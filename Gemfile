@@ -14,6 +14,8 @@ group :development, :test do
   gem 'launchy'
   gem 'simplecov'
   gem 'jettywrapper'
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
 
   # Use unicorn as the app server
   gem 'unicorn'
