@@ -5,3 +5,7 @@
 require File.expand_path('../config/application', __FILE__)
 
 NuigRnag::Application.load_tasks
+
+require 'rake/testtask'
+require 'bundler'
+require 'jettywrapper'
