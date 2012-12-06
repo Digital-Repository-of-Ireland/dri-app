@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
 
-gem 'blacklight', github: 'projectblacklight/blacklight', branch: 'bootstrap'
+gem 'blacklight', :git => 'https://github.com/projectblacklight/blacklight.git', :branch => 'bootstrap'
 #gem 'hydra-head', '5.0.0.pre9'
 
 gem 'sqlite3'
