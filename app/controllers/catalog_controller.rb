@@ -4,33 +4,30 @@ require 'blacklight/catalog'
 class CatalogController < ApplicationController  
 
   include Blacklight::Catalog
+  # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
+  include Hydra::Controller::ControllerBehavior
+
+  # These before_filters apply the hydra access controls
+  before_filter :enforce_show_permissions, :only=>:show
+  # This applies appropriate access controls to all solr queries
+  CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
+  # This filters out objects that you want to exclude from search results, like FileAssets
+  CatalogController.solr_search_params_logic += [:exclude_unwanted_models]
 
   configure_blacklight do |config|
-    ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = { 
       :qt => 'search',
       :rows => 10 
     }
 
-    ## Default parameters to send on single-document requests to Solr. These settings are the Blackligt defaults (see SolrHelper#solr_doc_params) or 
-    ## parameters included in the Blacklight-jetty document requestHandler.
-    #
-    #config.default_document_solr_params = {
-    #  :qt => 'document',
-    #  ## These are hard-coded in the blacklight 'document' requestHandler
-    #  # :fl => '*',
-    #  # :rows => 1
-    #  # :q => '{!raw f=id v=$id}' 
-    #}
-
     # solr field configuration for search results/index views
-    config.index.show_link = 'title_display'
-    config.index.record_display_type = 'format'
+    config.index.show_link = 'title_t'
+    config.index.record_display_type = 'has_model_s'
 
     # solr field configuration for document/show views
-    config.show.html_title = 'title_display'
-    config.show.heading = 'title_display'
-    config.show.display_type = 'format'
+    config.show.html_title = 'title_t'
+    config.show.heading = 'title_t'
+    config.show.display_type = 'has_model_s'
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -51,26 +48,21 @@ class CatalogController < ApplicationController
     #
     # :show may be set to false if you don't want the facet to be drawn in the 
     # facet bar
-    config.add_facet_field 'format', :label => 'Format'
-    config.add_facet_field 'pub_date', :label => 'Publication Year', :single => true
+    config.add_facet_field 'object_type_facet', :label => 'Format' 
+    config.add_facet_field 'pub_date', :label => 'Publication Year' 
     config.add_facet_field 'subject_topic_facet', :label => 'Topic', :limit => 20 
     config.add_facet_field 'language_facet', :label => 'Language', :limit => true 
     config.add_facet_field 'lc_1letter_facet', :label => 'Call Number' 
     config.add_facet_field 'subject_geo_facet', :label => 'Region' 
     config.add_facet_field 'subject_era_facet', :label => 'Era'  
 
-
-    config.add_facet_field 'example_query_facet_field', :label => 'Publish Date', :query => {
-       :years_5 => { :label => 'within 5 Years', :fq => "pub_date:[#{Time.now.year - 5 } TO *]" },
-       :years_10 => { :label => 'within 10 Years', :fq => "pub_date:[#{Time.now.year - 10 } TO *]" },
-       :years_25 => { :label => 'within 25 Years', :fq => "pub_date:[#{Time.now.year - 25 } TO *]" }
-    }
-
-
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.
-    config.add_facet_fields_to_solr_request!
+    config.default_solr_params[:'facet.field'] = config.facet_fields.keys
+    #use this instead if you don't want to query facets marked :show=>false
+    #config.default_solr_params[:'facet.field'] = config.facet_fields.select{ |k, v| v[:show] != false}.keys
+
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display 

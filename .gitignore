@@ -13,3 +13,9 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Gemfile.lock should be ignored
+Gemfile.lock
+
+# Jetty should be ignored
+/jetty
