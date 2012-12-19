@@ -48,8 +48,13 @@ class CatalogController < ApplicationController
     #
     # :show may be set to false if you don't want the facet to be drawn in the 
     # facet bar
-    config.add_facet_field 'object_type_facet', :label => 'Format' 
-    config.add_facet_field 'pub_date', :label => 'Publication Year' 
+    config.add_facet_field 'subject_facet', :label => 'Subject'
+    config.add_facet_field 'presenter_facet', :label => 'Presenter', :limit => 20
+    config.add_facet_field 'guest_facet', :label => 'Guest', :limit => 20
+    # config.add_facet_field 'person_facet', :label => 'Person', :limit => 20
+    config.add_facet_field 'object_type_facet', :label => 'Format'
+    config.add_facet_field 'pub_date', :label => 'Publication Year', :date => true
+    config.add_facet_field 'broadcast_date_facet', :label => 'Broadcast Date' 
     config.add_facet_field 'subject_topic_facet', :label => 'Topic', :limit => 20 
     config.add_facet_field 'language_facet', :label => 'Language', :limit => true 
     config.add_facet_field 'lc_1letter_facet', :label => 'Call Number' 
@@ -83,7 +88,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'subtitle_display', :label => 'Subtitle:' 
     config.add_show_field 'subtitle_vern_display', :label => 'Subtitle:' 
     config.add_show_field 'author_display', :label => 'Author:' 
-    config.add_show_field 'author_vern_display', :label => 'Author:' 
+    config.add_show_field 'author_vern_display', :label => 'Author:'
     config.add_show_field 'format', :label => 'Format:' 
     config.add_show_field 'url_fulltext_display', :label => 'URL:'
     config.add_show_field 'url_suppl_display', :label => 'More Information:'
@@ -132,12 +137,20 @@ class CatalogController < ApplicationController
       }
     end
     
-    config.add_search_field('author') do |field|
-      field.solr_parameters = { :'spellcheck.dictionary' => 'author' }
-      field.solr_local_parameters = { 
-        :qf => '$author_qf',
-        :pf => '$author_pf'
-      }
+    #config.add_search_field('author') do |field|
+    #  field.solr_parameters = { :'spellcheck.dictionary' => 'author' }
+    #  field.solr_local_parameters = { 
+    #    :qf => '$author_qf',
+    #    :pf => '$author_pf'
+    #  }
+    #end
+
+    config.add_search_field('person') do |field|
+        field.solr_parameters = { }
+        field.solr_local_parameters = {
+          :qf => '$person_qf',
+          :pf => '$person_pf',
+       }
     end
     
     # Specifying a :qt only to show it's possible, and so our internal automated

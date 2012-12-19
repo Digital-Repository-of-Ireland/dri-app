@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.9'
-gem 'blacklight', '4.0.0'
-gem 'hydra-head', '5.0.0'
+gem 'blacklight', '4.0.1'
+gem 'hydra-head', '5.0.1'
 gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git'
 
 gem 'sqlite3'
@@ -43,13 +43,6 @@ gem 'jquery-rails'
 # gem 'debugger'
 
 gem "unicode", :platforms => [:mri_18, :mri_19]
-# gem "devise"
-# gem "devise-guests", "~> 0.2"
-# gem "bootstrap-sass"
 
-# gem "devise"
-# gem "devise-guests", "~> 0.3"
-
-gem "devise"
 gem "devise-guests", "~> 0.3"
 gem "bootstrap-sass"

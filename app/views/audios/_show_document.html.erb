@@ -1,0 +1,52 @@
+<div class="document_viewer" id="cover_container">
+  <div class="content-type-header"><h3><%= @document_fedora.title %></h3></div>
+  <dl class="defList">
+	<dt>Description: </dt>
+	<dd><%= @document_fedora.description %></dd>
+	<dt>Broadcast Date: </dt>
+	<dd><%= @document_fedora.broadcast_date %></dd>
+	<dt>Presenters: </dt>
+	<% @document_fedora.presenter.each_with_index do |p,i| %>
+                <% if i > 0 %>
+                        <dt>&nbsp;</dt>
+                <% end %>
+                <dd><a href="<%= url_for :action => 'index', :controller => 'catalog', 'f[presenter_facet][]' => p %>"><%= p %></a></dd>
+        <% end %>
+        <dt>Guests: </dt>
+        <% @document_fedora.guest.each_with_index do |g,i| %>
+		<% if i > 0 %>
+			<dt>&nbsp;</dt>
+		<% end %>
+		<dd><a href="<%= url_for :action => 'index', :controller => 'catalog', 'f[person_facet][]' => g %>"><%= g %></a></dd>
+	<% end %>
+	<dt>Subjects: </dt>
+	<% @document_fedora.subject.each_with_index do |s,i| %>
+                <% if i > 0 %>
+                        <dt>&nbsp;</dt>
+                <% end %>
+                <dd><a href="<%= url_for :action => 'index', :controller => 'catalog', 'f[subject_facet][]' => s %>"><%= s %></a></dd>
+        <% end %>
+	<dt>Language: </dt>
+	<dd><a href="<%= url_for :action => 'index', :controller => 'catalog', 'f[language_facet][]' => @document_fedora.language %>"><%= @document_fedora.language == 'ga' ? 'Irish' : 'English' %></a></dd>
+	<dt>References: </dt>
+        <% @document_fedora.source.each_with_index do |s,i| %>
+                <% if i > 0 %>
+                        <dt>&nbsp;</dt>
+                <% end %>
+                <dd><%= s %></dd>
+        <% end %>
+	<dt>Resource Type:</dt>
+	<dd><a href="<%= url_for :action => 'index', :controller => 'catalog', 'f[object_type_facet][]' => 'Audio' %>">Audio</a></dd>
+  </dl>
+  <h3>Files</h3>
+  <dl class="defList">
+       <dt>Metadata: </dt>
+       <dd><a href="<%= url_for :controller => 'downloads', :action => 'show_metadata', :id => @document_fedora.id %>">view</a></dd>
+       <dt>Audio File: </dt>
+       <% if @document_fedora.datastreams.has_key?('masterContent') %>
+       <dd><a href="<%= url_for :controller => 'downloads', :action => 'show_file', :id => @document_fedora.id %>">view</a></dd>
+       <% else %>
+       <dd>No file has been uploaded.</dd>
+       <% end %>
+  </dl>
+</div>
