@@ -6,7 +6,8 @@ class AudiosController < ApplicationController
   # include Hydra::AssetsControllerHelper
   # include Hydra::AccessControlsEnforcement
   # include Blacklight::Configurable
-  # include DRI::Model
+  include DRI::Model
+  # include DRI::Metadata
 
   # self.copy_blacklight_config_from(CatalogController)
 
@@ -21,25 +22,27 @@ class AudiosController < ApplicationController
   end
 
   def edit
-    @document_fedora = DRI::Model::Audio.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json  { render :json => @document_fedora }
-    end
+    #@document_fedora = Audio.new
+    @document_fedora = Audio.find(params[:id])
+    #@document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
+    #respond_to do |format|
+    #  format.html
+    #  format.json  { render :json => @document_fedora }
+    #end
   end
 
   def show
     # update_session
     # session[:viewing_context] = "browse"
-    @document_fedora = DRI::Model::Audio.find(params[:id])
-    respond_to do |format|
-      format.html  
-      format.json  { render :json => @document_fedora }
-    end
+    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
+    #respond_to do |format|
+    #  format.html  
+    #  format.json  { render :json => @document_fedora }
+    #end
   end
 
   def update
-    @document_fedora = DRI::Model::Audio.find(params[:id])
+    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
     @document_fedora.update_attributes(params[:fedora_document])
     redirect_to :edit
   end
@@ -60,3 +63,4 @@ class AudiosController < ApplicationController
     end
   end
 end
+

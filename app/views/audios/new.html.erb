@@ -1,6 +1,16 @@
 <h1>New Audio</h1>
 
-<%= form_for @document_fedora, :html => {:class => 'form-vertical'} do |f| %>
+<fieldset>
+        <legend>Upload Metadata:</legend>
+        <p class="legend-caption">Ingest metadata XML file.</p>
+        <form id="metadata_uploader" action="<%= url_for(:action=>"ingest_metadata", :controller=>"downloads") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+        <input type="file" name="metadata_file" accept="application/xml" >
+        <input class="btn-primary btn-large" name="ingest_metadata" type="submit" value="Ingest Metadata"/>
+        </form>
+</fieldset>
+
+<%= form_for @document_fedora, :url => {:controller=>"audios"}, :html => {:class => 'form-vertical'} do |f| %>
 
   <fieldset id="metadata">
     <legend>Metadata</legend>
