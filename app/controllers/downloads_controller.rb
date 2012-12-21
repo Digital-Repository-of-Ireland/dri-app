@@ -3,10 +3,10 @@ class DownloadsController < ApplicationController
  include DRI::Metadata
  include DRI::Model
 
- before_filter :enforce_edit_permissions, :except => [:show_metadata, :show_file, :ingest_metadata]
+ #before_filter :enforce_edit_permissions, :except => [:show_metadata, :show_file, :ingest_metadata]
 
  def local_storage_dir
-   '/Users/damien/dri_data'
+   Rails.root.join('dri_files')
  end 
 
  # Renders the metadata XML stored in the descMetadata datastream.
@@ -60,34 +60,34 @@ class DownloadsController < ApplicationController
       datastream = params[:datastream]
     end
     
-    #if params.has_key?(:Filedata) && params[:Filedata] != nil
-    #  if datastream.eql?("masterContent")
-    #    @object = retrieve_object params[:id]
-#
- #       if @object == nil
-  #        flash[:notice] = "Please specify a valid object id."
-#	else
-#	  count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => @object.id, :d => datastream } ]).count
- #
- #         dir = local_storage_dir+'/'+@object.id+'/'+datastream+count.to_s+'/'
-#
-#	  @file = LocalFile.new
-#          @file.add_file params[:Filedata], {:fedora_id => @object.id, :ds_id => datastream, :directory => dir, :version => count}
-#	  @file.save!
-#
-#          @url = url_for :controller=>"downloads", :action=>"show_file", :id=>params[:id]
-#          logger.error @action_url
-#          @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
-#          @object.save
-#
-#	  flash[:notice] = "File has been successfully uploaded."
-#	end
-#      else
-#        flash[:notice] = "You must specify a valid file datastream."
-#      end
-#    else
-#      flash[:notice] = "You must specify a file to upload."
-#    end
+    if params.has_key?(:Filedata) && params[:Filedata] != nil
+      if datastream.eql?("masterContent")
+        @object = retrieve_object params[:id]
+
+        if @object == nil
+          flash[:notice] = "Please specify a valid object id."
+	else
+	  count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => @object.id, :d => datastream } ]).count
+ 
+          dir = local_storage_dir.join(@object.id).join(datastream+count.to_s)
+
+	  @file = LocalFile.new
+          @file.add_file params[:Filedata], {:fedora_id => @object.id, :ds_id => datastream, :directory => dir.to_s, :version => count}
+	  @file.save!
+
+          @url = url_for :controller=>"downloads", :action=>"show_file", :id=>params[:id]
+          logger.error @action_url
+          @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
+          @object.save
+
+	  flash[:notice] = "File has been successfully uploaded."
+	end
+      else
+        flash[:notice] = "You must specify a valid file datastream."
+      end
+    else
+      flash[:notice] = "You must specify a file to upload."
+    end
 
     redirect_to :controller => "catalog", :action => "show", :id => params[:id]
  end
@@ -125,7 +125,7 @@ class DownloadsController < ApplicationController
       flash[:notice] = "You must specify a valid file to upload."
     end
 
-    redirect_to :controller => "audios", :action => "edit", :id => params[:id]
+    redirect_to :controller => "catalog", :action => "show", :id => params[:id]
  end
 
  # Ingests the metadata of XML file to create a new digital object.

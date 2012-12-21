@@ -90,7 +90,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'title_vern_display', :label => 'Title:' 
     config.add_show_field 'subtitle_display', :label => 'Subtitle:' 
     config.add_show_field 'subtitle_vern_display', :label => 'Subtitle:'
-    config.add_show_field 'description_facet', :label => 'Subtitle:' 
+    config.add_show_field 'description_display', :label => 'Description:' 
     config.add_show_field 'author_display', :label => 'Author:' 
     config.add_show_field 'author_vern_display', :label => 'Author:'
     config.add_show_field 'presenter_facet', :label => 'Presenter:'

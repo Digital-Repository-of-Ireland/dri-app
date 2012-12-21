@@ -11,8 +11,8 @@ NuigRnag::Application.routes.draw do
 
   match 'downloads/:id/metadata' => 'downloads#show_metadata'
   match 'downloads/:id/file' => 'downloads#show_file'
-  match 'upload/:id/file' => 'downloads#upload_file'
-  match 'upload/:id/metadata' => 'downloads#replace_metadata'
+  match 'uploads/:id/file' => 'downloads#upload_file'
+  match 'uploads/:id/metadata' => 'downloads#replace_metadata'
   match 'ingest' => 'downloads#ingest_metadata'
 
   # The priority is based upon order of creation:
