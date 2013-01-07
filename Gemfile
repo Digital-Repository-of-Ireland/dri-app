@@ -1,3 +1,6 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.9'
@@ -24,6 +27,7 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'
+  gem 'simplecov'
 end
 gem 'jquery-rails'
 
