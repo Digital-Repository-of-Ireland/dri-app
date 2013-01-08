@@ -20,3 +20,5 @@ Gemfile.lock
 # Jetty should be ignored
 /jetty
 
+/coverage
+.DS_Store
