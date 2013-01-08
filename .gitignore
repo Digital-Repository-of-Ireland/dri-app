@@ -21,4 +21,5 @@ Gemfile.lock
 /jetty
 
 /coverage
+/rdoc
 .DS_Store

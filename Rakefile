@@ -9,3 +9,21 @@ NuigRnag::Application.load_tasks
 require 'rake/testtask'
 require 'bundler'
 require 'jettywrapper'
+
+begin
+  require 'rdoc/task'
+rescue LoadError
+  require 'rdoc/rdoc'
+  require 'rake/rdoctask'
+  RDoc::Task = Rake::RDocTask
+end
+
+RDoc::Task.new(:rdoc) do |rdoc|
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title    = 'nuig-rnag'
+  rdoc.options << '--line-numbers'
+  rdoc.rdoc_files.include('*.rdoc')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+  rdoc.rdoc_files.include('app/**/*.rb')
+  rdoc.rdoc_files.include('app/*.rb')
+end
