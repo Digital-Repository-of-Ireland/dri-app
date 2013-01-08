@@ -1,3 +1,4 @@
+@req-17 @ingest
 Feature: Ingestion
 
 DELETEME: REQ-17
@@ -22,6 +23,11 @@ In order to add a digital object into the repository
 As an authenticated and authorised depositor
 I want to ingest an asset with metadata
 
+Background:
+  Given that I am logged in
+  And that I have an existing collection
+
+@wip
 Scenario: Ingesting a Digital Object of 1 file
   Given the asset SAMPLEA
   Given that the asset is only 1 file
@@ -37,51 +43,45 @@ Scenario: Ingesting a Digital Object of 1 file
   Then I ingest the assest with the metadata
   Then I should be given a PID from the digital repository
 
-
-
 Scenario: Constructing a valid Digital Object
-#  Given an asset SAMPLEA
-#  And SAMPLEA is valid
-#  And the asset is only 1 file
-#  Given a metadata file SAMPLEA.xml
-#  And SAMPLEA.xml is valid
-#  When I submit the Digital Object
-#  Then I should see a review page
-
+  Given a metadata file "valid_metadata.xml"
+  When I visit the new Digital Object page
+  And I upload the metadata file "valid_metadata.xml"
+  Then I should see "Audio object has been successfully ingested"
+  And the collection should contain the Digital Object
+  And the Digital Object metadata should match "valid_metadata.xml" 
+  
 Scenario: Constructing an invalid Digital Object
-#  Given an asset SAMPLEA
-#  And SAMPLEA is valid
-#  And the asset is only 1 file
-#  Given a metadata file SAMPLEA.xml
-#  And SAMPLEA.xml is invalid
-#  When I submit the Digital Object
-#  Then I should see an error message
+  Given a metadata file "invalid_metadata.xml"
+  When I visit the new Digital Object page
+  And I upload the metadata file "invalid_metadata.xml"
+  Then I should see "Audio object has invalid metadata"
+  And the collection should not contain the Digital Object
 
 Scenario: Committing a valid Digital Object
   Given a valid Digital Object
-  And a known collection
-  When I commit the Digital Object
+  When I commit the Digital Object to the collection
   Then I should be given a PID from the digital repository
+  And the collection should contain the Digital Object
 
 Scenario: Committing an invalid Digital Object with incorrectly structured metadata file
   Given a Digital Object with invalid metadata
-  When I commit the Digital Object
+  When I commit the Digital Object to the collection
   Then I should get an error
+  And the collection should not contain the Digital Object
 
 Scenario: Committing an invalid Digital Object with an invalid asset
-  Given a Digital Object with invalid asset SAMPLEA
-  When I commit the Digital Object
+  Given a Digital Object with invalid asset "SAMPLEA"
+  When I commit the Digital Object to the collection
   Then I should get an error
+  And the collection should not contain the Digital Object
 
-Scenario: Ingesting a Digital Object which is a Duplicate of an existing Digital Object in the same collection
+Scenario: Ingesting a Digital Object which is a duplicate of an existing Digital Object in the same collection
   Given a valid Digital Object
-  And a known collection
-  And the collection already contains the Digital Object
+  And that the collection already contains the Digital Object
   When I commit the Digital Object
   Then I should get a warning
-  And I should be given a choice of using the existing object or create a new one
-
-
+  And I should be given a choice of using the existing object or creating a new one
 
 #Scenario: Ingesting a Digital Object with an invalid asset
 #  Given the asset SAMPLEA
