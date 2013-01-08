@@ -1,4 +1,4 @@
-<h2>New Audio</h2>
+<h2>Edit Audio</h2>
 
 <%= form_for @document_fedora, :url => {:controller=>"audios", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
 
@@ -8,13 +8,47 @@
     <%= f.text_field :title, :class => "edit span6", :required => "true" %>
     <%= f.label 'Description:' %>
     <%= f.text_area :description, :class => "edit span6" %>
+    <%= f.label 'Broadcast Date:' %>
+    <%= f.text_field :broadcast_date, :class => "edit span6", :required => "true" %>
+  </fieldset>
+  <fieldset id="presenter">
+    <%= f.label 'Presenters:' %>
+    <% @document_fedora.presenter.each do |i| %>
+      <%= f.text_field "presenter][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Presenter">Add Presenter</a></p>
+  </fieldset>
+  <fieldset id="guest">
+    <%= f.label 'Guests:' %>
+    <% @document_fedora.guest.each do |i| %>
+      <%= f.text_field "guest][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Guest">Add Guest</a></p>
+  </fieldset>
+  <fieldset id="subject">
+    <%= f.label 'Subjects:' %>
+    <% @document_fedora.subject.each do |i| %>
+      <%= f.text_field "subject][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Subject">Add Subject</a></p>
+  </fieldset>
+  <fieldset id="language">
+    <%= f.label 'Language:' %>
+    <%= f.select :language, [['English', 'en'],['Irish', 'ga']],:class => "edit span6" %>
+  </fieldset>
+  <fieldset id="source">
+    <%= f.label 'Sources:' %>
+    <% @document_fedora.source.each do |i| %>
+      <%= f.text_field "source][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Source">Add Source</a></p>
   </fieldset>
 
   <%= f.submit "Save Changes", :class => "btn-primary btn-large" %>
 <% end %>
 
 <fieldset>
-        <legend>Upload Metadata:</legend>
+        <legend>Replace Metadata:</legend>
         <p class="legend-caption">Replace metadata using XML file.</p>
         <form id="metadata_uploader" action="<%= url_for(:action=>"replace_metadata", :controller=>"downloads", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
