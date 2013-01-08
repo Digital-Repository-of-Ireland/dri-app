@@ -22,6 +22,7 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'nuig-rnag'
   rdoc.options << '--line-numbers'
+  rdoc.main = "README.rdoc"
   rdoc.rdoc_files.include('*.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
   rdoc.rdoc_files.include('app/**/*.rb')
