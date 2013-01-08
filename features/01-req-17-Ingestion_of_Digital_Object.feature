@@ -37,6 +37,52 @@ Scenario: Ingesting a Digital Object of 1 file
   Then I ingest the assest with the metadata
   Then I should be given a PID from the digital repository
 
+
+
+Scenario: Constructing a valid Digital Object
+#  Given an asset SAMPLEA
+#  And SAMPLEA is valid
+#  And the asset is only 1 file
+#  Given a metadata file SAMPLEA.xml
+#  And SAMPLEA.xml is valid
+#  When I submit the Digital Object
+#  Then I should see a review page
+
+Scenario: Constructing an invalid Digital Object
+#  Given an asset SAMPLEA
+#  And SAMPLEA is valid
+#  And the asset is only 1 file
+#  Given a metadata file SAMPLEA.xml
+#  And SAMPLEA.xml is invalid
+#  When I submit the Digital Object
+#  Then I should see an error message
+
+Scenario: Committing a valid Digital Object
+  Given a valid Digital Object
+  And a known collection
+  When I commit the Digital Object
+  Then I should be given a PID from the digital repository
+
+Scenario: Committing an invalid Digital Object with incorrectly structured metadata file
+  Given a Digital Object with invalid metadata
+  When I commit the Digital Object
+  Then I should get an error
+
+Scenario: Committing an invalid Digital Object with an invalid asset
+  Given a Digital Object with invalid asset SAMPLEA
+  When I commit the Digital Object
+  Then I should get an error
+
+Scenario: Ingesting a Digital Object which is a Duplicate of an existing Digital Object in the same collection
+  Given a valid Digital Object
+  And a known collection
+  And the collection already contains the Digital Object
+  When I commit the Digital Object
+  Then I should get a warning
+  And I should be given a choice of using the existing object or create a new one
+
+
+
 #Scenario: Ingesting a Digital Object with an invalid asset
 #  Given the asset SAMPLEA
 #  Given a known collection
