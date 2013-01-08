@@ -31,6 +31,11 @@ group :development, :test do
 end
 gem 'jquery-rails'
 
+group :test do
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
+end
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
