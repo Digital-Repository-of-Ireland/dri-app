@@ -57,3 +57,13 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+#
+# DRI-TCD - should be moved to a more sensible location to avoid being over-ridden
+#
+class Module
+  def recursive_const_get(name)
+    name.to_s.split("::").inject(self) do |b, c|
+      b.const_get(c)
+    end
+  end
+end

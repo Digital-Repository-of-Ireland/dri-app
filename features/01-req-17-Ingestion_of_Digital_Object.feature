@@ -24,8 +24,7 @@ As an authenticated and authorised depositor
 I want to ingest an asset with metadata
 
 Background:
-  Given that I am logged in
-  And that I have an existing collection
+  Given I am logged in as "user1"
 
 @wip
 Scenario: Ingesting a Digital Object of 1 file
@@ -43,45 +42,20 @@ Scenario: Ingesting a Digital Object of 1 file
   Then I ingest the assest with the metadata
   Then I should be given a PID from the digital repository
 
-Scenario: Constructing a valid Digital Object
-  Given a metadata file "valid_metadata.xml"
-  When I visit the new Digital Object page
-  And I upload the metadata file "valid_metadata.xml"
-  Then I should see "Audio object has been successfully ingested"
-  And the collection should contain the Digital Object
-  And the Digital Object metadata should match "valid_metadata.xml" 
-  
-Scenario: Constructing an invalid Digital Object
-  Given a metadata file "invalid_metadata.xml"
-  When I visit the new Digital Object page
-  And I upload the metadata file "invalid_metadata.xml"
-  Then I should see "Audio object has invalid metadata"
-  And the collection should not contain the Digital Object
-
 Scenario: Committing a valid Digital Object
   Given a valid Digital Object
-  When I commit the Digital Object to the collection
+  When I commit the Digital Object
   Then I should be given a PID from the digital repository
-  And the collection should contain the Digital Object
 
 Scenario: Committing an invalid Digital Object with incorrectly structured metadata file
   Given a Digital Object with invalid metadata
-  When I commit the Digital Object to the collection
-  Then I should get an error
-  And the collection should not contain the Digital Object
+  When I commit the Digital Object
+  Then I should get an invalid Digital Object error
 
 Scenario: Committing an invalid Digital Object with an invalid asset
   Given a Digital Object with invalid asset "SAMPLEA"
-  When I commit the Digital Object to the collection
-  Then I should get an error
-  And the collection should not contain the Digital Object
-
-Scenario: Ingesting a Digital Object which is a duplicate of an existing Digital Object in the same collection
-  Given a valid Digital Object
-  And that the collection already contains the Digital Object
   When I commit the Digital Object
-  Then I should get a warning
-  And I should be given a choice of using the existing object or creating a new one
+  Then I should get an invalid Digital Object error
 
 #Scenario: Ingesting a Digital Object with an invalid asset
 #  Given the asset SAMPLEA

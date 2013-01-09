@@ -1,39 +1,39 @@
-Given /^a valid Digital Object$/ do
+Given /^a collection that does not exist$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-When /^I commit the Digital Object$/ do
+When /^I add the Digital Object to a collection$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Then /^I should be given a PID from the digital repository$/ do
+Then /^the collection should exist$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Given /^a Digital Object with invalid metadata$/ do
+Then /^the collection should contain the Digital Object$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Given /^a Digital Object with invalid asset "(.*?)"$/ do |arg1|
+Then /^I should get a duplicate object warning$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Then /^I should get an invalid Digital Object error$/ do
+Given /^an existing collection$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Given /^a metadata file "(.*?)"$/ do |arg1|
+Given /^the collection already contains the Digital Object$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-When /^I visit the new Digital Object page$/ do
+When /^I retrieve the collection$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-When /^I upload the metadata file "(.*?)"$/ do |arg1|
+Then /^I should see my Digital Objects$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Then /^the Digital Object metadata should match "(.*?)"$/ do |arg1|
+Then /^I should be given a choice of using the existing object or creating a new one$/ do
   pending # express the regexp above with the code you wish you had
 end
