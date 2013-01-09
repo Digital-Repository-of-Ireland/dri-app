@@ -1,4 +1,4 @@
-@req-17 @ingest
+@ingest @req-17
 Feature: 
   In order to add a digital object into the repository
   As an authenticated and authorised depositor

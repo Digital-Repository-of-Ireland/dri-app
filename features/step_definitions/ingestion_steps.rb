@@ -1,7 +1,3 @@
-Given /^that I am logged in$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
 Given /^a valid Digital Object$/ do
   pending # express the regexp above with the code you wish you had
 end
@@ -35,10 +31,6 @@ When /^I visit the new Digital Object page$/ do
 end
 
 When /^I upload the metadata file "(.*?)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
-end
-
-Then /^I should see "(.*?)"$/ do |arg1|
   pending # express the regexp above with the code you wish you had
 end
 

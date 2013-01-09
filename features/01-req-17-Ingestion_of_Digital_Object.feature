@@ -24,7 +24,7 @@ As an authenticated and authorised depositor
 I want to ingest an asset with metadata
 
 Background:
-  Given that I am logged in
+  Given I am logged in as "user1"
 
 @wip
 Scenario: Ingesting a Digital Object of 1 file

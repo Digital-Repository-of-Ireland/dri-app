@@ -1,4 +1,4 @@
-@collections @ingest @req-17
+@collections @req-17
 Feature:
   In order to manage my Digital Objects
   As an authorized user
@@ -6,7 +6,7 @@ Feature:
   And to retrieve my Digital Objects by collection
 
 Background:
-  Given that I am logged in
+  Given I am logged in as "user1"
 
 Scenario: Commiting Digital Object to a collection that does not yet exist
   Given a valid Digital Object
