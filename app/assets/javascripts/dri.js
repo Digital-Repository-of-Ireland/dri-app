@@ -29,8 +29,11 @@ add_text_field = function() {
 // Remove the text field and the "delete" button whenever the "delete" link is clicked
 destroy_text_field = function() {
     $('.destructive').click(function() {
+      var fieldset_name = $(this).parent().attr('id');
+      var model_name = $(this).attr('model-name');
       $(this).prev('input[type="text"]').remove();
       $(this).prev('br').remove();
+      $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" value="">');
       $(this).remove();
       return false;
     });
