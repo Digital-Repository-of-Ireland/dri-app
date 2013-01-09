@@ -15,7 +15,8 @@ class CatalogController < ApplicationController
   CatalogController.solr_search_params_logic += [:exclude_unwanted_models]
 
   configure_blacklight do |config|
-    config.default_solr_params = { 
+    config.default_solr_params = {
+      :defType => "edismax", 
       :qt => 'search',
       :rows => 10 
     }
