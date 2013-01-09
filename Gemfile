@@ -34,6 +34,7 @@ gem 'jquery-rails'
 group :test do
   gem 'cucumber-rails'
   gem 'database_cleaner'
+  gem 'launchy'
 end
 
 # To use ActiveModel has_secure_password
