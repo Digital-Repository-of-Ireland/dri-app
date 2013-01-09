@@ -1,5 +1,12 @@
+<%= get_datastreams document %>
 <h3>Files</h3>
 <dl class="dl-horizontal  dl-invert">
   <dt>Metadata: </dt>
   <dd><a href="<%= url_for :controller => 'downloads', :action => 'show_metadata', :id => document.id %>">view</a></dd>
+  <dt>Audio File: </dt>
+<% if @datastreams.has_key?('masterContent') %>
+   <dd><a href="<%= url_for :controller => 'downloads', :action => 'show_file', :id => @document.id %>">listen</a></dd>
+<% else %>
+   <dd>No file has been uploaded.</dd>
+<% end %>
 </dl>

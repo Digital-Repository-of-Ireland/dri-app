@@ -42,8 +42,8 @@ class DownloadsController < ApplicationController
       send_file @local_file_info[0].path,
                       :type => @local_file_info[0].mime_type,
                       :stream => true,
-                      :buffer => 4096
-                      # :disposition => 'inline'
+                      :buffer => 4096,
+                      :disposition => 'inline'
       return
     end
 

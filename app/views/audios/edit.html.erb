@@ -1,3 +1,6 @@
+<div id="content" class="span9 show-document">
+<div id="document">
+<div class="document">
 <h2>Edit Audio</h2>
 
 <%= form_for @document_fedora, :url => {:controller=>"audios", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
@@ -58,12 +61,34 @@
 </fieldset>
 
 <fieldset>
-        <legend>Upload Audio:</legend>
-         <p class="legend-caption">No audio files have been uploaded. Please upload audio master file.</p>
+        <legend>Upload Audio File:</legend>
+        <% if @document_fedora.datastreams.has_key?("masterContent") %>
+        <p>A master audio file has already been uploaded: <a href="<%= url_for :controller => 'downloads', :action => 'show_file', :id => @document_fedora.id %>">listen here</a></p>
+        <form id="file_uploader" action="<%= url_for(:action=>"upload_file", :controller=>"downloads", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+        <input type="file" name="Filedata" accept="audio/*">
+        <input type="hidden" name="datastream" value="masterContent" />
+        <input class="btn-primary" name="upload_file" type="submit" value="Replace Master File"/>
+        </form>
+        <% else %>
+        <p class="legend-caption">No audio files have been uploaded. Please upload a master audio file.</p>
 <form id="file_uploader" action="<%= url_for(:action=>"upload_file", :controller=>"downloads", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
         <input type="file" name="Filedata" accept="audio/*">
         <input type="hidden" name="datastream" value="masterContent" />
         <input class="btn-primary" name="upload_file" type="submit" value="Upload Master File"/>
         </form>
+        <% end %>
 </fieldset>
+</div>
+</div>
+</div>
+<div id="sidebar" class="span3">
+<div class="well" id="sidebar-nav">
+  <ul class="nav nav-list">
+  <li class="nav-header">Edit Tools</li>
+    <%= link_to "View record", url_for(:controller => "catalog", :action => "show", :id => @document_fedora.id) %>
+  </ul>
+</div><!--/well -->
+</div>
+<!--/span -->
