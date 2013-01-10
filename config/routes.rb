@@ -11,11 +11,11 @@ NuigRnag::Application.routes.draw do
   resources :audios
   resources :user_session
 
-  match 'downloads/:id/metadata' => 'downloads#show_metadata'
-  match 'downloads/:id/file' => 'downloads#show_file'
-  match 'uploads/:id/file' => 'downloads#upload_file'
-  match 'uploads/:id/metadata' => 'downloads#replace_metadata'
-  match 'ingest' => 'downloads#ingest_metadata'
+  match 'audios/:id/metadata' => 'metadata#show', :via => :get
+  match 'audios/:id/metadata' => 'metadata#update', :via => :put
+  match 'audios/:id/file' => 'files#show', :via => :get
+  match 'audios/:id/file' => 'files#create', :via => :post
+  match 'ingest' => 'metadata#create', :via => :post  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
