@@ -5,9 +5,11 @@ NuigRnag::Application.routes.draw do
   Blacklight.add_routes(self)
   HydraHead.add_routes(self)
 
-  devise_scope :users do get '/users/sign_out' => 'devise/sessions#destroy' end
+  devise_for :users
+  devise_scope :users do get '/users/sign_out', :to => 'sessions#destroy' end
 
   resources :audios
+  resources :user_session
 
   match 'downloads/:id/metadata' => 'downloads#show_metadata'
   match 'downloads/:id/file' => 'downloads#show_file'
