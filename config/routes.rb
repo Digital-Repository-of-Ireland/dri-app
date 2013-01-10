@@ -5,11 +5,9 @@ NuigRnag::Application.routes.draw do
   Blacklight.add_routes(self)
   HydraHead.add_routes(self)
 
-  devise_for :users
-  devise_scope :users do get '/users/sign_out', :to => 'sessions#destroy' end
+  devise_for :users do get '/users/sign_out' => 'devise/sessions#destroy' end
 
   resources :audios
-  resources :user_session
 
   match 'audios/:id/metadata' => 'metadata#show', :via => :get
   match 'audios/:id/metadata' => 'metadata#update', :via => :put
