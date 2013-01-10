@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 gem 'blacklight', '4.0.0'
 gem 'hydra-head', '5.0.0'
 gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git'
