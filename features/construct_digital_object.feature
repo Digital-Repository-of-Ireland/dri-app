@@ -17,4 +17,4 @@ Scenario: Constructing an invalid Digital Object
   Given I am on the new Digital Object page
   When I attach the metadata file "invalid_metadata.xml"
   And I press "Ingest Metadata"
-  Then I should see "Audio object has invalid metadata"
+  Then I should see "Validation Errors:"

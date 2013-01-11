@@ -83,7 +83,7 @@ class MetadataController < AssetsController
     if MIME::Types.type_for(params[:metadata_file].original_filename).first.content_type.eql? 'application/xml'
       tmp = params[:metadata_file].tempfile
       @tmp_xml = Nokogiri::XML(tmp.read)
-
+  
       namespace = @tmp_xml.namespaces
 
       if namespace.has_key?("xmlns:oai_dc") &&
@@ -91,17 +91,20 @@ class MetadataController < AssetsController
         namespace["xmlns:oai_dc"].eql?("http://www.openarchives.org/OAI/2.0/oai_dc/") &&
         namespace["xmlns:dc"].eql?("http://purl.org/dc/elements/1.1/")
 
-        validate_errors = @tmp_xml.validate
+        xsd_xml = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
+
+        xsd = Nokogiri::XML::Schema(open(xsd_xml))
+        validate_errors = xsd.validate(@tmp_xml)
 
         if validate_errors == nil || validate_errors.size == 0
           result = true
         else
-          flash[:notice] = "Validation Errors: "+validate_errors
+          flash[:notice] = "Validation Errors: #{validate_errors.join(", ")}"
         end
       else
         flash[:notice] = "The XML file could not validate against the Dublin Core schema"
       end
-    else
+   else
       flash[:notice] = "You must specify a XML file."
    end
 
