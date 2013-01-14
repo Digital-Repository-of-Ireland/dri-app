@@ -18,24 +18,23 @@
           <%= link_to application_name, root_path, :class => "brand" %>
         </div>
 
-        <div class="span4">
-          <ul class="nav pull-left">
-            <li><%= link_to "Home", root_path %></li>
-            <li><%= link_to "Ingest", "/audios/new" %></li>
-            <li><%= link_to "About", "#" %></li>
-            <li><%= link_to "Contact", "#" %></li>
-          </ul>
-        </div>
-
         <div class="span6 clearfix" id="searchbar">         
           <%= render_search_bar  %>
+        </div>
+
+        <div class="span4 pull-right">
+         <%= render :partial=>'/user_util_links' %>
         </div>
 
       </div>
 
       <div class="row">
-        <div class="span6 pull-right">
-         <%= render :partial=>'/user_util_links' %>
+           <ul class="nav pull-left">
+            <li><%= link_to "Home", root_path %></li>
+            <li><%= link_to "Ingest", "/audios/new" %></li>
+            <li><%= link_to "About", "#" %></li>
+            <li><%= link_to "Contact", "#" %></li>
+          </ul>
         </div>
       </div>
 
