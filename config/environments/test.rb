@@ -34,4 +34,7 @@ NuigRnag::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Add a default host for devise mailer
+  config.action_mailer.default_url_options = { :host => 'localhost' }
 end
