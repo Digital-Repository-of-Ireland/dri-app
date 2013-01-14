@@ -31,6 +31,10 @@ When /^I attach the metadata file "(.*?)"$/ do |file|
   attach_file("metadata_file", "spec/fixtures/#{file}")
 end
 
+When /^I attach the audio file "(.*?)"$/ do |file|
+  attach_file("Filedata", "spec/fixtures/#{file}")
+end
+
 Then /^I press "(.*?)"$/ do |button|
   click_button(button)
 end
@@ -63,6 +67,36 @@ Then /^(?:|I )should be on (.+)$/ do |page_name|
     current_path.should == path_to(page_name)
   else
     assert_equal path_to(page_name), current_path
+  end
+end
+
+When /^(?:|I )fill in "([^"]*)" with "([^"]*)"(?: within "([^"]*)")?$/ do |field, value, selector|
+  with_scope(selector) do
+    fill_in(field, :with => value)
+  end
+end
+
+Then /^the "([^"]*)" field(?: within "([^"]*)")? should contain "([^"]*)"$/ do |field, selector, value|
+  with_scope(selector) do
+    field = find_field(field)
+    field_value = (field.tag_name == 'textarea') ? field.text : field.value
+    if field_value.respond_to? :should
+      field_value.should =~ /#{value}/
+    else
+      assert_match(/#{value}/, field_value)
+    end
+  end
+end
+
+Then /^the "([^"]*)" field(?: within "([^"]*)")? should not contain "([^"]*)"$/ do |field, selector, value|
+  with_scope(selector) do
+    field = find_field(field)
+    field_value = (field.tag_name == 'textarea') ? field.text : field.value
+    if field_value.respond_to? :should_not
+      field_value.should_not =~ /#{value}/
+    else
+      assert_no_match(/#{value}/, field_value)
+    end
   end
 end
 

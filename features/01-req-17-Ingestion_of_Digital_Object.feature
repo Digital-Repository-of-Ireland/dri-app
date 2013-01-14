@@ -43,19 +43,21 @@ Scenario: Ingesting a Digital Object of 1 file
   Then I should be given a PID from the digital repository
 
 Scenario: Committing a valid Digital Object
-  Given a valid Digital Object
+  Given a Digital Object
   When I commit the Digital Object
   Then I should be given a PID from the digital repository
 
 Scenario: Committing an invalid Digital Object with incorrectly structured metadata file
-  Given a Digital Object with invalid metadata
-  When I commit the Digital Object
-  Then I should get an invalid Digital Object error
+  Given a Digital Object
+  When I add invalid metadata
+  And I commit the Digital Object
+  Then I should get an invalid Digital Object
 
 Scenario: Committing an invalid Digital Object with an invalid asset
-  Given a Digital Object with invalid asset "SAMPLEA"
-  When I commit the Digital Object
-  Then I should get an invalid Digital Object error
+  Given a Digital Object
+  When I add an invalid asset
+  And I commit the Digital Object
+  Then I should get an invalid Digital Object
 
 #Scenario: Ingesting a Digital Object with an invalid asset
 #  Given the asset SAMPLEA
