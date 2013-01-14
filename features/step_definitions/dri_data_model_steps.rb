@@ -3,10 +3,16 @@ Given /^we have a "(.*?)" Model$/ do |model_name|
 end
 
 When /^we test the "(.*?)" Model$/ do |model_name|
-  @test_model = Object.recursive_const_get(model_name).new
-  @test_model.should be_valid
+  @test_model = FactoryGirl.build(:audio)
+  @test_mode.should be_valid
 end
 
-Then /^the Test Model should have attribute "(.*?)"$/ do |attribute_name|
+Then /^it should have attribute "(.*?)"$/ do |attribute_name|
   pending # @test_model.has_attribute?(attribute_name).should == true
+  @test_model.should respond_to(attribute_name)
 end
+
+Then /^it should validate presence of attribute "(.*?)"$/ do |attribute_name|
+  @test_model.should validate_presence_of(attribute_name)
+end
+

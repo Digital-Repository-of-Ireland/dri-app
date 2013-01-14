@@ -67,3 +67,7 @@ class Module
     end
   end
 end
+
+Before do
+  require 'factory_girl'
+end
