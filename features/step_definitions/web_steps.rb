@@ -53,6 +53,10 @@ Then /^I should see a link to "([^\"]*)" with text "([^\"]*)"$/ do |url, text|
   page.should have_link(text, href: url) 
 end
 
+Then /^I should not see a link to "([^\"]*)"$/ do |text|
+  page.should_not have_link(text)
+end
+
 Then /^(?:|I )should be on (.+)$/ do |page_name|
   current_path = URI.parse(current_url).path
   if current_path.respond_to? :should
@@ -64,6 +68,14 @@ end
 
 Then /^show me the page$/ do
   save_and_open_page
+end
+
+Then /^I should see the error "([^\"]*)"$/ do |error|
+  page.should have_content error
+end 
+
+Then /^I should see the message "([^\"]*)"$/ do |message| 
+  page.should have_selector ".alert", text: message
 end
 
 def path_to(page_name)
@@ -81,6 +93,12 @@ def path_to(page_name)
 
     when /the home page/
       '/'
+
+    when /User Signin page/
+      '/users/sign_in'
+
+    when /User Sign up page/
+      '/users/sign_up'
 
     end
 end
