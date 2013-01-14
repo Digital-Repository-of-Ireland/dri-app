@@ -1,3 +1,41 @@
+== WARNING and DISCLAIMER
+
+This code in its current state is not to be redistributed to parties
+outside of DRI.
+
 == Welcome to nuig-rnag
 
-Stub for documentation
+This repository contains the proto-type of a Hydra-Head which targets the
+NUIG-RNAG dataset. This dataset contains primarily Audio and PDF files.
+
+This is a ruby on rails application, as such to run this application
+the user must be somewhat aware of how ruby on rails applications are
+run and deployed.
+
+For testing and development you will need to bootstrap the project
+
+	$ git clone ssh://git@lonsdale.tchpc.tcd.ie/navr/nuig-rnag
+	$ cd nuig-rnag
+	$ git submodule update --init --recursive
+	$ bundle
+	$ rails db:migrate
+
+To start the application for demo purposes
+
+	$ cd nuig-rnag
+	$ rake jetty:start
+	$ rails server
+
+To run the tests
+
+	$ cd nuig-rnag
+	$ rake jetty:start
+	$ rake spec
+
+Additional information can be found by reading up on the drirepo,
+nuig-rnag, rspec and rails documentation.
+
+== Testing
+
+The unit tests are written using rspec and the functional tests are
+written with cucumber.
