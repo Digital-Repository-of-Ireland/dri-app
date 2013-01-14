@@ -8,7 +8,7 @@ Feature:
 Scenario: Navigate to the Sign in page
   Given I am not logged in
   When I go to the home page
-  Then I should see a link to "users/sign_in" with text "Login"
+  Then I should see a link to "/users/sign_in" with text "Login"
   When I follow "Login"
   Then I should be on the User Signin page
 
@@ -16,7 +16,7 @@ Scenario: Navigate to the Sign up page
   Given I do not have an account
   Given I am not logged in
   When I got to the home page
-  Then I should see a link to "users/sign_in" with text "Login"
+  Then I should see a link to "/users/sign_in" with text "Login"
   When I follow "Login"
   Then I should be on the User Signin page
   When I follow "Sign up"
@@ -69,13 +69,13 @@ Scenario: User signs in with invalid credentials
 Scenario: Logging out
   Given I am logged in as "user1"
   When I go to the home page
-  Then I should see a link to "users/sign_out" with text "Log Out"
-  When I follow "Logout"
+  Then I should see a link to "/users/sign_out" with text "Log Out"
+  When I follow "Log Out"
   Then I should be logged out
 
 Scenario: A user should be able to edit their details
   Given I am logged in as "user1"
-  Then I should see a link to "users/edit"
+  Then I should see an edit link for "user1"
   When I follow the edit link
   Then I should see my edit page
   When I submit a new email and password
@@ -83,7 +83,7 @@ Scenario: A user should be able to edit their details
 
 Scenario: A user should be able to cancel their account
   Given I am logged in as "user1"
-  Then I should see a link to "users/edit"
+  Then I should see an edit link for "user1"
   When I follow the edit link
   Then I should see a link with text "Cancel my account"
   When I follow "Cancel my account"
@@ -91,4 +91,6 @@ Scenario: A user should be able to cancel their account
   When I confirm account cancellation
   Then my account should be deleted
   And I should be logged out
+
+Scenario: A user should be able to recover their password
 
