@@ -14,8 +14,7 @@ Then /^I should see an edit link for "([^\"]*)"$/ do |login|
 end
 
 Given /^I am not logged in$/ do
-request = Net::HTTP::Delete.new("/users/sign_out")
-#  visit destroy_user_session_path
+  page.driver.submit :delete, "/users/sign_out", {}
 end
 
 Given /^an account for "([^\"]*)" already exists$/ do |email|
