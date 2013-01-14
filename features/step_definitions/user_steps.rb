@@ -14,7 +14,7 @@ Then /^I should see an edit link for "([^\"]*)"$/ do |login|
 end
 
 Given /^I am not logged in$/ do
-  visit "/users/sign_out"
+  visit destroy_user_session_path
 end
 
 Given /^an account for "([^\"]*)" already exists$/ do |email|
