@@ -53,9 +53,10 @@
 <fieldset>
         <legend>Replace Metadata:</legend>
         <p class="legend-caption">Replace metadata using XML file.</p>
-        <form id="metadata_uploader" action="<%= url_for(:action=>"replace_metadata", :controller=>"downloads", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+        <form id="metadata_uploader" action="<%= url_for(:action=>"update", :controller=>"metadata", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
         <input type="file" name="metadata_file" accept="application/xml" >
+        <input name="_method" type="hidden" value="put" />
         <input class="btn-primary" name="upload_metadata" type="submit" value="Upload Metadata"/>
         </form>
 </fieldset>
@@ -63,8 +64,8 @@
 <fieldset>
         <legend>Upload Audio File:</legend>
         <% if @document_fedora.datastreams.has_key?("masterContent") %>
-        <p>A master audio file has already been uploaded: <a href="<%= url_for :controller => 'downloads', :action => 'show_file', :id => @document_fedora.id %>">listen here</a></p>
-        <form id="file_uploader" action="<%= url_for(:action=>"upload_file", :controller=>"downloads", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+        <p>A master audio file has already been uploaded: <a href="<%= url_for :controller => 'files', :action => 'show', :id => @document_fedora.id %>">listen here</a></p>
+        <form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
         <input type="file" name="Filedata" accept="audio/*">
         <input type="hidden" name="datastream" value="masterContent" />
@@ -72,7 +73,7 @@
         </form>
         <% else %>
         <p class="legend-caption">No audio files have been uploaded. Please upload a master audio file.</p>
-<form id="file_uploader" action="<%= url_for(:action=>"upload_file", :controller=>"downloads", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+<form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
         <input type="file" name="Filedata" accept="audio/*">
         <input type="hidden" name="datastream" value="masterContent" />

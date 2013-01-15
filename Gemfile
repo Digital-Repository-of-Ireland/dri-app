@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 gem 'blacklight', '4.0.0'
 gem 'hydra-head', '5.0.0'
 gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git'
@@ -35,6 +35,9 @@ group :test do
   gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'launchy'
+  gem 'shoulda'
+  gem 'factory_girl_rails'
+  gem 'syntax'
 end
 
 # To use ActiveModel has_secure_password

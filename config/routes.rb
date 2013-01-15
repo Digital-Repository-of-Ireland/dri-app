@@ -5,15 +5,15 @@ NuigRnag::Application.routes.draw do
   Blacklight.add_routes(self)
   HydraHead.add_routes(self)
 
-  devise_for :users do get '/users/sign_out' => 'devise/sessions#destroy' end
+  devise_for :users 
 
   resources :audios
 
-  match 'downloads/:id/metadata' => 'downloads#show_metadata'
-  match 'downloads/:id/file' => 'downloads#show_file'
-  match 'uploads/:id/file' => 'downloads#upload_file'
-  match 'uploads/:id/metadata' => 'downloads#replace_metadata'
-  match 'ingest' => 'downloads#ingest_metadata'
+  match 'audios/:id/metadata' => 'metadata#show', :via => :get, :as => :audio_metadata
+  match 'audios/:id/metadata' => 'metadata#update', :via => :put
+  match 'audios/:id/file' => 'files#show', :via => :get, :as => :audio_file
+  match 'audios/:id/file' => 'files#create', :via => :post, :as => :new_audio_file
+  match 'ingest' => 'metadata#create', :via => :post  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
