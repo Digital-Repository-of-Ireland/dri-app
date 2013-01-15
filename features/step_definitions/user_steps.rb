@@ -32,10 +32,6 @@ Given /^an account for "([^\"]*)" already exists$/ do |login|
   user = User.create(:email => email, :password => "password", :password_confirmation => "password")
 end
 
-When /^I got to the home page$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
 When /^I submit a valid email, password and password confirmation$/ do
   email = "validuser@validdomain.com"
   password = "password"
@@ -45,10 +41,10 @@ When /^I submit a valid email, password and password confirmation$/ do
   click_button 'Sign up'
 end
 
-When /^I submit the User Sign up page with email "([^\"]*)"$/ do |email|
+When /^I submit the User Sign up page with email "([^\"]*)" and password "([^\"]*)"$/ do |email, password|
   fill_in("user_email", :with => email)
-  fill_in("user_password", :with => "password")
-  fill_in("user_password_confirmation", :with => "password")
+  fill_in("user_password", :with => password)
+  fill_in("user_password_confirmation", :with => password)
   click_button 'Sign up'
 end
 
@@ -115,20 +111,18 @@ Then /^my authentication details should be updated from "([^\"]*)", "([^\"]*)" t
   step 'I should be logged in'
 end
 
-Then /^I should see a link with text "([^\"]*)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
-end
-
-Then /^I should see a confirmation popup$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
 When /^I confirm account cancellation$/ do
-  pending # express the regexp above with the code you wish you had
+  def handle_js_confirm(accept=true)
+    page.evaluate_script "window.original_confirm_function = window.confirm"
+    page.evaluate_script "window.confirm = function(msg) { return #{!!accept}; }"
+    yield
+  ensure
+    page.evaluate_script "window.confirm = window.original_confirm_function"
+  end
 end
 
 Then /^my account should be deleted$/ do
-  pending # express the regexp above with the code you wish you had
+  step 'I should see the message "Bye! Your account was successfully cancelled. We hope to see you again soon."'
+  step 'I should be logged out'
 end
-
 

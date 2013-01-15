@@ -41,7 +41,7 @@ Scenario: Creating an invalid user account with duplicate email
   Given an account for "user1" already exists
   Given I am not logged in
   Given I am on the User Sign up page
-  When I submit the User Sign up page with email "user1@user1.com"
+  When I submit the User Sign up page with email "user1@user1.com" and password "password1"
   Then I should see the error "Email has already been taken"
   And I should be logged out
 
@@ -96,10 +96,9 @@ Scenario: A user should be able to cancel their account
   Given I am logged in as "user1" with password "password1"
   Then I should see an edit link for "user1"
   When I follow the edit link for "user1"
-  Then I should see a link with text "Cancel my account"
+  Then I should see a link to "/users" with text "Cancel my account"
   When I follow "Cancel my account"
-  Then I should see a confirmation popup
-  When I confirm account cancellation
+  And I confirm account cancellation
   Then my account should be deleted
   And I should be logged out
 
