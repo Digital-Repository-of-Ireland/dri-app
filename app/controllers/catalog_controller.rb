@@ -55,7 +55,7 @@ class CatalogController < ApplicationController
     # config.add_facet_field 'person_facet', :label => 'Person', :limit => 20
     config.add_facet_field 'object_type_facet', :label => 'Format'
     config.add_facet_field 'pub_date', :label => 'Publication Year', :date => true
-    config.add_facet_field 'broadcast_date_facet', :label => 'Broadcast Date' 
+    config.add_facet_field 'broadcast_date_facet', :label => 'Broadcast Date', :date => true 
     config.add_facet_field 'subject_topic_facet', :label => 'Topic', :limit => 20 
     config.add_facet_field 'language_facet', :label => 'Language', :limit => true 
     config.add_facet_field 'lc_1letter_facet', :label => 'Call Number' 

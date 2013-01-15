@@ -86,19 +86,38 @@ class MetadataController < AssetsController
   
       namespace = @tmp_xml.namespaces
 
-      if namespace.has_key?("xmlns:dcterms") &&
-        namespace.has_key?("xmlns:dc") &&
-        namespace["xmlns:dcterms"].eql?("http://purl.org/dc/terms/") &&
+      if namespace.has_key?("xmlns:dc") &&
         namespace["xmlns:dc"].eql?("http://purl.org/dc/elements/1.1/")
 
-        #xsd_xml = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
-        #xsd = Nokogiri::XML::Schema(open(xsd_xml))
-        validate_errors = @tmp_xml.validate #xsd.validate(@tmp_xml)
+        # We have to extract the overall root schema from the XML Document as Dublin Core
+        # is designed to work with any custom container schema
+        schema_location = nil
 
-        if validate_errors == nil || validate_errors.size == 0
-          result = true
+        if (@tmp_xml.root.namespace == nil)
+          schema_location = @tmp_xml.root.attr("xsi:noNamespaceSchemaLocation")
+        elsif (@tmp_xml.root.namespace.href != nil)
+          root_ns_href = @tmp_xml.root.namespace.href
+          schemata_by_ns = Hash[ @tmp_xml.root.attr("xsi:schemaLocation").scan(/(\S+)\s+(\S+)/) ]
+	  schema_location = schemata_by_ns[root_ns_href]
+        end
+
+        if (schema_location == nil)
+          flash[:notice] = "The XML file contains no schema to validate against."
         else
-          flash[:notice] = "Validation Errors: #{validate_errors.join(", ")}"
+          # Validation against schema that reference other schema, such as
+          # the qualifieddc schema seems to be broken in Nokogiri. So
+          # we are temporarily disabling it and allowing all incoming XML
+          # to pass validation.
+          #
+          # xsd = Nokogiri::XML::Schema(open(schema_location))
+          # validate_errors = xsd.validate(@tmp_xml)
+          validate_errors = nil
+
+          if validate_errors == nil || validate_errors.size == 0
+	    result = true
+          else
+            flash[:alert] = "Validation Errors: #{validate_errors.join(", ")}"
+          end
         end
       else
         flash[:notice] = "The XML file could not validate against the Dublin Core schema"
