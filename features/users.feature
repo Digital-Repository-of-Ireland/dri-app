@@ -103,4 +103,4 @@ Scenario: A user should be able to cancel their account
   And I should be logged out
 
 Scenario: A user should be able to recover their password
-
+# Not sure how to test this as it involves sending an email...
