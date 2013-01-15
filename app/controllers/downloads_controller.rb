@@ -170,9 +170,7 @@ class DownloadsController < ApplicationController
 
      namespace = @tmp_xml.namespaces
 
-     if namespace.has_key?("xmlns:oai_dc") &&
-	namespace.has_key?("xmlns:dc") &&
-	namespace["xmlns:oai_dc"].eql?("http://www.openarchives.org/OAI/2.0/oai_dc/") &&
+     if namespace.has_key?("xmlns:dc") &&
 	namespace["xmlns:dc"].eql?("http://purl.org/dc/elements/1.1/")
 
        validate_errors = @tmp_xml.validate
