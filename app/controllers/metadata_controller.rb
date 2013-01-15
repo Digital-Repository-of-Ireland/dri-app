@@ -86,15 +86,14 @@ class MetadataController < AssetsController
   
       namespace = @tmp_xml.namespaces
 
-      if namespace.has_key?("xmlns:oai_dc") &&
+      if namespace.has_key?("xmlns:dcterms") &&
         namespace.has_key?("xmlns:dc") &&
-        namespace["xmlns:oai_dc"].eql?("http://www.openarchives.org/OAI/2.0/oai_dc/") &&
+        namespace["xmlns:dcterms"].eql?("http://purl.org/dc/terms/") &&
         namespace["xmlns:dc"].eql?("http://purl.org/dc/elements/1.1/")
 
-        xsd_xml = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
-
-        xsd = Nokogiri::XML::Schema(open(xsd_xml))
-        validate_errors = xsd.validate(@tmp_xml)
+        #xsd_xml = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
+        #xsd = Nokogiri::XML::Schema(open(xsd_xml))
+        validate_errors = @tmp_xml.validate #xsd.validate(@tmp_xml)
 
         if validate_errors == nil || validate_errors.size == 0
           result = true

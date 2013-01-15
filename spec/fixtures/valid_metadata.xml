@@ -1,11 +1,24 @@
-<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
-  <dc:title>Raidi&#xF3; na Gaeltachta Sample 5</dc:title>
-  <dc:description/>
-  <dc:type>Sound</dc:type>
-  <dc:language>ga</dc:language>
-  <dc:date>1984-05-08</dc:date>
-  <dc:contributor>Tuathaigh, Gear&#xF3;id &#xD3;</dc:contributor>
-  <dc:contributor>M&#xF3;rdha, M&#xED;che&#xE1;l de</dc:contributor>
-  <dc:subject>&#xC9;ir&#xED; Amach na C&#xE1;sca 1916</dc:subject>
-  <dc:source>CD 1066 Rian nuig1066_10</dc:source>
-</oai_dc:dc>
+<?xml version="1.0" encoding="UTF-8"?>
+<qualifieddc xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:marcrel="http://www.loc.gov/marc.relators/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.loc.gov/marc.relators/ http://imlsdcc2.grainger.illinois.edu/registry/marcrel.xsd"
+    xsi:noNamespaceSchemaLocation="http://dublincore.org/schemas/xmls/qdc/2008/02/11/qualifieddc.xsd">
+    <dc:title>SAMPLE AUDIO TITLE</dc:title>
+    <dc:description>SAMPLE DESCRIPTION</dc:description>
+    <dc:subject>subject1</dc:subject>
+    <dc:subject>subject2</dc:subject>
+    <dc:subject>subject3</dc:subject>
+    <dcterms:temporal>SAMPLE ERA</dcterms:temporal>
+    <dcterms:spatial>SAMPLE COUNTRY</dcterms:spatial>
+    <dc:creator>Gallagher, Damien</dc:creator>
+    <marcrel:hst>DeValera, Eamonn</marcrel:hst>
+    <dc:contributor>Collins, Michael</dc:contributor>
+    <dc:contributor>Connolly, James</dc:contributor>
+    <dcterms:issued>2000-01-01</dcterms:issued>
+    <dc:publisher>Digital Repository of Ireland</dc:publisher>
+    <dc:identifier>dri:1232</dc:identifier>
+    <dc:language>en</dc:language>
+    <dc:type>Sound</dc:type>
+</qualifieddc>
