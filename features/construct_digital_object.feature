@@ -23,7 +23,7 @@ Scenario: Constructing an invalid Digital Object
   Given I am on the new Digital Object page
   When I attach the metadata file "invalid_metadata.xml"
   And I press "Ingest Metadata"
-  Then I should see "Validation Errors:"
+  Then I should see "Invalid XML:"
 
 Scenario: Replacing the metadata file of a Digital Object
   Given I have created a Digital Object

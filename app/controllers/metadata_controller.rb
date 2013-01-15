@@ -82,8 +82,15 @@ class MetadataController < AssetsController
 
     if MIME::Types.type_for(params[:metadata_file].original_filename).first.content_type.eql? 'application/xml'
       tmp = params[:metadata_file].tempfile
-      @tmp_xml = Nokogiri::XML(tmp.read)
+      #@tmp_xml = Nokogiri::XML(tmp.read)
   
+      begin
+        @tmp_xml = Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
+      rescue Nokogiri::XML::SyntaxError => e
+        flash[:alert] = "Invalid XML: #{e}"
+        return false
+      end
+
       namespace = @tmp_xml.namespaces
 
       if namespace.has_key?("xmlns:dc") &&
