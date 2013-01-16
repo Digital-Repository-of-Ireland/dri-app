@@ -28,11 +28,19 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'
   gem 'simplecov'
+
+  # guard - autorun of tests during development cycle
+  gem 'guard'
+  gem 'guard-cucumber'
+  gem 'guard-spork'
+  gem 'rb-inotify', :require => false
+  gem 'rb-fsevent', :require => false
+  gem 'rb-fchange', :require => false 
 end
 gem 'jquery-rails'
 
 group :test do
-  gem 'cucumber-rails'
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'launchy'
   gem 'shoulda'
