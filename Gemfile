@@ -12,6 +12,8 @@ gem 'sqlite3'
 
 gem 'devise'
 
+gem 'noid', '0.5.5'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

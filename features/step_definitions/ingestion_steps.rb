@@ -1,5 +1,5 @@
 Given /^a Digital Object$/ do
-  @digital_object = DRI::Model::Audio.new
+  @digital_object = DRI::Model::Audio.new(:pid => NuigRnag::IdService.mint)
 end
 
 When /^I commit the Digital Object$/ do
@@ -7,7 +7,7 @@ When /^I commit the Digital Object$/ do
 end
 
 Then /^I should be given a PID from the digital repository$/ do
- pending #@pid = @digital_object.persistent_identifier
+  @digital_object.id.should =~ /^#{NuigRnag::Application.config.id_namespace}:\w\w\d\d\w\w\d\d\w$/
 end
 
 When /^I add invalid metadata$/ do

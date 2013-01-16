@@ -40,6 +40,17 @@ Scenario: Replacing the metadata file of a Digital Object
   And I press "Upload Metadata"
   Then I should see "Metadata has been successfully updated"
 
+Scenario: Constructing a Digital Object using the web form
+  Given I am on the new Digital Object page
+  When I fill in "dri_model_audio_title" with "A Test Object"
+  And I fill in "dri_model_audio_description" with "Created using the web form"
+  And I fill in "dri_model_audio_broadcast_date" with "2013-01-16"
+  And I press "Create Record"
+  Then I should see "Audio object has been successfully ingested"
+  And I should see "Title: A Test Object"
+  And I should see "Description: Created using the web form"
+  And I should see "Broadcast Date: 2013-01-16"
+
 Scenario: Editing the metadata of a Digital Object using the web form
   Given I have created a Digital Object
   Then I should see a link to "Edit this record"
