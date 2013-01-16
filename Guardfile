@@ -24,3 +24,9 @@ guard 'bundler' do
   # Uncomment next line if Gemfile contain `gemspec' command
   # watch(/^.+\.gemspec/)
 end
+
+guard 'yard' do
+  watch(%r{app/.+\.rb})
+  watch(%r{lib/.+\.rb})
+  watch(%r{ext/.+\.c})
+end

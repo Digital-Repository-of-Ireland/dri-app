@@ -14,23 +14,23 @@ run and deployed.
 
 For testing and development you will need to bootstrap the project
 
-	$ git clone ssh://git@lonsdale.tchpc.tcd.ie/navr/nuig-rnag
-	$ cd nuig-rnag
-	$ git submodule update --init --recursive
-	$ bundle
-	$ bundle exec rails db:migrate
+  $ git clone ssh://git@lonsdale.tchpc.tcd.ie/navr/nuig-rnag
+  $ cd nuig-rnag
+  $ git submodule update --init --recursive
+  $ bundle
+  $ bundle exec rails db:migrate
 
 To start the application for demo purposes
 
-	$ cd nuig-rnag
-	$ rake jetty:start
+  $ cd nuig-rnag
+  $ rake jetty:start
 	$ bundle exec rails server
 
 To run the tests
 
-	$ cd nuig-rnag
-	$ rake jetty:start
-	$ rake spec
+  $ cd nuig-rnag
+  $ rake jetty:start
+  $ rake spec
 
 Additional information can be found by reading up on the drirepo,
 nuig-rnag, rspec and rails documentation.
@@ -43,5 +43,5 @@ written with cucumber.
 This project is setup to use guard to automatically run tests as they
 are changed.
 
-	$ cd nuig-rnag
-	$ bundle exec guard
+  $ cd nuig-rnag
+  $ bundle exec guard
