@@ -111,14 +111,14 @@ class MetadataController < AssetsController
         if (schema_location == nil)
           flash[:notice] = "The XML file contains no schema to validate against."
         else
-          # Validation against schema that reference other schema, such as
-          # the qualifieddc schema seems to be broken in Nokogiri. So
-          # we are temporarily disabling it and allowing all incoming XML
-          # to pass validation.
-          #
-          # xsd = Nokogiri::XML::Schema(open(schema_location))
-          # validate_errors = xsd.validate(@tmp_xml)
           validate_errors = nil
+
+          Dir.chdir(File.join(Rails.root, "config", "schemas")) do
+            schema_location = "nuig_rnag.xsd"
+
+            xsd = Nokogiri::XML::Schema(open(schema_location))
+            validate_errors = xsd.validate(@tmp_xml)
+          end
 
           if validate_errors == nil || validate_errors.size == 0
 	    result = true
