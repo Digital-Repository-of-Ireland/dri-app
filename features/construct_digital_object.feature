@@ -19,11 +19,17 @@ Scenario: Constructing a valid Digital Object
   And I press "Ingest Metadata" 
   Then I should see "Audio object has been successfully ingested"
  
-Scenario: Constructing an invalid Digital Object
+Scenario: Constructing a Digital Object with invalid XML metadata
   Given I am on the new Digital Object page
-  When I attach the metadata file "invalid_metadata.xml"
+  When I attach the metadata file "invalid_xml_metadata.xml"
   And I press "Ingest Metadata"
   Then I should see "Invalid XML:"
+
+Scenario: Constructing a Digital Object with metadata that does not conform to the schema
+  Given I am on the new Digital Object page
+  When I attach the metadata file "invalid_schema_metadata.xml"
+  And I press "Ingest Metadata"
+  Then I should see "Validation Errors:"
 
 Scenario: Replacing the metadata file of a Digital Object
   Given I have created a Digital Object
