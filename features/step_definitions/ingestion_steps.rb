@@ -11,7 +11,7 @@ Then /^I should be given a PID from the digital repository$/ do
 end
 
 When /^I add invalid metadata$/ do
-  @tmp_xml = Nokogiri::XML(File.new(File.join('spec','fixtures','metadata_no_title_language.xml')).read)
+  @tmp_xml = Nokogiri::XML(File.new(File.join('spec','fixtures','metadata_no_rights.xml')).read)
 
   if @digital_object.datastreams.has_key?("descMetadata")
     @digital_object.datastreams["descMetadata"].ng_xml = @tmp_xml

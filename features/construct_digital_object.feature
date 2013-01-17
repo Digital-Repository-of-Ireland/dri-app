@@ -31,6 +31,12 @@ Scenario: Constructing a Digital Object with metadata that does not conform to t
   And I press "Ingest Metadata"
   Then I should see "Validation Errors:"
 
+Scenario: Constructing a Digital Object with metadata that does not contain a required field
+  Given I am on the new Digital Object page
+  When I attach the metadata file "metadata_no_rights.xml"
+  And I press "Ingest Metadata"
+  Then I should see "Invalid object:"
+
 Scenario: Replacing the metadata file of a Digital Object
   Given I have created a Digital Object
   Then I should see a link to "Edit this record"
@@ -45,6 +51,7 @@ Scenario: Constructing a Digital Object using the web form
   When I fill in "dri_model_audio_title" with "A Test Object"
   And I fill in "dri_model_audio_description" with "Created using the web form"
   And I fill in "dri_model_audio_broadcast_date" with "2013-01-16"
+  And I fill in "dri_model_audio_rights" with "This is a statement of rights"
   And I press "Create Record"
   Then I should see "Audio object has been successfully ingested"
   And I should see "Title: A Test Object"

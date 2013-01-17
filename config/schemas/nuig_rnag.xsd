@@ -1,5 +1,0 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.dri.ie/nuig_rnag/">
-  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
-  <xs:import namespace="http://www.loc.gov/marc.relators/" schemaLocation="marcrel.xsd" />
-  <xs:import schemaLocation="qualifieddc.xsd" /> 
-</xs:schema>
