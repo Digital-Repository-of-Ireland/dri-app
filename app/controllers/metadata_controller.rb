@@ -32,9 +32,13 @@ class MetadataController < AssetsController
           end
 
            @object.datastreams["descMetadata"].save
-           @object.save
 
-          flash[:notice] = "Metadata has been successfully updated."
+           if @object.valid?
+             @object.save
+             flash[:notice] = "Metadata has been successfully updated."
+           else
+             flash[:alert] = "Invalid object: #{@object.errors.full_messages.inspect}."
+           end
         end
       end
     else
@@ -61,8 +65,15 @@ class MetadataController < AssetsController
           end
 
           # @object.datastreams["descMetadata"].save
-          @object.save
-          flash[:notice] = "Audio object has been successfully ingested."
+          if @object.valid?
+            @object.save
+            flash[:notice] = "Audio object has been successfully ingested."
+          else
+            flash[:alert] = "Invalid object: #{@object.errors.full_messages.inspect}."
+            redirect_to :controller => "audios", :action => "new"
+            return
+          end
+
           redirect_to :controller => "catalog", :action => "show", :id => @object.id
           return
       end

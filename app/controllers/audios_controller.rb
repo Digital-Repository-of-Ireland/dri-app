@@ -53,7 +53,7 @@ class AudiosController < ApplicationController
   def create
     @document_fedora = DRI::Model::Audio.new(params[:dri_model_audio])
     respond_to do |format|
-      if @document_fedora.save
+      if @document_fedora.valid? && @document_fedora.save
         format.html { flash[:notice] = "Audio object has been successfully ingested."
             redirect_to :controller => "catalog", :action => "show", :id => @document_fedora.id }
         format.json { render :json => @document_fedora }

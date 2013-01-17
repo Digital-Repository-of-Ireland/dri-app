@@ -108,6 +108,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'lc_callnum_display', :label => 'Call number:'
     config.add_show_field 'isbn_t', :label => 'ISBN:'
     config.add_show_field 'source_display', :label => 'Source:'
+    config.add_show_field 'rights_display', :label => 'Rights:'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
