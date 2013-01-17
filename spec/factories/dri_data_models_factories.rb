@@ -13,6 +13,6 @@ FactoryGirl.define do
     geographical_coverage  ["Dublin"]
     temporal_coverage      ["1900s"]
     subject                ["Ireland","something else"]
-
   end
+
 end

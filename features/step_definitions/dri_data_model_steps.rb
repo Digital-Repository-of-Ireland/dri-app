@@ -15,3 +15,10 @@ Then /^it should validate presence of attribute "(.*?)"$/ do |attribute_name|
   @test_model.should validate_presence_of(attribute_name)
 end
 
+When /^we test an empty "(.*?)" Model$/ do |model_name|
+  @test_model = Kernel.qualified_const_get(model_name).new
+end
+
+Then /^the "(.*?)" Model should not be valid$/ do |model_name|
+  @test_model.should_not be_valid
+end

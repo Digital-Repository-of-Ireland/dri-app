@@ -1,11 +1,16 @@
 @model
 Feature: DRI Data Model
 
-Scenario: We are defining our DRI Data Model for Audio
+Scenario: DRI Data Model for Audio should not be valid without correct metadata
+  Given we have a "DRI::Model::Audio" Model
+  When we test an empty "DRI::Model::Audio" Model
+  Then the "DRI::Model::Audio" Model should not be valid
+
+Scenario: DRI Data Model for Audio should have correct metadata fields and validate required ones
   Given we have a "DRI::Model::Audio" Model
   When we test the "DRI::Model::Audio" Model
   Then it should validate presence of attribute "title"
-#  And it should validate presence of attribute "rights"
+  And it should validate presence of attribute "rights"
   And it should validate presence of attribute "language"
   And it should have attribute "description"
   And it should have attribute "presenter"
