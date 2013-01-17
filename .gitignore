@@ -22,5 +22,6 @@ Gemfile.lock
 
 /coverage
 /rdoc
+/doc
 .DS_Store
 .yardoc
