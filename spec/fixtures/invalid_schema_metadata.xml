@@ -7,6 +7,7 @@
     xsi:noNamespaceSchemaLocation="http://dublincore.org/schemas/xmls/qdc/2008/02/11/qualifieddc.xsd">
     <dc:title>SAMPLE AUDIO TITLE</dc:title>
     <dc:description>SAMPLE DESCRIPTION</dc:description>
+    <dri:test>A test</dri:test>
     <dc:subject>subject1</dc:subject>
     <dc:subject>subject2</dc:subject>
     <dc:subject>subject3</dc:subject>
@@ -21,5 +22,4 @@
     <dc:identifier>dri:1232</dc:identifier>
     <dc:language>en</dc:language>
     <dc:type>Sound</dc:type>
-    <dc:rights>This is a statement of rights</dc:rights>
 </qualifieddc>

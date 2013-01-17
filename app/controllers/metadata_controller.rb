@@ -1,4 +1,3 @@
-
 class MetadataController < AssetsController
 
   # Renders the metadata XML stored in the descMetadata datastream.
@@ -83,8 +82,15 @@ class MetadataController < AssetsController
 
     if MIME::Types.type_for(params[:metadata_file].original_filename).first.content_type.eql? 'application/xml'
       tmp = params[:metadata_file].tempfile
-      @tmp_xml = Nokogiri::XML(tmp.read)
+      #@tmp_xml = Nokogiri::XML(tmp.read)
   
+      begin
+        @tmp_xml = Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
+      rescue Nokogiri::XML::SyntaxError => e
+        flash[:alert] = "Invalid XML: #{e}"
+        return false
+      end
+
       namespace = @tmp_xml.namespaces
 
       if namespace.has_key?("xmlns:dc") &&
@@ -117,7 +123,7 @@ class MetadataController < AssetsController
 
 	  # When parsing the schema, the local directory needs to point to the schema folder
           # as a work around to the problem Nokogiri has with parsing relative path imports.
-          xsd = Dir.chdir(Rails.root.join('schema')) do |path|
+          xsd = Dir.chdir(Rails.root.join('config').join('schemas')) do |path|
              Nokogiri::XML::Schema(all_schemata)
           end
 
@@ -126,7 +132,7 @@ class MetadataController < AssetsController
           if validate_errors == nil || validate_errors.size == 0
 	    result = true
           else
-            flash[:error] = "Validation Errors: #{validate_errors.join("\n ")}"
+            flash[:error] = "Validation Errors:<br/>".html_safe+validate_errors.join("<br/>").html_safe
           end
         end
       else

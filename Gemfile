@@ -12,6 +12,8 @@ gem 'sqlite3'
 
 gem 'devise'
 
+gem 'noid', '0.5.5'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -28,11 +30,21 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'
   gem 'simplecov'
+
+  # guard - autorun of tests during development cycle
+  gem 'guard'
+  gem 'guard-cucumber'
+  gem 'guard-spork'
+  gem 'guard-bundler'
+  gem 'guard-yard'
+  gem 'rb-inotify', :require => false
+  gem 'rb-fsevent', :require => false
+  gem 'rb-fchange', :require => false 
 end
 gem 'jquery-rails'
 
 group :test do
-  gem 'cucumber-rails'
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'launchy'
   gem 'shoulda'
@@ -59,3 +71,4 @@ gem "unicode", :platforms => [:mri_18, :mri_19]
 
 gem "devise-guests", "~> 0.3"
 gem "bootstrap-sass"
+gem "yard"
