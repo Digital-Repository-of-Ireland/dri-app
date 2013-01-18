@@ -82,4 +82,50 @@ Scenario: Adding and replacing the audio file for a Digital Object
   Then I should see "A master audio file has already been uploaded"
   When I attach the audio file "sample_audio.mp3"
   And I press "Replace Master File"
-  Then I should see "File has been successfully uploaded" 
+  Then I should see "File has been successfully uploaded"
+
+Scenario: Adding an audio file where the file extension is wrong
+  Given I have created a Digital Object
+  Then I should see a link to "Edit this record"
+  When I follow "Edit this record"
+  Then I should see "Upload Audio File:"
+  When I attach the audio file "sample_audio.txt"
+  And I press "Upload Master File"
+  Then I should see "The file does not appear to be a valid type"
+
+Scenario: Editing an audio file where the file extension is wrong
+  Given I have created a Digital Object
+  Then I should see a link to "Edit this record"
+  When I follow "Edit this record"
+  Then I should see "Upload Audio File:"
+  When I attach the audio file "sample_audio.mp3"
+  And I press "Upload Master File"
+  Then I should see "File has been successfully uploaded"
+  When I follow "Edit this record"
+  Then I should see "A master audio file has already been uploaded"
+  When I attach the audio file "sample_audio.txt"
+  And I press "Replace Master File"
+  Then I should see "The file does not appear to be a valid type"
+
+Scenario: Adding an audio file that is not really an audio
+  Given I have created a Digital Object
+  Then I should see a link to "Edit this record"
+  When I follow "Edit this record"
+  Then I should see "Upload Audio File:"
+  When I attach the audio file "sample_invalid_audio.mp3"
+  And I press "Upload Master File"
+  Then I should see "The file does not appear to be a valid type"
+
+Scenario: Editing an audio file that is not really an audio
+  Given I have created a Digital Object
+  Then I should see a link to "Edit this record"
+  When I follow "Edit this record"
+  Then I should see "Upload Audio File:"
+  When I attach the audio file "sample_audio.mp3"
+  And I press "Upload Master File"
+  Then I should see "File has been successfully uploaded"
+  When I follow "Edit this record"
+  Then I should see "A master audio file has already been uploaded"
+  When I attach the audio file "sample_invalid_audio.mp3"
+  And I press "Replace Master File"
+  Then I should see "The file does not appear to be a valid type"
