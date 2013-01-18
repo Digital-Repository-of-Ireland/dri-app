@@ -28,11 +28,11 @@ When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
 end
 
 When /^I attach the metadata file "(.*?)"$/ do |file|
-  attach_file("metadata_file", "spec/fixtures/#{file}")
+  attach_file("metadata_file", File.join(cc_fixture_path, file))
 end
 
 When /^I attach the audio file "(.*?)"$/ do |file|
-  attach_file("Filedata", "spec/fixtures/#{file}")
+  attach_file("Filedata", File.join(cc_fixture_path, file))
 end
 
 Then /^I press "(.*?)"$/ do |button|
@@ -111,29 +111,3 @@ end
 Then /^I should see the message "([^\"]*)"$/ do |message| 
   page.should have_selector ".alert", text: message
 end
-
-def path_to(page_name)
-    
-    case page_name
-  
-    when /new Digital Object page/
-      new_audio_path 
-
-    when /show Digital Object page for id (.+)/
-      catalog_path($1)
-
-    when /edit Digital Object page for id (.+)/
-      edit_audio_path($1)      
-
-    when /the home page/
-      '/'
-
-    when /User Signin page/
-      '/users/sign_in'
-
-    when /User Sign up page/
-      '/users/sign_up'
-
-    end
-end
-
