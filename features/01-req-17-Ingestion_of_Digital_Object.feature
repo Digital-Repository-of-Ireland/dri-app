@@ -34,7 +34,7 @@ Scenario: Ingesting a Digital Object of 1 file
   And a metadata file SAMPLEA.xml
   When I ingest the files SAMPLEA and SAMPLEA.xml
   Then I validate the metadata file
-  #Then I attempt to validate the data file against a mime type database
+  Then I attempt to validate the data file against a mime type database
   #Then I perform an Anti Viral check on the data file
   #Then I check my collections for duplicates
   #But if there are duplicates warn the user and give the user a choice of using the existing object or create a new one

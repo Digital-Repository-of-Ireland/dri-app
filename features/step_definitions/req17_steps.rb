@@ -48,7 +48,15 @@ Then /^I validate the metadata file$/ do
 end
 
 Then /^I attempt to validate the data file against a mime type database$/ do
-  pending # express the regexp above with the code you wish you had
+  steps %{
+    Given I have created a Digital Object
+    Then I should see a link to "Edit this record"
+    When I follow "Edit this record"
+    Then I should see "Upload Audio File:"
+    When I attach the audio file "sample_invalid_audio.mp3"
+    And I press "Upload Master File"
+    Then I should see "The file does not appear to be a valid type"
+  }
 end
 
 Then /^I inspect the asset for the file metadata and record this information$/ do
