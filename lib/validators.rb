@@ -1,5 +1,7 @@
 module Validators
 
+  require 'mimemagic'
+
   # Validate file mime-types
   #
   # Takes an uploaded file (ActionDispatch::Http::UploadedFile), and a list of allowed mime
@@ -15,8 +17,13 @@ module Validators
   def Validators.valid_file_type?(file, allowed_type, allowed_subtypes)
 
     #Get the mime type of our file
-    mime_type_from_content = FileMagic.new(FileMagic::MAGIC_MIME_TYPE).file(file.tempfile.path) # from file content
-    type,subtype = mime_type_from_content.split("/")
+    mime_type_from_content = MimeMagic.by_magic( File.open( file.tempfile.path ) )
+
+    # MimeMagic could return null if it can't find a match. If so return false
+    return false unless mime_type_from_content
+
+    # Split out the mime type into type and subtype
+    type,subtype = mime_type_from_content.to_s.split("/")
 
     # Ensure that the file extension matches the mime type
     extension = file.original_filename.split(".").last
