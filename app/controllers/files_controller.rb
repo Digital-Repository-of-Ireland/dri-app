@@ -49,7 +49,7 @@ class FilesController < AssetsController
           count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => @object.id, :d => datastream } ]).count
 
           unless Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
-            flash[:error] = "Warning: The file does not appear to be a valid type"
+            flash[:alert] = "Warning: The file does not appear to be a valid type"
           end
 
           dir = local_storage_dir.join(@object.id).join(datastream+count.to_s)
