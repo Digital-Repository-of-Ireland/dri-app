@@ -112,13 +112,15 @@ class MetadataController < AssetsController
 
         # Firstly, if the root schema has no namespace, retrieve it from xsi:noNamespaceSchemaLocation
         if (@tmp_xml.root.namespace == nil)
-          schema_imports = ["<xs:include schemaLocation=\""+@tmp_xml.root.attr("xsi:noNamespaceSchemaLocation")+"\"/>\n"]
+          no_ns_schema_location = map_to_localfile(@tmp_xml.root.attr("xsi:noNamespaceSchemaLocation"))
+          schema_imports = ["<xs:include schemaLocation=\""+no_ns_schema_location+"\"/>\n"]
         end
         
         # Then, find all elments that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
         @tmp_xml.xpath("//*[@xsi:schemaLocation]").each do |node|
           schemata_by_ns = Hash[node.attr("xsi:schemaLocation").scan(/(\S+)\s+(\S+)/)]
           schemata_by_ns.each do |ns,loc|
+            loc = map_to_localfile(loc)
 	    schema_imports = schema_imports | ["<xs:import namespace=\""+ns+"\" schemaLocation=\""+loc+"\"/>\n"]
           end
         end
@@ -155,5 +157,17 @@ class MetadataController < AssetsController
 
    return result
   end 
+
+  def map_to_localfile(schema_uri)    
+    schema_name = URI.parse(schema_uri).path[%r{[^/]+\z}]
+    schema_file = Rails.root.join('config').join('schemas', schema_name)
+    if Pathname.new(schema_file).exist?
+      schema_location = schema_name 
+    else
+      schema_location = schema_uri
+    end
+
+    return schema_location
+  end
 
 end
