@@ -67,4 +67,4 @@ module NuigRnag
   end
 end
 
-require 'nuigrnag/id_service'
+require 'pid_generator/id_service'

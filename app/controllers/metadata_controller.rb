@@ -1,8 +1,11 @@
+#
+# Creates, updates, or retrieves, the descMetadata datastream for an object
+# 
 class MetadataController < AssetsController
 
   # Renders the metadata XML stored in the descMetadata datastream.
-  #
   # 
+  #
   def show
     @object = retrieve_object params[:id]
 
@@ -14,6 +17,9 @@ class MetadataController < AssetsController
     render :text => "Unable to load metadata"
   end
 
+  # Replaces the current descMetadata datastream with the contents of the uploaded XML file.
+  #
+  #
   def update 
 
     if params.has_key?(:metadata_file) && params[:metadata_file] != nil
@@ -48,7 +54,7 @@ class MetadataController < AssetsController
     redirect_to :controller => "catalog", :action => "show", :id => params[:id]
   end
 
-  # Ingests the metadata of XML file to create a new digital object.
+  # Ingests metadata from an XML file to create a new digital object.
   #
   #
   def create
@@ -84,16 +90,14 @@ class MetadataController < AssetsController
     redirect_to :controller => "audios", :action => "new"
   end  
 
-  def retrieve_object(id)
-    return objs = ActiveFedora::Base.find(id,{:cast => true})
-  end
-
+  # Validates Dublin Core metadata against schema declared in the namespace.
+  #
+  #
   def is_valid_dc?
     result = false
 
     if MIME::Types.type_for(params[:metadata_file].original_filename).first.content_type.eql? 'application/xml'
       tmp = params[:metadata_file].tempfile
-      #@tmp_xml = Nokogiri::XML(tmp.read)
   
       begin
         @tmp_xml = Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
@@ -158,16 +162,18 @@ class MetadataController < AssetsController
    return result
   end 
 
-  def map_to_localfile(schema_uri)    
-    schema_name = URI.parse(schema_uri).path[%r{[^/]+\z}]
-    schema_file = Rails.root.join('config').join('schemas', schema_name)
-    if Pathname.new(schema_file).exist?
-      schema_location = schema_name 
+  # Maps a URI to a local filename if the file is found in config/schemas. Otherwise returns the original URI.
+  # 
+  def map_to_localfile(uri)    
+    filename = URI.parse(uri).path[%r{[^/]+\z}]
+    file = Rails.root.join('config').join('schemas', filename)
+    if Pathname.new(file).exist?
+      location = filename 
     else
-      schema_location = schema_uri
+      location = uri
     end
 
-    return schema_location
+    return location
   end
 
 end

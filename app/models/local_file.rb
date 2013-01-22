@@ -1,9 +1,9 @@
-# LocalFile
-#
-# A model containing a log of a file stored in the local filesystem.
+# Represents a file stored on the local filesystem.
 
 class LocalFile < ActiveRecord::Base
- 
+
+  # Write the file to the filesystem
+  #
   def add_file(upload,opts={}) 
     filename = upload.original_filename
     self.path = File.join(opts[:directory], filename)
@@ -16,6 +16,8 @@ class LocalFile < ActiveRecord::Base
     File.open(self.path, "wb") { |f| f.write(upload.read) }
   end
 
+  # Remove the file from the filesystem if it exists
+  #
   def delete_file
     if self.path = nil
       return

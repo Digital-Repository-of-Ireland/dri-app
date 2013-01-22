@@ -1,20 +1,14 @@
+# Controller for the Audio model
+#
 class AudiosController < ApplicationController
   include Blacklight::Catalog
-  # include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
-  # include Hydra::Controller::ControllerBehavior
-  # include Hydra::AssetsControllerHelper
-  # include Hydra::AccessControlsEnforcement
-  # include Blacklight::Configurable
   include DRI::Model
-  # include DRI::Metadata
-
-  #self.copy_blacklight_config_from(CatalogController)
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
-  # before_filter :enforce_access_controls
-  # before_filter :enforce_asset_creation_restrictions, :only=>[:new, :create]
 
+  # Creates a new Audio model.
+  #
   def new
     @document_fedora = DRI::Model::Audio.new
     respond_to do |format|
@@ -23,6 +17,8 @@ class AudiosController < ApplicationController
     end
   end
 
+  # Edits an existing model.
+  #
   def edit
     @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
     respond_to do |format|
@@ -31,6 +27,8 @@ class AudiosController < ApplicationController
     end
   end
 
+  # Retrieves an existing model.
+  #
   def show
     @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
     respond_to do |format|
@@ -39,6 +37,8 @@ class AudiosController < ApplicationController
     end
   end
 
+  # Updates the attributes of an existing model.
+  #
   def update
     @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
     
@@ -50,6 +50,8 @@ class AudiosController < ApplicationController
     end
   end
 
+  # Creates a new audio model using the parameters passed in the request.
+  #
   def create
     @document_fedora = DRI::Model::Audio.new(params[:dri_model_audio])
     respond_to do |format|

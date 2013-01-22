@@ -1,15 +1,18 @@
+# Creates, updates, or retrieves files attached to the objects masterContent datastream.
+#
 class FilesController < AssetsController
 
   require 'validators'
 
+  # Returns the directory on the local filesystem to use for storing uploaded files.
+  #
   def local_storage_dir
     Rails.root.join('dri_files')
   end
 
   # Retrieves external datastream files that have been stored in the filesystem.
   # By default, it retrieves the file in the masterContent datastream
-  #
-  # 
+  #      
   def show
     datastream = "masterContent"
     @object = retrieve_object params[:id]
@@ -32,7 +35,10 @@ class FilesController < AssetsController
 
     render :text => "Unable to find file"
   end
-  
+
+  # Stores an uploaded file to the local filesystem and then attaches it to one
+  # of the objects datastreams. masterContent is used by default.
+  #
   def create
     datastream = "masterContent"
     if params.has_key?(:datastream)
