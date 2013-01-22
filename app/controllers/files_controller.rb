@@ -2,7 +2,6 @@
 #
 class FilesController < AssetsController
 
-  require 'filemagic'
   require 'validators'
 
   # Returns the directory on the local filesystem to use for storing uploaded files.
@@ -55,23 +54,22 @@ class FilesController < AssetsController
         else
           count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => @object.id, :d => datastream } ]).count
 
-          if Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
-
-            dir = local_storage_dir.join(@object.id).join(datastream+count.to_s)
-
-            @file = LocalFile.new
-            @file.add_file params[:Filedata], {:fedora_id => @object.id, :ds_id => datastream, :directory => dir.to_s, :version => count}
-            @file.save!
-
-            @url = url_for :controller=>"files", :action=>"show", :id=>params[:id]
-            logger.error @action_url
-            @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
-            @object.save
-
-            flash[:notice] = "File has been successfully uploaded."
-          else
-            flash[:notice] = "The file does not appear to be a valid type"
+          unless Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
+            flash[:error] = "Warning: The file does not appear to be a valid type"
           end
+
+          dir = local_storage_dir.join(@object.id).join(datastream+count.to_s)
+
+          @file = LocalFile.new
+          @file.add_file params[:Filedata], {:fedora_id => @object.id, :ds_id => datastream, :directory => dir.to_s, :version => count}
+          @file.save!
+
+          @url = url_for :controller=>"files", :action=>"show", :id=>params[:id]
+          logger.error @action_url
+          @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
+          @object.save
+
+          flash[:notice] = "File has been successfully uploaded."
 
         end
       else
