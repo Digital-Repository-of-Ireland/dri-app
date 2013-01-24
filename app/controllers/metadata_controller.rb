@@ -1,8 +1,11 @@
+#
+# Creates, updates, or retrieves, the descMetadata datastream for an object
+# 
 class MetadataController < AssetsController
 
   # Renders the metadata XML stored in the descMetadata datastream.
-  #
   # 
+  #
   def show
     @object = retrieve_object params[:id]
 
@@ -14,6 +17,9 @@ class MetadataController < AssetsController
     render :text => "Unable to load metadata"
   end
 
+  # Replaces the current descMetadata datastream with the contents of the uploaded XML file.
+  #
+  #
   def update 
 
     if params.has_key?(:metadata_file) && params[:metadata_file] != nil
@@ -48,7 +54,7 @@ class MetadataController < AssetsController
     redirect_to :controller => "catalog", :action => "show", :id => params[:id]
   end
 
-  # Ingests the metadata of XML file to create a new digital object.
+  # Ingests metadata from an XML file to create a new digital object.
   #
   #
   def create
@@ -84,16 +90,14 @@ class MetadataController < AssetsController
     redirect_to :controller => "audios", :action => "new"
   end  
 
-  def retrieve_object(id)
-    return objs = ActiveFedora::Base.find(id,{:cast => true})
-  end
-
+  # Validates Dublin Core metadata against schema declared in the namespace.
+  #
+  #
   def is_valid_dc?
     result = false
 
     if MIME::Types.type_for(params[:metadata_file].original_filename).first.content_type.eql? 'application/xml'
       tmp = params[:metadata_file].tempfile
-      #@tmp_xml = Nokogiri::XML(tmp.read)
   
       begin
         @tmp_xml = Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
@@ -112,13 +116,15 @@ class MetadataController < AssetsController
 
         # Firstly, if the root schema has no namespace, retrieve it from xsi:noNamespaceSchemaLocation
         if (@tmp_xml.root.namespace == nil)
-          schema_imports = ["<xs:include schemaLocation=\""+@tmp_xml.root.attr("xsi:noNamespaceSchemaLocation")+"\"/>\n"]
+          no_ns_schema_location = map_to_localfile(@tmp_xml.root.attr("xsi:noNamespaceSchemaLocation"))
+          schema_imports = ["<xs:include schemaLocation=\""+no_ns_schema_location+"\"/>\n"]
         end
         
         # Then, find all elments that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
         @tmp_xml.xpath("//*[@xsi:schemaLocation]").each do |node|
           schemata_by_ns = Hash[node.attr("xsi:schemaLocation").scan(/(\S+)\s+(\S+)/)]
           schemata_by_ns.each do |ns,loc|
+            loc = map_to_localfile(loc)
 	    schema_imports = schema_imports | ["<xs:import namespace=\""+ns+"\" schemaLocation=\""+loc+"\"/>\n"]
           end
         end
@@ -155,5 +161,19 @@ class MetadataController < AssetsController
 
    return result
   end 
+
+  # Maps a URI to a local filename if the file is found in config/schemas. Otherwise returns the original URI.
+  # 
+  def map_to_localfile(uri)    
+    filename = URI.parse(uri).path[%r{[^/]+\z}]
+    file = Rails.root.join('config').join('schemas', filename)
+    if Pathname.new(file).exist?
+      location = filename 
+    else
+      location = uri
+    end
+
+    return location
+  end
 
 end

@@ -25,6 +25,7 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.main = "README.rdoc"
   rdoc.rdoc_files.include('*.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
+  rdoc.rdoc_files.include('lib/*.rb')
   rdoc.rdoc_files.include('app/**/*.rb')
   rdoc.rdoc_files.include('app/*.rb')
 end
