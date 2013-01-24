@@ -9,7 +9,7 @@ module Validators
   # Takes an uploaded file (ActionDispatch::Http::UploadedFile), and a list of allowed mime
   # types and subtypes.
   #
-  # First it gets the mime-type of the file using the ruby-filemagic gem
+  # First it gets the mime-type of the file using the mimemagic gem
   #
   # Then checks that the original extension of the uploaded file is valid for that mime-type
   #
