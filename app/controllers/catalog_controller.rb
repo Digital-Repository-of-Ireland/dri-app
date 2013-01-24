@@ -1,6 +1,8 @@
 # -*- encoding : utf-8 -*-
 require 'blacklight/catalog'
 
+# Blacklight catalog controller
+#
 class CatalogController < ApplicationController  
 
   include Blacklight::Catalog

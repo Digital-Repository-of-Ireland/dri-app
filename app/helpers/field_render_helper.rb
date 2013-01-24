@@ -1,5 +1,6 @@
 module FieldRenderHelper
 
+  # Returns the default html field separator characters
   def field_value_separator
     '<br/>'
   end

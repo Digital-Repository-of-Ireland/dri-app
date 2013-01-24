@@ -1,5 +1,7 @@
 module Validators
 
+  # Contains File validator methods for uploaded files
+ 
   require 'mimemagic'
 
   # Validate file mime-types
