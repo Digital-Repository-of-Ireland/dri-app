@@ -51,8 +51,9 @@ Scenario: Constructing a Digital Object using the web form
   And I fill in "dri_model_audio_description" with "Created using the web form"
   And I fill in "dri_model_audio_broadcast_date" with "2013-01-16"
   And I fill in "dri_model_audio_rights" with "This is a statement of rights"
-  And I press "Create Record"
-  Then I should see "Audio object has been successfully ingested"
+  #When I fill in the metadata form with valid data
+  And I press the button to create record
+  Then I should see a success message for ingestion
   And I should see "Title: A Test Object"
   And I should see "Description: Created using the web form"
   And I should see "Broadcast Date: 2013-01-16"

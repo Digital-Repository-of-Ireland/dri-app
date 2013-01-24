@@ -10,6 +10,9 @@ module ButtonTranslator
     when /upload metadata/
       "replace_metadata"
 
+    when /create record/
+      "Create Record"
+
     else "Unknown"
  
     end
