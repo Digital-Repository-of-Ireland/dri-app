@@ -16,7 +16,7 @@ end
 Scenario: Navigate to the Sign in page
   Given I am not logged in
   When I go to the home page
-  Then I should see a link to "/users/sign_in" with text "Login"
+  Then I should see a link to sign in
   And I should not see a link to "Log Out"
   When I follow "Login"
   Then I should be on the User Signin page
@@ -24,7 +24,7 @@ Scenario: Navigate to the Sign in page
 Scenario: Navigate to the Sign up page
   Given I am not logged in
   When I go to the home page
-  Then I should see a link to "/users/sign_in" with text "Login"
+  Then I should see a link to sign in
   When I follow "Login"
   Then I should be on the User Signin page
   When I follow "Sign up"
@@ -76,7 +76,7 @@ Scenario: User signs in with invalid credentials
 Scenario: Logging out
   Given I am logged in as "user1" with password "password1"
   When I go to the home page
-  Then I should see a link to "/users/sign_out" with text "Log Out"
+  Then I should see a link to sign out 
   When I follow "Log Out"
   Then I should be logged out
 
@@ -96,7 +96,7 @@ Scenario: A user should be able to cancel their account
   Given I am logged in as "user1" with password "password1"
   Then I should see an edit link for "user1"
   When I follow the edit link for "user1"
-  Then I should see a link to "/users" with text "Cancel my account"
+  Then I should see a link to cancel my account
   When I follow "Cancel my account"
   And I confirm account cancellation
   Then my account should be deleted
