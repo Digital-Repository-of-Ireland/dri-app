@@ -52,11 +52,13 @@ class CatalogController < ApplicationController
     config.add_facet_field 'subject_facet', :label => 'Subject'
     config.add_facet_field 'presenter_facet', :label => 'Presenter', :limit => 20
     config.add_facet_field 'guest_facet', :label => 'Guest', :limit => 20
-    # config.add_facet_field 'person_facet', :label => 'Person', :limit => 20
+    config.add_facet_field 'producer_facet', :label => 'Producer', :limit => 20
+    config.add_facet_field 'person_facet', :label => 'Person', :show => false
     config.add_facet_field 'object_type_facet', :label => 'Format'
     config.add_facet_field 'pub_date', :label => 'Publication Year', :date => true
     config.add_facet_field 'broadcast_date_facet', :label => 'Broadcast Date', :date => true 
-    config.add_facet_field 'subject_topic_facet', :label => 'Topic', :limit => 20 
+    config.add_facet_field 'subject_topic_facet', :label => 'Topic', :limit => 20
+    config.add_facet_field 'geographical_coverage_facet', :label => 'Place', :limit => 20 
     config.add_facet_field 'language_facet', :label => 'Language', :limit => true 
     config.add_facet_field 'lc_1letter_facet', :label => 'Call Number' 
     config.add_facet_field 'subject_geo_facet', :label => 'Region' 
@@ -77,6 +79,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'author_display', :label => 'Author:' 
     config.add_index_field 'author_vern_display', :label => 'Author:'
     config.add_index_field 'presenter_facet', :label => 'Presenter:'
+    config.add_index_field 'producer_facet', :label => 'Producer:'
     config.add_index_field 'subject_facet', :label => 'Subject:' 
     config.add_index_field 'format', :label => 'Format:'
     config.add_index_field 'object_type_facet', :label => 'Format:' 
@@ -96,8 +99,10 @@ class CatalogController < ApplicationController
     config.add_show_field 'author_vern_display', :label => 'Author:'
     config.add_show_field 'presenter_facet', :label => 'Presenter:'
     config.add_show_field 'guest_facet', :label => 'Guest:'
+    config.add_show_field 'producer_facet', :label => 'Producer:'
     config.add_show_field 'broadcast_date_facet', :label => 'Broadcast Date:'
     config.add_show_field 'subject_facet', :label => 'Subject:'
+    config.add_show_field 'geographical_coverage_facet', :label => 'Place:'
     config.add_show_field 'format', :label => 'Format:'
     config.add_show_field 'object_type_facet', :label => 'Format:' 
     config.add_show_field 'url_fulltext_display', :label => 'URL:'
@@ -158,7 +163,7 @@ class CatalogController < ApplicationController
     #end
 
     config.add_search_field('person') do |field|
-        field.solr_parameters = { }
+        field.solr_parameters = { :'spellcheck.dictionary' => 'person'}
         field.solr_local_parameters = {
           :qf => '$person_qf',
           :pf => '$person_pf',

@@ -20,6 +20,8 @@ Gemfile.lock
 # Jetty should be ignored
 /jetty
 
+/script/rnagimport
+/oo*
 /coverage
 /rdoc
 .DS_Store

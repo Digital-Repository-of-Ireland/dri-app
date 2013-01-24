@@ -23,6 +23,13 @@
     <% end %>
     <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Presenter">Add Presenter</a></p>
   </fieldset>
+  <fieldset id="producer">
+    <%= f.label 'Producers:' %>
+    <% @document_fedora.producer.each do |i| %>
+      <%= f.text_field "producer][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model_audio">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Producer">Add Producer</a></p>
+  </fieldset>
   <fieldset id="guest">
     <%= f.label 'Guests:' %>
     <% @document_fedora.guest.each do |i| %>
@@ -36,6 +43,13 @@
       <%= f.text_field "subject][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model_audio">Delete</a><br />
     <% end %>
     <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Subject">Add Subject</a></p>
+  </fieldset>
+  <fieldset id="geographical_coverage">
+    <%= f.label 'Places:' %>
+    <% @document_fedora.geographical_coverage.each do |i| %>
+      <%= f.text_field "geographical_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model_audio">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Place">Add Place</a></p>
   </fieldset>
   <fieldset id="language">
     <%= f.label 'Language:' %>

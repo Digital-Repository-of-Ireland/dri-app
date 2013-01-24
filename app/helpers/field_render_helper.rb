@@ -34,7 +34,7 @@ module FieldRenderHelper
      facet = args[:facet]
      search_arg = "f[" << facet << "][]"
 
-     if ((facet == 'guest_facet') || (facet == 'presenter_facet'))
+     if ((facet == 'guest_facet') || (facet == 'presenter_facet') || (facet == 'producer_facet'))
        search_arg = "f[person_facet][]"
      end
 

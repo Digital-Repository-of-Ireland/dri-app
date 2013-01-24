@@ -642,10 +642,15 @@
    <!-- author spell check; should match fields for author request handler -->
    <copyField source="author_t" dest="author_spell"/>
    <copyField source="author_addl_t" dest="author_spell"/>
+   <copyField source="person_t" dest="person_spell"/>
+   <copyField source="person_facet" dest="person_spell" />
+
    <!-- subject spell check; should match fields for subject request handler -->
    <copyField source="subject_topic_facet" dest="subject_spell"/>
    <copyField source="subject_t" dest="subject_spell"/>
-   <copyField source="subject_addl_t" dest="subject_spell"/>  
+   <copyField source="subject_addl_t" dest="subject_spell"/>
+   <copyField source="geographical_coverage_t" dest="geographical_coverage_spell"/>
+   <copyField source="geographical_coverage_facet" dest="geographical_coverage_spell" />
    
    <!-- OpenSearch query field should match request handler search fields -->
    <copyField source="title_t" dest="opensearch_display"/>

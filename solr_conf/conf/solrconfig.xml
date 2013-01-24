@@ -282,9 +282,23 @@
       <str name="buildOnOptimize">true</str>
     </lst>
     <lst name="spellchecker">
+      <str name="name">person</str>
+      <str name="field">person_spell</str>
+      <str name="spellcheckIndexDir">./spell_person</str>
+      <str name="accuracy">0.7</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+    <lst name="spellchecker">
       <str name="name">subject</str>
       <str name="field">subject_spell</str>
       <str name="spellcheckIndexDir">./spell_subject</str>
+      <str name="accuracy">0.7</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">geographical_coverage</str>
+      <str name="field">geographical_coverage_spell</str>
+      <str name="spellcheckIndexDir">./spell_geographical_coverage</str>
       <str name="accuracy">0.7</str>
       <str name="buildOnOptimize">true</str>
     </lst>
