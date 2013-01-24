@@ -5,6 +5,7 @@ class AssetsController < ApplicationController
   include DRI::Metadata
   include DRI::Model
 
+  # Retrieves a Fedora Digital Object by ID
   def retrieve_object(id)
     return objs = ActiveFedora::Base.find(id,{:cast => true})
   end

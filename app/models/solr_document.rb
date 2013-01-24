@@ -1,6 +1,8 @@
 # -*- encoding : utf-8 -*-
+# Generated Solr Document model
+#
 class SolrDocument 
-
+ 
   include Blacklight::Solr::Document
 
   # self.unique_key = 'id'
