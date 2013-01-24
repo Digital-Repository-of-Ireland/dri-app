@@ -10,6 +10,7 @@ module LinkTranslator
     when /edit an object/
       "edit_record"
 
+    # No ids for the links below so have to use text
     when /sign in/
       "Login"
 
