@@ -77,44 +77,30 @@ Scenario: Adding an audio file where the file extension is wrong
   Given I have created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
-  Then I should see "Upload Audio File:"
   When I attach the audio file "sample_audio.txt"
-  And I press "Upload Master File"
-  Then I should see "The file does not appear to be a valid type"
+  And I press the button to upload a file
+  Then I should see an error message for invalid file type
 
 Scenario: Editing an audio file where the file extension is wrong
   Given I have created a Digital Object
-  Then I should see a link to edit an object
+  And I have added an audio file  
   When I follow the link to edit an object
-  Then I should see "Upload Audio File:"
-  When I attach the audio file "sample_audio.mp3"
-  And I press "Upload Master File"
-  Then I should see "File has been successfully uploaded"
-  When I follow the link to edit an object
-  Then I should see "A master audio file has already been uploaded"
-  When I attach the audio file "sample_audio.txt"
-  And I press "Replace Master File"
-  Then I should see "The file does not appear to be a valid type"
+  And I attach the audio file "sample_audio.txt"
+  And I press the button to replace a file
+  Then I should see an error message for invalid file type
 
 Scenario: Adding an audio file that is not really an audio
   Given I have created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
-  Then I should see "Upload Audio File:"
-  When I attach the audio file "sample_invalid_audio.mp3"
-  And I press "Upload Master File"
-  Then I should see "The file does not appear to be a valid type"
+  And I attach the audio file "sample_invalid_audio.mp3"
+  And I press the button to upload a file
+  Then I should see an error message for invalid file type
 
 Scenario: Editing an audio file that is not really an audio
   Given I have created a Digital Object
-  Then I should see a link to edit an object
-  When I follow the link to edit an object
-  Then I should see "Upload Audio File:"
-  When I attach the audio file "sample_audio.mp3"
-  And I press "Upload Master File"
-  Then I should see "File has been successfully uploaded"
+  And I have added an audio file
   When I follow the link to edit an object 
-  Then I should see "A master audio file has already been uploaded"
-  When I attach the audio file "sample_invalid_audio.mp3"
-  And I press "Replace Master File"
-  Then I should see "The file does not appear to be a valid type"
+  And I attach the audio file "sample_invalid_audio.mp3"
+  And I press the button to replace a file
+  Then I should see an error message for invalid file type

@@ -13,6 +13,16 @@ Given /^I have created a Digital Object$/ do
   }
 end
 
+Given /^I have added an audio file$/ do
+  steps %{
+    Then I should see a link to edit an object
+    When I follow the link to edit an object
+    And I attach the audio file "sample_audio.mp3"
+    And I press the button to upload a file
+    Then I should see a success message for file upload
+  }
+end
+
 Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end

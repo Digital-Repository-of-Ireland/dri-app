@@ -21,6 +21,9 @@ module FlashTranslator
 
     when /file upload/
       "File has been successfully uploaded"
+
+    when /invalid file type/
+      "The file does not appear to be a valid type"
  
     else "Unknown"
  
