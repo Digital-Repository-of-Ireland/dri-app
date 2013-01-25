@@ -85,7 +85,7 @@
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
         <input type="file" name="Filedata" accept="audio/*">
         <input type="hidden" name="datastream" value="masterContent" />
-        <input class="btn-primary" name="upload_file" type="submit" value="Replace Master File"/>
+        <input class="btn-primary" name="upload_file" type="submit" value="Replace Master File" id="replace_file"/>
         </form>
         <% else %>
         <p class="legend-caption">No audio files have been uploaded. Please upload a master audio file.</p>
@@ -93,7 +93,7 @@
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
         <input type="file" name="Filedata" accept="audio/*">
         <input type="hidden" name="datastream" value="masterContent" />
-        <input class="btn-primary" name="upload_file" type="submit" value="Upload Master File"/>
+        <input class="btn-primary" name="upload_file" type="submit" value="Upload Master File" id="upload_file"/>
         </form>
         <% end %>
 </fieldset>
@@ -104,7 +104,7 @@
 <div class="well" id="sidebar-nav">
   <ul class="nav nav-list">
   <li class="nav-header">Edit Tools</li>
-    <%= link_to "View record", url_for(:controller => "catalog", :action => "show", :id => @document_fedora.id) %>
+    <%= link_to "View record", url_for(:controller => "catalog", :action => "show", :id => @document_fedora.id), :id => "view_record" %>
   </ul>
 </div><!--/well -->
 </div>

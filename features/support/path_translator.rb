@@ -23,10 +23,10 @@ module PathTranslator
      new_user_session_path
 
     when /User Signin page/
-      '/users/sign_in'
+      new_user_session_path
 
     when /User Sign up page/
-      '/users/sign_up'
+      new_user_registration_path
 
     else "Unknown"
 

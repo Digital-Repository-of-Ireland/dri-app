@@ -26,7 +26,7 @@ module LinkTranslator
       "signup"
 
      when /view record/
-       "View record"
+       "view_record"
 
     else "Unknown"
  

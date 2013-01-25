@@ -17,10 +17,10 @@ module ButtonTranslator
       "save_edit"
 
     when /upload a file/
-      "Upload Master File"
+      "upload_file"
 
     when /replace a file/
-      "Replace Master File"
+      "replace_file"
 
     else "Unknown"
  
