@@ -26,12 +26,11 @@ Feature:
 Background:
   Given I am logged in as "user1"
 
-Scenario: Commiting Digital Object to a collection that does not yet exist
+Scenario: Commiting Digital Object to a collection
   Given a Digital Object
-  And a collection that does not exist
-  When I add the Digital Object to a collection
-  Then the collection should exist
-  And the collection should contain the Digital Object
+  And an existing collection
+  When I add the Digital Object to the collection
+  Then the collection should contain the Digital Object
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
   Given a Digital Object
