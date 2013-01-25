@@ -9,7 +9,7 @@ Given /^I have created a Digital Object$/ do
   steps %{
     Given I am on the new Digital Object page
     When I attach the metadata file "valid_metadata.xml"
-    And I press "Ingest Metadata"
+    And I press the button to ingest metadata
   }
 end
 
@@ -19,6 +19,10 @@ end
 
 When /^(?:|I )go to (.+)$/ do |page_name|
   visit path_to(page_name)
+end
+
+When /^(?:|I )follow the link to (.+)$/ do |link_name|
+  click_link(link_to_id(link_name))
 end
 
 When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
@@ -39,6 +43,22 @@ Then /^I press "(.*?)"$/ do |button|
   click_button(button)
 end
 
+Then /^(?:|I )press the button to (.+)$/ do |button|
+  click_button(button_to_id(button))
+end 
+
+Then /^(?:|I )should see a link to (.+)$/ do |link|
+  page.should have_link(link_to_id(link))
+end
+
+Then /^(?:|I )should see a success message for (.+)$/ do |message|
+  page.should have_selector ".alert", text: flash_for(message)
+end
+
+Then /^(?:|I )should see an error message for (.+)$/ do |message|
+  page.should have_selector ".alert", text: flash_for(message)
+end
+
 Then /^(?:|I )should see "([^"]*)"(?: within "([^"]*)")?$/ do |text, selector|
   with_scope(selector) do
     if page.respond_to? :should
@@ -49,9 +69,9 @@ Then /^(?:|I )should see "([^"]*)"(?: within "([^"]*)")?$/ do |text, selector|
   end
 end
 
-Then /^I should see a link to "([^\"]*)"$/ do |text|
-  page.should have_link(text)
-end
+#Then /^I should see a link to "([^\"]*)"$/ do |text|
+#  page.should have_link(text)
+#end
 
 Then /^I should see a link to "([^\"]*)" with text "([^\"]*)"$/ do |url, text|
   page.should have_link(text, href: url) 

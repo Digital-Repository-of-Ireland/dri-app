@@ -43,7 +43,7 @@ class MetadataController < AssetsController
              @object.save
              flash[:notice] = "Metadata has been successfully updated."
            else
-             flash[:alert] = "Invalid object: #{@object.errors.full_messages.inspect}."
+             flash[:alert] = "Invalid Object: #{@object.errors.full_messages.inspect}."
            end
         end
       end
@@ -75,7 +75,7 @@ class MetadataController < AssetsController
             @object.save
             flash[:notice] = "Audio object has been successfully ingested."
           else
-            flash[:alert] = "Invalid object: #{@object.errors.full_messages.inspect}."
+            flash[:alert] = "Invalid Object: #{@object.errors.full_messages.inspect}."
             redirect_to :controller => "audios", :action => "new"
             return
           end

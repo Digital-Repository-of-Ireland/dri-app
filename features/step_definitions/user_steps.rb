@@ -74,11 +74,11 @@ When /^I submit the User Sign in page with credentials "([^\"]*)" and "([^\"]*)"
 end
 
 Then /^I should be logged in$/ do
-step 'I should see a link to "/users/sign_out" with text "Log Out"'
+step 'I should see a link to sign out'
 end
 
 Then /^I should be logged out$/ do
-  step 'I should see a link to "/users/sign_in" with text "Login"'
+  step 'I should see a link to sign in'
 end
 
 When /^I follow the edit link for "([^\"]*)"$/ do |login|

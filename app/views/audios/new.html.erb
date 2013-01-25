@@ -6,7 +6,7 @@
         <form id="metadata_uploader" action="<%= url_for(:action=>"create", :controller=>"metadata") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
         <input type="file" name="metadata_file" accept="application/xml" >
-        <input class="btn-primary btn-large" name="ingest_metadata" type="submit" value="Ingest Metadata"/>
+        <input class="btn-primary btn-large" name="ingest_metadata" id="ingest_metadata" type="submit" value="Ingest Metadata"/>
         </form>
 </fieldset>
 

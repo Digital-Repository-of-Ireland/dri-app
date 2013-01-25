@@ -4,6 +4,9 @@ module PathTranslator
 
     case page_name
 
+    when /ingest an object/
+      new_audio_path
+
     when /new Digital Object page/
       new_audio_path
 
@@ -16,11 +19,16 @@ module PathTranslator
     when /the home page/
       '/'
 
+    when /sign in/
+     new_user_session_path
+
     when /User Signin page/
       '/users/sign_in'
 
     when /User Sign up page/
       '/users/sign_up'
+
+    else "Unknown"
 
     end
   end
