@@ -13,6 +13,16 @@ Given /^I have created a Digital Object$/ do
   }
 end
 
+Given /^I have added an audio file$/ do
+  steps %{
+    Then I should see a link to edit an object
+    When I follow the link to edit an object
+    And I attach the audio file "sample_audio.mp3"
+    And I press the button to upload a file
+    Then I should see a success message for file upload
+  }
+end
+
 Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end
@@ -35,8 +45,24 @@ When /^I attach the metadata file "(.*?)"$/ do |file|
   attach_file("metadata_file", File.join(cc_fixture_path, file))
 end
 
+When /^I enter valid metadata$/ do
+  interface.enter_valid_metadata
+end
+
+When /^I enter modified metadata$/ do
+  interface.enter_modified_metadata
+end
+
 When /^I attach the audio file "(.*?)"$/ do |file|
   attach_file("Filedata", File.join(cc_fixture_path, file))
+end
+
+Then /^I should see the valid metadata$/ do
+  interface.has_valid_metadata?
+end
+
+Then /^I should see the modified metadata$/ do
+  interface.has_modified_metadata?
 end
 
 Then /^I press "(.*?)"$/ do |button|

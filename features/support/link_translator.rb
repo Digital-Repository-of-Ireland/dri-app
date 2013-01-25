@@ -34,6 +34,9 @@ module LinkTranslator
     when /sign up/
       "signup"
 
+     when /view record/
+       "view_record"
+
     else "Unknown"
  
     end

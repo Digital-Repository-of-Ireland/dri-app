@@ -19,6 +19,12 @@ module FlashTranslator
     when /updating metadata/
       "Metadata has been successfully updated"
 
+    when /file upload/
+      "File has been successfully uploaded"
+
+    when /invalid file type/
+      "The file does not appear to be a valid type"
+
     when /invalid email or password/
       "Invalid email or password"
 

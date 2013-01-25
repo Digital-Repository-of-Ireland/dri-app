@@ -11,7 +11,16 @@ module ButtonTranslator
       "replace_metadata"
 
     when /create record/
-      "Create Record"
+      "create_new"
+
+    when /save changes/
+      "save_edit"
+
+    when /upload a file/
+      "upload_file"
+
+    when /replace a file/
+      "replace_file"
 
     else "Unknown"
  
