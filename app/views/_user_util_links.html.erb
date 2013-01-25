@@ -2,21 +2,23 @@
   <% if has_user_authentication_provider? %>
     <div class="util-links-login">
       <% if current_user %>
-        <%= link_to t('blacklight.header_links.logout'), destroy_user_session_path, :method => :delete %> [<%= link_to current_user, edit_user_registration_path %>]
+        <%= link_to t('blacklight.header_links.logout'), destroy_user_session_path, :method => :delete, :id => "logout_link"  %>
+        [<%= link_to current_user, edit_user_registration_path, :id => "edit_user_link" %>]
+
       <% else %>
-        <%= link_to t('blacklight.header_links.login'), new_user_session_path %>
+        <%= link_to t('blacklight.header_links.login'), new_user_session_path, :id => "login_link" %>
       <% end %>
     </div>
 
   <% end %>
 
   <div class="util-links-other">
-    <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path %>
+    <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path, :id => "bookmarks_link" %>
     <% if current_user %>
       |
-      <%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path %>
+      <%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path, :id => "saved_search_link" %>
     <% end %>
     |
-    <%= link_to t('blacklight.header_links.search_history'), search_history_path %>
+    <%= link_to t('blacklight.header_links.search_history'), search_history_path, :id => "search_history_link" %>
   </div>
 </small>
