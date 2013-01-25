@@ -10,16 +10,21 @@ module LinkTranslator
     when /edit an object/
       "edit_record"
 
-    # No ids for the links below so have to use text
     when /sign in/
-      "Login"
+      "login"
 
     when /sign out/
-      "Log Out"
+      "logout"
+
+    when /edit my account/
+      "edit_account"
 
     when /cancel my account/
-      "Cancel my account"
+      "cancel_account"
  
+    when /sign up/
+      "signup"
+
     else "Unknown"
  
     end

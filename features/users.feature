@@ -16,16 +16,16 @@ end
 Scenario: Navigate to the Sign in page
   Given I am not logged in
   When I go to the home page
-  Then I should see a link to login
-  And I should not see a link to logout
-  When I follow the link to Login
+  Then I should see a link to sign in
+  And I should not see a link to sign out
+  When I follow the link to sign in
   Then I should be on the User Signin page
 
 Scenario: Navigate to the Sign up page
   Given I am not logged in
   When I go to the home page
-  Then I should see a link to login
-  When I follow the link to login
+  Then I should see a link to sign in
+  When I follow the link to sign in
   Then I should be on the User Signin page
   When I follow the link to sign up
   Then I should be on the User Sign up page
@@ -76,14 +76,14 @@ Scenario: User signs in with invalid credentials
 Scenario: Logging out
   Given I am logged in as "user1" with password "password1"
   When I go to the home page
-  Then I should see a link to logout
-  When I follow the link to logout
+  Then I should see a link to sign out
+  When I follow the link to sign out
   Then I should be logged out
 
 Scenario: A user should be able to edit their details
   Given I am logged in as "user1" with password "password1"
-  Then I should see a link to edit
-  When I follow the link to edit
+  Then I should see a link to edit my account
+  When I follow the link to edit my account
   Then I should see the edit page
   When I fill in "user_email" with "user2@user2.com"
   And I fill in "user_password" with "password2"
@@ -94,10 +94,10 @@ Scenario: A user should be able to edit their details
 
 Scenario: A user should be able to cancel their account
   Given I am logged in as "user1" with password "password1"
-  Then I should see a link to edit
-  When I follow the link to edit
-  Then I should see a link to cancel accont
-  When I follow the link to cancel account
+  Then I should see a link to edit my account
+  When I follow the link to edit my account
+  Then I should see a link to cancel my accont
+  When I follow the link to cancel my account
   And I confirm account cancellation
   Then my account should be deleted
   And I should be logged out
