@@ -2,7 +2,7 @@
   <% if has_user_authentication_provider? %>
     <div class="util-links-login">
       <% if current_user %>
-        <%= link_to t('blacklight.header_links.logout'), destroy_user_session_path, :method => :delete, :id => "logout_link"  %>
+        <%= link_to t('blacklight.header_links.logout'), destroy_user_session_path, :method => :delete, :id => "logout"  %>
         [<%= link_to current_user, edit_user_registration_path, :id => "edit_account" %>]
 
       <% else %>

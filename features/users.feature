@@ -34,7 +34,7 @@ Scenario: Creating a new valid user account
   Given I am not logged in
   Given I am on the User Sign up page
   When I submit a valid email, password and password confirmation
-  Then I should see the Welcome message 
+  Then I should see a success message for new account 
   And I should be logged in
 
 Scenario: Creating an invalid user account with duplicate email
@@ -42,21 +42,21 @@ Scenario: Creating an invalid user account with duplicate email
   Given I am not logged in
   Given I am on the User Sign up page
   When I submit the User Sign up page with email "user1@user1.com" and password "password1"
-  Then I should see the error "Email has already been taken"
+  Then I should see an error message for duplicate email
   And I should be logged out
 
 Scenario: Creating an invalid user account with non-matching password confirmation
   Given I am not logged in
   Given I am on the User Sign up page
   When I submit a valid email address and non-matching password and password confirmation
-  Then I should see the error "Password doesn't match confirmation" 
+  Then I should see an error message for password mismatch 
   And I should be logged out
 
 Scenario: Creating an invalid user account with too short password
   Given I am not logged in
   Given I am on the User Sign up page
   When I submit a valid email address and too short password and password confirmation
-  Then I should see the error "Password is too short" 
+  Then I should see an error message for too short password
   And I should be logged out
 
 Scenario: User signs in with valid credentials
@@ -71,7 +71,7 @@ Scenario: User signs in with invalid credentials
   Given I am on the User Signin page
   When I submit the User Sign in page with credentials "user1@user1.com" and "badpassword"
   Then I should be logged out
-  And I should see invalid email/password error
+  And I should see an error message for invalid email or password
 
 Scenario: Logging out
   Given I am logged in as "user1" with password "password1"
@@ -96,7 +96,7 @@ Scenario: A user should be able to cancel their account
   Given I am logged in as "user1" with password "password1"
   Then I should see a link to edit my account
   When I follow the link to edit my account
-  Then I should see a link to cancel my accont
+  Then I should see a link to cancel my account
   When I follow the link to cancel my account
   And I confirm account cancellation
   Then my account should be deleted
