@@ -16,6 +16,15 @@ module LinkTranslator
     when /sign out/
       "logout"
 
+    when /reset my password/
+      "password_reset"
+
+    when /password confirmation not sent/
+      "password_reset_not_sent"
+
+    when /unlock instructions not sent/
+      "unlock_not_sent"
+
     when /edit my account/
       "edit_account"
 

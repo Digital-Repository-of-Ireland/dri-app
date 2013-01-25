@@ -18,7 +18,22 @@ module FlashTranslator
 
     when /updating metadata/
       "Metadata has been successfully updated"
- 
+
+    when /invalid email or password/
+      "Invalid email or password"
+
+    when /new account/
+      "Welcome! You have signed up successfully."
+
+    when /duplicate email/
+      "Email has already been taken"
+
+    when /password mismatch/
+      "Password doesn't match confirmation"
+
+    when /too short password/
+      "Password is too short"
+
     else "Unknown"
  
     end
