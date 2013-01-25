@@ -35,8 +35,24 @@ When /^I attach the metadata file "(.*?)"$/ do |file|
   attach_file("metadata_file", File.join(cc_fixture_path, file))
 end
 
+When /^I enter valid metadata$/ do
+  interface.enter_valid_metadata
+end
+
+When /^I enter modified metadata$/ do
+  interface.enter_modified_metadata
+end
+
 When /^I attach the audio file "(.*?)"$/ do |file|
   attach_file("Filedata", File.join(cc_fixture_path, file))
+end
+
+Then /^I should see the valid metadata$/ do
+  interface.has_valid_metadata?
+end
+
+Then /^I should see the modified metadata$/ do
+  interface.has_modified_metadata?
 end
 
 Then /^I press "(.*?)"$/ do |button|

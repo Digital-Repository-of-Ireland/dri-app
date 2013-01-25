@@ -18,6 +18,9 @@ module FlashTranslator
 
     when /updating metadata/
       "Metadata has been successfully updated"
+
+    when /file upload/
+      "File has been successfully uploaded"
  
     else "Unknown"
  
