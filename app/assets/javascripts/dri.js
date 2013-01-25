@@ -39,6 +39,19 @@ destroy_text_field = function() {
     });
 }
 
+$(document).ready(function() {  
+    var audioSection = $('section#audio');  
+    $('a.player').click(function() {  
+        var audio = $('<audio>', {  
+             controls : 'controls'  
+        });  
+        var url = $(this).attr('href');  
+        $('<source>').attr('src', url).appendTo(audio);  
+        audioSection.html(audio);  
+        return false;  
+    });  
+});
+
 //uploader_submit = function() {
 //  $('.uploader_submit').click(function() {
 //     $('#file_uploader').submit();

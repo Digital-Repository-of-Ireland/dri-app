@@ -5,7 +5,10 @@
   <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => document.id %>">view</a></dd>
   <dt>Audio File: </dt>
 <% if @datastreams.has_key?('masterContent') %>
-   <dd><a href="<%= url_for :controller => 'files', :action => 'show', :id => @document.id %>">listen</a></dd>
+   <dd><%= link_to "listen", url_for(:controller => 'files', :action => 'show', :id => @document.id), :class => "player" %>
+     <section id="audio"> 
+     </section></dd>
+  </dd>
 <% else %>
    <dd>No file has been uploaded.</dd>
 <% end %>
