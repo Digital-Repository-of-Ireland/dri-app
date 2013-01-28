@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'spork'
+require 'i18n'
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 

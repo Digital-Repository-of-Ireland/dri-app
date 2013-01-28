@@ -1,11 +1,12 @@
 module FlashTranslator
 
+
   def flash_for(message)
 
     case message
 
     when /ingestion/
-      "Audio object has been successfully ingested"      
+      "Audio object has been successfully ingested"
 
     when /invalid metadata/
       "Invalid XML:"
