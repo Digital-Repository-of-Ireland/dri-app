@@ -28,6 +28,12 @@ module PathTranslator
     when /User Sign up page/
       new_user_registration_path
 
+    when /new Collection page/
+      'collections/new'
+
+    when /my collections page/
+      'collections/show'
+
     else "Unknown"
 
     end
