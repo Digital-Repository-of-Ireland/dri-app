@@ -6,6 +6,14 @@ When /^I add the Digital Object to a collection$/ do
   pending # express the regexp above with the code you wish you had
 end
 
+When /^I enter valid metadata for a collection$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+When /^I add the Digital Object to the collection$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
 Then /^the collection should exist$/ do
   pending # express the regexp above with the code you wish you had
 end
@@ -35,5 +43,9 @@ Then /^I should see my Digital Objects$/ do
 end
 
 Then /^I should be given a choice of using the existing object or creating a new one$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^I should see my collections$/ do
   pending # express the regexp above with the code you wish you had
 end

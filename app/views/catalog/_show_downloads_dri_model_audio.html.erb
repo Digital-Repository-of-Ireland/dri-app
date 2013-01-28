@@ -3,9 +3,12 @@
 <dl class="dl-horizontal  dl-invert">
   <dt>Metadata: </dt>
   <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => document.id %>">view</a></dd>
-  <dt>File: </dt>
+  <dt>Audio File: </dt>
 <% if @datastreams.has_key?('masterContent') %>
-   <dd><%= link_to "download", url_for(:controller => 'files', :action => 'show', :id => @document.id) %></dd>
+   <dd><%= link_to "listen", url_for(:controller => 'files', :action => 'show', :id => @document.id), :class => "player" %>
+     <section id="audio"> 
+     </section></dd>
+  </dd>
 <% else %>
    <dd>No file has been uploaded.</dd>
 <% end %>
