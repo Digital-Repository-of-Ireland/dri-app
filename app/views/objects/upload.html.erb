@@ -1,4 +1,4 @@
-<form accept-charset="UTF-8" action="/audios/<%= @audio.pid %>/upload" class="step" method="post" enctype="multipart/form-data">
+<form accept-charset="UTF-8" action="/objects/<%= @audio.pid %>/upload" class="step" method="post" enctype="multipart/form-data">
 <input type="file" id="Filedata" name="Filedata" />
 <input id="num_files_new_asset" name="new_asset" type="hidden" value="true" />
 <input id="file_assets_id" name="id" type="hidden" value="<%= @audio.pid %>" />

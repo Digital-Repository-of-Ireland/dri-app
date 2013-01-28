@@ -1,6 +1,6 @@
 # Controller for the Audio model
 #
-class AudiosController < ApplicationController
+class ObjectsController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
   include DRI::Model

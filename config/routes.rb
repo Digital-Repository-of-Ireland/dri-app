@@ -7,12 +7,12 @@ NuigRnag::Application.routes.draw do
 
   devise_for :users 
 
-  resources :audios
+  resources :objects
 
-  match 'audios/:id/metadata' => 'metadata#show', :via => :get, :as => :audio_metadata
-  match 'audios/:id/metadata' => 'metadata#update', :via => :put
-  match 'audios/:id/file' => 'files#show', :via => :get, :as => :audio_file
-  match 'audios/:id/file' => 'files#create', :via => :post, :as => :new_audio_file
+  match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
+  match 'objects/:id/metadata' => 'metadata#update', :via => :put
+  match 'objects/:id/file' => 'files#show', :via => :get, :as => :object_file
+  match 'objects/:id/file' => 'files#create', :via => :post, :as => :new_object_file
   match 'ingest' => 'metadata#create', :via => :post  
 
   # The priority is based upon order of creation:
