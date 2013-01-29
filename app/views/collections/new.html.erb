@@ -1,0 +1,15 @@
+<h1>New Collection</h1>
+
+<%= form_for @document_fedora, :url => {:controller=>"collections", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
+
+  <fieldset id="metadata">
+    <legend>Metadata</legend>
+    <%= f.label 'Title:' %>
+    <%= f.text_field :title, :class => "edit span6", :required => "true" %>
+    <%= f.label 'Description:' %>
+    <%= f.text_area :description, :class => "edit span6" %>  
+</fieldset>
+
+<%= f.submit "Create Collection", :class => "btn-primary btn-large", :id => "create_new_collection" %>
+
+<% end %>

@@ -1,0 +1,16 @@
+<h1><%= @collection.title %></h1>
+
+<dl>
+  <dt>PID:</dt>
+  <dd><%= @collection.pid %></dd>
+  <dt>Description</dt>
+  <dd><%= @collection.description %></dd>
+</dl>
+
+<h2>Members</h2>
+
+<ul>
+<% @collection.audios.each do |i| %>
+  <li><%= link_to i.pid, catalog_path(i) %></li>
+<% end %>
+</ul>

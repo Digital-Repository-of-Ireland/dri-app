@@ -1,16 +1,16 @@
-# Controller for the Audio model
+# Controller for the Collection model
 #
-class ObjectsController < ApplicationController
+class CollectionsController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
   include DRI::Model
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
-  # Creates a new Audio model.
+  # Creates a new model.
   #
   def new
-    @document_fedora = DRI::Model::Audio.new
+    @document_fedora = DRI::Model::Collection.new
     respond_to do |format|
       format.html
       format.json  { render :json => @document_fedora }
@@ -30,10 +30,11 @@ class ObjectsController < ApplicationController
   # Retrieves an existing model.
   #
   def show
-    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
+    @collection = ActiveFedora::Base.find(params[:id], {:cast => true})
+
     respond_to do |format|
       format.html  
-      format.json  { render :json => @document_fedora }
+      format.json  { render :json => @collection }
     end
   end
 
@@ -41,12 +42,8 @@ class ObjectsController < ApplicationController
   #
   def update
     @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
-    if params[:dri_model_audio][:collection_id]
-      collection = Collection.find(params[:dri_model_audio][:collection_id])
-      @document_fedora.collection = collection
-    end
-    @document_fedora.update_attributes(params[:dri_model_audio])
-
+    
+    @document_fedora.update_attributes(params[:dri_model_collection])
     respond_to do |format|
       flash["notice"] = "Updated " << params[:id]
       format.html  { render :action => "edit" }
@@ -54,18 +51,15 @@ class ObjectsController < ApplicationController
     end
   end
 
-  # Creates a new audio model using the parameters passed in the request.
+  # Creates a new model using the parameters passed in the request.
   #
   def create
-    @document_fedora = DRI::Model::Audio.new(params[:dri_model_audio])
-    if params[:dri_model_audio][:collection_id]
-      collection = Collection.find(params[:dri_model_audio][:collection_id])
-      @document_fedora.collection = collection
-    end
+    @document_fedora = DRI::Model::Collection.new(params[:dri_model_collection])
+    @document_fedora.creator = current_user.to_s
     respond_to do |format|
-      if @document_fedora.valid? && @document_fedora.save
-        format.html { flash[:notice] = "Audio object has been successfully ingested."
-            redirect_to :controller => "catalog", :action => "show", :id => @document_fedora.id }
+      if @document_fedora.save
+        format.html { flash[:notice] = "Collection object has been successfully created."
+            redirect_to :controller => "collections", :action => "show", :id => @document_fedora.id }
         format.json { render :json => @document_fedora }
       else
         format.html {
