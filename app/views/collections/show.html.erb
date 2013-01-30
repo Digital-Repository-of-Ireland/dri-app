@@ -1,0 +1,16 @@
+<h1><%= @document_fedora.title %></h1>
+
+<dl>
+  <dt>PID:</dt>
+  <dd><%= @document_fedora.pid %></dd>
+  <dt>Description</dt>
+  <dd><%= @document_fedora.description %></dd>
+</dl>
+
+<h2>Members</h2>
+
+<ul>
+<% @document_fedora.objects.each do |i| %>
+  <li><%= link_to i.pid, catalog_path(i) %></li>
+<% end %>
+</ul>

@@ -42,8 +42,12 @@ class ObjectsController < ApplicationController
   #
   def update
     @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
-    
+    if params[:dri_model_audio][:collection_id]
+      collection = Collection.find(params[:dri_model_audio][:collection_id])
+      @document_fedora.collection = collection
+    end
     @document_fedora.update_attributes(params[:dri_model_audio])
+
     respond_to do |format|
       flash["notice"] = "Updated " << params[:id]
       format.html  { render :action => "edit" }
@@ -54,7 +58,6 @@ class ObjectsController < ApplicationController
   # Creates a new audio model using the parameters passed in the request.
   #
   def create
-
     #Merge our object data so far and create the model
     session[:object_params].deep_merge!(params[:dri_model_audio]) if params[:dri_model_audio]
     @document_fedora = DRI::Model::Audio.new(session[:object_params])
@@ -66,6 +69,10 @@ class ObjectsController < ApplicationController
     # objects controller doesn't need to care about steps
     if last_step?
       # Last step, now we should create and save the object
+      if params[:dri_model_audio][:collection_id]
+        collection = Collection.find(params[:dri_model_audio][:collection_id])
+        @document_fedora.add_relationship(:is_member_of, collection)
+      end
       if @document_fedora.valid? && @document_fedora.save
         reset_ingest_state
         respond_to do |format|
