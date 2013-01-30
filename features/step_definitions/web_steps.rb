@@ -8,7 +8,12 @@ World(WithinHelpers)
 Given /^I have created a Digital Object$/ do
   steps %{
     Given I am on the new Digital Object page
-    When I attach the metadata file "valid_metadata.xml"
+    And I press the button to continue
+    And I select upload from the selectbox for ingest methods
+    And I press the button to continue
+    And I select audio from the selectbox for object type
+    And I press the button to continue
+    And I attach the metadata file "valid_metadata.xml"
     And I press the button to ingest metadata
   }
 end
@@ -39,6 +44,10 @@ When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
   with_scope(selector) do
     click_link(link)
   end
+end
+
+When /^I select (.*?) from the selectbox for (.*?)$/ do |option, selector|
+  select_by_value(option, :from => select_box_to_id(selector))
 end
 
 When /^I attach the metadata file "(.*?)"$/ do |file|

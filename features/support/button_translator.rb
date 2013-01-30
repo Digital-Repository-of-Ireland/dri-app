@@ -22,6 +22,9 @@ module ButtonTranslator
     when /replace a file/
       "replace_file"
 
+     when /continue/
+       "continue"
+
     else "Unknown"
  
     end

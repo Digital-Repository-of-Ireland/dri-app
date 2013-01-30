@@ -15,25 +15,49 @@ Scenario: Navigating to the ingest page
 
 Scenario: Constructing a valid Digital Object
   Given I am on the new Digital Object page
-  When I attach the metadata file "valid_metadata.xml"
+#  When I select a collection
+  And I press the button to continue
+  And I select upload from the selectbox for ingest methods 
+  And I press the button to continue
+  And I select audio from the selectbox for object type
+  And I press the button to continue
+  And I attach the metadata file "valid_metadata.xml"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion 
 
 Scenario: Constructing a Digital Object with invalid XML metadata
   Given I am on the new Digital Object page
-  When I attach the metadata file "invalid_xml_metadata.xml"
+#  When I select a collection
+  And I press the button to continue
+  And I select upload from the selectbox for ingest methods              
+  And I press the button to continue
+  And I select audio from the selectbox for object type
+  And I press the button to continue
+  And I attach the metadata file "invalid_xml_metadata.xml"
   And I press the button to ingest metadata
   Then I should see an error message for invalid metadata
 
 Scenario: Constructing a Digital Object with metadata that does not conform to the schema
   Given I am on the new Digital Object page
-  When I attach the metadata file "invalid_schema_metadata.xml"
+#  When I select a collection
+  And I press the button to continue
+  And I select upload from the selectbox for ingest methods              
+  And I press the button to continue
+  And I select audio from the selectbox for object type
+  And I press the button to continue
+  And I attach the metadata file "invalid_schema_metadata.xml"
   And I press the button to ingest metadata 
   Then I should see an error message for invalid schema
 
 Scenario: Constructing a Digital Object with metadata that does not contain a required field
   Given I am on the new Digital Object page
-  When I attach the metadata file "metadata_no_rights.xml"
+#  When I select a collection
+  And I press the button to continue
+  And I select upload from the selectbox for ingest methods              
+  And I press the button to continue
+  And I select audio from the selectbox for object type
+  And I press the button to continue
+  And I attach the metadata file "metadata_no_rights.xml"
   And I press the button to ingest metadata
   Then I should see an error message for invalid object
 
@@ -47,8 +71,14 @@ Scenario: Replacing the metadata file of a Digital Object
 
 Scenario: Constructing a Digital Object using the web form
   Given I am on the new Digital Object page
+#  When I select a collection
+  And I press the button to continue
+  And I select input from the selectbox for ingest methods              
+  And I press the button to continue
+  And I select audio from the selectbox for object type
+  And I press the button to continue
   When I enter valid metadata
-  And I press the button to create record
+  And I press the button to continue
   Then I should see a success message for ingestion
   And I should see the valid metadata
 
