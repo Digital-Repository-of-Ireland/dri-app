@@ -11,6 +11,7 @@ class CollectionsController < ApplicationController
   #
   def new
     @document_fedora = DRI::Model::Collection.new
+
     respond_to do |format|
       format.html
       format.json  { render :json => @document_fedora }
@@ -21,6 +22,7 @@ class CollectionsController < ApplicationController
   #
   def edit
     @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
+
     respond_to do |format|
       format.html
       format.json  { render :json => @document_fedora }
@@ -30,11 +32,11 @@ class CollectionsController < ApplicationController
   # Retrieves an existing model.
   #
   def show
-    @collection = ActiveFedora::Base.find(params[:id], {:cast => true})
+    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
 
     respond_to do |format|
       format.html  
-      format.json  { render :json => @collection }
+      format.json  { render :json => @document_fedora }
     end
   end
 

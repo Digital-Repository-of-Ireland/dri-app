@@ -60,7 +60,7 @@ class ObjectsController < ApplicationController
     @document_fedora = DRI::Model::Audio.new(params[:dri_model_audio])
     if params[:dri_model_audio][:collection_id]
       collection = Collection.find(params[:dri_model_audio][:collection_id])
-      @document_fedora.collection = collection
+      @document_fedora.add_relationship(:is_member_of, collection)
     end
     respond_to do |format|
       if @document_fedora.valid? && @document_fedora.save

@@ -1,0 +1,21 @@
+<div id="content" class="span9 show-document">
+<div id="document">
+<div class="document">
+<h2>Edit Collection</h2>
+
+<%= form_for @document_fedora, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
+    <fieldset id="metadata">
+    <legend>Metadata</legend>
+    <%= f.label 'Title:' %>
+    <%= f.text_field :title, :class => "edit span6", :required => "true" %>
+    <%= f.label 'Description:' %>
+    <%= f.text_area :description, :class => "edit span6" %>
+  </fieldset>
+
+<%= f.submit "Update Collection", :class => "btn-primary btn-large", :id => "edit_collection" %>
+
+<% end %>
+
+</div>
+</div>
+</div>
