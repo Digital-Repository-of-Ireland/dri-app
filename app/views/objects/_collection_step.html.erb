@@ -1,0 +1,8 @@
+<h2>Select Collection</h2>
+
+<%= form_tag :action=>"create", :method=>"post" do %>
+  <%= select_tag "collection_id", :prompt => "Select collection" %>
+  <%= submit_tag "Continue", :class => "btn-primary btn-large", :id => "continue" %>
+
+<% end %>
+
