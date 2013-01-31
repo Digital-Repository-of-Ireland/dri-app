@@ -6,7 +6,7 @@ module FlashTranslator
     case message
 
     when /ingestion/
-      "Audio object has been successfully ingested"
+      "Digital object has been successfully ingested"
 
     when /invalid metadata/
       "Invalid XML:"

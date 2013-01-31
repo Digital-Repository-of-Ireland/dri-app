@@ -73,7 +73,7 @@ class MetadataController < AssetsController
           # @object.datastreams["descMetadata"].save
           if @object.valid?
             @object.save
-            flash[:notice] = "Audio object has been successfully ingested."
+            flash[:notice] = "Digital object has been successfully ingested."
           else
             flash[:alert] = "Invalid Object: #{@object.errors.full_messages.inspect}."
             redirect_to :controller => "objects", :action => "new"
