@@ -14,4 +14,5 @@ class ApplicationController < ActionController::Base
   # these methods in order to perform user specific actions. 
 
   protect_from_forgery
+
 end

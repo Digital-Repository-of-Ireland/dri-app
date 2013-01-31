@@ -1,4 +1,4 @@
-@construct @web
+@web
 Feature: 
   In order to add a digital object into the repository
   As an authenticated and authorised depositor

@@ -73,8 +73,8 @@ class ObjectsController < ApplicationController
     # objects controller doesn't need to care about steps
     if last_step?
       # Last step, now we should create and save the object
-      if params[:dri_model_audio][:collection_id]
-        collection = Collection.find(params[:dri_model_audio][:collection_id])
+      if session[:object_collection] 
+        collection = Collection.find(session[:object_collection])
         @document_fedora.add_relationship(:is_member_of, collection)
       end
       if @document_fedora.valid? && @document_fedora.save

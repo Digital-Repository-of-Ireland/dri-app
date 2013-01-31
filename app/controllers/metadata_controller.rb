@@ -70,6 +70,10 @@ class MetadataController < AssetsController
             @object.add_datastream ds, :dsid => 'descMetadata'
           end
 
+          if !session[:object_collection].nil? && !session[:object_collection].eql?("")
+            @object.add_relationship(:is_member_of, Collection.find(session[:object_collection]))
+          end
+
           # @object.datastreams["descMetadata"].save
           if @object.valid?
             @object.save
