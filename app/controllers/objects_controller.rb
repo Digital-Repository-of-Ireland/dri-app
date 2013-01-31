@@ -64,7 +64,7 @@ class ObjectsController < ApplicationController
   def create
     #Merge our object data so far and create the model
     session[:object_params].deep_merge!(params[:dri_model_audio]) if params[:dri_model_audio]
-    @document_fedora = DRI::Model::Audio.new(session[:object_params])
+    @document_fedora = DRI::Model::DigitalObject.construct(:Audio, session[:object_params])
 
     @ingest_methods = get_ingest_methods
     @supported_types = get_supported_types
