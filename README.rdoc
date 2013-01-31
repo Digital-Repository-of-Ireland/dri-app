@@ -24,16 +24,22 @@ To start the application for demo purposes
 
   $ cd nuig-rnag
   $ rake jetty:start
-	$ bundle exec rails server
+  $ bundle exec rails server
 
-To run the tests
+To run the unit tests
 
   $ cd nuig-rnag
   $ rake jetty:start
   $ rake spec
 
+To run the functional tests
+
+  $ cd nuig-rnag
+  $ rake jetty:start
+  $ rake cucumber
+
 Additional information can be found by reading up on the drirepo,
-nuig-rnag, rspec and rails documentation.
+nuig-rnag, rspec, cucumber and rails documentation.
 
 == Testing
 

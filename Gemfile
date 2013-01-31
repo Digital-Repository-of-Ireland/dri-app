@@ -32,6 +32,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'
   gem 'simplecov'
+  gem 'railroady'
 
   # guard - autorun of tests during development cycle
   gem 'guard'
