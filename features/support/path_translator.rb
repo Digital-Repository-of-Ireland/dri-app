@@ -5,10 +5,10 @@ module PathTranslator
     case page_name
 
     when /ingest an object/
-      new_object_path
+      new_ingest_path
 
     when /new Digital Object page/
-      new_object_path
+      new_ingest_path
 
     when /show Digital Object page for id (.+)/
       catalog_path($1)

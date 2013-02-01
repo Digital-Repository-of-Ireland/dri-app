@@ -3,13 +3,24 @@
 
 require 'stepped_forms'
 
-class ObjectsController < ApplicationController
+class IngestController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
   include DRI::Model
   include SteppedForms
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
+
+  # Form for a new dri_data_models model.
+  #
+  def new
+    reset_ingest_state
+    @current_step = session[:ingest_step]
+
+    respond_to do |format|
+      format.html
+    end
+  end
 
   # Edits an existing model.
   #
@@ -53,28 +64,41 @@ class ObjectsController < ApplicationController
   def create
     #Merge our object data so far and create the model
     session[:object_params].deep_merge!(params[:dri_model_audio]) if params[:dri_model_audio]
+    @document_fedora = DRI::Model::Audio.new(session[:object_params])
 
+    @ingest_methods = get_ingest_methods
     @supported_types = get_supported_types
-    @document_fedora = DRI::Model::Audio.new(session[:object_params]) # fix to support multiple model types
 
-    if params[:dri_model_audio][:collection_id]
-      collection = Collection.find(params[:dri_model_audio][:collection_id])
-      @document_fedora.add_relationship(:is_member_of, collection)
-    end
-    if @document_fedora.valid? && @document_fedora.save
-      respond_to do |format|
-        format.html { flash[:notice] = "Digital object has been successfully ingested."
-          redirect_to :controller => "catalog", :action => "show", :id => @document_fedora.id }
-        format.json { render :json => @document_fedora }
+    # which step am I on? This should be moved to a separate controller so that the
+    # objects controller doesn't need to care about steps
+    if last_step?
+      # Last step, now we should create and save the object
+      if params[:dri_model_audio][:collection_id]
+        collection = Collection.find(params[:dri_model_audio][:collection_id])
+        @document_fedora.add_relationship(:is_member_of, collection)
+      end
+      if @document_fedora.valid? && @document_fedora.save
+        reset_ingest_state
+        respond_to do |format|
+          format.html { flash[:notice] = "Digital object has been successfully ingested."
+            redirect_to :controller => "catalog", :action => "show", :id => @document_fedora.id }
+          format.json { render :json => @document_fedora }
+        end
+      else
+        respond_to do |format|
+          format.html {
+            flash["alert"] = @document_fedora.errors.messages.values.to_s
+            render :action => :new
+          }
+          format.json { render :json => @document_fedora.errors}
+        end
       end
     else
-      respond_to do |format|
-        format.html {
-          flash["alert"] = @document_fedora.errors.messages.values.to_s
-          redirect_to new_ingest_url
-        }
-        format.json { render :json => @document_fedora.errors}
-      end
+      # Continue was pressed on a non-final step, increment the current step
+      # and update session state
+      update_ingest_state
+      @current_step = session[:ingest_step]
+      render :action => :new
     end
 
   end

@@ -76,7 +76,7 @@ class MetadataController < AssetsController
             flash[:notice] = "Digital object has been successfully ingested."
           else
             flash[:alert] = "Invalid Object: #{@object.errors.full_messages.inspect}."
-            redirect_to :controller => "objects", :action => "new"
+            redirect_to :controller => "ingest", :action => "new"
             return
           end
 
@@ -87,7 +87,7 @@ class MetadataController < AssetsController
       flash[:notice] = "You must specify a valid file to upload."
     end
 
-    redirect_to :controller => "objects", :action => "new"
+    redirect_to :controller => "ingest", :action => "new"
   end  
 
   # Validates Dublin Core metadata against schema declared in the namespace.
