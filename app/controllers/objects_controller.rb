@@ -55,10 +55,10 @@ class ObjectsController < ApplicationController
     session[:object_params].deep_merge!(params[:dri_model_audio]) if params[:dri_model_audio]
 
     @supported_types = get_supported_types
-    @document_fedora = DRI::Model::Audio.new(session[:object_params]) # fix to support multiple model types
+    @document_fedora = DRI::Model::DigitalObject.construct(:Audio, session[:object_params])
 
-    if params[:dri_model_audio][:collection_id]
-      collection = Collection.find(params[:dri_model_audio][:collection_id])
+    if session[:object_collection]
+      collection = Collection.find(session[:object_collection])
       @document_fedora.add_relationship(:is_member_of, collection)
     end
     if @document_fedora.valid? && @document_fedora.save
