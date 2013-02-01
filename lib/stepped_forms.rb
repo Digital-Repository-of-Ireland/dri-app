@@ -48,7 +48,7 @@ module SteppedForms
    # Returns a list of ingest steps
    def get_steps
      # TODO: these should not really be hardcoded here
-     %w[collection ingestmethod type metadata]
+     %w[collection type ingestmethod metadata]
    end
 
    def get_ingest_methods

@@ -57,7 +57,7 @@ class ObjectsController < ApplicationController
     @supported_types = get_supported_types
 
     if !session[:ingest][:type].nil?
-      if session[:ingest][:type].eql?('audio')
+     if session[:ingest][:type].eql?('audio')
         @document_fedora = DRI::Model::DigitalObject.construct(:Audio, session[:object_params])
       elsif session[:ingest][:type].eql?('pdfdoc')
         @document_fedora = DRI::Model::DigitalObject.construct(:Pdf, session[:object_params])
