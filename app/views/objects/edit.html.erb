@@ -1,112 +1,14 @@
 <div id="content" class="span9 show-document">
-<div id="document">
-<div class="document">
-<h2>Edit Audio</h2>
+  <div id="document">
+    <div class="document">
+      <h2>Edit Audio</h2>
 
-<%= form_for @document_fedora, :url => {:controller=>"objects", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
+        <%= render :partial => "form_#{get_partial_name(@document_fedora)}", :document_fedora  => @document_fedora %>
 
-  <fieldset id="metadata">
-    <legend>Metadata</legend>
-    <%= f.label 'Title:' %>
-    <%= f.text_field :title, :class => "edit span6", :required => "true" %>
-    <%= f.label 'Description:' %>
-    <%= f.text_area :description, :class => "edit span6" %>
-    <%= f.label 'Broadcast Date:' %>
-    <%= f.text_field :broadcast_date, :class => "edit span6", :required => "true" %>
-    <%= f.label 'Rights:' %>
-    <%= f.text_field :rights, :class => "edit span6", :required => "true" %> 
-    <%= f.label 'Collection:' %>
-    <%= f.select :collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }), :class => "edit span6" %>
-  </fieldset>
-  <fieldset id="presenter">
-    <%= f.label 'Presenters:' %>
-    <% @document_fedora.presenter.each do |i| %>
-      <%= f.text_field "presenter][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model_audio">Delete</a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Presenter">Add Presenter</a></p>
-  </fieldset>
-  <fieldset id="producer">
-    <%= f.label 'Producers:' %>
-    <% @document_fedora.producer.each do |i| %>
-      <%= f.text_field "producer][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model_audio">Delete</a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Producer">Add Producer</a></p>
-  </fieldset>
-  <fieldset id="guest">
-    <%= f.label 'Guests:' %>
-    <% @document_fedora.guest.each do |i| %>
-      <%= f.text_field "guest][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model_audio">Delete</a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Guest">Add Guest</a></p>
-  </fieldset>
-  <fieldset id="subject">
-    <%= f.label 'Subjects:' %>
-    <% @document_fedora.subject.each do |i| %>
-      <%= f.text_field "subject][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model_audio">Delete</a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Subject">Add Subject</a></p>
-  </fieldset>
-  <fieldset id="geographical_coverage">
-    <%= f.label 'Places:' %>
-    <% @document_fedora.geographical_coverage.each do |i| %>
-      <%= f.text_field "geographical_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model_audio">Delete</a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Place">Add Place</a></p>
-  </fieldset>
-  <fieldset id="language">
-    <%= f.label 'Language:' %>
-    <%= f.select :language, [['English', 'en'],['Irish', 'ga']],:class => "edit span6" %>
-  </fieldset>
-  <fieldset id="source">
-    <%= f.label 'Sources:' %>
-    <% @document_fedora.source.each do |i| %>
-      <%= f.text_field "source][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model_audio">Delete</a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model_audio" title="Add Source">Add Source</a></p>
-  </fieldset>
-
-  <%= f.submit "Save Changes", :class => "btn-primary btn-large", :id => "save_edit" %>
-<% end %>
-
-<fieldset>
-        <legend>Replace Metadata:</legend>
-        <p class="legend-caption">Replace metadata using XML file.</p>
-        <form id="metadata_uploader" action="<%= url_for(:action=>"update", :controller=>"metadata", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-        <input type="file" name="metadata_file" accept="application/xml" >
-        <input name="_method" type="hidden" value="put" />
-        <input class="btn-primary" name="upload_metadata" type="submit" value="Upload Metadata" id="replace_metadata"/>
-        </form>
-</fieldset>
-
-<fieldset>
-        <legend>Upload Audio File:</legend>
-        <% if @document_fedora.datastreams.has_key?("masterContent") %>
-          <p>A master audio file has already been uploaded: 
-            <%= link_to "listen here", url_for(:controller => 'files', :action => 'show', :id => @document_fedora.id), :class => "player" %>
-            <section id="audio">
-            </section>
-          </p>
-        
-          <form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-            <input type="file" name="Filedata" accept="audio/*">
-            <input type="hidden" name="datastream" value="masterContent" />
-            <input class="btn-primary" name="upload_file" type="submit" value="Replace Master File" id="replace_file"/>
-          </form>
-        <% else %>
-          <p class="legend-caption">No audio files have been uploaded. Please upload a master audio file.</p>
-          <form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-            <input type="file" name="Filedata" accept="audio/*">
-            <input type="hidden" name="datastream" value="masterContent" />
-            <input class="btn-primary" name="upload_file" type="submit" value="Upload Master File" id="upload_file"/>
-          </form>
-        <% end %>
-</fieldset>
+   </div>
+  </div>
 </div>
-</div>
-</div>
+
 <div id="sidebar" class="span3">
 <div class="well" id="sidebar-nav">
   <ul class="nav nav-list">

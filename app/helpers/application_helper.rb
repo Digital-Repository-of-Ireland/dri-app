@@ -11,4 +11,7 @@ module ApplicationHelper
     collections.collect{ |c| [c.title, c.pid] }
   end
 
+  def get_partial_name( object )
+    object.class.to_s.downcase.gsub("-"," ").parameterize("_")
+  end
 end
