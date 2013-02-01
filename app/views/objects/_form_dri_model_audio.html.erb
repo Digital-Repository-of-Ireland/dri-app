@@ -11,7 +11,7 @@
     <%= f.label 'Rights:' %>
     <%= f.text_field :rights, :class => "edit span6", :required => "true" %> 
     <%= f.label 'Collection:' %>
-    <%= f.select :collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }, @document_fedora.collection.pid), :class => "edit span6" %>
+    <%= f.select :collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }, get_current_collection(@document_fedora)), :class => "edit span6" %>
   </fieldset>
   <fieldset id="presenter">
     <%= f.label 'Presenters:' %>
