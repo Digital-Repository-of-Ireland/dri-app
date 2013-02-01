@@ -1,4 +1,4 @@
-# Controller for Digital Objects
+# Controller for Ingesting
 #
 
 require 'stepped_forms'
@@ -15,7 +15,7 @@ class IngestController < ApplicationController
   #
   def new
     reset_ingest_state
-    @current_step = session[:ingest_step]
+    @current_step = session[:ingest][:current_step]
 
     respond_to do |format|
       format.html
@@ -97,7 +97,7 @@ class IngestController < ApplicationController
       # Continue was pressed on a non-final step, increment the current step
       # and update session state
       update_ingest_state
-      @current_step = session[:ingest_step]
+      @current_step = session[:ingest][:current_step]
       render :action => :new
     end
 

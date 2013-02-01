@@ -8,7 +8,7 @@ module ButtonTranslator
       "ingestmethod"      
 
     when /object type/
-      "type"
+      "ingesttype"
 
     else "Unknown"
  

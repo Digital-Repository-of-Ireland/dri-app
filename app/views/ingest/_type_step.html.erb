@@ -1,8 +1,8 @@
 <h2>Select object type</h2>
 
-<%= form_tag :action=>"create", :method=>"post" do %>
+<%= form_tag :action=>"create" do %>
 
-    <%= select_tag "type", options_for_select(@supported_types), :prompt => "Select type" %>
+    <%= select_tag "ingesttype", options_for_select(@supported_types), :prompt => "Select type", :required => "true" %>
 
     <%= submit_tag "Continue", :class => "btn-primary btn-large", :id => "continue" %>
 

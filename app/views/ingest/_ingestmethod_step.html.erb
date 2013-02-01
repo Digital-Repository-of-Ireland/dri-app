@@ -1,7 +1,7 @@
 <h2>Select Ingest Method</h2>
 
-<%= form_tag :action=>"create", :method=>"post" do %>
-  <%= select_tag "ingestmethod", options_for_select(@ingest_methods), :prompt => "Select ingest method"  %>
+<%= form_tag :action=>"create" do %>
+  <%= select_tag "ingestmethod", options_for_select(@ingest_methods), :prompt => "Select ingest method", :required => "true" %>
   <%= submit_tag "Continue", :class => "btn-primary btn-large", :id => "continue" %>
 <% end %>
 
