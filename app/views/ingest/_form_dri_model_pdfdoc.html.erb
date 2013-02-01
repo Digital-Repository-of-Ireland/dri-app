@@ -1,0 +1,57 @@
+<%= form_for @document_fedora, :as => :dri_model, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
+
+  <fieldset id="metadata">
+    <legend>Metadata</legend>
+    <%= f.label 'Title:' %>
+    <%= f.text_field :title, :class => "edit span6", :required => "true" %>
+    <%= f.label 'Description:' %>
+    <%= f.text_area :description, :class => "edit span6" %>
+    <%= f.label 'Creation Date:' %>
+    <%= f.text_field :creation_date, :class => "edit span6", :required => "true" %>
+    <%= f.label 'Rights:' %>
+    <%= f.text_field :rights, :class => "edit span6", :required => "true" %> 
+    <%= f.label 'Collection:' %>
+    <%= f.select :collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }, get_current_collection(@document_fedora)), :class => "edit span6" %>
+  </fieldset>
+  <fieldset id="author">
+    <%= f.label 'Authors:' %>
+    <% @document_fedora.author.each do |i| %>
+      <%= f.text_field "author][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Author">Add Author</a></p>
+  </fieldset>
+  <fieldset id="editor">
+    <%= f.label 'Editors:' %>
+    <% @document_fedora.editor.each do |i| %>
+      <%= f.text_field "editor][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Editor">Add Editor</a></p>
+  </fieldset>
+  <fieldset id="subject">
+    <%= f.label 'Subjects:' %>
+    <% @document_fedora.subject.each do |i| %>
+      <%= f.text_field "subject][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Subject">Add Subject</a></p>
+  </fieldset>
+  <fieldset id="geographical_coverage">
+    <%= f.label 'Places:' %>
+    <% @document_fedora.geographical_coverage.each do |i| %>
+      <%= f.text_field "geographical_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Place">Add Place</a></p>
+  </fieldset>
+  <fieldset id="language">
+    <%= f.label 'Language:' %>
+    <%= f.select :language, [['English', 'en'],['Irish', 'ga']],:class => "edit span6" %>
+  </fieldset>
+  <fieldset id="source">
+    <%= f.label 'Sources:' %>
+    <% @document_fedora.source.each do |i| %>
+      <%= f.text_field "source][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+    <% end %>
+    <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Source">Add Source</a></p>
+  </fieldset>
+
+  <%= f.submit "Save Changes", :class => "btn-primary btn-large", :id => "save_edit" %>
+<% end %>

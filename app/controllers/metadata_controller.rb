@@ -33,7 +33,13 @@ class MetadataController < AssetsController
           if @object.datastreams.has_key?("descMetadata")
             @object.datastreams["descMetadata"].ng_xml = @tmp_xml
           else
-            ds = DRI::Metadata::DublinCoreAudio.from_xml(@tmp_xml)
+
+            if @object.is_a?(DRI::Model::Audio)
+              ds = DRI::Metadata::DublinCoreAudio.from_xml(@tmp_xml)
+            elsif @object.is_a?(DRI::Model::Pdfdoc)
+              ds = DRI::Metadata::DublinCorePdfdoc.from_xml(@tmp_xml)
+            end
+
             @object.add_datastream ds, :dsid => 'descMetadata'
           end
 
@@ -61,7 +67,16 @@ class MetadataController < AssetsController
 
     if params.has_key?(:metadata_file) && params[:metadata_file] != nil
       if is_valid_dc?
-        @object = DRI::Model::Audio.new
+
+        if !session[:ingest][:type].nil?
+          if session[:ingest][:type].eql?('pdfdoc')
+            @object = DRI::Model::DigitalObject.construct(:Pdf, session[:object_params])
+          elsif session[:ingest][:type].eql?('audio')
+            @object = DRI::Model::DigitalObject.construct(:Audio, session[:object_params])
+          end
+        else 
+          @object = DRI::Model::Audio.new
+        end
 
           if @object.datastreams.has_key?("descMetadata")
             @object.datastreams["descMetadata"].ng_xml = @tmp_xml
@@ -70,8 +85,8 @@ class MetadataController < AssetsController
             @object.add_datastream ds, :dsid => 'descMetadata'
           end
 
-          if !session[:object_collection].nil? && !session[:object_collection].eql?("")
-            @object.add_relationship(:is_member_of, Collection.find(session[:object_collection]))
+          if !session[:ingest][:collection].nil? && !session[:ingest][:collection].eql?("")
+            @object.add_relationship(:is_member_of, Collection.find(session[:ingest][:collection]))
           end
 
           # @object.datastreams["descMetadata"].save

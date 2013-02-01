@@ -35,11 +35,11 @@ class ObjectsController < ApplicationController
   #
   def update
     @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
-    if params[:dri_model_audio][:collection_id]
-      collection = Collection.find(params[:dri_model_audio][:collection_id])
+    if params[:dri_model][:collection_id]
+      collection = Collection.find(params[:dri_model][:collection_id])
       @document_fedora.collection = collection
     end
-    @document_fedora.update_attributes(params[:dri_model_audio])
+    @document_fedora.update_attributes(params[:dri_model])
 
     respond_to do |format|
       flash["notice"] = "Updated " << params[:id]
@@ -52,13 +52,22 @@ class ObjectsController < ApplicationController
   #
   def create
     #Merge our object data so far and create the model
-    session[:object_params].deep_merge!(params[:dri_model_audio]) if params[:dri_model_audio]
+    session[:object_params].deep_merge!(params[:dri_model]) if params[:dri_model]
 
     @supported_types = get_supported_types
-    @document_fedora = DRI::Model::DigitalObject.construct(:Audio, session[:object_params])
 
-    if session[:object_collection]
-      collection = Collection.find(session[:object_collection])
+    if !session[:ingest][:type].nil?
+      if session[:ingest][:type].eql?('audio')
+        @document_fedora = DRI::Model::DigitalObject.construct(:Audio, session[:object_params])
+      elsif session[:ingest][:type].eql?('pdfdoc')
+        @document_fedora = DRI::Model::DigitalObject.construct(:Pdf, session[:object_params])
+      end
+    else
+      @document_fedora = DRI::Model::DigitalObject.construct(:Audio, session[:object_params])
+    end
+
+    if session[:ingest][:collection]
+      collection = Collection.find(session[:ingest][:collection])
       @document_fedora.add_relationship(:is_member_of, collection)
     end
     if @document_fedora.valid? && @document_fedora.save
