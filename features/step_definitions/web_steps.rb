@@ -9,9 +9,9 @@ Given /^I have created a Digital Object$/ do
   steps %{
     Given I am on the new Digital Object page
     And I press the button to continue
-    And I select upload from the selectbox for ingest methods
-    And I press the button to continue
     And I select audio from the selectbox for object type
+    And I press the button to continue
+    And I select upload from the selectbox for ingest methods
     And I press the button to continue
     And I attach the metadata file "valid_metadata.xml"
     And I press the button to ingest metadata

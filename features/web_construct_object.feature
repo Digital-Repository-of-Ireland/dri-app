@@ -17,9 +17,9 @@ Scenario: Constructing a valid Digital Object
   Given I am on the new Digital Object page
 #  When I select a collection
   And I press the button to continue
-  And I select upload from the selectbox for ingest methods 
-  And I press the button to continue
   And I select audio from the selectbox for object type
+  And I press the button to continue
+  And I select upload from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to ingest metadata
@@ -29,9 +29,9 @@ Scenario: Constructing a Digital Object with invalid XML metadata
   Given I am on the new Digital Object page
 #  When I select a collection
   And I press the button to continue
-  And I select upload from the selectbox for ingest methods              
-  And I press the button to continue
   And I select audio from the selectbox for object type
+  And I press the button to continue
+  And I select upload from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "invalid_xml_metadata.xml"
   And I press the button to ingest metadata
@@ -41,9 +41,9 @@ Scenario: Constructing a Digital Object with metadata that does not conform to t
   Given I am on the new Digital Object page
 #  When I select a collection
   And I press the button to continue
-  And I select upload from the selectbox for ingest methods              
-  And I press the button to continue
   And I select audio from the selectbox for object type
+  And I press the button to continue
+  And I select upload from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "invalid_schema_metadata.xml"
   And I press the button to ingest metadata 
@@ -53,9 +53,9 @@ Scenario: Constructing a Digital Object with metadata that does not contain a re
   Given I am on the new Digital Object page
 #  When I select a collection
   And I press the button to continue
-  And I select upload from the selectbox for ingest methods              
-  And I press the button to continue
   And I select audio from the selectbox for object type
+  And I press the button to continue
+  And I select upload from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "metadata_no_rights.xml"
   And I press the button to ingest metadata
@@ -73,9 +73,9 @@ Scenario: Constructing a Digital Object using the web form
   Given I am on the new Digital Object page
 #  When I select a collection
   And I press the button to continue
-  And I select input from the selectbox for ingest methods              
-  And I press the button to continue
   And I select audio from the selectbox for object type
+  And I press the button to continue
+  And I select input from the selectbox for ingest methods
   And I press the button to continue
   When I enter valid metadata
   And I press the button to continue

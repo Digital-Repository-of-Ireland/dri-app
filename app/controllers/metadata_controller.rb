@@ -68,12 +68,8 @@ class MetadataController < AssetsController
     if params.has_key?(:metadata_file) && params[:metadata_file] != nil
       if is_valid_dc?
 
-        if !session[:ingest][:type].nil?
-          if session[:ingest][:type].eql?('pdfdoc')
-            @object = DRI::Model::DigitalObject.construct(:Pdf, session[:object_params])
-          elsif session[:ingest][:type].eql?('audio')
-            @object = DRI::Model::DigitalObject.construct(:Audio, session[:object_params])
-          end
+        if !session[:ingest][:type].nil? && !session[:ingest][:type].blank?
+          @object = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, session[:object_params])
         else 
           @object = DRI::Model::Audio.new
         end

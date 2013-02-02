@@ -66,13 +66,9 @@ class IngestController < ApplicationController
     session[:object_params].deep_merge!(params[:dri_model]) if params[:dri_model]
 
     if !session[:ingest][:type].nil? && !session[:ingest][:type].eql?("")
-      if session[:ingest][:type].eql?('audio')
-        @document_fedora = DRI::Model::DigitalObject.construct(:Audio, session[:object_params])
-      elsif session[:ingest][:type].eql?('pdfdoc')
-        @document_fedora = DRI::Model::DigitalObject.construct(:Pdf, session[:object_params])
-      end
+      @document_fedora = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, session[:object_params])
     else
-      @document_fedora = DRI::Model::DigitalObject.construct(:Audio, session[:object_params])
+      @document_fedora = DRI::Model::DigitalObject.construct(:audio, session[:object_params])
     end
 
     @ingest_methods = get_ingest_methods
