@@ -18,11 +18,24 @@ Given /^I have created a Digital Object$/ do
   }
 end
 
+Given /^I have created a (pdfdoc|audio) object$/ do |type|
+  steps %{
+    Given I am on the new Digital Object page
+    And I press the button to continue
+    And I select #{type} from the selectbox for object type
+    And I press the button to continue
+    And I select upload from the selectbox for ingest methods
+    And I press the button to continue
+    And I attach the metadata file "valid_metadata.xml"
+    And I press the button to ingest metadata
+  }
+end
+
 Given /^I have added an audio file$/ do
   steps %{
     Then I should see a link to edit an object
     When I follow the link to edit an object
-    And I attach the audio file "sample_audio.mp3"
+    And I attach the asset file "sample_audio.mp3"
     And I press the button to upload a file
     Then I should see a success message for file upload
   }
@@ -62,7 +75,7 @@ When /^I enter modified metadata$/ do
   interface.enter_modified_metadata
 end
 
-When /^I attach the audio file "(.*?)"$/ do |file|
+When /^I attach the asset file "(.*?)"$/ do |file|
   attach_file("Filedata", File.join(cc_fixture_path, file))
 end
 
@@ -106,6 +119,10 @@ Then /^(?:|I )should see "([^"]*)"(?: within "([^"]*)")?$/ do |text, selector|
       assert page.has_content?(text)
     end
   end
+end
+
+Then /^the object should be (.*?) format$/ do |format|
+  interface.is_format?(format)
 end
 
 #Then /^I should see a link to "([^\"]*)"$/ do |text|

@@ -61,6 +61,26 @@ Scenario: Constructing a Digital Object with metadata that does not contain a re
   And I press the button to ingest metadata
   Then I should see an error message for invalid object
 
+Scenario: Constructing a pdf object
+  Given I am on the new Digital Object page
+  And I press the button to continue
+  And I select pdfdoc from the selectbox for object type
+  And I press the button to continue
+  And I select upload from the selectbox for ingest methods
+  And I press the button to continue
+  And I attach the metadata file "dublin_core_pdfdoc_sample.xml"
+  And I press the button to ingest metadata
+  Then I should see a success message for ingestion
+  And the object should be Article format
+
+Scenario: Adding a pdf asset to an object
+  Given I have created a pdfdoc object 
+  Then I should see a link to edit an object
+  When I follow the link to edit an object
+  And I attach the asset file "sample_pdf.pdf"
+  And I press the button to upload a file
+  Then I should see a success message for file upload
+
 Scenario: Replacing the metadata file of a Digital Object
   Given I have created a Digital Object
   Then I should see a link to edit an object
@@ -95,11 +115,11 @@ Scenario: Adding and replacing the audio file for a Digital Object
   Given I have created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
-  And I attach the audio file "sample_audio.mp3"
+  And I attach the asset file "sample_audio.mp3"
   And I press the button to upload a file
   Then I should see a success message for file upload
   When I follow the link to edit an object
-  And I attach the audio file "sample_audio.mp3"
+  And I attach the asset file "sample_audio.mp3"
   And I press the button to replace a file
   Then I should see a success message for file upload
 
@@ -107,7 +127,7 @@ Scenario: Adding an audio file where the file extension is wrong
   Given I have created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
-  When I attach the audio file "sample_audio.txt"
+  When I attach the asset file "sample_audio.txt"
   And I press the button to upload a file
   Then I should see an error message for invalid file type
 
@@ -115,7 +135,7 @@ Scenario: Editing an audio file where the file extension is wrong
   Given I have created a Digital Object
   And I have added an audio file  
   When I follow the link to edit an object
-  And I attach the audio file "sample_audio.txt"
+  And I attach the asset file "sample_audio.txt"
   And I press the button to replace a file
   Then I should see an error message for invalid file type
 
@@ -123,7 +143,7 @@ Scenario: Adding an audio file that is not really an audio
   Given I have created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
-  And I attach the audio file "sample_invalid_audio.mp3"
+  And I attach the asset file "sample_invalid_audio.mp3"
   And I press the button to upload a file
   Then I should see an error message for invalid file type
 
@@ -131,6 +151,6 @@ Scenario: Editing an audio file that is not really an audio
   Given I have created a Digital Object
   And I have added an audio file
   When I follow the link to edit an object 
-  And I attach the audio file "sample_invalid_audio.mp3"
+  And I attach the asset file "sample_invalid_audio.mp3"
   And I press the button to replace a file
   Then I should see an error message for invalid file type

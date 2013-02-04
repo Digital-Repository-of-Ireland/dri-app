@@ -35,6 +35,13 @@ module Interface
         page.should have_content("Description: Editing test")
       end
     end
+
+    def is_format?(format)
+      within(:xpath, "//div[@id='document']") do
+        page.should have_content("Format: #{format}")
+      end
+    end
+      
   end
 
   def interface
