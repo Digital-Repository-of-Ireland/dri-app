@@ -26,12 +26,6 @@ module SteppedForms
       next_step = steps[steps.index(session[:ingest][:current_step])+1]
       if next_step == "metadata" and session[:ingest][:method].present?
         session[:ingest][:method]
-      elsif next_step == "metadata" and session[:ingest][:method].blank?
-        # This should not occur
-        "ingestmethod"
-      elsif next_step == "metadata" and session[:ingest][:type].blank
-        # This should not occur
-        "type"
       else
         next_step
       end
