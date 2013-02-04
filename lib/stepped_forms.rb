@@ -45,18 +45,28 @@ module SteppedForms
       session[:ingest][:current_step] == steps.last
     end
 
-   # Returns a list of ingest steps
-   def get_steps
-     # TODO: these should not really be hardcoded here
-     %w[collection type ingestmethod metadata]
-   end
+    # Returns a list of ingest steps
+    def get_steps
+      Settings.ingest.steps
+    end
 
-   def get_ingest_methods
-      ingest_methods = { "Upload XML" => :upload, "Form entry" => :input }
-   end
+    def get_step_data(step)
+      Kernel.eval "Settings.ingest.step_data.#{step}"
+    end
 
-   def get_supported_types
-     supported_types = { "Audio" => :audio, "Pdf" => :pdfdoc }
-   end
+    def get_ingest_methods
+       ingest_methods = { "Upload XML" => :upload, "Form entry" => :input }
+    end
+
+    def get_supported_types
+      supported_types = { "Audio" => :audio, "Pdf" => :pdfdoc }
+    end
+
+    def valid_step_data?(step)
+      stepdata = get_step_data(step)
+      stepdata.each do |dataitem|
+        return false unless params[dataitem.to_sym]
+      end
+    end
 
 end
