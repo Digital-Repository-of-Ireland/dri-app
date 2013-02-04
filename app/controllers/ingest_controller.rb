@@ -101,7 +101,9 @@ class IngestController < ApplicationController
     else
       # Continue was pressed on a non-final step, increment the current step
       # and update session state
-      update_ingest_state
+      if valid_step_data?(session[:ingest][:current_step])
+        update_ingest_state
+      end
       @current_step = session[:ingest][:current_step]
       render :action => :new
     end
