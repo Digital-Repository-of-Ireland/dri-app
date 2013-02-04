@@ -3,7 +3,8 @@ Given /^we have a "(.*?)" Model$/ do |model_name|
 end
 
 When /^we test the "(.*?)" Model$/ do |model_name|
-  @test_model = FactoryGirl.build(:audio)
+  model = model_name.split(":").last.downcase
+  @test_model = FactoryGirl.build(model.to_sym)
   @test_model.should be_valid
 end
 
