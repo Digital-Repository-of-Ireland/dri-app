@@ -33,13 +33,7 @@ class MetadataController < AssetsController
           if @object.datastreams.has_key?("descMetadata")
             @object.datastreams["descMetadata"].ng_xml = @tmp_xml
           else
-
-            if @object.is_a?(DRI::Model::Audio)
-              ds = DRI::Metadata::DublinCoreAudio.from_xml(@tmp_xml)
-            elsif @object.is_a?(DRI::Model::Pdfdoc)
-              ds = DRI::Metadata::DublinCorePdfdoc.from_xml(@tmp_xml)
-            end
-
+            ds = @object.load_from_xml(@tmp_xml)
             @object.add_datastream ds, :dsid => 'descMetadata'
           end
 
