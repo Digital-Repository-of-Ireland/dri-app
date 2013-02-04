@@ -80,7 +80,7 @@ class IngestController < ApplicationController
       # Last step, now we should create and save the object
       if params[:dri_model][:collection_id]
         collection = Collection.find(params[:dri_model][:collection_id])
-        @document_fedora.add_relationship(:is_member_of, collection)
+        @document_fedora.collection = collection
       end
       if @document_fedora.valid? && @document_fedora.save
         reset_ingest_state

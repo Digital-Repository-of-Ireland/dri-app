@@ -76,7 +76,7 @@ class MetadataController < AssetsController
           end
 
           if !session[:ingest][:collection].blank?
-            @object.add_relationship(:is_member_of, Collection.find(session[:ingest][:collection]))
+            @object.collection = Collection.find(session[:ingest][:collection])
           end
 
           # @object.datastreams["descMetadata"].save
