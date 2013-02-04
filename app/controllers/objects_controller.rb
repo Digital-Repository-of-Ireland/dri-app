@@ -64,7 +64,7 @@ class ObjectsController < ApplicationController
 
     if session[:ingest][:collection]
       collection = Collection.find(session[:ingest][:collection])
-      @document_fedora.add_relationship(:is_member_of, collection)
+      @document_fedora.collection = collection
     end
     if @document_fedora.valid? && @document_fedora.save
       respond_to do |format|
