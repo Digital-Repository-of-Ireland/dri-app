@@ -62,7 +62,7 @@ class MetadataController < AssetsController
     if params.has_key?(:metadata_file) && params[:metadata_file] != nil
       if is_valid_dc?
 
-        if !session[:ingest][:type].nil? && !session[:ingest][:type].blank?
+        if !session[:ingest][:type].blank?
           @object = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, session[:object_params])
         else 
           @object = DRI::Model::Audio.new
@@ -75,7 +75,7 @@ class MetadataController < AssetsController
             @object.add_datastream ds, :dsid => 'descMetadata'
           end
 
-          if !session[:ingest][:collection].nil? && !session[:ingest][:collection].eql?("")
+          if !session[:ingest][:collection].blank?
             @object.add_relationship(:is_member_of, Collection.find(session[:ingest][:collection]))
           end
 
