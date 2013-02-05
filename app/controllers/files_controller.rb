@@ -50,12 +50,12 @@ class FilesController < AssetsController
         @object = retrieve_object params[:id]
 
         if @object == nil
-          flash[:notice] = "Please specify a valid object id."
+          flash[:notice] = t('dri.flash.notice.speficy_object_id')
         else
           count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => @object.id, :d => datastream } ]).count
 
           unless Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
-            flash[:alert] = "Warning: The file does not appear to be a valid type"
+            flash[:alert] = t('dri.flash.alert.invalid_file_type')
           end
 
           dir = local_storage_dir.join(@object.id).join(datastream+count.to_s)
@@ -69,14 +69,14 @@ class FilesController < AssetsController
           @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
           @object.save
 
-          flash[:notice] = "File has been successfully uploaded."
+          flash[:notice] = t('dri.flash.notice.file_uploaded')
 
         end
       else
-        flash[:notice] = "You must specify a valid file datastream."
+        flash[:notice] = t('dri.flash.notice.specify_datastream')
       end
     else
-      flash[:notice] = "You must specify a file to upload."
+      flash[:notice] = t('dri.flash.notice.specify_file')
     end
 
     redirect_to :controller => "catalog", :action => "show", :id => params[:id]
