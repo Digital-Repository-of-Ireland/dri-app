@@ -6,6 +6,7 @@ en:
     application:
       home:
         introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
+        locale: "Language"
       lang:
         en: "English"
         ga: "Irish"
@@ -56,8 +57,28 @@ en:
           upload_pdf: "Upload PDF File"
           file_caption: "A master file has already been uploaded."
           upload_file_caption: "No files have been uploaded. Please upload a master file."
+          audio_caption: "A master audio file has already been uploaded."
+          upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
         links:
           listen: "listen"
           download: "download"
-    devise:
-      locale: "Language"
+      devise:
+        locale: "Language"
+      ingest:
+        forms:
+          title: "Add a new digital object"
+          collection_prompt: "Select collection"
+          object_type_prompt: "Select object type"
+          ingest_method_prompt: "Select ingest method"
+          upload_legend: "Upload Metadata:"
+          upload_caption: "Ingest metadata XML file."
+        buttons:
+          new_collection: "New collection"
+          reset: "Reset"
+          continue: "Continue"
+        steps:
+          collection: "Select Collection"
+          object_type: "Select Object Type"
+          ingest_method: "Select Ingest Method"
+          input: "Input"
+          upload: "Upload Metadata file"
