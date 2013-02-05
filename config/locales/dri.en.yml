@@ -65,6 +65,23 @@ en:
           listen: "listen"
           download: "download"
           view_record: "View Record"
+      catalog:
+        links:
+          listen: "listen"
+          view_metadata: "view"
+          download: "download"
+          edit_this_record: "Edit this record"
+        headers:
+          files: "Files"
+        forms:
+          metadata: "Metadata"
+          audio_file: "Audio File"
+          pdf_file: "PDF"
+        legends:
+          no_files: "No file has been uploaded."
+        sidebar:
+          more_like_this: "More Like This"
+          nav_header: "Edit Tools"
       devise:
         locale: "Language"
       ingest:
