@@ -12,6 +12,7 @@ gem 'rails_config'
 gem 'sqlite3'
 
 gem 'devise'
+gem 'devise-i18n-views'
 
 gem 'noid', '0.5.5'
 
