@@ -23,11 +23,14 @@ en:
           title: "Title"
           description: "Description"
           broadcast_date: "Broadcast Date"
+          creation_date: "Creation Date"
           rights: "Rights"
           collection: "Collection"
           presenters: "Presenters"
           producers: "Producers"
           guests: "Guests"
+          authors: "Authors"
+          editors: "Editors"
           subjects: "Subjects"
           places: "Places"
           language: "Language"
@@ -38,6 +41,9 @@ en:
           add_subject: "Add Subject"
           add_source: "Add Source"
           add_place: "Add Place"
+          add_author: "Add Author"
+          add_editor: "Add Editor"
+          delete: "delete"
         buttons:
           save: "Save Changes"
           replace_metadata: "Upload Metadata"
@@ -48,8 +54,16 @@ en:
           replace_metadata: "Replace Metadata"
           replace_caption: "Replace metadata using XML file."
           upload_audio: "Upload Audio File"
+          upload_pdf: "Upload PDF File"
+          file_caption: "A master file has already been uploaded."
+          upload_file_caption: "No files have been uploaded. Please upload a master file."
           audio_caption: "A master audio file has already been uploaded."
           upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
+        links:
+          listen: "listen"
+          download: "download"
+      devise:
+        locale: "Language"
       ingest:
         forms:
           title: "Add a new digital object"
