@@ -27,7 +27,7 @@ class MetadataController < AssetsController
         @object = retrieve_object params[:id]
 
         if @object == nil
-          flash[:notice] = "Please specify a valid object id."
+          flash[:notice] = t('dri.flash.notice.specify_object_id')
         else
             
           if @object.datastreams.has_key?("descMetadata")
@@ -41,14 +41,14 @@ class MetadataController < AssetsController
 
            if @object.valid?
              @object.save
-             flash[:notice] = "Metadata has been successfully updated."
+             flash[:notice] = t('dri.flash.notice.metadata_updated')
            else
-             flash[:alert] = "Invalid Object: #{@object.errors.full_messages.inspect}."
+             flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
            end
         end
       end
     else
-      flash[:notice] = "You must specify a valid file to upload."
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
     end
 
     redirect_to :controller => "catalog", :action => "show", :id => params[:id]
@@ -82,9 +82,9 @@ class MetadataController < AssetsController
           # @object.datastreams["descMetadata"].save
           if @object.valid?
             @object.save
-            flash[:notice] = "Digital object has been successfully ingested."
+            flash[:notice] = t('dri.flash.notice.digital_object_ingested')
           else
-            flash[:alert] = "Invalid Object: #{@object.errors.full_messages.inspect}."
+            flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
             redirect_to :controller => "ingest", :action => "new"
             return
           end
@@ -93,7 +93,7 @@ class MetadataController < AssetsController
           return
       end
     else
-      flash[:notice] = "You must specify a valid file to upload."
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
     end
 
     redirect_to :controller => "ingest", :action => "new"
@@ -111,7 +111,7 @@ class MetadataController < AssetsController
       begin
         @tmp_xml = Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
       rescue Nokogiri::XML::SyntaxError => e
-        flash[:alert] = "Invalid XML: #{e}"
+        flash[:alert] = t('dri.flash.alert.invalid_xml', :error => e)
         return false
       end
 
@@ -139,7 +139,7 @@ class MetadataController < AssetsController
         end
 
         if (schema_imports.size == 0)
-          flash[:notice] = "The XML file contains no schema to validate against."
+          flash[:notice] = t('dri.flash.notice.no_xml_schema')
         else
           # Create a schema that imports and includes the schema used in the XML
 
@@ -158,14 +158,14 @@ class MetadataController < AssetsController
           if validate_errors == nil || validate_errors.size == 0
 	    result = true
           else
-            flash[:error] = "Validation Errors:<br/>".html_safe+validate_errors.join("<br/>").html_safe
+            flash[:error] = t('dri.flash.error.validation_errors', :error => "<br/>".html_safe+validate_errors.join("<br/>").html_safe)
           end
         end
       else
-        flash[:notice] = "The XML file could not validate against the Dublin Core schema"
+        flash[:notice] = t('dri.flash.notice.schema_validation_error')
       end
    else
-      flash[:notice] = "You must specify a XML file."
+      flash[:notice] = t('dri.flash.notice.specify_xml_file')
    end
 
    return result

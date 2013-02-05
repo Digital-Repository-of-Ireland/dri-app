@@ -47,7 +47,7 @@ class CollectionsController < ApplicationController
     
     @document_fedora.update_attributes(params[:dri_model_collection])
     respond_to do |format|
-      flash["notice"] = "Updated " << params[:id]
+      flash["notice"] = t('dri.flash.notice.updated', :item => params[:id])
       format.html  { render :action => "edit" }
       format.json  { render :json => @document_fedora }
     end
@@ -60,7 +60,7 @@ class CollectionsController < ApplicationController
     @document_fedora.creator = current_user.to_s
     respond_to do |format|
       if @document_fedora.save
-        format.html { flash[:notice] = "Collection object has been successfully created."
+        format.html { flash[:notice] = t('dri.flash.notice.collection_created')
             redirect_to :controller => "collections", :action => "show", :id => @document_fedora.id }
         format.json { render :json => @document_fedora }
       else

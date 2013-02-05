@@ -104,3 +104,24 @@ en:
           ingest_method: "Select Ingest Method"
           input: "Input"
           upload: "Upload Metadata file"
+    flash:
+      notice:
+        digital_object_ingested: "Digital object has been successfully ingested."
+        collection_created: "Collection object has been successfully created."
+        specify_object_id: "Please specify a valid object id."
+        specify_datastream: "You must specify a valid file datastream."
+        specify_file: "You must specify a file to upload."
+        file_uploaded: "File has been successfully uploaded."
+        metadata_updated: "Metadata has been successfully updated."
+        specify_valid_file: "You must specify a valid file to upload."
+        no_xml_schema: "The XML file contains no schema to validate against."
+        schema_validation_error: "The XML file could not validate against the Dublin Core schema"
+        specify_xml_file: "You must specify a XML file."
+        updated: "Updated %{item}"
+      alert:
+        invalid_file_type: "Warning: The file does not appear to be a valid type"
+        invalid_object: "Invalid Object: %{error}."
+        invalid_xml: "Invalid XML: %{error}"
+      error:
+        validation_errors: "Validation Errors: %{error}"
+

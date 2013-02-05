@@ -32,7 +32,7 @@ class ObjectsController < ApplicationController
     @document_fedora.update_attributes(params[:dri_model])
 
     respond_to do |format|
-      flash["notice"] = "Updated " << params[:id]
+      flash["notice"] = t('dri.flash.notice.updated', :item => parms[:id])
       format.html  { render :action => "edit" }
       format.json  { render :json => @document_fedora }
     end
@@ -58,7 +58,7 @@ class ObjectsController < ApplicationController
     end
     if @document_fedora.valid? && @document_fedora.save
       respond_to do |format|
-        format.html { flash[:notice] = "Digital object has been successfully ingested."
+        format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
           redirect_to :controller => "catalog", :action => "show", :id => @document_fedora.id }
         format.json { render :json => @document_fedora }
       end
