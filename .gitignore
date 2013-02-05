@@ -14,9 +14,6 @@
 /log/*.log
 /tmp
 
-# Jetty should be ignored
-/jetty
-
 /script/rnagimport
 /oo*
 /coverage

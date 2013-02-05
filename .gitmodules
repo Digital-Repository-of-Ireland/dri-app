@@ -1,3 +1,0 @@
-[submodule "jetty"]
-	path = jetty
-	url = http://github.com/projecthydra/hydra-jetty.git
