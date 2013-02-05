@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  before_filter :set_locale
+ 
   # Adds a few additional behaviors into the application controller 
   include Blacklight::Controller  
 
@@ -15,4 +17,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
 end
