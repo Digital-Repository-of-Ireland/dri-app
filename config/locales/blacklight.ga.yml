@@ -29,9 +29,9 @@ ga:
       saved_searches: 'Mo Chuardaigh'
       search_history: 'Stair'
 
-    welcome: 'Welcome!'
-    and: 'and'
-    or: 'or'
+    welcome: 'Fáilte!'
+    and: 'agus'
+    or: 'nó'
 
     bookmarks:
       collection:

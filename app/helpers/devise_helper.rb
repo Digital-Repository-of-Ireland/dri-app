@@ -17,7 +17,7 @@ module DeviseHelper
 
    errortext = sentence + "<ul>#{messages}</ul>"
 
-   flash.now[:error] = errortext.html_safe
+   flash.now[:error] = errortext.html_safe unless messages.empty?
 
    return ""
 

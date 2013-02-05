@@ -3,6 +3,12 @@
 
 en:
   dri:
+    application:
+      home:
+        introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
+      lang:
+        en: "English"
+        ga: "Irish"
     headerlinks:
       home: "Home"
       ingest: "Ingest"
@@ -43,4 +49,5 @@ en:
           upload_audio: "Upload Audio File"
           audio_caption: "A master audio file has already been uploaded."
           upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
-
+    devise:
+      locale: "Language"
