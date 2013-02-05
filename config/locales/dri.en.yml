@@ -73,12 +73,14 @@ en:
           collection_prompt: "Select collection"
           object_type_prompt: "Select object type"
           ingest_method_prompt: "Select ingest method"
+        legends:
           upload_legend: "Upload Metadata:"
           upload_caption: "Ingest metadata XML file."
         buttons:
           new_collection: "New collection"
           reset: "Reset"
           continue: "Continue"
+          delete: "Delete"
         steps:
           collection: "Select Collection"
           object_type: "Select Object Type"
