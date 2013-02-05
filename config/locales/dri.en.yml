@@ -3,8 +3,16 @@
 
 en:
   dri:
+    application:
+      home:
+        introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
+      lang:
+        en: "English"
+        ga: "Irish"
     headerlinks:
       home: "Home"
       ingest: "Ingest"
       about: "About"
       contact: "Contact"
+    devise:
+      locale: "Language"

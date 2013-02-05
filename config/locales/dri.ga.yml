@@ -3,22 +3,14 @@
 
 ga:
   dri:
+    application:
+      home:
+        introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
+      lang:
+        en: "English"
+        ga: "Irish"
     headerlinks:
       home: "Príomhleathanach"
       ingest: "Glac isteach"
       about: "Eolas"
       contact: "Teagmháil"
-
-  cucumber:
-    audio_ingested: "Audio object has been successfully ingested"
-    invalid_metadata: "Invalid XML:"
-    invalid_schema: "Validation Errors:"
-    invalid_object: "Invalid Object:"
-    updating_metadata: "Metadata has been successfully updated"
-    file_upload: "File has been successfully uploaded"
-    invalid_file_type: "The file does not appear to be a valid type"
-    invalid_email_password: "Invalid email or password"
-    new_account: "Welcome! You have signed up successfully."
-    duplicate_email: "Email has already been taken"
-    password_mismatch: "Password doesn't match confirmation"
-    too_short_password: "Password is too short"
