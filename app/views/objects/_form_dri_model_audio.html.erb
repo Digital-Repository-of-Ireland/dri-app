@@ -16,35 +16,35 @@
   <fieldset id="presenter">
     <%= f.label "#{t('dri.views.objects.forms.presenters')}:" %>
     <% @document_fedora.presenter.each do |i| %>
-      <%= f.text_field "presenter][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+      <%= f.text_field "presenter][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
     <% end %>
     <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Presenter"><%= t('dri.views.objects.forms.add_presenter') %></a></p>
   </fieldset>
   <fieldset id="producer">
     <%= f.label "#{t('dri.views.objects.forms.producers')}:" %>
     <% @document_fedora.producer.each do |i| %>
-      <%= f.text_field "producer][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+      <%= f.text_field "producer][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
     <% end %>
     <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Producer"><%= t('dri.views.objects.forms.add_producer') %></a></p>
   </fieldset>
   <fieldset id="guest">
     <%= f.label "#{t('dri.views.objects.forms.guests')}:" %>
     <% @document_fedora.guest.each do |i| %>
-      <%= f.text_field "guest][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+      <%= f.text_field "guest][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
     <% end %>
     <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Guest"><%= t('dri.views.objects.forms.add_guest') %></a></p>
   </fieldset>
   <fieldset id="subject">
     <%= f.label "#{t('dri.views.objects.forms.subjects')}:" %>
     <% @document_fedora.subject.each do |i| %>
-      <%= f.text_field "subject][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+      <%= f.text_field "subject][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
     <% end %>
     <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Subject"><%= t('dri.views.objects.forms.add_subject') %></a></p>
   </fieldset>
   <fieldset id="geographical_coverage">
     <%= f.label "#{t('dri.views.objects.forms.places')}:" %>
     <% @document_fedora.geographical_coverage.each do |i| %>
-      <%= f.text_field "geographical_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+      <%= f.text_field "geographical_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
     <% end %>
     <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Place"><%= t('dri.views.objects.forms.add_place') %></a></p>
   </fieldset>
@@ -55,7 +55,7 @@
   <fieldset id="source">
     <%= f.label "#{t('dri.views.objects.forms.sources')}:" %>
     <% @document_fedora.source.each do |i| %>
-      <%= f.text_field "source][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model">Delete</a><br />
+      <%= f.text_field "source][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
     <% end %>
     <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Source"><%= t('dri.views.objects.forms.add_source') %></a></p>
   </fieldset>
@@ -64,7 +64,7 @@
 <% end %>
 
 <fieldset>
-        <legend><%= t('dri.views.objects.legends.replace_metadata') %>:</legend>
+        <legend><%= t('dri.views.objects.legends.replace_metadata') %></legend>
         <p class="legend-caption"><%= t('dri.views.objects.legends.replace_caption') %></p>
         <form id="metadata_uploader" action="<%= url_for(:action=>"update", :controller=>"metadata", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
@@ -75,10 +75,10 @@
 </fieldset>
 
 <fieldset>
-        <legend><%= t('dri.views.objects.legends.upload_audio') %>:</legend>
+        <legend><%= t('dri.views.objects.legends.upload_audio') %></legend>
         <% if @document_fedora.datastreams.has_key?("masterContent") %>
-          <p><%= t('dri.views.objects.legends.audio_caption') %>: 
-            <%= link_to "listen here", url_for(:controller => 'files', :action => 'show', :id => @document_fedora.id), :class => "player" %>
+          <p><%= t('dri.views.objects.legends.file_caption') %> 
+            <%= link_to t('dri.views.objects.links.listen'), url_for(:controller => 'files', :action => 'show', :id => @document_fedora.id), :class => "player" %>
             <section id="audio">
             </section>
           </p>
@@ -90,7 +90,7 @@
             <input class="btn-primary" name="upload_file" type="submit" value="<%= t('dri.views.objects.buttons.replace_master') %>" id="replace_file"/>
           </form>
         <% else %>
-          <p class="legend-caption"><%= t('dri.views.objects.legends.upload_audio_caption') %></p>
+          <p class="legend-caption"><%= t('dri.views.objects.legends.upload_file_caption') %></p>
           <form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
             <input type="file" name="Filedata" accept="audio/*">
