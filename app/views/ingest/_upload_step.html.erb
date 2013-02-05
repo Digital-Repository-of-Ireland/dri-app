@@ -1,11 +1,12 @@
-<h2>Upload metadata file</h2>
+<h2><%= t('dri.views.ingest.steps.upload') %></h2>
 
 <fieldset>
-        <legend>Upload Metadata:</legend>
-        <p class="legend-caption">Ingest metadata XML file.</p>
+        <legend><%= t('dri.views.ingest.forms.upload_legend') %></legend>
+        <p class="legend-caption"><%= t('dri.views.ingest.forms.upload_caption') %></p>
+
         <form id="metadata_uploader" action="<%= url_for(:action=>"create", :controller=>"metadata") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />        <input type="file" name="metadata_file" accept="application/xml" >
-        <%= submit_tag "Continue", :class => "btn-primary btn-large", :name => "ingest_metadata", :id => "ingest_metadata" %>
+        <%= submit_tag t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :name => "ingest_metadata", :id => "ingest_metadata" %>
 
         </form>
 </fieldset>

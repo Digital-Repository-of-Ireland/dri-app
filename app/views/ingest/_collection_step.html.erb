@@ -1,9 +1,9 @@
-<h2>Select Collection</h2>
+<h2><%= t('dri.views.ingest.steps.collection') %></h2>
 
 <%= form_tag :action=>"create" do %>
-  <%= select_tag "ingestcollection",  options_for_select(get_collections{ |c| [c.title, c.pid] }), :prompt => "Select collection" %>
-  <%= submit_tag "Continue", :class => "btn-primary btn-large", :id => "continue" %>
+  <%= select_tag "ingestcollection",  options_for_select(get_collections{ |c| [c.title, c.pid] }), :prompt => t('dri.views.ingest.forms.collection_prompt') %>
+  <%= submit_tag t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>
 
 <% end %>
 
-<%= button_to "New collection", new_collection_path, :id => "new_collection", :class => "btn", :method => :get %>
+<%= button_to t('dri.views.ingest.buttons.new_collection'), new_collection_path, :id => "new_collection", :class => "btn", :method => :get %>

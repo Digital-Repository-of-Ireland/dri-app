@@ -1,5 +1,5 @@
-<h1>Add a new digital object</h1>
+<h1><%= t('dri.views.ingest.forms.title') %></h1>
 
 <%= render "#{@current_step}_step" %>
 
-<%= link_to "Reset", {:action => "new"}, :class => "btn" %>
+<%= link_to t('dri.views.ingest.buttons.reset'), {:action => "new"}, :class => "btn" %>
