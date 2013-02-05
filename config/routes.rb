@@ -7,7 +7,8 @@ NuigRnag::Application.routes.draw do
 
   devise_for :users 
 
-  resources :objects, :collections
+  resources :objects, :only => ['edit', 'update', 'create']
+  resources :collections
   resources :ingest, :only => ['new', 'create']
 
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata

@@ -21,16 +21,6 @@ class ObjectsController < ApplicationController
     end
   end
 
-  # Retrieves an existing model.
-  #
-  def show
-    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
-    respond_to do |format|
-      format.html  
-      format.json  { render :json => @document_fedora }
-    end
-  end
-
   # Updates the attributes of an existing model.
   #
   def update

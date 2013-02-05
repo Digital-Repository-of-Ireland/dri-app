@@ -19,6 +19,8 @@ en:
       objects:
         edit:
           title: "Edit Audio"
+          sidebar:
+            nav_header: "Edit Tools"
         forms:
           title: "Title"
           description: "Description"
@@ -62,6 +64,7 @@ en:
         links:
           listen: "listen"
           download: "download"
+          view_record: "View Record"
       devise:
         locale: "Language"
       ingest:
