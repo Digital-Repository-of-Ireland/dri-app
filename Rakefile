@@ -29,3 +29,26 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('app/**/*.rb')
   rdoc.rdoc_files.include('app/*.rb')
 end
+
+namespace :jetty do
+
+  desc "return development jetty to its pristine state, as pulled from git"
+  task :reset => ['jetty:stop'] do
+    system("cd jetty && git reset --hard HEAD && git clean -dfx && cd ..")
+    sleep 2
+  end
+
+end
+
+desc "Run Continuous Integration"
+task :ci => ['jetty:reset', 'jetty:config'] do
+  Rake::Task['db:migrate'].invoke
+  jetty_params = Jettywrapper.load_config
+  error = nil
+  error = Jettywrapper.wrap(jetty_params) do
+    Rake::Task['cucumber'].invoke
+  end
+  raise "test failures: #{error}" if error
+
+  #Rake::Task["doc"].invoke
+end

@@ -12,8 +12,8 @@
 <div id="sidebar" class="span3">
 <div class="well" id="sidebar-nav">
   <ul class="nav nav-list">
-  <li class="nav-header">Edit Tools</li>
-    <%= link_to "View record", url_for(:controller => "catalog", :action => "show", :id => @document_fedora.id), :id => "view_record" %>
+  <li class="nav-header"><%= t('dri.views.objects.edit.sidebar.nav_header') %></li>
+    <%= link_to t('dri.views.objects.edit.links.view_record'), url_for(:controller => "catalog", :action => "show", :id => @document_fedora.id), :id => "view_record" %>
   </ul>
 </div><!--/well -->
 </div>
