@@ -1,15 +1,15 @@
 <%= get_datastreams document %>
-<h3>Files</h3>
+<h3><%= t('dri.views.catalog.headers.files') %></h3>
 <dl class="dl-horizontal  dl-invert">
-  <dt>Metadata: </dt>
-  <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => document.id %>">view</a></dd>
-  <dt>Audio File: </dt>
+  <dt><%= t('dri.views.catalog.forms.metadata') %>: </dt>
+  <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => document.id %>"><%= t('dri.views.catalog.links.view_metadata') %></a></dd>
+  <dt><%= t('dri.views.catalog.forms.audio_file') %>: </dt>
 <% if @datastreams.has_key?('masterContent') %>
-   <dd><%= link_to "listen", url_for(:controller => 'files', :action => 'show', :id => @document.id), :class => "player" %>
+   <dd><%= link_to t('dri.views.catalog.links.listen'), url_for(:controller => 'files', :action => 'show', :id => @document.id), :class => "player" %>
      <section id="audio"> 
      </section></dd>
   </dd>
 <% else %>
-   <dd>No file has been uploaded.</dd>
+   <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
 <% end %>
 </dl>
