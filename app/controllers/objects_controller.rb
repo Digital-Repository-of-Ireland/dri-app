@@ -32,7 +32,7 @@ class ObjectsController < ApplicationController
     @document_fedora.update_attributes(params[:dri_model])
 
     respond_to do |format|
-      flash["notice"] = t('dri.flash.notice.updated', :item => parms[:id])
+      flash["notice"] = t('dri.flash.notice.updated', :item => params[:id])
       format.html  { render :action => "edit" }
       format.json  { render :json => @document_fedora }
     end
