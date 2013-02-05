@@ -14,5 +14,40 @@ en:
       ingest: "Ingest"
       about: "About"
       contact: "Contact"
+    views:
+      objects:
+        edit:
+          title: "Edit Audio"
+        forms:
+          title: "Title"
+          description: "Description"
+          broadcast_date: "Broadcast Date"
+          rights: "Rights"
+          collection: "Collection"
+          presenters: "Presenters"
+          producers: "Producers"
+          guests: "Guests"
+          subjects: "Subjects"
+          places: "Places"
+          language: "Language"
+          sources: "Sources"
+          add_presenter: "Add Presenter"
+          add_producer: "Add Producer"
+          add_guest: "Add Guest"
+          add_subject: "Add Subject"
+          add_source: "Add Source"
+          add_place: "Add Place"
+        buttons:
+          save: "Save Changes"
+          replace_metadata: "Upload Metadata"
+          replace_master: "Replace Master File"
+          upload_master: "Upload Master File"
+        legends:
+          metadata: "Metadata"
+          replace_metadata: "Replace Metadata"
+          replace_caption: "Replace metadata using XML file."
+          upload_audio: "Upload Audio File"
+          audio_caption: "A master audio file has already been uploaded."
+          upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
     devise:
       locale: "Language"
