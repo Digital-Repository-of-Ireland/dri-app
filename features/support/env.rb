@@ -1,3 +1,6 @@
+#require 'simplecov'
+#SimpleCov.start
+
 require 'rubygems'
 require 'spork'
 require 'i18n'

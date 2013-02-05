@@ -305,6 +305,8 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
     simplecov-html (0.7.1)
+    simplecov-rcov (0.2.3)
+      simplecov (>= 0.4.1)
     slop (3.4.3)
     solrizer (2.1.0)
       activesupport
@@ -380,6 +382,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   shoulda
   simplecov
+  simplecov-rcov
   sqlite3
   syntax
   uglifier (>= 1.0.3)

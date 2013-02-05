@@ -42,9 +42,10 @@ end
 
 desc "Run Continuous Integration"
 task :ci => ['jetty:reset', 'jetty:config'] do
+  ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
   jetty_params = Jettywrapper.load_config
-  error = nil
+  jetty_params[:startup_wait]= 45
   error = Jettywrapper.wrap(jetty_params) do
     Rake::Task['cucumber'].invoke
   end
