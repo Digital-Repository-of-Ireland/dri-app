@@ -6,7 +6,13 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.11'
 gem 'blacklight', '4.0.0'
 gem 'hydra-head', '5.2.0'
-gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git'
+
+if ENV['DRI_BUNDLE_ENV'] == "tchpc"
+  gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models'
+else
+  gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git'
+end
+
 gem 'rails_config'
 gem 'sqlite3'
 
