@@ -10,3 +10,13 @@ en:
         remember_me: "Remember me"
         locale: "Language"
         current_password: "Current password"
+    errors:
+      models:
+       user:
+         attributes:
+           email:
+             blank: "can't be blank"
+           password:
+             blank: "can't be blank"
+             confirmation: "doesn't match confirmation"
+             too_short: "is too short (minimum is %{count} characters)"
