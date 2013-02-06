@@ -4,6 +4,7 @@
 ga:
   dri:
     application:
+      locale: "Teanga"
       home:
         introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
       lang:

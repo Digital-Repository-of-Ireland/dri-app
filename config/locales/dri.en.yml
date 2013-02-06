@@ -4,9 +4,9 @@
 en:
   dri:
     application:
+      locale: "Language"
       home:
         introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
-        locale: "Language"
       lang:
         en: "English"
         ga: "Irish"
