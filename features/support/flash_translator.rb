@@ -6,44 +6,62 @@ module FlashTranslator
     case message
 
     when /ingestion/
-      "Digital object has been successfully ingested"
+      I18n.t('dri.flash.notice.digital_object_ingested', :locale => @user.locale)
 
     when /invalid metadata/
-      "Invalid XML:"
+      strip_vars( I18n.t('dri.flash.alert.invalid_xml', :locale => @user.locale) )
 
     when /invalid schema/
-      "Validation Errors:"
+      strip_vars( I18n.t('dri.flash.error.validation_errors', :locale => @user.locale) )
 
     when /invalid object/
-      "Invalid Object:" 
+      strip_vars( I18n.t('dri.flash.alert.invalid_object', :locale => @user.locale) )
 
     when /updating metadata/
-      "Metadata has been successfully updated"
+      I18n.t('dri.flash.notice.metadata_updated', :locale => @user.locale)
 
     when /file upload/
-      "File has been successfully uploaded"
+      I18n.t('dri.flash.notice.file_uploaded', :locale => @user.locale)
 
     when /invalid file type/
-      "The file does not appear to be a valid type"
+      I18n.t('dri.flash.alert.invalid_file_type', :locale => @user.locale)
 
     when /invalid email or password/
+      # Model error, not yet translated
       "Invalid email or password"
 
     when /new account/
-      "Welcome! You have signed up successfully."
+      # User is not yet logged in and has no @user, will default to locale 'en'
+      I18n.t('devise.registrations.signed_up', :locale => "en")
 
     when /duplicate email/
+      # Model error, not yet translated
       "Email has already been taken"
 
     when /password mismatch/
+      # Model error, not yet translated
       "Password doesn't match confirmation"
 
     when /too short password/
+      # Model error, not yet translated
       "Password is too short"
 
     else "Unknown"
  
     end
+  end
+
+  # Method to remove %{foo} type variables from the flash messages.
+  # It will return the longest continuous string in the message that does not
+  # contain any variables.
+  # It need only be called when we know that the message contains variables.
+  #
+  def strip_vars(message)
+    bits = message.split(/%\{\w*\}/).sort_by(&:length).reverse
+    bits.each do |bit|
+      return bit unless bit.blank?
+    end
+    return message
   end
 
 end
