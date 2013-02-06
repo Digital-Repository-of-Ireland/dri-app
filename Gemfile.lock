@@ -135,6 +135,7 @@ GEM
       yard (>= 0.7.0)
     hike (1.2.1)
     hooks (0.2.2)
+    http_accept_language (1.0.2)
     hydra-access-controls (5.2.0)
       active-fedora
       activesupport
@@ -366,6 +367,7 @@ DEPENDENCIES
   guard-cucumber
   guard-spork
   guard-yard
+  http_accept_language
   hydra-head (= 5.2.0)
   jettywrapper
   jquery-rails

@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   before_filter :set_locale
- 
+
+  include HttpAcceptLanguage
+
   # Adds a few additional behaviors into the application controller 
   include Blacklight::Controller  
 
@@ -20,7 +22,10 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     if current_user
-      I18n.locale = current_user.locale || I18n.default_locale
+      I18n.locale = current_user.locale
+    else
+      I18n.locale = preferred_language_from(Settings.interface.languages)
     end
+    I18n.locale = I18n.default_locale if I18n.locale.blank?
   end
 end
