@@ -1,57 +1,6 @@
 <%= form_for @document_fedora, :as => :dri_model, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
 
-  <fieldset id="metadata">
-    <legend><%= t('dri.views.objects.legends.metadata') %></legend>
-    <%= f.label "#{t('dri.views.objects.forms.title')}:" %>
-    <%= f.text_field :title, :class => "edit span6", :required => "true" %>
-    <%= f.label "#{t('dri.views.objects.forms.description')}:" %>
-    <%= f.text_area :description, :class => "edit span6" %>
-    <%= f.label "#{t('dri.views.objects.forms.creation_date')}:" %>
-    <%= f.text_field :creation_date, :class => "edit span6", :required => "true" %>
-    <%= f.label "#{t('dri.views.objects.forms.rights')}:" %>
-    <%= f.text_field :rights, :class => "edit span6", :required => "true" %> 
-    <%= f.label "#{t('dri.views.objects.forms.collection')}:" %>
-    <%= f.select :collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }, get_current_collection(@document_fedora)), :class => "edit span6" %>
-  </fieldset>
-  <fieldset id="author">
-    <%= f.label "#{t('dri.views.objects.forms.authors')}:" %>
-    <% @document_fedora.author.each do |i| %>
-      <%= f.text_field "author][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Author"><%= t('dri.views.objects.forms.add_author') %></a></p>
-  </fieldset>
-  <fieldset id="editor">
-    <%= f.label "#{t('dri.views.objects.forms.editors')}:" %>
-    <% @document_fedora.editor.each do |i| %>
-      <%= f.text_field "editor][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Editor"><%= t('dri.views.objects.forms.add_editor') %></a></p>
-  </fieldset>
-  <fieldset id="subject">
-    <%= f.label "#{t('dri.views.objects.forms.subjects')}:" %>
-    <% @document_fedora.subject.each do |i| %>
-      <%= f.text_field "subject][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Subject"><%= t('dri.views.objects.forms.add_subject') %></a></p>
-  </fieldset>
-  <fieldset id="geographical_coverage">
-    <%= f.label "#{t('dri.views.objects.forms.places')}:" %>
-    <% @document_fedora.geographical_coverage.each do |i| %>
-      <%= f.text_field "geographical_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Place"><%= t('dri.views.objects.forms.add_place') %></a></p>
-  </fieldset>
-  <fieldset id="language">
-    <%= f.label "#{t('dri.views.objects.forms.language')}:" %>
-    <%= f.select :language, [['English', 'en'],['Irish', 'ga']],:class => "edit span6" %>
-  </fieldset>
-  <fieldset id="source">
-    <%= f.label "#{t('dri.views.objects.forms.sources')}:" %>
-    <% @document_fedora.source.each do |i| %>
-      <%= f.text_field "source][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
-    <% end %>
-    <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Source"><%= t('dri.views.objects.forms.add_source') %></a></p>
-  </fieldset>
+  <%= render :partial => "shared/form_pdf", :locals => { :f => f, :action => "create" } %>
 
   <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "save_edit" %>
 <% end %>
