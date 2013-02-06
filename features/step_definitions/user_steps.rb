@@ -5,7 +5,7 @@ Given /^I am logged in as "([^\"]*)"$/ do |login|
   fill_in("user_email", :with => email) 
   fill_in("user_password", :with => "password") 
   click_button("Sign in")
-  step 'I should see "Log Out"'
+  step 'I should be logged in'
 end
 
 Given /^I am logged in as "([^\"]*)" with password "([^\"]*)"$/ do |login, password|
@@ -15,7 +15,17 @@ Given /^I am logged in as "([^\"]*)" with password "([^\"]*)"$/ do |login, passw
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
   click_button("Sign in")
-  step 'I should see "Log Out"'
+  step 'I should be logged in'
+end
+
+Given /^I am logged in as "([^\"]*)" with language "([^\"]*)"$/ do |login, lang|
+  email = "#{login}@#{login}.com"
+  user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => lang) 
+  visit new_user_session_path
+  fill_in("user_email", :with => email)
+  fill_in("user_password", :with => "password")
+  click_button("Sign in")
+  step 'I should be logged in'
 end
 
 Then /^I should see an edit link for "([^\"]*)"$/ do |login|

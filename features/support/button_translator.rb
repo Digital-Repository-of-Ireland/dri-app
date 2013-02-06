@@ -22,8 +22,11 @@ module ButtonTranslator
     when /replace a file/
       "replace_file"
 
-     when /continue/
-       "continue"
+    when /continue/
+      "continue"
+
+    when /update language/
+      "commit"
 
     else "Unknown"
  

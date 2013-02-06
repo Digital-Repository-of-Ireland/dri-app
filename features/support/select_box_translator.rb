@@ -10,6 +10,9 @@ module ButtonTranslator
     when /object type/
       "ingesttype"
 
+    when /language/
+      "user_locale"
+
     else "Unknown"
  
     end
