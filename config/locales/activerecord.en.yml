@@ -1,0 +1,12 @@
+en:
+  activerecord:
+    models:
+      user: "User"
+    attributes:
+      user:
+        email: "email"
+        password: "password"
+        password_confirmation: "password confirmation"
+        remember_me: "remember me"
+        locale: "language"
+        current_password: "current password"

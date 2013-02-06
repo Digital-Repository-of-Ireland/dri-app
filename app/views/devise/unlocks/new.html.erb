@@ -3,7 +3,7 @@
 <%= form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
   <%= devise_error_messages! %>
 
-  <div><%= f.label :email %><br />
+  <div><%= f.label User.human_attribute_name(:email) %><br />
   <%= f.email_field :email %></div>
 
   <div><%= f.submit t('.resend_unlock_instructions', :default => "Resend unlock instructions") %></div>

@@ -1,0 +1,12 @@
+ga:
+  activerecord:
+    models:
+      user: "Úsáideoir"
+    attributes:
+      user:
+        email: "ríomhphost"
+        password: "focal faire"
+        password_confirmation: "deimhniú focal faire"
+        remember_me: "cuimhnigh"
+        locale: "teanga"
+        current_password: "focail faire reatha"
