@@ -53,3 +53,12 @@ task :ci => ['jetty:reset', 'jetty:config'] do
 
   #Rake::Task["doc"].invoke
 end
+
+namespace :rvm do
+
+  desc 'Trust rvmrc file'
+  task :trust_rvmrc do
+    system(". ~/.rvm/scripts/rvm && rvm rvmrc trust .rvmrc && rvm rvmrc load")
+  end
+
+end

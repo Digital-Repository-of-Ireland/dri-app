@@ -4,3 +4,5 @@ ingest:
     collection: [ingestcollection]
     type: [ingesttype]
     ingestmethod: [ingestmethod]
+interface:
+  languages: [en, ga]

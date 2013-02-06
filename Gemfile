@@ -8,15 +8,20 @@ gem 'blacklight', '4.0.0'
 gem 'hydra-head', '5.2.0'
 gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git'
 gem 'rails_config'
-
 gem 'sqlite3'
 
+# Devise authentication, and devise-i18n-views to support localisation of the
+# devise forms
 gem 'devise'
 gem 'devise-i18n-views'
 
 gem 'noid', '0.5.5'
 
+# File processing gems
 gem 'mimemagic'
+
+# Language and translation related gems
+gem 'http_accept_language'
 
 # Gems used only for assets and not required
 # in production environments by default.

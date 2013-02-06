@@ -3,6 +3,11 @@ class User < ActiveRecord::Base
  include Hydra::User
 # Connects this user object to Blacklights Bookmarks. 
  include Blacklight::User
+
+  include HttpAcceptLanguage
+
+  before_save :set_locale
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -18,5 +23,11 @@ class User < ActiveRecord::Base
   # the account. 
   def to_s
     email
+  end
+
+  # Method to set the locale to the browser language or to en if we
+  # can't get the browser language
+  def set_locale
+    self.locale = I18n.locale if self.locale.blank?
   end
 end
