@@ -1,10 +1,6 @@
 # Controller for the Collection model
 #
-class CollectionsController < ApplicationController
-  include Blacklight::Catalog
-  include Hydra::Controller::ControllerBehavior
-  include DRI::Model
-
+class CollectionsController < AssetsController
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
   # Creates a new model.
@@ -21,7 +17,7 @@ class CollectionsController < ApplicationController
   # Edits an existing model.
   #
   def edit
-    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
+    @document_fedora = retrieve_object(params[:id])
 
     respond_to do |format|
       format.html
@@ -32,7 +28,7 @@ class CollectionsController < ApplicationController
   # Retrieves an existing model.
   #
   def show
-    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
+    @document_fedora = retrieve_object(params[:id])
 
     respond_to do |format|
       format.html  
@@ -43,7 +39,7 @@ class CollectionsController < ApplicationController
   # Updates the attributes of an existing model.
   #
   def update
-    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
+    @document_fedora = retrieve_object(params[:id])
     
     @document_fedora.update_attributes(params[:dri_model_collection])
     respond_to do |format|

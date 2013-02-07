@@ -4,11 +4,6 @@ require 'blacklight/catalog'
 # Blacklight catalog controller
 #
 class CatalogController < ApplicationController  
-
-  include Blacklight::Catalog
-  # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
-  include Hydra::Controller::ControllerBehavior
-
   # These before_filters apply the hydra access controls
   before_filter :enforce_show_permissions, :only=>:show
   # This applies appropriate access controls to all solr queries
