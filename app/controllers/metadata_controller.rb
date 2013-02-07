@@ -44,6 +44,8 @@ class MetadataController < AssetsController
              flash[:notice] = t('dri.flash.notice.metadata_updated')
            else
              flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
+             raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
+             return
            end
         end
       end
@@ -85,14 +87,14 @@ class MetadataController < AssetsController
             flash[:notice] = t('dri.flash.notice.digital_object_ingested')
           else
             flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
-            raise Exceptions::BadRequest, t('dri.views.errors.invalid_metadata')
+            raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
             return
           end
 
           redirect_to :controller => "catalog", :action => "show", :id => @object.id
           return
       else
-        raise Exceptions::BadRequest, t('dri.views.errors.invalid_metadata')
+        raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
         return
       end
     else

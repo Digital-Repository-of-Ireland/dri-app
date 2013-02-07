@@ -10,7 +10,7 @@
         <p class="legend-caption"><%= t('dri.views.objects.legends.replace_caption') %></p>
         <form id="metadata_uploader" action="<%= url_for(:action=>"update", :controller=>"metadata", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-        <input type="file" name="metadata_file" accept="application/xml" >
+        <input type="file" name="metadata_file" accept="application/xml" required >
         <input name="_method" type="hidden" value="put" />
         <input class="btn-primary" name="upload_metadata" type="submit" value="<%= t('dri.views.objects.buttons.replace_metadata') %>" id="replace_metadata"/>
         </form>
@@ -24,7 +24,7 @@
           </p>
           <form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-            <input type="file" name="Filedata" accept="audio/*">
+            <input type="file" name="Filedata" accept="application/pdf" required >
             <input type="hidden" name="datastream" value="masterContent" />
             <input class="btn-primary" name="upload_file" type="submit" value="<%= t('dri.views.objects.buttons.replace_master') %>" id="replace_file"/>
           </form>
@@ -32,7 +32,7 @@
           <p class="legend-caption"><%= t('dri.views.objects.legends.upload_file_caption') %></p>
           <form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-            <input type="file" name="Filedata" accept="application/pdf">
+            <input type="file" name="Filedata" accept="application/pdf" required >
             <input type="hidden" name="datastream" value="masterContent" />
             <input class="btn-primary" name="upload_file" type="submit" value="<%= t('dri.views.objects.buttons.upload_master') %>" id="upload_file"/>
           </form>

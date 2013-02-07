@@ -50,12 +50,14 @@ class FilesController < AssetsController
         @object = retrieve_object params[:id]
 
         if @object == nil
-          flash[:notice] = t('dri.flash.notice.speficy_object_id')
+          flash[:notice] = t('dri.flash.notice.specify_object_id')
         else
           count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => @object.id, :d => datastream } ]).count
 
           unless Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
             flash[:alert] = t('dri.flash.alert.invalid_file_type')
+            raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_asset')
+            return
           end
 
           dir = local_storage_dir.join(@object.id).join(datastream+count.to_s)
