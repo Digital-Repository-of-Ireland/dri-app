@@ -222,15 +222,15 @@
       <str name="q">{!raw f=id v=$id}</str> <!-- use id=666 instead of q=id:666 -->
       <str name="fl">
         id,access_t,
-        discover_access_group_t,discover_access_person_t,
-        read_access_group_t,read_access_person_t,
-        edit_access_group_t,edit_access_person_t,
+        discover_access_group_t,discover_access_person_t,discover_access_policy_t,
+        read_access_group_t,read_access_person_t,read_access_policy_t,
+        edit_access_group_t,edit_access_person_t,edit_access_policy_t,
         depositor_t,
         embargo_release_date_dt,
         inheritable_access_t,
-        inheritable_discover_access_group_t,inheritable_discover_access_person_t,
-        inheritable_read_access_group_t,inheritable_read_access_person_t,
-        inheritable_edit_access_group_t,inheritable_edit_access_person_t,
+        inheritable_discover_access_group_t,inheritable_discover_access_person_t,inheritable_discover_access_policy_t,
+        inheritable_read_access_group_t,inheritable_read_access_person_t,inheritable_read_access_policy_t,
+        inheritable_edit_access_group_t,inheritable_edit_access_person_t,inheritable_edit_access_policy_t,
         inheritable_embargo_release_date_dt
       </str>
     </lst>
