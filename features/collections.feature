@@ -27,17 +27,17 @@ Background:
   Given I am logged in as "user1"
 
 Scenario: Navigating to the collections page
-  When I go to the home page
-  Then I should see a link to my collections
-  When I follow the link to my collections
-  Then I should see my collections
+#  When I go to the home page
+#  Then I should see a link to my collections
+#  When I follow the link to my collections
+#  Then I should see my collections
 
 Scenario: Constructing a valid collection
-  Given I am on the my collections page
-  When I follow the link to create a collection
-  And I enter valid metadata for a collection
-  And I press the button to create a collection
-  Then I should see a success message for creating a collection
+#  Given I am on the my collections page
+#  When I follow the link to create a collection
+#  And I enter valid metadata for a collection
+#  And I press the button to create a collection
+#  Then I should see a success message for creating a collection
 
 Scenario: Commiting Digital Object to a collection
   Given a Digital Object
