@@ -27,24 +27,21 @@ module FlashTranslator
       I18n.t('dri.flash.alert.invalid_file_type', :locale => @user.locale)
 
     when /invalid email or password/
-      # Model error, not yet translated
-      "Invalid email or password"
+      # User is not yet logged in and has no @user, will default to locale 'en'
+      I18n.t('devise.failure.invalid', :locale => "en")
 
     when /new account/
       # User is not yet logged in and has no @user, will default to locale 'en'
       I18n.t('devise.registrations.signed_up', :locale => "en")
 
     when /duplicate email/
-      # Model error, not yet translated
-      "Email has already been taken"
+      strip_vars( I18n.t('activerecord.errors.models.user.attributes.email.taken', :locale => "en") )
 
     when /password mismatch/
-      # Model error, not yet translated
-      "Password doesn't match confirmation"
+      strip_vars( I18n.t('activerecord.errors.models.user.attributes.password.confirmation', :locale => "en") )
 
     when /too short password/
-      # Model error, not yet translated
-      "Password is too short"
+      strip_vars( I18n.t('activerecord.errors.models.user.attributes.password.too_short', :locale => "en") )
 
     else "Unknown"
  
