@@ -4,7 +4,6 @@
 require 'stepped_forms'
 
 class ObjectsController < AssetsController
-  include Blacklight::Catalog
   include SteppedForms
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
