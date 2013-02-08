@@ -18,7 +18,7 @@ en:
     views:
       objects:
         edit:
-          title: "Edit Audio"
+          title: "Edit Object"
           sidebar:
             nav_header: "Edit Tools"
         forms:
@@ -46,6 +46,7 @@ en:
           add_author: "Add Author"
           add_editor: "Add Editor"
           delete: "delete"
+          publisher: "publisher"
         buttons:
           save: "Save Changes"
           replace_metadata: "Upload Metadata"
@@ -65,6 +66,13 @@ en:
           listen: "listen"
           download: "download"
           view_record: "View Record"
+      collection:
+          new:
+            title: "New Collection"
+          buttons:
+            create_collection: "Create Collection"
+          legends:
+            members: "Members"
       catalog:
         links:
           listen: "listen"
