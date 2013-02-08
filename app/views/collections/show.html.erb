@@ -10,7 +10,7 @@
 <h2><%= t('dri.views.collection.legends.members') %></h2>
 
 <ul>
-<% @document_fedora.items.each do |i| %>
+<% @document_fedora.governed_items.each do |i| %>
   <li><%= link_to i.pid, catalog_path(i) %></li>
 <% end %>
 </ul>

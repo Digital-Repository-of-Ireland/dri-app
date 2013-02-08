@@ -78,7 +78,7 @@ class MetadataController < AssetsController
           end
 
           if !session[:ingest][:collection].blank?
-            @object.collection = Collection.find(session[:ingest][:collection])
+            @object.governing_collection = Collection.find(session[:ingest][:collection])
           end
 
           # @object.datastreams["descMetadata"].save

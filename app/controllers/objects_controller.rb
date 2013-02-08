@@ -25,9 +25,9 @@ class ObjectsController < ApplicationController
   #
   def update
     @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
-    if params[:dri_model][:collection_id]
-      collection = Collection.find(params[:dri_model][:collection_id])
-      @document_fedora.collection = collection
+    if params[:dri_model][:governing_collection_id]
+      collection = Collection.find(params[:dri_model][:governing_collection_id])
+      @document_fedora.governing_collection = collection
     end
     @document_fedora.update_attributes(params[:dri_model])
 
@@ -54,7 +54,7 @@ class ObjectsController < ApplicationController
 
     if session[:ingest][:collection]
       collection = Collection.find(session[:ingest][:collection])
-      @document_fedora.collection = collection
+      @document_fedora.governing_collection = collection
     end
     if @document_fedora.valid? && @document_fedora.save
       respond_to do |format|
