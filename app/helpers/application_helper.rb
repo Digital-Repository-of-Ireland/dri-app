@@ -12,8 +12,8 @@ module ApplicationHelper
   end
 
   def get_current_collection( object )
-    if !object.collection.nil?
-      object.collection.pid
+    if !object.governing_collection.nil?
+      object.governing_collection.pid
     end
   end
 
