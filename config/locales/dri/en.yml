@@ -4,131 +4,131 @@
 en:
   dri:
     application:
-      locale: "Language"
+      locale: Language
       home:
         introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
       lang:
-        en: "English"
-        ga: "Irish"
+        en: English
+        ga: Irish
     headerlinks:
-      home: "Home"
-      ingest: "Ingest"
-      about: "About"
-      contact: "Contact"
+      home: Home
+      ingest: Ingest
+      about: About
+      contact: Contact
     views:
       objects:
         edit:
-          title: "Edit Object"
+          title: Edit Object
           sidebar:
-            nav_header: "Edit Tools"
+            nav_header: Edit Tools
         forms:
-          title: "Title"
-          description: "Description"
-          broadcast_date: "Broadcast Date"
-          creation_date: "Creation Date"
-          rights: "Rights"
-          collection: "Collection"
-          presenters: "Presenters"
-          producers: "Producers"
-          guests: "Guests"
-          authors: "Authors"
-          editors: "Editors"
-          subjects: "Subjects"
-          places: "Places"
-          language: "Language"
-          sources: "Sources"
-          add_presenter: "Add Presenter"
-          add_producer: "Add Producer"
-          add_guest: "Add Guest"
-          add_subject: "Add Subject"
-          add_source: "Add Source"
-          add_place: "Add Place"
-          add_author: "Add Author"
-          add_editor: "Add Editor"
-          delete: "delete"
-          publisher: "publisher"
+          title: Title
+          description: Description
+          broadcast_date: Broadcast Date
+          creation_date: Creation Date
+          rights: Rights
+          collection: Collection
+          presenters: Presenters
+          producers: Producers
+          guests: Guests
+          authors: Authors
+          editors: Editors
+          subjects: Subjects
+          places: Places
+          language: Language
+          sources: Sources
+          add_presenter: Add Presenter
+          add_producer: Add Producer
+          add_guest: Add Guest
+          add_subject: Add Subject
+          add_source: Add Source
+          add_place: Add Place
+          add_author: Add Author
+          add_editor: Add Editor
+          delete: delete
+          publisher: publisher
         buttons:
-          save: "Save Changes"
-          replace_metadata: "Upload Metadata"
-          replace_master: "Replace Master File"
-          upload_master: "Upload Master File"
+          save: Save Changes
+          replace_metadata: Upload Metadata
+          replace_master: Replace Master File
+          upload_master: Upload Master File
         legends:
-          metadata: "Metadata"
-          replace_metadata: "Replace Metadata"
-          replace_caption: "Replace metadata using XML file."
-          upload_audio: "Upload Audio File"
-          upload_pdf: "Upload PDF File"
-          file_caption: "A master file has already been uploaded."
-          upload_file_caption: "No files have been uploaded. Please upload a master file."
-          audio_caption: "A master audio file has already been uploaded."
-          upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
+          metadata: Metadata
+          replace_metadata: Replace Metadata
+          replace_caption: Replace metadata using XML file.
+          upload_audio: Upload Audio File
+          upload_pdf: Upload PDF File
+          file_caption: A master file has already been uploaded.
+          upload_file_caption: No files have been uploaded. Please upload a master file.
+          audio_caption: A master audio file has already been uploaded.
+          upload_audio_caption: No audio files have been uploaded. Please upload a master audio file.
         links:
-          listen: "listen"
-          download: "download"
-          view_record: "View Record"
+          listen: listen
+          download: download
+          view_record: View Record
       collection:
           new:
-            title: "New Collection"
+            title: New Collection
           buttons:
-            create_collection: "Create Collection"
+            create_collection: Create Collection
           legends:
-            members: "Members"
+            members: Members
       catalog:
         links:
-          listen: "listen"
-          view_metadata: "view"
-          download: "download"
-          edit_this_record: "Edit this record"
+          listen: listen
+          view_metadata: view
+          download: download
+          edit_this_record: Edit this record
         headers:
-          files: "Files"
+          files: Files
         forms:
-          metadata: "Metadata"
-          audio_file: "Audio File"
-          pdf_file: "PDF"
+          metadata: Metadata
+          audio_file: Audio File
+          pdf_file: PDF
         legends:
-          no_files: "No file has been uploaded."
+          no_files: No file has been uploaded.
         sidebar:
-          more_like_this: "More Like This"
-          nav_header: "Edit Tools"
+          more_like_this: More Like This
+          nav_header: Edit Tools
       devise:
-        locale: "Language"
+        locale: Language
       ingest:
         forms:
-          title: "Add a new digital object"
-          collection_prompt: "Select collection"
-          object_type_prompt: "Select object type"
-          ingest_method_prompt: "Select ingest method"
+          title: Add a new digital object
+          collection_prompt: Select collection
+          object_type_prompt: Select object type
+          ingest_method_prompt: Select ingest method
         legends:
           upload_legend: "Upload Metadata:"
-          upload_caption: "Ingest metadata XML file."
+          upload_caption: Ingest metadata XML file.
         buttons:
-          new_collection: "New collection"
-          reset: "Reset"
-          continue: "Continue"
-          delete: "Delete"
+          new_collection: New collection
+          reset: Reset
+          continue: Continue
+          delete: Delete
         steps:
-          collection: "Select Collection"
-          object_type: "Select Object Type"
-          ingest_method: "Select Ingest Method"
-          input: "Input"
-          upload: "Upload Metadata file"
+          collection: Select Collection
+          object_type: Select Object Type
+          ingest_method: Select Ingest Method
+          input: Input
+          upload: Upload Metadata file
       exceptions:
-        invalid_metadata: "The metadata file you have uploaded is invalid. Please correct the errors and try again."
-        invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
-        invalid_asset: "Unable to create asset. Please correct the errors and try again."
+        invalid_metadata: The metadata file you have uploaded is invalid. Please correct the errors and try again.
+        invalid_metadata_input: The metadata entered is invalid. Please correct the errors and try again.
+        invalid_asset: Unable to create asset. Please correct the errors and try again.
     flash:
       notice:
-        digital_object_ingested: "Digital object has been successfully ingested."
-        collection_created: "Collection object has been successfully created."
-        specify_object_id: "Please specify a valid object id."
-        specify_datastream: "You must specify a valid file datastream."
-        specify_file: "You must specify a file to upload."
-        file_uploaded: "File has been successfully uploaded."
-        metadata_updated: "Metadata has been successfully updated."
-        specify_valid_file: "You must specify a valid file to upload."
-        no_xml_schema: "The XML file contains no schema to validate against."
-        schema_validation_error: "The XML file could not validate against the Dublin Core schema"
-        specify_xml_file: "You must specify a XML file."
+        digital_object_ingested: Digital object has been successfully ingested.
+        collection_created: Collection object has been successfully created.
+        specify_object_id: Please specify a valid object id.
+        specify_datastream: You must specify a valid file datastream.
+        specify_file: You must specify a file to upload.
+        file_uploaded: File has been successfully uploaded.
+        metadata_updated: Metadata has been successfully updated.
+        specify_valid_file: You must specify a valid file to upload.
+        no_xml_schema: The XML file contains no schema to validate against.
+        schema_validation_error: The XML file could not validate against the Dublin Core schema
+        specify_xml_file: You must specify a XML file.
         updated: "Updated %{item}"
       alert:
         invalid_file_type: "Warning: The file does not appear to be a valid type"
@@ -136,4 +136,3 @@ en:
         invalid_xml: "Invalid XML: %{error}"
       error:
         validation_errors: "Validation Errors: %{error}"
-
