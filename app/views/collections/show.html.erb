@@ -1,16 +1,16 @@
 <h1><%= @document_fedora.title %></h1>
 
 <dl>
-  <dt>PID:</dt>
-  <dd><%= @document_fedora.pid %></dd>
-  <dt>Description</dt>
+  <dt><%= t('dri.views.objects.forms.description') %></dt>
   <dd><%= @document_fedora.description %></dd>
+  <dt><%= t('dri.views.objects.forms.publisher') %></dt>
+  <dd><%= @document_fedora.publisher %></dd>
 </dl>
 
-<h2>Members</h2>
+<h2><%= t('dri.views.collection.legends.members') %></h2>
 
 <ul>
-<% @document_fedora.objects.each do |i| %>
+<% @document_fedora.items.each do |i| %>
   <li><%= link_to i.pid, catalog_path(i) %></li>
 <% end %>
 </ul>

@@ -57,7 +57,7 @@ class CollectionsController < ApplicationController
   #
   def create
     @document_fedora = DRI::Model::Collection.new(params[:dri_model_collection])
-    @document_fedora.creator = current_user.to_s
+    #@document_fedora.creator = current_user.to_s
     respond_to do |format|
       if @document_fedora.save
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
