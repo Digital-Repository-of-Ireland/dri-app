@@ -72,7 +72,7 @@ en:
           buttons:
             create_collection: Create Collection
           legends:
-            members: Members
+            governed_objects: Governed Objects
       catalog:
         links:
           listen: listen
