@@ -28,6 +28,12 @@ module ButtonTranslator
     when /update language/
       "commit"
 
+    when /add new collection/
+      "new_collection"
+
+    when /create a collection/
+      "create_new_collection"
+
     else "Unknown"
  
     end

@@ -88,11 +88,11 @@ Then /^I should see the modified metadata$/ do
 end
 
 Then /^I press "(.*?)"$/ do |button|
-  click_button(button)
+  click_link_or_button(button)
 end
 
 Then /^(?:|I )press the button to (.+)$/ do |button|
-  click_button(button_to_id(button))
+  click_link_or_button(button_to_id(button))
 end 
 
 Then /^(?:|I )should see a link to (.+)$/ do |link|

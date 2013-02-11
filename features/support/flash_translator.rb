@@ -43,6 +43,9 @@ module FlashTranslator
     when /too short password/
       strip_vars( I18n.t('activerecord.errors.models.user.attributes.password.too_short', :locale => "en") )
 
+    when /creating a collection/
+      I18n.t('dri.flash.notice.collection_created', :locale => @user.locale)
+
     else "Unknown"
  
     end

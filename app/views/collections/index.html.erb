@@ -1,0 +1,13 @@
+<h1><%= t('dri.views.collection.index.title') %></h1>
+
+<ul>
+<% @mycollections.each do |collection| %>
+  <li><%= link_to collection.title, collection_path(:id => collection.id) %> (<%= collection.governed_items.count %> items)</p>
+<% end %>
+</ul>
+
+<% if @mycollections.blank? %>
+  <p><%= t('dri.views.collection.index.no_collections') %></p>
+<% end %>
+
+<%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>

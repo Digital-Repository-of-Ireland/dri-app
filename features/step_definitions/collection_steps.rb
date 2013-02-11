@@ -7,7 +7,11 @@ When /^I add the Digital Object to a collection$/ do
 end
 
 When /^I enter valid metadata for a collection$/ do
-  pending # express the regexp above with the code you wish you had
+  steps %{
+    When I fill in "dri_model_collection_title" with "Test collection"
+    And I fill in "dri_model_collection_description" with "Test description"
+    And I fill in "dri_model_collection_publisher" with "Test publisher"
+  }
 end
 
 When /^I add the Digital Object to the collection$/ do

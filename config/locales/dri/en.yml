@@ -12,6 +12,7 @@ en:
         ga: Irish
     headerlinks:
       home: Home
+      collections: My Collections
       ingest: Ingest
       about: About
       contact: Contact
@@ -71,8 +72,12 @@ en:
             title: New Collection
           buttons:
             create_collection: Create Collection
+            new_collection: New Collection
           legends:
             members: Members
+          index:
+            title: My Collections
+            no_collections: You do not have any collections yet.
       catalog:
         links:
           listen: listen

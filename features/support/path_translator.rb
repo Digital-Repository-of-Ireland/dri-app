@@ -34,8 +34,11 @@ module PathTranslator
     when /new Collection page/
       'collections/new'
 
-    when /my collections page/
+    when /view collection page/
       'collections/show'
+
+    when /my collections page/
+      collections_path
 
     else "Unknown"
 

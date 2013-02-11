@@ -7,6 +7,12 @@ class CollectionsController < ApplicationController
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
+  # Shows list of user's collections
+  #
+  def index
+    @mycollections = DRI::Model::Collection.all
+  end
+
   # Creates a new model.
   #
   def new

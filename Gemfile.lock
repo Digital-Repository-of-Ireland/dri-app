@@ -1,6 +1,6 @@
 GIT
   remote: git@dev.forasfeasa.ie:dri_data_models.git
-  revision: 4e4d176286dd6f197cef7da9d3c5065efe0e3d0e
+  revision: e71bf9a9db24190af6f56ea16a5f4ef1f6121918
   specs:
     dri_data_models (0.0.1)
       hydra-head (>= 5.0.0)
