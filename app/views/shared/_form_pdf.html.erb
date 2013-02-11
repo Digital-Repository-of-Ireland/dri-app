@@ -10,7 +10,7 @@
   <%= f.text_field :rights, :class => "edit span6", :required => "true" %>
  
   <% if action.eql?("update") %>
-    <%= f.label "#{t('dri.views.objects.forms.collection')}:" %>
+    <%= f.label "#{t('dri.views.objects.forms.governing_collection')}:" %>
     <%= f.select :governing_collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }, get_current_collection(@document_fedora)), :class => "edit span6" %>
   <% end %>
 
