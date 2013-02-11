@@ -7,7 +7,7 @@ class FilesController < AssetsController
   # Returns the directory on the local filesystem to use for storing uploaded files.
   #
   def local_storage_dir
-    Rails.root.join('dri_files')
+    Rails.root.join(Settings.dri.files)
   end
 
   # Retrieves external datastream files that have been stored in the filesystem.
