@@ -56,9 +56,10 @@ are changed.
 
 When translations are added to the english locale files in config/locales
 you should run the rake task localefiles with the parameter file which should
-be set to the (relative) path to the Irish yml file. For example:
+be set to the (relative) path to the ENGLISH yml file. For example:
 
-  $ rake localefiles file=config/locales/dri/ga.yml
+  $ rake localefiles file=config/locales/dri/en.yml
 
-This will merge any new keys from the English file into the Irish one with
-the English text.
+This will merge any new keys from the English file into any other locale files
+(with the same naming convention) in that directory. The default value for each
+key will be the English text.

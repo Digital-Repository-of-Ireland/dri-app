@@ -1,141 +1,143 @@
----
-ga:
-  dri:
-    application:
-      locale: Teanga
-      home:
-        introtext: Good news everyone! Dummy page here to be filled in and fixed!
-      lang:
+
+--- 
+ga: 
+  dri: 
+    application: 
+      home: 
+        introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
+      lang: 
         en: English
         ga: Irish
-    headerlinks:
-      home: Príomhleathanach
-      ingest: Glac isteach
+      locale: Teanga
+    flash: 
+      alert: 
+        invalid_file_type: "Warning: The file does not appear to be a valid type"
+        invalid_object: "Invalid Object: %{error}."
+        invalid_xml: "Invalid XML: %{error}"
+      error: 
+        validation_errors: "Validation Errors: %{error}"
+      notice: 
+        collection_created: "Collection object has been successfully created."
+        digital_object_ingested: "Digital object has been successfully ingested."
+        file_uploaded: "File has been successfully uploaded."
+        metadata_updated: "Metadata has been successfully updated."
+        no_xml_schema: "The XML file contains no schema to validate against."
+        schema_validation_error: "The XML file could not validate against the Dublin Core schema"
+        specify_datastream: "You must specify a valid file datastream."
+        specify_file: "You must specify a file to upload."
+        specify_object_id: "Please specify a valid object id."
+        specify_valid_file: "You must specify a valid file to upload."
+        specify_xml_file: "You must specify a XML file."
+        updated: "Updated %{item}"
+    headerlinks: 
       about: Eolas
+      collections: "My Collections"
       contact: Teagmháil
-    views:
-      objects:
-        edit:
-          title: Edit Object
-          sidebar:
-            nav_header: Edit Tools
-        forms:
-          title: Title
-          description: Description
-          broadcast_date: Broadcast Date
-          creation_date: Creation Date
-          rights: Rights
-          collection: Collection
-          presenters: Presenters
-          producers: Producers
-          guests: Guests
-          authors: Authors
-          editors: Editors
-          subjects: Subjects
-          places: Places
-          language: Language
-          sources: Sources
-          add_presenter: Add Presenter
-          add_producer: Add Producer
-          add_guest: Add Guest
-          add_subject: Add Subject
-          add_source: Add Source
-          add_place: Add Place
-          add_author: Add Author
-          add_editor: Add Editor
-          delete: delete
-          publisher: publisher
-        buttons:
-          save: Save Changes
-          replace_metadata: Upload Metadata
-          replace_master: Replace Master File
-          upload_master: Upload Master File
-        legends:
+      home: Príomhleathanach
+      ingest: "Glac isteach"
+    views: 
+      catalog: 
+        forms: 
+          audio_file: "Audio File"
           metadata: Metadata
-          replace_metadata: Replace Metadata
-          replace_caption: Replace metadata using XML file.
-          upload_audio: Upload Audio File
-          upload_pdf: Upload PDF File
-          file_caption: A master file has already been uploaded.
-          upload_file_caption: No files have been uploaded. Please upload a master
-            file.
-          audio_caption: A master audio file has already been uploaded.
-          upload_audio_caption: No audio files have been uploaded. Please upload a
-            master audio file.
-        links:
-          listen: listen
+          pdf_file: PDF
+        headers: 
+          files: Files
+        legends: 
+          no_files: "No file has been uploaded."
+        links: 
           download: download
-          view_record: View Record
-      collection:
-        new:
-          title: New Collection
-        buttons:
-          create_collection: Create Collection
-        legends:
-          members: Members
-      catalog:
-        links:
+          edit_this_record: "Edit this record"
           listen: listen
           view_metadata: view
-          download: download
-          edit_this_record: Edit this record
-        headers:
-          files: Files
-        forms:
-          metadata: Metadata
-          audio_file: Audio File
-          pdf_file: PDF
-        legends:
-          no_files: No file has been uploaded.
-        sidebar:
-          more_like_this: More Like This
-          nav_header: Edit Tools
-      devise:
+        sidebar: 
+          more_like_this: "More Like This"
+          nav_header: "Edit Tools"
+      collection: 
+        buttons: 
+          create_collection: "Create Collection"
+          new_collection: "New Collection"
+        index: 
+          no_collections: "You do not have any collections yet."
+          title: "My Collections"
+        legends: 
+          governed_objects: "Governed Objects"
+          members: Members
+        new: 
+          title: "New Collection"
+      devise: 
         locale: Language
-      ingest:
-        forms:
-          title: Add a new digital object
-          collection_prompt: Select collection
-          object_type_prompt: Select object type
-          ingest_method_prompt: Select ingest method
-        legends:
-          upload_legend: ! 'Upload Metadata:'
-          upload_caption: Ingest metadata XML file.
-        buttons:
-          new_collection: New collection
-          reset: Reset
+      exceptions: 
+        invalid_asset: "Unable to create asset. Please correct the errors and try again."
+        invalid_metadata: "The metadata file you have uploaded is invalid. Please correct the errors and try again."
+        invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
+      ingest: 
+        buttons: 
           continue: Continue
           delete: Delete
-        steps:
-          collection: Select Collection
-          object_type: Select Object Type
-          ingest_method: Select Ingest Method
+          new_collection: "New collection"
+          reset: Reset
+        forms: 
+          collection_prompt: "Select collection"
+          ingest_method_prompt: "Select ingest method"
+          object_type_prompt: "Select object type"
+          title: "Add a new digital object"
+        legends: 
+          upload_caption: "Ingest metadata XML file."
+          upload_legend: "Upload Metadata:"
+        steps: 
+          collection: "Select Collection"
+          ingest_method: "Select Ingest Method"
           input: Input
-          upload: Upload Metadata file
-      exceptions:
-        invalid_metadata: The metadata file you have uploaded is invalid. Please correct
-          the errors and try again.
-        invalid_metadata_input: The metadata entered is invalid. Please correct the
-          errors and try again.
-        invalid_asset: Unable to create asset. Please correct the errors and try again.
-    flash:
-      notice:
-        digital_object_ingested: Digital object has been successfully ingested.
-        collection_created: Collection object has been successfully created.
-        specify_object_id: Please specify a valid object id.
-        specify_datastream: You must specify a valid file datastream.
-        specify_file: You must specify a file to upload.
-        file_uploaded: File has been successfully uploaded.
-        metadata_updated: Metadata has been successfully updated.
-        specify_valid_file: You must specify a valid file to upload.
-        no_xml_schema: The XML file contains no schema to validate against.
-        schema_validation_error: The XML file could not validate against the Dublin
-          Core schema
-        specify_xml_file: You must specify a XML file.
-        updated: Updated %{item}
-      alert:
-        invalid_file_type: ! 'Warning: The file does not appear to be a valid type'
-        invalid_object: ! 'Invalid Object: %{error}.'
-        invalid_xml: ! 'Invalid XML: %{error}'
-      error:
-        validation_errors: ! 'Validation Errors: %{error}'
+          object_type: "Select Object Type"
+          upload: "Upload Metadata file"
+      objects: 
+        buttons: 
+          replace_master: "Replace Master File"
+          replace_metadata: "Upload Metadata"
+          save: "Save Changes"
+          upload_master: "Upload Master File"
+        edit: 
+          sidebar: 
+            nav_header: "Edit Tools"
+          title: "Edit Object"
+        forms: 
+          add_author: "Add Author"
+          add_editor: "Add Editor"
+          add_guest: "Add Guest"
+          add_place: "Add Place"
+          add_presenter: "Add Presenter"
+          add_producer: "Add Producer"
+          add_source: "Add Source"
+          add_subject: "Add Subject"
+          authors: Authors
+          broadcast_date: "Broadcast Date"
+          collection: Collection
+          creation_date: "Creation Date"
+          delete: delete
+          description: Description
+          editors: Editors
+          guests: Guests
+          language: Language
+          places: Places
+          presenters: Presenters
+          producers: Producers
+          publisher: publisher
+          rights: Rights
+          sources: Sources
+          subjects: Subjects
+          title: Title
+        legends: 
+          audio_caption: "A master audio file has already been uploaded."
+          file_caption: "A master file has already been uploaded."
+          metadata: Metadata
+          replace_caption: "Replace metadata using XML file."
+          replace_metadata: "Replace Metadata"
+          upload_audio: "Upload Audio File"
+          upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
+          upload_file_caption: "No files have been uploaded. Please upload a master file."
+          upload_pdf: "Upload PDF File"
+        links: 
+          download: download
+          listen: listen
+          view_record: "View Record"
