@@ -16,7 +16,7 @@ namespace :locales do
     files = Dir[Rails.root.to_s + '/**/**/*en.yml']
     files.each do |file|
       ENV['file'] = file
-      Rake::Task["localefiles:mergefile"].execute
+      Rake::Task["locales:mergefile"].execute
     end
   end
 end
