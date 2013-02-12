@@ -9,3 +9,6 @@
 
 <h2><%= t('dri.views.collection.legends.governed_objects') %></h2>
 <%= render :partial => 'governed_item', :collection => @document_fedora.governed_items %>
+
+<h2><%= t('dri.views.collection.legends.objects') %></h2>
+<%= render :partial => 'item', :collection => @document_fedora.items %>

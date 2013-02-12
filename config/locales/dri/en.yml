@@ -62,6 +62,7 @@ en:
           title: "My Collections"
         legends: 
           governed_objects: "Governed Objects"
+          objects: "Objects in Collection"
           members: Members
         new: 
           title: "New Collection"
@@ -97,6 +98,7 @@ en:
           replace_metadata: "Upload Metadata"
           save: "Save Changes"
           upload_master: "Upload Master File"
+          add_to_collection: "Add to Collection"
         edit: 
           sidebar: 
             nav_header: "Edit Tools"
@@ -137,6 +139,8 @@ en:
           upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
           upload_file_caption: "No files have been uploaded. Please upload a master file."
           upload_pdf: "Upload PDF File"
+          add_to_collection: "Add to Collection"
+          add_to_collection_caption: "Select collection to add object to"
         links: 
           download: download
           listen: listen
