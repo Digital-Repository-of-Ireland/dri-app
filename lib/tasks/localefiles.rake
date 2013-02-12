@@ -1,4 +1,6 @@
-namespace :localefiles do
+Bundler.require :translations
+
+namespace :locales do
   task :mergefile do
     masterfile = ENV['file']
     if masterfile.blank?

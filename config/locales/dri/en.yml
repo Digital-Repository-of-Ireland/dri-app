@@ -112,11 +112,11 @@ en:
           add_subject: "Add Subject"
           authors: Authors
           broadcast_date: "Broadcast Date"
-          governing_collection: Governing Collection
           creation_date: "Creation Date"
           delete: delete
           description: Description
           editors: Editors
+          governing_collection: "Governing Collection"
           guests: Guests
           language: Language
           places: Places

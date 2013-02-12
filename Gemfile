@@ -57,8 +57,6 @@ group :development, :test do
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false 
-
-#  gem 'i18n_sync'
 end
 gem 'jquery-rails'
 
@@ -91,3 +89,7 @@ gem "unicode", :platforms => [:mri_18, :mri_19]
 gem "devise-guests", "~> 0.3"
 gem "bootstrap-sass"
 gem "yard"
+
+group :translations do
+  gem 'i18n_sync'
+end
