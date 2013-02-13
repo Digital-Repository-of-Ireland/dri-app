@@ -45,6 +45,12 @@ Scenario: Commiting Digital Object to a collection
   When I add the Digital Object to the collection
   Then the collection should contain the Digital Object
 
+Scenario: Commiting Digital Object to a collection using the web forms
+  Given an existing collection
+  When I create a Digital Object in the existing collection
+  And I go to the show page for the existing collection
+  Then I should see the Digital Object as part of the collection
+
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
   Given a Digital Object
   And an existing collection

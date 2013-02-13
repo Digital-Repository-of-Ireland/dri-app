@@ -9,6 +9,6 @@ end
 
 When /^I change my language to ([^"]*)$/ do |lang|
   fill_in("user_current_password", :with => "password")
-  step "I select #{lang} from the selectbox for language"
+  step "I select \"#{lang}\" from the selectbox for language"
   step 'I press the button to update language'
 end

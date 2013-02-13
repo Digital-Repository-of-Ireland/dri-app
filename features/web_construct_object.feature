@@ -14,48 +14,52 @@ Scenario: Navigating to the ingest page
   Then I should be on the new Digital Object page
 
 Scenario: Constructing a valid Digital Object
-  Given I am on the new Digital Object page
-#  When I select a collection
+  Given I have created a collection
+  And I am on the new Digital Object page
+  When I select a collection
   And I press the button to continue
-  And I select audio from the selectbox for object type
+  And I select "audio" from the selectbox for object type
   And I press the button to continue
-  And I select upload from the selectbox for ingest methods
+  And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion 
 
 Scenario: Constructing a Digital Object with invalid XML metadata
-  Given I am on the new Digital Object page
-#  When I select a collection
+  Given I have created a collection
+  And I am on the new Digital Object page
+  When I select a collection
   And I press the button to continue
-  And I select audio from the selectbox for object type
+  And I select "audio" from the selectbox for object type
   And I press the button to continue
-  And I select upload from the selectbox for ingest methods
+  And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "invalid_xml_metadata.xml"
   And I press the button to ingest metadata
   Then I should see an error message for invalid metadata
 
 Scenario: Constructing a Digital Object with metadata that does not conform to the schema
-  Given I am on the new Digital Object page
-#  When I select a collection
+  Given I have created a collection
+  And I am on the new Digital Object page
+  When I select a collection
   And I press the button to continue
-  And I select audio from the selectbox for object type
+  And I select "audio" from the selectbox for object type
   And I press the button to continue
-  And I select upload from the selectbox for ingest methods
+  And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "invalid_schema_metadata.xml"
   And I press the button to ingest metadata 
   Then I should see an error message for invalid schema
 
 Scenario: Constructing a Digital Object with metadata that does not contain a required field
-  Given I am on the new Digital Object page
-#  When I select a collection
+  Given I have created a collection
+  And I am on the new Digital Object page
+  When I select a collection
   And I press the button to continue
-  And I select audio from the selectbox for object type
+  And I select "audio" from the selectbox for object type
   And I press the button to continue
-  And I select upload from the selectbox for ingest methods
+  And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "metadata_no_rights.xml"
   And I press the button to ingest metadata
@@ -64,9 +68,9 @@ Scenario: Constructing a Digital Object with metadata that does not contain a re
 Scenario: Constructing a pdf object
   Given I am on the new Digital Object page
   And I press the button to continue
-  And I select pdfdoc from the selectbox for object type
+  And I select "pdfdoc" from the selectbox for object type
   And I press the button to continue
-  And I select upload from the selectbox for ingest methods
+  And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "dublin_core_pdfdoc_sample.xml"
   And I press the button to ingest metadata
@@ -90,12 +94,13 @@ Scenario: Replacing the metadata file of a Digital Object
   Then I should see a success message for updating metadata
 
 Scenario: Constructing a Digital Object using the web form
-  Given I am on the new Digital Object page
-#  When I select a collection
+  Given I have created a collection
+  And I am on the new Digital Object page
+  When I select a collection
   And I press the button to continue
-  And I select audio from the selectbox for object type
+  And I select "audio" from the selectbox for object type
   And I press the button to continue
-  And I select input from the selectbox for ingest methods
+  And I select "input" from the selectbox for ingest methods
   And I press the button to continue
   When I enter valid metadata
   And I press the button to continue

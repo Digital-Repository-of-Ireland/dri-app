@@ -16,6 +16,9 @@ module PathTranslator
     when /edit Digital Object page for id (.+)/
       edit_object_path($1)
 
+    when /show page for the collection (.+)/
+      show_collection_path($1)
+
     when /edit user page/
       edit_user_registration_path
 
