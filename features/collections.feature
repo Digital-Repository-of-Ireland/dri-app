@@ -52,14 +52,10 @@ Scenario: Commiting Digital Object to a collection using the web forms
   Then I should see the Digital Object as part of the collection
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
-  Given a Digital Object
-  And an existing collection
-  And the collection already contains the Digital Object
-  When I commit the Digital Object
-  Then I should get a duplicate object warning
-  And I should be given a choice of using the existing object or creating a new one
+#  Given a Digital Object
+#  And an existing collection
+#  And the collection already contains the Digital Object
+#  When I commit the Digital Object
+#  Then I should get a duplicate object warning
+#  And I should be given a choice of using the existing object or creating a new one
 
-Scenario: Retrieving Digital Objects by collection
-  Given an existing collection
-  When I retrieve the collection
-  Then I should see my Digital Objects
