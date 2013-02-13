@@ -14,6 +14,7 @@ en:
         invalid_file_type: "Warning: The file does not appear to be a valid type"
         invalid_object: "Invalid Object: %{error}."
         invalid_xml: "Invalid XML: %{error}"
+        not_added_to_collection: "Unable to add object to collection." 
       error: 
         validation_errors: "Validation Errors: %{error}"
       notice: 
@@ -29,6 +30,7 @@ en:
         specify_valid_file: "You must specify a valid file to upload."
         specify_xml_file: "You must specify a XML file."
         updated: "Updated %{item}"
+        added_to_collection: "Object has been added to collection."
     headerlinks: 
       about: About
       collections: "My Collections"
