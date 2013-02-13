@@ -14,6 +14,8 @@ en:
         invalid_file_type: "Warning: The file does not appear to be a valid type"
         invalid_object: "Invalid Object: %{error}."
         invalid_xml: "Invalid XML: %{error}"
+        not_added_to_collection: "Unable to add object to collection."
+        not_removed_from_collection: "Unable to remove object from collection."
       error: 
         validation_errors: "Validation Errors: %{error}"
       notice: 
@@ -29,6 +31,8 @@ en:
         specify_valid_file: "You must specify a valid file to upload."
         specify_xml_file: "You must specify a XML file."
         updated: "Updated %{item}"
+        added_to_collection: "Object has been added to collection."
+        removed_from_collection: "Object has been removed from the collection."
     headerlinks: 
       about: About
       collections: "My Collections"
@@ -66,6 +70,8 @@ en:
           members: Members
         new: 
           title: "New Collection"
+        links:
+          remove: "remove"
       devise: 
         locale: Language
       exceptions: 
@@ -140,7 +146,7 @@ en:
           upload_file_caption: "No files have been uploaded. Please upload a master file."
           upload_pdf: "Upload PDF File"
           add_to_collection: "Add to Collection"
-          add_to_collection_caption: "Select collection to add object to"
+          add_to_collection_caption: "Choose the collection to add the object into."
         links: 
           download: download
           listen: listen
