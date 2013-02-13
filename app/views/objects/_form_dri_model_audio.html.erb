@@ -6,6 +6,16 @@
 <% end %>
 
 <fieldset>
+  <legend><%= t('dri.views.objects.legends.add_to_collection') %></legend>
+  <p class="legend-caption"><%= t('dri.views.objects.legends.add_to_collection_caption') %> </p>
+  <form id="relationships" action="<%= url_for(:action=>"create", :controller=>"relationships", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+  <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+  <%= select_tag(:collection_id , options_for_select(get_collections{ |c| [c.title, c.pid] }), :prompt => t('dri.views.ingest.forms.collection_prompt')) %>
+  <input class="btn-primary" name="add_to_collection" type="submit" value="<%= t('dri.views.objects.buttons.add_to_collection') %>" id="add_to_collection"/>
+  </form>
+</fieldset>
+
+<fieldset>
         <legend><%= t('dri.views.objects.legends.replace_metadata') %></legend>
         <p class="legend-caption"><%= t('dri.views.objects.legends.replace_caption') %></p>
         <form id="metadata_uploader" action="<%= url_for(:action=>"update", :controller=>"metadata", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
