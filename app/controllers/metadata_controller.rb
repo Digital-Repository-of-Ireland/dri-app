@@ -73,7 +73,7 @@ class MetadataController < AssetsController
           if @object.datastreams.has_key?("descMetadata")
             @object.datastreams["descMetadata"].ng_xml = @tmp_xml
           else
-            ds = DRI::Metadata::DublinCoreAudio.from_xml(@tmp_xml)
+            ds = @object.load_from_xml(@tmp_xml)
             @object.add_datastream ds, :dsid => 'descMetadata'
           end
 
@@ -81,7 +81,6 @@ class MetadataController < AssetsController
             @object.governing_collection = Collection.find(session[:ingest][:collection])
           end
 
-          # @object.datastreams["descMetadata"].save
           if @object.valid?
             @object.save
             flash[:notice] = t('dri.flash.notice.digital_object_ingested')

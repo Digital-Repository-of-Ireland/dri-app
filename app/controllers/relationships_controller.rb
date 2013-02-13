@@ -26,6 +26,7 @@ class RelationshipsController < AssetsController
   end
 
   def delete
+
     @object = ActiveFedora::Base.find(params[:id], {:cast => true})
     @collection = Collection.find(params[:collection_id])
 
