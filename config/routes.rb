@@ -17,8 +17,8 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/file' => 'files#create', :via => :post, :as => :new_object_file
   match 'metadata' => 'metadata#create', :via => :post  
 
-  match 'relationships' => 'relationships#create'
-  match 'relationships/:collection_id/item/:id' => 'relationships#delete', :via => :delete
+  match 'collections/item' => 'collection_items#create'
+  match 'collections/:collection_id/item/:id' => 'collection_items#delete', :via => :delete
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

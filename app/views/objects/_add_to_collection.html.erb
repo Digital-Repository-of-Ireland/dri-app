@@ -1,7 +1,7 @@
 <fieldset>
   <legend><%= t('dri.views.objects.legends.add_to_collection') %></legend>
   <p class="legend-caption"><%= t('dri.views.objects.legends.add_to_collection_caption') %> </p>
-  <form id="relationships" action="<%= url_for(:action=>"create", :controller=>"relationships") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+  <form id="relationships" action="<%= url_for(:action=>"create", :controller=>"collection_items") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
   <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
   <input name="object_id" type="hidden" value="<%= @document_fedora.id %>" />
   <%= select_tag(:collection_id , options_for_select(get_collections{ |c| [c.title, c.pid] }), :prompt => t('dri.views.ingest.forms.collection_prompt')) %>

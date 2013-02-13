@@ -1,4 +1,4 @@
-class RelationshipsController < AssetsController
+class CollectionItemsController < AssetsController
 
   def create
 
