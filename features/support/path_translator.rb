@@ -17,13 +17,13 @@ module PathTranslator
       edit_object_path($1)
 
     when /show page for the collection (.+)/
-      show_collection_path($1)
+      collection_path($1)
 
     when /edit user page/
       edit_user_registration_path
 
     when /the home page/
-      '/'
+      root_path
 
     when /sign in/
      new_user_session_path
@@ -35,15 +35,19 @@ module PathTranslator
       new_user_registration_path
 
     when /new Collection page/
-      'collections/new'
+      new_collection_path
 
     when /view collection page/
-      'collections/show'
+      collections_path
 
     when /my collections page/
       collections_path
 
-    else "Unknown"
+    when /show page for the existing collection/
+      collection_path(@collection.id)
+
+    else
+      raise('You specified an invalid path')
 
     end
   end
