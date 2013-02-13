@@ -61,6 +61,7 @@ en:
         buttons: 
           create_collection: "Create Collection"
           new_collection: "New Collection"
+          remove: "Remove"
         index: 
           no_collections: "You do not have any collections yet."
           title: "My Collections"
@@ -70,8 +71,6 @@ en:
           members: Members
         new: 
           title: "New Collection"
-        links:
-          remove: "remove"
       devise: 
         locale: Language
       exceptions: 

@@ -2,7 +2,7 @@ class RelationshipsController < AssetsController
 
   def create
 
-    @object = ActiveFedora::Base.find(params[:id], {:cast => true})
+    @object = ActiveFedora::Base.find(params[:object_id], {:cast => true})
     @collection = Collection.find(params[:collection_id])
 
     @collection.items << @object
@@ -17,7 +17,7 @@ class RelationshipsController < AssetsController
       respond_to do |format|
         format.html {
           flash["alert"] = t('dri.flash.alert.not_added_to_collection') 
-          redirect_to :controller => "objects", :action => "edit", :id => params[:id]
+          redirect_to :controller => "objects", :action => "edit", :id => params[:object_id]
         }
         format.json { render :json => @collection.errors}
       end

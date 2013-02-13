@@ -8,7 +8,7 @@ NuigRnag::Application.routes.draw do
   devise_for :users 
 
   resources :objects, :only => ['edit', 'update', 'create']
-  resources :collections
+  resources :collections 
   resources :ingest, :only => ['new', 'create']
 
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
@@ -17,8 +17,8 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/file' => 'files#create', :via => :post, :as => :new_object_file
   match 'metadata' => 'metadata#create', :via => :post  
 
-  match 'relationships/:id/collection' => 'relationships#create'
-  match 'relationships/:collection_id/item/:id' => 'relationships#delete'
+  match 'relationships' => 'relationships#create'
+  match 'relationships/:collection_id/item/:id' => 'relationships#delete', :via => :delete
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
