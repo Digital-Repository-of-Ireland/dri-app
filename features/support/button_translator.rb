@@ -34,6 +34,12 @@ module ButtonTranslator
     when /create a collection/
       "create_new_collection"
 
+    when /add to collection/
+      "add_to_collection"
+
+    when /remove from collection (.+)/
+      "remove_#{$1}"
+
     else "Unknown"
  
     end

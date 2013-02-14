@@ -16,8 +16,12 @@ When /^I create a Digital Object in the existing collection$/ do
   }
 end
 
-When /^I add the Digital Object to a collection$/ do
-  pending # express the regexp above with the code you wish you had
+When /^I add the Digital Object to the non-governing collection using the web forms$/ do
+  steps %{
+    Given I am on the edit Digital Object page for id #{@digital_object.pid}
+    And I select "#{@collection.pid}" from the selectbox for add to collection
+    And I press the button to add to collection
+  }
 end
 
 When /^I enter valid metadata for a collection$/ do
@@ -36,18 +40,28 @@ When /^I enter valid metadata for a collection with title (.*?)$/ do |title|
   }
 end
 
-When /^I add the Digital Object to the collection$/ do
-  @digital_object.title = "Test digital object 1"
+When /^I add the Digital Object to the governing collection$/ do
+  @digital_object.title = SecureRandom.hex(5)
   @collection.governed_items << @digital_object
+end
+
+When /^I add the Digital Object to the non-governing collection$/ do
+  @digital_object.title = SecureRandom.hex(5)
+  @collection.items << @digital_object
 end
 
 Then /^the collection should exist$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Then /^the collection should contain the Digital Object$/ do
+Then /^the governing collection should contain the Digital Object$/ do
   @collection.governed_items.length.should == 1
-  @collection.governed_items[0].title.should == "Test digital object 1"
+  @collection.governed_items[0].title.should == @digital_object.title
+end
+
+Then /^the non-governing collection should contain the Digital Object$/ do
+  @collection.items.length.should == 1
+  @collection.items[0].title.should == @digital_object.title
 end
 
 Then /^I should get a duplicate object warning$/ do
@@ -62,12 +76,21 @@ Given /^an existing collection$/ do
   @collection.save
 end
 
+Given /^an existing Digital Object/ do
+  @digital_object = FactoryGirl.build(:audio)
+  @digital_object.save
+end
+
 Given /^the collection already contains the Digital Object$/ do
   pending # express the regexp above with the code you wish you had
 end
 
 When /^I retrieve the collection$/ do
   pending # express the regexp above with the code you wish you had
+end
+
+When /^I press the remove from collection button/ do
+   click_link_or_button(button_to_id("remove from collection #{@digital_object.pid}"))
 end
 
 Then /^I should see my Digital Objects$/ do
@@ -84,4 +107,12 @@ end
 
 Then /^I should see the Digital Object as part of the collection$/ do
   page.should have_content @collection.governed_items[0].title
+end
+
+Then /^I should see the Digital Object as part of the non-governing collection$/ do
+  page.should have_content @digital_object.title
+end
+
+Then /^I should not see the Digital Object as part of the non-governing collection$/ do
+  page.should_not have_content @digital_object.title
 end

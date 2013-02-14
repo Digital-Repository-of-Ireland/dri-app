@@ -39,17 +39,41 @@ Scenario: Constructing a valid collection
   And I press the button to create a collection
   Then I should see a success message for creating a collection
 
-Scenario: Commiting Digital Object to a collection
+Scenario: Adding a Digital Object in a governing collection
+  Given an existing Digital Object
+  And an existing collection
+  When I add the Digital Object to the governing collection
+  Then the governing collection should contain the Digital Object
+
+Scenario: Adding a Digital Object to a non-governing collection
   Given a Digital Object
   And an existing collection
-  When I add the Digital Object to the collection
-  Then the collection should contain the Digital Object
+  When I add the Digital Object to the non-governing collection
+  Then the non-governing collection should contain the Digital Object
 
-Scenario: Commiting Digital Object to a collection using the web forms
+Scenario: Creating Digital Object in a governing collection using the web forms
   Given an existing collection
   When I create a Digital Object in the existing collection
-  And I go to the show page for the existing collection
+  And I go to the show page for the collection
   Then I should see the Digital Object as part of the collection
+
+Scenario: Adding a Digital Object to a non-governing collection using the web forms
+  Given an existing Digital Object
+  And an existing collection
+  When I add the Digital Object to the non-governing collection using the web forms
+  And I go to the show page for the collection
+  Then I should see the Digital Object as part of the non-governing collection
+
+Scenario: Removing a Digital Object from a non-governing collection using the web forms
+  Given an existing Digital Object
+  And an existing collection
+  When I add the Digital Object to the non-governing collection
+  Then the non-governing collection should contain the Digital Object
+  When I go to the show page for the collection
+  Then I should see the Digital Object as part of the non-governing collection
+  When I press the remove from collection button
+  And I go to the show page for the collection
+  Then I should not see the Digital Object as part of the non-governing collection
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
 #  Given a Digital Object

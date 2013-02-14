@@ -43,7 +43,7 @@ module PathTranslator
     when /my collections page/
       collections_path
 
-    when /show page for the existing collection/
+    when /show page for the collection/
       collection_path(@collection.id)
 
     else
