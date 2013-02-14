@@ -1,10 +1,11 @@
 <fieldset>
   <legend><%= t('dri.views.objects.legends.add_to_collection') %></legend>
   <p class="legend-caption"><%= t('dri.views.objects.legends.add_to_collection_caption') %> </p>
-  <form id="relationships" action="<%= url_for(:action=>"create", :controller=>"collection_items") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-  <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-  <input name="object_id" type="hidden" value="<%= @document_fedora.id %>" />
-  <%= select_tag(:collection_id , options_for_select(get_collections{ |c| [c.title, c.pid] }), :prompt => t('dri.views.ingest.forms.collection_prompt')) %>
-  <input class="btn-primary" name="add_to_collection" type="submit" value="<%= t('dri.views.objects.buttons.add_to_collection') %>" id="add_to_collection"/>
-  </form>
+
+  <%= form_tag( "#", { :method => :put, :onsubmit => "return this.action = '/collections/' + this.collection_id.value + '/items/' + this.object_id.value" } ) do %>
+  <%= hidden_field_tag 'authenticity_token', form_authenticity_token %> 
+  <%= hidden_field_tag :object_id, @document_fedora.id %>
+  <%= select_tag(:collection_id , options_for_select(get_collections{ |c| [c.title, c.pid] }), :prompt => t('dri.views.ingest.forms.collection_prompt'), :required => "true" ) %>
+  <%= button_tag t('dri.views.objects.buttons.add_to_collection'), :id => "add_to_collection", :name => "add_to_collection", :class => "btn-primary" %>
+  <% end %>
 </fieldset>

@@ -1,6 +1,6 @@
 class CollectionItemsController < AssetsController
 
-  def create
+  def update
 
     @object = ActiveFedora::Base.find(params[:object_id], {:cast => true})
     @collection = Collection.find(params[:collection_id])
@@ -25,7 +25,7 @@ class CollectionItemsController < AssetsController
 
   end
 
-  def delete
+  def destroy
 
     @object = ActiveFedora::Base.find(params[:id], {:cast => true})
     @collection = Collection.find(params[:collection_id])
