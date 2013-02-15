@@ -1,0 +1,20 @@
+<% if @document_fedora.datastreams.has_key?("masterContent") %>
+
+  <form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+    <input type="file" name="Filedata" accept="<%= @document_fedora.mime_type %>" required >
+    <input type="hidden" name="datastream" value="masterContent" />
+    <input class="btn-primary" name="upload_file" type="submit" value="<%= t('dri.views.objects.buttons.replace_master') %>" id="replace_file"/>
+  </form>
+
+<% else %>
+
+  <p class="legend-caption"><%= t('dri.views.objects.legends.upload_file_caption') %></p>
+  <form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+    <input type="file" name="Filedata" accept="<%= @document_fedora.mime_type %>" required >
+    <input type="hidden" name="datastream" value="masterContent" />
+    <input class="btn-primary" name="upload_file" type="submit" value="<%= t('dri.views.objects.buttons.upload_master') %>" id="upload_file"/>
+  </form>
+
+<% end %>
