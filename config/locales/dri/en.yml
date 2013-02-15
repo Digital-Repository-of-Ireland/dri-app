@@ -65,6 +65,9 @@ en:
         index: 
           no_collections: "You do not have any collections yet."
           title: "My Collections"
+          items:
+            one: "%{count} item"
+            other: "%{count} items"
         legends: 
           governed_objects: "Governed Objects"
           objects: "Objects in Collection"
@@ -145,7 +148,7 @@ en:
           upload_file_caption: "No files have been uploaded. Please upload a master file."
           upload_pdf: "Upload PDF File"
           add_to_collection: "Add to Collection"
-          add_to_collection_caption: "Choose the collection to add the object into."
+          add_to_collection_caption: "Choose a collection for this object."
         links: 
           download: download
           listen: listen

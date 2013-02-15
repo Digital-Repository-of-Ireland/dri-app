@@ -57,6 +57,7 @@ Scenario: Creating Digital Object in a governing collection using the web forms
   And I go to the show page for the collection
   Then I should see the Digital Object as part of the collection
 
+@javascript
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
   Given an existing Digital Object
   And an existing collection

@@ -4,8 +4,11 @@ SimpleCov.start
 require 'rubygems'
 require 'spork'
 require 'i18n'
+require 'capybara-webkit'
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
+
+Capybara.javascript_driver = :webkit
 
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
