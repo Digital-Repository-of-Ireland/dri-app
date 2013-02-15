@@ -2,7 +2,7 @@
 
 <ul>
 <% @mycollections.each do |collection| %>
-  <li><%= link_to collection.title, collection_path(:id => collection.id) %> (<%= collection.governed_items.count %> items)</p>
+  <li><%= link_to collection.title, collection_path(:id => collection.id) %> (<%= t('dri.views.collection.index.items', :count => collection.governed_items.count + collection.items.count) %>)</p>
 <% end %>
 </ul>
 
