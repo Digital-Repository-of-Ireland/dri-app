@@ -43,7 +43,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'capybara-webkit', '~> 0.12.1'
+  gem 'capybara-webkit'
   gem 'jettywrapper'
   gem 'simplecov'
   gem 'simplecov-rcov'

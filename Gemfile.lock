@@ -366,7 +366,7 @@ PLATFORMS
 DEPENDENCIES
   blacklight (= 4.0.0)
   bootstrap-sass
-  capybara-webkit (~> 0.12.1)
+  capybara-webkit
   cucumber-rails
   database_cleaner
   devise
