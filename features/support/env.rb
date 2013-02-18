@@ -10,6 +10,12 @@ require 'capybara-webkit'
 
 Capybara.javascript_driver = :webkit
 
+if Capybara.javascript_driver == :webkit
+  require 'headless'
+  headless = Headless.new
+  headless.start
+end
+
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
   # if you change any configuration or code from libraries loaded here, you'll

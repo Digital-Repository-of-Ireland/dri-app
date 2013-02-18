@@ -136,6 +136,7 @@ GEM
     guard-yard (2.0.1)
       guard (>= 1.1.0)
       yard (>= 0.7.0)
+    headless (1.0.0)
     hike (1.2.1)
     hooks (0.2.2)
     http_accept_language (1.0.2)
@@ -379,6 +380,7 @@ DEPENDENCIES
   guard-cucumber
   guard-spork
   guard-yard
+  headless
   http_accept_language
   hydra-head (= 5.2.0)
   i18n_sync
