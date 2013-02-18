@@ -40,6 +40,9 @@ module ButtonTranslator
     when /remove from collection (.+)/
       "remove_#{$1}"
 
+    when /set the current collection to (.+)/
+      "set_collection_#{$1}"
+
     else "Unknown"
  
     end

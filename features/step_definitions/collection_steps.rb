@@ -17,10 +17,14 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
 end
 
 When /^I add the Digital Object "(.*?)" to the non-governing collection "(.*?)" using the web forms$/ do |object_pid,collection_pid|
+  #Given I am on the edit Digital Object page for id #{object_pid}
+  #And I select "#{collection_pid}" from the selectbox for add to collection
+  #And I press the button to add to collection
   steps %{
-    Given I am on the edit Digital Object page for id #{object_pid}
-    And I select "#{collection_pid}" from the selectbox for add to collection
-    And I press the button to add to collection
+    Given I am on the my collections page
+    When I press the button to set the current collection to #{collection_pid}
+    And I go to the show Digital Object page for id #{object_pid}
+    And I follow the link to add to collection 
   }
 end
 
@@ -97,6 +101,10 @@ end
 
 When /^I press the remove from collection button for Digital Object "(.*?)"/ do |object_pid|
    click_link_or_button(button_to_id("remove from collection #{object_pid}"))
+end
+
+When /^I press the button to set the current collection to "(.*?)"/ do |collection_pid|
+   click_link_or_button(button_to_id("set current collection #{collection_pid}"))
 end
 
 Then /^I should see my Digital Objects$/ do

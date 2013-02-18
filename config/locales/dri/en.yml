@@ -33,12 +33,15 @@ en:
         updated: "Updated %{item}"
         added_to_collection: "Object has been added to collection."
         removed_from_collection: "Object has been removed from the collection."
+        current_collection_set: "Current collection has been set to: %{collection}"
+        current_collection_cleared: "No collection set."
     headerlinks: 
       about: About
       collections: "My Collections"
       contact: Contact
       home: Home
       ingest: Ingest
+      current_collection: "Current Collection: %{collection}"
     views: 
       catalog: 
         forms: 
@@ -61,6 +64,8 @@ en:
         buttons: 
           create_collection: "Create Collection"
           new_collection: "New Collection"
+          set_collection: "Set as Current"
+          clear_collection: "Clear as Current"
           remove: "Remove"
         index: 
           no_collections: "You do not have any collections yet."
@@ -153,3 +158,4 @@ en:
           download: download
           listen: listen
           view_record: "View Record"
+          add_to_collection: "Add to collection"
