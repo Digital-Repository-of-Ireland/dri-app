@@ -26,9 +26,6 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
 end
 
 When /^I add the Digital Object "(.*?)" to the non-governing collection "(.*?)" using the web forms$/ do |object_pid,collection_pid|
-  #Given I am on the edit Digital Object page for id #{object_pid}
-  #And I select "#{collection_pid}" from the selectbox for add to collection
-  #And I press the button to add to collection
   steps %{
     Given I am on the my collections page
     When I press the button to set the current collection to #{collection_pid}
