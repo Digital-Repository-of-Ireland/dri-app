@@ -11,6 +11,9 @@ NuigRnag::Application.routes.draw do
   resources :collections do
     resources :items, :only => ['update', 'destroy'], :controller => "collection_items"
   end
+  match 'collections/current/:id' => 'collection_items#set_current_collection', :via => :post, :as => :current_collection
+  match 'collections/current/:id' => 'collection_items#clear_current_collection', :via => :delete, :as => :clear_current_collection
+
   resources :ingest, :only => ['new', 'create']
 
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata

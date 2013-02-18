@@ -14,3 +14,13 @@
   font-size: 14px;
   font-weight: bold;
 }
+
+form.button_to {
+	margin:0;
+	padding:0;
+	display:inline;
+}
+
+form.button_to div, form.button_to div input {
+	display:inline;
+}

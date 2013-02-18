@@ -5,8 +5,6 @@
   <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "save_edit" %>
 <% end %>
 
-  <%= render :partial => "add_to_collection", :locals => { :document_fedora => @document_fedora } %>
-
   <%= render :partial => "replace_metadata", :locals => { :document_fedora => @document_fedora } %>
 
 <fieldset>
