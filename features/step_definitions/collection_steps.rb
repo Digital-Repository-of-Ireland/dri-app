@@ -1,5 +1,14 @@
-Given /^a collection that does not exist$/ do
-  pending # express the regexp above with the code you wish you had
+Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?$/ do |pid, title|
+  collection = DRI::Model::Collection.new(:pid => pid)
+  collection.title = title ? title : SecureRandom.hex(5)
+  collection.save
+end
+
+Given /^a Digital Object with pid "(.*?)" and title "(.*?)"/ do |pid, title|
+  digital_object = DRI::Model::Audio.new(:pid => pid)
+  digital_object.title = title
+  digital_object.rights = "This is a statement of rights"
+  digital_object.save
 end
 
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
@@ -24,15 +33,8 @@ When /^I add the Digital Object "(.*?)" to the non-governing collection "(.*?)" 
   }
 end
 
-When /^I enter valid metadata for a collection$/ do
-  steps %{
-    When I fill in "dri_model_collection_title" with "Test collection"
-    And I fill in "dri_model_collection_description" with "Test description"
-    And I fill in "dri_model_collection_publisher" with "Test publisher"
-  }
-end
-
-When /^I enter valid metadata for a collection with title (.*?)$/ do |title|
+When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title|
+    title ||= "Test collection"
   steps %{
     When I fill in "dri_model_collection_title" with "#{title}"
     And I fill in "dri_model_collection_description" with "Test description"
@@ -53,8 +55,9 @@ When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type ([^"]*
   end
 end
 
-Then /^the collection should exist$/ do
-  pending # express the regexp above with the code you wish you had
+When /^I press the remove from collection button for Digital Object "(.*?)"/ do |object_pid|
+   click_link_or_button(button_to_id("remove from collection #{object_pid}"))
+   step 'show me the page'
 end
 
 Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as type ([^"]*))?$/ do |collection_pid,object_pid,*type|
@@ -74,40 +77,7 @@ Then /^I should get a duplicate object warning$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?$/ do |pid, title|
-  collection = DRI::Model::Collection.new(:pid => pid)
-  collection.title = title ? title : SecureRandom.hex(5)
-  collection.save
-end
-
-Given /^a Digital Object with pid "(.*?)" and title "(.*?)"/ do |pid, title|
-  digital_object = DRI::Model::Audio.new(:pid => pid)
-  digital_object.title = title
-  digital_object.rights = "This is a statement of rights"
-  digital_object.save
-end
-
-Given /^the collection already contains the Digital Object$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-When /^I retrieve the collection$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-When /^I press the remove from collection button for Digital Object "(.*?)"/ do |object_pid|
-   click_link_or_button(button_to_id("remove from collection #{object_pid}"))
-end
-
-Then /^I should see my Digital Objects$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
 Then /^I should be given a choice of using the existing object or creating a new one$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-Then /^I should see my collections$/ do
   pending # express the regexp above with the code you wish you had
 end
 
