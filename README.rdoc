@@ -52,6 +52,9 @@ are changed.
   $ cd nuig-rnag
   $ bundle exec guard
 
+QT is required to install all the dependancies, it is required for
+capybara-webkit (front end testing of interface).
+
 == Translations
 
 When translations are added to the english locale files in config/locales
