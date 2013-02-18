@@ -2,6 +2,8 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?$/ do |pid, title|
   collection = DRI::Model::Collection.new(:pid => pid)
   collection.title = title ? title : SecureRandom.hex(5)
   collection.save
+  collection.items.count.should == 0
+  collection.governed_items.count.should == 0
 end
 
 Given /^a Digital Object with pid "(.*?)" and title "(.*?)"/ do |pid, title|
@@ -58,7 +60,6 @@ end
 
 When /^I press the remove from collection button for Digital Object "(.*?)"/ do |object_pid|
    click_link_or_button(button_to_id("remove from collection #{object_pid}"))
-   step 'show me the page'
 end
 
 Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as type ([^"]*))?$/ do |collection_pid,object_pid,*type|
@@ -87,11 +88,17 @@ Then /^I should be given a choice of using the existing object or creating a new
 end
 
 Then /^I should see the Digital Object "(.*?)" as part of the collection$/ do |object_pid|
-  object = DRI::Model::Audio.all.first
+  object = DRI::Model::Audio.find(object_pid)
   page.should have_content object.title
 end
 
-Then /^I should not see the Digital Object as part of the non-governing collection$/ do
-  object = DRI::Model::Audio.all.first
+Then /^I should not see the Digital Object "(.*?)" as part of the non-governing collection$/ do |object_pid|
+  object = DRI::Model::Audio.find(object_pid)
   page.should_not have_content object.title
+end
+
+Then /^the collection "(.*?)" should contain the new digital object$/ do |collection_pid|
+  collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
+  collection.governed_items.count.should == 1
+  collection.governed_items[0].title.should == "SAMPLE AUDIO TITLE"
 end

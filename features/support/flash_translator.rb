@@ -46,6 +46,9 @@ module FlashTranslator
     when /creating a collection/
       I18n.t('dri.flash.notice.collection_created', :locale => @user.locale)
 
+    when /removing an object from a collection/
+      I18n.t('dri.flash.notice.removed_from_collection', :locale => @user.locale)
+
     else "Unknown"
  
     end
