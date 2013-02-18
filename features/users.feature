@@ -5,14 +5,6 @@ Feature:
   As a user
   I want to be able to create and manage an account
 
-Before do
-  DatabaseCleaner.start
-end
-
-After do |scenario|
-  DatabaseCleaner.clean
-end
-
 Scenario: Navigate to the Sign in page
   Given I am not logged in
   When I go to the home page

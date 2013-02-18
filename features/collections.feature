@@ -40,40 +40,40 @@ Scenario: Constructing a valid collection
   Then I should see a success message for creating a collection
 
 Scenario: Adding a Digital Object in a governing collection
-  Given an existing Digital Object
-  And an existing collection
-  When I add the Digital Object to the governing collection
-  Then the governing collection should contain the Digital Object
+  Given a Digital Object with pid "dri:obj1" and title "Object 1"
+  And a collection with pid "dri:coll1"
+  When I add the Digital Object "dri:obj1" to the collection "dri:coll1" as type governing
+  Then the collection "dri:coll1" should contain the Digital Object "dri:obj1" as type governing
 
 Scenario: Adding a Digital Object to a non-governing collection
-  Given a Digital Object
-  And an existing collection
-  When I add the Digital Object to the non-governing collection
-  Then the non-governing collection should contain the Digital Object
+  Given a Digital Object with pid "dri:obj1" and title "Object 1"
+  And a collection with pid "dri:coll1"
+  When I add the Digital Object "dri:obj1" to the collection "dri:coll1" as type non-governing
+  Then the collection "dri:coll1" should contain the Digital Object "dri:obj1" as type non-governing
 
 Scenario: Creating Digital Object in a governing collection using the web forms
-  Given an existing collection
-  When I create a Digital Object in the existing collection
-  And I go to the show page for the collection
-  Then I should see the Digital Object as part of the collection
+  Given a collection with pid "dri:coll1"
+  When I create a Digital Object in the collection "dri:coll1"
+  And I go to the show page for the collection "dri:coll1"
+  Then I should see the Digital Object "dri:obj1" as part of the collection
 
 @javascript
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
-  Given an existing Digital Object
-  And an existing collection
-  When I add the Digital Object to the non-governing collection using the web forms
-  And I go to the show page for the collection
-  Then I should see the Digital Object as part of the non-governing collection
+  Given a Digital Object with pid "dri:obj1" and title "Object 1"
+  And a collection with pid "dri:coll1"
+  When I add the Digital Object "dri:obj1" to the non-governing collection "dri:coll1" using the web forms
+  And I go to the show page for the collection "dri:coll1"
+  Then I should see the Digital Object "dri:obj1" as part of the collection
 
 Scenario: Removing a Digital Object from a non-governing collection using the web forms
-  Given an existing Digital Object
-  And an existing collection
-  When I add the Digital Object to the non-governing collection
-  Then the non-governing collection should contain the Digital Object
-  When I go to the show page for the collection
-  Then I should see the Digital Object as part of the non-governing collection
-  When I press the remove from collection button
-  And I go to the show page for the collection
+  Given a Digital Object with pid "dri:obj1" and title "Object 1"
+  And a collection with pid "dri:coll1"
+  When I add the Digital Object "dri:obj1" to the collection "dri:coll1" as type non-governing
+  Then the collection "dri:coll1" should contain the Digital Object "dri:obj1" as type non-governing
+  When I go to the show page for the collection "dri:coll1"
+  Then I should see the Digital Object "dri:obj1" as part of the collection
+  When I press the remove from collection button for Digital Object "dri:obj1"
+  And I go to the show page for the collection "dri:coll1"
   Then I should not see the Digital Object as part of the non-governing collection
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
