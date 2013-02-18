@@ -77,9 +77,9 @@ Scenario: Removing a Digital Object from a non-governing collection using the we
   Then I should not see the Digital Object as part of the non-governing collection
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
-#  Given a Digital Object
-#  And an existing collection
-#  And the collection already contains the Digital Object
+#  Given a Digital Object with pid "dri:obj1" and title "Object 1"
+#  And a collection with pid "dri:coll1"
+#  And the collection "dri:coll1" already contains the Digital Object "dri:obj1"
 #  When I commit the Digital Object
 #  Then I should get a duplicate object warning
 #  And I should be given a choice of using the existing object or creating a new one
