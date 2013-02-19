@@ -51,6 +51,7 @@ class CollectionItemsController < AssetsController
   end
 
   def set_current_collection
+
     session[:current_collection] = params[:id]
 
     respond_to do |format|
@@ -59,9 +60,11 @@ class CollectionItemsController < AssetsController
           redirect_to :controller => "collections", :action => "index"
         }
     end
+
   end
 
   def clear_current_collection
+
     session.delete(:current_collection)    
 
     respond_to do |format|
@@ -70,6 +73,7 @@ class CollectionItemsController < AssetsController
           redirect_to :controller => "collections", :action => "index"
         }
     end
+
   end
 
 end

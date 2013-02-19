@@ -152,8 +152,6 @@ en:
           upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
           upload_file_caption: "No files have been uploaded. Please upload a master file."
           upload_pdf: "Upload PDF File"
-          add_to_collection: "Add to Collection"
-          add_to_collection_caption: "Choose a collection for this object."
         links: 
           download: download
           listen: listen
