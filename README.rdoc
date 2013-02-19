@@ -52,8 +52,8 @@ are changed.
   $ cd nuig-rnag
   $ bundle exec guard
 
-QT is required to install all the dependancies, it is required for
-capybara-webkit (front end testing of interface).
+Xvfb and QT is required to install all the dependancies, it is required
+for capybara-webkit (front end testing of interface).
 
 == Translations
 
