@@ -1,5 +1,4 @@
 Before do
-  DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.start
 end
 
