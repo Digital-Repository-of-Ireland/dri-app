@@ -1,3 +1,10 @@
 <ul>
-  <li><%= link_to item.title, catalog_path(item), :id => item.id %> <%= button_to t('dri.views.collection.buttons.remove'), {:controller => :collection_items, :action => :destroy, :id => item.id, :collection_id => collection_id }, :method => :delete, :class => "btn", :id => "remove_#{item.id}" %> </li>
+  <li>
+    <%= link_to item.title, catalog_path(item), :id => item.id %>
+
+    <%= form_tag url_for(:controller => :collection_items, :action => :destroy, :id => item.id, :collection_id => collection_id), :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+      <%= submit_tag t('dri.views.collection.buttons.remove'), :class => "btn", :id => "remove_#{item.id}" %>
+    <% end %>
+
+  </li>
 </ul>

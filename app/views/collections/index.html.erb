@@ -6,22 +6,36 @@
 
     <ul>
       <% @mycollections.each do |collection| %>
-        <li><%= link_to collection.title, collection_path(:id => collection.id) %> (<%= t('dri.views.collection.index.items', :count => collection.governed_items.count + collection.items.count) %>)  
-        <% if !get_current_collection.nil? && get_current_collection.id.eql?(collection.id) %>
-          <%= button_to t('dri.views.collection.buttons.clear_collection'), clear_current_collection_path(collection), :method => :delete, :class => "btn", :id => "clear_collection_#{collection.id}" %> </p>
-        <% else %>
-          <%= button_to t('dri.views.collection.buttons.set_collection'), current_collection_path(collection), :method => :post, :class => "btn", :id => "set_collection_#{collection.id}" %> </p>
-        <% end %>
+
+        <li>
+          <%= link_to collection.title, collection_path(:id => collection.id) %> (<%= t('dri.views.collection.index.items', :count => collection.governed_items.count + collection.items.count) %>)  
+          <% if !get_current_collection.nil? && get_current_collection.id.eql?(collection.id) %>
+
+            <%= form_tag (clear_current_collection_path(collection)), :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+              <%= submit_tag t('dri.views.collection.buttons.clear_collection'), :class => "btn", :id => "clear_collection_#{collection.id}" %>
+            <% end %>
+
+          <% else %>
+
+            <%= form_tag (current_collection_path(collection)), :style=>"margin:0;padding:0;display:inline;" do %>
+              <%= submit_tag t('dri.views.collection.buttons.set_collection'), :class => "btn", :id => "set_collection_#{collection.id}" %>
+            <% end %>
+
+          <% end %>
+
+        </li>
+
       <% end %>
-    </ul>
+      
+   </ul>
 
-    <% if @mycollections.blank? %>
-      <p><%= t('dri.views.collection.index.no_collections') %></p>
-    <% end %>
+   <% if @mycollections.blank? %>
+     <p><%= t('dri.views.collection.index.no_collections') %></p>
+   <% end %>
 
-    <br/>
-    <%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>
+   <br/>
+   <%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>
 
-    </div>
+   </div>
   </div>
 </div>
