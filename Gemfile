@@ -9,17 +9,14 @@ gem 'hydra-head', '5.2.0'
 
 if ENV['DRI_BUNDLE_ENV'] == "tchpc"
   gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models'
+  gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group'
 else
   gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git'
+  gem 'user_group', :git => 'git@dev.forasfeasa.ie:user_group.git'
 end
 
 gem 'rails_config'
 gem 'sqlite3'
-
-# Devise authentication, and devise-i18n-views to support localisation of the
-# devise forms
-gem 'devise'
-gem 'devise-i18n-views'
 
 gem 'noid', '0.5.5'
 
