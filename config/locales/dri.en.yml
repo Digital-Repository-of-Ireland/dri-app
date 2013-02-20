@@ -82,8 +82,6 @@ en:
         sidebar:
           more_like_this: "More Like This"
           nav_header: "Edit Tools"
-      devise:
-        locale: "Language"
       ingest:
         forms:
           title: "Add a new digital object"
