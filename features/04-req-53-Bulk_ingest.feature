@@ -35,7 +35,7 @@ Scenario: Bulk Ingest of a directory 10 of assets and metadata.xml files
   And there is a valid "bulk ingest" location
   And the "Digital Assets" are valid
   And the metadata are valid
-  When select the collection
+  When I select the collection
   And I specify the "bulk ingest" location
   And I run the "bulk ingest" tool
   Then the digital objects should be created in the collection
