@@ -91,7 +91,7 @@
                 type: form.attr("method").toUpperCase(),
                 data: form.serialize(),
                 error: function(xhr) {
-                   alert("Error: " + xhr.status);
+                   alert("Error");
                    update_state_for(checked);
                    label.removeAttr("disabled");
                    checkbox.removeAttr("disabled");
@@ -106,7 +106,7 @@
                     checkbox.removeAttr("disabled");
                     options.success.call(form, checked);
                   } else {
-                    alert("Error: " + status);
+                    alert("Error");
                     update_state_for(checked);
                     label.removeAttr("disabled");
                     checkbox.removeAttr("disabled");
