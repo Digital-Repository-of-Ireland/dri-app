@@ -13,9 +13,6 @@
       <li>
         <%= render_show_doc_actions @document %>
       </li>
-      <li>
-        <%= render "socialmedia/fb_like" %>
-      </li>
       <% if (@document.respond_to?(:export_as_mla_citation_txt) || @document.respond_to?(:export_as_apa_citation_txt)) %>
         <li class="cite">
          <%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>
@@ -41,8 +38,12 @@
       <%= link_to t('blacklight.tools.sms'), sms_catalog_path(:id => @document), {:id => 'smsLink', :name => 'sms', :class => 'lightboxLink'} %>
       </li>
     <%- end -%>
-    <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="dri_ireland" data-lang="en" data-count="horizontal">Tweet</a></li>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <li>
+      <%= render "socialmedia/fb_like" %>
+    </li>
+    <li>
+      <%= render "socialmedia/twitter_tweet" %>
+    </li>
     
     <% if @document.respond_to?(:to_marc) %>
       <li class="librarian_view">
