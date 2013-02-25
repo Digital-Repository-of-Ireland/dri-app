@@ -29,6 +29,9 @@ gem 'mimemagic'
 # Language and translation related gems
 gem 'http_accept_language'
 
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -60,7 +63,6 @@ group :development, :test do
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false 
 end
-gem 'jquery-rails'
 
 group :test do
   gem 'cucumber-rails', require: false
