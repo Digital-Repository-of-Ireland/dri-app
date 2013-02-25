@@ -39,6 +39,7 @@ destroy_text_field = function() {
     });
 }
 
+// Adds audio player in asset display for audio file
 $(document).ready(function() {  
     var audioSection = $('section#audio');  
     $('a.player').click(function() {  
@@ -52,6 +53,7 @@ $(document).ready(function() {
     });  
 });
 
+// Checkbox for adding an object to a collection in the edit tools sidebar
 //= require blacklight/core
 //= require blacklight/checkbox_submit
 (function($) {
@@ -71,14 +73,5 @@ $(document).ready(function() {
   Blacklight.do_collection_toggle_behavior();
 });
 
-
 })(jQuery);
 
-//uploader_submit = function() {
-//  $('.uploader_submit').click(function() {
-//     $('#file_uploader').submit();
-//  });
-//  $('.metadata_uploader_submit').click(function() {
-//     $('#metadata_uploader').submit();
-//  });
-//}
