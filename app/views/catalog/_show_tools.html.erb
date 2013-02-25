@@ -38,9 +38,16 @@
       <%= link_to t('blacklight.tools.sms'), sms_catalog_path(:id => @document), {:id => 'smsLink', :name => 'sms', :class => 'lightboxLink'} %>
       </li>
     <%- end -%>
+    <li>
+      <%= render "socialmedia/fb_like" %>
+    </li>
+    <li> 
+      <%= render "socialmedia/twitter_tweet" %>
+    </li>
+    <li>
+      <%= render "socialmedia/google_plus" %>
+    </li>
 
-    <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="dri_ireland" data-lang="en" data-count="horizontal">Tweet</a></li>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     
     <% if @document.respond_to?(:to_marc) %>
       <li class="librarian_view">
