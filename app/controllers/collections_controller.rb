@@ -5,7 +5,7 @@ class CollectionsController < ApplicationController
   include Hydra::Controller::ControllerBehavior
   include DRI::Model
 
-  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
+  before_filter :authenticate_user!, :only => [:index, :create, :new, :edit, :update]
 
   # Shows list of user's collections
   #

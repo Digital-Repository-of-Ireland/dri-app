@@ -25,6 +25,10 @@ module ApplicationHelper
     end
   end
 
+  def existing_collection_for( object_id )
+    get_current_collection.items.to_a.find {|b| b.id == object_id}
+  end
+
   def get_partial_name( object )
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end

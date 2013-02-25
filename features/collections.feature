@@ -5,24 +5,6 @@ Feature:
   I want to be able to add my Digital Objects to a collection
   And to retrieve my Digital Objects by collection
 
-  What comes first?
-    - collections or objects?
-	  - collections first? - DG
-    - from user perspective - users will want to view collections (which is curated)
-	- need to know the type of user, researchers are different from general public
-	  - focus on depositor for req-17
-	- hydra frame work supports collections but objects can't be in two collections due to access policies
-
-  Implementation plan/goal
-	- One level of depth in repository for collections
-	  - new data model (collections model???) (DG)
-	    - need two rights metadata - one for "itself" and one for "managed objects"
-		- need for cucumber scenario
-	    - Objects are only in one collection
-		- Need for organisation/institution name/code
-
-  Note: ingest will need to know about collections when committing objects
-
 Background:
   Given I am logged in as "user1"
 
@@ -56,7 +38,6 @@ Scenario: Creating Digital Object in a governing collection using the web forms
   When I create a Digital Object in the collection "dri:coll3"
   Then the collection "dri:coll3" should contain the new digital object
 
-@javascript
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
   Given a Digital Object with pid "dri:obj4" and title "Object 4"
   And a collection with pid "dri:coll4"
