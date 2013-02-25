@@ -52,6 +52,28 @@ $(document).ready(function() {
     });  
 });
 
+//= require blacklight/core
+//= require blacklight/checkbox_submit
+(function($) {
+//change form submit toggle to checkbox
+    Blacklight.do_collection_toggle_behavior = function() {
+      $(Blacklight.do_collection_toggle_behavior.selector).bl_checkbox_submit({
+          checked_label: "In Collection",
+          unchecked_label: "Add to Collection",
+          progress_label: "Saving...",
+          //css_class is added to elements added, plus used for id base
+          css_class: "toggle_collection"
+      });
+    };
+    Blacklight.do_collection_toggle_behavior.selector = "form.collection_toggle";
+
+$(document).ready(function() {
+  Blacklight.do_collection_toggle_behavior();
+});
+
+
+})(jQuery);
+
 //uploader_submit = function() {
 //  $('.uploader_submit').click(function() {
 //     $('#file_uploader').submit();

@@ -60,6 +60,9 @@ en:
         sidebar: 
           more_like_this: "More Like This"
           nav_header: "Edit Tools"
+        buttons:
+          add_to_collection: "Add to collection"
+          remove_from_collection: "Remove from collection"
       collection: 
         buttons: 
           create_collection: "Create Collection"
@@ -156,4 +159,3 @@ en:
           download: download
           listen: listen
           view_record: "View Record"
-          add_to_collection: "Add to collection"

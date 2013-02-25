@@ -2,3 +2,28 @@
 @import 'bootstrap-responsive';
 
 @import 'blacklight/blacklight';
+
+#documents .documentFunctions
+{
+        float:right;
+  margin: 10px 0;
+
+  .bookmark_toggle
+  {
+    display:inline;
+  }
+
+  .collection_toggle
+  {
+    display:inline;
+  }
+}
+
+label.toggle_collection
+{
+        color:inherit;
+        display:inline-block;
+        font-weight:inherit;
+        min-width:8.5em;
+        text-align:left;
+}
