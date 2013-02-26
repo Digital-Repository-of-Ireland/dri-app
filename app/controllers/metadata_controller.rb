@@ -65,7 +65,7 @@ class MetadataController < AssetsController
       if is_valid_dc?
 
         if !session[:ingest][:type].blank?
-          @object = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, session[:object_params])
+          @object = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, params[:dri_model])
         else 
           @object = DRI::Model::Audio.new
         end

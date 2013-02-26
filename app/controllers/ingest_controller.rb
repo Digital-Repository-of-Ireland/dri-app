@@ -25,13 +25,10 @@ class IngestController < ApplicationController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    #Merge our object data so far and create the model
-    session[:object_params].deep_merge!(params[:dri_model]) if params[:dri_model]
-
     if !session[:ingest][:type].blank?
-      @document_fedora = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, session[:object_params])
+      @document_fedora = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, params[:dri_model])
     else
-      @document_fedora = DRI::Model::DigitalObject.construct(:audio, session[:object_params])
+      @document_fedora = DRI::Model::DigitalObject.construct(:audio, params[:dri_model])
     end
 
     @ingest_methods = get_ingest_methods
