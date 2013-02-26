@@ -6,7 +6,6 @@
 $(document).ready(function() {
   add_text_field();
   destroy_text_field();
-  // uploader_submit();
 });
 
 // Whenever an "add" link is clicked, a new text field is added to the bottom of the list 

@@ -36,9 +36,6 @@
             <li><%= link_to t('dri.headerlinks.about'), "#", :id => "about" %></li>
             <li><%= link_to t('dri.headerlinks.contact'), "#", :id => "contact" %></li>
     
-          <% if !get_current_collection.nil? %>
-              <li><%= link_to t('dri.headerlinks.current_collection', :collection => get_current_collection.title), collection_path(get_current_collection), :id => "current_collection" %></li>
-          <% end %>
           </ul>
     </div>
 
