@@ -28,9 +28,11 @@ gem 'mimemagic'
 
 # Language and translation related gems
 gem 'http_accept_language'
+gem 'it'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'jquery-cookie-rails'
 
 # Gems used only for assets and not required
 # in production environments by default.
