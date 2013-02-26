@@ -12,7 +12,11 @@
   <div><%= f.label User.human_attribute_name(:password_confirmation) %><br />
   <%= f.password_field :password_confirmation %></div>
 
-  <div><%= f.submit t('.sign_up', :default => "Sign up") %></div>
+  <% if cookies[:accept_cookies] %>
+    <div><%= f.submit t('.sign_up', :default => "Sign up") %>
+  <% else %>
+    <div><%= f.submit t('.sign_up', :default => "Sign up"), :confirm => "#{ t('dri.application.cookies.confirm') }" %></div>
+  <% end %>
 <% end %>
 
 <%= render "devise/shared/links" %>
