@@ -32,7 +32,7 @@ When /^I add the Digital Object "(.*?)" to the non-governing collection "(.*?)" 
     Given I am on the my collections page
     When I press the button to set the current collection to #{collection_pid}
     And I go to the show Digital Object page for id #{object_pid}
-    And I follow the link to add to collection 
+    And I check add to collection for id #{object_pid} 
   }
 end
 
@@ -101,4 +101,8 @@ Then /^the collection "(.*?)" should contain the new digital object$/ do |collec
   collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
   collection.governed_items.count.should == 1
   collection.governed_items[0].title.should == "SAMPLE AUDIO TITLE"
+end
+
+When /^I check add to collection for id (.*?)$/ do |object_pid|
+  click_link_or_button(button_to_id("add to collection for id #{object_pid}"))
 end
