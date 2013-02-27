@@ -54,6 +54,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'railroady'
+  gem 'show_me_the_cookies'
 
   # guard - autorun of tests during development cycle
   gem 'guard'
