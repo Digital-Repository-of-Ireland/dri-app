@@ -43,6 +43,9 @@ module ButtonTranslator
     when /set the current collection to (.+)/
       "set_collection_#{$1}"
 
+    when /accept cookie policy/
+      "accept_cookies"
+
     else "Unknown"
  
     end
