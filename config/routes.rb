@@ -5,7 +5,7 @@ NuigRnag::Application.routes.draw do
   Blacklight.add_routes(self)
   HydraHead.add_routes(self)
 
-  devise_for :users 
+  mount UserGroup::Engine => "user_groups"
 
   resources :objects, :only => ['edit', 'update', 'create']
   resources :collections
