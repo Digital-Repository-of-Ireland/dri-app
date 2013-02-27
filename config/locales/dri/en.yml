@@ -23,6 +23,7 @@ en:
         not_removed_from_collection: "Unable to remove object from collection."
       error: 
         validation_errors: "Validation Errors: %{error}"
+        no_type_specified: "You must specify a valid object type"
       notice: 
         added_to_collection: "Object has been added to collection."
         collection_created: "Collection object has been successfully created."
@@ -94,6 +95,7 @@ en:
         invalid_asset: "Unable to create asset. Please correct the errors and try again."
         invalid_metadata: "The metadata file you have uploaded is invalid. Please correct the errors and try again."
         invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
+        invalid_object_type: "You have specified an invalid digital object type"
       ingest: 
         buttons: 
           continue: Continue

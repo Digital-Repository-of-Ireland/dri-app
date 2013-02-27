@@ -41,18 +41,20 @@ class ObjectsController < ApplicationController
   # Creates a new audio model using the parameters passed in the request.
   #
   def create
-    @supported_types = get_supported_types
+    if params[:dri_model][:governing_collection].present?
+      params[:dri_model][:governing_collection] = Collection.find(params[:dri_model][:governing_collection])
+    end
 
-    if !session[:ingest][:type].blank?
-     @document_fedora = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, params[:dri_model])
+    if params[:dri_model][:type].present?
+      type = params[:dri_model][:type]
+      params[:dri_model].delete(:type)
+      @document_fedora = DRI::Model::DigitalObject.construct(type.to_sym, params[:dri_model])
     else
-      @document_fedora = DRI::Model::DigitalObject.construct(:Audio, params[:dri_model])
+      flash[:alert] = t('dri.flash.error.no_type_specified')
+      raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')
+      return
     end
 
-    if session[:ingest][:collection]
-      collection = Collection.find(session[:ingest][:collection])
-      @document_fedora.governing_collection = collection
-    end
     if @document_fedora.valid? && @document_fedora.save
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')

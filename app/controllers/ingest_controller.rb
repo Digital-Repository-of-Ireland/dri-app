@@ -26,9 +26,14 @@ class IngestController < ApplicationController
   #
   def create
     if !session[:ingest][:type].blank?
+      @type = session[:ingest][:type]
       @document_fedora = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, params[:dri_model])
     else
       @document_fedora = DRI::Model::DigitalObject.construct(:audio, params[:dri_model])
+    end
+
+    if !session[:ingest][:collection].blank?
+      @collection = session[:ingest][:collection]
     end
 
     @ingest_methods = get_ingest_methods
