@@ -15,6 +15,7 @@ en:
       ingest: "Ingest"
       about: "About"
       contact: "Contact"
+      usergroups: "User Groups"
     views:
       objects:
         edit:

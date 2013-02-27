@@ -2,11 +2,13 @@
   <% if has_user_authentication_provider? %>
     <div class="util-links-login">
       <% if current_user %>
-        <%= link_to t('blacklight.header_links.logout'), destroy_user_session_path, :method => :delete, :id => "logout"  %>
-        [<%= link_to current_user, edit_user_registration_path, :id => "edit_account" %>]
+        <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, :method => :delete, :id => "logout"  %>
+        [<%= link_to current_user, user_group.edit_user_path(current_user), :id => "edit_account" %>]
 
       <% else %>
-        <%= link_to t('blacklight.header_links.login'), new_user_session_path, :id => "login" %>
+        <%= link_to t('blacklight.header_links.login'), user_group.new_user_session_path, :id => "login" %>
+	|
+	<%= link_to t('user_group.views.shared.register'), user_group.new_user_path %>
       <% end %>
     </div>
 
