@@ -1,3 +1,5 @@
+require 'exceptions'
+
 class ApplicationController < ActionController::Base
   before_filter :set_locale
 
@@ -9,6 +11,8 @@ class ApplicationController < ActionController::Base
   # Adds Hydra behaviors into the application controller 
   include Hydra::Controller::ControllerBehavior
 
+  include Exceptions
+
   # Please be sure to impelement current_user and user_session. Blacklight depends on 
   # these methods in order to perform user specific actions. 
 
@@ -19,6 +23,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
+  rescue_from Exceptions::BadRequest, :with => :render_bad_request
 
   def set_locale
     if current_user

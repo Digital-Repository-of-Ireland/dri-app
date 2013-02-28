@@ -64,6 +64,7 @@ class ObjectsController < AssetsController
         format.html {
           flash["alert"] = @document_fedora.errors.messages.values.to_s
           redirect_to new_ingest_url
+          render :action => "new"
         }
         format.json { render :json => @document_fedora.errors}
       end

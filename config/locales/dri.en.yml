@@ -103,6 +103,8 @@ en:
           ingest_method: "Select Ingest Method"
           input: "Input"
           upload: "Upload Metadata file"
+      errors:
+        invalid_metadata: "The metadata file you have uploaded is invalid. Please correct the errors and try again."
     flash:
       notice:
         digital_object_ingested: "Digital object has been successfully ingested."
