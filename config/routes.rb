@@ -8,7 +8,12 @@ NuigRnag::Application.routes.draw do
   mount UserGroup::Engine => "user_groups"
 
   resources :objects, :only => ['edit', 'update', 'create']
-  resources :collections
+  resources :collections do
+    resources :items, :only => ['update', 'destroy'], :controller => "collection_items"
+  end
+  match 'collections/current/:id' => 'collection_items#set_current_collection', :via => :post, :as => :current_collection
+  match 'collections/current/:id' => 'collection_items#clear_current_collection', :via => :delete, :as => :clear_current_collection
+
   resources :ingest, :only => ['new', 'create']
 
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
@@ -16,8 +21,6 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/file' => 'files#show', :via => :get, :as => :object_file
   match 'objects/:id/file' => 'files#create', :via => :post, :as => :new_object_file
   match 'metadata' => 'metadata#create', :via => :post  
-
-  match 'relationships/:id/collection' => 'relationships#create'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

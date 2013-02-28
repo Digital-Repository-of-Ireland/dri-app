@@ -16,8 +16,14 @@ module ButtonTranslator
     when /ingest collection/
       "ingestcollection"
 
+    when /add to collection/
+      "collection_id"
+
+    when /governing collection/
+      "dri_model_governing_collection_id"
+
     else "Unknown"
- 
+
     end
   end
 

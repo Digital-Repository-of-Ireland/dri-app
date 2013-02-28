@@ -1,0 +1,21 @@
+<% if @document_fedora.datastreams.has_key?("masterContent") %>
+  
+  <%= form_tag(url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id), :multipart => true, :method => :post, :id => "file_uploader") do %>
+    <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+    <%= hidden_field_tag 'datastream', "masterContent" %>
+    <%= file_field_tag 'Filedata', :accept => @document_fedora.mime_type, :required => "true" %>
+    <%= button_tag t('dri.views.objects.buttons.replace_master'), :id => "replace_file", :name => "upload_file", :class => "btn-primary" %>
+  <% end %>
+
+<% else %>
+
+  <p class="legend-caption"><%= t('dri.views.objects.legends.upload_file_caption') %></p>
+
+  <%= form_tag(url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id), :multipart => true, :method => :post, :id => "file_uploader") do %>
+    <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+    <%= hidden_field_tag 'datastream', "masterContent" %>
+    <%= file_field_tag 'Filedata', :accept => @document_fedora.mime_type, :required => "true" %>
+    <%= button_tag t('dri.views.objects.buttons.upload_master'), :id => "upload_file", :name => "upload_file", :class => "btn-primary" %>
+  <% end %>
+
+<% end %>

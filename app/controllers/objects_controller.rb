@@ -22,7 +22,7 @@ class ObjectsController < AssetsController
   #
   def update
     @document_fedora = retrieve_object(params[:id])
-    if params[:dri_model][:governing_collection_id]
+    if params[:dri_model][:governing_collection_id].present?
       collection = Collection.find(params[:dri_model][:governing_collection_id])
       @document_fedora.governing_collection = collection
     end

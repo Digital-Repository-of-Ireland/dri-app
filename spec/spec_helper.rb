@@ -1,5 +1,8 @@
 require 'simplecov'
 require 'simplecov-rcov'
+require 'capybara-webkit'
+
+Capybara.javascript_driver = :webkit
 
 SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 SimpleCov.start

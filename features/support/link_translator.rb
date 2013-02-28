@@ -40,6 +40,9 @@ module LinkTranslator
      when /my collections/
        "collections"
 
+     when /add to collection/
+       "add_to_collection"
+
     else "Unknown"
  
     end

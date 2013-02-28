@@ -5,49 +5,17 @@
   <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "save_edit" %>
 <% end %>
 
-<fieldset>
-  <legend><%= t('dri.views.objects.legends.add_to_collection') %></legend>
-  <p class="legend-caption"><%= t('dri.views.objects.legends.add_to_collection_caption') %> </p>
-  <form id="relationships" action="<%= url_for(:action=>"create", :controller=>"relationships", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-  <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-  <%= select_tag(:collection_id , options_for_select(get_collections{ |c| [c.title, c.pid] }), :prompt => t('dri.views.ingest.forms.collection_prompt')) %>
-  <input class="btn-primary" name="add_to_collection" type="submit" value="<%= t('dri.views.objects.buttons.add_to_collection') %>" id="add_to_collection"/>
-  </form>
-</fieldset>
+  <%= render :partial => "replace_metadata", :locals => { :document_fedora => @document_fedora } %>
 
 <fieldset>
-        <legend><%= t('dri.views.objects.legends.replace_metadata') %></legend>
-        <p class="legend-caption"><%= t('dri.views.objects.legends.replace_caption') %></p>
-        <form id="metadata_uploader" action="<%= url_for(:action=>"update", :controller=>"metadata", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-        <input type="file" name="metadata_file" accept="application/xml" required >
-        <input name="_method" type="hidden" value="put" />
-        <input class="btn-primary" name="upload_metadata" type="submit" value="<%= t('dri.views.objects.buttons.replace_metadata') %>" id="replace_metadata"/>
-        </form>
-</fieldset>
+  <legend><%= t('dri.views.objects.legends.upload_audio') %></legend>
+  <% if @document_fedora.datastreams.has_key?("masterContent") %>
+    <p><%= t('dri.views.objects.legends.file_caption') %> 
+    <%= link_to t('dri.views.objects.links.listen'), url_for(:controller => 'files', :action => 'show', :id => @document_fedora.id), :class => "player" %>
+      <section id="audio">
+      </section>
+    </p>
+  <% end %>
 
-<fieldset>
-        <legend><%= t('dri.views.objects.legends.upload_audio') %></legend>
-        <% if @document_fedora.datastreams.has_key?("masterContent") %>
-          <p><%= t('dri.views.objects.legends.file_caption') %> 
-            <%= link_to t('dri.views.objects.links.listen'), url_for(:controller => 'files', :action => 'show', :id => @document_fedora.id), :class => "player" %>
-            <section id="audio">
-            </section>
-          </p>
-        
-          <form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-            <input type="file" name="Filedata" accept="audio/*" required >
-            <input type="hidden" name="datastream" value="masterContent" />
-            <input class="btn-primary" name="upload_file" type="submit" value="<%= t('dri.views.objects.buttons.replace_master') %>" id="replace_file"/>
-          </form>
-        <% else %>
-          <p class="legend-caption"><%= t('dri.views.objects.legends.upload_file_caption') %></p>
-          <form id="file_uploader" action="<%= url_for(:action=>"create", :controller=>"files", :id=>@document_fedora.id) %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-            <input type="file" name="Filedata" accept="audio/*" required >
-            <input type="hidden" name="datastream" value="masterContent" />
-            <input class="btn-primary" name="upload_file" type="submit" value="<%= t('dri.views.objects.buttons.upload_master') %>" id="upload_file"/>
-          </form>
-        <% end %>
+  <%= render :partial => "upload_file", :locals => { :document_fedora => @document_fedora } %>
 </fieldset>

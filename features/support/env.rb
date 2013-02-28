@@ -4,8 +4,17 @@ SimpleCov.start
 require 'rubygems'
 require 'spork'
 require 'i18n'
+require 'capybara-webkit'
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
+
+Capybara.javascript_driver = :webkit
+
+if Capybara.javascript_driver == :webkit
+  require 'headless'
+  headless = Headless.new
+  headless.start
+end
 
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
@@ -85,7 +94,7 @@ ActionController::Base.allow_rescue = false
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
 begin
-  DatabaseCleaner.strategy = :transaction
+  DatabaseCleaner.strategy = :truncation
 rescue NameError
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
