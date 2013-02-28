@@ -27,23 +27,29 @@ Background:
   Given I am logged in as "user1"
 
 Scenario: Navigating to the collections page
-#  When I go to the home page
-#  Then I should see a link to my collections
-#  When I follow the link to my collections
-#  Then I should see my collections
+  Given I am on the home page
+  Then I should see a link to my collections
+  When I follow the link to my collections
+  Then I should be on the my collections page
 
 Scenario: Constructing a valid collection
-#  Given I am on the my collections page
-#  When I follow the link to create a collection
-#  And I enter valid metadata for a collection
-#  And I press the button to create a collection
-#  Then I should see a success message for creating a collection
+  Given I am on the my collections page
+  When I press the button to add new collection
+  And I enter valid metadata for a collection
+  And I press the button to create a collection
+  Then I should see a success message for creating a collection
 
 Scenario: Commiting Digital Object to a collection
   Given a Digital Object
   And an existing collection
   When I add the Digital Object to the collection
   Then the collection should contain the Digital Object
+
+Scenario: Commiting Digital Object to a collection using the web forms
+  Given an existing collection
+  When I create a Digital Object in the existing collection
+  And I go to the show page for the existing collection
+  Then I should see the Digital Object as part of the collection
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
   Given a Digital Object

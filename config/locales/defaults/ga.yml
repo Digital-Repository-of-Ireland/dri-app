@@ -1,6 +1,6 @@
 # en-GB file from https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
 --- 
-en: 
+ga: 
   activemodel: 
     errors: 
       format: "%{attribute} %{message}"

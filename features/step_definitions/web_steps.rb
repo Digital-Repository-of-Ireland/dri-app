@@ -7,11 +7,13 @@ World(WithinHelpers)
 
 Given /^I have created a Digital Object$/ do
   steps %{
-    Given I am on the new Digital Object page
+    Given I have created a collection
+    And I am on the new Digital Object page
+    And I select a collection
     And I press the button to continue
-    And I select audio from the selectbox for object type
+    And I select "audio" from the selectbox for object type
     And I press the button to continue
-    And I select upload from the selectbox for ingest methods
+    And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
     And I attach the metadata file "valid_metadata.xml"
     And I press the button to ingest metadata
@@ -20,14 +22,34 @@ end
 
 Given /^I have created a (pdfdoc|audio) object$/ do |type|
   steps %{
-    Given I am on the new Digital Object page
+    Given I have created a collection
+    And I am on the new Digital Object page
+    And I select a collection
     And I press the button to continue
-    And I select #{type} from the selectbox for object type
+    And I select "#{type}" from the selectbox for object type
     And I press the button to continue
-    And I select upload from the selectbox for ingest methods
+    And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
     And I attach the metadata file "valid_metadata.xml"
     And I press the button to ingest metadata
+  }
+end
+
+Given /^I have created a collection$/ do
+  steps %{
+    Given I am on the my collections page
+    And I press the button to add new collection
+    And I enter valid metadata for a collection
+    And I press the button to create a collection
+  }
+end
+
+Given /^I have created a collection with title "(.+)"$/ do |title|
+  steps %{
+    Given I am on the my collections page
+    And I press the button to add new collection
+    And I enter valid metadata for a collection with title #{title}
+    And I press the button to create a collection
   }
 end
 
@@ -59,8 +81,12 @@ When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
   end
 end
 
-When /^I select (.*?) from the selectbox for (.*?)$/ do |option, selector|
+When /^I select "(.*?)" from the selectbox for (.*?)$/ do |option, selector|
   select_by_value(option, :from => select_box_to_id(selector))
+end
+
+When /^I select the text "(.*?)" from the selectbox for (.*?)$/ do |option, selector|
+  select(option, :from => select_box_to_id(selector))
 end
 
 When /^I attach the metadata file "(.*?)"$/ do |file|
@@ -79,6 +105,12 @@ When /^I attach the asset file "(.*?)"$/ do |file|
   attach_file("Filedata", File.join(cc_fixture_path, file))
 end
 
+When /^I select a collection$/ do
+  second_option_xpath = "//*[@id='ingestcollection']/option[2]"
+  second_option = find(:xpath, second_option_xpath).value
+  select_by_value(second_option, :from => "ingestcollection")
+end
+
 Then /^I should see the valid metadata$/ do
   interface.has_valid_metadata?
 end
@@ -88,11 +120,11 @@ Then /^I should see the modified metadata$/ do
 end
 
 Then /^I press "(.*?)"$/ do |button|
-  click_button(button)
+  click_link_or_button(button)
 end
 
 Then /^(?:|I )press the button to (.+)$/ do |button|
-  click_button(button_to_id(button))
+  click_link_or_button(button_to_id(button))
 end 
 
 Then /^(?:|I )should see a link to (.+)$/ do |link|

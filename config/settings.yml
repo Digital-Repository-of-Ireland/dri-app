@@ -6,3 +6,5 @@ ingest:
     ingestmethod: [ingestmethod]
 interface:
   languages: [en, ga]
+dri:
+  files: dri_files

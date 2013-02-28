@@ -21,7 +21,6 @@ Scenario: DRI Data Model for Audio should have correct metadata fields and valid
   And it should have attribute "source"
   And it should have attribute "geographical_coverage"
   And it should have attribute "temporal_coverage"
-  And it should have attribute "person"
 
 Scenario: DRI Data Model for Pdfdoc should not be valid without correct metadata
   Given we have a "DRI::Model::Pdfdoc" Model
@@ -42,6 +41,16 @@ Scenario: DRI Data Model for Pdfdoc should have correct metadata fields and vali
   And it should have attribute "source"
   And it should have attribute "geographical_coverage"
   And it should have attribute "temporal_coverage"
-  And it should have attribute "person"
 
+Scenario: DRI Data Model for Collection should not be valid without correct metadata
+  Given we have a "DRI::Model::Collection" Model
+  When we test an empty "DRI::Model::Collection" Model
+  Then the "DRI::Model::Collection" Model should not be valid
+
+Scenario: DRI Data Model for Collection should have correct metadata fields and validate required ones
+  Given we have a "DRI::Model::Collection" Model
+  When we test the "DRI::Model::Collection" Model
+  Then it should validate presence of attribute "title"
+  And it should have attribute "description"
+  And it should have attribute "publisher"
 

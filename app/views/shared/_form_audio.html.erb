@@ -8,10 +8,10 @@
   <%= f.text_field :broadcast_date, :class => "edit span6", :required => "true" %>
   <%= f.label "#{t('dri.views.objects.forms.rights')}:" %>
   <%= f.text_field :rights, :class => "edit span6", :required => "true" %>
-  
+
   <% if action.eql?("update") %>
-    <%= f.label "#{t('dri.views.objects.forms.collection')}:" %>
-    <%= f.select :collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }, get_current_collection(@document_fedora)), :class => "edit span6" %>
+    <%= f.label "#{t('dri.views.objects.forms.governing_collection')}:" %>
+    <%= f.select :governing_collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }, get_governing_collection(@document_fedora)), :prompt => t('dri.views.ingest.forms.collection_prompt'), :class => "edit span6" %>
   <% end %>
 
 </fieldset>

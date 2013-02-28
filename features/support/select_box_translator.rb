@@ -13,6 +13,9 @@ module ButtonTranslator
     when /language/
       "user_locale"
 
+    when /ingest collection/
+      "ingestcollection"
+
     else "Unknown"
  
     end

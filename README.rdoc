@@ -51,3 +51,19 @@ are changed.
 
   $ cd nuig-rnag
   $ bundle exec guard
+
+== Translations
+
+When translations are added to the english locale files in config/locales
+you should run the rake task localefiles with the parameter file which should
+be set to the path to the ENGLISH yml file. For example:
+
+  $ rake locales:mergefile file=config/locales/dri/en.yml
+
+This will merge any new keys from the English file into any other locale files
+(with the same naming convention) in that directory. The default value for each
+key will be the English text.
+
+To merge all files use
+
+  $ rake locales:mergeall

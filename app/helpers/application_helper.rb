@@ -11,9 +11,9 @@ module ApplicationHelper
     collections.collect{ |c| [c.title, c.pid] }
   end
 
-  def get_current_collection( object )
-    if !object.collection.nil?
-      object.collection.pid
+  def get_governing_collection( object )
+    if !object.governing_collection.nil?
+      object.governing_collection.pid
     end
   end
 

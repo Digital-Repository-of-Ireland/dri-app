@@ -1,16 +1,16 @@
 
 --- 
-ga: 
+en: 
   active_record: 
     attributes: 
       feedback: 
-        email: "Votre E-mail"
-        message: "Votre Message"
-        name: "Votre Nom"
+        email: "Your Email"
+        message: "Your Message"
+        name: "Your Name"
     models: 
-      feedback: Réaction
+      feedback: Feedback
   blacklight: 
-    and: agus
+    and: and
     application_name: Blacklight
     back_to_bookmarks: "Back to Bookmarks"
     back_to_search: "Back to Search"
@@ -76,12 +76,12 @@ ga:
       valid_email: "A valid email address is required"
       valid_name: "A valid name is required"
     header_links: 
-      bookmarks: Leabharmharcanna
-      login: "Logáil isteach"
-      logout: "Logáil amach"
-      saved_searches: "Mo Chuardaigh"
-      search_history: Stair
-    or: nó
+      bookmarks: Bookmarks
+      login: Login
+      logout: "Log Out"
+      saved_searches: "Saved Searches"
+      search_history: History
+    or: or
     saved_searches: 
       add: 
         failure: "There was a problem saving your search."
@@ -196,7 +196,7 @@ ga:
       refworks: "Export to Refworks"
       sms: "SMS This"
       title: Tools
-    welcome: Fáilte!
+    welcome: Welcome!
   views: 
     pagination: 
       first: "&laquo; First"
