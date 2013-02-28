@@ -34,14 +34,17 @@ module ButtonTranslator
     when /create a collection/
       "create_new_collection"
 
-    when /add to collection/
-      "add_to_collection"
+    when /add to collection for id (.+)/
+      "collection_toggle_#{$1.parameterize}"
 
     when /remove from collection (.+)/
       "remove_#{$1}"
 
     when /set the current collection to (.+)/
       "set_collection_#{$1}"
+
+    when /accept cookie policy/
+      "accept_cookies"
 
     else "Unknown"
  

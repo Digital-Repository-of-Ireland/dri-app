@@ -64,34 +64,36 @@ class MetadataController < AssetsController
     if params.has_key?(:metadata_file) && params[:metadata_file] != nil
       if is_valid_dc?
 
-        if !session[:ingest][:type].blank?
-          @object = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, session[:object_params])
+        if params.has_key?(:type) && params[:type].present?
+          @object = DRI::Model::DigitalObject.construct(params[:type].to_sym, params[:dri_model])
         else 
-          @object = DRI::Model::Audio.new
+          flash[:alert] = t('dri.flash.error.no_type_specified')
+          raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')
+          return
         end
 
-          if @object.datastreams.has_key?("descMetadata")
-            @object.datastreams["descMetadata"].ng_xml = @tmp_xml
-          else
-            ds = @object.load_from_xml(@tmp_xml)
-            @object.add_datastream ds, :dsid => 'descMetadata'
-          end
+        if @object.datastreams.has_key?("descMetadata")
+          @object.datastreams["descMetadata"].ng_xml = @tmp_xml
+        else
+          ds = @object.load_from_xml(@tmp_xml)
+          @object.add_datastream ds, :dsid => 'descMetadata'
+        end
 
-          if !session[:ingest][:collection].blank?
-            @object.governing_collection = Collection.find(session[:ingest][:collection])
-          end
+        if params.has_key?(:governing_collection) && !params[:governing_collection].blank?
+          @object.governing_collection = Collection.find(params[:governing_collection])
+        end
 
-          if @object.valid?
-            @object.save
-            flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-          else
-            flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
-            raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
-            return
-          end
-
-          redirect_to :controller => "catalog", :action => "show", :id => @object.id
+        if @object.valid?
+          @object.save
+          flash[:notice] = t('dri.flash.notice.digital_object_ingested')
+        else
+          flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
+          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
           return
+        end
+
+        redirect_to :controller => "catalog", :action => "show", :id => @object.id
+        return
       else
         raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
         return

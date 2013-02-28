@@ -143,6 +143,14 @@ Then /^(?:|I )should see an error message for (.+)$/ do |message|
   page.should have_selector ".alert", text: flash_for(message)
 end
 
+Then /^(?:|I )should see a message for (.+)$/ do |message|
+  page.should have_selector ".alert", text: flash_for(message)
+end
+
+Then /^(?:|I )should not see a message for (.+)$/ do |message|
+  page.should_not have_selector ".alert", text: flash_for(message)
+end
+
 Then /^(?:|I )should see "([^"]*)"(?: within "([^"]*)")?$/ do |text, selector|
   with_scope(selector) do
     if page.respond_to? :should

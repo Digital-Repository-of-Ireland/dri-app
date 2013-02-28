@@ -49,6 +49,9 @@ module FlashTranslator
     when /removing an object from a collection/
       I18n.t('dri.flash.notice.removed_from_collection', :locale => @user.locale)
 
+    when /cookie notification/
+      I18n.t('dri.application.cookies.header', :locale => "en")
+
     else "Unknown"
  
     end

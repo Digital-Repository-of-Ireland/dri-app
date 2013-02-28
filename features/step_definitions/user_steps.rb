@@ -34,7 +34,11 @@ Then /^I should see an edit link for "([^\"]*)"$/ do |login|
 end
 
 Given /^I am not logged in$/ do
-  page.driver.submit :delete, "/users/sign_out", {}
+  step 'I am on the home page'
+  Capybara.reset_sessions!
+  if Capybara.current_driver.to_s == "rack_test"
+    page.driver.submit :delete, "/users/sign_out", {}
+  end
 end
 
 Given /^an account for "([^\"]*)" already exists$/ do |login|
@@ -84,7 +88,8 @@ When /^I submit the User Sign in page with credentials "([^\"]*)" and "([^\"]*)"
 end
 
 Then /^I should be logged in$/ do
-step 'I should see a link to sign out'
+  step 'I should have a cookie _nuig-rnag_session'
+  step 'I should see a link to sign out'
 end
 
 Then /^I should be logged out$/ do

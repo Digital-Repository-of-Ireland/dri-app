@@ -1,5 +1,8 @@
 <%= form_for @document_fedora, :as => :dri_model, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
 
+  <%= f.hidden_field :type, {:value => @type} %>
+  <%= f.hidden_field :governing_collection, {:value => @collection} %>
+
   <%= render :partial => "shared/form_pdf", :locals => { :f => f, :action => "create" } %>
 
   <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "save_edit" %>
