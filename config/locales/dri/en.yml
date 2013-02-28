@@ -19,7 +19,7 @@ en:
     views:
       objects:
         edit:
-          title: "Edit Audio"
+          title: "Edit Object"
           sidebar:
             nav_header: "Edit Tools"
         forms:
@@ -47,6 +47,7 @@ en:
           add_author: "Add Author"
           add_editor: "Add Editor"
           delete: "delete"
+          publisher: "publisher"
         buttons:
           save: "Save Changes"
           replace_metadata: "Upload Metadata"
@@ -66,6 +67,13 @@ en:
           listen: "listen"
           download: "download"
           view_record: "View Record"
+      collection:
+          new:
+            title: "New Collection"
+          buttons:
+            create_collection: "Create Collection"
+          legends:
+            members: "Members"
       catalog:
         links:
           listen: "listen"
@@ -103,8 +111,10 @@ en:
           ingest_method: "Select Ingest Method"
           input: "Input"
           upload: "Upload Metadata file"
-      errors:
+      exceptions:
         invalid_metadata: "The metadata file you have uploaded is invalid. Please correct the errors and try again."
+        invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
+        invalid_asset: "Unable to create asset. Please correct the errors and try again."
     flash:
       notice:
         digital_object_ingested: "Digital object has been successfully ingested."

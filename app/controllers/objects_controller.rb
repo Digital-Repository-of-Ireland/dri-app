@@ -63,8 +63,8 @@ class ObjectsController < AssetsController
       respond_to do |format|
         format.html {
           flash["alert"] = @document_fedora.errors.messages.values.to_s
-          redirect_to new_ingest_url
-          render :action => "new"
+          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
+          return
         }
         format.json { render :json => @document_fedora.errors}
       end
