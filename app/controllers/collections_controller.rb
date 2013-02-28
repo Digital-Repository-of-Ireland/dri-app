@@ -1,7 +1,7 @@
 # Controller for the Collection model
 #
 class CollectionsController < AssetsController
-  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
+  before_filter :authenticate_user!, :only => [:index, :create, :new, :edit, :update]
 
   # Shows list of user's collections
   #

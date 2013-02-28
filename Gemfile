@@ -25,6 +25,11 @@ gem 'mimemagic'
 
 # Language and translation related gems
 gem 'http_accept_language'
+gem 'it'
+
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'jquery-cookie-rails'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -57,7 +62,6 @@ group :development, :test do
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false 
 end
-gem 'jquery-rails'
 
 group :test do
   gem 'cucumber-rails', require: false
@@ -76,9 +80,6 @@ end
 
 # Use unicorn as the app server
 gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
 
 # To use debugger
 # gem 'debugger'

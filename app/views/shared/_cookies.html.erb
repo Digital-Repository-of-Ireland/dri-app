@@ -1,0 +1,5 @@
+<div class="alert alert-block">
+  <a class="close" data-dismiss="alert" onclick="$.cookie('accept_cookies', 'yes', { path: '/', expires: 10000 });"><%= t('dri.application.cookies.accept') %></a>
+  <h4 class="alert-heading"><%= t('dri.application.cookies.header') %></h4>
+  <%= it 'dri.application.cookies.message', privacy_statement: It.link(privacy_path), cookies_help: It.link("#") %>
+</div>

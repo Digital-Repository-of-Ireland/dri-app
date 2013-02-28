@@ -3,6 +3,8 @@
 This code in its current state is not to be redistributed to parties
 outside of DRI.
 
+THIS IS FOR ADMINS ONLY, THERE IS A SEPARATE HEAD FOR NON-ADMIN USERS
+
 == Welcome to nuig-rnag
 
 This repository contains the proto-type of a Hydra-Head which targets the

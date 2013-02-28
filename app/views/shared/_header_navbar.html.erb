@@ -28,19 +28,14 @@
         </div>
      </div>
 
-     <div class="row">
+    <div class="row">
            <ul class="nav pull-left">
             <li><%= link_to t('dri.headerlinks.home'), root_path, :id => "home" %></li>
             <li><%= link_to t('dri.headerlinks.collections'), collections_path, :id => "collections" %></li>
             <li><%= link_to t('dri.headerlinks.ingest'), new_ingest_path, :id => "ingest" %></li>
-            <li><%= link_to t('dri.headerlinks.about'), "#", :id => "about" %></li>
-            <li><%= link_to t('dri.headerlinks.contact'), "#", :id => "contact" %></li>
     	    <li><%= link_to t('dri.headerlinks.usergroups'), user_group_path, :id=>"usergroup" %></li>
-
-          <% if !get_current_collection.nil? %>
-              <li><%= link_to t('dri.headerlinks.current_collection', :collection => get_current_collection.title), collection_path(get_current_collection), :id => "current_collection" %></li>
-          <% end %>
           </ul>
+    </div>
     </div>
 
    </div>

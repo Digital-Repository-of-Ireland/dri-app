@@ -3,6 +3,10 @@
 en: 
   dri: 
     application: 
+      cookies: 
+        accept: "Accept and hide message"
+        header: "Important notice about cookies"
+        message: "The Digital Repository of Ireland uses cookies to implement access control to digital resources. To opt out of receiving cookies from DRI, please turn off cookies for this website in your browser preferences. Note that users who opt out will be unable to use some of the features of the Digital Repository. For more information please see our %{privacy_statement:privacy statement} and our %{cookies_help:cookies help} pages."
       home: 
         introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
       lang: 
@@ -19,11 +23,15 @@ en:
       error: 
         validation_errors: "Validation Errors: %{error}"
       notice: 
+        added_to_collection: "Object has been added to collection."
         collection_created: "Collection object has been successfully created."
+        current_collection_cleared: "No collection set."
+        current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
         file_uploaded: "File has been successfully uploaded."
         metadata_updated: "Metadata has been successfully updated."
         no_xml_schema: "The XML file contains no schema to validate against."
+        removed_from_collection: "Object has been removed from the collection."
         schema_validation_error: "The XML file could not validate against the Dublin Core schema"
         specify_datastream: "You must specify a valid file datastream."
         specify_file: "You must specify a file to upload."
@@ -31,19 +39,19 @@ en:
         specify_valid_file: "You must specify a valid file to upload."
         specify_xml_file: "You must specify a XML file."
         updated: "Updated %{item}"
-        added_to_collection: "Object has been added to collection."
-        removed_from_collection: "Object has been removed from the collection."
-        current_collection_set: "Current collection has been set to: %{collection}"
-        current_collection_cleared: "No collection set."
     headerlinks: 
       about: About
       collections: "My Collections"
       contact: Contact
+      current_collection: "Current Collection: %{collection}"
       home: Home
       ingest: Ingest
-      current_collection: "Current Collection: %{collection}"
+      privacy: "Privacy & Cookies policy"
     views: 
       catalog: 
+        buttons: 
+          add_to_collection: "Add to collection"
+          remove_from_collection: "Remove from collection"
         forms: 
           audio_file: "Audio File"
           metadata: Metadata
@@ -62,21 +70,21 @@ en:
           nav_header: "Edit Tools"
       collection: 
         buttons: 
+          clear_collection: "Clear as Current"
           create_collection: "Create Collection"
           new_collection: "New Collection"
+          remove: Remove
           set_collection: "Set as Current"
-          clear_collection: "Clear as Current"
-          remove: "Remove"
         index: 
-          no_collections: "You do not have any collections yet."
-          title: "My Collections"
-          items:
+          items: 
             one: "%{count} item"
             other: "%{count} items"
+          no_collections: "You do not have any collections yet."
+          title: "My Collections"
         legends: 
           governed_objects: "Governed Objects"
-          objects: "Objects in Collection"
           members: Members
+          objects: "Objects in Collection"
         new: 
           title: "New Collection"
       devise: 
@@ -107,11 +115,11 @@ en:
           upload: "Upload Metadata file"
       objects: 
         buttons: 
+          add_to_collection: "Add to Collection"
           replace_master: "Replace Master File"
           replace_metadata: "Upload Metadata"
           save: "Save Changes"
           upload_master: "Upload Master File"
-          add_to_collection: "Add to Collection"
         edit: 
           sidebar: 
             nav_header: "Edit Tools"
@@ -156,4 +164,3 @@ en:
           download: download
           listen: listen
           view_record: "View Record"
-          add_to_collection: "Add to collection"

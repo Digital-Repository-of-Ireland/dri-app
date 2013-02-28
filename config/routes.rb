@@ -21,6 +21,9 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/file' => 'files#show', :via => :get, :as => :object_file
   match 'objects/:id/file' => 'files#create', :via => :post, :as => :new_object_file
   match 'metadata' => 'metadata#create', :via => :post  
+  match '/privacy' => 'static_pages#privacy', :via => :get
+  match '/about' => 'static_pages#about', :via => :get
+  match '/contact' => 'static_pages#contact', :via => :get
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
