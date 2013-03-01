@@ -107,6 +107,18 @@ Scenario: Constructing a Digital Object using the web form
   Then I should see a success message for ingestion
   And I should see the valid metadata
 
+Scenario: Constructing a Digital Object using the web form without setting a collection
+  Given I am on the new Digital Object page
+  And I press the button to continue
+  And I select "audio" from the selectbox for object type
+  And I press the button to continue
+  And I select "input" from the selectbox for ingest methods
+  And I press the button to continue
+  When I enter valid metadata
+  And I press the button to continue
+  Then I should see a success message for ingestion
+  And I should see the valid metadata
+
 Scenario: Editing the metadata of a Digital Object using the web form
   Given I have created a Digital Object
   Then I should see a link to edit an object
