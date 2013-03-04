@@ -11,6 +11,20 @@ class CollectionsController < ApplicationController
   #
   def index
     @mycollections = DRI::Model::Collection.all
+
+    respond_to do |format|
+      format.html
+      format.json { 
+        collectionhash = []
+        @mycollections.each do |collection|
+          collectionhash << { :id => collection.id,
+                               :title => collection.title,
+                               :publisher => collection.publisher,
+                               :objectcount => collection.governed_items.count + collection.items.count }.to_json
+        end
+        @mycollections = collectionhash
+      }
+    end
   end
 
   # Creates a new model.
