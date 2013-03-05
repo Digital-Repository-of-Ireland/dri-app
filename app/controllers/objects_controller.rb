@@ -60,7 +60,8 @@ class ObjectsController < ApplicationController
     if @document_fedora.valid? && @document_fedora.save
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-          redirect_to :controller => "catalog", :action => "show", :id => @document_fedora.id }
+          redirect_to :controller => "catalog", :action => "show", :id => @document_fedora.id
+        }
         format.json { render :json => "{\"pid\": \"#{@document_fedora.id}\"}", :location => catalog_url(@document_fedora), :status => :created }
       end
     else
@@ -70,7 +71,10 @@ class ObjectsController < ApplicationController
           raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
           return
         }
-        format.json { render :json => @document_fedora.errors}
+        format.json {
+          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
+          render :json => @document_fedora.errors
+        }
       end
     end
 
