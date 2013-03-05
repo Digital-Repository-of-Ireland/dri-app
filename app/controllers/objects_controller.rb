@@ -61,7 +61,7 @@ class ObjectsController < ApplicationController
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
           redirect_to :controller => "catalog", :action => "show", :id => @document_fedora.id }
-        format.json { render :json => @document_fedora }
+        format.json { render :json => "{\"pid\": \"#{@document_fedora.id}\"}", :location => catalog_url(@document_fedora), :status => :created }
       end
     else
       respond_to do |format|
