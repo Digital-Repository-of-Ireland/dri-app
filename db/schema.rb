@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130205105143) do
+ActiveRecord::Schema.define(:version => 20130304123852) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20130205105143) do
     t.string  "ds_id"
     t.string  "mime_type"
     t.integer "version"
+    t.string  "checksum"
   end
 
   create_table "searches", :force => true do |t|
