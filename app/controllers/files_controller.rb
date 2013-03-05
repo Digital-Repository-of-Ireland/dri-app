@@ -75,7 +75,10 @@ class FilesController < AssetsController
 
           respond_to do |format|
             format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:id]}
-            format.json  { render :json => "{\"checksum\": \"#{@file.checksum}\"}", :status => :created }
+            format.json  { 
+              checksumhash = { :checksum => @file.checksum }
+              render :json => checksumhash, :status => :created 
+            }
           end
           return
 
