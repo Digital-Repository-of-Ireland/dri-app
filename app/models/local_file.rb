@@ -3,6 +3,7 @@
 require 'digest/md5'
 
 class LocalFile < ActiveRecord::Base
+  serialize :checksum
 
   # Write the file to the filesystem
   #
@@ -17,7 +18,7 @@ class LocalFile < ActiveRecord::Base
     FileUtils.mkdir_p(opts[:directory])
     File.open(self.path, "wb") { |f| f.write(upload.read) }
 
-    self.checksum = create_checksum
+    self.checksum = { :md5 => md5_checksum(self.path) }
   end
 
   # Remove the file from the filesystem if it exists
@@ -32,8 +33,8 @@ class LocalFile < ActiveRecord::Base
     end
   end
 
-  def create_checksum
-    Digest::MD5.file(self.path).hexdigest
+  def md5_checksum(file)
+    Digest::MD5.file(file).hexdigest
   end
 
 end
