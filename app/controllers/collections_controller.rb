@@ -34,7 +34,6 @@ class CollectionsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json  { render :json => @document_fedora }
     end
   end
 
@@ -45,7 +44,6 @@ class CollectionsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json  { render :json => @document_fedora }
     end
   end
 
@@ -56,7 +54,13 @@ class CollectionsController < ApplicationController
 
     respond_to do |format|
       format.html  
-      format.json  { render :json => @document_fedora }
+      format.json  {
+        @json_obj = {}
+        @json_obj[:id] = @document_fedora.pid
+        @json_obj[:title] = @document_fedora.title
+        @json_obj[:description] = @document_fedora.description
+        @json_obj[:objectcount] = @document_fedora.governed_items.count + @document_fedora.items.count
+      }
     end
   end
 
@@ -69,7 +73,6 @@ class CollectionsController < ApplicationController
     respond_to do |format|
       flash["notice"] = t('dri.flash.notice.updated', :item => params[:id])
       format.html  { render :action => "edit" }
-      format.json  { render :json => @document_fedora }
     end
   end
 
@@ -82,13 +85,11 @@ class CollectionsController < ApplicationController
       if @document_fedora.save
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
             redirect_to :controller => "collections", :action => "show", :id => @document_fedora.id }
-        format.json { render :json => @document_fedora }
       else
         format.html {
           flash["alert"] = @document_fedora.errors.messages.values.to_s
           render :action => :new
         }
-        format.json { render :json => @document_fedora.errors}
       end
     end
   end

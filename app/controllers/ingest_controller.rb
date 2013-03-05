@@ -9,7 +9,7 @@ class IngestController < ApplicationController
   include DRI::Model
   include SteppedForms
 
-  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
+  before_filter :authenticate_user!, :only => [:create, :new]
 
   # Form for a new dri_data_models model.
   #
@@ -22,7 +22,7 @@ class IngestController < ApplicationController
     end
   end
 
-  # Creates a new model using the parameters passed in the request.
+  # Handles the ingest process using partial forms
   #
   def create
     if !session[:ingest][:type].blank?
