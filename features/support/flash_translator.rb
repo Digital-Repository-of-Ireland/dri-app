@@ -32,16 +32,16 @@ module FlashTranslator
 
     when /new account/
       # User is not yet logged in and has no @user, will default to locale 'en'
-      I18n.t('devise.registrations.signed_up', :locale => "en")
+      I18n.t('user_groups.users.signup', :locale => "en")
 
     when /duplicate email/
-      strip_vars( I18n.t('activerecord.errors.models.user.attributes.email.taken', :locale => "en") )
+      strip_vars( I18n.t('activerecord.errors.models.user_group/user.attributes.email.taken', :locale => "en") )
 
     when /password mismatch/
-      strip_vars( I18n.t('activerecord.errors.models.user.attributes.password.confirmation', :locale => "en") )
+      strip_vars( I18n.t('activerecord.errors.models.user_group/user.attributes.password.confirmation', :locale => "en") )
 
     when /too short password/
-      strip_vars( I18n.t('activerecord.errors.models.user.attributes.password.too_short', :locale => "en") )
+      strip_vars( I18n.t('activerecord.errors.models.user_group/user.attributes.password.too_short', :locale => "en") )
 
     when /creating a collection/
       I18n.t('dri.flash.notice.collection_created', :locale => @user.locale)
