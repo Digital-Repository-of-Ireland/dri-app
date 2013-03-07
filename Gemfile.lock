@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git@dev.forasfeasa.ie:user_group.git
-  revision: 7f69f4689d86cefe94eb3fd45d2ee12ead878aa4
+  revision: 0f843aa5b8424a058052b0746cd0e312a04239dd
   specs:
     user_group (0.0.2)
       devise (~> 2.1.2)
@@ -60,7 +60,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.3)
     arel (3.0.2)
-    backports (3.0.3)
+    backports (3.1.0)
     bcrypt-ruby (3.0.1)
     blacklight (4.0.0)
       bootstrap-sass (~> 2.1.0)
@@ -296,7 +296,7 @@ GEM
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
-    rubydora (1.4.0)
+    rubydora (1.4.2)
       activemodel
       activesupport
       deprecation
