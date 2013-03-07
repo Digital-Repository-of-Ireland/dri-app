@@ -6,7 +6,7 @@ require 'stepped_forms'
 class IngestController < AssetsController
   include SteppedForms
 
-  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
+  before_filter :authenticate_user!, :only => [:create, :new]
 
   # Form for a new dri_data_models model.
   #
@@ -19,7 +19,7 @@ class IngestController < AssetsController
     end
   end
 
-  # Creates a new model using the parameters passed in the request.
+  # Handles the ingest process using partial forms
   #
   def create
     if !session[:ingest][:type].blank?

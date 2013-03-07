@@ -1,8 +1,9 @@
 # Represents a file stored on the local filesystem.
 
-require 'digest/md5'
+require 'checksum'
 
 class LocalFile < ActiveRecord::Base
+  serialize :checksum
 
   # Write the file to the filesystem
   #
@@ -17,7 +18,11 @@ class LocalFile < ActiveRecord::Base
     FileUtils.mkdir_p(opts[:directory])
     File.open(self.path, "wb") { |f| f.write(upload.read) }
 
-    self.checksum = create_checksum
+    unless opts[:checksum].blank?
+      self.checksum = { opts[:checksum] => Checksum.checksum(opts[:checksum], self.path) }
+    else
+      self.checksum = {}
+    end
   end
 
   # Remove the file from the filesystem if it exists
@@ -30,10 +35,6 @@ class LocalFile < ActiveRecord::Base
     if File.exist?(self.path)
       File.delete(self.path)
     end
-  end
-
-  def create_checksum
-    Digest::MD5.file(self.path).hexdigest
   end
 
 end

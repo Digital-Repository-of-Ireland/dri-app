@@ -7,6 +7,20 @@ class CollectionsController < AssetsController
   #
   def index
     @mycollections = DRI::Model::Collection.all
+
+    respond_to do |format|
+      format.html
+      format.json { 
+        collectionhash = []
+        @mycollections.each do |collection|
+          collectionhash << { :id => collection.id,
+                               :title => collection.title,
+                               :publisher => collection.publisher,
+                               :objectcount => collection.governed_items.count + collection.items.count }.to_json
+        end
+        @mycollections = collectionhash
+      }
+    end
   end
 
   # Creates a new model.
@@ -16,7 +30,6 @@ class CollectionsController < AssetsController
 
     respond_to do |format|
       format.html
-      format.json  { render :json => @document_fedora }
     end
   end
 
@@ -27,7 +40,6 @@ class CollectionsController < AssetsController
 
     respond_to do |format|
       format.html
-      format.json  { render :json => @document_fedora }
     end
   end
 
@@ -38,7 +50,14 @@ class CollectionsController < AssetsController
 
     respond_to do |format|
       format.html  
-      format.json  { render :json => @document_fedora }
+      format.json  {
+        @response = {}
+        @response[:id] = @document_fedora.pid
+        @response[:title] = @document_fedora.title
+        @response[:description] = @document_fedora.description
+        @response[:publisher] = @document_fedora.publisher
+        @response[:objectcount] = @document_fedora.governed_items.count + @document_fedora.items.count
+      }
     end
   end
 
@@ -51,7 +70,6 @@ class CollectionsController < AssetsController
     respond_to do |format|
       flash["notice"] = t('dri.flash.notice.updated', :item => params[:id])
       format.html  { render :action => "edit" }
-      format.json  { render :json => @document_fedora }
     end
   end
 
@@ -64,13 +82,20 @@ class CollectionsController < AssetsController
       if @document_fedora.save
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
             redirect_to :controller => "collections", :action => "show", :id => @document_fedora.id }
-        format.json { render :json => @document_fedora }
+        format.json {
+          @response = {}
+          @response[:id] = @document_fedora.pid
+          @response[:title] = @document_fedora.title
+          @response[:description] = @document_fedora.description
+          @response[:publisher] = @document_fedora.publisher
+          render(:json => @response, :status => :created)
+        }
       else
         format.html {
           flash["alert"] = @document_fedora.errors.messages.values.to_s
           render :action => :new
         }
-        format.json { render :json => @document_fedora.errors}
+        format.json { @document_fedora.errors.messages.values.to_s }
       end
     end
   end
