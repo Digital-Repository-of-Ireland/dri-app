@@ -66,7 +66,7 @@ class MetadataController < AssetsController
 
         if params.has_key?(:type) && params[:type].present?
           @object = DRI::Model::DigitalObject.construct(params[:type].to_sym, params[:dri_model])
-        else 
+        else
           flash[:alert] = t('dri.flash.error.no_type_specified')
           raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')
           return
@@ -92,7 +92,11 @@ class MetadataController < AssetsController
           return
         end
 
-        redirect_to :controller => "catalog", :action => "show", :id => @object.id
+        respond_to do |format|
+          format.html {redirect_to :controller => "catalog", :action => "show", :id => @object.id}
+          format.json  { render :json => "{\"pid\": \"#{@object.id}\"}", :location => catalog_url(@object), :status => :created }
+        end
+      
         return
       else
         raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')

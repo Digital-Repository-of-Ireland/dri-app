@@ -38,11 +38,13 @@ class ObjectsController < AssetsController
   # Creates a new audio model using the parameters passed in the request.
   #
   def create
-    if params[:dri_model][:governing_collection].present?
+    if params[:dri_model][:governing_collection].present? && !params[:dri_model][:governing_collection].blank?
       params[:dri_model][:governing_collection] = Collection.find(params[:dri_model][:governing_collection])
+    else
+      params[:dri_model].delete(:governing_collection)
     end
 
-    if params[:dri_model][:type].present?
+    if params[:dri_model][:type].present? && !params[:dri_model][:type].blank?
       type = params[:dri_model][:type]
       params[:dri_model].delete(:type)
       @document_fedora = DRI::Model::DigitalObject.construct(type.to_sym, params[:dri_model])

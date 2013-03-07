@@ -73,6 +73,12 @@ class FilesController < AssetsController
 
           flash[:notice] = t('dri.flash.notice.file_uploaded')
 
+          respond_to do |format|
+            format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:id]}
+            format.json  { render :json => "{\"checksum\": \"#{@file.checksum}\"}", :status => :created }
+          end
+          return
+
         end
       else
         flash[:notice] = t('dri.flash.notice.specify_datastream')
