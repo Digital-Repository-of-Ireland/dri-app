@@ -63,7 +63,7 @@ class FilesController < AssetsController
           dir = local_storage_dir.join(@object.id).join(datastream+count.to_s)
 
           @file = LocalFile.new
-          @file.add_file params[:Filedata], {:fedora_id => @object.id, :ds_id => datastream, :directory => dir.to_s, :version => count}
+          @file.add_file params[:Filedata], {:fedora_id => @object.id, :ds_id => datastream, :directory => dir.to_s, :version => count, :checksum => params[:checksum]}
           @file.save!
 
           @url = url_for :controller=>"files", :action=>"show", :id=>params[:id]
