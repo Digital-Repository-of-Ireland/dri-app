@@ -72,3 +72,11 @@ key will be the English text.
 To merge all files use
 
   $ rake locales:mergeall
+
+== Settings.yml
+
+This is where the application specific settings are located
+
+  config/settings.yml
+
+Please view and edit this file as needed before deploying the application.
