@@ -15,6 +15,9 @@ else
   gem 'user_group', :git => 'git@dev.forasfeasa.ie:user_group.git'
 end
 
+# DRI command line app for bulk, single ingest and other misc functionality
+gem 'dri', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri'
+
 gem 'rails_config'
 gem 'sqlite3'
 
