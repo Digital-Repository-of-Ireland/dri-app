@@ -99,6 +99,7 @@ class CollectionsController < AssetsController
           render :action => :new
         }
         format.json { render(:json => @document_fedora.errors.messages.values.to_s) }
+        raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_collection')
       end
     end
   end
