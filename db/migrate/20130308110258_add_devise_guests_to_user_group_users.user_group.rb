@@ -1,6 +1,7 @@
-class AddDeviseGuestsToUsers < ActiveRecord::Migration
+# This migration comes from user_group (originally 20130308110010)
+class AddDeviseGuestsToUserGroupUsers < ActiveRecord::Migration
   def self.up
-    change_table(:users) do |t|
+    change_table(:user_group_users) do |t|
       ## Database authenticatable
       t.boolean :guest, :default => false
     end

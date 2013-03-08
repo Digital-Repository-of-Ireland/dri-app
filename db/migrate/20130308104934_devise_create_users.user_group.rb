@@ -1,3 +1,4 @@
+# This migration comes from user_group (originally 20120924145315)
 class DeviseCreateUsers < ActiveRecord::Migration
   def change
     create_table(:users) do |t|

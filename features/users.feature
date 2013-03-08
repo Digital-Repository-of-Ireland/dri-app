@@ -24,6 +24,7 @@ Scenario: Navigate to the Sign up page
 
 Scenario: Creating a new valid user account
   Given I am not logged in
+  Given the group "registered" exists
   Given I am on the User Sign up page
   When I submit a valid email, password and password confirmation
   Then I should see a success message for new account 

@@ -3,10 +3,7 @@
 
 require 'stepped_forms'
 
-class IngestController < ApplicationController
-  include Blacklight::Catalog
-  include Hydra::Controller::ControllerBehavior
-  include DRI::Model
+class IngestController < AssetsController
   include SteppedForms
 
   before_filter :authenticate_user!, :only => [:create, :new]

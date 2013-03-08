@@ -1,7 +1,7 @@
 Given /^I am logged in as "([^\"]*)"$/ do |login|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password")
-  visit new_user_session_path
+  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :first_name => "fname", :second_name => "sname")
+  visit path_to("sign in")
   fill_in("user_email", :with => email) 
   fill_in("user_password", :with => "password") 
   click_button("Sign in")
@@ -10,8 +10,8 @@ end
 
 Given /^I am logged in as "([^\"]*)" with password "([^\"]*)"$/ do |login, password|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => password, :password_confirmation => password)
-  visit new_user_session_path
+  @user = User.create(:email => email, :password => password, :password_confirmation => password, :first_name => "fname", :second_name => "sname")
+  visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
   click_button("Sign in")
@@ -20,8 +20,8 @@ end
 
 Given /^I am logged in as "([^\"]*)" with language "([^\"]*)"$/ do |login, lang|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => lang) 
-  visit new_user_session_path
+  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => lang, :first_name => "fname", :second_name => "sname") 
+  visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
   click_button("Sign in")
@@ -30,36 +30,40 @@ end
 
 Then /^I should see an edit link for "([^\"]*)"$/ do |login|
   email = "#{login}@#{login}.com"
-  page.should have_link(email, href: "/users/edit")
+  page.should have_link(email, href: "/user_groups/users/edit")
 end
 
 Given /^I am not logged in$/ do
   step 'I am on the home page'
   Capybara.reset_sessions!
   if Capybara.current_driver.to_s == "rack_test"
-    page.driver.submit :delete, "/users/sign_out", {}
+    page.driver.submit :delete, "/user_groups/users/sign_out", {}
   end
 end
 
 Given /^an account for "([^\"]*)" already exists$/ do |login|
   email = "#{login}@#{login}.com"
-  user = User.create(:email => email, :password => "password", :password_confirmation => "password")
+  user = User.create(:email => email, :password => "password", :password_confirmation => "password", :first_name => "fname", :second_name => "sname")
 end
 
 When /^I submit a valid email, password and password confirmation$/ do
   email = "validuser@validdomain.com"
   password = "password"
   fill_in("user_email", :with => email)
+  fill_in("user_first_name", :with => "fname")
+  fill_in("user_second_name", :with => "sname")
   fill_in("user_password", :with => password)
   fill_in("user_password_confirmation", :with => password)
-  click_button 'Sign up'
+  click_button 'Register'
 end
 
 When /^I submit the User Sign up page with email "([^\"]*)" and password "([^\"]*)"$/ do |email, password|
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
   fill_in("user_password_confirmation", :with => password)
-  click_button 'Sign up'
+  fill_in("user_first_name", :with => "fname")
+  fill_in("user_second_name", :with => "sname")
+  click_button 'Register'
 end
 
 When /^I submit a valid email address and non\-matching password and password confirmation$/ do
@@ -69,7 +73,7 @@ When /^I submit a valid email address and non\-matching password and password co
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
   fill_in("user_password_confirmation", :with => password_confirmation)
-  click_button 'Sign up'
+  click_button 'Register'
 end
 
 When /^I submit a valid email address and too short password and password confirmation$/ do
@@ -78,7 +82,7 @@ When /^I submit a valid email address and too short password and password confir
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
   fill_in("user_password_confirmation", :with => password)
-  click_button 'Sign up'
+  click_button 'Register'
 end
 
 When /^I submit the User Sign in page with credentials "([^\"]*)" and "([^\"]*)"$/ do |email, password|
@@ -89,7 +93,7 @@ end
 
 Then /^I should be logged in$/ do
   step 'I should have a cookie _nuig-rnag_session'
-  step 'I should see a link to sign out'
+  #step 'I should see a link to sign out'
 end
 
 Then /^I should be logged out$/ do
@@ -102,7 +106,7 @@ When /^I follow the edit link for "([^\"]*)"$/ do |login|
 end
 
 Then /^I should see the edit page$/ do
-  page.should have_content("Edit User")
+  page.should have_content("Edit Account")
 end
 
 When /^I submit the Edit User form$/ do
@@ -113,8 +117,9 @@ Then /^my authentication details should be updated from "([^\"]*)", "([^\"]*)" t
   oldemail = "#{oldlogin}@#{oldlogin}.com"
   newemail = "#{newlogin}@#{newlogin}.com"
   page.should have_content( newemail )
-  click_link 'Log Out'
-  visit new_user_session_path
+  visit path_to("sign out")
+  step 'I should be logged out'
+  visit path_to("sign in")
   fill_in("user_email", :with => oldemail)
   fill_in("user_password", :with => oldpassword)
   click_button("Sign in")
@@ -137,7 +142,7 @@ When /^I confirm account cancellation$/ do
 end
 
 Then /^my account should be deleted$/ do
-  step 'I should see the message "Bye! Your account was successfully cancelled. We hope to see you again soon."'
+  step 'I should see the message "Your account has been deleted"'
   step 'I should be logged out'
 end
 

@@ -3,10 +3,7 @@
 
 require 'stepped_forms'
 
-class ObjectsController < ApplicationController
-  include Blacklight::Catalog
-  include Hydra::Controller::ControllerBehavior
-  include DRI::Model
+class ObjectsController < AssetsController
   include SteppedForms
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
@@ -14,7 +11,7 @@ class ObjectsController < ApplicationController
   # Edits an existing model.
   #
   def edit
-    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
+    @document_fedora = retrieve_object(params[:id])
     respond_to do |format|
       format.html
       format.json  { render :json => @document_fedora }
@@ -24,7 +21,7 @@ class ObjectsController < ApplicationController
   # Updates the attributes of an existing model.
   #
   def update
-    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
+    @document_fedora = retrieve_object(params[:id])
     if params[:dri_model][:governing_collection_id].present?
       collection = Collection.find(params[:dri_model][:governing_collection_id])
       @document_fedora.governing_collection = collection
