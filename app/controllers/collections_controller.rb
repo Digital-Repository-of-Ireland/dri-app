@@ -15,6 +15,7 @@ class CollectionsController < AssetsController
         @mycollections.each do |collection|
           collectionhash << { :id => collection.id,
                                :title => collection.title,
+                               :description => collection.description,
                                :publisher => collection.publisher,
                                :objectcount => collection.governed_items.count + collection.items.count }.to_json
         end
