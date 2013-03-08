@@ -16,16 +16,6 @@ GIT
       kaminari (~> 0.14.1)
       rails
 
-GIT
-  remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/dri
-  revision: 6eee0b8f6585e3bc996e2e6d0c0c60125a0c9372
-  specs:
-    dri (0.0.1)
-      gli (= 2.5.4)
-      mimemagic
-      nokogiri
-      rest-client
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -138,7 +128,6 @@ GEM
     ffi (1.4.0)
     gherkin (2.11.6)
       json (>= 1.7.6)
-    gli (2.5.4)
     guard (1.6.2)
       listen (>= 0.6.0)
       lumberjack (>= 1.0.2)
@@ -402,7 +391,6 @@ DEPENDENCIES
   capybara-webkit
   cucumber-rails
   database_cleaner
-  dri!
   dri_data_models!
   factory_girl_rails
   guard
