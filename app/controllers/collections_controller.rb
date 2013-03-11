@@ -15,6 +15,7 @@ class CollectionsController < AssetsController
         @mycollections.each do |collection|
           collectionhash << { :id => collection.id,
                                :title => collection.title,
+                               :description => collection.description,
                                :publisher => collection.publisher,
                                :objectcount => collection.governed_items.count + collection.items.count }.to_json
         end
@@ -76,8 +77,10 @@ class CollectionsController < AssetsController
   # Creates a new model using the parameters passed in the request.
   #
   def create
+
     @document_fedora = DRI::Model::Collection.new(params[:dri_model_collection])
     #@document_fedora.creator = current_user.to_s
+
     respond_to do |format|
       if @document_fedora.save
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
@@ -95,7 +98,8 @@ class CollectionsController < AssetsController
           flash["alert"] = @document_fedora.errors.messages.values.to_s
           render :action => :new
         }
-        format.json { @document_fedora.errors.messages.values.to_s }
+        format.json { render(:json => @document_fedora.errors.messages.values.to_s) }
+        raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_collection')
       end
     end
   end

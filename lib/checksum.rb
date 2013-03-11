@@ -8,6 +8,8 @@ module Checksum
         md5(filename)
       when "sha256"
         sha256(filename)
+      when "rmd160"
+        rmd160(filename)
     end 
   end
 
@@ -18,6 +20,10 @@ module Checksum
 
   def self.sha256(filename)
     Digest::SHA256.file(filename).hexdigest
+  end
+
+  def self.rmd160(filename)
+    Digest::RMD160.file(filename).hexdigest
   end
 
 end
