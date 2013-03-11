@@ -93,7 +93,7 @@ end
 
 Then /^I should be logged in$/ do
   step 'I should have a cookie _nuig-rnag_session'
-  #step 'I should see a link to sign out'
+  step 'I should see a link to sign out'
 end
 
 Then /^I should be logged out$/ do
@@ -117,7 +117,7 @@ Then /^my authentication details should be updated from "([^\"]*)", "([^\"]*)" t
   oldemail = "#{oldlogin}@#{oldlogin}.com"
   newemail = "#{newlogin}@#{newlogin}.com"
   page.should have_content( newemail )
-  visit path_to("sign out")
+  step 'I follow the link to sign out'
   step 'I should be logged out'
   visit path_to("sign in")
   fill_in("user_email", :with => oldemail)

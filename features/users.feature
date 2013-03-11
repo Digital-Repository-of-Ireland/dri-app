@@ -66,6 +66,7 @@ Scenario: User signs in with invalid credentials
   Then I should be logged out
   And I should see an error message for invalid email or password
 
+@javascript
 Scenario: Logging out
   Given I am logged in as "user1" with password "password1"
   When I go to the home page
@@ -73,6 +74,7 @@ Scenario: Logging out
   When I follow the link to sign out
   Then I should be logged out
 
+@javascript
 Scenario: A user should be able to edit their details
   Given I am logged in as "user1" with password "password1"
   Then I should see a link to edit my account

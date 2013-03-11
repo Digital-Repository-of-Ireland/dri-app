@@ -25,6 +25,8 @@ module PathTranslator
     when /sign in/
      user_group.new_user_session_path
 
+    # This should not be used as we cannot send a delete
+    # Instead we should follow the sign out link
     when /sign out/
       user_group.destroy_user_session_path
 
