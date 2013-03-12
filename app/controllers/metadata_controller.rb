@@ -7,7 +7,12 @@ class MetadataController < AssetsController
   # 
   #
   def show
-    @object = retrieve_object params[:id]
+    begin 
+      @object = retrieve_object params[:id]
+    rescue ActiveFedora::ObjectNotFoundError => e
+      render :xml => { :error => 'Not found' }, :status => 404
+      return
+    end
 
     if @object && @object.datastreams.keys.include?("descMetadata")
        render :xml => @object.datastreams["descMetadata"].content
