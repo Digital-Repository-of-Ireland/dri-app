@@ -1,0 +1,17 @@
+ga:
+  views:
+    pagination:
+      first: "&laquo; T_First"
+      last: "T_Last &raquo;"
+      previous: "&lsaquo; T_Prev"
+      next: "T_Next &rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "T_No %{entry_name} found"
+          one: "T_Displaying <b>1</b> %{entry_name}"
+          other: "T_Displaying <b>all %{count}</b> %{entry_name}"
+      more_pages:
+        display_entries: "T_Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
