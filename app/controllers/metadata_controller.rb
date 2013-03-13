@@ -85,7 +85,12 @@ class MetadataController < AssetsController
         end
 
         if params.has_key?(:governing_collection) && !params[:governing_collection].blank?
-          @object.governing_collection = Collection.find(params[:governing_collection])
+          begin
+            @object.governing_collection = Collection.find(params[:governing_collection])
+          rescue ActiveFedora::ObjectNotFoundError => e
+            raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_collection')
+            return
+          end
         end
 
         if @object.valid?

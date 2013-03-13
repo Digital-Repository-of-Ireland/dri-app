@@ -95,8 +95,9 @@ en:
         invalid_asset: "Unable to create asset. Please correct the errors and try again."
         invalid_metadata: "The metadata file you have uploaded is invalid. Please correct the errors and try again."
         invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
-        invalid_object_type: "You have specified an invalid digital object type"
+        invalid_object_type: "You have specified an invalid digital object type."
         invalid_collection: "Unable to create collection."
+        unknown_collection: "Unknown collection."        
       ingest: 
         buttons: 
           continue: Continue

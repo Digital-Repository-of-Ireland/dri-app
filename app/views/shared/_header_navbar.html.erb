@@ -33,7 +33,7 @@
             <li><%= link_to t('dri.headerlinks.home'), root_path, :id => "home" %></li>
             <li><%= link_to t('dri.headerlinks.collections'), collections_path, :id => "collections" %></li>
             <li><%= link_to t('dri.headerlinks.ingest'), new_ingest_path, :id => "ingest" %></li>
-    	    <li><%= link_to t('dri.headerlinks.usergroups'), user_group_path, :id=>"usergroup" %></li>
+    	      <%= render :partial=>'/user_group/sub_menu' %>
           </ul>
     </div>
 
