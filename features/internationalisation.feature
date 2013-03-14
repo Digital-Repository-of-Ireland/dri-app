@@ -45,6 +45,7 @@ Then I should see the ga language
 
 Scenario: Changing language from English to Irish
 Given I am logged in as "englishuser" with language "en"
+When I follow the link to view my account
 And I follow the link to edit my account
 Then I should see the edit page
 When I change my language to ga
@@ -52,6 +53,7 @@ Then I should see the ga language
 
 Scenario: Changing language from Irish to English
 Given I am logged in as "irishuser" with language "ga"
+When I follow the link to view my account
 And I follow the link to edit my account
 Then I should see the edit page
 When I change my language to en

@@ -25,6 +25,9 @@ module LinkTranslator
     when /unlock instructions not sent/
       "unlock_not_sent"
 
+    when /view my account/
+      "view_account"
+
     when /edit my account/
       "edit_account"
 
