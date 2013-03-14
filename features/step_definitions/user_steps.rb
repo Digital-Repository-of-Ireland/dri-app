@@ -100,7 +100,7 @@ Then /^I should be logged out$/ do
   step 'I should see a link to sign in'
 end
 
-When /^I follow the edit link for "([^\"]*)"$/ do |login|
+When /^I follow the view link for "([^\"]*)"$/ do |login|
   email = "#{login}@#{login}.com"
   click_link( email )
 end
