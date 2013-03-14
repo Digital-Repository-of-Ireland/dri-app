@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130312163724) do
+ActiveRecord::Schema.define(:version => 20130314121808) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20130312163724) do
     t.string   "locale"
     t.boolean  "guest",                  :default => false
     t.integer  "view_level",             :default => 0
+    t.string   "about_me",               :default => ""
   end
 
   add_index "user_group_users", ["email"], :name => "index_users_on_email", :unique => true
