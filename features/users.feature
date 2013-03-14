@@ -94,7 +94,6 @@ Scenario: A user should be able to cancel their account
   Then I should see a link to view my account
   When I follow the link to view my account
   Then I should see a link to edit my account
-  #REMOVED
   When I follow the link to edit my account
   Then I should see a link to cancel my account
   When I follow the link to cancel my account
