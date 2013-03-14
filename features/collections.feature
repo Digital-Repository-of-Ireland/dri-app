@@ -21,17 +21,18 @@ Scenario: Constructing a valid collection
   And I press the button to create a collection
   Then I should see a success message for creating a collection
 
-Scenario: Adding a Digital Object in a governing collection
-  Given a Digital Object with pid "dri:obj1" and title "Object 1"
-  And a collection with pid "dri:coll1"
-  When I add the Digital Object "dri:obj1" to the collection "dri:coll1" as type governing
-  Then the collection "dri:coll1" should contain the Digital Object "dri:obj1" as type governing
+Scenario Outline: Adding a Digital Object in a governing/non-governing collection
+  Given a Digital Object with pid <object_pid> and title <object_title>
+  And a collection with pid <collection_pid>
+  When I add the Digital Object <object_pid> to the collection <collection_pid> as type <governance_type>
+  Then the collection <collection_pid> should contain the Digital Object <object_pid> as type <governance_type>
 
-Scenario: Adding a Digital Object to a non-governing collection
-  Given a Digital Object with pid "dri:obj2" and title "Object 2"
-  And a collection with pid "dri:coll2"
-  When I add the Digital Object "dri:obj2" to the collection "dri:coll2" as type non-governing
-  Then the collection "dri:coll2" should contain the Digital Object "dri:obj2" as type non-governing
+  Examples:
+    | object_pid | object_title | collection_pid | governance_type |
+    | "dri:obj1" | "Object 1"   | "dri:coll1"    | governing       |
+    | "dri:obj2" | "Object 2"   | "dri:coll1"    | governing       |
+    | "dri:obj3" | "Object 3"   | "dri:coll2"    | non-governing   |
+    | "dri:obj4" | "Object 4"   | "dri:coll2"    | non-governing   |
 
 Scenario: Creating Digital Object in a governing collection using the web forms
   Given a collection with pid "dri:coll3"
