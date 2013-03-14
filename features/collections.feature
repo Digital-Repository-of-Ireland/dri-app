@@ -34,10 +34,14 @@ Scenario Outline: Adding a Digital Object in a governing/non-governing collectio
     | "dri:obj3" | "Object 3"   | "dri:coll2"    | non-governing   |
     | "dri:obj4" | "Object 4"   | "dri:coll2"    | non-governing   |
 
-Scenario: Creating Digital Object in a governing collection using the web forms
-  Given a collection with pid "dri:coll3"
-  When I create a Digital Object in the collection "dri:coll3"
-  Then the collection "dri:coll3" should contain the new digital object
+Scenario Outline: Creating Digital Object in a governing collection using the web forms
+  Given a collection with pid <collection_pid>
+  When I create a Digital Object in the collection <collection_pid>
+  Then the collection <collection_pid> should contain the new digital object
+
+  Examples:
+    | object_pid | object_title | collection_pid | governance_type |
+    | "dri:obj1" | "Object 1"   | "dri:coll1"    | governing       |
 
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
   Given a Digital Object with pid "dri:obj4" and title "Object 4"
