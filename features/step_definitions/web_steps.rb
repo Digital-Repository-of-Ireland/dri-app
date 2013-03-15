@@ -111,12 +111,13 @@ When /^I select a collection$/ do
   select_by_value(second_option, :from => "ingestcollection")
 end
 
-Then /^I should see the valid metadata$/ do
-  interface.has_valid_metadata?
-end
-
-Then /^I should see the modified metadata$/ do
-  interface.has_modified_metadata?
+Then /^I should see the (valid|modified) metadata$/ do |type|
+  case type
+    when "valid"
+      interface.has_valid_metadata?
+    when "modified"
+      interface.has_modified_metadata?
+  end
 end
 
 Then /^I press "(.*?)"$/ do |button|
