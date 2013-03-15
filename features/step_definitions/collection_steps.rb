@@ -45,7 +45,7 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
   }
 end
 
-When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type ([^"]*)$/ do |object_pid,collection_pid,type|
+When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type "(.*?)"$/ do |object_pid,collection_pid,type|
   object = ActiveFedora::Base.find(object_pid, {:cast => true})
   collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
   case type
@@ -62,7 +62,7 @@ When /^I press the remove from collection button for Digital Object "(.*?)"/ do 
    click_link_or_button(button_to_id("remove from collection #{object_pid}"))
 end
 
-Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as type ([^"]*))?$/ do |collection_pid,object_pid,*type|
+Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as type "(.*?)")?$/ do |collection_pid,object_pid,*type|
   object = ActiveFedora::Base.find(object_pid, {:cast => true})
   collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
   case type

@@ -22,26 +22,26 @@ Scenario: Constructing a valid collection
   Then I should see a success message for creating a collection
 
 Scenario Outline: Adding a Digital Object in a governing/non-governing collection
-  Given a Digital Object with pid <object_pid> and title <object_title>
-  And a collection with pid <collection_pid>
-  When I add the Digital Object <object_pid> to the collection <collection_pid> as type <governance_type>
-  Then the collection <collection_pid> should contain the Digital Object <object_pid> as type <governance_type>
+  Given a Digital Object with pid "<object_pid>" and title "<object_title>"
+  And a collection with pid "<collection_pid>"
+  When I add the Digital Object "<object_pid>" to the collection "<collection_pid>" as type "<governance_type>"
+  Then the collection "<collection_pid>" should contain the Digital Object "<object_pid>" as type "<governance_type>"
 
   Examples:
     | object_pid | object_title | collection_pid | governance_type |
-    | "dri:obj1" | "Object 1"   | "dri:coll1"    | governing       |
-    | "dri:obj2" | "Object 2"   | "dri:coll1"    | governing       |
-    | "dri:obj3" | "Object 3"   | "dri:coll2"    | non-governing   |
-    | "dri:obj4" | "Object 4"   | "dri:coll2"    | non-governing   |
+    | dri:obj1   | Object 1     | dri:coll1      | governing       |
+    | dri:obj2   | Object 2     | dri:coll1      | governing       |
+    | dri:obj3   | Object 3     | dri:coll2      | non-governing   |
+    | dri:obj4   | Object 4     | dri:coll2      | non-governing   |
 
 Scenario Outline: Creating Digital Object in a governing collection using the web forms
-  Given a collection with pid <collection_pid>
-  When I create a Digital Object in the collection <collection_pid>
-  Then the collection <collection_pid> should contain the new digital object
+  Given a collection with pid "<collection_pid>"
+  When I create a Digital Object in the collection "<collection_pid>"
+  Then the collection "<collection_pid>" should contain the new digital object
 
   Examples:
     | object_pid | object_title | collection_pid | governance_type |
-    | "dri:obj1" | "Object 1"   | "dri:coll1"    | governing       |
+    | dri:obj1   | Object 1     | dri:coll1      | governing       |
 
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
   Given a Digital Object with pid "dri:obj4" and title "Object 4"
@@ -53,8 +53,8 @@ Scenario: Adding a Digital Object to a non-governing collection using the web fo
 Scenario: Removing a Digital Object from a non-governing collection using the web forms
   Given a Digital Object with pid "dri:obj5" and title "Object 5"
   And a collection with pid "dri:coll5"
-  When I add the Digital Object "dri:obj5" to the collection "dri:coll5" as type non-governing
-  Then the collection "dri:coll5" should contain the Digital Object "dri:obj5" as type non-governing
+  When I add the Digital Object "dri:obj5" to the collection "dri:coll5" as type "non-governing"
+  Then the collection "dri:coll5" should contain the Digital Object "dri:obj5" as type "non-governing"
   When I go to the show page for the collection "dri:coll5"
   Then I should see the Digital Object "dri:obj5" as part of the collection
   When I press the remove from collection button for Digital Object "dri:obj5"
