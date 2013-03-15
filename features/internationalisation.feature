@@ -13,48 +13,47 @@ After do |scenario|
   DatabaseCleaner.clean
 end
 
-Scenario: Not logged in user with English browser
-Given my browser language is "en"
-And I am not logged in
-Then I should see the en language
+Scenario Outline: Not logged in user should see their own language based on their browser
+  Given my browser language is "<lang>"
+  And I am not logged in
+  Then I should see the language "<lang>"
 
-Scenario: Not logged in user with Irish browser
-Given my browser language is "ga"
-And I am not logged in
-Then I should see the ga language
+  Examples:
+    | lang |
+    | en   |
+    | ga   |
 
-Scenario: Logged in user with English browser and English language setting
-Given my browser language is "en"
-And I am logged in as "englishuser" with language "en"
-Then I should see the en language
 
-Scenario: Logged in user with English browser but Irish language setting
-Given my browser language is "en"
-And I am logged in as "irishuser" with language "ga"
-Then I should see the ga language
+Scenario Outline: A logged in user should see languages that they have set in their profile
+  Given my browser language is "<lang>"
+  When I am logged in as "<lang_user>" with language "<lang_profile_set_to>"
+  Then I should see the language "<lang_profile_set_to>"
 
-Scenario: Logged in user with Irish browser but English language setting
-Given my browser language is "ga"
-And I am logged in as "englishuser" with language "en"
-Then I should see the en language
+  Examples:
+    | lang | lang_user   | lang_profile_set_to |
+    | en   | englishuser | en                  |
+    | ga   | englishuser | en                  |
+    | ga   | irishuser   | ga                  |
+    | en   | irishuser   | ga                  |
 
-Scenario: Logged in user with Irish browser and Irish language setting
-Given my browser language is "ga"
-And I am logged in as "irishuser" with language "ga"
-Then I should see the ga language
 
-Scenario: Changing language from English to Irish
-Given I am logged in as "englishuser" with language "en"
-When I follow the link to view my account
-And I follow the link to edit my account
-Then I should see the edit page
-When I change my language to ga
-Then I should see the ga language
+Scenario Outline: Changing from Language set in the profile to a different Language
+  Given my browser language is "<lang>"
+  Given I am logged in as "<lang_user>" with language "<lang_profile_set_to>"
+  Then I should see the language "<lang_profile_set_to>"
+  When I follow the link to view my account
+  And I follow the link to edit my account
+  Then I should see the edit page
+  When I change my language to "<lang_new>"
+  Then I should see the language "<lang_new>"
 
-Scenario: Changing language from Irish to English
-Given I am logged in as "irishuser" with language "ga"
-When I follow the link to view my account
-And I follow the link to edit my account
-Then I should see the edit page
-When I change my language to en
-Then I should see the en language
+  Examples:
+    | lang | lang_user   | lang_profile_set_to | lang_new |
+    | en   | englishuser | en                  | ga       |
+    | en   | englishuser | ga                  | en       |
+    | ga   | englishuser | ga                  | en       |
+    | ga   | englishuser | en                  | ga       |
+    | ga   | irishuser   | ga                  | en       |
+    | ga   | irishuser   | en                  | ga       |
+    | en   | irishuser   | ga                  | en       |
+    | en   | irishuser   | en                  | ga       |

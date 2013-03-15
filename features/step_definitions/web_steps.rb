@@ -111,12 +111,13 @@ When /^I select a collection$/ do
   select_by_value(second_option, :from => "ingestcollection")
 end
 
-Then /^I should see the valid metadata$/ do
-  interface.has_valid_metadata?
-end
-
-Then /^I should see the modified metadata$/ do
-  interface.has_modified_metadata?
+Then /^I should see the (valid|modified) metadata$/ do |type|
+  case type
+    when "valid"
+      interface.has_valid_metadata?
+    when "modified"
+      interface.has_modified_metadata?
+  end
 end
 
 Then /^I press "(.*?)"$/ do |button|
@@ -135,11 +136,7 @@ Then /^(?:|I )should not see a link to (.+)$/ do |link|
   page.should_not have_link(link_to_id(link))
 end
 
-Then /^(?:|I )should see a success message for (.+)$/ do |message|
-  page.should have_selector ".alert", text: flash_for(message)
-end
-
-Then /^(?:|I )should see an error message for (.+)$/ do |message|
+Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucesss_failure,message|
   page.should have_selector ".alert", text: flash_for(message)
 end
 

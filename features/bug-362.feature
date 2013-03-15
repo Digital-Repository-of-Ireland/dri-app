@@ -1,5 +1,5 @@
 @bug
-Feature: Bug-360
+Feature: Bug-362
 
 @javascript
 Scenario: Logging out
