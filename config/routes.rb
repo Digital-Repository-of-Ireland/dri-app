@@ -16,6 +16,8 @@ NuigRnag::Application.routes.draw do
 
   resources :ingest, :only => ['new', 'create']
 
+  match 'export/:id' => 'export#show', :via => :get, :as => :object_export
+  
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
   match 'objects/:id/metadata' => 'metadata#update', :via => :put
   match 'objects/:id/file' => 'files#show', :via => :get, :as => :object_file

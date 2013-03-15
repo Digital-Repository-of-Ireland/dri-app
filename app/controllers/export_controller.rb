@@ -8,10 +8,16 @@ class ExportController < ApplicationController
 
   before_filter :authenticate_user!, :only => [:show]
 
-  # Exports an entire digital object as a tar.gz archive
+  # Exports an entire digital object
   #
   def show
-    @document_fedora = ActiveFedora::Base.find(params[:id], {:cast => true})
+    begin
+      @document = ActiveFedora::FixtureExporter.export(params[:id])
+      render :xml => @document    
+    rescue ActiveFedora::ObjectNotFoundError => e
+      render :xml => { :error => 'Not found' }, :status => 404
+      return
+    end
   end
 
 end
