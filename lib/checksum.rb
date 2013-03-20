@@ -10,11 +10,12 @@ module Checksum
         sha256(filename)
       when "rmd160"
         rmd160(filename)
+      else
+        sha256(filename) #default to sha256 if unknown
     end 
   end
 
   def self.md5(filename)
-    puts "Filename: #{filename}"
     Digest::MD5.file(filename).hexdigest
   end
 
