@@ -38,7 +38,7 @@ To run the functional tests
 
   $ cd nuig-rnag
   $ rake jetty:start
-  $ rake cucumber
+  $ rake cucumber or bundle exec cucumber
 
 Additional information can be found by reading up on the drirepo,
 nuig-rnag, rspec, cucumber and rails documentation.
