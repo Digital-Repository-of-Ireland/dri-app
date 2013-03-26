@@ -4,17 +4,11 @@ SimpleCov.start
 require 'rubygems'
 require 'spork'
 require 'i18n'
-require 'capybara-webkit'
+require 'capybara/poltergeist'
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 
-Capybara.javascript_driver = :webkit
-
-if Capybara.javascript_driver == :webkit
-  require 'headless'
-  headless = Headless.new
-  headless.start
-end
+Capybara.javascript_driver = :poltergeist
 
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,

@@ -54,8 +54,11 @@ are changed.
   $ cd nuig-rnag
   $ bundle exec guard
 
-Xvfb and QT is required to install all the dependancies, it is required
-for capybara-webkit (front end testing of interface).
+The poltergeist gem is required for testing, as a result phantomjs binary
+to run poltergeist.
+
+* https://github.com/jonleighton/poltergeist
+* https://github.com/ariya/phantomjs
 
 == Translations
 

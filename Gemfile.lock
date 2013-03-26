@@ -86,9 +86,6 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 1.0.0)
-    capybara-webkit (0.14.2)
-      capybara (~> 2.0, >= 2.0.2)
-      json
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
     coderay (1.0.9)
@@ -117,6 +114,7 @@ GEM
     equivalent-xml (0.3.0)
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
+    eventmachine (1.0.3)
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (4.2.0)
@@ -125,6 +123,8 @@ GEM
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
     fastercsv (1.5.5)
+    faye-websocket (0.4.7)
+      eventmachine (>= 0.12.0)
     ffi (1.4.0)
     gherkin (2.11.6)
       json (>= 1.7.6)
@@ -147,10 +147,10 @@ GEM
     guard-yard (2.0.1)
       guard (>= 1.1.0)
       yard (>= 0.7.0)
-    headless (1.0.1)
     hike (1.2.1)
     hooks (0.2.2)
     http_accept_language (1.0.2)
+    http_parser.rb (0.5.3)
     hydra-access-controls (5.2.0)
       active-fedora
       activesupport
@@ -236,6 +236,10 @@ GEM
       mediashelf-loggable
       nokogiri (>= 1.4.2)
     orm_adapter (0.4.0)
+    poltergeist (1.1.0)
+      capybara (~> 2.0, >= 2.0.1)
+      faye-websocket (~> 0.4, >= 0.4.4)
+      http_parser.rb (~> 0.5.3)
     polyglot (0.3.3)
     pry (0.9.12)
       coderay (~> 1.0.5)
@@ -390,7 +394,6 @@ PLATFORMS
 DEPENDENCIES
   blacklight (= 4.0.0)
   bootstrap-sass
-  capybara-webkit
   cucumber-rails
   database_cleaner
   dri_data_models!
@@ -400,7 +403,6 @@ DEPENDENCIES
   guard-cucumber
   guard-spork
   guard-yard
-  headless
   http_accept_language
   hydra-head (= 5.2.0)
   i18n_sync
@@ -412,6 +414,7 @@ DEPENDENCIES
   launchy
   mimemagic
   noid (= 0.5.5)
+  poltergeist
   railroady
   rails (= 3.2.11)
   rails_config
