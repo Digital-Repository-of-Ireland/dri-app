@@ -8,7 +8,7 @@ Background:
   Given I am logged in as "user1"
 
 Scenario: Navigating to the ingest page
-  When I go to the home page
+  When I go to "the home page"
   Then I should see a link to ingest an object
   When I follow the link to ingest an object
   Then I should be on the new Digital Object page

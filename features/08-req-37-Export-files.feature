@@ -17,20 +17,21 @@ Background:
   Given I am logged in as "user1"
   Given a Digital Object with pid "dri:obj1" and title "Object 1"
   And a collection with pid "dri:coll1"
-  When I add the Digital Object "dri:obj1" to the collection "dri:coll1" as type "governing"
+  When I add the asset "sample_audio.mp3" to "dri:obj1"
+  And I add the Digital Object "dri:obj1" to the collection "dri:coll1" as type "governing"
   Then the collection "dri:coll1" should contain the Digital Object "dri:obj1" as type "governing"
 
 Scenario: Export DigitalObject's metadata
-  When I go to the "object" show page for "dri:obj1"
+  When I go to the "object" "show" page for "dri:obj1"
   Then I should see a "rights statement"
-  And I should see a "license"
-  And I should see a link to metadata
+  #And I should see a "licence"
+  And I should see a link to download metadata
   
 
 #Scenario: Export DigitalObject metadata in a user selected format
 
 Scenario: Export a DigitalObject's asset
-  When I go to the "object" show page for "dri:obj1"
+  When I go to the "object" "show" page for "dri:obj1"
   Then I should see a "rights statement"
-  And I should see a "license"
-  And I should see a link to asset
+  #And I should see a "licence"
+  And I should see a link to download asset

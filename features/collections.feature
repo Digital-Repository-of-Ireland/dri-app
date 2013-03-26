@@ -47,7 +47,7 @@ Scenario: Adding a Digital Object to a non-governing collection using the web fo
   Given a Digital Object with pid "dri:obj4" and title "Object 4"
   And a collection with pid "dri:coll4"
   When I add the Digital Object "dri:obj4" to the non-governing collection "dri:coll4" using the web forms
-  And I go to the show page for the collection "dri:coll4"
+  And I go to the "collection" "show" page for "dri:coll4"
   Then I should see the Digital Object "dri:obj4" as part of the collection
 
 Scenario: Removing a Digital Object from a non-governing collection using the web forms
@@ -55,11 +55,11 @@ Scenario: Removing a Digital Object from a non-governing collection using the we
   And a collection with pid "dri:coll5"
   When I add the Digital Object "dri:obj5" to the collection "dri:coll5" as type "non-governing"
   Then the collection "dri:coll5" should contain the Digital Object "dri:obj5" as type "non-governing"
-  When I go to the show page for the collection "dri:coll5"
+  When I go to the "collection" "show" page for "dri:coll5"
   Then I should see the Digital Object "dri:obj5" as part of the collection
   When I press the remove from collection button for Digital Object "dri:obj5"
   Then I should see a success message for removing an object from a collection
-  When I go to the show page for the collection "dri:coll5"
+  When I go to the "collection" "show" page for "dri:coll5"
   Then I should not see the Digital Object "dri:obj5" as part of the non-governing collection
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection

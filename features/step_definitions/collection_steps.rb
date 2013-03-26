@@ -31,7 +31,7 @@ When /^I add the Digital Object "(.*?)" to the non-governing collection "(.*?)" 
   steps %{
     Given I am on the my collections page
     When I press the button to set the current collection to #{collection_pid}
-    And I go to the show Digital Object page for id #{object_pid}
+    And I go to the "object" "show" page for "#{object_pid}"
     And I check add to collection for id #{object_pid} 
   }
 end

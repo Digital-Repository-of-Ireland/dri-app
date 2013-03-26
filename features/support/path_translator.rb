@@ -54,6 +54,37 @@ module PathTranslator
     end
   end
 
+
+  def path_for(type, page, pid)
+
+    case type
+
+    when /object/
+
+      case page
+      when /show/
+          catalog_path(pid)
+      when /edit/
+          edit_object_path(pid)
+      else
+        raise('Unknown route')
+        
+      end
+
+    when /collection/
+      case page 
+      when /show/
+        collection_path(pid)
+      else
+        raise('Unknown route')
+      end
+
+    else
+      raise('Unknown route')
+    end
+
+  end   
+
 end
 
 World(PathTranslator)

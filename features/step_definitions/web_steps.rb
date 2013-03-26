@@ -63,12 +63,25 @@ Given /^I have added an audio file$/ do
   }
 end
 
+When /^I add the asset "(.*)" to "(.*?)"$/ do |asset, pid|
+  steps %{
+    When I go to the "object" "edit" page for "#{pid}"
+    And I attach the asset file "#{asset}"
+    And I press the button to upload a file
+    Then I should see a success message for file upload
+  }
+end
+
 Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^(?:|I )go to (.+)$/ do |page_name|
+When /^(?:|I )go to "([^"]*)"$/ do |page_name|
   visit path_to(page_name)
+end
+
+When /^(?:|I )go to the "([^"]*)" "([^"]*)" page for "([^"]*)"$/ do |type, page, pid|
+  visit path_for(type, page, pid)
 end
 
 When /^(?:|I )follow the link to (.+)$/ do |link_name|
@@ -136,7 +149,16 @@ Then /^(?:|I )should not see a link to (.+)$/ do |link|
   page.should_not have_link(link_to_id(link))
 end
 
-Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucesss_failure,message|
+Then /^(?:|I )should see a "([^"]*)"$/ do |element|
+  case element
+    when "rights statement"
+      interface.has_rights_statement?
+    when "licence"
+      interface.has_licence?
+  end
+end
+
+Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failure,message|
   page.should have_selector ".alert", text: flash_for(message)
 end
 

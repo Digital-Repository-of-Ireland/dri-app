@@ -7,7 +7,7 @@ Feature:
 
 Scenario: Navigate to the Sign in page
   Given I am not logged in
-  When I go to the home page
+  When I go to "the home page"
   Then I should see a link to sign in
   And I should not see a link to sign out
   When I follow the link to sign in
@@ -15,7 +15,7 @@ Scenario: Navigate to the Sign in page
 
 Scenario: Navigate to the Sign up page
   Given I am not logged in
-  When I go to the home page
+  When I go to "the home page"
   Then I should see a link to sign in
   When I follow the link to sign in
   Then I should be on the User Signin page
@@ -69,7 +69,7 @@ Scenario: User signs in with invalid credentials
 @javascript
 Scenario: Logging out
   Given I am logged in as "user1" with password "password1"
-  When I go to the home page
+  When I go to "the home page"
   Then I should see a link to sign out
   When I follow the link to sign out
   Then I should be logged out

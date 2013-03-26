@@ -36,6 +36,16 @@ module Interface
       end
     end
 
+    def has_rights_statement?
+      within(:xpath, "//div[@id='document']") do
+        page.should have_content("Rights: This is a statement of rights")
+      end
+    end
+
+    def has_licence?
+     page.should have_content("Licence")
+    end
+
     def is_format?(format)
       within(:xpath, "//div[@id='document']") do
         page.should have_content("Format: #{format}")
