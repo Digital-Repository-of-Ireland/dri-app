@@ -18,18 +18,20 @@ module Validators
   #
   def Validators.valid_file_type?(file, allowed_type, allowed_subtypes)
 
+    self.init_types()
+
     #Get the mime type of our file
-    mime_type_from_content = MimeMagic.by_magic( File.open( file.tempfile.path ) )
+    mime_type = MimeMagic.by_magic( File.open( file.tempfile.path ) )
 
     # MimeMagic could return null if it can't find a match. If so return false
-    return false unless mime_type_from_content
+    return false unless mime_type
 
     # Split out the mime type into type and subtype
-    type,subtype = mime_type_from_content.to_s.split("/")
+    type,subtype = mime_type.to_s.split("/")
 
     # Ensure that the file extension matches the mime type
     extension = file.original_filename.split(".").last
-    unless MIME::Types.type_for(extension).include?(mime_type_from_content)
+    unless MIME::Types.type_for(extension).include?(mime_type)
       return false
     end
 
@@ -45,5 +47,16 @@ module Validators
     return true
 
   end  # End validate_file_type method
+
+
+  private
+
+    #
+    # Add additional mime types
+    #
+    def Validators.init_types()
+      MimeMagic.add( "audio/mpeg", {:magic => [[0, "\377\372"], [0, "\377\373"], [0, "\377\362"], [0, "\377\363"]] } )
+      MimeMagic.add( "audio/mp2", {:extensions => "mp2, mpeg", :magic => [[0, "\377\364"], [0, "\377\365"], [0, "\377\374"], [0, "\377\375"] ] } )
+    end
 
 end  # End Validators module
