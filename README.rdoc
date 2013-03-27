@@ -83,3 +83,17 @@ This is where the application specific settings are located
   config/settings.yml
 
 Please view and edit this file as needed before deploying the application.
+
+== Going into production
+
+Edit config/solr.yml config/fedora.yml config/database.yml and put in
+the correct production servers into place.
+
+Some steps required to be run before a production env is ready to go...
+
+  $ rake RAILS_ENV=production assets:precompile
+  $ rake RAILS_ENV=production db:schema:load
+  $ rake RAILS_ENV=production db:migrate
+
+The above assumes a production ready instance of mysql, solr,
+fedora-commons and mod_passenger.
