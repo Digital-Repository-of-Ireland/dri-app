@@ -8,4 +8,4 @@ cucumber:
   <<: *TEST
 production:
   #url: http://your.production.server:8080/bl_solr/core0 
-  url: http://localhost:8983/solr/development
+  url: http://localhost:8080/solr/collection1

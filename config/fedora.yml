@@ -10,6 +10,6 @@ production:
   user: fedoraAdmin
   password: fedoraAdmin
   #url: http://your.production.server:8080/fedora
-  url: http://localhost:8983/fedora
+  url: http://localhost:8080/fedora
 cucumber:
   <<: *TEST
