@@ -84,6 +84,27 @@ This is where the application specific settings are located
 
 Please view and edit this file as needed before deploying the application.
 
+== Background jobs
+
+The application includes a queueing system based on Resque and Redis to allow
+asynchronous processing of background jobs. This introduces a dependency on a Redis
+host. For testing purposes this can be installed locally and started with the command
+
+  $ sudo redis-server /opt/local/etc/redis.conf
+
+To start the worker to process jobs run
+
+  $ bundle exec rake resque:work QUEUE="*"
+
+To view your queues (for debugging purposes) run 
+
+  $ resque-web -x
+
+This should pop up a browser window looking at localhost:5678 (if not open one). Here
+you can the status of your queues and jobs.
+
+The worker code is currently in lib/workers/.
+
 == Going into production
 
 Edit config/solr.yml config/fedora.yml config/database.yml and put in

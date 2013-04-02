@@ -20,6 +20,8 @@ gem 'sqlite3'
 
 gem 'noid', '0.5.5'
 
+gem 'resque'
+
 # File processing gems
 gem 'mimemagic'
 

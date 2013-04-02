@@ -3,6 +3,8 @@
 class FilesController < AssetsController
 
   require 'validators'
+  require 'resque'
+  require 'workers/create_surrogates'
 
   # Returns the directory on the local filesystem to use for storing uploaded files.
   #
@@ -71,6 +73,8 @@ class FilesController < AssetsController
           @object.save
 
           flash[:notice] = t('dri.flash.notice.file_uploaded')
+
+          Resque.enqueue(CreateSurrogates, @object.pid)
 
           respond_to do |format|
             format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:id]}
