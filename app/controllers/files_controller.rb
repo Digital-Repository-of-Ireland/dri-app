@@ -73,7 +73,15 @@ class FilesController < AssetsController
           end
 
           queue = BackgroundTasks::QueueManager.new()
-          queue.process_audio(@object.pid)
+          case @object.class.to_s
+          when "DRI::Model::Audio"
+            queue.process_audio(@object.pid)
+          when "DRI::Model::Pdfdoc"
+            queue.process_article(@object.pid)
+          else
+            logger.error "File #{@file.path} was added to #{@object.id}, but object is of invalid type #{@object.class.to_s}"
+            raise Exceptions::InternalError
+          end
 
           @url = url_for :controller=>"files", :action=>"show", :id=>params[:id]
           logger.error @action_url
