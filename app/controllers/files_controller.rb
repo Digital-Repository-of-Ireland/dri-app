@@ -89,7 +89,7 @@ class FilesController < AssetsController
 
           begin
             raise Exceptions::InternalError unless @object.save!
-          rescue ActiveRecordError => e
+          rescue RuntimeError => e
             logger.error "Could not save object #{@object.id}: #{e.message}"
             raise Exceptions::InternalError
           end

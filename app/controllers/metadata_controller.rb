@@ -42,10 +42,22 @@ class MetadataController < AssetsController
             @object.add_datastream ds, :dsid => 'descMetadata'
           end
 
-           @object.datastreams["descMetadata"].save
 
-           if @object.valid?
-             @object.save
+          begin
+            raise Exceptions::InternalError unless @object.datastreams["descMetadata"].save
+          rescue RuntimeError => e
+            logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
+            raise Exceptions::InternalError
+          end
+
+          if @object.valid?
+            begin
+              raise Exceptions::InternalError unless @object.save
+            rescue RuntimeError => e
+              logger.error "Could not save object #{@object.id}: #{e.message}"
+              raise Exceptions::InternalError
+            end
+
              flash[:notice] = t('dri.flash.notice.metadata_updated')
            else
              flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
@@ -94,7 +106,13 @@ class MetadataController < AssetsController
         end
 
         if @object.valid?
-          @object.save
+          begin
+            raise Exceptions::InternalError unless @object.save
+          rescue RuntimeError => e
+            logger.error "Could not save object: #{e.message}"
+            raise Exceptions::InternalError
+          end
+
           flash[:notice] = t('dri.flash.notice.digital_object_ingested')
         else
           flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
