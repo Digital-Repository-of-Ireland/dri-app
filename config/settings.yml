@@ -8,3 +8,6 @@ interface:
   languages: [en, ga]
 dri:
   files: dri_files
+queue:
+  audio: [VirusScan, VerifyAudio]
+  pdfdoc: [VirusScan, VerifyPdf]
