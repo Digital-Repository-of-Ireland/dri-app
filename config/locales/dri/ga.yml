@@ -22,6 +22,7 @@ ga:
         not_added_to_collection: "Unable to add object to collection."
         not_removed_from_collection: "Unable to remove object from collection."
       error: 
+        no_type_specified: "You must specify a valid object type"
         validation_errors: "Validation Errors: %{error}"
       notice: 
         added_to_collection: "Object has been added to collection."
@@ -92,9 +93,13 @@ ga:
       devise: 
         locale: Language
       exceptions: 
+        internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"
         invalid_asset: "Unable to create asset. Please correct the errors and try again."
+        invalid_collection: "Unable to create collection."
         invalid_metadata: "The metadata file you have uploaded is invalid. Please correct the errors and try again."
         invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
+        invalid_object_type: "You have specified an invalid digital object type."
+        unknown_collection: "Unknown collection."
       ingest: 
         buttons: 
           continue: Continue

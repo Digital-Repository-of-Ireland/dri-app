@@ -3,8 +3,7 @@
 class FilesController < AssetsController
 
   require 'validators'
-  require 'resque'
-  require 'workers/create_surrogates'
+  require 'background_tasks/queue_manager'
 
   # Returns the directory on the local filesystem to use for storing uploaded files.
   #
@@ -65,16 +64,29 @@ class FilesController < AssetsController
 
           @file = LocalFile.new
           @file.add_file params[:Filedata], {:fedora_id => @object.id, :ds_id => datastream, :directory => dir.to_s, :version => count, :checksum => params[:checksum]}
-          @file.save!
+
+          begin
+            raise Exceptions::InternalError unless @file.save!
+          rescue ActiveRecordError => e
+            logger.error "Could not save the asset file #{@file.path} for #{@object.id} to #{datastream}: #{e.message}"
+            raise Exceptions::InternalError
+          end
+
+          queue = BackgroundTasks::QueueManager.new()
+          queue.process_audio(@object.pid)
 
           @url = url_for :controller=>"files", :action=>"show", :id=>params[:id]
           logger.error @action_url
           @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
-          @object.save
+
+          begin
+            raise Exceptions::InternalError unless @object.save!
+          rescue ActiveRecordError => e
+            logger.error "Could not save object #{@object.id}: #{e.message}"
+            raise Exceptions::InternalError
+          end
 
           flash[:notice] = t('dri.flash.notice.file_uploaded')
-
-          Resque.enqueue(CreateSurrogates, @object.pid)
 
           respond_to do |format|
             format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:id]}
