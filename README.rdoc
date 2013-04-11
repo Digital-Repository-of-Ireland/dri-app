@@ -21,6 +21,10 @@ For testing and development you will need to bootstrap the project
   $ git submodule update --init --recursive
   $ bundle
   $ bundle exec rake db:migrate
+  $ bundle exec rake db:seed
+
+  Dont forget to prepare the test database with
+    $ bundle exec rake db:test:prepare
 
 To start the application for demo purposes
 
