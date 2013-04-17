@@ -6,6 +6,14 @@ module BackgroundTasks
       require 'background_tasks/workers/verify_pdf.rb'
       require 'background_tasks/workers/virus_scan.rb'
 
+      # Set up the background tasks for an Audio object
+      #
+      # Takes a process id as a parameter
+      # Uses Resque to enqueue each of the required jobs for that object
+      # type.
+      # Reqiured jobs for each type are stored in config/settings.yml
+      # Workers to process the queues and do the work are in lib/background_tasks/workers
+      # 
       def process_audio(pid)
 
         Settings.queue.audio.each do |task|
@@ -23,6 +31,14 @@ module BackgroundTasks
       end
 
 
+      # Set up the background tasks for a PDF object
+      #
+      # Takes a process id as a parameter
+      # Uses Resque to enqueue each of the required jobs for that object
+      # type.
+      # Reqiured jobs for each type are stored in config/settings.yml
+      # Workers to process the queues and do the work are in lib/background_tasks/workers
+      # 
       def process_article(pid)
 
         Settings.queue.pdfdoc.each do |task|
