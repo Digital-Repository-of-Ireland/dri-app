@@ -1,6 +1,7 @@
 GIT
   remote: git@dev.forasfeasa.ie:dri_data_models.git
-  revision: 6cd121669b80dfc1f69e59836f2fd2629421e6ea
+  revision: 5f685ad70ab9e695bea4946ea0d6c0a5c9da615d
+  branch: hydra6
   specs:
     dri_data_models (0.0.1)
       hydra-head (>= 5.0.0)
@@ -196,7 +197,7 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.8.0)
-    launchy (2.2.0)
+    launchy (2.3.0)
       addressable (~> 2.3)
     libv8 (3.11.8.17)
     listen (0.7.3)
