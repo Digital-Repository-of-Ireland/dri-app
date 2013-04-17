@@ -1,6 +1,6 @@
 GIT
   remote: git@dev.forasfeasa.ie:dri_data_models.git
-  revision: 5f685ad70ab9e695bea4946ea0d6c0a5c9da615d
+  revision: 03d1af4329c49a3673a67ed5b3cffca0b4c313f0
   branch: hydra6
   specs:
     dri_data_models (0.0.1)
@@ -8,12 +8,14 @@ GIT
 
 GIT
   remote: git@dev.forasfeasa.ie:user_group.git
-  revision: ecab5a401146d1c3ba8cd7bab3a0d824dcdda893
+  revision: 6fcfd8c28497457854dcda7968317a2ea99bae6e
   specs:
     user_group (0.0.4)
       devise (~> 2.2.3)
       devise-guests (~> 0.3)
       devise-i18n-views
+      fastimage
+      gravatar-ultimate
       kaminari (~> 0.14.1)
       rails
 
@@ -122,12 +124,14 @@ GEM
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
     fastercsv (1.5.5)
+    fastimage (1.3.0)
     faye-websocket (0.4.7)
       eventmachine (>= 0.12.0)
     ffi (1.7.0)
     formatador (0.2.4)
     gherkin (2.11.8)
       multi_json (~> 1.3)
+    gravatar-ultimate (1.0.3)
     guard (1.7.0)
       formatador (>= 0.2.4)
       listen (>= 0.6.0)
