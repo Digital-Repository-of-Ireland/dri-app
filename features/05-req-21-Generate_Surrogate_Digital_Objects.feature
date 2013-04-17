@@ -34,4 +34,15 @@ Some dummy workers are available, they only print output to indicate that they h
 
 The workers might be better tested via rspec than cucumber.
 
+Scenario Outline: Bulk Ingest of a directory 10 of assets and metadata.xml files
+  Given I am logged in as "user1"
+  And I have created a <type> object
+  Then the asset should be virus checked
+  And the asset type should be verified
+  And the asset should have <surrogates> created
+
+  Examples:
+    | type   | surrogates |
+    | audio  | mp3, clip  |
+    | pdfdoc | extract    |
 
