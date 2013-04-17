@@ -13,6 +13,7 @@ audio:
 * VirusScan
 * VerifyAudio - Check that it is a valid audio file
 * CreateMP3 - make an MP3 version of the file for delivery to the user
+* CreateOgg - make an ogg version of the file for delivery to the user, Note: pick a html5 supported format as fall back - need wp6 input
 
 pdfdoc:
 * VirusScan
@@ -23,9 +24,18 @@ Image:
 * VirusScan
 * VerifyImage - Check that it is a valid image file
 * CreateThumbnail - make one or more thumbnail images for various display modes
-* CreateLowRes - make a lower resolution version for delivery to the user
+* CreateLowRes - make a lower resolution version for delivery to the user. Note: ResizeImage is probably better, might be able to get rid of the above
+* CreateZoomified - make zoomified tiles (needs to be decided) -- might be messy - need wp6 input
+* CreateSeadragon - make seadragon tiles (needs to be decided) -- might be messy - need wp6 input
 
-Note that there must be something in the object datastreams to record each of these events, that it was run and when. Publishing an object will be blocked until all required background jobs have been run once.
+Generic:
+* checksum of assets which allows sha256, rmd160 and md5. This is so we can store this information for later verification of the object.
+
+Note that there must be something in the object datastreams to record
+each of these events, that it was run and when. Publishing an object
+will be blocked until all required background jobs have been run once.
+
+  Note could the above be done with audit logs ?
 
 Current implementation:
 When an asset is uploaded the FilesController create function creates a BackgroundTasks::QueueManager object and calls the appropriate process method depending on the object type.
