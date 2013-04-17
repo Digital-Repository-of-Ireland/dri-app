@@ -5,3 +5,33 @@ DELETEME:
 DELETEME: The system shall generate surrogate formats from primary digital object as required.
 DELETEME: 
 DELETEME: 1.1 It shall display derived assets (digital objects) as required (e.g. high resolution tiff to low resolution thumbnail in jpeg).
+
+
+Possible list of tasks by object type:
+
+audio:
+* VirusScan
+* VerifyAudio - Check that it is a valid audio file
+* CreateMP3 - make an MP3 version of the file for delivery to the user
+
+pdfdoc:
+* VirusScan
+* VerifyPdf - Check that it is a valid pdf file
+* FullTextIndex - could/should this happen as a background task??
+
+Image:
+* VirusScan
+* VerifyImage - Check that it is a valid image file
+* CreateThumbnail - make one or more thumbnail images for various display modes
+* CreateLowRes - make a lower resolution version for delivery to the user
+
+Note that there must be something in the object datastreams to record each of these events, that it was run and when. Publishing an object will be blocked until all required background jobs have been run once.
+
+Current implementation:
+When an asset is uploaded the FilesController create function creates a BackgroundTasks::QueueManager object and calls the appropriate process method depending on the object type.
+QueueManager uses resque to enqueue the appropriate background tasks for that object type (as configured in config/settings.yml)
+Some dummy workers are available, they only print output to indicate that they have run, but do not yet do any real work
+
+The workers might be better tested via rspec than cucumber.
+
+
