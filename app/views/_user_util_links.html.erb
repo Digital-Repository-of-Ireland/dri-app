@@ -3,7 +3,8 @@
     <div class="util-links-login">
       <% if current_user %>
         <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, :method => :delete, :id => "logout"  %>
-        [<%= link_to current_user, user_group.user_path(current_user), :id => "view_account" %>]
+        [<%= render partial: "user_group/users/partials/image", locals:{ user: current_user, size: "14x14"} %>
+        <%= link_to current_user, user_group.user_path(current_user), :id => "view_account" %>]
 
       <% else %>
         <%= link_to t('blacklight.header_links.login'), user_group.new_user_session_path, :id => "login" %>
