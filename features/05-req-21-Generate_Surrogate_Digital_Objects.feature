@@ -56,3 +56,9 @@ Scenario Outline: Running background jobs and creating surrogates for different 
     | audio  | mp3, clip  |
     | pdfdoc | extract    |
 
+## note for the above checksum and virus check are actions against any
+## object, "virus checked" and "checksum" should be the actions
+##
+## e.g. Then the asset should be "virus checked"
+## e.g. Then the asset should be "checksummed"
+## e.g. Then the asset should be "compressed"
