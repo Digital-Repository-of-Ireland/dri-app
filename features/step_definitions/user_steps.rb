@@ -1,6 +1,6 @@
 Given /^I am logged in as "([^\"]*)"$/ do |login|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :first_name => "fname", :second_name => "sname")
+  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   visit path_to("sign in")
   fill_in("user_email", :with => email) 
   fill_in("user_password", :with => "password") 
@@ -10,7 +10,7 @@ end
 
 Given /^I am logged in as "([^\"]*)" with password "([^\"]*)"$/ do |login, password|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => password, :password_confirmation => password, :first_name => "fname", :second_name => "sname")
+  @user = User.create(:email => email, :password => password, :password_confirmation => password, :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
@@ -20,7 +20,7 @@ end
 
 Given /^I am logged in as "([^\"]*)" with language "([^\"]*)"$/ do |login, lang|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => lang, :first_name => "fname", :second_name => "sname") 
+  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => lang, :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) 
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
