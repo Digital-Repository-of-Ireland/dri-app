@@ -9,5 +9,5 @@ interface:
 dri:
   files: dri_files
 queue:
-  audio: [Checksum, VirusScan, VerifyAudio, CreateMp3, CreateOgg]
-  pdfdoc: [Checksum, VirusScan, VerifyPdf, FullTextIndex]
+  audio: [CreateChecksums, VirusScan, VerifyAudio, CreateMp3, CreateOgg]
+  pdfdoc: [CreateChecksums, VirusScan, VerifyPdf, FullTextIndex]

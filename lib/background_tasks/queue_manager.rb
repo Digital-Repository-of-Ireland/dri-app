@@ -5,6 +5,10 @@ module BackgroundTasks
       require 'background_tasks/workers/verify_audio.rb'
       require 'background_tasks/workers/verify_pdf.rb'
       require 'background_tasks/workers/virus_scan.rb'
+      require 'background_tasks/workers/create_checksums.rb'
+      require 'background_tasks/workers/create_ogg.rb'
+      require 'background_tasks/workers/create_mp3.rb'
+      require 'background_tasks/workers/full_text_index.rb'
 
       # Set up the background tasks for an Audio object
       #
