@@ -13,8 +13,8 @@ class CatalogController < ApplicationController
   # This applies appropriate access controls to all solr queries
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
-  CatalogController.solr_search_params_logic += [:exclude_unwanted_models]
+  CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
+  #CatalogController.solr_search_params_logic += [:exclude_unwanted_models]
 
   configure_blacklight do |config|
     config.default_solr_params = {
@@ -30,7 +30,7 @@ class CatalogController < ApplicationController
     # solr field configuration for document/show views
     config.show.html_title = 'title_tesim'
     config.show.heading = 'title_tesim'
-    config.show.display_type = 'has_model_ssim'
+    config.show.display_type = 'object_type_tesim'
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -194,7 +194,7 @@ class CatalogController < ApplicationController
 
   def exclude_collection_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "-has_model_ssim\"info:fedora/afmodel:DRI_Model_Collection\""
+    solr_parameters[:fq] << "-has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
   end
 
 end 

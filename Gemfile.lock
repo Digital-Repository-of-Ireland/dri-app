@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git@dev.forasfeasa.ie:user_group.git
-  revision: 6fcfd8c28497457854dcda7968317a2ea99bae6e
+  revision: 5ae66b61944d983491d807c929ebea857438ae89
   specs:
     user_group (0.0.4)
       devise (~> 2.2.3)
@@ -263,7 +263,7 @@ GEM
       activesupport (= 3.2.11)
       bundler (~> 1.0)
       railties (= 3.2.11)
-    rails_config (0.3.2)
+    rails_config (0.3.3)
       activesupport (>= 3.0)
     railties (3.2.11)
       actionpack (= 3.2.11)
