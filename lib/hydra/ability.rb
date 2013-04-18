@@ -35,7 +35,8 @@ module Hydra
       return @user_groups if @user_groups
       
       @user_groups = default_user_groups
-      @user_groups |= current_user.groups if current_user and current_user.respond_to? :groups
+      #Redmine-378 TODO:: Must update this when working with access controls
+      @user_groups |= current_user.groups.map(&:name) if current_user and current_user.respond_to? :groups
       @user_groups |= ['registered'] unless current_user.new_record?
       @user_groups
     end
