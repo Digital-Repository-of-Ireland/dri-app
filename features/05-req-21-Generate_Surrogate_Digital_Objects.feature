@@ -44,6 +44,14 @@ Some dummy workers are available, they only print output to indicate that they h
 
 The workers might be better tested via rspec than cucumber.
 
+This feature will introduce a number of runtime dependancies, the
+following list is just an example
+
+* clamav
+* ffmpeg
+* imagemagick
+* openssl
+
 Scenario Outline: Running background jobs and creating surrogates for different object types
   Given I am logged in as "user1"
   And I have created a <type> object
