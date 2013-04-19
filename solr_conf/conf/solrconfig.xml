@@ -35,37 +35,46 @@
             those searches. You may also be interested in:
             http://wiki.apache.org/solr/LocalParams
        -->
-        <str name="qf">
+       <str name="qf">
           id
-          active_fedora_model_ssi
-          title_tesim
-          author_tesim
-          subject_tesim
-          <!-- id
-          all_text_timv
-          active_fedora_model_ssi
-          object_type_si -->
+          title_tesim^25000
+          text
+          active_fedora_model_ssim
+          object_type_sim
         </str>
         <str name="pf">
-          all_text_timv^10
+          id
+          title_tesim^250000
+          text^10
+          active_fedora_model_ssim
+          object_type_sim
         </str>
 
        <str name="author_qf">
-          author_tesim
+         author_unstem_search^200
+         author_tesim^20
        </str>
        <str name="author_pf">
-       </str>
+         author_unstem_search^2000
+         author_tesim^200
+       </str> 
        <str name="title_qf">
-          title_tesim
+         title_unstem_search^50000
+         title_tesim^5000
        </str>
        <str name="title_pf">
+         title_unstem_search^500000
+         title_tesim^50000
        </str>
        <str name="subject_qf">
-          subject_tesim
+         subject_unstem_search^125
+         subject_tesim^50
        </str>
        <str name="subject_pf">
+         subject_unstem_search^1250
+         subject_tesim^1000
        </str>
-       
+
        <str name="fl">
          *, 
          score
@@ -74,9 +83,11 @@
        <str name="facet">true</str>
        <str name="facet.mincount">1</str>
        <str name="facet.limit">10</str>
-       <str name="facet.field">active_fedora_model_ssi</str>
-       <str name="facet.field">subject_sim</str>
-       
+       <str name="facet.field">format</str>
+       <str name="facet.field">language_sim</str>
+       <str name="facet.field">subject_era_sim</str>
+       <str name="facet.field">subject_geo_sim</str>
+ 
        <str name="spellcheck">true</str>
        <str name="spellcheck.dictionary">default</str>
        <str name="spellcheck.onlyMorePopular">true</str>
@@ -136,10 +147,48 @@
     <!-- Multiple "Spell Checkers" can be declared and used by this component
       (e.g. for title_spell field)
       -->
+    <!-- a spellchecker built from a field of the main index, and
+         written to disk
+      -->
     <lst name="spellchecker">
       <str name="name">default</str>
       <str name="field">spell</str>
       <str name="spellcheckIndexDir">./spell</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">author</str>
+      <str name="field">author_spell</str>
+      <str name="spellcheckIndexDir">./spell_author</str>
+      <str name="accuracy">0.7</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">person</str>
+      <str name="field">person_spell</str>
+      <str name="spellcheckIndexDir">./spell_person</str>
+      <str name="accuracy">0.7</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">subject</str>
+      <str name="field">subject_spell</str>
+      <str name="spellcheckIndexDir">./spell_subject</str>
+      <str name="accuracy">0.7</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">geographical_coverage</str>
+      <str name="field">geographical_coverage_spell</str>
+      <str name="spellcheckIndexDir">./spell_geographical_coverage</str>
+      <str name="accuracy">0.7</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+    <lst name="spellchecker">
+      <str name="name">title</str>
+      <str name="field">title_spell</str>
+      <str name="spellcheckIndexDir">./spell_title</str>
+      <str name="accuracy">0.7</str>
       <str name="buildOnOptimize">true</str>
     </lst>
   </searchComponent>
