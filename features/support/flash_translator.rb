@@ -52,6 +52,9 @@ module FlashTranslator
     when /cookie notification/
       I18n.t('dri.application.cookies.header', :locale => "en")
 
+    when /invalid profile image/
+      strip_vars( I18n.t("user_groups.users.errors.validation_image_link", :locale => "en") )
+
     else "Unknown"
  
     end
