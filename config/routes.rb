@@ -26,6 +26,8 @@ NuigRnag::Application.routes.draw do
   match '/privacy' => 'static_pages#privacy', :via => :get
   match '/about' => 'static_pages#about', :via => :get
   match '/contact' => 'static_pages#contact', :via => :get
+  #required for hydra-core/lib/hydra/controller/controller_behavior.rb and lib/blacklight/controller.rb
+  match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
