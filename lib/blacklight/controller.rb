@@ -120,7 +120,7 @@ module Blacklight::Controller
 
       redirect_to root_url and return unless has_user_authentication_provider?
 
-      redirect_to new_user_session_url(:referer => request.fullpath)
+      redirect_to user_group.new_user_session_url(:referer => request.fullpath)
     end
   
 end
