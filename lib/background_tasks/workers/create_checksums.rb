@@ -1,4 +1,4 @@
-require 'digest'
+require 'checksum'
 
 class CreateChecksums
   @queue = "create_checksums_queue"
@@ -16,8 +16,8 @@ class CreateChecksums
 
     # If the checksum is already set should we be comparing them?
     # What happens when the asset is updated then?
-    @object.md5 = md5(filename) 
-    @object.sha1 = sha256(filename) 
+    @object.resource_md5 = Checksum.md5(filename) 
+    @object.resource_sha1 = Checksum.sha256(filename) 
 
     @object.save
 

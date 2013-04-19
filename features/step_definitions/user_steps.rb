@@ -20,7 +20,7 @@ end
 
 Given /^I am logged in as "([^\"]*)" with language "([^\"]*)"$/ do |login, lang|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => lang, :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) 
+  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => lang, :first_name => "fname", :second_name => "sname") 
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
