@@ -74,9 +74,7 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display 
     config.add_index_field solr_name('title', :stored_searchable, type: :string), :label => 'Title:'
-    config.add_index_field solr_name('title_vern', :stored_searchable, type: :string), :label => 'Title:'
     config.add_index_field solr_name('author', :stored_searchable, type: :string), :label => 'Author:'
-    config.add_index_field solr_name('author_vern', :stored_searchable, type: :string), :label => 'Author:'
     config.add_index_field solr_name('presenter', :stored_searchable, type: :string), :label => 'Presenter:'
     config.add_index_field solr_name('producer', :stored_searchable, type: :string), :label => 'Producer:'
     config.add_index_field solr_name('subject', :stored_searchable, type: :string), :label => 'Subject:'
@@ -84,17 +82,13 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name('object_type', :stored_searchable, type: :string), :label => 'Format:'
     config.add_index_field solr_name('language', :stored_searchable, type: :string), :label => 'Language:'
     config.add_index_field solr_name('published', :stored_searchable, type: :string), :label => 'Published:'
-    config.add_index_field solr_name('published_vern', :stored_searchable, type: :string), :label => 'Published:'
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display 
     config.add_show_field solr_name('title', :stored_searchable, type: :string), :label => 'Title:'
-    config.add_show_field solr_name('title_vern', :stored_searchable, type: :string), :label => 'Title:'
     config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), :label => 'Subtitle:'
-    config.add_show_field solr_name('subtitle_vern', :stored_searchable, type: :string), :label => 'Subtitle:'
     config.add_show_field solr_name('description', :stored_searchable, type: :string), :label => 'Description:'
     config.add_show_field solr_name('author', :stored_searchable, type: :string), :label => 'Author:'
-    config.add_show_field solr_name('author_vern', :stored_searchable, type: :string), :label => 'Author:'
     config.add_show_field solr_name('presenter', :stored_searchable, type: :string), :label => 'Presenter:'
     config.add_show_field solr_name('guest', :stored_searchable, type: :string), :label => 'Guest:'
     config.add_show_field solr_name('producer', :stored_searchable, type: :string), :label => 'Producer:'
@@ -103,11 +97,8 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), :label => 'Place:'
     config.add_show_field solr_name('format', :symbol), :label => 'Format:'
     config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'Format:'
-    config.add_show_field solr_name('url_fulltext', :stored_searchable, type: :string), :label => 'URL:'
-    config.add_show_field solr_name('url_suppl', :stored_searchable, type: :string), :label => 'More Information:'
     config.add_show_field solr_name('language', :stored_searchable, type: :string), :label => 'Language:'
     config.add_show_field solr_name('published', :stored_searchable, type: :string), :label => 'Published:'
-    config.add_show_field solr_name('published_vern', :stored_searchable, type: :string), :label => 'Published:'
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'Source:'
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'Rights:'
 
