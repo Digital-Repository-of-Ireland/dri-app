@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module UserA
+module UserTests
     describe UserGroup::User do
         before :each do
             @user_email = "text@example.com"
@@ -33,7 +33,7 @@ module UserA
         describe "#is_admin?" do
             context "is an admin" do
                 before :each do
-                    group_admin = Group.create(name: SETTING_ADMIN_GROUP, description: "admin group")
+                    group_admin = Group.create(name: SETTING_GROUP_ADMIN, description: "admin group")
                     group_id = group_admin.id
                     membership = @user.join_group(group_id)
                     membership.approved_by = @user.id
@@ -116,7 +116,7 @@ module UserA
             end
 
             context "leaving a group with full membership" do
-              before :each do
+                before :each do
                     @membership.approved_by = @user.id
                     @membership.save
                     @user.member?(@group.id).should == true
@@ -129,7 +129,7 @@ module UserA
             end
 
             context "leave a group with partial membership" do
-              before :each do
+                before :each do
                     @user.pending_member?(@group.id).should == true
                 end
 
@@ -140,19 +140,105 @@ module UserA
             end
         end
 
+        describe "#create_token" do
+            before :each do
+                @user.authentication_token = nil
+                @user.token_creation_date = nil
+            end
+            it "should create a login token" do
+                @user.authentication_token.should be_nil
+                @user.create_token
+                @user.authentication_token.empty?.should be_false
+            end
+        end
 
-        #full_memberships
+        describe "#destroy_token" do
+            before :each do
+                @user.create_token
+            end
+            it "should delete the login token" do
+                @user.authentication_token.should_not be_nil
+                @user.token_creation_date.should_not be_nil
 
-        #pending memberships
+                @user.destroy_token
+
+                @user.authentication_token.should be_nil
+                @user.token_creation_date.should be_nil
+            end
+        end
+
+        describe "#full_memberships" do
+            before :each do
+                @group = Group.create(name: "test group", description: "test group")
+                @membership = @user.join_group(@group.id)
+                @membership.approved_by = @user.id
+                @membership.save
+
+                @groupb = Group.create(name: "test group b", description: "test group b")
+                @membershipb = @user.join_group(@groupb.id)
+            end
+            context "full memberships" do
+                it "should be a full member of group a" do
+                    @user.full_memberships.map(&:group_id).include?(@group.id).should ==  true                    
+                end
+
+                it "should not be a full member of group b" do
+                    @user.full_memberships.map(&:group_id).include?(@groupb.id).should == false
+                end
+            end
+        end
+
+        describe "#pending_memberships" do
+            before :each do
+                @group = Group.create(name: "test group", description: "test group")
+                @membership = @user.join_group(@group.id)
+                @membership.approved_by = @user.id
+                @membership.save
+
+                @groupb = Group.create(name: "test group b", description: "test group b")
+                @membershipb = @user.join_group(@groupb.id)
+            end
+            context "pending memberships" do
+                it "should not be a pending member of group a" do
+                    @user.pending_memberships.map(&:group_id).include?(@group.id).should == false                    
+                end
+
+                it "should be a pending member of group b" do
+                    @user.pending_memberships.map(&:group_id).include?(@groupb.id).should == true
+                end
+            end
+        end
 
         #User options additions
-        #set_locale
+        describe "#set_locale" do
+            before :each do
+                @user.locale = "" 
+            end
+            it "should reset locale to default" do
+                @user.locale.should == ""
+                @user.set_locale
+                @user.locale.should == I18n.locale
+            end
+        end
 
-        #set_view_level
+        describe "#set_view_level" do
+            before :each do
+                @user.view_level = 0
+            end
+            it "should set view level to public (1)" do
+                @user.view_level.should == 0
+                @user.set_view_level("public")
+                @user.view_level.should == 1
+            end
+        end
 
-        #get_view_level
-        
-        #about_me
-
+        describe "#get_view_level" do
+            before :each do
+                @user.set_view_level("registered")
+            end
+            it "should return registered" do
+                @user.get_view_level.should == "registered"
+            end
+        end
     end
 end
