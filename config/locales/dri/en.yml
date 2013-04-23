@@ -157,6 +157,7 @@ en:
           sources: Sources
           subjects: Subjects
           title: Title
+          status: Status
         legends: 
           audio_caption: "A master audio file has already been uploaded."
           file_caption: "A master file has already been uploaded."
