@@ -54,3 +54,12 @@
   <% end %>
   <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Source"><%= t('dri.views.objects.forms.add_source') %></a></p>
 </fieldset>
+
+<fieldset id="status">
+  <%= f.label "#{t('dri.views.objects.forms.status')}:" %>  <label class="radio">
+    <input type="radio" id="status_open" name="dri_model[status]" value="published" <% if @document_fedora.status.eql?("published") %> checked="true"<% end %>/> <span class="label label-success">Published</span> Visible to all authorised users.
+  </label>
+  <label class="radio">
+    <input type="radio" id="status_draft" name="dri_model[status]" value="draft" <% if @document_fedora.status.eql?("draft") %> checked="true"<% end %>/> <span class="label label-important">Draft</span> Visible to creator only.
+  </label>
+</fieldset>
