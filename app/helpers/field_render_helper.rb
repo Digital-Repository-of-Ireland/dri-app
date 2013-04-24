@@ -22,8 +22,12 @@ module FieldRenderHelper
     value = value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x}
     value = value.map { |v| html_escape v }
 
-    if (args[:field] and args[:field].match(/_facet$/))
-      facet_arg = get_search_arg_from_facet :facet => args[:field]
+    last_index = args[:field].rindex('_')
+    field = args[:field][0..last_index-1]
+
+    #if (args[:field] and args[:field].match(/_facet$/))
+    if (args[:field] and blacklight_config.facet_fields[ActiveFedora::SolrService.solr_name(field, :facetable)])
+      facet_arg = get_search_arg_from_facet :facet => ActiveFedora::SolrService.solr_name(field, :facetable)
       value = value.map { |v| "<a href=\"" << url_for({:action => 'index', :controller => 'catalog', facet_arg => v}) << "\">" << v << "</a>"}
     end
     return value.join(field_value_separator).html_safe
@@ -35,8 +39,8 @@ module FieldRenderHelper
      facet = args[:facet]
      search_arg = "f[" << facet << "][]"
 
-     if ((facet == 'guest_facet') || (facet == 'presenter_facet') || (facet == 'producer_facet'))
-       search_arg = "f[person_facet][]"
+     if ((facet == ActiveFedora::SolrService.solr_name('guest', :facetable)) || (facet == ActiveFedora::SolrService.solr_name('presenter', :facetable)) || (facet == ActiveFedora::SolrService.solr_name('producer', :facetable)))
+       search_arg = "f[" << ActiveFedora::SolrService.solr_name('person', :facetable) << "][]"
      end
 
      return search_arg

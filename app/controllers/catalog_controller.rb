@@ -14,6 +14,7 @@ class CatalogController < ApplicationController
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
   CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
+  #CatalogController.solr_search_params_logic += [:exclude_unwanted_models]
 
   configure_blacklight do |config|
     config.default_solr_params = {
@@ -23,13 +24,13 @@ class CatalogController < ApplicationController
     }
 
     # solr field configuration for search results/index views
-    config.index.show_link = 'title_t'
-    config.index.record_display_type = 'has_model_s'
+    config.index.show_link = 'title_tesim'
+    config.index.record_tsim_type = 'has_model_ssim'
 
     # solr field configuration for document/show views
-    config.show.html_title = 'title_t'
-    config.show.heading = 'title_t'
-    config.show.display_type = 'has_model_s'
+    config.show.html_title = 'title_tesim'
+    config.show.heading = 'title_tesim'
+    config.show.display_type = 'object_type_tesim'
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -50,21 +51,17 @@ class CatalogController < ApplicationController
     #
     # :show may be set to false if you don't want the facet to be drawn in the 
     # facet bar
-    config.add_facet_field 'subject_facet', :label => 'Subject'
-    config.add_facet_field 'presenter_facet', :label => 'Presenter', :limit => 20
-    config.add_facet_field 'guest_facet', :label => 'Guest', :limit => 20
-    config.add_facet_field 'producer_facet', :label => 'Producer', :limit => 20
-    config.add_facet_field 'person_facet', :label => 'Person', :show => false
-    config.add_facet_field 'object_type_facet', :label => 'Format'
-    config.add_facet_field 'pub_date', :label => 'Publication Year', :date => true
-    config.add_facet_field 'broadcast_date_facet', :label => 'Broadcast Date', :date => true 
-    config.add_facet_field 'subject_topic_facet', :label => 'Topic', :limit => 20
-    config.add_facet_field 'geographical_coverage_facet', :label => 'Place', :limit => 20 
-    config.add_facet_field 'language_facet', :label => 'Language', :limit => true 
-    config.add_facet_field 'lc_1letter_facet', :label => 'Call Number' 
-    config.add_facet_field 'subject_geo_facet', :label => 'Region' 
-    config.add_facet_field 'subject_era_facet', :label => 'Era'  
-    config.add_facet_field 'collection_facet', :label => 'Collection'
+    config.add_facet_field solr_name('subject', :facetable), :label => 'Subject'
+    config.add_facet_field solr_name('presenter', :facetable), :label => 'Presenter', :limit => 20
+    config.add_facet_field solr_name('guest', :facetable), :label => 'Guest', :limit => 20
+    config.add_facet_field solr_name('producer', :facetable), :label => 'Producer', :limit => 20
+    config.add_facet_field solr_name('person', :facetable), :label => 'Person', :show => false
+    config.add_facet_field solr_name('object_type', :facetable), :label => 'Format'
+    config.add_facet_field solr_name('broadcast_date', :facetable), :label => 'Broadcast Date', :date => true
+    config.add_facet_field solr_name('subject_topic', :facetable),:label => 'Topic', :limit => 20
+    config.add_facet_field solr_name('geographical_coverage', :facetable), :label => 'Place', :limit => 20
+    config.add_facet_field solr_name('language', :facetable), :label => 'Language', :limit => true
+    config.add_facet_field solr_name('collection', :facetable), :label => 'Collection'
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -76,46 +73,35 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display 
-    config.add_index_field 'title_display', :label => 'Title:' 
-    config.add_index_field 'title_vern_display', :label => 'Title:' 
-    config.add_index_field 'author_display', :label => 'Author:' 
-    config.add_index_field 'author_vern_display', :label => 'Author:'
-    config.add_index_field 'presenter_facet', :label => 'Presenter:'
-    config.add_index_field 'producer_facet', :label => 'Producer:'
-    config.add_index_field 'subject_facet', :label => 'Subject:' 
-    config.add_index_field 'format', :label => 'Format:'
-    config.add_index_field 'object_type_facet', :label => 'Format:' 
-    config.add_index_field 'language_facet', :label => 'Language:'
-    config.add_index_field 'published_display', :label => 'Published:'
-    config.add_index_field 'published_vern_display', :label => 'Published:'
-    config.add_index_field 'lc_callnum_display', :label => 'Call number:'
+    config.add_index_field solr_name('title', :stored_searchable, type: :string), :label => 'Title:'
+    config.add_index_field solr_name('author', :stored_searchable, type: :string), :label => 'Author:'
+    config.add_index_field solr_name('presenter', :stored_searchable, type: :string), :label => 'Presenter:'
+    config.add_index_field solr_name('producer', :stored_searchable, type: :string), :label => 'Producer:'
+    config.add_index_field solr_name('subject', :stored_searchable, type: :string), :label => 'Subject:'
+    config.add_index_field solr_name('format', :symbol), :label => 'Format:'
+    config.add_index_field solr_name('object_type', :stored_searchable, type: :string), :label => 'Format:'
+    config.add_index_field solr_name('language', :stored_searchable, type: :string), :label => 'Language:'
+    config.add_index_field solr_name('published', :stored_searchable, type: :string), :label => 'Published:'
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display 
-    config.add_show_field 'title_display', :label => 'Title:' 
-    config.add_show_field 'title_vern_display', :label => 'Title:' 
-    config.add_show_field 'subtitle_display', :label => 'Subtitle:' 
-    config.add_show_field 'subtitle_vern_display', :label => 'Subtitle:'
-    config.add_show_field 'description_display', :label => 'Description:' 
-    config.add_show_field 'author_display', :label => 'Author:' 
-    config.add_show_field 'author_vern_display', :label => 'Author:'
-    config.add_show_field 'presenter_facet', :label => 'Presenter:'
-    config.add_show_field 'guest_facet', :label => 'Guest:'
-    config.add_show_field 'producer_facet', :label => 'Producer:'
-    config.add_show_field 'broadcast_date_facet', :label => 'Broadcast Date:'
-    config.add_show_field 'subject_facet', :label => 'Subject:'
-    config.add_show_field 'geographical_coverage_facet', :label => 'Place:'
-    config.add_show_field 'format', :label => 'Format:'
-    config.add_show_field 'object_type_facet', :label => 'Format:' 
-    config.add_show_field 'url_fulltext_display', :label => 'URL:'
-    config.add_show_field 'url_suppl_display', :label => 'More Information:'
-    config.add_show_field 'language_facet', :label => 'Language:'
-    config.add_show_field 'published_display', :label => 'Published:'
-    config.add_show_field 'published_vern_display', :label => 'Published:'
-    config.add_show_field 'lc_callnum_display', :label => 'Call number:'
-    config.add_show_field 'isbn_t', :label => 'ISBN:'
-    config.add_show_field 'source_display', :label => 'Source:'
-    config.add_show_field 'rights_display', :label => 'Rights:'
+    config.add_show_field solr_name('title', :stored_searchable, type: :string), :label => 'Title:'
+    config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), :label => 'Subtitle:'
+    config.add_show_field solr_name('description', :stored_searchable, type: :string), :label => 'Description:'
+    config.add_show_field solr_name('author', :stored_searchable, type: :string), :label => 'Author:'
+    config.add_show_field solr_name('presenter', :stored_searchable, type: :string), :label => 'Presenter:'
+    config.add_show_field solr_name('guest', :stored_searchable, type: :string), :label => 'Guest:'
+    config.add_show_field solr_name('producer', :stored_searchable, type: :string), :label => 'Producer:'
+    config.add_show_field solr_name('broadcast_date', :stored_searchable, type: :string), :label => 'Broadcast Date:'
+    config.add_show_field solr_name('subject', :stored_searchable, type: :string), :label => 'Subject:'
+    config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), :label => 'Place:'
+    config.add_show_field solr_name('format', :symbol), :label => 'Format:'
+    config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'Format:'
+    config.add_show_field solr_name('language', :stored_searchable, type: :string), :label => 'Language:'
+    config.add_show_field solr_name('published', :stored_searchable, type: :string), :label => 'Published:'
+    config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'Source:'
+    config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'Rights:'
+    config.add_show_field solr_name('properties_status', :displayable, type: :string), :label => 'Status:'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -188,10 +174,10 @@ class CatalogController < ApplicationController
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
-    config.add_sort_field 'score desc, pub_date_sort desc, title_sort asc', :label => 'relevance'
-    config.add_sort_field 'pub_date_sort desc, title_sort asc', :label => 'year'
-    config.add_sort_field 'author_sort asc, title_sort asc', :label => 'author'
-    config.add_sort_field 'title_sort asc, pub_date_sort desc', :label => 'title'
+    config.add_sort_field 'score desc, pub_date_dtsi desc, title_tesi asc', :label => 'relevance'
+    config.add_sort_field 'pub_date_dtsi desc, title_tesi asc', :label => 'year'
+    config.add_sort_field 'author_tesi asc, title_tesi asc', :label => 'author'
+    config.add_sort_field 'title_tesi asc, pub_date_dtsi desc', :label => 'title'
 
     # If there are more than this many search results, no spelling ("did you 
     # mean") suggestion is offered.
@@ -200,7 +186,7 @@ class CatalogController < ApplicationController
 
   def exclude_collection_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "-has_model_s:\"info:fedora/afmodel:DRI_Model_Collection\""
+    solr_parameters[:fq] << "-has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
   end
 
 end 
