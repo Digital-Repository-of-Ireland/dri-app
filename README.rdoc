@@ -91,8 +91,14 @@ Please view and edit this file as needed before deploying the application.
 == Background jobs
 
 The application includes a queueing system based on Resque and Redis to allow
-asynchronous processing of background jobs. This introduces a dependency on a Redis
-host. For testing purposes this can be installed locally and started with the command
+asynchronous processing of background jobs. This introduces the following dependencies:
+
+  * Redis (server for the queueing system)
+  * ffmpeg (video file processing tool)
+
+The file processing tools should be installed locally with the hydra-head.
+
+For testing purposes Redis can be installed locally and started with the command
 
   $ sudo redis-server /opt/local/etc/redis.conf
 

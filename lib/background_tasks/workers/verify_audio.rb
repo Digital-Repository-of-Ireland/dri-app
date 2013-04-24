@@ -1,6 +1,8 @@
 class VerifyAudio
   @queue = "verify_audio_queue"
 
+  require 'validators'
+
   def self.perform(object_id)
     puts "Verifying that the file for #{object_id} is a valid audio file"
 
