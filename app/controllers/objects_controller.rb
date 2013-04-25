@@ -54,6 +54,8 @@ class ObjectsController < AssetsController
       return
     end
 
+    @document_fedora.apply_depositor_metadata(current_user.to_s)
+
     if @document_fedora.valid? && @document_fedora.save
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
