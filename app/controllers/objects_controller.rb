@@ -29,7 +29,7 @@ class ObjectsController < AssetsController
     @document_fedora.update_attributes(params[:dri_model])
 
     respond_to do |format|
-      flash["notice"] = t('dri.flash.notice.updated', :item => params[:id])
+      flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
       format.html  { render :action => "edit" }
       format.json  { render :json => @document_fedora }
     end
@@ -66,7 +66,7 @@ class ObjectsController < AssetsController
     else
       respond_to do |format|
         format.html {
-          flash["alert"] = @document_fedora.errors.messages.values.to_s
+          flash[:alert] = @document_fedora.errors.messages.values.to_s
           raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
           return
         }
