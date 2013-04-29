@@ -1,9 +1,9 @@
  <fieldset id="metadata">
   <legend>Metadata</legend>
-  <%= f.label 'Title:' %>
+  <%= f.label "#{t('dri.views.objects.forms.title')}:" %>
   <%= f.text_field :title, :class => "edit span6", :required => "true" %>
-  <%= f.label 'Description:' %>
+  <%= f.label "#{t('dri.views.objects.forms.description')}:" %>
   <%= f.text_area :description, :class => "edit span6" %>
-  <%= f.label 'Publisher:' %>
+  <%= f.label "#{t('dri.views.objects.forms.publisher')}:" %>
   <%= f.text_field :publisher, :class => "edit span6", :required => "true" %>
 </fieldset>
