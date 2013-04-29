@@ -105,6 +105,8 @@ class MetadataController < AssetsController
           end
         end
 
+        @object.apply_depositor_metadata(current_user.to_s)
+
         if @object.valid?
           begin
             raise Exceptions::InternalError unless @object.save

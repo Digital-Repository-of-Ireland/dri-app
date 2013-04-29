@@ -69,7 +69,7 @@ class CollectionsController < AssetsController
     
     @document_fedora.update_attributes(params[:dri_model_collection])
     respond_to do |format|
-      flash["notice"] = t('dri.flash.notice.updated', :item => params[:id])
+      flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
       format.html  { render :action => "edit" }
     end
   end
@@ -95,7 +95,7 @@ class CollectionsController < AssetsController
         }
       else
         format.html {
-          flash["alert"] = @document_fedora.errors.messages.values.to_s
+          flash[:alert] = @document_fedora.errors.messages.values.to_s
           render :action => :new
         }
         format.json { render(:json => @document_fedora.errors.messages.values.to_s) }
