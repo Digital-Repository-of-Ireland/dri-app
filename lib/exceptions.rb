@@ -1,11 +1,26 @@
 module Exceptions
   include Rack::Utils
 
+
   class BadRequest < StandardError
   end
 
+
   class InternalError < StandardError
   end
+
+
+  class UnknownMimeType < StandardError
+  end
+
+
+  class WrongExtension < StandardError
+  end
+
+
+  class InappropriateFileType < StandardError
+  end
+
 
   def render_bad_request(exception)
     status_message = status_to_message(:bad_request)
@@ -19,6 +34,7 @@ module Exceptions
     end
     true
   end
+
 
   def render_internal_error(exception)
     status_message = status_to_message(:internal_server_error)

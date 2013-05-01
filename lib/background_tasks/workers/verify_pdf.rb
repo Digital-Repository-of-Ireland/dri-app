@@ -14,8 +14,18 @@ class VerifyPdf
                                       :limit => 1)
     filename = @local_file_info.first.path
 
-    unless Validators.valid_file_type?(filename, @object.whitelist_type, @object.whitelist_subtypes)
-      puts "Found a problem"
+    begin
+      Validators.valid_file_type?(filename, @object.whitelist_type, @object.whitelist_subtypes)
+    rescue Exceptions::UnknownMimeType => e
+      @object.verified = "UnknownMimeType"
+    rescue Exceptions::WrongExtension => e
+      @object.verified = "WrongExtension"
+    rescue Exceptions::InappropriateFileType => e
+      @object.verified = "InappropriateFileType"
+    else
+      @object.verified = "success"
+    ensure
+      @object.save
     end
 
   end

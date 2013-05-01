@@ -3,7 +3,7 @@ require 'ostruct'
   
 describe "workers" do
   
-  before :all do
+  before :each do
     @object = DRI::Model::DigitalObject.construct(:audio, {:title => "test title",
                                                            :rights => "test rights",
                                                            :language => "en"})
@@ -108,12 +108,32 @@ describe "workers" do
 
 
   describe VerifyAudio do
-    VerifyAudio.perform(@object.id)
-  end
+    it "should verify an audio file" do
+      @object.verified.should be nil    
+      VerifyAudio.perform(@object.id)
+      @object.reload
+      @object.verified.should == "success"
+    end
 
+    it "should fail when the audio is invalid" do
+      object2 = DRI::Model::DigitalObject.construct(:audio, {:title => "test title",
+                                                           :rights => "test rights",
+                                                           :language => "en"})
+      object2.save
+      asset = File.join(fixture_path, "sample_invalid_audio.mp3")
+      uploadfile = { :read =>  File.read( asset ), :original_filename => "sample_invalid_audio.mp3"}
+      uploadhash = OpenStruct.new uploadfile
+      tmpdir = Dir::tmpdir
+      file = LocalFile.new
+      file.add_file(uploadhash, {:fedora_id => object2.id, :ds_id => "masterContent", :directory => tmpdir} )
+      file.save
+      object2.save
+      object2.verified.should be nil
+      VerifyAudio.perform(object2.id)
+      object2.reload
+      object2.verified.should == "UnknownMimeType" 
+    end
 
-  describe VerifyPdf do
-    VerifyPdf.perform(@object.id)
   end
 
 
