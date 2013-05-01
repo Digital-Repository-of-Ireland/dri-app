@@ -55,8 +55,9 @@ class FilesController < AssetsController
         else
           count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => @object.id, :d => datastream } ]).count
 
-          unless Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
-            # flash warning but do not raise error
+          begin
+            Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
+          rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
             flash[:alert] = t('dri.flash.alert.invalid_file_type')
           end
 

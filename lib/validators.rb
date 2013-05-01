@@ -32,25 +32,19 @@ module Validators
     #Get the mime type of our file
     mime_type = MimeMagic.by_magic( File.open( path ) )
 
-    # MimeMagic could return null if it can't find a match. If so return false
-    return false unless mime_type
+    # MimeMagic could return null if it can't find a match. If so raise UnknownMimeType error
+    raise Exceptions::UnknownMimeType unless mime_type
 
     # Split out the mime type into type and subtype
     type,subtype = mime_type.to_s.split("/")
 
     # Ensure that the file extension matches the mime type
 
-    unless MIME::Types.type_for(extension).include?(mime_type)
-      return false
-    end
+    raise Exceptions::WrongExtension unless MIME::Types.type_for(extension).include?(mime_type)
 
-    unless allowed_type.downcase == type.downcase
-      return false
-    end
+    raise Exceptions::InappropriateFileType unless allowed_type.downcase == type.downcase
 
-    unless allowed_subtypes.any?{ |s| s.casecmp(subtype)==0 }
-      return false
-    end
+    raise Exceptions::InappropriateFileType unless allowed_subtypes.any?{ |s| s.casecmp(subtype)==0 }
 
     # If we haven't encountered a problem we return true
     return true
