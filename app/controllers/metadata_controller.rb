@@ -3,6 +3,8 @@
 # 
 class MetadataController < AssetsController
 
+  require 'metadata_validator'
+
   # Renders the metadata XML stored in the descMetadata datastream.
   # 
   #
@@ -27,21 +29,22 @@ class MetadataController < AssetsController
   #
   def update 
 
-    if params.has_key?(:metadata_file) && params[:metadata_file] != nil
-      if is_valid_dc?
+    if !params.has_key?(:metadata_file) || params[:metadata_file].nil?
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
+    else
+      xml = load_xml(params[:metadata_file])
+
+      if !MetadataValidator.is_valid_dc?(xml)
+        flash[:error] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
+        raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
+        return
+      else
         @object = retrieve_object params[:id]
 
         if @object == nil
           flash[:notice] = t('dri.flash.notice.specify_object_id')
         else
-            
-          if @object.datastreams.has_key?("descMetadata")
-            @object.datastreams["descMetadata"].ng_xml = @tmp_xml
-          else
-            ds = @object.load_from_xml(@tmp_xml)
-            @object.add_datastream ds, :dsid => 'descMetadata'
-          end
-
+          set_metadata_datastream(xml)
 
           begin
             raise Exceptions::InternalError unless @object.datastreams["descMetadata"].save
@@ -58,16 +61,10 @@ class MetadataController < AssetsController
               raise Exceptions::InternalError
             end
 
-             flash[:notice] = t('dri.flash.notice.metadata_updated')
-           else
-             flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
-             raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
-             return
-           end
+            flash[:notice] = t('dri.flash.notice.metadata_updated')
+          end
         end
       end
-    else
-      flash[:notice] = t('dri.flash.notice.specify_valid_file')
     end
 
     redirect_to :controller => "catalog", :action => "show", :id => params[:id]
@@ -78,36 +75,87 @@ class MetadataController < AssetsController
   #
   def create
 
-    if params.has_key?(:metadata_file) && params[:metadata_file] != nil
-      if is_valid_dc?
+    if !params.has_key?(:metadata_file) || params[:metadata_file].nil?
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      redirect_to :controller => "ingest", :action => "new"
+      return
+    end
 
-        if params.has_key?(:type) && params[:type].present?
-          @object = DRI::Model::DigitalObject.construct(params[:type].to_sym, params[:dri_model])
-        else
-          flash[:alert] = t('dri.flash.error.no_type_specified')
-          raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')
+    @xml = load_xml(params[:metadata_file])
+
+    result, @msg = MetadataValidator.is_valid_dc?(@xml)
+
+    if !result
+      flash[:error] = t('dri.flash.error.validation_errors', :error => @msg)
+      raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
+      return
+    end
+   
+    @object = construct_object
+    set_metadata_datastream(@xml)
+    add_to_collection
+
+    @object.apply_depositor_metadata(current_user.to_s)
+
+    save_object
+
+    respond_to do |format|
+      format.html {redirect_to :controller => "catalog", :action => "show", :id => @object.id}
+      format.json  { 
+        response = { :pid => @object.id }
+        render :json => response, :location => catalog_url(@object), :status => :created 
+      }
+    end
+      
+  end  
+
+  private
+
+    def load_xml(upload)
+      if MIME::Types.type_for(upload.original_filename).first.content_type.eql? 'application/xml'
+        tmp = upload.tempfile
+
+        begin
+          Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
+        rescue Nokogiri::XML::SyntaxError => e
+          flash[:error] = t('dri.flash.alert.invalid_xml', :error => e)
+          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
+        end
+      end
+    end
+
+    def construct_object
+      if params.has_key?(:type) && params[:type].present?
+        DRI::Model::DigitalObject.construct(params[:type].to_sym, params[:dri_model])
+      else
+        flash[:error] = t('dri.flash.error.no_type_specified')
+        raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')
+        return
+      end    
+    end
+
+    def set_metadata_datastream(xml)
+      if @object.datastreams.has_key?("descMetadata")
+        @object.datastreams["descMetadata"].ng_xml = xml
+      else
+        ds = @object.load_from_xml(xml)
+        @object.add_datastream ds, :dsid => 'descMetadata'
+      end
+    end
+
+    def add_to_collection
+      if params.has_key?(:governing_collection) && !params[:governing_collection].blank?
+        begin
+          @object.governing_collection = Collection.find(params[:governing_collection])
+        rescue ActiveFedora::ObjectNotFoundError => e
+          raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_collection')
           return
         end
+     end
+    end
 
-        if @object.datastreams.has_key?("descMetadata")
-          @object.datastreams["descMetadata"].ng_xml = @tmp_xml
-        else
-          ds = @object.load_from_xml(@tmp_xml)
-          @object.add_datastream ds, :dsid => 'descMetadata'
-        end
-
-        if params.has_key?(:governing_collection) && !params[:governing_collection].blank?
-          begin
-            @object.governing_collection = Collection.find(params[:governing_collection])
-          rescue ActiveFedora::ObjectNotFoundError => e
-            raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_collection')
-            return
-          end
-        end
-
-        @object.apply_depositor_metadata(current_user.to_s)
-
-        if @object.valid?
+    def save_object
+      if @object.valid?
           begin
             raise Exceptions::InternalError unless @object.save
           rescue RuntimeError => e
@@ -116,116 +164,12 @@ class MetadataController < AssetsController
           end
 
           flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-        else
-          flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
-          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
-          return
-        end
-
-        respond_to do |format|
-          format.html {redirect_to :controller => "catalog", :action => "show", :id => @object.id}
-          format.json  { 
-            response = { :pid => @object.id }
-            render :json => response, :location => catalog_url(@object), :status => :created 
-          }
-        end
-      
-        return
       else
+        flash[:error] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
+
         raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
         return
       end
-    else
-      flash[:notice] = t('dri.flash.notice.specify_valid_file')
     end
-
-    redirect_to :controller => "ingest", :action => "new"
-  end  
-
-  # Validates Dublin Core metadata against schema declared in the namespace.
-  #
-  #
-  def is_valid_dc?
-    result = false
-
-    if MIME::Types.type_for(params[:metadata_file].original_filename).first.content_type.eql? 'application/xml'
-      tmp = params[:metadata_file].tempfile
-  
-      begin
-        @tmp_xml = Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
-      rescue Nokogiri::XML::SyntaxError => e
-        flash[:alert] = t('dri.flash.alert.invalid_xml', :error => e)
-        return false
-      end
-
-      namespace = @tmp_xml.namespaces
-
-      if namespace.has_key?("xmlns:dc") &&
-        namespace["xmlns:dc"].eql?("http://purl.org/dc/elements/1.1/")
-
-        # We have to extract all the schemata from the XML Document in order to validate correctly
-        schema_imports = []
-
-        # Firstly, if the root schema has no namespace, retrieve it from xsi:noNamespaceSchemaLocation
-        if (@tmp_xml.root.namespace == nil)
-          no_ns_schema_location = map_to_localfile(@tmp_xml.root.attr("xsi:noNamespaceSchemaLocation"))
-          schema_imports = ["<xs:include schemaLocation=\""+no_ns_schema_location+"\"/>\n"]
-        end
-        
-        # Then, find all elments that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
-        @tmp_xml.xpath("//*[@xsi:schemaLocation]").each do |node|
-          schemata_by_ns = Hash[node.attr("xsi:schemaLocation").scan(/(\S+)\s+(\S+)/)]
-          schemata_by_ns.each do |ns,loc|
-            loc = map_to_localfile(loc)
-	    schema_imports = schema_imports | ["<xs:import namespace=\""+ns+"\" schemaLocation=\""+loc+"\"/>\n"]
-          end
-        end
-
-        if (schema_imports.size == 0)
-          flash[:notice] = t('dri.flash.notice.no_xml_schema')
-        else
-          # Create a schema that imports and includes the schema used in the XML
-
-          all_schemata = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-  			"<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" elementFormDefault=\"qualified\">\n" +
-                        schema_imports.join("") + "</xs:schema>"
-
-	  # When parsing the schema, the local directory needs to point to the schema folder
-          # as a work around to the problem Nokogiri has with parsing relative path imports.
-          xsd = Dir.chdir(Rails.root.join('config').join('schemas')) do |path|
-             Nokogiri::XML::Schema(all_schemata)
-          end
-
-          validate_errors = xsd.validate(@tmp_xml)
-
-          if validate_errors == nil || validate_errors.size == 0
-	    result = true
-          else
-            flash[:error] = t('dri.flash.error.validation_errors', :error => "<br/>".html_safe+validate_errors.join("<br/>").html_safe)
-          end
-        end
-      else
-        flash[:notice] = t('dri.flash.notice.schema_validation_error')
-      end
-   else
-      flash[:notice] = t('dri.flash.notice.specify_xml_file')
-   end
-
-   return result
-  end 
-
-  # Maps a URI to a local filename if the file is found in config/schemas. Otherwise returns the original URI.
-  # 
-  def map_to_localfile(uri)    
-    filename = URI.parse(uri).path[%r{[^/]+\z}]
-    file = Rails.root.join('config').join('schemas', filename)
-    if Pathname.new(file).exist?
-      location = filename 
-    else
-      location = uri
-    end
-
-    return location
-  end
 
 end
