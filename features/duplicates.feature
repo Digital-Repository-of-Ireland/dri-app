@@ -1,6 +1,8 @@
 @req-17 @duplicates
 Feature: Duplicates
 
+Store md5 of metadata datastream in Properties, search for match after object creation, warn if found?
+
 DELETEME: REQ-17
 DELETEME:
 DELETEME: The system shall enable the user to ingest digital objects into a
