@@ -1,14 +1,13 @@
 GIT
   remote: git@dev.forasfeasa.ie:dri_data_models.git
-  revision: 03d1af4329c49a3673a67ed5b3cffca0b4c313f0
-  branch: hydra6
+  revision: 3967db59851e5fc9a7e5c50da3d61735526da1cb
   specs:
     dri_data_models (0.0.1)
       hydra-head (>= 5.0.0)
 
 GIT
   remote: git@dev.forasfeasa.ie:user_group.git
-  revision: 5ae66b61944d983491d807c929ebea857438ae89
+  revision: f3869043cd01c18c93aa556bac1d8f491dc10ccd
   specs:
     user_group (0.0.4)
       devise (~> 2.2.3)
@@ -215,7 +214,7 @@ GEM
     mediashelf-loggable (0.4.9)
     metaclass (0.0.1)
     method_source (0.8.1)
-    mime-types (1.22)
+    mime-types (1.23)
     mimemagic (0.2.0)
     mocha (0.13.3)
       metaclass (~> 0.0.1)
