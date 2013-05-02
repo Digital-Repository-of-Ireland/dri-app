@@ -30,6 +30,7 @@ en:
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
+        duplicate_object_ingested: "Possible duplicate objects found: %{duplicates}"
         file_uploaded: "File has been successfully uploaded."
         metadata_updated: "Metadata has been successfully updated."
         no_xml_schema: "The XML file contains no schema to validate against."

@@ -15,6 +15,10 @@ module Checksum
     end 
   end
 
+  def self.md5_string(string)
+    Digest::MD5.hexdigest(string)
+  end
+
   def self.md5(filename)
     Digest::MD5.file(filename).hexdigest
   end
