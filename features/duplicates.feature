@@ -34,3 +34,15 @@ Scenario: Ingesting a duplicate Digital Object
   When I add the Digital Object "dri:obj2" to the collection "dri:col1" as type "governing"
   Then I should see a duplicate object warning containing pid "dri:obj1"
   And the collection "dri:col1" should contain the Digital Object "dri:obj2" as type "governing"
+
+@wip
+Scenario: Ingesting a duplicate Digital Object using metadata file upload
+
+@wip
+Scenario: Ingesting a duplicate Digital Object using form input
+
+@wip
+Scenario: Creating a duplicate Digital Object by replacing the metadata file
+
+@wip
+Scenario: Creating a duplicate Digital Object by editing with the metadata form
