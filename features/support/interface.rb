@@ -4,9 +4,9 @@ module Interface
     include Capybara::DSL
     include Capybara::RSpecMatchers
     
-    def enter_valid_metadata
+    def enter_valid_metadata(title)
       within_fieldset('metadata') do
-        fill_in("dri_model_title", :with => "A Test Object")
+        fill_in("dri_model_title", :with => title)
         fill_in("dri_model_description", :with => "Created using the web form")
         fill_in("dri_model_broadcast_date", :with => "2013-01-16")
         fill_in("dri_model_rights", :with => "This is a statement of rights")

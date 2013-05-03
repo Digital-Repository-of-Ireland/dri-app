@@ -35,6 +35,34 @@ Given /^I have created a (pdfdoc|audio) object$/ do |type|
   }
 end
 
+Given /^I have created an "(.*?)" object with metadata "(.*?)" in the collection "(.*?)"$/ do |type, metadata, collection_title|
+  steps %{
+    Given I am on the new Digital Object page
+    When I select the text "#{collection_title}" from the selectbox for ingest collection
+    And I press the button to continue
+    And I select "#{type}" from the selectbox for object type
+    And I press the button to continue
+    And I select "upload" from the selectbox for ingest methods
+    And I press the button to continue
+    And I attach the metadata file "#{metadata}"
+    And I press the button to ingest metadata
+  }
+end
+
+Given /^I have created an "(.*?)" object with title "(.*?)" in the collection "(.*?)"$/ do |type, title, collection_title|
+  steps %{
+    Given I am on the new Digital Object page
+    When I select the text "#{collection_title}" from the selectbox for ingest collection
+    And I press the button to continue
+    And I select "#{type}" from the selectbox for object type
+    And I press the button to continue
+    And I select "input" from the selectbox for ingest methods
+    And I press the button to continue
+    When I enter valid metadata with title "#{title}"
+    And I press the button to continue
+  }
+end
+ 
 Given /^I have created a collection$/ do
   steps %{
     Given I am on the my collections page
@@ -106,8 +134,9 @@ When /^I attach the metadata file "(.*?)"$/ do |file|
   attach_file("metadata_file", File.join(cc_fixture_path, file))
 end
 
-When /^I enter valid metadata$/ do
-  interface.enter_valid_metadata
+When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|
+  title ||= "A Test Object"
+  interface.enter_valid_metadata(title)
 end
 
 When /^I enter modified metadata$/ do
@@ -245,6 +274,10 @@ end
 
 Then /^I should see the message "([^\"]*)"$/ do |message| 
   page.should have_selector ".alert", text: message
+end
+
+Then /^I should not see the message "([^\"]*)"$/ do |message|
+  page.should_not have_selector ".alert", text: message
 end
 
 Then /^I should (not )?see an element "([^"]*)"$/ do |negate, selector|
