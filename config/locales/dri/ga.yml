@@ -21,6 +21,7 @@ ga:
         invalid_xml: "Invalid XML: %{error}"
         not_added_to_collection: "Unable to add object to collection."
         not_removed_from_collection: "Unable to remove object from collection."
+        edit_permission: "You do not have permission to edit this document."
       error: 
         no_type_specified: "You must specify a valid object type"
         validation_errors: "Validation Errors: %{error}"
