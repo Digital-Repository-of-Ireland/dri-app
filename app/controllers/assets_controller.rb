@@ -9,7 +9,15 @@ class AssetsController < ApplicationController
 
   # Retrieves a Fedora Digital Object by ID
   def retrieve_object(id)
+    enforce_edit_permissions!
     return objs = ActiveFedora::Base.find(id,{:cast => true})
+  end
+
+  private
+  def enforce_edit_permissions!
+    unless can? :edit, params[:id]
+        raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, params[:id])
+    end
   end
   
 end
