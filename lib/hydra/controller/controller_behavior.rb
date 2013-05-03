@@ -18,7 +18,7 @@ module Hydra::Controller::ControllerBehavior
     # Catch permission errors
     rescue_from Hydra::AccessDenied do |exception|
       if (exception.action == :edit)
-        redirect_to({:action=>'show'}, :alert => exception.message)
+        redirect_to({:controller=>'catalog', :action=>'show'}, :alert => exception.message)
       elsif current_user and current_user.persisted?
         redirect_to root_url, :alert => exception.message
       else
