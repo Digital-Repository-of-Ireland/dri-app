@@ -36,7 +36,6 @@ class AssetsController < ApplicationController
   #This might have to be moved/updated. Currently only checking upon retrieve object,
   #might want to change so each controller specifys when to check & what methods to check.
   def enforce_permissions!
-    debugger
     action = params[:action]
     if action.nil? or action=="edit" or action=="update"
       unless can? :edit, params[:id]
@@ -52,7 +51,7 @@ class AssetsController < ApplicationController
         raise Hydra::AccessDenied.new(t('dri.flash.alert.create_permission'), :create, params[:id])
       end
     else
-      raise Hydra::AccessDenied.new(t('Unsupported Permission Level'), :read, params[:id])
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.unknown_permission'), :read, params[:id])
     end
   end
   
