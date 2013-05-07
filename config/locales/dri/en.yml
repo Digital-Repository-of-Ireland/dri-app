@@ -21,6 +21,10 @@ en:
         invalid_xml: "Invalid XML: %{error}"
         not_added_to_collection: "Unable to add object to collection."
         not_removed_from_collection: "Unable to remove object from collection."
+        edit_permission: "You do not have permission to edit this document."
+        read_permission: "You do not have permission to read this document."
+        create_permission: "You do not have permission to create this document."
+        unknown_permission: "Unsupported Permission Level."
       error: 
         no_type_specified: "You must specify a valid object type"
         validation_errors: "Validation Errors: %{error}"
@@ -30,6 +34,7 @@ en:
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
+        duplicate_object_ingested: "Possible duplicate objects found: %{duplicates}"
         file_uploaded: "File has been successfully uploaded."
         metadata_updated: "Metadata has been successfully updated."
         no_xml_schema: "The XML file contains no schema to validate against."

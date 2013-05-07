@@ -2,6 +2,7 @@
 #
 
 require 'stepped_forms'
+require 'checksum'
 
 class ObjectsController < AssetsController
   include SteppedForms
@@ -28,8 +29,11 @@ class ObjectsController < AssetsController
     end
     @document_fedora.update_attributes(params[:dri_model])
 
+    checksum_metadata(@document_fedora)
+    check_for_duplicates(@document_fedora)
+
     respond_to do |format|
-      flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
+      flash[:notice] = t('dri.flash.notice.metadata_updated')
       format.html  { render :action => "edit" }
       format.json  { render :json => @document_fedora }
     end
@@ -56,6 +60,9 @@ class ObjectsController < AssetsController
 
     @document_fedora.apply_depositor_metadata(current_user.to_s)
 
+    checksum_metadata(@document_fedora)
+    check_for_duplicates(@document_fedora)
+
     if @document_fedora.valid? && @document_fedora.save
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -78,6 +85,16 @@ class ObjectsController < AssetsController
     end
 
   end
+
+  private
+
+    def checksum_metadata(object)
+      if object.datastreams.keys.include?("descMetadata")
+        xml = object.datastreams["descMetadata"].content
+
+         object.metadata_md5 = Checksum.md5_string(xml)
+      end
+    end
 
 end
 

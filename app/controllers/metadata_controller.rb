@@ -45,6 +45,8 @@ class MetadataController < AssetsController
           flash[:notice] = t('dri.flash.notice.specify_object_id')
         else
           set_metadata_datastream(xml)
+          @object.metadata_md5 = Checksum.md5_string(xml)
+          check_for_duplicates(@object)
 
           begin
             raise Exceptions::InternalError unless @object.datastreams["descMetadata"].save
@@ -94,6 +96,7 @@ class MetadataController < AssetsController
     @object = construct_object
     set_metadata_datastream(@xml)
     add_to_collection
+    check_for_duplicates(@object)
 
     @object.apply_depositor_metadata(current_user.to_s)
 
@@ -102,7 +105,11 @@ class MetadataController < AssetsController
     respond_to do |format|
       format.html {redirect_to :controller => "catalog", :action => "show", :id => @object.id}
       format.json  { 
-        response = { :pid => @object.id }
+        if  !@warnings.nil?
+          response = { :pid => @object.id, :warning => @warnings }
+        else
+          response = { :pid => @object.id }
+        end
         render :json => response, :location => catalog_url(@object), :status => :created 
       }
     end
@@ -141,6 +148,8 @@ class MetadataController < AssetsController
         ds = @object.load_from_xml(xml)
         @object.add_datastream ds, :dsid => 'descMetadata'
       end
+
+      @object.metadata_md5 = Checksum.md5_string(xml)     
     end
 
     def add_to_collection
