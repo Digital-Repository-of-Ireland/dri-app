@@ -251,3 +251,15 @@ Then /^I should (not )?see an element "([^"]*)"$/ do |negate, selector|
   expectation = negate ? :should_not : :should
   page.send(expectation, have_css(selector))
 end
+
+Then /^I should see the iframe "([^\"]+)"$/ do |iframe_name|
+  within_frame(iframe_name){
+    sleep 5
+    page.status_code.should be 200
+  }
+end
+
+Then /^I should see a section with id "([^\"]+)"$/ do |div_name|
+  selector = "div#" + div_name
+  page.should have_selector(selector)
+end
