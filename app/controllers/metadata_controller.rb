@@ -105,7 +105,11 @@ class MetadataController < AssetsController
     respond_to do |format|
       format.html {redirect_to :controller => "catalog", :action => "show", :id => @object.id}
       format.json  { 
-        response = { :pid => @object.id }
+        if  !@warnings.nil?
+          response = { :pid => @object.id, :warning => @warnings }
+        else
+          response = { :pid => @object.id }
+        end
         render :json => response, :location => catalog_url(@object), :status => :created 
       }
     end

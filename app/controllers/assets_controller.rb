@@ -18,14 +18,18 @@ class AssetsController < ApplicationController
       @duplicates = duplicates(object)
 
       if @duplicates && !@duplicates.empty?
-      flash[:alert] = t('dri.flash.notice.duplicate_object_ingested', :duplicates => @duplicates.map { |o| "'" + o.id + "'" }.join(", ").html_safe)
+        warning = t('dri.flash.notice.duplicate_object_ingested', :duplicates => @duplicates.map { |o| "'" + o.id + "'" }.join(", ").html_safe)
+        flash[:alert] = warning
+        @warnings = warning 
       end
   end
 
-  def duplicates(object)
-    if object.governing_collection && !object.governing_collection.nil?
-      ActiveFedora::Base.find(:is_governed_by_ssim => "info:fedora/#{object.governing_collection.id}", :metadata_md5_tesim => object.metadata_md5)
+  private
+
+    def duplicates(object)
+      if object.governing_collection && !object.governing_collection.nil?
+        ActiveFedora::Base.find(:is_governed_by_ssim => "info:fedora/#{object.governing_collection.id}", :metadata_md5_tesim => object.metadata_md5)
+      end
     end
-  end
   
 end
