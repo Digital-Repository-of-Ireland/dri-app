@@ -58,7 +58,9 @@ class FilesController < AssetsController
           begin
             Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
           rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
-            flash[:alert] = t('dri.flash.alert.invalid_file_type')
+            message = t('dri.flash.alert.invalid_file_type')
+            flash[:alert] = message
+            @warnings = message
           end
 
           dir = local_storage_dir.join(@object.id).join(datastream+count.to_s)
@@ -92,8 +94,12 @@ class FilesController < AssetsController
           respond_to do |format|
             format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:id]}
             format.json  { 
-              checksum = { :checksum => @file.checksum }
-              render :json => checksum, :status => :created 
+              if  !@warnings.nil?
+                response = { :checksum => @file.checksum, :warning => @warnings }
+              else
+                response = { :checksum => @file.checksum }
+              end
+              render :json => response, :status => :created 
             }
           end
           return
