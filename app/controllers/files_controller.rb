@@ -46,73 +46,85 @@ class FilesController < AssetsController
       datastream = params[:datastream]
     end
 
-    if params.has_key?(:Filedata) && params[:Filedata] != nil
-      if datastream.eql?("masterContent")
-        @object = retrieve_object params[:id]
+    if !params.has_key?(:Filedata) || params[:Filedata].nil?
+      flash[:notice] = t('dri.flash.notice.specify_file')
+      redirect_to :controller => "catalog", :action => "show", :id => params[:id]
+      return
+    end
 
-        if @object == nil
-          flash[:notice] = t('dri.flash.notice.specify_object_id')
-        else
-          count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => @object.id, :d => datastream } ]).count
+    if datastream.eql?("masterContent")
+      @object = retrieve_object params[:id]
 
-          begin
-            Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
-          rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
-            message = t('dri.flash.alert.invalid_file_type')
-            flash[:alert] = message
-            @warnings = message
-          end
-
-          dir = local_storage_dir.join(@object.id).join(datastream+count.to_s)
-
-          @file = LocalFile.new
-          @file.add_file params[:Filedata], {:fedora_id => @object.id, :ds_id => datastream, :directory => dir.to_s, :version => count, :checksum => params[:checksum]}
-
-          begin
-            raise Exceptions::InternalError unless @file.save!
-          rescue ActiveRecordError => e
-            logger.error "Could not save the asset file #{@file.path} for #{@object.id} to #{datastream}: #{e.message}"
-            raise Exceptions::InternalError
-          end
-
-          queue = BackgroundTasks::QueueManager.new()
-          queue.process(@object)
-
-          @url = url_for :controller=>"files", :action=>"show", :id=>params[:id]
-          logger.error @action_url
-          @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
-
-          begin
-            raise Exceptions::InternalError unless @object.save!
-          rescue RuntimeError => e
-            logger.error "Could not save object #{@object.id}: #{e.message}"
-            raise Exceptions::InternalError
-          end
-
-          flash[:notice] = t('dri.flash.notice.file_uploaded')
-
-          respond_to do |format|
-            format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:id]}
-            format.json  { 
-              if  !@warnings.nil?
-                response = { :checksum => @file.checksum, :warning => @warnings }
-              else
-                response = { :checksum => @file.checksum }
-              end
-              render :json => response, :status => :created 
-            }
-          end
-          return
-
-        end
+      if @object == nil
+        flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
-        flash[:notice] = t('dri.flash.notice.specify_datastream')
+        begin
+          Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
+        rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
+          message = t('dri.flash.alert.invalid_file_type')
+          flash[:alert] = message
+          @warnings = message
+        end
+        
+        create_file(params[:Filedata], @object.id, datastream, params[:checksum])
+
+        start_background_tasks
+        
+        @url = url_for :controller=>"files", :action=>"show", :id=>params[:id]
+        logger.error @action_url
+        @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
+
+        begin
+          raise Exceptions::InternalError unless @object.save!
+        rescue RuntimeError => e
+          logger.error "Could not save object #{@object.id}: #{e.message}"
+          raise Exceptions::InternalError
+        end
+
+        flash[:notice] = t('dri.flash.notice.file_uploaded')
+
+        respond_to do |format|
+          format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:id]}
+          format.json  { 
+            if  !@warnings.nil?
+              response = { :checksum => @file.checksum, :warning => @warnings }
+            else
+              response = { :checksum => @file.checksum }
+            end
+            render :json => response, :status => :created 
+          }
+        end
+        return
+
       end
     else
-      flash[:notice] = t('dri.flash.notice.specify_file')
+      flash[:notice] = t('dri.flash.notice.specify_datastream')
     end
 
     redirect_to :controller => "catalog", :action => "show", :id => params[:id]
   end
+
+  private
+
+    def create_file(filedata, object_id, datastream, checksum)
+      count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => object_id, :d => datastream } ]).count
+
+      dir = local_storage_dir.join(object_id).join(datastream+count.to_s)
+
+      @file = LocalFile.new
+      @file.add_file filedata, {:fedora_id => object_id, :ds_id => datastream, :directory => dir.to_s, :version => count, :checksum => checksum}
+
+      begin
+        raise Exceptions::InternalError unless @file.save!
+      rescue ActiveRecordError => e
+        logger.error "Could not save the asset file #{@file.path} for #{object_id} to #{datastream}: #{e.message}"
+        raise Exceptions::InternalError
+      end
+    end
+
+    def start_background_tasks
+      queue = BackgroundTasks::QueueManager.new()
+      queue.process(@object)
+    end
 
 end 
