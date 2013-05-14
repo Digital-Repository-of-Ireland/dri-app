@@ -18,7 +18,7 @@ class CreateChecksums
     # What happens when the asset is updated then?
     @object.resource_md5 = Checksum.md5(filename) 
     @object.resource_sha256 = Checksum.sha256(filename) 
-
+    @object.resource_md160 = Checksum.md160(filename)
     @object.save
 
   end

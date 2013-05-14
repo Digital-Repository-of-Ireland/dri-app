@@ -45,10 +45,11 @@ describe "workers" do
     end
   
     describe "perform" do
-      it "should create ogg when perform function is called" do
+      it "should create mp3 when perform function is called" do
+        @object.mp3Surrogate.should be nil
         CreateMp3.perform(@object.id)
         @object.reload
-        # once mp3 referenced in datastream we should retrieve it to test
+        @object.mp3Surrogate.should_not be nil
       end
     end
   
@@ -82,9 +83,10 @@ describe "workers" do
   
     describe "perform" do
       it "should create ogg when perform function is called" do
+        @object.oggSurrogate.should be nil
         CreateOgg.perform(@object.id)
         @object.reload
-        # once ogg referenced in datastream we should retrieve it to test
+        @object.oggSurrogate.should_not be nil
       end
     end
   
