@@ -31,9 +31,18 @@ module Hydra
           t.group(:proxy=>[:machine, :group])
           # accessor :access_person, :term=>[:access, :machine, :person]
         end
+        #383 Addition (Added Metadata/private_metadata)
+        t.metadata {
+          t.machine{
+            t.integer
+          }
+          t.private_metadata(:proxy => [:machine, :integer])
+        }
         t.discover_access(:ref=>[:access], :attributes=>{:type=>"discover"})
         t.read_access(:ref=>[:access], :attributes=>{:type=>"read"})
         t.edit_access(:ref=>[:access], :attributes=>{:type=>"edit"})
+        #383 Addition (Added Manager)
+        t.manager_access(:ref=>[:access], :attributes=>{:type=>"manager"})
         # A bug in OM prevnts us from declaring proxy terms at the root of a Terminology
         # t.access_person(:proxy=>[:access,:machine,:person])
         # t.access_group(:proxy=>[:access,:machine,:group])
@@ -71,8 +80,17 @@ module Hydra
               xml.human
               xml.machine
             }
+            #383 Addition (Added Manager)
+            xml.access(:type=>"manager") {
+              xml.human
+              xml.machine
+            }
             xml.embargo{
               xml.human
+              xml.machine
+            }
+            #383 Addition (Added Metadata)
+            xml.metadata{
               xml.machine
             }        
           }
@@ -139,9 +157,10 @@ module Hydra
       # @param [Symbol] type (either :group or :person)
       # @return 
       # This method limits the response to known access levels.  Probably runs a bit faster than .permissions().
+      #383 Modification (Added :manager_access)
       def quick_search_by_type(type)
         result = {}
-        [{:discover_access=>"discover"},{:read_access=>"read"},{:edit_access=>"edit"}].each do |access_levels_hash|
+        [{:discover_access=>"discover"},{:read_access=>"read"},{:edit_access=>"edit"},{:manager_access=>"manager"}].each do |access_levels_hash|
           access_level = access_levels_hash.keys.first
           access_level_name = access_levels_hash.values.first
           self.find_by_terms(*[access_level, type]).each do |entry|
@@ -149,6 +168,31 @@ module Hydra
           end
         end
         return result
+      end
+      
+      #383 Addition (private_metadata)
+      attr_reader :private_metadata
+      def private_metadata=(is_private)
+        if(is_private=="-1")
+          self.find_by_terms(*[:metadata,:machine,:integer]).first ? self.find_by_terms(*[:metadata,:machine,:integer]).first.remove : nil
+        elsif(is_private=="0" or is_private=="1")
+          self.update_values({[:metadata,:machine,:integer]=>is_private.to_s})
+        else
+          return "INVALID SETTING"
+        end
+      end
+
+      def private_metadata
+        return self.find_by_terms(*[:metadata,:machine,:integer]).first ? self.find_by_terms(*[:metadata,:machine,:integer]).first.text : nil
+      end
+
+      def private_metadata?
+        pvt = private_metadata.to_s
+        unless pvt.nil?
+          return true if pvt == "1"
+          return false if pvt == "0"
+        end
+        return nil
       end
 
       attr_reader :embargo_release_date
@@ -187,6 +231,15 @@ module Hydra
         vals = read_access.machine.person
         solr_doc[ActiveFedora::SolrService.solr_name('read_access_person', indexer)] = vals unless vals.empty?
 
+        #383 Addition
+        vals = manager_access.machine.group
+        solr_doc[ActiveFedora::SolrService.solr_name('manager_access_group', indexer)] = vals unless vals.empty?
+        vals = manager_access.machine.person
+        solr_doc[ActiveFedora::SolrService.solr_name('manager_access_person', indexer)] = vals unless vals.empty?        
+        vals = metadata.machine.integer
+        solr_doc[ActiveFedora::SolrService.solr_name('private_metadata', private_metadata_indexer)] = vals unless vals.empty?
+
+        #Should this be updated? whats the date_indexer for?
         ::Solrizer::Extractor.insert_solr_field_value(solr_doc, "embargo_release_date_dt", embargo_release_date(:format=>:solr_date)) if embargo_release_date
         solr_doc
       end
@@ -205,6 +258,15 @@ module Hydra
 
       def self.date_indexer
         @date_indexer ||= Solrizer::Descriptor.new(:date, :stored, :indexed)
+      end
+      
+      #383 Addition (new indexer)
+      def private_metadata_indexer
+        self.class.private_metadata_indexer
+      end
+      
+      def self.private_metadata_indexer
+        @private_metadata_indexer ||= Solrizer::Descriptor.new(:integer, :stored, :indexed)
       end
 
       # Completely clear the permissions

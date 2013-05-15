@@ -34,9 +34,58 @@ module Hydra
       def permissions
         (rightsMetadata.groups.map {|x| {:type=>'group', :access=>x[1], :name=>x[0] }} + 
           rightsMetadata.individuals.map {|x| {:type=>'user', :access=>x[1], :name=>x[0]}})
-
       end
-    
+
+      #383 Additions (Added private_metadata and manager_users/manager_groups methods)
+      def private_metadata
+        rightsMetadata.private_metadata?
+      end
+
+      def private_metadata=(is_private)
+        is_private = "-1" if is_private.nil?
+        rightsMetadata.private_metadata=is_private.to_s
+      end
+
+      def manager_users
+        rightsMetadata.individuals.map {|k, v| k if v == 'manager'}.compact
+      end
+
+      def manager_users=(users)
+        set_manager_users(users,manager_users)
+      end
+     
+      def manager_users_string=(users)
+        self.manager_users=users.split(/[\s,]+/)
+      end
+
+      def manager_users_string
+        self.manager_users.join(', ')
+      end
+      
+      def set_manager_users(users, eligible_users)
+        set_entities(:manager, :person, users, eligible_users)
+      end
+
+      def manager_groups
+        rightsMetadata.groups.map {|k, v| k if v == 'manager'}.compact
+      end
+
+      def manager_groups=(groups)
+        set_manager_groups(groups,manager_groups)
+      end
+     
+      def manager_groups_string=(groups)
+        self.manager_groups=groups.split(/[\s,]+/)
+      end
+
+      def manager_groups_string
+        self.manager_groups.join(', ')
+      end
+      
+      def set_manager_groups(groups, eligible_groups)
+        set_entities(:manager, :group, groups, eligible_groups)
+      end
+
       # Return a list of groups that have discover permission
       def discover_groups
         rightsMetadata.groups.map {|k, v| k if v == 'discover'}.compact
@@ -295,6 +344,15 @@ module Hydra
         rightsMetadata.individuals.map {|k, v| k if v == 'edit'}.compact
       end
 
+      #383 Additions (Added edit_users_string)
+      def edit_users_string=(users)
+        self.edit_users=users.split(/[\s,]+/)
+      end
+
+      def edit_users_string
+        self.edit_users.join(', ')
+      end
+
       # Grant edit permissions to the groups specified. Revokes edit permission for all other groups.
       # @param[Array] users a list of usernames
       # @example
@@ -343,6 +401,7 @@ module Hydra
       end
 
       ## Get those permissions we don't want to change
+      #383 Modified (Added manager case)
       def preserved(type, permission)
         case permission
         when :edit
@@ -351,6 +410,8 @@ module Hydra
           Hash[rightsMetadata.quick_search_by_type(type).select {|k, v| v == 'edit'}]
         when :discover
           Hash[rightsMetadata.quick_search_by_type(type).select {|k, v| v == 'discover'}]
+        when :manager
+          Hash[rightsMetadata.quick_search_by_type(type).select {|k, v| v == 'manager'}]
         end
       end
 
