@@ -30,20 +30,18 @@ ImprovedTextBox.prototype.restore_previous_value = function(){
 };
 
 
-var public_str = "[\"public\"]";
-var registered_str = "[\"registered\"]";
-var empty_str = "[]";
+var public_str = "public";
+var registered_str = "registered";
+var empty_str = "";
 
 var read_user_textbox;
 var read_group_textbox;
 
 $(document).ready(function () {
-    //$('textarea#record_discover_users').tokenInput('/users.json', { crossDomain: false , theme: 'facebook', propertyToSearch: 'email', tokenValue: 'email' });
+    init_search_access();
 
-    init_discovery_access();
-
-    read_user_textbox = new ImprovedTextBox('#dri_model_read_users');
-    read_group_textbox = new ImprovedTextBox('#dri_model_read_groups');
+    read_user_textbox = new ImprovedTextBox('#dri_model_read_users_string');
+    read_group_textbox = new ImprovedTextBox('#dri_model_read_groups_string');
     init_read_access();
 });
 
@@ -53,31 +51,36 @@ function init_read_access(){
 
     if(original_value_user!=empty_str){
         //Know its restricted without checking for public/registered
-        $('#dri_model_read_groups_radio_restricted').prop('checked', true);
+        $('#dri_model_read_groups_string_radio_restricted').prop('checked', true);
     }else{
         if(original_value_group==public_str){
-            $('#dri_model_read_groups_radio_public').prop('checked', true);
+            $('#dri_model_read_groups_string_radio_public').prop('checked', true);
             read_toggle_show_textboxes(false);
         }else if(original_value_group==registered_str){
-            $('#dri_model_read_groups_radio_logged').prop('checked', true);
+            $('#dri_model_read_groups_string_radio_logged').prop('checked', true);
             read_toggle_show_textboxes(false);
         }else{
-            $('#dri_model_read_groups_radio_restricted').prop('checked', true);
+            $('#dri_model_read_groups_string_radio_restricted').prop('checked', true);
         }
     }
 }
 
 function read_show_field_toggle(){
-    var val = $('input[name="dri_model[read_groups]"]:checked').val();
-    //Was going to set  value of read_groups server side but doing here for now [No Security concerns as admin interface.]
+    var val = $('input[name="dri_model[read_groups_string]"]:checked').val();
+    //Was going to set value of read_groups server side but doing here for now [No Security concerns as admin interface.]
     if(val=="radio_logged"){
         read_group_textbox.val(registered_str);
+        read_user_textbox.val("");
         read_toggle_show_textboxes(false);
     }else if(val=="radio_public"){
         read_group_textbox.val(public_str);
+        read_user_textbox.val("");
         read_toggle_show_textboxes(false);
     }else if(val=="radio_restricted"){
         read_toggle_show_textboxes(true);
+        if(read_group_textbox.val()==registered_str || read_group_textbox.val()==public_str){
+            read_group_textbox.val("");
+        }
         $('#dri_model_read_groups').show();   
     }else{
         console.log("Unknown textbox selected: read_field");
@@ -89,44 +92,37 @@ function read_toggle_show_textboxes(show){
         read_group_textbox.restore_previous_value();
         read_user_textbox.restore_previous_value();
         $('#read_access_entries').show();
-        //read_group_textbox.show();
-        //read_user_textbox.show();
     }else{
         $('#read_access_entries').hide();
-        //read_group_textbox.hide();
-        //read_user_textbox.hide();
     }
 }
 
-function init_discovery_access(){
-    //Should load up, this is TEMP
-    $('#dri_model_discover_users_radio_public').prop('checked', true);
-    $('#page_access_entries').hide();
+function init_search_access(){
+    search_field_toggle();
 }
 
-function discover_field_toggle(){
-    var val = $('input[name="dri_model[discover_users]"]:checked').val();
-    if(val=="radio_public"){
+function search_field_toggle(){
+    var val = $('input[name="dri_model[private_metadata]"]:checked').val();
+    if(val=="radio_public" || val=="radio_inherit"){
         $('#page_access_entries').hide();
     }else if(val=="radio_private"){
-        alert("Say about not wanting private metadata\n(Open Metadata Policy: Defaults to open)");
+        var text="Say about not wanting private metadata\n(Open Metadata Policy: Defaults to open)"
+        alert(text);
         $('#page_access_entries').show();
     }else{
-        console.log("Unknown textbox selected: discovery_field")
+        console.log("Unknown textbox selected: search_field_toggle")
     }
 }
-
 </script>
-    <%# This is a simple boolean field and as such shoudlnt use discover_users,
-    it should be in the properties datastream! %>
+
     <h5>Search Access</h5>
     <div class="row">
-        <%= f.radio_button :discover_users, "radio_public", :onclick => "discover_field_toggle();" %>
-        <%= f.label :discover_users, "Public Metadata", :class => "inline" %>
-        <%= f.radio_button :discover_users, "radio_private", :onclick => "discover_field_toggle();" %>
-        <%= f.label :discover_users, "Private Metadata", :class => "inline" %>
-         <%#= f.text_area :discover_users, "data-pre" => record.discover_users, :required=> false %>
-         <%#  :value=>record.discoer_users.join(",")  %>
+        <%= f.radio_button :private_metadata, "radio_public", :onclick => "search_field_toggle();", :checked=>!record.private_metadata %>
+        <%= f.label :private_metadata, "Public Metadata", :class => "inline" %>
+        <%= f.radio_button :private_metadata, "radio_private", :onclick => "search_field_toggle();", :checked=>record.private_metadata %>
+        <%= f.label :private_metadata, "Private Metadata", :class => "inline" %>
+        <%= f.radio_button :private_metadata, "radio_inherit", :onclick => "search_field_toggle();", :checked=>record.private_metadata.nil? %>
+        <%= f.label :private_metadata, "Inherit", :class => "inline" %>
     </div>
     
     <div id="page_access_entries">
@@ -135,61 +131,57 @@ function discover_field_toggle(){
         you can add people here who you would like to be able to access the metadata.
         <div class="row">
             <%= f.label :discover_users, "Users", :class => "inline"  %>
-            <%= f.text_field :discover_users %>
+            <%= f.text_field :discover_users_string %>
             <br />
             <%= f.label :discover_groups, "Groups", :class => "inline"  %>
-            <%= f.text_field :discover_groups %>
+            <%= f.text_field :discover_groups_string %>
         </div>
     </div>
 
-    <h5>Read Access</h5>
+    <h5>Read Access</h5>(Inheritance Issues)
     <div class="row">
-        <%= f.radio_button :read_groups, "radio_public", :onclick => "read_show_field_toggle();" %>
+        <%= f.radio_button :read_groups_string, "radio_public", :onclick => "read_show_field_toggle();" %>
         <%= "Public" %>
-        <%= f.radio_button :read_groups, "radio_logged", :onclick => "read_show_field_toggle();" %>
+        <%= f.radio_button :read_groups_string, "radio_logged", :onclick => "read_show_field_toggle();" %>
         <%= "Logged In" %>
-        <%= f.radio_button :read_groups, "radio_restricted", :onclick => "read_show_field_toggle();" %>
+        <%= f.radio_button :read_groups_string, "radio_restricted", :onclick => "read_show_field_toggle();" %>
         <%= "Restricted" %>
         <div id="read_access_entries">
             <br />
             <%= f.label :read_users, "Users", :class => "inline" %>
-            <%= f.text_field :read_users, "data-pre" => record.read_users , :required=> false, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
+            <%= f.text_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
             <br />
             <%= f.label :read_groups, "Groups", :class => "inline" %>
-            <%= f.text_field :read_groups, "data-pre" => record.read_groups, :required=> false, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
+            <%= f.text_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
         </div>
     </div>
     
-
     <h5>Edit Access</h5>
-<fieldset>
     <div class="row">
          <%= f.label :edit_users, "Users", :class => "inline" %>
-         <%= #should be done with all
-         if record.edit_users.empty?
-            f.text_field :edit_users, :value=>"", :required=> false
-        else
-         f.text_area :edit_users, "data-pre" => record.edit_users, :required=> true
-         end
-         %>
+         <%= f.text_field :edit_users_string %>
     </div>
 
     <div class="row">
          <%= f.label :edit_groups, "Groups", :class => "inline" %>
-         <%= f.text_field :edit_groups, "data-pre" => record.edit_groups, :required=> false%>
+         <%= f.text_field :edit_groups_string %>
     </div>
-</fieldset>
+
+    <%= "Show depending on permission " %>
     <h5>Managers</h5>
-    users/groups? 
-    
-    <h5>Embargo</h5>(QUESTIONS ABOUT WHAT TO DO)
     <div class="row">
-        <%= f.label :embargo, "Embargo" %>
-        <%= 
-        if record.rightsMetadata.embargo_release_date.nil?
-            f.text_field :embargo, :value=>"", :required=> false
-        else
-         f.text_field :embargo, :value=>record.rightsMetadata.embargo_release_date, :required=> true
-         end
-         %>
+         <%= f.label :manager_users, "Users", :class => "inline" %>
+         <%= f.text_field :manager_users_string %>
+    </div>
+
+    <div class="row">
+         <%= f.label :manager_groups, "Groups", :class => "inline" %>
+         <%= f.text_field :manager_groups_string %>
+    </div>
+    <%= "End permission show " %>
+    
+    <h5>Embargo</h5>(Questions about what to do)
+    <div class="row">
+        <%= f.label :embargo, "Date: ", :class => "inline" %>
+        <%= f.text_field :embargo, :value=>record.rightsMetadata.embargo_release_date %>
     </div>
