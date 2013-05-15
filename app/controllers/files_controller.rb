@@ -52,6 +52,8 @@ class FilesController < AssetsController
       return
     end
 
+    file_upload = params[:Filedata]
+
     if datastream.eql?("masterContent")
       @object = retrieve_object params[:id]
 
@@ -59,15 +61,18 @@ class FilesController < AssetsController
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
         begin
-          Validators.valid_file_type?(params[:Filedata], @object.whitelist_type, @object.whitelist_subtypes)
+          Validators.validate_file(file_upload, @object.whitelist_type, @object.whitelist_subtypes)
         rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
           message = t('dri.flash.alert.invalid_file_type')
           flash[:alert] = message
           @warnings = message
+        rescue Exceptions::VirusDetected => e
+          flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', :name => file_upload.original_filename)
+          return
         end
         
-        create_file(params[:Filedata], @object.id, datastream, params[:checksum])
-
+        create_file(file_upload, @object.id, datastream, params[:checksum])
         start_background_tasks
         
         @url = url_for :controller=>"files", :action=>"show", :id=>params[:id]

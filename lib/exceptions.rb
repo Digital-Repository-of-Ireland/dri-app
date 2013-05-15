@@ -21,6 +21,8 @@ module Exceptions
   class InappropriateFileType < StandardError
   end
 
+  class VirusDetected < StandardError
+  end
 
   def render_bad_request(exception)
     status_message = status_to_message(:bad_request)
