@@ -115,6 +115,32 @@ you can the status of your queues and jobs.
 
 The worker code is currently in lib/workers/.
 
+== ClamAV
+
+To enable virus scanning ClamAV needs to be installed. 
+
+  $ sudo port install clamav
+
+You will need to create the configuration file freshclam.conf in /opt/local/etc. There is an example
+file in /opt/local/etc/example-freshclam.conf. Set the directory for the database files and the log
+
+  DatabaseDirectory /opt/local/share/clamav
+  UpdateLogFile /opt/local/var/log/clamav/freshclam.log
+
+Update the virus database
+
+  $ sudo freshclam
+
+Install the clamav Ruby gem
+
+  $ gem install clamav -- --with-cflags=`clamav-config --cflags` --with-ldflags=`clamav-config --libs`
+
+Add the gem to the GemFile
+
+  gem 'clamav'
+
+Run bundler. Virus scanning should now take place when an asset is uploaded.
+
 == Going into production
 
 Edit config/solr.yml config/fedora.yml config/database.yml and put in
