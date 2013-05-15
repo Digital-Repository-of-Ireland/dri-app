@@ -15,7 +15,23 @@ describe "workers" do
     file = LocalFile.new
     file.add_file(uploadhash, {:fedora_id => @object.id, :ds_id => "masterContent", :directory => tmpdir} )
     file.save
-    @object.save
+    @collection = DRI::Model::Collection.new(:title => "test", :description => "test", :publisher => "test")
+    @collection.save
+    @collection.governed_items << @object
+    @collection.save
+    @object.reload
+
+    AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                        :access_key_id => Settings.S3.access_key_id,
+                                        :secret_access_key => Settings.S3.secret_access_key)
+    bucket = @collection.pid.sub('dri:', '')
+    begin
+      AWS::S3::Bucket.create(bucket)
+    rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+      logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
+      raise Exceptions::InternalError
+    end
+    AWS::S3::Base.disconnect!()
   end
   
   describe CreateMp3 do
@@ -46,10 +62,26 @@ describe "workers" do
   
     describe "perform" do
       it "should create mp3 when perform function is called" do
-        @object.mp3Surrogate.should be nil
         CreateMp3.perform(@object.id)
         @object.reload
-        @object.mp3Surrogate.should_not be nil
+
+        AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                            :access_key_id => Settings.S3.access_key_id,
+                                            :secret_access_key => Settings.S3.secret_access_key)
+
+        begin
+          bucket = AWS::S3::Bucket.find(@object.governing_collection.pid.sub('dri:', ''))
+        rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+          #report failue
+        end
+        filename = "#{@object.id}-Surrogate.mp3"
+        files = []
+        bucket.each do |fileobject|
+          files.push(fileobject.key)
+        end
+        files.should include filename
+
+        AWS::S3::Base.disconnect!()
       end
     end
   
@@ -83,10 +115,26 @@ describe "workers" do
   
     describe "perform" do
       it "should create ogg when perform function is called" do
-        @object.oggSurrogate.should be nil
         CreateOgg.perform(@object.id)
         @object.reload
-        @object.oggSurrogate.should_not be nil
+
+        AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                            :access_key_id => Settings.S3.access_key_id,
+                                            :secret_access_key => Settings.S3.secret_access_key)
+
+        begin
+          bucket = AWS::S3::Bucket.find(@object.governing_collection.pid.sub('dri:', ''))
+        rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+          #report failue
+        end
+        filename = "#{@object.id}-Surrogate.ogg"
+        files = []
+        bucket.each do |fileobject|
+          files.push(fileobject.key)
+        end
+        files.should include filename
+
+        AWS::S3::Base.disconnect!()
       end
     end
   
