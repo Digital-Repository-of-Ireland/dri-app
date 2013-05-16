@@ -26,6 +26,9 @@ module FlashTranslator
     when /invalid file type/
       I18n.t('dri.flash.alert.invalid_file_type', :locale => @user.locale)
 
+    when /virus detected/
+      I18n.t('dri.flash.alert.virus_detected', :virus => 'Eicar-Test-Signature', :locale => @user.locale)
+
     when /invalid email or password/
       # User is not yet logged in and has no @user, will default to locale 'en'
       I18n.t('devise.failure.invalid', :locale => "en")
