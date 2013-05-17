@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
 gem 'blacklight', '4.0.0'
-gem 'hydra-head', '6.0.0'
+gem 'hydra-head', '6.1.0'
 
 if ENV['DRI_BUNDLE_ENV'] == "tchpc"
   gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models'
@@ -21,6 +21,8 @@ gem 'sqlite3'
 gem 'noid', '0.5.5'
 
 gem 'resque'
+
+#gem 'clamav'
 
 # File processing gems
 gem 'mimemagic'
