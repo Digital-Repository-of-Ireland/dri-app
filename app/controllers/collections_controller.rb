@@ -84,19 +84,6 @@ class CollectionsController < AssetsController
     respond_to do |format|
       if @document_fedora.save
 
-        # Create an S3 bucket for the collection
-        AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                            :access_key_id => Settings.S3.access_key_id,
-                                            :secret_access_key => Settings.S3.secret_access_key)
-        bucket = @document_fedora.pid.sub('dri:', '')
-        begin
-          AWS::S3::Bucket.create(bucket)
-        rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
-          logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
-          raise Exceptions::InternalError
-        end
-        AWS::S3::Base.disconnect!()
-
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
             redirect_to :controller => "collections", :action => "show", :id => @document_fedora.id }
         format.json {

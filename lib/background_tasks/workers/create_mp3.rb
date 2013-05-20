@@ -31,19 +31,15 @@ class CreateMp3
                                         :access_key_id => Settings.S3.access_key_id,
                                         :secret_access_key => Settings.S3.secret_access_key)
 
-    bucket = @object.governing_collection.pid.sub('dri:', '')
+    bucket = @object.pid.sub('dri:', '')
+    filename = "#{@object.pid}-mp3-#{Settings.mp3_out_options.channel}-#{Settings.mp3_out_options.bitrate}-#{Settings.mp3_out_options.frequency}.mp3"
     # save the file to that bucket, note we do not version surrogates!
     begin
-      AWS::S3::S3Object.store("#{@object.pid}-Surrogate.mp3", open(outputfile), bucket, :access => :public_read)
+      AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
     rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
-      # report failure
-      # requeue?
+      puts "Problem saving Surrogate file #{filename} : #{e.to_s}"
     end
     AWS::S3::Base.disconnect!()
-
-    # Add the file to the object
-#    @object.add_file_reference("mp3Surrogate", {:url => outputfile, :mimeType => "audio/mpeg3"})
-#    @object.save
 
   end
 
