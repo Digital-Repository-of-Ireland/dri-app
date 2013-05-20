@@ -29,17 +29,17 @@ module Hydra
       @user = @current_user # just in case someone was using this in an override. Just don't.
       @session = session
       @cache = Hydra::PermissionsCache.new
+      #Default: Giving same level as edit
+      alias_action :edit, :update, :destroy, :to => :manage_collection
       hydra_default_permissions()
     end
 
+    #383 Modified
     ## You can override this method if you are using a different AuthZ (such as LDAP)
     def user_groups
       return @user_groups if @user_groups
-      
       @user_groups = default_user_groups
-      #Redmine-378 TODO:: Must update this when working with access controls
-      @user_groups |= current_user.groups.map(&:name) if current_user and current_user.respond_to? :groups
-      @user_groups |= ['registered'] unless current_user.new_record?
+      @user_groups |=  UserGroup::Group.find(current_user.full_memberships.pluck(:group_id)).map(&:name) if current_user and current_user.respond_to? :full_memberships
       @user_groups
     end
 
@@ -57,7 +57,7 @@ module Hydra
     end
 
     def create_permissions
-      can :create, :all if user_groups.include? 'registered'
+      #can :create, :all if user_groups.include? 'registered'
     end
 
     #TEMP:: Removed some permissions, must find out what an edit user can do
@@ -106,17 +106,17 @@ module Hydra
     #These are manager_permissions on a DO level
     #NOT the permissions a user gets if they are a collection manager
     def manager_permissions
-      can :read, String do |pid|
+      can :manage_collection, String do |pid|
         logger.debug("[MANPERM] Checking from STRING")
         test_manager(pid)
       end
 
-      can :read, ActiveFedora::Base do |obj|
+      can :manage_collection, ActiveFedora::Base do |obj|
         logger.debug("[MANPERM] Checking from AF::B")
         test_manager(obj.pid)
       end 
       
-      can :read, SolrDocument do |obj|
+      can :manage_collection, SolrDocument do |obj|
         logger.debug("[MANPERM] Checking from SolrDoc")
         cache.put(obj.id, obj)
         test_manager(obj.id)
