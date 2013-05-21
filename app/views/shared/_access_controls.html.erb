@@ -167,19 +167,19 @@ function search_field_toggle(){
          <%= f.text_field :edit_groups_string %>
     </div>
 
-    <%= "Show depending on permission " %>
-    <h5>Managers</h5>
-    <div class="row">
-         <%= f.label :manager_users, "Users", :class => "inline" %>
-         <%= f.text_field :manager_users_string %>
-    </div>
+    <% if can? :manage_collection, record %>
+        <h5>Managers</h5>
+        <div class="row">
+             <%= f.label :manager_users, "Users", :class => "inline" %>
+             <%= f.text_field :manager_users_string %>
+        </div>
 
-    <div class="row">
-         <%= f.label :manager_groups, "Groups", :class => "inline" %>
-         <%= f.text_field :manager_groups_string %>
-    </div>
-    <%= "End permission show " %>
-    
+        <div class="row">
+             <%= f.label :manager_groups, "Groups", :class => "inline" %>
+             <%= f.text_field :manager_groups_string %>
+        </div>
+    <% end %>
+
     <h5>Embargo</h5>(Questions about what to do)
     <div class="row">
         <%= f.label :embargo, "Date: ", :class => "inline" %>
