@@ -45,7 +45,7 @@ module Hydra
 
     def default_user_groups
       # # everyone is automatically a member of the group 'public'
-      ['public']
+      [SETTING_GROUP_PUBLIC]
     end
     
 
@@ -67,6 +67,7 @@ module Hydra
         test_edit(pid)
       end 
 
+      #[DRI::Model::DigitalObject, DRI::Model::Collection]
       #can [:edit, :update, :destroy], ActiveFedora::Base do |obj|
       #  test_edit(obj.pid)
       #end
@@ -125,6 +126,25 @@ module Hydra
 
     ## Override custom permissions in your own app to add more permissions beyond what is defined by default.
     def custom_permissions
+      #"Role" Based permissions here - rather than dynamicially changing assignments (no test needed)
+
+      #Collection Manager Permissions
+      #Higher power than edit user...[Dont want edit users to be able to DELETE a COLLECTION??, (Delete a DO?)]
+      if current_user.applicable_policy?(SETTING_POLICY_COLLECTION_MANAGER)
+        #Marked as being able to :manage_collection
+        can [:manage_collection_flag]
+        can :create, DRI::Model::Collection
+        #Cannot currently create a DO
+        #If i give create permission here then they could create a DO anywhere,
+        #only want them to be able to create a DO within their collection
+      end
+
+      #Admin Permissions
+      if current_user.applicable_policy?(SETTING_POLICY_ADMIN)
+        can :admin_flag, :all
+        #Disabled for now..
+        #can :manage, :all
+      end
     end
     
     protected
