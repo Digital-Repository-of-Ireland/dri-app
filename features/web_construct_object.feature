@@ -138,6 +138,13 @@ Scenario Outline: Adding an audio file that is not valid
     | sample_audio.txt         | invalid file type |
     | sample_invalid_audio.mp3 | invalid file type |
 
+Scenario: Adding a file that contains a virus
+  Given I have created a Digital Object
+  Then I should see a link to edit an object
+  When I follow the link to edit an object
+  And I upload the virus file "sample_virus.mp3"
+  Then I should see a failure message for "virus detected"
+
 Scenario Outline: Editing an audio file where the file is invalid
   Given I have created a Digital Object
   And I have added an audio file  

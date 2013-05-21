@@ -5,6 +5,8 @@ require 'rubygems'
 require 'spork'
 require 'i18n'
 require 'capybara/poltergeist'
+require 'cucumber/rspec/doubles'
+
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 
@@ -132,4 +134,8 @@ end
 
 Before do
   require 'factory_girl'
+end
+
+Before do
+  BackgroundTasks::QueueManager.any_instance.stub(:process)
 end
