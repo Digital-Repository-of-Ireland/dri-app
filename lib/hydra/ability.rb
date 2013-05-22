@@ -77,7 +77,11 @@ module Hydra
         test_edit(obj.pid)
       end
 
-   
+      can [:edit,:update], DRI::Model::Collection do |obj|
+        logger.debug("[EDITPERM] Checking from DRI::MODEL::Collection")
+        test_edit(obj.pid)
+      end
+      
       can :edit, SolrDocument do |obj|
         logger.debug("[EDITPERM] Checking from SOLRDOC")
         cache.put(obj.id, obj)
@@ -132,11 +136,8 @@ module Hydra
       #Higher power than edit user...[Dont want edit users to be able to DELETE a COLLECTION??, (Delete a DO?)]
       if current_user.applicable_policy?(SETTING_POLICY_COLLECTION_MANAGER)
         #Marked as being able to :manage_collection
-        can [:manage_collection_flag]
+        can :manage_collection_flag
         can :create, DRI::Model::Collection
-        #Cannot currently create a DO
-        #If i give create permission here then they could create a DO anywhere,
-        #only want them to be able to create a DO within their collection
       end
 
       #Admin Permissions
@@ -145,9 +146,17 @@ module Hydra
         #Disabled for now..
         #can :manage, :all
       end
+
+      #Create_do flag (alias for :edit collection)
+      can :create_do, DRI::Model::Collection do |collection|
+        test_create(collection)
+      end
     end
     
     protected
+    def test_create(collection)
+      return can? :edit, collection
+    end
 
     def test_edit(pid)
       logger.debug("[CANCAN] Checking edit permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
