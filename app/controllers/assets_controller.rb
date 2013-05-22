@@ -45,11 +45,6 @@ class AssetsController < ApplicationController
       unless can? :read ,params[:id]
         raise Hydra::AccessDenied.new(t('dri.flash.alert.read_permission'), :read, params[:id])
       end
-    elsif action=="create"
-      #NOTE: create given to all users in registered by default
-      unless can? :create ,params[:id]
-        raise Hydra::AccessDenied.new(t('dri.flash.alert.create_permission'), :create, params[:id])
-      end
     else
       raise Hydra::AccessDenied.new(t('dri.flash.alert.unknown_permission'), :read, params[:id])
     end
