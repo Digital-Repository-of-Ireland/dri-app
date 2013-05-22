@@ -1,0 +1,187 @@
+<script type="text/javascript">
+function ImprovedTextBox(textbox_str){
+    this.textbox = $(textbox_str);
+    this.last_tb_value;
+    this.catch_tb_value();
+}
+
+ImprovedTextBox.prototype.catch_tb_value = function(){
+    this.last_tb_value = this.textbox.val();
+};
+
+ImprovedTextBox.prototype.hide = function(){
+    this.textbox.hide();
+};
+
+ImprovedTextBox.prototype.show = function(){
+    this.textbox.show();
+};
+
+ImprovedTextBox.prototype.value = function(){
+    return this.textbox.val();
+};
+
+ImprovedTextBox.prototype.val = function(text){
+    this.textbox.val(text);
+};
+
+ImprovedTextBox.prototype.restore_previous_value = function(){
+    this.textbox.val(this.last_tb_value);
+};
+
+
+var public_str = "public";
+var registered_str = "registered";
+var empty_str = "";
+
+var read_user_textbox;
+var read_group_textbox;
+
+$(document).ready(function () {
+    init_search_access();
+
+    read_user_textbox = new ImprovedTextBox('#dri_model_read_users_string');
+    read_group_textbox = new ImprovedTextBox('#dri_model_read_groups_string');
+    init_read_access();
+});
+
+function init_read_access(){
+    var original_value_user = read_user_textbox.value();
+    var original_value_group = read_group_textbox.value();
+
+    if(original_value_user!=empty_str){
+        //Know its restricted without checking for public/registered
+        $('#dri_model_read_groups_string_radio_restricted').prop('checked', true);
+    }else{
+        if(original_value_group==public_str){
+            $('#dri_model_read_groups_string_radio_public').prop('checked', true);
+            read_toggle_show_textboxes(false);
+        }else if(original_value_group==registered_str){
+            $('#dri_model_read_groups_string_radio_logged').prop('checked', true);
+            read_toggle_show_textboxes(false);
+        }else{
+            $('#dri_model_read_groups_string_radio_restricted').prop('checked', true);
+        }
+    }
+}
+
+function read_show_field_toggle(){
+    var val = $('input[name="dri_model[read_groups_string]"]:checked').val();
+    //Was going to set value of read_groups server side but doing here for now [No Security concerns as admin interface.]
+    if(val=="radio_logged"){
+        read_group_textbox.val(registered_str);
+        read_user_textbox.val("");
+        read_toggle_show_textboxes(false);
+    }else if(val=="radio_public"){
+        read_group_textbox.val(public_str);
+        read_user_textbox.val("");
+        read_toggle_show_textboxes(false);
+    }else if(val=="radio_restricted"){
+        read_toggle_show_textboxes(true);
+        if(read_group_textbox.val()==registered_str || read_group_textbox.val()==public_str){
+            read_group_textbox.val("");
+        }
+        $('#dri_model_read_groups').show();   
+    }else{
+        console.log("Unknown textbox selected: read_field");
+    }
+}
+
+function read_toggle_show_textboxes(show){
+    if(show){
+        read_group_textbox.restore_previous_value();
+        read_user_textbox.restore_previous_value();
+        $('#read_access_entries').show();
+    }else{
+        $('#read_access_entries').hide();
+    }
+}
+
+function init_search_access(){
+    search_field_toggle();
+}
+
+function search_field_toggle(){
+    var val = $('input[name="dri_model[private_metadata]"]:checked').val();
+    if(val=="radio_public" || val=="radio_inherit"){
+        $('#page_access_entries').hide();
+    }else if(val=="radio_private"){
+        var text="Say about not wanting private metadata\n(Open Metadata Policy: Defaults to open)"
+        alert(text);
+        $('#page_access_entries').show();
+    }else{
+        console.log("Unknown textbox selected: search_field_toggle")
+    }
+}
+</script>
+
+    <h5>Search Access</h5>
+    <div class="row">
+        <%= f.radio_button :private_metadata, "radio_public", :onclick => "search_field_toggle();", :checked=>!record.private_metadata %>
+        <%= f.label :private_metadata, "Public Metadata", :class => "inline" %>
+        <%= f.radio_button :private_metadata, "radio_private", :onclick => "search_field_toggle();", :checked=>record.private_metadata %>
+        <%= f.label :private_metadata, "Private Metadata", :class => "inline" %>
+        <%= f.radio_button :private_metadata, "radio_inherit", :onclick => "search_field_toggle();", :checked=>record.private_metadata.nil? %>
+        <%= f.label :private_metadata, "Inherit", :class => "inline" %>
+    </div>
+    
+    <div id="page_access_entries">
+        <h5>Page Access</h5>
+        Since you have set access to metadata as private,
+        you can add people here who you would like to be able to access the metadata.
+        <div class="row">
+            <%= f.label :discover_users, "Users", :class => "inline"  %>
+            <%= f.text_field :discover_users_string %>
+            <br />
+            <%= f.label :discover_groups, "Groups", :class => "inline"  %>
+            <%= f.text_field :discover_groups_string %>
+        </div>
+    </div>
+
+    <h5>Read Access</h5>(Inheritance Issues)
+    <div class="row">
+        <%= f.radio_button :read_groups_string, "radio_public", :onclick => "read_show_field_toggle();" %>
+        <%= "Public" %>
+        <%= f.radio_button :read_groups_string, "radio_logged", :onclick => "read_show_field_toggle();" %>
+        <%= "Logged In" %>
+        <%= f.radio_button :read_groups_string, "radio_restricted", :onclick => "read_show_field_toggle();" %>
+        <%= "Restricted" %>
+        <div id="read_access_entries">
+            <br />
+            <%= f.label :read_users, "Users", :class => "inline" %>
+            <%= f.text_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
+            <br />
+            <%= f.label :read_groups, "Groups", :class => "inline" %>
+            <%= f.text_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
+        </div>
+    </div>
+    
+    <h5>Edit Access</h5>
+    <div class="row">
+         <%= f.label :edit_users, "Users", :class => "inline" %>
+         <%= f.text_field :edit_users_string %>
+    </div>
+
+    <div class="row">
+         <%= f.label :edit_groups, "Groups", :class => "inline" %>
+         <%= f.text_field :edit_groups_string %>
+    </div>
+
+    <% if can? :manage_collection, record %>
+        <h5>Managers</h5>
+        <div class="row">
+             <%= f.label :manager_users, "Users", :class => "inline" %>
+             <%= f.text_field :manager_users_string %>
+        </div>
+
+        <div class="row">
+             <%= f.label :manager_groups, "Groups", :class => "inline" %>
+             <%= f.text_field :manager_groups_string %>
+        </div>
+    <% end %>
+
+    <h5>Embargo</h5>(Questions about what to do)
+    <div class="row">
+        <%= f.label :embargo, "Date: ", :class => "inline" %>
+        <%= f.text_field :embargo, :value=>record.rightsMetadata.embargo_release_date %>
+    </div>

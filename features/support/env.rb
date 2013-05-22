@@ -6,6 +6,7 @@ require 'spork'
 require 'i18n'
 require 'capybara/poltergeist'
 require 'cucumber/rspec/doubles'
+
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 
@@ -136,4 +137,5 @@ Before do
   AWS::S3::Base.any_instance.stub(:establish_connection!)
   AWS::S3::Bucket.any_instance.stub(:create)
   AWS::S3::Base.any_instance.stub(:disconnect!)
+  BackgroundTasks::QueueManager.any_instance.stub(:process)
 end

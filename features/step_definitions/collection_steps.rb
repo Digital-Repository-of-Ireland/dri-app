@@ -6,9 +6,12 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?$/ do |pid, title|
   collection.governed_items.count.should == 0
 end
 
-Given /^a Digital Object with pid "(.*?)" and title "(.*?)"/ do |pid, title|
+Given /^a Digital Object with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |pid, title, user|
   digital_object = DRI::Model::Audio.new(:pid => pid)
   digital_object.title = title
+  if user
+    digital_object.apply_depositor_metadata(User.find_by_email(user))
+  end
   digital_object.rights = "This is a statement of rights"
   digital_object.save
 end

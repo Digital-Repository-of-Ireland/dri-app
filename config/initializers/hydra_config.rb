@@ -32,7 +32,9 @@ if Hydra.respond_to?(:configure)
       :discover => {:group =>ActiveFedora::SolrService.solr_name("discover_access_group", indexer), :individual=>ActiveFedora::SolrService.solr_name("discover_access_person", indexer), :policy=>ActiveFedora::SolrService.solr_name("discover_access_policy", indexer)},
       :read => {:group =>ActiveFedora::SolrService.solr_name("read_access_group", indexer), :individual=>ActiveFedora::SolrService.solr_name("read_access_person", indexer), :policy=>ActiveFedora::SolrService.solr_name("read_access_policy", indexer)},
       :edit => {:group =>ActiveFedora::SolrService.solr_name("edit_access_group", indexer), :individual=>ActiveFedora::SolrService.solr_name("edit_access_person", indexer), :policy=>ActiveFedora::SolrService.solr_name("edit_access_policy", indexer)},
+      :manager => {:group =>ActiveFedora::SolrService.solr_name("manager_access_group", indexer), :individual=>ActiveFedora::SolrService.solr_name("manager_access_person", indexer)},
       :owner => ActiveFedora::SolrService.solr_name("depositor", indexer),
+      :private_metadata => ActiveFedora::SolrService.solr_name("private_metadata", Solrizer::Descriptor.new(:integer,:stored, :indexed)),
       :embargo_release_date => ActiveFedora::SolrService.solr_name("embargo_release_date", Solrizer::Descriptor.new(:date, :stored, :indexed))
     }
     indexer = Solrizer::Descriptor.new(:string, :stored, :indexed, :multivalued)
@@ -40,6 +42,7 @@ if Hydra.respond_to?(:configure)
       :discover => {:group =>ActiveFedora::SolrService.solr_name("inheritable_discover_access_group", indexer), :individual=>ActiveFedora::SolrService.solr_name("inheritable_discover_access_person", indexer)},
       :read => {:group =>ActiveFedora::SolrService.solr_name("inheritable_read_access_group", indexer), :individual=>ActiveFedora::SolrService.solr_name("inheritable_read_access_person", indexer)},
       :edit => {:group =>ActiveFedora::SolrService.solr_name("inheritable_edit_access_group", indexer), :individual=>ActiveFedora::SolrService.solr_name("inheritable_edit_access_person", indexer)},
+      :manager => {:group =>ActiveFedora::SolrService.solr_name("inheritable_manager_access_group", indexer), :individual=>ActiveFedora::SolrService.solr_name("inheritable_manager_access_person", indexer)},
       :owner => ActiveFedora::SolrService.solr_name("inheritable_depositor", indexer),
       :embargo_release_date => ActiveFedora::SolrService.solr_name("inheritable_embargo_release_date", Solrizer::Descriptor.new(:date, :stored, :indexed))
     }

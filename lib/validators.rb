@@ -4,6 +4,16 @@ module Validators
  
   require 'mimemagic'
 
+  # Validate the file upload
+  #  
+  # Takes an uploaded file (ActionDispatch::Http::UploadedFile),
+  # or a path to a localfile, and calls the required validations.
+  #
+  def Validators.validate_file(file, allowed_type, allowed_subtypes)
+    self.virus_scan(file)
+    self.valid_file_type?(file, allowed_type, allowed_subtypes)
+  end
+
   # Validate file mime-types
   #
   # Takes an uploaded file (ActionDispatch::Http::UploadedFile), 
@@ -51,6 +61,19 @@ module Validators
 
   end  # End validate_file_type method
 
+  # Performs a virus scan on a single file
+  #
+  # Throws an exception if a virus is detected
+  #
+  def Validators.virus_scan(file)
+      if defined? ClamAV
+        logger.info "Performing virus scan."
+        result = ClamAV.instance.scanfile( file.respond_to?(:path) ? file.path : file )
+        raise Exceptions::VirusDetected.new(result) unless result == 0
+      else
+        logger.warn "Virus scanning is disabled."
+      end
+  end
 
   private
 

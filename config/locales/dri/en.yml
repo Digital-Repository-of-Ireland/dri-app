@@ -17,6 +17,7 @@ en:
     flash: 
       alert: 
         invalid_file_type: "Warning: The file does not appear to be a valid type"
+        virus_detected: "Virus detected in uploaded file: %{virus}"
         invalid_object: "Invalid Object: %{error}."
         invalid_xml: "Invalid XML: %{error}"
         not_added_to_collection: "Unable to add object to collection."
@@ -105,6 +106,7 @@ en:
         invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
         invalid_object_type: "You have specified an invalid digital object type."
         unknown_collection: "Unknown collection."
+        invalid_file: "Upload %{name} has failed validation."
       ingest: 
         buttons: 
           continue: Continue

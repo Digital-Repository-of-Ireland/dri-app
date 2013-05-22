@@ -14,6 +14,8 @@ module Hydra
       include Blacklight::SolrHelper
       class_attribute :ability_logic
       self.ability_logic = [:create_permissions, :edit_permissions, :read_permissions, :custom_permissions]
+      #383 Addition
+      self.ability_logic +=[:manager_permissions]
     end
 
     def self.user_class
@@ -27,23 +29,23 @@ module Hydra
       @user = @current_user # just in case someone was using this in an override. Just don't.
       @session = session
       @cache = Hydra::PermissionsCache.new
+      #Default: Giving same level as edit
+      alias_action :edit, :update, :destroy, :to => :manage_collection
       hydra_default_permissions()
     end
 
+    #383 Modified
     ## You can override this method if you are using a different AuthZ (such as LDAP)
     def user_groups
       return @user_groups if @user_groups
-      
       @user_groups = default_user_groups
-      #Redmine-378 TODO:: Must update this when working with access controls
-      @user_groups |= current_user.groups.map(&:name) if current_user and current_user.respond_to? :groups
-      @user_groups |= ['registered'] unless current_user.new_record?
+      @user_groups |=  UserGroup::Group.find(current_user.full_memberships.pluck(:group_id)).map(&:name) if current_user and current_user.respond_to? :full_memberships
       @user_groups
     end
 
     def default_user_groups
       # # everyone is automatically a member of the group 'public'
-      ['public']
+      [SETTING_GROUP_PUBLIC]
     end
     
 
@@ -55,19 +57,29 @@ module Hydra
     end
 
     def create_permissions
-      can :create, :all if user_groups.include? 'registered'
+      #can :create, :all if user_groups.include? 'registered'
     end
 
+    #TEMP:: Removed some permissions, must find out what an edit user can do
     def edit_permissions
-      can [:edit, :update, :destroy], String do |pid|
+      can [:edit, :update], String do |pid|
+        logger.debug("[EDITPERM] Checking from STRING")
         test_edit(pid)
       end 
 
-      can [:edit, :update, :destroy], ActiveFedora::Base do |obj|
+      #[DRI::Model::DigitalObject, DRI::Model::Collection]
+      #can [:edit, :update, :destroy], ActiveFedora::Base do |obj|
+      #  test_edit(obj.pid)
+      #end
+
+      can [:edit, :update, :destroy], DRI::Model::DigitalObject do |obj|
+        logger.debug("[EDITPERM] Checking from DRI::MODEL::DO")
         test_edit(obj.pid)
       end
+
    
       can :edit, SolrDocument do |obj|
+        logger.debug("[EDITPERM] Checking from SOLRDOC")
         cache.put(obj.id, obj)
         test_edit(obj.id)
       end       
@@ -75,22 +87,64 @@ module Hydra
 
     def read_permissions
       can :read, String do |pid|
+        logger.debug("[READPERM] Checking from STRING")
         test_read(pid)
       end
 
       can :read, ActiveFedora::Base do |obj|
+        logger.debug("[READPERM] Checking from AF::B")
         test_read(obj.pid)
       end 
       
       can :read, SolrDocument do |obj|
+        logger.debug("[READPERM] Checking from SolrDoc")
         cache.put(obj.id, obj)
         test_read(obj.id)
       end 
     end
 
+    #383 Addition
+    #These are manager_permissions on a DO level
+    #NOT the permissions a user gets if they are a collection manager
+    def manager_permissions
+      can :manage_collection, String do |pid|
+        logger.debug("[MANPERM] Checking from STRING")
+        test_manager(pid)
+      end
+
+      can :manage_collection, ActiveFedora::Base do |obj|
+        logger.debug("[MANPERM] Checking from AF::B")
+        test_manager(obj.pid)
+      end 
+      
+      can :manage_collection, SolrDocument do |obj|
+        logger.debug("[MANPERM] Checking from SolrDoc")
+        cache.put(obj.id, obj)
+        test_manager(obj.id)
+      end
+    end
 
     ## Override custom permissions in your own app to add more permissions beyond what is defined by default.
     def custom_permissions
+      #"Role" Based permissions here - rather than dynamicially changing assignments (no test needed)
+
+      #Collection Manager Permissions
+      #Higher power than edit user...[Dont want edit users to be able to DELETE a COLLECTION??, (Delete a DO?)]
+      if current_user.applicable_policy?(SETTING_POLICY_COLLECTION_MANAGER)
+        #Marked as being able to :manage_collection
+        can [:manage_collection_flag]
+        can :create, DRI::Model::Collection
+        #Cannot currently create a DO
+        #If i give create permission here then they could create a DO anywhere,
+        #only want them to be able to create a DO within their collection
+      end
+
+      #Admin Permissions
+      if current_user.applicable_policy?(SETTING_POLICY_ADMIN)
+        can :admin_flag, :all
+        #Disabled for now..
+        #can :manage, :all
+      end
     end
     
     protected
@@ -109,16 +163,23 @@ module Hydra
       result = !group_intersection.empty? || read_persons(pid).include?(current_user.user_key)
       result
     end 
+
+    def test_manager(pid)
+      logger.debug("[CANCAN] Checking manager permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+      group_intersection = user_groups & manager_groups(pid)
+      result = !group_intersection.empty? || manager_persons(pid).include?(current_user.user_key)
+    end
     
+    #383 Modified. manager implies edit, so edit_groups is the union of manager and edit groups    
     def edit_groups(pid)
       doc = permissions_doc(pid)
       return [] if doc.nil?
-      eg = doc[self.class.edit_group_field] || []
+      eg = manager_groups(pid) | ( doc[self.class.edit_group_field] || [])
       logger.debug("[CANCAN] edit_groups: #{eg.inspect}")
       return eg
     end
 
-    # edit implies read, so read_groups is the union of edit and read groups
+    #edit implies read, so read_groups is the union of edit and read groups
     def read_groups(pid)
       doc = permissions_doc(pid)
       return [] if doc.nil?
@@ -127,10 +188,11 @@ module Hydra
       return rg
     end
 
+    #383 Modified. manager implies edit, so edit_persons is the union of manager and edit persons
     def edit_persons(pid)
       doc = permissions_doc(pid)
       return [] if doc.nil?
-      ep = doc[self.class.edit_person_field] ||  []
+      ep = manager_persons(pid) | ( doc[self.class.edit_person_field] ||  [])
       logger.debug("[CANCAN] edit_persons: #{ep.inspect}")
       return ep
     end
@@ -142,6 +204,24 @@ module Hydra
       rp = edit_persons(pid) | (doc[self.class.read_person_field] || [])
       logger.debug("[CANCAN] read_persons: #{rp.inspect}")
       return rp
+    end
+
+    #383 Addition. Managers are at the top level
+    def manager_groups(pid)
+      doc = permissions_doc(pid)
+      return [] if doc.nil?
+      mg = doc[self.class.manager_group_field] ||  []
+      logger.debug("[CANCAN] manager_groups: #{mg.inspect}")
+      return mg
+    end
+
+    #383 Addition
+    def manager_persons(pid)
+      doc = permissions_doc(pid)
+      return [] if doc.nil?
+      mp = doc[self.class.manager_person_field] ||  []
+      logger.debug("[CANCAN] manager_persons: #{mp.inspect}")
+      return mp
     end
 
     module ClassMethods
@@ -159,6 +239,16 @@ module Hydra
 
       def edit_group_field
         Hydra.config[:permissions][:edit][:group]
+      end
+
+      #383 Addition
+      def manager_group_field
+        Hydra.config[:permissions][:manager][:group]
+      end
+
+      #383 Addition
+      def manager_person_field
+        Hydra.config[:permissions][:manager][:individual]
       end
     end
   end
