@@ -22,6 +22,9 @@ gem 'noid', '0.5.5'
 
 gem 'resque'
 
+# Storage-related gems
+gem 'aws-s3'
+
 #gem 'clamav'
 
 # File processing gems

@@ -25,3 +25,7 @@ ogg_out_options:
   channel: "2" # default is same as input file
   bitrate: "96k" # default is same as input file
   frequency: "44100" # default is same as input file
+S3:
+  server: 10.0.1.201
+  access_key_id: FIXME
+  secret_access_key: FIXME

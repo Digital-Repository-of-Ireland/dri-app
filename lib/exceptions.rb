@@ -21,6 +21,9 @@ module Exceptions
   class InappropriateFileType < StandardError
   end
 
+  class BadCommand < StandardError
+  end
+
   class VirusDetected < StandardError
   end
 

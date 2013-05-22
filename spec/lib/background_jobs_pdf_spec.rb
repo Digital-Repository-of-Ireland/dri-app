@@ -15,9 +15,30 @@ describe "workers" do
     file = LocalFile.new
     file.add_file(uploadhash, {:fedora_id => @object.id, :ds_id => "masterContent", :directory => tmpdir} )
     file.save
-    @object.save
+    @object.reload
+
+    AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                        :access_key_id => Settings.S3.access_key_id,
+                                        :secret_access_key => Settings.S3.secret_access_key)
+    bucket = @object.pid.sub('dri:', '')
+    begin
+      AWS::S3::Bucket.create(bucket)
+    rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+      logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
+      raise Exceptions::InternalError
+    end
+    AWS::S3::Base.disconnect!()
   end
-  
+ 
+  after :each do
+    AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                        :access_key_id => Settings.S3.access_key_id,
+                                        :secret_access_key => Settings.S3.secret_access_key)
+    AWS::S3::Bucket.delete(@object.pid.sub('dri:', ''), :force => true)
+    AWS::S3::Base.disconnect!()
+  end
+
+ 
   describe CreateChecksums do
   
     describe "perform" do

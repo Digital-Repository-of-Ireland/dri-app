@@ -61,7 +61,7 @@ class ObjectsController < AssetsController
     end
   end
 
-  # Creates a new audio model using the parameters passed in the request.
+  # Creates a new model using the parameters passed in the request.
   #
   def create
     if params[:dri_model][:governing_collection].present? && !params[:dri_model][:governing_collection].blank?
@@ -93,6 +93,9 @@ class ObjectsController < AssetsController
     check_for_duplicates(@document_fedora)
 
     if @document_fedora.valid? && @document_fedora.save
+
+      create_bucket
+
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
           redirect_to :controller => "catalog", :action => "show", :id => @document_fedora.id
@@ -123,6 +126,22 @@ class ObjectsController < AssetsController
 
          object.metadata_md5 = Checksum.md5_string(xml)
       end
+    end
+
+    # Create an S3 bucket for this object
+    #
+    def create_bucket
+      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                          :access_key_id => Settings.S3.access_key_id,
+                                          :secret_access_key => Settings.S3.secret_access_key)
+      bucket = @document_fedora.pid.sub('dri:', '')
+      begin
+        AWS::S3::Bucket.create(bucket)
+      rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+        logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
+        raise Exceptions::InternalError
+      end
+      AWS::S3::Base.disconnect!()
     end
 
 end

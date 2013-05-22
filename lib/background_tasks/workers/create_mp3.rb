@@ -20,9 +20,26 @@ class CreateMp3
     FileUtils.cp(masterfile,workingfile)
     outputfile = File.join(tmp_dir, "output_file.mp3")
 
-    transcode(workingfile, output_options, outputfile)
+    begin
+      transcode(workingfile, output_options, outputfile)
+    rescue BadCommand => e
+      # report failure
+      # requeue?
+    end
 
-    # Add the file to the object somehow...
+    AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                        :access_key_id => Settings.S3.access_key_id,
+                                        :secret_access_key => Settings.S3.secret_access_key)
+
+    bucket = @object.pid.sub('dri:', '')
+    filename = "#{@object.pid}-mp3-#{Settings.mp3_out_options.channel}-#{Settings.mp3_out_options.bitrate}-#{Settings.mp3_out_options.frequency}.mp3"
+    # save the file to that bucket, note we do not version surrogates!
+    begin
+      AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
+    rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+      puts "Problem saving Surrogate file #{filename} : #{e.to_s}"
+    end
+    AWS::S3::Base.disconnect!()
 
   end
 
@@ -55,7 +72,7 @@ class CreateMp3
     stdout.close
     err = stderr.read
     stderr.close
-    raise "Unable to execute command \"#{command}\"\n#{err}" unless wait_thr.value.success?
+    raise BadCommand "Unable to execute command \"#{command}\"\n#{err}" unless wait_thr.value.success?
   end
 
 

@@ -20,9 +20,26 @@ class CreateOgg
     FileUtils.cp(masterfile,workingfile)
     outputfile = File.join(tmp_dir, "output_file.ogg")
 
-    transcode(workingfile, output_options, outputfile)
+    begin
+      transcode(workingfile, output_options, outputfile)
+    rescue BadCommand => e
+      # report failure
+      # requeue?
+    end
 
-    # Add the file to the object somehow...
+    AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                        :access_key_id => Settings.S3.access_key_id,
+                                        :secret_access_key => Settings.S3.secret_access_key)
+
+    bucket = @object.pid.sub('dri:', '')
+    filename = "#{@object.pid}-ogg-#{Settings.ogg_out_options.channel}-#{Settings.ogg_out_options.bitrate}-#{Settings.ogg_out_options.frequency}.ogg"
+    # save the file to that bucket, note we do not version surrogates!
+    begin
+      AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
+    rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+      puts "Problem saving Surrogate file #{filename} : #{e.to_s}"
+    end
+    AWS::S3::Base.disconnect!()
 
   end
 

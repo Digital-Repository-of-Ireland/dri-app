@@ -83,6 +83,7 @@ class CollectionsController < AssetsController
 
     respond_to do |format|
       if @document_fedora.save
+
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
             redirect_to :controller => "collections", :action => "show", :id => @document_fedora.id }
         format.json {

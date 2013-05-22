@@ -134,8 +134,8 @@ end
 
 Before do
   require 'factory_girl'
-end
-
-Before do
+  AWS::S3::Base.any_instance.stub(:establish_connection!)
+  AWS::S3::Bucket.any_instance.stub(:create)
+  AWS::S3::Base.any_instance.stub(:disconnect!)
   BackgroundTasks::QueueManager.any_instance.stub(:process)
 end

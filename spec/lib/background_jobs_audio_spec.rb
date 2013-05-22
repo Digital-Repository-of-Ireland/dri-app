@@ -15,8 +15,29 @@ describe "workers" do
     file = LocalFile.new
     file.add_file(uploadhash, {:fedora_id => @object.id, :ds_id => "masterContent", :directory => tmpdir} )
     file.save
-    @object.save
+    @object.reload
+
+    AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                        :access_key_id => Settings.S3.access_key_id,
+                                        :secret_access_key => Settings.S3.secret_access_key)
+    bucket = @object.pid.sub('dri:', '')
+    begin
+      AWS::S3::Bucket.create(bucket)
+    rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+      logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
+      raise Exceptions::InternalError
+    end
+    AWS::S3::Base.disconnect!()
   end
+
+  after :each do
+    AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                        :access_key_id => Settings.S3.access_key_id,
+                                        :secret_access_key => Settings.S3.secret_access_key)
+    AWS::S3::Bucket.delete(@object.pid.sub('dri:', ''), :force => true)
+    AWS::S3::Base.disconnect!()
+  end
+
   
   describe CreateMp3 do
   
@@ -45,10 +66,27 @@ describe "workers" do
     end
   
     describe "perform" do
-      it "should create ogg when perform function is called" do
+      it "should create mp3 when perform function is called" do
         CreateMp3.perform(@object.id)
         @object.reload
-        # once mp3 referenced in datastream we should retrieve it to test
+
+        AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                            :access_key_id => Settings.S3.access_key_id,
+                                            :secret_access_key => Settings.S3.secret_access_key)
+
+        begin
+          bucket = AWS::S3::Bucket.find(@object.pid.sub('dri:', ''))
+        rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+          #report failue
+        end
+        filename = "#{@object.pid}-mp3-#{Settings.mp3_out_options.channel}-#{Settings.mp3_out_options.bitrate}-#{Settings.mp3_out_options.frequency}.mp3"
+        files = []
+        bucket.each do |fileobject|
+          files.push(fileobject.key)
+        end
+        files.should include filename
+
+        AWS::S3::Base.disconnect!()
       end
     end
   
@@ -84,7 +122,24 @@ describe "workers" do
       it "should create ogg when perform function is called" do
         CreateOgg.perform(@object.id)
         @object.reload
-        # once ogg referenced in datastream we should retrieve it to test
+
+        AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                            :access_key_id => Settings.S3.access_key_id,
+                                            :secret_access_key => Settings.S3.secret_access_key)
+
+        begin
+          bucket = AWS::S3::Bucket.find(@object.pid.sub('dri:', ''))
+        rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+          #report failue
+        end
+        filename = "#{@object.pid}-ogg-#{Settings.ogg_out_options.channel}-#{Settings.ogg_out_options.bitrate}-#{Settings.ogg_out_options.frequency}.ogg"
+        files = []
+        bucket.each do |fileobject|
+          files.push(fileobject.key)
+        end
+        files.should include filename
+
+        AWS::S3::Base.disconnect!()
       end
     end
   
