@@ -23,7 +23,6 @@ describe "workers" do
     bucket = @object.pid.sub('dri:', '')
     begin
       AWS::S3::Bucket.create(bucket)
-puts "creating bucket #{bucket}"
     rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
       logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
       raise Exceptions::InternalError
@@ -35,7 +34,6 @@ puts "creating bucket #{bucket}"
     AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                         :access_key_id => Settings.S3.access_key_id,
                                         :secret_access_key => Settings.S3.secret_access_key)
-puts "deleting bucket #{@object.pid.sub('dri:', '')}"
     AWS::S3::Bucket.delete(@object.pid.sub('dri:', ''), :force => true)
     AWS::S3::Base.disconnect!()
   end
