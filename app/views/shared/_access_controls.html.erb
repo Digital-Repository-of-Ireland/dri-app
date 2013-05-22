@@ -114,7 +114,8 @@ function search_field_toggle(){
     }
 }
 </script>
-
+    <h5>Depositor</h5>
+    <%= record.depositor %>
     <h5>Search Access</h5>
     <div class="row">
         <%= f.radio_button :private_metadata, "radio_public", :onclick => "search_field_toggle();", :checked=>!record.private_metadata %>
