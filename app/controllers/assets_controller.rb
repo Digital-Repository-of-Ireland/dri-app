@@ -37,7 +37,7 @@ class AssetsController < ApplicationController
   #might want to change so each controller specifys when to check & what methods to check.
   def enforce_permissions!
     action = params[:action]
-    if action.nil? or action=="edit" or action=="update"
+    if action.nil? or action=="edit" or action=="update" or action=="create"
       unless can? :edit, params[:id]
           raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, params[:id])
       end
@@ -46,7 +46,7 @@ class AssetsController < ApplicationController
         raise Hydra::AccessDenied.new(t('dri.flash.alert.read_permission'), :read, params[:id])
       end
     else
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.unknown_permission'), :read, params[:id])
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.unknown_permission', :action => action), :read, params[:id])
     end
   end
   

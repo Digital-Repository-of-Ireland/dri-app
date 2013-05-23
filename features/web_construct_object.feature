@@ -92,6 +92,7 @@ Scenario: Constructing a Digital Object using the web form
   Then I should see a success message for ingestion
   And I should see the valid metadata
 
+@review
 Scenario: Constructing a Digital Object using the web form without setting a collection
   Given I am on the new Digital Object page
   And I press the button to continue

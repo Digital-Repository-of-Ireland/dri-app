@@ -25,7 +25,7 @@ en:
         edit_permission: "You do not have permission to edit this document."
         read_permission: "You do not have permission to read this document."
         create_permission: "You do not have permission to create this document."
-        unknown_permission: "Unsupported Permission Level."
+        unknown_permission: "Unsupported Permission Level: %{action}"
       error: 
         no_type_specified: "You must specify a valid object type"
         validation_errors: "Validation Errors: %{error}"
