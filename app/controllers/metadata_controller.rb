@@ -102,7 +102,8 @@ class MetadataController < AssetsController
 
     save_object
 
-    create_bucket
+    buckets = S3Interface::Bucket.new()
+    buckets.create_bucket(@object.pid.sub('dri:', ''))
 
     respond_to do |format|
       format.html {redirect_to :controller => "catalog", :action => "show", :id => @object.id}
@@ -183,19 +184,4 @@ class MetadataController < AssetsController
       end
     end
 
-    # Create an S3 bucket for this object
-    #
-    def create_bucket
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                          :access_key_id => Settings.S3.access_key_id,
-                                          :secret_access_key => Settings.S3.secret_access_key)
-      bucket = @object.pid.sub('dri:', '')
-      begin
-        AWS::S3::Bucket.create(bucket)
-      rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
-        logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
-        raise Exceptions::InternalError
-      end
-      AWS::S3::Base.disconnect!()
-    end
 end

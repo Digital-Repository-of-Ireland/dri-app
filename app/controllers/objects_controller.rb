@@ -94,7 +94,8 @@ class ObjectsController < AssetsController
 
     if @document_fedora.valid? && @document_fedora.save
 
-      create_bucket
+      buckets = S3Interface::Bucket.new()
+      buckets.create_bucket(@document_fedora.pid.sub('dri:', ''))
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -126,22 +127,6 @@ class ObjectsController < AssetsController
 
          object.metadata_md5 = Checksum.md5_string(xml)
       end
-    end
-
-    # Create an S3 bucket for this object
-    #
-    def create_bucket
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                          :access_key_id => Settings.S3.access_key_id,
-                                          :secret_access_key => Settings.S3.secret_access_key)
-      bucket = @document_fedora.pid.sub('dri:', '')
-      begin
-        AWS::S3::Bucket.create(bucket)
-      rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
-        logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
-        raise Exceptions::InternalError
-      end
-      AWS::S3::Base.disconnect!()
     end
 
 end
