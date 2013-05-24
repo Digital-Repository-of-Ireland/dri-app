@@ -1,6 +1,9 @@
-Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?$/ do |pid, title|
+Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   collection = DRI::Model::Collection.new(:pid => pid)
   collection.title = title ? title : SecureRandom.hex(5)
+  if user
+    collection.apply_depositor_metadata(User.find_by_email(user))
+  end
   collection.save
   collection.items.count.should == 0
   collection.governed_items.count.should == 0

@@ -1,6 +1,6 @@
 <h1><%= t('dri.views.collection.new.title') %></h1>
 
-<%= form_for @document_fedora, :url => {:controller=>"collections", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
+<%= form_for @collection, :url => {:controller=>"collections", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
 
   <%= render :partial => "form_collection", :locals => { :f => f } %>
 

@@ -1,14 +1,14 @@
-<h1><%= @document_fedora.title %></h1>
+<h1><%= @collection.title %></h1>
 
 <dl>
   <dt><%= t('dri.views.objects.forms.description') %></dt>
-  <dd><%= @document_fedora.description %></dd>
+  <dd><%= @collection.description %></dd>
   <dt><%= t('dri.views.objects.forms.publisher') %></dt>
-  <dd><%= @document_fedora.publisher %></dd>
+  <dd><%= @collection.publisher %></dd>
 </dl>
 
 <h2><%= t('dri.views.collection.legends.governed_objects') %></h2>
-<%= render :partial => 'governed_item', :collection => @document_fedora.governed_items %>
+<%= render :partial => 'governed_item', :collection => @collection.governed_items %>
 
 <h2><%= t('dri.views.collection.legends.objects') %></h2>
-<%= render :partial => 'item', :collection => @document_fedora.items, :locals => {:collection_id => @document_fedora.pid} %>
+<%= render :partial => 'item', :collection => @collection.items, :locals => {:collection_id => @collection.pid} %>
