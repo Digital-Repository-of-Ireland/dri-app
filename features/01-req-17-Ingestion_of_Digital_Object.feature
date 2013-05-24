@@ -1,23 +1,5 @@
-@req-17 
+@req-17 @historical
 Feature: Ingestion
-
-DELETEME: REQ-17
-DELETEME: 
-DELETEME: The system shall enable the user to ingest digital objects into a
-DELETEME: collection in accordance with their access rights.
-DELETEME: 
-DELETEME: 1. It shall check for duplicate digital objects on a collection basis. (e.g. check metadata).
-DELETEME: 2. It shall warn users of any duplications.
-DELETEME: 3. It shall check, validate and verify the digital object (check integrity)
-DELETEME: 4. It may provide a replace operator to replace a digital object.
-DELETEME: 
-DELETEME: ---
-DELETEME: 
-DELETEME: In order to <meet goal>
-DELETEME: As a <stakeholder>
-DELETEME: I want <a feature>
-DELETEME: 
-DELETEME: ----
 
 In order to add a digital object into the repository
 As an authenticated and authorised depositor
