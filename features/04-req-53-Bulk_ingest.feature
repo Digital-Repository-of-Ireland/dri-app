@@ -1,9 +1,11 @@
-@req-53
+@req-17.7 @done
 Feature: Bulk Ingest
 
 In order to add a number of digital objects into the repository
 As an authenticated and authorised depositor
 I want to ingest a number of objects with an asset with metadata
+
+This is currently implemented in the commandline app
 
 # this is a repeat of the current collections and construct digital objects
 # feature files, this bulk ingest feature may not needed if there isn't going

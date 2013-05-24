@@ -1,4 +1,4 @@
-@cookies @javascript
+@cookies @javascript @done @req-67
 Feature:
   In order to comply with EU e-Privacy Directive
   As an new visitor to the DRI

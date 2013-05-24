@@ -1,4 +1,4 @@
-@collections @req-17
+@collections @req-17 @done @req-61 @req-63
 Feature:
   In order to manage my Digital Objects
   As an authorized user

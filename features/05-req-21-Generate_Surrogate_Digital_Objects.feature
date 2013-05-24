@@ -1,3 +1,4 @@
+@req-21 @done
 Feature: Generate Surrogate Digital Objects
 
 DELETEME: REQ-21
