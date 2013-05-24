@@ -1,4 +1,4 @@
-@req-33 @javascript
+@public @req-33 @javascript
 Feature: Social Media
 
 DELETEME: REQ-33

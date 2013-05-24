@@ -35,7 +35,7 @@ Scenario Outline: Adding a Digital Object in a governing/non-governing collectio
     | dri:obj4   | Object 4     | dri:coll2      | non-governing   |
 
 Scenario Outline: Creating Digital Object in a governing collection using the web forms
-  Given a collection with pid "<collection_pid>"
+  Given a collection with pid "<collection_pid>" created by "user1@user1.com"
   When I create a Digital Object in the collection "<collection_pid>"
   Then the collection "<collection_pid>" should contain the new digital object
 
@@ -45,7 +45,7 @@ Scenario Outline: Creating Digital Object in a governing collection using the we
 
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
   Given a Digital Object with pid "dri:obj4" and title "Object 4"
-  And a collection with pid "dri:coll4"
+  And a collection with pid "dri:coll4" created by "user1@user1.com"
   When I add the Digital Object "dri:obj4" to the non-governing collection "dri:coll4" using the web forms
   And I go to the "collection" "show" page for "dri:coll4"
   Then I should see the Digital Object "dri:obj4" as part of the collection

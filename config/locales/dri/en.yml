@@ -9,6 +9,7 @@ en:
         header: "Important notice about cookies"
         message: "The Digital Repository of Ireland uses cookies to implement access control to digital resources. To opt out of receiving cookies from DRI, please turn off cookies for this website in your browser preferences. Note that users who opt out will be unable to use some of the features of the Digital Repository. For more information please see our %{privacy_statement:privacy statement} and our %{cookies_help:cookies help} pages."
       home: 
+        adminintrotext: "DRI repository administrator interface."
         introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
       lang: 
         en: English

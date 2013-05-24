@@ -1,12 +1,12 @@
 # Controller for the Collection model
 #
 class CollectionsController < AssetsController
-  before_filter :authenticate_user!, :only => [:index, :create, :new, :edit, :update]
+  before_filter :authenticate_user!, :only => [:index, :create, :new, :show, :edit, :update]
 
   # Shows list of user's collections
   #
   def index
-    @mycollections = DRI::Model::Collection.all
+    @mycollections = DRI::Model::Collection.find(:depositor => current_user.to_s)
 
     respond_to do |format|
       format.html
@@ -27,7 +27,7 @@ class CollectionsController < AssetsController
   # Creates a new model.
   #
   def new
-    @document_fedora = DRI::Model::Collection.new
+    @collection = DRI::Model::Collection.new
 
     respond_to do |format|
       format.html
@@ -37,7 +37,7 @@ class CollectionsController < AssetsController
   # Edits an existing model.
   #
   def edit
-    @document_fedora = retrieve_object(params[:id])
+    @collection = retrieve_object(params[:id])
 
     respond_to do |format|
       format.html
@@ -47,17 +47,17 @@ class CollectionsController < AssetsController
   # Retrieves an existing model.
   #
   def show
-    @document_fedora = retrieve_object(params[:id])
+    @collection = retrieve_object(params[:id])
 
     respond_to do |format|
       format.html  
       format.json  {
         @response = {}
-        @response[:id] = @document_fedora.pid
-        @response[:title] = @document_fedora.title
-        @response[:description] = @document_fedora.description
-        @response[:publisher] = @document_fedora.publisher
-        @response[:objectcount] = @document_fedora.governed_items.count + @document_fedora.items.count
+        @response[:id] = @collection.pid
+        @response[:title] = @collection.title
+        @response[:description] = @collection.description
+        @response[:publisher] = @collection.publisher
+        @response[:objectcount] = @collection.governed_items.count + @collection.items.count
       }
     end
   end
@@ -65,9 +65,9 @@ class CollectionsController < AssetsController
   # Updates the attributes of an existing model.
   #
   def update
-    @document_fedora = retrieve_object(params[:id])
+    @collection = retrieve_object(params[:id])
     
-    @document_fedora.update_attributes(params[:dri_model_collection])
+    @collection.update_attributes(params[:dri_model_collection])
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
       format.html  { render :action => "edit" }
@@ -77,29 +77,28 @@ class CollectionsController < AssetsController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-
-    @document_fedora = DRI::Model::Collection.new(params[:dri_model_collection])
-    @document_fedora.apply_depositor_metadata(current_user.to_s)
+    @collection = DRI::Model::Collection.new(params[:dri_model_collection])
+    @collection.apply_depositor_metadata(current_user.to_s)
 
     respond_to do |format|
-      if @document_fedora.save
+      if @collection.save
 
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
-            redirect_to :controller => "collections", :action => "show", :id => @document_fedora.id }
+            redirect_to :controller => "collections", :action => "show", :id => @collection.id }
         format.json {
           @response = {}
-          @response[:id] = @document_fedora.pid
-          @response[:title] = @document_fedora.title
-          @response[:description] = @document_fedora.description
-          @response[:publisher] = @document_fedora.publisher
+          @response[:id] = @collection.pid
+          @response[:title] = @collection.title
+          @response[:description] = @collection.description
+          @response[:publisher] = @collection.publisher
           render(:json => @response, :status => :created)
         }
       else
         format.html {
-          flash[:alert] = @document_fedora.errors.messages.values.to_s
+          flash[:alert] = @collection.errors.messages.values.to_s
           render :action => :new
         }
-        format.json { render(:json => @document_fedora.errors.messages.values.to_s) }
+        format.json { render(:json => @collection.errors.messages.values.to_s) }
         raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_collection')
       end
     end

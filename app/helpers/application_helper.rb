@@ -7,7 +7,7 @@ module ApplicationHelper
   end
   
   def get_collections
-    collections = DRI::Model::Collection.all
+    collections = DRI::Model::Collection.find(:depositor => current_user.to_s)
     collections.collect{ |c| [c.title, c.pid] }
   end
 
