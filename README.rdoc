@@ -22,6 +22,7 @@ For testing and development you will need to bootstrap the project
   $ bundle
   $ bundle exec rake db:migrate
   $ bundle exec rake db:seed
+  $ bundle exec rake jetty:config
 
   Dont forget to prepare the test database with
     $ bundle exec rake db:test:prepare
@@ -115,6 +116,9 @@ you can the status of your queues and jobs.
 
 The worker code is currently in lib/workers/.
 
+Note that the queuing code is stubbed for the Cucumber tests so you do not need a redis
+host running in order to run the tests.
+
 == ClamAV
 
 To enable virus scanning ClamAV needs to be installed. 
@@ -140,6 +144,36 @@ Add the gem to the GemFile
   gem 'clamav'
 
 Run bundler. Virus scanning should now take place when an asset is uploaded.
+
+== Storage
+
+Surrogate files are stored using the Ceph S3 interface. To create surrogates
+you will need a Ceph instance running. A Ceph VM is available in the drirepo
+repository. To start up Ceph run
+
+  $ vagrant up ceph
+
+When the VM is running, log in with 
+
+  $ vagrant ssh ceph
+
+Then create a user with no max bucket limit as follows:
+
+  $ radosgw-admin user create --uid=johndoe --display-name="John Doe" --email=john@example.com --max-buckets=0
+
+This will return an access_key and secret_key which must be added
+to the hydra head's config/settings.yml or config/settings.local.yml file as follows:
+
+  S3:
+    server: 10.0.1.201
+    access_key_id: 4WP751XIFXBH9G97DD91
+    secret_access_key: v6tX8bZSeN9IRJAcelHLnQFrsYV8ojxgWa7rn0uz
+
+Note that the keys should be pasted in as they appear in the output of the radosgw-admin command,
+but all '\' characters should be stripped.
+
+Note that the storage code is stubbed for the Cucumber tests, but you must have a ceph
+host available and configured in order to run the rspec tests.
 
 == Going into production
 
