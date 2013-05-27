@@ -58,7 +58,8 @@ group :development, :test do
   gem 'simplecov-rcov'
   gem 'railroady'
   gem 'show_me_the_cookies'
-  gem "better_errors"
+  gem 'better_errors'
+  gem 'binding_of_caller'
 
   # guard - autorun of tests during development cycle
   gem 'guard'
