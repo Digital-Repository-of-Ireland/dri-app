@@ -68,6 +68,9 @@ GEM
       xml-simple
     backports (3.3.1)
     bcrypt-ruby (3.0.1)
+    better_errors (0.9.0)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
     blacklight (4.0.0)
       bootstrap-sass (~> 2.1.0)
       kaminari (~> 0.13)
@@ -395,6 +398,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-s3
+  better_errors
   blacklight (= 4.0.0)
   bootstrap-sass
   cucumber-rails
