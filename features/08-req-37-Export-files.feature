@@ -3,7 +3,7 @@ Feature: Export files
 
 In order to export the Digital Objects metadata and asset
 As an authenticated and authorised user
-I want to be able to download the metadata in a user selected format
+I want to be able to download the metadata
 And the asset file to my local drive
 
 Background:
@@ -20,9 +20,6 @@ Scenario: Export DigitalObject's metadata
   #And I should see a "licence"
   And I should see a link to download metadata
   
-
-#Scenario: Export DigitalObject metadata in a user selected format
-
 Scenario: Export a DigitalObject's asset
   When I go to the "object" "show" page for "dri:obj1"
   Then I should see a "rights statement"
