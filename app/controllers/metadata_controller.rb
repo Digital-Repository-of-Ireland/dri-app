@@ -5,6 +5,8 @@ class MetadataController < AssetsController
 
   require 'metadata_validator'
 
+  before_filter :authenticate_user!, :only => [:create, :update]
+
   # Renders the metadata XML stored in the descMetadata datastream.
   # 
   #
@@ -40,7 +42,7 @@ class MetadataController < AssetsController
         return
       else
         @object = retrieve_object params[:id]
-
+  
         if @object == nil
           flash[:notice] = t('dri.flash.notice.specify_object_id')
         else
@@ -76,7 +78,6 @@ class MetadataController < AssetsController
   #
   #
   def create
-
     if !params.has_key?(:metadata_file) || params[:metadata_file].nil?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
       redirect_to :controller => "ingest", :action => "new"

@@ -27,29 +27,27 @@ module Exceptions
   class VirusDetected < StandardError
   end
 
-  def render_bad_request(exception)
-    status_message = status_to_message(:bad_request)
-    
-    respond_to do |type|
-      type.html { render :template => "errors/error_display", 
-                         :locals => { :header => status_message, 
-                                      :exception => exception }, 
-                         :status => :bad_request }
-      type.all  { render :nothing => true, :status => :bad_request }
-    end
-    true
+  def render_internal_error(exception)
+    render_exception(:internal_server_error, t('dri.views.exceptions.internal_error'))
   end
 
+  def render_bad_request(exception)
+    render_exception(:bad_request, exception.message)
+  end
 
-  def render_internal_error(exception)
-    status_message = status_to_message(:internal_server_error)
+  def render_access_denied(exception)
+    render_exception(:unauthorized, exception.message)
+  end
+
+  def render_exception(status_type, message)
+    status_message = status_to_message(status_type)
 
     respond_to do |type|
-      type.html { render :template => "errors/private_error_display",
+      type.html { render :template => "errors/error_display",
                          :locals => { :header => status_message,
-                                      :message => t('dri.views.exceptions.internal_error') }, 
-                         :status => :internal_server_error }
-      type.all  { render :nothing => true, :status => :internal_server_error}
+                                      :message => message }, 
+                         :status => status_type}
+      type.all  { render :nothing => true, :status => status_type}
     end
     true
   end

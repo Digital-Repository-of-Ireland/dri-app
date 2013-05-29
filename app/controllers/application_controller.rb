@@ -23,9 +23,10 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  rescue_from Exceptions::BadRequest, :with => :render_bad_request
   rescue_from Exceptions::InternalError, :with => :render_internal_error
-
+  rescue_from Exceptions::BadRequest, :with => :render_bad_request
+  rescue_from Hydra::AccessDenied, :with => :render_access_denied
+  
   def set_locale
     if current_user
       I18n.locale = current_user.locale
