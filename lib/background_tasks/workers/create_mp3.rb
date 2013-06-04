@@ -4,7 +4,7 @@ class CreateMp3
   require 'open3'
 
   def self.perform(object_id)
-    puts "Creating mp3 version of #{object_id} asset, if required"
+    puts "Creating mp3 version of #{object_id} asset"
 
     datastream = "masterContent"
     @object = ActiveFedora::Base.find(object_id,{:cast => true})
@@ -23,6 +23,7 @@ class CreateMp3
     begin
       transcode(workingfile, output_options, outputfile)
     rescue BadCommand => e
+      puts "    Failed to transcode file"
       # report failure
       # requeue?
     end
@@ -30,17 +31,15 @@ class CreateMp3
     AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                         :access_key_id => Settings.S3.access_key_id,
                                         :secret_access_key => Settings.S3.secret_access_key)
-
     bucket = @object.pid.sub('dri:', '')
     filename = "#{@object.pid}-mp3-#{Settings.mp3_out_options.channel}-#{Settings.mp3_out_options.bitrate}-#{Settings.mp3_out_options.frequency}.mp3"
     # save the file to that bucket, note we do not version surrogates!
     begin
-      AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
-    rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
+     AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
+    rescue Error, AWS::S3::ResponseError, AWS::S3::S3Exception => e
       puts "Problem saving Surrogate file #{filename} : #{e.to_s}"
     end
     AWS::S3::Base.disconnect!()
-
   end
 
 

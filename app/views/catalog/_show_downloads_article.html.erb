@@ -1,4 +1,6 @@
 <%= get_datastreams document %>
+<% surrogates = S3Interface::Utils.get_surrogates document %>
+
 <h3><%= t('dri.views.catalog.headers.files') %></h3>
 <dl class="dl-horizontal  dl-invert">
   <dt><%= t('dri.views.catalog.forms.metadata') %>: </dt>
@@ -9,6 +11,14 @@
       <object data="<%= url_for(:controller => 'files', :action => 'show', :id => @document.id) %>" type="application/pdf" width="100%" height="600">
         alt :<%= link_to t('dri.views.catalog.links.download'), url_for(:controller => 'files', :action => 'show', :id => @document.id), :id => "download_asset" %>
       </object>
+
+
+  <% surrogates.each do |desc, url| %>
+    <object data="<%= url %>" type="application/pdf" width="100%" height="600">
+        alt :<%= link_to desc, url, :id => "download_asset" %>
+      </object>
+  <% end %>
+
     </dd>
   <% else %>
     <dd><%= t('dri.views.catalog.legends.no_files') %></dd>

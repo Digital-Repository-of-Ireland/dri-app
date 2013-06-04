@@ -1,9 +1,14 @@
 module ApplicationHelper
+  require 's3_interface/utils'
 
   # Extract file datastream info from fedora object
   def get_datastreams doc
     @datastreams = ActiveFedora::Base.find(doc.id, {:cast => true}).datastreams
     ""
+  end
+
+  def get_surrogates doc
+    @surrogates = S3Interface::Utils.get_surrogates doc
   end
   
   def get_collections
