@@ -24,7 +24,7 @@ module S3Interface
       files.each do |file|
         begin
           file.match(/dri:#{bucket}-([-a-zA-z0-9]*)\..*/)
-          url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true)
+          url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
           @surrogates_hash[$1] = url
         rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
           logger.debug "Problem getting url for file #{filename} : #{e.to_s}"
