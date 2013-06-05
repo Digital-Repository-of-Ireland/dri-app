@@ -159,7 +159,7 @@ When the VM is running, log in with
 
 Then create a user with no max bucket limit as follows:
 
-  $ radosgw-admin user create --uid=johndoe --display-name="John Doe" --email=john@example.com --max-buckets=0
+  $ sudo radosgw-admin user create --uid=johndoe --display-name="John Doe" --email=john@example.com --max-buckets=0
 
 This will return an access_key and secret_key which must be added
 to the hydra head's config/settings.yml or config/settings.local.yml file as follows:
