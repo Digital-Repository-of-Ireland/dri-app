@@ -1,6 +1,6 @@
 # Base controller for the asset managing controllers.
 #
-class AssetsController < ApplicationController
+class AssetsController < CatalogController
   require 'checksum'
   require 's3_interface/bucket'
 
