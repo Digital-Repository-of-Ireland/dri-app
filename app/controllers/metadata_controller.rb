@@ -34,39 +34,38 @@ class MetadataController < AssetsController
     if !params.has_key?(:metadata_file) || params[:metadata_file].nil?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
     else
-      xml = load_xml(params[:metadata_file])
+      load_xml(params[:metadata_file])
 
-      if !MetadataValidator.is_valid_dc?(xml)
-        flash[:error] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
-        raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
-        return
-      else
-        @object = retrieve_object params[:id]
+      @object = retrieve_object params[:id]
+
+      unless can? :update, @object
+        raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, "")
+      end
   
-        if @object == nil
-          flash[:notice] = t('dri.flash.notice.specify_object_id')
-        else
-          set_metadata_datastream(xml)
-          @object.metadata_md5 = Checksum.md5_string(xml)
-          check_for_duplicates(@object)
+      if @object == nil
+        flash[:notice] = t('dri.flash.notice.specify_object_id')
+      else
+        set_metadata_datastream
 
+        @object.metadata_md5 = Checksum.md5_string(@xml)
+        check_for_duplicates(@object)
+
+        begin
+          raise Exceptions::InternalError unless @object.datastreams["descMetadata"].save
+        rescue RuntimeError => e
+          logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
+          raise Exceptions::InternalError
+        end
+
+        if @object.valid?
           begin
-            raise Exceptions::InternalError unless @object.datastreams["descMetadata"].save
+            raise Exceptions::InternalError unless @object.save
           rescue RuntimeError => e
-            logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
+            logger.error "Could not save object #{@object.id}: #{e.message}"
             raise Exceptions::InternalError
           end
 
-          if @object.valid?
-            begin
-              raise Exceptions::InternalError unless @object.save
-            rescue RuntimeError => e
-              logger.error "Could not save object #{@object.id}: #{e.message}"
-              raise Exceptions::InternalError
-            end
-
-            flash[:notice] = t('dri.flash.notice.metadata_updated')
-          end
+          flash[:notice] = t('dri.flash.notice.metadata_updated')
         end
       end
     end
@@ -78,24 +77,20 @@ class MetadataController < AssetsController
   #
   #
   def create
+    unless can? :create_do, Collection.find(params[:governing_collection])
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.create_permission'), :create, "")
+    end
+
     if !params.has_key?(:metadata_file) || params[:metadata_file].nil?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
       redirect_to :controller => "ingest", :action => "new"
       return
     end
 
-    @xml = load_xml(params[:metadata_file])
+    load_xml(params[:metadata_file])
 
-    result, @msg = MetadataValidator.is_valid_dc?(@xml)
-
-    if !result
-      flash[:error] = t('dri.flash.error.validation_errors', :error => @msg)
-      raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
-      return
-    end
-   
-    @object = construct_object
-    set_metadata_datastream(@xml)
+    construct_object
+    set_metadata_datastream
     add_to_collection
     check_for_duplicates(@object)
 
@@ -127,17 +122,25 @@ class MetadataController < AssetsController
         tmp = upload.tempfile
 
         begin
-          Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
+          @xml = Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
         rescue Nokogiri::XML::SyntaxError => e
           flash[:error] = t('dri.flash.alert.invalid_xml', :error => e)
           raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
+        end
+
+        result, @msg = MetadataValidator.is_valid_dc?(@xml)
+
+        if !result
+          flash[:error] = t('dri.flash.error.validation_errors', :error => @msg)
+          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata')
+          return
         end
       end
     end
 
     def construct_object
       if params.has_key?(:type) && params[:type].present?
-        DRI::Model::DigitalObject.construct(params[:type].to_sym, params[:dri_model])
+        @object = DRI::Model::DigitalObject.construct(params[:type].to_sym, params[:dri_model])
       else
         flash[:error] = t('dri.flash.error.no_type_specified')
         raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')
@@ -145,15 +148,15 @@ class MetadataController < AssetsController
       end    
     end
 
-    def set_metadata_datastream(xml)
+    def set_metadata_datastream
       if @object.datastreams.has_key?("descMetadata")
-        @object.datastreams["descMetadata"].ng_xml = xml
+        @object.datastreams["descMetadata"].ng_xml = @xml
       else
-        ds = @object.load_from_xml(xml)
+        ds = @object.load_from_xml(@xml)
         @object.add_datastream ds, :dsid => 'descMetadata'
       end
 
-      @object.metadata_md5 = Checksum.md5_string(xml)     
+      @object.metadata_md5 = Checksum.md5_string(@xml)     
     end
 
     def add_to_collection

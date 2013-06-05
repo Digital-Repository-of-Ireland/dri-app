@@ -46,7 +46,9 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
     | audio       | invalid_xml_metadata.xml      | invalid metadata |
 
 Scenario Outline: Constructing a valid Digital Object
-  Given I am on the new Digital Object page
+  Given I have created a collection
+  And I am on the new Digital Object page
+  When I select a collection
   And I press the button to continue
   And I select "<object_type>" from the selectbox for object type
   And I press the button to continue
