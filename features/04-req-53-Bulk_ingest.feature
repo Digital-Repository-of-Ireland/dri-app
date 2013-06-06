@@ -30,6 +30,7 @@ This is currently implemented in the commandline app
 #
 # need to do checksumming of data on ingest
 
+@noexec
 Scenario: Bulk Ingest of a directory 10 of assets and metadata.xml files
   Given I am logged in as "user1"
   And there is an existing collection
@@ -46,7 +47,7 @@ Scenario: Bulk Ingest of a directory 10 of assets and metadata.xml files
   And it should have a list of "URLs"
   And it should have a list of "checksums"
 
-@wip
+@noexec @wip
 Scenario: Bulk ingest via a GUI using prepared metadata and assets
   Given I am logged in as "user1"
   And I am on the page for "Bulk Ingest via upload"
@@ -69,7 +70,7 @@ Scenario: Bulk ingest via a GUI using prepared metadata and assets
 #   metadata via a web form
 #   This is just an idea for an alternative way to implement
 #   bulk ingest. We may not implement it.
-@experimental @wip
+@noexec @experimental @wip
 Scenario: Bulk ingest via a GUI using form entry for metadata
   Given I am logged in as "user1"
   And I am on the page for "Bulk Ingest via form entry"
