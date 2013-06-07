@@ -23,7 +23,6 @@ class FilesController < AssetsController
                                             :order => "version DESC",
                                             :limit => 1)
 
-
     if !@local_file_info.empty?
       logger.error "Using path: "+@local_file_info[0].path
       send_file @local_file_info[0].path,
@@ -60,32 +59,17 @@ class FilesController < AssetsController
       if @object == nil
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
-        begin
-          Validators.validate_file(file_upload, @object.whitelist_type, @object.whitelist_subtypes)
-        rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
-          message = t('dri.flash.alert.invalid_file_type')
-          flash[:alert] = message
-          @warnings = message
-        rescue Exceptions::VirusDetected => e
-          flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
-          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', :name => file_upload.original_filename)
-          return
-        end
-        
+
+        validate_upload(file_upload)
+                
         create_file(file_upload, @object.id, datastream, params[:checksum])
         start_background_tasks
         
         @url = url_for :controller=>"files", :action=>"show", :id=>params[:id]
-        logger.error @action_url
         @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
 
-        begin
-          raise Exceptions::InternalError unless @object.save!
-        rescue RuntimeError => e
-          logger.error "Could not save object #{@object.id}: #{e.message}"
-          raise Exceptions::InternalError
-        end
-
+        save_object
+      
         flash[:notice] = t('dri.flash.notice.file_uploaded')
 
         respond_to do |format|
@@ -111,6 +95,20 @@ class FilesController < AssetsController
 
   private
 
+    def validate_upload(file_upload)
+      begin
+        Validators.validate_file(file_upload, @object.whitelist_type, @object.whitelist_subtypes)
+      rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
+        message = t('dri.flash.alert.invalid_file_type')
+        flash[:alert] = message
+        @warnings = message
+      rescue Exceptions::VirusDetected => e
+        flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+        raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', :name => file_upload.original_filename)
+        return
+      end
+    end
+
     def create_file(filedata, object_id, datastream, checksum)
       count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => object_id, :d => datastream } ]).count
 
@@ -130,6 +128,15 @@ class FilesController < AssetsController
     def start_background_tasks
       queue = BackgroundTasks::QueueManager.new()
       queue.process(@object)
+    end
+
+    def save_object
+      begin
+        raise Exceptions::InternalError unless @object.save!
+      rescue RuntimeError => e
+        logger.error "Could not save object #{@object.id}: #{e.message}"
+        raise Exceptions::InternalError
+      end
     end
 
 end 
