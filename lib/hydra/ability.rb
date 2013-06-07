@@ -15,7 +15,7 @@ module Hydra
       class_attribute :ability_logic
       self.ability_logic = [:create_permissions, :edit_permissions, :read_permissions, :custom_permissions]
       #383 Addition
-      self.ability_logic +=[:manager_permissions]
+      self.ability_logic +=[:manager_permissions, :search_permissions, :master_file_permissions]
     end
 
     def self.user_class
@@ -89,6 +89,7 @@ module Hydra
       end       
     end
 
+    #383 - Now means access to assets
     def read_permissions
       can :read, String do |pid|
         logger.debug("[READPERM] Checking from STRING")
@@ -107,7 +108,52 @@ module Hydra
       end 
     end
 
-    #383 Addition
+    #383 Additions
+
+    #This is for when the metadata is private and users specifically have
+    #Search access which allows them to view the DO but NOT the assets
+    def search_permissions
+      can :search, String do |pid|
+        logger.debug("[SEARCHPERM] Checking from STRING")
+        test_search(pid)
+      end
+
+      #Should change
+      can :search, ActiveFedora::Base do |obj|
+        logger.debug("[SEARCHPERM] Checking from AF::B")
+        test_search(obj.pid)
+      end 
+      
+      can :search, SolrDocument do |obj|
+        logger.debug("[SEARCHPERM] Checking from SolrDoc")
+        cache.put(obj.id, obj)
+        test_search(obj.id)
+      end
+    end
+
+    def master_file_permissions
+      can :read_master, String do |pid|
+        logger.debug("[master_file_permissions] Checking from STRING")
+        test_read_master(pid)
+      end
+
+      #Should change
+      #can :read_master, DRI::Model::DigitalObject do |object|
+      #end
+      #can :read_master, DRI::Model::Collection do |collection|
+      #end
+      can :read_master, ActiveFedora::Base do |obj|
+        logger.debug("[master_file_permissions] Checking from AF::B")
+        test_read_master(obj.pid)
+      end 
+      
+      can :read_master, SolrDocument do |obj|
+        logger.debug("[master_file_permissions] Checking from SolrDoc")
+        cache.put(obj.id, obj)
+        test_read_master(obj.id)
+      end
+    end
+
     #These are manager_permissions on a DO level
     #NOT the permissions a user gets if they are a collection manager
     def manager_permissions
@@ -130,13 +176,11 @@ module Hydra
 
     ## Override custom permissions in your own app to add more permissions beyond what is defined by default.
     def custom_permissions
-      #"Role" Based permissions here - rather than dynamicially changing assignments (no test needed)
-
       #Collection Manager Permissions
       #Higher power than edit user...[Dont want edit users to be able to DELETE a COLLECTION??, (Delete a DO?)]
       if current_user.applicable_policy?(SETTING_POLICY_COLLECTION_MANAGER)
         #Marked as being able to :manage_collection
-        can :manage_collection_flag
+        can :manage_collection_flag, :all
         can :create, DRI::Model::Collection
       end
 
@@ -171,6 +215,19 @@ module Hydra
       group_intersection = user_groups & read_groups(pid)
       result = !group_intersection.empty? || read_persons(pid).include?(current_user.user_key)
       result
+    end
+
+    def test_search(pid)
+      logger.debug("[CANCAN] Checking search permissions for user: #{current_user.user_key} with groups: #{user_groups.inspect}")
+      group_intersection = user_groups & search_groups(pid)
+      result = !group_intersection.empty? || search_persons(pid).include?(current_user.user_key)
+    end
+
+    def test_read_master(pid)
+      doc = permissions_doc(pid)
+      return false if doc.nil?      
+      #show master true -> test_read, if false, test_edit permission
+      return doc.show_master_file? ? test_read(pid) : test_edit(pid)
     end 
 
     def test_manager(pid)
@@ -233,6 +290,24 @@ module Hydra
       return mp
     end
 
+    #383 Addition. A search group/person has access to a DO (but not the assets)
+    def search_groups(pid)
+      doc = permissions_doc(pid)
+      return [] if doc.nil?
+      sg = read_groups(pid) | (doc[self.class.search_group_field] ||  [])
+      logger.debug("[CANCAN] search_groups: #{sg.inspect}")
+      return sg
+    end
+    
+    #383 Addition
+    def search_persons(pid)
+      doc = permissions_doc(pid)
+      return [] if doc.nil?
+      sp = read_persons(pid) | (doc[self.class.search_person_field] ||  [])
+      logger.debug("[CANCAN] manager_persons: #{sp.inspect}")
+      return sp
+    end
+
     module ClassMethods
       def read_group_field 
         Hydra.config[:permissions][:read][:group]
@@ -258,6 +333,16 @@ module Hydra
       #383 Addition
       def manager_person_field
         Hydra.config[:permissions][:manager][:individual]
+      end
+
+      #383 Addition
+      def search_group_field
+        Hydra.config[:permissions][:discover][:group]
+      end
+      
+      #383 Addition
+      def search_person_field
+        Hydra.config[:permissions][:discover][:individual]
       end
     end
   end

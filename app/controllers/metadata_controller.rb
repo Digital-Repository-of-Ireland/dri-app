@@ -11,6 +11,7 @@ class MetadataController < AssetsController
   # 
   #
   def show
+    enforce_permissions("show_digital_object", params[:id])
     begin 
       @object = retrieve_object params[:id]
     rescue ActiveFedora::ObjectNotFoundError => e
@@ -30,6 +31,7 @@ class MetadataController < AssetsController
   #
   #
   def update 
+    enforce_permissions!("update",params[:id])
 
     if !params.has_key?(:metadata_file) || params[:metadata_file].nil?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
@@ -77,9 +79,7 @@ class MetadataController < AssetsController
   #
   #
   def create
-    unless can? :create_do, Collection.find(params[:governing_collection])
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.create_permission'), :create, "")
-    end
+    enforce_permissions!("create_digital_object",params[:governing_collection])
 
     if !params.has_key?(:metadata_file) || params[:metadata_file].nil?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')

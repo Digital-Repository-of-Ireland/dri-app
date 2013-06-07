@@ -40,4 +40,7 @@ class ApplicationController < ActionController::Base
     cookies[:accept_cookies] = "yes" if current_user
   end
 
+  def enforce_permissions!(action, id_or_object)
+    #Do nothing
+  end
 end
