@@ -18,23 +18,29 @@ class IngestJob
   def self.perform(object_id)
     puts "Ingesting #{object_id} "
 
-    # set some status to ingesting?
-
     @object = ActiveFedora::Base.find(object_id,{:cast => true})
 
+    initial_status = @object.status
+
+    set_status("processing")
+    
     type = @object.class.name.demodulize.downcase
 
     if Settings.queue[type]
       Settings.queue[type].each do |task|
         task.constantize.perform(object_id)
 
-        # fail on failure?
         # status to failed?
       end
     end
 
-    # set some status to completed?
+    set_status(initial_status)
 
+  end
+
+  def self.set_status(status)
+    @object.status = status
+    @object.save
   end
 
 end
