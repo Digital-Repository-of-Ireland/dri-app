@@ -3,7 +3,7 @@ NuigRnag::Application.routes.draw do
   root :to => "catalog#index"
 
   Blacklight.add_routes(self)
-  HydraHead.add_routes(self)
+  #HydraHead.add_routes(self)
 
   mount UserGroup::Engine => "user_groups"
 
