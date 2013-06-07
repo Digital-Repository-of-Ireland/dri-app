@@ -12,6 +12,7 @@ class ObjectsController < AssetsController
   # Edits an existing model.
   #
   def edit
+    enforce_permissions!("edit",params[:id]) 
     @document_fedora = retrieve_object(params[:id])
     respond_to do |format|
       format.html
@@ -21,15 +22,15 @@ class ObjectsController < AssetsController
 
   # Updates the attributes of an existing model.
   #
+  #TODO:: Cleanup method
   def update
-    @document_fedora = retrieve_object(params[:id])
-
     if params[:dri_model][:manager_groups_string].present? or params[:dri_model][:manager_users_string].present?
-      if cannot? :manage_collection, @document_fedora
-        #Should I change to manager? Only time this can happen is malicious or command line?
-        raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, params[:id])
-      end
+      enforce_permissions!("manage_collection", params[:id])
+    else
+      enforce_permissions!("edit",params[:id])
     end
+
+    @document_fedora = retrieve_object(params[:id])
 
     if params[:dri_model][:governing_collection_id].present?
       collection = Collection.find(params[:dri_model][:governing_collection_id])
@@ -47,6 +48,19 @@ class ObjectsController < AssetsController
         params[:dri_model][:private_metadata] = "-1"
       end
     end
+    
+    if params[:dri_model][:master_file].present?
+      selected_level = params[:dri_model].delete(:master_file)
+      case selected_level
+      when "radio_public"
+        params[:dri_model][:master_file] = "1"
+      when "radio_private"
+        params[:dri_model][:master_file] = "0"
+      when "radio_inherit"
+        params[:dri_model][:master_file] = "-1"
+      end
+    end
+
     #Temp delete embargo [Waiting for hydra bug fix]
     params[:dri_model].delete(:embargo)
     @document_fedora.update_attributes(params[:dri_model])
@@ -70,10 +84,7 @@ class ObjectsController < AssetsController
       params[:dri_model].delete(:governing_collection)
     end
 
-    unless can? :create_do, params[:dri_model][:governing_collection]
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.create_permission'), :create, "")
-    end
-
+    enforce_permissions!("create_digital_object",params[:dri_model][:governing_collection])
 
     if params[:dri_model][:type].present? && !params[:dri_model][:type].blank?
       type = params[:dri_model][:type]
@@ -86,7 +97,7 @@ class ObjectsController < AssetsController
       return
     end
 
-    #Adds user as depositor and also grants edit permission
+    #Adds user as depositor and also grants edit permission (Clears permissions for current_user)
     @document_fedora.apply_depositor_metadata(current_user.to_s)
 
     checksum_metadata(@document_fedora)

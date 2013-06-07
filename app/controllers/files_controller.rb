@@ -15,6 +15,8 @@ class FilesController < AssetsController
   # By default, it retrieves the file in the masterContent datastream
   #      
   def show
+    enforce_permissions!("show_master", params[:id])
+
     datastream = "masterContent"
     @object = retrieve_object params[:id]
 
@@ -41,6 +43,8 @@ class FilesController < AssetsController
   # of the objects datastreams. masterContent is used by default.
   #
   def create
+    enforce_permissions!("edit" ,params[:id])
+    
     datastream = "masterContent"
     if params.has_key?(:datastream)
       datastream = params[:datastream]
