@@ -117,6 +117,8 @@
         depositor_ti,
         embargo_release_date_dtsi,
         private_metadata_isi,
+        master_file_isi,
+        properties_status_ssm,
         inheritable_access_ssim,
         inheritable_discover_access_group_ssim,inheritable_discover_access_person_ssim,
         inheritable_read_access_group_ssim,inheritable_read_access_person_ssim,
