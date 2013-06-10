@@ -16,7 +16,7 @@ class IngestJob
   # Workers to do the work are in lib/background_tasks/workers
   #
   def self.perform(object_id)
-    puts "Ingesting #{object_id} "
+    Rails.logger.info "Ingesting #{object_id}"
 
     @object = ActiveFedora::Base.find(object_id,{:cast => true})
 
@@ -29,13 +29,12 @@ class IngestJob
     if Settings.queue[type]
       Settings.queue[type].each do |task|
         task.constantize.perform(object_id)
-
-        # status to failed?
       end
     end
 
     set_status(initial_status)
 
+    Rails.logger.info "Completed processing #{object_id}"
   end
 
   def self.set_status(status)
