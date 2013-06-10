@@ -97,6 +97,7 @@ en:
           objects: "Objects in Collection"
         new: 
           title: "New Collection"
+        edit: "Edit Collection"
       devise: 
         locale: Language
       exceptions: 
@@ -177,6 +178,7 @@ en:
           upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
           upload_file_caption: "No files have been uploaded. Please upload a master file."
           upload_pdf: "Upload PDF File"
+          access_control: "Access Controls"
         links: 
           download: download
           listen: listen
