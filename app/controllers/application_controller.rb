@@ -1,7 +1,7 @@
 require 'exceptions'
 
 class ApplicationController < ActionController::Base
-  before_filter :set_locale, :set_cookie
+  before_filter :set_locale, :set_cookie, :authenticate_user!
 
   include HttpAcceptLanguage
 
