@@ -29,7 +29,7 @@ class AssetsController < CatalogController
 
   def duplicates(object)
     if object.governing_collection && !object.governing_collection.nil?
-      ActiveFedora::Base.find(:is_governed_by_ssim => "info:fedora/#{object.governing_collection.id}", :metadata_md5_tesim => object.metadata_md5)
+      ActiveFedora::Base.find(:is_governed_by_ssim => "info:fedora/#{object.governing_collection.id}", :metadata_md5_tesim => object.metadata_md5).delete_if{|obj| obj.id == object.pid}
     end
   end
 

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "validators" do
 
   describe "virus_scan" do
+
     before do
       unless defined? ClamAV
         class ClamAV
@@ -13,9 +14,11 @@ describe "validators" do
         @stubbed_clamav = true
       end
     end
+
     after do
       Object.send(:remove_const, :ClamAV) if @stubbed_clamav
     end
+
     it "should return 0 for a clean file" do
       input_file = File.join(fixture_path, "SAMPLEA.mp3")
       expect { Validators.virus_scan(input_file) }.to_not raise_error(Exceptions::VirusDetected)      
