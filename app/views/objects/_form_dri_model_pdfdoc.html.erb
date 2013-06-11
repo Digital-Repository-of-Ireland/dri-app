@@ -1,20 +1,20 @@
-<%= form_for @document_fedora, :as => :dri_model, :url => {:controller=>"objects", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
+<%= form_for @object, :as => :dri_model, :url => {:controller=>"objects", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
 
   <%= render :partial => "shared/form_pdf", :locals => { :f => f, :action => "update" } %>
-  <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @document_fedora } %>
+  <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
 
   <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "save_edit" %>
 <% end %>
 
-  <%= render :partial => "replace_metadata", :locals => { :document_fedora => @document_fedora } %>
+  <%= render :partial => "replace_metadata", :locals => { :object => @object } %>
 
 <fieldset>
   <legend><%= t('dri.views.objects.legends.upload_pdf') %></legend>
-  <% if @document_fedora.datastreams.has_key?("masterContent") %>
+  <% if @object.datastreams.has_key?("masterContent") %>
     <p><%= t('dri.views.objects.legends.file_caption') %> 
-      <%= link_to t('dri.views.objects.links.download'), url_for(:controller => 'files', :action => 'show', :id => @document_fedora.id) %>
+      <%= link_to t('dri.views.objects.links.download'), url_for(:controller => 'files', :action => 'show', :id => @object.id) %>
     </p>
   <% end %>
 
-  <%= render :partial => "upload_file", :locals => { :document_fedora => @document_fedora } %>
+  <%= render :partial => "upload_file", :locals => { :object => @object } %>
 </fieldset>
