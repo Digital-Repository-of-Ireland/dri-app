@@ -11,34 +11,34 @@
  
   <% if action.eql?("update") %>
     <%= f.label "#{t('dri.views.objects.forms.governing_collection')}:" %>
-    <%= f.select :governing_collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }, get_governing_collection(@document_fedora)), :prompt => t('dri.views.ingest.forms.collection_prompt'), :class => "edit span6" %>
+    <%= f.select :governing_collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }, get_governing_collection(@object)), :prompt => t('dri.views.ingest.forms.collection_prompt'), :class => "edit span6" %>
   <% end %>
 
 </fieldset>
 <fieldset id="author">
   <%= f.label "#{t('dri.views.objects.forms.authors')}:" %>
-  <% @document_fedora.author.each do |i| %>
+  <% @object.author.each do |i| %>
     <%= f.text_field "author][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
   <% end %>
   <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Author"><%= t('dri.views.objects.forms.add_author') %></a></p>
 </fieldset>
 <fieldset id="editor">
   <%= f.label "#{t('dri.views.objects.forms.editors')}:" %>
-  <% @document_fedora.editor.each do |i| %>
+  <% @object.editor.each do |i| %>
     <%= f.text_field "editor][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
   <% end %>
   <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Editor"><%= t('dri.views.objects.forms.add_editor') %></a></p>
 </fieldset>
 <fieldset id="subject">
   <%= f.label "#{t('dri.views.objects.forms.subjects')}:" %>
-  <% @document_fedora.subject.each do |i| %>
+  <% @object.subject.each do |i| %>
     <%= f.text_field "subject][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
   <% end %>
   <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Subject"><%= t('dri.views.objects.forms.add_subject') %></a></p>
 </fieldset>
 <fieldset id="geographical_coverage">
   <%= f.label "#{t('dri.views.objects.forms.places')}:" %>
-  <% @document_fedora.geographical_coverage.each do |i| %>
+  <% @object.geographical_coverage.each do |i| %>
     <%= f.text_field "geographical_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
   <% end %>
   <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Place"><%= t('dri.views.objects.forms.add_place') %></a></p>
@@ -49,7 +49,7 @@
 </fieldset>
 <fieldset id="source">
   <%= f.label "#{t('dri.views.objects.forms.sources')}:" %>
-  <% @document_fedora.source.each do |i| %>
+  <% @object.source.each do |i| %>
     <%= f.text_field "source][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
   <% end %>
   <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Source"><%= t('dri.views.objects.forms.add_source') %></a></p>

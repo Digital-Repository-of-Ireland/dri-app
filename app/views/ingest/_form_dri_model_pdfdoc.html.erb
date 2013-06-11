@@ -1,4 +1,4 @@
-<%= form_for @document_fedora, :as => :dri_model, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
+<%= form_for @object, :as => :dri_model, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
 
   <%= f.hidden_field :type, {:value => @type} %>
   <%= f.hidden_field :governing_collection, {:value => @collection} %>
