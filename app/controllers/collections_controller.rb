@@ -1,6 +1,8 @@
 # Controller for the Collection model
 #
 class CollectionsController < AssetsController
+  include UserGroup::Permissions
+
   before_filter :authenticate_user!, :only => [:index, :create, :new, :show, :edit, :update]
 
   # Shows list of user's collections
@@ -68,18 +70,12 @@ class CollectionsController < AssetsController
   # Updates the attributes of an existing model.
   #
   def update
-    #TODO:: Update Access Controls page
-    ###Update depending on whats change
-    if params[:dri_model_collection][:manager_groups_string].present? or params[:dri_model_collection][:manager_users_string].present?
-      enforce_permissions!("manage_collection", params[:id])
-   else
-      enforce_permissions!("edit",params[:id])
-    end
+    update_object_permission_check(params[:dri_model_collection][:manager_groups_string],params[:dri_model_collection][:manager_users_string], params[:id])
 
     @collection = retrieve_object(params[:id])
-    
-    #Temp delete embargo [Waiting for hydra bug fix]
-    params[:dri_model_collection].delete(:embargo)
+
+    params[:dri_model_collection][:private_metadata] = set_private_metadata_permission(params[:dri_model_collection].delete(:private_metadata)) if params[:dri_model_collection][:private_metadata].present?
+    params[:dri_model_collection][:master_file] = set_master_file_permission(params[:dri_model_collection].delete(:master_file)) if params[:dri_model_collection][:master_file].present?
 
     @collection.update_attributes(params[:dri_model_collection])
     respond_to do |format|

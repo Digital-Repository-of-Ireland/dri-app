@@ -55,6 +55,15 @@ module Hydra
         rightsMetadata.private_metadata=is_private.to_s
       end
 
+      #Not used to check if under embargo
+      def embargo
+        rightsMetadata.embargo_release_date
+      end
+
+      def embargo=(release_date)
+        rightsMetadata.embargo_release_date=release_date
+      end
+
       def manager_users
         rightsMetadata.individuals.map {|k, v| k if v == 'manager'}.compact
       end

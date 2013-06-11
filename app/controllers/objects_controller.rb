@@ -6,6 +6,7 @@ require 'checksum'
 
 class ObjectsController < AssetsController
   include SteppedForms
+  include UserGroup::Permissions
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
@@ -22,13 +23,8 @@ class ObjectsController < AssetsController
 
   # Updates the attributes of an existing model.
   #
-  #TODO:: Cleanup method
   def update
-    if params[:dri_model][:manager_groups_string].present? or params[:dri_model][:manager_users_string].present?
-      enforce_permissions!("manage_collection", params[:id])
-    else
-      enforce_permissions!("edit",params[:id])
-    end
+    update_object_permission_check(params[:dri_model][:manager_groups_string], params[:dri_model][:manager_users_string], params[:id])
 
     @object = retrieve_object(params[:id])
 
@@ -37,32 +33,9 @@ class ObjectsController < AssetsController
       @object.governing_collection = collection
     end
 
-    if params[:dri_model][:private_metadata].present?
-      selected_level = params[:dri_model].delete(:private_metadata)
-      case selected_level
-      when "radio_public"
-        params[:dri_model][:private_metadata] = "0"
-      when "radio_private"
-        params[:dri_model][:private_metadata] = "1"
-      when "radio_inherit"
-        params[:dri_model][:private_metadata] = "-1"
-      end
-    end
-    
-    if params[:dri_model][:master_file].present?
-      selected_level = params[:dri_model].delete(:master_file)
-      case selected_level
-      when "radio_public"
-        params[:dri_model][:master_file] = "1"
-      when "radio_private"
-        params[:dri_model][:master_file] = "0"
-      when "radio_inherit"
-        params[:dri_model][:master_file] = "-1"
-      end
-    end
+    params[:dri_model][:private_metadata] = set_private_metadata_permission(params[:dri_model].delete(:private_metadata)) if params[:dri_model][:private_metadata].present?
+    params[:dri_model][:master_file] = set_master_file_permission(params[:dri_model].delete(:master_file)) if params[:dri_model][:master_file].present?
 
-    #Temp delete embargo [Waiting for hydra bug fix]
-    params[:dri_model].delete(:embargo)
     @object.update_attributes(params[:dri_model])
 
     checksum_metadata(@object)
@@ -128,7 +101,6 @@ class ObjectsController < AssetsController
   end
 
   private
-
     def checksum_metadata(object)
       if object.datastreams.keys.include?("descMetadata")
         xml = object.datastreams["descMetadata"].content

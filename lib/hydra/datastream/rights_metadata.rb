@@ -275,8 +275,10 @@ module Hydra
         vals = masterfile.machine.integer
         solr_doc[ActiveFedora::SolrService.solr_name('master_file', integer_indexer)] = vals unless vals.empty?
 
-        #Should this be updated? whats the date_indexer for?
-        ::Solrizer::Extractor.insert_solr_field_value(solr_doc, "embargo_release_date_dt", embargo_release_date(:format=>:solr_date)) if embargo_release_date
+        if embargo_release_date
+          embargo_release_date_solr_key_name = ActiveFedora::SolrService.solr_name("embargo_release_date", date_indexer)
+          ::Solrizer::Extractor.insert_solr_field_value(solr_doc, embargo_release_date_solr_key_name , embargo_release_date(:format=>:solr_date))
+        end
         solr_doc
       end
 
