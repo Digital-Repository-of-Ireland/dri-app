@@ -105,9 +105,6 @@ class ObjectsController < AssetsController
 
     if @document_fedora.valid? && @document_fedora.save
 
-      buckets = S3Interface::Bucket.new()
-      buckets.create_bucket(@document_fedora.pid.sub('dri:', ''))
-
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
           redirect_to :controller => "catalog", :action => "show", :id => @document_fedora.id

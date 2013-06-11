@@ -98,9 +98,6 @@ class MetadataController < AssetsController
 
     save_object
 
-    buckets = S3Interface::Bucket.new()
-    buckets.create_bucket(@object.pid.sub('dri:', ''))
-
     respond_to do |format|
       format.html {redirect_to :controller => "catalog", :action => "show", :id => @object.id}
       format.json  { 

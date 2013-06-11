@@ -134,6 +134,5 @@ end
 
 Before do
   require 'factory_girl'
-  S3Interface::Bucket.any_instance.stub(:create_bucket)
   BackgroundTasks::QueueManager.any_instance.stub(:process)
 end

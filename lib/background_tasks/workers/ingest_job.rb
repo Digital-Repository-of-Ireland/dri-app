@@ -6,6 +6,7 @@ class IngestJob
   require 'background_tasks/workers/create_ogg.rb'
   require 'background_tasks/workers/create_mp3.rb'
   require 'background_tasks/workers/full_text_index.rb'
+  require 'background_tasks/workers/create_bucket.rb'
 
   @queue = "ingest_job_queue"
 

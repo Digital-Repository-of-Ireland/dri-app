@@ -2,7 +2,6 @@
 #
 class AssetsController < CatalogController
   require 'checksum'
-  require 's3_interface/bucket'
 
   include Hydra::AccessControlsEnforcement
   include DRI::Metadata
