@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
 
   include Exceptions
 
+  include UserGroup::PermissionsCheck
+
   # Please be sure to impelement current_user and user_session. Blacklight depends on 
   # these methods in order to perform user specific actions. 
 
@@ -26,6 +28,7 @@ class ApplicationController < ActionController::Base
   rescue_from Exceptions::InternalError, :with => :render_internal_error
   rescue_from Exceptions::BadRequest, :with => :render_bad_request
   rescue_from Hydra::AccessDenied, :with => :render_access_denied
+  rescue_from Exceptions::NotFound, :with => :render_not_found
   
   def set_locale
     if current_user
@@ -40,7 +43,4 @@ class ApplicationController < ActionController::Base
     cookies[:accept_cookies] = "yes" if current_user
   end
 
-  def enforce_permissions!(action, id_or_object)
-    #Do nothing
-  end
 end
