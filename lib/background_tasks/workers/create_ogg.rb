@@ -2,9 +2,10 @@ class CreateOgg
   @queue = "create_ogg_queue"
 
   require 'open3'
+  require 's3_interface/utils'
 
   def self.perform(object_id)
-    puts "Creating Ogg version of #{object_id} asset, if required"
+    Rails.logger.info "Creating Ogg version of #{object_id} asset"
 
     datastream = "masterContent"
     @object = ActiveFedora::Base.find(object_id,{:cast => true})
@@ -23,23 +24,13 @@ class CreateOgg
     begin
       transcode(workingfile, output_options, outputfile)
     rescue BadCommand => e
+      Rails.logger.error "Failed to transcode file"
       # report failure
       # requeue?
     end
 
-    AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                        :access_key_id => Settings.S3.access_key_id,
-                                        :secret_access_key => Settings.S3.secret_access_key)
-
-    bucket = @object.pid.sub('dri:', '')
-    filename = "#{@object.pid}-ogg-#{Settings.ogg_out_options.channel}-#{Settings.ogg_out_options.bitrate}-#{Settings.ogg_out_options.frequency}.ogg"
-    # save the file to that bucket, note we do not version surrogates!
-    begin
-      AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
-    rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
-      puts "Problem saving Surrogate file #{filename} : #{e.to_s}"
-    end
-    AWS::S3::Base.disconnect!()
+    filename = "#{object_id}-ogg-#{Settings.ogg_out_options.channel}-#{Settings.ogg_out_options.bitrate}-#{Settings.ogg_out_options.frequency}.ogg"
+    S3Interface::Utils.store_surrogate(object_id, outputfile, filename)
 
   end
 
@@ -72,7 +63,7 @@ class CreateOgg
     stdout.close
     err = stderr.read
     stderr.close
-    raise "Unable to execute command \"#{command}\"\n#{err}" unless wait_thr.value.success?
+    raise BadCommand "Unable to execute command \"#{command}\"\n#{err}" unless wait_thr.value.success?
   end
 
 

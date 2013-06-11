@@ -1,11 +1,14 @@
 class IngestJob
+  
+  require 'background_tasks/workers/verify_audio'
+  require 'background_tasks/workers/verify_pdf'
+  require 'background_tasks/workers/create_checksums'
+  require 'background_tasks/workers/create_ogg'
+  require 'background_tasks/workers/create_mp3'
+  require 'background_tasks/workers/full_text_index'
+  require 'background_tasks/workers/create_bucket'
 
-  require 'background_tasks/workers/verify_audio.rb'
-  require 'background_tasks/workers/verify_pdf.rb'
-  require 'background_tasks/workers/create_checksums.rb'
-  require 'background_tasks/workers/create_ogg.rb'
-  require 'background_tasks/workers/create_mp3.rb'
-  require 'background_tasks/workers/full_text_index.rb'
+  require 'background_tasks/queue'
 
   @queue = "ingest_job_queue"
 
@@ -28,7 +31,11 @@ class IngestJob
 
     if Settings.queue[type]
       Settings.queue[type].each do |task|
-        task.constantize.perform(object_id)
+        unless task.is_a?(Array)
+          task.constantize.perform(object_id)
+        else
+          run_in_background(task, object_id)
+        end
       end
     end
 
@@ -40,6 +47,12 @@ class IngestJob
   def self.set_status(status)
     @object.status = status
     @object.save
+  end
+
+  def self.run_in_background(tasks, object_id)
+    tasks.each do |task|
+      BackgroundTasks::Queue.run_in_background(task.constantize, object_id)
+    end
   end
 
 end

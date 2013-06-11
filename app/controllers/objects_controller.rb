@@ -78,9 +78,6 @@ class ObjectsController < AssetsController
 
     if @object.valid? && @object.save
 
-      buckets = S3Interface::Bucket.new()
-      buckets.create_bucket(@object.pid.sub('dri:', ''))
-
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
           redirect_to :controller => "catalog", :action => "show", :id => @object.id

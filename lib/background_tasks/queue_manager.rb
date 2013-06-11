@@ -1,9 +1,9 @@
 module BackgroundTasks
+
     class QueueManager
 
-      require 'resque'
-
-      require 'background_tasks/workers/ingest_job.rb'
+      require 'background_tasks/workers/ingest_job'
+      require 'background_tasks/queue'
 
       # Set up the ingest process for an object
       #
@@ -15,16 +15,7 @@ module BackgroundTasks
       def process(object)
 
         pid = object.pid
-
-        begin
-          raise Exceptions::InternalError unless Resque.enqueue(IngestJob, pid)
-        rescue Redis::CannotConnectError => e
-          logger.error "Could not connect to redis: #{e.message}"
-          raise Exceptions::InternalError
-        rescue Resque::NoQueueError => e
-          logger.error "Invalid Resque queue: #{e.message}"
-          raise Exceptions::InternalError
-        end
+        Queue.run_in_background(IngestJob, pid)
 
       end
 

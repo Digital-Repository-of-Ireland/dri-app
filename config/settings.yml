@@ -9,8 +9,8 @@ interface:
 dri:
   files: dri_files
 queue:
-  audio: [CreateChecksums, CreateMp3, CreateOgg]
-  pdfdoc: [CreateChecksums, FullTextIndex]
+  audio: [CreateBucket, CreateChecksums, CreateMp3, CreateOgg]
+  pdfdoc: [CreateBucket, CreateChecksums, FullTextIndex]
 plugins:
   ffmpeg_path: /opt/local/bin/ffmpeg
 mp3_out_options:

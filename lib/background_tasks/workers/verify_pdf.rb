@@ -4,7 +4,7 @@ class VerifyPdf
   require 'validators'
 
   def self.perform(object_id)
-    puts "Verifying that the file for #{object_id} is a valid pdf file"
+    Rails.logger.info "Verifying that the file for #{object_id} is a valid pdf file"
 
     datastream = "masterContent"
     @object = ActiveFedora::Base.find(object_id,{:cast => true})
