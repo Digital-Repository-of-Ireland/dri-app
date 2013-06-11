@@ -27,6 +27,9 @@ module Exceptions
   class VirusDetected < StandardError
   end
 
+  class NotFound < StandardError
+  end
+
   def render_internal_error(exception)
     render_exception(:internal_server_error, t('dri.views.exceptions.internal_error'))
   end
@@ -37,6 +40,10 @@ module Exceptions
 
   def render_access_denied(exception)
     render_exception(:unauthorized, exception.message)
+  end
+
+  def render_not_found(exception)
+    render_exception(:not_found, exception.message)    
   end
 
   def render_exception(status_type, message)
