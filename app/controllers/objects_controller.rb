@@ -61,8 +61,6 @@ class ObjectsController < AssetsController
       end
     end
 
-    #Temp delete embargo [Waiting for hydra bug fix]
-    params[:dri_model].delete(:embargo)
     @object.update_attributes(params[:dri_model])
 
     checksum_metadata(@object)

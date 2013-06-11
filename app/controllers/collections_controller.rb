@@ -78,9 +78,6 @@ class CollectionsController < AssetsController
 
     @collection = retrieve_object(params[:id])
     
-    #Temp delete embargo [Waiting for hydra bug fix]
-    params[:dri_model_collection].delete(:embargo)
-
     @collection.update_attributes(params[:dri_model_collection])
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
