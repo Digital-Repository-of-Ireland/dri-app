@@ -2,7 +2,7 @@ class CreateMp3
   @queue = "create_mp3_queue"
 
   require 'open3'
-  require 's3_interface/utils'
+  require 'storage/s3_interface'
 
   def self.perform(object_id)
     Rails.logger.info "Creating mp3 version of #{object_id} asset"
@@ -30,7 +30,7 @@ class CreateMp3
     end
 
     filename = "#{object_id}-mp3-#{Settings.mp3_out_options.channel}-#{Settings.mp3_out_options.bitrate}-#{Settings.mp3_out_options.frequency}.mp3"
-    S3Interface::Utils.store_surrogate(object_id, outputfile, filename)
+    Storage::S3Interface.store_surrogate(object_id, outputfile, filename)
 
   end
 
