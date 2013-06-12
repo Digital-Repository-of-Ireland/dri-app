@@ -109,6 +109,7 @@ en:
         invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
         invalid_object_type: "You have specified an invalid digital object type."
         unknown_collection: "Unknown collection."
+        unknown_object: "Unknown Object."
         invalid_file: "Upload %{name} has failed validation."
       ingest: 
         buttons: 
@@ -168,6 +169,27 @@ en:
           subjects: Subjects
           title: Title
           status: Status
+        access_controls:
+          private_metadata_warn: 'Say about not wanting private metadata\n(Open Metadata Policy: Defaults to open)'
+          private_metadata_access: "Since you have set access to metadata as private, you can add people here who you would like to be able to access the metadata."
+          depositor: "Depositor"
+          search: "Search Access"
+          page: "Page Access"
+          read: "Read Access"
+          edit: "Edit Access"
+          manage: "Managers"
+          embargo: "Embargo"
+          public_metadata: "Public Metadata"
+          private_metadata: "Private Metadata"
+          public: "Public"
+          registered: "Logged In"
+          restricted: "Restricted"
+          inherit: "Inherit"
+          master_file: "Access Master File?"
+          master_file_desc: "If accessible then users with read access can download the master file(s)"
+          accessible_master_file: "Accessible Master File(s)"
+          private_master_file: "Private Master File(s)"
+          date: "Date: "
         legends: 
           audio_caption: "A master audio file has already been uploaded."
           file_caption: "A master file has already been uploaded."
