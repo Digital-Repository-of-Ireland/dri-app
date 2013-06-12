@@ -1,5 +1,5 @@
 module ApplicationHelper
-  require 's3_interface/utils'
+  require 'storage/s3_interface'
 
   # Extract file datastream info from fedora object
   def get_datastreams doc
@@ -8,7 +8,7 @@ module ApplicationHelper
   end
 
   def get_surrogates doc
-    @surrogates = S3Interface::Utils.get_surrogates doc
+    @surrogates = Storage::S3Interface.get_surrogates doc
   end
   
   def get_collections

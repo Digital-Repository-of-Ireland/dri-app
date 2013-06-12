@@ -1,5 +1,5 @@
-module S3Interface
-  module Utils
+module Storage
+  module S3Interface
 
     # Get a hash of all surrogates for an object
     def self.get_surrogates(doc)

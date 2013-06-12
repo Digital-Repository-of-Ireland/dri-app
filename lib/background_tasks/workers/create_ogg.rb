@@ -2,7 +2,7 @@ class CreateOgg
   @queue = "create_ogg_queue"
 
   require 'open3'
-  require 's3_interface/utils'
+  require 'storage/s3_interface'
 
   def self.perform(object_id)
     Rails.logger.info "Creating Ogg version of #{object_id} asset"
@@ -30,7 +30,7 @@ class CreateOgg
     end
 
     filename = "#{object_id}-ogg-#{Settings.ogg_out_options.channel}-#{Settings.ogg_out_options.bitrate}-#{Settings.ogg_out_options.frequency}.ogg"
-    S3Interface::Utils.store_surrogate(object_id, outputfile, filename)
+    Storage::S3Interface.store_surrogate(object_id, outputfile, filename)
 
   end
 

@@ -1,5 +1,5 @@
 <%= get_datastreams document %>
-<% surrogates = S3Interface::Utils.get_surrogates document %>
+<% get_surrogates document %>
 
 <h3><%= t('dri.views.catalog.headers.files') %></h3>
 <dl class="dl-horizontal  dl-invert">
@@ -13,7 +13,7 @@
       </object>
 
 
-  <% surrogates.each do |desc, url| %>
+  <% @surrogates.each do |desc, url| %>
     <object data="<%= url %>" type="application/pdf" width="100%" height="600">
         alt :<%= link_to desc, url, :id => "download_asset" %>
       </object>
