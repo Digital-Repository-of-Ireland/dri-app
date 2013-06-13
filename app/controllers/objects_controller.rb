@@ -14,7 +14,7 @@ class ObjectsController < AssetsController
   #
   def edit
     enforce_permissions!("edit",params[:id]) 
-    @object = retrieve_object!!(params[:id])
+    @object = retrieve_object!(params[:id])
     respond_to do |format|
       format.html
       format.json  { render :json => @object }
