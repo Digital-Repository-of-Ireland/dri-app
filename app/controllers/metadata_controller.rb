@@ -13,7 +13,7 @@ class MetadataController < AssetsController
   def show
     enforce_permissions("show_digital_object", params[:id])
     begin 
-      @object = retrieve_object params[:id]
+      @object = retrieve_object! params[:id]
     rescue ActiveFedora::ObjectNotFoundError => e
       render :xml => { :error => 'Not found' }, :status => 404
       return
@@ -38,7 +38,7 @@ class MetadataController < AssetsController
     else
       load_xml(params[:metadata_file])
 
-      @object = retrieve_object params[:id]
+      @object = retrieve_object! params[:id]
 
       unless can? :update, @object
         raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, "")

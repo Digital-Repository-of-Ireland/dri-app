@@ -18,7 +18,7 @@ class FilesController < AssetsController
     enforce_permissions!("show_master", params[:id])
 
     datastream = "masterContent"
-    @object = retrieve_object params[:id]
+    @object = retrieve_object! params[:id]
 
     @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
                                                                 { :f => @object.id, :d => datastream } ],
@@ -58,7 +58,7 @@ class FilesController < AssetsController
     file_upload = params[:Filedata]
 
     if datastream.eql?("masterContent")
-      @object = retrieve_object params[:id]
+      @object = retrieve_object! params[:id]
 
       if @object == nil
         flash[:notice] = t('dri.flash.notice.specify_object_id')
