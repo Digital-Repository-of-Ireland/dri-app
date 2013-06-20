@@ -11,7 +11,7 @@ class MetadataController < AssetsController
   # 
   #
   def show
-    enforce_permissions("show_digital_object", params[:id])
+    enforce_permissions!("show_digital_object", params[:id])
     begin 
       @object = retrieve_object! params[:id]
     rescue ActiveFedora::ObjectNotFoundError => e
