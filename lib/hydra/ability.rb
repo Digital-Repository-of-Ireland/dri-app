@@ -12,6 +12,7 @@ module Hydra
       include CanCan::Ability
       include Hydra::PermissionsQuery
       include Blacklight::SolrHelper
+      include UserGroup::InheritanceMethods
       class_attribute :ability_logic
       self.ability_logic = [:create_permissions, :edit_permissions, :read_permissions, :custom_permissions]
       #383 Addition
@@ -220,10 +221,8 @@ module Hydra
     end
 
     def test_read_master(pid)
-      doc = permissions_doc(pid)
-      return false if doc.nil?      
       #show master true -> test_read, if false, test_edit permission
-      return doc.show_master_file? ? test_read(pid) : test_edit(pid)
+      return get_permission_method(pid,"show_master_file?") ? test_read(pid) : test_edit(pid)
     end 
 
     def test_manager(pid)
@@ -234,72 +233,56 @@ module Hydra
     
     #383 Modified. manager implies edit, so edit_groups is the union of manager and edit groups    
     def edit_groups(pid)
-      doc = permissions_doc(pid)
-      return [] if doc.nil?
-      eg = manager_groups(pid) | ( doc[self.class.edit_group_field] || [])
+      eg = manager_groups(pid) | ( get_permission_key(pid,self.class.edit_group_field) || [])
       logger.debug("[CANCAN] edit_groups: #{eg.inspect}")
       return eg
     end
 
     #edit implies read, so read_groups is the union of edit and read groups
     def read_groups(pid)
-      doc = permissions_doc(pid)
-      return [] if doc.nil?
-      rg = edit_groups(pid) | (doc[self.class.read_group_field] || [])
+      rg = edit_groups(pid) | ( get_permission_key(pid,self.class.read_group_field) || [])
       logger.debug("[CANCAN] read_groups: #{rg.inspect}")
       return rg
     end
 
     #383 Modified. manager implies edit, so edit_persons is the union of manager and edit persons
     def edit_persons(pid)
-      doc = permissions_doc(pid)
-      return [] if doc.nil?
-      ep = manager_persons(pid) | ( doc[self.class.edit_person_field] ||  [])
+      ep = manager_persons(pid) | ( get_permission_key(pid,self.class.edit_person_field) ||  [])
       logger.debug("[CANCAN] edit_persons: #{ep.inspect}")
       return ep
     end
 
     # edit implies read, so read_persons is the union of edit and read persons
     def read_persons(pid)
-      doc = permissions_doc(pid)
-      return [] if doc.nil?
-      rp = edit_persons(pid) | (doc[self.class.read_person_field] || [])
+      rp = edit_persons(pid) | ( get_permission_key(pid,self.class.read_person_field) || [])
       logger.debug("[CANCAN] read_persons: #{rp.inspect}")
       return rp
     end
 
     #383 Addition. Managers are at the top level
     def manager_groups(pid)
-      doc = permissions_doc(pid)
-      return [] if doc.nil?
-      mg = doc[self.class.manager_group_field] ||  []
+      mg = get_permission_key(pid,self.class.manager_group_field) ||  []
       logger.debug("[CANCAN] manager_groups: #{mg.inspect}")
       return mg
     end
 
     #383 Addition
     def manager_persons(pid)
-      doc = permissions_doc(pid)
-      return [] if doc.nil?
-      mp = doc[self.class.manager_person_field] ||  []
+      mp = get_permission_key(pid,self.class.manager_person_field) ||  []
       logger.debug("[CANCAN] manager_persons: #{mp.inspect}")
       return mp
     end
 
     #383 Addition. A search group/person has access to a DO (but not the assets)
     def search_groups(pid)
-      doc = permissions_doc(pid)
-      return [] if doc.nil?
-      sg = read_groups(pid) | (doc[self.class.search_group_field] ||  [])
+      sg = read_groups(pid) | (get_permission_key(pid,self.class.search_group_field) ||  [])
       logger.debug("[CANCAN] search_groups: #{sg.inspect}")
       return sg
     end
     
     #383 Addition
     def search_persons(pid)
-      doc = permissions_doc(pid)
-      return [] if doc.nil?
-      sp = read_persons(pid) | (doc[self.class.search_person_field] ||  [])
+      sp = read_persons(pid) | (get_permission_key(pid,self.class.search_person_field) ||  [])
       logger.debug("[CANCAN] manager_persons: #{sp.inspect}")
       return sp
     end
@@ -341,5 +324,6 @@ module Hydra
         Hydra.config[:permissions][:discover][:individual]
       end
     end
+
   end
 end
