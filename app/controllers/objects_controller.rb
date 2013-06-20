@@ -3,10 +3,11 @@
 
 require 'stepped_forms'
 require 'checksum'
+require 'permission_methods'
 
 class ObjectsController < AssetsController
   include SteppedForms
-  include UserGroup::Permissions
+  include PermissionMethods
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
@@ -38,6 +39,7 @@ class ObjectsController < AssetsController
 
     @object.update_attributes(params[:dri_model])
 
+    #Do for collection?
     checksum_metadata(@object)
     check_for_duplicates(@object)
 

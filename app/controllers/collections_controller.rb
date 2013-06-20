@@ -1,7 +1,9 @@
 # Controller for the Collection model
 #
+require 'permission_methods'
+
 class CollectionsController < AssetsController
-  include UserGroup::Permissions
+  include PermissionMethods
 
   before_filter :authenticate_user!, :only => [:index, :create, :new, :show, :edit, :update]
 
@@ -73,6 +75,9 @@ class CollectionsController < AssetsController
     update_object_permission_check(params[:dri_model_collection][:manager_groups_string],params[:dri_model_collection][:manager_users_string], params[:id])
 
     @collection = retrieve_object!(params[:id])
+
+    #For sub collections will have to set a governing_collection_id
+    #Create a sub collections controller?
 
     params[:dri_model_collection][:private_metadata] = set_private_metadata_permission(params[:dri_model_collection].delete(:private_metadata)) if params[:dri_model_collection][:private_metadata].present?
     params[:dri_model_collection][:master_file] = set_master_file_permission(params[:dri_model_collection].delete(:master_file)) if params[:dri_model_collection][:master_file].present?
