@@ -67,18 +67,14 @@ module Hydra
         test_edit(pid)
       end 
 
-      #[DRI::Model::DigitalObject, DRI::Model::Collection]
-      #can [:edit, :update, :destroy], ActiveFedora::Base do |obj|
-      #  test_edit(obj.pid)
-      #end
-
       can [:edit, :update, :destroy], DRI::Model::DigitalObject do |obj|
-        logger.debug("[EDITPERM] Checking from DRI::MODEL::DO")
+        logger.debug("[EDITPERM] Checking from DRI::Model::DO")
         test_edit(obj.pid)
       end
 
+      #No destroy?
       can [:edit,:update], DRI::Model::Collection do |obj|
-        logger.debug("[EDITPERM] Checking from DRI::MODEL::Collection")
+        logger.debug("[EDITPERM] Checking from DRI::Model::Collection")
         test_edit(obj.pid)
       end
       
@@ -96,10 +92,11 @@ module Hydra
         test_read(pid)
       end
 
-      can :read, ActiveFedora::Base do |obj|
-        logger.debug("[READPERM] Checking from AF::B")
+      can :read, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
+        logger.debug("[READPERM] Checking from Object")
         test_read(obj.pid)
-      end 
+      end
+
       
       can :read, SolrDocument do |obj|
         logger.debug("[READPERM] Checking from SolrDoc")
@@ -118,9 +115,8 @@ module Hydra
         test_search(pid)
       end
 
-      #Should change
-      can :search, ActiveFedora::Base do |obj|
-        logger.debug("[SEARCHPERM] Checking from AF::B")
+      can :search, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
+        logger.debug("[SEARCHPERM] Checking from Object")
         test_search(obj.pid)
       end 
       
@@ -137,13 +133,8 @@ module Hydra
         test_read_master(pid)
       end
 
-      #Should change
-      #can :read_master, DRI::Model::DigitalObject do |object|
-      #end
-      #can :read_master, DRI::Model::Collection do |collection|
-      #end
-      can :read_master, ActiveFedora::Base do |obj|
-        logger.debug("[master_file_permissions] Checking from AF::B")
+      can :read_master, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
+        logger.debug("[master_file_permissions] Checking from Object")
         test_read_master(obj.pid)
       end 
       
@@ -162,8 +153,8 @@ module Hydra
         test_manager(pid)
       end
 
-      can :manage_collection, ActiveFedora::Base do |obj|
-        logger.debug("[MANPERM] Checking from AF::B")
+      can :manage_collection, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
+        logger.debug("[MANPERM] Checking from Object")
         test_manager(obj.pid)
       end 
       
@@ -184,6 +175,7 @@ module Hydra
         can :create, DRI::Model::Collection
       end
 
+
       #Admin Permissions
       if current_user.applicable_policy?(SETTING_POLICY_ADMIN)
         can :admin_flag, :all
@@ -192,6 +184,10 @@ module Hydra
       end
 
       #Create_do flag (alias for :edit collection)
+      can :create_do, String do |pid|
+        test_create(pid)
+      end
+
       can :create_do, DRI::Model::Collection do |collection|
         test_create(collection)
       end
