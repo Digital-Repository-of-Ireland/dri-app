@@ -97,7 +97,8 @@ ga:
         edit: "Edit Collection"
       devise: 
         locale: Language
-      exceptions: 
+      exceptions:
+        access_denied: "You do not have permission to perfrom the requested operation."
         internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"
         invalid_asset: "Unable to create asset. Please correct the errors and try again."
         invalid_collection: "Unable to create collection."
