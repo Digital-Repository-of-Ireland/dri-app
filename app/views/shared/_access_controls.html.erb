@@ -31,6 +31,15 @@
         this.textbox.val(this.last_tb_value);
     };
 
+    ImprovedTextBox.prototype.add_user_string = function(text){
+        //comma followed by spaces, then text then spaces and final comma
+        var regex_contains = new RegExp(",\\s*" + text + "\\s*,");
+        var regex_start = new RegExp("^\\s*" + text + "\\s*,?\\s*$");
+
+        if(!this.textbox.val().match(regex_contains) && !this.textbox.val().match(regex_start)){
+            this.textbox.val(text+", "+this.textbox.val());
+        }
+    };
 
     var public_str = "public";
     var registered_str = "registered";
@@ -229,6 +238,7 @@
         if(show){
             edit_group_textbox.restore_previous_value();
             edit_user_textbox.restore_previous_value();
+            edit_user_textbox.add_user_string('<%= current_user.to_s %>');
             $('#edit_access_entries').show();
         }else{
             $('#edit_access_entries').hide();
@@ -239,6 +249,7 @@
         if(show){
             manager_group_textbox.restore_previous_value();
             manager_user_textbox.restore_previous_value();
+            manager_user_textbox.add_user_string('<%= current_user.to_s %>');
             $('#manager_access_entries').show();
         }else{
             $('#manager_access_entries').hide();
@@ -350,7 +361,7 @@
             </div>
         </div>
     <% end %>
-<% debugger %>
+
     <h5><%= t('dri.views.objects.access_controls.embargo') %></h5>
         <div class="row">
             <%= f.radio_button :embargo, "radio_inherit", :onclick => "embargo_field_toggle();", :disabled=> disabled_inherit  %>
