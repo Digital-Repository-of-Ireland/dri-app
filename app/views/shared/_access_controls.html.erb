@@ -1,3 +1,5 @@
+<% disabled_inherit = (record.is_a? DRI::Model::Collection) ? true : false  %>
+
 <script type="text/javascript">
     function ImprovedTextBox(textbox_str){
         this.textbox = $(textbox_str);
@@ -50,8 +52,8 @@
         var mdl = "dri_model";
         var mdlcl = "dri_model_collection";
         var mdlscl = "dri_model_subcollection"
+        //Must add mdlscl when they're created
         model_str = <%= (record.is_a? DRI::Model::Collection) ? "mdlcl" : "mdl"  %>
-        //TODO dont allow inherit on collection
 
         init_search_access();
 
@@ -259,7 +261,7 @@
     <%= record.depositor %>
     <h5><%= t('dri.views.objects.access_controls.search') %></h5>
     <div class="row">
-        <%= f.radio_button :private_metadata, "radio_inherit", :onclick => "search_field_toggle();", :checked=>record.private_metadata.nil? %>
+        <%= f.radio_button :private_metadata, "radio_inherit", :onclick => "search_field_toggle();", :checked=>record.private_metadata.nil?, :disabled=> disabled_inherit %>
         <%= f.label :private_metadata, t('dri.views.objects.access_controls.inherit'), :class => "inline" %>
         <%= f.radio_button :private_metadata, "radio_public", :onclick => "search_field_toggle();", :checked=>record.private_metadata==false %>
         <%= f.label :private_metadata, t('dri.views.objects.access_controls.public_metadata'), :class => "inline" %>
@@ -281,7 +283,7 @@
 
     <h5><%= t('dri.views.objects.access_controls.read') %></h5>
     <div class="row">
-        <%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();" %>
+        <%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled=> disabled_inherit %>
         <%= f.label :read_groups, t('dri.views.objects.access_controls.inherit'), :class => "inline" %>
         <%= f.radio_button :read_groups_string, "radio_public", :onclick => "read_field_toggle();" %>
         <%= t('dri.views.objects.access_controls.public') %>
@@ -305,7 +307,7 @@
         <br />
         <%= t('dri.views.objects.access_controls.master_file_desc') %>
         <br />
-        <%= f.radio_button :master_file, "radio_inherit", :checked=>record.master_file.nil? %>
+        <%= f.radio_button :master_file, "radio_inherit", :checked=>record.master_file.nil?, :disabled=> disabled_inherit %>
         <%= f.label :master_file, t('dri.views.objects.access_controls.inherit'), :class => "inline" %>
         <%= f.radio_button :master_file, "radio_public", :checked=>record.master_file==true %>
         <%= f.label :master_file, t('dri.views.objects.access_controls.accessible_master_file'), :class => "inline" %>
@@ -315,7 +317,7 @@
 
     <h5><%= t('dri.views.objects.access_controls.edit') %></h5>
     <div class="row">
-        <%= f.radio_button :edit_groups_string, "radio_inherit", :onclick => "edit_field_toggle();"  %>
+        <%= f.radio_button :edit_groups_string, "radio_inherit", :onclick => "edit_field_toggle();", :disabled=> disabled_inherit  %>
         <%= f.label :edit_users, t('dri.views.objects.access_controls.inherit'), :class => "inline" %>
         <%= f.radio_button :edit_groups_string, "radio_restricted", :onclick => "edit_field_toggle();" %>
         <%= f.label :edit_users, t('dri.views.objects.access_controls.restricted'), :class => "inline" %>
@@ -333,7 +335,7 @@
     <% if can? :manage_collection, record %>
         <h5><%= t('dri.views.objects.access_controls.manage') %></h5>
         <div class="row">
-            <%= f.radio_button :manager_groups_string, "radio_inherit", :onclick => "manager_field_toggle();"  %>
+            <%= f.radio_button :manager_groups_string, "radio_inherit", :onclick => "manager_field_toggle();", :disabled=> disabled_inherit  %>
             <%= f.label :manager_users, t('dri.views.objects.access_controls.inherit'), :class => "inline" %>
             <%= f.radio_button :manager_groups_string, "radio_restricted", :onclick => "manager_field_toggle();" %>
             <%= f.label :manager_users, t('dri.views.objects.access_controls.restricted'), :class => "inline" %>
@@ -351,7 +353,7 @@
 <% debugger %>
     <h5><%= t('dri.views.objects.access_controls.embargo') %></h5>
         <div class="row">
-            <%= f.radio_button :embargo, "radio_inherit", :onclick => "embargo_field_toggle();"  %>
+            <%= f.radio_button :embargo, "radio_inherit", :onclick => "embargo_field_toggle();", :disabled=> disabled_inherit  %>
             <%= f.label :manager_users, t('dri.views.objects.access_controls.inherit'), :class => "inline" %>
             <%= f.radio_button :embargo, "radio_restricted", :onclick => "embargo_field_toggle();" %>
             <%= f.label :embargo, t('dri.views.objects.access_controls.restricted'), :class => "inline" %>
