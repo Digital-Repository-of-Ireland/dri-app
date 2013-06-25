@@ -21,6 +21,10 @@ module Hydra
       self.ability_logic +=[:manager_permissions, :search_permissions, :master_file_permissions]
     end
 
+    def self.user_class
+      Hydra.config[:user_model] ?  Hydra.config[:user_model].constantize : ::User
+    end
+
     def create_permissions
       #can :create, :all if user_groups.include? 'registered'
     end
