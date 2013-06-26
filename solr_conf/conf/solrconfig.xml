@@ -119,6 +119,9 @@
         private_metadata_isi,
         master_file_isi,
         properties_status_ssm,
+        is_governed_by_ssim,
+
+  
         inheritable_access_ssim,
         inheritable_discover_access_group_ssim,inheritable_discover_access_person_ssim,
         inheritable_read_access_group_ssim,inheritable_read_access_person_ssim,

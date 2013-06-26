@@ -3,10 +3,11 @@
 
 require 'stepped_forms'
 require 'checksum'
+require 'permission_methods'
 
 class ObjectsController < AssetsController
   include SteppedForms
-  include UserGroup::Permissions
+  include PermissionMethods
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
@@ -14,7 +15,7 @@ class ObjectsController < AssetsController
   #
   def edit
     enforce_permissions!("edit",params[:id]) 
-    @object = retrieve_object(params[:id])
+    @object = retrieve_object!(params[:id])
     respond_to do |format|
       format.html
       format.json  { render :json => @object }
@@ -26,7 +27,7 @@ class ObjectsController < AssetsController
   def update
     update_object_permission_check(params[:dri_model][:manager_groups_string], params[:dri_model][:manager_users_string], params[:id])
 
-    @object = retrieve_object(params[:id])
+    @object = retrieve_object!(params[:id])
 
     if params[:dri_model][:governing_collection_id].present?
       collection = Collection.find(params[:dri_model][:governing_collection_id])
@@ -38,6 +39,7 @@ class ObjectsController < AssetsController
 
     @object.update_attributes(params[:dri_model])
 
+    #Do for collection?
     checksum_metadata(@object)
     check_for_duplicates(@object)
 

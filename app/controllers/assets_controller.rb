@@ -14,6 +14,12 @@ class AssetsController < CatalogController
     return objs = ActiveFedora::Base.find(id,{:cast => true})
   end
 
+  def retrieve_object!(id)
+    objs = ActiveFedora::Base.find(id,{:cast => true})
+    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') +" ID: #{id}" if objs.nil?
+    return objs
+  end
+
   def check_for_duplicates(object)
       @duplicates = duplicates(object)
 
