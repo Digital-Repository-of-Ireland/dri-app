@@ -1,188 +1,209 @@
 <script type="text/javascript">
-function ImprovedTextBox(textbox_str){
-    this.textbox = $(textbox_str);
-    this.last_tb_value;
-    this.catch_tb_value();
-}
+    function ImprovedTextBox(textbox_str){
+        this.textbox = $(textbox_str);
+        this.last_tb_value;
+        this.catch_tb_value();
+    }
 
-ImprovedTextBox.prototype.catch_tb_value = function(){
-    this.last_tb_value = this.textbox.val();
-};
+    ImprovedTextBox.prototype.catch_tb_value = function(){
+        this.last_tb_value = this.textbox.val();
+    };
 
-ImprovedTextBox.prototype.hide = function(){
-    this.textbox.hide();
-};
+    ImprovedTextBox.prototype.hide = function(){
+        this.textbox.hide();
+    };
 
-ImprovedTextBox.prototype.show = function(){
-    this.textbox.show();
-};
+    ImprovedTextBox.prototype.show = function(){
+        this.textbox.show();
+    };
 
-ImprovedTextBox.prototype.value = function(){
-    return this.textbox.val();
-};
+    ImprovedTextBox.prototype.value = function(){
+        return this.textbox.val();
+    };
 
-ImprovedTextBox.prototype.val = function(text){
-    this.textbox.val(text);
-};
+    ImprovedTextBox.prototype.val = function(text){
+        this.textbox.val(text);
+    };
 
-ImprovedTextBox.prototype.restore_previous_value = function(){
-    this.textbox.val(this.last_tb_value);
-};
+    ImprovedTextBox.prototype.restore_previous_value = function(){
+        this.textbox.val(this.last_tb_value);
+    };
 
 
-var public_str = "public";
-var registered_str = "registered";
-var empty_str = "";
+    var public_str = "public";
+    var registered_str = "registered";
+    var empty_str = "";
 
-var read_user_textbox;
-var read_group_textbox;
+    var model_str;
+    var read_user_textbox;
+    var read_group_textbox;
 
-$(document).ready(function () {
-    init_search_access();
+    $(document).ready(function () {
+        var mdl = "dri_model";
+        var mdlcl = "dri_model_collection";
+        model_str = <%= (record.is_a? DRI::Model::Collection) ? "mdlcl" : "mdl"  %>
+        
+        init_search_access();
 
-    read_user_textbox = new ImprovedTextBox('#dri_model_read_users_string');
-    read_group_textbox = new ImprovedTextBox('#dri_model_read_groups_string');
-    init_read_access();
-});
+        read_user_textbox = new ImprovedTextBox('#'+model_str+'_read_users_string');
+        read_group_textbox = new ImprovedTextBox('#'+model_str+'_read_groups_string');
+        init_read_access();
+    });
 
-function init_read_access(){
-    var original_value_user = read_user_textbox.value();
-    var original_value_group = read_group_textbox.value();
+    function init_read_access(){
+        var original_value_user = read_user_textbox.value();
+        var original_value_group = read_group_textbox.value();
 
-    if(original_value_user!=empty_str){
-        //Know its restricted without checking for public/registered
-        $('#dri_model_read_groups_string_radio_restricted').prop('checked', true);
-    }else{
-        if(original_value_group==public_str){
-            $('#dri_model_read_groups_string_radio_public').prop('checked', true);
-            read_toggle_show_textboxes(false);
-        }else if(original_value_group==registered_str){
-            $('#dri_model_read_groups_string_radio_logged').prop('checked', true);
-            read_toggle_show_textboxes(false);
+        if(original_value_user!=empty_str){
+            //Know its restricted without checking for public/registered
+            $('#'+model_str+'_read_groups_string_radio_restricted').prop('checked', true);
         }else{
-            $('#dri_model_read_groups_string_radio_restricted').prop('checked', true);
+            if(original_value_group==public_str){
+                $('#'+model_str+'_read_groups_string_radio_public').prop('checked', true);
+                read_toggle_show_textboxes(false);
+            }else if(original_value_group==registered_str){
+                $('#'+model_str+'_read_groups_string_radio_logged').prop('checked', true);
+                read_toggle_show_textboxes(false);
+            }else{
+                $('#'+model_str+'_read_groups_string_radio_restricted').prop('checked', true);
+            }
         }
     }
-}
 
-function read_show_field_toggle(){
-    var val = $('input[name="dri_model[read_groups_string]"]:checked').val();
-    //Was going to set value of read_groups server side but doing here for now [No Security concerns as admin interface.]
-    if(val=="radio_logged"){
-        read_group_textbox.val(registered_str);
-        read_user_textbox.val("");
-        read_toggle_show_textboxes(false);
-    }else if(val=="radio_public"){
-        read_group_textbox.val(public_str);
-        read_user_textbox.val("");
-        read_toggle_show_textboxes(false);
-    }else if(val=="radio_restricted"){
-        read_toggle_show_textboxes(true);
-        if(read_group_textbox.val()==registered_str || read_group_textbox.val()==public_str){
-            read_group_textbox.val("");
+    function read_show_field_toggle(){
+        var val = $('input[name="'+model_str+'[read_groups_string]"]:checked').val();
+        //Was going to set value of read_groups server side but doing here for now [No Security concerns as admin interface.]
+        if(val=="radio_logged"){
+            read_group_textbox.val(registered_str);
+            read_user_textbox.val("");
+            read_toggle_show_textboxes(false);
+        }else if(val=="radio_public"){
+            read_group_textbox.val(public_str);
+            read_user_textbox.val("");
+            read_toggle_show_textboxes(false);
+        }else if(val=="radio_restricted"){
+            read_toggle_show_textboxes(true);
+            if(read_group_textbox.val()==registered_str || read_group_textbox.val()==public_str){
+                read_group_textbox.val("");
+            }
+            $('#'+model_str+'_read_groups').show();   
+        }else{
+            console.log("Unknown textbox selected: read_field");
         }
-        $('#dri_model_read_groups').show();   
-    }else{
-        console.log("Unknown textbox selected: read_field");
     }
-}
 
-function read_toggle_show_textboxes(show){
-    if(show){
-        read_group_textbox.restore_previous_value();
-        read_user_textbox.restore_previous_value();
-        $('#read_access_entries').show();
-    }else{
-        $('#read_access_entries').hide();
+    function read_toggle_show_textboxes(show){
+        if(show){
+            read_group_textbox.restore_previous_value();
+            read_user_textbox.restore_previous_value();
+            $('#read_access_entries').show();
+        }else{
+            $('#read_access_entries').hide();
+        }
     }
-}
 
-function init_search_access(){
-    search_field_toggle();
-}
-
-function search_field_toggle(){
-    var val = $('input[name="dri_model[private_metadata]"]:checked').val();
-    if(val=="radio_public" || val=="radio_inherit"){
-        $('#page_access_entries').hide();
-    }else if(val=="radio_private"){
-        var text="Say about not wanting private metadata\n(Open Metadata Policy: Defaults to open)"
-        alert(text);
-        $('#page_access_entries').show();
-    }else{
-        console.log("Unknown textbox selected: search_field_toggle")
+    function init_search_access(){
+        search_field_toggle();
     }
-}
+
+    function search_field_toggle(){
+        var val = $('input[name="'+model_str+'[private_metadata]"]:checked').val();
+        if(val=="radio_public" || val=="radio_inherit"){
+            $('#page_access_entries').hide();
+        }else if(val=="radio_private"){
+            var text= "<%= t('dri.views.objects.access_controls.private_metadata_warn') %>"
+            alert(text);
+            $('#page_access_entries').show();
+        }else{
+            console.log("Unknown textbox selected: search_field_toggle")
+        }
+    }
 </script>
-    <h5>Depositor</h5>
+
+
+  <legend><%= t('dri.views.objects.legends.access_control') %></legend>
+
+    <h5><%= t('dri.views.objects.access_controls.depositor') %></h5>
     <%= record.depositor %>
-    <h5>Search Access</h5>
+    <h5><%= t('dri.views.objects.access_controls.search') %></h5>
     <div class="row">
         <%= f.radio_button :private_metadata, "radio_public", :onclick => "search_field_toggle();", :checked=>!record.private_metadata %>
-        <%= f.label :private_metadata, "Public Metadata", :class => "inline" %>
+        <%= f.label :private_metadata, t('dri.views.objects.access_controls.public_metadata'), :class => "inline" %>
         <%= f.radio_button :private_metadata, "radio_private", :onclick => "search_field_toggle();", :checked=>record.private_metadata %>
-        <%= f.label :private_metadata, "Private Metadata", :class => "inline" %>
+        <%= f.label :private_metadata, t('dri.views.objects.access_controls.private_metadata'), :class => "inline" %>
         <%= f.radio_button :private_metadata, "radio_inherit", :onclick => "search_field_toggle();", :checked=>record.private_metadata.nil? %>
-        <%= f.label :private_metadata, "Inherit", :class => "inline" %>
+        <%= f.label :private_metadata, t('dri.views.objects.access_controls.inherit'), :class => "inline" %>
     </div>
     
     <div id="page_access_entries">
-        <h5>Page Access</h5>
-        Since you have set access to metadata as private,
-        you can add people here who you would like to be able to access the metadata.
+        <h5><%= t('dri.views.objects.access_controls.page') %></h5>
+        <%= t('dri.views.objects.access_controls.private_metadata_access') %>
         <div class="row">
-            <%= f.label :discover_users, "Users", :class => "inline"  %>
+            <%= f.label :discover_users, t('user_groups.views.shared.users'), :class => "inline"  %>
             <%= f.text_field :discover_users_string %>
             <br />
-            <%= f.label :discover_groups, "Groups", :class => "inline"  %>
+            <%= f.label :discover_groups, t('user_groups.views.shared.groups'), :class => "inline"  %>
             <%= f.text_field :discover_groups_string %>
         </div>
     </div>
 
-    <h5>Read Access</h5>(Inheritance Issues)
+    <h5><%= t('dri.views.objects.access_controls.read') %></h5>
     <div class="row">
         <%= f.radio_button :read_groups_string, "radio_public", :onclick => "read_show_field_toggle();" %>
-        <%= "Public" %>
+        <%= t('dri.views.objects.access_controls.public') %>
         <%= f.radio_button :read_groups_string, "radio_logged", :onclick => "read_show_field_toggle();" %>
-        <%= "Logged In" %>
+        <%= t('dri.views.objects.access_controls.registered') %>
         <%= f.radio_button :read_groups_string, "radio_restricted", :onclick => "read_show_field_toggle();" %>
-        <%= "Restricted" %>
+        <%= t('dri.views.objects.access_controls.restricted') %>
         <div id="read_access_entries">
             <br />
-            <%= f.label :read_users, "Users", :class => "inline" %>
+            <%= f.label :read_users, t('user_groups.views.shared.users'), :class => "inline" %>
             <%= f.text_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
             <br />
-            <%= f.label :read_groups, "Groups", :class => "inline" %>
+            <%= f.label :read_groups, t('user_groups.views.shared.groups'), :class => "inline" %>
             <%= f.text_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
         </div>
     </div>
-    
-    <h5>Edit Access</h5>
+
     <div class="row">
-         <%= f.label :edit_users, "Users", :class => "inline" %>
+        <%= t('dri.views.objects.access_controls.master_file') %>
+        <br />
+        <%= t('dri.views.objects.access_controls.master_file_desc') %>
+        <br />
+        <%= f.radio_button :master_file, "radio_public", :checked=>record.master_file %>
+        <%= f.label :master_file, t('dri.views.objects.access_controls.accessible_master_file'), :class => "inline" %>
+        <%= f.radio_button :master_file, "radio_private", :checked=>!record.master_file %>
+        <%= f.label :master_file, t('dri.views.objects.access_controls.private_master_file'), :class => "inline" %>
+        <%= f.radio_button :master_file, "radio_inherit", :checked=>record.master_file.nil? %>
+        <%= f.label :master_file, t('dri.views.objects.access_controls.inherit'), :class => "inline" %>
+    </div>
+
+    <h5><%= t('dri.views.objects.access_controls.edit') %></h5>
+    <div class="row">
+         <%= f.label :edit_users, t('user_groups.views.shared.users'), :class => "inline" %>
          <%= f.text_field :edit_users_string %>
     </div>
 
     <div class="row">
-         <%= f.label :edit_groups, "Groups", :class => "inline" %>
+         <%= f.label :edit_groups, t('user_groups.views.shared.groups'), :class => "inline" %>
          <%= f.text_field :edit_groups_string %>
     </div>
 
     <% if can? :manage_collection, record %>
-        <h5>Managers</h5>
+        <h5><%= t('dri.views.objects.access_controls.manage') %></h5>
         <div class="row">
-             <%= f.label :manager_users, "Users", :class => "inline" %>
+             <%= f.label :manager_users, t('user_groups.views.shared.users'), :class => "inline" %>
              <%= f.text_field :manager_users_string %>
         </div>
 
         <div class="row">
-             <%= f.label :manager_groups, "Groups", :class => "inline" %>
+             <%= f.label :manager_groups, t('user_groups.views.shared.groups'), :class => "inline" %>
              <%= f.text_field :manager_groups_string %>
         </div>
     <% end %>
 
-    <h5>Embargo</h5>(Questions about what to do)
+    <h5><%= t('dri.views.objects.access_controls.embargo') %></h5>
     <div class="row">
-        <%= f.label :embargo, "Date: ", :class => "inline" %>
-        <%= f.text_field :embargo, :value=>record.rightsMetadata.embargo_release_date %>
+        <%= f.label :embargo, t('dri.views.objects.access_controls.date'), :class => "inline" %>
+        <%= f.text_field :embargo %>
     </div>

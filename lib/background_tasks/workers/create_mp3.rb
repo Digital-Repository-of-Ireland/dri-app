@@ -2,9 +2,10 @@ class CreateMp3
   @queue = "create_mp3_queue"
 
   require 'open3'
+  require 'storage/s3_interface'
 
   def self.perform(object_id)
-    puts "Creating mp3 version of #{object_id} asset, if required"
+    Rails.logger.info "Creating mp3 version of #{object_id} asset"
 
     datastream = "masterContent"
     @object = ActiveFedora::Base.find(object_id,{:cast => true})
@@ -23,23 +24,13 @@ class CreateMp3
     begin
       transcode(workingfile, output_options, outputfile)
     rescue BadCommand => e
+      Rails.logger.error "Failed to transcode file"
       # report failure
       # requeue?
     end
 
-    AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                        :access_key_id => Settings.S3.access_key_id,
-                                        :secret_access_key => Settings.S3.secret_access_key)
-
-    bucket = @object.pid.sub('dri:', '')
-    filename = "#{@object.pid}-mp3-#{Settings.mp3_out_options.channel}-#{Settings.mp3_out_options.bitrate}-#{Settings.mp3_out_options.frequency}.mp3"
-    # save the file to that bucket, note we do not version surrogates!
-    begin
-      AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
-    rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
-      puts "Problem saving Surrogate file #{filename} : #{e.to_s}"
-    end
-    AWS::S3::Base.disconnect!()
+    filename = "#{object_id}-mp3-#{Settings.mp3_out_options.channel}-#{Settings.mp3_out_options.bitrate}-#{Settings.mp3_out_options.frequency}.mp3"
+    Storage::S3Interface.store_surrogate(object_id, outputfile, filename)
 
   end
 

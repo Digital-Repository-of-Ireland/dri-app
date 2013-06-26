@@ -3,7 +3,7 @@ NuigRnag::Application.routes.draw do
   root :to => "catalog#index"
 
   Blacklight.add_routes(self)
-  HydraHead.add_routes(self)
+  #HydraHead.add_routes(self)
 
   mount UserGroup::Engine => "user_groups"
 
@@ -28,6 +28,8 @@ NuigRnag::Application.routes.draw do
   match '/contact' => 'static_pages#contact', :via => :get
   #required for hydra-core/lib/hydra/controller/controller_behavior.rb and lib/blacklight/controller.rb
   match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
+
+  match 'objects/:id' => 'catalog#show', :via => :get
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

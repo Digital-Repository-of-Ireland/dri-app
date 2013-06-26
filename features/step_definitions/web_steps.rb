@@ -187,6 +187,10 @@ Then /^(?:|I )should see a "([^"]*)"$/ do |element|
   end
 end
 
+Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
+  page.should have_select id
+end
+
 Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failure,message|
   page.should have_selector ".alert", text: flash_for(message)
 end

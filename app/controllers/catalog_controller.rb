@@ -8,8 +8,14 @@ class CatalogController < ApplicationController
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
   include Hydra::Controller::ControllerBehavior
 
+  #This method shows the DO if the metadata is open
+  #Rather than before where the user had to have read permisisons on the object all the time
+  #TODO:: Inheritance, Solr Query
+  def enforce_search_for_show_permissions
+    enforce_permissions!("show_digital_object",params[:id])
+  end
   # These before_filters apply the hydra access controls
-  before_filter :enforce_show_permissions, :only=>:show
+  before_filter :enforce_search_for_show_permissions, :only=>:show
   # This applies appropriate access controls to all solr queries
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets

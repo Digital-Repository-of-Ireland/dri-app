@@ -1,6 +1,8 @@
 # Controller for the Collection model
 #
 class CollectionsController < AssetsController
+  include UserGroup::Permissions
+
   before_filter :authenticate_user!, :only => [:index, :create, :new, :show, :edit, :update]
 
   # Shows list of user's collections
@@ -27,6 +29,7 @@ class CollectionsController < AssetsController
   # Creates a new model.
   #
   def new
+    enforce_permissions!("create", DRI::Model::Collection)
     @collection = DRI::Model::Collection.new
 
     respond_to do |format|
@@ -37,6 +40,7 @@ class CollectionsController < AssetsController
   # Edits an existing model.
   #
   def edit
+    enforce_permissions!("edit",params[:id])
     @collection = retrieve_object(params[:id])
 
     respond_to do |format|
@@ -47,6 +51,7 @@ class CollectionsController < AssetsController
   # Retrieves an existing model.
   #
   def show
+    enforce_permissions!("show",params[:id])
     @collection = retrieve_object(params[:id])
 
     respond_to do |format|
@@ -65,8 +70,13 @@ class CollectionsController < AssetsController
   # Updates the attributes of an existing model.
   #
   def update
+    update_object_permission_check(params[:dri_model_collection][:manager_groups_string],params[:dri_model_collection][:manager_users_string], params[:id])
+
     @collection = retrieve_object(params[:id])
-    
+
+    params[:dri_model_collection][:private_metadata] = set_private_metadata_permission(params[:dri_model_collection].delete(:private_metadata)) if params[:dri_model_collection][:private_metadata].present?
+    params[:dri_model_collection][:master_file] = set_master_file_permission(params[:dri_model_collection].delete(:master_file)) if params[:dri_model_collection][:master_file].present?
+
     @collection.update_attributes(params[:dri_model_collection])
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
@@ -77,8 +87,11 @@ class CollectionsController < AssetsController
   # Creates a new model using the parameters passed in the request.
   #
   def create
+    enforce_permissions!("create",DRI::Model::Collection)
     @collection = DRI::Model::Collection.new(params[:dri_model_collection])
+    #Clears permissions for current_user so do first
     @collection.apply_depositor_metadata(current_user.to_s)
+    @collection.manager_users_string=current_user.to_s
 
     respond_to do |format|
       if @collection.save

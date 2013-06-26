@@ -36,7 +36,16 @@ module Hydra
           rightsMetadata.individuals.map {|x| {:type=>'user', :access=>x[1], :name=>x[0]}})
       end
 
-      #383 Additions (Added private_metadata and manager_users/manager_groups methods)
+      #383 Additions (Added private_metadata, show master_file and manager_users/manager_groups methods)
+      def master_file
+        rightsMetadata.show_master_file?
+      end
+      
+      def master_file=(is_allowed)
+        is_allowed = "-1" if is_allowed.nil?
+        rightsMetadata.master_file=is_allowed.to_s
+      end
+
       def private_metadata
         rightsMetadata.private_metadata?
       end
@@ -44,6 +53,15 @@ module Hydra
       def private_metadata=(is_private)
         is_private = "-1" if is_private.nil?
         rightsMetadata.private_metadata=is_private.to_s
+      end
+
+      #Not used to check if under embargo
+      def embargo
+        rightsMetadata.embargo_release_date
+      end
+
+      def embargo=(release_date)
+        rightsMetadata.embargo_release_date=release_date
       end
 
       def manager_users

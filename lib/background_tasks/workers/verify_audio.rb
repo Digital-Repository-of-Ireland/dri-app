@@ -4,7 +4,7 @@ class VerifyAudio
   require 'validators'
 
   def self.perform(object_id)
-    puts "Verifying that the file for #{object_id} is a valid audio file"
+    Rails.logger.info "Verifying that the file for #{object_id} is a valid audio file"
 
     datastream = "masterContent"
     @object = ActiveFedora::Base.find(object_id,{:cast => true})

@@ -38,6 +38,13 @@ module Hydra
           }
           t.private_metadata(:proxy => [:machine, :integer])
         }
+        #383 Addition (Affed Masterfile flag)
+        t.masterfile{
+          t.machine{
+            t.integer
+          }
+          t.master_file(:proxy => [:machine, :integer])
+        }
         t.discover_access(:ref=>[:access], :attributes=>{:type=>"discover"})
         t.read_access(:ref=>[:access], :attributes=>{:type=>"read"})
         t.edit_access(:ref=>[:access], :attributes=>{:type=>"edit"})
@@ -91,6 +98,9 @@ module Hydra
             }
             #383 Addition (Added Metadata)
             xml.metadata{
+              xml.machine
+            }
+            xml.masterfile{
               xml.machine
             }        
           }
@@ -170,7 +180,7 @@ module Hydra
         return result
       end
       
-      #383 Addition (private_metadata)
+      #383 Addition (private_metadata, master_file)
       attr_reader :private_metadata
       def private_metadata=(is_private)
         if(is_private=="-1")
@@ -194,6 +204,30 @@ module Hydra
         end
         return nil
       end
+
+      attr_reader :master_file
+      def master_file=(is_allowed)
+        if(is_allowed=="-1")
+          self.find_by_terms(*[:masterfile,:machine,:integer]).first ? self.find_by_terms(*[:masterfile,:machine,:integer]).first.remove : nil
+        elsif(is_allowed=="0" or is_allowed=="1")
+          self.update_values({[:masterfile,:machine,:integer]=>is_allowed.to_s})
+        else
+          return "INVALID SETTING"
+        end
+      end
+
+      def master_file
+        return self.find_by_terms(*[:masterfile,:machine,:integer]).first ? self.find_by_terms(*[:masterfile,:machine,:integer]).first.text : nil
+      end
+
+      def show_master_file?
+        shw = master_file.to_s
+        unless shw.nil?
+          return true if shw == "1"
+          return false if shw == "0"
+        end
+        return nil
+      end      
 
       attr_reader :embargo_release_date
       def embargo_release_date=(release_date)
@@ -237,10 +271,14 @@ module Hydra
         vals = manager_access.machine.person
         solr_doc[ActiveFedora::SolrService.solr_name('manager_access_person', indexer)] = vals unless vals.empty?        
         vals = metadata.machine.integer
-        solr_doc[ActiveFedora::SolrService.solr_name('private_metadata', private_metadata_indexer)] = vals unless vals.empty?
+        solr_doc[ActiveFedora::SolrService.solr_name('private_metadata', integer_indexer)] = vals unless vals.empty?
+        vals = masterfile.machine.integer
+        solr_doc[ActiveFedora::SolrService.solr_name('master_file', integer_indexer)] = vals unless vals.empty?
 
-        #Should this be updated? whats the date_indexer for?
-        ::Solrizer::Extractor.insert_solr_field_value(solr_doc, "embargo_release_date_dt", embargo_release_date(:format=>:solr_date)) if embargo_release_date
+        if embargo_release_date
+          embargo_release_date_solr_key_name = ActiveFedora::SolrService.solr_name("embargo_release_date", date_indexer)
+          ::Solrizer::Extractor.insert_solr_field_value(solr_doc, embargo_release_date_solr_key_name , embargo_release_date(:format=>:solr_date))
+        end
         solr_doc
       end
 
@@ -261,12 +299,12 @@ module Hydra
       end
       
       #383 Addition (new indexer)
-      def private_metadata_indexer
-        self.class.private_metadata_indexer
+      def integer_indexer
+        self.class.integer_indexer
       end
       
-      def self.private_metadata_indexer
-        @private_metadata_indexer ||= Solrizer::Descriptor.new(:integer, :stored, :indexed)
+      def self.integer_indexer
+        @integer_indexer ||= Solrizer::Descriptor.new(:integer, :stored, :indexed)
       end
 
       # Completely clear the permissions
