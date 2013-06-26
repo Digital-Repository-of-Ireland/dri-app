@@ -119,7 +119,7 @@
         private_metadata_isi,
         master_file_isi,
         properties_status_ssm,
-        is_governed_by_ssim,
+        is_governed_by_ssim
       </str>
     </lst>
   </requestHandler>
