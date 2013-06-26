@@ -34,7 +34,7 @@
     ImprovedTextBox.prototype.add_user_string = function(text){
         //comma followed by spaces, then text then spaces and final comma
         var regex_contains = new RegExp(",\\s*" + text + "\\s*,");
-        var regex_start = new RegExp("^\\s*" + text + "\\s*,?\\s*$");
+        var regex_start = new RegExp("^\\s*" + text + "\\s*,?\\s*");
 
         if(!this.textbox.val().match(regex_contains) && !this.textbox.val().match(regex_start)){
             this.textbox.val(text+", "+this.textbox.val());
@@ -238,7 +238,7 @@
         if(show){
             edit_group_textbox.restore_previous_value();
             edit_user_textbox.restore_previous_value();
-            edit_user_textbox.add_user_string('<%= current_user.to_s %>');
+            edit_user_textbox.add_user_string('<%= current_user.user_key %>');
             $('#edit_access_entries').show();
         }else{
             $('#edit_access_entries').hide();
@@ -249,7 +249,7 @@
         if(show){
             manager_group_textbox.restore_previous_value();
             manager_user_textbox.restore_previous_value();
-            manager_user_textbox.add_user_string('<%= current_user.to_s %>');
+            manager_user_textbox.add_user_string('<%= current_user.user_key %>');
             $('#manager_access_entries').show();
         }else{
             $('#manager_access_entries').hide();
