@@ -37,6 +37,8 @@ class ObjectsController < AssetsController
     params[:dri_model][:private_metadata] = set_private_metadata_permission(params[:dri_model].delete(:private_metadata)) if params[:dri_model][:private_metadata].present?
     params[:dri_model][:master_file] = set_master_file_permission(params[:dri_model].delete(:master_file)) if params[:dri_model][:master_file].present?
 
+    #Private_metadata cannot be set to -1 (inherit)
+
     @object.update_attributes(params[:dri_model])
 
     #Do for collection?
