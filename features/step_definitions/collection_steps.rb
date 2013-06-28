@@ -3,6 +3,7 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.title = title ? title : SecureRandom.hex(5)
   if user
     collection.apply_depositor_metadata(User.find_by_email(user))
+    collection.manager_users_string=User.find_by_email(user).to_s
   end
   collection.save
   collection.items.count.should == 0

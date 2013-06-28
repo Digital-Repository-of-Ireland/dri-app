@@ -6,7 +6,7 @@ Feature:
   And to retrieve my Digital Objects by collection
 
 Background:
-  Given I am logged in as "user1"
+  Given I am logged in as "user1" in the group "cm"
 
 Scenario: Navigating to the collections page
   Given I am on the home page
@@ -44,15 +44,15 @@ Scenario Outline: Creating Digital Object in a governing collection using the we
     | dri:obj1   | Object 1     | dri:coll1      | governing       |
 
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
-  Given a Digital Object with pid "dri:obj4" and title "Object 4"
+  Given a Digital Object with pid "dri:obj4" and title "Object 4" created by "user1@user1.com"
   And a collection with pid "dri:coll4" created by "user1@user1.com"
   When I add the Digital Object "dri:obj4" to the non-governing collection "dri:coll4" using the web forms
   And I go to the "collection" "show" page for "dri:coll4"
   Then I should see the Digital Object "dri:obj4" as part of the collection
 
 Scenario: Removing a Digital Object from a non-governing collection using the web forms
-  Given a Digital Object with pid "dri:obj5" and title "Object 5"
-  And a collection with pid "dri:coll5"
+  Given a Digital Object with pid "dri:obj5" and title "Object 5" created by "user1@user1.com"
+  And a collection with pid "dri:coll5" created by "user1@user1.com"
   When I add the Digital Object "dri:obj5" to the collection "dri:coll5" as type "non-governing"
   Then the collection "dri:coll5" should contain the Digital Object "dri:obj5" as type "non-governing"
   When I go to the "collection" "show" page for "dri:coll5"

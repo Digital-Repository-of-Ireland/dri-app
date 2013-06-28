@@ -1,11 +1,11 @@
-@web @req-17.6 @done
+@web @req-17.6 @done @javascript
 Feature: 
   In order to add a digital object into the repository
   As an authenticated and authorised depositor
   I want to construct a Digital Object with web forms
 
 Background:
-  Given I am logged in as "user1"
+  Given I am logged in as "user1" in the group "cm"
 
 Scenario: Navigating to the ingest page
   When I go to "the home page"
@@ -107,6 +107,7 @@ Scenario: Constructing a Digital Object using the web form without setting a col
   Then I should see a success message for ingestion
   And I should see the valid metadata
 
+@test
 Scenario: Editing the metadata of a Digital Object using the web form
   Given I have created a Digital Object
   Then I should see a link to edit an object

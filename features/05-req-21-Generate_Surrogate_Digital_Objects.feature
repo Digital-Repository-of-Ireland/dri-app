@@ -54,7 +54,7 @@ following list is just an example
 * openssl
 
 Scenario Outline: Running background jobs and creating surrogates for different object types
-  Given I am logged in as "user1"
+  Given I am logged in as "user1" in the group "cm"
   And I have created a <type> object
   Then the asset should be virus checked
   And the asset type should be verified
