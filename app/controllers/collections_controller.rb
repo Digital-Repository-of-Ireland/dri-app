@@ -82,6 +82,7 @@ class CollectionsController < AssetsController
     params[:dri_model_collection][:private_metadata] = set_private_metadata_permission(params[:dri_model_collection].delete(:private_metadata)) if params[:dri_model_collection][:private_metadata].present?
     params[:dri_model_collection][:master_file] = set_master_file_permission(params[:dri_model_collection].delete(:master_file)) if params[:dri_model_collection][:master_file].present?
 
+
     if ((params[:dri_model_collection][:private_metadata].blank? || params[:dri_model_collection][:private_metadata]=="-1") || 
        (params[:dri_model_collection][:master_file].blank? || params[:dri_model_collection][:master_file]=="-1") ||
        (params[:dri_model_collection][:read_groups_string].blank? && params[:dri_model_collection][:read_users_string].blank?) ||
@@ -89,6 +90,7 @@ class CollectionsController < AssetsController
       flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])
     else
       @collection.update_attributes(params[:dri_model_collection])
+      #Apply private_metadata & properties to each DO/Subcollection within this collection
       flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
     end
 
