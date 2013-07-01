@@ -31,6 +31,11 @@ NuigRnag::Application.routes.draw do
 
   match 'objects/:id' => 'catalog#show', :via => :get
 
+  # need to put in the 'system administrator' role here
+  #authenticate :admin do
+    mount Resque::Server, :at => "/resque"
+  #end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

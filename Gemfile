@@ -20,7 +20,7 @@ gem 'sqlite3'
 
 gem 'noid', '0.5.5'
 
-gem 'resque'
+gem 'resque', :require => 'resque/server'
 
 # Storage-related gems
 gem 'aws-s3'
