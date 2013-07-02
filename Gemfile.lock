@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git@dev.forasfeasa.ie:user_group.git
-  revision: 4d721fc2f29fb6cc04a9aeadd820b691cc68bc94
+  revision: 6601e40f9c544066674d4514d51977fd833962b1
   branch: develop
   specs:
     user_group (0.0.5)

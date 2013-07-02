@@ -1,3 +1,4 @@
+ENV["RAILS_RELATIVE_URL_ROOT"] = "/admin"
 NuigRnag::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
