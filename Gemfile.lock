@@ -228,6 +228,7 @@ GEM
     mini_portile (0.5.0)
     mono_logger (1.1.0)
     multi_json (1.7.7)
+    mysql2 (0.3.11)
     noid (0.5.5)
       backports
     nokogiri (1.6.0)
@@ -427,6 +428,7 @@ DEPENDENCIES
   jquery-ui-rails
   launchy
   mimemagic
+  mysql2
   noid (= 0.5.5)
   poltergeist
   railroady

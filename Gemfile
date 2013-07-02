@@ -17,6 +17,7 @@ end
 
 gem 'rails_config'
 gem 'sqlite3'
+gem 'mysql2'
 
 gem 'noid', '0.5.5'
 
