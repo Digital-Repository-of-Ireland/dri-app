@@ -1,7 +1,9 @@
 #!/bin/sh
 #
+# resque        init file for starting up the resque workers
 #
-# chkconfig: 
+# chkconfig:   - 20 80
+# description: Starts and stops the resque workers.
 
 ### BEGIN INIT INFO
 # Provides:          nuig-rnag
