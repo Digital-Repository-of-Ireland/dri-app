@@ -22,6 +22,8 @@ gem 'mysql2'
 gem 'noid', '0.5.5'
 
 gem 'resque', :require => 'resque/server'
+gem "resque-scheduler"
+gem "resque-status"
 
 # Storage-related gems
 gem 'aws-s3'
