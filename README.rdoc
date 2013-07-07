@@ -24,8 +24,8 @@ For testing and development you will need to bootstrap the project
   $ bundle exec rake db:seed
   $ bundle exec rake jetty:config
 
-  Dont forget to prepare the test database with
-    $ bundle exec rake db:test:prepare
+Dont forget to prepare the test database with
+  $ bundle exec rake db:test:prepare
 
 To start the application for demo purposes
 
@@ -88,6 +88,20 @@ This is where the application specific settings are located
   config/settings.yml
 
 Please view and edit this file as needed before deploying the application.
+
+== Configuation of database.yml, fedora.yml and solr.yml
+
+The configuration files for the NUIG-RNAG application
+
+* config/database.yml
+* config/solr.yml
+* config/fedora.yml
+
+are not configured initially, there are some sample configurations in
+the config directory. These configuration files must be created before
+development, testing, deployment. The default sample files can be copied
+into the correct locations for testing and development. It is suggested
+that these files are not commited to the repository.
 
 == Background jobs
 
@@ -187,4 +201,7 @@ Some steps required to be run before a production env is ready to go...
   $ rake RAILS_ENV=production db:migrate
 
 The above assumes a production ready instance of mysql, solr,
-fedora-commons and mod_passenger.
+fedora-commons and mod_passenger. You will also need to start the
+resque workers.
+
+  $ rake environment resque:work RAILS_ENV=development QUEUE="*" VERBOSE=1
