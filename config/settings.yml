@@ -13,13 +13,13 @@ queue:
   pdfdoc: [CreateBucket, CreateChecksums, FullTextIndex]
 plugins:
   ffmpeg_path: /opt/local/bin/ffmpeg
-mp3_out_options:
+mp3_web_quality_out_options:
   codec: # default is for ffmpeg to auto-detect appropriate codec, this should be good for most scenarios
   strip_metadata: "yes" # default is to preserve global metadata
   channel: "2" # default is same as input file
   bitrate: "96k" # default is same as input file
   frequency: "44100" # default is same as input file
-ogg_out_options:
+ogg_web_quality_out_options:
   codec: libvorbis # Default for ogg will produce very large files 
   strip_metadata: "yes" # default is preserve global metadata
   channel: "2" # default is same as input file

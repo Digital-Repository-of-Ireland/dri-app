@@ -29,7 +29,7 @@ class CreateOgg
       # requeue?
     end
 
-    filename = "#{object_id}-ogg-#{Settings.ogg_out_options.channel}-#{Settings.ogg_out_options.bitrate}-#{Settings.ogg_out_options.frequency}.ogg"
+    filename = "#{object_id}_ogg_web_quality.ogg"
     Storage::S3Interface.store_surrogate(object_id, outputfile, filename)
 
   end
@@ -45,11 +45,11 @@ class CreateOgg
   # settings come from the settings.yml config file
   #
   def self.output_options
-    codec = "-acodec #{Settings.ogg_out_options.codec}" unless Settings.ogg_out_options.codec.blank?
-    channel = "-ac #{Settings.ogg_out_options.channel}" unless Settings.ogg_out_options.channel.blank?
-    bitrate = "-ab #{Settings.ogg_out_options.bitrate}" unless Settings.ogg_out_options.bitrate.blank?
-    frequency = "-ar #{Settings.ogg_out_options.frequency}" unless Settings.ogg_out_options.frequency.blank?
-    strip_metadata = "-map_metadata -1" if Settings.ogg_out_options.strip_metadata.eql?("yes")
+    codec = "-acodec #{Settings.ogg_web_quality_out_options.codec}" unless Settings.ogg_web_quality_out_options.codec.blank?
+    channel = "-ac #{Settings.ogg_web_quality_out_options.channel}" unless Settings.ogg_web_quality_out_options.channel.blank?
+    bitrate = "-ab #{Settings.ogg_web_quality_out_options.bitrate}" unless Settings.ogg_web_quality_out_options.bitrate.blank?
+    frequency = "-ar #{Settings.ogg_web_quality_out_options.frequency}" unless Settings.ogg_web_quality_out_options.frequency.blank?
+    strip_metadata = "-map_metadata -1" if Settings.ogg_web_quality_out_options.strip_metadata.eql?("yes")
     "#{codec} -vn #{channel} #{bitrate} #{frequency} #{strip_metadata}"
   end
 
