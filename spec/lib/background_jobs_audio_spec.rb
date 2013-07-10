@@ -79,7 +79,7 @@ describe "workers" do
         rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
           #report failue
         end
-        filename = "#{@object.pid}-mp3-#{Settings.mp3_out_options.channel}-#{Settings.mp3_out_options.bitrate}-#{Settings.mp3_out_options.frequency}.mp3"
+        filename = "#{@object.pid}_mp3_web_quality.mp3"
         files = []
         bucket.each do |fileobject|
           files.push(fileobject.key)
@@ -132,7 +132,7 @@ describe "workers" do
         rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
           #report failue
         end
-        filename = "#{@object.pid}-ogg-#{Settings.ogg_out_options.channel}-#{Settings.ogg_out_options.bitrate}-#{Settings.ogg_out_options.frequency}.ogg"
+        filename = "#{@object.pid}_ogg_web_quality.ogg"
         files = []
         bucket.each do |fileobject|
           files.push(fileobject.key)
