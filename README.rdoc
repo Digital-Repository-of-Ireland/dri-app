@@ -126,7 +126,8 @@ To view your queues (for debugging purposes) run
   $ resque-web -x
 
 This should pop up a browser window looking at localhost:5678 (if not open one). Here
-you can the status of your queues and jobs.
+you can see the status of your queues and jobs. This is also mounted in the application
+at /resque
 
 The worker code is currently in lib/workers/.
 

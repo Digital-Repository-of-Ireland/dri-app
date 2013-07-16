@@ -11,12 +11,11 @@
 
   <% @surrogates.each do |desc, url| %>
     <dt><%= desc %></dt>
-    <dd><%= link_to t('dri.views.catalog.links.listen'), url, :id => "download_asset", :class => "player" %></dd>
+    <dd><%= link_to t('dri.views.catalog.links.listen'), url, :id => desc, :class => "player" %></dd>
   <% end %>
 
      <section id="audio"> 
      </section>
-  </dd>
 
 <% else %>
    <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
