@@ -7,7 +7,7 @@ NuigRnag::Application.routes.draw do
   Blacklight.add_routes(self)
   #HydraHead.add_routes(self)
 
-  mount UserGroup::Engine => "user_groups"
+  mount UserGroup::Engine => "/user_groups"
 
   resources :objects, :only => ['edit', 'update', 'create']
   resources :collections do
