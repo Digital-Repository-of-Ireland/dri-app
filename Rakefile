@@ -40,8 +40,9 @@ namespace :jetty do
 
 end
 
+require 'ci/reporter/rake/cucumber'
 desc "Run Continuous Integration"
-task :ci => ['jetty:reset', 'jetty:config'] do
+task :ci => ['jetty:reset', 'jetty:config', 'ci:setup:cucumber' ] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
   jetty_params = Jettywrapper.load_config
