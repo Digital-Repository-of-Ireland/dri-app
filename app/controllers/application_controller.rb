@@ -5,23 +5,23 @@ class ApplicationController < ActionController::Base
 
   include HttpAcceptLanguage
 
-  # Adds a few additional behaviors into the application controller 
-  include Blacklight::Controller  
+  # Adds a few additional behaviors into the application controller
+  include Blacklight::Controller
 
-  # Adds Hydra behaviors into the application controller 
+  # Adds Hydra behaviors into the application controller
   include Hydra::Controller::ControllerBehavior
 
   include Exceptions
 
   include UserGroup::PermissionsCheck
 
-  # Please be sure to impelement current_user and user_session. Blacklight depends on 
-  # these methods in order to perform user specific actions. 
+  # Please be sure to impelement current_user and user_session. Blacklight depends on
+  # these methods in order to perform user specific actions.
 
   layout 'blacklight'
 
-  # Please be sure to impelement current_user and user_session. Blacklight depends on 
-  # these methods in order to perform user specific actions. 
+  # Please be sure to impelement current_user and user_session. Blacklight depends on
+  # these methods in order to perform user specific actions.
 
   protect_from_forgery
 
@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
   rescue_from Exceptions::BadRequest, :with => :render_bad_request
   rescue_from Hydra::AccessDenied, :with => :render_access_denied
   rescue_from Exceptions::NotFound, :with => :render_not_found
-  
+
   def set_locale
     if current_user
       I18n.locale = current_user.locale
@@ -41,6 +41,11 @@ class ApplicationController < ActionController::Base
 
   def set_cookie
     cookies[:accept_cookies] = "yes" if current_user
+  end
+
+
+  def after_sign_out_path_for(resource_or_scope)
+    main_app.new_user_session_url
   end
 
 end
