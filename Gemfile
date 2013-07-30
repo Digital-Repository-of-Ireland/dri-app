@@ -8,7 +8,7 @@ gem 'blacklight', '4.0.0'
 gem 'hydra-head', '6.1.0'
 
 if ENV['DRI_BUNDLE_ENV'] == "tchpc"
-  gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :branch => 'develop'
+  gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :branch => 'release/0.0.1'
   gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :branch => 'develop'
 else
   gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'develop'
