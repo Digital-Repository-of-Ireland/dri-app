@@ -41,7 +41,7 @@ namespace :jetty do
 end
 
 desc "Run Continuous Integration"
-task :ci => ['jetty:reset', 'jetty:config'] do
+task :ci => ['jetty:reset', 'jetty:config', 'ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
   jetty_params = Jettywrapper.load_config
@@ -52,6 +52,11 @@ task :ci => ['jetty:reset', 'jetty:config'] do
   raise "test failures: #{error}" if error
 
   #Rake::Task["doc"].invoke
+end
+
+desc "Clean CI environment"
+task :ci_clean do
+  rm_rf 'features/reports'
 end
 
 namespace :rvm do
