@@ -7,13 +7,13 @@ gem 'rails', '3.2.11'
 gem 'blacklight', '4.0.0'
 gem 'hydra-head', '6.1.0'
 
-if ENV['DRI_BUNDLE_ENV'] == "tchpc"
-  gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :branch => 'develop'
+#if ENV['DRI_BUNDLE_ENV'] == "tchpc"
+  gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :branch => 'release/0.0.1'
   gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :branch => 'develop'
-else
-  gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'develop'
-  gem 'user_group', :git => 'git@dev.forasfeasa.ie:user_group.git', :branch => 'develop'
-end
+#else
+#  gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'develop'
+#  gem 'user_group', :git => 'git@dev.forasfeasa.ie:user_group.git', :branch => 'develop'
+#end
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -73,8 +73,6 @@ group :development, :test do
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false
-
-  gem 'ci_reporter'
 end
 
 group :test do
