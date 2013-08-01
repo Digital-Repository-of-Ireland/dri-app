@@ -51,7 +51,7 @@ task :ci => ['jetty:reset', 'jetty:config', 'ci_clean'] do
   end
   raise "test failures: #{error}" if error
 
-  #Rake::Task["doc"].invoke
+  Rake::Task["rdoc"].invoke
 end
 
 desc "Clean CI environment"
