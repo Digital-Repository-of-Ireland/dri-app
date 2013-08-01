@@ -55,6 +55,20 @@ task :ci => ['jetty:reset', 'jetty:config', 'ci_clean'] do
   Rake::Task["rdoc"].invoke
 end
 
+desc "Run Continuous Integration-spec"
+task :ci_spec => ['jetty:reset', 'jetty:config', 'ci_clean'] do
+  ENV['environment'] = "test"
+  Rake::Task['db:migrate'].invoke
+  jetty_params = Jettywrapper.load_config
+  jetty_params[:startup_wait]= 120
+  error = Jettywrapper.wrap(jetty_params) do
+    Rake::Task['spec'].invoke
+  end
+  raise "test failures: #{error}" if error
+
+  Rake::Task["rdoc"].invoke
+end
+
 desc "Clean CI environment"
 task :ci_clean do
   rm_rf 'features/reports'
