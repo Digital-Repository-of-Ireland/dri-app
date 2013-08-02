@@ -16,25 +16,27 @@ ga:
       locale: Teanga
     flash: 
       alert: 
+        create_permission: "You do not have permission to create this document."
+        edit_permission: "You do not have permission to edit this document."
         invalid_file_type: "Warning: The file does not appear to be a valid type"
         invalid_object: "Invalid Object: %{error}."
         invalid_xml: "Invalid XML: %{error}"
         not_added_to_collection: "Unable to add object to collection."
         not_removed_from_collection: "Unable to remove object from collection."
-        edit_permission: "You do not have permission to edit this document."
         read_permission: "You do not have permission to read this document."
-        create_permission: "You do not have permission to create this document."
         unknown_permission: "Unsupported Permission Level."
+        virus_detected: "Virus detected in uploaded file: %{virus}"
       error: 
         no_type_specified: "You must specify a valid object type"
-        validation_errors: "Validation Errors: %{error}"
         not_updated: "%{item} was not updated. Check set permissions"
+        validation_errors: "Validation Errors: %{error}"
       notice: 
         added_to_collection: "Object has been added to collection."
         collection_created: "Collection object has been successfully created."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
+        duplicate_object_ingested: "Possible duplicate objects found: %{duplicates}"
         file_uploaded: "File has been successfully uploaded."
         metadata_updated: "Metadata has been successfully updated."
         no_xml_schema: "The XML file contains no schema to validate against."
@@ -54,7 +56,7 @@ ga:
       home: Príomhleathanach
       ingest: "Glac isteach"
       privacy: "Privacy & Cookies policy"
-      usergroups: "T_Users & Groups"
+      usergroups: "Users & Groups"
     views: 
       catalog: 
         buttons: 
@@ -68,6 +70,7 @@ ga:
           files: Files
         legends: 
           no_files: "No file has been uploaded."
+          no_permission: "You do not have permission to view the asset file associated with this object. Please contact the digital object's owner to request access."
         links: 
           download: download
           edit_this_record: "Edit this record"
@@ -83,6 +86,7 @@ ga:
           new_collection: "New Collection"
           remove: Remove
           set_collection: "Set as Current"
+        edit: "Edit Collection"
         index: 
           items: 
             one: "%{count} item"
@@ -95,20 +99,19 @@ ga:
           objects: "Objects in Collection"
         new: 
           title: "New Collection"
-        edit: "Edit Collection"
       devise: 
         locale: Language
-      exceptions:
+      exceptions: 
         access_denied: "You do not have permission to perfrom the requested operation."
         internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"
         invalid_asset: "Unable to create asset. Please correct the errors and try again."
         invalid_collection: "Unable to create collection."
+        invalid_file: "Upload %{name} has failed validation."
         invalid_metadata: "The metadata file you have uploaded is invalid. Please correct the errors and try again."
         invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
         invalid_object_type: "You have specified an invalid digital object type."
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
-        invalid_file: "Upload %{name} has failed validation."
       ingest: 
         buttons: 
           continue: Continue
@@ -130,6 +133,27 @@ ga:
           object_type: "Select Object Type"
           upload: "Upload Metadata file"
       objects: 
+        access_controls: 
+          accessible_master_file: "Accessible Master File(s)"
+          date: "Date: "
+          depositor: Depositor
+          edit: "Edit Access"
+          embargo: Embargo
+          inherit: Inherit
+          manage: Managers
+          master_file: "Access Master File?"
+          master_file_desc: "If accessible then users with read access can download the master file(s)"
+          page: "Page Access"
+          private_master_file: "Private Master File(s)"
+          private_metadata: "Private Metadata"
+          private_metadata_access: "Since you have set access to metadata as private, you can add people here who you would like to be able to access the metadata."
+          private_metadata_warn: "Say about not wanting private metadata\\n(Open Metadata Policy: Defaults to open)"
+          public: Public
+          public_metadata: "Public Metadata"
+          read: "Read Access"
+          registered: "Logged In"
+          restricted: Restricted
+          search: "Search Access"
         buttons: 
           add_to_collection: "Add to Collection"
           replace_master: "Replace Master File"
@@ -164,30 +188,11 @@ ga:
           publisher: publisher
           rights: Rights
           sources: Sources
+          status: Status
           subjects: Subjects
           title: Title
-        access_controls:
-          private_metadata_warn: 'Say about not wanting private metadata\n(Open Metadata Policy: Defaults to open)'
-          private_metadata_access: "Since you have set access to metadata as private, you can add people here who you would like to be able to access the metadata."
-          depositor: "Depositor"
-          search: "Search Access"
-          page: "Page Access"
-          read: "Read Access"
-          edit: "Edit Access"
-          manage: "Managers"
-          embargo: "Embargo"
-          public_metadata: "Public Metadata"
-          private_metadata: "Private Metadata"
-          public: "Public"
-          registered: "Logged In"
-          restricted: "Restricted"
-          inherit: "Inherit"
-          master_file: "Access Master File?"
-          master_file_desc: "If accessible then users with read access can download the master file(s)"
-          accessible_master_file: "Accessible Master File(s)"
-          private_master_file: "Private Master File(s)"
-          date: "Date: "
         legends: 
+          access_control: "Access Controls"
           audio_caption: "A master audio file has already been uploaded."
           file_caption: "A master file has already been uploaded."
           metadata: Metadata
@@ -197,7 +202,6 @@ ga:
           upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
           upload_file_caption: "No files have been uploaded. Please upload a master file."
           upload_pdf: "Upload PDF File"
-          access_control: "Access Controls"
         links: 
           download: download
           listen: listen
