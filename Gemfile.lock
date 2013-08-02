@@ -1,7 +1,7 @@
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models
-  revision: 7a4f46973adb7fd14cb4ed6b8238383bb3eed72d
-  branch: release/0.0.1
+  revision: 44dcd2f71a9e28484a8400091c5264f8096257dc
+  branch: master
   specs:
     dri_data_models (0.0.1)
       hydra-access-controls (>= 6.1.0)
