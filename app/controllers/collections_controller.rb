@@ -2,7 +2,7 @@
 #
 require 'permission_methods'
 
-class CollectionsController < AssetsController
+class CollectionsController < CatalogController
   include PermissionMethods
 
   before_filter :authenticate_user!, :only => [:index, :create, :new, :show, :edit, :update]

@@ -1,9 +1,10 @@
+require 'checksum'
+require 'metadata_validator'
+
 #
 # Creates, updates, or retrieves, the descMetadata datastream for an object
 # 
-class MetadataController < AssetsController
-
-  require 'metadata_validator'
+class MetadataController < CatalogController
 
   before_filter :authenticate_user!, :only => [:create, :update]
 

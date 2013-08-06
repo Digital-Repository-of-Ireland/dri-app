@@ -1,41 +1,146 @@
-# Base controller for the asset managing controllers.
+# Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
 class AssetsController < CatalogController
-  require 'checksum'
 
-  include Hydra::AccessControlsEnforcement
-  include DRI::Metadata
-  include DRI::Model
-  #Moved from application controller due to routing issues with devise
-  include Blacklight::Catalog
+  require 'validators'
+  require 'background_tasks/queue_manager'
 
-  # Retrieves a Fedora Digital Object by ID
-  def retrieve_object(id)
-    return objs = ActiveFedora::Base.find(id,{:cast => true})
+  # Returns the directory on the local filesystem to use for storing uploaded files.
+  #
+  def local_storage_dir
+    Rails.root.join(Settings.dri.files)
   end
 
-  def retrieve_object!(id)
-    objs = ActiveFedora::Base.find(id,{:cast => true})
-    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') +" ID: #{id}" if objs.nil?
-    return objs
+  # Retrieves external datastream files that have been stored in the filesystem.
+  # By default, it retrieves the file in the masterContent datastream
+  #      
+  def show
+    enforce_permissions!("show_master", params[:id])
+
+    datastream = "masterContent"
+    @object = retrieve_object! params[:id]
+
+    @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
+                                                                { :f => @object.id, :d => datastream } ],
+                                            :order => "version DESC",
+                                            :limit => 1)
+
+    if !@local_file_info.empty?
+      logger.error "Using path: "+@local_file_info[0].path
+      send_file @local_file_info[0].path,
+                      :type => @local_file_info[0].mime_type,
+                      :stream => true,
+                      :buffer => 4096,
+                      :disposition => 'inline'
+      return
+    end
+
+    render :text => "Unable to find file"
   end
 
-  def check_for_duplicates(object)
-      @duplicates = duplicates(object)
+  # Stores an uploaded file to the local filesystem and then attaches it to one
+  # of the objects datastreams. masterContent is used by default.
+  #
+  def create
+    enforce_permissions!("edit" ,params[:id])
+    
+    datastream = "masterContent"
+    if params.has_key?(:datastream)
+      datastream = params[:datastream]
+    end
 
-      if @duplicates && !@duplicates.empty?
-        warning = t('dri.flash.notice.duplicate_object_ingested', :duplicates => @duplicates.map { |o| "'" + o.id + "'" }.join(", ").html_safe)
-        flash[:alert] = warning
-        @warnings = warning 
+    if !params.has_key?(:Filedata) || params[:Filedata].nil?
+      flash[:notice] = t('dri.flash.notice.specify_file')
+      redirect_to :controller => "catalog", :action => "show", :id => params[:id]
+      return
+    end
+
+    file_upload = params[:Filedata]
+
+    if datastream.eql?("masterContent")
+      @object = retrieve_object! params[:id]
+
+      if @object == nil
+        flash[:notice] = t('dri.flash.notice.specify_object_id')
+      else
+
+        validate_upload(file_upload)
+                
+        create_file(file_upload, @object.id, datastream, params[:checksum])
+        start_background_tasks
+        
+        @url = url_for :controller=>"assets", :action=>"show", :id=>params[:id]
+        @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
+
+        save_object
+      
+        flash[:notice] = t('dri.flash.notice.file_uploaded')
+
+        respond_to do |format|
+          format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:id]}
+          format.json  { 
+            if  !@warnings.nil?
+              response = { :checksum => @file.checksum, :warning => @warnings }
+            else
+              response = { :checksum => @file.checksum }
+            end
+            render :json => response, :status => :created 
+          }
+        end
+        return
+
       end
+    else
+      flash[:notice] = t('dri.flash.notice.specify_datastream')
+    end
+
+    redirect_to :controller => "catalog", :action => "show", :id => params[:id]
   end
 
   private
 
-  def duplicates(object)
-    if object.governing_collection && !object.governing_collection.nil?
-      ActiveFedora::Base.find(:is_governed_by_ssim => "info:fedora/#{object.governing_collection.id}", :metadata_md5_tesim => object.metadata_md5).delete_if{|obj| obj.id == object.pid}
+    def validate_upload(file_upload)
+      begin
+        Validators.validate_file(file_upload, @object.whitelist_type, @object.whitelist_subtypes)
+      rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
+        message = t('dri.flash.alert.invalid_file_type')
+        flash[:alert] = message
+        @warnings = message
+      rescue Exceptions::VirusDetected => e
+        flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+        raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', :name => file_upload.original_filename)
+        return
+      end
     end
-  end
 
-end
+    def create_file(filedata, object_id, datastream, checksum)
+      count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => object_id, :d => datastream } ]).count
+
+      dir = local_storage_dir.join(object_id).join(datastream+count.to_s)
+
+      @file = LocalFile.new
+      @file.add_file filedata, {:fedora_id => object_id, :ds_id => datastream, :directory => dir.to_s, :version => count, :checksum => checksum}
+
+      begin
+        raise Exceptions::InternalError unless @file.save!
+      rescue ActiveRecordError => e
+        logger.error "Could not save the asset file #{@file.path} for #{object_id} to #{datastream}: #{e.message}"
+        raise Exceptions::InternalError
+      end
+    end
+
+    def start_background_tasks
+      queue = BackgroundTasks::QueueManager.new()
+      queue.process(@object)
+    end
+
+    def save_object
+      begin
+        raise Exceptions::InternalError unless @object.save!
+      rescue RuntimeError => e
+        logger.error "Could not save object #{@object.id}: #{e.message}"
+        raise Exceptions::InternalError
+      end
+    end
+
+end 

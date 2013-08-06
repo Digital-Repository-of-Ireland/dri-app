@@ -1,4 +1,4 @@
-class CollectionItemsController < AssetsController
+class CollectionItemsController < CatalogController
 
   def update
 
