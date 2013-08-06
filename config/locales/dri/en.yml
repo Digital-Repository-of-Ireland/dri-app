@@ -143,7 +143,7 @@ en:
       objects: 
         access_controls: 
           accessible_master_file: "Accessible Master File(s)"
-          date: "Date: "
+          date: "Date"
           depositor: Depositor
           edit: "Edit Access"
           embargo: Embargo

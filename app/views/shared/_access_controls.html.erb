@@ -286,10 +286,10 @@
       <h5><%= t('dri.views.objects.access_controls.page') %></h5>
       <%= t('dri.views.objects.access_controls.private_metadata_access') %>
       <div>
-        <%= f.label :discover_users, t('user_groups.views.shared.users'), :class => "label inline"  %>
+        <%= f.label :discover_users, t('user_groups.views.shared.users'), :class => "label access_control_label"  %>
         <%= f.text_field :discover_users_string %>
         <br />
-        <%= f.label :discover_groups, t('user_groups.views.shared.groups'), :class => "label inline"  %>
+        <%= f.label :discover_groups, t('user_groups.views.shared.groups'), :class => "label access_control_label"  %>
         <%= f.text_field :discover_groups_string %>
       </div>
     </div>
@@ -308,10 +308,10 @@
       </div>
       <div id="read_access_entries">
         <br />
-        <%= f.label :read_users, t('user_groups.views.shared.users'), :class => "label inline" %>
+        <%= f.label :read_users, t('user_groups.views.shared.users'), :class => "label access_control_label" %>
         <%= f.text_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
         <br />
-        <%= f.label :read_groups, t('user_groups.views.shared.groups'), :class => "label inline" %>
+        <%= f.label :read_groups, t('user_groups.views.shared.groups'), :class => "label access_control_label" %>
         <%= f.text_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
       </div>
     </div>
@@ -341,10 +341,10 @@
 
         <div id="edit_access_entries">
             <br />
-            <%= f.label :edit_users, t('user_groups.views.shared.users'), :class => "label inline" %>
+            <%= f.label :edit_users, t('user_groups.views.shared.users'), :class => "label access_control_label" %>
             <%= f.text_field :edit_users_string, :onkeyup=>"edit_user_textbox.catch_tb_value();" %>
             <br />
-            <%= f.label :edit_groups, t('user_groups.views.shared.groups'), :class => "label inline" %>
+            <%= f.label :edit_groups, t('user_groups.views.shared.groups'), :class => "label access_control_label" %>
             <%= f.text_field :edit_groups_string, :onkeyup=>"edit_group_textbox.catch_tb_value();" %>
         </div>
       </div>
@@ -361,10 +361,10 @@
 
             <div id="manager_access_entries">
                 <br />
-                <%= f.label :manager_users, t('user_groups.views.shared.users'), :class => "label inline" %>
+                <%= f.label :manager_users, t('user_groups.views.shared.users'), :class => "label access_control_label" %>
                 <%= f.text_field :manager_users_string, :onkeyup=>"manager_user_textbox.catch_tb_value();" %>
                 <br />
-                <%= f.label :manager_groups, t('user_groups.views.shared.groups'), :class => "label inline" %>
+                <%= f.label :manager_groups, t('user_groups.views.shared.groups'), :class => "label access_control_label" %>
                 <%= f.text_field :manager_groups_string, :onkeyup=>"manager_group_textbox.catch_tb_value();" %>
             </div>
         </div>
@@ -378,12 +378,11 @@
             <%= f.label :manager_users, t('dri.views.objects.access_controls.inherit'), :class => "label inline" %>
             <%= f.radio_button :embargo, "radio_restricted", :onclick => "embargo_field_toggle();" %>
             <%= f.label :embargo, t('dri.views.objects.access_controls.restricted'), :class => "label label-important inline" %>
-
-            <br />
-            <div id="embargo_access_entries">
+        </div>
+        <br />
+        <div id="embargo_access_entries">
                 <%= f.label :embargo, t('dri.views.objects.access_controls.date'), :class => "label inline" %>
                 <%= f.text_field :embargo, :onkeyup=>"embargo_textbox.catch_tb_value();" %>
-            </div>
         </div>
-      </div>
   </div>
+  <br />
