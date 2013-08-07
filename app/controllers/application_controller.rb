@@ -3,6 +3,9 @@ require 'exceptions'
 class ApplicationController < ActionController::Base
   before_filter :set_locale, :set_cookie, :authenticate_user!
 
+  include DRI::Metadata
+  include DRI::Model
+
   include HttpAcceptLanguage
 
   # Adds a few additional behaviors into the application controller
@@ -46,6 +49,35 @@ class ApplicationController < ActionController::Base
 
   def after_sign_out_path_for(resource_or_scope)
     main_app.new_user_session_url
+  end
+
+  # Retrieves a Fedora Digital Object by ID
+  def retrieve_object(id)
+    return objs = ActiveFedora::Base.find(id,{:cast => true})
+  end
+
+  def retrieve_object!(id)
+    objs = ActiveFedora::Base.find(id,{:cast => true})
+    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') +" ID: #{id}" if objs.nil?
+    return objs
+  end
+
+  def check_for_duplicates(object)
+      @duplicates = duplicates(object)
+
+      if @duplicates && !@duplicates.empty?
+        warning = t('dri.flash.notice.duplicate_object_ingested', :duplicates => @duplicates.map { |o| "'" + o.id + "'" }.join(", ").html_safe)
+        flash[:alert] = warning
+        @warnings = warning
+      end
+  end
+
+  private
+
+  def duplicates(object)
+    if object.governing_collection && !object.governing_collection.nil?
+      ActiveFedora::Base.find(:is_governed_by_ssim => "info:fedora/#{object.governing_collection.id}", :metadata_md5_tesim => object.metadata_md5).delete_if{|obj| obj.id == object.pid}
+    end
   end
 
 end

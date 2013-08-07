@@ -5,7 +5,7 @@
   <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => document.id %>" id="download_metadata">view</a></dd>
   <dt>File: </dt>
 <% if @datastreams.has_key?('masterContent') %>
-   <dd><%= link_to "download", url_for(:controller => 'files', :action => 'show', :id => @document.id), :id => "download_asset" %></dd>
+   <dd><%= link_to "download", url_for(:controller => 'assets', :action => 'show', :id => @document.id), :id => "download_asset" %></dd>
 <% else %>
    <dd>No file has been uploaded.</dd>
 <% end %>

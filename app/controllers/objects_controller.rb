@@ -5,7 +5,7 @@ require 'stepped_forms'
 require 'checksum'
 require 'permission_methods'
 
-class ObjectsController < AssetsController
+class ObjectsController < CatalogController
   include SteppedForms
   include PermissionMethods
 
