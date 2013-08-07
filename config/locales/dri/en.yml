@@ -128,6 +128,7 @@ en:
           new_collection: "New collection"
           reset: Reset
         forms:
+          status_prompt: "Select status"
           collection_prompt: "Select collection"
           ingest_method_prompt: "Select ingest method"
           object_type_prompt: "Select object type"

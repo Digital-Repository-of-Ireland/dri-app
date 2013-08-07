@@ -61,4 +61,8 @@
   <% end %>
   <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Source"><%= t('dri.views.objects.forms.add_source') %></a></p>
 </fieldset>
+<fieldset id="status">
+  <%= f.label "#{t('dri.views.objects.forms.status')}:" %>
+  <%= f.select :status, ['draft','review','published'],:class => "edit span6" %>
+</fieldset>
 
