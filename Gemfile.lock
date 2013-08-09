@@ -1,6 +1,6 @@
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models
-  revision: 44dcd2f71a9e28484a8400091c5264f8096257dc
+  revision: f93e88e426673727a4e9d092f50f950e6ae02160
   branch: master
   specs:
     dri_data_models (0.0.1)
@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group
-  revision: d61589ae8f75719c8cbfb14c210f20af41833170
+  revision: c95f3acc0b3edf119fc362b4fca03a207d736a5b
   branch: develop
   specs:
     user_group (0.0.5)
@@ -37,7 +37,7 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
-    active-fedora (6.4.4)
+    active-fedora (6.4.5)
       activesupport (>= 3.0.0)
       deprecation
       mediashelf-loggable
@@ -112,7 +112,7 @@ GEM
     debug_inspector (0.0.2)
     deprecation (0.0.5)
       activesupport
-    devise (2.2.4)
+    devise (2.2.6)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (~> 3.1)
@@ -141,7 +141,7 @@ GEM
     gherkin (2.12.0)
       multi_json (~> 1.3)
     gravatar-ultimate (1.0.3)
-    guard (1.8.1)
+    guard (1.8.2)
       formatador (>= 0.2.4)
       listen (>= 1.0.0)
       lumberjack (>= 1.0.2)
@@ -229,9 +229,9 @@ GEM
     mimemagic (0.2.1)
     mini_portile (0.5.1)
     mono_logger (1.1.0)
-    multi_json (1.7.7)
+    multi_json (1.7.8)
     multi_test (0.0.2)
-    mysql2 (0.3.13)
+    mysql2 (0.3.11)
     noid (0.5.5)
       backports
     nokogiri (1.6.0)
@@ -266,7 +266,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    railroady (1.1.0)
+    railroady (1.1.1)
     rails (3.2.11)
       actionmailer (= 3.2.11)
       actionpack (= 3.2.11)
@@ -304,7 +304,7 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     redis (3.0.4)
-    redis-namespace (1.3.0)
+    redis-namespace (1.3.1)
       redis (~> 3.0.0)
     resque (1.24.1)
       mono_logger (~> 1.0)
@@ -325,7 +325,7 @@ GEM
     rspec-core (2.14.4)
     rspec-expectations (2.14.0)
       diff-lcs (>= 1.1.3, < 2.0)
-    rspec-mocks (2.14.1)
+    rspec-mocks (2.14.2)
     rspec-rails (2.14.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
