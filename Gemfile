@@ -73,6 +73,8 @@ group :development, :test do
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false
+
+  gem 'ci_reporter'
 end
 
 group :test do

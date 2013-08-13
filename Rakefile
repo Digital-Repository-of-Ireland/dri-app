@@ -9,6 +9,7 @@ NuigRnag::Application.load_tasks
 require 'rake/testtask'
 require 'bundler'
 require 'jettywrapper'
+require 'ci/reporter/rake/rspec'
 
 begin
   require 'rdoc/task'
@@ -38,6 +39,12 @@ namespace :jetty do
     sleep 2
   end
 
+end
+
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
+  rspec.pattern = FileList['spec/*_spec.rb']
 end
 
 desc "Run Continuous Integration"
