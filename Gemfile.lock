@@ -9,10 +9,10 @@ GIT
 
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group
-  revision: c95f3acc0b3edf119fc362b4fca03a207d736a5b
+  revision: fc96fee322584d3a8e696735a52715655a5f029e
   branch: develop
   specs:
-    user_group (0.0.5)
+    user_group (0.0.6)
       devise (~> 2.2.3)
       devise-guests (~> 0.3)
       devise-i18n-views
