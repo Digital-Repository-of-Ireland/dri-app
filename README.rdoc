@@ -33,6 +33,14 @@ To start the application for demo purposes
   $ rake jetty:start
   $ bundle exec rails server
 
+The db:seed step above will create 3 initial accounts:
+
+* admin@dri.ie (admin user)
+* manager@dri.ie (collection manager)
+* user@dri.ie (public user)
+
+The password for all 3 accounts is 'password'
+
 To run the unit tests
 
   $ cd nuig-rnag
