@@ -58,6 +58,12 @@ module FlashTranslator
     when /invalid profile image/
       strip_vars( I18n.t("user_groups.users.errors.validation_image_link", :locale => "en") )
 
+    when /invalid collection/
+      I18n.t('dri.flash.error.not_created', :locale => @user.locale)
+
+    when /invalid update collection/
+      strip_vars( I18n.t('dri.flash.error.not_updated', :locale => @user.locale) )
+
     else "Unknown"
  
     end

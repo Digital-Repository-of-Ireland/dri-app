@@ -1,25 +1,26 @@
 module PermissionMethods
+
   private
 
     def set_private_metadata_permission(selected_level)
       case selected_level
       when "radio_public"
-        return "0"
+        return UserGroup::Permissions::PUBLIC_METADATA #"0"
       when "radio_private"
-        return "1"
+        return UserGroup::Permissions::PRIVATE_METADATA #"1"
       when "radio_inherit"
-        return "-1"
+        return UserGroup::Permissions::INHERIT_METADATA #"-1"
       end
     end
 
     def set_master_file_permission(selected_level)
       case selected_level
       when "radio_public"
-        return "1"
+        return UserGroup::Permissions::PUBLIC_MASTERFILE #"1"
       when "radio_private"
-        return "0"
+        return UserGroup::Permissions::PRIVATE_MASTERFILE #"0"
       when "radio_inherit"
-        return "-1"
+        return UserGroup::Permissions::INHERIT_MASTERFILE #"-1"
       end
     end
 

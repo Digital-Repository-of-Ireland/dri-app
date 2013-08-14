@@ -107,7 +107,6 @@ Scenario: Constructing a Digital Object using the web form without setting a col
   Then I should see a success message for ingestion
   And I should see the valid metadata
 
-@test
 Scenario: Editing the metadata of a Digital Object using the web form
   Given I have created a Digital Object
   Then I should see a link to edit an object

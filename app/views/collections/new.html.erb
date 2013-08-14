@@ -4,6 +4,8 @@
 
   <%= render :partial => "form_collection", :locals => { :f => f } %>
 
+  <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @collection } %>
+
 <%= f.submit t('dri.views.collection.buttons.create_collection'), :class => "btn-primary btn-large", :id => "create_new_collection" %>
 
 <% end %>

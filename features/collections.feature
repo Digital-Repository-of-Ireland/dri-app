@@ -21,6 +21,30 @@ Scenario: Constructing a valid collection
   And I press the button to create a collection
   Then I should see a success message for creating a collection
 
+Scenario: Constructing a collection with valid permissions
+  Given I am on the my collections page
+  When I press the button to add new collection
+  And I enter valid metadata for a collection
+  And I enter valid permissions for a collection
+  And I press the button to create a collection
+  Then I should see a success message for creating a collection
+
+Scenario: Constructing a collection with invalid permissions
+  Given I am on the my collections page
+  When I press the button to add new collection
+  And I enter valid metadata for a collection
+  And I enter invalid permissions for a collection
+  And I press the button to create a collection
+  Then I should see a failure message for "invalid collection"
+
+Scenario: Updating a collection with invalid permissions
+  Given a collection with pid "dri:collperm" created by "user1@user1.com"
+  When I go to the "collection" "show" page for "dri:collperm"
+  When I follow the link to edit a collection
+  And I enter invalid permissions for a collection
+  And I press the button to save collection changes
+  Then I should see a failure message for "invalid update collection"
+
 Scenario Outline: Adding a Digital Object in a governing/non-governing collection
   Given a Digital Object with pid "<object_pid>" and title "<object_title>"
   And a collection with pid "<collection_pid>"

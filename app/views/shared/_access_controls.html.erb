@@ -1,4 +1,5 @@
 <% disabled_inherit = (record.is_a? DRI::Model::Collection) ? true : false  %>
+<% allow_manage = (record.is_a?(DRI::Model::Collection) && record.new_record?) ? true : false %>
 
 <script type="text/javascript">
     function ImprovedTextBox(textbox_str){
@@ -350,7 +351,7 @@
       </div>
     </div>
 
-    <% if can? :manage_collection, record %>
+    <% if allow_manage || (can? :manage_collection, record) %>
       <div class="field">
         <h5><%= t('dri.views.objects.access_controls.manage') %></h5>
         <div class="control">

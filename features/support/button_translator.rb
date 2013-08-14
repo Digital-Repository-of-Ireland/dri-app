@@ -16,6 +16,9 @@ module ButtonTranslator
     when /save changes/
       "save_edit"
 
+    when /save collection changes/
+      "edit_collection"
+
     when /upload a file/
       "upload_file"
 
