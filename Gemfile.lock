@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group
-  revision: fc96fee322584d3a8e696735a52715655a5f029e
+  revision: 0032f0aef11940075c54fa7865b05f99c950ba28
   branch: develop
   specs:
     user_group (0.0.6)
