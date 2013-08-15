@@ -121,7 +121,7 @@ When /^I follow the view link for "([^\"]*)"$/ do |login|
 end
 
 Then /^I should see the edit page$/ do
-  page.should have_content("Edit Account")
+  current_path.should == user_group.edit_user_path(@user)
 end
 
 When /^I submit the Edit User form$/ do
