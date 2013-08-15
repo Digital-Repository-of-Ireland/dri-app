@@ -13,4 +13,4 @@
 <h2><%= t('dri.views.collection.legends.objects') %></h2>
 <%= render :partial => 'item', :collection => @collection.items, :locals => {:collection_id => @collection.pid} %>
 
-<%= link_to t('dri.views.collection.edit'), edit_collection_path %>
+<%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %>
