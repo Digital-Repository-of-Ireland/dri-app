@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group
-  revision: 281cd28d45e2eeb665b18d02f9aeeb18adf13b75
+  revision: e7d39c17ec02f75fda825f79999ab7032eb2275c
   branch: develop
   specs:
     user_group (0.0.6)
@@ -347,6 +347,7 @@ GEM
       rest-client
     rufus-scheduler (2.0.23)
       tzinfo (>= 0.3.23)
+    rvm (1.11.3.8)
     sass (3.2.10)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -455,6 +456,7 @@ DEPENDENCIES
   resque-scheduler
   resque-status
   rspec-rails
+  rvm
   sass-rails (~> 3.2.3)
   shoulda
   show_me_the_cookies
