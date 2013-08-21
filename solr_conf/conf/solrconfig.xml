@@ -3,9 +3,9 @@
   <!-- NOTE: various comments and unused configuration possibilities have been purged
      from this file.  Please refer to http://wiki.apache.org/solr/SolrConfigXml,
      as well as the default solrconfig file included with Solr -->
-  
+
   <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
-  
+
   <luceneMatchVersion>LUCENE_40</luceneMatchVersion>
 
   <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
@@ -13,7 +13,7 @@
   <!-- solr lib dirs -->
   <lib dir="../lib/contrib/analysis-extras/lib" />
   <lib dir="../lib/contrib/analysis-extras/lucene-libs" />
-  
+
   <dataDir>${solr.data.dir:}</dataDir>
 
   <requestHandler name="search" class="solr.SearchHandler" default="true">
@@ -30,7 +30,7 @@
        <float name="tie">0.01</float>
        <!-- this qf and pf are used by default, if not otherwise specified by
             client. The default blacklight_config will use these for the
-            "keywords" search. See the author_qf/author_pf, title_qf, etc 
+            "keywords" search. See the author_qf/author_pf, title_qf, etc
             below, which the default blacklight_config will specify for
             those searches. You may also be interested in:
             http://wiki.apache.org/solr/LocalParams
@@ -57,7 +57,7 @@
        <str name="author_pf">
          author_unstem_search^2000
          author_tesim^200
-       </str> 
+       </str>
        <str name="title_qf">
          title_unstem_search^50000
          title_tesim^5000
@@ -76,7 +76,7 @@
        </str>
 
        <str name="fl">
-         *, 
+         *,
          score
        </str>
 
@@ -87,7 +87,7 @@
        <str name="facet.field">language_sim</str>
        <str name="facet.field">subject_era_sim</str>
        <str name="facet.field">subject_geo_sim</str>
- 
+
        <str name="spellcheck">true</str>
        <str name="spellcheck.dictionary">default</str>
        <str name="spellcheck.onlyMorePopular">true</str>
@@ -118,12 +118,12 @@
         embargo_release_date_dtsi,
         private_metadata_isi,
         master_file_isi,
-        properties_status_ssm,
+        properties_status_ssim,
         is_governed_by_ssim
       </str>
     </lst>
   </requestHandler>
-  
+
   <requestHandler name="standard" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="echoParams">explicit</str>
@@ -192,17 +192,17 @@
       <str name="buildOnOptimize">true</str>
     </lst>
   </searchComponent>
-  
-  <requestHandler name="/replication" class="solr.ReplicationHandler" startup="lazy" /> 
-  
+
+  <requestHandler name="/replication" class="solr.ReplicationHandler" startup="lazy" />
+
   <requestDispatcher handleSelect="true" >
     <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048" />
   </requestDispatcher>
-  
+
   <requestHandler name="/analysis/field" startup="lazy" class="solr.FieldAnalysisRequestHandler" />
   <requestHandler name="/update" class="solr.UpdateRequestHandler"  />
   <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
-  
+
   <requestHandler name="/admin/ping" class="solr.PingRequestHandler">
     <lst name="invariants">
       <str name="q">solrpingquery</str>
@@ -211,10 +211,10 @@
       <str name="echoParams">all</str>
     </lst>
   </requestHandler>
-  
-  <!-- config for the admin interface --> 
+
+  <!-- config for the admin interface -->
   <admin>
     <defaultQuery>search</defaultQuery>
   </admin>
-  
+
 </config>
