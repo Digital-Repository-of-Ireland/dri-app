@@ -3,7 +3,8 @@
   <%= f.hidden_field :type, {:value => @type} %>
   <%= f.hidden_field :governing_collection, {:value => @collection} %>
 
+  <%= render :partial => "shared/form_default_permissions", :locals => { :f => f } %>
   <%= render :partial => "shared/form_pdf", :locals => { :f => f, :action => "create" } %>
 
-  <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "save_edit" %>
+  <%= f.submit t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>
 <% end %>

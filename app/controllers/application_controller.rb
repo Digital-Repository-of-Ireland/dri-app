@@ -1,4 +1,5 @@
 require 'exceptions'
+require 'permission_methods'
 
 class ApplicationController < ActionController::Base
   before_filter :set_locale, :set_cookie, :authenticate_user!
@@ -17,6 +18,8 @@ class ApplicationController < ActionController::Base
   include Exceptions
 
   include UserGroup::PermissionsCheck
+
+  include PermissionMethods
 
   # Please be sure to impelement current_user and user_session. Blacklight depends on
   # these methods in order to perform user specific actions.
@@ -46,6 +49,10 @@ class ApplicationController < ActionController::Base
     cookies[:accept_cookies] = "yes" if current_user
   end
 
+  def set_access_permissions(key)
+      params[key][:private_metadata] = set_private_metadata_permission(params[key].delete(:private_metadata)) if params[key][:private_metadata].present?
+      params[key][:master_file] = set_master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
+    end
 
   def after_sign_out_path_for(resource_or_scope)
     main_app.new_user_session_url

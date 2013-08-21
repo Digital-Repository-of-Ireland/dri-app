@@ -65,6 +65,8 @@
         //Must add mdlscl when they're created
         model_str = <%= (record.is_a? DRI::Model::Collection) ? "mdlcl" : "mdl"  %>
 
+        discover_user_textbox = new ImprovedTextBox('#'+model_str+'_discover_users_string');
+        discover_group_textbox = new ImprovedTextBox('#'+model_str+'_discover_groups_string');
         init_search_access();
 
         read_user_textbox = new ImprovedTextBox('#'+model_str+'_read_users_string');
@@ -147,7 +149,9 @@
     function search_field_toggle(){
         var val = $('input[name="'+model_str+'[private_metadata]"]:checked').val();
         if(val=="radio_public" || val=="radio_inherit"){
-            $('#page_access_entries').hide();
+           discover_group_textbox.val(""); 
+           discover_user_textbox.val("");
+           $('#page_access_entries').hide();
         }else if(val=="radio_private"){
             var text= "<%= t('dri.views.objects.access_controls.private_metadata_warn') %>"
             alert(text);
@@ -288,10 +292,10 @@
       <%= t('dri.views.objects.access_controls.private_metadata_access') %>
       <div>
         <%= f.label :discover_users, t('user_groups.views.shared.users'), :class => "label access_control_label"  %>
-        <%= f.text_field :discover_users_string %>
+        <%= f.text_field :discover_users_string, :onkeyup=>"discover_user_textbox.catch_tb_value();" %>
         <br />
         <%= f.label :discover_groups, t('user_groups.views.shared.groups'), :class => "label access_control_label"  %>
-        <%= f.text_field :discover_groups_string %>
+        <%= f.text_field :discover_groups_string, :onkeyup=>"discover_group_textbox.catch_tb_value();" %>
       </div>
     </div>
 

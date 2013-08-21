@@ -90,12 +90,15 @@ class MetadataController < CatalogController
 
     load_xml(params[:metadata_file])
 
+    set_access_permissions(:dri_model)
+
     construct_object
     set_metadata_datastream
     add_to_collection
     check_for_duplicates(@object)
 
-    @object.apply_depositor_metadata(current_user.to_s)
+    #@object.apply_depositor_metadata(current_user.to_s)
+    @object.depositor = current_user.to_s 
 
     save_object
 

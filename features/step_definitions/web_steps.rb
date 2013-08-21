@@ -139,6 +139,16 @@ When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|
   interface.enter_valid_metadata(title)
 end
 
+When /^I enter valid "(audio|pdfdoc)" metadata$/ do |type|
+  title ||= "A Test Object"
+  case type
+    when "audio"
+      interface.enter_valid_metadata(title)
+    when "pdfdoc"
+      interface.enter_valid_pdf_metadata(title)
+  end
+end
+
 When /^I enter modified metadata$/ do
   interface.enter_modified_metadata
 end
@@ -305,4 +315,17 @@ end
 Then /^I should see a section with id "([^\"]+)"$/ do |div_name|
   selector = "div#" + div_name
   page.should have_selector(selector)
+end
+
+When /^I accept the alert$/ do
+  page.driver.browser.switch_to.alert.accept  
+end
+
+Then(/^the radio button "(.*?)" is "(.*?)"$/) do |field, status|
+  case status
+    when "checked"
+      page.has_checked_field?(field)
+    when "not checked"
+      page.has_no_checked_field?(field)
+  end
 end

@@ -1,9 +1,7 @@
 # Controller for the Collection model
 #
-require 'permission_methods'
 
 class CollectionsController < CatalogController
-  include PermissionMethods
 
   before_filter :authenticate_user!, :only => [:index, :create, :new, :show, :edit, :update]
 
@@ -33,9 +31,14 @@ class CollectionsController < CatalogController
   def new
     enforce_permissions!("create", DRI::Model::Collection)
     @collection = DRI::Model::Collection.new
+    
+    # configure default permissions
     @collection.apply_depositor_metadata(current_user.to_s)
     @collection.manager_users_string=current_user.to_s
-    @collection.apply_default_permissions
+    @collection.read_groups_string="registered"
+    @collection.discover_groups_string="public"
+    @collection.private_metadata="0"
+    @collection.master_file="1"
 
     respond_to do |format|
       format.html
@@ -82,9 +85,9 @@ class CollectionsController < CatalogController
     #For sub collections will have to set a governing_collection_id
     #Create a sub collections controller?
 
-    set_access_permissions(params)
+    set_access_permissions(:dri_model_collection)
 
-    if !valid_permissions?(params) 
+    if !valid_permissions? 
       flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])
     else
       @collection.update_attributes(params[:dri_model_collection])
@@ -102,14 +105,14 @@ class CollectionsController < CatalogController
   def create
     enforce_permissions!("create",DRI::Model::Collection)
     
-    set_access_permissions(params)
+    set_access_permissions(:dri_model_collection)
 
     @collection = DRI::Model::Collection.new(params[:dri_model_collection])
 
     # depositor is not submitted as part of the form
     @collection.depositor = current_user.to_s
 
-    if !valid_permissions?(params)
+    if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_created')
       render :action => :new
       return 
@@ -141,12 +144,7 @@ class CollectionsController < CatalogController
 
   private
 
-    def set_access_permissions(params)
-      params[:dri_model_collection][:private_metadata] = set_private_metadata_permission(params[:dri_model_collection].delete(:private_metadata)) if params[:dri_model_collection][:private_metadata].present?
-      params[:dri_model_collection][:master_file] = set_master_file_permission(params[:dri_model_collection].delete(:master_file)) if params[:dri_model_collection][:master_file].present?
-    end
-
-    def valid_permissions?(params)
+    def valid_permissions?
       if ((params[:dri_model_collection][:private_metadata].blank? || params[:dri_model_collection][:private_metadata]==UserGroup::Permissions::INHERIT_METADATA) ||
        (params[:dri_model_collection][:master_file].blank? || params[:dri_model_collection][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
        (params[:dri_model_collection][:read_groups_string].blank? && params[:dri_model_collection][:read_users_string].blank?) ||

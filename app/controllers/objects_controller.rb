@@ -3,11 +3,9 @@
 
 require 'stepped_forms'
 require 'checksum'
-require 'permission_methods'
 
 class ObjectsController < CatalogController
   include SteppedForms
-  include PermissionMethods
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
@@ -34,10 +32,7 @@ class ObjectsController < CatalogController
       @object.governing_collection = collection
     end
 
-    params[:dri_model][:private_metadata] = set_private_metadata_permission(params[:dri_model].delete(:private_metadata)) if params[:dri_model][:private_metadata].present?
-    params[:dri_model][:master_file] = set_master_file_permission(params[:dri_model].delete(:master_file)) if params[:dri_model][:master_file].present?
-
-    #Private_metadata cannot be set to -1 (inherit)
+    set_access_permissions(:dri_model)
 
     @object.update_attributes(params[:dri_model])
 
@@ -67,6 +62,8 @@ class ObjectsController < CatalogController
       type = params[:dri_model][:type]
       params[:dri_model].delete(:type)
 
+      set_access_permissions(:dri_model)
+
       @object = DRI::Model::DigitalObject.construct(type.to_sym, params[:dri_model])
     else
       flash[:alert] = t('dri.flash.error.no_type_specified')
@@ -75,7 +72,9 @@ class ObjectsController < CatalogController
     end
 
     #Adds user as depositor and also grants edit permission (Clears permissions for current_user)
-    @object.apply_depositor_metadata(current_user.to_s)
+    #@object.apply_depositor_metadata(current_user.to_s)
+    # depositor is not submitted as part of the form
+    @object.depositor = current_user.to_s 
 
     checksum_metadata(@object)
     check_for_duplicates(@object)
