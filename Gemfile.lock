@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group
-  revision: e7d39c17ec02f75fda825f79999ab7032eb2275c
+  revision: 3e94dea77235434a24957f5cdc87f05af5a007ab
   branch: develop
   specs:
     user_group (0.0.6)
@@ -114,7 +114,7 @@ GEM
     debug_inspector (0.0.2)
     deprecation (0.0.5)
       activesupport
-    devise (2.2.6)
+    devise (2.2.7)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (~> 3.1)
@@ -233,7 +233,7 @@ GEM
     mono_logger (1.1.0)
     multi_json (1.7.9)
     multi_test (0.0.2)
-    mysql2 (0.3.11)
+    mysql2 (0.3.13)
     noid (0.5.5)
       backports
     nokogiri (1.6.0)
