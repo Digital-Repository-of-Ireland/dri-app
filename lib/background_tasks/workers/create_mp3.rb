@@ -63,7 +63,7 @@ class CreateMp3
     stdout.close
     err = stderr.read
     stderr.close
-    raise Exceptions::BadCommand "Unable to execute command \"#{command}\"\n#{err}" unless wait_thr.value.success?
+    raise BadCommand "Unable to execute command \"#{command}\"\n#{err}" unless wait_thr.value.success?
   end
 
 
