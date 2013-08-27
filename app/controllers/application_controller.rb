@@ -50,9 +50,11 @@ class ApplicationController < ActionController::Base
   end
 
   def set_access_permissions(key)
+    if params.key?(key)
       params[key][:private_metadata] = set_private_metadata_permission(params[key].delete(:private_metadata)) if params[key][:private_metadata].present?
       params[key][:master_file] = set_master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
     end
+  end
 
   def after_sign_out_path_for(resource_or_scope)
     main_app.new_user_session_url
