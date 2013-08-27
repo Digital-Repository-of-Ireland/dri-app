@@ -149,7 +149,7 @@ module Hydra
       if current_user.applicable_policy?(SETTING_POLICY_ADMIN)
         can :admin_flag, :all
         #Disabled for now..
-        #can :manage, :all
+        can :manage, :all
       end
 
       #Create_do flag (alias for :edit collection)

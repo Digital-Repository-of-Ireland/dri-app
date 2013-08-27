@@ -9,6 +9,7 @@
 
         <li>
           <%= link_to collection.title, collection_path(:id => collection.id) %> (<%= t('dri.views.collection.index.items', :count => collection.governed_items.count + collection.items.count) %>)
+
           <% if !get_current_collection.nil? && get_current_collection.id.eql?(collection.id) %>
 
             <%= form_tag (clear_current_collection_path(collection)), :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
