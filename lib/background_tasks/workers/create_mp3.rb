@@ -23,7 +23,7 @@ class CreateMp3
 
     begin
       transcode(workingfile, output_options, outputfile)
-    rescue BadCommand => e
+    rescue Exceptions::BadCommand => e
       Rails.logger.error "Failed to transcode file"
       # report failure
       # requeue?
