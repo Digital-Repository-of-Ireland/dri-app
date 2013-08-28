@@ -63,6 +63,14 @@ describe "workers" do
         CreateMp3.transcode(input_file, options, output_file)
         File.exists?(output_file).should be true
       end
+
+      it "should raise an error when a command fails" do
+        tmpdir = Dir::tmpdir
+        input_file = File.join(fixture_path, "SAMPLEA.mp3")
+        output_file = File.join(tmpdir, "testout.mp3")
+        options = "-y -ac 2 -ab 96k -ar 44100 --foo"
+        expect { CreateMp3.transcode(input_file, options, output_file)}.to raise_error(Exceptions::BadCommand)
+      end
     end
   
     describe "perform" do
@@ -115,6 +123,14 @@ describe "workers" do
         options = "-y -ac 2 -ab 96k -ar 44100"
         CreateOgg.transcode(input_file, options, output_file)
         File.exists?(output_file).should be true
+      end
+
+      it "should raise an error when a command fails" do
+        tmpdir = Dir::tmpdir
+        input_file = File.join(fixture_path, "SAMPLEA.mp3")
+        output_file = File.join(tmpdir, "testout.mp3")
+        options = "-y -ac 2 -ab 96k -ar 44100 --foo"
+        expect { CreateOgg.transcode(input_file, options, output_file)}.to raise_error(Exceptions::BadCommand)
       end
     end
   

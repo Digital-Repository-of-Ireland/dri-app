@@ -22,10 +22,6 @@ class IngestJob
     Rails.logger.info "Ingesting #{object_id}"
 
     @object = ActiveFedora::Base.find(object_id,{:cast => true})
-
-    initial_status = @object.status
-
-    set_status("processing")
     
     type = @object.class.name.demodulize.downcase
 
@@ -39,14 +35,7 @@ class IngestJob
       end
     end
 
-    set_status(initial_status)
-
     Rails.logger.info "Completed processing #{object_id}"
-  end
-
-  def self.set_status(status)
-    @object.status = status
-    @object.save
   end
 
   def self.run_in_background(tasks, object_id)
