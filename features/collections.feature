@@ -86,6 +86,22 @@ Scenario: Removing a Digital Object from a non-governing collection using the we
   When I go to the "collection" "show" page for "dri:coll5"
   Then I should not see the Digital Object "dri:obj5" as part of the non-governing collection
 
+Scenario: Deleting a collection as an admin
+  Given I am not logged in
+  Given I am logged in as "admin" in the group "admin"
+  Given a collection with pid "dri:coll6" created by "user1@user1.com"
+  When I go to the "collection" "show" page for "dri:coll6"
+  And I follow the link to edit a collection
+  Then I should see a button to delete collection with id dri:coll6
+  When I press the button to delete collection with id dri:coll6
+  Then I should see a success message for "deleting a collection"
+
+Scenario: Non-admin should not be given option to delete
+  Given a collection with pid "dri:coll7" created by "user1@user1.com"
+  When I go to the "collection" "show" page for "dri:coll7"
+  And I follow the link to edit a collection
+  Then I should not see a button to delete collection with id dri:coll7
+
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
 #  Given a Digital Object with pid "dri:obj6" and title "Object 6"
 #  And a collection with pid "dri:coll6"

@@ -180,12 +180,12 @@ Then /^(?:|I )press the button to (.+)$/ do |button|
   click_link_or_button(button_to_id(button))
 end 
 
-Then /^(?:|I )should see a link to (.+)$/ do |link|
-  page.should have_link(link_to_id(link))
+Then /^(?:|I )should( not)? see a button to (.+)$/ do |negate,button|
+   negate ? (page.should_not have_button(button_to_id(button))) : (page.should have_button(button_to_id(button)))
 end
 
-Then /^(?:|I )should not see a link to (.+)$/ do |link|
-  page.should_not have_link(link_to_id(link))
+Then /^(?:|I )should( not)? see a link to (.+)$/ do |negate,link|
+  negate ? (page.should_not have_link(link_to_id(link))) : (page.should have_link(link_to_id(link)))
 end
 
 Then /^(?:|I )should see a "([^"]*)"$/ do |element|
@@ -205,12 +205,8 @@ Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failu
   page.should have_selector ".alert", text: flash_for(message)
 end
 
-Then /^(?:|I )should see a message for (.+)$/ do |message|
-  page.should have_selector ".alert", text: flash_for(message)
-end
-
-Then /^(?:|I )should not see a message for (.+)$/ do |message|
-  page.should_not have_selector ".alert", text: flash_for(message)
+Then /^(?:|I )should( not)? see a message for (.+)$/ do |negate, message|
+  negate ? (page.should_not have_selector ".alert", text: flash_for(message)) : (page.should have_selector ".alert", text: flash_for(message))
 end
 
 Then /^(?:|I )should see "([^"]*)"(?: within "([^"]*)")?$/ do |text, selector|
@@ -292,12 +288,8 @@ Then /^I should see the error "([^\"]*)"$/ do |error|
   page.should have_content error
 end 
 
-Then /^I should see the message "([^\"]*)"$/ do |message| 
-  page.should have_selector ".alert", text: message
-end
-
-Then /^I should not see the message "([^\"]*)"$/ do |message|
-  page.should_not have_selector ".alert", text: message
+Then /^I should( not)? see the message "([^\"]*)"$/ do |negate, message| 
+  negate ? (page.should_not have_selector ".alert", text: message) : (page.should have_selector ".alert", text: message)
 end
 
 Then /^I should (not )?see an element "([^"]*)"$/ do |negate, selector|

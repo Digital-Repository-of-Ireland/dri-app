@@ -46,6 +46,9 @@ module ButtonTranslator
     when /set the current collection to (.+)/
       "set_collection_#{$1}"
 
+    when /delete collection with id (.+)/
+      "delete_collection_#{$1}"
+
     when /accept cookie policy/
       "accept_cookies"
 
