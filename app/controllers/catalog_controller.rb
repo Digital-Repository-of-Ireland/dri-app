@@ -55,19 +55,26 @@ class CatalogController < ApplicationController
     #
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
+    config.add_facet_field solr_name('status', :facetable), :label => 'Record Status'
+    config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :permissions_renderer
+    config.add_facet_field "master_file_isi", :label => 'Master File Access' #, :query => {
+      #:inherited => { :label => 'inherited', :fq => "-1"},
+      #:public => { :label => 'public', :fq => "0"},
+      #:private => { :label => 'private', :fq => "1"}
+    #} 
     config.add_facet_field solr_name('subject', :facetable), :label => 'Subject'
     config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subject (in Irish)'
     config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subject (in English)'
-    config.add_facet_field solr_name('presenter', :facetable), :label => 'Presenter', :limit => 20
-    config.add_facet_field solr_name('guest', :facetable), :label => 'Guest', :limit => 20
-    config.add_facet_field solr_name('producer', :facetable), :label => 'Producer', :limit => 20
-    config.add_facet_field solr_name('person', :facetable), :label => 'Person', :show => false
+    config.add_facet_field solr_name('geographical_coverage', :facetable), :label => 'Subject (Place)', :limit => 20
+    config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
+    config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
+    config.add_facet_field solr_name('temporal_coverage', :facetable), :label => 'Subject (Time)', :limit => 20
+    config.add_facet_field solr_name('temporal_coverage_gle', :facetable), :label => 'Subject (Time) (in Irish)', :limit => 20
+    config.add_facet_field solr_name('temporal_coverage_eng', :facetable), :label => 'Subject (Time) (in English)', :limit => 20
+    config.add_facet_field solr_name('person', :facetable), :label => 'Name', :limit => 20
     config.add_facet_field solr_name('object_type', :facetable), :label => 'Format'
     config.add_facet_field solr_name('broadcast_date', :facetable), :label => 'Broadcast Date', :date => true
-    config.add_facet_field solr_name('subject_topic', :facetable),:label => 'Topic', :limit => 20
-    config.add_facet_field solr_name('geographical_coverage', :facetable), :label => 'Place', :limit => 20
-    config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Place (in Irish)', :limit => 20
-    config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Place (in English)', :limit => 20
+    config.add_facet_field solr_name('subject_topic', :facetable), :label => 'Topic', :limit => 20
     config.add_facet_field solr_name('language', :facetable), :label => 'Language', :limit => true
     config.add_facet_field solr_name('collection', :facetable), :label => 'Collection'
 

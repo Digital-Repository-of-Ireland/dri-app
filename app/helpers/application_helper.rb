@@ -37,4 +37,19 @@ module ApplicationHelper
   def get_partial_name( object )
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
+
+  def permissons_renderer value
+    #permission = args[:document][args[:field]]
+    #case permission
+    #when 0
+    #  return "public"
+    #when 1
+    #  return "private"
+    #when -1
+    #  return "inherited"
+    #else
+    #  return "unknown?"
+    #end
+    "huh?"  
+  end
 end
