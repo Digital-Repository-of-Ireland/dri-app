@@ -36,6 +36,7 @@ en:
       notice:
         added_to_collection: "Object has been added to collection."
         collection_created: "Collection object has been successfully created."
+        collection_deleted: "Collection has been deleted."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
@@ -91,8 +92,10 @@ en:
           create_collection: "Create Collection"
           new_collection: "New Collection"
           remove: Remove
+          delete_collection: "Delete Collection"
           set_collection: "Set as Current"
         edit: "Edit Collection"
+        confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         index:
           items:
             one: "%{count} item"

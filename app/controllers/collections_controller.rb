@@ -8,7 +8,11 @@ class CollectionsController < CatalogController
   # Shows list of user's collections
   #
   def index
-    @mycollections = DRI::Model::Collection.find(:depositor => current_user.to_s)
+    unless current_user.is_admin?
+      @mycollections = DRI::Model::Collection.find(:depositor => current_user.to_s)
+    else
+      @mycollections = DRI::Model::Collection.all
+    end
 
     respond_to do |format|
       format.html
@@ -140,6 +144,26 @@ class CollectionsController < CatalogController
         raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_collection')
       end
     end
+  end
+
+  def destroy
+    enforce_permissions!("edit",params[:id])
+
+    if current_user.is_admin?
+      @collection = retrieve_object!(params[:id])
+  
+      @collection.governed_items.each do |object|
+        object.delete
+      end
+      @collection.reload
+      @collection.delete
+    end
+
+    respond_to do |format|
+      format.html { flash[:notice] = t('dri.flash.notice.collection_deleted')
+      redirect_to :controller => "collections", :action => "index" }
+    end
+
   end
 
   private

@@ -24,8 +24,7 @@ class CreateMp3
     begin
       transcode(workingfile, output_options, outputfile)
     rescue Exceptions::BadCommand => e
-      Rails.logger.error "Failed to transcode file"
-      # report failure
+      Rails.logger.error "Failed to transcode file #{e.message}"
       # requeue?
     end
 
@@ -56,14 +55,14 @@ class CreateMp3
 
   # Transcode the file
   def self.transcode(input_file, options, output_file)
-    command = "#{executable} -i #{input_file} #{options} #{output_file}"
+    command = "#{executable} -y -i #{input_file} #{options} #{output_file}"
     stdin, stdout, stderr, wait_thr = Open3::popen3(command)
     stdin.close
     out = stdout.read
     stdout.close
     err = stderr.read
     stderr.close
-    raise BadCommand "Unable to execute command \"#{command}\"\n#{err}" unless wait_thr.value.success?
+    raise Exceptions::BadCommand.new "Unable to execute command \"#{command}\"\n#{err}" unless wait_thr.value.success?
   end
 
 
