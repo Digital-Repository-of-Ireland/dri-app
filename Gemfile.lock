@@ -1,11 +1,12 @@
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models
-  revision: 729b9a3e06ebec35fc32dd787bbc49f0038e9c02
-  branch: master
+  revision: 546e5d0eaa4131fc2dc59e2bba26b3383949478c
+  branch: release/v1.0.0
   specs:
-    dri_data_models (0.0.2)
+    dri_data_models (1.0.0)
       hydra-access-controls (>= 6.1.0)
       hydra-head (>= 6.1.0)
+      iso-639
 
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group
@@ -189,6 +190,7 @@ GEM
     i18n (0.6.5)
     i18n_sync (0.5.1)
       ya2yaml
+    iso-639 (0.1.0)
     it (0.2.5)
       actionpack (>= 3.0.0)
     jettywrapper (1.4.1)
