@@ -1,7 +1,7 @@
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models
-  revision: 546e5d0eaa4131fc2dc59e2bba26b3383949478c
-  branch: release/v1.0.0
+  revision: 7bbfa25fa95460a00c1384465ca4954d41da7da4
+  tag: v1.0.0
   specs:
     dri_data_models (1.0.0)
       hydra-access-controls (>= 6.1.0)
@@ -10,10 +10,10 @@ GIT
 
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group
-  revision: 3e94dea77235434a24957f5cdc87f05af5a007ab
-  branch: develop
+  revision: 6616e5b81f861170471f3aeaae2fa4ed05d85166
+  tag: v1.0.0
   specs:
-    user_group (0.0.6)
+    user_group (1.0.0)
       devise (~> 2.2.3)
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -69,7 +69,7 @@ GEM
       mime-types
       xml-simple
     backports (3.3.3)
-    bcrypt-ruby (3.1.1)
+    bcrypt-ruby (3.1.2)
     better_errors (0.9.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
