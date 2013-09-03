@@ -39,8 +39,8 @@ class CollectionsController < CatalogController
     # configure default permissions
     @collection.apply_depositor_metadata(current_user.to_s)
     @collection.manager_users_string=current_user.to_s
-    @collection.read_groups_string="registered"
     @collection.discover_groups_string="public"
+    @collection.read_groups_string="public"
     @collection.private_metadata="0"
     @collection.master_file="1"
 

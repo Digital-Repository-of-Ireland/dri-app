@@ -20,12 +20,15 @@ For testing and development you will need to bootstrap the project
   $ cd nuig-rnag
   $ git submodule update --init --recursive
   $ bundle
+  $ cp config/database.yml.sample config/database.yml (and edit as appropriate)
   $ bundle exec rake db:migrate
   $ bundle exec rake db:seed
   $ bundle exec rake jetty:config
 
-Dont forget to prepare the test database with
-  $ bundle exec rake db:test:prepare
+  Dont forget to prepare the test database with
+    $ bundle exec rake db:test:prepare
+
+  You may also need to edit config/settings.yml and/or create config/settings.local.yml
 
 To start the application for demo purposes
 
@@ -129,7 +132,7 @@ To start the worker to process jobs run
 
   $ bundle exec rake resque:work QUEUE="*"
 
-To view your queues (for debugging purposes) run 
+To view your queues (for debugging purposes) run
 
   $ resque-web -x
 
@@ -144,7 +147,7 @@ host running in order to run the tests.
 
 == ClamAV
 
-To enable virus scanning ClamAV needs to be installed. 
+To enable virus scanning ClamAV needs to be installed.
 
   $ sudo port install clamav
 
@@ -176,7 +179,7 @@ repository. To start up Ceph run
 
   $ vagrant up ceph
 
-When the VM is running, log in with 
+When the VM is running, log in with
 
   $ vagrant ssh ceph
 
