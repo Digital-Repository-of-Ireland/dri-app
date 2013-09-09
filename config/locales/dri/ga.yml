@@ -149,6 +149,7 @@ ga:
         temporal_coverage_eng: "Subject (Era) in English"
         temporal_coverage_gle: "Subject (Era) in Irish"
         title: Teideal
+        format: Format
       ingest: 
         buttons: 
           continue: "Lean ort"

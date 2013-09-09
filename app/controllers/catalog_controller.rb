@@ -113,7 +113,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), :label => 'temporal_coverage'
     config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), :label => 'name_coverage'
     config.add_show_field solr_name('format', :stored_searchable), :label => 'Format:'
-    config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'Format'
+    config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'format'
     config.add_show_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'rights'

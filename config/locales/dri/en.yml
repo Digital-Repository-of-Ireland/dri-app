@@ -149,6 +149,7 @@ en:
         temporal_coverage_eng: "Subject (Era) in English"
         temporal_coverage_gle: "Subject (Era) in Irish"
         title: Title
+        format: Format
       ingest: 
         buttons: 
           continue: Continue
