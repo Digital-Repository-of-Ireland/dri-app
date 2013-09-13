@@ -160,7 +160,7 @@ GEM
       yard (>= 0.7.0)
     hike (1.2.3)
     hooks (0.3.1)
-    http_accept_language (2.0.0)
+    http_accept_language (1.0.2)
     hydra-access-controls (6.1.0)
       active-fedora (~> 6.1)
       activesupport
@@ -425,7 +425,7 @@ DEPENDENCIES
   guard-cucumber
   guard-spork
   guard-yard
-  http_accept_language
+  http_accept_language (~> 1.0.2)
   hydra-head (= 6.1.0)
   i18n_sync
   it
