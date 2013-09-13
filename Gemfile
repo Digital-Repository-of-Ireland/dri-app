@@ -7,8 +7,8 @@ gem 'rails', '3.2.11'
 gem 'blacklight', '4.0.0'
 gem 'hydra-head', '6.1.0'
 
-gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :tag => 'v1.0.0'
-gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :tag => 'v1.0.0'
+gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :tag => 'v1.0.1'
+gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :tag => 'v1.0.2'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -74,7 +74,7 @@ end
 
 group :test do
   gem 'cucumber-rails', require: false
-  gem 'database_cleaner'
+  gem 'database_cleaner', '1.0.1'
   gem 'launchy'
   gem 'shoulda'
   gem 'factory_girl_rails'
