@@ -24,9 +24,11 @@ class IngestController < CatalogController
   def create
     if !session[:ingest][:type].blank?
       @type = session[:ingest][:type]
-      @object = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, params[:dri_model])
+      @object = Batch.new params[:dri_model]
+      @object.object_type = [session[:ingest][:type]]
     else
-      @object = DRI::Model::DigitalObject.construct(:audio, params[:dri_model])
+      @object = Batch.new params[:dri_model]
+      @object.object_type = [ "Audio" ]
     end
 
     if !session[:ingest][:collection].blank?

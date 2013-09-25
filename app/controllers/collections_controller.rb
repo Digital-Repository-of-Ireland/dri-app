@@ -9,9 +9,9 @@ class CollectionsController < CatalogController
   #
   def index
     unless current_user.is_admin?
-      @mycollections = DRI::Model::Collection.find(:depositor => current_user.to_s)
+      @mycollections = Batch.find(:depositor => current_user.to_s)
     else
-      @mycollections = DRI::Model::Collection.all
+      @mycollections = Batch.all
     end
 
     respond_to do |format|
@@ -33,8 +33,8 @@ class CollectionsController < CatalogController
   # Creates a new model.
   #
   def new
-    enforce_permissions!("create", DRI::Model::Collection)
-    @collection = DRI::Model::Collection.new
+    enforce_permissions!("create", Batch)
+    @collection = Batch.new
     
     # configure default permissions
     @collection.apply_depositor_metadata(current_user.to_s)
@@ -43,6 +43,7 @@ class CollectionsController < CatalogController
     @collection.read_groups_string="public"
     @collection.private_metadata="0"
     @collection.master_file="1"
+    @collection.object_type = [] "Collection" ]
 
     respond_to do |format|
       format.html

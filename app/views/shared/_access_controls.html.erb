@@ -1,5 +1,5 @@
-<% disabled_inherit = (record.is_a? DRI::Model::Collection) ? true : false  %>
-<% allow_manage = (record.is_a?(DRI::Model::Collection) && record.new_record?) ? true : false %>
+<% disabled_inherit = (record.is_collection?) ? true : false  %>
+<% allow_manage = (record.is_collection?) && record.new_record?) ? true : false %>
 
 <script type="text/javascript">
     function ImprovedTextBox(textbox_str){
@@ -63,7 +63,7 @@
         var mdlcl = "dri_model_collection";
         var mdlscl = "dri_model_subcollection"
         //Must add mdlscl when they're created
-        model_str = <%= (record.is_a? DRI::Model::Collection) ? "mdlcl" : "mdl"  %>
+        model_str = <%= (record.is_collection?) ? "mdlcl" : "mdl"  %>
 
         discover_user_textbox = new ImprovedTextBox('#'+model_str+'_discover_users_string');
         discover_group_textbox = new ImprovedTextBox('#'+model_str+'_discover_groups_string');

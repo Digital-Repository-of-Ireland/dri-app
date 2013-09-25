@@ -1,5 +1,5 @@
 Given /^a Digital Object$/ do
-  @digital_object = DRI::Model::Audio.new(:pid => PIDGenerator::IdService.mint)
+  @digital_object = Batch.new(:pid => Sufia::IdService.mint)
 end
 
 When /^I commit the Digital Object$/ do

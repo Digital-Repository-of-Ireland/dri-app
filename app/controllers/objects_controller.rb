@@ -28,7 +28,7 @@ class ObjectsController < CatalogController
     @object = retrieve_object!(params[:id])
 
     if params[:dri_model][:governing_collection_id].present?
-      collection = Collection.find(params[:dri_model][:governing_collection_id])
+      collection = Batch.find(params[:dri_model][:governing_collection_id])
       @object.governing_collection = collection
     end
 
@@ -51,7 +51,7 @@ class ObjectsController < CatalogController
   #
   def create
     if params[:dri_model][:governing_collection].present? && !params[:dri_model][:governing_collection].blank?
-      params[:dri_model][:governing_collection] = Collection.find(params[:dri_model][:governing_collection])
+      params[:dri_model][:governing_collection] = Batch.find(params[:dri_model][:governing_collection])
     else
       params[:dri_model].delete(:governing_collection)
     end
@@ -64,7 +64,8 @@ class ObjectsController < CatalogController
 
       set_access_permissions(:dri_model)
 
-      @object = DRI::Model::DigitalObject.construct(type.to_sym, params[:dri_model])
+      @object = Batch.new params[:dri_model]
+      @object.object_type = [ type ]
     else
       flash[:alert] = t('dri.flash.error.no_type_specified')
       raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')

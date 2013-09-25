@@ -12,7 +12,7 @@ module ApplicationHelper
   end
   
   def get_collections
-    collections = DRI::Model::Collection.find(:depositor => current_user.to_s)
+    collections = Batch.find(:depositor => current_user.to_s, :object_type => "Collection")
     collections.collect{ |c| [c.title, c.pid] }
   end
 
@@ -24,7 +24,7 @@ module ApplicationHelper
 
   def get_current_collection
     if session[:current_collection]
-      return DRI::Model::Collection.find(session[:current_collection])
+      return Batch.find(session[:current_collection])
     else
       return nil
     end

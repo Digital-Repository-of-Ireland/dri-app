@@ -4,9 +4,6 @@ require 'permission_methods'
 class ApplicationController < ActionController::Base
   before_filter :set_locale, :set_cookie, :authenticate_user!
 
-  include DRI::Metadata
-  include DRI::Model
-
   include HttpAcceptLanguage
 
   # Adds a few additional behaviors into the application controller

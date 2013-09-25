@@ -3,22 +3,23 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.13'
 gem 'blacklight', '4.0.0'
 gem 'hydra-head', '6.1.0'
 
-gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :tag => 'v1.0.1'
+gem 'sufia-models'
+gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'action424'
 gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :tag => 'v1.0.2'
 
 gem 'rails_config'
 gem 'sqlite3'
 gem 'mysql2'
 
-gem 'noid', '0.5.5'
+#gem 'noid', '0.5.5'
 
-gem 'resque', :require => 'resque/server'
-gem "resque-scheduler"
-gem "resque-status"
+#gem 'resque', :require => 'resque/server'
+#gem "resque-scheduler"
+#gem "resque-status"
 
 # Storage-related gems
 gem 'aws-s3'

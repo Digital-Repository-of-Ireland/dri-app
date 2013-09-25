@@ -141,7 +141,8 @@ class MetadataController < CatalogController
 
     def construct_object
       if params.has_key?(:type) && params[:type].present?
-        @object = DRI::Model::DigitalObject.construct(params[:type].to_sym, params[:dri_model])
+        @object = Batch.new params[:dri_model]
+        @object.object_type = [ params[:type] ]
       else
         flash[:error] = t('dri.flash.error.no_type_specified')
         raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')
@@ -150,23 +151,23 @@ class MetadataController < CatalogController
     end
 
     def set_metadata_datastream
-      if @object.datastreams.has_key?("descMetadata")
-        @object.datastreams["descMetadata"].ng_xml = @xml
-      else
-        ds = @object.load_from_xml(@xml)
-        @object.add_datastream ds, :dsid => 'descMetadata'
+      if @object.update_metadata @xml
+        @object.metadata_md5 = Checksum.md5_string(@xml)   
       end
-
-      @object.metadata_md5 = Checksum.md5_string(@xml)     
     end
 
     def add_to_collection
       if params.has_key?(:governing_collection) && !params[:governing_collection].blank?
         begin
-          @object.governing_collection = Collection.find(params[:governing_collection])
+          coll = Batch.find(params[:governing_collection])
         rescue ActiveFedora::ObjectNotFoundError => e
           raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_collection')
           return
+        end
+        if coll.is_collection?
+          @object.governing_collection = coll
+        else
+          raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_collection')
         end
      end
     end

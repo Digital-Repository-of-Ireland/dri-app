@@ -4,7 +4,6 @@
 class ExportController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
-  include DRI::Model
 
   before_filter :authenticate_user!, :only => [:show]
 

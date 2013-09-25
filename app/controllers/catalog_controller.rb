@@ -202,7 +202,7 @@ class CatalogController < ApplicationController
 
   def exclude_collection_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "-has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
+    solr_parameters[:fq] << "has_model_ssim:\"info:fedora/afmodel:Batch\""
   end
 
 end

@@ -68,5 +68,3 @@ module NuigRnag
     config.assets.version = '1.0'
   end
 end
-
-require 'pid_generator/id_service'

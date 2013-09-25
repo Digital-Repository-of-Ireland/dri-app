@@ -3,7 +3,7 @@
 class AssetsController < CatalogController
 
   require 'validators'
-  require 'background_tasks/queue_manager'
+  #require 'background_tasks/queue_manager'
 
   # Returns the directory on the local filesystem to use for storing uploaded files.
   #
@@ -17,29 +17,31 @@ class AssetsController < CatalogController
   def show
     enforce_permissions!("show_master", params[:id])
 
-    datastream = "masterContent"
+    datastream = "content"
     @object = retrieve_object! params[:id]
+    if (@object.generic_files.count > 0)
 
-    @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                                { :f => @object.id, :d => datastream } ],
+      @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
+                                                                { :f => @object.generic_files[0].id, :d => datastream } ],
                                             :order => "version DESC",
                                             :limit => 1)
 
-    if !@local_file_info.empty?
-      logger.error "Using path: "+@local_file_info[0].path
-      send_file @local_file_info[0].path,
+      if !@local_file_info.empty?
+        logger.error "Using path: "+@local_file_info[0].path
+        send_file @local_file_info[0].path,
                       :type => @local_file_info[0].mime_type,
                       :stream => true,
                       :buffer => 4096,
                       :disposition => 'inline'
-      return
+        return
+      end
     end
 
     render :text => "Unable to find file"
   end
 
   # Stores an uploaded file to the local filesystem and then attaches it to one
-  # of the objects datastreams. masterContent is used by default.
+  # of the objects datastreams. content is used by default.
   #
   def create
     enforce_permissions!("edit" ,params[:id])
@@ -57,7 +59,7 @@ class AssetsController < CatalogController
 
     file_upload = params[:Filedata]
 
-    if datastream.eql?("masterContent")
+    if datastream.eql?("content")
       @object = retrieve_object! params[:id]
 
       if @object == nil
@@ -65,14 +67,17 @@ class AssetsController < CatalogController
       else
 
         validate_upload(file_upload)
-                
-        create_file(file_upload, @object.id, datastream, params[:checksum])
-        start_background_tasks
+                  
+        #start_background_tasks
         
         @url = url_for :controller=>"assets", :action=>"show", :id=>params[:id]
-        @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
 
-        save_object
+        @gf = GenericFile.new
+        @gf.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
+        @gf.batch = @object
+        save_file
+
+        create_file(file_upload, @object.id, datastream, params[:checksum])
       
         flash[:notice] = t('dri.flash.notice.file_uploaded')
 
@@ -129,16 +134,16 @@ class AssetsController < CatalogController
       end
     end
 
-    def start_background_tasks
-      queue = BackgroundTasks::QueueManager.new()
-      queue.process(@object)
-    end
+    #def start_background_tasks
+    #  queue = BackgroundTasks::QueueManager.new()
+    #  queue.process(@object)
+    #end
 
-    def save_object
+    def save_file
       begin
-        raise Exceptions::InternalError unless @object.save!
+        raise Exceptions::InternalError unless @gf.save!
       rescue RuntimeError => e
-        logger.error "Could not save object #{@object.id}: #{e.message}"
+        logger.error "Could not save file #{@gf.id}: #{e.message}"
         raise Exceptions::InternalError
       end
     end

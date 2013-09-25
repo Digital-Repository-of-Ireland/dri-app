@@ -36,14 +36,8 @@ module Hydra
         test_edit(pid)
       end 
 
-      can [:edit, :update, :destroy], DRI::Model::DigitalObject do |obj|
-        logger.debug("[EDITPERM] Checking from DRI::Model::DO")
-        test_edit(obj.pid)
-      end
-
-      #No destroy?
-      can [:edit,:update], DRI::Model::Collection do |obj|
-        logger.debug("[EDITPERM] Checking from DRI::Model::Collection")
+      can [:edit, :update, :destroy], Batch do |obj|
+        logger.debug("[EDITPERM] Checking from Batch")
         test_edit(obj.pid)
       end
       
@@ -61,7 +55,7 @@ module Hydra
         test_read(pid)
       end
 
-      can :read, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
+      can :read, [Batch] do |obj|
         logger.debug("[READPERM] Checking from Object")
         test_read(obj.pid)
       end
@@ -84,7 +78,7 @@ module Hydra
         test_search(pid)
       end
 
-      can :search, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
+      can :search, [Batch] do |obj|
         logger.debug("[SEARCHPERM] Checking from Object")
         test_search(obj.pid)
       end 
@@ -102,7 +96,7 @@ module Hydra
         test_read_master(pid)
       end
 
-      can :read_master, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
+      can :read_master, Batch do |obj|
         logger.debug("[master_file_permissions] Checking from Object")
         test_read_master(obj.pid)
       end 
@@ -122,7 +116,7 @@ module Hydra
         test_manager(pid)
       end
 
-      can :manage_collection, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
+      can :manage_collection, Batch do |obj|
         logger.debug("[MANPERM] Checking from Object")
         test_manager(obj.pid)
       end 
@@ -141,7 +135,7 @@ module Hydra
       if current_user.applicable_policy?(SETTING_POLICY_COLLECTION_MANAGER)
         #Marked as being able to :manage_collection
         can :manage_collection_flag, :all
-        can :create, DRI::Model::Collection
+        can :create, Batch
       end
 
 
@@ -157,7 +151,7 @@ module Hydra
         test_create(pid)
       end
 
-      can :create_do, DRI::Model::Collection do |collection|
+      can :create_do, Batch do |collection|
         test_create(collection)
       end
     end
