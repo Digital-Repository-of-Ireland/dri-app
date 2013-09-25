@@ -28,7 +28,7 @@ class IngestController < CatalogController
       @object.object_type = [session[:ingest][:type]]
     else
       @object = Batch.new params[:dri_model]
-      @object.object_type = [ "Audio" ]
+      @object.object_type = ["Audio"]
     end
 
     if !session[:ingest][:collection].blank?

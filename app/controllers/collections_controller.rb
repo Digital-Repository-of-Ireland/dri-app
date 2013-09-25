@@ -43,7 +43,7 @@ class CollectionsController < CatalogController
     @collection.read_groups_string="public"
     @collection.private_metadata="0"
     @collection.master_file="1"
-    @collection.object_type = [] "Collection" ]
+    @collection.object_type = ["Collection"]
 
     respond_to do |format|
       format.html
@@ -83,19 +83,19 @@ class CollectionsController < CatalogController
   # Updates the attributes of an existing model.
   #
   def update
-    update_object_permission_check(params[:dri_model_collection][:manager_groups_string],params[:dri_model_collection][:manager_users_string], params[:id])
+    update_object_permission_check(params[:batch][:manager_groups_string],params[:batch][:manager_users_string], params[:id])
 
     @collection = retrieve_object!(params[:id])
 
     #For sub collections will have to set a governing_collection_id
     #Create a sub collections controller?
 
-    set_access_permissions(:dri_model_collection)
+    set_access_permissions(:batch)
 
     if !valid_permissions? 
       flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])
     else
-      @collection.update_attributes(params[:dri_model_collection])
+      @collection.update_attributes(params[:batch])
       #Apply private_metadata & properties to each DO/Subcollection within this collection
       flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
     end
@@ -108,11 +108,13 @@ class CollectionsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    enforce_permissions!("create",DRI::Model::Collection)
+    enforce_permissions!("create",Batch)
     
-    set_access_permissions(:dri_model_collection)
+    set_access_permissions(:batch)
 
-    @collection = DRI::Model::Collection.new(params[:dri_model_collection])
+    @collection = Batch.new
+    @collection.update_attributes(params[:batch])
+    @collection.object_type = ["Collection"]
 
     # depositor is not submitted as part of the form
     @collection.depositor = current_user.to_s
@@ -170,10 +172,10 @@ class CollectionsController < CatalogController
   private
 
     def valid_permissions?
-      if ((params[:dri_model_collection][:private_metadata].blank? || params[:dri_model_collection][:private_metadata]==UserGroup::Permissions::INHERIT_METADATA) ||
-       (params[:dri_model_collection][:master_file].blank? || params[:dri_model_collection][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
-       (params[:dri_model_collection][:read_groups_string].blank? && params[:dri_model_collection][:read_users_string].blank?) ||
-       (params[:dri_model_collection][:manager_users_string].blank? && params[:dri_model_collection][:manager_groups_string].blank? && params[:dri_model_collection][:edit_users_string].blank? && params[:dri_model_collection][:edit_groups_string].blank?))
+      if ((params[:batch][:private_metadata].blank? || params[:batch][:private_metadata]==UserGroup::Permissions::INHERIT_METADATA) ||
+       (params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
+       (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
+       (params[:batch][:manager_users_string].blank? && params[:batch][:manager_groups_string].blank? && params[:batch][:edit_users_string].blank? && params[:batch][:edit_groups_string].blank?))
          return false
       else
          return true

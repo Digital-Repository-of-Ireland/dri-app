@@ -64,8 +64,9 @@ class ObjectsController < CatalogController
 
       set_access_permissions(:dri_model)
 
-      @object = Batch.new params[:dri_model]
+      @object = Batch.new
       @object.object_type = [ type ]
+      @object.update_attributes params[:dri_model]
     else
       flash[:alert] = t('dri.flash.error.no_type_specified')
       raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')

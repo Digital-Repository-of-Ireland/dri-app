@@ -141,8 +141,9 @@ class MetadataController < CatalogController
 
     def construct_object
       if params.has_key?(:type) && params[:type].present?
-        @object = Batch.new params[:dri_model]
-        @object.object_type = [ params[:type] ]
+        @object = Batch.new
+        @object.object_type = [params[:type]]
+        @object.update_attributes params[:dri_model]
       else
         flash[:error] = t('dri.flash.error.no_type_specified')
         raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')

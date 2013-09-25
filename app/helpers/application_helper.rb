@@ -14,6 +14,15 @@ module ApplicationHelper
   def get_collections
     collections = Batch.find(:depositor => current_user.to_s, :object_type => "Collection")
     collections.collect{ |c| [c.title, c.pid] }
+
+    results = Array.new
+    solr_query = "+object_type_sim:Collection +depositor_sim:*"
+    result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "500", :fl => "id,title_tesim")
+    result_docs.each do | doc |
+      results.push([doc["title_tesim"][0], doc['id']])
+    end
+
+    return results
   end
 
   def get_governing_collection( object )
