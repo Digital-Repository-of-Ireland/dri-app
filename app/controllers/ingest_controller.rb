@@ -24,11 +24,18 @@ class IngestController < CatalogController
   def create
     if !session[:ingest][:type].blank?
       @type = session[:ingest][:type]
-      @object = Batch.new params[:dri_model]
+      @object = Batch.new
       @object.object_type = [session[:ingest][:type]]
+      if params[:dri_model] != nil
+        @object.update_attributes params[:dri_model]
+      end
+      
     else
-      @object = Batch.new params[:dri_model]
+      @object = Batch.new
       @object.object_type = ["Audio"]
+      if params[:dri_model] != nil
+        @object.update_attributes params[:dri_model]
+      end
     end
 
     if !session[:ingest][:collection].blank?

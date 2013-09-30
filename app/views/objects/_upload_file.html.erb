@@ -1,8 +1,9 @@
-<% if @object.datastreams.has_key?("masterContent") %>
+<%= get_datastreams document %>
+<% if !@files.empty? %>
   
   <%= form_tag(url_for(:action=>"create", :controller=>"assets", :id=>@object.id), :multipart => true, :method => :post, :id => "file_uploader") do %>
     <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-    <%= hidden_field_tag 'datastream', "masterContent" %>
+    <%= hidden_field_tag 'datastream', "content" %>
     <%= file_field_tag 'Filedata', :accept => @object.mime_type, :required => "true" %>
     <%= button_tag t('dri.views.objects.buttons.replace_master'), :id => "replace_file", :name => "upload_file", :class => "btn-primary" %>
   <% end %>
@@ -13,7 +14,7 @@
 
   <%= form_tag(url_for(:action=>"create", :controller=>"assets", :id=>@object.id), :multipart => true, :method => :post, :id => "file_uploader") do %>
     <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-    <%= hidden_field_tag 'datastream', "masterContent" %>
+    <%= hidden_field_tag 'datastream', "content" %>
     <%= file_field_tag 'Filedata', :required => "true" %>
     <%= button_tag t('dri.views.objects.buttons.upload_master'), :id => "upload_file", :name => "upload_file", :class => "btn-primary" %>
   <% end %>

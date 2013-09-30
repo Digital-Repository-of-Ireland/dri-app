@@ -9,9 +9,9 @@ module Validators
   # Takes an uploaded file (ActionDispatch::Http::UploadedFile),
   # or a path to a localfile, and calls the required validations.
   #
-  def Validators.validate_file(file, allowed_type, allowed_subtypes)
+  def Validators.validate_file(file, mime_type=nll)
     self.virus_scan(file)
-    self.valid_file_type?(file, allowed_type, allowed_subtypes)
+    self.valid_file_type?(file, mime_type)
   end
 
   # Validate file mime-types
@@ -27,8 +27,29 @@ module Validators
   # Finally it compares the mime-type to a whitelist of allowed mime-types which is stored in
   # a class variable for the object type (e.g. in DRI:Model:Audio)
   #
-  def Validators.valid_file_type?(file, allowed_type, allowed_subtypes)
+  def Validators.valid_file_type?(file, mime_type)
+    if file.class.to_s == "ActionDispatch::Http::UploadedFile"
+      path = file.tempfile.path
+      extension = file.original_filename.split(".").last
+    else
+      path = file
+      extension = file.split(".").last
+    end
 
+    # MimeMagic could return null if it can't find a match. If so raise UnknownMimeType error
+    raise Exceptions::UnknownMimeType unless mime_type
+
+    # Ensure that the file extension matches the mime type
+    raise Exceptions::WrongExtension unless MIME::Types.type_for(extension).include?(mime_type)
+
+    raise Exceptions::InappropriateFileType unless Settings.restrict.mime_types.include? mime_type.to_s.downcase
+
+    # If we haven't encountered a problem we return true
+    return true
+
+  end  # End validate_file_type method
+
+  def Validators.file_type?(file)
     self.init_types()
 
     if file.class.to_s == "ActionDispatch::Http::UploadedFile"
@@ -38,28 +59,17 @@ module Validators
       path = file
       extension = file.split(".").last
     end
-
-    #Get the mime type of our file
     mime_type = MimeMagic.by_magic( File.open( path ) )
 
-    # MimeMagic could return null if it can't find a match. If so raise UnknownMimeType error
-    raise Exceptions::UnknownMimeType unless mime_type
-
-    # Split out the mime type into type and subtype
-    type,subtype = mime_type.to_s.split("/")
-
-    # Ensure that the file extension matches the mime type
-
-    raise Exceptions::WrongExtension unless MIME::Types.type_for(extension).include?(mime_type)
-
-    raise Exceptions::InappropriateFileType unless allowed_type.downcase == type.downcase
-
-    raise Exceptions::InappropriateFileType unless allowed_subtypes.any?{ |s| s.casecmp(subtype)==0 }
-
-    # If we haven't encountered a problem we return true
-    return true
-
-  end  # End validate_file_type method
+    if mime_type == nil
+      # If we can't determine from file structure, then determine by extension
+      extension_results = MIME::Types.type_for(extension)
+      if !extension_results.empty?
+        mime_type = extension_results[0]
+      end
+    end
+    mime_type
+  end
 
   # Performs a virus scan on a single file
   #

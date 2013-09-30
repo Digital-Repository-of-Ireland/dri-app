@@ -1,5 +1,5 @@
 Given /^we have a "(.*?)" Model$/ do |model_name|
-  eval("defined?(#{model_name}) && #{model_name}.is_a?(Class)")
+  eval("defined?(#{model_name}) && ['Collection', 'Audio', 'Text'].includes?(#{model_name})")
 end
 
 When /^we test the "(.*?)" Model$/ do |model_name|
@@ -17,7 +17,8 @@ Then /^it should validate presence of attribute "(.*?)"$/ do |attribute_name|
 end
 
 When /^we test an empty "(.*?)" Model$/ do |model_name|
-  @test_model = Kernel.qualified_const_get(model_name).new
+  @test_model = Batch.new
+  @test_model.object_type = [ model_name ]
 end
 
 Then /^the "(.*?)" Model should not be valid$/ do |model_name|

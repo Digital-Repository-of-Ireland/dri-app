@@ -1,6 +1,7 @@
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
-  collection = DRI::Model::Collection.new(:pid => pid)
+  collection = Batch.new(:pid => pid)
   collection.title = title ? title : SecureRandom.hex(5)
+  collection.object_type = ["Collection"]
   if user
     collection.apply_depositor_metadata(User.find_by_email(user))
     collection.manager_users_string=User.find_by_email(user).to_s
@@ -12,7 +13,7 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
 end
 
 Given /^a Digital Object with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |pid, title, user|
-  digital_object = DRI::Model::Audio.new(:pid => pid)
+  digital_object = Batch.new(:pid => pid)
   digital_object.title = title
   if user
     digital_object.apply_depositor_metadata(User.find_by_email(user))
@@ -47,23 +48,23 @@ end
 When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title|
     title ||= "Test collection"
   steps %{
-    When I fill in "dri_model_collection_title" with "#{title}"
-    And I fill in "dri_model_collection_description" with "Test description"
-    And I fill in "dri_model_collection_publisher" with "Test publisher"
+    When I fill in "batch_title" with "#{title}"
+    And I fill in "batch_description" with "Test description"
+    And I fill in "batch_publisher" with "Test publisher"
   }
 end
 
 When /^I enter valid permissions for a collection$/ do
   steps %{
-    When I choose "dri_model_collection_private_metadata_radio_public"
-    And choose "dri_model_collection_read_groups_string_radio_public"
+    When I choose "batch_private_metadata_radio_public"
+    And choose "batch_read_groups_string_radio_public"
   }
 end
 
 When /^I enter invalid permissions for a collection$/ do
   steps %{
-    When I choose "dri_model_collection_private_metadata_radio_private"
-    And I fill in "dri_model_collection_manager_users_string" with ""
+    When I choose "batch_private_metadata_radio_private"
+    And I fill in "batch_manager_users_string" with ""
   }
 end
 
@@ -110,12 +111,12 @@ Then /^I should be given a choice of using the existing object or creating a new
 end
 
 Then /^I should see the Digital Object "(.*?)" as part of the collection$/ do |object_pid|
-  object = DRI::Model::Audio.find(object_pid)
+  object = Batchfind(object_pid)
   page.should have_content object.title
 end
 
 Then /^I should not see the Digital Object "(.*?)" as part of the non-governing collection$/ do |object_pid|
-  object = DRI::Model::Audio.find(object_pid)
+  object = Batch.find(object_pid)
   page.should_not have_content object.title
 end
 

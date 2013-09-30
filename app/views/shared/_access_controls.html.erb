@@ -59,29 +59,26 @@
     var embargo_textbox;
 
     $(document).ready(function () {
-        var mdl = "dri_model";
-        var mdlcl = "dri_model_collection";
-        var mdlscl = "dri_model_subcollection"
-        //Must add mdlscl when they're created
-        model_str = <%= (record.is_collection?) ? "mdlcl" : "mdl"  %>
+    
+        model_str = "batch";
 
-        discover_user_textbox = new ImprovedTextBox('#'+model_str+'_discover_users_string');
-        discover_group_textbox = new ImprovedTextBox('#'+model_str+'_discover_groups_string');
+        discover_user_textbox = new ImprovedTextBox('#batch_discover_users_string');
+        discover_group_textbox = new ImprovedTextBox('#batch_discover_groups_string');
         init_search_access();
 
-        read_user_textbox = new ImprovedTextBox('#'+model_str+'_read_users_string');
-        read_group_textbox = new ImprovedTextBox('#'+model_str+'_read_groups_string');
+        read_user_textbox = new ImprovedTextBox('#batch_read_users_string');
+        read_group_textbox = new ImprovedTextBox('#batch_read_groups_string');
         init_read_access();
 
-        edit_user_textbox = new ImprovedTextBox('#'+model_str+"_edit_users_string");
-        edit_group_textbox = new ImprovedTextBox('#'+model_str+"_edit_groups_string");
+        edit_user_textbox = new ImprovedTextBox('#batch_edit_users_string');
+        edit_group_textbox = new ImprovedTextBox('#batch_edit_groups_string');
         init_edit_access();
 
-        manager_user_textbox = new ImprovedTextBox('#'+model_str+"_manager_users_string");
-        manager_group_textbox = new ImprovedTextBox('#'+model_str+"_manager_groups_string");
+        manager_user_textbox = new ImprovedTextBox('#batch_manager_users_string');
+        manager_group_textbox = new ImprovedTextBox('#batch_manager_groups_string');
         init_manager_access();
 
-        embargo_textbox = new ImprovedTextBox('#'+model_str+"_embargo")
+        embargo_textbox = new ImprovedTextBox('#batch_embargo')
         init_embargo();
     });
 

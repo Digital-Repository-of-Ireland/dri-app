@@ -7,14 +7,16 @@ module ApplicationHelper
     ""
   end
 
+  def get_files doc
+    @files = ActiveFedora::Base.find(doc.id, {:cast => true}).generic_files
+    ""
+  end
+
   def get_surrogates doc
     @surrogates = Storage::S3Interface.get_surrogates doc
   end
   
   def get_collections
-    collections = Batch.find(:depositor => current_user.to_s, :object_type => "Collection")
-    collections.collect{ |c| [c.title, c.pid] }
-
     results = Array.new
     solr_query = "+object_type_sim:Collection +depositor_sim:*"
     result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "500", :fl => "id,title_tesim")

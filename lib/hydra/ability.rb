@@ -40,6 +40,11 @@ module Hydra
         logger.debug("[EDITPERM] Checking from Batch")
         test_edit(obj.pid)
       end
+
+      can [:edit, :update, :destroy], GenericFile do |obj|
+        logger.debug("[EDITPERM] Checking from GenericFile")
+        test_edit(obj.pid)
+      end
       
       can :edit, SolrDocument do |obj|
         logger.debug("[EDITPERM] Checking from SOLRDOC")
@@ -135,7 +140,7 @@ module Hydra
       if current_user.applicable_policy?(SETTING_POLICY_COLLECTION_MANAGER)
         #Marked as being able to :manage_collection
         can :manage_collection_flag, :all
-        can :create, Batch
+        can :create, [Batch, GenericFile]
       end
 
 

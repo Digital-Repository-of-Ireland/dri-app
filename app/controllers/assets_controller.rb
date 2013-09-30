@@ -1,6 +1,6 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
-class AssetsController < CatalogController
+class AssetsController < ApplicationController
 
   require 'validators'
   #require 'background_tasks/queue_manager'
@@ -12,17 +12,37 @@ class AssetsController < CatalogController
   end
 
   # Retrieves external datastream files that have been stored in the filesystem.
-  # By default, it retrieves the file in the masterContent datastream
-  #      
+  # By default, it retrieves the file in the content datastream
+  #
+  # id can be id of the Batch, which returns the first GenericFile in it's relationship
+  # or the id of a GenericFile
   def show
-    enforce_permissions!("show_master", params[:id])
-
+  
     datastream = "content"
+    if params.has_key?(:datastream)
+      datastream = params[:datastream]
+    end
+
     @object = retrieve_object! params[:id]
-    if (@object.generic_files.count > 0)
+    @gf = nil
+
+    # if id belongs to a GenericFile, swap variables around
+    if @object.is_a?(GenericFile)
+      @gf = @object
+      @object = @gf.batch
+    elsif @object.is_a?(Batch) && @object.generic_files.count > 0
+      @gf = @object.generic_files[0]
+    end
+
+    # Check if user can view a master file
+    if (datastream == "content")
+      enforce_permissions!("show_master", @object.id)
+    end
+
+    if (@gf != nil)
 
       @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                                { :f => @object.generic_files[0].id, :d => datastream } ],
+                                                                { :f => @gf.id, :d => datastream } ],
                                             :order => "version DESC",
                                             :limit => 1)
 
@@ -46,7 +66,7 @@ class AssetsController < CatalogController
   def create
     enforce_permissions!("edit" ,params[:id])
     
-    datastream = "masterContent"
+    datastream = "content"
     if params.has_key?(:datastream)
       datastream = params[:datastream]
     end
@@ -66,18 +86,31 @@ class AssetsController < CatalogController
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
 
-        validate_upload(file_upload)
+        mime_type = Validators.file_type?(file_upload)
+        validate_upload(file_upload, mime_type)
                   
         #start_background_tasks
-        
-        @url = url_for :controller=>"assets", :action=>"show", :id=>params[:id]
+
 
         @gf = GenericFile.new
-        @gf.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
+        @url = url_for :controller=>"assets", :action=>"show", :id=>@object.id
+        @gf.update_file_reference datastream, :url=>@url, :mimeType=>mime_type.to_s
         @gf.batch = @object
-        save_file
+        @gf.save
 
-        create_file(file_upload, @object.id, datastream, params[:checksum])
+        # A silly workaround, @gf doesn't get assigned a pid until it is saved
+        # therefore I have to save it twice, in order to have the pid in the URL being
+        # referenced in Fedora.
+        #
+        # We should look at ActiveFedora::Base to see when exactly assign_pid is called
+        # and add the correct id to the url before it's saved, eg. look for <<pid>> in
+        # the URL and replace it with the assigned pid.
+        @url = url_for :controller=>"assets", :action=>"show", :id=>@gf.id
+        @gf.update_file_reference datastream, :url=>@url, :mimeType=>mime_type.to_s
+        @gf.save
+
+
+        create_file(file_upload, @gf.id, datastream, params[:checksum])
       
         flash[:notice] = t('dri.flash.notice.file_uploaded')
 
@@ -104,9 +137,9 @@ class AssetsController < CatalogController
 
   private
 
-    def validate_upload(file_upload)
+    def validate_upload(file_upload, mime_type)
       begin
-        Validators.validate_file(file_upload, @object.whitelist_type, @object.whitelist_subtypes)
+        Validators.validate_file(file_upload, mime_type)
       rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
         message = t('dri.flash.alert.invalid_file_type')
         flash[:alert] = message

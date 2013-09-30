@@ -120,6 +120,7 @@ The application includes a queueing system based on Resque and Redis to allow
 asynchronous processing of background jobs. This introduces the following dependencies:
 
   * Redis (server for the queueing system)
+  * fits (for extracting metadata from a file)
   * ffmpeg (video file processing tool)
 
 The file processing tools should be installed locally with the hydra-head.
@@ -130,11 +131,11 @@ For testing purposes Redis can be installed locally and started with the command
 
 To start the worker to process jobs run
 
-  $ bundle exec rake resque:work QUEUE="*"
+  $ QUEUE="*" bundle exec rake resque:work 
 
 To view your queues (for debugging purposes) run
 
-  $ resque-web -x
+  $ resque-web -x -N dri:development
 
 This should pop up a browser window looking at localhost:5678 (if not open one). Here
 you can see the status of your queues and jobs. This is also mounted in the application

@@ -25,7 +25,9 @@ ogg_web_quality_out_options:
   channel: "2" # default is same as input file
   bitrate: "96k" # default is same as input file
   frequency: "44100" # default is same as input file
+restrict:
+  mime_types: [ "application/pdf", "application/x-pdf", "audio/mp3","audio/mpeg","audio/mpeg3","audio/mp2"]
 S3:
   server: 10.0.1.201
-  access_key_id: FIXME
-  secret_access_key: FIXME
+  access_key_id: 1J2473PEF7SQCCFOXQFK
+  secret_access_key: xlkaJhAs2o7ZAXtGXpNDf4+9x2gXGL6u9LN94Soe
