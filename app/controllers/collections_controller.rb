@@ -36,16 +36,16 @@ class CollectionsController < CatalogController
   #
   def new
     enforce_permissions!("create", Batch)
-    @collection = Batch.new
+    @object = Batch.new
     
     # configure default permissions
-    @collection.apply_depositor_metadata(current_user.to_s)
-    @collection.manager_users_string=current_user.to_s
-    @collection.discover_groups_string="public"
-    @collection.read_groups_string="public"
-    @collection.private_metadata="0"
-    @collection.master_file="1"
-    @collection.object_type = ["Collection"]
+    @object.apply_depositor_metadata(current_user.to_s)
+    @object.manager_users_string=current_user.to_s
+    @object.discover_groups_string="public"
+    @object.read_groups_string="public"
+    @object.private_metadata="0"
+    @object.master_file="1"
+    @object.object_type = ["Collection"]
 
     respond_to do |format|
       format.html
@@ -56,7 +56,7 @@ class CollectionsController < CatalogController
   #
   def edit
     enforce_permissions!("edit",params[:id])
-    @collection = retrieve_object!(params[:id])
+    @object = retrieve_object!(params[:id])
 
     respond_to do |format|
       format.html
@@ -88,7 +88,7 @@ class CollectionsController < CatalogController
   def update
     update_object_permission_check(params[:batch][:manager_groups_string],params[:batch][:manager_users_string], params[:id])
 
-    @collection = retrieve_object!(params[:id])
+    @object = retrieve_object!(params[:id])
 
     #For sub collections will have to set a governing_collection_id
     #Create a sub collections controller?
@@ -98,7 +98,7 @@ class CollectionsController < CatalogController
     if !valid_permissions? 
       flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])
     else
-      @collection.update_attributes(params[:batch])
+      @object.update_attributes(params[:batch])
       #Apply private_metadata & properties to each DO/Subcollection within this collection
       flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
     end
@@ -115,12 +115,12 @@ class CollectionsController < CatalogController
     
     set_access_permissions(:batch)
 
-    @collection = Batch.new
-    @collection.update_attributes(params[:batch])
-    @collection.object_type = ["Collection"]
+    @object = Batch.new
+    @object.update_attributes(params[:batch])
+    @object.type = ["Collection"]
 
     # depositor is not submitted as part of the form
-    @collection.depositor = current_user.to_s
+    @object.depositor = current_user.to_s
 
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_created')

@@ -20,7 +20,7 @@ FactoryGirl.define do
     title                  ["A PDF Title"]
     rights                 ["This is a statement about the rights associated with this object"]
     role_aut               ["Collins, Michael"]
-    role_et                ["DeValera, Eamonn", "Connolly, James"]
+    role_edt                ["DeValera, Eamonn", "Connolly, James"]
     language               ["ga"]
     description            ["This is a PDF document"]
     creation_date          ["1916-01-01"]

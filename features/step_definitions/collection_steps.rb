@@ -1,7 +1,9 @@
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   collection = Batch.new(:pid => pid)
   collection.title = title ? title : SecureRandom.hex(5)
-  collection.object_type = ["Collection"]
+  collection.description = SecureRandom.hex(20)
+  collection.rights = SecureRandom.hex(20)
+  collection.type = ["Collection"]
   if user
     collection.apply_depositor_metadata(User.find_by_email(user))
     collection.manager_users_string=User.find_by_email(user).to_s
@@ -12,13 +14,15 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.governed_items.count.should == 0
 end
 
-Given /^a Digital Object with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |pid, title, user|
+Given /^a Digital Object with pid "(.*?)", title "(.*?)", description "(.*?)" and type "(.*?)"(?: created by "(.*?)")?/ do |pid, title, desc, type, user|
   digital_object = Batch.new(:pid => pid)
-  digital_object.title = title
+  digital_object.title = [title]
+  digital_object.type = [type]
+  digital_object.description = [desc]
   if user
     digital_object.apply_depositor_metadata(User.find_by_email(user))
   end
-  digital_object.rights = "This is a statement of rights"
+  digital_object.rights = ["This is a statement of rights"]
   digital_object.save
 end
 
@@ -50,6 +54,8 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
   steps %{
     When I fill in "batch_title" with "#{title}"
     And I fill in "batch_description" with "Test description"
+    And I fill in "batch_rights" with "Test rights"
+    And I fill in "batch_type" with "Collection"
     And I fill in "batch_publisher" with "Test publisher"
   }
 end

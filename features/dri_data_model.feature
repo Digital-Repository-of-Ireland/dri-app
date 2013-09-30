@@ -11,12 +11,12 @@ Scenario: DRI Data Model for Audio should have correct metadata fields and valid
   When we test the "Audio" Model
   Then it should validate presence of attribute "title"
   And it should validate presence of attribute "rights"
-# Metadata Task Force has decided that language is no longer a mandatory field for DRI
-# And it should validate presence of attribute "language"
-  And it should have attribute "description"
-  And it should have attribute "presenter"
-  And it should have attribute "guest"
-  And it should have attribute "broadcast_date"
+  And it should validate presence of attribute "description"
+  And it should validate presence of attribute "type"
+  And it should have attribute "language"
+  And it should have attribute "role_hst"
+  And it should have attribute "contributor"
+  And it should have attribute "published_date"
   And it should have attribute "creation_date"
   And it should have attribute "subject"
   And it should have attribute "source"
@@ -33,11 +33,11 @@ Scenario: DRI Data Model for Pdfdoc should have correct metadata fields and vali
   When we test the "Text" Model
   Then it should validate presence of attribute "title"
   And it should validate presence of attribute "rights"
-# Metadata Task Force has decided that language is no longer a mandatory field for DRI
-# And it should validate presence of attribute "language"
-  And it should have attribute "description"
-  And it should have attribute "author"
-  And it should have attribute "editor"
+  And it should validate presence of attribute "description"
+  And it should validate presence of attribute "type"
+  And it should have attribute "language"
+  And it should have attribute "role_aut"
+  And it should have attribute "role_edt"
   And it should have attribute "creation_date"
   And it should have attribute "subject"
   And it should have attribute "source"
@@ -53,6 +53,8 @@ Scenario: DRI Data Model for Collection should have correct metadata fields and 
   Given we have a "Collection" Model
   When we test the "Collection" Model
   Then it should validate presence of attribute "title"
-  And it should have attribute "description"
+  And it should validate presence of attribute "description"
+  And it should validate presence of attribute "rights"
+  And it should validate presence of attribute "type"
   And it should have attribute "publisher"
 
