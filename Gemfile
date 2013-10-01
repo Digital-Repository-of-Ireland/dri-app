@@ -11,6 +11,7 @@ gem 'sufia-models', '3.2.1'
 gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'action424'
 gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :tag => 'v1.0.2'
 
+
 gem 'rails_config'
 gem 'sqlite3'
 gem 'mysql2'

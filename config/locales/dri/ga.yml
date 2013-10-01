@@ -126,8 +126,10 @@ ga:
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
       fields: 
+        contributor: Contributor
         contributors: Contributors
         creation_date: "Dáta Cruthaithe"
+        creator: Creator
         creators: Creators
         date: Date
         description: "Cur Síos"
@@ -171,6 +173,9 @@ ga:
           input: Ionchuir
           object_type: "Roghnaigh cineál oibiachta"
           upload: "Uaslódáil comhad meiteashonraí"
+      metadata: 
+        dublin_core: "Dublin Core"
+        qualified_dublin_core: "Qualifed Dublin Core"
       objects: 
         access_controls: 
           accessible_master_file: "Máistirchomha(i)d Inrochtana"
@@ -998,3 +1003,5 @@ ga:
         wdc: Woodcutter
         wde: "Wood engraver"
         wit: Witness
+      name: 
+        marc_relators: "MARC Relators"

@@ -46,6 +46,11 @@ class CollectionsController < CatalogController
     @object.private_metadata="0"
     @object.master_file="1"
     @object.object_type = ["Collection"]
+    @object.title = [""]
+    @object.description = [""]
+    @object.creator = [""]
+    @object.rights = [""]
+    @object.type = [ "Collection" ]
 
     respond_to do |format|
       format.html
@@ -94,6 +99,8 @@ class CollectionsController < CatalogController
     #Create a sub collections controller?
 
     set_access_permissions(:batch)
+
+    flub
 
     if !valid_permissions? 
       flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])

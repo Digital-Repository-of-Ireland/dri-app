@@ -6,6 +6,8 @@
 $(document).ready(function() {
   add_text_field();
   destroy_text_field();
+  add_person_fields();
+  destroy_person_fields();
 });
 
 // Whenever an "add" link is clicked, a new text field is added to the bottom of the list 
@@ -14,7 +16,7 @@ add_text_field = function() {
       var fieldset_name = $(this).parent().parent().attr('id');
       var model_name = $(this).attr('model-name');
       $(this).parent().before(  
-      '<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" size="30" type="text" value=""> <a class="destructive">Delete</a><br />');
+      '<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" size="30" type="text" value=""> <a class="destructive">delete</a><br />');
       $(this).parent().siblings('a').last().click(function() {
         $(this).prev('input[type="text"]').remove();
         $(this).prev('br').remove();
@@ -30,13 +32,53 @@ destroy_text_field = function() {
     $('.destructive').click(function() {
       var fieldset_name = $(this).parent().attr('id');
       var model_name = $(this).attr('model-name');
-      $(this).prev('input[type="text"]').remove();
-      $(this).prev('br').remove();
-      $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" value="">');
-      $(this).remove();
+
+      if ((fieldset_name == 'person_hash') && $(this).siblings('select').length > 1) {
+        $(this).prev('input[type="text"]').remove();
+        $(this).prev('select').remove();
+        $(this).prev('br').remove();
+        $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][type][" name="'+model_name+'['+fieldset_name+'][type][]" value="">');
+        $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" value="">');
+        $(this).remove();
+      }
+      else if (fieldset_name != 'person_hash') {
+        $(this).prev('input[type="text"]').remove();
+        $(this).prev('br').remove();
+        $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" value="">');
+        $(this).remove();
+      }
+      
       return false;
     });
 }
+
+add_person_fields = function() {
+    $('.add-person-fields a').click(function() {
+      var fieldset_name = $(this).parent().parent().attr('id');
+      var model_name = $(this).attr('model-name')
+      var previous_select = $(this).parent().siblings('select').last();
+      $(this).parent().before(
+      '<select id="'+model_name+'_'+fieldset_name+'][type][" selected="'+previous_select.val()+'" name="'+model_name+'['+fieldset_name+'][type][]">'+previous_select.html()+'</select> '+  
+      '<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" size="30" type="text" value=""> <a class="destructive" model-name="'+model_name+'">delete</a><br />');
+      $(this).parent().siblings('select').last().val(previous_select.val())
+      $(this).parent().siblings('a').last().click(function() {
+        var fieldset_name = $(this).parent().attr('id');
+        var model_name = $(this).attr('model-name');
+
+        if ($(this).siblings('select').length > 1) {
+          var selected_value = $(this).prev('select').val();
+          $(this).prev('input[type="text"]').remove();
+          $(this).prev('select').remove();
+          $(this).prev('br').remove();
+          $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][type][" name="'+model_name+'['+fieldset_name+'][type][]" value="'+selected_value+'">');
+          $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" value="">');
+          $(this).remove();
+        }
+        return false;
+      });
+      return false;
+    });
+  }
 
 // Adds audio player in asset display for audio file
 $(document).ready(function() {  
