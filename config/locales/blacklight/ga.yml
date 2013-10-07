@@ -13,6 +13,7 @@ ga:
     and: agus
     application_name: Blacklight
     back_to_bookmarks: "Back to Bookmarks"
+    back_to_collection: " ⬅ Back to Collection"
     back_to_search: "Back to Search"
     bookmarks: 
       add: 

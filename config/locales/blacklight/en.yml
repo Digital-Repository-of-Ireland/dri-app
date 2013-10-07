@@ -12,8 +12,9 @@ en:
   blacklight: 
     and: and
     application_name: NuigRnag
-    back_to_bookmarks: "Back to Bookmarks"
-    back_to_search: "Back to Search"
+    back_to_bookmarks: " ⬅ Back to Bookmarks"
+    back_to_collection: " ⬅ Back to Collection"
+    back_to_search: " ⬅ Back to Search"
     bookmarks: 
       add: 
         button: Bookmark
@@ -117,7 +118,7 @@ en:
         sort: 
           count: "Numerical Sort"
           index: "A-Z Sort"
-        title: "Limit your search"
+        title: "Refine your search"
       fields: 
         default: Keyword
       filters: 

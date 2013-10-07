@@ -16,6 +16,11 @@ ga:
         en: Béarla
         ga: Gaeilge
       locale: Teanga
+    data: 
+      types: 
+        audio: Audio
+        image: Images
+        pdfdoc: Documents
     flash: 
       alert: 
         create_permission: "Níl cead agat an doiciméad seo a chruthú."
@@ -131,6 +136,7 @@ ga:
         creators: Creators
         date: Date
         description: "Cur Síos"
+        format: Format
         geographical_coverage: "Subject (Place)"
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
@@ -149,7 +155,6 @@ ga:
         temporal_coverage_eng: "Subject (Era) in English"
         temporal_coverage_gle: "Subject (Era) in Irish"
         title: Teideal
-        format: Format
       ingest: 
         buttons: 
           continue: "Lean ort"
@@ -234,7 +239,9 @@ ga:
         legends: 
           access_control: "Rialúcháin Rochtana"
           audio_caption: "Uaslódáladh máistirchomhad fuaime cheana féin."
+          comments: Comments
           file_caption: "Uaslódáladh máistirchomhad cheana féin."
+          likes: Likes
           metadata: Meiteashonraí
           replace_caption: "Athchuir meiteashonraí trí chomhad XML a úsáid."
           replace_metadata: "Athchuir meiteashonraí"
@@ -242,7 +249,10 @@ ga:
           upload_audio_caption: "Níor uaslódáladh comhad fuaime ar bith. Uaslódáil máistirchomhad fuaime le do thoil."
           upload_file_caption: "Níor uaslódáladh comhad ar bith. Uaslódáil máistirchomhad le do thoil."
           upload_pdf: "Uaslódáil comhad PDF"
+          view_collection: "View Collection"
+          viewcount: Views
         links: 
+          all_objects: "All Objects"
           download: íoslódáil
           listen: éist
           view_record: "Féach ar an taifead"
