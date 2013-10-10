@@ -30,6 +30,12 @@ module Exceptions
   class NotFound < StandardError
   end
 
+  class InvalidXML < StandardError
+  end
+
+  class ValidationErrors < StandardError
+  end
+
   def render_internal_error(exception)
     render_exception(:internal_server_error, t('dri.views.exceptions.internal_error'))
   end
