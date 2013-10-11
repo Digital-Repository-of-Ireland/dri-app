@@ -52,6 +52,20 @@ module Storage
       return true
     end
 
+    # Delete bucket
+    def self.delete_bucket(bucket)
+      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                          :access_key_id => Settings.S3.access_key_id,
+                                          :secret_access_key => Settings.S3.secret_access_key)
+      begin
+        AWS::S3::Bucket.delete(bucket, :force => true)
+      rescue Exception => e
+        logger.error "Could not delete Storage Bucket #{bucket}: #{e.to_s}"
+        return false
+      end
+      AWS::S3::Base.disconnect!()
+      return true
+    end
 
     # Save File
     def self.store_surrogate(object_id, outputfile, filename)

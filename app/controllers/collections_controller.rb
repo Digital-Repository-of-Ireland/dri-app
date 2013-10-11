@@ -1,5 +1,6 @@
 # Controller for the Collection model
 #
+require 'storage/s3_interface'
 
 class CollectionsController < CatalogController
 
@@ -153,6 +154,7 @@ class CollectionsController < CatalogController
       @collection = retrieve_object!(params[:id])
   
       @collection.governed_items.each do |object|
+        delete_files(object)
         object.delete
       end
       @collection.reload
@@ -177,6 +179,16 @@ class CollectionsController < CatalogController
       else
          return true
       end
+   end
+
+   def delete_files(object)
+     local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
+                                                                { :f => object.id, :d => 'masterContent' } ],
+                                            :order => "version DESC")
+     local_file_info.each { |file| file.delete_file }
+     FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
+
+     Storage::S3Interface.delete_bucket(object.id.sub('dri:', ''))
    end
 
 end
