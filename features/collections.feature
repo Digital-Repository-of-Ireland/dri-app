@@ -110,3 +110,65 @@ Scenario: Committing a Digital Object which is a duplicate of an existing Digita
 #  Then I should get a duplicate object warning
 #  And I should be given a choice of using the existing object or creating a new one
 
+
+Scenario: Using the new design to create a collection
+  Given I am on the home page
+  Then I should see a link to collections
+  When I hover over the link to collections
+  Then I should see the collection sub-menu
+  When I follow the link to add a new collection
+  Then I should see the select collection type form
+  When I enter a collection title
+  And I select a metadta type
+  And I press the button to Continue
+  Then I should see the add you collection details form
+  When I upload a cover image
+  And I enter a description
+  And I enter a creation date
+  And I select the default copyright holder
+  And I press select the desired licence
+  And I press the button to download the Deposit Agreement
+  And I sign the Deposit Agreement
+  And I upload the signed Deposit Agreement
+  And I tick the box to agree to the terms and conditions of the Deposit Agreement
+  And I select the default language
+  And I add read access group public
+  And I select an Institutional Entity from the dropdown list
+  And I press the button to add the existing Institutional Entity
+  And I upload a logo for a new Institutional Entity
+  And I enter a name for the new Institutional Entity
+  And I enter a url for the new Institutional Entity
+  And I press the button to add the new institutional Entity
+  And I select read only access for public users
+  And I give public users search access
+  And I give public users export access
+  And I press the button to save draft
+  Then my collection should be created
+
+
+Scenario: Becoming a collection manager when I have created an account
+  Given I am a member of a cultural institution or other target audience
+  And I have a collection of cultural or social sciences data
+  And I want to ingest the data into DRI
+  And I have created an account on the DRI Repository
+  When I visit the How to become a collection manager page
+  And I use the contact form / email the designated address
+  And I provide the email address which I used to create my account
+  Then I will be sent a collection manager agreement
+  When I sign the collection manager agreement
+  And I send the signed collection manager agreement back to DRI Personnel
+  Then DRI Personnel will add me to the collection manager group
+
+Scenario: Becoming a collection manager when I don't have an account
+  Given I am a member of a cultural institution or other target audience
+  And I have a collection of cultural or social sciences data
+  And I want to ingest the data into DRI
+  And I have not created an account on the DRI Repository
+  When I visit the How to become a collection manager page
+  And I use the contact form / email the designated address
+  And I provide my email address
+  Then I will be sent a collection manager agreement
+  When I sign the collection manager agreement
+  And I send the signed collection manager agreement back to DRI Personnel
+  Then DRI Personnel will create a user account for my email address
+  And DRI Personnel will add me to the collection manager group
