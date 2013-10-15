@@ -3,6 +3,7 @@ class IngestJob
   require 'background_tasks/workers/verify_audio'
   require 'background_tasks/workers/verify_pdf'
   require 'background_tasks/workers/create_checksums'
+  require 'background_tasks/workers/create_audio'
   require 'background_tasks/workers/create_ogg'
   require 'background_tasks/workers/create_mp3'
   require 'background_tasks/workers/full_text_index'

@@ -5,6 +5,8 @@ outside of DRI.
 
 THIS IS FOR ADMINS ONLY, THERE IS A SEPARATE HEAD FOR NON-ADMIN USERS
 
+THIS 1.0 release is a snapshot
+
 == Welcome to nuig-rnag
 
 This repository contains the proto-type of a Hydra-Head which targets the

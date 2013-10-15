@@ -3,7 +3,7 @@
 <fieldset>
         <legend><%= t('dri.views.ingest.legends.upload_legend') %></legend>
         <p class="legend-caption"><%= t('dri.views.ingest.legends.upload_caption') %></p>
-        <form id="metadata_uploader" action="<%= url_for(:action=>"create", :controller=>"metadata") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+        <form id="metadata_uploader" action="<%= url_for(:action=>"create", :controller=>"objects") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
         <input type="file" name="metadata_file" accept="application/xml" required >
         <input type="hidden" name="type" value="<%=@type%>">
