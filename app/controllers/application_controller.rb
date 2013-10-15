@@ -35,6 +35,14 @@ class ApplicationController < ActionController::Base
   rescue_from Exceptions::BadRequest, :with => :render_bad_request
   rescue_from Hydra::AccessDenied, :with => :render_access_denied
   rescue_from Exceptions::NotFound, :with => :render_not_found
+  rescue_from Exceptions::InvalidXML do |exception|
+    flash[:error] = t('dri.flash.alert.invalid_xml', :error => exception)
+    render_bad_request(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
+  end
+  rescue_from Exceptions::ValidationErrors do |exception|
+    flash[:error] = t('dri.flash.error.validation_errors', :error => exception)
+    render_bad_request(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
+  end
 
   def set_locale
     if current_user
@@ -75,7 +83,7 @@ class ApplicationController < ActionController::Base
       @duplicates = duplicates(object)
 
       if @duplicates && !@duplicates.empty?
-        warning = t('dri.flash.notice.duplicate_object_ingested', :duplicates => @duplicates.map { |o| "'" + o.id + "'" }.join(", ").html_safe)
+        warning = t('dri.flash.notice.duplicate_object_ingested', :duplicates => @duplicates.map { |o| "'" + o["id"] + "'" }.join(", ").html_safe)
         flash[:alert] = warning
         @warnings = warning
       end
@@ -84,8 +92,10 @@ class ApplicationController < ActionController::Base
   private
 
   def duplicates(object)
-    if object.governing_collection && !object.governing_collection.nil?
-      ActiveFedora::Base.find(:is_governed_by_ssim => "info:fedora/#{object.governing_collection.id}", :metadata_md5_tesim => object.metadata_md5).delete_if{|obj| obj.id == object.pid}
+    unless object.governing_collection.blank?
+      collection_id = object.governing_collection.id
+      solr_query = "metadata_md5_tesim:\"#{object.metadata_md5}\" AND is_governed_by_ssim:\"info:fedora/#{collection_id}\""
+      ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "10", :fl => "id").delete_if{|obj| obj["id"] == object.pid}
     end
   end
 

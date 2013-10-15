@@ -1,6 +1,7 @@
 # Represents a file stored on the local filesystem.
 
 require 'checksum'
+require 'pathname'
 
 class LocalFile < ActiveRecord::Base
   serialize :checksum
@@ -28,12 +29,15 @@ class LocalFile < ActiveRecord::Base
   # Remove the file from the filesystem if it exists
   #
   def delete_file
-    if self.path = nil
+    if self.path.nil?
       return
     end
 
     if File.exist?(self.path)
       File.delete(self.path)
+
+      pn = Pathname.new(self.path)
+      FileUtils.remove_dir(pn.dirname, :force => true)
     end
   end
 
