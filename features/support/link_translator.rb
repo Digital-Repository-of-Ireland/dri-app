@@ -10,6 +10,9 @@ module LinkTranslator
     when /edit an object/
       "edit_record"
 
+    when /edit a collection/
+      "edit_collection"
+
     when /sign in/
       "login"
 

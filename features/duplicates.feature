@@ -1,4 +1,4 @@
-@req-17 @duplicates @req-17.1.1 @done
+@req-17 @duplicates @req-17.1.1 @done @javascript
 Feature: Duplicates
 
 When I ingest a digital object into a collection in the repository
@@ -6,7 +6,7 @@ As an authenticated and authorised depositor
 I want to be warned of any possible duplicate objects already contained in the collection
 
 Background:
-  Given I am logged in as "user1"
+  Given I am logged in as "user1" in the group "cm"
   And I have created a collection with title "Test Collection"
 
 Scenario: Ingesting a duplicate Digital Object using metadata file upload

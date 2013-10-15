@@ -1,6 +1,6 @@
 Given /^I am logged in as "([^\"]*)"$/ do |login|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
+  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   visit path_to("sign in")
   fill_in("user_email", :with => email) 
   fill_in("user_password", :with => "password") 
@@ -8,9 +8,24 @@ Given /^I am logged in as "([^\"]*)"$/ do |login|
   step 'I should be logged in'
 end
 
+Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)"$/ do |login, group|
+  email = "#{login}@#{login}.com"
+  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
+  @user.save
+  group_id = UserGroup::Group.find_or_create_by_name(group, description: "Test group", is_locked: true).id
+  membership = @user.join_group(group_id)
+  membership.approved_by = @user.id
+  membership.save
+  visit path_to("sign in")
+  fill_in("user_email", :with => email)
+  fill_in("user_password", :with => "password")
+  click_button("Sign in")
+  step 'I should be logged in'
+end
+
 Given /^I am logged in as "([^\"]*)" with password "([^\"]*)"$/ do |login, password|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => password, :password_confirmation => password, :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
+  @user = User.create(:email => email, :password => password, :password_confirmation => password, :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
@@ -43,7 +58,7 @@ end
 
 Given /^an account for "([^\"]*)" already exists$/ do |login|
   email = "#{login}@#{login}.com"
-  user = User.create(:email => email, :password => "password", :password_confirmation => "password", :first_name => "fname", :second_name => "sname")
+  user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname")
 end
 
 When /^I submit a valid email, password and password confirmation$/ do
@@ -106,7 +121,7 @@ When /^I follow the view link for "([^\"]*)"$/ do |login|
 end
 
 Then /^I should see the edit page$/ do
-  page.should have_content("Edit Account")
+  current_path.should == user_group.edit_user_path(@user)
 end
 
 When /^I submit the Edit User form$/ do

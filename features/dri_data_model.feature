@@ -11,7 +11,8 @@ Scenario: DRI Data Model for Audio should have correct metadata fields and valid
   When we test the "DRI::Model::Audio" Model
   Then it should validate presence of attribute "title"
   And it should validate presence of attribute "rights"
-  And it should validate presence of attribute "language"
+# Metadata Task Force has decided that language is no longer a mandatory field for DRI
+# And it should validate presence of attribute "language"
   And it should have attribute "description"
   And it should have attribute "presenter"
   And it should have attribute "guest"
@@ -32,7 +33,8 @@ Scenario: DRI Data Model for Pdfdoc should have correct metadata fields and vali
   When we test the "DRI::Model::Pdfdoc" Model
   Then it should validate presence of attribute "title"
   And it should validate presence of attribute "rights"
-  And it should validate presence of attribute "language"
+# Metadata Task Force has decided that language is no longer a mandatory field for DRI
+# And it should validate presence of attribute "language"
   And it should have attribute "description"
   And it should have attribute "author"
   And it should have attribute "editor"

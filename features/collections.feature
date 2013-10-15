@@ -6,7 +6,7 @@ Feature:
   And to retrieve my Digital Objects by collection
 
 Background:
-  Given I am logged in as "user1"
+  Given I am logged in as "user1" in the group "cm"
 
 Scenario: Navigating to the collections page
   Given I am on the home page
@@ -20,6 +20,30 @@ Scenario: Constructing a valid collection
   And I enter valid metadata for a collection
   And I press the button to create a collection
   Then I should see a success message for creating a collection
+
+Scenario: Constructing a collection with valid permissions
+  Given I am on the my collections page
+  When I press the button to add new collection
+  And I enter valid metadata for a collection
+  And I enter valid permissions for a collection
+  And I press the button to create a collection
+  Then I should see a success message for creating a collection
+
+Scenario: Constructing a collection with invalid permissions
+  Given I am on the my collections page
+  When I press the button to add new collection
+  And I enter valid metadata for a collection
+  And I enter invalid permissions for a collection
+  And I press the button to create a collection
+  Then I should see a failure message for "invalid collection"
+
+Scenario: Updating a collection with invalid permissions
+  Given a collection with pid "dri:collperm" created by "user1@user1.com"
+  When I go to the "collection" "show" page for "dri:collperm"
+  When I follow the link to edit a collection
+  And I enter invalid permissions for a collection
+  And I press the button to save collection changes
+  Then I should see a failure message for "invalid update collection"
 
 Scenario Outline: Adding a Digital Object in a governing/non-governing collection
   Given a Digital Object with pid "<object_pid>" and title "<object_title>"
@@ -44,15 +68,15 @@ Scenario Outline: Creating Digital Object in a governing collection using the we
     | dri:obj1   | Object 1     | dri:coll1      | governing       |
 
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
-  Given a Digital Object with pid "dri:obj4" and title "Object 4"
+  Given a Digital Object with pid "dri:obj4" and title "Object 4" created by "user1@user1.com"
   And a collection with pid "dri:coll4" created by "user1@user1.com"
   When I add the Digital Object "dri:obj4" to the non-governing collection "dri:coll4" using the web forms
   And I go to the "collection" "show" page for "dri:coll4"
   Then I should see the Digital Object "dri:obj4" as part of the collection
 
 Scenario: Removing a Digital Object from a non-governing collection using the web forms
-  Given a Digital Object with pid "dri:obj5" and title "Object 5"
-  And a collection with pid "dri:coll5"
+  Given a Digital Object with pid "dri:obj5" and title "Object 5" created by "user1@user1.com"
+  And a collection with pid "dri:coll5" created by "user1@user1.com"
   When I add the Digital Object "dri:obj5" to the collection "dri:coll5" as type "non-governing"
   Then the collection "dri:coll5" should contain the Digital Object "dri:obj5" as type "non-governing"
   When I go to the "collection" "show" page for "dri:coll5"
@@ -61,6 +85,22 @@ Scenario: Removing a Digital Object from a non-governing collection using the we
   Then I should see a success message for removing an object from a collection
   When I go to the "collection" "show" page for "dri:coll5"
   Then I should not see the Digital Object "dri:obj5" as part of the non-governing collection
+
+Scenario: Deleting a collection as an admin
+  Given I am not logged in
+  Given I am logged in as "admin" in the group "admin"
+  Given a collection with pid "dri:coll6" created by "user1@user1.com"
+  When I go to the "collection" "show" page for "dri:coll6"
+  And I follow the link to edit a collection
+  Then I should see a button to delete collection with id dri:coll6
+  When I press the button to delete collection with id dri:coll6
+  Then I should see a success message for "deleting a collection"
+
+Scenario: Non-admin should not be given option to delete
+  Given a collection with pid "dri:coll7" created by "user1@user1.com"
+  When I go to the "collection" "show" page for "dri:coll7"
+  And I follow the link to edit a collection
+  Then I should not see a button to delete collection with id dri:coll7
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
 #  Given a Digital Object with pid "dri:obj6" and title "Object 6"

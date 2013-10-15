@@ -9,30 +9,39 @@ en:
         header: "Important notice about cookies"
         message: "The Digital Repository of Ireland uses cookies to implement access control to digital resources. To opt out of receiving cookies from DRI, please turn off cookies for this website in your browser preferences. Note that users who opt out will be unable to use some of the features of the Digital Repository. For more information please see our %{privacy_statement:privacy statement} and our %{cookies_help:cookies help} pages."
       home: 
-        adminintrotext: "DRI repository administrator interface."
-        introtext: "Good news everyone! Dummy page here to be filled in and fixed!"
+        introtext: 
+          admin: "DRI repository administrator interface"
+          public: "Welcome to the DRI repository."
       lang: 
         en: English
         ga: Irish
       locale: Language
+    data: 
+      types: 
+        audio: Audio
+        image: Images
+        pdfdoc: Documents
     flash: 
       alert: 
+        create_permission: "You do not have permission to create this document."
+        edit_permission: "You do not have permission to edit this document."
         invalid_file_type: "Warning: The file does not appear to be a valid type"
-        virus_detected: "Virus detected in uploaded file: %{virus}"
         invalid_object: "Invalid Object: %{error}."
         invalid_xml: "Invalid XML: %{error}"
         not_added_to_collection: "Unable to add object to collection."
         not_removed_from_collection: "Unable to remove object from collection."
-        edit_permission: "You do not have permission to edit this document."
         read_permission: "You do not have permission to read this document."
-        create_permission: "You do not have permission to create this document."
         unknown_permission: "Unsupported Permission Level: %{action}"
+        virus_detected: "Virus detected in uploaded file: %{virus}"
       error: 
         no_type_specified: "You must specify a valid object type"
+        not_created: "Unable to create. Check set permissions"
+        not_updated: "%{item} was not updated. Check set permissions"
         validation_errors: "Validation Errors: %{error}"
       notice: 
         added_to_collection: "Object has been added to collection."
         collection_created: "Collection object has been successfully created."
+        collection_deleted: "Collection has been deleted."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
@@ -50,12 +59,15 @@ en:
         updated: "Updated %{item}"
     headerlinks: 
       about: About
-      collections: "My Collections"
+      collections: 
+        admin: "My Collections"
+        public: Collections
       contact: Contact
       current_collection: "Current Collection: %{collection}"
       home: Home
       ingest: Ingest
       privacy: "Privacy & Cookies policy"
+      resque: "Resque Server"
       usergroups: "Users & Groups"
     views: 
       catalog: 
@@ -70,6 +82,7 @@ en:
           files: Files
         legends: 
           no_files: "No file has been uploaded."
+          no_permission: "You do not have permission to view the asset file associated with this object. Please contact the digital object's owner to request access."
         links: 
           download: download
           edit_this_record: "Edit this record"
@@ -82,22 +95,28 @@ en:
         buttons: 
           clear_collection: "Clear as Current"
           create_collection: "Create Collection"
+          delete_collection: "Delete Collection"
           new_collection: "New Collection"
           remove: Remove
           set_collection: "Set as Current"
+        confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
+        edit: "Edit Collection"
         index: 
           items: 
             one: "%{count} item"
             other: "%{count} items"
-          no_collections: "You do not have any collections yet."
-          title: "My Collections"
+          no_collections: 
+            admin: "You do not have any collections yet."
+            public: "There are no collections available."
+          title: 
+            admin: "My Collections"
+            public: Collections
         legends: 
           governed_objects: "Governed Objects"
           members: Members
           objects: "Objects in Collection"
         new: 
           title: "New Collection"
-        edit: "Edit Collection"
       devise: 
         locale: Language
       exceptions: 
@@ -105,12 +124,37 @@ en:
         internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"
         invalid_asset: "Unable to create asset. Please correct the errors and try again."
         invalid_collection: "Unable to create collection."
+        invalid_file: "Upload %{name} has failed validation."
         invalid_metadata: "The metadata file you have uploaded is invalid. Please correct the errors and try again."
         invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
         invalid_object_type: "You have specified an invalid digital object type."
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
-        invalid_file: "Upload %{name} has failed validation."
+      fields: 
+        contributors: Contributors
+        creation_date: "Creation Date"
+        creators: Creators
+        date: Date
+        description: Description
+        format: Format
+        geographical_coverage: "Subject (Place)"
+        geographical_coverage_eng: "Subject (Place) in English"
+        geographical_coverage_gle: "Subject (Place) in Irish"
+        governing_collection: "Governing Collection"
+        language: Language
+        name_coverage: "Subject (Name)"
+        published_date: "Published/Broadcast Date"
+        publisher: Publisher
+        rights: Rights
+        sources: Sources
+        status: Status
+        subjects: Subjects
+        subjects_eng: "Subjects in English"
+        subjects_gle: "Subjects in Irish"
+        temporal_coverage: "Subject (Era)"
+        temporal_coverage_eng: "Subject (Era) in English"
+        temporal_coverage_gle: "Subject (Era) in Irish"
+        title: Title
       ingest: 
         buttons: 
           continue: Continue
@@ -121,6 +165,7 @@ en:
           collection_prompt: "Select collection"
           ingest_method_prompt: "Select ingest method"
           object_type_prompt: "Select object type"
+          status_prompt: "Select status"
           title: "Add a new digital object"
         legends: 
           upload_caption: "Ingest metadata XML file."
@@ -132,6 +177,28 @@ en:
           object_type: "Select Object Type"
           upload: "Upload Metadata file"
       objects: 
+        access_controls: 
+          accessible_master_file: "Accessible Master File(s)"
+          date: "Date: "
+          depositor: Depositor
+          edit: "Edit Access"
+          embargo: Embargo
+          inherit: Inherit
+          manage: Managers
+          master_file: "Access Master File?"
+          master_file_desc: "If accessible then users with read access can download the master file(s)"
+          page: "Page Access"
+          private: Private
+          private_master_file: "Private Master File(s)"
+          private_metadata: "Private Metadata"
+          private_metadata_access: "Since you have set access to metadata as private, you can add people here who you would like to be able to access the metadata."
+          private_metadata_warn: "DRI have an Open Metadata Policy. We strongly encourage all depositors to allow open access to their object's metadata."
+          public: Public
+          public_metadata: "Public Metadata"
+          read: "Read Access"
+          registered: "Logged In"
+          restricted: Restricted
+          search: "Search Access"
         buttons: 
           add_to_collection: "Add to Collection"
           replace_master: "Replace Master File"
@@ -166,33 +233,15 @@ en:
           publisher: publisher
           rights: Rights
           sources: Sources
+          status: Status
           subjects: Subjects
           title: Title
-          status: Status
-        access_controls:
-          private_metadata_warn: 'Say about not wanting private metadata\n(Open Metadata Policy: Defaults to open)'
-          private_metadata_access: "Since you have set access to metadata as private, you can add people here who you would like to be able to access the metadata."
-          depositor: "Depositor"
-          search: "Search Access"
-          page: "Page Access"
-          read: "Read Access"
-          edit: "Edit Access"
-          manage: "Managers"
-          embargo: "Embargo"
-          public_metadata: "Public Metadata"
-          private_metadata: "Private Metadata"
-          public: "Public"
-          registered: "Logged In"
-          restricted: "Restricted"
-          inherit: "Inherit"
-          master_file: "Access Master File?"
-          master_file_desc: "If accessible then users with read access can download the master file(s)"
-          accessible_master_file: "Accessible Master File(s)"
-          private_master_file: "Private Master File(s)"
-          date: "Date: "
         legends: 
+          access_control: "Access Controls"
           audio_caption: "A master audio file has already been uploaded."
+          comments: Comments
           file_caption: "A master file has already been uploaded."
+          likes: Likes
           metadata: Metadata
           replace_caption: "Replace metadata using XML file."
           replace_metadata: "Replace Metadata"
@@ -200,8 +249,762 @@ en:
           upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
           upload_file_caption: "No files have been uploaded. Please upload a master file."
           upload_pdf: "Upload PDF File"
-          access_control: "Access Controls"
+          view_collection: "View Collection"
+          viewcount: Views
         links: 
+          all_objects: "All Objects"
           download: download
           listen: listen
           view_record: "View Record"
+    vocabulary: 
+      iso_639_2: 
+        aar: Afar
+        abk: Abkhazian
+        ace: Achinese
+        ach: Acoli
+        ada: Adangme
+        ady: "Adyghe; Adygei"
+        afa: "Afro-Asiatic languages"
+        afh: Afrihili
+        afr: Afrikaans
+        ain: Ainu
+        aka: Akan
+        akk: Akkadian
+        alb: Albanian
+        ale: Aleut
+        alg: "Algonquian languages"
+        alt: "Southern Altai"
+        amh: Amharic
+        ang: "English, Old (ca.450-1100)"
+        anp: Angika
+        apa: "Apache languages"
+        ara: Arabic
+        arc: "Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)"
+        arg: Aragonese
+        arm: Armenian
+        arn: "Mapudungun; Mapuche"
+        arp: Arapaho
+        art: "Artificial languages"
+        arw: Arawak
+        asm: Assamese
+        ast: "Asturian; Bable; Leonese; Asturleonese"
+        ath: "Athapascan languages"
+        aus: "Australian languages"
+        ava: Avaric
+        ave: Avestan
+        awa: Awadhi
+        aym: Aymara
+        aze: Azerbaijani
+        bad: "Banda languages"
+        bai: "Bamileke languages"
+        bak: Bashkir
+        bal: Baluchi
+        bam: Bambara
+        ban: Balinese
+        baq: Basque
+        bas: Basa
+        bat: "Baltic languages"
+        bej: "Beja; Bedawiyet"
+        bel: Belarusian
+        bem: Bemba
+        ben: Bengali
+        ber: "Berber languages"
+        bho: Bhojpuri
+        bih: "Bihari languages"
+        bik: Bikol
+        bin: "Bini; Edo"
+        bis: Bislama
+        bla: Siksika
+        bnt: "Bantu (Other)"
+        bos: Bosnian
+        bra: Braj
+        bre: Breton
+        btk: "Batak languages"
+        bua: Buriat
+        bug: Buginese
+        bul: Bulgarian
+        bur: Burmese
+        byn: "Blin; Bilin"
+        cad: Caddo
+        cai: "Central American Indian languages"
+        car: "Galibi Carib"
+        cat: "Catalan; Valencian"
+        cau: "Caucasian languages"
+        ceb: Cebuano
+        cel: "Celtic languages"
+        cha: Chamorro
+        chb: Chibcha
+        che: Chechen
+        chg: Chagatai
+        chi: Chinese
+        chk: Chuukese
+        chm: Mari
+        chn: "Chinook jargon"
+        cho: Choctaw
+        chp: "Chipewyan; Dene Suline"
+        chr: Cherokee
+        chu: "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"
+        chv: Chuvash
+        chy: Cheyenne
+        cmc: "Chamic languages"
+        cop: Coptic
+        cor: Cornish
+        cos: Corsican
+        cpe: "Creoles and pidgins, English based"
+        cpf: "Creoles and pidgins, French-based "
+        cpp: "Creoles and pidgins, Portuguese-based "
+        cre: Cree
+        crh: "Crimean Tatar; Crimean Turkish"
+        crp: "Creoles and pidgins "
+        csb: Kashubian
+        cus: "Cushitic languages"
+        cze: Czech
+        dak: Dakota
+        dan: Danish
+        dar: Dargwa
+        day: "Land Dayak languages"
+        del: Delaware
+        den: "Slave (Athapascan)"
+        dgr: Dogrib
+        din: Dinka
+        div: "Divehi; Dhivehi; Maldivian"
+        doi: Dogri
+        dra: "Dravidian languages"
+        dsb: "Lower Sorbian"
+        dua: Duala
+        dum: "Dutch, Middle (ca.1050-1350)"
+        dut: "Dutch; Flemish"
+        dyu: Dyula
+        dzo: Dzongkha
+        efi: Efik
+        egy: "Egyptian (Ancient)"
+        eka: Ekajuk
+        elx: Elamite
+        eng: English
+        enm: "English, Middle (1100-1500)"
+        epo: Esperanto
+        est: Estonian
+        ewe: Ewe
+        ewo: Ewondo
+        fan: Fang
+        fao: Faroese
+        fat: Fanti
+        fij: Fijian
+        fil: "Filipino; Pilipino"
+        fin: Finnish
+        fiu: "Finno-Ugrian languages"
+        fon: Fon
+        fre: French
+        frm: "French, Middle (ca.1400-1600)"
+        fro: "French, Old (842-ca.1400)"
+        frr: "Northern Frisian"
+        frs: "Eastern Frisian"
+        fry: "Western Frisian"
+        ful: Fulah
+        fur: Friulian
+        gaa: Ga
+        gay: Gayo
+        gba: Gbaya
+        gem: "Germanic languages"
+        geo: Georgian
+        ger: German
+        gez: Geez
+        gil: Gilbertese
+        gla: "Gaelic; Scottish Gaelic"
+        gle: Irish
+        glg: Galician
+        glv: Manx
+        gmh: "German, Middle High (ca.1050-1500)"
+        goh: "German, Old High (ca.750-1050)"
+        gon: Gondi
+        gor: Gorontalo
+        got: Gothic
+        grb: Grebo
+        grc: "Greek, Ancient (to 1453)"
+        gre: "Greek, Modern (1453-)"
+        grn: Guarani
+        gsw: "Swiss German; Alemannic; Alsatian"
+        guj: Gujarati
+        gwi: Gwich'in
+        hai: Haida
+        hat: "Haitian; Haitian Creole"
+        hau: Hausa
+        haw: Hawaiian
+        heb: Hebrew
+        her: Herero
+        hil: Hiligaynon
+        him: "Himachali languages; Western Pahari languages"
+        hin: Hindi
+        hit: Hittite
+        hmn: Hmong
+        hmo: "Hiri Motu"
+        hrv: Croatian
+        hsb: "Upper Sorbian"
+        hun: Hungarian
+        hup: Hupa
+        iba: Iban
+        ibo: Igbo
+        ice: Icelandic
+        ido: Ido
+        iii: "Sichuan Yi; Nuosu"
+        ijo: "Ijo languages"
+        iku: Inuktitut
+        ile: "Interlingue; Occidental"
+        ilo: Iloko
+        ina: "Interlingua (International Auxiliary Language Association)"
+        inc: "Indic languages"
+        ind: Indonesian
+        ine: "Indo-European languages"
+        inh: Ingush
+        ipk: Inupiaq
+        ira: "Iranian languages"
+        iro: "Iroquoian languages"
+        ita: Italian
+        jav: Javanese
+        jbo: Lojban
+        jpn: Japanese
+        jpr: Judeo-Persian
+        jrb: Judeo-Arabic
+        kaa: Kara-Kalpak
+        kab: Kabyle
+        kac: "Kachin; Jingpho"
+        kal: "Kalaallisut; Greenlandic"
+        kam: Kamba
+        kan: Kannada
+        kar: "Karen languages"
+        kas: Kashmiri
+        kau: Kanuri
+        kaw: Kawi
+        kaz: Kazakh
+        kbd: Kabardian
+        kha: Khasi
+        khi: "Khoisan languages"
+        khm: "Central Khmer"
+        kho: "Khotanese; Sakan"
+        kik: "Kikuyu; Gikuyu"
+        kin: Kinyarwanda
+        kir: "Kirghiz; Kyrgyz"
+        kmb: Kimbundu
+        kok: Konkani
+        kom: Komi
+        kon: Kongo
+        kor: Korean
+        kos: Kosraean
+        kpe: Kpelle
+        krc: Karachay-Balkar
+        krl: Karelian
+        kro: "Kru languages"
+        kru: Kurukh
+        kua: "Kuanyama; Kwanyama"
+        kum: Kumyk
+        kur: Kurdish
+        kut: Kutenai
+        lad: Ladino
+        lah: Lahnda
+        lam: Lamba
+        lao: Lao
+        lat: Latin
+        lav: Latvian
+        lez: Lezghian
+        lim: "Limburgan; Limburger; Limburgish"
+        lin: Lingala
+        lit: Lithuanian
+        lol: Mongo
+        loz: Lozi
+        ltz: "Luxembourgish; Letzeburgesch"
+        lua: Luba-Lulua
+        lub: Luba-Katanga
+        lug: Ganda
+        lui: Luiseno
+        lun: Lunda
+        luo: "Luo (Kenya and Tanzania)"
+        lus: Lushai
+        mac: Macedonian
+        mad: Madurese
+        mag: Magahi
+        mah: Marshallese
+        mai: Maithili
+        mak: Makasar
+        mal: Malayalam
+        man: Mandingo
+        mao: Maori
+        map: "Austronesian languages"
+        mar: Marathi
+        mas: Masai
+        may: Malay
+        mdf: Moksha
+        mdr: Mandar
+        men: Mende
+        mga: "Irish, Middle (900-1200)"
+        mic: "Mi'kmaq; Micmac"
+        min: Minangkabau
+        mis: "Uncoded languages"
+        mkh: "Mon-Khmer languages"
+        mlg: Malagasy
+        mlt: Maltese
+        mnc: Manchu
+        mni: Manipuri
+        mno: "Manobo languages"
+        moh: Mohawk
+        mon: Mongolian
+        mos: Mossi
+        mul: "Multiple languages"
+        mun: "Munda languages"
+        mus: Creek
+        mwl: Mirandese
+        mwr: Marwari
+        myn: "Mayan languages"
+        myv: Erzya
+        nah: "Nahuatl languages"
+        nai: "North American Indian languages"
+        nap: Neapolitan
+        nau: Nauru
+        nav: "Navajo; Navaho"
+        nbl: "Ndebele, South; South Ndebele"
+        nde: "Ndebele, North; North Ndebele"
+        ndo: Ndonga
+        nds: "Low German; Low Saxon; German, Low; Saxon, Low"
+        nep: Nepali
+        new: "Nepal Bhasa; Newari"
+        nia: Nias
+        nic: "Niger-Kordofanian languages"
+        niu: Niuean
+        nno: "Norwegian Nynorsk; Nynorsk, Norwegian"
+        nob: "Bokmål, Norwegian; Norwegian Bokmål"
+        nog: Nogai
+        non: "Norse, Old"
+        nor: Norwegian
+        nqo: N'Ko
+        nso: "Pedi; Sepedi; Northern Sotho"
+        nub: "Nubian languages"
+        nwc: "Classical Newari; Old Newari; Classical Nepal Bhasa"
+        nya: "Chichewa; Chewa; Nyanja"
+        nym: Nyamwezi
+        nyn: Nyankole
+        nyo: Nyoro
+        nzi: Nzima
+        oci: "Occitan (post 1500); Provençal"
+        oji: Ojibwa
+        ori: Oriya
+        orm: Oromo
+        osa: Osage
+        oss: "Ossetian; Ossetic"
+        ota: "Turkish, Ottoman (1500-1928)"
+        oto: "Otomian languages"
+        paa: "Papuan languages"
+        pag: Pangasinan
+        pal: Pahlavi
+        pam: "Pampanga; Kapampangan"
+        pan: "Panjabi; Punjabi"
+        pap: Papiamento
+        pau: Palauan
+        peo: "Persian, Old (ca.600-400 B.C.)"
+        per: Persian
+        phi: "Philippine languages"
+        phn: Phoenician
+        pli: Pali
+        pol: Polish
+        pon: Pohnpeian
+        por: Portuguese
+        pra: "Prakrit languages"
+        pro: "Provençal, Old (to 1500)"
+        pus: "Pushto; Pashto"
+        qaa: "Reserved for local use"
+        que: Quechua
+        raj: Rajasthani
+        rap: Rapanui
+        rar: "Rarotongan; Cook Islands Maori"
+        roa: "Romance languages"
+        roh: Romansh
+        rom: Romany
+        rum: "Romanian; Moldavian; Moldovan"
+        run: Rundi
+        rup: "Aromanian; Arumanian; Macedo-Romanian"
+        rus: Russian
+        sad: Sandawe
+        sag: Sango
+        sah: Yakut
+        sai: "South American Indian (Other)"
+        sal: "Salishan languages"
+        sam: "Samaritan Aramaic"
+        san: Sanskrit
+        sas: Sasak
+        sat: Santali
+        scn: Sicilian
+        sco: Scots
+        sel: Selkup
+        sem: "Semitic languages"
+        sga: "Irish, Old (to 900)"
+        sgn: "Sign Languages"
+        shn: Shan
+        sid: Sidamo
+        sin: "Sinhala; Sinhalese"
+        sio: "Siouan languages"
+        sit: "Sino-Tibetan languages"
+        sla: "Slavic languages"
+        slo: Slovak
+        slv: Slovenian
+        sma: "Southern Sami"
+        sme: "Northern Sami"
+        smi: "Sami languages"
+        smj: "Lule Sami"
+        smn: "Inari Sami"
+        smo: Samoan
+        sms: "Skolt Sami"
+        sna: Shona
+        snd: Sindhi
+        snk: Soninke
+        sog: Sogdian
+        som: Somali
+        son: "Songhai languages"
+        sot: "Sotho, Southern"
+        spa: "Spanish; Castilian"
+        srd: Sardinian
+        srn: "Sranan Tongo"
+        srp: Serbian
+        srr: Serer
+        ssa: "Nilo-Saharan languages"
+        ssw: Swati
+        suk: Sukuma
+        sun: Sundanese
+        sus: Susu
+        sux: Sumerian
+        swa: Swahili
+        swe: Swedish
+        syc: "Classical Syriac"
+        syr: Syriac
+        tah: Tahitian
+        tai: "Tai languages"
+        tam: Tamil
+        tat: Tatar
+        tel: Telugu
+        tem: Timne
+        ter: Tereno
+        tet: Tetum
+        tgk: Tajik
+        tgl: Tagalog
+        tha: Thai
+        tib: Tibetan
+        tig: Tigre
+        tir: Tigrinya
+        tiv: Tiv
+        tkl: Tokelau
+        tlh: "Klingon; tlhIngan-Hol"
+        tli: Tlingit
+        tmh: Tamashek
+        tog: "Tonga (Nyasa)"
+        ton: "Tonga (Tonga Islands)"
+        tpi: "Tok Pisin"
+        tsi: Tsimshian
+        tsn: Tswana
+        tso: Tsonga
+        tuk: Turkmen
+        tum: Tumbuka
+        tup: "Tupi languages"
+        tur: Turkish
+        tut: "Altaic languages"
+        tvl: Tuvalu
+        twi: Twi
+        tyv: Tuvinian
+        udm: Udmurt
+        uga: Ugaritic
+        uig: "Uighur; Uyghur"
+        ukr: Ukrainian
+        umb: Umbundu
+        und: Undetermined
+        urd: Urdu
+        uzb: Uzbek
+        vai: Vai
+        ven: Venda
+        vie: Vietnamese
+        vol: Volapük
+        vot: Votic
+        wak: "Wakashan languages"
+        wal: Walamo
+        war: Waray
+        was: Washo
+        wel: Welsh
+        wen: "Sorbian languages"
+        wln: Walloon
+        wol: Wolof
+        xal: "Kalmyk; Oirat"
+        xho: Xhosa
+        yao: Yao
+        yap: Yapese
+        yid: Yiddish
+        yor: Yoruba
+        ypk: "Yupik languages"
+        zap: Zapotec
+        zbl: "Blissymbols; Blissymbolics; Bliss"
+        zen: Zenaga
+        zha: "Zhuang; Chuang"
+        znd: "Zande languages"
+        zul: Zulu
+        zun: Zuni
+        zxx: "No linguistic content; Not applicable"
+        zza: "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
+      marc_relator: 
+        abr: Abridger
+        acp: "Art copyist"
+        act: Actor
+        adi: "Art director"
+        adp: Adapter
+        aft: "Author of afterword, colophon, etc."
+        anl: Analyst
+        anm: Animator
+        ann: Annotator
+        ant: "Bibliographic antecedent"
+        ape: Appellee
+        apl: Appellant
+        app: Applicant
+        aqt: "Author in quotations or text abstracts"
+        arc: Architect
+        ard: "Artistic director"
+        arr: Arranger
+        art: Artist
+        asg: Assignee
+        asn: "Associated name"
+        ato: Autographer
+        att: "Attributed name"
+        auc: Auctioneer
+        aud: "Author of dialog"
+        aui: "Author of introduction, etc."
+        aus: Screenwriter
+        aut: Author
+        bdd: "Binding designer"
+        bjd: "Bookjacket designer"
+        bkd: "Book designer"
+        bkp: "Book producer"
+        blw: "Blurb writer"
+        bnd: Binder
+        bpd: "Bookplate designer"
+        brd: Broadcaster
+        brl: "Braille embosser"
+        bsl: Bookseller
+        cas: Caster
+        ccp: Conceptor
+        chr: Choreographer
+        clb: Collaborator
+        cli: Client
+        cll: Calligrapher
+        clr: Colorist
+        clt: Collotyper
+        cmm: Commentator
+        cmp: Composer
+        cmt: Compositor
+        cnd: Conductor
+        cng: Cinematographer
+        cns: Censor
+        coe: Contestant-appellee
+        col: Collector
+        com: Compiler
+        con: Conservator
+        cor: "Collection registrar"
+        cos: Contestant
+        cot: Contestant-appellant
+        cou: "Court governed"
+        cov: "Cover designer"
+        cpc: "Copyright claimant"
+        cpe: Complainant-appellee
+        cph: "Copyright holder"
+        cpl: Complainant
+        cpt: Complainant-appellant
+        cre: Creator
+        crp: Correspondent
+        crr: Corrector
+        crt: "Court reporter"
+        csl: Consultant
+        csp: "Consultant to a project"
+        cst: "Costume designer"
+        ctb: Contributor
+        cte: Contestee-appellee
+        ctg: Cartographer
+        ctr: Contractor
+        cts: Contestee
+        ctt: Contestee-appellant
+        cur: Curator
+        cwt: "Commentator for written text"
+        dbp: "Distribution place"
+        dfd: Defendant
+        dfe: Defendant-appellee
+        dft: Defendant-appellant
+        dgg: "Degree granting institution"
+        dis: Dissertant
+        dln: Delineator
+        dnc: Dancer
+        dnr: Donor
+        dpc: Depicted
+        dpt: Depositor
+        drm: Draftsman
+        drt: Director
+        dsr: Designer
+        dst: Distributor
+        dtc: "Data contributor"
+        dte: Dedicatee
+        dtm: "Data manager"
+        dto: Dedicator
+        dub: "Dubious author"
+        edc: "Editor of compilation"
+        edm: "Editor of moving image work"
+        edt: Editor
+        egr: Engraver
+        elg: Electrician
+        elt: Electrotyper
+        eng: Engineer
+        enj: "Enacting jurisdiction"
+        etr: Etcher
+        evp: "Event place"
+        exp: Expert
+        fac: Facsimilist
+        fds: "Film distributor"
+        fld: "Field director"
+        flm: "Film editor"
+        fmd: "Film director"
+        fmk: Filmmaker
+        fmo: "Former owner"
+        fmp: "Film producer"
+        fnd: Funder
+        fpy: "First party"
+        frg: Forger
+        gis: "Geographic information specialist"
+        grt: "Graphic technician"
+        his: "Host institution"
+        hnr: Honoree
+        hst: Host
+        ill: Illustrator
+        ilu: Illuminator
+        ins: Inscriber
+        inv: Inventor
+        isb: "Issuing body"
+        itr: Instrumentalist
+        ive: Interviewee
+        ivr: Interviewer
+        jud: Judge
+        jug: "Jurisdiction governed"
+        lbr: Laboratory
+        lbt: Librettist
+        ldr: "Laboratory director"
+        led: Lead
+        lee: Libelee-appellee
+        lel: Libelee
+        len: Lender
+        let: Libelee-appellant
+        lgd: "Lighting designer"
+        lie: Libelant-appellee
+        lil: Libelant
+        lit: Libelant-appellant
+        lsa: "Landscape architect"
+        lse: Licensee
+        lso: Licensor
+        ltg: Lithographer
+        lyr: Lyricist
+        mcp: "Music copyist"
+        mdc: "Metadata contact"
+        mfp: "Manufacture place"
+        mfr: Manufacturer
+        mod: Moderator
+        mon: Monitor
+        mrb: Marbler
+        mrk: "Markup editor"
+        msd: "Musical director"
+        mte: Metal-engraver
+        mus: Musician
+        nrt: Narrator
+        opn: Opponent
+        org: Originator
+        orm: "Organizer of meeting"
+        osp: "Onscreen presenter"
+        oth: Other
+        own: Owner
+        pan: Panelist
+        pat: Patron
+        pbd: "Publishing director"
+        pbl: Publisher
+        pdr: "Project director"
+        pfr: Proofreader
+        pht: Photographer
+        plt: Platemaker
+        pma: "Permitting agency"
+        pmn: "Production manager"
+        pop: "Printer of plates"
+        ppm: Papermaker
+        ppt: Puppeteer
+        pra: Praeses
+        prc: "Process contact"
+        prd: "Production personnel"
+        pre: Presenter
+        prf: Performer
+        prg: Programmer
+        prm: Printmaker
+        prn: "Production company"
+        pro: Producer
+        prp: "Production place"
+        prs: "Production designer"
+        prt: Printer
+        prv: Provider
+        pta: "Patent applicant"
+        pte: Plaintiff-appellee
+        ptf: Plaintiff
+        pth: "Patent holder"
+        ptt: Plaintiff-appellant
+        pup: "Publication place"
+        rbr: Rubricator
+        rcd: Recordist
+        rce: "Recording engineer"
+        rcp: Addressee
+        rdd: "Radio director"
+        red: Redaktor
+        ren: Renderer
+        res: Researcher
+        rev: Reviewer
+        rpc: "Radio producer"
+        rps: Repository
+        rpt: Reporter
+        rpy: "Responsible party"
+        rse: Respondent-appellee
+        rsg: Restager
+        rsp: Respondent
+        rsr: Restorationist
+        rst: Respondent-appellant
+        rth: "Research team head"
+        rtm: "Research team member"
+        sad: "Scientific advisor"
+        sce: Scenarist
+        scl: Sculptor
+        scr: Scribe
+        sds: "Sound designer"
+        sec: Secretary
+        sgd: "Stage director"
+        sgn: Signer
+        sht: "Supporting host"
+        sll: Seller
+        sng: Singer
+        spk: Speaker
+        spn: Sponsor
+        spy: "Second party"
+        srv: Surveyor
+        std: "Set designer"
+        stg: Setting
+        stl: Storyteller
+        stm: "Stage manager"
+        stn: "Standards body"
+        str: Stereotyper
+        tcd: "Technical director"
+        tch: Teacher
+        ths: "Thesis advisor"
+        tld: "Television director"
+        tlp: "Television producer"
+        trc: Transcriber
+        trl: Translator
+        tyd: "Type designer"
+        tyg: Typographer
+        uvp: "University place"
+        vdg: Videographer
+        voc: Vocalist
+        wac: "Writer of added commentary"
+        wal: "Writer of added lyrics"
+        wam: "Writer of accompanying material"
+        wat: "Writer of added text"
+        wdc: Woodcutter
+        wde: "Wood engraver"
+        wit: Witness

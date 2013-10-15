@@ -37,4 +37,5 @@ module ApplicationHelper
   def get_partial_name( object )
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
+
 end

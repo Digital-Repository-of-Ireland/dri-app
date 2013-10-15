@@ -7,20 +7,18 @@ gem 'rails', '3.2.11'
 gem 'blacklight', '4.0.0'
 gem 'hydra-head', '6.1.0'
 
-if ENV['DRI_BUNDLE_ENV'] == "tchpc"
-  gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models'
-  gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group'
-else
-  gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git'
-  gem 'user_group', :git => 'git@dev.forasfeasa.ie:user_group.git'
-end
+gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :tag => 'v1.0.1'
+gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :tag => 'v1.0.2'
 
 gem 'rails_config'
 gem 'sqlite3'
+gem 'mysql2'
 
 gem 'noid', '0.5.5'
 
-gem 'resque'
+gem 'resque', :require => 'resque/server'
+gem "resque-scheduler"
+gem "resque-status"
 
 # Storage-related gems
 gem 'aws-s3'
@@ -31,7 +29,7 @@ gem 'aws-s3'
 gem 'mimemagic'
 
 # Language and translation related gems
-gem 'http_accept_language'
+gem 'http_accept_language', '~> 1.0.2'
 gem 'it'
 
 gem 'jquery-rails'
@@ -69,15 +67,18 @@ group :development, :test do
   gem 'guard-yard'
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
-  gem 'rb-fchange', :require => false 
+  gem 'rb-fchange', :require => false
+
+  gem 'ci_reporter'
 end
 
 group :test do
   gem 'cucumber-rails', require: false
-  gem 'database_cleaner'
+  gem 'database_cleaner', '1.0.1'
   gem 'launchy'
   gem 'shoulda'
   gem 'factory_girl_rails'
+  gem 'faker'
   gem 'syntax'
 end
 
@@ -100,3 +101,5 @@ gem "yard"
 group :translations do
   gem 'i18n_sync'
 end
+
+gem 'rvm'

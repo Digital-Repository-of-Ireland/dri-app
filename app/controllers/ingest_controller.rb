@@ -3,7 +3,7 @@
 
 require 'stepped_forms'
 
-class IngestController < AssetsController
+class IngestController < CatalogController
   include SteppedForms
 
   before_filter :authenticate_user!, :only => [:create, :new]

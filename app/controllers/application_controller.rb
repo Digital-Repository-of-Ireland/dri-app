@@ -1,27 +1,33 @@
 require 'exceptions'
+require 'permission_methods'
 
 class ApplicationController < ActionController::Base
   before_filter :set_locale, :set_cookie, :authenticate_user!
 
+  include DRI::Metadata
+  include DRI::Model
+
   include HttpAcceptLanguage
 
-  # Adds a few additional behaviors into the application controller 
-  include Blacklight::Controller  
+  # Adds a few additional behaviors into the application controller
+  include Blacklight::Controller
 
-  # Adds Hydra behaviors into the application controller 
+  # Adds Hydra behaviors into the application controller
   include Hydra::Controller::ControllerBehavior
 
   include Exceptions
 
   include UserGroup::PermissionsCheck
 
-  # Please be sure to impelement current_user and user_session. Blacklight depends on 
-  # these methods in order to perform user specific actions. 
+  include PermissionMethods
+
+  # Please be sure to impelement current_user and user_session. Blacklight depends on
+  # these methods in order to perform user specific actions.
 
   layout 'blacklight'
 
-  # Please be sure to impelement current_user and user_session. Blacklight depends on 
-  # these methods in order to perform user specific actions. 
+  # Please be sure to impelement current_user and user_session. Blacklight depends on
+  # these methods in order to perform user specific actions.
 
   protect_from_forgery
 
@@ -29,7 +35,15 @@ class ApplicationController < ActionController::Base
   rescue_from Exceptions::BadRequest, :with => :render_bad_request
   rescue_from Hydra::AccessDenied, :with => :render_access_denied
   rescue_from Exceptions::NotFound, :with => :render_not_found
-  
+  rescue_from Exceptions::InvalidXML do |exception|
+    flash[:error] = t('dri.flash.alert.invalid_xml', :error => exception)
+    render_bad_request(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
+  end
+  rescue_from Exceptions::ValidationErrors do |exception|
+    flash[:error] = t('dri.flash.error.validation_errors', :error => exception)
+    render_bad_request(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
+  end
+
   def set_locale
     if current_user
       I18n.locale = current_user.locale
@@ -41,6 +55,48 @@ class ApplicationController < ActionController::Base
 
   def set_cookie
     cookies[:accept_cookies] = "yes" if current_user
+  end
+
+  def set_access_permissions(key)
+    if params.key?(key)
+      params[key][:private_metadata] = set_private_metadata_permission(params[key].delete(:private_metadata)) if params[key][:private_metadata].present?
+      params[key][:master_file] = set_master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
+    end
+  end
+
+  def after_sign_out_path_for(resource_or_scope)
+    main_app.new_user_session_url
+  end
+
+  # Retrieves a Fedora Digital Object by ID
+  def retrieve_object(id)
+    return objs = ActiveFedora::Base.find(id,{:cast => true})
+  end
+
+  def retrieve_object!(id)
+    objs = ActiveFedora::Base.find(id,{:cast => true})
+    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') +" ID: #{id}" if objs.nil?
+    return objs
+  end
+
+  def check_for_duplicates(object)
+      @duplicates = duplicates(object)
+
+      if @duplicates && !@duplicates.empty?
+        warning = t('dri.flash.notice.duplicate_object_ingested', :duplicates => @duplicates.map { |o| "'" + o["id"] + "'" }.join(", ").html_safe)
+        flash[:alert] = warning
+        @warnings = warning
+      end
+  end
+
+  private
+
+  def duplicates(object)
+    unless object.governing_collection.blank?
+      collection_id = object.governing_collection.id
+      solr_query = "metadata_md5_tesim:\"#{object.metadata_md5}\" AND is_governed_by_ssim:\"info:fedora/#{collection_id}\""
+      ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "10", :fl => "id").delete_if{|obj| obj["id"] == object.pid}
+    end
   end
 
 end

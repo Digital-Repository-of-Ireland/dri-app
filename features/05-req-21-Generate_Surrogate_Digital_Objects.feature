@@ -39,7 +39,7 @@ will be blocked until all required background jobs have been run once.
   Note could the above be done with audit logs ?
 
 Current implementation:
-When an asset is uploaded the FilesController create function creates a BackgroundTasks::QueueManager object and calls the appropriate process method depending on the object type.
+When an asset is uploaded the AssetsController create function creates a BackgroundTasks::QueueManager object and calls the appropriate process method depending on the object type.
 QueueManager uses resque to enqueue the appropriate background tasks for that object type (as configured in config/settings.yml)
 Some dummy workers are available, they only print output to indicate that they have run, but do not yet do any real work
 
@@ -54,7 +54,7 @@ following list is just an example
 * openssl
 
 Scenario Outline: Running background jobs and creating surrogates for different object types
-  Given I am logged in as "user1"
+  Given I am logged in as "user1" in the group "cm"
   And I have created a <type> object
   Then the asset should be virus checked
   And the asset type should be verified

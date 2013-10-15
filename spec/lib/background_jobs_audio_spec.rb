@@ -63,6 +63,14 @@ describe "workers" do
         CreateMp3.transcode(input_file, options, output_file)
         File.exists?(output_file).should be true
       end
+
+      it "should raise an error when a command fails" do
+        tmpdir = Dir::tmpdir
+        input_file = File.join(fixture_path, "SAMPLEA.mp3")
+        output_file = File.join(tmpdir, "testout.mp3")
+        options = "-y -ac 2 -ab 96k -ar 44100 --foo"
+        expect { CreateMp3.transcode(input_file, options, output_file)}.to raise_error(Exceptions::BadCommand)
+      end
     end
   
     describe "perform" do
@@ -79,7 +87,7 @@ describe "workers" do
         rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
           #report failue
         end
-        filename = "#{@object.pid}-mp3-#{Settings.mp3_out_options.channel}-#{Settings.mp3_out_options.bitrate}-#{Settings.mp3_out_options.frequency}.mp3"
+        filename = "#{@object.pid}_mp3_web_quality.mp3"
         files = []
         bucket.each do |fileobject|
           files.push(fileobject.key)
@@ -116,6 +124,14 @@ describe "workers" do
         CreateOgg.transcode(input_file, options, output_file)
         File.exists?(output_file).should be true
       end
+
+      it "should raise an error when a command fails" do
+        tmpdir = Dir::tmpdir
+        input_file = File.join(fixture_path, "SAMPLEA.mp3")
+        output_file = File.join(tmpdir, "testout.mp3")
+        options = "-y -ac 2 -ab 96k -ar 44100 --foo"
+        expect { CreateOgg.transcode(input_file, options, output_file)}.to raise_error(Exceptions::BadCommand)
+      end
     end
   
     describe "perform" do
@@ -132,7 +148,7 @@ describe "workers" do
         rescue AWS::S3::ResponseError, AWS::S3::S3Exception => e
           #report failue
         end
-        filename = "#{@object.pid}-ogg-#{Settings.ogg_out_options.channel}-#{Settings.ogg_out_options.bitrate}-#{Settings.ogg_out_options.frequency}.ogg"
+        filename = "#{@object.pid}_ogg_web_quality.ogg"
         files = []
         bucket.each do |fileobject|
           files.push(fileobject.key)

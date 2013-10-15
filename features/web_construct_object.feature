@@ -1,11 +1,11 @@
-@web @req-17.6 @done
+@web @req-17.6 @done @javascript
 Feature: 
   In order to add a digital object into the repository
   As an authenticated and authorised depositor
   I want to construct a Digital Object with web forms
 
 Background:
-  Given I am logged in as "user1"
+  Given I am logged in as "user1" in the group "cm"
 
 Scenario: Navigating to the ingest page
   When I go to "the home page"

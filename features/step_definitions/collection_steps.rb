@@ -3,7 +3,9 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.title = title ? title : SecureRandom.hex(5)
   if user
     collection.apply_depositor_metadata(User.find_by_email(user))
+    collection.manager_users_string=User.find_by_email(user).to_s
   end
+  collection.apply_default_permissions
   collection.save
   collection.items.count.should == 0
   collection.governed_items.count.should == 0
@@ -48,6 +50,20 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
     When I fill in "dri_model_collection_title" with "#{title}"
     And I fill in "dri_model_collection_description" with "Test description"
     And I fill in "dri_model_collection_publisher" with "Test publisher"
+  }
+end
+
+When /^I enter valid permissions for a collection$/ do
+  steps %{
+    When I choose "dri_model_collection_private_metadata_radio_public"
+    And choose "dri_model_collection_read_groups_string_radio_public"
+  }
+end
+
+When /^I enter invalid permissions for a collection$/ do
+  steps %{
+    When I choose "dri_model_collection_private_metadata_radio_private"
+    And I fill in "dri_model_collection_manager_users_string" with ""
   }
 end
 

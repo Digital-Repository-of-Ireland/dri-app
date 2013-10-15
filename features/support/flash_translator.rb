@@ -48,6 +48,9 @@ module FlashTranslator
 
     when /creating a collection/
       I18n.t('dri.flash.notice.collection_created', :locale => @user.locale)
+ 
+    when /deleting a collection/
+      I18n.t('dri.flash.notice.collection_deleted', :locale => @user.locale)
 
     when /removing an object from a collection/
       I18n.t('dri.flash.notice.removed_from_collection', :locale => @user.locale)
@@ -57,6 +60,12 @@ module FlashTranslator
 
     when /invalid profile image/
       strip_vars( I18n.t("user_groups.users.errors.validation_image_link", :locale => "en") )
+
+    when /invalid collection/
+      I18n.t('dri.flash.error.not_created', :locale => @user.locale)
+
+    when /invalid update collection/
+      strip_vars( I18n.t('dri.flash.error.not_updated', :locale => @user.locale) )
 
     else "Unknown"
  

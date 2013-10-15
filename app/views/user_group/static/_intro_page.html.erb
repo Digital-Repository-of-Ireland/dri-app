@@ -1,0 +1,15 @@
+ <br /> <br /> <br />
+
+ <b><%= t('user_groups.views.static_pages.account_mgt') %></b><br />
+ <%= link_to t('user_groups.views.static_pages.links.show_profile'), user_path(current_user) if signed_in? %> :
+ <%= t('user_groups.views.static_pages.link_desc.show_profile_desc') if signed_in? %>
+ <br />
+<%= link_to t('user_groups.views.static_pages.links.edit_profile'), edit_user_path(current_user) if signed_in? %> :
+<%= t('user_groups.views.static_pages.link_desc.edit_profile_desc') if signed_in? %>.
+<br />
+<%= link_to t('user_groups.views.static_pages.links.browse_groups'), groups_path %> :
+<%= t('user_groups.views.static_pages.link_desc.browse_groups_desc') %>
+<br />
+<%= link_to t('user_groups.views.static_pages.links.browse_users'), user_group.users_path %> :
+<%= t('user_groups.views.static_pages.link_desc.browse_users_desc') %>
+<br />

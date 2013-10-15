@@ -16,6 +16,9 @@ module ButtonTranslator
     when /save changes/
       "save_edit"
 
+    when /save collection changes/
+      "edit_collection"
+
     when /upload a file/
       "upload_file"
 
@@ -42,6 +45,9 @@ module ButtonTranslator
 
     when /set the current collection to (.+)/
       "set_collection_#{$1}"
+
+    when /delete collection with id (.+)/
+      "delete_collection_#{$1}"
 
     when /accept cookie policy/
       "accept_cookies"

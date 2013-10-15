@@ -1,11 +1,13 @@
-NuigRnag::Application.routes.draw do
+require 'resque/server'
 
+NuigRnag::Application.routes.draw do
+  scope ENV["RAILS_RELATIVE_URL_ROOT"] || "/" do
   root :to => "catalog#index"
 
   Blacklight.add_routes(self)
   #HydraHead.add_routes(self)
 
-  mount UserGroup::Engine => "user_groups"
+  mount UserGroup::Engine => "/user_groups"
 
   resources :objects, :only => ['edit', 'update', 'create']
   resources :collections do
@@ -20,9 +22,8 @@ NuigRnag::Application.routes.draw do
   
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
   match 'objects/:id/metadata' => 'metadata#update', :via => :put
-  match 'objects/:id/file' => 'files#show', :via => :get, :as => :object_file
-  match 'objects/:id/file' => 'files#create', :via => :post, :as => :new_object_file
-  match 'metadata' => 'metadata#create', :via => :post  
+  match 'objects/:id/file' => 'assets#show', :via => :get, :as => :object_file
+  match 'objects/:id/file' => 'assets#create', :via => :post, :as => :new_object_file
   match '/privacy' => 'static_pages#privacy', :via => :get
   match '/about' => 'static_pages#about', :via => :get
   match '/contact' => 'static_pages#contact', :via => :get
@@ -30,6 +31,11 @@ NuigRnag::Application.routes.draw do
   match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 
   match 'objects/:id' => 'catalog#show', :via => :get
+
+  # need to put in the 'system administrator' role here
+  authenticate do
+    mount Resque::Server, :at => "/resque"
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -87,4 +93,5 @@ NuigRnag::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
+  end
 end

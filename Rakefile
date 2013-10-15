@@ -9,6 +9,7 @@ NuigRnag::Application.load_tasks
 require 'rake/testtask'
 require 'bundler'
 require 'jettywrapper'
+require 'ci/reporter/rake/rspec'
 
 begin
   require 'rdoc/task'
@@ -40,18 +41,44 @@ namespace :jetty do
 
 end
 
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
+  rspec.pattern = FileList['spec/*_spec.rb']
+end
+
 desc "Run Continuous Integration"
-task :ci => ['jetty:reset', 'jetty:config'] do
+task :ci => ['jetty:reset', 'jetty:config', 'ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
   jetty_params = Jettywrapper.load_config
-  jetty_params[:startup_wait]= 45
+  jetty_params[:startup_wait]= 120
   error = Jettywrapper.wrap(jetty_params) do
     Rake::Task['cucumber'].invoke
+#    Rake::Task['spec'].invoke
   end
   raise "test failures: #{error}" if error
 
-  #Rake::Task["doc"].invoke
+  Rake::Task["rdoc"].invoke
+end
+
+desc "Run Continuous Integration-spec"
+task :ci_spec => ['jetty:reset', 'jetty:config', 'ci_clean'] do
+  ENV['environment'] = "test"
+  Rake::Task['db:migrate'].invoke
+  jetty_params = Jettywrapper.load_config
+  jetty_params[:startup_wait]= 120
+  error = Jettywrapper.wrap(jetty_params) do
+    Rake::Task['spec'].invoke
+  end
+  raise "test failures: #{error}" if error
+
+  Rake::Task["rdoc"].invoke
+end
+
+desc "Clean CI environment"
+task :ci_clean do
+  rm_rf 'features/reports'
 end
 
 namespace :rvm do
@@ -61,4 +88,33 @@ namespace :rvm do
     system(". ~/.rvm/scripts/rvm && rvm rvmrc trust .rvmrc && rvm rvmrc load")
   end
 
+end
+
+task :restart_workers => :environment do
+  pids = Array.new
+  Resque.workers.each do |worker|
+    pids << worker.to_s.split(/:/).second
+  end
+  if pids.size > 0
+    system("kill -QUIT #{pids.join(' ')}")
+  end
+end
+
+namespace :solr do
+  namespace :dri do
+    desc 'reindex'
+    task :reindex do
+      DRI::Model::Collection.find(:all).each do |obj|
+        obj.update_index
+      end
+
+      DRI::Model::Audio.find(:all).each do |obj|
+        obj.update_index
+      end
+
+      DRI::Model::Pdfdoc.find(:all).each do |obj|
+        obj.update_index
+      end
+    end
+  end
 end

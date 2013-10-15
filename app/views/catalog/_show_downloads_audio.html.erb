@@ -7,16 +7,15 @@
   <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => document.id %>" id="download_metadata"><%= t('dri.views.catalog.links.view_metadata') %></a></dd>
   <dt><%= t('dri.views.catalog.forms.audio_file') %>: </dt>
 <% if @datastreams.has_key?('masterContent') %>
-  <dd><%= link_to t('dri.views.catalog.links.listen'), url_for(:controller => 'files', :action => 'show', :id => @document.id), :id => "download_asset", :class => "player" %></dd>
+  <dd><%= link_to t('dri.views.catalog.links.listen'), url_for(:controller => 'assets', :action => 'show', :id => @document.id), :id => "download_asset", :class => "player" %></dd>
 
   <% @surrogates.each do |desc, url| %>
     <dt><%= desc %></dt>
-    <dd><%= link_to t('dri.views.catalog.links.listen'), url, :id => "download_asset", :class => "player" %></dd>
+    <dd><%= link_to t('dri.views.catalog.links.listen'), url, :id => desc, :class => "player" %></dd>
   <% end %>
 
      <section id="audio"> 
      </section>
-  </dd>
 
 <% else %>
    <dd><%= t('dri.views.catalog.legends.no_files') %></dd>

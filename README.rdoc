@@ -5,6 +5,8 @@ outside of DRI.
 
 THIS IS FOR ADMINS ONLY, THERE IS A SEPARATE HEAD FOR NON-ADMIN USERS
 
+THIS 1.0 release is a snapshot
+
 == Welcome to nuig-rnag
 
 This repository contains the proto-type of a Hydra-Head which targets the
@@ -20,6 +22,7 @@ For testing and development you will need to bootstrap the project
   $ cd nuig-rnag
   $ git submodule update --init --recursive
   $ bundle
+  $ cp config/database.yml.sample config/database.yml (and edit as appropriate)
   $ bundle exec rake db:migrate
   $ bundle exec rake db:seed
   $ bundle exec rake jetty:config
@@ -27,11 +30,21 @@ For testing and development you will need to bootstrap the project
   Dont forget to prepare the test database with
     $ bundle exec rake db:test:prepare
 
+  You may also need to edit config/settings.yml and/or create config/settings.local.yml
+
 To start the application for demo purposes
 
   $ cd nuig-rnag
   $ rake jetty:start
   $ bundle exec rails server
+
+The db:seed step above will create 3 initial accounts:
+
+* admin@dri.ie (admin user)
+* manager@dri.ie (collection manager)
+* user@dri.ie (public user)
+
+The password for all 3 accounts is 'password'
 
 To run the unit tests
 
@@ -89,6 +102,20 @@ This is where the application specific settings are located
 
 Please view and edit this file as needed before deploying the application.
 
+== Configuation of database.yml, fedora.yml and solr.yml
+
+The configuration files for the NUIG-RNAG application
+
+* config/database.yml
+* config/solr.yml
+* config/fedora.yml
+
+are not configured initially, there are some sample configurations in
+the config directory. These configuration files must be created before
+development, testing, deployment. The default sample files can be copied
+into the correct locations for testing and development. It is suggested
+that these files are not commited to the repository.
+
 == Background jobs
 
 The application includes a queueing system based on Resque and Redis to allow
@@ -107,12 +134,13 @@ To start the worker to process jobs run
 
   $ bundle exec rake resque:work QUEUE="*"
 
-To view your queues (for debugging purposes) run 
+To view your queues (for debugging purposes) run
 
   $ resque-web -x
 
 This should pop up a browser window looking at localhost:5678 (if not open one). Here
-you can the status of your queues and jobs.
+you can see the status of your queues and jobs. This is also mounted in the application
+at /resque
 
 The worker code is currently in lib/workers/.
 
@@ -121,7 +149,7 @@ host running in order to run the tests.
 
 == ClamAV
 
-To enable virus scanning ClamAV needs to be installed. 
+To enable virus scanning ClamAV needs to be installed.
 
   $ sudo port install clamav
 
@@ -153,7 +181,7 @@ repository. To start up Ceph run
 
   $ vagrant up ceph
 
-When the VM is running, log in with 
+When the VM is running, log in with
 
   $ vagrant ssh ceph
 
@@ -187,4 +215,7 @@ Some steps required to be run before a production env is ready to go...
   $ rake RAILS_ENV=production db:migrate
 
 The above assumes a production ready instance of mysql, solr,
-fedora-commons and mod_passenger.
+fedora-commons and mod_passenger. You will also need to start the
+resque workers.
+
+  $ rake environment resque:work RAILS_ENV=development QUEUE="*" VERBOSE=1

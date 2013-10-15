@@ -24,16 +24,15 @@ module Storage
       @surrogates_hash = {}
       files.each do |file|
         begin
-          file.match(/dri:#{bucket}-([-a-zA-z0-9]*)\..*/)
+          file.match(/dri:#{bucket}_([-a-zA-z0-9]*)\..*/)
           url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
           @surrogates_hash[$1] = url
         rescue Exception => e
-          logger.debug "Problem getting url for file #{filename} : #{e.to_s}"
+          logger.debug "Problem getting url for file #{file} : #{e.to_s}"
         end
       end
 
       AWS::S3::Base.disconnect!()
-
       return @surrogates_hash
     end
 
@@ -53,6 +52,20 @@ module Storage
       return true
     end
 
+    # Delete bucket
+    def self.delete_bucket(bucket)
+      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                          :access_key_id => Settings.S3.access_key_id,
+                                          :secret_access_key => Settings.S3.secret_access_key)
+      begin
+        AWS::S3::Bucket.delete(bucket, :force => true)
+      rescue Exception => e
+        logger.error "Could not delete Storage Bucket #{bucket}: #{e.to_s}"
+        return false
+      end
+      AWS::S3::Base.disconnect!()
+      return true
+    end
 
     # Save File
     def self.store_surrogate(object_id, outputfile, filename)

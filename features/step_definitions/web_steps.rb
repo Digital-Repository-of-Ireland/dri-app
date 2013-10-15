@@ -139,6 +139,16 @@ When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|
   interface.enter_valid_metadata(title)
 end
 
+When /^I enter valid "(audio|pdfdoc)" metadata$/ do |type|
+  title ||= "A Test Object"
+  case type
+    when "audio"
+      interface.enter_valid_metadata(title)
+    when "pdfdoc"
+      interface.enter_valid_pdf_metadata(title)
+  end
+end
+
 When /^I enter modified metadata$/ do
   interface.enter_modified_metadata
 end
@@ -170,12 +180,12 @@ Then /^(?:|I )press the button to (.+)$/ do |button|
   click_link_or_button(button_to_id(button))
 end 
 
-Then /^(?:|I )should see a link to (.+)$/ do |link|
-  page.should have_link(link_to_id(link))
+Then /^(?:|I )should( not)? see a button to (.+)$/ do |negate,button|
+   negate ? (page.should_not have_button(button_to_id(button))) : (page.should have_button(button_to_id(button)))
 end
 
-Then /^(?:|I )should not see a link to (.+)$/ do |link|
-  page.should_not have_link(link_to_id(link))
+Then /^(?:|I )should( not)? see a link to (.+)$/ do |negate,link|
+  negate ? (page.should_not have_link(link_to_id(link))) : (page.should have_link(link_to_id(link)))
 end
 
 Then /^(?:|I )should see a "([^"]*)"$/ do |element|
@@ -195,12 +205,8 @@ Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failu
   page.should have_selector ".alert", text: flash_for(message)
 end
 
-Then /^(?:|I )should see a message for (.+)$/ do |message|
-  page.should have_selector ".alert", text: flash_for(message)
-end
-
-Then /^(?:|I )should not see a message for (.+)$/ do |message|
-  page.should_not have_selector ".alert", text: flash_for(message)
+Then /^(?:|I )should( not)? see a message for (.+)$/ do |negate, message|
+  negate ? (page.should_not have_selector ".alert", text: flash_for(message)) : (page.should have_selector ".alert", text: flash_for(message))
 end
 
 Then /^(?:|I )should see "([^"]*)"(?: within "([^"]*)")?$/ do |text, selector|
@@ -244,6 +250,12 @@ When /^(?:|I )fill in "([^"]*)" with "([^"]*)"(?: within "([^"]*)")?$/ do |field
   end
 end
 
+When /^(?:|I )choose "([^"]*)"(?: within "([^"]*)")?$/ do |field, selector|
+  with_scope(selector) do
+    choose(field)
+  end
+end
+
 Then /^the "([^"]*)" field(?: within "([^"]*)")? should contain "([^"]*)"$/ do |field, selector, value|
   with_scope(selector) do
     field = find_field(field)
@@ -276,12 +288,8 @@ Then /^I should see the error "([^\"]*)"$/ do |error|
   page.should have_content error
 end 
 
-Then /^I should see the message "([^\"]*)"$/ do |message| 
-  page.should have_selector ".alert", text: message
-end
-
-Then /^I should not see the message "([^\"]*)"$/ do |message|
-  page.should_not have_selector ".alert", text: message
+Then /^I should( not)? see the message "([^\"]*)"$/ do |negate, message| 
+  negate ? (page.should_not have_selector ".alert", text: message) : (page.should have_selector ".alert", text: message)
 end
 
 Then /^I should (not )?see an element "([^"]*)"$/ do |negate, selector|
@@ -299,4 +307,17 @@ end
 Then /^I should see a section with id "([^\"]+)"$/ do |div_name|
   selector = "div#" + div_name
   page.should have_selector(selector)
+end
+
+When /^I accept the alert$/ do
+  page.driver.browser.switch_to.alert.accept  
+end
+
+Then(/^the radio button "(.*?)" is "(.*?)"$/) do |field, status|
+  case status
+    when "checked"
+      page.has_checked_field?(field)
+    when "not checked"
+      page.has_no_checked_field?(field)
+  end
 end

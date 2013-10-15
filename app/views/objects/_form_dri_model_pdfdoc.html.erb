@@ -12,7 +12,7 @@
   <legend><%= t('dri.views.objects.legends.upload_pdf') %></legend>
   <% if @object.datastreams.has_key?("masterContent") %>
     <p><%= t('dri.views.objects.legends.file_caption') %> 
-      <%= link_to t('dri.views.objects.links.download'), url_for(:controller => 'files', :action => 'show', :id => @object.id) %>
+      <%= link_to t('dri.views.objects.links.download'), url_for(:controller => 'assets', :action => 'show', :id => @object.id) %>
     </p>
   <% end %>
 

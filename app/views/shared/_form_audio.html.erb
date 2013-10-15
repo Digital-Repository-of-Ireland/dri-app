@@ -4,8 +4,8 @@
   <%= f.text_field :title, :class => "edit span6", :required => "true" %>
   <%= f.label "#{t('dri.views.objects.forms.description')}:" %>
   <%= f.text_area :description, :class => "edit span6" %>
-  <%= f.label "#{t('dri.views.objects.forms.broadcast_date')}:" %>
-  <%= f.text_field :broadcast_date, :class => "edit span6", :required => "true" %>
+  <%= f.label "#{t('dri.views.objects.forms.creation_date')}:" %>
+  <%= f.text_field :creation_date, :class => "edit span6", :required => "true" %>
   <%= f.label "#{t('dri.views.objects.forms.rights')}:" %>
   <%= f.text_field :rights, :class => "edit span6", :required => "true" %>
 
@@ -60,5 +60,9 @@
     <%= f.text_field "source][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="dri_model"><%= t('dri.views.objects.forms.delete') %></a><br />
   <% end %>
   <p class="add-text-field"><a href="#" model-name="dri_model" title="Add Source"><%= t('dri.views.objects.forms.add_source') %></a></p>
+</fieldset>
+<fieldset id="status">
+  <%= f.label "#{t('dri.views.objects.forms.status')}:" %>
+  <%= f.select :status, ['draft','review','published'],:class => "edit span6" %>
 </fieldset>
 
