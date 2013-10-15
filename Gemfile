@@ -29,7 +29,7 @@ gem 'aws-s3'
 gem 'mimemagic'
 
 # Language and translation related gems
-gem 'http_accept_language'
+gem 'http_accept_language', '~> 1.0.2'
 gem 'it'
 
 gem 'jquery-rails'
