@@ -110,7 +110,7 @@ Scenario: Committing a Digital Object which is a duplicate of an existing Digita
 #  Then I should get a duplicate object warning
 #  And I should be given a choice of using the existing object or creating a new one
 
-
+@wip
 Scenario: Using the new design to create a collection
   Given I am on the home page
   Then I should see a link to collections
