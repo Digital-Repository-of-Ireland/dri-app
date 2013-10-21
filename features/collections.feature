@@ -67,6 +67,7 @@ Scenario Outline: Creating Digital Object in a governing collection using the we
     | object_pid | object_title | collection_pid | governance_type |
     | dri:obj1   | Object 1     | dri:coll1      | governing       |
 
+@review
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
   Given a Digital Object with pid "dri:obj4" and title "Object 4" created by "user1@user1.com"
   And a collection with pid "dri:coll4" created by "user1@user1.com"
@@ -74,6 +75,7 @@ Scenario: Adding a Digital Object to a non-governing collection using the web fo
   And I go to the "collection" "show" page for "dri:coll4"
   Then I should see the Digital Object "dri:obj4" as part of the collection
 
+@review
 Scenario: Removing a Digital Object from a non-governing collection using the web forms
   Given a Digital Object with pid "dri:obj5" and title "Object 5" created by "user1@user1.com"
   And a collection with pid "dri:coll5" created by "user1@user1.com"

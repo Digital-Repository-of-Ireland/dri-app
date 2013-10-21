@@ -22,14 +22,6 @@ module ApplicationHelper
     end
   end
 
-  def get_current_collection
-    if session[:current_collection]
-      return DRI::Model::Collection.find(session[:current_collection])
-    else
-      return nil
-    end
-  end
-
   def existing_collection_for( object_id )
     get_current_collection.items.to_a.find {|b| b.id == object_id}
   end
