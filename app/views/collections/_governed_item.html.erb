@@ -1,3 +1,5 @@
 <ul>
-  <li><%= link_to governed_item.title, catalog_path(governed_item) %></li>
+  <% @children.each do |child_item| %>
+    <li><%= link_to child_item[:title], catalog_path(child_item[:id]) %></li>
+  <% end %>
 </ul>

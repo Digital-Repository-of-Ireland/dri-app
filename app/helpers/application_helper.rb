@@ -38,4 +38,8 @@ module ApplicationHelper
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
+  def is_collection?( document )
+    document["type_ssm"].first.casecmp("collection") == 0 ? true : false
+  end
+
 end

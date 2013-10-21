@@ -8,7 +8,7 @@
       <% @mycollections.each do |collection| %>
 
         <li>
-          <%= link_to collection.title, collection_path(:id => collection.id) %> (<%= t('dri.views.collection.index.items', :count => collection.governed_items.count + collection.items.count) %>)
+          <%= link_to collection.title, collection_path(:id => collection.id) %> (<%= t('dri.views.collection.index.items', :count => @collection_counts[collection.id]) %>) 
 
           <% if !get_current_collection.nil? && get_current_collection.id.eql?(collection.id) %>
 

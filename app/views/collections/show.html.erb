@@ -8,7 +8,7 @@
 </dl>
 
 <h2><%= t('dri.views.collection.legends.governed_objects') %></h2>
-<%= render :partial => 'governed_item', :collection => @collection.governed_items %>
+<%= render :partial => 'governed_item', :children => @children %>
 
 <h2><%= t('dri.views.collection.legends.objects') %></h2>
 <%= render :partial => 'item', :collection => @collection.items, :locals => {:collection_id => @collection.pid} %>
