@@ -8,6 +8,7 @@ interface:
   languages: [en, ga]
 dri:
   files: dri_files
+  logos: dri_files/logos
 queue:
   audio: [CreateBucket, CreateChecksums, CreateMp3, CreateOgg]
   pdfdoc: [CreateBucket, CreateChecksums, FullTextIndex]
@@ -20,7 +21,7 @@ mp3_web_quality_out_options:
   bitrate: "96k" # default is same as input file
   frequency: "44100" # default is same as input file
 ogg_web_quality_out_options:
-  codec: libvorbis # Default for ogg will produce very large files 
+  codec: libvorbis # Default for ogg will produce very large files
   strip_metadata: "yes" # default is preserve global metadata
   channel: "2" # default is same as input file
   bitrate: "96k" # default is same as input file
