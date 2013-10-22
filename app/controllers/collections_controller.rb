@@ -18,7 +18,7 @@ class CollectionsController < CatalogController
     @collection_counts = {}
 
     @mycollections.each do |collection|
-      @collection_counts[collection.id] = count_published_items_in_collection collection.id
+      @collection_counts[collection.id] = count_items_in_collection collection.id
     end
 
     respond_to do |format|
@@ -30,7 +30,7 @@ class CollectionsController < CatalogController
                                :title => collection.title,
                                :description => collection.description,
                                :publisher => collection.publisher,
-                               :objectcount => collection.governed_items.count + collection.items.count }.to_json
+                               :objectcount => collection_counts[collection.id] }.to_json
         end
         @mycollections = collectionhash
       }
@@ -72,7 +72,7 @@ class CollectionsController < CatalogController
   def show
     enforce_permissions!("show",params[:id])
     @collection = retrieve_object!(params[:id])
-    @children = get_published_items_in_collection params[:id]
+    @children = get_items_in_collection params[:id]
 
     respond_to do |format|
       format.html  
@@ -82,7 +82,7 @@ class CollectionsController < CatalogController
         @response[:title] = @collection.title
         @response[:description] = @collection.description
         @response[:publisher] = @collection.publisher
-        @response[:objectcount] = count_published_items_in_collection @collection.pid
+        @response[:objectcount] = count_items_in_collection @collection.pid
       }
     end
   end
@@ -198,16 +198,16 @@ class CollectionsController < CatalogController
      Storage::S3Interface.delete_bucket(object.id.sub('dri:', ''))
    end
 
-   def count_published_items_in_collection collection_id
-      solr_query = "status_ssim:published AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
-                                              "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
+   def count_items_in_collection collection_id
+      solr_query = "is_governed_by_ssim:\"info:fedora/" + collection_id +
+                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\""
       ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
     end
 
-    def get_published_items_in_collection collection_id
+    def get_items_in_collection collection_id
       results = Array.new
-      solr_query = "status_ssim:published AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
-                                              "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
+      solr_query = "is_governed_by_ssim:\"info:fedora/" + collection_id +
+                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\""
       result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "500", :fl => "id,title_tesim")
       result_docs.each do | doc |
         results.push({ :id => doc['id'], :title => doc["title_tesim"][0] })

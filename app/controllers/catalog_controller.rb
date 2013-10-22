@@ -8,7 +8,7 @@ class CatalogController < ApplicationController
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
   include UserGroup::SolrAccessControls
   #This method shows the DO if the metadata is open
-  #Rather than before where the user had to have read permisisons on the object all the time
+  #Rather than before where the user had to have read permissions on the object all the time
   def enforce_search_for_show_permissions
     enforce_permissions!("show_digital_object",params[:id])
   end
