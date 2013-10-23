@@ -13,7 +13,7 @@ module ApplicationHelper
   
   def get_collections
     collections = DRI::Model::Collection.all
-    collections.select! { |c| (can?(:edit, c) || can?(:create_do, c)) }
+    collections.select! { |c| (can?(:edit, c) || can?(:create_do, c)) } unless current_user.is_admin?
     collections.collect{ |c| [c.title, c.pid] }
   end
 
