@@ -321,3 +321,9 @@ Then(/^the radio button "(.*?)" is "(.*?)"$/) do |field, status|
       page.has_no_checked_field?(field)
   end
 end
+
+Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |id, negate, value|
+  expectation = negate ? :should_not : :should
+  page.send(expectation,  have_xpath("//select[@id = '#{id}']/option[@value = '#{value}']"))
+end
+

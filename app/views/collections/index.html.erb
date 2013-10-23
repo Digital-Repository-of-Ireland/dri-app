@@ -8,11 +8,10 @@
       <% @mycollections.each do |collection| %>
 
         <li>
-          <%= link_to collection.title, collection_path(:id => collection.id) %> (<%= t('dri.views.collection.index.items', :count => @collection_counts[collection.id]) %>) 
+          <%= link_to collection[:title], collection_path(:id => collection[:id]) %> (<%= t('dri.views.collection.index.items', :count => @collection_counts[collection[:id]]) %>) 
         </li>
 
       <% end %>
-
    </ul>
 
    <% if @mycollections.blank? %>

@@ -9,16 +9,13 @@ class CollectionsController < CatalogController
   # Shows list of user's collections
   #
   def index
-    unless current_user.is_admin?
-      @mycollections = DRI::Model::Collection.find(:depositor => current_user.to_s)
-    else
-      @mycollections = DRI::Model::Collection.all
-    end
+    @mycollections = get_collections
+    @mycollections.select! { |c| (can?(:edit, c[:id]) || can?(:create_do, c[:id])) } unless current_user.is_admin?
 
     @collection_counts = {}
 
     @mycollections.each do |collection|
-      @collection_counts[collection.id] = count_items_in_collection collection.id
+      @collection_counts[collection[:id]] = count_items_in_collection collection[:id]
     end
 
     respond_to do |format|
@@ -26,11 +23,11 @@ class CollectionsController < CatalogController
       format.json { 
         collectionhash = []
         @mycollections.each do |collection|
-          collectionhash << { :id => collection.id,
-                               :title => collection.title,
-                               :description => collection.description,
-                               :publisher => collection.publisher,
-                               :objectcount => collection_counts[collection.id] }.to_json
+          collectionhash << { :id => collection[:id],
+                               :title => collection[:title],
+                               :description => collection[:description],
+                               :publisher => collection[:publisher],
+                               :objectcount => collection_counts[collection[:id]] }.to_json
         end
         @mycollections = collectionhash
       }
@@ -211,6 +208,17 @@ class CollectionsController < CatalogController
       result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "500", :fl => "id,title_tesim")
       result_docs.each do | doc |
         results.push({ :id => doc['id'], :title => doc["title_tesim"][0] })
+      end
+
+      return results
+    end
+
+    def get_collections
+      results = Array.new
+      solr_query = "has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
+      result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,publisher_tesim")
+      result_docs.each do | doc |
+        results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :publisher => doc["publisher_tesim"][0] })
       end
 
       return results
