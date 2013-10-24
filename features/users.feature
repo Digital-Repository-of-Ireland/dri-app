@@ -1,6 +1,6 @@
 @users @req-23 @done @req-22.2
 Feature:
-  
+
   In order for the digital repository to control access to digital objects
   As a user
   I want to be able to create and manage an account
@@ -27,7 +27,7 @@ Scenario: Creating a new valid user account
   Given the group "registered" exists
   Given I am on the User Sign up page
   When I submit a valid email, password and password confirmation
-  Then I should see a success message for new account 
+  Then I should see a success message for new account
   And I should be logged in
 
 Scenario: Creating an invalid user account with duplicate email
@@ -58,8 +58,8 @@ Scenario: User signs in with valid credentials
   Given I am on the User Signin page
   When I submit the User Sign in page with credentials "user1@user1.com" and "password"
   Then I should be logged in
-  
-Scenario: User signs in with invalid credentials 
+
+Scenario: User signs in with invalid credentials
   Given I am not logged in
   Given I am on the User Signin page
   When I submit the User Sign in page with credentials "user1@user1.com" and "badpassword"
@@ -149,3 +149,10 @@ Scenario: A user provides an invalid profile image url
   And I fill in "user_current_password" with "password1"
   And I submit the Edit User form
   Then I should see a failure message for "invalid profile image"
+
+@wip
+Scenario: an admin user creates a new user account
+  Given I am logged in as "adminuser" in the group "admin"
+  And I am on the User Sign up page
+  When I submit a valid email, password and password confirmation
+  Then I should be logged in as "adminuser"
