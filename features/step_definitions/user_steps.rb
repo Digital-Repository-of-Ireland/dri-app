@@ -2,8 +2,8 @@ Given /^I am logged in as "([^\"]*)"$/ do |login|
   email = "#{login}@#{login}.com"
   @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   visit path_to("sign in")
-  fill_in("user_email", :with => email) 
-  fill_in("user_password", :with => "password") 
+  fill_in("user_email", :with => email)
+  fill_in("user_password", :with => "password")
   click_button("Sign in")
   step 'I should be logged in'
 end
@@ -35,7 +35,7 @@ end
 
 Given /^I am logged in as "([^\"]*)" with language "([^\"]*)"$/ do |login, lang|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => lang, :first_name => "fname", :second_name => "sname") 
+  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => lang, :first_name => "fname", :second_name => "sname")
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
@@ -115,6 +115,12 @@ Then /^I should be logged out$/ do
   step 'I should see a link to sign in'
 end
 
+Then /^I should be logged in as "(.*?)"$/ do |login|
+  step 'I should be logged in'
+  account_link = page.find_by_id('view_account')
+  account_link.should have_content(login)
+end
+
 When /^I follow the view link for "([^\"]*)"$/ do |login|
   email = "#{login}@#{login}.com"
   click_link( email )
@@ -138,7 +144,7 @@ Then /^my authentication details should be updated from "([^\"]*)", "([^\"]*)" t
   fill_in("user_email", :with => oldemail)
   fill_in("user_password", :with => oldpassword)
   click_button("Sign in")
-  step 'I should see the error "Invalid email or password"' 
+  step 'I should see the error "Invalid email or password"'
   step 'I should be logged out'
   fill_in("user_email", :with => newemail)
   fill_in("user_password", :with => newpassword)
