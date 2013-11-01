@@ -16,7 +16,7 @@ or edit permission, as well as all objects within those collections.
 Manage and Edit users should see all objects for which they have manage or
 edit permission.
 
-
+  @wip
   Scenario: Admin user can see all objects
     Given I am logged in as "admin" in the group "admin"
     And a collection with pid "dri:coll1" and title "Search Collection 1" created by "user1@user1.com"
