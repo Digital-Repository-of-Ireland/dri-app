@@ -5,7 +5,7 @@ module ButtonTranslator
     case button_name
 
     when /ingest metadata/
-      "ingest_metadata"      
+      "ingest_metadata"
 
     when /upload metadata/
       "replace_metadata"
@@ -52,8 +52,11 @@ module ButtonTranslator
     when /accept cookie policy/
       "accept_cookies"
 
+    when /search/
+      "search"
+
     else "Unknown"
- 
+
     end
   end
 

@@ -123,7 +123,7 @@ Scenario: Using the new design to create a collection
   When I enter a collection title
   And I select a metadta type
   And I press the button to Continue
-  Then I should see the add you collection details form
+  Then I should see the add your collection details form
   When I upload a cover image
   And I enter a description
   And I enter a creation date

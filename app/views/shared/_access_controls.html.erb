@@ -93,18 +93,22 @@
         var original_value_user = read_user_textbox.value();
         var original_value_group = read_group_textbox.value();
 
+        read_toggle_show_textboxes(false);
         if(original_value_user!=empty_str){
             //Know its restricted without checking for public/registered
             $('#'+model_str+'_read_groups_string_radio_restricted').prop('checked', true);
+            read_toggle_show_textboxes(true);
         }else{
-            if(original_value_group==public_str){
+            if(original_value_group==empty_str){
+              $('#'+model_str+'_read_groups_string_radio_inherit').prop('checked', true);
+            }else if(original_value_group==public_str){
                 $('#'+model_str+'_read_groups_string_radio_public').prop('checked', true);
             }else if(original_value_group==registered_str){
                 $('#'+model_str+'_read_groups_string_radio_logged').prop('checked', true);
             }else{
-                $('#'+model_str+'_read_groups_string_radio_inherit').prop('checked', true);
+                $('#'+model_str+'_read_groups_string_radio_restricted').prop('checked', true);
+                read_toggle_show_textboxes(true);
             }
-            read_toggle_show_textboxes(false);
         }
     }
 
@@ -149,7 +153,7 @@
     function search_field_toggle(){
         var val = $('input[name="'+model_str+'[private_metadata]"]:checked').val();
         if(val=="radio_public" || val=="radio_inherit"){
-           discover_group_textbox.val(""); 
+           discover_group_textbox.val("");
            discover_user_textbox.val("");
            $('#page_access_entries').hide();
         }else if(val=="radio_private"){
@@ -180,7 +184,7 @@
             if(read_group_textbox.val()==registered_str || read_group_textbox.val()==public_str){
                 read_group_textbox.val("");
             }
-            $('#'+model_str+'_read_groups').show();   
+            $('#'+model_str+'_read_groups').show();
         }else{
             console.log("Unknown textbox selected: read_field -"+val);
         }
@@ -195,7 +199,7 @@
         }else if(val=="radio_restricted"){
             edit_group_textbox.val("");
             edit_user_textbox.val("");
-            edit_toggle_show_textboxes(true); 
+            edit_toggle_show_textboxes(true);
         }else{
             console.log("Unknown textbox selected: edit_field -"+val);
         }
@@ -210,7 +214,7 @@
         }else if(val=="radio_restricted"){
             manager_group_textbox.val("");
             manager_user_textbox.val("");
-            manager_toggle_show_textboxes(true); 
+            manager_toggle_show_textboxes(true);
         }else{
             console.log("Unknown textbox selected: manager_field -"+val);
         }
@@ -274,7 +278,7 @@
     <legend><%= t('dri.views.objects.legends.access_control') %></legend>
     <h5><%= t('dri.views.objects.access_controls.depositor') %></h5>
     <%= record.depositor %>
-    
+
     <div class="field">
       <h5><%= t('dri.views.objects.access_controls.search') %></h5>
       <div class="controls">
@@ -286,7 +290,7 @@
         <%= f.label :private_metadata, t('dri.views.objects.access_controls.private_metadata'), :class => "label label-important inline" %>
       </div>
     </div>
-    
+
     <div class="field" id="page_access_entries">
       <h5><%= t('dri.views.objects.access_controls.page') %></h5>
       <%= t('dri.views.objects.access_controls.private_metadata_access') %>

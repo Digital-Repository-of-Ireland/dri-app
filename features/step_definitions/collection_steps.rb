@@ -21,6 +21,14 @@ Given /^a Digital Object with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)
   digital_object.save
 end
 
+Given /^the object with pid "(.*?)" is in the collection with pid "(.*?)"$/ do |objid,colid|
+  object = ActiveFedora::Base.find(objid, {:cast => true})
+  collection = ActiveFedora::Base.find(colid, {:cast => true})
+  collection.governed_items << object
+  collection.save
+  object.save
+end
+
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
     Given I am on the new Digital Object page
@@ -40,7 +48,7 @@ When /^I add the Digital Object "(.*?)" to the non-governing collection "(.*?)" 
     Given I am on the my collections page
     When I press the button to set the current collection to #{collection_pid}
     And I go to the "object" "show" page for "#{object_pid}"
-    And I check add to collection for id #{object_pid} 
+    And I check add to collection for id #{object_pid}
   }
 end
 
