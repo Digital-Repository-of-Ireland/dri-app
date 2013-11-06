@@ -189,7 +189,7 @@ class CollectionsController < CatalogController
      local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
                                                                 { :f => object.id, :d => 'masterContent' } ],
                                             :order => "version DESC")
-     local_file_info.each { |file| file.delete_file }
+     local_file_info.each { |file| file.destroy }
      FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
 
      Storage::S3Interface.delete_bucket(object.id.sub('dri:', ''))

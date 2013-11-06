@@ -6,6 +6,8 @@ require 'pathname'
 class LocalFile < ActiveRecord::Base
   serialize :checksum
 
+  before_destroy :delete_file
+
   # Write the file to the filesystem
   #
   def add_file(upload,opts={}) 
@@ -17,7 +19,7 @@ class LocalFile < ActiveRecord::Base
     self.mime_type = MIME::Types.type_for(filename).first.content_type 
 
     FileUtils.mkdir_p(opts[:directory])
-    File.open(self.path, "wb") { |f| f.write(upload.read) }
+    FileUtils.move(upload.path, self.path)
 
     unless opts[:checksum].blank?
       self.checksum = { opts[:checksum] => Checksum.checksum(opts[:checksum], self.path) }
