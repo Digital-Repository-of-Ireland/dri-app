@@ -4,7 +4,7 @@ Feature:
 
   Scenario: Anonymous user access
     Given I do not have an account on DRI
-    When I go to the home page
+    When I go to "the home page"
     Then I should see facets
     And I should see social media
     And I should see a Search button
@@ -13,7 +13,7 @@ Feature:
     Given I do not have an account on DRI
     And a collection with public permissions exists
     And an object with public permissions exists within the collection
-    When I go to the home page
+    When I go to "the home page"
     And I enter a search term
     And I click on Search
     Then I should see one search result
@@ -22,7 +22,7 @@ Feature:
 
   Scenario: Anonymous user wants to create an account
     Given I do not have an account on DRI
-    When I go to the home page
+    When I go to "the home page"
     And I click on the link to Register
     And I enter my details
     And I click on Register
@@ -33,7 +33,7 @@ Scenario: Logged in user search
     And a collection with public permissions exists
     And an object with public permissions exists within the collection
     And an object with logged-in permissions exists within the collection
-    When I go to the home page
+    When I go to "the home page"
     And I enter a search term
     And I click on Search
     Then I should see 2 search results

@@ -28,10 +28,11 @@ Background:
 # Note that facets do not appear on the main page
 # Thus we need to perform an empty search first
 # This is probably a bug, need confirmation of what should appear on main page
+@wip
 Scenario Outline: Faceted Search
   Given a collection with pid "dri:coll55" and title "Sample collection" created by "user1@user1.com"
   And I have created an "audio" object with metadata "SAMPLEA.xml" in the collection "Sample collection"
-  When I go to the home page
+  When I go to "the home page"
   And I search for "<search>" with "<facet>"
   Then I should see a search result "<result>"
 
