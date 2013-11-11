@@ -11,7 +11,8 @@ module PathTranslator
       new_ingest_path
 
     when /show Digital Object page for id (.+)/
-      catalog_path($1)
+      pid = ($1 == "@random")? "dri:o" + @random_pid : $1
+      catalog_path(pid)
 
     when /edit Digital Object page for id (.+)/
       edit_object_path($1)
@@ -68,11 +69,11 @@ module PathTranslator
           edit_object_path(pid)
       else
         raise('Unknown route')
-        
+
       end
 
     when /collection/
-      case page 
+      case page
       when /show/
         collection_path(pid)
       else
@@ -83,7 +84,7 @@ module PathTranslator
       raise('Unknown route')
     end
 
-  end   
+  end
 
 end
 

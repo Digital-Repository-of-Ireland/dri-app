@@ -5,7 +5,7 @@ module LinkTranslator
     case link_name
 
     when /ingest an object/
-      "ingest"      
+      "ingest"
 
     when /edit an object/
       "edit_record"
@@ -36,7 +36,7 @@ module LinkTranslator
 
     when /cancel my account/
       "cancel_account"
- 
+
     when /sign up/
       "signup"
 
@@ -55,8 +55,11 @@ module LinkTranslator
      when /download asset/
        "download_asset"
 
+    when /download surrogate/
+      "download_surrogate_asset"
+
     else "Unknown"
- 
+
     end
   end
 
