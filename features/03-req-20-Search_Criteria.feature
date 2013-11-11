@@ -1,3 +1,9 @@
+# search by various dates, by format, location, subject and free text supported.
+# Search by digital object owner is not supported on the public head, but you
+# can search by collection instead.
+# Facet searching and boolean logic search supported
+# fuzzy string needs further definition
+
 @req-20
 Feature: Search criteria
 
@@ -47,6 +53,25 @@ Scenario Outline: Faceted Search
     | Published/Broadcast Date | 2000-01-01     | SAMPLE AUDIO TITLE |
     | Format                   | Audio          | SAMPLE AUDIO TITLE |
     | Collection               | Test           | SAMPLE AUDIO TITLE |
+
+@wip
+Scenario Outline: Faceted Search for admin user
+  Given I am logged in as "admin" in the group "admin"
+  Given a collection with pid "dri:coll55" and title "Sample collection" created by "user1@user1.com"
+  And I have created an "audio" object with metadata "SAMPLEA.xml" in the collection "Sample collection"
+  When I go to "the home page"
+  And I search for "<search>" with "<facet>"
+  Then I should see a search result "<result>"
+
+  Examples:
+    | facet                        | search          | result             |
+    | Record Status                | published       | SAMPLE AUDIO TITLE |
+    | Metadata Search Access       | Public          | SAMPLE AUDIO TITLE |
+    | Masterfile Access            | Private         | SAMPLE AUDIO TITLE |
+    | Subjects (in English)        | subject1        | SAMPLE AUDIO TITLE |
+    | Subject (Place) (in English) | SAMPLE COUNTRY  | SAMPLE AUDIO TITLE |
+    | Subject (Era) (in English)   | SAMPLE ERA      | SAMPLE AUDIO TITLE |
+    | Depositor                    | user1@user1.com | SAMPLE AUDIO TITLE |
 
 # The following two features could be tested via the all fields / search box
 #

@@ -14,14 +14,15 @@ Background:
   And I add the Digital Object "dri:obj1" to the collection "dri:coll1" as type "governing"
   Then the collection "dri:coll1" should contain the Digital Object "dri:obj1" as type "governing"
 
-Scenario: Export DigitalObject's metadata
+Scenario: Export DigitalObject's metadata when I have edit/manage permissions
   When I go to the "object" "show" page for "dri:obj1"
   Then I should see a "rights statement"
   #And I should see a "licence"
   And I should see a link to download metadata
-  
-Scenario: Export a DigitalObject's asset
+
+Scenario: Export a DigitalObject's asset when I have edit/manage permissions
   When I go to the "object" "show" page for "dri:obj1"
   Then I should see a "rights statement"
   #And I should see a "licence"
   And I should see a link to download asset
+
