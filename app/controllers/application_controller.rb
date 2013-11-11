@@ -2,7 +2,7 @@ require 'exceptions'
 require 'permission_methods'
 
 class ApplicationController < ActionController::Base
-  before_filter :set_locale, :set_cookie, :authenticate_user!
+  before_filter :set_locale, :set_cookie
 
   include DRI::Metadata
   include DRI::Model
@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
 
   # Retrieves a Fedora Digital Object by ID
   def retrieve_object(id)
-    return objs = ActiveFedora::Base.find(id,{:cast => true})
+    return ActiveFedora::Base.find(id,{:cast => true})
   end
 
   def retrieve_object!(id)
