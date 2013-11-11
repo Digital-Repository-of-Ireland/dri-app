@@ -1,4 +1,5 @@
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
+  pid = "dri:c" + @random_pid if (pid == "@random")
   collection = DRI::Model::Collection.new(:pid => pid)
   collection.title = title ? title : SecureRandom.hex(5)
   if user
@@ -12,7 +13,25 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
 end
 
 Given /^a Digital Object with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |pid, title, user|
+  pid = "dri:o" + @random_pid if (pid == "@random")
   digital_object = DRI::Model::Audio.new(:pid => pid)
+  digital_object.title = title
+  if user
+    digital_object.apply_depositor_metadata(User.find_by_email(user))
+  end
+  digital_object.rights = "This is a statement of rights"
+  digital_object.save
+end
+
+Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |type, pid, title, user|
+  pid = "dri:o" + @random_pid if (pid == "@random")
+  case type
+   when 'Audio'
+    digital_object = DRI::Model::Audio.new(:pid => pid)
+   when 'Pdf'
+    digital_object = DRI::Model::Pdfdoc.new(:pid => pid)
+  end
+
   digital_object.title = title
   if user
     digital_object.apply_depositor_metadata(User.find_by_email(user))

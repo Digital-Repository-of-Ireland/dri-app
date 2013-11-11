@@ -4,7 +4,8 @@ Given /^my browser language is "([^"]*)"$/ do |lang|
 end
 
 Then /^I should see the language "([^"]*)"$/ do |lang|
-  page.should have_content( I18n.t('dri.headerlinks.home', :locale => lang) )
+  page.should have_content( I18n.t('dri.headerlinks.collections.public', :locale => lang) )
+  # page.should have_content( I18n.t('dri.headerlinks.home', :locale => lang) )
 end
 
 When /^I change my language to "([^"]*)"$/ do |lang|
