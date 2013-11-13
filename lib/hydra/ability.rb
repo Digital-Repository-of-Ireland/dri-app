@@ -3,11 +3,11 @@ require 'cancan'
 module Hydra
   module Ability
     extend ActiveSupport::Concern
-    
+
     # once you include Hydra::Ability you can add custom permission methods by appending to ability_logic like so:
     #
     # self.ability_logic +=[:setup_my_permissions]
-    
+
     included do
       include CanCan::Ability
       include Hydra::PermissionsQuery
@@ -34,7 +34,7 @@ module Hydra
       can [:edit, :update], String do |pid|
         logger.debug("[EDITPERM] Checking from STRING")
         test_edit(pid)
-      end 
+      end
 
       can [:edit, :update, :destroy], DRI::Model::DigitalObject do |obj|
         logger.debug("[EDITPERM] Checking from DRI::Model::DO")
@@ -46,12 +46,12 @@ module Hydra
         logger.debug("[EDITPERM] Checking from DRI::Model::Collection")
         test_edit(obj.pid)
       end
-      
+
       can :edit, SolrDocument do |obj|
         logger.debug("[EDITPERM] Checking from SOLRDOC")
         cache.put(obj.id, obj)
         test_edit(obj.id)
-      end       
+      end
     end
 
     #383 - Now means access to assets
@@ -66,12 +66,12 @@ module Hydra
         test_read(obj.pid)
       end
 
-      
+
       can :read, SolrDocument do |obj|
         logger.debug("[READPERM] Checking from SolrDoc")
         cache.put(obj.id, obj)
         test_read(obj.id)
-      end 
+      end
     end
 
     #383 Additions
@@ -87,8 +87,8 @@ module Hydra
       can :search, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
         logger.debug("[SEARCHPERM] Checking from Object")
         test_search(obj.pid)
-      end 
-      
+      end
+
       can :search, SolrDocument do |obj|
         logger.debug("[SEARCHPERM] Checking from SolrDoc")
         cache.put(obj.id, obj)
@@ -105,8 +105,8 @@ module Hydra
       can :read_master, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
         logger.debug("[master_file_permissions] Checking from Object")
         test_read_master(obj.pid)
-      end 
-      
+      end
+
       can :read_master, SolrDocument do |obj|
         logger.debug("[master_file_permissions] Checking from SolrDoc")
         cache.put(obj.id, obj)
@@ -125,8 +125,8 @@ module Hydra
       can :manage_collection, [DRI::Model::DigitalObject, DRI::Model::Collection] do |obj|
         logger.debug("[MANPERM] Checking from Object")
         test_manager(obj.pid)
-      end 
-      
+      end
+
       can :manage_collection, SolrDocument do |obj|
         logger.debug("[MANPERM] Checking from SolrDoc")
         cache.put(obj.id, obj)

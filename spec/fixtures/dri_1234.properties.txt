@@ -1,0 +1,13 @@
+<properties>
+<status>published</status>
+<model_version>0.0.1</model_version>
+<metadata_md5>93f0f24827735816a30c86e666fcbe14</metadata_md5>
+<depositor>archivist1@example.com</depositor>
+<resource>
+<checksum type="md5">1dffbb03721bb4272a265c9f5c8c1671</checksum>
+<checksum type="sha256">
+8fed5f76e609180de8cb68194591a79af8f00b1e2343ed47996721512a1c6d20
+</checksum>
+</resource>
+<verified>success</verified>
+</properties>

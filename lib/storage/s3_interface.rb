@@ -1,6 +1,66 @@
 module Storage
   module S3Interface
 
+    # Return the best available surrogate for delivery
+    def self.deliverable_surrogate?(doc, list = nil)
+
+      deliverable_surrogate = nil
+      deliverable_surrogates = []
+
+      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                          :access_key_id => Settings.S3.access_key_id,
+                                          :secret_access_key => Settings.S3.secret_access_key)
+      bucket = doc.id.sub('dri:', '')
+      object_type = doc["type_tesim"][0]
+      files = []
+      begin
+        bucketobj = AWS::S3::Bucket.find(bucket)
+        bucketobj.each do |fileobj|
+          files << fileobj.key
+        end
+      rescue
+        logger.debug "Problem listing files in bucket #{bucket}"
+        AWS::S3::Base.disconnect!()
+      end
+
+      if list == nil
+        Settings.surrogates[object_type.to_sym].each do |surrogate_type|
+          filename = "dri:#{bucket}_#{surrogate_type}"
+          deliverable_surrogate = files.find { |e| /#{filename}/ =~ e }
+          break unless deliverable_surrogate.nil?
+        end
+        AWS::S3::Base.disconnect!()
+        return deliverable_surrogate
+      else
+        Settings.surrogates[object_type.to_sym].each do |surrogate_type|
+          filename = "dri:#{bucket}_#{surrogate_type}"
+          deliverable_surrogates << files.find { |e| /#{filename}/ =~ e }
+        end
+        AWS::S3::Base.disconnect!()
+        return deliverable_surrogates
+      end
+
+    end
+
+
+    # Get an authenticated short-duration url for a file
+    def self.get_link_for_surrogate(doc, file)
+      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                         :access_key_id => Settings.S3.access_key_id,
+                                         :secret_access_key => Settings.S3.secret_access_key)
+      bucket = doc.id.sub('dri:', '')
+      begin
+        url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
+      rescue Exception => e
+        logger.debug "Problem getting url for file #{file} : #{e.to_s}"
+      end
+
+      AWS::S3::Base.disconnect!()
+
+      return url
+    end
+
+
     # Get a hash of all surrogates for an object
     def self.get_surrogates(doc)
 
@@ -74,7 +134,7 @@ module Storage
                                           :secret_access_key => Settings.S3.secret_access_key)
       bucket = object_id.sub('dri:', '')
       begin
-       AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
+        AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
       rescue Exception  => e
         logger.error "Problem saving Surrogate file #{filename} : #{e.to_s}"
       end
