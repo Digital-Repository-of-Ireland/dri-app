@@ -3,8 +3,6 @@
 This code in its current state is not to be redistributed to parties
 outside of DRI.
 
-THIS IS FOR ADMINS ONLY, THERE IS A SEPARATE HEAD FOR NON-ADMIN USERS
-
 THIS 1.0 release is a snapshot
 
 == Welcome to nuig-rnag
@@ -29,11 +27,13 @@ For testing and development you will need to bootstrap the project
 
   Dont forget to prepare the test database with
     $ bundle exec rake db:test:prepare
+    $ rake dri:fixtures:generate
 
   You may also need to edit config/settings.yml and/or create config/settings.local.yml
 
 To start the application for demo purposes
-
+  Note: Ensure that a mysql (or mysql replacement) is running.
+  (E.G. MariaDB start alias: alias mariadbstart='cd "/opt/local" ;sudo /opt/local/lib/mariadb/bin/mysqld_safe --datadir="/opt/local/var/db/mariadb"')
   $ cd nuig-rnag
   $ rake jetty:start
   $ bundle exec rails server
@@ -66,7 +66,7 @@ nuig-rnag, rspec, cucumber and rails documentation.
 The unit tests are written using rspec and the functional tests are
 written with cucumber.
 
-This project is setup to use guard to automatically run tests as they
+This project is set up to use guard to automatically run tests as they
 are changed.
 
   $ cd nuig-rnag
@@ -215,7 +215,16 @@ Some steps required to be run before a production env is ready to go...
   $ rake RAILS_ENV=production db:migrate
 
 The above assumes a production ready instance of mysql, solr,
-fedora-commons and mod_passenger. You will also need to start the
-resque workers.
+fedora-commons and mod_passenger.
+
+Note that to install the mysql2 gem you may have to use the syntax
+  $ sudo gem install mysql2 -v '0.3.11' -- --with-mysql-config="/opt/local/lib/mysql55/bin/mysql_config"
+
+To configure bundle to automatically pass the appropriate parameters when building the mysql gem
+you should run the bundle config command, for example:
+
+  $ bundle config build.mysql --with-mysql-config=/opt/local/lib/mysql55/bin/mysql_config
+
+You will also need to start the resque workers.
 
   $ rake environment resque:work RAILS_ENV=development QUEUE="*" VERBOSE=1
