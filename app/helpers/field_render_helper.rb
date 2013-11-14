@@ -92,4 +92,17 @@ module FieldRenderHelper
     end
   end
 
+
+  def render_arbitrary_facet_links(fields)
+    url_args = {:action => 'index', :controller => 'catalog'}
+    fields.each do |field, value|
+      if (blacklight_config.facet_fields[ActiveFedora::SolrService.solr_name(field, :facetable)])
+        facet_name = ActiveFedora::SolrService.solr_name(field, :facetable)
+        facet_arg = get_search_arg_from_facet :facet => facet_name
+        url_args[facet_arg] = value
+      end
+    end
+    url_for(url_args)
+  end
+
 end
