@@ -11,6 +11,8 @@ class ExportController < ApplicationController
   # Exports an entire digital object
   #
   def show
+    enforce_permissions!("show_digital_object", params[:id])
+
     begin
       @document = ActiveFedora::FixtureExporter.export(params[:id])
       render :xml => @document    
