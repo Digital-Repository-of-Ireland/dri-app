@@ -54,7 +54,7 @@ module FacetsHelper
   end
 
   # Used as helper_method in CatalogController's add_facet_field, doesn't seem to get called.
-  def transform_permission value   
+  def transform_permission value
     case value
     when "0"
       return t('dri.views.objects.access_controls.public')
@@ -64,7 +64,7 @@ module FacetsHelper
       return t('dri.views.objects.access_controls.inherited')
     else
       return "unknown?"
-    end 
+    end
   end
 
   # Overwriting this helper so that we can translate facet values
@@ -77,7 +77,24 @@ module FacetsHelper
     elsif facet_config.label == "Metadata Search Access" || facet_config.label == "Master File Access"
       label = label_permission label
     end
-    (link_to_unless(options[:suppress_link], label, add_facet_params_and_redirect(facet_solr_field, item), :class=>"facet_select") + " " + render_facet_count(item.hits)).html_safe
+    # (link_to_unless(options[:suppress_link], label, add_facet_params_and_redirect(facet_solr_field, item), :class=>"facet_select") + " " + render_facet_count(item.hits)).html_safe
+    (link_to_unless(options[:suppress_link], label.html_safe + " (#{render_facet_count(item.hits)})".html_safe, add_facet_params_and_redirect(facet_solr_field, item)))
+  end
+
+
+  # Renders a count value for facet limits. Can be over-ridden locally
+  # to change style. And can be called by plugins to get consistent display
+  def render_facet_count(num)
+    content_tag("b", t('blacklight.search.facets.count', :number => num))
+  end
+
+
+  # Standard display of a SELECTED facet value, no link, special span
+  # with class, and 'remove' button.
+  def render_selected_facet_value(facet_solr_field, item)
+    #Updated class for Bootstrap Blacklight.
+    content_tag(:span, render_facet_value(facet_solr_field, item, :suppress_link => true), :class => "selected") +
+      link_to(content_tag(:i, '', :class => "icon-remove") + content_tag(:span, '[remove]', :class => 'hide-text'), remove_facet_params(facet_solr_field, item, params), :class=>"remove")
   end
 
   # Overwriting this helper so that values containing colons are automatically enclosed in double-quoted strings,
