@@ -31,7 +31,12 @@
     <div class="row">
            <ul class="nav pull-left">
             <li><%= link_to t('dri.headerlinks.home'), root_path, :id => "home" %></li>
-            <li><%= link_to t('dri.headerlinks.collections.admin'), collections_path, :id => "collections" %></li>
+            <li>
+            <% if signed_in? %>
+              <%= link_to t('dri.headerlinks.collections.admin'), collections_path, :id => "collections" %></li>
+            <% else %>
+              <%= link_to t('dri.headerlinks.collections.public'), collections_path, :id => "collections" %></li>  
+            <% end %>
             <li><%= link_to t('dri.headerlinks.ingest'), new_ingest_path, :id => "ingest" %></li>
             <%= render :partial=>'/user_group/sub_menu' %>
             <% if signed_in? && current_user.is_admin? %>

@@ -2,7 +2,13 @@
   <div id="document">
     <div class="document">
 
-    <h1><%= t('dri.views.collection.index.title.admin') %></h1>
+    <h1>
+      <% if signed_in? %>
+        <%= t('dri.views.collection.index.title.admin') %>
+      <% else %>
+        <%= t('dri.views.collection.index.title.public') %>
+      <% end %>
+    </h1>
 
     <ul>
       <% @mycollections.each do |collection| %>
@@ -19,7 +25,9 @@
    <% end %>
 
    <br/>
-   <%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>
+   <% if signed_in? %>
+     <%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>
+   <% end %>
 
    </div>
   </div>
