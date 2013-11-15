@@ -49,28 +49,17 @@ module ApplicationHelper
     @surrogates = Storage::S3Interface.get_surrogates doc
   end
 
+
   def get_collections
     collections = DRI::Model::Collection.all
     collections.select! { |c| (can?(:edit, c) || can?(:create_do, c)) } unless current_user.is_admin?
     collections.collect{ |c| [c.title, c.pid] }
   end
 
+
   def get_governing_collection( object )
     if !object.governing_collection.nil?
       object.governing_collection.pid
-    end
-  end
-
-  def existing_collection_for( object_id )
-    get_current_collection.items.to_a.find {|b| b.id == object_id}
-  end
-
-
-  def get_current_collection
-    if session[:current_collection]
-      return DRI::Model::Collection.find(session[:current_collection])
-    else
-      return nil
     end
   end
 
@@ -84,6 +73,10 @@ module ApplicationHelper
     document["type_ssm"].first.casecmp("collection") == 0 ? true : false
   end
 
+  def can_edit?( pid )
+    model = ActiveFedora::Base.find(pid,{ :cast => true})
+    can? :edit, model
+  end
 
   def count_published_items_in_collection collection_id
     solr_query = "status_ssim:published AND (is_governed_by_ssim:\"info:fedora/" + collection_id +

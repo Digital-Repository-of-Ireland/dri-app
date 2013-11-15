@@ -43,6 +43,7 @@
 
 	<div class="dri_object_view_block">
 		<div class="dri_back_search"><%= link_back_to_catalog %></div>
+                <% if can_edit? @document.id %><div class="dri_edit_object"><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => is_collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %></div><% end %>
 
 <!--
 		<div class="dri_like_button">
@@ -88,6 +89,7 @@
 		</div><!-- close dri_bookmark_object -->
 
 	</div><!-- close dri_object_view_block -->
+
 
     <% if @document.respond_to?(:export_as_openurl_ctx_kev) %>
       <!--
