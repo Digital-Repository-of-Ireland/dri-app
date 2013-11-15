@@ -1,0 +1,38 @@
+<% unless has_search_parameters? %>
+  <div id="content" class="span9">
+<% end %>
+
+  <% unless has_search_parameters? %>
+    <%# if there are no input/search related params, display the "home" partial -%>
+    <%= render 'home' %>
+  <% else %>
+
+    <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
+
+    <% extra_head_content << render_opensearch_response_metadata.html_safe %>
+
+    <%= render :partial => 'did_you_mean' %>
+  
+    <%= render :partial => 'sort_widget' %>
+  
+    <div class="dri_search_nav_container">
+      <nav class="dri_search_menu">
+        <%= render 'constraints' %>
+        <%= render 'dri_search_form' %>
+        <%= render 'sort_and_per_page' %>
+      </nav><!-- close dri_search_menu -->
+    </div><!-- close dri_search_nav_container -->
+        
+    <div class="dri_search_results_container">
+      <%= render_document_index %>
+    </div><!-- close dri_search_results_container -->
+    
+    <div class="dri_facet_filters_block" id="sidebar">
+     <%= render :partial => 'facets' %>
+    </div>
+   
+  <% end %>
+  
+<% unless has_search_parameters? %>
+  </div>
+<% end %>

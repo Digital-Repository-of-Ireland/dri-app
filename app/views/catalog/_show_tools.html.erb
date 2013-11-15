@@ -39,6 +39,19 @@
       </li>
     <%- end -%>
   </ul>
+  <div id="socialmedia">
+  <ul class="nav nav-list">
+    <li>
+      <%= render "socialmedia/fb_like" %>
+    </li>
+    <li> 
+      <%= render "socialmedia/twitter_tweet" %>
+    </li>
+    <li>
+      <%= render "socialmedia/google_plus" %>
+    </li>
+  </ul>
+  </div>
 
   <ul class="nav nav-list">
     <% if @document.respond_to?(:to_marc) %>

@@ -1,12 +1,14 @@
-     
-      <% # header bar for doc items in index view -%>
-      <div class="documentHeader clearfix">
-        
-        <% # main title container for doc partial view -%>
-          <h5 class="index_title"><%= t('blacklight.search.documents.counter', :counter => (document_counter + 1 + @response.params[:start].to_i)) %><%= link_to_document document, :label=>document_show_link_field, :counter => (document_counter + 1 + @response.params[:start].to_i) %></h5>
+<a href="#">
+  <h1>
+    <!-- <%= t('blacklight.search.documents.counter', :counter => (document_counter + 1 + @response.params[:start].to_i)) %> -->
+    <%= link_to_document document, :label => document_show_link_field, :counter => (document_counter + 1 + @response.params[:start].to_i) %>
+  </h1>
+  <div class="dri_image">
+    <% if document[:type_tesim].first.eql?"Sound" %>
+	  <%= image_tag("/assets/audio_format.png", :width=>"200", :height=>"80") %>
+	<% else %>
+	  <%= image_tag("/assets/no_image.png", :width=>"200", :height=>"80") %>
+	<% end %>
+  </div><!-- close image -->
+</a>
 
-        
-        <% # bookmark functions for items/docs -%>
-        <%= render_index_doc_actions document, :wrapping_class => "documentFunctions span2" %>
-      </div>
-      

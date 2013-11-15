@@ -1,46 +1,39 @@
 <!-- Overridden _header_navbar.html.erb file. This file overrides
-     the file of the same name provided with blacklight. Placing a copy
-     here allows us to specify our own custom header instead of the
-     default blacklight one.
+the file of the same name provided with blacklight. Placing a copy
+here allows us to specify our own custom header instead of the
+default blacklight one.
 -->
-
+  
 <div id="header-navbar-fixed-top" class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
 
-     <div class="row">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </a>
-        <div class="span2">
-          <%= link_to application_name, root_path, :class => "brand", :id => "logo" %>
-        </div>
-
-        <div class="span6 clearfix" id="searchbar">
-          <%= render_search_bar  %>
-        </div>
-
-        <div class="span4 pull-right">
-         <%= render :partial=>'/user_util_links' %>
-        </div>
-     </div>
+    <div class="row">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <div class="span2">
+        <%= link_to application_name, main_app.root_path, :class => "brand", :id => "logo" %>
+      </div>
+      <div class="span6 clearfix" id="searchbar">
+        <%= render_search_bar  %>
+      </div>
+      <div class="span4 pull-right">
+        <%= render :partial=>'/user_util_links' %>
+      </div>
+    </div><!-- close row -->
 
     <div class="row">
-           <ul class="nav pull-left">
-            <li><%= link_to t('dri.headerlinks.home'), root_path, :id => "home" %></li>
-            <li><%= link_to t('dri.headerlinks.collections.admin'), collections_path, :id => "collections" %></li>
-            <li><%= link_to t('dri.headerlinks.ingest'), new_ingest_path, :id => "ingest" %></li>
-            <%= render :partial=>'/user_group/sub_menu' %>
-            <% if signed_in? && current_user.is_admin? %>
-            <li><%= link_to t('dri.headerlinks.resque'), resque_server_path, :id => "resque" %></li>
-            <% end %>
-          </ul>
-    </div>
+      <ul class="nav pull-left">
+        <li><%= link_to t('dri.headerlinks.home'), main_app.root_path, :id => "home" %></li>
+        <li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+        <%= render :partial=>'/user_group/sub_menu' %>
+      </ul>
+    </div><!-- close row -->
 
-   </div>
-  </div>
-</div>
-
+    </div><!-- close container -->
+  </div><!-- close navbar-inner -->
+</div><!-- close header-navbar-fixed-top -->

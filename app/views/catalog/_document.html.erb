@@ -1,0 +1,32 @@
+<div class="dri_content_block">
+
+  <%= render :partial => 'document_header', :locals => { :document => document, :document_counter => document_counter } %>
+
+  <h2><!-- Creator -->
+    <% if document[:creator_tesim] %>
+  	  <a href="#"><%= document[:creator_tesim].first %></a>
+  	<% else %>
+  	  n/a
+  	<% end %>
+  </h2>
+
+  <h2 class="dri_editor"><!-- Subjects -->
+    <% if document[:subject_tesim] %>
+
+        <% document[:subject_tesim].each do |subject| %>
+          <%= subject %>,
+        <% end %>
+
+    <% else %>
+      n/a
+    <% end %>
+  </h2>
+
+
+  <div class="dri_stats">
+    <span class="dri_view"><%= image_tag("/assets/views_icon.png", :width=>"21", :height=>"12") %> 101</span>
+    <!-- <span class="dri_like"><%= image_tag("/assets/like_icon.png", :width=>"16", :height=>"15") %> 102</span> -->
+    <!-- <span class="dri_comment"><%= image_tag("/assets/comment_icon.png", :width=>"16", :height=>"16") %> 10</span> -->
+  </div><!-- close stats -->
+
+</div><!-- close content_block -->

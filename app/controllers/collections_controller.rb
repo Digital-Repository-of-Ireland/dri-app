@@ -9,27 +9,27 @@ class CollectionsController < CatalogController
   # Shows list of user's collections
   #
   def index
-    @mycollections = get_collections
-    @mycollections.select! { |c| (can?(:edit, c[:id]) || can?(:create_do, c[:id])) } unless current_user.is_admin?
+    @collections = get_collections
+    @collections.select! { |c| (can?(:edit, c[:id]) || can?(:create_do, c[:id])) } unless current_user.is_admin?
 
     @collection_counts = {}
 
-    @mycollections.each do |collection|
+    @collections.each do |collection|
       @collection_counts[collection[:id]] = count_items_in_collection collection[:id]
     end
 
     respond_to do |format|
       format.html
-      format.json { 
+      format.json {
         collectionhash = []
-        @mycollections.each do |collection|
+        @collections.each do |collection|
           collectionhash << { :id => collection[:id],
                                :title => collection[:title],
                                :description => collection[:description],
                                :publisher => collection[:publisher],
                                :objectcount => collection_counts[collection[:id]] }.to_json
         end
-        @mycollections = collectionhash
+        @collections = collectionhash
       }
     end
   end
@@ -39,7 +39,7 @@ class CollectionsController < CatalogController
   def new
     enforce_permissions!("create", DRI::Model::Collection)
     @collection = DRI::Model::Collection.new
-    
+
     # configure default permissions
     @collection.apply_depositor_metadata(current_user.to_s)
     @collection.manager_users_string=current_user.to_s
@@ -72,7 +72,7 @@ class CollectionsController < CatalogController
     @children = get_items_in_collection params[:id]
 
     respond_to do |format|
-      format.html  
+      format.html
       format.json  {
         @response = {}
         @response[:id] = @collection.pid
@@ -96,7 +96,7 @@ class CollectionsController < CatalogController
 
     set_access_permissions(:dri_model_collection)
 
-    if !valid_permissions? 
+    if !valid_permissions?
       flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])
     else
       @collection.update_attributes(params[:dri_model_collection])
@@ -113,7 +113,7 @@ class CollectionsController < CatalogController
   #
   def create
     enforce_permissions!("create",DRI::Model::Collection)
-    
+
     set_access_permissions(:dri_model_collection)
 
     @collection = DRI::Model::Collection.new(params[:dri_model_collection])
@@ -124,7 +124,7 @@ class CollectionsController < CatalogController
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_created')
       render :action => :new
-      return 
+      return
     end
 
     respond_to do |format|
@@ -156,7 +156,7 @@ class CollectionsController < CatalogController
 
     if current_user.is_admin?
       @collection = retrieve_object!(params[:id])
-  
+
       @collection.governed_items.each do |object|
         delete_files(object)
         object.delete
@@ -214,11 +214,15 @@ class CollectionsController < CatalogController
     end
 
     def get_collections
-      results = Array.new
-      solr_query = "has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
-      result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,publisher_tesim")
-      result_docs.each do | doc |
-        results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :publisher => doc["publisher_tesim"][0] })
+      if current_user.is_admin?
+        results = Array.new
+        solr_query = "has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
+        result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,publisher_tesim")
+        result_docs.each do | doc |
+          results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :publisher => doc["publisher_tesim"][0] })
+        end
+      else
+        results = DRI::Model::Collection.find(:status_ssim => "published")
       end
 
       return results

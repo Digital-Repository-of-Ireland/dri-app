@@ -1,0 +1,14 @@
+@charset "UTF-8";
+/* CSS Document */
+/* line 3, ../../sass/dri/text.scss */
+a {
+  text-decoration: none;
+}
+
+/* line 6, ../../sass/dri/text.scss */
+h1 {
+  font-size: 150%;
+  padding: 0 0 0 30px;
+  color: #0A222B;
+  margin: 0px;
+}

@@ -1,26 +1,42 @@
 <div id="content" class="span9 show-document">
   <div id="document">
     <div class="document">
+      <h1><%= t('dri.views.collection.index.title.public') %></h1>
 
-    <h1><%= t('dri.views.collection.index.title.admin') %></h1>
+        <% @collections.each do |collection| %>
+        <div class="dri_content_block">
 
-    <ul>
-      <% @mycollections.each do |collection| %>
+<a href="#">
+  <h1>
+    <%= link_to collection.title, collection_path(:id => collection.id) %> 
+  </h1>
+  <div class="dri_image">
+  <!-- hardcode the image for the moment while only one collection exists and until the data models and controllers can provide it -->
+  <a href="<%=  collection_path(:id => collection.id) %> "><img src="/assets/RnG_crop.png" width="200" height="80" alt="RnG Collection Image, from Wikipedia"></a>
 
-        <li>
-          <%= link_to collection[:title], collection_path(:id => collection[:id]) %> (<%= t('dri.views.collection.index.items', :count => @collection_counts[collection[:id]]) %>) 
-        </li>
+  </div><!-- close dri_image -->
+</a>
 
-      <% end %>
-   </ul>
+  <h2><!-- Creator - How do we get it? Hardcoded for now -->
+ NUIG
+  </h2>
 
-   <% if @mycollections.blank? %>
-     <p><%= t('dri.views.collection.index.no_collections.admin') %></p>
-   <% end %>
+  <h2 class="dri_editor"><!-- What is appropriate if anything here -->
 
-   <br/>
-   <%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>
+  </h2>
 
+
+  <div class="dri_stats">
+    <span class="dri_view"><%= image_tag("/assets/views_icon.png", :width=>"21", :height=>"12") %> <%= t('dri.views.collection.index.items', :count => @collection_counts[collection.id]) %></span>
+  </div><!-- close stats -->
+
+</div><!-- close content_block -->
+        <% end %>
+
+     <% if @collections.blank? %>
+       <p><%= t('dri.views.collection.index.no_collections.public') %></p>
+     <% end %>
+     <br/>
    </div>
   </div>
 </div>

@@ -1,0 +1,26 @@
+<% if current_or_guest_user %>
+  <%- current_collection = get_current_collection -%>
+  <% if current_collection %>
+    <%- existing_collection = existing_collection_for(document.id) -%>
+    <%- 
+    # Note these two forms are pretty similar but for different :methods, classes, and labels. 
+    # but it was simpler to leave them seperate instead of DRYing them, got confusing trying that.
+    # the data-doc-id attribute is used by our JS that converts to a checkbox/label.
+    -%>  
+    <% unless existing_collection %>  
+
+      <%= form_tag( url_for(:controller => "collection_items", :action => "update", :id => document.id, :collection_id => get_current_collection ), :method => :put, :class => "collection_toggle", "data-doc-id" => document.id) do %>   
+        <%= submit_tag(t('dri.views.catalog.buttons.add_to_collection'), :id => "collection_toggle_#{document.id.to_s.parameterize}", :class => "collection_add") %>
+      <% end %>
+
+    <% else %>
+
+      <%= form_tag( url_for(:controller => "collection_items", :action => "destroy", :id => document.id, :collection_id => get_current_collection ), :method => :delete, :class => "collection_toggle", "data-doc-id" => document.id) do %>
+        <%= submit_tag(t('dri.views.catalog.buttons.remove_from_collection'), :id => "collection_toggle_#{document.id.to_s.parameterize}", :class => "collection_remove") %>
+     <% end%>
+ 
+    <% end %>
+  <% end %>
+<% else %>
+  &nbsp;
+<% end %>

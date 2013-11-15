@@ -1,0 +1,15 @@
+<%= link_to (t :'user_groups.views.shared.add_group'), "/user_group/groups/new", :target => "_blank"  %>
+
+<h2> <%= (t :'user_groups.views.groups.index.groups') %>(<%= @groups.total_count %>)</h2>
+<%= paginate @groups %>
+<br />
+<% for group in @groups %>
+    <div class="index-element">
+        <%= link_to group.name.capitalize, "/user_group/groups/"+group.id.to_s, :target => "_blank"  %>
+        <p><%= group.description %></p>
+
+        <%= render :partial => "pending_link", :locals => { :group => group }  %>
+
+        <i><%= (t :'user_groups.views.groups.index.members') %></i> <%= group.full_memberships.count %>
+    </div>
+<% end %>

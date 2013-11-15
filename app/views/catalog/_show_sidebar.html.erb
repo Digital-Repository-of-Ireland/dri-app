@@ -11,13 +11,3 @@
 </div><!--/well -->
 <% end %>
 
-<div class="well" id="sidebar-nav">
-  <ul class="nav nav-list">
-  <li class="nav-header"><%= t('dri.views.catalog.sidebar.nav_header') %> </li>
-    <li>
-      <%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => is_collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %>
-    </li>
-
-  </ul>
-
-</div><!--/well -->

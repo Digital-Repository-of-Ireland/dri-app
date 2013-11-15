@@ -62,7 +62,7 @@ Given /^I have created an "(.*?)" object with title "(.*?)" in the collection "(
     And I press the button to continue
   }
 end
- 
+
 Given /^I have created a collection$/ do
   steps %{
     Given I am on the my collections page
@@ -178,7 +178,7 @@ end
 
 Then /^(?:|I )press the button to (.+)$/ do |button|
   click_link_or_button(button_to_id(button))
-end 
+end
 
 Then /^(?:|I )should( not)? see a button to (.+)$/ do |negate,button|
    negate ? (page.should_not have_button(button_to_id(button))) : (page.should have_button(button_to_id(button)))
@@ -228,7 +228,7 @@ end
 #end
 
 Then /^I should see a link to "([^\"]*)" with text "([^\"]*)"$/ do |url, text|
-  page.should have_link(text, href: url) 
+  page.should have_link(text, href: url)
 end
 
 Then /^I should not see a link to "([^\"]*)"$/ do |text|
@@ -286,9 +286,9 @@ end
 
 Then /^I should see the error "([^\"]*)"$/ do |error|
   page.should have_content error
-end 
+end
 
-Then /^I should( not)? see the message "([^\"]*)"$/ do |negate, message| 
+Then /^I should( not)? see the message "([^\"]*)"$/ do |negate, message|
   negate ? (page.should_not have_selector ".alert", text: message) : (page.should have_selector ".alert", text: message)
 end
 
@@ -310,7 +310,7 @@ Then /^I should see a section with id "([^\"]+)"$/ do |div_name|
 end
 
 When /^I accept the alert$/ do
-  page.driver.browser.switch_to.alert.accept  
+  page.driver.browser.switch_to.alert.accept
 end
 
 Then(/^the radio button "(.*?)" is "(.*?)"$/) do |field, status|

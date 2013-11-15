@@ -26,38 +26,43 @@
 
     <%= favicon_link_tag asset_path('favicon.ico') %>
   </head>
+  
   <% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
+  
   <body onload="<%= onload_text %>" class="<%= render_body_class %>">
 
-  <div id="wrap">
+    <div id="wrap">
 
-  <%= render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
+      <%= render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
 
-  <%= render :partial => 'shared/header_navbar' %>
+      <%= render :partial => 'shared/header_navbar' %>
 
-  <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
+      <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
 
-<!-- /container -->
-  <div id="main-container" class="container">
-            <!-- Top bar -->
-            <div id="search-found" class="row hidden-phone">
-              <%= topbar_items.join('').html_safe %>
+      <div id="main-container" class="container">
+      
+        <!-- Top bar -->
+        <div id="search-found" class="row hidden-phone">
+          <%= topbar_items.join('').html_safe %>
+        </div><!-- /Top bar -->
+    
+        <div class="row">
+          <div class="span10">
+            <div id="main-flashes">
+              <%= render :partial=>'/flash_msg' %>
             </div>
-            <!-- /Top bar -->
-                  <div class="row">
-                      <div class="span10">
-                        <div id="main-flashes">
-                          <%= render :partial=>'/flash_msg' %>
-                        </div>
-                      </div>    
-                  </div>              
+          </div>    
+        </div>              
 
-                  <div class="row">
-                       <%= yield %>
-                  </div>   
+        <div class="row">
+          <%= yield %>
+        </div>   
 
-  </div>
+      <!-- Missing closing tag of the main-container div -->
 
-<%= render :partial => 'shared/footer' %>
-    </body>
+    </div><!-- close wrap -->
+
+  <%= render :partial => 'shared/footer' %>
+  
+  </body>
 </html>

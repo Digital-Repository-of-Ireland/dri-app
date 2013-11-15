@@ -1,14 +1,71 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>NuigRnag</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+ <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
 
-<%= yield %>
+    <!-- Mobile viewport optimization h5bp.com/ad -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-</body>
+    <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
+    <meta http-equiv="cleartype" content="on">
+
+    <title><%= h(@page_title || application_name) %></title>
+    
+    <link href="<%= opensearch_catalog_path(:format => 'xml', :only_path => false) %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
+    
+    <%= favicon_link_tag asset_path('favicon.ico') %>
+    
+    <%= stylesheet_link_tag "dri/dri_grid" %>
+    
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+    <%= raw(render_head_content) %> 
+    
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <%= favicon_link_tag asset_path('favicon.ico') %>
+  
+  </head>
+  
+  <% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
+  
+  <body>
+    
+    <div class="dri_wrapper">
+      
+      <%= render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
+      
+      <%= render :partial => 'shared/header_navbar_public' %>
+      
+      <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div><!-- close ajax-modal -->
+ 
+      <div id="search-found" class="row hidden-phone">
+        <%= topbar_items.join('').html_safe %>
+      </div> 
+     
+      <div class="row">
+        <div class="span10">
+          <div id="main-flashes"><%= render :partial=>'/flash_msg' %></div>
+        </div>    
+      </div>          
+      
+      <% unless (controller_name == 'catalog' && action_name == 'index') || (controller_name == 'catalog' && action_name == 'show') %>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      <% end %>
+      
+      <%= yield %>
+            
+    </div><!-- close wrapper -->
+    
+    <div class="clearfix"></div>
+
+    <%# render :partial => 'shared/footer' %>
+    
+  </body>
+  
 </html>

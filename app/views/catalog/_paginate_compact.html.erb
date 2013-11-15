@@ -1,0 +1,5 @@
+<% if paginate_params(@response).num_pages > 1 %>
+  <%= paginate_rsolr_response @response, :outer_window => 1, :theme => :blacklight %>
+<% else %>
+  <%= render_pagination_info(@response) %>
+<% end %>

@@ -30,3 +30,8 @@ S3:
   server: 10.0.1.201
   access_key_id: FIXME
   secret_access_key: FIXME
+surrogates:
+  Sound: [mp3_web_quality, ogg_web_quality]
+  Document: [pdf]
+data:
+  types: [Audio, Article]

@@ -39,6 +39,7 @@ Scenario Outline: Faceted Search
   Given a collection with pid "dri:coll55" and title "Sample collection" created by "user1@user1.com"
   And I have created an "audio" object with metadata "SAMPLEA.xml" in the collection "Sample collection"
   When I go to "the home page"
+  And I press the button to search
   And I search for "<search>" with "<facet>"
   Then I should see a search result "<result>"
 
@@ -60,6 +61,7 @@ Scenario Outline: Faceted Search for admin user
   Given a collection with pid "dri:coll55" and title "Sample collection" created by "user1@user1.com"
   And I have created an "audio" object with metadata "SAMPLEA.xml" in the collection "Sample collection"
   When I go to "the home page"
+  And I press the button to search
   And I search for "<search>" with "<facet>"
   Then I should see a search result "<result>"
 

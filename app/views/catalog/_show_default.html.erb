@@ -7,7 +7,4 @@
     <% end -%>
   <% end -%>
 </dl>
-
-<% unless is_collection?(@document) %>
-  <%= render :partial => "show_downloads", :locals => { :document => document} %>
-<% end %>
+<%= render :partial => "show_downloads", :locals => { :document => document} %>

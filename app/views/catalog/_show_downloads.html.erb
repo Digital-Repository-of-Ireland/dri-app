@@ -1,10 +1,10 @@
-<%= get_datastreams document %>
+<% get_delivery_file document  %>
 <h3>Files</h3>
 <dl class="dl-horizontal  dl-invert">
   <dt>Metadata: </dt>
   <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => document.id %>" id="download_metadata">view</a></dd>
   <dt>File: </dt>
-<% if @datastreams.has_key?('masterContent') %>
+<% if @datastreams.include?('masterContent') %>
    <dd><%= link_to "download", url_for(:controller => 'assets', :action => 'show', :id => @document.id), :id => "download_asset" %></dd>
 <% else %>
    <dd>No file has been uploaded.</dd>

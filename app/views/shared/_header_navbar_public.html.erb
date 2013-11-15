@@ -1,0 +1,62 @@
+<!-- Header to be displayed to annonymous users -->
+<div class="dri_header_container">
+	<div class="dri_line dri_h140">
+
+		<%= link_to main_app.root_url do %>
+      <div class="dri_ident"></div>
+		<% end %>
+    <!-- <div><%= link_to image_tag("/assets/ident.png"), main_app.root_url %></div> -->
+
+		<div class="dri_header_menus_container">
+			<div class="dri_login_and_account_container">
+			  <nav class="dri_login_nav">
+				  <% if current_user %>
+			      <ul class="dri_logout">
+			        <li class="dri_logout"><%= link_to "", user_group.destroy_user_session_path, :method => :delete, :id => "logout", :alt => t('blacklight.header_links.logout') %></li>
+			  	  </ul>
+				  <% else %>
+			      <ul class="dri_login">
+			        <li class="dri_logout"><%= link_to "", user_group.new_user_session_path, :id => "login", :alt => t('blacklight.header_links.login') %></li>
+			    	</ul>
+			  	<% end %>
+			  </nav>
+			  <!-- close dri_login_nav -->
+
+			  <nav class="dri_account_nav">
+					<% if current_user %>
+				    <ul class="dri_sign_up">
+					    <li><%= link_to current_user, user_group.user_path(current_user), :id => "view_account" %></li>
+              <li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+				    </ul>
+				  <% else %>
+		  			<ul class="dri_sign_up">
+		  				<li><%= link_to "Sign Up", user_group.new_user_path, :alt => "sign up link" %></li>
+     					<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+			  		</ul>
+				  <% end %>
+			  </nav><!-- close dri_account_nav -->
+		  </div>
+		  <nav class="dri_social_nav">
+	            <a href="#"><%= image_tag("/assets/google_plus.png", :width=>"28", :height=>"28") %></a>
+	            <a href="#"><%= image_tag("/assets/share.png", :width=>"28", :height=>"28") %></a>
+                    <a href="#"><%= image_tag("/assets/linkedin.png", :width=>"28", :height=>"28") %></a>
+	            <a href="#"><%= image_tag("/assets/facebook_icon.png", :width=>"28", :height=>"28") %></a>
+		  </nav>
+		  <div></div>
+	  </div>
+
+	</div><!-- close dri_line -->
+
+	<%# if there are no input/search related params the search input box must still be displayed -%>
+  <% if !has_search_parameters? %>
+    <% unless controller_name == 'catalog' && action_name == 'show' %>
+      <div class="dri_main_nav_container"></div>
+    	<div class="dri_search_nav_container">
+        <nav class="dri_search_menu">
+          <%= render 'catalog/dri_search_form' %>
+        </nav><!-- close dri_search_menu -->
+      </div><!-- close dri_search_nav_container -->
+    <% end %>
+  <% end %>
+
+</div><!-- close dri_header_container -->

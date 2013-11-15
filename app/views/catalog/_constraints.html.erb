@@ -1,0 +1,9 @@
+<% if query_has_constraints? %>
+<div class="dri_search_terms_block">
+  <ul class="dri_search_term" id="appliedParams">
+<nav class="dri_contraint_search">   
+		  <%= render_constraints(params) %>
+</nav>
+	</ul>
+</div>
+<% end %>

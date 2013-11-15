@@ -1,0 +1,18 @@
+<% # main container for facets/limits menu -%>
+<% if has_facet_values?  %>
+<div id="facets" class="dri_facet_filters">
+	
+  <h4>
+
+
+  	<%= t('blacklight.search.facets.title') %>
+  				  <span class="dri_search_num">
+			    	<%= @response.response[:numFound] %>
+			  	</span>
+
+  </h4>
+  <div class="facets-collapse">
+  <%= render_facet_partials %>
+</div>
+</div>
+<% end %>&nbsp;

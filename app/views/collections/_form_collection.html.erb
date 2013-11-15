@@ -6,6 +6,4 @@
   <%= f.text_area :description, :class => "edit span6" %>
   <%= f.label "#{t('dri.views.objects.forms.publisher')}:" %>
   <%= f.text_field :publisher, :class => "edit span6", :required => "true" %>
-  <%= f.label "#{t('dri.views.objects.forms.status')}:" %>
-  <%= f.select :status,  options_for_select(['draft','review','published'], @collection.status), :prompt => t('dri.views.ingest.forms.status_prompt'), :class => "edit span6" %>
 </fieldset>

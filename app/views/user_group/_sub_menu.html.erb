@@ -3,7 +3,6 @@
     <ul class="navb first">
       <li><%= link_to (t :'user_groups.views.shared.groups'), user_group.groups_path %></li>
       <li><%= link_to (t :'user_groups.views.shared.users'), user_group.users_path %></li>
-      <li><%= link_to_if(current_user.is_admin?, (t :'user_groups.views.header.admin'), user_group.admin_path){} %></li>
     </ul>
   <% end %>
 </li>

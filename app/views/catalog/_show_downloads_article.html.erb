@@ -1,26 +1,31 @@
-<%= get_datastreams document %>
-<% get_surrogates document %>
-
 <h3><%= t('dri.views.catalog.headers.files') %></h3>
 <dl class="dl-horizontal  dl-invert">
   <dt><%= t('dri.views.catalog.forms.metadata') %>: </dt>
   <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => document.id %>" id="download_metadata"><%= t('dri.views.catalog.links.view_metadata') %></a></dd>
   <dt><%= t('dri.views.catalog.forms.pdf_file') %>:  </dt>
-  <% if @datastreams.has_key?('masterContent') %>
-    <dd>
-      <object data="<%= url_for(:controller => 'assets', :action => 'show', :id => @document.id) %>" type="application/pdf" width="100%" height="600">
-        alt :<%= link_to t('dri.views.catalog.links.download'), url_for(:controller => 'assets', :action => 'show', :id => @document.id), :id => "download_asset" %>
-      </object>
 
+<% if (@asset == 'masterfile') %>
+   <dd>
+    <object data="<%= url_for(:controller => 'assets', :action => 'show', :id => @document.id) %>" type="application/pdf" width="100%" height="600">
+      alt :<%= link_to t('dri.views.catalog.links.download'), url_for(:controller => 'assets', :action => 'show', :id => @document.id), :id => "download_asset" %>
+    </object>
+   </dd>
 
-  <% @surrogates.each do |desc, url| %>
-    <object data="<%= url %>" type="application/pdf" width="100%" height="600">
-        alt :<%= link_to desc, url, :id => "download_asset" %>
-      </object>
-  <% end %>
+<% elsif (@asset == "no permission") %>
+   <dd><%= t('dri.views.catalog.legends.no_permission') %></dd>
 
-    </dd>
-  <% else %>
-    <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
-  <% end %>
+<% elsif (@asset == "no file") %>
+  <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
+
+<% elsif !@asset.blank? %>
+<dd><%= @asset.to_s %>
+    <object data="<%= @asset %>" type="application/pdf" width="100%" height="600">
+      alt :<%= link_to t('dri.views.catalog.links.download'), @asset, :id => "download_surrogate_asset" %>
+    </object>
+   </dd>
+
+<% else %>
+   <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
+<% end %>
+
 </dl>

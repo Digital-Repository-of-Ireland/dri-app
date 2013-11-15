@@ -1,0 +1,665 @@
+@charset "UTF-8";
+/* CSS Document */
+/* HTML5 display-role reset for older browsers */
+/* line 6, ../../sass/dri/main.scss */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/*--------------MAINlayout--------------*/
+/* line 11, ../../sass/dri/main.scss */
+html {
+  margin-bottom: 0.5em;
+  height: 100%;
+}
+
+/* line 16, ../../sass/dri/main.scss */
+body {
+  font: 76%/1.6 Arial, Helvetica, clean, sans-serif;
+  *font-size: small;
+  *font: x-small;
+  margin: 0;
+}
+
+/* line 25, ../../sass/dri/main.scss */
+.dri_wrapper {
+  padding: 0 0 120px 0;
+  width: 1024px;
+  margin: 0 auto;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+/* line 33, ../../sass/dri/main.scss */
+.dri_ident {
+  background: url('ident.png');
+  background-repeat: no-repeat;
+  width: 272px;
+  height: 104px;
+  margin-top: 20px;
+  float: left;
+}
+
+/*social stuff */
+/* line 45, ../../sass/dri/main.scss */
+nav.dri_social_nav a {
+  float: right;
+  padding: 20px 3px 0 0;
+}
+
+/* signup and accounts ----------------------------------- */
+/* line 52, ../../sass/dri/main.scss */
+.dri_account_nav {
+  float: right;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+  z-index: 99;
+}
+
+/* line 61, ../../sass/dri/main.scss */
+.dri_account_nav ul.dri_sign_up {
+  float: right;
+  margin: 15px 15px 0 0;
+  padding: 0px;
+  width: 90px;
+}
+
+/* line 67, ../../sass/dri/main.scss */
+.dri_account_nav ul.dri_sign_up li {
+  text-decoration: none;
+  list-style: none;
+  text-align: right;
+}
+
+/* line 72, ../../sass/dri/main.scss */
+.dri_account_nav ul.dri_sign_up li a {
+  color: #2F2F2F;
+  font-weight: bold;
+}
+
+/* line 76, ../../sass/dri/main.scss */
+.dri_account_nav ul.dri_sign_up li a:hover {
+  text-decoration: underline;
+}
+
+/*--------------Login--------------*/
+/* line 82, ../../sass/dri/main.scss */
+.dri_login_nav {
+  height: 70px;
+  float: right;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 90, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_sign_up {
+  float: left;
+  margin: 15px 0 0 0;
+  padding: 0px;
+  width: 90px;
+}
+
+/* line 96, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_sign_up li {
+  text-decoration: none;
+  list-style: none;
+  text-align: right;
+}
+
+/* line 101, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_sign_up li a {
+  color: #FFF;
+  font-weight: bold;
+}
+
+/* line 105, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_sign_up li a:hover {
+  text-decoration: underline;
+}
+
+/* line 109, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_login {
+  float: right;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 114, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_login li {
+  text-decoration: none;
+  list-style: none;
+}
+
+/* line 119, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_login li a {
+  float: right;
+  width: 40px;
+  height: 54px;
+  background: url(/assets/login.png) no-repeat;
+}
+
+/* line 125, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_login li a:hover {
+  background: url(/assets/login_hover.png) no-repeat;
+}
+
+/*--------------Logout--------------*/
+/* line 130, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_logout {
+  float: right;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 135, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_logout li {
+  text-decoration: none;
+  list-style: none;
+}
+
+/* line 139, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_logout li a {
+  float: right;
+  width: 40px;
+  height: 54px;
+  background: url(/assets/logout.png);
+}
+
+/* line 145, ../../sass/dri/main.scss */
+.dri_login_nav ul.dri_logout li a:hover {
+  background: url(/assets/logout_hover.png);
+}
+
+/*--------------account--------------*/
+/* line 152, ../../sass/dri/main.scss */
+.dri_account_nav ul.dri_account {
+  float: right;
+  margin: 0 0 0 0;
+  padding: 0;
+  width: 120px;
+}
+
+/* line 158, ../../sass/dri/main.scss */
+.dri_account_nav ul.dri_account li {
+  text-decoration: none;
+  list-style: none;
+  display: block;
+  margin: 0px;
+  padding: 15px 0 6px 0;
+}
+
+/* line 165, ../../sass/dri/main.scss */
+.dri_account_nav ul.dri_account li a {
+  color: #FFF;
+  font-weight: bold;
+}
+
+/* line 171, ../../sass/dri/main.scss */
+.dri_account_nav ul.dri_account li a span.dri_profile_icon {
+  padding: 0 10px 0 10px;
+}
+
+/* line 176, ../../sass/dri/main.scss */
+.dri_account_nav ul.dri_account li a span.dri_dp_arrow {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #fff;
+  float: right;
+  margin: 8px 10px 0 10px;
+}
+
+/* line 185, ../../sass/dri/main.scss */
+.dri_account_nav ul.dri_account li a:hover {
+  text-decoration: underline;
+}
+
+/*--------------drop down account--------------*/
+/* line 191, ../../sass/dri/main.scss */
+.dri_dd_account {
+  float: right;
+  margin: 0 0 0 0;
+  padding: 0px;
+  width: 120px;
+  background-color: #2F2F2F;
+}
+
+/* line 198, ../../sass/dri/main.scss */
+ul.dri_dd_account li {
+  text-decoration: none;
+  list-style: none;
+  text-align: left;
+  display: block;
+  border-top: 1px solid #4D4D4D;
+  padding: 0 0 2px 10px;
+}
+
+/* line 206, ../../sass/dri/main.scss */
+ul.dri_dd_account li a {
+  color: #FFF;
+  font-weight: normal;
+}
+
+/* line 211, ../../sass/dri/main.scss */
+ul.dri_dd_account li a:hover {
+  text-decoration: underline;
+}
+
+/*--------------Top Main Navigation --------------*/
+/* line 218, ../../sass/dri/main.scss */
+.dri_main_nav_container {
+  width: 984px;
+  height: 60px;
+  float: left;
+  margin: 30px 0 5px 0;
+  padding: 0 20px 0 20px;
+  position: relative;
+  border-top: 1px solid #E1E1E1;
+  border-bottom: 1px solid #E1E1E1;
+}
+
+/*-------------- styling for sorting --------------*/
+/* line 231, ../../sass/dri/main.scss */
+.dri_sort_container {
+  padding: 10px 70px 0 0;
+}
+
+/* line 238, ../../sass/dri/main.scss */
+.dri_main_nav {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 246, ../../sass/dri/main.scss */
+.dri_main_nav ul.dri_sort a {
+  color: #6D6E71;
+}
+
+/* line 251, ../../sass/dri/main.scss */
+.dri_main_nav ul.dri_sort li {
+  width: 270px;
+  text-decoration: none;
+  font-size: 190%;
+  padding: 0;
+  margin: 0px 0 0 0;
+  list-style: none;
+  display: block;
+  float: left;
+}
+
+/* line 263, ../../sass/dri/main.scss */
+.dri_sort ul.dropit-submenu li a {
+  font-weight: normal;
+  font-size: 60%;
+  color: #6D6E71;
+  margin: 0 20px -20px 0;
+  padding: 0;
+}
+
+/* line 271, ../../sass/dri/main.scss */
+.dri_sort ul.dropit-submenu li:hover {
+  background-color: #DEDEDE;
+  color: #4C4C4C;
+}
+
+/* line 276, ../../sass/dri/main.scss */
+.dri_dd_menu_arrow {
+  background: url(/assets/drop_arrow.png) no-repeat right;
+  padding: 0 40px 0 8px;
+  margin: 0;
+}
+
+/* line 282, ../../sass/dri/main.scss */
+.dri_sort ul.dropit-submenu li a.on {
+  color: #2D8DC1;
+}
+
+/* line 285, ../../sass/dri/main.scss */
+.dri_sort span.dri_dd_menu_arrow {
+  background: url(/assets/drop_arrow.png) no-repeat center;
+  padding: 0 40px 0 8px;
+  margin: 0;
+}
+
+/*
+ * Dropit v1.0
+ * http://dev7studios.com/dropit
+ *
+ * Copyright 2012, Dev7studios
+ * Free to use and abuse under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+/* These styles assume you are using ul and li */
+/* line 302, ../../sass/dri/main.scss */
+.dropit {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 308, ../../sass/dri/main.scss */
+.dropit .dropit-trigger {
+  position: relative;
+}
+
+/* line 313, ../../sass/dri/main.scss */
+.dropit .dropit-submenu {
+  position: absolute;
+  top: 100%;
+  z-index: 1000;
+  display: none;
+  padding: 0px;
+  left: -20px;
+  top: 27px;
+  background-color: #F1F2F2;
+  filter: alpha(opacity=85);
+  -moz-opacity: 0.85;
+  opacity: 0.90;
+  border-bottom: 1px solid #E1E1E1;
+  border-right: 1px solid #E1E1E1;
+  border-left: 1px solid #E1E1E1;
+  z-index: 99;
+}
+
+/* line 331, ../../sass/dri/main.scss */
+.dropit ul.dropit-submenu li {
+  text-decoration: none;
+  font-size: 150%;
+  border-bottom: 1px solid #E1E1E1;
+  padding: 2px 30px 2px 20px;
+}
+
+/* line 338, ../../sass/dri/main.scss */
+.dropit .dropit-open .dropit-submenu {
+  display: block;
+}
+
+/*-------------- end dropit --------------*/
+/*-------------- styling for search nav --------------*/
+/* line 345, ../../sass/dri/main.scss */
+.dri_search_menu {
+  width: 984px;
+  margin: 20px 0 20px 0;
+  padding: 0 20px 0 20px;
+  float: left;
+}
+
+/* line 353, ../../sass/dri/main.scss */
+.dri_search_menu ul.option {
+  margin: 0px 20px 0 0;
+  padding: 0px;
+  float: left;
+}
+
+/* line 359, ../../sass/dri/main.scss */
+.dri_search_menu ul.option li {
+  margin: 0;
+  padding: 4px 0 4px 15px;
+  list-style: none;
+  text-decoration: none;
+  color: #FFF;
+  background-color: #2F2F2F;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 4px  #888888;
+}
+
+/* line 373, ../../sass/dri/main.scss */
+.dri_search_menu ul.option li a {
+  margin: 0 0 0 20px;
+  padding: 0 10px 0 10px;
+  color: #FFF;
+  border-left: 1px solid #999;
+}
+
+/* line 382, ../../sass/dri/main.scss */
+.dri_search_bar {
+  width: 228px;
+  float: right;
+  margin: 0 0 0 0;
+  padding: 0;
+}
+
+/* line 390, ../../sass/dri/main.scss */
+.dri_search_bar input {
+  width: 208px;
+  float: right;
+  margin: 0 0 0 0;
+  padding: 6px 10px 6px 10px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  border: 1px solid #E1E1E1;
+  color: #808080;
+}
+
+/* line 401, ../../sass/dri/main.scss */
+.dri_search_menu ul.dri_search_term {
+  margin: 0px 20px 0 0;
+  padding: 0px;
+  float: left;
+}
+
+/* line 408, ../../sass/dri/main.scss */
+.dri_search_menu ul.dri_search_term li {
+  list-style: none;
+  text-decoration: none;
+}
+
+/* line 421, ../../sass/dri/main.scss */
+.dri_search_menu ul.dri_search_term li a {
+  margin: 0 0 0 20px;
+  padding: 0 10px 0 10px;
+  color: #FFF;
+  border-left: 1px solid #999;
+}
+
+/* line 429, ../../sass/dri/main.scss */
+.dri_search_constraint_term {
+  margin: 10px 20px 20px 0;
+  padding: 4px 0 4px 15px;
+  list-style: none;
+  text-decoration: none;
+  color: #FFF;
+  background-color: #2F2F2F;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 4px  #888888;
+}
+
+/* line 440, ../../sass/dri/main.scss */
+.search_page_holder {
+  width: 480px;
+  margin: 20px 0 20px 0;
+  padding: 0 20px 0 0;
+  float: right;
+}
+
+/* line 446, ../../sass/dri/main.scss */
+.dri_contraint_search {
+  width: 500px;
+  margin: 20px 0 20px 0;
+  padding: 0 0 0 20px;
+  float: left;
+}
+
+/* line 453, ../../sass/dri/main.scss */
+.dri_contraint_search ul.search_term {
+  margin: 0px 6px 0 0;
+  padding: 0px;
+  float: left;
+}
+
+/* line 459, ../../sass/dri/main.scss */
+.dri_contraint_search ul.search_term li {
+  margin: 0 0 8px 0;
+  padding: 4px 0 4px 15px;
+  list-style: none;
+  text-decoration: none;
+  color: #FFF;
+  background-color: #2F2F2F;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 4px  #888888;
+}
+
+/* line 470, ../../sass/dri/main.scss */
+.dri_contraint_search ul.search_term li a {
+  margin: 0 0 0 20px;
+  padding: 0 10px 0 10px;
+  color: #FFF;
+  border-left: 1px solid #999;
+}
+
+/* ----------- Pagination ---------- */
+/* line 477, ../../sass/dri/main.scss */
+.dri_pagination_container {
+  width: 275px;
+  float: right;
+}
+
+/* line 482, ../../sass/dri/main.scss */
+.dri_pagination {
+  margin: 0 0 10px 0;
+  padding: 0 20px 0 20px;
+  float: left;
+}
+
+/* line 491, ../../sass/dri/main.scss */
+ul.dri_paging {
+  padding: 0;
+}
+
+/* line 498, ../../sass/dri/main.scss */
+ul.dri_paging li {
+  float: left;
+  list-style: none;
+  display: block;
+  padding: 0;
+}
+
+/* line 505, ../../sass/dri/main.scss */
+ul.dri_paging li a {
+  float: left;
+  list-style: none;
+  display: block;
+  padding: 2px 10px 2px 10px;
+  color: #FFFFFF;
+  background-color: #6D6E71;
+  margin-right: 4px;
+}
+
+/* line 514, ../../sass/dri/main.scss */
+ul.dri_paging li a:hover {
+  text-decoration: underline;
+}
+
+/* line 517, ../../sass/dri/main.scss */
+ul.dri_paging li.dri_prev_arrow a {
+  background: url(/assets/prev_arrow.png) no-repeat center;
+  background-color: none;
+}
+
+/* line 521, ../../sass/dri/main.scss */
+ul.dri_paging li.dri_next_arrow a {
+  background: url(/assets/next_arrow.png) no-repeat center;
+  background-color: none;
+}
+
+/* line 526, ../../sass/dri/main.scss */
+ul.dri_paging li.dri_selected a {
+  background-color: #B3B3B3;
+  color: #FFF;
+}
+
+/* line 531, ../../sass/dri/main.scss */
+ul.dri_paging li.dri_next_num a {
+  background-color: #2F2F2F;
+  color: #FFF;
+}
+
+/* button styling ----------------------------------- */
+/* line 538, ../../sass/dri/main.scss */
+input.dri_request_button {
+  font-size: 100%;
+  background-color: #7573C0;
+  color: #FFF;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: none;
+  padding: 6px 30px 6px 30px;
+  margin: 20px 0 0 0;
+  cursor: pointer;
+  display: none;
+}
+
+/* line 550, ../../sass/dri/main.scss */
+input.dri_request_button:hover {
+  background-color: #595BAA;
+}
+
+/* footer ----------------------------------- */
+/* line 555, ../../sass/dri/main.scss */
+dri_footer {
+  margin-bottom: 40px;
+  display: block;
+  height: 50px;
+  padding: 20px 0 70px 0;
+  margin: 0 auto;
+  color: #9a9a9a;
+  text-align: right;
+  width: 930px;
+}
+
+/* line 565, ../../sass/dri/main.scss */
+footer a {
+  color: #9a9a9a;
+  text-decoration: none;
+}
+
+/* line 569, ../../sass/dri/main.scss */
+footer a:hover {
+  color: #787878;
+}
+
+/* line 573, ../../sass/dri/main.scss */
+.base {
+  padding: 0;
+  margin-bottom: 40px;
+  width: 960px;
+  margin: auto;
+  display: block;
+  height: 50px;
+  padding: 10px 0 0 0;
+  margin-bottom: 100px;
+  color: #9a9a9a;
+}
+
+/* Fixes for refactoring */
+/* Clear Fix ----------------------------------- */
+/* line 590, ../../sass/dri/main.scss */
+.dri_clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+/* line 599, ../../sass/dri/main.scss */
+.dri_clearfix {
+  display: block;
+}
+
+/* line 603, ../../sass/dri/main.scss */
+html[xmlns] .dri_clearfix {
+  display: block;
+}
+
+/* line 607, ../../sass/dri/main.scss */
+* html .dri_clearfix {
+  height: 1%;
+}
