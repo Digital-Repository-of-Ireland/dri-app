@@ -233,7 +233,6 @@ class CollectionsController < CatalogController
       result_docs.each do | doc |
         results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :publisher => doc["publisher_tesim"][0] })
       end
-puts "++++++++++++++++ #{results.to_s}"
       return results
     end
 
