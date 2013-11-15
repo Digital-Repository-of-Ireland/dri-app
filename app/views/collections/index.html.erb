@@ -1,18 +1,26 @@
 <div id="content" class="span9 show-document">
   <div id="document">
     <div class="document">
-      <h1><%= t('dri.views.collection.index.title.public') %></h1>
+      <h1>
+        <% if signed_in? %>
+          <%= t('dri.views.collection.index.title.admin') %>
+        <% else %>
+          <%= t('dri.views.collection.index.title.public') %>
+        <% end %>
+      </h1>
 
         <% @collections.each do |collection| %>
+        <% puts "++++++++ #{collection.to_s}" %>
+        <% puts "++++++++ #{collection[:title]}" %>
         <div class="dri_content_block">
 
 <a href="#">
   <h1>
-    <%= link_to collection.title, collection_path(:id => collection.id) %> 
+    <%= link_to collection[:title], collection_path(:id => collection[:id]) %>
   </h1>
   <div class="dri_image">
   <!-- hardcode the image for the moment while only one collection exists and until the data models and controllers can provide it -->
-  <a href="<%=  collection_path(:id => collection.id) %> "><img src="/assets/RnG_crop.png" width="200" height="80" alt="RnG Collection Image, from Wikipedia"></a>
+  <a href="<%=  collection_path(:id => collection[:id]) %> "><img src="/assets/RnG_crop.png" width="200" height="80" alt="RnG Collection Image, from Wikipedia"></a>
 
   </div><!-- close dri_image -->
 </a>
@@ -27,7 +35,7 @@
 
 
   <div class="dri_stats">
-    <span class="dri_view"><%= image_tag("/assets/views_icon.png", :width=>"21", :height=>"12") %> <%= t('dri.views.collection.index.items', :count => @collection_counts[collection.id]) %></span>
+    <span class="dri_view"><%= image_tag("/assets/views_icon.png", :width=>"21", :height=>"12") %> <%= t('dri.views.collection.index.items', :count => @collection_counts[collection[:id]]) %></span>
   </div><!-- close stats -->
 
 </div><!-- close content_block -->
@@ -35,8 +43,12 @@
 
      <% if @collections.blank? %>
        <p><%= t('dri.views.collection.index.no_collections.public') %></p>
-     <% end %>
-     <br/>
+       <% end %>
+       <br/>
+
+       <% if signed_in? %>
+         <%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>
+       <% end %>"
    </div>
   </div>
 </div>

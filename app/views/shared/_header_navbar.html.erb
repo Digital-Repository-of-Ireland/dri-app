@@ -3,7 +3,7 @@ the file of the same name provided with blacklight. Placing a copy
 here allows us to specify our own custom header instead of the
 default blacklight one.
 -->
-  
+
 <div id="header-navbar-fixed-top" class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
@@ -29,7 +29,12 @@ default blacklight one.
     <div class="row">
       <ul class="nav pull-left">
         <li><%= link_to t('dri.headerlinks.home'), main_app.root_path, :id => "home" %></li>
-        <li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+        <li>
+        <% if signed_in? %>
+          <%= link_to t('dri.headerlinks.collections.admin'), collections_path, :id => "collections" %></li>
+        <% else %>
+          <%= link_to t('dri.headerlinks.collections.public'), collections_path, :id => "collections" %></li>
+        <% end %>
         <%= render :partial=>'/user_group/sub_menu' %>
       </ul>
     </div><!-- close row -->

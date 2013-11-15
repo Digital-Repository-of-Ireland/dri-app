@@ -4,13 +4,16 @@ require 'storage/s3_interface'
 
 class CollectionsController < CatalogController
 
-  before_filter :authenticate_user!, :only => [:index, :create, :new, :show, :edit, :update]
+  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
   # Shows list of user's collections
   #
   def index
     @collections = get_collections
-    @collections.select! { |c| (can?(:edit, c[:id]) || can?(:create_do, c[:id])) } unless current_user.is_admin?
+
+    if current_user
+      @collections.select! { |c| (can?(:edit, c[:id]) || can?(:create_do, c[:id])) } unless current_user.is_admin?
+    end
 
     @collection_counts = {}
 
@@ -68,6 +71,7 @@ class CollectionsController < CatalogController
   #
   def show
     enforce_permissions!("show",params[:id])
+
     @collection = retrieve_object!(params[:id])
     @children = get_items_in_collection params[:id]
 
@@ -196,15 +200,21 @@ class CollectionsController < CatalogController
    end
 
    def count_items_in_collection collection_id
-      solr_query = "is_governed_by_ssim:\"info:fedora/" + collection_id +
-                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\""
+      solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
+                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\")"
+
+      solr_query << " AND status_ssim:published" unless current_user
+
       ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
     end
 
     def get_items_in_collection collection_id
       results = Array.new
-      solr_query = "is_governed_by_ssim:\"info:fedora/" + collection_id +
-                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\""
+      solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
+                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\")"
+
+      solr_query << " AND status_ssim:published" unless current_user
+
       result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "500", :fl => "id,title_tesim")
       result_docs.each do | doc |
         results.push({ :id => doc['id'], :title => doc["title_tesim"][0] })
@@ -214,17 +224,16 @@ class CollectionsController < CatalogController
     end
 
     def get_collections
-      if current_user.is_admin?
-        results = Array.new
-        solr_query = "has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
-        result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,publisher_tesim")
-        result_docs.each do | doc |
-          results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :publisher => doc["publisher_tesim"][0] })
-        end
-      else
-        results = DRI::Model::Collection.find(:status_ssim => "published")
+      results = Array.new
+      solr_query = "has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
+      if !(signed_in? || (!current_user.is_admin? && !user_groups.include?("cm")))
+        solr_query << " AND status_ssim:published"
       end
-
+      result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,publisher_tesim")
+      result_docs.each do | doc |
+        results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :publisher => doc["publisher_tesim"][0] })
+      end
+puts "++++++++++++++++ #{results.to_s}"
       return results
     end
 
