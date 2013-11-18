@@ -23,7 +23,7 @@ module Interface
     end
 
     def has_valid_metadata?
-      within(:xpath, "//div[@id='document']") do
+      within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_search_results_container')]") do
       	page.should have_content("Creation Date: 2013-01-16")
         page.should have_content("Title: A Test Object")
         page.should have_content("Description: Created using the web form")
@@ -39,14 +39,14 @@ module Interface
     end
 
     def has_modified_metadata?
-      within(:xpath, "//div[@id='document']") do
+      within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_search_results_container')]") do
         page.should have_content("Creation Date: 2013-01-01")
         page.should have_content("Description: Editing test")
       end
     end
 
     def has_rights_statement?
-      within(:xpath, "//div[@id='document']") do
+      within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_search_results_container')]") do
         page.should have_content("Rights: This is a statement of rights")
       end
     end
@@ -56,7 +56,7 @@ module Interface
     end
 
     def is_format?(format)
-      within(:xpath, "//div[@id='document']") do
+      within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_search_results_container')]") do
         page.should have_content("Format: #{format}")
       end
     end
