@@ -73,11 +73,7 @@ module ApplicationHelper
     document["type_ssm"].first.casecmp("collection") == 0 ? true : false
   end
 
-  def can_edit?( pid )
-    model = ActiveFedora::Base.find(pid,{ :cast => true})
-    can? :edit, model
-  end
-
+  
   def count_published_items_in_collection collection_id
     solr_query = "status_ssim:published AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
                  "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
