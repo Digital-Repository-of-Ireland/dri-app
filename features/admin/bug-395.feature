@@ -1,4 +1,4 @@
-@bug
+@bug @public-broken
 Feature: Bug-395
 
 Scenario: Search Fields drop-down should appear on the ingest page
