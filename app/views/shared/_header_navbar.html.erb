@@ -35,7 +35,11 @@ default blacklight one.
         <% else %>
           <%= link_to t('dri.headerlinks.collections.public'), collections_path, :id => "collections" %></li>
         <% end %>
+        <li><%= link_to t('dri.headerlinks.ingest'), new_ingest_path, :id => "ingest" %></li>
         <%= render :partial=>'/user_group/sub_menu' %>
+        <% if signed_in? && current_user.is_admin? %>
+          <li><%= link_to t('dri.headerlinks.resque'), resque_server_path, :id => "resque" %></li>
+        <% end %>
       </ul>
     </div><!-- close row -->
 

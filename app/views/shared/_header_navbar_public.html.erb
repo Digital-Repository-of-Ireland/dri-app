@@ -24,13 +24,17 @@
 
 			  <nav class="dri_account_nav">
 					<% if current_user %>
-				    <ul class="dri_sign_up">
+				          <ul class="dri_sign_up">
 					    <li><%= link_to current_user, user_group.user_path(current_user), :id => "view_account" %></li>
-              <li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
-				    </ul>
+                                            <li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+                                            <li><%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %></li>
+                                            <% if signed_in? && current_user.is_admin? %>
+                                              <li><%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, :id => "resque" %></li>
+                                            <% end %>
+				         </ul> 
 				  <% else %>
 		  			<ul class="dri_sign_up">
-		  				<li><%= link_to "Sign Up", user_group.new_user_path, :alt => "sign up link" %></li>
+		  			<li><%= link_to "Sign Up", user_group.new_user_path, :alt => "sign up link" %></li>
      					<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
 			  		</ul>
 				  <% end %>
