@@ -19,7 +19,11 @@ class LocalFile < ActiveRecord::Base
     self.mime_type = MIME::Types.type_for(filename).first.content_type 
 
     FileUtils.mkdir_p(opts[:directory])
-    FileUtils.move(upload.path, self.path)
+    if upload.respond_to?('path')
+      FileUtils.move(upload.path, self.path)
+    else
+      File.open(self.path, "wb") { |f| f.write(upload.read) }
+    end
 
     unless opts[:checksum].blank?
       self.checksum = { opts[:checksum] => Checksum.checksum(opts[:checksum], self.path) }

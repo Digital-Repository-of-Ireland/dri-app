@@ -9,7 +9,9 @@ describe "workers" do
                                                            :language => "en"})
     @object.save
     asset = File.join(fixture_path, "sample_pdf.pdf")
-    uploadfile = { :read =>  File.read( asset ), :original_filename => "sample_pdf.pdf"}
+    tmp_file = Tempfile.new('sample_pdf')
+    FileUtils.cp(asset, tmp_file.path)
+    uploadfile = { :path =>  tmp_file.path, :original_filename => "sample_pdf.pdf"}
     uploadhash = OpenStruct.new uploadfile
     tmpdir = Dir::tmpdir
     file = LocalFile.new
