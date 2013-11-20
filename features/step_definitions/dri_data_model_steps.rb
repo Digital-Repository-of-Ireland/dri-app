@@ -39,5 +39,7 @@ Given /^an object in collection "(.*?)" with metadata from file "(.*?)"$/ do |co
   obj.status = 'published'
   obj.governing_collection = col
   obj.rightsMetadata.metadata.machine.integer = '0'
+  obj.rightsMetadata.discover_access.machine.group = 'public'
+  obj.rightsMetadata.masterfile.machine.integer = '1'
   obj.save
 end
