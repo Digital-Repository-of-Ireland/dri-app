@@ -1,5 +1,5 @@
 <% get_delivery_file @document  %>
-<% get_object_type_counts @document[:is_governed_by_ssim][0].sub('info:fedora/', '') %>
+<% get_object_type_counts @document %>
 
 <div class="dri_main_nav_container"></div>
 
@@ -13,94 +13,82 @@
 </div><!-- close line -->
 
 <div class="dri_search_results_container">
-  <!-- <div class="row"> -->
-    <span class="dri_spacer1_refactor_this">&nbsp;</span><% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>
-    <% extra_head_content << render_link_rel_alternates %>
-    <% sidebar_items << render_document_sidebar_partial %>
+  <span class="dri_spacer1_refactor_this">&nbsp;</span><% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>
+  <% extra_head_content << render_link_rel_alternates %>
+  <% sidebar_items << render_document_sidebar_partial %>
 
-	<div class="dri_object_view dri_object_title_top"><%= render_field_value(document_heading) %></div>
+  <div class="dri_object_view dri_object_title_top"><%= render_field_value(document_heading) %></div>
 
-	<div class="dri_object_view_block">
-  <!-- <div id="content" class="span9 show-document"> -->
-
-  <% if ((@asset != "no file") && (@asset != "no permission")) %>
-    <div class="dri_audio_player">
-      <audio controls>
-        <% if (@asset == 'masterfile') %>
-          <source src="<%= url_for(:controller => 'assets', :action => 'show', :id => @document.id) %>" type="audio/mpeg">
-        <% elsif !@asset.blank? %>
-          <source src="<%= @asset %>" type="audio/mpeg">
-        <% end %>
-      </audio>
-    </div><!-- close dri_audio_player -->
-  <% end %>
+    <div class="dri_object_view_block">
 
     <%= render_document_partial @document, :show %>
 
     <input class="dri_request_button" name="request" type="button" value="↳ Request to Join this Group">
 
-	</div><!-- close dri_object_view_block -->
+  </div><!-- close dri_object_view_block -->
 
-	<div class="dri_object_view_block">
-		<div class="dri_back_search"><%= link_back_to_catalog %></div>
-                <% if signed_in? && (can?(:edit, @document)) %><div class="dri_edit_object"><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => is_collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %></div><% end %>
+  <div class="dri_object_view_block">
+    <div class="dri_back_search"><%= link_back_to_catalog %></div>
+      <% if signed_in? && (can?(:edit, @document)) %><div class="dri_edit_object"><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => is_collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %></div><% end %>
 
 <!--
-		<div class="dri_like_button">
-			<span class="dri_like">&nbsp;</span> | Like
-		</div>
+  <div class="dri_like_button">
+    <span class="dri_like">&nbsp;</span> | Like
+  </div>
 -->
 
-		<ul class="dri_stats">
-			<li>
-			  <%= image_tag("/assets/view_stat.png", :width=>"25", :height=>"12") %><%= t('dri.views.objects.legends.viewcount') %>
-			  <span class="dri_stat_num">2701</span>
-			</li>
-			<!-- <li>
-        <%= image_tag("/assets/like_stat.png", :width=>"25", :height=>"15") %><%= t('dri.views.objects.legends.likes') %>
-				<span class="dri_stat_num">209</span>
+    <ul class="dri_stats">
+      <li>
+        <%= image_tag("/assets/view_stat.png", :width=>"25", :height=>"12") %><%= t('dri.views.objects.legends.viewcount') %>
+        <span class="dri_stat_num">2701</span>
+      </li>
+      <!-- <li>
+      <%= image_tag("/assets/like_stat.png", :width=>"25", :height=>"15") %><%= t('dri.views.objects.legends.likes') %>
+      <span class="dri_stat_num">209</span>
       </li> -->
-			<!-- <li>
-        <%= image_tag("/assets/comment_stat.png", :width=>"25", :height=>"14") %><%= t('dri.views.objects.legends.comments') %>
-			  <span class="dri_stat_num">3</span>
+      <!-- <li>
+      <%= image_tag("/assets/comment_stat.png", :width=>"25", :height=>"14") %><%= t('dri.views.objects.legends.comments') %>
+      <span class="dri_stat_num">3</span>
       </li> -->
-		</ul><!-- close dri_stats -->
+    </ul><!-- close dri_stats -->
 
-		<div class="dri_vc_title">
-      <%= image_tag("/assets/vc_folder.png", :width=>"22", :height=>"12") %> <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
-		</div><!-- close vc_title -->
+    <% unless is_collection?(@document) %>
+      <div class="dri_vc_title">
+        <%= image_tag("/assets/vc_folder.png", :width=>"22", :height=>"12") %> <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
+      </div><!-- close vc_title -->
 
-		<ul class="dri_view_collection">
-      <li><%= t('dri.views.objects.links.all_objects') %> <span class="dri_stat_num">
+      <ul class="dri_view_collection">
+        <li><%= t('dri.views.objects.links.all_objects') %> <span class="dri_stat_num">
           <%= link_to(count_published_items_in_collection(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')), render_arbitrary_facet_links({:collection => @document[:collection_tesim][0]}) ) %>
-      </span></li>
-      <% @type_counts.keys.each do |key| %>
-      <% unless @type_counts[key].blank? %>
-          <li><%= t("dri.data.types.#{key}") %> <span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %></span></li>
+        </span></li>
+        <% @type_counts.keys.each do |key| %>
+          <% unless @type_counts[key].blank? %>
+            <li><%= t("dri.data.types.#{key}") %> <span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %></span></li>
+          <% end %>
         <% end %>
-      <% end %>
-		</ul>
-
-		<div class="dri_bookmark_object">
-			<%= image_tag("/assets/bm_folder.png", :width=>"22", :height=>"15") %>Bookmark Object
-			<select name="dri_bookmark_folder">
-			  <option>Bookmark to Folder</option>
-			</select>
-		</div><!-- close dri_bookmark_object -->
-
-	</div><!-- close dri_object_view_block -->
-
-
-    <% if @document.respond_to?(:export_as_openurl_ctx_kev) %>
-      <!--
-           // COinS, for Zotero among others.
-           // This document_partial_name(@document) business is not quite right,
-           // but has been there for a while.
-      -->
-      <span class="Z3988" title="<%= @document.export_as_openurl_ctx_kev(document_partial_name(@document)) %>"></span>
+      </ul>
     <% end %>
 
-  </div><!-- close dri_search_results_container -->
+    <div class="dri_bookmark_object">
+      <%= image_tag("/assets/bm_folder.png", :width=>"22", :height=>"15") %>Bookmark Object
+      <select name="dri_bookmark_folder">
+        <option>Bookmark to Folder</option>
+      </select>
+    </div><!-- close dri_bookmark_object -->
+
+  </div><!-- close dri_object_view_block -->
+
+
+  <% if @document.respond_to?(:export_as_openurl_ctx_kev) %>
+    <!--
+     // COinS, for Zotero among others.
+    // This document_partial_name(@document) business is not quite right,
+     // but has been there for a while.
+     -->
+     <span class="Z3988" title="<%= @document.export_as_openurl_ctx_kev(document_partial_name(@document)) %>"></span>
+  <% end %>
+
+</div><!-- close dri_search_results_container -->
 
   <!--
 	<div class="dri_comment_block">
@@ -129,6 +117,3 @@
 		</h1>
 		<p class="dri_read_comment">Great. I am signing up now for DRI so I can request to join this group. Do you know if I can download this asset once I am a member? Cheers, Eddy</p>
   </div> --><!-- close dri_comment_block -->
-
-
-</div><!-- close row -->

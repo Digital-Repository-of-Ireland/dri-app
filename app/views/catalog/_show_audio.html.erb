@@ -1,4 +1,17 @@
 <%# default partial to display solr document fields in catalog show view -%>
+
+<% if ((@asset != "no file") && (@asset != "no permission")) %>
+  <div class="dri_audio_player">
+    <audio controls>
+      <% if (@asset == 'masterfile') %>
+        <source src="<%= url_for(:controller => 'assets', :action => 'show', :id => @document.id) %>" type="audio/mpeg">
+      <% elsif !@asset.blank? %>
+        <source src="<%= @asset %>" type="audio/mpeg">
+      <% end %>
+    </audio>
+  </div><!-- close dri_audio_player -->
+<% end %>
+
 <dl class="dl-horizontal  dl-invert">
   <% document_show_fields.each do |solr_fname, field| -%>
     <% if should_render_show_field? document, field %>

@@ -89,10 +89,12 @@ module ApplicationHelper
   end
 
 
-  def get_object_type_counts( collection_id )
+  def get_object_type_counts( document )
+    id = document.key?(:is_governed_by_ssim) ? document[:is_governed_by_ssim][0].sub('info:fedora/', '') : document.id
+
     @type_counts = {}
     Settings.data.types.each do |type|
-      @type_counts[type] =  count_published_items_in_collection_by_type( collection_id, type )
+      @type_counts[type] =  count_published_items_in_collection_by_type( id, type )
     end
   end
 
