@@ -20,7 +20,7 @@ class CollectionsController < CatalogController
     @mycollections.push( { :id => doc['id'],
                       :title => doc["title_tesim"][0],
                       :description => doc["description_tesim"][0],
-                      :publisher => doc["publisher_tesim"][0],
+                      #:publisher => doc["publisher_tesim"][0],
                       :objectCount => count_items_in_collection(doc['id']) } )
     end
 
@@ -49,6 +49,7 @@ class CollectionsController < CatalogController
     @object.title = [""]
     @object.description = [""]
     @object.creator = [""]
+    @object.publisher = [""]
     @object.rights = [""]
     @object.type = [ "Collection" ]
 
@@ -82,7 +83,7 @@ class CollectionsController < CatalogController
         @response[:id] = @collection.pid
         @response[:title] = @collection.title
         @response[:description] = @collection.description
-        @response[:publisher] = @collection.publisher
+        #@response[:publisher] = @collection.publisher
         @response[:objectcount] = @collection.governed_items.count + @collection.items.count
       }
     end
@@ -100,8 +101,6 @@ class CollectionsController < CatalogController
 
     set_access_permissions(:batch)
 
-    flub
-
     if !valid_permissions? 
       flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])
     else
@@ -118,16 +117,23 @@ class CollectionsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    enforce_permissions!("create",Batch)
+    enforce_permissions!("create", Batch)
     
     set_access_permissions(:batch)
 
-    @object = Batch.new
-    @object.update_attributes(params[:batch])
-    @object.type = ["Collection"]
+    @collection = Batch.new
+    if @collection.type == nil
+      @collection.type = ["Collection"]
+    end
+
+    if !@collection.type.include?("Collection")
+      @collection.type.push("Collection")
+    end    
+    @collection.update_attributes(params[:batch])
+    
 
     # depositor is not submitted as part of the form
-    @object.depositor = current_user.to_s
+    @collection.depositor = current_user.to_s
 
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_created')
@@ -145,7 +151,7 @@ class CollectionsController < CatalogController
           @response[:id] = @collection.pid
           @response[:title] = @collection.title
           @response[:description] = @collection.description
-          @response[:publisher] = @collection.publisher
+          #@response[:publisher] = @collection.publisher
           render(:json => @response, :status => :created)
         }
       else

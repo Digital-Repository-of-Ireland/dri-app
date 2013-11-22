@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="DRI Data Model" skipped="0" tests="6" time="0.471946">
+<testcase classname="DRI Data Model" name="DRI Data Model for Audio should not be valid without correct metadata" time="0.119521">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="DRI Data Model" name="DRI Data Model for Audio should have correct metadata fields and validate required ones" time="0.078092">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="DRI Data Model" name="DRI Data Model for Pdfdoc should not be valid without correct metadata" time="0.023103">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="DRI Data Model" name="DRI Data Model for Pdfdoc should have correct metadata fields and validate required ones" time="0.165325">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="DRI Data Model" name="DRI Data Model for Collection should not be valid without correct metadata" time="0.022592">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="DRI Data Model" name="DRI Data Model for Collection should have correct metadata fields and validate required ones" time="0.063313">
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

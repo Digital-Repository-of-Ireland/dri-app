@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="" skipped="8" tests="8" time="0.176241">
+<testcase classname="" name="Anonymous user access" time="0.006523">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Anonymous user search" time="0.011119">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Anonymous user wants to create an account" time="0.007013">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Logged in user search" time="0.010283">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Accessing restricted content by joining a group" time="0.114299">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Accessing restricted contact by contacting the collection manager" time="0.012505">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="ingest for non-collection manager" time="0.005449">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Becoming a collection manager" time="0.009050">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

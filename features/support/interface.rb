@@ -6,19 +6,19 @@ module Interface
     
     def enter_valid_metadata(title)
       within_fieldset('metadata') do
-        fill_in("dri_model_title", :with => title)
-        fill_in("dri_model_description", :with => "Created using the web form")
-        fill_in("dri_model_creation_date", :with => "2013-01-16")
-        fill_in("dri_model_rights", :with => "This is a statement of rights")
+        fill_in("batch_title][", :with => title)
+        fill_in("batch_description][", :with => "Created using the web form")
+        fill_in("batch_creation_date][", :with => "2013-01-16")
+        fill_in("batch_rights][", :with => "This is a statement of rights")
       end
     end
 
     def enter_valid_pdf_metadata(title)
       within_fieldset('metadata') do
-        fill_in("dri_model_title", :with => title)
-        fill_in("dri_model_description", :with => "Created using the web form")
-        fill_in("dri_model_creation_date", :with => "2013-01-16")
-        fill_in("dri_model_rights", :with => "This is a statement of rights")
+        fill_in("batch_title][", :with => title)
+        fill_in("batch_description][", :with => "Created using the web form")
+        fill_in("batch_creation_date][", :with => "2013-01-16")
+        fill_in("batch_rights][", :with => "This is a statement of rights")
       end
     end
 
@@ -33,8 +33,8 @@ module Interface
 
     def enter_modified_metadata
       within_fieldset('metadata') do
-        fill_in("dri_model_description", :with => "Editing test")
-        fill_in("dri_model_creation_date", :with => "2013-01-01")
+        fill_in("batch_description][", :with => "Editing test")
+        fill_in("batch_creation_date][", :with => "2013-01-01")
       end
     end
 

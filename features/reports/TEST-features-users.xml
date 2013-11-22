@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="" skipped="0" tests="16" time="3.695653">
+<testcase classname="" name="Navigate to the Sign in page" time="0.076792">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Navigate to the Sign up page" time="0.090847">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Creating a new valid user account" time="0.223214">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Creating an invalid user account with duplicate email" time="0.096507">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Creating an invalid user account with non-matching password confirmation" time="0.085293">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Creating an invalid user account with too short password" time="0.185102">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="User signs in with valid credentials" time="0.109242">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="User signs in with invalid credentials" time="0.084305">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Logging out" time="0.477269">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="A user should be able to edit their details" time="1.146265">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="A user should be able to cancel their account" time="0.269155">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="A user should be able to recover their password" time="0.000989">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="A user should be able to provide a profile image url" time="0.164975">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="A user should be able to use gravatar for a profile image" time="0.256861">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="A user should be able to remove their profile image" time="0.265384">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="A user provides an invalid profile image url" time="0.163453">
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

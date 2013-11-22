@@ -1,4 +1,4 @@
-<%= get_datastreams document %>
+<%= get_datastreams @object %>
 <% if !@files.empty? %>
   
   <%= form_tag(url_for(:action=>"create", :controller=>"assets", :id=>@object.id), :multipart => true, :method => :post, :id => "file_uploader") do %>

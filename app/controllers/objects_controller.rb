@@ -23,18 +23,18 @@ class ObjectsController < CatalogController
   # Updates the attributes of an existing model.
   #
   def update
-    update_object_permission_check(params[:dri_model][:manager_groups_string], params[:dri_model][:manager_users_string], params[:id])
+    update_object_permission_check(params[:batch][:manager_groups_string], params[:batch][:manager_users_string], params[:id])
 
     @object = retrieve_object!(params[:id])
 
-    if params[:dri_model][:governing_collection_id].present?
-      collection = Batch.find(params[:dri_model][:governing_collection_id])
+    if params[:batch][:governing_collection_id].present?
+      collection = Batch.find(params[:batch][:governing_collection_id])
       @object.governing_collection = collection
     end
 
-    set_access_permissions(:dri_model)
+    set_access_permissions(:batch)
 
-    @object.update_attributes(params[:dri_model])
+    @object.update_attributes(params[:batch])
 
     #Do for collection?
     checksum_metadata(@object)
@@ -50,23 +50,23 @@ class ObjectsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    if params[:dri_model][:governing_collection].present? && !params[:dri_model][:governing_collection].blank?
-      params[:dri_model][:governing_collection] = Batch.find(params[:dri_model][:governing_collection])
+    if params[:batch][:governing_collection].present? && !params[:batch][:governing_collection].blank?
+      params[:batch][:governing_collection] = Batch.find(params[:batch][:governing_collection])
     else
-      params[:dri_model].delete(:governing_collection)
+      params[:batch].delete(:governing_collection)
     end
 
-    enforce_permissions!("create_digital_object",params[:dri_model][:governing_collection])
+    enforce_permissions!("create_digital_object",params[:batch][:governing_collection])
 
-    if params[:dri_model][:type].present? && !params[:dri_model][:type].blank?
-      type = params[:dri_model][:type]
-      params[:dri_model].delete(:type)
+    if params[:batch][:object_type].present? && !params[:batch][:object_type].blank?
+      type = params[:batch][:object_type]
+      params[:batch].delete(:object_type)
 
-      set_access_permissions(:dri_model)
+      set_access_permissions(:batch)
 
       @object = Batch.new
       @object.object_type = [ type ]
-      @object.update_attributes params[:dri_model]
+      @object.update_attributes params[:batch]
     else
       flash[:alert] = t('dri.flash.error.no_type_specified')
       raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')

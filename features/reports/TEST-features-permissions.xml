@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="2" name="" skipped="0" tests="5" time="19.724634">
+<testcase classname="" name="Setting a list of users for restricted access" time="2.538083">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using the web form should set default permissions (outline example : | pdfdoc |)" time="2.768038">
+  <failure message="failed Constructing a Digital Object using the web form should set default permissions (outline example : | pdfdoc |)" type="failed">
+    <![CDATA[Scenario Outline: Constructing a Digital Object using the web form should set default permissions
+
+Example row: | pdfdoc |
+
+Message:
+]]>
+    <![CDATA[Unable to find field "batch_title][" (Capybara::ElementNotFound)
+./features/support/interface.rb:18:in `block in enter_valid_pdf_metadata'
+./features/support/interface.rb:17:in `enter_valid_pdf_metadata'
+./features/step_definitions/web_steps.rb:153:in `/^I enter valid "(audio|pdfdoc)" metadata$/'
+features/permissions.feature:31:in `When I enter valid "<object_type>" metadata']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using the web form should set default permissions (outline example : | audio |)" time="2.722713">
+  <failure message="failed Constructing a Digital Object using the web form should set default permissions (outline example : | audio |)" type="failed">
+    <![CDATA[Scenario Outline: Constructing a Digital Object using the web form should set default permissions
+
+Example row: | pdfdoc |
+
+Message:
+Example row: | audio |
+
+Message:
+]]>
+    <![CDATA[Unable to find field "batch_title][" (Capybara::ElementNotFound)
+./features/support/interface.rb:9:in `block in enter_valid_metadata'
+./features/support/interface.rb:8:in `enter_valid_metadata'
+./features/step_definitions/web_steps.rb:151:in `/^I enter valid "(audio|pdfdoc)" metadata$/'
+features/permissions.feature:31:in `When I enter valid "<object_type>" metadata']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using XML upload should set default permissions (outline example : | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |)" time="5.825610">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using XML upload should set default permissions (outline example : | audio | SAMPLEA.xml | Audio |)" time="5.870190">
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

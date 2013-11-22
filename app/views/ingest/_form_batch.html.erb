@@ -1,10 +1,10 @@
-<%= form_for @object, :as => :dri_model, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
+<%= form_for @object, :as => :batch, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
 
-  <%= f.hidden_field :type, {:value => @type} %>
+  <%= f.hidden_field :object_type, {:value => @object.object_type} %>
   <%= f.hidden_field :governing_collection, {:value => @collection} %> 
 
-  <%= render :partial => "shared/form_default_permissions", :locals => { :f => f } %>
   <%= render :partial => "shared/form_metadata", :locals => { :f => f, :action => "create" } %>
+  <%= render :partial => "shared/form_default_permissions", :locals => {:f => f,:record => @object } %>
 
   <%= f.submit t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>
 

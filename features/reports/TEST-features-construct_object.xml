@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="" skipped="0" tests="2" time="0.235381">
+<testcase classname="" name="Committing a valid Digital Object" time="0.146774">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Committing a Digital Object with incorrectly structured metadata file" time="0.088607">
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

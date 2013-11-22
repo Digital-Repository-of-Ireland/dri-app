@@ -200,9 +200,9 @@ class CatalogController < ApplicationController
     config.spell_max = 5
   end
 
-  def exclude_collection_models(solr_parameters, user_parameters)
+  def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "has_model_ssim:\"info:fedora/afmodel:Batch\""
+    solr_parameters[:fq] << "+has_model_ssim:\"info:fedora/afmodel:Batch\""
   end
 
 end

@@ -31,7 +31,7 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
     Given I am on the new Digital Object page
     And I select "#{collection_pid}" from the selectbox for ingest collection
     And I press the button to continue
-    And I select "audio" from the selectbox for object type
+    And I select "Sound" from the selectbox for object type
     And I press the button to continue
     And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
@@ -52,11 +52,12 @@ end
 When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title|
     title ||= "Test collection"
   steps %{
-    When I fill in "batch_title" with "#{title}"
-    And I fill in "batch_description" with "Test description"
-    And I fill in "batch_rights" with "Test rights"
-    And I fill in "batch_type" with "Collection"
-    And I fill in "batch_publisher" with "Test publisher"
+    When I fill in "batch_title][" with "#{title}"
+    And I fill in "batch_description][" with "Test description"
+    And I fill in "batch_rights][" with "Test rights"
+    And I fill in "batch_type][" with "Collection"
+    And I select "publisher" from the selectbox number 0 for role type
+    And I fill in "batch_roles][name][" number 0 with "Test publisher"
   }
 end
 
@@ -129,7 +130,7 @@ end
 Then /^the collection "(.*?)" should contain the new digital object$/ do |collection_pid|
   collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
   collection.governed_items.count.should == 1
-  collection.governed_items[0].title.should == "SAMPLE AUDIO TITLE"
+  collection.governed_items[0].title.should == ["SAMPLE AUDIO TITLE"]
 end
 
 When /^I check add to collection for id (.*?)$/ do |object_pid|

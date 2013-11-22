@@ -126,6 +126,11 @@ When /^I select "(.*?)" from the selectbox for (.*?)$/ do |option, selector|
   select_by_value(option, :from => select_box_to_id(selector))
 end
 
+When /^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/ do |option, index, selector|
+  selected_select = page.all(:xpath, '//select[@id="'+select_box_to_id(selector)+'"]')[index.to_i].path
+  select_by_value(option, :xpath => selected_select)
+end
+
 When /^I select the text "(.*?)" from the selectbox for (.*?)$/ do |option, selector|
   select(option, :from => select_box_to_id(selector))
 end
@@ -249,6 +254,13 @@ When /^(?:|I )fill in "([^"]*)" with "([^"]*)"(?: within "([^"]*)")?$/ do |field
     fill_in(field, :with => value)
   end
 end
+
+When /^(?:|I )fill in "([^"]*)" number (.*?) with "([^"]*)"(?: within "([^"]*)")?$/ do |field, index, value, selector|
+  with_scope(selector) do
+    selected_select = page.all(:xpath, '//input[@id="'+field+'"]')[index.to_i].set(value)
+  end
+end
+
 
 When /^(?:|I )choose "([^"]*)"(?: within "([^"]*)")?$/ do |field, selector|
   with_scope(selector) do

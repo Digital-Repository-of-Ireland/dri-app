@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="16" name="" skipped="0" tests="17" time="11.243672">
+<testcase classname="" name="Navigating to the ingest page" time="0.266286">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a valid Digital Object" time="0.540516">
+  <failure message="failed Constructing a valid Digital Object" type="failed">
+    <![CDATA[Scenario: Constructing a valid Digital Object
+
+Given I am logged in as "user1" in the group "cm"
+Given I have created a collection
+And I am on the new Digital Object page
+When I select a collection
+And I press the button to continue
+And I select "audio" from the selectbox for object type
+And I press the button to continue
+And I select "upload" from the selectbox for ingest methods
+And I press the button to continue
+And I attach the metadata file "valid_metadata.xml"
+And I press the button to ingest metadata
+Then I should see a success message for ingestion
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+features/web_construct_object.feature:17:in `Given I have created a collection']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object with metadata that incorrect or incomplete (outline example : | audio | metadata_no_rights.xml | invalid object |)" time="0.668029">
+  <failure message="failed Constructing a Digital Object with metadata that incorrect or incomplete (outline example : | audio | metadata_no_rights.xml | invalid object |)" type="failed">
+    <![CDATA[Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
+
+Example row: | audio | metadata_no_rights.xml | invalid object |
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+features/web_construct_object.feature:30:in `Given I have created a collection']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object with metadata that incorrect or incomplete (outline example : | audio | invalid_schema_metadata.xml | invalid schema |)" time="0.757978">
+  <failure message="failed Constructing a Digital Object with metadata that incorrect or incomplete (outline example : | audio | invalid_schema_metadata.xml | invalid schema |)" type="failed">
+    <![CDATA[Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
+
+Example row: | audio | metadata_no_rights.xml | invalid object |
+
+Message:
+Example row: | audio | invalid_schema_metadata.xml | invalid schema |
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+features/web_construct_object.feature:30:in `Given I have created a collection']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object with metadata that incorrect or incomplete (outline example : | audio | invalid_xml_metadata.xml | invalid metadata |)" time="0.760673">
+  <failure message="failed Constructing a Digital Object with metadata that incorrect or incomplete (outline example : | audio | invalid_xml_metadata.xml | invalid metadata |)" type="failed">
+    <![CDATA[Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
+
+Example row: | audio | metadata_no_rights.xml | invalid object |
+
+Message:
+Example row: | audio | invalid_schema_metadata.xml | invalid schema |
+
+Message:
+Example row: | audio | invalid_xml_metadata.xml | invalid metadata |
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+features/web_construct_object.feature:30:in `Given I have created a collection']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a valid Digital Object (outline example : | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |)" time="0.750366">
+  <failure message="failed Constructing a valid Digital Object (outline example : | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |)" type="failed">
+    <![CDATA[Scenario Outline: Constructing a valid Digital Object
+
+Example row: | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+features/web_construct_object.feature:49:in `Given I have created a collection']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a valid Digital Object (outline example : | audio | SAMPLEA.xml | Audio |)" time="0.773547">
+  <failure message="failed Constructing a valid Digital Object (outline example : | audio | SAMPLEA.xml | Audio |)" type="failed">
+    <![CDATA[Scenario Outline: Constructing a valid Digital Object
+
+Example row: | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |
+
+Message:
+Example row: | audio | SAMPLEA.xml | Audio |
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+features/web_construct_object.feature:49:in `Given I have created a collection']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a pdf asset to an object" time="0.539130">
+  <failure message="failed Adding a pdf asset to an object" type="failed">
+    <![CDATA[Scenario: Adding a pdf asset to an object
+
+Given I am logged in as "user1" in the group "cm"
+Given I have created a pdfdoc object
+Then I should see a link to edit an object
+When I follow the link to edit an object
+And I attach the asset file "sample_pdf.pdf"
+And I press the button to upload a file
+Then I should see a success message for file upload
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+./features/step_definitions/web_steps.rb:24:in `/^I have created a (pdfdoc|audio) object$/'
+features/web_construct_object.feature:68:in `Given I have created a pdfdoc object']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Replacing the metadata file of a Digital Object" time="0.645279">
+  <failure message="failed Replacing the metadata file of a Digital Object" type="failed">
+    <![CDATA[Scenario: Replacing the metadata file of a Digital Object
+
+Given I am logged in as "user1" in the group "cm"
+Given I have created a Digital Object
+Then I should see a link to edit an object
+When I follow the link to edit an object
+And I attach the metadata file "valid_metadata.xml"
+And I press the button to upload metadata
+Then I should see a success message for updating metadata
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+./features/step_definitions/web_steps.rb:9:in `/^I have created a Digital Object$/'
+features/web_construct_object.feature:76:in `Given I have created a Digital Object']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using the web form" time="0.639322">
+  <failure message="failed Constructing a Digital Object using the web form" type="failed">
+    <![CDATA[Scenario: Constructing a Digital Object using the web form
+
+Given I am logged in as "user1" in the group "cm"
+Given I have created a collection
+And I am on the new Digital Object page
+When I select a collection
+And I press the button to continue
+And I select "audio" from the selectbox for object type
+And I press the button to continue
+And I select "input" from the selectbox for ingest methods
+And I press the button to continue
+When I enter valid metadata
+And I press the button to continue
+Then I should see a success message for ingestion
+And I should see the valid metadata
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+features/web_construct_object.feature:84:in `Given I have created a collection']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Editing the metadata of a Digital Object using the web form" time="0.640757">
+  <failure message="failed Editing the metadata of a Digital Object using the web form" type="failed">
+    <![CDATA[Scenario: Editing the metadata of a Digital Object using the web form
+
+Given I am logged in as "user1" in the group "cm"
+Given I have created a Digital Object
+Then I should see a link to edit an object
+When I follow the link to edit an object
+And I enter modified metadata
+And I press the button to save changes
+And I follow the link to view record
+Then I should see the modified metadata
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+./features/step_definitions/web_steps.rb:9:in `/^I have created a Digital Object$/'
+features/web_construct_object.feature:111:in `Given I have created a Digital Object']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding and replacing the audio file for a Digital Object" time="0.653751">
+  <failure message="failed Adding and replacing the audio file for a Digital Object" type="failed">
+    <![CDATA[Scenario: Adding and replacing the audio file for a Digital Object
+
+Given I am logged in as "user1" in the group "cm"
+Given I have created a Digital Object
+Then I should see a link to edit an object
+When I follow the link to edit an object
+And I attach the asset file "sample_audio.mp3"
+And I press the button to upload a file
+Then I should see a success message for file upload
+When I follow the link to edit an object
+And I attach the asset file "sample_audio.mp3"
+And I press the button to replace a file
+Then I should see a success message for file upload
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+./features/step_definitions/web_steps.rb:9:in `/^I have created a Digital Object$/'
+features/web_construct_object.feature:120:in `Given I have created a Digital Object']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding an audio file that is not valid (outline example : | sample_audio.txt | invalid file type |)" time="0.786820">
+  <failure message="failed Adding an audio file that is not valid (outline example : | sample_audio.txt | invalid file type |)" type="failed">
+    <![CDATA[Scenario Outline: Adding an audio file that is not valid
+
+Example row: | sample_audio.txt | invalid file type |
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+./features/step_definitions/web_steps.rb:9:in `/^I have created a Digital Object$/'
+features/web_construct_object.feature:132:in `Given I have created a Digital Object']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding an audio file that is not valid (outline example : | sample_invalid_audio.mp3 | invalid file type |)" time="0.662382">
+  <failure message="failed Adding an audio file that is not valid (outline example : | sample_invalid_audio.mp3 | invalid file type |)" type="failed">
+    <![CDATA[Scenario Outline: Adding an audio file that is not valid
+
+Example row: | sample_audio.txt | invalid file type |
+
+Message:
+Example row: | sample_invalid_audio.mp3 | invalid file type |
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+./features/step_definitions/web_steps.rb:9:in `/^I have created a Digital Object$/'
+features/web_construct_object.feature:132:in `Given I have created a Digital Object']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a file that contains a virus" time="0.644188">
+  <failure message="failed Adding a file that contains a virus" type="failed">
+    <![CDATA[Scenario: Adding a file that contains a virus
+
+Given I am logged in as "user1" in the group "cm"
+Given I have created a Digital Object
+Then I should see a link to edit an object
+When I follow the link to edit an object
+And I upload the virus file "sample_virus.mp3"
+Then I should see a failure message for "virus detected"
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+./features/step_definitions/web_steps.rb:9:in `/^I have created a Digital Object$/'
+features/web_construct_object.feature:145:in `Given I have created a Digital Object']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Editing an audio file where the file is invalid (outline example : | sample_audio.txt | invalid file type |)" time="0.753577">
+  <failure message="failed Editing an audio file where the file is invalid (outline example : | sample_audio.txt | invalid file type |)" type="failed">
+    <![CDATA[Scenario Outline: Editing an audio file where the file is invalid
+
+Example row: | sample_audio.txt | invalid file type |
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+./features/step_definitions/web_steps.rb:9:in `/^I have created a Digital Object$/'
+features/web_construct_object.feature:152:in `Given I have created a Digital Object']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Editing an audio file where the file is invalid (outline example : | sample_invalid_audio.mp3 | invalid file type |)" time="0.761071">
+  <failure message="failed Editing an audio file where the file is invalid (outline example : | sample_invalid_audio.mp3 | invalid file type |)" type="failed">
+    <![CDATA[Scenario Outline: Editing an audio file where the file is invalid
+
+Example row: | sample_audio.txt | invalid file type |
+
+Message:
+Example row: | sample_invalid_audio.mp3 | invalid file type |
+
+Message:
+]]>
+    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
+./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
+./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
+./features/step_definitions/web_steps.rb:67:in `/^I have created a collection$/'
+./features/step_definitions/web_steps.rb:9:in `/^I have created a Digital Object$/'
+features/web_construct_object.feature:152:in `Given I have created a Digital Object']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="3" name="" skipped="6" tests="15" time="15.733774">
+<testcase classname="" name="Navigating to the collections page" time="0.050463">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a valid collection" time="2.278371">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a collection with valid permissions" time="2.506696">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a collection with invalid permissions" time="1.525082">
+  <failure message="failed Constructing a collection with invalid permissions" type="failed">
+    <![CDATA[Scenario: Constructing a collection with invalid permissions
+
+Given I am logged in as "user1" in the group "cm"
+Given I am on the my collections page
+When I press the button to add new collection
+And I enter valid metadata for a collection
+And I enter invalid permissions for a collection
+And I press the button to create a collection
+Then I should see a failure message for "invalid collection"
+
+Message:
+]]>
+    <![CDATA[expected to find css ".alert" with text "Unable to create. Check set permissions" but there were no matches (Capybara::ExpectationNotMet)
+./features/step_definitions/web_steps.rb:210:in `/^(?:|I )should see a (success|failure) message for (.+)$/'
+features/collections.feature:38:in `Then I should see a failure message for "invalid collection"']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Updating a collection with invalid permissions" time="2.111252">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj1 | Object 1 | Test 1 | audio | Test Rights | dri:coll1 | governing |)" time="0.234016">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj2 | Object 2 | Test 2 | pdfdoc | Test Rights | dri:coll1 | governing |)" time="0.148532">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj3 | Object 3 | Test 3 | audio | Test Rights | dri:coll2 | non-governing |)" time="0.239242">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj4 | Object 4 | Test 4 | pdfdoc | Test Rights | dri:coll2 | non-governing |)" time="0.149984">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Creating Digital Object in a governing collection using the web forms (outline example : | dri:obj1 | Object 1 | dri:coll1 | governing |)" time="1.734064">
+  <failure message="failed Creating Digital Object in a governing collection using the web forms (outline example : | dri:obj1 | Object 1 | dri:coll1 | governing |)" type="failed">
+    <![CDATA[Scenario Outline: Creating Digital Object in a governing collection using the web forms
+
+Example row: | dri:obj1 | Object 1 | dri:coll1 | governing |
+
+Message:
+]]>
+    <![CDATA[Unable to find xpath ".//option[@value='Sound']" (Capybara::ElementNotFound)
+./features/support/custom_matchers.rb:5:in `select_by_value'
+./features/step_definitions/web_steps.rb:126:in `/^I select "(.*?)" from the selectbox for (.*?)$/'
+./features/step_definitions/collection_steps.rb:30:in `/^I create a Digital Object in the collection "(.*?)"$/'
+features/collections.feature:63:in `When I create a Digital Object in the collection "<collection_pid>"']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a Digital Object to a non-governing collection using the web forms" time="0.187458">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Removing a Digital Object from a non-governing collection using the web forms" time="0.096635">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Deleting a collection as an admin" time="2.204077">
+  <failure message="failed Deleting a collection as an admin" type="failed">
+    <![CDATA[Scenario: Deleting a collection as an admin
+
+Given I am logged in as "user1" in the group "cm"
+Given I am not logged in
+Given I am logged in as "admin" in the group "admin"
+Given a collection with pid "dri:coll6" created by "user1@user1.com"
+When I go to the "collection" "show" page for "dri:coll6"
+And I follow the link to edit a collection
+Then I should see a button to delete collection with id dri:coll6
+When I press the button to delete collection with id dri:coll6
+Then I should see a success message for "deleting a collection"
+
+Message:
+]]>
+    <![CDATA[expected to find button "delete_collection_dri:coll6" but there were no matches (Capybara::ExpectationNotMet)
+./features/step_definitions/web_steps.rb:189:in `/^(?:|I )should( not)? see a button to (.+)$/'
+features/collections.feature:95:in `Then I should see a button to delete collection with id dri:coll6']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Non-admin should not be given option to delete" time="2.173447">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection" time="0.094455">
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>
