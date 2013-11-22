@@ -1,11 +1,20 @@
 When(/^"(.*?)" has been granted "(.*?)" permissions on "(.*?)" with pid "(.*?)"$/) do |user, permission, type, pid|
   object = ActiveFedora::Base.find(pid, {:cast => true})
-
+  
   if permission == "manage"
-    object.manager_users_string += ", #{User.find_by_email(user).to_s}"
+    if object.manager_users_string.nil?
+      object.manager_users_string = User.find_by_email(user).to_s
+    else
+      object.manager_users_string += ", #{User.find_by_email(user).to_s}"
+    end
   elsif permission == "edit"
-    object.edit_users_string += ", #{User.find_by_email(user).to_s}"
+    if object.edit_users_string.nil?
+      object.edit_users_string = User.find_by_email(user).to_s
+    else
+      object.edit_users_string += ", #{User.find_by_email(user).to_s}"
+    end
   end
 
   object.save
+  object.reload
 end

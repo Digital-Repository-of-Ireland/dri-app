@@ -3,10 +3,11 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection = DRI::Model::Collection.new(:pid => pid)
   collection.title = title ? title : SecureRandom.hex(5)
   if user
-    collection.apply_depositor_metadata(User.find_by_email(user))
+    User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
+   
+    collection.depositor = User.find_by_email(user).to_s
     collection.manager_users_string=User.find_by_email(user).to_s
   end
-  collection.apply_default_permissions
   collection.save
   collection.items.count.should == 0
   collection.governed_items.count.should == 0
@@ -17,7 +18,11 @@ Given /^a Digital Object with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)
   digital_object = DRI::Model::Audio.new(:pid => pid)
   digital_object.title = title
   if user
-    digital_object.apply_depositor_metadata(User.find_by_email(user))
+    User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
+
+    digital_object.depositor=User.find_by_email(user).to_s
+    digital_object.manager_users_string=User.find_by_email(user).to_s
+    digital_object.edit_groups_string="registered"
   end
   digital_object.rights = "This is a statement of rights"
   digital_object.save
@@ -34,7 +39,9 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
 
   digital_object.title = title
   if user
-    digital_object.apply_depositor_metadata(User.find_by_email(user))
+    digital_object.depositor = User.find_by_email(user).to_s
+    digital_object.manager_users_string=User.find_by_email(user).to_s
+    digital_object.edit_groups_string="registered"
   end
   digital_object.rights = "This is a statement of rights"
   digital_object.save
