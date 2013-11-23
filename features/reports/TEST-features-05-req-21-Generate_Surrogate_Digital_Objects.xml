@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="0" name="Generate Surrogate Digital Objects" skipped="2" tests="2" time="14.584673">
-<testcase classname="Generate Surrogate Digital Objects" name="Running background jobs and creating surrogates for different object types (outline example : | audio | mp3, clip |)" time="9.220341">
+<testsuite errors="0" failures="0" name="Generate Surrogate Digital Objects" skipped="2" tests="2" time="14.037552">
+<testcase classname="Generate Surrogate Digital Objects" name="Running background jobs and creating surrogates for different object types (outline example : | audio | mp3, clip |)" time="7.407755">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="Generate Surrogate Digital Objects" name="Running background jobs and creating surrogates for different object types (outline example : | pdfdoc | extract |)" time="5.364332">
+<testcase classname="Generate Surrogate Digital Objects" name="Running background jobs and creating surrogates for different object types (outline example : | pdfdoc | extract |)" time="6.629797">
   <skipped/>
   <system-out/>
   <system-err/>

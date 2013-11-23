@@ -1,47 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="1" name="Duplicates" skipped="3" tests="4" time="0.019871">
-<testcase classname="Duplicates" name="Ingesting a duplicate Digital Object using metadata file upload" time="0.005918">
-  <failure message="failed Ingesting a duplicate Digital Object using metadata file upload" type="failed">
-    <![CDATA[Scenario: Ingesting a duplicate Digital Object using metadata file upload
-
-Given I am logged in as "user1" in the group "cm"
-And I have created a collection with title "Test Collection"
-Given I have created an "audio" object with metadata "SAMPLEA.xml" in the collection "Test Collection"
-And I am on the new Digital Object page
-When I select the text "Test Collection" from the selectbox for ingest collection
-And I press the button to continue
-And I select "audio" from the selectbox for object type
-And I press the button to continue
-And I select "upload" from the selectbox for ingest methods
-And I press the button to continue
-And I attach the metadata file "SAMPLEA.xml"
-And I press the button to ingest metadata
-Then I should see a success message for ingestion
-And I should see the message "Possible duplicate objects found"
-
-Message:
-]]>
-    <![CDATA[Capybara::Driver::Node#path (Capybara::NotSupportedByDriverError)
-./features/step_definitions/web_steps.rb:130:in `/^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/'
-./features/step_definitions/collection_steps.rb:54:in `/^I enter valid metadata for a collection(?: with title (.*?))?$/'
-./features/step_definitions/web_steps.rb:76:in `/^I have created a collection with title "(.+)"$/'
-features/duplicates.feature:10:in `And I have created a collection with title "Test Collection"']]>
-  </failure>
+<testsuite errors="0" failures="0" name="Duplicates" skipped="0" tests="4" time="41.240661">
+<testcase classname="Duplicates" name="Ingesting a duplicate Digital Object using metadata file upload" time="5.872888">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="Duplicates" name="Ingesting a duplicate Digital Object using form input" time="0.005323">
-  <skipped/>
+<testcase classname="Duplicates" name="Ingesting a duplicate Digital Object using form input" time="11.998459">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="Duplicates" name="Creating a duplicate Digital Object by replacing the metadata file" time="0.004655">
-  <skipped/>
+<testcase classname="Duplicates" name="Creating a duplicate Digital Object by replacing the metadata file" time="10.732881">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="Duplicates" name="Creating a duplicate Digital Object by editing with the metadata form" time="0.003975">
-  <skipped/>
+<testcase classname="Duplicates" name="Creating a duplicate Digital Object by editing with the metadata form" time="12.636433">
   <system-out/>
   <system-err/>
 </testcase>

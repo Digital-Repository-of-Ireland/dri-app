@@ -31,7 +31,7 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
     Given I am on the new Digital Object page
     And I select "#{collection_pid}" from the selectbox for ingest collection
     And I press the button to continue
-    And I select "Sound" from the selectbox for object type
+    And I select "pdfdoc" from the selectbox for object type
     And I press the button to continue
     And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
@@ -59,6 +59,9 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
     And I select "publisher" from the selectbox number 0 for role type
     And I fill in "batch_roles][name][" number 0 with "Test publisher"
   }
+  #{}  And I select "publisher" from the selectbox number 0 for role type
+  #{}  And I fill in "batch_roles][name][" number 0 with "Test publisher"
+  #{}}
 end
 
 When /^I enter valid permissions for a collection$/ do

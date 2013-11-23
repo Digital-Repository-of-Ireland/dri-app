@@ -127,8 +127,8 @@ When /^I select "(.*?)" from the selectbox for (.*?)$/ do |option, selector|
 end
 
 When /^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/ do |option, index, selector|
-  selected_select = page.all(:xpath, '//select[@id="'+select_box_to_id(selector)+'"]')[index.to_i].path
-  select_by_value(option, :xpath => selected_select)
+  page.all(:xpath, '//select[@id="'+select_box_to_id(selector)+'"]')[index.to_i].find(:xpath, ".//option[@value='#{option}']").select_option
+  #select_by_value(option, :xpath => selected_select)
 end
 
 When /^I select the text "(.*?)" from the selectbox for (.*?)$/ do |option, selector|
@@ -226,6 +226,10 @@ end
 
 Then /^the object should be (.*?) format$/ do |format|
   interface.is_format?(format)
+end
+
+Then /^the object should be of type (.*?)$/ do |type|
+  interface.is_type?(type)
 end
 
 #Then /^I should see a link to "([^\"]*)"$/ do |text|

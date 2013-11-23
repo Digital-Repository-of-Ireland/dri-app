@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="0" name="Bug-360" skipped="0" tests="1" time="0.293084">
-<testcase classname="Bug-360" name="Creating a new valid user account" time="0.293084">
+<testsuite errors="0" failures="0" name="Bug-360" skipped="0" tests="1" time="0.274253">
+<testcase classname="Bug-360" name="Creating a new valid user account" time="0.274253">
   <system-out/>
   <system-err/>
 </testcase>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="0" name="Bug-395" skipped="0" tests="2" time="0.271728">
-<testcase classname="Bug-395" name="Search Fields drop-down should appear on the ingest page" time="0.181585">
+<testsuite errors="0" failures="0" name="Bug-395" skipped="0" tests="2" time="0.279815">
+<testcase classname="Bug-395" name="Search Fields drop-down should appear on the ingest page" time="0.097101">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="Bug-395" name="Search Fields drop-down should appear on the collection page" time="0.090143">
+<testcase classname="Bug-395" name="Search Fields drop-down should appear on the collection page" time="0.182714">
   <system-out/>
   <system-err/>
 </testcase>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="0" name="" skipped="0" tests="2" time="0.474807">
-<testcase classname="" name="Visiting the site for the first time" time="0.103042">
+<testsuite errors="0" failures="0" name="" skipped="0" tests="2" time="0.477892">
+<testcase classname="" name="Visiting the site for the first time" time="0.105412">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Logging in should set accept_cookies" time="0.371765">
+<testcase classname="" name="Logging in should set accept_cookies" time="0.372480">
   <system-out/>
   <system-err/>
 </testcase>

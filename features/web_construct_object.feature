@@ -57,12 +57,12 @@ Scenario Outline: Constructing a valid Digital Object
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
-  And the object should be <format_type> format
+  And the object should be of type <type>
 
   Examples:
-    | object_type | metadata_file                 | format_type |
-    | pdfdoc      | dublin_core_pdfdoc_sample.xml | Article     |
-    | audio       | SAMPLEA.xml                   | Audio       |
+    | object_type | metadata_file                 | type        |
+    | pdfdoc      | dublin_core_pdfdoc_sample.xml | Text        |
+    | audio       | SAMPLEA.xml                   | Sound       |
 
 Scenario: Adding a pdf asset to an object
   Given I have created a pdfdoc object 

@@ -1,4 +1,4 @@
-@permissions
+@permissions @javascript
 Feature:
   In order to manage my Digital Objects
   As an authorized user
