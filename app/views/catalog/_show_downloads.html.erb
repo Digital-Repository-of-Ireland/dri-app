@@ -9,12 +9,12 @@
 	<% @files.each do |gf| %>
 	  <% if gf.audio? %>
 	  <dd><%= link_to t('dri.views.catalog.links.listen'), url_for(:controller => 'assets', :action => 'show', :id => gf.id), :id => "download_asset", :class => "player" %>
-	  (Duration: <%= gf.duration[0] %>, <%= case gf.channels[0]
+	  (Duration: <%=  gf.duration[0] %>, <%= case gf.channels[0]
 	  											when "1"
 	  												"mono"
 	  											when "2"
 	  												"stereo"
-	  											else gf.channels[0]+" channels"
+	  											else # gf.channels[0]+" channels"
 	  											end %>, <%= gf.file_size[0].to_i/1024/1024 %>MB, <%= gf.format_label[0] %>)</dd>
 	  <% else %>
       <dd><%= link_to "download", url_for(:controller => 'assets', :action => 'show', :id => gf.id), :id => "download_asset" %></dd>

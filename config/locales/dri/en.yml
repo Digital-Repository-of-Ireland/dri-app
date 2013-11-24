@@ -1,3 +1,5 @@
+
+--- 
 en: 
   dri: 
     application: 
@@ -138,9 +140,9 @@ en:
         format: Format
         formats: Formats
         geographical_coverage: "Subject (Place)"
-        geographical_coverages: "Subjects (Places)"
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
+        geographical_coverages: "Subjects (Places)"
         governing_collection: "Governing Collection"
         identifier: Identifier
         identifiers: Identifiers
@@ -163,9 +165,9 @@ en:
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
         temporal_coverage: "Subject (Era)"
-        temporal_coverages: "Subjects (Eras)"
         temporal_coverage_eng: "Subject (Era) in English"
         temporal_coverage_gle: "Subject (Era) in Irish"
+        temporal_coverages: "Subjects (Eras)"
         title: Title
         type: Type
         types: Types
@@ -262,6 +264,7 @@ en:
           replace_metadata: "Replace Metadata"
           upload_audio: "Upload Audio File"
           upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
+          upload_file: "Upload File"
           upload_file_caption: "No files have been uploaded. Please upload a master file."
           upload_pdf: "Upload PDF File"
         links: 

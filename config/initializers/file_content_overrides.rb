@@ -39,7 +39,4 @@ FileContentDatastream.class_eval do
   end
   end
 
-  def blah
-    true
-  end
 end

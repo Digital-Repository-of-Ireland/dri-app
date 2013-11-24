@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="1" name="" skipped="0" tests="14" time="3.951834">
-<testcase classname="" name="Not logged in user should see their own language based on their browser (outline example : | en |)" time="0.103636">
+<testsuite errors="0" failures="1" name="" skipped="0" tests="14" time="3.836648">
+<testcase classname="" name="Not logged in user should see their own language based on their browser (outline example : | en |)" time="0.228423">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Not logged in user should see their own language based on their browser (outline example : | ga |)" time="0.215872">
+<testcase classname="" name="Not logged in user should see their own language based on their browser (outline example : | ga |)" time="0.219803">
   <failure message="failed Not logged in user should see their own language based on their browser (outline example : | ga |)" type="failed">
     <![CDATA[Scenario Outline: Not logged in user should see their own language based on their browser
 
@@ -19,51 +19,51 @@ features/internationalisation.feature:19:in `Then I should see the language "<la
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="A logged in user should see languages that they have set in their profile (outline example : | en | englishuser | en |)" time="0.226070">
+<testcase classname="" name="A logged in user should see languages that they have set in their profile (outline example : | en | englishuser | en |)" time="0.137635">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="A logged in user should see languages that they have set in their profile (outline example : | ga | englishuser | en |)" time="0.137505">
+<testcase classname="" name="A logged in user should see languages that they have set in their profile (outline example : | ga | englishuser | en |)" time="0.240912">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="A logged in user should see languages that they have set in their profile (outline example : | ga | irishuser | ga |)" time="0.245573">
+<testcase classname="" name="A logged in user should see languages that they have set in their profile (outline example : | ga | irishuser | ga |)" time="0.156855">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="A logged in user should see languages that they have set in their profile (outline example : | en | irishuser | ga |)" time="0.142720">
+<testcase classname="" name="A logged in user should see languages that they have set in their profile (outline example : | en | irishuser | ga |)" time="0.239180">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | en | englishuser | en | ga |)" time="0.442148">
+<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | en | englishuser | en | ga |)" time="0.352259">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | en | englishuser | ga | en |)" time="0.347221">
+<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | en | englishuser | ga | en |)" time="0.250901">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | ga | englishuser | ga | en |)" time="0.331463">
+<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | ga | englishuser | ga | en |)" time="0.339641">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | ga | englishuser | en | ga |)" time="0.332686">
+<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | ga | englishuser | en | ga |)" time="0.335954">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | ga | irishuser | ga | en |)" time="0.337233">
+<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | ga | irishuser | ga | en |)" time="0.332259">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | ga | irishuser | en | ga |)" time="0.329017">
+<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | ga | irishuser | en | ga |)" time="0.336221">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | en | irishuser | ga | en |)" time="0.425414">
+<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | en | irishuser | ga | en |)" time="0.334184">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | en | irishuser | en | ga |)" time="0.335276">
+<testcase classname="" name="Changing from Language set in the profile to a different Language (outline example : | en | irishuser | en | ga |)" time="0.332421">
   <system-out/>
   <system-err/>
 </testcase>

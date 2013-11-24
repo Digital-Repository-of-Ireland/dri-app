@@ -207,7 +207,12 @@ Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
 end
 
 Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failure,message|
-  page.should have_selector ".alert", text: flash_for(message)
+  begin
+    page.should have_selector ".alert", text: flash_for(message)
+  rescue
+    save_and_open_page
+    raise
+  end
 end
 
 Then /^(?:|I )should( not)? see a message for (.+)$/ do |negate, message|

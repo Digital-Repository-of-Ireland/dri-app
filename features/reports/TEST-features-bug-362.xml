@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="0" name="Bug-362" skipped="0" tests="1" time="2.642707">
-<testcase classname="Bug-362" name="Logging out" time="2.642707">
+<testsuite errors="0" failures="0" name="Bug-362" skipped="0" tests="1" time="2.537557">
+<testcase classname="Bug-362" name="Logging out" time="2.537557">
   <system-out/>
   <system-err/>
 </testcase>

@@ -1,10 +1,12 @@
-<%= get_datastreams @object %>
+<%= get_files @object %>
+<fieldset>
+<legend><%= t('dri.views.objects.legends.upload_file') %></legend>
 <% if !@files.empty? %>
-  
+  <p class="legend-caption"><%= t('dri.views.objects.legends.file_caption') %></p>
   <%= form_tag(url_for(:action=>"create", :controller=>"assets", :id=>@object.id), :multipart => true, :method => :post, :id => "file_uploader") do %>
     <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
     <%= hidden_field_tag 'datastream', "content" %>
-    <%= file_field_tag 'Filedata', :accept => @object.mime_type, :required => "true" %>
+    <%= file_field_tag 'Filedata', :required => "true" %>
     <%= button_tag t('dri.views.objects.buttons.replace_master'), :id => "replace_file", :name => "upload_file", :class => "btn-primary" %>
   <% end %>
 
@@ -20,3 +22,6 @@
   <% end %>
 
 <% end %>
+</fieldset>
+
+

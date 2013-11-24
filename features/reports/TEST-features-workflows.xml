@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="0" name="" skipped="8" tests="8" time="0.082590">
-<testcase classname="" name="Anonymous user access" time="0.006325">
+<testsuite errors="0" failures="0" name="" skipped="8" tests="8" time="0.378181">
+<testcase classname="" name="Anonymous user access" time="0.009637">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Anonymous user search" time="0.011073">
+<testcase classname="" name="Anonymous user search" time="0.308830">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Anonymous user wants to create an account" time="0.010680">
+<testcase classname="" name="Anonymous user wants to create an account" time="0.007165">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Logged in user search" time="0.013087">
+<testcase classname="" name="Logged in user search" time="0.012338">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Accessing restricted content by joining a group" time="0.014412">
+<testcase classname="" name="Accessing restricted content by joining a group" time="0.014047">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Accessing restricted contact by contacting the collection manager" time="0.012443">
+<testcase classname="" name="Accessing restricted contact by contacting the collection manager" time="0.012188">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="ingest for non-collection manager" time="0.005527">
+<testcase classname="" name="ingest for non-collection manager" time="0.005053">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Becoming a collection manager" time="0.009043">
+<testcase classname="" name="Becoming a collection manager" time="0.008923">
   <skipped/>
   <system-out/>
   <system-err/>

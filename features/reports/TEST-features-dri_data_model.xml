@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="0" name="DRI Data Model" skipped="0" tests="6" time="0.383661">
-<testcase classname="DRI Data Model" name="DRI Data Model for Audio should not be valid without correct metadata" time="0.023634">
+<testsuite errors="0" failures="0" name="DRI Data Model" skipped="0" tests="6" time="0.377704">
+<testcase classname="DRI Data Model" name="DRI Data Model for Audio should not be valid without correct metadata" time="0.022674">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="DRI Data Model" name="DRI Data Model for Audio should have correct metadata fields and validate required ones" time="0.080873">
+<testcase classname="DRI Data Model" name="DRI Data Model for Audio should have correct metadata fields and validate required ones" time="0.076134">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="DRI Data Model" name="DRI Data Model for Pdfdoc should not be valid without correct metadata" time="0.024112">
+<testcase classname="DRI Data Model" name="DRI Data Model for Pdfdoc should not be valid without correct metadata" time="0.119316">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="DRI Data Model" name="DRI Data Model for Pdfdoc should have correct metadata fields and validate required ones" time="0.167295">
+<testcase classname="DRI Data Model" name="DRI Data Model for Pdfdoc should have correct metadata fields and validate required ones" time="0.074392">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="DRI Data Model" name="DRI Data Model for Collection should not be valid without correct metadata" time="0.022720">
+<testcase classname="DRI Data Model" name="DRI Data Model for Collection should not be valid without correct metadata" time="0.022647">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="DRI Data Model" name="DRI Data Model for Collection should have correct metadata fields and validate required ones" time="0.065027">
+<testcase classname="DRI Data Model" name="DRI Data Model for Collection should have correct metadata fields and validate required ones" time="0.062541">
   <system-out/>
   <system-err/>
 </testcase>

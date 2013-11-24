@@ -137,6 +137,7 @@ class CollectionsController < CatalogController
 
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_created')
+      @object = @collection
       render :action => :new
       return 
     end

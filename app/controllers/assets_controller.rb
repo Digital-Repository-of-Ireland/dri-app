@@ -93,10 +93,12 @@ class AssetsController < ApplicationController
 
 
         @gf = GenericFile.new
-        @url = url_for :controller=>"assets", :action=>"show", :id=>@object.id
-        @gf.update_file_reference datastream, :url=>@url, :mimeType=>mime_type.to_s
+        #@url = url_for :controller=>"assets", :action=>"show", :id=>@object.id
+        #@gf.update_file_reference datastream, :url=>@url, :mimeType=>mime_type.to_s
         @gf.batch = @object
         @gf.save
+
+        create_file(file_upload, @gf.id, datastream, params[:checksum])
 
         # A silly workaround, @gf doesn't get assigned a pid until it is saved
         # therefore I have to save it twice, in order to have the pid in the URL being
@@ -109,9 +111,6 @@ class AssetsController < ApplicationController
         @gf.update_file_reference datastream, :url=>@url, :mimeType=>mime_type.to_s
         @gf.save
 
-
-        create_file(file_upload, @gf.id, datastream, params[:checksum])
-      
         flash[:notice] = t('dri.flash.notice.file_uploaded')
 
         respond_to do |format|

@@ -54,6 +54,10 @@ module Interface
         fill_in("batch_description][", :with => "Editing test")
       end
       within_fieldset('creation_date') do
+        if (!page.has_field?("batch_creation_date]["))
+          click_link("Add Creation Date")
+          page.should have_field("batch_creation_date][")
+        end
         fill_in("batch_creation_date][", :with => "2013-01-01")
       end
     end

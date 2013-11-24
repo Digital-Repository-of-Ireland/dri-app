@@ -1,104 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="2" name="" skipped="6" tests="15" time="17.796772">
-<testcase classname="" name="Navigating to the collections page" time="0.050845">
+<testsuite errors="0" failures="0" name="" skipped="6" tests="15" time="17.831014">
+<testcase classname="" name="Navigating to the collections page" time="0.047200">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Constructing a valid collection" time="2.147085">
+<testcase classname="" name="Constructing a valid collection" time="2.142941">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Constructing a collection with valid permissions" time="2.185433">
+<testcase classname="" name="Constructing a collection with valid permissions" time="2.039839">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Constructing a collection with invalid permissions" time="1.429943">
-  <failure message="failed Constructing a collection with invalid permissions" type="failed">
-    <![CDATA[Scenario: Constructing a collection with invalid permissions
-
-Given I am logged in as "user1" in the group "cm"
-Given I am on the my collections page
-When I press the button to add new collection
-And I enter valid metadata for a collection
-And I enter invalid permissions for a collection
-And I press the button to create a collection
-Then I should see a failure message for "invalid collection"
-
-Message:
-]]>
-    <![CDATA[expected to find css ".alert" with text "Unable to create. Check set permissions" but there were no matches (Capybara::ExpectationNotMet)
-./features/step_definitions/web_steps.rb:210:in `/^(?:|I )should see a (success|failure) message for (.+)$/'
-features/collections.feature:38:in `Then I should see a failure message for "invalid collection"']]>
-  </failure>
+<testcase classname="" name="Constructing a collection with invalid permissions" time="1.616848">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Updating a collection with invalid permissions" time="2.185201">
+<testcase classname="" name="Updating a collection with invalid permissions" time="2.166164">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj1 | Object 1 | Test 1 | audio | Test Rights | dri:coll1 | governing |)" time="0.154150">
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj1 | Object 1 | Test 1 | audio | Test Rights | dri:coll1 | governing |)" time="0.149862">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj2 | Object 2 | Test 2 | pdfdoc | Test Rights | dri:coll1 | governing |)" time="0.242092">
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj2 | Object 2 | Test 2 | pdfdoc | Test Rights | dri:coll1 | governing |)" time="0.147622">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj3 | Object 3 | Test 3 | audio | Test Rights | dri:coll2 | non-governing |)" time="0.152994">
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj3 | Object 3 | Test 3 | audio | Test Rights | dri:coll2 | non-governing |)" time="0.236465">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj4 | Object 4 | Test 4 | pdfdoc | Test Rights | dri:coll2 | non-governing |)" time="0.242028">
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj4 | Object 4 | Test 4 | pdfdoc | Test Rights | dri:coll2 | non-governing |)" time="0.148611">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Creating Digital Object in a governing collection using the web forms (outline example : | dri:obj1 | Object 1 | dri:coll1 | governing |)" time="4.734792">
+<testcase classname="" name="Creating Digital Object in a governing collection using the web forms (outline example : | dri:obj1 | Object 1 | dri:coll1 | governing |)" time="4.559776">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Adding a Digital Object to a non-governing collection using the web forms" time="0.100309">
+<testcase classname="" name="Adding a Digital Object to a non-governing collection using the web forms" time="0.193671">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Removing a Digital Object from a non-governing collection using the web forms" time="0.194327">
+<testcase classname="" name="Removing a Digital Object from a non-governing collection using the web forms" time="0.098063">
   <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Deleting a collection as an admin" time="1.961314">
-  <failure message="failed Deleting a collection as an admin" type="failed">
-    <![CDATA[Scenario: Deleting a collection as an admin
-
-Given I am logged in as "user1" in the group "cm"
-Given I am not logged in
-Given I am logged in as "admin" in the group "admin"
-Given a collection with pid "dri:coll6" created by "user1@user1.com"
-When I go to the "collection" "show" page for "dri:coll6"
-And I follow the link to edit a collection
-Then I should see a button to delete collection with id dri:coll6
-When I press the button to delete collection with id dri:coll6
-Then I should see a success message for "deleting a collection"
-
-Message:
-]]>
-    <![CDATA[expected to find button "delete_collection_dri:coll6" but there were no matches (Capybara::ExpectationNotMet)
-./features/step_definitions/web_steps.rb:189:in `/^(?:|I )should( not)? see a button to (.+)$/'
-features/collections.feature:95:in `Then I should see a button to delete collection with id dri:coll6']]>
-  </failure>
+<testcase classname="" name="Deleting a collection as an admin" time="2.466255">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Non-admin should not be given option to delete" time="1.923864">
+<testcase classname="" name="Non-admin should not be given option to delete" time="1.723627">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection" time="0.092395">
+<testcase classname="" name="Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection" time="0.094070">
   <system-out/>
   <system-err/>
 </testcase>

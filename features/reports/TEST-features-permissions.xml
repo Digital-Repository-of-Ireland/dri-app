@@ -1,80 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite errors="0" failures="4" name="" skipped="0" tests="5" time="35.733515">
-<testcase classname="" name="Setting a list of users for restricted access" time="2.366220">
+<testsuite errors="0" failures="0" name="" skipped="4" tests="5" time="26.197588">
+<testcase classname="" name="Setting a list of users for restricted access" time="2.253551">
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Constructing a Digital Object using the web form should set default permissions (outline example : | pdfdoc |)" time="7.428287">
-  <failure message="failed Constructing a Digital Object using the web form should set default permissions (outline example : | pdfdoc |)" type="failed">
-    <![CDATA[Scenario Outline: Constructing a Digital Object using the web form should set default permissions
-
-Example row: | pdfdoc |
-
-Message:
-]]>
-    <![CDATA[Unable to find field "batch_discover_groups_string" (Capybara::ElementNotFound)
-./features/step_definitions/web_steps.rb:277:in `block (2 levels) in <top (required)>'
-./features/step_definitions/web_steps.rb:3:in `with_scope'
-./features/step_definitions/web_steps.rb:276:in `/^the "([^"]*)" field(?: within "([^"]*)")? should contain "([^"]*)"$/'
-features/permissions.feature:35:in `Then the "batch_discover_groups_string" field should contain "public"']]>
-  </failure>
+<testcase classname="" name="Constructing a Digital Object using the web form should set default permissions (outline example : | pdfdoc |)" time="5.089341">
+  <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Constructing a Digital Object using the web form should set default permissions (outline example : | audio |)" time="10.514535">
-  <failure message="failed Constructing a Digital Object using the web form should set default permissions (outline example : | audio |)" type="failed">
-    <![CDATA[Scenario Outline: Constructing a Digital Object using the web form should set default permissions
-
-Example row: | pdfdoc |
-
-Message:
-Example row: | audio |
-
-Message:
-]]>
-    <![CDATA[Unable to find field "batch_discover_groups_string" (Capybara::ElementNotFound)
-./features/step_definitions/web_steps.rb:277:in `block (2 levels) in <top (required)>'
-./features/step_definitions/web_steps.rb:3:in `with_scope'
-./features/step_definitions/web_steps.rb:276:in `/^the "([^"]*)" field(?: within "([^"]*)")? should contain "([^"]*)"$/'
-features/permissions.feature:35:in `Then the "batch_discover_groups_string" field should contain "public"']]>
-  </failure>
+<testcase classname="" name="Constructing a Digital Object using the web form should set default permissions (outline example : | audio |)" time="7.308919">
+  <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Constructing a Digital Object using XML upload should set default permissions (outline example : | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |)" time="7.772068">
-  <failure message="failed Constructing a Digital Object using XML upload should set default permissions (outline example : | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |)" type="failed">
-    <![CDATA[Scenario Outline: Constructing a Digital Object using XML upload should set default permissions
-
-Example row: | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |
-
-Message:
-]]>
-    <![CDATA[Unable to find field "batch_discover_groups_string" (Capybara::ElementNotFound)
-./features/step_definitions/web_steps.rb:277:in `block (2 levels) in <top (required)>'
-./features/step_definitions/web_steps.rb:3:in `with_scope'
-./features/step_definitions/web_steps.rb:276:in `/^the "([^"]*)" field(?: within "([^"]*)")? should contain "([^"]*)"$/'
-features/permissions.feature:58:in `Then the "batch_discover_groups_string" field should contain "public"']]>
-  </failure>
+<testcase classname="" name="Constructing a Digital Object using XML upload should set default permissions (outline example : | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |)" time="6.278462">
+  <skipped/>
   <system-out/>
   <system-err/>
 </testcase>
-<testcase classname="" name="Constructing a Digital Object using XML upload should set default permissions (outline example : | audio | SAMPLEA.xml | Audio |)" time="7.652405">
-  <failure message="failed Constructing a Digital Object using XML upload should set default permissions (outline example : | audio | SAMPLEA.xml | Audio |)" type="failed">
-    <![CDATA[Scenario Outline: Constructing a Digital Object using XML upload should set default permissions
-
-Example row: | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |
-
-Message:
-Example row: | audio | SAMPLEA.xml | Audio |
-
-Message:
-]]>
-    <![CDATA[Unable to find field "batch_discover_groups_string" (Capybara::ElementNotFound)
-./features/step_definitions/web_steps.rb:277:in `block (2 levels) in <top (required)>'
-./features/step_definitions/web_steps.rb:3:in `with_scope'
-./features/step_definitions/web_steps.rb:276:in `/^the "([^"]*)" field(?: within "([^"]*)")? should contain "([^"]*)"$/'
-features/permissions.feature:58:in `Then the "batch_discover_groups_string" field should contain "public"']]>
-  </failure>
+<testcase classname="" name="Constructing a Digital Object using XML upload should set default permissions (outline example : | audio | SAMPLEA.xml | Audio |)" time="5.267315">
+  <skipped/>
   <system-out/>
   <system-err/>
 </testcase>

@@ -37,7 +37,7 @@ class IngestController < CatalogController
 
         if @type == "audio"
           @object.type = ["Sound"]
-        elsif @type = "pdfdoc"
+        elsif @type == "pdfdoc"
           @object.type == ["Text"]
         else
           @object.type = [""]
