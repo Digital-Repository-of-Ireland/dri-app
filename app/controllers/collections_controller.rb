@@ -230,7 +230,7 @@ class CollectionsController < CatalogController
     def get_collections
       results = Array.new
       solr_query = "has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
-      if !(signed_in? || (!current_user.is_admin? && !user_groups.include?("cm")))
+      unless current_user 
         solr_query << " AND status_ssim:published"
       end
       result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,publisher_tesim")
