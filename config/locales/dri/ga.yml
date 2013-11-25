@@ -82,7 +82,9 @@ ga:
           files: Comhaid
         legends: 
           no_files: "Níor uaslódáladh comhad ar bith."
-          no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo. Chun rochtain a lorg téigh i dteagmháil le húinéir na hoibiachta digití le do thoil."
+          no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo."
+          request_permission_logged_in: "Request Access"
+          request_permission_not_logged_in: "Sign up/Sign in to get access."
         links: 
           download: Íoslódáil
           edit_this_record: "Cuir an taifead seo in eagar"

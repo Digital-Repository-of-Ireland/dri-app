@@ -13,7 +13,11 @@
 
 <% elsif (@asset == "no permission") %>
    <dd><%= t('dri.views.catalog.legends.no_permission') %></dd>
-
+   <% if !signed_in? %>
+     <dd><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></dd>
+   <% else %>
+     <dd><%= t('dri.views.catalog.legends.request_permission_logged_in') %></dd>
+   <% end %>
 <% elsif (@asset == "no file") %>
   <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
 

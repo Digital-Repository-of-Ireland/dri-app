@@ -82,7 +82,9 @@ en:
           files: Files
         legends: 
           no_files: "No file has been uploaded."
-          no_permission: "You do not have permission to view the asset file associated with this object. Please contact the digital object's owner to request access."
+          no_permission: "You do not have permission to view the asset file associated with this object."
+          request_permission_logged_in: "Request Access"
+          request_permission_not_logged_in: "Sign up/Sign in to get access."
         links: 
           download: download
           edit_this_record: "Edit this record"
