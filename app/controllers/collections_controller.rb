@@ -134,6 +134,10 @@ class CollectionsController < CatalogController
     respond_to do |format|
       if @collection.save
 
+        # We have to create a default reader group
+        @group = UserGroup::Group.new(:name => @collection.id, :description => "Default Reader group for collection #{    @collection.id}")
+        @group.save
+
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
             redirect_to :controller => "collections", :action => "show", :id => @collection.id }
         format.json {
