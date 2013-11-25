@@ -126,6 +126,11 @@ When /^I select "(.*?)" from the selectbox for (.*?)$/ do |option, selector|
   select_by_value(option, :from => select_box_to_id(selector))
 end
 
+When /^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/ do |option, index, selector|
+  page.all(:xpath, '//select[@id="'+select_box_to_id(selector)+'"]')[index.to_i].find(:xpath, ".//option[@value='#{option}']").select_option
+  #select_by_value(option, :xpath => selected_select)
+end
+
 When /^I select the text "(.*?)" from the selectbox for (.*?)$/ do |option, selector|
   select(option, :from => select_box_to_id(selector))
 end
@@ -202,7 +207,12 @@ Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
 end
 
 Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failure,message|
-  page.should have_selector ".alert", text: flash_for(message)
+  begin
+    page.should have_selector ".alert", text: flash_for(message)
+  rescue
+    save_and_open_page
+    raise
+  end
 end
 
 Then /^(?:|I )should( not)? see a message for (.+)$/ do |negate, message|
@@ -221,6 +231,10 @@ end
 
 Then /^the object should be (.*?) format$/ do |format|
   interface.is_format?(format)
+end
+
+Then /^the object should be of type (.*?)$/ do |type|
+  interface.is_type?(type)
 end
 
 #Then /^I should see a link to "([^\"]*)"$/ do |text|
@@ -249,6 +263,13 @@ When /^(?:|I )fill in "([^"]*)" with "([^"]*)"(?: within "([^"]*)")?$/ do |field
     fill_in(field, :with => value)
   end
 end
+
+When /^(?:|I )fill in "([^"]*)" number (.*?) with "([^"]*)"(?: within "([^"]*)")?$/ do |field, index, value, selector|
+  with_scope(selector) do
+    selected_select = page.all(:xpath, '//input[@id="'+field+'"]')[index.to_i].set(value)
+  end
+end
+
 
 When /^(?:|I )choose "([^"]*)"(?: within "([^"]*)")?$/ do |field, selector|
   with_scope(selector) do

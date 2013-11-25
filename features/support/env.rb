@@ -146,5 +146,5 @@ end
 
 Before do
   require 'factory_girl'
-  BackgroundTasks::QueueManager.any_instance.stub(:process)
+  #BackgroundTasks::QueueManager.any_instance.stub(:process)
 end

@@ -18,6 +18,8 @@
 //= require blacklight/blacklight
 //= Required by Dropit dropdown menu library
 //= require dropit/dropit
+//
+//= require dri
 
 $(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];

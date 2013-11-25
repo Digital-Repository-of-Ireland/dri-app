@@ -5,20 +5,38 @@ module Interface
     include Capybara::RSpecMatchers
     
     def enter_valid_metadata(title)
-      within_fieldset('metadata') do
-        fill_in("dri_model_title", :with => title)
-        fill_in("dri_model_description", :with => "Created using the web form")
-        fill_in("dri_model_creation_date", :with => "2013-01-16")
-        fill_in("dri_model_rights", :with => "This is a statement of rights")
+      within_fieldset('title') do
+        fill_in("batch_title][", :with => title)
+      end
+      within_fieldset('description') do
+        fill_in("batch_description][", :with => "Created using the web form")
+      end
+      within_fieldset('creation_date') do
+        if (!page.has_field?("batch_creation_date]["))
+          click_link("Add Creation Date")
+          page.should have_field("batch_creation_date][")
+        end
+        fill_in("batch_creation_date][", :with => "2013-01-16")
+      end
+      within_fieldset('rights') do
+        fill_in("batch_rights][", :with => "This is a statement of rights")
       end
     end
 
     def enter_valid_pdf_metadata(title)
-      within_fieldset('metadata') do
-        fill_in("dri_model_title", :with => title)
-        fill_in("dri_model_description", :with => "Created using the web form")
-        fill_in("dri_model_creation_date", :with => "2013-01-16")
-        fill_in("dri_model_rights", :with => "This is a statement of rights")
+      within_fieldset('title') do
+        fill_in("batch_title][", :with => title)
+      end
+      within_fieldset('description') do
+        fill_in("batch_description][", :with => "Created using the web form")
+      end
+      within_fieldset('creation_date') do
+        click_link("Add Creation Date")
+        page.document.should have_field("batch_creation_date][")
+        fill_in("batch_creation_date][", :with => "2013-01-16")
+      end
+      within_fieldset('rights') do
+        fill_in("batch_rights][", :with => "This is a statement of rights")
       end
     end
 
@@ -32,9 +50,15 @@ module Interface
     end
 
     def enter_modified_metadata
-      within_fieldset('metadata') do
-        fill_in("dri_model_description", :with => "Editing test")
-        fill_in("dri_model_creation_date", :with => "2013-01-01")
+      within_fieldset('description') do
+        fill_in("batch_description][", :with => "Editing test")
+      end
+      within_fieldset('creation_date') do
+        if (!page.has_field?("batch_creation_date]["))
+          click_link("Add Creation Date")
+          page.should have_field("batch_creation_date][")
+        end
+        fill_in("batch_creation_date][", :with => "2013-01-01")
       end
     end
 
@@ -58,6 +82,12 @@ module Interface
     def is_format?(format)
       within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_search_results_container')]") do
         page.should have_content("Format: #{format}")
+      end
+    end
+
+    def is_type?(type)
+      within(:xpath, "//div[@id='document']") do
+        page.should have_content("Type: #{type}")
       end
     end
       

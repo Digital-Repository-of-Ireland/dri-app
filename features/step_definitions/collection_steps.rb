@@ -1,7 +1,10 @@
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = "dri:c" + @random_pid if (pid == "@random")
-  collection = DRI::Model::Collection.new(:pid => pid)
+  collection = Batch.new(:pid => pid)
   collection.title = title ? title : SecureRandom.hex(5)
+  collection.description = SecureRandom.hex(20)
+  collection.rights = SecureRandom.hex(20)
+  collection.type = ["Collection"]
   if user
     User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
    
@@ -13,10 +16,13 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.governed_items.count.should == 0
 end
 
-Given /^a Digital Object with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |pid, title, user|
+
+Given /^a Digital Object with pid "(.*?)", title "(.*?)", description "(.*?)" and type "(.*?)"(?: created by "(.*?)")?/ do |pid, title, desc, type, user|
   pid = "dri:o" + @random_pid if (pid == "@random")
-  digital_object = DRI::Model::Audio.new(:pid => pid)
-  digital_object.title = title
+  digital_object = Batch.new(:pid => pid)
+  digital_object.title = [title]
+  digital_object.type = [type]
+  digital_object.description = [desc]
   if user
     User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
 
@@ -43,7 +49,7 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
     digital_object.manager_users_string=User.find_by_email(user).to_s
     digital_object.edit_groups_string="registered"
   end
-  digital_object.rights = "This is a statement of rights"
+  digital_object.rights = ["This is a statement of rights"]
   digital_object.save
 end
 
@@ -60,7 +66,7 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
     Given I am on the new Digital Object page
     And I select "#{collection_pid}" from the selectbox for ingest collection
     And I press the button to continue
-    And I select "audio" from the selectbox for object type
+    And I select "pdfdoc" from the selectbox for object type
     And I press the button to continue
     And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
@@ -81,23 +87,29 @@ end
 When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title|
     title ||= "Test collection"
   steps %{
-    When I fill in "dri_model_collection_title" with "#{title}"
-    And I fill in "dri_model_collection_description" with "Test description"
-    And I fill in "dri_model_collection_publisher" with "Test publisher"
+    When I fill in "batch_title][" with "#{title}"
+    And I fill in "batch_description][" with "Test description"
+    And I fill in "batch_rights][" with "Test rights"
+    And I fill in "batch_type][" with "Collection"
+    And I select "publisher" from the selectbox number 0 for role type
+    And I fill in "batch_roles][name][" number 0 with "Test publisher"
   }
+  #{}  And I select "publisher" from the selectbox number 0 for role type
+  #{}  And I fill in "batch_roles][name][" number 0 with "Test publisher"
+  #{}}
 end
 
 When /^I enter valid permissions for a collection$/ do
   steps %{
-    When I choose "dri_model_collection_private_metadata_radio_public"
-    And choose "dri_model_collection_read_groups_string_radio_public"
+    When I choose "batch_private_metadata_radio_public"
+    And choose "batch_read_groups_string_radio_public"
   }
 end
 
 When /^I enter invalid permissions for a collection$/ do
   steps %{
-    When I choose "dri_model_collection_private_metadata_radio_private"
-    And I fill in "dri_model_collection_manager_users_string" with ""
+    When I choose "batch_private_metadata_radio_private"
+    And I fill in "batch_manager_users_string" with ""
   }
 end
 
@@ -144,19 +156,19 @@ Then /^I should be given a choice of using the existing object or creating a new
 end
 
 Then /^I should see the Digital Object "(.*?)" as part of the collection$/ do |object_pid|
-  object = DRI::Model::Audio.find(object_pid)
+  object = Batchfind(object_pid)
   page.should have_content object.title
 end
 
 Then /^I should not see the Digital Object "(.*?)" as part of the non-governing collection$/ do |object_pid|
-  object = DRI::Model::Audio.find(object_pid)
+  object = Batch.find(object_pid)
   page.should_not have_content object.title
 end
 
 Then /^the collection "(.*?)" should contain the new digital object$/ do |collection_pid|
   collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
   collection.governed_items.count.should == 1
-  collection.governed_items[0].title.should == "SAMPLE AUDIO TITLE"
+  collection.governed_items[0].title.should == ["SAMPLE AUDIO TITLE"]
 end
 
 When /^I check add to collection for id (.*?)$/ do |object_pid|

@@ -1,9 +1,9 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
-class AssetsController < CatalogController
+class AssetsController < ApplicationController
 
   require 'validators'
-  require 'background_tasks/queue_manager'
+  #require 'background_tasks/queue_manager'
 
   # Returns the directory on the local filesystem to use for storing uploaded files.
   #
@@ -12,39 +12,61 @@ class AssetsController < CatalogController
   end
 
   # Retrieves external datastream files that have been stored in the filesystem.
-  # By default, it retrieves the file in the masterContent datastream
-  #      
+  # By default, it retrieves the file in the content datastream
+  #
+  # id can be id of the Batch, which returns the first GenericFile in it's relationship
+  # or the id of a GenericFile
   def show
-    enforce_permissions!("show_master", params[:id])
+  
+    datastream = "content"
+    if params.has_key?(:datastream)
+      datastream = params[:datastream]
+    end
 
-    datastream = "masterContent"
     @object = retrieve_object! params[:id]
+    @gf = nil
 
-    @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                                { :f => @object.id, :d => datastream } ],
+    # if id belongs to a GenericFile, swap variables around
+    if @object.is_a?(GenericFile)
+      @gf = @object
+      @object = @gf.batch
+    elsif @object.is_a?(Batch) && @object.generic_files.count > 0
+      @gf = @object.generic_files[0]
+    end
+
+    # Check if user can view a master file
+    if (datastream == "content")
+      enforce_permissions!("show_master", @object.id)
+    end
+
+    if (@gf != nil)
+
+      @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
+                                                                { :f => @gf.id, :d => datastream } ],
                                             :order => "version DESC",
                                             :limit => 1)
 
-    if !@local_file_info.empty?
-      logger.error "Using path: "+@local_file_info[0].path
-      send_file @local_file_info[0].path,
+      if !@local_file_info.empty?
+        logger.error "Using path: "+@local_file_info[0].path
+        send_file @local_file_info[0].path,
                       :type => @local_file_info[0].mime_type,
                       :stream => true,
                       :buffer => 4096,
                       :disposition => 'inline'
-      return
+        return
+      end
     end
 
     render :text => "Unable to find file"
   end
 
   # Stores an uploaded file to the local filesystem and then attaches it to one
-  # of the objects datastreams. masterContent is used by default.
+  # of the objects datastreams. content is used by default.
   #
   def create
     enforce_permissions!("edit" ,params[:id])
     
-    datastream = "masterContent"
+    datastream = "content"
     if params.has_key?(:datastream)
       datastream = params[:datastream]
     end
@@ -57,23 +79,38 @@ class AssetsController < CatalogController
 
     file_upload = params[:Filedata]
 
-    if datastream.eql?("masterContent")
+    if datastream.eql?("content")
       @object = retrieve_object! params[:id]
 
       if @object == nil
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
 
-        validate_upload(file_upload)
-                
-        create_file(file_upload, @object.id, datastream, params[:checksum])
-        start_background_tasks
-        
-        @url = url_for :controller=>"assets", :action=>"show", :id=>params[:id]
-        @object.add_file_reference datastream, :url=>@url, :mimeType=>@file.mime_type
+        mime_type = Validators.file_type?(file_upload)
+        validate_upload(file_upload, mime_type)
+                  
+        #start_background_tasks
 
-        save_object
-      
+
+        @gf = GenericFile.new
+        #@url = url_for :controller=>"assets", :action=>"show", :id=>@object.id
+        #@gf.update_file_reference datastream, :url=>@url, :mimeType=>mime_type.to_s
+        @gf.batch = @object
+        @gf.save
+
+        create_file(file_upload, @gf.id, datastream, params[:checksum])
+
+        # A silly workaround, @gf doesn't get assigned a pid until it is saved
+        # therefore I have to save it twice, in order to have the pid in the URL being
+        # referenced in Fedora.
+        #
+        # We should look at ActiveFedora::Base to see when exactly assign_pid is called
+        # and add the correct id to the url before it's saved, eg. look for <<pid>> in
+        # the URL and replace it with the assigned pid.
+        @url = url_for :controller=>"assets", :action=>"show", :id=>@gf.id
+        @gf.update_file_reference datastream, :url=>@url, :mimeType=>mime_type.to_s
+        @gf.save
+
         flash[:notice] = t('dri.flash.notice.file_uploaded')
 
         respond_to do |format|
@@ -99,9 +136,9 @@ class AssetsController < CatalogController
 
   private
 
-    def validate_upload(file_upload)
+    def validate_upload(file_upload, mime_type)
       begin
-        Validators.validate_file(file_upload, @object.whitelist_type, @object.whitelist_subtypes)
+        Validators.validate_file(file_upload, mime_type)
       rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
         message = t('dri.flash.alert.invalid_file_type')
         flash[:alert] = message
@@ -129,16 +166,16 @@ class AssetsController < CatalogController
       end
     end
 
-    def start_background_tasks
-      queue = BackgroundTasks::QueueManager.new()
-      queue.process(@object)
-    end
+    #def start_background_tasks
+    #  queue = BackgroundTasks::QueueManager.new()
+    #  queue.process(@object)
+    #end
 
-    def save_object
+    def save_file
       begin
-        raise Exceptions::InternalError unless @object.save!
+        raise Exceptions::InternalError unless @gf.save!
       rescue RuntimeError => e
-        logger.error "Could not save object #{@object.id}: #{e.message}"
+        logger.error "Could not save file #{@gf.id}: #{e.message}"
         raise Exceptions::InternalError
       end
     end

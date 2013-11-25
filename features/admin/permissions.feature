@@ -1,4 +1,4 @@
-@permissions
+@permissions @javascript
 Feature:
   In order to manage my Digital Objects
   As an authorized user
@@ -12,12 +12,12 @@ Scenario: Setting a list of users for restricted access
   Given I am on the my collections page
   When I press the button to add new collection
   And I enter valid metadata for a collection
-  And I choose "dri_model_collection_read_groups_string_radio_restricted"
-  And I fill in "dri_model_collection_read_users_string" with "test, test2, test3" 
+  And I choose "batch_read_groups_string_radio_restricted"
+  And I fill in "batch_read_users_string" with "test, test2, test3" 
   And I press the button to create a collection
   Then I should see a success message for creating a collection
   When I follow the link to edit a collection
-  Then the "dri_model_collection_read_users_string" field should contain "test, test2, test3"
+  Then the "batch_read_users_string" field should contain "test, test2, test3"
 
 Scenario Outline: Constructing a Digital Object using the web form should set default permissions
   Given I have created a collection
@@ -32,10 +32,10 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
   And I press the button to continue
   Then I should see a success message for ingestion
   When I follow the link to edit an object
-  Then the "dri_model_discover_groups_string" field should contain "public"
-  And the "dri_model_read_groups_string" field should contain "registered"
-  And the radio button "dri_model_master_file_radio_public" is "checked"
-  And the "dri_model_manager_users_string" field should contain "user1@user1.com"
+  Then the "batch_private_metadata_radio_public" field is "checked"
+  And the "batch_read_groups_string" field should contain "registered"
+  And the radio button "batch_master_file_radio_public" is "checked"
+  And the "batch_manager_users_string" field should contain "user1@user1.com"
 
   Examples:
     | object_type |
@@ -55,10 +55,10 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
   When I follow the link to edit an object
-  Then the "dri_model_discover_groups_string" field should contain "public"
-  And the "dri_model_read_groups_string" field should contain "registered"
-  And the radio button "dri_model_master_file_radio_public" is "checked"
-  And the "dri_model_manager_users_string" field should contain "user1@user1.com"
+  Then the "batch_private_metadata_radio_public" field is "checked"
+  And the "batch_read_groups_string" field should contain "registered"
+  And the radio button "batch_master_file_radio_public" is "checked"
+  And the "batch_manager_users_string" field should contain "user1@user1.com"
 
   Examples:
     | object_type | metadata_file                 | format_type |

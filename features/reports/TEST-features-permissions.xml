@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="" skipped="4" tests="5" time="26.197588">
+<testcase classname="" name="Setting a list of users for restricted access" time="2.253551">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using the web form should set default permissions (outline example : | pdfdoc |)" time="5.089341">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using the web form should set default permissions (outline example : | audio |)" time="7.308919">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using XML upload should set default permissions (outline example : | pdfdoc | dublin_core_pdfdoc_sample.xml | Article |)" time="6.278462">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using XML upload should set default permissions (outline example : | audio | SAMPLEA.xml | Audio |)" time="5.267315">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>
