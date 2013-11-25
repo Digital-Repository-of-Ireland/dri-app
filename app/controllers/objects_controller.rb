@@ -23,18 +23,18 @@ class ObjectsController < CatalogController
   # Updates the attributes of an existing model.
   #
   def update
-    update_object_permission_check(params[:dri_model][:manager_groups_string], params[:dri_model][:manager_users_string], params[:id])
+    update_object_permission_check(params[:batch][:manager_groups_string], params[:batch][:manager_users_string], params[:id])
 
     @object = retrieve_object!(params[:id])
 
-    if params[:dri_model][:governing_collection_id].present?
-      collection = Collection.find(params[:dri_model][:governing_collection_id])
+    if params[:batch][:governing_collection_id].present?
+      collection = Batch.find(params[:batch][:governing_collection_id])
       @object.governing_collection = collection
     end
 
-    set_access_permissions(:dri_model)
+    set_access_permissions(:batch)
 
-    @object.update_attributes(params[:dri_model])
+    @object.update_attributes(params[:batch])
 
     #Do for collection?
     MetadataHelpers.checksum_metadata(@object)
@@ -50,20 +50,14 @@ class ObjectsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    params[:dri_model][:governing_collection] = Collection.find(params[:governing_collection]) unless params[:governing_collection].blank?
+    params[:batch][:governing_collection] = Batch.find(params[:batch][:governing_collection]) unless params[:batch][:governing_collection].blank?
 
-    enforce_permissions!("create_digital_object",params[:governing_collection])
+    enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
 
-    if params[:type].blank?
-      flash[:alert] = t('dri.flash.error.no_type_specified')
-      raise Exceptions::BadRequest, t('dri.views.exceptions.no_type_specified')
-      return
-    end
+    set_access_permissions(:batch)
 
-    set_access_permissions(:dri_model)
-
-    @object = DRI::Model::DigitalObject.construct(params[:type].to_sym, params[:dri_model])
-
+    @object = Batch.new
+    
     if request.content_type == "multipart/form-data"
       xml = MetadataHelpers.load_xml(params[:metadata_file])
       MetadataHelpers.set_metadata_datastream(@object, xml)   
@@ -71,6 +65,7 @@ class ObjectsController < CatalogController
 
     @object.depositor = current_user.to_s
 
+    @object.update_attributes params[:batch]
     MetadataHelpers.checksum_metadata(@object)
     check_for_duplicates(@object)
     

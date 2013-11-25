@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="Generate Surrogate Digital Objects" skipped="2" tests="2" time="12.271209">
+<testcase classname="Generate Surrogate Digital Objects" name="Running background jobs and creating surrogates for different object types (outline example : | audio | mp3, clip |)" time="6.815409">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Generate Surrogate Digital Objects" name="Running background jobs and creating surrogates for different object types (outline example : | pdfdoc | extract |)" time="5.455800">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

@@ -131,30 +131,51 @@ ga:
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
       fields: 
+        contributor: Contributor
         contributors: Contributors
+        coverage: Coverage
+        coverages: Coverages
         creation_date: "Dáta Cruthaithe"
+        creation_dates: "Creation Dates"
+        creator: Creator
         creators: Creators
         date: Date
+        dates: Dates
         description: "Cur Síos"
         format: Format
+        formats: Formats
         geographical_coverage: "Subject (Place)"
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
+        geographical_coverages: "Subjects (Places)"
         governing_collection: "Bailiúchán Rialaithe"
+        identifier: Identifier
+        identifiers: Identifiers
         language: Teanga
+        languages: Languages
         name_coverage: "Subject (Name)"
+        name_coverages: "Subjects (Names)"
         published_date: "Published/Broadcast Date"
+        published_dates: "Published/Broadcast Dates"
         publisher: Foilsitheoir
+        relation: Relation
+        relations: Relations
         rights: Cearta
+        roles: Roles
+        source: Source
         sources: Foinsí
         status: Stádas
+        subject: Subject
         subjects: Ábhair
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
         temporal_coverage: "Subject (Era)"
         temporal_coverage_eng: "Subject (Era) in English"
         temporal_coverage_gle: "Subject (Era) in Irish"
+        temporal_coverages: "Subjects (Eras)"
         title: Teideal
+        type: Type
+        types: Types
       ingest: 
         buttons: 
           continue: "Lean ort"
@@ -176,6 +197,9 @@ ga:
           input: Ionchuir
           object_type: "Roghnaigh cineál oibiachta"
           upload: "Uaslódáil comhad meiteashonraí"
+      metadata: 
+        dublin_core: "Dublin Core"
+        qualified_dublin_core: "Qualifed Dublin Core"
       objects: 
         access_controls: 
           accessible_master_file: "Máistirchomha(i)d Inrochtana"
@@ -247,6 +271,7 @@ ga:
           replace_metadata: "Athchuir meiteashonraí"
           upload_audio: "Uaslódáil comhad fuaime"
           upload_audio_caption: "Níor uaslódáladh comhad fuaime ar bith. Uaslódáil máistirchomhad fuaime le do thoil."
+          upload_file: "Upload File"
           upload_file_caption: "Níor uaslódáladh comhad ar bith. Uaslódáil máistirchomhad le do thoil."
           upload_pdf: "Uaslódáil comhad PDF"
           view_collection: "View Collection"
@@ -1008,3 +1033,5 @@ ga:
         wdc: Woodcutter
         wde: "Wood engraver"
         wit: Witness
+      name: 
+        marc_relators: "MARC Relators"

@@ -20,6 +20,5 @@ class CreateChecksums
     @object.resource_sha256 = Checksum.sha256(filename) 
     @object.resource_rmd160 = Checksum.rmd160(filename)
     @object.save
-
   end
 end

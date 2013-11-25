@@ -1,5 +1,5 @@
 Given /^we have a "(.*?)" Model$/ do |model_name|
-  eval("defined?(#{model_name}) && #{model_name}.is_a?(Class)")
+  eval("defined?(#{model_name}) && ['Collection', 'Sound', 'Text'].includes?(#{model_name})")
 end
 
 When /^we test the "(.*?)" Model$/ do |model_name|
@@ -17,7 +17,8 @@ Then /^it should validate presence of attribute "(.*?)"$/ do |attribute_name|
 end
 
 When /^we test an empty "(.*?)" Model$/ do |model_name|
-  @test_model = Kernel.qualified_const_get(model_name).new
+  @test_model = Batch.new
+  @test_model.type = [ model_name ]
 end
 
 Then /^the "(.*?)" Model should not be valid$/ do |model_name|
@@ -25,17 +26,12 @@ Then /^the "(.*?)" Model should not be valid$/ do |model_name|
 end
 
 Given /^an object in collection "(.*?)" with metadata from file "(.*?)"$/ do |collection,file|
-  col = ActiveFedora::Base.find(collection,{:cast => true})
+  col = Batch.find(collection)
   col.status = 'published'
   col.save
-  obj = DRI::Model::Audio.new(:pid => "dri:9999")
+  obj = Batch.new(:pid => "dri:9999")
   tmp_xml = Nokogiri::XML(File.new(File.join(cc_fixture_path, file)).read)
-  if obj.datastreams.has_key?("descMetadata")
-    obj.datastreams["descMetadata"].ng_xml = tmp_xml
-  else
-    ds = DRI::Metadata::DublinCoreAudio.from_xml(tmp_xml)
-    obj.add_datastream ds, :dsid => 'descMetadata'
-  end
+  obj.update_metadata tmp_xml
   obj.status = 'published'
   obj.governing_collection = col
   obj.rightsMetadata.metadata.machine.integer = '0'

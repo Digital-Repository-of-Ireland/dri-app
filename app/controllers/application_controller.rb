@@ -4,9 +4,6 @@ require 'permission_methods'
 class ApplicationController < ActionController::Base
   before_filter :set_locale, :set_cookie
 
-  include DRI::Metadata
-  include DRI::Model
-
   include HttpAcceptLanguage
 
   # Adds a few additional behaviors into the application controller
@@ -47,8 +44,8 @@ class ApplicationController < ActionController::Base
   def set_locale
     if current_user
       I18n.locale = current_user.locale
-    else
-      I18n.locale = preferred_language_from(Settings.interface.languages)
+    #else
+     # I18n.locale = preferred_language_from(Settings.interface.languages)
     end
     I18n.locale = I18n.default_locale if I18n.locale.blank?
   end

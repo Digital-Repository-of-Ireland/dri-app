@@ -8,7 +8,7 @@ module ApplicationHelper
   end
 
 
-  # Extract file datastream info from fedora object
+# Extract file datastream info from fedora object
 #  def get_datastreams doc
 #    @datastreams = ActiveFedora::Base.find(doc.id, {:cast => true}).datastreams
 #    ""
@@ -44,6 +44,10 @@ module ApplicationHelper
     end
   end
 
+  def get_files doc
+    @files = ActiveFedora::Base.find(doc.id, {:cast => true}).generic_files
+    ""
+  end
 
   def get_surrogates doc
     @surrogates = Storage::S3Interface.get_surrogates doc
@@ -51,11 +55,15 @@ module ApplicationHelper
 
 
   def get_collections
-    collections = DRI::Model::Collection.all
-    collections.select! { |c| (can?(:edit, c) || can?(:create_do, c)) } unless current_user.is_admin?
-    collections.collect{ |c| [c.title, c.pid] }
-  end
+    results = Array.new
+    solr_query = "+object_type_sim:Collection +depositor_sim:*"
+    result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "500", :fl => "id,title_tesim")
+    result_docs.each do | doc |
+      results.push([doc["title_tesim"][0], doc['id']])
+    end
 
+    return results
+  end
 
   def get_governing_collection( object )
     if !object.governing_collection.nil?
@@ -63,11 +71,17 @@ module ApplicationHelper
     end
   end
 
-
   def get_partial_name( object )
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
+  def get_current_collection
+    if session[:current_collection]
+      return Batch.find(session[:current_collection])
+    else
+      return nil
+    end
+  end
 
   def is_collection?( document )
     document["type_ssm"].first.casecmp("collection") == 0 ? true : false

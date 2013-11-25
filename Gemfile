@@ -3,21 +3,18 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.13'
 gem 'blacklight', '4.0.0'
-gem 'hydra-head', '6.1.0'
+gem 'hydra-head', '6.3.0'
+gem 'sufia-models', '3.2.1'
 
-gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :tag => 'v1.0.1'
-gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :branch => 'develop'
+# gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :tag => 'v1.0.1'
+gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'action424'
+gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :tag => 'develop'
+
 gem 'rails_config'
 gem 'sqlite3'
 gem 'mysql2'
-
-gem 'noid', '0.5.5'
-
-gem 'resque', :require => 'resque/server'
-gem "resque-scheduler"
-gem "resque-status"
 
 # Storage-related gems
 gem 'aws-s3'
@@ -49,7 +46,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'poltergeist'
+  gem 'poltergeist', '>= 1.4.1'
   gem 'jettywrapper'
   gem 'simplecov'
   gem 'simplecov-rcov'

@@ -10,6 +10,9 @@ module ButtonTranslator
     when /object type/
       "ingesttype"
 
+    when /role type/
+      "batch_roles][type]["
+
     when /language/
       "user_locale"
 

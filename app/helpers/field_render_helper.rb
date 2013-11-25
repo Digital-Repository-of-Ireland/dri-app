@@ -92,7 +92,6 @@ module FieldRenderHelper
     end
   end
 
-
   def render_arbitrary_facet_links(fields)
     url_args = {:action => 'index', :controller => 'catalog'}
     fields.each do |field, value|
@@ -103,6 +102,36 @@ module FieldRenderHelper
       end
     end
     url_for(url_args)
+  end
+
+  # For form views, returns a list of "people" values in qualifed dublin core that have values.
+  # Also sets @qdc_people_select_list, for creating a select list in HTML based on qualified dublin core people
+  # fields.
+  def qdc_extract_people
+    @qdc_people_select_list = [[t('dri.views.metadata.dublin_core'), [[t("dri.views.fields.creator"), "creator"],
+                                [t("dri.views.fields.contributor"), "contributor"],
+                                [t("dri.views.fields.publisher"), "publisher"]]]]
+    qdc_people = Hash.new
+    marc_relator_select_list = Array.new
+
+    @qdc_people_select_list[0][1].each do | value |
+      array_result = @object.send(value[1])
+      if (array_result != nil || array_result.length > 0)
+        qdc_people.merge!( value[1] => array_result)
+      end
+    end
+
+    DRI::Vocabulary.marcRelators.each do |role|
+      array_result = @object.send("role_"+role)
+      marc_relator_select_list.push [ role + " - " + t("dri.vocabulary.marc_relator."+role), "role_"+role]
+      if (array_result != nil || array_result.length > 0)
+        qdc_people.merge!( "role_"+role => array_result)
+      end
+    end
+
+    @qdc_people_select_list.push [ t('dri.vocabulary.name.marc_relators'), marc_relator_select_list]
+
+    qdc_people
   end
 
 end

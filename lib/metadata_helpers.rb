@@ -4,12 +4,7 @@ require 'metadata_validator'
 module MetadataHelpers
 
   def self.set_metadata_datastream(object, xml)
-    if object.datastreams.has_key?("descMetadata")
-      object.datastreams["descMetadata"].ng_xml = xml
-    else
-      ds = object.load_from_xml(xml)
-      object.add_datastream ds, :dsid => 'descMetadata'
-    end
+    object.update_metadata xml
   end
     
   def self.checksum_metadata(object)

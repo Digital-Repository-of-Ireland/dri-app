@@ -114,6 +114,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), :label => 'name_coverage'
     config.add_show_field solr_name('format', :stored_searchable), :label => 'Format:'
     config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'format'
+    config.add_show_field solr_name('type', :stored_searchable, type: :string), :label => 'type'
     config.add_show_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'rights'
@@ -200,9 +201,9 @@ class CatalogController < ApplicationController
     config.spell_max = 5
   end
 
-  def exclude_collection_models(solr_parameters, user_parameters)
+  def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "-has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
+    solr_parameters[:fq] << "+has_model_ssim:\"info:fedora/afmodel:Batch\""
   end
 
 end

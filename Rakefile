@@ -104,15 +104,11 @@ namespace :solr do
   namespace :dri do
     desc 'reindex'
     task :reindex do
-      DRI::Model::Collection.find(:all).each do |obj|
+      GenericFile.find(:all).each do |obj|
         obj.update_index
       end
 
-      DRI::Model::Audio.find(:all).each do |obj|
-        obj.update_index
-      end
-
-      DRI::Model::Pdfdoc.find(:all).each do |obj|
+      Batch.find(:all).each do |obj|
         obj.update_index
       end
     end

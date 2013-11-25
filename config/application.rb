@@ -66,7 +66,7 @@ module NuigRnag
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.eager_load_paths += ["#{config.root}/lib/sufia/models/jobs"]
   end
 end
-
-require 'pid_generator/id_service'

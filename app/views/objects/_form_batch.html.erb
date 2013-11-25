@@ -1,0 +1,10 @@
+<%= form_for @object, :as => :batch, :url => {:controller=>"objects", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
+
+  <%= render :partial => "shared/form_metadata", :locals => { :f => f, :action => "update" } %>
+  <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
+
+  <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "save_edit" %>
+<% end %>
+
+  <%= render :partial => "replace_metadata", :locals => { :object => @object } %>
+  <%= render :partial => "upload_file", :locals => { :object => @object } %>

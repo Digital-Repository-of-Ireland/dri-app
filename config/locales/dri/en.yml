@@ -131,30 +131,51 @@ en:
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
       fields: 
+        contributor: Contributor
         contributors: Contributors
+        coverage: Coverage
+        coverages: Coverages
         creation_date: "Creation Date"
+        creation_dates: "Creation Dates"
+        creator: Creator
         creators: Creators
         date: Date
+        dates: Dates
         description: Description
         format: Format
+        formats: Formats
         geographical_coverage: "Subject (Place)"
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
+        geographical_coverages: "Subjects (Places)"
         governing_collection: "Governing Collection"
+        identifier: Identifier
+        identifiers: Identifiers
         language: Language
+        languages: Languages
         name_coverage: "Subject (Name)"
+        name_coverages: "Subjects (Names)"
         published_date: "Published/Broadcast Date"
+        published_dates: "Published/Broadcast Dates"
         publisher: Publisher
+        relation: Relation
+        relations: Relations
         rights: Rights
+        roles: Roles
+        source: Source
         sources: Sources
         status: Status
+        subject: Subject
         subjects: Subjects
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
         temporal_coverage: "Subject (Era)"
         temporal_coverage_eng: "Subject (Era) in English"
         temporal_coverage_gle: "Subject (Era) in Irish"
+        temporal_coverages: "Subjects (Eras)"
         title: Title
+        type: Type
+        types: Types
       ingest: 
         buttons: 
           continue: Continue
@@ -176,6 +197,9 @@ en:
           input: Input
           object_type: "Select Object Type"
           upload: "Upload Metadata file"
+      metadata: 
+        dublin_core: "Dublin Core"
+        qualified_dublin_core: "Qualifed Dublin Core"
       objects: 
         access_controls: 
           accessible_master_file: "Accessible Master File(s)"
@@ -247,6 +271,7 @@ en:
           replace_metadata: "Replace Metadata"
           upload_audio: "Upload Audio File"
           upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
+          upload_file: "Upload File"
           upload_file_caption: "No files have been uploaded. Please upload a master file."
           upload_pdf: "Upload PDF File"
           view_collection: "View Collection"
@@ -1008,3 +1033,5 @@ en:
         wdc: Woodcutter
         wde: "Wood engraver"
         wit: Witness
+      name: 
+        marc_relators: "MARC Relators"

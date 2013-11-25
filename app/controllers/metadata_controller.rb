@@ -73,5 +73,5 @@ class MetadataController < CatalogController
 
     redirect_to :controller => "catalog", :action => "show", :id => params[:id]
   end
-    
+
 end

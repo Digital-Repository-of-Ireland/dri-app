@@ -1,10 +1,10 @@
 <h1><%= t('dri.views.collection.new.title') %></h1>
 
-<%= form_for @collection, :url => {:controller=>"collections", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
+<%= form_for @object, :url => {:controller=>"collections", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
 
-  <%= render :partial => "form_collection", :locals => { :f => f } %>
+  <%= render :partial => "shared/form_metadata", :locals => { :f => f, :action => "update" } %>
 
-  <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @collection } %>
+  <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
 
 <%= f.submit t('dri.views.collection.buttons.create_collection'), :class => "btn-primary btn-large", :id => "create_new_collection" %>
 
