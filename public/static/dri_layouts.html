@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<meta name="description" content="description">
+
+<title>DRI Generic Grid</title>
+
+<link rel="stylesheet" type="text/css" media="screen"
+	href="stylesheets/dri/dri_layouts.css">
+
+</head>
+
+<body>
+	<div id="dri_wrapper_id" class="block1 dri_wrapper">
+
+		<header id="dri_header_container_id" class="dri_header_container">
+			<div id="dri_ident_id" class="dri_ident" alt="dri logo"></div>
+			<a href="#"><div id="dri_ident_id" class="dri_ident"></div></a>
+			<div id="dri_authentication_menus_container_id"
+				class="dri_authentication_menus_container">
+
+				<nav id="dri_account_nav_id" class="dri_account_nav">
+					<ul id="dri_account_links_id" class="dri_account_links" role="tree">
+						<li><a href="#" alt="sign up link">Sign Up</a></li>
+						<li><a href="#" alt="login link">Login</a></li>
+						<ul id="dri_language_links_id" class="dri_language_links">
+							<li><a href="#">Gaeilge</a></li>
+							<li class="selected" aria-selected="true"><a href="#">English</a></li>
+						</ul>
+					</ul>
+				</nav>
+			</div>
+			<!--  close dri_authentication_menus_container -->
+			<div id="dri_social_media_container_id"
+				class="dri_social_media_container">
+
+				<nav id="dri_social_media_nav_id" class="dri_social_media_nav">
+					<ul id="dri_social_media_links_id" class="dri_social_media_links">
+						<li><a href="#">Google</a></li>
+						<li><a href="#">Facebook</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!--  close dri_authentication_menus_container -->
+		</header>
+		<!-- close dri_header_container -->
+
+		<div id="dri_main_nav_container_id" class="dri_main_nav_container">
+			<nav id="dri_main_nav_id" class="dri_main_nav">
+				<ul id="dri_main_nav_links_id" class="dri_main_nav_links">
+					<li><a href="#">Featured</a></li>
+					<li class="selected"><a href="#">Collections</a></li>
+				</ul>
+			</nav>
+		</div>
+		<!-- close dri_main_nav_container -->
+		<div id="dri_sub_nav_container_id" class="dri_sub_nav_container">
+			<nav id="dri_sub_nav_id" class="dri_sub_nav">
+				<ul id="dri_main_nav_links_id" class="dri_sub_nav_links">
+					<li><a href="#">Subnav 1</a></li>
+					<li class="selected"><a href="#">Subnav 2</a></li>
+				</ul>
+			</nav>
+		</div>
+		<!-- close dri_sub_nav_container -->
+
+		<div id="dri_crumbtrail_nav_container_id"
+			class="dri_crumbtrail_nav_container">
+			<nav id="dri_crumbtrail_nav_id" class="dri_crumbtrail_nav">
+				<ul id="dri_crumbtrail_nav_links_id"
+					class="dri_crumbtrail_nav_links">
+					<li><a href="#">Crumtrail 1</a> |</li>
+					<li class="selected"><a href="#">Crumbtrail 2</a></li>
+				</ul>
+			</nav>
+		</div>
+		<!-- close dri_crumbtrail_nav_container -->
+
+		<!-- container for search, sort and pagination etc. navigations and search text input -->
+		<div id="dri_search_features_nav_container_id"
+			class="dri_search_features_nav_container">
+
+			<!-- navigation to allow the user to determine how the search result are sorted e.g. by relevance, A to Z, Z to A -->
+			<nav id="dri_sort_nav_id" class="dri_sort_nav">
+				<ul id="dri_sort_nav_links_id" class="dri_sort_nav_links">
+					<li><a href="#">Relevance</li>
+					<li class="selected"><a href="#">A to Z</a></li>
+				</ul>
+			</nav>
+
+			<!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
+			<nav id="dri_pager_nav_id" class="dri_pager_nav">
+				<ul id="dri_pager_nav_links_id" class="dri_pager_nav_links">
+					<li><a href="#">9</a></li>
+					<li class="selected"><a href="#">18</a></li>
+				</ul>
+			</nav>
+
+			<!-- navigation to allow the user to page through the search results  -->
+			<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
+				<ul id="dri_pagination_nav_links_id"
+					class="dri_pagination_nav_links">
+					<li class="first"><a href="#">first</a></li>
+					<li><a href="#">2</a></li>
+					<li class="selected"><a href="#">3</a></li>
+					<li class="last"><a href="#">last</a></li>
+				</ul>
+			</nav>
+
+			<!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->
+			<div id="dri_search_term_input_id" class="dri_search_term_input">
+
+				<form id="dri_search_term_input_form_id"
+					class="dri_search_term_input_form" accept-charset="UTF-8"
+					action="/repository" method="get">
+					<input name="utf8" type="hidden" value="✓"> <input
+						name="search_field" type="hidden" value="all_fields"> <input
+						id="dri_search_term_text_input_id"
+						class="dri_search_term_text_input_id" name="q"
+						placeholder="Search..." type="text" value="">
+					<button id="dri_search_term_text_submit_button_id" type="submit"
+						class="dri_search_term_text_submit_button_id" id="search">
+						Search</button>
+
+				</form>
+				<!-- close dri_search_term_input_form -->
+
+			</div>
+			<!-- close dri_search_term_input -->
+
+			<!-- save search block to allow user to save current search term(s) to their workspace (authenticated user) -->
+			<div id="dri_search_save_input_id" class="dri_search_save_input">
+
+				<form id="dri_search_save_input_form_id"
+					class="dri_search_save_input_form">
+					<button id="dri_search_save_submit_button_id" type="submit"
+						class="dri_search_save_submit_button_id" id="search">
+						Save Current Search</button>
+
+				</form>
+				<!-- close dri_search_term_input_form -->
+
+			</div>
+			<!-- close dri_search_save_input -->
+
+		</div>
+		<!-- close dri_search_features_nav_container -->
+
+		<!-- facet restrictions block showing term(s) and remove links for facet filtered content -->
+		<div id="dri_facet_restrictions_container_id"
+			class="dri_facet_restrictions_container">
+			<ul id="dri_facet_restrictions_links_id"
+				class="dri_facet_restrictions_links">
+				<li><a href="#">x</a> | Báid</li>
+				<li><a href="#">x</a> | Galway</li>
+			</ul>
+		</div>
+		<!-- close dri_facet_restrictions_container -->
+
+		<!-- system messages container -->
+		<div id="dri_messages_container_id" class="dri_messages_container">
+			<h3 class="dri_messages_warning">
+				Warning Message!
+				</h1>
+		</div>
+		<!-- close dri_messages_container -->
+
+		<!-- main content container with place holders for left (first) and right (second) navigation blocks e.g. facet filters note:only one nav (left or right) is expected at any one time-->
+		<div class="dri_main_content_container">
+
+			<!-- first (left) navigation container shown depending on context -->
+			<div id="dri_first_navigation_container_id"
+				class="dri_first_navigation_container">
+				<nav id="dri_first_navigation_id" class="dri_first_navigation">
+					<ul id="dri_first_navigation_links_id"
+						class="dri_first_navigation_links">
+						<li><a href="#">First Nav Item 1</a></li>
+						<li class="selected"><a href="#">First Nav Item 2</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!--  close dri_first_navigation_container -->
+
+			<!-- second (right) navigation container shown depending on context -->
+			<div id="dri_second_navigation_container_id"
+				class="dri_second_navigation_container">
+				<nav id="dri_second_navigation_id" class="dri_second_navigation">
+					<ul id="dri_second_navigation_links_id"
+						class="dri_second_navigation_links">
+						<li><a href="#">Second Nav Item 1</a></li>
+						<li class="selected"><a href="#">Second Nav Item 2</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!-- close dri_second_navigation_container -->
+
+			<!-- result container showing results / content or forms depending on Context -->
+			<div id="dri_result_container_id" class="dri_result_container">
+				<article class="block5">
+					<h3>Content / Result Item 1</h3>
+				</article>
+				<article class="block5">
+					<h3>Content / Result Item 2</h3>
+				</article>
+				<article class="block5">
+					<h3>Content / Result Item 3</h3>
+				</article>
+				<article class="block5">
+					<h3>Content / Result Item 4</h3>
+				</article>
+			</div>
+			<!-- close dri_result_container -->
+
+		</div>
+		<!-- close dri_main_content_container -->
+
+		<footer id="dri_main_footer_id" class="dri_main_footer">
+			<nav id="dri_main_footer_navigation_id"
+				class="dri_main_footer_navigation">
+				<ul id="dri_main_footer_navigation_links_id"
+					class="dri_main_footer_navigation_links">
+					<li><a href="#">First main_footer Item</a></li>
+					<li><a href="#">Second main_footer Item</a></li>
+				</ul>
+			</nav>
+		</footer>
+		<!-- close dri_main_footer_id -->
+
+	</div>
+	<!-- close dri_wrapper -->
+</body>
+</html>
