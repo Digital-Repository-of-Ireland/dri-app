@@ -19,9 +19,9 @@ module ApplicationHelper
   #     # surrogates of the object
   def get_delivery_file doc
     if can? :read, doc.id
-      @datastreams = JSON.parse(doc["object_profile_ssm"][0])["datastreams"]
-      masterfile = @datastreams.include?('masterContent')
-
+      get_files(doc)
+      masterfile = @files[0] unless @files.nil?
+      
       @asset = nil
 
       if (!masterfile)
