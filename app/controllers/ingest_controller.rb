@@ -22,11 +22,40 @@ class IngestController < CatalogController
   # Handles the ingest process using partial forms
   #
   def create
-    if !session[:ingest][:type].blank?
-      @type = session[:ingest][:type]
-      @object = DRI::Model::DigitalObject.construct(session[:ingest][:type].to_sym, params[:dri_model])
+    if !session[:ingest][:object_type].blank?
+      @type = session[:ingest][:object_type]
+      @object = Batch.new
+      @object.object_type = [@type]
+      if params[:batch] != nil
+        @object.update_attributes params[:batch]
+      else
+        @object.title = [""]
+        @object.description = [""]
+        @object.creator = [""]
+        @object.rights = [""]
+        @object.type = ["Text"]
+
+        if @type == "audio"
+          @object.type = ["Sound"]
+        elsif @type == "pdfdoc"
+          @object.type == ["Text"]
+        else
+          @object.type = [""]
+        end
+      end
+      
     else
-      @object = DRI::Model::DigitalObject.construct(:audio, params[:dri_model])
+      @object = Batch.new
+      @object.object_type = ["Text"]
+      if params[:batch] != nil
+        @object.update_attributes params[:batch]
+      else
+        @object.title = [""]
+        @object.description = [""]
+        @object.creator = [""]
+        @object.rights = [""]
+        @object.type = ["Text"]
+      end
     end
 
     if !session[:ingest][:collection].blank?

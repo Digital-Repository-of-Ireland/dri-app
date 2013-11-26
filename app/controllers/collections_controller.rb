@@ -29,27 +29,35 @@ class CollectionsController < CatalogController
           collectionhash << { :id => collection[:id],
                                :title => collection[:title],
                                :description => collection[:description],
-                               :publisher => collection[:publisher],
+                               #:publisher => collection[:publisher],
                                :objectcount => collection_counts[collection[:id]] }.to_json
         end
         @collections = collectionhash
       }
     end
+    
   end
 
   # Creates a new model.
   #
   def new
-    enforce_permissions!("create", DRI::Model::Collection)
-    @collection = DRI::Model::Collection.new
+    enforce_permissions!("create", Batch)
+    @object = Batch.new
 
     # configure default permissions
-    @collection.apply_depositor_metadata(current_user.to_s)
-    @collection.manager_users_string=current_user.to_s
-    @collection.discover_groups_string="public"
-    @collection.read_groups_string="public"
-    @collection.private_metadata="0"
-    @collection.master_file="1"
+    @object.apply_depositor_metadata(current_user.to_s)
+    @object.manager_users_string=current_user.to_s
+    @object.discover_groups_string="public"
+    @object.read_groups_string="public"
+    @object.private_metadata="0"
+    @object.master_file="1"
+    @object.object_type = ["Collection"]
+    @object.title = [""]
+    @object.description = [""]
+    @object.creator = [""]
+    @object.publisher = [""]
+    @object.rights = [""]
+    @object.type = [ "Collection" ]
 
     respond_to do |format|
       format.html
@@ -60,7 +68,7 @@ class CollectionsController < CatalogController
   #
   def edit
     enforce_permissions!("edit",params[:id])
-    @collection = retrieve_object!(params[:id])
+    @object = retrieve_object!(params[:id])
 
     respond_to do |format|
       format.html
@@ -82,8 +90,9 @@ class CollectionsController < CatalogController
         @response[:id] = @collection.pid
         @response[:title] = @collection.title
         @response[:description] = @collection.description
-        @response[:publisher] = @collection.publisher
+        #@response[:publisher] = @collection.publisher
         @response[:objectcount] = count_items_in_collection @collection.pid
+
       }
     end
   end
@@ -91,19 +100,19 @@ class CollectionsController < CatalogController
   # Updates the attributes of an existing model.
   #
   def update
-    update_object_permission_check(params[:dri_model_collection][:manager_groups_string],params[:dri_model_collection][:manager_users_string], params[:id])
+    update_object_permission_check(params[:batch][:manager_groups_string],params[:batch][:manager_users_string], params[:id])
 
-    @collection = retrieve_object!(params[:id])
+    @object = retrieve_object!(params[:id])
 
     #For sub collections will have to set a governing_collection_id
     #Create a sub collections controller?
 
-    set_access_permissions(:dri_model_collection)
+    set_access_permissions(:batch)
 
     if !valid_permissions?
       flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])
     else
-      @collection.update_attributes(params[:dri_model_collection])
+      @object.update_attributes(params[:batch])
       #Apply private_metadata & properties to each DO/Subcollection within this collection
       flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
     end
@@ -116,17 +125,27 @@ class CollectionsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    enforce_permissions!("create",DRI::Model::Collection)
+    enforce_permissions!("create", Batch)
+    
+    set_access_permissions(:batch)
 
-    set_access_permissions(:dri_model_collection)
+    @collection = Batch.new
+    if @collection.type == nil
+      @collection.type = ["Collection"]
+    end
 
-    @collection = DRI::Model::Collection.new(params[:dri_model_collection])
+    if !@collection.type.include?("Collection")
+      @collection.type.push("Collection")
+    end    
+    @collection.update_attributes(params[:batch])
+    
 
     # depositor is not submitted as part of the form
     @collection.depositor = current_user.to_s
 
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_created')
+      @object = @collection
       render :action => :new
       return
     end
@@ -145,7 +164,7 @@ class CollectionsController < CatalogController
           @response[:id] = @collection.pid
           @response[:title] = @collection.title
           @response[:description] = @collection.description
-          @response[:publisher] = @collection.publisher
+          #@response[:publisher] = @collection.publisher
           render(:json => @response, :status => :created)
         }
       else
@@ -183,41 +202,39 @@ class CollectionsController < CatalogController
   private
 
     def valid_permissions?
-      if ((params[:dri_model_collection][:private_metadata].blank? || params[:dri_model_collection][:private_metadata]==UserGroup::Permissions::INHERIT_METADATA) ||
-       (params[:dri_model_collection][:master_file].blank? || params[:dri_model_collection][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
-       (params[:dri_model_collection][:read_groups_string].blank? && params[:dri_model_collection][:read_users_string].blank?) ||
-       (params[:dri_model_collection][:manager_users_string].blank? && params[:dri_model_collection][:manager_groups_string].blank? && params[:dri_model_collection][:edit_users_string].blank? && params[:dri_model_collection][:edit_groups_string].blank?))
+      if ((params[:batch][:private_metadata].blank? || params[:batch][:private_metadata]==UserGroup::Permissions::INHERIT_METADATA) ||
+       (params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
+       (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
+       (params[:batch][:manager_users_string].blank? && params[:batch][:manager_groups_string].blank? && params[:batch][:edit_users_string].blank? && params[:batch][:edit_groups_string].blank?))
          return false
       else
          return true
       end
-   end
+    end
 
-   def delete_files(object)
-     local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                                { :f => object.id, :d => 'masterContent' } ],
+    def delete_files(object)
+      local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
+                                                                { :f => object.id, :d => 'content' } ],
                                             :order => "version DESC")
-     local_file_info.each { |file| file.destroy }
-     FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
+      local_file_info.each { |file| file.destroy }
+      FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
 
-     Storage::S3Interface.delete_bucket(object.id.sub('dri:', ''))
-   end
+      Storage::S3Interface.delete_bucket(object.id.sub('dri:', ''))
+    end
 
-   def count_items_in_collection collection_id
+    def count_items_in_collection collection_id
       solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
-                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\")"
-
-      solr_query << " AND status_ssim:published" unless current_user
-
+                                              "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\")"
+      solr_query << " +status_ssim:published" unless current_user
       ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
     end
 
     def get_items_in_collection collection_id
       results = Array.new
-      solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
-                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\")"
 
-      solr_query << " AND status_ssim:published" unless current_user
+      solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
+                                              "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\") "
+      solr_query << " +status_ssim:published" unless current_user
 
       result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "500", :fl => "id,title_tesim")
       result_docs.each do | doc |
@@ -229,16 +246,15 @@ class CollectionsController < CatalogController
 
     def get_collections
       results = Array.new
-      solr_query = "has_model_ssim:\"info:fedora/afmodel:DRI_Model_Collection\""
+      solr_query = "+object_type_sim:Collection"
       unless current_user 
-        solr_query << " AND status_ssim:published"
+        solr_query << " +status_ssim:published"
       end
       result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,publisher_tesim")
       result_docs.each do | doc |
-        results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :publisher => doc["publisher_tesim"][0] })
+        results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0] })
       end
       return results
     end
-
 end
 

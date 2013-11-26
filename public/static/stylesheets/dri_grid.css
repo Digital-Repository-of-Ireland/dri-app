@@ -1,0 +1,1518 @@
+/*Import the Zen Grids files*/
+/* Some useful variables*/
+/* CSS Document */
+/* HTML5 display-role reset for older browsers */
+/* line 6, ../sass/dri/main.scss */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/*--------------MAINlayout--------------*/
+/* line 10, ../sass/dri/main.scss */
+html {
+  margin-bottom: 0.5em;
+  height: 100%;
+}
+
+/* line 15, ../sass/dri/main.scss */
+body {
+  font: 76%/1.6 Arial, Helvetica, clean,sans-serif;
+  *font-size: small;
+  *font: x-small;
+  margin: 0;
+  background: url(../images/background_top.png) repeat-x;
+}
+
+/* line 24, ../sass/dri/main.scss */
+.wrapper {
+  padding: 0 0 120px 0;
+  width: 1024px;
+  margin: 0 auto;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+/* line 32, ../sass/dri/main.scss */
+.dri_ident {
+  background: url(../images/ident.png);
+  background-repeat: no-repeat;
+  width: 272px;
+  height: 94px;
+  margin-top: 20px;
+  float: left;
+}
+
+/* signup and accounts ----------------------------------- */
+/* line 42, ../sass/dri/main.scss */
+.dri_account_menu {
+  width: 170px;
+  float: right;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+  z-index: 99;
+}
+
+/* line 51, ../sass/dri/main.scss */
+.dri_account_menu ul.dri_sign_up {
+  float: right;
+  margin: 15px 15px 0 0;
+  padding: 0px;
+  width: 90px;
+}
+
+/* line 57, ../sass/dri/main.scss */
+.dri_account_menu ul.dri_sign_up li {
+  text-decoration: none;
+  list-style: none;
+  text-align: right;
+}
+
+/* line 62, ../sass/dri/main.scss */
+.dri_account_menu ul.dri_sign_up li a {
+  color: #FFF;
+  font-weight: bold;
+}
+
+/* line 66, ../sass/dri/main.scss */
+.dri_account_menu ul.dri_sign_up li a:hover {
+  text-decoration: underline;
+}
+
+/*--------------Login--------------*/
+/* line 73, ../sass/dri/main.scss */
+.dri_login_menu {
+  width: 45px;
+  height: 70px;
+  float: right;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 81, ../sass/dri/main.scss */
+.dri_login_menu ul.dri_sign_up {
+  float: left;
+  margin: 15px 0 0 0;
+  padding: 0px;
+  width: 90px;
+}
+
+/* line 87, ../sass/dri/main.scss */
+.dri_login_menu ul.dri_sign_up li {
+  text-decoration: none;
+  list-style: none;
+  text-align: right;
+}
+
+/* line 92, ../sass/dri/main.scss */
+.dri_login_menu ul.dri_sign_up li a {
+  color: #FFF;
+  font-weight: bold;
+}
+
+/* line 96, ../sass/dri/main.scss */
+.dri_login_menu ul.dri_sign_up li a:hover {
+  text-decoration: underline;
+}
+
+/* line 100, ../sass/dri/main.scss */
+.dri_login_menu ul.dri_login {
+  float: right;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 105, ../sass/dri/main.scss */
+.dri_login_menu ul.dri_login li {
+  text-decoration: none;
+  list-style: none;
+}
+
+/* line 110, ../sass/dri/main.scss */
+.dri_login_menu ul.dri_login li a {
+  float: right;
+  width: 40px;
+  height: 54px;
+  background: url(../images/login.png);
+}
+
+/* line 116, ../sass/dri/main.scss */
+.dri_login_menu ul.dri_login li a:hover {
+  background: url(../images/login_hover.png);
+}
+
+/*--------------Logout--------------*/
+/* line 121, ../sass/dri/main.scss */
+.login_menu ul.logout {
+  float: right;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 126, ../sass/dri/main.scss */
+.login_menu ul.logout li {
+  text-decoration: none;
+  list-style: none;
+}
+
+/* line 130, ../sass/dri/main.scss */
+.login_menu ul.logout li a {
+  float: right;
+  width: 40px;
+  height: 54px;
+  background: url(../images/logout.png);
+}
+
+/* line 136, ../sass/dri/main.scss */
+.login_menu ul.logout li a:hover {
+  background: url(../images/logout_hover.png);
+}
+
+/*--------------account--------------*/
+/* line 143, ../sass/dri/main.scss */
+.account_menu ul.account {
+  float: right;
+  margin: 0 0 0 0;
+  padding: 0;
+  width: 120px;
+}
+
+/* line 149, ../sass/dri/main.scss */
+.account_menu ul.account li {
+  text-decoration: none;
+  list-style: none;
+  display: block;
+  margin: 0px;
+  padding: 15px 0 6px 0;
+}
+
+/* line 156, ../sass/dri/main.scss */
+.account_menu ul.account li a {
+  color: #FFF;
+  font-weight: bold;
+}
+
+/* line 162, ../sass/dri/main.scss */
+.account_menu ul.account li a span.profile_icon {
+  padding: 0 10px 0 10px;
+}
+
+/* line 167, ../sass/dri/main.scss */
+.account_menu ul.account li a span.dp_arrow {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #fff;
+  float: right;
+  margin: 8px 10px 0 10px;
+}
+
+/* line 176, ../sass/dri/main.scss */
+.account_menu ul.account li a:hover {
+  text-decoration: underline;
+}
+
+/*--------------drop down account--------------*/
+/* line 182, ../sass/dri/main.scss */
+.dd_account {
+  float: right;
+  margin: 0 0 0 0;
+  padding: 0px;
+  width: 120px;
+  background-color: #2F2F2F;
+}
+
+/* line 189, ../sass/dri/main.scss */
+ul.dd_account li {
+  text-decoration: none;
+  list-style: none;
+  text-align: left;
+  display: block;
+  border-top: 1px solid #4D4D4D;
+  padding: 0 0 2px 10px;
+}
+
+/* line 197, ../sass/dri/main.scss */
+ul.dd_account li a {
+  color: #FFF;
+  font-weight: normal;
+}
+
+/* line 202, ../sass/dri/main.scss */
+ul.dd_account li a:hover {
+  text-decoration: underline;
+}
+
+/*--------------Top Main Navigation --------------*/
+/* line 208, ../sass/dri/main.scss */
+.dri_main_nav_container {
+  width: 984px;
+  height: 60px;
+  float: left;
+  margin: 30px 0 0 0;
+  padding: 0 20px 0 20px;
+  background-color: #F1F2F2;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+/*-------------- styling for sorting --------------*/
+/* line 220, ../sass/dri/main.scss */
+.dri_main_nav ul.dri_sort {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 226, ../sass/dri/main.scss */
+.dri_main_nav ul.dri_sort a {
+  color: #6D6E71;
+}
+
+/* line 231, ../sass/dri/main.scss */
+.dri_main_nav ul.dri_sort li {
+  text-decoration: none;
+  font-size: 190%;
+  padding: 0;
+  margin: 14px 0 0 0;
+  list-style: none;
+  display: block;
+  float: left;
+}
+
+/*--
+.dri_main_nav ul.dropit-submenu li a {
+	font-weight: normal;
+	color: #6D6E71;
+	margin: 0;
+	padding: 0;
+}
+.dri_main_nav ul.dropit-submenu li a:hover {
+	color: #4C4C4C;
+}
+.dri_main_nav ul.dropit-submenu li a span.dri_dd_menu_arrow {
+	padding: 0 40px 0 8px;
+	margin: 0;
+}
+.dri_main_nav ul.dropit-submenu li  a.on {
+	color: #2D8DC1;
+}
+--*/
+/*
+ * Dropit v1.0
+ * http://dev7studios.com/dropit
+ *
+ * Copyright 2012, Dev7studios
+ * Free to use and abuse under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+/* These styles assume you are using ul and li */
+/* line 269, ../sass/dri/main.scss */
+.dropit {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 275, ../sass/dri/main.scss */
+.dropit .dropit-trigger {
+  position: relative;
+}
+
+/* line 280, ../sass/dri/main.scss */
+.dropit .dropit-submenu {
+  position: absolute;
+  top: 100%;
+  left: 10;
+  /* dropdown left or right */
+  z-index: 1000;
+  display: none;
+  padding: 0px;
+  left: 1px;
+  top: 47px;
+  background-color: #F1F2F2;
+  filter: alpha(opacity=75);
+  -moz-opacity: 0.75;
+  opacity: 0.90;
+  border-bottom: 1px solid #E1E1E1;
+  border-right: 1px solid #E1E1E1;
+  border-left: 1px solid #E1E1E1;
+  z-index: 99;
+}
+
+/* line 299, ../sass/dri/main.scss */
+.dropit ul.dropit-submenu li {
+  list-style: none;
+  text-decoration: none;
+  font-size: 150%;
+  border-bottom: 1px solid #E1E1E1;
+  padding: 2px 60px 2px 20px;
+}
+
+/* line 306, ../sass/dri/main.scss */
+.dropit .dropit-open .dropit-submenu {
+  display: block;
+}
+
+/*-------------- styling for search nav --------------*/
+/* line 310, ../sass/dri/main.scss */
+.dri_search_menu {
+  width: 984px;
+  height: 30px;
+  margin: 20px 0 20px 0;
+  padding: 0 20px 0 20px;
+  float: left;
+}
+
+/* line 318, ../sass/dri/main.scss */
+.dri_search_menu ul.option {
+  margin: 0px 20px 0 0;
+  padding: 0px;
+  float: left;
+}
+
+/* line 324, ../sass/dri/main.scss */
+.dri_search_menu ul.option li {
+  margin: 0;
+  padding: 4px 0 4px 15px;
+  list-style: none;
+  text-decoration: none;
+  color: #FFF;
+  background-color: #2F2F2F;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 4px  #888888;
+}
+
+/* line 338, ../sass/dri/main.scss */
+.dri_search_menu ul.option li a {
+  margin: 0 0 0 20px;
+  padding: 0 10px 0 10px;
+  color: #FFF;
+  border-left: 1px solid #999;
+}
+
+/* line 347, ../sass/dri/main.scss */
+.dri_search_bar {
+  width: 228px;
+  float: right;
+  margin: 0 0 0 0;
+  padding: 0;
+}
+
+/* line 355, ../sass/dri/main.scss */
+.dri_search_bar input {
+  width: 208px;
+  float: right;
+  margin: 0 0 0 0;
+  padding: 6px 10px 6px 10px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  border: 1px solid #E1E1E1;
+  color: #808080;
+}
+
+/* line 366, ../sass/dri/main.scss */
+.dri_search_menu ul.dri_search_term {
+  margin: 0px 20px 0 0;
+  padding: 0px;
+  float: left;
+}
+
+/* line 372, ../sass/dri/main.scss */
+.dri_search_menu ul.dri_search_term li {
+  margin: 0;
+  padding: 4px 0 4px 15px;
+  list-style: none;
+  text-decoration: none;
+  color: #FFF;
+  background-color: #2F2F2F;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 4px  #888888;
+}
+
+/* line 385, ../sass/dri/main.scss */
+.dri_search_menu ul.dri_search_term li a {
+  margin: 0 0 0 20px;
+  padding: 0 10px 0 10px;
+  color: #FFF;
+  border-left: 1px solid #999;
+}
+
+/* ----------- Pagination ---------- */
+/* line 394, ../sass/dri/main.scss */
+.dri_pagination {
+  width: 984px;
+  height: 30px;
+  margin: 0 0 10px 0;
+  padding: 0 20px 0 20px;
+  float: left;
+}
+
+/* line 403, ../sass/dri/main.scss */
+ul.dri_paging {
+  height: 30px;
+  margin: 3px 0 0 0;
+  padding: 0;
+  float: right;
+  width: 175px;
+}
+
+/* line 410, ../sass/dri/main.scss */
+ul.dri_paging li {
+  float: left;
+  list-style: none;
+  display: block;
+  padding: 0;
+}
+
+/* line 417, ../sass/dri/main.scss */
+ul.dri_paging li a {
+  float: left;
+  list-style: none;
+  display: block;
+  padding: 2px 10px 2px 10px;
+  color: #FFFFFF;
+  background-color: #6D6E71;
+  margin-right: 4px;
+}
+
+/* line 426, ../sass/dri/main.scss */
+ul.dri_paging li a:hover {
+  text-decoration: underline;
+}
+
+/* line 429, ../sass/dri/main.scss */
+ul.dri_paging li.dri_prev_arrow a {
+  background: url(../images/prev_arrow.png) no-repeat center;
+  background-color: none;
+}
+
+/* line 433, ../sass/dri/main.scss */
+ul.dri_paging li.dri_next_arrow a {
+  background: url(../images/next_arrow.png) no-repeat center;
+  background-color: none;
+}
+
+/* line 438, ../sass/dri/main.scss */
+ul.dri_paging li.dri_selected a {
+  background-color: #B3B3B3;
+  color: #FFF;
+}
+
+/* line 443, ../sass/dri/main.scss */
+ul.dri_paging li.dri_next_num a {
+  background-color: #2F2F2F;
+  color: #FFF;
+}
+
+/* button styling ----------------------------------- */
+/* line 449, ../sass/dri/main.scss */
+input.request_button {
+  background-color: #7573C0;
+  color: #FFF;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: none;
+  padding: 2px 20px 2px 20px;
+  margin: 20px 0 0 0;
+  cursor: pointer;
+}
+
+/* line 459, ../sass/dri/main.scss */
+input.request_button:hover {
+  background-color: #595BAA;
+}
+
+/* footer ----------------------------------- */
+/* line 464, ../sass/dri/main.scss */
+footer {
+  margin-bottom: 40px;
+  display: block;
+  height: 50px;
+  padding: 20px 0 70px 0;
+  margin: 0 auto;
+  color: #9a9a9a;
+  text-align: right;
+  width: 930px;
+}
+
+/* line 474, ../sass/dri/main.scss */
+footer a {
+  color: #9a9a9a;
+  text-decoration: none;
+}
+
+/* line 478, ../sass/dri/main.scss */
+footer a:hover {
+  color: #787878;
+}
+
+/* line 482, ../sass/dri/main.scss */
+.base {
+  padding: 0;
+  margin-bottom: 40px;
+  width: 960px;
+  margin: auto;
+  display: block;
+  height: 50px;
+  padding: 10px 0 0 0;
+  margin-bottom: 100px;
+  color: #9a9a9a;
+}
+
+/* Clear Fix ----------------------------------- */
+/* line 497, ../sass/dri/main.scss */
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+/* line 506, ../sass/dri/main.scss */
+.clearfix {
+  display: block;
+}
+
+/* line 510, ../sass/dri/main.scss */
+html[xmlns] .clearfix {
+  display: block;
+}
+
+/* line 514, ../sass/dri/main.scss */
+* html .clearfix {
+  height: 1%;
+}
+
+/* CSS Document */
+/* line 3, ../sass/dri/text.scss */
+a {
+  text-decoration: none;
+}
+
+/* line 6, ../sass/dri/text.scss */
+h1 {
+  font-size: 150%;
+  padding: 0 0 0 30px;
+  color: #0A222B;
+  margin: 0px;
+}
+
+/* CSS Document */
+/* line 4, ../sass/dri/containers.scss */
+.line {
+  width: 1024px;
+  margin: 0;
+  padding: 0px;
+}
+
+/* line 9, ../sass/dri/containers.scss */
+.size_0 {
+  width: 984px;
+  float: left;
+  margin: 0;
+  padding: 0 20px 0 20px;
+}
+
+/* line 15, ../sass/dri/containers.scss */
+.size_01 {
+  margin: 0 20px 20px 0;
+  padding: 0;
+  width: 228px;
+  float: left;
+  display: block;
+  color: #2F2F2F;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #E1E1E1;
+  position: relative;
+}
+
+/* line 28, ../sass/dri/containers.scss */
+.size_01.top {
+  border-top: 5px solid #E1E1E1;
+}
+
+/* line 31, ../sass/dri/containers.scss */
+.size_01.last {
+  margin: 0 0 20px 0;
+}
+
+/* line 35, ../sass/dri/containers.scss */
+.size_01.refine {
+  float: right;
+  box-shadow: 1px 2px 6px  #E3E3E3;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+/* line 41, ../sass/dri/containers.scss */
+.size_01 .high_view {
+  background: url(../images/high_view_icon.png) no-repeat;
+  position: absolute;
+  left: 185px;
+  top: -6px;
+  display: block;
+  height: 50px;
+  width: 32px;
+  z-index: 99;
+}
+
+/* ----------- Collection block ---------- */
+/* line 54, ../sass/dri/containers.scss */
+.content_block_wrap {
+  width: 730px;
+  margin: 0 20px 0 20px;
+  float: left;
+  padding: 0;
+}
+
+/* line 60, ../sass/dri/containers.scss */
+.dri_content_block {
+  margin: 0 20px 20px 0;
+  padding: 0;
+  width: 228px;
+  height: 300px;
+  float: left;
+  display: block;
+  color: #2F2F2F;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #E1E1E1;
+  position: relative;
+}
+
+/* line 74, ../sass/dri/containers.scss */
+.dri_content_block.top {
+  border-top: 5px solid #E1E1E1;
+}
+
+/* line 77, ../sass/dri/containers.scss */
+.dri_content_block.last {
+  margin: 0 0 20px 0;
+}
+
+/* line 81, ../sass/dri/containers.scss */
+.dri_content_block .dri_high_view {
+  background: url(../images/high_view_icon.png) no-repeat;
+}
+
+/* line 86, ../sass/dri/containers.scss */
+.dri_content_block h1 {
+  color: #2F2F2F;
+  font-size: 110%;
+  padding: 0;
+  margin: 10px 14px 20px 14px;
+}
+
+/* line 92, ../sass/dri/containers.scss */
+.dri_content_block a h1 {
+  color: #2F2F2F;
+  text-decoration: none;
+}
+
+/* line 97, ../sass/dri/containers.scss */
+.dri_content_block a:hover h1 {
+  text-decoration: underline;
+}
+
+/* line 101, ../sass/dri/containers.scss */
+.dri_content_block h2 {
+  color: #2F2F2F;
+  font-size: 100%;
+  padding: 0;
+  margin: 4px 14px 4px 14px;
+  font-weight: normal;
+}
+
+/* line 108, ../sass/dri/containers.scss */
+.dri_content_block h2 a {
+  color: #2F2F2F;
+}
+
+/* line 111, ../sass/dri/containers.scss */
+.dri_content_block h2 a:hover {
+  text-decoration: underline;
+}
+
+/* line 115, ../sass/dri/containers.scss */
+.dri_content_block h2.dri_editor {
+  color: #808080;
+  line-height: 1.4em;
+  display: block;
+  height: 36px;
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* line 125, ../sass/dri/containers.scss */
+.dri_content_block h2.dri_editor a {
+  color: #808080;
+}
+
+/* line 128, ../sass/dri/containers.scss */
+.dri_content_block h2.dri_editor a:hover {
+  text-decoration: none;
+}
+
+/* line 131, ../sass/dri/containers.scss */
+.dri_content_block p {
+  color: #2F2F2F;
+  font-size: 100%;
+  padding: 0;
+  margin: 10px 10px 10px 10px;
+}
+
+/* line 138, ../sass/dri/containers.scss */
+.dri_image {
+  padding: 0;
+  margin: 0 14px 0 14px;
+}
+
+/* line 143, ../sass/dri/containers.scss */
+.dri_content_block .dri_stats {
+  color: #808080;
+  line-height: 1.4em;
+  display: block;
+  height: 26px;
+  margin: 4px 14px 4px 14px;
+  border-top: 1px solid #E1E1E1;
+  padding: 4px 0 0 0;
+}
+
+/* line 152, ../sass/dri/containers.scss */
+.dri_content_block .dri_stats span.dri_object_num {
+  color: #fff;
+  display: block;
+  height: 20px;
+  width: 42px;
+  padding: 3px 0 0 6px;
+  margin: 0 8px 0 0;
+  float: left;
+  background: url(../images/object_back.png) no-repeat;
+}
+
+/* line 162, ../sass/dri/containers.scss */
+.dri_content_block .stats span.dri_object_num a {
+  color: #fff;
+}
+
+/* line 165, ../sass/dri/containers.scss */
+.dri_content_block .stats span.dri_object_num a:hover {
+  text-decoration: underline;
+}
+
+/* line 169, ../sass/dri/containers.scss */
+.dri_content_block .dri_stats span.dri_view {
+  margin: 4px 8px 0 0;
+  display: block;
+  height: 20px;
+  padding: 3px 0 0 0;
+  margin: 0 10px 0 0;
+  float: left;
+}
+
+/* line 177, ../sass/dri/containers.scss */
+.dri_content_block .dri_stats span.dri_like {
+  margin: 4px 8px 0 0;
+  display: block;
+  height: 20px;
+  padding: 1px 0 0 0;
+  margin: 0 10px 0 0;
+  float: left;
+}
+
+/* line 185, ../sass/dri/containers.scss */
+.dri_content_block .dri_stats span.dri_comment {
+  margin: 4px 8px 0 0;
+  display: block;
+  height: 20px;
+  padding: 0;
+  margin: 0 10px 0 0;
+  float: left;
+}
+
+/* ----------- Pagination ---------- */
+/* line 194, ../sass/dri/containers.scss */
+.dri_pagination {
+  width: 984px;
+  height: 30px;
+  margin: 0 0 10px 0;
+  padding: 0 20px 0 20px;
+  float: left;
+}
+
+/* line 202, ../sass/dri/containers.scss */
+ul.dri_paging {
+  height: 30px;
+  margin: 3px 0 0 0;
+  padding: 0;
+  float: right;
+  width: 175px;
+}
+
+/* line 209, ../sass/dri/containers.scss */
+ul.dri_paging li {
+  float: left;
+  list-style: none;
+  display: block;
+  padding: 0;
+}
+
+/* line 216, ../sass/dri/containers.scss */
+ul.dri_paging li a {
+  float: left;
+  list-style: none;
+  display: block;
+  padding: 2px 10px 2px 10px;
+  color: #FFFFFF;
+  background-color: #6D6E71;
+  margin-right: 4px;
+}
+
+/* line 225, ../sass/dri/containers.scss */
+ul.dri_paging li a:hover {
+  text-decoration: underline;
+}
+
+/* line 228, ../sass/dri/containers.scss */
+ul.dri_paging li.prev_arrow a {
+  background: url(../images/prev_arrow.png) no-repeat center;
+  background-color: none;
+}
+
+/* line 232, ../sass/dri/containers.scss */
+ul.dri_paging li.next_arrow a {
+  background: url(../images/next_arrow.png) no-repeat center;
+  background-color: none;
+}
+
+/* line 237, ../sass/dri/containers.scss */
+ul.dri_paging li.selected a {
+  background-color: #B3B3B3;
+  color: #FFF;
+}
+
+/* line 242, ../sass/dri/containers.scss */
+ul.dri_paging li.next_num a {
+  background-color: #2F2F2F;
+  color: #FFF;
+}
+
+/* ----------- Filter List Block ---------- */
+/* ----------- Search Facet Filters ---------- */
+/* line 252, ../sass/dri/containers.scss */
+.dri_facet_filters {
+  margin: 0 10px 20px 0;
+  padding: 0;
+  width: 228px;
+  float: left;
+  display: block;
+  color: #2F2F2F;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #E1E1E1;
+  position: relative;
+}
+
+/* line 266, ../sass/dri/containers.scss */
+.dri_facet_filters.top {
+  border-top: 5px solid #E1E1E1;
+}
+
+/* line 269, ../sass/dri/containers.scss */
+.dri_facet_filters.last {
+  margin: 0 0 20px 0;
+}
+
+/* line 273, ../sass/dri/containers.scss */
+.dri_facet_filters.refine {
+  float: right;
+  box-shadow: 1px 2px 6px  #E3E3E3;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+/* line 279, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter {
+  padding: 0;
+  margin: 0;
+}
+
+/* line 283, ../sass/dri/containers.scss */
+.dri_facet_filters .filter li {
+  padding: 0;
+  margin: 0;
+}
+
+/* line 287, ../sass/dri/containers.scss */
+.dri_facet_filters .filter li.title {
+  color: #2F2F2F;
+  font-size: 110%;
+  font-weight: bold;
+  padding: 12px 15px 12px 15px;
+  margin: 0;
+  float: left;
+  list-style: none;
+  text-decoration: none;
+  display: block;
+  width: 200px;
+}
+
+/* line 299, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter li.title span.search_num {
+  font-size: 100%;
+  padding: 0;
+  margin: 0;
+  float: right;
+  align: top;
+}
+
+/* line 306, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter li.title span.search_num a {
+  color: #B3B3B3;
+}
+
+/* line 309, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter li.title span.search_num a:hover {
+  text-decoration: underline;
+}
+
+/* line 312, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list {
+  padding: 0;
+  margin: 0;
+}
+
+/* line 316, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list li {
+  font-size: 106%;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
+}
+
+/* line 324, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list li a {
+  color: #2F2F2F;
+  display: block;
+  padding: 4px 15px 4px 15px;
+  margin: 0;
+  border-top: 1px solid #E1E1E1;
+  float: left;
+  width: 198px;
+}
+
+/* line 335, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list li a:hover {
+  text-decoration: underline;
+}
+
+/* line 339, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list li a span.filter_arrow_down {
+  float: right;
+  width: 14px;
+  height: 12px;
+  display: block;
+}
+
+/* line 346, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list li a span.filter_arrow_up {
+  float: right;
+  width: 12px;
+  height: 14px;
+  display: block;
+}
+
+/* line 353, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list_sub {
+  margin: 0;
+  padding: 0;
+}
+
+/* line 357, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list_sub li {
+  font-size: 100%;
+}
+
+/* line 360, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list_sub li a {
+  color: #808080;
+  background-color: #FAFAFA;
+}
+
+/* line 364, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list_sub li a:hover {
+  background-color: #EEEEEE;
+  text-decoration: none;
+}
+
+/* line 368, ../sass/dri/containers.scss */
+.dri_facet_filters ul.filter_list_sub li.on a {
+  text-decoration: underline;
+  background-color: #EEEEEE;
+}
+
+/* ----------- comment blocks ---------- */
+/* line 375, ../sass/dri/containers.scss */
+.comment_block {
+  width: 730px;
+  margin: 0 20px 0 20px;
+  float: left;
+  padding: 0;
+  border-top: 1px solid #E1E1E1;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* line 386, ../sass/dri/containers.scss */
+.comment_block h1.comments {
+  font-size: 120%;
+  margin: 0;
+  padding: 0;
+  color: #2F2F2F;
+}
+
+/* line 392, ../sass/dri/containers.scss */
+.comment_block h1.pc_name {
+  font-size: 106%;
+  margin: 0;
+  padding: 0;
+  color: #2F2F2F;
+  font-weight: normal;
+}
+
+/* line 399, ../sass/dri/containers.scss */
+.comment_block h1.pc_name span.date {
+  color: #B3B3B3;
+  margin-left: 10px;
+}
+
+/* line 404, ../sass/dri/containers.scss */
+.comment_block .comment_box {
+  width: 730px;
+  height: 120px;
+  border: 1px solid #E1E1E1;
+  margin: 10px 0 10px 0;
+}
+
+/* line 410, ../sass/dri/containers.scss */
+.comment_block p.read_comment {
+  margin: 4px 0 0 0;
+  padding: 0 80px 0 0;
+  color: #808080;
+  font-weight: normal;
+  font-size: 106%;
+}
+
+/* ----------- Object View ---------- */
+/* line 420, ../sass/dri/containers.scss */
+.object_view {
+  width: 730px;
+  margin: 0 20px 0 20px;
+  float: left;
+  padding: 0;
+}
+
+/* line 426, ../sass/dri/containers.scss */
+.object_view.padding_none {
+  width: 770px;
+  float: left;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+/* line 432, ../sass/dri/containers.scss */
+.object_view.object_title_top {
+  padding: 6px 20px 6px 20px;
+  float: left;
+  margin: 0;
+  background-color: #2F2F2F;
+  color: #FFF;
+  font-size: 120%;
+}
+
+/* line 442, ../sass/dri/containers.scss */
+.object_view_block {
+  width: 355px;
+  padding: 0;
+  float: left;
+  margin: 30px 0 0 20px;
+}
+
+/* line 448, ../sass/dri/containers.scss */
+.object_view_block h1.title {
+  padding: 0;
+  margin: 0 0 4px 0;
+  font-size: 106%;
+  font-weight: normal;
+  color: #2F2F2F;
+}
+
+/* line 455, ../sass/dri/containers.scss */
+.object_view_block p {
+  padding: 0 30px 0 0;
+  margin: 0 0 15px 0;
+  line-height: 1.4;
+  color: #808080;
+  font-size: 100%;
+}
+
+/* line 462, ../sass/dri/containers.scss */
+.object_view_block .back_search a {
+  padding: 0;
+  margin: 0 30px 0 0;
+  color: #278DC1;
+  font-size: 100%;
+  font-weight: bold;
+  float: left;
+  display: block;
+  width: 130px;
+}
+
+/* line 472, ../sass/dri/containers.scss */
+.object_view_block ul.title_list {
+  padding: 0 0 0 15px;
+  margin: 0 0 15px 0;
+}
+
+/* line 476, ../sass/dri/containers.scss */
+.object_view_block ul.title_list li {
+  line-height: 1.4;
+  color: #808080;
+  font-size: 100%;
+  list-style: square;
+}
+
+/* line 483, ../sass/dri/containers.scss */
+.object_view_block.border_r {
+  border-right: 1px solid #E1E1E1;
+}
+
+/* line 487, ../sass/dri/containers.scss */
+.object_view_block .image_view {
+  display: block;
+  background-color: #EAEBEB;
+}
+
+/* line 493, ../sass/dri/containers.scss */
+.object_view_block.last {
+  margin-right: 0px;
+}
+
+/* line 496, ../sass/dri/containers.scss */
+.object_view_block .like_button {
+  margin: 0;
+  padding: 2px 10px 2px 10px;
+  list-style: none;
+  text-decoration: none;
+  color: #FFF;
+  background-color: #808284;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 4px  #888888;
+  width: 50px;
+  float: left;
+  display: block;
+  cursor: pointer;
+}
+
+/* line 511, ../sass/dri/containers.scss */
+.object_view_block .like_button:hover {
+  background-color: #646768;
+}
+
+/* line 514, ../sass/dri/containers.scss */
+.object_view_block .like_button span.like {
+  background: url(../images/like_button.png) no-repeat;
+  width: 20px;
+  height: 20px;
+  display: block;
+  float: left;
+  margin: 0;
+}
+
+/* line 523, ../sass/dri/containers.scss */
+.object_view_block ul.view_collection {
+  margin: 6px 0 0 0;
+  padding: 0;
+  display: block;
+  float: left;
+  width: 230px;
+  border-top: 1px solid #E1E1E1;
+}
+
+/* line 532, ../sass/dri/containers.scss */
+.object_view_block ul.view_collection li {
+  margin: 0;
+  padding: 3px 0 3px 0;
+  list-style: none;
+  border-bottom: 1px solid #E1E1E1;
+  color: #808080;
+}
+
+/* line 539, ../sass/dri/containers.scss */
+.object_view_block ul.view_collection li span.stat_num a {
+  float: right;
+  font-weight: bold;
+  color: #278DC1;
+}
+
+/* line 545, ../sass/dri/containers.scss */
+.object_view_block ul.view_collection li span.stat_num a:hover {
+  text-decoration: underline;
+}
+
+/* line 549, ../sass/dri/containers.scss */
+.object_view_block ul.stats {
+  margin: 20px 0 0 0;
+  padding: 4px 0 4px 0;
+  width: 230px;
+  float: left;
+  border-bottom: 1px solid #E1E1E1;
+  border-top: 1px solid #E1E1E1;
+}
+
+/* line 558, ../sass/dri/containers.scss */
+.object_view_block ul.stats li {
+  float: left;
+  width: 230px;
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #808080;
+}
+
+/* line 568, ../sass/dri/containers.scss */
+.object_view_block ul.stats li span.stat_num {
+  float: right;
+  font-weight: bold;
+}
+
+/* line 572, ../sass/dri/containers.scss */
+.object_view_block .bookmark_object {
+  margin: 20px 0 0 0;
+  padding: 0;
+  display: block;
+  float: left;
+  width: 230px;
+  font-weight: bold;
+  color: #2F2F2F;
+  font-size: 106%;
+}
+
+/* line 582, ../sass/dri/containers.scss */
+.object_view_block .bookmark_object select {
+  margin: 6px 0 0 0;
+  padding: 0;
+  float: left;
+  width: 230px;
+}
+
+/* line 588, ../sass/dri/containers.scss */
+.object_view_block .save_search {
+  margin: 20px 0 0 0;
+  padding: 0;
+  display: block;
+  float: left;
+  width: 300px;
+}
+
+/* line 596, ../sass/dri/containers.scss */
+.object_view_block .save_search input {
+  margin: 0 10px 0 0;
+  padding: 0;
+  float: left;
+}
+
+/* line 603, ../sass/dri/containers.scss */
+.object_view_block .vc_title {
+  margin: 20px 0 0 0;
+  padding: 0;
+  display: block;
+  float: left;
+  width: 230px;
+  font-weight: bold;
+  color: #2F2F2F;
+  font-size: 106%;
+}
+
+/* line 613, ../sass/dri/containers.scss */
+.h140 {
+  height: 140px;
+}
+
+/* line 617, ../sass/dri/containers.scss */
+.mb20 {
+  margin-bottom: 20px;
+}
+
+/* line 14, ../sass/dri_grid.scss */
+.dri_wrapper {
+  width: 1024px;
+  margin: 0 auto;
+}
+
+/* line 46, ../sass/zen/_grids.scss */
+.dri_content_container:before, .dri_content_container:after {
+  content: "";
+  display: table;
+}
+/* line 50, ../sass/zen/_grids.scss */
+.dri_content_container:after {
+  clear: both;
+}
+
+/* line 28, ../sass/dri_grid.scss */
+.dri_header_container {
+  height: 140px;
+}
+/* line 46, ../sass/zen/_grids.scss */
+.dri_header_container:before, .dri_header_container:after {
+  content: "";
+  display: table;
+}
+/* line 50, ../sass/zen/_grids.scss */
+.dri_header_container:after {
+  clear: both;
+}
+
+/* line 35, ../sass/dri_grid.scss */
+.dri_ident {
+  float: left;
+  width: 50%;
+  margin-left: 0%;
+  margin-right: -50%;
+  padding-left: 7px;
+  padding-right: 8px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+/* line 39, ../sass/dri_grid.scss */
+.dri_authentication_menus_container {
+  float: left;
+  width: 25%;
+  margin-left: 75%;
+  margin-right: -100%;
+  padding-left: 7px;
+  padding-right: 8px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  padding-left: 0;
+  padding-right: 0;
+}
+/* line 46, ../sass/zen/_grids.scss */
+.dri_authentication_menus_container:before, .dri_authentication_menus_container:after {
+  content: "";
+  display: table;
+}
+/* line 50, ../sass/zen/_grids.scss */
+.dri_authentication_menus_container:after {
+  clear: both;
+}
+
+/* line 47, ../sass/dri_grid.scss */
+.dri_login_menu {
+  float: left;
+  width: 25%;
+  margin-left: 75%;
+  margin-right: -100%;
+  padding-left: 7px;
+  padding-right: 8px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+/* line 51, ../sass/dri_grid.scss */
+.dri_account_menu {
+  float: left;
+  width: 25%;
+  margin-left: 50%;
+  margin-right: -75%;
+  padding-left: 7px;
+  padding-right: 8px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+/* line 55, ../sass/dri_grid.scss */
+.dri_search_results_container {
+  float: left;
+  width: 25%;
+  margin-left: 50%;
+  margin-right: -75%;
+  padding-left: 7px;
+  padding-right: 8px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  padding-left: 0;
+  padding-right: 0;
+  width: 1000px;
+  margin: 0 auto;
+}
+/* line 46, ../sass/zen/_grids.scss */
+.dri_search_results_container:before, .dri_search_results_container:after {
+  content: "";
+  display: table;
+}
+/* line 50, ../sass/zen/_grids.scss */
+.dri_search_results_container:after {
+  clear: both;
+}
+
+/* line 66, ../sass/dri_grid.scss */
+.dri_search_result_block {
+  padding-left: 7px;
+  padding-right: 8px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  width: 25%;
+  padding-left: 0;
+  margin-left: 15px;
+  padding-right: 11.25px;
+  margin-right: -11.25px;
+  float: left;
+}
+
+/* line 73, ../sass/dri_grid.scss */
+.dri_facet_filters_block {
+  float: left;
+  width: 25%;
+  margin-left: 75%;
+  margin-right: -100%;
+  padding-left: 7px;
+  padding-right: 8px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  float: left;
+}

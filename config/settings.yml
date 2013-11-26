@@ -1,8 +1,8 @@
 ingest:
-  steps: [collection, type, ingestmethod, metadata]
+  steps: [collection, object_type, ingestmethod, metadata]
   step_data:
     collection: [ingestcollection]
-    type: [ingesttype]
+    object_type: [ingesttype]
     ingestmethod: [ingestmethod]
 interface:
   languages: [en, ga]
@@ -26,6 +26,8 @@ ogg_web_quality_out_options:
   channel: "2" # default is same as input file
   bitrate: "96k" # default is same as input file
   frequency: "44100" # default is same as input file
+restrict:
+  mime_types: [ "application/pdf", "application/x-pdf", "audio/mp3","audio/mpeg","audio/mpeg3","audio/mp2"]
 S3:
   server: 10.0.1.201
   access_key_id: FIXME

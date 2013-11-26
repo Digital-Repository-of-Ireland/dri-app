@@ -3,18 +3,18 @@
 <div class="document">
 <h2><%= t('dri.views.objects.edit.title') %></h2>
 
-<%= form_for @collection, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
+<%= form_for @object, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
 
-  <%= render :partial => "form_collection", :locals => { :f => f } %>  
-  <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @collection } %>
+  <%= render :partial => "shared/form_metadata", :locals => { :f => f, :action => "update" } %>  
+  <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
 
 <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "edit_collection" %>
 
 <% end %>
 
 <% if current_user.is_admin? %>
- <%= form_tag (collection_path(@collection)), :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
-   <%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "btn", :class => "btn-primary btn-large", :id => "delete_collection_#{@collection.id}", :confirm => "#{ t('dri.views.collection.confirm_delete') }" %>
+ <%= form_tag (collection_path(@object)), :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+   <%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "btn", :class => "btn-primary btn-large", :id => "delete_collection_#{@object.id}", :confirm => "#{ t('dri.views.collection.confirm_delete') }" %>
  <% end %>
 <% end %>
 
