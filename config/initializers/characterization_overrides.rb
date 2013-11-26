@@ -1,7 +1,28 @@
 require "hydra/derivatives/extract_metadata"
-require "sufia/models/file_content"
-FileContentDatastream.class_eval do
-  # Quick fix to get the content from storage and avoid using the REST API
+# require "sufia/models/file_content"
+
+Hydra::Derivatives::ExtractMetadata.module_eval do
+  # Quick fixes to get the content from storage and avoid using the REST API
+
+  def extract_metadata
+    return unless has_content?
+
+    if ['E','R'].include? controlGroup
+      @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
+                                                                { :f => pid, :d => "content" } ],
+                                            :order => "version DESC",
+                                            :limit => 1)
+      path = @local_file_info[0].path
+      Hydra::FileCharacterization.characterize(path, filename_for_characterization.join(""), :fits) do |config|
+        config[:fits] = Hydra::Derivatives.fits_path
+      end
+    else
+      Hydra::FileCharacterization.characterize(content, filename_for_characterization.join(""), :fits) do |config|
+        config[:fits] = Hydra::Derivatives.fits_path
+      end
+    end
+  end
+
   def to_tempfile(&block)
     return unless has_content?
 
@@ -36,7 +57,9 @@ FileContentDatastream.class_eval do
         f.rewind
         yield(f)
     end
-  end
+    end
   end
 
+  def self.blah
+  end
 end
