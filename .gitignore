@@ -29,4 +29,6 @@ config/database.yml
 config/fedora.yml
 config/solr.yml
 
+features/reports/*
+
 # *.html
