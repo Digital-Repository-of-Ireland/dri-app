@@ -17,7 +17,6 @@ Background:
 
 Scenario: Export DigitalObject's metadata when I have edit/manage permissions
   When I go to the "object" "show" page for "dri:obj1"
-  Then show me the page
   Then I should see a "rights statement"
   #And I should see a "licence"
   And I should see a link to download metadata
