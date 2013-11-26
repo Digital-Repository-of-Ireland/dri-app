@@ -23,7 +23,6 @@ edit permission.
     And the object with pid "dri:obj1" is in the collection with pid "dri:coll1"
     And I am on the home page
     When I press the button to search
-    Then show me the page
     Then I should see a search result "Search Collection 1"
     And I should see a search result "Search Object 1"
 
