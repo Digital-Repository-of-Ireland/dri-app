@@ -86,7 +86,7 @@ module Interface
     end
 
     def is_type?(type)
-      within(:xpath, "//div[@id='document']") do
+      within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_search_results_container')]") do
         page.should have_content("Type: #{type}")
       end
     end

@@ -210,7 +210,7 @@ Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failu
   begin
     page.should have_selector ".alert", text: flash_for(message)
   rescue
-    save_and_open_page
+    #save_and_open_page
     raise
   end
 end
