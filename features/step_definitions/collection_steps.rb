@@ -17,12 +17,12 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
 end
 
 
-Given /^a Digital Object with pid "(.*?)", title "(.*?)", description "(.*?)" and type "(.*?)"(?: created by "(.*?)")?/ do |pid, title, desc, type, user|
+Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?/ do |pid, title, desc, type, user|
   pid = "dri:o" + @random_pid if (pid == "@random")
   digital_object = Batch.new(:pid => pid)
-  digital_object.title = [title]
-  digital_object.type = [type]
-  digital_object.description = [desc]
+  digital_object.title = title ? [title] : "Test Object" 
+  digital_object.type = type ? [type] : "Sound"
+  digital_object.description = desc ? [desc] : "A test object"
   if user
     User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
 
