@@ -127,13 +127,21 @@ asynchronous processing of background jobs. This introduces the following depend
 
 The file processing tools should be installed locally with the hydra-head.
 
+By default fits should be installed in the directory /opt/local/fits/ (this can
+be changed by modifying the config.fits_path setting in the file
+config/initializers/sufia.rb).
+
+By default ffmpeg should be installed in the directory /opt/local/bin (this can
+be changed by modifying the ffmpeg_path setting in the file config/settings.yml).
+
+
 For testing purposes Redis can be installed locally and started with the command
 
   $ sudo redis-server /opt/local/etc/redis.conf
 
 To start the worker to process jobs run
 
-  $ QUEUE="*" bundle exec rake resque:work 
+  $ QUEUE="*" bundle exec rake resque:work
 
 To view your queues (for debugging purposes) run
 
