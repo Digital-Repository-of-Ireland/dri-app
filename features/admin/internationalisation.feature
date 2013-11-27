@@ -5,14 +5,6 @@ Feature:
   As a user
   I should be able to see the website in English or Irish
 
-Before do
-  DatabaseCleaner.start
-end
-
-After do |scenario|
-  DatabaseCleaner.clean
-end
-
 Scenario Outline: Not logged in user should see their own language based on their browser
   Given my browser language is "<lang>"
   And I am not logged in
