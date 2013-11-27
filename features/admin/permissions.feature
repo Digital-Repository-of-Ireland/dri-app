@@ -5,11 +5,9 @@ Feature:
   I want to be able to set permissions on my Digital Objects
   And to retrieve my Digital Objects by collection
 
-Background:
-  Given I am logged in as "user1" in the group "cm"
-
 Scenario: Setting a list of users for restricted access
-  Given I am on the my collections page
+  Given I am logged in as "user1" in the group "cm"
+  And I am on the my collections page
   When I press the button to add new collection
   And I enter valid metadata for a collection
   And I choose "batch_read_groups_string_radio_restricted"
@@ -20,7 +18,8 @@ Scenario: Setting a list of users for restricted access
   Then the "batch_read_users_string" field should contain "test, test2, test3"
 
 Scenario Outline: Constructing a Digital Object using the web form should set default permissions
-  Given I have created a collection
+  Given I am logged in as "user1" in the group "cm"
+  And I have created a collection
   And I am on the new Digital Object page
   When I select a collection
   And I press the button to continue
@@ -43,7 +42,8 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
     | audio       | 
 
 Scenario Outline: Constructing a Digital Object using XML upload should set default permissions
-  Given I have created a collection
+  Given I am logged in as "user1" in the group "cm"
+  And I have created a collection
   And I am on the new Digital Object page
   When I select a collection
   And I press the button to continue
@@ -67,9 +67,11 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
 
 Scenario Outline: Collection visibility
   Given a collection with pid "dri:coll8" and title "Access Test" created by "test@test.com"
-  When I am on the new Digital Object page
+  Given I am not logged in
+  Given I am logged in as "user2"
+  And I am on the new Digital Object page
   Then the "ingestcollection" drop-down should not contain the option "dri:coll8"
-  When "user1@user1.com" has been granted "<permission>" permissions on "collection" with pid "dri:coll8"
+  When "user2@user2.com" has been granted "<permission>" permissions on "collection" with pid "dri:coll8"
   And I am on the new Digital Object page
   Then the "ingestcollection" drop-down should contain the option "dri:coll8"
 
