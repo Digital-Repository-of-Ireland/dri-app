@@ -270,33 +270,20 @@ When /^(?:|I )fill in "([^"]*)" number (.*?) with "([^"]*)"(?: within "([^"]*)")
   end
 end
 
-
 When /^(?:|I )choose "([^"]*)"(?: within "([^"]*)")?$/ do |field, selector|
   with_scope(selector) do
     choose(field)
   end
 end
 
-Then /^the "([^"]*)" field(?: within "([^"]*)")? should contain "([^"]*)"$/ do |field, selector, value|
+Then /^the( hidden)? "([^"]*)" field(?: within "([^"]*)")? should( not)? contain "([^"]*)"$/ do |visibility, field, selector, negate, value|
   with_scope(selector) do
-    field = find_field(field)
-    field_value = (field.tag_name == 'textarea') ? field.text : field.value
-    if field_value.respond_to? :should
-      field_value.should =~ /#{value}/
-    else
-      assert_match(/#{value}/, field_value)
-    end
-  end
-end
-
-Then /^the "([^"]*)" field(?: within "([^"]*)")? should not contain "([^"]*)"$/ do |field, selector, value|
-  with_scope(selector) do
-    field = find_field(field)
+    field = visibility ? find_field(field, :visible=>false) : find_field(field)
     field_value = (field.tag_name == 'textarea') ? field.text : field.value
     if field_value.respond_to? :should_not
-      field_value.should_not =~ /#{value}/
+      negate ? field_value.should_not =~ /#{value}/ : field_value.should =~ /#{value}/
     else
-      assert_no_match(/#{value}/, field_value)
+      negate ? assert_no_match(/#{value}/, field_value) : assert_match(/#{value}/, field_value)
     end
   end
 end

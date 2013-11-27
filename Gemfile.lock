@@ -1,5 +1,5 @@
 GIT
-  remote: git@dev.forasfeasa.ie:dri_data_models.git
+  remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models
   revision: 6f1d3ffc3fb4dd3d66700c224f7ebfce914ced99
   branch: action424
   specs:
@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group
-  revision: c7b44b1018f40eb390224d3fdc8130cf3a0f2bce
+  revision: 02332ef27c39c0c1491f0e7c09eefa787dbb10eb
   tag: develop
   specs:
     user_group (1.0.2)
@@ -137,7 +137,7 @@ GEM
       devise
     devise-i18n-views (0.2.8)
     diff-lcs (1.2.5)
-    docile (1.1.0)
+    docile (1.1.1)
     ensure_valid_encoding (0.5.3)
     equivalent-xml (0.3.0)
       nokogiri (>= 1.4.3)
@@ -234,7 +234,7 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.8.1)
-    launchy (2.4.0)
+    launchy (2.4.1)
       addressable (~> 2.3)
     listen (2.2.0)
       celluloid (>= 0.15.2)
@@ -249,7 +249,7 @@ GEM
       carrierwave (>= 0.5.8)
       foreigner (>= 0.9.1)
       rails (> 3.0.0)
-    marc (0.8.0)
+    marc (0.8.1)
       ensure_valid_encoding
       unf
     mediashelf-loggable (0.4.9)
