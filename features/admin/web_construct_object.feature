@@ -139,7 +139,7 @@ Scenario Outline: Adding an audio file that is not valid
   Examples:
     | asset_name               | case              |
     | sample_audio.txt         | invalid file type |
-    | sample_invalid_audio.mp3 | invalid file type |
+#    | sample_invalid_audio.mp3 | invalid file type |
 
 Scenario: Adding a file that contains a virus
   Given I have created a Digital Object
@@ -159,4 +159,4 @@ Scenario Outline: Editing an audio file where the file is invalid
   Examples:
     | asset_name               | case              |
     | sample_audio.txt         | invalid file type |
-    | sample_invalid_audio.mp3 | invalid file type |
+#    | sample_invalid_audio.mp3 | invalid file type |
