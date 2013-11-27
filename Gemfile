@@ -10,7 +10,7 @@ gem 'sufia-models', '3.2.1'
 
 gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :branch => 'action424'
 #gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'action424'
-gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :tag => 'develop'
+gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :branch => 'develop'
 
 gem 'rails_config'
 gem 'sqlite3'
