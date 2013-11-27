@@ -10,6 +10,7 @@ class CharacterizeJob < ActiveFedoraPidBasedJob
   end
 
   def after_characterize
+    Sufia.queue.push(CreateChecksumsJob.new(generic_file_id))
     Sufia.queue.push(CreateBucketJob.new(generic_file_id))
   end
 

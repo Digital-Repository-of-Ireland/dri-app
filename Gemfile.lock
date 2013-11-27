@@ -1,6 +1,6 @@
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models
-  revision: 6f1d3ffc3fb4dd3d66700c224f7ebfce914ced99
+  revision: 96b8b1017d9237d199482046447a413c807f46a4
   branch: action424
   specs:
     dri_data_models (1.0.0)
