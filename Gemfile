@@ -8,8 +8,8 @@ gem 'blacklight', '4.0.0'
 gem 'hydra-head', '6.3.0'
 gem 'sufia-models', '3.2.1'
 
-# gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :tag => 'v1.0.1'
-gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'action424'
+gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :branch => 'action424'
+#gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'action424'
 gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :tag => 'develop'
 
 gem 'rails_config'
