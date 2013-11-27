@@ -5,7 +5,7 @@ class IndexTextJob < ActiveFedoraPidBasedJob
   end
 
   def run
-    Rails.logger.info "Creating full text index of #{object_id} asset"
+    Rails.logger.info "Creating full text index of #{pid} asset"
   end
 
 end
