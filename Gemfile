@@ -4,9 +4,9 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-gem 'blacklight', '4.0.0'
-gem 'hydra-head', '6.3.0'
-gem 'sufia-models', '3.2.1'
+gem 'blacklight', '4.5.0'
+gem 'hydra-head', '6.4.0'
+gem 'sufia-models', '3.4.0'
 
 gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :branch => 'action424'
 #gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'action424'
