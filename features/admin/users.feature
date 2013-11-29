@@ -150,7 +150,6 @@ Scenario: A user provides an invalid profile image url
   And I submit the Edit User form
   Then I should see a failure message for "invalid profile image"
 
-@wip
 Scenario: an admin user creates a new user account
   Given I am logged in as "adminuser" in the group "admin"
   And I am on the User Sign up page
