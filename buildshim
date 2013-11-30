@@ -1,0 +1,81 @@
+#!/bin/bash
+
+if [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then
+  # First try to load from a user install
+  source "$HOME/.rvm/scripts/rvm"
+elif [[ -s "/usr/local/rvm/scripts/rvm" ]] ; then
+  # Then try to load from a root install
+  source "/usr/local/rvm/scripts/rvm"
+else
+  printf "ERROR: An RVM installation was not found.\n"
+fi
+
+rvm use ruby-2.0.0-p195 || exit 100
+rvm use ruby-2.0.0-p195@build --create || exit 100
+rvm --force gemset empty ruby-2.0.0p195@build || exit 100
+
+case $1 in
+patch)
+    ;;
+install_deps)
+    ;;
+configure)
+
+cp config/fedora.yml.sample config/fedora.yml
+cp config/solr.yml.sample config/solr.yml
+cp config/database.yml.sample config/database.yml
+
+cat > config/settings.local.yml << __EOF__
+ingest:
+  steps: [collection, type, ingestmethod, metadata]
+  step_data:
+    collection: [ingestcollection]
+    type: [ingesttype]
+    ingestmethod: [ingestmethod]
+interface:
+  languages: [en, ga]
+dri:
+  files: dri_files
+queue:
+  audio: [CreateBucket, CreateChecksums, CreateMp3, CreateOgg]
+  pdfdoc: [CreateBucket, CreateChecksums, FullTextIndex]
+plugins:
+  ffmpeg_path: /usr/bin/ffmpeg
+mp3_web_quality_out_options:
+  codec: # default is for ffmpeg to auto-detect appropriate codec, this should be good for most scenarios
+  strip_metadata: "yes" # default is to preserve global metadata
+  channel: "2" # default is same as input file
+  bitrate: "96k" # default is same as input file
+  frequency: "44100" # default is same as input file
+ogg_web_quality_out_options:
+  codec: libvorbis # Default for ogg will produce very large files
+  strip_metadata: "yes" # default is preserve global metadata
+  channel: "2" # default is same as input file
+  bitrate: "96k" # default is same as input file
+  frequency: "44100" # default is same as input file
+S3:
+  server: objects.tchpc.tcd.ie
+  access_key_id: OMZPBA7D6U3MZ6MBVJZQ
+  secret_access_key: nnXKfE/+0zfEsHW8n55ffP18Bvn+N9sJ83AmWPOS
+__EOF__
+
+    bundle install --quiet
+    bundle exec rake db:seed
+    bundle exec rake db:test:prepare
+    bundle exec rake db:migrate
+    bundle exec rake dri:fixtures:generate
+    ;;
+compile)
+    ;;
+check)
+    bundle exec rake ci || exit 100
+    ;;
+package)
+    ;;
+upload)
+    ;;
+compile_extra)
+    ;;
+uninstall_deps)
+    ;;
+esac
