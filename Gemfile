@@ -1,14 +1,14 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'rails', '3.2.13'
 gem 'blacklight', '4.5.0'
 gem 'hydra-head', '6.4.0'
 gem 'sufia-models', '3.4.0'
 
-gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :branch => 'action424'
+gem 'dri_data_models', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models', :branch => 'develop'
 #gem 'dri_data_models', :git => 'git@dev.forasfeasa.ie:dri_data_models.git', :branch => 'action424'
 gem 'user_group', :git => 'ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group', :branch => 'develop'
 

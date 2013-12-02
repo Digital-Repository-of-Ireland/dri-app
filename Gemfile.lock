@@ -1,11 +1,11 @@
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models
-  revision: 96b8b1017d9237d199482046447a413c807f46a4
-  branch: action424
+  revision: 03b08ff21391e11a5edeeea6edc0c38fd33b9a20
+  branch: develop
   specs:
-    dri_data_models (1.0.0)
-      hydra-access-controls (>= 6.1.0)
-      hydra-head (>= 6.1.0)
+    dri_data_models (1.0.1)
+      hydra-access-controls (>= 6.4.0)
+      hydra-head (>= 6.4.0)
       iso-639
       sufia-models
 
@@ -24,7 +24,7 @@ GIT
       rails
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     actionmailer (3.2.13)
       actionpack (= 3.2.13)
