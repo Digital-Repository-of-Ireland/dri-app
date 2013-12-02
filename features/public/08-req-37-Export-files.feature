@@ -15,10 +15,16 @@ And the asset file to my local drive
 
 Background:
   Given I am logged in as "user1"
-  And an object with pid "dri:1234" exists
+  Given a Digital Object with pid "dri:1234", title "Object 1" created by "user1@user1.com"
+  And a collection with pid "dri:coll1"
+  When I add the Digital Object "dri:1234" to the collection "dri:coll1" as type "governing"
+  And I add the asset "sample_audio.mp3" to "dri:1234"
+  And the object with pid "dri:1234" is published
+  Then the collection "dri:coll1" should contain the Digital Object "dri:1234" as type "governing"
+  Given I am not logged in
+
 
 Scenario: Export DigitalObject's metadata
-  Given PENDING: UI work, should public head be able to export metadata - see policy/usage etc...
   When I go to the "object" "show" page for "dri:1234"
   Then I should see a "rights statement"
   #And I should see a "licence"
