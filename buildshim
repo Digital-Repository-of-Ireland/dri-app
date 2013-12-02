@@ -68,7 +68,9 @@ __EOF__
 compile)
     ;;
 check)
+    bundle exec rake ci_spec || exit 100
     bundle exec rake ci || exit 100
+    bundle exec rake rdoc
     ;;
 package)
     ;;
