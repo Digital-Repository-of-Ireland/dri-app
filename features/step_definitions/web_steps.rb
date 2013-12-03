@@ -321,7 +321,7 @@ When /^I accept the alert$/ do
   page.driver.browser.switch_to.alert.accept
 end
 
-Then(/^the radio button "(.*?)" should( not)? be "(.*?)"$/) do |field, negate, status|
+Then /^the radio button "(.*?)" should (not )?be "(.*?)"$/ do |field, negate, status|
   negate ? (find_by_id(field).should_not be_checked) : (find_by_id(field).should be_checked)
 end
 

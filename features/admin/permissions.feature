@@ -40,16 +40,12 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
   And I press the button to continue
   Then I should see a success message for ingestion
   When I follow the link to edit an object
-  Then the radio button "batch_private_metadata_radio_inherit should be "checked"
+  Then the radio button "batch_private_metadata_radio_inherit" should be "checked"
   And the radio button "batch_read_groups_string_radio_inherit" should be "checked"
   And the radio button "batch_master_file_radio_inherit" should be "checked"
   And the radio button "batch_edit_groups_string_radio_inherit" should be "checked"
   And the radio button "batch_manager_groups_string_radio_inherit" should be "checked"
   And the radio button "batch_embargo_radio_inherit" should be "checked"
-  #Then the radio button "batch_private_metadata_radio_inherit" should be "checked"
-  #And the hidden "batch_read_groups_string" field should contain ""
-  #And the radio button "batch_master_file_radio_inherit" should be "checked"
-  #And the "batch_manager_users_string" field should contain "user1@user1.com"
 
   Examples:
     | object_type |
