@@ -32,7 +32,7 @@ class CollectionsController < CatalogController
         @collections = collectionhash
       }
     end
-    
+
   end
 
   # Creates a new model.
@@ -47,7 +47,7 @@ class CollectionsController < CatalogController
     @object.discover_groups_string="public"
     @object.read_groups_string="public"
     @object.private_metadata="0"
-    @object.master_file="1"
+    @object.master_file="0"
     @object.object_type = ["Collection"]
     @object.title = [""]
     @object.description = [""]
@@ -123,7 +123,7 @@ class CollectionsController < CatalogController
   #
   def create
     enforce_permissions!("create", Batch)
-    
+
     set_access_permissions(:batch)
 
     @collection = Batch.new
@@ -133,9 +133,9 @@ class CollectionsController < CatalogController
 
     if !@collection.type.include?("Collection")
       @collection.type.push("Collection")
-    end    
+    end
     @collection.update_attributes(params[:batch])
-    
+
 
     # depositor is not submitted as part of the form
     @collection.depositor = current_user.to_s
