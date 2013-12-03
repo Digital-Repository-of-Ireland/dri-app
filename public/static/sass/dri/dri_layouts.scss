@@ -4,9 +4,19 @@
 @import "../zen/_background";
 @import "dri.scss";
 
+/* Anna updated html and body */
+html {
+  margin-bottom: 0.5em;
+	height: 100%;
+		}
+
 body {
-	
+	font: 76%/1.6 Arial, Helvetica, clean,sans-serif;
+	*font-size: small;
+	*font: x-small;
+	margin: 0;
 }
+/* Anna updated html and body */
 
 .dri_wrapper {
 	@include zen-grid-container;
