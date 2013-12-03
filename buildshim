@@ -18,6 +18,8 @@ case $1 in
 patch)
     ;;
 install_deps)
+    git submodule init
+    git submodule update
     ;;
 configure)
 
