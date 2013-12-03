@@ -75,6 +75,12 @@ check)
 package)
     ;;
 upload)
+    if [[ -s "$HOME/hosts.buildbot" ]] ; then
+      cp $HOME/hosts.buildbot deploy/hosts.buildbot
+      ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-nuig-rnag.yml
+    else
+      printf "Can't upload and deploy, can't find hosts.buildbot file"
+    fi
     ;;
 compile_extra)
     ;;
