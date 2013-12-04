@@ -21,9 +21,9 @@ Scenario: Constructing a Collection using the web form should set default permis
   Given I am logged in as "user1" in the group "cm"
   And I am on the my collections page
   And I press the button to add new collection
-  Then the radio button "batch_private_metadata_radio_public" is "checked"
-  And the radio button "id="batch_read_groups_string_radio_public" is "checked"
-  And the radio button "batch_master_file_radio_private" is "checked"
+  Then the radio button "batch_private_metadata_radio_public" should be "checked"
+  And the radio button "batch_read_groups_string_radio_public" should be "checked"
+  And the radio button "batch_master_file_radio_private" should be "checked"
   And the "batch_manager_users_string" field should contain "user1@user1.com"
 
 Scenario Outline: Constructing a Digital Object using the web form should set default permissions
@@ -40,12 +40,12 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
   And I press the button to continue
   Then I should see a success message for ingestion
   When I follow the link to edit an object
-  Then the radio button "batch_private_metadata_radio_inherit is "checked"
-  And the radio button "batch_read_groups_string_radio_inherit" is "checked"
-  And the radio button "batch_master_file_radio_inherit" is "checked"
-  And the radio button "batch_edit_groups_string_radio_inherit" is "checked"
-  And the radio button "batch_manager_groups_string_radio_inherit" is "checked"
-  And the radio button "batch_embargo_radio_inherit" is "checked"
+  Then the radio button "batch_private_metadata_radio_inherit" should be "checked"
+  And the radio button "batch_read_groups_string_radio_inherit" should be "checked"
+  And the radio button "batch_master_file_radio_inherit" should be "checked"
+  And the radio button "batch_edit_groups_string_radio_inherit" should be "checked"
+  And the radio button "batch_manager_groups_string_radio_inherit" should be "checked"
+  And the radio button "batch_embargo_radio_inherit" should be "checked"
 
   Examples:
     | object_type |
@@ -66,9 +66,9 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
   When I follow the link to edit an object
-  Then the radio button "batch_private_metadata_radio_public" is "checked"
-  And the hidden "batch_read_groups_string" field should contain "registered"
-  And the radio button "batch_master_file_radio_public" is "checked"
+  Then the radio button "batch_private_metadata_radio_public" should be "checked"
+  And the hidden "batch_read_groups_string" field should contain ""
+  And the radio button "batch_master_file_radio_public" should be "checked"
   And the "batch_manager_users_string" field should contain "user1@user1.com"
 
   Examples:
