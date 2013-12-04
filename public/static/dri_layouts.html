@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,28 @@
 
 <link rel="stylesheet" type="text/css" media="screen"
 	href="stylesheets/dri/dri_layouts.css">
+<script src="javascripts/jquery-1.10.2.js"></script>
+<script src="javascripts/jquery-ui.js"></script>
+
+<script>
+  $(function() {
+    $( "#dri_dialog" ).dialog({
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 500
+      },
+      hide: {
+        effect: "explode",
+        duration: 500
+      }
+    });
+ 
+    $( "#dri_search_save_submit_button_id" ).click(function() {
+      $( "#dri_dialogue" ).dialog( "open" );
+    });
+  });
+  </script>
 
 </head>
 
@@ -15,18 +38,18 @@
 	<div id="dri_wrapper_id" class="block1 dri_wrapper">
 
 		<header id="dri_header_container_id" class="dri_header_container">
-			<div id="dri_ident_id" class="dri_ident" alt="dri logo"></div>
-			<a href="#"><div id="dri_ident_id" class="dri_ident"></div></a>
+
 			<div id="dri_authentication_menus_container_id"
 				class="dri_authentication_menus_container">
 
 				<nav id="dri_account_nav_id" class="dri_account_nav">
 					<ul id="dri_account_links_id" class="dri_account_links" role="tree">
-						<li><a href="#" alt="sign up link">Sign Up</a></li>
-						<li><a href="#" alt="login link">Login</a></li>
+						<li class="on"><a href="#" alt="sign up link">Sign Up</a></li>
+						<li class="noborder"><a href="#" alt="login link">Login</a></li>
 						<ul id="dri_language_links_id" class="dri_language_links">
-							<li><a href="#">Gaeilge</a></li>
-							<li class="selected" aria-selected="true"><a href="#">English</a></li>
+							<li class="selected" aria-selected="true"><a href="#">English
+									<img src="images/account_arrow.png" width="10" height="5">
+							</a></li>
 						</ul>
 					</ul>
 				</nav>
@@ -37,29 +60,36 @@
 
 				<nav id="dri_social_media_nav_id" class="dri_social_media_nav">
 					<ul id="dri_social_media_links_id" class="dri_social_media_links">
-						<li><a href="#">Google</a></li>
-						<li><a href="#">Facebook</a></li>
+						<li><a href="#" class="facebook"></a></li>
+						<li><a href="#" class="linkedin"></a></li>
+						<li><a href="#" class="share"></a></li>
+						<li><a href="#" class="google"></a></li>
 					</ul>
 				</nav>
 			</div>
 			<!--  close dri_authentication_menus_container -->
+
+			<a href="#"><div id="dri_ident_id" class="dri_ident"></div></a>
 		</header>
 		<!-- close dri_header_container -->
 
 		<div id="dri_main_nav_container_id" class="dri_main_nav_container">
 			<nav id="dri_main_nav_id" class="dri_main_nav">
 				<ul id="dri_main_nav_links_id" class="dri_main_nav_links">
-					<li><a href="#">Featured</a></li>
-					<li class="selected"><a href="#">Collections</a></li>
+					<li><a href="#">FEATURED</a></li>
+					<li class="selected"><a href="#">COLLECTIONS</a></li>
+					<li><a href="#">ABOUT US</a></li>
 				</ul>
 			</nav>
 		</div>
 		<!-- close dri_main_nav_container -->
 		<div id="dri_sub_nav_container_id" class="dri_sub_nav_container">
 			<nav id="dri_sub_nav_id" class="dri_sub_nav">
-				<ul id="dri_main_nav_links_id" class="dri_sub_nav_links">
-					<li><a href="#">Subnav 1</a></li>
-					<li class="selected"><a href="#">Subnav 2</a></li>
+				<ul id="dri_main_nav_links_id"
+					class="dri_sub_nav_links dri_nav_collections">
+					<li><a href="#">Assigned Collections </a></li>
+					<li class="selected no_border_right"><a href="#">My
+							Objects</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -70,8 +100,9 @@
 			<nav id="dri_crumbtrail_nav_id" class="dri_crumbtrail_nav">
 				<ul id="dri_crumbtrail_nav_links_id"
 					class="dri_crumbtrail_nav_links">
-					<li><a href="#">Crumtrail 1</a> |</li>
-					<li class="selected"><a href="#">Crumbtrail 2</a></li>
+					<li><a href="#">Excepteur</a></li>
+					<li><a href="#">Sed ut perspiciatis</a></li>
+					<li class="selected"><a href="#">Excepteur</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -83,17 +114,19 @@
 
 			<!-- navigation to allow the user to determine how the search result are sorted e.g. by relevance, A to Z, Z to A -->
 			<nav id="dri_sort_nav_id" class="dri_sort_nav">
-				<ul id="dri_sort_nav_links_id" class="dri_sort_nav_links">
-					<li><a href="#">Relevance</li>
-					<li class="selected"><a href="#">A to Z</a></li>
-				</ul>
+				<select name="sort_options">
+					<option selected>Sort by</option>
+					<option>Relevance</option>
+					<option>A - Z</option>
+				</select>
 			</nav>
 
 			<!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
 			<nav id="dri_pager_nav_id" class="dri_pager_nav">
 				<ul id="dri_pager_nav_links_id" class="dri_pager_nav_links">
-					<li><a href="#">9</a></li>
-					<li class="selected"><a href="#">18</a></li>
+					<li><a href="#">9 </li>
+					<li class="selected"><a href="#">18</li>
+					<li><a href="#">36</li>
 				</ul>
 			</nav>
 
@@ -101,10 +134,11 @@
 			<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
 				<ul id="dri_pagination_nav_links_id"
 					class="dri_pagination_nav_links">
-					<li class="first"><a href="#">first</a></li>
-					<li><a href="#">2</a></li>
-					<li class="selected"><a href="#">3</a></li>
-					<li class="last"><a href="#">last</a></li>
+					<li class="first"><a href="#">&nbsp;</a></li>
+					<li><a href="#">1</a></li>
+					<li class="selected"><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li class="last"><a href="#">&nbsp;</a></li>
 				</ul>
 			</nav>
 
@@ -117,11 +151,10 @@
 					<input name="utf8" type="hidden" value="✓"> <input
 						name="search_field" type="hidden" value="all_fields"> <input
 						id="dri_search_term_text_input_id"
-						class="dri_search_term_text_input_id" name="q"
+						class="dri_search_term_text_input" name="q"
 						placeholder="Search..." type="text" value="">
 					<button id="dri_search_term_text_submit_button_id" type="submit"
-						class="dri_search_term_text_submit_button_id" id="search">
-						Search</button>
+						class="dri_search_term_text_submit_button" id="search">Ok</button>
 
 				</form>
 				<!-- close dri_search_term_input_form -->
@@ -135,12 +168,17 @@
 				<form id="dri_search_save_input_form_id"
 					class="dri_search_save_input_form">
 					<button id="dri_search_save_submit_button_id" type="submit"
-						class="dri_search_save_submit_button_id" id="search">
-						Save Current Search</button>
-
+						class="dri_search_save_submit_button" id="search">Save
+						Current Search</button>
 				</form>
 				<!-- close dri_search_term_input_form -->
 
+			</div>
+			<div id="dri_dialog_example_id" class="dri_dialog_example"
+				title="Example dialog">
+				<p>This is an dialog which is useful for displaying information.
+					The dialog window can be moved, resized and closed with the 'x'
+					icon.</p>
 			</div>
 			<!-- close dri_search_save_input -->
 
@@ -152,17 +190,32 @@
 			class="dri_facet_restrictions_container">
 			<ul id="dri_facet_restrictions_links_id"
 				class="dri_facet_restrictions_links">
-				<li><a href="#">x</a> | Báid</li>
-				<li><a href="#">x</a> | Galway</li>
+				<li>Báid <a href="#">x</a>
+				</li>
+				<li>Galway <a href="#">x</a>
+				</li>
 			</ul>
 		</div>
 		<!-- close dri_facet_restrictions_container -->
 
 		<!-- system messages container -->
 		<div id="dri_messages_container_id" class="dri_messages_container">
-			<h3 class="dri_messages_warning">
-				Warning Message!
-				</h1>
+			<div class="dri_info_message">
+				<h1>Info Message!</h1>
+				<span class="dri_close"><a href="#">X</a></span>
+			</div>
+			<div class="dri_successful_message">
+				<h1>Successful Message!</h1>
+				<span class="dri_close"><a href="#">X</a></span>
+			</div>
+			<div class="dri_warning_message">
+				<h1>Warning Message!</h1>
+				<span class="dri_close"><a href="#">X</a></span>
+			</div>
+			<div class="dri_error_message">
+				<h1>Error Message!</h1>
+				<span class="dri_close"><a href="#">X</a></span>
+			</div>
 		</div>
 		<!-- close dri_messages_container -->
 
@@ -220,8 +273,10 @@
 				class="dri_main_footer_navigation">
 				<ul id="dri_main_footer_navigation_links_id"
 					class="dri_main_footer_navigation_links">
-					<li><a href="#">First main_footer Item</a></li>
-					<li><a href="#">Second main_footer Item</a></li>
+					<li><a href="#">About DRI</a></li>
+					<li><a href="#">Security Policy</a></li>
+					<li><a href="#">Help</a></li>
+					<li class="selected no_border_right"><a href="#">Sitemap</a></li>
 				</ul>
 			</nav>
 		</footer>
