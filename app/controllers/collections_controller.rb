@@ -196,8 +196,8 @@ class CollectionsController < CatalogController
   private
 
     def valid_permissions?
-      if ((params[:batch][:private_metadata].blank? || params[:batch][:private_metadata]==UserGroup::Permissions::INHERIT_METADATA) ||
-       (params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
+      if (
+       #(params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
        (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
        (params[:batch][:manager_users_string].blank? && params[:batch][:manager_groups_string].blank? && params[:batch][:edit_users_string].blank? && params[:batch][:edit_groups_string].blank?))
          return false
@@ -219,7 +219,7 @@ class CollectionsController < CatalogController
     def count_items_in_collection collection_id
       solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
                    "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\")"
-      
+
       unless (current_user && current_user.is_admin?)
         fq = published_or_permitted_filter
       end
@@ -248,7 +248,7 @@ class CollectionsController < CatalogController
     def get_collections
       results = Array.new
       solr_query = "+object_type_sim:Collection"
-      
+
       unless (current_user && current_user.is_admin?)
         fq = published_or_permitted_filter
       end
