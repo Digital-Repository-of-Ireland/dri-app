@@ -35,15 +35,15 @@ class IngestController < CatalogController
         @object.description = [""]
         @object.creator = [""]
         @object.rights = [""]
-        @object.type = ["Text"]
+        @object.type = [@type] #["Text"]
 
-        if @type == "audio"
-          @object.type = ["Sound"]
-        elsif @type == "pdfdoc"
-          @object.type == ["Text"]
-        else
-          @object.type = [""]
-        end
+        #if @type == "audio"
+        #  @object.type = ["Sound"]
+        #elsif @type == "pdfdoc"
+        #  @object.type == ["Text"]
+        #else
+        #  @object.type = [""]
+        #end
       end
       
     else

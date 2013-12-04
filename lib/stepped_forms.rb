@@ -53,7 +53,7 @@ module SteppedForms
     end
 
     def get_supported_types
-      supported_types = { "Audio" => :audio, "Pdf" => :pdfdoc }
+      supported_types = [ "Sound", "Text", "Image", "MovingImage" ]
     end
 
     def valid_step_data?(step)

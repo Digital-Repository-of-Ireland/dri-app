@@ -44,8 +44,8 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
 
   Examples:
     | object_type |
-    | pdfdoc      |
-    | audio       |
+    | Text        |
+    | Sound       |
 
 Scenario Outline: Constructing a Digital Object using XML upload should set default permissions
   Given I am logged in as "user1" in the group "cm"
@@ -65,8 +65,8 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
 
   Examples:
     | object_type | metadata_file                 | format_type |
-    | pdfdoc      | dublin_core_pdfdoc_sample.xml | Article     |
-    | audio       | SAMPLEA.xml                   | Audio       |
+    | Text        | dublin_core_pdfdoc_sample.xml | Article     |
+    | Sound       | SAMPLEA.xml                   | Audio       |
 
 Scenario Outline: Collection visibility
   Given a collection with pid "dri:coll8" and title "Access Test" created by "test@test.com"
@@ -74,7 +74,7 @@ Scenario Outline: Collection visibility
   Given I am logged in as "user2"
   And I am on the new Digital Object page
   Then the "ingestcollection" drop-down should not contain the option "dri:coll8"
-  When "user2@user2.com" has been granted "<permission>" permissions on "collection" with pid "dri:coll8"
+  When "user2@user2.com" has been granted "<permission>" permissions on "dri:coll8"
   And I am on the new Digital Object page
   Then the "ingestcollection" drop-down should contain the option "dri:coll8"
 

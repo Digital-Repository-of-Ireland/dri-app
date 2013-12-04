@@ -62,8 +62,8 @@ Scenario Outline: Running background jobs and creating surrogates for different 
 
   Examples:
     | type   | surrogates |
-    | audio  | mp3, clip  |
-    | pdfdoc | extract    |
+    | Sound  | mp3, clip  |
+    | Text   | extract    |
 
 ## note for the above checksum and virus check are actions against any
 ## object, "virus checked" and "checksum" should be the actions

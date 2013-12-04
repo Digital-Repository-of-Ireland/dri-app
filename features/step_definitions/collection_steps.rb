@@ -66,7 +66,7 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
     Given I am on the new Digital Object page
     And I select "#{collection_pid}" from the selectbox for ingest collection
     And I press the button to continue
-    And I select "pdfdoc" from the selectbox for object type
+    And I select "Text" from the selectbox for object type
     And I press the button to continue
     And I select "upload" from the selectbox for ingest methods
     And I press the button to continue

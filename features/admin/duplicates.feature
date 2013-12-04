@@ -10,11 +10,11 @@ Background:
   And I have created a collection with title "Test Collection"
 
 Scenario: Ingesting a duplicate Digital Object using metadata file upload
-  Given I have created an "audio" object with metadata "SAMPLEA.xml" in the collection "Test Collection"
+  Given I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Test Collection"
   And I am on the new Digital Object page
   When I select the text "Test Collection" from the selectbox for ingest collection
   And I press the button to continue
-  And I select "audio" from the selectbox for object type
+  And I select "Sound" from the selectbox for object type
   And I press the button to continue
   And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
@@ -24,11 +24,11 @@ Scenario: Ingesting a duplicate Digital Object using metadata file upload
   And I should see the message "Possible duplicate objects found"
 
 Scenario: Ingesting a duplicate Digital Object using form input
-  Given I have created an "audio" object with title "SAMPLE OBJECT A" in the collection "Test Collection"  
+  Given I have created a "Sound" object with title "SAMPLE OBJECT A" in the collection "Test Collection"  
   And I am on the new Digital Object page
   When I select the text "Test Collection" from the selectbox for ingest collection
   And I press the button to continue
-  And I select "audio" from the selectbox for object type
+  And I select "Sound" from the selectbox for object type
   And I press the button to continue
   And I select "input" from the selectbox for ingest methods
   And I press the button to continue
@@ -38,8 +38,8 @@ Scenario: Ingesting a duplicate Digital Object using form input
   And I should see the message "Possible duplicate objects found"
 
 Scenario: Creating a duplicate Digital Object by replacing the metadata file
-  Given I have created an "audio" object with metadata "SAMPLEA.xml" in the collection "Test Collection"
-  And I have created an "audio" object with metadata "SAMPLEB.xml" in the collection "Test Collection"
+  Given I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Test Collection"
+  And I have created a "Sound" object with metadata "SAMPLEB.xml" in the collection "Test Collection"
   Then I should not see the message "Possible duplicate objects found"
   And I should see a link to edit an object
   When I follow the link to edit an object
@@ -49,8 +49,8 @@ Scenario: Creating a duplicate Digital Object by replacing the metadata file
   And I should see the message "Possible duplicate objects found"
 
 Scenario: Creating a duplicate Digital Object by editing with the metadata form
- Given I have created an "audio" object with title "SAMPLE OBJECT A" in the collection "Test Collection"
- And I have created an "audio" object with title "SAMPLE OBJECT B" in the collection "Test Collection"
+ Given I have created a "Sound" object with title "SAMPLE OBJECT A" in the collection "Test Collection"
+ And I have created a "Sound" object with title "SAMPLE OBJECT B" in the collection "Test Collection"
  Then I should not see the message "Possible duplicate objects found"
  And I should see a link to edit an object
  When I follow the link to edit an object
