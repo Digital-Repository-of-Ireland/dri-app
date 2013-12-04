@@ -18,7 +18,7 @@ Scenario: Constructing a valid Digital Object
   And I am on the new Digital Object page
   When I select a collection
   And I press the button to continue
-  And I select "audio" from the selectbox for object type
+  And I select "Sound" from the selectbox for object type
   And I press the button to continue
   And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
@@ -41,9 +41,9 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
 
   Examples:
     | object_type | metadata_file                 | case             | 
-    | audio       | metadata_no_rights.xml        | invalid object   |
-    | audio       | invalid_schema_metadata.xml   | invalid schema   |
-    | audio       | invalid_xml_metadata.xml      | invalid metadata |
+    | Sound       | metadata_no_rights.xml        | invalid object   |
+    | Sound       | invalid_schema_metadata.xml   | invalid schema   |
+    | Sound       | invalid_xml_metadata.xml      | invalid metadata |
 
 Scenario Outline: Constructing a valid Digital Object
   Given I have created a collection
@@ -61,11 +61,11 @@ Scenario Outline: Constructing a valid Digital Object
 
   Examples:
     | object_type | metadata_file                 | type        |
-    | pdfdoc      | dublin_core_pdfdoc_sample.xml | Text        |
-    | audio       | SAMPLEA.xml                   | Sound       |
+    | Text        | dublin_core_pdfdoc_sample.xml | Text        |
+    | Sound       | SAMPLEA.xml                   | Sound       |
 
 Scenario: Adding a pdf asset to an object
-  Given I have created a pdfdoc object 
+  Given I have created a Text object 
   Then I should see a link to edit an object
   When I follow the link to edit an object
   And I attach the asset file "sample_pdf.pdf"
@@ -85,7 +85,7 @@ Scenario: Constructing a Digital Object using the web form
   And I am on the new Digital Object page
   When I select a collection
   And I press the button to continue
-  And I select "audio" from the selectbox for object type
+  And I select "Sound" from the selectbox for object type
   And I press the button to continue
   And I select "input" from the selectbox for ingest methods
   And I press the button to continue
@@ -98,7 +98,7 @@ Scenario: Constructing a Digital Object using the web form
 Scenario: Constructing a Digital Object using the web form without setting a collection
   Given I am on the new Digital Object page
   And I press the button to continue
-  And I select "audio" from the selectbox for object type
+  And I select "Sound" from the selectbox for object type
   And I press the button to continue
   And I select "input" from the selectbox for ingest methods
   And I press the button to continue

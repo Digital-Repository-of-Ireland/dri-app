@@ -11,7 +11,7 @@ Given /^I have created a Digital Object$/ do
     And I am on the new Digital Object page
     And I select a collection
     And I press the button to continue
-    And I select "audio" from the selectbox for object type
+    And I select "Sound" from the selectbox for object type
     And I press the button to continue
     And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
@@ -20,7 +20,7 @@ Given /^I have created a Digital Object$/ do
   }
 end
 
-Given /^I have created a (pdfdoc|audio) object$/ do |type|
+Given /^I have created a (Text|Sound) object$/ do |type|
   steps %{
     Given I have created a collection
     And I am on the new Digital Object page
@@ -35,7 +35,7 @@ Given /^I have created a (pdfdoc|audio) object$/ do |type|
   }
 end
 
-Given /^I have created an "(.*?)" object with metadata "(.*?)" in the collection "(.*?)"$/ do |type, metadata, collection_title|
+Given /^I have created a "(.*?)" object with metadata "(.*?)" in the collection "(.*?)"$/ do |type, metadata, collection_title|
   steps %{
     Given I am on the new Digital Object page
     When I select the text "#{collection_title}" from the selectbox for ingest collection
@@ -49,7 +49,7 @@ Given /^I have created an "(.*?)" object with metadata "(.*?)" in the collection
   }
 end
 
-Given /^I have created an "(.*?)" object with title "(.*?)" in the collection "(.*?)"$/ do |type, title, collection_title|
+Given /^I have created a "(.*?)" object with title "(.*?)" in the collection "(.*?)"$/ do |type, title, collection_title|
   steps %{
     Given I am on the new Digital Object page
     When I select the text "#{collection_title}" from the selectbox for ingest collection
@@ -144,12 +144,12 @@ When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|
   interface.enter_valid_metadata(title)
 end
 
-When /^I enter valid "(audio|pdfdoc)" metadata$/ do |type|
+When /^I enter valid "(sound|text)" metadata$/ do |type|
   title ||= "A Test Object"
   case type
-    when "audio"
+    when "sound"
       interface.enter_valid_metadata(title)
-    when "pdfdoc"
+    when "text"
       interface.enter_valid_pdf_metadata(title)
   end
 end

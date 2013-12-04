@@ -1,4 +1,4 @@
-When(/^"(.*?)" has been granted "(.*?)" permissions on "(.*?)" with pid "(.*?)"$/) do |user, permission, type, pid|
+When(/^"(.*?)" has been granted "(.*?)" permissions on "(.*?)"$/) do |user, permission, pid|
   object = ActiveFedora::Base.find(pid, {:cast => true})
   
   if permission == "manage"

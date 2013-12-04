@@ -53,10 +53,10 @@ Scenario Outline: Adding a Digital Object in a governing/non-governing collectio
 
   Examples:
     | object_pid | object_title | object_desc | object_type | object_rights | collection_pid | governance_type |
-    | dri:obj1   | Object 1     | Test 1      | audio       | Test Rights   | dri:coll1      | governing       |
-    | dri:obj2   | Object 2     | Test 2      | pdfdoc      | Test Rights   | dri:coll1      | governing       |
-    | dri:obj3   | Object 3     | Test 3      | audio       | Test Rights   | dri:coll2      | non-governing   |
-    | dri:obj4   | Object 4     | Test 4      | pdfdoc      | Test Rights   | dri:coll2      | non-governing   |
+    | dri:obj1   | Object 1     | Test 1      | Sound       | Test Rights   | dri:coll1      | governing       |
+    | dri:obj2   | Object 2     | Test 2      | Text        | Test Rights   | dri:coll1      | governing       |
+    | dri:obj3   | Object 3     | Test 3      | Sound       | Test Rights   | dri:coll2      | non-governing   |
+    | dri:obj4   | Object 4     | Test 4      | Text        | Test Rights   | dri:coll2      | non-governing   |
 
 Scenario Outline: Creating Digital Object in a governing collection using the web forms
   Given a collection with pid "<collection_pid>" created by "user1@user1.com"
