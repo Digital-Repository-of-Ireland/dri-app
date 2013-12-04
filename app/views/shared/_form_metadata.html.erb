@@ -1,7 +1,7 @@
 <fieldset id="metadata">
   <% if action.eql?("update") && params[:controller] != "collections" %>
     <%= f.label "#{t('dri.views.objects.forms.governing_collection')}:" %>
-    <%= f.select :governing_collection_id,  options_for_select(get_collections{ |c| [c.title, c.pid] }, get_governing_collection(@object)), :prompt => t('dri.views.ingest.forms.collection_prompt'), :class => "edit span6" %>
+    <%= f.select :governing_collection_id,  options_for_select(@collections, get_governing_collection(@object)), :prompt => t('dri.views.ingest.forms.collection_prompt'), :class => "edit span6" %>
   <% end %>
 </fieldset>
 <legend><%= t('dri.views.objects.legends.metadata') %></legend>
