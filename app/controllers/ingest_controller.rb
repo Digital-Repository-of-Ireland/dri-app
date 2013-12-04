@@ -14,6 +14,8 @@ class IngestController < CatalogController
     reset_ingest_state
     @current_step = session[:ingest][:current_step]
 
+    @collections = get_collections    
+
     respond_to do |format|
       format.html
     end

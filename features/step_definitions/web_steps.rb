@@ -321,13 +321,8 @@ When /^I accept the alert$/ do
   page.driver.browser.switch_to.alert.accept
 end
 
-Then(/^the radio button "(.*?)" is "(.*?)"$/) do |field, status|
-  case status
-    when "checked"
-      page.has_checked_field?(field)
-    when "not checked"
-      page.has_no_checked_field?(field)
-  end
+Then /^the radio button "(.*?)" should (not )?be "(.*?)"$/ do |field, negate, status|
+  negate ? (find_by_id(field).should_not be_checked) : (find_by_id(field).should be_checked)
 end
 
 Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |id, negate, value|

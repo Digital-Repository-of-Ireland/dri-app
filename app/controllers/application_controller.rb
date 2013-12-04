@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   include Exceptions
 
   include UserGroup::PermissionsCheck
+  include UserGroup::SolrAccessControls
 
   include PermissionMethods
 
@@ -84,6 +85,22 @@ class ApplicationController < ActionController::Base
         flash[:alert] = warning
         @warnings = warning
       end
+  end
+
+  def get_collections
+    results = Array.new
+    solr_query = "+object_type_sim:Collection"
+
+    unless (current_user && current_user.is_admin?)
+      fq = manager_and_edit_filter
+    end
+
+    result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim", :fq => fq)
+    result_docs.each do | doc |
+      results.push([doc["title_tesim"][0], doc['id']])
+    end
+
+    return results
   end
 
   private

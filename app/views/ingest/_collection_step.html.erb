@@ -1,7 +1,7 @@
 <h2><%= t('dri.views.ingest.steps.collection') %></h2>
 
 <%= form_tag :action=>"create" do %>
-  <%= select_tag "ingestcollection",  options_for_select(get_collections), :prompt => t('dri.views.ingest.forms.collection_prompt'), :required => "true" %>
+  <%= select_tag "ingestcollection",  options_for_select(@collections), :prompt => t('dri.views.ingest.forms.collection_prompt'), :required => "true" %>
   <%= submit_tag t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>
 
 <% end %>

@@ -40,20 +40,6 @@ module ApplicationHelper
     @surrogates = Storage::S3Interface.get_surrogates doc
   end
 
-  def get_collections
-    results = Array.new
-    #solr_query = "+object_type_sim:Collection +depositor_sim:*"
-    solr_query = "+object_type_sim:Collection"
-    solr_query += " AND (" + generate_manager_permission_filters().join(" OR ") + ")" unless current_user && current_user.is_admin?
-
-    result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "500", :fl => "id,title_tesim")
-    result_docs.each do | doc |
-      results.push([doc["title_tesim"][0], doc['id']])
-    end
-
-    return results
-  end
-
   def get_governing_collection( object )
     if !object.governing_collection.nil?
       object.governing_collection.pid
@@ -88,36 +74,6 @@ module ApplicationHelper
     Settings.data.types.each do |type|
       @type_counts[type] =  count_published_items_in_collection_by_type( id, type )
     end
-  end
-
-  def generate_manager_permission_filters()
-      filters = []
-
-      user_roles = current_ability.user_groups
-      user_roles |= ['public']
-
-      string_user_roles = "("+user_roles.join(" OR ")+")"
-
-      permission_types = [ "manager", "edit" ]
-
-      permission_types.each do |type|
-        permission_query = escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_group", Hydra::Datastream::RightsMetadata.indexer), string_user_roles)
-
-        if current_user && current_user.user_key.present?
-          permission_query += " OR " + escape_filter(ActiveFedora::SolrService.solr_name("#{type}_access_person", Hydra::Datastream::RightsMetadata.indexer), current_user.user_key)
-        end
-
-        permission_query = "_query_:\"{!join from=id to=governing_id_sim}" + permission_query + "\" OR " +
-                           "("+permission_query+")"
-
-        filters << permission_query
-      end
-
-      filters
-  end
-    
-  def escape_filter(key, value)
-    [key, value.gsub('/', '\/')].join(':')
   end
 
 end
