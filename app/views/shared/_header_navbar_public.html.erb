@@ -27,6 +27,7 @@
 				          <ul class="dri_sign_up">
 					    <li><%= link_to current_user, user_group.user_path(current_user), :id => "view_account" %></li>
                                             <li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+                                            <li><%= link_to t('dri.headerlinks.collections.admin'), main_app.collections_path(:view => 'mine'), :id => "manage_collections" %></li>
                                             <li><%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %></li>
                                             <% if signed_in? && current_user.is_admin? %>
                                               <li><%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, :id => "resque" %></li>

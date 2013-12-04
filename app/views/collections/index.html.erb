@@ -2,11 +2,7 @@
   <div id="document">
     <div class="document">
       <h1>
-        <% if signed_in? %>
-          <%= t('dri.views.collection.index.title.admin') %>
-        <% else %>
           <%= t('dri.views.collection.index.title.public') %>
-        <% end %>
       </h1>
 
         <% @collections.each do |collection| %>

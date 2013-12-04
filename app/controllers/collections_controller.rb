@@ -11,7 +11,7 @@ class CollectionsController < CatalogController
   # Shows list of user's collections
   #
   def index
-    @collections = get_collections
+    @collections = get_collections(params[:view])
     @collection_counts = {}
 
     @collections.each do |collection|
@@ -245,14 +245,21 @@ class CollectionsController < CatalogController
       return results
     end
 
-    def get_collections
+    def get_collections(view = 'mine')
       results = Array.new
       solr_query = "+object_type_sim:Collection"
 
-      unless (current_user && current_user.is_admin?)
-        fq = published_or_permitted_filter
-      end
-
+      case view
+        when 'all'  
+          fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
+        when 'mine'
+          fq = manager_and_edit_filter unless (current_user && current_user.is_admin?)
+        when 'published'
+          fq = published_filter
+        else
+          fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
+      end 
+      
       result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim", :fq => fq)
       result_docs.each do | doc |
         results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0] })

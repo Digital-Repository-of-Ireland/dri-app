@@ -41,6 +41,7 @@ Scenario: Updating a collection with invalid permissions
   Given a collection with pid "dri:collperm" created by "user1@user1.com"
   When I go to the "collection" "show" page for "dri:collperm"
   When I follow the link to edit a collection
+  Then show me the page
   And I enter invalid permissions for a collection
   And I press the button to save collection changes
   Then I should see a failure message for "invalid update collection"
