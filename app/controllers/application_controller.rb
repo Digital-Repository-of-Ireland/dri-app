@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
       end
   end
 
-  def get_collections
+  def ingest_collections
     results = Array.new
     solr_query = "+object_type_sim:Collection"
 

@@ -14,7 +14,7 @@ class IngestController < CatalogController
     reset_ingest_state
     @current_step = session[:ingest][:current_step]
 
-    @collections = get_collections    
+    @collections = ingest_collections    
 
     respond_to do |format|
       format.html
@@ -36,14 +36,6 @@ class IngestController < CatalogController
         @object.creator = [""]
         @object.rights = [""]
         @object.type = [@type] #["Text"]
-
-        #if @type == "audio"
-        #  @object.type = ["Sound"]
-        #elsif @type == "pdfdoc"
-        #  @object.type == ["Text"]
-        #else
-        #  @object.type = [""]
-        #end
       end
       
     else

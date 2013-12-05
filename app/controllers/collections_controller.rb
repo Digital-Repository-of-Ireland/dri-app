@@ -11,11 +11,11 @@ class CollectionsController < CatalogController
   # Shows list of user's collections
   #
   def index
-    @collections = get_collections(params[:view])
+    @collections = filtered_collections(params[:view])
     @collection_counts = {}
 
     @collections.each do |collection|
-      @collection_counts[collection[:id]] = count_items_in_collection collection[:id]
+      @collection_counts[collection[:id]] = count_collection_items collection[:id]
     end
 
     respond_to do |format|
@@ -64,7 +64,7 @@ class CollectionsController < CatalogController
   #
   def edit
     enforce_permissions!("edit",params[:id])
-    @collections = get_collections
+    @collections = filtered_collections
     @object = retrieve_object!(params[:id])
 
     respond_to do |format|
@@ -78,7 +78,7 @@ class CollectionsController < CatalogController
     enforce_permissions!("show",params[:id])
 
     @collection = retrieve_object!(params[:id])
-    @children = get_items_in_collection params[:id]
+    @children = collection_items params[:id]
 
     respond_to do |format|
       format.html
@@ -216,7 +216,7 @@ class CollectionsController < CatalogController
       Storage::S3Interface.delete_bucket(object.id.sub('dri:', ''))
     end
 
-    def count_items_in_collection collection_id
+    def count_collection_items collection_id
       solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
                    "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\")"
 
@@ -227,7 +227,7 @@ class CollectionsController < CatalogController
       ActiveFedora::SolrService.count(solr_query, :defType => "edismax", :fq => fq)
     end
 
-    def get_items_in_collection collection_id
+    def collection_items collection_id
       results = Array.new
 
       solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
@@ -245,7 +245,7 @@ class CollectionsController < CatalogController
       return results
     end
 
-    def get_collections(view = 'mine')
+    def filtered_collections(view = 'mine')
       results = Array.new
       solr_query = "+object_type_sim:Collection"
 
