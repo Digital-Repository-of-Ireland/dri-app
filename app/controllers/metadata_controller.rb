@@ -49,7 +49,7 @@ class MetadataController < CatalogController
       else
         MetadataHelpers.set_metadata_datastream(@object, xml)
         MetadataHelpers.checksum_metadata(@object)
-        check_for_duplicates(@object)
+        duplicates?(@object)
 
         begin
           raise Exceptions::InternalError unless @object.datastreams["descMetadata"].save

@@ -217,8 +217,7 @@ class CollectionsController < CatalogController
     end
 
     def count_collection_items collection_id
-      solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
-                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\")"
+      solr_query = collection_items_query(collection_id)
 
       unless (current_user && current_user.is_admin?)
         fq = published_or_permitted_filter
@@ -230,8 +229,7 @@ class CollectionsController < CatalogController
     def collection_items collection_id
       results = Array.new
 
-      solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
-                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\") "
+      solr_query = collection_items_query(collection_id)
 
       unless (current_user && current_user.is_admin?)
         fq = published_or_permitted_filter
@@ -267,5 +265,11 @@ class CollectionsController < CatalogController
 
       return results
     end
+
+    def collection_items_query(id)
+      "(is_governed_by_ssim:\"info:fedora/" + id +
+                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + id + "\")"
+    end
+
 end
 

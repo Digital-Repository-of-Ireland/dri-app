@@ -77,7 +77,7 @@ class ApplicationController < ActionController::Base
     return objs
   end
 
-  def check_for_duplicates(object)
+  def duplicates?(object)
       @duplicates = duplicates(object)
 
       if @duplicates && !@duplicates.empty?

@@ -39,7 +39,7 @@ class ObjectsController < CatalogController
 
     #Do for collection?
     MetadataHelpers.checksum_metadata(@object)
-    check_for_duplicates(@object)
+    duplicates?(@object)
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -68,7 +68,7 @@ class ObjectsController < CatalogController
 
     @object.update_attributes params[:batch]
     MetadataHelpers.checksum_metadata(@object)
-    check_for_duplicates(@object)
+    duplicates?(@object)
     
     if @object.valid? && @object.save
 
