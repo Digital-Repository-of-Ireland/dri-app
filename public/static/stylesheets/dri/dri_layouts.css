@@ -660,8 +660,185 @@
   text-decoration: none;
 }
 
+/* ----------- Collection block ---------- */
+/* line 591, ../../sass/dri/dri.scss */
+.content_block_wrap {
+  width: 730px;
+  margin: 0 20px 0 20px;
+  float: left;
+  padding: 0;
+}
+
+/* line 597, ../../sass/dri/dri.scss */
+.dri_content_block {
+  margin: 0 20px 20px 0;
+  padding: 0;
+  width: 228px;
+  float: left;
+  display: block;
+  color: #2F2F2F;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #E1E1E1;
+  position: relative;
+}
+
+/* line 611, ../../sass/dri/dri.scss */
+.dri_content_block.top {
+  border-top: 5px solid #E1E1E1;
+}
+
+/* line 614, ../../sass/dri/dri.scss */
+.dri_content_block.last {
+  margin: 0 0 20px 0;
+}
+
+/* line 618, ../../sass/dri/dri.scss */
+.dri_content_block .dri_high_view {
+  background: url('../../images/high_view_icon.png') no-repeat;
+}
+
+/* line 623, ../../sass/dri/dri.scss */
+.dri_content_block h1 {
+  color: #2F2F2F;
+  font-size: 110%;
+  padding: 0;
+  margin: 10px 14px 20px 14px;
+  height: 35px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* line 633, ../../sass/dri/dri.scss */
+.dri_content_block h1 a {
+  color: #2F2F2F;
+  text-decoration: none;
+}
+
+/* line 637, ../../sass/dri/dri.scss */
+.dri_content_block a:hover h1 {
+  text-decoration: underline;
+}
+
+/* line 641, ../../sass/dri/dri.scss */
+.dri_content_block h2 {
+  color: #2F2F2F;
+  font-size: 100%;
+  padding: 0;
+  margin: 4px 14px 4px 14px;
+  font-weight: normal;
+}
+
+/* line 648, ../../sass/dri/dri.scss */
+.dri_content_block h2 a {
+  color: #2F2F2F;
+}
+
+/* line 651, ../../sass/dri/dri.scss */
+.dri_content_block h2 a:hover {
+  text-decoration: underline;
+}
+
+/* line 655, ../../sass/dri/dri.scss */
+.dri_content_block h2.dri_editor {
+  color: #808080;
+  line-height: 1.4em;
+  display: block;
+  height: 36px;
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* line 665, ../../sass/dri/dri.scss */
+.dri_content_block h2.dri_editor a {
+  color: #808080;
+}
+
+/* line 668, ../../sass/dri/dri.scss */
+.dri_content_block h2.dri_editor a:hover {
+  text-decoration: none;
+}
+
+/* line 671, ../../sass/dri/dri.scss */
+.dri_content_block p {
+  color: #2F2F2F;
+  font-size: 100%;
+  padding: 0;
+  margin: 10px 10px 10px 10px;
+}
+
+/* line 678, ../../sass/dri/dri.scss */
+.dri_image {
+  padding: 0;
+  margin: 0 14px 0 14px;
+}
+
+/* line 683, ../../sass/dri/dri.scss */
+.dri_content_block .dri_stats {
+  color: #808080;
+  line-height: 1.4em;
+  display: block;
+  height: 26px;
+  margin: 4px 14px 4px 14px;
+  border-top: 1px solid #E1E1E1;
+  padding: 4px 0 0 0;
+}
+
+/* line 692, ../../sass/dri/dri.scss */
+.dri_content_block .dri_stats span.dri_object_num {
+  color: #fff;
+  display: block;
+  height: 20px;
+  width: 42px;
+  padding: 3px 0 0 6px;
+  margin: 0 8px 0 0;
+  float: left;
+  background: url('../../images/object_back.png') no-repeat;
+}
+
+/* line 702, ../../sass/dri/dri.scss */
+.dri_content_block .stats span.dri_object_num a {
+  color: #fff;
+}
+
+/* line 705, ../../sass/dri/dri.scss */
+.dri_content_block .stats span.dri_object_num a:hover {
+  text-decoration: underline;
+}
+
+/* line 709, ../../sass/dri/dri.scss */
+.dri_content_block .dri_stats span.dri_view {
+  margin: 4px 8px 0 0;
+  display: block;
+  height: 20px;
+  padding: 3px 0 0 0;
+  margin: 0 10px 0 0;
+  float: left;
+}
+
+/* line 717, ../../sass/dri/dri.scss */
+.dri_content_block .dri_stats span.dri_like {
+  margin: 4px 8px 0 0;
+  display: block;
+  height: 20px;
+  padding: 1px 0 0 0;
+  margin: 0 10px 0 0;
+  float: left;
+}
+
+/* line 725, ../../sass/dri/dri.scss */
+.dri_content_block .dri_stats span.dri_comment {
+  margin: 4px 8px 0 0;
+  display: block;
+  height: 20px;
+  padding: 0;
+  margin: 0 10px 0 0;
+  float: left;
+}
+
 /*-------------- Footer navigation --------------*/
-/* line 590, ../../sass/dri/dri.scss */
+/* line 735, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation {
   margin: 100px 0 100px 0;
   padding: 0px;
@@ -669,13 +846,13 @@
   height: 40px;
 }
 
-/* line 596, ../../sass/dri/dri.scss */
+/* line 741, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation ul {
   margin: 0px;
   padding: 0px;
 }
 
-/* line 602, ../../sass/dri/dri.scss */
+/* line 747, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation li {
   float: left;
   margin: 10px 0 10px 0;
@@ -687,7 +864,7 @@
   border-right: 1px solid #D9DADB;
 }
 
-/* line 612, ../../sass/dri/dri.scss */
+/* line 757, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation li a {
   list-style: none;
   text-decoration: none;
@@ -697,17 +874,17 @@
   display: block;
 }
 
-/* line 621, ../../sass/dri/dri.scss */
+/* line 766, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation li a:hover {
   text-decoration: underline;
 }
 
-/* line 624, ../../sass/dri/dri.scss */
+/* line 769, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation li.selected {
   text-decoration: underline;
 }
 
-/* line 627, ../../sass/dri/dri.scss */
+/* line 772, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation li.no_border_right {
   border-right: none;
 }
@@ -721,7 +898,7 @@ html {
 
 /* line 13, ../../sass/dri/dri_layouts.scss */
 body {
-  font: 76%/1.6 Arial, Helvetica, clean, sans-serif;
+  font: 76%/1.6 Arial, Helvetica, clean,sans-serif;
   *font-size: small;
   *font: x-small;
   margin: 0;
@@ -1177,7 +1354,7 @@ body {
     -ms-box-sizing: border-box;
     box-sizing: border-box;
     word-wrap: break-word;
-    background: url('../../images/dri/dri_ident_small.png?1385400624');
+    background: url('../../images/dri/dri_ident_small.png?1385538808');
     background-repeat: no-repeat;
     height: 77px;
   }

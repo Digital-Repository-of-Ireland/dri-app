@@ -11,26 +11,24 @@
 	href="stylesheets/dri/dri_layouts.css">
 <script src="javascripts/jquery-1.10.2.js"></script>
 <script src="javascripts/jquery-ui.js"></script>
-
+<!-- Dialogue Script - uses JQuery-UI Dialogue function -->
 <script>
   $(function() {
-    $( "#dri_dialog" ).dialog({
+    $( "#dri_dialog_example_id" ).dialog({
       autoOpen: false,
       show: {
-        effect: "blind",
-        duration: 500
+        duration: 100
       },
       hide: {
-        effect: "explode",
-        duration: 500
+        duration: 100
       }
     });
  
     $( "#dri_search_save_submit_button_id" ).click(function() {
-      $( "#dri_dialogue" ).dialog( "open" );
+      $( "#dri_dialog_example_id" ).dialog( "open" );
     });
   });
-  </script>
+</script>
 
 </head>
 
@@ -124,9 +122,9 @@
 			<!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
 			<nav id="dri_pager_nav_id" class="dri_pager_nav">
 				<ul id="dri_pager_nav_links_id" class="dri_pager_nav_links">
-					<li><a href="#">9 </li>
-					<li class="selected"><a href="#">18</li>
-					<li><a href="#">36</li>
+					<li><a href="#">9</a></li>
+					<li class="selected"><a href="#">18</a></li>
+					<li><a href="#">36</a></li>
 				</ul>
 			</nav>
 
@@ -175,11 +173,9 @@
 
 			</div>
 			<div id="dri_dialog_example_id" class="dri_dialog_example"
-				title="Example dialog">
-				<p>This is an dialog which is useful for displaying information.
-					The dialog window can be moved, resized and closed with the 'x'
-					icon.</p>
-			</div>
+				title="Example dialog">This is an dialog which is useful for
+				displaying information. The dialog window can be moved, resized and
+				closed with the 'x' icon.</div>
 			<!-- close dri_search_save_input -->
 
 		</div>
@@ -251,16 +247,211 @@
 			<!-- result container showing results / content or forms depending on Context -->
 			<div id="dri_result_container_id" class="dri_result_container">
 				<article class="block5">
-					<h3>Content / Result Item 1</h3>
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Object Title</h1>
+							<div class="dri_image">
+								<img src="images/no_image.png" width="200" height="80">
+							</div>
+							<!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_stats">
+							<span class="view"><img src="images/views_icon.png"
+								width="21" height="12"> 2</span>
+						</div>
+						<!-- close image -->
+					</div>
+					<!-- close content_block -->
 				</article>
 				<article class="block5">
-					<h3>Content / Result Item 2</h3>
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Object Title</h1>
+							<div class="dri_image">
+								<img src="images/no_image.png" width="200" height="80">
+							</div>
+							<!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_stats">
+							<span class="view"><img src="images/views_icon.png"
+								width="21" height="12"> 2</span>
+						</div>
+						<!-- close image -->
+					</div>
+					<!-- close content_block -->
 				</article>
 				<article class="block5">
-					<h3>Content / Result Item 3</h3>
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Object Title</h1>
+							<div class="dri_image">
+								<img src="images/no_image.png" width="200" height="80">
+							</div>
+							<!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_stats">
+							<span class="view"><img src="images/views_icon.png"
+								width="21" height="12"> 2</span>
+						</div>
+						<!-- close image -->
+					</div>
+					<!-- close content_block -->
 				</article>
 				<article class="block5">
-					<h3>Content / Result Item 4</h3>
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Object Title</h1>
+							<div class="dri_image">
+								<img src="images/no_image.png" width="200" height="80">
+							</div>
+							<!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_stats">
+							<span class="view"><img src="images/views_icon.png"
+								width="21" height="12"> 2</span>
+						</div>
+						<!-- close image -->
+					</div>
+					<!-- close content_block -->
+				</article>
+				<article class="block5">
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Object Title</h1>
+							<div class="dri_image">
+								<img src="images/no_image.png" width="200" height="80">
+							</div>
+							<!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_stats">
+							<span class="view"><img src="images/views_icon.png"
+								width="21" height="12"> 2</span>
+						</div>
+						<!-- close image -->
+					</div>
+					<!-- close content_block -->
+				</article>
+				<article class="block5">
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Object Title</h1>
+							<div class="dri_image">
+								<img src="images/no_image.png" width="200" height="80">
+							</div>
+							<!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_stats">
+							<span class="view"><img src="images/views_icon.png"
+								width="21" height="12"> 2</span>
+						</div>
+						<!-- close image -->
+					</div>
+					<!-- close content_block -->
+				</article>
+								<article class="block5">
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Object Title</h1>
+							<div class="dri_image">
+								<img src="images/no_image.png" width="200" height="80">
+							</div>
+							<!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_stats">
+							<span class="view"><img src="images/views_icon.png"
+								width="21" height="12"> 2</span>
+						</div>
+						<!-- close image -->
+					</div>
+					<!-- close content_block -->
+				</article>
+				<article class="block5">
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Object Title</h1>
+							<div class="dri_image">
+								<img src="images/no_image.png" width="200" height="80">
+							</div>
+							<!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_stats">
+							<span class="view"><img src="images/views_icon.png"
+								width="21" height="12"> 2</span>
+						</div>
+						<!-- close image -->
+					</div>
+					<!-- close content_block -->
+				</article>
+				<article class="block5">
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Object Title</h1>
+							<div class="dri_image">
+								<img src="images/no_image.png" width="200" height="80">
+							</div>
+							<!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_stats">
+							<span class="view"><img src="images/views_icon.png"
+								width="21" height="12"> 2</span>
+						</div>
+						<!-- close image -->
+					</div>
+					<!-- close content_block -->
 				</article>
 			</div>
 			<!-- close dri_result_container -->
