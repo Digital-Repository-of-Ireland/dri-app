@@ -11,8 +11,10 @@
 	href="stylesheets/dri/dri_layouts.css">
 <script src="javascripts/jquery-1.10.2.js"></script>
 <script src="javascripts/jquery-ui.js"></script>
-<!-- Dialogue Script - uses JQuery-UI Dialogue function -->
+<script src="javascripts/dropit/dropit.js"></script>
+
 <script>
+<!-- Dialogue Script - uses JQuery-UI Dialogue function -->
   $(function() {
     $( "#dri_dialog_example_id" ).dialog({
       autoOpen: false,
@@ -28,6 +30,11 @@
       $( "#dri_dialog_example_id" ).dialog( "open" );
     });
   });
+
+<!-- Dropit Script - uses JQuery-UI Drop function -->
+  $(document).ready(function() {
+	    $('.menu').dropit();
+	});
 </script>
 
 </head>
@@ -44,10 +51,13 @@
 					<ul id="dri_account_links_id" class="dri_account_links" role="tree">
 						<li class="on"><a href="#" alt="sign up link">Sign Up</a></li>
 						<li class="noborder"><a href="#" alt="login link">Login</a></li>
-						<ul id="dri_language_links_id" class="dri_language_links">
+						<ul id="dri_language_links_id" class="dri_language_links menu">
 							<li class="selected" aria-selected="true"><a href="#">English
-									<img src="images/account_arrow.png" width="10" height="5">
-							</a></li>
+									<img src="images/dri/account_arrow.png" width="10" height="5">
+							</a>
+								<ul>
+									<li><a href="#">Gaeilge</a></li>
+								</ul></li>
 						</ul>
 					</ul>
 				</nav>
@@ -251,9 +261,8 @@
 						<a href="#">
 							<h1>Object Title</h1>
 							<div class="dri_image">
-								<img src="images/no_image.png" width="200" height="80">
-							</div>
-							<!-- close image -->
+								<img src="images/dri/no_image.png" width="200" height="80">
+							</div> <!-- close image -->
 						</a>
 						<h2>
 							<a href="#">David Joyce</a>
@@ -262,7 +271,7 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_stats">
-							<span class="view"><img src="images/views_icon.png"
+							<span class="view"><img src="images/dri/views_icon.png"
 								width="21" height="12"> 2</span>
 						</div>
 						<!-- close image -->
@@ -274,9 +283,8 @@
 						<a href="#">
 							<h1>Object Title</h1>
 							<div class="dri_image">
-								<img src="images/no_image.png" width="200" height="80">
-							</div>
-							<!-- close image -->
+								<img src="images/dri/no_image.png" width="200" height="80">
+							</div> <!-- close image -->
 						</a>
 						<h2>
 							<a href="#">David Joyce</a>
@@ -285,7 +293,7 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_stats">
-							<span class="view"><img src="images/views_icon.png"
+							<span class="view"><img src="images/dri/views_icon.png"
 								width="21" height="12"> 2</span>
 						</div>
 						<!-- close image -->
@@ -297,9 +305,8 @@
 						<a href="#">
 							<h1>Object Title</h1>
 							<div class="dri_image">
-								<img src="images/no_image.png" width="200" height="80">
-							</div>
-							<!-- close image -->
+								<img src="images/dri/no_image.png" width="200" height="80">
+							</div> <!-- close image -->
 						</a>
 						<h2>
 							<a href="#">David Joyce</a>
@@ -308,7 +315,7 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_stats">
-							<span class="view"><img src="images/views_icon.png"
+							<span class="view"><img src="images/dri/views_icon.png"
 								width="21" height="12"> 2</span>
 						</div>
 						<!-- close image -->
@@ -320,9 +327,8 @@
 						<a href="#">
 							<h1>Object Title</h1>
 							<div class="dri_image">
-								<img src="images/no_image.png" width="200" height="80">
-							</div>
-							<!-- close image -->
+								<img src="images/dri/no_image.png" width="200" height="80">
+							</div> <!-- close image -->
 						</a>
 						<h2>
 							<a href="#">David Joyce</a>
@@ -331,7 +337,7 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_stats">
-							<span class="view"><img src="images/views_icon.png"
+							<span class="view"><img src="images/dri/views_icon.png"
 								width="21" height="12"> 2</span>
 						</div>
 						<!-- close image -->
@@ -343,9 +349,8 @@
 						<a href="#">
 							<h1>Object Title</h1>
 							<div class="dri_image">
-								<img src="images/no_image.png" width="200" height="80">
-							</div>
-							<!-- close image -->
+								<img src="images/dri/no_image.png" width="200" height="80">
+							</div> <!-- close image -->
 						</a>
 						<h2>
 							<a href="#">David Joyce</a>
@@ -354,7 +359,7 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_stats">
-							<span class="view"><img src="images/views_icon.png"
+							<span class="view"><img src="images/dri/views_icon.png"
 								width="21" height="12"> 2</span>
 						</div>
 						<!-- close image -->
@@ -366,9 +371,8 @@
 						<a href="#">
 							<h1>Object Title</h1>
 							<div class="dri_image">
-								<img src="images/no_image.png" width="200" height="80">
-							</div>
-							<!-- close image -->
+								<img src="images/dri/no_image.png" width="200" height="80">
+							</div> <!-- close image -->
 						</a>
 						<h2>
 							<a href="#">David Joyce</a>
@@ -377,30 +381,7 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_stats">
-							<span class="view"><img src="images/views_icon.png"
-								width="21" height="12"> 2</span>
-						</div>
-						<!-- close image -->
-					</div>
-					<!-- close content_block -->
-				</article>
-								<article class="block5">
-					<div class="dri_content_block">
-						<a href="#">
-							<h1>Object Title</h1>
-							<div class="dri_image">
-								<img src="images/no_image.png" width="200" height="80">
-							</div>
-							<!-- close image -->
-						</a>
-						<h2>
-							<a href="#">David Joyce</a>
-						</h2>
-						<h2 class="dri_editor">
-							<a href="#">Catriona Walsh</a>
-						</h2>
-						<div class="dri_stats">
-							<span class="view"><img src="images/views_icon.png"
+							<span class="view"><img src="images/dri/views_icon.png"
 								width="21" height="12"> 2</span>
 						</div>
 						<!-- close image -->
@@ -412,9 +393,8 @@
 						<a href="#">
 							<h1>Object Title</h1>
 							<div class="dri_image">
-								<img src="images/no_image.png" width="200" height="80">
-							</div>
-							<!-- close image -->
+								<img src="images/dri/no_image.png" width="200" height="80">
+							</div> <!-- close image -->
 						</a>
 						<h2>
 							<a href="#">David Joyce</a>
@@ -423,7 +403,7 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_stats">
-							<span class="view"><img src="images/views_icon.png"
+							<span class="view"><img src="images/dri/views_icon.png"
 								width="21" height="12"> 2</span>
 						</div>
 						<!-- close image -->
@@ -435,9 +415,8 @@
 						<a href="#">
 							<h1>Object Title</h1>
 							<div class="dri_image">
-								<img src="images/no_image.png" width="200" height="80">
-							</div>
-							<!-- close image -->
+								<img src="images/dri/no_image.png" width="200" height="80">
+							</div> <!-- close image -->
 						</a>
 						<h2>
 							<a href="#">David Joyce</a>
@@ -446,7 +425,29 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_stats">
-							<span class="view"><img src="images/views_icon.png"
+							<span class="view"><img src="images/dri/views_icon.png"
+								width="21" height="12"> 2</span>
+						</div>
+						<!-- close image -->
+					</div>
+					<!-- close content_block -->
+				</article>
+				<article class="block5">
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Object Title</h1>
+							<div class="dri_image">
+								<img src="images/dri/no_image.png" width="200" height="80">
+							</div> <!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_stats">
+							<span class="view"><img src="images/dri/views_icon.png"
 								width="21" height="12"> 2</span>
 						</div>
 						<!-- close image -->

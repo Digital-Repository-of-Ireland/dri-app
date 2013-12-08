@@ -1,6 +1,5 @@
-/* line 1, ../../sass/dri/dri.scss */
 .dri_ident {
-  background: url('../../images/dri/dri_ident.png?1385391350');
+  background: image-url('dri/dri_ident.png');
   background-repeat: no-repeat;
   height: 104px;
   margin: 20px;
@@ -109,7 +108,7 @@
 }
 
 .dri_social_media_nav li a.facebook {
-	background:url(../../images/facebook_icon.png) no-repeat;
+	background: image-url('dri/facebook_icon.png') no-repeat;
 	height:30px;
 	width: 30px;
 	margin-left: 3px;
@@ -117,19 +116,19 @@
 	
 }
 .dri_social_media_nav li a.linkedin {
-	background: url(../../images/linkedin.png) no-repeat;
+	background: image-url('dri/linkedin.png') no-repeat;
 	height: 30px;
 	width: 30px;
 	display: block;	
 }
 .dri_social_media_nav li a.share {
-	background: url(../../images/share.png) no-repeat;
+	background: image-url('dri/share.png') no-repeat;
 	height: 30px;
 	width: 30px;
 	display: block;
 }
 .dri_social_media_nav li a.google {
-	background: url(../../images/google_plus.png) no-repeat;
+	background: image-url('dri/google_plus.png') no-repeat;
 	height: 30px;
 	width: 30px;
 	display: block;	
@@ -259,7 +258,7 @@
 	margin: 10px 0 10px 0;
 	padding: 0 15px 0 10px;
 	display: block;
-	background:url(../../images/dash.png) no-repeat right;
+	background: image-url('dri/dash.png') no-repeat right;
 }
 .dri_crumbtrail_nav  li a:hover  {
 	text-decoration: underline;
@@ -772,3 +771,35 @@
 .dri_main_footer_navigation li.no_border_right {
 		border-right: none;	
 }
+
+/* Third Party CSS */
+
+
+/*
+ * Dropit v1.0
+ * http://dev7studios.com/dropit
+ *
+ * Copyright 2012, Dev7studios
+ * Free to use and abuse under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+ 
+/* These styles assume you are using ul and li */
+.dropit {
+    list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.dropit .dropit-trigger { position: relative; }
+.dropit .dropit-submenu {
+    position: absolute;
+    top: 100%;
+    left: 0; /* dropdown left or right */
+    z-index: 1000;
+    display: none;
+    min-width: 150px;
+    list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.dropit .dropit-open .dropit-submenu { display: block; }
