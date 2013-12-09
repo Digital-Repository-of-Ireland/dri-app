@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset=utf-8 />
 <meta name="description" content="description">
@@ -12,12 +13,32 @@
 <script src="javascripts/jquery-1.10.2.js"></script>
 <script src="javascripts/jquery-ui.js"></script>
 <script src="javascripts/dropit/dropit.js"></script>
+<script src="/assets/blacklight/core.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/autofocus.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/checkbox_submit.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/bookmark_toggle.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/facet_expand_contract.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/lightbox_dialog.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/search_context.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/select_submit.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/zebra_stripe.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/css_dropdowns.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-transition.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-collapse.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-alert.js?body=1" type="text/javascript"></script>
+<script src="/assets/improved-modal/bootstrap-modalmanager.js?body=1" type="text/javascript"></script>
+<script src="/assets/improved-modal/bootstrap-modal.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/blacklight.js?body=1" type="text/javascript"></script>
+<script src="/assets/dri.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+<script id="twitter-wjs" src="https://platform.twitter.com/widgets.js"></script>
 
 <script>
 <!-- Dialogue Script - uses JQuery-UI Dialogue function -->
   $(function() {
     $( "#dri_dialog_example_id" ).dialog({
       autoOpen: false,
+      modal: true,
       show: {
         duration: 100
       },
@@ -244,13 +265,114 @@
 			<!-- second (right) navigation container shown depending on context -->
 			<div id="dri_second_navigation_container_id"
 				class="dri_second_navigation_container">
-				<nav id="dri_second_navigation_id" class="dri_second_navigation">
-					<ul id="dri_second_navigation_links_id"
-						class="dri_second_navigation_links">
-						<li><a href="#">Second Nav Item 1</a></li>
-						<li class="selected"><a href="#">Second Nav Item 2</a></li>
-					</ul>
-				</nav>
+				<!-- facet block -->
+				<div class="dri_facet_filters_block" id="sidebar">
+					<div id="facets" class="dri_facet_filters">
+
+						<h4>Refine your search <span class="dri_search_num"> 1 </span></h4>
+						<div class="facets-collapse">
+
+							<div class="dri_facet_title">
+								<h5 class="twiddle">
+									<a href="#" data-no-turbolink="true">Subjects</a> <i
+										class="icon-chevron"></i>
+								</h5>
+								<ul>
+									<li><a
+										href="#">Amhráin
+											na farraige (<b>1</b>)
+									</a></li>
+									<li><a
+										href="#">An
+											Capall - Bád Seoil (<b>1</b>)
+									</a></li>
+									<li><a
+										href="#">An
+											Capall - Sailboat (<b>1</b>)
+									</a></li>
+									<li><a
+										href="#">Boat
+											builders (<b>1</b>)
+									</a></li>
+
+								</ul>
+
+							</div>
+
+
+							<div class="dri_facet_title">
+								<h5 class="twiddle">
+									<a href="#" data-no-turbolink="true">Names</a> <i
+										class="icon-chevron"></i>
+								</h5>
+								<ul style="display: none;">
+									<li><a
+										href="#">Báille,
+											Dudley (<b>1</b>)
+									</a></li>
+									<li><a
+										href="#">Báille,
+											Johnny (<b>1</b>)
+									</a></li>
+									<li><a
+										href="#">Báille,
+											Micil (<b>1</b>)
+									</a></li>
+								</ul>
+
+							</div>
+
+							<div class="dri_facet_title">
+								<h5 class="twiddle">
+									<a href="#" data-no-turbolink="true">Language</a> <i
+										class="icon-chevron"></i>
+								</h5>
+								<ul style="display: none;">
+									<li><a
+										href="#">Irish
+											(<b>1</b>)
+									</a></li>
+
+
+								</ul>
+
+							</div>
+
+							<div
+								class="dri_facet_title">
+								<h5 class="twiddle">
+									<a href="#" data-no-turbolink="true">Format</a> <i
+										class="icon-chevron"></i>
+								</h5>
+								<ul style="display: none;">
+									<li><a
+										href="#">Sound
+											(<b>1</b>)
+									</a></li>
+								</ul>
+
+							</div>
+
+							<div
+								class="dri_facet_title">
+								<h5 class="twiddle">
+									<a href="#" data-no-turbolink="true">Collection</a> <i
+										class="icon-chevron"></i>
+								</h5>
+								<ul style="display: none;">
+									<li><a
+										href="#">["Test"]
+											(<b>1</b>)
+									</a></li>
+
+								</ul>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- close facet block -->
 			</div>
 			<!-- close dri_second_navigation_container -->
 

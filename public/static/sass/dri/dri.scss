@@ -1,3 +1,18 @@
+/* Anna updated html and body */
+html {
+  margin-bottom: 0.5em;
+	height: 100%;
+		}
+
+body {
+	font: 76%/1.6 Arial, Helvetica, clean,sans-serif;
+	*font-size: small;
+	*font: x-small;
+	margin: 0;
+}
+/* Anna updated html and body */
+
+
 .dri_ident {
   background: image-url('dri/dri_ident.png');
   background-repeat: no-repeat;
@@ -224,6 +239,7 @@
 .dri_sub_nav li.selected a {
 	text-decoration: underline;
 }
+
 
 
 /*-------------- Crumb trail Navigation --------------*/
@@ -804,3 +820,6 @@
 
 }
 .dropit .dropit-open .dropit-submenu { display: block; }
+
+
+
