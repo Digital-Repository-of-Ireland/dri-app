@@ -102,7 +102,7 @@ body {
 .dri_social_media_nav ul {
 	margin:  0;
 	padding: 0;
-	float: left;
+	float: right;
 	
 }
 
@@ -329,7 +329,7 @@ body {
 
 .dri_search_term_text_submit_button {
 	margin: 25px 0 0 6px;
-	padding: 4px 3px 4px 3px;
+	padding: 4px 6px 4px 6px;
 	background-color: #808082;
 	border: none;
 	color: #FFF;
@@ -662,9 +662,10 @@ body {
 }
 .dri_content_block h2 a {
 	color: #2F2F2F;
+	text-decoration: none;
 }
 .dri_content_block h2 a:hover {
-	text-decoration:underline;
+	text-decoration: underline;
 
 }
 .dri_content_block h2.dri_editor {
@@ -679,9 +680,10 @@ body {
 
 .dri_content_block h2.dri_editor a {
 	color: #808080;
+	text-decoration: none;
 }
 .dri_content_block h2.dri_editor a:hover {
-	text-decoration: none;
+	text-decoration: underline;
 }
 .dri_content_block p {
 	color:#2F2F2F;
@@ -699,10 +701,10 @@ body {
 	color: #808080;
 	line-height: 1.4em;
 	display: block;
-	height: 26px;
+	height: 24px;
 	margin: 4px 14px 4px 14px;
 	border-top: 1px solid #E1E1E1;
-	padding: 4px 0 0 0;
+	padding: 6px 0 0 0;
 }
 .dri_content_block .dri_stats span.dri_object_num {
 	color: #fff;
@@ -716,6 +718,7 @@ body {
 }
 .dri_content_block .stats span.dri_object_num a {
 	color: #fff;
+	text-decoration: none;
 }
 .dri_content_block .stats span.dri_object_num a:hover {
 	text-decoration: underline;
@@ -788,6 +791,17 @@ body {
 		border-right: none;	
 }
 
+
+/*-------------- Dialog Box --------------*/
+.dri_dialog_example {
+	margin: 0;
+	padding: 12px;
+	border: 1px solid #D9DADB;
+	background-color: #FFF;
+	color: #808082;
+	
+}
+
 /* Third Party CSS */
 
 
@@ -810,14 +824,17 @@ body {
 .dropit .dropit-submenu {
     position: absolute;
     top: 100%;
-    right: 10px; /* dropdown left or right */
+    right: -14%; /* dropdown left or right */
     z-index: 1000;
     display: none;
-    min-width: 150px;
     list-style: none;
-	padding: 0;
-	margin: 10px 0 0 0;
-
+ 	border: 1px solid #D9DADB;
+  	margin: 2px 0 0 0;
+ 	padding: 2px 16px 2px 7px;
+ 	display: block;
+ 	-moz-border-radius: 2px;
+ 	border-radius: 2px;
+	background-color: #f0f0f0;
 }
 .dropit .dropit-open .dropit-submenu { display: block; }
 
