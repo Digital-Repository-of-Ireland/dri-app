@@ -568,6 +568,7 @@ body {
 	font-weight: bold;
 	float: right;
 	text-decoration: none;
+	
 }
 /*-------------- Error Messages --------------*/
 
@@ -600,8 +601,28 @@ body {
 	float: right;
 	text-decoration: none;
 }
-
-
+/* ----------- Facet Filter block ---------- */
+.dri_facet_filters_block {
+	margin: 0 20px 20px 0;
+	padding: 0;
+	width: 228px;
+	float: left;
+	display: block;
+	color: #2F2F2F;
+	border: 1px solid #E1E1E1;
+	box-shadow: 1px 2px 6px  #E3E3E3;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+.dri_facet_filters  {
+	color: #2F2F2F;
+	font-size: 110%;
+	font-weight: bold;
+	padding: 0;
+	margin: 0 20px 0 20px;
+	list-style: none;
+	text-decoration: none;
+}
 /* ----------- Collection block ---------- */
 .content_block_wrap {
 	width: 730px;
