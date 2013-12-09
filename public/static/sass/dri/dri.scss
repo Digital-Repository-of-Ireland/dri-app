@@ -87,7 +87,7 @@
 .dri_social_media_nav ul {
 	margin:  0;
 	padding: 0;
-	float: right;
+	float: left;
 	
 }
 
@@ -800,6 +800,7 @@
     min-width: 150px;
     list-style: none;
 	padding: 0;
-	margin: 0;
+	margin: 10px 0 0 0;
+
 }
 .dropit .dropit-open .dropit-submenu { display: block; }
