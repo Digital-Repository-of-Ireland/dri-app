@@ -2,7 +2,7 @@ module PermissionMethods
 
   private
 
-    def set_private_metadata_permission(selected_level)
+    def private_metadata_permission(selected_level)
       case selected_level
       when "radio_public"
         return UserGroup::Permissions::PUBLIC_METADATA #"0"
@@ -13,7 +13,7 @@ module PermissionMethods
       end
     end
 
-    def set_master_file_permission(selected_level)
+    def master_file_permission(selected_level)
       case selected_level
       when "radio_public"
         return UserGroup::Permissions::PUBLIC_MASTERFILE #"1"

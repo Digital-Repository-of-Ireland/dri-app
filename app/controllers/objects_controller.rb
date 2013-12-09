@@ -13,7 +13,7 @@ class ObjectsController < CatalogController
   #
   def edit
     enforce_permissions!("edit",params[:id]) 
-    @collections = get_collections
+    @collections = ingest_collections
     @object = retrieve_object!(params[:id])
     respond_to do |format|
       format.html
@@ -25,7 +25,7 @@ class ObjectsController < CatalogController
   #
   def update
     update_object_permission_check(params[:batch][:manager_groups_string], params[:batch][:manager_users_string], params[:id])
-    @collections = get_collections
+    @collections = ingest_collections
     @object = retrieve_object!(params[:id])
 
     if params[:batch][:governing_collection_id].present?
@@ -39,7 +39,7 @@ class ObjectsController < CatalogController
 
     #Do for collection?
     MetadataHelpers.checksum_metadata(@object)
-    check_for_duplicates(@object)
+    duplicates?(@object)
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -68,7 +68,7 @@ class ObjectsController < CatalogController
 
     @object.update_attributes params[:batch]
     MetadataHelpers.checksum_metadata(@object)
-    check_for_duplicates(@object)
+    duplicates?(@object)
     
     if @object.valid? && @object.save
 

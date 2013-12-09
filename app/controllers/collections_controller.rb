@@ -11,11 +11,11 @@ class CollectionsController < CatalogController
   # Shows list of user's collections
   #
   def index
-    @collections = get_collections
+    @collections = filtered_collections(params[:view])
     @collection_counts = {}
 
     @collections.each do |collection|
-      @collection_counts[collection[:id]] = count_items_in_collection collection[:id]
+      @collection_counts[collection[:id]] = count_collection_items collection[:id]
     end
 
     respond_to do |format|
@@ -64,7 +64,7 @@ class CollectionsController < CatalogController
   #
   def edit
     enforce_permissions!("edit",params[:id])
-    @collections = get_collections
+    @collections = filtered_collections
     @object = retrieve_object!(params[:id])
 
     respond_to do |format|
@@ -78,7 +78,7 @@ class CollectionsController < CatalogController
     enforce_permissions!("show",params[:id])
 
     @collection = retrieve_object!(params[:id])
-    @children = get_items_in_collection params[:id]
+    @children = collection_items params[:id]
 
     respond_to do |format|
       format.html
@@ -196,8 +196,8 @@ class CollectionsController < CatalogController
   private
 
     def valid_permissions?
-      if ((params[:batch][:private_metadata].blank? || params[:batch][:private_metadata]==UserGroup::Permissions::INHERIT_METADATA) ||
-       (params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
+      if (
+       #(params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
        (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
        (params[:batch][:manager_users_string].blank? && params[:batch][:manager_groups_string].blank? && params[:batch][:edit_users_string].blank? && params[:batch][:edit_groups_string].blank?))
          return false
@@ -216,10 +216,9 @@ class CollectionsController < CatalogController
       Storage::S3Interface.delete_bucket(object.id.sub('dri:', ''))
     end
 
-    def count_items_in_collection collection_id
-      solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
-                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\")"
-      
+    def count_collection_items collection_id
+      solr_query = collection_items_query(collection_id)
+
       unless (current_user && current_user.is_admin?)
         fq = published_or_permitted_filter
       end
@@ -227,11 +226,10 @@ class CollectionsController < CatalogController
       ActiveFedora::SolrService.count(solr_query, :defType => "edismax", :fq => fq)
     end
 
-    def get_items_in_collection collection_id
+    def collection_items collection_id
       results = Array.new
 
-      solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
-                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\") "
+      solr_query = collection_items_query(collection_id)
 
       unless (current_user && current_user.is_admin?)
         fq = published_or_permitted_filter
@@ -245,14 +243,21 @@ class CollectionsController < CatalogController
       return results
     end
 
-    def get_collections
+    def filtered_collections(view = 'mine')
       results = Array.new
       solr_query = "+object_type_sim:Collection"
-      
-      unless (current_user && current_user.is_admin?)
-        fq = published_or_permitted_filter
-      end
 
+      case view
+        when 'all'  
+          fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
+        when 'mine'
+          fq = manager_and_edit_filter unless (current_user && current_user.is_admin?)
+        when 'published'
+          fq = published_filter
+        else
+          fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
+      end 
+      
       result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim", :fq => fq)
       result_docs.each do | doc |
         results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0] })
@@ -260,5 +265,11 @@ class CollectionsController < CatalogController
 
       return results
     end
+
+    def collection_items_query(id)
+      "(is_governed_by_ssim:\"info:fedora/" + id +
+                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + id + "\")"
+    end
+
 end
 

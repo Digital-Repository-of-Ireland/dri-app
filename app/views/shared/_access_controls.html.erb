@@ -83,7 +83,7 @@
     });
 
     function init_search_access(){
-        search_field_toggle();
+        //search_field_toggle();
     }
 
     function init_read_access(){
@@ -126,12 +126,14 @@
         var original_value_user = manager_user_textbox.value();
         var original_value_group = manager_group_textbox.value();
 
+        if (typeof(batch_manager_groups_string_radio_restricted)!='undefined'){
         if(original_value_user!=empty_str){
             $('#'+model_str+'_manager_groups_string_radio_restricted').prop('checked', true);
             manager_toggle_show_textboxes(true);
         }else{
             manager_toggle_show_textboxes(false);
             $('#'+model_str+'_manager_groups_string_radio_inherit').prop('checked', true);
+        }
         }
     }
 

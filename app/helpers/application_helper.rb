@@ -40,7 +40,7 @@ module ApplicationHelper
     @surrogates = Storage::S3Interface.get_surrogates doc
   end
 
-  def get_governing_collection( object )
+  def governing_collection( object )
     if !object.governing_collection.nil?
       object.governing_collection.pid
     end

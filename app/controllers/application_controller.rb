@@ -57,8 +57,8 @@ class ApplicationController < ActionController::Base
 
   def set_access_permissions(key)
     if params.key?(key)
-      params[key][:private_metadata] = set_private_metadata_permission(params[key].delete(:private_metadata)) if params[key][:private_metadata].present?
-      params[key][:master_file] = set_master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
+      params[key][:private_metadata] = private_metadata_permission(params[key].delete(:private_metadata)) if params[key][:private_metadata].present?
+      params[key][:master_file] = master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
     end
   end
 
@@ -77,7 +77,7 @@ class ApplicationController < ActionController::Base
     return objs
   end
 
-  def check_for_duplicates(object)
+  def duplicates?(object)
       @duplicates = duplicates(object)
 
       if @duplicates && !@duplicates.empty?
@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
       end
   end
 
-  def get_collections
+  def ingest_collections
     results = Array.new
     solr_query = "+object_type_sim:Collection"
 

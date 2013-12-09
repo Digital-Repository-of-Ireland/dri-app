@@ -30,5 +30,5 @@ config/fedora.yml
 config/solr.yml
 
 features/reports/*
-
+.sass-cache/
 # *.html
