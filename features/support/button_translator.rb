@@ -55,6 +55,9 @@ module ButtonTranslator
     when /search/
       "search"
 
+    when /request access/
+      "request_access"
+
     else "Unknown"
 
     end

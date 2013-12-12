@@ -22,7 +22,7 @@
     <dd><%= form_tag(user_group.pending_memberships_path, :method => 'post') do %>
         <%= hidden_field_tag('membership_user_id', current_user.id, {:name => "membership[user_id]"}) %>
         <%= hidden_field_tag('membership_group_id', UserGroup::Group.where(:name => @document[:is_governed_by_ssim][0].sub('info:fedora/', '')).first.id, {:name => "membership[group_id]"} ) %>
-        <%= submit_tag t('dri.views.catalog.legends.request_permission_logged_in') %>
+        <%= submit_tag t('dri.views.catalog.legends.request_permission_logged_in'), :id=> "request_access" %>
     <% end %> </dd>
   <% end %>
 

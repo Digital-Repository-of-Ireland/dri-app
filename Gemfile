@@ -32,7 +32,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-cookie-rails'
 
-gem 'hydra-remote_identifier'
+gem 'rest-client'
 
 # Gems used only for assets and not required
 # in production environments by default.
