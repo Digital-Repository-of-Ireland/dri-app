@@ -199,7 +199,7 @@ class CollectionsController < CatalogController
       if (
        #(params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
        (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
-       (params[:batch][:manager_users_string].blank? && params[:batch][:manager_groups_string].blank? && params[:batch][:edit_users_string].blank? && params[:batch][:edit_groups_string].blank?))
+       (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
          return false
       else
          return true
@@ -248,7 +248,7 @@ class CollectionsController < CatalogController
       solr_query = "+object_type_sim:Collection"
 
       case view
-        when 'all'  
+        when 'all'
           fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
         when 'mine'
           fq = manager_and_edit_filter unless (current_user && current_user.is_admin?)
@@ -256,8 +256,8 @@ class CollectionsController < CatalogController
           fq = published_filter
         else
           fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
-      end 
-      
+      end
+
       result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim", :fq => fq)
       result_docs.each do | doc |
         results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0] })
