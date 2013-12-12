@@ -5,10 +5,9 @@
 @import "dri.scss";
 @import "../smoothness/jquery-ui.scss";
 
-
 .dri_wrapper {
-	@include zen-grid-container;
-	@include zen-nested-container;
+	//@include zen-grid-container;
+	//@include zen-nested-container;
 	width: 1024px;
 	margin: 0 auto;
 	$zen-column-count:4;
@@ -64,7 +63,7 @@
 .dri_search_features_nav_container {
 
   	@include zen-grid-container;
-	@include zen-grid-flow-item(1, 1);
+	@include zen-grid-flow-item(1, 1, $alpha-gutter: 20px);
   	
 	.dri_sort_nav {
 	
@@ -99,37 +98,43 @@
 .dri_facet_restrictions_container {
 	
   	@include zen-grid-container;
-	@include zen-grid-flow-item(1, 1);
+	@include zen-grid-flow-item(1, 1, $alpha-gutter: 20px);
 
 }
 
 .dri_messages_container {
 	 
   	@include zen-grid-container;
-	@include zen-grid-flow-item(1, 1);
+	@include zen-grid-flow-item(1, 1, $alpha-gutter: 20px);
 	
 }
 
 .dri_main_content_container {
 
   	@include zen-grid-container;
+  	@include zen-grid-item(4, 1);
+  	margin-left: 10px;
+  	
   	 	
   	.dri_first_navigation_container {
   		
   	  	display: none;
-  		@include zen-grid-item(1, 1);
+  		@include zen-grid-item(1, 1, $gutter-width: 0px);
 
   	}
   	
   	.dri_second_navigation_container {
   	
   		//display: none;
-  		@include zen-grid-item(1, 4);
+  		@include zen-grid-item(1, 4, $gutter-width: 0px);
+  		//@include zen-grid-background ( $grid-color: #eee);
 
   	}
   	
   	.dri_result_container {
-  	  	@include zen-grid-item(3, 1);
+  	  	@include zen-grid-item(3, 1, $gutter-width: 0px);
+  	  	//@include zen-grid-background ( $grid-color: #eee);
+
 		
   	}
   	
@@ -140,6 +145,8 @@
   	@include zen-grid-container;
 
 	@include zen-grid-flow-item(1, 1);
+
+  	@include zen-clear();
 	
 
 }
@@ -165,6 +172,8 @@
   	@include zen-grid-container;
 
 	@include zen-grid-flow-item(1, 1);
+	@include zen-float();
+	@include zen-clear();
 
 	
 
