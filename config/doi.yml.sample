@@ -1,0 +1,18 @@
+common: &common
+  username: 
+  password:
+  
+development:
+  <<: *common
+  prefix: 10.5072
+  url: https://test.datacite.org/mds
+
+test:
+  <<: *common
+  prefix: 10.5072
+  url: https://test.datacite.org/mds
+
+production:
+  <<: *common
+  prefix: 10.7486
+  url: https://mds.datacite.org

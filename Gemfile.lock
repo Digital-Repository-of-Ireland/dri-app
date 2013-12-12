@@ -511,6 +511,7 @@ DEPENDENCIES
   rb-fchange
   rb-fsevent
   rb-inotify
+  rest-client
   rspec-rails
   rvm
   sass-rails (~> 3.2.3)
