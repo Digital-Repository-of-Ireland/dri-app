@@ -321,7 +321,7 @@ a {
 
 .dri_search_term_text_input {
 	margin: 25px 0 0 0;
-	width: 136px;
+	width: 146px;
 	padding: 5px 10px 5px 10px;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
@@ -659,7 +659,8 @@ a {
 }
 
 .dri_facet_filters .dri_sub_title a {
-	font-size: 110%;
+	font-size: 120%;
+	font-weight: normal;
 	margin: 0;
 	padding: 6px 0 6px 20px;
 	list-style: none;
@@ -670,6 +671,8 @@ a {
 	border-top: 1px solid #D9DADB;
 	color: #2F2F2F;
 }
+
+
 
 .dri_facet_filters .dri_sub_title a span.dri_arrow_down {
 	background:url(../../images/dri/arrow_down.png) no-repeat center;
@@ -722,6 +725,7 @@ a {
 .dri_facet_filters li a:hover {
 	text-decoration: underline;
 }
+
 .dri_facet_filters li.selected a{
 	background-color: #E0E0E0;
 	text-decoration: none;
