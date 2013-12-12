@@ -212,9 +212,6 @@ GEM
       hydra-access-controls (= 6.4.0)
       hydra-core (= 6.4.0)
       rails (>= 3.2.6)
-    hydra-remote_identifier (0.6.1)
-      activesupport (>= 3.2.13, < 5.0)
-      rest-client (~> 1.6.7)
     i18n (0.6.1)
     i18n_sync (0.5.1)
       ya2yaml
@@ -498,7 +495,6 @@ DEPENDENCIES
   guard-yard
   http_accept_language (~> 1.0.2)
   hydra-head (= 6.4.0)
-  hydra-remote_identifier
   i18n_sync
   it
   jettywrapper

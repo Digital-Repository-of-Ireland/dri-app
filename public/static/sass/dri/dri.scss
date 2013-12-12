@@ -1,10 +1,27 @@
+/* Anna updated html and body */
+html {
+  margin-bottom: 0.5em;
+	height: 100%;
+		}
+
+body {
+	font: 76%/1.6 Arial, Helvetica, clean,sans-serif;
+	*font-size: small;
+	*font: x-small;
+	margin: 0;
+}
+/* Anna updated html and body */
+
+
 .dri_ident {
   background: image-url('dri/dri_ident.png');
   background-repeat: no-repeat;
   height: 104px;
   margin: 20px;
 }
-
+a {
+	text-decoration: none;
+}
 
 /*-------------- Account and Language Styling--------------*/
 .dri_account_nav {
@@ -87,7 +104,7 @@
 .dri_social_media_nav ul {
 	margin:  0;
 	padding: 0;
-	float: left;
+	float: right;
 	
 }
 
@@ -226,6 +243,7 @@
 }
 
 
+
 /*-------------- Crumb trail Navigation --------------*/
 
 .dri_crumbtrail_nav {
@@ -276,7 +294,7 @@
 	float: left;
 	height: 80px;
 	margin: 0;
-	padding: 0px;
+	padding: 0;
 }
 /*-------------- Sort by --------------*/
 
@@ -303,7 +321,7 @@
 
 .dri_search_term_text_input {
 	margin: 25px 0 0 0;
-	width: 186px;
+	width: 136px;
 	padding: 5px 10px 5px 10px;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
@@ -313,13 +331,15 @@
 
 .dri_search_term_text_submit_button {
 	margin: 25px 0 0 6px;
-	padding: 4px 3px 4px 3px;
+	padding: 4px 8px 4px 6px;
 	background-color: #808082;
 	border: none;
 	color: #FFF;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
+	float: right;
 }
+
 
 /*-------------- Page Grid --------------*/
 .dri_pager_nav {
@@ -335,7 +355,7 @@
 .dri_pager_nav li {
 	float: left;
 	margin: 0 0 0 4px;
-	padding: 2px 8px 2px 8px;
+	padding: 3px 8px 0px 8px;
 	text-decoration: none;
 	list-style: none;
 	display: block;
@@ -353,9 +373,8 @@
 	color:#3E3E3E;
 }
 .dri_pager_nav li.selected {
-	background-color:#F0F0F0;
-	text-decoration: none;
-	
+	background-color: #F5F5F5;
+	text-decoration: underline;	
 }
 
 
@@ -383,14 +402,18 @@
 	float: left;
 	list-style: none;
 	display: block;
-	padding: 2px 10px 2px 10px;
+	padding: 3px 10px 0px 10px;
 	color: #FFFFFF;
 	background-color: #B3B3B3;
 	margin-right: 4px;
 	text-decoration: none;
 }
+.dri_pagination_nav li a:hover {
+	background-color: #B3B3B3;
+}
 .dri_pagination_nav li.selected a {
 	background-color: #6D6E71;
+	text-decoration: underline;
 }
 .dri_pagination_nav li.first a {
 	background:url(../../images/dri/prev_arrow.png) no-repeat center;
@@ -444,7 +467,8 @@
 	padding: 0px;
 }
 
-.dri_search_save_submit_button {
+.dri_search_save_submit_button {	
+	box-shadow: 1px 1px 4px  #f0f0f0;
 	margin: 25px 0 0 0;
 	padding: 4px 10px 4px 10px;
 	float: right;
@@ -454,6 +478,11 @@
 	color: #808082;
 	background-color: #F0F0F0;
 	border: 1px solid #D9DADB;
+}
+
+.dri_search_save_submit_button:hover {
+	background-color: #E0E0E0;
+	cursor: pointer;
 }
 /*-------------- Warning Messages --------------*/
 
@@ -552,6 +581,7 @@
 	font-weight: bold;
 	float: right;
 	text-decoration: none;
+	
 }
 /*-------------- Error Messages --------------*/
 
@@ -586,6 +616,116 @@
 }
 
 
+
+/* ----------- Facet Filter block ---------- */
+.dri_facet_filters_block {
+	font-size: 100%;
+	margin: 0 20px 20px 0;
+	padding: 0 0 0 0;
+	width: 228px;
+	float: left;
+	display: block;
+	color: #2F2F2F;
+	border: 1px solid #E1E1E1;
+	box-shadow: 1px 2px 6px  #E3E3E3;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+.dri_facet_filters  {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	text-decoration: none;		
+	float: left;
+	display: block;
+}
+.dri_facet_filters .dri_head_title {
+	color: #2F2F2F;
+	font-weight: bold;
+	padding: 10px 0 10px 20px;
+	margin:  0;
+	list-style: none;
+	text-decoration: none;
+	font-size: 110%;
+	float: left;
+	display: block;
+	width: 120px;
+}
+.dri_facet_filters .dri_search_num {
+	float: right;
+	display: block;
+	padding: 10px 15px 0 0;
+	margin:  0;
+}
+
+.dri_facet_filters .dri_sub_title a {
+	font-size: 110%;
+	margin: 0;
+	padding: 6px 0 6px 20px;
+	list-style: none;
+	text-decoration: none;
+	width: 208px;
+	float: left;
+	display: block;
+	border-top: 1px solid #D9DADB;
+	color: #2F2F2F;
+}
+
+.dri_facet_filters .dri_sub_title a span.dri_arrow_down {
+	background:url(../../images/dri/arrow_down.png) no-repeat center;
+	width: 15px;
+	height: 15px;
+	display:block;
+	float: right;
+	margin: 0;
+	padding: 0 0 0 25px;
+	
+}
+.dri_facet_filters .dri_sub_title a span.dri_arrow_up {
+	background:url(../../images/dri/arrow_up.png) no-repeat center;
+	width: 15px;
+	height: 15px;
+	display:block;
+	float: right;
+	margin: 0;
+	padding: 0 0 0 25px;
+	
+}
+
+.dri_facet_filters .dri_sub_title a:hover {
+	text-decoration: underline;
+}
+
+.dri_facet_filters ul {
+	margin: 0;
+	padding: 0;
+}
+.dri_facet_filters li {
+	font-weight: normal;
+	list-style: none;
+	
+}
+
+.dri_facet_filters li a {
+	text-decoration: none;
+	color: #808080;
+	font-weight: normal;
+	float: left;
+	display: block;
+	background-color: #F5F5F5;
+	border-bottom: 2px solid #FFF;
+	margin: 0;
+	padding: 4px 0 4px 20px;
+	width: 208px;
+}
+
+.dri_facet_filters li a:hover {
+	text-decoration: underline;
+}
+.dri_facet_filters li.selected a{
+	background-color: #E0E0E0;
+	text-decoration: none;
+}
 /* ----------- Collection block ---------- */
 .content_block_wrap {
 	width: 730px;
@@ -646,9 +786,10 @@
 }
 .dri_content_block h2 a {
 	color: #2F2F2F;
+	text-decoration: none;
 }
 .dri_content_block h2 a:hover {
-	text-decoration:underline;
+	text-decoration: underline;
 
 }
 .dri_content_block h2.dri_editor {
@@ -663,9 +804,10 @@
 
 .dri_content_block h2.dri_editor a {
 	color: #808080;
+	text-decoration: none;
 }
 .dri_content_block h2.dri_editor a:hover {
-	text-decoration: none;
+	text-decoration: underline;
 }
 .dri_content_block p {
 	color:#2F2F2F;
@@ -679,14 +821,18 @@
 	margin: 0 14px 0 14px;
 }
 
-.dri_content_block .dri_stats {
+.dri_stats {
 	color: #808080;
 	line-height: 1.4em;
 	display: block;
-	height: 26px;
+	height: 24px;
 	margin: 4px 14px 4px 14px;
 	border-top: 1px solid #E1E1E1;
-	padding: 4px 0 0 0;
+	padding: 6px 0 0 0;
+}
+.dri_stats span.view {
+	margin: 0;
+	padding: 0;
 }
 .dri_content_block .dri_stats span.dri_object_num {
 	color: #fff;
@@ -700,35 +846,12 @@
 }
 .dri_content_block .stats span.dri_object_num a {
 	color: #fff;
+	text-decoration: none;
 }
 .dri_content_block .stats span.dri_object_num a:hover {
 	text-decoration: underline;
 }
 
-.dri_content_block .dri_stats span.dri_view {
-	margin: 4px 8px 0 0;
-	display: block;
-	height: 20px;
-	padding: 3px 0 0 0;
-	margin: 0 10px 0 0;
-	float: left;
-}
-.dri_content_block .dri_stats span.dri_like {
-	margin: 4px 8px 0 0;
-	display: block;
-	height: 20px;
-	padding: 1px 0 0 0;
-	margin: 0 10px 0 0;
-	float: left;
-}
-.dri_content_block .dri_stats span.dri_comment{
-	margin: 4px 8px 0 0;
-	display: block;
-	height: 20px;
-	padding: 0;
-	margin: 0 10px 0 0;
-	float: left;
-}
 
 /*-------------- Footer navigation --------------*/
 .dri_main_footer_navigation {
@@ -772,6 +895,17 @@
 		border-right: none;	
 }
 
+
+/*-------------- Dialog Box --------------*/
+.dri_dialog_example {
+	margin: 0;
+	padding: 12px;
+	border: 1px solid #D9DADB;
+	background-color: #FFF;
+	color: #808082;
+	
+}
+
 /* Third Party CSS */
 
 
@@ -794,13 +928,19 @@
 .dropit .dropit-submenu {
     position: absolute;
     top: 100%;
-    right: 10px; /* dropdown left or right */
+    right: -14%; /* dropdown left or right */
     z-index: 1000;
     display: none;
-    min-width: 150px;
     list-style: none;
-	padding: 0;
-	margin: 10px 0 0 0;
-
+ 	border: 1px solid #D9DADB;
+  	margin: 2px 0 0 0;
+ 	padding: 2px 16px 2px 7px;
+ 	display: block;
+ 	-moz-border-radius: 2px;
+ 	border-radius: 2px;
+	background-color: #f0f0f0;
 }
 .dropit .dropit-open .dropit-submenu { display: block; }
+
+
+
