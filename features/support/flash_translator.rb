@@ -48,7 +48,7 @@ module FlashTranslator
 
     when /creating a collection/
       I18n.t('dri.flash.notice.collection_created', :locale => @user.locale)
- 
+
     when /deleting a collection/
       I18n.t('dri.flash.notice.collection_deleted', :locale => @user.locale)
 
@@ -67,8 +67,11 @@ module FlashTranslator
     when /invalid update collection/
       strip_vars( I18n.t('dri.flash.error.not_updated', :locale => @user.locale) )
 
+    when /application pending/
+      I18n.t('user_groups.memberships.pending', :locale => @user.locale)
+
     else "Unknown"
- 
+
     end
   end
 

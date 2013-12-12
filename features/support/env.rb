@@ -30,6 +30,8 @@ Capybara.register_driver :poltergeist do |app|
     :debug => false)
 end
 
+Capybara.ignore_hidden_elements = false
+
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
   # if you change any configuration or code from libraries loaded here, you'll

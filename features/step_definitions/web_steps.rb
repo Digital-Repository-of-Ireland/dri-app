@@ -178,11 +178,19 @@ Then /^I should see the (valid|modified) metadata$/ do |type|
 end
 
 Then /^I press "(.*?)"$/ do |button|
+  Capybara.ignore_hidden_elements = false
   click_link_or_button(button)
 end
 
 Then /^(?:|I )press the button to (.+)$/ do |button|
+  Capybara.ignore_hidden_elements = false
   click_link_or_button(button_to_id(button))
+end
+
+When /^(?:|I )perform a search$/ do
+  # Requires javascript
+  page.evaluate_script("document.getElementById('search').style.display='block';")
+  click_on('search')
 end
 
 Then /^(?:|I )should( not)? see a button to (.+)$/ do |negate,button|
@@ -329,4 +337,3 @@ Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |
   expectation = negate ? :should_not : :should
   page.send(expectation,  have_xpath("//select[@id = '#{id}']/option[@value = '#{value}']"))
 end
-

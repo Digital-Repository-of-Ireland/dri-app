@@ -1,0 +1,23 @@
+<% group = UserGroup::Group.find(UserGroup::Group.where(:name => @collection.id)) %>
+<% pending_memberships = group.pending_memberships %>
+
+<% for membership in pending_memberships %>
+
+  <% user = UserGroup::User.find_by_id(membership.user_id) %>
+  <% identifier = user.full_name+'('+user.email+')' unless user.nil? %>
+
+  <%= identifier %>
+    <br />
+    <div class="inline">
+    <% if current_user.is_admin? && !membership.id.nil? %>
+      <%= button_to (t :'user_groups.views.partials.pending.approve'), user_group.approve_membership_path(membership), method: :put %>
+    <% end %>
+
+    <%= form_for(membership, url: user_group.membership_path, html: {:method => :delete}) do |f| %>
+      <%= render 'user_group/shared/error_messages', object: f.object %>
+      <%= f.hidden_field :group_id %>
+      <%= f.hidden_field :user_id %>
+      <%= f.submit (t :'user_groups.views.shared.cancel') %>
+    <% end %>
+  </div>
+<% end %>

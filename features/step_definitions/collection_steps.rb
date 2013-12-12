@@ -14,6 +14,10 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.save
   collection.items.count.should == 0
   collection.governed_items.count.should == 0
+
+  group = UserGroup::Group.new(:name => collection.id,
+                              :description => "Default Reader group for collection #{collection.id}")
+  group.save
 end
 
 

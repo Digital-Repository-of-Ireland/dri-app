@@ -1,4 +1,4 @@
-@collections @req-17 @done @req-61 @req-63
+@collections @req-17 @done @req-61 @req-63 @javascript
 Feature:
   In order to manage my Digital Objects
   As an authorized user
@@ -147,3 +147,20 @@ Scenario: Using the new design to create a collection
   And I press the button to save draft
   Then my collection should be created
 
+Scenario: user requests access to readers group for restricted asset
+  Given I am not logged in
+  Given I am logged in as "admin" in the group "admin"
+  And I have created a collection with title "Restricted Collection"
+  And I have created a "Sound" object with title "Restricted Object" in the collection "Restricted Collection"
+  And the collection with title "Restricted Collection" is published
+  And the object with title "Restricted Object" is published
+  And I have added an audio file
+  And the masterfile for object with title "Restricted Object" is "accessible"
+  And the object with title "Restricted Object" is restricted to the reader group
+  And I am not logged in
+  And I am logged in as "user1"
+  And I am on the home page
+  When I perform a search
+  And I press "Restricted Object"
+  And I press the button to request access
+  Then I should see a message for application pending
