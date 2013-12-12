@@ -19,7 +19,9 @@ body {
   height: 104px;
   margin: 20px;
 }
-
+a {
+	text-decoration: none;
+}
 
 /*-------------- Account and Language Styling--------------*/
 .dri_account_nav {
@@ -292,7 +294,7 @@ body {
 	float: left;
 	height: 80px;
 	margin: 0;
-	padding: 0px;
+	padding: 0;
 }
 /*-------------- Sort by --------------*/
 
@@ -319,7 +321,7 @@ body {
 
 .dri_search_term_text_input {
 	margin: 25px 0 0 0;
-	width: 186px;
+	width: 136px;
 	padding: 5px 10px 5px 10px;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
@@ -329,13 +331,15 @@ body {
 
 .dri_search_term_text_submit_button {
 	margin: 25px 0 0 6px;
-	padding: 4px 6px 4px 6px;
+	padding: 4px 8px 4px 6px;
 	background-color: #808082;
 	border: none;
 	color: #FFF;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
+	float: right;
 }
+
 
 /*-------------- Page Grid --------------*/
 .dri_pager_nav {
@@ -351,7 +355,7 @@ body {
 .dri_pager_nav li {
 	float: left;
 	margin: 0 0 0 4px;
-	padding: 2px 8px 2px 8px;
+	padding: 3px 8px 0px 8px;
 	text-decoration: none;
 	list-style: none;
 	display: block;
@@ -369,9 +373,8 @@ body {
 	color:#3E3E3E;
 }
 .dri_pager_nav li.selected {
-	background-color:#F0F0F0;
-	text-decoration: none;
-	
+	background-color: #F5F5F5;
+	text-decoration: underline;	
 }
 
 
@@ -399,14 +402,18 @@ body {
 	float: left;
 	list-style: none;
 	display: block;
-	padding: 2px 10px 2px 10px;
+	padding: 3px 10px 0px 10px;
 	color: #FFFFFF;
 	background-color: #B3B3B3;
 	margin-right: 4px;
 	text-decoration: none;
 }
+.dri_pagination_nav li a:hover {
+	background-color: #B3B3B3;
+}
 .dri_pagination_nav li.selected a {
 	background-color: #6D6E71;
+	text-decoration: underline;
 }
 .dri_pagination_nav li.first a {
 	background:url(../../images/dri/prev_arrow.png) no-repeat center;
@@ -460,7 +467,8 @@ body {
 	padding: 0px;
 }
 
-.dri_search_save_submit_button {
+.dri_search_save_submit_button {	
+	box-shadow: 1px 1px 4px  #f0f0f0;
 	margin: 25px 0 0 0;
 	padding: 4px 10px 4px 10px;
 	float: right;
@@ -470,6 +478,11 @@ body {
 	color: #808082;
 	background-color: #F0F0F0;
 	border: 1px solid #D9DADB;
+}
+
+.dri_search_save_submit_button:hover {
+	background-color: #E0E0E0;
+	cursor: pointer;
 }
 /*-------------- Warning Messages --------------*/
 
@@ -601,10 +614,14 @@ body {
 	float: right;
 	text-decoration: none;
 }
+
+
+
 /* ----------- Facet Filter block ---------- */
 .dri_facet_filters_block {
+	font-size: 100%;
 	margin: 0 20px 20px 0;
-	padding: 0;
+	padding: 0 0 0 0;
 	width: 228px;
 	float: left;
 	display: block;
@@ -615,12 +632,98 @@ body {
 	border-radius: 10px;
 }
 .dri_facet_filters  {
-	color: #2F2F2F;
-	font-size: 110%;
-	font-weight: bold;
 	padding: 0;
-	margin: 0 20px 0 20px;
+	margin: 0;
 	list-style: none;
+	text-decoration: none;		
+	float: left;
+	display: block;
+}
+.dri_facet_filters .dri_head_title {
+	color: #2F2F2F;
+	font-weight: bold;
+	padding: 10px 0 10px 20px;
+	margin:  0;
+	list-style: none;
+	text-decoration: none;
+	font-size: 110%;
+	float: left;
+	display: block;
+	width: 120px;
+}
+.dri_facet_filters .dri_search_num {
+	float: right;
+	display: block;
+	padding: 10px 15px 0 0;
+	margin:  0;
+}
+
+.dri_facet_filters .dri_sub_title a {
+	font-size: 110%;
+	margin: 0;
+	padding: 6px 0 6px 20px;
+	list-style: none;
+	text-decoration: none;
+	width: 208px;
+	float: left;
+	display: block;
+	border-top: 1px solid #D9DADB;
+	color: #2F2F2F;
+}
+
+.dri_facet_filters .dri_sub_title a span.dri_arrow_down {
+	background:url(../../images/dri/arrow_down.png) no-repeat center;
+	width: 15px;
+	height: 15px;
+	display:block;
+	float: right;
+	margin: 0;
+	padding: 0 0 0 25px;
+	
+}
+.dri_facet_filters .dri_sub_title a span.dri_arrow_up {
+	background:url(../../images/dri/arrow_up.png) no-repeat center;
+	width: 15px;
+	height: 15px;
+	display:block;
+	float: right;
+	margin: 0;
+	padding: 0 0 0 25px;
+	
+}
+
+.dri_facet_filters .dri_sub_title a:hover {
+	text-decoration: underline;
+}
+
+.dri_facet_filters ul {
+	margin: 0;
+	padding: 0;
+}
+.dri_facet_filters li {
+	font-weight: normal;
+	list-style: none;
+	
+}
+
+.dri_facet_filters li a {
+	text-decoration: none;
+	color: #808080;
+	font-weight: normal;
+	float: left;
+	display: block;
+	background-color: #F5F5F5;
+	border-bottom: 2px solid #FFF;
+	margin: 0;
+	padding: 4px 0 4px 20px;
+	width: 208px;
+}
+
+.dri_facet_filters li a:hover {
+	text-decoration: underline;
+}
+.dri_facet_filters li.selected a{
+	background-color: #E0E0E0;
 	text-decoration: none;
 }
 /* ----------- Collection block ---------- */
@@ -718,7 +821,7 @@ body {
 	margin: 0 14px 0 14px;
 }
 
-.dri_content_block .dri_stats {
+.dri_stats {
 	color: #808080;
 	line-height: 1.4em;
 	display: block;
@@ -726,6 +829,10 @@ body {
 	margin: 4px 14px 4px 14px;
 	border-top: 1px solid #E1E1E1;
 	padding: 6px 0 0 0;
+}
+.dri_stats span.view {
+	margin: 0;
+	padding: 0;
 }
 .dri_content_block .dri_stats span.dri_object_num {
 	color: #fff;
@@ -745,30 +852,6 @@ body {
 	text-decoration: underline;
 }
 
-.dri_content_block .dri_stats span.dri_view {
-	margin: 4px 8px 0 0;
-	display: block;
-	height: 20px;
-	padding: 3px 0 0 0;
-	margin: 0 10px 0 0;
-	float: left;
-}
-.dri_content_block .dri_stats span.dri_like {
-	margin: 4px 8px 0 0;
-	display: block;
-	height: 20px;
-	padding: 1px 0 0 0;
-	margin: 0 10px 0 0;
-	float: left;
-}
-.dri_content_block .dri_stats span.dri_comment{
-	margin: 4px 8px 0 0;
-	display: block;
-	height: 20px;
-	padding: 0;
-	margin: 0 10px 0 0;
-	float: left;
-}
 
 /*-------------- Footer navigation --------------*/
 .dri_main_footer_navigation {
