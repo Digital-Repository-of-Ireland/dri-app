@@ -1,13 +1,13 @@
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models
-  revision: 03b08ff21391e11a5edeeea6edc0c38fd33b9a20
+  revision: 53978527b063c9f86935355beec7c3202a36b94e
   branch: develop
   specs:
     dri_data_models (1.0.1)
-      hydra-access-controls (>= 6.4.0)
-      hydra-head (>= 6.4.0)
+      hydra-access-controls (= 6.4.0)
+      hydra-head (= 6.4.0)
       iso-639
-      sufia-models
+      sufia-models (= 3.4.0)
 
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group
