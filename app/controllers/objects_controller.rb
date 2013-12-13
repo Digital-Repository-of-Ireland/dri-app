@@ -38,11 +38,11 @@ class ObjectsController < CatalogController
     set_access_permissions(:batch)
     @object.update_attributes(params[:batch])
 
-    mint_doi unless DoiConfig.nil?
-
     #Do for collection?
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
+
+    mint_doi unless DoiConfig.nil?
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -74,6 +74,8 @@ class ObjectsController < CatalogController
     duplicates?(@object)
     
     if @object.valid? && @object.save
+
+      mint_doi unless DoiConfig.nil?
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
