@@ -34,3 +34,4 @@ features/reports/*
 # *.html
 public/static/stylesheets/dri/*
 public/static/stylesheets/dri/*
+public/static/stylesheets/dri/dri.css
