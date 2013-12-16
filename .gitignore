@@ -33,3 +33,5 @@ features/reports/*
 .sass-cache/
 # *.html
 public/static/stylesheets/dri/*.css
+public/static/stylesheets/dri/*
+public/static/stylesheets/dri/dri.css
