@@ -58,6 +58,12 @@ module ButtonTranslator
     when /request access/
       "request_access"
 
+    when /approve membership request/
+      "approve_access"
+
+    when /cancel membership request/
+      "deny_access"
+
     else "Unknown"
 
     end

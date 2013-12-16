@@ -947,4 +947,43 @@ a {
 .dropit .dropit-open .dropit-submenu { display: block; }
 
 
+/*-------------- OBJECT VIEW --------------*/
+
+
+.dri_object_title_top {
+	height: 30px;
+	font-size: 110%;
+	padding: 5px 0 0 0;
+}
+
+
+/*-------------- Media asset --------------*/
+
+.dri_object_render_block {
+	margin: 30px 0 0 0;
+	padding: 0px;
+}
+
+/*-------------- MetaData Readview  --------------*/
+
+dl.dri_object_metadata_readview {
+	margin: 0px;
+	padding:0px;
+}
+
+
+dl.dri_object_metadata_readview dt {
+	margin: 10px 0 0 0;
+	padding:0px;
+	color: #2F2F2F;
+	font-weight: bold;
+	
+}
+
+dl.dri_object_metadata_readview dd{
+	margin: 0px;
+	padding:0px;
+}
+
+
 
