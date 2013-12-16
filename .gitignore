@@ -32,5 +32,4 @@ config/solr.yml
 features/reports/*
 .sass-cache/
 # *.html
-public/static/stylesheets/dri/*
-public/static/stylesheets/dri/*
+public/static/stylesheets/dri/*.css
