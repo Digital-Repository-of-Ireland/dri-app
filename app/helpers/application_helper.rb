@@ -63,7 +63,7 @@ module ApplicationHelper
   def count_published_items_in_collection_by_type( collection_id, type )
     solr_query = "status_ssim:published AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
                  "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
-                 "object_type_tesim:"+ type
+                 "object_type_sim:"+ type
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
