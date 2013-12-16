@@ -149,7 +149,9 @@
   	}
   	
   	.dri_object_title_top {
-		@include zen-grid-item(4, 1);
+		@include zen-grid-item(3, 1);
+		background: #000;
+		color: #fff;
 		//@include zen-grid-background ( $grid-color: #eee);
 		
 	}
