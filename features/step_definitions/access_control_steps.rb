@@ -1,5 +1,13 @@
-Given /^the object with pid "(.*?)" has "(.*?)" masterfile$/ do |pid, permission|
+Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, pid, permission|
   pid = "dri:o" + @random_pid if (pid == "@random")
+
+  if type == "title"
+    query = "title_tesim:#{URI.encode(pid)}"
+    pid = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
+  else
+    pid = "dri:o" + @random_pid if (pid == "@random")
+  end
+
   mapping = {}
   mapping['accessible'] = "1"
   mapping['inaccessible'] = "0"
@@ -11,6 +19,19 @@ Given /^the object with pid "(.*?)" has "(.*?)" masterfile$/ do |pid, permission
   object.save
 end
 
+Given /the masterfile for object with title "(.*?)" is "(.*?)"$/ do |title, permission|
+  mapping = {}
+  mapping['accessible'] = "1"
+  mapping['inaccessible'] = "0"
+  mapping['inherited'] = "-1"
+
+  query = "title_tesim:#{URI.encode(title)}"
+  id = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
+  object = ActiveFedora::Base.find(id, {:cast => true})
+  object.master_file = mapping[permission].to_s
+  object.save
+end
+
 Given /^the object with pid "(.*?)" is under embargo$/ do |pid|
   pid = "dri:o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
@@ -18,17 +39,38 @@ Given /^the object with pid "(.*?)" is under embargo$/ do |pid|
   object.save
 end
 
-Given /^the object with pid "(.*?)" has no read access for my user$/ do |pid|
+Given /^the object with (pid|title) "(.*?)" has no read access for my user$/ do |type,pid|
+  if type == 'title'
+    query = "title_tesim:#{URI.encode(pid)}"
+    pid = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
+  end
+
   pid = "dri:o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
   object.rightsMetadata.read_access.machine.person = ["another@user.com"]
+  object.rightsMetadata.read_access.machine.group = []
   object.save
+  object.reload
 end
 
 Given /^the object with pid "(.*?)" has no read access for my group$/ do |pid|
   pid = "dri:o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
   object.rightsMetadata.read_access.machine.group = ["notmygroup"]
+  object.save
+end
+
+Given /^the object with (pid|title) "(.*?)" is restricted to the reader group$/ do |type,pid|
+  if type == "title"
+    query = "title_tesim:#{URI.encode(pid)}"
+    pid = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
+  else
+    pid = "dri:o" + @random_pid if (pid == "@random")
+  end
+
+
+  object = ActiveFedora::Base.find(pid, {:cast => true})
+  object.rightsMetadata.read_access.machine.group = pid
   object.save
 end
 
@@ -73,6 +115,14 @@ end
 Given /^the object with pid "(.*?)" is published$/ do |pid|
   pid = "dri:o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
+  object.status = "published"
+  object.save
+end
+
+Given /^the (collection|object) with title "(.*?)" is published$/ do |type,title|
+  query = "title_tesim:#{URI.encode(title)}"
+  id = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
+  object = ActiveFedora::Base.find(id, {:cast => true})
   object.status = "published"
   object.save
 end

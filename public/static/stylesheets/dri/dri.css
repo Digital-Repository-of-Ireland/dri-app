@@ -360,7 +360,7 @@ a {
 /* line 322, ../../sass/dri/dri.scss */
 .dri_search_term_text_input {
   margin: 25px 0 0 0;
-  width: 136px;
+  width: 146px;
   padding: 5px 10px 5px 10px;
   -moz-border-radius: 15px;
   border-radius: 15px;
@@ -698,7 +698,6 @@ a {
   font-size: 100%;
   margin: 0 20px 20px 0;
   padding: 0 0 0 0;
-  width: 228px;
   float: left;
   display: block;
   color: #2F2F2F;
@@ -742,19 +741,20 @@ a {
 
 /* line 661, ../../sass/dri/dri.scss */
 .dri_facet_filters .dri_sub_title a {
-  font-size: 110%;
+  font-size: 120%;
+  font-weight: normal;
   margin: 0;
   padding: 6px 0 6px 20px;
   list-style: none;
   text-decoration: none;
-  width: 208px;
+  width: 218px;
   float: left;
   display: block;
   border-top: 1px solid #D9DADB;
   color: #2F2F2F;
 }
 
-/* line 674, ../../sass/dri/dri.scss */
+/* line 677, ../../sass/dri/dri.scss */
 .dri_facet_filters .dri_sub_title a span.dri_arrow_down {
   background: url(../../images/dri/arrow_down.png) no-repeat center;
   width: 15px;
@@ -765,7 +765,7 @@ a {
   padding: 0 0 0 25px;
 }
 
-/* line 684, ../../sass/dri/dri.scss */
+/* line 687, ../../sass/dri/dri.scss */
 .dri_facet_filters .dri_sub_title a span.dri_arrow_up {
   background: url(../../images/dri/arrow_up.png) no-repeat center;
   width: 15px;
@@ -776,24 +776,24 @@ a {
   padding: 0 0 0 25px;
 }
 
-/* line 695, ../../sass/dri/dri.scss */
+/* line 698, ../../sass/dri/dri.scss */
 .dri_facet_filters .dri_sub_title a:hover {
   text-decoration: underline;
 }
 
-/* line 699, ../../sass/dri/dri.scss */
+/* line 702, ../../sass/dri/dri.scss */
 .dri_facet_filters ul {
   margin: 0;
   padding: 0;
 }
 
-/* line 703, ../../sass/dri/dri.scss */
+/* line 706, ../../sass/dri/dri.scss */
 .dri_facet_filters li {
   font-weight: normal;
   list-style: none;
 }
 
-/* line 709, ../../sass/dri/dri.scss */
+/* line 712, ../../sass/dri/dri.scss */
 .dri_facet_filters li a {
   text-decoration: none;
   color: #808080;
@@ -804,22 +804,22 @@ a {
   border-bottom: 2px solid #FFF;
   margin: 0;
   padding: 4px 0 4px 20px;
-  width: 208px;
+  width: 218px;
 }
 
-/* line 722, ../../sass/dri/dri.scss */
+/* line 725, ../../sass/dri/dri.scss */
 .dri_facet_filters li a:hover {
   text-decoration: underline;
 }
 
-/* line 725, ../../sass/dri/dri.scss */
+/* line 729, ../../sass/dri/dri.scss */
 .dri_facet_filters li.selected a {
   background-color: #E0E0E0;
   text-decoration: none;
 }
 
 /* ----------- Collection block ---------- */
-/* line 730, ../../sass/dri/dri.scss */
+/* line 734, ../../sass/dri/dri.scss */
 .content_block_wrap {
   width: 730px;
   margin: 0 20px 0 20px;
@@ -827,7 +827,7 @@ a {
   padding: 0;
 }
 
-/* line 736, ../../sass/dri/dri.scss */
+/* line 740, ../../sass/dri/dri.scss */
 .dri_content_block {
   margin: 0 20px 20px 0;
   padding: 0;
@@ -841,22 +841,22 @@ a {
   position: relative;
 }
 
-/* line 750, ../../sass/dri/dri.scss */
+/* line 754, ../../sass/dri/dri.scss */
 .dri_content_block.top {
   border-top: 5px solid #E1E1E1;
 }
 
-/* line 753, ../../sass/dri/dri.scss */
+/* line 757, ../../sass/dri/dri.scss */
 .dri_content_block.last {
   margin: 0 0 20px 0;
 }
 
-/* line 757, ../../sass/dri/dri.scss */
+/* line 761, ../../sass/dri/dri.scss */
 .dri_content_block .dri_high_view {
   background: url('../../images/high_view_icon.png') no-repeat;
 }
 
-/* line 762, ../../sass/dri/dri.scss */
+/* line 766, ../../sass/dri/dri.scss */
 .dri_content_block h1 {
   color: #2F2F2F;
   font-size: 110%;
@@ -867,18 +867,18 @@ a {
   text-overflow: ellipsis;
 }
 
-/* line 772, ../../sass/dri/dri.scss */
+/* line 776, ../../sass/dri/dri.scss */
 .dri_content_block h1 a {
   color: #2F2F2F;
   text-decoration: none;
 }
 
-/* line 776, ../../sass/dri/dri.scss */
+/* line 780, ../../sass/dri/dri.scss */
 .dri_content_block a:hover h1 {
   text-decoration: underline;
 }
 
-/* line 780, ../../sass/dri/dri.scss */
+/* line 784, ../../sass/dri/dri.scss */
 .dri_content_block h2 {
   color: #2F2F2F;
   font-size: 100%;
@@ -887,18 +887,18 @@ a {
   font-weight: normal;
 }
 
-/* line 787, ../../sass/dri/dri.scss */
+/* line 791, ../../sass/dri/dri.scss */
 .dri_content_block h2 a {
   color: #2F2F2F;
   text-decoration: none;
 }
 
-/* line 791, ../../sass/dri/dri.scss */
+/* line 795, ../../sass/dri/dri.scss */
 .dri_content_block h2 a:hover {
   text-decoration: underline;
 }
 
-/* line 795, ../../sass/dri/dri.scss */
+/* line 799, ../../sass/dri/dri.scss */
 .dri_content_block h2.dri_editor {
   color: #808080;
   line-height: 1.4em;
@@ -909,18 +909,18 @@ a {
   text-overflow: ellipsis;
 }
 
-/* line 805, ../../sass/dri/dri.scss */
+/* line 809, ../../sass/dri/dri.scss */
 .dri_content_block h2.dri_editor a {
   color: #808080;
   text-decoration: none;
 }
 
-/* line 809, ../../sass/dri/dri.scss */
+/* line 813, ../../sass/dri/dri.scss */
 .dri_content_block h2.dri_editor a:hover {
   text-decoration: underline;
 }
 
-/* line 812, ../../sass/dri/dri.scss */
+/* line 816, ../../sass/dri/dri.scss */
 .dri_content_block p {
   color: #2F2F2F;
   font-size: 100%;
@@ -928,13 +928,13 @@ a {
   margin: 10px 10px 10px 10px;
 }
 
-/* line 819, ../../sass/dri/dri.scss */
+/* line 823, ../../sass/dri/dri.scss */
 .dri_image {
   padding: 0;
   margin: 0 14px 0 14px;
 }
 
-/* line 824, ../../sass/dri/dri.scss */
+/* line 828, ../../sass/dri/dri.scss */
 .dri_stats {
   color: #808080;
   line-height: 1.4em;
@@ -945,13 +945,13 @@ a {
   padding: 6px 0 0 0;
 }
 
-/* line 833, ../../sass/dri/dri.scss */
+/* line 837, ../../sass/dri/dri.scss */
 .dri_stats span.view {
   margin: 0;
   padding: 0;
 }
 
-/* line 837, ../../sass/dri/dri.scss */
+/* line 841, ../../sass/dri/dri.scss */
 .dri_content_block .dri_stats span.dri_object_num {
   color: #fff;
   display: block;
@@ -963,19 +963,19 @@ a {
   background: url('../../images/object_back.png') no-repeat;
 }
 
-/* line 847, ../../sass/dri/dri.scss */
+/* line 851, ../../sass/dri/dri.scss */
 .dri_content_block .stats span.dri_object_num a {
   color: #fff;
   text-decoration: none;
 }
 
-/* line 851, ../../sass/dri/dri.scss */
+/* line 855, ../../sass/dri/dri.scss */
 .dri_content_block .stats span.dri_object_num a:hover {
   text-decoration: underline;
 }
 
 /*-------------- Footer navigation --------------*/
-/* line 857, ../../sass/dri/dri.scss */
+/* line 861, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation {
   margin: 100px 0 100px 0;
   padding: 0px;
@@ -983,13 +983,13 @@ a {
   height: 40px;
 }
 
-/* line 863, ../../sass/dri/dri.scss */
+/* line 867, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation ul {
   margin: 0px;
   padding: 0px;
 }
 
-/* line 869, ../../sass/dri/dri.scss */
+/* line 873, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation li {
   float: left;
   margin: 10px 0 10px 0;
@@ -1001,7 +1001,7 @@ a {
   border-right: 1px solid #D9DADB;
 }
 
-/* line 879, ../../sass/dri/dri.scss */
+/* line 883, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation li a {
   list-style: none;
   text-decoration: none;
@@ -1011,23 +1011,23 @@ a {
   display: block;
 }
 
-/* line 888, ../../sass/dri/dri.scss */
+/* line 892, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation li a:hover {
   text-decoration: underline;
 }
 
-/* line 891, ../../sass/dri/dri.scss */
+/* line 895, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation li.selected {
   text-decoration: underline;
 }
 
-/* line 894, ../../sass/dri/dri.scss */
+/* line 898, ../../sass/dri/dri.scss */
 .dri_main_footer_navigation li.no_border_right {
   border-right: none;
 }
 
 /*-------------- Dialog Box --------------*/
-/* line 900, ../../sass/dri/dri.scss */
+/* line 904, ../../sass/dri/dri.scss */
 .dri_dialog_example {
   margin: 0;
   padding: 12px;
@@ -1046,19 +1046,19 @@ a {
  * http://www.opensource.org/licenses/mit-license.php
  */
 /* These styles assume you are using ul and li */
-/* line 922, ../../sass/dri/dri.scss */
+/* line 926, ../../sass/dri/dri.scss */
 .dropit {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* line 927, ../../sass/dri/dri.scss */
+/* line 931, ../../sass/dri/dri.scss */
 .dropit .dropit-trigger {
   position: relative;
 }
 
-/* line 928, ../../sass/dri/dri.scss */
+/* line 932, ../../sass/dri/dri.scss */
 .dropit .dropit-submenu {
   position: absolute;
   top: 100%;
@@ -1076,7 +1076,7 @@ a {
   background-color: #f0f0f0;
 }
 
-/* line 943, ../../sass/dri/dri.scss */
+/* line 947, ../../sass/dri/dri.scss */
 .dropit .dropit-open .dropit-submenu {
   display: block;
 }

@@ -3,6 +3,8 @@
 
 require 'stepped_forms'
 require 'metadata_helpers'
+require 'doi/datacite'
+require 'sufia/models/jobs/mint_doi_job'
 
 class ObjectsController < CatalogController
   include SteppedForms
@@ -34,12 +36,13 @@ class ObjectsController < CatalogController
     end
 
     set_access_permissions(:batch)
-
     @object.update_attributes(params[:batch])
 
     #Do for collection?
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
+
+    mint_doi unless DoiConfig.nil?
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -56,7 +59,6 @@ class ObjectsController < CatalogController
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
 
     set_access_permissions(:batch)
-
     @object = Batch.new
     
     if request.content_type == "multipart/form-data"
@@ -67,10 +69,13 @@ class ObjectsController < CatalogController
     @object.depositor = current_user.to_s
 
     @object.update_attributes params[:batch]
+
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
     
     if @object.valid? && @object.save
+
+      mint_doi unless DoiConfig.nil?
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -98,6 +103,12 @@ class ObjectsController < CatalogController
       end
     end
 
+  end
+
+  def mint_doi
+    if @object.status.eql?("published") && @object.doi.nil?
+      Sufia.queue.push(MintDoiJob.new(@object.id))
+    end
   end
 
 end

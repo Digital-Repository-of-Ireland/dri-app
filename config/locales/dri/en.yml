@@ -78,6 +78,8 @@ en:
           audio_file: "Audio File"
           metadata: Metadata
           pdf_file: PDF
+          video_file: Video
+          image_file: Image
         headers: 
           files: Files
         legends: 

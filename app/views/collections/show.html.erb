@@ -17,3 +17,8 @@
 <% if signed_in? && (can? :edit, @collection) %>
   <%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %>
 <% end %>
+
+<% if signed_in? && (can? :manage, @collection) %>
+<% object = UserGroup::Group.find(UserGroup::Group.where(:name => @collection.id)) %>
+  <%= render :partial => 'shared/approve_membership' %>
+<% end %>
