@@ -36,4 +36,4 @@ surrogates:
   Sound: [mp3_web_quality, ogg_web_quality]
   Document: [pdf]
 data:
-  types: [Audio, Article]
+  types: [Sound, MovingImage, Image, Text]

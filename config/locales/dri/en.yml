@@ -18,9 +18,10 @@ en:
       locale: Language
     data: 
       types: 
-        audio: Audio
-        image: Images
-        pdfdoc: Documents
+        Sound: Audio
+        Image: Images
+        Text: Documents
+        MovingImage: Video
     flash: 
       alert: 
         create_permission: "You do not have permission to create this document."
