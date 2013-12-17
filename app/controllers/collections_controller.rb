@@ -295,9 +295,9 @@ class CollectionsController < CatalogController
           fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
       end
 
-      result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim", :fq => fq)
+      result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,cover_image_tesim", :fq => fq)
       result_docs.each do | doc |
-        results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0] })
+        results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :cover_image => doc["cover_image_tesim"] })
       end
 
       return results
