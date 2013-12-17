@@ -42,7 +42,14 @@ module Validators
     # Ensure that the file extension matches the mime type
     raise Exceptions::WrongExtension unless MIME::Types.type_for(extension).include?(mime_type)
 
-    raise Exceptions::InappropriateFileType unless Settings.restrict.mime_types.include? mime_type.to_s.downcase
+    lc_mime_type = mime_type.to_s.downcase
+    unless (Settings.restrict.mime_types.image.include? lc_mime_type or
+           Settings.restrict.mime_types.text.include? lc_mime_type or
+           Settings.restrict.mime_types.pdf.include? lc_mime_type or
+           Settings.restrict.mime_types.audio.include? lc_mime_type or
+           Settings.restrict.mime_types.video.include? lc_mime_type)
+      raise Exceptions::InappropriateFileType
+    end
 
     # If we haven't encountered a problem we return true
     return true
