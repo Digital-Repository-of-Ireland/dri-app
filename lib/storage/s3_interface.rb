@@ -127,7 +127,7 @@ module Storage
       return true
     end
 
-    # Save File
+    # Save Surrogate File
     def self.store_surrogate(object_id, outputfile, filename)
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                           :access_key_id => Settings.S3.access_key_id,
@@ -139,6 +139,38 @@ module Storage
         logger.error "Problem saving Surrogate file #{filename} : #{e.to_s}"
       end
       AWS::S3::Base.disconnect!()
+    end
+
+
+    # Save arbitrary file
+    def self.store_file(file, filename, bucket)
+      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                         :access_key_id => Settings.S3.access_key_id,
+                                         :secret_access_key => Settings.S3.secret_access_key)
+
+      begin
+        AWS::S3::S3Object.store(filename, open(file), bucket, :access => :public_read)
+      rescue Exception => e
+        logger.error "Problem saving file #{filename} : #{e.to_s}"
+        raise
+      end
+      AWS::S3::Base.disconnect!()
+    end
+
+
+    # Get link for arbitrary file
+    def self.get_link_for_surrogate(file, bucket)
+      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                         :access_key_id => Settings.S3.access_key_id,
+                                         :secret_access_key => Settings.S3.secret_access_key)
+
+      begin
+        url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => false)
+      rescue Exception => e
+        logger.error "Problem getting link for file #{filename} : #{e.to_s}"
+      end
+      AWS::S3::Base.disconnect!()
+      return url
     end
 
 

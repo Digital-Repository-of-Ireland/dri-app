@@ -76,8 +76,10 @@ ga:
           remove_from_collection: "Bain ón mbailiúchán"
         forms: 
           audio_file: "Comhad Fuaime"
+          image_file: Image
           metadata: Meiteashonraí
           pdf_file: PDF
+          video_file: Video
         headers: 
           files: Comhaid
         legends: 
@@ -135,6 +137,7 @@ ga:
       fields: 
         contributor: Contributor
         contributors: Contributors
+        cover_image: "Upload a cover image"
         coverage: Coverage
         coverages: Coverages
         creation_date: "Dáta Cruthaithe"

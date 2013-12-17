@@ -37,3 +37,4 @@ surrogates:
   Document: [pdf]
 data:
   types: [Audio, Article]
+  cover_image_bucket: coverimages

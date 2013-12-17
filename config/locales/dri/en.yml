@@ -76,10 +76,10 @@ en:
           remove_from_collection: "Remove from collection"
         forms: 
           audio_file: "Audio File"
+          image_file: Image
           metadata: Metadata
           pdf_file: PDF
           video_file: Video
-          image_file: Image
         headers: 
           files: Files
         legends: 
@@ -137,6 +137,7 @@ en:
       fields: 
         contributor: Contributor
         contributors: Contributors
+        cover_image: "Upload a cover image"
         coverage: Coverage
         coverages: Coverages
         creation_date: "Creation Date"
