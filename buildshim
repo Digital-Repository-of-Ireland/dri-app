@@ -86,6 +86,7 @@ upload)
     fi
     ;;
 compile_extra)
+    curl http://repository.dri.ie/v1 > /dev/null 2>&1
     ;;
 uninstall_deps)
     ;;

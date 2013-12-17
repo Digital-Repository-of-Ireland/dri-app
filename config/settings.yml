@@ -36,5 +36,5 @@ surrogates:
   Sound: [mp3_web_quality, ogg_web_quality]
   Document: [pdf]
 data:
-  types: [Audio, Article]
   cover_image_bucket: coverimages
+  types: [Sound, MovingImage, Image, Text]

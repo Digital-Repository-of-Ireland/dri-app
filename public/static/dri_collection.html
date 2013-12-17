@@ -6,7 +6,7 @@
 <meta charset=utf-8 />
 <meta name="description" content="description">
 
-<title>DRI Object View Grid</title>
+<title>DRI Collection View Grid</title>
 
 <link rel="stylesheet" type="text/css" media="screen"
 	href="stylesheets/dri/dri_layouts.css">
@@ -47,9 +47,7 @@
 <script src="/assets/application.js?body=1" type="text/javascript"></script>
 <script id="twitter-wjs" src="https://platform.twitter.com/widgets.js"></script>
 
-<script>
-<!-- Dialogue Script - uses JQuery-UI Dialogue function -->
-  $(function() {
+<script>  $(function() {
     $( "#dri_dialog_example_id" ).dialog({
       autoOpen: false,
       modal: true,
@@ -381,28 +379,15 @@
 			<!-- close dri_second_navigation_container -->
 
 			<!-- result container showing results / content or forms depending on Context -->
-			<div class="dri_object_container">
+			<div class="dri_collection_container">
+							<div class="dri_object_view dri_object_title_top">National Archive of Irish Composers (Performance)</div>
+							<div class="dri_object_second_block">
 
-				<div class="dri_object_view dri_object_title_top">A Favorite
-					Scotch Air, arranged as a Rondo</div>
-								<div class="dri_object_second_block">
-					<div class="dri_back_search">
-						<a
-							href="/?f%5Bcollection_sim%5D%5B%5D=test&amp;id=24&amp;results_view=true">
-							⬅ Back to Search</a>
-					</div>
-
-					<ul class="dri_stats">
-						<li><img alt="View_stat" height="12"
-							src="/assets/view_stat.png" width="25">Views <span
-							class="dri_stat_num">2701</span></li>
-					</ul>
-					<!-- close dri_stats -->
 
 					<div class="dri_vc_title">
 						<img alt="Vc_folder" height="12" src="/assets/vc_folder.png"
-							width="22"> <a href="/collections/dri:j9602060k">View
-							Collection</a>
+							width="22"> <a href="/collections/dri:j9602060k">Objects
+							in this Collection</a>
 					</div>
 					<!-- close vc_title -->
 
@@ -420,20 +405,13 @@
 								href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D&amp;f%5Bobject_type_sim%5D%5B%5D=Article">0</a></span></li>
 					</ul>
 
-					<div class="dri_bookmark_object">
-						<img alt="Bm_folder" height="15" src="/assets/bm_folder.png"
-							width="22">Bookmark Object <input type="checkbox"
-							name="vehicle" value="Bike">
-
-					</div>
-					<!-- close dri_bookmark_object -->
 
 				</div>
 				<!-- close dri_object_second_block -->
+
+
 				<div class="dri_object_render_block">
-					<audio controls>
-						<source src="/objects/dri:j9602064p/file" type="audio/mpeg">
-    				</audio>
+					<img src="images/dri/collection_cover_sample.png" height="">
 				</div>
 				<div class="dri_object_first_block">
 
@@ -441,82 +419,53 @@
 
 					<dl class="dl-horizontal  dl-invert  dri_object_metadata_readview">
 						<dt class="blacklight-title_tesim">Title:</dt>
-						<dd class="blacklight-title_tesim">A Favorite Scotch Air,
-							arranged as a Rondo</dd>
+						<dd class="blacklight-title_tesim">National Archive of Irish Composers (Performance)</dd>
 						<dt class="blacklight-description_tesim">Description:</dt>
-						<dd class="blacklight-description_tesim">John Field was born
-							in Dublin where he performed at the Rotunda Assembly Rooms as a
-							prodigy, aged nine. The Dublin Evening Post noted his appearance
-							as ‘an astonishing performance by such a child’. After moving to
-							London, Field was apprenticed to Muzio Clementi acting as
-							demonstrator on Clementi’s pianos and later travelled with him to
-							Russia to set up a piano showroom. Thereafter, Field established
-							himself as a popular performer and teacher and Russia became his
-							home until his death. Field developed a new style of piano
-							playing with his insistence on singing tone and the ‘floating’
-							feeling he achieved in his passagework. His lightness of touch
-							and the sweetness of his cantabile phrases became legendary
-							throughout Europe where the ‘school of Field’ was followed by
-							many of the leading teachers including Chopin’s early mentor
-							Jozef Elsner and Friedrich Wieck, father and teacher of Clara
-							Schumann. Field was most noted for his invention of the nocturne,
-							a work reflecting mood and atmosphere, at a time when the piano
-							‘piece’ was far from commonplace. The style of his nocturnes
-							influenced Chopin most prominently but also affected Liszt,
-							Mendelssohn and countless other composers. The piano used in this
-							performance is an original square piano dating from c1809, kindly
-							loaned by the Royal Irish Academy of Music. The square piano was
-							a popular domestic instrument; despite its name, the piano is not
-							square but rectangular, with a key span of five and a half
-							octaves. It was fully restored to playing condition by David Hunt
-							of Cambridge in 2001-2002. The proprietor of the
-							piano-manufacturing business that built the square piano was
-							Muzio Clementi, Field’s teacher and mentor. This instrument is
-							particularly appropriate for performances of Field’s works as he
-							would have been very familiar with similar instruments. Field’s
-							rondo on A Favorite Scotch Air is a closely-related transcription
-							of the slow movement of his Piano Concerto no. 1 which the
-							composer first performed in London at the age of seventeen. It
-							uses the popular melody from James Hook’s song: Twas within a
-							Mile of Edinboro’ Town. Una Hunt</dd>
-						<dt class="blacklight-role_cmp_tesim">Composer:</dt>
+						<dd class="blacklight-description_tesim">The National Archive
+							of Irish Composers was launched at Gleeson Theatre, DIT Kevin
+							Street, Dublin on Friday 26th November, 2010. Featuring
+							instrumental and vocal treasures from the National Library of
+							Ireland, there were several modern world premieres to be heard at
+							this unique concert. The inspiration for many of the works on the
+							programme came from Irish airs; the same theme can be seen in the
+							accompanying Digital Library of historic piano music.</dd>
+						<dt class="blacklight-role_cmp_tesim">Owner:</dt>
 						<dd class="blacklight-role_cmp_tesim">
-							<a href="/?f%5Bperson_sim%5D%5B%5D=John+Field">John Field</a>
-						</dd>
-						<dt class="blacklight-role_mus_tesim">Musician:</dt>
-						<dd class="blacklight-role_mus_tesim">
-							<a
-								href="/?f%5Bperson_sim%5D%5B%5D=Catherina+Lemoni-O%26%23x27%3BDoherty">Catherina
-								Lemoni-O'Doherty</a>
+							<a href="/?f%5Bperson_sim%5D%5B%5D=John+Field">Sam Green</a>
 						</dd>
 						<dt class="blacklight-creation_date_tesim">Creation Date:</dt>
 						<dd class="blacklight-creation_date_tesim">Friday 26th
-							November, 2010.</dd>
-						<dt class="blacklight-type_tesim">Type:</dt>
-						<dd class="blacklight-type_tesim">MovingImage</dd>
-						<dt class="blacklight-language_tesim">Language:</dt>
+							November, 2013.</dd>
+						<dt class="blacklight-type_tesim">Governing Collection:</dt>
+						<dd class="blacklight-type_tesim">None</dd>
+						<dt class="blacklight-language_tesim">Editors:</dt>
 						<dd class="blacklight-language_tesim">
-							<a href="/?f%5Blanguage_sim%5D%5B%5D=eng">English</a>
+							<a href="/?f%5Blanguage_sim%5D%5B%5D=eng">Martin Whelan</a>
 						</dd>
-						<dt class="blacklight-rights_tesim">Rights:</dt>
+						<dd class="blacklight-language_tesim">
+							<a href="/?f%5Blanguage_sim%5D%5B%5D=eng">Andrea Marie
+								Hannigan</a>
+						</dd>
+						<dt class="blacklight-creation_date_tesim">Default Embargo
+							Date:</dt>
+						<dd class="blacklight-creation_date_tesim">Friday 26th
+							November, 2013.</dd>
+						<dt class="blacklight-rights_tesim">Defaul Rights:</dt>
 						<dd class="blacklight-rights_tesim">National Library of
 							Ireland / NAIC</dd>
+						<dt class="blacklight-rights_tesim">Defaul License:</dt>
+						<dd class="blacklight-rights_tesim">CC-BY</dd>
 					</dl>
 
 
-					<input class="dri_request_button" name="request" type="button"
-						value="↳ Request to Join this Group">
+
 
 				</div>
-				
+
 				<!-- close dri_object_first_block -->
 
 
-
-
-
-			</div>
-							<div class="dri_object_institutes_block">
+				<div class="dri_object_institutes_block">
 
 
 					<div class="dri_institutes_title">
@@ -546,6 +495,11 @@
 
 				</div>
 				<!-- close dri_object_institutes_block -->
+
+
+
+
+			</div>
 			<!-- close dri_object_container -->
 
 		</div>
