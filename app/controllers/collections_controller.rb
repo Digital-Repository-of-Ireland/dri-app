@@ -80,6 +80,19 @@ class CollectionsController < CatalogController
     @collection = retrieve_object!(params[:id])
     @children = collection_items params[:id]
 
+    @pending = {}
+
+    reader_group = UserGroup::Group.find_by_name(reader_group_name)
+    reader_group ||= create_reader_group
+
+    pending_memberships = reader_group.pending_memberships
+    pending_memberships.each do |membership|
+      user = UserGroup::User.find_by_id(membership.user_id)
+      identifier = user.full_name+'('+user.email+')' unless user.nil?
+
+      @pending[identifier] = membership
+    end
+
     respond_to do |format|
       format.html
       format.json  {
@@ -149,8 +162,7 @@ class CollectionsController < CatalogController
       if @collection.save
 
         # We have to create a default reader group
-        @group = UserGroup::Group.new(:name => @collection.id, :description => "Default Reader group for collection #{    @collection.id}")
-        @group.save
+        create_reader_group
 
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
             redirect_to :controller => "collections", :action => "show", :id => @collection.id }
@@ -269,6 +281,16 @@ class CollectionsController < CatalogController
     def collection_items_query(id)
       "(is_governed_by_ssim:\"info:fedora/" + id +
                    "\" OR is_member_of_collection_ssim:\"info:fedora/" + id + "\")"
+    end
+
+    def create_reader_group
+      @group = UserGroup::Group.new(:name => reader_group_name, :description => "Default Reader group for collection #{@collection.id}")
+      @group.save
+      @group
+    end
+
+    def reader_group_name
+      @collection.id.sub(':', '_')
     end
 
 end

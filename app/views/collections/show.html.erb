@@ -15,10 +15,9 @@
 <%= render :partial => 'item', :collection => @collection.items, :locals => {:collection_id => @collection.pid} %>
 
 <% if signed_in? && (can? :edit, @collection) %>
-  <%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %>
+  <%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %><br/>
 <% end %>
 
-<% if signed_in? && (can? :manage, @collection) %>
-<% object = UserGroup::Group.find(UserGroup::Group.where(:name => @collection.id)) %>
-  <%= render :partial => 'shared/approve_membership' %>
+<% if signed_in? && (can? :manage_collection, @collection) %>
+  <%= render :partial => 'approve_membership', :pending => @pending %>
 <% end %>
