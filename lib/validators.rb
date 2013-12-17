@@ -1,22 +1,22 @@
 module Validators
 
   # Contains File validator methods for uploaded files
- 
+
   require 'mimemagic'
 
   # Validate the file upload
-  #  
+  #
   # Takes an uploaded file (ActionDispatch::Http::UploadedFile),
   # or a path to a localfile, and calls the required validations.
   #
-  def Validators.validate_file(file, mime_type=nll)
+  def Validators.validate_file(file, mime_type=nil)
     self.virus_scan(file)
     self.valid_file_type?(file, mime_type)
   end
 
   # Validate file mime-types
   #
-  # Takes an uploaded file (ActionDispatch::Http::UploadedFile), 
+  # Takes an uploaded file (ActionDispatch::Http::UploadedFile),
   # or a path to a localfile, and a list of allowed mime
   # types and subtypes.
   #

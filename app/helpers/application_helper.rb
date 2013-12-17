@@ -53,6 +53,12 @@ module ApplicationHelper
   def is_collection?( document )
     document["type_ssm"].first.casecmp("collection") == 0 ? true : false
   end
+
+  def reader_group_name( document )
+    id = document[:is_governed_by_ssim][0].sub('info:fedora/', '')
+    name = id.sub(':','_')
+    return name
+  end
   
   def count_published_items_in_collection collection_id
     solr_query = "status_ssim:published AND (is_governed_by_ssim:\"info:fedora/" + collection_id +

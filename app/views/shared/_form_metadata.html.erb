@@ -132,6 +132,12 @@
   <% end %>
   <p class="add-text-field"><a href="#" model-name="batch" title="Add Format"><%= t('dri.views.objects.forms.add_format') %></a></p>
 </fieldset>
+<fieldset id="cover_image">
+  <% if (params[:controller] == "collections" ) %>
+    <%= f.label "#{t('dri.views.fields.cover_image')}:" %>
+    <%= f.file_field :cover_image, :class => "edit span6" %>
+  <% end %>
+</fieldset>
 <fieldset id="status">
   <%= f.label "#{t('dri.views.fields.status')}:" %>
   <%= f.select :status, ['draft','published'],:class => "edit span6" %>

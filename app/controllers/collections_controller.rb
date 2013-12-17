@@ -1,6 +1,7 @@
 # Controller for the Collection model
 #
 require 'storage/s3_interface'
+require 'validators'
 
 class CollectionsController < CatalogController
 
@@ -80,6 +81,19 @@ class CollectionsController < CatalogController
     @collection = retrieve_object!(params[:id])
     @children = collection_items params[:id]
 
+    @pending = {}
+
+    reader_group = UserGroup::Group.find_by_name(reader_group_name)
+    reader_group ||= create_reader_group
+
+    pending_memberships = reader_group.pending_memberships
+    pending_memberships.each do |membership|
+      user = UserGroup::User.find_by_id(membership.user_id)
+      identifier = user.full_name+'('+user.email+')' unless user.nil?
+
+      @pending[identifier] = membership
+    end
+
     respond_to do |format|
       format.html
       format.json  {
@@ -132,6 +146,10 @@ class CollectionsController < CatalogController
     if !@collection.type.include?("Collection")
       @collection.type.push("Collection")
     end
+
+    # If a cover image was uploaded, remove it from the params hash
+    cover_image = params[:batch].delete(:cover_image)
+
     @collection.update_attributes(params[:batch])
 
 
@@ -149,8 +167,27 @@ class CollectionsController < CatalogController
       if @collection.save
 
         # We have to create a default reader group
-        @group = UserGroup::Group.new(:name => @collection.id, :description => "Default Reader group for collection #{    @collection.id}")
-        @group.save
+        create_reader_group
+
+        # If a cover image was uploaded, validate and save it
+        if !cover_image.blank? && Validators.file_type?(cover_image).mediatype == "image"
+          begin
+            Validators.virus_scan(cover_image)
+          rescue Exceptions::VirusDetected => e
+            virus = true
+            flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+          end
+
+          unless virus
+            Storage::S3Interface.store_file(cover_image.tempfile.path,
+                                            "#{@collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
+                                            Settings.data.cover_image_bucket)
+            url = Storage::S3Interface.get_link_for_surrogate("#{@collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
+                                                              Settings.data.cover_image_bucket)
+            @collection.properties.cover_image = url
+            @collection.save
+          end
+        end
 
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
             redirect_to :controller => "collections", :action => "show", :id => @collection.id }
@@ -269,6 +306,16 @@ class CollectionsController < CatalogController
     def collection_items_query(id)
       "(is_governed_by_ssim:\"info:fedora/" + id +
                    "\" OR is_member_of_collection_ssim:\"info:fedora/" + id + "\")"
+    end
+
+    def create_reader_group
+      @group = UserGroup::Group.new(:name => reader_group_name, :description => "Default Reader group for collection #{@collection.id}")
+      @group.save
+      @group
+    end
+
+    def reader_group_name
+      @collection.id.sub(':', '_')
     end
 
 end
