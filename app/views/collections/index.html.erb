@@ -14,7 +14,7 @@
   </h1>
   <div class="dri_image">
   <!-- hardcode the image for the moment while only one collection exists and until the data models and controllers can provide it -->
-  <a href="<%=  collection_path(:id => collection[:id]) %> "><img src="/assets/RnG_crop.png" width="200" height="80" alt="RnG Collection Image, from Wikipedia"></a>
+  <a href="<%=  collection_path(:id => collection[:id]) %> "><img src="<%= collection[:cover_image] %>" width="200" height="80" alt="Collection Cover Image"></a>
 
   </div><!-- close dri_image -->
 </a>
