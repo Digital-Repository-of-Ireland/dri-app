@@ -116,7 +116,7 @@ class CollectionsController < CatalogController
     #For sub collections will have to set a governing_collection_id
     #Create a sub collections controller?
 
-    set_access_permissions(:batch)
+    set_access_permissions(:batch, true)
 
     if !valid_permissions?
       flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])
@@ -136,7 +136,7 @@ class CollectionsController < CatalogController
   def create
     enforce_permissions!("create", Batch)
 
-    set_access_permissions(:batch)
+    set_access_permissions(:batch, true)
 
     @collection = Batch.new
     if @collection.type == nil
@@ -163,31 +163,34 @@ class CollectionsController < CatalogController
       return
     end
 
+    # We need to save to get a pid at this point
+    if @collection.save
+
+      # We have to create a default reader group
+      create_reader_group
+
+      # If a cover image was uploaded, validate and save it
+      if !cover_image.blank? && Validators.file_type?(cover_image).mediatype == "image"
+        begin
+          Validators.virus_scan(cover_image)
+        rescue Exceptions::VirusDetected => e
+          virus = true
+          flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+        end
+
+        unless virus
+          Storage::S3Interface.store_file(cover_image.tempfile.path,
+                                          "#{@collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
+                                          Settings.data.cover_image_bucket)
+          url = Storage::S3Interface.get_link_for_surrogate("#{@collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
+                                                            Settings.data.cover_image_bucket)
+          @collection.properties.cover_image = url
+        end
+      end
+    end
+
     respond_to do |format|
       if @collection.save
-
-        # We have to create a default reader group
-        create_reader_group
-
-        # If a cover image was uploaded, validate and save it
-        if !cover_image.blank? && Validators.file_type?(cover_image).mediatype == "image"
-          begin
-            Validators.virus_scan(cover_image)
-          rescue Exceptions::VirusDetected => e
-            virus = true
-            flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
-          end
-
-          unless virus
-            Storage::S3Interface.store_file(cover_image.tempfile.path,
-                                            "#{@collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
-                                            Settings.data.cover_image_bucket)
-            url = Storage::S3Interface.get_link_for_surrogate("#{@collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
-                                                              Settings.data.cover_image_bucket)
-            @collection.properties.cover_image = url
-            @collection.save
-          end
-        end
 
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
             redirect_to :controller => "collections", :action => "show", :id => @collection.id }
