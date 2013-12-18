@@ -297,14 +297,16 @@ class CollectionsController < CatalogController
 
       result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,cover_image_tesim", :fq => fq)
       result_docs.each do | doc |
-        if doc["cover_image_tesim"].blank?
+        if !doc.has_key?("cover_image_tesim") || (doc.has_key?("cover_image_tesim") && doc["cover_image_tesim"].blank?)
           type = doc["object_type_sim"] || "collection"
           image = "assets/formats/#{type}.png"
         else
           image = doc["cover_image_tesim"][0]
         end
 
-        results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :cover_image => image })
+        if (doc.has_key?("id") && doc.has_key?("title_tesim") && doc.has_key("description_tesim"))
+          results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :cover_image => image })
+        end
       end
 
       return results
