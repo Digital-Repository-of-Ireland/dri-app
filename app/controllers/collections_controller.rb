@@ -307,7 +307,7 @@ class CollectionsController < CatalogController
           image = doc["cover_image_tesim"][0]
         end
 
-        if (doc.has_key?("id") && doc.has_key?("title_tesim") && doc.has_key("description_tesim"))
+        if (doc.has_key?("id") && doc.has_key?("title_tesim") && doc.has_key?("description_tesim"))
           results.push({ :id => doc['id'], :title => doc["title_tesim"][0], :description => doc["description_tesim"][0], :cover_image => image })
         end
       end
