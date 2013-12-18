@@ -55,11 +55,18 @@ class ApplicationController < ActionController::Base
     cookies[:accept_cookies] = "yes" if current_user
   end
 
-  def set_access_permissions(key)
-    if params.key?(key)
-      params[key][:private_metadata] = private_metadata_permission(params[key].delete(:private_metadata)) if params[key][:private_metadata].present?
-      params[key][:master_file] = master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
+  def set_access_permissions(key, collection=nil)
+    if !collection.blank?
+      params[key][:private_metadata] = private_metadata_permission('radio_public')
+      params[key][:master_file] = master_file_permission('radio_private')
+    else
+      params[key][:private_metadata] = private_metadata_permission('radio_inherit')
+      params[key][:private_metadata] = private_metadata_permission('radio_inherit')
     end
+#    if params.key?(key)
+#      params[key][:private_metadata] = private_metadata_permission(params[key].delete(:private_metadata)) if params[key][:private_metadata].present?
+#      params[key][:master_file] = master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
+#    end
   end
 
   def after_sign_out_path_for(resource_or_scope)
