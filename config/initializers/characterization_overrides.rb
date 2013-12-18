@@ -13,7 +13,8 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
                                             :order => "version DESC",
                                             :limit => 1)
       path = @local_file_info[0].path
-      Hydra::FileCharacterization.characterize(path, filename_for_characterization.join(""), :fits) do |config|
+
+      Hydra::FileCharacterization.characterize(File.open(path), filename_for_characterization.join(""), :fits) do |config|
         config[:fits] = Hydra::Derivatives.fits_path
       end
     else
