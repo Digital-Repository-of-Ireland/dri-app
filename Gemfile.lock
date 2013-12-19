@@ -1,9 +1,9 @@
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/dri_data_models
-  revision: 428cb0ca33c9ee4bd3a9f3f6fa6ecb20d918e22b
+  revision: 7e18115ea33ba54234e58e11860a0d9ffb7d7b9b
   branch: develop
   specs:
-    dri_data_models (1.0.1)
+    dri_data_models (1.0.2)
       hydra-access-controls (= 6.4.0)
       hydra-head (= 6.4.0)
       iso-639
@@ -11,10 +11,10 @@ GIT
 
 GIT
   remote: ssh://git@lonsdale.tchpc.tcd.ie/navr/user_group
-  revision: dd9f1441876ccfd9819572cba74411af267406a6
+  revision: 1e329529b25399bba44bdb0f26ca281d425f97b6
   branch: develop
   specs:
-    user_group (1.0.2)
+    user_group (1.0.3)
       devise (~> 2.2.3)
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -39,7 +39,7 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
-    active-fedora (6.7.0)
+    active-fedora (6.7.3)
       activesupport (>= 3.0.0)
       deprecation
       mediashelf-loggable
