@@ -50,8 +50,28 @@ module ApplicationHelper
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
-  def is_collection?( document )
-    document["type_ssm"].first.casecmp("collection") == 0 ? true : false
+  def collection?( document )
+    type?("collection", document)
+  end
+
+  def audio?( document )
+    type?("sound", document)
+  end
+
+  def image?( document )
+    type?("image", document)
+  end
+
+  def video?( document )
+    type?("movingimage", document)
+  end
+
+  def document?( document )
+    type?("text", document)
+  end
+
+  def type?( type, document )
+    document["type_ssm"].first.casecmp(type) == 0 ? true : false
   end
 
   def reader_group_name( document )

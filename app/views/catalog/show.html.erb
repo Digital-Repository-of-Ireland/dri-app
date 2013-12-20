@@ -30,7 +30,7 @@
 
   <div class="dri_object_view_block">
     <div class="dri_back_search"><%= link_back_to_catalog %></div>
-      <% if signed_in? && (can?(:edit, @document)) %><div class="dri_edit_object"><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => is_collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %></div><% end %>
+      <% if signed_in? && (can?(:edit, @document)) %><div class="dri_edit_object"><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %></div><% end %>
 
 <!--
   <div class="dri_like_button">
@@ -53,7 +53,7 @@
       </li> -->
     </ul><!-- close dri_stats -->
 
-    <% unless is_collection?(@document) %>
+    <% unless collection?(@document) %>
       <div class="dri_vc_title">
         <%= image_tag("/assets/vc_folder.png", :width=>"22", :height=>"12") %> <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
       </div><!-- close vc_title -->

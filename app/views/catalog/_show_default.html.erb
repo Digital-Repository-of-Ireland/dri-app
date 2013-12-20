@@ -1,4 +1,34 @@
 <%# default partial to display solr document fields in catalog show view -%>
+<% if ((@asset != "no file") && (@asset != "no permission")) %>
+  <% if audio?( @document ) %>
+    <div class="dri_audio_player">
+      <audio controls>
+        <% if (@asset == 'masterfile') %>
+          <source src="<%= url_for(:controller => 'assets', :action => 'show', :id => @document.id) %>" type="audio/mpeg">
+        <% elsif !@asset.blank? %>
+          <source src="<%= @asset %>" type="audio/mpeg">
+        <% end %>
+      </audio>
+    </div><!-- close dri_audio_player -->
+  <% elsif video?( @document ) %>
+    <div>
+      <video width="320" height="240" controls>
+        <% if (@asset == 'masterfile') %>
+          <source src="<%= url_for(:only_path => false, :controller => 'assets', :action => 'show', :id => @document.id) %>" type="video/mp4">
+        <% elsif !@asset.blank? %>
+          <source src="<%= @asset %>" type="video/mp4">
+        <% end %>
+      </video>
+    </div>
+  <% elsif document?( @document ) %>
+    <div>
+      <object data="<%= url_for(:controller => 'assets', :action => 'show', :id => @document.id) %>" type="application/pdf" width="100%" height="600">
+      </object>
+    </div>    
+  <% elsif image? ( @document ) %>
+  <% end %>
+<% end %>
+
 <dl class="dl-horizontal  dl-invert">
   <% document_show_fields.each do |solr_fname, field| -%>
     <% if should_render_show_field? document, field %>
@@ -7,3 +37,5 @@
     <% end -%>
   <% end -%>
 </dl>
+
+<%= render :partial => "show_downloads" %>

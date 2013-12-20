@@ -76,11 +76,12 @@ en:
           add_to_collection: "Add to collection"
           remove_from_collection: "Remove from collection"
         forms: 
+          file: "File"
           audio_file: "Audio File"
-          image_file: Image
-          metadata: Metadata
-          pdf_file: PDF
-          video_file: Video
+          image_file: "Image"
+          metadata: "Metadata"
+          pdf_file: "PDF"
+          video_file: "Video"
         headers: 
           files: Files
         legends: 
