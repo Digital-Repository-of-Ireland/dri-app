@@ -25,9 +25,9 @@ For testing and development you will need to bootstrap the project
   $ bundle exec rake db:seed
   $ bundle exec rake jetty:config
 
-  Dont forget to prepare the test database with
-    $ bundle exec rake db:test:prepare
-    $ rake dri:fixtures:generate
+Dont forget to prepare the test database with
+  $ bundle exec rake db:test:prepare
+  $ rake dri:fixtures:generate
 
   You may also need to edit config/settings.yml and/or create config/settings.local.yml
 
@@ -60,6 +60,16 @@ To run the functional tests
 
 Additional information can be found by reading up on the drirepo,
 nuig-rnag, rspec, cucumber and rails documentation.
+
+== Dependencies
+
+If you are using homenbrew on OSX
+
+  $ brew install ansible coreutils libtool libksba libxml2 libxslt automake autoconf openssl curl curl-ca-bundle readline lzlib gettext pkg-config libyaml mariadb redis clamav sqlite ffmpeg gource phantomjs fits glib imagemagick node
+  $ brew link libxml2 --force
+  $ brew link libxslt --force
+  $ brew link gettext --force
+  $ brew link readline --force
 
 == Testing
 
