@@ -24,17 +24,21 @@ module Storage
       end
 
       if list == nil
-        Settings.surrogates[object_type.to_sym].each do |surrogate_type|
-          filename = "dri:#{bucket}_#{surrogate_type}"
-          deliverable_surrogate = files.find { |e| /#{filename}/ =~ e }
-          break unless deliverable_surrogate.nil?
+        unless Settings.surrogates[object_type.to_sym].nil?
+          Settings.surrogates[object_type.to_sym].each do |surrogate_type|
+            filename = "dri:#{bucket}_#{surrogate_type}"
+            deliverable_surrogate = files.find { |e| /#{filename}/ =~ e }
+            break unless deliverable_surrogate.nil?
+          end
         end
         AWS::S3::Base.disconnect!()
         return deliverable_surrogate
       else
-        Settings.surrogates[object_type.to_sym].each do |surrogate_type|
-          filename = "dri:#{bucket}_#{surrogate_type}"
-          deliverable_surrogates << files.find { |e| /#{filename}/ =~ e }
+        unless Settings.surrogates[object_type.to_sym].nil?
+          Settings.surrogates[object_type.to_sym].each do |surrogate_type|
+            filename = "dri:#{bucket}_#{surrogate_type}"
+            deliverable_surrogates << files.find { |e| /#{filename}/ =~ e }
+          end
         end
         AWS::S3::Base.disconnect!()
         return deliverable_surrogates
