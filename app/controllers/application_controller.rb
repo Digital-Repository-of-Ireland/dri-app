@@ -63,10 +63,6 @@ class ApplicationController < ActionController::Base
       params[key][:private_metadata] = private_metadata_permission('radio_inherit')
       params[key][:private_metadata] = private_metadata_permission('radio_inherit')
     end
-#    if params.key?(key)
-#      params[key][:private_metadata] = private_metadata_permission(params[key].delete(:private_metadata)) if params[key][:private_metadata].present?
-#      params[key][:master_file] = master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
-#    end
   end
 
   def after_sign_out_path_for(resource_or_scope)
