@@ -31,24 +31,26 @@ module BlacklightHelper
     "huh?"
   end
 
-
-  # link_back_to_catalog(:label=>'Back to Search')
   # Create a link back to the index screen, keeping the user's facet, query and paging choices intact by using session.
+  # @example
+  #   link_back_to_catalog(label: 'Back to Search')
+  #   link_back_to_catalog(label: 'Back to Search', route_set: my_engine)
   def link_back_to_catalog(opts={:label=>nil})
-    query_params = session[:search] ? session[:search].dup : {}
+    scope = opts.delete(:route_set) || self
+    query_params = current_search_session.try(:query_params) || {}
     return if query_params.blank?
-    query_params.delete :counter
-    query_params.delete :total
-    link_url = url_for(query_params)
+    link_url = scope.url_for(query_params)
+    label = opts.delete(:label)
+
     if link_url =~ /bookmarks/
-      opts[:label] ||= t('blacklight.back_to_bookmarks')
+      label ||= t('blacklight.back_to_bookmarks')
     elsif link_url =~ /collections/
       opts[:label] ||= t('blacklight.back_to_collection')
     end
 
-    opts[:label] ||= t('blacklight.back_to_search')
+    label ||= t('blacklight.back_to_search')
 
-    link_to opts[:label], link_url
-  end
+    link_to label, link_url, opts
+  end 
 
 end
