@@ -70,6 +70,9 @@ module FlashTranslator
     when /application pending/
       I18n.t('user_groups.memberships.pending', :locale => @user.locale)
 
+    when /membership approved/
+      I18n.t('user_groups.memberships.approve', :locale => @user.locale)
+
     else "Unknown"
 
     end
