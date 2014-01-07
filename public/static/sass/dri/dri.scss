@@ -29,8 +29,7 @@ a {
 	margin: 10px 0 0 0;
 	padding: 0px;
 	color: #333;
-	height: 50px;	
-	
+	height: 50px;	 
 }
 
  .dri_account_nav ul.dri_account_links {
@@ -107,8 +106,6 @@ a {
 	float: right;
 	
 }
-
-
 .dri_social_media_nav li {
 	text-decoration: none;
 	list-style: none;
@@ -951,9 +948,12 @@ a {
 
 
 .dri_object_title_top {
-	height: 30px;
+	height: 26px;
 	font-size: 110%;
-	padding: 5px 0 0 0;
+	padding: 4px 0 0 10px;
+	margin: 0;
+	color: #FFF;
+	background: #2F2F2F;
 }
 
 
@@ -964,26 +964,206 @@ a {
 	padding: 0px;
 }
 
+
+/*-------------- Restricted Media asset --------------*/
+
+h2.dri_restrict_title {
+	margin: 0px 0 0 0;
+	padding: 0px;
+	color: #2F2F2F;
+	font-weight: normal;
+	font-size: 115%;
+}
+
+p.dri_restrict_message {
+	margin: 0px;
+	padding: 0px 80px 10px 0;
+	color: #808080;
+}
+
+.dri_request_access_button input {
+	color:#FFF;
+}
 /*-------------- MetaData Readview  --------------*/
 
 dl.dri_object_metadata_readview {
 	margin: 0px;
-	padding:0px;
+	padding:0px 80px 0 0;
 }
 
 
 dl.dri_object_metadata_readview dt {
-	margin: 10px 0 0 0;
-	padding:0px;
+	margin: 0px 0 0 0;
+	padding: 0px;
 	color: #2F2F2F;
-	font-weight: bold;
+	font-weight: normal;
+	font-size: 115%;
 	
 }
 
-dl.dri_object_metadata_readview dd{
+dl.dri_object_metadata_readview dd {
 	margin: 0px;
-	padding:0px;
+	padding: 0px 0 10px 0;
+	color: #808080;
 }
+
+dl.dri_object_metadata_readview dd a {
+	margin: 0px;
+	padding:0px 0 0 0;
+	color: #288DC0;
+}
+
+dl.dri_object_metadata_readview dd a:hover {
+	text-decoration: underline;
+}
+
+/*-------------- Collection status and Features  --------------*/
+
+.dri_object_second_block {
+	padding: 0;
+	margin: 0;
+}
+
+.dri_back_search a {
+	padding: 0;
+	margin: 20px 0 0 0;
+	color: #2F2F2F;
+	font-size: 100%;
+	font-weight: normal;
+	display: block;	
+}
+.dri_back_search a:hover {
+	text-decoration: underline;
+}
+
+
+ul.dri_stats {
+	margin: 20px 0 20px 0;
+	padding: 4px 0 0px 0;
+	width: 230px;
+	float: left;
+	border-top: 1px solid #E1E1E1;
+	border-bottom: 1px solid #E1E1E1;
+}
+
+ul.dri_stats li {
+	float: left;
+	width: 230px;
+	display: block;
+	margin: 0;
+	padding: 2px 0 2px 0;
+	list-style: none;
+	color: #808080;
+}
+.dri_stat_num {
+	float: right;
+}
+.dri_vc_image {
+	border: 1px solid #E1E1E1;
+	width: 230px;
+	height: 92px;
+}
+ul.dri_view_collection {
+	margin: 10px 0 0 0;
+	padding: 0;
+	display: block;
+	float: left;
+	width: 230px;
+}
+
+ul.dri_view_collection li {
+	margin: 0;
+	padding: 3px 0 3px 0;
+	list-style: none;
+	border-bottom: 1px solid #E1E1E1;
+	color: #808080;	
+}
+ul.dri_view_collection li a {
+	list-style: none;
+	color: #808080;
+}
+.dri_vc_title a {
+	color: #2F2F2F;
+}
+.dri_vc_title a:hover {
+	text-decoration: underline;
+}
+.object_view_block ul.view_collection li span.stat_num {
+	float: right;
+	font-weight: bold;
+	color: #808080;
+}
+.object_view_block ul.view_collection li a:hover {
+	text-decoration: underline;
+}
+.object_view_block ul.view_collection li  a:hover span.stat_num {
+	color: #505050;
+	float: right;
+}
+
+.dri_bookmark_object {
+	margin: 20px 0 0 0;
+	padding: 0;
+	display: block;
+	float: left;
+	color: #2F2F2F;
+}
+/*-------------- Institutes  --------------*/
+.dri_object_institutes_block {
+	border-top: 1px solid #E1E1E1;
+	margin: 20px 0 0 0;
+	padding: 0;
+	display: block;
+}
+.dri_institutes_title {
+	margin: 20px 0 0 0;
+	padding: 0px;
+	color: #2F2F2F;
+	font-weight: normal;
+	font-size: 120%;
+	
+}
+ 
+ul.dri_collection_institutes_list {
+	margin: 20px 0 0 0;
+	padding: 0;
+	display: block;
+	color: #2F2F2F;
+}
+
+
+ul.dri_collection_institutes_list li {
+	margin: 20px 0 0 0;
+	padding: 0;
+	display: block;
+	color: #2F2F2F;
+	list-style: none;
+	float: left;
+}
+ul.dri_collection_institutes_list li a {
+	margin: 0 0 0 0;
+	padding: 0;
+	list-style: none;
+	
+}
+
+.dri_institutes_show_more  {
+	margin: 0;
+	padding: 0px;
+}
+
+.dri_institutes_show_more a {
+	margin: 20px 0 0 0;
+	padding: 0px;
+	color: #2F2F2F;
+	font-weight: normal;
+	font-size: 110%;
+	float: left;
+	
+}
+
+
+
 
 
 
