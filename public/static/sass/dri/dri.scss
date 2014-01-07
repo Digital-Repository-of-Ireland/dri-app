@@ -949,13 +949,9 @@ a {
 
 .dri_object_title_top {
 	height: 26px;
-	font-size: 110%;
-<<<<<<< HEAD
-	padding: 4px 0 0 0;
-	margin: 0;
-=======
+	font-size: 120%;
 	padding: 4px 0 0 10px;
->>>>>>> 52c10e96c04c1008af46056223bfe1bbdcf80cd1
+	margin: 0px;
 	color: #FFF;
 	background: #2F2F2F;
 	width: 77%;
@@ -965,7 +961,7 @@ a {
 /*-------------- Media asset --------------*/
 
 .dri_object_render_block {
-	margin: 30px 0 0 0;
+	margin: 30px 0 10px 0;
 	padding: 0px;
 }
 
@@ -985,7 +981,11 @@ p.dri_restrict_message {
 	padding: 0px 80px 10px 0;
 	color: #808080;
 }
-
+p.dri_restrict_progress {
+	margin: 0px;
+	padding: 0px 80px 10px 0;
+	color: #00948F;
+}
  input.dri_request_access_button {
 	color:#FFF;
 	border: none;
@@ -1167,16 +1167,14 @@ ul.dri_collection_institutes_list li a {
 
 .dri_institutes_show_more  {
 	margin: 0;
-	padding: 0px;
+	padding: 0;
 }
 
 .dri_institutes_show_more a {
-	margin: 20px 0 0 0;
+	margin: 0;
 	padding: 0px;
-	color: #2F2F2F;
+	color: #288DC0;
 	font-weight: normal;
-	font-size: 110%;
-	float: left;
 	
 }
 
