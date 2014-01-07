@@ -156,30 +156,30 @@
 		
 	}
 	
-	.dri_object_render_block {
-		@include zen-grid-item(2, 1, $gutter-width: 0px);
-		
 
-
-	}
+	
 	
 	.dri_object_first_block {
 		@include zen-grid-item(2, 1, $gutter-width: 0px);
 
 		@include zen-clear();
+
 		
 	}
 	
 	.dri_object_second_block {
 		@include zen-grid-item(1, 3, $gutter-width: 0px);
-		@include zen-clear();
-		
+
 
 
 	}
 	.dri_object_institutes_block {
 		@include zen-grid-item(4, 1, $gutter-width: 0px);
 				@include zen-clear();
+				
+				.dri_institutes_show_more {
+				 	@include zen-clear();
+				}
 
 	}
 }
