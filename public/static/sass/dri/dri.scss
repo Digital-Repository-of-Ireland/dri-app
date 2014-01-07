@@ -972,7 +972,7 @@ h2.dri_restrict_title {
 	padding: 0px;
 	color: #2F2F2F;
 	font-weight: normal;
-	font-size: 115%;
+	font-size: 110%;
 }
 
 p.dri_restrict_message {
@@ -981,29 +981,38 @@ p.dri_restrict_message {
 	color: #808080;
 }
 
-.dri_request_access_button input {
+ input.dri_request_access_button {
 	color:#FFF;
+	border: none;
+	background-color: #00948F;
+	padding: 0;
+	margin: 0px 0 20px 0;
+	width: 230px;
+	height: 26px;
+	display: block;
+ 	-moz-border-radius: 2px;
+ 	border-radius: 2px;
 }
 /*-------------- MetaData Readview  --------------*/
 
 dl.dri_object_metadata_readview {
-	margin: 0px;
+	margin: 0 0 20px 0;
 	padding:0px 80px 0 0;
 }
 
 
 dl.dri_object_metadata_readview dt {
-	margin: 0px 0 0 0;
+	margin: 10px 0 0 0;
 	padding: 0px;
 	color: #2F2F2F;
 	font-weight: normal;
-	font-size: 115%;
+	font-size: 110%;
 	
 }
 
 dl.dri_object_metadata_readview dd {
 	margin: 0px;
-	padding: 0px 0 10px 0;
+	padding: 0px 0 0 0;
 	color: #808080;
 }
 
@@ -1026,7 +1035,7 @@ dl.dri_object_metadata_readview dd a:hover {
 
 .dri_back_search a {
 	padding: 0;
-	margin: 20px 0 0 0;
+	margin: 30px 0 0 0;
 	color: #2F2F2F;
 	font-size: 100%;
 	font-weight: normal;
@@ -1075,14 +1084,19 @@ ul.dri_view_collection li {
 	margin: 0;
 	padding: 3px 0 3px 0;
 	list-style: none;
-	border-bottom: 1px solid #E1E1E1;
+	border-top: 1px solid #E1E1E1;
 	color: #808080;	
 }
 ul.dri_view_collection li a {
 	list-style: none;
 	color: #808080;
 }
+.dri_vc_title  {
+	margin: 20px 0 0 0;
+	color: #2F2F2F;
+}
 .dri_vc_title a {
+	margin: 20px 0 0 0;
 	color: #2F2F2F;
 }
 .dri_vc_title a:hover {
