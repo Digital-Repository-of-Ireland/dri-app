@@ -950,7 +950,7 @@ a {
 .dri_object_title_top {
 	height: 26px;
 	font-size: 110%;
-	padding: 4px 0 0 10px;
+	padding: 4px 0 0 0;
 	margin: 0;
 	color: #FFF;
 	background: #2F2F2F;
@@ -1045,7 +1045,6 @@ dl.dri_object_metadata_readview dd a:hover {
 .dri_back_search a:hover {
 	text-decoration: underline;
 }
-
 
 ul.dri_stats {
 	margin: 20px 0 20px 0;
