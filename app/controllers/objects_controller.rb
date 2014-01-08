@@ -23,6 +23,21 @@ class ObjectsController < CatalogController
     end
   end
 
+  def show
+    enforce_permissions!("show",params[:id])
+
+    @object = retrieve_object!(params[:id])
+
+    respond_to do |format|
+      format.html { redirect_to(catalog_url(@object)) }
+      format.endnote { render :text => @object.export_as_endnote, :layout => false }
+      format.openurl_kev { render :text => @object.export_as_openurl_ctx_kev, :layout => false }
+      format.apa_citation { render :text => @object.export_as_apa_citation, :layout => false }
+      format.mla_citation { render :text => @object.export_as_mla_citation, :layout => false }
+      format.chicago_citation { render :text => @object.export_as_chicago_citation, :layout => false }
+    end
+  end
+
   # Updates the attributes of an existing model.
   #
   def update

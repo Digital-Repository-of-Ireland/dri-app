@@ -16,7 +16,6 @@
 <div class="dri_search_results_container">
   <span class="dri_spacer1_refactor_this">&nbsp;</span><% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>
   <% extra_head_content << render_link_rel_alternates %>
-  <% #sidebar_items << render_document_sidebar_partial %>
 
   <div class="dri_object_view dri_object_title_top"><%= render_field_value(document_heading) %></div>
 
@@ -77,17 +76,18 @@
       </select>
     </div><!-- close dri_bookmark_object -->
 
+    <div class="dri_cite_title">
+      <%= t('dri.views.objects.legends.cite') %>
+    </div>
+    <div class="dri_cite_object">
+      <ul class="dri_cite_object">
+        <li>
+          <%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %>
+        </li>
+      </ul>
+    </div>
+
   </div><!-- close dri_object_view_block -->
-
-
-  <% if @document.respond_to?(:export_as_openurl_ctx_kev) %>
-    <!--
-     // COinS, for Zotero among others.
-    // This document_partial_name(@document) business is not quite right,
-     // but has been there for a while.
-     -->
-     <span class="Z3988" title="<%= @document.export_as_openurl_ctx_kev(document_partial_name(@document)) %>"></span>
-  <% end %>
 
 </div><!-- close dri_search_results_container -->
 

@@ -570,6 +570,22 @@
 .dri_object_view_block ul.dri_view_collection li span.dri_stat_num a:hover {
 	text-decoration: underline;
 }
+.dri_object_view_block ul.dri_cite_object {
+        margin: 6px 0 0 0; 
+        padding: 0;
+        display: block;
+        float: left;
+        width: 230px;
+        border-top: 1px solid #E1E1E1;
+}
+
+.dri_object_view_block ul.dri_cite_object li {
+        margin: 0;
+        padding: 3px 0 3px 0;
+        list-style: none;
+        border-bottom: 1px solid #E1E1E1;
+        color: #808080;
+}
 
 .dri_object_view_block ul.dri_stats {
 	margin: 20px 0 0 0;
@@ -634,6 +650,17 @@
 	font-weight: bold;
 	color: #2F2F2F;
 	font-size: 106%;
+}
+
+.dri_object_view_block .dri_cite_title {
+        margin: 20px 0 0 0;
+        padding: 0;
+        display: block;
+        float: left;
+        width: 230px;
+        font-weight: bold;
+        color: #2F2F2F;
+        font-size: 106%;
 }
 
 .dri_object_view_block .dri_audio_player {
