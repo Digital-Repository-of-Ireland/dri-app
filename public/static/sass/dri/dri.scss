@@ -985,6 +985,7 @@ p.dri_restrict_progress {
 	margin: 0px;
 	padding: 0px 80px 10px 0;
 	color: #00948F;
+	text-decoration: underline;
 }
  input.dri_request_access_button {
 	color:#FFF;
@@ -1016,14 +1017,15 @@ dl.dri_object_metadata_readview dt {
 
 dl.dri_object_metadata_readview dd {
 	margin: 0px;
-	padding: 0px 0 0 0;
+	padding: 0px 0 0;
 	color: #808080;
 }
 
 dl.dri_object_metadata_readview dd a {
-	margin: 0px;
-	padding:0 0 0 0;
-	list-style: square;
+	margin: 0;
+	padding:0 0 0 20px;
+	  display: list-item;
+   list-style-type: disc;
 	color: #808080;
 }
 
