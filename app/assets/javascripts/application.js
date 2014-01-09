@@ -19,10 +19,11 @@
 //= Required by Dropit dropdown menu library
 //= require dropit/dropit
 //
-//= require dri
+//= require dri/
 
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 
+<!-- Dropit Script - uses JQuery-UI Drop function -->
 $(document).ready(function() {
-    $('.dri_sort').dropit();
+    $('.menu').dropit();
 });

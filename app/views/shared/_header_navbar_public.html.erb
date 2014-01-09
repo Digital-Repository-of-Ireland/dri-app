@@ -1,28 +1,179 @@
 <!-- Header to be displayed to annonymous users -->
-<div class="dri_header_container">
+<header id="dri_header_container_id" class="dri_header_container">
+			<div id="dri_authentication_menus_container_id"
+				class="dri_authentication_menus_container">
+
+				<nav id="dri_account_nav_id" class="dri_account_nav">
+					<ul id="dri_account_links_id" class="dri_account_links" role="tree">
+					<% if !current_user %>
+						<li class="on"><%= link_to "Sign Up", user_group.new_user_path, :alt => "sign up link" %></li>
+					<% end %>
+						<li class="noborder">
+						  <% if current_user %>
+					        <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, :method => :delete, :id => "logout", :alt => t('blacklight.header_links.logout') %>
+						  <% else %>
+					        <%= link_to t('blacklight.header_links.login'), user_group.new_user_session_path, :id => "login", :alt => t('blacklight.header_links.login') %>
+					  	  <% end %>
+
+						</li>
+						<ul id="dri_language_links_id" class="dri_language_links menu">
+							<li class="selected" aria-selected="true"><a href="#">English
+									<img src="/assets/dri/account_arrow.png" width="10" height="5">
+							</a>
+								<ul>
+									<li><a href="#">Gaeilge</a></li>
+								</ul></li>
+						</ul>
+					</ul>
+				</nav>
+				<!-- close dri_account_nav -->
+			</div>
+			<!--  close dri_authentication_menus_container -->
+			<div id="dri_social_media_container_id"
+				class="dri_social_media_container">
+
+				<nav id="dri_social_media_nav_id" class="dri_social_media_nav">
+					<ul id="dri_social_media_links_id" class="dri_social_media_links">
+						<li><a href="https://www.facebook.com/digitalrepositoryireland" class="facebook"></a></li>
+						<li><a href="http://www.linkedin.com/company/digital-repository-of-ireland" class="linkedin"></a></li>
+						<li><a href="http://www.slideshare.net/dri_ireland" class="share"></a></li>
+						<li><a href="https://twitter.com/dri_ireland" class="google"></a></li>
+					</ul>
+				</nav>
+			</div>
+			
+			<!--  close dri_social_media_container -->
+			<%= link_to main_app.root_url do %><div id="dri_ident_id" class="dri_ident"></div><% end %>
+			</header><!-- close dri_header_container -->
+			
+			<div id="dri_main_nav_container_id" class="dri_main_nav_container">
+				<nav id="dri_main_nav_id" class="dri_main_nav">
+				
+					<ul id="dri_main_nav_links_id" class="dri_main_nav_links">
+					<% if current_user %>
+						<li><a href="#">Home</a></li>
+						<li><%= link_to t('dri.account'), user_group.user_path(current_user), :id => "view_account" %></li>
+						<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+						<li class="selected"><a href="#">COLLECTIONS</a></li>
+						<li><a href="#">ABOUT US</a></li>
+					<% else %>
+						<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+						<li class="selected"><a href="#">COLLECTIONS</a></li>
+						<li><a href="#">ABOUT US</a></li>
+					<% end %>
+					</ul>
+				</nav>
+			</div>
+			<!-- close dri_main_nav_container -->
+			<div id="dri_sub_nav_container_id" class="dri_sub_nav_container">
+				<nav id="dri_sub_nav_id" class="dri_sub_nav">
+					<ul id="dri_main_nav_links_id"
+						class="dri_sub_nav_links dri_nav_collections">
+						<li><a href="#">Assigned Collections </a></li>
+						<li class="selected no_border_right"><a href="#">My
+								Objects</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!-- close dri_sub_nav_container -->
+	
+			<div id="dri_crumbtrail_nav_container_id"
+				class="dri_crumbtrail_nav_container">
+				<nav id="dri_crumbtrail_nav_id" class="dri_crumbtrail_nav">
+					<ul id="dri_crumbtrail_nav_links_id"
+						class="dri_crumbtrail_nav_links">
+						<li><a href="#">Excepteur</a></li>
+						<li><a href="#">Sed ut perspiciatis</a></li>
+						<li class="selected"><a href="#">Excepteur</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!-- close dri_crumbtrail_nav_container -->
+			<!-- container for search, sort and pagination etc. navigations and search text input -->
+			<div id="dri_search_features_nav_container_id"
+				class="dri_search_features_nav_container">
+	
+				<!-- navigation to allow the user to determine how the search result are sorted e.g. by relevance, A to Z, Z to A -->
+				<nav id="dri_sort_nav_id" class="dri_sort_nav">
+					<select name="sort_options">
+						<option selected>Sort by</option>
+						<option>Relevance</option>
+						<option>A - Z</option>
+					</select>
+				</nav>
+	
+				<!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
+				<nav id="dri_pager_nav_id" class="dri_pager_nav">
+					<ul id="dri_pager_nav_links_id" class="dri_pager_nav_links">
+						<li><a href="#">9</a></li>
+						<li class="selected"><a href="#">18</a></li>
+						<li><a href="#">36</a></li>
+					</ul>
+				</nav>
+	
+				<!-- navigation to allow the user to page through the search results  -->
+				<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
+					<ul id="dri_pagination_nav_links_id"
+						class="dri_pagination_nav_links">
+						<li class="first"><a href="#">&nbsp;</a></li>
+						<li><a href="#">1</a></li>
+						<li class="selected"><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li class="last"><a href="#">&nbsp;</a></li>
+					</ul>
+				</nav>
+	
+				<!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->
+				<div id="dri_search_term_input_id" class="dri_search_term_input">
+	
+					<form id="dri_search_term_input_form_id"
+						class="dri_search_term_input_form" accept-charset="UTF-8"
+						action="/repository" method="get">
+						<input name="utf8" type="hidden" value="✓"> <input
+							name="search_field" type="hidden" value="all_fields"> <input
+							id="dri_search_term_text_input_id"
+							class="dri_search_term_text_input" name="q"
+							placeholder="Search..." type="text" value="">
+						<button id="dri_search_term_text_submit_button_id" type="submit"
+							class="dri_search_term_text_submit_button" id="search">Ok</button>
+	
+					</form>
+					<!-- close dri_search_term_input_form -->
+				<div id="dri_search_save_input_id" class="dri_search_save_input">
+	
+					<form id="dri_search_save_input_form_id"
+						class="dri_search_save_input_form">
+						<button id="dri_search_save_submit_button_id" type="submit"
+							class="dri_search_save_submit_button" id="search">Save
+							Current Search</button>
+					</form>
+					<!-- close dri_search_term_input_form -->
+	
+				</div>
+				</div>
+				<!-- close dri_search_term_input -->
+	
+				<!-- save search block to allow user to save current search term(s) to their workspace (authenticated user) -->
+	
+				<!-- <div id="dri_dialog_example_id" 
+	            class="dri_dialog_example" title="Example dialog">
+	            This is an dialog which is useful for
+					displaying information. The dialog window can be moved, resized and
+					closed with the 'x' icon.</div>  -->
+				<!-- close dri_search_save_input -->
+	
+			</div>
+			<!-- close dri_search_features_nav_container -->
 	<div class="dri_line dri_h140">
 
-		<%= link_to main_app.root_url do %>
-      <div class="dri_ident"></div>
-		<% end %>
+
     <!-- <div><%= link_to image_tag("/assets/ident.png"), main_app.root_url %></div> -->
 
 		<div class="dri_header_menus_container">
 			<div class="dri_login_and_account_container">
-			  <nav class="dri_login_nav">
-				  <% if current_user %>
-			      <ul class="dri_logout">
-			        <li class="dri_logout"><%= link_to "", user_group.destroy_user_session_path, :method => :delete, :id => "logout", :alt => t('blacklight.header_links.logout') %></li>
-			  	  </ul>
-				  <% else %>
-			      <ul class="dri_login">
-			        <li class="dri_logout"><%= link_to "", user_group.new_user_session_path, :id => "login", :alt => t('blacklight.header_links.login') %></li>
-			    	</ul>
-			  	<% end %>
-			  </nav>
-			  <!-- close dri_login_nav -->
 
-			  <nav class="dri_account_nav">
+
+			  <!-- <nav class="dri_account_nav">
 					<% if current_user %>
 				          <ul class="dri_sign_up">
 					    <li><%= link_to current_user, user_group.user_path(current_user), :id => "view_account" %></li>
@@ -35,18 +186,17 @@
 				         </ul> 
 				  <% else %>
 		  			<ul class="dri_sign_up">
-		  			<li><%= link_to "Sign Up", user_group.new_user_path, :alt => "sign up link" %></li>
-     					<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+     					<!-- <li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>  -->
 			  		</ul>
 				  <% end %>
 			  </nav><!-- close dri_account_nav -->
 		  </div>
-		  <nav class="dri_social_nav">
+		  <!-- <nav class="dri_social_nav">
 	            <a href="#"><%= image_tag("/assets/google_plus.png", :width=>"28", :height=>"28") %></a>
 	            <a href="#"><%= image_tag("/assets/share.png", :width=>"28", :height=>"28") %></a>
                     <a href="#"><%= image_tag("/assets/linkedin.png", :width=>"28", :height=>"28") %></a>
 	            <a href="#"><%= image_tag("/assets/facebook_icon.png", :width=>"28", :height=>"28") %></a>
-		  </nav>
+		  </nav> -->
 		  <div></div>
 	  </div>
 
@@ -64,4 +214,4 @@
     <% end %>
   <% end %>
 
-</div><!-- close dri_header_container -->
+

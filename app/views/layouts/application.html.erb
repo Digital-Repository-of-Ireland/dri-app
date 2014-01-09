@@ -18,6 +18,7 @@
     <%= favicon_link_tag asset_path('favicon.ico') %>
     
     <%= stylesheet_link_tag "dri/dri_grid" %>
+        <%= stylesheet_link_tag "dri/dri_layouts" %>
     
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
@@ -36,7 +37,7 @@
   
   <body>
     
-    <div class="dri_wrapper">
+    <div id="dri_wrapper_id" class="block1 dri_wrapper">
       
       <%= render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
       
@@ -60,7 +61,7 @@
       
       <%= yield %>
             
-    </div><!-- close wrapper -->
+    </div><!-- close dri_wrapper -->
     
     <div class="clearfix"></div>
 
