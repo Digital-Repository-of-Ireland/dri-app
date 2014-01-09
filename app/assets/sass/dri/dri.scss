@@ -33,13 +33,13 @@ a {
 }
 
  .dri_account_nav ul.dri_account_links {
+
 	margin:  0;
 	padding: 0; 
 }
 
 .dri_account_nav ul.dri_account_links li {
 	float:left;
-	text-decoration: none;
 	list-style: none;
 	display: block;
 	margin: 2px 0 0 10px;
@@ -109,7 +109,7 @@ a {
 .dri_social_media_nav li {
 	text-decoration: none;
 	list-style: none;
-	margin: 0;
+	margin: 0 3px 0 0;
 	padding: 0; 
 	float: left;
 	display: block;
@@ -125,7 +125,6 @@ a {
 	background: image-url('dri/facebook_icon.png') no-repeat;
 	height:30px;
 	width: 30px;
-	margin-left: 3px;
 	display: block;
 	
 }
@@ -141,8 +140,8 @@ a {
 	width: 30px;
 	display: block;
 }
-.dri_social_media_nav li a.google {
-	background: image-url('dri/google_plus.png') no-repeat;
+.dri_social_media_nav li a.twitter {
+	background: image-url('dri/twitter.png') no-repeat;
 	height: 30px;
 	width: 30px;
 	display: block;	
@@ -177,6 +176,7 @@ a {
 	
 }
 .dri_main_nav li a {
+	text-transform:uppercase;
 	list-style: none;
 	text-decoration: none;
 	color: #3E3E3E;
@@ -366,12 +366,10 @@ a {
 	color: #808082;
 }
 .dri_pager_nav li:hover  {
-	text-decoration: underline;
-	color:#3E3E3E;
+	background-color: #F5F5F5;
 }
 .dri_pager_nav li.selected {
 	background-color: #F5F5F5;
-	text-decoration: underline;	
 }
 
 
@@ -406,11 +404,10 @@ a {
 	text-decoration: none;
 }
 .dri_pagination_nav li a:hover {
-	background-color: #B3B3B3;
+	background-color: #6D6E71;
 }
 .dri_pagination_nav li.selected a {
 	background-color: #6D6E71;
-	text-decoration: underline;
 }
 .dri_pagination_nav li.first a {
 	background:url(../../images/dri/prev_arrow.png) no-repeat center;
@@ -655,7 +652,7 @@ a {
 	margin:  0;
 }
 
-.dri_facet_filters .dri_sub_title a {
+.dri_sub_title span.dri_title_dropdown {
 	font-size: 120%;
 	font-weight: normal;
 	margin: 0;
@@ -667,11 +664,15 @@ a {
 	display: block;
 	border-top: 1px solid #D9DADB;
 	color: #2F2F2F;
+	cursor: pointer;
+}
+.dri_sub_title span.dri_title_dropdown:hover {
+	text-decoration: underline;
 }
 
 
 
-.dri_facet_filters .dri_sub_title a span.dri_arrow_down {
+h5.twiddle span.dri_arrow_down {
 	background:url(../../images/dri/arrow_down.png) no-repeat center;
 	width: 15px;
 	height: 15px;
@@ -681,7 +682,7 @@ a {
 	padding: 0 0 0 25px;
 	
 }
-.dri_facet_filters .dri_sub_title a span.dri_arrow_up {
+h5.twiddle span.dri_arrow_up {
 	background:url(../../images/dri/arrow_up.png) no-repeat center;
 	width: 15px;
 	height: 15px;
@@ -692,9 +693,6 @@ a {
 	
 }
 
-.dri_facet_filters .dri_sub_title a:hover {
-	text-decoration: underline;
-}
 
 .dri_facet_filters ul {
 	margin: 0;

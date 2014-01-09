@@ -33,13 +33,13 @@ a {
 }
 
  .dri_account_nav ul.dri_account_links {
+
 	margin:  0;
 	padding: 0; 
 }
 
 .dri_account_nav ul.dri_account_links li {
 	float:left;
-	text-decoration: none;
 	list-style: none;
 	display: block;
 	margin: 2px 0 0 10px;
@@ -176,6 +176,7 @@ a {
 	
 }
 .dri_main_nav li a {
+	text-transform:uppercase;
 	list-style: none;
 	text-decoration: none;
 	color: #3E3E3E;
