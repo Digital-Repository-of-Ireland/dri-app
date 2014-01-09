@@ -133,7 +133,7 @@ en:
           label: "Search in"
           post_label: for
           title: "Targeted search options"
-        submit: Search
+        submit: Ok
       librarian_view: 
         leader: "LEADER %{leader}"
         title: "Librarian View"
