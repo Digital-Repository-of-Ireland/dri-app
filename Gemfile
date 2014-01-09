@@ -100,4 +100,7 @@ group :translations do
   gem 'i18n_sync'
 end
 
+# analytics
+gem 'google-analytics-rails'
+
 gem 'rvm'

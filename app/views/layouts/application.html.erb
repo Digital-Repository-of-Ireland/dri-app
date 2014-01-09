@@ -31,6 +31,8 @@
     
     <%= favicon_link_tag asset_path('favicon.ico') %>
   
+    <%= analytics_init if Rails.env.production? %>
+
   </head>
   
   <% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
