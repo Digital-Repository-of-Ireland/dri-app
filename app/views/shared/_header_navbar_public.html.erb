@@ -54,7 +54,11 @@
 			<li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
 			<li><%= link_to t('dri.account'), user_group.user_path(current_user), :id => "view_account" %></li>
 			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
-			<li><a href="#">ABOUT US</a></li>
+			<li><%= link_to t('dri.headerlinks.collections.admin'), main_app.collections_path(:view => 'mine'), :id => "manage_collections" %></li>
+            <li><%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %></li>
+            	<% if signed_in? && current_user.is_admin? %>
+                	<li><%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, :id => "resque" %></li>
+            	<% end %>
 		<% else %>
 			<li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
 			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
