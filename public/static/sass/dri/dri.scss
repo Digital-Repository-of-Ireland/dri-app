@@ -366,12 +366,10 @@ a {
 	color: #808082;
 }
 .dri_pager_nav li:hover  {
-	text-decoration: underline;
-	color:#3E3E3E;
+	background-color: #F5F5F5;
 }
 .dri_pager_nav li.selected {
 	background-color: #F5F5F5;
-	text-decoration: underline;	
 }
 
 
@@ -406,11 +404,10 @@ a {
 	text-decoration: none;
 }
 .dri_pagination_nav li a:hover {
-	background-color: #B3B3B3;
+	background-color: #6D6E71;
 }
 .dri_pagination_nav li.selected a {
 	background-color: #6D6E71;
-	text-decoration: underline;
 }
 .dri_pagination_nav li.first a {
 	background:url(../../images/dri/prev_arrow.png) no-repeat center;
@@ -655,7 +652,7 @@ a {
 	margin:  0;
 }
 
-.dri_facet_filters .dri_sub_title a {
+.dri_facet_filters .dri_sub_title span.dri_title_dropdown {
 	font-size: 120%;
 	font-weight: normal;
 	margin: 0;
