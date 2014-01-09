@@ -762,13 +762,14 @@ a {
 
 .dri_content_block h1 {
 	color: #2F2F2F;
-	font-size: 110%;
+	font-size: 100%;
 	padding: 0;
-	margin: 10px 14px 20px 14px;
-	height: 35px;
+	margin: 12px 14px 12px 14px;
+	height: 30px;
 	overflow: hidden;
-  	text-overflow: ellipsis;
-
+	text-overflow: ellipsis;
+	line-height: 1.3em;
+	font-weight: bold;
 }
 .dri_content_block h1 a {
 	color:#2F2F2F;
@@ -782,7 +783,7 @@ a {
 	color: #2F2F2F;
 	font-size: 100%;
 	padding: 0;
-	margin: 4px 14px 4px 14px;
+	margin: 0 14px 0 14px;
 	font-weight: normal;
 }
 .dri_content_block h2 a {
@@ -795,12 +796,12 @@ a {
 }
 .dri_content_block h2.dri_editor {
 	color: #808080;
-	line-height: 1.4em;
 	display: block;
-	height: 36px;
+	height: 30px;
 	white-space: wrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
+	line-height: 1.3em;
 }
 
 .dri_content_block h2.dri_editor a {
@@ -822,18 +823,26 @@ a {
 	margin: 0 14px 0 14px;
 }
 
-.dri_stats {
+
+.dri_icon {
 	color: #808080;
 	line-height: 1.4em;
 	display: block;
-	height: 24px;
-	margin: 4px 14px 4px 14px;
+	height: 27px;
+	margin: 6px 14px 4px 14px;
 	border-top: 1px solid #E1E1E1;
-	padding: 6px 0 0 0;
+	padding: 0 0 0 0;
 }
-.dri_stats span.view {
-	margin: 0;
+.dri_icon .dri_icon_image {
+	margin: 6px 0 0 0;
 	padding: 0;
+	display: block;
+	float: left;
+}
+.dri_icon_text  {
+	margin: 8px 0 0 6px;
+	padding: 0;
+	display: block;float: left;
 }
 .dri_content_block .dri_stats span.dri_object_num {
 	color: #fff;
@@ -951,7 +960,7 @@ a {
 	height: 26px;
 	font-size: 120%;
 	padding: 4px 0 0 10px;
-	margin: 0px;
+	margin: 0px 0 20px 0;
 	color: #FFF;
 	background: #2F2F2F;
 	width: 77%;
@@ -961,7 +970,7 @@ a {
 /*-------------- Media asset --------------*/
 
 .dri_object_render_block {
-	margin: 30px 0 10px 0;
+	margin: 10px 0 10px 0;
 	padding: 0px;
 }
 
@@ -1022,8 +1031,8 @@ dl.dri_object_metadata_readview dd {
 }
 
 dl.dri_object_metadata_readview dd a {
-	margin: 0;
-	padding:0 0 0 20px;
+	margin: 0 0 0 15px;
+	padding:0 0 0 0;
 	  display: list-item;
    list-style-type: disc;
 	color: #808080;
@@ -1042,7 +1051,7 @@ dl.dri_object_metadata_readview dd a:hover {
 
 .dri_back_search a {
 	padding: 0;
-	margin: 30px 0 0 0;
+	margin: 10px 0 0 0;
 	color: #288DC0;
 	font-weight: normal;
 	display: block;
@@ -1075,8 +1084,8 @@ ul.dri_stats li {
 }
 .dri_vc_image {
 	border: 1px solid #E1E1E1;
-	width: 230px;
-	height: 92px;
+	width: 200px;
+	height: 113px;
 }
 ul.dri_view_collection {
 	margin: 10px 0 0 0;
