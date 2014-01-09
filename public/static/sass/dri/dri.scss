@@ -652,7 +652,7 @@ a {
 	margin:  0;
 }
 
-.dri_facet_filters .dri_sub_title span.dri_title_dropdown {
+.dri_sub_title span.dri_title_dropdown {
 	font-size: 120%;
 	font-weight: normal;
 	margin: 0;
@@ -664,11 +664,15 @@ a {
 	display: block;
 	border-top: 1px solid #D9DADB;
 	color: #2F2F2F;
+	cursor: pointer;
+}
+.dri_sub_title span.dri_title_dropdown:hover {
+	text-decoration: underline;
 }
 
 
 
-.dri_facet_filters .dri_sub_title a span.dri_arrow_down {
+h5.twiddle span.dri_arrow_down {
 	background:url(../../images/dri/arrow_down.png) no-repeat center;
 	width: 15px;
 	height: 15px;
@@ -678,7 +682,7 @@ a {
 	padding: 0 0 0 25px;
 	
 }
-.dri_facet_filters .dri_sub_title a span.dri_arrow_up {
+h5.twiddle span.dri_arrow_up {
 	background:url(../../images/dri/arrow_up.png) no-repeat center;
 	width: 15px;
 	height: 15px;
@@ -689,9 +693,6 @@ a {
 	
 }
 
-.dri_facet_filters .dri_sub_title a:hover {
-	text-decoration: underline;
-}
 
 .dri_facet_filters ul {
 	margin: 0;
