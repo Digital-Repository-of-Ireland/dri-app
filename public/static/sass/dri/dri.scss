@@ -109,7 +109,7 @@ a {
 .dri_social_media_nav li {
 	text-decoration: none;
 	list-style: none;
-	margin: 0;
+	margin: 0 3px 0 0;
 	padding: 0; 
 	float: left;
 	display: block;
@@ -125,7 +125,6 @@ a {
 	background: image-url('dri/facebook_icon.png') no-repeat;
 	height:30px;
 	width: 30px;
-	margin-left: 3px;
 	display: block;
 	
 }
@@ -141,8 +140,8 @@ a {
 	width: 30px;
 	display: block;
 }
-.dri_social_media_nav li a.google {
-	background: image-url('dri/google_plus.png') no-repeat;
+.dri_social_media_nav li a.twitter {
+	background: image-url('dri/twitter.png') no-repeat;
 	height: 30px;
 	width: 30px;
 	display: block;	
