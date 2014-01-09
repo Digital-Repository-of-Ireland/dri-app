@@ -74,4 +74,7 @@ NuigRnag::Application.configure do
     [u, p] == ['navr', 'navr']
   end
   config.assets.precompile += ['dri/dri_grid.css']
+
+  # google analytics
+  GA.tracker = "UA-27838653-2"
 end
