@@ -66,10 +66,6 @@ nuig-rnag, rspec, cucumber and rails documentation.
 If you are using homenbrew on OSX
 
   $ brew install ansible coreutils libtool libksba libxml2 libxslt automake autoconf openssl curl curl-ca-bundle readline lzlib gettext pkg-config libyaml mariadb redis clamav sqlite ffmpeg gource phantomjs fits glib imagemagick node
-  $ brew link libxml2 --force
-  $ brew link libxslt --force
-  $ brew link gettext --force
-  $ brew link readline --force
 
 == Testing
 
