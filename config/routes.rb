@@ -9,7 +9,7 @@ NuigRnag::Application.routes.draw do
 
   mount UserGroup::Engine => "/user_groups"
 
-  resources :objects, :only => ['edit', 'update', 'create']
+  resources :objects, :only => ['edit', 'update', 'create', 'show']
   resources :collections
 
   resources :ingest, :only => ['new', 'create']
@@ -26,7 +26,7 @@ NuigRnag::Application.routes.draw do
   #required for hydra-core/lib/hydra/controller/controller_behavior.rb and lib/blacklight/controller.rb
   match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 
-  match 'objects/:id' => 'catalog#show', :via => :get
+  #match 'objects/:id' => 'catalog#show', :via => :get
 
   # need to put in the 'system administrator' role here
   authenticate do

@@ -271,6 +271,7 @@ en:
           access_control: "Access Controls"
           audio_caption: "A master audio file has already been uploaded."
           comments: Comments
+          cite: Cite
           file_caption: "A master file has already been uploaded."
           likes: Likes
           metadata: Metadata

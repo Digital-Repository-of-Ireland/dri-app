@@ -2,8 +2,8 @@ module ApplicationHelper
   require 'storage/s3_interface'
 
   # Returns the file that should be delivered to the user
-  #   # based on their access rights and the policies and available
-  #     # surrogates of the object
+  # based on their access rights and the policies and available
+  # surrogates of the object
   def get_delivery_file doc
     if can? :read, doc.id
       get_files(doc)
