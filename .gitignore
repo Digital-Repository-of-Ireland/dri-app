@@ -30,6 +30,7 @@ config/fedora.yml
 config/solr.yml
 
 features/reports/*
+spec/reports/*
 .sass-cache/
 # *.html
 public/static/stylesheets/dri/*.css
