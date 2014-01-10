@@ -17,7 +17,8 @@
     
     <%= favicon_link_tag asset_path('favicon.ico') %>
     
-    <%= stylesheet_link_tag "dri/dri_grid" %>
+
+        <%= stylesheet_link_tag "dri/dri_layouts" %>
     
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
@@ -38,7 +39,7 @@
   
   <body>
     
-    <div class="dri_wrapper">
+    <div id="dri_wrapper_id" class="block1 dri_wrapper">
       
       <%= render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
       
@@ -46,27 +47,34 @@
       
       <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div><!-- close ajax-modal -->
  
-      <div id="search-found" class="row hidden-phone">
-        <%= topbar_items.join('').html_safe %>
-      </div> 
-     
-      <div class="row">
-        <div class="span10">
-          <div id="main-flashes"><%= render :partial=>'/flash_msg' %></div>
-        </div>    
-      </div>          
-      
+	  <% if query_has_constraints? %>
+      	<%= render 'constraints' %>
+      <% else %>
+		<div id="dri_facet_restrictions_container_id" 
+        class="dri_facet_restrictions_container">
+			<ul id="dri_facet_restrictions_links_id" 
+            class="dri_facet_restrictions_links empty">
+		  		<li class="empty">&nbsp;</li>
+
+			</ul>
+		</div>
+		<!-- close dri_facet_restrictions_container -->
+      <% end %>
+      <%= render :partial=>'/flash_msg' %>
+           
+      <div class="dri_main_content_container">
       <% unless (controller_name == 'catalog' && action_name == 'index') || (controller_name == 'catalog' && action_name == 'show') %>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
       <% end %>
       
       <%= yield %>
+      </div>
+      <!-- close dri_main_content_container -->
             
-    </div><!-- close wrapper -->
-    
-    <div class="clearfix"></div>
 
-    <%# render :partial => 'shared/footer' %>
+    <%= render :partial => 'shared/footer' %>
+     
+    </div><!-- close dri_wrapper -->
     
   </body>
   

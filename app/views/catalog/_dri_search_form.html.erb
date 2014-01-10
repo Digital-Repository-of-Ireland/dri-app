@@ -1,17 +1,10 @@
-<div class="dri_search_bar" id="searchbar">
-
-  <!-- <input name="search" type="text" value="New Search"> -->
-
-  <%= form_tag catalog_index_path, :method => :get, :id => 'searchform' do %> <!-- , :class => 'search-query-form form-inline clearfix' -->
+  <%= form_tag catalog_index_path, :method => :get, :id => 'searchform', :class => 'dri_search_term_input_form' do %>
     <%= hidden_field_tag 'search_field', 'all_fields' %>
     <%= search_as_hidden_fields(:omit_keys => [:q, :search_field, :qt, :page, :utf8, :id]).html_safe %>
 
-     <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :id => "q" %>
-     <button type="submit" class="dri_non_display_search_button" id="search">
-          <span class="submit-search-text"><%=t('blacklight.search.form.submit')%></span>
-          <i class="icon-search icon-white"></i>
+     <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :id => "q", :class => "dri_search_term_text_input" %>
+     <button type="submit" class="dri_search_term_text_submit_button" id="search">
+          <%=t('blacklight.search.form.submit')%>
      </button>
 
   <% end %><!-- end form -->
-
-</div><!-- close dri_search_bar -->

@@ -113,13 +113,13 @@ a {
 }
 
  .dri_account_nav ul.dri_account_links {
+
 	margin:  0;
 	padding: 0; 
 }
 
 .dri_account_nav ul.dri_account_links li {
 	float:left;
-	text-decoration: none;
 	list-style: none;
 	display: block;
 	margin: 2px 0 0 10px;
@@ -256,6 +256,7 @@ a {
 	
 }
 .dri_main_nav li a {
+	text-transform:uppercase;
 	list-style: none;
 	text-decoration: none;
 	color: #3E3E3E;
@@ -489,11 +490,11 @@ a {
 	background-color: #6D6E71;
 }
 .dri_pagination_nav li.first a {
-	background:url(../../images/dri/prev_arrow.png) no-repeat center;
+	background:image-url('dri/prev_arrow.png') no-repeat center;
 	background-color: none;
 }
 .dri_pagination_nav li.last a {
-	background:url(../../images/dri/next_arrow.png) no-repeat center;
+	background:image-url('dri/next_arrow.png') no-repeat center;
 	background-color: none;
 }
 
@@ -532,6 +533,11 @@ a {
 	border-left: 1px solid #999;
 	text-decoration: none;
 	
+}
+
+li.empty  {
+	background-color: #fff;
+	box-shadow: 1px 1px 4px  #fff;
 }
 
 /*-------------- Save Search --------------*/
@@ -591,7 +597,9 @@ a {
 	text-decoration: none;
 }
 
-
+.dri_close_message {
+	float: right;
+}
 /*-------------- Successful Messages --------------*/
 .dri_successful_message {
 	margin: 20px 0 0 0;

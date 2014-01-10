@@ -133,7 +133,7 @@ en:
           label: "Search in"
           post_label: for
           title: "Targeted search options"
-        submit: Search
+        submit: Ok
       librarian_view: 
         leader: "LEADER %{leader}"
         title: "Librarian View"
@@ -146,8 +146,8 @@ en:
           other: "<b>%{start_num}</b> - <b>%{end_num}</b> of <b>%{total_num}</b>"
         single_item_found: "<b>1</b> to <b>1</b> of <b>1</b>"
       per_page: 
-        button_label: "%{count} per page"
-        label: "%{count}<span class=\"hide-text\"> per page</span>"
+        button_label: "%{count}"
+        label: "%{count}"
         submit: Update
         title: "Number of results to display per page"
       rss_feed: "RSS for results"

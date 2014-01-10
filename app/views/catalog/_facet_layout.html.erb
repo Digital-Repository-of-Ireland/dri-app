@@ -1,4 +1,10 @@
 <div class="facet_limit blacklight-<%= facet_field.field.parameterize %> dri_facet_title">
-  <h5><%= link_to facet_field.label, "#", "data-no-turbolink" => true -%> <i class="icon-chevron"></i></h5>
+  <h5 class="dri_sub_title twiddle">
+  <div class="dri_title_dropdown"><%= facet_field.label -%> 
+  <span class="dri_arrow_down">&nbsp;</span>
+  </div>  
+  <i class="icon-chevron"></i>
+  </h5>
   <%= yield %>
 </div>
+
