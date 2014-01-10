@@ -1,6 +1,4 @@
-<% unless has_search_parameters? %>
-  <div id="content" class="span9">
-<% end %>
+
 
   <% unless has_search_parameters? %>
     <%# if there are no input/search related params, display the "home" partial -%>
@@ -12,16 +10,14 @@
     <% extra_head_content << render_opensearch_response_metadata.html_safe %>
 
     <%= render :partial => 'did_you_mean' %>
- 
-    			<div id="dri_second_navigation_container_id"
+ 			<div id="dri_second_navigation_container_id"
 				class="dri_second_navigation_container">
 				<!-- facet block -->
 				<div class="dri_facet_filters_block" id="sidebar">
-					     <%= render :partial => 'facets' %>
+					<%= render :partial => 'facets' %>
 				</div>
 				<!-- close facet block -->
 			</div>
-			<!-- close dri_second_navigation_container -->
 			  
 			<div id="dri_result_container_id" class="dri_result_container">
       			<%= render_document_index %>
@@ -29,6 +25,3 @@
     
   <% end %>
   
-<% unless has_search_parameters? %>
-  </div>
-<% end %>
