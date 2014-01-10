@@ -63,6 +63,8 @@ group :development, :test do
   gem 'guard-spork'
   gem 'guard-bundler'
   gem 'guard-yard'
+  gem 'guard-compass'
+  gem 'guard-livereload'
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false
