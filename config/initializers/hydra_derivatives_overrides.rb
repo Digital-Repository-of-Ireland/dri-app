@@ -12,8 +12,11 @@ Hydra::Derivatives::ShellBasedProcessor.module_eval do
           self.class.encode(f.path, options, output_file)
         end
         out_file = File.open(output_file, "rb")
-        #object.add_file_datastream(out_file.read, :dsid=>dest_dsid, :mimeType=>mime_type)
-        Storage::S3Interface.store_surrogate(object.pid, out_file, dest_dsid+".#{file_suffix}")
+
+        bucket_id = object.batch.nil? ? object.pid : object.batch.pid
+        filename = "#{bucket_id}_#{dest_dsid}.#{file_suffix}"
+
+        Storage::S3Interface.store_surrogate(bucket_id, out_file, filename)
         File.unlink(output_file)
   end
 
