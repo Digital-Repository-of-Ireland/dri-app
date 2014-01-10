@@ -270,17 +270,3 @@ en:
       long: "%d %B, %Y %H:%M"
       short: "%d %b %H:%M"
     pm: pm
-  exception:
-    show:
-      not_found:
-        title: "Not Found"
-        description: "The page you were looking for does not exists."
-      internal_server_error:
-        title: "Internal Server Error"
-        description: "Sorry, something went wrong while processing your request."
-      bad_request:
-        title: "Bad Request"
-        description: "The server did not understand your request. It may have been malformed."
-        bad_taste:
-          title: "Bad Taste"
-          description: "Sorry, the server thinks you've got a bad taste for food (%{exception_message})."

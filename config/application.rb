@@ -69,7 +69,5 @@ module NuigRnag
     config.assets.version = '1.0'
 
     config.eager_load_paths += ["#{config.root}/lib/sufia/models/jobs", "#{config.root}/lib/sufia/models/generic_file"]
-
-    config.exceptions_app = ->(env) { ExceptionsController.action(:show).call(env) }
   end
 end
