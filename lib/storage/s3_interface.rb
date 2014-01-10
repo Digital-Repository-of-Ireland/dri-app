@@ -46,25 +46,6 @@ module Storage
 
     end
 
-
-    # Get an authenticated short-duration url for a file
-    def self.get_link_for_surrogate(doc, file)
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                         :access_key_id => Settings.S3.access_key_id,
-                                         :secret_access_key => Settings.S3.secret_access_key)
-      bucket = doc.id.sub('dri:', '')
-      begin
-        url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
-      rescue Exception => e
-        logger.debug "Problem getting url for file #{file} : #{e.to_s}"
-      end
-
-      AWS::S3::Base.disconnect!()
-
-      return url
-    end
-
-
     # Get a hash of all surrogates for an object
     def self.get_surrogates(doc)
 
@@ -163,7 +144,7 @@ module Storage
 
 
     # Get link for arbitrary file
-    def self.get_link_for_surrogate(file, bucket)
+    def self.get_link_for_surrogate(bucket, file)
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                          :access_key_id => Settings.S3.access_key_id,
                                          :secret_access_key => Settings.S3.secret_access_key)
@@ -171,7 +152,7 @@ module Storage
       begin
         url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => false)
       rescue Exception => e
-        logger.error "Problem getting link for file #{filename} : #{e.to_s}"
+        logger.error "Problem getting link for file #{file} : #{e.to_s}"
       end
       AWS::S3::Base.disconnect!()
       return url
