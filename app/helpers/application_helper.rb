@@ -19,7 +19,7 @@ module ApplicationHelper
         delivery_file = Storage::S3Interface.deliverable_surrogate?(doc)
 
         if (!delivery_file.blank?)
-          @asset = Storage::S3Interface.get_link_for_surrogate(doc, delivery_file)
+          @asset = Storage::S3Interface.get_link_for_surrogate(doc.id.sub('dri:',''), delivery_file)
         elsif (delivery_file.blank?)
           @asset = "no file"
         else
