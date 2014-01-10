@@ -1,9 +1,11 @@
 <% if query_has_constraints? %>
-<div class="dri_search_terms_block">
-  <ul class="dri_search_term" id="appliedParams">
-<nav class="dri_contraint_search">   
+		<div id="dri_facet_restrictions_container_id" 
+        class="dri_facet_restrictions_container">
+			<ul id="dri_facet_restrictions_links_id" 
+            class="dri_facet_restrictions_links">
 		  <%= render_constraints(params) %>
-</nav>
-	</ul>
-</div>
+
+			</ul>
+		</div>
+		<!-- close dri_facet_restrictions_container -->
 <% end %>
