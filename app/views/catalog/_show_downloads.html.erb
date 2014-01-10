@@ -8,6 +8,10 @@
    <dd>
       <%= link_to t('dri.views.catalog.links.download'), url_for(:controller => 'assets', :action => 'show', :id => @document.id), :id => "download_asset" %>
    </dd>
+   <% @surrogates.each do |desc, url| %>
+    <dt><%= desc %>:</dt>
+    <dd><%= link_to t('dri.views.catalog.links.download'), url, :id => desc %></dd>
+  <% end %>
 
 <% elsif (@asset == "no permission") %>
   <dd><%= t('dri.views.catalog.legends.no_permission') %></dd>
@@ -30,9 +34,11 @@
   <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
 
 <% elsif !@asset.blank? %>
-  <dd><%= @asset.to_s %>
-    <%= link_to t('dri.views.catalog.links.download'), @asset, :id => "download_surrogate_asset" %>
- </dd>
+
+  <% @surrogates.each do |desc, url| %>
+    <dt><%= desc %>:</dt>
+    <dd><%= link_to t('dri.views.catalog.links.download'), url, :id => desc %></dd>
+  <% end %>
 
 <% else %>
   <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
