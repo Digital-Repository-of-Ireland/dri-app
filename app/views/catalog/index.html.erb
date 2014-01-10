@@ -12,24 +12,21 @@
     <% extra_head_content << render_opensearch_response_metadata.html_safe %>
 
     <%= render :partial => 'did_you_mean' %>
-  
-
-    <div class="dri_search_nav_container">
-      <nav class="dri_search_menu">
-        <%# render 'constraints' %>
-        <%# render 'dri_search_form' %>  
-        <%= render 'sort_and_per_page' %>
-      </nav><!-- close dri_search_menu -->
-    </div><!-- close dri_search_nav_container -->
-        
-    <div class="dri_search_results_container">
-      <%= render_document_index %>
-    </div><!-- close dri_search_results_container -->
+ 
+    			<div id="dri_second_navigation_container_id"
+				class="dri_second_navigation_container">
+				<!-- facet block -->
+				<div class="dri_facet_filters_block" id="sidebar">
+					     <%= render :partial => 'facets' %>
+				</div>
+				<!-- close facet block -->
+			</div>
+			<!-- close dri_second_navigation_container -->
+			  
+			<div id="dri_result_container_id" class="dri_result_container">
+      			<%= render_document_index %>
+    		</div><!-- close dri_result_container -->
     
-    <div class="dri_facet_filters_block" id="sidebar">
-     <%= render :partial => 'facets' %>
-    </div>
-   
   <% end %>
   
 <% unless has_search_parameters? %>

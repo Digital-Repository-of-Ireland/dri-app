@@ -47,21 +47,23 @@
       
       <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div><!-- close ajax-modal -->
  
-      <!-- "what does this do?" <div id="search-found" class="row hidden-phone">
-        <%= topbar_items.join('').html_safe %>
-      </div>   -->
-     
+	  <% if query_has_constraints? %>
+      <%= render 'constraints' %>
+      <% end %>
       <%= render :partial=>'/flash_msg' %>
            
-      
+      <div class="dri_main_content_container">
       <% unless (controller_name == 'catalog' && action_name == 'index') || (controller_name == 'catalog' && action_name == 'show') %>
 
       <% end %>
       
       <%= yield %>
+      </div>
+      <!-- close dri_main_content_container -->
             
 
     <%= render :partial => 'shared/footer' %>
+     
     </div><!-- close dri_wrapper -->
     
   </body>
