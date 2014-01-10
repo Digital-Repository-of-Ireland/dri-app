@@ -48,7 +48,17 @@
       <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div><!-- close ajax-modal -->
  
 	  <% if query_has_constraints? %>
-      <%= render 'constraints' %>
+      	<%= render 'constraints' %>
+      <% else %>
+		<div id="dri_facet_restrictions_container_id" 
+        class="dri_facet_restrictions_container">
+			<ul id="dri_facet_restrictions_links_id" 
+            class="dri_facet_restrictions_links empty">
+		  		<li class="empty">&nbsp;</li>
+
+			</ul>
+		</div>
+		<!-- close dri_facet_restrictions_container -->
       <% end %>
       <%= render :partial=>'/flash_msg' %>
            

@@ -535,6 +535,11 @@ a {
 	
 }
 
+li.empty  {
+	background-color: #fff;
+	box-shadow: 1px 1px 4px  #fff;
+}
+
 /*-------------- Save Search --------------*/
 .dri_search_save_input {
 	margin: 0px;
@@ -592,7 +597,9 @@ a {
 	text-decoration: none;
 }
 
-
+.dri_close_message {
+	float: right;
+}
 /*-------------- Successful Messages --------------*/
 .dri_successful_message {
 	margin: 20px 0 0 0;

@@ -27,10 +27,11 @@ a {
 	margin: 0;
 	border: 1px solid #D9DADB;
 	background-color: white;
-	padding: 20px 40px 20px 40px;
+	padding: 40px 40px 40px 40px;
 	display: block;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+	float: left;
 	
 }
 .dri_login_form_block h2 {
@@ -70,13 +71,37 @@ a {
 	padding: 0;
 	width: 14px;
 	height: 14px;
-	color: #FFF;
 	font-size: 106%;
-	background-color: none;
 }
 .dri_checkbox_text span {
 	margin: 0;
 	padding: 0;
+}
+
+.dri_form_text  {
+	display: block;
+	margin: 10px 4px 0 0;
+	padding: 0;
+}
+
+.dri_form_text a {
+	float: left;
+	margin: 20px 4px 0 0;
+	padding: 0;
+	color:#3E3E3E;
+
+}
+.dri_form_text a span.text_right {
+	float: right;
+	margin: 0 0 0 151px;
+	padding: 0;
+	color:#3E3E3E;
+}
+.dri_form_text a:hover{
+	text-decoration: underline;
+}
+.dri_form_text a span.text_right:hover {
+		text-decoration: underline;
 }
 /*-------------- Account and Language Styling--------------*/
 .dri_account_nav {
@@ -510,6 +535,11 @@ a {
 	
 }
 
+li.empty  {
+	background-color: #fff;
+	box-shadow: 1px 1px 4px  #fff;
+}
+
 /*-------------- Save Search --------------*/
 .dri_search_save_input {
 	margin: 0px;
@@ -567,7 +597,9 @@ a {
 	text-decoration: none;
 }
 
-
+.dri_close_message {
+	float: right;
+}
 /*-------------- Successful Messages --------------*/
 .dri_successful_message {
 	margin: 20px 0 0 0;
@@ -808,7 +840,7 @@ a {
 }
 
 .dri_content_block .dri_high_view {
-	background: image-url('high_view_icon.png') no-repeat;
+	background: image-url('dri/high_view_icon.png') no-repeat;
 
 }
 
@@ -904,7 +936,7 @@ a {
 	padding: 3px 0 0 6px;
 	margin: 0 8px 0 0;
 	float: left;
-	background: image-url('object_back.png') no-repeat;
+	background: image-url('dri/object_back.png') no-repeat;
 }
 .dri_content_block .stats span.dri_object_num a {
 	color: #fff;
@@ -1139,6 +1171,7 @@ ul.dri_stats li {
 	width: 230px;
 	height: 129px;
 }
+/*-------------- 320x180 Ratio - Image upload  --------------*/
 ul.dri_view_collection {
 	margin: 10px 0 0 0;
 	padding: 0;
