@@ -22,7 +22,62 @@ body {
 a {
 	text-decoration: none;
 }
+/*-------------- Signin Model--------------*/
+.dri_login_form_block {
+	margin: 0;
+	border: 1px solid #D9DADB;
+	background-color: white;
+	padding: 20px 40px 20px 40px;
+	display: block;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	
+}
+.dri_login_form_block h2 {
+	margin: 0 0 10px 0;
+	padding: 0px;
+	font-weight: bold;
+	font-size: 140%;
+	
+}
 
+.dri_login_form_block input {
+	margin: 0 0 4px 0;
+	padding: 6px 15px 6px 15px;
+	width: 300px;
+	background-color: #2F2F2F;
+	border: none;
+	color: #FFF;
+	font-size: 106%;
+	font-weight: normal;
+}
+
+.dri_login_form_block .dri_submit  input {
+	font-size: 100%;
+	float: left;
+	background-color: #278DC1;
+	color: #FFF;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border: none;
+	padding: 6px 0 6px 0;
+	margin: 10px 0 0 0;
+	cursor: pointer;
+	width: 330px;
+}
+.dri_checkbox_text input {
+	margin: 10px 4px 0 0;
+	padding: 0;
+	width: 14px;
+	height: 14px;
+	color: #FFF;
+	font-size: 106%;
+	background-color: none;
+}
+.dri_checkbox_text span {
+	margin: 0;
+	padding: 0;
+}
 /*-------------- Account and Language Styling--------------*/
 .dri_account_nav {
 	float: right;
