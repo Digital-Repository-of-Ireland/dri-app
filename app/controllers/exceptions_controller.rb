@@ -1,3 +1,4 @@
+# see https://gist.github.com/s-andringa/3748828
 class ExceptionsController < ActionController::Base
     layout 'application'
 
