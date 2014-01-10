@@ -22,7 +22,62 @@ body {
 a {
 	text-decoration: none;
 }
+/*-------------- Signin Model--------------*/
+.dri_login_form_block {
+	margin: 0;
+	border: 1px solid #D9DADB;
+	background-color: white;
+	padding: 20px 40px 20px 40px;
+	display: block;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	
+}
+.dri_login_form_block h2 {
+	margin: 0 0 10px 0;
+	padding: 0px;
+	font-weight: bold;
+	font-size: 140%;
+	
+}
 
+.dri_login_form_block input {
+	margin: 0 0 4px 0;
+	padding: 6px 15px 6px 15px;
+	width: 300px;
+	background-color: #2F2F2F;
+	border: none;
+	color: #FFF;
+	font-size: 106%;
+	font-weight: normal;
+}
+
+.dri_login_form_block .dri_submit  input {
+	font-size: 100%;
+	float: left;
+	background-color: #278DC1;
+	color: #FFF;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border: none;
+	padding: 6px 0 6px 0;
+	margin: 10px 0 0 0;
+	cursor: pointer;
+	width: 330px;
+}
+.dri_checkbox_text input {
+	margin: 10px 4px 0 0;
+	padding: 0;
+	width: 14px;
+	height: 14px;
+	color: #FFF;
+	font-size: 106%;
+	background-color: none;
+}
+.dri_checkbox_text span {
+	margin: 0;
+	padding: 0;
+}
 /*-------------- Account and Language Styling--------------*/
 .dri_account_nav {
 	float: right;
@@ -651,7 +706,7 @@ a {
 	margin:  0;
 }
 
-.dri_sub_title span.dri_title_dropdown {
+.dri_sub_title .dri_title_dropdown {
 	font-size: 120%;
 	font-weight: normal;
 	margin: 0;
@@ -659,19 +714,18 @@ a {
 	list-style: none;
 	text-decoration: none;
 	width: 218px;
+	height: 15px;
 	float: left;
 	display: block;
 	border-top: 1px solid #D9DADB;
 	color: #2F2F2F;
 	cursor: pointer;
 }
-.dri_sub_title span.dri_title_dropdown:hover {
+.dri_sub_title .dri_title_dropdown:hover {
 	text-decoration: underline;
 }
 
-
-
-h5.twiddle span.dri_arrow_down {
+.twiddle .dri_arrow_down {
 	background:url(../../images/dri/arrow_down.png) no-repeat center;
 	width: 15px;
 	height: 15px;
@@ -681,7 +735,7 @@ h5.twiddle span.dri_arrow_down {
 	padding: 0 0 0 25px;
 	
 }
-h5.twiddle span.dri_arrow_up {
+.twiddle .dri_arrow_up {
 	background:url(../../images/dri/arrow_up.png) no-repeat center;
 	width: 15px;
 	height: 15px;
@@ -753,7 +807,7 @@ h5.twiddle span.dri_arrow_up {
 }
 
 .dri_content_block .dri_high_view {
-	background: image-url('high_view_icon.png') no-repeat;
+	background: image-url('dri/high_view_icon.png') no-repeat;
 
 }
 
@@ -849,7 +903,7 @@ h5.twiddle span.dri_arrow_up {
 	padding: 3px 0 0 6px;
 	margin: 0 8px 0 0;
 	float: left;
-	background: image-url('object_back.png') no-repeat;
+	background: image-url('dri/object_back.png') no-repeat;
 }
 .dri_content_block .stats span.dri_object_num a {
 	color: #fff;
@@ -1081,8 +1135,8 @@ ul.dri_stats li {
 }
 .dri_vc_image {
 	border: 1px solid #E1E1E1;
-	width: 200px;
-	height: 113px;
+	width: 230px;
+	height: 129px;
 }
 ul.dri_view_collection {
 	margin: 10px 0 0 0;

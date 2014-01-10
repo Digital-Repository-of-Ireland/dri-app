@@ -7,8 +7,10 @@ class CreateBucketJob < ActiveFedoraPidBasedJob
   end
 
   def run
-    Rails.logger.info "Creating bucket for object #{generic_file_id}"
-    Storage::S3Interface.create_bucket(generic_file_id.sub('dri:', ''))
+    bucket_id = object.batch.nil? ? object.id : object.batch.id
+    Rails.logger.info "Creating bucket for object #{bucket_id}"
+
+    Storage::S3Interface.create_bucket(bucket_id.sub('dri:', ''))
     after_create_bucket
   end
 
