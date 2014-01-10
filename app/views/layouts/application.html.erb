@@ -51,11 +51,8 @@
         <%= topbar_items.join('').html_safe %>
       </div>   -->
      
-      <div class="row">
-        <div class="span10">
-          <div id="main-flashes"><%= render :partial=>'/flash_msg' %></div>
-        </div>    
-      </div>          
+      <%= render :partial=>'/flash_msg' %>
+           
       
       <% unless (controller_name == 'catalog' && action_name == 'index') || (controller_name == 'catalog' && action_name == 'show') %>
 
@@ -63,9 +60,6 @@
       
       <%= yield %>
             
-
-    
-	   <div class="clearfix"></div>
 
     <%= render :partial => 'shared/footer' %>
     </div><!-- close dri_wrapper -->

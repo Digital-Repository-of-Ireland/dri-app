@@ -69,6 +69,7 @@
 </div>
 <!-- close dri_main_nav_container -->
 
+<!-- no sub navs for the moment - hidden 
 <div id="dri_sub_nav_container_id" class="dri_sub_nav_container">
 	<nav id="dri_sub_nav_id" class="dri_sub_nav">
 		<ul id="dri_main_nav_links_id"
@@ -81,7 +82,8 @@
 </div>
 
 <!-- close dri_sub_nav_container -->
-	
+
+<!-- no crumbtrail for the moment - hidden 	
 <div id="dri_crumbtrail_nav_container_id"
 	class="dri_crumbtrail_nav_container">
 	<nav id="dri_crumbtrail_nav_id" class="dri_crumbtrail_nav">
@@ -102,9 +104,13 @@
 	<% if show_sort_and_per_page? and !blacklight_config.sort_fields.blank? %>
 		<!-- navigation to allow the user to determine how the search result are sorted e.g. by relevance, A to Z, Z to A -->
 		<nav id="dri_sort_nav_id" class="dri_sort_nav">
-			<select name="sort_options">
+			<select id="dri_sort_options_id" name="sort_options">
 				<%- blacklight_config.sort_fields.each do |sort_key, field| %>
-	                <option><%= (field.label).capitalize %></option>
+					<% if field.label == current_sort_field.label %>
+	                	<option value="<%= url_for(params_for_search.merge(:sort => sort_key)) %>" selected><%= (field.label).capitalize %></option>
+	                <% else %>
+	                	<option value="<%= url_for(params_for_search.merge(:sort => sort_key)) %>"><%= (field.label).capitalize %></option>
+	                <% end %>
 			    <%- end -%>
 			</select>
 		</nav>
@@ -123,41 +129,14 @@
 		</nav>
 	<% end %>
 <% end %>
-	<!-- navigation to allow the user to page through the search results  -->
-	<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
-		<ul id="dri_pagination_nav_links_id"
-			class="dri_pagination_nav_links">
-			
-			<li class="first"><a href="#">&nbsp;</a></li>
-			<li><a href="#">1</a></li>
-			<li class="selected"><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li class="last"><a href="#">&nbsp;</a></li>
-		</ul>
-	</nav>
 
-
-<%# Using the DRI Pagination class -%>
-<% if @previous_document || @next_document %>	
-	<ul class="dri_paging"> 	  
-	  <ul class="paging">
-	    <li class="">
-	   &nbsp;<%= link_to_previous_document @previous_document %>&nbsp;
-	</li>
-	        <li class="selected">
-	 &nbsp;<%= item_page_entry_info %>&nbsp; &nbsp; &nbsp; 
-	</li>
-	        <li class="">
-	 &nbsp;<%= link_to_next_document @next_document %>&nbsp;
-	 
-	</li>
-<% end %>
-
+<!-- use kaminari views -->
 <% if has_search_parameters? %>
 	<% if paginate_params(@response).num_pages > 1 %>
 	  <%= paginate_rsolr_response @response, :outer_window => 1, :theme => 'blacklight' %>
 	<% end %>
 <% end %>	
+
 	<!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->
 	<div id="dri_search_term_input_id" class="dri_search_term_input">
 
@@ -183,23 +162,5 @@
 	
 </div>
 <!-- close dri_search_features_nav_container -->
-
-<% if has_search_parameters? %>
-  <% unless controller_name == 'catalog' && action_name == 'show' %>
-	<% if query_has_constraints? %>
-		<!-- facet restrictions block showing term(s) and remove links for facet filtered content -->
-		<div id="dri_facet_restrictions_container_id" 
-		      class="dri_facet_restrictions_container">
-			<ul id="dri_facet_restrictions_links_id" 
-		          class="dri_facet_restrictions_links">
-				<%= render_constraints(params) %>
-		
-			</ul>
-		</div>
-		<!-- close dri_facet_restrictions_container -->
-	<% end %>
-  <% end %>
-<% end %>
-
 
 

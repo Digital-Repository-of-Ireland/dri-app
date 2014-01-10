@@ -27,3 +27,14 @@
 $(document).ready(function() {
     $('.menu').dropit();
 });
+
+$(function(){
+    // bind change event to select
+    $('#dri_sort_options_id').bind('change', function () {
+        var url = $(this).val(); // get selected value
+        if (url) { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+  });
