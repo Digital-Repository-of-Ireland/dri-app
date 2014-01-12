@@ -28,10 +28,10 @@
 
 				<!-- close dri_object_first_block -->
 				<div class="dri_object_second_block">
-					<div class="dri_back_search">
-						<a href="/?f%5Bcollection_sim%5D%5B%5D=test&amp;id=24&amp;results_view=true">
-							⬅ Back to Search</a>
-					</div>
+
+    <div class="dri_back_search"><%= link_back_to_catalog %></div>
+
+
 
 
 					<div class="dri_vc_title">
@@ -65,7 +65,7 @@
 					<!-- close dri_bookmark_object -->
                     
                     <div class="dri_objecttools_title">
-                    Object Tools
+                    <%= t('dri.views.objects.legends.cite') %>
 
 					</div>
 					<!-- close vc_title -->
@@ -78,6 +78,15 @@
 						<li><a href="">View Citation</a></li>
                         <li><a href="">Librarian view</a></li>
 					</ul>
+					      <% if signed_in? && (can?(:edit, @document)) %>
+      		<div class="dri_objecttools_title">
+      		Editor
+      		      </div>    
+      		                          <ul class="dri_view_collection">  
+      		        <li><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %></li>
+      		      </ul>
+      		      <% end %>
+    
 
 				</div>
 				<!-- close dri_object_second_block -->
@@ -86,20 +95,6 @@
 <div class="dri_object_container" style="display: none">
 
 
-
-<div class="dri_search_results_container">
-  		<div class="dri_pagination_container">
-		  <%= render :partial => 'previous_next_doc' %>
-		</div><!-- close dri_paging_container -->
-  </div><!-- close line -->
-
-    <div class="dri_object_view_block">
-
-    <%= render_document_partial @document, :show %>
-
-    <input class="dri_request_button" name="request" type="button" value="‚Ü≥ Request to Join this Group">
-
-  </div><!-- close dri_object_view_block -->
 
   <div class="dri_object_view_block">
     <div class="dri_back_search"><%= link_back_to_catalog %></div>
@@ -138,13 +133,6 @@
 
     <div class="dri_cite_title">
       <%= t('dri.views.objects.legends.cite') %>
-    </div>
-    <div class="dri_cite_object">
-      <ul class="dri_cite_object">
-        <li>
-          <%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %>
-        </li>
-      </ul>
     </div>
 
   </div><!-- close dri_object_view_block -->
