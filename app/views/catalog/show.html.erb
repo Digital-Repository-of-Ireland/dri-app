@@ -42,19 +42,22 @@
 					</div>
 					<!-- close vc_title -->
 					<div class="dri_vc_image">
-						<a href="/collections/dri:j9602060k">&nbsp;</a>
+						<a href="/collections/dri:j9602060k"><img alt="collection_image_[make_locale_translate]" height="129" src="/assets/dri/rnag.jpg" width="230"></a>
 
 
 					</div>
 					<!-- close vc_title -->
 					<ul class="dri_view_collection">
 
-						<li><a href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D">All Objects <span class="dri_stat_num"> 0</span></a> 	</li>
+						<li><%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %><span class="dri_stat_num"></span></a> 	</li>
                         
-						<li><a href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D&amp;f%5Bobject_type_sim%5D%5B%5D=Audio"><span class="translation_missing" title="translation missing: en.dri.data.types.Audio">Audio</span><span class="dri_stat_num">0</span></a></li>
-						<li><a href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D&amp;f%5Bobject_type_sim%5D%5B%5D=Article">
-                        <span class="translation_missing" title="translation missing: en.dri.data.types.Article">Article</span>
-							<span class="dri_stat_num">0</span></a></li>
+		        <% @type_counts.keys.each do |key| %>
+          <% unless @type_counts[key].blank? %>
+            <li><%= t("dri.data.types.#{key}") %> <span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num">0</span></li>
+          <% end %>
+        <% end %>
+                 
+							
 					</ul>
 
 					<div class="dri_bookmark_object">
