@@ -498,7 +498,9 @@ a {
 	background-color: none;
 }
 
-
+.dri_document_pagination_nav {
+ 	@extend .dri_pagination_nav
+}
 
 /*-------------- Facet Restriction --------------*/
 

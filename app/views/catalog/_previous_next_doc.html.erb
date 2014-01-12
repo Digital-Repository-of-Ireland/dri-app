@@ -1,15 +1,16 @@
-<%# Using the DRI Pagination class -%>
-<% if @previous_document || @next_document %>	
-<ul class="dri_paging"> 	  
-  <ul class="paging">
-    <li class="">
-   &nbsp;<%= link_to_previous_document @previous_document %>&nbsp;
-</li>
-        <li class="selected">
- &nbsp;<%= item_page_entry_info %>&nbsp; &nbsp; &nbsp; 
-</li>
-        <li class="">
- &nbsp;<%= link_to_next_document @next_document %>&nbsp;
- 
-</li>
+
+
+<% if @previous_document || @next_document %>
+
+<nav class="dri_document_pagination_nav">
+		<ul id="dri_pagination_nav_links_id" class="dri_pagination_nav_links">
+		<%if @previous_document %>
+		        <li class="previous"><%= link_to_previous_document @previous_document %></li>
+		<% end %>
+		        <li class="selected"> <%= item_page_entry_info %> </li>
+		<%if @next_document %>
+				<li class="next"><%= link_to_next_document @next_document %></li>
+		<% end %>
+		</ul>
+</nav>
 <% end %>

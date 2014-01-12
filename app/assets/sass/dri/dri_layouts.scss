@@ -86,6 +86,13 @@
 		
 	}
 	
+	.dri_document_pagination_nav {
+	
+		@include zen-grid-item(1, 4);
+		//@include zen-float();
+		
+	}
+	
 	.dri_search_term_input {
 	
 		@include zen-grid-item(1, 4);
