@@ -35,27 +35,24 @@
 
 
 					<div class="dri_vc_title">
-						<img alt="Vc_folder" height="12" src="/assets/vc_folder.png" width="22"> <a href="/collections/dri:j9602060k">View
-							Collection</a>
+						<img alt="Vc_folder" height="12" src="/assets/vc_folder.png" width="22"> <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
 
 
 					</div>
 					<!-- close vc_title -->
 					<div class="dri_vc_image">
-						<a href="/collections/dri:j9602060k"><img alt="collection_image_[make_locale_translate]" height="129" src="/assets/dri/rnag.jpg" width="230"></a>
+						<img alt="collection_image_alt_[make_locale_translate]" height="129" src="/assets/dri/rnag.jpg" width="230">
 
 
 					</div>
 					<!-- close vc_title -->
 					<ul class="dri_view_collection">
-
-						<li><%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %><span class="dri_stat_num"></span></a> 	</li>
-                        
+                        <!-- need callback for object type count -->
 		        <% @type_counts.keys.each do |key| %>
-          <% unless @type_counts[key].blank? %>
-            <li><%= t("dri.data.types.#{key}") %> <span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num">0</span></li>
-          <% end %>
-        <% end %>
+          			<% unless @type_counts[key].blank?  %>
+            			<li><%= link_to(t("dri.data.types.#{key}"), render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"></span></li>
+          			<% end %>
+        		<% end %>
                  
 							
 					</ul>
@@ -73,12 +70,12 @@
 					</div>
 					<!-- close vc_title -->
                     <ul class="dri_view_collection">
-                    	<li><a href="">Export descriptive Meta Data</a></li>
-						<li><a href="">Export to Reworks</a></li>
+                      <li><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => @document.id %>" id="download_metadata"><%= t('dri.views.catalog.forms.metadata') %></a></li>
+						<li><%= link_to t('blacklight.tools.refworks'), refworks_export_url(:id => @document)  %> </li>
                         <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
 						<li><a href="">Email this</a></li>
                         <li><a href="">Send SMS</a></li>
-						<li><a href="">View Citation</a></li>
+						<li><%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :class => 'lightboxLink'} %></li>
                         <li><a href="">Librarian view</a></li>
 					</ul>
 					      <% if signed_in? && (can?(:edit, @document)) %>
