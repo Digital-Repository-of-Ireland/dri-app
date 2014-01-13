@@ -108,6 +108,8 @@ This is where the application specific settings are located
 
 Please view and edit this file as needed before deploying the application.
 
+To override settings.yml with local settings please use settings.local.yml.
+
 == Configuation of database.yml, fedora.yml and solr.yml
 
 The configuration files for the NUIG-RNAG application
