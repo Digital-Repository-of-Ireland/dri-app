@@ -7,10 +7,18 @@ Then /^I should not see a search result "(.*?)"$/ do |text|
 end
 
 When /^I search for "(.*?)" in facet "(.*?)" with id "(.*?)"$/ do |search,facetname,facetid|
+  regexp = Regexp.escape(facetname)
+  matcher = ['.dri_title_dropdown', { :text => /^#{regexp}$/ }]
   within find(:xpath, "//div[@id='facets']") do
-    click_on facetname
+    element = page.find(:css, *matcher)
+    while better_match = element.first(:css, *matcher)
+      element = better_match
+    end
+    element.click
+
     with_scope("div.#{facetid}") do
       click_on search
     end
   end
 end
+
