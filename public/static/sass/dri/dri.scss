@@ -1232,6 +1232,25 @@ ul.dri_view_collection li a:hover {
 	font-weight: bold;
 
 }
+
+.dri_grey_button {
+	float: left;
+	border: none;
+	background-color: #B3B3B3;
+	padding: 4px 0 0 0;
+	margin: 20px 0 0 0;
+	width: 230px;
+	height: 22px;
+	display: block;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	text-align: center;
+}
+
+.dri_grey_button a {
+	color:#FFF;
+	
+}
 /*-------------- Institutes  --------------*/
 .dri_object_institutes_block {
 	border-top: 1px solid #E1E1E1;
