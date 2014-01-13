@@ -483,7 +483,7 @@ a {
 	text-decoration: none;
 }
 .dri_pagination_nav li a:hover {
-	background-color: #6D6E71;
+	background-color: #999999;
 }
 .dri_pagination_nav li.selected a {
 	background-color: #6D6E71;
@@ -1083,6 +1083,10 @@ p.dri_restrict_progress {
 	display: block;
  	-moz-border-radius: 2px;
  	border-radius: 2px;
+	cursor: pointer;
+}
+ input.dri_request_access_button:hover {
+	background-color: #007B75;
 }
 /*-------------- MetaData Readview  --------------*/
 
@@ -1231,6 +1235,28 @@ ul.dri_view_collection li a:hover {
 	float: left;
 	font-weight: bold;
 
+}
+
+.dri_grey_button {
+	float: left;
+	border: none;
+	background-color: #B3B3B3;
+	padding: 4px 0 0 0;
+	margin: 20px 0 0 0;
+	width: 230px;
+	height: 22px;
+	display: block;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	text-align: center;
+}
+
+.dri_grey_button a {
+	color:#FFF;
+	
+}
+.dri_grey_button:hover {
+	background-color:  #999999;
 }
 /*-------------- Institutes  --------------*/
 .dri_object_institutes_block {
