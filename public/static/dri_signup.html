@@ -6,7 +6,7 @@
 <meta charset=utf-8 />
 <meta name="description" content="description">
 
-<title>DRI Collection View Grid</title>
+<title>DRI Object View Grid</title>
 
 <link rel="stylesheet" type="text/css" media="screen"
 	href="stylesheets/dri/dri_layouts.css">
@@ -47,7 +47,9 @@
 <script src="/assets/application.js?body=1" type="text/javascript"></script>
 <script id="twitter-wjs" src="https://platform.twitter.com/widgets.js"></script>
 
-<script>  $(function() {
+<script>
+<!-- Dialogue Script - uses JQuery-UI Dialogue function -->
+  $(function() {
     $( "#dri_dialog_example_id" ).dialog({
       autoOpen: false,
       modal: true,
@@ -268,237 +270,61 @@
 			</div>
 		</div>
 		<!-- close dri_messages_container -->
-
-		<!-- main content container with place holders for left (first) and right (second) navigation blocks e.g. facet filters note:only one nav (left or right) is expected at any one time-->
 		<div class="dri_main_content_container">
 
-			<!-- first (left) navigation container shown depending on context -->
-			<div id="dri_first_navigation_container_id"
-				class="dri_first_navigation_container" style="display: none">
-				<nav id="dri_first_navigation_id" class="dri_first_navigation">
-					<ul id="dri_first_navigation_links_id"
-						class="dri_first_navigation_links">
-						<li><a href="#">First Nav Item 1</a></li>
-						<li class="selected"><a href="#">First Nav Item 2</a></li>
-					</ul>
-				</nav>
-			</div>
-			<!--  close dri_first_navigation_container -->
 
-			<!-- second (right) navigation container shown depending on context -->
-			<div id="dri_second_navigation_container_id"
-				class="dri_second_navigation_container" style="display: none">
-				<!-- facet block -->
-				<div class="dri_facet_filters_block" id="sidebar">
-					<div id="facets" class="dri_facet_filters">
-						<span class="dri_head_title">Refine your search</span> <span
-							class="dri_search_num">All 106 </span>
-						<div class="facets-collapse">
-							<div class="dri_facet_title ">
-								<h5 class="dri_sub_title twiddle">
-									<a href="#" data-no-turbolink="true">Subjects<span
-										class="dri_arrow_down twiddle">&nbsp;</span></a> <i
-										class="icon-chevron"></i>
-								</h5>
-								<ul>
-									<li><a href="#">Amhráin na farraige (<b>1</b>)
-									</a></li>
-									<li class="selected"><a href="#">An Capall - Bád Seoil
-											(<b>1</b>)
-									</a></li>
-									<li><a href="#">An Capall - Sailboat (<b>1</b>)
-									</a></li>
-									<li><a href="#">Boat builders (<b>1</b>)
-									</a></li>
+			<link href="/assets/user_group/application.css?body=1" media="all"
+				rel="stylesheet" type="text/css">
 
-								</ul>
+			<h2>Sign Up</h2>
 
-							</div>
-
-
-							<div class="dri_facet_title">
-								<h5 class="dri_sub_title twiddle">
-									<a href="#" data-no-turbolink="true">Names<span
-										class="dri_arrow_up">&nbsp;</span></a> <i class="icon-chevron"></i>
-								</h5>
-								<ul>
-									<li><a href="#">Báille, Dudley (<b>1</b>)
-									</a></li>
-									<li><a href="#">Báille, Johnny (<b>1</b>)
-									</a></li>
-									<li><a href="#">Báille, Micil (<b>1</b>)
-									</a></li>
-								</ul>
-
-							</div>
-
-							<div class="dri_facet_title twiddle">
-								<h5 class="dri_sub_title">
-									<a href="#" data-no-turbolink="true">Language<span
-										class="dri_arrow_up">&nbsp;</span></a> <i class="icon-chevron"></i>
-								</h5>
-								<ul style="display: none;">
-									<li><a href="#">Irish (<b>1</b>)
-									</a></li>
-
-
-								</ul>
-
-							</div>
-
-							<div class="dri_facet_title">
-								<h5 class="dri_sub_title twiddle">
-									<a href="#" data-no-turbolink="true">Format<span
-										class="dri_arrow_up">&nbsp;</span></a> <i class="icon-chevron"></i>
-								</h5>
-								<ul style="display: none;">
-									<li><a href="#">Sound (<b>1</b>)
-									</a></li>
-								</ul>
-
-							</div>
-
-							<div class="dri_facet_title">
-								<h5 class="dri_sub_title twiddle">
-									<a href="#" data-no-turbolink="true">Collection<span
-										class="dri_arrow_up">&nbsp;</span></a> <i class="icon-chevron"></i>
-								</h5>
-								<ul style="display: none;">
-									<li><a href="#">["Test"] (<b>1</b>)
-									</a></li>
-
-								</ul>
-
-							</div>
-
-						</div>
-					</div>
-				</div>
-				<!-- close facet block -->
-			</div>
-			<!-- close dri_second_navigation_container -->
-
-			<!-- result container showing results / content or forms depending on Context -->
-			<div class="dri_collection_container">
-							<div class="dri_object_view dri_object_title_top">National Archive of Irish Composers (Performance)</div>
-
-				<!-- close dri_object_second_block -->
-
-
-
-				<div class="dri_object_first_block">
-
-					<dl class="dl-horizontal  dl-invert  dri_object_metadata_readview">
-						<dt class="blacklight-title_tesim">Title</dt>
-						<dd class="blacklight-title_tesim">National Archive of Irish Composers (Performance)</dd>
-						<dt class="blacklight-description_tesim">Description:</dt>
-						<dd class="blacklight-description_tesim">The National Archive
-							of Irish Composers was launched at Gleeson Theatre, DIT Kevin
-							Street, Dublin on Friday 26th November, 2010. Featuring
-							instrumental and vocal treasures from the National Library of
-							Ireland, there were several modern world premieres to be heard at
-							this unique concert. The inspiration for many of the works on the
-							programme came from Irish airs; the same theme can be seen in the
-							accompanying Digital Library of historic piano music.</dd>
-						<dt class="blacklight-role_cmp_tesim">Owner</dt>
-						<dd class="blacklight-role_cmp_tesim">
-							<a href="/?f%5Bperson_sim%5D%5B%5D=John+Field">Sam Green</a>
-						</dd>
-						<dt class="blacklight-creation_date_tesim">Creation Date:</dt>
-						<dd class="blacklight-creation_date_tesim">Friday 26th
-							November, 2013.</dd>
-						<dt class="blacklight-type_tesim">Governing Collection:</dt>
-						<dd class="blacklight-type_tesim">None</dd>
-						<dt class="blacklight-language_tesim">Editors</dt>
-						<dd class="blacklight-language_tesim">
-							<a href="/?f%5Blanguage_sim%5D%5B%5D=eng">Martin Whelan</a>
-						</dd>
-						<dd class="blacklight-language_tesim">
-							<a href="/?f%5Blanguage_sim%5D%5B%5D=eng">Andrea Marie
-								Hannigan</a></dd>
-						<dt class="blacklight-creation_date_tesim">Default Embargo
-							Date:</dt>
-						<dd class="blacklight-creation_date_tesim">Friday 26th
-							November, 2013.</dd>
-						<dt class="blacklight-rights_tesim">Defaul Rights:</dt>
-						<dd class="blacklight-rights_tesim">National Library of
-							Ireland / NAIC</dd>
-						<dt class="blacklight-rights_tesim">Defaul License:</dt>
-						<dd class="blacklight-rights_tesim">CC-BY</dd>
-					</dl>
-
-
-
-
+			<form accept-charset="UTF-8" action="/user_groups/users"
+				class="new_user" id="new_user" method="post">
+				<div style="margin: 0; padding: 0; display: inline">
+					<input name="utf8" type="hidden" value="✓"><input
+						name="authenticity_token" type="hidden"
+						value="mX638u5X5SFRPI+BzeiVlMfQ4zJCMCeY9yehgtFxyyc=">
 				</div>
 
-				<!-- close dri_object_first_block -->
-				<div class="dri_object_second_block">
 
-					<div class="dri_vc_title">
-						<img alt="Vc_folder" height="12" src="/assets/vc_folder.png"
-							width="22"> <a href="/collections/dri:j9602060k">Objects
-							in this Collection</a> 
-					</div>
-					<!-- close vc_title -->
-                    		<div class="dri_vc_image">
-						<a href="/collections/dri:j9602060k"><img src="images/dri/collection_cover_sample.png" height=""></a>
-
-
-					</div>
-					<!-- close vc_title -->
-
-					<ul class="dri_view_collection">
-						<li>All Objects <span class="dri_stat_num"> <a
-								href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D">0</a>
-						</span></li>
-						<li><span class="translation_missing"
-							title="translation missing: en.dri.data.types.Audio">Audio</span>
-							<span class="dri_stat_num"><a
-								href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D&amp;f%5Bobject_type_sim%5D%5B%5D=Audio">0</a></span></li>
-						<li><span class="translation_missing"
-							title="translation missing: en.dri.data.types.Article">Article</span>
-							<span class="dri_stat_num"><a
-								href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D&amp;f%5Bobject_type_sim%5D%5B%5D=Article">0</a></span></li>
-					</ul>
-
-
+				<div>
+					<label for="user_first_name">First Name</label><br> <input
+						id="user_first_name" name="user[first_name]" size="30" type="text">
 				</div>
 
-				<div class="dri_object_institutes_block">
-
-
-					<div class="dri_institutes_title">
-						<span>Institutes and Sponsors</span>
-					</div>
-					<!-- close vc_title -->
-
-					<ul class="dri_collection_institutes_list">
-						<li><span class="dri_collection_institutes_item"> <a
-								href=""><img
-									src="images/dri/inst_sample_01.png"></a>
-						</span></li>
-						<li><span class="dri_collection_institutes_item"> <a
-								href=""><img
-									src="images/dri/inst_sample_02.png"></a>
-						</span></li>
-						<li><span class="dri_collection_institutes_item"> <a
-								href=""><img
-									src="images/dri/inst_sample_03.png"></a>
-						</span></li>
-					</ul>
-					<div class="dri_institutes_show_more">
-					<a href="">Show more </a>
-				</div>	<!-- close dri_bookmark_object -->
-
+				<div>
+					<label for="user_second_name">Second Name</label><br> <input
+						id="user_second_name" name="user[second_name]" size="30"
+						type="text">
 				</div>
-				<!-- close dri_object_institutes_block -->
 
-			</div>
-			<!-- close dri_object_container -->
+				<div>
+					<label for="user_email">Email</label><br> <input
+						id="user_email" name="user[email]" size="30" type="email" value="">
+				</div>
 
+				<div>
+					<label for="user_password">Password</label><br> <input
+						id="user_password" name="user[password]" size="30" type="password">
+				</div>
+
+				<div>
+					<label for="user_password_confirmation">Confirm Password</label><br>
+					<input id="user_password_confirmation"
+						name="user[password_confirmation]" size="30" type="password">
+				</div>
+
+				<div>
+					<label for="user_locale">Preferred Language</label><br> <select
+						id="user_locale" name="user[locale]"><option value="en">English</option>
+						<option value="ga">Irish</option></select>
+				</div>
+
+				<div>
+					<input name="commit" type="submit" value="Register">
+				</div>
+			</form>
 		</div>
-		<!-- close dri_main_content_container -->
 
 		<footer id="dri_main_footer_id" class="dri_main_footer">
 			<nav id="dri_main_footer_navigation_id"
