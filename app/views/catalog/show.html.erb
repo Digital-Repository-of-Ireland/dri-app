@@ -48,6 +48,7 @@
 					<!-- close vc_title -->
 					<ul class="dri_view_collection">
                         <!-- need callback for object type count -->
+
 			        <% @type_counts.keys.each do |key| %>
 	          			<% unless @type_counts[key].blank?  %>
 	            			<li><%= link_to(t("dri.data.types.#{key}"), render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"></span></li>
@@ -55,6 +56,7 @@
 	        		<% end %>
                  
 							
+
 					</ul>
 
 					<div class="dri_bookmark_object">
@@ -63,7 +65,7 @@
 
 					</div>
 					<!-- close dri_bookmark_object -->
-                    
+
                     <div class="dri_objecttools_title">
                     <%= t('dri.views.objects.legends.cite') %>
 
@@ -80,25 +82,26 @@
 					</ul>
 					      <% if signed_in? && (can?(:edit, @document)) %>
       		<div class="dri_objecttools_title">
+
       		Editor Tools <!-- localise this -->
       		      </div>    
       		                          <div class="dri_grey_button" >
       		        <%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %>
       		      </div>
       		      <% end %>
-    
+
 
 				</div>
 				<!-- close dri_object_second_block -->
 			</div>
-			
-<div class="dri_object_container" style="display: none">
+
+<div class="dri_old_object_container" style="display: none">
 
 
 
   <div class="dri_object_view_block">
     <div class="dri_back_search"><%= link_back_to_catalog %></div>
-      <% if signed_in? && (can?(:edit, @document)) %><div class="dri_edit_object"><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %></div><% end %>
+      <% if signed_in? && (can?(:edit, @document)) %><div class="dri_edit_object"><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record_old" %></div><% end %>
 
     <ul class="dri_stats">
       <li>
@@ -161,7 +164,8 @@
 						<span>Show more</span>
 					</div>
 
+
 					<!-- close dri_bookmark_object -->
 
 				</div>
-				<!-- close dri_object_institutes_block -->
+

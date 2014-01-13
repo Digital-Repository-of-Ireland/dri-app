@@ -103,6 +103,10 @@ a {
 .dri_form_text a span.text_right:hover {
 		text-decoration: underline;
 }
+
+.dri_signup_password input{
+	background-color: #B3B3B3;
+}
 /*-------------- Account and Language Styling--------------*/
 .dri_account_nav {
 	float: right;
@@ -1060,7 +1064,6 @@ h2.dri_restrict_title {
 	font-weight: bold;
 	font-size: 100%;
 }
-
 p.dri_restrict_message {
 	margin: 0px;
 	padding: 0px 80px 10px 0;
