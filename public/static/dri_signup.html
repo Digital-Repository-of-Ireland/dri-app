@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset=utf-8 />
+<meta name="description" content="description">
+
+<title>DRI Object View Grid</title>
+
+<link rel="stylesheet" type="text/css" media="screen"
+	href="stylesheets/dri/dri_layouts.css">
+<script src="javascripts/jquery-1.10.2.js"></script>
+<script src="javascripts/jquery-ui.js"></script>
+<script src="javascripts/dropit/dropit.js"></script>
+<script src="/assets/blacklight/core.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/autofocus.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/checkbox_submit.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/bookmark_toggle.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/facet_expand_contract.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/lightbox_dialog.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/search_context.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/select_submit.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/zebra_stripe.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/css_dropdowns.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/bootstrap-transition.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/bootstrap-collapse.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/bootstrap-alert.js?body=1" type="text/javascript"></script>
+<script src="/assets/improved-modal/bootstrap-modalmanager.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/improved-modal/bootstrap-modal.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/blacklight.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/dri.js?body=1" type="text/javascript"></script>
+<script src="/assets/application.js?body=1" type="text/javascript"></script>
+<script id="twitter-wjs" src="https://platform.twitter.com/widgets.js"></script>
+
+<script>
+<!-- Dialogue Script - uses JQuery-UI Dialogue function -->
+  $(function() {
+    $( "#dri_dialog_example_id" ).dialog({
+      autoOpen: false,
+      modal: true,
+      show: {
+        duration: 100
+      },
+      hide: {
+        duration: 100
+      }
+    });
+ 
+    $( "#dri_search_save_submit_button_id" ).click(function() {
+      $( "#dri_dialog_example_id" ).dialog( "open" );
+    });
+  });
+
+<!-- Dropit Script - uses JQuery-UI Drop function -->
+  $(document).ready(function() {
+	    $('.menu').dropit();
+	});
+</script>
+
+</head>
+
+<body>
+	<div id="dri_wrapper_id" class="block1 dri_wrapper">
+
+		<header id="dri_header_container_id" class="dri_header_container">
+
+			<div id="dri_authentication_menus_container_id"
+				class="dri_authentication_menus_container">
+
+				<nav id="dri_account_nav_id" class="dri_account_nav">
+					<ul id="dri_account_links_id" class="dri_account_links" role="tree">
+						<li class="on"><a href="#" alt="sign up link">Sign Up</a></li>
+						<li class="noborder"><a href="#" alt="login link">Login</a></li>
+						<ul id="dri_language_links_id" class="dri_language_links menu">
+							<li class="selected" aria-selected="true"><a href="#">English
+									<img src="images/dri/account_arrow.png" width="10" height="5">
+							</a>
+								<ul>
+									<li><a href="#">Gaeilge</a></li>
+								</ul></li>
+						</ul>
+					</ul>
+				</nav>
+			</div>
+			<!--  close dri_authentication_menus_container -->
+			<div id="dri_social_media_container_id"
+				class="dri_social_media_container">
+
+				<nav id="dri_social_media_nav_id" class="dri_social_media_nav">
+					<ul id="dri_social_media_links_id" class="dri_social_media_links">
+						<li><a href="#" class="facebook"></a></li>
+						<li><a href="#" class="linkedin"></a></li>
+						<li><a href="#" class="share"></a></li>
+						<li><a href="#" class="google"></a></li>
+					</ul>
+				</nav>
+			</div>
+			<!--  close dri_authentication_menus_container -->
+
+			<a href="#"><div id="dri_ident_id" class="dri_ident"></div></a>
+		</header>
+		<!-- close dri_header_container -->
+
+		<div id="dri_main_nav_container_id" class="dri_main_nav_container">
+			<nav id="dri_main_nav_id" class="dri_main_nav">
+				<ul id="dri_main_nav_links_id" class="dri_main_nav_links">
+					<li><a href="#">FEATURED</a></li>
+					<li class="selected"><a href="#">COLLECTIONS</a></li>
+					<li><a href="#">ABOUT US</a></li>
+				</ul>
+			</nav>
+		</div>
+		<!-- close dri_main_nav_container -->
+		<div id="dri_sub_nav_container_id" class="dri_sub_nav_container">
+			<nav id="dri_sub_nav_id" class="dri_sub_nav">
+				<ul id="dri_main_nav_links_id"
+					class="dri_sub_nav_links dri_nav_collections">
+					<li><a href="#">Assigned Collections </a></li>
+					<li class="selected no_border_right"><a href="#">My
+							Objects</a></li>
+				</ul>
+			</nav>
+		</div>
+		<!-- close dri_sub_nav_container -->
+
+		<div id="dri_crumbtrail_nav_container_id"
+			class="dri_crumbtrail_nav_container">
+			<nav id="dri_crumbtrail_nav_id" class="dri_crumbtrail_nav">
+				<ul id="dri_crumbtrail_nav_links_id"
+					class="dri_crumbtrail_nav_links">
+					<li><a href="#">Excepteur</a></li>
+					<li><a href="#">Sed ut perspiciatis</a></li>
+					<li class="selected"><a href="#">Excepteur</a></li>
+				</ul>
+			</nav>
+		</div>
+		<!-- close dri_crumbtrail_nav_container -->
+
+		<!-- container for search, sort and pagination etc. navigations and search text input -->
+		<div id="dri_search_features_nav_container_id"
+			class="dri_search_features_nav_container">
+
+			<!-- navigation to allow the user to determine how the search result are sorted e.g. by relevance, A to Z, Z to A -->
+			<nav id="dri_sort_nav_id" class="dri_sort_nav">
+				<select name="sort_options">
+					<option selected>Sort by</option>
+					<option>Relevance</option>
+					<option>A - Z</option>
+				</select>
+			</nav>
+
+			<!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
+			<nav id="dri_pager_nav_id" class="dri_pager_nav">
+				<ul id="dri_pager_nav_links_id" class="dri_pager_nav_links">
+					<li><a href="#">9</a></li>
+					<li class="selected"><a href="#">18</a></li>
+					<li><a href="#">36</a></li>
+				</ul>
+			</nav>
+
+			<!-- navigation to allow the user to page through the search results  -->
+			<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
+				<ul id="dri_pagination_nav_links_id"
+					class="dri_pagination_nav_links">
+					<li class="first"><a href="#">&nbsp;</a></li>
+					<li><a href="#">1</a></li>
+					<li class="selected"><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li class="last"><a href="#">&nbsp;</a></li>
+				</ul>
+			</nav>
+
+			<!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->
+			<div id="dri_search_term_input_id" class="dri_search_term_input">
+
+				<form id="dri_search_term_input_form_id"
+					class="dri_search_term_input_form" accept-charset="UTF-8"
+					action="/repository" method="get">
+					<input name="utf8" type="hidden" value="✓"> <input
+						name="search_field" type="hidden" value="all_fields"> <input
+						id="dri_search_term_text_input_id"
+						class="dri_search_term_text_input" name="q"
+						placeholder="Search..." type="text" value="">
+					<button id="dri_search_term_text_submit_button_id" type="submit"
+						class="dri_search_term_text_submit_button" id="search">Ok</button>
+
+				</form>
+				<!-- close dri_search_term_input_form -->
+				<div id="dri_search_save_input_id" class="dri_search_save_input">
+
+					<form id="dri_search_save_input_form_id"
+						class="dri_search_save_input_form">
+						<button id="dri_search_save_submit_button_id" type="submit"
+							class="dri_search_save_submit_button" id="search">Save
+							Current Search</button>
+					</form>
+					<!-- close dri_search_term_input_form -->
+
+				</div>
+			</div>
+			<!-- close dri_search_term_input -->
+
+			<!-- save search block to allow user to save current search term(s) to their workspace (authenticated user) -->
+
+			<div id="dri_dialog_example_id" class="dri_dialog_example"
+				title="Example dialog">This is an dialog which is useful for
+				displaying information. The dialog window can be moved, resized and
+				closed with the 'x' icon.</div>
+			<!-- close dri_search_save_input -->
+
+		</div>
+		<!-- close dri_search_features_nav_container -->
+
+		<!-- facet restrictions block showing term(s) and remove links for facet filtered content -->
+		<div id="dri_facet_restrictions_container_id"
+			class="dri_facet_restrictions_container">
+			<ul id="dri_facet_restrictions_links_id"
+				class="dri_facet_restrictions_links">
+				<li>Báid <a href="#">x</a>
+				</li>
+				<li>Galway <a href="#">x</a>
+				</li>
+				<li>Báid <a href="#">x</a>
+				</li>
+				<li>Galway <a href="#">x</a>
+				</li>
+				<li>Báid <a href="#">x</a>
+				</li>
+				<li>Galway <a href="#">x</a>
+				</li>
+				<li>Báid <a href="#">x</a>
+				</li>
+
+			</ul>
+		</div>
+		<!-- close dri_facet_restrictions_container -->
+
+		<!-- system messages container -->
+		<div id="dri_messages_container_id" class="dri_messages_container">
+			<div class="dri_info_message">
+				<h1>Info Message!</h1>
+				<span class="dri_close"><a href="#">X</a></span>
+			</div>
+			<div class="dri_successful_message">
+				<h1>Successful Message!</h1>
+				<span class="dri_close"><a href="#">X</a></span>
+			</div>
+			<div class="dri_warning_message">
+				<h1>Warning Message!</h1>
+				<span class="dri_close"><a href="#">X</a></span>
+			</div>
+			<div class="dri_error_message">
+				<h1>Error Message!</h1>
+				<span class="dri_close"><a href="#">X</a></span>
+			</div>
+		</div>
+		<!-- close dri_messages_container -->
+		<div class="dri_main_content_container">
+
+
+			<link href="/assets/user_group/application.css?body=1" media="all"
+				rel="stylesheet" type="text/css">
+
+			<h2>Sign Up</h2>
+
+			<form accept-charset="UTF-8" action="/user_groups/users"
+				class="new_user" id="new_user" method="post">
+				<div style="margin: 0; padding: 0; display: inline">
+					<input name="utf8" type="hidden" value="✓"><input
+						name="authenticity_token" type="hidden"
+						value="mX638u5X5SFRPI+BzeiVlMfQ4zJCMCeY9yehgtFxyyc=">
+				</div>
+
+
+				<div>
+					<label for="user_first_name">First Name</label><br> <input
+						id="user_first_name" name="user[first_name]" size="30" type="text">
+				</div>
+
+				<div>
+					<label for="user_second_name">Second Name</label><br> <input
+						id="user_second_name" name="user[second_name]" size="30"
+						type="text">
+				</div>
+
+				<div>
+					<label for="user_email">Email</label><br> <input
+						id="user_email" name="user[email]" size="30" type="email" value="">
+				</div>
+
+				<div>
+					<label for="user_password">Password</label><br> <input
+						id="user_password" name="user[password]" size="30" type="password">
+				</div>
+
+				<div>
+					<label for="user_password_confirmation">Confirm Password</label><br>
+					<input id="user_password_confirmation"
+						name="user[password_confirmation]" size="30" type="password">
+				</div>
+
+				<div>
+					<label for="user_locale">Preferred Language</label><br> <select
+						id="user_locale" name="user[locale]"><option value="en">English</option>
+						<option value="ga">Irish</option></select>
+				</div>
+
+				<div>
+					<input name="commit" type="submit" value="Register">
+				</div>
+			</form>
+		</div>
+
+		<footer id="dri_main_footer_id" class="dri_main_footer">
+			<nav id="dri_main_footer_navigation_id"
+				class="dri_main_footer_navigation">
+				<ul id="dri_main_footer_navigation_links_id"
+					class="dri_main_footer_navigation_links">
+					<li><a href="#">About DRI</a></li>
+					<li><a href="#">Terms of Use</a></li>
+					<li><a href="#">Help</a></li>
+					<li class="selected no_border_right"><a href="#">Sitemap</a></li>
+				</ul>
+			</nav>
+		</footer>
+		<!-- close dri_main_footer_id -->
+
+	</div>
+	<!-- close dri_wrapper -->
+</body>
+</html>

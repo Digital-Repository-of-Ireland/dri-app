@@ -28,6 +28,7 @@ config/environments/*.local.yml
 config/database.yml
 config/fedora.yml
 config/solr.yml
+config/jetty.yml
 
 features/reports/*
 spec/reports/*
