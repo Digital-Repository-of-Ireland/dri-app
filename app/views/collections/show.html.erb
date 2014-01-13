@@ -1,3 +1,4 @@
+<div class="dri_collection_container">
 <h1><%= @collection.title %></h1>
 
 <dl>
@@ -11,13 +12,94 @@
 <%= render :partial => 'governed_item', :children => @children %>
 
 
-<h2><%= t('dri.views.collection.legends.objects') %></h2>
-<%= render :partial => 'item', :collection => @collection.items, :locals => {:collection_id => @collection.pid} %>
+</div>
+<div class="dri_collection_container">
+							<div class="dri_object_view dri_object_title_top"><%= @collection.title %></div>
 
-<% if signed_in? && (can? :edit, @collection) %>
+				<!-- close dri_object_second_block -->
+
+
+
+				<div class="dri_object_first_block">
+
+					<dl class="dl-horizontal  dl-invert  dri_object_metadata_readview">
+						<dt class="blacklight-title_tesim">Title</dt>
+						<dd class="blacklight-title_tesim"><%= @collection.title %></dd>
+						<dt class="blacklight-description_tesim"><%= t('dri.views.objects.forms.description') %></dt>
+						<dd class="blacklight-description_tesim"><%= @collection.description %></dd>
+					</dl>
+
+
+
+
+				</div>
+
+				<!-- close dri_object_first_block -->
+				<div class="dri_object_second_block">
+
+					<div class="dri_vc_title">
+						<img alt="Vc_folder" height="12" src="/assets/vc_folder.png" width="22"> <a href="/collections/dri:j9602060k">Objects
+							in this Collection</a> 
+					</div>
+					<!-- close vc_title -->
+                    		<div class="dri_vc_image">
+						<a href="/collections/dri:j9602060k"><img src="images/dri/collection_cover_sample.png" height=""></a>
+
+
+					</div>
+					<!-- close vc_title -->
+
+					<ul class="dri_view_collection">
+						<li>All Objects <span class="dri_stat_num"> <a href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D"><%= @children.count %></a>
+						</span></li>
+					</ul>
+					
+					      		<div class="dri_objecttools_title">
+      		Editor
+      		      </div>    
+      		                          <ul class="dri_view_collection">  
+      		        <li><% if signed_in? && (can? :edit, @collection) %>
   <%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %><br/>
-<% end %>
+<% end %></li>
+<li><% if signed_in? && (can? :manage_collection, @collection) %>
+  <%= render :partial => 'approve_membership', :pending => @pending %>
+<% end %></li>
+      		      </ul>
+
+
 
 <% if signed_in? && (can? :manage_collection, @collection) %>
   <%= render :partial => 'approve_membership', :pending => @pending %>
 <% end %>
+
+				</div>
+
+				<div class="dri_object_institutes_block">
+
+
+					<div class="dri_institutes_title">
+						<span>Institutes and Sponsors</span>
+					</div>
+					<!-- close vc_title -->
+
+					<ul class="dri_collection_institutes_list">
+						<li><span class="dri_collection_institutes_item"> <a href=""><img src="/assets/dri/inst_sample_01.png"></a>
+						</span></li>
+						<li><span class="dri_collection_institutes_item"> <a href=""><img src="/assets/dri/inst_sample_02.png"></a>
+						</span></li>
+						<li><span class="dri_collection_institutes_item"> <a href=""><img src="/assets/dri/inst_sample_03.png"></a>
+						</span></li>
+					</ul>
+					<div class="dri_institutes_show_more">
+						<span>Show more</span>
+					</div>
+
+					<!-- close dri_bookmark_object -->
+
+				</div>
+				<!-- close dri_object_institutes_block -->
+
+
+
+
+			</div>
