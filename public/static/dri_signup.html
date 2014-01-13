@@ -271,8 +271,8 @@
 		</div>
 		<!-- close dri_messages_container -->
 		<div class="dri_main_content_container">
-
-
+			<div id="dri_login_form_container_id" class="dri_login_form_container">
+				<div id="dri_login_form_block_id" class="dri_login_form_block">
 			<link href="/assets/user_group/application.css?body=1" media="all"
 				rel="stylesheet" type="text/css">
 
@@ -303,12 +303,12 @@
 						id="user_email" name="user[email]" size="30" type="email" value="">
 				</div>
 
-				<div>
+				<div class="dri_signup_password">
 					<label for="user_password">Password</label><br> <input
 						id="user_password" name="user[password]" size="30" type="password">
 				</div>
 
-				<div>
+				<div class="dri_signup_password">
 					<label for="user_password_confirmation">Confirm Password</label><br>
 					<input id="user_password_confirmation"
 						name="user[password_confirmation]" size="30" type="password">
@@ -324,7 +324,13 @@
 					<input name="commit" type="submit" value="Register">
 				</div>
 			</form>
+         	</div>
+				<!--  close dri_login_form_block -->
+
+			</div>
+			<!-- close dri_login_form_container -->
 		</div>
+		<!-- close dri_main_content_container -->
 
 		<footer id="dri_main_footer_id" class="dri_main_footer">
 			<nav id="dri_main_footer_navigation_id"
