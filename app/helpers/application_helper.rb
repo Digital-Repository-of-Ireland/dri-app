@@ -5,30 +5,9 @@ module ApplicationHelper
   # based on their access rights and the policies and available
   # surrogates of the object
   def get_delivery_file doc
-    if can? :read, doc.id
-      get_files(doc)
-      masterfile = @files[0] unless @files.nil?
-      
       @asset = nil
-
-      if (!masterfile)
-        @asset = "no file"
-      elsif (can?(:read_master, doc.id))
-        @asset = "masterfile"
-      else
-        delivery_file = Storage::S3Interface.deliverable_surrogate?(doc)
-
-        if (!delivery_file.blank?)
-          @asset = Storage::S3Interface.get_link_for_surrogate(doc.id.sub('dri:',''), delivery_file)
-        elsif (delivery_file.blank?)
-          @asset = "no file"
-        else
-          @asset = "no permission"
-        end
-      end
-    else
-      @asset = "no permission"
-    end
+      delivery_file = Storage::S3Interface.deliverable_surrogate?(doc)
+      @asset = Storage::S3Interface.get_link_for_surrogate(doc.id.sub('dri:',''), delivery_file) unless (delivery_file.blank?)
   end
 
   def get_files doc
