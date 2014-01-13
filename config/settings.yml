@@ -1,0 +1,45 @@
+ingest:
+  steps: [collection, object_type, ingestmethod, metadata]
+  step_data:
+    collection: [ingestcollection]
+    object_type: [ingesttype]
+    ingestmethod: [ingestmethod]
+interface:
+  languages: [en, ga]
+dri:
+  files: dri_files
+  logos: dri_files/logos
+queue:
+  audio: [CreateBucket, CreateChecksums, CreateMp3, CreateOgg]
+  pdfdoc: [CreateBucket, CreateChecksums, FullTextIndex]
+plugins:
+  ffmpeg_path: /opt/local/bin/ffmpeg
+mp3_web_quality_out_options:
+  codec: # default is for ffmpeg to auto-detect appropriate codec, this should be good for most scenarios
+  strip_metadata: "yes" # default is to preserve global metadata
+  channel: "2" # default is same as input file
+  bitrate: "96k" # default is same as input file
+  frequency: "44100" # default is same as input file
+ogg_web_quality_out_options:
+  codec: libvorbis # Default for ogg will produce very large files
+  strip_metadata: "yes" # default is preserve global metadata
+  channel: "2" # default is same as input file
+  bitrate: "96k" # default is same as input file
+  frequency: "44100" # default is same as input file
+restrict:
+  mime_types:
+    image: ['image/png','image/jpeg', 'image/jpg', 'image/jp2', 'image/bmp', 'image/gif', 'image/tiff' ]
+    text: ['application/pdf', 'application/x-pdf']
+    pdf: ['application/pdf', 'application/x-pdf']
+    audio: ['audio/mp3', 'audio/mpeg', 'audio/mpeg3', 'audio/mp2', 'audio/wav', 'audio/x-wave', 'audio/x-wav', 'audio/ogg']
+    video: ['video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/avi', 'video/quicktime', 'application/mxf']
+S3:
+  server: objects.dri.ie
+  access_key_id: 5FR23KDRNDTAD38FWGRF
+  secret_access_key: V2Qr1nRE5P1A4kmatUQeNFHxVl0dEnTYb22MvJbI
+surrogates:
+  Sound: [mp3, ogg]
+  Document: [pdf]
+data:
+  cover_image_bucket: coverimages
+  types: [Sound, MovingImage, Image, Text]
