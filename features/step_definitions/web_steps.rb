@@ -216,7 +216,7 @@ end
 
 Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failure,message|
   begin
-    page.should have_selector ".alert", text: flash_for(message)
+    page.should have_selector ".dri_messages_container", text: flash_for(message)
   rescue
     #save_and_open_page
     raise
