@@ -86,6 +86,7 @@ en:
           files: Files
         legends: 
           no_files: "No file has been uploaded."
+          no_surrogates: "No surrogates are available."
           no_permission: "You do not have permission to view the asset file associated with this object."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."

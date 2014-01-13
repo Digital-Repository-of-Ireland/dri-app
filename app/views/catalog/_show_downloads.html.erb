@@ -1,47 +1,49 @@
+<% get_files @document %>
+<% get_surrogates @document %>
+
 <h3><%= t('dri.views.catalog.headers.files') %></h3>
 <dl class="dl-horizontal  dl-invert">
   <dt><%= t('dri.views.catalog.forms.metadata') %>: </dt>
   <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => @document.id %>" id="download_metadata"><%= t('dri.views.catalog.links.view_metadata') %></a></dd>
   <dt><%= t('dri.views.catalog.forms.file') %>:  </dt>
 
-<% if (@asset == 'masterfile') %>
-   <dd>
-      <%= link_to t('dri.views.catalog.links.download'), url_for(:controller => 'assets', :action => 'show', :id => @document.id), :id => "download_asset" %>
-   </dd>
-   <% @surrogates.each do |desc, url| %>
-    <dt><%= desc %>:</dt>
-    <dd><%= link_to t('dri.views.catalog.links.download'), url, :id => desc %></dd>
-  <% end %>
+  <% unless @files.empty? %>
 
-<% elsif (@asset == "no permission") %>
-  <dd><%= t('dri.views.catalog.legends.no_permission') %></dd>
+    <% if can? :read_master, @document %>
+      <dd>
+        <%= link_to t('dri.views.catalog.links.download'), url_for(:controller => 'assets', :action => 'show', :id => @document.id), :id => "download_asset" %>
+     </dd>
+    <% end %>
 
-  <% if !signed_in? %>
-     <dd><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></dd>
-   <% elsif (current_user.pending_member?(UserGroup::Group.find(UserGroup::Group.where(:name => reader_group_name( @document ))))) %>
-     <dd><%= t('user_groups.views.groups.index.pending') %></dd>
-  <% else %>
-    <dd>
-      <%= form_tag(user_group.pending_memberships_path, :method => 'post') do %>
-        <%= hidden_field_tag('membership_user_id', current_user.id, {:name => "membership[user_id]"}) %>
-        <%= hidden_field_tag('membership_group_id', UserGroup::Group.find(UserGroup::Group.where(:name => reader_group_name( @document ))).id, {:name => "membership[group_id]"} ) %>
-        <%= submit_tag t('dri.views.catalog.legends.request_permission_logged_in'), :id=> "request_access" %>
+    <% if can? :read, @document %>
+      <% if @surrogates.empty? %>
+        <dd><%= t('dri.views.catalog.legends.no_surrogates') %></dd>
+      <% else %>
+        <% @surrogates.each do |desc, url| %>
+          <dt><%= desc %>:</dt>
+          <dd><%= link_to t('dri.views.catalog.links.download'), url, :id => desc %></dd>
+        <% end %>
       <% end %>
-    </dd>
-<% end %>
+    <% else %>
+      <dd><%= t('dri.views.catalog.legends.no_permission') %></dd>
 
-<% elsif (@asset == "no file") %>
-  <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
+      <% if !signed_in? %>
+        <dd><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></dd>
+       <% elsif (current_user.pending_member?(UserGroup::Group.find(UserGroup::Group.where(:name => reader_group_name( @document ))))) %>
+         <dd><%= t('user_groups.views.groups.index.pending') %></dd>
+      <% else %>
+        <dd>
+          <%= form_tag(user_group.pending_memberships_path, :method => 'post') do %>
+            <%= hidden_field_tag('membership_user_id', current_user.id, {:name => "membership[user_id]"}) %>
+            <%= hidden_field_tag('membership_group_id', UserGroup::Group.find(UserGroup::Group.where(:name => reader_group_name( @document ))).id, {:name => "membership[group_id]"} ) %>
+            <%= submit_tag t('dri.views.catalog.legends.request_permission_logged_in'), :id=> "request_access" %>
+          <% end %>
+        </dd>
+      <% end %>
+    <% end %>
 
-<% elsif !@asset.blank? %>
-
-  <% @surrogates.each do |desc, url| %>
-    <dt><%= desc %>:</dt>
-    <dd><%= link_to t('dri.views.catalog.links.download'), url, :id => desc %></dd>
+  <% else %>
+    <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
   <% end %>
-
-<% else %>
-  <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
-<% end %>
 
 </dl>

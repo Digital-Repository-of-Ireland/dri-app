@@ -96,7 +96,7 @@ When /^I add the asset "(.*)" to "(.*?)"$/ do |asset, pid|
     When I go to the "object" "edit" page for "#{pid}"
     And I attach the asset file "#{asset}"
     And I press the button to upload a file
-    Then I should see a success message for file upload
+    Then I should see a info message for file upload
   }
 end
 
@@ -214,7 +214,7 @@ Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
   page.should have_select id
 end
 
-Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failure,message|
+Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |success_failure, message|
   begin
     page.should have_selector ".dri_messages_container", text: flash_for(message)
   rescue
