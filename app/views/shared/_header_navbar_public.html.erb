@@ -49,7 +49,7 @@
 <div id="dri_main_nav_container_id" class="dri_main_nav_container">
 	<nav id="dri_main_nav_id" class="dri_main_nav">
 	
-		<ul id="dri_main_nav_links_id" class="dri_main_nav_links">
+		<ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase">
 		<% if current_user %>
 			<li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
 			<li><%= link_to t('dri.account'), user_group.user_path(current_user), :id => "view_account" %></li>
@@ -69,8 +69,8 @@
 </div>
 <!-- close dri_main_nav_container -->
 
-<!-- no sub navs for the moment - hidden 
-<div id="dri_sub_nav_container_id" class="dri_sub_nav_container">
+<!-- no sub navs for the moment - hidden -->
+<div id="dri_sub_nav_container_id" class="dri_sub_nav_container dri_no_display">
 	<nav id="dri_sub_nav_id" class="dri_sub_nav">
 		<ul id="dri_main_nav_links_id"
 			class="dri_sub_nav_links dri_nav_collections">
@@ -83,9 +83,9 @@
 
 <!-- close dri_sub_nav_container -->
 
-<!-- no crumbtrail for the moment - hidden 	
+<!-- no crumbtrail for the moment - hidden 	-->
 <div id="dri_crumbtrail_nav_container_id"
-	class="dri_crumbtrail_nav_container">
+	class="dri_crumbtrail_nav_container dri_no_display">
 	<nav id="dri_crumbtrail_nav_id" class="dri_crumbtrail_nav">
 		<ul id="dri_crumbtrail_nav_links_id"
 			class="dri_crumbtrail_nav_links">
@@ -135,7 +135,25 @@
 	<% if paginate_params(@response).num_pages > 1 %>
 	  <%= paginate_rsolr_response @response, :outer_window => 1, :theme => 'blacklight' %>
 	<% end %>
-<% end %>	
+<% end %>
+
+<% if @previous_document || @next_document %>
+
+	<!-- navigation to allow the user to page through the search results  -->
+	<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
+		<ul id="dri_pagination_nav_links_id"
+			class="dri_pagination_nav_links">
+
+		<%if @previous_document %>
+		        <li class="previous"><%= link_to_previous_document @previous_document %></li>
+		<% end %>
+		        <li class="selected"> <%= item_page_entry_info %> &nbsp;</li>
+		<%if @next_document %>
+				<li class="next"><%= link_to_next_document @next_document %></li>
+		<% end %>
+		</ul>
+</nav>
+<% end %>
 
 	<!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->
 	<div id="dri_search_term_input_id" class="dri_search_term_input">

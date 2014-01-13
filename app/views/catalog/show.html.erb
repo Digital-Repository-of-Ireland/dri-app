@@ -7,7 +7,7 @@
 <% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>
 <% extra_head_content << render_link_rel_alternates %>
 <div class="dri_object_container">
-		  <%= render :partial => 'previous_next_doc' %>
+		  
 			<div class="dri_object_title_top"><%= render_field_value(document_heading) %></div>
 
 
@@ -21,7 +21,7 @@
 
 				<div class="dri_object_first_block">
 
-<%= render_document_partial @document, :show %>
+				<%= render_document_partial @document, :show %>
 
 
 				</div>
@@ -29,7 +29,7 @@
 				<!-- close dri_object_first_block -->
 				<div class="dri_object_second_block">
 
-    <div class="dri_back_search"><%= link_back_to_catalog %></div>
+    			<div class="dri_back_search"><%= link_back_to_catalog %></div>
 
 
 
@@ -48,11 +48,11 @@
 					<!-- close vc_title -->
 					<ul class="dri_view_collection">
                         <!-- need callback for object type count -->
-		        <% @type_counts.keys.each do |key| %>
-          			<% unless @type_counts[key].blank?  %>
-            			<li><%= link_to(t("dri.data.types.#{key}"), render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"></span></li>
-          			<% end %>
-        		<% end %>
+			        <% @type_counts.keys.each do |key| %>
+	          			<% unless @type_counts[key].blank?  %>
+	            			<li><%= link_to(t("dri.data.types.#{key}"), render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"></span></li>
+	          			<% end %>
+	        		<% end %>
                  
 							
 					</ul>
@@ -80,11 +80,11 @@
 					</ul>
 					      <% if signed_in? && (can?(:edit, @document)) %>
       		<div class="dri_objecttools_title">
-      		Editor
+      		Editor Tools <!-- localise this -->
       		      </div>    
-      		                          <ul class="dri_view_collection">  
-      		        <li><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %></li>
-      		      </ul>
+      		                          <div class="dri_grey_button" >
+      		        <%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %>
+      		      </div>
       		      <% end %>
     
 
@@ -136,5 +136,32 @@
     </div>
 
   </div><!-- close dri_object_view_block -->
+  
+
 
 </div>
+
+  				<div class="dri_object_institutes_block">
+
+
+					<div class="dri_institutes_title">
+						<span>Institutes and Sponsors</span>
+					</div>
+					<!-- close vc_title -->
+
+					<ul class="dri_collection_institutes_list">
+						<li><span class="dri_collection_institutes_item"> <a href=""><img src="/assets/dri/inst_sample_01.png"></a>
+						</span></li>
+						<li><span class="dri_collection_institutes_item"> <a href=""><img src="/assets/dri/inst_sample_02.png"></a>
+						</span></li>
+						<li><span class="dri_collection_institutes_item"> <a href=""><img src="/assets/dri/inst_sample_03.png"></a>
+						</span></li>
+					</ul>
+					<div class="dri_institutes_show_more">
+						<span>Show more</span>
+					</div>
+
+					<!-- close dri_bookmark_object -->
+
+				</div>
+				<!-- close dri_object_institutes_block -->

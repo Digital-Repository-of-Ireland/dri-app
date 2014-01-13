@@ -1,9 +1,13 @@
 
 
+
 <% if @previous_document || @next_document %>
 
-<nav class="dri_document_pagination_nav">
-		<ul id="dri_pagination_nav_links_id" class="dri_pagination_nav_links">
+	<!-- navigation to allow the user to page through the search results  -->
+	<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
+		<ul id="dri_pagination_nav_links_id"
+			class="dri_pagination_nav_links">
+
 		<%if @previous_document %>
 		        <li class="previous"><%= link_to_previous_document @previous_document %></li>
 		<% end %>
