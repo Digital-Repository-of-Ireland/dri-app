@@ -73,7 +73,7 @@ NuigRnag::Application.configure do
   #config.middleware.use '::Rack::Auth::Basic' do |u, p|
   #  [u, p] == ['navr', 'navr']
   #end
-  config.assets.precompile += ['dri/dri_grid.css']
+  config.assets.precompile += ['dri/dri_grid.css','dri/dri_layouts.css']
 
   # google analytics
   GA.tracker = "UA-27838653-2"
