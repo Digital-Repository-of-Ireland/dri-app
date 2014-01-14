@@ -121,8 +121,8 @@ end
 
 Then /^I should be logged in as "(.*?)"$/ do |login|
   step 'I should be logged in'
-  account_link = page.find_by_id('view_account')
-  account_link.should have_content(login)
+  click_link('view_account')
+  page.should have_content(login)
 end
 
 When /^I follow the view link for "([^\"]*)"$/ do |login|

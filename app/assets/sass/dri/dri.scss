@@ -489,11 +489,11 @@ a {
 	background-color: #6D6E71;
 }
 .dri_pagination_nav li.first a {
-	background:url(../../images/dri/prev_arrow.png) no-repeat center;
+	background:image-url('dri/prev_arrow.png') no-repeat center;
 	background-color: none;
 }
 .dri_pagination_nav li.last a {
-	background:url(../../images/dri/next_arrow.png) no-repeat center;
+	background:image-url('dri/next_arrow.png') no-repeat center;
 	background-color: none;
 }
 
@@ -751,7 +751,7 @@ a {
 }
 
 .twiddle .dri_arrow_down {
-	background:url(../../images/dri/arrow_down.png) no-repeat center;
+	background:image-url('dri/arrow_down.png') no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
@@ -761,7 +761,7 @@ a {
 	
 }
 .twiddle .dri_arrow_up {
-	background:url(../../images/dri/arrow_up.png) no-repeat center;
+	background:image-url('dri/arrow_up.png') no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
