@@ -97,16 +97,47 @@ a {
 	padding: 0;
 	color:#3E3E3E;
 }
-.dri_form_text a:hover{
+.dri_form_text a:hover {
 	text-decoration: underline;
 }
 .dri_form_text a span.text_right:hover {
 		text-decoration: underline;
 }
 
-.dri_signup_password input{
+.dri_signup_password input {
 	background-color: #B3B3B3;
 }
+
+/*--------------Preferred Language --------------*/
+
+
+.dri_select_dropdown {
+	float: left;
+	margin: 10px 0 10px 0;
+	padding: 0;
+}
+
+.dri_select_dropdown select {
+	margin: 0;
+	padding: 4px;
+	width: 140px;
+	border: 1px solid #D9DADB;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.dri_select_dropdown span.text_right {
+	margin: 0 0 0 80px;
+	padding: 0;
+}
+.dri_select_dropdown a span.text_right {
+	color: #2F2F2F;
+}
+.dri_select_dropdown a span.text_right:hover {
+	text-decoration: underline;
+}
+
+
 /*-------------- Account and Language Styling--------------*/
 .dri_account_nav {
 	float: right;
@@ -169,6 +200,7 @@ a {
 	padding: 0;
 	margin: 0;
 }
+
 /*-------------- dri logo --------------*/
 .dri_ident {
 	height: 165px;
@@ -270,7 +302,7 @@ a {
 
 }
 .dri_main_nav li a:hover {
-	border-top: 3px solid #B3B3B3;
+	border-top: 3px solid #6D6E71;
 }
 .dri_main_nav li.selected a {
 	border-top: 3px solid #90993D;
@@ -279,8 +311,8 @@ a {
 /*-------------- Sub Navigation --------------*/
 
 .dri_sub_nav {
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 	border-bottom: 1px solid #D9DADB;	
 	height: 40px;
 }
@@ -327,7 +359,7 @@ a {
 /*-------------- Crumb trail Navigation --------------*/
 
 .dri_crumbtrail_nav {
-	margin: 0px;
+	margin: 0;
 	padding: 0px;
 }
 
@@ -506,7 +538,7 @@ a {
 /*-------------- Facet Restriction --------------*/
 
 .dri_facet_restrictions_links {
-	margin: 0;
+	margin: 0 0 0 0;
 	padding: 0;
 	float: left;
 }
@@ -598,7 +630,7 @@ a {
 
 /*-------------- Successful Messages --------------*/
 .dri_successful_message {
-	margin: 20px 0 0 0;
+	margin:  20px 0 0 0;
 	padding: 2px 10px 2px 10px;
 	display: block;
 	width: 100%;
@@ -631,7 +663,7 @@ a {
 /*-------------- Warning Messages --------------*/
 
 .dri_warning_message {
-	margin: 20px 0 0 0;
+	margin:  20px 0 0 0;
 	padding: 2px 10px 2px 10px;
 	display: block;
 	width: 100%;
@@ -663,7 +695,7 @@ a {
 /*-------------- Error Messages --------------*/
 
 .dri_error_message {
-	margin: 20px 0 0 0;
+	margin:  20px 0 0 0;
 	padding: 2px 10px 2px 10px;
 	display: block;
 	width: 100%;
@@ -697,7 +729,7 @@ a {
 /* ----------- Facet Filter block ---------- */
 .dri_facet_filters_block {
 	font-size: 100%;
-	margin: 0 20px 20px 0;
+	margin: 30px 20px 20px 0;
 	padding: 0 0 0 0;
 	//width: 228px;
 	float: left;
@@ -803,16 +835,32 @@ a {
 	text-decoration: underline;
 }
 
-.dri_facet_filters li.selected a{
+.dri_facet_filters li.selected a {
 	background-color: #E0E0E0;
 	text-decoration: none;
 }
-/* ----------- Collection block ---------- */
-.content_block_wrap {
-	width: 730px;
-	margin: 0 20px 0 20px;
-	float: left;
+/* ----------- Homepage features ---------- */
+.dri_home_title {
+	margin: 0 0 20px 0;
 	padding: 0;
+	width: 730px;
+	border-bottom: 1px solid #D9DADB;
+	float: left;
+}
+.dri_home_title h2 {
+	border-bottom: 3px solid #808082;
+	font-size: 110%;
+	width: 200px;
+	margin: 0;
+	padding: 0;
+	color: #808082;
+	font-weight: bold;
+}
+
+
+/* ----------- Collection block ---------- */
+.dri_result_container {
+	margin-top: 30px;
 }
 .dri_content_block {
 	margin: 0 20px 20px 0;

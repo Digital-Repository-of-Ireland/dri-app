@@ -104,160 +104,14 @@
 		<div id="dri_main_nav_container_id" class="dri_main_nav_container">
 			<nav id="dri_main_nav_id" class="dri_main_nav">
 				<ul id="dri_main_nav_links_id" class="dri_main_nav_links">
-					<li><a href="#">FEATURED</a></li>
-					<li class="selected"><a href="#">COLLECTIONS</a></li>
+					<li class="selected"><a href="#">FEATURED</a></li>
+					<li><a href="#">COLLECTIONS</a></li>
 					<li><a href="#">ABOUT US</a></li>
 				</ul>
 			</nav>
 		</div>
 		<!-- close dri_main_nav_container -->
-		<div id="dri_sub_nav_container_id" class="dri_sub_nav_container">
-			<nav id="dri_sub_nav_id" class="dri_sub_nav">
-				<ul id="dri_main_nav_links_id"
-					class="dri_sub_nav_links dri_nav_collections">
-					<li><a href="#">Assigned Collections </a></li>
-					<li class="selected no_border_right"><a href="#">My
-							Objects</a></li>
-				</ul>
-			</nav>
-		</div>
-		<!-- close dri_sub_nav_container -->
-
-		<div id="dri_crumbtrail_nav_container_id"
-			class="dri_crumbtrail_nav_container">
-			<nav id="dri_crumbtrail_nav_id" class="dri_crumbtrail_nav">
-				<ul id="dri_crumbtrail_nav_links_id"
-					class="dri_crumbtrail_nav_links">
-					<li><a href="#">Excepteur</a></li>
-					<li><a href="#">Sed ut perspiciatis</a></li>
-					<li class="selected"><a href="#">Excepteur</a></li>
-				</ul>
-			</nav>
-		</div>
-		<!-- close dri_crumbtrail_nav_container -->
-
-		<!-- container for search, sort and pagination etc. navigations and search text input -->
-		<div id="dri_search_features_nav_container_id"
-			class="dri_search_features_nav_container">
-
-			<!-- navigation to allow the user to determine how the search result are sorted e.g. by relevance, A to Z, Z to A -->
-			<nav id="dri_sort_nav_id" class="dri_sort_nav">
-				<select name="sort_options">
-					<option selected>Sort by</option>
-					<option>Relevance</option>
-					<option>A - Z</option>
-				</select>
-			</nav>
-
-			<!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
-			<nav id="dri_pager_nav_id" class="dri_pager_nav">
-				<ul id="dri_pager_nav_links_id" class="dri_pager_nav_links">
-					<li><a href="#">9</a></li>
-					<li class="selected"><a href="#">18</a></li>
-					<li><a href="#">36</a></li>
-				</ul>
-			</nav>
-
-			<!-- navigation to allow the user to page through the search results  -->
-			<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
-				<ul id="dri_pagination_nav_links_id"
-					class="dri_pagination_nav_links">
-					<li class="first"><a href="#">&nbsp;</a></li>
-					<li><a href="#">1</a></li>
-					<li class="selected"><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li class="last"><a href="#">&nbsp;</a></li>
-				</ul>
-			</nav>
-
-			<!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->
-			<div id="dri_search_term_input_id" class="dri_search_term_input">
-
-				<form id="dri_search_term_input_form_id"
-					class="dri_search_term_input_form" accept-charset="UTF-8"
-					action="/repository" method="get">
-					<input name="utf8" type="hidden" value="✓"> <input
-						name="search_field" type="hidden" value="all_fields"> <input
-						id="dri_search_term_text_input_id"
-						class="dri_search_term_text_input" name="q"
-						placeholder="Search..." type="text" value="">
-					<button id="dri_search_term_text_submit_button_id" type="submit"
-						class="dri_search_term_text_submit_button" id="search">Ok</button>
-
-				</form>
-				<!-- close dri_search_term_input_form -->
-
-				<div id="dri_search_save_input_id" class="dri_search_save_input">
-	
-					<form id="dri_search_save_input_form_id"
-						class="dri_search_save_input_form">
-						<button id="dri_search_save_submit_button_id" type="submit"
-							class="dri_search_save_submit_button" id="search">Save
-							Current Search</button>
-					</form>
-					<!-- close dri_search_term_input_form -->
-	
-				</div>
-			</div>
-			<!-- close dri_search_term_input -->
-
-			<!-- save search block to allow user to save current search term(s) to their workspace (authenticated user) -->
-
-			<div id="dri_dialog_example_id" 
-            class="dri_dialog_example" title="Example dialog">
-            This is an dialog which is useful for
-				displaying information. The dialog window can be moved, resized and
-				closed with the 'x' icon.</div>
-			<!-- close dri_search_save_input -->
-
-		</div>
-		<!-- close dri_search_features_nav_container -->
-
-		<!-- facet restrictions block showing term(s) and remove links for facet filtered content -->
-		<div id="dri_facet_restrictions_container_id" 
-        class="dri_facet_restrictions_container">
-			<ul id="dri_facet_restrictions_links_id" 
-            class="dri_facet_restrictions_links">
-				<li>Báid <a href="#">x</a>
-				</li>
-				<li>Galway <a href="#">x</a>
-				</li>
-								<li>Báid <a href="#">x</a>
-				</li>
-				<li>Galway <a href="#">x</a>
-				</li>
-								<li>Báid <a href="#">x</a>
-				</li>
-				<li>Galway <a href="#">x</a>
-				</li>
-								<li>Báid <a href="#">x</a>
-				</li>
-
-			</ul>
-		</div>
-		<!-- close dri_facet_restrictions_container -->
-
-		<!-- system messages container -->
-		<div id="dri_messages_container_id" class="dri_messages_container">
-			<div class="dri_info_message">
-				<h1>Info Message!</h1>
-				<span class="dri_close"><a href="#">X</a></span>
-			</div>
-			<div class="dri_successful_message">
-				<h1>Successful Message!</h1>
-				<span class="dri_close"><a href="#">X</a></span>
-			</div>
-			<div class="dri_warning_message">
-				<h1>Warning Message!</h1>
-				<span class="dri_close"><a href="#">X</a></span>
-			</div>
-			<div class="dri_error_message">
-				<h1>Error Message!</h1>
-				<span class="dri_close"><a href="#">X</a></span>
-			</div>
-		</div>
-		<!-- close dri_messages_container -->
-
+        
 		<!-- main content container with place holders for left (first) and right (second) navigation blocks e.g. facet filters note:only one nav (left or right) is expected at any one time-->
 		<div class="dri_main_content_container">
 
@@ -280,102 +134,13 @@
 				<!-- facet block -->
 				<div class="dri_facet_filters_block" id="sidebar">
 					<div id="facets" class="dri_facet_filters">
-                    <span class="dri_head_title">Refine your search</span> <span class="dri_search_num">All 106 </span>
+                    <span class="dri_head_title">Twitter Feed</span> <span class="dri_search_num">All 106 </span>
 						<div class="facets-collapse">
-							<div class="dri_facet_title ">
-								<h5 class="dri_sub_title twiddle">
-									<div class="dri_title_dropdown">Subjects <span class="dri_arrow_down">&nbsp;</span></div>  <i class="icon-chevron"></i>
-								</h5>
-								<ul>
-									<li><a
-										href="#">Amhráin
-											na farraige (<b>1</b>)
-									</a></li>
-									<li class="selected"><a
-										href="#">An
-											Capall - Bád Seoil (<b>1</b>)
-									</a></li>
-									<li><a
-										href="#">An
-											Capall - Sailboat (<b>1</b>)
-									</a></li>
-									<li><a
-										href="#">Boat
-											builders (<b>1</b>)
-									</a></li>
-
-								</ul>
+							<div class="dri_facet_title"><br><br><br><br><br>
+						
 
 							</div>
 
-
-							<div class="dri_facet_title">
-								<h5 class="dri_sub_title twiddle">
-									<div class="dri_title_dropdown">Names <span class="dri_arrow_up">&nbsp;</span> </div>
-                                    <i class="icon-chevron"></i>
-						</h5>
-								<ul>
-									<li><a
-										href="#">Báille,
-											Dudley (<b>1</b>)
-									</a></li>
-									<li><a
-										href="#">Báille,
-											Johnny (<b>1</b>)
-									</a></li>
-									<li><a
-										href="#">Báille,
-											Micil (<b>1</b>)
-									</a></li>
-								</ul>
-
-							</div>
-
-							<div class="dri_facet_title twiddle">
-								<h5 class="dri_sub_title">
-									<div class="dri_title_dropdown">Language<span class="dri_arrow_up">&nbsp;</span></div><i
-										class="icon-chevron"></i>
-								</h5>
-								<ul style="display: none;">
-									<li><a
-										href="#">Irish
-											(<b>1</b>)
-									</a></li>
-
-
-								</ul>
-
-							</div>
-
-							<div
-								class="dri_facet_title">
-								<h5 class="dri_sub_title twiddle">
-									<div class="dri_title_dropdown">Format<span class="dri_arrow_up">&nbsp;</span></div> <i
-										class="icon-chevron"></i>
-								</h5>
-								<ul style="display: none;">
-									<li><a
-										href="#">Sound
-											(<b>1</b>)
-									</a></li>
-								</ul>
-
-							</div>
-
-							<div
-								class="dri_facet_title">
-								<h5 class="dri_sub_title twiddle">
-									<div class="dri_title_dropdown">Collection<span class="dri_arrow_down">&nbsp;</span></div> <iclass="icon-chevron"></i>
-								</h5>
-								<ul style="display: none;">
-									<li><a
-										href="#">["Test"]
-											(<b>1</b>)
-									</a></li>
-
-								</ul>
-
-							</div>
 
 						</div>
 					</div>
@@ -383,9 +148,11 @@
 				<!-- close facet block -->
 			</div>
 			<!-- close dri_second_navigation_container -->
+            
 
 			<!-- result container showing results / content or forms depending on Context -->
 			<div id="dri_result_container_id" class="dri_result_container">
+           	<div class="dri_home_title"> <h2> Featured</h2> </div><!-- close dri_home_title -->
 				<article class="block5">
 					<div class="dri_content_block">
 						<a href="#">
@@ -424,72 +191,6 @@
 						<h2 class="dri_editor">
 							<a href="#">Catriona Walsh</a>
 						</h2>
-						<div class="dri_icon">
-                       		 <span class="dri_icon_image"><img src="images/dri/document_icon.png"></span>
-							<span class="dri_icon_text">Document</span>
-						</div>
-						<!-- close dri_icon -->
-					</div>
-					<!-- close content_block -->
-				</article>
-				<article class="block5">
-					<div class="dri_content_block">
-						<a href="#">
-							<h1>Object Title</h1>
-							<div class="dri_image">
-								<img src="images/dri/no_image.png" width="200" height="113">
-							</div> <!-- close image -->
-						</a>
-						<h2>
-							<a href="#">David Joyce</a>
-						</h2>
-						<h2 class="dri_editor">
-							<a href="#">Catriona Walsh</a>
-						</h2>
-						<div class="dri_icon">
-                       		 <span class="dri_icon_image"><img src="images/dri/image_icon.png"></span>
-							<span class="dri_icon_text"> Image</span>
-						</div>
-						<!-- close dri_icon -->
-					</div>
-					<!-- close content_block -->
-				</article>
-				<article class="block5">
-					<div class="dri_content_block">
-						<a href="#">
-							<h1>Object Title</h1>
-							<div class="dri_image">
-								<img src="images/dri/no_image.png" width="200" height="113">
-							</div> <!-- close image -->
-						</a>
-						<h2>
-							<a href="#">David Joyce</a>
-						</h2>
-						<h2 class="dri_editor">
-							<a href="#">Catriona Walsh</a>
-						</h2>
-						<div class="dri_icon">
-                       		 <span class="dri_icon_image"><img src="images/dri/image_icon.png"></span>
-							<span class="dri_icon_text"> Image</span>
-						</div>
-						<!-- close dri_icon -->
-					</div>
-					<!-- close content_block -->
-				</article>
-				<article class="block5">
-					<div class="dri_content_block">
-						<a href="#">
-							<h1>Object Title</h1>
-							<div class="dri_image">
-								<img src="images/dri/no_image.png" width="200" height="113">
-							</div> <!-- close image -->
-						</a>
-						<h2>
-							<a href="#">David Joyce</a>
-						</h2>
-						<h2 class="dri_editor">
-							<a href="#">Catriona Walsh</a>
-						</h2>
 							<div class="dri_icon">
                        		 <span class="dri_icon_image"><img src="images/dri/audio_icon.png"></span>
 							<span class="dri_icon_text">Audio</span>
@@ -498,6 +199,7 @@
 					</div>
 					<!-- close content_block -->
 				</article>
+                
 				<article class="block5">
 					<div class="dri_content_block">
 						<a href="#">
@@ -519,7 +221,9 @@
 						<!-- close dri_icon -->
 					</div>
 					<!-- close content_block -->
-				</article>
+				</article>  	
+                
+                <div class="dri_home_title"> <h2>New Collections</h2> </div><!-- close dri_home_title -->
 				<article class="block5">
 					<div class="dri_content_block">
 						<a href="#">
