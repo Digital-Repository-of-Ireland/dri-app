@@ -70,9 +70,9 @@ NuigRnag::Application.configure do
 
   # Add a default host for devise mailer
   config.action_mailer.default_url_options = { :host => 'HOSTNAME' }
-  config.middleware.use '::Rack::Auth::Basic' do |u, p|
-    [u, p] == ['navr', 'navr']
-  end
+  #config.middleware.use '::Rack::Auth::Basic' do |u, p|
+  #  [u, p] == ['navr', 'navr']
+  #end
   config.assets.precompile += ['dri/dri_grid.css']
 
   # google analytics
