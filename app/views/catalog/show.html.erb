@@ -29,22 +29,19 @@
 
     			<div class="dri_back_search"><%= link_back_to_catalog %></div>
 
+          <% unless collection?(@document) %>
+					  <div class="dri_vc_title">
+						  <img alt="Vc_folder" height="12" src="/assets/vc_folder.png" width="22"> <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
+					  
+            </div>
+					  <!-- close vc_title -->
+					  <div class="dri_vc_image">
+						  <img alt="collection_image_alt_[make_locale_translate]" height="129" src="/assets/dri/rnag.jpg" width="230">
 
 
-
-					<div class="dri_vc_title">
-						<img alt="Vc_folder" height="12" src="/assets/vc_folder.png" width="22"> <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
-
-
-					</div>
-					<!-- close vc_title -->
-					<div class="dri_vc_image">
-						<img alt="collection_image_alt_[make_locale_translate]" height="129" src="/assets/dri/rnag.jpg" width="230">
-
-
-					</div>
-					<!-- close vc_title -->
-					<ul class="dri_view_collection">
+					  </div>
+					  <!-- close vc_title -->
+					  <ul class="dri_view_collection">
                         <!-- need callback for object type count -->
 
 			        <% @type_counts.keys.each do |key| %>
@@ -55,7 +52,8 @@
                  
 							
 
-					</ul>
+					  </ul>
+          <% end %>
 
 					<div class="dri_bookmark_object">
 						<input type="checkbox" name="vehicle" value="Bike">
