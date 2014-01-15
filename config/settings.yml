@@ -9,23 +9,8 @@ interface:
 dri:
   files: dri_files
   logos: dri_files/logos
-queue:
-  audio: [CreateBucket, CreateChecksums, CreateMp3, CreateOgg]
-  pdfdoc: [CreateBucket, CreateChecksums, FullTextIndex]
 plugins:
   ffmpeg_path: /opt/local/bin/ffmpeg
-mp3_web_quality_out_options:
-  codec: # default is for ffmpeg to auto-detect appropriate codec, this should be good for most scenarios
-  strip_metadata: "yes" # default is to preserve global metadata
-  channel: "2" # default is same as input file
-  bitrate: "96k" # default is same as input file
-  frequency: "44100" # default is same as input file
-ogg_web_quality_out_options:
-  codec: libvorbis # Default for ogg will produce very large files
-  strip_metadata: "yes" # default is preserve global metadata
-  channel: "2" # default is same as input file
-  bitrate: "96k" # default is same as input file
-  frequency: "44100" # default is same as input file
 restrict:
   mime_types:
     image: ['image/png','image/jpeg', 'image/jpg', 'image/jp2', 'image/bmp', 'image/gif', 'image/tiff' ]
@@ -38,9 +23,9 @@ S3:
   access_key_id: FIXME
   secret_access_key: FIXME
 surrogates:
-  Sound: [mp3, ogg]
-  Document: [pdf]
-  Image: [thumbnail]
+  sound: [mp3, ogg]
+  text: [thumbnail]
+  image: [thumbnail]
 data:
   cover_image_bucket: coverimages
   types: [Sound, MovingImage, Image, Text]
