@@ -14,7 +14,22 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
   mapping['inherited'] = "-1"
 
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  object.add_file_reference("masterContent", {:url => "http://johndadlez.com/MP3/BTAS2_D1_45_Gotham.mp3", :mimeType => "audio/mpeg3"})
+
+  GenericFile.any_instance.stub(:characterize_if_changed)
+
+  gf = GenericFile.new
+  gf.batch = object
+  gf.save
+
+  file = LocalFile.new
+  uploaded = Rack::Test::UploadedFile.new(File.join(cc_fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+  file.add_file(uploaded, { :directory => Dir.tmpdir, :fedora_id => gf.id, :ds_id => "content", :version => "0" })
+  file.save
+
+  url = url_for :controller=>"assets", :action=>"show", :id=>gf.id
+  gf.update_file_reference "content", :url=>url, :mimeType=>"audio/mpeg3"
+  gf.save
+
   object.master_file = mapping[permission].to_s
   object.save
 end
@@ -140,8 +155,8 @@ Given(/^the object with pid "(.*?)" has a deliverable surrogate file$/) do |pid|
   Storage::S3Interface.create_bucket(object.pid.sub('dri:', ''))
   case object.type
     when "Sound"
-      Storage::S3Interface.store_surrogate(object.pid,  File.join(cc_fixture_path, 'SAMPLEA.mp3'), object.pid + '_mp3_web_quality.mp3')
-    when "Article"
-      Storage::S3Interface.store_surrogate(object.pid,  File.join(cc_fixture_path, 'SAMPLEA.pdf'), object.pid + '_pdf_web_quality.pdf')
+      Storage::S3Interface.store_surrogate(object.pid,  File.join(cc_fixture_path, 'SAMPLEA.mp3'), object.pid + '_mp3.mp3')
+    when "Text"
+      Storage::S3Interface.store_surrogate(object.pid,  File.join(cc_fixture_path, 'SAMPLEA.pdf'), object.pid + '_thumbnail.png')
   end
 end
