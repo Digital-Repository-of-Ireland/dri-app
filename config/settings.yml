@@ -40,6 +40,7 @@ S3:
 surrogates:
   Sound: [mp3, ogg]
   Document: [pdf]
+  Image: [thumbnail]
 data:
   cover_image_bucket: coverimages
   types: [Sound, MovingImage, Image, Text]
