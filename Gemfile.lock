@@ -202,6 +202,7 @@ GEM
     guard-yard (2.1.0)
       guard (>= 1.1.0)
       yard (>= 0.7.0)
+    high_voltage (2.1.0)
     hike (1.2.3)
     hooks (0.3.3)
     http_accept_language (1.0.2)
@@ -514,6 +515,7 @@ DEPENDENCIES
   guard-livereload
   guard-spork
   guard-yard
+  high_voltage (~> 2.1.0)
   http_accept_language (~> 1.0.2)
   hydra-head (= 6.4.0)
   i18n_sync
