@@ -1,0 +1,14 @@
+  <div class="dri_institutes_title">
+  <span>Institutes and Sponsors</span>
+  </div>
+  <!-- close vc_title -->
+
+  <ul class="dri_collection_institutes_list">
+  <%= @collection.institute.each do |inst| %>
+  <li><span class="dri_collection_institutes_item"> <a href=""><img src="<%= inst.url %>"></a>
+  </span></li>
+  <% end %>
+  </ul>
+  <div class="dri_institutes_show_more">
+  <span>Show more</span>
+  </div>>

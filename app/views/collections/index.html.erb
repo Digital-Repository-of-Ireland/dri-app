@@ -6,14 +6,9 @@
 <div class="dri_content_block">
 <h1><%= link_to collection[:title], collection_path(:id => collection[:id]) %>
   </h1>
-  <!--  get working callback for collection image -->
   <div class="dri_image">
-						<img alt="collection_image_alt_[make_locale_translate]" height="113" src="/assets/dri/rnag.jpg" width="200">
-
-					</div>
-  <div class="dri_image dri_no_display">
-	  <a href="<%=  collection_path(:id => collection[:id]) %> "><img src="<%= collection[:cover_image] %>" width="200" height="113" alt="Collection Cover Image"></a>
-  </div><!-- close image -->
+    <img alt="collection_image_alt_[make_locale_translate]" height="113" src="<%= collection[:cover_image] %>" width="200">
+  </div>
 
 
 
@@ -28,24 +23,24 @@
 <div class="dri_icon">
 <span class="dri_icon_image">
 <%= image_tag("/assets/views_icon.png", :width=>"21", :height=>"12") %> <%= t('dri.views.collection.index.items', :count => @collection_counts[collection[:id]]) %>
-</span>                		 
+</span>
 </div>
 <!-- close dri_icon -->
 
 </div><!-- close content_block -->
-</article>				
+</article>
 
 <% end %>
 
      <% if @collections.blank? %>
        <p><%= t('dri.views.collection.index.no_collections.public') %></p>
        <% end %>
-       
+
 
        <% if signed_in? %>
        <div class="dri_grey_button dri_clearfix">
 					<%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>
 		</div>
-         
+
        <% end %>
 
