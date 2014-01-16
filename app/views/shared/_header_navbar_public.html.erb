@@ -62,7 +62,7 @@
 		<% else %>
 			<li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
 			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
-			<li><a href="#">ABOUT US</a></li>
+            <li><%= link_to 'ABOUT US', main_app.page_path('about_us') %></li>
 		<% end %>
 		</ul>
 	</nav>

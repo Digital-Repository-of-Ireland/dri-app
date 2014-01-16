@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
-  revision: 1e329529b25399bba44bdb0f26ca281d425f97b6
+  revision: 72fdf96642f2fb2202c919a8776e66dd8488eb48
   branch: develop
   specs:
     user_group (1.0.3)
@@ -202,6 +202,7 @@ GEM
     guard-yard (2.1.0)
       guard (>= 1.1.0)
       yard (>= 0.7.0)
+    high_voltage (2.1.0)
     hike (1.2.3)
     hooks (0.3.3)
     http_accept_language (1.0.2)
@@ -337,6 +338,8 @@ GEM
       activesupport (= 3.2.13)
       bundler (~> 1.0)
       railties (= 3.2.13)
+    rails-pulse (0.5.1)
+      rails
     rails_config (0.3.3)
       activesupport (>= 3.0)
     railties (3.2.13)
@@ -514,6 +517,7 @@ DEPENDENCIES
   guard-livereload
   guard-spork
   guard-yard
+  high_voltage (~> 2.1.0)
   http_accept_language (~> 1.0.2)
   hydra-head (= 6.4.0)
   i18n_sync
@@ -528,6 +532,7 @@ DEPENDENCIES
   poltergeist (>= 1.4.1)
   railroady
   rails (= 3.2.13)
+  rails-pulse
   rails_config
   rb-fchange
   rb-fsevent
