@@ -1,7 +1,10 @@
 ENV["RAILS_RELATIVE_URL_ROOT"] = "/v1"
 NuigRnag::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
-
+  
+  # the following might fail for high_voltage
+  config.content_path = ENV["RAILS_RELATIVE_URL_ROOT"]
+  
   # Code is not reloaded between requests
   config.cache_classes = true
 
