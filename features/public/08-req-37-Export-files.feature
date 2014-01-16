@@ -16,9 +16,10 @@ And the asset file to my local drive
 Background:
   Given I am logged in as "user1"
   Given a Digital Object with pid "dri:1234", title "Object 1" created by "user1@user1.com"
-  And a collection with pid "dri:coll1"
+  And a collection with pid "dri:coll1" created by "user1@user1.com"
   When I add the Digital Object "dri:1234" to the collection "dri:coll1" as type "governing"
   And I add the asset "sample_audio.mp3" to "dri:1234"
+  And the object with pid "dri:coll1" is published
   And the object with pid "dri:1234" is published
   Then the collection "dri:coll1" should contain the Digital Object "dri:1234" as type "governing"
   Given I am not logged in
