@@ -14,8 +14,11 @@ NuigRnag::Application.routes.draw do
 
   resources :ingest, :only => ['new', 'create']
 
+  resources :institutes, :only => ['show', 'new', 'create']
+  match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
+
   match 'export/:id' => 'export#show', :via => :get, :as => :object_export
-  
+
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
   match 'objects/:id/metadata' => 'metadata#update', :via => :put
   match 'objects/:id/file' => 'assets#show', :via => :get, :as => :object_file

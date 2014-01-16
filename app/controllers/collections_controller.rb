@@ -1,6 +1,7 @@
 # Controller for the Collection model
 #
 require 'storage/s3_interface'
+require 'storage/cover_images'
 require 'validators'
 
 class CollectionsController < CatalogController
@@ -68,6 +69,9 @@ class CollectionsController < CatalogController
     @collections = filtered_collections
     @object = retrieve_object!(params[:id])
 
+    @institutes = Institute.find(:all)
+    @inst = Institute.new
+
     respond_to do |format|
       format.html
     end
@@ -113,8 +117,14 @@ class CollectionsController < CatalogController
 
     @object = retrieve_object!(params[:id])
 
+    # If a cover image was uploaded, remove it from the params hash
+    cover_image = params[:batch].delete(:cover_image)
+
     #For sub collections will have to set a governing_collection_id
     #Create a sub collections controller?
+
+    @institutes = Institute.find(:all)
+    @inst = Institute.new
 
     set_access_permissions(:batch, true)
 
@@ -122,6 +132,9 @@ class CollectionsController < CatalogController
       flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])
     else
       @object.update_attributes(params[:batch])
+
+      Storage::CoverImages.validate(cover_image, @object)
+
       #Apply private_metadata & properties to each DO/Subcollection within this collection
       flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
     end
@@ -169,24 +182,7 @@ class CollectionsController < CatalogController
       # We have to create a default reader group
       create_reader_group
 
-      # If a cover image was uploaded, validate and save it
-      if !cover_image.blank? && Validators.file_type?(cover_image).mediatype == "image"
-        begin
-          Validators.virus_scan(cover_image)
-        rescue Exceptions::VirusDetected => e
-          virus = true
-          flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
-        end
-
-        unless virus
-          Storage::S3Interface.store_file(cover_image.tempfile.path,
-                                          "#{@collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
-                                          Settings.data.cover_image_bucket)
-          url = Storage::S3Interface.get_link_for_surrogate("#{@collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
-                                                            Settings.data.cover_image_bucket)
-          @collection.properties.cover_image = url
-        end
-      end
+      Storage::CoverImages.validate(cover_image, @collection)
     end
 
     respond_to do |format|
@@ -311,8 +307,8 @@ class CollectionsController < CatalogController
         result[:id] = doc['id'] if doc['id']
         result[:title] = doc["title_tesim"][0] if doc["title_tesim"]
         result[:description] = doc["description_tesim"][0] if doc["description_tesim"]
-        result[:cover_image] = image        
-     
+        result[:cover_image] = image
+
         results.push(result)
       end
 

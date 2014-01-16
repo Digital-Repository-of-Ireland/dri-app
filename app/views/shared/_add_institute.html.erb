@@ -1,0 +1,8 @@
+<%= form_for(@inst, remote: true) do |f| %>
+  <%= f.label :name %>:
+  <%= f.text_field :name %><br />
+
+  <%= f.file_field :logo %>
+
+  <%= f.submit t('dri.views.collection.institute.add') %>
+<% end %>

@@ -143,8 +143,24 @@ module Storage
     end
 
 
-    # Get link for arbitrary file
+    # Get an authenticated short-duration url for a file
     def self.get_link_for_surrogate(bucket, file)
+      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                         :access_key_id => Settings.S3.access_key_id,
+                                         :secret_access_key => Settings.S3.secret_access_key)
+
+      begin
+        url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
+      rescue Exception => e
+        logger.error "Problem getting link for file #{file} : #{e.to_s}"
+      end
+      AWS::S3::Base.disconnect!()
+      return url
+    end
+
+
+    # Get link for arbitrary file
+    def self.get_link_for_file(bucket, file)
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                          :access_key_id => Settings.S3.access_key_id,
                                          :secret_access_key => Settings.S3.secret_access_key)
