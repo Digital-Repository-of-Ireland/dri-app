@@ -848,15 +848,14 @@ a {
 	float: left;
 }
 .dri_home_title h2 {
-	border-bottom: 3px solid #808082;
-	font-size: 110%;
-	width: 200px;
+	border-bottom: 3px solid #2F2F2F;
+	font-size: 120%;
+	width: 230px;
 	margin: 0;
 	padding: 0;
-	color: #808082;
-	font-weight: bold;
+	color: #2F2F2F;
+	font-weight: normal;
 }
-
 
 /* ----------- Collection block ---------- */
 .dri_result_container {
@@ -866,7 +865,6 @@ a {
 	margin: 0 20px 20px 0;
 	padding: 0;
 	width: 228px;
-	//height:270px;
 	float: left;
 	display: block;
 	color: #2F2F2F;
@@ -919,7 +917,7 @@ a {
 	text-decoration: none;
 }
 .dri_content_block h2 a:hover {
-	text-decoration: underline;
+	color: #288DC0;
 
 }
 .dri_content_block h2.dri_editor {
@@ -937,7 +935,7 @@ a {
 	text-decoration: none;
 }
 .dri_content_block h2.dri_editor a:hover {
-	text-decoration: underline;
+	text-decoration: none;
 }
 .dri_content_block p {
 	color:#2F2F2F;
@@ -950,8 +948,6 @@ a {
 	padding: 0;
 	margin: 0 14px 0 14px;
 }
-
-
 .dri_icon {
 	color: #808080;
 	line-height: 1.4em;
@@ -970,8 +966,36 @@ a {
 .dri_icon_text  {
 	margin: 8px 0 0 6px;
 	padding: 0;
-	display: block;float: left;
+	display: block;
+	float: left;
 }
+
+.dri_num_objects {
+	color: #808080;
+	line-height: 1.4em;
+	display: block;
+	height: 27px;
+	margin: 6px 14px 4px 14px;
+	border-top: 1px solid #E1E1E1;
+	padding: 0 0 0 0;
+}
+.dri_object_text  {
+	margin: 8px 0 0 0;
+	padding: 0;
+	display: block;
+	float: left;
+}
+.dri_object_text_num a {
+	margin: 8px 0 0 6px;
+	padding: 0;
+	display: block;
+	float: left;
+	color: #2F2F2F;
+}
+.dri_object_text_num a:hover {
+	color: #288DC0;
+}
+
 .dri_content_block .dri_stats span.dri_object_num {
 	color: #fff;
 	display: block;
