@@ -5,9 +5,9 @@ module ApplicationHelper
   # based on their access rights and the policies and available
   # surrogates of the object
   def get_delivery_file doc
-      @asset = nil
-      delivery_file = Storage::S3Interface.deliverable_surrogate?(doc)
-      @asset = Storage::S3Interface.get_link_for_surrogate(doc.id.sub('dri:',''), delivery_file) unless (delivery_file.blank?)
+    @asset = nil
+    delivery_file = Storage::S3Interface.deliverable_surrogate?(doc)
+    @asset = Storage::S3Interface.get_link_for_surrogate(doc.id.sub('dri:',''), delivery_file) unless (delivery_file.blank?)
   end
 
   def get_files doc
@@ -65,8 +65,8 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
-  def count_published_items_in_collection_by_type( collection_id, type )
-    solr_query = "status_ssim:published AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
+  def count_items_in_collection_by_type( collection_id, type, status )
+    solr_query = "status_ssim:" + status + " AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
                  "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
                  "object_type_sim:"+ type
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
@@ -77,7 +77,12 @@ module ApplicationHelper
 
     @type_counts = {}
     Settings.data.types.each do |type|
-      @type_counts[type] =  count_published_items_in_collection_by_type( id, type )
+      @type_counts[type] = { :published => count_items_in_collection_by_type( id, type, "published" ) }
+      
+      if signed_in? && (can? :edit, id)
+        @type_counts[type][:draft] = count_items_in_collection_by_type( id, type, "draft" )
+      end
+
     end
   end
 

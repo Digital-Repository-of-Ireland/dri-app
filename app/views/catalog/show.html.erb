@@ -30,8 +30,13 @@
           <ul class="dri_view_collection">
           <!-- need callback for object type count -->
             <% @type_counts.keys.each do |key| %>
-	      <% unless @type_counts[key].blank?  %>
-                <li><%= link_to(t("dri.data.types.#{key}"), render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"></span></li>
+	      <% unless @type_counts[key].blank?  %>    
+                <% link = @type_counts[key][:draft].present? ? "#{@type_counts[key][:published]} (#{@type_counts[key][:draft]})" : "#{@type_counts[key][:published]}" %>
+ 
+                <li><%= link_to(t("dri.data.types.#{key}"), render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %>
+                  <span class="dri_stat_num"><%= link_to(link, render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %>
+                  <span class="dri_stat_num"></span>
+                </li>
               <% end %>
 	    <% end %>
           </ul>
