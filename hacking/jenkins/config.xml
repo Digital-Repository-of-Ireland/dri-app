@@ -10,7 +10,7 @@
       <hudson.plugins.git.UserRemoteConfig>
         <name></name>
         <refspec></refspec>
-        <url>ssh://git@lonsdale.tchpc.tcd.ie/navr/nuig-rnag</url>
+        <url>ssh://git@tracker.dri.ie/navr/nuig-rnag</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
