@@ -23,10 +23,10 @@
   <% end %>
 </h2>
 <div class="dri_icon">
-                 		 <span class="dri_icon_image"><%= image_tag("/assets/dri/audio_icon.png") %></span>
-	<span class="dri_icon_text">Audio</span>
+  <span class="dri_icon_image"><%= image_tag("dri/formats/#{document[:type_tesim].first.downcase}_icon.png") %></span>
+  <span class="dri_icon_text"><%= document[:type_tesim].first %></span>
 </div>
 <!-- close dri_icon -->
 
 </div><!-- close content_block -->
-</article>				
+</article>

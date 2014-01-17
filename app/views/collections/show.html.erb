@@ -26,13 +26,17 @@
 				<div class="dri_object_second_block">
 
 					<div class="dri_vc_title">
-					<%= image_tag("/assets/vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %><a href="#">Objects
+					<%= image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %><a href="#">Objects
 							in this Collection</a><!-- needs localisation --><!-- needs callback -->
 					</div>
 					<!-- close vc_title -->
-          			<div class="dri_vc_image"><!-- fix link -->
-                          <a href="#"><%= image_tag(@collection[:cover_image].first, :width=>"230", :height=>"139", :alt=>"localise.collection.cover.label") %></a>
-
+          <div class="dri_vc_image"><!-- fix link -->
+            <% if @collection[:cover_image] && @collection[:cover_image].first %>
+               <a href="#"><%= image_tag(@collection[:cover_image].first, :width=>"230", :height=>"139", :alt=>"localise.collection.cover.label") %></a>
+               <% else %>
+               <% image = "dri/formats/collection.png".downcase %>
+              <a href="#"><%= image_tag(image, :width=>"230", :height=>"139", :alt=>"localise.collection.cover.label") %></a>
+              <% end %>
 
 					</div>
 					<!-- close vc_title -->
