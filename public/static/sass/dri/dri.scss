@@ -27,7 +27,7 @@ a {
 	margin: 0;
 	border: 1px solid #D9DADB;
 	background-color: white;
-	padding: 40px 40px 40px 40px;
+	padding: 40px 0 40px 65px;
 	display: block;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -113,7 +113,7 @@ a {
 .dri_input_error_message  {
 	color: #B3232B;
 	margin: 0 0 10px 0;
-	padding: 0 0 2px 0;
+	padding: 0 40px 0 0;
 	font-size: 110%;
 }
 
@@ -132,7 +132,7 @@ a {
 
 .dri_signin_socialmedia {
 	border-top: 1px solid #D9DADB;
-	margin: 30px 0  0;
+	margin: 30px 0  0 0;
 	padding: 0;
 	width: 330px;
 	float: left
