@@ -294,12 +294,9 @@ class CollectionsController < CatalogController
           fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
       end
 
-      result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,cover_image_tesim", :fq => fq)
+      result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,cover_image_tesim,rights_tesim", :fq => fq)
       result_docs.each do | doc |
-        if !doc.has_key?("cover_image_tesim") || (doc.has_key?("cover_image_tesim") && doc["cover_image_tesim"].blank?)
-          type = doc["object_type_sim"] || "collection"
-          image = "assets/formats/#{type}.png"
-        else
+        if doc.has_key?("cover_image_tesim") && !doc["cover_image_tesim"].blank?
           image = doc["cover_image_tesim"][0]
         end
 
@@ -308,6 +305,7 @@ class CollectionsController < CatalogController
         result[:title] = doc["title_tesim"][0] if doc["title_tesim"]
         result[:description] = doc["description_tesim"][0] if doc["description_tesim"]
         result[:cover_image] = image
+        result[:rights] = doc['rights_tesim'].first
 
         results.push(result)
       end

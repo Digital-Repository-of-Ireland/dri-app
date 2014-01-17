@@ -7,14 +7,21 @@
 <h1><%= link_to collection[:title], collection_path(:id => collection[:id]) %>
   </h1>
   <div class="dri_image">
-   		<%= image_tag(collection[:cover_image], :width=>"200", :height=>"113") %>
+    <% if collection[:cover_image] %>
+      <%= image_tag(collection[:cover_image], :width=>"200", :height=>"113") %>
+      <% else %>
+      <% image = "dri/formats/collection.png".downcase %>
+      <a href="#">
+        <%= image_tag image, :width=>"200", :height=>"113" %>
+      </a>
+    <% end %>
   </div>
 
 
 
 
-<h2 class-"dri_editor"=""><!-- Rights? -->
-	   Rights<% collection[:rights] %>
+<h2 class-"dri_editor"=""><!-- Rights -->
+  <%= collection[:rights] %>
 </h2>
 
 <h2 class="dri_editor"><!-- Subjects -->
