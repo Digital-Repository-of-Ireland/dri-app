@@ -38,7 +38,7 @@ a {
 	margin: 0 0 10px 0;
 	padding: 0px;
 	font-weight: bold;
-	font-size: 140%;
+	font-size: 120%;
 	
 }
 
@@ -107,7 +107,37 @@ a {
 .dri_signup_password input {
 	background-color: #B3B3B3;
 }
-
+.dri_signin_socialmedia {
+	border-top: 1px solid #D9DADB;
+	margin: 30px 0  0;
+	padding: 0;
+	width: 330px;
+	float: left
+}
+.dri_signin_socialmedia h2 {
+	margin: 30px 0 10px 0;
+	padding: 0px;
+	font-weight: bold;
+	font-size: 120%;
+}
+.dri_signin_facebook {
+	background:url(../../images/dri/signin_facebook.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin: 0;
+}
+.dri_signin_google {
+	background:url(../../images/dri/signin_google.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin:0 0 0 0;
+}
+.dri_signin_twitter {
+	background:url(../../images/dri/signin_twitter.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin:0 0 0 0;
+}
 /*--------------Preferred Language --------------*/
 
 
@@ -929,7 +959,6 @@ a {
   	text-overflow: ellipsis;
 	line-height: 1.3em;
 }
-
 .dri_content_block h2.dri_editor a {
 	color: #808080;
 	text-decoration: none;
