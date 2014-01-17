@@ -14,8 +14,11 @@ NuigRnag::Application.routes.draw do
 
   resources :ingest, :only => ['new', 'create']
 
+  resources :institutes, :only => ['show', 'new', 'create']
+  match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
+
   match 'export/:id' => 'export#show', :via => :get, :as => :object_export
-  
+
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
   match 'objects/:id/metadata' => 'metadata#update', :via => :put
   match 'objects/:id/file' => 'assets#show', :via => :get, :as => :object_file
@@ -89,5 +92,6 @@ NuigRnag::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
+  pulse
   end
 end

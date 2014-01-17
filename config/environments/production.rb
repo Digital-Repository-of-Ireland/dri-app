@@ -1,7 +1,10 @@
 ENV["RAILS_RELATIVE_URL_ROOT"] = "/v1"
 NuigRnag::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
-
+  
+  # the following might fail for high_voltage
+  config.content_path = ENV["RAILS_RELATIVE_URL_ROOT"]
+  
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -70,10 +73,10 @@ NuigRnag::Application.configure do
 
   # Add a default host for devise mailer
   config.action_mailer.default_url_options = { :host => 'HOSTNAME' }
-  config.middleware.use '::Rack::Auth::Basic' do |u, p|
-    [u, p] == ['navr', 'navr']
-  end
-  config.assets.precompile += ['dri/dri_grid.css']
+  #config.middleware.use '::Rack::Auth::Basic' do |u, p|
+  #  [u, p] == ['navr', 'navr']
+  #end
+  config.assets.precompile += ['dri/dri_grid.css','dri/dri_layouts.css']
 
   # google analytics
   GA.tracker = "UA-27838653-2"

@@ -147,6 +147,7 @@ Scenario: Using the new design to create a collection
   And I press the button to save draft
   Then my collection should be created
 
+@wip @noexec
 Scenario: user requests access to readers group for restricted asset
   Given I am not logged in
   Given I am logged in as "admin" in the group "admin"
@@ -164,3 +165,19 @@ Scenario: user requests access to readers group for restricted asset
   And I press "Restricted Object"
   And I press the button to request access
   Then I should see a message for application pending
+  And I should not see a link to download asset
+  Given I am not logged in
+  And I am logged in as "admin"
+  And I am on the my collections page
+  And I press "Restricted Collection"
+  Then I should see "user1@user1.com"
+  And I should see a button to approve membership request
+  When I press the button to approve membership request
+  Then I should see a message for membership approved
+  Given I am not logged in
+  And I am logged in as "user1"
+  And I am on the home page
+  When I perform a search
+  And I press "Restricted Object"
+  Then show me the page
+  Then I should see a link to download asset

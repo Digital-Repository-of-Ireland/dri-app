@@ -36,6 +36,9 @@ module Exceptions
   class ValidationErrors < StandardError
   end
 
+  class InstituteError < StandardError
+  end
+
   def render_internal_error(exception)
     render_exception(:internal_server_error, t('dri.views.exceptions.internal_error'))
   end
@@ -49,7 +52,7 @@ module Exceptions
   end
 
   def render_not_found(exception)
-    render_exception(:not_found, exception.message)    
+    render_exception(:not_found, exception.message)
   end
 
   def render_exception(status_type, message)
@@ -58,7 +61,7 @@ module Exceptions
     respond_to do |type|
       type.html { render :template => "errors/error_display",
                          :locals => { :header => status_message,
-                                      :message => message }, 
+                                      :message => message },
                          :status => status_type}
       type.all  { render :nothing => true, :status => status_type}
     end

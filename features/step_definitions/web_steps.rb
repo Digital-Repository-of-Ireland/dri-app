@@ -214,9 +214,9 @@ Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
   page.should have_select id
 end
 
-Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failure,message|
+Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |success_failure, message|
   begin
-    page.should have_selector ".alert", text: flash_for(message)
+    page.should have_selector ".dri_messages_container", text: flash_for(message)
   rescue
     #save_and_open_page
     raise
@@ -224,7 +224,11 @@ Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |sucess_failu
 end
 
 Then /^(?:|I )should( not)? see a message for (.+)$/ do |negate, message|
-  negate ? (page.should_not have_selector ".alert", text: flash_for(message)) : (page.should have_selector ".alert", text: flash_for(message))
+  negate ? (page.should_not have_selector ".dri_messages_container", text: flash_for(message)) : (page.should have_selector ".dri_messages_container", text: flash_for(message))
+end
+
+Then /^(?:|I )should( not)? see a message about cookies$/ do |negate|
+  negate ? (page.should_not have_selector ".alert", text: flash_for("cookie notification")) : (page.should have_selector ".alert", text: flash_for("cookie notification"))
 end
 
 Then /^(?:|I )should see "([^"]*)"(?: within "([^"]*)")?$/ do |text, selector|
@@ -305,7 +309,7 @@ Then /^I should see the error "([^\"]*)"$/ do |error|
 end
 
 Then /^I should( not)? see the message "([^\"]*)"$/ do |negate, message|
-  negate ? (page.should_not have_selector ".alert", text: message) : (page.should have_selector ".alert", text: message)
+  negate ? (page.should_not have_selector ".dri_messages_container", text: message) : (page.should have_selector ".dri_messages_container", text: message)
 end
 
 Then /^I should (not )?see an element "([^"]*)"$/ do |negate, selector|

@@ -94,7 +94,7 @@ Scenario: Unsuccessful search using AND boolean search string
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "invalidstring AND audio"
   And I press the button to search
-  Then I should see "No entries found"
+  Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using OR boolean search string
   Given I am logged in as "user1"
@@ -113,7 +113,7 @@ Scenario: Unsuccessful search using OR boolean search string
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "invalidstring1 OR invalidstring2"
   And I press the button to search
-  Then I should see "No entries found"
+  Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using NOT boolean search string
   Given I am logged in as "user1"
@@ -129,7 +129,7 @@ Scenario: Unsuccessful search using NOT boolean search string
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "NOT sample"
   And I press the button to search
-  Then I should see "No entries found"
+  Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using "+"
   Given I am logged in as "user1"
@@ -145,7 +145,7 @@ Scenario: Unsuccessful search using "+"
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "+invalidstring"
   And I press the button to search
-  Then I should see "No entries found"
+  Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using "-"
   Given I am logged in as "user1"
@@ -161,7 +161,7 @@ Scenario: Unsuccessful search using "-"
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "-sample"
   And I press the button to search
-  Then I should see "No entries found"
+  Then I should not see a search result "Sample Object"
 
 Scenario: Wildcard search
   Given I am logged in as "user1"

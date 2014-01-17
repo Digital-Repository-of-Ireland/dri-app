@@ -113,13 +113,13 @@ a {
 }
 
  .dri_account_nav ul.dri_account_links {
-
 	margin:  0;
 	padding: 0; 
 }
 
 .dri_account_nav ul.dri_account_links li {
 	float:left;
+	text-decoration: none;
 	list-style: none;
 	display: block;
 	margin: 2px 0 0 10px;
@@ -256,7 +256,6 @@ a {
 	
 }
 .dri_main_nav li a {
-	text-transform:uppercase;
 	list-style: none;
 	text-decoration: none;
 	color: #3E3E3E;
@@ -484,7 +483,7 @@ a {
 	text-decoration: none;
 }
 .dri_pagination_nav li a:hover {
-	background-color: #6D6E71;
+	background-color: #999999;
 }
 .dri_pagination_nav li.selected a {
 	background-color: #6D6E71;
@@ -498,9 +497,7 @@ a {
 	background-color: none;
 }
 
-.dri_document_pagination_nav {
- 	@extend .dri_pagination_nav
-}
+
 
 /*-------------- Facet Restriction --------------*/
 
@@ -535,11 +532,6 @@ a {
 	border-left: 1px solid #999;
 	text-decoration: none;
 	
-}
-
-li.empty  {
-	background-color: #fff;
-	box-shadow: 1px 1px 4px  #fff;
 }
 
 /*-------------- Save Search --------------*/
@@ -599,9 +591,7 @@ li.empty  {
 	text-decoration: none;
 }
 
-.dri_close_message {
-	float: right;
-}
+
 /*-------------- Successful Messages --------------*/
 .dri_successful_message {
 	margin: 20px 0 0 0;
@@ -757,11 +747,11 @@ li.empty  {
 	cursor: pointer;
 }
 .dri_sub_title .dri_title_dropdown:hover {
-	text-decoration: underline;
+	color: #288DC0;
 }
 
 .twiddle .dri_arrow_down {
-	background:url(../../images/dri/arrow_down.png) no-repeat center;
+	background:image-url('dri/arrow_down.png') no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
@@ -771,7 +761,7 @@ li.empty  {
 	
 }
 .twiddle .dri_arrow_up {
-	background:url(../../images/dri/arrow_up.png) no-repeat center;
+	background:image-url('dri/arrow_up.png') no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
@@ -1093,6 +1083,10 @@ p.dri_restrict_progress {
 	display: block;
  	-moz-border-radius: 2px;
  	border-radius: 2px;
+	cursor: pointer;
+}
+ input.dri_request_access_button:hover {
+	background-color: #007B75;
 }
 /*-------------- MetaData Readview  --------------*/
 
@@ -1241,6 +1235,28 @@ ul.dri_view_collection li a:hover {
 	float: left;
 	font-weight: bold;
 
+}
+
+.dri_grey_button {
+	float: left;
+	border: none;
+	background-color: #B3B3B3;
+	padding: 4px 0 0 0;
+	margin: 20px 0 0 0;
+	width: 230px;
+	height: 22px;
+	display: block;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	text-align: center;
+}
+
+.dri_grey_button a {
+	color:#FFF;
+	
+}
+.dri_grey_button:hover {
+	background-color:  #999999;
 }
 /*-------------- Institutes  --------------*/
 .dri_object_institutes_block {

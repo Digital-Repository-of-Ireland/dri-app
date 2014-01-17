@@ -270,51 +270,63 @@
 			</div>
 		</div>
 		<!-- close dri_messages_container -->
-		<!-- main content container with place holders for left (first) and right (second) navigation blocks e.g. facet filters note:only one nav (left or right) is expected at any one time-->
 		<div class="dri_main_content_container">
 			<div id="dri_login_form_container_id" class="dri_login_form_container">
 				<div id="dri_login_form_block_id" class="dri_login_form_block">
-					<form accept-charset="UTF-8" action="/user_groups/users/sign_in"
-						class="new_user" id="new_user" method="post">
-						<div style="margin: 0; padding: 0; display: inline">
-							<input name="utf8" type="hidden" value="✓"><input
-								name="authenticity_token" type="hidden"
-								value="LaqnTgirPvXjELptznG0PzG0eSwKrsyI18Z/GF06It0=">
-						</div>
+			<link href="/assets/user_group/application.css?body=1" media="all"
+				rel="stylesheet" type="text/css">
 
-						<h2>Sign in</h2>
-						<div>
-							<label for="user_email">Email</label><br> <input
-								id="user_email" name="user[email]" size="30" type="email"
-								value="">
-						</div>
+			<h2>Sign Up</h2>
 
-						<div>
-							<label for="user_password">Password</label><br> <input
-								id="user_password" name="user[password]" size="30"
-								type="password">
-						</div>
-
-						<div class="dri_checkbox_text">
-							<input name="user[remember_me]" type="hidden" value="0"><input
-								id="user_remember_me" name="user[remember_me]" type="checkbox"
-								value="1"> <label for="user_remember_me"><span
-								class="translation_missing"
-								title="translation missing: en.user_groups.views.sign_in.remember_me">Remember
-									Me</span></label>
-						</div>
-
-						<div class="dri_submit">
-							<input   name="commit" type="submit" value="Sign in">
-						</div>
-					</form>
-                    <div class="dri_form_text">
-					<a href="/user_groups/users/new" id="signup">Sign up</a>
-                    <a href="/user_groups/users/password/new" id="password_reset"><span class="text_right">Forgot
-						your password?</span></a>
-                      </div><!--  close dri_form_text -->
-
+			<form accept-charset="UTF-8" action="/user_groups/users"
+				class="new_user" id="new_user" method="post">
+				<div style="margin: 0; padding: 0; display: inline">
+					<input name="utf8" type="hidden" value="✓"><input
+						name="authenticity_token" type="hidden"
+						value="mX638u5X5SFRPI+BzeiVlMfQ4zJCMCeY9yehgtFxyyc=">
 				</div>
+
+
+				<div>
+					<label for="user_first_name">First Name</label><br> <input
+						id="user_first_name" name="user[first_name]" size="30" type="text">
+				</div>
+
+				<div>
+					<label for="user_second_name">Second Name</label><br> <input
+						id="user_second_name" name="user[second_name]" size="30"
+						type="text">
+				</div>
+
+				<div>
+					<label for="user_email">Email</label><br> <input
+						id="user_email" name="user[email]" size="30" type="email" value="">
+				</div>
+
+				<div class="dri_signup_password">
+					<label for="user_password">Password</label><br> <input
+						id="user_password" name="user[password]" size="30" type="password">
+				</div>
+
+				<div class="dri_signup_password">
+					<label for="user_password_confirmation">Confirm Password</label><br>
+					<input id="user_password_confirmation"
+						name="user[password_confirmation]" size="30" type="password">
+				</div>
+
+				<div class="dri_select_dropdown">
+					<label for="user_locale">Preferred Language</label><br> <select
+						id="user_locale" name="user[locale]"><option value="en">English</option>
+						<option value="ga">Irish</option></select>
+                        <a href="#"><span class="text_right">Already a member?</span></a>
+				</div>
+                  
+
+				<div class="dri_submit">
+					<input name="commit" type="submit" value="Register">
+				</div>
+			</form>
+         	</div>
 				<!--  close dri_login_form_block -->
 
 			</div>
