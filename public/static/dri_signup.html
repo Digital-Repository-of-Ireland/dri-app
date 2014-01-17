@@ -275,6 +275,8 @@
 				<div id="dri_login_form_block_id" class="dri_login_form_block">
 			<link href="/assets/user_group/application.css?body=1" media="all"
 				rel="stylesheet" type="text/css">
+                
+                <div class="dri_input_error_message">Your password does not match. Please Confirm correct Password.</div>
 
 			<h2>Sign Up</h2>
 
@@ -308,7 +310,7 @@
 						id="user_password" name="user[password]" size="30" type="password">
 				</div>
 
-				<div class="dri_signup_password">
+				<div class="dri_signup_password dri_input_error">
 					<label for="user_password_confirmation">Confirm Password</label><br>
 					<input id="user_password_confirmation"
 						name="user[password_confirmation]" size="30" type="password">
@@ -321,16 +323,17 @@
                         <a href="#"><span class="text_right">Already a member?</span></a>
 				</div>
                   
-
 				<div class="dri_submit">
 					<input name="commit" type="submit" value="Register">
 				</div>
                 
                 <div class="dri_signin_socialmedia">
                 <h2> Sign In with Social Media</h2>
+               		 <div class="dri_signin_edugate">&nbsp; </div> 
+                	 <div class="dri_signin_google">&nbsp; </div>
 					<div class="dri_signin_facebook">&nbsp; </div>
                     <div class="dri_signin_twitter">&nbsp; </div>
-                    <div class="dri_signin_google">&nbsp; </div>
+                   
 				</div><!--  close dri_signup_socialmedi -->
                 
 			</form>

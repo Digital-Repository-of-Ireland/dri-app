@@ -27,7 +27,7 @@ a {
 	margin: 0;
 	border: 1px solid #D9DADB;
 	background-color: white;
-	padding: 40px 40px 40px 40px;
+	padding: 40px 0 40px 65px;
 	display: block;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -103,6 +103,100 @@ a {
 .dri_form_text a span.text_right:hover {
 		text-decoration: underline;
 }
+
+
+.dri_signup_password input {
+	background-color: #B3B3B3;
+}
+
+/*-------------- Signin Error message styling --------------*/
+.dri_input_error_message  {
+	color: #B3232B;
+	margin: 0 0 10px 0;
+	padding: 0 40px 0 0;
+	font-size: 110%;
+}
+
+.dri_input_error input {
+	background-color: #fff;
+	color: #9F2931;
+	margin: 0 0 4px 0;
+	padding: 6px 13px 6px 15px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	border: 1px solid  #E18191;
+	
+}
+
+/*-------------- Signin Social Media--------------*/
+
+.dri_signin_socialmedia {
+	border-top: 1px solid #D9DADB;
+	margin: 30px 0  0 0;
+	padding: 0;
+	width: 330px;
+	float: left
+}
+.dri_signin_socialmedia h2 {
+	margin: 30px 0 10px 0;
+	padding: 0px;
+	font-weight: bold;
+	font-size: 120%;
+}
+.dri_signin_facebook {
+	background:url(../../images/dri/signin_facebook.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin: 0;
+}
+.dri_signin_google {
+	background:url(../../images/dri/signin_google.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin:0 0 0 0;
+}
+.dri_signin_twitter {
+	background:url(../../images/dri/signin_twitter.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin:0 0 0 0;
+}
+
+.dri_signin_edugate {
+	background:url(../../images/dri/signin_edugate.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin:0 0 0 0;
+}
+/*--------------Preferred Language --------------*/
+
+
+.dri_select_dropdown {
+	float: left;
+	margin: 10px 0 10px 0;
+	padding: 0;
+}
+
+.dri_select_dropdown select {
+	margin: 0;
+	padding: 4px;
+	width: 140px;
+	border: 1px solid #D9DADB;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.dri_select_dropdown span.text_right {
+	margin: 0 0 0 80px;
+	padding: 0;
+}
+.dri_select_dropdown a span.text_right {
+	color: #2F2F2F;
+}
+.dri_select_dropdown a span.text_right:hover {
+	text-decoration: underline;
+}
+
 /*-------------- Account and Language Styling--------------*/
 .dri_account_nav {
 	float: right;
