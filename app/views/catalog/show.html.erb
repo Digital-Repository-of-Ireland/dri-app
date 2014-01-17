@@ -18,14 +18,14 @@
         <% unless collection?(@document) %>
 
           <div class="dri_vc_title">
-          	<%= image_tag("/assets/vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
+          	<%= image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
             <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
           </div>
           <!-- close vc_title -->
 
           <div class="dri_vc_image">
-            <!-- TODO: display the collection cover_image if the object is in a collection with cover image -->>
-            <%= image_tag("/assets/dri/rnag.jpg", :width=>"230", :height=>"129", :alt=>"collection_image_alt_[make_locale_translate]" ) %><!-- needs callback -->
+            <!-- TODO: display the collection cover_image if the object is in a collection with cover image -->
+            <%= image_tag("dri/rnag.jpg", :width=>"230", :height=>"129", :alt=>"collection_image_alt_[make_locale_translate]" ) %><!-- needs callback -->
           </div>
           <!-- close vc_title -->
 
@@ -88,14 +88,14 @@
 
       <ul class="dri_stats">
         <li>
-          <%= image_tag("/assets/view_stat.png", :width=>"25", :height=>"12") %><%= t('dri.views.objects.legends.viewcount') %>
+          <%= image_tag("view_stat.png", :width=>"25", :height=>"12") %><%= t('dri.views.objects.legends.viewcount') %>
           <span class="dri_stat_num">2701</span>
         </li>
       </ul><!-- close dri_stats -->
 
       <% unless collection?(@document) %>
         <div class="dri_vc_title">
-          <%= image_tag("/assets/vc_folder.png", :width=>"22", :height=>"12") %> <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
+          <%= image_tag("vc_folder.png", :width=>"22", :height=>"12") %> <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
         </div><!-- close vc_title -->
 
         <ul class="dri_view_collection">
@@ -111,7 +111,7 @@
       <% end %>
 
       <div class="dri_bookmark_object">
-        <%= image_tag("/assets/bm_folder.png", :width=>"22", :height=>"15") %>Bookmark Object
+        <%= image_tag("bm_folder.png", :width=>"22", :height=>"15") %>Bookmark Object
         <select name="dri_bookmark_folder">
           <option>Bookmark to Folder</option><!-- needs localisation -->
         </select>
@@ -134,11 +134,11 @@
 
   <ul class="dri_collection_institutes_list"><!-- needs callback -->
 
-    <li><span class="dri_collection_institutes_item"><%= image_tag("/assets/dri/inst_sample_01.png") %>
+    <li><span class="dri_collection_institutes_item"><%= image_tag("dri/inst_sample_01.png") %>
     </span></li>
-    <li><span class="dri_collection_institutes_item"><%= image_tag("/assets/dri/inst_sample_02.png") %>
+    <li><span class="dri_collection_institutes_item"><%= image_tag("dri/inst_sample_02.png") %>
     </span></li>
-    <li><span class="dri_collection_institutes_item"><%= image_tag("/assets/dri/inst_sample_03.png") %>
+    <li><span class="dri_collection_institutes_item"><%= image_tag("dri/inst_sample_03.png") %>
     </span></li>
   </ul>
 
