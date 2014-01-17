@@ -26,19 +26,19 @@
 				<div class="dri_object_second_block">
 
 					<div class="dri_vc_title">
-						<img alt="Vc_folder" height="12" src="/assets/vc_folder.png" width="22"> <a href="/collections/dri:j9602060k">Objects
-							in this Collection</a>
+					<%= image_tag("/assets/vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %><a href="#">Objects
+							in this Collection</a><!-- needs localisation --><!-- needs callback -->
 					</div>
 					<!-- close vc_title -->
-          <div class="dri_vc_image"><!-- fix link -->
-                          <a href="/collections/dri:j9602060k"><img src="<%= @collection[:cover_image].first %>" width="230" height="139"></a>
+          			<div class="dri_vc_image"><!-- fix link -->
+                          <a href="#"><%= image_tag(@collection[:cover_image].first, :width=>"230", :height=>"139", :alt=>"localise.collection.cover.label") %></a>
 
 
 					</div>
 					<!-- close vc_title -->
 
-					<ul class="dri_view_collection"> <!-- need callback to get search by collection title -->
-						<li>All Objects <span class="dri_stat_num"> <a href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D"><%= @children.count %></a>
+					<ul class="dri_view_collection"> <!-- needs callback to get search by collection title -->
+						<li>All Objects <!-- needs localisation --><span class="dri_stat_num"> <a href="#"><%= @children.count %></a>
 						</span></li>
 					</ul>
 

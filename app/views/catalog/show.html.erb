@@ -24,7 +24,7 @@
           <!-- close vc_title -->
 
           <div class="dri_vc_image">
-            <%= image_tag("/assets/vc_folder.png", :width=>"230", :height=>"129", :alt=>"collection_image_alt_[make_locale_translate]" ) %><!-- needs callback -->
+            <%= image_tag("/assets/dri/rnag.jpg", :width=>"230", :height=>"129", :alt=>"collection_image_alt_[make_locale_translate]" ) %><!-- needs callback -->
           </div>
           <!-- close vc_title -->
 	
@@ -45,7 +45,7 @@
         <% end %>
 
         <div class="dri_bookmark_object">
-          <input type="checkbox" name="vehicle" value="Bike">Bookmark Object
+          <input type="checkbox" name="vehicle" value="Bike">Bookmark Object<!-- needs localisation -->
         </div>
         <!-- close dri_bookmark_object -->
 
@@ -58,15 +58,15 @@
           <li><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => @document.id %>" id="download_metadata"><%= t('dri.views.catalog.forms.metadata') %></a></li>
           <li><%= link_to t('blacklight.tools.refworks'), refworks_export_url(:id => @document)  %> </li>
           <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
-          <li><a href="">Email this</a></li>
-          <li><a href="">Send SMS</a></li>
+          <li><a href="">Email this</a></li><!-- needs localisation -->
+          <li><a href="">Send SMS</a></li><!-- needs localisation -->
           <li><%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :class => 'lightboxLink'} %></li>
-          <li><a href="">Librarian view</a></li>
+          <li><a href="">Librarian view</a></li><!-- needs localisation -->
         </ul>
 	
         <% if signed_in? && (can?(:edit, @document)) %>
           <div class="dri_objecttools_title">
-            Editor Tools <!-- localise this -->
+            Editor Tools <!-- needs localisation -->
           </div>
 
           <div class="dri_grey_button" >
@@ -112,7 +112,7 @@
       <div class="dri_bookmark_object">
         <%= image_tag("/assets/bm_folder.png", :width=>"22", :height=>"15") %>Bookmark Object
         <select name="dri_bookmark_folder">
-          <option>Bookmark to Folder</option>
+          <option>Bookmark to Folder</option><!-- needs localisation -->
         </select>
       </div><!-- close dri_bookmark_object -->
 
@@ -127,21 +127,22 @@
 <div class="dri_object_institutes_block">
 
   <div class="dri_institutes_title">
-    <span>Institutes and Sponsors</span>
+    <span>Institutes and Sponsors</span><!-- needs localisation -->
   </div>
   <!-- close vc_title -->
 
-  <ul class="dri_collection_institutes_list">
-    <li><span class="dri_collection_institutes_item"> <a href=""><img src="/assets/dri/inst_sample_01.png"></a>
+  <ul class="dri_collection_institutes_list"><!-- needs callback -->
+  
+    <li><span class="dri_collection_institutes_item"><%= image_tag("/assets/dri/inst_sample_01.png") %>
     </span></li>
-    <li><span class="dri_collection_institutes_item"> <a href=""><img src="/assets/dri/inst_sample_02.png"></a>
+    <li><span class="dri_collection_institutes_item"><%= image_tag("/assets/dri/inst_sample_02.png") %>
     </span></li>
-    <li><span class="dri_collection_institutes_item"> <a href=""><img src="/assets/dri/inst_sample_03.png"></a>
+    <li><span class="dri_collection_institutes_item"><%= image_tag("/assets/dri/inst_sample_03.png") %>
     </span></li>
   </ul>
   
   <div class="dri_institutes_show_more">
-    <span>Show more</span>
+    <span>Show more</span><!-- needs localisation -->
   </div>
   <!-- close dri_bookmark_object -->
 
