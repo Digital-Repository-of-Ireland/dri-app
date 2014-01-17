@@ -23,6 +23,7 @@ install_deps)
     ;;
 configure)
 
+cp config/jetty.yml.sample config/jetty.yml
 cp config/fedora.yml.sample config/fedora.yml
 cp config/solr.yml.sample config/solr.yml
 cp config/database.yml.sample config/database.yml

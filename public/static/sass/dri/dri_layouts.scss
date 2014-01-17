@@ -86,13 +86,6 @@
 		
 	}
 	
-	.dri_document_pagination_nav {
-	
-		@include zen-grid-item(1, 4);
-		//@include zen-float();
-		
-	}
-	
 	.dri_search_term_input {
 	
 		@include zen-grid-item(1, 4);
@@ -205,31 +198,8 @@
 
 }
 
-// Hide, clear etc.
 
-.dri_clearfix {
-	@include zen-clear();
-}
 
-.dri_invisible {
-	visibility:hidden;
-}
-
-.dri_uppercase {
-	text-transform:uppercase;
-}
-
-.dri_capitalize {
-	text-transform:capitalize;
-}
-
-.dri_no_display {
-	display: none;
-}
-
-.dri_float_right {
-	float: right;
-}
 
 @media screen and (max-width:1020px) {
 	

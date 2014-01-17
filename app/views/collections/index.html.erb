@@ -7,7 +7,7 @@
 <h1><%= link_to collection[:title], collection_path(:id => collection[:id]) %>
   </h1>
   <div class="dri_image">
-    <img alt="collection_image_alt_[make_locale_translate]" height="113" src="<%= collection[:cover_image] %>" width="200">
+   		<%= image_tag(collection[:cover_image], :width=>"200", :height=>"113") %>
   </div>
 
 

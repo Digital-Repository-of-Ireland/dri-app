@@ -16,7 +16,7 @@ run and deployed.
 
 For testing and development you will need to bootstrap the project
 
-  $ git clone ssh://git@lonsdale.tchpc.tcd.ie/navr/nuig-rnag
+  $ git clone ssh://git@tracker.dri.ie/navr/nuig-rnag
   $ cd nuig-rnag
   $ git submodule update --init --recursive
   $ bundle
