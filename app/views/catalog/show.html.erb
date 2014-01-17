@@ -9,88 +9,65 @@
 <div class="dri_object_container">
 		  <%= render :partial => 'previous_next_doc' %>
 			<div class="dri_object_title_top"><%= render_field_value(document_heading) %></div>
-
-
-
-
-
-
-
-
-
-
 				<div class="dri_object_first_block">
-
-<%= render_document_partial @document, :show %>
-
-
+					<%= render_document_partial @document, :show %>
 				</div>
 
 				<!-- close dri_object_first_block -->
 				<div class="dri_object_second_block">
 
-    <div class="dri_back_search"><%= link_back_to_catalog %></div>
-
-
-
-
+	   				<div class="dri_back_search">
+	   					<%= link_back_to_catalog %>
+	   				</div>
 					<div class="dri_vc_title">
-						<img alt="Vc_folder" height="12" src="/assets/vc_folder.png" width="22"> <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
-
-
+							<img alt="Vc_folder" height="12" src="/assets/vc_folder.png" width="22"> 
+								<%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
 					</div>
 					<!-- close vc_title -->
 					<div class="dri_vc_image">
-						<img alt="collection_image_alt_[make_locale_translate]" height="129" src="/assets/dri/rnag.jpg" width="230">
-
-
+							<img alt="collection_image_alt_[make_locale_translate]" height="129" src="/assets/dri/rnag.jpg" width="230">
 					</div>
 					<!-- close vc_title -->
 					<ul class="dri_view_collection">
-                        <!-- need callback for object type count -->
-		        <% @type_counts.keys.each do |key| %>
-          			<% unless @type_counts[key].blank?  %>
-            			<li><%= link_to(t("dri.data.types.#{key}"), render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"></span></li>
-          			<% end %>
-        		<% end %>
-                 
-							
+	                <!-- need callback for object type count -->
+			        <% @type_counts.keys.each do |key| %>
+	          			<% unless @type_counts[key].blank?  %>
+	            			<li><%= link_to(t("dri.data.types.#{key}"), render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"><%= link_to(@type_counts[key], render_arbitrary_facet_links({:collection => @document[:collection_tesim][0], :object_type => key})) %><span class="dri_stat_num"></span></li>
+	          			<% end %>
+	        		<% end %>
 					</ul>
-
 					<div class="dri_bookmark_object">
-						<input type="checkbox" name="vehicle" value="Bike">
-						Bookmark Object
-
+						<input type="checkbox" name="vehicle" value="Bike">Bookmark Object
 					</div>
-					<!-- close dri_bookmark_object -->
-                    
-                    <div class="dri_objecttools_title">
-                    <%= t('dri.views.objects.legends.cite') %>
-
-					</div>
-					<!-- close vc_title -->
-                    <ul class="dri_view_collection">
-                      <li><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => @document.id %>" id="download_metadata"><%= t('dri.views.catalog.forms.metadata') %></a></li>
-						<li><%= link_to t('blacklight.tools.refworks'), refworks_export_url(:id => @document)  %> </li>
-                        <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
-						<li><a href="">Email this</a></li>
-                        <li><a href="">Send SMS</a></li>
-						<li><%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :class => 'lightboxLink'} %></li>
-                        <li><a href="">Librarian view</a></li>
-					</ul>
-					      <% if signed_in? && (can?(:edit, @document)) %>
-      		<div class="dri_objecttools_title">
-      		Editor
-      		      </div>    
-      		                          <ul class="dri_view_collection">  
-      		        <li><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %></li>
-      		      </ul>
-      		      <% end %>
+						<!-- close dri_bookmark_object -->
+	                    
+	                    <div class="dri_objecttools_title">
+	                    <%= t('dri.views.objects.legends.cite') %>
+	
+						</div>
+						<!-- close dri_objecttools_title -->
+	                    <ul class="dri_view_collection">
+	                      <li><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => @document.id %>" id="download_metadata"><%= t('dri.views.catalog.forms.metadata') %></a></li>
+							<li><%= link_to t('blacklight.tools.refworks'), refworks_export_url(:id => @document)  %> </li>
+	                        <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
+							<li><a href="">Email this</a></li>
+	                        <li><a href="">Send SMS</a></li>
+							<li><%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :class => 'lightboxLink'} %></li>
+	                        <li><a href="">Librarian view</a></li>
+						</ul>
+						<% if signed_in? && (can?(:edit, @document)) %>
+						<div class="dri_objecttools_title">
+							Editor<!-- localise this -->
+	      		      	</div>    
+						<ul class="dri_view_collection">  
+	      		        	<li><%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => collection?(@document) ? "collections" : "objects", :action => "edit", :id => @document.id), :id => "edit_record" %></li>
+	      		      	</ul>
+	      		      	<% end %>
     
 
 				</div>
 				<!-- close dri_object_second_block -->
-			</div>
+</div>
 			
 <div class="dri_object_container" style="display: none">
 
