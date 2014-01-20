@@ -141,83 +141,51 @@ ga:
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
       fields:
-        contributor:
-          one: Contributor
-          other: Rannpháirtithe
+        contributor: Contributor
         contributors: Rannpháirtithe
         cover_image: "Upload a cover image"
-        coverage:
-          one: Coverage
-          other: Coverages
+        coverage: Coverage
         coverages: Coverages
-        creation_date:
-          one: "Dáta Cruthaithe"
-          other: "Creation Dates"
+        creation_date: "Dáta Cruthaithe"
         creation_dates: "Creation Dates"
-        creator:
-          one: Creator
-          other: Cruthaitheoirí
+        creator: Creator
         creators: Cruthaitheoirí
-        date:
-          one: Dáta
-          other: Dates
+        date: Dáta
         dates: Dates
         description: "Cur Síos"
-        format:
-          one: Formáid
-          other: Formats
+        format: Formáid
         formats: Formats
-        geographical_coverage:
-          one: "Ábhar (Áit)"
-          other: "Subjects (Places)"
+        geographical_coverage: "Ábhar (Áit)"
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
         geographical_coverages: "Subjects (Places)"
         governing_collection: "Bailiúchán Rialaithe"
-        identifier:
-          one: Identifier
-          other: Identifiers
+        identifier: Identifier
         identifiers: Identifiers
-        language:
-          one: Teanga
-          other: Languages
+        language: Teanga
         languages: Languages
-        name_coverage:
-          one: "Ábhar (Ainm)"
-          other: "Subjects (Names)"
+        name_coverage: "Ábhar (Ainm)"
         name_coverages: "Subjects (Names)"
-        published_date:
-          one: "Dáta Foilsithe/Craolta"
-          other: "Published/Broadcast Dates"
+        published_date: "Dáta Foilsithe/Craolta"
         published_dates: "Published/Broadcast Dates"
         publisher: Foilsitheoir
-        relation:
-          one: Relation
-          other: Relations
+        relation: Relation
         relations: Relations
         rights: Cearta
         roles: Roles
-        source:
-          one: Source
-          other: Foinsí
+        source: Source
         sources: Foinsí
         status: Stádas
-        subject:
-          one: Subject
-          other: Ábhair
+        subject: Subject
         subjects: Ábhair
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
-        temporal_coverage:
-          one: "Ábhar (Tréimhse)"
-          other: "Subjects (Eras)"
+        temporal_coverage: "Ábhar (Tréimhse)"
         temporal_coverage_eng: "Subject (Era) in English"
         temporal_coverage_gle: "Subject (Era) in Irish"
         temporal_coverages: "Subjects (Eras)"
         title: Teideal
-        type:
-          one: Type
-          other: Types
+        type: Type
         types: Types
       ingest:
         buttons:

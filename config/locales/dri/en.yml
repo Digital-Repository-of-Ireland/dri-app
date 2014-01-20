@@ -141,83 +141,51 @@ en:
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
       fields:
-        contributor:
-          one: Contributor
-          other: Contributors
+        contributor: Contributor
         contributors: Contributors
         cover_image: "Upload a cover image"
-        coverage:
-          one: Coverage
-          other: Coverages
+        coverage: Coverage
         coverages: Coverages
-        creation_date:
-          one: "Creation Date"
-          other: "Creation Dates"
+        creation_date: "Creation Date"
         creation_dates: "Creation Dates"
-        creator:
-          one: Creator
-          other: Creators
+        creator: Creator
         creators: Creators
-        date:
-          one: Date
-          other: Dates
+        date: Date
         dates: Dates
         description: Description
-        format:
-          one: Format
-          other: Formats
+        format: Format
         formats: Formats
-        geographical_coverage:
-          one: "Subject (Place)"
-          other: "Subjects (Places)"
+        geographical_coverage: "Subject (Place)"
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
         geographical_coverages: "Subjects (Places)"
         governing_collection: "Governing Collection"
-        identifier:
-          one: Identifier
-          other: Identifiers
+        identifier: Identifier
         identifiers: Identifiers
-        language:
-          one: Language
-          other: Languages
+        language: Language
         languages: Languages
-        name_coverage:
-          one: "Subject (Name)"
-          other: "Subjects (Names)"
+        name_coverage: "Subject (Name)"
         name_coverages: "Subjects (Names)"
-        published_date:
-          one: "Published/Broadcast Date"
-          other: "Published/Broadcast Dates"
+        published_date: "Published/Broadcast Date"
         published_dates: "Published/Broadcast Dates"
         publisher: Publisher
-        relation:
-          one: Relation
-          other: Relations
+        relation: Relation
         relations: Relations
         rights: Rights
         roles: Roles
-        source:
-          one: Source
-          other: Sources
+        source: Source
         sources: Sources
         status: Status
-        subject:
-          one: Subject
-          other: Subjects
+        subject: Subject
         subjects: Subjects
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
-        temporal_coverage:
-          one: "Subject (Era)"
-          other: "Subjects (Eras)"
+        temporal_coverage: "Subject (Era)"
         temporal_coverage_eng: "Subject (Era) in English"
         temporal_coverage_gle: "Subject (Era) in Irish"
         temporal_coverages: "Subjects (Eras)"
         title: Title
-        type:
-          one: Type
-          other: Types
+        type: Type
         types: Types
       ingest:
         buttons:
