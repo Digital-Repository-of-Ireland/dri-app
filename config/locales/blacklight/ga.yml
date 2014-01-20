@@ -12,9 +12,9 @@ ga:
   blacklight: 
     and: agus
     application_name: Blacklight
-    back_to_bookmarks: "Back to Bookmarks"
+    back_to_bookmarks: " ⬅ Back to Bookmarks"
     back_to_collection: " ⬅ Back to Collection"
-    back_to_search: "Back to Search"
+    back_to_search: " ⬅ Siar chuig Cuardach"
     bookmarks: 
       add: 
         button: Bookmark
@@ -156,7 +156,7 @@ ga:
       show: 
         title: "%{document_title} - %{application_name}"
       sort: 
-        label: "Sort by %{field}"
+        label: "Eagraigh de réir %{field}"
         submit: "sort results"
       start_over: "Start Over"
       title: "%{application_name} Search Results"

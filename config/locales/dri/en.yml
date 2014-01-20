@@ -18,10 +18,10 @@ en:
       locale: Language
     data:
       types:
-        Sound: Audio
         Image: Images
-        Text: Documents
         MovingImage: Video
+        Sound: Audio
+        Text: Documents
     flash:
       alert:
         create_permission: "You do not have permission to create this document."
@@ -76,18 +76,18 @@ en:
           add_to_collection: "Add to collection"
           remove_from_collection: "Remove from collection"
         forms:
-          file: "File"
           audio_file: "Audio File"
-          image_file: "Image"
-          metadata: "Metadata"
-          pdf_file: "PDF"
-          video_file: "Video"
+          file: File
+          image_file: Image
+          metadata: Metadata
+          pdf_file: PDF
+          video_file: Video
         headers:
           files: Files
         legends:
           no_files: "No file has been uploaded."
-          no_surrogates: "No surrogates are available."
           no_permission: "You do not have permission to view the asset file associated with this object."
+          no_surrogates: "No surrogates are available."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
         links:
@@ -118,15 +118,15 @@ en:
           title:
             admin: "My Collections"
             public: Collections
+        institute:
+          add: "Add a new Institute"
+          associate: "Associate Institute"
         legends:
           governed_objects: "Governed Objects"
           members: Members
           objects: "Objects in Collection"
         new:
           title: "New Collection"
-        institute:
-          associate: "Associate Institute"
-          add: "Add a new Institute"
       devise:
         locale: Language
       exceptions:
@@ -141,51 +141,83 @@ en:
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
       fields:
-        contributor: Contributor
+        contributor:
+          one: Contributor
+          other: Contributors
         contributors: Contributors
         cover_image: "Upload a cover image"
-        coverage: Coverage
+        coverage:
+          one: Coverage
+          other: Coverages
         coverages: Coverages
-        creation_date: "Creation Date"
+        creation_date:
+          one: "Creation Date"
+          other: "Creation Dates"
         creation_dates: "Creation Dates"
-        creator: Creator
+        creator:
+          one: Creator
+          other: Creators
         creators: Creators
-        date: Date
+        date:
+          one: Date
+          other: Dates
         dates: Dates
         description: Description
-        format: Format
+        format:
+          one: Format
+          other: Formats
         formats: Formats
-        geographical_coverage: "Subject (Place)"
+        geographical_coverage:
+          one: "Subject (Place)"
+          other: "Subjects (Places)"
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
         geographical_coverages: "Subjects (Places)"
         governing_collection: "Governing Collection"
-        identifier: Identifier
+        identifier:
+          one: Identifier
+          other: Identifiers
         identifiers: Identifiers
-        language: Language
+        language:
+          one: Language
+          other: Languages
         languages: Languages
-        name_coverage: "Subject (Name)"
+        name_coverage:
+          one: "Subject (Name)"
+          other: "Subjects (Names)"
         name_coverages: "Subjects (Names)"
-        published_date: "Published/Broadcast Date"
+        published_date:
+          one: "Published/Broadcast Date"
+          other: "Published/Broadcast Dates"
         published_dates: "Published/Broadcast Dates"
         publisher: Publisher
-        relation: Relation
+        relation:
+          one: Relation
+          other: Relations
         relations: Relations
         rights: Rights
         roles: Roles
-        source: Source
+        source:
+          one: Source
+          other: Sources
         sources: Sources
         status: Status
-        subject: Subject
+        subject:
+          one: Subject
+          other: Subjects
         subjects: Subjects
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
-        temporal_coverage: "Subject (Era)"
+        temporal_coverage:
+          one: "Subject (Era)"
+          other: "Subjects (Eras)"
         temporal_coverage_eng: "Subject (Era) in English"
         temporal_coverage_gle: "Subject (Era) in Irish"
         temporal_coverages: "Subjects (Eras)"
         title: Title
-        type: Type
+        type:
+          one: Type
+          other: Types
         types: Types
       ingest:
         buttons:
@@ -274,8 +306,8 @@ en:
         legends:
           access_control: "Access Controls"
           audio_caption: "A master audio file has already been uploaded."
-          comments: Comments
           cite: Cite
+          comments: Comments
           file_caption: "A master file has already been uploaded."
           likes: Likes
           metadata: Metadata
