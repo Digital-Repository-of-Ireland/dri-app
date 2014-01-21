@@ -907,22 +907,27 @@ li.empty  {
 	background-color: #E0E0E0;
 	text-decoration: none;
 }
-/* ----------- Homepage features ---------- */
-.dri_home_title {
-	margin: 0 0 20px 0;
-	padding: 0;
-	width: 730px;
-	border-bottom: 1px solid #D9DADB;
-	float: left;
-}
-.dri_home_title h2 {
-	border-bottom: 3px solid #2F2F2F;
-	font-size: 120%;
-	width: 230px;
+
+/* -----------Home page styling ---------- */
+.dri_welcome_block {
 	margin: 0;
 	padding: 0;
-	color: #2F2F2F;
-	font-weight: normal;
+}
+.dri_welcome_block h1 {
+	margin: 0 0 8px 0;
+	padding: 0;
+	font-size: 150%;
+}
+
+.dri_welcome_block p {
+	margin: 0 0 8px 0;
+	padding: 0;
+	font-size: 120%;
+	line-height: 1.4em;
+}
+.dri_welcome_block p a {
+	margin: 0;
+	padding: 0;
 }
 
 /* ----------- Collection block ---------- */
