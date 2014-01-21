@@ -29,8 +29,8 @@ config/database.yml
 config/fedora.yml
 config/solr.yml
 config/jetty.yml
+config/settings.yml
 
-features/reports/*
 spec/reports/*
 .sass-cache/
 # *.html
