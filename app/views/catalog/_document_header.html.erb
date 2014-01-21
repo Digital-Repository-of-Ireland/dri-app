@@ -4,11 +4,16 @@
     <%= link_to_document document, :label => document_show_link_field, :counter => (document_counter + 1 + @response.params[:start].to_i) %>
   </h1>
   <div class="dri_image">
-    <% if document[:type_tesim].first.eql?"Sound" %>
-	  <%= image_tag("/assets/audio_format.png", :width=>"200", :height=>"80") %>
-	<% else %>
-	  <%= image_tag("/assets/no_image.png", :width=>"200", :height=>"80") %>
-	<% end %>
+    <% if document[:cover_image_tesim] && document[:cover_image_tesim].first %>
+      <%= image_tag document[:cover_image_tesim].first, :width=>"200", :height=>"80" %>
+    <% elsif !document[:collection_tesim].blank? %>
+      <!-- TODO: display the collection cover_image if the object is in a collection with cover image -->
+      <% image = "dri/formats/#{document[:type_tesim].first}.png".downcase %>
+      <%= image_tag image, :width=>"200", :height=>"80" %>
+    <% else %>
+      <% image = "dri/formats/#{document[:type_tesim].first}.png".downcase %>
+      <%= image_tag image, :width=>"200", :height=>"80" %>
+	  <% end %>
   </div><!-- close image -->
 </a>
 
