@@ -13,21 +13,35 @@
 <script src="javascripts/jquery-ui.js"></script>
 <script src="javascripts/dropit/dropit.js"></script>
 <script src="/assets/blacklight/core.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/autofocus.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/checkbox_submit.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/bookmark_toggle.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/facet_expand_contract.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/lightbox_dialog.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/search_context.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/select_submit.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/zebra_stripe.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/css_dropdowns.js?body=1" type="text/javascript"></script>
-<script src="/assets/bootstrap-transition.js?body=1" type="text/javascript"></script>
-<script src="/assets/bootstrap-collapse.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/autofocus.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/checkbox_submit.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/bookmark_toggle.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/facet_expand_contract.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/lightbox_dialog.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/search_context.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/select_submit.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/zebra_stripe.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/css_dropdowns.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/bootstrap-transition.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/bootstrap-collapse.js?body=1"
+	type="text/javascript"></script>
 <script src="/assets/bootstrap-alert.js?body=1" type="text/javascript"></script>
-<script src="/assets/improved-modal/bootstrap-modalmanager.js?body=1" type="text/javascript"></script>
-<script src="/assets/improved-modal/bootstrap-modal.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/blacklight.js?body=1" type="text/javascript"></script>
+<script src="/assets/improved-modal/bootstrap-modalmanager.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/improved-modal/bootstrap-modal.js?body=1"
+	type="text/javascript"></script>
+<script src="/assets/blacklight/blacklight.js?body=1"
+	type="text/javascript"></script>
 <script src="/assets/dri.js?body=1" type="text/javascript"></script>
 <script src="/assets/application.js?body=1" type="text/javascript"></script>
 <script id="twitter-wjs" src="https://platform.twitter.com/widgets.js"></script>
@@ -111,7 +125,7 @@
 			</nav>
 		</div>
 		<!-- close dri_main_nav_container -->
-        
+
 		<!-- main content container with place holders for left (first) and right (second) navigation blocks e.g. facet filters note:only one nav (left or right) is expected at any one time-->
 		<div class="dri_main_content_container">
 
@@ -127,25 +141,27 @@
 				</nav>
 			</div>
 			<!--  close dri_first_navigation_container -->
-            
-       <div id="dri_search_features_nav_container_id" class="dri_search_features_nav_container">	
-			<div id="dri_search_term_input_id" class="dri_search_term_input">
-				<form id="dri_search_term_input_form_id"
-					class="dri_search_term_input_form" accept-charset="UTF-8"
-					action="/repository" method="get">
-					<input name="utf8" type="hidden" value="✓"> <input
-						name="search_field" type="hidden" value="all_fields"> <input
-						id="dri_search_term_text_input_id"
-						class="dri_search_term_text_input" name="q"
-						placeholder="Search..." type="text" value="">
-					<button id="dri_search_term_text_submit_button_id" type="submit"
-						class="dri_search_term_text_submit_button" id="search">Ok</button>
 
-				</form>
+			<div id="dri_search_features_nav_container_id"
+				class="dri_search_features_nav_container">
+				<div id="dri_search_term_input_id" class="dri_search_term_input">
+					<form id="dri_search_term_input_form_id"
+						class="dri_search_term_input_form" accept-charset="UTF-8"
+						action="/repository" method="get">
+						<input name="utf8" type="hidden" value="✓"> <input
+							name="search_field" type="hidden" value="all_fields"> <input
+							id="dri_search_term_text_input_id"
+							class="dri_search_term_text_input" name="q"
+							placeholder="Search..." type="text" value="">
+						<button id="dri_search_term_text_submit_button_id" type="submit"
+							class="dri_search_term_text_submit_button" id="search">Ok</button>
 
+					</form>
+
+				</div>
+				<!-- close dri_search_term_input -->
 			</div>
-			<!-- close dri_search_term_input -->
-            </div><!-- close dri_search_features_nav_container -->
+			<!-- close dri_search_features_nav_container -->
 
 			<!-- second (right) navigation container shown depending on context -->
 			<div id="dri_second_navigation_container_id"
@@ -153,10 +169,16 @@
 				<!-- facet block -->
 				<div class="dri_facet_filters_block" id="sidebar">
 					<div id="facets" class="dri_facet_filters">
-                    <span class="dri_head_title">Twitter Feed</span> <span class="dri_search_num">All 106 </span>
+						<span class="dri_head_title">Twitter Feed</span> <span
+							class="dri_search_num">All 106 </span>
 						<div class="facets-collapse">
-							<div class="dri_facet_title"><br><br><br><br><br>
-						
+							<div class="dri_facet_title">
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+
 
 							</div>
 
@@ -167,15 +189,21 @@
 				<!-- close facet block -->
 			</div>
 			<!-- close dri_second_navigation_container -->
-            
+
 
 			<!-- result container showing results / content or forms depending on Context -->
 			<div id="dri_result_container_id" class="dri_result_container">
-           	<div class="dri_home_title"> <h2> Featured</h2> </div><!-- close dri_home_title -->
+				<div id="dri_welcome_block_id" class="dri_welcome_block">Welcome to DRI</div>
+				<div id="dri_slideshow_block_id" class="dri_slideshow_block">Slideshow Here!!!</div>
+				<div class="dri_home_title dri_clearfix">
+					<h2>Featured</h2>
+				</div>
+				<!-- close dri_home_title -->
 				<article class="block5">
 					<div class="dri_content_block">
 						<a href="#">
-							<h1>A Favorite Scotch Air, arranged as a Rondo A Favorite Scotch Air, arranged as a Rondo</h1>
+							<h1>A Favorite Scotch Air, arranged as a Rondo A Favorite
+								Scotch Air, arranged as a Rondo</h1>
 							<div class="dri_image">
 								<img src="images/dri/no_image.png" width="200" height="113">
 							</div> <!-- close image -->
@@ -185,12 +213,12 @@
 						</h2>
 						<h2 class="dri_editor">
 							<a href="#">Sed ut perspiciatis, Voluptatem <br>
-							accusantium, Eaque ipsa quae,<br>
-							Sed ut perspiciatis</a>
+								accusantium, Eaque ipsa quae,<br> Sed ut perspiciatis
+							</a>
 						</h2>
 						<div class="dri_num_objects">
-							<span class="dri_object_text">Objects</span>
-                            <span class="dri_object_text_num"><a href="#">28</a></span>
+							<span class="dri_object_text">Objects</span> <span
+								class="dri_object_text_num"><a href="#">28</a></span>
 						</div>
 						<!-- close dri_num_objects -->
 					</div>
@@ -211,14 +239,14 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_num_objects">
-							<span class="dri_object_text">Objects</span>
-                            <span class="dri_object_text_num"><a href="#">28</a></span>
+							<span class="dri_object_text">Objects</span> <span
+								class="dri_object_text_num"><a href="#">28</a></span>
 						</div>
 						<!-- close dri_num_objects -->
 					</div>
 					<!-- close content_block -->
 				</article>
-                
+
 				<article class="block5">
 					<div class="dri_content_block">
 						<a href="#">
@@ -234,15 +262,18 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_num_objects">
-							<span class="dri_object_text">Objects</span>
-                            <span class="dri_object_text_num"><a href="#">28</a></span>
+							<span class="dri_object_text">Objects</span> <span
+								class="dri_object_text_num"><a href="#">28</a></span>
 						</div>
 						<!-- close dri_num_objects -->
 					</div>
 					<!-- close content_block -->
-				</article>  	
-                
-                <div class="dri_home_title"> <h2>New Collections</h2> </div><!-- close dri_home_title -->
+				</article>
+
+				<div class="dri_home_title">
+					<h2>New Collections</h2>
+				</div>
+				<!-- close dri_home_title -->
 				<article class="block5">
 					<div class="dri_content_block">
 						<a href="#">
@@ -258,30 +289,8 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_num_objects">
-							<span class="dri_object_text">Objects</span>
-                            <span class="dri_object_text_num"><a href="#">28</a></span>
-						</div>
-						<!-- close dri_num_objects -->
-					</div>
-					<!-- close content_block -->
-				</article>
-				<article class="block5">
-					<div class="dri_content_block">
-						<a href="#">
-							<h1>Title of Collection</h1>
-							<div class="dri_image">
-								<img src="images/dri/no_image.png" width="200" height="113">
-							</div> <!-- close image -->
-						</a>
-						<h2>
-							<a href="#">David Joyce</a>
-						</h2>
-						<h2 class="dri_editor">
-							<a href="#">Catriona Walsh</a>
-						</h2>
-							<div class="dri_num_objects">
-							<span class="dri_object_text">Objects</span>
-                            <span class="dri_object_text_num"><a href="#">28</a></span>
+							<span class="dri_object_text">Objects</span> <span
+								class="dri_object_text_num"><a href="#">28</a></span>
 						</div>
 						<!-- close dri_num_objects -->
 					</div>
@@ -302,8 +311,30 @@
 							<a href="#">Catriona Walsh</a>
 						</h2>
 						<div class="dri_num_objects">
-							<span class="dri_object_text">Objects</span>
-                            <span class="dri_object_text_num"><a href="#">28</a></span>
+							<span class="dri_object_text">Objects</span> <span
+								class="dri_object_text_num"><a href="#">28</a></span>
+						</div>
+						<!-- close dri_num_objects -->
+					</div>
+					<!-- close content_block -->
+				</article>
+				<article class="block5">
+					<div class="dri_content_block">
+						<a href="#">
+							<h1>Title of Collection</h1>
+							<div class="dri_image">
+								<img src="images/dri/no_image.png" width="200" height="113">
+							</div> <!-- close image -->
+						</a>
+						<h2>
+							<a href="#">David Joyce</a>
+						</h2>
+						<h2 class="dri_editor">
+							<a href="#">Catriona Walsh</a>
+						</h2>
+						<div class="dri_num_objects">
+							<span class="dri_object_text">Objects</span> <span
+								class="dri_object_text_num"><a href="#">28</a></span>
 						</div>
 						<!-- close dri_num_objects -->
 					</div>

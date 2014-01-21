@@ -125,6 +125,20 @@
 	
 }
 
+.dri_welcome_block {
+	@include zen-grid-item(2, 1);
+	
+}
+
+.dri_slideshow_block {
+	@include zen-grid-item(2, 3);
+	
+}
+
+.dri_result_container {
+	
+}
+
 .dri_main_content_container {
 
   	@include zen-grid-container;
