@@ -18,10 +18,10 @@ en:
       locale: Language
     data:
       types:
-        Sound: Audio
         Image: Images
-        Text: Documents
         MovingImage: Video
+        Sound: Audio
+        Text: Documents
     flash:
       alert:
         create_permission: "You do not have permission to create this document."
@@ -76,18 +76,18 @@ en:
           add_to_collection: "Add to collection"
           remove_from_collection: "Remove from collection"
         forms:
-          file: "File"
           audio_file: "Audio File"
-          image_file: "Image"
-          metadata: "Metadata"
-          pdf_file: "PDF"
-          video_file: "Video"
+          file: File
+          image_file: Image
+          metadata: Metadata
+          pdf_file: PDF
+          video_file: Video
         headers:
           files: Files
         legends:
           no_files: "No file has been uploaded."
-          no_surrogates: "No surrogates are available."
           no_permission: "You do not have permission to view the asset file associated with this object."
+          no_surrogates: "No surrogates are available."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
         links:
@@ -118,15 +118,15 @@ en:
           title:
             admin: "My Collections"
             public: Collections
+        institute:
+          add: "Add a new Institute"
+          associate: "Associate Institute"
         legends:
           governed_objects: "Governed Objects"
           members: Members
           objects: "Objects in Collection"
         new:
           title: "New Collection"
-        institute:
-          associate: "Associate Institute"
-          add: "Add a new Institute"
       devise:
         locale: Language
       exceptions:
@@ -274,8 +274,8 @@ en:
         legends:
           access_control: "Access Controls"
           audio_caption: "A master audio file has already been uploaded."
-          comments: Comments
           cite: Cite
+          comments: Comments
           file_caption: "A master file has already been uploaded."
           likes: Likes
           metadata: Metadata
