@@ -126,7 +126,7 @@
 }
 
 .dri_welcome_block {
-	@include zen-grid-item(2, 1);
+	@include zen-grid-item(2, 1, $gutter-width: 0px);
 	
 }
 
@@ -148,7 +148,8 @@
   	.dri_login_form_container {
 
   		margin: auto;
-		width: 100%;
+		width:460px;
+		background-color:#b0e0e6;
 		
   		
   		

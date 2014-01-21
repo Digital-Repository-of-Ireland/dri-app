@@ -126,7 +126,7 @@
 }
 
 .dri_welcome_block {
-	@include zen-grid-item(2, 1);
+	@include zen-grid-item(2, 1, $gutter-width: 0px);
 	
 }
 
