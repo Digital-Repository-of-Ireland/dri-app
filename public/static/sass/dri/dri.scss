@@ -903,6 +903,34 @@ li.empty  {
 	background-color: #E0E0E0;
 	text-decoration: none;
 }
+
+/* ----------- Home page styling ---------- */
+.dri_welcome_block  {
+	margin: 0;
+	padding: 0;
+}
+.dri_welcome_block h1 {
+	font-size: 140%;
+	margin: 0;
+	padding: 0;
+	color: #2F2F2F;
+}
+
+.dri_welcome_block p {
+	font-size: 120%;
+	line-height: 1.4em;
+	margin: 0 0 8px 0;
+	padding: 0;
+	color: #2F2F2F;
+}
+.dri_welcome_block p a {
+	font-size: 120%;
+	line-height: 1.4em;
+	margin: 0;
+	padding: 0;
+	color: #2F2F2F;
+}
+
 /* ----------- Collection block ---------- */
 .content_block_wrap {
 	width: 730px;
