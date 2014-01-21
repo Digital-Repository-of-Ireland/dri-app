@@ -24,21 +24,21 @@ a {
 }
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
-	margin: 0;
+	margin:  auto;
 	border: 1px solid #D9DADB;
 	background-color: white;
-	padding: 40px 0 40px 65px;
+	padding: 40px 40px 40px 40px;
 	display: block;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
-	float: left;
+	width: 330px;
 	
 }
 .dri_login_form_block h2 {
 	margin: 0 0 10px 0;
 	padding: 0px;
 	font-weight: bold;
-	font-size: 120%;
+	font-size: 140%;
 	
 }
 
@@ -55,7 +55,6 @@ a {
 
 .dri_login_form_block .dri_submit  input {
 	font-size: 100%;
-	float: left;
 	background-color: #278DC1;
 	color: #FFF;
 	-moz-border-radius: 3px;
@@ -85,19 +84,17 @@ a {
 }
 
 .dri_form_text a {
-	float: left;
 	margin: 20px 4px 0 0;
 	padding: 0;
 	color:#3E3E3E;
 
 }
 .dri_form_text a span.text_right {
-	float: right;
 	margin: 0 0 0 151px;
 	padding: 0;
 	color:#3E3E3E;
 }
-.dri_form_text a:hover {
+.dri_form_text a:hover{
 	text-decoration: underline;
 }
 .dri_form_text a span.text_right:hover {
@@ -113,8 +110,10 @@ a {
 .dri_input_error_message  {
 	color: #B3232B;
 	margin: 0 0 10px 0;
-	padding: 0 40px 0 0;
+	padding: 0 0 0 0;
 	font-size: 110%;
+	display: block;
+	width: 330px;
 }
 
 .dri_input_error input {
@@ -135,7 +134,6 @@ a {
 	margin: 30px 0  0 0;
 	padding: 0;
 	width: 330px;
-	float: left
 }
 .dri_signin_socialmedia h2 {
 	margin: 30px 0 10px 0;
@@ -214,7 +212,6 @@ a {
 
 .dri_account_nav ul.dri_account_links li {
 	float:left;
-	text-decoration: none;
 	list-style: none;
 	display: block;
 	margin: 2px 0 0 10px;
@@ -362,7 +359,7 @@ a {
 
 }
 .dri_main_nav li a:hover {
-	border-top: 3px solid #6D6E71;
+	border-top: 3px solid #B3B3B3;
 }
 .dri_main_nav li.selected a {
 	border-top: 3px solid #90993D;
@@ -579,7 +576,7 @@ a {
 	text-decoration: none;
 }
 .dri_pagination_nav li a:hover {
-	background-color: #999999;
+	background-color: #6D6E71;
 }
 .dri_pagination_nav li.selected a {
 	background-color: #6D6E71;
@@ -598,7 +595,7 @@ a {
 /*-------------- Facet Restriction --------------*/
 
 .dri_facet_restrictions_links {
-	margin: 0 0 0 0;
+	margin: 0;
 	padding: 0;
 	float: left;
 }
@@ -796,7 +793,7 @@ li.empty  {
 /* ----------- Facet Filter block ---------- */
 .dri_facet_filters_block {
 	font-size: 100%;
-	margin: 30px 20px 20px 0;
+	margin: 0 20px 20px 0;
 	padding: 0 0 0 0;
 	//width: 228px;
 	float: left;
@@ -851,7 +848,6 @@ li.empty  {
 }
 .dri_sub_title .dri_title_dropdown:hover {
 	text-decoration: underline;
-	color: #288DC0;
 }
 
 .twiddle .dri_arrow_down {
@@ -907,29 +903,7 @@ li.empty  {
 	background-color: #E0E0E0;
 	text-decoration: none;
 }
-/* ----------- Homepage features ---------- */
-.dri_home_title {
-	margin: 0 0 20px 0;
-	padding: 0;
-	width: 730px;
-	border-bottom: 1px solid #D9DADB;
-	float: left;
-}
-.dri_home_title h2 {
-	border-bottom: 3px solid #2F2F2F;
-	font-size: 120%;
-	width: 230px;
-	margin: 0;
-	padding: 0;
-	color: #2F2F2F;
-	font-weight: normal;
-}
-
 /* ----------- Collection block ---------- */
-.dri_result_container {
-	margin-top: 30px;
-}
-
 .content_block_wrap {
 	width: 730px;
 	margin: 0 20px 0 20px;
@@ -994,7 +968,6 @@ li.empty  {
 }
 .dri_content_block h2 a:hover {
 	text-decoration: underline;
-	color: #288DC0;
 
 }
 .dri_content_block h2.dri_editor {
@@ -1012,7 +985,7 @@ li.empty  {
 	text-decoration: none;
 }
 .dri_content_block h2.dri_editor a:hover {
-	text-decoration: none;
+	text-decoration: underline;
 }
 .dri_content_block p {
 	color:#2F2F2F;
@@ -1078,33 +1051,6 @@ li.empty  {
 	padding: 0;
 	display: block;float: left;
 }
-
-.dri_num_objects {
-	color: #808080;
-	line-height: 1.4em;
-	display: block;
-	height: 27px;
-	margin: 6px 14px 4px 14px;
-	border-top: 1px solid #E1E1E1;
-	padding: 0 0 0 0;
-}
-.dri_object_text  {
-	margin: 8px 0 0 0;
-	padding: 0;
-	display: block;
-	float: left;
-}
-.dri_object_text_num a {
-	margin: 8px 0 0 6px;
-	padding: 0;
-	display: block;
-	float: left;
-	color: #2F2F2F;
-}
-.dri_object_text_num a:hover {
-	color: #288DC0;
-}
-
 .dri_content_block .dri_stats span.dri_object_num {
 	color: #fff;
 	display: block;
