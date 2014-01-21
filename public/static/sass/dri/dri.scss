@@ -908,6 +908,27 @@ li.empty  {
 	text-decoration: none;
 }
 
+/* -----------Home page styling ---------- */
+.dri_welcome_block {
+	margin: 0;
+	padding: 0;
+}
+.dri_welcome_block h1 {
+	margin: 0 0 8px 0;
+	padding: 0;
+	font-size: 150%;
+}
+
+.dri_welcome_block p {
+	margin: 0 0 8px 0;
+	padding: 0;
+	font-size: 120%;
+	line-height: 1.4em;
+}
+.dri_welcome_block p a {
+	margin: 0;
+	padding: 0;
+}
 
 /* ----------- Collection block ---------- */
 .dri_result_container {
