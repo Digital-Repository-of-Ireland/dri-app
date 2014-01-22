@@ -21,18 +21,27 @@
 
       <div class="dri_back_search"><%= link_back_to_catalog %></div>
 
-        <% unless collection?(@document) %>
+        <% if collection?(@document) %>
+
+          <% if @document['cover_image_tesim'] && @document['cover_image_tesim'][0] %>
+          <div class="dri_vc_image">
+            <%= image_tag(@document['cover_image_tesim'][0], :width=>"230", :height=>"129", :alt=> t('dri.views.alt_tags.cover_image') ) %>
+          </div>
+          <% end %>
+        <% else %>
+        <% collection = governing_collection_solr(@document) %>
 
           <div class="dri_vc_title">
           	<%= image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
-            <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(@document[:is_governed_by_ssim][0].sub('info:fedora/', '')) ) %>
+            <%= link_to( t('dri.views.objects.legends.view_collection'), collection_path(collection['id']) ) %>
           </div>
           <!-- close vc_title -->
 
+          <% if collection['cover_image_tesim'] && collection['cover_image_tesim'][0] %>
           <div class="dri_vc_image">
-            <!-- TODO: display the collection cover_image if the object is in a collection with cover image -->
-            <%= image_tag("dri/rnag.jpg", :width=>"230", :height=>"129", :alt=>"collection_image_alt_[make_locale_translate]" ) %><!-- needs callback -->
-          </div>
+              <%= image_tag(collection['cover_image_tesim'][0], :width=>"230", :height=>"129", :alt=> t('dri.views.alt_tags.cover_image') ) %><!-- needs callback -->
+            </div>
+          <% end %>
           <!-- close vc_title -->
 
           <ul class="dri_view_collection">
