@@ -27,7 +27,7 @@ a {
 	margin: 0;
 	border: 1px solid #D9DADB;
 	background-color: white;
-	padding: 40px 40px 40px 40px;
+	padding: 40px 0 40px 65px;
 	display: block;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -38,7 +38,7 @@ a {
 	margin: 0 0 10px 0;
 	padding: 0px;
 	font-weight: bold;
-	font-size: 140%;
+	font-size: 120%;
 	
 }
 
@@ -97,12 +97,106 @@ a {
 	padding: 0;
 	color:#3E3E3E;
 }
-.dri_form_text a:hover{
+.dri_form_text a:hover {
 	text-decoration: underline;
 }
 .dri_form_text a span.text_right:hover {
 		text-decoration: underline;
 }
+
+
+.dri_signup_password input {
+	background-color: #B3B3B3;
+}
+
+/*-------------- Signin Error message styling --------------*/
+.dri_input_error_message  {
+	color: #B3232B;
+	margin: 0 0 10px 0;
+	padding: 0 40px 0 0;
+	font-size: 110%;
+}
+
+.dri_input_error input {
+	background-color: #fff;
+	color: #9F2931;
+	margin: 0 0 4px 0;
+	padding: 6px 13px 6px 15px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	border: 1px solid  #E18191;
+	
+}
+
+/*-------------- Signin Social Media--------------*/
+
+.dri_signin_socialmedia {
+	border-top: 1px solid #D9DADB;
+	margin: 30px 0  0 0;
+	padding: 0;
+	width: 330px;
+	float: left
+}
+.dri_signin_socialmedia h2 {
+	margin: 30px 0 10px 0;
+	padding: 0px;
+	font-weight: bold;
+	font-size: 120%;
+}
+.dri_signin_facebook {
+	background:url(../../images/dri/signin_facebook.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin: 0;
+}
+.dri_signin_google {
+	background:url(../../images/dri/signin_google.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin:0 0 0 0;
+}
+.dri_signin_twitter {
+	background:url(../../images/dri/signin_twitter.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin:0 0 0 0;
+}
+
+.dri_signin_edugate {
+	background:url(../../images/dri/signin_edugate.png) no-repeat;
+	width: 330px;
+	height: 40px;
+	margin:0 0 0 0;
+}
+/*--------------Preferred Language --------------*/
+
+
+.dri_select_dropdown {
+	float: left;
+	margin: 10px 0 10px 0;
+	padding: 0;
+}
+
+.dri_select_dropdown select {
+	margin: 0;
+	padding: 4px;
+	width: 140px;
+	border: 1px solid #D9DADB;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.dri_select_dropdown span.text_right {
+	margin: 0 0 0 80px;
+	padding: 0;
+}
+.dri_select_dropdown a span.text_right {
+	color: #2F2F2F;
+}
+.dri_select_dropdown a span.text_right:hover {
+	text-decoration: underline;
+}
+
 /*-------------- Account and Language Styling--------------*/
 .dri_account_nav {
 	float: right;
@@ -113,6 +207,7 @@ a {
 }
 
  .dri_account_nav ul.dri_account_links {
+
 	margin:  0;
 	padding: 0; 
 }
@@ -256,6 +351,7 @@ a {
 	
 }
 .dri_main_nav li a {
+	text-transform:uppercase;
 	list-style: none;
 	text-decoration: none;
 	color: #3E3E3E;
@@ -266,7 +362,7 @@ a {
 
 }
 .dri_main_nav li a:hover {
-	border-top: 3px solid #B3B3B3;
+	border-top: 3px solid #6D6E71;
 }
 .dri_main_nav li.selected a {
 	border-top: 3px solid #90993D;
@@ -502,7 +598,7 @@ a {
 /*-------------- Facet Restriction --------------*/
 
 .dri_facet_restrictions_links {
-	margin: 0;
+	margin: 0 0 0 0;
 	padding: 0;
 	float: left;
 }
@@ -532,6 +628,11 @@ a {
 	border-left: 1px solid #999;
 	text-decoration: none;
 	
+}
+
+li.empty  {
+	background-color: #fff;
+	box-shadow: 1px 1px 4px  #fff;
 }
 
 /*-------------- Save Search --------------*/
@@ -591,7 +692,9 @@ a {
 	text-decoration: none;
 }
 
-
+.dri_close_message {
+	float: right;
+}
 /*-------------- Successful Messages --------------*/
 .dri_successful_message {
 	margin: 20px 0 0 0;
@@ -693,7 +796,7 @@ a {
 /* ----------- Facet Filter block ---------- */
 .dri_facet_filters_block {
 	font-size: 100%;
-	margin: 0 20px 20px 0;
+	margin: 30px 20px 20px 0;
 	padding: 0 0 0 0;
 	//width: 228px;
 	float: left;
@@ -747,11 +850,12 @@ a {
 	cursor: pointer;
 }
 .dri_sub_title .dri_title_dropdown:hover {
+	text-decoration: underline;
 	color: #288DC0;
 }
 
 .twiddle .dri_arrow_down {
-	background:image-url('dri/arrow_down.png') no-repeat center;
+	background:url(../../images/dri/arrow_down.png) no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
@@ -761,7 +865,7 @@ a {
 	
 }
 .twiddle .dri_arrow_up {
-	background:image-url('dri/arrow_up.png') no-repeat center;
+	background:url(../../images/dri/arrow_up.png) no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
@@ -803,7 +907,34 @@ a {
 	background-color: #E0E0E0;
 	text-decoration: none;
 }
+
+/* -----------Home page styling ---------- */
+.dri_welcome_block {
+	margin: 0;
+	padding: 0;
+}
+.dri_welcome_block h1 {
+	margin: 0 0 8px 0;
+	padding: 0;
+	font-size: 150%;
+}
+
+.dri_welcome_block p {
+	margin: 0 0 8px 0;
+	padding: 0;
+	font-size: 120%;
+	line-height: 1.4em;
+}
+.dri_welcome_block p a {
+	margin: 0;
+	padding: 0;
+}
+
 /* ----------- Collection block ---------- */
+.dri_result_container {
+	margin-top: 30px;
+}
+
 .content_block_wrap {
 	width: 730px;
 	margin: 0 20px 0 20px;
@@ -868,6 +999,7 @@ a {
 }
 .dri_content_block h2 a:hover {
 	text-decoration: underline;
+	color: #288DC0;
 
 }
 .dri_content_block h2.dri_editor {
@@ -885,7 +1017,7 @@ a {
 	text-decoration: none;
 }
 .dri_content_block h2.dri_editor a:hover {
-	text-decoration: underline;
+	text-decoration: none;
 }
 .dri_content_block p {
 	color:#2F2F2F;
@@ -898,7 +1030,38 @@ a {
 	padding: 0;
 	margin: 0 14px 0 14px;
 }
+.dri_icon_text  {
+	margin: 8px 0 0 6px;
+	padding: 0;
+	display: block;
+	float: left;
+}
 
+.dri_num_objects {
+	color: #808080;
+	line-height: 1.4em;
+	display: block;
+	height: 27px;
+	margin: 6px 14px 4px 14px;
+	border-top: 1px solid #E1E1E1;
+	padding: 0 0 0 0;
+}
+.dri_object_text  {
+	margin: 8px 0 0 0;
+	padding: 0;
+	display: block;
+	float: left;
+}
+.dri_object_text_num a {
+	margin: 8px 0 0 6px;
+	padding: 0;
+	display: block;
+	float: left;
+	color: #2F2F2F;
+}
+.dri_object_text_num a:hover {
+	color: #288DC0;
+}
 
 .dri_icon {
 	color: #808080;
@@ -920,6 +1083,33 @@ a {
 	padding: 0;
 	display: block;float: left;
 }
+
+.dri_num_objects {
+	color: #808080;
+	line-height: 1.4em;
+	display: block;
+	height: 27px;
+	margin: 6px 14px 4px 14px;
+	border-top: 1px solid #E1E1E1;
+	padding: 0 0 0 0;
+}
+.dri_object_text  {
+	margin: 8px 0 0 0;
+	padding: 0;
+	display: block;
+	float: left;
+}
+.dri_object_text_num a {
+	margin: 8px 0 0 6px;
+	padding: 0;
+	display: block;
+	float: left;
+	color: #2F2F2F;
+}
+.dri_object_text_num a:hover {
+	color: #288DC0;
+}
+
 .dri_content_block .dri_stats span.dri_object_num {
 	color: #fff;
 	display: block;
@@ -1083,10 +1273,6 @@ p.dri_restrict_progress {
 	display: block;
  	-moz-border-radius: 2px;
  	border-radius: 2px;
-	cursor: pointer;
-}
- input.dri_request_access_button:hover {
-	background-color: #007B75;
 }
 /*-------------- MetaData Readview  --------------*/
 
@@ -1235,28 +1421,6 @@ ul.dri_view_collection li a:hover {
 	float: left;
 	font-weight: bold;
 
-}
-
-.dri_grey_button {
-	float: left;
-	border: none;
-	background-color: #B3B3B3;
-	padding: 4px 0 0 0;
-	margin: 20px 0 0 0;
-	width: 230px;
-	height: 22px;
-	display: block;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	text-align: center;
-}
-
-.dri_grey_button a {
-	color:#FFF;
-	
-}
-.dri_grey_button:hover {
-	background-color:  #999999;
 }
 /*-------------- Institutes  --------------*/
 .dri_object_institutes_block {
