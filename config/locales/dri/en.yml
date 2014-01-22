@@ -13,7 +13,10 @@ en:
           admin: "DRI repository administrator interface"
           public: "Welcome to the DRI repository."
         featured: "Featured"
+        featured_collections: "Featured Collections"
         new_collections: "New Collections"
+        newly_added: "Newly Added"
+        
       lang:
         en: English
         ga: Irish
