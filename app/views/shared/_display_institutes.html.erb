@@ -1,14 +1,16 @@
   <div class="dri_institutes_title">
-  <span>Institutes and Sponsors</span>
+    <span><%= t('dri.views.collection.institute.title') %></span>
   </div>
   <!-- close vc_title -->
 
+  <% if @collection_institutes %>
   <ul class="dri_collection_institutes_list">
-  <%= @collection.institute.each do |inst| %>
-  <li><span class="dri_collection_institutes_item"> <a href=""><img src="<%= inst.url %>"></a>
+  <% @collection_institutes.each do |inst| %>
+  <li><span class="dri_collection_institutes_item"> <%= link_to image_tag(inst.logo, :width => '100'), inst.url %></a>
   </span></li>
   <% end %>
-  </ul>
+</ul>
   <div class="dri_institutes_show_more">
-  <span>Show more</span>
-  </div>>
+    <span><%= t('dri.views.collection.institute.more') %></span>
+  </div>
+<% end %>

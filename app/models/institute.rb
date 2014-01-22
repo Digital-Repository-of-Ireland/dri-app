@@ -1,5 +1,6 @@
 class Institute < ActiveRecord::Base
   require 'storage/s3_interface'
+  require 'validators'
 
   attr_accessible :name, :url, :logo
 
@@ -10,13 +11,14 @@ class Institute < ActiveRecord::Base
     self.url = opts[:url]
 
     begin
-      raise Exceptions::InstituteError unless self.save
+      self.save
     rescue ActiveRecord::ActiveRecordError, Exceptions::InstituteError => e
       logger.error "Could not save institute: #{e.message}"
       raise Exceptions::InternalError
     end
 
-    validate(fileupload, self.name)
+    validate_and_store_logo(upload, self.name)
+    self.save
   end
 
 
@@ -31,7 +33,7 @@ class Institute < ActiveRecord::Base
   end
 
 
-  def validate(logo, name)
+  def validate_and_store_logo(logo, name)
     if !logo.blank? && Validators.file_type?(logo).mediatype == "image"
       begin
         Validators.virus_scan(logo)
@@ -41,12 +43,17 @@ class Institute < ActiveRecord::Base
       end
 
       unless virus
+        AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                           :access_key_id => Settings.S3.access_key_id,
+                                           :secret_access_key => Settings.S3.secret_access_key)
+
         Storage::S3Interface.store_file(logo.tempfile.path,
                                         "#{name}.#{logo.original_filename.split(".").last}",
                                         Settings.data.logos_bucket)
         self.logo = Storage::S3Interface.get_link_for_file(Settings.data.logos_bucket,
                                                           "#{name}.#{logo.original_filename.split(".").last}")
-        self.save
+
+        AWS::S3::Base.disconnect!()
       end
     end
   end
