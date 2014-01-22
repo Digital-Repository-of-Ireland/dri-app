@@ -14,8 +14,18 @@ module InstituteHelpers
   end
 
 
-  def self.get_object_institutes
-
+  def self.get_object_institutes_from_solr_doc(doc)
+    allinstitutes = Institute.find(:all)
+    myinstitutes = []
+    id = doc['is_governed_by_ssim'][0].gsub(/^info:fedora\//, '')
+    solr_query = "id:#{id}"
+    collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1", :fl => "id,institute_tesim")
+    allinstitutes.each do |inst|
+      if collection[0]['institute_tesim'].include?(inst.name)
+        myinstitutes.push(inst)
+      end
+    end
+    return myinstitutes
   end
 
 end

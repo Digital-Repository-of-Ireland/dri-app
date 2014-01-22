@@ -122,6 +122,7 @@ en:
           add: "Add a new Institute"
           associate: "Associate Institute"
           title: "Institutes and Sponsors"
+          more: "Show more"
         legends:
           governed_objects: "Governed Objects"
           members: Members

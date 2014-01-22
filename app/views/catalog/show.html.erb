@@ -1,4 +1,5 @@
 <% get_object_type_counts @document %>
+<% @collection_institutes = InstituteHelpers.get_object_institutes_from_solr_doc(@document) %>
 
 <% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>
 <% extra_head_content << render_link_rel_alternates %>
@@ -126,26 +127,6 @@
 </div>
 
 <div class="dri_object_institutes_block">
-
-  <div class="dri_institutes_title">
-    <span>Institutes and Sponsors</span><!-- needs localisation -->
-  </div>
-  <!-- close vc_title -->
-
-  <ul class="dri_collection_institutes_list"><!-- needs callback -->
-
-    <li><span class="dri_collection_institutes_item"><%= image_tag("dri/inst_sample_01.png") %>
-    </span></li>
-    <li><span class="dri_collection_institutes_item"><%= image_tag("dri/inst_sample_02.png") %>
-    </span></li>
-    <li><span class="dri_collection_institutes_item"><%= image_tag("dri/inst_sample_03.png") %>
-    </span></li>
-  </ul>
-
-  <div class="dri_institutes_show_more">
-    <span>Show more</span><!-- needs localisation -->
-  </div>
-  <!-- close dri_bookmark_object -->
-
+  <%= render :partial => 'shared/display_institutes' %>
 </div>
 
