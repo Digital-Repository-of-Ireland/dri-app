@@ -28,4 +28,14 @@ module InstituteHelpers
     return myinstitutes
   end
 
+  def self.get_collection_institutes_from_solr_doc(doc)
+    allinstitutes = Institute.find(:all)
+    myinstitutes = []
+    allinstitutes.each do |inst|
+      if doc['institute_tesim'].include?(inst.name)
+        myinstitutes.push(inst)
+      end
+    end
+    return myinstitutes
+  end
 end
