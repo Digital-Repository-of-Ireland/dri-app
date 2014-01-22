@@ -1,4 +1,6 @@
 class InstitutesController < ApplicationController
+  require 'institute_helpers'
+
 
   # Get the list of institutes
   def show
@@ -20,7 +22,14 @@ class InstitutesController < ApplicationController
     @inst.add_logo(file_upload, {:name => params[:institute][:name]})
 
     @institutes = Institute.find(:all)
-    render :partial => 'shared/institute_list'
+
+    if params[:object]
+      @object = ActiveFedora::Base.find(params[:object], {:cast => true})
+    end
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def associate
@@ -31,10 +40,16 @@ class InstitutesController < ApplicationController
     institute = Institute.where(:name => params[:institute_name]).first
     raise Exception::NotFound unless institute
 
-    collection.institute << institute.name
+    collection.institute = collection.institute.push(institute.name)
 
     raise Exception::InternalError unless collection.save
-    render :partial => "shared/display_institutes", :collection => collection
+
+    @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
+
+    respond_to do |format|
+      format.js
+    end
+
   end
 
 end

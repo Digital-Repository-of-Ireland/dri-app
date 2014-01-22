@@ -8,14 +8,19 @@
   <%= render :partial => "shared/form_metadata", :locals => { :f => f, :action => "update" } %>
   <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
 
-  <%= render :partial => "shared/institute_list" %>
+  <%= render :partial => "shared/display_institutes" %>
 
 <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "edit_collection" %>
 
 <% end %>
 
+<div id='dri_collection_institutes_dropdown' name='dri_collection_institutes_dropdown'>
 <%= render :partial => "shared/associate_institute" %>
+</div>
+
+<div name='dri_collection_add_institute' id='dri_collection_add_institute'>
 <%= render :partial => "shared/add_institute" %>
+</div>
 
 <% if current_user.is_admin? %>
  <%= form_tag (collection_path(@object)), :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>

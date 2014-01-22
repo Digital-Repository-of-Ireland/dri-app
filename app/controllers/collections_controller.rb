@@ -3,6 +3,7 @@
 require 'storage/s3_interface'
 require 'storage/cover_images'
 require 'validators'
+require 'institute_helpers'
 
 class CollectionsController < CatalogController
 
@@ -72,6 +73,8 @@ class CollectionsController < CatalogController
     @institutes = Institute.find(:all)
     @inst = Institute.new
 
+    @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
+
     respond_to do |format|
       format.html
     end
@@ -86,6 +89,8 @@ class CollectionsController < CatalogController
     @children = collection_items params[:id]
 
     @pending = {}
+
+    @collection_institutes = InstituteHelpers.get_collection_institutes(@collection)
 
     reader_group = UserGroup::Group.find_by_name(reader_group_name)
     reader_group ||= create_reader_group

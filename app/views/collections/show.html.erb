@@ -61,13 +61,9 @@
 				<h2 class="dri_clearfix"><%= t('dri.views.collection.legends.governed_objects') %></h2>
 <%= render :partial => 'governed_item', :children => @children %>
 
-				<div class="dri_object_institutes_block">
-
-          <%= render :partial => 'shared/display_institutes', :collection => @collection %>
-
-					<!-- close dri_bookmark_object -->
-
-				</div>
+        <div class="dri_object_institutes_block">
+          <%= render :partial => 'shared/display_institutes' %>
+        </div>
 				<!-- close dri_object_institutes_block -->
 
 
