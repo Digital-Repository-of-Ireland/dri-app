@@ -464,7 +464,6 @@ a {
 /*-------------- Search/Sort features --------------*/
 .dri_search_features_nav_container {
 	float: left;
-	height: 80px;
 	margin: 0;
 	padding: 0;
 }
@@ -1034,7 +1033,7 @@ li.empty  {
 .dri_content_block h2.dri_editor {
 	color: #808080;
 	display: block;
-	height: 30px;
+	height: 50px;
 	white-space: wrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
@@ -1103,11 +1102,12 @@ li.empty  {
 	font-size: 100%;
 	padding: 0;
 	margin: 6px 14px 6px 14px;
-	height: 30px;
+	height: 58px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	line-height: 1.3em;
 	font-weight: bold;
+	border-bottom: 1px solid #E1E1E1;
 }
 .dri_content_block_collection h1 a {
 	color:#2F2F2F;
@@ -1120,9 +1120,10 @@ li.empty  {
 .dri_content_block_collection h2 {
 	color: #2F2F2F;
 	font-size: 100%;
-	padding: 0;
-	margin: 0 14px 0 14px;
+	padding: 0 14px 6px 14px;
+	margin: 0;
 	font-weight: normal;
+	border-bottom: 1px solid #E1E1E1;
 }
 .dri_content_block_collection h2 a {
 	color: #2F2F2F;
@@ -1140,7 +1141,8 @@ li.empty  {
 	white-space: wrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
-	line-height: 1.3em;
+	line-height: 1.3em;	
+	
 }
 
 .dri_content_block_collection p {
@@ -1156,14 +1158,14 @@ li.empty  {
 	text-decoration: none;
 }
 
-.dri_content_block h2.dri_editor a {
+.dri_content_block_collection h2.dri_editor a {
 	color: #808080;
 	text-decoration: none;
 }
-.dri_content_block h2.dri_editor a:hover {
+.dri_content_block_collection h2.dri_editor a:hover {
 	text-decoration: none;
 }
-.dri_content_block_collectionk p {
+.dri_content_block_collection p {
 	color:#2F2F2F;
 	font-size: 100%;
 	padding: 0;
@@ -1180,13 +1182,14 @@ li.empty  {
 }
 
 .dri_content_block_collection .dri_num_objects {
+	border-top: 1px solid #fff;
 	color: #808080;
 	line-height: 1.4em;
 	display: block;
 	height: 27px;
-	margin: 6px 14px 4px 14px;
-	border-top: 1px solid #E1E1E1;
-	padding: 0 0 0 0;
+	margin: 0px 0 0 0;
+	background-color: #F6F6F6;
+	padding: 0 14px 4px 14px;
 }
 .dri_content_block_collection .dri_object_text  {
 	margin: 8px 0 0 0;
