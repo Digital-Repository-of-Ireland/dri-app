@@ -12,6 +12,8 @@ en:
         introtext:
           admin: "DRI repository administrator interface"
           public: "Welcome to the DRI repository."
+        featured: "Featured"
+        new_collections: "New Collections"
       lang:
         en: English
         ga: Irish
@@ -70,6 +72,7 @@ en:
       privacy: "Privacy & Cookies policy"
       resque: "Resque Server"
       usergroups: "Users & Groups"
+      sitemap: Sitemap
     views:
       catalog:
         buttons:

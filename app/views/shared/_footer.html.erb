@@ -3,10 +3,18 @@
 		class="dri_main_footer_navigation">
 		<ul id="dri_main_footer_navigation_links_id"
 			class="dri_main_footer_navigation_links">
-			<li><span><%= link_to t('dri.headerlinks.privacy'), 'http://www.dri.ie/privacy-statement', :id => "privacy", :class => "muted" %></span></li>
-			<li><span><%= link_to t('dri.headerlinks.about'), 'http://www.dri.ie/mission-statement', :id => "about", :class => "muted" %></span></li>
-			<li><span><%= link_to t('dri.headerlinks.contact'), 'http://www.dri.ie/contact', :id => "contact", :class => "muted" %></span></li>
-			<li class="selected no_border_right"><a href="#">Sitemap</a></li>
+      <li class="selected no_border_right"><span>
+        <%= link_to t('dri.headerlinks.privacy'), 'http://www.dri.ie/privacy-statement', :id => "privacy", :class => "muted" %>
+      </span></li>
+      <li class="selected no_border_right"><span>
+        <%= link_to t('dri.headerlinks.about'), 'http://www.dri.ie/mission-statement', :id => "about", :class => "muted" %>
+      </span></li>
+      <li class="selected no_border_right"><span>
+        <%= link_to t('dri.headerlinks.contact'), 'http://www.dri.ie/contact', :id => "contact", :class => "muted" %>
+      </span></li>
+      <li class="selected no_border_right"><span>
+        <%= link_to t('dri.headerlinks.sitemap'), '#', :id => "sitemap" %>
+      </span></li>
 		</ul>
 	</nav>
 </footer>
