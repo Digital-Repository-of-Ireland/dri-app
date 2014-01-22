@@ -52,7 +52,7 @@
 		<ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase">
 		<% if current_user %>
 			<li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
-			<li><%= link_to t('dri.account'), user_group.user_path(current_user), :id => "view_account" %></li>
+			<li><%= link_to t('dri.headerlinks.account'), user_group.user_path(current_user), :id => "view_account" %></li>
 			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
 			<li><%= link_to t('dri.headerlinks.collections.admin'), main_app.collections_path(:view => 'mine'), :id => "manage_collections" %></li>
             <li><%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %></li>

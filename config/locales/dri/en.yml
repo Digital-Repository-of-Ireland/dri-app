@@ -73,6 +73,7 @@ en:
       resque: "Resque Server"
       usergroups: "Users & Groups"
       sitemap: Sitemap
+      account: My Workspace
     views:
       catalog:
         buttons:
@@ -298,6 +299,8 @@ en:
           download: download
           listen: listen
           view_record: "View Record"
+      alt_tags:
+        cover_image: "Cover Image"
     vocabulary:
       iso_639_2:
         aar: Afar
