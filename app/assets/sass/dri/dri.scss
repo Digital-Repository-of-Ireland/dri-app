@@ -597,7 +597,7 @@ a {
 /*-------------- Facet Restriction --------------*/
 
 .dri_facet_restrictions_links {
-	margin: 0 0 0 0;
+	margin: 15px 0 0 0;
 	padding: 0;
 	float: left;
 }
@@ -636,25 +636,25 @@ li.empty  {
 
 /*-------------- Save Search --------------*/
 .dri_search_save_input {
-	margin: 0px;
+	margin: 0;
 	padding: 0px;
 }
 
-.dri_search_save_submit_button {	
+.dri_search_save_submit_button {
+	width: 230px;
 	box-shadow: 1px 1px 4px  #f0f0f0;
-	margin: 25px 0 0 0;
-	padding: 4px 10px 4px 10px;
+	margin: 15px 0 0 0;
+	padding: 7px 10px 7px 10px;
 	float: right;
 	border: none;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
-	color: #808082;
-	background-color: #F0F0F0;
-	border: 1px solid #D9DADB;
+	color: #fff;
+	background-color: #288DC0;
 }
 
 .dri_search_save_submit_button:hover {
-	background-color: #E0E0E0;
+	background-color: #0071A6;
 	cursor: pointer;
 }
 /*-------------- Warning Messages --------------*/
@@ -939,7 +939,10 @@ li.empty  {
 	color: #2F2F2F;
 	background: image-url('dri/arrow_black.png') no-repeat;
 }
-
+.dri_welcome_block p.dri_home_link a:hover {
+	color: #288DC0;
+	background: image-url('dri/arrow_black_over.png') no-repeat;
+}
 .dri_home_title h2 {
 	margin: 0 0 0 0;
 	padding: 0 0 0 0;
