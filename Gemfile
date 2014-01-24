@@ -32,6 +32,8 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-cookie-rails'
 
+gem 'remotipart'
+
 gem 'rest-client'
 
 # static pages
