@@ -24,8 +24,7 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/file' => 'assets#show', :via => :get, :as => :object_file
   match 'objects/:id/file' => 'assets#create', :via => :post, :as => :new_object_file
   match '/privacy' => 'static_pages#privacy', :via => :get
-  match '/about' => 'static_pages#about', :via => :get
-  match '/contact' => 'static_pages#contact', :via => :get
+  match '/workspace' => 'static_pages#workspace', :via => :get
   #required for hydra-core/lib/hydra/controller/controller_behavior.rb and lib/blacklight/controller.rb
   match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 
