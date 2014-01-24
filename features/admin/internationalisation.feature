@@ -33,7 +33,8 @@ Scenario Outline: Changing from Language set in the profile to a different Langu
   Given my browser language is "<lang>"
   Given I am logged in as "<lang_user>" with language "<lang_profile_set_to>"
   Then I should see the language "<lang_profile_set_to>"
-  When I follow the link to view my account
+  When I follow the link to my workspace
+  And I follow the link to view my account
   And I follow the link to edit my account
   Then I should see the edit page
   When I change my language to "<lang_new>"
