@@ -365,6 +365,7 @@ GEM
     redis (3.0.6)
     redis-namespace (1.4.1)
       redis (~> 3.0.4)
+    remotipart (1.2.1)
     resque (1.25.1)
       mono_logger (~> 1.0)
       multi_json (~> 1.0)
@@ -534,6 +535,7 @@ DEPENDENCIES
   rb-fchange
   rb-fsevent
   rb-inotify
+  remotipart
   rest-client
   rspec-rails
   rvm
