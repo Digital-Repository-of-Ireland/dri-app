@@ -338,8 +338,6 @@ GEM
       activesupport (= 3.2.13)
       bundler (~> 1.0)
       railties (= 3.2.13)
-    rails-pulse (0.5.1)
-      rails
     rails_config (0.3.3)
       activesupport (>= 3.0)
     railties (3.2.13)
@@ -532,7 +530,6 @@ DEPENDENCIES
   poltergeist (>= 1.4.1)
   railroady
   rails (= 3.2.13)
-  rails-pulse
   rails_config
   rb-fchange
   rb-fsevent
