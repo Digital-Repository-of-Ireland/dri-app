@@ -12,47 +12,49 @@
     <meta http-equiv="cleartype" content="on">
 
     <title><%= h(@page_title || application_name) %></title>
-    
+
     <link href="<%= opensearch_catalog_path(:format => 'xml', :only_path => false) %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
-    
+
     <%= favicon_link_tag asset_path('favicon.ico') %>
-    
+
 
         <%= stylesheet_link_tag "dri/dri_layouts" %>
-    
+
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
-    <%= raw(render_head_content) %> 
-    
+    <%= raw(render_head_content) %>
+
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    
+
     <%= favicon_link_tag asset_path('favicon.ico') %>
-  
+
     <%= analytics_init if Rails.env.production? %>
 
+    <%= render :partial => 'shared/statcounter' if Rails.env.production? %>
+
   </head>
-  
+
   <% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
-  
+
   <body>
-    
+
     <div id="dri_wrapper_id" class="block1 dri_wrapper">
-      
+
       <%= render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
-      
+
       <%= render :partial => 'shared/header_navbar_public' %>
-      
+
       <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div><!-- close ajax-modal -->
- 
+
 	  <% if query_has_constraints? %>
       	<%= render 'constraints' %>
       <% else %>
-		<div id="dri_facet_restrictions_container_id" 
+		<div id="dri_facet_restrictions_container_id"
         class="dri_facet_restrictions_container">
-			<ul id="dri_facet_restrictions_links_id" 
+			<ul id="dri_facet_restrictions_links_id"
             class="dri_facet_restrictions_links empty">
 		  		<li class="dri_invisible">&nbsp;</li>
 
@@ -61,21 +63,21 @@
 		<!-- close dri_facet_restrictions_container -->
       <% end %>
       <%= render :partial=>'/flash_msg' %>
-           
+
       <div class="dri_main_content_container">
       <% unless (controller_name == 'catalog' && action_name == 'index') || (controller_name == 'catalog' && action_name == 'show') %>
 
       <% end %>
-      
+
       <%= yield %>
       </div>
       <!-- close dri_main_content_container -->
-            
+
 
     <%= render :partial => 'shared/footer' %>
-     
+
     </div><!-- close dri_wrapper -->
-    
+
   </body>
-  
+
 </html>
