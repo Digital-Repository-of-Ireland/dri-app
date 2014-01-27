@@ -39,6 +39,9 @@ gem 'rest-client'
 # static pages
 gem 'high_voltage', '~> 2.1.0'
 
+# is it working fork
+gem 'is_it_working-cbeer'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -61,6 +64,8 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'better_errors'
   gem 'binding_of_caller'
+
+  gem "zeus", require: false
 
   gem 'ci_reporter'
 end
