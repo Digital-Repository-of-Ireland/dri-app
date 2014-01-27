@@ -37,6 +37,9 @@ module LinkTranslator
     when /cancel my account/
       "cancel_account"
 
+    when /my workspace/
+      "workspace"
+
     when /sign up/
       "signup"
 

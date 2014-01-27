@@ -32,13 +32,12 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-cookie-rails'
 
+gem 'remotipart'
+
 gem 'rest-client'
 
 # static pages
 gem 'high_voltage', '~> 2.1.0'
-
-# provide feedback to upstream proxy
-gem 'rails-pulse'
 
 # Gems used only for assets and not required
 # in production environments by default.

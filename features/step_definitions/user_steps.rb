@@ -121,6 +121,7 @@ end
 
 Then /^I should be logged in as "(.*?)"$/ do |login|
   step 'I should be logged in'
+  click_link('workspace')
   click_link('view_account')
   page.should have_content(login)
 end

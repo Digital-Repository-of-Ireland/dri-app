@@ -16,7 +16,7 @@ en:
         featured_collections: "Featured Collections"
         new_collections: "New Collections"
         newly_added: "Newly Added"
-        
+
       lang:
         en: English
         ga: Irish
@@ -76,7 +76,7 @@ en:
       resque: "Resque Server"
       usergroups: "Users & Groups"
       sitemap: Sitemap
-      account: My Workspace
+      workspace: My Workspace
     views:
       catalog:
         buttons:
@@ -306,6 +306,9 @@ en:
           download: download
           listen: listen
           view_record: "View Record"
+      static:
+        workspace:
+          account: Account
       alt_tags:
         cover_image: "Cover Image"
     vocabulary:
