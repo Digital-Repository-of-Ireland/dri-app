@@ -62,18 +62,6 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
 
-  # guard - autorun of tests during development cycle
-  gem 'guard'
-  gem 'guard-cucumber'
-  gem 'guard-spork'
-  gem 'guard-bundler'
-  gem 'guard-yard'
-  gem 'guard-compass'
-  gem 'guard-livereload'
-  gem 'rb-inotify', :require => false
-  gem 'rb-fsevent', :require => false
-  gem 'rb-fchange', :require => false
-
   gem 'ci_reporter'
 end
 
