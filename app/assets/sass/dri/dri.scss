@@ -439,7 +439,6 @@ a {
 	list-style: none;
 	text-decoration: none;	
 	
-	
 }
 .dri_crumbtrail_nav  li a {
 	list-style: none;
@@ -463,7 +462,6 @@ a {
 
 /*-------------- Search/Sort features --------------*/
 .dri_search_features_nav_container {
-	float: left;
 	margin: 0;
 	padding: 0;
 }
@@ -492,17 +490,17 @@ a {
 
 .dri_search_term_text_input {
 	margin: 25px 0 0 0;
-	width: 146px;
+	width: 153px;
 	padding: 5px 10px 5px 10px;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 	border: 1px solid #E1E1E1;
 	color: #808080;
 	}
 
 .dri_search_term_text_submit_button {
-	margin: 25px 0 0 6px;
-	padding: 4px 8px 4px 6px;
+	margin: 25px 0 0 0;
+	padding: 5px 8px 6px 8px;
 	background-color: #808082;
 	border: none;
 	color: #FFF;
@@ -1211,47 +1209,7 @@ li.empty  {
 	color: #288DC0;
 }
 
-/*-------------- Footer navigation --------------*/
-.dri_main_footer_navigation {
-	margin: 100px 0 100px 0;
-	padding: 0px;
-	border-top: 1px solid #D9DADB;
-	height: 40px;
-}
-.dri_main_footer_navigation ul {
-	margin: 0px;
-	padding: 0px;
-}
 
-
-.dri_main_footer_navigation li {
-	float: left;
-	margin: 10px 0 10px 0;
-	padding: 0 20px 0 20px;
-	font-size: 100%;
-	font-weight: normal;
-	list-style: none;
-	text-decoration: none;
-	border-right: 1px solid #D9DADB;	
-}
-.dri_main_footer_navigation li a {
-	list-style: none;
-	text-decoration: none;
-	color: #808082;
-	margin: 0;
-	padding: 0;
-	display: block;
-}
-
-.dri_main_footer_navigation li a:hover {
-	text-decoration: underline;
-}
-.dri_main_footer_navigation li.selected {
-	text-decoration: underline;
-}
-.dri_main_footer_navigation li.no_border_right {
-		border-right: none;	
-}
 
 
 /*-------------- Dialog Box --------------*/
@@ -1561,5 +1519,45 @@ ul.dri_collection_institutes_list li a {
 
 
 
+/*-------------- Footer navigation --------------*/
+.dri_main_footer_navigation {
+	margin: 100px 0 100px 0;
+	padding: 0px;
+	border-top: 1px solid #D9DADB;
+	height: 40px;
+}
+.dri_main_footer_navigation ul {
+	margin: 0px;
+	padding: 0px;
+}
 
+
+.dri_main_footer_navigation li {
+	float: left;
+	margin: 10px 0 10px 0;
+	padding: 0 20px 0 20px;
+	font-size: 100%;
+	font-weight: normal;
+	list-style: none;
+	text-decoration: none;
+	border-right: 1px solid #D9DADB;	
+}
+.dri_main_footer_navigation li a {
+	list-style: none;
+	text-decoration: none;
+	color: #808082;
+	margin: 0;
+	padding: 0;
+	display: block;
+}
+
+.dri_main_footer_navigation li a:hover {
+	text-decoration: underline;
+}
+.dri_main_footer_navigation li.selected {
+	text-decoration: underline;
+}
+.dri_main_footer_navigation li.no_border_right {
+		border-right: none;	
+}
 
