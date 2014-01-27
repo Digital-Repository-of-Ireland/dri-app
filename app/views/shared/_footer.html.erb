@@ -16,6 +16,7 @@
         <%= link_to t('dri.headerlinks.sitemap'), '#', :id => "sitemap" %>
       </span></li>
 		</ul>
-	</nav>
+  </nav>
+  <%= render :partial => 'shared/statcounter' if Rails.env.production? %>
 </footer>
 <!-- close dri_main_footer_id -->
