@@ -21,6 +21,9 @@ class InstitutesController < ApplicationController
     file_upload = params[:institute][:logo]
     @inst.add_logo(file_upload, {:name => params[:institute][:name]})
 
+    @inst.url = params[:institute][:url]
+    @inst.save
+
     @institutes = Institute.find(:all)
 
     if params[:object]
