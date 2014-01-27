@@ -70,17 +70,21 @@
 <!-- close dri_main_nav_container -->
 
 <!-- no sub navs for the moment - hidden -->
+<% if current_user %>
 <div id="dri_sub_nav_container_id" class="dri_sub_nav_container dri_no_display">
 	<nav id="dri_sub_nav_id" class="dri_sub_nav">
 		<ul id="dri_main_nav_links_id"
 			class="dri_sub_nav_links dri_nav_collections">
-			<li><a href="#">Assigned Collections </a></li>
-			<li class="selected no_border_right"><a href="#">My
-					Objects</a></li>
+	
+  <li><%= link_to t('dri.application.views.static.workspace.account'), user_group.user_path(current_user), :id => "view_account" %></li>
+  <li><%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path %></li>
+  <li><%= link_to t('blacklight.header_links.search_history'), search_history_path %></li>
+  <li><%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path %></li>
+
 		</ul>
 	</nav>
 </div>
-
+<% end %>
 <!-- close dri_sub_nav_container -->
 
 <!-- no crumbtrail for the moment - hidden 	-->
