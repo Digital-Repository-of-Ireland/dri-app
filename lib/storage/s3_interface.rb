@@ -10,6 +10,8 @@ module Storage
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                           :access_key_id => Settings.S3.access_key_id,
                                           :secret_access_key => Settings.S3.secret_access_key)
+      AWS::S3::Service.buckets
+
       bucket = doc.id.sub('dri:', '')
       object_type = doc["type_tesim"][0]
       files = []
@@ -54,6 +56,7 @@ module Storage
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                           :access_key_id => Settings.S3.access_key_id,
                                           :secret_access_key => Settings.S3.secret_access_key)
+      AWS::S3::Service.buckets
 
       bucket = @object.pid.sub('dri:', '')
       files = []
@@ -87,6 +90,8 @@ module Storage
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                           :access_key_id => Settings.S3.access_key_id,
                                           :secret_access_key => Settings.S3.secret_access_key)
+      AWS::S3::Service.buckets
+
       begin
         AWS::S3::Bucket.create(bucket)
       rescue Exception => e
@@ -102,6 +107,8 @@ module Storage
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                           :access_key_id => Settings.S3.access_key_id,
                                           :secret_access_key => Settings.S3.secret_access_key)
+      AWS::S3::Service.buckets
+
       begin
         AWS::S3::Bucket.delete(bucket, :force => true)
       rescue Exception => e
@@ -117,6 +124,8 @@ module Storage
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                           :access_key_id => Settings.S3.access_key_id,
                                           :secret_access_key => Settings.S3.secret_access_key)
+      AWS::S3::Service.buckets
+
       bucket = object_id.sub('dri:', '')
       begin
         AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
@@ -132,6 +141,7 @@ module Storage
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                          :access_key_id => Settings.S3.access_key_id,
                                          :secret_access_key => Settings.S3.secret_access_key)
+      AWS::S3::Service.buckets
 
       begin
         AWS::S3::S3Object.store(filename, open(file), bucket, :access => :public_read)
@@ -148,6 +158,7 @@ module Storage
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                          :access_key_id => Settings.S3.access_key_id,
                                          :secret_access_key => Settings.S3.secret_access_key)
+      AWS::S3::Service.buckets
 
       begin
         url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
@@ -164,6 +175,7 @@ module Storage
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                          :access_key_id => Settings.S3.access_key_id,
                                          :secret_access_key => Settings.S3.secret_access_key)
+      AWS::S3::Service.buckets
 
       begin
         url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => false)
