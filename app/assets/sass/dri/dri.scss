@@ -851,8 +851,8 @@ li.empty  {
 	color: #288DC0;
 }
 
-.twiddle .dri_arrow_down {
-	background:url(../../images/dri/arrow_down.png) no-repeat center;
+.twiddle-open .dri_arrow_down {
+	background:image-url('arrow_down.png') no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
@@ -862,7 +862,7 @@ li.empty  {
 	
 }
 .twiddle .dri_arrow_up {
-	background:url(../../images/dri/arrow_up.png) no-repeat center;
+	background:image-url('arrow_up.png') no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
@@ -900,7 +900,7 @@ li.empty  {
 	text-decoration: underline;
 }
 
-.dri_facet_filters li.selected a{
+.dri_facet_filters li a.selected {
 	background-color: #E0E0E0;
 	text-decoration: none;
 }
