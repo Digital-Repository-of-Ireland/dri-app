@@ -103,11 +103,8 @@ GEM
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
       json (>= 1.7)
-    celluloid (0.15.2)
-      timers (~> 1.1.0)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
-    chunky_png (1.2.8)
     ci_reporter (1.9.1)
       builder (>= 2.1.2)
     climate_control (0.0.3)
@@ -116,10 +113,6 @@ GEM
     cocaine (0.5.3)
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.0)
-    compass (0.12.2)
-      chunky_png (~> 1.2)
-      fssm (>= 0.2.7)
-      sass (~> 3.1)
     cucumber (1.3.10)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.3)
@@ -146,14 +139,10 @@ GEM
     devise-i18n-views (0.2.8)
     diff-lcs (1.2.5)
     docile (1.1.1)
-    em-websocket (0.5.0)
-      eventmachine (>= 0.12.9)
-      http_parser.rb (~> 0.5.3)
     ensure_valid_encoding (0.5.3)
     equivalent-xml (0.4.0)
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
-    eventmachine (1.0.3)
     execjs (2.0.2)
     factory_girl (4.3.0)
       activesupport (>= 3.0.0)
@@ -168,45 +157,16 @@ GEM
     ffi (1.9.3)
     foreigner (1.6.1)
       activerecord (>= 3.0.0)
-    formatador (0.2.4)
-    fssm (0.2.10)
     gherkin (2.12.2)
       multi_json (~> 1.3)
     google-analytics-rails (0.0.4)
     gravatar-ultimate (2.0.0)
       activesupport (>= 2.3.14)
       rack
-    guard (2.2.5)
-      formatador (>= 0.2.4)
-      listen (~> 2.1)
-      lumberjack (~> 1.0)
-      pry (>= 0.9.12)
-      thor (>= 0.18.1)
-    guard-bundler (2.0.0)
-      bundler (~> 1.0)
-      guard (~> 2.2)
-    guard-compass (1.0.0)
-      compass (>= 0.10.5)
-      guard (~> 2.0)
-    guard-cucumber (1.4.1)
-      cucumber (>= 1.2.0)
-      guard (>= 1.1.0)
-    guard-livereload (2.1.0)
-      em-websocket (~> 0.5)
-      guard (~> 2.0)
-      multi_json (~> 1.8)
-    guard-spork (1.5.1)
-      childprocess (>= 0.2.3)
-      guard (>= 1.1)
-      spork (>= 0.8.4)
-    guard-yard (2.1.0)
-      guard (>= 1.1.0)
-      yard (>= 0.7.0)
     high_voltage (2.1.0)
     hike (1.2.3)
     hooks (0.3.3)
     http_accept_language (1.0.2)
-    http_parser.rb (0.5.3)
     hydra-access-controls (6.4.0)
       active-fedora (~> 6.6)
       activesupport
@@ -235,6 +195,7 @@ GEM
     i18n (0.6.1)
     i18n_sync (0.5.1)
       ya2yaml
+    is_it_working-cbeer (1.0.16)
     iso-639 (0.2.4)
     it (0.2.5)
       actionpack (>= 3.0.0)
@@ -259,12 +220,7 @@ GEM
     kgio (2.8.1)
     launchy (2.4.2)
       addressable (~> 2.3)
-    listen (2.4.0)
-      celluloid (>= 0.15.2)
-      rb-fsevent (>= 0.9.3)
-      rb-inotify (>= 0.9)
     logger (1.2.8)
-    lumberjack (1.0.4)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -316,10 +272,6 @@ GEM
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
     polyglot (0.3.3)
-    pry (0.9.12.4)
-      coderay (~> 1.0)
-      method_source (~> 0.8)
-      slop (~> 3.4)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -349,11 +301,6 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.12.0)
     rake (10.1.1)
-    rb-fchange (0.0.6)
-      ffi
-    rb-fsevent (0.9.4)
-    rb-inotify (0.9.3)
-      ffi (>= 0.5.0)
     rdf (1.1.1.1)
     rdf-rdfxml (1.0.1)
       rdf (>= 1.0)
@@ -427,7 +374,6 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
-    slop (3.4.7)
     solrizer (3.1.1)
       activesupport
       daemons
@@ -435,7 +381,6 @@ GEM
       nokogiri
       stomp
       xml-simple
-    spork (0.9.2)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -463,7 +408,6 @@ GEM
     syntax (1.2.0)
     thor (0.18.1)
     tilt (1.4.1)
-    timers (1.1.0)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -490,6 +434,8 @@ GEM
       nokogiri (~> 1.3)
     ya2yaml (0.31)
     yard (0.8.7.3)
+    zeus (0.13.3)
+      method_source (>= 0.6.7)
     zipruby (0.3.6)
 
 PLATFORMS
@@ -509,17 +455,11 @@ DEPENDENCIES
   factory_girl_rails
   faker
   google-analytics-rails
-  guard
-  guard-bundler
-  guard-compass
-  guard-cucumber
-  guard-livereload
-  guard-spork
-  guard-yard
   high_voltage (~> 2.1.0)
   http_accept_language (~> 1.0.2)
   hydra-head (= 6.4.0)
   i18n_sync
+  is_it_working-cbeer
   it
   jettywrapper
   jquery-cookie-rails
@@ -532,9 +472,6 @@ DEPENDENCIES
   railroady
   rails (= 3.2.13)
   rails_config
-  rb-fchange
-  rb-fsevent
-  rb-inotify
   remotipart
   rest-client
   rspec-rails
@@ -552,3 +489,4 @@ DEPENDENCIES
   unicorn
   user_group!
   yard
+  zeus
