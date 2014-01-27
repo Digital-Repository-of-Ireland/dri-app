@@ -1516,8 +1516,26 @@ ul.dri_collection_institutes_list li a {
 	
 }
 
-
-
+/*-------------- General Buttons --------------*/
+.dri_grey_button {
+	color: #FFF;
+	border: none;
+	background-color: #B3B3B3;
+	margin: 20px 0 20px 0;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	float: left;
+	text-align: center;
+}
+.dri_grey_button a {
+	padding: 4px 0 0 0;
+	color: #FFF;
+	width: 230px;
+	height: 22px;display: block;
+}
+.dri_grey_button a:hover {
+	 background-color: #999999;
+}
 
 /*-------------- Footer navigation --------------*/
 .dri_main_footer_navigation {
