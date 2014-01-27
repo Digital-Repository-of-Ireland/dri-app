@@ -116,6 +116,10 @@ en:
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         edit: "Edit Collection"
         index:
+          objects: "Objects"
+          object_count:
+            one: "%{count}"
+            other: "%{count}"
           items:
             one: "%{count} item"
             other: "%{count} items"
