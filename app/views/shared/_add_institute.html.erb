@@ -1,4 +1,4 @@
-<%= form_for(@inst, :url => institutes_path(:format => :js), remote: true) do |f| %>
+<%= form_for(@inst, remote: true) do |f| %>
   <%= hidden_field_tag 'object', @object.id %>
   <%= f.label :name %>:
   <%= f.text_field :name %><br />

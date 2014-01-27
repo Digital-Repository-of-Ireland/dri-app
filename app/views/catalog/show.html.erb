@@ -61,7 +61,7 @@
         <% end %>
 
         <div class="dri_bookmark_object">
-          <input type="checkbox" name="vehicle" value="Bike">Bookmark Object<!-- needs localisation -->
+          <%= render_show_doc_actions %>
         </div>
         <!-- close dri_bookmark_object -->
 
@@ -79,6 +79,7 @@
           <li><%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :class => 'lightboxLink'} %></li>
           <li><a href="">Librarian view</a></li><!-- needs localisation -->
         </ul>
+
 
         <% if signed_in? && (can?(:edit, @document)) %>
           <div class="dri_objecttools_title">

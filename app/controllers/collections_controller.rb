@@ -73,7 +73,7 @@ class CollectionsController < CatalogController
     @institutes = Institute.find(:all)
     @inst = Institute.new
 
-    @collection_institutes = get_collection_institutes(@object)
+    @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
 
     respond_to do |format|
       format.html

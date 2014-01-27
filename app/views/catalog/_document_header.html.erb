@@ -7,9 +7,13 @@
     <% if document[:cover_image_tesim] && document[:cover_image_tesim].first %>
       <%= image_tag document[:cover_image_tesim].first, :width=>"200", :height=>"80" %>
     <% elsif !document[:collection_tesim].blank? %>
-      <!-- TODO: display the collection cover_image if the object is in a collection with cover image -->
-      <% image = "dri/formats/#{document[:type_tesim].first}.png".downcase %>
-      <%= image_tag image, :width=>"200", :height=>"80" %>
+      <% collection = governing_collection_solr(document) %>
+      <% if collection['cover_image_tesim'] && collection['cover_image_tesim'].first %>
+        <%= image_tag collection['cover_image_tesim'].first, :width=>"200", :height=>"80" %>
+      <% else %>
+        <% image = "dri/formats/#{document[:type_tesim].first}.png".downcase %>
+        <%= image_tag image, :width=>"200", :height=>"80" %>
+      <% end %>
     <% else %>
       <% image = "dri/formats/#{document[:type_tesim].first}.png".downcase %>
       <%= image_tag image, :width=>"200", :height=>"80" %>
