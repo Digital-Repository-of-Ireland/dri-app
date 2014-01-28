@@ -1,8 +1,11 @@
 <%= form_for(@inst, remote: true) do |f| %>
+  <%= hidden_field_tag 'object', @object.id %>
   <%= f.label :name %>:
   <%= f.text_field :name %><br />
 
-  <%= f.file_field :logo %>
+  <%= f.file_field :logo %><br />
 
+  <%= f.label :url %>
+  <%= f.text_field :url %>
   <%= f.submit t('dri.views.collection.institute.add') %>
 <% end %>

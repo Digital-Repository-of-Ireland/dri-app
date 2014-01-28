@@ -1,43 +1,33 @@
 
 
-
 <% @collections.each do |collection| %>
 <article class="block5">
-<div class="dri_content_block">
-<h1><%= link_to collection[:title], collection_path(:id => collection[:id]) %>
-  </h1>
-  <div class="dri_image">
-    <% if collection[:cover_image] %>
-      <%= image_tag(collection[:cover_image], :width=>"200", :height=>"113") %>
-      <% else %>
-      <% image = "dri/formats/collection.png".downcase %>
-      <a href="#">
-        <%= image_tag image, :width=>"200", :height=>"113" %>
-      </a>
-    <% end %>
-  </div>
-
-
-
-
-<h2 class-"dri_editor"=""><!-- Rights -->
-  <%= collection[:rights] %>
-</h2>
-
-<h2 class="dri_editor"><!-- Subjects -->
-
-</h2>
-<div class="dri_icon">
-<span class="dri_icon_image">
-<%= image_tag("views_icon.png", :width=>"21", :height=>"12") %> <%= t('dri.views.collection.index.items', :count => @collection_counts[collection[:id]]) %>
-</span>
-</div>
-<!-- close dri_icon -->
-
-</div><!-- close content_block -->
-</article>
-
+					<div class="dri_content_block_collection">
+					    <% if collection[:cover_image] %>
+     	 					<%= image_tag(collection[:cover_image], :class=>"dri_image", :width=>"228", :height=>"127") %>
+      					<% else %>
+      						<% image = "dri/formats/collection.png".downcase %>
+      						<a href="#">
+        						<%= image_tag image, :width=>"228", :height=>"127" %>
+      						</a>
+    					<% end %>
+    					<h1><%= link_to collection[:title], collection_path(:id => collection[:id]) %></h1>
+    					
+                        <h2>
+							<a href=""><!-- need callback to get search on rights -->
+								<%= collection[:rights] %>
+							</a>
+						</h2>
+						<div class="dri_num_objects">
+							<span class="dri_object_text">Objects</span> <span class="dri_object_text_num"><a href="#"><%= t('dri.views.collection.index.object_count', :count => @collection_counts[collection[:id]]) %></a></span>
+						</div>
+						<!-- close dri_num_objects -->
+					</div>
+					<!-- close content_block -->
+				</article>
 <% end %>
+
+
 
      <% if @collections.blank? %>
        <p><%= t('dri.views.collection.index.no_collections.public') %></p>

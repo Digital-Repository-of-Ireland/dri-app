@@ -25,6 +25,15 @@ module ApplicationHelper
     end
   end
 
+  def governing_collection_solr( doc )
+    if doc['is_governed_by_ssim']
+      id = doc['is_governed_by_ssim'][0].gsub(/^info:fedora\//, '')
+      solr_query = "id:#{id}"
+      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
+    end
+    collection[0]
+  end
+
   def get_partial_name( object )
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
@@ -58,7 +67,7 @@ module ApplicationHelper
     name = id.sub(':','_')
     return name
   end
-  
+
   def count_published_items_in_collection collection_id
     solr_query = "status_ssim:published AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
                  "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
@@ -78,7 +87,7 @@ module ApplicationHelper
     @type_counts = {}
     Settings.data.types.each do |type|
       @type_counts[type] = { :published => count_items_in_collection_by_type( id, type, "published" ) }
-      
+
       if signed_in? && (can? :edit, id)
         @type_counts[type][:draft] = count_items_in_collection_by_type( id, type, "draft" )
       end

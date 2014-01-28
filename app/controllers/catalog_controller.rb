@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'blacklight/catalog'
+require 'institute_helpers'
 
 # Blacklight catalog controller
 #
@@ -58,7 +59,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('status', :facetable), :label => 'Record Status'
     config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :label_permission
     config.add_facet_field "master_file_isi", :label => 'Master File Access',  :helper_method => :label_permission
-    #} 
+    #}
     config.add_facet_field solr_name('subject', :facetable), :label => 'Subjects', :limit => 20
     config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
     config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'

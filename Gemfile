@@ -34,13 +34,15 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-cookie-rails'
 
+gem 'remotipart'
+
 gem 'rest-client'
 
 # static pages
 gem 'high_voltage', '~> 2.1.0'
 
-# provide feedback to upstream proxy
-gem 'rails-pulse'
+# is it working fork
+gem 'is_it_working-cbeer'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -65,17 +67,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
 
-  # guard - autorun of tests during development cycle
-  gem 'guard'
-  gem 'guard-cucumber'
-  gem 'guard-spork'
-  gem 'guard-bundler'
-  gem 'guard-yard'
-  gem 'guard-compass'
-  gem 'guard-livereload'
-  gem 'rb-inotify', :require => false
-  gem 'rb-fsevent', :require => false
-  gem 'rb-fchange', :require => false
+  gem "zeus", require: false
 
   gem 'ci_reporter'
 end

@@ -93,8 +93,8 @@ module FacetsHelper
   # with class, and 'remove' button.
   def render_selected_facet_value(facet_solr_field, item)
     #Updated class for Bootstrap Blacklight.
-    content_tag(:span, render_facet_value(facet_solr_field, item, :suppress_link => true), :class => "selected") +
-      link_to(content_tag(:i, '', :class => "icon-remove") + content_tag(:span, '[remove]', :class => 'hide-text'), remove_facet_params(facet_solr_field, item, params), :class=>"remove")
+    
+      link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), remove_facet_params(facet_solr_field, item, params), :class=>"selected")
   end
 
   # Overwriting this helper so that values containing colons are automatically enclosed in double-quoted strings,

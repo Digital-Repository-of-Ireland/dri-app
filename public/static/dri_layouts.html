@@ -8,7 +8,7 @@
 <title>DRI Generic Grid</title>
 
 <link rel="stylesheet" type="text/css" media="screen"
-	href="stylesheets/dri/dri_layouts.css">
+	href="/assets/dri/dri_layouts.css">
 <script src="javascripts/jquery-1.10.2.js"></script>
 <script src="javascripts/jquery-ui.js"></script>
 <script src="javascripts/dropit/dropit.js"></script>
@@ -187,17 +187,6 @@
 				</form>
 				<!-- close dri_search_term_input_form -->
 
-				<div id="dri_search_save_input_id" class="dri_search_save_input">
-	
-					<form id="dri_search_save_input_form_id"
-						class="dri_search_save_input_form">
-						<button id="dri_search_save_submit_button_id" type="submit"
-							class="dri_search_save_submit_button" id="search">Save
-							Current Search</button>
-					</form>
-					<!-- close dri_search_term_input_form -->
-	
-				</div>
 			</div>
 			<!-- close dri_search_term_input -->
 
@@ -209,9 +198,18 @@
 				displaying information. The dialog window can be moved, resized and
 				closed with the 'x' icon.</div>
 			<!-- close dri_search_save_input -->
-
-		</div>
+	</div>
 		<!-- close dri_search_features_nav_container -->
+        		<div id="dri_search_save_input_id" class="dri_search_save_input">
+					<form id="dri_search_save_input_form_id"
+						class="dri_search_save_input_form">
+						<button id="dri_search_save_submit_button_id" type="submit"
+							class="dri_search_save_submit_button" id="search">Save
+							Current Search</button>
+					</form>
+					
+
+				</div><!-- close dri_search_term_input_form -->
 
 		<!-- facet restrictions block showing term(s) and remove links for facet filtered content -->
 		<div id="dri_facet_restrictions_container_id" 
@@ -287,14 +285,10 @@
 									<div class="dri_title_dropdown">Subjects <span class="dri_arrow_down">&nbsp;</span></div>  <i class="icon-chevron"></i>
 								</h5>
 								<ul>
-									<li><a
-										href="#">Amhráin
+									<li><a href="#">Amhráin
 											na farraige (<b>1</b>)
 									</a></li>
-									<li class="selected"><a
-										href="#">An
-											Capall - Bád Seoil (<b>1</b>)
-									</a></li>
+									<li><a class="selected" href="#">An Capall - Bád Seoil (<b>1</b>)</a></li>
 									<li><a
 										href="#">An
 											Capall - Sailboat (<b>1</b>)

@@ -1,28 +1,29 @@
 
---- 
-ga: 
-  dri: 
-    application: 
-      cookies: 
+---
+ga:
+  dri:
+    application:
+      cookies:
         accept: "Glac le agus folaigh an teachtaireacht"
         confirm: "Meastar go nglacann tú le polasaí fhianáin an TDÉ ar chlárú duit agus gach uair a shíníonn tú isteach."
         header: "Fógra tábhachtach faoi fhianáin"
         message: "Baineann Taisclann Dhigiteach na hÉireann úsáid as fianáin chun rialú rochtana ar acmhainní digiteacha a chur i bhfeidhm. Más mian leat diúltú d'fhianáin a fháil ó TDÉ, cas as na fianáin don suíomh idirlín seo i sainroghanna do bhrabhsálaí. Tabhair d'aire nach mbeidh úsáideoirí a dhiúltaíonn in ann roinnt de ghnéithe na Taisclainne Digití a úsáid. Le tuilleadh eolais a fháil féach ar ár %{privacy_statement:ráiteas um príobháideachas} agus ar na leathanaigh a bhaineann le %{cookies_help:treoir faoi fhianáin}."
-      home: 
-        introtext: 
+      home:
+        introtext:
           admin: "Dea-scéala a chairde! Leathanach bréige anseo le líonadh isteach agus le deisiú!"
-          public: "Welcome to the DRI repository."
-      lang: 
+          public: "Fáilte chuig Taisclann an TDÉ."
+      lang:
         en: Béarla
         ga: Gaeilge
       locale: Teanga
-    data: 
-      types: 
-        audio: Audio
-        image: Images
-        pdfdoc: Documents
-    flash: 
-      alert: 
+    data:
+      types:
+        Image: Íomhánna
+        MovingImage: Video
+        Sound: Audio
+        Text: Doiciméid
+    flash:
+      alert:
         create_permission: "Níl cead agat an doiciméad seo a chruthú."
         edit_permission: "Níl cead agat an doiciméad seo a chur in eagar."
         invalid_file_type: "Rabhadh: Is cosúil nach cineál bailí comhaid é an comhad seo"
@@ -33,12 +34,12 @@ ga:
         read_permission: "Níl cead agat an doiciméad seo a léamh."
         unknown_permission: "Ní ghlactar leis an leibhéal ceada atá agat."
         virus_detected: "Aimsíodh víreas sa chomhad a uaslódáladh: %{virus}"
-      error: 
+      error:
         no_type_specified: "Ní mór cineál oibiachta bailí a shonrú"
         not_created: "Unable to create. Check set permissions"
         not_updated: "Níor tugadh %{item} cothrom le dáta. Seiceáil na ceadanna socraithe"
         validation_errors: "Earráidí Bailíochtaithe: %{error}"
-      notice: 
+      notice:
         added_to_collection: "Cuireadh an oibiacht leis an mbailiúchán."
         collection_created: "D'éirigh leat an oibiacht bhailiúcháin a chruthú."
         collection_deleted: "Collection has been deleted."
@@ -57,9 +58,9 @@ ga:
         specify_valid_file: "Ní mór duit comhad bailí a shonrú le huaslódáil."
         specify_xml_file: "Ní mór duit comhad XML a shonrú."
         updated: "Tugtha cothrom le dáta %{item}"
-    headerlinks: 
+    headerlinks:
       about: Eolas
-      collections: 
+      collections:
         admin: "Mo Chuid Bailiúchán"
         public: Bailiúchán
       contact: Teagmháil
@@ -69,34 +70,36 @@ ga:
       privacy: "Polasaí um Príobháideachas agus Fianáin"
       resque: "Resque Server"
       usergroups: "Úsáideoirí agus Grúpaí"
-    views: 
-      catalog: 
-        buttons: 
+    views:
+      catalog:
+        buttons:
           add_to_collection: "Cuir leis an mbailiúchán"
           remove_from_collection: "Bain ón mbailiúchán"
-        forms: 
+        forms:
           audio_file: "Comhad Fuaime"
+          file: File
           image_file: Image
           metadata: Meiteashonraí
           pdf_file: PDF
           video_file: Video
-        headers: 
+        headers:
           files: Comhaid
-        legends: 
+        legends:
           no_files: "Níor uaslódáladh comhad ar bith."
           no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo."
+          no_surrogates: "No surrogates are available."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
-        links: 
+        links:
           download: Íoslódáil
           edit_this_record: "Cuir an taifead seo in eagar"
           listen: Éist
           view_metadata: Féach
-        sidebar: 
+        sidebar:
           more_like_this: "Tuilleadh mar seo"
           nav_header: "Uirlisí Eagarthóireachta"
-      collection: 
-        buttons: 
+      collection:
+        buttons:
           clear_collection: "Glan mar Bhailiúchán Reatha"
           create_collection: "Cruthaigh Bailiúchán"
           delete_collection: "Delete Collection"
@@ -105,25 +108,28 @@ ga:
           set_collection: "Socraigh mar Bhailiúchán Reatha"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         edit: "Cuir an bailiúchán in eagar"
-        index: 
-          items: 
+        index:
+          items:
             one: "%{count} mír"
             other: "%{count} míreanna"
-          no_collections: 
+          no_collections:
             admin: "Níl bailiúchán ar bith agat go fóill."
             public: "Níl bailiúchán ar bith go fóill."
-          title: 
+          title:
             admin: "Mo Chuid Bailiúchán"
             public: Bailiúchán
-        legends: 
+        institute:
+          add: "Add a new Institute"
+          associate: "Associate Institute"
+        legends:
           governed_objects: "Oibiachtaí Rialaithe"
           members: Baill
           objects: "Oibiachtaí sa bhailiúchán"
-        new: 
+        new:
           title: "Bailiúchán Nua"
-      devise: 
+      devise:
         locale: Teanga
-      exceptions: 
+      exceptions:
         access_denied: "Thriail tú oibríocht nach bhfuil cead agat a chur i bhfeidhm."
         internal_error: "Fuips. Chuaigh rud éigin amú! Bain triail eile as níos déanaí le do thoil, nó téigh i dteagmháil le support@dri.ie"
         invalid_asset: "Ní féidir sócmhainn a chruthú. Leasaigh na hearráidí le do thoil, agus bain triail eile as."
@@ -134,22 +140,22 @@ ga:
         invalid_object_type: "Shonraigh tú cineál neamhbhailí oibiachta digití."
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
-      fields: 
+      fields:
         contributor: Contributor
-        contributors: Contributors
+        contributors: Rannpháirtithe
         cover_image: "Upload a cover image"
         coverage: Coverage
         coverages: Coverages
         creation_date: "Dáta Cruthaithe"
         creation_dates: "Creation Dates"
         creator: Creator
-        creators: Creators
-        date: Date
+        creators: Cruthaitheoirí
+        date: Dáta
         dates: Dates
         description: "Cur Síos"
-        format: Format
+        format: Formáid
         formats: Formats
-        geographical_coverage: "Subject (Place)"
+        geographical_coverage: "Ábhar (Áit)"
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
         geographical_coverages: "Subjects (Places)"
@@ -158,9 +164,9 @@ ga:
         identifiers: Identifiers
         language: Teanga
         languages: Languages
-        name_coverage: "Subject (Name)"
+        name_coverage: "Ábhar (Ainm)"
         name_coverages: "Subjects (Names)"
-        published_date: "Published/Broadcast Date"
+        published_date: "Dáta Foilsithe/Craolta"
         published_dates: "Published/Broadcast Dates"
         publisher: Foilsitheoir
         relation: Relation
@@ -174,39 +180,39 @@ ga:
         subjects: Ábhair
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
-        temporal_coverage: "Subject (Era)"
+        temporal_coverage: "Ábhar (Tréimhse)"
         temporal_coverage_eng: "Subject (Era) in English"
         temporal_coverage_gle: "Subject (Era) in Irish"
         temporal_coverages: "Subjects (Eras)"
         title: Teideal
         type: Type
         types: Types
-      ingest: 
-        buttons: 
+      ingest:
+        buttons:
           continue: "Lean ort"
           delete: Scrios
           new_collection: "Bailiúchán Nua"
           reset: Athshocraigh
-        forms: 
+        forms:
           collection_prompt: "Roghnaigh Bailiúchán"
           ingest_method_prompt: "Roghnaigh modh glactha isteach"
           object_type_prompt: "Roghnaigh cineál oibiachta"
           status_prompt: "Select status"
           title: "Cuir oibiacht dhigiteach nua leis"
-        legends: 
+        legends:
           upload_caption: "Glac comhad XML meiteashonraí isteach."
           upload_legend: "Uaslódáil Meiteashonraí:"
-        steps: 
+        steps:
           collection: "Roghnaigh Bailiúchán"
           ingest_method: "Roghnaigh modh glactha isteach"
           input: Ionchuir
           object_type: "Roghnaigh cineál oibiachta"
           upload: "Uaslódáil comhad meiteashonraí"
-      metadata: 
+      metadata:
         dublin_core: "Dublin Core"
         qualified_dublin_core: "Qualifed Dublin Core"
-      objects: 
-        access_controls: 
+      objects:
+        access_controls:
           accessible_master_file: "Máistirchomha(i)d Inrochtana"
           date: "Dáta: "
           depositor: Taisceoir
@@ -228,17 +234,17 @@ ga:
           registered: "Logáilte Isteach"
           restricted: Teoranta
           search: "Rochtain Cuardaigh"
-        buttons: 
+        buttons:
           add_to_collection: "Cuir leis an mbailiúchán"
           replace_master: "Athchuir Máistirchomhad"
           replace_metadata: "Uaslódáil Meiteashonraí"
           save: "Sábháil Athruithe"
           upload_master: "Uaslódáil Máistirchomhad"
-        edit: 
-          sidebar: 
+        edit:
+          sidebar:
             nav_header: "Uirlisí Eagarthóireachta"
           title: "Cuir Oibiacht in eagar"
-        forms: 
+        forms:
           add_author: "Cuir Údar leis"
           add_editor: "Cuir Eagarthóir leis"
           add_guest: "Cuir Aoi leis"
@@ -265,10 +271,11 @@ ga:
           status: Stádas
           subjects: Ábhair
           title: Teideal
-        legends: 
+        legends:
           access_control: "Rialúcháin Rochtana"
           audio_caption: "Uaslódáladh máistirchomhad fuaime cheana féin."
-          comments: Comments
+          cite: Cite
+          comments: Barúlacha
           file_caption: "Uaslódáladh máistirchomhad cheana féin."
           likes: Likes
           metadata: Meiteashonraí
@@ -280,14 +287,14 @@ ga:
           upload_file_caption: "Níor uaslódáladh comhad ar bith. Uaslódáil máistirchomhad le do thoil."
           upload_pdf: "Uaslódáil comhad PDF"
           view_collection: "View Collection"
-          viewcount: Views
-        links: 
-          all_objects: "All Objects"
+          viewcount: Amhairc
+        links:
+          all_objects: "Gach Oibiacht"
           download: íoslódáil
           listen: éist
           view_record: "Féach ar an taifead"
-    vocabulary: 
-      iso_639_2: 
+    vocabulary:
+      iso_639_2:
         aar: Afar
         abk: Abkhazian
         ace: Achinese
@@ -773,7 +780,7 @@ ga:
         zun: Zuni
         zxx: "No linguistic content; Not applicable"
         zza: "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
-      marc_relator: 
+      marc_relator:
         abr: Abridger
         acp: "Art copyist"
         act: Actor
@@ -1038,5 +1045,5 @@ ga:
         wdc: Woodcutter
         wde: "Wood engraver"
         wit: Witness
-      name: 
+      name:
         marc_relators: "MARC Relators"
