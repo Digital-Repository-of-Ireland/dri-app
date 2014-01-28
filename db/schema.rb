@@ -102,6 +102,8 @@ ActiveRecord::Schema.define(:version => 20140127161149) do
     t.string   "about_me",               :default => ""
     t.datetime "token_creation_date"
     t.string   "image_link"
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "user_group_users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

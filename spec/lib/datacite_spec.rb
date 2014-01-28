@@ -1,7 +1,9 @@
 require 'spec_helper'
+require 'ostruct'
 require 'active_support/core_ext/hash/conversions'
+require 'doi/datacite'
 
-describe DOI::Datacite do
+describe "DOI::Datacite" do
 
   DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository" })
 

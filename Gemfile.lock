@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
-  revision: 72fdf96642f2fb2202c919a8776e66dd8488eb48
+  revision: 4acde4a4ea603dd145dfe5d71da350b4b08ad8b4
   branch: develop
   specs:
     user_group (1.0.3)
@@ -163,6 +163,7 @@ GEM
     gravatar-ultimate (2.0.0)
       activesupport (>= 2.3.14)
       rack
+    hashie (2.0.5)
     high_voltage (2.1.0)
     hike (1.2.3)
     hooks (0.3.3)
@@ -259,6 +260,11 @@ GEM
       mediashelf-loggable
       nokogiri (>= 1.4.2)
       solrizer (~> 3.1.0)
+    omniauth (1.2.1)
+      hashie (>= 1.2, < 3)
+      rack (~> 1.0)
+    omniauth-shibboleth (1.1.1)
+      omniauth (>= 1.0.0)
     orm_adapter (0.5.0)
     paperclip (3.4.2)
       activemodel (>= 3.0.0)
@@ -468,6 +474,7 @@ DEPENDENCIES
   launchy
   mimemagic
   mysql2
+  omniauth-shibboleth
   poltergeist (>= 1.4.1)
   railroady
   rails (= 3.2.13)
