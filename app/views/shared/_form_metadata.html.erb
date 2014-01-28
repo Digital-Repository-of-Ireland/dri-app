@@ -137,6 +137,8 @@
     <%= f.label "#{t('dri.views.fields.cover_image')}:" %>
     <%= f.file_field :cover_image, :class => "edit span6" %>
     <%= image_tag @object[:cover_image].first, :width=>"230", :height=>"139" unless @object[:cover_image].blank? %>
+
+    <%= f.label "#{t('dri.views.fields.cover_image')}:" %>
   <% end %>
 </fieldset>
 <fieldset id="status">
