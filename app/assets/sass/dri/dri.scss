@@ -850,8 +850,8 @@ li.empty  {
 	text-decoration: underline;
 }
 
-.twiddle .dri_arrow_down {
-	background:url(../../images/dri/arrow_down.png) no-repeat center;
+.twiddle span {
+	background:image-url('dri/arrow_up.png') no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
@@ -860,8 +860,8 @@ li.empty  {
 	padding: 0 0 0 25px;
 	
 }
-.twiddle .dri_arrow_up {
-	background:url(../../images/dri/arrow_up.png) no-repeat center;
+.twiddle-open span {
+	background:image-url('dri/arrow_down.png') no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
