@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140115165608) do
+ActiveRecord::Schema.define(:version => 20140116122451) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(:version => 20140115165608) do
     t.string   "about_me",               :default => ""
     t.datetime "token_creation_date"
     t.string   "image_link"
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "user_group_users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

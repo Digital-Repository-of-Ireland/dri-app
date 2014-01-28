@@ -9,6 +9,8 @@ NuigRnag::Application.routes.draw do
 
   mount UserGroup::Engine => "/user_groups"
 
+  devise_for :users, :skip => [ :sessions, :registrations, :passwords], class_name: 'UserGroup::User', :controllers => { :omniauth_callbacks => "user_group/omniauth_callbacks" }
+
   resources :objects, :only => ['edit', 'update', 'create', 'show']
   resources :collections
 

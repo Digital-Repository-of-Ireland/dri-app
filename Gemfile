@@ -16,6 +16,8 @@ gem 'rails_config'
 gem 'sqlite3'
 gem 'mysql2'
 
+gem 'omniauth-shibboleth'
+
 # Storage-related gems
 gem 'aws-s3'
 
