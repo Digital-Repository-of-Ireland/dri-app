@@ -75,6 +75,8 @@ class CollectionsController < CatalogController
 
     @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
 
+    @licences = Licence.find(:all)
+
     respond_to do |format|
       format.html
     end

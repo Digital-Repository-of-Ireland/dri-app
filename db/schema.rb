@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140115165608) do
+ActiveRecord::Schema.define(:version => 20140127161149) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -31,6 +31,15 @@ ActiveRecord::Schema.define(:version => 20140115165608) do
   end
 
   add_index "institutes", ["name"], :name => "index_institutes_on_name"
+
+  create_table "licences", :force => true do |t|
+    t.string   "name"
+    t.string   "url"
+    t.string   "logo"
+    t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "local_files", :force => true do |t|
     t.string  "path"
