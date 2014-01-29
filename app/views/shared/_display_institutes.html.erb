@@ -3,9 +3,9 @@
   </div>
   <!-- close vc_title -->
 
-  <% if @collection_institutes %>
+  <% if @institutes %>
   <ul class="dri_collection_institutes_list">
-  <% @collection_institutes.each do |inst| %>
+  <% @institutes.each do |inst| %>
   <li><span class="dri_collection_institutes_item"> <%= link_to image_tag(inst.logo, :width => '100'), inst.url %></a>
   </span></li>
   <% end %>

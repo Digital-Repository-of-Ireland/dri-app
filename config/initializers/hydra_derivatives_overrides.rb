@@ -37,11 +37,12 @@ Hydra::Derivatives::Image.module_eval do
     out_file = nil
     output_file = Dir::Tmpname.create('sufia', Hydra::Derivatives.temp_file_base){}
     xfrm.write(output_file)
-    format = xfrm["format"].downcase
-    out_file = File.open(output_file, "rb")
-    bucket_id = object.batch.nil? ? object.pid : object.batch.pid
-    filename = "#{bucket_id}_thumbnail.#{format}"
 
+    format = xfrm["format"].downcase
+    bucket_id = object.batch.nil? ? object.pid : object.batch.pid
+    filename = "#{bucket_id}_#{output_datastream.dsid}.#{format}"
+
+    out_file = File.open(output_file, "rb")
     Storage::S3Interface.store_surrogate(bucket_id, out_file, filename)
     File.unlink(output_file)
   end
