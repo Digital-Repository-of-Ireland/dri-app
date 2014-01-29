@@ -20,7 +20,9 @@ module Sufia
               { :webm => {format: "webm", datastream: 'webm'}, 
                 :mp4 => {format: "mp4", datastream: 'mp4'} }, processor: :video 
           when *image_mime_types
-            obj.transform_datastream :content, { :thumbnail => {size: "200x150>", datastream: 'thumbnail'} }
+            obj.transform_datastream :content, 
+              { :small => {size: "75x75", datastream: 'thumbnail_small'},
+                :medium => {size: "200x150", datastream: 'thumbnail_medium'} }
           end
         end
       end
