@@ -95,5 +95,9 @@ module ApplicationHelper
     end
   end
 
+  def get_institutes( document)
+    @institutes = document['type_tesim'][0] == 'Collection' ? InstituteHelpers.get_collection_institutes_from_solr_doc(@document) : InstituteHelpers.get_object_institutes_from_solr_doc(@document)
+  end
+
 end
 
