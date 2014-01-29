@@ -73,7 +73,7 @@ class CollectionsController < CatalogController
     @institutes = Institute.find(:all)
     @inst = Institute.new
 
-    @institutes = InstituteHelpers.get_collection_institutes(@object)
+    @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
 
     @licences = Licence.find(:all)
 
@@ -92,7 +92,7 @@ class CollectionsController < CatalogController
 
     @pending = {}
 
-    @institutes = InstituteHelpers.get_collection_institutes(@collection)
+    @collection_institutes = InstituteHelpers.get_collection_institutes(@collection)
 
     reader_group = UserGroup::Group.find_by_name(reader_group_name)
     reader_group ||= create_reader_group
