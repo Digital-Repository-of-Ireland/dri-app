@@ -25,32 +25,3 @@ Hydra::Derivatives::ShellBasedProcessor.module_eval do
 
 end
 
-Hydra::Derivatives::Image.module_eval do
-
-  def create_resized_image(output_datastream, size, format, quality=nil)
-    create_image(output_datastream, format, quality) do |xfrm|
-      xfrm.resize(size) if size.present?
-    end
-  end
-
-  def write_image(output_datastream, xfrm)
-    out_file = nil
-    output_file = Dir::Tmpname.create('sufia', Hydra::Derivatives.temp_file_base){}
-    xfrm.write(output_file)
-
-    format = xfrm["format"].downcase
-    bucket_id = object.batch.nil? ? object.pid : object.batch.pid
-    filename = "#{bucket_id}_#{output_datastream.dsid}.#{format}"
-
-    out_file = File.open(output_file, "rb")
-    Storage::S3Interface.store_surrogate(bucket_id, out_file, filename)
-    File.unlink(output_file)
-  end
-
-  def load_image_transformer
-     source_datastream.to_tempfile do |f|
-       MiniMagick::Image.read(f.read)
-     end
-  end
-
-end
