@@ -24,14 +24,15 @@ a {
 }
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
-	margin: 0;
+	margin: auto;
+	width:400px;
 	border: 1px solid #D9DADB;
 	background-color: white;
 	padding: 40px 0 40px 65px;
 	display: block;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
-	float: left;
+	
 	
 }
 .dri_login_form_block h2 {
@@ -144,26 +145,26 @@ a {
 	font-size: 120%;
 }
 .dri_signin_facebook {
-	background:url(../../images/dri/signin_facebook.png) no-repeat;
+	background:image-url('dri/signin_facebook.png') no-repeat;
 	width: 330px;
 	height: 40px;
 	margin: 0;
 }
 .dri_signin_google {
-	background:url(../../images/dri/signin_google.png) no-repeat;
+	background:image-url('dri/signin_google.png') no-repeat;
 	width: 330px;
 	height: 40px;
 	margin:0 0 0 0;
 }
 .dri_signin_twitter {
-	background:url(../../images/dri/signin_twitter.png) no-repeat;
+	background:image-url('dri/signin_twitter.png') no-repeat;
 	width: 330px;
 	height: 40px;
 	margin:0 0 0 0;
 }
 
 .dri_signin_edugate {
-	background:url(../../images/dri/signin_edugate.png) no-repeat;
+	background:image-url('dri/signin_edugate.png') no-repeat;
 	width: 330px;
 	height: 40px;
 	margin:0 0 0 0;
