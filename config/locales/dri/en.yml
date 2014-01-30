@@ -77,6 +77,7 @@ en:
       usergroups: "Users & Groups"
       sitemap: Sitemap
       workspace: My Workspace
+      admin: Admin Tasks
     views:
       catalog:
         buttons:
@@ -308,7 +309,9 @@ en:
           view_record: "View Record"
       static:
         workspace:
-          account: Account
+          account: My Account
+        admin:
+          licences: Configure Supported Licences
       alt_tags:
         cover_image: "Cover Image"
     vocabulary:

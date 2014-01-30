@@ -56,8 +56,8 @@
 			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
 			<li><%= link_to t('dri.headerlinks.collections.admin'), main_app.collections_path(:view => 'mine'), :id => "manage_collections" %></li>
             <li><%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %></li>
-            	<% if signed_in? && current_user.is_admin? %>
-                	<li><%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, :id => "resque" %></li>
+            <% if signed_in? && current_user.is_admin? %>
+                  <li><%= link_to t('dri.headerlinks.admin'), main_app.admin_tasks_path, :id => "admin_tasks" %></li>
             	<% end %>
 		<% else %>
 			<li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
@@ -76,7 +76,7 @@
 		<ul id="dri_main_nav_links_id"
 			class="dri_sub_nav_links dri_nav_collections">
 
-  <li><%= link_to t('dri.application.views.static.workspace.account'), user_group.user_path(current_user), :id => "FIXMEview_account" %></li>
+  <li><%= link_to t('dri.views.static.workspace.account'), user_group.user_path(current_user), :id => "FIXMEview_account" %></li>
   <li><%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path %></li>
   <li><%= link_to t('blacklight.header_links.search_history'), search_history_path %></li>
   <li><%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path %></li>

@@ -15,6 +15,11 @@ module InstituteHelpers
   end
 
 
+  def self.get_institutes_from_solr_doc(doc)
+    doc['type_tesim'][0] == 'Collection' ? self.get_collection_institutes_from_solr_doc(doc) : self.get_object_institutes_from_solr_doc(doc)
+  end  
+
+
   def self.get_object_institutes_from_solr_doc(doc)
     allinstitutes = Institute.find(:all)
     myinstitutes = []

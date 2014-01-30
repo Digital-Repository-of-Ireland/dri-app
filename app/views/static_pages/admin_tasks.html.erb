@@ -1,0 +1,11 @@
+<h1>Administrator Tasks</h1>
+
+<% if signed_in? && current_user.is_admin? %>
+<ul>
+  <li><%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, :id => "resque" %></li>
+  <li><%= link_to t('dri.views.static.admin.licences'), main_app.licences_path, :id => "licences" %></li>
+  <li>Users</li>
+  <li>Groups</li>
+  <li>...</li>
+</ul>
+<% end %>

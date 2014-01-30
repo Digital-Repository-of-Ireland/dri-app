@@ -38,14 +38,14 @@ class InstitutesController < ApplicationController
   def associate
     # save the institute name to the properties datastream
     collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
-    raise Exception::NotFound unless collection
+    raise Exceptions::NotFound unless collection
 
     institute = Institute.where(:name => params[:institute_name]).first
-    raise Exception::NotFound unless institute
+    raise Exceptions::NotFound unless institute
 
     collection.institute = collection.institute.push(institute.name)
 
-    raise Exception::InternalError unless collection.save
+    raise Exceptions::InternalError unless collection.save
 
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
 

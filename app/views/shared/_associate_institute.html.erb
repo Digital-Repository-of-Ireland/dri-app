@@ -1,9 +1,11 @@
 <%= form_tag new_association_path, :id => 'associate_institute', :name => 'associate_institute', :remote => true do %>
 <%= hidden_field_tag 'object', @object.id %>
 <select name="institute_name" id="institute">
+<% if @institutes %>
 <% @institutes.each do |inst| %>
 <option value="<%= inst.name %>"><%= inst.name %>
 <% end %>
 </select>
 <%= submit_tag t('dri.views.collection.institute.associate') %>
+<% end %>
 <% end %>

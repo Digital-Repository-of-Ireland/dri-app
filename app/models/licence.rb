@@ -1,8 +1,8 @@
-class Institute < ActiveRecord::Base
+class Licence < ActiveRecord::Base
   require 'storage/s3_interface'
   require 'validators'
 
-  attr_accessible :name, :url, :logo
+  attr_accessible :name, :url, :logo, :description
 
   validates_uniqueness_of :name
 
@@ -12,8 +12,8 @@ class Institute < ActiveRecord::Base
 
     begin
       self.save
-    rescue ActiveRecord::ActiveRecordError, Exceptions::InstituteError => e
-      logger.error "Could not save institute: #{e.message}"
+    rescue ActiveRecord::ActiveRecordError, Exceptions::LicenceError => e
+      logger.error "Could not save licence: #{e.message}"
       raise Exceptions::InternalError
     end
 
@@ -23,13 +23,7 @@ class Institute < ActiveRecord::Base
 
 
   def get_logo()
-
-
-  end
-
-
-  def local_storage_dir
-    Rails.root.join(Settings.dri.logos)
+    self.logo
   end
 
 
@@ -46,7 +40,6 @@ class Institute < ActiveRecord::Base
         AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                            :access_key_id => Settings.S3.access_key_id,
                                            :secret_access_key => Settings.S3.secret_access_key)
-        AWS::S3::Service.buckets
 
         Storage::S3Interface.store_file(logo.tempfile.path,
                                         "#{name}.#{logo.original_filename.split(".").last}",

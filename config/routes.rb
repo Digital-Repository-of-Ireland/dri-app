@@ -9,6 +9,8 @@ NuigRnag::Application.routes.draw do
 
   mount UserGroup::Engine => "/user_groups"
 
+  devise_for :users, :skip => [ :sessions, :registrations, :passwords], class_name: 'UserGroup::User', :controllers => { :omniauth_callbacks => "user_group/omniauth_callbacks" }
+
   resources :objects, :only => ['edit', 'update', 'create', 'show']
   resources :collections
 
@@ -16,6 +18,8 @@ NuigRnag::Application.routes.draw do
 
   resources :institutes, :only => ['show', 'new', 'create']
   match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
+
+  resources :licences
 
   match 'export/:id' => 'export#show', :via => :get, :as => :object_export
 
@@ -25,6 +29,7 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/file' => 'assets#create', :via => :post, :as => :new_object_file
   match '/privacy' => 'static_pages#privacy', :via => :get
   match '/workspace' => 'static_pages#workspace', :via => :get
+  match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
   #required for hydra-core/lib/hydra/controller/controller_behavior.rb and lib/blacklight/controller.rb
   match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 

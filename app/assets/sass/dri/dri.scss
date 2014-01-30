@@ -848,11 +848,10 @@ li.empty  {
 }
 .dri_sub_title .dri_title_dropdown:hover {
 	text-decoration: underline;
-	color: #288DC0;
 }
 
-.twiddle-open .dri_arrow_down {
-	background:image-url('arrow_down.png') no-repeat center;
+.twiddle span {
+	background:image-url('dri/arrow_up.png') no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
@@ -861,8 +860,8 @@ li.empty  {
 	padding: 0 0 0 25px;
 	
 }
-.twiddle span {
-	background:image-url('arrow_up.png') no-repeat center;
+.twiddle-open span {
+	background:image-url('dri/arrow_down.png') no-repeat center;
 	width: 15px;
 	height: 15px;
 	display:block;
@@ -889,7 +888,7 @@ li.empty  {
 	font-weight: normal;
 	float: left;
 	display: block;
-	background-color: #F5F5F5;
+	background-color: #F8F8F8;
 	border-bottom: 2px solid #FFF;
 	margin: 0;
 	padding: 4px 0 4px 20px;
@@ -897,11 +896,13 @@ li.empty  {
 }
 
 .dri_facet_filters li a:hover {
-	text-decoration: underline;
+	text-decoration: none;
+	background-color: #F0F0F0;
 }
 
 .dri_facet_filters li a.selected {
 	background-color: #E0E0E0;
+	color: #2F2F2F;
 	text-decoration: none;
 }
 
