@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="" skipped="2" tests="7" time="34.792368">
+<testcase classname="" name="Constructing a Collection using the web form should set default permissions" time="0.978372">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using the web form should set default permissions (outline example : | Text |)" time="2.735923">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using the web form should set default permissions (outline example : | Sound |)" time="4.316322">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using XML upload should set default permissions (outline example : | Text | dublin_core_pdfdoc_sample.xml | Article |)" time="9.015685">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using XML upload should set default permissions (outline example : | Sound | SAMPLEA.xml | Audio |)" time="9.969588">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Collection visibility (outline example : | edit |)" time="4.559652">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Collection visibility (outline example : | manage |)" time="3.216826">
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

@@ -54,6 +54,7 @@ class CollectionsController < CatalogController
     @object.title = [""]
     @object.description = [""]
     @object.creator = [""]
+    @object.creation_date = [""]
     @object.publisher = [""]
     @object.rights = [""]
     @object.type = [ "Collection" ]

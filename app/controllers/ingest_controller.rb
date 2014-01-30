@@ -35,6 +35,7 @@ class IngestController < CatalogController
         @object.description = [""]
         @object.creator = [""]
         @object.rights = [""]
+        @object.creation_date = [""]
         @object.type = [@type] #["Text"]
       end
       
@@ -48,6 +49,7 @@ class IngestController < CatalogController
         @object.description = [""]
         @object.creator = [""]
         @object.rights = [""]
+        @object.creation_date = [""]
         @object.type = ["Text"]
       end
     end

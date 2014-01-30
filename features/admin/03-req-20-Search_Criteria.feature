@@ -47,10 +47,10 @@ Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
     | Subject (Era)            | blacklight-temporal_coverage_sim     | SAMPLE ERA        | SAMPLE AUDIO TITLE |
     | Names                    | blacklight-person_sim                | Collins           | SAMPLE AUDIO TITLE |
     | Language                 | blacklight-language_sim              | English           | SAMPLE AUDIO TITLE |
-    | Creation Date            | blacklight-creation_date_dtsim       | 1999-12-03        | SAMPLE AUDIO TITLE |
-    | Published/Broadcast Date | blacklight-published_date_dtsim      | 2000-01-01        | SAMPLE AUDIO TITLE |
+    # | Creation Date            | blacklight-creation_date_dtsim       | 1999-12-03        | SAMPLE AUDIO TITLE |
+    # | Published/Broadcast Date | blacklight-published_date_dtsim      | 2000-01-01        | SAMPLE AUDIO TITLE |
     | Format                   | blacklight-object_type_sim           | Sound             | SAMPLE AUDIO TITLE |
-    | Collection               | blacklight-collection_sim            | Test collection | SAMPLE AUDIO TITLE |
+    | Collection               | blacklight-root_collection_sim            | Test collection | SAMPLE AUDIO TITLE |
 
 Scenario Outline: Faceted Search for admin user
   Given I am logged in as "admin" in the group "admin"

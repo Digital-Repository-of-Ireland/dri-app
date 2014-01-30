@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="Workflows for a user administrator" skipped="4" tests="11" time="0.074829">
+<testcase classname="Workflows for a user administrator" name="ban a user" time="0.001437">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Workflows for a user administrator" name="unban a user" time="0.000989">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Workflows for a user administrator" name="delete a user" time="0.012645">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Workflows for a user administrator" name="add a user (same as registering)" time="0.001052">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Workflows for a user administrator" name="Reset a user's password" time="0.016903">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Workflows for a user administrator" name="Reporting" time="0.000999">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Workflows for a user administrator" name="CRUD User Agreements" time="0.001048">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Workflows for a user administrator" name="Block objects" time="0.001170">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Workflows for a user administrator" name="Remove permissions" time="0.001163">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Workflows for a user administrator" name="Make a user a CM" time="0.017466">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Workflows for a user administrator" name="Remove user from CM" time="0.019957">
+  <skipped/>
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

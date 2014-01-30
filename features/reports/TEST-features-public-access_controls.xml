@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="1" name="Access controls" skipped="0" tests="10" time="41.962324">
+<testcase classname="Access controls" name="I should see the asset file where masterfile is accesible and object is public read" time="5.030582">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Access controls" name="I should not see the asset file if it is under embargo" time="3.351723">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Access controls" name="When I do have access by group or id then I should see the asset file (outline example : | group | read access | mygroup |)" time="4.222380">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Access controls" name="When I do have access by group or id then I should see the asset file (outline example : | user | read access | user2 |)" time="4.876185">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Access controls" name="When I do have access by group or id then I should see the asset file (outline example : | group | inherited access | mygroup |)" time="4.217231">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Access controls" name="When I do have access by group or id then I should see the asset file (outline example : | user | inherited access | user2 |)" time="7.590754">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Access controls" name="I should not see an object that is in draft status" time="2.512221">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Access controls" name="I should see the object in search when it is public discoverable (metadata)" time="4.069861">
+  <failure message="failed I should see the object in search when it is public discoverable (metadata)" type="failed">
+    <![CDATA[Scenario: I should see the object in search when it is public discoverable (metadata)
+
+Given a collection with pid "dri:c88888" and title "Access Controls Test Collection" created by "user1"
+And a Digital Object with pid "dri:o88888", title "Access Controls Test Object" created by "user1"
+And the object with pid "dri:o88888" is governed by the collection with pid "dri:c88888"
+And the object with pid "dri:o88888" has "inaccessible" masterfile
+And the object with pid "dri:o88888" has no read access for my user
+And the object with pid "dri:o88888" has no read access for my group
+And the object with pid "dri:o88888" has public discover access and metadata
+And the object with pid "dri:c88888" is published
+And the object with pid "dri:o88888" is published
+And I am logged in as "user2" in the group "unprivileged"
+When I go to "the home page"
+And I fill in "q" with "Access"
+And I press the button to search
+Then I should see a search result "Access Controls Test Object"
+
+Message:
+]]>
+    <![CDATA[expected to find text "Access Controls Test Object" in "NuigRnag Search Results Log Out English Gaeilge Home My Workspace Collections My Collections Ingest My Account Bookmarks History Saved Searches Excepteur Sed ut perspiciatis Excepteur Ok Save Current Search Access x Refine your search 1 Record Status published (1) Format Collection (1) Collection Access Controls Test Collection (1) Access Controls Test Collection n/a n/a Collection Privacy & Cookies policy About Contact Sitemap" (RSpec::Expectations::ExpectationNotMetError)
+./features/step_definitions/search_steps.rb:2:in `/^I should see a search result "(.*?)"$/'
+features/public/access_controls.feature:123:in `Then I should see a search result "Access Controls Test Object"']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Access controls" name="I should not see the object in search when it is published but parent collection is draft" time="3.532099">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Access controls" name="I should not see the object when the parent collection is draft" time="2.559288">
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

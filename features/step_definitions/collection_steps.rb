@@ -5,6 +5,7 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.description = SecureRandom.hex(20)
   collection.rights = SecureRandom.hex(20)
   collection.type = ["Collection"]
+  collection.date = ["2000-01-01"]
   if user
     User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
 
@@ -34,7 +35,8 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
     digital_object.manager_users_string=User.find_by_email(user).to_s
     digital_object.edit_groups_string="registered"
   end
-  digital_object.rights = "This is a statement of rights"
+  digital_object.rights = ["This is a statement of rights"]
+  digital_object.date = ["2000-01-01"]
   digital_object.save
 end
 
@@ -53,6 +55,7 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
     digital_object.manager_users_string=User.find_by_email(user).to_s
     digital_object.edit_groups_string="registered"
   end
+  digital_object.date = ["2000-01-01"]
   digital_object.rights = ["This is a statement of rights"]
   digital_object.save
 end
@@ -95,6 +98,7 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
     And I fill in "batch_description][" with "Test description"
     And I fill in "batch_rights][" with "Test rights"
     And I fill in "batch_type][" with "Collection"
+    And I fill in "batch_creation_date][" with "2000-01-01"
     And I select "publisher" from the selectbox number 0 for role type
     And I fill in "batch_roles][name][" number 0 with "Test publisher"
   }

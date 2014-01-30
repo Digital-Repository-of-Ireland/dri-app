@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="" skipped="0" tests="15" time="287.673240">
+<testcase classname="" name="Navigating to the ingest page" time="0.208570">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a valid Digital Object" time="4.015860">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object with metadata that incorrect or incomplete (outline example : | Sound | metadata_no_rights.xml | invalid object |)" time="5.504534">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object with metadata that incorrect or incomplete (outline example : | Sound | invalid_schema_metadata.xml | invalid schema |)" time="3.939152">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object with metadata that incorrect or incomplete (outline example : | Sound | invalid_xml_metadata.xml | invalid metadata |)" time="2.588539">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a valid Digital Object (outline example : | Text | dublin_core_pdfdoc_sample.xml | Text |)" time="4.672926">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a valid Digital Object (outline example : | Sound | SAMPLEA.xml | Sound |)" time="4.624649">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a pdf asset to an object" time="25.414003">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Replacing the metadata file of a Digital Object" time="7.794232">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Constructing a Digital Object using the web form" time="5.211702">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Editing the metadata of a Digital Object using the web form" time="7.951330">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding and replacing the audio file for a Digital Object" time="92.000698">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding an audio file that is not valid (outline example : | sample_audio.txt | invalid file type |)" time="45.907482">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a file that contains a virus" time="5.874705">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Editing an audio file where the file is invalid (outline example : | sample_audio.txt | invalid file type |)" time="71.964858">
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

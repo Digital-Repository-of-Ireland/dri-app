@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="3" name="Search Results" skipped="0" tests="8" time="32.942069">
+<testcase classname="Search Results" name="Admin user can see all objects" time="5.752655">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Search Results" name="Collection managers should see all of their collections and objects within their collections" time="3.351427">
+  <failure message="failed Collection managers should see all of their collections and objects within their collections" type="failed">
+    <![CDATA[Scenario: Collection managers should see all of their collections and objects within their collections
+
+Given I am logged in as "colmgr" in the group "cm"
+And a collection with pid "dri:coll2" and title "Search Collection 2" created by "colmgr@colmgr.com"
+And a Digital Object with pid "dri:obj2", title "Search Object 2" created by "user1@user1.com"
+And the object with pid "dri:obj2" is in the collection with pid "dri:coll2"
+And I am on the home page
+When I press the button to search
+Then I should see a search result "Search Collection 2"
+And I should see a search result "Search Object 2"
+
+Message:
+]]>
+    <![CDATA[expected to find text "Search Object 2" in "NuigRnag Search Results Log Out English Gaeilge Home My Workspace Collections My Collections Ingest My Account Bookmarks History Saved Searches Excepteur Sed ut perspiciatis Excepteur Ok Save Current Search Refine your search 1 Record Status draft (1) Format Collection (1) Collection Search Collection 2 (1) Search Collection 2 n/a n/a Collection Privacy & Cookies policy About Contact Sitemap" (RSpec::Expectations::ExpectationNotMetError)
+./features/step_definitions/search_steps.rb:2:in `/^I should see a search result "(.*?)"$/'
+features/admin/02-req-26-Search_Results.feature:37:in `And I should see a search result "Search Object 2"']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Search Results" name="Manage/edit users should see all collections for which they have permission (outline example : | edit |)" time="2.912895">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Search Results" name="Manage/edit users should see all collections for which they have permission (outline example : | manage |)" time="2.472970">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Search Results" name="Manage/edit users should see all objects in collections for which they have permission (outline example : | edit |)" time="4.261974">
+  <failure message="failed Manage/edit users should see all objects in collections for which they have permission (outline example : | edit |)" type="failed">
+    <![CDATA[Scenario Outline: Manage/edit users should see all objects in collections for which they have permission
+
+Example row: | edit |
+
+Message:
+]]>
+    <![CDATA[expected to find text "Search Object 4" in "NuigRnag Search Results Log Out English Gaeilge Home My Workspace Collections My Collections Ingest My Account Bookmarks History Saved Searches Excepteur Sed ut perspiciatis Excepteur Ok Save Current Search Refine your search 1 Record Status draft (1) Format Collection (1) Collection Search Collection 4 (1) Search Collection 4 n/a n/a Collection Privacy & Cookies policy About Contact Sitemap" (RSpec::Expectations::ExpectationNotMetError)
+./features/step_definitions/search_steps.rb:2:in `/^I should see a search result "(.*?)"$/'
+features/admin/02-req-26-Search_Results.feature:61:in `And I should see a search result "Search Object 4"']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Search Results" name="Manage/edit users should see all objects in collections for which they have permission (outline example : | manage |)" time="4.266110">
+  <failure message="failed Manage/edit users should see all objects in collections for which they have permission (outline example : | manage |)" type="failed">
+    <![CDATA[Scenario Outline: Manage/edit users should see all objects in collections for which they have permission
+
+Example row: | edit |
+
+Message:
+Example row: | manage |
+
+Message:
+]]>
+    <![CDATA[expected to find text "Search Object 4" in "NuigRnag Search Results Log Out English Gaeilge Home My Workspace Collections My Collections Ingest My Account Bookmarks History Saved Searches Excepteur Sed ut perspiciatis Excepteur Ok Save Current Search Refine your search 1 Record Status draft (1) Format Collection (1) Collection Search Collection 4 (1) Search Collection 4 n/a n/a Collection Privacy & Cookies policy About Contact Sitemap" (RSpec::Expectations::ExpectationNotMetError)
+./features/step_definitions/search_steps.rb:2:in `/^I should see a search result "(.*?)"$/'
+features/admin/02-req-26-Search_Results.feature:61:in `And I should see a search result "Search Object 4"']]>
+  </failure>
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Search Results" name="Manage/edit users should see all objects for which they have permission (outline example : | edit |)" time="4.588233">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="Search Results" name="Manage/edit users should see all objects for which they have permission (outline example : | manage |)" time="5.335805">
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

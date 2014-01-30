@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="" skipped="0" tests="5" time="5.863586">
+<testcase classname="" name="Navigating to the collections page" time="0.040280">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj1 | Object 1 | dri:coll1 | governing |)" time="1.297885">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj2 | Object 2 | dri:coll1 | governing |)" time="1.288056">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj3 | Object 3 | dri:coll2 | non-governing |)" time="1.253269">
+  <system-out/>
+  <system-err/>
+</testcase>
+<testcase classname="" name="Adding a Digital Object in a governing/non-governing collection (outline example : | dri:obj4 | Object 4 | dri:coll2 | non-governing |)" time="1.984096">
+  <system-out/>
+  <system-err/>
+</testcase>
+  <system-out>
+    <![CDATA[]]>
+  </system-out>
+  <system-err>
+    <![CDATA[]]>
+  </system-err>
+</testsuite>

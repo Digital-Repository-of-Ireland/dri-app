@@ -53,6 +53,7 @@ FactoryGirl.define do
     rights                 ["This is a statement about the rights associated with this object"]
     publisher              ["RnaG"]
     type                   ["Collection"]
+    creation_date          ["1916-01-01"]
   end
 
 end
