@@ -36,3 +36,6 @@ spec/reports/*
 public/static/stylesheets/dri/*.css
 public/static/stylesheets/dri/*
 public/static/stylesheets/dri/dri.css
+
+features/reports/*
+spec/fixtures/dri_1234.foxml.xml
