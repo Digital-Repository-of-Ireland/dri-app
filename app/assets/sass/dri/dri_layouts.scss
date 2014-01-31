@@ -148,10 +148,7 @@
   	.dri_login_form_container {
 
   		margin: auto;
-		width:460px;
-		background-color:#b0e0e6;
-		
-  		
+		width:100%;	
   		
   	}
   	 	
@@ -243,6 +240,10 @@
 
 .dri_float_right {
 	float: right;
+}
+
+.dri_float_left {
+	float: left;
 }
 
 @media screen and (max-width:1020px) {

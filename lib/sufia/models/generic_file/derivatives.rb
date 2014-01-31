@@ -22,7 +22,9 @@ module Sufia
           when *image_mime_types
             obj.transform_datastream :content, 
               { :small => {size: "75x75", datastream: 'thumbnail_small'},
-                :medium => {size: "200x150", datastream: 'thumbnail_medium'} }
+                :medium => {size: "200x150", datastream: 'thumbnail_medium'},
+                :crop16_9_small => {size: "200", crop: "100%x56.25%+0+0", gravity: "Center", datastream: 'crop16_9_thumbnail_small'}, 
+                :crop16_9_medium => {size: "228", crop: "100%x56.25%+0+0", gravity: "Center", datastream: 'crop16_9_thumbnail_medium'} }
           end
         end
       end
