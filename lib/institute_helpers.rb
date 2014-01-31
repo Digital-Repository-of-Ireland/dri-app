@@ -16,7 +16,7 @@ module InstituteHelpers
 
 
   def self.get_institutes_from_solr_doc(doc)
-    doc['type_tesim'][0] == 'Collection' ? self.get_collection_institutes_from_solr_doc(doc) : self.get_object_institutes_from_solr_doc(doc)
+    doc['object_type_ssm'][0] == 'Collection' ? self.get_collection_institutes_from_solr_doc(doc) : self.get_object_institutes_from_solr_doc(doc)
   end  
 
 

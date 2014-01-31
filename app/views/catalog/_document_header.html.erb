@@ -11,11 +11,11 @@
       <% if collection['cover_image_tesim'] && collection['cover_image_tesim'].first %>
         <%= image_tag collection['cover_image_tesim'].first, :width=>"200", :height=>"80" %>
       <% else %>
-        <% image = "dri/formats/#{document[:type_tesim].first}.png".downcase %>
+        <% image = "dri/formats/#{document[:object_type_ssm].first}.png".downcase %>
         <%= image_tag image, :width=>"200", :height=>"80" %>
       <% end %>
     <% else %>
-      <% image = "dri/formats/#{document[:type_tesim].first}.png".downcase %>
+      <% image = "dri/formats/#{document[:object_type_ssm].first}.png".downcase %>
       <%= image_tag image, :width=>"200", :height=>"80" %>
 	  <% end %>
   </div><!-- close image -->
