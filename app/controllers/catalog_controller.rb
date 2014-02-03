@@ -21,11 +21,24 @@ class CatalogController < ApplicationController
   CatalogController.solr_search_params_logic += [:exclude_unwanted_models]
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
+  def rows_per_page
+    result = 15
+
+    if (params.include?(:per_page))
+      rows_per_page = params[:per_page].to_i
+
+      if (rows_per_page < 1) || (rows_per_page > 100)
+        rows_per_page = 15
+      end
+    end
+  end
+
   configure_blacklight do |config|
+
     config.default_solr_params = {
       :defType => "edismax",
       :qt => 'search',
-      :rows => 12
+      :rows => 15
     }
 
     # solr field configuration for search results/index views
@@ -76,7 +89,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('language', :facetable), :label => 'Language', :helper_method => :label_language, :limit => true
     #config.add_facet_field solr_name('creation_date', :dateable), :label => 'Creation Date', :date => true
     #config.add_facet_field solr_name('published_date', :dateable), :label => 'Published/Broadcast Date', :date => true
-    config.add_facet_field solr_name('object_type', :facetable), :label => 'Format'
+    config.add_facet_field solr_name('object_type', :facetable), :label => 'Type'
     config.add_facet_field solr_name('root_collection', :facetable), :label => 'Collection'
 
     # Have BL send all facet field names to Solr, which has been the default

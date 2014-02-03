@@ -13,7 +13,7 @@ module Storage
       AWS::S3::Service.buckets
 
       bucket = doc.id.sub('dri:', '')
-      object_type = doc["type_tesim"][0]
+      object_type = doc["object_type_ssm"][0]
       files = []
       begin
         bucketobj = AWS::S3::Bucket.find(bucket)

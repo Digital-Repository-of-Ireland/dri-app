@@ -49,7 +49,7 @@ Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
     | Language                 | blacklight-language_sim              | English           | SAMPLE AUDIO TITLE |
     # | Creation Date            | blacklight-creation_date_dtsim       | 1999-12-03        | SAMPLE AUDIO TITLE |
     # | Published/Broadcast Date | blacklight-published_date_dtsim      | 2000-01-01        | SAMPLE AUDIO TITLE |
-    | Format                   | blacklight-object_type_sim           | Sound             | SAMPLE AUDIO TITLE |
+    | Type                   | blacklight-object_type_sim           | Sound             | SAMPLE AUDIO TITLE |
     | Collection               | blacklight-root_collection_sim            | Test collection | SAMPLE AUDIO TITLE |
 
 Scenario Outline: Faceted Search for admin user

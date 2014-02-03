@@ -63,7 +63,7 @@ module ApplicationHelper
   end
 
   def type?( type, document )
-    document["type_ssm"].first.casecmp(type) == 0 ? true : false
+    document["object_type_ssm"].first.casecmp(type) == 0 ? true : false
   end
 
   def reader_group_name( document )

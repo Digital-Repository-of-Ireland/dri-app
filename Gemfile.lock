@@ -1,6 +1,6 @@
 GIT
   remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: 161fa27b43f34ec7e1146e179fbd1483a888ab87
+  revision: 7e6ffb889027413d660241745e94e21f71f7ea67
   branch: develop
   specs:
     dri_data_models (1.0.2)
@@ -74,7 +74,7 @@ GEM
       builder
       mime-types
       xml-simple
-    backports (3.4.0)
+    backports (3.4.1)
     bcrypt-ruby (3.1.2)
     better_errors (1.1.0)
       coderay (>= 1.0.0)
@@ -202,7 +202,7 @@ GEM
     iso-639 (0.2.4)
     it (0.2.5)
       actionpack (>= 3.0.0)
-    jettywrapper (1.5.0)
+    jettywrapper (1.5.2)
       activesupport (>= 3.0.0)
       childprocess
       i18n

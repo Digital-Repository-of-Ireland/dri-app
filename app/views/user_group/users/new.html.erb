@@ -1,0 +1,35 @@
+<div id="dri_login_form_container_id" class="dri_login_form_container">
+	<div class="dri_login_form_block">
+	<%= render :partial => "user_group/shared/header" %>
+	
+				<h2><%= t :'user_groups.views.users.new.signup' %></h2>
+				<%= form_for(@user) do |f| %>
+	  			<%= render 'user_group/shared/error_messages', object: f.object %>
+	 
+	  			<div><%= f.label :first_name, (t :'user_groups.views.shared.first_name') %><br />
+	  			<%= f.text_field :first_name %></div>
+	
+	    <div><%= f.label :second_name, (t :'user_groups.views.shared.second_name') %><br />
+	  <%= f.text_field :second_name %></div>
+	
+	  <div><%= f.label :email, (t :'user_groups.views.shared.email') %><br />
+	  <%= f.email_field :email %></div>
+	
+	  <div class="dri_signup_password"><%= f.label :password, (t :'user_groups.views.shared.password') %><br />
+	  <%= f.password_field :password %></div>
+	
+	  <div class="dri_signup_password dri_input_error"><%= f.label :password_confirmation, (t :'user_groups.views.shared.password_confirm') %><br />
+	  <%= f.password_field :password_confirmation %></div>
+	
+	  <div class="dri_select_dropdown"><%= f.label :locale, (t :'user_groups.views.shared.locale') %><br />
+	  <%= f.select(:locale, [[t('dri.application.lang.en'), 'en'], [t('dri.application.lang.ga'), 'ga']]) %></div>
+	
+	  <% if cookies[:accept_cookies] %>
+	    <div class="dri_submit"><%= f.submit t :'user_groups.views.shared.register' %></div>
+	  <% else %>
+	    <div class="dri_submit"><%= f.submit t :'user_groups.views.shared.register', :confirm => "#{ t('dri.application.cookies.confirm') }" %></div>
+	  <% end %>
+	  <div>&nbsp;</div>
+	<% end %>
+	</div>
+</div>
