@@ -657,7 +657,7 @@ li.empty  {
 /*-------------- Warning Messages --------------*/
 
 /*-------------- Info Messages --------------*/
-.dri_info_message {
+.dri_notice_message {
 	margin: 20px 0 0 0;
 	padding: 2px 10px 2px 10px;
 	display: block;
@@ -669,7 +669,7 @@ li.empty  {
 	float: left;
 }
 
-.dri_info_message h1 {
+.dri_notice_message h1 {
 	margin: 0;
 	padding: 0;
 	font-size: 110%;
@@ -678,7 +678,7 @@ li.empty  {
 	font-weight: normal;
 	float: left
 }
-.dri_info_message span.dri_close a {
+.dri_notice_message span.dri_close a {
 	margin: 0;
 	padding: 1px 0 0 0;
 	font-size: 100%;
@@ -692,7 +692,7 @@ li.empty  {
 	float: right;
 }
 /*-------------- Successful Messages --------------*/
-.dri_successful_message {
+.dri_success_message{
 	margin: 20px 0 0 0;
 	padding: 2px 10px 2px 10px;
 	display: block;
@@ -704,7 +704,7 @@ li.empty  {
 	float:left;
 }
 
-.dri_successful_message h1 {
+.dri_success_message h1 {
 	margin: 0;
 	padding: 0;
 	font-size: 110%;
@@ -713,7 +713,7 @@ li.empty  {
 	font-weight: normal;
 	float: left
 }
-.dri_successful_message span.dri_close a {
+.dri_success_message span.dri_close a {
 	margin: 0;
 	padding: 1px 0 0 0;
 	font-size: 100%;
@@ -725,7 +725,7 @@ li.empty  {
 
 /*-------------- Warning Messages --------------*/
 
-.dri_warning_message {
+.dri_alert_message{
 	margin: 20px 0 0 0;
 	padding: 2px 10px 2px 10px;
 	display: block;
@@ -736,7 +736,7 @@ li.empty  {
 	border: 1px solid #BC7F00;
 	float:left;
 }
-.dri_warning_message h1 {
+.dri_alert_message h1 {
 	margin: 0;
 	padding: 0;
 	font-size: 110%;
@@ -745,7 +745,7 @@ li.empty  {
 	font-weight: normal;
 	float: left
 }
-.dri_warning_message span.dri_close a {
+.dri_alert_message span.dri_close a {
 	margin: 0;
 	padding: 1px 0 0 0;
 	font-size: 100%;
