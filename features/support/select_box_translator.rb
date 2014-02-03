@@ -5,7 +5,7 @@ module ButtonTranslator
     case select_name
 
     when /ingest methods/
-      "ingestmethod"      
+      "ingestmethod"
 
     when /object type/
       "ingesttype"
@@ -24,6 +24,9 @@ module ButtonTranslator
 
     when /governing collection/
       "dri_model_governing_collection_id"
+
+    when /institute/
+      "select_institute"
 
     else "Unknown"
 

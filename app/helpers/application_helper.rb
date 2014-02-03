@@ -100,7 +100,7 @@ module ApplicationHelper
   end
 
   def get_institutes( document )
-    @institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
+    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
   end
 
 end

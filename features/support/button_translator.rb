@@ -16,6 +16,9 @@ module ButtonTranslator
     when /save changes/
       "save_edit"
 
+    when /edit a collection/
+      "edit_collection"
+
     when /save collection changes/
       "edit_collection"
 
@@ -63,6 +66,12 @@ module ButtonTranslator
 
     when /cancel membership request/
       "deny_access"
+
+    when /add an institute/
+      "add_institute"
+
+    when /associate an institute/
+      "associate_inst"
 
     else "Unknown"
 
