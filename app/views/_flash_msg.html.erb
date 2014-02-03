@@ -1,7 +1,7 @@
 <!-- system messages container -->
 <div id="dri_messages_container_id" class="dri_messages_container">
   <% [:success, :notice, :error, :alert].each do |type| %>
-    <%- alert_class = type == :notice ? 'info' : type %>
+    <%- alert_class = type %>
     <% if flash[type] %>
 	<div class="dri_<%=alert_class%>_message">
 		<h1><%= flash[type] %></h1>
