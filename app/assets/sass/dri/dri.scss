@@ -56,7 +56,6 @@ a {
 
 .dri_login_form_block .dri_submit  input {
 	font-size: 100%;
-	float: left;
 	background-color: #278DC1;
 	color: #FFF;
 	-moz-border-radius: 3px;
@@ -87,7 +86,7 @@ a {
 }
 
 .dri_form_text a {
-	margin: 20px 4px 0 0;
+	margin: 0 4px 0 0;
 	padding: 0;
 	color:#3E3E3E;
 
@@ -133,7 +132,7 @@ a {
 .dri_signin_socialmedia  {
 	border-top: 1px solid #D9DADB;
 	margin: 30px 0  0 0;
-	padding: 0;
+	padding: 0 0 0 0;
 	width: 330px;
 }
 .dri_signin_socialmedia h2 {
