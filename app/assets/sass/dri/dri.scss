@@ -130,7 +130,7 @@ a {
 
 /*-------------- Signin Social Media--------------*/
 
-.dri_signin_socialmedia {
+.dri_signin_socialmedia  {
 	border-top: 1px solid #D9DADB;
 	margin: 30px 0  0 0;
 	padding: 0;
@@ -142,30 +142,42 @@ a {
 	font-weight: bold;
 	font-size: 120%;
 }
-.dri_signin_facebook {
+a .dri_signin_facebook {
 	background:image-url('dri/signin_facebook.png') no-repeat;
 	width: 330px;
 	height: 40px;
 	margin: 0;
+	padding: 6px 0 0 55px;
+	color:#FFF;
+	font-size: 110%;
 }
-.dri_signin_google {
+a .dri_signin_google {
 	background:image-url('dri/signin_google.png') no-repeat;
 	width: 330px;
 	height: 40px;
 	margin:0 0 0 0;
+	padding: 6px 0 0 55px;
+	color:#FFF;
+	font-size: 110%;
 }
-.dri_signin_twitter {
+a .dri_signin_twitter {
 	background:image-url('dri/signin_twitter.png') no-repeat;
 	width: 330px;
 	height: 40px;
 	margin:0 0 0 0;
+	padding: 6px 0 0 55px;
+	color:#FFF;
+	font-size: 110%;
 }
 
-.dri_signin_edugate {
+a .dri_signin_edugate {
 	background:image-url('dri/signin_edugate.png') no-repeat;
 	width: 330px;
 	height: 40px;
 	margin:0 0 0 0;
+	padding: 6px 0 0 55px;
+	color:#FFF;
+	font-size: 110%;
 }
 /*--------------Preferred Language --------------*/
 
