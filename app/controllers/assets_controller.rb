@@ -89,12 +89,7 @@ class AssetsController < ApplicationController
         mime_type = Validators.file_type?(file_upload)
         validate_upload(file_upload, mime_type)
                   
-        #start_background_tasks
-
-
-        @gf = GenericFile.new
-        #@url = url_for :controller=>"assets", :action=>"show", :id=>@object.id
-        #@gf.update_file_reference datastream, :url=>@url, :mimeType=>mime_type.to_s
+        @gf = GenericFile.new(:pid => Sufia::IdService.mint)
         @gf.batch = @object
         @gf.save
 
@@ -109,7 +104,13 @@ class AssetsController < ApplicationController
         # the URL and replace it with the assigned pid.
         @url = url_for :controller=>"assets", :action=>"show", :id=>@gf.id
         @gf.update_file_reference datastream, :url=>@url, :mimeType=>mime_type.to_s
-        @gf.save
+        begin
+          @gf.save
+        rescue Exception => e
+          flash[:alert] = t('dri.flash.alert.error_saving_file', :error => e.message)
+          @warnings = t('dri.flash.alert.error_saving_file', :error => e.message)
+          logger.error "Error saving file: #{e.message}"
+        end
 
         flash[:notice] = t('dri.flash.notice.file_uploaded')
 
@@ -125,7 +126,6 @@ class AssetsController < ApplicationController
           }
         end
         return
-
       end
     else
       flash[:notice] = t('dri.flash.notice.specify_datastream')
