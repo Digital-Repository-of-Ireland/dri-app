@@ -13,6 +13,9 @@ module LinkTranslator
     when /edit a collection/
       "edit_collection"
 
+    when /edit this record/
+      "edit_record"
+
     when /sign in/
       "login"
 

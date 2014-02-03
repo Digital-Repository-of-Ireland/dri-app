@@ -139,6 +139,10 @@ When /^I attach the metadata file "(.*?)"$/ do |file|
   attach_file("metadata_file", File.join(cc_fixture_path, file))
 end
 
+When /^I attach the institute logo file "(.*?)"$/ do |file|
+  attach_file("institute[logo]", File.join(cc_fixture_path, file))
+end
+
 When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|
   title ||= "A Test Object"
   interface.enter_valid_metadata(title)
@@ -340,4 +344,8 @@ end
 Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |id, negate, value|
   expectation = negate ? :should_not : :should
   page.send(expectation,  have_xpath("//select[@id = '#{id}']/option[@value = '#{value}']"))
+end
+
+Then /^I should see the image "(.*?)"$/ do |src|
+  page.should have_xpath("//img[contains(@src, \"#{src}\")]")
 end
