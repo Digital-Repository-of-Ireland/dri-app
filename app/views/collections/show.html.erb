@@ -1,16 +1,16 @@
 <div class="dri_collection_container">
 
-  <div class="dri_object_view dri_object_title_top"><%= @collection.title %></div>
+  <div class="dri_object_view dri_object_title_top"><%= @collection.title.join %></div>
   <!-- close dri_object_second_block -->
 
   <div class="dri_object_first_block">
     <dl class="dl-horizontal  dl-invert  dri_object_metadata_readview">
       <dt class="blacklight-title_tesim">Title</dt>
-      <dd class="blacklight-title_tesim"><%= @collection.title %></dd>
+      <dd class="blacklight-title_tesim"><%= @collection.title.join %></dd>
       <dt class="blacklight-description_tesim"><%= t('dri.views.objects.forms.description') %></dt>
-      <dd class="blacklight-description_tesim"><%= @collection.description %></dd>
+      <dd class="blacklight-description_tesim"><%= @collection.description.join %></dd>
       <dt class="dri_capitalize"><%= t('dri.views.objects.forms.publisher') %></dt>
-      <dd><%= @collection.publisher %></dd>
+      <dd><%= @collection.publisher.join %></dd>
     </dl>
   </div>
 
