@@ -262,7 +262,9 @@ class CollectionsController < CatalogController
       local_file_info.each { |file| file.destroy }
       FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
 
-      Storage::S3Interface.delete_bucket(object.id.sub('dri:', ''))
+      storage = Storage::S3Interface.new
+      storage.delete_bucket(object.id.sub('dri:', ''))
+      storage.close
     end
 
     def count_collection_items collection_id

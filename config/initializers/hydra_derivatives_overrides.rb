@@ -19,7 +19,9 @@ Hydra::Derivatives::ShellBasedProcessor.module_eval do
         bucket_id = object.batch.nil? ? object.pid : object.batch.pid
         filename = "#{bucket_id}_#{dest_dsid}.#{file_suffix}"
 
-        Storage::S3Interface.store_surrogate(bucket_id, out_file, filename)
+        storage = Storage::S3Interface.new
+        storage.store_surrogate(bucket_id, out_file, filename)
+        storage.close
         File.unlink(output_file)
   end
 

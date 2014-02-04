@@ -6,8 +6,10 @@ module ApplicationHelper
   # surrogates of the object
   def get_delivery_file doc
     @asset = nil
-    delivery_file = Storage::S3Interface.deliverable_surrogate?(doc)
-    @asset = Storage::S3Interface.get_link_for_surrogate(doc.id.sub('dri:',''), delivery_file) unless (delivery_file.blank?)
+    storage = Storage::S3Interface.new
+    delivery_file = storage.deliverable_surrogate?(doc)
+    @asset = storage.get_link_for_surrogate(doc.id.sub('dri:',''), delivery_file) unless (delivery_file.blank?)
+    storage.close
   end
 
   def get_files doc
@@ -16,11 +18,15 @@ module ApplicationHelper
   end
 
   def get_surrogates doc
-    @surrogates = Storage::S3Interface.get_surrogates doc
+    storage = Storage::S3Interface.new
+    @surrogates = storage.get_surrogates doc
+    storage.close
   end
 
   def surrogate_url( doc, name )
-    Storage::S3Interface.surrogate_url(doc, name)
+    storage = Storage::S3Interface.new
+    storage.surrogate_url(doc, name)
+    storage.close
   end
 
   def governing_collection( object )
