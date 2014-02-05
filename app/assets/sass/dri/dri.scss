@@ -83,12 +83,12 @@ a {
 
 .dri_form_text  {
 	display: block;
-	margin: 10px 4px 0 0;
+	margin: 0 4px 0 0;
 	padding: 0;
 	width: 330px;
 }
 .dri_form_text a {
-	margin: 0 4px 0 0;
+	margin: 0 0 0 0;
 	padding: 0;
 	color:#3E3E3E;
 }
@@ -334,6 +334,9 @@ a .dri_signin_edugate:hover {
 	border-radius: 2px;
 	
 }
+.dri_social_media_nav li a.facebook:hover {
+	background-color: #000;
+}
 .dri_social_media_nav li a.linkedin {
 	background: image-url('dri/linkedin.png') no-repeat;
 	height:28px;
@@ -342,6 +345,9 @@ a .dri_signin_edugate:hover {
 	background-color:#2E2E2E;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
+}
+.dri_social_media_nav li a.linkedin:hover {
+	background-color: #000;
 }
 .dri_social_media_nav li a.share {
 	background: image-url('dri/share.png') no-repeat;
@@ -352,6 +358,9 @@ a .dri_signin_edugate:hover {
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 }
+.dri_social_media_nav li a.share:hover {
+	background-color: #000;
+}
 .dri_social_media_nav li a.twitter {
 	background: image-url('dri/twitter.png') no-repeat;
 	height:28px;
@@ -361,7 +370,9 @@ a .dri_signin_edugate:hover {
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 }
-
+.dri_social_media_nav li a.twitter:hover {
+	background-color: #000;
+}
 /*-------------- Main Navigation --------------*/
 
 
@@ -1060,8 +1071,13 @@ li.empty  {
 	color: #2F2F2F;
 	font-size: 100%;
 	padding: 0;
-	margin: 0 14px 0 14px;
+	margin: 0 14px 4px 14px;
 	font-weight: normal;
+	height: 30px;
+	white-space: wrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+	line-height: 1.3em;
 }
 .dri_content_block h2 a {
 	color: #2F2F2F;
@@ -1075,7 +1091,7 @@ li.empty  {
 .dri_content_block h2.dri_editor {
 	color: #808080;
 	display: block;
-	height: 50px;
+	height: 30px;
 	white-space: wrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
@@ -1183,7 +1199,7 @@ li.empty  {
 	white-space: wrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
-	line-height: 1.3em;	
+	line-height: 1.3em;
 	
 }
 
@@ -1304,14 +1320,18 @@ li.empty  {
 
 
 .dri_object_title_top {
-	height: 26px;
-	font-size: 120%;
-	padding: 4px 0 0 10px;
-	margin: 0px 0 20px 0;
-	color: #FFF;
-	background: #2F2F2F;
-	width: 77%;
+	font-size: 110%;
+	padding: 5px 20px 0 10px;
+	margin: 30px 0 10px 0;
+	height: 24px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	color: #fff;
+	background-color:#2F2F2F;
+	width: 71%;
+	font-weight: bold;
 }
+
 
 
 /*-------------- Media asset --------------*/
