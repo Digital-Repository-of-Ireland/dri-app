@@ -11,6 +11,7 @@ class CollectionsController < CatalogController
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
+
   # Shows list of user's collections
   #
   def index
@@ -24,7 +25,7 @@ class CollectionsController < CatalogController
     respond_to do |format|
       format.html
       format.json {
-        collectionhash = []
+       collectionhash = []
         @collections.each do |collection|
           collectionhash << { :id => collection[:id],
                                :title => collection[:title],

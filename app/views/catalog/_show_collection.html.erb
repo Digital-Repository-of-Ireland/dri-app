@@ -1,10 +1,44 @@
-
-<dl class="dl-horizontal  dl-invert dri_object_metadata_readview">
-  <% document_show_fields.each do |solr_fname, field| -%>
-    <% if should_render_show_field? document, field %>
-	    <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
-	    <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
+<div class="dri_object_first_block">
+  <dl class="dl-horizontal  dl-invert dri_object_metadata_readview">
+    <% document_show_fields.each do |solr_fname, field| -%>
+      <% if should_render_show_field? document, field %>
+        <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
+        <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
+      <% end -%>
     <% end -%>
-  <% end -%>
-</dl>
+  </dl>
+</div>
+<!-- close dri_object_first_block -->
+
+<div class="dri_object_second_block">
+
+  <div class="dri_back_search"><%= link_back_to_catalog %></div>
+
+  <div class="dri_vc_title">
+    <%= image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
+    <%= link_to(t('dri.views.catalog.forms.objects_in_collection'), render_arbitrary_facet_links({:root_collection => document[:title_ssm].first})) %>
+  </div>
+
+  <div class="dri_vc_image"><!-- fix link -->
+    <% if document[:cover_image] && document[:cover_image].first %>
+      <a href="#"><%= image_tag(document[:cover_image].first, :width=>"230", :height=>"139", :alt=>"localise.collection.cover.label") %></a>
+    <% else %>
+      <% image = "dri/formats/collection.png".downcase %>
+      <a href="#"><%= image_tag(image, :width=>"230", :height=>"139", :alt=>"localise.collection.cover.label") %></a>
+    <% end %>
+  </div>
+
+  <%= render :partial => "tools", :locals => {:document => document} %>
+
+  <% if signed_in? && (can? :edit, document) %>
+    <div class="dri_objecttools_title">
+            Editor Tools <!-- needs localisation -->
+    </div>
+    <div class="dri_grey_button"><%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %></div>
+  <% end %>
+
+</div>
+
+
+
 
