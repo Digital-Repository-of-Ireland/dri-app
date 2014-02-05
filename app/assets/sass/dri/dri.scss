@@ -54,9 +54,8 @@ a {
 	font-weight: normal;
 }
 
-.dri_login_form_block .dri_submit  input {
+.dri_login_form_block .dri_submit input {
 	font-size: 100%;
-	float: left;
 	background-color: #278DC1;
 	color: #FFF;
 	-moz-border-radius: 3px;
@@ -66,6 +65,9 @@ a {
 	margin: 10px 0 10px 0;
 	cursor: pointer;
 	width: 330px;
+}
+.dri_login_form_block .dri_submit input:hover {
+	background-color: #0075AC;
 }
 .dri_checkbox_text input {
 	margin: 10px 4px 0 0;
@@ -85,12 +87,10 @@ a {
 	padding: 0;
 	width: 330px;
 }
-
 .dri_form_text a {
-
+	margin: 0 4px 0 0;
 	padding: 0;
 	color:#3E3E3E;
-
 }
 .dri_form_text a span.text_right {
 	margin: 0 0 0 151px;
@@ -103,8 +103,6 @@ a {
 .dri_form_text a span.text_right:hover {
 	text-decoration: underline;
 }
-
-
 .dri_signup_password input {
 	background-color: #B3B3B3;
 }
@@ -133,7 +131,7 @@ a {
 .dri_signin_socialmedia  {
 	border-top: 1px solid #D9DADB;
 	margin: 30px 0  0 0;
-	padding: 0;
+	padding: 0 0 0 0;
 	width: 330px;
 }
 .dri_signin_socialmedia h2 {
@@ -144,40 +142,59 @@ a {
 }
 a .dri_signin_facebook {
 	background:image-url('dri/signin_facebook.png') no-repeat;
-	width: 330px;
-	height: 40px;
-	margin: 0;
-	padding: 6px 0 0 55px;
-	color:#FFF;
+	background-color: #3B5998;
+	margin: 0 0 6px 0;
+	padding: 4px 0 4px 55px;
+	border: 1px solid #132547;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #FFF;
 	font-size: 110%;
+}
+a .dri_signin_facebook:hover {
+	background-color: #244685;
 }
 a .dri_signin_google {
-	background:image-url('dri/signin_google.png') no-repeat;
-	width: 330px;
-	height: 40px;
-	margin:0 0 0 0;
-	padding: 6px 0 0 55px;
-	color:#FFF;
+	background: image-url('dri/signin_google.png') no-repeat;
+	background-color: #D7515D; 
+	margin: 0 0 6px 0;
+	padding: 4px 0 4px 55px;
+	border: 1px solid #A32E38;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #FFF;
 	font-size: 110%;
+}
+a .dri_signin_google:hover {
+	background-color: #CC3945;
 }
 a .dri_signin_twitter {
-	background:image-url('dri/signin_twitter.png') no-repeat;
-	width: 330px;
-	height: 40px;
-	margin:0 0 0 0;
-	padding: 6px 0 0 55px;
-	color:#FFF;
+	background: image-url('dri/signin_twitter.png') no-repeat;
+	background-color: #4195C1;
+	margin: 0 0 6px 0;
+	padding: 4px 0 4px 55px;
+	border: 1px solid #1A658B;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #FFF;
 	font-size: 110%;
 }
-
+a .dri_signin_twitter:hover {
+	background-color: #207BAA;
+}
 a .dri_signin_edugate {
 	background:image-url('dri/signin_edugate.png') no-repeat;
-	width: 330px;
-	height: 40px;
-	margin:0 0 0 0;
-	padding: 6px 0 0 55px;
-	color:#FFF;
+	background-color: #7D4391;
+	margin: 0 0 6px 0;
+	padding: 4px 0 4px 55px;
+	border: 1px solid #612E76;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #FFF;
 	font-size: 110%;
+}
+a .dri_signin_edugate:hover {
+	background-color: #66317C;
 }
 /*--------------Preferred Language --------------*/
 
@@ -309,28 +326,40 @@ a .dri_signin_edugate {
 
 .dri_social_media_nav li a.facebook {
 	background: image-url('dri/facebook_icon.png') no-repeat;
-	height:30px;
-	width: 30px;
+	height:28px;
+	width: 28px;
 	display: block;
+	background-color:#2E2E2E;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 	
 }
 .dri_social_media_nav li a.linkedin {
 	background: image-url('dri/linkedin.png') no-repeat;
-	height: 30px;
-	width: 30px;
-	display: block;	
+	height:28px;
+	width: 28px;
+	display: block;
+	background-color:#2E2E2E;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 }
 .dri_social_media_nav li a.share {
 	background: image-url('dri/share.png') no-repeat;
-	height: 30px;
-	width: 30px;
+	height:28px;
+	width: 28px;
 	display: block;
+	background-color:#2E2E2E;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 }
 .dri_social_media_nav li a.twitter {
 	background: image-url('dri/twitter.png') no-repeat;
-	height: 30px;
-	width: 30px;
-	display: block;	
+	height:28px;
+	width: 28px;
+	display: block;
+	background-color:#2E2E2E;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 }
 
 /*-------------- Main Navigation --------------*/
@@ -663,7 +692,7 @@ li.empty  {
 }
 
 .dri_search_save_submit_button:hover {
-	background-color: #0071A6;
+	background-color: #0075AC;
 	cursor: pointer;
 }
 /*-------------- Warning Messages --------------*/
