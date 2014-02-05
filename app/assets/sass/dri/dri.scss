@@ -334,6 +334,9 @@ a .dri_signin_edugate:hover {
 	border-radius: 2px;
 	
 }
+.dri_social_media_nav li a.facebook:hover {
+	background-color: #000;
+}
 .dri_social_media_nav li a.linkedin {
 	background: image-url('dri/linkedin.png') no-repeat;
 	height:28px;
@@ -342,6 +345,9 @@ a .dri_signin_edugate:hover {
 	background-color:#2E2E2E;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
+}
+.dri_social_media_nav li a.linkedin:hover {
+	background-color: #000;
 }
 .dri_social_media_nav li a.share {
 	background: image-url('dri/share.png') no-repeat;
@@ -352,6 +358,9 @@ a .dri_signin_edugate:hover {
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 }
+.dri_social_media_nav li a.share:hover {
+	background-color: #000;
+}
 .dri_social_media_nav li a.twitter {
 	background: image-url('dri/twitter.png') no-repeat;
 	height:28px;
@@ -361,7 +370,9 @@ a .dri_signin_edugate:hover {
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 }
-
+.dri_social_media_nav li a.twitter:hover {
+	background-color: #000;
+}
 /*-------------- Main Navigation --------------*/
 
 
