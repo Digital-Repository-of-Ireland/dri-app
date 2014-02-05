@@ -3,7 +3,10 @@
 <%= link_to t(".sign_in", :default => "Sign in"), new_session_path(resource_name), :id => "login" %>
 <% end -%>
 
-<%= link_to t(".sign_up", :default => "Sign up"), user_group.new_user_path, :id => "signup" %>
+
+<%= link_to user_group.new_user_path, :id => "signup" do %>
+<span class="text_right"><%= t(".sign_up", :default => "Sign up") %></span>
+<% end %>
 
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
 <%= link_to (new_password_path(resource_name)), :id => "password_reset" do %>
