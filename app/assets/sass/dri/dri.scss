@@ -54,7 +54,7 @@ a {
 	font-weight: normal;
 }
 
-.dri_login_form_block .dri_submit  input {
+.dri_login_form_block .dri_submit input {
 	font-size: 100%;
 	background-color: #278DC1;
 	color: #FFF;
@@ -65,6 +65,9 @@ a {
 	margin: 10px 0 10px 0;
 	cursor: pointer;
 	width: 330px;
+}
+.dri_login_form_block .dri_submit input:hover {
+	background-color: #0075AC;
 }
 .dri_checkbox_text input {
 	margin: 10px 4px 0 0;
@@ -143,40 +146,59 @@ a {
 }
 a .dri_signin_facebook {
 	background:image-url('dri/signin_facebook.png') no-repeat;
-	width: 330px;
-	height: 40px;
-	margin: 0;
-	padding: 6px 0 0 55px;
-	color:#FFF;
+	background-color: #3B5998;
+	margin: 0 0 6px 0;
+	padding: 4px 0 4px 55px;
+	border: 1px solid #132547;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #FFF;
 	font-size: 110%;
+}
+a .dri_signin_facebook:hover {
+	background-color: #244685;
 }
 a .dri_signin_google {
-	background:image-url('dri/signin_google.png') no-repeat;
-	width: 330px;
-	height: 40px;
-	margin:0 0 0 0;
-	padding: 6px 0 0 55px;
-	color:#FFF;
+	background: image-url('dri/signin_google.png') no-repeat;
+	background-color: #D7515D; 
+	margin: 0 0 6px 0;
+	padding: 4px 0 4px 55px;
+	border: 1px solid #A32E38;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #FFF;
 	font-size: 110%;
+}
+a .dri_signin_google:hover {
+	background-color: #CC3945;
 }
 a .dri_signin_twitter {
-	background:image-url('dri/signin_twitter.png') no-repeat;
-	width: 330px;
-	height: 40px;
-	margin:0 0 0 0;
-	padding: 6px 0 0 55px;
-	color:#FFF;
+	background: image-url('dri/signin_twitter.png') no-repeat;
+	background-color: #4195C1;
+	margin: 0 0 6px 0;
+	padding: 4px 0 4px 55px;
+	border: 1px solid #1A658B;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #FFF;
 	font-size: 110%;
 }
-
+a .dri_signin_twitter:hover {
+	background-color: #207BAA;
+}
 a .dri_signin_edugate {
 	background:image-url('dri/signin_edugate.png') no-repeat;
-	width: 330px;
-	height: 40px;
-	margin:0 0 0 0;
-	padding: 6px 0 0 55px;
-	color:#FFF;
+	background-color: #7D4391;
+	margin: 0 0 6px 0;
+	padding: 4px 0 4px 55px;
+	border: 1px solid #612E76;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #FFF;
 	font-size: 110%;
+}
+a .dri_signin_edugate:hover {
+	background-color: #66317C;
 }
 /*--------------Preferred Language --------------*/
 
@@ -662,7 +684,7 @@ li.empty  {
 }
 
 .dri_search_save_submit_button:hover {
-	background-color: #0071A6;
+	background-color: #0075AC;
 	cursor: pointer;
 }
 /*-------------- Warning Messages --------------*/
