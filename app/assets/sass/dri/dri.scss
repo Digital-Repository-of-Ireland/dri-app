@@ -83,12 +83,12 @@ a {
 
 .dri_form_text  {
 	display: block;
-	margin: 10px 4px 0 0;
+	margin: 0 4px 0 0;
 	padding: 0;
 	width: 330px;
 }
 .dri_form_text a {
-	margin: 0 4px 0 0;
+	margin: 0 0 0 0;
 	padding: 0;
 	color:#3E3E3E;
 }
@@ -1315,14 +1315,18 @@ li.empty  {
 
 
 .dri_object_title_top {
-	height: 26px;
-	font-size: 120%;
-	padding: 4px 0 0 10px;
-	margin: 0px 0 20px 0;
-	color: #FFF;
-	background: #2F2F2F;
-	width: 77%;
+	font-size: 110%;
+	padding: 5px 20px 0 10px;
+	margin: 30px 0 10px 0;
+	height: 24px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	color: #fff;
+	background-color:#2F2F2F;
+	width: 71%;
+	font-weight: bold;
 }
+
 
 
 /*-------------- Media asset --------------*/
