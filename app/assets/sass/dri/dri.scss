@@ -1071,8 +1071,13 @@ li.empty  {
 	color: #2F2F2F;
 	font-size: 100%;
 	padding: 0;
-	margin: 0 14px 0 14px;
+	margin: 0 14px 4px 14px;
 	font-weight: normal;
+	height: 30px;
+	white-space: wrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+	line-height: 1.3em;
 }
 .dri_content_block h2 a {
 	color: #2F2F2F;
@@ -1086,7 +1091,7 @@ li.empty  {
 .dri_content_block h2.dri_editor {
 	color: #808080;
 	display: block;
-	height: 50px;
+	height: 30px;
 	white-space: wrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
@@ -1194,7 +1199,7 @@ li.empty  {
 	white-space: wrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
-	line-height: 1.3em;	
+	line-height: 1.3em;
 	
 }
 
