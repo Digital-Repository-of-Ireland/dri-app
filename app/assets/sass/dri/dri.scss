@@ -87,12 +87,10 @@ a {
 	padding: 0;
 	width: 330px;
 }
-
 .dri_form_text a {
 	margin: 0 4px 0 0;
 	padding: 0;
 	color:#3E3E3E;
-
 }
 .dri_form_text a span.text_right {
 	margin: 0 0 0 151px;
@@ -105,8 +103,6 @@ a {
 .dri_form_text a span.text_right:hover {
 	text-decoration: underline;
 }
-
-
 .dri_signup_password input {
 	background-color: #B3B3B3;
 }
@@ -330,28 +326,40 @@ a .dri_signin_edugate:hover {
 
 .dri_social_media_nav li a.facebook {
 	background: image-url('dri/facebook_icon.png') no-repeat;
-	height:30px;
-	width: 30px;
+	height:28px;
+	width: 28px;
 	display: block;
+	background-color:#2E2E2E;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 	
 }
 .dri_social_media_nav li a.linkedin {
 	background: image-url('dri/linkedin.png') no-repeat;
-	height: 30px;
-	width: 30px;
-	display: block;	
+	height:28px;
+	width: 28px;
+	display: block;
+	background-color:#2E2E2E;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 }
 .dri_social_media_nav li a.share {
 	background: image-url('dri/share.png') no-repeat;
-	height: 30px;
-	width: 30px;
+	height:28px;
+	width: 28px;
 	display: block;
+	background-color:#2E2E2E;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 }
 .dri_social_media_nav li a.twitter {
 	background: image-url('dri/twitter.png') no-repeat;
-	height: 30px;
-	width: 30px;
-	display: block;	
+	height:28px;
+	width: 28px;
+	display: block;
+	background-color:#2E2E2E;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 }
 
 /*-------------- Main Navigation --------------*/

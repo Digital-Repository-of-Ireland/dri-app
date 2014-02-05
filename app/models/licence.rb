@@ -37,17 +37,14 @@ class Licence < ActiveRecord::Base
       end
 
       unless virus
-        AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                           :access_key_id => Settings.S3.access_key_id,
-                                           :secret_access_key => Settings.S3.secret_access_key)
-
-        Storage::S3Interface.store_file(logo.tempfile.path,
+        storage = Storage::S3Interface.new
+        storage.store_file(logo.tempfile.path,
                                         "#{name}.#{logo.original_filename.split(".").last}",
                                         Settings.data.logos_bucket)
-        self.logo = Storage::S3Interface.get_link_for_file(Settings.data.logos_bucket,
+        self.logo = storage.get_link_for_file(Settings.data.logos_bucket,
                                                           "#{name}.#{logo.original_filename.split(".").last}")
 
-        AWS::S3::Base.disconnect!()
+        storage.close
       end
     end
   end
