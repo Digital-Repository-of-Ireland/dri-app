@@ -91,6 +91,7 @@ en:
           metadata: Metadata
           pdf_file: PDF
           video_file: Video
+          objects_in_collection: "Objects in this Collection"
         headers:
           files: Files
         legends:
