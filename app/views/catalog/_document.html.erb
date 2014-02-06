@@ -20,7 +20,9 @@
 							<h1><%= link_to_document document, :label => document_show_link_field, :counter => (document_counter + 1 + @response.params[:start].to_i) %></h1>	
 						
 						  <p class="dri_publishing_institute">
-							<a ><%= collection[:rights] %></a>
+							<a ><% document[:rights_tesim].each do |rights| %>
+        							<%= rights %>,
+      							<% end %></a>
 						
 						</p><div class="dri_num_objects">
 							<span class="dri_object_text">Objects</span> <span class="dri_object_text_num"><a href="#">28</a></span>
