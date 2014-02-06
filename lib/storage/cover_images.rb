@@ -11,11 +11,14 @@ module Storage
         end
 
         unless virus
-          Storage::S3Interface.store_file(cover_image.tempfile.path,
+          storage = Storage::S3Interface.new
+          storage.store_file(cover_image.tempfile.path,
                                           "#{collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
                                           Settings.data.cover_image_bucket)
-          url = Storage::S3Interface.get_link_for_file(Settings.data.cover_image_bucket,
-                                                       "#{collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}")
+          url = storage.get_link_for_file(Settings.data.cover_image_bucket,
+                            "#{collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}")
+          storage.close
+
           collection.properties.cover_image = url
           collection.save
         end
