@@ -540,13 +540,15 @@ a .dri_signin_edugate:hover {
 
 
 .dri_search_term_text_input {
-	margin: 25px 0 0 0;
-	width: 153px;
-	padding: 5px 10px 5px 10px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
+	margin: 24px 0 0 0;
+	width: 87%;
+	padding: 4px 10px 4px 29px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
 	border: 1px solid #E1E1E1;
 	color: #808080;
+	background:image-url('dri/search_icon.png') no-repeat left;
+	font-size: 100%;
 	}
 
 .dri_search_term_text_submit_button {
@@ -1158,14 +1160,13 @@ li.empty  {
 .dri_content_block_collection h1 {
 	color: #2F2F2F;
 	font-size: 100%;
-	padding: 0;
+	padding: 0 0 0 0;
 	margin: 6px 14px 6px 14px;
-	height: 58px;
+	height: 32px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	line-height: 1.3em;
 	font-weight: bold;
-	border-bottom: 1px solid #E1E1E1;
 }
 .dri_content_block_collection h1 a {
 	color:#2F2F2F;
@@ -1178,10 +1179,10 @@ li.empty  {
 .dri_content_block_collection h2 {
 	color: #2F2F2F;
 	font-size: 100%;
-	padding: 0 14px 6px 14px;
-	margin: 0;
+	padding: 6px 0 6px 0;
+	margin: 0 14px 0 14px;
 	font-weight: normal;
-	border-bottom: 1px solid #E1E1E1;
+	border-top: 1px solid #E1E1E1;
 }
 .dri_content_block_collection h2 a {
 	color: #2F2F2F;
@@ -1240,7 +1241,7 @@ li.empty  {
 }
 
 .dri_content_block_collection .dri_num_objects {
-	border-top: 1px solid #fff;
+	border-top: 1px solid #E1E1E1;
 	color: #808080;
 	line-height: 1.4em;
 	display: block;
