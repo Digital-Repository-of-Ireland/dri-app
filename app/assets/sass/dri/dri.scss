@@ -1038,18 +1038,15 @@ li.empty  {
 	position: relative;
 
 }
+
 .dri_content_block.top {
 	border-top: 5px solid #E1E1E1;
 }
-.dri_content_block.last {
-	margin: 0 0 20px 0;
+
+.dri_image {
+	padding: 0;
+	margin: 0 14px 0 14px;
 }
-
-.dri_content_block .dri_high_view {
-	background: image-url('dri/high_view_icon.png') no-repeat;
-
-}
-
 .dri_content_block h1 {
 	color: #2F2F2F;
 	font-size: 100%;
@@ -1067,58 +1064,30 @@ li.empty  {
 }
 .dri_content_block a:hover h1 {
 	text-decoration:underline;
-
-}
-.dri_content_block h2 {
-	color: #2F2F2F;
-	font-size: 100%;
-	padding: 0;
-	margin: 0 14px 4px 14px;
-	font-weight: normal;
-	height: 30px;
-	white-space: wrap;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
-	line-height: 1.3em;
-}
-.dri_content_block h2 a {
-	color: #2F2F2F;
-	text-decoration: none;
-}
-.dri_content_block h2 a:hover {
-	text-decoration: underline;
 	color: #288DC0;
 
 }
-.dri_content_block h2.dri_editor {
+.dri_content_block p.dri_description_text {
+	font-size: 100%;
 	color: #808080;
-	display: block;
-	height: 30px;
+	padding: 0;
+	margin: 0 14px 4px 14px;
+	font-weight: normal;
+	height: 58px;
 	white-space: wrap;
   	overflow: hidden;
   	text-overflow: ellipsis;
 	line-height: 1.3em;
 }
-
-.dri_content_block h2.dri_editor a {
+.dri_content_block p.dri_description_text a {
 	color: #808080;
 	text-decoration: none;
+	cursor: pointer;
 }
-.dri_content_block h2.dri_editor a:hover {
-	text-decoration: none;
-}
-.dri_content_block p {
-	color:#2F2F2F;
-	font-size: 100%;
-	padding: 0;
-	margin: 10px 10px 10px 10px;
+.dri_content_block p.dri_description_text a:hover {
+	color: #2F2F2F;
 
 }
-.dri_image {
-	padding: 0;
-	margin: 0 14px 0 14px;
-}
-
 .dri_icon {
 	color: #808080;
 	line-height: 1.4em;
@@ -1157,12 +1126,16 @@ li.empty  {
 	border-top: none;
 
 }
+.dri_content_block_collection .dri_image {
+	padding: 0;
+	margin: 0;
+}
 .dri_content_block_collection h1 {
 	color: #2F2F2F;
 	font-size: 100%;
 	padding: 0 0 0 0;
-	margin: 6px 14px 6px 14px;
-	height: 32px;
+	margin: 6px 14px 8px 14px;
+	height: 46px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	line-height: 1.3em;
@@ -1174,72 +1147,28 @@ li.empty  {
 }
 .dri_content_block_collection a:hover h1 {
 	text-decoration:underline;
+	color: #288DC0;
 
 }
-.dri_content_block_collection h2 {
+.dri_content_block_collection p.dri_publishing_institute {
 	color: #2F2F2F;
-	font-size: 100%;
+	line-height: 1.3em;
+	height: 32px;
+	overflow: hidden;
 	padding: 6px 0 6px 0;
 	margin: 0 14px 0 14px;
 	font-weight: normal;
 	border-top: 1px solid #E1E1E1;
 }
-.dri_content_block_collection h2 a {
+.dri_content_block_collection p.dri_publishing_institute a {
+	color: #808080;
+	text-decoration: none;
+	cursor: pointer;
+}
+.dri_content_block_collection p.dri_publishing_institute a:hover {
 	color: #2F2F2F;
-	text-decoration: none;
-}
-.dri_content_block_collection h2 a:hover {
-	text-decoration: underline;
-	color: #288DC0;
 
 }
-.dri_content_block_collection h2.dri_editor {
-	color: #808080;
-	display: block;
-	height: 30px;
-	white-space: wrap;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
-	line-height: 1.3em;
-	
-}
-
-.dri_content_block_collection p {
-	color: #808080;
-	font-size: 100%;
-	padding: 0;
-	margin: 0 14px 0 14px;
-	font-weight: normal;
-	line-height: 1.3em;
-}
-.dri_content_block_collection p a {
-	color: #808080;
-	text-decoration: none;
-}
-
-.dri_content_block_collection h2.dri_editor a {
-	color: #808080;
-	text-decoration: none;
-}
-.dri_content_block_collection h2.dri_editor a:hover {
-	text-decoration: none;
-}
-.dri_content_block_collection p {
-	color:#2F2F2F;
-	font-size: 100%;
-	padding: 0;
-	margin: 10px 10px 10px 10px;
-
-}
-.dri_content_block_collection .dri_image {
-	padding: 0;
-	margin: 0;
-}
-
-.dri_content_block_collection.last {
-	margin: 0 0 20px 0;
-}
-
 .dri_content_block_collection .dri_num_objects {
 	border-top: 1px solid #E1E1E1;
 	color: #808080;
