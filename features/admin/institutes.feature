@@ -12,7 +12,7 @@ Feature:
     Given I am on the home page
     When I perform a search
     And I press "Institute Test Collection"
-    And I follow the link to edit this record
+    And I follow the link to edit a collection
     And I fill in "institute[name]" with "TestInstitute"
     And I fill in "institute[url]" with "http://www.dri.ie/"
     And I attach the institute logo file "sample_logo.png"
@@ -24,7 +24,7 @@ Feature:
     Given I am on the home page
     When I perform a search
     And I press "Institute Test Collection"
-    And I follow the link to edit this record
+    And I follow the link to edit a collection
     And I fill in "institute[name]" with "TestInstitute"
     And I fill in "institute[url]" with "http://www.dri.ie/"
     And I attach the institute logo file "sample_logo.png"
