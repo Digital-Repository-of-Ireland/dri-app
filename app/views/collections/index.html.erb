@@ -7,17 +7,17 @@
      	 					<%= image_tag(collection[:cover_image], :class=>"dri_image", :width=>"228", :height=>"127") %>
       					<% else %>
       						<% image = "dri/formats/collection.png".downcase %>
-      						<a href="#">
+      						<a >
         						<%= image_tag image, :width=>"228", :height=>"127" %>
       						</a>
     					<% end %>
     					<h1><%= link_to collection[:title], collection_path(:id => collection[:id]) %></h1>
     					
-                        <h2>
+                        <p class="dri_publishing_institute">
 							<a href=""><!-- need callback to get search on rights -->
 								<%= collection[:rights] %>
 							</a>
-						</h2>
+						</p>
 						<div class="dri_num_objects">
 							<span class="dri_object_text">Objects</span> <span class="dri_object_text_num"><a href="#"><%= t('dri.views.collection.index.object_count', :count => @collection_counts[collection[:id]]) %></a></span>
 						</div>
