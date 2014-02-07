@@ -113,5 +113,18 @@ module ApplicationHelper
     UserGroup::Group.find_by_name(collection['id'].sub(':', '_'))
   end
 
+  def pending_memberships ( collection )
+    pending = {}
+    pending_memberships = reader_group( collection ).pending_memberships
+    pending_memberships.each do |membership|
+      user = UserGroup::User.find_by_id(membership.user_id)
+      identifier = user.full_name+'('+user.email+')' unless user.nil?
+
+      pending[identifier] = membership
+    end
+
+    pending
+  end
+
 end
 

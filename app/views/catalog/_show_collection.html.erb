@@ -37,6 +37,13 @@
     <div class="dri_grey_button"><%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %></div>
   <% end %>
 
+  <% if signed_in? && (can? :manage_collection, document) %>
+    <% pending = pending_memberships( document ) %>
+    <% unless pending.blank? %>
+      <%= render :partial => 'collections/approve_membership', :locals => {:pending => pending} %>
+    <% end %>
+  <% end %>
+
 </div>
 
 
