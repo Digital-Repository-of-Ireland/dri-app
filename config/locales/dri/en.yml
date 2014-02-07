@@ -92,6 +92,7 @@ en:
           pdf_file: PDF
           video_file: Video
           objects_in_collection: "Objects in this Collection"
+          restricted_asset: "Restricted Asset"
         headers:
           files: Files
         legends:
@@ -100,6 +101,7 @@ en:
           no_surrogates: "No surrogates are available."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
+          request_permission_in_progress: "Your request is in progress."
         links:
           download: download
           edit_this_record: "Edit this record"

@@ -109,5 +109,9 @@ module ApplicationHelper
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
   end
 
+  def reader_group( collection )
+    UserGroup::Group.find_by_name(collection['id'].sub(':', '_'))
+  end
+
 end
 
