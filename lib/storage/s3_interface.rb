@@ -1,16 +1,18 @@
 module Storage
-  module S3Interface
+  class S3Interface
 
-    # Return the best available surrogate for delivery
-    def self.deliverable_surrogate?(doc, list = nil)
-
-      deliverable_surrogate = nil
-      deliverable_surrogates = []
-
+    def initialize
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                           :access_key_id => Settings.S3.access_key_id,
                                           :secret_access_key => Settings.S3.secret_access_key)
       AWS::S3::Service.buckets
+    end
+    
+
+    # Return the best available surrogate for delivery
+    def deliverable_surrogate?(doc, list = nil)
+      deliverable_surrogate = nil
+      deliverable_surrogates = []
 
       bucket = doc.id.sub('dri:', '')
       object_type = doc["object_type_ssm"][0]
@@ -22,7 +24,6 @@ module Storage
         end
       rescue
         logger.debug "Problem listing files in bucket #{bucket}"
-        AWS::S3::Base.disconnect!()
       end
 
       if list == nil
@@ -33,7 +34,7 @@ module Storage
             break unless deliverable_surrogate.nil?
           end
         end
-        AWS::S3::Base.disconnect!()
+      
         return deliverable_surrogate
       else
         unless Settings.surrogates[object_type.downcase.to_sym].nil?
@@ -42,21 +43,15 @@ module Storage
             deliverable_surrogates << files.find { |e| /#{filename}/ =~ e }
           end
         end
-        AWS::S3::Base.disconnect!()
+      
         return deliverable_surrogates
       end
 
     end
 
     # Get a hash of all surrogates for an object
-    def self.get_surrogates(doc)
-
+    def get_surrogates(doc)
       @object = ActiveFedora::Base.find(doc.id, {:cast => true})
- 
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                          :access_key_id => Settings.S3.access_key_id,
-                                          :secret_access_key => Settings.S3.secret_access_key)
-      AWS::S3::Service.buckets
 
       bucket = @object.pid.sub('dri:', '')
       files = []
@@ -79,19 +74,13 @@ module Storage
           logger.debug "Problem getting url for file #{file} : #{e.to_s}"
         end
       end
-
-      AWS::S3::Base.disconnect!()
+      
       return @surrogates_hash
     end
 
 
-    def self.surrogate_url( doc, name )
+    def surrogate_url( doc, name )
       @object = ActiveFedora::Base.find(doc.id, {:cast => true})
-
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                          :access_key_id => Settings.S3.access_key_id,
-                                          :secret_access_key => Settings.S3.secret_access_key)
-      AWS::S3::Service.buckets
 
       bucket = @object.pid.sub('dri:', '')
       files = []
@@ -119,106 +108,70 @@ module Storage
     end
 
     # Create bucket
-    def self.create_bucket(bucket)
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                          :access_key_id => Settings.S3.access_key_id,
-                                          :secret_access_key => Settings.S3.secret_access_key)
-      AWS::S3::Service.buckets
-
+    def create_bucket(bucket)
       begin
         AWS::S3::Bucket.create(bucket)
       rescue Exception => e
         logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
         return false
       end
-      AWS::S3::Base.disconnect!()
       return true
     end
 
     # Delete bucket
-    def self.delete_bucket(bucket)
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                          :access_key_id => Settings.S3.access_key_id,
-                                          :secret_access_key => Settings.S3.secret_access_key)
-      AWS::S3::Service.buckets
-
+    def delete_bucket(bucket)
       begin
         AWS::S3::Bucket.delete(bucket, :force => true)
       rescue Exception => e
         logger.error "Could not delete Storage Bucket #{bucket}: #{e.to_s}"
         return false
       end
-      AWS::S3::Base.disconnect!()
       return true
     end
 
     # Save Surrogate File
-    def self.store_surrogate(object_id, outputfile, filename)
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                          :access_key_id => Settings.S3.access_key_id,
-                                          :secret_access_key => Settings.S3.secret_access_key)
-      AWS::S3::Service.buckets
-
+    def store_surrogate(object_id, outputfile, filename)
       bucket = object_id.sub('dri:', '')
       begin
         AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
       rescue Exception  => e
         logger.error "Problem saving Surrogate file #{filename} : #{e.to_s}"
       end
-      AWS::S3::Base.disconnect!()
     end
 
-
     # Save arbitrary file
-    def self.store_file(file, filename, bucket)
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                         :access_key_id => Settings.S3.access_key_id,
-                                         :secret_access_key => Settings.S3.secret_access_key)
-      AWS::S3::Service.buckets
-
+    def store_file(file, filename, bucket)
       begin
         AWS::S3::S3Object.store(filename, open(file), bucket, :access => :public_read)
       rescue Exception => e
         logger.error "Problem saving file #{filename} : #{e.to_s}"
         raise
       end
-      AWS::S3::Base.disconnect!()
     end
 
-
     # Get an authenticated short-duration url for a file
-    def self.get_link_for_surrogate(bucket, file)
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                         :access_key_id => Settings.S3.access_key_id,
-                                         :secret_access_key => Settings.S3.secret_access_key)
-      AWS::S3::Service.buckets
-
+    def get_link_for_surrogate(bucket, file)
       begin
         url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
       rescue Exception => e
         logger.error "Problem getting link for file #{file} : #{e.to_s}"
       end
-      AWS::S3::Base.disconnect!()
       return url
     end
 
-
     # Get link for arbitrary file
-    def self.get_link_for_file(bucket, file)
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                         :access_key_id => Settings.S3.access_key_id,
-                                         :secret_access_key => Settings.S3.secret_access_key)
-      AWS::S3::Service.buckets
-
+    def get_link_for_file(bucket, file)
       begin
         url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => false)
       rescue Exception => e
         logger.error "Problem getting link for file #{file} : #{e.to_s}"
       end
-      AWS::S3::Base.disconnect!()
       return url
     end
-
+    
+    def close
+      AWS::S3::Base.disconnect!()
+    end
 
   end
 

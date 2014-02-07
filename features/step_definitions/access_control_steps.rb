@@ -152,11 +152,13 @@ end
 Given(/^the object with pid "(.*?)" has a deliverable surrogate file$/) do |pid|
   pid = "dri:o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  Storage::S3Interface.create_bucket(object.pid.sub('dri:', ''))
+  storage = Storage::S3Interface.new
+  storage.create_bucket(object.pid.sub('dri:', ''))
   case object.type
     when "Sound"
-      Storage::S3Interface.store_surrogate(object.pid,  File.join(cc_fixture_path, 'SAMPLEA.mp3'), object.pid + '_mp3.mp3')
+      storage.store_surrogate(object.pid,  File.join(cc_fixture_path, 'SAMPLEA.mp3'), object.pid + '_mp3.mp3')
     when "Text"
-      Storage::S3Interface.store_surrogate(object.pid,  File.join(cc_fixture_path, 'SAMPLEA.pdf'), object.pid + '_thumbnail.png')
+      storage.store_surrogate(object.pid,  File.join(cc_fixture_path, 'SAMPLEA.pdf'), object.pid + '_thumbnail.png')
   end
+  storage.close
 end

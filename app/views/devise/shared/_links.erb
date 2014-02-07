@@ -1,25 +1,42 @@
 
 <%- if controller_name != 'sessions' %>
-<div class="dri_clearfix"><%= link_to t(".sign_in", :default => "Sign in"), new_session_path(resource_name), :id => "login" %></div>
+<%= link_to t(".sign_in", :default => "Sign in"), new_session_path(resource_name), :id => "login" %>
 <% end -%>
 
-<div class="dri_clearfix"><%= link_to t(".sign_up", :default => "Sign up"), user_group.new_user_path, :id => "signup" %></div>
+
+<%= link_to user_group.new_user_path, :id => "signup" do %>
+<span class="text_right"><%= t(".sign_up", :default => "Sign up") %></span>
+<% end %>
 
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
-<div class="dri_clearfix"><%= link_to t(".forgot_your_password", :default => "Forgot your password?"), new_password_path(resource_name), :id => "password_reset" %></div>
+<%= link_to (new_password_path(resource_name)), :id => "password_reset" do %>
+
+<span class="text_right"><%= t(".forgot_your_password", :default => "Forgot your password?") %></span>
+<% end %>
 <% end -%>
 
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-<div class="dri_clearfix"><%= link_to t('.didn_t_receive_confirmation_instructions', :default => "Didn't receive confirmation instructions?"), new_confirmation_path(resource_name), :id => "password_reset_not_sent" %></div>
+<%= link_to t('.didn_t_receive_confirmation_instructions', :default => "Didn't receive confirmation instructions?"), new_confirmation_path(resource_name), :id => "password_reset_not_sent" %>
 <% end -%>
 
 <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-<div class="dri_clearfix"><%= link_to t('.didn_t_receive_unlock_instructions', :default => "Didn't receive unlock instructions?"), new_unlock_path(resource_name), :id => "unlock_not_sent" %></div>
+<%= link_to t('.didn_t_receive_unlock_instructions', :default => "Didn't receive unlock instructions?"), new_unlock_path(resource_name), :id => "unlock_not_sent" %>
 <% end -%>
 
 <%- if devise_mapping.omniauthable? %>
-  <%- resource_class.omniauth_providers.each do |provider| %>
-<div class="dri_clearfix">  <%= link_to t('.sign_in_with_provider', :provider => provider.to_s.titleize, :default => "Sign in with #{provider.to_s.titleize}"), omniauth_authorize_path(resource_name, provider) %></div>
+<div class="dri_signin_socialmedia">
+                		<h2> Sign In with another Account</h2>
+                		  <%- resource_class.omniauth_providers.each do |provider| %>
+<%= link_to (omniauth_authorize_path(resource_name, provider)) do %>
+<div class="dri_signin_edugate"><%= t('.sign_in_with_provider', :provider => provider.to_s.titleize, :default => "Sign in with #{provider.to_s.titleize}") %></div>
+  <% end %>
   <% end -%>
+
+                	 <a onclick="alert('May come soon');" href=""><div class="dri_signin_google">Sign In with Google</div></a>
+					<a onclick="alert('May come soon');" href=""><div class="dri_signin_facebook">Sign In with Facebook</div></a>
+                    <a onclick="alert('May come soon');" href=""><div class="dri_signin_twitter">Sign In with Twitter</div></a>
+                   
+</div>
+
 <% end -%>
-<div  class="dri_clearfix">&nbsp;</div>
+

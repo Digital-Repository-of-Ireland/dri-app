@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* CSS Document */
 /* line 4, ../../sass/dri/containers.scss */
 .dri_line {
@@ -49,7 +48,7 @@
 
 /* line 43, ../../sass/dri/containers.scss */
 .size_01 .high_view {
-  background: url(../images/high_view_icon.png) no-repeat;
+  background: url('../../images/high_view_icon.png?1385377389') no-repeat;
   position: absolute;
   left: 185px;
   top: -6px;
@@ -94,7 +93,7 @@
 
 /* line 83, ../../sass/dri/containers.scss */
 .dri_content_block .dri_high_view {
-  background: url(../images/high_view_icon.png) no-repeat;
+  background: url('../../images/high_view_icon.png?1385377389') no-repeat;
 }
 
 /* line 88, ../../sass/dri/containers.scss */
@@ -193,7 +192,7 @@
   padding: 3px 0 0 6px;
   margin: 0 8px 0 0;
   float: left;
-  background: url(../images/object_back.png) no-repeat;
+  background: url('../../images/object_back.png?1385377389') no-repeat;
 }
 
 /* line 167, ../../sass/dri/containers.scss */
@@ -280,13 +279,13 @@ ul.dri_paging li a:hover {
 
 /* line 233, ../../sass/dri/containers.scss */
 ul.dri_paging li.prev_arrow a {
-  background: url(/assets/prev_arrow.png) no-repeat center;
+  background: url('../../images/prev_arrow.png?1385377389') no-repeat center;
   background-color: none;
 }
 
 /* line 237, ../../sass/dri/containers.scss */
 ul.dri_paging li.next_arrow a {
-  background: url(/assets/next_arrow.png) no-repeat center;
+  background: url('../../images/next_arrow.png?1385377389') no-repeat center;
   background-color: none;
 }
 
@@ -576,7 +575,7 @@ ul.dri_paging li.next_num a {
 }
 
 /* line 487, ../../sass/dri/containers.scss */
-.dri_object_view_block .dri_back_search a {
+.dri_object_view_block .dri_back_search .dri_edit_object a {
   padding: 0;
   margin: 0 30px 0 0;
   color: #278DC1;
@@ -641,7 +640,7 @@ ul.dri_paging li.next_num a {
 
 /* line 539, ../../sass/dri/containers.scss */
 .dri_object_view_block .dri_like_button span.dri_like {
-  background: url(/assets/like_button.png) no-repeat;
+  background: url('../../images/like_button.png?1385377389') no-repeat;
   width: 20px;
   height: 20px;
   display: block;
@@ -680,7 +679,26 @@ ul.dri_paging li.next_num a {
   text-decoration: underline;
 }
 
-/* line 574, ../../sass/dri/containers.scss */
+/* line 573, ../../sass/dri/containers.scss */
+.dri_object_view_block ul.dri_cite_object {
+  margin: 6px 0 0 0;
+  padding: 0;
+  display: block;
+  float: left;
+  width: 230px;
+  border-top: 1px solid #E1E1E1;
+}
+
+/* line 582, ../../sass/dri/containers.scss */
+.dri_object_view_block ul.dri_cite_object li {
+  margin: 0;
+  padding: 3px 0 3px 0;
+  list-style: none;
+  border-bottom: 1px solid #E1E1E1;
+  color: #808080;
+}
+
+/* line 590, ../../sass/dri/containers.scss */
 .dri_object_view_block ul.dri_stats {
   margin: 20px 0 0 0;
   padding: 4px 0 4px 0;
@@ -690,7 +708,7 @@ ul.dri_paging li.next_num a {
   border-top: 1px solid #E1E1E1;
 }
 
-/* line 583, ../../sass/dri/containers.scss */
+/* line 599, ../../sass/dri/containers.scss */
 .dri_object_view_block ul.dri_stats li {
   float: left;
   width: 230px;
@@ -701,13 +719,13 @@ ul.dri_paging li.next_num a {
   color: #808080;
 }
 
-/* line 593, ../../sass/dri/containers.scss */
+/* line 609, ../../sass/dri/containers.scss */
 .dri_object_view_block ul.dri_stats li span.dri_stat_num {
   float: right;
   font-weight: bold;
 }
 
-/* line 597, ../../sass/dri/containers.scss */
+/* line 613, ../../sass/dri/containers.scss */
 .dri_object_view_block .dri_bookmark_object {
   margin: 20px 0 0 0;
   padding: 0;
@@ -719,7 +737,7 @@ ul.dri_paging li.next_num a {
   font-size: 106%;
 }
 
-/* line 607, ../../sass/dri/containers.scss */
+/* line 623, ../../sass/dri/containers.scss */
 .dri_object_view_block .dri_bookmark_object select {
   margin: 6px 0 0 0;
   padding: 0;
@@ -727,7 +745,7 @@ ul.dri_paging li.next_num a {
   width: 230px;
 }
 
-/* line 613, ../../sass/dri/containers.scss */
+/* line 629, ../../sass/dri/containers.scss */
 .dri_object_view_block .dri_save_search {
   margin: 20px 0 0 0;
   padding: 0;
@@ -736,14 +754,14 @@ ul.dri_paging li.next_num a {
   width: 300px;
 }
 
-/* line 621, ../../sass/dri/containers.scss */
+/* line 637, ../../sass/dri/containers.scss */
 .dri_object_view_block .dri_save_search input {
   margin: 0 10px 0 0;
   padding: 0;
   float: left;
 }
 
-/* line 628, ../../sass/dri/containers.scss */
+/* line 644, ../../sass/dri/containers.scss */
 .dri_object_view_block .dri_vc_title {
   margin: 20px 0 0 0;
   padding: 0;
@@ -755,18 +773,30 @@ ul.dri_paging li.next_num a {
   font-size: 106%;
 }
 
-/* line 639, ../../sass/dri/containers.scss */
+/* line 655, ../../sass/dri/containers.scss */
+.dri_object_view_block .dri_cite_title {
+  margin: 20px 0 0 0;
+  padding: 0;
+  display: block;
+  float: left;
+  width: 230px;
+  font-weight: bold;
+  color: #2F2F2F;
+  font-size: 106%;
+}
+
+/* line 666, ../../sass/dri/containers.scss */
 .dri_object_view_block .dri_audio_player {
   padding: 0;
   margin: 0 0 30px 0;
 }
 
-/* line 644, ../../sass/dri/containers.scss */
+/* line 671, ../../sass/dri/containers.scss */
 .dri_h140 {
   height: 140px;
 }
 
-/* line 648, ../../sass/dri/containers.scss */
+/* line 675, ../../sass/dri/containers.scss */
 .mb20 {
   margin-bottom: 20px;
 }

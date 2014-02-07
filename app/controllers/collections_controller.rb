@@ -11,11 +11,14 @@ class CollectionsController < CatalogController
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
+
   # Shows list of user's collections
   #
   def index
-    @collections = filtered_collections(params[:view])
+    (@response, @document_list) = filtered_collections(params[:view])
+
     @collection_counts = {}
+    @collections = @document_list
 
     @collections.each do |collection|
       @collection_counts[collection[:id]] = count_collection_items collection[:id]
@@ -24,12 +27,12 @@ class CollectionsController < CatalogController
     respond_to do |format|
       format.html
       format.json {
-        collectionhash = []
+       collectionhash = []
         @collections.each do |collection|
           collectionhash << { :id => collection[:id],
                                :title => collection[:title],
                                :description => collection[:description],
-                               :objectcount => collection_counts[collection[:id]] }.to_json
+                               :objectcount => @collection_counts[collection[:id]] }.to_json
         end
         @collections = collectionhash
       }
@@ -181,6 +184,11 @@ class CollectionsController < CatalogController
       @collection.type.push("Collection")
     end
 
+    @licences = {}
+      Licence.find(:all).each do |licence|
+      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
+    end
+
     # If a cover image was uploaded, remove it from the params hash
     cover_image = params[:batch].delete(:cover_image)
 
@@ -237,8 +245,8 @@ class CollectionsController < CatalogController
 
       @collection.governed_items.each do |object|
         begin
-            # this makes a connection to s3, should really test if connection is available somewhere else
-            delete_files(object)
+          # this makes a connection to s3, should really test if connection is available somewhere else
+          delete_files(object)
         rescue Exception => e
             puts 'cannot delete files'
         end
@@ -253,6 +261,17 @@ class CollectionsController < CatalogController
       redirect_to :controller => "collections", :action => "index" }
     end
 
+  end
+
+  def children
+    (@response, @document_list) = collection_children params[:id]
+
+    respond_to do |format|
+      format.html { }
+      format.json do
+        render json: render_search_results_as_json
+      end
+    end
   end
 
   private
@@ -275,7 +294,9 @@ class CollectionsController < CatalogController
       local_file_info.each { |file| file.destroy }
       FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
 
-      Storage::S3Interface.delete_bucket(object.id.sub('dri:', ''))
+      storage = Storage::S3Interface.new
+      storage.delete_bucket(object.id.sub('dri:', ''))
+      storage.close
     end
 
     def count_collection_items collection_id
@@ -286,6 +307,18 @@ class CollectionsController < CatalogController
       end
 
       ActiveFedora::SolrService.count(solr_query, :defType => "edismax", :fq => fq)
+    end
+
+    def collection_children collection_id
+      solr_query = collection_items_query(collection_id)
+
+      unless (current_user && current_user.is_admin?)
+        fq = published_or_permitted_filter
+      end
+
+      (solr_response, document_list) = get_search_results({:q => solr_query, :fq => fq})
+
+      return [solr_response, document_list]
     end
 
     def collection_items collection_id
@@ -320,23 +353,9 @@ class CollectionsController < CatalogController
           fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
       end
 
-      result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim,description_tesim,cover_image_tesim,rights_tesim", :fq => fq)
-      result_docs.each do | doc |
-        if doc.has_key?("cover_image_tesim") && !doc["cover_image_tesim"].blank?
-          image = doc["cover_image_tesim"][0]
-        end
+      (solr_response, document_list) = get_search_results({:q => solr_query, :fq => fq})
 
-        result = {}
-        result[:id] = doc['id'] if doc['id']
-        result[:title] = doc["title_tesim"][0] if doc["title_tesim"]
-        result[:description] = doc["description_tesim"][0] if doc["description_tesim"]
-        result[:cover_image] = image
-        result[:rights] = doc['rights_tesim'].first
-
-        results.push(result)
-      end
-
-      return results
+      return [solr_response, document_list]
     end
 
     def collection_items_query(id)

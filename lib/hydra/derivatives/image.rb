@@ -50,7 +50,11 @@ module Hydra
         filename = "#{bucket_id}_#{output_datastream}.#{format}"
 
         out_file = File.open(output_file, "rb")
-        Storage::S3Interface.store_surrogate(bucket_id, out_file, filename)
+
+        storage = Storage::S3Interface.new
+        storage.store_surrogate(bucket_id, out_file, filename)
+        storage.close
+        
         File.unlink(output_file)
       end
 

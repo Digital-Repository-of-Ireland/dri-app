@@ -34,30 +34,24 @@ class Institute < ActiveRecord::Base
 
 
   def validate_and_store_logo(logo, name)
+    if !logo.blank? && Validators.file_type?(logo).mediatype == "image"
+      begin
+        Validators.virus_scan(logo)
+      rescue Exceptions::VirusDetected => e
+        virus = true
+        flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+      end
 
-    if (logo.nil? || logo.blank?)
-      raise Exceptions::UnknownMimeType
-    else
-      mime_object = Validators.file_type?(logo)
-      type = mime_object.mediatype if mime_object.respond_to?('mediatype')
-      type = mime_object.media_type if mime_object.respond_to?('media_type')
-    end
+      unless virus
+        storage = Storage::S3Interface.new
+        storage.store_file(logo.tempfile.path,
+                           "#{name}.#{logo.original_filename.split(".").last}",
+                           Settings.data.logos_bucket)
+        self.logo = storage.get_link_for_file(Settings.data.logos_bucket,
+                                              "#{name}.#{logo.original_filename.split(".").last}")
 
-    if type == "image"
-      Validators.virus_scan(logo)
-
-      AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                          :access_key_id => Settings.S3.access_key_id,
-                                          :secret_access_key => Settings.S3.secret_access_key)
-      AWS::S3::Service.buckets
-
-      Storage::S3Interface.store_file(logo.tempfile.path,
-                                      "#{name}.#{logo.original_filename.split(".").last}",
-                                      Settings.data.logos_bucket)
-      self.logo = Storage::S3Interface.get_link_for_file(Settings.data.logos_bucket,
-                                                        "#{name}.#{logo.original_filename.split(".").last}")
-
-      AWS::S3::Base.disconnect!()
+        storage.close
+      end
     end
   end
 end

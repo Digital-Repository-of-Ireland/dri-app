@@ -1,0 +1,34 @@
+
+
+
+<div id="dri_login_form_container_id" class="dri_login_form_container">
+
+	<div id="dri_login_form_block_id" class="dri_login_form_block">
+
+<%= form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
+  <%= devise_error_messages! %>
+
+			<h2>
+				<%= t('.resend_unlock_instructions', :default => "Resend unlock instructions") %>
+			</h2>
+			<div>
+				<%= f.label :email, (t :'user_groups.views.shared.email') %><br />
+  <%= f.email_field :email %>
+			</div>
+
+		<div class="dri_submit">
+			<%= f.submit t('.resend_unlock_instructions', :default => "Resend unlock instructions") %>
+			
+		</div>
+		<div class="dri_form_text">
+			<%= render "devise/shared/links" %>
+		</div>
+		<!--  close dri_form_text -->
+
+	<% end %>
+	</div>
+
+
+
+
+</div>

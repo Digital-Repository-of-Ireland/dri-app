@@ -67,7 +67,7 @@ Feature:
     Given I have created a licence "TestLicence7"
     When I perform a search
     And I follow "Licence Test Collection"
-    And I follow the link to edit this record
+    And I follow the link to edit a collection
     Then the "licence" drop-down should contain the option "TestLicence7"
     When I select "TestLicence7" from the selectbox for licence
     And I press the button to save collection changes
