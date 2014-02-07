@@ -1,63 +1,62 @@
 <% if collection?(document) %>
 <article class="block5">
-						<div class="dri_content_block_collection">
-						<div class="dri_image">
-								    <% if document[:cover_image_tesim] && document[:cover_image_tesim].first %>
-							      <%= image_tag document[:cover_image_tesim].first, :width=>"228", :height=>"127" %>
-							    <% elsif !document[:collection_tesim].blank? %>
-							      <% collection = governing_collection_solr(document) %>
-							      <% if collection['cover_image_tesim'] && collection['cover_image_tesim'].first %>
-							        <%= image_tag collection['cover_image_tesim'].first, :width=>"228", :height=>"127" %>
-							      <% else %>
-							        <% image = "dri/formats/#{document[:object_type_ssm].first}.png".downcase %>
-							        <%= image_tag image, :width=>"228", :height=>"127" %>
-							      <% end %>
-							    <% else %>
-							      <% image = "dri/formats/#{document[:object_type_ssm].first}.png".downcase %>
-							      <%= image_tag image, :width=>"228", :height=>"127" %>
-								  <% end %>
-							</div> <!-- close image -->
-							<h1><%= link_to_document document, :label => document_show_link_field, :counter => (document_counter + 1 + @response.params[:start].to_i) %></h1>	
-						
-						  <p class="dri_publishing_institute">
-							<a ><% document[:rights_tesim].each do |rights| %>
-        							<%= rights %>
-      							<% end %></a>
-						
-						</p><div class="dri_num_objects">
-							<span class="dri_object_text">Objects</span> <span class="dri_object_text_num"><a href="#">28</a></span>
-						</div>
-						<!-- close dri_num_objects -->
-					</div>
-					<!-- close content_block -->
-				</article>
+  <div class="dri_content_block_collection">
+    <div class="dri_image">
+      <% if document[:cover_image_tesim] && document[:cover_image_tesim].first %>
+        <%= image_tag document[:cover_image_tesim].first, :width=>"228", :height=>"127" %>
+      <% elsif !document[:collection_tesim].blank? %>
+        <% collection = governing_collection_solr(document) %>
+        <% if collection['cover_image_tesim'] && collection['cover_image_tesim'].first %>
+          <%= image_tag collection['cover_image_tesim'].first, :width=>"228", :height=>"127" %>
+	<% else %>
+	  <% image = "dri/formats/#{document[:object_type_ssm].first}.png".downcase %>
+	  <%= image_tag image, :width=>"228", :height=>"127" %>
+	<% end %>
+      <% else %>
+        <% image = "dri/formats/#{document[:object_type_ssm].first}.png".downcase %>
+        <%= image_tag image, :width=>"228", :height=>"127" %>
+      <% end %>
+    </div> <!-- close image -->
+
+    <h1><%= link_to_document document, :label => document_show_link_field, :counter => (document_counter + 1 + @response.params[:start].to_i) %></h1>	
+    <p class="dri_publishing_institute">
+      <a ><% document[:rights_tesim].each do |rights| %>
+        <%= rights %>
+      <% end %></a>
+    </p>
+
+    <div class="dri_num_objects">
+      <span class="dri_object_text">Objects</span> <span class="dri_object_text_num"><a href="#"><%= count_published_items_in_collection(document[:id]) %></a></span>
+   </div>
+   <!-- close dri_num_objects -->
+  </div>
+  <!-- close content_block -->
+</article>
 									
 <% else %>
+
 <article class="block5">
-					<div class="dri_content_block">
-					<%= render :partial => 'document_header', :locals => { :document => document, :document_counter => document_counter } %>	
-						 <p class="dri_description_text">
-							<a>
-							  <% if document[:subject_tesim] %>
+  <div class="dri_content_block">
+    <%= render :partial => 'document_header', :locals => { :document => document, :document_counter => document_counter } %>	
+    <p class="dri_description_text">
+      <a>
+        <% if document[:subject_tesim] %>
+          <% document[:subject_tesim].each do |subject| %>
+            <%= subject %>,
+      	  <% end %>
+        <% else %>
+    	  n/a
+        <% end %>
+      </a>
+    </p>
 
-      							<% document[:subject_tesim].each do |subject| %>
-        							<%= subject %>,
-      							<% end %>
+    <div class="dri_icon">
+      <span class="dri_icon_image"><%# image_tag("dri/formats/#{document[:object_type_ssm].first.downcase}_icon.png") %></span>
+      <span class="dri_icon_text"><%= document[:object_type_ssm].first %></span>
+    </div>
+    <!-- close dri_icon -->
+  </div>
+<!-- close content_block -->
+</article>
 
-  								<% else %>
-    								n/a
-  								<% end %>
-  								
-
-							
-							</a>
-						</p>
-						<div class="dri_icon">
-                       		 <span class="dri_icon_image"><%# image_tag("dri/formats/#{document[:object_type_ssm].first.downcase}_icon.png") %></span>
-							<span class="dri_icon_text"><%= document[:object_type_ssm].first %></span>
-						</div>
-						<!-- close dri_icon -->
-					</div>
-					<!-- close content_block -->
-				</article>
 <% end %>
