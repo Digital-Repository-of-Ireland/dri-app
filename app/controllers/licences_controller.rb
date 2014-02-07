@@ -7,11 +7,16 @@ class LicencesController < ApplicationController
   end
 
 
-  # Not implemented yet
+  # Create new licence
   def new
     @licence = Licence.new
   end
 
+
+  # Edit an existing licence
+  def edit
+    @licence = Licence.find(params[:id])
+  end
 
   # Not implemented yet
   def show
@@ -24,16 +29,89 @@ class LicencesController < ApplicationController
 
     @licence = Licence.new
 
-    file_upload = params[:licence][:logo]
-    @licence.add_logo(file_upload, {:name => params[:licence][:name]})
+    if ((params[:licence][:logo].nil? || params[:licence][:logo].blank?) &&
+      (params[:logo_file].nil? || params[:logo_file].blank?))
+      @licence.name = params[:licence][:name]
+      @licence.save
+    elsif params[:licence][:logo] =~ URI::regexp
+      @licence.name = params[:licence][:name]
+      @licence.logo = params[:licence][:logo]
+      @licence.save
+    elsif !params[:logo_file].blank?
+      begin
+        @licence.add_logo(params[:logo_file], {:name => params[:licence][:name]})
+      rescue Exceptions::UnknownMimeType => e
+        flash[:alert] = t('dri.flash.alert.invalid_file_type')
+      rescue Exceptions::VirusDetected => e
+        flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+      rescue Exceptions::InternalError => e
+        logger.error "Could not save licence: #{e.message}"
+        raise Exceptions::InternalError
+      end
+    end
 
-    @licence.url = params[:licence][:url]
+    if (!(params[:licence][:url].nil? || params[:licence][:url].blank?) && params[:licence][:url] =~ URI::regexp)
+      @licence.url = params[:licence][:url]
+    end
+
+    if !(params[:licence][:url].nil? || params[:licence][:url].blank?)
+      @licence.description = params[:licence][:description]
+    end
+
     @licence.save
 
-    @licences = Licences.find(:all)
 
     respond_to do |format|
-      format.html
+      format.html  {
+        flash[:notice] = t('dri.flash.notice.licence_created')
+        @licences = Licence.find(:all)
+        render :action => "index"
+      }
+    end
+  end
+
+
+  # Update existing licence
+  def update
+    @licence = Licence.find(params[:id])
+
+    if ((params[:licence][:logo].nil? || params[:licence][:logo].blank?) &&
+       (params[:logo_file].nil? || params[:logo_file].blank?))
+      @licence.name = params[:licence][:name]
+      @licence.save
+    elsif params[:licence][:logo] =~ URI::regexp
+      @licence.name = params[:licence][:name]
+      @licence.logo = params[:licence][:logo]
+      @licence.save
+    elsif !params[:logo_file].blank?
+      begin
+        @licence.add_logo(params[:logo_file], {:name => params[:licence][:name]})
+      rescue Exceptions::UnknownMimeType => e
+        flash[:alert] = t('dri.flash.alert.invalid_file_type')
+      rescue Exceptions::VirusDetected => e
+        flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+      rescue Exceptions::InternalError => e
+        logger.error "Could not save licence: #{e.message}"
+        raise Exceptions::InternalError
+      end
+    end
+
+    if (!(params[:licence][:url].nil? || params[:licence][:url].blank?) && params[:licence][:url] =~ URI::regexp)
+      @licence.url = params[:licence][:url]
+    end
+
+    if !(params[:licence][:url].nil? || params[:licence][:url].blank?)
+      @licence.description = params[:licence][:description]
+    end
+
+    @licence.save
+
+    respond_to do |format|
+      format.html  {
+        flash[:notice] = t('dri.flash.notice.licence_updated')
+        @licences = Licence.find(:all)
+        render :action => "index"
+      }
     end
   end
 

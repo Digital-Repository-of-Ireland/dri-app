@@ -1,34 +1,33 @@
 
----
-en:
-  dri:
-    application:
-      cookies:
+--- 
+en: 
+  dri: 
+    application: 
+      cookies: 
         accept: "Accept and hide message"
         confirm: "By signing in or signing up you are deemed to be accepting the DRI cookie policy."
         header: "Important notice about cookies"
         message: "The Digital Repository of Ireland uses cookies to implement access control to digital resources. To opt out of receiving cookies from DRI, please turn off cookies for this website in your browser preferences. Note that users who opt out will be unable to use some of the features of the Digital Repository. For more information please see our %{privacy_statement:privacy statement} and our %{cookies_help:cookies help} pages."
-      home:
-        introtext:
+      home: 
+        featured: Featured
+        featured_collections: "Featured Collections"
+        introtext: 
           admin: "DRI repository administrator interface"
           public: "Welcome to the DRI repository."
-        featured: "Featured"
-        featured_collections: "Featured Collections"
         new_collections: "New Collections"
         newly_added: "Newly Added"
-
-      lang:
+      lang: 
         en: English
         ga: Irish
       locale: Language
-    data:
-      types:
+    data: 
+      types: 
         Image: Images
         MovingImage: Video
         Sound: Audio
         Text: Documents
-    flash:
-      alert:
+    flash: 
+      alert: 
         create_permission: "You do not have permission to create this document."
         edit_permission: "You do not have permission to edit this document."
         invalid_file_type: "Warning: The file does not appear to be a valid type"
@@ -39,12 +38,12 @@ en:
         read_permission: "You do not have permission to read this document."
         unknown_permission: "Unsupported Permission Level: %{action}"
         virus_detected: "Virus detected in uploaded file: %{virus}"
-      error:
+      error: 
         no_type_specified: "You must specify a valid object type"
         not_created: "Unable to create. Check set permissions"
         not_updated: "%{item} was not updated. Check set permissions"
         validation_errors: "Validation Errors: %{error}"
-      notice:
+      notice: 
         added_to_collection: "Object has been added to collection."
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Collection has been deleted."
@@ -53,6 +52,8 @@ en:
         digital_object_ingested: "Digital object has been successfully ingested."
         duplicate_object_ingested: "Possible duplicate objects found: %{duplicates}"
         file_uploaded: "File has been successfully uploaded."
+        licence_created: "Licence successfully created."
+        licence_updated: "Licence successfully updated."
         metadata_updated: "Metadata has been successfully updated."
         no_xml_schema: "The XML file contains no schema to validate against."
         removed_from_collection: "Object has been removed from the collection."
@@ -63,9 +64,10 @@ en:
         specify_valid_file: "You must specify a valid file to upload."
         specify_xml_file: "You must specify a XML file."
         updated: "Updated %{item}"
-    headerlinks:
+    headerlinks: 
       about: About
-      collections:
+      admin: "Admin Tasks"
+      collections: 
         admin: "My Collections"
         public: Collections
       contact: Contact
@@ -74,40 +76,41 @@ en:
       ingest: Ingest
       privacy: "Privacy & Cookies policy"
       resque: "Resque Server"
-      usergroups: "Users & Groups"
       sitemap: Sitemap
-      workspace: My Workspace
-      admin: Admin Tasks
-    views:
-      catalog:
-        buttons:
+      usergroups: "Users & Groups"
+      workspace: "My Workspace"
+    views: 
+      alt_tags: 
+        cover_image: "Cover Image"
+      catalog: 
+        buttons: 
           add_to_collection: "Add to collection"
           remove_from_collection: "Remove from collection"
-        forms:
+        forms: 
           audio_file: "Audio File"
           file: File
           image_file: Image
           metadata: Metadata
           pdf_file: PDF
           video_file: Video
-        headers:
+        headers: 
           files: Files
-        legends:
+        legends: 
           no_files: "No file has been uploaded."
           no_permission: "You do not have permission to view the asset file associated with this object."
           no_surrogates: "No surrogates are available."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
-        links:
+        links: 
           download: download
           edit_this_record: "Edit this record"
           listen: listen
           view_metadata: view
-        sidebar:
+        sidebar: 
           more_like_this: "More Like This"
           nav_header: "Edit Tools"
-      collection:
-        buttons:
+      collection: 
+        buttons: 
           clear_collection: "Clear as Current"
           create_collection: "Create Collection"
           delete_collection: "Delete Collection"
@@ -116,34 +119,34 @@ en:
           set_collection: "Set as Current"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         edit: "Edit Collection"
-        index:
-          objects: "Objects"
-          object_count:
-            one: "%{count}"
-            other: "%{count}"
-          items:
+        index: 
+          items: 
             one: "%{count} item"
             other: "%{count} items"
-          no_collections:
+          no_collections: 
             admin: "You do not have any collections yet."
             public: "There are no collections available."
-          title:
+          object_count: 
+            one: "%{count}"
+            other: "%{count}"
+          objects: Objects
+          title: 
             admin: "My Collections"
             public: Collections
-        institute:
+        institute: 
           add: "Add a new Institute"
           associate: "Associate Institute"
-          title: "Institutes and Sponsors"
           more: "Show more"
-        legends:
+          title: "Institutes and Sponsors"
+        legends: 
           governed_objects: "Governed Objects"
           members: Members
           objects: "Objects in Collection"
-        new:
+        new: 
           title: "New Collection"
-      devise:
+      devise: 
         locale: Language
-      exceptions:
+      exceptions: 
         access_denied: "You do not have permission to perform the requested operation."
         internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"
         invalid_asset: "Unable to create asset. Please correct the errors and try again."
@@ -154,7 +157,7 @@ en:
         invalid_object_type: "You have specified an invalid digital object type."
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
-      fields:
+      fields: 
         contributor: Contributor
         contributors: Contributors
         cover_image: "Upload a cover image"
@@ -178,6 +181,7 @@ en:
         identifiers: Identifiers
         language: Language
         languages: Languages
+        licence: Licence
         name_coverage: "Subject (Name)"
         name_coverages: "Subjects (Names)"
         published_date: "Published/Broadcast Date"
@@ -201,32 +205,36 @@ en:
         title: Title
         type: Type
         types: Types
-      ingest:
-        buttons:
+      ingest: 
+        buttons: 
           continue: Continue
           delete: Delete
           new_collection: "New collection"
           reset: Reset
-        forms:
+        forms: 
           collection_prompt: "Select collection"
           ingest_method_prompt: "Select ingest method"
           object_type_prompt: "Select object type"
           status_prompt: "Select status"
           title: "Add a new digital object"
-        legends:
+        legends: 
           upload_caption: "Ingest metadata XML file."
           upload_legend: "Upload Metadata:"
-        steps:
+        steps: 
           collection: "Select Collection"
           ingest_method: "Select Ingest Method"
           input: Input
           object_type: "Select Object Type"
           upload: "Upload Metadata file"
-      metadata:
+      licences: 
+        buttons: 
+          edit: "Edit Licence"
+          new: "Add a new licence"
+      metadata: 
         dublin_core: "Dublin Core"
         qualified_dublin_core: "Qualifed Dublin Core"
-      objects:
-        access_controls:
+      objects: 
+        access_controls: 
           accessible_master_file: "Accessible Master File(s)"
           date: "Date: "
           depositor: Depositor
@@ -248,17 +256,17 @@ en:
           registered: "Logged In"
           restricted: Restricted
           search: "Search Access"
-        buttons:
+        buttons: 
           add_to_collection: "Add to Collection"
           replace_master: "Replace Master File"
           replace_metadata: "Upload Metadata"
           save: "Save Changes"
           upload_master: "Upload Master File"
-        edit:
-          sidebar:
+        edit: 
+          sidebar: 
             nav_header: "Edit Tools"
           title: "Edit Object"
-        forms:
+        forms: 
           add_author: "Add Author"
           add_editor: "Add Editor"
           add_guest: "Add Guest"
@@ -285,7 +293,7 @@ en:
           status: Status
           subjects: Subjects
           title: Title
-        legends:
+        legends: 
           access_control: "Access Controls"
           audio_caption: "A master audio file has already been uploaded."
           cite: Cite
@@ -302,20 +310,18 @@ en:
           upload_pdf: "Upload PDF File"
           view_collection: "View Collection"
           viewcount: Views
-        links:
+        links: 
           all_objects: "All Objects"
           download: download
           listen: listen
           view_record: "View Record"
-      static:
-        workspace:
-          account: My Account
-        admin:
-          licences: Configure Supported Licences
-      alt_tags:
-        cover_image: "Cover Image"
-    vocabulary:
-      iso_639_2:
+      static: 
+        admin: 
+          licences: "Configure Supported Licences"
+        workspace: 
+          account: "My Account"
+    vocabulary: 
+      iso_639_2: 
         aar: Afar
         abk: Abkhazian
         ace: Achinese
@@ -801,7 +807,7 @@ en:
         zun: Zuni
         zxx: "No linguistic content; Not applicable"
         zza: "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
-      marc_relator:
+      marc_relator: 
         abr: Abridger
         acp: "Art copyist"
         act: Actor
@@ -1066,5 +1072,5 @@ en:
         wdc: Woodcutter
         wde: "Wood engraver"
         wit: Witness
-      name:
+      name: 
         marc_relators: "MARC Relators"

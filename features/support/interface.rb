@@ -91,6 +91,11 @@ module Interface
       end
     end
 
+    def enter_valid_licence(name)
+      fill_in("licence[name]", :with => name)
+      fill_in("licence[url]", :with => "http://www.dri.ie/")
+      fill_in("licence[description]", :with => "Valid Description")
+    end
   end
 
   def interface

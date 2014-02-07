@@ -103,5 +103,32 @@ module ApplicationHelper
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
   end
 
+  def get_cover_image( document )
+    if document[:cover_image_tesim] && document[:cover_image_tesim].first
+      @cover_image = document[:cover_image_tesim].first
+    elsif !document[:collection_tesim].blank?
+      collection = governing_collection_solr(document)
+      if collection['cover_image_tesim'] && collection['cover_image_tesim'].first
+        @cover_image = collection['cover_image_tesim'].first
+      else
+        @cover_image = "dri/formats/#{document[:object_type_ssm].first}.png".downcase
+      end
+    else
+      @cover_image = "dri/formats/#{document[:object_type_ssm].first}.png".downcase
+    end
+  end
+
+
+  def get_licence( document )
+    if !document[:licence_tesim].blank?
+      @licence = Licence.where(:name => document[:licence_tesim]).first
+    elsif !document[:collection_tesim].blank?
+      collection = governing_collection_solr(document)
+      if !collection['licence_tesim'].blank?
+        @licence = Licence.where(:name => collection['licence_tesim']).first
+      end
+    end
+  end
+
 end
 

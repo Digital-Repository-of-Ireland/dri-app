@@ -1,0 +1,21 @@
+<%= form_for @licence, :html => { :id => "dri_new_licence_form", :multipart => true }  do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <br />
+
+  <%= f.label :url %>
+  <%= f.text_field :url %>
+  <br />
+
+  <%= f.label :logo %>
+  <%= f.text_field :logo %>
+  <%= file_field_tag :logo_file %>
+  <br />
+
+  <%= f.label :description %>
+  <%= f.text_field :description %>
+  <br />
+
+  <%= f.submit :id => "add_licence" %>
+
+<% end %>

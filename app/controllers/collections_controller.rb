@@ -59,6 +59,11 @@ class CollectionsController < CatalogController
     @object.rights = [""]
     @object.type = [ "Collection" ]
 
+    @licences = {}
+    Licence.find(:all).each do |licence|
+      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
+    end
+
     respond_to do |format|
       format.html
     end
@@ -76,7 +81,10 @@ class CollectionsController < CatalogController
 
     @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
 
-    @licences = Licence.find(:all)
+    @licences = {}
+    Licence.find(:all).each do |licence|
+      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
+    end
 
     respond_to do |format|
       format.html
@@ -133,6 +141,11 @@ class CollectionsController < CatalogController
 
     @institutes = Institute.find(:all)
     @inst = Institute.new
+
+    @licences = {}
+      Licence.find(:all).each do |licence|
+      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
+    end
 
     set_access_permissions(:batch, true)
 
