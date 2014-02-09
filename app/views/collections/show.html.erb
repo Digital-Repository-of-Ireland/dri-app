@@ -41,7 +41,7 @@
      <% end %>
 
      <% if signed_in? && (can? :manage_collection, @collection) %>
-       <%= render :partial => 'approve_membership', :pending => @pending %>
+       <%= render :partial => 'approve_membership', :locals => {:pending => @pending} %>
      <% end %>
 
   </div>

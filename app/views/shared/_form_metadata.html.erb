@@ -146,3 +146,9 @@
   <%= f.select :status, ['draft','published'],:class => "edit span6" %>
 </fieldset>
 
+<% if params[:controller] == "collections" %>
+<fieldset id="licence">
+  <%= f.label "#{t('dri.views.fields.licence')}:" %>
+  <%= f.select :licence, options_for_select(@licences, @object[:licence]), :class => "edit span6" %>
+</fieldset>
+<% end %>

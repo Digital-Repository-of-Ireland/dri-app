@@ -14,6 +14,8 @@ NuigRnag::Application.routes.draw do
   resources :objects, :only => ['edit', 'update', 'create', 'show']
   resources :collections
 
+  match 'collections/:id/children' => 'collections#children', :via => :get, :as => :collection_children
+
   resources :ingest, :only => ['new', 'create']
 
   resources :institutes, :only => ['show', 'new', 'create']
@@ -34,6 +36,7 @@ NuigRnag::Application.routes.draw do
   match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 
   #match 'objects/:id' => 'catalog#show', :via => :get
+  match 'collections/:id' => 'catalog#show', :via => :get
 
   # need to put in the 'system administrator' role here
   authenticate do

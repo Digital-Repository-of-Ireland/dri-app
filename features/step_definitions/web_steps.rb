@@ -162,6 +162,22 @@ When /^I enter modified metadata$/ do
   interface.enter_modified_metadata
 end
 
+When /^I enter valid licence information for licence "(.*?)" into the new licence form$/ do |name|
+  interface.enter_valid_licence(name)
+end
+
+When /^I enter an url to a licence logo$/ do
+  fill_in("licence[logo]", :with => "http://i.creativecommons.org/l/by/4.0/88x31.png")
+end
+
+When /^I attach the licence logo file "(.*?)"$/ do |file|
+  attach_file("logo_file", File.join(cc_fixture_path, file))
+end
+
+Given /^I have created a licence "(.*?)"$/ do |name|
+  licence = Licence.create(:name=>name, :description=>'This is a description', :url=>"http://www.dri.ie/", :logo=>"http://creativecommons.org/licenses/by/4.0/deed.en_US")
+end
+
 When /^I attach the asset file "(.*?)"$/ do |file|
   attach_file("Filedata", File.join(cc_fixture_path, file))
 end
@@ -235,12 +251,20 @@ Then /^(?:|I )should( not)? see a message about cookies$/ do |negate|
   negate ? (page.should_not have_selector ".alert", text: flash_for("cookie notification")) : (page.should have_selector ".alert", text: flash_for("cookie notification"))
 end
 
-Then /^(?:|I )should see "([^"]*)"(?: within "([^"]*)")?$/ do |text, selector|
+Then /^(?:|I )should( not)? see "([^"]*)"(?: within "([^"]*)")?$/ do |negate, text, selector|
   with_scope(selector) do
-    if page.respond_to? :should
-      page.should have_content(text)
+    if !negate.nil? && !negate.blank?
+      if page.respond_to? :should_not
+        page.should_not have_content(text)
+      else
+        assert !page.has_content?(text)
+      end
     else
-      assert page.has_content?(text)
+      if page.respond_to? :should
+        page.should have_content(text)
+      else
+        assert page.has_content?(text)
+      end
     end
   end
 end
@@ -253,16 +277,12 @@ Then /^the object should be of type (.*?)$/ do |type|
   interface.is_type?(type)
 end
 
-#Then /^I should see a link to "([^\"]*)"$/ do |text|
-#  page.should have_link(text)
-#end
-
 Then /^I should see a link to "([^\"]*)" with text "([^\"]*)"$/ do |url, text|
   page.should have_link(text, href: url)
 end
 
-Then /^I should not see a link to "([^\"]*)"$/ do |text|
-  page.should_not have_link(text)
+Then /^I should see a form for (.+)$/ do |form|
+  page.should have_selector("form##{form_to_id(form)}")
 end
 
 Then /^(?:|I )should be on (.+)$/ do |page_name|
@@ -343,7 +363,7 @@ end
 
 Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |id, negate, value|
   expectation = negate ? :should_not : :should
-  page.send(expectation,  have_xpath("//select[@id = '#{id}']/option[@value = '#{value}']"))
+  page.send(expectation,  have_xpath("//select[@id = '#{select_box_to_id(id)}']/option[@value = '#{value}']"))
 end
 
 Then /^I should see the image "(.*?)"$/ do |src|

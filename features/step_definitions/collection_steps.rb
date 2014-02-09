@@ -73,13 +73,13 @@ Given /^I have associated the institute "(.?*)" with the colleciton entitled "(.
     Given I am on the home page
     When I perform a search
     And I press "#{collection}"
-    And I follow the link to edit this record
+    And I follow the link to edit a collection
     And I fill in "institute[name]" with "#{institute}"
     And I fill in "institute[url]" with "http://www.dri.ie/"
     And I attach the institute logo file "sample_logo.png"
     And I press the button to add an institute
     And I wait for the ajax request to finish
-    Then the "select_institute" drop-down should contain the option "#{institute}"
+    Then the "institute" drop-down should contain the option "#{institute}"
     When I select "#{institute}" from the selectbox for institute
     And I press the button to associate an institute
     And I wait for the ajax request to finish

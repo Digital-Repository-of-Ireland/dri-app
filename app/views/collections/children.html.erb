@@ -1,0 +1,11 @@
+<% @page_title = t('blacklight.search.title', :application_name => application_name) %>
+<% extra_head_content << render_opensearch_response_metadata.html_safe %>
+
+<div id="dri_second_navigation_container_id"
+	class="dri_second_navigation_container">
+  <div class="dri_back_search"><%= link_to(t('blacklight.back_to_collection'), catalog_path(params[:id])) %></div>
+</div>
+		  
+<div id="dri_result_container_id" class="dri_result_container">
+  <%= render_document_index %>
+</div><!-- close dri_result_container -->  

@@ -28,6 +28,9 @@ module ButtonTranslator
     when /institute/
       "select_institute"
 
+    when /licence/
+      "batch_licence"
+
     else "Unknown"
 
     end

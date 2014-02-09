@@ -73,6 +73,12 @@ module ButtonTranslator
     when /associate an institute/
       "associate_inst"
 
+    when /add a licence/
+      "add_licence"
+
+    when /save licence/
+      "save_licence"
+
     else "Unknown"
 
     end

@@ -19,7 +19,17 @@ class InstitutesController < ApplicationController
     @inst = Institute.new
 
     file_upload = params[:institute][:logo]
-    @inst.add_logo(file_upload, {:name => params[:institute][:name]})
+
+    begin
+      @inst.add_logo(file_upload, {:name => params[:institute][:name]})
+    rescue Exceptions::UnknownMimeType => e
+      flash[:alert] = t('dri.flash.alert.invalid_file_type')
+    rescue Exceptions::VirusDetected => e
+      flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+    rescue Exceptions::InternalError => e
+      logger.error "Could not save licence: #{e.message}"
+      raise Exceptions::InternalError
+    end
 
     @inst.url = params[:institute][:url]
     @inst.save
