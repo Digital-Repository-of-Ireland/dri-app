@@ -1,5 +1,7 @@
 <ul>
 <% @licences.each do |licence| %>
-<li><%= licence.name %></li>
+<li><%= licence.name %> <span><%= link_to t('dri.views.licences.buttons.edit'), edit_licence_path(licence.id) %> </span> </li>
 <% end %>
 </ul>
+
+<%= link_to t('dri.views.licences.buttons.new'), new_licence_path, :id => "new_licence" %>

@@ -45,10 +45,10 @@ class Institute < ActiveRecord::Base
       unless virus
         storage = Storage::S3Interface.new
         storage.store_file(logo.tempfile.path,
-                                        "#{name}.#{logo.original_filename.split(".").last}",
-                                        Settings.data.logos_bucket)
+                           "#{name}.#{logo.original_filename.split(".").last}",
+                           Settings.data.logos_bucket)
         self.logo = storage.get_link_for_file(Settings.data.logos_bucket,
-                                                          "#{name}.#{logo.original_filename.split(".").last}")
+                                              "#{name}.#{logo.original_filename.split(".").last}")
 
         storage.close
       end

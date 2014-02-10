@@ -10,17 +10,25 @@ class LocalFile < ActiveRecord::Base
 
   # Write the file to the filesystem
   #
-  def add_file(upload,opts={}) 
-    filename = upload.original_filename
-    self.path = File.join(opts[:directory], filename)
+  def add_file(upload,opts={})
+    file_name = ""
+
+    if opts.key?(:file_name)
+      file_name = opts[:file_name]
+    else
+      file_name = upload.original_filename
+    end
+
+    
+    self.path = File.join(opts[:directory], file_name)
     self.fedora_id = opts[:fedora_id]
     self.ds_id = opts[:ds_id]
     self.version = opts[:version]
-    self.mime_type = MIME::Types.type_for(filename).first.content_type 
+    self.mime_type = MIME::Types.type_for(file_name).first.content_type 
 
     FileUtils.mkdir_p(opts[:directory])
     if upload.respond_to?('path')
-      FileUtils.move(upload.path, self.path)
+      FileUtils.mv(upload.path, self.path)
     else
       File.open(self.path, "wb") { |f| f.write(upload.read) }
     end

@@ -49,6 +49,12 @@ module PathTranslator
     when /show page for the collection/
       collection_path(@collection.id)
 
+    when /licence index page/
+      licences_path
+
+    when /new licence page/
+      new_licence_path
+
     else
       raise('You specified an invalid path')
 

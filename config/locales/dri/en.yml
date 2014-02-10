@@ -9,14 +9,13 @@ en:
         header: "Important notice about cookies"
         message: "The Digital Repository of Ireland uses cookies to implement access control to digital resources. To opt out of receiving cookies from DRI, please turn off cookies for this website in your browser preferences. Note that users who opt out will be unable to use some of the features of the Digital Repository. For more information please see our %{privacy_statement:privacy statement} and our %{cookies_help:cookies help} pages."
       home:
+        featured: Featured
+        featured_collections: "Featured Collections"
         introtext:
           admin: "DRI repository administrator interface"
           public: "Welcome to the DRI repository."
-        featured: "Featured"
-        featured_collections: "Featured Collections"
         new_collections: "New Collections"
         newly_added: "Newly Added"
-
       lang:
         en: English
         ga: Irish
@@ -54,6 +53,8 @@ en:
         digital_object_ingested: "Digital object has been successfully ingested."
         duplicate_object_ingested: "Possible duplicate objects found: %{duplicates}"
         file_uploaded: "File has been successfully uploaded."
+        licence_created: "Licence successfully created."
+        licence_updated: "Licence successfully updated."
         metadata_updated: "Metadata has been successfully updated."
         no_xml_schema: "The XML file contains no schema to validate against."
         removed_from_collection: "Object has been removed from the collection."
@@ -66,6 +67,7 @@ en:
         updated: "Updated %{item}"
     headerlinks:
       about: About
+      admin: "Admin Tasks"
       collections:
         admin: "My Collections"
         public: Collections
@@ -75,11 +77,12 @@ en:
       ingest: Ingest
       privacy: "Privacy & Cookies policy"
       resque: "Resque Server"
-      usergroups: "Users & Groups"
       sitemap: Sitemap
-      workspace: My Workspace
-      admin: Admin Tasks
+      usergroups: "Users & Groups"
+      workspace: "My Workspace"
     views:
+      alt_tags:
+        cover_image: "Cover Image"
       catalog:
         buttons:
           add_to_collection: "Add to collection"
@@ -91,6 +94,8 @@ en:
           metadata: Metadata
           pdf_file: PDF
           video_file: Video
+          objects_in_collection: "Objects in this Collection"
+          restricted_asset: "Restricted Asset"
         headers:
           files: Files
         legends:
@@ -99,6 +104,7 @@ en:
           no_surrogates: "No surrogates are available."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
+          request_permission_in_progress: "Your request is in progress."
         links:
           download: download
           edit_this_record: "Edit this record"
@@ -118,24 +124,24 @@ en:
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         edit: "Edit Collection"
         index:
-          objects: "Objects"
-          object_count:
-            one: "%{count}"
-            other: "%{count}"
           items:
             one: "%{count} item"
             other: "%{count} items"
           no_collections:
             admin: "You do not have any collections yet."
             public: "There are no collections available."
+          object_count:
+            one: "%{count}"
+            other: "%{count}"
+          objects: Objects
           title:
             admin: "My Collections"
             public: Collections
         institute:
           add: "Add a new Institute"
           associate: "Associate Institute"
-          title: "Institutes and Sponsors"
           more: "Show more"
+          title: "Institutes and Sponsors"
         legends:
           governed_objects: "Governed Objects"
           members: Members
@@ -179,6 +185,7 @@ en:
         identifiers: Identifiers
         language: Language
         languages: Languages
+        licence: Licence
         name_coverage: "Subject (Name)"
         name_coverages: "Subjects (Names)"
         published_date: "Published/Broadcast Date"
@@ -223,6 +230,10 @@ en:
           input: Input
           object_type: "Select Object Type"
           upload: "Upload Metadata file"
+      licences:
+        buttons:
+          edit: "Edit Licence"
+          new: "Add a new licence"
       metadata:
         dublin_core: "Dublin Core"
         qualified_dublin_core: "Qualifed Dublin Core"
@@ -309,12 +320,10 @@ en:
           listen: listen
           view_record: "View Record"
       static:
-        workspace:
-          account: My Account
         admin:
-          licences: Configure Supported Licences
-      alt_tags:
-        cover_image: "Cover Image"
+          licences: "Configure Supported Licences"
+        workspace:
+          account: "My Account"
     vocabulary:
       iso_639_2:
         aar: Afar

@@ -56,6 +56,8 @@ module Validators
 
   end  # End validate_file_type method
 
+
+  # Returns a MimeMagic or Mime::Types object
   def Validators.file_type?(file)
     self.init_types()
 
@@ -66,6 +68,7 @@ module Validators
       path = file
       extension = file.split(".").last
     end
+
     mime_type = MimeMagic.by_magic( File.open( path ) )
 
     if mime_type == nil

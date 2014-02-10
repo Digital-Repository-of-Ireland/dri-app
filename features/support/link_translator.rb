@@ -64,6 +64,15 @@ module LinkTranslator
     when /download surrogate/
       "download_surrogate_asset"
 
+    when /admin tasks/
+      "admin_tasks"
+
+    when /configure licences/
+      "licences"
+
+    when /add new licence/
+      "new_licence"
+
     else "Unknown"
 
     end
