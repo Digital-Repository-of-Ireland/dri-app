@@ -76,7 +76,7 @@ class CollectionsController < CatalogController
   #
   def edit
     enforce_permissions!("edit",params[:id])
-    @collections = filtered_collections
+    #@collections = filtered_collections
     @object = retrieve_object!(params[:id])
 
     @institutes = Institute.find(:all)
@@ -316,7 +316,9 @@ class CollectionsController < CatalogController
         fq = published_or_permitted_filter
       end
 
-      (solr_response, document_list) = get_search_results({:q => solr_query, :fq => fq})
+      params[:q] = solr_query
+      params[:fq] = fq
+      (solr_response, document_list) = get_search_results
 
       return [solr_response, document_list]
     end
@@ -353,7 +355,10 @@ class CollectionsController < CatalogController
           fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
       end
 
-      (solr_response, document_list) = get_search_results({:q => solr_query, :fq => fq})
+      params[:q] = solr_query
+      params[:fq] = fq
+
+      (solr_response, document_list) = get_search_results
 
       return [solr_response, document_list]
     end
