@@ -48,30 +48,20 @@ module ApplicationHelper
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
-  def collection?( document )
-    type?("collection", document)
-  end
+  def image_path ( document, suffix = "" )
+    format = format?(document)
 
-  def audio?( document )
-    type?("sound", document)
-  end
+    path = "" 
 
-  def image?( document )
-    type?("image", document)
-  end
+    if format.eql?("unknown")
+      path = "no_image.png"
+    else
+      path = "dri/formats/#{format}#{suffix}.png"
+    end
 
-  def video?( document )
-    type?("movingimage", document)
+    path
   end
-
-  def document?( document )
-    type?("text", document)
-  end
-
-  def type?( type, document )
-    document["object_type_ssm"].first.casecmp(type) == 0 ? true : false
-  end
-
+    
   def reader_group_name( document )
     id = document[:is_governed_by_ssim][0].sub('info:fedora/', '')
     name = id.sub(':','_')
@@ -118,10 +108,10 @@ module ApplicationHelper
       if collection['cover_image_tesim'] && collection['cover_image_tesim'].first
         @cover_image = collection['cover_image_tesim'].first
       else
-        @cover_image = "dri/formats/#{document[:object_type_ssm].first}.png".downcase
+        @cover_image = image_path( document )
       end
     else
-      @cover_image = "dri/formats/#{document[:object_type_ssm].first}.png".downcase
+      @cover_image = image_path( document )
     end
   end
 
