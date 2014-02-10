@@ -1,21 +1,43 @@
-<% @page_title = t('blacklight.search.title', :application_name => application_name) %>
-<% extra_head_content << render_opensearch_response_metadata.html_safe %>
 
-<div id="dri_second_navigation_container_id"
-	class="dri_second_navigation_container">
 
-  <% if signed_in? %>
-    <div class="dri_grey_button dri_clearfix">
-      <%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>
-    </div>
-  <% end %>
+<% @collections.each do |collection| %>
+<article class="block5">
+					<div class="dri_content_block_collection">
+					    <% if collection[:cover_image] %>
+     	 					<%= image_tag(collection[:cover_image], :class=>"dri_image", :width=>"228", :height=>"127") %>
+      					<% else %>
+      						<% image = "dri/formats/collection.png".downcase %>
+      						<a href="#">
+        						<%= image_tag image, :width=>"228", :height=>"127" %>
+      						</a>
+    					<% end %>
+    					<h1><%= link_to collection[:title], collection_path(:id => collection[:id]) %></h1>
+    					
+                        <h2>
+							<a href=""><!-- need callback to get search on rights -->
+								<%= collection[:rights] %>
+							</a>
+						</h2>
+						<div class="dri_num_objects">
+							<span class="dri_object_text">Objects</span> <span class="dri_object_text_num"><a href="#"><%= t('dri.views.collection.index.object_count', :count => @collection_counts[collection[:id]]) %></a></span>
+						</div>
+						<!-- close dri_num_objects -->
+					</div>
+					<!-- close content_block -->
+				</article>
+<% end %>
 
-</div>
-		  
-<div id="dri_result_container_id" class="dri_result_container">
-  <% if @document_list.blank? %>
-    <p><%= t('dri.views.collection.index.no_collections.public') %></p>
-  <% else %>
-    <%= render_document_index %>
-  <% end %>
-</div><!-- close dri_result_container -->  
+
+
+     <% if @collections.blank? %>
+       <p><%= t('dri.views.collection.index.no_collections.public') %></p>
+       <% end %>
+
+
+       <% if signed_in? %>
+       <div class="dri_grey_button dri_clearfix">
+					<%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>
+		</div>
+
+       <% end %>
+
