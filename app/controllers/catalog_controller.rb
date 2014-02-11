@@ -48,7 +48,7 @@ class CatalogController < ApplicationController
     # solr field configuration for document/show views
     config.show.html_title = 'title_tesim'
     config.show.heading = 'title_tesim'
-    config.show.display_type = 'type_tesim'
+    config.show.display_type = 'file_type_tesim'
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
