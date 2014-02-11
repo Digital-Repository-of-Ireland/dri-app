@@ -3,6 +3,11 @@
 <div id="dri_second_navigation_container_id"
        class="dri_second_navigation_container">
 
+  <div class="dri_facet_filters_block" id="sidebar">
+    <%= render :partial => 'facets' %>
+  </div>
+  <!-- close facet block -->
+
   <% if signed_in? %>
     <div class="dri_grey_button dri_clearfix">
       <%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>

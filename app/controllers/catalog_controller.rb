@@ -92,6 +92,8 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('object_type', :facetable), :label => 'Type'
     config.add_facet_field solr_name('root_collection', :facetable), :label => 'Collection'
 
+    config.add_facet_field solr_name('is_collection', :facetable), :label => 'is_collection', :helper_method => :is_collection, :show => false
+
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.

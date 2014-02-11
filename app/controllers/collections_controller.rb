@@ -266,7 +266,7 @@ class CollectionsController < CatalogController
     (@response, @document_list) = collection_children params[:id]
 
     respond_to do |format|
-      format.html { }
+      format.html   
       format.json do
         render json: render_search_results_as_json
       end
