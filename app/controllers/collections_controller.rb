@@ -76,7 +76,6 @@ class CollectionsController < CatalogController
   #
   def edit
     enforce_permissions!("edit",params[:id])
-    #@collections = filtered_collections
     @object = retrieve_object!(params[:id])
 
     @institutes = Institute.find(:all)

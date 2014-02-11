@@ -26,7 +26,7 @@
     </p>
 
     <div class="dri_num_objects">
-      <span class="dri_object_text">Objects</span> <span class="dri_object_text_num"><a href="#"><%= count_published_items_in_collection(document[:id]) %></a></span>
+      <span class="dri_object_text">Objects</span> <span class="dri_object_text_num"><a href="#"><%= count_items_in_collection(document[:id]) %></a></span>
    </div>
    <!-- close dri_num_objects -->
   </div>
@@ -52,7 +52,7 @@
 
     <div class="dri_icon">
       <% unless format?(document).eql?("unknown") %>
-        <span class="dri_icon_image"><%= image_tag(image_path( document, "_icon" )) %></span>
+        <span class="dri_icon_image"><%= image_tag(icon_path(document)) %></span>
       <% else %>
         <span class="dri_icon_text"><%= document[:object_type_ssm].first %></span>
       <% end %>
