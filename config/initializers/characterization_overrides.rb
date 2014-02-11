@@ -14,8 +14,21 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
                                             :limit => 1)
       path = @local_file_info[0].path
 
-      Hydra::FileCharacterization.characterize(File.open(path), filename_for_characterization.join(""), :fits) do |config|
-        config[:fits] = Hydra::Derivatives.fits_path
+      # Bit of a hack here to force mp2 files to be characterized in FITS
+      # We have to pretend it's an mp3 by creating a tempfile with an mp3 extension
+      if (path.split(".").last == "mp2")
+        temp_file = Tempfile.new(filename_for_characterization)
+        temp_file.binmode
+        open(path) { |data| temp_file.write data.read}
+        temp_file.rewind
+
+        Hydra::FileCharacterization.characterize(temp_file, filename_for_characterization.join(""), :fits) do |config|
+          config[:fits] = Hydra::Derivatives.fits_path
+        end
+      else
+        Hydra::FileCharacterization.characterize(File.open(path), filename_for_characterization.join(""), :fits) do |config|
+          config[:fits] = Hydra::Derivatives.fits_path
+        end
       end
     else
       Hydra::FileCharacterization.characterize(content, filename_for_characterization.join(""), :fits) do |config|
@@ -35,19 +48,11 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
                                             :order => "version DESC",
                                             :limit => 1)
       source = File.open(@local_file_info[0].path, 'r')
-    
-
-    type = @local_file_info[0].mime_type
-    extension = "."+@local_file_info[0].path.split(".").last
-
-    # hmm, changing mp2 to mp3 forces FITS to measure audio channels, bitrate and duration
-    if (extension == '.mp2')
-      extension = '.mp3'
+    else
+      source = content
     end
 
-    logger.warn "Unable to find a registered mime type for #{mimeType.inspect} on #{pid}" unless type
-
-    Tempfile.open(["#{pid}-#{dsVersionID}", extension]) do |f|
+    Tempfile.open(filename_for_characterization) do |f|
         f.binmode
         if source.respond_to? :read
           f.write(source.read)
@@ -58,9 +63,30 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
         f.rewind
         yield(f)
     end
-    end
   end
 
-  def self.blah
+  protected
+
+  def filename_for_characterization
+      extension = ""
+      if ['E','R'].include? controlGroup
+      local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
+                                                                { :f => pid, :d => "content" } ],
+                                            :order => "version DESC",
+                                            :limit => 1)
+        extension = "."+local_file_info[0].path.split(".").last
+      else
+        mime_type = MIME::Types[mimeType].first
+        logger.warn "Unable to find a registered mime type for #{mimeType.inspect} on #{pid}" unless mime_type
+        extension = mime_type ? ".#{mime_type.extensions.first}" : ''
+      end
+        
+
+      if (extension == '.mp2')
+        extension = '.mp3'
+      end
+
+      ["#{pid}-#{dsVersionID}", "#{extension}"]
   end
+
 end
