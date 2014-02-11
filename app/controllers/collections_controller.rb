@@ -18,7 +18,7 @@ class CollectionsController < CatalogController
     (@response, @document_list) = filtered_collections(params[:view])
 
     @collection_counts = {}
-    @collections = @document_list   
+    @collections = @document_list
 
     @collections.each do |collection|
       @collection_counts[collection[:id]] = count_collection_items collection[:id]
@@ -62,6 +62,11 @@ class CollectionsController < CatalogController
     @object.rights = [""]
     @object.type = [ "Collection" ]
 
+    @licences = {}
+    Licence.find(:all).each do |licence|
+      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
+    end
+
     respond_to do |format|
       format.html
     end
@@ -71,7 +76,6 @@ class CollectionsController < CatalogController
   #
   def edit
     enforce_permissions!("edit",params[:id])
-    @collections = filtered_collections
     @object = retrieve_object!(params[:id])
 
     @institutes = Institute.find(:all)
@@ -79,7 +83,10 @@ class CollectionsController < CatalogController
 
     @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
 
-    @licences = Licence.find(:all)
+    @licences = {}
+    Licence.find(:all).each do |licence|
+      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
+    end
 
     respond_to do |format|
       format.html
@@ -137,6 +144,11 @@ class CollectionsController < CatalogController
     @institutes = Institute.find(:all)
     @inst = Institute.new
 
+    @licences = {}
+      Licence.find(:all).each do |licence|
+      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
+    end
+
     set_access_permissions(:batch, true)
 
     if !valid_permissions?
@@ -169,6 +181,11 @@ class CollectionsController < CatalogController
 
     if !@collection.type.include?("Collection")
       @collection.type.push("Collection")
+    end
+
+    @licences = {}
+      Licence.find(:all).each do |licence|
+      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
     end
 
     # If a cover image was uploaded, remove it from the params hash
@@ -298,7 +315,9 @@ class CollectionsController < CatalogController
         fq = published_or_permitted_filter
       end
 
-      (solr_response, document_list) = get_search_results({:q => solr_query, :fq => fq})
+      params[:q] = solr_query
+      params[:fq] = fq
+      (solr_response, document_list) = get_search_results
 
       return [solr_response, document_list]
     end
@@ -335,7 +354,10 @@ class CollectionsController < CatalogController
           fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
       end
 
-      (solr_response, document_list) = get_search_results({:q => solr_query, :fq => fq})
+      params[:q] = solr_query
+      params[:fq] = fq
+
+      (solr_response, document_list) = get_search_results
 
       return [solr_response, document_list]
     end

@@ -2,6 +2,7 @@ require 'exceptions'
 require 'permission_methods'
 
 class ApplicationController < ActionController::Base
+
   before_filter :set_locale, :set_cookie
 
   include HttpAcceptLanguage

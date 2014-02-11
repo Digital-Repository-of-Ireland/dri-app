@@ -16,15 +16,7 @@ module Storage
 
       bucket = doc.id.sub('dri:', '')
       object_type = doc["object_type_ssm"][0]
-      files = []
-      begin
-        bucketobj = AWS::S3::Bucket.find(bucket)
-        bucketobj.each do |fileobj|
-          files << fileobj.key
-        end
-      rescue
-        logger.debug "Problem listing files in bucket #{bucket}"
-      end
+      files = list_files(bucket)
 
       if list == nil
         unless Settings.surrogates[object_type.downcase.to_sym].nil?
@@ -54,15 +46,7 @@ module Storage
       @object = ActiveFedora::Base.find(doc.id, {:cast => true})
 
       bucket = @object.pid.sub('dri:', '')
-      files = []
-      begin
-        bucketobj = AWS::S3::Bucket.find(bucket)
-        bucketobj.each do |object|
-          files << object.key
-        end
-      rescue
-        logger.debug "Problem listing files in bucket #{bucket}"
-      end
+      files = list_files(bucket)
 
       @surrogates_hash = {}
       files.each do |file|
@@ -78,20 +62,11 @@ module Storage
       return @surrogates_hash
     end
 
-
     def surrogate_url( doc, name )
       @object = ActiveFedora::Base.find(doc.id, {:cast => true})
 
       bucket = @object.pid.sub('dri:', '')
-      files = []
-      begin
-        bucketobj = AWS::S3::Bucket.find(bucket)
-        bucketobj.each do |object|
-          files << object.key
-        end
-      rescue
-        logger.debug "Problem listing files in bucket #{bucket}"
-      end     
+      files = list_files(bucket)
 
       filename = "dri:#{bucket}_#{name}"
       surrogate = files.find { |e| /#{filename}/ =~ e }
@@ -103,7 +78,7 @@ module Storage
           logger.debug "Problem getting url for file #{file} : #{e.to_s}"
         end
       end
-
+      
       return url
     end
 
@@ -171,6 +146,20 @@ module Storage
     
     def close
       AWS::S3::Base.disconnect!()
+    end
+
+    def list_files(bucket)
+      files = []
+      begin
+        bucketobj = AWS::S3::Bucket.find(bucket)
+        bucketobj.each do |fileobj|
+          files << fileobj.key
+        end
+      rescue
+        logger.debug "Problem listing files in bucket #{bucket}"
+      end
+
+      files
     end
 
   end

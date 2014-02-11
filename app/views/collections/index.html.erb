@@ -1,8 +1,7 @@
-<% @page_title = t('blacklight.search.title', :application_name => application_name) %>
 <% extra_head_content << render_opensearch_response_metadata.html_safe %>
 
 <div id="dri_second_navigation_container_id"
-	class="dri_second_navigation_container">
+       class="dri_second_navigation_container">
 
   <% if signed_in? %>
     <div class="dri_grey_button dri_clearfix">
@@ -11,11 +10,19 @@
   <% end %>
 
 </div>
-		  
+
 <div id="dri_result_container_id" class="dri_result_container">
   <% if @document_list.blank? %>
     <p><%= t('dri.views.collection.index.no_collections.public') %></p>
   <% else %>
-    <%= render_document_index %>
+    <%- if @response.empty? %>
+        <%= render "zero_results" %>
+      <%- elsif render_grouped_response? %>
+        <%= render_grouped_document_index %>
+      <%- else %>
+        <%= render_document_index %>
+      <%- end %>
+
+      <%= render 'results_pagination' %>
   <% end %>
-</div><!-- close dri_result_container -->  
+</div><!-- close dri_result_container -->

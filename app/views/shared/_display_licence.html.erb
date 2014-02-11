@@ -1,0 +1,12 @@
+<div>
+  <%= t('dri.app.views.fields.licence') %>:
+  <% if !@licence.nil? && !@licence.blank? %>
+    <% if !@licence.url.blank? %>
+      <%= link_to "#{@licence.name} - #{@licence.description}", @licence.url %>
+    <% else %>
+      <%= "#{@licence.name} - #{@licence.description}" %>
+    <% end %>
+    <br />
+    <%= image_tag(@licence.logo) unless @licence.logo.blank? %>
+  <% end %>
+</div>

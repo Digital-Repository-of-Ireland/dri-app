@@ -73,10 +73,10 @@ Scenario Outline: Collection visibility
   Given I am not logged in
   Given I am logged in as "user2"
   And I am on the new Digital Object page
-  Then the "ingestcollection" drop-down should not contain the option "dri:coll8"
+  Then the "ingest collection" drop-down should not contain the option "dri:coll8"
   When "user2@user2.com" has been granted "<permission>" permissions on "dri:coll8"
   And I am on the new Digital Object page
-  Then the "ingestcollection" drop-down should contain the option "dri:coll8"
+  Then the "ingest collection" drop-down should contain the option "dri:coll8"
 
   Examples:
     | permission |

@@ -132,10 +132,14 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('title', :stored_searchable, type: :string), :label => 'title'
     config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), :label => 'subtitle:'
     config.add_show_field solr_name('description', :stored_searchable, type: :string), :label => 'description'
+    config.add_show_field solr_name('scope_content', :stored_searchable, type: :string), :label => 'scope_content'
+   config.add_show_field solr_name('scopecontent', :stored_searchable, type: :string), :label => 'scope_content'
+    config.add_show_field solr_name('abstract', :stored_searchable, type: :string), :label => 'abstract'
     config.add_show_field solr_name('creator', :stored_searchable, type: :string), :label => 'creators'
     DRI::Vocabulary::marcRelators.each do |role|
       config.add_show_field solr_name('role_'+role, :stored_searchable, type: :string), :label => 'role_'+role
     end
+    config.add_show_field solr_name('bioghist', :stored_searchable, type: :string), :label => 'bioghist'
     config.add_show_field solr_name('contributor', :stored_searchable, type: :string), :label => 'contributors'
     config.add_show_field solr_name('creation_date', :stored_searchable), :label => 'creation_date', :date => true
     config.add_show_field solr_name('published_date', :stored_searchable), :label => 'published_date', :date => true
@@ -144,6 +148,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), :label => 'temporal_coverage'
     config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), :label => 'name_coverage'
     config.add_show_field solr_name('format', :stored_searchable), :label => 'Format:'
+    config.add_show_field solr_name('physdesc', :stored_searchable), :label => 'physdesc'
     config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'format'
     config.add_show_field solr_name('type', :stored_searchable, type: :string), :label => 'type'
     config.add_show_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language

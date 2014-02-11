@@ -25,8 +25,10 @@ module ApplicationHelper
 
   def surrogate_url( doc, name )
     storage = Storage::S3Interface.new
-    storage.surrogate_url(doc, name)
+    url = storage.surrogate_url(doc, name)
     storage.close
+
+    url
   end
 
   def governing_collection( object )
@@ -48,28 +50,25 @@ module ApplicationHelper
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
-  def collection?( document )
-    type?("collection", document)
-  end
+  def image_path ( document )
+    format = format?(document)
 
-  def audio?( document )
-    type?("sound", document)
-  end
+    if format.eql?("unknown")
+      path = "no_image.png"
+    elsif format.eql?("image")
+      path = surrogate_url( document, "thumbnail_medium" ) if can? :read, document
+      path ||= "no_image.png"
+    else
+      path = "dri/formats/#{format}.png"
+    end
 
-  def image?( document )
-    type?("image", document)
+    path
   end
+    
+  def icon_path ( document )
+    format = format?(document)
 
-  def video?( document )
-    type?("movingimage", document)
-  end
-
-  def document?( document )
-    type?("text", document)
-  end
-
-  def type?( type, document )
-    document["object_type_ssm"].first.casecmp(type) == 0 ? true : false
+    format.eql?("unknown") ? "no_image.png" : "dri/formats/#{format}_icon.png"
   end
 
   def reader_group_name( document )
@@ -78,9 +77,14 @@ module ApplicationHelper
     return name
   end
 
-  def count_published_items_in_collection collection_id
-    solr_query = "status_ssim:published AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
+  def count_items_in_collection collection_id
+    solr_query = "(is_governed_by_ssim:\"info:fedora/" + collection_id +
                  "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
+    
+    unless signed_in? && can?(:edit, collection_id)
+      solr_query = "status_ssim:published AND " + solr_query
+    end
+
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
@@ -107,6 +111,34 @@ module ApplicationHelper
 
   def get_institutes( document )
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
+  end
+
+
+  def get_cover_image( document )
+    if document[:cover_image_tesim] && document[:cover_image_tesim].first
+      @cover_image = document[:cover_image_tesim].first
+    elsif !document[:collection_tesim].blank?
+      collection = governing_collection_solr(document)
+      if collection['cover_image_tesim'] && collection['cover_image_tesim'].first
+        @cover_image = collection['cover_image_tesim'].first
+      else
+        @cover_image = image_path( document )
+      end
+    else
+      @cover_image = image_path( document )
+    end
+  end
+
+
+  def get_licence( document )
+    if !document[:licence_tesim].blank?
+      @licence = Licence.where(:name => document[:licence_tesim]).first
+    elsif !document[:collection_tesim].blank?
+      collection = governing_collection_solr(document)
+      if !collection['licence_tesim'].blank?
+        @licence = Licence.where(:name => collection['licence_tesim']).first
+      end
+    end
   end
 
   def reader_group( collection )

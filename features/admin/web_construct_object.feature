@@ -1,5 +1,5 @@
 @web @req-17.6 @done @javascript
-Feature: 
+Feature:
   In order to add a digital object into the repository
   As an authenticated and authorised depositor
   I want to construct a Digital Object with web forms
@@ -24,7 +24,7 @@ Scenario: Constructing a valid Digital Object
   And I press the button to continue
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to ingest metadata
-  Then I should see a success message for ingestion 
+  Then I should see a success message for ingestion
 
 Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
   Given I have created a collection
@@ -40,7 +40,7 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
   Then I should see a failure message for "<case>"
 
   Examples:
-    | object_type | metadata_file                 | case             | 
+    | object_type | metadata_file                 | case             |
     | Sound       | metadata_no_rights.xml        | invalid object   |
     | Sound       | invalid_schema_metadata.xml   | invalid schema   |
     | Sound       | invalid_xml_metadata.xml      | invalid metadata |
@@ -65,7 +65,7 @@ Scenario Outline: Constructing a valid Digital Object
     | Sound       | SAMPLEA.xml                   | Sound       |
 
 Scenario: Adding a pdf asset to an object
-  Given I have created a Text object 
+  Given I have created a Text object
   Then I should see a link to edit an object
   When I follow the link to edit an object
   And I attach the asset file "sample_pdf.pdf"
@@ -150,7 +150,7 @@ Scenario: Adding a file that contains a virus
 
 Scenario Outline: Editing an audio file where the file is invalid
   Given I have created a Digital Object
-  And I have added an audio file  
+  And I have added an audio file
   When I follow the link to edit an object
   And I attach the asset file "<asset_name>"
   And I press the button to replace a file
