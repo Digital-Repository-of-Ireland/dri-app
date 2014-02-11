@@ -708,7 +708,31 @@ li.empty  {
 	background-color: #0075AC;
 	cursor: pointer;
 }
+
 /*-------------- Warning Messages --------------*/
+/*-------------- Suggest Message --------------*/
+h4.suggest {
+	margin: 20px 0 0 0;
+	padding: 0;
+	display: block;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color:#2F2F2F;
+	font-weight: normal;
+	font-size: 110%;
+	font-style: italic;
+
+}
+h4.suggest a {
+	color: #2F2F2F;
+	font-weight: bold;
+
+}
+
+h4.suggest a:hover {
+	text-decoration: underline;
+
+}
 
 /*-------------- Info Messages --------------*/
 .dri_notice_message {
@@ -740,11 +764,10 @@ li.empty  {
 	font-weight: bold;
 	float: right;
 	text-decoration: none;
+	
 }
 
-.dri_close_message {
-	float: right;
-}
+
 /*-------------- Successful Messages --------------*/
 .dri_success_message{
 	margin: 20px 0 0 0;
@@ -1265,12 +1288,27 @@ li.empty  {
 
 
 /*-------------- Media asset --------------*/
-
 .dri_object_render_block {
 	margin: 10px 0 10px 0;
 	padding: 0px;
 }
+.dri_asset_holder {
+	margin: 0;
+	padding: 0px;
+	width: 400px;
+	height: 200px;
+	display: block;
+	border: 1px solid #E1E1E1;
+}
 
+h2.dri_no_asset_availiable {
+	margin: 0px 0 0 0;
+	padding: 0px;
+	color: #2F2F2F;
+	font-weight: bold;
+	font-size: 100%;
+	font-style: italic;
+}
 
 /*-------------- Restricted Media asset --------------*/
 
