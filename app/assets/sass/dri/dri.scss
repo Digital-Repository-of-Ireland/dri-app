@@ -1416,12 +1416,14 @@ ul.dri_stats li {
 .dri_stat_num {
 	float: right;
 }
+
+/*-------------- 320x180 Ratio - Image upload  --------------*/
 .dri_vc_image {
 	border: 1px solid #E1E1E1;
 	width: 230px;
 	height: 129px;
 }
-/*-------------- 320x180 Ratio - Image upload  --------------*/
+
 ul.dri_view_collection {
 	margin: 10px 0 0 0;
 	padding: 0;
@@ -1490,6 +1492,25 @@ ul.dri_view_collection li a:hover {
 	font-weight: bold;
 
 }
+
+/*-------------- publishing institute  --------------*/
+.dri_publishing_institute_title {
+	margin: 20px 0 5px 0;
+	padding: 0;
+	width: 230px;
+	color: #2F2F2F;
+	display: block;
+	float: left;
+	font-weight: bold;
+
+}
+.dri_publishing_institute_image {
+	border: 1px solid #E1E1E1;
+	width: 230px;
+	float: left;
+	
+}
+
 /*-------------- Institutes  --------------*/
 .dri_object_institutes_block {
 	border-top: 1px solid #E1E1E1;
