@@ -53,7 +53,7 @@
 		<% if current_user %>
 			<li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
 			<li><%= link_to t('dri.headerlinks.workspace'), workspace_path, :id => "workspace" %></li>
-			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.catalog_index_path(:f => {:is_collection_sim => ["true"]}), :id => "collections" %></li>
 			<li><%= link_to t('dri.headerlinks.collections.admin'), main_app.collections_path(:view => 'mine'), :id => "manage_collections" %></li>
             <li><%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %></li>
             <% if signed_in? && current_user.is_admin? %>
@@ -61,7 +61,7 @@
             	<% end %>
 		<% else %>
 			<li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
-			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
+			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.catalog_index_path(:f => {:is_collection_sim => ["true"]}), :id => "collections" %></li>
             <li><%= link_to 'ABOUT US', main_app.page_path('about_us') %></li>
 		<% end %>
 		</ul>

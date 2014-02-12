@@ -341,7 +341,7 @@ class CollectionsController < CatalogController
 
     def filtered_collections(view = 'mine')
       results = Array.new
-      solr_query = "+object_type_sim:Collection"
+      f = { :is_collection_sim => ["true"] }
 
       case view
         when 'all'
@@ -354,8 +354,9 @@ class CollectionsController < CatalogController
           fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
       end
 
-      params[:q] = solr_query
+      #params[:q] = solr_query
       params[:fq] = fq
+      params[:f] = f
 
       (solr_response, document_list) = get_search_results
 

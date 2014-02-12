@@ -50,7 +50,7 @@ module LinkTranslator
        "view_record"
 
      when /my collections/
-       "collections"
+       "manage_collections"
 
      when /add to collection/
        "add_to_collection"

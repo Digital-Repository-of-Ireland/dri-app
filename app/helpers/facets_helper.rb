@@ -43,7 +43,7 @@ module FacetsHelper
       return 'nil'
     end
 
-    value.eql?("false") ? "Exclude Collection" : "Include Collection" 
+    value.eql?("false") ? t('dri.views.facets.values.no_collections') : t('dri.views.facets.values.collections') 
   end
 
   # Fetches the correct internationalization translation for a given language code
