@@ -49,8 +49,8 @@ module LinkTranslator
      when /view record/
        "view_record"
 
-     when /my collections/
-       "manage_collections"
+     when /collections/
+       "collections"
 
      when /add to collection/
        "add_to_collection"

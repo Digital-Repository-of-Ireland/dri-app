@@ -262,17 +262,6 @@ class CollectionsController < CatalogController
 
   end
 
-  def children
-    (@response, @document_list) = collection_children params[:id]
-
-    respond_to do |format|
-      format.html   
-      format.json do
-        render json: render_search_results_as_json
-      end
-    end
-  end
-
   private
 
     def valid_permissions?
@@ -308,20 +297,6 @@ class CollectionsController < CatalogController
       ActiveFedora::SolrService.count(solr_query, :defType => "edismax", :fq => fq)
     end
 
-    def collection_children collection_id
-      solr_query = collection_items_query(collection_id)
-
-      unless (current_user && current_user.is_admin?)
-        fq = published_or_permitted_filter
-      end
-
-      params[:q] = solr_query
-      params[:fq] = fq
-      (solr_response, document_list) = get_search_results
-
-      return [solr_response, document_list]
-    end
-
     def collection_items collection_id
       results = Array.new
 
@@ -354,7 +329,6 @@ class CollectionsController < CatalogController
           fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
       end
 
-      #params[:q] = solr_query
       params[:fq] = fq
       params[:f] = f
 

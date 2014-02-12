@@ -18,7 +18,7 @@ module PathTranslator
       edit_object_path($1)
 
     when /show page for the collection "(.+)"/
-      collection_path($1)
+      catalog_path($1)
 
     when /the home page/
       root_path
@@ -47,7 +47,7 @@ module PathTranslator
       collections_path
 
     when /show page for the collection/
-      collection_path(@collection.id)
+      catalog_path(@collection.id)
 
     when /licence index page/
       licences_path
@@ -81,7 +81,7 @@ module PathTranslator
     when /collection/
       case page
       when /show/
-        collection_path(pid)
+        catalog_path(pid)
       else
         raise('Unknown route')
       end

@@ -16,7 +16,7 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.items.count.should == 0
   collection.governed_items.count.should == 0
 
-  group = UserGroup::Group.new(:name => collection.id,
+  group = UserGroup::Group.new(:name => collection.id.sub(':', '_'),
                               :description => "Default Reader group for collection #{collection.id}")
   group.save
 end
@@ -103,7 +103,7 @@ end
 
 When /^I add the Digital Object "(.*?)" to the non-governing collection "(.*?)" using the web forms$/ do |object_pid,collection_pid|
   steps %{
-    Given I am on the my collections page
+    Given I am on the collections page
     When I press the button to set the current collection to #{collection_pid}
     And I go to the "object" "show" page for "#{object_pid}"
     And I check add to collection for id #{object_pid}
