@@ -132,8 +132,11 @@ asynchronous processing of background jobs. This introduces the following depend
   * Redis (server for the queueing system)
   * fits (for extracting metadata from a file)
   * ffmpeg (video file processing tool)
+  * imagemagick (image processing)
 
-The file processing tools should be installed locally with the hydra-head.
+For testing, the file processing tools should be installed locally with the hydra-head.
+See the Dependencies section of this document for more information on installing
+these and other dependencies.
 
 By default fits should be installed in the directory /opt/local/fits/ (this can
 be changed by modifying the config.fits_path setting in the file
@@ -142,24 +145,12 @@ config/initializers/sufia.rb).
 By default ffmpeg should be installed in the directory /opt/local/bin (this can
 be changed by modifying the ffmpeg_path setting in the file config/settings.yml).
 
-
 For testing purposes Redis can be installed locally and started with the command
 
-  $ sudo redis-server /opt/local/etc/redis.conf
+  $ rake environment resque:work RAILS_ENV=development QUEUE="*" VERBOSE=1
 
-To start the worker to process jobs run
-
-  $ QUEUE="*" bundle exec rake resque:work
-
-To view your queues (for debugging purposes) run
-
-  $ resque-web -x -N dri:development
-
-This should pop up a browser window looking at localhost:5678 (if not open one). Here
-you can see the status of your queues and jobs. This is also mounted in the application
-at /resque
-
-The worker code is currently in lib/workers/.
+To view your queues and workers you can visit the path /resque on the web
+application where resque-web is mounted.
 
 Note that the queuing code is stubbed for the Cucumber tests so you do not need a redis
 host running in order to run the tests.
