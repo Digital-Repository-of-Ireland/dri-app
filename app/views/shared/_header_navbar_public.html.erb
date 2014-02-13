@@ -47,25 +47,25 @@
 </header><!-- close dri_header_container -->
 
 <div id="dri_main_nav_container_id" class="dri_main_nav_container">
-	<nav id="dri_main_nav_id" class="dri_main_nav">
+  <nav id="dri_main_nav_id" class="dri_main_nav">
 
-		<ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase">
-		<% if current_user %>
-			<li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
-			<li><%= link_to t('dri.headerlinks.workspace'), workspace_path, :id => "workspace" %></li>
-			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
-			<li><%= link_to t('dri.headerlinks.collections.admin'), main_app.collections_path(:view => 'mine'), :id => "manage_collections" %></li>
-            <li><%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %></li>
-            <% if signed_in? && current_user.is_admin? %>
-                  <li><%= link_to t('dri.headerlinks.admin'), main_app.admin_tasks_path, :id => "admin_tasks" %></li>
-            	<% end %>
-		<% else %>
-			<li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
-			<li><%= link_to t('dri.headerlinks.collections.public'), main_app.collections_path, :id => "collections" %></li>
-            <li><%= link_to 'ABOUT US', main_app.page_path('about_us') %></li>
-		<% end %>
-		</ul>
-	</nav>
+  <ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase">
+    <% if current_user %>
+      <li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
+      <li><%= link_to t('dri.headerlinks.workspace'), workspace_path, :id => "workspace" %></li>
+      <li><%= link_to t('dri.headerlinks.collections.public'), main_app.catalog_index_path(:f => {:is_collection_sim => ["true"]}), :id => "collections" %></li>
+      <li><%= link_to t('dri.views.collection.buttons.new_collection'), main_app.new_collection_path, :id => "new_collection" %></li>
+      <li><%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %></li>
+      <% if signed_in? && current_user.is_admin? %>
+        <li><%= link_to t('dri.headerlinks.admin'), main_app.admin_tasks_path, :id => "admin_tasks" %></li>
+      <% end %>
+    <% else %>
+      <li><%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %></li>
+      <li><%= link_to t('dri.headerlinks.collections.public'), main_app.catalog_index_path(:f => {:is_collection_sim => ["true"]}), :id => "collections" %></li>
+      <li><%= link_to 'ABOUT US', main_app.page_path('about_us') %></li>
+    <% end %>
+  </ul>
+  </nav>
 </div>
 <!-- close dri_main_nav_container -->
 

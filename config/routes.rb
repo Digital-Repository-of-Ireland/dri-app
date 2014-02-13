@@ -14,8 +14,6 @@ NuigRnag::Application.routes.draw do
   resources :objects, :only => ['edit', 'update', 'create', 'show']
   resources :collections
 
-  match 'collections/:id/children' => 'collections#children', :via => :get, :as => :collection_children
-
   resources :ingest, :only => ['new', 'create']
 
   resources :institutes, :only => ['show', 'new', 'create']

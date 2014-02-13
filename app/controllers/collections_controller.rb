@@ -76,7 +76,6 @@ class CollectionsController < CatalogController
   #
   def edit
     enforce_permissions!("edit",params[:id])
-    @collections = filtered_collections
     @object = retrieve_object!(params[:id])
 
     @institutes = Institute.find(:all)
@@ -263,17 +262,6 @@ class CollectionsController < CatalogController
 
   end
 
-  def children
-    (@response, @document_list) = collection_children params[:id]
-
-    respond_to do |format|
-      format.html { }
-      format.json do
-        render json: render_search_results_as_json
-      end
-    end
-  end
-
   private
 
     def valid_permissions?
@@ -309,18 +297,6 @@ class CollectionsController < CatalogController
       ActiveFedora::SolrService.count(solr_query, :defType => "edismax", :fq => fq)
     end
 
-    def collection_children collection_id
-      solr_query = collection_items_query(collection_id)
-
-      unless (current_user && current_user.is_admin?)
-        fq = published_or_permitted_filter
-      end
-
-      (solr_response, document_list) = get_search_results({:q => solr_query, :fq => fq})
-
-      return [solr_response, document_list]
-    end
-
     def collection_items collection_id
       results = Array.new
 
@@ -340,7 +316,7 @@ class CollectionsController < CatalogController
 
     def filtered_collections(view = 'mine')
       results = Array.new
-      solr_query = "+object_type_sim:Collection"
+      f = { :is_collection_sim => ["true"] }
 
       case view
         when 'all'
@@ -353,7 +329,10 @@ class CollectionsController < CatalogController
           fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
       end
 
-      (solr_response, document_list) = get_search_results({:q => solr_query, :fq => fq})
+      params[:fq] = fq
+      params[:f] = f
+
+      (solr_response, document_list) = get_search_results
 
       return [solr_response, document_list]
     end

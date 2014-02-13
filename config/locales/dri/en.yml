@@ -87,6 +87,10 @@ en:
         buttons:
           add_to_collection: "Add to collection"
           remove_from_collection: "Remove from collection"
+        facets:
+          values:
+            no_collections: "No collections"
+            collections: "Collections"
         forms:
           audio_file: "Audio File"
           file: File

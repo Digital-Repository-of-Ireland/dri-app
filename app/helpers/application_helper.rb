@@ -25,8 +25,10 @@ module ApplicationHelper
 
   def surrogate_url( doc, name )
     storage = Storage::S3Interface.new
-    storage.surrogate_url(doc, name)
+    url = storage.surrogate_url(doc, name)
     storage.close
+
+    url
   end
 
   def governing_collection( object )
@@ -48,30 +50,46 @@ module ApplicationHelper
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
-  def image_path ( document, suffix = "" )
+  def image_path ( document )
     format = format?(document)
-
-    path = "" 
 
     if format.eql?("unknown")
       path = "no_image.png"
+    elsif format.eql?("image")
+      path = surrogate_url( document, "thumbnail_medium" ) if can? :read, document
+      path ||= "no_image.png"
     else
-      path = "dri/formats/#{format}#{suffix}.png"
+      path = "dri/formats/#{format}.png"
     end
 
     path
   end
     
+  def icon_path ( document )
+    format = format?(document)
+
+    format.eql?("unknown") ? "no_image.png" : "dri/formats/#{format}_icon.png"
+  end
+
   def reader_group_name( document )
     id = document[:is_governed_by_ssim][0].sub('info:fedora/', '')
     name = id.sub(':','_')
     return name
   end
 
-  def count_published_items_in_collection collection_id
-    solr_query = "status_ssim:published AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
-                 "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
+  def count_items_in_collection collection_id
+    solr_query = collection_children_query( collection_id )
+    
+    unless signed_in? && can?(:edit, collection_id)
+      solr_query = "status_ssim:published AND " + solr_query
+    end
+
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+  end
+
+  def collection_children_query ( collection_id )
+    "(is_governed_by_ssim:\"info:fedora/" + collection_id +
+                 "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
   end
 
   def count_items_in_collection_by_type( collection_id, type, status )

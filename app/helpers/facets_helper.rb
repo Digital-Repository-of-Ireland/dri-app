@@ -21,6 +21,31 @@ module FacetsHelper
     return results
   end
 
+  def is_collection args
+    results = nil
+
+    if args.is_a?(Hash)
+      results = Array.new
+      value_list = args[:document][args[:field]]
+
+      value_list.each do |value|
+        results.push(transform_is_collection value)
+      end
+    else
+      results = transform_is_collection args
+    end
+
+    return results
+  end
+
+  def transform_is_collection value
+    if value == nil
+      return 'nil'
+    end
+
+    value.eql?("false") ? t('dri.views.facets.values.no_collections') : t('dri.views.facets.values.collections') 
+  end
+
   # Fetches the correct internationalization translation for a given language code
   def transform_language value
     if value == nil

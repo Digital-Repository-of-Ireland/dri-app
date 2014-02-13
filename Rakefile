@@ -104,7 +104,9 @@ namespace :solr do
   namespace :dri do
     desc 'reindex'
     task :reindex do
-        Batch.reindex_everything
+        #Batch.reindex_everything
+        GenericFile.all.each { |obj| obj.update_index }
+        Batch.all.each { |obj| obj.update_index }
     end
   end
 end

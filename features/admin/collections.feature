@@ -8,21 +8,22 @@ Feature:
 Background:
   Given I am logged in as "user1" in the group "cm"
 
+@wip
 Scenario: Navigating to the collections page
   Given I am on the home page
-  Then I should see a link to my collections
-  When I follow the link to my collections
-  Then I should be on the my collections page
+  Then I should see a link to collections
+  When I follow the link to collections
+  Then I should be on the collections page
 
 Scenario: Constructing a valid collection
-  Given I am on the my collections page
+  Given I am on the home page
   When I press the button to add new collection
   And I enter valid metadata for a collection
   And I press the button to create a collection
   Then I should see a success message for creating a collection
 
 Scenario: Constructing a collection with valid permissions
-  Given I am on the my collections page
+  Given I am on the home page
   When I press the button to add new collection
   And I enter valid metadata for a collection
   And I enter valid permissions for a collection
@@ -30,7 +31,7 @@ Scenario: Constructing a collection with valid permissions
   Then I should see a success message for creating a collection
 
 Scenario: Constructing a collection with invalid permissions
-  Given I am on the my collections page
+  Given I am on the home page
   When I press the button to add new collection
   And I enter valid metadata for a collection
   And I enter invalid permissions for a collection

@@ -48,7 +48,7 @@ class CatalogController < ApplicationController
     # solr field configuration for document/show views
     config.show.html_title = 'title_tesim'
     config.show.heading = 'title_tesim'
-    config.show.display_type = 'type_tesim'
+    config.show.display_type = 'file_type_tesim'
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -89,8 +89,26 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('language', :facetable), :label => 'Language', :helper_method => :label_language, :limit => true
     #config.add_facet_field solr_name('creation_date', :dateable), :label => 'Creation Date', :date => true
     #config.add_facet_field solr_name('published_date', :dateable), :label => 'Published/Broadcast Date', :date => true
-    config.add_facet_field solr_name('object_type', :facetable), :label => 'Type'
+    config.add_facet_field solr_name('width', :facetable, type: :integer), :label => 'Image Width'
+    config.add_facet_field solr_name('height', :facetable, type: :integer), :label => 'Image Height'
+    config.add_facet_field solr_name('area', :facetable, type: :integer), :label => 'Image Size'
+
+    # duration is measured in milliseconds
+    #config.add_facet_field solr_name('duration_total', :stored_sortable, type: :integer), :label => 'Total Duration'
+  
+    config.add_facet_field solr_name('channels', :facetable, type: :integer), :label => 'Audio Channels'
+    config.add_facet_field solr_name('sample_rate', :facetable, type: :integer), :label => 'Sample Rate'
+    config.add_facet_field solr_name('bit_depth', :facetable, type: :integer), :label => 'Bit Depth'
+    config.add_facet_field solr_name('file_count', :stored_sortable, type: :integer), :label => 'Number of Files'
+    #config.add_facet_field solr_name('file_size_total', :stored_sortable, type: :integer), :label => 'Total File Size'
+    config.add_facet_field solr_name('mime_type', :facetable), :label => 'MIME Type'
+    config.add_facet_field solr_name('file_format', :facetable), :label => 'File Format'
+    config.add_facet_field solr_name('file_type_display', :facetable), :label => 'Type'
+    config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
+    config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
     config.add_facet_field solr_name('root_collection', :facetable), :label => 'Collection'
+
+    config.add_facet_field solr_name('is_collection', :facetable), :label => 'is_collection', :helper_method => :is_collection, :show => false
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request

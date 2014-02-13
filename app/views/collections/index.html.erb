@@ -3,11 +3,10 @@
 <div id="dri_second_navigation_container_id"
        class="dri_second_navigation_container">
 
-  <% if signed_in? %>
-    <div class="dri_grey_button dri_clearfix">
-      <%= link_to t('dri.views.collection.buttons.new_collection'), new_collection_path, :class => "btn-primary btn-large", :id => "new_collection" %>
-    </div>
-  <% end %>
+  <div class="dri_facet_filters_block" id="sidebar">
+    <%= render :partial => 'facets' %>
+  </div>
+  <!-- close facet block -->
 
 </div>
 
@@ -15,6 +14,14 @@
   <% if @document_list.blank? %>
     <p><%= t('dri.views.collection.index.no_collections.public') %></p>
   <% else %>
-    <%= render_document_index %>
+    <%- if @response.empty? %>
+        <%= render "zero_results" %>
+      <%- elsif render_grouped_response? %>
+        <%= render_grouped_document_index %>
+      <%- else %>
+        <%= render_document_index %>
+      <%- end %>
+
+      <%= render 'results_pagination' %>
   <% end %>
 </div><!-- close dri_result_container -->

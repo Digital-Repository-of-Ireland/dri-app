@@ -16,7 +16,7 @@
 
   <div class="dri_vc_title">
     <%= image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
-    <%= link_to(t('dri.views.catalog.forms.objects_in_collection'), collection_children_path(document.id)) %>
+    <%= link_to t('dri.views.catalog.forms.objects_in_collection'), render_arbitrary_facet_links({:root_collection => document['title_tesim'].first, :is_collection => "false"}) %>
   </div>
 
   <div class="dri_vc_image"><!-- fix link -->

@@ -708,7 +708,31 @@ li.empty  {
 	background-color: #0075AC;
 	cursor: pointer;
 }
+
 /*-------------- Warning Messages --------------*/
+/*-------------- Suggest Message --------------*/
+h4.suggest {
+	margin: 20px 0 0 0;
+	padding: 0;
+	display: block;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color:#2F2F2F;
+	font-weight: normal;
+	font-size: 110%;
+	font-style: italic;
+
+}
+h4.suggest a {
+	color: #2F2F2F;
+	font-weight: bold;
+
+}
+
+h4.suggest a:hover {
+	text-decoration: underline;
+
+}
 
 /*-------------- Info Messages --------------*/
 .dri_notice_message {
@@ -740,11 +764,10 @@ li.empty  {
 	font-weight: bold;
 	float: right;
 	text-decoration: none;
+	
 }
 
-.dri_close_message {
-	float: right;
-}
+
 /*-------------- Successful Messages --------------*/
 .dri_success_message{
 	margin: 20px 0 0 0;
@@ -1265,12 +1288,26 @@ li.empty  {
 
 
 /*-------------- Media asset --------------*/
-
 .dri_object_render_block {
 	margin: 10px 0 10px 0;
 	padding: 0px;
 }
+.dri_asset_holder {
+	margin: 0;
+	padding: 0px;
+	width: 400px;
+	display: block;
+	border: 1px solid #E1E1E1;
+}
 
+h2.dri_no_asset_availiable {
+	margin: 0px 0 0 0;
+	padding: 0px;
+	color: #2F2F2F;
+	font-weight: bold;
+	font-size: 100%;
+	font-style: italic;
+}
 
 /*-------------- Restricted Media asset --------------*/
 
@@ -1322,16 +1359,16 @@ dl.dri_object_metadata_readview dt {
 }
 
 dl.dri_object_metadata_readview dd {
-	margin: 0px;
-	padding: 0px 0 0;
+	margin: 0;
+	padding: 0;
 	color: #808080;
 }
 
 dl.dri_object_metadata_readview dd a {
 	margin: 0 0 0 15px;
-	padding:0 0 0 0;
-	  display: list-item;
-   list-style-type: disc;
+	padding: 0;
+	display: list-item;
+   list-style-type: square;
 	color: #808080;
 }
 
@@ -1379,12 +1416,14 @@ ul.dri_stats li {
 .dri_stat_num {
 	float: right;
 }
+
+/*-------------- 320x180 Ratio - Image upload  --------------*/
 .dri_vc_image {
 	border: 1px solid #E1E1E1;
 	width: 230px;
 	height: 129px;
 }
-/*-------------- 320x180 Ratio - Image upload  --------------*/
+
 ul.dri_view_collection {
 	margin: 10px 0 0 0;
 	padding: 0;
@@ -1453,6 +1492,25 @@ ul.dri_view_collection li a:hover {
 	font-weight: bold;
 
 }
+
+/*-------------- publishing institute  --------------*/
+.dri_publishing_institute_title {
+	margin: 20px 0 5px 0;
+	padding: 0;
+	width: 230px;
+	color: #2F2F2F;
+	display: block;
+	float: left;
+	font-weight: bold;
+
+}
+.dri_publishing_institute_image {
+	border: 1px solid #E1E1E1;
+	width: 230px;
+	float: left;
+	
+}
+
 /*-------------- Institutes  --------------*/
 .dri_object_institutes_block {
 	border-top: 1px solid #E1E1E1;
