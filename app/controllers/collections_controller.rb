@@ -11,35 +11,6 @@ class CollectionsController < CatalogController
 
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
-
-  # Shows list of user's collections
-  #
-  def index
-    (@response, @document_list) = filtered_collections(params[:view])
-
-    @collection_counts = {}
-    @collections = @document_list
-
-    @collections.each do |collection|
-      @collection_counts[collection[:id]] = count_collection_items collection[:id]
-    end
-
-    respond_to do |format|
-      format.html
-      format.json {
-       collectionhash = []
-        @collections.each do |collection|
-          collectionhash << { :id => collection[:id],
-                               :title => collection[:title],
-                               :description => collection[:description],
-                               :objectcount => @collection_counts[collection[:id]] }.to_json
-        end
-        @collections = collectionhash
-      }
-    end
-
-  end
-
   # Creates a new model.
   #
   def new
@@ -90,41 +61,6 @@ class CollectionsController < CatalogController
 
     respond_to do |format|
       format.html
-    end
-  end
-
-  # Retrieves an existing model.
-  #
-  def show
-    enforce_permissions!("show",params[:id])
-
-    @collection = retrieve_object!(params[:id])
-    @children = collection_items params[:id]
-
-    @pending = {}
-
-    @collection_institutes = InstituteHelpers.get_collection_institutes(@collection)
-
-    reader_group = UserGroup::Group.find_by_name(reader_group_name)
-    reader_group ||= create_reader_group
-
-    pending_memberships = reader_group.pending_memberships
-    pending_memberships.each do |membership|
-      user = UserGroup::User.find_by_id(membership.user_id)
-      identifier = user.full_name+'('+user.email+')' unless user.nil?
-
-      @pending[identifier] = membership
-    end
-
-    respond_to do |format|
-      format.html
-      format.json  {
-        @response = {}
-        @response[:id] = @collection.pid
-        @response[:title] = @collection.title
-        @response[:description] = @collection.description
-        @response[:objectcount] = count_items_in_collection @collection.pid
-      }
     end
   end
 
@@ -217,7 +153,7 @@ class CollectionsController < CatalogController
       if @collection.save
 
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
-            redirect_to :controller => "collections", :action => "show", :id => @collection.id }
+            redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
         format.json {
           @response = {}
           @response[:id] = @collection.pid
@@ -257,7 +193,7 @@ class CollectionsController < CatalogController
 
     respond_to do |format|
       format.html { flash[:notice] = t('dri.flash.notice.collection_deleted')
-      redirect_to :controller => "collections", :action => "index" }
+      redirect_to :controller => "catalog", :action => "index" }
     end
 
   end
@@ -285,61 +221,6 @@ class CollectionsController < CatalogController
       storage = Storage::S3Interface.new
       storage.delete_bucket(object.id.sub('dri:', ''))
       storage.close
-    end
-
-    def count_collection_items collection_id
-      solr_query = collection_items_query(collection_id)
-
-      unless (current_user && current_user.is_admin?)
-        fq = published_or_permitted_filter
-      end
-
-      ActiveFedora::SolrService.count(solr_query, :defType => "edismax", :fq => fq)
-    end
-
-    def collection_items collection_id
-      results = Array.new
-
-      solr_query = collection_items_query(collection_id)
-
-      unless (current_user && current_user.is_admin?)
-        fq = published_or_permitted_filter
-      end
-
-      result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "500", :fl => "id,title_tesim", :fq => fq)
-      result_docs.each do | doc |
-        results.push({ :id => doc['id'], :title => doc["title_tesim"][0] })
-      end
-
-      return results
-    end
-
-    def filtered_collections(view = 'mine')
-      results = Array.new
-      f = { :is_collection_sim => ["true"] }
-
-      case view
-        when 'all'
-          fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
-        when 'mine'
-          fq = manager_and_edit_filter unless (current_user && current_user.is_admin?)
-        when 'published'
-          fq = published_filter
-        else
-          fq = published_or_permitted_filter unless (current_user && current_user.is_admin?)
-      end
-
-      params[:fq] = fq
-      params[:f] = f
-
-      (solr_response, document_list) = get_search_results
-
-      return [solr_response, document_list]
-    end
-
-    def collection_items_query(id)
-      "(is_governed_by_ssim:\"info:fedora/" + id +
-                   "\" OR is_member_of_collection_ssim:\"info:fedora/" + id + "\")"
     end
 
     def create_reader_group
