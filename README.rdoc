@@ -147,6 +147,10 @@ be changed by modifying the ffmpeg_path setting in the file config/settings.yml)
 
 For testing purposes Redis can be installed locally and started with the command
 
+  $ sudo redis-server /opt/local/etc/redis.conf
+
+The worker queues can be started with the following rake task
+
   $ rake environment resque:work RAILS_ENV=development QUEUE="*" VERBOSE=1
 
 To view your queues and workers you can visit the path /resque on the web

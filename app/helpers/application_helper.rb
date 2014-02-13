@@ -42,8 +42,9 @@ module ApplicationHelper
       id = doc['is_governed_by_ssim'][0].gsub(/^info:fedora\//, '')
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
+      return collection[0]
     end
-    collection[0]
+    return nil
   end
 
   def get_partial_name( object )
@@ -64,7 +65,7 @@ module ApplicationHelper
 
     path
   end
-    
+
   def icon_path ( document )
     format = format?(document)
 
@@ -79,7 +80,7 @@ module ApplicationHelper
 
   def count_items_in_collection collection_id
     solr_query = collection_children_query( collection_id )
-    
+
     unless signed_in? && can?(:edit, collection_id)
       solr_query = "status_ssim:published AND " + solr_query
     end
