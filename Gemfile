@@ -79,6 +79,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'syntax'
+  gem 'cucumber-api-steps'
 end
 
 # To use ActiveModel has_secure_password

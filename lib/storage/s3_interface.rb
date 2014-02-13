@@ -7,7 +7,7 @@ module Storage
                                           :secret_access_key => Settings.S3.secret_access_key)
       AWS::S3::Service.buckets
     end
-    
+
 
     # Return the best available surrogate for delivery
     def deliverable_surrogate?(doc, list = nil)
@@ -34,7 +34,7 @@ module Storage
             break unless deliverable_surrogate.nil?
           end
         end
-      
+
         return deliverable_surrogate
       else
         unless Settings.surrogates[object_type.downcase.to_sym].nil?
@@ -43,7 +43,7 @@ module Storage
             deliverable_surrogates << files.find { |e| /#{filename}/ =~ e }
           end
         end
-      
+
         return deliverable_surrogates
       end
 
@@ -51,9 +51,8 @@ module Storage
 
     # Get a hash of all surrogates for an object
     def get_surrogates(doc)
-      @object = ActiveFedora::Base.find(doc.id, {:cast => true})
 
-      bucket = @object.pid.sub('dri:', '')
+      bucket = doc.id.sub('dri:', '')
       files = []
       begin
         bucketobj = AWS::S3::Bucket.find(bucket)
@@ -74,7 +73,7 @@ module Storage
           logger.debug "Problem getting url for file #{file} : #{e.to_s}"
         end
       end
-      
+
       return @surrogates_hash
     end
 
@@ -91,7 +90,7 @@ module Storage
         end
       rescue
         logger.debug "Problem listing files in bucket #{bucket}"
-      end     
+      end
 
       filename = "dri:#{bucket}_#{name}"
       surrogate = files.find { |e| /#{filename}/ =~ e }
@@ -133,7 +132,7 @@ module Storage
     def store_surrogate(object_id, outputfile, filename)
       bucket = object_id.sub('dri:', '')
       begin
-        AWS::S3::S3Object.store(filename, open(outputfile), bucket, :access => :public_read)
+        AWS::S3::S3Object.store(filename, open(outputfile), bucket)
       rescue Exception  => e
         logger.error "Problem saving Surrogate file #{filename} : #{e.to_s}"
       end
@@ -168,7 +167,7 @@ module Storage
       end
       return url
     end
-    
+
     def close
       AWS::S3::Base.disconnect!()
     end

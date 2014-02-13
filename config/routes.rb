@@ -29,6 +29,7 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/metadata' => 'metadata#update', :via => :put
   match 'objects/:id/file' => 'assets#show', :via => :get, :as => :object_file
   match 'objects/:id/file' => 'assets#create', :via => :post, :as => :new_object_file
+  match 'files/list_assets' => 'assets#list_assets', :via => :post, :as => :list_assets
   match '/privacy' => 'static_pages#privacy', :via => :get
   match '/workspace' => 'static_pages#workspace', :via => :get
   match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get

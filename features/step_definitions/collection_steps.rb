@@ -27,6 +27,7 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
   digital_object = Batch.new(:pid => pid)
   digital_object.title = title ? [title] : "Test Object"
   digital_object.type = type ? [type] : "Sound"
+  digital_object.object_type = type ? [type] : "Sound"
   digital_object.description = desc ? [desc] : "A test object"
   if user
     User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?

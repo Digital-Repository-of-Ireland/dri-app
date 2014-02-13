@@ -3,7 +3,6 @@
 class AssetsController < ApplicationController
 
   require 'validators'
-  #require 'background_tasks/queue_manager'
 
   # Returns the directory on the local filesystem to use for storing uploaded files.
   #
@@ -17,7 +16,7 @@ class AssetsController < ApplicationController
   # id can be id of the Batch, which returns the first GenericFile in it's relationship
   # or the id of a GenericFile
   def show
-  
+
     datastream = "content"
     if params.has_key?(:datastream)
       datastream = params[:datastream]
@@ -65,7 +64,7 @@ class AssetsController < ApplicationController
   #
   def create
     enforce_permissions!("edit" ,params[:id])
-    
+
     datastream = "content"
     if params.has_key?(:datastream)
       datastream = params[:datastream]
@@ -88,7 +87,7 @@ class AssetsController < ApplicationController
 
         mime_type = Validators.file_type?(file_upload)
         validate_upload(file_upload, mime_type)
-                  
+
         @gf = GenericFile.new(:pid => Sufia::IdService.mint)
         @gf.batch = @object
         @gf.save
@@ -116,13 +115,13 @@ class AssetsController < ApplicationController
 
         respond_to do |format|
           format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:id]}
-          format.json  { 
+          format.json  {
             if  !@warnings.nil?
               response = { :checksum => @file.checksum, :warning => @warnings }
             else
               response = { :checksum => @file.checksum }
             end
-            render :json => response, :status => :created 
+            render :json => response, :status => :created
           }
         end
         return
@@ -133,6 +132,54 @@ class AssetsController < ApplicationController
 
     redirect_to :controller => "catalog", :action => "show", :id => params[:id]
   end
+
+
+  # API call: takes one or more object ids and returns a list of asset urls
+  def list_assets
+
+    @list = []
+
+    if params.has_key?("objects") && (!params[:objects].nil? || !params[:objects].blank?)
+
+      solr_query = ActiveFedora::SolrService.construct_query_for_pids(params[:objects].map{|o| o.values.first})
+      result_docs = ActiveFedora::SolrService.query(solr_query)
+
+      if result_docs.empty?
+        raise Exceptions::NotFound
+      end
+
+      storage = Storage::S3Interface.new
+
+      result_docs.each do | r |
+        doc = SolrDocument.new(r)
+
+        item = {}
+        item['pid'] = doc.id
+
+        if can? :read_master, doc
+          url = url_for(:controller => 'assets', :action => 'show', :id => doc.id)
+          item['masterfile'] = url
+        else
+        end
+
+        surrogates = storage.get_surrogates doc
+        surrogates.each do |file,loc|
+          item[file] = loc
+        end
+        @list << item
+      end
+
+      storage.close
+
+    else
+      raise raise Exceptions::BadRequest
+    end
+
+    respond_to do |format|
+      format.json  { }
+    end
+  end
+
 
   private
 
@@ -180,4 +227,4 @@ class AssetsController < ApplicationController
       end
     end
 
-end 
+end

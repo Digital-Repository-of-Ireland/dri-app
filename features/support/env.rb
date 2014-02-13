@@ -15,7 +15,7 @@ require 'rubygems'
 require 'i18n'
 require 'capybara/poltergeist'
 require 'cucumber/rspec/doubles'
-
+require 'cucumber/api_steps'
 require 'rake'
 
 Capybara.javascript_driver = :poltergeist
@@ -101,4 +101,8 @@ end
 Before do
   require 'factory_girl'
   #BackgroundTasks::QueueManager.any_instance.stub(:process)
+end
+
+def last_json
+  page.source
 end

@@ -30,7 +30,7 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
   gf.update_file_reference "content", :url=>url, :mimeType=>"audio/mpeg3"
   gf.save
 
-  object.master_file = mapping[permission].to_s
+  object.rightsMetadata.masterfile.machine.integer = mapping[permission].to_s
   object.save
 end
 
@@ -154,11 +154,13 @@ Given(/^the object with pid "(.*?)" has a deliverable surrogate file$/) do |pid|
   object = ActiveFedora::Base.find(pid, {:cast => true})
   storage = Storage::S3Interface.new
   storage.create_bucket(object.pid.sub('dri:', ''))
-  case object.type
+  case object.object_type.first
     when "Sound"
-      storage.store_surrogate(object.pid,  File.join(cc_fixture_path, 'SAMPLEA.mp3'), object.pid + '_mp3.mp3')
+      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'SAMPLEA.mp3'), object.pid + '_mp3.mp3')
     when "Text"
-      storage.store_surrogate(object.pid,  File.join(cc_fixture_path, 'SAMPLEA.pdf'), object.pid + '_thumbnail.png')
+      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'SAMPLEA.pdf'), object.pid + '_thumbnail.png')
+    when "Image"
+      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'sample_image.png'), "#{object.pid}_thumbnail.png")
   end
   storage.close
 end
