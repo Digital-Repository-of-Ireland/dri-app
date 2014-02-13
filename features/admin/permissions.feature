@@ -8,7 +8,7 @@ Feature:
 @wip @disabled-pilot
 Scenario: Setting a list of users for restricted access
   Given I am logged in as "user1" in the group "cm"
-  And I am on the my collections page
+  And I am on the home page
   When I press the button to add new collection
   And I enter valid metadata for a collection
   And I choose "batch_read_groups_string_radio_restricted"
@@ -20,7 +20,7 @@ Scenario: Setting a list of users for restricted access
 
 Scenario: Constructing a Collection using the web form should set default permissions
   Given I am logged in as "user1" in the group "cm"
-  And I am on the my collections page
+  And I am on the home page
   And I press the button to add new collection
   And the radio button "batch_read_groups_string_radio_public" should be "checked"
   And the "batch_manager_users_string" field should contain "user1@user1.com"

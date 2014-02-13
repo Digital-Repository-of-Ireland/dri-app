@@ -65,7 +65,7 @@ end
 
 Given /^I have created a collection$/ do
   steps %{
-    Given I am on the my collections page
+    Given I am on the home page
     And I press the button to add new collection
     And I enter valid metadata for a collection
     And I press the button to create a collection
@@ -74,7 +74,7 @@ end
 
 Given /^I have created a collection with title "(.+)"$/ do |title|
   steps %{
-    Given I am on the my collections page
+    Given I am on the home page
     And I press the button to add new collection
     And I enter valid metadata for a collection with title #{title}
     And I press the button to create a collection
