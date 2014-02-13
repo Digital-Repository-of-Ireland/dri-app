@@ -1359,16 +1359,16 @@ dl.dri_object_metadata_readview dt {
 }
 
 dl.dri_object_metadata_readview dd {
-	margin: 0px;
-	padding: 0px 0 0;
+	margin: 0;
+	padding: 0;
 	color: #808080;
 }
 
 dl.dri_object_metadata_readview dd a {
 	margin: 0 0 0 15px;
-	padding:0 0 0 0;
-	  display: list-item;
-   list-style-type: disc;
+	padding: 0;
+	display: list-item;
+   list-style-type: square;
 	color: #808080;
 }
 
