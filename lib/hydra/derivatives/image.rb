@@ -7,9 +7,8 @@ module Hydra
           opts = args.kind_of?(Hash) ? args : {size: args}
           format = opts.fetch(:format, 'png')
           output_datastream_name = opts.fetch(:datastream, output_datastream_id(name))
-       
-          create_resized_image(output_datastream_name, opts[:size], format) if opts[:size].present?
-          create_cropped_image(output_datastream_name, opts[:gravity], opts[:crop], format) if opts[:crop].present?
+          create_cropped_resized_image(output_datastream_name, opts[:size], opts[:crop], opts[:gravity], format) if opts[:crop].present?
+          create_resized_image(output_datastream_name, opts[:size], format) if (opts[:size].present? && !opts[:crop].present?)
         end
       end
 
@@ -31,6 +30,14 @@ module Hydra
           xfrm.crop(crop) if crop.present?
         end
       end
+		
+	def create_cropped_resized_image(output_datastream, size, crop, gravity, format, quality=nil)
+    	create_image(output_datastream, format, quality) do |xfrm|
+	  		xfrm.resize(size) if size.present? 
+	  		xfrm.gravity(gravity) if gravity.present?
+	  		xfrm.crop(crop) if crop.present?
+		end
+	end
 
       def create_image(output_datastream, format, quality=nil)
         xfrm = load_image_transformer
