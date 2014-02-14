@@ -171,8 +171,8 @@ class AssetsController < ApplicationController
           
         files.each do |mf|
           file_list = {}
-
           file_doc = SolrDocument.new(mf)
+          
           if can? :read_master, doc
             url = url_for(file_download_url(doc.id, file_doc.id))
             file_list['masterfile'] = url
