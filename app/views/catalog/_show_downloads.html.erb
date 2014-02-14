@@ -12,7 +12,7 @@
  
      <% if can? :read_master, @document %>
         <dd>
-          <%= link_to t('dri.views.catalog.links.download'), url_for(file_download_path(@document.id, file.id)), :id => "download_asset" %>
+          <%= link_to t('dri.views.catalog.links.details'), url_for(:controller => 'assets', :action => 'show', :object_id => @document.id, :id => file.id), :id => "asset_details" %> <%= link_to t('dri.views.catalog.links.download'), url_for(file_download_path(@document.id, file.id)), :id => "download_asset" %>
        </dd>
       <% end %>
     

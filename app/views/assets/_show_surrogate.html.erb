@@ -1,0 +1,48 @@
+<% if can? :read, @document %>
+
+  <div class="dri_object_render_block">
+    <% if @generic_file.audio? %>
+      <div class="dri_audio_player">
+        <audio controls>
+          <source src="<%= surrogate_url(@document.id, @generic_file.id, "mp3") %>" type="audio/mpeg">
+        </audio>
+      </div><!-- close dri_audio_player -->
+    <% elsif @generic_file.video? %>
+      <div>
+        <video width="320" height="240" controls>
+          <source src="<%= surrogate_url(@document.id, @generic_file.id, "mp4") %>" type="video/mp4">
+        </video>
+      </div>
+    <% elsif @generic_file.pdf? %>
+      <div>
+        <img src="<%= surrogate_url(@document.id, @generic_file.id, "pdf") %>">
+      </div>
+    <% elsif @generic_file.image? %>
+      <img src="<%= surrogate_url(@document.id, @generic_file.id, "thumbnail")  %>">
+    <% end %>
+  </div>
+
+<% else %>
+
+  <h2 class="dri_restrict_title"><%= t('dri.views.catalog.forms.restricted_asset') %></h2>
+  <p class="dri_restrict_message"><%= t('dri.views.catalog.legends.no_permission') %></p>
+  <% if current_user %>
+    <% governing_collection = governing_collection_solr(@document) %>
+    <% reader_group = reader_group(governing_collection) %>
+    <% pending = reader_group.pending_memberships %>
+    
+    <% if pending.find_by_user_id(current_user.id).nil? %>
+      <%= form_for(reader_group.memberships.build, url: user_group.pending_memberships_path, :method => :post) do |f| %>
+        <%= render partial: 'user_group/shared/error_messages', locals: {object: f.object} %>
+        <%= f.hidden_field :user_id, value: current_user.id %>
+        <%= f.hidden_field :group_id , value: reader_group.id %>
+        <%= f.submit t('dri.views.catalog.legends.request_permission_logged_in'), :class => 'dri_request_access_button' %>
+      <% end %>
+    <% else %>
+      <p class="dri_restrict_progress"><%= t('dri.views.catalog.legends.request_permission_in_progress') %></p>
+    <% end %>
+  <% else %>
+    <%= t('dri.views.catalog.legends.request_permission_not_logged_in') %>
+  <% end %>
+
+<% end %>

@@ -22,6 +22,7 @@ class AssetsController < ApplicationController
       enforce_permissions!("show_master", params[:object_id])
     end
 
+    @document = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
 
     respond_to do |format|
@@ -232,11 +233,6 @@ class AssetsController < ApplicationController
         raise Exceptions::InternalError
       end
     end
-
-    #def start_background_tasks
-    #  queue = BackgroundTasks::QueueManager.new()
-    #  queue.process(@object)
-    #end
 
     def save_file
       begin

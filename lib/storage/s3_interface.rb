@@ -66,10 +66,10 @@ module Storage
       return @surrogates_hash
     end
 
-    def surrogate_url( doc, file_doc, name )
+    def surrogate_url( object_id, file_id, name )
 
-      bucket = doc.id.sub('dri:', '')
-      generic_file = file_doc.id.sub('dri:', '')
+      bucket = object_id.sub('dri:', '')
+      generic_file = file_id.sub('dri:', '')
       files = list_files(bucket)
 
       filename = "dri:#{generic_file}_#{name}"
