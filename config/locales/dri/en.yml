@@ -117,6 +117,8 @@ en:
         sidebar:
           more_like_this: "More Like This"
           nav_header: "Edit Tools"
+        titles:
+          editor_tools: "Editor Tools"
       collection:
         buttons:
           clear_collection: "Clear as Current"

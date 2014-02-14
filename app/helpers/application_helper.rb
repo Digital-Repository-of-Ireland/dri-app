@@ -32,9 +32,7 @@ module ApplicationHelper
   end
 
   def governing_collection( object )
-    if !object.governing_collection.nil?
-      object.governing_collection.pid
-    end
+      object.governing_collection.pid unless object.governing_collection.nil?
   end
 
   def governing_collection_solr( doc )
