@@ -269,6 +269,7 @@ en:
         buttons:
           add_to_collection: "Add to Collection"
           replace_master: "Replace Master File"
+          add_master: "Add Master File"
           replace_metadata: "Upload Metadata"
           save: "Save Changes"
           upload_master: "Upload Master File"

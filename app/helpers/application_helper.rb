@@ -4,10 +4,10 @@ module ApplicationHelper
   # Returns the file that should be delivered to the user
   # based on their access rights and the policies and available
   # surrogates of the object
-  def get_delivery_file doc
+  def get_delivery_file doc, file_doc
     @asset = nil
     storage = Storage::S3Interface.new
-    delivery_file = storage.deliverable_surrogate?(doc)
+    delivery_file = storage.deliverable_surrogate?(doc, file_doc)
     @asset = storage.get_link_for_surrogate(doc.id.sub('dri:',''), delivery_file) unless (delivery_file.blank?)
     storage.close
   end
@@ -17,15 +17,17 @@ module ApplicationHelper
     ""
   end
 
-  def get_surrogates doc
+  def get_surrogates doc, file_doc
     storage = Storage::S3Interface.new
-    @surrogates = storage.get_surrogates doc
+    surrogates = storage.get_surrogates doc, file_doc
     storage.close
+
+    surrogates
   end
 
-  def surrogate_url( doc, name )
+  def surrogate_url( doc, file_doc, name )
     storage = Storage::S3Interface.new
-    url = storage.surrogate_url(doc, name)
+    url = storage.surrogate_url(doc, file_doc, name)
     storage.close
 
     url

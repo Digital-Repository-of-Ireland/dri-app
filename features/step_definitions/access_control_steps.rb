@@ -26,7 +26,7 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
   file.add_file(uploaded, { :directory => Dir.tmpdir, :fedora_id => gf.id, :ds_id => "content", :version => "0" })
   file.save
 
-  url = url_for :controller=>"assets", :action=>"show", :id=>gf.id
+  url = url_for :controller=>"assets", :action=>"download", :object_id=>object.id, :id=>gf.id
   gf.update_file_reference "content", :url=>url, :mimeType=>"audio/mpeg3"
   gf.save
 
@@ -152,15 +152,16 @@ end
 Given(/^the object with pid "(.*?)" has a deliverable surrogate file$/) do |pid|
   pid = "dri:o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
+  generic_file = GenericFile.find(:is_part_of_ssim => "info:fedora/#{object.pid}").first
   storage = Storage::S3Interface.new
   storage.create_bucket(object.pid.sub('dri:', ''))
   case object.object_type.first
     when "Sound"
-      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'SAMPLEA.mp3'), object.pid + '_mp3.mp3')
+      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'SAMPLEA.mp3'), generic_file.pid + '_mp3.mp3')
     when "Text"
-      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'SAMPLEA.pdf'), object.pid + '_thumbnail.png')
+      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'SAMPLEA.pdf'), generic_file.pid + '_thumbnail.png')
     when "Image"
-      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'sample_image.png'), "#{object.pid}_thumbnail.png")
+      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'sample_image.png'), "#{generic_file.pid}_thumbnail.png")
   end
   storage.close
 end

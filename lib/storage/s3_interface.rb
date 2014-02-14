@@ -10,18 +10,20 @@ module Storage
 
 
     # Return the best available surrogate for delivery
-    def deliverable_surrogate?(doc, list = nil)
+    def deliverable_surrogate?(doc, file_doc, list = nil)
       deliverable_surrogate = nil
       deliverable_surrogates = []
 
       bucket = doc.id.sub('dri:', '')
+      generic_file = file_doc.id.sub('dri:', '')
+
       object_type = doc["object_type_ssm"][0]
       files = list_files(bucket)
 
       if list == nil
         unless Settings.surrogates[object_type.downcase.to_sym].nil?
           Settings.surrogates[object_type.downcase.to_sym].each do |surrogate_type|
-            filename = "dri:#{bucket}_#{surrogate_type}"
+            filename = "dri:#{generic_file}_#{surrogate_type}"
             deliverable_surrogate = files.find { |e| /#{filename}/ =~ e }
             break unless deliverable_surrogate.nil?
           end
@@ -31,7 +33,7 @@ module Storage
       else
         unless Settings.surrogates[object_type.downcase.to_sym].nil?
           Settings.surrogates[object_type.downcase.to_sym].each do |surrogate_type|
-            filename = "dri:#{bucket}_#{surrogate_type}"
+            filename = "dri:#{generic_file}_#{surrogate_type}"
             deliverable_surrogates << files.find { |e| /#{filename}/ =~ e }
           end
         end
@@ -42,17 +44,20 @@ module Storage
     end
 
     # Get a hash of all surrogates for an object
-    def get_surrogates(doc)
+    def get_surrogates(doc, file_doc)
 
       bucket = doc.id.sub('dri:', '')
+      generic_file = file_doc.id.sub('dri:','')
+
       files = list_files(bucket)
 
       @surrogates_hash = {}
       files.each do |file|
         begin
-          file.match(/dri:#{bucket}_([-a-zA-z0-9]*)\..*/)
-          url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
-          @surrogates_hash[$1] = url
+          if file.match(/dri:#{generic_file}_([-a-zA-z0-9]*)\..*/)
+            url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
+            @surrogates_hash[$1] = url
+          end
         rescue Exception => e
           logger.debug "Problem getting url for file #{file} : #{e.to_s}"
         end
@@ -61,12 +66,13 @@ module Storage
       return @surrogates_hash
     end
 
-    def surrogate_url( doc, name )
+    def surrogate_url( doc, file_doc, name )
 
       bucket = doc.id.sub('dri:', '')
+      generic_file = file_doc.id.sub('dri:', '')
       files = list_files(bucket)
 
-      filename = "dri:#{bucket}_#{name}"
+      filename = "dri:#{generic_file}_#{name}"
       surrogate = files.find { |e| /#{filename}/ =~ e }
 
       unless surrogate.blank?

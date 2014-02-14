@@ -47,7 +47,7 @@ module Hydra
 
         format = xfrm["format"].downcase
         bucket_id = object.batch.nil? ? object.pid : object.batch.pid
-        filename = "#{bucket_id}_#{output_datastream}.#{format}"
+        filename = "#{object.pid}_#{output_datastream}.#{format}"
 
         out_file = File.open(output_file, "rb")
 
