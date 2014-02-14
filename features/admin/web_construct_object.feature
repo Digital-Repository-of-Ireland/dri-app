@@ -116,7 +116,7 @@ Scenario: Editing the metadata of a Digital Object using the web form
   And I follow the link to view record
   Then I should see the modified metadata
 
-Scenario: Adding and replacing the audio file for a Digital Object
+Scenario: Adding multiple audio files for a Digital Object
   Given I have created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
@@ -125,7 +125,7 @@ Scenario: Adding and replacing the audio file for a Digital Object
   Then I should see a success message for file upload
   When I follow the link to edit an object
   And I attach the asset file "sample_audio.mp3"
-  And I press the button to replace a file
+  And I press the button to add a file
   Then I should see a success message for file upload
 
 Scenario Outline: Adding an audio file that is not valid
@@ -153,7 +153,7 @@ Scenario Outline: Editing an audio file where the file is invalid
   And I have added an audio file
   When I follow the link to edit an object
   And I attach the asset file "<asset_name>"
-  And I press the button to replace a file
+  And I press the button to add a file
   Then I should see a failure message for "<case>"
 
   Examples:

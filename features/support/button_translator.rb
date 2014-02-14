@@ -28,6 +28,9 @@ module ButtonTranslator
     when /replace a file/
       "replace_file"
 
+    when /add a file/
+      "add_file"
+
     when /continue/
       "continue"
 

@@ -17,7 +17,7 @@ Hydra::Derivatives::ShellBasedProcessor.module_eval do
         out_file = File.open(output_file, "rb")
 
         bucket_id = object.batch.nil? ? object.pid : object.batch.pid
-        filename = "#{bucket_id}_#{dest_dsid}.#{file_suffix}"
+        filename = "#{object.pid}_#{dest_dsid}.#{file_suffix}"
 
         storage = Storage::S3Interface.new
         storage.store_surrogate(bucket_id, out_file, filename)

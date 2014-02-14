@@ -1,10 +1,4 @@
-<% get_delivery_file @document  %>
-
 <div class="dri_object_first_block">
-
-  <% unless @asset.nil? %>
-    <%= render :partial => "show_surrogate" %>
-  <% end %>
 
   <dl class="dl-horizontal  dl-invert dri_object_metadata_readview">
     <% document_show_fields.each do |solr_fname, field| -%>

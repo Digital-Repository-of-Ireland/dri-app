@@ -10,11 +10,6 @@ class AssetsController < ApplicationController
     Rails.root.join(Settings.dri.files)
   end
 
-  # Retrieves external datastream files that have been stored in the filesystem.
-  # By default, it retrieves the file in the content datastream
-  #
-  # id can be id of the Batch, which returns the first GenericFile in it's relationship
-  # or the id of a GenericFile
   def show
 
     datastream = "content"
@@ -22,21 +17,35 @@ class AssetsController < ApplicationController
       datastream = params[:datastream]
     end
 
-    @object = retrieve_object! params[:id]
-    @gf = nil
+    # Check if user can view a master file
+    if (datastream == "content")
+      enforce_permissions!("show_master", params[:object_id])
+    end
 
-    # if id belongs to a GenericFile, swap variables around
-    if @object.is_a?(GenericFile)
-      @gf = @object
-      @object = @gf.batch
-    elsif @object.is_a?(Batch) && @object.generic_files.count > 0
-      @gf = @object.generic_files[0]
+    @generic_file = retrieve_object! params[:id]
+
+    respond_to do |format|
+      format.html
+      format.json  { render :json => @generic_file }
+    end
+
+  end
+  
+  # Retrieves external datastream files that have been stored in the filesystem.
+  # By default, it retrieves the file in the content datastream
+  def download
+
+    datastream = "content"
+    if params.has_key?(:datastream)
+      datastream = params[:datastream]
     end
 
     # Check if user can view a master file
     if (datastream == "content")
-      enforce_permissions!("show_master", @object.id)
+      enforce_permissions!("show_master", params[:object_id])
     end
+
+    @gf = retrieve_object! params[:id]
 
     if (@gf != nil)
 
@@ -57,13 +66,13 @@ class AssetsController < ApplicationController
     end
 
     render :text => "Unable to find file"
-  end
+  end 
 
   # Stores an uploaded file to the local filesystem and then attaches it to one
   # of the objects datastreams. content is used by default.
   #
   def create
-    enforce_permissions!("edit" ,params[:id])
+    enforce_permissions!("edit" ,params[:object_id])
 
     datastream = "content"
     if params.has_key?(:datastream)
@@ -72,14 +81,14 @@ class AssetsController < ApplicationController
 
     if !params.has_key?(:Filedata) || params[:Filedata].nil?
       flash[:notice] = t('dri.flash.notice.specify_file')
-      redirect_to :controller => "catalog", :action => "show", :id => params[:id]
+      redirect_to :controller => "catalog", :action => "show", :id => params[:object_id]
       return
     end
 
     file_upload = params[:Filedata]
 
     if datastream.eql?("content")
-      @object = retrieve_object! params[:id]
+      @object = retrieve_object! params[:object_id]
 
       if @object == nil
         flash[:notice] = t('dri.flash.notice.specify_object_id')
@@ -101,7 +110,7 @@ class AssetsController < ApplicationController
         # We should look at ActiveFedora::Base to see when exactly assign_pid is called
         # and add the correct id to the url before it's saved, eg. look for <<pid>> in
         # the URL and replace it with the assigned pid.
-        @url = url_for :controller=>"assets", :action=>"show", :id=>@gf.id
+        @url = url_for :controller=>"assets", :action=>"download", :object_id => @object.id, :id=>@gf.id
         @gf.update_file_reference datastream, :url=>@url, :mimeType=>mime_type.to_s
         begin
           @gf.save
@@ -114,7 +123,7 @@ class AssetsController < ApplicationController
         flash[:notice] = t('dri.flash.notice.file_uploaded')
 
         respond_to do |format|
-          format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:id]}
+          format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:object_id]}
           format.json  {
             if  !@warnings.nil?
               response = { :checksum => @file.checksum, :warning => @warnings }
@@ -130,7 +139,7 @@ class AssetsController < ApplicationController
       flash[:notice] = t('dri.flash.notice.specify_datastream')
     end
 
-    redirect_to :controller => "catalog", :action => "show", :id => params[:id]
+    redirect_to :controller => "catalog", :action => "show", :id => params[:object_id]
   end
 
 
@@ -139,7 +148,7 @@ class AssetsController < ApplicationController
 
     @list = []
 
-    if params.has_key?("objects") && (!params[:objects].nil? || !params[:objects].blank?)
+    if params.has_key?("objects") && !params[:objects].blank?
 
       solr_query = ActiveFedora::SolrService.construct_query_for_pids(params[:objects].map{|o| o.values.first})
       result_docs = ActiveFedora::SolrService.query(solr_query)
@@ -147,25 +156,36 @@ class AssetsController < ApplicationController
       if result_docs.empty?
         raise Exceptions::NotFound
       end
-
+      
       storage = Storage::S3Interface.new
 
       result_docs.each do | r |
         doc = SolrDocument.new(r)
 
+        files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
+        files = ActiveFedora::SolrService.query(files_query)
+
         item = {}
         item['pid'] = doc.id
+        item['files'] = []
+          
+        files.each do |mf|
+          file_list = {}
+          file_doc = SolrDocument.new(mf)
+          
+          if can? :read_master, doc
+            url = url_for(file_download_url(doc.id, file_doc.id))
+            file_list['masterfile'] = url
+          end
 
-        if can? :read_master, doc
-          url = url_for(:controller => 'assets', :action => 'show', :id => doc.id)
-          item['masterfile'] = url
-        else
+          surrogates = storage.get_surrogates doc, file_doc
+          surrogates.each do |file,loc|
+            file_list[file] = loc 
+          end
+
+          item['files'].push(file_list)
         end
 
-        surrogates = storage.get_surrogates doc
-        surrogates.each do |file,loc|
-          item[file] = loc
-        end
         @list << item
       end
 

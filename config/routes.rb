@@ -11,7 +11,10 @@ NuigRnag::Application.routes.draw do
 
   devise_for :users, :skip => [ :sessions, :registrations, :passwords], class_name: 'UserGroup::User', :controllers => { :omniauth_callbacks => "user_group/omniauth_callbacks" }
 
-  resources :objects, :only => ['edit', 'update', 'create', 'show']
+  resources :objects, :only => ['edit', 'update', 'create', 'show'] do
+    resources :files, :controller => :assets, :only => ['create','show']
+  end
+
   resources :collections, :only => ['new','create','update','edit','destroy']
 
   resources :ingest, :only => ['new', 'create']
@@ -25,8 +28,7 @@ NuigRnag::Application.routes.draw do
 
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
   match 'objects/:id/metadata' => 'metadata#update', :via => :put
-  match 'objects/:id/file' => 'assets#show', :via => :get, :as => :object_file
-  match 'objects/:id/file' => 'assets#create', :via => :post, :as => :new_object_file
+  match 'objects/:object_id/file/:id' => 'assets#download', :via => :get, :as => :file_download
   match 'files/list_assets' => 'assets#list_assets', :via => :post, :as => :list_assets
   match '/privacy' => 'static_pages#privacy', :via => :get
   match '/workspace' => 'static_pages#workspace', :via => :get

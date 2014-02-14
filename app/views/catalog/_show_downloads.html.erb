@@ -1,36 +1,42 @@
 <% get_files @document %>
-<% get_surrogates @document %>
 
 <h3><%= t('dri.views.catalog.headers.files') %></h3>
 <dl class="dl-horizontal  dl-invert">
   <dt><%= t('dri.views.catalog.forms.metadata') %>: </dt>
   <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => @document.id %>" id="download_metadata"><%= t('dri.views.catalog.links.view_metadata') %></a></dd>
-  <dt><%= t('dri.views.catalog.forms.file') %>:  </dt>
-
+  
   <% unless @files.empty? %>
 
-    <% if can? :read_master, @document %>
-      <dd>
-        <%= link_to t('dri.views.catalog.links.download'), url_for(:controller => 'assets', :action => 'show', :id => @document.id), :id => "download_asset" %>
-     </dd>
-    <% end %>
-
-    <% if can? :read, @document %>
-      <% if @surrogates.empty? %>
-        <dd><%= t('dri.views.catalog.legends.no_surrogates') %></dd>
-      <% else %>
-        <% @surrogates.each do |desc, url| %>
-          <dt><%= desc %>:</dt>
-          <dd><%= link_to t('dri.views.catalog.links.download'), url, :id => desc %></dd>
+    <% @files.each do |file| %>
+     <dt><%= t('dri.views.catalog.forms.file') %>:  </dt>
+ 
+     <% if can? :read_master, @document %>
+        <dd>
+          <%= link_to t('dri.views.catalog.links.download'), url_for(file_download_path(@document.id, file.id)), :id => "download_asset" %>
+       </dd>
+      <% end %>
+    
+      <% if can? :read, @document %>
+        <% surrogates = get_surrogates @document, file %>
+        <% if surrogates.empty? %>
+          <dd><%= t('dri.views.catalog.legends.no_surrogates') %></dd>
+        <% else %>
+          <% surrogates.each do |desc, url| %>
+            <dt><%= desc %>:</dt>
+            <dd><%= link_to t('dri.views.catalog.links.download'), url, :id => desc %></dd>
+          <% end %>
         <% end %>
       <% end %>
-    <% else %>
+    
+    <% end %>
+
+    <% unless can? :read, @document %>
       <dd><%= t('dri.views.catalog.legends.no_permission') %></dd>
 
       <% if !signed_in? %>
         <dd><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></dd>
-       <% elsif (current_user.pending_member?(UserGroup::Group.find(UserGroup::Group.where(:name => reader_group_name( @document ))))) %>
-         <dd><%= t('user_groups.views.groups.index.pending') %></dd>
+      <% elsif (current_user.pending_member?(UserGroup::Group.find(UserGroup::Group.where(:name => reader_group_name( @document ))))) %>
+        <dd><%= t('user_groups.views.groups.index.pending') %></dd>
       <% else %>
         <dd>
           <%= form_tag(user_group.pending_memberships_path, :method => 'post') do %>
