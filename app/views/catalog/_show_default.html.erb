@@ -1,5 +1,5 @@
 <div class="dri_object_first_block">
-
+  <%=  render :partial => 'show_surrogate' %>
   <dl class="dl-horizontal  dl-invert dri_object_metadata_readview">
     <% document_show_fields.each do |solr_fname, field| -%>
       <% if should_render_show_field? document, field %>
@@ -60,7 +60,7 @@
 
     <div class="dri_grey_button" >
       <%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => "objects", :action => "edit", :id => @document.id), :id => "edit_record" %>
-    </div>
+   </div>
 
   <% end %>
 

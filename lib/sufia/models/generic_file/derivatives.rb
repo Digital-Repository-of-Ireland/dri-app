@@ -10,7 +10,9 @@ module Sufia
           case obj.mime_type
           when *pdf_mime_types
             obj.transform_datastream :content,
-              { :thumbnail => {size: "400", datastream: 'thumbnail'} }
+              { :large => {size: "400", datastream: 'thumbnail_large'},
+              	:lightbox => {size: "600", datastream: 'lightbox_format'}
+               }
           when *audio_mime_types
             obj.transform_datastream :content,
               { :mp3 => {format: 'mp3', datastream: 'mp3'},

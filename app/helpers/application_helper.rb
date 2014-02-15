@@ -53,11 +53,13 @@ module ApplicationHelper
 
   def image_path ( document )
     format = format?(document)
+    files = get_files (document)
 
     if format.eql?("unknown")
       path = "no_image.png"
     elsif format.eql?("image")
-      path = surrogate_url( document, "thumbnail_medium" ) if can? :read, document
+      #not sure where the multiple files per metadata is going - commenting this out as it throws an error
+      #path = surrogate_url( document, "thumbnail_large" ) if (can? :read, document)
       path ||= "no_image.png"
     else
       path = "dri/formats/#{format}.png"

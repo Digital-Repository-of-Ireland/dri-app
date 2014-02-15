@@ -1,5 +1,5 @@
 <% if can? :read, @document %>
-
+<% get_files @document %>
   <div class="dri_object_render_block">
     <% if @generic_file.audio? %>
       <div class="dri_audio_player">
@@ -18,7 +18,7 @@
         <img src="<%= surrogate_url(@document.id, @generic_file.id, "pdf") %>">
       </div>
     <% elsif @generic_file.image? %>
-      <img src="<%= surrogate_url(@document.id, @generic_file.id, "thumbnail")  %>">
+      <img src="<%= surrogate_url(@document.id, @generic_file.id, "thumbnail_large")  %>">
     <% end %>
   </div>
 

@@ -1,31 +1,27 @@
 <% if can? :read, @document %>
+<% get_files @document %>
+  <% unless @files.empty? %>
 
-  <div class="dri_object_render_block">
-    <% if audio?( @document ) %>
-      <div class="dri_audio_player">
-        <audio controls>
-          <% unless @asset.blank? %>
-            <source src="<%= @asset %>" type="audio/mpeg">
-          <% end %>
-        </audio>
-      </div><!-- close dri_audio_player -->
-    <% elsif video?( @document ) %>
-      <div>
-        <video width="320" height="240" controls>
-          <% unless @asset.blank? %>
-            <source src="<%= @asset %>" type="video/mp4">
-          <% end %>
-        </video>
-      </div>
-    <% elsif document?( @document ) %>
-      <div>
-        <img src="<%= @asset %>">
-      </div>
-    <% elsif image? ( @document ) %>
-      <img src="<%= @asset %>">
-    <% end %>
-  </div>
+        <% if can? :read, @document %>
+        <% surrogates = get_surrogates @document, @files[0] %>
+        <% if surrogates.empty? %>
+          <p><%= t('dri.views.catalog.legends.no_surrogates') %></p>
+        <% else %>
+          <% surrogates.each do |desc, url| %>
+               <% case desc when "thumbnail_large" %>
+               
+                <div class="dri_asset_holder">
+                <%= link_to url, :data => { :colorbox => true } do %>
+      				<img class="dri_float_right" src="<%= url %>">		
+      				<% end %>	
+      			</div>
 
+   			   <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+<% end %>
 <% else %>
 
   <h2 class="dri_restrict_title"><%= t('dri.views.catalog.forms.restricted_asset') %></h2>
