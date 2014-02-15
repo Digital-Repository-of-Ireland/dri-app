@@ -106,3 +106,6 @@ end
 gem 'google-analytics-rails'
 
 gem 'rvm'
+
+# UI widgets
+gem 'colorbox-rails'
