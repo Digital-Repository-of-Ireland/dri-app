@@ -1,12 +1,13 @@
-<div>
-  <%= t('dri.app.views.fields.licence') %>:
-  <% if !@licence.nil? && !@licence.blank? %>
+<dl class="dri_object_metadata_readview">
+  <dt class="blacklight-rights_tesim"><%= t('dri.app.views.fields.licence') %></dd>
+  <dd><% if !@licence.nil? && !@licence.blank? %>
     <% if !@licence.url.blank? %>
-      <%= link_to "#{@licence.name} - #{@licence.description}", @licence.url %>
+      <%= link_to "#{@licence.name}", @licence.url, :target => "_blank" %>
     <% else %>
-      <%= "#{@licence.name} - #{@licence.description}" %>
+      <%= "#{@licence.name}" %>
     <% end %>
-    <br />
-    <%= image_tag(@licence.logo) unless @licence.logo.blank? %>
+    <%# these logos are too ugly %>
+    <%# image_tag(@licence.logo) unless @licence.logo.blank? %>
   <% end %>
-</div>
+  </dd>
+</dl>
