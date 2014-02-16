@@ -14,7 +14,7 @@
   <% end %>
 
   <% if(paginator.has_next?)  %>
-    <li class="more_facets_link"><%= link_to(t('blacklight.search.facets.more'), params.merge(:id => solr_field, :action=>"facet", :page => nil), :class => "more_facets_link") %></li>
+    <li class="more_facets_link"><%= link_to(t('blacklight.search.facets.more'), params.merge(:id => solr_field, :action=>"facet", :page => nil), :class => "more_facets_link", :data => { :colorbox => true, :colorbox_html => true, :colorbox_width => "400" }, :remote => true) %></li>
   <% end %>
 
 </ul>
