@@ -6,7 +6,7 @@
   <% if @collection_institutes %>
   <ul class="dri_collection_institutes_list">
   <% @collection_institutes.each do |inst| %>
-  <li><span class="dri_collection_institutes_item"> <%= link_to image_tag(inst.logo), inst.url, :target => "_blank" %></a>
+  <li><span class="dri_collection_institutes_item"> <%= link_to image_tag(inst.logo, :height => "75px"), inst.url, :target => "_blank" %></a>
   </span></li>
   <% end %>
 </ul>
