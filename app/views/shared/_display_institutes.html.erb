@@ -6,11 +6,12 @@
   <% if @collection_institutes %>
   <ul class="dri_collection_institutes_list">
   <% @collection_institutes.each do |inst| %>
-  <li><span class="dri_collection_institutes_item"> <%= link_to image_tag(inst.logo, :width => '100'), inst.url %></a>
+  <li><span class="dri_collection_institutes_item"> <%= link_to image_tag(inst.logo), inst.url, :target => "_blank" %></a>
   </span></li>
   <% end %>
 </ul>
-  <div class="dri_institutes_show_more">
+  <!--  <div class="dri_institutes_show_more">
     <span><%= t('dri.views.collection.institute.more') %></span>
-  </div>
+  </div> 
+  -->
   <% end %>
