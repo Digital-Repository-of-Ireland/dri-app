@@ -9,7 +9,7 @@
         <% else %>
           <% surrogates.each do |desc, url| %>
                <% case desc when "thumbnail_large" %>
-               
+               <!-- need to find a comprehensive way to deal with surrogate rendering across object types -->
                 <div class="dri_asset_holder">
                 <%= link_to url, :data => { :colorbox => true } do %>
       				<img class="dri_float_right" src="<%= url %>">		
