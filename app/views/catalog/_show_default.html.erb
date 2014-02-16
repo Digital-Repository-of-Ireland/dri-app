@@ -9,7 +9,7 @@
     <% end -%>
   </dl>
 
-  <%= render :partial => "show_downloads" %>
+  
 
 </div>
 <!-- close dri_object_first_block -->
@@ -52,7 +52,7 @@
   <% end %>
 
   <%= render :partial => "tools" %>
-
+  <%= render :partial => "show_downloads" %>
   <% if signed_in? && (can?(:edit, @document)) %>
     <div class="dri_objecttools_title">
       <%= t('dri.views.catalog.titles.editor_tools') %>

@@ -1,55 +1,58 @@
 <% get_files @document %>
 
-<h3><%= t('dri.views.catalog.headers.files') %></h3>
-<dl class="dl-horizontal  dl-invert">
-  <dt><%= t('dri.views.catalog.forms.metadata') %>: </dt>
-  <dd><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => @document.id %>" id="download_metadata"><%= t('dri.views.catalog.links.view_metadata') %></a></dd>
-  
+<div class="dri_objecttools_title">
+  <%= t('dri.views.catalog.headers.files') %> (<%= @files.count %>)
+</div>
+<!-- close vc_title -->
+<ul class="dl-horizontal  dl-invert dri_view_collection">
+  <li>&nbsp;</li>
   <% unless @files.empty? %>
+   
 
     <% @files.each do |file| %>
-     <dt><%= t('dri.views.catalog.forms.file') %>:  </dt>
+
  
      <% if can? :read_master, @document %>
-        <dd>
-          <%= link_to t('dri.views.catalog.links.details'), url_for(:controller => 'assets', :action => 'show', :object_id => @document.id, :id => file.id), :id => "asset_details" %> <%= link_to t('dri.views.catalog.links.download'), url_for(file_download_path(@document.id, file.id)), :id => "download_asset" %>
-       </dd>
+        <li>
+          <%= link_to t('dri.views.catalog.links.details'), url_for(:controller => 'assets', :action => 'show', :object_id => @document.id, :id => file.id), :id => "asset_details" %> 
+          </li>
+          <li><%= link_to t('dri.views.catalog.links.download'), url_for(file_download_path(@document.id, file.id)), :id => "download_asset" %>
+       </li>
       <% end %>
     
       <% if can? :read, @document %>
         <% surrogates = get_surrogates @document, file %>
         <% if surrogates.empty? %>
-          <dd><%= t('dri.views.catalog.legends.no_surrogates') %></dd>
+          <li><%= t('dri.views.catalog.legends.no_surrogates') %></li>
         <% else %>
           <% surrogates.each do |desc, url| %>
-            <dt><%= desc %>:</dt>
-            <dd><%= link_to t('dri.views.catalog.links.download'), url, :id => desc %></dd>
+            <li><%= link_to desc, url, :id => desc %></li>
           <% end %>
         <% end %>
       <% end %>
-    
+     <li>&nbsp;</li>
     <% end %>
 
     <% unless can? :read, @document %>
-      <dd><%= t('dri.views.catalog.legends.no_permission') %></dd>
+      <li><%= t('dri.views.catalog.legends.no_permission') %></li>
 
       <% if !signed_in? %>
-        <dd><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></dd>
+        <li><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></li>
       <% elsif (current_user.pending_member?(UserGroup::Group.find(UserGroup::Group.where(:name => reader_group_name( @document ))))) %>
-        <dd><%= t('user_groups.views.groups.index.pending') %></dd>
+        <li><%= t('user_groups.views.groups.index.pending') %></li>
       <% else %>
-        <dd>
+        <li>
           <%= form_tag(user_group.pending_memberships_path, :method => 'post') do %>
             <%= hidden_field_tag('membership_user_id', current_user.id, {:name => "membership[user_id]"}) %>
             <%= hidden_field_tag('membership_group_id', UserGroup::Group.find(UserGroup::Group.where(:name => reader_group_name( @document ))).id, {:name => "membership[group_id]"} ) %>
             <%= submit_tag t('dri.views.catalog.legends.request_permission_logged_in'), :id=> "request_access" %>
           <% end %>
-        </dd>
+        </li>
       <% end %>
     <% end %>
 
   <% else %>
-    <dd><%= t('dri.views.catalog.legends.no_files') %></dd>
+    <li><%= t('dri.views.catalog.legends.no_files') %></li>
   <% end %>
 
-</dl>
+</ul>

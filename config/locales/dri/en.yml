@@ -95,7 +95,7 @@ en:
           audio_file: "Audio File"
           file: File
           image_file: Image
-          metadata: Metadata
+          metadata: Metadata (XML)
           pdf_file: PDF
           video_file: Video
           objects_in_collection: "Objects in this Collection"
@@ -110,11 +110,11 @@ en:
           request_permission_not_logged_in: "Sign up/Sign in to get access."
           request_permission_in_progress: "Your request is in progress."
         links:
-          download: download
-          details: details
+          download: Download File
+          details: File Details
           edit_this_record: "Edit this record"
           listen: listen
-          view_metadata: view
+          view_metadata: View Metadata (XML)
         sidebar:
           more_like_this: "More Like This"
           nav_header: "Edit Tools"
