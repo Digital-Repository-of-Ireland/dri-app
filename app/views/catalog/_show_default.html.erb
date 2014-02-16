@@ -40,19 +40,7 @@
   <% end %>
   <!-- close vc_title -->
 
-  <% unless collection.nil? %>
-    <ul class="dri_view_collection">
-      <% @type_counts.keys.each do |key| %>
-        <% unless @type_counts[key].blank?  %>
-          <% link = @type_counts[key][:draft].present? ? "#{@type_counts[key][:published]} (#{@type_counts[key][:draft]})" : "#{@type_counts[key][:published]}" %>
-          <li><%= link_to(t("dri.data.types.#{key}"), render_arbitrary_facet_links({:collection => collection['id'], :object_type => key})) %>
-            <span class="dri_stat_num"><%= link_to(link, render_arbitrary_facet_links({:collection => collection['id'], :object_type => key})) %>
-            <span class="dri_stat_num"></span>
-          </li>
-        <% end %>
-      <% end %>
-    </ul>
-  <% end %>
+
 
   <%= render :partial => "tools" %>
   <%= render :partial => "show_downloads" %>
