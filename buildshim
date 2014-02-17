@@ -73,6 +73,10 @@ compile)
     ;;
 check)
     bundle exec rake ci_spec || exit 100
+    bundle exec rake db:migrate
+    bundle exec rake db:seed
+    bundle exec rake dri:fixtures:generate
+    bundle exec rake db:test:prepare
     bundle exec rake ci || exit 100
     bundle exec rake rdoc
     ;;
