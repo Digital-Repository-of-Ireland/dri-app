@@ -7,31 +7,29 @@
 <ul class="dl-horizontal  dl-invert dri_view_collection">
 
   <% unless @files.empty? %>
-   
-
-    <% @files.each_with_index do |file, index| %>
-
  
-     <% if can? :read_master, @document %>
-     <li></li>
-        <li>
-          <%= link_to t('dri.views.catalog.links.details') + " " + ( index +1).to_s , url_for(:controller => 'assets', :action => 'show', :object_id => @document.id, :id => file.id), :id => "asset_details" %> 
+    <% @files.each_with_index do |file, index| %>
+ 
+      <% if can? :read_master, @document %>
+        <li></li>
+          <li>
+            <%= link_to t('dri.views.catalog.links.details') + " " + ( index +1).to_s , object_file_path(@document, file.id), :id => "asset_details" %> 
           </li>
-          <li><%= link_to t('dri.views.catalog.links.download'), url_for(file_download_path(@document.id, file.id)), :id => "download_asset" %>
-       </li>
+          <li><%= link_to t('dri.views.catalog.links.download'), file_download_path(@document, file.id), :id => "download_asset" %></li>
       <% end %>
     
       <% if can? :read, @document %>
         <% surrogates = get_surrogates @document, file %>
         <% if surrogates.empty? %>
           <li><%= t('dri.views.catalog.legends.no_surrogates') %></li>
-        <% else %>
-          <% surrogates.each do |desc, url| %>
-            <li><%= link_to desc, url, :id => desc %></li>
-          <% end %>
-        <% end %>
+         <% else %>
+           <% surrogates.each do |desc, url| %>
+             <li><%= link_to desc, url, :id => desc %></li>
+           <% end %>
+         <% end %>
       <% end %>
-     <li>&nbsp;</li>
+      <li>&nbsp;</li>
+    
     <% end %>
 
     <% unless can? :read, @document %>

@@ -50,7 +50,7 @@
     </div>
 
     <div class="dri_grey_button" >
-      <%= link_to t('dri.views.catalog.links.edit_this_record'), url_for(:controller => "objects", :action => "edit", :id => @document.id), :id => "edit_record" %>
+      <%= link_to t('dri.views.catalog.links.edit_this_record'), edit_object_path(@document), :id => "edit_record" %>
    </div>
 
   <% end %>
