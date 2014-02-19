@@ -28,8 +28,7 @@ end
 if Settings.data.logos_bucket.blank?
   logger.error "Storage bucket for logos not configured"
 else
-#  bucket = Settings.data.logos_bucket
-  bucket = "hellothere"
+  bucket = Settings.data.logos_bucket
   begin
     unless AWS::S3::Bucket.find(bucket)
       begin

@@ -1,3 +1,4 @@
+@api
 Feature: API Testing
 
   Background:
@@ -16,7 +17,7 @@ Feature: API Testing
     And the object with pid "dri:apitest1" has a deliverable surrogate file
     And the object with pid "dri:apitest2" has a deliverable surrogate file
 
-  Scenario: I shoould be able to get a list of asset files for an object
+  Scenario: I should be able to get a list of asset files for an object
     When I send and accept JSON
     When I send a POST request to "/files/list_assets" with the following:
     """
