@@ -25,3 +25,18 @@ After('@random_pid') do
 
   @random_pid = ""
 end
+
+After('@api') do
+  buckets = ['apitest1', 'apitest2']
+  AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
+                                     :access_key_id => Settings.S3.access_key_id,
+                                     :secret_access_key => Settings.S3.secret_access_key)
+  buckets.each do |bucket|
+    begin
+      AWS::S3::Bucket.delete(bucket, :force => true)
+    rescue Exception
+    end
+  end
+  AWS::S3::Base.disconnect!()
+end
+
