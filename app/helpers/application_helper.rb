@@ -51,21 +51,36 @@ module ApplicationHelper
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
-  def image_path ( document )
-    format = format?(document)
-    files = get_files (document)
+  def image_path ( document, image_name = "thumbnail_large" )
+    files_query = "is_part_of_ssim:\"info:fedora/#{document.id}\""
+    files = ActiveFedora::SolrService.query(files_query)
+    
+    unless files.empty?
+      file_doc = SolrDocument.new(files.first)
 
-    if format.eql?("unknown")
-      path = "no_image.png"
-    elsif format.eql?("image")
-      #not sure where the multiple files per metadata is going - commenting this out as it throws an error
-      #path = surrogate_url( document, "thumbnail_large" ) if (can? :read, document)
-      path ||= "no_image.png"
+      unless file_doc['file_type_tesim'].blank?
+        format = file_doc['file_type_tesim'].first
+      else
+        format = "unknown"
+        path = "no_image.png"
+      end
+
+      if format.eql?("image")
+        path = surrogate_url(document.id, file_doc.id, image_name)
+      end
+
+      if path.nil?
+        path = "dri/formats/#{format}.png"
+
+        if Rails.application.assets.find_asset(path).nil?
+          path = "no_image.png"
+        end
+      end
+
+      path
     else
-      path = "dri/formats/#{format}.png"
+      "no_image.png"
     end
-
-    path
   end
 
   def icon_path ( document )
