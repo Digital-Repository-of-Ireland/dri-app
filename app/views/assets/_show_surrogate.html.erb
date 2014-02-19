@@ -15,10 +15,10 @@
       </div>
     <% elsif @generic_file.pdf? %>
       <div>
-        <img src="<%= surrogate_url(@document.id, @generic_file.id, "pdf") %>">
+        <img src="<%= surrogate_url(@document.id, @generic_file.id, "thumbnail_medium") %>">
       </div>
     <% elsif @generic_file.image? %>
-      <img src="<%= surrogate_url(@document.id, @generic_file.id, "thumbnail_large")  %>">
+      <img src="<%= surrogate_url(@document.id, @generic_file.id, "thumbnail_medium")  %>">
     <% end %>
   </div>
 
