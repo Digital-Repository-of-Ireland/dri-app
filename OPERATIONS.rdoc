@@ -1,0 +1,7 @@
+## Clearing Stale resque workers
+
+In the rails console...
+
+    Resque.workers.each {|w| w.unregister_worker}
+
+You will need to restart the resque workers
