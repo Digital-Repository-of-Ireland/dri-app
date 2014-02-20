@@ -34,7 +34,7 @@ module ApplicationHelper
   end
 
   def governing_collection( object )
-      object.governing_collection.pid unless object.governing_collection.nil?
+    object.governing_collection.pid unless object.governing_collection.nil?
   end
 
   def governing_collection_solr( doc )
@@ -42,7 +42,7 @@ module ApplicationHelper
       id = doc['is_governed_by_ssim'][0].gsub(/^info:fedora\//, '')
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
-      return collection[0]
+    return collection[0]
     end
     return nil
   end
@@ -54,7 +54,7 @@ module ApplicationHelper
   def image_path ( document, image_name = "thumbnail_large" )
     files_query = "is_part_of_ssim:\"info:fedora/#{document.id}\""
     files = ActiveFedora::SolrService.query(files_query)
-    
+
     unless files.empty?
       file_doc = SolrDocument.new(files.first)
 
@@ -69,6 +69,10 @@ module ApplicationHelper
         path = surrogate_url(document.id, file_doc.id, image_name)
       end
 
+      if format.eql?("text")
+        path = surrogate_url(document.id, file_doc.id, image_name)
+      end
+
       if path.nil?
         path = "dri/formats/#{format}.png"
 
@@ -77,7 +81,7 @@ module ApplicationHelper
         end
       end
 
-      path
+    path
     else
       "no_image.png"
     end
@@ -107,13 +111,13 @@ module ApplicationHelper
 
   def collection_children_query ( collection_id )
     "(is_governed_by_ssim:\"info:fedora/" + collection_id +
-                 "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
+    "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
   end
 
   def count_items_in_collection_by_type( collection_id, type, status )
     solr_query = "status_ssim:" + status + " AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
-                 "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
-                 "object_type_sim:"+ type
+    "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
+    "object_type_sim:"+ type
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
@@ -135,22 +139,16 @@ module ApplicationHelper
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
   end
 
-
   def get_cover_image( document )
-    if document[:cover_image_tesim] && document[:cover_image_tesim].first
-      @cover_image = document[:cover_image_tesim].first
-    elsif !document[:collection_tesim].blank?
+    if !document[:collection_tesim].blank?
       collection = governing_collection_solr(document)
-      if collection['cover_image_tesim'] && collection['cover_image_tesim'].first
-        @cover_image = collection['cover_image_tesim'].first
-      else
-        @cover_image = image_path( document )
+      path = image_path( document )
+      if path.to_s.start_with?("dri")
+        path = collection['cover_image_tesim'].first
       end
-    else
-      @cover_image = image_path( document )
     end
+    @cover_image = path
   end
-
 
   def get_licence( document )
     if !document[:licence_tesim].blank?
