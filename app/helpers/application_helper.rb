@@ -51,36 +51,50 @@ module ApplicationHelper
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
-  def image_path ( document, image_name = "thumbnail_large" )
-    files_query = "is_part_of_ssim:\"info:fedora/#{document.id}\""
-    files = ActiveFedora::SolrService.query(files_query)
-    
-    unless files.empty?
-      file_doc = SolrDocument.new(files.first)
+  def search_image ( document, file_document, image_name = "crop16_9_width_200_thumbnail" )
+    path = nil
 
-      unless file_doc['file_type_tesim'].blank?
-        format = file_doc['file_type_tesim'].first
-      else
-        format = "unknown"
-        path = "no_image.png"
-      end
+    unless file_document['file_type_tesim'].blank?
+      format = file_document['file_type_tesim'].first
 
       if format.eql?("image")
-        path = surrogate_url(document.id, file_doc.id, image_name)
+        path = surrogate_url(document.id, file_document.id, image_name)
       end
+    end
 
-      if path.nil?
+    path
+  end
+
+  def default_image ( file_document )
+    path = "no_image.png"
+
+    unless file_document.nil?
+      unless file_document['file_type_tesim'].blank?
+        format = file_document['file_type_tesim'].first
         path = "dri/formats/#{format}.png"
 
         if Rails.application.assets.find_asset(path).nil?
           path = "no_image.png"
         end
       end
-
-      path
-    else
-      "no_image.png"
     end
+    
+    path
+  end  
+
+  def cover_image ( document )
+    path = nil  
+
+    if document[:cover_image_tesim] && document[:cover_image_tesim].first
+        path = document[:cover_image_tesim].first
+    elsif !document[:collection_tesim].blank?
+      collection = governing_collection_solr(document)
+      if collection['cover_image_tesim'] && collection['cover_image_tesim'].first
+        path = collection['cover_image_tesim'].first
+      end
+    end
+
+    path
   end
 
   def icon_path ( document )
@@ -135,22 +149,17 @@ module ApplicationHelper
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
   end
 
-
   def get_cover_image( document )
-    if document[:cover_image_tesim] && document[:cover_image_tesim].first
-      @cover_image = document[:cover_image_tesim].first
-    elsif !document[:collection_tesim].blank?
-      collection = governing_collection_solr(document)
-      if collection['cover_image_tesim'] && collection['cover_image_tesim'].first
-        @cover_image = collection['cover_image_tesim'].first
-      else
-        @cover_image = image_path( document )
-      end
-    else
-      @cover_image = image_path( document )
-    end
-  end
+    files_query = "is_part_of_ssim:\"info:fedora/#{document.id}\""
+    files = ActiveFedora::SolrService.query(files_query)
+    file_doc = SolrDocument.new(files.first) unless files.empty?
 
+    @cover_image = search_image( document, file_doc ) unless file_doc.nil?
+
+    @cover_image = cover_image ( document ) if @cover_image.nil?
+
+    @cover_image = default_image ( file_doc ) if @cover_image.nil?
+  end
 
   def get_licence( document )
     if !document[:licence_tesim].blank?

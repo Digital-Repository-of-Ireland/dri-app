@@ -25,7 +25,11 @@ module FormatHelper
   end
 
   def format? ( document )
-    format = document['file_type_tesim'].first 
+    unless document['file_type_tesim'].blank?
+      format = document['file_type_tesim'].first 
+    else
+      format = "unknown"
+    end
 
     format
   end

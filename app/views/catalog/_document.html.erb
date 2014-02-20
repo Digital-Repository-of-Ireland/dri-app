@@ -2,17 +2,11 @@
 <article class="block5">
   <div class="dri_content_block_collection">
     <div class="dri_image">
-      <% if document[:cover_image_tesim] && document[:cover_image_tesim].first %>
-        <%= image_tag document[:cover_image_tesim].first, :width=>"228", :height=>"127" %>
-      <% elsif !document[:collection_tesim].blank? %>
-        <% collection = governing_collection_solr(document) %>
-        <% if collection['cover_image_tesim'] && collection['cover_image_tesim'].first %>
-          <%= image_tag collection['cover_image_tesim'].first, :width=>"228", :height=>"127" %>
-	<% else %>
-	  <%= image_tag "no_image.png", :width=>"228", :height=>"127" %>
-	<% end %>
+      <% image = cover_image ( document ) %>
+      <% unless image.nil? %>
+        <%= image_tag image, :width=>"228", :height=>"127" %>
       <% else %>
-        <%= image_tag "no_image.png", :width=>"228", :height=>"127" %>
+	  <%= image_tag "no_image.png", :width=>"228", :height=>"127" %>
       <% end %>
     </div> <!-- close image -->
 
