@@ -1309,8 +1309,11 @@ h2.dri_no_asset_availiable {
 }
 /*-------------- Media asset Image Tools  --------------*/
 .dri_asset_tools {
-	margin: 10px 0 0 0;
-	padding: 0px;
+	margin: 5px 0 15px 0;
+	padding: 0;	
+	display:block;
+	width: 500px;
+	float:left;
 }
 .dri_asset_tools p a {
 	margin: 0;
@@ -1324,7 +1327,7 @@ h2.dri_no_asset_availiable {
 }
 
 .dri_asset_tools ul {
-	margin: 0 35px 0 50px;
+	margin: 0 20px 0 0;
 	padding: 0;
 	float: left;
 }
@@ -1362,20 +1365,27 @@ h2.dri_no_asset_availiable {
 	background:image-url('dri/next_arrow.png') no-repeat center;
 
 }
-
-input.dri_green_button {
-	color:#FFF;
-	border: none;
-	background-color: #00948F;
-	padding: 0 10px 0 10px;
+.dri_green_button {
+	padding: 0;
 	margin: 0;
-	height: 26px;
+	float: left;
+	margin: 0 20px 0 0;
+
+}
+.dri_green_button  a {
+	padding: 0;
+	margin: 0;
+	color: #00948F;
+	border: none;
+	font-weight: bold;
+	
 	display: block;
  	-moz-border-radius: 2px;
  	border-radius: 2px;
 }
-input.dri_green_button:hover {
-	background-color: #007F79;
+.dri_green_button a:hover {
+	color: #007F79;
+	text-decoration: underline;
 }
 /*-------------- Restricted Media asset --------------*/
 
