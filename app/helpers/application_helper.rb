@@ -34,7 +34,7 @@ module ApplicationHelper
   end
 
   def governing_collection( object )
-      object.governing_collection.pid unless object.governing_collection.nil?
+    object.governing_collection.pid unless object.governing_collection.nil?
   end
 
   def governing_collection_solr( doc )
@@ -42,7 +42,7 @@ module ApplicationHelper
       id = doc['is_governed_by_ssim'][0].gsub(/^info:fedora\//, '')
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
-      return collection[0]
+    return collection[0]
     end
     return nil
   end
@@ -57,7 +57,7 @@ module ApplicationHelper
     unless file_document['file_type_tesim'].blank?
       format = file_document['file_type_tesim'].first
 
-      if format.eql?("image")
+      if format.eql?("image") || format.eql?("text")
         path = surrogate_url(document.id, file_document.id, image_name)
       end
     end
@@ -71,6 +71,7 @@ module ApplicationHelper
     unless file_document.nil?
       unless file_document['file_type_tesim'].blank?
         format = file_document['file_type_tesim'].first
+
         path = "dri/formats/#{format}.png"
 
         if Rails.application.assets.find_asset(path).nil?
@@ -121,13 +122,13 @@ module ApplicationHelper
 
   def collection_children_query ( collection_id )
     "(is_governed_by_ssim:\"info:fedora/" + collection_id +
-                 "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
+    "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
   end
 
   def count_items_in_collection_by_type( collection_id, type, status )
     solr_query = "status_ssim:" + status + " AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
-                 "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
-                 "object_type_sim:"+ type
+    "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
+    "object_type_sim:"+ type
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 

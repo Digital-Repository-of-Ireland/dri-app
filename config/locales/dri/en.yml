@@ -101,7 +101,7 @@ en:
           objects_in_collection: "Objects in this Collection"
           restricted_asset: "Restricted Asset"
         headers:
-          files: Files
+          files: File Tools
         legends:
           no_files: "No file has been uploaded."
           no_permission: "You do not have permission to view the asset file associated with this object."
@@ -308,7 +308,7 @@ en:
         legends:
           access_control: "Access Controls"
           audio_caption: "A master audio file has already been uploaded."
-          cite: Cite
+          cite: Object Tools
           comments: Comments
           file_caption: "A master file has already been uploaded."
           likes: Likes

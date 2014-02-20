@@ -189,7 +189,7 @@ en:
         title: "%{value}"
         url: "Link: %{url}"
     tools: 
-      cite: Cite
+      cite: Object Tools
       clear: Clear
       email: Email
       endnote: "Export to EndNote"
