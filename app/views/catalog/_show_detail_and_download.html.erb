@@ -1,0 +1,14 @@
+<% get_files @document %>
+<% unless @files.empty? %>
+<% @file = @files.first %>
+<div class="dri_asset_tools">
+	<p>
+		<%= link_to t('dri.views.catalog.links.details') , object_file_path(@document, @file.id), :id => "asset_details" %>
+	</p>
+
+	<div class="dri_green_button">
+		<%= link_to t('dri.views.catalog.links.download'), file_download_path(@document, @file.id), :id => "download_asset" %>
+	</div>
+</div>
+
+<% end%>
