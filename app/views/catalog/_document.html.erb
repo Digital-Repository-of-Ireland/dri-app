@@ -4,9 +4,9 @@
     <div class="dri_image">
       <% image = cover_image ( document ) %>
       <% unless image.nil? %>
-        <%= image_tag image, :width=>"228", :height=>"127" %>
+        <%= image_tag image, :width=>"228" %>
       <% else %>
-	  <%= image_tag "no_image.png", :width=>"228", :height=>"127" %>
+	  <%= image_tag "no_image.png", :width=>"228" %>
       <% end %>
     </div> <!-- close image -->
 
