@@ -100,7 +100,7 @@ end
 
 Before do
   require 'factory_girl'
-  #BackgroundTasks::QueueManager.any_instance.stub(:process)
+  Sufia.queue.stub(:push) 
 end
 
 def last_json

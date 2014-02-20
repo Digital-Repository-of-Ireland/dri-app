@@ -19,8 +19,7 @@ After('@random_pid') do
   AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                       :access_key_id => Settings.S3.access_key_id,
                                       :secret_access_key => Settings.S3.secret_access_key)
-  AWS::S3::S3Object.delete("dri:o"+@random_pid+"_mp3_web_quality.mp3", "o"+@random_pid)
-  AWS::S3::Bucket.delete("o"+@random_pid)
+  AWS::S3::Bucket.delete("o"+@random_pid, :force => true)
   AWS::S3::Base.disconnect!()
 
   @random_pid = ""
