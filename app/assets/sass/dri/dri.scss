@@ -1309,7 +1309,7 @@ h2.dri_no_asset_availiable {
 }
 /*-------------- Media asset Image Tools  --------------*/
 .dri_asset_tools {
-	margin: 0 0 20px 0;
+	margin: 5px 0 15px 0;
 	padding: 0;	
 	display:block;
 	width: 500px;
@@ -1327,7 +1327,7 @@ h2.dri_no_asset_availiable {
 }
 
 .dri_asset_tools ul {
-	margin: 0 0 0 50px;
+	margin: 0 20px 0 0;
 	padding: 0;
 	float: left;
 }
@@ -1368,22 +1368,24 @@ h2.dri_no_asset_availiable {
 .dri_green_button {
 	padding: 0;
 	margin: 0;
-	float: right;
-	margin: 0 100px 0 0;
+	float: left;
+	margin: 0 20px 0 0;
 
 }
 .dri_green_button  a {
-	padding: 1px 8px 0 8px;
+	padding: 0;
 	margin: 0;
-	color:#FFF;
+	color: #00948F;
 	border: none;
-	background-color: #00948F;
+	font-weight: bold;
+	
 	display: block;
  	-moz-border-radius: 2px;
  	border-radius: 2px;
 }
 .dri_green_button a:hover {
-	background-color: #007F79;
+	color: #007F79;
+	text-decoration: underline;
 }
 /*-------------- Restricted Media asset --------------*/
 
