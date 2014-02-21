@@ -57,8 +57,12 @@ module ApplicationHelper
     unless file_document['file_type_tesim'].blank?
       format = file_document['file_type_tesim'].first
 
-      if format.eql?("image") || format.eql?("text")
+      if format.eql?("image")
         path = surrogate_url(document.id, file_document.id, image_name)
+      end
+      
+      if format.eql?("text")
+        path = surrogate_url(document.id, file_document.id, "thumbnail_medium")
       end
     end
 
