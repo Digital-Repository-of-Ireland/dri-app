@@ -69,7 +69,7 @@ Given /^the object with pid "(.*?)" is in the collection with pid "(.*?)"$/ do |
   object.save
 end
 
-Given /^I have associated the institute "(.?*)" with the colleciton entitled "(.?*)"$/ do |institute,collection|
+Given /^I have associated the institute "(.?*)" with the collection entitled "(.?*)"$/ do |institute,collection|
   steps %{
     Given I am on the home page
     When I perform a search

@@ -8,7 +8,7 @@ Feature:
     And I have created a collection with title "Institute Test Collection"
     And I have created a "Sound" object with title "Institute Test Object" in the collection "Institute Test Collection"
 
-  Scenario: Adding a new insititute
+  Scenario: Adding a new institute
     Given I am on the home page
     When I perform a search
     And I press "Institute Test Collection"
@@ -20,7 +20,7 @@ Feature:
     And I wait for the ajax request to finish
     Then the "institute" drop-down should contain the option "TestInstitute"
 
-  Scenario: Associating an insititute with a collection
+  Scenario: Associating an institute with a collection
     Given I am on the home page
     When I perform a search
     And I press "Institute Test Collection"
@@ -37,13 +37,13 @@ Feature:
     Then I should see the image "TestInstitute.png"
 
   Scenario: Viewing associated institutes for a collection
-    Given I have associated the institute "TestInstitute" with the colleciton entitled "Institute Test Collection"
+    Given I have associated the institute "TestInstitute" with the collection entitled "Institute Test Collection"
     When I perform a search
     And I press "Institute Test Collection"
     Then I should see the image "TestInstitute.png"
 
   Scenario: viewing associated institutes for an object
-    Given I have associated the institute "TestInstitute" with the colleciton entitled "Institute Test Collection"
+    Given I have associated the institute "TestInstitute" with the collection entitled "Institute Test Collection"
     When I perform a search
     And I press "Institute Test Object"
     Then I should see the image "TestInstitute.png"
