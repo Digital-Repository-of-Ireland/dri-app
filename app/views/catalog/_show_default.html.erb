@@ -52,7 +52,11 @@
 
     <div class="dri_grey_button" >
       <%= link_to t('dri.views.catalog.links.edit_this_record'), edit_object_path(@document), :id => "edit_record" %>
-   </div>
+    </div>
+    
+    <div class="dri_grey_button" >
+      <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :post, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
+    </div>
 
   <% end %>
 
