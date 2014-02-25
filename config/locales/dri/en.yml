@@ -122,6 +122,7 @@ en:
           nav_header: "Edit Tools"
         titles:
           editor_tools: "Editor Tools"
+          object_tools: "Object Tools"
       collection:
         buttons:
           clear_collection: "Clear as Current"
@@ -313,7 +314,7 @@ en:
         legends:
           access_control: "Access Controls"
           audio_caption: "A master audio file has already been uploaded."
-          cite: Object Tools
+          cite: Cite
           comments: Comments
           file_caption: "A master file has already been uploaded."
           likes: Likes

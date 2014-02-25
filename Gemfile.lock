@@ -1,6 +1,6 @@
 GIT
   remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: 165d87da403f0552ddd31baa7b1589836630bbaa
+  revision: f3c5311c4f7644abee0e81143d52bdae782cc269
   branch: develop
   specs:
     dri_data_models (1.0.2)

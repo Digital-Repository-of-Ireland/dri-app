@@ -28,6 +28,8 @@ NuigRnag::Application.routes.draw do
 
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
   match 'objects/:id/metadata' => 'metadata#update', :via => :put
+  match 'objects/:id/citation' => 'objects#citation', :via => :get, :as => :citation_object
+
   match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download
   match 'files/list_assets' => 'assets#list_assets', :via => :post, :as => :list_assets
   match '/privacy' => 'static_pages#privacy', :via => :get
