@@ -134,9 +134,9 @@ class ObjectsController < CatalogController
       end
 
       storage = Storage::S3Interface.new
-      item = {}
 
       result_docs.each do | r |
+        item = {}
         doc = SolrDocument.new(r)
 
         # Get metadata
@@ -180,6 +180,7 @@ class ObjectsController < CatalogController
 
       storage.close
     else
+      logger.error "No objects in params #{params.inspect}"
       raise raise Exceptions::BadRequest
     end
 
