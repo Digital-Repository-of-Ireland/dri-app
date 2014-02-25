@@ -39,6 +39,7 @@ en:
         unknown_permission: "Unsupported Permission Level: %{action}"
         virus_detected: "Virus detected in uploaded file: %{virus}"
         error_saving_file: "Error saving file: %{error}"
+        error_generating_surrogates: "Error generating surrogates: %{error}"
       error:
         no_type_specified: "You must specify a valid object type"
         not_created: "Unable to create. Check set permissions"
@@ -65,6 +66,7 @@ en:
         specify_valid_file: "You must specify a valid file to upload."
         specify_xml_file: "You must specify a XML file."
         updated: "Updated %{item}"
+        generating_surrogates: "Surrogates are being generated."
     headerlinks:
       about: About
       admin: "Admin Tasks"
@@ -129,6 +131,7 @@ en:
           remove: Remove
           set_collection: "Set as Current"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
+        confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
         edit: "Edit Collection"
         index:
           items:
@@ -274,6 +277,8 @@ en:
           replace_metadata: "Upload Metadata"
           save: "Save Changes"
           upload_master: "Upload Master File"
+        confirm:
+          surrogates: "This will (re)generate surrogates for all files. Continue?"
         edit:
           sidebar:
             nav_header: "Edit Tools"

@@ -540,7 +540,7 @@ a .dri_signin_edugate:hover {
 
 
 .dri_search_term_text_input {
-	margin: 24px 0 0 0 ;
+	margin: 24px 0 0 0;
 	width: 189px;
 	padding: 4px 10px 4px 29px;
 	-moz-border-radius: 2px;
@@ -694,7 +694,7 @@ li.empty  {
 .dri_search_save_submit_button {
 	width: 230px;
 	box-shadow: 1px 1px 4px  #f0f0f0;
-	margin: 15px 0 0 0;
+	margin: 15px 10px 0 0;
 	padding: 7px 10px 7px 10px;
 	float: right;
 	border: none;
@@ -1154,6 +1154,9 @@ h4.suggest a:hover {
 .dri_content_block_collection .dri_image {
 	padding: 0;
 	margin: 0;
+	border-bottom: 1px solid #E1E1E1;
+	border-top: 1px solid #E1E1E1;
+	
 }
 .dri_content_block_collection h1 {
 	color: #2F2F2F;
@@ -1164,7 +1167,7 @@ h4.suggest a:hover {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	line-height: 1.3em;
-	font-weight: bold;
+	font-weight: bold;;
 }
 .dri_content_block_collection h1 a {
 	color:#2F2F2F;

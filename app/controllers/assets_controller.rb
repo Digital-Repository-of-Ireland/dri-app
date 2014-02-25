@@ -229,7 +229,7 @@ class AssetsController < ApplicationController
       storage.close
 
     else
-      raise raise Exceptions::BadRequest
+      raise Exceptions::BadRequest
     end
 
     respond_to do |format|

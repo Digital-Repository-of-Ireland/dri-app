@@ -35,6 +35,8 @@ NuigRnag::Application.routes.draw do
   #required for hydra-core/lib/hydra/controller/controller_behavior.rb and lib/blacklight/controller.rb
   match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 
+  match 'surrogates/:id' => 'surrogates#generate', :via => :post, :as => :surrogates_generate
+
   #match 'objects/:id' => 'catalog#show', :via => :get
   match 'collections/:id' => 'catalog#show', :via => :get
 
