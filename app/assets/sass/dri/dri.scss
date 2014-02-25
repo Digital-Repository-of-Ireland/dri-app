@@ -685,6 +685,49 @@ li.empty  {
 	box-shadow: 1px 1px 4px  #fff;
 }
 
+
+/*-------------- Browse Sort Collections/Objects --------------*/
+
+.dri_browse_sort_tabs {
+	margin: 0 0 0 0;
+	padding: 0;
+	float: left;
+	width: 96%;
+	border-bottom: 1px solid #D9DADB;
+}
+
+.dri_browse_sort_tabs  ul {
+	margin: 0;
+	padding: 0;
+}
+
+.dri_browse_sort_tabs  li {
+	list-style: none;
+	text-decoration: none;
+	float: left;
+}
+.dri_browse_sort_tabs li a {
+	margin: 20px 4px 0 0;
+	padding: 4px 14px 4px 14px;
+	color:#808082;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #D9DADB;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-bottom: none;
+	display: block;
+	
+}
+.dri_browse_sort_tabs li:hover a {
+	background-color: #F5F5F5;
+}
+.dri_browse_sort_tabs li.selected a {
+	background-color: #909A3C;
+	color:#FFF;
+	
+}
+
 /*-------------- Save Search --------------*/
 .dri_search_save_input {
 	margin: 0;
@@ -694,7 +737,7 @@ li.empty  {
 .dri_search_save_submit_button {
 	width: 230px;
 	box-shadow: 1px 1px 4px  #f0f0f0;
-	margin: 15px 10px 0 0;
+	margin: 15px 14px 0 0;
 	padding: 7px 10px 7px 10px;
 	float: right;
 	border: none;
@@ -869,7 +912,7 @@ h4.suggest a:hover {
 /* ----------- Facet Filter block ---------- */
 .dri_facet_filters_block {
 	font-size: 100%;
-	margin: 30px 20px 20px 0;
+	margin: 25px 20px 20px 0;
 	padding: 0 0 0 0;
 	//width: 228px;
 	float: left;
@@ -1038,7 +1081,7 @@ h4.suggest a:hover {
 
 
 .dri_result_container {
-	margin-top: 30px;
+	margin-top: 25px;
 }
 
 .content_block_wrap {
