@@ -65,7 +65,7 @@
 
   	@include zen-grid-container;
 	@include zen-grid-flow-item(1, 1, $alpha-gutter: 20px, $omega-gutter: 0px);
-	padding-right: 20px;
+	padding-right: 24px;
   	
 	.dri_sort_nav {
 	
@@ -121,7 +121,7 @@
 .dri_messages_container {
 	 
   	@include zen-grid-container;
-	@include zen-grid-flow-item(3, 4, $alpha-gutter: 20px);
+	@include zen-grid-flow-item(3, 4.3, $alpha-gutter: 20px);
 	padding-bottom: 10px;
 	
 }

@@ -16,6 +16,7 @@ Feature: API Testing
     And the object with pid "dri:apitest2" has "inaccessible" masterfile
     And the object with pid "dri:apitest1" has a deliverable surrogate file
     And the object with pid "dri:apitest2" has a deliverable surrogate file
+    When I add 2 subject terms to the object with pid "dri:apitest1"
 
   Scenario: I should be able to get a list of asset files for an object
     When I send and accept JSON
@@ -29,6 +30,22 @@ Feature: API Testing
     And the JSON response should have "$..masterfile" with a length of 1
     And the JSON response should have "$..thumbnail" with a length of 1
 
+  Scenario: I should be able to get a list of metadata and asset files for an object
+    When I send and accept JSON
+    When I send a POST request to "/get_objects" with the following:
+    """
+    {"objects": [ { "pid":"dri:apitest1"} ], "metadata": ["title", "description", "subject"]}
+    """
+    Then the response status should be "200"
+    And the JSON response should have "$..pid" with a length of 1
+    And the JSON response should have "$..pid" with the text "dri:apitest1"
+    And the JSON response should have "$..masterfile" with a length of 1
+    And the JSON response should have "$..thumbnail" with a length of 1
+    And the JSON response should have "$..metadata" with a length of 1
+    And the JSON response should have "$..title" with a length of 1
+    And the JSON response should have "$..description" with a length of 1
+    And the JSON response should have "$..subject" with a length of 1
+
   Scenario: I should be able to get a list of asset files for several objects
     When I send and accept JSON
     When I send a POST request to "/files/list_assets" with the following:
@@ -41,6 +58,23 @@ Feature: API Testing
     And the JSON response should have "$..pid" with the text "dri:apitest2"
     And the JSON response should have "$..masterfile" with a length of 1
     And the JSON response should have "$..thumbnail" with a length of 2
+
+  Scenario: I should be able to get a list of metadata and asset files for several objects
+    When I send and accept JSON
+    When I send a POST request to "/get_objects" with the following:
+      """
+      {"objects": [ { "pid":"dri:apitest1"}, {"pid":"dri:apitest2" } ]}
+      """
+    Then the response status should be "200"
+    #And the JSON response should have "$..pid" with a length of 2
+    #And the JSON response should have "$..pid" with the text "dri:apitest1"
+    #And the JSON response should have "$..pid" with the text "dri:apitest2"
+    #And the JSON response should have "$..masterfile" with a length of 1
+    #And the JSON response should have "$..thumbnail" with a length of 2
+    #And the JSON response should have "$..metadata" with a length of 2
+    #And the JSON response should have "$..title" with a length of 2
+    #And the JSON response should have "$..description" with a length of 2
+    #And the JSON response should have "$..subject" with a length of 1
 
   Scenario: Invalid object id
     When I send and accept JSON
@@ -65,4 +99,5 @@ Feature: API Testing
     {"test":"invalid input"}
     """
     Then the response status should be "400"
+
 

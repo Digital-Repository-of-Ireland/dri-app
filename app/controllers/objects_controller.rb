@@ -8,13 +8,13 @@ require 'sufia/models/jobs/mint_doi_job'
 
 class ObjectsController < CatalogController
   include SteppedForms
-   
+
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
   # Edits an existing model.
   #
   def edit
-    enforce_permissions!("edit",params[:id]) 
+    enforce_permissions!("edit",params[:id])
     @collections = ingest_collections
     @object = retrieve_object!(params[:id])
     respond_to do |format|
@@ -77,10 +77,10 @@ class ObjectsController < CatalogController
 
     set_access_permissions(:batch)
     @object = Batch.new
-    
+
     if request.content_type == "multipart/form-data"
       xml = MetadataHelpers.load_xml(params[:metadata_file])
-      MetadataHelpers.set_metadata_datastream(@object, xml)   
+      MetadataHelpers.set_metadata_datastream(@object, xml)
     end
 
     @object.depositor = current_user.to_s
@@ -89,7 +89,7 @@ class ObjectsController < CatalogController
 
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
-    
+
     if @object.valid? && @object.save
 
       mint_doi unless DoiConfig.nil?
@@ -103,7 +103,7 @@ class ObjectsController < CatalogController
             response = { :pid => @object.id, :warning => @warnings }
           else
             response = { :pid => @object.id }
-          end 
+          end
           render :json => response, :location => catalog_url(@object), :status => :created }
       end
     else
@@ -120,6 +120,72 @@ class ObjectsController < CatalogController
       end
     end
 
+  end
+
+  def index
+    @list = []
+
+    if params.has_key?("objects") && !params[:objects].blank?
+      solr_query = ActiveFedora::SolrService.construct_query_for_pids(params[:objects].map{|o| o.values.first})
+      result_docs = ActiveFedora::SolrService.query(solr_query)
+
+      if result_docs.empty?
+        raise Exceptions::NotFound
+      end
+
+      storage = Storage::S3Interface.new
+      item = {}
+
+      result_docs.each do | r |
+        doc = SolrDocument.new(r)
+
+        # Get metadata
+        item['pid'] = doc.id
+        item['files'] = []
+        item['metadata'] = {}
+
+        ['title','subject','type','rights','language','description','creator',
+         'contributor','publisher','date','format','source','temporal_coverage',
+         'geographical_coverage'].each do |field|
+
+          if params['metadata'].blank? || params['metadata'].include?(field)
+            value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
+            item['metadata'][field] = value unless value.nil?
+          end
+        end
+
+        # Get files
+        files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
+        files = ActiveFedora::SolrService.query(files_query)
+
+        files.each do |mf|
+          file_list = {}
+          file_doc = SolrDocument.new(mf)
+
+          if can? :read_master, doc
+            url = url_for(file_download_url(doc.id, file_doc.id))
+            file_list['masterfile'] = url
+          end
+
+          surrogates = storage.get_surrogates doc, file_doc
+          surrogates.each do |file,loc|
+            file_list[file] = loc
+          end
+
+          item['files'].push(file_list)
+        end
+
+        @list << item
+      end
+
+      storage.close
+    else
+      raise raise Exceptions::BadRequest
+    end
+
+    respond_to do |format|
+      format.json  { }
+    end
   end
 
   def mint_doi

@@ -31,7 +31,6 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/citation' => 'objects#citation', :via => :get, :as => :citation_object
 
   match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download
-  match 'files/list_assets' => 'assets#list_assets', :via => :post, :as => :list_assets
   match '/privacy' => 'static_pages#privacy', :via => :get
   match '/workspace' => 'static_pages#workspace', :via => :get
   match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
@@ -42,6 +41,10 @@ NuigRnag::Application.routes.draw do
 
   #match 'objects/:id' => 'catalog#show', :via => :get
   match 'collections/:id' => 'catalog#show', :via => :get
+
+  #API paths
+  match 'get_objects' => 'objects#index', :via => :post
+  match 'files/list_assets' => 'assets#list_assets', :via => :post, :as => :list_assets
 
   # need to put in the 'system administrator' role here
   authenticate do
