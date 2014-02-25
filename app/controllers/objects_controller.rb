@@ -142,16 +142,13 @@ class ObjectsController < CatalogController
         item['files'] = []
         item['metadata'] = {}
 
-        if params.has_key?('metadata') && !params['metadata'].blank?
-          
-          ['title','subject','type','rights','language','description','creator',
-           'contributor','publisher','date','format','source','temporal_coverage',
-           'geographical_coverage'].each do |field|
+        ['title','subject','type','rights','language','description','creator',
+         'contributor','publisher','date','format','source','temporal_coverage',
+         'geographical_coverage'].each do |field|
 
-            if params['metadata'].include?(field)
-              value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
-              item['metadata'][field] = value unless value.nil?
-            end
+          if params['metadata'].blank? || params['metadata'].include?(field)
+            value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
+            item['metadata'][field] = value unless value.nil?
           end
         end
 
