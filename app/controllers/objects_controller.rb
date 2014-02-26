@@ -165,7 +165,8 @@ class ObjectsController < CatalogController
             file_list['masterfile'] = url
           end
 
-          surrogates = storage.get_surrogates doc, file_doc
+          timeout = 60 * 60 * 24 * 30 # 30 days
+          surrogates = storage.get_surrogates doc, file_doc, timeout
           surrogates.each do |file,loc|
             file_list[file] = loc
           end
@@ -186,6 +187,22 @@ class ObjectsController < CatalogController
       format.json  { }
     end
   end
+
+
+  def related
+    if params.has_key?("object") && !params[:object].blank?
+      solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
+      @result = ActiveFedora::SolrService.instance.conn.get('select',
+                             :params=>{:q=>solr_query, :qt => 'standard',
+                                       :mlt => 'true', :'mlt.fl' => 'subject_tesim,subject_tesim',
+                                       :'mlt.count' => '3', :fl => 'id,score', :'mlt.match.include'=> 'false'})
+    end
+
+    respond_to do |format|
+      format.json {}
+    end
+  end
+
 
   def mint_doi
     if @object.status.eql?("published") && @object.doi.nil?

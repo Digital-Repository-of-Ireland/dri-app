@@ -44,8 +44,9 @@ module Storage
     end
 
     # Get a hash of all surrogates for an object
-    def get_surrogates(doc, file_doc)
+    def get_surrogates(doc, file_doc, expire=nil)
 
+      expire = 60 * 30 unless (!expire.blank? && numeric?(expire))
       bucket = doc.id.sub('dri:', '')
       generic_file = file_doc.id.sub('dri:','')
 
@@ -55,7 +56,7 @@ module Storage
       files.each do |file|
         begin
           if file.match(/dri:#{generic_file}_([-a-zA-z0-9]*)\..*/)
-            url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
+            url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => expire)
             @surrogates_hash[$1] = url
           end
         rescue Exception => e
@@ -164,6 +165,10 @@ module Storage
       end
 
       files
+    end
+
+    def numeric?(number)
+      Integer(number) rescue false
     end
 
   end
