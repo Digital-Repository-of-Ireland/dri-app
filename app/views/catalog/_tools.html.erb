@@ -4,12 +4,12 @@
 <!-- close dri_bookmark_object -->
 
 <div class="dri_objecttools_title">
-  <%= t('dri.views.objects.legends.cite') %>
+  <%= t('dri.views.catalog.titles.object_tools') %>
 </div>
 <!-- close vc_title -->
 
 <ul class="dri_view_collection">
   <li><a href="<%= url_for :controller => 'metadata', :action => 'show', :id => @document.id %>" id="download_metadata"><%= t('dri.views.catalog.forms.metadata') %></a></li>
   <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
-  <li><%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :data => { :colorbox => true }, :remote => true } %></li>
+  <li><%= link_to t('blacklight.tools.cite'), citation_object_path(@document), {:id => 'citeLink', :data => { :colorbox => true }, :remote => true } %></li>
 </ul>

@@ -31,10 +31,6 @@ class ObjectsController < CatalogController
     respond_to do |format|
       format.html { redirect_to(catalog_url(@object)) }
       format.endnote { render :text => @object.export_as_endnote, :layout => false }
-      format.openurl_kev { render :text => @object.export_as_openurl_ctx_kev, :layout => false }
-      format.apa_citation { render :text => @object.export_as_apa_citation, :layout => false }
-      format.mla_citation { render :text => @object.export_as_mla_citation, :layout => false }
-      format.chicago_citation { render :text => @object.export_as_chicago_citation, :layout => false }
     end
   end
 
@@ -64,6 +60,12 @@ class ObjectsController < CatalogController
       format.html  { render :action => "edit" }
       format.json  { render :json => @object }
     end
+  end
+
+  def citation
+    enforce_permissions!("show",params[:id])
+
+    @object = retrieve_object!(params[:id])
   end
 
   # Creates a new model using the parameters passed in the request.
