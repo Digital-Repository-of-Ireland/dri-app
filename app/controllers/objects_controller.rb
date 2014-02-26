@@ -5,6 +5,7 @@ require 'stepped_forms'
 require 'metadata_helpers'
 require 'doi/datacite'
 require 'sufia/models/jobs/mint_doi_job'
+include Utils
 
 class ObjectsController < CatalogController
   include SteppedForms
@@ -192,12 +193,18 @@ class ObjectsController < CatalogController
 
 
   def related
+    if params.has_key?("count") && !params[:count].blank? && numeric?(params[:count])
+      count = params[:count]
+    else
+      count = 3
+    end
+
     if params.has_key?("object") && !params[:object].blank?
       solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
       @result = ActiveFedora::SolrService.instance.conn.get('select',
                              :params=>{:q=>solr_query, :qt => 'standard',
                                        :mlt => 'true', :'mlt.fl' => 'subject_tesim,subject_tesim',
-                                       :'mlt.count' => '3', :fl => 'id,score', :'mlt.match.include'=> 'false'})
+                                       :'mlt.count' => count, :fl => 'id,score', :'mlt.match.include'=> 'false'})
     end
 
     respond_to do |format|

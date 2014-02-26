@@ -1,6 +1,9 @@
 module Storage
   class S3Interface
 
+    require 'utils'
+    include Utils
+
     def initialize
       AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
                                           :access_key_id => Settings.S3.access_key_id,
@@ -165,10 +168,6 @@ module Storage
       end
 
       files
-    end
-
-    def numeric?(number)
-      Integer(number) rescue false
     end
 
   end
