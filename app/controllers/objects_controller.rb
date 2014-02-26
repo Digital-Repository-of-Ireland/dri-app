@@ -147,11 +147,22 @@ class ObjectsController < CatalogController
 
         ['title','subject','type','rights','language','description','creator',
          'contributor','publisher','date','format','source','temporal_coverage',
-         'geographical_coverage'].each do |field|
+         'geographical_coverage','geocode_point'].each do |field|
 
           if params['metadata'].blank? || params['metadata'].include?(field)
             value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
-            item['metadata'][field] = value unless value.nil?
+
+            if field.eql?("geocode_point")
+              if !value.nil? && !value.blank?
+                geojson_points = []
+                value.each do |point|
+                  geojson_points << dcterms_point_to_geojson(point)
+                end
+                item['metadata'][field] = geojson_points
+              end
+            else
+              item['metadata'][field] = value unless value.nil?
+            end
           end
         end
 
