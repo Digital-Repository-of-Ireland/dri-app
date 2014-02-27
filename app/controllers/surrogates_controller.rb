@@ -1,6 +1,6 @@
 class SurrogatesController < ApplicationController
 
-  def generate
+  def update
     unless params[:id].blank?
       enforce_permissions!("edit",params[:id])
 

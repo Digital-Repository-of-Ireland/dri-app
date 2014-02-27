@@ -55,7 +55,7 @@
     </div>
     
     <div class="dri_grey_button" >
-      <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :post, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
+      <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
     </div>
 
   <% end %>
