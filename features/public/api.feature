@@ -20,7 +20,7 @@ Feature: API Testing
 
   Scenario: I should be able to get a list of asset files for an object
     When I send and accept JSON
-    When I send a POST request to "/files/list_assets" with the following:
+    When I send a POST request to "/get_assets" with the following:
     """
     {"objects": [ { "pid":"dri:apitest1"} ]}
     """
@@ -64,7 +64,7 @@ Scenario: I should be able to get a list of specific metadata and asset files fo
 
   Scenario: I should be able to get a list of asset files for several objects
     When I send and accept JSON
-    When I send a POST request to "/files/list_assets" with the following:
+    When I send a POST request to "/get_assets" with the following:
       """
       {"objects": [ { "pid":"dri:apitest1"}, {"pid":"dri:apitest2" } ]}
       """
@@ -94,7 +94,7 @@ Scenario: I should be able to get a list of specific metadata and asset files fo
 
   Scenario: Invalid object id
     When I send and accept JSON
-    When I send a POST request to "/files/list_assets" with the following:
+    When I send a POST request to "/get_assets" with the following:
     """
     {"objects": [ { "pid":"dri:unknown"} ]}
     """
@@ -102,7 +102,7 @@ Scenario: I should be able to get a list of specific metadata and asset files fo
 
   Scenario: Empty input
     When I send and accept JSON
-    When I send a POST request to "/files/list_assets" with the following:
+    When I send a POST request to "/get_assets" with the following:
     """
     {}
     """
@@ -110,7 +110,7 @@ Scenario: I should be able to get a list of specific metadata and asset files fo
 
   Scenario: Invalid input
     When I send and accept JSON
-    When I send a POST request to "/files/list_assets" with the following:
+    When I send a POST request to "/get_assets" with the following:
     """
     {"test":"invalid input"}
     """

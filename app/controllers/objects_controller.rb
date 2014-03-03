@@ -212,10 +212,19 @@ class ObjectsController < CatalogController
 
     if params.has_key?("object") && !params[:object].blank?
       solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
-      @result = ActiveFedora::SolrService.instance.conn.get('select',
+      result = ActiveFedora::SolrService.instance.conn.get('select',
                              :params=>{:q=>solr_query, :qt => 'standard',
                                        :mlt => 'true', :'mlt.fl' => 'subject_tesim,subject_tesim',
                                        :'mlt.count' => count, :fl => 'id,score', :'mlt.match.include'=> 'false'})
+    end
+
+    # TODO: fixme!
+    @related = []
+    if result && result['moreLikeThis'] && result['moreLikeThis'].first &&
+       result['moreLikeThis'].first[1] && result['moreLikeThis'].first[1]['docs']
+      result['moreLikeThis'].first[1]['docs'].each do |item|
+        @related << item
+      end
     end
 
     respond_to do |format|

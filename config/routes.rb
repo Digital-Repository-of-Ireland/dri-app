@@ -45,7 +45,7 @@ NuigRnag::Application.routes.draw do
   #API paths
   match 'get_objects' => 'objects#index', :via => :post
   match 'related' => 'objects#related', :via => :get
-  match 'files/list_assets' => 'assets#list_assets', :via => :post, :as => :list_assets
+  match 'get_assets' => 'assets#list_assets', :via => :post, :as => :list_assets
 
   # need to put in the 'system administrator' role here
   authenticate do
