@@ -29,17 +29,16 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
   match 'objects/:id/metadata' => 'metadata#update', :via => :put
   match 'objects/:id/citation' => 'objects#citation', :via => :get, :as => :citation_object
-
   match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download
+  
   match '/privacy' => 'static_pages#privacy', :via => :get
   match '/workspace' => 'static_pages#workspace', :via => :get
   match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
-  #required for hydra-core/lib/hydra/controller/controller_behavior.rb and lib/blacklight/controller.rb
   match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 
-  match 'surrogates/:id' => 'surrogates#generate', :via => :post, :as => :surrogates_generate
+  match 'surrogates/:id' => 'surrogates#update', :via => :put, :as => :surrogates_generate
+  match 'surrogates/:id' => 'surrogates#show', :via => :get, :as => :surrogates
 
-  #match 'objects/:id' => 'catalog#show', :via => :get
   match 'collections/:id' => 'catalog#show', :via => :get
 
   #API paths
