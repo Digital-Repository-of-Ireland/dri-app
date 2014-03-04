@@ -232,6 +232,37 @@ class ObjectsController < CatalogController
     end
   end
 
+  def status
+    enforce_permissions!("edit",params[:id])
+
+    @object = retrieve_object!(params[:id])
+
+    return if request.get?
+
+    @object.status = params[:status] if params[:status].present?
+
+    if @object.is_collection?
+      if params[:update_objects].present? && params[:update_objects].eql?("yes")
+        @collection_objects = Batch.find(:collection_id_sim => @object.id)
+
+        unless @collection_objects.nil?
+          @collection_objects.each do |o|
+            o.status = params[:objects_status]
+            o.save
+          end
+        end
+      end
+    end
+
+    @object.save
+
+    respond_to do |format|
+      flash[:notice] = t('dri.flash.notice.metadata_updated')
+      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+      format.json  { render :json => @object }
+    end
+
+  end
 
   def mint_doi
     if @object.status.eql?("published") && @object.doi.nil?
