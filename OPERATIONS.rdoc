@@ -29,7 +29,10 @@ you should run the bundle config command, for example:
 
 You will also need to start the resque workers.
 
-  $ rake environment resque:work RAILS_ENV=development QUEUE="*" VERBOSE=1
+  $ rake environment resque:work RAILS_ENV=production COUNT=4 QUEUE="*" VERBOSE=1
+
+In a production environment it is recommended to deploy the workers with
+either supervisord or an equivalent system.
 
 == Clearing Stale resque workers
 
