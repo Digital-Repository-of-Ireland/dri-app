@@ -1,10 +1,3 @@
-== WARNING and DISCLAIMER
-
-This code in its current state is not to be redistributed to parties
-outside of DRI.
-
-THIS 1.0 release is a snapshot
-
 == Welcome to nuig-rnag
 
 This repository contains the proto-type of a Hydra-Head which targets the
@@ -215,28 +208,3 @@ but all '\' characters should be stripped.
 Note that the storage code is stubbed for the Cucumber tests, but you must have a ceph
 host available and configured in order to run the rspec tests.
 
-== Going into production
-
-Edit config/solr.yml config/fedora.yml config/database.yml and put in
-the correct production servers into place.
-
-Some steps required to be run before a production env is ready to go...
-
-  $ rake RAILS_ENV=production assets:precompile
-  $ rake RAILS_ENV=production db:schema:load
-  $ rake RAILS_ENV=production db:migrate
-
-The above assumes a production ready instance of mysql, solr,
-fedora-commons and mod_passenger.
-
-Note that to install the mysql2 gem you may have to use the syntax
-  $ sudo gem install mysql2 -v '0.3.11' -- --with-mysql-config="/opt/local/lib/mysql55/bin/mysql_config"
-
-To configure bundle to automatically pass the appropriate parameters when building the mysql gem
-you should run the bundle config command, for example:
-
-  $ bundle config build.mysql --with-mysql-config=/opt/local/lib/mysql55/bin/mysql_config
-
-You will also need to start the resque workers.
-
-  $ rake environment resque:work RAILS_ENV=development QUEUE="*" VERBOSE=1
