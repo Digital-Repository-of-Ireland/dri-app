@@ -1,9 +1,9 @@
-Stuart Kenny <skenny@tchpc.tcd.ie>
-Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
-Jimmy Tang <jtang@tchpc.tcd.ie>
-Raymond Noonan <raymond.noonan@nuim.ie>
-ekilfeather <ekilfeather@gmail.com>
 Anna Deegan <anna.deegan@dmc.dit.ie>
 Damien Gallagher <damien.gallagher@nuim.ie>
-SineadRed <sinead.redmond@nuim.ie>
+Eoin Kilfeather <ekilfeather@gmail.com>
 Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Jimmy Tang <jtang@tchpc.tcd.ie>
+Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Raymond Noonan <raymond.noonan@nuim.ie>
+Sinead Redmond <sinead.redmond@nuim.ie>
+Stuart Kenny <skenny@tchpc.tcd.ie>
