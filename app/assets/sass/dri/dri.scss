@@ -1112,15 +1112,22 @@ h4.suggest a:hover {
 .dri_image {
 	padding: 0;
 	margin: 0 14px 0 14px;
-	height: 128px;
+	height: 113px;
 	overflow: hidden;
+}
+
+.dri_collection_image {
+  padding: 0;
+  #margin: 0 14px 0 14px;
+  height: 128px;
+  overflow: hidden;
 }
 .dri_content_block h1 {
 	color: #2F2F2F;
 	font-size: 100%;
 	padding: 0;
 	margin: 12px 14px 12px 14px;
-	height: 44px;
+	height: 47px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	line-height: 1.3em;
@@ -1206,7 +1213,7 @@ h4.suggest a:hover {
 	font-size: 100%;
 	padding: 0 0 0 0;
 	margin: 6px 14px 8px 14px;
-	height: 46px;
+	height: 47px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	line-height: 1.3em;
@@ -1250,13 +1257,19 @@ h4.suggest a:hover {
 	background-color: #F6F6F6;
 	padding: 0 14px 2px 14px;
 }
+.dri_num_objects_link {
+  display: block;
+}
+
+
+
 .dri_content_block_collection .dri_object_text  {
 	margin: 6px 0 0 0;
 	padding: 0;
 	display: block;
 	float: left;
 }
-.dri_content_block_collection .dri_object_text_num a {
+.dri_content_block_collection .dri_object_text_num {
 	margin: 6px 0 0 6px;
 	padding: 0;
 	display: block;
@@ -1264,7 +1277,7 @@ h4.suggest a:hover {
 	color: #2F2F2F;
 }
 .dri_content_block_collection .dri_object_text_num a:hover {
-	color: #288DC0;
+	#color: #288DC0;
 }
 
 

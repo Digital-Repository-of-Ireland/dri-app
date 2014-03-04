@@ -1,15 +1,10 @@
 <% get_cover_image document %>
 
-<a>
-  <h1>
-    <!-- <%= t('blacklight.search.documents.counter', :counter => (document_counter + 1 + @response.params[:start].to_i)) %> -->
-	<%= link_to_document document, :label => document_show_link_field, :counter => (document_counter + 1 + @response.params[:start].to_i) %>
+<%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+<h1><%= document[:title_tesim][0] %></h1>
+<div class="dri_image">
 
-  </h1>
-  <div class="dri_image">
+	<%= image_tag @cover_image, :width=>"200" %>
 
-    <%= image_tag @cover_image, :width=>"200" %>
-
-  </div><!-- close image -->
-</a>
-
+</div><!-- close image -->
+<% end %>
