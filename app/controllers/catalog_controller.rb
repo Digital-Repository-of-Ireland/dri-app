@@ -69,43 +69,44 @@ class CatalogController < ApplicationController
     #
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
-    config.add_facet_field solr_name('status', :facetable), :label => 'Record Status'
-    config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :label_permission
-    config.add_facet_field "master_file_isi", :label => 'Master File Access',  :helper_method => :label_permission
+
+    #config.add_facet_field solr_name('status', :facetable), :label => 'Record Status'
+    #config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :label_permission
+    #config.add_facet_field "master_file_isi", :label => 'Master File Access',  :helper_method => :label_permission
     #}
     config.add_facet_field solr_name('subject', :facetable), :label => 'Subjects', :limit => 20
-    config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
-    config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
-    config.add_facet_field solr_name('geographical_coverage', :facetable), :label => 'Subject (Place)', :limit => 20
-    config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
-    config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
-    config.add_facet_field solr_name('temporal_coverage', :facetable), :label => 'Subject (Era)', :limit => 20
-    config.add_facet_field solr_name('temporal_coverage_gle', :facetable), :label => 'Subject (Era) (in Irish)', :limit => 20
-    config.add_facet_field solr_name('temporal_coverage_eng', :facetable), :label => 'Subject (Era) (in English)', :limit => 20
-    config.add_facet_field solr_name('name_coverage', :facetable), :label => 'Subject (Name)', :limit => 20
-    config.add_facet_field solr_name('creator', :facetable), :label => 'creators', :show => false
-    config.add_facet_field solr_name('contributor', :facetable), :label => 'contributors', :show => false
+    #config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
+    #config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
+    config.add_facet_field solr_name('geographical_coverage', :facetable), :label => 'Location', :limit => 20
+    #config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
+    #config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
+    config.add_facet_field solr_name('temporal_coverage', :facetable), :label => 'Era', :limit => 20
+    #config.add_facet_field solr_name('temporal_coverage_gle', :facetable), :label => 'Subject (Era) (in Irish)', :limit => 20
+    #config.add_facet_field solr_name('temporal_coverage_eng', :facetable), :label => 'Subject (Era) (in English)', :limit => 20
+    #config.add_facet_field solr_name('name_coverage', :facetable), :label => 'Subject (Name)', :limit => 20
+    #config.add_facet_field solr_name('creator', :facetable), :label => 'creators', :show => false
+    #config.add_facet_field solr_name('contributor', :facetable), :label => 'contributors', :show => false
     config.add_facet_field solr_name('person', :facetable), :label => 'Names', :limit => 20
     config.add_facet_field solr_name('language', :facetable), :label => 'Language', :helper_method => :label_language, :limit => true
     #config.add_facet_field solr_name('creation_date', :dateable), :label => 'Creation Date', :date => true
     #config.add_facet_field solr_name('published_date', :dateable), :label => 'Published/Broadcast Date', :date => true
-    config.add_facet_field solr_name('width', :facetable, type: :integer), :label => 'Image Width'
-    config.add_facet_field solr_name('height', :facetable, type: :integer), :label => 'Image Height'
-    config.add_facet_field solr_name('area', :facetable, type: :integer), :label => 'Image Size'
+    #config.add_facet_field solr_name('width', :facetable, type: :integer), :label => 'Image Width'
+    #config.add_facet_field solr_name('height', :facetable, type: :integer), :label => 'Image Height'
+    #config.add_facet_field solr_name('area', :facetable, type: :integer), :label => 'Image Size'
 
     # duration is measured in milliseconds
     #config.add_facet_field solr_name('duration_total', :stored_sortable, type: :integer), :label => 'Total Duration'
-  
-    config.add_facet_field solr_name('channels', :facetable, type: :integer), :label => 'Audio Channels'
-    config.add_facet_field solr_name('sample_rate', :facetable, type: :integer), :label => 'Sample Rate'
-    config.add_facet_field solr_name('bit_depth', :facetable, type: :integer), :label => 'Bit Depth'
-    config.add_facet_field solr_name('file_count', :stored_sortable, type: :integer), :label => 'Number of Files'
+
+    #config.add_facet_field solr_name('channels', :facetable, type: :integer), :label => 'Audio Channels'
+    #config.add_facet_field solr_name('sample_rate', :facetable, type: :integer), :label => 'Sample Rate'
+    #config.add_facet_field solr_name('bit_depth', :facetable, type: :integer), :label => 'Bit Depth'
+    #config.add_facet_field solr_name('file_count', :stored_sortable, type: :integer), :label => 'Number of Files'
     #config.add_facet_field solr_name('file_size_total', :stored_sortable, type: :integer), :label => 'Total File Size'
-    config.add_facet_field solr_name('mime_type', :facetable), :label => 'MIME Type'
-    config.add_facet_field solr_name('file_format', :facetable), :label => 'File Format'
-    config.add_facet_field solr_name('file_type_display', :facetable), :label => 'Type'
-    config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
-    config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
+    #config.add_facet_field solr_name('mime_type', :facetable), :label => 'MIME Type'
+    #config.add_facet_field solr_name('file_format', :facetable), :label => 'File Format'
+    config.add_facet_field solr_name('file_type_display', :facetable), :label => 'Mediatype'
+    #config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
+    #config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
     config.add_facet_field solr_name('root_collection', :facetable), :label => 'Collection'
 
     config.add_facet_field solr_name('is_collection', :facetable), :label => 'is_collection', :helper_method => :is_collection, :show => false
@@ -231,7 +232,7 @@ class CatalogController < ApplicationController
     config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', :label => 'relevance'
     # The year created sort throws an error as the date type is not enforced and so a string can be passed in - it is commented out for this reason.
     # config.add_sort_field 'creation_date_dtsim, title_sorted_ssi asc', :label => 'year created'
-    
+
     # We son't use the author_tesi field in DRI so disabling this sort - Damien
     #config.add_sort_field 'author_tesi asc, title_sorted_ssi asc', :label => 'author'
 
