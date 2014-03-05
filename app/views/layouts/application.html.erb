@@ -1,74 +1,76 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
 
-    <!-- Mobile viewport optimization h5bp.com/ad -->
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<!-- Mobile viewport optimization h5bp.com/ad -->
+		<meta name="HandheldFriendly" content="True">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-    <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
-    <meta http-equiv="cleartype" content="on">
+		<!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
+		<meta http-equiv="cleartype" content="on">
 
-    <title><%= h(@page_title || application_name) %></title>
+		<title><%= h(@page_title || application_name) %></title>
 
-    <link href="<%= opensearch_catalog_path(:format => 'xml', :only_path => false) %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
+		<link href="<%= opensearch_catalog_path(:format => 'xml', :only_path => false) %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
 
-    <%= favicon_link_tag asset_path('favicon.ico') %>
+		<%= favicon_link_tag asset_path('favicon.ico') %>
 
+		<%= stylesheet_link_tag "dri/dri_layouts" %>
 
-        <%= stylesheet_link_tag "dri/dri_layouts" %>
+		<%= javascript_include_tag "application" %>
+		<%= csrf_meta_tags %>
+		<%= raw(render_head_content) %>
 
-    <%= javascript_include_tag "application" %>
-    <%= csrf_meta_tags %>
-    <%= raw(render_head_content) %>
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+		<%= favicon_link_tag asset_path('favicon.ico') %>
 
-    <%= favicon_link_tag asset_path('favicon.ico') %>
+		<%= analytics_init if Rails.env.production? %>
 
-    <%= analytics_init if Rails.env.production? %>
+	</head>
 
-  </head>
+	<% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
 
-  <% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
+	<body>
 
-  <body>
+		<%= render :partial => 'shared/statcounter' if Rails.env.production? %>
 
-    <%= render :partial => 'shared/statcounter' if Rails.env.production? %>
+		<div id="dri_wrapper_id" class="block1 dri_wrapper">
 
-    <div id="dri_wrapper_id" class="block1 dri_wrapper">
+			<%= render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
 
-      <%= render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
+			<%= render :partial => 'shared/header_navbar_public' %>
 
-      <%= render :partial => 'shared/header_navbar_public' %>
+			<div id="ajax-modal" class="modal hide fade" tabindex="-1"></div><!-- close ajax-modal -->
 
-      <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div><!-- close ajax-modal -->
+			<% if query_has_constraints?%>
+			<%= render 'constraints' %>
+			<% end %>
 
-	  <% if query_has_constraints? %>
-      	<%= render 'constraints' %>
-      <% end %>
-
-      <%= render :partial=>'/flash_msg' %>
-
-      <div class="dri_main_content_container">
-      <% unless (controller_name == 'catalog' && action_name == 'index') || (controller_name == 'catalog' && action_name == 'show') %>
-
-      <% end %>
-
-      <%= yield %>
-      </div>
-      <!-- close dri_main_content_container -->
+			<%= render :partial=>'/flash_msg' %>
+			<% if (controller_name == 'catalog' && action_name != 'show')  && request.env['PATH_INFO'] != "/" %> <!-- what condition for this? -->
+			<%= render 'catalog/collection_constraints' %>
+			<% end %>
 
 
-    <%= render :partial => 'shared/footer' %>
+			<div class="dri_main_content_container">
+				<% unless (controller_name == 'catalog' && action_name == 'index') || (controller_name == 'catalog' && action_name == 'show') %>
 
-    </div><!-- close dri_wrapper -->
+				<% end %>
 
-  </body>
+				<%= yield %>
+			</div>
+			<!-- close dri_main_content_container -->
+
+			<%= render :partial => 'shared/footer' %>
+
+		</div><!-- close dri_wrapper -->
+
+	</body>
 
 </html>
