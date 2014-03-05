@@ -25,7 +25,7 @@ DRI::ModelSupport::Files.module_eval do
 
       create_file(file, file_name, gf.id, dsid, "")
 
-      url = "http://repository.dri.ie/v1/objects/#{gf.id}/file"
+      url = "http://repository.dri.ie/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/objects/#{gf.id}/file"
       gf.update_file_reference dsid, :url=>url, :mimeType=>mime_type.to_s
 
       begin
