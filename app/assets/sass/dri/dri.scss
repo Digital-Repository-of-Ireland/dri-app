@@ -1570,8 +1570,22 @@ ul.dri_stats li {
 	border: 1px solid #E1E1E1;
 	width: 230px;
 	height: 129px;
+	margin: 8px 0 0 0;
 }
-
+.dri_vc_title  {
+	margin: 20px 0 10px 0;
+	color: #2F2F2F;
+	font-weight: bold;
+	
+}
+.dri_vc_title a {
+	margin: 20px 0 0 0;
+	color: #2F2F2F;	font-size: 100%;
+}
+.dri_vc_title a:hover {
+	text-decoration: underline;
+	color: #288DC0;
+}
 ul.dri_view_collection {
 	margin: 10px 0 0 0;
 	padding: 0;
@@ -1586,36 +1600,25 @@ ul.dri_view_collection li {
 	padding: 4px 0 3px 0;
 	list-style: none;
 	border-top: 1px solid #E1E1E1;
-
-	color: #808080;	
+	color: #808080;		
 }
 ul.dri_view_collection li a {
 	list-style: none;
-	color: #808080;	
+	color: #808080;
+	display: block;
 }
 ul.dri_view_collection li a:hover {
-	color: #288DC0;
-}
-.dri_vc_title  {
-	margin: 20px 0 10px 0;
-	color: #2F2F2F;
-	font-weight: bold;
-	
-}
-.dri_vc_title a {
-	margin: 20px 0 0 0;
-	color: #2F2F2F;
-}
-.dri_vc_title a:hover {
+	color: #505050;
+	display: block;
 	text-decoration: underline;
 }
+
 ul.dri_view_collection li span.dri_stat_num {
 	float: right;
 	font-size: 100%;
 	font-weight: bold;
 	color: #288DC0;
 }
-
 ul.dri_view_collection li a:hover span.dri_stat_num {
 	color: #505050;
 	float: right;
@@ -1630,12 +1633,13 @@ ul.dri_view_collection li a:hover span.dri_stat_num {
 	font-weight: bold;
 
 }
-ul.dri_view_collection li a:hover {
-	text-decoration: underline;
-	color: #505050;
+
+.dri_title {
+	color: #2F2F2F;
+	font-weight: bold;
+	margin: 0 0 4px 0;
+	padding: 0;	
 }
-
-
 .dri_objecttools_title {
 	margin: 20px 0 0 0;
 	padding: 0;
