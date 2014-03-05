@@ -681,6 +681,21 @@ a .dri_signin_edugate:hover {
 	
 }
 
+.dri_facet_restrictions_links  span.dri_clear_all  a {
+	margin: 19px 10px 0 10px;
+	padding: 2px 8px 0 22px;
+	list-style: none;
+	text-decoration: none;
+	color: #808082;
+	float: left;
+	display: block;
+	border-left: 1px solid #D9DADB;
+	background:image-url('dri/clear_all_close.png') no-repeat left;
+}
+.dri_facet_restrictions_links  span.dri_clear_all  a:hover {
+	color: #2F2F2F;
+	background:image-url('dri/clear_all_close_hover.png') no-repeat left;
+}
 li.empty  {
 	background-color: #fff;
 	box-shadow: 1px 1px 4px  #fff;
