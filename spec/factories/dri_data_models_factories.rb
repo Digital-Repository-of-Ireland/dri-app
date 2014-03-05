@@ -54,6 +54,7 @@ FactoryGirl.define do
     publisher              ["RnaG"]
     type                   ["Collection"]
     creation_date          ["1916-01-01"]
+    published_date         ["1916-01-02"]
   end
 
 end
