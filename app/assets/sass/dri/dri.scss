@@ -1255,7 +1255,7 @@ h4.suggest a:hover {
 }
 a .dri_num_objects {
 	border-top: 1px solid #E1E1E1;
-	color: #2F2F2F;
+	color: #808080;
 	line-height: 1.4em;
 	display: block;
 	height: 22px;
@@ -1270,7 +1270,10 @@ a .dri_num_objects:hover {
 }
 
 
-
+a .dri_num_objects span.object_total {
+	margin: 0 0 0 6px;
+	color: #2F2F2F;
+}
 
 
 /*-------------- Dialog Box --------------*/
