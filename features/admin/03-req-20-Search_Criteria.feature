@@ -43,13 +43,13 @@ Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
   Examples:
     | facetname                | facetid                              | search            | result             |
     | Subjects                 | blacklight-subject_sim               | subject1          | SAMPLE AUDIO TITLE |
-    | Subject (Place)          | blacklight-geographical_coverage_sim | SAMPLE COUNTRY    | SAMPLE AUDIO TITLE |
-    | Subject (Era)            | blacklight-temporal_coverage_sim     | SAMPLE ERA        | SAMPLE AUDIO TITLE |
+    | Location          | blacklight-geographical_coverage_sim | SAMPLE COUNTRY    | SAMPLE AUDIO TITLE |
+    | Era            | blacklight-temporal_coverage_sim     | SAMPLE ERA        | SAMPLE AUDIO TITLE |
     | Names                    | blacklight-person_sim                | Collins           | SAMPLE AUDIO TITLE |
     | Language                 | blacklight-language_sim              | English           | SAMPLE AUDIO TITLE |
     # | Creation Date            | blacklight-creation_date_dtsim       | 1999-12-03        | SAMPLE AUDIO TITLE |
     # | Published/Broadcast Date | blacklight-published_date_dtsim      | 2000-01-01        | SAMPLE AUDIO TITLE |
-    | Type                   | blacklight-object_type_sim           | Sound             | SAMPLE AUDIO TITLE |
+      | Mediatype                   | blacklight-file_type_display_sim           | Audio             | SAMPLE AUDIO TITLE |
     | Collection               | blacklight-root_collection_sim            | Test collection | SAMPLE AUDIO TITLE |
 
 Scenario Outline: Faceted Search for admin user
@@ -63,12 +63,12 @@ Scenario Outline: Faceted Search for admin user
 
   Examples:
     | facetname                    | facetid                                  | search          | result             |
-    | Record Status                | blacklight-status_sim                    | published       | SAMPLE AUDIO TITLE |
-    | Metadata Search Access       | blacklight-private_metadata_isi          | Public          | SAMPLE AUDIO TITLE |
-    | Master File Access           | blacklight-master_file_isi               | Private         | SAMPLE AUDIO TITLE |
-    | Subjects (in English)        | blacklight-subject_eng_sim               | subject1        | SAMPLE AUDIO TITLE |
-    | Subject (Place) (in English) | blacklight-geographical_coverage_eng_sim | SAMPLE COUNTRY  | SAMPLE AUDIO TITLE |
-    | Subject (Era) (in English)   | blacklight-temporal_coverage_eng_sim     | SAMPLE ERA      | SAMPLE AUDIO TITLE |
+    # | Record Status                | blacklight-status_sim                    | published       | SAMPLE AUDIO TITLE |
+    # | Metadata Search Access       | blacklight-private_metadata_isi          | Public          | SAMPLE AUDIO TITLE |
+    # | Master File Access           | blacklight-master_file_isi               | Private         | SAMPLE AUDIO TITLE |
+    # | Subjects (in English)        | blacklight-subject_eng_sim               | subject1        | SAMPLE AUDIO TITLE |
+    # | Subject (Place) (in English) | blacklight-geographical_coverage_eng_sim | SAMPLE COUNTRY  | SAMPLE AUDIO TITLE |
+    # | Subject (Era) (in English)   | blacklight-temporal_coverage_eng_sim     | SAMPLE ERA      | SAMPLE AUDIO TITLE |
     # | Depositor                    | blacklight-depositor_sim                 |user1@user1.com | SAMPLE AUDIO TITLE |
 
 # The following two features could be tested via the all fields / search box
