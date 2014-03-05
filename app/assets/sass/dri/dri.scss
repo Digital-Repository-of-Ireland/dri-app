@@ -632,7 +632,7 @@ a .dri_signin_edugate:hover {
 	background-color: #999999;
 }
 .dri_pagination_nav li.selected a {
-	background-color: #6D6E71;
+	background-color: #3E3E3E;
 }
 .dri_pagination_nav li.first a {
 	background:image-url('dri/prev_arrow.png') no-repeat center;
@@ -705,29 +705,34 @@ li.empty  {
 	list-style: none;
 	text-decoration: none;
 	float: left;
+	
 }
 .dri_browse_sort_tabs li a {
-	margin: 20px 4px 0 0;
-	padding: 4px 14px 4px 14px;
 	color:#808082;
+	margin: 20px 4px 0 0;
+	padding: 4px 13px 4px 13px;
 	text-decoration: none;
-	background-color: #fff;
 	border: 1px solid #D9DADB;
 	border-top-right-radius: 3px;
 	border-top-left-radius: 3px;
 	border-bottom: none;
 	display: block;
-	
+	font-size: 110%;
 }
-.dri_browse_sort_tabs li:hover a {
-	background-color: #F5F5F5;
-}
-.dri_browse_sort_tabs li.selected a {
-	background-color: #909A3C;
-	color:#FFF;
+.dri_browse_sort_tabs li a span.tab_total_number {
+	margin: 0;
+	font-size: 90%;
+	color: #A6A9AF;
 	
 }
 
+.dri_browse_sort_tabs li a.selected {
+	background-color: #909A3C;
+	color: #FFF;	
+}
+.dri_browse_sort_tabs li a.selected  span.tab_total_number{
+	color: #FFF;	
+}
 /*-------------- Save Search --------------*/
 .dri_search_save_input {
 	margin: 0;
@@ -1528,10 +1533,11 @@ dl.dri_object_metadata_readview dd a:hover {
 .dri_back_search a {
 	padding: 0;
 	margin: 10px 0 0 0;
-	color: #288DC0;
 	font-weight: normal;
 	display: block;
-	font-size: 110%;
+	font-size: 100%;
+	font-weight: bold;
+	color: #288DC0;
 }
 .dri_back_search a:hover {
 	text-decoration: underline;
@@ -1572,13 +1578,15 @@ ul.dri_view_collection {
 	display: block;
 	float: left;
 	width: 230px;
+	border-bottom: 1px solid #E1E1E1;
 }
 
 ul.dri_view_collection li {
 	margin: 0;
-	padding: 3px 0 3px 0;
+	padding: 4px 0 3px 0;
 	list-style: none;
 	border-top: 1px solid #E1E1E1;
+
 	color: #808080;	
 }
 ul.dri_view_collection li a {
@@ -1601,15 +1609,14 @@ ul.dri_view_collection li a:hover {
 .dri_vc_title a:hover {
 	text-decoration: underline;
 }
-.object_view_block ul.view_collection li span.stat_num {
+ul.dri_view_collection li span.dri_stat_num {
 	float: right;
+	font-size: 100%;
 	font-weight: bold;
-	color: #808080;
+	color: #288DC0;
 }
-.object_view_block ul.view_collection li a:hover {
-	text-decoration: underline;
-}
-.object_view_block ul.view_collection li  a:hover span.stat_num {
+
+ul.dri_view_collection li a:hover span.dri_stat_num {
 	color: #505050;
 	float: right;
 }
@@ -1623,9 +1630,9 @@ ul.dri_view_collection li a:hover {
 	font-weight: bold;
 
 }
-
-.dri_bookmark_lable {
-	margin: 0 10px 0 0;
+ul.dri_view_collection li a:hover {
+	text-decoration: underline;
+	color: #505050;
 }
 
 
@@ -1704,7 +1711,7 @@ ul.dri_collection_institutes_list li a {
 	
 }
 
-.dri_collection_institutes_item  img{
+.dri_collection_institutes_item  img {
 	margin: 10px;
 	padding: 10px;
 	
