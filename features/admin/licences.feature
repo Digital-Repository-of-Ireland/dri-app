@@ -9,8 +9,9 @@ Feature:
 
   Background:
     Given I am logged in as "admin" in the group "admin"
-    And I have created a collection with title "Licence Test Collection"
-    And I have created a "Sound" object with title "Licence Test Object" in the collection "Licence Test Collection"
+    And a collection with pid "dri:lcoll" and title "Licence Test Collection" created by "admin@admin.com"
+    And a Digital Object with pid "dri:lobj" and title "Licence Test Object"
+    And the object with pid "dri:lobj" is in the collection with pid "dri:lcoll"
 
   Scenario: Navigating to the licences pages
     Given I am on the home page
@@ -66,12 +67,11 @@ Feature:
   Scenario: Associating a licence with a collection
     Given I have created a licence "TestLicence7"
     When I perform a search
-    And I follow "Licence Test Collection"
+    And I follow "Licence Test Collection" within "div.dri_result_container"
     And I follow the link to edit a collection
     Then the "licence" drop-down should contain the option "TestLicence7"
     When I select "TestLicence7" from the selectbox for licence
     And I press the button to save collection changes
-    And I perform a search
-    And I follow "Licence Test Object"
+    And I go to the "object" "show" page for "dri:lobj"
     Then I should see "TestLicence7"
 

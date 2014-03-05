@@ -11,6 +11,8 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
 
     collection.depositor = User.find_by_email(user).to_s
     collection.manager_users_string=User.find_by_email(user).to_s
+    collection.discover_groups_string="public"
+    collection.read_groups_string="registered"
   end
   collection.save
   collection.items.count.should == 0
