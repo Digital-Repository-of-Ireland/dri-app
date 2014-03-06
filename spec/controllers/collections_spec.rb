@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CollectionsController do
   include Devise::TestHelpers
 
-  before(:each) do
+  before do
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
   end
