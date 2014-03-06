@@ -107,6 +107,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('file_type_display', :facetable), :label => 'Mediatype'
     #config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
     #config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
+    config.add_facet_field solr_name('institute', :facetable), :label => 'Institute'
     config.add_facet_field solr_name('root_collection', :facetable), :label => 'Collection'
 
     config.add_facet_field solr_name('is_collection', :facetable), :label => 'is_collection', :helper_method => :is_collection, :show => false
