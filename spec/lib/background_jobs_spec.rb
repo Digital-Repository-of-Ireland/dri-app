@@ -4,7 +4,7 @@ require 'tempfile'
 
 describe "workers" do
 
-  before :each do
+  before do
     asset = File.join(fixture_path, "SAMPLEA.mp3")
     tmp_file = Tempfile.new('SAMPLEA')
     FileUtils.cp(asset, tmp_file.path)
@@ -21,6 +21,11 @@ describe "workers" do
 
     @url = "file://#{@file.path}"
     @gf.update_file_reference "content", :url=>@url, :mimeType=>'audio/mpeg'
+  end
+
+  after do
+    @file.delete
+    @gf.delete
   end
   
   describe CreateChecksumsJob do

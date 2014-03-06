@@ -11,6 +11,8 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
 
     collection.depositor = User.find_by_email(user).to_s
     collection.manager_users_string=User.find_by_email(user).to_s
+    collection.discover_groups_string="public"
+    collection.read_groups_string="registered"
   end
   collection.save
   collection.items.count.should == 0
@@ -73,7 +75,7 @@ Given /^I have associated the institute "(.?*)" with the collection entitled "(.
   steps %{
     Given I am on the home page
     When I perform a search
-    And I press "#{collection}"
+    And I follow "#{collection}" within "div.dri_result_container"
     And I follow the link to edit a collection
     And I fill in "institute[name]" with "#{institute}"
     And I fill in "institute[url]" with "http://www.dri.ie/"

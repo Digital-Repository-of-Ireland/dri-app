@@ -735,6 +735,9 @@ li.empty  {
 	display: block;
 	font-size: 110%;
 }
+.dri_browse_sort_tabs li a:hover {
+	background-color: #F5F5F5;
+}
 .dri_browse_sort_tabs li a span.tab_total_number {
 	margin: 0;
 	font-size: 90%;
