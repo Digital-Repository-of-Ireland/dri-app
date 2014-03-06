@@ -5,6 +5,7 @@ require 'stepped_forms'
 require 'metadata_helpers'
 require 'doi/datacite'
 require 'sufia/models/jobs/mint_doi_job'
+require 'institute_helpers'
 include Utils
 
 class ObjectsController < CatalogController
@@ -147,12 +148,14 @@ class ObjectsController < CatalogController
 
         ['title','subject','type','rights','language','description','creator',
          'contributor','publisher','date','format','source','temporal_coverage',
-         'geographical_coverage','geocode_point'].each do |field|
+         'geographical_coverage','geocode_point','institute', 'root_collection_id'].each do |field|
 
           if params['metadata'].blank? || params['metadata'].include?(field)
             value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
 
-            if field.eql?("geocode_point")
+            if field.eql?("institute")
+              item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
+            elsif field.eql?("geocode_point")
               if !value.nil? && !value.blank?
                 geojson_points = []
                 value.each do |point|
