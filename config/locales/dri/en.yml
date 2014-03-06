@@ -100,7 +100,7 @@ en:
           metadata: Metadata (XML)
           pdf_file: PDF
           video_file: Video
-          objects_in_collection: "Objects in this Collection"
+          objects_in_collection: "Objects"
           restricted_asset: "Restricted Asset"
         headers:
           files: File Tools
