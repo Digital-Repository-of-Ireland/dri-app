@@ -148,7 +148,7 @@ class ObjectsController < CatalogController
 
         ['title','subject','type','rights','language','description','creator',
          'contributor','publisher','date','format','source','temporal_coverage',
-         'geographical_coverage','geocode_point','institute', 'collection_id'].each do |field|
+         'geographical_coverage','geocode_point','institute', 'root_collection_id'].each do |field|
 
           if params['metadata'].blank? || params['metadata'].include?(field)
             value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
