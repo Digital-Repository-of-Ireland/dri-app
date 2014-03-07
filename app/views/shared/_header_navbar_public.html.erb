@@ -134,7 +134,7 @@ class="dri_search_features_nav_container">
 	<nav id="dri_pager_nav_id" class="dri_pager_nav">
 		<ul id="dri_pager_nav_links_id" class="dri_pager_nav_links">
 			<%- blacklight_config.per_page.each do |count| %>
-			<li>
+			<% if current_per_page == count %><li class="selected"><% else %><li><% end %>
 				<%= link_to(t(:'blacklight.search.per_page.label', :count => count).html_safe, url_for(params_for_search(:per_page => count))) %>
 			</li>
 			<%- end -%>
