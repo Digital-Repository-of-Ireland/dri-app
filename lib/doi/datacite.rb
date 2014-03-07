@@ -41,7 +41,7 @@ module DOI
             xml.title t 
           end
         }
-        xml.publisher @object.publisher.first unless @object.publisher.nil?
+        xml.publisher DoiConfig.publisher
         xml.publicationYear publication_year
         xml.subjects {
           @object.subject.each do |s|
@@ -52,7 +52,17 @@ module DOI
           @object.description.each do |d|
             xml.description d, :descriptionType => 'Abstract'
           end
-        }   
+        }
+        
+        if (@object.creation_date.present?) || (@object.published_date.present?)
+          xml.dates {
+            xml.date(@object.creation_date.first, :dateType => 'Created') unless @object.creation_date.blank?
+            xml.date(@object.published_date.first, :dateType => 'Issued') unless @object.published_date.blank?
+          }
+        end
+
+        xml.rights @object.rights.first unless @object.rights.blank?
+   
       }
       end
 
@@ -65,7 +75,7 @@ module DOI
     end
 
     def publication_year
-      @object.published_date.first.nil? ? Time.now.year : Date.parse(@object.published_date.first).year
+      Time.now.year
     end
 
   end
