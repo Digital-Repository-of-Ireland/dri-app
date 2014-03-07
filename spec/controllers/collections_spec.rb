@@ -3,9 +3,13 @@ require 'spec_helper'
 describe CollectionsController do
   include Devise::TestHelpers
 
-  before do
+  before(:each) do
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
+  end
+
+  after(:each) do
+    @login_user.delete
   end
 
   describe 'DELETE destroy' do
@@ -43,8 +47,8 @@ describe CollectionsController do
 
       delete :destroy, :id => @collection.id
 
-      expect { ActiveFedora::Base.find(@object.id) }.to raise_error(ActiveFedora::ObjectNotFoundError)
-      expect { ActiveFedora::Base.find(@collection.id) }.to raise_error(ActiveFedora::ObjectNotFoundError)
+      expect { ActiveFedora::Base.find(@object.id, :cast => true) }.to raise_error(ActiveFedora::ObjectNotFoundError)
+      expect { ActiveFedora::Base.find(@collection.id, :cast => true) }.to raise_error(ActiveFedora::ObjectNotFoundError)
     end
 
   end
