@@ -1,6 +1,7 @@
 common: &common
   username: 
   password:
+  publisher: "Digital Repository of Ireland"
   
 development:
   <<: *common
