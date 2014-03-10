@@ -213,7 +213,7 @@ GEM
     iso-639 (0.2.4)
     it (0.2.5)
       actionpack (>= 3.0.0)
-    jettywrapper (1.5.2)
+    jettywrapper (1.6.0)
       activesupport (>= 3.0.0)
       childprocess
       i18n

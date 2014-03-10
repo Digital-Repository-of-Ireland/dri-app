@@ -255,7 +255,7 @@ class ObjectsController < CatalogController
 
     if @object.is_collection?
       if params[:update_objects].present? && params[:update_objects].eql?("yes")
-        @collection_objects = Batch.find(:collection_id_sim => @object.id)
+        @collection_objects = Batch.find(:ancestor_id_tesim => @object.id)
 
         unless @collection_objects.nil?
           @collection_objects.each do |o|

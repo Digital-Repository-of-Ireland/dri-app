@@ -230,34 +230,36 @@ class CollectionsController < CatalogController
       end
 
       # We need to save to get a pid at this point
-    if @collection.save
-
-      # We have to create a default reader group
-      create_reader_group
-
-      Storage::CoverImages.validate(nil, @collection)
-    end
-
-    respond_to do |format|
       if @collection.save
 
-        format.html { flash[:notice] = t('dri.flash.notice.collection_created')
-            redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
-        format.json {
-          @response = {}
-          @response[:id] = @collection.pid
-          @response[:title] = @collection.title
-          @response[:description] = @collection.description
-          render(:json => @response, :status => :created)
-        }
-      else
-        format.html {
-          flash[:alert] = @collection.errors.messages.values.to_s
-          render :action => :new
-        }
-        format.json { render(:json => @collection.errors.messages.values.to_s) }
-        raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_collection')
+      # We have to create a default reader group
+        create_reader_group
+
+        Storage::CoverImages.validate(nil, @collection)
       end
+
+      respond_to do |format|
+        if @collection.save
+
+          format.html { flash[:notice] = t('dri.flash.notice.collection_created')
+            redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
+          format.json {
+            @response = {}
+            @response[:id] = @collection.pid
+            @response[:title] = @collection.title
+            @response[:description] = @collection.description
+            render(:json => @response, :status => :created)
+          }
+        else
+          format.html {
+            flash[:alert] = @collection.errors.messages.values.to_s
+            render :action => :new
+          }
+          format.json { render(:json => @collection.errors.messages.values.to_s) }
+          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_collection')
+        end
+      end
+
     end
   end
 
@@ -284,9 +286,6 @@ class CollectionsController < CatalogController
       format.html { flash[:notice] = t('dri.flash.notice.collection_deleted')
       redirect_to :controller => "catalog", :action => "index" }
     end
-
-  end
-
 end
 
   private
