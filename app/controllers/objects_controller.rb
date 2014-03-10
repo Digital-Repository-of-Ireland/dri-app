@@ -179,25 +179,27 @@ class ObjectsController < CatalogController
         end
 
         # Get files
-        files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
-        files = ActiveFedora::SolrService.query(files_query)
+        if can? :read, doc
+          files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
+          files = ActiveFedora::SolrService.query(files_query)
 
-        files.each do |mf|
-          file_list = {}
-          file_doc = SolrDocument.new(mf)
+          files.each do |mf|
+            file_list = {}
+            file_doc = SolrDocument.new(mf)
 
-          if can? :read_master, doc
-            url = url_for(file_download_url(doc.id, file_doc.id))
-            file_list['masterfile'] = url
+            if can? :read_master, doc
+              url = url_for(file_download_url(doc.id, file_doc.id))
+              file_list['masterfile'] = url
+            end
+
+            timeout = 60 * 60 * 24 * 30 # 30 days
+            surrogates = storage.get_surrogates doc, file_doc, timeout
+            surrogates.each do |file,loc|
+              file_list[file] = loc
+            end
+
+            item['files'].push(file_list)
           end
-
-          timeout = 60 * 60 * 24 * 30 # 30 days
-          surrogates = storage.get_surrogates doc, file_doc, timeout
-          surrogates.each do |file,loc|
-            file_list[file] = loc
-          end
-
-          item['files'].push(file_list)
         end
 
         @list << item
