@@ -55,7 +55,7 @@ class ObjectsController < CatalogController
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
 
-    mint_doi unless DoiConfig.nil?
+    mint_doi( @object ) unless DoiConfig.nil?
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -94,7 +94,7 @@ class ObjectsController < CatalogController
 
     if @object.valid? && @object.save
 
-      mint_doi unless DoiConfig.nil?
+      mint_doi( @object ) unless DoiConfig.nil?
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -259,8 +259,16 @@ class ObjectsController < CatalogController
 
         unless @collection_objects.nil?
           @collection_objects.each do |o|
+            if (o.status.eql?("draft")) && (params[:objects_status].eql?("published"))
+              mint_doi = true
+            end
+ 
             o.status = params[:objects_status]
             o.save
+
+            if mint_doi
+              mint_doi( o ) unless DoiConfig.nil?
+            end
           end
         end
       end
@@ -276,9 +284,9 @@ class ObjectsController < CatalogController
 
   end
 
-  def mint_doi
-    if @object.status.eql?("published") && @object.doi.nil?
-      Sufia.queue.push(MintDoiJob.new(@object.id))
+  def mint_doi( object )
+    if object.status.eql?("published") && object.doi.nil?
+      Sufia.queue.push(MintDoiJob.new(object.id))
     end
   end
 
