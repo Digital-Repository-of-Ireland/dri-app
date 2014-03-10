@@ -38,9 +38,13 @@
     <div class="dri_grey_button" >
       <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" %>
     </div>
-    <div class="dri_grey_button" >
-      <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
-    </div> 
+
+    <% if current_user.is_admin? %>
+      <div class="dri_grey_button" >
+        <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
+      </div> 
+    <% end %>
+
   <% end %>
 
   <% if signed_in? && (document[:root_collection_id_tesim] == document[:id]) && (can? :manage_collection, document) %>

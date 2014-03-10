@@ -71,7 +71,7 @@ describe ObjectsController do
     it 'should mint a doi if an object is published' do
       DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
 
-      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
+      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).twice
       post :status, :id => @collection.id, :status => "published", :update_objects => "yes", :objects_status => "published"
 
       @collection.reload
