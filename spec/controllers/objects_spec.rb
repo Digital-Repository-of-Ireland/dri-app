@@ -37,8 +37,6 @@ describe ObjectsController do
 
     @collection.governed_items << @object    
     @collection.save
-
-    DoiConfig = nil
   end
 
   after(:each) do
@@ -50,6 +48,7 @@ describe ObjectsController do
   describe 'status' do
 
     it 'should set a collection status' do
+      DoiConfig = nil
       post :status, :id => @collection.id, :status => "published"
 
       @collection.reload
@@ -59,6 +58,7 @@ describe ObjectsController do
     end
 
     it 'should set collection objects status' do
+      DoiConfig = nil
       post :status, :id => @collection.id, :status => "published", :update_objects => "yes", :objects_status => "published"
 
       @collection.reload
