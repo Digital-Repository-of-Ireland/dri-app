@@ -3,9 +3,9 @@
 
 require 'stepped_forms'
 require 'metadata_helpers'
-require 'doi/datacite'
-require 'sufia/models/jobs/mint_doi_job'
 require 'institute_helpers'
+require 'doi/doi'
+
 include Utils
 
 class ObjectsController < CatalogController
@@ -55,7 +55,7 @@ class ObjectsController < CatalogController
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
 
-    mint_doi unless DoiConfig.nil?
+    DOI.mint_doi( @object )
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -94,7 +94,7 @@ class ObjectsController < CatalogController
 
     if @object.valid? && @object.save
 
-      mint_doi unless DoiConfig.nil?
+      DOI.mint_doi( @object )
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -247,41 +247,43 @@ class ObjectsController < CatalogController
   end
 
   def status
-    enforce_permissions!("edit",params[:id])
+    if (current_user && current_user.is_admin?)
+      enforce_permissions!("edit",params[:id])
 
-    @object = retrieve_object!(params[:id])
+      @object = retrieve_object!(params[:id])
 
-    return if request.get?
+      return if request.get?
 
-    @object.status = params[:status] if params[:status].present?
+      @object.status = params[:status] if params[:status].present?
+    
+      if @object.is_collection?
+        if params[:update_objects].present? && params[:update_objects].eql?("yes")
+          @collection_objects = Batch.find(:ancestor_id_tesim => @object.id)
 
-    if @object.is_collection?
-      if params[:update_objects].present? && params[:update_objects].eql?("yes")
-        @collection_objects = Batch.find(:collection_id_sim => @object.id)
+          unless @collection_objects.nil?
+            @collection_objects.each do |o|
+              o.status = params[:objects_status]
+              o.save
 
-        unless @collection_objects.nil?
-          @collection_objects.each do |o|
-            o.status = params[:objects_status]
-            o.save
+              DOI.mint_doi( o )
+            end
           end
         end
       end
-    end
 
-    @object.save
+      @object.save
+      DOI.mint_doi( @object )
 
-    respond_to do |format|
-      flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
-      format.json  { render :json => @object }
-    end
+      respond_to do |format|
+        flash[:notice] = t('dri.flash.notice.metadata_updated')
+        format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+        format.json  { render :json => @object }
+      end
+    else
+      raise Hydra::AccessDenied
+      return
+    end      
 
-  end
-
-  def mint_doi
-    if @object.status.eql?("published") && @object.doi.nil?
-      Sufia.queue.push(MintDoiJob.new(@object.id))
-    end
   end
 
 end

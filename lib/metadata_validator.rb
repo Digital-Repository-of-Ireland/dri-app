@@ -6,7 +6,7 @@ module MetadataValidator
 
     namespace = xml.namespaces
 
-    if namespace.has_key?("xmlns:dc") &&
+   if namespace.has_key?("xmlns:dc") &&
       namespace["xmlns:dc"].eql?("http://purl.org/dc/elements/1.1/")
 
       # We have to extract all the schemata from the XML Document in order to validate correctly

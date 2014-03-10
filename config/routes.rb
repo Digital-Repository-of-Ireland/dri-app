@@ -43,6 +43,7 @@ NuigRnag::Application.routes.draw do
   match 'surrogates/:id' => 'surrogates#show', :via => :get, :as => :surrogates
 
   match 'collections/:id' => 'catalog#show', :via => :get
+  match 'collections/ingest' => 'collections#ingest', :via => :post
 
   #API paths
   match 'get_objects' => 'objects#index', :via => :post
