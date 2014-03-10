@@ -5,9 +5,9 @@ require 'doi/datacite'
 
 describe "DOI::Datacite" do
 
-  DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
-
   before(:all) do
+    DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
+
     @object = Batch.new
     @object[:title] = ["An Audio Title"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
