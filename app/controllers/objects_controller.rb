@@ -3,9 +3,9 @@
 
 require 'stepped_forms'
 require 'metadata_helpers'
-require 'doi/datacite'
-require 'sufia/models/jobs/mint_doi_job'
 require 'institute_helpers'
+require 'doi/doi'
+
 include Utils
 
 class ObjectsController < CatalogController
@@ -55,7 +55,7 @@ class ObjectsController < CatalogController
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
 
-    mint_doi( @object ) unless DoiConfig.nil?
+    DOI.mint_doi( @object )
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -94,7 +94,7 @@ class ObjectsController < CatalogController
 
     if @object.valid? && @object.save
 
-      mint_doi( @object ) unless DoiConfig.nil?
+      DOI.mint_doi( @object )
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -252,29 +252,24 @@ class ObjectsController < CatalogController
     return if request.get?
 
     @object.status = params[:status] if params[:status].present?
-
+    
     if @object.is_collection?
       if params[:update_objects].present? && params[:update_objects].eql?("yes")
         @collection_objects = Batch.find(:collection_id_sim => @object.id)
 
         unless @collection_objects.nil?
           @collection_objects.each do |o|
-            if (o.status.eql?("draft")) && (params[:objects_status].eql?("published"))
-              mint_doi = true
-            end
- 
             o.status = params[:objects_status]
             o.save
 
-            if mint_doi
-              mint_doi( o ) unless DoiConfig.nil?
-            end
+            DOI.mint_doi( o )
           end
         end
       end
     end
 
     @object.save
+    DOI.mint_doi( @object )
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -282,12 +277,6 @@ class ObjectsController < CatalogController
       format.json  { render :json => @object }
     end
 
-  end
-
-  def mint_doi( object )
-    if object.status.eql?("published") && object.doi.nil?
-      Sufia.queue.push(MintDoiJob.new(object.id))
-    end
   end
 
 end

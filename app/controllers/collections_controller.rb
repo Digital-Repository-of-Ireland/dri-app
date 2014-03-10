@@ -4,6 +4,7 @@ require 'storage/s3_interface'
 require 'storage/cover_images'
 require 'validators'
 require 'institute_helpers'
+require 'doi/doi'
 
 class CollectionsController < CatalogController
 
@@ -92,6 +93,8 @@ class CollectionsController < CatalogController
     else
       @object.update_attributes(params[:batch])
 
+      DOI.mint_doi( @object )
+
       Storage::CoverImages.validate(cover_image, @object)
 
       #Apply private_metadata & properties to each DO/Subcollection within this collection
@@ -142,6 +145,7 @@ class CollectionsController < CatalogController
 
     # We need to save to get a pid at this point
     if @collection.save
+      DOI.mint_doi( @collection )
 
       # We have to create a default reader group
       create_reader_group
