@@ -4,6 +4,7 @@ require 'storage/s3_interface'
 require 'storage/cover_images'
 require 'validators'
 require 'institute_helpers'
+require 'metadata_helpers'
 
 class CollectionsController < CatalogController
 
@@ -172,6 +173,94 @@ class CollectionsController < CatalogController
     end
   end
 
+  # Create a collection from an uploaded XML file.
+  #
+  def ingest
+    enforce_permissions!("create", Batch)
+
+    if !params.has_key?(:metadata_file)
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @object = @collection
+      render :action => :new
+      return
+    elsif params[:metadata_file].nil?
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @object = @collection
+      render :action => :new
+      return
+    else
+
+      xml = MetadataHelpers.load_xml_bypass_validation(params[:metadata_file])
+      metadata_class = MetadataHelpers.get_metadata_class_from_xml xml
+
+      if metadata_class == nil
+        flash[:notice] = t('dri.flash.notice.specify_valid_file')
+        @object = @collection
+        render :action => :new
+      end
+
+      @collection = Batch.new :desc_metadata_class => metadata_class.constantize
+      MetadataHelpers.set_metadata_datastream(@collection, xml)
+      MetadataHelpers.checksum_metadata(@collection)
+      duplicates?(@collection)
+
+      if @collection.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
+        flash[:notice] = t('dri.flash.notice.specify_valid_file')
+        @object = @collection
+        render :action => :new
+        return
+      end
+
+      if !@collection.is_collection?
+        flash[:notice] = "Metadata file does not specify that the object is a collection."
+        @object = @collection
+        render :action => :new
+        return
+      end
+
+      @collection.apply_depositor_metadata(current_user.to_s)
+      @collection.manager_users_string=current_user.to_s
+      @collection.discover_groups_string="public"
+      @collection.read_groups_string="public"
+      @collection.private_metadata="0"
+      @collection.master_file="0"
+
+      if params.has_key?(:ingest_files) && !params[:ingest_files].nil?
+        @collection.ingest_files_from_metadata = params[:ingest_files]
+      end
+
+      # We need to save to get a pid at this point
+    if @collection.save
+
+      # We have to create a default reader group
+      create_reader_group
+
+      Storage::CoverImages.validate(nil, @collection)
+    end
+
+    respond_to do |format|
+      if @collection.save
+
+        format.html { flash[:notice] = t('dri.flash.notice.collection_created')
+            redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
+        format.json {
+          @response = {}
+          @response[:id] = @collection.pid
+          @response[:title] = @collection.title
+          @response[:description] = @collection.description
+          render(:json => @response, :status => :created)
+        }
+      else
+        format.html {
+          flash[:alert] = @collection.errors.messages.values.to_s
+          render :action => :new
+        }
+        format.json { render(:json => @collection.errors.messages.values.to_s) }
+        raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_collection')
+      end
+    end
+  end
+
   def destroy
     enforce_permissions!("edit",params[:id])
 
@@ -197,6 +286,8 @@ class CollectionsController < CatalogController
     end
 
   end
+
+end
 
   private
 

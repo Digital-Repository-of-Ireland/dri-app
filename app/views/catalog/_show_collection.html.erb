@@ -43,7 +43,7 @@
     </div> 
   <% end %>
 
-  <% if signed_in? && (can? :manage_collection, document) %>
+  <% if signed_in? && (document[:root_collection_id_tesim] == document[:id]) && (can? :manage_collection, document) %>
     <% pending = pending_memberships( document ) %>
     <% unless pending.blank? %>
       <%= render :partial => 'collections/approve_membership', :locals => {:pending => pending} %>

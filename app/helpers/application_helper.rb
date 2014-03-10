@@ -37,6 +37,15 @@ module ApplicationHelper
     object.governing_collection.pid unless object.governing_collection.nil?
   end
 
+  def root_collection_solr( doc )
+    if doc['root_collection_id_tesim']
+      id = doc['root_collection_id_tesim'][0]
+      solr_query = "id:#{id}"
+      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
+    end
+    collection[0]
+  end
+
   def governing_collection_solr( doc )
     if doc['is_governed_by_ssim']
       id = doc['is_governed_by_ssim'][0].gsub(/^info:fedora\//, '')
@@ -92,8 +101,8 @@ module ApplicationHelper
 
     if document[:cover_image_tesim] && document[:cover_image_tesim].first
         path = document[:cover_image_tesim].first
-    elsif !document[:collection_tesim].blank?
-      collection = governing_collection_solr(document)
+    elsif !document[:root_collection_tesim].blank?
+      collection = root_collection_solr(document)
       if collection['cover_image_tesim'] && collection['cover_image_tesim'].first
         path = collection['cover_image_tesim'].first
       end
@@ -109,7 +118,8 @@ module ApplicationHelper
   end
 
   def reader_group_name( document )
-    id = document[:is_governed_by_ssim][0].sub('info:fedora/', '')
+    #id = document[:is_governed_by_ssim][0].sub('info:fedora/', '')
+    id = document[:root_collection][0]
     name = id.sub(':','_')
     return name
   end
@@ -125,19 +135,22 @@ module ApplicationHelper
   end
 
   def collection_children_query ( collection_id )
-    "(is_governed_by_ssim:\"info:fedora/" + collection_id +
+    #"(is_governed_by_ssim:\"info:fedora/" + collection_id +
+    "(ancestor_id_tesim:\"" + collection_id +
     "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
   end
 
   def count_items_in_collection_by_type( collection_id, type, status )
-    solr_query = "status_ssim:" + status + " AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
+    #solr_query = "status_ssim:" + status + " AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
+    solr_query = "status_ssim:" + status + " AND (ancestor_id_tesim:\"" + collection_id +
     "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
     "object_type_sim:"+ type
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
   def get_object_type_counts( document )
-    id = document.key?(:is_governed_by_ssim) ? document[:is_governed_by_ssim][0].sub('info:fedora/', '') : document.id
+    #id = document.key?(:is_governed_by_ssim) ? document[:is_governed_by_ssim][0].sub('info:fedora/', '') : document.id
+    id = document.key?(:root_collection) ? document[:root_collection][0] : document.id
 
     @type_counts = {}
     Settings.data.types.each do |type|
@@ -169,8 +182,8 @@ module ApplicationHelper
   def get_licence( document )
     if !document[:licence_tesim].blank?
       @licence = Licence.where(:name => document[:licence_tesim]).first
-    elsif !document[:collection_tesim].blank?
-      collection = governing_collection_solr(document)
+    elsif !document[:root_collection_tesim].blank?
+      collection = root_collection_solr(document)
       if !collection['licence_tesim'].blank?
         @licence = Licence.where(:name => collection['licence_tesim']).first
       end
