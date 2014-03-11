@@ -280,9 +280,8 @@
 
 			<h2>Sign Up</h2>
 
-			<form accept-charset="UTF-8" action="/user_groups/users"
-				class="new_user" id="new_user" method="post">
-				<div style="margin: 0; padding: 0; display: inline">
+			<form accept-charset="UTF-8" action="/user_groups/users" class="new_user" id="new_user" method="post">
+				<div>
 					<input name="utf8" type="hidden" value="✓"><input
 						name="authenticity_token" type="hidden"
 						value="mX638u5X5SFRPI+BzeiVlMfQ4zJCMCeY9yehgtFxyyc=">
@@ -300,7 +299,7 @@
 						type="text">
 				</div>
 
-				<div>
+				<div class="field_with_errors">
 					<label for="user_email">Email</label><br> <input
 						id="user_email" name="user[email]" size="30" type="email" value="">
 				</div>
@@ -310,7 +309,7 @@
 						id="user_password" name="user[password]" size="30" type="password">
 				</div>
 
-				<div class="dri_signup_password dri_input_error">
+				<div class="dri_signup_password field_with_errors">
 					<label for="user_password_confirmation">Confirm Password</label><br>
 					<input id="user_password_confirmation"
 						name="user[password_confirmation]" size="30" type="password">
