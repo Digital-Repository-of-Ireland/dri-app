@@ -53,10 +53,12 @@
     <div class="dri_grey_button" >
       <%= link_to t('dri.views.catalog.links.edit_this_record'), edit_object_path(@document), :id => "edit_record" %>
     </div>
-    
-    <div class="dri_grey_button" >
-      <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
-    </div>
+
+    <% unless @files.nil? || @files.empty? %>
+      <div class="dri_grey_button" >
+        <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
+      </div>
+    <% end %>
 
     <% if current_user.is_admin? %>
       <div class="dri_grey_button" >
