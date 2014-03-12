@@ -149,31 +149,39 @@ class ObjectsController < CatalogController
         ['title','subject','type','rights','language','description','creator',
          'contributor','publisher','date','format','source','temporal_coverage',
          'geographical_coverage','geocode_point','geocode_box','institute',
-         'root_collection_id'].each do |field|
+         'root_collection_id','medium'].each do |field|
 
           if params['metadata'].blank? || params['metadata'].include?(field)
-            value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
 
-            if field.eql?("institute")
-              item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
-            elsif field.eql?("geocode_point")
-              if !value.nil? && !value.blank?
-                geojson_points = []
-                value.each do |point|
-                  geojson_points << dcterms_point_to_geojson(point)
-                end
-                item['metadata'][field] = geojson_points
-              end
-            elsif field.eql?("geocode_box")
-              if !value.nil? && !value.blank?
-                geojson_boxes = []
-                value.each do |box|
-                  geojson_boxes << dcterms_box_to_geojson(box)
-                end
-                item['metadata'][field] = geojson_boxes
+            if field.eql?("medium")
+              fedoraobj = ActiveFedora::Base.find(doc['id'], {:cast => true})
+              if fedoraobj.respond_to?('medium')
+              item['metadata'][field] = fedoraobj['medium'] unless fedoraobj['medium'].nil?
               end
             else
-              item['metadata'][field] = value unless value.nil?
+              value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
+
+              if field.eql?("institute")
+                item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
+              elsif field.eql?("geocode_point")
+                if !value.nil? && !value.blank?
+                  geojson_points = []
+                  value.each do |point|
+                    geojson_points << dcterms_point_to_geojson(point)
+                  end
+                  item['metadata'][field] = geojson_points
+                end
+              elsif field.eql?("geocode_box")
+                if !value.nil? && !value.blank?
+                  geojson_boxes = []
+                  value.each do |box|
+                    geojson_boxes << dcterms_box_to_geojson(box)
+                  end
+                  item['metadata'][field] = geojson_boxes
+                end
+              else
+                item['metadata'][field] = value unless value.nil?
+              end
             end
           end
         end
@@ -255,7 +263,7 @@ class ObjectsController < CatalogController
       return if request.get?
 
       @object.status = params[:status] if params[:status].present?
-    
+
       if @object.is_collection?
         if params[:update_objects].present? && params[:update_objects].eql?("yes")
           @collection_objects = Batch.find(:ancestor_id_tesim => @object.id)
@@ -282,7 +290,7 @@ class ObjectsController < CatalogController
     else
       raise Hydra::AccessDenied
       return
-    end      
+    end
 
   end
 
