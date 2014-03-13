@@ -83,7 +83,7 @@
 				<nav id="dri_account_nav_id" class="dri_account_nav">
 					<ul id="dri_account_links_id" class="dri_account_links" role="tree">
 						<li class="on"><a href="#" alt="sign up link">Sign Up</a></li>
-						<li class="noborder"><a href="#" alt="login link">Login</a></li>
+						<li class="noborder"><a href="#" alt="login link"><img src="../../app/assets/images/dri/login_icon.png" width="9" height="13"> Login</a></li>
 						<ul id="dri_language_links_id" class="dri_language_links menu">
 							<li class="selected" aria-selected="true"><a href="#">English
 									<img src="images/dri/account_arrow.png" width="10" height="5">
@@ -164,15 +164,17 @@
 
 			<!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
 			<nav id="dri_pager_nav_id" class="dri_pager_nav">
-				<ul id="dri_pager_nav_links_id" class="dri_pager_nav_links">
-					<li><a href="#">9</a></li>
-					<li class="selected"><a href="#">18</a></li>
-					<li><a href="#">36</a></li>
-				</ul>
+           <p> Items per page</p>
+            <select  name="sort_options">
+					<option selected>9</option>
+					<option>18</option>
+					<option>36</option>
+			  </select>
 			</nav>
 
 			<!-- navigation to allow the user to page through the search results  -->
 			<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
+             <p>Items 9 of 200</p>
 				<ul id="dri_pagination_nav_links_id"
 					class="dri_pagination_nav_links">
 					<li class="first"><a href="#">&nbsp;</a></li>
@@ -213,7 +215,7 @@
 
 		</div>
 		<!-- close dri_search_features_nav_container -->
-			<div id="dri_search_save_input_id" class="dri_search_save_input">
+				<div id="dri_search_save_input_id" class="dri_search_save_input">
 					<form id="dri_search_save_input_form_id"
 						class="dri_search_save_input_form">
 						<button id="dri_search_save_submit_button_id" type="submit"
@@ -241,12 +243,12 @@
 				</li>
 				<li>Galway <a href="#">x</a>
 				</li>
-				<li>Báid <a href="#">x</a></li>	<li>Galway <a href="#">x</a>
+				<li>Báid <a href="#">x</a>
 				</li>
-				<li>Báid <a href="#">x</a></li>
 
 			</ul>
 		</div>
+		<!-- close dri_facet_restrictions_container -->
 		<!-- close dri_facet_restrictions_container -->
       <!-- system messages container -->
 		<div id="dri_messages_container_id" class="dri_messages_container">
