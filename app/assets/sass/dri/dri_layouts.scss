@@ -41,7 +41,7 @@
 
 .dri_main_nav_container {
 	
-  	@include zen-grid-container;
+  @include zen-grid-container;
 	@include zen-grid-flow-item(1, 1);
   	
 }
@@ -127,12 +127,13 @@
 }
 
 .dri_welcome_block {
-	@include zen-grid-item(2, 1, $gutter-width: 0px);
+	@include zen-grid-item(1.5, 1, $gutter-width: 0px);
 	
 }
 
 .dri_slideshow_block {
-	@include zen-grid-item(2, 3);
+	@include zen-grid-item(2.5, 2.5);
+	border: 1px solid #000;
 	
 }
 
