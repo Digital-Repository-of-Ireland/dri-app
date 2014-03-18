@@ -255,24 +255,18 @@ class ObjectsController < CatalogController
       return if request.get?
 
       @object.status = params[:status] if params[:status].present?
-    
+         
       if @object.is_collection?
         if params[:update_objects].present? && params[:update_objects].eql?("yes")
-          @collection_objects = Batch.find(:ancestor_id_tesim => @object.id)
-
-          unless @collection_objects.nil?
-            @collection_objects.each do |o|
-              o.status = params[:objects_status]
-              o.save
-
-              DOI.mint_doi( o )
-            end
-          end
+          update_objects_status
+        else
+          @object.save
+          DOI.mint_doi( @object )
         end
+      else
+        @object.save
+        DOI.mint_doi( @object )
       end
-
-      @object.save
-      DOI.mint_doi( @object )
 
       respond_to do |format|
         flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -285,6 +279,22 @@ class ObjectsController < CatalogController
     end      
 
   end
+
+  def update_objects_status
+    begin
+      if params[:objects_status].eql?("published")
+        Sufia.queue.push(PublishJob.new(@object.id))
+        @object.save
+        DOI.mint_doi( @object )
+      else
+        Sufia.queue.push(UnPublishJob.new(@object.id))
+        @object.save
+      end
+    rescue Exception => e
+      logger.error "Unable to set collection object status: #{e.message}"
+    end
+  end
+  
 
 end
 

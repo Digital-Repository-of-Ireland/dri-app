@@ -85,14 +85,14 @@ package)
 upload)
     if [[ -s "$HOME/hosts.buildbot" ]] ; then
       cp $HOME/hosts.buildbot deploy/hosts.buildbot
-      ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-common.yml
-      ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-nuig-rnag.yml -e "deploy_branch=$(git rev-parse HEAD)"
+      #ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-common.yml
+      #ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-nuig-rnag.yml -e "deploy_branch=$(git rev-parse HEAD)"
     else
       printf "Can't upload and deploy, can't find hosts.buildbot file"
     fi
     ;;
 compile_extra)
-    curl http://repository.dri.ie/v1 > /dev/null 2>&1
+    #curl http://repository.dri.ie/v1 > /dev/null 2>&1
     ;;
 uninstall_deps)
     ;;
