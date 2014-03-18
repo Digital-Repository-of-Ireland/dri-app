@@ -59,26 +59,24 @@ describe ObjectsController do
 
     it 'should set collection objects status' do
       DoiConfig = nil
+      Sufia.queue.should_receive(:push).with(an_instance_of(PublishJob)).once
       post :status, :id => @collection.id, :status => "published", :update_objects => "yes", :objects_status => "published"
 
       @collection.reload
-      @object.reload
-
+      
       expect(@collection.status).to eql("published")
-      expect(@object.status).to eql("published")
     end
 
     it 'should mint a doi if an object is published' do
       DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
 
-      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).twice
+      Sufia.queue.should_receive(:push).with(an_instance_of(PublishJob)).once
+      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
       post :status, :id => @collection.id, :status => "published", :update_objects => "yes", :objects_status => "published"
 
       @collection.reload
-      @object.reload
-
+      
       expect(@collection.status).to eql("published")
-      expect(@object.status).to eql("published")
     end
 
   end
