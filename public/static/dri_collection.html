@@ -83,7 +83,7 @@
 				<nav id="dri_account_nav_id" class="dri_account_nav">
 					<ul id="dri_account_links_id" class="dri_account_links" role="tree">
 						<li class="on"><a href="#" alt="sign up link">Sign Up</a></li>
-						<li class="noborder"><a href="#" alt="login link">Login</a></li>
+						<li class="noborder"><a href="#" alt="login link"><img src="../../app/assets/images/dri/login_icon.png" width="9" height="13"> Login</a></li>
 						<ul id="dri_language_links_id" class="dri_language_links menu">
 							<li class="selected" aria-selected="true"><a href="#">English
 									<img src="images/dri/account_arrow.png" width="10" height="5">
@@ -164,15 +164,17 @@
 
 			<!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
 			<nav id="dri_pager_nav_id" class="dri_pager_nav">
-				<ul id="dri_pager_nav_links_id" class="dri_pager_nav_links">
-					<li><a href="#">9</a></li>
-					<li class="selected"><a href="#">18</a></li>
-					<li><a href="#">36</a></li>
-				</ul>
+           <p> Items per page</p>
+            <select  name="sort_options">
+					<option selected>9</option>
+					<option>18</option>
+					<option>36</option>
+			  </select>
 			</nav>
 
 			<!-- navigation to allow the user to page through the search results  -->
 			<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
+             <p>Items 9 of 200</p>
 				<ul id="dri_pagination_nav_links_id"
 					class="dri_pagination_nav_links">
 					<li class="first"><a href="#">&nbsp;</a></li>
@@ -213,7 +215,7 @@
 
 		</div>
 		<!-- close dri_search_features_nav_container -->
-			<div id="dri_search_save_input_id" class="dri_search_save_input">
+				<div id="dri_search_save_input_id" class="dri_search_save_input">
 					<form id="dri_search_save_input_form_id"
 						class="dri_search_save_input_form">
 						<button id="dri_search_save_submit_button_id" type="submit"
@@ -241,12 +243,12 @@
 				</li>
 				<li>Galway <a href="#">x</a>
 				</li>
-				<li>Báid <a href="#">x</a></li>	<li>Galway <a href="#">x</a>
+				<li>Báid <a href="#">x</a>
 				</li>
-				<li>Báid <a href="#">x</a></li>
 
 			</ul>
 		</div>
+		<!-- close dri_facet_restrictions_container -->
 		<!-- close dri_facet_restrictions_container -->
       <!-- system messages container -->
 		<div id="dri_messages_container_id" class="dri_messages_container">
@@ -394,7 +396,7 @@
 					<dl class="dl-horizontal  dl-invert  dri_object_metadata_readview">
 						<dt class="blacklight-title_tesim">Title</dt>
 						<dd class="blacklight-title_tesim">National Archive of Irish Composers (Performance)</dd>
-						<dt class="blacklight-description_tesim">Description:</dt>
+						<dt class="blacklight-description_tesim">Description</dt>
 						<dd class="blacklight-description_tesim">The National Archive
 							of Irish Composers was launched at Gleeson Theatre, DIT Kevin
 							Street, Dublin on Friday 26th November, 2010. Featuring
@@ -407,10 +409,10 @@
 						<dd class="blacklight-role_cmp_tesim">
 							<a href="/?f%5Bperson_sim%5D%5B%5D=John+Field">Sam Green</a>
 						</dd>
-						<dt class="blacklight-creation_date_tesim">Creation Date:</dt>
+						<dt class="blacklight-creation_date_tesim">Creation Date</dt>
 						<dd class="blacklight-creation_date_tesim">Friday 26th
 							November, 2013.</dd>
-						<dt class="blacklight-type_tesim">Governing Collection:</dt>
+						<dt class="blacklight-type_tesim">Governing Collection</dt>
 						<dd class="blacklight-type_tesim">None</dd>
 						<dt class="blacklight-language_tesim">Editors</dt>
 						<dd class="blacklight-language_tesim">
@@ -420,13 +422,13 @@
 							<a href="/?f%5Blanguage_sim%5D%5B%5D=eng">Andrea Marie
 								Hannigan</a></dd>
 						<dt class="blacklight-creation_date_tesim">Default Embargo
-							Date:</dt>
+							Date</dt>
 						<dd class="blacklight-creation_date_tesim">Friday 26th
 							November, 2013.</dd>
-						<dt class="blacklight-rights_tesim">Defaul Rights:</dt>
+						<dt class="blacklight-rights_tesim">Defaul Rights</dt>
 						<dd class="blacklight-rights_tesim">National Library of
 							Ireland / NAIC</dd>
-						<dt class="blacklight-rights_tesim">Defaul License:</dt>
+						<dt class="blacklight-rights_tesim">Defaul License</dt>
 						<dd class="blacklight-rights_tesim">CC-BY</dd>
 					</dl>
 
