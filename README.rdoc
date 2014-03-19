@@ -14,13 +14,17 @@ For testing and development you will need to bootstrap the project
   $ git submodule update --init --recursive
   $ bundle
   $ cp config/database.yml.sample config/database.yml (and edit as appropriate)
+  $ cp config/fedora.yml.sample config/fedora.yml (and edit as appropriate)
+  $ cp config/jetty.yml.sample config/jetty.yml (and edit as appropriate)
+  $ cp config/redis.yml.sample config/redis.yml (and edit as appropriate)
+  $ cp config/solr.yml.sample config/solr.yml (and edit as appropriate)
   $ bundle exec rake db:migrate
   $ bundle exec rake db:seed
   $ bundle exec rake jetty:config
 
 Dont forget to prepare the test database with
   $ bundle exec rake db:test:prepare
-  $ rake dri:fixtures:generate
+  $ bundle exec rake dri:fixtures:generate
 
   You may also need to edit config/settings.yml and/or create config/settings.local.yml
 
