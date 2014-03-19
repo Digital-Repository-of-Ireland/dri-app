@@ -9,15 +9,9 @@
             <li>
                 <%= link_to t('dri.headerlinks.workspace'), workspace_path, :id => "workspace" %>
             </li>
-            <% if has_search_parameters? %>
-            <li class="selected">
-                <%= link_to t('dri.headerlinks.collections.public'), main_app.catalog_index_path(:f => {:is_collection_sim => ["true"]}), :id => "collections" %>
-            </li>
-            <% else %>
             <li>
-                <%= link_to t('dri.headerlinks.collections.public'), main_app.catalog_index_path(:f => {:is_collection_sim => ["true"]}), :id => "collections" %>
+              <%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
             </li>
-            <% end %>
             <li>
                 <%= link_to t('dri.views.collection.buttons.new_collection'), main_app.new_collection_path, :id => "new_collection" %>
             </li>
@@ -33,17 +27,11 @@
             <li>
                 <%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
             </li>
-            <% if has_search_parameters? %>
-            <li class="selected">
-                <%= link_to t('dri.headerlinks.collections.public'), main_app.catalog_index_path(:f => {:is_collection_sim => ["true"]}), :id => "collections" %>
-            </li>
-            <% else %>
             <li>
-                <%= link_to t('dri.headerlinks.collections.public'), main_app.catalog_index_path(:f => {:is_collection_sim => ["true"]}), :id => "collections" %>
+              <%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
             </li>
-            <% end %>
             <li>
-          
+
                 <%= link_to 'ABOUT US', 'http://www.dri.ie/about', :target => '_blank' %>
             </li>
             <% end %>

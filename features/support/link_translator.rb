@@ -49,6 +49,9 @@ module LinkTranslator
      when /view record/
        "view_record"
 
+     when /browse/
+      "browse"
+
      when /collections/
        "collections"
 
