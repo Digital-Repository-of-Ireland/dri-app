@@ -30,6 +30,8 @@ ga:
       alert: 
         create_permission: "Níl cead agat an doiciméad seo a chruthú."
         edit_permission: "Níl cead agat an doiciméad seo a chur in eagar."
+        error_generating_surrogates: "Error generating surrogates: %{error}"
+        error_saving_file: "Error saving file: %{error}"
         invalid_file_type: "Rabhadh: Is cosúil nach cineál bailí comhaid é an comhad seo"
         invalid_object: "Oibiacht Neamhbhailí: %{error}."
         invalid_xml: "XML Neamhbhailí %{error}"
@@ -52,6 +54,7 @@ ga:
         digital_object_ingested: "Glacadh an oibiacht dhigiteach isteach go sásúil."
         duplicate_object_ingested: "D'fhéadfadh gur aimsíodh oibiachtaí dúblacha: %{duplicates}"
         file_uploaded: "D'éirigh leat an comhad a uaslódáil."
+        generating_surrogates: "Surrogates are being generated."
         licence_created: "Licence successfully created."
         licence_updated: "Licence successfully updated."
         metadata_updated: "D'éirigh leat na meiteashonraí a thabhairt cothrom le dáta."
@@ -67,6 +70,7 @@ ga:
     headerlinks: 
       about: Eolas
       admin: "Admin Tasks"
+      browse: Browse
       collections: 
         admin: "Mo Chuid Bailiúchán"
         public: Bailiúchán
@@ -74,6 +78,7 @@ ga:
       current_collection: "Bailiúchán Reatha: %{collection}"
       home: "Leathanach Baile"
       ingest: "Glac isteach"
+      objects: Objects
       privacy: "Polasaí um Príobháideachas agus Fianáin"
       resque: "Resque Server"
       sitemap: Sitemap
@@ -86,12 +91,18 @@ ga:
         buttons: 
           add_to_collection: "Cuir leis an mbailiúchán"
           remove_from_collection: "Bain ón mbailiúchán"
+        facets: 
+          values: 
+            collections: Collections
+            no_collections: "No collections"
         forms: 
           audio_file: "Comhad Fuaime"
           file: File
           image_file: Image
           metadata: Meiteashonraí
+          objects_in_collection: Objects
           pdf_file: PDF
+          restricted_asset: "Restricted Asset"
           video_file: Video
         headers: 
           files: Comhaid
@@ -99,16 +110,23 @@ ga:
           no_files: "Níor uaslódáladh comhad ar bith."
           no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo."
           no_surrogates: "No surrogates are available."
+          request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
         links: 
+          details: "File Details"
           download: Íoslódáil
           edit_this_record: "Cuir an taifead seo in eagar"
+          generate_surrogates: "Generate surrogates"
           listen: Éist
+          status_update: "Update status"
           view_metadata: Féach
         sidebar: 
           more_like_this: "Tuilleadh mar seo"
           nav_header: "Uirlisí Eagarthóireachta"
+        titles: 
+          editor_tools: "Editor Tools"
+          object_tools: "Object Tools"
       collection: 
         buttons: 
           clear_collection: "Glan mar Bhailiúchán Reatha"
@@ -118,6 +136,7 @@ ga:
           remove: Bain
           set_collection: "Socraigh mar Bhailiúchán Reatha"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
+        confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
         edit: "Cuir an bailiúchán in eagar"
         index: 
           items: 
@@ -257,11 +276,15 @@ ga:
           restricted: Teoranta
           search: "Rochtain Cuardaigh"
         buttons: 
+          add_master: "Add Master File"
           add_to_collection: "Cuir leis an mbailiúchán"
           replace_master: "Athchuir Máistirchomhad"
           replace_metadata: "Uaslódáil Meiteashonraí"
           save: "Sábháil Athruithe"
+          update_status: "Update Status"
           upload_master: "Uaslódáil Máistirchomhad"
+        confirm: 
+          surrogates: "This will (re)generate surrogates for all files. Continue?"
         edit: 
           sidebar: 
             nav_header: "Uirlisí Eagarthóireachta"
@@ -284,6 +307,7 @@ ga:
           governing_collection: "Bailiúchán Rialaithe"
           guests: Aíonna
           language: Teanga
+          object_status: "Object Status"
           places: Áiteanna
           presenters: Láithreoirí
           producers: Léiritheoirí
@@ -293,6 +317,7 @@ ga:
           status: Stádas
           subjects: Ábhair
           title: Teideal
+          update_objects: "Update Objects"
         legends: 
           access_control: "Rialúcháin Rochtana"
           audio_caption: "Uaslódáladh máistirchomhad fuaime cheana féin."

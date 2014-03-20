@@ -247,6 +247,12 @@ class CatalogController < ApplicationController
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << "+has_model_ssim:\"info:fedora/afmodel:Batch\""
+    if user_parameters[:mode].eql?('collections')
+      solr_parameters[:fq] << "+is_collection_sim:true"
+      solr_parameters[:fq] << "-ancestor_id_tesim:[* TO *]"
+    else
+      solr_parameters[:fq] << "+is_collection_sim:false"
+    end
   end
 
 end
