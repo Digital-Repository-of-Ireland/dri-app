@@ -69,7 +69,7 @@ module ApplicationHelper
       if format.eql?("image")
         path = surrogate_url(document.id, file_document.id, image_name)
       end
-      
+
       if format.eql?("text")
         path = surrogate_url(document.id, file_document.id, "thumbnail_medium")
       end
@@ -92,12 +92,12 @@ module ApplicationHelper
         end
       end
     end
-    
+
     path
-  end  
+  end
 
   def cover_image ( document )
-    path = nil  
+    path = nil
 
     if document[:cover_image_tesim] && document[:cover_image_tesim].first
         path = document[:cover_image_tesim].first
@@ -118,8 +118,7 @@ module ApplicationHelper
   end
 
   def reader_group_name( document )
-    #id = document[:is_governed_by_ssim][0].sub('info:fedora/', '')
-    id = document[:root_collection][0]
+    id = document[:root_collection_id_tesim][0]
     name = id.sub(':','_')
     return name
   end
