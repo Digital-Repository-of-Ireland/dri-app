@@ -80,4 +80,9 @@ NuigRnag::Application.configure do
 
   # google analytics
   GA.tracker = "UA-27838653-2"
+
+  Devise.setup do |config|
+    config.omniauth_path_prefix = "/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/users/auth"
+  end
+
 end

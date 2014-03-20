@@ -50,4 +50,18 @@ From a rails console you can execute one or all of the following commands
     GenericFile.all.each { |obj| obj.update_index }
     Batch.all.each { |obj| obj.update_index }
 
+== Restarting workers in the production system
+
+Supervisor (http://supervisord.org/) is used to manage the resque
+processes in the production system.
+
+Login to the production systems as root which are the running the
+rails application and the designated worker node. Execute the
+following command to restart/start/stop the workers.
+
+    # supervisorctl restart all
+
+To get the status of the workers
+
+    # supervisorctl status
 
