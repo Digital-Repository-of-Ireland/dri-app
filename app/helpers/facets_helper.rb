@@ -21,6 +21,42 @@ module FacetsHelper
     return results
   end
 
+
+  def parse_era args
+    results = nil
+
+    if args.is_a?(Hash)
+      results = Array.new
+      value_list = args[:document][args[:field]]
+
+      value_list.each do |value|
+        results.push(transform_era value)
+      end
+    else
+      results = transform_era args
+    end
+
+    return results
+  end
+
+
+  def parse_location args
+    results = nil
+
+    if args.is_a?(Hash)
+      results = Array.new
+      value_list = args[:document][args[:field]]
+
+      value_list.each do |value|
+        results.push(transform_loc value)
+      end
+    else
+      results = transform_loc args
+    end
+
+    return results
+  end
+
   def is_collection args
     results = nil
 
@@ -43,7 +79,50 @@ module FacetsHelper
       return 'nil'
     end
 
-    value.eql?("false") ? t('dri.views.facets.values.no_collections') : t('dri.views.facets.values.collections') 
+    value.eql?("false") ? t('dri.views.facets.values.no_collections') : t('dri.views.facets.values.collections')
+  end
+
+
+  # parses encoded era values
+  def transform_era value
+    if value == nil
+      return 'nil'
+    end
+
+    components = value.split(/\s*;\s*/)
+
+    if components.length < 2
+      return value
+    else
+      value.split(/\s*;\s*/).each do |component|
+        (k,v) = component.split(/\s*=\s*/)
+        if k.eql?('name')
+          return v
+        end
+      end
+    end
+  end
+
+
+  # parses encoded location values
+  def transform_loc value
+    if value == nil
+      return 'nil'
+    end
+
+    components = value.split(/\s*;\s*/)
+
+    if components.length < 2
+      return value
+    else
+      components.each do |component|
+
+        (k,v) = component.split(/\s*=\s*/)
+        if k.eql?('name')
+          return v
+        end
+      end
+    end
   end
 
   # Fetches the correct internationalization translation for a given language code
@@ -101,6 +180,10 @@ module FacetsHelper
     	label = label_language label
     elsif facet_config.label == "Metadata Search Access" || facet_config.label == "Master File Access"
       label = label_permission label
+    elsif facet_config.label == "Era"
+      label = parse_era label
+    elsif facet_config.label == "Location"
+      label = parse_location label
     end
     # (link_to_unless(options[:suppress_link], label, add_facet_params_and_redirect(facet_solr_field, item), :class=>"facet_select") + " " + render_facet_count(item.hits)).html_safe
     (link_to_unless(options[:suppress_link], label.html_safe + " (#{render_facet_count(item.hits)})".html_safe, add_facet_params_and_redirect(facet_solr_field, item)))
@@ -118,7 +201,7 @@ module FacetsHelper
   # with class, and 'remove' button.
   def render_selected_facet_value(facet_solr_field, item)
     #Updated class for Bootstrap Blacklight.
-    
+
       link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), remove_facet_params(facet_solr_field, item, params), :class=>"selected")
   end
 

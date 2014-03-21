@@ -42,6 +42,7 @@ class ApplicationController < ActionController::Base
     flash[:error] = t('dri.flash.error.validation_errors', :error => exception)
     render_bad_request(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
   end
+  rescue_from Exceptions::ResqueError, :with => :render_resque_error
 
   def set_locale
     if current_user

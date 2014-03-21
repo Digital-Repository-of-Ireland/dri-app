@@ -13,6 +13,7 @@ gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch =>
 
 gem 'rails_config'
 gem 'sqlite3'
+#gem 'mysql'
 gem 'mysql2'
 
 gem 'omniauth-shibboleth'
@@ -26,7 +27,7 @@ gem 'aws-s3'
 gem 'mimemagic'
 
 # Language and translation related gems
-gem 'http_accept_language', '~> 1.0.2'
+gem 'http_accept_language'
 gem 'it'
 
 gem 'jquery-rails'

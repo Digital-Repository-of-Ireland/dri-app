@@ -291,7 +291,30 @@ class CollectionsController < CatalogController
       format.html { flash[:notice] = t('dri.flash.notice.collection_deleted')
       redirect_to :controller => "catalog", :action => "index" }
     end
-end
+  end
+
+  def publish
+    enforce_permissions!("edit", params[:id])
+
+    @object = retrieve_object!(params[:id])
+
+    @object.status = "published"
+
+    begin
+      publish_objects
+      @object.save
+   
+      DOI.mint_doi( @object )
+      flash[:notice] = t('dri.flash.notice.metadata_updated')
+    rescue Exception => e
+      flash[:alert] = t('dri.flash.alert.error_publishing_collection')
+    end 
+   
+    respond_to do |format|
+      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+      format.json  { render :json => @object }
+    end
+  end 
 
   private
 
@@ -308,7 +331,7 @@ end
 
     def delete_files(object)
       local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                                { :f => object.id, :d => 'content' } ],
+                                          { :f => object.id, :d => 'content' } ],
                                             :order => "version DESC")
       local_file_info.each { |file| file.destroy }
       FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
@@ -326,6 +349,15 @@ end
 
     def reader_group_name
       @collection.id.sub(':', '_')
+    end
+
+    def publish_objects
+      begin
+        Sufia.queue.push(PublishJob.new(@object.id))
+      rescue Exception => e
+        logger.error "Unable to submit publish job: #{e.message}"
+        raise Exceptions::ResqueError
+      end
     end
 
 end

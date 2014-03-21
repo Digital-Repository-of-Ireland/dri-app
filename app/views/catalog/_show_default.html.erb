@@ -60,11 +60,11 @@
       </div>
     <% end %>
 
-    <% if current_user.is_admin? %>
-      <div class="dri_grey_button" >
-        <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
-      </div>
-    <% end %>
+      <% unless @document[:status_tesim].first.eql?("published") %>
+        <div class="dri_grey_button" >
+          <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
+        </div>
+      <% end %>
 
   <% end %>
 
