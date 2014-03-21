@@ -43,7 +43,7 @@ I want to be able to use the faceted search interface
   Examples:
     | facetname  | facetid                              | search          | result             |
     | Subjects   | blacklight-subject_sim               | subject1        | SAMPLE AUDIO TITLE |
-    | Location   | blacklight-geographical_coverage_sim | SAMPLE COUNTRY  | SAMPLE AUDIO TITLE |
+    | Places     | blacklight-geographical_coverage_sim | SAMPLE COUNTRY  | SAMPLE AUDIO TITLE |
     | Era        | blacklight-temporal_coverage_sim     | SAMPLE ERA      | SAMPLE AUDIO TITLE |
     | Names      | blacklight-person_sim                | Collins         | SAMPLE AUDIO TITLE |
     | Language   | blacklight-language_sim              | English         | SAMPLE AUDIO TITLE |
