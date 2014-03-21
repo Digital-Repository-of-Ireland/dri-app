@@ -39,6 +39,9 @@ module Exceptions
   class InstituteError < StandardError
   end
 
+  class ResqueError < StandardError
+  end
+
   def render_internal_error(exception)
     render_exception(:internal_server_error, t('dri.views.exceptions.internal_error'))
   end
@@ -53,6 +56,10 @@ module Exceptions
 
   def render_not_found(exception)
     render_exception(:not_found, exception.message)
+  end
+
+  def render_resque_error(exception)
+    render_exception(:internal_server_error, t('dri.views.exceptions.resque_error'))
   end
 
   def render_exception(status_type, message)

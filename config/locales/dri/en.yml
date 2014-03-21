@@ -31,6 +31,7 @@ en:
         create_permission: "You do not have permission to create this document."
         edit_permission: "You do not have permission to edit this document."
         error_generating_surrogates: "Error generating surrogates: %{error}"
+        error_publishing_collection: "Unable to publish objects."
         error_saving_file: "Error saving file: %{error}"
         invalid_file_type: "Warning: The file does not appear to be a valid type"
         invalid_object: "Invalid Object: %{error}."
@@ -117,6 +118,7 @@ en:
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
           listen: listen
+          publish: Publish
           status_update: "Update status"
           view_metadata: "View Metadata (XML)"
         sidebar: 
@@ -135,6 +137,7 @@ en:
           set_collection: "Set as Current"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
+        confirm_publish: "This will make all reviewed objects accessible. Continue?"
         edit: "Edit Collection"
         index: 
           items: 
@@ -174,6 +177,7 @@ en:
         invalid_object_type: "You have specified an invalid digital object type."
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
+        resque_error: "Error connecting to Resque."
       fields: 
         contributor: Contributor
         contributors: Contributors

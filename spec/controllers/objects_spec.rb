@@ -6,17 +6,6 @@ describe ObjectsController do
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
-
-    @collection = Batch.new
-    @collection[:title] = ["A collection"]
-    @collection[:description] = ["This is a Collection"]
-    @collection[:rights] = ["This is a statement about the rights associated with this object"]
-    @collection[:publisher] = ["RnaG"]
-    @collection[:type] = ["Collection"]
-    @collection[:creation_date] = ["1916-01-01"]
-    @collection[:published_date] = ["1916-04-01"]    
-    @collection[:status] = ["draft"]
-    @collection.save
     
     @object = Batch.new
     @object[:title] = ["An Audio Title"]
@@ -34,49 +23,38 @@ describe ObjectsController do
     @object[:type] = ["Sound"]
     @object[:status] = ["draft"]
     @object.save
-
-    @collection.governed_items << @object    
-    @collection.save
   end
 
   after(:each) do
     @object.delete
-    @collection.delete
     @login_user.delete
   end
 
   describe 'status' do
 
-    it 'should set a collection status' do
-      DoiConfig = nil
-      post :status, :id => @collection.id, :status => "published"
+    it 'should set an object status' do
+      post :status, :id => @object.id, :status => "reviewed"
 
-      @collection.reload
+      @object.reload
 
-      expect(@collection.status).to eql("published")
+      expect(@object.status).to eql("reviewed")
+
+      post :status, :id => @object.id, :status => "draft"
+
+      @object.reload
+
       expect(@object.status).to eql("draft")
     end
 
-    it 'should set collection objects status' do
-      DoiConfig = nil
-      Sufia.queue.should_receive(:push).with(an_instance_of(PublishJob)).once
-      post :status, :id => @collection.id, :status => "published", :update_objects => "yes", :objects_status => "published"
+    it 'should not set the status of a published object' do
+      @object.status = ["published"]
+      @object.save
 
-      @collection.reload
-      
-      expect(@collection.status).to eql("published")
-    end
+      post :status, :id => @object.id, :status => "draft"
 
-    it 'should mint a doi if an object is published' do
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
+      @object.reload
 
-      Sufia.queue.should_receive(:push).with(an_instance_of(PublishJob)).once
-      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
-      post :status, :id => @collection.id, :status => "published", :update_objects => "yes", :objects_status => "published"
-
-      @collection.reload
-      
-      expect(@collection.status).to eql("published")
+      expect(@object.status).to eql("published") 
     end
 
   end

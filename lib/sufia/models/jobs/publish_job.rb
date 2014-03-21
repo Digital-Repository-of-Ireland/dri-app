@@ -13,7 +13,7 @@ class PublishJob < ActiveFedoraPidBasedJob
     unless collection_objects.nil?
       collection_objects.each do |object|
         o = ActiveFedora::Base.find(object["id"], {:cast => true})
-        o.status = "published" 
+        o.status = "published" if o.status.eql?("reviewed") 
         o.save
 
         DOI.mint_doi( o )
