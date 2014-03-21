@@ -28,7 +28,7 @@ describe "PublishJob" do
     @object[:temporal_coverage] = ["1900s"]
     @object[:subject] = ["Ireland","something else"]
     @object[:type] = ["Sound"]
-    @object[:status] = ["draft"]
+    @object[:status] = ["reviewed"]
     @object.save
 
     @collection.governed_items << @object
@@ -41,7 +41,7 @@ describe "PublishJob" do
   end
   
   describe "run" do
-    it "should set a collection objects status to published" do
+    it "should set a collection's reviewed objects status to published" do
       
       job = PublishJob.new(@collection.id)
       job.run
@@ -50,6 +50,38 @@ describe "PublishJob" do
       @object.reload
 
       expect(@object.status).to eql("published")     
+    end
+
+    it "should not set a collection's draft objects to published" do
+      @draft = Batch.new
+      @draft[:title] = ["An Audio Title"]
+      @draft[:rights] = ["This is a statement about the rights associated with this object"]
+      @draft[:role_hst] = ["Collins, Michael"]
+      @draft[:contributor] = ["DeValera, Eamonn", "Connolly, James"]
+      @draft[:language] = ["ga"]
+      @draft[:description] = ["This is an Audio file"]
+      @draft[:published_date] = ["1916-04-01"]
+      @draft[:creation_date] = ["1916-01-01"]
+      @draft[:source] = ["CD nnn nuig"]
+      @draft[:geographical_coverage] = ["Dublin"]
+      @draft[:temporal_coverage] = ["1900s"]
+      @draft[:subject] = ["Ireland","something else"]
+      @draft[:type] = ["Sound"]
+      @draft[:status] = ["draft"]
+      @draft.save
+
+      @collection.governed_items << @draft
+      @collection.save
+
+      job = PublishJob.new(@collection.id)
+      job.run
+
+      @collection.reload
+      @draft.reload
+
+      expect(@draft.status).to eql("draft")
+
+      @draft.delete
     end
   end
  
