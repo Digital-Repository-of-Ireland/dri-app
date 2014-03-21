@@ -1,0 +1,5 @@
+    <% if has_search_parameters? %>
+        <% if paginate_params(@response).num_pages > 1 %>
+           <%= paginate @response, :window => 1, :theme => 'blacklight' %>
+        <% end %>
+    <% end %>
