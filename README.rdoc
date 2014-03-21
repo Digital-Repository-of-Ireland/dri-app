@@ -222,3 +222,66 @@ but all '\' characters should be stripped.
 Note that the storage code is stubbed for the Cucumber tests, but you must have a ceph
 host available and configured in order to run the rspec tests.
 
+== Migrating from sqlite3 to mysql
+
+This paragraph will explain the steps requires to migrate the database configuration from sqlite3 to mysql.
+The first step is to install mysql using homebrew.
+
+  $ brew install mysql
+
+Once the installation is completed start your mysql server and log to it.
+
+  $ mysql.server start
+  $ mysql -u root -p
+
+In the mysql console create the 3 environment databases required by rails.
+
+  mysql> create database dri_development;
+  mysql> grant all privileges on dri_development.* to 'root'@'localhost' identified by 'password';
+  mysql> flush privileges;
+
+  mysql> create database dri_test;
+  mysql> grant all privileges on dri_test.* to 'root'@'localhost' identified by 'password';
+  mysql> flush privileges;
+
+  mysql> create database dri_production;
+  mysql> grant all privileges on dri_production.* to 'root'@'localhost' identified by 'password';
+  mysql> flush privileges;
+
+  mysql> exit
+  
+The next step is to change the database configurations in the [yourProjectLocation]/config/database.yml as follows:
+
+  development:
+    adapter: mysql
+    database: dri_development
+    username: root
+    password: yourPWD
+    host: localhost
+
+  test: &test
+    adapter: mysql
+    database: dri_test
+    username: root
+    password: yourPWD
+    host: localhost
+
+  production:
+    adapter: mysql
+    database: dri_production
+    username: root
+    password: yourPWD
+    host: localhost
+
+  cucumber:
+    <<: *test
+
+The last step is to install the mysql and mysql2 gems and to setup your new mysql databases by migrating and seeding them.
+
+  $ gem install mysql
+  $ gem install mysql2
+  
+  $ bundle exec rake db:migrate
+  $ bundle exec rake db:seed
+  $ bundle exec rake db:test:prepare
+  
