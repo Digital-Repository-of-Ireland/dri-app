@@ -247,54 +247,23 @@ class ObjectsController < CatalogController
   end
 
   def status
-    if (current_user && current_user.is_admin?)
-      enforce_permissions!("edit",params[:id])
+    enforce_permissions!("edit",params[:id])
 
-      @object = retrieve_object!(params[:id])
+    @object = retrieve_object!(params[:id])
 
-      return if request.get?
+    return if request.get?
 
-      @object.status = params[:status] if params[:status].present?
-         
-      if @object.is_collection?
-        if params[:update_objects].present? && params[:update_objects].eql?("yes")
-          update_objects_status
-        else
-          @object.save
-          DOI.mint_doi( @object )
-        end
-      else
-        @object.save
-        DOI.mint_doi( @object )
-      end
+    unless @object.status.eql?("published")
+      @object.status = [params[:status]] if params[:status].present? 
+      @object.save   
+    end
 
-      respond_to do |format|
-        flash[:notice] = t('dri.flash.notice.metadata_updated')
-        format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
-        format.json  { render :json => @object }
-      end
-    else
-      raise Hydra::AccessDenied
-      return
-    end      
-
-  end
-
-  def update_objects_status
-    begin
-      if params[:objects_status].eql?("published")
-        Sufia.queue.push(PublishJob.new(@object.id))
-        @object.save
-        DOI.mint_doi( @object )
-      else
-        Sufia.queue.push(UnPublishJob.new(@object.id))
-        @object.save
-      end
-    rescue Exception => e
-      logger.error "Unable to set collection object status: #{e.message}"
+    respond_to do |format|
+      flash[:notice] = t('dri.flash.notice.metadata_updated')
+      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+      format.json  { render :json => @object }
     end
   end
-  
 
 end
 

@@ -34,6 +34,8 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
   match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
   
+  match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
+
   match '/privacy' => 'static_pages#privacy', :via => :get
   match '/workspace' => 'static_pages#workspace', :via => :get
   match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get

@@ -14,14 +14,7 @@
 
 <%= form_tag status_update_path(@object.id) ,:method => :put do %>
   <%= label_tag :status, t('dri.views.objects.forms.status') %>:
-  <%= select_tag(:status, options_for_select(['draft','published'], selected: @object.status)) %><br />
-
-  <% if @object.is_collection? %> 
-    <br /><%= label_tag :update_objects, t('dri.views.objects.forms.update_objects') %> 
-    <%= check_box_tag 'update_objects', 'yes', false, { :onclick => "javascript:toggleSelect();" } %><br />
-    <%= label_tag :status, t('dri.views.objects.forms.object_status') %>:
-    <%= select_tag(:objects_status, options_for_select(['draft','published']), :disabled => true) %><br />
-  <% end %>
+  <%= select_tag(:status, options_for_select(['draft','reviewed'], selected: @object.status)) %><br />
 
   <br /><%= submit_tag t('dri.views.objects.buttons.update_status'), :id => 'status_update' %>
 <% end %>
