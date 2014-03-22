@@ -75,7 +75,7 @@ Given /^I have associated the institute "(.?*)" with the collection entitled "(.
   steps %{
     Given I am on the home page
     When I perform a search
-    And I follow the link to collections
+    And I follow the link to browse
     And I follow "#{collection}" within "div.dri_result_container"
     And I follow the link to edit a collection
     And I fill in "institute[name]" with "#{institute}"
