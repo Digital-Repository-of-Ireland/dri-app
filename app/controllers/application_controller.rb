@@ -1,5 +1,6 @@
 require 'exceptions'
 require 'permission_methods'
+require 'http_accept_language'
 
 class ApplicationController < ActionController::Base
 
@@ -48,7 +49,7 @@ class ApplicationController < ActionController::Base
     if current_user
       I18n.locale = current_user.locale
     else
-      I18n.locale = preferred_language_from(Settings.interface.languages)
+      I18n.locale = http_accept_language.preferred_language_from(Settings.interface.languages)
     end
     I18n.locale = I18n.default_locale if I18n.locale.blank?
   end
