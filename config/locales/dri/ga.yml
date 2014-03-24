@@ -14,6 +14,10 @@ ga:
         introtext:
           admin: "Dea-scéala a chairde! Leathanach bréige anseo le líonadh isteach agus le deisiú!"
           public: "Fáilte chuig Taisclann an TDÉ."
+        links: 
+          news_dri: "Read our News"
+          register_dri: "Sign Up Now"
+          visit_dri: "Visit the DRI Website"
         new_collections: "New Collections"
         newly_added: "Newly Added"
       lang:
@@ -31,6 +35,7 @@ ga:
         create_permission: "Níl cead agat an doiciméad seo a chruthú."
         edit_permission: "Níl cead agat an doiciméad seo a chur in eagar."
         error_generating_surrogates: "Error generating surrogates: %{error}"
+        error_publishing_collection: "Unable to publish objects."
         error_saving_file: "Error saving file: %{error}"
         invalid_file_type: "Rabhadh: Is cosúil nach cineál bailí comhaid é an comhad seo"
         invalid_object: "Oibiacht Neamhbhailí: %{error}."
@@ -117,6 +122,7 @@ ga:
           edit_this_record: "Cuir an taifead seo in eagar"
           generate_surrogates: "Generate surrogates"
           listen: Éist
+          publish: Publish
           status_update: "Update status"
           view_metadata: Féach
         sidebar:
@@ -134,6 +140,7 @@ ga:
           remove: Bain
           set_collection: "Socraigh mar Bhailiúchán Reatha"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
+        confirm_publish: "This will make all reviewed objects accessible. Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
         edit: "Cuir an bailiúchán in eagar"
         index:
@@ -172,6 +179,7 @@ ga:
         invalid_metadata: "Tá an comhad meiteashonraí a d'uaslódáil tú neamhbhailí. Leasaigh na hearráidí le do thoil, agus bain triail eile as."
         invalid_metadata_input: "Tá na meiteashonraí a cuireadh isteach neamhbhailí. Leasaigh na hearráidí le do thoil, agus bain triail eile as."
         invalid_object_type: "Shonraigh tú cineál neamhbhailí oibiachta digití."
+        resque_error: "Error connecting to Resque."
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
       fields:
