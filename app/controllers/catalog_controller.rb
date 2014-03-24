@@ -28,7 +28,7 @@ class CatalogController < ApplicationController
       rows_per_page = params[:per_page].to_i
 
       if (rows_per_page < 1) || (rows_per_page > 100)
-        rows_per_page = 15
+        rows_per_page = 9
       end
     end
   end
@@ -38,7 +38,7 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       :defType => "edismax",
       :qt => 'search',
-      :rows => 15
+      :rows => 9
     }
 
     # solr field configuration for search results/index views
