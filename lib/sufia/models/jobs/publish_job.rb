@@ -7,9 +7,9 @@ class PublishJob < ActiveFedoraPidBasedJob
   end
 
   def run
-    Rails.logger.info "Publishing #{object.id}"
+    Rails.logger.info "Publishing reviewed objects in #{object.id}"
 
-    collection_objects = ActiveFedora::SolrService.query("collection_id_sim:\"#{object.id}\"")
+    collection_objects = ActiveFedora::SolrService.query("collection_id_sim:\"#{object.id}\" AND status_ssim:reviewed")
     unless collection_objects.nil?
       collection_objects.each do |object|
         o = ActiveFedora::Base.find(object["id"], {:cast => true})
