@@ -180,7 +180,7 @@ GEM
     hike (1.2.3)
     hooks (0.3.6)
       uber (~> 0.0.4)
-    http_accept_language (1.0.2)
+    http_accept_language (2.0.1)
     hydra-access-controls (6.4.0)
       active-fedora (~> 6.6)
       activesupport
@@ -485,7 +485,7 @@ DEPENDENCIES
   faker
   google-analytics-rails
   high_voltage (~> 2.1.0)
-  http_accept_language (~> 1.0.2)
+  http_accept_language
   hydra-head (= 6.4.0)
   i18n_sync
   is_it_working-cbeer
