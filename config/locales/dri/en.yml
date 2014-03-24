@@ -14,6 +14,10 @@ en:
         introtext: 
           admin: "DRI repository administrator interface"
           public: "Welcome to the DRI repository."
+        links: 
+          news_dri: "Read our News"
+          register_dri: "Sign Up Now"
+          visit_dri: "Visit the DRI Website"
         new_collections: "New Collections"
         newly_added: "Newly Added"
       lang: 
@@ -136,8 +140,8 @@ en:
           remove: Remove
           set_collection: "Set as Current"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
-        confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
         confirm_publish: "This will make all reviewed objects accessible. Continue?"
+        confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
         edit: "Edit Collection"
         index: 
           items: 
@@ -175,9 +179,9 @@ en:
         invalid_metadata: "The metadata file you have uploaded is invalid. Please correct the errors and try again."
         invalid_metadata_input: "The metadata entered is invalid. Please correct the errors and try again."
         invalid_object_type: "You have specified an invalid digital object type."
+        resque_error: "Error connecting to Resque."
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
-        resque_error: "Error connecting to Resque."
       fields: 
         contributor: Contributor
         contributors: Contributors
