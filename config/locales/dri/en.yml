@@ -36,6 +36,7 @@ en:
         edit_permission: "You do not have permission to edit this document."
         error_generating_surrogates: "Error generating surrogates: %{error}"
         error_publishing_collection: "Unable to publish reviewed objects: %{error}"
+        error_review_job: "Unable to submit background task, all objects will not be updated: %{error}"
         error_saving_file: "Error saving file: %{error}"
         invalid_file_type: "Warning: The file does not appear to be a valid type"
         invalid_object: "Invalid Object: %{error}."
@@ -324,7 +325,7 @@ en:
           status: Status
           subjects: Subjects
           title: Title
-          update_objects: "Update Objects"
+          apply_to_all: "Apply to all"
         legends: 
           access_control: "Access Controls"
           audio_caption: "A master audio file has already been uploaded."

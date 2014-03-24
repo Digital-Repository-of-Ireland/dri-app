@@ -6,27 +6,27 @@ describe ObjectsController do
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
-    
-    @object = Batch.new
-    @object[:title] = ["An Audio Title"]
-    @object[:rights] = ["This is a statement about the rights associated with this object"]
-    @object[:role_hst] = ["Collins, Michael"]
-    @object[:contributor] = ["DeValera, Eamonn", "Connolly, James"]
-    @object[:language] = ["ga"]
-    @object[:description] = ["This is an Audio file"]
-    @object[:published_date] = ["1916-04-01"]
-    @object[:creation_date] = ["1916-01-01"]
-    @object[:source] = ["CD nnn nuig"]
-    @object[:geographical_coverage] = ["Dublin"]
-    @object[:temporal_coverage] = ["1900s"]
-    @object[:subject] = ["Ireland","something else"]
-    @object[:type] = ["Sound"]
+
+    @collection = FactoryGirl.create(:collection)
+   
+    @object = FactoryGirl.create(:sound) 
     @object[:status] = ["draft"]
     @object.save
+
+    @object2 = FactoryGirl.create(:sound)
+    @object2[:status] = ["draft"]
+    @object2.save
+
+    @collection.governed_items << @object
+    @collection.governed_items << @object2
+
+    @collection.save    
   end
 
   after(:each) do
+    @object2.delete
     @object.delete
+    @collection.delete
     @login_user.delete
   end
 
@@ -55,6 +55,15 @@ describe ObjectsController do
       @object.reload
 
       expect(@object.status).to eql("published") 
+    end
+
+    it 'should set the status of all objects in collection' do
+      Sufia.queue.should_receive(:push).with(an_instance_of(ReviewJob)).once
+      post :status, :id => @object.id, :status => "reviewed", :apply_all => "yes"
+
+      @object.reload
+
+      expect(@object.status).to eql("reviewed")
     end
 
   end
