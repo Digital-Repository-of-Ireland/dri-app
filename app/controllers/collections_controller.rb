@@ -298,18 +298,21 @@ class CollectionsController < CatalogController
 
     @object = retrieve_object!(params[:id])
 
-    @object.status = "published"
+    unless @object.status.eql?("published")
+      @object.status = "published"
+      @object.save
+
+      DOI.mint_doi( @object )
+
+      flash[:notice] = t('dri.flash.notice.metadata_updated')
+    end
 
     begin
       publish_objects
-      @object.save
-   
-      DOI.mint_doi( @object )
-      flash[:notice] = t('dri.flash.notice.metadata_updated')
     rescue Exception => e
-      flash[:alert] = t('dri.flash.alert.error_publishing_collection')
+      flash[:alert] = t('dri.flash.alert.error_publishing_collection', :error => e.message)
     end 
-   
+ 
     respond_to do |format|
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       format.json  { render :json => @object }

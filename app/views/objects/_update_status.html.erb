@@ -1,20 +1,9 @@
-<script type="text/javascript">
-  function toggleSelect()
-  {
-    if (document.getElementById("update_objects").checked == true)
-    {
-      document.getElementById("objects_status").disabled = false;
-    }
-    else
-    {
-      document.getElementById("objects_status").disabled = true;
-    }
-  }
-</script>
-
 <%= form_tag status_update_path(@object.id) ,:method => :put do %>
   <%= label_tag :status, t('dri.views.objects.forms.status') %>:
   <%= select_tag(:status, options_for_select(['draft','reviewed'], selected: @object.status)) %><br />
+
+  <%= label_tag :apply_all, t('dri.views.objects.forms.apply_to_all') %>:
+  <%= check_box_tag 'apply_all', 'yes', false %><br />
 
   <br /><%= submit_tag t('dri.views.objects.buttons.update_status'), :id => 'status_update' %>
 <% end %>

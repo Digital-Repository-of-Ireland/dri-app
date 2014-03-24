@@ -182,7 +182,7 @@ module FacetsHelper
       label = label_permission label
     elsif facet_config.label == "Era"
       label = parse_era label
-    elsif facet_config.label == "Location"
+    elsif facet_config.label == "Places"
       label = parse_location label
     end
     # (link_to_unless(options[:suppress_link], label, add_facet_params_and_redirect(facet_solr_field, item), :class=>"facet_select") + " " + render_facet_count(item.hits)).html_safe

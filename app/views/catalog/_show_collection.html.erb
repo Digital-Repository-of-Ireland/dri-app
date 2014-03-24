@@ -40,10 +40,14 @@
     </div>
 
     <% if @document[:status_ssim].first.eql?("draft") %>
-      <div class="dri_grey_button" >
-        <%= link_to t('dri.views.catalog.links.publish'), publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" %>
-      </div> 
+      <% publish_label = t('dri.views.catalog.links.publish') %>
+    <% else %>
+      <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
     <% end %>
+
+    <div class="dri_grey_button" >
+      <%= link_to publish_label, publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" %>
+    </div> 
 
   <% end %>
 

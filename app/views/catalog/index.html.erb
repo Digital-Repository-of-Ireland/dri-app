@@ -2,7 +2,7 @@
 
   <% unless has_search_parameters? %>
     <%# if there are no input/search related params, display the "home" partial -%>
-    <%= render 'home' %>
+    <%= render 'home_text' %>
   <% else %>
 
     <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
