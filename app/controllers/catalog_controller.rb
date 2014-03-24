@@ -77,7 +77,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('subject', :facetable), :label => 'Subjects', :limit => 20
     #config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
     #config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
-    config.add_facet_field solr_name('geographical_coverage', :facetable), :label => 'Places', :limit => 20
+    config.add_facet_field solr_name('geographical_coverage', :facetable), :label => 'Places', :helper_method => :parse_location, :limit => 20
     #config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
     #config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
     config.add_facet_field solr_name('temporal_coverage', :facetable), :label => 'Era', :helper_method => :parse_era, :limit => 20
