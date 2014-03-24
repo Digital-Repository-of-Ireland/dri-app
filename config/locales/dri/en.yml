@@ -31,7 +31,7 @@ en:
         create_permission: "You do not have permission to create this document."
         edit_permission: "You do not have permission to edit this document."
         error_generating_surrogates: "Error generating surrogates: %{error}"
-        error_publishing_collection: "Unable to publish objects."
+        error_publishing_collection: "Unable to publish reviewed objects: %{error}"
         error_saving_file: "Error saving file: %{error}"
         invalid_file_type: "Warning: The file does not appear to be a valid type"
         invalid_object: "Invalid Object: %{error}."
@@ -118,7 +118,8 @@ en:
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
           listen: listen
-          publish: Publish
+          publish: "Publish collection"
+          publish_reviewed: "Publish reviewed objects"
           status_update: "Update status"
           view_metadata: "View Metadata (XML)"
         sidebar: 
