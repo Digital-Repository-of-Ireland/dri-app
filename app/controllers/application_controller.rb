@@ -47,7 +47,9 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     if cookies[:lang].nil? && current_user.nil?
-      I18n.locale = :en
+      currentLang = request.preferred_language_from(Settings.interface.languages)
+      cookies.permanent[:lang] = currentLang || I18n.default_locale
+      I18n.locale = cookies[:lang]
     elsif current_user
       I18n.locale = current_user.locale
     else
