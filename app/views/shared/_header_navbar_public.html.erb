@@ -18,18 +18,8 @@
           <% end %>
 
         </li>
-        <ul id="dri_language_links_id" class="dri_language_links menu">
-          <li class="selected" aria-selected="true">
-            <a href="#">English
-              <%= image_tag("dri/account_arrow.png", :width=>"10", :height=>"5") %> </a>
-            <ul>
-              <li>
-                <a href="#">Gaeilge</a>
-              </li>
-            </ul>
-          </li>
+        <%= render :partial => 'shared/header_lang' %>
         </ul>
-      </ul>
     </nav>
     <!-- close dri_account_nav -->
   </div>
