@@ -1,18 +1,18 @@
 <%= form_for @licence, :html => { :id => "dri_new_licence_form", :multipart => true }  do |f| %>
-  <%= f.label :name %>
+  <%= f.label "#{t('dri.views.licences.forms.name')}:" %>
   <%= f.text_field :name %>
   <br />
 
-  <%= f.label :url %>
+  <%= f.label "#{t('dri.views.licences.forms.url')}:" %>
   <%= f.text_field :url %>
   <br />
 
-  <%= f.label :logo %>
+  <%= f.label "#{t('dri.views.licences.forms.logo')}:" %>
   <%= f.text_field :logo %>
   <%= file_field_tag :logo_file %>
   <br />
 
-  <%= f.label :description %>
+  <%= f.label "#{t('dri.views.licences.forms.description')}:" %>
   <%= f.text_field :description %>
   <br />
 
