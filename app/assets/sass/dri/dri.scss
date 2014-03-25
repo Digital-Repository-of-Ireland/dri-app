@@ -10,7 +10,47 @@ body {
 	*font: x-small;
 	margin: 0;
 }
+
+
 /* Anna updated html and body */
+
+/* bootstrap override */
+input,
+button,
+select,
+textarea {
+  font-family: Arial, Helvetica, clean,sans-serif;
+}
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  display: inline-block;
+  height: 20px;
+  padding: 2px 2px 2px 30px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #555555;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
 
 
 .dri_ident {
@@ -564,6 +604,12 @@ a .dri_signin_edugate:hover {
 	color: #808082;
 }
 
+.dri_sort_options {
+  height: 25px;
+  font-family: Arial, Helvetica, clean,sans-serif;
+  font-size: 11px;
+
+}
 
 /*-------------- Search --------------*/
 

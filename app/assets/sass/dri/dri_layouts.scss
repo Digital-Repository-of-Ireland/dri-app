@@ -1,4 +1,5 @@
 /*Import the Zen Grids files*/
+@import "bootstrap.scss";
 @import "../zen/_grids.scss";
 @import "../zen/_base.scss";
 @import "../zen/_background";
@@ -18,13 +19,13 @@
 .dri_header_container {
 
   	@include zen-grid-container;
-	@include zen-grid-flow-item(1, 1);
+	  @include zen-grid-flow-item(1, 1);
 	 	
   	.dri_authentication_menus_container {
   	  	@include zen-grid-item(1, 4);
 		}
 		
-	.dri_social_media_container {
+	  .dri_social_media_container {
 	
 		@include zen-grid-item(1, 4);
   		@include zen-float();
@@ -32,7 +33,7 @@
 		
 		}
 		
-	.dri_ident {
+	 .dri_ident {
 		
 		@include zen-grid-item(2, 1);
 		
@@ -50,29 +51,29 @@
 .dri_sub_nav_container {
 
   	@include zen-grid-container;
-	@include zen-grid-flow-item(1, 1);
+	  @include zen-grid-flow-item(1, 1);
 
 }
 
 .dri_crumbtrail_nav_container {
 
   	@include zen-grid-container;
-	@include zen-grid-flow-item(1, 1);
+	  @include zen-grid-flow-item(1, 1);
   	@include zen-float();
 }
 
 .dri_search_features_nav_container {
 
   	@include zen-grid-container;
-	@include zen-grid-flow-item(1, 1, $alpha-gutter: 20px, $omega-gutter: 0px);
-	padding-right: 24px;
-  	
-	.dri_sort_nav {
+	  @include zen-grid-flow-item(1, 1, $alpha-gutter: 20px, $omega-gutter: 0px);
+	  padding-right: 24px;
+   	
+	  .dri_sort_nav {
 	
 		@include zen-grid-item(1, 1, $gutter-width: 0px);
 		//@include zen-float();
 		
-	}
+	  }
 		
 	.dri_pager_nav {
 	
