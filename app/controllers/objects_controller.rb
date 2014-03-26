@@ -26,7 +26,7 @@ class ObjectsController < CatalogController
   end
 
   def show
-    enforce_permissions!("show",params[:id])
+    enforce_permissions!("show_digital_object",params[:id])
 
     @object = retrieve_object!(params[:id])
 
@@ -65,7 +65,7 @@ class ObjectsController < CatalogController
   end
 
   def citation
-    enforce_permissions!("show",params[:id])
+    enforce_permissions!("show_digital_object",params[:id])
 
     @object = retrieve_object!(params[:id])
   end
