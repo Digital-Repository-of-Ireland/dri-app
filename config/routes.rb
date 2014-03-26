@@ -29,7 +29,7 @@ NuigRnag::Application.routes.draw do
   match 'session/:id' => 'session#create', :via => :get, :as => :lang
 
   match 'error/404' => 'error#404', :via => :get
-  match 'error/422' => 'error#404', :via => :get
+  match 'error/422' => 'error#422', :via => :get
   match 'error/500' => 'error#500', :via => :get
 
   match '/404' => 'error#error_404'
