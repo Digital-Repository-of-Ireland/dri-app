@@ -1,5 +1,10 @@
 require 'spec_helper'
 
+RSpec.configure do |c|
+  # declare an exclusion filter
+  c.filter_run_excluding :slow => true
+end
+
 describe "ReviewJob" do
 
   before(:each) do
@@ -55,6 +60,25 @@ describe "ReviewJob" do
 
       @published.delete
     end
+
+    @slow
+    it "should handle more than 10 objects", :slow => true do
+      20.times do
+        o = FactoryGirl.create(:sound)
+        o[:status] = ["draft"]
+        o.save
+
+        @collection.governed_items << o
+      end
+
+      @collection.save
+
+      job = ReviewJob.new(@collection.id)
+      job.run
+      
+      expect(ActiveFedora::SolrService.count("collection_id_sim:\"#{@collection.id}\" AND status_ssim:reviewed")).to eq(22)
+    end     
+      
 
   end
  
