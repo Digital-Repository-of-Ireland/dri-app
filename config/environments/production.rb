@@ -12,6 +12,8 @@ NuigRnag::Application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
+  config.exceptions_app = self.routes
+
   config.action_controller.relative_url_root = '/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC'
 
   # Disable Rails's static asset server (Apache or nginx will already do this)

@@ -87,13 +87,13 @@ class ApplicationController < ActionController::Base
   end
 
   def duplicates?(object)
-      @duplicates = duplicates(object)
+    @duplicates = duplicates(object)
 
-      if @duplicates && !@duplicates.empty?
-        warning = t('dri.flash.notice.duplicate_object_ingested', :duplicates => @duplicates.map { |o| "'" + o["id"] + "'" }.join(", ").html_safe)
-        flash[:alert] = warning
-        @warnings = warning
-      end
+    if @duplicates && !@duplicates.empty?
+      warning = t('dri.flash.notice.duplicate_object_ingested', :duplicates => @duplicates.map { |o| "'" + o["id"] + "'" }.join(", ").html_safe)
+      flash[:alert] = warning
+      @warnings = warning
+    end
   end
 
   def ingest_collections
