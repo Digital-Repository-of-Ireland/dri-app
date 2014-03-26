@@ -15,6 +15,8 @@ NuigRnag::Application.routes.draw do
     resources :files, :controller => :assets, :only => ['create','show','update']
   end
 
+  resources :session, :only => ['create']
+
   resources :collections, :only => ['new','create','update','edit','destroy']
 
   resources :ingest, :only => ['new', 'create']
@@ -23,6 +25,8 @@ NuigRnag::Application.routes.draw do
   match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
 
   resources :licences
+
+  match 'session/:id' => 'session#create', :via => :get, :as => :lang
 
   match 'export/:id' => 'export#show', :via => :get, :as => :object_export
 

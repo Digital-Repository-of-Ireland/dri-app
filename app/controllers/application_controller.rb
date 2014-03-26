@@ -1,6 +1,6 @@
 require 'exceptions'
 require 'permission_methods'
-require 'http_accept_language'
+#require 'http_accept_language'
 
 class ApplicationController < ActionController::Base
 
@@ -46,12 +46,15 @@ class ApplicationController < ActionController::Base
   rescue_from Exceptions::ResqueError, :with => :render_resque_error
 
   def set_locale
-    if current_user
+    if cookies[:lang].nil? && current_user.nil?
+      currentLang = http_accept_language.preferred_language_from(Settings.interface.languages)
+      cookies.permanent[:lang] = currentLang || I18n.default_locale
+      I18n.locale = cookies[:lang]
+    elsif current_user
       I18n.locale = current_user.locale
     else
-      I18n.locale = http_accept_language.preferred_language_from(Settings.interface.languages)
+      I18n.locale = cookies[:lang]
     end
-    I18n.locale = I18n.default_locale if I18n.locale.blank?
   end
 
   def set_cookie

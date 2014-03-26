@@ -118,13 +118,16 @@ en:
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
         links: 
+          characterization: Characterization
           details: "File Details"
           download: "Download File"
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
           listen: listen
+          not_caracterized: "not yet characterized"
           publish: "Publish collection"
           publish_reviewed: "Publish reviewed objects"
+          related: "Related Files"
           status_update: "Update status"
           view_metadata: "View Metadata (XML)"
         sidebar: 
@@ -162,6 +165,10 @@ en:
         institute: 
           add: "Add a new Institute"
           associate: "Associate Institute"
+          form: 
+            logo: Logo
+            name: Name
+            url: Url
           more: "Show more"
           title: "Institutes and Sponsors"
         legends: 
@@ -257,6 +264,11 @@ en:
         buttons: 
           edit: "Edit Licence"
           new: "Add a new licence"
+        forms: 
+          description: Description
+          logo: Logo
+          name: Name
+          url: Url
       metadata: 
         dublin_core: "Dublin Core"
         qualified_dublin_core: "Qualifed Dublin Core"
@@ -306,6 +318,7 @@ en:
           add_producer: "Add Producer"
           add_source: "Add Source"
           add_subject: "Add Subject"
+          apply_to_all: "Apply to all"
           authors: Authors
           broadcast_date: "Broadcast Date"
           creation_date: "Creation Date"
@@ -325,7 +338,6 @@ en:
           status: Status
           subjects: Subjects
           title: Title
-          apply_to_all: "Apply to all"
         legends: 
           access_control: "Access Controls"
           audio_caption: "A master audio file has already been uploaded."

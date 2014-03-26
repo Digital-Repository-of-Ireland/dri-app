@@ -13,7 +13,7 @@ gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch =>
 
 gem 'rails_config'
 gem 'sqlite3'
-#gem 'mysql'
+gem 'mysql'
 gem 'mysql2'
 
 gem 'omniauth-shibboleth'
