@@ -98,4 +98,22 @@ describe CollectionsController do
 
   end
 
+  describe 'ingest' do
+
+    it 'should create a collection from a metadata file' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+
+      @file = fixture_file_upload("/collection_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      post :ingest, :metadata_file => @file
+      response.should be_success    
+    end
+
+  end
+
 end
