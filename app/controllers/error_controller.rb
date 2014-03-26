@@ -5,11 +5,11 @@ class ErrorController < ApplicationController
   end
 
   def error_422
-    redirect_to error_404_path
+    redirect_to error_422_path
   end
 
   def error_500
-    redirect_to error_404_path
+    redirect_to error_500_path
   end
 
 end
