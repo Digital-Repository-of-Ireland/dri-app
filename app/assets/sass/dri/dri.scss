@@ -43,17 +43,22 @@ input[type="color"],
   height: 20px;
   padding: 2px 2px 2px 30px;
   margin-bottom: 10px;
-  font-size: 14px;
+  font-size: 100%;
   line-height: 20px;
   color: #555555;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
   vertical-align: middle;
 }
 
-
-
+h5 {
+	font-size: 100%;
+}
+label {
+	display: inline;
+	font-size: 100%;
+	line-height: 0px;
+}
 /* end bootstrap override */
 
 .dri_ident {
@@ -89,13 +94,13 @@ a {
 }
 
 .dri_login_form_block input {
-	margin: 0 0 4px 0;
-	padding: 6px 15px 6px 15px;
+	margin: 0 0 10px 0;
+	padding: 4px 15px 4px 15px;
 	width: 300px;
 	background-color: #2F2F2F;
 	border: none;
 	color: #FFF;
-	font-size: 106%;
+	font-size: 100%;
 	font-weight: normal;
 }
 
@@ -106,7 +111,7 @@ a {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 	border: none;
-	padding: 6px 0 6px 0;
+	padding: 4px 0 4px 0;
 	margin: 10px 0 10px 0;
 	cursor: pointer;
 	width: 330px;
@@ -115,17 +120,12 @@ a {
 	background-color: #0075AC;
 }
 .dri_checkbox_text input {
-	margin: 10px 4px 0 0;
+	margin: 0 4px 0 0;
 	padding: 0;
 	width: 14px;
 	height: 14px;
 	font-size: 106%;
 }
-.dri_checkbox_text span {
-	margin: 0;
-	padding: 0;
-}
-
 .dri_form_text  {
 	display: block;
 	margin: 0 4px 0 0;
@@ -152,6 +152,15 @@ a {
 .dri_signup_password input {
 	background-color: #B3B3B3;
 }
+.dri_form_text a span.text_line {
+	margin: 10px 0 0px 0;
+	padding: 0;
+	color:#3E3E3E;
+	font-weight: bold;
+	font-size: 90%;
+	display: block;
+	text-decoration: underline;
+}
 
 /*-------------- Signin Error message styling --------------*/
 .dri_login_form_block .field_with_errors {
@@ -169,7 +178,7 @@ a {
 	background-color: #fff;
 	color: #9F2931;
 	margin: 0 0 4px 0;
-	padding: 6px 13px 6px 15px;
+	padding: 4px 13px 4px 15px;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 	border: 1px solid  #E18191;
@@ -187,7 +196,7 @@ a {
 	background-color: #fff;
 	color: #9F2931;
 	margin: 0 0 4px 0;
-	padding: 6px 13px 6px 15px;
+	padding: 4px 13px 4px 15px;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 	border: 1px solid  #E18191;
@@ -343,7 +352,7 @@ a .dri_signin_edugate:hover {
 	display: block;
 	border: 1px solid #D9DADB;
 	margin: 0;
-	padding: 2px 6px 2px 6px;
+	padding: 2px 8px 2px 8px;
 	display: block;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
@@ -605,6 +614,7 @@ a .dri_signin_edugate:hover {
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 	color: #808082;
+	font-size: 100%;
 }
 
 .dri_sort_options {
@@ -781,7 +791,6 @@ a .dri_signin_edugate:hover {
 	color:#FFF;
 	border-left: 1px solid #999;
 	text-decoration: none;
-	
 }
 
 .dri_facet_restrictions_links  span.dri_clear_all  a {
