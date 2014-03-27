@@ -1,5 +1,9 @@
 World(ShowMeTheCookies)
 
+Given /^I do not have any cookies$/ do
+  expire_cookies
+end
+
 Then /^I should have a cookie (.*)$/ do |cookie|
   if Capybara.current_driver.to_s != "rack_test"
     page.driver.cookies.find(cookie).should_not be_nil

@@ -6,8 +6,10 @@ Feature:
   I should be able to see the website in English or Irish
 
   Scenario Outline: Not logged in user should see their own language based on their browser
-    Given my browser language is "<lang>"
-    And I am not logged in
+    Given I am not logged in
+    And I do not have any cookies
+    And my browser language is "<lang>"
+    When I go to "the home page"
     Then I should see the language "<lang>"
 
   Examples:
@@ -16,8 +18,9 @@ Feature:
     | ga   |
 
   Scenario Outline: Not logged in user changes language using the language selection tab
-    Given my browser language is "<lang>"
-    And I am not logged in
+    Given I am not logged in
+    And I do not have any cookies
+    And my browser language is "<lang>"
     Then I should see the language "<lang>"
     When I follow the link to change to <lang_new>
     Then I should see the language "<lang_new>"
@@ -30,7 +33,9 @@ Feature:
     | ga   | en      |
 
   Scenario Outline: A logged in user should see languages that they have set in their profile
-    Given my browser language is "<lang>"
+    Given I am not logged in
+    And I do not have any cookies
+    And my browser language is "<lang>"
     When I am logged in as "<lang_user>" with language "<lang_profile_set_to>"
     Then I should see the language "<lang_profile_set_to>"
 
@@ -43,7 +48,9 @@ Feature:
 
 
   Scenario Outline: Changing from Language set in the profile to a different Language
-    Given my browser language is "<lang>"
+    Given I am not logged in
+    And I do not have any cookies
+    And my browser language is "<lang>"
     Given I am logged in as "<lang_user>" with language "<lang_profile_set_to>"
     Then I should see the language "<lang_profile_set_to>"
     When I follow the link to my workspace
@@ -65,7 +72,9 @@ Feature:
     | en   | irishuser   | en                  | ga       |
 
   Scenario Outline: Changing Language of a Logged in user with localisation preferences
-    Given my browser language is "<lang>"
+    Given I am not logged in
+    And I do not have any cookies
+    And my browser language is "<lang>"
     Given I am logged in as "<lang_user>" with language "<lang_profile_set_to>"
     Then I should see the language "<lang_profile_set_to>"
     When I follow the link to change to <lang_new>
@@ -87,15 +96,17 @@ Feature:
     | en   | irishuser   | ga                  | en       | Preferred Language: English |
     | en   | irishuser   | en                  | ga       | Rogha Teangan: Gaeilge      |
 
-#  Scenario: Scenario Outline: Changing Language of a Logged in user without localisation preferences
-#    Given my browser language is "en"
-#    Given I am logged in as "englishuser" with no language
-#    Then I should see the language "en"
-#    When I follow the link to change to ga
-#    Then I should see the language "ga"
-#    And I should have a cookie lang
-#    And I should not have a cookie user
-#    And The language cookie content should be ga
-#    When I follow the link to my workspace
-#    And I follow the link to view my account
-#    Then My language preferences should be "Rogha Teangan: Gaeilge"
+  Scenario: Scenario Outline: Changing Language of a Logged in user without localisation preferences
+    Given I am not logged in
+    And I do not have any cookies
+    And my browser language is "en"
+    And I am logged in as "nolanguser" with no language
+    Then I should see the language "en"
+    Then I should see a link to change to ga
+    When I follow the link to change to ga
+    Then I should see the language "ga"
+    And I should have a cookie lang
+    And The language cookie content should be ga
+    When I follow the link to my workspace
+    And I follow the link to view my account
+    Then My language preferences should be "Rogha Teangan: Gaeilge"
