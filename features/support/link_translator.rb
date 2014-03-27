@@ -4,79 +4,85 @@ module LinkTranslator
 
     case link_name
 
-    when /ingest an object/
-      "ingest"
+      when /ingest an object/
+        "ingest"
 
-    when /edit an object/
-      "edit_record"
+      when /edit an object/
+        "edit_record"
 
-    when /edit a collection/
-      "edit_collection"
+      when /edit a collection/
+        "edit_collection"
 
-    when /edit this record/
-      "edit_record"
+      when /edit this record/
+        "edit_record"
 
-    when /sign in/
-      "login"
+      when /sign in/
+        "login"
 
-    when /sign out/
-      "logout"
+      when /sign out/
+        "logout"
 
-    when /reset my password/
-      "password_reset"
+      when /reset my password/
+        "password_reset"
 
-    when /password confirmation not sent/
-      "password_reset_not_sent"
+      when /password confirmation not sent/
+        "password_reset_not_sent"
 
-    when /unlock instructions not sent/
-      "unlock_not_sent"
+      when /unlock instructions not sent/
+        "unlock_not_sent"
 
-    when /view my account/
-      "view_account"
+      when /view my account/
+        "view_account"
 
-    when /edit my account/
-      "edit_account"
+      when /edit my account/
+        "edit_account"
 
-    when /cancel my account/
-      "cancel_account"
+      when /cancel my account/
+        "cancel_account"
 
-    when /my workspace/
-      "workspace"
+      when /my workspace/
+        "workspace"
 
-    when /sign up/
-      "signup"
+      when /sign up/
+        "signup"
 
-     when /view record/
-       "view_record"
+      when /view record/
+        "view_record"
 
-     when /browse/
-      "browse"
+      when /browse/
+        "browse"
 
-     when /collections/
-       "collections"
+      when /collections/
+        "collections"
 
-     when /add to collection/
-       "add_to_collection"
+      when /add to collection/
+        "add_to_collection"
 
-     when /download metadata/
-       "download_metadata"
+      when /download metadata/
+        "download_metadata"
 
-     when /download asset/
-       "download_asset"
+      when /download asset/
+        "download_asset"
 
-    when /download surrogate/
-      "download_surrogate_asset"
+      when /download surrogate/
+        "download_surrogate_asset"
 
-    when /admin tasks/
-      "admin_tasks"
+      when /admin tasks/
+        "admin_tasks"
 
-    when /configure licences/
-      "licences"
+      when /configure licences/
+        "licences"
 
-    when /add new licence/
-      "new_licence"
+      when /add new licence/
+        "new_licence"
 
-    else "Unknown"
+      when /change to en/
+        "en"
+
+      when /change to ga/
+        "ga"
+
+      else "Unknown"
 
     end
   end

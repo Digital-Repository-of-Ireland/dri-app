@@ -51,6 +51,18 @@ Given /^I am logged in as "([^\"]*)" with language "([^\"]*)"$/ do |login, lang|
   step 'I should be logged in'
 end
 
+Given /^I am logged in as "([^\"]*)" with no language$/ do |login|
+  email = "#{login}@#{login}.com"
+  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :first_name => "fname", :second_name => "sname")
+  @user.confirm!
+  visit path_to("sign out")
+  visit path_to("sign in")
+  fill_in("user_email", :with => email)
+  fill_in("user_password", :with => "password")
+  click_button("Sign in")
+  step 'I should be logged in'
+end
+
 Then /^I should see an edit link for "([^\"]*)"$/ do |login|
   email = "#{login}@#{login}.com"
   page.should have_link(email, href: "/user_groups/users/edit")
