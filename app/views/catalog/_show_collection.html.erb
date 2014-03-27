@@ -38,12 +38,20 @@
     <div class="dri_grey_button" >
       <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" %>
     </div>
+
+    <% if @document[:status_ssim].first.eql?("draft") %>
+      <% publish_label = t('dri.views.catalog.links.publish') %>
+    <% else %>
+      <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
+    <% end %>
+
     <div class="dri_grey_button" >
-      <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
+      <%= link_to publish_label, publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" %>
     </div> 
+
   <% end %>
 
-  <% if signed_in? && (can? :manage_collection, document) %>
+  <% if signed_in? && (document[:root_collection_id_tesim] == document[:id]) && (can? :manage_collection, document) %>
     <% pending = pending_memberships( document ) %>
     <% unless pending.blank? %>
       <%= render :partial => 'collections/approve_membership', :locals => {:pending => pending} %>

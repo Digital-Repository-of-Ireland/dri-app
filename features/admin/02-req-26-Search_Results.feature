@@ -42,6 +42,7 @@ edit permission.
     And "user2@user2.com" has been granted "<permission>" permissions on "dri:coll3"
     And I am on the home page
     When I press the button to search
+    And I follow the link to collections
     Then I should see a search result "Search Collection 3"
 
     Examples:

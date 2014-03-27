@@ -15,6 +15,8 @@ NuigRnag::Application.routes.draw do
     resources :files, :controller => :assets, :only => ['create','show','update']
   end
 
+  resources :session, :only => ['create']
+
   resources :collections, :only => ['new','create','update','edit','destroy']
 
   resources :ingest, :only => ['new', 'create']
@@ -23,6 +25,17 @@ NuigRnag::Application.routes.draw do
   match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
 
   resources :licences
+
+  match 'session/:id' => 'session#create', :via => :get, :as => :lang
+
+  match 'error/404' => 'error#404', :via => :get
+  match 'error/422' => 'error#422', :via => :get
+  match 'error/500' => 'error#500', :via => :get
+
+  match '/404' => 'error#error_404'
+  match '/422' => 'error#error_422'
+  match '/500' => 'error#error_500'
+
 
   match 'export/:id' => 'export#show', :via => :get, :as => :object_export
 
@@ -34,6 +47,8 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
   match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
   
+  match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
+
   match '/privacy' => 'static_pages#privacy', :via => :get
   match '/workspace' => 'static_pages#workspace', :via => :get
   match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
@@ -43,6 +58,7 @@ NuigRnag::Application.routes.draw do
   match 'surrogates/:id' => 'surrogates#show', :via => :get, :as => :surrogates
 
   match 'collections/:id' => 'catalog#show', :via => :get
+  match 'collections/ingest' => 'collections#ingest', :via => :post
 
   #API paths
   match 'get_objects' => 'objects#index', :via => :post

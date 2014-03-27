@@ -31,7 +31,7 @@ class AssetsController < ApplicationController
     end
 
   end
-  
+
   # Retrieves external datastream files that have been stored in the filesystem.
   # By default, it retrieves the file in the content datastream
   def download
@@ -67,7 +67,7 @@ class AssetsController < ApplicationController
     end
 
     render :text => "Unable to find file"
-  end 
+  end
 
   def update
     enforce_permissions!("edit", params[:object_id])
@@ -114,7 +114,7 @@ class AssetsController < ApplicationController
     end
 
     redirect_to object_file_url(params[:object_id], params[:id])
-  end  
+  end
 
   # Stores an uploaded file to the local filesystem and then attaches it to one
   # of the objects datastreams. content is used by default.
@@ -193,7 +193,7 @@ class AssetsController < ApplicationController
       if result_docs.empty?
         raise Exceptions::NotFound
       end
-      
+
       storage = Storage::S3Interface.new
 
       result_docs.each do | r |
@@ -205,19 +205,21 @@ class AssetsController < ApplicationController
         item = {}
         item['pid'] = doc.id
         item['files'] = []
-          
+
         files.each do |mf|
           file_list = {}
           file_doc = SolrDocument.new(mf)
-          
+
           if can? :read_master, doc
             url = url_for(file_download_url(doc.id, file_doc.id))
             file_list['masterfile'] = url
           end
 
-          surrogates = storage.get_surrogates doc, file_doc
-          surrogates.each do |file,loc|
-            file_list[file] = loc 
+          if can? :read, doc
+            surrogates = storage.get_surrogates doc, file_doc
+            surrogates.each do |file,loc|
+              file_list[file] = loc
+            end
           end
 
           item['files'].push(file_list)

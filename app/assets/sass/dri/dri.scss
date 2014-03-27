@@ -10,8 +10,51 @@ body {
 	*font: x-small;
 	margin: 0;
 }
+
+
 /* Anna updated html and body */
 
+/* bootstrap override */
+input,
+button,
+select,
+textarea {
+  font-family: Arial, Helvetica, clean,sans-serif;
+}
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  display: inline-block;
+  height: 20px;
+  padding: 2px 2px 2px 30px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #555555;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+
+
+/* end bootstrap override */
 
 .dri_ident {
   background: image-url('dri/dri_ident.png');
@@ -564,6 +607,12 @@ a .dri_signin_edugate:hover {
 	color: #808082;
 }
 
+.dri_sort_options {
+  height: 25px;
+  font-family: Arial, Helvetica, clean,sans-serif;
+  font-size: 11px;
+
+}
 
 /*-------------- Search --------------*/
 
@@ -1029,14 +1078,14 @@ h4.suggest a:hover {
 }
 
 .dri_sub_title .dri_title_dropdown {
-	font-size: 120%;
+	font-size: 100%;
 	font-weight: normal;
 	margin: 0;
 	padding: 6px 0 6px 20px;
 	list-style: none;
 	text-decoration: none;
 	width: 218px;
-	height: 15px;
+	height: 18px;
 	float: left;
 	display: block;
 	border-top: 1px solid #D9DADB;
@@ -1047,7 +1096,7 @@ h4.suggest a:hover {
 	text-decoration: underline;
 }
 
-.twiddle span {
+.twiddle i {
 	background:image-url('dri/arrow_up.png') no-repeat center;
 	width: 15px;
 	height: 15px;
@@ -1057,7 +1106,7 @@ h4.suggest a:hover {
 	padding: 0 0 0 25px;
 	
 }
-.twiddle-open span {
+.twiddle-open i {
 	background:image-url('dri/arrow_down.png') no-repeat center;
 	width: 15px;
 	height: 15px;

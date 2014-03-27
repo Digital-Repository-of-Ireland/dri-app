@@ -3,8 +3,9 @@
 
 require 'stepped_forms'
 require 'metadata_helpers'
-require 'doi/datacite'
-require 'sufia/models/jobs/mint_doi_job'
+require 'institute_helpers'
+require 'doi/doi'
+
 include Utils
 
 class ObjectsController < CatalogController
@@ -25,7 +26,7 @@ class ObjectsController < CatalogController
   end
 
   def show
-    enforce_permissions!("show",params[:id])
+    enforce_permissions!("show_digital_object",params[:id])
 
     @object = retrieve_object!(params[:id])
 
@@ -54,7 +55,7 @@ class ObjectsController < CatalogController
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
 
-    mint_doi unless DoiConfig.nil?
+    DOI.mint_doi( @object )
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -64,7 +65,7 @@ class ObjectsController < CatalogController
   end
 
   def citation
-    enforce_permissions!("show",params[:id])
+    enforce_permissions!("show_digital_object",params[:id])
 
     @object = retrieve_object!(params[:id])
   end
@@ -93,7 +94,7 @@ class ObjectsController < CatalogController
 
     if @object.valid? && @object.save
 
-      mint_doi unless DoiConfig.nil?
+      DOI.mint_doi( @object )
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -147,18 +148,29 @@ class ObjectsController < CatalogController
 
         ['title','subject','type','rights','language','description','creator',
          'contributor','publisher','date','format','source','temporal_coverage',
-         'geographical_coverage','geocode_point'].each do |field|
+         'geographical_coverage','geocode_point','geocode_box','institute',
+         'root_collection_id'].each do |field|
 
           if params['metadata'].blank? || params['metadata'].include?(field)
             value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
 
-            if field.eql?("geocode_point")
+            if field.eql?("institute")
+              item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
+            elsif field.eql?("geocode_point")
               if !value.nil? && !value.blank?
                 geojson_points = []
                 value.each do |point|
                   geojson_points << dcterms_point_to_geojson(point)
                 end
                 item['metadata'][field] = geojson_points
+              end
+            elsif field.eql?("geocode_box")
+              if !value.nil? && !value.blank?
+                geojson_boxes = []
+                value.each do |box|
+                  geojson_boxes << dcterms_box_to_geojson(box)
+                end
+                item['metadata'][field] = geojson_boxes
               end
             else
               item['metadata'][field] = value unless value.nil?
@@ -167,25 +179,27 @@ class ObjectsController < CatalogController
         end
 
         # Get files
-        files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
-        files = ActiveFedora::SolrService.query(files_query)
+        if can? :read, doc
+          files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
+          files = ActiveFedora::SolrService.query(files_query)
 
-        files.each do |mf|
-          file_list = {}
-          file_doc = SolrDocument.new(mf)
+          files.each do |mf|
+            file_list = {}
+            file_doc = SolrDocument.new(mf)
 
-          if can? :read_master, doc
-            url = url_for(file_download_url(doc.id, file_doc.id))
-            file_list['masterfile'] = url
+            if can? :read_master, doc
+              url = url_for(file_download_url(doc.id, file_doc.id))
+              file_list['masterfile'] = url
+            end
+
+            timeout = 60 * 60 * 24 * 30 # 30 days
+            surrogates = storage.get_surrogates doc, file_doc, timeout
+            surrogates.each do |file,loc|
+              file_list[file] = loc
+            end
+
+            item['files'].push(file_list)
           end
-
-          timeout = 60 * 60 * 24 * 30 # 30 days
-          surrogates = storage.get_surrogates doc, file_doc, timeout
-          surrogates.each do |file,loc|
-            file_list[file] = loc
-          end
-
-          item['files'].push(file_list)
         end
 
         @list << item
@@ -239,34 +253,24 @@ class ObjectsController < CatalogController
 
     return if request.get?
 
-    @object.status = params[:status] if params[:status].present?
-
-    if @object.is_collection?
-      if params[:update_objects].present? && params[:update_objects].eql?("yes")
-        @collection_objects = Batch.find(:collection_id_sim => @object.id)
-
-        unless @collection_objects.nil?
-          @collection_objects.each do |o|
-            o.status = params[:objects_status]
-            o.save
-          end
-        end
-      end
+    unless @object.status.eql?("published")
+      @object.status = [params[:status]] if params[:status].present? 
+      @object.save   
     end
 
-    @object.save
+    if params[:apply_all].present? && params[:apply_all].eql?("yes")
+      begin
+        Sufia.queue.push(ReviewJob.new(@object.governing_collection.id)) unless @object.governing_collection.nil?
+      rescue Exception => e
+        logger.error "Unable to submit status job: #{e.message}"
+        flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)
+      end
+    end
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       format.json  { render :json => @object }
-    end
-
-  end
-
-  def mint_doi
-    if @object.status.eql?("published") && @object.doi.nil?
-      Sufia.queue.push(MintDoiJob.new(@object.id))
     end
   end
 

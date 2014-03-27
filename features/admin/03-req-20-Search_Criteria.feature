@@ -31,7 +31,7 @@ I want to be able to use the faceted search interface
 # Note that facets do not appear on the main page
 # Thus we need to perform an empty search first
 # This is probably a bug, need confirmation of what should appear on main page
-Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
+  Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
   Given a collection with pid "dri:collection" and title "Test collection" created by "admin@admin.com"
   And an object in collection "dri:collection" with metadata from file "SAMPLEA.xml"
   And I am not logged in
@@ -41,14 +41,15 @@ Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
   Then I should see a search result "<result>"
 
   Examples:
-    | facetname                | facetid                              | search            | result             |
-    | Subjects                 | blacklight-subject_sim               | subject1          | SAMPLE AUDIO TITLE |
-    | Location          | blacklight-geographical_coverage_sim | SAMPLE COUNTRY    | SAMPLE AUDIO TITLE |
-    | Era            | blacklight-temporal_coverage_sim     | SAMPLE ERA        | SAMPLE AUDIO TITLE |
-    | Names                    | blacklight-person_sim                | Collins           | SAMPLE AUDIO TITLE |
-    | Language                 | blacklight-language_sim              | English           | SAMPLE AUDIO TITLE |
-    | Mediatype                   | blacklight-file_type_display_sim           | Audio             | SAMPLE AUDIO TITLE |
-    | Collection               | blacklight-root_collection_sim            | Test collection | SAMPLE AUDIO TITLE |
+    | facetname  | facetid                              | search          | result             |
+    | Subjects   | blacklight-subject_sim               | subject1        | SAMPLE AUDIO TITLE |
+    | Places     | blacklight-geographical_coverage_sim | SAMPLE COUNTRY  | SAMPLE AUDIO TITLE |
+    | Era        | blacklight-temporal_coverage_sim     | SAMPLE ERA      | SAMPLE AUDIO TITLE |
+    | Names      | blacklight-person_sim                | Collins         | SAMPLE AUDIO TITLE |
+    | Language   | blacklight-language_sim              | English         | SAMPLE AUDIO TITLE |
+    | Mediatype  | blacklight-file_type_display_sim     | Audio           | SAMPLE AUDIO TITLE |
+    | Collection | blacklight-root_collection_sim       | Test collection | SAMPLE AUDIO TITLE |
+    #| Institute  | blacklight-institute_sim             | Test Institute  | SAMPLE AUDIO TITLE |
 
 @wip
 Scenario Outline: Faceted Search for admin user

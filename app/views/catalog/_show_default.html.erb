@@ -53,14 +53,18 @@
     <div class="dri_grey_button" >
       <%= link_to t('dri.views.catalog.links.edit_this_record'), edit_object_path(@document), :id => "edit_record" %>
     </div>
-    
-    <div class="dri_grey_button" >
-      <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
-    </div>
 
-    <div class="dri_grey_button" >
-      <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
-    </div>
+    <% unless @files.nil? || @files.empty? %>
+      <div class="dri_grey_button" >
+        <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
+      </div>
+    <% end %>
+
+      <% unless @document[:status_tesim].first.eql?("published") %>
+        <div class="dri_grey_button" >
+          <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
+        </div>
+      <% end %>
 
   <% end %>
 

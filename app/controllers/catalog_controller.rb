@@ -28,7 +28,7 @@ class CatalogController < ApplicationController
       rows_per_page = params[:per_page].to_i
 
       if (rows_per_page < 1) || (rows_per_page > 100)
-        rows_per_page = 15
+        rows_per_page = 9
       end
     end
   end
@@ -38,7 +38,7 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       :defType => "edismax",
       :qt => 'search',
-      :rows => 15
+      :rows => 9
     }
 
     # solr field configuration for search results/index views
@@ -77,10 +77,10 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('subject', :facetable), :label => 'Subjects', :limit => 20
     #config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
     #config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
-    config.add_facet_field solr_name('geographical_coverage', :facetable), :label => 'Location', :limit => 20
+    config.add_facet_field solr_name('geographical_coverage', :facetable), :label => 'Places', :helper_method => :parse_location, :limit => 20
     #config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
     #config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
-    config.add_facet_field solr_name('temporal_coverage', :facetable), :label => 'Era', :limit => 20
+    config.add_facet_field solr_name('temporal_coverage', :facetable), :label => 'Era', :helper_method => :parse_era, :limit => 20
     #config.add_facet_field solr_name('temporal_coverage_gle', :facetable), :label => 'Subject (Era) (in Irish)', :limit => 20
     #config.add_facet_field solr_name('temporal_coverage_eng', :facetable), :label => 'Subject (Era) (in English)', :limit => 20
     #config.add_facet_field solr_name('name_coverage', :facetable), :label => 'Subject (Name)', :limit => 20
@@ -107,6 +107,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('file_type_display', :facetable), :label => 'Mediatype'
     #config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
     #config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
+    config.add_facet_field solr_name('institute', :facetable), :label => 'Institute'
     config.add_facet_field solr_name('root_collection', :facetable), :label => 'Collection'
 
     config.add_facet_field solr_name('is_collection', :facetable), :label => 'is_collection', :helper_method => :is_collection, :show => false
@@ -246,6 +247,12 @@ class CatalogController < ApplicationController
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << "+has_model_ssim:\"info:fedora/afmodel:Batch\""
+    if user_parameters[:mode].eql?('collections')
+      solr_parameters[:fq] << "+is_collection_sim:true"
+      solr_parameters[:fq] << "-ancestor_id_tesim:[* TO *]"
+    else
+      solr_parameters[:fq] << "+is_collection_sim:false"
+    end
   end
 
 end

@@ -11,6 +11,8 @@ Background:
 @wip
 Scenario: Navigating to the collections page
   Given I am on the home page
+  Then I should see a link to browse
+  When I follow the link to browse
   Then I should see a link to collections
   When I follow the link to collections
   Then I should be on the collections page
