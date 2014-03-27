@@ -1,5 +1,6 @@
 require 'exceptions'
 require 'permission_methods'
+require 'solr/query'
 #require 'http_accept_language'
 
 class ApplicationController < ActionController::Base
@@ -108,9 +109,13 @@ class ApplicationController < ActionController::Base
       fq = manager_and_edit_filter
     end
 
-    result_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fl => "id,title_tesim", :fq => fq)
-    result_docs.each do | doc |
-      results.push([doc["title_tesim"][0], doc['id']])
+    query = Solr::Query.new(solr_query, 50, {:defType => "edismax", :fl => "id,title_tesim", :fq => fq})
+    while query.has_more?
+      result_docs = query.pop
+
+      result_docs.each do | doc |
+        results.push([doc["title_tesim"][0], doc['id']])
+      end
     end
 
     return results
