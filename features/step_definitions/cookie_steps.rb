@@ -1,8 +1,25 @@
 World(ShowMeTheCookies)
 
-Given /^I do not have any cookies$/ do
-  expire_cookies
+Given /^I reset the sessions$/ do
+  Capybara.reset_sessions!
 end
+
+Given /^I have a "([^\"]+)" cookie set to "([^\"]+)"$/ do |key, value|
+  headers = {}
+  Rack::Utils.set_cookie_header!(headers, key, value)
+  cookie_string = headers['Set-Cookie']
+
+  Capybara.current_session.driver.browser.set_cookie(cookie_string)
+end
+
+Given /^I delete a "([^\"]+)" cookie$/ do |key|
+  headers = {}
+  Rack::Utils.set_cookie_header!(headers, key)
+  cookie_string = headers['Set-Cookie']
+
+  Capybara.current_session.driver.browser.delete_cookie(cookie_string)
+end
+
 
 Then /^I should have a cookie (.*)$/ do |cookie|
   if Capybara.current_driver.to_s != "rack_test"

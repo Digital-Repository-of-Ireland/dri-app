@@ -49,8 +49,6 @@ class ApplicationController < ActionController::Base
     currentLang = http_accept_language.preferred_language_from(Settings.interface.languages)
     if cookies[:lang].nil? && current_user.nil?
       cookies.permanent[:lang] = currentLang || I18n.default_locale
-      #cookies.permanent[:creator] = "application controller"
-      #cookies.permanent[:user] = current_user
       I18n.locale = cookies[:lang]
     elsif current_user
       if current_user.locale.nil? #This case covers third party users that log in the first time
