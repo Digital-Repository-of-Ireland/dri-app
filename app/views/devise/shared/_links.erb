@@ -16,7 +16,9 @@
 <% end -%>
 
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-<%= link_to t('.didn_t_receive_confirmation_instructions', :default => "Didn't receive confirmation instructions?"), new_confirmation_path(resource_name), :id => "password_reset_not_sent" %>
+  <%= link_to (new_confirmation_path(resource_name)), :id => "password_reset_not_sent" do %>
+    <span class="text_right"><%= t(".didn_t_receive_confirmation_instructions", :default => "Didn't receive confirmation instructions?") %></span>
+  <% end %>
 <% end -%>
 
 <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>

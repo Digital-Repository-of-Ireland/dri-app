@@ -35,7 +35,8 @@ module FlashTranslator
 
     when /new account/
       # User is not yet logged in and has no @user, will default to locale 'en'
-      I18n.t('user_groups.users.signup', :locale => "en")
+      #I18n.t('user_groups.users.signup', :locale => "en")
+      I18n.t('devise.failure.unconfirmed', :locale => "en")
 
     when /duplicate email/
       strip_vars( I18n.t('activerecord.errors.models.user_group/user.attributes.email.taken', :locale => "en") )
