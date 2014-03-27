@@ -182,5 +182,4 @@ Scenario: user requests access to readers group for restricted asset
   And I am on the home page
   When I perform a search
   And I press "Restricted Object"
-  Then show me the page
   Then I should see a link to download asset

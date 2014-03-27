@@ -13,3 +13,7 @@ When /^I change my language to "([^"]*)"$/ do |lang|
   step "I select \"#{lang}\" from the selectbox for language"
   step 'I press the button to update language'
 end
+
+Then /^My language preferences should be "([^"]*)"$/ do |lang|
+  page.should have_content(lang)
+end

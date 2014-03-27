@@ -46,11 +46,15 @@ class ApplicationController < ActionController::Base
   rescue_from Exceptions::ResqueError, :with => :render_resque_error
 
   def set_locale
+    currentLang = http_accept_language.preferred_language_from(Settings.interface.languages)
     if cookies[:lang].nil? && current_user.nil?
-      currentLang = http_accept_language.preferred_language_from(Settings.interface.languages)
       cookies.permanent[:lang] = currentLang || I18n.default_locale
       I18n.locale = cookies[:lang]
     elsif current_user
+      if current_user.locale.nil? #This case covers third party users that log in the first time
+        current_user.locale = currentLang || I18n.default_locale
+        current_user.save
+      end
       I18n.locale = current_user.locale
     else
       I18n.locale = cookies[:lang]
