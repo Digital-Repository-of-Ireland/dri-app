@@ -2,11 +2,11 @@
     <% params[:id] = :ga %>
     <ul id="dri_language_links_id" class="dri_language_links menu">
       <li class="selected" aria-selected="true">
-        <%= link_to 'English', '#' %>
+        <%= link_to 'English', '#', id: :en %>
         <%= image_tag("dri/account_arrow.png", :width=>"10", :height=>"5") %>
         <ul>
           <li>
-            <%= link_to 'Gaeilge', lang_path(params) %>
+            <%= link_to 'Gaeilge', lang_path(params), id: :ga %>
           </li>
         </ul>
       </li>
@@ -15,11 +15,11 @@
     <% params[:id] = :en %>
     <ul id="dri_language_links_id" class="dri_language_links menu">
       <li class="selected" aria-selected="true">
-        <%= link_to 'Gaeilge', '#' %>
+        <%= link_to 'Gaeilge', '#', id: :ga %>
         <%= image_tag("dri/account_arrow.png", :width=>"10", :height=>"5") %>
         <ul>
           <li>
-            <%= link_to 'English', lang_path(params) %>
+            <%= link_to 'English', lang_path(params), id: :en %>
           </li>
         </ul>
       </li>
