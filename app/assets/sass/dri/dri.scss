@@ -53,8 +53,15 @@ input[type="color"],
 }
 
 
-
+.modal.fade.in {
+  top: 50%;
+}
 /* end bootstrap override */
+h1,
+h2,
+h3 {
+  line-height: 150%;
+}
 
 .dri_ident {
   background: image-url('dri/dri_ident.png');
