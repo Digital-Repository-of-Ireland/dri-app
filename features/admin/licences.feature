@@ -67,6 +67,7 @@ Feature:
   Scenario: Associating a licence with a collection
     Given I have created a licence "TestLicence7"
     When I perform a search
+    And I follow the link to browse
     And I follow "Licence Test Collection" within "div.dri_result_container"
     And I follow the link to edit a collection
     Then the "licence" drop-down should contain the option "TestLicence7"

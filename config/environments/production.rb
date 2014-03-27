@@ -12,6 +12,8 @@ NuigRnag::Application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
+  config.exceptions_app = self.routes
+
   config.action_controller.relative_url_root = '/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC'
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
@@ -72,7 +74,10 @@ NuigRnag::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   # Add a default host for devise mailer
-  config.action_mailer.default_url_options = { :host => 'HOSTNAME' }
+  config.action_mailer.default_url_options = { :host => 'repository.dri.ie/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC' }
+
+  config.action_mailer.delivery_method = :sendmail
+
   #config.middleware.use '::Rack::Auth::Basic' do |u, p|
   #  [u, p] == ['navr', 'navr']
   #end
@@ -80,4 +85,9 @@ NuigRnag::Application.configure do
 
   # google analytics
   GA.tracker = "UA-27838653-2"
+
+  Devise.setup do |config|
+    config.omniauth_path_prefix = "/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/users/auth"
+  end
+
 end

@@ -13,6 +13,7 @@ FactoryGirl.define do
     u.password_confirmation 'password'
     u.first_name Faker::Name.first_name
     u.second_name Faker::Name.last_name
+    u.confirmed_at Time.now
   end
 
   factory :invalid_user, parent: :user do |u|

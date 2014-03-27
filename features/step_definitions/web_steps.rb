@@ -209,8 +209,7 @@ end
 
 When /^(?:|I )perform a search$/ do
   # Requires javascript
-  page.evaluate_script("document.getElementById('search').style.display='block';")
-  click_on('search')
+  find(:id, 'q').native.send_keys(:enter)
 end
 
 Then /^(?:|I )should( not)? see a button to (.+)$/ do |negate,button|

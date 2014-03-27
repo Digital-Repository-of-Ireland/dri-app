@@ -7,11 +7,12 @@ Feature:
     Given I am logged in as "admin" in the group "admin"
     And a collection with pid "dri:instcoll" and title "Institute Test Collection"
     And a Digital Object with pid "dri:instobj" and title "Institute Test Object"
-    And the object with pid "dri:instobj" is in the collection with pid "dri:instcoll"     
- 
+    And the object with pid "dri:instobj" is in the collection with pid "dri:instcoll"
+
   Scenario: Adding a new institute
     Given I am on the home page
     When I perform a search
+    And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"
     And I follow the link to edit a collection
     And I fill in "institute[name]" with "TestInstitute"
@@ -24,6 +25,7 @@ Feature:
   Scenario: Associating an institute with a collection
     Given I am on the home page
     When I perform a search
+    And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"
     And I follow the link to edit a collection
     And I fill in "institute[name]" with "TestInstitute"
@@ -40,6 +42,7 @@ Feature:
   Scenario: Viewing associated institutes for a collection
     Given I have associated the institute "TestInstitute" with the collection entitled "Institute Test Collection"
     When I perform a search
+    And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"
     Then I should see the image "TestInstitute.png"
 

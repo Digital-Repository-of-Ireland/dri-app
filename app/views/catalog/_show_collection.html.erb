@@ -39,11 +39,15 @@
       <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" %>
     </div>
 
-    <% if current_user.is_admin? %>
-      <div class="dri_grey_button" >
-        <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
-      </div> 
+    <% if @document[:status_ssim].first.eql?("draft") %>
+      <% publish_label = t('dri.views.catalog.links.publish') %>
+    <% else %>
+      <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
     <% end %>
+
+    <div class="dri_grey_button" >
+      <%= link_to publish_label, publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" %>
+    </div> 
 
   <% end %>
 

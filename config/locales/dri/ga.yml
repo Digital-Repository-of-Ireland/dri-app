@@ -14,6 +14,10 @@ ga:
         introtext: 
           admin: "Dea-scéala a chairde! Leathanach bréige anseo le líonadh isteach agus le deisiú!"
           public: "Fáilte chuig Taisclann an TDÉ."
+        links: 
+          news_dri: "Read our News"
+          register_dri: "Sign Up Now"
+          visit_dri: "Visit the DRI Website"
         new_collections: "New Collections"
         newly_added: "Newly Added"
       lang: 
@@ -30,6 +34,10 @@ ga:
       alert: 
         create_permission: "Níl cead agat an doiciméad seo a chruthú."
         edit_permission: "Níl cead agat an doiciméad seo a chur in eagar."
+        error_generating_surrogates: "Error generating surrogates: %{error}"
+        error_publishing_collection: "Unable to publish objects."
+        error_review_job: "Unable to submit background task, all objects will not be updated: %{error}"
+        error_saving_file: "Error saving file: %{error}"
         invalid_file_type: "Rabhadh: Is cosúil nach cineál bailí comhaid é an comhad seo"
         invalid_object: "Oibiacht Neamhbhailí: %{error}."
         invalid_xml: "XML Neamhbhailí %{error}"
@@ -52,6 +60,7 @@ ga:
         digital_object_ingested: "Glacadh an oibiacht dhigiteach isteach go sásúil."
         duplicate_object_ingested: "D'fhéadfadh gur aimsíodh oibiachtaí dúblacha: %{duplicates}"
         file_uploaded: "D'éirigh leat an comhad a uaslódáil."
+        generating_surrogates: "Surrogates are being generated."
         licence_created: "Licence successfully created."
         licence_updated: "Licence successfully updated."
         metadata_updated: "D'éirigh leat na meiteashonraí a thabhairt cothrom le dáta."
@@ -67,13 +76,13 @@ ga:
     headerlinks: 
       about: Eolas
       admin: "Admin Tasks"
-      collections: 
-        admin: "Mo Chuid Bailiúchán"
-        public: Bailiúchán
+      browse: Browse
+      collections: Bailiúchán
       contact: Teagmháil
       current_collection: "Bailiúchán Reatha: %{collection}"
       home: "Leathanach Baile"
       ingest: "Glac isteach"
+      objects: Objects
       privacy: "Polasaí um Príobháideachas agus Fianáin"
       resque: "Resque Server"
       sitemap: Sitemap
@@ -86,12 +95,18 @@ ga:
         buttons: 
           add_to_collection: "Cuir leis an mbailiúchán"
           remove_from_collection: "Bain ón mbailiúchán"
+        facets: 
+          values: 
+            collections: Collections
+            no_collections: "No collections"
         forms: 
           audio_file: "Comhad Fuaime"
           file: File
           image_file: Image
           metadata: Meiteashonraí
+          objects_in_collection: Objects
           pdf_file: PDF
+          restricted_asset: "Restricted Asset"
           video_file: Video
         headers: 
           files: Comhaid
@@ -99,16 +114,28 @@ ga:
           no_files: "Níor uaslódáladh comhad ar bith."
           no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo."
           no_surrogates: "No surrogates are available."
+          request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
         links: 
+          characterization: Characterization
+          details: "File Details"
           download: Íoslódáil
           edit_this_record: "Cuir an taifead seo in eagar"
+          generate_surrogates: "Generate surrogates"
           listen: Éist
+          not_caracterized: "not yet characterized"
+          publish: Publish
+          publish_reviewed: "Publish reviewed objects"
+          related: "Related Files"
+          status_update: "Update status"
           view_metadata: Féach
         sidebar: 
           more_like_this: "Tuilleadh mar seo"
           nav_header: "Uirlisí Eagarthóireachta"
+        titles: 
+          editor_tools: "Editor Tools"
+          object_tools: "Object Tools"
       collection: 
         buttons: 
           clear_collection: "Glan mar Bhailiúchán Reatha"
@@ -118,6 +145,8 @@ ga:
           remove: Bain
           set_collection: "Socraigh mar Bhailiúchán Reatha"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
+        confirm_publish: "This will make all reviewed objects accessible. Continue?"
+        confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
         edit: "Cuir an bailiúchán in eagar"
         index: 
           items: 
@@ -136,6 +165,10 @@ ga:
         institute: 
           add: "Add a new Institute"
           associate: "Associate Institute"
+          form: 
+            logo: Logo
+            name: Name
+            url: Url
           more: "Show more"
           title: "Institutes and Sponsors"
         legends: 
@@ -155,6 +188,7 @@ ga:
         invalid_metadata: "Tá an comhad meiteashonraí a d'uaslódáil tú neamhbhailí. Leasaigh na hearráidí le do thoil, agus bain triail eile as."
         invalid_metadata_input: "Tá na meiteashonraí a cuireadh isteach neamhbhailí. Leasaigh na hearráidí le do thoil, agus bain triail eile as."
         invalid_object_type: "Shonraigh tú cineál neamhbhailí oibiachta digití."
+        resque_error: "Error connecting to Resque."
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
       fields: 
@@ -230,6 +264,11 @@ ga:
         buttons: 
           edit: "Edit Licence"
           new: "Add a new licence"
+        forms: 
+          description: Description
+          logo: Logo
+          name: Name
+          url: Url
       metadata: 
         dublin_core: "Dublin Core"
         qualified_dublin_core: "Qualifed Dublin Core"
@@ -257,11 +296,15 @@ ga:
           restricted: Teoranta
           search: "Rochtain Cuardaigh"
         buttons: 
+          add_master: "Add Master File"
           add_to_collection: "Cuir leis an mbailiúchán"
           replace_master: "Athchuir Máistirchomhad"
           replace_metadata: "Uaslódáil Meiteashonraí"
           save: "Sábháil Athruithe"
+          update_status: "Update Status"
           upload_master: "Uaslódáil Máistirchomhad"
+        confirm: 
+          surrogates: "This will (re)generate surrogates for all files. Continue?"
         edit: 
           sidebar: 
             nav_header: "Uirlisí Eagarthóireachta"
@@ -275,6 +318,7 @@ ga:
           add_producer: "Cuir Léiritheoir leis"
           add_source: "Cuir Foinse leis"
           add_subject: "Cuir Ábhar leis"
+          apply_to_all: "Apply to all"
           authors: Údair
           broadcast_date: "Dáta Craolta"
           creation_date: "Dáta Cruthaithe"
@@ -284,6 +328,7 @@ ga:
           governing_collection: "Bailiúchán Rialaithe"
           guests: Aíonna
           language: Teanga
+          object_status: "Object Status"
           places: Áiteanna
           presenters: Láithreoirí
           producers: Léiritheoirí

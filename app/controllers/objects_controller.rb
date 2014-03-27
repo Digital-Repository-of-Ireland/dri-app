@@ -26,7 +26,7 @@ class ObjectsController < CatalogController
   end
 
   def show
-    enforce_permissions!("show",params[:id])
+    enforce_permissions!("show_digital_object",params[:id])
 
     @object = retrieve_object!(params[:id])
 
@@ -65,7 +65,7 @@ class ObjectsController < CatalogController
   end
 
   def citation
-    enforce_permissions!("show",params[:id])
+    enforce_permissions!("show_digital_object",params[:id])
 
     @object = retrieve_object!(params[:id])
   end
@@ -247,43 +247,31 @@ class ObjectsController < CatalogController
   end
 
   def status
-    if (current_user && current_user.is_admin?)
-      enforce_permissions!("edit",params[:id])
+    enforce_permissions!("edit",params[:id])
 
-      @object = retrieve_object!(params[:id])
+    @object = retrieve_object!(params[:id])
 
-      return if request.get?
+    return if request.get?
 
-      @object.status = params[:status] if params[:status].present?
-    
-      if @object.is_collection?
-        if params[:update_objects].present? && params[:update_objects].eql?("yes")
-          @collection_objects = Batch.find(:ancestor_id_tesim => @object.id)
+    unless @object.status.eql?("published")
+      @object.status = [params[:status]] if params[:status].present? 
+      @object.save   
+    end
 
-          unless @collection_objects.nil?
-            @collection_objects.each do |o|
-              o.status = params[:objects_status]
-              o.save
-
-              DOI.mint_doi( o )
-            end
-          end
-        end
+    if params[:apply_all].present? && params[:apply_all].eql?("yes")
+      begin
+        Sufia.queue.push(ReviewJob.new(@object.governing_collection.id)) unless @object.governing_collection.nil?
+      rescue Exception => e
+        logger.error "Unable to submit status job: #{e.message}"
+        flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)
       end
+    end
 
-      @object.save
-      DOI.mint_doi( @object )
-
-      respond_to do |format|
-        flash[:notice] = t('dri.flash.notice.metadata_updated')
-        format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
-        format.json  { render :json => @object }
-      end
-    else
-      raise Hydra::AccessDenied
-      return
-    end      
-
+    respond_to do |format|
+      flash[:notice] = t('dri.flash.notice.metadata_updated')
+      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+      format.json  { render :json => @object }
+    end
   end
 
 end

@@ -7,39 +7,24 @@ describe ObjectsController do
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
 
-    @collection = Batch.new
-    @collection[:title] = ["A collection"]
-    @collection[:description] = ["This is a Collection"]
-    @collection[:rights] = ["This is a statement about the rights associated with this object"]
-    @collection[:publisher] = ["RnaG"]
-    @collection[:type] = ["Collection"]
-    @collection[:creation_date] = ["1916-01-01"]
-    @collection[:published_date] = ["1916-04-01"]    
-    @collection[:status] = ["draft"]
-    @collection.save
-    
-    @object = Batch.new
-    @object[:title] = ["An Audio Title"]
-    @object[:rights] = ["This is a statement about the rights associated with this object"]
-    @object[:role_hst] = ["Collins, Michael"]
-    @object[:contributor] = ["DeValera, Eamonn", "Connolly, James"]
-    @object[:language] = ["ga"]
-    @object[:description] = ["This is an Audio file"]
-    @object[:published_date] = ["1916-04-01"]
-    @object[:creation_date] = ["1916-01-01"]
-    @object[:source] = ["CD nnn nuig"]
-    @object[:geographical_coverage] = ["Dublin"]
-    @object[:temporal_coverage] = ["1900s"]
-    @object[:subject] = ["Ireland","something else"]
-    @object[:type] = ["Sound"]
+    @collection = FactoryGirl.create(:collection)
+   
+    @object = FactoryGirl.create(:sound) 
     @object[:status] = ["draft"]
     @object.save
 
-    @collection.governed_items << @object    
-    @collection.save
+    @object2 = FactoryGirl.create(:sound)
+    @object2[:status] = ["draft"]
+    @object2.save
+
+    @collection.governed_items << @object
+    @collection.governed_items << @object2
+
+    @collection.save    
   end
 
   after(:each) do
+    @object2.delete
     @object.delete
     @collection.delete
     @login_user.delete
@@ -47,38 +32,38 @@ describe ObjectsController do
 
   describe 'status' do
 
-    it 'should set a collection status' do
-      DoiConfig = nil
-      post :status, :id => @collection.id, :status => "published"
+    it 'should set an object status' do
+      post :status, :id => @object.id, :status => "reviewed"
 
-      @collection.reload
+      @object.reload
 
-      expect(@collection.status).to eql("published")
+      expect(@object.status).to eql("reviewed")
+
+      post :status, :id => @object.id, :status => "draft"
+
+      @object.reload
+
       expect(@object.status).to eql("draft")
     end
 
-    it 'should set collection objects status' do
-      DoiConfig = nil
-      post :status, :id => @collection.id, :status => "published", :update_objects => "yes", :objects_status => "published"
+    it 'should not set the status of a published object' do
+      @object.status = ["published"]
+      @object.save
 
-      @collection.reload
+      post :status, :id => @object.id, :status => "draft"
+
       @object.reload
 
-      expect(@collection.status).to eql("published")
-      expect(@object.status).to eql("published")
+      expect(@object.status).to eql("published") 
     end
 
-    it 'should mint a doi if an object is published' do
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
+    it 'should set the status of all objects in collection' do
+      Sufia.queue.should_receive(:push).with(an_instance_of(ReviewJob)).once
+      post :status, :id => @object.id, :status => "reviewed", :apply_all => "yes"
 
-      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).twice
-      post :status, :id => @collection.id, :status => "published", :update_objects => "yes", :objects_status => "published"
-
-      @collection.reload
       @object.reload
 
-      expect(@collection.status).to eql("published")
-      expect(@object.status).to eql("published")
+      expect(@object.status).to eql("reviewed")
     end
 
   end
