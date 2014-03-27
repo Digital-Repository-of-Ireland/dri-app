@@ -15,6 +15,18 @@ body {
 /* Anna updated html and body */
 
 /* bootstrap override */
+input:focus:invalid, textarea:focus:invalid, select:focus:invalid {
+color: #fff;
+}
+input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:focus {
+border-color: #ccc;
+-webkit-box-shadow: 0 0 6px #ccc;
+-moz-box-shadow: 0 0 6px #ccc;
+box-shadow: 0 0 6px #ccc;
+}
+
+
+
 input,
 button,
 select,
