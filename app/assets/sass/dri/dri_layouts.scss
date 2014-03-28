@@ -213,14 +213,14 @@
 
 .dri_main_footer {
 
-  	@include zen-grid-container;
-
-	@include zen-grid-flow-item(1, 1);
-
-  	@include zen-clear();
+}
+  	
+  	.dri_footer_address {
+  	  float: right;
+  	  text-align: right;
+  	}
 	
 
-}
 
 // Hide, clear etc.
 

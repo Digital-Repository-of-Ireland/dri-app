@@ -1,24 +1,47 @@
+
 <footer id="dri_main_footer_id" class="dri_main_footer">
+	<div id="dri_footer_address" class="dri_footer_address">
+		DRI
+		<br>
+		Dawson Street
+		<br>
+		Dublin
+		<br>
+		Ireland
+	</div>
 	<nav id="dri_main_footer_navigation_id"
-		class="dri_main_footer_navigation">
+	class="dri_main_footer_navigation">
 		<ul id="dri_main_footer_navigation_links_id"
-			class="dri_main_footer_navigation_links">
-      <li class="selected no_border_right"><span>
-        <%= link_to t('dri.headerlinks.privacy'), 'http://www.dri.ie/privacy-statement', :id => "privacy", :class => "muted" %>
-      </span></li>
-      <li class="selected no_border_right"><span>
-        <%= link_to t('dri.headerlinks.about'), 'http://www.dri.ie/mission-statement', :id => "about", :class => "muted" %>
-      </span></li>
-      <li class="selected no_border_right"><span>
-        <%= link_to t('dri.headerlinks.contact'), 'http://www.dri.ie/contact', :id => "contact", :class => "muted" %>
-      </span></li>
-      <li class="selected no_border_right"><span>
-        <%= link_to t('dri.headerlinks.sitemap'), '#', :id => "sitemap" %>
-      </span></li>
+		class="dri_main_footer_navigation_links">
+			<li class="selected no_border_right">
+				<span> <%= link_to t('dri.headerlinks.privacy'), 'http://www.dri.ie/privacy-statement', :id => "privacy", :class => "muted" %> </span>
+			</li>
+			<li class="selected no_border_right">
+				<span> <%= link_to t('dri.headerlinks.about'), 'http://www.dri.ie/mission-statement', :id => "about", :class => "muted" %> </span>
+			</li>
+			<li class="selected no_border_right">
+				<span> <%= link_to t('dri.headerlinks.contact'), 'http://www.dri.ie/contact', :id => "contact", :class => "muted" %> </span>
+			</li>
+			<li class="selected no_border_right">
+				<span> <%= link_to t('dri.headerlinks.sitemap'), '#', :id => "sitemap" %> </span>
+			</li>
 		</ul>
-  </nav>
-  <div id="dri_footer_address" class="dri_footer_address">
-  	DRI<br>Dawson Street<br>Dublin<br>Ireland
-  </div>
+	</nav>
+	<div class="dri_funder_institutes">
+
+		<ul class="dri_collection_institutes_list">
+ 
+		  <% if @all_institutes %>
+		    <% @all_institutes.each do |inst| %>
+		     <li>
+		      <%= inst.name %>
+		       </li>
+		    <% end %>
+		  <% end %>
+ 
+		</ul>
+
+	</div>
+
 </footer>
 <!-- close dri_main_footer_id -->
