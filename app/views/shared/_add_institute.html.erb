@@ -3,14 +3,14 @@
 </div>
 
 <%= form_for(@inst, remote: true) do |f| %>
-  <%= hidden_field_tag 'object', @object.id %>
-  <%= f.label "#{t('dri.views.collection.institute.form.name')}:" %>:
-  <%= f.text_field :name %><br />
+    <%= hidden_field_tag 'object', @object.id %>
+    <%= f.label "#{t('dri.views.collection.institute.form.name')}:" %>:
+    <%= f.text_field :name %><br />
 
-  <%= f.label "#{t('dri.views.collection.institute.form.logo')}:" %>:
-  <%= f.file_field :logo %><br />
+    <%= f.label "#{t('dri.views.collection.institute.form.logo')}:" %>:
+    <%= f.file_field :logo %><br />
 
-  <%= f.label "#{t('dri.views.collection.institute.form.url')}:" %>:
-  <%= f.text_field :url %>
-  <%= f.submit t('dri.views.collection.institute.add'), :id => 'add_institute' %>
+    <%= f.label "#{t('dri.views.collection.institute.form.url')}:" %>:
+    <%= f.text_field :url %>
+    <%= f.submit t('dri.views.collection.institute.add'), :id => 'add_institute' %>
 <% end %>
