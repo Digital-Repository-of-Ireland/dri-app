@@ -200,29 +200,33 @@ class AssetsController < ApplicationController
         doc = SolrDocument.new(r)
 
         files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
-        files = ActiveFedora::SolrService.query(files_query)
+        query = Solr::Query.new(files_query)
 
         item = {}
         item['pid'] = doc.id
         item['files'] = []
 
-        files.each do |mf|
-          file_list = {}
-          file_doc = SolrDocument.new(mf)
+        while query.has_more?
+          files = query.pop
 
-          if can? :read_master, doc
-            url = url_for(file_download_url(doc.id, file_doc.id))
-            file_list['masterfile'] = url
-          end
+          files.each do |mf|
+            file_list = {}
+            file_doc = SolrDocument.new(mf)
 
-          if can? :read, doc
-            surrogates = storage.get_surrogates doc, file_doc
-            surrogates.each do |file,loc|
-              file_list[file] = loc
+            if can? :read_master, doc
+              url = url_for(file_download_url(doc.id, file_doc.id))
+              file_list['masterfile'] = url
             end
-          end
 
-          item['files'].push(file_list)
+            if can? :read, doc
+              surrogates = storage.get_surrogates doc, file_doc
+              surrogates.each do |file,loc|
+                file_list[file] = loc
+              end
+            end
+
+            item['files'].push(file_list)
+          end
         end
 
         @list << item

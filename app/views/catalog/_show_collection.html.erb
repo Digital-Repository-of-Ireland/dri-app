@@ -1,5 +1,5 @@
 <div class="dri_object_first_block">
-  <dl class="dl-horizontal  dl-invert dri_object_metadata_readview">
+  <dl class="dri_object_metadata_readview">
     <% document_show_fields.each do |solr_fname, field| -%>
       <% if should_render_show_field? document, field %>
         <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>

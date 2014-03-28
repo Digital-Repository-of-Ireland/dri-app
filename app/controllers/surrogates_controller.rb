@@ -17,12 +17,15 @@ class SurrogatesController < ApplicationController
 
         if doc['file_type_tesim'].present? && doc['file_type_tesim'].first.eql?("collection")
 
-          objects = solr_query ( "collection_id_sim:\"#{doc.id}\"" )
+          query = Solr::Query.new("collection_id_sim:\"#{doc.id}\"")
+          while query.has_more?
+            objects = query.pop
 
-          objects.each do |object|
-            object_doc = SolrDocument.new(object)
-            object_surrogates = surrogates(object_doc)
-            @surrogates[object_doc.id] = object_surrogates unless object_surrogates.empty?
+            objects.each do |object|
+              object_doc = SolrDocument.new(object)
+              object_surrogates = surrogates(object_doc)
+              @surrogates[object_doc.id] = object_surrogates unless object_surrogates.empty?
+            end
           end
 
         else
@@ -56,11 +59,14 @@ class SurrogatesController < ApplicationController
 
         if doc['file_type_tesim'].present? && doc['file_type_tesim'].first.eql?("collection")
        
-          objects = solr_query ( "collection_id_sim:\"#{doc.id}\"" )
+          query = Solr::Query.new("collection_id_sim:\"#{doc.id}\"")
+          while query.has_more?
+            objects = query.pop
           
-          objects.each do |object|
-            object_doc = SolrDocument.new(object)
-            generate_surrogates(object_doc.id)
+            objects.each do |object|
+              object_doc = SolrDocument.new(object)
+              generate_surrogates(object_doc.id)
+            end
           end
 
         else
@@ -83,34 +89,45 @@ class SurrogatesController < ApplicationController
     def generate_surrogates(object_id)
       enforce_permissions!("edit", object_id)
 
-      files = solr_query( "is_part_of_ssim:\"info:fedora/#{object_id}\"" )
+      query = Solr::Query.new("is_part_of_ssim:\"info:fedora/#{object_id}\"")
       
-      unless files.empty?
-        files.each do |mf|
-          file_doc = SolrDocument.new(mf)
-          begin
-            Sufia.queue.push(CharacterizeJob.new(file_doc.id))
-            flash[:notice] = t('dri.flash.notice.generating_surrogates')
-          rescue Exception => e
-            flash[:alert] = t('dri.flash.alert.error_generating_surrogates', :error => e.message)
+      while query.has_more?
+      
+        files = query.pop 
+      
+        unless files.empty?
+          files.each do |mf|
+            file_doc = SolrDocument.new(mf)
+            begin
+              Sufia.queue.push(CharacterizeJob.new(file_doc.id))
+              flash[:notice] = t('dri.flash.notice.generating_surrogates')
+            rescue Exception => e
+              flash[:alert] = t('dri.flash.alert.error_generating_surrogates', :error => e.message)
+            end
           end
         end
+      
       end
+    
     end
 
     def surrogates(object)
       surrogates = {}
 
       if can? :read, object
-        files = solr_query( "is_part_of_ssim:\"info:fedora/#{object.id}\"" )
-  
         storage = Storage::S3Interface.new
 
-        unless files.empty?
-          files.each do |mf|
-            file_doc = SolrDocument.new(mf)
-            file_surrogates = storage.get_surrogates(object, file_doc)
-            surrogates[file_doc.id] = file_surrogates unless file_surrogates.empty?
+        query = Solr::Query.new("is_part_of_ssim:\"info:fedora/#{object.id}\"")
+        
+        while query.has_more?
+          files = query.pop  
+
+          unless files.empty?
+            files.each do |mf|
+              file_doc = SolrDocument.new(mf)
+              file_surrogates = storage.get_surrogates(object, file_doc)
+              surrogates[file_doc.id] = file_surrogates unless file_surrogates.empty?
+            end
           end
         end
 

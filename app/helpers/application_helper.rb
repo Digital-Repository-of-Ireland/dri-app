@@ -134,13 +134,11 @@ module ApplicationHelper
   end
 
   def collection_children_query ( collection_id )
-    #"(is_governed_by_ssim:\"info:fedora/" + collection_id +
     "(ancestor_id_tesim:\"" + collection_id +
     "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
   end
 
   def count_items_in_collection_by_type( collection_id, type, status )
-    #solr_query = "status_ssim:" + status + " AND (is_governed_by_ssim:\"info:fedora/" + collection_id +
     solr_query = "status_ssim:" + status + " AND (ancestor_id_tesim:\"" + collection_id +
     "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
     "object_type_sim:"+ type
@@ -148,7 +146,6 @@ module ApplicationHelper
   end
 
   def get_object_type_counts( document )
-    #id = document.key?(:is_governed_by_ssim) ? document[:is_governed_by_ssim][0].sub('info:fedora/', '') : document.id
     id = document.key?(:root_collection) ? document[:root_collection][0] : document.id
 
     @type_counts = {}

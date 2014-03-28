@@ -9,30 +9,18 @@ class PublishJob < ActiveFedoraPidBasedJob
   def run
     Rails.logger.info "Publishing reviewed objects in #{object.id}"
 
-    done = false
-    cursor_mark = "*"
+    query = Solr::Query.new("collection_id_sim:\"#{object.id}\" AND status_ssim:reviewed")
 
-    until done
-      result = ActiveFedora::SolrService.query("collection_id_sim:\"#{object.id}\" AND status_ssim:reviewed",
-                 :raw => true, :rows => 100, :sort => 'id asc', :cursorMark => cursor_mark)
+    while query.has_more?
+      collection_objects = query.pop
 
-      unless result['response']['numFound'].to_i == 0
+      collection_objects.each do |object|
+        o = ActiveFedora::Base.find(object["id"], {:cast => true})
+        o.status = "published" if o.status.eql?("reviewed")
+        o.save
 
-        collection_objects = result['response']['docs']
-
-        collection_objects.each do |object|
-          o = ActiveFedora::Base.find(object["id"], {:cast => true})
-          o.status = "published" if o.status.eql?("reviewed")
-          o.save
-
-          DOI.mint_doi( o )
-        end
-
-      else
-        done = true
+        DOI.mint_doi( o )
       end
-
-      cursor_mark = result['response']['nextCursorMark']
     end
 
   end
