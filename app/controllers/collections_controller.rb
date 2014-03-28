@@ -306,6 +306,8 @@ class CollectionsController < CatalogController
 
     @object = retrieve_object!(params[:id])
 
+    raise Exceptions::BadRequest unless @object.is_collection?
+
     unless @object.status.eql?("published")
       @object.status = "published"
       @object.save
@@ -319,11 +321,18 @@ class CollectionsController < CatalogController
       publish_objects
     rescue Exception => e
       flash[:alert] = t('dri.flash.alert.error_publishing_collection', :error => e.message)
-    end
-
+      @warnings = t('dri.flash.alert.error_publishing_collection', :error => e.message)
+    end 
+ 
     respond_to do |format|
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
-      format.json  { render :json => @object }
+      format.json { 
+          unless @warnings.nil?
+            response = { :warning => @warnings, :id => @object.id, :status => @object.status }
+          else
+            response = { :id => @object.id, :status => @object.status }
+          end
+          render :json => response, :status => :accepted }
     end
   end
 
