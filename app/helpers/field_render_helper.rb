@@ -5,7 +5,7 @@ module FieldRenderHelper
     ''
   end
 
-    # Overwrites the method located in Blacklight::BlacklightHelperBehavior,
+  # Overwrites the method located in Blacklight::BlacklightHelperBehavior,
   # allowing DRI to customise how metadata fields are rendered.
   def render_document_show_field_value args
     value = args[:value]
@@ -69,14 +69,14 @@ module FieldRenderHelper
   # Used when rendering a faceted link in catalog#show. Determines the blacklight search argument
   # for the resulting catalog#index search.
   def get_search_arg_from_facet args
-     facet = args[:facet]
-     search_arg = "f[" << facet << "][]"
+    facet = args[:facet]
+    search_arg = "f[" << facet << "][]"
 
-     if ((facet[0, 5] == 'role_') || (facet == ActiveFedora::SolrService.solr_name('creator', :facetable)) || (facet == ActiveFedora::SolrService.solr_name('contributor', :facetable)))
-       search_arg = "f[" << ActiveFedora::SolrService.solr_name('person', :facetable) << "][]"
-     end
+    if ((facet[0, 5] == 'role_') || (facet == ActiveFedora::SolrService.solr_name('creator', :facetable)) || (facet == ActiveFedora::SolrService.solr_name('contributor', :facetable)))
+      search_arg = "f[" << ActiveFedora::SolrService.solr_name('person', :facetable) << "][]"
+    end
 
-     return search_arg
+    return search_arg
   end
 
   # Sometimes in order to provide the most accurate linking between objects, we have to transform a metadata
@@ -109,8 +109,8 @@ module FieldRenderHelper
   # fields.
   def qdc_extract_people
     @qdc_people_select_list = [[t('dri.views.metadata.dublin_core'), [[t("dri.views.fields.creator"), "creator"],
-                                [t("dri.views.fields.contributor"), "contributor"],
-                                [t("dri.views.fields.publisher"), "publisher"]]]]
+                                                                      [t("dri.views.fields.contributor"), "contributor"],
+                                                                      [t("dri.views.fields.publisher"), "publisher"]]]]
     qdc_people = Hash.new
     marc_relator_select_list = Array.new
 
@@ -132,6 +132,16 @@ module FieldRenderHelper
     @qdc_people_select_list.push [ t('dri.vocabulary.name.marc_relators'), marc_relator_select_list]
 
     qdc_people
+  end
+
+  def get_value_from_solr_flied solrField, value
+    components = solrField.to_s.split(/\[|;|\\|"|\]/)
+    components.each do |component|
+      (k,v) = component.split("=")
+      if k.eql?(value)
+        return v
+      end
+    end
   end
 
 end
