@@ -69,7 +69,6 @@ class CollectionsController < CatalogController
   # Updates the attributes of an existing model.
   #
   def update
-
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
     params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
@@ -115,7 +114,6 @@ class CollectionsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
     params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
