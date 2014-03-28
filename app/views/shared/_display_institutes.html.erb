@@ -4,9 +4,9 @@
 <!-- close vc_title -->
 
 <% if @collection_institutes %>
-  <ul class="dri_collection_institutes_list">
-  <% @collection_institutes.each do |inst| %>
-    <li>
+    <ul class="dri_collection_institutes_list">
+      <% @collection_institutes.each do |inst| %>
+          <li>
       <span class="dri_collection_institutes_item"> 
       <%if inst.logo.nil? %>
         <%= link_to inst.name, inst.url, :target => "_blank" %>
@@ -14,10 +14,10 @@
         <%= link_to image_tag(inst.logo, :height => "75px"), inst.url, :target => "_blank" %>
       <% end %>
       </span>
-    </li>
-  <% end %>
-</ul>
-  <!--  <div class="dri_institutes_show_more">
+          </li>
+      <% end %>
+    </ul>
+    <!--  <div class="dri_institutes_show_more">
     <span><%= t('dri.views.collection.institute.more') %></span>
   </div> 
   -->

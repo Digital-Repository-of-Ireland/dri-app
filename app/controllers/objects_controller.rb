@@ -40,6 +40,9 @@ class ObjectsController < CatalogController
   # Updates the attributes of an existing model.
   #
   def update
+    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
+    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
+
     update_object_permission_check(params[:batch][:manager_groups_string], params[:batch][:manager_users_string], params[:id])
     @collections = ingest_collections
     @object = retrieve_object!(params[:id])
@@ -74,6 +77,9 @@ class ObjectsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
+    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
+    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
+
     params[:batch][:governing_collection] = Batch.find(params[:batch][:governing_collection]) unless params[:batch][:governing_collection].blank?
 
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
@@ -99,7 +105,7 @@ class ObjectsController < CatalogController
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-          redirect_to :controller => "catalog", :action => "show", :id => @object.id
+        redirect_to :controller => "catalog", :action => "show", :id => @object.id
         }
         format.json {
           if  !@warnings.nil?
@@ -183,7 +189,7 @@ class ObjectsController < CatalogController
         if can? :read, doc
           files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
           query = Solr::Query.new(files_query)
-          
+
           while query.has_more?
             files = query.pop
 
@@ -207,7 +213,7 @@ class ObjectsController < CatalogController
           end
 
         end
-        
+
         @list << item
       end
 
@@ -233,15 +239,15 @@ class ObjectsController < CatalogController
     if params.has_key?("object") && !params[:object].blank?
       solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
       result = ActiveFedora::SolrService.instance.conn.get('select',
-                             :params=>{:q=>solr_query, :qt => 'standard',
-                                       :mlt => 'true', :'mlt.fl' => 'subject_tesim,subject_tesim',
-                                       :'mlt.count' => count, :fl => 'id,score', :'mlt.match.include'=> 'false'})
+                                                           :params=>{:q=>solr_query, :qt => 'standard',
+                                                                     :mlt => 'true', :'mlt.fl' => 'subject_tesim,subject_tesim',
+                                                                     :'mlt.count' => count, :fl => 'id,score', :'mlt.match.include'=> 'false'})
     end
 
     # TODO: fixme!
     @related = []
     if result && result['moreLikeThis'] && result['moreLikeThis'].first &&
-       result['moreLikeThis'].first[1] && result['moreLikeThis'].first[1]['docs']
+        result['moreLikeThis'].first[1] && result['moreLikeThis'].first[1]['docs']
       result['moreLikeThis'].first[1]['docs'].each do |item|
         @related << item
       end
@@ -260,8 +266,8 @@ class ObjectsController < CatalogController
     return if request.get?
 
     unless @object.status.eql?("published")
-      @object.status = [params[:status]] if params[:status].present? 
-      @object.save   
+      @object.status = [params[:status]] if params[:status].present?
+      @object.save
     end
 
     if params[:apply_all].present? && params[:apply_all].eql?("yes")

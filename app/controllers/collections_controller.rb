@@ -69,6 +69,10 @@ class CollectionsController < CatalogController
   # Updates the attributes of an existing model.
   #
   def update
+    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
+    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
+    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
+
     update_object_permission_check(params[:batch][:manager_groups_string],params[:batch][:manager_users_string], params[:id])
 
     @object = retrieve_object!(params[:id])
@@ -83,7 +87,7 @@ class CollectionsController < CatalogController
     @inst = Institute.new
 
     @licences = {}
-      Licence.find(:all).each do |licence|
+    Licence.find(:all).each do |licence|
       @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
     end
 
@@ -110,6 +114,10 @@ class CollectionsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
+    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
+    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
+    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
+
     enforce_permissions!("create", Batch)
 
     set_access_permissions(:batch, true)
@@ -124,7 +132,7 @@ class CollectionsController < CatalogController
     end
 
     @licences = {}
-      Licence.find(:all).each do |licence|
+    Licence.find(:all).each do |licence|
       @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
     end
 
@@ -158,7 +166,7 @@ class CollectionsController < CatalogController
       if @collection.save
 
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
-            redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
+        redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
         format.json {
           @response = {}
           @response[:id] = @collection.pid
@@ -247,7 +255,7 @@ class CollectionsController < CatalogController
         if @collection.save
 
           format.html { flash[:notice] = t('dri.flash.notice.collection_created')
-            redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
+          redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
           format.json {
             @response = {}
             @response[:id] = @collection.pid
@@ -279,7 +287,7 @@ class CollectionsController < CatalogController
           # this makes a connection to s3, should really test if connection is available somewhere else
           delete_files(object)
         rescue Exception => e
-            puts 'cannot delete files'
+          puts 'cannot delete files'
         end
         object.delete
       end
@@ -298,6 +306,8 @@ class CollectionsController < CatalogController
 
     @object = retrieve_object!(params[:id])
 
+    raise Exceptions::BadRequest unless @object.is_collection?
+
     unless @object.status.eql?("published")
       @object.status = "published"
       @object.save
@@ -311,57 +321,64 @@ class CollectionsController < CatalogController
       publish_objects
     rescue Exception => e
       flash[:alert] = t('dri.flash.alert.error_publishing_collection', :error => e.message)
+      @warnings = t('dri.flash.alert.error_publishing_collection', :error => e.message)
     end 
  
     respond_to do |format|
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
-      format.json  { render :json => @object }
+      format.json { 
+          unless @warnings.nil?
+            response = { :warning => @warnings, :id => @object.id, :status => @object.status }
+          else
+            response = { :id => @object.id, :status => @object.status }
+          end
+          render :json => response, :status => :accepted }
     end
-  end 
+  end
 
   private
 
-    def valid_permissions?
-      if (
-       #(params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
-       (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
-       (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
-         return false
-      else
-         return true
-      end
+  def valid_permissions?
+    if (
+        #(params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
+    (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
+        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
+      return false
+    else
+      return true
     end
+  end
 
-    def delete_files(object)
-      local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                          { :f => object.id, :d => 'content' } ],
-                                            :order => "version DESC")
-      local_file_info.each { |file| file.destroy }
-      FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
+  def delete_files(object)
+    local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
+                                                            { :f => object.id, :d => 'content' } ],
+                                     :order => "version DESC")
+    local_file_info.each { |file| file.destroy }
+    FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
 
-      storage = Storage::S3Interface.new
-      storage.delete_bucket(object.id.sub('dri:', ''))
-      storage.close
+    storage = Storage::S3Interface.new
+    storage.delete_bucket(object.id.sub('dri:', ''))
+    storage.close
+  end
+
+  def create_reader_group
+    @group = UserGroup::Group.new(:name => reader_group_name, :description => "Default Reader group for collection #{@collection.id}")
+    @group.save
+    @group
+  end
+
+  def reader_group_name
+    @collection.id.sub(':', '_')
+  end
+
+  def publish_objects
+    begin
+      Sufia.queue.push(PublishJob.new(@object.id))
+    rescue Exception => e
+      logger.error "Unable to submit publish job: #{e.message}"
+      raise Exceptions::ResqueError
     end
-
-    def create_reader_group
-      @group = UserGroup::Group.new(:name => reader_group_name, :description => "Default Reader group for collection #{@collection.id}")
-      @group.save
-      @group
-    end
-
-    def reader_group_name
-      @collection.id.sub(':', '_')
-    end
-
-    def publish_objects
-      begin
-        Sufia.queue.push(PublishJob.new(@object.id))
-      rescue Exception => e
-        logger.error "Unable to submit publish job: #{e.message}"
-        raise Exceptions::ResqueError
-      end
-    end
+  end
 
 end
 
