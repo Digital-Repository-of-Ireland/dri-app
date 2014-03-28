@@ -14,7 +14,9 @@ body {
 
 /* Anna updated html and body */
 
-/* bootstrap override */
+/* bootstrap overrides */
+
+
 input,
 button,
 select,
@@ -1687,6 +1689,7 @@ ul.dri_stats li {
 	width: 230px;
 	height: 129px;
 	margin: 8px 0 0 0;
+	overflow: hidden;
 }
 .dri_vc_title  {
 	margin: 20px 0 10px 0;
