@@ -38,7 +38,9 @@ module FieldRenderHelper
       end
       facet_arg = get_search_arg_from_facet :facet => facet_name
 
-      value = value.each_with_index.map { |v,i| "<a href=\"" << url_for({:action => 'index', :controller => 'catalog', facet_arg => standardise_facet(:facet => facet_name, :value => indexed_value[i])}) << "\">" << v << "</a>"}
+      value = value.each_with_index.map do |v,i|
+          "<a href=\"" << url_for({:action => 'index', :controller => 'catalog', facet_arg => standardise_facet(:facet => facet_name, :value => indexed_value[i])}) << "\">" << standardise_value(:facet_name => facet_name, :value => v) << "</a>"
+      end
     end
     return value.join(field_value_separator).html_safe
   end
@@ -92,6 +94,16 @@ module FieldRenderHelper
     end
   end
 
+  def standardise_value args
+
+    if args[:facet_name] == "temporal_coverage_sim" || args[:facet_name] == "geographical_coverage_sim"
+      return get_value_from_solr_field args[:value], "name"
+    else
+      return args[:value]
+    end
+
+  end
+
   def render_arbitrary_facet_links(fields)
     url_args = {:action => 'index', :controller => 'catalog'}
     fields.each do |field, value|
@@ -134,14 +146,19 @@ module FieldRenderHelper
     qdc_people
   end
 
-  def get_value_from_solr_flied solrField, value
-    components = solrField.to_s.split(/\[|;|\\|"|\]/)
-    components.each do |component|
-      (k,v) = component.split("=")
-      if k.eql?(value)
-        return v
+  def get_value_from_solr_field solrField, value
+    components = solrField.split(/\s*;\s*/)
+
+    if components.length < 2
+      return value
+    else
+      components.each do |component|
+        (k,v) = component.split(/\s*=\s*/)
+        if k.eql?(value)
+          return v
+        end
       end
     end
   end
-
+  
 end

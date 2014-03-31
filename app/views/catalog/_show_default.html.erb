@@ -3,39 +3,9 @@
   <%= render :partial => 'show_detail_and_download' %>
   <dl class="dri_object_metadata_readview">
     <% document_show_fields.each do |solr_fname, field| -%>
-        <% puts "#########################" %>
-        <% puts solr_fname.inspect %>
-        <% puts "#########################" %>
         <% if should_render_show_field? document, field %>
-
-            <% if solr_fname == "geographical_coverage_tesim" %>
-                <% copyDocument = document %>
-                <% parsedGeoCoverage = document[:geographical_coverage_tesim] %>
-
-                <% parsedGeoCoverage = get_value_from_solr_flied parsedGeoCoverage, "name" %>
-
-                <% copyDocument[:geographical_coverage_tesim] = parsedGeoCoverage %>
-
-                <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
-                <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => copyDocument, :field => solr_fname %></dd>
-
-            <% elsif solr_fname == "temporal_coverage_tesim" %>
-                <% copyDocument = document %>
-                <% parsedEraCoverage = document[:temporal_coverage_tesim] %>
-
-                <% parsedEraCoverage = get_value_from_solr_flied parsedEraCoverage, "name" %>
-
-                <% copyDocument[:temporal_coverage_tesim] = parsedEraCoverage %>
-
-                <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
-                <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => copyDocument, :field => solr_fname %></dd>
-
-            <% else %>
-
-                <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
-                <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
-
-            <% end %>
+            <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
+            <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
         <% end -%>
     <% end -%>
     <%= render :partial => 'shared/display_licence' %>

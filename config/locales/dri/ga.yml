@@ -94,6 +94,7 @@ ga:
       catalog: 
         buttons: 
           add_to_collection: "Cuir leis an mbailiúchán"
+          clear_search_facet_list: "Clear All"
           remove_from_collection: "Bain ón mbailiúchán"
         facets: 
           values: 

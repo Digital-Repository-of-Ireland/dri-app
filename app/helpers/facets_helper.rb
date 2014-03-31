@@ -74,6 +74,42 @@ module FacetsHelper
     return results
   end
 
+  def collection_title args
+    results = nil
+
+    if args.is_a?(Hash)
+      results = Array.new
+      value_list = args[:document][args[:field]]
+
+      value_list.each do |value|
+        results.push(transform_collection_title value)
+      end
+    else
+      results = transform_collection_title args
+    end
+
+    return results
+  end
+
+  def transform_collection_title value
+    return 'nil' if value == nil
+
+    pid = value
+
+    unless pid.blank?
+      solr_query = ActiveFedora::SolrService.construct_query_for_pids([pid])
+      docs = ActiveFedora::SolrService.query(solr_query)
+    else
+      return value
+    end
+
+    return 'nil' if docs.empty?
+
+    doc = docs.first
+
+    return doc["title_tesim"].first
+  end
+
   def transform_is_collection value
     if value == nil
       return 'nil'
@@ -160,14 +196,14 @@ module FacetsHelper
   # Used as helper_method in CatalogController's add_facet_field, doesn't seem to get called.
   def transform_permission value
     case value
-    when "0"
-      return t('dri.views.objects.access_controls.public')
-    when "1"
-      return t('dri.views.objects.access_controls.private')
-    when "-1"
-      return t('dri.views.objects.access_controls.inherited')
-    else
-      return "unknown?"
+      when "0"
+        return t('dri.views.objects.access_controls.public')
+      when "1"
+        return t('dri.views.objects.access_controls.private')
+      when "-1"
+        return t('dri.views.objects.access_controls.inherited')
+      else
+        return "unknown?"
     end
   end
 
@@ -177,13 +213,15 @@ module FacetsHelper
     label = item.label
     facet_config = facet_configuration_for_field(facet_solr_field)
     if facet_config.label == "Language"
-    	label = label_language label
+      label = label_language label
     elsif facet_config.label == "Metadata Search Access" || facet_config.label == "Master File Access"
       label = label_permission label
     elsif facet_config.label == "Era"
       label = parse_era label
     elsif facet_config.label == "Places"
       label = parse_location label
+    elsif facet_config.label == "Collection"
+      label = collection_title label
     end
     # (link_to_unless(options[:suppress_link], label, add_facet_params_and_redirect(facet_solr_field, item), :class=>"facet_select") + " " + render_facet_count(item.hits)).html_safe
     (link_to_unless(options[:suppress_link], label.html_safe + " (#{render_facet_count(item.hits)})".html_safe, add_facet_params_and_redirect(facet_solr_field, item)))
@@ -202,7 +240,7 @@ module FacetsHelper
   def render_selected_facet_value(facet_solr_field, item)
     #Updated class for Bootstrap Blacklight.
 
-      link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), remove_facet_params(facet_solr_field, item, params), :class=>"selected")
+    link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), remove_facet_params(facet_solr_field, item, params), :class=>"selected")
   end
 
   # Overwriting this helper so that values containing colons are automatically enclosed in double-quoted strings,
@@ -217,7 +255,8 @@ module FacetsHelper
     end
 
     if (value.include? ":")
-      value = '"'+value+'"'
+      #value = '"'+value+'"'
+      value = value.html_safe
     end
 
     value
