@@ -196,14 +196,14 @@ module FacetsHelper
   # Used as helper_method in CatalogController's add_facet_field, doesn't seem to get called.
   def transform_permission value
     case value
-    when "0"
-      return t('dri.views.objects.access_controls.public')
-    when "1"
-      return t('dri.views.objects.access_controls.private')
-    when "-1"
-      return t('dri.views.objects.access_controls.inherited')
-    else
-      return "unknown?"
+      when "0"
+        return t('dri.views.objects.access_controls.public')
+      when "1"
+        return t('dri.views.objects.access_controls.private')
+      when "-1"
+        return t('dri.views.objects.access_controls.inherited')
+      else
+        return "unknown?"
     end
   end
 
@@ -213,7 +213,7 @@ module FacetsHelper
     label = item.label
     facet_config = facet_configuration_for_field(facet_solr_field)
     if facet_config.label == "Language"
-    	label = label_language label
+      label = label_language label
     elsif facet_config.label == "Metadata Search Access" || facet_config.label == "Master File Access"
       label = label_permission label
     elsif facet_config.label == "Era"
@@ -240,7 +240,7 @@ module FacetsHelper
   def render_selected_facet_value(facet_solr_field, item)
     #Updated class for Bootstrap Blacklight.
 
-      link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), remove_facet_params(facet_solr_field, item, params), :class=>"selected")
+    link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), remove_facet_params(facet_solr_field, item, params), :class=>"selected")
   end
 
   # Overwriting this helper so that values containing colons are automatically enclosed in double-quoted strings,
