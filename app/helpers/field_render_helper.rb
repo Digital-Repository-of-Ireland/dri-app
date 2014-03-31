@@ -38,7 +38,14 @@ module FieldRenderHelper
       end
       facet_arg = get_search_arg_from_facet :facet => facet_name
 
-      value = value.each_with_index.map { |v,i| "<a href=\"" << url_for({:action => 'index', :controller => 'catalog', facet_arg => standardise_facet(:facet => facet_name, :value => indexed_value[i])}) << "\">" << v << "</a>"}
+      value = value.each_with_index.map do |v,i|
+        if facet_name == "temporal_coverage_sim" || facet_name == "geographical_coverage_sim"
+          name = get_value_from_solr_flied v, "name"
+          "<a href=\"" << url_for({:action => 'index', :controller => 'catalog', facet_arg => standardise_facet(:facet => facet_name, :value => indexed_value[i])}) << "\">" << name << "</a>"
+        else
+          "<a href=\"" << url_for({:action => 'index', :controller => 'catalog', facet_arg => standardise_facet(:facet => facet_name, :value => indexed_value[i])}) << "\">" << v << "</a>"
+        end
+      end
     end
     return value.join(field_value_separator).html_safe
   end
