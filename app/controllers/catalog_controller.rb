@@ -252,6 +252,7 @@ class CatalogController < ApplicationController
       solr_parameters[:fq] << "-ancestor_id_tesim:[* TO *]"
     else
       solr_parameters[:fq] << "+is_collection_sim:false"
+      solr_parameters[:fq] << "+root_collection_id_sim:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
     end
   end
 

@@ -3,17 +3,47 @@
   <%= render :partial => 'show_detail_and_download' %>
   <dl class="dri_object_metadata_readview">
     <% document_show_fields.each do |solr_fname, field| -%>
-      <% if should_render_show_field? document, field %>
-        <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
-        <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
-      <% end -%>
+        <% puts "#########################" %>
+        <% puts solr_fname.inspect %>
+        <% puts "#########################" %>
+        <% if should_render_show_field? document, field %>
+
+            <% if solr_fname == "geographical_coverage_tesim" %>
+                <% copyDocument = document %>
+                <% parsedGeoCoverage = document[:geographical_coverage_tesim] %>
+
+                <% parsedGeoCoverage = get_value_from_solr_flied parsedGeoCoverage, "name" %>
+
+                <% copyDocument[:geographical_coverage_tesim] = parsedGeoCoverage %>
+
+                <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
+                <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => copyDocument, :field => solr_fname %></dd>
+
+            <% elsif solr_fname == "temporal_coverage_tesim" %>
+                <% copyDocument = document %>
+                <% parsedEraCoverage = document[:temporal_coverage_tesim] %>
+
+                <% parsedEraCoverage = get_value_from_solr_flied parsedEraCoverage, "name" %>
+
+                <% copyDocument[:temporal_coverage_tesim] = parsedEraCoverage %>
+
+                <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
+                <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => copyDocument, :field => solr_fname %></dd>
+
+            <% else %>
+
+                <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
+                <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
+
+            <% end %>
+        <% end -%>
     <% end -%>
     <%= render :partial => 'shared/display_licence' %>
   </dl>
 
-    
 
-  
+
+
 
 </div>
 <!-- close dri_object_first_block -->
@@ -25,19 +55,19 @@
   <% collection = governing_collection_solr(@document) %>
 
   <% unless collection.nil? %>
-    <div class="dri_vc_title">
-      <%= image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
-      <%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(collection['id']) ) %>
-    </div>
+      <div class="dri_vc_title">
+        <%= image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
+        <%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(collection['id']) ) %>
+      </div>
   <% end %>
   <!-- close vc_title -->
 
   <% unless collection.nil? %>
-    <% if collection['cover_image_tesim'] && collection['cover_image_tesim'][0] %>
-      <div class="dri_vc_image">
-        <%= image_tag(collection['cover_image_tesim'][0], :width=>"230", :height=>"129", :alt=> t('dri.views.alt_tags.cover_image') ) %><!-- needs callback -->
-      </div>
-    <% end %>
+      <% if collection['cover_image_tesim'] && collection['cover_image_tesim'][0] %>
+          <div class="dri_vc_image">
+            <%= image_tag(collection['cover_image_tesim'][0], :width=>"230", :height=>"129", :alt=> t('dri.views.alt_tags.cover_image') ) %><!-- needs callback -->
+          </div>
+      <% end %>
   <% end %>
   <!-- close vc_title -->
 
@@ -46,24 +76,24 @@
   <%= render :partial => "tools" %>
   <%= render :partial => "show_downloads" %>
   <% if signed_in? && (can?(:edit, @document)) %>
-    <div class="dri_objecttools_title">
-      <%= t('dri.views.catalog.titles.editor_tools') %>
-    </div>
-
-    <div class="dri_grey_button" >
-      <%= link_to t('dri.views.catalog.links.edit_this_record'), edit_object_path(@document), :id => "edit_record" %>
-    </div>
-
-    <% unless @files.nil? || @files.empty? %>
-      <div class="dri_grey_button" >
-        <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
+      <div class="dri_objecttools_title">
+        <%= t('dri.views.catalog.titles.editor_tools') %>
       </div>
-    <% end %>
+
+      <div class="dri_grey_button" >
+        <%= link_to t('dri.views.catalog.links.edit_this_record'), edit_object_path(@document), :id => "edit_record" %>
+      </div>
+
+      <% unless @files.nil? || @files.empty? %>
+          <div class="dri_grey_button" >
+            <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
+          </div>
+      <% end %>
 
       <% unless @document[:status_tesim].first.eql?("published") %>
-        <div class="dri_grey_button" >
-          <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
-        </div>
+          <div class="dri_grey_button" >
+            <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
+          </div>
       <% end %>
 
   <% end %>

@@ -21,6 +21,7 @@
 /doc
 .DS_Store
 .yardoc
+.idea/*
 
 config/settings.local.yml
 config/settings/*.local.yml
