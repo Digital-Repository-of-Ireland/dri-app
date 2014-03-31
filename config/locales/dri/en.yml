@@ -94,6 +94,7 @@ en:
       catalog: 
         buttons: 
           add_to_collection: "Add to collection"
+          clear_search_facet_list: "Clear All"
           remove_from_collection: "Remove from collection"
         facets: 
           values: 
