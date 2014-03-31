@@ -74,6 +74,42 @@ module FacetsHelper
     return results
   end
 
+  def collection_title args
+    results = nil
+
+    if args.is_a?(Hash)
+      results = Array.new
+      value_list = args[:document][args[:field]]
+
+      value_list.each do |value|
+        results.push(transform_collection_title value)
+      end
+    else
+      results = transform_collection_title args
+    end
+
+    return results
+  end
+
+  def transform_collection_title value
+    return 'nil' if value == nil
+
+    pid = value
+
+    unless pid.blank?
+      solr_query = ActiveFedora::SolrService.construct_query_for_pids([pid])
+      docs = ActiveFedora::SolrService.query(solr_query)
+    else
+      return value
+    end
+
+    return 'nil' if docs.empty?
+
+    doc = docs.first
+
+    return doc["title_tesim"].first
+  end
+
   def transform_is_collection value
     if value == nil
       return 'nil'
@@ -184,6 +220,8 @@ module FacetsHelper
       label = parse_era label
     elsif facet_config.label == "Places"
       label = parse_location label
+    elsif facet_config.label == "Collection"
+      label = collection_title label
     end
     # (link_to_unless(options[:suppress_link], label, add_facet_params_and_redirect(facet_solr_field, item), :class=>"facet_select") + " " + render_facet_count(item.hits)).html_safe
     (link_to_unless(options[:suppress_link], label.html_safe + " (#{render_facet_count(item.hits)})".html_safe, add_facet_params_and_redirect(facet_solr_field, item)))
@@ -217,7 +255,8 @@ module FacetsHelper
     end
 
     if (value.include? ":")
-      value = '"'+value+'"'
+      #value = '"'+value+'"'
+      value = value.html_safe
     end
 
     value

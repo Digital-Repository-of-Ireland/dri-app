@@ -48,7 +48,7 @@ I want to be able to use the faceted search interface
     | Names      | blacklight-person_sim                | Collins         | SAMPLE AUDIO TITLE |
     | Language   | blacklight-language_sim              | English         | SAMPLE AUDIO TITLE |
     | Mediatype  | blacklight-file_type_display_sim     | Audio           | SAMPLE AUDIO TITLE |
-    | Collection | blacklight-root_collection_sim       | Test collection | SAMPLE AUDIO TITLE |
+    | Collection | blacklight-root_collection_id_sim    | Test collection | SAMPLE AUDIO TITLE |
     #| Institute  | blacklight-institute_sim             | Test Institute  | SAMPLE AUDIO TITLE |
 
 @wip

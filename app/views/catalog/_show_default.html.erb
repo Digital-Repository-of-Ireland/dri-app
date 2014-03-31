@@ -3,9 +3,6 @@
   <%= render :partial => 'show_detail_and_download' %>
   <dl class="dri_object_metadata_readview">
     <% document_show_fields.each do |solr_fname, field| -%>
-        <% puts "#########################" %>
-        <% puts solr_fname.inspect %>
-        <% puts "#########################" %>
         <% if should_render_show_field? document, field %>
 
             <% if solr_fname == "geographical_coverage_tesim" %>
