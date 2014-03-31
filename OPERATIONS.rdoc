@@ -65,3 +65,6 @@ To get the status of the workers
 
     # supervisorctl status
 
+== Ensure assets are generated
+
+  bundle exec rake assets:precompile
