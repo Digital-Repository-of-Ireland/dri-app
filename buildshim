@@ -27,6 +27,7 @@ cp config/jetty.yml.sample config/jetty.yml
 cp config/fedora.yml.sample config/fedora.yml
 cp config/solr.yml.sample config/solr.yml
 cp config/database.yml.sample config/database.yml
+cp config/redis.yml.sample config/redis.yml
 
 cat > config/settings.local.yml << __EOF__
 ingest:
@@ -79,6 +80,7 @@ check)
     bundle exec rake db:test:prepare
     bundle exec rake ci || exit 100
     bundle exec rake rdoc
+    bundle exec rake assets:precompile
     ;;
 package)
     ;;
