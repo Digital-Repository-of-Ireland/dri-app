@@ -1,7 +1,7 @@
 <div id="dri_welcome_block_id" class="dri_welcome_block">
-	<h1><%= t('dri.application.home.introtext.public') %></h1>
+	<h1><%= t('blacklight.welcome') %></h1>
 	<p>
-		<%= t('blacklight.welcome') %>
+		<%= t('dri.application.home.introtext.public') %>
 	</p>
 	<p class="dri_home_link">
 		<%= link_to t('dri.application.home.links.visit_dri'), 'http://dri.ie' %>
@@ -25,7 +25,7 @@
 
   <!-- Wrapper for slides -->
   <div class="carousel-inner">
-    <div class="item">
+    <div class="item active">
         <%= link_to (user_group.new_user_path) do %>
       <%= image_tag("dri/slides/slide1.png", :alt=>"Hardiman Atlas" ) %>
       <div class="carousel-caption">
@@ -137,7 +137,7 @@
 		<!-- close content_block -->
 	</article>
 
-	<div class="dri_home_title">
+	<div class="dri_home_title dri_clearfix">
 		<h2><%= t('dri.application.home.newly_added') %></h2>
 		<div class="dri_border_bottom">
 			&nbsp;

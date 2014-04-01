@@ -24,6 +24,9 @@ body {
   background: #333333;
   background: rgba(144, 154, 60, 0.75);
 }
+.carousel-indicators .active {
+  background-color: rgba(144, 154, 60, 1);
+}
 
 input,
 button,
