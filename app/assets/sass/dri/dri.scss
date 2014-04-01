@@ -1874,7 +1874,7 @@ ul.dri_collection_institutes_list li a {
 
 /*-------------- Footer navigation --------------*/
 .dri_main_footer_navigation {
-	margin: 100px 0 100px 0;
+	margin: 100px 0 70px 0;
 	padding: 0px;
 	border-top: 1px solid #D9DADB;
 	height: 40px;
@@ -1912,5 +1912,9 @@ ul.dri_collection_institutes_list li a {
 }
 .dri_main_footer_navigation li.no_border_right {
 		border-right: none;	
+}
+
+.dri_footer_address {
+  margin: 10px 0 10px 0;
 }
 

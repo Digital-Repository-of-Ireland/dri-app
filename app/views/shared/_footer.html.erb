@@ -1,13 +1,7 @@
 
 <footer id="dri_main_footer_id" class="dri_main_footer">
-	<div id="dri_footer_address" class="dri_footer_address">
-		DRI
-		<br>
-		Dawson Street
-		<br>
-		Dublin
-		<br>
-		Ireland
+	<div id="dri_footer_address_id" class="dri_footer_address">
+Royal Irish Academy<br>19 Dawson Street<br>Dublin 2<br>Tel +353 1 609 0674<br>Email dri@ria.ie
 	</div>
 	<nav id="dri_main_footer_navigation_id"
 	class="dri_main_footer_navigation">
@@ -28,18 +22,7 @@
 		</ul>
 	</nav>
 	<div class="dri_funder_institutes">
-
-		<ul class="dri_collection_institutes_list">
- 
-		  <% if @all_institutes %>
-		    <% @all_institutes.each do |inst| %>
-		     <li>
-		      <%= inst.name %>
-		       </li>
-		    <% end %>
-		  <% end %>
- 
-		</ul>
+      <%= image_tag("dri/dri_funder_logos.png", :alt=>"funder logos" ) %>
 
 	</div>
 

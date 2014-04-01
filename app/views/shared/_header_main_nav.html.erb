@@ -1,41 +1,55 @@
 <div id="dri_main_nav_container_id" class="dri_main_nav_container">
-  <nav id="dri_main_nav_id" class="dri_main_nav">
+	<nav id="dri_main_nav_id" class="dri_main_nav">
 
-    <ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase">
-      <% if current_user %>
-          <li>
-            <%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
-          </li>
-          <li>
-            <%= link_to t('dri.headerlinks.workspace'), workspace_path, :id => "workspace" %>
-          </li>
-          <li>
-            <%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
-          </li>
-          <li>
-            <%= link_to t('dri.views.collection.buttons.new_collection'), main_app.new_collection_path, :id => "new_collection" %>
-          </li>
-          <li>
-            <%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %>
-          </li>
-          <% if signed_in? && current_user.is_admin? %>
-              <li>
-                <%= link_to t('dri.headerlinks.admin'), main_app.admin_tasks_path, :id => "admin_tasks" %>
-              </li>
-          <% end %>
-      <% else %>
-          <li>
-            <%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
-          </li>
-          <li>
-            <%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
-          </li>
-          <li>
+		<ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase">
+			<% if current_user %>
+			<li>
+				<%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
+			</li>
+			<li>
+				<%= link_to t('dri.headerlinks.workspace'), workspace_path, :id => "workspace" %>
+			</li>
+			<% if (controller_name == 'catalog' and has_search_parameters? ) %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
+				<%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
+			</li>
+			<li>
+				<%= link_to t('dri.views.collection.buttons.new_collection'), main_app.new_collection_path, :id => "new_collection" %>
+			</li>
+			<li>
+				<%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %>
+			</li>
+			<% if signed_in? && current_user.is_admin? %>
+			<li>
+				<%= link_to t('dri.headerlinks.admin'), main_app.admin_tasks_path, :id => "admin_tasks" %>
+			</li>
+			<% end %>
+			<% else %>
+			<% if current_page?('/') %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
+				<%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
+			</li>
+			<% if (controller_name == 'catalog' and has_search_parameters? ) %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
 
-            <%= link_to t('dri.headerlinks.about'), 'http://www.dri.ie/about', :target => '_blank' %>
-          </li>
-      <% end %>
-    </ul>
-  </nav>
+				<%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
+
+			</li>
+			<li>
+
+				<%= link_to t('dri.headerlinks.about'), 'http://www.dri.ie/about', :target => '_blank' %>
+			</li>
+			<% end %>
+		</ul>
+	</nav>
 </div>
 <!-- close dri_main_nav_container -->
