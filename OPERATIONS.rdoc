@@ -12,8 +12,8 @@ and ensure the correct production servers have been deployed and are place.
 Some steps required to be run before a production env is ready to go...
 
   $ rake RAILS_ENV=production assets:precompile
-  $ rake RAILS_ENV=production db:schema:load
   $ rake RAILS_ENV=production db:migrate
+  $ rake RAILS_ENV=production db:seed
 
 The above assumes a production ready instance of redis, mysql, solr,
 fedora-commons and mod_passenger.
