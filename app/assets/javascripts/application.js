@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require jquery.remotipart
 //= require jquery.cookie
-//
+//= require bootstrap
 // Required by Blacklight
 //= require blacklight/blacklight
 //= Required by Dropit dropdown menu library
@@ -28,6 +28,7 @@
 <!-- Dropit Script - uses JQuery-UI Drop function -->
 $(document).ready(function() {
     $('.menu').dropit();
+    $('.carousel').carousel();
 });
 
 $(function(){
@@ -40,3 +41,5 @@ $(function(){
         return false;
     });
   });
+  
+
