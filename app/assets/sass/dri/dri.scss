@@ -15,7 +15,15 @@ body {
 /* Anna updated html and body */
 
 /* bootstrap overrides */
-
+.carousel-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 15px;
+  background: #333333;
+  background: rgba(144, 154, 60, 0.75);
+}
 
 input,
 button,
@@ -1192,7 +1200,7 @@ h4.suggest a:hover {
 .dri_home_title h2 {
 	margin: 0 0 0 0;
 	padding: 0 0 0 0;
-	width: 730px;
+	width: 100%;
 	font-size: 130%;
 	color: #2F2F2F;
 	border-bottom: 1px solid #E1E1E1;

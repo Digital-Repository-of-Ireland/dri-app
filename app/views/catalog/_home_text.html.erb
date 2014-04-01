@@ -25,25 +25,29 @@
 
   <!-- Wrapper for slides -->
   <div class="carousel-inner">
-    <div class="item active">
-        <%= link_to (user_group.new_user_path) do %>|
-      <%= image_tag("dri/slides/slide1.png", :alt=>"slide1" ) %>
+    <div class="item">
+        <%= link_to (user_group.new_user_path) do %>
+      <%= image_tag("dri/slides/slide1.png", :alt=>"Hardiman Atlas" ) %>
       <div class="carousel-caption">
-      <p>Slide 1</p>
+      <p>Hardiman Atlas</p>
       <% end %>
       </div>
     </div>
     <div class="item">
-      <%= image_tag("dri/slides/slide2.png", :alt=>"slide2" ) %>
+      <%= link_to (user_group.new_user_path) do %>
+      <%= image_tag("dri/slides/slide2.png", :alt=>"Kilkenny Design" ) %>
       <div class="carousel-caption">
-      Slide 2
+      <p>Kilkenny Design</p>
       </div>
+      <% end %>
     </div>
     <div class="item">
+      <%= link_to (user_group.new_user_path) do %>
       <%= image_tag("dri/slides/slide3.png", :alt=>"slide3" ) %>
       <div class="carousel-caption">
-      Slide 3
+      <p>World War I Recruiting Collection</p>
       </div>
+      <% end %>
     </div>
   </div>
 

@@ -29,6 +29,8 @@
 $(document).ready(function() {
     $('.menu').dropit();
     $('.carousel').carousel();
+    //popover for search info
+    $('#q').popover();
 });
 
 $(function(){
