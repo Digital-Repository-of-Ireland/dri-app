@@ -106,6 +106,13 @@ class CollectionsController < CatalogController
       flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
     end
 
+    #purge params from update action
+    params.delete(:batch)
+    params.delete(:_method)
+    params.delete(:authenticity_token)
+    params.delete(:commit)
+    params.delete(:action)
+
     respond_to do |format|
       format.html  { render :action => "edit" }
     end

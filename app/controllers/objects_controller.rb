@@ -55,6 +55,13 @@ class ObjectsController < CatalogController
     set_access_permissions(:batch)
     @object.update_attributes(params[:batch])
 
+    #purge params from update action
+    params.delete(:batch)
+    params.delete(:_method)
+    params.delete(:authenticity_token)
+    params.delete(:commit)
+    params.delete(:action)
+
     #Do for collection?
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
