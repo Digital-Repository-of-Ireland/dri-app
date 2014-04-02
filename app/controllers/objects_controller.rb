@@ -265,6 +265,8 @@ class ObjectsController < CatalogController
 
     return if request.get?
 
+    raise Exceptions::BadRequest if @object.is_collection?
+
     unless @object.status.eql?("published")
       @object.status = [params[:status]] if params[:status].present?
       @object.save
@@ -276,13 +278,20 @@ class ObjectsController < CatalogController
       rescue Exception => e
         logger.error "Unable to submit status job: #{e.message}"
         flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)
+        @warnings = t('dri.flash.alert.error_review_job', :error => e.message)  
       end
     end
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
-      format.json  { render :json => @object }
+      format.json {
+        unless @warnings.nil?
+          response = { :warning => @warnings, :id => @object.id, :status => @object.status }
+        else
+          response = { :id => @object.id, :status => @object.status }
+        end
+        render :json => response, :status => :accepted } 
     end
   end
 
