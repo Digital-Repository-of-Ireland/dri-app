@@ -12,9 +12,10 @@
     <% end %>
     <% copyParams.delete(:f) %>
     <% copyParams.delete(:q) %>
+    <% copyParams.delete(:id) %>
 
     <span class="dri_clear_all">
-      <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), main_app.catalog_index_path(copyParams), :id => "browse" %>
+      <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), main_app.catalog_index_path(copyParams) %>
     </span>
   </ul>
 </div>
