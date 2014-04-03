@@ -1,7 +1,15 @@
-When(/^"(.*?)" has been granted "(.*?)" permissions on "(.*?)"$/) do |user, permission, pid|
+When(/^"(.*?)" has been granted "(.*?)" permissions(?: on "(.*?)")?$/) do |user, permission, pid|
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  
-  if permission == "manage"
+
+  if permission == "none"
+    # do nothing
+  elsif permission == "admin"
+    user = User.find_by_email(user)
+    group_id = UserGroup::Group.find_or_create_by_name('admin', description: "Test group", is_locked: true).id
+    membership = user.join_group(group_id)
+    membership.approved_by = user.id
+    membership.save
+  elsif permission == "manage"
     if object.manager_users_string.nil?
       object.manager_users_string = User.find_by_email(user).to_s
     else

@@ -27,9 +27,11 @@ ga:
     data: 
       types: 
         Image: Íomhánna
+        MixedType: "Mixed Types"
         MovingImage: Video
         Sound: Audio
         Text: Doiciméid
+        Unknown: Unknown
     flash: 
       alert: 
         create_permission: "Níl cead agat an doiciméad seo a chruthú."

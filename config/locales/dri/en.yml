@@ -26,10 +26,12 @@ en:
       locale: Language
     data: 
       types: 
-        Image: Images
+        Image: Image
+        MixedType: "Mixed Types"
         MovingImage: Video
         Sound: Audio
-        Text: Documents
+        Text: Document
+        Unknown: Unknown
     flash: 
       alert: 
         create_permission: "You do not have permission to create this document."
