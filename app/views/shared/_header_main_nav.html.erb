@@ -28,7 +28,7 @@
 			</li>
 			<% end %>
 			<% else %>
-			<% if current_page?('/') %>
+			<% if current_page?('/') and !current_page?('/?*') %>
 			<li class="selected">
 				<% else %>
 			<li>
@@ -44,9 +44,12 @@
 				<%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
 
 			</li>
-			<li>
-
-				<%= link_to t('dri.headerlinks.about'), 'http://www.dri.ie/about', :target => '_blank' %>
+		      <% if current_page?('/pages/about_us') %>
+            <li class="selected">
+                <% else %>
+            <li>
+                <% end %>
+				<%= link_to t('dri.headerlinks.about'), '/pages/about_us' %>
 			</li>
 			<% end %>
 		</ul>
