@@ -114,7 +114,6 @@ Feature: Access controls
     When I am logged in as "foo"
     And "foo@foo.com" has been granted "<permission>" permissions on "dri:c11111"
     And I go to "show Digital Object page for id dri:o11111"
-    Then show me the page
     Then I should see a link to generate surrogates
 
     Examples:
