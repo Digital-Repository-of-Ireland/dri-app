@@ -1,0 +1,8 @@
+== Deployment
+
+Once the test suite passes and the code base has been reviewed and agreed
+upon, a branch is created for deployment, it should be dated in the form
+YYYY-MM-DD the assets should be compiled and committed.
+
+Once the assets are committed, a tag is created, this tag is then merged
+to master for the the deployment scripts to deploy.
