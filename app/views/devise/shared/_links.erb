@@ -1,44 +1,54 @@
 
 <%- if controller_name != 'sessions' %>
-<%= link_to t(".sign_in", :default => "Sign in"), new_session_path(resource_name), :id => "login" %>
+    <%= link_to t('dri.sign_in.title'), new_session_path(resource_name), :id => "login" %>
 <% end -%>
 
 
 <%= link_to user_group.new_user_path, :id => "signup" do %>
-<span class="text_right"><%= t(".sign_up", :default => "Sign up") %></span>
+    <span class="text_right"><%= t('dri.sign_in.register') %></span>
 <% end %>
 
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
-<%= link_to (new_password_path(resource_name)), :id => "password_reset" do %>
+    <%= link_to (new_password_path(resource_name)), :id => "password_reset" do %>
 
-<span class="text_right"><%= t(".forgot_your_password", :default => "Forgot your password?") %></span>
-<% end %>
+        <span class="text_right"><%= t('dri.sign_in.forgot_password') %></span>
+    <% end %>
 <% end -%>
 
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-  <%= link_to (new_confirmation_path(resource_name)), :id => "password_reset_not_sent" do %>
-    <span class="text_right"><%= t(".didn_t_receive_confirmation_instructions", :default => "Didn't receive confirmation instructions?") %></span>
-  <% end %>
+    <%= link_to (new_confirmation_path(resource_name)), :id => "password_reset_not_sent" do %>
+        <span class="text_right"><%= t('dri.sign_in.no_confirmation') %></span>
+    <% end %>
 <% end -%>
 
 <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-<%= link_to t('.didn_t_receive_unlock_instructions', :default => "Didn't receive unlock instructions?"), new_unlock_path(resource_name), :id => "unlock_not_sent" %>
+    <%= link_to t('dri.sign_in.no_unlock'), new_unlock_path(resource_name), :id => "unlock_not_sent" %>
 <% end -%>
 
 <%- if devise_mapping.omniauthable? %>
-<div class="dri_signin_socialmedia">
-                		<h2> Sign In with another Account</h2>
-                		  <%- resource_class.omniauth_providers.each do |provider| %>
-<%= link_to (omniauth_authorize_path(resource_name, provider)) do %>
-<div class="dri_signin_edugate"><%= t('.sign_in_with_provider', :provider => provider.to_s.titleize, :default => "Sign in with #{provider.to_s.titleize}") %></div>
-  <% end %>
-  <% end -%>
+    <div class="dri_signin_socialmedia">
+      <h2><%= t('dri.sign_in.with_another_account') %></h2>
+      <% signWith = t('dri.sign_in.sign_in_with') %>
+      <%- resource_class.omniauth_providers.each do |provider| %>
+          <%= link_to (omniauth_authorize_path(resource_name, provider)) do %>
+              <div class="dri_signin_edugate"><%= signWith + provider.to_s.titleize %></div>
+          <% end %>
+      <% end -%>
 
-                	 <a onclick="alert('May come soon');" href=""><div class="dri_signin_google">Sign In with Google</div></a>
-					<a onclick="alert('May come soon');" href=""><div class="dri_signin_facebook">Sign In with Facebook</div></a>
-                    <a onclick="alert('May come soon');" href=""><div class="dri_signin_twitter">Sign In with Twitter</div></a>
-                   
-</div>
+      <% comingSoon = t('dri.window.alert.coming_soon') %>
+      <%= link_to '', onclick: "alert('#{comingSoon}');" do %>
+          <div class="dri_signin_google"><%= t('dri.sign_in.sign_in_with') + 'Google' %></div>
+      <% end %>
+
+      <%= link_to '', onclick: "alert('#{comingSoon}');" do %>
+          <div class="dri_signin_facebook"><%= t('dri.sign_in.sign_in_with') + 'Facebook' %></div>
+      <% end %>
+
+      <%= link_to '', onclick: "alert('#{comingSoon}');" do %>
+          <div class="dri_signin_twitter"><%= t('dri.sign_in.sign_in_with') + 'Twitter' %></div>
+      <% end %>
+
+    </div>
 
 <% end -%>
 
