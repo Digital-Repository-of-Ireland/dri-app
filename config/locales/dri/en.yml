@@ -75,6 +75,14 @@ en:
         specify_valid_file: "You must specify a valid file to upload."
         specify_xml_file: "You must specify a XML file."
         updated: "Updated %{item}"
+    footer: 
+      contacts: 
+        email: Email
+        phone: Tel
+      ria_address: 
+        name: "Royal Irish Academy"
+        street: "19 Dawson Street"
+        zip: "Dublin 2"
     headerlinks: 
       about: About
       admin: "Admin Tasks"

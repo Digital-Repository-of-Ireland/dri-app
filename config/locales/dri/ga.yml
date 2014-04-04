@@ -75,6 +75,14 @@ ga:
         specify_valid_file: "Ní mór duit comhad bailí a shonrú le huaslódáil."
         specify_xml_file: "Ní mór duit comhad XML a shonrú."
         updated: "Tugtha cothrom le dáta %{item}"
+    footer: 
+      contacts: 
+        email: Email
+        phone: Tel
+      ria_address: 
+        name: "Royal Irish Academy"
+        street: "19 Dawson Street"
+        zip: "Dublin 2"
     headerlinks: 
       about: Eolas
       admin: "Admin Tasks"
