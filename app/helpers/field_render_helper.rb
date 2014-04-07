@@ -58,9 +58,9 @@ module FieldRenderHelper
     label = blacklight_config.show_fields[field].label
 
     if label[0, 5] == 'role_'
-      html_escape t('dri.vocabulary.marc_relator.'+label[5,3])+":"
+      html_escape t('dri.vocabulary.marc_relator.'+label[5,3])
     else
-      html_escape t('dri.views.fields.'+label)+":"
+      html_escape t('dri.views.fields.'+label)
     end
   end
 
