@@ -1122,3 +1122,5 @@ en:
         wit: Witness
       name: 
         marc_relators: "MARC Relators"
+    help:
+      q: "Type a search term and press Enter"

@@ -3,7 +3,7 @@
     <%= hidden_field_tag 'search_field', 'all_fields' %>
     <%= search_as_hidden_fields(:omit_keys => [:q, :search_field, :qt, :page, :utf8, :id]).html_safe %>
 
-    <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :id => "q", :class => "dri_search_term_text_input", :'data-toggle' => "popover", :'data-content' =>  t('blacklight.search.form.q'), :'data-trigger' => "hover", :'data-placement' => "left" %>
+    <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :id => "q", :class => "dri_search_term_text_input", :'data-content' =>  t('dri.help.q'), :'data-trigger' => "hover", :'data-placement' => "left" %>
     <button type="submit" class="dri_search_term_text_submit_button dri_no_display" id="search">
       <%=t('blacklight.search.form.submit')%>
     </button>
