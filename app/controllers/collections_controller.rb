@@ -48,7 +48,7 @@ class CollectionsController < CatalogController
   # Edits an existing model.
   #
   def edit
-    enforce_permissions!("edit",params[:id])
+    enforce_permissions!("manage_collection",params[:id])
     @object = retrieve_object!(params[:id])
 
     @institutes = Institute.find(:all)
@@ -284,7 +284,7 @@ class CollectionsController < CatalogController
   end
 
   def destroy
-    enforce_permissions!("edit",params[:id])
+    enforce_permissions!("manage_collection",params[:id])
 
     if current_user.is_admin?
       @collection = retrieve_object!(params[:id])
@@ -309,7 +309,7 @@ class CollectionsController < CatalogController
   end
 
   def publish
-    enforce_permissions!("edit", params[:id])
+    enforce_permissions!("manage_collection", params[:id])
 
     @object = retrieve_object!(params[:id])
 

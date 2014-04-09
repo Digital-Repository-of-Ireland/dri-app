@@ -52,7 +52,7 @@
 
         <div class="dri_icon">
           <% unless format?(document).eql?("unknown") %>
-              <span class="dri_icon_image"><%= image_tag(icon_path(document)) %> &nbsp; <%= document[:file_type_display_tesim][0].to_s %></span>
+              <span class="dri_icon_image"><%= image_tag(icon_path(document)) %> &nbsp; <%= get_document_type document %></span>
           <% else %>
               <span class="dri_icon_text"><%= document[:object_type_ssm].first %></span>
           <% end %>

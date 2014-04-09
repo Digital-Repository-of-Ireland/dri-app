@@ -103,12 +103,10 @@ class ApplicationController < ActionController::Base
 
   def ingest_collections
     results = Array.new
-    solr_query = "+object_type_sim:Collection"
+    solr_query = "+is_collection_sim:true"
 
-    unless (current_user && current_user.is_admin?)
-      fq = manager_and_edit_filter
-    end
-
+    fq = manager_and_edit_filter unless (current_user && current_user.is_admin?)
+    
     query = Solr::Query.new(solr_query, 50, {:defType => "edismax", :fl => "id,title_tesim", :fq => fq})
     while query.has_more?
       result_docs = query.pop

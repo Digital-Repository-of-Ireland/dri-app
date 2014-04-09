@@ -1,10 +1,10 @@
 <div class="dri_object_first_block">
   <dl class="dri_object_metadata_readview">
     <% document_show_fields.each do |solr_fname, field| -%>
-      <% if should_render_show_field? document, field %>
-        <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
-        <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
-      <% end -%>
+        <% if should_render_show_field? document, field %>
+            <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
+            <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
+        <% end -%>
     <% end -%>
   </dl>
 </div>
@@ -21,41 +21,41 @@
 
   <div class="dri_vc_image"><!-- fix link -->
     <% if document[:cover_image_tesim] && document[:cover_image_tesim].first %>
-      <%= image_tag(document[:cover_image_tesim].first, :width=>"230", :height=>"139", :alt=> t('dri.views.alt_tags.cover_image')) %></a>
+        <%= image_tag(document[:cover_image_tesim].first, :width=>"230", :height=>"139", :alt=> t('dri.views.alt_tags.cover_image')) %></a>
     <% else %>
-      <% image = "dri/formats/collection.png".downcase %>
-      <%= image_tag(image, :width=>"230", :height=>"139", :alt=>t('dri.views.alt_tags.cover_image')) %></a>
+        <% image = "dri/formats/collection.png".downcase %>
+        <%= image_tag(image, :width=>"230", :height=>"139", :alt=>t('dri.views.alt_tags.cover_image')) %></a>
     <% end %>
   </div>
 
   <%= render :partial => "tools", :locals => {:document => document} %>
 
   <% if signed_in? && (can? :manage_collection, document) %>
-    <div class="dri_objecttools_title">
-      <%= t('dri.views.catalog.titles.editor_tools') %>
-    </div>
-    <div class="dri_grey_button"><%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %></div>
-    <div class="dri_grey_button" >
-      <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" %>
-    </div>
+      <div class="dri_objecttools_title">
+        <%= t('dri.views.catalog.titles.editor_tools') %>
+      </div>
+      <div class="dri_grey_button"><%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %></div>
+      <div class="dri_grey_button" >
+        <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" %>
+      </div>
 
-    <% if @document[:status_ssim].first.eql?("draft") %>
-      <% publish_label = t('dri.views.catalog.links.publish') %>
-    <% else %>
-      <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
-    <% end %>
+      <% if @document[:status_ssim].first.eql?("draft") %>
+          <% publish_label = t('dri.views.catalog.links.publish') %>
+      <% else %>
+          <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
+      <% end %>
 
-    <div class="dri_grey_button" >
-      <%= link_to publish_label, publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" %>
-    </div>
+      <div class="dri_grey_button" >
+        <%= link_to publish_label, publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" %>
+      </div>
 
   <% end %>
 
   <% if signed_in? && (document[:root_collection_id_tesim] == document[:id]) && (can? :manage_collection, document) %>
-    <% pending = pending_memberships( document ) %>
-    <% unless pending.blank? %>
-      <%= render :partial => 'collections/approve_membership', :locals => {:pending => pending} %>
-    <% end %>
+      <% pending = pending_memberships( document ) %>
+      <% unless pending.blank? %>
+          <%= render :partial => 'collections/approve_membership', :locals => {:pending => pending} %>
+      <% end %>
   <% end %>
 
 </div>

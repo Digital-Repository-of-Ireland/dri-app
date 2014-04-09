@@ -12,16 +12,11 @@ class AssetsController < ApplicationController
 
   def show
 
-    datastream = "content"
-    if params.has_key?(:datastream)
-      datastream = params[:datastream]
-    end
+    datastream = params[:datastream].presence || "content"
 
     # Check if user can view a master file
-    if (datastream == "content")
-      enforce_permissions!("show_master", params[:object_id])
-    end
-
+    enforce_permissions!("show_master", params[:object_id]) if (datastream == "content")
+    
     @document = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
 
@@ -36,26 +31,21 @@ class AssetsController < ApplicationController
   # By default, it retrieves the file in the content datastream
   def download
 
-    datastream = "content"
-    if params.has_key?(:datastream)
-      datastream = params[:datastream]
-    end
+    datastream = params[:datastream].presence || "content"
 
     # Check if user can view a master file
-    if (datastream == "content")
-      enforce_permissions!("show_master", params[:object_id])
-    end
-
+    enforce_permissions!("show_master", params[:object_id]) if (datastream == "content")
+    
     @gf = retrieve_object! params[:id]
 
-    if (@gf != nil)
+    unless @gf.nil?
 
       @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
                                                                 { :f => @gf.id, :d => datastream } ],
                                             :order => "version DESC",
                                             :limit => 1)
 
-      if !@local_file_info.empty?
+      unless @local_file_info.empty?
         logger.error "Using path: "+@local_file_info[0].path
         send_file @local_file_info[0].path,
                       :type => @local_file_info[0].mime_type,
@@ -72,10 +62,7 @@ class AssetsController < ApplicationController
   def update
     enforce_permissions!("edit", params[:object_id])
 
-    datastream = "content"
-    if params.has_key?(:datastream)
-      datastream = params[:datastream]
-    end
+    datastream = params[:datastream].presence || "content"
 
     file_upload = upload_from_params
 
@@ -122,10 +109,7 @@ class AssetsController < ApplicationController
   def create
     enforce_permissions!("edit", params[:object_id])
 
-    datastream = "content"
-    if params.has_key?(:datastream)
-      datastream = params[:datastream]
-    end
+    datastream = params[:datastream].presence || "content"
 
     file_upload = upload_from_params
 
@@ -137,17 +121,9 @@ class AssetsController < ApplicationController
       else
         @gf = GenericFile.new(:pid => Sufia::IdService.mint)
         @gf.batch = @object
-        @gf.save
 
         create_file(file_upload, @gf.id, datastream, params[:checksum])
 
-        # A silly workaround, @gf doesn't get assigned a pid until it is saved
-        # therefore I have to save it twice, in order to have the pid in the URL being
-        # referenced in Fedora.
-        #
-        # We should look at ActiveFedora::Base to see when exactly assign_pid is called
-        # and add the correct id to the url before it's saved, eg. look for <<pid>> in
-        # the URL and replace it with the assigned pid.
         @url = url_for :controller=>"assets", :action=>"download", :object_id => @object.id, :id=>@gf.id
         @gf.update_file_reference datastream, :url=>@url, :mimeType=>@mime_type.to_s
         begin
@@ -185,15 +161,13 @@ class AssetsController < ApplicationController
 
     @list = []
 
-    if params.has_key?("objects") && !params[:objects].blank?
+    if params[:objects].present?
 
       solr_query = ActiveFedora::SolrService.construct_query_for_pids(params[:objects].map{|o| o.values.first})
       result_docs = ActiveFedora::SolrService.query(solr_query)
 
-      if result_docs.empty?
-        raise Exceptions::NotFound
-      end
-
+      raise Exceptions::NotFound if result_docs.empty?
+      
       storage = Storage::S3Interface.new
 
       result_docs.each do | r |
@@ -247,7 +221,7 @@ class AssetsController < ApplicationController
   private
 
     def upload_from_params
-      if !params.has_key?(:Filedata) || params[:Filedata].nil?
+      if params[:Filedata].blank?
         flash[:notice] = t('dri.flash.notice.specify_file')
         redirect_to :controller => "catalog", :action => "show", :id => params[:object_id]
         return

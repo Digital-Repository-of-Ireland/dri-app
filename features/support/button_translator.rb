@@ -82,6 +82,15 @@ module ButtonTranslator
     when /save licence/
       "save_licence"
 
+    when /generate surrogates/
+      generate_surrogates
+
+    when /publish collection/
+      publish
+
+    when /publish objects in collection/
+      publish
+
     else "Unknown"
 
     end
