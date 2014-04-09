@@ -35,7 +35,7 @@
 		
 	 .dri_ident {
 		
-		@include zen-grid-item(2, 1);
+		@include zen-grid-item(1.5, 1);
 		
 	}
 }
@@ -74,6 +74,13 @@
 		//@include zen-float();
 		
 	  }
+	  
+	  .dri_display_grid_table_nav {
+	
+		@include zen-grid-item(1, 1.7);
+		//@include zen-float();
+		
+	}
 		
 	.dri_pager_nav {
 	
@@ -84,7 +91,7 @@
 	
 	.dri_pagination_nav {
 	
-		@include zen-grid-item(1.1, 2.9);
+		@include zen-grid-item(1.4, 2.6);
 		
 	}
 	
