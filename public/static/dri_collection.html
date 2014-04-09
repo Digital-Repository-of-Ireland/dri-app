@@ -160,7 +160,16 @@
 					<option>Relevance</option>
 					<option>A - Z</option>
 				</select>
-			</nav>
+			</nav>         	
+            
+            <!-- navigation to allow the user to determine how the search result is displayed e.g. grid display or table display  -->
+		<nav id="dri_display_grid_table_id" class="dri_display_grid_table_nav">
+        <ul>
+       	 <li class="grid"><a href="#" class="selected">&nbsp;</a></li>
+          <li class="table"><a href="#">&nbsp;</a></li>
+        </ul>
+        </nav>
+   
 
 			<!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
 			<nav id="dri_pager_nav_id" class="dri_pager_nav">
@@ -174,13 +183,15 @@
 
 			<!-- navigation to allow the user to page through the search results  -->
 			<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
-             <p>Items 9 of 200</p>
+            
 				<ul id="dri_pagination_nav_links_id"
 					class="dri_pagination_nav_links">
 					<li class="first"><a href="#">&nbsp;</a></li>
 					<li><a href="#">1</a></li>
-					<li class="selected"><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
+					<li><a href="#">8</a></li>
+					<li class="selected"><a href="#">9</a></li>
+                    <li><a href="#">10</a></li>
+                    <li><a href="#">2098</a></li>
 					<li class="last"><a href="#">&nbsp;</a></li>
 				</ul>
 			</nav>
@@ -196,8 +207,6 @@
 						id="dri_search_term_text_input_id"
 						class="dri_search_term_text_input" name="q"
 						placeholder="Search..." type="text" value="">
-				<!--	<button id="dri_search_term_text_submit_button_id" type="submit"
-						class="dri_search_term_text_submit_button" id="search">Ok</button> -->
 
 				</form>
 				<!-- close dri_search_term_input_form -->

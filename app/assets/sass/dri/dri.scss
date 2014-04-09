@@ -79,8 +79,7 @@ h3 {
 .dri_ident {
   background: image-url('dri/dri_ident.png');
   background-repeat: no-repeat;
-  height: 104px;
-  margin: 20px;
+  margin: 0;
 }
 a {
 	text-decoration: none;
@@ -90,7 +89,6 @@ a {
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
 	margin: auto;
-	width: 400px;
 	border: 1px solid #D9DADB;
 	background-color: white;
 	padding: 40px 0 40px 65px;
@@ -320,7 +318,6 @@ a .dri_signin_edugate:hover {
 	margin: 10px 0 0 0;
 	padding: 0px;
 	color: #333;
-	height: 50px;	 
 }
 
  .dri_account_nav ul.dri_account_links {
@@ -379,7 +376,7 @@ a .dri_signin_edugate:hover {
 }
 /*-------------- dri logo --------------*/
 .dri_ident {
-	height: 165px;
+	height: 135px;
 	margin: 0px;
 	padding: 0px;
 }
@@ -389,6 +386,7 @@ a .dri_signin_edugate:hover {
 .dri_social_media_nav {
 	margin: 55px 0 0 0;
 	padding: 0px;
+	
 	
 }
 
@@ -412,7 +410,15 @@ a .dri_signin_edugate:hover {
 	list-style: none;
 	padding: 0;
 }
-
+.dri_social_media_nav li a.facebook {
+	background: image-url('dri/facebook.png') no-repeat;
+	height:28px;
+	width: 28px;
+	display: block;
+	background-color:#2E2E2E;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
 
 
 .dri_social_media_nav li a.facebook:hover {
@@ -498,8 +504,7 @@ a .dri_signin_edugate:hover {
 }
 .dri_main_nav li.selected a {
 	border-top: 3px solid #90993D;
-	background-color: #90993D;
-	color: #FFF;
+	color: #3E3E3E;
 
 }
 
@@ -578,7 +583,7 @@ a .dri_signin_edugate:hover {
 .dri_crumbtrail_nav  li a {
 	list-style: none;
 	text-decoration: none;
-	color: #288DC0;
+	color: #9E9E9E;
 	margin: 10px 0 10px 0;
 	padding: 0 15px 0 10px;
 	display: block;
@@ -617,12 +622,14 @@ a .dri_signin_edugate:hover {
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 	color: #808082;
+	width: 160px;
+	font-size: 100%;
 }
 
 .dri_sort_options {
   height: 25px;
   font-family: Arial, Helvetica, clean,sans-serif;
-  font-size: 11px;
+  font-size: 100%;
 
 }
 
@@ -652,6 +659,62 @@ a .dri_signin_edugate:hover {
 	float: right;
 }
 
+/*-------------- Grid / table display--------------*/
+.dri_display_grid_table_nav {
+	margin:  24px 0 0 0;
+	padding: 0;
+}
+.dri_display_grid_table_nav ul {
+	margin: 0;
+	padding: 0;
+	
+}
+
+.dri_display_grid_table_nav li {
+	margin: 0;
+	padding: 2px;
+	text-decoration: none;
+	list-style: none;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	border-bottom-right-radius: none;
+}
+
+.dri_display_grid_table_nav li.grid  {
+	margin: 0;
+	padding: 0;
+}
+.dri_display_grid_table_nav li.grid  a {
+	background:image-url('dri/grid_icon.png') no-repeat center;
+	display: block;
+	float: left;
+	width: 25px;
+	border: 1px solid #D9DADB;
+	border-right: none;
+	list-style: none;
+	text-decoration: none;
+}
+.dri_display_grid_table_nav li.table {
+	margin: 0;
+	padding: 0;
+}
+.dri_display_grid_table_nav li.table  a {
+	background:image-url('dri/table_icon.png') no-repeat center;
+	display: block;
+	float: left;
+	width: 25px;
+	border: 1px solid #D9DADB;
+	border-left: none;
+	list-style: none;
+	text-decoration: none;
+}
+
+.dri_display_grid_table_nav li a.hover  {
+	background-color: #EDEDED;
+}
+.dri_display_grid_table_nav li a.selected {
+	background-color: #EDEDED;
+}
 
 /*-------------- Page Grid --------------*/
 .dri_pager_nav {
@@ -672,6 +735,8 @@ a .dri_signin_edugate:hover {
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 	color: #808082;
+	width: 60px;
+	font-size: 100%;
 }
 
 .dri_pager_nav ul {
@@ -730,35 +795,39 @@ a .dri_signin_edugate:hover {
 	float: left;
 	list-style: none;
 	display: block;
+	margin: 0;
 	padding: 0;
+	border-right: 1px solid #D9DADB;
 }
 .dri_pagination_nav li a {
 	float: left;
 	list-style: none;
 	display: block;
-	padding: 3px 10px 0px 10px;
-	color: #FFFFFF;
-	background-color: #B3B3B3;
-	margin-right: 4px;
+	padding: 0 6px 0 6px;
+	color: #9E9E9E;
 	text-decoration: none;
 }
 .dri_pagination_nav li a:hover {
-	background-color: #999999;
+	color: #808082;
 }
 .dri_pagination_nav li.selected a {
-	background-color: #757575;
+	color: #757575;
+	text-decoration: underline;
 }
 .dri_pagination_nav li.first a {
 	background:image-url('dri/prev_arrow.png') no-repeat center;
 	background-color: none;
+	margin-right: 4px;
 }
+
 .dri_pagination_nav li.last a {
 	background:image-url('dri/next_arrow.png') no-repeat center;
 	background-color: none;
+	border-right: none;
+	margin-left: 4px;
 }
-
-.dri_pagination_nav li.total_num a {
-	background-color: #3E3E3E;
+.dri_pagination_nav li.last  {
+	border-right: none;
 }
 
 /*-------------- Facet Restriction --------------*/
@@ -841,14 +910,14 @@ li.empty  {
 .dri_browse_sort_tabs li a {
 	color:#808082;
 	margin: 20px 4px 0 0;
-	padding: 4px 13px 4px 13px;
+	padding: 8px 13px 8px 13px;
 	text-decoration: none;
 	border: 1px solid #D9DADB;
 	border-top-right-radius: 3px;
 	border-top-left-radius: 3px;
 	border-bottom: none;
 	display: block;
-	font-size: 110%;
+	font-size: 115%;
 }
 .dri_browse_sort_tabs li a:hover {
 	background-color: #F5F5F5;
@@ -876,18 +945,19 @@ li.empty  {
 .dri_search_save_submit_button {
 	width: 230px;
 	box-shadow: 1px 1px 4px  #f0f0f0;
-	margin: 15px 14px 0 0;
-	padding: 7px 10px 7px 10px;
+	margin: 15px 15px 0 0;
+	padding: 3px 9px 3px 9px;
 	float: right;
 	border: none;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 	color: #fff;
-	background-color: #288DC0;
+	background-color: #909A3C;
+	font-size: 100%;
 }
 
 .dri_search_save_submit_button:hover {
-	background-color: #0075AC;
+	background-color: #7A8229;
 	cursor: pointer;
 }
 
