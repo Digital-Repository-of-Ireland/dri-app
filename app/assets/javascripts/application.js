@@ -30,8 +30,8 @@
 $(document).ready(function() {
     $('.menu').dropit();
     $('.carousel').carousel();
-    //popover for search info
-    $('#q').popover();
+    $('#q, #dri_social_media_links_id').popover( {delay: { show: 500, hide: 100 }} );
+    
 });
 
 $(function(){

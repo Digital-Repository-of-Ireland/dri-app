@@ -1141,3 +1141,5 @@ en:
     window: 
       alert: 
         coming_soon: "Coming Soon"
+    help:
+      q: "Type a search term and press Enter"
