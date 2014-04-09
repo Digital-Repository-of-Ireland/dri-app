@@ -96,6 +96,9 @@ h3 {
   
 }
 
+form {
+  margin: 0 0 0 0;
+}
 /* end bootstrap override */
 
 
@@ -954,8 +957,8 @@ li.empty  {
 .dri_search_save_submit_button {
 	width: 230px;
 	box-shadow: 1px 1px 4px  #f0f0f0;
-	margin: 15px 15px 0 0;
-	padding: 3px 9px 3px 9px;
+	margin: 23px 0px 0 0;
+	padding: 2px 9px 2px 9px;
 	float: right;
 	border: none;
 	-moz-border-radius: 2px;

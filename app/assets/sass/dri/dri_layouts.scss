@@ -27,7 +27,7 @@
 		
 	  .dri_social_media_container {
 	
-		@include zen-grid-item(1, 2);
+		@include zen-grid-item(1, 1.8);
   		//@include zen-float();
 		@include zen-clear();
 		
@@ -35,13 +35,14 @@
 		
 	 .dri_ident {
 		
-		@include zen-grid-item(1.5, 1);
+		@include zen-grid-item(1.25, 1);
 		
 	}
 	 .dri_search_term_input {
   
     @include zen-grid-item(1, 4);
-    padding-right: 30px;
+    padding-left: 30px;
+    padding-top: 45px;
   }
 }
 
@@ -96,14 +97,15 @@
 	
 	.dri_pagination_nav {
 	
-		@include zen-grid-item(1.4, 2.6);
+		@include zen-grid-item(1.95, 2);
+
 		
 	}
 	
 	.dri_document_pagination_nav {
 	
 		@include zen-grid-item(1, 4);
-		//@include zen-float();
+		@include zen-float();
 		
 	}
 	
