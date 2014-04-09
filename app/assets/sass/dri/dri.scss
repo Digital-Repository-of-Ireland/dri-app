@@ -69,12 +69,36 @@ input[type="color"],
 .modal.fade.in {
   top: 50%;
 }
-/* end bootstrap override */
+
+
 h1,
 h2,
 h3 {
   line-height: 150%;
 }
+
+.field_with_errors label {
+  background-color:#FFF;
+  color: #B3232B;
+  margin: 0 0 10px 0;
+  padding: 0 40px 0 0;
+  font-size: 110%;
+}
+
+.field_with_errors input {
+  background-color: #fff;
+  color: #9F2931;
+  margin: 0 0 4px 0;
+  padding: 6px 13px 6px 15px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  border: 1px solid  #E18191;
+  
+}
+
+/* end bootstrap override */
+
+
 
 .dri_ident {
   background: image-url('dri/dri_ident.png');
@@ -175,24 +199,9 @@ a {
 .dri_login_form_block .field_with_errors {
 	background-color:#FFF;
 }
-.field_with_errors label {
-	background-color:#FFF;
-	color: #B3232B;
-	margin: 0 0 10px 0;
-	padding: 0 40px 0 0;
-	font-size: 110%;
-}
 
-.field_with_errors input {
-	background-color: #fff;
-	color: #9F2931;
-	margin: 0 0 4px 0;
-	padding: 6px 13px 6px 15px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	border: 1px solid  #E18191;
-	
-}
+
+
 
 .dri_input_error_message  {
 	color: #B3232B;
@@ -384,7 +393,7 @@ a .dri_signin_edugate:hover {
 /*-------------- Social Media --------------*/
 
 .dri_social_media_nav {
-	margin: 55px 0 0 0;
+	margin: 65px 0 0 0;
 	padding: 0px;
 	
 	

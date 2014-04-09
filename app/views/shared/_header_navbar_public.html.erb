@@ -44,7 +44,15 @@
       </ul>
     </nav>
   </div>
+  <!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->
+  <div id="dri_search_term_input_id" class="dri_search_term_input">
 
+    <%= render 'catalog/dri_search_form' %>
+
+    <!-- close dri_search_term_input_form -->
+
+  </div>
+  <!-- close dri_search_term_input -->
   <!--  close dri_social_media_container -->
   <%= link_to main_app.root_url do %><div id="dri_ident_id" class="dri_ident"></div>
   <% end %>
@@ -160,15 +168,7 @@
       </nav>
   <% end %>
 
-  <!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->
-  <div id="dri_search_term_input_id" class="dri_search_term_input">
 
-    <%= render 'catalog/dri_search_form' %>
-
-    <!-- close dri_search_term_input_form -->
-
-  </div>
-  <!-- close dri_search_term_input -->
 
 </div>
 <!-- close dri_search_features_nav_container -->

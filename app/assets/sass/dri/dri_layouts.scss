@@ -19,7 +19,7 @@
 .dri_header_container {
 
   	@include zen-grid-container;
-	  @include zen-grid-flow-item(1, 1);
+	  //@include zen-grid-flow-item(1, 1);
 	 	
   	.dri_authentication_menus_container {
   	  	@include zen-grid-item(1, 4);
@@ -27,8 +27,8 @@
 		
 	  .dri_social_media_container {
 	
-		@include zen-grid-item(1, 4);
-  		@include zen-float();
+		@include zen-grid-item(1, 2);
+  		//@include zen-float();
 		@include zen-clear();
 		
 		}
@@ -38,6 +38,11 @@
 		@include zen-grid-item(1.5, 1);
 		
 	}
+	 .dri_search_term_input {
+  
+    @include zen-grid-item(1, 4);
+    padding-right: 30px;
+  }
 }
 
 .dri_main_nav_container {
@@ -102,10 +107,7 @@
 		
 	}
 	
-	.dri_search_term_input {
-	
-		@include zen-grid-item(1, 4);
-		padding-right: 30px;
+
 		
 		.dri_search_save_input {
 		
@@ -113,7 +115,7 @@
 			
 		}
 		
-	}
+
 	
 
 
