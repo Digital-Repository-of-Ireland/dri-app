@@ -147,6 +147,7 @@
 
 
 	@include zen-grid-item(2.5, 2.5);
+	padding-top: 10px;
 	//border: 1px solid lightgray;
 	//@include zen-grid-item(2, 3, $gutter-width: 80px);
 
@@ -164,8 +165,8 @@
   	
   	.dri_login_form_container {
 
-  		margin: auto;
-		width:100%;	
+  	margin: auto;
+		width:450px;
   		
   	}
   	 	

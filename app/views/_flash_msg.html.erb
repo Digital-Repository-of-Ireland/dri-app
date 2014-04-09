@@ -1,4 +1,5 @@
 <!-- system messages container -->
+<% if flash %>
 <div id="dri_messages_container_id" class="dri_messages_container">
   <% [:success, :notice, :error, :alert].each do |type| %>
     <%- alert_class = type %>
@@ -10,4 +11,5 @@
 	    <% end %>
   <% end %>
 </div>
+<% end %>
 <!-- close dri_messages_container -->
