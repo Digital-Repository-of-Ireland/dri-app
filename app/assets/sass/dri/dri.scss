@@ -41,6 +41,38 @@ width: 509px;
   background-color: rgba(144, 154, 60, 1);
 }
 
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  width: 62px;
+  min-width: 62px;
+  padding: 3px 5px 3px 0;
+  margin: 0;
+  list-style: none;
+  background-color: white;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 0px;
+  -webkit-box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  a {
+    margin-left: 5px;
+    color: #808082;
+  }
+}
+
 input,
 button,
 select,

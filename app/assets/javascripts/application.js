@@ -28,10 +28,9 @@
 //* Dropit Script - uses JQuery-UI Drop function
 
 $(document).ready(function() {
-    $('.menu').dropit();
+    $('dropdown').dropdown();
     $('.carousel').carousel();
     $('#q, #dri_social_media_links_id').popover( {delay: { show: 500, hide: 100 }} );
-    
 });
 
 $(function(){
