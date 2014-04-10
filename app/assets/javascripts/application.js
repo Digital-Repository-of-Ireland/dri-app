@@ -29,6 +29,7 @@
 
 $(document).ready(function() {
     $('dropdown').dropdown();
+    $('#dri_cookie_modal').modal();
     $('.carousel').carousel();
     $('#q, #dri_social_media_links_id').popover( {delay: { show: 500, hide: 100 }} );
 });
