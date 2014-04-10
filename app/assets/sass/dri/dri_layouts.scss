@@ -70,7 +70,7 @@
 
 .dri_search_features_nav_container {
 
-  	@include zen-grid-container;
+  	//@include zen-grid-container;
 	  @include zen-grid-flow-item(1, 1, $alpha-gutter: 20px, $omega-gutter: 0px);
 	  padding-right: 24px;
    	
@@ -97,7 +97,7 @@
 	
 	.dri_pagination_nav {
 	
-		@include zen-grid-item(1.95, 2);
+		@include zen-grid-item(1.5,2.5);
 
 		
 	}
