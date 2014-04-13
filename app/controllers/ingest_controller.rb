@@ -26,35 +26,22 @@ class IngestController < CatalogController
   def create
     if session[:ingest][:object_type].present?
       @type = session[:ingest][:object_type]
-      @object = Batch.new
-      @object.object_type = [@type]
-
-      if params[:batch].present?
-        @object.update_attributes params[:batch]
-      else
-        @object.title = [""]
-        @object.description = [""]
-        @object.creator = [""]
-        @object.rights = [""]
-        @object.creation_date = [""]
-        @object.type = [@type]
-      end
-      
     else
-      @object = Batch.new
-      @object.object_type = ["Text"]
+      @type = "Text"
+    end
 
-      if params[:batch].present?
-        @object.update_attributes params[:batch]
-      else
-        @object.title = [""]
-        @object.description = [""]
-        @object.creator = [""]
-        @object.rights = [""]
-        @object.creation_date = [""]
-        @object.type = ["Text"]
-      end
+    @object = Batch.new
+    @object.object_type = [@type]
 
+    if params[:batch].present?
+      @object.update_attributes params[:batch]
+    else
+      @object.title = [""]
+      @object.description = [""]
+      @object.creator = [""]
+      @object.rights = [""]
+      @object.creation_date = [""]
+      @object.type = [@type]
     end
 
     @collection = session[:ingest][:collection] if session[:ingest][:collection].present?
