@@ -1,0 +1,86 @@
+
+.dri_about_container {
+   //@include zen-float();
+    $zen-column-count:12;
+
+  
+    .dri_about_01 {
+      @include zen-grid-item(4, 1);      
+    }
+    .dri_about_02 {
+      @include zen-grid-item(4, 5);      
+    }
+    .dri_about_03 {
+      @include zen-grid-item(4, 9);      
+    }
+    .dri_about_04 {
+      @include zen-clear();
+      @include zen-grid-item(12, 1);      
+    }
+    .dri_about_05 {
+      @include zen-clear();
+      @include zen-grid-item(6, 1);      
+    }
+    .dri_about_06 {
+      @include zen-grid-item(6, 7);      
+    }
+    .dri_about_07 {
+      @include zen-clear();
+      @include zen-grid-item(4, 1);      
+    }
+    .dri_about_08 {
+      @include zen-grid-item(4, 5);      
+    }
+    .nested {
+      @include zen-grid-item(4, 9);
+      @include zen-nested-container();
+    }
+    .dri_about_09 {
+      @include zen-grid-item(4, 9);      
+    }
+    .dri_about_10 {
+      @include zen-clear();
+      @include zen-grid-item(4, 9);      
+    }
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
