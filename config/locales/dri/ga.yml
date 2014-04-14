@@ -20,6 +20,9 @@ ga:
           visit_dri: "Visit the DRI Website"
         new_collections: "New Collections"
         newly_added: "Newly Added"
+        rss_feed: 
+          read_more: "Read More"
+          title: News
       lang: 
         en: Béarla
         ga: Gaeilge
@@ -98,6 +101,8 @@ ga:
       sitemap: Sitemap
       usergroups: "Úsáideoirí agus Grúpaí"
       workspace: "My Workspace"
+    help: 
+      q: "Type a search term and press Enter"
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
