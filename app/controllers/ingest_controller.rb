@@ -24,48 +24,35 @@ class IngestController < CatalogController
   # Handles the ingest process using partial forms
   #
   def create
-    if !session[:ingest][:object_type].blank?
+    if session[:ingest][:object_type].present?
       @type = session[:ingest][:object_type]
-      @object = Batch.new
-      @object.object_type = [@type]
-      if params[:batch] != nil
-        @object.update_attributes params[:batch]
-      else
-        @object.title = [""]
-        @object.description = [""]
-        @object.creator = [""]
-        @object.rights = [""]
-        @object.creation_date = [""]
-        @object.type = [@type] #["Text"]
-      end
-      
     else
-      @object = Batch.new
-      @object.object_type = ["Text"]
-      if params[:batch] != nil
-        @object.update_attributes params[:batch]
-      else
-        @object.title = [""]
-        @object.description = [""]
-        @object.creator = [""]
-        @object.rights = [""]
-        @object.creation_date = [""]
-        @object.type = ["Text"]
-      end
+      @type = "Text"
     end
 
-    if !session[:ingest][:collection].blank?
-      @collection = session[:ingest][:collection]
+    @object = Batch.new
+    @object.object_type = [@type]
+
+    if params[:batch].present?
+      @object.update_attributes params[:batch]
+    else
+      @object.title = [""]
+      @object.description = [""]
+      @object.creator = [""]
+      @object.rights = [""]
+      @object.creation_date = [""]
+      @object.type = [@type]
     end
 
+    @collection = session[:ingest][:collection] if session[:ingest][:collection].present?
+    
     @ingest_methods = get_ingest_methods
     @supported_types = get_supported_types
 
     # Continue was pressed on a non-final step, increment the current step
     # and update session state
-    if valid_step_data?(session[:ingest][:current_step])
-      update_ingest_state
-    end
+    update_ingest_state if valid_step_data?(session[:ingest][:current_step])
+    
     @current_step = session[:ingest][:current_step]
     render :action => :new
   end

@@ -33,8 +33,8 @@ class MetadataController < CatalogController
   def update 
     enforce_permissions!("update",params[:id])
 
-    if !params.has_key?(:metadata_file) || params[:metadata_file].nil?
-      flash[:notice] = t('dri.flash.notice.specify_valid_file')
+    unless params[:metadata_file].present?
+      flash[:notice] = t('dri.flash.notice.specify_valid_file') 
     else
       xml = MetadataHelpers.load_xml(params[:metadata_file])
 
@@ -44,7 +44,7 @@ class MetadataController < CatalogController
         raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, "")
       end
   
-      if @object == nil
+      if @object.nil?
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
         MetadataHelpers.set_metadata_datastream(@object, xml)

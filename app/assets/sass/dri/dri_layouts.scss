@@ -19,7 +19,7 @@
 .dri_header_container {
 
   	@include zen-grid-container;
-	  @include zen-grid-flow-item(1, 1);
+	  //@include zen-grid-flow-item(1, 1);
 	 	
   	.dri_authentication_menus_container {
   	  	@include zen-grid-item(1, 4);
@@ -27,17 +27,23 @@
 		
 	  .dri_social_media_container {
 	
-		@include zen-grid-item(1, 4);
-  		@include zen-float();
+		@include zen-grid-item(1, 1.8);
+  		//@include zen-float();
 		@include zen-clear();
 		
 		}
 		
 	 .dri_ident {
 		
-		@include zen-grid-item(2, 1);
+		@include zen-grid-item(1.25, 1);
 		
 	}
+	 .dri_search_term_input {
+  
+    @include zen-grid-item(1, 4);
+    padding-left: 30px;
+    padding-top: 45px;
+  }
 }
 
 .dri_main_nav_container {
@@ -64,7 +70,7 @@
 
 .dri_search_features_nav_container {
 
-  	@include zen-grid-container;
+  	//@include zen-grid-container;
 	  @include zen-grid-flow-item(1, 1, $alpha-gutter: 20px, $omega-gutter: 0px);
 	  padding-right: 24px;
    	
@@ -74,6 +80,13 @@
 		//@include zen-float();
 		
 	  }
+	  
+	  .dri_display_grid_table_nav {
+	
+		@include zen-grid-item(1, 1.7);
+		//@include zen-float();
+		
+	}
 		
 	.dri_pager_nav {
 	
@@ -84,21 +97,19 @@
 	
 	.dri_pagination_nav {
 	
-		@include zen-grid-item(1.1, 2.9);
+		@include zen-grid-item(1.5,2.5);
+
 		
 	}
 	
 	.dri_document_pagination_nav {
 	
 		@include zen-grid-item(1, 4);
-		//@include zen-float();
+		@include zen-float();
 		
 	}
 	
-	.dri_search_term_input {
-	
-		@include zen-grid-item(1, 4);
-		padding-right: 30px;
+
 		
 		.dri_search_save_input {
 		
@@ -106,7 +117,7 @@
 			
 		}
 		
-	}
+
 	
 
 
@@ -136,7 +147,8 @@
 
 
 	@include zen-grid-item(2.5, 2.5);
-	//border: 1px solid #000;
+	padding-top: 10px;
+	//border: 1px solid lightgray;
 	//@include zen-grid-item(2, 3, $gutter-width: 80px);
 
 }
@@ -153,8 +165,8 @@
   	
   	.dri_login_form_container {
 
-  		margin: auto;
-		width:100%;	
+  	margin: auto;
+		width:450px;
   		
   	}
   	 	

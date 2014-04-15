@@ -13,7 +13,7 @@ en:
         featured_collections: "Featured Collections"
         introtext: 
           admin: "DRI repository administrator interface"
-          public: "Welcome to the DRI repository."
+          public: "We believe richer, deeper stories can be constructed by accessing multiple complementary collections of content from a single location."
         links: 
           news_dri: "Read our News"
           register_dri: "Sign Up Now"
@@ -26,10 +26,12 @@ en:
       locale: Language
     data: 
       types: 
-        Image: Images
+        Image: Image
+        MixedType: "Mixed Types"
         MovingImage: Video
         Sound: Audio
-        Text: Documents
+        Text: Document
+        Unknown: Unknown
     flash: 
       alert: 
         create_permission: "You do not have permission to create this document."
@@ -73,6 +75,14 @@ en:
         specify_valid_file: "You must specify a valid file to upload."
         specify_xml_file: "You must specify a XML file."
         updated: "Updated %{item}"
+    footer: 
+      contacts: 
+        email: Email
+        phone: Tel
+      ria_address: 
+        name: "Royal Irish Academy"
+        street: "19 Dawson Street"
+        zip: "Dublin 2"
     headerlinks: 
       about: About
       admin: "Admin Tasks"
@@ -88,6 +98,14 @@ en:
       sitemap: Sitemap
       usergroups: "Users & Groups"
       workspace: "My Workspace"
+    sign_in: 
+      forgot_password: "Forgot your password?"
+      no_confirmation: "Didn't receive confirmation?"
+      no_unlock: "Didn't receive unlock instructions?"
+      register: "Sign Up"
+      sign_in_with: "Sign in with "
+      title: "Sign In"
+      with_another_account: "Sign In with another Account"
     views: 
       alt_tags: 
         cover_image: "Cover Image"
@@ -1120,3 +1138,8 @@ en:
         wit: Witness
       name: 
         marc_relators: "MARC Relators"
+    window: 
+      alert: 
+        coming_soon: "Coming Soon"
+    help:
+      q: "Type a search term and press Enter"

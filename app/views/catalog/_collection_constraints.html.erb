@@ -1,13 +1,13 @@
 <div class="dri_facet_restrictions_container">
-         <ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs">
+  <ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs">
 
-           <% if params[:mode].eql?('collections') %>
-           <li><%= link_to t('dri.headerlinks.collections'), main_app.catalog_index_path(:mode=>'collections', :q=>params[:q], :search_field=>'all_fields'), :id=>"collections", :class=>'selected' %></li>
-           <li><%= link_to t('dri.headerlinks.objects'), main_app.catalog_index_path(:mode=>'objects', :q=>params[:q], :search_field=>'all_fields'), :id=>"objects" %></li>
-           <% else %>
-           <li><%= link_to t('dri.headerlinks.collections'), main_app.catalog_index_path(:mode=>'collections', :q=>params[:q], :search_field=>'all_fields'), :id=>"collections" %></li>
-           <li><%= link_to t('dri.headerlinks.objects'), main_app.catalog_index_path(:mode=>'objects', :q=>params[:q], :search_field=>'all_fields'), :id=>"objects", :class=>'selected' %></li>
-           <% end %>
-            </ul>
-        </div>
+    <% if params[:mode].eql?('collections') %>
+        <li><%= link_to t('dri.headerlinks.collections'), main_app.catalog_index_path(:mode=>'collections', :q=>params[:q], :search_field=>'all_fields'), :id=>"collections", :class=>'selected' %></li>
+        <li><%= link_to t('dri.headerlinks.objects'), main_app.catalog_index_path(:mode=>'objects', :q=>params[:q], :search_field=>'all_fields'), :id=>"objects" %></li>
+    <% else %>
+        <li><%= link_to t('dri.headerlinks.collections'), main_app.catalog_index_path(:mode=>'collections', :q=>params[:q], :search_field=>'all_fields'), :id=>"collections" %></li>
+        <li><%= link_to t('dri.headerlinks.objects'), main_app.catalog_index_path(:mode=>'objects', :q=>params[:q], :search_field=>'all_fields'), :id=>"objects", :class=>'selected' %></li>
+    <% end %>
+  </ul>
+</div>
 <!-- close dri_facet_restrictions_container -->

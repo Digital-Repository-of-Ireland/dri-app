@@ -48,7 +48,7 @@ class CollectionsController < CatalogController
   # Edits an existing model.
   #
   def edit
-    enforce_permissions!("edit",params[:id])
+    enforce_permissions!("manage_collection",params[:id])
     @object = retrieve_object!(params[:id])
 
     @institutes = Institute.find(:all)
@@ -106,6 +106,13 @@ class CollectionsController < CatalogController
       flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
     end
 
+    #purge params from update action
+    params.delete(:batch)
+    params.delete(:_method)
+    params.delete(:authenticity_token)
+    params.delete(:commit)
+    params.delete(:action)
+
     respond_to do |format|
       format.html  { render :action => "edit" }
     end
@@ -123,14 +130,10 @@ class CollectionsController < CatalogController
     set_access_permissions(:batch, true)
 
     @collection = Batch.new
-    if @collection.type == nil
-      @collection.type = ["Collection"]
-    end
-
-    if !@collection.type.include?("Collection")
-      @collection.type.push("Collection")
-    end
-
+    
+    @collection.type = ["Collection"] if @collection.type == nil 
+    @collection.type.push("Collection") unless @collection.type.include?("Collection")
+    
     @licences = {}
     Licence.find(:all).each do |licence|
       @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
@@ -141,11 +144,10 @@ class CollectionsController < CatalogController
 
     @collection.update_attributes(params[:batch])
 
-
     # depositor is not submitted as part of the form
     @collection.depositor = current_user.to_s
 
-    if !valid_permissions?
+    unless valid_permissions?
       flash[:alert] = t('dri.flash.error.not_created')
       @object = @collection
       render :action => :new
@@ -190,12 +192,7 @@ class CollectionsController < CatalogController
   def ingest
     enforce_permissions!("create", Batch)
 
-    if !params.has_key?(:metadata_file)
-      flash[:notice] = t('dri.flash.notice.specify_valid_file')
-      @object = @collection
-      render :action => :new
-      return
-    elsif params[:metadata_file].nil?
+    unless params[:metadata_file].present?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
       @object = @collection
       render :action => :new
@@ -205,10 +202,11 @@ class CollectionsController < CatalogController
       xml = MetadataHelpers.load_xml_bypass_validation(params[:metadata_file])
       metadata_class = MetadataHelpers.get_metadata_class_from_xml xml
 
-      if metadata_class == nil
+      if metadata_class.nil?
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @object = @collection
         render :action => :new
+        return
       end
 
       @collection = Batch.new :desc_metadata_class => metadata_class.constantize
@@ -223,7 +221,7 @@ class CollectionsController < CatalogController
         return
       end
 
-      if !@collection.is_collection?
+      unless @collection.is_collection?
         flash[:notice] = "Metadata file does not specify that the object is a collection."
         @object = @collection
         render :action => :new
@@ -237,9 +235,7 @@ class CollectionsController < CatalogController
       @collection.private_metadata="0"
       @collection.master_file="0"
 
-      if params.has_key?(:ingest_files) && !params[:ingest_files].nil?
-        @collection.ingest_files_from_metadata = params[:ingest_files]
-      end
+      @collection.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?
 
       # We need to save to get a pid at this point
       if @collection.save
@@ -277,7 +273,7 @@ class CollectionsController < CatalogController
   end
 
   def destroy
-    enforce_permissions!("edit",params[:id])
+    enforce_permissions!("manage_collection",params[:id])
 
     if current_user.is_admin?
       @collection = retrieve_object!(params[:id])
@@ -302,7 +298,7 @@ class CollectionsController < CatalogController
   end
 
   def publish
-    enforce_permissions!("edit", params[:id])
+    enforce_permissions!("manage_collection", params[:id])
 
     @object = retrieve_object!(params[:id])
 

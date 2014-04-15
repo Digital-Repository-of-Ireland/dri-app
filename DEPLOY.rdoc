@@ -1,0 +1,23 @@
+== Deployment
+
+Once the test suite passes and the code base has been reviewed and agreed
+upon, a branch is created for deployment, it should be dated in the form
+YYYY-MM-DD the assets should be compiled and committed.
+
+Once the assets are committed, a tag is created, this tag is then merged
+to master for the the deployment scripts to deploy.
+
+=== Steps
+
+  $ git flow release start v2.0.0rc2-YYYY-MM-DD
+  $ git checkout release v2.0.0rc2-YYYY-MM-DD
+  ... check everything ...
+  $ rake assets:clean
+  $ rake assets:precompile
+  $ git add public/assets && git commit -am "Generate assets"
+  $ git flow release publish v2.0.0rc2-YYYY-MM-DD # for peer review
+  $ git flow release finish v2.0.0rc2-YYYY-MM-DD  # merge with master
+  $ git checkout develop
+  $ rake assets:clean
+  $ git commit -am "clear out assets for development branch"
+

@@ -10,6 +10,7 @@ class SessionController < ApplicationController
       current_user.locale = params[:id]
       current_user.save
     end
+    params.delete(:id)
     redirect_to root_path
   end
 

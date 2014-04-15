@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require jquery.remotipart
 //= require jquery.cookie
-//
+//= require bootstrap
 // Required by Blacklight
 //= require blacklight/blacklight
 //= Required by Dropit dropdown menu library
@@ -25,9 +25,13 @@
 
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 
-<!-- Dropit Script - uses JQuery-UI Drop function -->
+//* Dropit Script - uses JQuery-UI Drop function
+
 $(document).ready(function() {
     $('.menu').dropit();
+    $('.carousel').carousel();
+    $('#q, #dri_social_media_links_id').popover( {delay: { show: 500, hide: 100 }} );
+    
 });
 
 $(function(){
@@ -40,3 +44,5 @@ $(function(){
         return false;
     });
   });
+  
+

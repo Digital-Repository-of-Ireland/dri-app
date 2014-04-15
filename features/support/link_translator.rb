@@ -82,6 +82,18 @@ module LinkTranslator
       when /change to ga/
         "ga"
 
+      when /generate surrogates/
+        "surrogates_generate"
+
+      when /publish collection/
+        "publish"
+
+      when /publish objects in the collection/
+        "publish"
+
+      when /update status/
+        "status_update"
+
       else "Unknown"
 
     end

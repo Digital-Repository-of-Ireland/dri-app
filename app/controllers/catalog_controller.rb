@@ -238,6 +238,7 @@ class CatalogController < ApplicationController
     #config.add_sort_field 'author_tesi asc, title_sorted_ssi asc', :label => 'author'
 
     config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', :label => 'title'
+    config.add_sort_field 'system_create_dtsi desc', :label => 'Newest'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.

@@ -27,9 +27,11 @@ ga:
     data: 
       types: 
         Image: Íomhánna
+        MixedType: "Mixed Types"
         MovingImage: Video
         Sound: Audio
         Text: Doiciméid
+        Unknown: Unknown
     flash: 
       alert: 
         create_permission: "Níl cead agat an doiciméad seo a chruthú."
@@ -73,6 +75,14 @@ ga:
         specify_valid_file: "Ní mór duit comhad bailí a shonrú le huaslódáil."
         specify_xml_file: "Ní mór duit comhad XML a shonrú."
         updated: "Tugtha cothrom le dáta %{item}"
+    footer: 
+      contacts: 
+        email: Email
+        phone: Tel
+      ria_address: 
+        name: "Royal Irish Academy"
+        street: "19 Dawson Street"
+        zip: "Dublin 2"
     headerlinks: 
       about: Eolas
       admin: "Admin Tasks"
@@ -88,6 +98,14 @@ ga:
       sitemap: Sitemap
       usergroups: "Úsáideoirí agus Grúpaí"
       workspace: "My Workspace"
+    sign_in: 
+      forgot_password: "Forgot your password?"
+      no_confirmation: "Didn't receive confirmation?"
+      no_unlock: "Didn't receive unlock instructions?"
+      register: "Sign Up"
+      sign_in_with: "Sign in with "
+      title: "Sign In"
+      with_another_account: "Sign In with another Account"
     views: 
       alt_tags: 
         cover_image: "Cover Image"
@@ -1120,3 +1138,6 @@ ga:
         wit: Witness
       name: 
         marc_relators: "MARC Relators"
+    window: 
+      alert: 
+        coming_soon: "Coming Soon"

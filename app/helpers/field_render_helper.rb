@@ -17,7 +17,6 @@ module FieldRenderHelper
     end
 
     value ||= args[:document].get(args[:field], :sep => nil) if args[:document] and args[:field]
-
     value = [value] unless value.is_a? Array
     value = value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x}
     value = value.map { |v| html_escape v }
@@ -39,9 +38,17 @@ module FieldRenderHelper
       facet_arg = get_search_arg_from_facet :facet => facet_name
 
       value = value.each_with_index.map do |v,i|
-          "<a href=\"" << url_for({:action => 'index', :controller => 'catalog', facet_arg => standardise_facet(:facet => facet_name, :value => indexed_value[i])}) << "\">" << standardise_value(:facet_name => facet_name, :value => v) << "</a>"
+        "<a href=\"" << url_for({:action => 'index', :controller => 'catalog', facet_arg => standardise_facet(:facet => facet_name, :value => indexed_value[i])}) << "\">" << standardise_value(:facet_name => facet_name, :value => v) << "</a>"
+      end
+    else
+      if value.length > 1
+        value = value.each_with_index.map do |v,i|
+          '<dd>' << indexed_value[i] << '</dd>'
+        end
+
       end
     end
+
     return value.join(field_value_separator).html_safe
   end
 
@@ -51,9 +58,9 @@ module FieldRenderHelper
     label = blacklight_config.show_fields[field].label
 
     if label[0, 5] == 'role_'
-      html_escape t('dri.vocabulary.marc_relator.'+label[5,3])+":"
+      html_escape t('dri.vocabulary.marc_relator.'+label[5,3])
     else
-      html_escape t('dri.views.fields.'+label)+":"
+      html_escape t('dri.views.fields.'+label)
     end
   end
 
@@ -160,5 +167,5 @@ module FieldRenderHelper
       end
     end
   end
-  
+
 end
