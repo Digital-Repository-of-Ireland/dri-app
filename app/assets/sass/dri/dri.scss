@@ -1298,8 +1298,8 @@ h4.suggest a:hover {
 .dri_home_title h2 {
 	margin: 0 0 0 0;
 	padding: 0 0 0 0;
-	width: 100%;
 	font-size: 130%;
+	width: 730px;
 	color: #2F2F2F;
 	border-bottom: 1px solid #E1E1E1;
 }
@@ -1310,6 +1310,42 @@ h4.suggest a:hover {
 	margin: 0 0 30px 0;
 	display: block;
 }
+
+/* ----------- News / Events styling ---------- */
+h1.dri_rss_title {
+	margin: 0 0 4px 0;
+	padding: 0;
+	font-size: 150%;
+	color: #2F2F2F;
+	border-bottom: 3px solid #2F2F2F;
+}
+h5.dri_rss_subtitle {
+	margin: 10px 0 4px 0;
+	padding: 0;
+	font-size: 100%;
+	line-height: 1.4em;
+	color: #2F2F2F;
+	}
+	
+p.dri_rss_description {
+		padding: 0;
+		margin: 0 0 0 0;
+		line-height: 1.4em;
+		color: #808082;
+	}
+p.dri_rss_description .field-items a {
+		color: #2F2F2F;
+		text-decoration: underline;
+	}	
+p.dri_rss_link a{
+		border-bottom: 1px solid #D9DADB;
+		padding: 0 0 10px 0;
+		margin: 0 0 0 0;
+		color: #2F2F2F;
+		display: block;
+		background: image-url('dri/arrow_black.png') no-repeat 80px, right;
+	}
+
 /* ----------- Collection block ---------- */
 
 

@@ -136,6 +136,7 @@ GEM
       cucumber (>= 1.2.0)
       nokogiri (>= 1.5.0)
       rails (>= 3.0.0)
+    curb (0.8.5)
     daemons (1.1.9)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
@@ -166,6 +167,10 @@ GEM
     fastercsv (1.5.5)
     fastimage (1.6.1)
       addressable (~> 2.3, >= 2.3.5)
+    feedjira (1.2.0)
+      curb (~> 0.8.1)
+      loofah (~> 1.2.1)
+      sax-machine (~> 0.2.1)
     ffi (1.9.3)
     foreigner (1.6.1)
       activerecord (>= 3.0.0)
@@ -237,6 +242,8 @@ GEM
     launchy (2.4.2)
       addressable (~> 2.3)
     logger (1.2.8)
+    loofah (1.2.1)
+      nokogiri (>= 1.4.4)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -382,6 +389,8 @@ GEM
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
+    sax-machine (0.2.1)
+      nokogiri (~> 1.6.0)
     shoulda (3.5.0)
       shoulda-context (~> 1.0, >= 1.0.1)
       shoulda-matchers (>= 1.4.1, < 3.0)
@@ -484,6 +493,7 @@ DEPENDENCIES
   execjs
   factory_girl_rails
   faker
+  feedjira
   google-analytics-rails
   high_voltage (~> 2.1.0)
   http_accept_language
