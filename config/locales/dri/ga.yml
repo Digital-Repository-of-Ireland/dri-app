@@ -35,6 +35,7 @@ ga:
     flash: 
       alert: 
         create_permission: "Níl cead agat an doiciméad seo a chruthú."
+        delete_permission: "You do not have permission to delete this document."
         edit_permission: "Níl cead agat an doiciméad seo a chur in eagar."
         error_generating_surrogates: "Error generating surrogates: %{error}"
         error_publishing_collection: "Unable to publish objects."
@@ -98,6 +99,8 @@ ga:
       sitemap: Sitemap
       usergroups: "Úsáideoirí agus Grúpaí"
       workspace: "My Workspace"
+    help: 
+      q: "Type a search term and press Enter"
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"

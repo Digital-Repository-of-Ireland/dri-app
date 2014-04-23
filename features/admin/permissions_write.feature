@@ -31,8 +31,8 @@ Feature: Access controls
     Examples:
       | permission |
       | edit       |
+      | read       |
       | none       |
-
 
   Scenario Outline: I should see a button to Generate Surrogates for the collection if I have manage or higher permissions
     When I am logged in as "foo"
@@ -55,6 +55,7 @@ Feature: Access controls
     Examples:
       | permission |
       | edit       |
+      | read       |
       | none       |
 
 
@@ -73,7 +74,7 @@ Feature: Access controls
       | manage     |
 
 
-  Scenario Outline: I should see a button to Publish if I have manage or higher permissions on the collection
+  Scenario Outline: I should not see a button to Publish if I have edit or lower permissions on the collection
     Given I am logged in as "foo"
     And "foo@foo.com" has been granted "<permission>" permissions on "dri:c11111"
     And I go to "show Digital Object page for id dri:c11111"
@@ -82,6 +83,7 @@ Feature: Access controls
     Examples:
       | permission |
       | edit       |
+      | read       |
       | none       |
 
 
@@ -107,6 +109,7 @@ Feature: Access controls
 
     Examples:
       | permission |
+      | read       |
       | none       |
 
 
@@ -131,6 +134,7 @@ Feature: Access controls
 
     Examples:
       | permission |
+      | read       |
       | none       |
 
 
@@ -155,5 +159,66 @@ Feature: Access controls
 
     Examples:
       | permission |
+      | read       |
       | none       |
+
+  Scenario Outline: I should see a button to delete collection if I am an admin user
+    When I am logged in as "foo"
+    And "foo@foo.com" has been granted "admin" permissions on "dri:c11111"
+    And the collection with pid "dri:c11111" has status <status>
+    When I go to "edit collection page for id dri:c11111"
+    Then I should see a button to delete collection with id dri:c11111
+
+    Examples:
+      | status    |
+      | draft     |
+      | published |
+
+  Scenario: I should see a button to delete collection if I have manage permissions and collection is draft
+    When I am logged in as "foo"
+    And "foo@foo.com" has been granted "manage" permissions on "dri:c11111"
+    And the collection with pid "dri:c11111" has status draft
+    When I go to "edit collection page for id dri:c11111"
+    Then I should see a button to delete collection with id dri:c11111
+
+  Scenario: I should not see a button to delete collection if I have manage permissions and collection is published
+    When I am logged in as "foo"
+    And "foo@foo.com" has been granted "manage" permissions on "dri:c11111"
+    And the collection with pid "dri:c11111" has status published
+    When I go to "edit collection page for id dri:c11111"
+    Then I should not see a button to delete collection with id dri:c11111
+
+  Scenario Outline: I should not see a button to delete collection if I have edit or lower permissions
+    When I am logged in as "foo"
+    And "foo@foo.com" has been granted "<permission>" permissions on "dri:c11111"
+    And the collection with pid "dri:c11111" has status <status>
+    When I go to "edit collection page for id dri:c11111"
+    Then I should not see a button to delete collection with id dri:c11111
+
+    Examples:
+      | permission | status    |
+      | edit       | draft     |
+      | edit       | published |
+      | read       | draft     |
+      | read       | published |
+      | none       | draft     |
+      | none       | published |
+
+  Scenario: I should be able to delete a collection if I am an admin user
+    When I am logged in as "foo"
+    And "foo@foo.com" has been granted "admin" permissions on "dri:c11111"
+    And the collection with pid "dri:c11111" has status published
+    When I go to "edit collection page for id dri:c11111"
+    Then I should see a button to delete collection with id dri:c11111
+    When I press the button to delete collection with id dri:c11111
+    Then I should see a message for deleting a collection
+
+  Scenario: I should be able to delete a collection if I have manage permissions and collection is draft
+    When I am logged in as "foo"
+    And "foo@foo.com" has been granted "manage" permissions on "dri:c11111"
+    And the collection with pid "dri:c11111" has status draft
+    When I go to "edit collection page for id dri:c11111"
+    Then I should see a button to delete collection with id dri:c11111
+    When I press the button to delete collection with id dri:c11111
+    Then I should see a message for deleting a collection
 
