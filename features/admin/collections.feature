@@ -95,6 +95,7 @@ Scenario: Deleting a collection as an admin
   Given I am not logged in
   Given I am logged in as "admin" in the group "admin"
   Given a collection with pid "dri:coll6" created by "user1@user1.com"
+  And the collection with pid "dri:coll6" has status published
   When I go to the "collection" "show" page for "dri:coll6"
   And I follow the link to edit a collection
   Then I should see a button to delete collection with id dri:coll6
@@ -103,6 +104,7 @@ Scenario: Deleting a collection as an admin
 
 Scenario: Non-admin should not be given option to delete
   Given a collection with pid "dri:coll7" created by "user1@user1.com"
+  And the collection with pid "dri:coll7" has status published
   When I go to the "collection" "show" page for "dri:coll7"
   And I follow the link to edit a collection
   Then I should not see a button to delete collection with id dri:coll7
@@ -156,8 +158,8 @@ Scenario: user requests access to readers group for restricted asset
   Given I am logged in as "admin" in the group "admin"
   And I have created a collection with title "Restricted Collection"
   And I have created a "Sound" object with title "Restricted Object" in the collection "Restricted Collection"
-  And the collection with title "Restricted Collection" is published
-  And the object with title "Restricted Object" is published
+  And the collection with title "Restricted Collection" has status published
+  And the object with title "Restricted Object" has status published
   And I have added an audio file
   And the masterfile for object with title "Restricted Object" is "accessible"
   And the object with title "Restricted Object" is restricted to the reader group

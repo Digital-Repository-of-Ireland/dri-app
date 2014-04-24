@@ -130,10 +130,10 @@ class CollectionsController < CatalogController
     set_access_permissions(:batch, true)
 
     @collection = Batch.new
-    
-    @collection.type = ["Collection"] if @collection.type == nil 
+
+    @collection.type = ["Collection"] if @collection.type == nil
     @collection.type.push("Collection") unless @collection.type.include?("Collection")
-    
+
     @licences = {}
     Licence.find(:all).each do |licence|
       @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
@@ -275,9 +275,9 @@ class CollectionsController < CatalogController
   def destroy
     enforce_permissions!("manage_collection",params[:id])
 
-    if current_user.is_admin?
-      @collection = retrieve_object!(params[:id])
+    @collection = retrieve_object!(params[:id])
 
+    if current_user.is_admin? || ((can? :manage_collection, @collection) && @collection.status.eql?('draft'))
       @collection.governed_items.each do |object|
         begin
           # this makes a connection to s3, should really test if connection is available somewhere else
@@ -289,11 +289,13 @@ class CollectionsController < CatalogController
       end
       @collection.reload
       @collection.delete
+      flash[:notice] = t('dri.flash.notice.collection_deleted')
+    else
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, "")
     end
 
     respond_to do |format|
-      format.html { flash[:notice] = t('dri.flash.notice.collection_deleted')
-      redirect_to :controller => "catalog", :action => "index" }
+      format.html { redirect_to :controller => "catalog", :action => "index" }
     end
   end
 
@@ -318,11 +320,11 @@ class CollectionsController < CatalogController
     rescue Exception => e
       flash[:alert] = t('dri.flash.alert.error_publishing_collection', :error => e.message)
       @warnings = t('dri.flash.alert.error_publishing_collection', :error => e.message)
-    end 
- 
+    end
+
     respond_to do |format|
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
-      format.json { 
+      format.json {
           unless @warnings.nil?
             response = { :warning => @warnings, :id => @object.id, :status => @object.status }
           else
