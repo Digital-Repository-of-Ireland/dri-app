@@ -127,7 +127,7 @@ module FacetsHelper
 
     components = value.split(/\s*;\s*/)
 
-    if components.length < 2
+    if components.length < 3
       return value
     else
       value.split(/\s*;\s*/).each do |component|
@@ -148,7 +148,7 @@ module FacetsHelper
 
     components = value.split(/\s*;\s*/)
 
-    if components.length < 2
+    if components.length < 3
       return value
     else
       components.each do |component|
