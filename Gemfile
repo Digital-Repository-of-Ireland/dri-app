@@ -98,6 +98,7 @@ gem 'unicorn'
 gem "unicode", :platforms => [:mri_18, :mri_19]
 gem "bootstrap-sass"
 gem "yard"
+gem "feedjira"
 
 group :translations do
   gem 'i18n_sync'

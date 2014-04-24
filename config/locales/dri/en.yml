@@ -25,6 +25,9 @@ en:
           visit_dri: "Visit the DRI Website"
         new_collections: "New Collections"
         newly_added: "Newly Added"
+        rss_feed: 
+          read_more: "Read More"
+          title: News
       lang: 
         en: English
         ga: Irish
