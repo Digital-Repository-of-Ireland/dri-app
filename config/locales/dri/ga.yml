@@ -31,6 +31,7 @@ ga:
         MovingImage: Video
         Sound: Audio
         Text: Doiciméid
+        Title: "Media Types"
         Unknown: Unknown
     flash: 
       alert: 
@@ -122,6 +123,7 @@ ga:
             collections: Collections
             no_collections: "No collections"
         forms: 
+          all_objects_in_collection: "All Objects in this Collection"
           audio_file: "Comhad Fuaime"
           file: File
           image_file: Image
