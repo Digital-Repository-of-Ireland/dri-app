@@ -139,7 +139,9 @@
 }
 
 .dri_welcome_block {
-	@include zen-grid-item(1.5, 1, $gutter-width: 0px);
+	@include zen-grid-item(1.3, 1, $gutter-width: 0);
+
+
 	
 }
 
@@ -147,7 +149,7 @@
 
 
 	@include zen-grid-item(2.5, 2.5);
-	padding-top: 10px;
+	padding-top: 30px;
 	//border: 1px solid lightgray;
 	//@include zen-grid-item(2, 3, $gutter-width: 80px);
 

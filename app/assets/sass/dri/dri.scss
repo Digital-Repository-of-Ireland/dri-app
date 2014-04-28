@@ -506,7 +506,7 @@ a .dri_signin_edugate:hover {
 	float: left;
 	margin: 0;
 	padding: 0;
-	font-size: 110%;
+	font-size: 115%;
 	font-weight: bold;
 	list-style: none;
 	text-decoration: none;	
@@ -1261,27 +1261,27 @@ h4.suggest a:hover {
 
 /* -----------Home page styling ---------- */
 .dri_welcome_block {
-	margin: 10px 0 40px 0;
+	margin: 30px 0 40px 0;
 	padding: 0;
 }
 .dri_welcome_block h1 {
 	margin: 0 0 4px 0;
 	padding: 0;
-	font-size: 180%;
+	font-size: 220%;
 	color: #2F2F2F;
 }
 
 .dri_welcome_block p {
 	margin: 0 0 15px 0;
 	padding: 0;
-	font-size: 125%;
+	font-size: 145%;
 	line-height: 1.4em;
 	color: #2F2F2F;
 }
 .dri_welcome_block p.dri_home_link {
 	margin: 0 0 0 0;
 	padding: 0;
-	font-size: 115%;
+	font-size: 130%;
 	line-height: 1.4em;
 	color: #2F2F2F;
 }
@@ -1289,11 +1289,10 @@ h4.suggest a:hover {
 	margin: 0 0 0 0;
 	padding: 0 0 0 15px;
 	color: #2F2F2F;
-	background: image-url('dri/arrow_black.png') no-repeat;
+	background: image-url('dri/arrow_black.png') no-repeat left center;
 }
 .dri_welcome_block p.dri_home_link a:hover {
-	color: #288DC0;
-	background: image-url('dri/arrow_black_over.png') no-repeat;
+	text-decoration: underline;
 }
 .dri_home_title h2 {
 	margin: 0 0 0 0;
@@ -1331,15 +1330,17 @@ h5.dri_rss_subtitle {
 		padding: 0;
 		margin: 0;
 		line-height: 1.4em;
-		color: #2F2F2F;
+		color: #808080;
 	}
 .dri_rss_description .field-items a {
-		color: #2F2F2F;
+		color: #808080;
 		text-decoration: underline;
 		
 	}	
+		
 p.dri_rss_link a {
 		border-bottom: 1px solid #D9DADB;
+		font-size: 93%;
 		color: #2F2F2F;
 		display: block;
 		font-weight: bold;
