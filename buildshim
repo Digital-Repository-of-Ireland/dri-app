@@ -14,6 +14,8 @@ rvm use ruby-2.0.0-p195 || exit 100
 rvm use ruby-2.0.0-p195@build --create || exit 100
 rvm --force gemset empty ruby-2.0.0p195@build || exit 100
 
+branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+
 case $1 in
 patch)
     ;;
@@ -87,8 +89,10 @@ package)
 upload)
     if [[ -s "$HOME/hosts.buildbot" ]] ; then
       cp $HOME/hosts.buildbot deploy/hosts.buildbot
+      if [[ "$branch" == "master" ]]; then
       #ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-common.yml
-      #ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-nuig-rnag.yml -e "deploy_branch=$(git rev-parse HEAD)"
+        ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-nuig-rnag.yml -e "deploy_branch=$(git rev-parse HEAD)"
+      fi
     else
       printf "Can't upload and deploy, can't find hosts.buildbot file"
     fi

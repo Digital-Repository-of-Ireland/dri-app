@@ -16,7 +16,7 @@ class AssetsController < ApplicationController
 
     # Check if user can view a master file
     enforce_permissions!("show_master", params[:object_id]) if (datastream == "content")
-    
+
     @document = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
 
@@ -35,7 +35,7 @@ class AssetsController < ApplicationController
 
     # Check if user can view a master file
     enforce_permissions!("show_master", params[:object_id]) if (datastream == "content")
-    
+
     @gf = retrieve_object! params[:id]
 
     unless @gf.nil?
@@ -164,46 +164,49 @@ class AssetsController < ApplicationController
     if params[:objects].present?
 
       solr_query = ActiveFedora::SolrService.construct_query_for_pids(params[:objects].map{|o| o.values.first})
-      result_docs = ActiveFedora::SolrService.query(solr_query)
+      result_docs = Solr::Query.new(solr_query)
 
-      raise Exceptions::NotFound if result_docs.empty?
-      
       storage = Storage::S3Interface.new
 
-      result_docs.each do | r |
-        doc = SolrDocument.new(r)
+      while result_docs.has_more?
+        doc = result_docs.pop
+        raise Exceptions::NotFound if doc.empty?
 
-        files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
-        query = Solr::Query.new(files_query)
+        doc.each do |r|
+          doc = SolrDocument.new(r)
 
-        item = {}
-        item['pid'] = doc.id
-        item['files'] = []
+          files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
+          query = Solr::Query.new(files_query)
 
-        while query.has_more?
-          files = query.pop
+          item = {}
+          item['pid'] = doc.id
+          item['files'] = []
 
-          files.each do |mf|
-            file_list = {}
-            file_doc = SolrDocument.new(mf)
+          while query.has_more?
+            files = query.pop
 
-            if can? :read_master, doc
-              url = url_for(file_download_url(doc.id, file_doc.id))
-              file_list['masterfile'] = url
-            end
+            files.each do |mf|
+              file_list = {}
+              file_doc = SolrDocument.new(mf)
 
-            if can? :read, doc
-              surrogates = storage.get_surrogates doc, file_doc
-              surrogates.each do |file,loc|
-                file_list[file] = loc
+              if can? :read_master, doc
+                url = url_for(file_download_url(doc.id, file_doc.id))
+                file_list['masterfile'] = url
               end
+
+              if can? :read, doc
+                surrogates = storage.get_surrogates doc, file_doc
+                surrogates.each do |file,loc|
+                  file_list[file] = loc
+                end
+              end
+
+              item['files'].push(file_list)
             end
-
-            item['files'].push(file_list)
           end
-        end
 
-        @list << item
+          @list << item
+        end
       end
 
       storage.close

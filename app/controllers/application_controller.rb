@@ -1,7 +1,6 @@
 require 'exceptions'
 require 'permission_methods'
 require 'solr/query'
-#require 'http_accept_language'
 
 class ApplicationController < ActionController::Base
 
@@ -106,7 +105,7 @@ class ApplicationController < ActionController::Base
     solr_query = "+is_collection_sim:true"
 
     fq = manager_and_edit_filter unless (current_user && current_user.is_admin?)
-    
+
     query = Solr::Query.new(solr_query, 50, {:defType => "edismax", :fl => "id,title_tesim", :fq => fq})
     while query.has_more?
       result_docs = query.pop

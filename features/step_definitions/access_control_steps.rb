@@ -127,18 +127,18 @@ Given(/^the object with pid "(.*?)" is governed by the collection with pid "(.*?
   collection.save
 end
 
-Given /^the object with pid "(.*?)" is published$/ do |pid|
+Given /^the (collection|object) with pid "(.*?)" has status (.*?)$/ do |type,pid,status|
   pid = "dri:o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  object.status = "published"
+  object.status = status
   object.save
 end
 
-Given /^the (collection|object) with title "(.*?)" is published$/ do |type,title|
+Given /^the (collection|object) with title "(.*?)" has status (.*?)$/ do |type,title,status|
   query = "title_tesim:#{URI.encode(title)}"
   id = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
   object = ActiveFedora::Base.find(id, {:cast => true})
-  object.status = "published"
+  object.status = status
   object.save
 end
 
@@ -165,3 +165,4 @@ Given(/^the object with pid "(.*?)" has a deliverable surrogate file$/) do |pid|
   end
   storage.close
 end
+

@@ -1,0 +1,18 @@
+<div class="modal fade" id="dri_cookie_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel"><%= t('dri.application.terms.header') %></h4>
+			</div>
+			<div class="modal-body">
+				<div class="dri_cookie_acceptance_text">
+					<p><%= it 'dri.application.terms.message', privacy_statement: It.link('http://www.dri.ie/privacy-statement')%></p>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="$.cookie('accept_cookies', 'yes', { path: '/', expires: 10000 });">
+					<%= t('dri.application.terms.accept') %>
+			</div></button>
+		</div>
+	</div>
+</div>
