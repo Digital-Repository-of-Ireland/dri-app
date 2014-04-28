@@ -1,13 +1,20 @@
 <div class="dri_facet_restrictions_container">
   <ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs">
-
+    <% copySearchParams = @current_search_session[:query_params] %>
+    <% copySearchParams.delete(:controller) %>
+    <% copySearchParams.delete(:action) %>
     <% if params[:mode].eql?('collections') %>
-        <li><%= link_to t('dri.headerlinks.collections'), main_app.catalog_index_path(:mode=>'collections', :q=>params[:q], :search_field=>'all_fields'), :id=>"collections", :class=>'selected' %></li>
-        <li><%= link_to t('dri.headerlinks.objects'), main_app.catalog_index_path(:mode=>'objects', :q=>params[:q], :search_field=>'all_fields'), :id=>"objects" %></li>
+        <% copySearchParams[:mode] = 'objects' %>
+        <li><%= link_to t('dri.headerlinks.collections'), "#", :id=>"collections", :class=>'selected' %></li>
+        <li><%= link_to t('dri.headerlinks.objects'), main_app.catalog_index_path(copySearchParams), :id=>"objects" %></li>
     <% else %>
-        <li><%= link_to t('dri.headerlinks.collections'), main_app.catalog_index_path(:mode=>'collections', :q=>params[:q], :search_field=>'all_fields'), :id=>"collections" %></li>
-        <li><%= link_to t('dri.headerlinks.objects'), main_app.catalog_index_path(:mode=>'objects', :q=>params[:q], :search_field=>'all_fields'), :id=>"objects", :class=>'selected' %></li>
+        <% copySearchParams[:mode] = 'collections' %>
+        <li><%= link_to t('dri.headerlinks.collections'), main_app.catalog_index_path(copySearchParams), :id=>"collections" %></li>
+        <li><%= link_to t('dri.headerlinks.objects'), "#", :id=>"objects", :class=>'selected' %></li>
     <% end %>
+    <% puts "################" %>
+    <% puts copySearchParams.inspect %>
+    <% puts "################" %>
   </ul>
 </div>
 <!-- close dri_facet_restrictions_container -->
