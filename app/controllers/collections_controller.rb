@@ -1,6 +1,5 @@
 # Controller for the Collection model
 #
-require 'storage/s3_interface'
 require 'storage/cover_images'
 require 'validators'
 require 'institute_helpers'
@@ -278,18 +277,12 @@ class CollectionsController < CatalogController
     @collection = retrieve_object!(params[:id])
 
     if current_user.is_admin? || ((can? :manage_collection, @collection) && @collection.status.eql?('draft'))
-      @collection.governed_items.each do |object|
-        begin
-          # this makes a connection to s3, should really test if connection is available somewhere else
-          delete_files(object)
-        rescue Exception => e
-          puts 'cannot delete files'
-        end
-        object.delete
+      begin
+        delete_collection
+        flash[:notice] = t('dri.flash.notice.collection_deleted')
+      rescue Exception => e
+        flash[:alert] = t('dri.flash.alert.error_deleting_collection', :error => e.message)
       end
-      @collection.reload
-      @collection.delete
-      flash[:notice] = t('dri.flash.notice.collection_deleted')
     else
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, "")
     end
@@ -347,18 +340,6 @@ class CollectionsController < CatalogController
     end
   end
 
-  def delete_files(object)
-    local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                            { :f => object.id, :d => 'content' } ],
-                                     :order => "version DESC")
-    local_file_info.each { |file| file.destroy }
-    FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
-
-    storage = Storage::S3Interface.new
-    storage.delete_bucket(object.id.sub('dri:', ''))
-    storage.close
-  end
-
   def create_reader_group
     @group = UserGroup::Group.new(:name => reader_group_name, :description => "Default Reader group for collection #{@collection.id}")
     @group.save
@@ -367,6 +348,15 @@ class CollectionsController < CatalogController
 
   def reader_group_name
     @collection.id.sub(':', '_')
+  end
+
+  def delete_collection
+    begin
+      Sufia.queue.push(DeleteCollectionJob.new(@collection.id))
+    rescue Exception => e
+      logger.error "Unable to delete collection: #{e.message}"
+      raise Exceptions::ResqueError
+    end
   end
 
   def publish_objects
