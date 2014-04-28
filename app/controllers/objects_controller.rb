@@ -143,85 +143,86 @@ class ObjectsController < CatalogController
 
     if params.has_key?("objects") && !params[:objects].blank?
       solr_query = ActiveFedora::SolrService.construct_query_for_pids(params[:objects].map{|o| o.values.first})
-      result_docs = ActiveFedora::SolrService.query(solr_query)
-
-      if result_docs.empty?
-        raise Exceptions::NotFound
-      end
+      result_docs = Solr::Query.new(solr_query)
 
       storage = Storage::S3Interface.new
 
-      result_docs.each do | r |
-        item = {}
-        doc = SolrDocument.new(r)
+      while result_docs.has_more?
+        doc = result_docs.pop
+        raise Exceptions::NotFound if doc.empty?
 
-        # Get metadata
-        item['pid'] = doc.id
-        item['files'] = []
-        item['metadata'] = {}
+        doc.each do | r |
+          item = {}
+          doc = SolrDocument.new(r)
 
-        ['title','subject','type','rights','language','description','creator',
-         'contributor','publisher','date','format','source','temporal_coverage',
-         'geographical_coverage','geocode_point','geocode_box','institute',
-         'root_collection_id'].each do |field|
+          # Get metadata
+          item['pid'] = doc.id
+          item['files'] = []
+          item['metadata'] = {}
 
-          if params['metadata'].blank? || params['metadata'].include?(field)
-            value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
+          ['title','subject','type','rights','language','description','creator',
+           'contributor','publisher','date','format','source','temporal_coverage',
+           'geographical_coverage','geocode_point','geocode_box','institute',
+           'root_collection_id'].each do |field|
 
-            if field.eql?("institute")
-              item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
-            elsif field.eql?("geocode_point")
-              if !value.nil? && !value.blank?
-                geojson_points = []
-                value.each do |point|
-                  geojson_points << dcterms_point_to_geojson(point)
+            if params['metadata'].blank? || params['metadata'].include?(field)
+              value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
+
+              if field.eql?("institute")
+                item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
+              elsif field.eql?("geocode_point")
+                if !value.nil? && !value.blank?
+                  geojson_points = []
+                  value.each do |point|
+                    geojson_points << dcterms_point_to_geojson(point)
+                  end
+                  item['metadata'][field] = geojson_points
                 end
-                item['metadata'][field] = geojson_points
-              end
-            elsif field.eql?("geocode_box")
-              if !value.nil? && !value.blank?
-                geojson_boxes = []
-                value.each do |box|
-                  geojson_boxes << dcterms_box_to_geojson(box)
+              elsif field.eql?("geocode_box")
+                if !value.nil? && !value.blank?
+                  geojson_boxes = []
+                  value.each do |box|
+                    geojson_boxes << dcterms_box_to_geojson(box)
+                  end
+                  item['metadata'][field] = geojson_boxes
                 end
-                item['metadata'][field] = geojson_boxes
+              else
+                item['metadata'][field] = value unless value.nil?
               end
-            else
-              item['metadata'][field] = value unless value.nil?
             end
-          end
-        end
+           end
 
-        # Get files
-        if can? :read, doc
-          files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
-          query = Solr::Query.new(files_query)
+          # Get files
+          if can? :read, doc
+            files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
+            query = Solr::Query.new(files_query)
 
-          while query.has_more?
-            files = query.pop
+            while query.has_more?
+              files = query.pop
 
-            files.each do |mf|
-              file_list = {}
-              file_doc = SolrDocument.new(mf)
+              files.each do |mf|
+                file_list = {}
+                file_doc = SolrDocument.new(mf)
 
-              if can? :read_master, doc
-                url = url_for(file_download_url(doc.id, file_doc.id))
-                file_list['masterfile'] = url
+                if can? :read_master, doc
+                  url = url_for(file_download_url(doc.id, file_doc.id))
+                  file_list['masterfile'] = url
+                end
+
+                timeout = 60 * 60 * 24 * 30 # 30 days
+                surrogates = storage.get_surrogates doc, file_doc, timeout
+                surrogates.each do |file,loc|
+                  file_list[file] = loc
+                end
+
+                item['files'].push(file_list)
               end
-
-              timeout = 60 * 60 * 24 * 30 # 30 days
-              surrogates = storage.get_surrogates doc, file_doc, timeout
-              surrogates.each do |file,loc|
-                file_list[file] = loc
-              end
-
-              item['files'].push(file_list)
             end
+
           end
 
+          @list << item
         end
-
-        @list << item
       end
 
       storage.close
@@ -285,7 +286,7 @@ class ObjectsController < CatalogController
       rescue Exception => e
         logger.error "Unable to submit status job: #{e.message}"
         flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)
-        @warnings = t('dri.flash.alert.error_review_job', :error => e.message)  
+        @warnings = t('dri.flash.alert.error_review_job', :error => e.message)
       end
     end
 
@@ -298,7 +299,7 @@ class ObjectsController < CatalogController
         else
           response = { :id => @object.id, :status => @object.status }
         end
-        render :json => response, :status => :accepted } 
+        render :json => response, :status => :accepted }
     end
   end
 

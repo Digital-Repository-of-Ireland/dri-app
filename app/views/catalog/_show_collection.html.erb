@@ -16,7 +16,8 @@
 
   <div class="dri_vc_title">
     <%= image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
-    <%= link_to t('dri.views.catalog.forms.objects_in_collection'), catalog_index_path(:collection => document['root_collection_id_tesim'].first, :mode => "objects", :search_field => "all_fields") %>
+    <% objectsCount = count_items_in_collection document[:id] %>
+    <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(:collection => document['root_collection_id_tesim'].first, :mode => "objects", :search_field => "all_fields") %>
   </div>
 
   <div class="dri_vc_image"><!-- fix link -->
@@ -27,6 +28,8 @@
         <%= image_tag(image, :width=>"230", :height=>"139", :alt=>t('dri.views.alt_tags.cover_image')) %></a>
     <% end %>
   </div>
+
+  <%= render :partial => "catalog/collection_show_objects_types", :locals => {:document => document, :objectsCount => objectsCount} %>
 
   <%= render :partial => "tools", :locals => {:document => document} %>
 
@@ -59,7 +62,3 @@
   <% end %>
 
 </div>
-
-
-
-
