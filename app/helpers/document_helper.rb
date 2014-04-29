@@ -19,4 +19,10 @@ module DocumentHelper
 
   end
 
+  def get_collection_media_type_params collectionId, mediaType
+    searchFacets = { :file_type_display_sim => [mediaType], :root_collection_id_sim => [collectionId] }
+    searchParams = { :mode => "objects", :search_field => "all_fields", :utf8 => "✓", :f => searchFacets }
+    return searchParams
+  end
+
 end
