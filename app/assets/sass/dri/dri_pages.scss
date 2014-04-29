@@ -2,6 +2,8 @@
 .dri_about_container {
    //@include zen-float();
     $zen-column-count:12;
+    $bgcolour-1: #111;
+    $about-text-1: #fff;
 
   
     .dri_about_01 {
@@ -15,11 +17,15 @@
     }
     .dri_about_04 {
       @include zen-clear();
-      @include zen-grid-item(12, 1);      
+      @include zen-grid-item(12, 1); 
+      background-color: $bgcolour-1;
+      p {
+        color: $about-text-1;
+      }   
     }
     .dri_about_05 {
       @include zen-clear();
-      @include zen-grid-item(6, 1);      
+      @include zen-grid-item(6, 1);     
     }
     .dri_about_06 {
       @include zen-grid-item(6, 7);      
