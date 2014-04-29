@@ -1395,6 +1395,7 @@ p.dri_rss_link a {
 .dri_about_01 {
 	padding: 0;
 	margin: 20px 0 0 0;
+	border-right: 1px solid #D9DADB;
 	
 	
 }
@@ -1402,9 +1403,25 @@ p.dri_rss_link a {
 	padding: 0;
 	margin: 0;
 	color:#90993D;
+	line-height: 1.3em;
 	
 }
+.dri_about_02 {
+	padding: 0;
+	margin: 20px 0 0 0;
+	border-right: 1px solid #D9DADB;
 	
+	
+}
+.dri_about_02 h4 {
+	padding: 0;
+	margin: 0;
+	color: #2F2F2F;
+	font-size: 170%;
+	line-height: 1.3em;
+	
+}
+		
 	
 /* ----------- Collection block ---------- */
 
