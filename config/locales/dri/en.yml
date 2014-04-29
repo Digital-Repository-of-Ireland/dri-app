@@ -1154,3 +1154,5 @@ en:
     window: 
       alert: 
         coming_soon: "Coming Soon"
+      modal:
+        close: "Close"

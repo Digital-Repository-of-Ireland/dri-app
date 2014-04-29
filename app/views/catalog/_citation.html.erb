@@ -2,12 +2,12 @@
 
 <% if document.respond_to?(:export_as_mla_citation_txt) %>
   <h4><%= t('blacklight.citation.mla') %></h4>
-  <%= document.send(:export_as_mla_citation_txt).html_safe %><br/><br/>
+  <%= document.send(:export_as_mla_citation_txt).html_safe %><br/>
 <% end %>
 
 <% if document.respond_to?(:export_as_apa_citation_txt) %>
   <h4><%= t('blacklight.citation.apa') %></h4>
-  <%= document.send(:export_as_apa_citation_txt).html_safe %><br/><br/>
+  <%= document.send(:export_as_apa_citation_txt).html_safe %><br/>
 <% end %>
 
 <%- if document.respond_to?(:export_as_chicago_citation_txt) -%>
