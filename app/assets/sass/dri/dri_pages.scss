@@ -30,7 +30,7 @@
     }
     .dri_about_05 {
       @include zen-clear();
-      @include zen-grid-item(6, 1);     
+      @include zen-grid-item(6, 0.89);     
     }
     .dri_about_06 {
       @include zen-grid-item(6, 7);      
