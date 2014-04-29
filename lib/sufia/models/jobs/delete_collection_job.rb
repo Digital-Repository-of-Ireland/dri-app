@@ -20,7 +20,7 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
           # this makes a connection to s3, should really test if connection is available somewhere else
           delete_files(o)
         rescue Exception => e
-          puts 'cannot delete files'
+          Rails.logger.error "Unable to delete files"
         end        
       
         o.delete
