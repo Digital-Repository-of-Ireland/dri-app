@@ -3,7 +3,12 @@
    //@include zen-float();
     $zen-column-count:12;
     $bgcolour-1: #111;
+    $bgcolour-2: #eee;
+    $bgcolour-3: #ddd;
+    $bgcolour-4: #ccc;
+    $bgcolour-5: #bbb;
     $about-text-1: #fff;
+ 
 
   
     .dri_about_01 {
@@ -30,23 +35,30 @@
     .dri_about_06 {
       @include zen-grid-item(6, 7);      
     }
+    .dri_about_06b {
+       @include zen-grid-item(6, 1);
+    }
     .dri_about_07 {
       @include zen-clear();
-      @include zen-grid-item(4, 1);      
+      @include zen-grid-item(4, 1);  
+            background-color: $bgcolour-2;    
     }
     .dri_about_08 {
-      @include zen-grid-item(4, 5);      
+      @include zen-grid-item(4, 5);     
+            background-color: $bgcolour-3; 
     }
     .nested {
       @include zen-grid-item(4, 9);
       @include zen-nested-container();
     }
     .dri_about_09 {
-      @include zen-grid-item(4, 9);      
+      @include zen-grid-item(12, 1);  
+            background-color: $bgcolour-4;    
     }
     .dri_about_10 {
       @include zen-clear();
-      @include zen-grid-item(4, 9);      
+      @include zen-grid-item(12, 1);    
+            background-color: $bgcolour-5;  
     }
   
 }

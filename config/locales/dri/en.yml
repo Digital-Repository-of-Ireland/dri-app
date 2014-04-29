@@ -109,7 +109,8 @@ en:
       usergroups: "Users & Groups"
       workspace: "My Workspace"
     help: 
-      q: "Type a search term and press Enter"
+      q_title: "Search the repository"
+      q: "Type a query and press Enter"
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
