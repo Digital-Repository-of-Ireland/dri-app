@@ -6,10 +6,6 @@
     <% videoCount = count_items_in_collection_by_type(document[:id], "Video") %>
     <% mixedCount = count_items_in_collection_by_type(document[:id], "Mixed_Types") %>
 
-    <% testparams = get_collection_media_type_params("dri:ff365527s", "Audio") %>
-    <% puts "testParams = #{testparams.inspect}" %>
-    <% puts "#####################" %>
-
     <ul class="dri_view_collection">
       <div class="dri_title"><%= t("dri.data.types.Title") %></div>
 
