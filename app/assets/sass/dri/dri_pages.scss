@@ -12,13 +12,13 @@
 
   
     .dri_about_01 {
-      @include zen-grid-item(4, 1);      
+      @include zen-grid-item(4, 1, $gutter-width: 0px);      
     }
     .dri_about_02 {
-      @include zen-grid-item(4, 5);      
+      @include zen-grid-item(4, 5, $gutter-width: 20px);      
     }
     .dri_about_03 {
-      @include zen-grid-item(4, 9);      
+      @include zen-grid-item(4, 9, $gutter-width: 20px);      
     }
     .dri_about_04 {
       @include zen-clear();
