@@ -66,11 +66,10 @@ module ApplicationHelper
     unless file_document['file_type_tesim'].blank?
       format = file_document['file_type_tesim'].first
 
-      if format.eql?("image")
+      case format
+      when "image"
         path = surrogate_url(document.id, file_document.id, image_name)
-      end
-
-      if format.eql?("text")
+      when "text"
         path = surrogate_url(document.id, file_document.id, "thumbnail_medium")
       end
     end
@@ -178,7 +177,9 @@ module ApplicationHelper
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
-    @cover_image = search_image( document, file_doc ) unless file_doc.nil?
+    if can?(:read, document)
+      @cover_image = search_image( document, file_doc ) unless file_doc.nil?
+    end
 
     @cover_image = cover_image ( document ) if @cover_image.nil?
 
