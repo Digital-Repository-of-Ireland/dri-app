@@ -1,4 +1,6 @@
 /* Anna updated html and body */
+$dri_green: #90993D;
+
 html {
   margin-bottom: 0.5em;
 	height: 100%;
@@ -1391,7 +1393,11 @@ p.dri_rss_link a {
 	
 	
 /*-------------- About Page --------------*/
-	
+.dri_colour_text {
+  color: $dri_green;
+}
+
+
 .dri_about_01 {
 	padding: 0;
 	margin: 20px 0 0 0;
@@ -1483,6 +1489,27 @@ p.dri_rss_link a {
 	height: 398px;
 	
 	
+}
+
+.dri_about_07 {
+
+  min-height: 320px;
+  
+}
+.dri_about_08 {
+
+  min-height: 320px;
+  
+}
+.dri_about_09 {
+
+  min-height: 160px;
+  
+}
+.dri_about_10 {
+
+  min-height: 160px;
+  
 }
 /* ----------- Collection block ---------- */
 

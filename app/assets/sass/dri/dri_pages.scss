@@ -32,11 +32,16 @@
       @include zen-clear();
       @include zen-grid-item(6, 0.89);     
     }
-    .dri_about_06 {
-      @include zen-grid-item(6, 7);      
+    .dri_about_06a {
+      @include zen-nested-container();
+      @include zen-grid-item(6, 7);   
     }
+    .dri_about_06 {
+      //@include zen-grid-item(1, 6);   
+    }
+
     .dri_about_06b {
-       @include zen-grid-item(6, 1);
+       //@include zen-grid-item(6, 1);
     }
     .dri_about_07 {
       @include zen-clear();
