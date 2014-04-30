@@ -1,32 +1,24 @@
-<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-  <!-- Indicators -->
+<div id="carousel-example-generic" class="carousel slide dri_carousel_controls" data-ride="carousel" data-interval="100000">
+	<!-- Indicators -->
 
+	<!-- Wrapper for slides -->
+	<div class="carousel-inner">
+		<!--First item set to active-->
+		<div class="item active">
+			<%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files.first} %>
+		</div>
 
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner">
-    <!--First item set to active-->
-    <div class="item active">
-      <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files.first} %>
-    </div>
+		<% for i in 1..(files.count - 1) %>
+		<div class="item">
+			<%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files[i]} %>
+		</div>
+		<% end %>
 
-    <% for i in 1..(files.count - 1) %>
-        <div class="item">
-          <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files[i]} %>
-        </div>
-    <% end %>
+	</div>
 
-
-
-  </div>
-
-  <!-- Controls -->
-
-</div>
-<div class="dri_carousel_controls">
-  <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left"></span>
-  </a>
-  <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right"></span>
-  </a>
+	<!-- Controls -->
+	<div class="">
+		<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a>
+		<a class="right carousel-control" href="#carousel-example-generic" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a>
+	</div>
 </div>
