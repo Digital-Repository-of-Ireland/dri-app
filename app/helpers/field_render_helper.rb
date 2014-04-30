@@ -154,18 +154,15 @@ module FieldRenderHelper
   end
 
   def get_value_from_solr_field solrField, value
-    components = solrField.split(/\s*;\s*/)
+    return nil if solrField.blank? or value.blank?
 
-    if components.length < 3
-      return solrField
-    else
-      components.each do |component|
-        (k,v) = component.split(/\s*=\s*/)
-        if k.eql?(value)
-          return v
-        end
+    solrField.split(/\s*;\s*/).each do |component|
+      (k,v) = component.split(/\s*=\s*/)
+      if k.eql?(value)
+        return v
       end
     end
+    return solrField
   end
 
 end

@@ -44,7 +44,9 @@
 
   <%= render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
 
+  <%# render :partial => 'shared/cookies_modal' unless cookies[:accept_cookies]%>
   <%= render :partial => 'shared/header_navbar_public' %>
+
 
   <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div><!-- close ajax-modal -->
 

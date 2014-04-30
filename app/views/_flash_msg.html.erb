@@ -1,6 +1,6 @@
 <!-- system messages container -->
 
-<div id="dri_messages_container_id" class="dri_messages_container">
+<div id="dri_messages_container_id" class="dri_messages_container dri_clearfix">
   <% [:success, :notice, :error, :alert].each do |type| %>
     <%- alert_class = type %>
     <% if flash[type] %>
