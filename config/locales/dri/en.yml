@@ -25,6 +25,9 @@ en:
           visit_dri: "Visit the DRI Website"
         new_collections: "New Collections"
         newly_added: "Newly Added"
+        rss_feed: 
+          read_more: "Read More"
+          title: News
       lang: 
         en: English
         ga: Irish
@@ -106,7 +109,8 @@ en:
       usergroups: "Users & Groups"
       workspace: "My Workspace"
     help: 
-      q: "Type a search term and press Enter"
+      q_title: "Search the repository"
+      q: "Type a query and press Enter"
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
@@ -1151,3 +1155,5 @@ en:
     window: 
       alert: 
         coming_soon: "Coming Soon"
+      modal:
+        close: "Close"
