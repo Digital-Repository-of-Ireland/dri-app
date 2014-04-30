@@ -10,8 +10,8 @@ Feature: API Testing
     And the object with pid "dri:apitest2" is governed by the collection with pid "dri:apitest"
     And the object with pid "dri:apitest1" is publicly readable
     And the object with pid "dri:apitest2" is publicly readable
-    And the object with pid "dri:apitest1" is published
-    And the object with pid "dri:apitest2" is published
+    And the object with pid "dri:apitest1" has status published
+    And the object with pid "dri:apitest2" has status published
     And the object with pid "dri:apitest1" has "accessible" masterfile
     And the object with pid "dri:apitest2" has "inaccessible" masterfile
     And the object with pid "dri:apitest1" has a deliverable surrogate file
@@ -116,4 +116,7 @@ Scenario: I should be able to get a list of specific metadata and asset files fo
     """
     Then the response status should be "400"
 
+  Scenario: Requesting more than 10 objects
+
+  Scenario: Requesting more than 100 objects
 

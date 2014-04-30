@@ -1,6 +1,5 @@
 # Controller for the Collection model
 #
-require 'storage/s3_interface'
 require 'storage/cover_images'
 require 'validators'
 require 'institute_helpers'
@@ -130,10 +129,10 @@ class CollectionsController < CatalogController
     set_access_permissions(:batch, true)
 
     @collection = Batch.new
-    
-    @collection.type = ["Collection"] if @collection.type == nil 
+
+    @collection.type = ["Collection"] if @collection.type == nil
     @collection.type.push("Collection") unless @collection.type.include?("Collection")
-    
+
     @licences = {}
     Licence.find(:all).each do |licence|
       @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
@@ -275,25 +274,21 @@ class CollectionsController < CatalogController
   def destroy
     enforce_permissions!("manage_collection",params[:id])
 
-    if current_user.is_admin?
-      @collection = retrieve_object!(params[:id])
+    @collection = retrieve_object!(params[:id])
 
-      @collection.governed_items.each do |object|
-        begin
-          # this makes a connection to s3, should really test if connection is available somewhere else
-          delete_files(object)
-        rescue Exception => e
-          puts 'cannot delete files'
-        end
-        object.delete
+    if current_user.is_admin? || ((can? :manage_collection, @collection) && @collection.status.eql?('draft'))
+      begin
+        delete_collection
+        flash[:notice] = t('dri.flash.notice.collection_deleted')
+      rescue Exception => e
+        flash[:alert] = t('dri.flash.alert.error_deleting_collection', :error => e.message)
       end
-      @collection.reload
-      @collection.delete
+    else
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, "")
     end
 
     respond_to do |format|
-      format.html { flash[:notice] = t('dri.flash.notice.collection_deleted')
-      redirect_to :controller => "catalog", :action => "index" }
+      format.html { redirect_to :controller => "catalog", :action => "index" }
     end
   end
 
@@ -318,11 +313,11 @@ class CollectionsController < CatalogController
     rescue Exception => e
       flash[:alert] = t('dri.flash.alert.error_publishing_collection', :error => e.message)
       @warnings = t('dri.flash.alert.error_publishing_collection', :error => e.message)
-    end 
- 
+    end
+
     respond_to do |format|
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
-      format.json { 
+      format.json {
           unless @warnings.nil?
             response = { :warning => @warnings, :id => @object.id, :status => @object.status }
           else
@@ -345,18 +340,6 @@ class CollectionsController < CatalogController
     end
   end
 
-  def delete_files(object)
-    local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                            { :f => object.id, :d => 'content' } ],
-                                     :order => "version DESC")
-    local_file_info.each { |file| file.destroy }
-    FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
-
-    storage = Storage::S3Interface.new
-    storage.delete_bucket(object.id.sub('dri:', ''))
-    storage.close
-  end
-
   def create_reader_group
     @group = UserGroup::Group.new(:name => reader_group_name, :description => "Default Reader group for collection #{@collection.id}")
     @group.save
@@ -365,6 +348,15 @@ class CollectionsController < CatalogController
 
   def reader_group_name
     @collection.id.sub(':', '_')
+  end
+
+  def delete_collection
+    begin
+      Sufia.queue.push(DeleteCollectionJob.new(@collection.id))
+    rescue Exception => e
+      logger.error "Unable to delete collection: #{e.message}"
+      raise Exceptions::ResqueError
+    end
   end
 
   def publish_objects

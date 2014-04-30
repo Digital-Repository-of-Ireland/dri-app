@@ -66,11 +66,10 @@ module ApplicationHelper
     unless file_document['file_type_tesim'].blank?
       format = file_document['file_type_tesim'].first
 
-      if format.eql?("image")
+      case format
+      when "image"
         path = surrogate_url(document.id, file_document.id, image_name)
-      end
-
-      if format.eql?("text")
+      when "text"
         path = surrogate_url(document.id, file_document.id, "thumbnail_medium")
       end
     end
@@ -138,10 +137,20 @@ module ApplicationHelper
     "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
   end
 
-  def count_items_in_collection_by_type( collection_id, type, status )
+  def count_items_in_collection_by_type_and_status( collection_id, type, status )
     solr_query = "status_ssim:" + status + " AND (ancestor_id_tesim:\"" + collection_id +
     "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
-    "object_type_sim:"+ type
+    "file_type_display_tesim:"+ type
+    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+  end
+
+  def count_items_in_collection_by_type(collection_id, type)
+    solr_query = "(ancestor_id_tesim:\"" + collection_id +
+        "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
+        "file_type_display_tesim:"+ type
+    unless signed_in? && can?(:edit, collection_id)
+      solr_query = "status_ssim:published AND " + solr_query
+    end
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
@@ -150,10 +159,10 @@ module ApplicationHelper
 
     @type_counts = {}
     Settings.data.types.each do |type|
-      @type_counts[type] = { :published => count_items_in_collection_by_type( id, type, "published" ) }
+      @type_counts[type] = { :published => count_items_in_collection_by_type_and_status( id, type, "published" ) }
 
       if signed_in? && (can? :edit, id)
-        @type_counts[type][:draft] = count_items_in_collection_by_type( id, type, "draft" )
+        @type_counts[type][:draft] = count_items_in_collection_by_type_and_status( id, type, "draft" )
       end
 
     end
@@ -168,7 +177,9 @@ module ApplicationHelper
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
-    @cover_image = search_image( document, file_doc ) unless file_doc.nil?
+    if can?(:read, document)
+      @cover_image = search_image( document, file_doc ) unless file_doc.nil?
+    end
 
     @cover_image = cover_image ( document ) if @cover_image.nil?
 

@@ -156,8 +156,8 @@ module FieldRenderHelper
   def get_value_from_solr_field solrField, value
     components = solrField.split(/\s*;\s*/)
 
-    if components.length < 2
-      return value
+    if components.length < 3
+      return solrField
     else
       components.each do |component|
         (k,v) = component.split(/\s*=\s*/)

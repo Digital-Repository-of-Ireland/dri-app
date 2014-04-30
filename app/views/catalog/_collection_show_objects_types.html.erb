@@ -1,0 +1,63 @@
+<% if (objectsCount > 0) %>
+
+    <% imageCount = count_items_in_collection_by_type(document[:id], "Image") %>
+    <% textCount = count_items_in_collection_by_type(document[:id], "Text") %>
+    <% audioCount = count_items_in_collection_by_type(document[:id], "Audio") %>
+    <% videoCount = count_items_in_collection_by_type(document[:id], "Video") %>
+    <% mixedCount = count_items_in_collection_by_type(document[:id], "Mixed_Types") %>
+
+    <% testparams = get_collection_media_type_params("dri:ff365527s", "Audio") %>
+    <% puts "testParams = #{testparams.inspect}" %>
+    <% puts "#####################" %>
+
+    <ul class="dri_view_collection">
+      <div class="dri_title"><%= t("dri.data.types.Title") %></div>
+
+      <% if (imageCount > 0) %>
+          <li>
+            <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document[:id], "Image")) do %>
+                <%= t("dri.data.types.Image") %>
+                <span class="dri_stat_num"><%= imageCount %></span>
+            <% end %>
+          </li>
+      <% end %>
+
+      <% if (audioCount > 0) %>
+          <li>
+            <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document[:id], "Audio")) do %>
+                <%= t("dri.data.types.Sound") %>
+                <span class="dri_stat_num"><%= audioCount %></span>
+            <% end %>
+          </li>
+      <% end %>
+
+      <% if (videoCount > 0) %>
+          <li>
+            <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document[:id], "Video")) do %>
+                <%= t("dri.data.types.MovingImage") %>
+                <span class="dri_stat_num"><%= videoCount %></span>
+            <% end %>
+          </li>
+      <% end %>
+
+      <% if (textCount > 0) %>
+          <li>
+            <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document[:id], "Text")) do %>
+                <%= t("dri.data.types.Text") %>
+                <span class="dri_stat_num"><%= textCount %></span>
+            <% end %>
+          </li>
+      <% end %>
+
+      <% if (mixedCount > 0) %>
+          <li>
+            <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document[:id], "Mixed_Types")) do %>
+                <%= t("dri.data.types.MixedType") %>
+                <span class="dri_stat_num"><%= mixedCount %></span>
+            <% end %>
+          </li>
+      <% end %>
+
+    </ul>
+
+<% end %>

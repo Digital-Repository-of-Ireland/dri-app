@@ -45,10 +45,8 @@ describe CollectionsController do
 
       @collection.governed_items.length.should == 1
 
+      Sufia.queue.should_receive(:push).with(an_instance_of(DeleteCollectionJob)).once
       delete :destroy, :id => @collection.id
-
-      expect { ActiveFedora::Base.find(@object.id, :cast => true) }.to raise_error(ActiveFedora::ObjectNotFoundError)
-      expect { ActiveFedora::Base.find(@collection.id, :cast => true) }.to raise_error(ActiveFedora::ObjectNotFoundError)
     end
 
   end

@@ -13,7 +13,7 @@ module Utils
       point_hash[key] = value
     end
 
-    return nil if point_hash.count < 2
+    return nil if point_hash.count < 3
 
     tmp_hash = {}
     geojson_hash = {}
@@ -39,7 +39,7 @@ module Utils
       point_hash[key] = value
     end
 
-    return nil if point_hash.count < 2
+    return nil if point_hash.count < 3
 
     tmp_hash = {}
     geojson_hash = {}

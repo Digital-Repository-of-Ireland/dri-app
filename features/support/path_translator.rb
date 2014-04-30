@@ -20,6 +20,9 @@ module PathTranslator
     when /show page for the collection "(.+)"/
       catalog_path($1)
 
+    when /edit collection page for id (.+)/
+      edit_collection_path($1)
+
     when /the home page/
       root_path
 
@@ -75,13 +78,14 @@ module PathTranslator
           edit_object_path(pid)
       else
         raise('Unknown route')
-
       end
 
     when /collection/
       case page
       when /show/
         catalog_path(pid)
+      when /edit/
+        edit_collection_path(pid)
       else
         raise('Unknown route')
       end
