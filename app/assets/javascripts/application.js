@@ -22,6 +22,7 @@
 //
 //= require dri/
 //= require colorbox-rails
+//= require bootstrap-player.js
 
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 
@@ -32,6 +33,7 @@ $(document).ready(function() {
     $('#dri_cookie_modal').modal();
     $('.carousel').carousel();
     $('#q, #dri_social_media_links_id').popover( {delay: { show: 500, hide: 100 }} );
+    
 });
 
 $(function(){

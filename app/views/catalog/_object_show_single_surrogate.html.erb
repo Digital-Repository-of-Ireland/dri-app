@@ -2,7 +2,7 @@
 <% @surrogate = surrogate_url(document.id, generic_file.id, "mp3") %>
 <% unless @surrogate.nil? %>
 <div class="dri_carousel_item">
-	<audio controls>
+	<audio controls data-info-title="Come, take a trip in my air-ship">
 		<source src="<%= @surrogate %>" type="audio/mpeg">
 	</audio>
 </div>
