@@ -193,7 +193,7 @@ a {
 
 .dri_login_form_block .dri_submit input {
 	font-size: 100%;
-	background-color: #278DC1;
+	background-color: #90993D;
 	color: #FFF;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
@@ -204,7 +204,12 @@ a {
 	width: 330px;
 }
 .dri_login_form_block .dri_submit input:hover {
-	background-color: #0075AC;
+	background-color: #7C842B;
+}
+
+.dri_checkbox_text {
+	margin: 0;
+	padding: 0;
 }
 .dri_checkbox_text input {
 	margin: 10px 4px 0 0;
@@ -212,11 +217,15 @@ a {
 	width: 14px;
 	height: 14px;
 	font-size: 106%;
+	float:left;
 }
-.dri_checkbox_text span {
-	margin: 0;
+
+.dri_checkbox_text label span {
+	margin: 10px 4px 0 0;
 	padding: 0;
+	float:left;
 }
+
 
 .dri_form_text  {
 	display: block;
@@ -244,14 +253,16 @@ a {
 .dri_signup_password input {
 	background-color: #B3B3B3;
 }
-
+.dri_form_text a span.text_line {
+	margin: 20px 0 0 0;
+	padding: 0 0 0 0;
+	display: block;
+	font-weight: bold;
+}
 /*-------------- Signin Error message styling --------------*/
 .dri_login_form_block .field_with_errors {
 	background-color:#FFF;
 }
-
-
-
 
 .dri_input_error_message  {
 	color: #B3232B;
