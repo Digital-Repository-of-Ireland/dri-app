@@ -204,7 +204,6 @@
 	
 	.dri_object_first_block {
 		@include zen-grid-item(2, 1, $gutter-width: 0px);
-
 		@include zen-clear();
 
 		
