@@ -121,51 +121,34 @@ module FacetsHelper
 
   # parses encoded era values
   def transform_era value
-    if value == nil
-      return 'nil'
-    end
+    return 'nil' if value.nil?
 
-    components = value.split(/\s*;\s*/)
-
-    if components.length < 3
-      return value
-    else
-      value.split(/\s*;\s*/).each do |component|
-        (k,v) = component.split(/\s*=\s*/)
-        if k.eql?('name')
-          return v
-        end
+    value.split(/\s*;\s*/).each do |component|
+      (k,v) = component.split(/\s*=\s*/)
+      if k.eql?('name')
+        return v
       end
     end
+    return value
   end
 
 
   # parses encoded location values
   def transform_loc value
-    if value == nil
-      return 'nil'
-    end
+    return 'nil' if value.nil?
 
-    components = value.split(/\s*;\s*/)
-
-    if components.length < 3
-      return value
-    else
-      components.each do |component|
-
-        (k,v) = component.split(/\s*=\s*/)
-        if k.eql?('name')
-          return v
-        end
+    value.split(/\s*;\s*/).each do |component|
+      (k,v) = component.split(/\s*=\s*/)
+      if k.eql?('name')
+        return v
       end
     end
+    return value
   end
 
   # Fetches the correct internationalization translation for a given language code
   def transform_language value
-    if value == nil
-      return 'nil'
-    end
+    return 'nil' if value == nil
 
     standard_lang = DRI::Metadata::Descriptors.standardise_language_code value
 
