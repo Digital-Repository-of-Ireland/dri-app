@@ -27,6 +27,11 @@ ga:
         en: Béarla
         ga: Gaeilge
       locale: Teanga
+      terms: 
+        accept: "Accept terms and hide message"
+        confirm: "By signing in or signing up you are deemed to be accepting the DRI terms of use"
+        header: "DRI Terms of Use"
+        message: "Aliquam erat volutpat. Integer fermentum est at risus condimentum accumsan. Sed imperdiet ac lectus vitae commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam rutrum arcu at lorem sodales, sed mollis nibh scelerisque. Proin congue ipsum eget velit gravida, non fringilla est ultrices. Duis lobortis sem et imperdiet tempor. In gravida tortor vulputate nibh vestibulum lobortis. Curabitur fermenm, ipsum id ultrices fermentum, nisi metus tristique justo, faucibus tempor nulla massa semper dolor. Donec tellus felis, luctus eu aliquet quis, scelerisque ut diam. Duis luctus turpis lectus, et feugiat mauris feugiat vitae. Sed interdum commodo est, consectetur suscipit lectus viverra et. Integer a consequat massa. Praesent arcu purus, auctor sed ante vel, blandit molestie neque.Aenean posuere pharetra ligula in aliquam. Maecenas tristique felis felis, id posuere metus bibendum accumsan. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent at velit quis nunc rhoncus laoreet. Sed ornare, leo et tincidunt malesuada, ligula ligula gravida lacus, quis ultrices lacus mi venenatis lacus. Nunc id interdum erat. Suspendisse eu molestie mauris. Suspendisse pharetra dapibus euismo. Pellentesque a ligula velit. Ut volutpat pretium risus adipiscing porta. In lectus augue, interdum sit amet iaculis eu, vehicula a nibh. Etiam lectus ligula, rhoncus id facilisis molestie, pellentesque vitae elit. Nulla elit dolor, mollis vitae ultrices sed, tristique vel erat. Nam mattis aliquam porta. Sed sagittis velit eu feugiat tincidunt. Etiam vulputate augue eleifend facilisis faucibus. Sed at turpis ut massa tristique feugiat eget et arcu. Fusce suscipit egestas elementum. Duis ac quam at elit scelerisque scelerisque quis et dui. Nulla sit amet porttitor quam, eget porta libero."
     data: 
       types: 
         Image: Íomhánna
@@ -105,6 +110,7 @@ ga:
       workspace: "My Workspace"
     help: 
       q: "Type a search term and press Enter"
+      q_title: "Search the repository"
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
@@ -127,6 +133,11 @@ ga:
             no_collections: "No collections"
         forms: 
           all_objects_in_collection: "All Objects in this Collection"
+          audio: 
+            duration: Duration
+            file_size: "File Size"
+            format: Format
+            last_modified: "Last Update"
           audio_file: "Comhad Fuaime"
           file: File
           image_file: Image
@@ -144,6 +155,7 @@ ga:
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
+          surrogate_not_available: "Surrogate not avilable yet"
         links: 
           characterization: Characterization
           details: "File Details"
@@ -1149,3 +1161,5 @@ ga:
     window: 
       alert: 
         coming_soon: "Coming Soon"
+      modal: 
+        close: Close
