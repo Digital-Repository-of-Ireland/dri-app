@@ -17,6 +17,7 @@ gem 'mysql'
 gem 'mysql2'
 
 gem 'omniauth-shibboleth'
+gem 'feedjira'
 
 # Storage-related gems
 gem 'aws-s3'

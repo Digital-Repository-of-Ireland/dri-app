@@ -2,11 +2,11 @@
     <% @surrogate = surrogate_url(document.id, generic_file.id, "mp3") %>
     <% unless @surrogate.nil? %>
         <div class="dri_carousel_item">
-          <audio controls data-info-title="Come, take a trip in my air-ship">
+          <audio controls>
             <source src="<%= @surrogate %>" type="audio/mpeg">
           </audio>
+          <%= render :partial => "object_show_single_audio_details", :locals => {:generic_file => generic_file} %>
         </div>
-
     <% end %>
 
 <% elsif generic_file.video? %>
