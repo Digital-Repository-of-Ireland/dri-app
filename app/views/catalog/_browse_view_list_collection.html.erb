@@ -1,20 +1,11 @@
-<article class="block5">
+<article class="dri_result_object dri_clearfix">
   <div class="dri_content_list_collection">
-    <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
-        <div class="dri_collection_image">
-          <% image = cover_image ( document ) %>
-          <% unless image.nil? %>
-              <%= image_tag image, :width=>"228" %>
-          <% else %>
-              <%= image_tag "no_image.png", :width=>"228" %>
-          <% end %>
-        </div>
-    <% end %>
+
     <!-- close image -->
 
-    <div>
+    <div class="dri_content_list_collection_data">
       <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
-          <h1><%= document[:title_tesim][0] %></h1>
+          <h4><%= document[:title_tesim][0] %></h4>
       <% end %>
       <p>
         <%= truncate_description(document[:description_tesim][0], 280).html_safe %>
@@ -33,7 +24,17 @@
             </span>
           </div>
       <% end %> <!-- close dri_num_objects -->
-    </div>
+      </div>
   </div>
+      <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+        <div class="dri_collection_image">
+          <% image = cover_image ( document ) %>
+          <% unless image.nil? %>
+              <%= image_tag image, :width=>"228" %>
+          <% else %>
+              <%= image_tag "no_image.png", :width=>"228" %>
+          <% end %>
+        </div>
+    <% end %>
   <!-- close content_block -->
 </article>
