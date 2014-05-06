@@ -3,7 +3,7 @@ module SocialMediaHelper
     feeds = Feedjira::Feed.fetch_and_parse urls
     feed = feeds[channel]
 
-    return feed == 0 ? {} : feed.entries
+    return feed.is_a?(Fixnum) ? {} : feed.entries
   end
 
 end

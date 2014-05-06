@@ -5,7 +5,7 @@
 
     <%= render_constraints(params) %>
 
-    <% copyParams = params %>
+    <% copyParams = params.clone %>
     <% if copyParams[:mode].nil? %>
         <% copyParams[:mode] = "objects" %>
         <% copyParams[:search_field] = "all_fields" %>
