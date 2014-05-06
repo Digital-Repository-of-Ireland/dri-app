@@ -303,6 +303,18 @@
 
 <br />
 
+<div class="field">
+  <%= t('dri.views.objects.access_controls.master_file') %> - <small><%= t('dri.views.objects.access_controls.master_file_desc') %></small>
+  <br />
+  <div class="controls">
+    <%= f.radio_button :master_file, "radio_inherit", :checked=>record.master_file.nil?, :disabled=> disabled_inherit %>
+    <%= f.label :master_file, t('dri.views.objects.access_controls.inherit'), :class => "label inline" %>
+    <%= f.radio_button :master_file, "radio_public", :checked=>record.master_file==true %>
+    <%= f.label :master_file, t('dri.views.objects.access_controls.accessible_master_file'), :class => "label label-success inline" %>
+    <%= f.radio_button :master_file, "radio_private", :checked=>record.master_file==false %>
+    <%= f.label :master_file, t('dri.views.objects.access_controls.private_master_file'), :class => "label label-important inline" %>
+  </div>
+</div>
 
 <div class="field">
   <h5><%= t('dri.views.objects.access_controls.edit') %></h5>
