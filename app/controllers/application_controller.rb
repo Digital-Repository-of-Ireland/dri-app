@@ -66,11 +66,10 @@ class ApplicationController < ActionController::Base
   end
 
   def set_access_permissions(key, collection=nil)
+    params[key][:master_file] = master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
     if !collection.blank?
       params[key][:private_metadata] = private_metadata_permission('radio_public')
-      params[key][:master_file] = master_file_permission('radio_private')
     else
-      params[key][:private_metadata] = private_metadata_permission('radio_inherit')
       params[key][:private_metadata] = private_metadata_permission('radio_inherit')
     end
   end

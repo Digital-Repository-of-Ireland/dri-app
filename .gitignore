@@ -31,6 +31,7 @@ config/fedora.yml
 config/solr.yml
 config/jetty.yml
 config/redis.yml
+config/doi.yml
 
 spec/reports/*
 .sass-cache/
