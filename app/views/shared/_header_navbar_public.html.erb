@@ -148,17 +148,18 @@
       <% if show_sort_and_per_page? and !blacklight_config.sort_fields.blank? %>
           <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
           <nav id="dri_pager_nav_id" class="dri_pager_nav">
-            <ul id="dri_pager_nav_links_id" class="dri_pager_nav_links">
+            <p><%= t('dri.navbar.items_per_page') %></p>
+            <select id="dri_page_options_id" class="dri_sort_options" name="sort_options">
               <%- blacklight_config.per_page.each do |count| %>
                   <% if current_per_page == count %>
-                      <li class="selected">
+                      <option value="<%= url_for(params_for_search.merge(:per_page => count)) %>" selected>
                   <% else %>
-                      <li>
+                      <option value="<%= url_for(params_for_search.merge(:per_page => count)) %>">
                   <% end %>
-                  <%= link_to(t(:'blacklight.search.per_page.label', :count => count).html_safe, url_for(params_for_search(:per_page => count))) %>
-                  </li>
+                  <%= t(:'blacklight.search.per_page.label', :count => count).html_safe %>
+                  </option>
               <%- end -%>
-            </ul>
+            </select>
           </nav>
       <% end %>
   <% end %>

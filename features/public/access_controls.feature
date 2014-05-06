@@ -120,7 +120,7 @@ Scenario: I should see the object in search when it is public discoverable (meta
   When I go to "the home page"
   And I fill in "q" with "Access"
   And I press the button to search
-  Then I should see a search result "Access Controls Test Object"
+  Then I should see a search result "Access Controls Test Collection"
 
 Scenario: I should not see the object in search when it has status published but parent collection is draft
   Given a collection with pid "dri:c99999" and title "Access Controls Test Collection" created by "user1"
@@ -135,7 +135,7 @@ Scenario: I should not see the object in search when it has status published but
   When I go to "the home page"
   And I fill in "q" with "Access"
   And I press the button to search
-  Then I should not see a search result "Access Controls Test Object"
+  Then I should not see a search result "Access Controls Test Collection"
 
 Scenario: I should not see the object when the parent collection is draft
   Given a collection with pid "dri:c77777" and title "Access Controls Test Collection" created by "user1"
