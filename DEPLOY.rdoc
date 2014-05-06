@@ -12,12 +12,12 @@ to master for the the deployment scripts to deploy.
   $ git flow release start v2.0.0rc2-YYYY-MM-DD
   $ git checkout release v2.0.0rc2-YYYY-MM-DD
   ... check everything ...
-  $ rake assets:clean
-  $ rake assets:precompile
-  $ git add public/assets && git commit -am "Generate assets"
   $ git flow release publish v2.0.0rc2-YYYY-MM-DD # for peer review
   $ git flow release finish v2.0.0rc2-YYYY-MM-DD  # merge with master
   $ git checkout develop
   $ rake assets:clean
   $ git commit -am "clear out assets for development branch"
 
+If all the above goes well, once the master branch is pushed up to the
+repository, buildbot will check the repo again then deploy the master
+branch.

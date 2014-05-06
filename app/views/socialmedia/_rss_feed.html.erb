@@ -2,8 +2,10 @@
 <% feeds = %w[http://dri.ie/rss.xml] %>
 <% feed_entries = fetch_rss_feed(feeds, feed_url) %>
 <h1 class="dri_rss_title"><%= t("dri.application.home.rss_feed.title") %></h1>
-<% for i in 0..5 %>
+<% unless feed_entries.empty? %>
+  <% for i in 0..5 %>
     <h5 class="dri_rss_subtitle"><%= feed_entries[i].title %></h5>
     <div class="dri_rss_description"><%= feed_entries[i].summary.html_safe %></div>
     <p class="dri_rss_link"><%= link_to(t("dri.application.home.rss_feed.read_more"), feed_entries[i].url) %></p>
+  <% end %>
 <% end %>

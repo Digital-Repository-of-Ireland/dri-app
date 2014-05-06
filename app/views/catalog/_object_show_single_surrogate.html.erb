@@ -1,50 +1,42 @@
 <% if generic_file.audio? %>
-    <% @surrogate = surrogate_url(document.id, generic_file.id, "mp3") %>
-    <% unless @surrogate.nil? %>
-        <div class="dri_carousel_item">
-          <audio controls data-info-title="Come, take a trip in my air-ship">
-            <source src="<%= @surrogate %>" type="audio/mpeg">
-          </audio>
-        </div>
-
-    <% end %>
+<% @surrogate = surrogate_url(document.id, generic_file.id, "mp3") %>
+<% unless @surrogate.nil? %>
+<audio controls>
+	<source src="<%= @surrogate %>" type="audio/mpeg">
+</audio>
+<%= render :partial => "object_show_single_audio_details", :locals => {:generic_file => generic_file} %>
+<% end %>
 
 <% elsif generic_file.video? %>
-    <% @surrogate = surrogate_url(document.id, generic_file.id, "mp4") %>
-    <% unless @surrogate.nil? %>
-        <div class="dri_carousel_item">
-          <video controls>
-            <source src="<%= @surrogate %>" type="video/mp4">
-          </video>
-        </div>
-    <% end %>
+<% @surrogate = surrogate_url(document.id, generic_file.id, "mp4") %>
+<% unless @surrogate.nil? %>
+<video controls>
+	<source src="<%= @surrogate %>" type="video/mp4">
+</video>
+<% end %>
 
 <% elsif generic_file.pdf? %>
-    <% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
-    <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "lightbox_format") %>
-    <% unless @surrogate.nil?  %>
-        <div class="dri_carousel_item">
-          <%= link_to @surrogate_colorbox, :data => { :colorbox => true } do %>
-              <img class="dri_carousel_img" src="<%= @surrogate %>">
-              </div>
-          <% end %>
-    <% end %>
+<% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
+<% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "lightbox_format") %>
+<% unless @surrogate.nil?  %>
+<%= link_to @surrogate_colorbox, :data => { :colorbox => true } do %>
+<img class="dri_carousel_img" src="<%= @surrogate %>">
+<% end %>
+<% end %>
 
 <% elsif generic_file.image? %>
-    <div class="dri_carousel_item">
-      <% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
-      <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "lightbox_format") %>
-      <% unless @surrogate.nil? %>
-          <%= link_to @surrogate_colorbox, :data => { :colorbox => true } do %>
-              <img class="dri_carousel_img" height="300" src="<%= @surrogate %>">
-              </div>
-          <% end %>
-      <% end %>
+<% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
+<% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "lightbox_format") %>
+<% unless @surrogate.nil? %>
+<%= link_to @surrogate_colorbox, :data => { :colorbox => true } do %>
+<img class="dri_carousel_img" height="300" src="<%= @surrogate %>">
+<% end %>
+<% end %>
 <% end %>
 
 <% if @surrogate.blank? %>
-    <h2 class="dri_restrict_title"><%= t('dri.views.catalog.legends.surrogate_not_available') %></h2>
-    <p class="dri_restrict_message">
-      Sed scelerisque justo eu tortor lobortis, condimentum porttitor enim dignissim. Maecenas pellentesque vel nisl ac elementum. Morbi et massa dignissim, imperdiet nunc et, aliquet turpis. Duis placerat a orci vel ultrices. Fusce et est vel magna rutrum lacinia. Suspendisse a ultricies urna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut eu purus et orci feugiat euismod.
-    </p>
+<h2 class="dri_restrict_title"><%= t('dri.views.catalog.legends.surrogate_not_available') %></h2>
+<p class="dri_restrict_message">
+	Sed scelerisque justo eu tortor lobortis, condimentum porttitor enim dignissim. Maecenas pellentesque vel nisl ac elementum. Morbi et massa dignissim, imperdiet nunc et, aliquet turpis. Duis placerat a orci vel ultrices. Fusce et est vel magna rutrum lacinia. Suspendisse a ultricies urna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut eu purus et orci feugiat euismod.
+</p>
 <% end %>
