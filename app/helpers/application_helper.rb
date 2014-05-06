@@ -214,5 +214,9 @@ module ApplicationHelper
     pending
   end
 
+  def has_browse_params?
+    has_search_parameters? || !params[:mode].blank?
+  end
+
 end
 

@@ -1,0 +1,21 @@
+<!--TO BE CHANGED AND STYLED-->
+<% changeViewParams = params.clone %>
+<ul>
+  <% if (params[:view] == "grid") %>
+      <% changeViewParams[:view] = "list" %>
+      <li class="grid">
+        <%= link_to ' ', '#', :class => "selected" %>
+      </li>
+      <li class="table">
+        <%= link_to ' ', main_app.catalog_index_path(changeViewParams) %>
+      </li>
+  <% else %>
+      <% changeViewParams[:view] = "grid" %>
+      <li class="grid">
+        <%= link_to ' ', main_app.catalog_index_path(changeViewParams) %>
+      </li>
+      <li class="table">
+        <%= link_to ' ', '#', :class => "selected" %>
+      </li>
+  <% end %>
+</ul>
