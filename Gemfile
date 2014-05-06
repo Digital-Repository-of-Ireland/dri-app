@@ -17,6 +17,7 @@ gem 'mysql'
 gem 'mysql2'
 
 gem 'omniauth-shibboleth'
+gem 'feedjira'
 
 # Storage-related gems
 gem 'aws-s3'
@@ -96,9 +97,8 @@ gem 'unicorn'
 # gem 'debugger'
 
 gem "unicode", :platforms => [:mri_18, :mri_19]
-gem "bootstrap-sass"
-gem "yard"
-gem "feedjira"
+gem 'bootstrap-sass'
+gem 'yard'
 
 group :translations do
   gem 'i18n_sync'
