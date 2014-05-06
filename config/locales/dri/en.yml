@@ -150,6 +150,7 @@ en:
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Sign in to get access."
+          surrogate_not_available: "Surrogate not avilable yet"
         links: 
           characterization: Characterization
           details: "File Details"

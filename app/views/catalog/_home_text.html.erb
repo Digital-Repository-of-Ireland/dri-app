@@ -15,17 +15,17 @@
 </div><!-- dri_welcome_block -->
 
 <div id="dri_slideshow_block_id" class="dri_slideshow_block">
-  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+  <div class="carousel slide" data-ride="carousel" data-interval="5000">
     <!-- Indicators -->
     <ol class="carousel-indicators">
-      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-      <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="0" ></li>
+      <li data-target="#carousel-example-generic" data-slide-to="1" class="active"></li>
       <li data-target="#carousel-example-generic" data-slide-to="2"></li>
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
-      <div class="item active">
+      <div class="item ">
         <%= link_to (user_group.new_user_path) do %>
             <%= image_tag("dri/slides/slide1.png", :alt=>"Hardiman Atlas" ) %>
             <div class="carousel-caption">
@@ -33,7 +33,7 @@
         <% end %>
         </div>
       </div>
-      <div class="item">
+      <div class="item active">
         <%= link_to (user_group.new_user_path) do %>
             <%= image_tag("dri/slides/slide2.png", :alt=>"Kilkenny Design" ) %>
             <div class="carousel-caption">
