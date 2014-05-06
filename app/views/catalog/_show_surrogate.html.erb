@@ -4,13 +4,8 @@
     <% unless @files.empty? %>
         <div class="dri_asset_holder">
           <% if (@files.count > 1) %>
-              <!--TO BE REMOVED-->
-              <h1>List</h1>
               <%= render :partial => "object_show_list_surrogate", :locals => {:document => @document, :files => @files} %>
-
           <% else %>
-              <!--TO BE REMOVED-->
-              <h1>Single</h1>
               <%= render :partial => "object_show_single_surrogate", :locals => {:document => @document, :generic_file => @files.first} %>
           <% end %>
         </div>

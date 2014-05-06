@@ -6,6 +6,7 @@ module Utils
 
 
   def dcterms_point_to_geojson(point)
+    return nil if point.blank?
     point_hash = {}
 
     point.split(/\s*;\s*/).each do |component|
@@ -13,7 +14,7 @@ module Utils
       point_hash[key] = value
     end
 
-    return nil if point_hash.count < 3
+    return nil unless point_hash.keys.include?('name')
 
     tmp_hash = {}
     geojson_hash = {}
@@ -32,6 +33,7 @@ module Utils
 
 
   def dcterms_box_to_geojson(box)
+    return nil if box.blank?
     point_hash = {}
 
     box.split(/\s*;\s*/).each do |component|
@@ -39,7 +41,7 @@ module Utils
       point_hash[key] = value
     end
 
-    return nil if point_hash.count < 3
+    return nil unless point_hash.keys.include?('name')
 
     tmp_hash = {}
     geojson_hash = {}

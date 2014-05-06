@@ -25,4 +25,10 @@ module DocumentHelper
     return searchParams
   end
 
+  def convert_file_size_to_mb(filesize)
+    filesize = filesize / (1024 * 1024)
+    filesize = filesize.round(2)
+    return filesize
+  end
+
 end
