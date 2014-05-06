@@ -789,6 +789,7 @@ a .dri_signin_edugate:hover {
 	display: block;
 	float: left;
 	width: 25px;
+	height: 20px;
 	border: 1px solid #D9DADB;
 	border-right: none;
 	list-style: none;
@@ -803,6 +804,7 @@ a .dri_signin_edugate:hover {
 	display: block;
 	float: left;
 	width: 25px;
+    height: 20px;
 	border: 1px solid #D9DADB;
 	border-left: none;
 	list-style: none;
@@ -2055,7 +2057,7 @@ dl.dri_object_metadata_readview dd a:hover {
 	display: block;
 	font-size: 100%;
 	font-weight: bold;
-	color: #288DC0;
+	color:  #2F2F2F;
 }
 .dri_back_search a:hover {
 	text-decoration: underline;
@@ -2136,7 +2138,7 @@ ul.dri_view_collection li span.dri_stat_num {
 	float: right;
 	font-size: 100%;
 	font-weight: bold;
-	color: #288DC0;
+	color: #808080;
 }
 ul.dri_view_collection li a:hover span.dri_stat_num {
 	color: #505050;
