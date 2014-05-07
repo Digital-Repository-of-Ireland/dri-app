@@ -12,9 +12,11 @@ class IngestController < CatalogController
   #
   def new
     reset_ingest_state
+    get_supported_licences()
+
     @current_step = session[:ingest][:current_step]
 
-    @collections = ingest_collections    
+    @collections = ingest_collections
 
     respond_to do |format|
       format.html
@@ -24,6 +26,8 @@ class IngestController < CatalogController
   # Handles the ingest process using partial forms
   #
   def create
+    get_supported_licences()
+
     if session[:ingest][:object_type].present?
       @type = session[:ingest][:object_type]
     else
@@ -45,14 +49,14 @@ class IngestController < CatalogController
     end
 
     @collection = session[:ingest][:collection] if session[:ingest][:collection].present?
-    
+
     @ingest_methods = get_ingest_methods
     @supported_types = get_supported_types
 
     # Continue was pressed on a non-final step, increment the current step
     # and update session state
     update_ingest_state if valid_step_data?(session[:ingest][:current_step])
-    
+
     @current_step = session[:ingest][:current_step]
     render :action => :new
   end
