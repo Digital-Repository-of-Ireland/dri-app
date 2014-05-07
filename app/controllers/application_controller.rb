@@ -117,6 +117,14 @@ class ApplicationController < ActionController::Base
     return results
   end
 
+  # Return a list of all supported licences (for populating select dropdowns)
+  def get_supported_licences
+    @licences = {}
+    Licence.find(:all).each do |licence|
+      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
+    end
+  end
+
   private
 
   def duplicates(object)
