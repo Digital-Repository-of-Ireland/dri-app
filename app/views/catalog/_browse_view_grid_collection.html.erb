@@ -14,9 +14,7 @@
           <h1><%= document[:title_tesim][0] %></h1>
           <p class="dri_publishing_institute">
             <% unless document[:institute_tesim].nil? %>
-                <% document[:institute_tesim].each do |institute| %>
-                    <%= institute %>
-                <% end %>
+                <%= document[:institute_tesim][0] %>
             <% end %>
           </p>
         </div>
