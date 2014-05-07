@@ -34,10 +34,7 @@ class CollectionsController < CatalogController
     @object.rights = [""]
     @object.type = [ "Collection" ]
 
-    @licences = {}
-    Licence.find(:all).each do |licence|
-      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
-    end
+    get_supported_licences()
 
     respond_to do |format|
       format.html
@@ -55,10 +52,7 @@ class CollectionsController < CatalogController
 
     @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
 
-    @licences = {}
-    Licence.find(:all).each do |licence|
-      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
-    end
+    get_supported_licences()
 
     respond_to do |format|
       format.html
@@ -85,10 +79,7 @@ class CollectionsController < CatalogController
     @institutes = Institute.find(:all)
     @inst = Institute.new
 
-    @licences = {}
-    Licence.find(:all).each do |licence|
-      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
-    end
+    get_supported_licences()
 
     set_access_permissions(:batch, true)
 
@@ -133,10 +124,7 @@ class CollectionsController < CatalogController
     @collection.type = ["Collection"] if @collection.type == nil
     @collection.type.push("Collection") unless @collection.type.include?("Collection")
 
-    @licences = {}
-    Licence.find(:all).each do |licence|
-      @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
-    end
+    get_supported_licences()
 
     # If a cover image was uploaded, remove it from the params hash
     cover_image = params[:batch].delete(:cover_image)
