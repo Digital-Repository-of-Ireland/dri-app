@@ -74,8 +74,7 @@ edit permission.
     And "user4@user4.com" has been granted "<permission>" permissions on "dri:obj5"
     And I am on the home page
     When I press the button to search
-    Then I should see a search result "Search Collection 5"
-    And I should see a search result "Search Object 5"
+    Then I should see a search result "Search Object 5"
 
     Examples:
       | permission |
