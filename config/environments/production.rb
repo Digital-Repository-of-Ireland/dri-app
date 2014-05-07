@@ -1,4 +1,4 @@
-ENV["RAILS_RELATIVE_URL_ROOT"] = "/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC"
+ENV["RAILS_RELATIVE_URL_ROOT"] = "/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/"
 NuigRnag::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
   
@@ -15,6 +15,7 @@ NuigRnag::Application.configure do
   config.exceptions_app = self.routes
 
   config.action_controller.relative_url_root = '/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC'
+  config.relative_url_root = '/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC'
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
   config.serve_static_assets = false
