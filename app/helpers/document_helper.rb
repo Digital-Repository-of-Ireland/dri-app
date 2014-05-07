@@ -31,4 +31,12 @@ module DocumentHelper
     return filesize
   end
 
+  def truncate_description description, count
+    if (description.length > count)
+      return description.first(count)
+    else
+      return description
+    end
+  end
+
 end

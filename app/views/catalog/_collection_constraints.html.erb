@@ -1,6 +1,6 @@
 <div class="dri_facet_restrictions_container">
   <ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs">
-    <% copySearchParams = @current_search_session[:query_params] %>
+    <% copySearchParams = params.clone %>
     <% copySearchParams.delete(:controller) %>
     <% copySearchParams.delete(:action) %>
     <% if params[:mode].eql?('collections') %>

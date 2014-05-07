@@ -188,6 +188,15 @@ When /^I select a collection$/ do
   select_by_value(second_option, :from => "ingestcollection")
 end
 
+When /^I select the "(objects|collections)" tab$/ do |tab|
+  case tab
+    when "objects"
+      click_link("objects")
+    when "collections"
+      click_link("collections")
+  end
+end
+
 Then /^I should see the (valid|modified) metadata$/ do |type|
   case type
     when "valid"

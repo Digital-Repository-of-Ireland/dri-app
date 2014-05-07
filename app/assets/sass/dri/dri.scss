@@ -239,15 +239,14 @@ a {
 	width: 14px;
 	height: 14px;
 	font-size: 106%;
-	float:left;
+	float: left;
 }
 
 .dri_checkbox_text label span {
 	margin: 10px 4px 0 0;
-	padding: 0;
-	float:left;
+	padding: 0;	
+	float: left;
 }
-
 
 .dri_form_text  {
 	display: block;
@@ -789,6 +788,7 @@ a .dri_signin_edugate:hover {
 	display: block;
 	float: left;
 	width: 25px;
+	height: 24px;
 	border: 1px solid #D9DADB;
 	border-right: none;
 	list-style: none;
@@ -803,6 +803,7 @@ a .dri_signin_edugate:hover {
 	display: block;
 	float: left;
 	width: 25px;
+    height: 24px;
 	border: 1px solid #D9DADB;
 	border-left: none;
 	list-style: none;
@@ -2055,7 +2056,7 @@ dl.dri_object_metadata_readview dd a:hover {
 	display: block;
 	font-size: 100%;
 	font-weight: bold;
-	color: #288DC0;
+	color:  #2F2F2F;
 }
 .dri_back_search a:hover {
 	text-decoration: underline;
@@ -2136,7 +2137,7 @@ ul.dri_view_collection li span.dri_stat_num {
 	float: right;
 	font-size: 100%;
 	font-weight: bold;
-	color: #288DC0;
+	color: #808080;
 }
 ul.dri_view_collection li a:hover span.dri_stat_num {
 	color: #505050;

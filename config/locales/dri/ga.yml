@@ -111,6 +111,8 @@ ga:
     help: 
       q: "Type a search term and press Enter"
       q_title: "Search the repository"
+    navbar: 
+      items_per_page: "Items per page"
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"

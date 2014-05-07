@@ -201,6 +201,24 @@
   	  	//@include zen-grid-background ( $grid-color: #eee);
   	}
   	
+  	.dri_result_object {
+  	     height: 140px;
+  	  .dri_content_list_collection {
+      width:700px;
+
+      .dri_collection_image {
+        width:200px;
+        float:right;
+        max-height: 128px;
+      }
+     .dri_content_list_collection_data {
+       height: 128px;
+       width:500px;
+       float:right;
+     }
+    } 
+  	}
+
 	
 	
 	.dri_object_first_block {
