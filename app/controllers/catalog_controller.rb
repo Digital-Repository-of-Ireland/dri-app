@@ -230,15 +230,15 @@ class CatalogController < ApplicationController
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
-    config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', :label => 'relevance'
+    config.add_sort_field 'system_create_dtsi desc', :label => 'newest'
     # The year created sort throws an error as the date type is not enforced and so a string can be passed in - it is commented out for this reason.
     # config.add_sort_field 'creation_date_dtsim, title_sorted_ssi asc', :label => 'year created'
 
     # We son't use the author_tesi field in DRI so disabling this sort - Damien
     #config.add_sort_field 'author_tesi asc, title_sorted_ssi asc', :label => 'author'
 
+    config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', :label => 'relevance'
     config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', :label => 'title'
-    config.add_sort_field 'system_create_dtsi desc', :label => 'Newest'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
