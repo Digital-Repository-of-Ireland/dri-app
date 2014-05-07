@@ -24,7 +24,8 @@ edit permission.
     And I am on the home page
     When I press the button to search
     Then I should see a search result "Search Collection 1"
-    And I should see a search result "Search Object 1"
+    When I select the "objects" tab
+    Then I should see a search result "Search Object 1"
 
   Scenario: Collection managers should see all of their collections and objects within their collections
     Given I am logged in as "colmgr" in the group "cm"
@@ -34,7 +35,8 @@ edit permission.
     And I am on the home page
     When I press the button to search
     Then I should see a search result "Search Collection 2"
-    And I should see a search result "Search Object 2"
+    When I select the "objects" tab
+    Then I should see a search result "Search Object 2"
 
   Scenario Outline: Manage/edit users should see all collections for which they have permission
     Given I am logged in as "user2"
@@ -42,7 +44,7 @@ edit permission.
     And "user2@user2.com" has been granted "<permission>" permissions on "dri:coll3"
     And I am on the home page
     When I press the button to search
-    And I follow the link to collections
+    And I select the "collections" tab
     Then I should see a search result "Search Collection 3"
 
     Examples:
@@ -59,7 +61,8 @@ edit permission.
     And I am on the home page
     When I press the button to search
     Then I should see a search result "Search Collection 4"
-    And I should see a search result "Search Object 4"
+    When I select the "objects" tab
+    Then I should see a search result "Search Object 4"
 
     Examples:
       | permission |
@@ -74,8 +77,8 @@ edit permission.
     And "user4@user4.com" has been granted "<permission>" permissions on "dri:obj5"
     And I am on the home page
     When I press the button to search
-    Then I should see a search result "Search Collection 5"
-    And I should see a search result "Search Object 5"
+    When I select the "objects" tab
+    Then I should see a search result "Search Object 5"
 
     Examples:
       | permission |

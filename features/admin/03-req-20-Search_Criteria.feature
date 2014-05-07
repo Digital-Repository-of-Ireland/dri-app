@@ -37,6 +37,7 @@ I want to be able to use the faceted search interface
   And I am not logged in
   When I go to "the home page"
   And I press the button to search
+  And I select the "objects" tab
   And I search for "<search>" in facet "<facetname>" with id "<facetid>"
   Then I should see a search result "<result>"
 
@@ -83,6 +84,7 @@ Scenario: Successful search using AND boolean search string
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "sample AND audio"
   And I press the button to search
+  And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
   When I fill in "q" with "sample + audio"
   And I press the button to search
@@ -94,6 +96,7 @@ Scenario: Unsuccessful search using AND boolean search string
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "invalidstring AND audio"
   And I press the button to search
+  And I select the "objects" tab
   Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using OR boolean search string
@@ -102,6 +105,7 @@ Scenario: Successful search using OR boolean search string
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "sample OR audio"
   And I press the button to search
+  And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
   When I fill in "q" with "invalidstring OR audio"
   And I press the button to search
@@ -113,6 +117,7 @@ Scenario: Unsuccessful search using OR boolean search string
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "invalidstring1 OR invalidstring2"
   And I press the button to search
+  And I select the "objects" tab
   Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using NOT boolean search string
@@ -121,6 +126,7 @@ Scenario: Successful search using NOT boolean search string
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "NOT invalidstring"
   And I press the button to search
+  And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
 
 Scenario: Unsuccessful search using NOT boolean search string
@@ -129,6 +135,7 @@ Scenario: Unsuccessful search using NOT boolean search string
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "NOT sample"
   And I press the button to search
+  And I select the "objects" tab
   Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using "+"
@@ -137,6 +144,7 @@ Scenario: Successful search using "+"
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "+sample"
   And I press the button to search
+  And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
 
 Scenario: Unsuccessful search using "+"
@@ -145,6 +153,7 @@ Scenario: Unsuccessful search using "+"
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "+invalidstring"
   And I press the button to search
+  And I select the "objects" tab
   Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using "-"
@@ -153,6 +162,7 @@ Scenario: Successful search using "-"
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "-invalidstring"
   And I press the button to search
+  And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
 
 Scenario: Unsuccessful search using "-"
@@ -161,6 +171,7 @@ Scenario: Unsuccessful search using "-"
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "-sample"
   And I press the button to search
+  And I select the "objects" tab
   Then I should not see a search result "Sample Object"
 
 Scenario: Wildcard search
@@ -169,6 +180,7 @@ Scenario: Wildcard search
   And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
   When I fill in "q" with "*"
   And I press the button to search
+  And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
 
 # This is a configuration option in SOLR? May impact Irish searches
