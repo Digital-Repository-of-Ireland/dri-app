@@ -1830,6 +1830,8 @@ a .dri_num_objects span.object_total {
 	font-size: 100%;
 	line-height: 1.3em;
 	font-weight: bold;
+	max-height: 28px;
+  overflow: hidden;
 }
 
 .dri_content_list_collection_data p {
@@ -1846,6 +1848,10 @@ a .dri_num_objects span.object_total {
 	color: #808080;
 	font-size: 100%;
 	line-height: 1.3em;
+}
+
+.dri_list_icon {
+  padding-left:15px;
 }
 /*-------------- Dialog Box --------------*/
 .dri_dialog_example {
