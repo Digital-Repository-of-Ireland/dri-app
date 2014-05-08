@@ -1,4 +1,2 @@
-class PagesController < ApplicationController
-  def about_us
-  end
+class PagesController < HighVoltage::PagesController
 end

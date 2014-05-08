@@ -22,7 +22,7 @@
 <fieldset id="rights">
   <%= f.label "#{t('dri.views.fields.rights')}:" %>
   <% @object.rights.each do |i| %>
-      <%= f.text_field "rights][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
+      <%= f.text_area "rights][", :value=>i, :class => "edit span6 dri-textarea" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
   <% end %>
   <p class="add-text-field"><a href="#" model-name="batch" title="Add Rights"><%= t('dri.views.objects.forms.add_rights') %></a></p>
 </fieldset>
@@ -142,9 +142,7 @@
   <% end %>
 </fieldset>
 
-<% if params[:controller] == "collections" %>
-    <fieldset id="licence">
-      <%= f.label "#{t('dri.views.fields.licence')}:" %>
-      <%= f.select :licence, options_for_select(@licences, @object[:licence]), :class => "edit span6" %>
-    </fieldset>
-<% end %>
+<fieldset id="licence">
+  <%= f.label "#{t('dri.views.fields.licence')}:" %>
+  <%= f.select :licence, options_for_select(@licences, @object[:licence]), :class => "edit span6" %>
+</fieldset>

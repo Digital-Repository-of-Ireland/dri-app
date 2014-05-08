@@ -1,12 +1,13 @@
 
 <footer id="dri_main_footer_id" class="dri_main_footer">
   <div id="dri_footer_address_id" class="dri_footer_address">
+    <%= t('dri.footer.ria_address.project') %><br/>
     <%= t('dri.footer.ria_address.name') %><br/>
     <%= t('dri.footer.ria_address.street') %><br/>
     <%= t('dri.footer.ria_address.zip') %><br/>
     <% phoneNum = '+353 1 609 0674' %>
     <%= t('dri.footer.contacts.phone') + ' ' + phoneNum %><br/>
-    <% emailAddress = 'dri@ria.ie' %>
+    <% emailAddress = 'info@dri.ie' %>
     <%= t('dri.footer.contacts.email') + ' ' %>
     <%= link_to emailAddress, "mailto:#{emailAddress}" %>
   </div>
@@ -15,16 +16,10 @@
     <ul id="dri_main_footer_navigation_links_id"
         class="dri_main_footer_navigation_links">
       <li class="selected no_border_right">
-        <span> <%= link_to t('dri.headerlinks.privacy'), 'http://www.dri.ie/privacy-statement', :id => "privacy", :class => "muted" %> </span>
+        <span> <%= link_to t('dri.headerlinks.end_user_agreement'), page_path('terms'), :id => "privacy", :class => "muted" %> </span>
       </li>
       <li class="selected no_border_right">
-        <span> <%= link_to t('dri.headerlinks.about'), 'http://www.dri.ie/about', :id => "about", :class => "muted" %> </span>
-      </li>
-      <li class="selected no_border_right">
-        <span> <%= link_to t('dri.headerlinks.contact'), 'http://www.dri.ie/contact', :id => "contact", :class => "muted" %> </span>
-      </li>
-      <li class="selected no_border_right">
-        <span> <%= link_to t('dri.headerlinks.sitemap'), '#', :id => "sitemap" %> </span>
+        <span><%= link_to t('dri.headerlinks.about'), main_app.about_us_path, :id => "about", :class => "muted" %></span>
       </li>
     </ul>
   </nav>

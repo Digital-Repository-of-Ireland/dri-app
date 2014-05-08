@@ -24,7 +24,7 @@ edit permission.
     And I am on the home page
     When I press the button to search
     Then I should see a search result "Search Collection 1"
-    When I select the "objects" tab
+    And I select the "Objects" tab
     Then I should see a search result "Search Object 1"
 
   Scenario: Collection managers should see all of their collections and objects within their collections
@@ -35,7 +35,7 @@ edit permission.
     And I am on the home page
     When I press the button to search
     Then I should see a search result "Search Collection 2"
-    When I select the "objects" tab
+    And I select the "Objects" tab
     Then I should see a search result "Search Object 2"
 
   Scenario Outline: Manage/edit users should see all collections for which they have permission
@@ -44,7 +44,7 @@ edit permission.
     And "user2@user2.com" has been granted "<permission>" permissions on "dri:coll3"
     And I am on the home page
     When I press the button to search
-    And I select the "collections" tab
+    And I follow the link to collections
     Then I should see a search result "Search Collection 3"
 
     Examples:
@@ -61,7 +61,7 @@ edit permission.
     And I am on the home page
     When I press the button to search
     Then I should see a search result "Search Collection 4"
-    When I select the "objects" tab
+    And I select the "Objects" tab
     Then I should see a search result "Search Object 4"
 
     Examples:
@@ -77,7 +77,7 @@ edit permission.
     And "user4@user4.com" has been granted "<permission>" permissions on "dri:obj5"
     And I am on the home page
     When I press the button to search
-    When I select the "objects" tab
+    And I select the "Objects" tab
     Then I should see a search result "Search Object 5"
 
     Examples:

@@ -12,7 +12,8 @@ NuigRnag::Application.routes.draw do
   devise_for :users, :skip => [ :sessions, :registrations, :passwords], class_name: 'UserGroup::User', :controllers => { :omniauth_callbacks => "user_group/omniauth_callbacks" }
 
   resources :objects, :only => ['edit', 'update', 'create', 'show'] do
-    resources :files, :controller => :assets, :only => ['create','show','update']
+  resources :files, :controller => :assets, :only => ['create','show','update']
+  resources :pages
   end
 
   resources :session, :only => ['create']
