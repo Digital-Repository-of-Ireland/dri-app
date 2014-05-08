@@ -1,0 +1,38 @@
+<article class="dri_result_object dri_clearfix">
+  <div class="dri_content_list_collection">
+
+    <!-- close image -->
+
+    <div class="dri_content_list_collection_data">
+      <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+          <h4><%= document[:title_tesim][0] %></h4>
+      <% end %>
+      <p>
+        <%= truncate_description(document[:description_tesim][0], 280).html_safe %>
+      </p>
+      <p class="dri_publishing_institute">
+        <% unless document[:institute_tesim].nil? %>
+            <%= document[:institute_tesim][0] %>
+        <% end %>
+      </p>
+      <%= link_to (catalog_index_path(:collection => document[:id], :mode => "objects", :search_field => "all_fields", :view => params[:view])) do %>
+          <div class="dri_num_list_objects">
+            <span class="dri_object_text_num">
+              <%= t('dri.views.catalog.forms.objects_in_collection') + " " + count_items_in_collection(document[:id]).to_s %>
+            </span>
+          </div>
+      <% end %> <!-- close dri_num_objects -->
+    </div>
+  </div>
+  <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+      <div class="dri_collection_image">
+        <% image = cover_image ( document ) %>
+        <% unless image.nil? %>
+            <%= image_tag image, :width=>"228" %>
+        <% else %>
+            <%= image_tag "no_image.png", :width=>"228" %>
+        <% end %>
+      </div>
+  <% end %>
+  <!-- close content_block -->
+</article>

@@ -1,0 +1,32 @@
+<article class="block5">
+  <div class="dri_content_block">
+    <% get_cover_image document %>
+    <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+        <h1><%= document[:title_tesim][0] %></h1>
+        <div class="dri_image">
+
+          <%= image_tag @cover_image, :width=>"200" %>
+        </div><!-- close image -->
+    <% end %>
+
+    <p class="dri_subject">
+      <% if document[:subject_tesim] %>
+          <% document[:subject_tesim].each do |subject| %>
+              <%= subject %> <% if !document[:subject_tesim].last %> , <% end %>
+          <% end %>
+      <% else %>
+          n/a
+      <% end %>
+    </p>
+
+    <div class="dri_icon">
+      <% unless format?(document).eql?("unknown") %>
+          <span class="dri_icon_image"><%= image_tag(icon_path(document)) %> &nbsp; <%= get_document_type document %></span>
+      <% else %>
+          <span class="dri_icon_text"><%= document[:object_type_ssm].first %></span>
+      <% end %>
+    </div>
+    <!-- close dri_icon -->
+  </div>
+  <!-- close content_block -->
+</article>
