@@ -1805,8 +1805,48 @@ a .dri_num_objects span.object_total {
 	margin: 0 0 0 6px;
 	color: #2F2F2F;
 }
+/*-------------- Tabular View styling --------------*/
+.dri_result_object { 
+	margin: 0;
+	padding: 10px 0 0 0;
+	border-bottom: 1px solid #E1E1E1;
 
+}
 
+.dri_content_list_collection {
+	margin: 0;
+	padding: 0;
+}
+
+.dri_content_list_collection_data {
+	margin: 0 0 0 0;
+	padding: 0;
+}
+
+.dri_content_list_collection_data a h4 {
+	margin: 3px 0 10px 15px;
+	padding: 0;
+	color: #2F2F2F;
+	font-size: 100%;
+	line-height: 1.3em;
+	font-weight: bold;
+}
+
+.dri_content_list_collection_data p {
+	margin: 0 0 10px 15px;
+	padding: 0;
+	color: #808080;
+	font-size: 100%;
+	line-height: 1.3em;
+}
+
+.dri_content_list_collection_data a .dri_num_list_objects {
+	margin: 10px 0 0 15px;
+	padding: 0;
+	color: #808080;
+	font-size: 100%;
+	line-height: 1.3em;
+}
 /*-------------- Dialog Box --------------*/
 .dri_dialog_example {
 	margin: 0;
