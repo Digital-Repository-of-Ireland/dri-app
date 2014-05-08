@@ -18,5 +18,19 @@
 </div>
 
 <div id="dri_result_container_id" class="dri_result_container">
-  <%= render_document_index @document_list %>
+  <% if (@document_list.count > 0) %>
+      <%= render_document_index @document_list %>&nbsp;
+  <% else %>
+      <h4>
+        <%= t('dri.help.no_results_found') %>
+      </h4>
+      <p>
+        <%= t('dri.help.try_looking_for') %>
+        <% if (params[:mode] == "collections") %>
+            <%= t('dri.headerlinks.objects') %>
+        <% else %>
+            <%= t('dri.headerlinks.collections') %>
+        <% end %>
+      </p>
+  <% end %>
 </div><!-- close dri_result_container -->
