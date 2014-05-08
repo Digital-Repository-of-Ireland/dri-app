@@ -109,8 +109,10 @@ en:
       usergroups: "Users & Groups"
       workspace: "My Workspace"
     help: 
+      no_results_found: "No search results found"
       q: "Type a query and press Enter"
       q_title: "Search the repository"
+      try_looking_for: "Try looking for"
     navbar: 
       items_per_page: "Items per page"
     sign_in: 

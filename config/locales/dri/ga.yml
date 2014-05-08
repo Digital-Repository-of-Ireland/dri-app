@@ -109,8 +109,10 @@ ga:
       usergroups: "Úsáideoirí agus Grúpaí"
       workspace: "My Workspace"
     help: 
+      no_results_found: "No search results found. Try looking for"
       q: "Type a search term and press Enter"
       q_title: "Search the repository"
+      try_looking_for: "Try looking for"
     navbar: 
       items_per_page: "Items per page"
     sign_in: 
