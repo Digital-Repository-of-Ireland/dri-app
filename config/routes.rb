@@ -36,6 +36,7 @@ NuigRnag::Application.routes.draw do
   match '/422' => 'error#error_422'
   match '/500' => 'error#error_500'
 
+  match 'about_us' => 'pages#about_us', :via => :get
 
   match 'export/:id' => 'export#show', :via => :get, :as => :object_export
 
