@@ -19,7 +19,7 @@
         <span> <%= link_to t('dri.headerlinks.end_user_agreement'), page_path('terms'), :id => "privacy", :class => "muted" %> </span>
       </li>
       <li class="selected no_border_right">
-        <span><%= link_to t('dri.headerlinks.about'), main_app.about_us_path, :id => "about", :class => "muted" %></span>
+        <span><%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us", :id => "about", :class => "muted" %></span>
       </li>
     </ul>
   </nav>
