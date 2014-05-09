@@ -7,8 +7,10 @@
               <%= render :partial => "object_show_list_surrogate", :locals => {:document => @document, :files => @files} %>
           <% else %>
               <%= render :partial => "object_show_single_surrogate", :locals => {:document => @document, :generic_file => @files.first} %>
+              <%= render :partial => 'object_show_single_download', :locals => {:document => @document, :generic_file => @files.first} %>
           <% end %>
         </div>
+
     <% end %>
 
 <% else %>
