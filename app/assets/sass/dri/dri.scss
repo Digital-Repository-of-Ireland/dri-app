@@ -1,5 +1,6 @@
 /* Anna updated html and body */
 $dri_green: #90993D;
+$dri_grey: #2F2F2F;
 
 html {
   margin-bottom: 0.5em;
@@ -1841,6 +1842,8 @@ a .dri_num_objects span.object_total {
 	color: #808080;
 	font-size: 100%;
 	line-height: 1.3em;
+	max-height: 42px;
+overflow: hidden;
 
   }
   .dri_list_description {
@@ -2263,20 +2266,44 @@ ul.dri_view_collection li a:hover span.dri_stat_num {
 	font-weight: bold;
 	
 }
-
-.dri_collection_institutes_pages {
-  padding: 0;
-    margin: 20px 0 0 0;
-border-right: 1px solid #D9DADB;
-width: 50%; 
-  img {
-    margin: 10px;
-  padding: 10px;
-  max-height: 75px;
+// static page of institutes
+  .not_first {
+        border-bottom: 1px solid #D9DADB;
+  }
   
+.dri_collection_institutes_pages {
+
+  margin-bottom: 30px;
+  margin-top: 30px;
+    clear:both;
+
+  
+  .dri_collection_institutes_pages_img {
+    
+
+    border-right: 1px solid #D9DADB;
+    padding-top: -30px;
+    padding-bottom: -30px;
+           margin-top: 40px;
+        margin-bottom: 40px;
+    img {
+
+      max-height: 75px;
+      max-width: 90%;
+      
+    }
+  }
+  .dri_collection_institutes_pages_text {
+    margin-top: 25px;
+    h6 {
+      color: $dri_grey;
+    }
   }
 }
  
+// close static page of institutes 
+
+
 ul.dri_collection_institutes_list {
 	margin: 20px 0 0 0;
 	padding: 0;

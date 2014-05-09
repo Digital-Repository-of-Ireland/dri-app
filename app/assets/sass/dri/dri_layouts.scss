@@ -247,15 +247,27 @@
 
 .dri_main_footer {
 
-}
+
   	
   	.dri_footer_address {
   	  float: right;
   	  text-align: right;
   	}
-	
+
+}	
+//Static Pages
+.dri_collection_institutes_pages {
 
 
+  .dri_collection_institutes_pages_img {
+        @include zen-grid-item(1.5, 1, $gutter-width: 0px);
+  }	
+  
+  .dri_collection_institutes_pages_text {
+        @include zen-grid-item(1, 2.75, $gutter-width: 0px);
+  }
+
+}
 // Hide, clear etc.
 
 .dri_clearfix {
