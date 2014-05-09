@@ -1,16 +1,20 @@
 <div id="oject-multiple-asset-carousel" class="carousel slide dri_carousel_controls" data-ride="carousel" >
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner">
-    <!--First item set to active-->
-    <div class="item active">
-      <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files.first} %>
-    </div>
+  <div class="carousel slide" data-ride="carousel">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+      <!--First item set to active-->
+      <div class="item active">
+        <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files.first} %>
+        <%= render :partial => "object_show_list_download", :locals => {:document => document, :generic_file => files.first} %>
+      </div>
 
-    <% for i in 1..(files.count - 1) %>
-        <div class="item">
-          <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files[i]} %>
-        </div>
-    <% end %>
+      <% for i in 1..(files.count - 1) %>
+          <div class="item">
+            <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files[i]} %>
+            <%= render :partial => "object_show_list_download", :locals => {:document => document, :generic_file => files[i]} %>
+          </div>
+      <% end %>
+    </div>
   </div>
   <!-- Controls -->
   <div>
