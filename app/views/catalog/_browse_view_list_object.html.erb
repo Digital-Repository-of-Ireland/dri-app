@@ -5,7 +5,7 @@
       <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
           <h4><%= document[:title_tesim][0] %></h4>
       <% end %>
-      <p>
+      <p class="dri_list_description">
         <%= truncate_description(document[:description_tesim][0], 280).html_safe %>
       </p>
       <p class="dri_list_subject">

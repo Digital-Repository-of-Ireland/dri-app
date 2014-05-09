@@ -1834,12 +1834,24 @@ a .dri_num_objects span.object_total {
   overflow: hidden;
 }
 
-.dri_content_list_collection_data p {
+.dri_content_list_collection_data {
+  p {
 	margin: 0 0 10px 15px;
 	padding: 0;
 	color: #808080;
 	font-size: 100%;
 	line-height: 1.3em;
+
+  }
+  .dri_list_description {
+  max-height: 32px;
+  overflow: hidden;    
+  }
+  
+  .dri_list_subject {
+   max-height:12px;
+   overflow:hidden;
+  }
 }
 
 .dri_content_list_collection_data a .dri_num_list_objects {
