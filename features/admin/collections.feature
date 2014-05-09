@@ -40,6 +40,14 @@ Scenario: Constructing a collection with invalid permissions
   And I press the button to create a collection
   Then I should see a failure message for "invalid collection"
 
+Scenario: Updating a collection with invalid metadata
+  Given a collection with pid "dri:collperm" created by "user1@user1.com"
+  When I go to the "collection" "show" page for "dri:collperm"
+  When I follow the link to edit a collection
+  And I enter invalid metadata for a collection
+  And I press the button to save collection changes
+  Then I should see a failure message for "invalid object"
+
 Scenario: Updating a collection with invalid permissions
   Given a collection with pid "dri:collperm" created by "user1@user1.com"
   When I go to the "collection" "show" page for "dri:collperm"
