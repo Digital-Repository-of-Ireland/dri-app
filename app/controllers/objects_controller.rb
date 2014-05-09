@@ -56,7 +56,7 @@ class ObjectsController < CatalogController
     end
 
     set_access_permissions(:batch)
-    @object.update_attributes(params[:batch])
+    updated = @object.update_attributes(params[:batch])
 
     #purge params from update action
     params.delete(:batch)
@@ -65,17 +65,23 @@ class ObjectsController < CatalogController
     params.delete(:commit)
     params.delete(:action)
 
-    #Do for collection?
-    MetadataHelpers.checksum_metadata(@object)
-    duplicates?(@object)
-
-    DOI.mint_doi( @object )
-
     respond_to do |format|
-      flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html  { render :action => "edit" }
-      format.json  { render :json => @object }
+      if updated
+        MetadataHelpers.checksum_metadata(@object)
+        duplicates?(@object)
+
+        DOI.mint_doi( @object )
+      
+        flash[:notice] = t('dri.flash.notice.metadata_updated')
+        format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+        format.json  { render :json => @object }
+      else
+        flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect) 
+        format.html  { render :action => "edit" }
+        format.json  { render :json => @object }
+      end
     end
+
   end
 
   def citation

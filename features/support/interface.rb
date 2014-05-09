@@ -23,6 +23,25 @@ module Interface
       end
     end
 
+    def enter_invalid_metadata(title)
+      within_fieldset('title') do
+        fill_in("batch_title][", :with => title)
+      end
+      within_fieldset('description') do
+        fill_in("batch_description][", :with => "Created using the web form")
+      end
+      within_fieldset('creation_date') do
+        if (!page.has_field?("batch_creation_date]["))
+          click_link("Add Creation Date")
+          page.should have_field("batch_creation_date][")
+        end
+        fill_in("batch_creation_date][", :with => "2013-01-16")
+      end
+      within_fieldset('rights') do
+        fill_in("batch_rights][", :with => "")
+      end
+    end
+
     def enter_valid_pdf_metadata(title)
       within_fieldset('title') do
         fill_in("batch_title][", :with => title)

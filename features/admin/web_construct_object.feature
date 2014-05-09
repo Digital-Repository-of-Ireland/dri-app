@@ -94,6 +94,19 @@ Scenario: Constructing a Digital Object using the web form
   Then I should see a success message for ingestion
   And I should see the valid metadata
 
+Scenario: Constructing an invalid Digital Object using the web form
+  Given I have created a collection
+  And I am on the new Digital Object page
+  When I select a collection
+  And I press the button to continue
+  And I select "Sound" from the selectbox for object type
+  And I press the button to continue
+  And I select "input" from the selectbox for ingest methods
+  And I press the button to continue
+  When I enter invalid metadata
+  And I press the button to continue
+  Then I should see a failure message for "invalid object"
+
 @review
 Scenario: Constructing a Digital Object using the web form without setting a collection
   Given I am on the new Digital Object page
@@ -113,8 +126,16 @@ Scenario: Editing the metadata of a Digital Object using the web form
   When I follow the link to edit an object
   And I enter modified metadata
   And I press the button to save changes
-  And I follow the link to view record
   Then I should see the modified metadata
+  And I should see a success message for updating metadata
+
+Scenario: Editing the metadata of a Digital Object with invalid metadata
+  Given I have created a Digital Object
+  Then I should see a link to edit an object
+  When I follow the link to edit an object
+  And I enter invalid metadata
+  And I press the button to save changes
+  Then I should see a failure message for "invalid object"
 
 Scenario: Adding multiple audio files for a Digital Object
   Given I have created a Digital Object

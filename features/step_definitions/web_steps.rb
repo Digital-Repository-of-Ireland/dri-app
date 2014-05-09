@@ -148,6 +148,11 @@ When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|
   interface.enter_valid_metadata(title)
 end
 
+When /^I enter invalid metadata(?: with title "(.*?)")?$/ do |title|
+  title ||= "A Test Object"
+  interface.enter_invalid_metadata(title)
+end
+
 When /^I enter valid "(sound|text)" metadata$/ do |type|
   title ||= "A Test Object"
   case type
