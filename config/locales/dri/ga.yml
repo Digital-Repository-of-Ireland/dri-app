@@ -91,6 +91,7 @@ ga:
         phone: Tel
       ria_address: 
         name: "Royal Irish Academy"
+        project: "Digital Repository of Ireland"
         street: "19 Dawson Street"
         zip: "Dublin 2"
     headerlinks: 
@@ -100,8 +101,10 @@ ga:
       collections: Bailiúchán
       contact: Teagmháil
       current_collection: "Bailiúchán Reatha: %{collection}"
+      end_user_agreement: "End User Agreement"
       home: "Leathanach Baile"
       ingest: "Glac isteach"
+      institutions: Institutions
       objects: Objects
       privacy: "Polasaí um Príobháideachas agus Fianáin"
       resque: "Resque Server"
