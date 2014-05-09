@@ -37,8 +37,6 @@ NuigRnag::Application.routes.draw do
   match '/422' => 'error#error_422'
   match '/500' => 'error#error_500'
 
-  match 'about_us' => 'pages#about_us', :via => :get
-
   match 'export/:id' => 'export#show', :via => :get, :as => :object_export
 
   match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
@@ -48,7 +46,7 @@ NuigRnag::Application.routes.draw do
 
   match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
   match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
-  
+
   match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
 
   match '/privacy' => 'static_pages#privacy', :via => :get
@@ -129,4 +127,7 @@ NuigRnag::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
   end
+
+  match '00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/pages/*id' => 'high_voltage/pages#show', :via => :get
+
 end
