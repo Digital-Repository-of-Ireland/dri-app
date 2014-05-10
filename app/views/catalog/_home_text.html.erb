@@ -1,205 +1,218 @@
 <div id="dri_welcome_block_id" class="dri_welcome_block">
-  <h1><%= t('blacklight.welcome') %></h1>
-  <p>
-    <%= t('dri.application.home.introtext.public') %>
-  </p>
-  <p class="dri_home_link">
-    <%= link_to t('dri.application.home.links.visit_dri'), 'http://dri.ie' %>
-  </p>
-  <p class="dri_home_link">
-    <%= link_to t('dri.application.home.links.news_dri'), 'http://dri.ie/news' %>
-  </p>
-  <p class="dri_home_link">
-    <%= link_to t('dri.application.home.links.register_dri'), user_group.new_user_path %>
-  </p>
+	<h1><%= t('blacklight.welcome') %></h1>
+	<p>
+		<%= t('dri.application.home.introtext.public') %>
+	</p>
+	<p class="dri_home_link">
+		<%= link_to t('dri.application.home.links.visit_dri'), 'http://dri.ie' %>
+	</p>
+	<p class="dri_home_link">
+		<%= link_to t('dri.application.home.links.news_dri'), 'http://dri.ie/news' %>
+	</p>
+	<p class="dri_home_link">
+		<%= link_to t('dri.application.home.links.register_dri'), user_group.new_user_path %>
+	</p>
 </div><!-- dri_welcome_block -->
 
 <div id="dri_slideshow_block_id" class="carousel slide dri_slideshow_block">
-  <div class="carousel slide" data-ride="carousel" data-interval="5000">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-      <li data-target="#carousel-example-generic" data-slide-to="0" ></li>
-      <li data-target="#carousel-example-generic" data-slide-to="1" class="active"></li>
-      <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-    </ol>
+	<div class="carousel slide" data-ride="carousel" data-interval="5000">
+		<!-- Indicators -->
+		<ol class="carousel-indicators">
+			<li data-target="#carousel-example-generic" data-slide-to="0" ></li>
+			<li data-target="#carousel-example-generic" data-slide-to="1" class="active"></li>
+			<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+		</ol>
 
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-      <div class="item ">
-        <%= link_to (user_group.new_user_path) do %>
-            <%= image_tag("dri/slides/slide1.png", :alt=>"Hardiman Atlas" ) %>
-            <div class="carousel-caption">
-              <p>Hardiman Atlas</p>
-        <% end %>
-        </div>
-      </div>
-      <div class="item active">
-        <%= link_to (user_group.new_user_path) do %>
-            <%= image_tag("dri/slides/slide2.png", :alt=>"Kilkenny Design" ) %>
-            <div class="carousel-caption">
-              <p>Kilkenny Design</p>
-            </div>
-        <% end %>
-      </div>
-      <div class="item">
-        <%= link_to (user_group.new_user_path) do %>
-            <%= image_tag("dri/slides/slide3.png", :alt=>"slide3" ) %>
-            <div class="carousel-caption">
-              <p>World War I Recruiting Collection</p>
-            </div>
-        <% end %>
-      </div>
-    </div>
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner">
+			<div class="item active">
+				<%= link_to "#{main_app.root_url}/catalog/dri:1n79hb02h" do %>
+				<%= image_tag("dri/slides/slide1.png", :alt=>"Hardiman Atlas" ) %>
+				<div class="carousel-caption">
+					<p>
+						Hardiman Atlas
+					</p>
+					<% end %>
+				</div>
+			</div>
+			<div class="item">
+				<%= link_to "#{main_app.root_url}/catalog/dri:0c483m863" do %>
+				<%= image_tag("dri/home_tmp/rnag_tmp.jpg", :alt=>"RTE RnaG" ) %>
+				<div class="carousel-caption">
+					<p>
+						Bailiúchán RTÉ Raidió na Gaeltachta
+					</p>
+				</div>
+				<% end %>
+			</div>
+			<div class="item">
+				<%= link_to "#{main_app.root_url}/catalog/dri:1n79j099q" do %>
+				<%= image_tag("dri/slides/slide3.png", :alt=>"Recuiting Poster Collection" ) %>
+				<div class="carousel-caption">
+					<p>
+						World War I Recruiting Collection
+					</p>
+				</div>
+				<% end %>
+			</div>
+		</div>
 
-    <!-- Controls -->
-    <a class="left carousel-control" href="#dri_slideshow_block_id" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left"></span>
-    </a>
-    <a class="right carousel-control" href="#dri_slideshow_block_id" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right"></span>
-    </a>
-  </div>
+		<!-- Controls -->
+		<a class="left carousel-control" href="#dri_slideshow_block_id" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a>
+		<a class="right carousel-control" href="#dri_slideshow_block_id" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a>
+	</div>
 
 </div>
 <div class="dri_home_title dri_clearfix">
-  <h2><%= t('dri.application.home.featured_collections') %></h2>
-  <div class="dri_border_bottom">
-    &nbsp;
-  </div>
+	<h2><%= t('dri.application.home.featured_collections') %></h2>
+	<div class="dri_border_bottom">
+		&nbsp;
+	</div>
 </div>
 <div id="dri_result_container_id" class="dri_result_container">
 
-  <!-- close dri_home_title -->
-  <article class="block5">
-    <div class="dri_content_block_collection">
-      <a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog/dri:0c483k077" data-counter="13">
-        <div>
-          <div class="dri_collection_image">
+	<!-- close dri_home_title -->
+	<article class="block5">
+		<div class="dri_content_block_collection">
+			<a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog/dri:1n79h4915" data-counter="10">
+			<div>
+				<div class="dri_collection_image">
+					<img alt="1n79h4915" src="http://objects.dri.ie/coverimages/1n79h4915.png" width="228">
+				</div>
+				<!-- close image -->
+				<h1>Bailiúchán RTÉ Raidió na Gaeltachta: Oidhreacht agus Cultúr</h1>
+				<p class="dri_publishing_institute">
+					RTÉ Raidió na Gaeltachta
+				</p>
+			</div> </a>
+			<a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog?collection=dri%3A1n79h4915&amp;mode=objects&amp;search_field=all_fields&amp;view=grid">
+			<div class="dri_num_objects">
+				<span class="dri_object_text_num"> Objects 41 </span>
+			</div> </a><!-- close dri_num_objects -->
+		</div>
+		<!-- close content_block -->
+	</article>
+	<article class="block5">
+		<div class="dri_content_block_collection">
+			<a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog/dri:x059c799p" data-counter="7">
+			<div>
+				<div class="dri_collection_image">
+					<img alt="X059c799p" src="http://objects.dri.ie/coverimages/x059c799p.jpg" width="228">
+				</div>
+				<!-- close image -->
+				<h1>The Teresa Deevy Archive</h1>
+				<p class="dri_publishing_institute">
+					Irish Qualitative Data Archive
+				</p>
+			</div> </a>
+			<a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog?collection=dri%3Ax059c799p&amp;mode=objects&amp;search_field=all_fields&amp;view=grid">
+			<div class="dri_num_objects">
+				<span class="dri_object_text_num"> Objects 76 </span>
+			</div> </a><!-- close dri_num_objects -->
+		</div>
+		<!-- close content_block -->
+	</article>
+	<article class="block5">
+		<div class="dri_content_block_collection">
+			<a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog/dri:x059c802s" data-counter="6">
+			<div>
+				<div class="dri_collection_image">
+					<img alt="X059c802s" src="http://objects.dri.ie/coverimages/x059c802s.jpg" width="228">
+				</div>
+				<!-- close image -->
+				<h1>National Archive of Irish Composers</h1>
+				<p class="dri_publishing_institute">
+					National Library of Ireland
+				</p>
+			</div> </a>
+			<a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog?collection=dri%3Ax059c802s&amp;mode=objects&amp;search_field=all_fields&amp;view=grid">
+			<div class="dri_num_objects">
+				<span class="dri_object_text_num"> Objects 51 </span>
+			</div> </a><!-- close dri_num_objects -->
+		</div>
+		<!-- close content_block -->
+	</article>
 
-            <img alt="0c483k077" src="http://objects.dri.ie/coverimages/0c483k077.png" width="228">
+	<div class="dri_home_title dri_clearfix">
+		<h2><%= t('dri.application.home.newly_added') %></h2>
+		<div class="dri_border_bottom">
+			&nbsp;
+		</div>
 
-          </div>
-          <!-- close image -->
+	</div>
+	<!-- close dri_home_title -->
 
-          <h1>Inspiring Ireland - National Library of Ireland</h1>
-          <p class="dri_publishing_institute">
-            Reproduction rights owned by National Library of Ireland
-          </p>
-        </div> </a><a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC?f%5Bis_collection_sim%5D%5B%5D=false&amp;f%5Broot_collection_sim%5D%5B%5D=Inspiring+Ireland+-+National+Library+of+Ireland">
-      <div class="dri_num_objects">
-        <span class="dri_object_text_num"> Objects 15 </span>
-      </div> </a><!-- close dri_num_objects -->
-    </div>
-    <!-- close content_block -->
-  </article>
-  <article class="block5">
-    <div class="dri_content_block_collection">
-      <a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog/dri:0c483k05p" data-counter="15">
-        <div>
-          <div class="dri_collection_image">
+	<article class="block5">
+		<div class="dri_content_block">
+			<a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog/dri:sx61dm430" data-counter="2"> <h1>Report on the MoTIF Project. Thesaurus Construction Guidelines and a Pilot Thesaurus of Irish Folklore</h1>
+			<div class="dri_image">
 
-            <img alt="0c483k05p" src="http://objects.dri.ie/coverimages/0c483k05p.png" width="228">
+				<%= image_tag("dri/home_tmp/motif_image_tmp.png", :alt=>"Document Icon" ) %>
+			</div><!-- close image --> </a>
+			<p class="dri_subject">
+				Thesaurus Compilation
+				Folklore
+				Libraries
+				Archives
+			</p>
 
-          </div>
-          <!-- close image -->
+			<div class="dri_icon">
+				<span class="dri_icon_image"><%= image_tag("dri/formats/text_icon.png", :alt=>"Document Icon" ) %></span>
+				<span class="dri_icon_text">Document</span>
+			</div>
+			<!-- close dri_icon -->
+		</div>
+		<!-- close content_block -->
+		<article class="block5">
+			<div class="dri_content_block">
+				<a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog/dri:9880vs83h" data-counter="1"> <h1>Dreadful shipwreck!</h1>
+				<div class="dri_image">
 
-          <h1>Inspiring Ireland - Irish Museum of Modern Art</h1>
-          <p class="dri_publishing_institute">
-            Copyright the artists. All rights reserved.
-          </p>
-        </div> </a><a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC?f%5Bis_collection_sim%5D%5B%5D=false&amp;f%5Broot_collection_sim%5D%5B%5D=Inspiring+Ireland+-+Irish+Museum+of+Modern+Art">
-      <div class="dri_num_objects">
-        <span class="dri_object_text_num"> Objects 14 </span>
-      </div> </a><!-- close dri_num_objects -->
-    </div>
-    <!-- close content_block -->
-  </article>
-  <article class="block5">
-    <div class="dri_content_block_collection">
-      <a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog/dri:0c483k034" data-counter="17">
-        <div>
-          <div class="dri_collection_image">
+					<%= image_tag("dri/home_tmp/dreadful_tmp.jpeg", :alt=>"Dreadful Shipwreck" ) %>
+				</div><!-- close image --> </a>
+				<p class="dri_subject">
+					Ballads, English--Ireland
+					Shipwrecks
+					Christians--Ireland
+					Wood-engraving--19th century
+					Hero (Ship)
+				</p>
 
-            <img alt="0c483k034" src="http://objects.dri.ie/coverimages/0c483k034.png" width="228">
+				<div class="dri_icon">
+					<span class="dri_icon_image"><%= image_tag("dri/formats/image_icon.png", :alt=>"Image Icon" ) %></span>
+					<span class="dri_icon_text">Image</span>
+				</div>
+				<!-- close dri_icon -->
+			</div>
+			<!-- close content_block -->
+		</article>
+		<article class="block5">
+			<div class="dri_content_block">
+				<a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/catalog/dri:1n79j101j" data-counter="1"> <h1>Have you any women folk worth defending?</h1>
+				<div class="dri_image">
 
-          </div>
-          <!-- close image -->
+					<%= image_tag("dri/home_tmp/women_tmp.png", :alt=>"Dreadful Shipwreck" ) %>
+				</div><!-- close image --> </a>
+				<p class="dri_subject">
+					Patriotism
+					World War, 1914-1918--Great Britain--Posters
+					Recruiting and enlistment
+					World War, 1914-1918--Ireland
+					World War, 1914-1918--Belgium
+					Posters
+				</p>
 
-          <h1>Inspiring Ireland - Crawford Art Gallery</h1>
-          <p class="dri_publishing_institute">
-            © Crawford Art Gallery, Cork.
-          </p>
-        </div> </a><a href="/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC?f%5Bis_collection_sim%5D%5B%5D=false&amp;f%5Broot_collection_sim%5D%5B%5D=Inspiring+Ireland+-+Crawford+Art+Gallery">
-      <div class="dri_num_objects">
-        <span class="dri_object_text_num"> Objects 15 </span>
-      </div> </a><!-- close dri_num_objects -->
-    </div>
-    <!-- close content_block -->
-  </article>
-
-  <div class="dri_home_title dri_clearfix">
-    <h2><%= t('dri.application.home.newly_added') %></h2>
-    <div class="dri_border_bottom">
-      &nbsp;
-    </div>
-
-  </div>
-  <!-- close dri_home_title -->
-
-  <article class="block5">
-    <div class="dri_content_block">
-      <a href="#"> <h1>This is a title for an object</h1>
-        <div class="dri_image">
-          <%= image_tag("no_image.png", :width=>"200", :height=>"113", :alt=>"object_thumbnail_image" ) %>
-        </div> <!-- close image --> </a>
-      <p class="dri_subject">
-        <a>voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt </a>
-      </p>
-      <div class="dri_icon">
-        <span class="dri_icon_image"><%= image_tag("dri/audio_icon.png", :alt=>"oaudio_thumbnail_image" ) %></span>
-        <span class="dri_icon_text">Audio</span>
-      </div>
-      <!-- close dri_icon -->
-    </div>
-    <!-- close content_block -->
-  </article>
-  <article class="block5">
-    <div class="dri_content_block">
-      <a href="#"> <h1>This is a title for an object</h1>
-        <div class="dri_image">
-          <%= image_tag("no_image.png", :width=>"200", :height=>"113", :alt=>"object_thumbnail_image" ) %>
-        </div> <!-- close image --> </a>
-      <p class="dri_subject">
-        <a>Sed ut perspiciatis, Voluptatemaccusantium, Eaque ipsa quae, Sed ut perspiciatis,</a>
-      </p>
-      <div class="dri_icon">
-        <span class="dri_icon_image"><%= image_tag("dri/audio_icon.png", :alt=>"oaudio_thumbnail_image" ) %></span>
-        <span class="dri_icon_text">Audio</span>
-      </div>
-      <!-- close dri_icon -->
-    </div>
-    <!-- close content_block -->
-  </article>
-  <article class="block5">
-    <div class="dri_content_block">
-      <a href="#"> <h1>This is a title for an object</h1>
-        <div class="dri_image">
-          <%= image_tag("no_image.png", :width=>"200", :height=>"113", :alt=>"object_thumbnail_image" ) %>
-        </div> <!-- close image --> </a>
-      <p class="dri_subject">
-        <a>Sed ut perspiciatis, Voluptatem accusantium, Eaque ipsa quae, Sed ut perspiciatis,</a>
-      </p>
-      <div class="dri_icon">
-        <span class="dri_icon_image"><%= image_tag("dri/audio_icon.png", :alt=>"oaudio_thumbnail_image" ) %></span>
-        <span class="dri_icon_text">Audio</span>
-      </div>
-      <!-- close dri_icon -->
-    </div>
-    <!-- close content_block -->
-  </article>
+				<div class="dri_icon">
+					<span class="dri_icon_image"><%= image_tag("dri/formats/image_icon.png", :alt=>"Image Icon" ) %></span>
+					<span class="dri_icon_text">Image</span>
+				</div>
+				<!-- close dri_icon -->
+			</div>
+			<!-- close content_block -->
+		</article>
 </div>
 <div id="dri_second_navigation_container_id" class="dri_second_navigation_container">
-  <!--<%= render "socialmedia/twitter_feed" %>-->
-  <%= render "socialmedia/rss_feed" %>
+	<!--<%= render "socialmedia/twitter_feed" %>-->
+	<%= render "socialmedia/rss_feed" %>
 
 </div>
