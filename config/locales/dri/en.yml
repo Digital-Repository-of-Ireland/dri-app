@@ -90,8 +90,8 @@ en:
         email: Email
         phone: Tel
       ria_address: 
-        project: "Digital Repository of Ireland"
         name: "Royal Irish Academy"
+        project: "Digital Repository of Ireland"
         street: "19 Dawson Street"
         zip: "Dublin 2"
     headerlinks: 
@@ -101,18 +101,21 @@ en:
       collections: Collections
       contact: Contact
       current_collection: "Current Collection: %{collection}"
+      end_user_agreement: "End User Agreement"
       home: Home
       ingest: Ingest
+      institutions: Institutions
       objects: Objects
       privacy: "Privacy & Cookies policy"
-      end_user_agreement: "End User Agreement"
       resque: "Resque Server"
       sitemap: Sitemap
       usergroups: "Users & Groups"
       workspace: "My Workspace"
     help: 
+      no_results_found: "No search results found"
       q: "Type a query and press Enter"
       q_title: "Search the repository"
+      try_looking_for: "Try looking for"
     navbar: 
       items_per_page: "Items per page"
     sign_in: 

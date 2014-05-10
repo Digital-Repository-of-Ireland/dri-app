@@ -1,17 +1,11 @@
-<article class="block5">
-  <div class="dri_content_list_object_block">
-    <% get_cover_image document %>
-    <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
-        <div class="dri_image">
-          <%= image_tag @cover_image, :width=>"200" %>
-        </div><!-- close image -->
-    <% end %>
 
-    <div>
+<article class="dri_result_object dri_clearfix">
+  <div class="dri_content_list_collection">
+          <div class="dri_content_list_collection_data">
       <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
-          <h1><%= document[:title_tesim][0] %></h1>
+          <h4><%= document[:title_tesim][0] %></h4>
       <% end %>
-      <p>
+      <p class="dri_list_description">
         <%= truncate_description(document[:description_tesim][0], 280).html_safe %>
       </p>
       <p class="dri_list_subject">
@@ -32,6 +26,14 @@
       </div>
       <!-- close dri_icon -->
     </div>
+    <% get_cover_image document %>
+    <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+        <div class="dri_image">
+          <%= image_tag @cover_image, :width=>"200" %>
+        </div><!-- close image -->
+    <% end %>
+
+
   </div>
   <!-- close content_block -->
 </article>

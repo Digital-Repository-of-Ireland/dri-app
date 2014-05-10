@@ -84,16 +84,19 @@ class CollectionsController < CatalogController
     set_access_permissions(:batch, true)
 
     if !valid_permissions?
-      flash[:error] = t('dri.flash.error.not_updated', :item => params[:id])
+      flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
     else
-      @object.update_attributes(params[:batch])
+      updated = @object.update_attributes(params[:batch])
 
-      DOI.mint_doi( @object )
+      if updated
+        DOI.mint_doi( @object )
 
-      Storage::CoverImages.validate(cover_image, @object)
+        Storage::CoverImages.validate(cover_image, @object)
+      else
+        flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
+      end
 
       #Apply private_metadata & properties to each DO/Subcollection within this collection
-      flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
     end
 
     #purge params from update action
@@ -104,7 +107,12 @@ class CollectionsController < CatalogController
     params.delete(:action)
 
     respond_to do |format|
-      format.html  { render :action => "edit" }
+      if updated
+        flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
+        format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+      else
+        format.html  { render :action => "edit" }
+      end
     end
   end
 

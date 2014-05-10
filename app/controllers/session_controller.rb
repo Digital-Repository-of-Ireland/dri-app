@@ -11,7 +11,7 @@ class SessionController < ApplicationController
       current_user.save
     end
     params.delete(:id)
-    redirect_to root_path
+    redirect_to params[:path]
   end
 
 end

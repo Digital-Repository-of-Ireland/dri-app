@@ -3,6 +3,7 @@
     <% copySearchParams = params.clone %>
     <% copySearchParams.delete(:controller) %>
     <% copySearchParams.delete(:action) %>
+    <% copySearchParams.delete(:page) %>
     <% if params[:mode].eql?('collections') %>
         <% copySearchParams[:mode] = 'objects' %>
         <li><%= link_to t('dri.headerlinks.collections'), "#", :id=>"collections", :class=>'selected' %></li>

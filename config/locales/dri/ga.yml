@@ -91,6 +91,7 @@ ga:
         phone: Tel
       ria_address: 
         name: "Royal Irish Academy"
+        project: "Digital Repository of Ireland"
         street: "19 Dawson Street"
         zip: "Dublin 2"
     headerlinks: 
@@ -100,8 +101,10 @@ ga:
       collections: Bailiúchán
       contact: Teagmháil
       current_collection: "Bailiúchán Reatha: %{collection}"
+      end_user_agreement: "End User Agreement"
       home: "Leathanach Baile"
       ingest: "Glac isteach"
+      institutions: Institutions
       objects: Objects
       privacy: "Polasaí um Príobháideachas agus Fianáin"
       resque: "Resque Server"
@@ -109,8 +112,10 @@ ga:
       usergroups: "Úsáideoirí agus Grúpaí"
       workspace: "My Workspace"
     help: 
+      no_results_found: "No search results found. Try looking for"
       q: "Type a search term and press Enter"
       q_title: "Search the repository"
+      try_looking_for: "Try looking for"
     navbar: 
       items_per_page: "Items per page"
     sign_in: 

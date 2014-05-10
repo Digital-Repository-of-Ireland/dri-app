@@ -84,6 +84,11 @@ class SurrogatesController < ApplicationController
     end
   end
 
+  def download
+    data = open(params[:path])
+    send_data data.read, :filename => params[:name], :type => params[:type], disposition: 'inline', stream: 'true', buffer_size: '4096'
+  end
+
   private
 
     def generate_surrogates(object_id)

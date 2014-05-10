@@ -1,0 +1,24 @@
+<% if generic_file.audio? %>
+    <% surrogate = surrogate_url(document.id, generic_file.id, "mp3") %>
+    <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.mp3"} %>
+
+<% elsif generic_file.video? %>
+    <% surrogate = surrogate_url(document.id, generic_file.id, "mp4") %>
+    <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.mp4"} %>
+
+<% elsif generic_file.pdf? %>
+    <% surrogate = surrogate_url(document.id, generic_file.id, "pdf") %>
+    <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.pdf"} %>
+
+<% elsif generic_file.image? %>
+    <% surrogate = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
+    <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.jpg"} %>
+<% end %>
+
+<% unless surrogate.nil? %>
+    <div class="carousel-caption">
+      <p>
+        <%= link_to t('dri.views.catalog.links.download'), download_surrogate_path(download_params), :id => "download_asset" %>
+      </p>
+    </div>
+<% end %>

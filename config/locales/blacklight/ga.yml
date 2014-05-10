@@ -147,7 +147,7 @@ ga:
         single_item_found: "<b>1</b> to <b>1</b> of <b>1</b>"
       per_page: 
         button_label: "%{count} per page"
-        label: "%{count}<span class=\"hide-text\"> per page</span>"
+        label: "%{count}"
         submit: Update
         title: "Number of results to display per page"
       rss_feed: "RSS for results"
