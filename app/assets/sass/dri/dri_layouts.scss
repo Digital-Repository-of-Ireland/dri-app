@@ -317,6 +317,21 @@
 
 }
 
+.dri_search_features_nav_container {
+  
+.dri_display_grid_table_nav {
+
+  padding-left: 55px;
+  width: 120px;
+
+}
+.dri_pager_nav {
+  
+    @include zen-grid-item(1, 2);
+    //@include zen-float();
+    
+  }
+}
 .dri_main_content_container {
     .dri_result_container {
         @include zen-grid-item(2, 1, $gutter-width: 0px);
@@ -395,6 +410,13 @@ border-bottom: 1px solid #D9DADB;
   }
 	
 
+}
+.dri_footer {
+  .dri_funder_institutes {
+    padding-left:5%;
+    max-width:90%;
+  }
+  
 }
 
 
