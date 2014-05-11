@@ -88,7 +88,7 @@
 	  
 	  .dri_display_grid_table_nav {
 	
-		@include zen-grid-item(1, 1.7);
+		@include zen-grid-item(.5, 1.7);
 		//@include zen-float();
 		
 	}
