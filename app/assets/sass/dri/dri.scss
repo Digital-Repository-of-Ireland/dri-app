@@ -78,14 +78,16 @@ width: 509px;
   //  border-radius: 23px;
   //  opacity: 1.0;
   //  filter: alpha(opacity=100);
-  //  .left {
-  //    background-image: url("dri/previous_carousel_arrow.png");
-  //  }
-  //  .right {
-  //    background-image: url("dri/next_carousel_arrow.png");
-  //  }
+
 }
 
+.dri_asset_holder .carousel-control .left {
+  background-image: url("dri/previous_carousel_arrow.png");
+}
+.dri_asset_holder .carousel-control .right {
+  background-image: url("dri/next_carousel_arrow.png");
+ }
+ 
 .dri_carousel_controls {
   .carousel-control {
   top: 90%;
