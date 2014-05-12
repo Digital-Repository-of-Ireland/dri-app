@@ -1,6 +1,6 @@
 <!--TO BE CHANGED AND STYLED-->
 <% changeViewParams = params.clone %>
-<ul>
+<ul class="dri_change_sort_view" id="dri_change_sort_view_id" data-content="<%= t('dri.help.dri_change_sort_view') %>"  data-original-title="<%= t('dri.help.dri_change_sort_view_title')%>" data-trigger="hover" data-placement="top">
   <% if (params[:view] == "grid") %>
       <% changeViewParams[:view] = "list" %>
       <li class="grid">
