@@ -3,15 +3,15 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <!--First item set to active-->
-      <div class="item active">
+      <div class="item dri_asset_carousel_item active">
         <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files.first} %>
-        <%= render :partial => "object_show_list_download", :locals => {:document => document, :generic_file => files.first} %>
+        <%= render :partial => "object_show_list_download", :locals => {:document => document, :generic_file => files.first, :index => 1} %>
       </div>
 
       <% for i in 1..(files.count - 1) %>
-          <div class="item">
+          <div class="item dri_asset_carousel_item">
             <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files[i]} %>
-            <%= render :partial => "object_show_list_download", :locals => {:document => document, :generic_file => files[i]} %>
+            <%= render :partial => "object_show_list_download", :locals => {:document => document, :generic_file => files[i], :index => i} %>
           </div>
       <% end %>
     </div>
@@ -33,3 +33,6 @@
         $('.carousel').carousel('pause');
     });
 </script>
+<% if (files.count > 0) %>
+    <p class="dri_assets_total"><%= "#{t('dri.views.fields.total_assets')} (#{files.count})" %></p>
+<% end %>
