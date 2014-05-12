@@ -18,7 +18,7 @@
 <% unless surrogate.nil? %>
     <div class="carousel-caption">
       <p>
-        <%= link_to t('dri.views.catalog.links.download'), download_surrogate_path(download_params), :id => "download_asset" %>
+        <%= link_to "#{index} #{t('dri.views.catalog.links.download')}", download_surrogate_path(download_params), :id => "download_asset" %>
       </p>
     </div>
 <% end %>
