@@ -49,13 +49,14 @@ width: 509px;
 .dri_asset_carousel_item {
   height: 300px;
   p {
-    padding-left: 75px;
+    padding-left: 40px;
   }
   a {
     color: #fff;
   }
   .carousel-caption {
     background: rgba(47, 47, 47, 0.75);
+	height: 30px;
   }
 }
 
@@ -63,51 +64,66 @@ width: 509px;
   //  position: absolute;
   //  top: 40%;
   //  left: 15px;
-  //  width: 40px;
-  //  height: 40px;
-  //  margin-top: -20px;
-  //  font-size: 60px;
-  //  font-weight: 100;
-  //  line-height: 30px;
-  //  color: white;
-  //  text-align: center;
-  //  background: #222222;
-  //  border: 3px solid white;
-  //  -webkit-border-radius: 23px;
-  //  -moz-border-radius: 23px;
-  //  border-radius: 23px;
-  //  opacity: 1.0;
+  //  width: 20px;
+  //  height: 20px;
+  // margin-top: -10px;
+  // padding-top: 0;
+  // font-size: 100%;
+  // font-weight: none;
+  // line-height: 0;
+  // color: none;
+  // text-align: center;
+   	background: none;
+  	border: none;
+  //  -webkit-border-radius: 0;
+  //  -moz-border-radius: 0;
+  // border-radius: 0;
+  opacity: 1.0;
   //  filter: alpha(opacity=100);
 
 }
-
-.dri_asset_holder .carousel-control .left {
-  background-image: url("dri/previous_carousel_arrow.png");
+ .dri_asset_holder .carousel-caption {
+    background: rgba(47, 47, 47, 0.75);
+	height: 30px;
+	padding: 0px;
+	margin: 0px;
+  }
+.dri_asset_holder .dri_asset_carousel_item {
+  height: 300px;
+  p {
+    padding: 5px 0 0 40px;
+  }
+  a {
+    color: #fff;
+  }
+ 
 }
-.dri_asset_holder .carousel-control .right {
-  background-image: url("dri/next_carousel_arrow.png");
+.dri_asset_holder .carousel-control.left {
+  background-image: url("previous_carousel_arrow.png");
+  top: 95%;
+  width: 12px;
+  height: 8px;
+  margin-top: -5px;
+  padding: 0;
+}
+.dri_asset_holder .carousel-control.right {
+  background-image: url("next_carousel_arrow.png");
+  top: 95%;
+  width: 12px;
+  height: 10px;
+   margin-top: -5px;
+  padding: 0;
  }
+.dri_asset_holder p.dri_assets_total {
+	border-top: 1px solid #D9DADB;
+	padding: 4px 0 0 0;
+	margin: 0 0 20px 0;
+	font-weight: bold;
+	color: #2F2F2F;
+	font-size: 100%;
+	
+}
  
-.dri_carousel_controls {
-  .carousel-control {
-  top: 90%;
-}
-.dri_carousel_item {
-  //max-height:380px;
-}
-
-.dri_carousel_img {
-  height: 300px;
-  float: left;
-}
-.carousel-inner {
- 
-  height: 300px;
-}
-.carousel-control.left {margin-left: 0px; color: black;}
-.carousel-control.right {margin-right: 0px; color: black;}
-}
-
 .dropdown-menu {
   position: absolute;
   top: 100%;
