@@ -514,6 +514,11 @@ a .dri_signin_edugate:hover {
 	padding: 0;
 	margin: 0;
 }
+
+.dri_account_nav ul.dri_language_links a {
+	color:#808082;
+}
+
 /*-------------- dri logo --------------*/
 .dri_ident {
 	height: 135px;
@@ -1526,13 +1531,30 @@ p.dri_rss_link a {
 	line-height: 1.3em;
 
 }	
-
 .dri_about_03 .dri_green_button {
-	padding: 0;
-	margin: 10px 0 0 0;
-	width: 160px;
+	margin:13px 0 0 0;
+	padding: 0px;
+}
 
-}		
+.dri_about_03 .dri_green_button a {
+	width: 300px;
+	margin: 0;
+	padding: 2px 9px 2px 9px;
+	border: none;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #fff;
+	background-color: #909A3C;
+	font-size: 100%;
+	font-weight: none;
+	text-align: center;
+}
+
+.dri_about_03 .dri_green_button a:hover {
+	background-color: #7A8229;
+	color: #fff;
+	text-decoration: none;
+}
 
 .dri_about_04 {
 	padding: 0;
@@ -1575,10 +1597,10 @@ p.dri_rss_link a {
 
 .dri_about_06b {
 	padding: 0;
-	margin: 0;
+	margin: 10px 0 0 0;
 }
-.dri_about_06b h3{
-	padding: 0;
+.dri_about_06b h3 {
+	padding: 15px 0 0 0;
 	margin: 0;
 	line-height: 1.3em;
 	font-size: 200%;
@@ -1811,7 +1833,7 @@ p.dri_rss_link a {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	line-height: 1.3em;
-	font-weight: bold;;
+	font-weight: bold;
 }
 .dri_content_block_collection h1 a {
 	color:#2F2F2F;
@@ -1839,6 +1861,16 @@ p.dri_rss_link a {
 .dri_content_block_collection p.dri_publishing_institute a:hover {
 	color: #2F2F2F;
 
+}
+
+.dri_content_block_collection p.dri_publishing_institute  {
+	color: #808080;
+	text-decoration: none;
+	cursor: pointer;
+}
+.dri_content_block_collection p.dri_publishing_institute:hover {
+	color: #2F2F2F;
+	text-decoration: none;
 }
 a .dri_num_objects {
 	border-top: 1px solid #E1E1E1;
@@ -2220,7 +2252,6 @@ ul.dri_stats li {
 }
 .dri_vc_title a:hover {
 	text-decoration: underline;
-	color: #288DC0;
 }
 ul.dri_view_collection {
 	margin: 10px 0 0 0;
@@ -2330,7 +2361,7 @@ ul.dri_view_collection li a:hover span.dri_stat_num {
 
   margin-bottom: 30px;
   margin-top: 30px;
-    clear:both;
+  clear:both;
 
   
   .dri_collection_institutes_pages_img {
@@ -2339,8 +2370,8 @@ ul.dri_view_collection li a:hover span.dri_stat_num {
     border-right: 1px solid #D9DADB;
     padding-top: -30px;
     padding-bottom: -30px;
-           margin-top: 40px;
-        margin-bottom: 40px;
+    margin-top: 40px;
+    margin-bottom: 40px;
     img {
 
       max-height: 75px;
