@@ -130,6 +130,16 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
   #{}}
 end
 
+When /^I enter invalid metadata for a collection(?: with title (.*?))?$/ do |title|
+    title ||= "Test collection"
+  steps %{
+    When I fill in "batch_title][" with "#{title}"
+    And I fill in "batch_description][" with "Test description"
+    And I fill in "batch_rights][" with ""
+    And I fill in "batch_type][" with "Collection"
+  }
+end
+
 When /^I enter valid permissions for a collection$/ do
   steps %{
     When choose "batch_read_groups_string_radio_public"

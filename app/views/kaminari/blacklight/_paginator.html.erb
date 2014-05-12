@@ -12,8 +12,7 @@
 <%= paginator.render do -%>
 	<!-- navigation to allow the user to page through the search results  -->
 	<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
-		<ul id="dri_pagination_nav_links_id"
-			class="dri_pagination_nav_links">
+		<ul id="dri_pagination_nav_links_id" class="dri_pagination_nav_links" data-content="<%= I18n.t('dri.help.dri_pagination_nav_links') %>"  data-original-title="<%= I18n.t('dri.help.dri_pagination_nav_links_title')%>" data-trigger="hover" data-placement="left">
 			
 		    <%= prev_page_tag unless current_page.first? %>
 		    <% each_relevant_page do |page| -%>
