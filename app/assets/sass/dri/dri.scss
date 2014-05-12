@@ -90,14 +90,16 @@ width: 509px;
   }
 .dri_asset_holder .dri_asset_carousel_item {
   height: 300px;
-  p {
+ 
+ 
+} 
+.dri_asset_holder .dri_asset_carousel_item p {
     padding: 5px 0 0 40px;
   }
-  a {
+ 
+.dri_asset_holder .dri_asset_carousel_item p a {
     color: #fff;
   }
- 
-}
 .dri_asset_holder .carousel-control.left {
   background-image: url("previous_carousel_arrow.png");
   top: 95%;
