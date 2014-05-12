@@ -2152,9 +2152,15 @@ h2.dri_restrict_title {
 	font-size: 100%;
 }
 
+.dri_asset_holder .dri_asset_carousel_item p.dri_restrict_message  {
+	margin: 8px 0 0 0;
+	padding: 0;
+	color: #808080;
+}
+
 p.dri_restrict_message {
 	margin: 0px;
-	padding: 0px 80px 10px 0;
+	padding: 0;
 	color: #808080;
 }
 p.dri_restrict_progress {
