@@ -87,11 +87,6 @@ describe CollectionsController do
       DoiConfig = nil
       Sufia.queue.should_receive(:push).with(an_instance_of(PublishJob)).once
       post :publish, :id => @collection.id
-
-      @collection.reload
-
-      expect(@collection.status).to eql("published")
-      expect(@object.status).to eql("draft")
     end    
 
   end

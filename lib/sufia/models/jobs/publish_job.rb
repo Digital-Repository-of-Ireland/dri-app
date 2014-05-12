@@ -7,20 +7,27 @@ class PublishJob < ActiveFedoraPidBasedJob
   end
 
   def run
-    Rails.logger.info "Publishing reviewed objects in #{object.id}"
+    Rails.logger.info "Publishing collection #{object.id}"
 
     query = Solr::Query.new("collection_id_sim:\"#{object.id}\" AND status_ssim:reviewed")
 
     while query.has_more?
       collection_objects = query.pop
 
-      collection_objects.each do |object|
-        o = ActiveFedora::Base.find(object["id"], {:cast => true})
+      collection_objects.each do |obj|
+        o = ActiveFedora::Base.find(obj["id"], {:cast => true})
         o.status = "published" if o.status.eql?("reviewed")
         o.save
 
         DOI.mint_doi( o )
       end
+    end
+
+    unless object.status.eql?("published")
+      object.status = "published"
+      object.save
+
+      DOI.mint_doi( object )
     end
 
   end
