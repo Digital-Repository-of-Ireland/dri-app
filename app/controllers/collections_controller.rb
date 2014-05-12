@@ -294,18 +294,10 @@ class CollectionsController < CatalogController
     @object = retrieve_object!(params[:id])
 
     raise Exceptions::BadRequest unless @object.is_collection?
-
-    unless @object.status.eql?("published")
-      @object.status = "published"
-      @object.save
-
-      DOI.mint_doi( @object )
-
-      flash[:notice] = t('dri.flash.notice.metadata_updated')
-    end
-
+    
     begin
-      publish_objects
+      publish_collection
+      flash[:notice] = t('dri.flash.notice.collection_publishing')
     rescue Exception => e
       flash[:alert] = t('dri.flash.alert.error_publishing_collection', :error => e.message)
       @warnings = t('dri.flash.alert.error_publishing_collection', :error => e.message)
@@ -355,7 +347,7 @@ class CollectionsController < CatalogController
     end
   end
 
-  def publish_objects
+  def publish_collection
     begin
       Sufia.queue.push(PublishJob.new(@object.id))
     rescue Exception => e
