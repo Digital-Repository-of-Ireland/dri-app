@@ -141,9 +141,9 @@ en:
       no_confirmation: "Didn't receive confirmation?"
       no_unlock: "Didn't receive unlock instructions?"
       register: "Sign Up"
-      sign_in_with: "Sign in with "
-      title: "Sign In"
-      with_another_account: "Sign In with another Account"
+      sign_in_with: "Login with "
+      title: Login
+      with_another_account: "Login with another Account"
     views: 
       alt_tags: 
         cover_image: "Cover Image"
@@ -179,7 +179,7 @@ en:
           no_surrogates: "No surrogates are available."
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
-          request_permission_not_logged_in: "Sign up/Sign in to get access."
+          request_permission_not_logged_in: "Sign up/Loginn to get access."
           surrogate_not_available: "Surrogate not available yet"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
         links: 

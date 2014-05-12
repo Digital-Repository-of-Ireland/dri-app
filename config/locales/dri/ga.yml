@@ -142,8 +142,8 @@ ga:
       no_unlock: "Didn't receive unlock instructions?"
       register: "Sign Up"
       sign_in_with: "Sign in with "
-      title: "Sign In"
-      with_another_account: "Sign In with another Account"
+      title: "Login"
+      with_another_account: "Login with another Account"
     views: 
       alt_tags: 
         cover_image: "Cover Image"

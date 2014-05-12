@@ -5,7 +5,7 @@
 
 
 <%= link_to user_group.new_user_path, :id => "signup" do %>
-    <span class="text_right"><%= t('dri.sign_in.register') %></span>
+    <span class=""><%= t('dri.sign_in.register') %></span>
 <% end %>
 
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
@@ -17,7 +17,7 @@
 
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
     <%= link_to (new_confirmation_path(resource_name)), :id => "password_reset_not_sent" do %>
-        <span class="text_right"><%= t('dri.sign_in.no_confirmation') %></span>
+        <span class="text_line"><%= t('dri.sign_in.no_confirmation') %></span>
     <% end %>
 <% end -%>
 
