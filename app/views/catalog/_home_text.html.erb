@@ -4,13 +4,7 @@
 		<%= t('dri.application.home.introtext.public') %>
 	</p>
 	<p class="dri_home_link">
-		<%= link_to t('dri.application.home.links.visit_dri'), 'http://dri.ie' %>
-	</p>
-	<p class="dri_home_link">
-		<%= link_to t('dri.application.home.links.news_dri'), 'http://dri.ie/news' %>
-	</p>
-	<p class="dri_home_link">
-		<%= link_to t('dri.application.home.links.register_dri'), user_group.new_user_path %>
+		<%= link_to t('dri.application.home.links.visit_dri'), 'http://dri.ie', :target => "_blank" %>
 	</p>
 </div><!-- dri_welcome_block -->
 
