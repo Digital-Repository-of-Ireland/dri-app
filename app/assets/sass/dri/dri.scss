@@ -2296,11 +2296,21 @@ ul.dri_view_collection li a:hover span.dri_stat_num {
   .dri_collection_institutes_pages_text {
     margin-top: 25px;
     h6 {
-      color: $dri_grey;
+    color: #2F2F2F;
     }
   }
 }
- 
+   .dri_collection_institutes_pages_text p {
+	       color: #808080;
+   }
+   
+   .dri_collection_institutes_pages_text p span.dri_bold_text {
+		   font-weight: bold;
+   }
+	.dri_collection_institutes_pages_text p:hover {
+	     text-decoration: underline;
+   }
+
 // close static page of institutes 
 
 
@@ -2345,7 +2355,7 @@ ul.dri_collection_institutes_list li a {
 .dri_institutes_show_more a {
 	margin: 0;
 	padding: 0px;
-	color: #288DC0;
+	color: #2F2F2F;
 	font-weight: bold;
 	
 }
@@ -2412,11 +2422,17 @@ ul.dri_collection_institutes_list li a {
 .dri_main_footer_navigation li.no_border_right {
 		border-right: none;	
 }
-
+.dri_funder_institutes {
+	padding-top: 20px;
+}
 .dri_footer_address {
   margin: 10px 0 10px 0;
+  color: #808080;
 }
-
+.dri_footer_address a {
+	  color: #808080;
+	  text-decoration: underline;
+}
 /* static blocks */
 
 .dri_about_box  {
