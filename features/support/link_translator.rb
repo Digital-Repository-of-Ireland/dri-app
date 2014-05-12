@@ -94,6 +94,9 @@ module LinkTranslator
       when /update status/
         "status_update"
 
+      when /accept terms/
+        "accept_cookies"
+
       else "Unknown"
 
     end

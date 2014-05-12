@@ -10,13 +10,13 @@ Background:
 
 Scenario: Visiting the site for the first time
   Given I am on the home page
-  Then I should see a message about cookies
-  When I press the button to accept cookie policy
+  Then I should see a window about cookies
+  When I accept cookies terms
   Then I should have a cookie accept_cookies
-  And I should not see a message about cookies
+#  And I should not see a window about cookies
 
 Scenario: Logging in should set accept_cookies
   Given I am on the home page
-  Then I should see a message about cookies
-  When I am logged in as "user1"
-  Then I should not see a message about cookies
+  Then I should see a window about cookies
+  When I am logged in as "user1" and accept cookies
+  Then I should not see a window about cookies

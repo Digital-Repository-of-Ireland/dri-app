@@ -4,7 +4,7 @@ Feature:
   and view them in the repository
 
   Background:
-    Given I am logged in as "admin" in the group "admin"
+    Given I am logged in as "admin" in the group "admin" and accept cookies
     And a collection with pid "dri:instcoll" and title "Institute Test Collection"
     And a Digital Object with pid "dri:instobj" and title "Institute Test Object"
     And the object with pid "dri:instobj" is in the collection with pid "dri:instcoll"

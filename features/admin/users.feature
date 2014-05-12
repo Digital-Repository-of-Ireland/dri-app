@@ -71,7 +71,7 @@ Scenario: User signs in with invalid credentials
 
 @javascript
 Scenario: Logging out
-  Given I am logged in as "user1" with password "password1"
+  Given I am logged in as "user1" with password "password1" and accept cookies
   When I go to "the home page"
   Then I should see a link to sign out
   When I follow the link to sign out
@@ -79,7 +79,7 @@ Scenario: Logging out
 
 @javascript
 Scenario: A user should be able to edit their details
-  Given I am logged in as "user1" with password "password1"
+  Given I am logged in as "user1" with password "password1" and accept cookies
   Then I should see a link to my workspace
   When I follow the link to my workspace
   And I follow the link to view my account
@@ -94,7 +94,7 @@ Scenario: A user should be able to edit their details
   Then my authentication details should be updated from "user1", "password1" to "user2", "password2"
 
 Scenario: A user should be able to cancel their account
-  Given I am logged in as "user1" with password "password1"
+  Given I am logged in as "user1" with password "password1" and accept cookies
   Then I should see a link to my workspace
   When I follow the link to my workspace
   And I follow the link to view my account
@@ -111,7 +111,7 @@ Scenario: A user should be able to recover their password
 
 
 Scenario: A user should be able to provide a profile image url
-  Given I am logged in as "user1" with password "password1"
+  Given I am logged in as "user1" with password "password1" and accept cookies
   Then I should see a link to my workspace
   When I follow the link to my workspace
   And I follow the link to view my account
@@ -123,7 +123,7 @@ Scenario: A user should be able to provide a profile image url
   Then I should see an element ".profile_image"
 
 Scenario: A user should be able to use gravatar for a profile image
-  Given I am logged in as "user1" with password "password1"
+  Given I am logged in as "user1" with password "password1" and accept cookies
   Then I should see a link to my workspace
   When I follow the link to my workspace
   And I follow the link to view my account
@@ -136,7 +136,7 @@ Scenario: A user should be able to use gravatar for a profile image
 
 
 Scenario: A user should be able to remove their profile image
-  Given I am logged in as "user1" with password "password1"
+  Given I am logged in as "user1" with password "password1" and accept cookies
   Then I should see a link to my workspace
   When I follow the link to my workspace
   And I follow the link to view my account
@@ -148,7 +148,7 @@ Scenario: A user should be able to remove their profile image
   Then I should not see an element ".profile_image"
 
 Scenario: A user provides an invalid profile image url
-  Given I am logged in as "user1" with password "password1"
+  Given I am logged in as "user1" with password "password1" and accept cookies
   Then I should see a link to my workspace
   When I follow the link to my workspace
   And I follow the link to view my account
@@ -160,7 +160,7 @@ Scenario: A user provides an invalid profile image url
   Then I should see a failure message for "invalid profile image"
 
 Scenario: an admin user creates a new user account
-  Given I am logged in as "adminuser" in the group "admin"
+  Given I am logged in as "adminuser" in the group "admin" and accept cookies
   And I am on the User Sign up page
   When I submit a valid email, password and password confirmation
   Then I should be logged in as "adminuser"

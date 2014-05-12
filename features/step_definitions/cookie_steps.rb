@@ -44,3 +44,7 @@ Then /^The language cookie content should be (.*)$/ do |value|
     get_me_the_cookie('lang')[:value].should eq(value)
   end
 end
+
+Given /^I accept cookies terms$/ do
+  click_button("Accept End User Agreement")
+end
