@@ -11,7 +11,7 @@
       <% for i in 1..(files.count - 1) %>
           <div class="item dri_asset_carousel_item">
             <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files[i]} %>
-            <%= render :partial => "object_show_list_download", :locals => {:document => document, :generic_file => files[i], :index => i} %>
+            <%= render :partial => "object_show_list_download", :locals => {:document => document, :generic_file => files[i], :index => i + 1} %>
           </div>
       <% end %>
     </div>

@@ -183,9 +183,11 @@ ga:
           surrogate_not_available: "Surrogate not avilable yet"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
         links: 
+          asset: Asset
           characterization: Characterization
           details: "File Details"
           download: Íoslódáil
+          download_not_available: "not available for download"
           edit_this_record: "Cuir an taifead seo in eagar"
           generate_surrogates: "Generate surrogates"
           listen: Éist
