@@ -31,6 +31,20 @@
                 <%= link_to t('dri.headerlinks.admin'), main_app.admin_tasks_path, :id => "admin_tasks" %>
               </li>
           <% end %>
+          <% if (request.path.include? "/pages/institutions") %>
+              <li class="selected">
+          <% else %>
+              <li>
+          <% end %>
+          <%= link_to t('dri.headerlinks.institutions'), "#{main_app.root_url}/pages/institutions" %>
+          </li>
+          <% if (request.path.include? "/pages/about_us") %>
+              <li class="selected">
+          <% else %>
+              <li>
+          <% end %>
+          <%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us" %>
+          </li>
       <% else %>
           <% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_search_parameters?) %>
               <li class="selected">
