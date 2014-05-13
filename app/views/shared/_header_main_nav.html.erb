@@ -3,7 +3,7 @@
 
     <ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase">
       <% if current_user %>
-          <% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_search_parameters?) %>
+          <% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_browse_params?) %>
               <li class="selected">
           <% else %>
               <li>
@@ -13,7 +13,7 @@
           <li>
             <%= link_to t('dri.headerlinks.workspace'), workspace_path, :id => "workspace" %>
           </li>
-          <% if (controller_name == 'catalog' and has_search_parameters? ) %>
+          <% if (controller_name == 'catalog' and has_browse_params? ) %>
               <li class="selected">
           <% else %>
               <li>
@@ -46,14 +46,14 @@
           <%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us" %>
           </li>
       <% else %>
-          <% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_search_parameters?) %>
+          <% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_browse_params?) %>
               <li class="selected">
           <% else %>
               <li>
           <% end %>
           <%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
           </li>
-          <% if (controller_name == 'catalog' and has_search_parameters? ) %>
+          <% if (controller_name == 'catalog' and has_browse_params? ) %>
               <li class="selected">
           <% else %>
               <li>
