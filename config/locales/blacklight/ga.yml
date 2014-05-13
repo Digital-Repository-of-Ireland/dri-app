@@ -1,93 +1,93 @@
 
---- 
-ga: 
-  active_record: 
-    attributes: 
-      feedback: 
+---
+ga:
+  active_record:
+    attributes:
+      feedback:
         email: "Votre E-mail"
         message: "Votre Message"
         name: "Votre Nom"
-    models: 
+    models:
       feedback: Réaction
-  blacklight: 
+  blacklight:
     and: agus
-    application_name: Blacklight
+    application_name: "Taisclann Dhigiteach na hÉireann"
     back_to_bookmarks: " ⬅ Back to Bookmarks"
     back_to_collection: " ⬅ Back to Collection"
     back_to_search: " ⬅ Siar chuig Cuardach"
-    bookmarks: 
-      add: 
+    bookmarks:
+      add:
         button: Bookmark
         failure: "Sorry, there was a problem saving the bookmarks."
-        success: 
+        success:
           one: "Successfully added bookmark."
           other: "Successfully added bookmarks."
-      clear: 
+      clear:
         action_confirm: "Clear your bookmarks?"
         action_title: "Clear Bookmarks"
         failure: "Sorry, there was a problem clearing your bookmarks."
         success: "Cleared your bookmarks."
-      collection: 
-        add: 
+      collection:
+        add:
           button: "Add to Bookmarks"
       delete: Remove
       list_title: "Your Bookmarks"
       need_login: "Please log in to manage and view your bookmarks."
       no_bookmarks: "You have no bookmarks"
-      remove: 
+      remove:
         action_confirm: "Remove this bookmark?"
         button: "Remove bookmark"
         failure: "Sorry, there was a problem removing the bookmarks."
         success: "Successfully removed bookmark."
       title: Bookmarks
-    citation: 
+    citation:
       apa: APA
       chicago: Chicago
       mla: MLA
     did_you_mean: "Did you mean to type: %{options}?"
-    email: 
-      errors: 
-        to: 
+    email:
+      errors:
+        to:
           blank: "You must enter a recipient in order to send this message"
           invalid: "You must enter a valid email address"
-      form: 
+      form:
         message: "Message:"
         submit: Send
         title: "Email This"
         to: "Email:"
-      text: 
+      text:
         author: "Author: %{value}"
         format: "Format: %{value}"
         language: "Language: %{value}"
         message: "Message: %{message}"
-        subject: 
+        subject:
           one: "Item Record: %{title}"
           other: "Item records"
         title: "Title: %{value}"
         url: "URL: %{url}"
-    entry_name: 
+    entry_name:
       default: entry
-    feedback: 
-      complete: 
+    feedback:
+      complete:
         title: "Thank-you for your feedback"
-      errors: 
+      errors:
         title: "Please fix the following form errors:"
       need_message: "A message is required"
       submit: Send!
       valid_email: "A valid email address is required"
       valid_name: "A valid name is required"
-    header_links: 
+    header_links:
       bookmarks: Leabharmharcanna
       login: "Logáil isteach"
       logout: "Logáil amach"
       saved_searches: "Mo Chuardaigh"
       search_history: Stair
     or: nó
-    saved_searches: 
-      add: 
+    saved_searches:
+      add:
         failure: "There was a problem saving your search."
         success: "Successfully saved your search."
-      clear: 
+      clear:
         action_confirm: "Clear your saved searches?"
         action_title: "Clear Saved Searches"
         failure: "There was a problem clearing your searches."
@@ -96,56 +96,56 @@ ga:
       list_title: "Your saved searches"
       need_login: "Please log in to manage and view your saved searches."
       no_searches: "You have no saved searches"
-      remove: 
+      remove:
         failure: "There was a problem removing your search."
         success: "Successfully removed that saved search."
       title: "Saved Searches"
-    search: 
+    search:
       atom_feed: "Atom for results"
-      documents: 
+      documents:
         counter: "%{counter}. "
-      entry_pagination_info: 
+      entry_pagination_info:
         one: "<b>1 of 1</b>"
         other: "<b>%{current}</b> of <b>%{total}</b>"
-      errors: 
+      errors:
         invalid_solr_id: "Sorry, you have requested a record that doesn't exist."
         request_error: "Sorry, I don't understand your search."
-      facets: 
+      facets:
         count: "%{number}"
         more: "more »"
-        selected: 
+        selected:
           remove: "[remove]"
-        sort: 
+        sort:
           count: "Numerical Sort"
           index: "A-Z Sort"
         title: "Limit your search"
-      fields: 
+      fields:
         default: Keyword
-      filters: 
+      filters:
         label: "%{label}:"
-        remove: 
+        remove:
           label_value: "Remove constraint %{label}: %{value}"
           value: "Remove constraint %{value}"
         title: "You searched for:"
-      form: 
+      form:
         q: Search...
-        search_field: 
+        search_field:
           label: "Search in"
           post_label: for
           title: "Targeted search options"
         submit: Search
-      librarian_view: 
+      librarian_view:
         leader: "LEADER %{leader}"
         title: "Librarian View"
-      pagination: 
+      pagination:
         title: "Results navigation"
-      pagination_info: 
+      pagination_info:
         no_items_found: "No %{entry_name} found"
-        pages: 
+        pages:
           one: "<b>%{start_num}</b> - <b>%{end_num}</b> of <b>%{total_num}</b>"
           other: "<b>%{start_num}</b> - <b>%{end_num}</b> of <b>%{total_num}</b>"
         single_item_found: "<b>1</b> to <b>1</b> of <b>1</b>"
-      per_page: 
+      per_page:
         button_label: "%{count} per page"
         label: "%{count}"
         submit: Update
@@ -153,15 +153,15 @@ ga:
       rss_feed: "RSS for results"
       search_results: "Search Results"
       search_results_header: Search
-      show: 
+      show:
         title: "%{document_title} - %{application_name}"
-      sort: 
+      sort:
         label: "Eagraigh de réir %{field}"
         submit: "sort results"
       start_over: "Start Over"
       title: "%{application_name} Search Results"
-    search_history: 
-      clear: 
+    search_history:
+      clear:
         action_confirm: "Clear your search history?"
         action_title: "Clear Search History"
         failure: "There was a problem clearing your search history."
@@ -171,24 +171,24 @@ ga:
       recent: "Your recent searches"
       save: save
       title: "Search History"
-    sms: 
-      errors: 
-        carrier: 
+    sms:
+      errors:
+        carrier:
           blank: "You must select a carrier"
-        to: 
+        to:
           blank: "You must enter a recipient's phone number in order to send this message"
           invalid: "You must enter a valid 10 digit phone number"
-      form: 
+      form:
         carrier: Carrier
         carrier_prompt: "Please select your carrier"
         submit: Send
         title: "SMS This"
         to: "Phone Number:"
-      text: 
+      text:
         author: " by %{value}"
         title: "%{value}"
         url: "Link: %{url}"
-    tools: 
+    tools:
       cite: Cite
       clear: Clear
       email: Email
@@ -198,13 +198,13 @@ ga:
       sms: "SMS This"
       title: Tools
     welcome: Fáilte!
-  views: 
-    pagination: 
+  views:
+    pagination:
       first: "&laquo; First"
       last: "Last &raquo;"
       next: "Next &raquo;"
       previous: "&laquo; Previous"
       truncate: …
-    pagination_compact: 
+    pagination_compact:
       next: "Next &raquo;"
       previous: "&laquo; Previous"
