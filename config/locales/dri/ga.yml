@@ -99,14 +99,14 @@ ga:
     headerlinks: 
       about: Eolas
       admin: "Admin Tasks"
-      browse: Browse
+      browse: Brabhsáil
       collections: Bailiúchán
       contact: Teagmháil
       current_collection: "Bailiúchán Reatha: %{collection}"
       end_user_agreement: "End User Agreement"
       home: "Leathanach Baile"
       ingest: "Glac isteach"
-      institutions: Institutions
+      institutions: Institiúidí
       objects: Objects
       privacy: "Polasaí um Príobháideachas agus Fianáin"
       resque: "Resque Server"

@@ -43,7 +43,9 @@
 
 
   <%= render :partial => "tools" %>
+  <% if current_user %>
   <%= render :partial => "show_downloads" %>
+  <% end %>
   <% if signed_in? && (can?(:edit, @document)) %>
       <div class="dri_objecttools_title">
         <%= t('dri.views.catalog.titles.editor_tools') %>
