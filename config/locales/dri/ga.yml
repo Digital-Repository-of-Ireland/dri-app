@@ -68,6 +68,7 @@ ga:
         added_to_collection: "Cuireadh an oibiacht leis an mbailiúchán."
         collection_created: "D'éirigh leat an oibiacht bhailiúcháin a chruthú."
         collection_deleted: "Collection has been deleted."
+        collection_publishing: "Collection is being published."
         current_collection_cleared: "Níor socraíodh bailiúchán ar bith."
         current_collection_set: "Socraíodh an bailiúchán reatha ag: %{collection}"
         digital_object_ingested: "Glacadh an oibiacht dhigiteach isteach go sásúil."
@@ -98,14 +99,14 @@ ga:
     headerlinks: 
       about: Eolas
       admin: "Admin Tasks"
-      browse: Browse
+      browse: Brabhsáil
       collections: Bailiúchán
       contact: Teagmháil
       current_collection: "Bailiúchán Reatha: %{collection}"
       end_user_agreement: "End User Agreement"
       home: "Leathanach Baile"
       ingest: "Glac isteach"
-      institutions: Institutions
+      institutions: Institiúidí
       objects: Objects
       privacy: "Polasaí um Príobháideachas agus Fianáin"
       resque: "Resque Server"

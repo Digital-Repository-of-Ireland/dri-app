@@ -58,7 +58,7 @@
       @include zen-nested-container();
     }
     .dri_about_09 {
-      @include zen-grid-item(12, 1);  
+      @include zen-grid-item(12, 1, $gutter-width: 0px);  
     }
     .dri_about_10 {
       @include zen-clear();

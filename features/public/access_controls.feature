@@ -4,16 +4,17 @@ Feature: Access controls
   And to inherit permissions
 
 Scenario: I should see the asset file where masterfile is accesible and object is public read
-  Given a collection with pid "dri:c11111" and title "Access Controls Test Collection" created by "user1"
-  And a Digital Object with pid "dri:o11111" and title "Access Controls Test Object" created by "user1"
-  And the object with pid "dri:o11111" is governed by the collection with pid "dri:c11111"
-  And the object with pid "dri:o11111" has "accessible" masterfile
-  And the object with pid "dri:o11111" is publicly readable
-  And the object with pid "dri:c11111" has status published
-  And the object with pid "dri:o11111" has status published
-  When I go to "show Digital Object page for id dri:o11111"
-  Then I should see a link to download asset
-  And I should not see a link to download surrogate
+  #Given a collection with pid "dri:c11111" and title "Access Controls Test Collection" created by "user1"
+  #And a Digital Object with pid "dri:o11111" and title "Access Controls Test Object" created by "user1"
+  #And the object with pid "dri:o11111" is governed by the collection with pid "dri:c11111"
+  #And the object with pid "dri:o11111" has "accessible" masterfile
+  #And the object with pid "dri:o11111" is publicly readable
+  #And the object with pid "dri:c11111" has status published
+  #And the object with pid "dri:o11111" has status published
+  #When I go to "show Digital Object page for id dri:o11111"
+  #Then I should see a link to download asset
+  #And I should not see a link to download surrogate
+
 
 Scenario: I should not see the asset file if it is under embargo
   Given a collection with pid "dri:c22222" and title "Access Controls Test Collection" created by "user1"

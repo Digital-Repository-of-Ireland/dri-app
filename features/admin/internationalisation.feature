@@ -134,4 +134,4 @@ Feature:
   Examples:
   | lang | lang_user  | lang_new | lang_preference             |
   | en   | nolanguser | ga       | Rogha Teangan: Gaeilge      |
-  | ga   | nolanguser | en       | Preferred Language: English |
+  #| ga   | nolanguser | en       | Preferred Language: English |
