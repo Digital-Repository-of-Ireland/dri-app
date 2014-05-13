@@ -49,7 +49,7 @@ module Storage
     # Get a hash of all surrogates for an object
     def get_surrogates(doc, file_doc, expire=nil)
 
-      expire = 60 * 30 unless (!expire.blank? && numeric?(expire))
+      expire = Settings.S3.expiry unless (!expire.blank? && numeric?(expire))
       bucket = doc.id.sub('dri:', '')
       generic_file = file_doc.id.sub('dri:','')
 
@@ -70,7 +70,9 @@ module Storage
       return @surrogates_hash
     end
 
-    def surrogate_url( object_id, file_id, name )
+    def surrogate_url( object_id, file_id, name, expire=nil )
+
+      expire = Settings.S3.expiry unless (!expire.blank? && numeric?(expire))
 
       bucket = object_id.sub('dri:', '')
       generic_file = file_id.sub('dri:', '')
@@ -81,7 +83,7 @@ module Storage
 
       unless surrogate.blank?
         begin
-          url = AWS::S3::S3Object.url_for(surrogate, bucket, :authenticated => true, :expires_in => 60 * 30)
+          url = AWS::S3::S3Object.url_for(surrogate, bucket, :authenticated => true, :expires_in => expire)
         rescue Exception => e
           logger.debug "Problem getting url for file #{file} : #{e.to_s}"
         end
@@ -133,9 +135,10 @@ module Storage
     end
 
     # Get an authenticated short-duration url for a file
-    def get_link_for_surrogate(bucket, file)
+    def get_link_for_surrogate(bucket, file, expire=nil)
+      expire = Settings.S3.expiry unless (!expire.blank? && numeric?(expire))
       begin
-        url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => 60 * 30)
+        url = AWS::S3::S3Object.url_for(file, bucket, :authenticated => true, :expires_in => expire)
       rescue Exception => e
         logger.error "Problem getting link for file #{file} : #{e.to_s}"
       end

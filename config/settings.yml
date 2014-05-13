@@ -22,6 +22,7 @@ S3:
   server: 10.0.1.201
   access_key_id: FIXME
   secret_access_key: FIXME
+  expiry: 2592000
 surrogates:
   sound: [mp3, ogg]
   text: [thumbnail]
