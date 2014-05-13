@@ -55,6 +55,7 @@ describe "PublishJob" do
       @collection.reload
       @object.reload
 
+      expect(@collection.status).to eql("published")
       expect(@object.status).to eql("published")     
     end
 

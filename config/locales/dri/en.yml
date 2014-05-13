@@ -17,7 +17,7 @@ en:
         links: 
           news_dri: "Read our News"
           register_dri: "Sign Up Now"
-          visit_dri: "Visit the DRI Website"
+          visit_dri: "Visit the DRI Project Website"
         new_collections: "New Collections"
         newly_added: "Newly Added"
         rss_feed: 
@@ -32,6 +32,7 @@ en:
         confirm: "By signing in or signing up you are deemed to be accepting the DRI End User Agreement"
         header: "DRI End User Agreement"
         message: "Aliquam erat volutpat. Integer fermentum est at risus condimentum accumsan. Sed imperdiet ac lectus vitae commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam rutrum arcu at lorem sodales, sed mollis nibh scelerisque. Proin congue ipsum eget velit gravida, non fringilla est ultrices. Duis lobortis sem et imperdiet tempor. In gravida tortor vulputate nibh vestibulum lobortis. Curabitur fermenm, ipsum id ultrices fermentum, nisi metus tristique justo, faucibus tempor nulla massa semper dolor. Donec tellus felis, luctus eu aliquet quis, scelerisque ut diam. Duis luctus turpis lectus, et feugiat mauris feugiat vitae. Sed interdum commodo est, consectetur suscipit lectus viverra et. Integer a consequat massa. Praesent arcu purus, auctor sed ante vel, blandit molestie neque.Aenean posuere pharetra ligula in aliquam. Maecenas tristique felis felis, id posuere metus bibendum accumsan. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent at velit quis nunc rhoncus laoreet. Sed ornare, leo et tincidunt malesuada, ligula ligula gravida lacus, quis ultrices lacus mi venenatis lacus. Nunc id interdum erat. Suspendisse eu molestie mauris. Suspendisse pharetra dapibus euismo. Pellentesque a ligula velit. Ut volutpat pretium risus adipiscing porta. In lectus augue, interdum sit amet iaculis eu, vehicula a nibh. Etiam lectus ligula, rhoncus id facilisis molestie, pellentesque vitae elit. Nulla elit dolor, mollis vitae ultrices sed, tristique vel erat. Nam mattis aliquam porta. Sed sagittis velit eu feugiat tincidunt. Etiam vulputate augue eleifend facilisis faucibus. Sed at turpis ut massa tristique feugiat eget et arcu. Fusce suscipit egestas elementum. Duis ac quam at elit scelerisque scelerisque quis et dui. Nulla sit amet porttitor quam, eget porta libero."
+        reject: "Reject End User Agreement"
     data: 
       types: 
         Image: Image
@@ -47,7 +48,7 @@ en:
         delete_permission: "You do not have permission to delete this document."
         edit_permission: "You do not have permission to edit this document."
         error_generating_surrogates: "Error generating surrogates: %{error}"
-        error_publishing_collection: "Unable to publish reviewed objects: %{error}"
+        error_publishing_collection: "Error publishing collection: %{error}"
         error_review_job: "Unable to submit background task, all objects will not be updated: %{error}"
         error_saving_file: "Error saving file: %{error}"
         invalid_file_type: "Warning: The file does not appear to be a valid type"
@@ -67,6 +68,7 @@ en:
         added_to_collection: "Object has been added to collection."
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Delete collection process successfully started."
+        collection_publishing: "Collection is being published."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
@@ -112,28 +114,28 @@ en:
       usergroups: "Users & Groups"
       workspace: "My Workspace"
     help: 
-      no_results_found: "No search results found"
-      q: "Type a search term and press Enter. Use AND and OR to narrow or broaden your search"
-      q_title: "Search the repository"
-      try_looking_for: "Try looking for"
-      facets: "Use Facets to narrow your search using specific metadata fields"
-      facets_title: "Facet Filters"
-      social_media_links: "Use these buttons to vist our Facebook, Linked-In, Slideshare and Twitter pages"
-      social_media_links_title: "DRI on the Internet"
-      dri_sort_options: "Select from this list to sort your results by Newest, Title or Relevance. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
-      dri_sort_options_title: "Search Sort Options"
-      dri_change_sort_view: "Use these buttons to select between a Grid or Tabular layout for your search result"
-      dri_change_sort_view_title: "Search Result Layout"
-      dri_page_options: "Select from this list to chose the number of items shown on each page"
-      dri_page_options_title: "Items per Page"
-      dri_facet_restrictions_links: "These are the Facets which are narrowing your search. You can disable them individually or Clear All"
-      dri_facet_restrictions_links_title: "Selected Facets"
-      dri_pagination_nav_links: "Use these links to move through your search results. You can change the number of pages selecting more or less items per page"
-      dri_pagination_nav_links_title: "Result Pagination"
       dri_browse_sort_tabs_collections: "Use this tab to search for Collections"
       dri_browse_sort_tabs_collections_title: "Collections Search"
       dri_browse_sort_tabs_objects: "Use this tab to search for Objects"
       dri_browse_sort_tabs_objects_title: "Objects Search"
+      dri_change_sort_view: "Use these buttons to select between a Grid or Tabular layout for your search result"
+      dri_change_sort_view_title: "Search Result Layout"
+      dri_facet_restrictions_links: "These are the Facets which are narrowing your search. You can disable them individually or Clear All"
+      dri_facet_restrictions_links_title: "Selected Facets"
+      dri_page_options: "Select from this list to chose the number of items shown on each page"
+      dri_page_options_title: "Items per Page"
+      dri_pagination_nav_links: "Use these links to move through your search results. You can change the number of pages selecting more or less items per page"
+      dri_pagination_nav_links_title: "Result Pagination"
+      dri_sort_options: "Select from this list to sort your results by Newest, Title or Relevance. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
+      dri_sort_options_title: "Search Sort Options"
+      facets: "Use Facets to narrow your search using specific metadata fields"
+      facets_title: "Facet Filters"
+      no_results_found: "No search results found"
+      q: "Type a search term and press Enter. Use AND and OR to narrow or broaden your search"
+      q_title: "Search the repository"
+      social_media_links: "Use these buttons to vist our Facebook, Linked-In, Slideshare and Twitter pages"
+      social_media_links_title: "DRI on the Internet"
+      try_looking_for: "Try looking for"
     navbar: 
       items_per_page: "Items per page"
     sign_in: 
@@ -141,9 +143,9 @@ en:
       no_confirmation: "Didn't receive confirmation?"
       no_unlock: "Didn't receive unlock instructions?"
       register: "Sign Up"
-      sign_in_with: "Sign in with "
-      title: "Sign In"
-      with_another_account: "Sign In with another Account"
+      sign_in_with: "Login with "
+      title: Login
+      with_another_account: "Login with another Account"
     views: 
       alt_tags: 
         cover_image: "Cover Image"
@@ -179,13 +181,15 @@ en:
           no_surrogates: "No surrogates are available."
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
-          request_permission_not_logged_in: "Sign up/Sign in to get access."
+          request_permission_not_logged_in: "Sign up/Login to get access."
           surrogate_not_available: "Surrogate not available yet"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
         links: 
+          asset: Asset
           characterization: Characterization
           details: "File Details"
-          download: "Download File"
+          download: "Download asset"
+          download_not_available: "not available for download"
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
           listen: listen
@@ -302,6 +306,7 @@ en:
         temporal_coverage_gle: "Subject (Era) in Irish"
         temporal_coverages: "Subjects (Eras)"
         title: Title
+        total_assets: "Total number of assets"
         type: Type
         types: Types
       ingest: 

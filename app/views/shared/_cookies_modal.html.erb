@@ -6,12 +6,14 @@
 			</div>
 			<div class="modal-body">
 				<div class="dri_cookie_acceptance_text">
-					<p><%= it 'dri.application.terms.message', privacy_statement: It.link('http://www.dri.ie/privacy-statement')%></p>
+					<p><%= render :partial => 'pages/terms' %></p>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="$.cookie('accept_cookies', 'yes', { path: '/', expires: 10000 });">
-					<%= t('dri.application.terms.accept') %></button>
+                <a href="http://www.google.com"><button type="button" class="btn btn-secondary"><%= t('dri.application.terms.reject') %></button></a>
+				<button type="button" id="accept_cookies" class="btn btn-primary" data-dismiss="modal" onclick="$.cookie('accept_cookies', 'yes', { path: '/', expires: 10000 });">
+					<%= t('dri.application.terms.accept') %>
+                </button>
 			</div>
 		</div>
 	</div>

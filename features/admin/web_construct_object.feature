@@ -5,7 +5,7 @@ Feature:
   I want to construct a Digital Object with web forms
 
 Background:
-  Given I am logged in as "user1" in the group "cm"
+  Given I am logged in as "user1" in the group "cm" and accept cookies
 
 Scenario: Navigating to the ingest page
   When I go to "the home page"

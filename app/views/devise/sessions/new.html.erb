@@ -13,12 +13,12 @@
 				<%= t('.sign_in', :default => "Sign in") %>
 			</h2>
 			<div>
-				<%= f.label :email, (t :'user_groups.views.shared.email') %><br /> 
+				<%= f.label :email, (t :'user_groups.views.shared.email') %>
 				<%= f.email_field :email %>
 			</div>
 
 			<div>
-			<%= f.label :password, (t :'user_groups.views.shared.password') %><br />
+			<%= f.label :password, (t :'user_groups.views.shared.password') %>
 			<%= f.password_field :password %>
 			</div>
 			<% if devise_mapping.rememberable? -%>

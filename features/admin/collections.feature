@@ -6,7 +6,7 @@ Feature:
   And to retrieve my Digital Objects by collection
 
 Background:
-  Given I am logged in as "user1" in the group "cm"
+  Given I am logged in as "user1" in the group "cm" and accept cookies
 
 @wip
 Scenario: Navigating to the collections page
@@ -101,7 +101,7 @@ Scenario: Removing a Digital Object from a non-governing collection using the we
 
 Scenario: Deleting a collection as an admin
   Given I am not logged in
-  Given I am logged in as "admin" in the group "admin"
+  Given I am logged in as "admin" in the group "admin" and accept cookies
   Given a collection with pid "dri:coll6" created by "user1@user1.com"
   And the collection with pid "dri:coll6" has status published
   When I go to the "collection" "show" page for "dri:coll6"

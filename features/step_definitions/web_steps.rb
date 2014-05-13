@@ -260,6 +260,10 @@ Then /^(?:|I )should( not)? see a message for (.+)$/ do |negate, message|
   negate ? (page.should_not have_selector ".dri_messages_container", text: flash_for(message)) : (page.should have_selector ".dri_messages_container", text: flash_for(message))
 end
 
+Then /^(?:|I )should( not)? see a window about cookies$/ do |negate|
+  negate ? (page.should_not have_selector ".modal-title", text: flash_for("cookie terms")) : (page.should have_selector ".modal-title", text: flash_for("cookie terms"))
+end
+
 Then /^(?:|I )should( not)? see a message about cookies$/ do |negate|
   negate ? (page.should_not have_selector ".alert", text: flash_for("cookie notification")) : (page.should have_selector ".alert", text: flash_for("cookie notification"))
 end

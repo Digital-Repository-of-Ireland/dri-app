@@ -8,7 +8,7 @@ Feature:
 
 
   Background:
-    Given I am logged in as "admin" in the group "admin"
+    Given I am logged in as "admin" in the group "admin" and accept cookies
     And a collection with pid "dri:lcoll" and title "Licence Test Collection" created by "admin@admin.com"
     And a Digital Object with pid "dri:lobj" and title "Licence Test Object"
     And the object with pid "dri:lobj" is in the collection with pid "dri:lcoll"
