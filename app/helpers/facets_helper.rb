@@ -207,7 +207,9 @@ module FacetsHelper
       label = collection_title label
     end
     # (link_to_unless(options[:suppress_link], label, add_facet_params_and_redirect(facet_solr_field, item), :class=>"facet_select") + " " + render_facet_count(item.hits)).html_safe
-    (link_to_unless(options[:suppress_link], label.html_safe + " (#{render_facet_count(item.hits)})".html_safe, add_facet_params_and_redirect(facet_solr_field, item)))
+    add_facet = add_facet_params_and_redirect(facet_solr_field, item)
+    add_facet.delete(:_)
+    (link_to_unless(options[:suppress_link], label.html_safe + " (#{render_facet_count(item.hits)})".html_safe, add_facet))
   end
 
 
