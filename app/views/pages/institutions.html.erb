@@ -1,192 +1,28 @@
-<div class="dri_collection_institutes_pages">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=DRIS%2C+Trinity+College+Dublin&mode=collections&search_field=all_fields&view=grid" do %>
+<% @institutes = InstituteHelpers.get_all_institutes %>
 
-    <div class="dri_collection_institutes_pages_img">
-        <img alt="Dris,%20trinity%20college%20dublin"  src="http://objects.dri.ie/institutelogos/DRIS,%20Trinity%20College%20Dublin.png">
+<% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => {} } %>
+<% @institutes.each_with_index do |institute, i| %>
+    <% collection_count = get_institute_collection_counts institute[:name].to_s.html_safe %>
+    <div class="dri_collection_institutes_pages
+        <% if (i != 0) %>
+            <%= "not_first" %>
+        <% end %>
+    ">
+      <% institute_browse_params[:f] = { :institute_sim => [institute[:name].to_s.html_safe] } %>
+      <%= link_to main_app.catalog_index_path(institute_browse_params) do %>
+          <div class="dri_collection_institutes_pages_img">
+            <%= image_tag institute[:logo], alt: institute[:name].to_s.html_safe %>
+          </div>
+          <div class="dri_collection_institutes_pages_text" >
+            <h6>
+              <%= institute[:name].to_s.html_safe %>
+            </h6>
+            <p><%= t('dri.headerlinks.collections') %>
+              <span class="dri_bold_text">
+                <%= "(#{collection_count})" %>
+              </span>
+          </p>
+          </div>
+      <% end %>
     </div>
-    <div class="dri_collection_institutes_pages_text" >
-        <h6>Trinity College Dublin</h6>       <p> Collections <span class="dri_bold_text">(4)</span>
-        </p>
-    </div>
-    <% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=National+Library+of+Ireland&mode=collections&search_field=all_fields&view=grid" do %>
-
-    <div class="dri_collection_institutes_pages_img">
-        <img alt="National%20library%20of%20ireland"  src="http://objects.dri.ie/institutelogos/National%20Library%20of%20Ireland.jpg">
-    </div>
-    <div class="dri_collection_institutes_pages_text" >
-        <h6>National Library of Ireland </h6>     <p> Collections <span class="dri_bold_text">(3)</span>
-        </p>
-    </div>
-    <% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=Dublin+Institute+of+Technology&mode=collections&search_field=all_fields&view=grid" do %>
-    <div class="dri_collection_institutes_pages_img">
-        <img alt="Dublin%20institute%20of%20technology"  src="http://objects.dri.ie/institutelogos/Dublin%20Institute%20of%20Technology.png">
-    </div>
-    <div class="dri_collection_institutes_pages_text" >
-        <h6>Dublin Institute of Technology </h6>      <p> Collections <span class="dri_bold_text">(2)</span>
-        </p>
-    </div>
-    <% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=Irish+Qualitative+Data+Archive&mode=collections&search_field=all_fields&view=grid" do %>
-    <div class="dri_collection_institutes_pages_img">
-        <img alt="Irish%20qualitative%20data%20archive"  src="http://objects.dri.ie/institutelogos/Irish%20Qualitative%20Data%20Archive.jpg">
-    </div>
-    <div class="dri_collection_institutes_pages_text" >
-        <h6>Irish Qualitative Data Archive </h6>      <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-    </div>
-    <% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=NUI+Maynooth+Library&mode=collections&search_field=all_fields&view=grid" do %>
-    <div class="dri_collection_institutes_pages_img">
-        <img alt="NUI Maynooth Library"  src="http://objects.dri.ie/institutelogos/NUI%20Maynooth%20Library.jpg">
-    </div>
-    <div class="dri_collection_institutes_pages_text" >
-        <h6>NUI Maynooth Library </h6>      <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-    </div>
-    <% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=Digital+Repository+of+Ireland&mode=collections&search_field=all_fields&view=grid" do %>
-	<div class="dri_collection_institutes_pages_img">
-		<img alt="Digital%20repository%20of%20ireland"  src="http://objects.dri.ie/institutelogos/Digital%20Repository%20of%20Ireland.png">
-	</div>
-	<div class="dri_collection_institutes_pages_text" >
-		<h6>Digital Repository of Ireland </h6>
-		<p> Collections <span class="dri_bold_text">(1)</span>
-		</p>
-	</div>
-	<% end %>
-</div>
-
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=National+Museum+of+Ireland&mode=collections&search_field=all_fields&view=grid" do %>
-
-	<div class="dri_collection_institutes_pages_img">
-		<img alt="National%20museum%20of%20ireland"  src="http://objects.dri.ie/institutelogos/National%20Museum%20of%20Ireland.jpg">
-	</div>
-	<div class="dri_collection_institutes_pages_text" >
-		<h6>National Museum of Ireland </h6>      <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-	</div>
-	<% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=RTÉ+Raidió+na+Gaeltachta&mode=collections&search_field=all_fields&view=grid" do %>
-
-	<div class="dri_collection_institutes_pages_img">
-		<img alt="Rt%c3%89%20raidi%c3%b3%20na%20gaeltachta"  src="http://objects.dri.ie/institutelogos/RT%C3%89%20Raidi%C3%B3%20na%20Gaeltachta.jpg">
-	</div>
-	<div class="dri_collection_institutes_pages_text" >
-		<h6>RTÉ Radió na Gaeltachta </h6>     <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-	</div>
-	<% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=Ollscoil+na+h%c3%89ireann,+Gaillimh&mode=collections&search_field=all_fields&view=grid" do %>
-
-	<div class="dri_collection_institutes_pages_img">
-		<img alt="Ollscoil%20na%20h%c3%89ireann,%20gaillimh"  src="http://objects.dri.ie/institutelogos/Ollscoil%20na%20h%C3%89ireann,%20Gaillimh.jpg">
-	</div>
-	<div class="dri_collection_institutes_pages_text" >
-		<h6>National University of Ireland, Galway </h6>      <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-	</div>
-	<% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=National+Archives+of+Ireland&mode=collections&search_field=all_fields&view=grid" do %>
-
-	<div class="dri_collection_institutes_pages_img">
-		<img alt="National%20archives%20of%20ireland"  src="http://objects.dri.ie/institutelogos/National%20Archives%20of%20Ireland.png">
-	</div>
-	<div class="dri_collection_institutes_pages_text" >
-		<h6>National Archives of Ireland </h6>        <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-	</div>
-	<% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=Irish+Museum+of+Modern+Art&mode=collections&search_field=all_fields&view=grid" do %>
-
-	<div class="dri_collection_institutes_pages_img">
-		<img alt="Irish%20museum%20of%20modern%20art"  src="http://objects.dri.ie/institutelogos/Irish%20Museum%20of%20Modern%20Art.jpg">
-	</div>
-	<div class="dri_collection_institutes_pages_text" >
-		<h6>Irish Museum of Modern Art </h6>      <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-	</div>
-	<% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=Crawford+Art+Gallery&mode=collections&search_field=all_fields&view=grid" do %>
-
-	<div class="dri_collection_institutes_pages_img">
-		<img alt="Crawford%20art%20gallery%20cork"  src="http://objects.dri.ie/institutelogos/Crawford%20Art%20Gallery%20Cork.jpg">
-	</div>
-	<div class="dri_collection_institutes_pages_text" >
-		<h6>Crawford Art Gallery </h6>        <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-	</div>
-	<% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=National+Gallery+of+Ireland&mode=collections&search_field=all_fields&view=grid" do %>
-
-	<div class="dri_collection_institutes_pages_img">
-		<img alt="National%20gallery%20of%20ireland"  src="http://objects.dri.ie/institutelogos/National%20Gallery%20of%20Ireland.jpg">
-	</div>
-	<div class="dri_collection_institutes_pages_text" >
-		<h6>National Gallery of Ireland </h6>     <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-	</div>
-	<% end %>
-</div>
-
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=The+Abbey+Theatre&mode=collections&search_field=all_fields&view=grid" do %>
-	<div class="dri_collection_institutes_pages_img">
-		<img alt="The%20abbey%20theatre"  src="http://objects.dri.ie/institutelogos/The%20Abbey%20Theatre.jpg">
-	</div>
-	<div class="dri_collection_institutes_pages_text" >
-		<h6>The Abbey Theatre </h6>       <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-	</div>
-	<% end %>
-</div>
-
-<div class="dri_collection_institutes_pages not_first">
-    <%= link_to "#{main_app.root_url}?f%5Binstitute_sim%5D%5B%5D=Chester+Beatty+Library&mode=collections&search_field=all_fields&view=grid" do %>
-
-	<div class="dri_collection_institutes_pages_img">
-		<img alt="Chester%20beatty%20library"  src="http://objects.dri.ie/institutelogos/Chester%20Beatty%20Library.jpg">
-	</div>
-    <div class="dri_collection_institutes_pages_text" >
-        <h6>Chester Beatty Library </h6>        <p> Collections <span class="dri_bold_text">(1)</span>
-        </p>
-    </div>
-    <% end %>
-</div>
+<% end %>
