@@ -25,7 +25,8 @@
 
   <% unless collection.nil? %>
       <div class="dri_vc_title">
-        <%= image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
+        <%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
+        <i class="fa fa-lg fa-folder-open"></i>
         <%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(collection['id']) ) %>
       </div>
   <% end %>
