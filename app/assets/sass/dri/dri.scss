@@ -1,4 +1,4 @@
-@import url('http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
+
 
 /* Anna updated html and body */
 $dri_green: #90993D;
@@ -56,17 +56,20 @@ width: 509px;
     background: none;
     border: none;
     opacity: 1.0;
+    font-size: 100%;
+    line-height: 100%;
   }
   .carousel-control.left {
-    background-image: url("previous_carousel_arrow.png");
+    //background-image: url("previous_carousel_arrow.png");
     top: 95%;
     width: 12px;
     height: 8px;
     margin-top: -5px;
     padding: 0;
+
   }
   .carousel-control.right {
-    background-image: url("next_carousel_arrow.png");
+    //background-image: url("next_carousel_arrow.png");
     top: 95%;
     width: 12px;
     height: 10px;
