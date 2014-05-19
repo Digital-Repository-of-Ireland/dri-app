@@ -82,7 +82,6 @@ width: 509px;
       padding: 5px 0 0 40px;
     }
     a {
-      color: #fff;
       img {
         max-height: 300px;
       }
@@ -92,6 +91,9 @@ width: 509px;
       height: 30px;
       padding: 0px;
       margin: 0px;
+      a {
+        color: #fff;
+      }
     }  
     p.dri_restrict_message  {
       margin: 8px 0 0 0;
