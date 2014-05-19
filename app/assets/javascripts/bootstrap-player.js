@@ -310,4 +310,4 @@ $(document).ready(function($) {
 		});
 		return player_box;
 	});
-})(jQuery)
+})
