@@ -7,6 +7,7 @@
         <% end -%>
     <% end -%>
   </dl>
+  <p><%= link_to "TBC Styled Metadata", object_styled_metadata_path(@document.id) %></p>
 </div>
 <!-- close dri_object_first_block -->
 
@@ -15,7 +16,7 @@
   <div class="dri_back_search"><%= link_back_to_catalog %></div>
 
   <div class="dri_vc_title">
-  	<i class="fa fa-lg fa-folder-open"></i>
+    <i class="fa fa-lg fa-folder-open"></i>
     <%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
     <% objectsCount = count_items_in_collection document[:id] %>
     <% collection_objects_params = { :f => {:root_collection_id_sim => [document['root_collection_id_tesim'].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
