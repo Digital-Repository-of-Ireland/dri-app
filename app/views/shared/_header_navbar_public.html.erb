@@ -5,6 +5,13 @@
 
     <nav id="dri_account_nav_id" class="dri_account_nav">
       <ul id="dri_account_links_id" class="dri_account_links" role="tree">
+        <% if current_user %>
+            <%= link_to user_group.user_path(current_user) do %>
+                <li class="dri_vc_title">
+                  <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
+                </li>
+            <% end %>
+        <% end %>
         <% if !current_user %>
             <li class="on">
               <%= link_to "Sign Up", user_group.new_user_path, :alt => "sign up link" %>

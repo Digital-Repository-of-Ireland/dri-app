@@ -144,6 +144,12 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
+  def count_collections_institute( institute_tesim, status )
+    solr_query = "status_ssim:" + status + " AND institute_tesim:" + institute_tesim + " AND " +
+    "type_tesim:Collection"
+    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+  end
+
   def count_items_in_collection_by_type(collection_id, type)
     solr_query = "(ancestor_id_tesim:\"" + collection_id +
         "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
@@ -166,6 +172,10 @@ module ApplicationHelper
       end
 
     end
+  end
+
+  def get_institute_collection_counts( institute )
+      @coll_counts = count_collections_institute(institute, "published")
   end
 
   def get_institutes( document )

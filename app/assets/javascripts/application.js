@@ -10,11 +10,13 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+
 //= require jquery
 //= require jquery_ujs
 //= require jquery.remotipart
 //= require jquery.cookie
 //= require bootstrap
+//= require bootstrap-player.js
 // Required by Blacklight
 //= require blacklight/blacklight
 //= Required by Dropit dropdown menu library
@@ -22,7 +24,7 @@
 //
 //= require dri/
 //= require colorbox-rails
-//= require bootstrap-player.js
+
 
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 

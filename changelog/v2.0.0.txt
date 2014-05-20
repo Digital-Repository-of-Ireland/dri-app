@@ -1,0 +1,5519 @@
+commit 31e4bb24529fd3a4f59b288433e6fe571cdb898f
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Thu Sep 5 17:50:29 2013 +0100
+
+    Some initial work on improving Qualifed Dublin Core forms.
+
+commit 1e86758c325248c778a8501ed5be2603c448b77b
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Wed Sep 25 14:10:42 2013 +0100
+
+    The initial preparations for the new data model system.
+    
+    - Removed nuig-rnag's resque system, to be replaced by Sufia's implementation
+    - Replaced nuig-rnag's noid minter, with Sufia's implementation
+    - Replaced references to DRI::Model::DigitalObject with Batch
+    - Changed AssetsController behaviour so it uses GenericFile
+
+commit ad7a33c38e55a00a77906c7729c92f6baf3b4b37
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Wed Sep 25 16:53:03 2013 +0100
+
+    I am successful creating new collections and ingesting metadata
+    from the web interface.
+    
+    Will test file uploads tomorrow.
+
+commit 98ef0fd5c7b416b336e959d4cab4f958e7c56e1e
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Mon Sep 30 16:09:36 2013 +0100
+
+    Modified file handling to support GenericFile objects.
+    Started cleaning up errors in cucumber tests. Most of the remaining errors
+    are due to changes in validation rules (both description and type are now required fields),
+    and some minor changes to the views.
+
+commit 165e635b0a518b9a7d7543ead0602e5c0af429dd
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Mon Sep 30 17:19:48 2013 +0100
+
+    The Dublin Core collection form now uses the standard Dublin Core
+    collection form used by other digital objects.
+    
+    Fixed some broken cucumber tests.
+
+commit e0063e6240f75717432206b4f557353cd20369c4
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Oct 15 15:02:23 2013 +0100
+
+    Allow for redis connection settings
+
+commit 82c4cc2864516a79bbf8ac6768e47cee7ec07f90
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Oct 15 15:14:24 2013 +0100
+
+    Check that config file exists
+
+commit 4a41c20c2594012ca761a1c22d98bd9457845201
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Oct 15 16:40:09 2013 +0100
+
+    Adding scenarios for creating collections and becoming a collection manager
+
+commit d368e436b9e40f9b5ceca44e0e23d1e9f3bcc98f
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Oct 15 16:54:52 2013 +0100
+
+    Rearranging scenarios and creating a new user_roles feature
+
+commit 7fc54828f5486b2b86221b54e829d288c6714c91
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Oct 16 12:26:49 2013 +0100
+
+    Mark new collections scenario as work in progress
+
+commit 58f1728bf54f65ddc2eb66677f76770f92ed13e3
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Oct 21 15:17:17 2013 +0100
+
+    Fix for edit record on collection catalog show
+
+commit ecbbf0a7b8033335e5c1e6c0146134948ccd4655
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Oct 21 16:37:35 2013 +0100
+
+    Remove set current collection as it is not clearly defined
+
+commit a7a9a25bd22a7164a891700f38cced808d3a0002
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Oct 22 16:28:57 2013 +0100
+
+    Creating an institute model to hold the attribution logos.
+
+commit cec06bcd0c956f0d41a6e3eeafc163874b18536c
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Oct 22 17:23:45 2013 +0100
+
+    Count all objects, not just published
+
+commit f62ad5c932317d23563543a6f0ed2727c7014bae
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Oct 23 16:48:32 2013 +0100
+
+    Show all collections that user has edit or manage permissions for
+
+commit 72069f3c8da53054ff634826b175e897fe9065e5
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Oct 23 17:01:27 2013 +0100
+
+    Dont filter for admin user
+
+commit a2cc0ad3bcb83a02626732167e52dba0f305383c
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Oct 24 16:13:01 2013 +0100
+
+    Test for bug 587, marked to wip for now as it relies on user_group > v1.0.2
+
+commit 5e52d3a2115dd6184dc48d462915be5873f81c22
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Oct 25 12:49:00 2013 +0100
+
+    Fixing bug 594 read permissions not being displayed correctly on edit page
+
+commit 0d2c13773478a05ee0c76384a4aa3287fa3fce39
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Oct 25 17:00:19 2013 +0100
+
+    Additional file needed for the fix for bug 587
+
+commit 15ec23c894cdd80cc8f7c000e9b514a5076d6fa7
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Oct 30 15:36:37 2013 +0000
+
+    adding create date as it is one of the facet fields.
+
+commit f2dd032c2f3485fa4eb5478cf2ba360e7c643db8
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 1 11:45:59 2013 +0000
+
+    Fixing search tests
+
+commit 402ec027f7d577fccf88751986c4a5057b12691d
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 1 16:29:32 2013 +0000
+
+    Adding search results tests, and pushing non-executable feature files for different user types based on workflows meetings.
+
+commit 412f20ae1c7c1fe32de8e4ca38e6184e629fbfc4
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 1 16:32:19 2013 +0000
+
+    Forgot to mark failing test as @wip.
+
+commit 412500715da4b2edc39437eb25970bf3e67d5aa4
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 1 16:42:29 2013 +0000
+
+    fixing typo.
+
+commit 7c2b378b492079a6ce3238d6c915eeee9bad411b
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Nov 4 14:50:55 2013 +0000
+
+    Remove active record for local file on delete
+
+commit 125fe7108a48e4bdb600437875c8a40bbde5e93b
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Nov 6 15:01:39 2013 +0000
+
+    Collection manager features list as defined by workflows group.
+
+commit 54536ebfd7f5214f9ee0f40efda64fe58a4e8020
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Nov 6 15:40:53 2013 +0000
+
+    Fixing some non-running tests, one set to pending until the new UI is merged in as I don't want to do too much work to get it running on the old UI.
+
+commit 6abe83091961a74a4d13f0964211c91db9c30532
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Nov 11 12:17:16 2013 +0000
+
+    Merging changes in feature support files from public head
+
+commit 53b3a0de8d0623c58031df5c149762e921c21b3e
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Nov 11 12:36:45 2013 +0000
+
+    Starting to remove authentication requirement for admin head to facilitate merging heads.
+
+commit f5b843efb294c6bffa116ac48833d27f1e2fcd29
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Nov 11 14:10:02 2013 +0000
+
+    Cleaning up some feature files.
+
+commit f2c001cce1332481a6cab602224fda2de9da04da
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Nov 11 16:39:35 2013 +0000
+
+    Merging in a few steps from the public head.
+
+commit 8fdda8e08d32988a64537193efd1e8c841079250
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Nov 13 16:36:24 2013 +0000
+
+    change route to v1 instead of admin
+
+commit ec0b7dc8b4f0794b1c558718c1bfb84471062d8d
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Nov 13 16:47:08 2013 +0000
+
+    Merging in tests and lib files from the public head. All tests passing, but a few from the public head needed to be tagged @public-broken until we have merged the UI and added some role-based logic to the controllers.
+
+commit 151085a270c92fffd98ff249fe5d9c120e781cf0
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Nov 13 17:14:54 2013 +0000
+
+    This file shouldn't be checked in, should be generated.
+
+commit c59f85adecc1a623f848692dc36d33cdc5d3f701
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Nov 13 17:34:24 2013 +0000
+
+    Updating the README for the soon-to-be merged admin & public heads
+
+commit 2691bbb9a751675eb41438b46826a5f18e234ea5
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Nov 14 15:56:43 2013 +0000
+
+    Merging in functions from the public head helper files.
+
+commit e714f2c207d15df9267eeddd0054859f5d9891ca
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Nov 14 16:42:23 2013 +0000
+
+    Allow public user to view collections
+
+commit 71b7eb66fb03e5c898fcbe8645b5bf1d13c2a161
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Nov 14 16:54:05 2013 +0000
+
+    More changes for public users
+
+commit 71da883a197fd7f2c36e60d3cefb2bd70687f25f
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 15 11:38:16 2013 +0000
+
+    Added views and assets from public head. Tests failing.
+
+commit 9568972b218941d864a66997a765f5b75022d28e
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 15 13:58:50 2013 +0000
+
+    Pulling back in some functionality from admin views. Also deleting debug prints.
+
+commit bc161d21230b69f94a7795af6011608a9d8777a9
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 15 14:47:08 2013 +0000
+
+    Pulling back some updated functionality from admin views.
+
+commit f51376bf1fa5b4b9cbe85a40d0dbb1945ae726fa
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Nov 15 16:07:33 2013 +0000
+
+    Use application layout
+
+commit 8939cc8cef35b8dc32bb51899097c9847fc0d70f
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Nov 15 17:32:03 2013 +0000
+
+    Add back in edit record link in catalog show
+
+commit f6cde02e62a8961b7493527f283ccf30db6a34f8
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Nov 18 09:53:26 2013 +0000
+
+    Add permissions to Blacklight solr document
+
+commit 78cf2edfb484e722c3579036ae035bcd72e86f7e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Nov 18 15:49:32 2013 +0000
+
+    id no longer included in div
+
+commit 2dc0d2b65b619c25bf4c5739dcb2a8a8b24f27b6
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Nov 18 15:57:57 2013 +0000
+
+    Mark as public-broken
+
+commit 7edbb0eede0ec365d724814a04ab7fa91d419165
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Nov 19 10:46:15 2013 +0000
+
+    Small fix, check signed in before looking at permissions.
+
+commit f4a578889896ddf66e5a9605439a65062314f21a
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Nov 19 10:48:54 2013 +0000
+
+    Add ingest link to nav
+
+commit 0821e43f1875f5503f1bdf856184fd41d2b5d368
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Nov 20 11:55:34 2013 +0000
+
+    Fix rspec tests for local_file model change
+
+commit 73bba30e2968f7883278c3317c43890f502fa593
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Nov 20 13:33:16 2013 +0000
+
+    Cleaning up search criteria features for admin and public.
+
+commit 160723dac4ef39e52a1315f676957c19010bd386
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 22 12:23:32 2013 +0000
+
+    Use the latest develop version of user_groups
+
+commit c3cd95dddb307bac9ff6997edf09b9d1696a13f2
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 22 12:31:13 2013 +0000
+
+    Updating to latest develop version of user_group
+
+commit 1b017a1009386a2ac53e7e2a2f06a63b85a8c630
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Nov 22 13:00:48 2013 +0000
+
+    Use merged access controls, fix search results tests
+
+commit cab90341b035620c338349acef08f93b88f4fd0e
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 22 16:15:13 2013 +0000
+
+    Deleting some user_group views that should not have been copied from the public head.
+
+commit 6d8495ccb047af1f088aebe60391a36a07049c66
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Nov 22 16:20:56 2013 +0000
+
+    Fix for showing collection in search results
+
+commit d5fd4698742caaf7acc67700d0d895d5495388b3
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Fri Nov 22 16:39:58 2013 +0000
+
+    Final adjustments to Dublin Core forms.
+    
+    Most of the tests are now passing.
+
+commit 55516c7d3c651ac8f7c55ae0783812669e484180
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Nov 22 16:59:34 2013 +0000
+
+    Temporary fix for displaying collections to non logged in users
+
+commit e07064cf95b10f76db2b7c12fc3267996b9e988b
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Sat Nov 23 17:00:59 2013 +0000
+
+    FIXED bugs with cucumber testing on AJAX-based Dublin Core form.
+
+commit 4834986484a5a339f36be496aee595f1c3f3f249
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Sat Nov 23 17:05:09 2013 +0000
+
+    Deleted unused views.
+
+commit d356c4a8187376dba69983c8cff7428cb3d18d00
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Sun Nov 24 22:58:33 2013 +0000
+
+    FIXED: More cucumber tests
+    
+    FIXED: Bug where the repository would attempt to access an uploaded file before the file's location could be stored in the LocalFile database table.
+    
+    Started final work on converting the DRI Resque tasks into Sufia Resque tasks
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1. Hydra Derivatives are now set up to automatically save a surrogate file in CEPH, instead of saving the surrogate in a Fedora data stream. See: config/initializers/shell_based_processor_overrides.rb for the code.
+    
+    2. Converted create_bucket, create_checksums, index_text tasks into Sufia jobs.
+    
+    3. There is now a DRI characterize job that will override the Sufia characterize job.
+    
+    4. Still a bit of work to do on setting the order of these jobs. So these tasks are not fully activated yet.
+       Also, the RSpec tests are completely broken.
+
+commit cc6f876173b771b9a12228bbaa7330c238869948
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Nov 25 10:28:42 2013 +0000
+
+    Add a default reader group
+
+commit 090d070431d7b9618211127e323529c5cdeca3a4
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Nov 25 12:11:30 2013 +0000
+
+    reverted *.scss.erb to *.scss files - asset image-urls are handled by sass-rails correctly
+
+commit c557a85c9cab2c19d939a94c40360a7e5026fff8
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Nov 25 12:28:59 2013 +0000
+
+    set config.assets.compile = true in config/application.rb
+
+commit 143316747df423ad84ba10de159da32e0c6a59fc
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Nov 25 12:49:53 2013 +0000
+
+    Add dri_grid to assets compilation, enable auth for pilot
+
+commit 8e5c3cc44819804f3af7090e979b7ec6527a154c
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Nov 25 15:01:34 2013 +0000
+
+    Some changes to allow users to request access to an asset.
+
+commit 1ad54ad0104a17536b02bbf8f16a416c45ea3ea0
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Nov 25 18:06:51 2013 +0000
+
+    barebones static html template layouts for RC1
+
+commit c23d90f77143684ee4ddaf3c562d527cf174ed00
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Nov 26 12:45:31 2013 +0000
+
+    Apply for access button appears as appropriate.
+
+commit 2e292c0548e83415464b6ba219866e7aca2d5946
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Nov 26 12:54:47 2013 +0000
+
+    Fixes for new data models
+
+commit 529ea772e742ec8bf58832a60042ecec6d82d543
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Nov 26 12:55:58 2013 +0000
+
+    Remove show page
+
+commit f7c774c98a66f8ec1100ef1d5f2d53b99e9f6fee
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Nov 26 14:43:21 2013 +0000
+
+    Removing some generated files that shouldn't really be in git
+
+commit 3d7436faf1b28d62bca356cd137735a468e0d80e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Nov 26 15:15:55 2013 +0000
+
+    Fixes for new models, document partial name has changed
+
+commit b8c6aa1ccb38e66ae9c8d086d8ab645a4be06a75
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Tue Nov 26 15:24:37 2013 +0000
+
+    Fixed bug when characterization job failed trying to extract the file from the Fedora object.
+    Now it should pick it up from the file storage system.
+
+commit e76f830a63b101360823f25ae3e896d1ab6da1a1
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Nov 26 15:43:20 2013 +0000
+
+    Take out show page
+
+commit 7558812081f11d9c8d995c47a52c01cc26fd8636
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Nov 26 16:26:41 2013 +0000
+
+    Change how the masterfile is found from the object
+
+commit dd8d7da03fb370d1d65ac758d5489972272f1e85
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Nov 26 17:00:07 2013 +0000
+
+    Stop page open, and change xpath to find correct element
+
+commit 6e246b242675ee5effceafa1c150c21ff5b41b0a
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Nov 26 20:42:59 2013 +0000
+
+    Update for new status field name
+
+commit 6d665f463de18655ab3df8f946b7ff6921e0cefc
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Nov 27 11:55:08 2013 +0000
+
+    macports changed how mysql is laid out on filesystem...
+
+commit 64abe10886cea8431e93715cb00beb5b1746afdc
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Nov 27 12:00:56 2013 +0000
+
+    Reenabling default language selection from browser preferences.
+
+commit 38d54f31de4c71101a5f7d74207b83960d2a87cd
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Nov 27 12:07:10 2013 +0000
+
+    Fix for finding field that is not visible
+
+commit 1fec160f6b405e4d04f3b235a7806fca76388db3
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Nov 27 12:34:46 2013 +0000
+
+    Removing the facebook javascript. This is disabled for the pilot and should be regenerated if it is ever added back in. Should get rid of annoying FB errors.
+
+commit fa2fe99e20ee772a731e26a865e463c0cbdd21a8
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Nov 27 12:57:21 2013 +0000
+
+    point the repos at TCD so CI system won't complain
+
+commit 433dc7c519ac1a16e11248a6c6823b15b4821e5f
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Wed Nov 27 12:58:06 2013 +0000
+
+    Reordered the Sufia jobs.
+      Characterize > CreateBucket > Surrogate Generation
+
+commit 462f8163c69f8a299157ce913f952219c1819bf1
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Nov 27 13:44:23 2013 +0000
+
+    fix typo, point to branch and not tag 'develop'
+
+commit 2bdaa514d9d5f0f32c9ce0521799ef9a879da42c
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Nov 27 14:27:56 2013 +0000
+
+    re-instate jetty.yml file
+
+commit 36f462741f0cc6be72045df8a042f8dca7d97d65
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Nov 27 15:13:57 2013 +0000
+
+    Fixing users.features errors (caused by language change in internationalisation.feature)
+
+commit 36a259832c9524142d458546ec502084a72f4c5f
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Nov 27 16:24:27 2013 +0000
+
+    Adding documenation on fits and ffmpeg install locations
+
+commit eff6998f7131a610ed17332544590adc99f0a2bb
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Nov 27 16:41:55 2013 +0000
+
+    Comment out tests for now, as validation checks have changed
+
+commit 4b4d466ee0c9249d0123899798a65ee0dfb33f47
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Wed Nov 27 17:23:01 2013 +0000
+
+    CreateChecksumsJob is now working (requires a bundle update)
+    
+    Changed references to 'pid' to 'generic_file_id' in our resque jobs to make
+    it clear that these resque jobs are being run on GenericFile ids, not Batch
+    ids.
+
+commit 82d9384e5f00cf27d37e295cc47382591145d1e9
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Nov 27 17:30:08 2013 +0000
+
+    Generate filters for manage and edit permissions
+
+commit b14b4913f59d8243bc61ff79ad8fdf3429a59791
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Nov 28 16:47:12 2013 +0000
+
+    Upgrade hydra, fedora, sufia-models
+
+commit eed411a798b10ae80a66b2694df906580c7440a0
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 29 14:29:59 2013 +0000
+
+    Marking some tests as noexec
+
+commit 45ffde5de4f32beceb74484cf0c8e350505584d0
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Nov 29 16:41:44 2013 +0000
+
+    Removing duplication of tests from admin and public
+
+commit 1c63c7f47c8526536f68de81928ddbb8a0be4a5c
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Sat Nov 30 11:18:02 2013 +0000
+
+    add buildshim
+
+commit ffde10637ffce5e72d8e71c0a9c32cbbcca35add
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Dec 2 11:03:34 2013 +0000
+
+    update gemfile to point to develop branch of data models
+
+commit 8012b68ff2b06a647dacc8643b7afcb1c645378e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Dec 2 12:44:31 2013 +0000
+
+    Get rid of some deprecation warnings
+
+commit 32a3163c66f3ca119c4f72bca86db067809b9fc9
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Dec 2 13:01:24 2013 +0000
+
+    run specs and generate docs in buildshim
+
+commit 1ffa3fed49446ec4b3d646cb3e26cbb95ba31ba0
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Dec 2 14:21:51 2013 +0000
+
+    Fixed a broken UI test and reenabled.
+
+commit fa3f6d62ab9869bd77ee509f5256349350195b52
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Dec 2 15:59:58 2013 +0000
+
+    Changes for new background jobs
+
+commit 580af367c8865cbafad9ea74e4bad0bce96daf41
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Dec 3 12:33:10 2013 +0000
+
+    start of deploy on a successful passing of tests, relies on hosts.buildbot existing on the buildslave
+
+commit b629ceca808cbf24ef3fd30bd2d77c3398fe60f4
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Dec 3 13:09:03 2013 +0000
+
+    run playbook in upload hook
+
+commit f88eacf1117366b6569ff80818d6986becb701d0
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Dec 3 14:08:33 2013 +0000
+
+    fix typo
+
+commit 37921839ed1e9669bbf226fdd447b649decb99bc
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Dec 3 14:48:02 2013 +0000
+
+    Updating default permissions.
+
+commit 7f1db71e1119dcb46610ae0bc4bdb4c4ef99276a
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Dec 3 14:48:37 2013 +0000
+
+    push update submodules
+
+commit dc91e537f60ea2ca4a410e7d7c5a545241033d25
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Dec 3 15:02:15 2013 +0000
+
+    Apply filters to queries for collections
+
+commit 917d22c18b24d1188a91dc80add28dd535db8196
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Dec 3 15:55:42 2013 +0000
+
+    Broke the tests with bad code in last commit, fixing.
+
+commit b08720b205edbc8cf140c5051528ee98c9b0a03c
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Dec 3 16:42:36 2013 +0000
+
+    Change check for radio button, still does not work
+
+commit c8ad5ca0e3b868f6b2d65ff25e857e7802480dcf
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Dec 3 17:23:39 2013 +0000
+
+    Fix radio button check
+
+commit 3ad0b35cdf967abd7236a1969a07261d4a8bac5a
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Dec 3 18:40:52 2013 +0000
+
+    styling to header and footer css
+
+commit 2650611f3d27e6f45e8c9728a8c89b3cb5c80ff2
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Dec 3 18:45:52 2013 +0000
+
+    do common as well
+
+commit 005575610617084b738d48d76e6e5211dbd51a75
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Dec 3 18:49:55 2013 +0000
+
+    font family update added to layouts
+
+commit 45cc640f3e99ff57b07ddaa36413269798ec0753
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Dec 4 09:27:22 2013 +0000
+
+    deploy sha1 hash of current build/test instead of blindly pulling the tip of the master/develop
+
+commit 543dc182dd183667979b692be9879280ce41e060
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Dec 4 11:57:47 2013 +0000
+
+    Removing all unused access controls. Have left some js code there in case we need to reenable later. Should clean it up when a final decision has emerged on access controls.
+
+commit cc739218fdf139a31d2c3925a74b503b3d4ee328
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Dec 4 12:12:35 2013 +0000
+
+    Apply permissions filter to list of collections
+
+commit 7f71eba76d69b0c506840643a21158a6ba707046
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Dec 4 12:51:25 2013 +0000
+
+    ui library update to static page
+
+commit c50fbc56e9c22b7418abef158461f42c999425d7
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Dec 4 14:01:24 2013 +0000
+
+    Fixing some javascript errors.
+
+commit c1e5a245dba4f9dbc4c1f94351dd7368fa0e50ca
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Dec 4 14:31:24 2013 +0000
+
+    Fixing some failing tests after update to default permissions
+
+commit 72c0a3ad542adf2bdcc94e5257daee692dd00c2d
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Dec 4 15:13:16 2013 +0000
+
+    Switch to using Sound and Text for object types
+
+commit aa485aebc521a8c8017479b2339474d2e44dc701
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Dec 4 15:38:11 2013 +0000
+
+    Removing 'review' from statuses
+
+commit 2cd67281b3918a9e39037f6fb420bfda704fb78e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Dec 4 16:14:41 2013 +0000
+
+    Add my collections link
+
+commit 42f0c23e081c683bd852fb0bdc0368a69077ef03
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Dec 4 16:45:01 2013 +0000
+
+    Remove show me the page
+
+commit a71984a642277dec0da5b3b0a839b653d75d3f41
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Dec 4 17:35:22 2013 +0000
+
+    deploy scripts have been updated - make sure application deploys get latest changes
+
+commit e245e971cb89b8198b213f52f10bf929227bb42d
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Dec 5 09:40:24 2013 +0000
+
+    Update user group gem
+
+commit d258e1b6468f7cec6501fd2330fc3722fc68a073
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Dec 5 10:18:05 2013 +0000
+
+    Rename some methods
+
+commit 32bfeea98694b789110bfd4bc3bcd6181d72cc7d
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Dec 5 10:40:18 2013 +0000
+
+    More renaming of methods
+
+commit 4c9f3480a157f57e257d60f510b314b2280babb8
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Dec 5 14:25:11 2013 +0000
+
+    Rename permission method
+
+commit ba27d7ae8f7bd100fc6120d741f8bc187aa7eb03
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Dec 8 15:36:29 2013 +0000
+
+    jquery ui fix, results block styles
+
+commit 63e59a99744a9de1bd1bee4349e774afb2478b45
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Dec 8 16:15:29 2013 +0000
+
+    style changes and dropit js library
+
+commit 1206ead9d5763f201dce746049578e4ba71ac803
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Dec 8 16:20:06 2013 +0000
+
+    dropit style tweaks
+
+commit c26b9ff760af6906469810e9ff56a755de595c4b
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Dec 8 16:34:46 2013 +0000
+
+    cleanup dropit css
+
+commit d3531bca79df9b1b0a9c71144f5aa7d72bbf76da
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Dec 9 11:15:54 2013 +0000
+
+    added a bit of top margin to drop it css
+
+commit 91100968a45429177a256ac862373bb15f2b5bf0
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Dec 9 12:02:51 2013 +0000
+
+    Jquery library in statis site
+
+commit ebe1871c06da885736a3320f9756ea9a6140ec2b
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Dec 9 15:08:14 2013 +0000
+
+    messy fix to get jquery-ui to play with asset pipeline - needs refactoring
+
+commit 3c30e472bf6a568000e714af19c73efe6328c7eb
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Dec 9 15:14:46 2013 +0000
+
+    cleanup some image folders
+
+commit 35e121dc15061eac757f82b3d6503ea7593ac1cc
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Dec 9 15:23:42 2013 +0000
+
+    login account updates, object box fixes, updates on styling
+
+commit d4b5226a4ef617ffc6986741d3cd3482de215712
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Dec 9 15:25:44 2013 +0000
+
+    removed cached css
+
+commit eac93b1c27c031b48221fca4bca5c53f0be60931
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Dec 9 15:25:47 2013 +0000
+
+    generated css - also ignore these in future
+
+commit 232a6c9bb918d6c25e8804dfe3819e6e069a1beb
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Dec 9 15:58:29 2013 +0000
+
+    updates to facet filter styling
+
+commit 4be92496cde167a77fbbf56724d380a5c79fcd6f
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Dec 10 14:41:28 2013 +0000
+
+    Drop hydra remote identifier
+
+commit 4e6f68bda1ecc652e62aa4123d76ce7df07b4cda
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Dec 10 15:28:48 2013 +0000
+
+    Update styling to browse collection page - Fix widths with Eoin
+
+commit 1f8e9c64f3a5b4502e0aa97dc47ce8f16a71e57c
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Dec 11 12:21:18 2013 +0000
+
+    update deploy scripts
+
+commit 70a74c86f1b846125fa04fdbeb8744f861b91259
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Dec 11 15:26:20 2013 +0000
+
+    Styling updates and fixes
+
+commit 04734ce4c4e0a1c2032f8b2e74baa3dc3f37ce9e
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Dec 12 10:27:05 2013 +0000
+
+    Width Update
+
+commit b3e46f902860196b9e7ab4270ab179566ed99c91
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Dec 12 14:13:49 2013 +0000
+
+    Fix default permissions.
+
+commit 2d287eaaba8ab642e945173a6959ee4f802de980
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Dec 12 14:23:11 2013 +0000
+
+    Changes for requesting and granting read access, and for tests of same.
+
+commit 8689a4be21d56407f115a473f03044aceba79a77
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Dec 12 14:48:18 2013 +0000
+
+    Background task for minting DOI
+
+commit b36a0431e109fa82d495f4f7c0e1eb1817bc0a19
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Dec 12 15:40:58 2013 +0000
+
+    adding generated stylesheets to .gitignore
+
+commit 1fa774f9dd8c33b27edc72003376ab0220fa1f05
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Dec 12 15:43:05 2013 +0000
+
+    layout tweaks
+
+commit 525b441286b71d979c7834f564f72756c3438e95
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Dec 12 16:36:56 2013 +0000
+
+    facet ui fix for blacklight/bootstrap
+
+commit db7a388778e37f6e6da48261bc77348fff04a457
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Dec 13 11:54:14 2013 +0000
+
+    load password up in redis initialiser
+
+commit d524509f878d02c7e803979768d65c88f09e6ded
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Dec 13 12:07:42 2013 +0000
+
+    really pull in password from config
+
+commit 290baeabd25a13e859f09f5d73f58c5f2403e9d3
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Dec 13 12:14:18 2013 +0000
+
+    Tests for DOI code and update data models gem
+
+commit 9ad52902c53a8152dd6ddfc374a2e6da4a19258f
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Dec 13 13:46:34 2013 +0000
+
+    Add doi to create object
+
+commit f12a8446f2442b054be49d390b45eadb61964e09
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Dec 13 12:34:11 2013 +0000
+
+    load up password in resque
+
+commit 830c383290bb542d86a31d8661875ab7b2d71eb4
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Dec 16 11:59:25 2013 +0000
+
+    temporarily disable resque namespaces
+
+commit b64ab06cb894685e3bfc74c788a2a676e7328dc2
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Dec 16 12:17:39 2013 +0000
+
+    update deploy scripts
+
+commit 2886011d57b16f607bec83377186fe852ee6bf09
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Dec 16 13:00:25 2013 +0000
+
+    Show moving images and images
+
+commit 4c5b579ae2355826a6d95bb1774e569b8a3c2c25
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Dec 16 13:57:30 2013 +0000
+
+    Renaming view partial from article to text.
+
+commit 022ba83327d938e887ce831d3859e3395b681db2
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Dec 16 14:11:00 2013 +0000
+
+    Adding button ids for testing
+
+commit 6dd898ec53ea0c6d1242de7384b353bf7dbbf03a
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Dec 16 15:06:48 2013 +0000
+
+    object view layout
+
+commit 0c2bb9dc2934d535717c51237eaf954d64173195
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Dec 16 15:14:35 2013 +0000
+
+    object title styling
+
+commit 1fe0c4f1ea5a67c512ecf4c11b5276a0b9a1e8d8
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Dec 16 15:17:51 2013 +0000
+
+    Adding failbunny.
+
+commit e992951d0eca880a7e4869f5ebdda65cc8e5fae6
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Dec 16 15:25:23 2013 +0000
+
+    CSS updates
+
+commit c6ed075c640d535a5a119c9bf8a0dc0cbe49e199
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Dec 16 15:50:49 2013 +0000
+
+    relative paths
+
+commit 8f7178d041d1f9e8516c5f645f4b08edbd5feafc
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Dec 16 15:54:51 2013 +0000
+
+    removed gutters on object blocks, disambiguate titles
+
+commit 1e6fcc1e9dd9fdfdbbc5ef7d3652b38705dadb58
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Dec 16 15:59:36 2013 +0000
+
+    ignore more css
+
+commit 883ec5dc3e1e5660df41ac5aa3b8b6cce0169e02
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Dec 16 15:59:53 2013 +0000
+
+    Styling for top title
+
+commit 171578389e281b7dddf2f78a21ca20c184cbbe1c
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Dec 16 15:57:46 2013 +0000
+
+    try hitting the app after it's deployed so it's faster on first load for users
+
+commit b3b8913d9ae5bceae0f5ed053918505a082495c3
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Dec 16 16:00:48 2013 +0000
+
+    enable thread safe
+
+commit 02dc0d102be8914270981390498f4275268d1fba
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Dec 16 16:03:46 2013 +0000
+
+    ignore css
+
+commit 56fbc4e6187b50303d06bb40f488b6515722ed8b
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Dec 16 17:05:58 2013 +0000
+
+    Fix object type counts
+
+commit 38cfa04b4f289cd8f36768441ba8cf1041aca9a2
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Dec 16 17:12:04 2013 +0000
+
+    solr config has been changed
+
+commit 98885de7c42739c374f26bfc0fd030005d685fa2
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Dec 16 17:55:58 2013 +0000
+
+    Revert "enable thread safe"
+    
+    This reverts commit b3b8913d9ae5bceae0f5ed053918505a082495c3.
+
+commit 7c8d1aeca934eb47c5ab0f7ef51a35951c8ecf67
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Dec 16 18:16:28 2013 +0000
+
+    collection and object template updates
+
+commit 8a293ebe8930dd48b4df7067fbc21317fdabb031
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Dec 17 09:57:35 2013 +0000
+
+    enable debug logging for the forseeable future in production environment
+
+commit d2d0cb8c7841aec0f37d6a7512831431d429effb
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Dec 17 16:43:12 2013 +0000
+
+    Fixes for reader group
+
+commit 5e8b2e305cc9c8ed03d54e935d10798d65633704
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Dec 17 17:14:15 2013 +0000
+
+    Updating Gemfile.lock to get changes to dri_data_models for collection cover images
+
+commit 32285db37f5277b9ca9d3c209feeaeaf98a9abe0
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Dec 17 17:19:51 2013 +0000
+
+    Adding collection branding images
+
+commit 7bb5cb1365fdf6e759e6227857268abe6477a01b
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Dec 17 17:38:18 2013 +0000
+
+    Removing a debug print
+
+commit a84cb78e35ac4c4ca72204efab308440c5e56c80
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Tue Dec 17 17:44:00 2013 +0000
+
+    Fixed bugs with characterization and audio delegate queues.
+    
+    Changed mime_type settings in settings.yml to allow mime_types to
+    be classed under Audio, Video, Text and Image type.
+    
+    Brought in lib/sufia/models/generic_file/derivatives.rb from
+    Hydra Derivatives, so that we can set the delegate settings
+    for GenericFile from within nuig-rnag.
+
+commit 5a43189025b5968ee70fb3e4e6eb0c4209d03e83
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Dec 17 19:47:28 2013 +0000
+
+    fix missing bracket
+
+commit 9ac58ac8f54bd8066f7a3e52e070b9fdd2215de0
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Wed Dec 18 12:36:14 2013 +0000
+
+    A bracket was in the wrong spot.
+
+commit c99057a2ca82319068b0b68459be387a63e6a612
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Dec 18 14:59:50 2013 +0000
+
+    cover images.
+
+commit dca2446349349ac840924b3c12901c2265514b99
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Dec 18 15:04:08 2013 +0000
+
+    Updating this image.
+
+commit 176f27aac960f72ad4ec673de3de3c0e66c9f2eb
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Dec 18 15:46:20 2013 +0000
+
+    Fix for empty documents
+
+commit c925ee21074bbbbe097d9613ac41e0cf2f37fb7e
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Dec 18 16:16:08 2013 +0000
+
+    Fixing default permissions
+
+commit 9597993627ff675cc9cae88962518388a1acc2f0
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Dec 18 16:22:13 2013 +0000
+
+    Fix for typo
+
+commit b1a491bfdcb46be76ac052f88322800d7a25487f
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Dec 18 16:29:20 2013 +0000
+
+    updated deploy scripts, fixed rvm version
+
+commit 7380b29f05a66187e7cf03ad0181811522d9f53e
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Dec 18 16:45:13 2013 +0000
+
+    Fixing tests for set_access_controls
+
+commit bf20036975bc669be7ebfdf5f98b4a92f4d44cd9
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu Dec 19 08:30:07 2013 +0000
+
+    tagged dri gems to force an update
+
+commit 22852d51fa96a21467aed3558a11528679546b3a
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Dec 20 16:43:51 2013 +0000
+
+    Remove unnecessary partials
+
+commit d9d33e1937126c8afb586c1051dcf421e8d13820
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Dec 20 17:05:21 2013 +0000
+
+    Tidy up code
+
+commit e60256033149ade1e1463fe958371a5c99ef3913
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu Jan 2 12:02:12 2014 +0000
+
+    dependencies for homebrew
+
+commit 7f5b0b4d148a8628f38a454b033f5d30c06deb89
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Jan 2 12:04:35 2014 +0000
+
+    Deleting some commented out code.
+
+commit 09015cf41c2b8cd20cec46365ac19000903e6895
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Jan 2 16:30:49 2014 +0000
+
+    Fix for back to search link
+
+commit e3b96d1a61eaa03e8654ae4eb384cfe42d65462d
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Jan 2 17:12:48 2014 +0000
+
+    Fix for bug 634
+
+commit f7e36e33b0fb9bf8c148d46c9b918957c895cd5a
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 3 11:40:40 2014 +0000
+
+    pull in changes related to changes in the DB settings
+
+commit 7377a81427338dc54c3279add4805c9f595ec74f
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 6 10:45:51 2014 +0000
+
+    addition for access control tests
+
+commit 7cfe58cd262dbd31f2f76014b0b75484071c67db
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 7 11:58:57 2014 +0000
+
+    CSS Styles and Updates
+
+commit 6c060a58d8009ced87598998509beda2f31336f0
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 7 13:17:44 2014 +0000
+
+    clear fixes for object render block and show more institutes link
+
+commit 58fd2b7e73c088dfdab5900a679ae548dac6a3b0
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 7 13:21:32 2014 +0000
+
+    Style updates on object page
+
+commit 5f6390ffc63972ae750ee4f1ea6832393fb2d992
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 7 13:58:42 2014 +0000
+
+    fixed render order on collections, message width
+
+commit a9ae62ec22a68b63239a2c605bbd167d29bca3e9
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 7 14:06:52 2014 +0000
+
+    Css fix for object
+
+commit dec9c85f97f15eb030e79adba3075b5efa8c4864
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 7 14:16:02 2014 +0000
+
+    object media render and first block reordering
+
+commit 52c10e96c04c1008af46056223bfe1bbdcf80cd1
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 7 14:38:27 2014 +0000
+
+    object title width tweak
+
+commit 2a21420ab794cbd226d239c86b5d6190a64371ee
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 7 14:53:07 2014 +0000
+
+    CSS updates
+
+commit 5490148558895c8bf4c995d7f05e24e34d25e436
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 7 15:26:27 2014 +0000
+
+    login form
+
+commit f9850359a2c177b5c996ecb36378a430f4fceb25
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 7 15:33:37 2014 +0000
+
+    Fixes to Institutions and Sponsors
+
+commit ba604347a16743ac68fa58541c6e28a8e46a4f32
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 7 16:27:51 2014 +0000
+
+    Object View updates
+
+commit 0ac376b482ae99cb034320def6ac1f4fbb5873de
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Jan 8 10:27:09 2014 +0000
+
+    List and link fixes on object
+
+commit f17a1f317511761cc18d27cbe0eabc1f86d7cc3d
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Jan 8 13:52:27 2014 +0000
+
+    update submodules
+
+commit 304426d52183cb3c1f761177faf24c0e8feef6fc
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Jan 8 13:56:30 2014 +0000
+
+    update gemfile, gemfile.lock must be updated
+
+commit 083d6a1d8e6d45ee5097b637a771b27f5e3ee6df
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Jan 8 14:47:55 2014 +0000
+
+    update gemfile.lock as repo locations have changed
+
+commit 4584a0dccafdb58849b1d465067a4ed2af4d4727
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Jan 8 15:26:30 2014 +0000
+
+    update deploy directory which is needed for buildbot
+
+commit 94579d6cda65269c0491f2eb64744453e5de4a11
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 8 15:34:59 2014 +0000
+
+    Functionality for issue #524 Citation Exports
+
+commit 44a35b6cf63c953af2f116908235bc25cbc1bade
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Jan 9 11:31:45 2014 +0000
+
+    updates to designs
+
+commit de03de6570db3d80a593d6b1dd11e48758cc1025
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Jan 9 11:41:19 2014 +0000
+
+    objects in dri_object_container not dri_result_container
+
+commit 56bc2886672009a51384357e789d8b80c43ece06
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Jan 9 11:54:07 2014 +0000
+
+    removed a wrapper on blacklight facets
+
+commit 49015559818a01f72d56b202e9ca9b902405a68f
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Jan 9 12:14:35 2014 +0000
+
+    class updates
+
+commit 2c1db4e9420c8621d5f3eb6c6fe626983c30aacf
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu Jan 9 12:39:56 2014 +0000
+
+    remove some bad documentation
+
+commit a7dceb29a5c2e8da58a38c56456d500cc1c252b2
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Jan 9 12:57:55 2014 +0000
+
+    arrow up/down fixes
+
+commit 8553fd91e435ee0dd2d6a3206765cfe1c670cb35
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Jan 9 13:31:39 2014 +0000
+
+    header css/views integration
+
+commit c400aaf68f269ef22ebc35ac87514b0ca51b52b1
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Jan 9 13:33:05 2014 +0000
+
+    layouts update
+
+commit f3c9eef9408e996cb0487ba1d2891c6d6722be7b
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Jan 9 13:40:12 2014 +0000
+
+    social link fixes
+
+commit ac9dcca0e8f33577402c42bb6263b06a65e811a0
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu Jan 9 15:33:41 2014 +0000
+
+    enable google analytics in production version of site
+
+commit d3156367d355abd27d82560f16d6bdf8771bddd5
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Jan 9 16:03:20 2014 +0000
+
+    Reapply removing namespace
+
+commit b9e164e91646988ecb0014cbd48d625e422705fa
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Jan 9 17:11:01 2014 +0000
+
+    various views integrations
+
+commit 9e1d2bd3bf5ed607a5cf03a4cdbb69e80cb05024
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Jan 9 17:20:14 2014 +0000
+
+    changed lable on per_page count in blacklight/en.yml locale
+
+commit de0429f456225c4f1973b224b3970effb29b0ad1
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Jan 9 18:11:13 2014 +0000
+
+    using OK on search submit button as per design
+
+commit 9f95a22dd8abf7613ae39ef4a940de9fd5b9ee63
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Jan 9 18:56:55 2014 +0000
+
+    moved jetty to 8984
+
+commit bb46fb93861c9678257f511dd5334bbb18eb2999
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Jan 9 19:03:34 2014 +0000
+
+    added links to main_nav
+
+commit 4ecd5c0fe4f7f7ff787975e7fa1110afa0aa91eb
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Jan 10 10:30:40 2014 +0000
+
+    Change bucket name to be parent object, change filename used by background jobs
+
+commit 23bfee2158a7893fd826be44a5f483a116d86cf8
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Fri Jan 10 10:36:18 2014 +0000
+
+    Twiddle markup and css fixes
+
+commit d03af0c77220f8e613258b1967317fdbb974186d
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 10 10:56:52 2014 +0000
+
+    update deploy
+
+commit 9f34cccbc9bd6971d06f0ac68efd319279995368
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 10 10:57:22 2014 +0000
+
+    ignore spec reports
+
+commit a010b8d1ca9d3bc72499f0f7da1dded3cb537a9e
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Fri Jan 10 11:29:54 2014 +0000
+
+    Login styling fixes
+
+commit 188fc4f86e1ea1b96ab537b21d8096b32cf89122
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Fri Jan 10 11:36:11 2014 +0000
+
+    collection cover
+
+commit a2178ef0c97078626d380b14aaa69ae975a09580
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 10 11:55:45 2014 +0000
+
+    enable guard-compass and livereload
+
+commit e228b417f531ecf17e7cdcc26cc5e1e0ca96075d
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 10 11:57:32 2014 +0000
+
+    fix paths to icons
+
+commit 5719143609af07065c8d95ed1ffa33649763985f
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 10 12:39:56 2014 +0000
+
+    render exceptions dynamically
+
+commit 69913bbea4a1b2fa5d5f85198b07a81e0c51e6c0
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 10 12:44:17 2014 +0000
+
+    reference where code came from
+
+commit 6a3b06331ed5288a845daf8c1f876e75b39e72ea
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 10 12:54:03 2014 +0000
+
+    Revert "reference where code came from"
+    
+    This reverts commit 69913bbea4a1b2fa5d5f85198b07a81e0c51e6c0.
+
+commit bd9f528cdfaf16e8d69aa02b5deda2330523ca8a
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 10 12:54:21 2014 +0000
+
+    Revert "render exceptions dynamically"
+    
+    This reverts commit 5719143609af07065c8d95ed1ffa33649763985f.
+
+commit 2f094e2de85c11b42a8287e1dd40afdb7c85d59a
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Jan 10 14:34:54 2014 +0000
+
+    Add surrogates
+
+commit 5c27eca543f8ec612a0b62adbc72c5434d36c9b2
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Fri Jan 10 14:58:09 2014 +0000
+
+    various views and style updates to sorting and searching
+
+commit b35e73c3c06d8e26a674227dbe02a9262fabd766
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Fri Jan 10 15:07:54 2014 +0000
+
+    constraint views and styling
+
+commit 2a1ad0ebc79109fb96036d61705bc4fb93106b2a
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Fri Jan 10 15:41:26 2014 +0000
+
+    Login styling
+
+commit 5518588f62080f723961cb192fbf3b745bba2d46
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Fri Jan 10 15:49:14 2014 +0000
+
+    constraint render position changed  and styling
+
+commit a83bc16c6e3833ba78881b9a76bd9e8aba9bc761
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Fri Jan 10 17:07:25 2014 +0000
+
+    layout containers cleanup and spacing
+
+commit c92d297bd91158e7c1d6fcaf28176a6bee13f87b
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Fri Jan 10 17:53:09 2014 +0000
+
+    DO results markup updates, icons hard coded for now
+
+commit 9c347c25ebeee08bc63e07118764eff2e391bcfe
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Fri Jan 10 18:03:01 2014 +0000
+
+    facet markup
+
+commit f59eae5bf54981d9de5c119257b42bd77e176378
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Jan 12 17:52:54 2014 +0000
+
+    begining object catalog object style integration
+
+commit a10a2f503f3be3084cd4379990c38940f346ccdb
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Jan 12 18:07:49 2014 +0000
+
+    update document partial
+
+commit 63be7e8eb1d9224630144ac7499c24f167cf5110
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Jan 12 18:55:20 2014 +0000
+
+    update document partial
+
+commit 69be9f2e84a514537dee24968028b2fb9b05b33f
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Jan 12 19:24:09 2014 +0000
+
+    update document partial hard code collection image
+
+commit 202698498c6934188f52580a5eb91f2c31b774db
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Jan 12 21:05:45 2014 +0000
+
+    update document partials - cite tools
+
+commit 5b9d46b83013cab31f336ca18c0e7f955e5e8035
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Jan 13 10:14:48 2014 +0000
+
+    Revert "moved jetty to 8984"
+    
+    This reverts commit 9f95a22dd8abf7613ae39ef4a940de9fd5b9ee63.
+
+commit 0c4b000f7b59e64480b366d74f7c23854eee3466
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Jan 13 11:06:23 2014 +0000
+
+    git ignore jetty.yml
+
+commit d45998eb2a7d86ae1d491abb7ae83c938951eff9
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Jan 13 13:15:58 2014 +0000
+
+    signup static template
+
+commit 11e3e7c23a0e74f61730d85009d7d00ffa6f71a0
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Jan 13 13:18:36 2014 +0000
+
+    Styling updates
+
+commit ae02d23d43eb4d9d1ab1a1cef82b699e625a9f8d
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Jan 13 13:35:58 2014 +0000
+
+    snag copy of jetty.yml for future reference
+
+commit eddb5d754d28ebd8f963f9a8cbc665891f776d72
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Jan 13 13:44:23 2014 +0000
+
+    edit this record - styling
+
+commit eac5483c89830c8452146d26d38f7c060efb2bd4
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Jan 13 13:49:59 2014 +0000
+
+    collections grid view updates
+
+commit 2e124f1c7194531be0156e9c75acbd3c879de455
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Jan 13 13:51:11 2014 +0000
+
+    button styling /update request to asset
+
+commit faee9b0d67c9f55f7d5de7cd630aaf60b4aa4e6b
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 13 14:19:56 2014 +0000
+
+    Fixing tests for new UI changes
+
+commit 970647b6bddaa40468ebec8168bfef1885afcc75
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 13 14:39:08 2014 +0000
+
+    Adding settings.yml file back as it was deleted.
+
+commit 5782e3fa4b863ac8219c4baa13909eebd4560424
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 13 14:41:41 2014 +0000
+
+    Updating documentation for settings files.
+
+commit 45824709e4f89ce3dd48064832db33758fd765cb
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 13 15:21:03 2014 +0000
+
+    More fixes for UI changes
+
+commit da1739de804bc0d513a39fb3d032dd00cdb3769d
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 13 15:54:34 2014 +0000
+
+    More fixes for UI changes
+
+commit 829e3fb2f64741ef7696da7efe87d26565287f98
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Jan 13 16:07:10 2014 +0000
+
+    views and sass updates for collections / catalogue
+
+commit 28c48773fd97be4ea4df720fb098473877738c58
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Jan 13 16:09:03 2014 +0000
+
+    jetty settings
+
+commit e6683f01bea200e79a9ad022ab98333502dce102
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Jan 13 16:09:24 2014 +0000
+
+    sign up styling
+
+commit cc8eb1fdc3e7eee62174a53d113bc4fc6c7ff7bf
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Jan 13 16:12:01 2014 +0000
+
+    Changes for surrogate and file delivery
+
+commit b9a764143a60dee28d8430ef47a521f7a6febdbb
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 13 16:46:47 2014 +0000
+
+    Fixing tests for UI changes. Slightly ugly hack for cookies message, but the UI will probably change for that requiring reworking later.
+
+commit 9197e4cb2f380d98351454c047f07c98636c16b9
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Jan 14 11:37:43 2014 +0000
+
+    Fix for image not found
+
+commit 3aa5214c823af27a8d0d39ebac5571df1ab66bc5
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Jan 14 12:09:12 2014 +0000
+
+    Change step for viewing user account
+
+commit a2fed03d1c68a89128bfe8efcbe6f9a9eed476a1
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Jan 14 12:10:03 2014 +0000
+
+    Remove basic auth
+
+commit 5e20a0209b8e3c51f7ece60671cb5e8b3af63db7
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Jan 14 13:02:05 2014 +0000
+
+    Try to fix .css isnt precompiled error
+
+commit 2065ff4d222ab0494a868fd6b399353d51644c5f
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Jan 14 14:42:03 2014 +0000
+
+    Change surrogate names
+
+commit 3338f772bb492cd9b5d1b0b1b70dd87650bfe03a
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 14 15:59:37 2014 +0000
+
+    homepage/Sign up /new member styling
+
+commit 05edfa8195b46c60ea9ea897b751b786527b1479
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 15 09:34:06 2014 +0000
+
+    Surrogates for images
+
+commit d7545184769b4661cc010a901ccc2af7e228c407
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Jan 15 10:54:09 2014 +0000
+
+    monitoring roles added upstream
+
+commit 3f503a80a7807bb70438798f48ca3a4aa7dbf23d
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 15 12:10:32 2014 +0000
+
+    Surrogates for images and pdf documents
+
+commit 8a36bea9e05de482e23e60f6e5e866474d8f4311
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 15 14:24:56 2014 +0000
+
+    Stop catalog show breaking on collections
+
+commit 2955ee16aaf584a7079cf47bcbd601ef407f094b
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Jan 15 15:30:00 2014 +0000
+
+    Some wait functions for debugging or handling odd synchronisation issues with the tests.
+
+commit 72e58c41fe4be33f4b2cabddedd32fbd8c0bff6c
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Jan 15 16:46:57 2014 +0000
+
+    use high_voltage gem to 'template' up static pages
+
+commit 09557d1a92b85254799794c6ff614da785858413
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 15 17:01:41 2014 +0000
+
+    Update user_group for draft collection fix and renable access control tests
+
+commit af4da14d775c52cefcfc0aa11b6a4e5abc671e56
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Jan 15 17:07:37 2014 +0000
+
+    insert dependancy to generate fixtures when tests are run
+
+commit 220daea93caabc9a0a2e80adf8f572b8bff5f567
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Jan 15 17:24:08 2014 +0000
+
+    enable 'feedback' for haproxy
+
+commit 831f50665acdc330473e559fc844ffdd224d88dc
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Jan 15 17:38:27 2014 +0000
+
+    use correct path
+
+commit 5b929f4809e06c327013af242d883a23ef06a84b
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 15 19:19:15 2014 +0000
+
+    Update user_group for is_published fix
+
+commit a4b1eab6ce01d1be549e6788376b9f736d5c24e1
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 15 19:54:08 2014 +0000
+
+    Formatting
+
+commit 6017b855f6c81a7e654c1673958badb0c02c6f8e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 15 21:49:39 2014 +0000
+
+    Fix up failing test
+
+commit defde4bf14b5cca50a520b8b32e213e99e46f3a2
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Jan 16 10:19:14 2014 +0000
+
+    home collection block updates
+
+commit 7ffb3bb43700e6bbc63b22c48e9819cb71295acd
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Jan 16 10:23:29 2014 +0000
+
+    Changes institutes and cover images. Cover images should work, institutes still not complete, but pushing so that people can get an idea of how it will work. Tests are passing.
+
+commit d081b9c4645c3c6c4d40410fd143cb1489160f72
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu Jan 16 10:25:33 2014 +0000
+
+    set relative root path for high voltage
+
+commit ff03ca7da2948dc3f0942806594b0e4a49bf904b
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Jan 16 11:28:56 2014 +0000
+
+    Show draft objects in count if permitted
+
+commit 92e4fb69afa644b241caa96d7694f50a5de95709
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu Jan 16 16:24:55 2014 +0000
+
+    update deploy scripts as mysql configs have changed to a HA configuration
+
+commit 467b9d39f267134204bf62a3990a44c6db1606a2
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Jan 17 09:46:10 2014 +0000
+
+    catalogue/show update
+
+commit 9fccecd339f47578e3d2fe066e45ada10aedd5aa
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Fri Jan 17 10:04:45 2014 +0000
+
+    Social media Sign In
+
+commit 648ccfc20e3d8175dc664d0c28e55f7808810e36
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Jan 17 11:25:13 2014 +0000
+
+    fix img elements to use correct asset paths
+
+commit c62a6abe5b9ab769197770751280f5ecc62b0d3f
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Jan 17 11:30:21 2014 +0000
+
+    Getting rid of references to lonsdale for git
+
+commit 21af97bb2c4a279ccd9637d77f4cfa047c0f82e7
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 17 11:56:10 2014 +0000
+
+    tweak buildshim to use sample jetty file for testing
+
+commit 8bc2b22114014b70526bdefa3d97cadebddc90b3
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 17 11:57:01 2014 +0000
+
+    monitor buildbot and redis virtual machines
+
+commit 8e80c53eb627658d9b679ef25ecf29c16d4e470e
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 17 14:28:48 2014 +0000
+
+    attempt to fix high_voltage for production
+
+commit 5022768dd74fc5dbe81319395129453ed6707706
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Jan 17 14:30:21 2014 +0000
+
+    fix typo
+
+commit 95ce49c0003ce3172d1d850e3266f800b9fc0b6a
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Fri Jan 17 14:50:23 2014 +0000
+
+    sign up error messages / educate sign in
+
+commit 47cc5aceb7c01c03097d2b71ee22920e11f3d78a
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Fri Jan 17 15:05:18 2014 +0000
+
+    sign up fixes
+
+commit 9ea2da4dad541d66b803c9f8694d7e4b90e79e4f
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Fri Jan 17 16:14:35 2014 +0000
+
+    fixed bad merge on dri.scss
+
+commit afd45fe44cccaa0fb7f75099c7b776b60124424d
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Jan 17 16:58:19 2014 +0000
+
+    Fixing cover images
+
+commit 39e1ebcf2cb69d87c2fa728ad8ba7017285d7907
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Jan 17 17:04:39 2014 +0000
+
+    Fixing asset pipeline
+
+commit d2c5a59ddeff2c31e34ad24bebffb256aa0d4ea6
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Sat Jan 18 12:37:37 2014 +0000
+
+    set the content path with pages in name
+
+commit 54c79a4d3618d2274384f9cc263f072139371afd
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Sat Jan 18 14:03:08 2014 +0000
+
+    stable deploy of ansible-hydra
+
+commit 6eba91e87a9676fe5e5d77c2940272c80a8d4944
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 20 14:51:09 2014 +0000
+
+    Adding new translations
+
+commit dc4a0d1bd963c8cf4964a6c2b8aa4a65d1886845
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 20 15:57:14 2014 +0000
+
+    Undo! Undo!!! Removing pluralization changes.
+
+commit e56bf3b5c75d64040b7b3d0d07ba1ca2f55ec1e7
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 11:37:11 2014 +0000
+
+    css updates
+
+commit 72a2d0110e8c932568eda0c99e714e72c8230149
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 11:58:29 2014 +0000
+
+    update to collection block
+
+commit 07c8055c033807fa304e75c5684af56433b7dceb
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 21 11:58:46 2014 +0000
+
+    apply scss changes to asset path version
+
+commit 34ddf37e86ebf6287084d96f865131cdbda47029
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 21 12:10:49 2014 +0000
+
+    sync app/static scss files
+
+commit ebe5bfc6b5a3a285e1fd5a456473e0098d325a3e
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 21 13:52:39 2014 +0000
+
+    update home page and layout scss
+
+commit f37030daf971af6ddc9822181335eeec6bafc621
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 14:17:14 2014 +0000
+
+    fixes to widths on signup
+
+commit d4e7d471da7711a79639d48a457d9068aa618dac
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 14:26:14 2014 +0000
+
+    login/signup updates
+
+commit 95ad397efc184413b15afbe3f597a3a53d3b0d31
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 21 14:33:12 2014 +0000
+
+    static homepage with slideshow placeholder
+
+commit 69e58a757f4286a187cd0921e3a2f46efa9ebb99
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 21 14:52:29 2014 +0000
+
+    removed colorbox as accidental git submodule - update home partial to match design
+
+commit 65034fa7012492835ccbd6cbcaf35994a26dd1e5
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 14:56:35 2014 +0000
+
+    Update tests
+
+commit 2448162e89196c56b9ac3343b943e5c701ce263c
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 15:11:08 2014 +0000
+
+    removed colorbox
+
+commit 76c840e64858414d6233842daf84808ba8ed3fad
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 21 15:13:15 2014 +0000
+
+    fixed broken div on static home
+
+commit 3aa95cccaf5c0ee5c24d04198c9c95e472496985
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 21 16:12:07 2014 +0000
+
+    gutter width on welcome block to 0
+
+commit d5c5ee5ec1451484aa349c5177d9a0ef6b2cdeac
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 16:19:53 2014 +0000
+
+    home page updates
+
+commit 9e11c1475e071e5ca41609a5483c6bd5d8083cca
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 16:20:07 2014 +0000
+
+    update
+
+commit 6e165e4fb9adeb73ead265451ad4bdc2ee27d4d0
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 16:26:51 2014 +0000
+
+    sync scss files
+
+commit 6810d1ebd4d913af1603c331bfbd34410c9f8623
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 16:31:40 2014 +0000
+
+    fixes to home
+
+commit b359a80dd3bcb655f4b5d1114e175e225302d59d
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 21 16:31:43 2014 +0000
+
+    new path to css for static home template
+
+commit 832da9570eee15213cd5120fb2f99fc5bb7ed16d
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 21 16:37:33 2014 +0000
+
+    updates to markup and css home
+
+commit 52a2b8b70808c0dc907a4246cd0bb1ff56fa89b2
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 21 16:34:03 2014 +0000
+
+    sync scss - hope this will be the last
+
+commit 7b43d9389b9dad490366a639d01cc9734cd12d3e
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Jan 21 09:22:13 2014 -0800
+
+    re-instate deployment scripts for buildbot
+
+commit 15699f0101fec95484806667836b1e0d6e088e8f
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Jan 21 12:04:59 2014 -0800
+
+    work around d5c5ee5ec1451484aa349c5177d9a0ef6b2cdeac where settings.yml file got removed for some reason
+
+commit 65eb3e519bc1080e8de5e38cdca07053ea0cee40
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Jan 21 13:49:40 2014 -0800
+
+    update buildshim
+
+commit a198c74088f5e0f6d9388b50979f633e4ca24517
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Jan 21 14:49:52 2014 -0800
+
+    revert changes to settings.yml, it is required to 'boot' the application
+
+commit 023b184a5b0059983338a209964a3b90fc8f95f4
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Jan 22 11:50:20 2014 +0000
+
+    Fixes for institutes. Ajax is still not working, but the functionality is there.
+
+commit 7aa82b02f6b17eb5e061047eeb1070ed0571f3e8
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Jan 22 12:54:05 2014 +0000
+
+    Institutes now appear on object show page. Also fixed hardcoded strings.
+
+commit ca50b94c21226d933fa0cca190d4767ad0875d31
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Jan 22 13:34:29 2014 +0000
+
+    Fixed catalog view for collections, institutes were not appearing.
+
+commit 8a5d96271f56b3d208b01d62d81af65b2e1af56b
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Jan 22 14:42:07 2014 +0000
+
+    Fixing hardcoded strings.
+
+commit 5bc3b31b51bfc349c9206e716d255bbd1d60b14d
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Jan 22 14:56:45 2014 +0000
+
+    Fixed a small bug when there were no institutes.
+
+commit 5af0f3c40b302367518d9ff8fd178d5a3ca0faac
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Jan 22 15:37:46 2014 +0000
+
+    Home Block Layout and CSS
+
+commit 2edb603b484ea1f175394d4d7f02cd44fc2b7a86
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Jan 22 15:41:07 2014 +0000
+
+    Update to Object Blocks
+
+commit 22f856d65730b98ddc8fca09e3cc0e0656eaa6fd
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Jan 22 16:25:52 2014 +0000
+
+    Collection Block updates
+
+commit 5b22bf18720f3daff87e5696fed51a8d2214dd33
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Jan 22 17:05:04 2014 +0000
+
+    home partial update to new collection style
+
+commit c67a037b0d20c3261fe1e0037a0ddf6f2574e655
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Jan 22 17:15:40 2014 +0000
+
+    Fixing hardcoded strings.
+
+commit d70f9c8ec3249d41f9e5805f7f80fb037e378172
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Jan 22 17:22:41 2014 +0000
+
+    test for search param to show save search
+
+commit 3831f0cca49ac83a747cccee9051d635df91add7
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Jan 22 17:31:32 2014 +0000
+
+    also check if user is authenticated
+
+commit 8c92b93372e5397a98e0f528927e987e5dfccf52
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Jan 22 18:21:22 2014 +0000
+
+    applied new collection object style to browse collections view
+
+commit 6cd01d12878cf4c6d1849951d53bf2ea0c9ee35d
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Jan 22 18:28:58 2014 +0000
+
+    updated link to generated css in static templates - removed scss in public folder
+
+commit 2529d07ead01c60a1d135f146bcf665ac36a4fa7
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Jan 23 15:55:16 2014 +0000
+
+    Save Current Search /styling updates
+
+commit af49b36f31b8ecf24ca8f16e3a50e25cf3281d3f
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Jan 24 12:27:43 2014 +0000
+
+    Adding remotipart gem to allow multipart ajax requests
+
+commit 8ea0c109dfaec77f1b20d025e2e121be23403ecb
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Jan 24 12:43:18 2014 +0000
+
+    Fixing Ajax institutes code.
+
+commit 2800aabbf6e45c63b96dc1e27981b8b924204ebe
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Jan 24 12:43:52 2014 +0000
+
+    Search results now display collection cover image for objects within the collection
+
+commit a114f95b421a58a24032e28256c1b22865953439
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Jan 24 15:29:10 2014 +0000
+
+    Adding functionality for bookmarking objects
+
+commit efded1e82eec1e7edeaea923d4e7444a8146d463
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Jan 24 15:53:18 2014 +0000
+
+    Added basic workspace page with links.
+
+commit f9f2faa315b2e97143fc104346e02feb4a3d514d
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Jan 24 17:05:02 2014 +0000
+
+    Fixing some tests that I broke, few more to do later.
+
+commit cf1b6e7ce966e7748d3a9f0dbb150bb6404251e0
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Sun Jan 26 12:26:53 2014 +0000
+
+    Revert "enable 'feedback' for haproxy"
+    
+    This reverts commit 220daea93caabc9a0a2e80adf8f572b8bff5f567.
+    
+    recommendation is to use is_it_working
+
+commit d19139ca7c65781d4a48e7be4f8b7a375df46f50
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Sun Jan 26 20:49:55 2014 +0000
+
+    update lockfile
+
+commit 750c88bee0395b92878a9f502140204d1884e316
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 27 09:45:41 2014 +0000
+
+    Fixing more broken tests.
+
+commit c0484c44b5f3d0fff40c3a3deef60e3cea9d85ac
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 27 10:30:09 2014 +0000
+
+    Statcounter!
+
+commit 4c17a1f9dc077693ececcdcb9628c7b3da9c9f58
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 27 11:07:39 2014 +0000
+
+    Moving statcounter to header.
+
+commit 2905ce590c0be2331572536d29f5784b08fb6fff
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Jan 27 11:22:27 2014 +0000
+
+    Updates to search feature
+
+commit 2dd474236062302325eca364a728acef2abc7de9
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Jan 27 12:08:12 2014 +0000
+
+    Object strings in en.yml
+
+commit f84c6e318403b9b684f74f20d20402a2ff0d69e7
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 27 12:15:57 2014 +0000
+
+    Oops, rendering statcounter block in the wrong place.
+
+commit d8b7de97374c699f3d1bc502ee84510872e833ff
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Jan 27 12:31:28 2014 +0000
+
+    remove spork/guard to speed up tests in buildbot
+
+commit 752374d506ebc61463aa03f984b47bbbb7ab4420
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Jan 27 12:32:14 2014 +0000
+
+    use zeus as alternative to spork for faster cucumber tests
+
+commit 88a5c315581ad3267cee6ccb3f21045d39366e25
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Jan 27 12:33:47 2014 +0000
+
+    Grey button css fix
+
+commit ad3789f1e3ca6807fa5af24a6728f9f6a3ca92d7
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Jan 27 12:40:47 2014 +0000
+
+    subnav for workspace - hidden until better test
+
+commit a0c2e9832cb56f29a3a32e0b820426b87d7dd38a
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Jan 27 13:47:14 2014 +0000
+
+    basic zeus config, and is_it_working tests, tests fedora and smtp, should test solr as well
+
+commit 1f3e9247462d528a7621ae66861c99a8a46e2f4c
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Jan 27 13:58:20 2014 +0000
+
+    fixes for selected facet filter
+
+commit 6724c205c26fb78a7825237517191bb9a051f070
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Jan 27 14:01:45 2014 +0000
+
+    check load balancer, should really check solr as well
+
+commit 57e5b7767fa1f9d54e543c8af8601866497e62eb
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Jan 27 14:03:52 2014 +0000
+
+    example rsolr check
+
+commit f4e0a4e9e3f267b66d3f0831443abacda4ba975e
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Jan 27 14:20:10 2014 +0000
+
+    facet selection fixes - partial solution
+
+commit 2d1903cffeffd1617f11d3353bfb0d99742d8f94
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Jan 27 14:26:59 2014 +0000
+
+    Fixes for facet restrictions
+
+commit 881017046f468dbccc3dada7990f8f3f90cf4520
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Jan 27 14:35:46 2014 +0000
+
+    object type icons
+
+commit 3598362fde68c57247fd0d740ba0e98557d3e46c
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Jan 27 14:40:12 2014 +0000
+
+    video icon
+
+commit 7764446f89b36e673dfbb0888719002d607bb58a
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 27 14:37:54 2014 +0000
+
+    Fixing institute url
+
+commit 38e4484ca0a8c78c51aeb3ecf0c103e15b188f6c
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Jan 27 14:40:54 2014 +0000
+
+    movingimage icon
+
+commit f3e76e269c3cf91dc4d486101e8535f5abba6e53
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 27 15:18:34 2014 +0000
+
+    Fix for duplicate Account link which caused tests to fail
+
+commit 8ebfb60b691bfaee6ac95e844d5a7fb93861f168
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Mon Jan 27 16:17:29 2014 +0000
+
+    Removed date facets in CatalogController
+    Removed date sorting in CatalogController
+    CatalogController now deafults to displaying 12 results, instead of 10.
+
+commit 5c56112cb7ea81309b27772e75928dba45fbfa41
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Jan 27 16:18:24 2014 +0000
+
+    Remove some random characters from the statcounter code. Confirmed that it is working.
+
+commit 135140456400ceecdccaf306a794f01c7c0f4b27
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Jan 27 17:20:43 2014 +0000
+
+    attempt to squash a bunch of rspec errors
+
+commit 7ca73ee055361f52b4c94f4f40e00b326d55b475
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Jan 28 12:27:13 2014 +0000
+
+    fix step for checking flash'd messages
+
+commit 71f6b8c6b8db41dc831c9220083a92ea2dde471f
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Jan 28 12:34:11 2014 +0000
+
+    Revert "fix step for checking flash'd messages"
+    
+    This reverts commit 7ca73ee055361f52b4c94f4f40e00b326d55b475.
+
+commit 050620d73daa98d87bf17e9b86377515611288ba
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Jan 28 12:48:56 2014 +0000
+
+    Adding omniauth shibboleth
+
+commit 082204aa0753436dda0bd9e37672b94fb3a71189
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Jan 28 14:20:14 2014 +0000
+
+    Facet Filter styling
+
+commit 9b08caebfb45aec65c1b8605580968d79fa14563
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Jan 28 14:41:19 2014 +0000
+
+    Fixing typo in the Exceptions raise line
+
+commit 9b435406587731de1d5cfe0e19021253c5da1582
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Jan 28 14:41:49 2014 +0000
+
+    Removing random debug
+
+commit 9c5c69ddb72bae08d14c6026489c5321ea121ebe
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Jan 28 14:43:00 2014 +0000
+
+    Adding label for cover image
+
+commit 716a30f200be747c81dcf348e6b450c85fa32bea
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Jan 28 14:53:08 2014 +0000
+
+    Initial version of licenes, including a new static admin_tasks page where we can collect links to administrative tasks such as adding new licences, adding users, etc.
+
+commit c08ecccea5b17d6383b1305e9f0d58b99b1b930d
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Jan 28 15:32:30 2014 +0000
+
+    Correct order of database setup
+
+commit bfadfb8349dff1b928dd9ffadd90298aa16247b7
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 28 16:58:31 2014 +0000
+
+    facet dropdown arrows
+
+commit fabed40d1462d4782b3bc4a5dc64c4b77964200f
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Jan 28 17:08:27 2014 +0000
+
+    commented out year created sort value - throwing errors
+
+commit 511f3ce8ab37bc2d3126fb75f8044e16cdc738c4
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Jan 28 18:09:20 2014 +0000
+
+    migrate needs to happen both before and after the db:seed
+
+commit 69fbdce9df984786d1c9fc0ffd598e6aab644aac
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 29 12:52:51 2014 +0000
+
+    View cleanup
+
+commit eee4d1149f51d89a9b13e73e2c3299204587d863
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Jan 29 15:12:49 2014 +0000
+
+    Updating to latest version of the user_group gem
+
+commit 28b67261fa0c94dc5fc8b27de1b7fcb0da1fe5cb
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 29 15:29:26 2014 +0000
+
+    Changes to surrogate filenames for use in views
+
+commit e2c062e9a61bc6da299e2c6d25eee33c6cc1a27e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 29 16:28:59 2014 +0000
+
+    Put institutes back in collection view
+
+commit c08cbbb781d24b9e95543d905bd5ee18abc02f0c
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Jan 29 16:51:35 2014 +0000
+
+    Updating version of dri_data_models gem
+
+commit bf50f2fa6af7f05e58ddae1b4536d1c4a2f98e5b
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Jan 29 17:44:02 2014 +0000
+
+    Undoing some changes that broke institutes.
+
+commit f662f35d803149de2a619ad8b0d295d8fff74c98
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Jan 29 18:54:00 2014 +0000
+
+    Helper for fetching surrogate url
+
+commit 4e3bbd61ab97d17200ff14219b6d00cad77ba367
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Jan 30 13:57:27 2014 +0000
+
+    JSON rendering was broken due to changes in the controller.
+
+commit a5acafea35747dfe216bc10e02b4e5cf472be4db
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Thu Jan 30 14:08:18 2014 +0000
+
+    Fixed broken tests involving dri_data_models, there are still failing
+    tests but it looks more like a problem with permissions.
+    
+    Add predicates_config.yml to config folder as dri_data_models now uses
+    a custom predicate to identify ordered siblings in EAD.
+
+commit 7fd13497479080967db1405cd71d619f134dc673
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Jan 30 15:07:34 2014 +0000
+
+    Remove generated files
+
+commit 849481e016b2d043665a8b1b86ca00920d2cd1b2
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Jan 30 15:11:01 2014 +0000
+
+    Exclude generated files
+
+commit 2858b4e9ae0d8c5d65c0923530ea5efa19fbf10e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Jan 30 16:33:47 2014 +0000
+
+    Add crop to image processor
+
+commit 879a1cc5cfc5ebddeec6ea1e75a260c45a84b78a
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu Jan 30 19:59:33 2014 +0000
+
+    devise views styling - sign in
+
+commit 3542b3b5ae5f5558593121410f04e287ad011e09
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Fri Jan 31 12:07:30 2014 +0000
+
+    Replaced referencing the 'type' fields in Solr calls to 'object_type' as EAD metadata
+    may produce empty fields.
+
+commit b0baea06692b2ee234a91973e5c0a89f1fbeb69e
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Fri Jan 31 13:35:52 2014 +0000
+
+    All cucumber tests now pass.
+
+commit 32ed9acf5e97f8cfb12b08af312e379a8eca8182
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Sat Feb 1 15:41:08 2014 +0000
+
+    update deploy scripts
+
+commit 462c082ab9f58387ed14a2820eab2e44ff4625c3
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Sat Feb 1 18:57:36 2014 +0000
+
+    updates to build infrastructure and ci system
+
+commit b27b0ab51b627127ee8f5079e8c68f9354fe5465
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Sat Feb 1 19:15:06 2014 +0000
+
+    settle on behaviour of supervisord
+
+commit 4ee6dc1bcf9d2e6967de9310645f3dc5ff7091ea
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 2 18:46:26 2014 +0000
+
+    fixed border box around devise _links.erb links
+
+commit e4ab1e7ccec78fb9e49bed895f507bcb6f6c6fbe
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 2 19:21:13 2014 +0000
+
+    signup styling
+
+commit 93d0354947b74fcbe73a4bb55ae01e330e7412fc
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Feb 3 10:33:20 2014 +0000
+
+    Warning message styling fix
+
+commit 79cfea406255fb65825eb8b8a2b87063047ec966
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Feb 3 14:37:07 2014 +0000
+
+    Added tests for instiutes and fixed code for getting collection_institutes
+
+commit 30cbe38f7e051215d07802c3849fbf9306b01bfa
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Feb 3 14:56:24 2014 +0000
+
+    css fixes for login
+
+commit cba8e114d691a2e5b9887c1057816ff09a0d9cc7
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Feb 3 14:58:24 2014 +0000
+
+    signup block fixes
+
+commit a01298255869add8eaa151324055f4fe6ffdbed3
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Feb 3 15:20:04 2014 +0000
+
+    Sign Up/ Login In / Alerts
+
+commit f3ec2d1ba41bb4454e5f815fad1beaf6b166c946
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Feb 3 15:27:31 2014 +0000
+
+    social media signin - first pass
+
+commit c1b50fd0bae5fff187a09f2318366b539bae2e2c
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Feb 3 15:35:07 2014 +0000
+
+    updates to Sign In and Sign Up
+
+commit 1ed7ba095612eebed90b272135427a4702fb451a
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Feb 3 15:40:39 2014 +0000
+
+    social login image updates
+
+commit 5fcae6b6e0b6ad3f83519b8bbde6bf1d32a38f88
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Feb 3 15:55:32 2014 +0000
+
+    css updates for sign up and login
+
+commit 94f20177cad424ce87688ce3c32f57393fd9878a
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Feb 3 16:27:41 2014 +0000
+
+    Catch exception if file cannot be saved
+
+commit c372a5d33f66a874f9ee793505323c2083a55baa
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Feb 3 16:35:10 2014 +0000
+
+    sign in tweaks
+
+commit 52677d0b2e95f406b268ac983a1981295d224057
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Feb 3 18:45:51 2014 +0000
+
+    removed annoying array brackets from collection view
+
+commit 3a8aaa2bc08d6998370718bdee82219dd5551213
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Feb 4 12:16:34 2014 +0000
+
+    Change S3Interface to class
+
+commit 9b9fa1faf0b705d453466373640f8482eaac576e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Feb 4 12:20:01 2014 +0000
+
+    Remove generated files
+
+commit 132d537d5391bb69ea833db84c553e62f3ecc919
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Feb 4 19:16:39 2014 +0000
+
+    update deploy scripts
+
+commit 17eec08224332ddd8239f6e02f0379c1f2a06bfc
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Feb 5 12:23:38 2014 +0000
+
+    social media css button updates
+
+commit 9a75f7cf3522afb5998ec2bdd881935db2d13398
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Feb 5 13:00:39 2014 +0000
+
+    Split views into partials
+
+commit 4553e4a6e514994ad7f8584ef4c2b9554a387aff
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Feb 5 13:12:05 2014 +0000
+
+    social media hover updates
+
+commit 3f0ef0781ea7041e19bc7a8c259d2af954ae5f31
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Feb 5 14:39:40 2014 +0000
+
+    title updates
+
+commit bb252bad23bdce53ac32bc1c072b7bb75ec60c55
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Feb 5 15:56:48 2014 +0000
+
+    Try tests without factory girl
+
+commit f63505c7ecb5cb9b20ed3e936869d1631dd138e7
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Feb 5 16:08:55 2014 +0000
+
+    default_icon / Block fixes
+
+commit 9801a83b05f902fa6fb7de6d5616aed6f8d4edb1
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Feb 5 17:12:37 2014 +0000
+
+    forgot password partial
+
+commit 8015d81ac23fce771fa1248f3a06163a8eb7207b
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Feb 6 12:00:56 2014 +0000
+
+    search icon / enter as submit / fixes to collection and object blocks
+
+commit 194cf76b645aa98f5e8a2325013d3542abddc9cb
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Feb 6 12:29:21 2014 +0000
+
+    Include storage changes
+
+commit fa5ce6b1cf7f85bf5eaecaecefd4b5f74191252c
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Feb 6 14:05:30 2014 +0000
+
+    Updates to blocks css and markup
+
+commit 6dc63674e091a003e219b10250bbd2c9fafa496b
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Feb 6 14:56:54 2014 +0000
+
+    updates home page
+
+commit 7aa5c6713e9049f27a65a21dc1005a6b3a6be6ea
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Feb 6 16:03:57 2014 +0000
+
+    Subject update to blocks
+
+commit 9f46d53c9ac6135fa069aaf259a9ddf2ca686b05
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu Feb 6 16:27:04 2014 +0000
+
+    band-aid fix for re-index all objects
+
+commit e35f9b8ab6ff259f2925bbce7978736ce65e5d92
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Feb 6 18:31:41 2014 +0000
+
+    new object and collection blocks
+
+commit d01bc06708ce93cee44417dd092e4fbd0bf691ae
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Feb 6 18:37:28 2014 +0000
+
+    document rights on collection blocks
+
+commit c07c8c1eec374cdaf0ea5cb3b4b3be275ce820b7
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Feb 6 18:43:31 2014 +0000
+
+    do not display OK search button
+
+commit 720856cf78e4b923b510fc8ebc55b0b4077b3b22
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 7 10:26:05 2014 +0000
+
+    Replace collections index view with search results
+
+commit 2b2562f46f4ac5ad552237201223b8322f051a87
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 7 10:40:54 2014 +0000
+
+    Get collection object count
+
+commit df1b647488bfd2c6aad850e42a49df57240dfe09
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Feb 7 10:57:00 2014 +0000
+
+    cleanup article views on catalog and collections
+
+commit f387d1946d349e189ac358889227543f57c17851
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Fri Feb 7 13:13:20 2014 +0000
+
+    Some modifications to get NIVAL collection ingested.
+
+commit 6391eb646a60505294a3d7d47ea362b6d3dfb6c2
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Fri Feb 7 14:08:41 2014 +0000
+
+    Updated to latest version of dri_data_modelsto fix some EAD bugs.
+
+commit 6a6b4296b96361c633879d4cf5315796fab077ef
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 7 15:50:59 2014 +0000
+
+    Reimplement request access to asset
+
+commit f6a7cd604aa04e2db15a4c3f7e5cf4b3af245acc
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Feb 7 17:07:33 2014 +0000
+
+    Adding Licences and associated tests. Some improvements to tests for institutes. Also some code clean-up.
+
+commit 539a2142a559f9126902165efb8fcbb5472f4dce
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 7 17:07:37 2014 +0000
+
+    Display pending requests
+
+commit 12e7ac884bf783912e5512b9eeda8178032c0d38
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Feb 7 17:44:52 2014 +0000
+
+    removed unwanted <br> from field render - fixed home partial classes
+
+commit 39272297e91414ee47df38101f8e992f8a366288
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 9 09:26:47 2014 +0000
+
+    reorder bookmark checkbox render
+
+commit d9761d432b153b356001b2b6b131d87906721d84
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Sun Feb 9 16:08:26 2014 +0000
+
+    fixed up deploy scripts
+
+commit b339c239fa84bc32f100a6ee5b99990500411bee
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Sun Feb 9 17:05:49 2014 +0000
+
+    deploy on one host at a time
+
+commit cc1f4c5bb128e174f29d2e14e60818f54749635c
+Author: SineadRed <sinead.redmond@nuim.ie>
+Date:   Mon Feb 10 11:50:17 2014 +0000
+
+    Updating catalog_controller to display EAD metadata fields
+
+commit 6c14da0f869498cf1eef8f065d092ab3eed3330f
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Feb 10 11:53:02 2014 +0000
+
+    Fixing bunneh path. This page needs design.
+
+commit 52bf4916d89ff662eb0a3b401b24a30b884016c7
+Author: SineadRed <sinead.redmond@nuim.ie>
+Date:   Mon Feb 10 11:55:14 2014 +0000
+
+    Delete conflicting config from application_controller.rb
+
+commit 525fcd3eb336981e966df7bab19a14ef5f328c3e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Feb 10 14:18:09 2014 +0000
+
+    Determine format from generic file if possible
+
+commit 8e43a46fb71dc573487950eafa962bb5ae037806
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Feb 10 14:36:24 2014 +0000
+
+    Change collection index view again
+
+commit eac7878752ebd1674a7aa2c4709f6876d59c9377
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Feb 10 16:34:33 2014 +0000
+
+    Paging for collections
+
+commit 82fab35d55e8b4de6c78ff7bb17399908ff55629
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Feb 11 11:22:41 2014 +0000
+
+    Use surrogate for image objects in results
+
+commit 86e602b2c03ed31c39205c3efa27f36ad3b59aa7
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Tue Feb 11 12:07:28 2014 +0000
+
+    Fixed a bug where mp2 files were not being characterized by FITS. We have
+    to use a workaround where the mp2 file is copied into a temp file with an mp3 extension.
+    
+    Added a lot of new Solr fields based on the characterization data provide by FITS.
+    
+    Added two new fields Solr fields to replace our dependency on using metadata type fields
+    for generating file icons etc:
+    
+    - file_type_tesim
+      This an array. It can be either ["collection"], ["unknown"], or an array of following four
+      file types : "audio", "video", "image" or "text".
+    
+    - file_type_display_tesim
+      This is an array that should be identical in length to file_type_tesim. It contains the
+      text that should be displayed to the end user. For example, an element called "collection" in
+      file_type_tesim may correspond to a "Series" element in file_type_display_tesim. The elements
+      in both file_type_tesim and file_type_display_tesim are ordered so that the correspond to each
+      other.
+    
+    These fields are derived from data stored in GenericFile. So once a GenericFile is characterized, a
+    queued task is now sent to update the index of the Batch file it belongs to.
+    
+    You will need to reindex the entire repository to see the changes. Avoid using index_everything as
+    the indexing has to be done in a specific order, so that the GenericFile objects are indexed before
+    the Batch objects. Please, use the following commands in order:
+    
+    GenericFile.all.each { |obj| obj.update_index }
+    Batch.all.each { |obj| obj.update_index }
+
+commit 5a8b7df06b5e5e8ec343d699f8bab909fb68ae17
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Feb 11 12:18:42 2014 +0000
+
+    more updates to deploy scripts, app deploy now occurs serially
+
+commit 892684a7c269e3a88638b7f2f6f3923c0988eed0
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Tue Feb 11 13:01:16 2014 +0000
+
+    The logic for calculating the _show_{type} views now use file_type_tesim, not type_tesim.
+
+commit fc0b938ed603c1a66dfd83ba8984026914067bf0
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Feb 11 14:08:45 2014 +0000
+
+    object image holder / no asset available / suggest message fix
+
+commit fd90de252aefe318b63fb5a35de168819648ab93
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Feb 11 14:10:26 2014 +0000
+
+    fix to image (width 400px, no height)
+
+commit f48c529ba590f4a76ba65bbd16fd28f11dea82dc
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Feb 11 15:34:57 2014 +0000
+
+    publishing institute styling for a collection view
+
+commit e82346f0c135d0078e27fd3eef23106af03d4810
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Feb 11 16:08:18 2014 +0000
+
+    publishing institute
+
+commit 95f46247b42fd67d952e28a397df1b0095c5b39d
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Feb 11 19:03:49 2014 +0000
+
+    Add facets and use facets for collection objects
+
+commit 9fd7795c12bf1c9f0ef9a6695372bed95b254350
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Feb 12 10:32:34 2014 +0000
+
+    Updating docs - change Resque instructions and prerequisites.
+
+commit fc59ae79843fa6e8e7afb49ac4e6d2d71cf076c8
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Feb 12 10:43:03 2014 +0000
+
+    adding empty spec file stub for licences
+
+commit 826b0d2520891be83a928247dd9b8d4ecc8691f2
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Feb 12 10:55:59 2014 +0000
+
+    updat deploy and reindex all objects
+
+commit 197ec5cc3bcee27caec14cdfed44349d7fbaccf1
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Feb 12 12:54:29 2014 +0000
+
+    Facet filter collection views
+
+commit 26d1e2055efbfad1e55ee21233493562161306d0
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Feb 12 16:47:12 2014 +0000
+
+    Add link in nav to create collection
+
+commit b8ffa898e6f24b2278cd7145a5db3aaef59f9c5c
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Feb 13 11:02:35 2014 +0000
+
+    updates to institute
+
+commit 820b75af672986b53d598940858bd96eb254fc71
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Feb 13 12:44:49 2014 +0000
+
+    API to return a list of assets associated with objects.
+
+commit a377697ff8335476445e336de4085911bbf9afb5
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Thu Feb 13 13:05:20 2014 +0000
+
+    netbeans project folder added to .gitignore
+
+commit 2bf081cb817699e6aecf33f2d305cf98bb61bc4e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Feb 13 14:04:06 2014 +0000
+
+    Remove unused routes and views
+
+commit 6238a135032d8fabbc2481794b4311bfd767f5ef
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Feb 13 14:52:11 2014 +0000
+
+    Remove check of generic files as it slows down search
+
+commit 091f501ce7647805eff20b829ef277ca8a823612
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Feb 13 17:00:53 2014 +0000
+
+    Fixing bug with governing_collection_solr helper function and views when object was a top-level collection.
+
+commit ef447b43acbc2c131df82ea14c2b083512664aaf
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Feb 13 17:22:52 2014 +0000
+
+    Updating version of dri_data_models gem
+
+commit c3504690f3425f90b47317cac9d24805c8bf8746
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 14 10:23:02 2014 +0000
+
+    No governing collection should not happen, but check anyway
+
+commit 43d9e267843221e6c50e1da92dcc01a361685123
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Feb 14 11:55:09 2014 +0000
+
+    Added large thumbnail (400x300), lightbox (600x450) and full size (no resizing) derivatives for image
+
+commit a76457e9d301bd35801a4faeb9020eb384cc51ea
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 14 16:47:14 2014 +0000
+
+    Modifications to allow for multiple files per object
+
+commit 22891de1c24f44f5bd83c222dc3137896dcca805
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 14 19:21:05 2014 +0000
+
+    Changes for multiple files
+
+commit 936eba550f27e398f09c8ccce61d7d205f6f0a32
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Feb 14 20:43:29 2014 +0000
+
+    new thumbnail derivative jobs
+
+commit 5104d2e6a4eb5a6184fe6a04cf8c072b3c9750b5
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 14 22:24:01 2014 +0000
+
+    Placeholder views for generic file details, also displays the surrogates
+
+commit ca525c0f5bf62e3b16eb9f596ef5eb6cf5babd71
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sat Feb 15 18:52:17 2014 +0000
+
+    images back on object view - colorbox support
+
+commit 1dbdbfe18a838182f0fda621fc68d201d328434a
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sat Feb 15 18:54:29 2014 +0000
+
+    added colorbox gem
+
+commit e62ddb5bfae8a964ed89c85fd5422940fed40f0c
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sat Feb 15 19:28:19 2014 +0000
+
+    cleaner license display
+
+commit 352a167ec201ca8331085ebeb00bd446dbe350eb
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 16 12:12:29 2014 +0000
+
+    license and bookmark tweaks
+
+commit e97ec1a3b075050c7c54d5af337af0deb12db233
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 16 13:04:17 2014 +0000
+
+    download files moved to second object block
+
+commit d7f4a98e5713d16205b114ab7dd793341c34e5bd
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 16 13:16:03 2014 +0000
+
+    count for file downloads
+
+commit 42c2d4ebe9f4523c4fdab8307a9c1e55bba74e33
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 16 13:24:33 2014 +0000
+
+    moved license link on object
+
+commit ec2d61b6b89f6bb2a528860b0a6a6d5e29bb212c
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 16 14:18:49 2014 +0000
+
+    remove counted object in collection - better done by facet filtering
+
+commit 0e00e458208f36abe07015bff0a8abc9d158fd19
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 16 14:19:54 2014 +0000
+
+    reusing document Icon for Text type
+
+commit 9244e4f2b46dba844a08c7f9ac95ed45dffd8a49
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 16 14:52:57 2014 +0000
+
+    institues display cleanup
+
+commit 461cb4c6e159b8baa07b23032459c07abdffa536
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Feb 16 19:01:57 2014 +0000
+
+    whitespace for institutes
+
+commit 3fc97335272afafff0e6418dcbcef716d73437b7
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Feb 17 09:36:48 2014 +0000
+
+    do seed and migrate/testprepare before ci run and after ci_spec
+
+commit dddeffc9f66d98618d27938d610b05bf5dfe233f
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Feb 17 09:40:30 2014 +0000
+
+    Modify download file route, colorbox in gemfile
+
+commit 0798b25f0e53229ef6bbe1b595d84e79272c4f5d
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Feb 17 09:55:25 2014 +0000
+
+    use url helpers
+
+commit 692e0add795ccf8456a82dcc78a29adc7acd3450
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Feb 17 15:35:08 2014 +0000
+
+    Allow a file to be replaced
+
+commit 2f6d4b36d22525854bc9d42863c9d157ba520e3a
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Feb 18 15:05:06 2014 +0000
+
+    collection update
+
+commit 3a07aabbd9f5a1fa579946fa9c47937e3f772045
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Feb 18 16:50:27 2014 +0000
+
+    added ghostscript dependency to brew install command
+
+commit a7c05ec642f56bec6026755459a903b34a07ae56
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Feb 18 18:50:41 2014 +0000
+
+    cleanup object tools and citation modal
+
+commit 2da9e2dccafa22a5fc78a40ea8e8ead872efdc92
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Feb 18 18:51:22 2014 +0000
+
+    override blacklight citation
+
+commit 01c9d7cb81d45ab884db390cf69afb190f029536
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Feb 18 19:14:46 2014 +0000
+
+    begining to ajaxify facet pagination
+
+commit 3b4f8f5c97b470ef47fa97f30dac364d9003aece
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue Feb 18 20:01:36 2014 +0000
+
+    removed unnecessary constraints div
+
+commit 36b6ac7e8356078b276e89d38462a9d0f012544d
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Wed Feb 19 08:47:48 2014 +0000
+
+    same thumbnail jobs for PDF as Image type"
+
+commit 8c0ef544f4fb28795015dbe605c9afe7dd1f299f
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Feb 19 09:40:29 2014 +0000
+
+    note about operations
+
+commit 726a200e12601d383d1e39f7e48dbf9225b5c8db
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Feb 19 09:58:39 2014 +0000
+
+    Add surrogate display back to view, will move to helper later
+
+commit 22503b4c2c8b2ded77f523097cb29c1590e3baea
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Feb 19 10:42:28 2014 +0000
+
+    fixes to search feature
+
+commit 076344ba2324b68aa45e3a21444d8b05495a75bd
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Feb 19 12:40:32 2014 +0000
+
+    Job to copy pdf to surrogate
+
+commit 3d9bbf0e68fa13a4d7ed229b8d36b9847945163b
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Feb 19 13:44:42 2014 +0000
+
+    Some fixes to bucket names and removing buckets after api tests
+
+commit 745d44f6f2268c641ffcfa6cfa0927c807126e2c
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Feb 19 14:43:58 2014 +0000
+
+    Object View styling - multiple image asset, download
+
+commit 3527502674f22e00222eb9e5fc129d1457cdbab5
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Feb 19 16:56:40 2014 +0000
+
+    Image in search results
+
+commit 22e4713e7c532859dd351ef2d7e30a598415322e
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Wed Feb 19 18:58:33 2014 +0000
+
+    video icon - needs design review
+
+commit fa03e9bc0c174097965ae7289d98d416cf749e22
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Feb 20 10:19:28 2014 +0000
+
+    object image tool fixes
+
+commit 7132a8e7b4cb1ec9212cf4ec59f316a0b83b9cad
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu Feb 20 10:36:24 2014 +0000
+
+    simple download links under asset
+
+commit 027863f8d6f416cf81474e0fda5b71b114b404ab
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Feb 20 10:47:54 2014 +0000
+
+    update to download button
+
+commit b3182f4cfbf0490c591d6091efbecff863f7d5a7
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu Feb 20 12:05:18 2014 +0000
+
+    simple download link button
+
+commit 7ba59ba6df4a3768c31c58aaecde42f9e33d5d84
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Feb 20 12:05:37 2014 +0000
+
+    Tool/bar edits and image updates
+
+commit 881758ba5360400b36d79aee7e0841be46a66c2d
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Feb 20 12:29:32 2014 +0000
+
+    Make sure bucket is removed and stub sufia queue
+
+commit 88cc535a4dcc122b325355366e5ff88f08cb86a0
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Feb 20 14:57:10 2014 +0000
+
+    Updating to latest dri_data_models
+
+commit 8ec362b5110e2fe6dffea8623798bcd192bf11b3
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu Feb 20 15:15:13 2014 +0000
+
+    various UI fixes
+
+commit 62f19cf2c21d5bfd2e7296e4589b28e91f28404f
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Feb 20 15:35:05 2014 +0000
+
+    Change search order for cover images
+
+commit db4d27015e1c3fac90b5d4ff89c8ff0c94611e12
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu Feb 20 19:00:29 2014 +0000
+
+    fixed colorbox href on image types
+
+commit 004975123909d8e79b1dd2f984a83c87f4db1e90
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu Feb 20 19:06:31 2014 +0000
+
+    fixed height on dri_image class
+
+commit a4c752b87f9a108b1f0f36798a78afa5bcbebf40
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu Feb 20 19:10:03 2014 +0000
+
+    removed height attribute from collection cover img
+
+commit bee6717723d13fe4033eed5b79af4d32d5e5eccb
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu Feb 20 20:00:55 2014 +0000
+
+    quick and dirty home page
+
+commit 725fee807113ac9ad7eeb7964b8d0ade3cb75586
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Feb 21 09:10:17 2014 +0000
+
+    fix to use thumnail_medium for PDF surrogate for search_image
+
+commit 3d9f4f3b42c11ce6cd84c81026ee221606f483ef
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Fri Feb 21 09:16:05 2014 +0000
+
+    update to image holder
+
+commit 926814dc69e71f7ad672136fb5844c130a8d7b97
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 21 14:27:58 2014 +0000
+
+    Change so that you can see form, and handle institutes with no logos
+
+commit 78c451e18ca6831d21ce8281efd40b51f083dc04
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 21 14:47:32 2014 +0000
+
+    Fix error in routes
+
+commit a760772227ff33f9cce1cf7ddf9024d3dddff928
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Feb 21 16:18:19 2014 +0000
+
+    Fix tests
+
+commit 6d9e58679cf57af0d9c619ee26f30fb02cf226f1
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Feb 24 10:10:55 2014 +0000
+
+    Remove extra raise
+
+commit f407d3c53fa22cee173152b57bc751e7d0c16eb9
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Feb 24 16:38:57 2014 +0000
+
+    Add action to generate surrogates of objects or all objects in collection
+
+commit c30ed5a3967390aae4912f1184e772f395b1e72d
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Feb 25 09:29:47 2014 +0000
+
+    Updates to Search, Save Search and Collection Blocks
+
+commit ca1d0ec24a57fe212bd9a1e757264a444e4a475e
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Feb 25 11:01:59 2014 +0000
+
+    Some changes to the API
+
+commit 8c58d62537ce4a3c6cef73668b53928f3f413d4d
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Feb 25 15:02:23 2014 +0000
+
+    Defaults to returning all metadata fields in the API
+
+commit e33e88aa4aec29b73bae4d18ad4fdb5a5c38ca9f
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Feb 25 15:25:04 2014 +0000
+
+    static design for Browse tabs all/collection/objects
+
+commit c2200e939829faed644cee64caff0d2738789ee3
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Feb 25 16:30:36 2014 +0000
+
+    Add citations
+
+commit 25913efd09b279c4596d5cfcd65c4d3698eee415
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Feb 25 16:39:50 2014 +0000
+
+    Fixing bugs in API
+
+commit acffcf3db4eb39287579d77050a46f0de77c622a
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Feb 26 12:25:21 2014 +0000
+
+    Adding related API and 30 day surrogate URIs to the get_objects API.
+
+commit 422356fbd0bb1bb14bf56dc6ff7fbe71c33f795f
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Feb 26 13:00:03 2014 +0000
+
+    Can now pass an optional count parameter to related API
+
+commit 8092dddc6f7ba34f52e9a363c9c7a2c1b98ae296
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Feb 26 16:23:07 2014 +0000
+
+    Adding geojson coords
+
+commit 54fdb69ac4d98e07e4a48a15f7587d2677d93688
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Feb 27 09:52:48 2014 +0000
+
+    Surrogates resource
+
+commit 65dd9c1766d80261ddeecc75ea9205f45b7485c4
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Feb 27 12:53:52 2014 +0000
+
+    Add show to surrogates controller
+
+commit 385236db514b691c8b1202c45f70801ff88e64b1
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Feb 27 16:55:52 2014 +0000
+
+    styling update browse tabs
+
+commit 56140795ba1b09a3802dfe24e71c402082a41665
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Mar 3 12:29:58 2014 +0000
+
+    Changes to related API
+
+commit 622b77c3907ca3a0b30792d3694292a37ca9f8d3
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Mar 4 16:12:58 2014 +0000
+
+    Allow user to change status
+
+commit cd8166bc481f318bdafecc2c7a5288df02dabb09
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Tue Mar 4 11:43:07 2014 +0100
+
+    breakup documentation
+
+commit 9207a69375efcc5d9f0b4843487f295c39cf14a4
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Tue Mar 4 11:43:27 2014 +0100
+
+    create disclaimer doc
+
+commit 451ad31221a9cd84cd0b8f7bc0708e0f34564712
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Tue Mar 4 11:45:02 2014 +0100
+
+    dont load schema, it truncates database, also run seed as an example
+
+commit 3f4afe759d2647af5d6a0eb8f50acd2cb2ffa6e1
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Tue Mar 4 11:47:54 2014 +0100
+
+    update contributors and create mailmap so attribution goes to the right people without duplicate entries
+
+commit 40d78a9f860d069df77871fdf4dc11849fef47dd
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Tue Mar 4 11:50:39 2014 +0100
+
+    edit and clean mailmap
+
+commit 471974f432e413296758228480a46b3c7dc164c6
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Tue Mar 4 11:51:58 2014 +0100
+
+    sort list
+
+commit d86b3f8041db4a6032054c4a94ce1b100479b384
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Tue Mar 4 11:54:42 2014 +0100
+
+    minor edits to starting up resque workers in different modes
+
+commit 10b6a62d443b681f9e9b0e8de096c152cb6bd990
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Mar 4 19:22:15 2014 +0000
+
+    collection and object bigger clickable areas and no phantom links
+
+commit 56b47edf97ea7af36104bbc1b1d627a25db215b4
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Mar 4 20:43:39 2014 +0000
+
+    type facet selectors on tabs - needs callbacks and conditions
+
+commit 5dabee36801c8e5f08676e830866e1d7e1651ecd
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Mar 5 11:51:51 2014 +0000
+
+    Tabs Collections/Objects
+    Objects in the collection list
+
+commit 68545e7e729a977b09cbb7f2e4a14e1b96e0f7a5
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Mar 5 12:35:52 2014 +0000
+
+    dri_collection - Media Types Block /Total Objects / Depositing Institute
+
+commit 96b619272e61d60e90860e7e2480016eff385832
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Mar 5 12:41:08 2014 +0000
+
+    Reducing facets
+
+commit 031307a633af46ead059cdc2c648f5ae65494d00
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Mar 5 13:12:48 2014 +0000
+
+    collection block / object number styling
+
+commit a81c900962c67841ba3864389a2362b68eaf3dec
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Mar 5 13:17:53 2014 +0000
+
+    object_type string on result block
+
+commit 26648d18a6766d8ca5c38839a2daf6e79b82cef5
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Mar 5 13:18:41 2014 +0000
+
+    (browse_collection.html) selected class on page display 9|18|36
+
+commit 79b8832bd30992df7a5c6982f64156bf880566ef
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Mar 5 13:26:00 2014 +0000
+
+    update to collection object number total
+
+commit 89925b7dbae1bc9daab9293d0e3c2d60364b9c9c
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Mar 5 13:41:50 2014 +0000
+
+    security through obscurity - /v1/ no longer exists
+
+commit 6d296b74a4a5b5addd006eeb16cc0a2af7607cc1
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Mar 5 15:00:30 2014 +0000
+
+    Styling for Clear All / Facet Restrictions
+
+commit 60f3e043e0adbcfcd4839eaf6a550a85f2bb5fe6
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Mar 5 15:02:54 2014 +0000
+
+    Fixing some commented out tests, now @wip
+
+commit 158b4e106d931a15bc619fb3ba72cbf8866130fd
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Mar 5 15:09:21 2014 +0000
+
+    update deploy scripts, back in a steady state for deploys again
+
+commit 9a8638e53bcf90b54f7fa8e5242b25bd4e2ef9cb
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Mar 5 16:05:38 2014 +0000
+
+    Styling Update
+
+commit bd0b8ab4067cdb90c66d2cd865bac88acdacfcd9
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Mar 5 17:02:47 2014 +0000
+
+    Fix failing institutes test
+
+commit 15eb81474207917e861884f129bfa74a7bc0fc80
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed Mar 5 16:57:15 2014 +0000
+
+    collection factory should include published date
+
+commit 6f763b0d324169e5229eb735e64329002c56ce70
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Mar 5 17:37:22 2014 +0000
+
+    Fix broken licences test
+
+commit fcf6a1f23fb435f88aaca04fe84748a00bcb3351
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Mar 6 13:06:52 2014 +0000
+
+    changed Objects in this Collection locales_en label
+
+commit cb90d2bdbf45d2e286759686eb0e67eb414de8d2
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Mar 6 14:18:51 2014 +0000
+
+    Add some spec tests
+
+commit 697e3da663260b16a96ce1acf98483b704cc6408
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Mar 6 15:39:19 2014 +0000
+
+    Adding institutes to API objects index
+
+commit 9d6d89f2a3417028f583b19fe65745ab959dd909
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Mar 6 16:38:06 2014 +0000
+
+    changed collection_id to root_collection_id for API
+
+commit 92d2dc09b5c8796ada2ba3085a3fe622b39782a3
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Mar 6 16:43:09 2014 +0000
+
+    Update doi metadata and tests
+
+commit e62df7aa5fb280f62d594ad681e0de0e467cc568
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Mar 6 16:46:28 2014 +0000
+
+    Add publisher config
+
+commit 21a841d1b723bbb779ba8fa1402a5780a6dad3fb
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Fri Mar 7 07:26:57 2014 +0000
+
+    update deployment scripts
+
+commit 1a0165520b38e009774c54df39810d3b4cdb1afc
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 7 08:10:20 2014 +0000
+
+    fewer (2) facet restriction tabs - new style
+
+commit 4568cfc174f0fd84a915114a0b34a2bef2cc2f88
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 7 08:12:30 2014 +0000
+
+    home page partial with updated collection blocks
+
+commit dbb6a86a053ea2f13aba2ae3ba2a06877bb8f389
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Mar 7 10:10:49 2014 +0000
+
+    GeoJSON box changes
+
+commit 83acacc679b00048ad201fdb1798fbdf43c15293
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Mar 7 16:00:45 2014 +0000
+
+    Incorrect tmp directory used in local file model test
+
+commit afc416566e7ca200803754e8c415bf493ac959f8
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 7 18:19:04 2014 +0000
+
+    selected class on current_per_page value
+
+commit 7824c9cd91f16645bfac4c01d546f63cbc67bc25
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 7 18:21:20 2014 +0000
+
+    blacklight configuration file - can this be overridden by application config?
+
+commit 6748af5a877cabec144428d9b17c737097dadb85
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Mon Mar 10 07:53:16 2014 +0000
+
+    temporarily hide collection/object tabs - real about us link
+
+commit 600f78cc0372af726571a6a597a5b2d2eb4b0542
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Mar 10 12:35:11 2014 +0000
+
+    Adding Optimized web format
+
+commit 4f8b69c1c0521a233fa93c7c35fe30f7b30e1a05
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Mar 10 12:46:36 2014 +0000
+
+    Mint doi if publishing
+
+commit fcf342c332c693b9a2ce2a180ae5e4f2ca97d2af
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Mar 10 14:19:13 2014 +0000
+
+    Fix tests
+
+commit d637e0961bcc5d0c3e4b0bdbc0a6a8fcab50c7ec
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Mon Mar 10 15:47:32 2014 +0000
+
+    Add new route collections/ingest for ingesting a collection from XMl.
+    
+    Adjust some application_helper helpers to work with a collection
+    with a hierarchy of subcollections.
+
+commit 73224335c656d29650a7b8327d753fc54b44a076
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Mar 10 16:18:56 2014 +0000
+
+    Mint doi for collection
+
+commit 501798173d4d943457b4f525d578470e3b081a23
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Mar 10 16:48:53 2014 +0000
+
+    Set status admin only
+
+commit 5f1184e67c0fefa9f4ff98572aba79a68425af34
+Author: Damien Gallagher <damien.gallagher@nuim.ie>
+Date:   Mon Mar 10 17:04:44 2014 +0000
+
+    Modified ObjectController.update_status so that it handled hierarchical collections.
+    
+    Fixed bug where CollectionController.destroy got accidently incorporated into
+    CollectionController.ingest.
+
+commit 2bb2c6bb8146a1b0715d3e85503e9e57e511f9a4
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Mar 10 17:24:05 2014 +0000
+
+    Fixing permissions check on asset files
+
+commit fe2268700a052cc37e7dfd725825cd3f83803b79
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Mar 11 10:23:50 2014 +0000
+
+    signup field_with_errors fixes
+
+commit f55ef9efef8802e0c6dfa9722f4676571174b352
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Mar 11 10:47:03 2014 +0000
+
+    Reducing size of optimized image
+
+commit 4edb95cd0e72fb21a3dbdbe148af62730c8ed3d7
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Mar 11 13:00:15 2014 +0000
+
+    Slight change in image size
+
+commit d0e7267e1255da3eb05cae8418a50f28615e0f5d
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Mar 12 14:39:04 2014 +0000
+
+    Change for medium field and for jpeg surrogates
+
+commit d253a5e1cae0bb0b9b4036757487dc3dcaf39573
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Mar 12 15:01:00 2014 +0000
+
+    Removing the medium field again.
+
+commit fd51b1653edbb8566735aed74c895eea6e247489
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Mar 12 16:02:45 2014 +0000
+
+    styling updates
+
+commit b1c17f96982690c9499ef425653b1abc0428e328
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Mar 12 16:16:11 2014 +0000
+
+    Only show generate surrogates if there is a file
+
+commit 9bc5399ddb27c02deb865bcd2e0524d8a5ca0bdf
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Mar 13 16:04:19 2014 +0000
+
+    new homepage layout
+
+commit f39d7f7d5f5bac4170b6790de706137d4c0e7535
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Mar 13 16:13:41 2014 +0000
+
+    Styling Updates
+
+commit dd5ada5962d9f7b924a6da8cbf588747ddd0d87f
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri Mar 14 16:15:00 2014 +0000
+
+    disable auto-deploys as inspiring ireland is live -- need to re-organise how deploys work
+
+commit a06d27bb8ad0cb55395e9d5084376d7bfd4f8b63
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Mar 18 14:32:56 2014 +0000
+
+    Modify the set status function to avoid fedora
+
+commit 35786f36a4f8cec06e4b0c705d451ffe83bbb8d8
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Mar 18 17:33:37 2014 +0000
+
+    Removed subcollections from search results and enabled the 'Collections' and 'Objects' tabs.
+
+commit abbb49a3c89f1ab0efa5c7ea80ac10744b9d3db9
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Mar 18 19:57:08 2014 +0000
+
+    update deploy repo
+
+commit f0a3d527a1334274a68230b44e025785dd17784f
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Tue Mar 18 20:09:34 2014 +0000
+
+    microformat readme
+
+commit 99b608802c957727adca564b90c349c2d8d94e07
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Mar 19 10:43:24 2014 +0000
+
+    fix for home page banner
+
+commit d9540aa42787e8c21540859b6b994e217578bbda
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed Mar 19 13:18:00 2014 +0000
+
+    README.rdoc updated
+
+commit 4da7e03fcd5c473baabb7e7327dde29058d01e61
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Mar 20 10:54:52 2014 +0000
+
+    Configure devise path in production
+
+commit a61eb13a2ef3ab413880632aacff00283376ec13
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu Mar 20 10:59:48 2014 +0000
+
+    note how to start the workers
+
+commit 49beca8603bc4f86cd690e2e6fdb4ffde1a94a7e
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Mar 20 16:49:56 2014 +0000
+
+    Fix for bug #780 - getting a syntax error on catalog show page for an object with restricted read permissions where you do not have access.
+
+commit 5c804e2938ec6a52feee3f4ed43af80ed8fceb1e
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri Mar 21 11:42:10 2014 +0000
+
+    sqlite3 to mysql migration documented in the README.rdoc
+
+commit 9bcb6c993b4307846b624a7a03f731a9d9c6dd50
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri Mar 21 16:18:12 2014 +0000
+
+    Fix for issue #709 -  parsing encoded facets.
+
+commit 5df1e6d80368aa54db20370d177af91f0c5d30a5
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Mar 21 16:41:30 2014 +0000
+
+    Add publish action to collection, add reviewed status for objects
+
+commit 751b475ec51d17607341d42c9c21ef8e74426fc0
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri Mar 21 17:13:19 2014 +0000
+
+    http_accept_language gem updated and tested
+
+commit f597fda5001b8d5ef1fc400566ddc92cb3e07989
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 21 17:23:33 2014 +0000
+
+    changed geographical_coverage facet label to Places
+
+commit 33e92ea2ee0749c930bb27b4eb37e8df6d5f00b5
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 21 18:52:14 2014 +0000
+
+    pagination fixes
+
+commit c6712d299af177eea80a9638899f342b891d7014
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 21 19:14:08 2014 +0000
+
+    fixed broken test due to Location Facet label change
+
+commit 7db96c1c7a56ce22b599b9da93f91bb8867f7b38
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 21 19:15:13 2014 +0000
+
+    added initaliser for kaminari default values
+
+commit b778f537992b811f560303cfbae66ddea701649c
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sat Mar 22 12:15:35 2014 +0000
+
+    fixed tests from changed collection label
+
+commit 17985bb429b831d6eab82294fc3ad1091b8eb00c
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Mar 24 11:02:39 2014 +0000
+
+    potential language gem bug fixed
+
+commit 444ef017fc3e028e1aa9a8e891f5407af9c053d8
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Mar 24 12:16:55 2014 +0000
+
+    Update for http_accept_language
+
+commit 320c3ad5a7e30e21788a20b876bb09c82c580628
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Mon Mar 24 12:17:49 2014 +0000
+
+    default value for results set to 9 in catalog controller
+
+commit 541854f63d1b39f54eb464a99610c6351d89283e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Mar 24 12:48:26 2014 +0000
+
+    Allow for publishing objects in an already published collection
+
+commit 783328c607b921e896af84778b268931166795b2
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Mar 24 12:49:15 2014 +0000
+
+    Fix encoded facet parsing, broken because Location facet label changed.
+
+commit 61a41a04c44b01e97d418ca03e2bd8071ff8479c
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Mon Mar 24 13:09:38 2014 +0000
+
+    Fixing debug broken translations that I had added.
+
+commit 979247c60abdf3ef314a39f90b02206af1bb23ba
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Mar 24 13:23:33 2014 +0000
+
+    Home page and navigation bar updated adding new locale params where needed.
+
+commit 8280f62821353fe56aef1cb4bd71c806aa3de1a3
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Mar 24 16:20:06 2014 +0000
+
+    Allow all objects to be marked as reviewed refs #783
+
+commit e408770954555c5fd0f4e07cfa2ef46be5467839
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Mar 25 08:33:46 2014 +0000
+
+    merge scss
+
+commit 9d19961f42c6b9e70dd14900d3b8137acf147e1e
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Mar 25 08:35:03 2014 +0000
+
+    removed queue dump accidentally commited
+
+commit 9dbeec6bdd068e416a3a9095018cddd9f2347429
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Mar 25 13:23:43 2014 +0000
+
+    language selection functionality developed
+
+commit e73ad13e499087911d5718545f705c56633a29e3
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Mar 25 14:19:30 2014 +0000
+
+    issue 622 language selection tweaked
+
+commit 4e8ce43869a093fe09998dcb2dcdd3407953c90c
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Mar 25 15:50:06 2014 +0000
+
+    gemfile updated
+
+commit f1d15dafb9fa53110682b3eb5e426e519ed34c18
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Mar 25 16:37:58 2014 +0000
+
+    issue 643 hardcoded strings paramterized
+
+commit 2ec81a1e1ed532b95b779dcf44536352fe669f67
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Mar 25 16:39:09 2014 +0000
+
+    issue 643 hardcoded strings paramterized
+
+commit f896715b6cd77ad2273ac93ee199235872541a74
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Mar 25 17:06:26 2014 +0000
+
+    issue 675 sign in/up request stylized
+
+commit 633f611f14cbec8aef15de3295e055b03ef46fcf
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Mar 26 12:43:59 2014 +0000
+
+    Add email confirmations to user registration refs #613
+
+commit e04e32490e6053d2c755dd6ca027a063cfc172f3
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Mar 26 12:57:31 2014 +0000
+
+    Correct permissions fixes #797
+
+commit 42a1aac22dabc62ec42e992b4d78652ef01fec7d
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed Mar 26 13:41:01 2014 +0000
+
+    issue 793 resolved dynamic error page generation implemented
+
+commit e738aebd6ad5f75e10b0c5217431fcbf4bac0973
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed Mar 26 13:50:16 2014 +0000
+
+    issue 793 I forgot to remove the rabbit from the HTML
+
+commit d2a453de46330abc5b85e9f3a43a8ae8c2836400
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed Mar 26 13:56:50 2014 +0000
+
+    fixed typo in the error controller
+
+commit 77ea8e1790246ffdd3058bf2c2b3e134321653de
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Mar 26 17:20:50 2014 +0000
+
+    Get all objects not the default of 10 refs #792
+
+commit d48c3f5602e0aeb4f7395782dcae8b358d6f95bb
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Wed Mar 26 17:59:18 2014 +0000
+
+    restored blacklight facet classes
+
+commit 1c7ffdb27d20614fc4b79cb58f6393b70b010d0e
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu Mar 27 08:01:05 2014 +0000
+
+    more facet tweaks - not sure if this is working
+
+commit d7bce01ee8606673d479cd57b95f0a7470775b72
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Mar 27 09:27:49 2014 +0000
+
+    logo_base
+
+commit 0d47680131b77f5fb67b02b10f07530410afeff0
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Thu Mar 27 11:45:14 2014 +0000
+
+    issue 799 language change test scenrrios developed for: anonymous user and registered with locale preferences
+
+commit 21c91632f3571d8a56cfb696aa83593fc8a30bdc
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Thu Mar 27 11:46:29 2014 +0000
+
+    issue 799 WIP
+
+commit beb171425cd6cc3ad2b74f8610c9bf81359dc7f5
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Mar 27 12:02:11 2014 +0000
+
+    Removing some unused files and fixing default permissions for objects.
+
+commit eb6c9807a1168f8a697e90bb4b7d75ebcbb60bd3
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Mar 27 14:09:09 2014 +0000
+
+    Fix for some odd behaviour when cookie was already present
+
+commit 1058e442e82c387beaf602c189841289a92845f1
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Mar 27 14:14:36 2014 +0000
+
+    Removing a show me the page (in a non-executable test, but still...)
+
+commit 6f6830c0b291fa21948c07901d3690435c59cbc1
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Mar 27 15:54:39 2014 +0000
+
+    updates to css for login and sign up
+
+commit f6d9bea5365cdb9c1ae1d88b60bcfd240eb54cd4
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Thu Mar 27 15:55:54 2014 +0000
+
+    css changes
+
+commit 174785ebf94bdeb1271ffd0a6c311296a5a2654e
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Thu Mar 27 16:31:04 2014 +0000
+
+    issue 799 resolved the test scenarion related to logged in users with a cookie is WIP bacause of capybara chaching the cookies
+
+commit 6662c1e5b2ac90c13d68fe4c1549e51a4b690468
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Mar 27 16:49:05 2014 +0000
+
+    Get all results not just the default of 10 fixes #792
+
+commit 54d2bbd58819e5bd56b2af74a86f96d0bd5a4abc
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Mar 27 17:15:13 2014 +0000
+
+    removed bootstrap classes from show metadata
+
+commit 333d5bd6dc3de80d2bff541ce2674c4295a2bbe0
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Mar 27 17:53:04 2014 +0000
+
+    facet pagination modal fixes
+
+commit 7c845a61dcac82de335b86fc0f71103678354c80
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 28 10:19:37 2014 +0000
+
+    fixed collection_view for bootstrap
+
+commit a85c2d976511226fc9ebcbaef9f0cfacc47c576f
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Fri Mar 28 10:23:14 2014 +0000
+
+    login update
+
+commit fae312d5252a837456afbe0bbfe10e6ea5ab671f
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 28 11:47:40 2014 +0000
+
+    removed old scss files
+
+commit 510288102cbfeb4a61138cf0702a7b07396cf99f
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri Mar 28 12:26:41 2014 +0000
+
+    issue 713 fixed user's read, management and edit restriction emails are lower cased before creing created and updated
+
+commit 0bc09bac443b3b3c5cc287179111bb94b0c436e5
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri Mar 28 12:28:03 2014 +0000
+
+    issue 713 fixed user's read, management and edit restriction emails are lower cased before creing created and updated
+
+commit d9271839a0f8ed7cbb215458c40d8a2b8d5d61f5
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Mar 28 17:03:59 2014 +0000
+
+    Fix for collection publish
+
+commit 789758c22a08b107c99849b25acd7cb221ecbb52
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri Mar 28 17:09:11 2014 +0000
+
+    issue 788 solved subject era and place are parsed and rendered properly
+
+commit 8dec6367d2f816c4b75d7df6fd12e16d3d1bf795
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Fri Mar 28 17:30:37 2014 +0000
+
+    footer updates
+
+commit c1d19f7de8f47acbd8218de466dff3b24c67b662
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Mar 31 10:59:10 2014 +0100
+
+    git ignore updated
+
+commit d3fd924e150c8fab9eb1cd8dbef489fea13d1422
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Mar 31 14:16:59 2014 +0100
+
+    Dont use collection title to view collection objects, fixes #804
+
+commit c30c63e18e8430f8ee5ef2b36f3623e0301a4865
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Mar 31 13:49:34 2014 +0100
+
+    Update redis.yml file for testing assets:precompile target
+
+commit d4889223526bd6208be5d568a8c38ba5ee61f274
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Mar 31 13:50:15 2014 +0100
+
+    be consistent with the rest of the sample config files
+
+commit 7780ce29ed0b9044e8cc47b0014e05c88d0a3d0c
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Mar 31 13:51:55 2014 +0100
+
+    generate assets in tests
+
+commit b41d236495766498b32d4eec44f25487496949dd
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Mar 31 13:53:05 2014 +0100
+
+    note assets precompile step when going into production
+
+commit 7923a654873b535fd449d019b9ed60ae9150248e
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Mar 31 14:36:24 2014 +0100
+
+    issue 727 resolved clear all button developed
+
+commit 729504d07a99e7bc95a40b65c647475548ce8b44
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Mon Mar 31 15:48:32 2014 +0100
+
+    removed exteranious _forms.css.scss - issue640
+
+commit 52ded596b133059e7e78eea85ea287018c72c030
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Mar 31 15:53:21 2014 +0100
+
+    Remove partial that isn't being used as recommended by Eoin.
+    
+    There are upcoming changes in the march_ui branch which will bring back chunks of bootstrap
+
+commit 87438bcff73876ae7d664022d9c839c04c8da755
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Mar 31 16:03:37 2014 +0100
+
+    Generate and commit assets to repo
+    
+    Going by best practices for rails3 apps - https://devcenter.heroku.com/articles/rails-asset-pipeline#the-rails-3-asset-pipeline
+    Assets need to be generated on the client side, then committed to the repository
+
+commit 02eb4fdba9d57407777b0f3fd666b9daed5a5a21
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Mar 31 16:08:58 2014 +0100
+
+    don't initialise the app when generating assets
+
+commit 733d813d3d7e8482ca77093886238d156607e719
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Mar 31 16:12:27 2014 +0100
+
+    regenerate assets
+
+commit 0df1063d26a36fb179dd3b330e4ce9ab071f41fd
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Mar 31 16:29:18 2014 +0100
+
+    Avoid using collection title refs #804
+
+commit 8eeee4ca32a40f4e2fa86f9161b10c118186838c
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Mon Mar 31 16:47:20 2014 +0100
+
+    clear out assets, need to generate assets on a release/production branch
+
+commit ed9e17bdbed7425701cac530f8e8b5587fe31fc1
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Mar 31 16:50:35 2014 +0100
+
+    Change url for collection objects
+
+commit b128c6b5cce62f05220772cd5f5e6b9e756b5f40
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Mar 31 16:53:26 2014 +0100
+
+    issue 788 solved subject era and place are show properly and the facet functionality works as before
+
+commit 25cf6994e33102f3822004c21958fd8dfaba6327
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Mar 31 17:20:20 2014 +0100
+
+    gitignore updated
+
+commit ed9c7e917ae5942932980813b7d14a88d9f6e28f
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Mar 31 18:07:03 2014 +0100
+
+    issue 788 fixed following specifications
+
+commit 2adafb68a96aebda1baccaaca3b940541aa4acba
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Mar 31 18:37:22 2014 +0100
+
+    issue 727 tested and refined
+
+commit 963b6d5414656a3d96be8a74b63a5ffc100c3038
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue Apr 1 11:55:12 2014 +0100
+
+    dont do a schema load in the example, it will blow away the database (it truncates)
+
+commit 3f4628723887dc2ba2f2140854af7c9a75c806e6
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Apr 1 12:18:35 2014 +0100
+
+    possible solution WIP
+
+commit f08ace1fcad4d6374a311073a01005401d6c7e36
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Apr 1 12:30:32 2014 +0100
+
+    test
+
+commit 5dfe0e1f52bf747c2e1ca6130d794abeaa602f57
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Apr 1 13:08:15 2014 +0100
+
+    issue807 rejected because it is browser's caching related. added data-turbolink attribute to facet's link
+
+commit 927c00d370a06fbbb5049f377cce9b570b2c4180
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Apr 1 16:52:02 2014 +0100
+
+    Fix for 809 - only manager should be able to edit collection or publish
+
+commit 69da54dc86d525ff56812a2e306e421606e71e12
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Apr 1 17:09:05 2014 +0100
+
+    new layout and basic carousel
+
+commit d0273e31b80c775c37fc1725f8018cba8996f598
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Apr 1 18:40:01 2014 +0100
+
+    added slides and popover help for query form
+
+commit 36e37f8bb0f841b8ffdd735f378d3343ebc9723e
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Tue Apr 1 19:06:47 2014 +0100
+
+    correct link for footer
+
+commit 484191424722fdb0d080bcf2f10692c124d5a155
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Apr 1 19:16:14 2014 +0100
+
+    fixed broken link on footer - locales text for home
+
+commit 753db9fa5c2583c4f5c6e285fdd78cb282ad4113
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Apr 1 19:22:20 2014 +0100
+
+    rollback production.rb accidentally commited
+
+commit 237f168c5d91ff2db855280606b07dbc87e1f404
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Apr 1 21:15:34 2014 +0100
+
+    footer and main nav fixes
+
+commit a45303c0e7db99b2159832ae34d04f34130bf533
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Apr 2 12:20:57 2014 +0100
+
+    json output for command line client refs #784
+
+commit 89bafa69e7763f9d7bd4230cea4be1768a6fe530
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed Apr 2 12:38:31 2014 +0100
+
+    issue 806 solved params purged after an object and/or a collection update have been persisted
+
+commit b5d4a2aab6ba5cecfa12b1ac33c1dce6296b131c
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Wed Apr 2 15:29:36 2014 +0100
+
+    sort by newest
+
+commit 0c6ad639bcc83a21e2e7963f0fb681f989a4d374
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu Apr 3 11:25:37 2014 +0100
+
+    Update permission checks for collections refs #809
+
+commit 2a2e3a72151689d98411a5be156df5a784027885
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Thu Apr 3 12:39:13 2014 +0100
+
+    issue 818 solved id param purged during clear all facets action
+
+commit 3597352ba03100ca4d14ae28c36b1e27439411c3
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu Apr 3 15:52:36 2014 +0100
+
+    Note deployment procedure - this is an outline for now
+
+commit 2711d7c492aceb54615512b39301a9fd90aa59a6
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu Apr 3 15:59:57 2014 +0100
+
+    list out steps
+
+commit 57d9bb508b345e7c3619694bbf1ee482934b11ff
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Thu Apr 3 17:33:05 2014 +0100
+
+    issue818 fixed now the params id is deleted after use in the controller
+
+commit 76a612bb88c1398629da226f7818a419b032c00a
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Apr 3 17:44:15 2014 +0100
+
+    Tests for permissions (see issue #809 - Only manager should edit or publish collection)
+
+commit 041718f4f9c3a2b57ca139973b7a1dab90b5b61a
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Apr 3 17:50:17 2014 +0100
+
+    Removing 'show me the page'
+
+commit ca87201209e2e2e01c7c3bced3f6a8ab52e21359
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Thu Apr 3 18:11:22 2014 +0100
+
+    issue 707 WIP document type helper developed it now retrieves the localised media types from the locale configurations
+
+commit ebee2647b788b079da2176daa7b5b8fd177a079e
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu Apr 3 21:06:57 2014 +0100
+
+    high voltage about_us page strated
+
+commit d031489ac2afa9078e3b247a1d001f3ce341fc79
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Apr 4 10:22:18 2014 +0100
+
+    Correct url for devise mailer
+
+commit cdb03fef1c9530ebc2805d06f8b70bb1c4e003d5
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri Apr 4 12:23:13 2014 +0100
+
+    issue 822 solved sign in link parametrized and localised
+
+commit 3b93d9c30f3814cb9b5b1125cec8e9ae9d2e302d
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri Apr 4 12:52:21 2014 +0100
+
+    issue 823 solved footer parametrised and localised
+
+commit d94f47d0e54beaeb9e978a57c147e93eb827a10e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Apr 4 15:16:07 2014 +0100
+
+    Correct query for ingest collections
+
+commit 77cd13f1c0fc380c9e9791ab69779f1bebc5fccb
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri Apr 4 15:41:22 2014 +0100
+
+    issue 806 fixed the condition that triggers the renedring of the collection/object selection tab has been refined
+
+commit fcfe0e9647c5b38844c32676eaac31ec6e48c9c0
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Apr 4 16:37:19 2014 +0100
+
+    Clean up some code
+
+commit a00d791f762c22b3060e846205c8f6cf918d3286
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Mon Apr 7 13:17:56 2014 +0100
+
+    popover functions for search etc.
+
+commit 83ecf3e04c34653df2169346105103da7e4425a0
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Apr 7 15:31:11 2014 +0100
+
+    issue 825 solved object fields that are an array are now shown as array into the view
+
+commit e1ee963b098b748400651fe21aeb581d7e436163
+Author: Fabrizio Valerio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Apr 7 15:39:55 2014 +0100
+
+    issue 725 metadata title rendering is now consistent
+
+commit 175e924a707db13f9e18da418464678c49ad4bb9
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Apr 9 13:21:27 2014 +0100
+
+    updates to sort bar and social links
+
+commit f0b51e8ede2f18cb61850668f795148181476b70
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Apr 9 14:12:20 2014 +0100
+
+    issue694 - banner fixes
+
+commit 38e035b84d47f16498a15a030175e1bdf16bd578
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Apr 9 15:06:49 2014 +0100
+
+    issue694 - moved social media and search input form in header
+
+commit 90423505f1279f3b7d20673e48f18fc853f5acda
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Apr 9 16:19:02 2014 +0100
+
+    issue694 - restyled search tools nav bar
+
+commit ae1631762eb20744ffb9a2e7557f9af8e852355a
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Apr 9 16:46:41 2014 +0100
+
+    issue694 - test to see if there is a flash message and allow extra white space on home partial
+
+commit 6415e43bfa219bdd6ccc3fb66c32a4ff13de460b
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Apr 10 10:12:12 2014 +0100
+
+    issue694 - removed flash message test - restyled
+
+commit 7fbc9505b48450c25430c38faeacffb1d1b3fb9b
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Apr 10 14:08:49 2014 +0100
+
+    issue729 - fixed tests
+
+commit 6166c791a720d29c443b799fb683a90d1aeb3643
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Apr 10 15:35:09 2014 +0100
+
+    issue679 - using bootstrap dropdown for lang selcetion
+
+commit c7ab945e9c17e06798cb66cdf27475fc6d2bca6c
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Thu Apr 10 16:26:14 2014 +0100
+
+    issue679 - terms of use modal to replace alert
+
+commit 19c0963336bef04692bc87c143ef99e922e0d66a
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Apr 11 10:57:17 2014 +0100
+
+    Code cleanup
+
+commit 1ffe256042455d9a9925326e167a13267e49bca8
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Apr 11 11:49:49 2014 +0100
+
+    Code cleanup
+
+commit 5b48c6c1e8f209289ce23da3a552d4445f56bd86
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri Apr 11 12:03:47 2014 +0100
+
+    Remove duplicate code
+
+commit f51716ff2715675fa5e534404216cab4e6aef290
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Apr 13 17:17:56 2014 +0100
+
+    issue679 - clearfix for facet constraints
+
+commit 0dea39fa520c7276795332fd1ddbe6051eb5ca45
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun Apr 13 18:26:41 2014 +0100
+
+    about page nave in zen grids
+
+commit 5858d417829e10ea4bcab916e3cfe356c0c0bcc7
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Apr 14 12:37:19 2014 +0100
+
+    issue 830 solved rss feed partial developed
+
+commit 0768a63471fee0d6a06dc60dd1b7142657c65581
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Apr 15 11:17:03 2014 +0100
+
+    issue 768 solved now the collection object in the browse collection views shows the depositing institute instead of the copyrights
+
+commit eccc11e935300ef0621dc9bf208e24dbaefeac4c
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Apr 15 11:46:13 2014 +0100
+
+    Update user group gem for shibboleth fixes
+
+commit 6353e551258ddb31b0032795f2116a851f0c987d
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Apr 15 12:00:48 2014 +0100
+
+    Styling for news feed
+
+commit c9d937edda844cc723b72523f87cf94a340feff3
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Apr 15 11:54:18 2014 +0100
+
+    rss feed description wrapped in a div instead
+
+commit db1d6c12bbeb40a095f31b18b8e68369ad1aeff8
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Apr 15 11:55:19 2014 +0100
+
+    rss feed description wrapped in a div instead
+
+commit 2cae0e8aa8072baa25b339f82e227e26c3afacf1
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Apr 15 13:07:53 2014 +0100
+
+    modified styling for rss feed
+
+commit 5f021ea6d13497e1116cbe65fa51d068bae259f5
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Apr 15 17:34:55 2014 +0100
+
+    Fix for issue #829 API only returns 10 items
+
+commit 09db979c2a0c3092440c7c9e7c711f38721795f0
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Wed Apr 16 11:36:59 2014 +0100
+
+    remove cruft
+
+commit da0a44246fff26424a43ee7c73976645d55a2e95
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Sat Apr 19 12:02:25 2014 +0100
+
+    deploy master automatically
+
+commit 3e1e977329b10241b8d9b7b98eb1a2f9e20c2e6d
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Apr 22 12:47:10 2014 +0100
+
+    removed commented out require statement
+
+commit abedc7240e5748148cb6b0430ad05e8f9b9625d4
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Apr 23 17:41:59 2014 +0100
+
+    Feature #813 - allow manager users to delete draft collections
+
+commit b811f10088ccb63082ac84efdadfb45a5414a55a
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu Apr 24 16:57:49 2014 +0100
+
+    Fix for #856 - array to string conversion error for some objects
+
+commit 637545b62e97201f2d40b9f85beb7d058a5cef7c
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri Apr 25 17:33:52 2014 +0100
+
+    issue 728 and 827 solved both functionalities developed
+
+commit 05c44e529d926029e58b2157464cf26c672e9d76
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri Apr 25 19:55:42 2014 +0100
+
+    issue681 - moved citations to bootstrap modal
+
+commit 720cde6a19a49c851c87019d90e3fff0e1fb9f29
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon Apr 28 09:23:21 2014 +0100
+
+    homepage fixes
+
+commit 3b615fd67cbe99898a641365b20e939982ca5f64
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon Apr 28 12:27:54 2014 +0100
+
+    issue731 - child p elements
+
+commit 1610b5f0d5a64f340c6575f1836cc0c76c8bca44
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Apr 28 12:32:52 2014 +0100
+
+    issue 842 solved switching between objcets and collections in the browse view retains the current search params
+
+commit 87d8113e516a0ffe7b0d5dbd337281b40aeed76b
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon Apr 28 16:55:50 2014 +0100
+
+    Move deleting collections to background job, refs #863
+
+commit 2f7f32ef16813d19de7eb10f63d12417763f99e3
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon Apr 28 17:14:52 2014 +0100
+
+    issue 728 improved objects types custom search urls in collection's view developed
+
+commit ed33d0a72b5dc4d36391e6e40a7c39021502ef65
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Apr 29 09:52:16 2014 +0100
+
+    Funder logo updates
+
+commit a9c5e64b82cda8ef6f2b29d8c08a792d4e42d8c2
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue Apr 29 09:59:29 2014 +0100
+
+    Fix for issue #865 Subject Place not rendering correctly
+
+commit fd84bb9f5a9c7b9a062fea448492ac47adf3ebc9
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Apr 29 10:02:32 2014 +0100
+
+    issue681 - bootstrap citation
+
+commit 549b35794f9dde130e0a5bd64349ad3aead3cc14
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Apr 29 12:29:59 2014 +0100
+
+    Change delete collection flash message, refs #863
+
+commit 691071fc4c06d5bd6156225a883bcbd9dbed7d34
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Apr 29 12:38:37 2014 +0100
+
+    issue731 - content update
+
+commit fd10934cc9f700a607d1bbe45f8033b30bb78013
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Apr 29 13:13:07 2014 +0100
+
+    about page updates
+
+commit e0245a35ef5041ccf9bbd8692fef7b3170b5f977
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Apr 29 13:20:07 2014 +0100
+
+    about updates
+
+commit bd68e2598d1ed6b787149ea0221b51b94eb22dd7
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Apr 29 13:33:06 2014 +0100
+
+    about updates
+
+commit 1e87f5b1ae9e835dbe10310515bbeb9edbca8632
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue Apr 29 16:05:36 2014 +0100
+
+    about page css
+
+commit 149fad87ce7a6670999ed0f1d4e3daab769bd35f
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue Apr 29 16:43:18 2014 +0100
+
+    Add permissions check for search images, refs #837
+
+commit 809e07b1c0b4798fb901f881316f0e63e1b6041c
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue Apr 29 17:22:41 2014 +0100
+
+    issue 736 WIP showing all surrogates if present
+
+commit d0bd245bfe978a79e109d7b0931b68b68a91663d
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue Apr 29 22:08:34 2014 +0100
+
+    issue731 - updates to layout, styling and content on About page
+
+commit 3719be291059df906b3d6a727b97108e39171751
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed Apr 30 10:47:37 2014 +0100
+
+    Update user group gem to fix db seed
+
+commit 9a7fc957fad5dff67fef402d76050e2562bea582
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Apr 30 10:58:37 2014 +0100
+
+    about updates
+
+commit 82b21431cc7c31376723b0e83f220a4f37f58ea6
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Apr 30 10:59:46 2014 +0100
+
+    issue679 - disabled the modal cookie to allow tests to pass
+
+commit 7808b905b00ff53fec0ce3ea903a920c644e76e0
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed Apr 30 11:43:05 2014 +0100
+
+    issue 736 WIP: corousel implemented
+
+commit 7f2a4f2d0d9062696fd7634e2001d17a1c5742cc
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed Apr 30 15:01:42 2014 +0100
+
+    WIP stopped carousel autoplay
+
+commit 86b91149a38cbbc6d352ba7c29510a00dbfabe1f
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Apr 30 15:22:15 2014 +0100
+
+    issue736 - some styling
+
+commit 00c97e7e48428600bf197b9438b28365a1e2eca8
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed Apr 30 15:23:16 2014 +0100
+
+    More robust checking for presence of encoded fields, resolves issue #856.
+
+commit 19ade97173adde451bf5ff71c8dc7d109586befd
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Apr 30 16:28:08 2014 +0100
+
+    issue736 - bootstrap audio player
+
+commit be0cc32228f898573f8bc4be9334b11e523d973c
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Apr 30 16:53:04 2014 +0100
+
+    login / signup fixes
+
+commit 8dfa05d31d1d0a849f30bfbc3d4127bfe3cda05d
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Wed Apr 30 16:57:13 2014 +0100
+
+    login fix
+
+commit 0a03b102cf6cd37a47fafef975e85280a536bee8
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed Apr 30 17:40:16 2014 +0100
+
+    issue736 WIP merge conflicts fixed working
+
+commit feef82b72c0332c0a732ec0e90dfe2c40660eb0e
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Wed Apr 30 17:57:25 2014 +0100
+
+    march_ui - fixed broken about_us pages link in main nav,  about content
+
+commit a25e50f88da61f2559959156b54e132155651f16
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu May 1 09:59:26 2014 +0100
+
+    copy doi.yml sample file in place for tests
+
+commit fec45e12feebb753b515a38a2566ac5eae2313b8
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu May 1 09:59:26 2014 +0100
+
+    copy doi.yml sample file in place for tests
+
+commit 6a672ac2be929315c155e96637a6d7380f03fac8
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Thu May 1 13:48:24 2014 +0100
+
+    Fix for issue #881 remove debug output
+
+commit 3528e84b6f96938b21b9b4713ee358f946ccb0e2
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Thu May 1 16:01:39 2014 +0100
+
+    snapshot deploy scripts
+
+commit 7ec36b5cbec5d1dd443852be2fc65d717a46c811
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Thu May 1 16:09:33 2014 +0100
+
+    Update user group gem to fix issue #852
+
+commit 38572bad34081b449e81bf9b6e5bbbc587f54f05
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Thu May 1 16:32:14 2014 +0100
+
+    issue736 solved initial development of a multiple assets view done
+
+commit af7f360256a77060f639f3affca43c974fcd93e2
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri May 2 12:23:58 2014 +0100
+
+    update deploy scripts as buildbot now deploys from master automatically
+
+commit c921c3371de820e2af024e0cb049c7728bcc358e
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri May 2 16:58:11 2014 +0100
+
+    Fix for bug #885, make sure feed has entries
+
+commit 368d52f7e22de6e766f29cd1a6f7373fc4938eb5
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri May 2 19:21:00 2014 +0100
+
+    issue771 WIP grid/list branching view logic implemented
+
+commit d4097ec5e7237ba388eece4ba9129f5fe607846e
+Author: Jimmy Tang <jcftang@gmail.com>
+Date:   Sat May 3 15:42:47 2014 +0100
+
+    update deploy docs
+
+commit 108487f430fda84dad4c776096adccb4970db94c
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue May 6 10:29:50 2014 +0100
+
+    Catch error code being returned on error, fix #885
+
+commit 6fa9d2b201c9fde1dcc140c7b6a186c862da7403
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue May 6 12:11:47 2014 +0100
+
+    issue654 - better adaptive break for tablets
+
+commit 451aa88bd88130999b4c960ff76fe6ed0807d4b0
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue May 6 12:33:01 2014 +0100
+
+    ignore doi.yml file in prod
+
+commit 9841886cfee7c43bb061054f2e2359ddccb77cdd
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue May 6 12:40:46 2014 +0100
+
+    issue736 - fixed double carousel wrapper bug
+
+commit e5dcb6c18216acf5f27ab1d37a810c5a55cc16ac
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue May 6 12:52:20 2014 +0100
+
+    issue654 - better responsive object_show
+
+commit 1fd8cfeaf1d42d3a6a3fdb42d6f8234907f1b329
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Tue May 6 12:59:19 2014 +0100
+
+    issue654 - features collections title fix on home page
+
+commit ea404cdd6cd99c1bec71114b47ccf40ce0808d6a
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue May 6 13:27:48 2014 +0100
+
+    tweak css for grid
+
+commit 16e84526d5beba0d369c7fdd5594fdf06450fec2
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue May 6 13:35:27 2014 +0100
+
+    issue 771 WIP change view in the browse page functinality developed styling to be done
+
+commit d4ddf5723d5c911d725d8124cddf6d2dfbdfddc2
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue May 6 14:01:51 2014 +0100
+
+    carousel arrows
+
+commit 57e1990e14740b34cfcd11c6c20bf6c0df8fbb01
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue May 6 14:25:22 2014 +0100
+
+    css updates
+
+commit c55f6a5421649523554451a1de9ad71272e8eff6
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue May 6 14:35:06 2014 +0100
+
+    Fix for #817 reenable masterfile access flag
+
+commit e8dffbe3537e1a4b10b5cc02af91953576f03c06
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue May 6 15:13:34 2014 +0100
+
+    Individual partner logos
+
+commit cbc48742520403f659284b58ad300ef5a83b386a
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Tue May 6 16:34:13 2014 +0100
+
+    Update user group gem to fix #886
+
+commit 14037cc0448a2900a79211c743506fe7b4edf0c2
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue May 6 16:43:13 2014 +0100
+
+    remove what appears to be unused style sheets removed from feef82b72c0332c0a732ec0e90dfe2c40660eb0e
+
+commit ab8fe98af2c0965f46f80ac497db4fef92cbd3d6
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue May 6 17:11:52 2014 +0100
+
+    add trailing slash to relative root in production environment
+
+commit 9bc5d76b5824499ed97e8951aed65a24873da678
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue May 6 18:07:23 2014 +0100
+
+    issue771 number per page selector alligned with design
+
+commit 4497973691edc736491b88776668f63c240a0df3
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue May 6 19:25:23 2014 +0100
+
+    issue868 - set max-height for institute logos
+
+commit 6e2895e5640d8d9b8337c89e10ebcc2a7f6f65ea
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue May 6 21:07:32 2014 +0100
+
+    issue763 - list layout for collections
+
+commit a191db5a485889482a9e0f9db97260b024a90c85
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed May 7 12:49:02 2014 +0100
+
+    Fix tests for new catalog display
+
+commit cc298979d1651f8b2edce4a77e6dd04520290944
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Wed May 7 14:33:06 2014 +0100
+
+    issue889 - using highvoltage call to about_us page
+
+commit 16480aed0c5134f67ac495868e31519b21aff242
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed May 7 14:36:10 2014 +0100
+
+    issue 894 news feeds are now open in a new tab by default
+
+commit 9494b618ac94720b69a4af0970f5b1c33d9a3cbb
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed May 7 14:39:00 2014 +0100
+
+    issue 897 amount of feeds restricted to 4
+
+commit 0722d56d96b79d2fe536022eae057a8cfdea6062
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed May 7 14:49:29 2014 +0100
+
+    try and fix relative root url problems
+
+commit 54d11999aee9d34e84cdd8d064d5f08066dbedce
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed May 7 14:50:26 2014 +0100
+
+    issue 890 catalog controller search result sorting configuration cahnged to newest by default
+
+commit e34fb3cd3cecbe165662226e938eb0f57c69aebb
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed May 7 15:06:07 2014 +0100
+
+    temp undo
+
+commit 8aa75cd021fc57a7931a488379b2c93d30e7d35c
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed May 7 15:14:25 2014 +0100
+
+    Checking for something that should not be visible
+
+commit 196a93dc3f113bcc2889eb373d7e025c520ee781
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Wed May 7 15:32:54 2014 +0100
+
+    Fix for #859 Licence override at object level
+
+commit c43ace6cb82efddf96f953f596cea3d922486d84
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed May 7 15:42:53 2014 +0100
+
+    issue 893 home page highlight bug fixed and about us broken link issue fixed
+
+commit af1a803beaed78f48fa6f11a76637dadf4e61741
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed May 7 16:22:04 2014 +0100
+
+    issue 896 only the first institution is shown in the browse collection
+
+commit 6b2bbd24b5b329115dbe91480cb7c3ae29af3719
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Wed May 7 16:26:28 2014 +0100
+
+    generated pages controller for overriding/mapping if necessary
+
+commit 99790de4012ee57723d3ced611a04a8e7af51b13
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Wed May 7 16:41:36 2014 +0100
+
+    issue 891 home page carousel's controllers fixed
+
+commit 627862a6fd714bc7b6384c2538661187261ba8a0
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Wed May 7 17:29:12 2014 +0100
+
+    Make rights a text area issue #860
+
+commit 1373ec8db684b45b12f9c8040f25f6c3a7abe839
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Wed May 7 19:04:06 2014 +0100
+
+    issue899 - fixed footer links and added draft End User Agreement
+
+commit e555af55939acb9488a704e32d7ff11f423af585
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Wed May 7 19:05:26 2014 +0100
+
+    issue899 - marked End User Agreement as draft
+
+commit 032da529318b557c10ab500cdce72eba31d1135c
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Wed May 7 19:49:40 2014 +0100
+
+    issue771 - fixed Search_Results test
+
+commit 3542af1307364083fb984929818870fb357e1d68
+Author: Anna Deegan <anna@Annas-iMac.local>
+Date:   Thu May 8 10:14:27 2014 +0100
+
+    styling for tabular view
+
+commit 54d5f1866808283c0532dbacfac61c02ca3419d3
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Thu May 8 16:03:08 2014 +0100
+
+    issue 895 no search results message implemented
+
+commit 198fb98db5f4f4b28322f33f3943f839bfcdc7b8
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Thu May 8 16:58:09 2014 +0100
+
+    issue763 - tabular view for objects
+
+commit 4687fc012a06e501646c160fc9c36e16aeed2a28
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Thu May 8 19:19:49 2014 +0100
+
+    issue 901 pdf download fixed issue 892 WIP dowload surrogate logic refactored and download single asset surrogate refactored
+
+commit 60140edcb19642529f8f1d764054ff4712963507
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri May 9 10:53:38 2014 +0100
+
+    issue763 - set max-heights and overflow for big description and subject fields
+
+commit 21b027a3c9ac98847612850a723821aa64b07372
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri May 9 12:45:26 2014 +0100
+
+    issue 892 WIP download link integrated with the multiple assets carousel
+
+commit e6b59884fb3ba36968814ddfa175efdb947d4939
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri May 9 13:32:33 2014 +0100
+
+    issue900 - institutions page with first styling
+
+commit 9972f4d337e0f0d4676cb4b32e1fc20ecd568fb4
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri May 9 14:29:38 2014 +0100
+
+    issue 902 solved the search parameter has been purged by the page variable when swithching between collections and objects
+
+commit df970f361485d23c98b7b22a249280ce5dcd9ed1
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri May 9 15:24:08 2014 +0100
+
+    Check if update of object is successful, fixes #872
+
+commit 01411a5e0641b90d97097b3469718280a6f7f365
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri May 9 15:29:52 2014 +0100
+
+    Should be object in step, not Object
+
+commit eeee383b1cf5b68dc233f91ad011301ea0e14ede
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri May 9 15:43:43 2014 +0100
+
+    issue 898 solved current path position retained when cahnging locale language
+
+commit 6dc77877e284c3a31ddb572a7376a4b4013d09a2
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Fri May 9 15:48:05 2014 +0100
+
+    Fixes for #869 and #889 - routing problems with subdir deployment
+
+commit 03987be43efa6965aa1c642224cf6b9b8bf4cfe4
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri May 9 15:59:36 2014 +0100
+
+    Update deploy scripts, there are a number of sql checks in place now
+
+commit 916d55d5b3c25055330b910acb39f809adc6ac3b
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri May 9 16:01:43 2014 +0100
+
+    issue900 - better styling
+
+commit 5e9066856ce89682f8a4182168b938d9f6186526
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri May 9 16:04:07 2014 +0100
+
+    issue900 - deleted accidental file commit
+
+commit d66a35802f8efff1860e4e045193ee8ed9d4a033
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Fri May 9 16:13:01 2014 +0100
+
+    update footer
+
+commit 411f74ff86dee66122f97b39e4580a531539c752
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Fri May 9 16:37:48 2014 +0100
+
+    Handle failed updates, fixes #872
+
+commit 569dc130e3a7f4b0e4acd2caa56a4937a532d1af
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri May 9 16:59:31 2014 +0100
+
+    issue 900 institutions added to the navigation bar
+
+commit 8f245612f58257bd2fa4389da52429461cc37a96
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Fri May 9 17:00:21 2014 +0100
+
+    issue 900 institutions added to the navigation bar
+
+commit 50e6a3fe171f1b5e3474e78b65297d6dd8462ae6
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Fri May 9 17:44:28 2014 +0100
+
+    issue900 - facet search links on static page
+
+commit 0170513ab85e06e72df1a478a1167958ff5e20bd
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sat May 10 15:39:48 2014 +0100
+
+    issue906 - content updates to home page
+
+commit 636a56abdfc6e45ad5b01a154ee39220213e2b76
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sat May 10 17:18:46 2014 +0100
+
+    issue763 - added why no asset text to en locale
+
+commit d946d719c116b8093df4ac474b0e7465894215af
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sat May 10 17:38:40 2014 +0100
+
+    issue907 - set to look for substring in the path
+
+commit 0ff1cefb727ad038dcfbbe1dd5515113581e3ff5
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun May 11 12:42:31 2014 +0100
+
+    issue654 - header styling for tablets
+
+commit e1e9213ba097efc8ca422c0f1759209666441df4
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun May 11 13:02:17 2014 +0100
+
+    issue654 - footer and search option styling for tablets
+
+commit ab2b407740a0754ea30babf65fe328a0856bb340
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun May 11 13:19:25 2014 +0100
+
+    issue763 - styling tweak to right-padding
+
+commit 6fc7c6d351b9d6e0b5a94bd9d740b5a4ff4516a7
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun May 11 19:37:26 2014 +0100
+
+    issue766 - popover help for UI elements WIP
+
+commit 24753f2b0f755bbe764bf8d82c91f4174c24f646
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Sun May 11 20:39:20 2014 +0100
+
+    issue906 - removed English text and replace with latin - links to Inspiring Ireland and Location LODer
+
+commit c953dc69a903504c3b3439570fe0ec9d899da02d
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 07:55:03 2014 +0100
+
+    issue906 - added submitted text, factsheets and links for Natalie
+
+commit 5443327b23c068f2563acf8eebf3f78d8971d93f
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 10:41:34 2014 +0100
+
+    styling updates
+
+commit bc9c086c581a06828c4ecab1ac9fc2d44125579d
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 11:03:46 2014 +0100
+
+    about styling base fixes
+
+commit cfc00ff7d199deb79ee0f6eef6a3b11357020050
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 11:07:28 2014 +0100
+
+    inspiring ireland update
+
+commit 8f5e0dbb03d0a9ac4a874d4c16548d29fddff992
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 11:09:42 2014 +0100
+
+    positing for inspiring ireland
+
+commit 95c9fd399dfa6a238f436bfba77a24e3927a6103
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 11:16:03 2014 +0100
+
+    issue906 - footer styling update, about page layout tweak
+
+commit 3d3b36ebb132e7268af116619bda5bd9e1bef1f6
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 12:03:21 2014 +0100
+
+    home page fixes
+
+commit 315bb25c3291a28b2862eef78013dbaecde57e80
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 12:07:37 2014 +0100
+
+    issue906 - about page and institutes cleanup
+
+commit 95d89e9f9ad5c0c494a70bff935b92dbdc28631f
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon May 12 13:01:13 2014 +0100
+
+    issue 892 file download positioning fixed css style improved total number of assets indicator added
+
+commit 82419d88ba076062073ddb1b3eae4d35731b1f88
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 13:01:36 2014 +0100
+
+    issue906 - update application name and footer address right padding tweak
+
+commit 9cf282fbfc9a7c321071dd5fd0edd04c91e0e9de
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon May 12 13:18:32 2014 +0100
+
+    issue892 merge fix
+
+commit e6a9f4170dbbae6f948ed001e3fadd4a872c100a
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon May 12 13:24:03 2014 +0100
+
+    issue 892 multiple assets static html page (for styling purposing)
+
+commit de15653ad58dac64691ea00d6d47aef3e30417b2
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 13:26:02 2014 +0100
+
+    issue906 - home-page tweaks requested by Natalie
+
+commit 5a50840713dd21ed788fd1e2d55249014b263816
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 13:28:51 2014 +0100
+
+    styling fixes
+
+commit 8360c358228727d2e59cb99b1b4b8aad494ede91
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 13:34:54 2014 +0100
+
+    updates css
+
+commit 43954e63173d60bce6d6bfa4c45d5e2270712e48
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 14:03:45 2014 +0100
+
+    issue906 - about-page tweaks requested by Natalie
+
+commit c1335ae36c2aa087b6b020f516c416c004c5c495
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 15:01:44 2014 +0100
+
+    multiple asset styling
+
+commit 1f9bc26ca265680c5e6f972c8c57dc63716767bb
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 15:02:11 2014 +0100
+
+    issue882 - purged search_field parameter for ajax request from modal
+
+commit 90197c31d9ad5f1194b92932954e694ffdf338de
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 15:08:10 2014 +0100
+
+    updates to multiple assets
+
+commit c33a0eb923c80c6e4c3dedf6ffc087d5a742d2e5
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon May 12 15:24:32 2014 +0100
+
+    issue 892 multiple assets pagination bar tweaked
+
+commit ce8c109e4306e987bab4b04903a3dc7b3c0c0bc6
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 15:26:51 2014 +0100
+
+    issue900 - added NU Maynooth Library
+
+commit f25c7127399ae81c270c6f4bac692df3de3edf0f
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 15:39:53 2014 +0100
+
+    issue892 - set max-height for asset img in carousel
+
+commit c045e3025cf7c7d171f2cea9cbe6c9f599aa56a5
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 15:40:27 2014 +0100
+
+    fixes to multiple assets
+
+commit f0235ea056cafd50682a1f789669e6779733b0f9
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 15:46:14 2014 +0100
+
+    issue910 - added Institutions and About to logged in user main nav
+
+commit 7922ec199aec9f0fe70ce8879aed0d0dca195f22
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Mon May 12 16:05:44 2014 +0100
+
+    fixes to text
+
+commit 40c854594f6bb98d5e6adca2e58d2653e51c8819
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 16:10:21 2014 +0100
+
+    issue801 - standardise Login for UI lables - some styling
+
+commit fb5468ddc4047ca49c4fb334f562baac4ce9044b
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 16:20:36 2014 +0100
+
+    issue801 - stray Sing In lables fixed
+
+commit 767d86415293c3421c95eaf1dd273c31b644a226
+Author: ekilfeather <ekilfeather@gmail.com>
+Date:   Mon May 12 16:31:26 2014 +0100
+
+    fixed bad css commit
+
+commit 4a1c230de6f077e999dfed7914fa477992773773
+Author: Stuart Kenny <skenny@tchpc.tcd.ie>
+Date:   Mon May 12 16:37:07 2014 +0100
+
+    Move setting collection status published to background job #912
+
+commit b6d2789e8cc1db8cc0aab0d16e0f37803db9eea2
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon May 12 17:09:37 2014 +0100
+
+    issue 679 WIP terms and conditions pop up re enabled TODO fix tests
+
+commit 0df0d5f9fe3b831581fc4137469a3694eb5c995d
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Mon May 12 19:09:02 2014 +0100
+
+    issue 679 test fixed
+
+commit 80d831dd8bdfa796d8b4cea77f570789155a448d
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue May 13 11:17:05 2014 +0100
+
+    issue906 - catalogue links for factsheets on about page
+
+commit e4190e3e349933aa6f23fd57a65b2c44909a4042
+Author: Anna Deegan <anna.deegan@dmc.dit.ie>
+Date:   Tue May 13 11:38:49 2014 +0100
+
+    facet block text styling
+
+commit 74859503bb7507f58a5972ed521e352419800e8a
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue May 13 11:44:07 2014 +0100
+
+    issue882 - removing more link on facets until better solution found
+
+commit 0bcee3d555ffef47a3d7b1450791912b11a7fc6e
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue May 13 11:46:42 2014 +0100
+
+    update mailmap
+
+commit 3690e7af0dc9c563ebd2514ce0083750a54a7494
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue May 13 11:48:03 2014 +0100
+
+    issue 913 solved navbar consistent with search results
+
+commit 3b34333962de4dc3ceb40ff852830491695c76db
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue May 13 11:52:45 2014 +0100
+
+    issue882 - removing more link on facets until better solution found - commented out section in partial
+
+commit b81761771e2965ee3dddee93b0fa7f8a64ee578f
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue May 13 12:35:12 2014 +0100
+
+    issue906 / issue736 - final content changes from Natalie - hide download tools from anon user
+
+commit 7888a3f08ea2e5dc4f982a2fd80bfd14d699d34b
+Author: Jimmy Tang <jtang@tchpc.tcd.ie>
+Date:   Tue May 13 12:46:14 2014 +0100
+
+    add simple change log script
+
+commit 30706993180f0457d909b367e26ee36df745e311
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue May 13 13:24:17 2014 +0100
+
+    issue900 - ga locale translations for Institutes and Browse
+
+commit 5796d2c9fbe29befbc29cb872cd682af2cbde170
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue May 13 13:25:44 2014 +0100
+
+    issue736 - disabled scenario for download asset for preview event
+
+commit 0de31dc4468ab6dc679c421885ee74789c521a84
+Author: Eoin Kilfeather <ekilfeather@gmail.com>
+Date:   Tue May 13 13:57:55 2014 +0100
+
+    issue900 - temporary dodge for cookie language test
+
+commit c24766377976120b88b29e4387b65819473b7c5b
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue May 13 14:34:10 2014 +0100
+
+    merging and adding some translations.
+
+commit 8b137c267690bdb17c4eefe0e4c6105e430db79a
+Author: Kathryn Cassidy <kcassidy@tchpc.tcd.ie>
+Date:   Tue May 13 14:46:25 2014 +0100
+
+    Surrogate url expiry changed to 30 days.
+
+commit 9c425447e44ba98c4f2c8aad023b2d5a783fb8b5
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue May 13 15:37:49 2014 +0100
+
+    issue 882 facet pagination fixed TODO has to be tested
+
+commit 0899155e02e19a867d5c9f59a9cc17f383a71a59
+Author: Fabrizio Covone <fabrizio.valerio.covone@gmail.com>
+Date:   Tue May 13 15:45:03 2014 +0100
+
+    issue 882 WIP more link in facet tool re-enabled

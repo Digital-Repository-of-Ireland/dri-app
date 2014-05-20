@@ -15,9 +15,11 @@
   <div class="dri_back_search"><%= link_back_to_catalog %></div>
 
   <div class="dri_vc_title">
-    <%= image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
+  	<i class="fa fa-lg fa-folder-open"></i>
+    <%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
     <% objectsCount = count_items_in_collection document[:id] %>
-    <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(:collection => document['root_collection_id_tesim'].first, :mode => "objects", :search_field => "all_fields") %>
+    <% collection_objects_params = { :f => {:root_collection_id_sim => [document['root_collection_id_tesim'].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
+    <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params) %>
   </div>
 
   <div class="dri_vc_image"><!-- fix link -->
