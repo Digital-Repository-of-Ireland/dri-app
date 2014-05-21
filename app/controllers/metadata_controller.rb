@@ -27,6 +27,32 @@ class MetadataController < CatalogController
     render :text => "Unable to load metadata"
   end
 
+  # Renders the transformed metadata XML stored in the descMetadata datastream.
+  #
+  #
+  def show_styled
+    enforce_permissions!("show_digital_object", params[:id])
+    begin
+      @object = retrieve_object! params[:id]
+    rescue ActiveFedora::ObjectNotFoundError => e
+      render :xml => { :error => 'Not found' }, :status => 404
+      return
+    end
+
+    if @object && @object.datastreams.keys.include?("descMetadata")
+      xml_data = @object.datastreams["descMetadata"].content
+      xml = Nokogiri::XML(xml_data)
+      xslt_data = File.read("app/assets/stylesheets/dri_style_metadata.xsl")
+      xslt = Nokogiri::XSLT(xslt_data)
+      styled_xml = xslt.transform(xml)
+
+      render :text => styled_xml.to_html
+      return
+    end
+
+    render :text => "Unable to load metadata"
+  end
+
   # Replaces the current descMetadata datastream with the contents of the uploaded XML file.
   #
   #

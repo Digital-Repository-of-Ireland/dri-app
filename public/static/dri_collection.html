@@ -1,523 +1,437 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<meta charset=utf-8 />
-<meta name="description" content="description">
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
 
-<title>DRI Collection View Grid</title>
+  <!-- Mobile viewport optimization h5bp.com/ad -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<link rel="stylesheet" type="text/css" media="screen"
-	href="/assets/dri/dri_layouts.css">
-<script src="javascripts/jquery-1.10.2.js"></script>
-<script src="javascripts/jquery-ui.js"></script>
-<script src="javascripts/dropit/dropit.js"></script>
-<script src="/assets/blacklight/core.js?body=1" type="text/javascript"></script>
-<script src="/assets/blacklight/autofocus.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/blacklight/checkbox_submit.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/blacklight/bookmark_toggle.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/blacklight/facet_expand_contract.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/blacklight/lightbox_dialog.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/blacklight/search_context.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/blacklight/select_submit.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/blacklight/zebra_stripe.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/blacklight/css_dropdowns.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/bootstrap-transition.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/bootstrap-collapse.js?body=1"
-	type="text/javascript"></script>
+  <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
+  <meta http-equiv="cleartype" content="on">
+
+  <title>National Archive of Irish Composers - Digital Repository of Ireland</title>
+
+  <link href="http://localhost:3000/catalog/opensearch.xml" title="Digital Repository of Ireland" type="application/opensearchdescription+xml" rel="search"/>
+
+  <link href="/assets/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+  <link href="/assets/dri/dri_layouts.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+  <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery_ujs.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.iframe-transport.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.remotipart.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.cookie.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-transition.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-affix.js?body=1" type="text/javascript"></script>
 <script src="/assets/bootstrap-alert.js?body=1" type="text/javascript"></script>
-<script src="/assets/improved-modal/bootstrap-modalmanager.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/improved-modal/bootstrap-modal.js?body=1"
-	type="text/javascript"></script>
-<script src="/assets/blacklight/blacklight.js?body=1"
-	type="text/javascript"></script>
+<script src="/assets/bootstrap-button.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-carousel.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-collapse.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-dropdown.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-modal.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-scrollspy.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-tab.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-tooltip.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-popover.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-typeahead.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap.js?body=1" type="text/javascript"></script>
+<script src="/assets/bootstrap-player.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/core.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/autofocus.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/checkbox_submit.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/bookmark_toggle.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/facet_expand_contract.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/lightbox_dialog.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/search_context.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/select_submit.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/zebra_stripe.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/css_dropdowns.js?body=1" type="text/javascript"></script>
+<script src="/assets/improved-modal/bootstrap-modalmanager.js?body=1" type="text/javascript"></script>
+<script src="/assets/improved-modal/bootstrap-modal.js?body=1" type="text/javascript"></script>
+<script src="/assets/blacklight/blacklight.js?body=1" type="text/javascript"></script>
+<script src="/assets/dropit/dropit.js?body=1" type="text/javascript"></script>
 <script src="/assets/dri.js?body=1" type="text/javascript"></script>
+<script src="/assets/colorbox-rails/jquery.colorbox-min.js?body=1" type="text/javascript"></script>
+<script src="/assets/colorbox-rails/colorbox-links.js?body=1" type="text/javascript"></script>
+<script src="/assets/colorbox-rails.js?body=1" type="text/javascript"></script>
 <script src="/assets/application.js?body=1" type="text/javascript"></script>
-<script id="twitter-wjs" src="https://platform.twitter.com/widgets.js"></script>
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="pDiTYXEauN6AGty/UWWmOBZusH0/HzSGBH2nKMmBEwI=" name="csrf-token" />
+  <link href="http://localhost:3000/catalog/dri:bk128n37v.xml" rel="alternate" title="xml" type="application/xml" />
+<link href="http://localhost:3000/catalog/dri:bk128n37v.dc_xml" rel="alternate" title="dc_xml" type="text/xml" />
+<link href="http://localhost:3000/catalog/dri:bk128n37v.oai_dc_xml" rel="alternate" title="oai_dc_xml" type="text/xml" />
 
-<script>  $(function() {
-    $( "#dri_dialog_example_id" ).dialog({
-      autoOpen: false,
-      modal: true,
-      show: {
-        duration: 100
-      },
-      hide: {
-        duration: 100
-      }
-    });
- 
-    $( "#dri_search_save_submit_button_id" ).click(function() {
-      $( "#dri_dialog_example_id" ).dialog( "open" );
-    });
-  });
 
-<!-- Dropit Script - uses JQuery-UI Drop function -->
-  $(document).ready(function() {
-	    $('.menu').dropit();
-	});
-</script>
+  <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="/assets/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+  
 
 </head>
 
+
 <body>
-	<div id="dri_wrapper_id" class="block1 dri_wrapper">
 
-		<header id="dri_header_container_id" class="dri_header_container">
 
-			<div id="dri_authentication_menus_container_id"
-				class="dri_authentication_menus_container">
 
-				<nav id="dri_account_nav_id" class="dri_account_nav">
-					<ul id="dri_account_links_id" class="dri_account_links" role="tree">
-						<li class="on"><a href="#" alt="sign up link">Sign Up</a></li>
-						<li class="noborder"><a href="#" alt="login link"><img src="../../app/assets/images/dri/login_icon.png" width="9" height="13"> Login</a></li>
-						<ul id="dri_language_links_id" class="dri_language_links menu">
-							<li class="selected" aria-selected="true"><a href="#">English
-									<img src="images/dri/account_arrow.png" width="10" height="5">
-							</a>
-								<ul>
-									<li><a href="#">Gaeilge</a></li>
-								</ul></li>
-						</ul>
-					</ul>
-				</nav>
-			</div>
-			<!--  close dri_authentication_menus_container -->
-			<div id="dri_social_media_container_id"
-				class="dri_social_media_container">
+<div id="dri_wrapper_id" class="block1 dri_wrapper">
 
-				<nav id="dri_social_media_nav_id" class="dri_social_media_nav">
-					<ul id="dri_social_media_links_id" class="dri_social_media_links">
-						<li><a href="#" class="facebook"></a></li>
-						<li><a href="#" class="linkedin"></a></li>
-						<li><a href="#" class="share"></a></li>
-						<li><a href="#" class="google"></a></li>
-					</ul>
-				</nav>
-			</div>
-			<!--  close dri_authentication_menus_container -->
 
-			<a href="#"><div id="dri_ident_id" class="dri_ident"></div></a>
-		</header>
-		<!-- close dri_header_container -->
+  
+  <!-- Header to be displayed to users -->
+<header id="dri_header_container_id" class="dri_header_container">
+  <div id="dri_authentication_menus_container_id"
+       class="dri_authentication_menus_container">
 
-		<div id="dri_main_nav_container_id" class="dri_main_nav_container">
-			<nav id="dri_main_nav_id" class="dri_main_nav">
-				<ul id="dri_main_nav_links_id" class="dri_main_nav_links">
-					<li><a href="#">FEATURED</a></li>
-					<li class="selected"><a href="#">COLLECTIONS</a></li>
-					<li><a href="#">ABOUT US</a></li>
-				</ul>
-			</nav>
-		</div>
-		<!-- close dri_main_nav_container -->
-		<div id="dri_sub_nav_container_id" class="dri_sub_nav_container">
-			<nav id="dri_sub_nav_id" class="dri_sub_nav">
-				<ul id="dri_main_nav_links_id"
-					class="dri_sub_nav_links dri_nav_collections">
-					<li><a href="#">Assigned Collections </a></li>
-					<li class="selected no_border_right"><a href="#">My
-							Objects</a></li>
-				</ul>
-			</nav>
-		</div>
-		<!-- close dri_sub_nav_container -->
+    <nav id="dri_account_nav_id" class="dri_account_nav">
+      <ul id="dri_account_links_id" class="dri_account_links" role="tree">
+            <li class="on">
+              <a href="/user_groups/users/new" alt="sign up link">Sign Up</a>
+            </li>
+        <li class="noborder">
+              <a href="/user_groups/users/sign_in" alt="Login" id="login">Login</a>
 
-		<div id="dri_crumbtrail_nav_container_id"
-			class="dri_crumbtrail_nav_container">
-			<nav id="dri_crumbtrail_nav_id" class="dri_crumbtrail_nav">
-				<ul id="dri_crumbtrail_nav_links_id"
-					class="dri_crumbtrail_nav_links">
-					<li><a href="#">Excepteur</a></li>
-					<li><a href="#">Sed ut perspiciatis</a></li>
-					<li class="selected"><a href="#">Excepteur</a></li>
-				</ul>
-			</nav>
-		</div>
-		<!-- close dri_crumbtrail_nav_container -->
+        </li>
+        
+    <ul class="dropdown dri_language_links">
+      <a href="#" data-toggle="dropdown" id="en">English</a>
+      <img alt="Account_arrow" height="5" src="/assets/dri/account_arrow.png" width="10" />
 
-		<!-- container for search, sort and pagination etc. navigations and search text input -->
-		<div id="dri_search_features_nav_container_id"
-			class="dri_search_features_nav_container">
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <a href="/session/ga?path=%2Fcatalog%2Fdri%3Abk128n37v" id="ga">Gaeilge</a>
+      </ul>
+    </ul>
 
-			<!-- navigation to allow the user to determine how the search result are sorted e.g. by relevance, A to Z, Z to A -->
-			<nav id="dri_sort_nav_id" class="dri_sort_nav">
-				<select name="sort_options">
-					<option selected>Sort by</option>
-					<option>Relevance</option>
-					<option>A - Z</option>
-				</select>
-			</nav>         	
-            
-            <!-- navigation to allow the user to determine how the search result is displayed e.g. grid display or table display  -->
-		<nav id="dri_display_grid_table_id" class="dri_display_grid_table_nav">
-        <ul>
-       	 <li class="grid"><a href="#" class="selected">&nbsp;</a></li>
-          <li class="table"><a href="#">&nbsp;</a></li>
+      </ul>
+    </nav>
+    <!-- close dri_account_nav -->
+  </div>
+  <!--  close dri_authentication_menus_container -->
+  <div id="dri_social_media_container_id"
+       class="dri_social_media_container">
+
+    <nav id="dri_social_media_nav_id" class="dri_social_media_nav" >
+      <ul id="dri_social_media_links_id" class="dri_social_media_links" data-content="Use these buttons to vist our Facebook, Linked-In, Slideshare and Twitter pages"  data-original-title="DRI on the Internet" data-trigger="hover" data-placement="right">
+        <li>
+          <a href="https://www.facebook.com/digitalrepositoryireland" class="facebook"></a>
+        </li>
+        <li>
+          <a href="http://www.linkedin.com/company/digital-repository-of-ireland" class="linkedin"></a>
+        </li>
+        <li>
+          <a href="http://www.slideshare.net/dri_ireland" class="share"></a>
+        </li>
+        <li>
+          <a href="https://twitter.com/dri_ireland" class="twitter"></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->
+  <div id="dri_search_term_input_id" class="dri_search_term_input">
+
+    <form accept-charset="UTF-8" action="/catalog" class="dri_search_term_input_form" id="searchform" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+
+    <input id="search_field" name="search_field" type="hidden" value="all_fields" />
+        <input id="mode" name="mode" type="hidden" value="collections" />
+
+    
+
+    <input class="dri_search_term_text_input" data-content="Type a search term and press Enter. Use AND and OR to narrow or broaden your search" data-original-title="Search the repository" data-placement="left" data-trigger="hover" id="q" name="q" placeholder="Search..." type="text" />
+    <button type="submit" class="dri_search_term_text_submit_button dri_no_display" id="search">
+      Ok
+    </button>
+
+</form><!-- end form -->
+
+
+    <!-- close dri_search_term_input_form -->
+
+  </div>
+  <!-- close dri_search_term_input -->
+  <!--  close dri_social_media_container -->
+  <a href="http://localhost:3000/"><div id="dri_ident_id" class="dri_ident"></div>
+</a></header><!-- close dri_header_container -->
+
+<div id="dri_main_nav_container_id" class="dri_main_nav_container">
+  <nav id="dri_main_nav_id" class="dri_main_nav">
+
+    <ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase">
+              <li>
+          <a href="http://localhost:3000/" id="dri_home_id">Home</a>
+          </li>
+              <li>
+          <a href="/catalog?mode=collections&amp;search_field=all_fields" id="browse">Browse</a>
+          </li>
+              <li>
+          <a href="http://localhost:3000//pages/institutions">Institutions</a>
+          </li>
+              <li>
+          <a href="http://localhost:3000//pages/about_us">About</a>
+          </li>
+    </ul>
+  </nav>
+</div>
+<!-- close dri_main_nav_container -->
+
+
+<!-- no sub navs for the moment - hidden -->
+<!-- close dri_sub_nav_container -->
+
+<!-- no crumbtrail for the moment - hidden 	-->
+<div id="dri_crumbtrail_nav_container_id"
+     class="dri_crumbtrail_nav_container dri_no_display">
+  <nav id="dri_crumbtrail_nav_id" class="dri_crumbtrail_nav">
+    <ul id="dri_crumbtrail_nav_links_id"
+        class="dri_crumbtrail_nav_links">
+      <li>
+        <a href="#">Excepteur</a>
+      </li>
+      <li>
+        <a href="#">Sed ut perspiciatis</a>
+      </li>
+      <li class="selected">
+        <a href="#">Excepteur</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<!-- close dri_crumbtrail_nav_container -->
+
+<!-- container for search, sort and pagination etc. navigations and search text input -->
+<div id="dri_search_features_nav_container_id"
+     class="dri_search_features_nav_container">
+
+
+  <!-- use kaminari views -->
+  
+
+
+      <!-- navigation to allow the user to page through the search results  -->
+      <nav id="dri_pagination_nav_id" class="dri_pagination_nav">
+        <ul
+        class="dri_pagination_nav_links" >
+
+          <li class="selected">
+            <b>1</b> of <b>3</b> &nbsp;
+          </li>
+              <li class="next">
+                <a href="/catalog/dri:bk128n21z" class="next" data-counter="2" data-search_id="464" rel="next">Next &rsaquo;</a>
+              </li>
         </ul>
-        </nav>
-   
+      </nav>
 
-			<!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
-			<nav id="dri_pager_nav_id" class="dri_pager_nav">
-           <p> Items per page</p>
-            <select  name="sort_options">
-					<option selected>9</option>
-					<option>18</option>
-					<option>36</option>
-			  </select>
-			</nav>
-
-			<!-- navigation to allow the user to page through the search results  -->
-			<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
-            
-				<ul id="dri_pagination_nav_links_id"
-					class="dri_pagination_nav_links">
-					<li class="first"><a href="#">&nbsp;</a></li>
-					<li><a href="#">1</a></li>
-					<li><a href="#">8</a></li>
-					<li class="selected"><a href="#">9</a></li>
-                    <li><a href="#">10</a></li>
-                    <li><a href="#">2098</a></li>
-					<li class="last"><a href="#">&nbsp;</a></li>
-				</ul>
-			</nav>
-
-			<!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->
-			<div id="dri_search_term_input_id" class="dri_search_term_input">
-
-			<!-- 	<form id="dri_search_term_input_form_id"
-					class="dri_search_term_input_form" accept-charset="UTF-8"
-					action="/repository" method="get">
-					<input name="utf8" type="hidden" value="✓"> <input
-						name="search_field" type="hidden" value="all_fields"> <input
-						id="dri_search_term_text_input_id"
-						class="dri_search_term_text_input" name="q"
-						placeholder="Search..." type="text" value="">
-
-				</form>
-				close dri_search_term_input_form -->
-			
-			</div>
-			<!-- close dri_search_term_input -->
-
-			<!-- save search block to allow user to save current search term(s) to their workspace (authenticated user) -->
-
-			<div id="dri_dialog_example_id" class="dri_dialog_example"
-				title="Example dialog">This is an dialog which is useful for
-				displaying information. The dialog window can be moved, resized and
-				closed with the 'x' icon.</div>
-			<!-- close dri_search_save_input -->
-
-		</div>
-		<!-- close dri_search_features_nav_container -->
-				<div id="dri_search_save_input_id" class="dri_search_save_input">
-					<form id="dri_search_save_input_form_id"
-						class="dri_search_save_input_form">
-						<button id="dri_search_save_submit_button_id" type="submit"
-							class="dri_search_save_submit_button" id="search">Save
-							Current Search</button>
-					</form>
-					
-
-				</div><!-- close dri_search_term_input_form -->
-
-		<!-- facet restrictions block showing term(s) and remove links for facet filtered content -->
-		<div id="dri_facet_restrictions_container_id"
-			class="dri_facet_restrictions_container">
-			<ul id="dri_facet_restrictions_links_id"
-				class="dri_facet_restrictions_links">
-				<li>Báid <a href="#">x</a>
-				</li>
-				<li>Galway <a href="#">x</a>
-				</li>
-				<li>Báid <a href="#">x</a>
-				</li>
-				<li>Galway <a href="#">x</a>
-				</li>
-				<li>Báid <a href="#">x</a>
-				</li>
-				<li>Galway <a href="#">x</a>
-				</li>
-				<li>Báid <a href="#">x</a>
-				</li>
-
-			</ul>
-		</div>
-		<!-- close dri_facet_restrictions_container -->
-		<!-- close dri_facet_restrictions_container -->
-      <!-- system messages container -->
-		<div id="dri_messages_container_id" class="dri_messages_container">
-        	<div>
-				<h4 class="suggest">Do you mean: <a href="#">naic</a>?</h4>
-			</div>
-			<div class="dri_notice_message">
-				<h1>Info Message!</h1>
-				<span class="dri_close"><a href="#">X</a></span>
-			</div>
-			<div class="dri_success_message">
-				<h1>Successful Message!</h1>
-				<span class="dri_close"><a href="#">X</a></span>
-			</div>
-			<div class="dri_alert_message">
-				<h1>Warning Message!</h1>
-				<span class="dri_close"><a href="#">X</a></span>
-			</div>
-			<div class="dri_error_message">
-				<h1>Error Message!</h1>
-				<span class="dri_close"><a href="#">X</a></span>
-			</div>
-		</div>
-		<!-- close dri_messages_container -->
-
-		<!-- main content container with place holders for left (first) and right (second) navigation blocks e.g. facet filters note:only one nav (left or right) is expected at any one time-->
-		<div class="dri_main_content_container">
-
-			<!-- first (left) navigation container shown depending on context -->
-			<div id="dri_first_navigation_container_id"
-				class="dri_first_navigation_container" style="display: none">
-				<nav id="dri_first_navigation_id" class="dri_first_navigation">
-					<ul id="dri_first_navigation_links_id"
-						class="dri_first_navigation_links">
-						<li><a href="#">First Nav Item 1</a></li>
-						<li class="selected"><a href="#">First Nav Item 2</a></li>
-					</ul>
-				</nav>
-			</div>
-			<!--  close dri_first_navigation_container -->
-
-			<!-- second (right) navigation container shown depending on context -->
-			<div id="dri_second_navigation_container_id"
-				class="dri_second_navigation_container" style="display: none">
-				<!-- facet block -->
-				<div class="dri_facet_filters_block" id="sidebar">
-					<div id="facets" class="dri_facet_filters">
-						<span class="dri_head_title">Refine your search</span> <span
-							class="dri_search_num">All 106 </span>
-						<div class="facets-collapse">
-							<div class="dri_facet_title ">
-								<h5 class="dri_sub_title twiddle">
-									<a href="#" data-no-turbolink="true">Subjects<span
-										class="dri_arrow_down twiddle">&nbsp;</span></a> <i
-										class="icon-chevron"></i>
-								</h5>
-								<ul>
-									<li><a href="#">Amhráin na farraige (<b>1</b>)
-									</a></li>
-									<li class="selected"><a href="#">An Capall - Bád Seoil
-											(<b>1</b>)
-									</a></li>
-									<li><a href="#">An Capall - Sailboat (<b>1</b>)
-									</a></li>
-									<li><a href="#">Boat builders (<b>1</b>)
-									</a></li>
-
-								</ul>
-
-							</div>
-
-
-							<div class="dri_facet_title">
-								<h5 class="dri_sub_title twiddle">
-									<a href="#" data-no-turbolink="true">Names<span
-										class="dri_arrow_up">&nbsp;</span></a> <i class="icon-chevron"></i>
-								</h5>
-								<ul>
-									<li><a href="#">Báille, Dudley (<b>1</b>)
-									</a></li>
-									<li><a href="#">Báille, Johnny (<b>1</b>)
-									</a></li>
-									<li><a href="#">Báille, Micil (<b>1</b>)
-									</a></li>
-								</ul>
-
-							</div>
-
-							<div class="dri_facet_title twiddle">
-								<h5 class="dri_sub_title">
-									<a href="#" data-no-turbolink="true">Language<span
-										class="dri_arrow_up">&nbsp;</span></a> <i class="icon-chevron"></i>
-								</h5>
-								<ul style="display: none;">
-									<li><a href="#">Irish (<b>1</b>)
-									</a></li>
-
-
-								</ul>
-
-							</div>
-
-							<div class="dri_facet_title">
-								<h5 class="dri_sub_title twiddle">
-									<a href="#" data-no-turbolink="true">Format<span
-										class="dri_arrow_up">&nbsp;</span></a> <i class="icon-chevron"></i>
-								</h5>
-								<ul style="display: none;">
-									<li><a href="#">Sound (<b>1</b>)
-									</a></li>
-								</ul>
-
-							</div>
-
-							<div class="dri_facet_title">
-								<h5 class="dri_sub_title twiddle">
-									<a href="#" data-no-turbolink="true">Collection<span
-										class="dri_arrow_up">&nbsp;</span></a> <i class="icon-chevron"></i>
-								</h5>
-								<ul style="display: none;">
-									<li><a href="#">["Test"] (<b>1</b>)
-									</a></li>
-
-								</ul>
-
-							</div>
-
-						</div>
-					</div>
-				</div>
-				<!-- close facet block -->
-			</div>
-			<!-- close dri_second_navigation_container -->
-
-			<!-- result container showing results / content or forms depending on Context -->
-			<div class="dri_collection_container">
-					<div class="dri_object_view dri_object_title_top">National Archive of Irish Composers (Performance)</div>
-
-				<!-- close dri_object_second_block -->
-
-
-
-				<div class="dri_object_first_block">
-
-					<dl class="dl-horizontal  dl-invert  dri_object_metadata_readview">
-						<dt class="blacklight-title_tesim">Title</dt>
-						<dd class="blacklight-title_tesim">National Archive of Irish Composers (Performance)</dd>
-						<dt class="blacklight-description_tesim">Description</dt>
-						<dd class="blacklight-description_tesim">The National Archive
-							of Irish Composers was launched at Gleeson Theatre, DIT Kevin
-							Street, Dublin on Friday 26th November, 2010. Featuring
-							instrumental and vocal treasures from the National Library of
-							Ireland, there were several modern world premieres to be heard at
-							this unique concert. The inspiration for many of the works on the
-							programme came from Irish airs; the same theme can be seen in the
-							accompanying Digital Library of historic piano music.</dd>
-						<dt class="blacklight-role_cmp_tesim">Owner</dt>
-						<dd class="blacklight-role_cmp_tesim">
-							<a href="/?f%5Bperson_sim%5D%5B%5D=John+Field">Sam Green</a>
-						</dd>
-						<dt class="blacklight-creation_date_tesim">Creation Date</dt>
-						<dd class="blacklight-creation_date_tesim">Friday 26th
-							November, 2013.</dd>
-						<dt class="blacklight-type_tesim">Governing Collection</dt>
-						<dd class="blacklight-type_tesim">None</dd>
-						<dt class="blacklight-language_tesim">Editors</dt>
-						<dd class="blacklight-language_tesim">
-							<a href="/?f%5Blanguage_sim%5D%5B%5D=eng">Martin Whelan</a>
-						</dd>
-						<dd class="blacklight-language_tesim">
-							<a href="/?f%5Blanguage_sim%5D%5B%5D=eng">Andrea Marie
-								Hannigan</a></dd>
-						<dt class="blacklight-creation_date_tesim">Default Embargo
-							Date</dt>
-						<dd class="blacklight-creation_date_tesim">Friday 26th
-							November, 2013.</dd>
-						<dt class="blacklight-rights_tesim">Defaul Rights</dt>
-						<dd class="blacklight-rights_tesim">National Library of
-							Ireland / NAIC</dd>
-						<dt class="blacklight-rights_tesim">Defaul License</dt>
-						<dd class="blacklight-rights_tesim">CC-BY</dd>
-					</dl>
+</div>
+<!-- close dri_search_features_nav_container -->
 
 
 
 
-				</div>
+  <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div><!-- close ajax-modal -->
 
-				<!-- close dri_object_first_block -->
-				<div class="dri_object_second_block">
 
-					<div class="dri_vc_title">
-						 <a href="/collections/dri:j9602060k"><img alt="Vc_folder" height="12" src="/assets/vc_folder.png"
-							width="22"> All Objects
-							in this Collection (102)
-                             <div class="dri_vc_image"></div><!-- close vc_title --> </a>
-					</div>
-					<!-- close vc_title -->
-                 
-         
-           
-				<ul class="dri_view_collection">  <div class="dri_title"> Media Types</div>
-               
-						<li><a href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D">Images<span class="dri_stat_num"> 4</span></a> 	</li>
-                        
-						<li><a href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D&amp;f%5Bobject_type_sim%5D%5B%5D=Audio"><span class="translation_missing"
-							title="translation missing: en.dri.data.types.Audio">Audio</span><span class="dri_stat_num">10</span></a></li>
-                            <li><a href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D&amp;f%5Bobject_type_sim%5D%5B%5D=Article">
-                        <span class="translation_missing"title="translation missing: en.dri.data.types.Article">Video</span>
-							<span class="dri_stat_num">15</span></a></li>
-						<li><a href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D&amp;f%5Bobject_type_sim%5D%5B%5D=Article">
-                        <span class="translation_missing"title="translation missing: en.dri.data.types.Article">Document</span>
-							<span class="dri_stat_num">15</span></a></li>
-					 <li><a href="/?f%5Bcollection_sim%5D%5B%5D=%5B%22NAIC+Performance%22%5D">Mixed Types<span class="dri_stat_num"> 20</span></a> 	</li>
-                     </ul>
+  <!-- system messages container -->
 
-  				<div class="dri_publishing_institute_title"> Depositing Institute </div>
-                    <div class="dri_publishing_institute_image"><a href=""> <img src="images/dri/inst_sample_02.png"></a> </div><!-- close dri_publishing_institute_image -->
-                    
-				</div>
+<div id="dri_messages_container_id" class="dri_messages_container dri_clearfix">
+</div>
 
-				<div class="dri_object_institutes_block">
+<!-- close dri_messages_container -->
 
-					<div class="dri_institutes_title">
-						<span>Institutes and Sponsors</span>
-					</div><!-- close dri_institutes_title -->
 
-					<ul class="dri_collection_institutes_list">
-						<li><span class="dri_collection_institutes_item"> <a href=""><img src="images/dri/inst_sample_01.png"></a></span></li>
-						<li><span class="dri_collection_institutes_item"> <a href=""><img src="images/dri/inst_sample_02.png"></a></span></li>
-						<li><span class="dri_collection_institutes_item"> <a href=""><img src="images/dri/inst_sample_03.png"></a></span></li>
-					</ul>
-					
-                    <div class="dri_institutes_show_more">
-					<a href="">Show more </a>
-				</div>	<!-- close dri_bookmark_object -->
+  <!-- This condition identifies the browse section of the application and every search result and/or facet refinement -->
 
-				</div>
-				<!-- close dri_object_institutes_block -->
 
-			</div>
-			<!-- close dri_object_container -->
-          </div>
-		<!-- close dri_main_content_container -->
+  <div class="dri_main_content_container">
+    
 
-		<footer id="dri_main_footer_id" class="dri_main_footer">
-			<nav id="dri_main_footer_navigation_id"
-				class="dri_main_footer_navigation">
-				<ul id="dri_main_footer_navigation_links_id"
-					class="dri_main_footer_navigation_links">
-					<li><a href="#">About DRI</a></li>
-					<li><a href="#">Terms of Use</a></li>
-					<li><a href="#">Help</a></li>
-					<li class="selected no_border_right"><a href="#">Sitemap</a></li>
-				</ul>
-			</nav>
-		</footer>
-		<!-- close dri_main_footer_id -->
+<div class="dri_object_container">
 
-	</div>
-	<!-- close dri_wrapper -->
+  <div class="dri_object_title_top">National Archive of Irish Composers</div>
+
+  <div class="dri_object_first_block">
+  <dl class="dri_object_metadata_readview">
+            <dt class="blacklight-title_tesim">Title</dt>
+            <dd class="blacklight-title_tesim">National Archive of Irish Composers</dd>
+            <dt class="blacklight-description_tesim">Description</dt>
+            <dd class="blacklight-description_tesim">Suspendisse consequat, magna ac ultrices suscipit, libero nisl consectetur dolor, euismod interdum massa dui eget nisi. Mauris elit turpis, gravida nec dapibus nec, ullamcorper hendrerit orci. Donec erat metus, laoreet id imperdiet ut, pretium eu justo. Aliquam in nulla placerat, sodales risus adipiscing, aliquet metus. Duis placerat velit ac eleifend laoreet. Donec eu dolor interdum, ornare diam quis, facilisis arcu. Curabitur ac mauris pharetra, semper mauris tempor, mattis massa. Maecenas urna diam, suscipit vitae imperdiet pulvinar, malesuada id erat. Curabitur tincidunt mattis dapibus. Sed vel posuere mi. Curabitur mattis tellus ac enim placerat, at eleifend eros accumsan. Mauris non viverra lacus.
+
+Nunc eget sodales mauris. Sed in tortor ac est facilisis dictum. Pellentesque sed volutpat ante. Nulla facilisi. Donec congue eget odio quis gravida. In consectetur magna eu tortor egestas auctor. Phasellus et venenatis lorem, quis pellentesque urna. Nulla ac posuere enim. Quisque ornare lacinia nulla. Vivamus ac felis a sem elementum dignissim.
+
+Maecenas diam metus, lobortis nec tortor ac, ultrices imperdiet leo. Curabitur purus orci, convallis at sagittis vitae, blandit a justo. Vivamus fringilla quam eu tincidunt aliquam. Donec purus neque, gravida eu risus non, hendrerit dignissim massa. Aenean blandit arcu sed mi cursus adipiscing. Nulla luctus rutrum erat, nec auctor augue tincidunt nec. Donec dapibus elementum tempus. Donec feugiat nisi sit amet accumsan gravida. Praesent posuere vel lacus eget mattis. Donec tempus vel massa quis pharetra. Proin accumsan nibh at mauris dignissim imperdiet.
+
+Suspendisse vehicula justo et lacus laoreet pulvinar. Suspendisse quis dapibus ante. Sed quis interdum enim. Pellentesque porta sit amet est et consectetur. Fusce pharetra nibh nisi, dapibus tempus lectus aliquam placerat. Curabitur suscipit nibh eu magna vestibulum placerat. Phasellus justo justo, tincidunt non convallis in, feugiat id arcu. Integer nec augue et lorem condimentum sagittis. Phasellus id urna metus. Nulla sed augue ligula. Sed ut faucibus arcu, vel fermentum odio. Phasellus sed suscipit erat, ac pharetra nibh. Donec in aliquam libero, eget tempus enim. Curabitur aliquam orci ut molestie pellentesque.</dd>
+            <dt class="blacklight-creation_date_tesim">Creation Date</dt>
+            <dd class="blacklight-creation_date_tesim">Friday 26th November, 2010</dd>
+            <dt class="blacklight-subject_tesim">Subjects</dt>
+            <dd class="blacklight-subject_tesim"><a href="/?f%5Bsubject_sim%5D%5B%5D=Suspendisse">Suspendisse</a><a href="/?f%5Bsubject_sim%5D%5B%5D=consequat">consequat</a><a href="/?f%5Bsubject_sim%5D%5B%5D=sodales">sodales</a><a href="/?f%5Bsubject_sim%5D%5B%5D=Maecenas">Maecenas</a><a href="/?f%5Bsubject_sim%5D%5B%5D=laoreet">laoreet</a><a href="/?f%5Bsubject_sim%5D%5B%5D=aliquam">aliquam</a><a href="/?f%5Bsubject_sim%5D%5B%5D=Curabitur">Curabitur</a><a href="/?f%5Bsubject_sim%5D%5B%5D=libero+nisl+consectetur">libero nisl consectetur</a></dd>
+            <dt class="blacklight-type_tesim">Type</dt>
+            <dd class="blacklight-type_tesim">Collection</dd>
+            <dt class="blacklight-rights_tesim">Rights</dt>
+            <dd class="blacklight-rights_tesim">National Library of Ireland</dd>
+  </dl>
+</div>
+<!-- close dri_object_first_block -->
+
+<div class="dri_object_second_block">
+
+  <div class="dri_back_search"><a href="/?mode=collections&amp;search_field=all_fields" label=" ⬅ Back to Collection"> ⬅ Back to Search</a></div>
+
+  <div class="dri_vc_title">
+  	<i class="fa fa-lg fa-folder-open"></i>
+    <a href="/catalog?f%5Broot_collection_id_sim%5D%5B%5D=dri%3Abk128n37v&amp;mode=objects&amp;search_field=all_fields&amp;view=grid">All Objects in this Collection (51)</a>
+  </div>
+
+  <div class="dri_vc_image"><!-- fix link -->
+        <img alt="Cover Image" height="139" src="http://objects.dri.ie/coverimages/bk128n37v.jpg" width="230" /></a>
+  </div>
+
+  
+
+    <ul class="dri_view_collection">
+      <div class="dri_title">Media Types</div>
+
+
+
+
+          <li>
+            <a href="/catalog?f%5Bfile_type_display_sim%5D%5B%5D=Text&amp;f%5Broot_collection_id_sim%5D%5B%5D=dri%3Abk128n37v&amp;mode=objects&amp;search_field=all_fields&amp;utf8=%E2%9C%93">
+                Document
+                <span class="dri_stat_num">49</span>
+</a>          </li>
+
+
+    </ul>
+
+
+
+  <div class="dri_bookmark_object">
+  <div class="documentFunctions"></div>
+</div>
+<!-- close dri_bookmark_object -->
+
+<div class="dri_objecttools_title">
+  <i class="fa fa-lg fa-gear"></i>&nbsp;Object Tools
+</div>
+<!-- close vc_title -->
+
+<ul class="dri_view_collection">
+  <li><a href="/objects/dri:bk128n37v/metadata" id="download_metadata">Metadata (XML)</a></li>
+  <li><a href="/objects/dri:bk128n37v.endnote">Export to EndNote</a></li>
+  <li><a href="/objects/dri:bk128n37v/citation" data-target="#dri_citatation_modal_id" data-toggle="modal">Cite</a></li>
+
+</ul>
+
+
+<div class="modal fade" id="dri_citatation_modal_id">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Cite</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+</div>
+
+
+</div>
+
+<div class="dri_object_institutes_block">
+  <div class="dri_institutes_title">
+  <span>Institutes and Sponsors</span>
+</div>
+<!-- close vc_title -->
+
+    <ul class="dri_collection_institutes_list">
+          <li>
+      <span class="dri_collection_institutes_item"> 
+        <a href="http://www.nli.ie" target="_blank"><img alt="National%20library%20of%20ireland" height="75px" src="http://objects.dri.ie/institutelogos/National%20Library%20of%20Ireland.jpg" /></a>
+      </span>
+          </li>
+          <li>
+      <span class="dri_collection_institutes_item"> 
+        <a href="http//:tcd.ie" target="_blank"><img alt="Tcd" height="75px" src="http://objects.dri.ie/institutelogos/TCD.jpeg" /></a>
+      </span>
+          </li>
+          <li>
+      <span class="dri_collection_institutes_item"> 
+        <a href="tcd.ie" target="_blank"><img alt="Trinity" height="75px" src="http://objects.dri.ie/institutelogos/Trinity.jpeg" /></a>
+      </span>
+          </li>
+          <li>
+      <span class="dri_collection_institutes_item"> 
+        <a href="http://www.museum.ie/" target="_blank"><img alt="National%20museum%20of%20ireland" height="75px" src="http://objects.dri.ie/institutelogos/National%20Museum%20of%20Ireland.jpg" /></a>
+      </span>
+          </li>
+          <li>
+      <span class="dri_collection_institutes_item"> 
+        <a href="http://www.abbey.ie/" target="_blank"><img alt="Abbey%20theater" height="75px" src="http://objects.dri.ie/institutelogos/Abbey%20Theater.jpg" /></a>
+      </span>
+          </li>
+    </ul>
+    <!--  <div class="dri_institutes_show_more">
+    <span>Show more</span>
+  </div> 
+  -->
+
+</div>
+
+
+  </div>
+  <div class="dri_search_features_nav_container dri_clearfix">
+    
+  </div>
+  <!-- close dri_main_content_container -->
+
+  
+<footer id="dri_main_footer_id" class="dri_main_footer">
+  <div id="dri_footer_address_id" class="dri_footer_address">
+    Digital Repository of Ireland<br/>
+    Royal Irish Academy<br/>
+    19 Dawson Street<br/>
+    Dublin 2<br/>
+    Tel +353 1 609 0674<br/>
+    Email 
+    <a href="mailto:info@dri.ie">info@dri.ie</a>
+  </div>
+  <nav id="dri_main_footer_navigation_id"
+       class="dri_main_footer_navigation">
+    <ul id="dri_main_footer_navigation_links_id"
+        class="dri_main_footer_navigation_links">
+      <li class="">
+      <span> <a href="http://localhost:3000//pages/terms" class="muted" id="privacy">End User Agreement</a> </span>
+      </li>
+      <li class=" no_border_right">
+        <span><a href="http://localhost:3000//pages/about_us" class="muted" id="about">About</a></span>
+      </li>
+    </ul>
+  </nav>
+  <div class="dri_funder_institutes">
+    <img alt="funder logos" src="/assets/dri/dri_funder_logos.png" />
+  </div>
+
+</footer>
+<!-- close dri_main_footer_id -->
+
+
+</div><!-- close dri_wrapper -->
+
 </body>
+
 </html>

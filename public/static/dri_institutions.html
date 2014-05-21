@@ -102,7 +102,7 @@
       <img alt="Account_arrow" height="5" src="/assets/dri/account_arrow.png" width="10" />
 
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <a href="/session/ga?path=%2Fuser_groups%2Fusers%2Fsign_in" id="ga">Gaeilge</a>
+        <a href="/session/ga?path=%2Fpages%2Finstitutions" id="ga">Gaeilge</a>
       </ul>
     </ul>
 
@@ -167,7 +167,7 @@
               <li>
           <a href="/catalog?mode=collections&amp;search_field=all_fields" id="browse">Browse</a>
           </li>
-              <li>
+              <li class="selected">
           <a href="http://localhost:3000//pages/institutions">Institutions</a>
           </li>
               <li>
@@ -233,78 +233,131 @@
 
   <div class="dri_main_content_container">
     
-
-
-
-<div id="dri_login_form_container_id" class="dri_login_form_container">
-
-	<div id="dri_login_form_block_id" class="dri_login_form_block">
-
-	<form accept-charset="UTF-8" action="/user_groups/users/sign_in" class="new_user" id="new_user" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="OssOJ0vwvJ6AqskpIgQXoRZ8wn6H8crbcjaOPilfx6M=" /></div> 
-	
-
-			<h2>
-				Sign in
-			</h2>
-			<div>
-				<label for="user_email">Email</label>
-				<input id="user_email" name="user[email]" size="30" type="email" value="" />
-			</div>
-
-			<div>
-			<label for="user_password">Password</label>
-			<input id="user_password" name="user[password]" size="30" type="password" />
-			</div>
-				<div class="dri_checkbox_text">
-					<input name="user[remember_me]" type="hidden" value="0" /><input id="user_remember_me" name="user[remember_me]" type="checkbox" value="1" /> <label for="user_remember_me"><span class="translation_missing" title="translation missing: en.user_groups.views.sign_in.remember_me">Remember Me</span></label>
-				</div>
-
-		<div class="dri_submit">
-				<input name="commit" type="submit" value="Sign in" /> 
-			
-		</div>
-		<div class="dri_form_text">
-			
-
-
-<a href="/user_groups/users/new" id="signup">
-    <span class="">Sign Up</span>
-</a>
-    <a href="/user_groups/users/password/new" id="password_reset">
-
-        <span class="text_right">Forgot your password?</span>
-</a>
-    <a href="/user_groups/users/confirmation/new" id="password_reset_not_sent">
-        <span class="text_line">Didn&#x27;t receive confirmation?</span>
-</a>
-
-    <div class="dri_signin_socialmedia">
-      <h2>Login with another Account</h2>
-          <a href="/users/auth/shibboleth">
-              <div class="dri_signin_edugate">Login with Shibboleth</div>
-</a>
-      <a href="" onclick="alert(&#x27;Coming Soon&#x27;);">
-          <div class="dri_signin_google">Login with Google</div>
-</a>
-      <a href="" onclick="alert(&#x27;Coming Soon&#x27;);">
-          <div class="dri_signin_facebook">Login with Facebook</div>
-</a>
-      <a href="" onclick="alert(&#x27;Coming Soon&#x27;);">
-          <div class="dri_signin_twitter">Login with Twitter</div>
-</a>
-    </div>
-
-
-
-		</div>
-		<!--  close dri_form_text -->
-
-</form>	</div>
-
-
-
-
-</div>
+    <div class="dri_collection_institutes_pages
+    ">
+      <a href="/catalog?f%5Binstitute_sim%5D%5B%5D=National+Library+of+Ireland&amp;mode=collections&amp;search_field=all_fields&amp;view=grid">
+          <div class="dri_collection_institutes_pages_img">
+            <img alt="National Library of Ireland" src="http://objects.dri.ie/institutelogos/National%20Library%20of%20Ireland.jpg" />
+          </div>
+          <div class="dri_collection_institutes_pages_text" >
+            <h6>
+              National Library of Ireland
+            </h6>
+            <p>Collections
+              <span class="dri_bold_text">
+                (2)
+              </span>
+          </p>
+          </div>
+</a>    </div>
+    <div class="dri_collection_institutes_pages
+            not_first
+    ">
+      <a href="/catalog?f%5Binstitute_sim%5D%5B%5D=TCD&amp;mode=collections&amp;search_field=all_fields&amp;view=grid">
+          <div class="dri_collection_institutes_pages_img">
+            <img alt="TCD" src="http://objects.dri.ie/institutelogos/TCD.jpeg" />
+          </div>
+          <div class="dri_collection_institutes_pages_text" >
+            <h6>
+              TCD
+            </h6>
+            <p>Collections
+              <span class="dri_bold_text">
+                (1)
+              </span>
+          </p>
+          </div>
+</a>    </div>
+    <div class="dri_collection_institutes_pages
+            not_first
+    ">
+      <a href="/catalog?f%5Binstitute_sim%5D%5B%5D=Trinity&amp;mode=collections&amp;search_field=all_fields&amp;view=grid">
+          <div class="dri_collection_institutes_pages_img">
+            <img alt="Trinity" src="http://objects.dri.ie/institutelogos/Trinity.jpeg" />
+          </div>
+          <div class="dri_collection_institutes_pages_text" >
+            <h6>
+              Trinity
+            </h6>
+            <p>Collections
+              <span class="dri_bold_text">
+                (1)
+              </span>
+          </p>
+          </div>
+</a>    </div>
+    <div class="dri_collection_institutes_pages
+            not_first
+    ">
+      <a href="/catalog?f%5Binstitute_sim%5D%5B%5D=Trinity+College+Dublin&amp;mode=collections&amp;search_field=all_fields&amp;view=grid">
+          <div class="dri_collection_institutes_pages_img">
+            <img alt="Trinity College Dublin" src="http://objects.dri.ie/institutelogos/Trinity%20College%20Dublin.jpeg" />
+          </div>
+          <div class="dri_collection_institutes_pages_text" >
+            <h6>
+              Trinity College Dublin
+            </h6>
+            <p>Collections
+              <span class="dri_bold_text">
+                (0)
+              </span>
+          </p>
+          </div>
+</a>    </div>
+    <div class="dri_collection_institutes_pages
+            not_first
+    ">
+      <a href="/catalog?f%5Binstitute_sim%5D%5B%5D=NUI+Maynooth+Library&amp;mode=collections&amp;search_field=all_fields&amp;view=grid">
+          <div class="dri_collection_institutes_pages_img">
+            <img alt="NUI Maynooth Library" src="http://objects.dri.ie/institutelogos/NUI%20Maynooth%20Library.jpg" />
+          </div>
+          <div class="dri_collection_institutes_pages_text" >
+            <h6>
+              NUI Maynooth Library
+            </h6>
+            <p>Collections
+              <span class="dri_bold_text">
+                (1)
+              </span>
+          </p>
+          </div>
+</a>    </div>
+    <div class="dri_collection_institutes_pages
+            not_first
+    ">
+      <a href="/catalog?f%5Binstitute_sim%5D%5B%5D=National+Museum+of+Ireland&amp;mode=collections&amp;search_field=all_fields&amp;view=grid">
+          <div class="dri_collection_institutes_pages_img">
+            <img alt="National Museum of Ireland" src="http://objects.dri.ie/institutelogos/National%20Museum%20of%20Ireland.jpg" />
+          </div>
+          <div class="dri_collection_institutes_pages_text" >
+            <h6>
+              National Museum of Ireland
+            </h6>
+            <p>Collections
+              <span class="dri_bold_text">
+                (2)
+              </span>
+          </p>
+          </div>
+</a>    </div>
+    <div class="dri_collection_institutes_pages
+            not_first
+    ">
+      <a href="/catalog?f%5Binstitute_sim%5D%5B%5D=Abbey+Theater&amp;mode=collections&amp;search_field=all_fields&amp;view=grid">
+          <div class="dri_collection_institutes_pages_img">
+            <img alt="Abbey Theater" src="http://objects.dri.ie/institutelogos/Abbey%20Theater.jpg" />
+          </div>
+          <div class="dri_collection_institutes_pages_text" >
+            <h6>
+              Abbey Theater
+            </h6>
+            <p>Collections
+              <span class="dri_bold_text">
+                (1)
+              </span>
+          </p>
+          </div>
+</a>    </div>
 
   </div>
   <div class="dri_search_features_nav_container dri_clearfix">

@@ -9,11 +9,6 @@
     <% end -%>
     <%= render :partial => 'shared/display_licence' %>
   </dl>
-
-
-
-
-
 </div>
 <!-- close dri_object_first_block -->
 
@@ -45,7 +40,7 @@
 
   <%= render :partial => "tools" %>
   <% if current_user %>
-  <%= render :partial => "show_downloads" %>
+      <%= render :partial => "show_downloads" %>
   <% end %>
   <% if signed_in? && (can?(:edit, @document)) %>
       <div class="dri_objecttools_title">

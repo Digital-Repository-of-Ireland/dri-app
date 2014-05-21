@@ -61,6 +61,9 @@ module LinkTranslator
       when /download metadata/
         "download_metadata"
 
+      when /full metadata/
+        "styled_metadata"
+
       when /download asset/
         "download_asset"
 
