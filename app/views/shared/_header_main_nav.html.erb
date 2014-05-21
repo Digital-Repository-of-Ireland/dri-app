@@ -36,7 +36,7 @@
           <% else %>
               <li>
           <% end %>
-          <%= link_to t('dri.headerlinks.institutions'), "#{main_app.root_url}/pages/institutions" %>
+          <%= link_to t('dri.headerlinks.institutions'), "#{main_app.root_url}/pages/institutions", :id => "dri_institutions_link_id" %>
           </li>
           <% if (request.path.include? "/pages/about_us") %>
               <li class="selected">
@@ -65,7 +65,7 @@
           <% else %>
               <li>
           <% end %>
-          <%= link_to t('dri.headerlinks.institutions'), "#{main_app.root_url}/pages/institutions" %>
+          <%= link_to t('dri.headerlinks.institutions'), "#{main_app.root_url}/pages/institutions", :id => "dri_institutions_link_id" %>
           </li>
           <% if (request.path.include? "/pages/about_us") %>
               <li class="selected">

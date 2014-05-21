@@ -96,6 +96,9 @@ module LinkTranslator
 
       when /accept terms/
         "accept_cookies"
+      
+      when /institutions/
+        "dri_institutions_link_id"
 
       else "Unknown"
 
