@@ -379,6 +379,7 @@ a .dri_signin_edugate:hover {
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
   background-clip: padding-box;
+  
   a {
     margin-left: 5px;
     color: #808082;
@@ -1042,10 +1043,9 @@ a .dri_signin_edugate:hover {
 }
 
 .dri_search_save_submit_button {
-	width: 230px;
 	box-shadow: 1px 1px 4px  #f0f0f0;
-	margin: 23px 0px 0 0;
-	padding: 2px 9px 2px 9px;
+	margin: 23px 8px 0 0;
+	padding: 2px 62px 2px 62px;
 	float: right;
 	border: none;
 	-moz-border-radius: 2px;
