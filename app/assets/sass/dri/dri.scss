@@ -2363,7 +2363,7 @@ ul.dri_view_collection {
 		}
 	label.bookmark_object {
 		margin: 0;
-		padding: 0 0 0 6px;
+		padding: 0 0 0 5px;
 		}
 	
 	label.bookmark_manage {
@@ -2371,6 +2371,10 @@ ul.dri_view_collection {
 		padding-top: 5px;
 		margin-top: 5px;
 		width: 230px;
+		
+		a {
+			color: #2F2F2F;
+		}
 	}
 
 }
