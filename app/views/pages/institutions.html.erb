@@ -11,7 +11,9 @@
       <% institute_browse_params[:f] = { :institute_sim => [institute[:name].to_s.html_safe] } %>
       <%= link_to main_app.catalog_index_path(institute_browse_params) do %>
           <div class="dri_collection_institutes_pages_img">
-            <%= image_tag institute[:logo], alt: institute[:name].to_s.html_safe %>
+            <% if (!institute[:logo].blank?) %>
+                <%= image_tag institute[:logo], alt: institute[:name].to_s.html_safe %>
+            <% end %>
           </div>
           <div class="dri_collection_institutes_pages_text" >
             <h6>
@@ -21,7 +23,7 @@
               <span class="dri_bold_text">
                 <%= "(#{collection_count})" %>
               </span>
-          </p>
+            </p>
           </div>
       <% end %>
     </div>
