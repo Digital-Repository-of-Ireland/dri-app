@@ -102,7 +102,7 @@
       <img alt="Account_arrow" height="5" src="/assets/dri/account_arrow.png" width="10" />
 
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <a href="/session/ga?path=%2Fuser_groups%2Fusers%2Fsign_in" id="ga">Gaeilge</a>
+        <a href="/session/ga?path=%2Fuser_groups%2Fusers%2Fnew" id="ga">Gaeilge</a>
       </ul>
     </ul>
 
@@ -232,80 +232,38 @@
 
 
   <div class="dri_main_content_container">
-    
-
-
-
-<div id="dri_login_form_container_id" class="dri_login_form_container">
-
-	<div id="dri_login_form_block_id" class="dri_login_form_block">
-
-	<form accept-charset="UTF-8" action="/user_groups/users/sign_in" class="new_user" id="new_user" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="OssOJ0vwvJ6AqskpIgQXoRZ8wn6H8crbcjaOPilfx6M=" /></div> 
+    <div id="dri_login_form_container_id" class="dri_login_form_container">
+	<div class="dri_login_form_block">
+	           <h4 class="dri_colour_text">Sorry we are not accepting new accounts at the moment. Please return in late 2014.</h4>
+	<link href="/assets/user_group/application.css?body=1" media="all" rel="stylesheet" type="text/css" />
 	
-
-			<h2>
-				Sign in
-			</h2>
-			<div>
-				<label for="user_email">Email</label>
-				<input id="user_email" name="user[email]" size="30" type="email" value="" />
-			</div>
-
-			<div>
-			<label for="user_password">Password</label>
-			<input id="user_password" name="user[password]" size="30" type="password" />
-			</div>
-				<div class="dri_checkbox_text">
-					<input name="user[remember_me]" type="hidden" value="0" /><input id="user_remember_me" name="user[remember_me]" type="checkbox" value="1" /> <label for="user_remember_me"><span class="translation_missing" title="translation missing: en.user_groups.views.sign_in.remember_me">Remember Me</span></label>
-				</div>
-
-		<div class="dri_submit">
-				<input name="commit" type="submit" value="Sign in" /> 
-			
-		</div>
-		<div class="dri_form_text">
-			
-
-
-<a href="/user_groups/users/new" id="signup">
-    <span class="">Sign Up</span>
-</a>
-    <a href="/user_groups/users/password/new" id="password_reset">
-
-        <span class="text_right">Forgot your password?</span>
-</a>
-    <a href="/user_groups/users/confirmation/new" id="password_reset_not_sent">
-        <span class="text_line">Didn&#x27;t receive confirmation?</span>
-</a>
-
-    <div class="dri_signin_socialmedia">
-      <h2>Login with another Account</h2>
-          <a href="/users/auth/shibboleth">
-              <div class="dri_signin_edugate">Login with Shibboleth</div>
-</a>
-      <a href="" onclick="alert(&#x27;Coming Soon&#x27;);">
-          <div class="dri_signin_google">Login with Google</div>
-</a>
-      <a href="" onclick="alert(&#x27;Coming Soon&#x27;);">
-          <div class="dri_signin_facebook">Login with Facebook</div>
-</a>
-      <a href="" onclick="alert(&#x27;Coming Soon&#x27;);">
-          <div class="dri_signin_twitter">Login with Twitter</div>
-</a>
-    </div>
-
-
-
-		</div>
-		<!--  close dri_form_text -->
-
+				<h2>Sign Up</h2>
+				<form accept-charset="UTF-8" action="/user_groups/users" class="new_user" id="new_user" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="OssOJ0vwvJ6AqskpIgQXoRZ8wn6H8crbcjaOPilfx6M=" /></div>
+	  			
+	 
+	  			<div><label for="user_first_name">First Name</label><br />
+	  			<input id="user_first_name" name="user[first_name]" size="30" type="text" /></div>
+	
+	    <div><label for="user_second_name">Second Name</label><br />
+	  <input id="user_second_name" name="user[second_name]" size="30" type="text" /></div>
+	
+	  <div><label for="user_email">Email</label><br />
+	  <input id="user_email" name="user[email]" size="30" type="email" value="" /></div>
+	
+	  <div class="dri_signup_password"><label for="user_password">Password</label><br />
+	  <input id="user_password" name="user[password]" size="30" type="password" /></div>
+	
+	  <div class="dri_signup_password dri_input_error"><label for="user_password_confirmation">Confirm Password</label><br />
+	  <input id="user_password_confirmation" name="user[password_confirmation]" size="30" type="password" /></div>
+	
+	  <div class="dri_select_dropdown"><label for="user_locale">Preferred Language</label><br />
+	  <select id="user_locale" name="user[locale]"><option value="en">English</option>
+<option value="ga">Irish</option></select></div>
+	
+	    <div class="dri_submit"><input name="commit" type="submit" value="Register" /></div>
+	  <div>&nbsp;</div>
 </form>	</div>
-
-
-
-
 </div>
-
   </div>
   <div class="dri_search_features_nav_container dri_clearfix">
     

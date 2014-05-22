@@ -169,6 +169,7 @@ ga:
           file: File
           image_file: Image
           metadata: Meiteashonraí
+          metadata_full: "Full Metadata"
           objects_in_collection: Objects
           pdf_file: PDF
           restricted_asset: "Restricted Asset"
