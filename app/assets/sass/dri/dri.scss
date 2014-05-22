@@ -2348,18 +2348,29 @@ ul.dri_view_collection {
 	margin: 20px 0 0 0;
 	padding: 0;
 	float: left;
-	width: 230px;
+	
+	form input {
+			padding: 0;
+			float: left;
+	}
 	
 	label {
 		font-size: 95%;
 		display: block;
 		color: #2F2F2F;
 		font-weight: bold;
+		float: left;
+		}
+	label.bookmark_object {
+		margin: 0;
+		padding: 0 0 0 6px;
 		}
 	
 	label.bookmark_manage {
 		border-top: 1px solid #E1E1E1;
 		padding-top: 5px;
+		margin-top: 5px;
+		width: 230px;
 	}
 
 }
