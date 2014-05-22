@@ -1,14 +1,24 @@
 == Deployment
 
 Once the test suite passes and the code base has been reviewed and agreed
-upon, a branch is created for deployment, it should be dated in the form
-YYYY-MM-DD the assets should be compiled and committed.
+upon, a branch is created for deployment, it should contain the version number
+and be dated in the form YYYY-MM-DD.
+If more than one deploy occurs on a given day then .n should
+be appended (where n is an incrementing integer). For example
+v2.0.0rc2-2014-05-06.4 would be the fifth release on 6th May 2014 for
+version 2.0.0rc2.
 
-Once the assets are committed, a tag is created, this tag is then merged
+The assets should be compiled and committed.
+
+Once the assets are committed, a tag is created (tag name can be the
+same as the branch name), this tag is then merged
 to master for the the deployment scripts to deploy.
 
 === Steps
 
+These steps will only work if your user is in the merge group and has write access to the master branch.
+
+==== git-flow
   $ git flow release start v2.0.0rc2-YYYY-MM-DD
   $ git checkout release v2.0.0rc2-YYYY-MM-DD
   ... check everything ...
@@ -18,6 +28,34 @@ to master for the the deployment scripts to deploy.
   $ rake assets:clean
   $ git commit -am "clear out assets for development branch"
 
-If all the above goes well, once the master branch is pushed up to the
-repository, buildbot will check the repo again then deploy the master
-branch.
+==== manual
+From the develop branch
+  $ git tag -l # list current tags
+  $ git branch v2.0.0rc2-YYYY-MM-DD
+  $ git checkout v2.0.0rc2-YYYY-MM-DD # you should now be on the deploy branch
+  $ git log # get current hash and check on the buildbot that it is passing tests in develop branch
+  $ git tag -a v2.0.0rc2-YYYY-MM-DD # tag the realease when you are happy with it
+  $ git checkout master # switch to master to perform the merge
+  $ git pull
+  $ git merge v2.0.0rc2-YYYY-MM-DD # perform the merge
+  $ git push
+  $ git push --tags
+
+=== Manually deploying
+
+Pushing to Master will cause the builder to run, but if you need to deploy
+manually you can do so on dri-admin.
+
+  $ cd /srv/infrastructure/ansible-hydra/
+  $ ansible-playbook -i hosts.production playbooks/setup-dri_app-nuig-rnag.yml -e "deploy_branch=v2.0.0rc2-YYYY-MM-DD"
+
+=== TODO
+
+List of things that should be fixed in deploying
+
+* run db:seed, migrate etc... on only the first rails app host and not everywhere.
+* use ansible-vault to encrypt the passwords for the buildbot/dri-admin machine so they are at least not sitting around in plain text.
+* breakup roles/playbooks in to Prepare, Configure and Deploy phases, this is so Prepare steps which run rarely and take a long time don't affect the Configure and Deploy steps which are usually pretty quick.
+* Encode some git hash into the application so it's visible in the footer when the app is deployed, this way you can verify that the correct version is deployed more clearly and easily.
+* Automate the tag and merge to master process.
+* Figure out how to do database rollbacks if the db:seed/db:migrate commands roll out the wrong changes.
