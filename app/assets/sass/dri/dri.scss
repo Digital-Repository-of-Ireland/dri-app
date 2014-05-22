@@ -2347,12 +2347,22 @@ ul.dri_view_collection {
 .dri_bookmark_object {
 	margin: 20px 0 0 0;
 	padding: 0;
-	display: block;
-	float: left;
-	color: #2F2F2F;
-	font-weight: bold;
+	
+	label {
+		font-size: 95%;
+		display: block;
+		color: #2F2F2F;
+		font-weight: bold;
+		}
+	
+	label.bookmark_manage {
+		border-top: 1px solid #E1E1E1;
+		padding-top: 5px;
+	}
 
 }
+
+
 
 .dri_title {
 	color: #2F2F2F;
