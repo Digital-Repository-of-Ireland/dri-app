@@ -118,17 +118,7 @@
      class="dri_search_features_nav_container">
   <% if has_browse_params? and current_user %>
       <div id="dri_search_save_input_id" class="dri_search_save_input">
-
-        <form id="dri_search_save_input_form_id"
-              class="dri_search_save_input_form">
-          <button id="dri_search_save_submit_button_id" type="submit"
-                  class="dri_search_save_submit_button" id="search">
-            Save
-            Current Search
-          </button>
-        </form>
-        <!-- close dri_search_save_input_form -->
-
+        <%= button_to(t('dri.views.objects.buttons.save_current_search'), save_search_path(session[:history].first), :method => :put, :class => "dri_search_save_submit_button")%>
       </div>
   <% end %>
   <% if has_browse_params? %>

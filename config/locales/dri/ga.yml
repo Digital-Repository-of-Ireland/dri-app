@@ -372,6 +372,7 @@ ga:
           replace_master: "Athchuir Máistirchomhad"
           replace_metadata: "Uaslódáil Meiteashonraí"
           save: "Sábháil Athruithe"
+          save_current_search: "Save Current Search"
           update_status: "Update Status"
           upload_master: "Uaslódáil Máistirchomhad"
         confirm: 
