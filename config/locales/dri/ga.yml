@@ -166,8 +166,10 @@ ga:
             format: Format
             last_modified: "Last Update"
           audio_file: "Comhad Fuaime"
+          bookmark_object: "Bookmark Object"
           file: File
           image_file: Image
+          manage_bookmark: "Manage Your Bookmarks"
           metadata: Meiteashonraí
           metadata_full: "Full Metadata"
           objects_in_collection: Objects
