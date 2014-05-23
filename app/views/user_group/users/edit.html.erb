@@ -1,0 +1,72 @@
+<%= render :partial => "user_group/shared/header" %>
+<h2><%= t( :'user_groups.views.users.edit.edit') %></h2>
+
+<%= form_for(@user) do |f| %>
+    <div><%= link_to (t :'user_groups.views.shared.back') , @user %></div><br />
+
+    <%= render 'user_group/shared/error_messages', object: f.object %>
+    <div><%= f.label :email, (t :'user_groups.views.shared.email') %><br />
+      <%= f.email_field :email %></div>
+
+    <div>
+      <div><%= f.label :first_name, (t :'user_groups.views.shared.first_name') %><br />
+        <%= f.text_field :first_name %></div>
+
+      <div><%= f.label :second_name, (t :'user_groups.views.shared.second_name')  %><br />
+        <%= f.text_field :second_name %></div>
+
+      <div><%= f.label :password, (t :'user_groups.views.shared.password')  %><br />
+        <%= f.password_field :password, :disabled => @user.password_required? ? false : true %></div>
+
+      <div><%= f.label :password_confirmation, (t :'user_groups.views.shared.password_confirm')  %><br />
+        <%= f.password_field :password_confirmation, :disabled => @user.password_required? ? false : true %></div>
+
+      <div><%= f.label :locale, (t :'user_groups.views.shared.locale') %><br />
+        <%= f.select(:locale, [[t('dri.application.lang.en'), 'en'], [t('dri.application.lang.ga'), 'ga']]) %></div>
+
+      <div><%= f.label :view_level, (t :'user_groups.views.shared.view_profile') %><br />
+        <%= f.select(:view_level, [[t('user_groups.views.shared.public'), 1], [t('user_groups.views.shared.private'), 0], [t('user_groups.views.shared.registered'),2]]) %></div>
+
+      <div><%= f.label :about_me, (t :'user_groups.views.shared.about_me')  %><br />
+        <%= f.text_area :about_me, :rows => 10 %></div>
+
+      <div><%= f.label :token_authentication_key, (t :'user_groups.views.shared.token')  %>
+        <%= @user.authentication_token.blank? ? t('user_groups.views.shared.token_empty'): @user.authentication_token %><br />
+
+        <p><%= link_to (t :'user_groups.views.users.edit.new_token'), create_token_user_path(@user), :method => :post, confirm: (t :'user_groups.views.shared.confirm')  %>
+          <%= link_to (t :'user_groups.views.users.edit.delete_token'), destroy_token_user_path(@user), :method => :delete, confirm: (t :'user_groups.views.shared.confirm')  %></p>
+      </div>
+
+      <div><%= f.label :image_link, (t :'user_groups.views.users.edit.image_link') %>
+        <%= t :'user_groups.views.users.edit.image_link_supported' %><br />
+        <%= t :'user_groups.views.users.edit.image_link_gravatar' %><br />
+        <%= f.text_field :image_link %></div>
+      <br />
+
+      <% if current_user.id == @user.id or !current_user.is_admin? %>
+          <div><%= f.label :current_password, (t :'user_groups.views.users.edit.current_password')  %><br />
+            <%= f.password_field :current_password, :disabled => @user.password_required? ? false : true %></div>
+      <% end %>
+    </div>
+
+    <div><%= f.submit (t :'user_groups.views.shared.update'), :id => "commit" %></div>
+<% end %>
+
+<h3><%= (t :'user_groups.views.users.edit.delete_heading') %></h3>
+<p><%= (t :'user_groups.views.users.edit.unhappy') %> <%= link_to (t :'user_groups.views.users.edit.delete'), @user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account" %>.</p>
+
+<h3><%= (t :'user_groups.views.shared.group_membership')%></h3>
+<% #Rendering the other way does odd things %>
+<h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.cancel') %></h4>
+<%= render 'user_group/shared/leave_groups', object: @user %>
+<% if @user.pending_memberships.count >0 %>
+    <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.pending') %></h4>
+    <%= render 'user_group/shared/pending_groups', object: @user %>
+<% end %>
+<% if current_user.is_admin? %>
+    <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.add') %></h4>
+    <%= render 'user_group/shared/join_groups', object: @user %>
+<% else %>
+    <p><%= (t :'user_groups.views.users.edit.join_groups') %> </p>
+    <%= link_to (t :'user_groups.views.shared.groups'), groups_path %>
+<% end %>
