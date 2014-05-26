@@ -158,7 +158,9 @@ ga:
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
     navbar: 
-      items_per_page: "Items per page"
+      bookmarks: Bookmarks
+      items: Items
+      per_page: "per page"
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"

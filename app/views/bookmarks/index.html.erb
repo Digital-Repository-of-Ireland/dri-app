@@ -1,0 +1,17 @@
+<%= render 'catalog/browse_mode_swap' %>
+
+<div id="content" class="span12">
+ <%- if current_or_guest_user.blank? -%>
+
+      <h2><%= t('blacklight.bookmarks.need_login') %></h2>
+
+  <%- elsif @document_list.blank? -%>
+
+      <h3><%= t('blacklight.bookmarks.no_bookmarks') %></h3>
+  <% else %>
+
+      <%= render_document_index %>
+
+  <% end %>
+</div>
+

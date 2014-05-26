@@ -116,7 +116,7 @@
 <!-- container for search, sort and pagination etc. navigations and search text input -->
 <div id="dri_search_features_nav_container_id"
      class="dri_search_features_nav_container">
-  <% if has_browse_params? and current_user %>
+  <% if has_browse_params? && current_user && (params[:controller] == 'catalog' && params[:action] == 'index') %>
       <div id="dri_search_save_input_id" class="dri_search_save_input">
         <%= button_to(t('dri.views.objects.buttons.save_current_search'), save_search_path(session[:history].first), :method => :put, :class => "dri_search_save_submit_button")%>
       </div>
@@ -142,7 +142,14 @@
   <% if has_browse_params? %>
       <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
       <nav id="dri_pager_nav_id" class="dri_pager_nav">
-        <p><%= t('dri.navbar.items_per_page') %></p>
+        <p>
+          <% if params[:controller] == 'catalog' %>
+            <%= t('dri.navbar.items') %>
+          <% else %>
+              <%= t('dri.navbar.bookmarks') %>
+          <% end %>
+          <%= t('dri.navbar.per_page') %>
+        </p>
         <select id="dri_page_options_id" class="dri_sort_options" name="sort_options" data-content="<%= t('dri.help.dri_page_options') %>"  data-original-title="<%= t('dri.help.dri_page_options_title')%>" data-trigger="hover" data-placement="right">
           <%- blacklight_config.per_page.each do |count| %>
               <% if current_per_page == count %>
@@ -157,8 +164,17 @@
       </nav>
   <% end %>
 
-  <!-- use kaminari views -->
-  <%= render :partial => 'shared/results_paginator' %>
+  <% if has_browse_params? && current_user && (params[:controller] == 'bookmarks' && params[:action] == 'index') %>
+      <nav id="dri_clear_bookmarks" class="dri_clear_bookmarks">
+        <span class="dri_clear_all">
+          <%= link_to t('blacklight.bookmarks.clear.action_title'), clear_bookmarks_path, :method => :delete, :data => { :confirm => t('blacklight.bookmarks.clear.action_confirm') } %>
+        </span>
+      </nav>
+  <% end %>
+
+  <% if has_browse_params? %>
+    <%= render 'sort_and_per_page' %>
+  <% end %>
 
   <% if @previous_document || @next_document %>
 

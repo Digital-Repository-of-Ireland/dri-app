@@ -25,6 +25,10 @@
           <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %></span>
         </div>
     <% end %> <!-- close dri_num_objects -->
+
+    <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+        <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete %>
+    <% end %>
   </div>
   <!-- close content_block -->
 </article>
