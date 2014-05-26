@@ -18,6 +18,7 @@ For testing and development you will need to bootstrap the project
   $ cp config/jetty.yml.sample config/jetty.yml (and edit as appropriate)
   $ cp config/redis.yml.sample config/redis.yml (and edit as appropriate)
   $ cp config/solr.yml.sample config/solr.yml (and edit as appropriate)
+  $ cp config/doi.yml.sample config/doi.yml (and edit as appropriate)
   $ bundle exec rake db:migrate
   $ bundle exec rake db:seed
   $ bundle exec rake jetty:config

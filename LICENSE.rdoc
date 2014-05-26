@@ -1,1 +1,1 @@
-TBD
+TBD - Ideally the license should be compatible with the Hydra Project CLA.
