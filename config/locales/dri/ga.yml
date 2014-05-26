@@ -8,6 +8,19 @@ ga:
         confirm: "Meastar go nglacann tú le polasaí fhianáin an TDÉ ar chlárú duit agus gach uair a shíníonn tú isteach."
         header: "Fógra tábhachtach faoi fhianáin"
         message: "Baineann Taisclann Dhigiteach na hÉireann úsáid as fianáin chun rialú rochtana ar acmhainní digiteacha a chur i bhfeidhm. Más mian leat diúltú d'fhianáin a fháil ó TDÉ, cas as na fianáin don suíomh idirlín seo i sainroghanna do bhrabhsálaí. Tabhair d'aire nach mbeidh úsáideoirí a dhiúltaíonn in ann roinnt de ghnéithe na Taisclainne Digití a úsáid. Le tuilleadh eolais a fháil féach ar ár %{privacy_statement:ráiteas um príobháideachas} agus ar na leathanaigh a bhaineann le %{cookies_help:treoir faoi fhianáin}."
+      edit_user_profile: 
+        change_password: "Change Password"
+        confirm_new_password: "Confirm New Password"
+        current_password: "Current Password"
+        delete_your_account: "Delete your account"
+        edit_account: "Edit Account"
+        email: Email
+        first_name: "First Name"
+        last_name: "Last Name"
+        new_password: "New Password"
+        request_to_leave: "Request To Leave"
+        requested_to_leave: "You have requested to leave this group"
+        save_edits: "Save Edits"
       home: 
         featured: Featured
         featured_collections: "Featured Collections"
@@ -39,6 +52,7 @@ ga:
         email: Email
         my_account: "My Account"
         name: Name
+        user_type: "User Type"
         your_collection_details: "Your Collection Details"
     data: 
       types: 
