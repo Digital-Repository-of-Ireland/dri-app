@@ -1,81 +1,102 @@
 <div id="dri_main_nav_container_id" class="dri_main_nav_container">
-  <nav id="dri_main_nav_id" class="dri_main_nav">
+	<nav id="dri_main_nav_id" class="dri_main_nav">
 
-    <ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase">
-      <% if current_user %>
-          <% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_browse_params?) %>
-              <li class="selected">
-          <% else %>
-              <li>
-          <% end %>
-          <%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
-          </li>
-          <li>
-            <%= link_to t('dri.headerlinks.workspace'), workspace_path, :id => "workspace" %>
-          </li>
-          <% if (controller_name == 'catalog' and has_browse_params? ) %>
-              <li class="selected">
-          <% else %>
-              <li>
-          <% end %>
-          <%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
-          </li>
-          <li>
-            <%= link_to t('dri.views.collection.buttons.new_collection'), main_app.new_collection_path, :id => "new_collection" %>
-          </li>
-          <li>
-            <%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %>
-          </li>
-          <% if signed_in? && current_user.is_admin? %>
-              <li>
-                <%= link_to t('dri.headerlinks.admin'), main_app.admin_tasks_path, :id => "admin_tasks" %>
-              </li>
-          <% end %>
-          <% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>
-              <li class="selected">
-          <% else %>
-              <li>
-          <% end %>
-          <%= link_to t('dri.headerlinks.institutions'), institutions_path %>
-          </li>
-          <% if (request.path.include? "/pages/about_us") %>
-              <li class="selected">
-          <% else %>
-              <li>
-          <% end %>
-          <%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us" %>
-          </li>
-      <% else %>
-          <% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_browse_params?) %>
-              <li class="selected">
-          <% else %>
-              <li>
-          <% end %>
-          <%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
-          </li>
-          <% if (controller_name == 'catalog' and has_browse_params? ) %>
-              <li class="selected">
-          <% else %>
-              <li>
-          <% end %>
-          <%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
-          </li>
-          <% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>
-              <li class="selected">
-          <% else %>
-              <li>
-          <% end %>
-          <%= link_to t('dri.headerlinks.institutions'), institutions_path %>
-          </li>
-          <% if (request.path.include? "/pages/about_us") %>
-              <li class="selected">
-          <% else %>
-              <li>
-          <% end %>
-          <%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us" %>
-          </li>
-      <% end %>
-    </ul>
-  </nav>
+		<ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase dropdown">
+			<% if current_user %>
+			<% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_browse_params?) %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
+				<%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
+			</li>
+			<li>
+				<%= link_to t('dri.headerlinks.workspace'), workspace_path, :id => "workspace" %>
+
+			</li>
+
+			<li id="dropdownMenu1" data-toggle="dropdown">
+				<a>Dropdown</a>
+			</li>
+			<ul class="dropdown-menu dri_main_nav_dropdown_select" role="menu" aria-labelledby="dropdownMenu1">
+				<li role="presentation">
+					<a role="menuitem" tabindex="-1" href="#">Action</a>
+				</li>
+				<li role="presentation">
+					<a role="menuitem" tabindex="-1" href="#">Another action</a>
+				</li>
+				<li role="presentation">
+					<a role="menuitem" tabindex="-1" href="#">Something else here</a>
+				</li>
+				<li role="presentation" class="divider"></li>
+				<li role="presentation">
+					<a role="menuitem" tabindex="-1" href="#">Separated link</a>
+				</li>
+			</ul>
+
+			<% if (controller_name == 'catalog' and has_browse_params? ) %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
+				<%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
+			</li>
+			<li>
+				<%= link_to t('dri.views.collection.buttons.new_collection'), main_app.new_collection_path, :id => "new_collection" %>
+			</li>
+			<li>
+				<%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %>
+			</li>
+			<% if signed_in? && current_user.is_admin? %>
+			<li>
+				<%= link_to t('dri.headerlinks.admin'), main_app.admin_tasks_path, :id => "admin_tasks" %>
+			</li>
+			<% end %>
+			<% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
+				<%= link_to t('dri.headerlinks.institutions'), institutions_path %>
+			</li>
+			<% if (request.path.include? "/pages/about_us") %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
+				<%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us" %>
+			</li>
+			<% else %>
+			<% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_browse_params?) %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
+				<%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
+			</li>
+			<% if (controller_name == 'catalog' and has_browse_params? ) %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
+				<%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
+			</li>
+			<% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
+				<%= link_to t('dri.headerlinks.institutions'), institutions_path %>
+			</li>
+			<% if (request.path.include? "/pages/about_us") %>
+			<li class="selected">
+				<% else %>
+			<li>
+				<% end %>
+				<%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us" %>
+			</li>
+			<% end %>
+		</ul>
+	</nav>
 </div>
 <!-- close dri_main_nav_container -->
