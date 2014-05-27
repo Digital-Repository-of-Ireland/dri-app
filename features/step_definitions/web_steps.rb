@@ -221,6 +221,11 @@ Then /^(?:|I )press the button to (.+)$/ do |button|
   click_link_or_button(button_to_id(button))
 end
 
+Then /^I check "(.*?)"$/ do |checkbox|
+  Capybara.ignore_hidden_elements = false
+  check(checkbox)
+end
+
 When /^(?:|I )perform a search$/ do
   # Requires javascript
   find(:id, 'q').native.send_keys(:enter)

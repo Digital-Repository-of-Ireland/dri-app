@@ -100,6 +100,14 @@ module LinkTranslator
       when /accept terms/
         "accept_cookies"
 
+      when /manage bookmark/
+        "manage_bookmark"
+
+      when /remove bookmark/
+        "remove_bookmark"
+
+      when /clear bookmarks/
+        "clear_bookmarks"
       else "Unknown"
 
     end
