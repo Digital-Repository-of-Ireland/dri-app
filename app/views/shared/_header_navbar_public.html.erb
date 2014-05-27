@@ -167,7 +167,7 @@
   <% if has_browse_params? && current_user && (params[:controller] == 'bookmarks' && params[:action] == 'index') %>
       <nav id="dri_clear_bookmarks" class="dri_clear_bookmarks">
         <span class="dri_clear_all">
-          <%= link_to t('blacklight.bookmarks.clear.action_title'), clear_bookmarks_path, :method => :delete, :data => { :confirm => t('blacklight.bookmarks.clear.action_confirm') } %>
+          <%= link_to t('blacklight.bookmarks.clear.action_title'), clear_bookmarks_path, :method => :delete, :data => { :confirm => t('blacklight.bookmarks.clear.action_confirm')}, :id => 'clear_bookmarks' %>
         </span>
       </nav>
   <% end %>

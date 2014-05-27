@@ -22,7 +22,7 @@
       <% else %>
           <% bookmark_params[:mode] = 'objects' %>
       <% end %>
-      <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path(bookmark_params) %>
+      <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path(bookmark_params), :id => 'manage_bookmark' %>
     </label>
 <% else %>
     &nbsp;
