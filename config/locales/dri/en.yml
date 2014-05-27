@@ -202,6 +202,7 @@ en:
         headers: 
           files: "File Tools"
         legends: 
+          no_bookmarks: "You have no bookmarks"
           no_files: "No file has been uploaded."
           no_permission: "You do not have permission to view the asset file associated with this object."
           no_surrogates: "No surrogates are available."

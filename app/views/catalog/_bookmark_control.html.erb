@@ -16,7 +16,13 @@
     </label>
     <label class="bookmark_manage">
       <i class="fa fa-bookmark"></i>&nbsp;&nbsp;
-      <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path %>
+      <% bookmark_params = {:view => 'grid'} %>
+      <% if local_assigns[:document][:object_type_ssm].first == 'Collection' %>
+          <% bookmark_params[:mode] = 'collections' %>
+      <% else %>
+          <% bookmark_params[:mode] = 'objects' %>
+      <% end %>
+      <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path(bookmark_params) %>
     </label>
 <% else %>
     &nbsp;
