@@ -8,6 +8,19 @@ ga:
         confirm: "Meastar go nglacann tú le polasaí fhianáin an TDÉ ar chlárú duit agus gach uair a shíníonn tú isteach."
         header: "Fógra tábhachtach faoi fhianáin"
         message: "Baineann Taisclann Dhigiteach na hÉireann úsáid as fianáin chun rialú rochtana ar acmhainní digiteacha a chur i bhfeidhm. Más mian leat diúltú d'fhianáin a fháil ó TDÉ, cas as na fianáin don suíomh idirlín seo i sainroghanna do bhrabhsálaí. Tabhair d'aire nach mbeidh úsáideoirí a dhiúltaíonn in ann roinnt de ghnéithe na Taisclainne Digití a úsáid. Le tuilleadh eolais a fháil féach ar ár %{privacy_statement:ráiteas um príobháideachas} agus ar na leathanaigh a bhaineann le %{cookies_help:treoir faoi fhianáin}."
+      edit_user_profile: 
+        change_password: "Change Password"
+        confirm_new_password: "Confirm New Password"
+        current_password: "Current Password"
+        delete_your_account: "Delete your account"
+        edit_account: "Edit Account"
+        email: Email
+        first_name: "First Name"
+        last_name: "Last Name"
+        new_password: "New Password"
+        request_to_leave: "Request To Leave"
+        requested_to_leave: "You have requested to leave this group"
+        save_edits: "Save Edits"
       home: 
         featured: Featured
         featured_collections: "Featured Collections"
@@ -33,6 +46,14 @@ ga:
         header: "DRI Terms of Use"
         message: "Aliquam erat volutpat. Integer fermentum est at risus condimentum accumsan. Sed imperdiet ac lectus vitae commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam rutrum arcu at lorem sodales, sed mollis nibh scelerisque. Proin congue ipsum eget velit gravida, non fringilla est ultrices. Duis lobortis sem et imperdiet tempor. In gravida tortor vulputate nibh vestibulum lobortis. Curabitur fermenm, ipsum id ultrices fermentum, nisi metus tristique justo, faucibus tempor nulla massa semper dolor. Donec tellus felis, luctus eu aliquet quis, scelerisque ut diam. Duis luctus turpis lectus, et feugiat mauris feugiat vitae. Sed interdum commodo est, consectetur suscipit lectus viverra et. Integer a consequat massa. Praesent arcu purus, auctor sed ante vel, blandit molestie neque.Aenean posuere pharetra ligula in aliquam. Maecenas tristique felis felis, id posuere metus bibendum accumsan. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent at velit quis nunc rhoncus laoreet. Sed ornare, leo et tincidunt malesuada, ligula ligula gravida lacus, quis ultrices lacus mi venenatis lacus. Nunc id interdum erat. Suspendisse eu molestie mauris. Suspendisse pharetra dapibus euismo. Pellentesque a ligula velit. Ut volutpat pretium risus adipiscing porta. In lectus augue, interdum sit amet iaculis eu, vehicula a nibh. Etiam lectus ligula, rhoncus id facilisis molestie, pellentesque vitae elit. Nulla elit dolor, mollis vitae ultrices sed, tristique vel erat. Nam mattis aliquam porta. Sed sagittis velit eu feugiat tincidunt. Etiam vulputate augue eleifend facilisis faucibus. Sed at turpis ut massa tristique feugiat eget et arcu. Fusce suscipit egestas elementum. Duis ac quam at elit scelerisque scelerisque quis et dui. Nulla sit amet porttitor quam, eget porta libero."
         reject: "Reject End User Agreement"
+      user_profile: 
+        collection_title: "Collection Title"
+        edit: Edit
+        email: Email
+        my_account: "My Account"
+        name: Name
+        user_type: "User Type"
+        your_collection_details: "Your Collection Details"
     data: 
       types: 
         Image: Íomhánna
@@ -137,7 +158,9 @@ ga:
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
     navbar: 
-      items_per_page: "Items per page"
+      bookmarks: Bookmarks
+      items: Items
+      per_page: "per page"
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
@@ -166,9 +189,12 @@ ga:
             format: Format
             last_modified: "Last Update"
           audio_file: "Comhad Fuaime"
+          bookmark_object: "Bookmark Object"
           file: File
           image_file: Image
+          manage_bookmark: "Manage Your Bookmarks"
           metadata: Meiteashonraí
+          metadata_full: "Full Metadata"
           objects_in_collection: Objects
           pdf_file: PDF
           restricted_asset: "Restricted Asset"
@@ -176,6 +202,7 @@ ga:
         headers: 
           files: Comhaid
         legends: 
+          no_bookmarks: "You have no bookmarks"
           no_files: "Níor uaslódáladh comhad ar bith."
           no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo."
           no_surrogates: "No surrogates are available."
@@ -371,6 +398,7 @@ ga:
           replace_master: "Athchuir Máistirchomhad"
           replace_metadata: "Uaslódáil Meiteashonraí"
           save: "Sábháil Athruithe"
+          save_current_search: "Save Current Search"
           update_status: "Update Status"
           upload_master: "Uaslódáil Máistirchomhad"
         confirm: 

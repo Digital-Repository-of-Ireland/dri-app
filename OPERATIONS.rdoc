@@ -6,6 +6,7 @@ Edit the following files
 * config/fedora.yml
 * config/database.yml
 * config/redis.yml
+* config/doi.yml
 
 and ensure the correct production servers have been deployed and are place.
 
@@ -33,6 +34,8 @@ You will also need to start the resque workers.
 
 In a production environment it is recommended to deploy the workers with
 either supervisord or an equivalent system.
+
+It is possible to limit the type of queues that a worker runs by placing a comma seperated list of queues in the QUEUES="" variable.
 
 == Clearing Stale resque workers
 

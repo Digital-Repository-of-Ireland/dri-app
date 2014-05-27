@@ -46,19 +46,16 @@ Feature:
     | ga   | irishuser   | ga                  |
     | en   | irishuser   | ga                  |
 
-
-  Scenario Outline: Changing from Language set in the profile to a different Language
+  Scenario Outline: Changing Language of a Logged in user with localisation preferences
     Given I reset the sessions
     Given I am not logged in
     And my browser language is "<lang>"
     Given I am logged in as "<lang_user>" with language "<lang_profile_set_to>"
     Then I should see the language "<lang_profile_set_to>"
-    When I follow the link to my workspace
-    And I follow the link to view my account
-    And I follow the link to edit my account
-    Then I should see the edit page
-    When I change my language to "<lang_new>"
+    When I follow the link to change to <lang_new>
     Then I should see the language "<lang_new>"
+    And I should have a cookie lang
+    And The language cookie content should be <lang_new>
 
   Examples:
     | lang | lang_user   | lang_profile_set_to | lang_new |
@@ -70,31 +67,6 @@ Feature:
     | ga   | irishuser   | en                  | ga       |
     | en   | irishuser   | ga                  | en       |
     | en   | irishuser   | en                  | ga       |
-
-  Scenario Outline: Changing Language of a Logged in user with localisation preferences
-    Given I reset the sessions
-    Given I am not logged in
-    And my browser language is "<lang>"
-    Given I am logged in as "<lang_user>" with language "<lang_profile_set_to>"
-    Then I should see the language "<lang_profile_set_to>"
-    When I follow the link to change to <lang_new>
-    Then I should see the language "<lang_new>"
-    And I should have a cookie lang
-    And The language cookie content should be <lang_new>
-    When I follow the link to my workspace
-    And I follow the link to view my account
-    Then My language preferences should be "<lang_preference>"
-
-  Examples:
-    | lang | lang_user   | lang_profile_set_to | lang_new | lang_preference             |
-    | en   | englishuser | en                  | ga       | Rogha Teangan: Gaeilge      |
-    | en   | englishuser | ga                  | en       | Preferred Language: English |
-    | ga   | englishuser | ga                  | en       | Preferred Language: English |
-    | ga   | englishuser | en                  | ga       | Rogha Teangan: Gaeilge      |
-    | ga   | irishuser   | ga                  | en       | Preferred Language: English |
-    | ga   | irishuser   | en                  | ga       | Rogha Teangan: Gaeilge      |
-    | en   | irishuser   | ga                  | en       | Preferred Language: English |
-    | en   | irishuser   | en                  | ga       | Rogha Teangan: Gaeilge      |
 
 # This test fails at "And The language cookie content should be ga" it seems due to capybara caching the cookies because having checked the values in the wokflow logic seems working properly
   @wip
@@ -127,11 +99,8 @@ Feature:
     Then I should see the language "<lang_new>"
     And I should have a cookie lang
     And The language cookie content should be <lang_new>
-    When I follow the link to my workspace
-    And I follow the link to view my account
-    Then My language preferences should be "<lang_preference>"
 
   Examples:
-  | lang | lang_user  | lang_new | lang_preference             |
-  | en   | nolanguser | ga       | Rogha Teangan: Gaeilge      |
-  #| ga   | nolanguser | en       | Preferred Language: English |
+  | lang | lang_user  | lang_new |
+  | en   | nolanguser | ga       |
+#  | ga   | nolanguser | en       |

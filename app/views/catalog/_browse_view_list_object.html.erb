@@ -1,7 +1,6 @@
-
 <article class="dri_result_object dri_clearfix">
   <div class="dri_content_list_collection">
-          <div class="dri_content_list_collection_data">
+    <div class="dri_content_list_collection_data">
       <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
           <h4><%= document[:title_tesim][0] %></h4>
       <% end %>
@@ -33,7 +32,9 @@
         </div><!-- close image -->
     <% end %>
 
-
+    <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+        <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete %>
+    <% end %>
   </div>
   <!-- close content_block -->
 </article>

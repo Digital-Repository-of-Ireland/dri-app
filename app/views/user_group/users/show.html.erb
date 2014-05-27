@@ -1,0 +1,37 @@
+<%= render partial: "user_group/shared/header" %>
+
+<% allowed_edit = user_signed_in? && ( current_user.id == @user.id || current_user.is_admin? ) %>
+
+<div>
+  <h1><%= t('dri.application.user_profile.my_account') %></h1>
+
+  <h4><%= t('dri.application.user_profile.email') %></h4>
+  <p><%= @user.email %></p>
+
+  <h4><%= t('dri.application.user_profile.name') %></h4>
+  <p><%= @user.first_name %>&nbsp;<%= @user.second_name %></p>
+</div>
+
+<!--TO BE CHANGED placeholder for real functionality when it is developed-->
+<div>
+  <% collection_data = get_collection_permission %>
+  <% if (collection_data.count > 0) %>
+      <h1><%= t('dri.application.user_profile.your_collection_details') %></h1>
+      <% collection_data.each_with_index do |collection, i| %>
+          <h4><%= "#{t('dri.application.user_profile.collection_title')} #{i + 1}" %></h4>
+          <p><%= collection[:collection_title] %></p>
+          <h4><%= t('dri.application.user_profile.user_type') %></h4>
+          <p><%= collection[:permission] %></p>
+      <% end %>
+  <% end %>
+</div>
+
+<% if allowed_edit %>
+    <div>
+      <%= link_to user_group.edit_user_path(@user), :id => "edit_account" do %>
+          <button><%= t('dri.application.user_profile.edit') %></button>
+      <% end %>
+    </div>
+<% end %>
+
+

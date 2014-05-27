@@ -1,4 +1,3 @@
-<!--TO BE CHANGED AND STYLED-->
 <% changeViewParams = params.clone %>
 <ul class="dri_change_sort_view" id="dri_change_sort_view_id" data-content="<%= t('dri.help.dri_change_sort_view') %>"  data-original-title="<%= t('dri.help.dri_change_sort_view_title')%>" data-trigger="hover" data-placement="top">
   <% if (params[:view] == "grid") %>
@@ -7,12 +6,12 @@
         <%= link_to ' ', '#', :class => "selected" %>
       </li>
       <li class="table">
-        <%= link_to ' ', main_app.catalog_index_path(changeViewParams) %>
+        <%= link_to ' ', changeViewParams %>
       </li>
   <% else %>
       <% changeViewParams[:view] = "grid" %>
       <li class="grid">
-        <%= link_to ' ', main_app.catalog_index_path(changeViewParams) %>
+        <%= link_to ' ', changeViewParams %>
       </li>
       <li class="table">
         <%= link_to ' ', '#', :class => "selected" %>

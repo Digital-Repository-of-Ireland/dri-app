@@ -27,6 +27,10 @@
       <% end %>
     </div>
     <!-- close dri_icon -->
+
+    <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+        <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete %>
+    <% end %>
   </div>
   <!-- close content_block -->
 </article>
