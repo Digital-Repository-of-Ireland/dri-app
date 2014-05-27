@@ -24,6 +24,7 @@ NuigRnag::Application.routes.draw do
 
   resources :institutes, :only => ['show', 'new', 'create']
   match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
+  match 'institutions' => 'institutes#index', :via => :get, :as => :institutions
 
   resources :licences
 
