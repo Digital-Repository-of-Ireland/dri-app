@@ -1,19 +1,15 @@
 <% @institutes = InstituteHelpers.get_all_institutes %>
 
 <% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => {} } %>
+<% style='' %>
 <% @institutes.each_with_index do |institute, i| %>
+    <% style='not_first' unless i.eql?(0) %>
     <% collection_count = get_institute_collection_counts institute[:name].to_s.html_safe %>
-    <div class="dri_collection_institutes_pages
-        <% if (i != 0) %>
-            <%= "not_first" %>
-        <% end %>
-    ">
+    <div class="dri_collection_institutes_pages <%= style %>">
       <% institute_browse_params[:f] = { :institute_sim => [institute[:name].to_s.html_safe] } %>
       <%= link_to main_app.catalog_index_path(institute_browse_params) do %>
           <div class="dri_collection_institutes_pages_img">
-            <% if (!institute[:logo].blank?) %>
-                <%= image_tag institute[:logo], alt: institute[:name].to_s.html_safe %>
-            <% end %>
+            <%= image_tag institute[:logo], alt: institute[:name].to_s.html_safe unless institute[:logo].blank? %>
           </div>
           <div class="dri_collection_institutes_pages_text" >
             <h6>
