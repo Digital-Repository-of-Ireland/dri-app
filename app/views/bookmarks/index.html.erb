@@ -1,7 +1,8 @@
 <%= render 'catalog/browse_mode_swap' %>
 
-<div id="content" class="span12">
- <%- if current_or_guest_user.blank? -%>
+
+<div id="dri_result_container_id" class="dri_result_container">
+  <%- if current_or_guest_user.blank? -%>
 
       <h2><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></h2>
 
@@ -14,4 +15,5 @@
 
   <% end %>
 </div>
+
 
