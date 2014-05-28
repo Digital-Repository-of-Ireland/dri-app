@@ -1,7 +1,7 @@
 <div id="dri_main_nav_container_id" class="dri_main_nav_container">
 	<nav id="dri_main_nav_id" class="dri_main_nav">
 
-		<ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase dropdown">
+		<ul id="dri_main_nav_links_id" class="dri_main_nav_links dri_uppercase">
 			<% if current_user %>
 			<% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_browse_params?) %>
 			<li class="selected">
@@ -14,25 +14,24 @@
 				<%= link_to t('dri.headerlinks.workspace'), workspace_path, :id => "workspace" %>
 
 			</li>
+			<li class="dri_main_nav_top dropdown">
+				<div class="dropdown-toggle" id="dri_workspace_id" data-toggle="dropdown">
+					<a><%= t('dri.headerlinks.workspace') %></a>
+				</div>
 
-			<li id="dropdownMenu1" data-toggle="dropdown">
-				<a>Dropdown</a>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+					<li role="presentation">
+						<%= link_to t('blacklight.header_links.bookmarks'), {:controller => 'bookmarks', :action => 'index', :mode => 'collections', :view => 'grid'} %>
+					</li>
+					<li role="presentation">
+						<%= link_to t('blacklight.header_links.search_history'), search_history_path %>
+					</li>
+					<li role="presentation">
+						<%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path %>
+					</li>
+
+				</ul>
 			</li>
-			<ul class="dropdown-menu dri_main_nav_dropdown_select" role="menu" aria-labelledby="dropdownMenu1">
-				<li role="presentation">
-					<a role="menuitem" tabindex="-1" href="#">Action</a>
-				</li>
-				<li role="presentation">
-					<a role="menuitem" tabindex="-1" href="#">Another action</a>
-				</li>
-				<li role="presentation">
-					<a role="menuitem" tabindex="-1" href="#">Something else here</a>
-				</li>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation">
-					<a role="menuitem" tabindex="-1" href="#">Separated link</a>
-				</li>
-			</ul>
 
 			<% if (controller_name == 'catalog' and has_browse_params? ) %>
 			<li class="selected">

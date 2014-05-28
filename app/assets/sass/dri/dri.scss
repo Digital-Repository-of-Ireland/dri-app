@@ -564,6 +564,7 @@ a .dri_signin_edugate:hover {
 	
 	li {
 		float: left;
+		position: relative;
 		margin: 0;
 		padding: 0;
 		font-size: 115%;
@@ -597,11 +598,28 @@ a .dri_signin_edugate:hover {
 	
 	}
 	
-	.dri_main_nav_dropdown_select {
-	   position: relative;
-	       
+	.dri_main_nav_top {
+	  ul {
+	    min-width:0px;
+      width: 0px;
+      background-color: white;
+      top:61px;
+      border: 0;
+      li {
+              background-color: white;
+              min-width: 230px;
+              border-bottom: 1px solid #D9DADB;
+              border-left: 1px solid #D9DADB;
+              font-size: 100%;
+              font-weight: bold;
+              float: left;
+             
+      }
+	  }
 
-   }
+	}
+
+
 }
 
 
