@@ -128,6 +128,7 @@ form {
   background-repeat: no-repeat;
   margin: 0;
 }
+
 a {
 	text-decoration: none;
 }
@@ -595,6 +596,12 @@ a .dri_signin_edugate:hover {
 		color: #3E3E3E;
 	
 	}
+	
+	.dri_main_nav_dropdown_select {
+	   position: relative;
+	       
+
+   }
 }
 
 
@@ -1677,6 +1684,7 @@ p.dri_rss_link a {
 .dri_result_container {
 	margin-top: 25px;
 }
+
 
 .content_block_wrap {
 	width: 730px;

@@ -165,9 +165,6 @@
 	@include zen-grid-item(2.9, 1, $gutter-width: 0);
 	
 }
-.dri_result_container {
-	
-}
 
 .dri_main_content_container {
 
@@ -201,6 +198,10 @@
   	  	//@include zen-grid-background ( $grid-color: #eee);
   	}
 	
+	  .dri_home_container {
+        @include zen-grid-item(3, 1, $gutter-width: 0px);
+        //@include zen-grid-background ( $grid-color: #eee);
+    }
   	
 
   	.dri_object_container {
