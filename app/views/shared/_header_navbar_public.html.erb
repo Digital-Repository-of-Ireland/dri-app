@@ -134,17 +134,21 @@
           <%- end -%>
         </select>
       </nav>
+
+  <% end %>
+
+  <% if has_browse_params? %>
       <nav id="dri_display_grid_table_id" class="dri_display_grid_table_nav">
         <%= render 'shared/header_navbar_change_view' %>
       </nav>
   <% end %>
 
-  <% if has_browse_params? %>
+  <% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index')%>
       <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
       <nav id="dri_pager_nav_id" class="dri_pager_nav">
         <p>
           <% if params[:controller] == 'catalog' %>
-            <%= t('dri.navbar.items') %>
+              <%= t('dri.navbar.items') %>
           <% else %>
               <%= t('dri.navbar.bookmarks') %>
           <% end %>
@@ -172,8 +176,8 @@
       </nav>
   <% end %>
 
-  <% if has_browse_params? %>
-    <%= render 'sort_and_per_page' %>
+  <% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index')%>
+      <%= render 'sort_and_per_page' %>
   <% end %>
 
   <% if @previous_document || @next_document %>
