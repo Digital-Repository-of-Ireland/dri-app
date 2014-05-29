@@ -599,25 +599,39 @@ a .dri_signin_edugate:hover {
 	}
 	
 	.dri_main_nav_top {
-	  ul {
-	    min-width:0px;
-      width: 0px;
-      background-color: white;
-      top:61px;
-      border: 0;
-      li {
-              background-color: white;
-              min-width: 230px;
-              border-bottom: 1px solid #D9DADB;
-              border-left: 1px solid #D9DADB;
-              font-size: 100%;
-              font-weight: bold;
-              float: left;
-             
-      }
-	  }
 
-	}
+
+  	  ul {
+  	    min-width:0px;
+        width: 0px;
+        background-color: white;
+        top:61px;
+        border: 0;
+        li {
+               
+                background-color: white;
+                min-width: 200px;
+                border-bottom: 1px solid #D9DADB;
+                border-left: 1px solid #D9DADB;
+                font-size: 100%;
+                font-weight: bold;
+                float: left;
+                max-height: 50px;
+                a {
+                   border-top: none;
+                  text-transform:none;
+                }
+               
+               
+        }
+        li.selected a {
+          border-top: none;
+          color: $dri_green;
+        
+        }
+  	  }
+    }
+
 
 
 }
