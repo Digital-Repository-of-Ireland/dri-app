@@ -149,8 +149,10 @@
         <p>
           <% if params[:controller] == 'catalog' %>
               <%= t('dri.navbar.items') %>
-          <% else %>
+          <% elsif params[:controller] == 'bookmarks' %>
               <%= t('dri.navbar.bookmarks') %>
+          <% else %>
+              <%= t('dri.navbar.saved_searches') %>
           <% end %>
           <%= t('dri.navbar.per_page') %>
         </p>
@@ -171,7 +173,15 @@
   <% if has_browse_params? && current_user && (params[:controller] == 'bookmarks' && params[:action] == 'index') %>
       <nav id="dri_clear_bookmarks" class="dri_clear_bookmarks">
         <span class="dri_clear_all">
-          <%= link_to t('blacklight.bookmarks.clear.action_title'), clear_bookmarks_path, :method => :delete, :data => { :confirm => t('blacklight.bookmarks.clear.action_confirm')}, :id => 'clear_bookmarks' %>
+          <%= link_to t('dri.views.catalog.buttons.clear_all_bookmarks'), clear_bookmarks_path, :method => :delete, :data => { :confirm => "#{t('dri.views.catalog.buttons.clear_all_bookmarks')}?"}, :id => 'clear_bookmarks' %>
+        </span>
+      </nav>
+  <% end %>
+
+  <% if current_user && (params[:controller] == 'saved_searches' && params[:action] == 'index') %>
+      <nav id="dri_clear_saved_searches" class="dri_clear_saved_searches">
+        <span class="dri_clear_all">
+          <%= link_to t('dri.views.catalog.buttons.clear_all_saved_searches'), clear_saved_searches_path, :method => :delete, :data => { :confirm => "#{t('dri.views.catalog.buttons.clear_all_saved_searches')}?" } %>
         </span>
       </nav>
   <% end %>

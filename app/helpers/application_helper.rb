@@ -225,8 +225,6 @@ module ApplicationHelper
   end
 
   def has_browse_params?
-
-
     return has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
   end
 
