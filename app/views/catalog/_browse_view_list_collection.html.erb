@@ -15,7 +15,8 @@
             <%= document[:institute_tesim][0] %>
         <% end %>
       </p>
-      <%= link_to (catalog_index_path(:collection => document[:id], :mode => "objects", :search_field => "all_fields", :view => params[:view])) do %>
+      <% collection_objects_params = { :f => {:root_collection_id_sim => [document['root_collection_id_tesim'].first]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+      <%= link_to (catalog_index_path(collection_objects_params)) do %>
           <div class="dri_num_list_objects">
             <span class="dri_object_text_num">
               <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %>
