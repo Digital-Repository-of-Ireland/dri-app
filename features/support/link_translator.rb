@@ -99,7 +99,18 @@ module LinkTranslator
 
       when /accept terms/
         "accept_cookies"
+      
+      when /institutions/
+        "dri_institutions_link_id"
 
+      when /manage bookmark/
+        "manage_bookmark"
+
+      when /remove bookmark/
+        "remove_bookmark"
+
+      when /clear bookmarks/
+        "clear_bookmarks"
       else "Unknown"
 
     end

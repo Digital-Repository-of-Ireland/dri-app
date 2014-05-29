@@ -128,6 +128,7 @@ form {
   background-repeat: no-repeat;
   margin: 0;
 }
+
 a {
 	text-decoration: none;
 }
@@ -563,6 +564,7 @@ a .dri_signin_edugate:hover {
 	
 	li {
 		float: left;
+		position: relative;
 		margin: 0;
 		padding: 0;
 		font-size: 115%;
@@ -595,6 +597,43 @@ a .dri_signin_edugate:hover {
 		color: #3E3E3E;
 	
 	}
+	
+	.dri_main_nav_top {
+
+
+  	  ul {
+  	    min-width:0px;
+        width: 0px;
+        background-color: white;
+        top:61px;
+        border: 0;
+        li {
+               
+                background-color: white;
+                min-width: 200px;
+                border-bottom: 1px solid #D9DADB;
+                border-left: 1px solid #D9DADB;
+                font-size: 100%;
+                font-weight: bold;
+                float: left;
+                max-height: 50px;
+                a {
+                   border-top: none;
+                  text-transform:none;
+                }
+               
+               
+        }
+        li.selected a {
+          border-top: none;
+          color: $dri_green;
+        
+        }
+  	  }
+    }
+
+
+
 }
 
 
@@ -1677,6 +1716,7 @@ p.dri_rss_link a {
 .dri_result_container {
 	margin-top: 25px;
 }
+
 
 .content_block_wrap {
 	width: 730px;

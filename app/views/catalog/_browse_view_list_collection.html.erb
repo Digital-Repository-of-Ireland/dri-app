@@ -34,5 +34,9 @@
         <% end %>
       </div>
   <% end %>
+
+  <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+      <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' %>
+  <% end %>
   <!-- close content_block -->
 </article>
