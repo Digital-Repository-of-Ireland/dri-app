@@ -158,10 +158,15 @@
         </p>
         <select id="dri_page_options_id" class="dri_sort_options" name="sort_options" data-content="<%= t('dri.help.dri_page_options') %>"  data-original-title="<%= t('dri.help.dri_page_options_title')%>" data-trigger="hover" data-placement="right">
           <%- blacklight_config.per_page.each do |count| %>
+              <% current_params = params.clone %>
+              <% current_params[:per_page] = count %>
+              <% unless current_params[:page].blank? %>
+                <% current_params.delete(:page) %>
+              <% end %>
               <% if current_per_page == count %>
-                  <option value="<%= url_for(params_for_search.merge(:per_page => count)) %>" selected>
+                  <option value="<%= url_for(current_params) %>" selected>
               <% else %>
-                  <option value="<%= url_for(params_for_search.merge(:per_page => count)) %>">
+                  <option value="<%= url_for(current_params) %>">
               <% end %>
               <%= t(:'blacklight.search.per_page.label', :count => count).html_safe %>
               </option>
