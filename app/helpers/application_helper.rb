@@ -38,8 +38,8 @@ module ApplicationHelper
   end
 
   def root_collection_solr( doc )
-    if doc['root_collection_id_tesim']
-      id = doc['root_collection_id_tesim'][0]
+    if doc[:root_collection_id_tesim]
+      id = doc[:root_collection_id_tesim][0]
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
     end
@@ -183,7 +183,7 @@ module ApplicationHelper
   end
 
   def get_cover_image( document )
-    files_query = "is_part_of_ssim:\"info:fedora/#{document.id}\""
+    files_query = "is_part_of_ssim:\"info:fedora/#{document[:id]}\""
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 

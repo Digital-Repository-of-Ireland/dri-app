@@ -5,12 +5,35 @@
       <h2><%= t('dri.views.catalog.legends.no_saved_search') %></h2>
   <%- else -%>
       <table class="table">
-        <%- @searches.each do |search| -%>
+        <% @searches.each do |search| %>
             <tr>
-              <td><%= link_to_saved_search(search.query_params) %></td>
+              <td>
+                <%= link_to_saved_search(search.query_params) %>
+                <% search_count = get_saved_search_count(search.query_params) %>
+                <% if search.query_params[:mode] == "collections" %>
+                    <%= "#{search_count} #{t('dri.headerlinks.collections')}" %>
+                <% else %>
+                    <%= "#{search_count} #{t('dri.headerlinks.objects')}" %>
+                <% end %>
+              </td>
               <td><%= button_to t('blacklight.saved_searches.delete'), forget_search_path(search.id) %></td>
             </tr>
-        <%- end -%>
+            <tr>
+              <td>
+                <% snippet_documents = get_saved_search_snippet_documents(search.query_params) %>
+                <% if search_count > 0 %>
+                    <%= link_to catalog_index_path(search.query_params) do %>
+                        <div>
+                          <% snippet_documents.each do |document| %>
+                              <% document = document.symbolize_keys! %>
+                              <%= render :partial => 'catalog/saved_search_object_snippet', :locals => {:document => document, :mode => search.query_params[:mode]}%>
+                          <% end %>
+                        </div>
+                    <% end %>
+                <% end %>
+              </td>
+            </tr>
+        <% end %>
       </table>
 
   <%- end -%>
