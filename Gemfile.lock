@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
-  revision: ad2c7fec09f67de786775aa6cc189a705ec86c93
+  revision: 69dbcf87f0d6b7c586274bfc1158f2cbb5e0a51c
   branch: develop
   specs:
     user_group (1.0.3)
