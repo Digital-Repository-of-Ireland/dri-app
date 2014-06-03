@@ -101,7 +101,7 @@ module LinkTranslator
         "accept_cookies"
       
       when /institutions/
-        "dri_institutions_link_id"
+        "institutions"
 
       when /manage bookmark/
         "manage_bookmark"

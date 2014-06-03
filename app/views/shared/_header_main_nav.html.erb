@@ -34,7 +34,7 @@
           <% else %>
               <li>
           <% end %>
-          <%= link_to t('dri.headerlinks.institutions'), institutions_path %>
+          <%= link_to t('dri.headerlinks.institutions'), institutions_path, :id => 'institutions' %>
           </li>
           <% if (request.path.include? "/pages/about_us") %>
               <li class="selected">
@@ -58,7 +58,7 @@
             <% else %>
                 <li role="presentation">
             <% end %>
-            <%= link_to t('dri.views.static.workspace.account'), user_group.user_path(current_user), :id => "view_account", :tabindex => "-1" %>
+            <%= link_to t('dri.views.static.workspace.account'), user_group.user_path(current_user), :tabindex => "-1" %>
             </li>
             <% if request.path.include? "/bookmarks" %>
                 <li role="presentation" class="selected">
@@ -104,7 +104,7 @@
           <% else %>
               <li>
           <% end %>
-          <%= link_to t('dri.headerlinks.institutions'), institutions_path %>
+          <%= link_to t('dri.headerlinks.institutions'), institutions_path, :id => 'institutions' %>
           </li>
           <% if (request.path.include? "/pages/about_us") %>
               <li class="selected">

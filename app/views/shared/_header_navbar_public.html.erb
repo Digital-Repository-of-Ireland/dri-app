@@ -6,7 +6,7 @@
     <nav id="dri_account_nav_id" class="dri_account_nav">
       <ul id="dri_account_links_id" class="dri_account_links" role="tree">
         <% if current_user %>
-            <%= link_to user_group.user_path(current_user) do %>
+            <%= link_to user_group.user_path(current_user), :id => 'view_account' do %>
                 <li class="dri_vc_title">
                   <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
                 </li>
@@ -75,7 +75,7 @@
             class="dri_sub_nav_links dri_nav_collections">
 
           <li>
-            <%= link_to t('dri.views.static.workspace.account'), user_group.user_path(current_user), :id => "FIXMEview_account" %>
+            <%= link_to t('dri.views.static.workspace.account'), user_group.user_path(current_user) %>
           </li>
           <li>
             <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path %>

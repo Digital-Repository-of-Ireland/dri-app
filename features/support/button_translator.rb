@@ -4,94 +4,97 @@ module ButtonTranslator
 
     case button_name
 
-    when /ingest metadata/
-      "ingest_metadata"
+      when /ingest/
+        "ingest"
 
-    when /upload metadata/
-      "replace_metadata"
+      when /ingest metadata/
+        "ingest_metadata"
 
-    when /create record/
-      "create_new"
+      when /upload metadata/
+        "replace_metadata"
 
-    when /save changes/
-      "save_edit"
+      when /create record/
+        "create_new"
 
-    when /edit a collection/
-      "edit_collection"
+      when /save changes/
+        "save_edit"
 
-    when /save collection changes/
-      "edit_collection"
+      when /edit a collection/
+        "edit_collection"
 
-    when /upload a file/
-      "upload_file"
+      when /save collection changes/
+        "edit_collection"
 
-    when /replace a file/
-      "replace_file"
+      when /upload a file/
+        "upload_file"
 
-    when /add a file/
-      "add_file"
+      when /replace a file/
+        "replace_file"
 
-    when /continue/
-      "continue"
+      when /add a file/
+        "add_file"
 
-    when /update language/
-      "commit"
+      when /continue/
+        "continue"
 
-    when /add new collection/
-      "new_collection"
+      when /update language/
+        "commit"
 
-    when /create a collection/
-      "create_new_collection"
+      when /add new collection/
+        "new_collection"
 
-    when /add to collection for id (.+)/
-      "collection_toggle_#{$1.parameterize}"
+      when /create a collection/
+        "create_new_collection"
 
-    when /remove from collection (.+)/
-      "remove_#{$1}"
+      when /add to collection for id (.+)/
+        "collection_toggle_#{$1.parameterize}"
 
-    when /set the current collection to (.+)/
-      "set_collection_#{$1}"
+      when /remove from collection (.+)/
+        "remove_#{$1}"
 
-    when /delete collection with id (.+)/
-      "delete_collection_#{$1}"
+      when /set the current collection to (.+)/
+        "set_collection_#{$1}"
 
-    when /accept cookie policy/
-      "accept_cookies"
+      when /delete collection with id (.+)/
+        "delete_collection_#{$1}"
 
-    when /search/
-      "search"
+      when /accept cookie policy/
+        "accept_cookies"
 
-    when /request access/
-      "request_access"
+      when /search/
+        "search"
 
-    when /approve membership request/
-      "approve_access"
+      when /request access/
+        "request_access"
 
-    when /cancel membership request/
-      "deny_access"
+      when /approve membership request/
+        "approve_access"
 
-    when /add an institute/
-      "add_institute"
+      when /cancel membership request/
+        "deny_access"
 
-    when /associate an institute/
-      "associate_inst"
+      when /add an institute/
+        "add_institute"
 
-    when /add a licence/
-      "add_licence"
+      when /associate an institute/
+        "associate_inst"
 
-    when /save licence/
-      "save_licence"
+      when /add a licence/
+        "add_licence"
 
-    when /generate surrogates/
-      generate_surrogates
+      when /save licence/
+        "save_licence"
 
-    when /publish collection/
-      publish
+      when /generate surrogates/
+        generate_surrogates
 
-    when /publish objects in collection/
-      publish
+      when /publish collection/
+        publish
 
-    else "Unknown"
+      when /publish objects in collection/
+        publish
+
+      else "Unknown"
 
     end
   end
