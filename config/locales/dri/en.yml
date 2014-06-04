@@ -166,8 +166,10 @@ en:
             format: Format
             last_modified: "Last Update"
           audio_file: "Audio File"
+          bookmark_object: "Bookmark Object"
           file: File
           image_file: Image
+          manage_bookmark: "Manage Your Bookmarks"
           metadata: "Metadata (XML)"
           metadata_full: "Full Metadata"
           objects_in_collection: Objects
@@ -372,6 +374,7 @@ en:
           replace_master: "Replace Master File"
           replace_metadata: "Upload Metadata"
           save: "Save Changes"
+          save_current_search: "Save Current Search"
           update_status: "Update Status"
           upload_master: "Upload Master File"
         confirm: 

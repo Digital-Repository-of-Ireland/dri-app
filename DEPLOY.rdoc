@@ -44,7 +44,7 @@ From the develop branch
 === Manually deploying
 
 Pushing to Master will cause the builder to run, but if you need to deploy
-manually you can do so on dri-admin.
+manually you can do so on dri-admin. You should log in as you with agent forwarding enabled.
 
   $ cd /srv/infrastructure/ansible-hydra/
   $ ansible-playbook -i hosts.production playbooks/setup-dri_app-nuig-rnag.yml -e "deploy_branch=v2.0.0rc2-YYYY-MM-DD"

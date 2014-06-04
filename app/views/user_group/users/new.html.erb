@@ -17,10 +17,10 @@
 	  <%= f.email_field :email %></div>
 	
 	  <div class="dri_signup_password"><%= f.label :password, (t :'user_groups.views.shared.password') %><br />
-	  <%= f.password_field :password %></div>
+	  <%= f.password_field :password, :disabled => @user.password_required? ? false : true %></div>
 	
 	  <div class="dri_signup_password dri_input_error"><%= f.label :password_confirmation, (t :'user_groups.views.shared.password_confirm') %><br />
-	  <%= f.password_field :password_confirmation %></div>
+	  <%= f.password_field :password_confirmation, :disabled => @user.password_required? ? false : true %></div>
 	
 	  <div class="dri_select_dropdown"><%= f.label :locale, (t :'user_groups.views.shared.locale') %><br />
 	  <%= f.select(:locale, [[t('dri.application.lang.en'), 'en'], [t('dri.application.lang.ga'), 'ga']]) %></div>

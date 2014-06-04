@@ -161,7 +161,10 @@
 	//@include zen-grid-item(2, 3, $gutter-width: 80px);
 
 }
-
+.dri_home_title {
+	@include zen-grid-item(2.9, 1, $gutter-width: 0);
+	
+}
 .dri_result_container {
 	
 }
@@ -180,7 +183,6 @@
   	}
   	 	
   	.dri_first_navigation_container {
-  		
   	  	display: none;
   		@include zen-grid-item(1, 1, $gutter-width: 0px);
 
@@ -198,6 +200,7 @@
   	  	@include zen-grid-item(3, 1, $gutter-width: 0px);
   	  	//@include zen-grid-background ( $grid-color: #eee);
   	}
+	
   	
 
   	.dri_object_container {
