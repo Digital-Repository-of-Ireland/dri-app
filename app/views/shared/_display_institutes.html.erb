@@ -3,11 +3,20 @@
 </div>
 <!-- close vc_title -->
 
+<% if @depositing_institute %>
+  <span class="dri_collection_institutes_item">
+    <%if @depositing_institute.logo.nil? %>
+      <%= link_to @depositing_institute.name, @depositing_institute.url, :target => "_blank" %>
+    <% else %>
+      <%= link_to image_tag(@depositing_institute.logo, :height => "75px"), @depositing_institute.url, :target => "_blank" %>
+    <% end %>
+  </span>
+<% end %>
 <% if @collection_institutes %>
     <ul class="dri_collection_institutes_list">
       <% @collection_institutes.each do |inst| %>
           <li>
-      <span class="dri_collection_institutes_item"> 
+      <span class="dri_collection_institutes_item">
       <%if inst.logo.nil? %>
         <%= link_to inst.name, inst.url, :target => "_blank" %>
       <% else %>
@@ -19,6 +28,12 @@
     </ul>
     <!--  <div class="dri_institutes_show_more">
     <span><%= t('dri.views.collection.institute.more') %></span>
-  </div> 
+  </div>
   -->
+<% end %>
+
+<% if /edit/.match(request.path) || /newdepositingassociation/.match(request.path) || /newassociation/.match(request.path) %>
+  <div id='dri_collection_institutes_dropdown' name='dri_collection_institutes_dropdown'>
+    <%= render :partial => "shared/associate_depositing_institute" %>
+  </div>
 <% end %>
