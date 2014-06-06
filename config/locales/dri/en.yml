@@ -237,6 +237,7 @@ en:
         institute: 
           add: "Add a new Institute"
           associate: "Associate Institute"
+          associate_depositing: "Select Depositing Institute"
           form: 
             logo: Logo
             name: Name
