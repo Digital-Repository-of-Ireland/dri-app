@@ -180,6 +180,7 @@ module ApplicationHelper
 
   def get_institutes( document )
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
+    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc(@document)
   end
 
   def get_cover_image( document )

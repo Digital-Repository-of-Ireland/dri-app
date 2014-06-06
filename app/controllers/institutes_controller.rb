@@ -45,6 +45,8 @@ class InstitutesController < ApplicationController
     end
   end
 
+
+  # Associate institute
   def associate
     # save the institute name to the properties datastream
     collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
@@ -57,7 +59,32 @@ class InstitutesController < ApplicationController
 
     raise Exceptions::InternalError unless collection.save
 
+    @object = collection
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
+    @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
+
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
+
+  # Associate depositing institute
+  def associate_depositing
+    collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
+    raise Exceptions::NotFound unless collection
+
+    institute = Institute.where(:name => params[:institute_name]).first
+    raise Exceptions::NotFound unless institute
+
+    collection.depositing_institute = institute.name
+
+    raise Exceptions::InternalError unless collection.save
+
+    @object = collection
+    @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
+    @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
 
     respond_to do |format|
       format.js
