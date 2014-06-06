@@ -4,6 +4,9 @@ module LinkTranslator
 
     case link_name
 
+      when /ingest page/
+        "ingest"
+
       when /ingest an object/
         "ingest"
 

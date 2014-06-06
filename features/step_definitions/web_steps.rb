@@ -66,7 +66,7 @@ end
 Given /^I have created a collection$/ do
   steps %{
     Given I am on the home page
-    And I press the button to ingest
+    And I follow the link to ingest page
     And I press the button to add new collection
     And I enter valid metadata for a collection
     And I press the button to create a collection
@@ -76,7 +76,7 @@ end
 Given /^I have created a collection with title "(.+)"$/ do |title|
   steps %{
     Given I am on the home page
-    And I press the button to ingest
+    And I follow the link to ingest page
     And I press the button to add new collection
     And I enter valid metadata for a collection with title #{title}
     And I press the button to create a collection

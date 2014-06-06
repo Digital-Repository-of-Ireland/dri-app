@@ -4,7 +4,7 @@ module ButtonTranslator
 
     case button_name
 
-      when /ingest/
+      when /ingest page/
         "ingest"
 
       when /ingest metadata/
