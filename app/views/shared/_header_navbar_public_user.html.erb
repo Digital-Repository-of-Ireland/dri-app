@@ -12,7 +12,7 @@
       <% end %>
       <% if !current_user %>
           <li class="on">
-            <%= link_to "Sign Up", user_group.new_user_path, :alt => "sign up link" %>
+            <%= link_to "Sign Up", user_group.new_user_path, :alt => "sign up link", :id => 'sign_up' %>
           </li>
       <% end %>
       <li class="noborder">

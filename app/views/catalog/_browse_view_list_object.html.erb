@@ -1,4 +1,4 @@
-<article class="dri_result_object dri_clearfix">
+<article class="dri_result_object dri_clearfix" id="<%= document.id.to_s %>">
   <div class="dri_content_list_collection">
     <div class="dri_content_list_collection_data">
       <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>

@@ -5,18 +5,18 @@
         <% if (params[:view] == "grid") %>
             <% changeViewParams[:view] = "list" %>
             <li class="grid">
-              <%= link_to ' ', '#', :class => "selected" %>
+              <%= link_to ' ', '#', :class => "selected", :id => 'grid_view' %>
             </li>
             <li class="table">
-              <%= link_to ' ', changeViewParams %>
+              <%= link_to ' ', changeViewParams, :id => 'table_view' %>
             </li>
         <% else %>
             <% changeViewParams[:view] = "grid" %>
             <li class="grid">
-              <%= link_to ' ', changeViewParams %>
+              <%= link_to ' ', changeViewParams , :id => 'grid_view'%>
             </li>
             <li class="table">
-              <%= link_to ' ', '#', :class => "selected" %>
+              <%= link_to ' ', '#', :class => "selected", :id => 'table_view' %>
             </li>
         <% end %>
       </ul>
