@@ -13,8 +13,11 @@
           <!-- close image -->
           <h1><%= document[:title_tesim][0] %></h1>
           <p class="dri_publishing_institute">
-            <% unless document[:institute_tesim].nil? %>
-                <%= document[:institute_tesim][0] %>
+            <% @depositing_institute = get_institutes( document ) %>
+            <% if @depositing_institute %>
+                <%= @depositing_institute.name %>
+            <% else %>
+                N/A
             <% end %>
           </p>
         </div>
