@@ -26,9 +26,9 @@
           <%= f.select(:locale, [[t('dri.application.lang.en'), 'en'], [t('dri.application.lang.ga'), 'ga']]) %></div>
 
         <% if cookies[:accept_cookies] %>
-            <div class="dri_submit"><%= f.submit t :'user_groups.views.shared.register' %></div>
+            <div class="dri_submit"><%= f.submit t('user_groups.views.shared.register'), :id => 'submit_new_user' %></div>
         <% else %>
-            <div class="dri_submit"><%= f.submit t :'user_groups.views.shared.register', :confirm => "#{ t('dri.application.cookies.confirm') }" %></div>
+            <div class="dri_submit"><%= f.submit t('user_groups.views.shared.register'), :id => 'submit_new_user', :confirm => "#{ t('dri.application.cookies.confirm') }" %></div>
         <% end %>
         <div>&nbsp;</div>
     <% end %>

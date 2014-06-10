@@ -131,8 +131,8 @@ form {
 
 a {
 	text-decoration: none;
+	
 }
-
 
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
@@ -385,6 +385,7 @@ a .dri_signin_edugate:hover {
     margin-left: 5px;
     color: #808082;
   }
+ 
 }
 
 
@@ -600,35 +601,39 @@ a .dri_signin_edugate:hover {
 	
 	.dri_main_nav_top {
 
-
-  	  ul {
-  	    min-width:0px;
-        width: 0px;
+  	    ul.dropdown-menu {
         background-color: white;
         top:61px;
+		left: -1px;
         border: 0;
+		
         li {
-               
-                background-color: white;
                 min-width: 200px;
                 border-bottom: 1px solid #D9DADB;
                 border-left: 1px solid #D9DADB;
                 font-size: 100%;
-                font-weight: bold;
                 float: left;
-                max-height: 50px;
+				
                 a {
-                   border-top: none;
-                  text-transform:none;
+					background-color: white;
+					margin: 0;
+					padding: 8px 0 8px 20px;
+                   	border-top: none;
+                    text-transform:none;
                 }
-               
+			a:hover {
+			  background-color: white;
+			  color: white;
+        
+        }
                
         }
         li.selected a {
-          border-top: none;
           color: $dri_green;
         
-        }
+        } 
+		
+		
   	  }
     }
 
@@ -1292,13 +1297,13 @@ h4.suggest {
 		font-size: 100%;
 		float: left;
 		display: block;
-		width: 120px;
+		width: 217px;
 	}
 	
 	.dri_search_num {
 		float: right;
 		display: block;
-		padding: 10px 15px 0 0;
+		padding: 0 15px 0 0;
 		margin:  0;
 		color: #2F2F2F;
 		font-weight: normal;

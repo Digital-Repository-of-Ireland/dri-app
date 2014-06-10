@@ -4,6 +4,9 @@ module LinkTranslator
 
     case link_name
 
+      when /ingest page/
+        "ingest"
+
       when /ingest an object/
         "ingest"
 
@@ -101,7 +104,7 @@ module LinkTranslator
         "accept_cookies"
       
       when /institutions/
-        "dri_institutions_link_id"
+        "institutions"
 
       when /manage bookmark/
         "manage_bookmark"

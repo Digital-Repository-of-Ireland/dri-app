@@ -1,0 +1,21 @@
+<!--to be refactored into a dropdown?-->
+
+<% if signed_in? && (current_user.is_cm? || current_user.is_admin?) %>
+    <% if ((controller.controller_name == 'ingest'  && (controller.action_name == 'new' || controller.action_name == 'create')) ||
+            (controller.controller_name == 'collections' && controller.action_name == 'new')) %>
+        <li class="selected">
+    <% else %>
+        <li>
+    <% end %>
+      <%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest" %>
+    </li>
+<% end %>
+<% if signed_in? && current_user.is_admin? %>
+    <% if (controller.controller_name == 'static_pages'  && controller.action_name == 'admin_tasks')%>
+        <li class="selected">
+    <% else %>
+        <li>
+    <% end %>
+      <%= link_to t('dri.headerlinks.admin'), main_app.admin_tasks_path, :id => "admin_tasks" %>
+    </li>
+<% end %>

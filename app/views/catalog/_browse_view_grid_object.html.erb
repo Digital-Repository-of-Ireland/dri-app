@@ -1,4 +1,4 @@
-<article class="block5">
+<article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block">
     <% get_cover_image document %>
     <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>

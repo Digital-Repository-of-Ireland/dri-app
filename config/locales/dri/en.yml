@@ -133,7 +133,7 @@ en:
       resque: "Resque Server"
       sitemap: Sitemap
       usergroups: "Users & Groups"
-      workspace: "Workspace"
+      workspace: Workspace
     help: 
       dri_browse_sort_tabs_collections: "Use this tab to search for Collections"
       dri_browse_sort_tabs_collections_title: "Collections Search"
@@ -161,6 +161,7 @@ en:
       bookmarks: Bookmarks
       items: Items
       per_page: "per page"
+      saved_searches: Searches
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
@@ -175,6 +176,8 @@ en:
       catalog: 
         buttons: 
           add_to_collection: "Add to collection"
+          clear_all_bookmarks: "Clear All Bookmarks"
+          clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
           remove_from_collection: "Remove from collection"
         facets: 
@@ -205,6 +208,7 @@ en:
           no_bookmarks: "You have no bookmarks"
           no_files: "No file has been uploaded."
           no_permission: "You do not have permission to view the asset file associated with this object."
+          no_saved_search: "You have no saved searches"
           no_surrogates: "No surrogates are available."
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
@@ -261,6 +265,7 @@ en:
         institute: 
           add: "Add a new Institute"
           associate: "Associate Institute"
+          associate_depositing: "Select Depositing Institute"
           form: 
             logo: Logo
             name: Name

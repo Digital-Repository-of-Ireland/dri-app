@@ -77,11 +77,9 @@ Scenario: Logging out
   When I follow the link to sign out
   Then I should be logged out
 
-@javascript
 Scenario: A user should be able to edit their details
   Given I am logged in as "user1" with password "password1" and accept cookies
-  Then I should see a link to my workspace
-  When I follow the link to my workspace
+  Then I should see a link to view my account
   And I follow the link to view my account
   Then I should see a link to edit my account
   When I follow the link to edit my account
@@ -95,8 +93,7 @@ Scenario: A user should be able to edit their details
 
 Scenario: A user should be able to cancel their account
   Given I am logged in as "user1" with password "password1" and accept cookies
-  Then I should see a link to my workspace
-  When I follow the link to my workspace
+  Then I should see a link to view my account
   And I follow the link to view my account
   Then I should see a link to edit my account
   When I follow the link to edit my account

@@ -161,6 +161,7 @@ ga:
       bookmarks: Bookmarks
       items: Items
       per_page: "per page"
+      saved_searches: Searches
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
@@ -175,6 +176,8 @@ ga:
       catalog: 
         buttons: 
           add_to_collection: "Cuir leis an mbailiúchán"
+          clear_all_bookmarks: "Clear All Bookmarks"
+          clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
           remove_from_collection: "Bain ón mbailiúchán"
         facets: 
@@ -205,6 +208,7 @@ ga:
           no_bookmarks: "You have no bookmarks"
           no_files: "Níor uaslódáladh comhad ar bith."
           no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo."
+          no_saved_search: "You have no saved searches"
           no_surrogates: "No surrogates are available."
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
@@ -261,6 +265,7 @@ ga:
         institute: 
           add: "Add a new Institute"
           associate: "Associate Institute"
+          associate_depositing: "Select Depositing Institute"
           form: 
             logo: Logo
             name: Name

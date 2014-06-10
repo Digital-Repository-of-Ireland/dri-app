@@ -51,6 +51,7 @@ class CollectionsController < CatalogController
     @inst = Institute.new
 
     @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
+    @depositing_institute = InstituteHelpers.get_depositing_institute(@object)
 
     get_supported_licences()
 
@@ -294,7 +295,7 @@ class CollectionsController < CatalogController
     @object = retrieve_object!(params[:id])
 
     raise Exceptions::BadRequest unless @object.is_collection?
-    
+
     begin
       publish_collection
       flash[:notice] = t('dri.flash.notice.collection_publishing')
