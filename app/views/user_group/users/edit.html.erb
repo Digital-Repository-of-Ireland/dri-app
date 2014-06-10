@@ -1,75 +1,119 @@
 <%= render :partial => "user_group/shared/header" %>
 
 <%= form_for(@user) do |f| %>
-    <%= render 'user_group/shared/error_messages', object: f.object %>
-    <div>
-      <h1><%= t('dri.application.edit_user_profile.edit_account') %></h1>
-      <h4><%= f.label :email, (t :'dri.application.edit_user_profile.email') %></h4>
-      <p><%= f.email_field :email %></p>
-      <br/>
-      <h4><%= f.label :first_name, (t :'dri.application.edit_user_profile.first_name') %></h4>
-      <p><%= f.text_field :first_name %></p>
-      <h4><%= f.label :second_name, (t :'dri.application.edit_user_profile.last_name') %></h4>
-      <p><%= f.text_field :second_name %></p>
-    </div>
+<%= render 'user_group/shared/error_messages', object: f.object %>
+<%= render partial: "user_group/shared/header" %>
 
-    <div>
-      <h1><%= t('dri.application.edit_user_profile.change_password') %></h1>
-      <% if current_user.id == @user.id or !current_user.is_admin? %>
-          <h4><%= f.label :current_password, (t :'dri.application.edit_user_profile.current_password') %></h4>
-          <p><%= f.password_field :current_password, :disabled => @user.password_required? ? false : true %></p>
-      <% end %>
-      <h4><%= f.label :password, (t :'dri.application.edit_user_profile.new_password') %></h4>
-      <p><%= f.password_field :password, :disabled => @user.password_required? ? false : true %></p>
-      <h4><%= f.label :password_confirmation, (t :'dri.application.edit_user_profile.confirm_new_password') %></h4>
-      <p><%= f.password_field :password_confirmation, :disabled => @user.password_required? ? false : true %></p>
-    </div>
+<% allowed_edit = user_signed_in? && ( current_user.id == @user.id || current_user.is_admin? ) %>
 
-    <!--TO BE CHANGED placeholder for real functionality when it is developed-->
-    <div>
-      <% collection_data = get_collection_permission %>
-      <% if (collection_data.count > 0) %>
-          <h1><%= t('dri.application.user_profile.your_collection_details') %></h1>
-          <% collection_data.each_with_index do |collection, i| %>
-              <h4><%= "#{t('dri.application.user_profile.collection_title')} #{i + 1}" %></h4>
-              <p><%= collection[:collection_title] %></p>
-              <h4><%= t('dri.application.user_profile.user_type') %></h4>
-              <p><%= collection[:permission] %></p>
-              <% if (i == 1) %>
-                  <%= link_to t('dri.application.edit_user_profile.requested_to_leave'), '#' %>
-              <% else %>
-                  <%= link_to '#' do %>
-                      <%= t('dri.application.edit_user_profile.request_to_leave') %>
-                  <% end %>
-              <% end %>
-          <% end %>
-      <% end %>
-    </div>
+<div  class="dri_account_block dri_clearfix">
+	<h4 class="dri_account_block_heading"><%= t('dri.application.edit_user_profile.edit_account') %></h4>
+	<div class="dri_account_block_info">
+		<h5><%= t('dri.application.user_profile.email') %></h5>
+		<p>
+			<%= @user.email %>
+		</p>
 
+		<h5><%= f.label :first_name, (t :'dri.application.edit_user_profile.first_name') %></h5>
+		<p>
+			<%= f.text_field :first_name %>
+		</p>
+		<h5><%= f.label :second_name, (t :'dri.application.edit_user_profile.last_name') %></h5>
+		<p>
+			<%= f.text_field :second_name %>
+		</p>
+	</div>
+</div>
 
+<div  class="dri_account_block dri_clearfix">
+	<h4 class="dri_account_block_heading"><%= t('dri.application.edit_user_profile.change_password') %></h4>
+	<div class="dri_account_block_info">
+		<% if current_user.id == @user.id or !current_user.is_admin? %>
+		<h5><%= f.label :current_password, (t :'dri.application.edit_user_profile.current_password') %></h5>
+		<p>
+			<%= f.password_field :current_password, :disabled => @user.password_required? ? false : true %>
+		</p>
+		<% end %>
+		<h5><%= f.label :password, (t :'dri.application.edit_user_profile.new_password') %></h5>
+		<p>
+			<%= f.password_field :password, :disabled => @user.password_required? ? false : true %>
+		</p>
+		<h5><%= f.label :password_confirmation, (t :'dri.application.edit_user_profile.confirm_new_password') %></h5>
+		<p>
+			<%= f.password_field :password_confirmation, :disabled => @user.password_required? ? false : true %>
+		</p>
+	</div>
+</div>
 
-    <div>
-      <%= f.submit (t :'user_groups.views.shared.update'), :id => "commit" %>
-      <%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account") do %>
-          <button>
-            <%= t :'user_groups.views.users.edit.delete' %>
-          </button>
-      <% end %>
-    </div>
+<!--TO BE CHANGED placeholder for real functionality when it is developed-->
+<div class="dri_account_block dri_clearfix">
+	<% collection_data = get_collection_permission %>
+	<% if (collection_data.count > 0) %>
+	<h4 class="dri_account_block_heading"><%= t('dri.application.user_profile.your_collection_details') %></h4>
+	<div class="dri_account_block_info">
+		<% collection_data.each_with_index do |collection, i| %>
+		<div class="dri_account_block_info_item">
+			<h5><%= "#{t('dri.application.user_profile.collection_title')} #{i + 1}" %></h5>
+			<p>
+				<%= collection[:collection_title] %>
+			</p>
+			<h5><%= t('dri.application.user_profile.user_type') %></h5>
+			<p>
+				<%= collection[:permission] %>
+			</p>
+			<% if (i == 1) %>
+			<%= link_to t('dri.application.edit_user_profile.requested_to_leave'), '#' %>
+			<% else %>
+			<%= link_to '#' do %>
+			<%= t('dri.application.edit_user_profile.request_to_leave') %>
+			<% end %>
+			<% end %>
+		</div>
+		<% end %>
+	</div>
+	<% end %>
+</div>
+
+<% if allowed_edit %>
+<div class="dri_account_block dri_clearfix">
+
+	<div class="dri_account_block_info">
+		<div class="dri_account_block_info_buttons dri_float_right">
+			<%= f.submit (t :'user_groups.views.shared.update'), :id => "commit", :class => "btn"%>
+			<%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account", :class => "dri_no_display") do %>
+			<button class="btn">
+				<%= t :'user_groups.views.users.edit.delete' %>
+			</button>
+			<% end %>
+		</div>
+
+	</div>
+
+</div>
 <% end %>
 
-
+<% end %>
 
 <% if current_user.is_admin? %>
-    <h3><%= (t :'user_groups.views.shared.group_membership')%></h3>
-    <% #Rendering the other way does odd things %>
-    <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.cancel') %></h4>
-    <%= render 'user_group/shared/leave_groups', object: @user %>
-    <% if @user.pending_memberships.count >0 %>
-        <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.pending') %></h4>
-        <%= render 'user_group/shared/pending_groups', object: @user %>
-    <% end %>
+<div class="dri_account_block dri_clearfix">
 
-    <h4 class="no_bottom_margin"><%= (t :'user_groups.views.shared.add') %></h4>
-    <%= render 'user_group/shared/join_groups', object: @user %>
+
+	<h4 class="dri_account_block_heading"><%= (t :'user_groups.views.shared.group_membership')%></h4>
+	<div class="dri_account_block_info">
+		<h5 class="no_bottom_margin"><%= (t :'user_groups.views.shared.cancel') %></h5>
+		<%= render 'user_group/shared/leave_groups', object: @user %>
+		<% if @user.pending_memberships.count > 0 %>
+		<h5 class="no_bottom_margin"><%= (t :'user_groups.views.shared.pending') %></h5>
+		<%= render 'user_group/shared/pending_groups', object: @user %>
+		<% end %>
+
+		<h5 class="no_bottom_margin"><%= (t :'user_groups.views.shared.add') %></h5>
+		<%= render 'user_group/shared/join_groups', object: @user %>
+
+
+	</div>
+</div>
+
+</div>
 <% end %>
+
