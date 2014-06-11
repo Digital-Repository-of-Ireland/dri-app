@@ -46,9 +46,10 @@
 </div>
 
 <!--TO BE CHANGED placeholder for real functionality when it is developed-->
-<div class="dri_account_block dri_clearfix">
-	<% collection_data = get_collection_permission %>
-	<% if (collection_data.count > 0) %>
+    <% collection_data = get_collection_permission %>
+    <% if (collection_data != "") %>
+    <div class="dri_account_block dri_clearfix">
+
 	<h4 class="dri_account_block_heading"><%= t('dri.application.user_profile.your_collection_details') %></h4>
 	<div class="dri_account_block_info">
 		<% collection_data.each_with_index do |collection, i| %>
@@ -71,15 +72,21 @@
 		</div>
 		<% end %>
 	</div>
-	<% end %>
 </div>
+<% end %>
 
 <% if allowed_edit %>
 <div class="dri_account_block dri_clearfix">
 
 	<div class="dri_account_block_info">
 		<div class="dri_account_block_info_buttons dri_float_right">
-			<%= f.submit (t :'user_groups.views.shared.update'), :id => "commit", :class => "btn"%>
+		    <%= link_to(@user, :id => "cancel") do %><!-- needs something in the controller to intercept a cancel I think -->
+            <button class="btn">
+                <%= t :'user_groups.views.users.edit.cancel' %>
+            </button>
+            <% end %>
+			<%= f.submit (t :'user_groups.views.shared.update'), :id => "commit", :class => "btn btn-primary"%>
+
 			<%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account", :class => "dri_no_display") do %>
 			<button class="btn">
 				<%= t :'user_groups.views.users.edit.delete' %>
@@ -91,6 +98,7 @@
 
 </div>
 <% end %>
+
 
 <% end %>
 

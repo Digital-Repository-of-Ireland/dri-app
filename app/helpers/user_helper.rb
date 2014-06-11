@@ -1,8 +1,12 @@
 module UserHelper
   #TO BE DELETED once the functionality has been developed
   def get_collection_permission
-    fake_data = [{:collection_title => "Fake Collection 1", :permission => "Collection Manager"}, {:collection_title => "Fake Collection 2", :permission => "Editor"}]
-    return fake_data
+    if current_user.is_admin? || current_user.is_cm?
+      fake_data = [{:collection_title => "Fake Collection 1", :permission => "Collection Manager"}, {:collection_title => "Fake Collection 2", :permission => "Editor"}]
+      return fake_data
+    else
+      return ""
+    end
   end
 
   def get_saved_search_snippet_documents(search_params)
@@ -69,7 +73,7 @@ module UserHelper
           facets = facets + " AND "
         end
       end
-      return facets
+    return facets
     end
   end
 
