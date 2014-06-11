@@ -308,6 +308,7 @@ en:
         creators: Creators
         date: Date
         dates: Dates
+        depositing_institute: "Depositing Institute"
         description: Description
         format: Format
         formats: Formats

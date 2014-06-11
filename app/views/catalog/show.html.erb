@@ -5,7 +5,7 @@
 
 <% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>
 <% extra_head_content << render_link_rel_alternates %>
-<div class="dri_object_container">
+<div class="dri_object_container" id="object_container">
 
   <div class="dri_object_title_top"><%= render_field_value(document_heading) %></div>
 
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="dri_object_institutes_block">
+<div class="dri_object_institutes_block" id="institutes_block">
   <%= render :partial => 'shared/display_institutes' %>
 </div>
 

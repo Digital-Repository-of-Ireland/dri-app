@@ -8,6 +8,11 @@
         <% end -%>
     <% end -%>
     <%= render :partial => 'shared/display_licence' %>
+    <% if (@depositing_institute) %>
+        <% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { :institute_sim => [@depositing_institute[:name]] } } %>
+        <dt class="blacklight-depositing_institute"><%= t('dri.views.fields.depositing_institute') %></dt>
+        <dd class="blacklight-depositing_institute"><%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %></dd>
+    <% end %>
   </dl>
 </div>
 <!-- close dri_object_first_block -->
@@ -22,7 +27,7 @@
       <div class="dri_vc_title">
         <%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
         <i class="fa fa-lg fa-folder-open"></i>
-        <%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(collection['id']) ) %>
+        <%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(collection['id']), :id => 'view_collection' ) %>
       </div>
   <% end %>
   <!-- close vc_title -->
