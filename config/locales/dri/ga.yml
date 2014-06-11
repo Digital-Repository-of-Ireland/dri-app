@@ -133,7 +133,7 @@ ga:
       resque: "Resque Server"
       sitemap: Sitemap
       usergroups: "Úsáideoirí agus Grúpaí"
-      workspace: "My Workspace"
+      workspace: "Spás Oibre"
     help: 
       dri_browse_sort_tabs_collections: "Use this tab to search for Collections"
       dri_browse_sort_tabs_collections_title: "Collections Search"
