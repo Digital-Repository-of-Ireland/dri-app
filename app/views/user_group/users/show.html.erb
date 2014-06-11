@@ -18,9 +18,10 @@
 </div>
 
 <!--TO BE CHANGED placeholder for real functionality when it is developed-->
-<div class="dri_account_block dri_clearfix">
-	<% collection_data = get_collection_permission %>
-	<% if (collection_data.count > 0) %>
+    <% collection_data = get_collection_permission %>
+    <% if (collection_data != "") %>
+    <div class="dri_account_block dri_clearfix">
+
 	<h4 class="dri_account_block_heading"><%= t('dri.application.user_profile.your_collection_details') %></h4>
 	<div class="dri_account_block_info">
 		<% collection_data.each_with_index do |collection, i| %>
@@ -37,8 +38,8 @@
 
 		<% end %>
 	</div>
-	<% end %>
 </div>
+<% end %>
 
 <% if allowed_edit %>
 <div class="dri_account_block dri_clearfix">

@@ -17,6 +17,7 @@
 //= require jquery.cookie
 //= require bootstrap
 //= require bootstrap-player.js
+//= require bootstrap-switch
 // Required by Blacklight
 //= require blacklight/blacklight
 //= Required by Dropit dropdown menu library

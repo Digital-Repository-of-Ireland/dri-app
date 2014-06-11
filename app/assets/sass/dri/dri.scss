@@ -119,6 +119,18 @@ h3 {
 form {
   margin: 0 0 0 0;
 }
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-submenu:hover > a,
+.dropdown-submenu:focus > a {
+  text-decoration: none; 
+  color: $dri_green;
+  background-color: $dri_green;
+  background-image: none;
+
+}
+
 /* end bootstrap override */
 
 
@@ -604,7 +616,7 @@ a .dri_signin_edugate:hover {
   	    ul.dropdown-menu {
         background-color: white;
         top:61px;
-		left: -1px;
+		    left: -1px;
         border: 0;
 		
         li {
@@ -621,9 +633,9 @@ a .dri_signin_edugate:hover {
                    	border-top: none;
                     text-transform:none;
                 }
-			a:hover {
+			  a:hover {
 			  background-color: white;
-			  color: white;
+			  color: $dri_green;
         
         }
                
