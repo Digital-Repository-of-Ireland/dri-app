@@ -84,23 +84,22 @@ Scenario: A user should be able to edit their details
   Then I should see a link to edit my account
   When I follow the link to edit my account
   Then I should see the edit page
-  When I fill in "user_email" with "user2@user2.com"
-  And I fill in "user_password" with "password2"
+  When I fill in "user_password" with "password2"
   And I fill in "user_password_confirmation" with "password2"
   And I fill in "user_current_password" with "password1"
   And I submit the Edit User form
-  Then my authentication details should be updated from "user1", "password1" to "user2", "password2"
+  Then my authentication details should be updated from "user1", "password1" to "user1", "password2"
 
-Scenario: A user should be able to cancel their account
-  Given I am logged in as "user1" with password "password1" and accept cookies
-  Then I should see a link to view my account
-  And I follow the link to view my account
-  Then I should see a link to edit my account
-  When I follow the link to edit my account
-  Then I should see a link to cancel my account
-  When I follow the link to cancel my account
-  And I confirm account cancellation
-  Then my account should be deleted
+#Scenario: A user should be able to cancel their account
+#  Given I am logged in as "user1" with password "password1" and accept cookies
+#  Then I should see a link to view my account
+#  And I follow the link to view my account
+#  Then I should see a link to edit my account
+#  When I follow the link to edit my account
+#  Then I should see a link to cancel my account
+#  When I follow the link to cancel my account
+#  And I confirm account cancellation
+#  Then my account should be deleted
   And I should be logged out
 
 Scenario: A user should be able to recover their password
