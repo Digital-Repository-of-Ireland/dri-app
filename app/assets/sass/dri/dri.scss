@@ -152,7 +152,7 @@ a {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 	border: none;
-	padding: 6px 0 6px 0;
+	padding: 4px 0 4px 0;
 	margin: 10px 0 10px 0;
 	
 }
@@ -173,8 +173,11 @@ a {
 
 .dri_button_black {
   @extend .dri_button;
-	background-color: white;
+	background-color: #2F2F2F;
 }
+.dri_button_black:hover {
+}
+
 
 .dri_w230 {
 	width: 230px;
@@ -256,7 +259,8 @@ a {
 		span {
 			margin: 10px 4px 0 0;
 			padding: 0;	
-			float: left;cursor: pointer;
+			float: left;
+			cursor: pointer;
 			
 		}
 	}
