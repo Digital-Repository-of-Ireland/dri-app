@@ -257,28 +257,13 @@
 	//* User Accounts *//
   
   .dri_account_block {
-    border-bottom: 1px lightgrey solid;
-    display: flex;
-    height: 100%;
-    padding-bottom: 10px;
-    padding-top:10px;
     
     .dri_account_block_heading {
       @include zen-grid-item(1, 1, $gutter-width: 0px);
     }
     .dri_account_block_info {
       @include zen-grid-item(1.5, 2, $gutter-width: 0px);
-      
-      .dri_account_block_info_item {
-        border-bottom: 1px lightgrey solid;
-        padding-bottom: 20px;
-        
-      }
-      .dri_account_block_info_buttons {
-
-        padding-top: 20px;
-        
-      }
+   
       
     }
     

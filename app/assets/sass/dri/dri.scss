@@ -1093,6 +1093,8 @@ a .dri_signin_edugate:hover {
 }
 
 /*-------------- Save Search --------------*/
+
+
 .dri_search_save_input {
 	margin: 0;
 	padding: 0px;
@@ -1396,6 +1398,68 @@ h4.suggest {
 	padding: 0 0 0 25px;
 	
 }
+
+
+
+/*-------------- Accounts page --------------*/
+
+  .dri_account_block {
+    border-bottom: 1px lightgrey solid;
+    display: flex;
+    height: 100%;
+    padding-bottom: 10px;
+    padding-top:20px;
+    
+    .dri_account_block_heading {
+		color: #2F2F2F;
+		font-size: 150%;
+		margin: 0px;
+		padding: 0px;
+    }
+    .dri_account_block_info {
+      
+      .dri_account_block_info_item {
+        border-bottom: 1px lightgrey solid;
+        padding-bottom: 20px;
+        
+      }
+	  
+	  h5 {
+		  color: #2F2F2F;
+		  font-size: 100%;
+		  margin: 0px;
+		  padding: 0px;
+		 
+	  }
+	  p {
+		   	color: #808080;
+	  }
+      .dri_account_block_info_buttons {
+
+        padding-top: 20px;
+		
+		button {
+		width: 100px;
+		margin: 0;
+		padding: 2px 9px 2px 9px;
+		border: none;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+		color: #fff;
+		background-color: #909A3C;
+		font-size: 100%;
+		font-weight: none;
+		text-align: center;
+		
+		
+		}
+		
+        
+      }
+      
+    }
+    
+  }
 
 /* -----------Home page styling ---------- */
 .dri_welcome_block {
