@@ -3,6 +3,7 @@
 /* Anna updated html and body */
 $dri_green: #90993D;
 $dri_grey: #2F2F2F;
+$dri_lightgrey: #B3B3B3;
 
 html {
   margin-bottom: 0.5em;
@@ -168,7 +169,7 @@ a {
 
 .dri_button_grey {
   @extend .dri_button;
-	background-color: #90993D;
+	background-color: $dri_lightgrey;
 }
 
 .dri_button_black {
@@ -178,6 +179,10 @@ a {
 
 .dri_w230 {
 	width: 230px;
+}
+
+input.dri_w230 {
+  width: 230px;
 }
 
 .dri_w330 {

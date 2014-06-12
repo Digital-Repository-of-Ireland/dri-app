@@ -85,32 +85,10 @@
 </div>
 <% end %>
 
-<% if allowed_edit %>
-<div class="dri_account_block dri_clearfix">
-
-	<div class="dri_account_block_info">
-		<div class="dri_account_block_info_buttons dri_float_right">
-		    <%= link_to(@user, :id => "cancel") do %><!-- needs something in the controller to intercept a cancel I think -->
-            <button>
-                <%= t :'user_groups.views.users.edit.cancel' %>
-            </button>
-            <% end %>
-			<%= f.submit (t :'user_groups.views.shared.update'), :id => "commit"%>
-
-			<%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account") do %>
-			<button>
-				<%= t :'user_groups.views.users.edit.delete' %>
-			</button>
-			<% end %>
-		</div>
-
-	</div>
-
-</div>
-<% end %>
 
 
-<% end %>
+
+
 
 <% if current_user.is_admin? %>
 <div class="dri_account_block dri_clearfix">
@@ -134,4 +112,28 @@
 
 </div>
 <% end %>
+<% if allowed_edit %>
+<div class="dri_account_block dri_clearfix dri_noborder dri_float_right">
 
+		<div class="dri_account_block_info_buttons dri_float_right">
+		
+      
+        	<button class="dri_button_grey dri_w230">
+                <%= t ('dri.application.edit_user_profile.cancel') %>
+            </button>
+
+		    
+			<%= f.submit (t :'user_groups.views.shared.update'), :id => "commit", :class => "dri_button_green dri_w230"%>
+			<% if current_user.is_admin? %>
+			<%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account") do %>
+			<button>
+				<%= t :'user_groups.views.users.edit.delete' %>
+			</button>
+			<% end %>
+			<% end %>
+		</div>
+
+</div>
+<% end %>
+
+<% end %>
