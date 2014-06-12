@@ -91,14 +91,14 @@
 	<div class="dri_account_block_info">
 		<div class="dri_account_block_info_buttons dri_float_right">
 		    <%= link_to(@user, :id => "cancel") do %><!-- needs something in the controller to intercept a cancel I think -->
-            <button class="btn">
+            <button>
                 <%= t :'user_groups.views.users.edit.cancel' %>
             </button>
             <% end %>
-			<%= f.submit (t :'user_groups.views.shared.update'), :id => "commit", :class => "btn btn-primary"%>
+			<%= f.submit (t :'user_groups.views.shared.update'), :id => "commit"%>
 
-			<%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account", :class => "dri_no_display") do %>
-			<button class="btn">
+			<%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account") do %>
+			<button>
 				<%= t :'user_groups.views.users.edit.delete' %>
 			</button>
 			<% end %>

@@ -161,8 +161,9 @@ a {
   @extend .dri_button;
 	background-color:#90993D;
 }
+
 .dri_button_green:hover {
-	background-color: darken($dri_green, 50%);
+	background-color: darken( $dri_green, 10%);
 }
 
 .dri_button_grey {
@@ -1485,26 +1486,9 @@ h4.suggest {
 			 padding: 3px 10px 3px 10px;
 			 margin: 0 0 0 0;
 	  }
-      .dri_account_block_info_buttons {
 
-        padding-top: 20px;
-		
-		button {
-			width: 230px;
-			margin: 0;
-			padding: 2px 9px 2px 9px;
-			border: none;
-			-moz-border-radius: 2px;
-			border-radius: 2px;
-			color: #fff;
-			background-color: #909A3C;
-			font-size: 100%;
-			font-weight: none;
-			text-align: center;
-		}
-		
         
-      }
+
       
     }
     
