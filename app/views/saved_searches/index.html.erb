@@ -16,7 +16,7 @@
                     <%= "#{search_count} #{t('dri.headerlinks.objects')}" %>
                 <% end %>
               </td>
-              <td><%= button_to t('blacklight.saved_searches.delete'), forget_search_path(search.id) %></td>
+              <td><%= button_to t('blacklight.saved_searches.delete'), forget_search_path(search.id), :id => 'delete_saved_search' %></td>
             </tr>
             <tr>
               <td>

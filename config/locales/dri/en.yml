@@ -9,6 +9,7 @@ en:
         header: "Important notice about cookies"
         message: "The Digital Repository of Ireland uses cookies to implement access control to digital resources. To opt out of receiving cookies from DRI, please turn off cookies for this website in your browser preferences. Note that users who opt out will be unable to use some of the features of the Digital Repository. For more information please see our %{privacy_statement:privacy statement} and our %{cookies_help:cookies help} pages."
       edit_user_profile: 
+        cancel: Cancel
         change_password: "Change Password"
         confirm_new_password: "Confirm New Password"
         current_password: "Current Password"
@@ -16,16 +17,15 @@ en:
         edit_account: "Edit Account"
         email: Email
         first_name: "First Name"
+        help_bubbles: "Show Help Bubbles"
         last_name: "Last Name"
         new_password: "New Password"
+        off_text: "OFF"
+        on_text: "ON"
         request_to_leave: "Request To Leave"
         requested_to_leave: "You have requested to leave this group"
         save_edits: "Save Edits"
-        help_bubbles: "Show Help Bubbles"
-        settings: "Settings"
-        on_text: "ON"
-        off_text: "OFF"
-        cancel: "Cancel"
+        settings: Settings
       home: 
         featured: Featured
         featured_collections: "Featured Collections"

@@ -19,6 +19,15 @@ module ButtonTranslator
       when /save changes/
         "save_edit"
 
+      when /save search/
+        "save_search"
+
+      when /delete saved search/
+        "delete_saved_search"
+
+      when /clear saved search/
+        "clear_saved_search"
+
       when /edit a collection/
         "edit_collection"
 

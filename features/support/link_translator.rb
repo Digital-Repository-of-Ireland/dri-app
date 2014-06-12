@@ -46,6 +46,9 @@ module LinkTranslator
       when /my workspace/
         "workspace"
 
+      when /my saved search/
+        "saved_search"
+
       when /sign up/
         "signup"
 
