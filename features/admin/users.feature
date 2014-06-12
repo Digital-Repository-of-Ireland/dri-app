@@ -100,7 +100,7 @@ Scenario: A user should be able to edit their details
 #  When I follow the link to cancel my account
 #  And I confirm account cancellation
 #  Then my account should be deleted
-  And I should be logged out
+#  And I should be logged out
 
 Scenario: A user should be able to recover their password
 # Not sure how to test this as it involves sending an email...
