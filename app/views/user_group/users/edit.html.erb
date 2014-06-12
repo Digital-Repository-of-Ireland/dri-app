@@ -110,7 +110,7 @@
 	</div>
 </div>
 
-</div>
+
 <% end %>
 <% if allowed_edit %>
 <div class="dri_account_block dri_clearfix dri_noborder dri_float_right">
@@ -126,7 +126,7 @@
 			<%= f.submit (t :'user_groups.views.shared.update'), :id => "commit", :class => "dri_button_green dri_w230"%>
 			<% if current_user.is_admin? %>
 			<%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account") do %>
-			<button>
+			<button class="dri_button_black dri_w230">
 				<%= t :'user_groups.views.users.edit.delete' %>
 			</button>
 			<% end %>
@@ -137,3 +137,4 @@
 <% end %>
 
 <% end %>
+

@@ -25,6 +25,7 @@ en:
         settings: "Settings"
         on_text: "ON"
         off_text: "OFF"
+        cancel: "Cancel"
       home: 
         featured: Featured
         featured_collections: "Featured Collections"
