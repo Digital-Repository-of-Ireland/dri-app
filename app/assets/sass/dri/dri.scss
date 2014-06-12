@@ -156,15 +156,22 @@ a {
 	margin: 10px 0 10px 0;
 	
 }
+
 .dri_button_green {
+  @extend .dri_button
 	background-color: white;
 }
+
 .dri_button_grey {
+  @extend .dri_button
 	background-color: white;
 }
+
 .dri_button_black {
+  @extend .dri_button
 	background-color: white;
 }
+
 .dri_btn_230 {
 	width: 260px;
 }
@@ -172,6 +179,7 @@ a {
 .dri_bth_330 {
 	width: 330px;
 }
+
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
 	margin: auto;
