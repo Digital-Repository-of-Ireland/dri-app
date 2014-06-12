@@ -3,8 +3,8 @@
 
     <div id="facets" class="facets sidenav dri_facet_filters" data-content="<%= t('dri.help.facets') %>" data-original-title="<%= t('dri.help.facets_title') %>" data-trigger="hover" data-placement="top">
 
-      <span class="dri_head_title"><%= t('blacklight.search.facets.title') %></span>
-      <span class="dri_search_num" id="browse_results_count"><%= @response.response[:numFound] %></span>
+      <div class="dri_head_title"><%= t('blacklight.search.facets.title') %>      <span class="dri_search_num" id="browse_results_count"><%= @response.response[:numFound] %></span></div>
+
       <div class="facets-collapse">
         <%= render_facet_partials %>
       </div>

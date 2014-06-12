@@ -21,6 +21,10 @@ en:
         request_to_leave: "Request To Leave"
         requested_to_leave: "You have requested to leave this group"
         save_edits: "Save Edits"
+        help_bubbles: "Show Help Bubbles"
+        settings: "Settings"
+        on_text: "ON"
+        off_text: "OFF"
       home: 
         featured: Featured
         featured_collections: "Featured Collections"

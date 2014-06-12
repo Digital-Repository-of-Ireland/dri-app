@@ -45,6 +45,16 @@
 	</div>
 </div>
 
+<div  class="dri_account_block dri_clearfix">
+    <h4 class="dri_account_block_heading"><%= t('dri.application.edit_user_profile.settings') %></h4>
+    <div class="dri_account_block_info">
+        
+        <h5><%= t ('dri.application.edit_user_profile.help_bubbles') %></h5>
+        <!-- not functional - needs the setting to be stored on the user data model-->
+        <input type="checkbox" name="dri_slider_checkbox" data-size="mini" data-on-text="<%= t('dri.application.edit_user_profile.on_text') %>" data-off-text="<%= t('dri.application.edit_user_profile.off_text') %>"checked>
+
+    </div>
+</div>
 <!--TO BE CHANGED placeholder for real functionality when it is developed-->
     <% collection_data = get_collection_permission %>
     <% if (collection_data != "") %>
