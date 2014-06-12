@@ -145,6 +145,43 @@ a {
 	text-decoration: none;
 	
 }
+/*-------------- Button Styling--------------*/
+.dri_button {
+	font-size: 100%;
+	color: #FFF;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border: none;
+	padding: 6px 0 6px 0;
+	margin: 10px 0 10px 0;
+	
+}
+
+.dri_button_green {
+  @extend .dri_button;
+	background-color:#90993D;
+}
+.dri_button_green:hover {
+	background-color: darken($dri_green, 50%);
+}
+
+.dri_button_grey {
+  @extend .dri_button;
+	background-color: #90993D;
+}
+
+.dri_button_black {
+  @extend .dri_button;
+	background-color: white;
+}
+
+.dri_btn_w230 {
+	width: 230px;
+}
+
+.dri_bth_w330 {
+	width: 330px;
+}
 
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
@@ -1093,6 +1130,8 @@ a .dri_signin_edugate:hover {
 }
 
 /*-------------- Save Search --------------*/
+
+
 .dri_search_save_input {
 	margin: 0;
 	padding: 0px;
@@ -1397,6 +1436,80 @@ h4.suggest {
 	
 }
 
+
+
+/*-------------- Accounts page --------------*/
+
+  .dri_account_block {
+    border-bottom: 1px lightgrey solid;
+    display: flex;
+    height: 100%;
+    padding: 30px 0 30px 0;
+    
+    .dri_account_block_heading {
+		color: #2F2F2F;
+		font-size: 150%;
+    }
+    .dri_account_block_info {
+      
+      .dri_account_block_info_item {
+        border-bottom: 1px lightgrey solid;
+        
+      }
+	  
+	  h5 {
+		  color: #2F2F2F;
+		  font-size: 110%;
+		  margin: 10px 0 0 0;
+		  padding: 0px;
+		  font-weight: normal;
+		 
+	  }
+	  p {
+		   	color: #808080;
+			 font-size: 110%;
+			 margin-bottom: 15px;
+	  }
+	 
+	    h5 label {
+		  color: #2F2F2F;
+		  font-size: 100%;
+		  margin: 0 0 4px 0;
+		  padding: 0px;
+		 
+	  }
+	     p input {
+			 width: 230px;
+		   	color: #808080;
+			 font-size: 100%;
+			 padding: 3px 10px 3px 10px;
+			 margin: 0 0 0 0;
+	  }
+      .dri_account_block_info_buttons {
+
+        padding-top: 20px;
+		
+		button {
+			width: 230px;
+			margin: 0;
+			padding: 2px 9px 2px 9px;
+			border: none;
+			-moz-border-radius: 2px;
+			border-radius: 2px;
+			color: #fff;
+			background-color: #909A3C;
+			font-size: 100%;
+			font-weight: none;
+			text-align: center;
+		}
+		
+        
+      }
+      
+    }
+    
+  }
+
 /* -----------Home page styling ---------- */
 .dri_welcome_block {
 	margin: 30px 0 40px 0;
@@ -1497,6 +1610,9 @@ p.dri_rss_link a {
 	
 	
 /*-------------- About Page --------------*/
+.dri_about_container {
+	margin-top: 10px;
+
 .dri_colour_text {
   color: $dri_green;
 }
@@ -1728,7 +1844,7 @@ p.dri_rss_link a {
 	  
 	}
 }
-
+}
 /* ----------- Object block ---------- */
 .dri_result_container {
 	margin-top: 25px;
