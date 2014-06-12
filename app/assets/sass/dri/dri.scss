@@ -158,25 +158,28 @@ a {
 }
 
 .dri_button_green {
-  @extend .dri_button
-	background-color: white;
+  @extend .dri_button;
+	background-color:#90993D;
+}
+.dri_button_green:hover {
+	background-color: darken($dri_green, 50%);
 }
 
 .dri_button_grey {
-  @extend .dri_button
-	background-color: white;
+  @extend .dri_button;
+	background-color: #90993D;
 }
 
 .dri_button_black {
-  @extend .dri_button
+  @extend .dri_button;
 	background-color: white;
 }
 
-.dri_btn_230 {
-	width: 260px;
+.dri_btn_w230 {
+	width: 230px;
 }
 
-.dri_bth_330 {
+.dri_bth_w330 {
 	width: 330px;
 }
 
