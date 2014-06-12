@@ -1575,6 +1575,9 @@ p.dri_rss_link a {
 	
 	
 /*-------------- About Page --------------*/
+.dri_about_container {
+	margin-top: 10px;
+
 .dri_colour_text {
   color: $dri_green;
 }
@@ -1806,7 +1809,7 @@ p.dri_rss_link a {
 	  
 	}
 }
-
+}
 /* ----------- Object block ---------- */
 .dri_result_container {
 	margin-top: 25px;
