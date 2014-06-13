@@ -1,4 +1,9 @@
+/*-------------- DRI Wrapper--------------*/
 
+.dri_wrapper {
+	width: 1024px;
+	margin: 0 auto;
+}
 
 /* Anna updated html and body */
 $dri_green: #90993D;
@@ -134,18 +139,24 @@ form {
 
 /* end bootstrap override */
 
-
+/*-------------- Layout for Identity and Search feature --------------*/
 
 .dri_ident {
-  background: image-url('dri/dri_ident.png');
-  background-repeat: no-repeat;
-  margin: 0;
+  	background: image-url('dri/dri_ident.png');
+ 	background-repeat: no-repeat;
+ 	height: 135px;
+	margin: 0px;
+	padding: 0px;
 }
 
 a {
 	text-decoration: none;
 	
 }
+
+.dri_search_term_input {
+	padding-top: 45px;
+  }
 /*-------------- Button Styling--------------*/
 .dri_button {
 	font-size: 100%;
@@ -525,12 +536,7 @@ a .dri_signin_edugate:hover {
 	}
 }
 
-/*-------------- dri logo --------------*/
-.dri_ident {
-	height: 135px;
-	margin: 0px;
-	padding: 0px;
-}
+
 
 /*-------------- Social Media --------------*/
 
@@ -802,8 +808,6 @@ a .dri_signin_edugate:hover {
 	padding: 0;
 }
 /*-------------- Sort by --------------*/
-
-
 .dri_sort_nav {
 	float: left;
 	margin: 0;
@@ -1548,6 +1552,7 @@ h4.suggest {
 	.dri_home_title {
 		margin: 0 0 30px 0;
 		padding: 0 0 0 0;
+		width: 500px;
 		
 	 h2 {
 		margin: 0 0 0 0;

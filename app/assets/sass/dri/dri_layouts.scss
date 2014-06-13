@@ -14,8 +14,6 @@
 
 
 .dri_wrapper {
-	width: 1024px;
-	margin: 0 auto;
 	$zen-column-count:4;
 }
 
@@ -38,19 +36,9 @@
 		 @include zen-grid-item(1.25, 1);
 	}
 	 .dri_search_term_input {
-		@include zen-grid-item(1, 4);
-		padding-left: 30px;
-		padding-top: 45px;
+		@include zen-grid-item(1, 4.08);
   }
   
-
-}
-
-.dri_main_nav_container {
-}
-
-
-.dri_sub_nav_container {
 
 }
 
@@ -92,17 +80,11 @@
 		
 	}
 	
-
-		
 		.dri_search_save_input {
 			@include zen-clear();
 			
 		}
 		
-
-	
-
-
 }
 
 .dri_facet_restrictions_container {
@@ -112,8 +94,7 @@
 }
 
 .dri_messages_container {
-	 
-  @include zen-grid-container;
+    @include zen-grid-container;
 	@include zen-grid-flow-item(3, 4.3, $alpha-gutter: 20px);
 	padding-bottom: 10px;
 	
@@ -122,8 +103,6 @@
 .dri_welcome_block {
 	@include zen-grid-item(1.3, 1, $gutter-width: 0);
 
-
-	
 }
 
 .dri_slideshow_block {
@@ -242,7 +221,6 @@
 //Static Pages
 .dri_collection_institutes_pages {
 
-
   .dri_collection_institutes_pages_img {
         @include zen-grid-item(1.5, 1, $gutter-width: 0px);
   }	
@@ -299,7 +277,6 @@
 	margin: 0 auto;
 	$zen-column-count:3;
 
-
 }
 
 .dri_search_features_nav_container {
@@ -339,19 +316,7 @@
     .dri_object_title_top {
 		 width: 77%;
   
-}
-
-.dri_home_title h2 {
-	width: 500px;
-
-}
-    
-	.dri_asset_holder {
-			margin: 20px 0 0 0;
-			padding: 0px;
-			width: 350px;
-			display: block;
-	}
+}   
 
 }
 .dri_browse_sort_tabs {
