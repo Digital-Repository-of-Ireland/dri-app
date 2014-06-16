@@ -1509,7 +1509,13 @@ h4.suggest {
     }
     
   }
+  
+  
+  
+/* -----------Main Content Container ---------- */
 
+
+    
 /* -----------Home page styling ---------- */
 .dri_welcome_block {
 	margin: 30px 0 40px 0;
@@ -1847,6 +1853,8 @@ p.dri_rss_link a {
 }
 }
 /* ----------- Object block ---------- */
+	
+	
 .dri_result_container {
 	margin-top: 25px;
 }
@@ -1957,8 +1965,6 @@ p.dri_rss_link a {
 }
 
 
-
-
 /* ----------- Collection block ---------- */
 
 .dri_content_block_collection {
@@ -2048,26 +2054,34 @@ p.dri_rss_link a {
 
 
 /*-------------- Tabular View styling --------------*/
+
 .dri_result_object { 
-	margin: 0;
-	padding: 10px 0 0 0;
+	padding: 0 0 20px 0;
+	margin-bottom: 20px;
 	border-bottom: 1px solid #E1E1E1;
+	 height: 140px;
+	
+	 .dri_content_list_collection {
+      width:700px;
+
+    } 
+	
+	 .dri_collection_image {
+		padding: 0;
+	    margin: 0 0 10px 0;
+        width:200px;
+        float:right;
+        max-height: 128px;
+      }
 
 }
 
-.dri_content_list_collection {
-	margin: 0;
-	padding: 0;
-}
-.dri_collection_image {
-	  padding: 0;
-	  #margin: 0 14px 0 14px;
-	  height: 128px;
-	  overflow: hidden;
-	}
 .dri_content_list_collection_data {
-	margin: 0 0 0 0;
+	margin:0;
 	padding: 0;
+	height: 128px;
+    width:500px;
+    float:right;
 	
 	a h4 {
 		margin: 3px 0 10px 15px;
@@ -2090,7 +2104,7 @@ p.dri_rss_link a {
 		overflow: hidden;
 	
 	  }
-	  
+	
 	  .dri_list_description {
 		  max-height: 40px;
 		  overflow: hidden;    

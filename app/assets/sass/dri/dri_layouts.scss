@@ -151,26 +151,7 @@
   	  	@include zen-grid-item(4, 1, $gutter-width: 0px);
   	}
   	
-  	.dri_result_object {
-  	     height: 140px;
-  	      margin-right:10px;
-  	  .dri_content_list_collection {
-      width:700px;
-
-      .dri_collection_image {
-        width:200px;
-        float:right;
-        max-height: 128px;
-      }
-     .dri_content_list_collection_data {
-       height: 128px;
-       width:500px;
-       float:right;
-     }
-    } 
-  	}
-
-	
+ 
 	
 	.dri_object_first_block {
 		@include zen-grid-item(2, 1, $gutter-width: 0px);
@@ -316,7 +297,19 @@
     .dri_object_title_top {
 		 width: 77%;
   
-}   
+}
+
+.dri_home_title h2 {
+	width: 500px;
+
+}
+    
+.dri_asset_holder {
+			margin: 20px 0 0 0;
+			padding: 0px;
+			width: 350px;
+			display: block;
+	}
 
 }
 .dri_browse_sort_tabs {
