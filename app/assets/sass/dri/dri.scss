@@ -2804,9 +2804,57 @@ ul.dri_collection_institutes_list {
 	  text-decoration: underline;
 	}
 }
-.dri_footer_address {
-  
+
+.dri_main_footer {
+  	.dri_footer_address {
+  	 	float: right;
+  	 	text-align: right;
+  	  	padding-right: 5px;
+  	}
+
+}	
+
+
+/*-------------- Standard CSS --------------*/
+// Hide, clear etc.
+
+.dri_clearfix {
+	@include zen-clear();
 }
+
+.dri_invisible {
+	visibility:hidden;
+}
+
+.dri_uppercase {
+	text-transform:uppercase;
+}
+
+.dri_capitalize {
+	text-transform:capitalize;
+}
+
+.dri_no_display {
+	display: none;
+}
+
+.dri_float_right {
+	float: right;
+}
+
+.dri_float_left {
+	float: left;
+}
+
+.dri_bold_text {
+  font-weight: bold;
+}
+
+.dri_noborder {
+  border: inherit;
+}
+
+
 /* static blocks */
 
 .dri_about_box  {
