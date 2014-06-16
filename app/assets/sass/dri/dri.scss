@@ -137,6 +137,14 @@ form {
 
 }
 
+/* breadcrumbs */
+
+.breadcrumb>li+li:before {
+  content: "/\00a0";
+  padding: 0 5px;
+  color: #ccc;
+}
+
 /* end bootstrap override */
 
 /*-------------- Layout for Identity and Search feature --------------*/
