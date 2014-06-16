@@ -4,6 +4,9 @@ module LinkTranslator
 
     case link_name
 
+      when /ingest page/
+        "ingest"
+
       when /ingest an object/
         "ingest"
 
@@ -42,6 +45,9 @@ module LinkTranslator
 
       when /my workspace/
         "workspace"
+
+      when /my saved search/
+        "saved_search"
 
       when /sign up/
         "signup"
@@ -99,7 +105,18 @@ module LinkTranslator
 
       when /accept terms/
         "accept_cookies"
+      
+      when /institutions/
+        "institutions"
 
+      when /manage bookmark/
+        "manage_bookmark"
+
+      when /remove bookmark/
+        "remove_bookmark"
+
+      when /clear bookmarks/
+        "clear_bookmarks"
       else "Unknown"
 
     end

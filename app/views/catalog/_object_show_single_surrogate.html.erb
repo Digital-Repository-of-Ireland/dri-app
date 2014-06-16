@@ -36,7 +36,7 @@
 
 <% if @surrogate.blank? %>
     <h2 class="dri_restrict_title"><%= t('dri.views.catalog.legends.surrogate_not_available') %></h2>
-    <p class="dri_restrict_message">
+    <p class="dri_restrict_message" id="asset_not_available">
       <%= t('dri.views.catalog.legends.surrogate_not_available_why') %>
     </p>
 <% end %>

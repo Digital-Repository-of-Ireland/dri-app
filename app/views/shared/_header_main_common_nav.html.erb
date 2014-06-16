@@ -1,0 +1,31 @@
+<% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_browse_params?) %>
+    <li class="selected">
+<% else %>
+    <li>
+<% end %>
+<%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
+</li>
+
+<% if ((controller_name == 'catalog') and (controller.action_name != 'index')  or (request.path.include? "/catalog") ) %>
+    <li class="selected">
+<% else %>
+    <li>
+<% end %>
+
+<%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
+</li>
+
+<% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>
+    <li class="selected">
+<% else %>
+    <li>
+<% end %>
+<%= link_to t('dri.headerlinks.institutions'), institutions_path, :id => 'institutions' %>
+</li>
+<% if (request.path.include? "/pages/about_us") %>
+    <li class="selected">
+<% else %>
+    <li>
+<% end %>
+<%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us", :id => 'about_us' %>
+</li>

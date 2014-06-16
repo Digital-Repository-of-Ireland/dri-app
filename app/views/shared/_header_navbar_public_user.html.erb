@@ -1,0 +1,31 @@
+<div id="dri_authentication_menus_container_id"
+     class="dri_authentication_menus_container">
+
+  <nav id="dri_account_nav_id" class="dri_account_nav">
+    <ul id="dri_account_links_id" class="dri_account_links" role="tree">
+      <% if current_user %>
+          <%= link_to user_group.user_path(current_user), :id => 'view_account' do %>
+              <li class="dri_vc_title">
+                <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
+              </li>
+          <% end %>
+      <% end %>
+      <% if !current_user %>
+          <li class="on">
+            <%= link_to "Sign Up", user_group.new_user_path, :alt => "sign up link", :id => 'sign_up' %>
+          </li>
+      <% end %>
+      <li class="noborder">
+        <% if current_user %>
+            <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, :method => :delete, :id => "logout", :alt => t('blacklight.header_links.logout') %>
+        <% else %>
+            <%= link_to t('blacklight.header_links.login'), user_group.new_user_session_path, :id => "login", :alt => t('blacklight.header_links.login') %>
+        <% end %>
+
+      </li>
+      <%= render :partial => 'shared/header_lang' %>
+    </ul>
+  </nav>
+  <!-- close dri_account_nav -->
+</div>
+<!--  close dri_authentication_menus_container -->

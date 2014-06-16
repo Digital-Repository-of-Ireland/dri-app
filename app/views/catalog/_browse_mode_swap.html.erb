@@ -1,16 +1,14 @@
 <div class="dri_facet_restrictions_container">
   <ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs" >
     <% copySearchParams = params.clone %>
-    <% copySearchParams.delete(:controller) %>
-    <% copySearchParams.delete(:action) %>
     <% copySearchParams.delete(:page) %>
     <% if params[:mode].eql?('collections') %>
         <% copySearchParams[:mode] = 'objects' %>
         <li id="dri_browse_sort_tabs_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.collections'), "#", :id=>"collections", :class=>'selected' %></li>
-        <li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.objects'), main_app.catalog_index_path(copySearchParams), :id=>"objects" %></li>
+        <li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.objects'), copySearchParams, :id=>"objects" %></li>
     <% else %>
         <% copySearchParams[:mode] = 'collections' %>
-        <li id="dri_browse_sort_tabs_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.collections'), main_app.catalog_index_path(copySearchParams), :id=>"collections" %></li>
+        <li id="dri_browse_sort_tabs_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.collections'), copySearchParams, :id=>"collections" %></li>
         <li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.objects'), "#", :id=>"objects", :class=>'selected' %></li>
     <% end %>
   </ul>

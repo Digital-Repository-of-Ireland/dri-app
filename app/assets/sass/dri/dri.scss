@@ -1,8 +1,14 @@
+/*-------------- DRI Wrapper--------------*/
 
+.dri_wrapper {
+	width: 1024px;
+	margin: 0 auto;
+}
 
 /* Anna updated html and body */
 $dri_green: #90993D;
 $dri_grey: #2F2F2F;
+$dri_lightgrey: #B3B3B3;
 
 html {
   margin-bottom: 0.5em;
@@ -119,19 +125,94 @@ h3 {
 form {
   margin: 0 0 0 0;
 }
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-submenu:hover > a,
+.dropdown-submenu:focus > a {
+  text-decoration: none; 
+  color: $dri_green;
+  background-color: $dri_green;
+  background-image: none;
+
+}
+
+/* breadcrumbs */
+
+.breadcrumb>li+li:before {
+  content: "/\00a0";
+  padding: 0 5px;
+  color: #ccc;
+}
+
 /* end bootstrap override */
 
-
+/*-------------- Layout for Identity and Search feature --------------*/
 
 .dri_ident {
-  background: image-url('dri/dri_ident.png');
-  background-repeat: no-repeat;
-  margin: 0;
-}
-a {
-	text-decoration: none;
+  	background: image-url('dri/dri_ident.png');
+ 	background-repeat: no-repeat;
+ 	height: 135px;
+	margin: 0px;
+	padding: 0px;
 }
 
+a {
+	text-decoration: none;
+	
+}
+
+.dri_search_term_input {
+	padding-top: 45px;
+  }
+/*-------------- Button Styling--------------*/
+.dri_button {
+	font-size: 100%;
+	color: #FFF;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border: none;
+	padding: 4px 0 4px 0;
+	margin: 10px 0 10px 0;
+	
+}
+
+.dri_button_green {
+  @extend .dri_button;
+	background-color:#90993D;
+}
+
+.dri_button_green:hover {
+	background-color: darken( $dri_green, 10%);
+}
+
+.dri_button_grey {
+  @extend .dri_button;
+
+	background-color: #848587;
+
+}
+
+.dri_button_black {
+  @extend .dri_button;
+	background-color: #2F2F2F;
+}
+
+.dri_button_black:hover {
+}
+
+
+.dri_w230 {
+	width: 230px;
+}
+
+input.dri_w230 {
+  width: 230px;
+}
+
+.dri_w330 {
+	width: 330px;
+}
 
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
@@ -205,7 +286,8 @@ a {
 		span {
 			margin: 10px 4px 0 0;
 			padding: 0;	
-			float: left;cursor: pointer;
+			float: left;
+			cursor: pointer;
 			
 		}
 	}
@@ -384,6 +466,7 @@ a .dri_signin_edugate:hover {
     margin-left: 5px;
     color: #808082;
   }
+ 
 }
 
 
@@ -461,12 +544,7 @@ a .dri_signin_edugate:hover {
 	}
 }
 
-/*-------------- dri logo --------------*/
-.dri_ident {
-	height: 135px;
-	margin: 0px;
-	padding: 0px;
-}
+
 
 /*-------------- Social Media --------------*/
 
@@ -563,6 +641,7 @@ a .dri_signin_edugate:hover {
 	
 	li {
 		float: left;
+		position: relative;
 		margin: 0;
 		padding: 0;
 		font-size: 115%;
@@ -595,6 +674,47 @@ a .dri_signin_edugate:hover {
 		color: #3E3E3E;
 	
 	}
+	
+	.dri_main_nav_top {
+
+  	    ul.dropdown-menu {
+        background-color: white;
+        top:61px;
+		    left: -1px;
+        border: 0;
+		
+        li {
+                min-width: 200px;
+                border-bottom: 1px solid #D9DADB;
+                border-left: 1px solid #D9DADB;
+                font-size: 100%;
+                float: left;
+				
+                a {
+					background-color: white;
+					margin: 0;
+					padding: 8px 0 8px 20px;
+                   	border-top: none;
+                    text-transform:none;
+                }
+			  a:hover {
+			  background-color: white;
+			  color: $dri_green;
+        
+        }
+               
+        }
+        li.selected a {
+          color: $dri_green;
+        
+        } 
+		
+		
+  	  }
+    }
+
+
+
 }
 
 
@@ -696,8 +816,6 @@ a .dri_signin_edugate:hover {
 	padding: 0;
 }
 /*-------------- Sort by --------------*/
-
-
 .dri_sort_nav {
 	float: left;
 	margin: 0;
@@ -1037,6 +1155,8 @@ a .dri_signin_edugate:hover {
 }
 
 /*-------------- Save Search --------------*/
+
+
 .dri_search_save_input {
 	margin: 0;
 	padding: 0px;
@@ -1253,13 +1373,13 @@ h4.suggest {
 		font-size: 100%;
 		float: left;
 		display: block;
-		width: 120px;
+		width: 217px;
 	}
 	
 	.dri_search_num {
 		float: right;
 		display: block;
-		padding: 10px 15px 0 0;
+		padding: 0 15px 0 0;
 		margin:  0;
 		color: #2F2F2F;
 		font-weight: normal;
@@ -1341,6 +1461,69 @@ h4.suggest {
 	
 }
 
+
+
+/*-------------- Accounts page --------------*/
+
+  .dri_account_block {
+    border-bottom: 1px lightgrey solid;
+    display: flex;
+    height: 100%;
+    padding: 30px 0 30px 0;
+    
+    .dri_account_block_heading {
+		color: #2F2F2F;
+		font-size: 150%;
+    }
+    .dri_account_block_info {
+      
+      .dri_account_block_info_item {
+        border-bottom: 1px lightgrey solid;
+        
+      }
+	  
+	  h5 {
+		  color: #2F2F2F;
+		  font-size: 110%;
+		  margin: 10px 0 0 0;
+		  padding: 0px;
+		  font-weight: normal;
+		 
+	  }
+	  p {
+		   	color: #808080;
+			 font-size: 110%;
+			 margin-bottom: 15px;
+	  }
+	 
+	    h5 label {
+		  color: #2F2F2F;
+		  font-size: 100%;
+		  margin: 0 0 4px 0;
+		  padding: 0px;
+		 
+	  }
+	     p input {
+			 width: 230px;
+		   	color: #808080;
+			 font-size: 100%;
+			 padding: 3px 10px 3px 10px;
+			 margin: 0 0 0 0;
+	  }
+
+        
+
+      
+    }
+    
+  }
+  
+  
+  
+/* -----------Main Content Container ---------- */
+
+
+    
 /* -----------Home page styling ---------- */
 .dri_welcome_block {
 	margin: 30px 0 40px 0;
@@ -1383,6 +1566,7 @@ h4.suggest {
 	.dri_home_title {
 		margin: 0 0 30px 0;
 		padding: 0 0 0 0;
+		width: 500px;
 		
 	 h2 {
 		margin: 0 0 0 0;
@@ -1441,6 +1625,9 @@ p.dri_rss_link a {
 	
 	
 /*-------------- About Page --------------*/
+.dri_about_container {
+	margin-top: 10px;
+
 .dri_colour_text {
   color: $dri_green;
 }
@@ -1672,11 +1859,14 @@ p.dri_rss_link a {
 	  
 	}
 }
-
+}
 /* ----------- Object block ---------- */
+	
+	
 .dri_result_container {
 	margin-top: 25px;
 }
+
 
 .content_block_wrap {
 	width: 730px;
@@ -1783,8 +1973,6 @@ p.dri_rss_link a {
 }
 
 
-
-
 /* ----------- Collection block ---------- */
 
 .dri_content_block_collection {
@@ -1874,26 +2062,34 @@ p.dri_rss_link a {
 
 
 /*-------------- Tabular View styling --------------*/
+
 .dri_result_object { 
-	margin: 0;
-	padding: 10px 0 0 0;
+	padding: 0 0 20px 0;
+	margin-bottom: 20px;
 	border-bottom: 1px solid #E1E1E1;
+	 height: 140px;
+	
+	 .dri_content_list_collection {
+      width:700px;
+
+    } 
+	
+	 .dri_collection_image {
+		padding: 0;
+	    margin: 0 0 10px 0;
+        width:200px;
+        float:right;
+        max-height: 128px;
+      }
 
 }
 
-.dri_content_list_collection {
-	margin: 0;
-	padding: 0;
-}
-.dri_collection_image {
-	  padding: 0;
-	  #margin: 0 14px 0 14px;
-	  height: 128px;
-	  overflow: hidden;
-	}
 .dri_content_list_collection_data {
-	margin: 0 0 0 0;
+	margin:0;
 	padding: 0;
+	height: 128px;
+    width:500px;
+    float:right;
 	
 	a h4 {
 		margin: 3px 0 10px 15px;
@@ -1916,7 +2112,7 @@ p.dri_rss_link a {
 		overflow: hidden;
 	
 	  }
-	  
+	
 	  .dri_list_description {
 		  max-height: 40px;
 		  overflow: hidden;    
@@ -2608,7 +2804,57 @@ ul.dri_collection_institutes_list {
 	  text-decoration: underline;
 	}
 }
-.dri_footer_address 
+
+.dri_main_footer {
+  	.dri_footer_address {
+  	 	float: right;
+  	 	text-align: right;
+  	  	padding-right: 5px;
+  	}
+
+}	
+
+
+/*-------------- Standard CSS --------------*/
+// Hide, clear etc.
+
+.dri_clearfix {
+	@include zen-clear();
+}
+
+.dri_invisible {
+	visibility:hidden;
+}
+
+.dri_uppercase {
+	text-transform:uppercase;
+}
+
+.dri_capitalize {
+	text-transform:capitalize;
+}
+
+.dri_no_display {
+	display: none;
+}
+
+.dri_float_right {
+	float: right;
+}
+
+.dri_float_left {
+	float: left;
+}
+
+.dri_bold_text {
+  font-weight: bold;
+}
+
+.dri_noborder {
+  border: inherit;
+}
+
+
 /* static blocks */
 
 .dri_about_box  {
@@ -2619,3 +2865,4 @@ ul.dri_collection_institutes_list {
   border-radius: 2px;
   color: #808082;
 }
+

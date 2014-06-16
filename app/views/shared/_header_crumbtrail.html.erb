@@ -1,0 +1,15 @@
+<!-- no crumbtrail for the moment - hidden 	-->
+<% if @document %>
+    <div id="dri_crumbtrail_nav_container_id">
+      <% root_collection = root_collection_solr @document %>
+      <% root_collection = root_collection.symbolize_keys %>
+      <ol class="breadcrumb">
+        <li><%=link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields') %></li>
+        <% unless @document[:id] == root_collection[:id] %>
+            <li><%= link_to root_collection[:title_tesim].first, main_app.catalog_path(root_collection[:id]) %></li>
+        <% end %>
+        <li class="active"><%= @document[:title_tesim].first %></li>
+      </ol>
+    </div>
+<% end %>
+<!-- close dri_crumbtrail_nav_container -->

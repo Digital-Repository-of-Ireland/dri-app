@@ -70,7 +70,7 @@ Scenario Outline: Faceted Search for admin user
     | Subjects (in English)        | blacklight-subject_eng_sim               | subject1        | SAMPLE AUDIO TITLE |
     | Subject (Place) (in English) | blacklight-geographical_coverage_eng_sim | SAMPLE COUNTRY  | SAMPLE AUDIO TITLE |
     | Subject (Era) (in English)   | blacklight-temporal_coverage_eng_sim     | SAMPLE ERA      | SAMPLE AUDIO TITLE |
-    | Depositor                    | blacklight-depositor_sim                 |user1@user1.com | SAMPLE AUDIO TITLE |
+    | Depositor                    | blacklight-depositor_sim                 | user1@user1.com | SAMPLE AUDIO TITLE |
 
 # The following two features could be tested via the all fields / search box
 #
