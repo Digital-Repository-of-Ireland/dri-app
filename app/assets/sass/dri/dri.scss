@@ -1908,6 +1908,15 @@ p.dri_rss_link a {
 	
 	.top {
 		border-top: 5px solid #E1E1E1;
+		
+	 .dri_collection_image {
+		padding: 0;
+	    margin: 0 0 10px 0;
+        width:200px;
+        float:right;
+        max-height: 128px;
+      }
+	  
 	}
 	
 	.dri_image {
@@ -2013,6 +2022,7 @@ p.dri_rss_link a {
 		border-top: 1px solid #E1E1E1;
 		
 	}
+	
 	
 	h1 {
 		color: #2F2F2F;
