@@ -15,12 +15,24 @@
     <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.jpg"} %>
 
 <% end %>
+<% converted_file_size = convert_file_size(generic_file[:file_size].first.to_f) %>
 
 <% unless surrogate.nil? %>
     <div class="dri_asset_holder">
       <div class="dri_asset_tools">
         <div class="dri_green_button">
           <%= link_to t('dri.views.catalog.links.download'), download_surrogate_path(download_params), :id => "download_asset" %>
+        </div>
+      </div>
+    </div>
+<% end %>
+
+<% if can? :read_master, @document %>
+    <div class="dri_asset_holder">
+      <div class="dri_asset_tools">
+        <div class="dri_green_button">
+          <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{converted_file_size[:size]} #{converted_file_size[:unit]})",
+                      file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
         </div>
       </div>
     </div>
