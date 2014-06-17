@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140325120537) do
+ActiveRecord::Schema.define(:version => 20140526163754) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -60,6 +60,12 @@ ActiveRecord::Schema.define(:version => 20140325120537) do
 
   add_index "searches", ["user_id"], :name => "index_searches_on_user_id"
 
+  create_table "user_group_authentications", :force => true do |t|
+    t.integer "user_id"
+    t.string  "provider"
+    t.string  "uid"
+  end
+
   create_table "user_group_groups", :force => true do |t|
     t.string   "name"
     t.string   "description"
@@ -102,8 +108,6 @@ ActiveRecord::Schema.define(:version => 20140325120537) do
     t.string   "about_me",               :default => ""
     t.datetime "token_creation_date"
     t.string   "image_link"
-    t.string   "provider"
-    t.string   "uid"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"

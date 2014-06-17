@@ -1,0 +1,27 @@
+<% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index')%>
+    <%= render 'sort_and_per_page' %>
+<% end %>
+
+<% if @previous_document || @next_document %>
+
+    <!-- navigation to allow the user to page through the search results  -->
+    <nav id="dri_pagination_nav_id" class="dri_pagination_nav">
+      <ul
+      class="dri_pagination_nav_links" >
+
+        <%if @previous_document %>
+            <li class="previous">
+              <%= link_to_previous_document @previous_document %>
+            </li>
+        <% end %>
+        <li class="selected">
+          <%= item_page_entry_info %> &nbsp;
+        </li>
+        <%if @next_document %>
+            <li class="next">
+              <%= link_to_next_document @next_document %>
+            </li>
+        <% end %>
+      </ul>
+    </nav>
+<% end %>

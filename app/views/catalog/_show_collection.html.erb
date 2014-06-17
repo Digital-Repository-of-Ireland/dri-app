@@ -6,6 +6,12 @@
             <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
         <% end -%>
     <% end -%>
+
+    <% if (@document[:depositing_institute_tesim]) %>
+        <% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { :institute_sim => @document[:depositing_institute_tesim] } } %>
+        <dt class="blacklight-depositing_institute"><%= t('dri.views.fields.depositing_institute') %></dt>
+        <dd class="blacklight-depositing_institute"><%= link_to @document[:depositing_institute_tesim].first, main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %></dd>
+    <% end %>
   </dl>
 </div>
 <!-- close dri_object_first_block -->
@@ -19,7 +25,7 @@
     <%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
     <% objectsCount = count_items_in_collection document[:id] %>
     <% collection_objects_params = { :f => {:root_collection_id_sim => [document['root_collection_id_tesim'].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-    <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params) %>
+    <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
   </div>
 
   <div class="dri_vc_image"><!-- fix link -->

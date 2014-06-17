@@ -66,6 +66,7 @@ end
 Given /^I have created a collection$/ do
   steps %{
     Given I am on the home page
+    And I follow the link to ingest page
     And I press the button to add new collection
     And I enter valid metadata for a collection
     And I press the button to create a collection
@@ -75,6 +76,7 @@ end
 Given /^I have created a collection with title "(.+)"$/ do |title|
   steps %{
     Given I am on the home page
+    And I follow the link to ingest page
     And I press the button to add new collection
     And I enter valid metadata for a collection with title #{title}
     And I press the button to create a collection
@@ -219,6 +221,11 @@ end
 Then /^(?:|I )press the button to (.+)$/ do |button|
   Capybara.ignore_hidden_elements = false
   click_link_or_button(button_to_id(button))
+end
+
+Then /^I check "(.*?)"$/ do |checkbox|
+  Capybara.ignore_hidden_elements = false
+  check(checkbox)
 end
 
 When /^(?:|I )perform a search$/ do

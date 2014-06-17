@@ -8,6 +8,24 @@ en:
         confirm: "By signing in or signing up you are deemed to be accepting the DRI cookie policy."
         header: "Important notice about cookies"
         message: "The Digital Repository of Ireland uses cookies to implement access control to digital resources. To opt out of receiving cookies from DRI, please turn off cookies for this website in your browser preferences. Note that users who opt out will be unable to use some of the features of the Digital Repository. For more information please see our %{privacy_statement:privacy statement} and our %{cookies_help:cookies help} pages."
+      edit_user_profile: 
+        cancel: Cancel
+        change_password: "Change Password"
+        confirm_new_password: "Confirm New Password"
+        current_password: "Current Password"
+        delete_your_account: "Delete your account"
+        edit_account: "Edit Account"
+        email: Email
+        first_name: "First Name"
+        help_bubbles: "Show Help Bubbles"
+        last_name: "Last Name"
+        new_password: "New Password"
+        off_text: "OFF"
+        on_text: "ON"
+        request_to_leave: "Request To Leave"
+        requested_to_leave: "You have requested to leave this group"
+        save_edits: "Save Edits"
+        settings: Settings
       home: 
         featured: Featured
         featured_collections: "Featured Collections"
@@ -33,6 +51,14 @@ en:
         header: "DRI End User Agreement"
         message: "Aliquam erat volutpat. Integer fermentum est at risus condimentum accumsan. Sed imperdiet ac lectus vitae commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam rutrum arcu at lorem sodales, sed mollis nibh scelerisque. Proin congue ipsum eget velit gravida, non fringilla est ultrices. Duis lobortis sem et imperdiet tempor. In gravida tortor vulputate nibh vestibulum lobortis. Curabitur fermenm, ipsum id ultrices fermentum, nisi metus tristique justo, faucibus tempor nulla massa semper dolor. Donec tellus felis, luctus eu aliquet quis, scelerisque ut diam. Duis luctus turpis lectus, et feugiat mauris feugiat vitae. Sed interdum commodo est, consectetur suscipit lectus viverra et. Integer a consequat massa. Praesent arcu purus, auctor sed ante vel, blandit molestie neque.Aenean posuere pharetra ligula in aliquam. Maecenas tristique felis felis, id posuere metus bibendum accumsan. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent at velit quis nunc rhoncus laoreet. Sed ornare, leo et tincidunt malesuada, ligula ligula gravida lacus, quis ultrices lacus mi venenatis lacus. Nunc id interdum erat. Suspendisse eu molestie mauris. Suspendisse pharetra dapibus euismo. Pellentesque a ligula velit. Ut volutpat pretium risus adipiscing porta. In lectus augue, interdum sit amet iaculis eu, vehicula a nibh. Etiam lectus ligula, rhoncus id facilisis molestie, pellentesque vitae elit. Nulla elit dolor, mollis vitae ultrices sed, tristique vel erat. Nam mattis aliquam porta. Sed sagittis velit eu feugiat tincidunt. Etiam vulputate augue eleifend facilisis faucibus. Sed at turpis ut massa tristique feugiat eget et arcu. Fusce suscipit egestas elementum. Duis ac quam at elit scelerisque scelerisque quis et dui. Nulla sit amet porttitor quam, eget porta libero."
         reject: "Reject End User Agreement"
+      user_profile: 
+        collection_title: "Collection Title"
+        edit: Edit
+        email: Email
+        my_account: "My Account"
+        name: Name
+        user_type: "User Type"
+        your_collection_details: "Your Collection Details"
     data: 
       types: 
         Image: Image
@@ -112,7 +138,7 @@ en:
       resque: "Resque Server"
       sitemap: Sitemap
       usergroups: "Users & Groups"
-      workspace: "My Workspace"
+      workspace: Workspace
     help: 
       dri_browse_sort_tabs_collections: "Use this tab to search for Collections"
       dri_browse_sort_tabs_collections_title: "Collections Search"
@@ -137,7 +163,10 @@ en:
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
     navbar: 
-      items_per_page: "Items per page"
+      bookmarks: Bookmarks
+      items: Items
+      per_page: "per page"
+      saved_searches: Searches
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
@@ -152,6 +181,8 @@ en:
       catalog: 
         buttons: 
           add_to_collection: "Add to collection"
+          clear_all_bookmarks: "Clear All Bookmarks"
+          clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
           remove_from_collection: "Remove from collection"
         facets: 
@@ -179,8 +210,10 @@ en:
         headers: 
           files: "File Tools"
         legends: 
+          no_bookmarks: "You have no bookmarks"
           no_files: "No file has been uploaded."
           no_permission: "You do not have permission to view the asset file associated with this object."
+          no_saved_search: "You have no saved searches"
           no_surrogates: "No surrogates are available."
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
@@ -276,6 +309,7 @@ en:
         creators: Creators
         date: Date
         dates: Dates
+        depositing_institute: "Depositing Institute"
         description: Description
         format: Format
         formats: Formats

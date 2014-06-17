@@ -1,0 +1,24 @@
+<% if has_browse_params? %>
+    <nav id="dri_display_grid_table_id" class="dri_display_grid_table_nav">
+      <% changeViewParams = params.clone %>
+      <ul class="dri_change_sort_view" id="dri_change_sort_view_id" data-content="<%= t('dri.help.dri_change_sort_view') %>"  data-original-title="<%= t('dri.help.dri_change_sort_view_title')%>" data-trigger="hover" data-placement="top">
+        <% if (params[:view] == "grid") %>
+            <% changeViewParams[:view] = "list" %>
+            <li class="grid">
+              <%= link_to ' ', '#', :class => "selected", :id => 'grid_view' %>
+            </li>
+            <li class="table">
+              <%= link_to ' ', changeViewParams, :id => 'table_view' %>
+            </li>
+        <% else %>
+            <% changeViewParams[:view] = "grid" %>
+            <li class="grid">
+              <%= link_to ' ', changeViewParams , :id => 'grid_view'%>
+            </li>
+            <li class="table">
+              <%= link_to ' ', '#', :class => "selected", :id => 'table_view' %>
+            </li>
+        <% end %>
+      </ul>
+    </nav>
+<% end %>

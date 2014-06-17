@@ -38,8 +38,8 @@ module ApplicationHelper
   end
 
   def root_collection_solr( doc )
-    if doc['root_collection_id_tesim']
-      id = doc['root_collection_id_tesim'][0]
+    if doc[:root_collection_id_tesim]
+      id = doc[:root_collection_id_tesim][0]
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
     end
@@ -179,12 +179,12 @@ module ApplicationHelper
   end
 
   def get_institutes( document )
-    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
-    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc(@document)
+    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(document)
+    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc(document)
   end
 
   def get_cover_image( document )
-    files_query = "is_part_of_ssim:\"info:fedora/#{document.id}\""
+    files_query = "is_part_of_ssim:\"info:fedora/#{document[:id]}\""
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
@@ -226,8 +226,6 @@ module ApplicationHelper
   end
 
   def has_browse_params?
-
-
     return has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
   end
 
