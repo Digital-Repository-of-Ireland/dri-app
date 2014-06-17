@@ -809,7 +809,24 @@ a .dri_signin_edugate:hover {
 	text-decoration: underline;
 }
 --------------*/
+ol.breadcrumb {
+	background-color:#FFF;
+	border-bottom: 1px solid #D9DADB;
+	margin: 0px;
+	
+	li {
+		font-size: 110%;
+		
+		a {
+			color: #9E9E9E;
+		}
+	}
+}
 
+.breadcrumb .active {
+	color: #2F2F2F;
+	
+		}
 /*-------------- Search/Sort features --------------*/
 .dri_search_features_nav_container {
 	margin: 0;
@@ -924,6 +941,7 @@ a .dri_signin_edugate:hover {
 	}
 	li a.selected {
 		background-color: #EDEDED;
+
 	}
 }
 
