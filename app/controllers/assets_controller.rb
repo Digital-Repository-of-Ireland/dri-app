@@ -51,7 +51,7 @@ class AssetsController < ApplicationController
                       :type => @local_file_info[0].mime_type,
                       :stream => true,
                       :buffer => 4096,
-                      :disposition => 'inline'
+                      :disposition => 'attachment'
         return
       end
     end
