@@ -1,20 +1,18 @@
+<% mime_type_list = MIME::Types[generic_file[:mime_type].first] %>
+<% file_extension = mime_type_list.first.extensions.first %>
+
 <% if generic_file.audio? %>
-    <% surrogate = surrogate_url(document.id, generic_file.id, "mp3") %>
-    <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.mp3"} %>
-
+    <% surrogate_type_name = "mp3" %>
 <% elsif generic_file.video? %>
-    <% surrogate = surrogate_url(document.id, generic_file.id, "mp4") %>
-    <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.mp4"} %>
-
+    <% surrogate_type_name = "mp4" %>
 <% elsif generic_file.pdf? %>
-    <% surrogate = surrogate_url(document.id, generic_file.id, "pdf") %>
-    <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.pdf"} %>
-
+    <% surrogate_type_name = "pdf" %>
 <% elsif generic_file.image? %>
-    <% surrogate = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
-    <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.jpg"} %>
-
+    <% surrogate_type_name = "full_size_web_format" %>
 <% end %>
+
+<% surrogate = surrogate_url(document.id, generic_file.id, surrogate_type_name) %>
+<% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.#{file_extension}"} %>
 <% converted_file_size = convert_file_size(generic_file[:file_size].first.to_f) %>
 
 <% unless surrogate.nil? %>
