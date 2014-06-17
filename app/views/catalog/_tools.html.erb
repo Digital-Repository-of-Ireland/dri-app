@@ -12,7 +12,7 @@
   <li><%= link_to t('dri.views.catalog.forms.metadata_full'), object_styled_metadata_path(@document.id), :id => "styled_metadata", :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %></li>
   <li><%= link_to t('dri.views.catalog.forms.metadata'), object_metadata_path(@document.id), :id => "download_metadata" %></li>
   <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
-  <li><%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :'data-toggle' => 'modal',  :'data-target' => '#dri_citatation_modal_id' %></li>
+  <li><%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citatation_modal_id' %></li>
 </ul>
 
 

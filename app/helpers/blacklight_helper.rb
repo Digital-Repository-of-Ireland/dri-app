@@ -31,6 +31,11 @@ module BlacklightHelper
     "huh?"
   end
 
+  def link_to_saved_search(params)
+    label = "#{params[:mode].to_s.capitalize} (" + render_search_to_s_q(params) + render_search_to_s_filters(params) + ")"
+    link_to(raw(label), catalog_index_path(params)).html_safe
+  end
+
   # Create a link back to the index screen, keeping the user's facet, query and paging choices intact by using session.
   # @example
   #   link_back_to_catalog(label: 'Back to Search')
@@ -51,6 +56,6 @@ module BlacklightHelper
     label ||= t('blacklight.back_to_search')
 
     link_to label, link_url, opts
-  end 
+  end
 
 end

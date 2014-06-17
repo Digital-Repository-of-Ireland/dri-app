@@ -9,21 +9,21 @@
     <%= t('dri.footer.contacts.phone') + ' ' + phoneNum %><br/>
     <% emailAddress = 'info@dri.ie' %>
     <%= t('dri.footer.contacts.email') + ' ' %>
-    <%= link_to emailAddress, "mailto:#{emailAddress}" %>
+    <%= link_to emailAddress, "mailto:#{emailAddress}", :id => 'contact_email' %>
   </div>
   <nav id="dri_main_footer_navigation_id"
        class="dri_main_footer_navigation">
     <ul id="dri_main_footer_navigation_links_id"
         class="dri_main_footer_navigation_links">
       <li class="">
-      <span> <%= link_to t('dri.headerlinks.end_user_agreement'), "#{main_app.root_url}/pages/terms", :id => "privacy", :class => "muted" %> </span>
+      <span> <%= link_to t('dri.headerlinks.end_user_agreement'), "#{main_app.root_url}/pages/terms", :id => "end_user_agreement", :class => "muted" %> </span>
       </li>
       <li class=" no_border_right">
-        <span><%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us", :id => "about", :class => "muted" %></span>
+        <span><%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us", :id => "about_us_footer", :class => "muted" %></span>
       </li>
     </ul>
   </nav>
-  <div class="dri_funder_institutes">
+  <div class="dri_funder_institutes" id="funder_institutes">
     <%= image_tag("dri/dri_funder_logos.png", :alt=>"funder logos" ) %>
   </div>
 

@@ -1,4 +1,4 @@
-<article class="dri_result_object dri_clearfix">
+<article class="dri_result_object dri_clearfix" id="<%= document.id.to_s %>">
   <div class="dri_content_list_collection">
 
     <!-- close image -->
@@ -10,11 +10,14 @@
       <p>
         <%= truncate_description(document[:description_tesim][0], 280).html_safe %>
       </p>
-      <p class="dri_publishing_institute">
-        <% unless document[:institute_tesim].nil? %>
-            <%= document[:institute_tesim][0] %>
-        <% end %>
-      </p>
+			<p class="dri_publishing_institute">
+				<% @depositing_institute = get_institutes( document ) %>
+				<% if @depositing_institute %>
+				<%= @depositing_institute.name %>
+				<% else %>
+				N/A
+				<% end %>
+			</p>
       <% collection_objects_params = { :f => {:root_collection_id_sim => [document['root_collection_id_tesim'].first]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
       <%= link_to (catalog_index_path(collection_objects_params)) do %>
           <div class="dri_num_list_objects">
@@ -34,6 +37,10 @@
             <%= image_tag "no_image.png", :width=>"228" %>
         <% end %>
       </div>
+  <% end %>
+
+  <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+      <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' %>
   <% end %>
   <!-- close content_block -->
 </article>

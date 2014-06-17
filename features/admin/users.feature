@@ -77,87 +77,33 @@ Scenario: Logging out
   When I follow the link to sign out
   Then I should be logged out
 
-@javascript
 Scenario: A user should be able to edit their details
   Given I am logged in as "user1" with password "password1" and accept cookies
-  Then I should see a link to my workspace
-  When I follow the link to my workspace
+  Then I should see a link to view my account
   And I follow the link to view my account
   Then I should see a link to edit my account
   When I follow the link to edit my account
   Then I should see the edit page
-  When I fill in "user_email" with "user2@user2.com"
-  And I fill in "user_password" with "password2"
+  When I fill in "user_password" with "password2"
   And I fill in "user_password_confirmation" with "password2"
   And I fill in "user_current_password" with "password1"
   And I submit the Edit User form
-  Then my authentication details should be updated from "user1", "password1" to "user2", "password2"
+  Then my authentication details should be updated from "user1", "password1" to "user1", "password2"
 
-Scenario: A user should be able to cancel their account
-  Given I am logged in as "user1" with password "password1" and accept cookies
-  Then I should see a link to my workspace
-  When I follow the link to my workspace
-  And I follow the link to view my account
-  Then I should see a link to edit my account
-  When I follow the link to edit my account
-  Then I should see a link to cancel my account
-  When I follow the link to cancel my account
-  And I confirm account cancellation
-  Then my account should be deleted
-  And I should be logged out
+#Scenario: A user should be able to cancel their account
+#  Given I am logged in as "user1" with password "password1" and accept cookies
+#  Then I should see a link to view my account
+#  And I follow the link to view my account
+#  Then I should see a link to edit my account
+#  When I follow the link to edit my account
+#  Then I should see a link to cancel my account
+#  When I follow the link to cancel my account
+#  And I confirm account cancellation
+#  Then my account should be deleted
+#  And I should be logged out
 
 Scenario: A user should be able to recover their password
 # Not sure how to test this as it involves sending an email...
-
-
-Scenario: A user should be able to provide a profile image url
-  Given I am logged in as "user1" with password "password1" and accept cookies
-  Then I should see a link to my workspace
-  When I follow the link to my workspace
-  And I follow the link to view my account
-  Then I should see a link to edit my account
-  When I follow the link to edit my account
-  When I fill in "user_image_link" with "gravatar"
-  And I fill in "user_current_password" with "password1"
-  And I submit the Edit User form
-  Then I should see an element ".profile_image"
-
-Scenario: A user should be able to use gravatar for a profile image
-  Given I am logged in as "user1" with password "password1" and accept cookies
-  Then I should see a link to my workspace
-  When I follow the link to my workspace
-  And I follow the link to view my account
-  Then I should see a link to edit my account
-  When I follow the link to edit my account
-  And I fill in "user_image_link" with "gravatar"
-  And I fill in "user_current_password" with "password1"
-  And I submit the Edit User form
-  Then I should see an element ".profile_image"
-
-
-Scenario: A user should be able to remove their profile image
-  Given I am logged in as "user1" with password "password1" and accept cookies
-  Then I should see a link to my workspace
-  When I follow the link to my workspace
-  And I follow the link to view my account
-  Then I should see a link to edit my account
-  When I follow the link to edit my account
-  When I fill in "user_image_link" with ""
-  And I fill in "user_current_password" with "password1"
-  And I submit the Edit User form
-  Then I should not see an element ".profile_image"
-
-Scenario: A user provides an invalid profile image url
-  Given I am logged in as "user1" with password "password1" and accept cookies
-  Then I should see a link to my workspace
-  When I follow the link to my workspace
-  And I follow the link to view my account
-  Then I should see a link to edit my account
-  When I follow the link to edit my account
-  When I fill in "user_image_link" with "http://localhost/"
-  And I fill in "user_current_password" with "password1"
-  And I submit the Edit User form
-  Then I should see a failure message for "invalid profile image"
 
 Scenario: an admin user creates a new user account
   Given I am logged in as "adminuser" in the group "admin" and accept cookies

@@ -10,7 +10,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-                <a href="http://www.google.com"><button type="button" class="btn btn-secondary"><%= t('dri.application.terms.reject') %></button></a>
+                <a href="http://www.google.com"><button type="button" class="btn btn-secondary" id="reject_agreement"><%= t('dri.application.terms.reject') %></button></a>
 				<button type="button" id="accept_cookies" class="btn btn-primary" data-dismiss="modal" onclick="$.cookie('accept_cookies', 'yes', { path: '/', expires: 10000 });">
 					<%= t('dri.application.terms.accept') %>
                 </button>

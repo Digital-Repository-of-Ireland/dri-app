@@ -45,6 +45,12 @@ Feature:
     And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"
     Then I should see the image "TestInstitute.png"
+    
+  Scenario: Viewing institutes page
+    Given I am on the home page
+    And I have associated the institute "TestInstitute" with the collection entitled "Institute Test Collection"
+    And I follow the link to institutions
+    Then I should see the image "TestInstitute.png"
 
   @test
   Scenario: viewing associated institutes for an object

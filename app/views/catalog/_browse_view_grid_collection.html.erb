@@ -1,4 +1,4 @@
-<article class="block5">
+<article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block_collection">
     <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
         <div>
@@ -13,8 +13,11 @@
           <!-- close image -->
           <h1><%= document[:title_tesim][0] %></h1>
           <p class="dri_publishing_institute">
-            <% unless document[:institute_tesim].nil? %>
-                <%= document[:institute_tesim][0] %>
+            <% @depositing_institute = get_institutes( document ) %>
+            <% if @depositing_institute %>
+                <%= @depositing_institute.name %>
+            <% else %>
+                N/A
             <% end %>
           </p>
         </div>
@@ -25,6 +28,10 @@
           <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %></span>
         </div>
     <% end %> <!-- close dri_num_objects -->
+
+    <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+        <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' %>
+    <% end %>
   </div>
   <!-- close content_block -->
 </article>
