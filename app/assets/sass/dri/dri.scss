@@ -2015,12 +2015,16 @@ p.dri_rss_link a {
 	position: relative;
 	border-top: none;
 	
-	.dri_image {
+	.dri_collection_image {
 		padding: 0;
 		margin: 0;
 		border-bottom: 1px solid #E1E1E1;
 		border-top: 1px solid #E1E1E1;
 		
+		img {
+		      max-height: 128px;
+		}
+
 	}
 	
 	
