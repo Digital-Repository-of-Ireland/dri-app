@@ -67,7 +67,7 @@ module ButtonTranslator
       when /delete collection with id (.+)/
         "delete_collection_#{$1}"
 
-      when /accept cookie policy/
+      when /accept the end user agreement/
         "accept_cookies"
 
       when /search/
