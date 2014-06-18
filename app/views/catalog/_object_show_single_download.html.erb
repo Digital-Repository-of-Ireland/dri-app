@@ -1,6 +1,3 @@
-<% mime_type_list = MIME::Types[generic_file[:mime_type].first] %>
-<% file_extension = mime_type_list.first.extensions.first %>
-
 <% if generic_file.audio? %>
     <% surrogate_type_name = "mp3" %>
 <% elsif generic_file.video? %>
@@ -12,25 +9,21 @@
 <% end %>
 
 <% surrogate = surrogate_url(document.id, generic_file.id, surrogate_type_name) %>
-<% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.#{file_extension}"} %>
-<% converted_file_size = convert_file_size(generic_file[:file_size].first.to_f) %>
-
 <% unless surrogate.nil? %>
+    <% mime_type_list = MIME::Types[generic_file[:mime_type].first] %>
+    <% file_extension = mime_type_list.first.extensions.first %>
+    <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.#{file_extension}"} %>
+    <% converted_file_size = convert_file_size(generic_file[:file_size].first.to_f) %>
+
+
     <div class="dri_asset_holder">
       <div class="dri_asset_tools">
         <div class="dri_green_button">
           <%= link_to t('dri.views.catalog.links.download'), download_surrogate_path(download_params), :id => "download_asset" %>
-        </div>
-      </div>
-    </div>
-<% end %>
-
-<% if can? :read_master, @document %>
-    <div class="dri_asset_holder">
-      <div class="dri_asset_tools">
-        <div class="dri_green_button">
-          <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{converted_file_size[:size]} #{converted_file_size[:unit]})",
-                      file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
+          <% if can? :read_master, @document %>
+              <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{converted_file_size[:size]} #{converted_file_size[:unit]})",
+                          file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
+          <% end %>
         </div>
       </div>
     </div>
