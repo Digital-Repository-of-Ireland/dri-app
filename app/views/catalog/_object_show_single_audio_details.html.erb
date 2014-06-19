@@ -21,7 +21,8 @@
       <dt><%= t("dri.views.catalog.forms.audio.file_size") %></dt>
       <dd>
         <% file_size = generic_file[:file_size].first.to_f %>
-        <%= "#{convert_file_size_to_mb(file_size)} Mb"%>
+        <% converted_file_size = convert_file_size(file_size) %>
+        <%= "#{converted_file_size[:size]} #{converted_file_size[:unit]}"%>
       </dd>
   <% end %>
 </dl>
