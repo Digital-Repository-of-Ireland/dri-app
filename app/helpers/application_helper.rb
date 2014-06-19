@@ -68,9 +68,9 @@ module ApplicationHelper
 
       case format
       when "image"
-        path = surrogate_url(document.id, file_document.id, image_name)
+        path = surrogate_url(document[:id], file_document.id, image_name)
       when "text"
-        path = surrogate_url(document.id, file_document.id, "thumbnail_medium")
+        path = surrogate_url(document[:id], file_document.id, "thumbnail_medium")
       end
     end
 
