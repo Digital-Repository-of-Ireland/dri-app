@@ -86,7 +86,7 @@ class SurrogatesController < ApplicationController
 
   def download
     data = open(params[:path])
-    send_data data.read, :filename => params[:name], :type => params[:type], disposition: 'inline', stream: 'true', buffer_size: '4096'
+    send_data data.read, :filename => params[:name], :type => params[:type], disposition: 'attachment', stream: 'true', buffer_size: '4096'
   end
 
   private

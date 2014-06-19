@@ -225,7 +225,8 @@ en:
           characterization: Characterization
           details: "File Details"
           download: "Download asset"
-          download_not_available: "not available for download"
+          download_master: "Download master asset"
+          download_not_available: "not available"
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
           listen: listen
