@@ -809,7 +809,24 @@ a .dri_signin_edugate:hover {
 	text-decoration: underline;
 }
 --------------*/
+ol.breadcrumb {
+	background-color:#FFF;
+	border-bottom: 1px solid #D9DADB;
+	margin: 0px;
+	
+	li {
+		font-size: 110%;
+		
+		a {
+			color: #9E9E9E;
+		}
+	}
+}
 
+.breadcrumb .active {
+	color: #2F2F2F;
+	
+		}
 /*-------------- Search/Sort features --------------*/
 .dri_search_features_nav_container {
 	margin: 0;
@@ -924,6 +941,7 @@ a .dri_signin_edugate:hover {
 	}
 	li a.selected {
 		background-color: #EDEDED;
+
 	}
 }
 
@@ -1890,6 +1908,7 @@ p.dri_rss_link a {
 	
 	.top {
 		border-top: 5px solid #E1E1E1;
+		
 	}
 	
 	.dri_image {
@@ -1988,13 +2007,18 @@ p.dri_rss_link a {
 	position: relative;
 	border-top: none;
 	
-	.dri_image {
+	.dri_collection_image {
 		padding: 0;
 		margin: 0;
 		border-bottom: 1px solid #E1E1E1;
 		border-top: 1px solid #E1E1E1;
 		
+		img {
+		      max-height: 128px;
+		}
+
 	}
+	
 	
 	h1 {
 		color: #2F2F2F;
