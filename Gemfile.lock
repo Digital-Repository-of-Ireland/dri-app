@@ -1,9 +1,9 @@
 GIT
   remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: 4c6144b9c6f9b18dd4da03b91249109a93251073
+  revision: bf33413cef490210ccdb4aeb5516d0d65dcc5629
   branch: develop
   specs:
-    dri_data_models (1.0.2)
+    dri_data_models (1.0.5)
       hydra-access-controls (= 6.4.0)
       hydra-head (= 6.4.0)
       iso-639
@@ -11,10 +11,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
-  revision: 8dd3e9d6787b5b1205eb39252e3e2b2fab6db3b3
+  revision: 70a43e1b9f023d63973f9c29b61b33a0b9692b42
   branch: develop
   specs:
-    user_group (1.0.3)
+    user_group (1.0.5)
       devise (~> 2.2.3)
       devise-guests (~> 0.3)
       devise-i18n-views
