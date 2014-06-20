@@ -250,7 +250,7 @@ class CatalogController < ApplicationController
     solr_parameters[:fq] << "+has_model_ssim:\"info:fedora/afmodel:Batch\""
     if user_parameters[:mode].eql?('collections')
       solr_parameters[:fq] << "+is_collection_sim:true"
-      solr_parameters[:fq] << "-ancestor_id_tesim:[* TO *]"
+      solr_parameters[:fq] << "-ancestor_id_sim:[* TO *]"
     else
       solr_parameters[:fq] << "+is_collection_sim:false"
       solr_parameters[:fq] << "+root_collection_id_sim:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
