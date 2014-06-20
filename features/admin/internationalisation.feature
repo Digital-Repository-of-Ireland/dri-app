@@ -7,7 +7,7 @@ Feature:
 
   Scenario Outline: Not logged in user should see their own language based on their browser
     Given I reset the sessions
-    Given I am not logged in
+    Given I am not logged in and accept cookies
     And my browser language is "<lang>"
     When I go to "the home page"
     Then I should see the language "<lang>"
@@ -19,7 +19,7 @@ Feature:
 
   Scenario Outline: Not logged in user changes language using the language selection tab
     Given I reset the sessions
-    Given I am not logged in
+    Given I am not logged in and accept cookies
     And my browser language is "<lang>"
     Then I should see the language "<lang>"
     When I follow the link to change to <lang_new>
