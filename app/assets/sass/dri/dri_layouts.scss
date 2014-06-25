@@ -321,5 +321,18 @@
 
 }
 
+@media screen and (max-width:400px) {
+  
+.dri_wrapper {
+  width: 380px;
+  margin: 0 auto;
+  $zen-column-count:2;
+
+}
+.dri_no_mobile_display {
+  display: none;
+}
+
+}
 
 
