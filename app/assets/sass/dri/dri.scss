@@ -1921,7 +1921,7 @@ p.dri_rss_link a {
 	.dri_image {
 		padding: 0;
 		margin: 0 14px 0 14px;
-		height: 113px;
+		max-height: 113px;
 		overflow: hidden;
 	}
 	
@@ -2106,11 +2106,18 @@ p.dri_rss_link a {
     } 
 	
 	 .dri_collection_image {
-		padding: 0;
-	    margin: 0 0 10px 0;
+		    padding: 0;
+	       margin: 0 0 10px 0;
         width:200px;
         float:right;
         max-height: 128px;
+        overflow: hidden;
+      }
+      
+   .dri_image {
+
+               max-height: 113px;
+               overflow:hidden;
       }
 
 }
