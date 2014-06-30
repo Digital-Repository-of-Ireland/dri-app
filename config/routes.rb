@@ -35,9 +35,9 @@ NuigRnag::Application.routes.draw do
   match 'error/422' => 'error#422', :via => :get
   match 'error/500' => 'error#500', :via => :get
 
-  match '/404' => 'error#error_404'
-  match '/422' => 'error#error_422'
-  match '/500' => 'error#error_500'
+  get '/404' => 'error#error_404'
+  get '/422' => 'error#error_422'
+  get '/500' => 'error#error_500'
 
   match 'export/:id' => 'export#show', :via => :get, :as => :object_export
 

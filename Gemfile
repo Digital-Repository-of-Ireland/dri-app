@@ -3,13 +3,19 @@
 
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.13'
-gem 'blacklight', '4.5.0'
-gem 'hydra-head', '6.4.0'
-gem 'sufia-models', '3.4.0'
+gem 'rails', '4.0.1'
+gem "protected_attributes"
+gem 'rails-observers'
+gem 'actionpack-page_caching'
+gem 'actionpack-action_caching'
+gem 'activerecord-deprecated_finders'
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'develop'
-gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'develop'
+gem 'blacklight', '4.7.0'
+gem 'hydra-head', '6.4.1'
+gem 'sufia-models', '3.7.0'
+
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'rails4'
+gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'rails4'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -48,7 +54,7 @@ gem 'is_it_working-cbeer'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails' , '~> 4.0.2'
   # gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -58,7 +64,7 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 2.99'
   gem 'poltergeist', '>= 1.4.1'
   gem 'jettywrapper'
   gem 'simplecov'
