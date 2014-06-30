@@ -17,7 +17,6 @@ Feature:
     Given I follow the link to manage bookmark
     Then I should see "no bookmarks"
 
-  @test
   Scenario: Add new bookmark
     Given I am on the home page
     When I perform a search
@@ -25,13 +24,9 @@ Feature:
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
     Then I should see "Manage Your Bookmarks"
     Given I check "toggle_bookmark_dri:bookcoll"
-    Then show me the page
-    And I wait for the ajax request to finish
-    Given I follow the link to manage bookmark
-    Then show me the page
+    And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
 
-  @test
   Scenario: Remove bookmark
     Given I am on the home page
     When I perform a search
@@ -39,10 +34,8 @@ Feature:
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
     Then I should see "Manage Your Bookmarks"
     Given I check "toggle_bookmark_dri:bookcoll"
-    And I wait for the ajax request to finish
-    Given I follow the link to manage bookmark
+    And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
-    Then show me the page
     Given I follow the link to remove bookmark
     Then I should see "no bookmarks"
 
@@ -53,8 +46,7 @@ Feature:
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
     Then I should see "Manage Your Bookmarks"
     Given I check "toggle_bookmark_dri:bookcoll"
-    And I wait for the ajax request to finish
-    Given I follow the link to manage bookmark
+    And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
     Given I follow the link to clear bookmarks
     Then I should see "no bookmarks"

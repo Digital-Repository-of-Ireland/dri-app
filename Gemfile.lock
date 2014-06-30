@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
-  revision: ecc0d11e3490f9c5beb7dd13d0cd85f2c59ed555
+  revision: 2e6cf85d83afab420d8ace1707c03b0a0e7e5d9d
   branch: rails4
   specs:
     user_group (1.0.5)
