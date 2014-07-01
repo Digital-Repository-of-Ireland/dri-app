@@ -30,7 +30,8 @@ module NuigRnag
     # config.time_zone = 'Central Time (US & Canada)'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s
+    config.i18n.enforce_available_locales = true
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     config.i18n.default_locale = :en
     config.i18n.fallbacks = true
@@ -59,7 +60,7 @@ module NuigRnag
 
     # Enable the asset pipeline
     config.assets.enabled = true
-    
+
     # Default SASS Configuration, check out https://github.com/rails/sass-rails for details
     config.assets.compress = !Rails.env.development?
 
