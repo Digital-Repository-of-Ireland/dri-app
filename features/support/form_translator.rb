@@ -4,7 +4,7 @@ module FormTranslator
 
     case form_name
 
-    when /create new licence/
+    when /^create new licence$/
       "dri_new_licence_form"
 
     else "Unknown"

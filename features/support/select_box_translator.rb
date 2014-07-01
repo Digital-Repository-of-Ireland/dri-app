@@ -4,31 +4,31 @@ module ButtonTranslator
 
     case select_name
 
-    when /ingest methods/
+    when /^ingest methods$/
       "ingestmethod"
 
-    when /object type/
+    when /^object type$/
       "ingesttype"
 
-    when /role type/
+    when /^role type$/
       "batch_roles][type]["
 
-    when /language/
+    when /^language$/
       "user_locale"
 
-    when /ingest collection/
+    when /^ingest collection$/
       "ingestcollection"
 
-    when /add to collection/
+    when /^add to collection$/
       "collection_id"
 
-    when /governing collection/
+    when /^governing collection$/
       "dri_model_governing_collection_id"
 
-    when /institute/
+    when /^institute$/
       "select_institute"
 
-    when /licence/
+    when /^licence$/
       "batch_licence"
 
     else "Unknown"

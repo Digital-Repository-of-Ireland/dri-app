@@ -38,21 +38,21 @@ Scenario: Creating an invalid user account with duplicate email
   Given I am not logged in
   Given I am on the User Sign up page
   When I submit the User Sign up page with email "user1@user1.com" and password "password1"
-  Then I should see a failure message for "duplicate email"
+  Then I should see a failure message for duplicate email
   And I should be logged out
 
 Scenario: Creating an invalid user account with non-matching password confirmation
   Given I am not logged in
   Given I am on the User Sign up page
   When I submit a valid email address and non-matching password and password confirmation
-  Then I should see a failure message for "password mismatch"
+  Then I should see a failure message for password mismatch
   And I should be logged out
 
 Scenario: Creating an invalid user account with too short password
   Given I am not logged in
   Given I am on the User Sign up page
   When I submit a valid email address and too short password and password confirmation
-  Then I should see a failure message for "too short password"
+  Then I should see a failure message for too short password
   And I should be logged out
 
 Scenario: User signs in with valid credentials
@@ -67,7 +67,7 @@ Scenario: User signs in with invalid credentials
   Given I am on the User Signin page
   When I submit the User Sign in page with credentials "user1@user1.com" and "badpassword"
   Then I should be logged out
-  And I should see a failure message for "invalid email or password"
+  And I should see a failure message for invalid email or password
 
 @javascript
 Scenario: Logging out

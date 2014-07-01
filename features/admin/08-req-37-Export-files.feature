@@ -26,7 +26,7 @@ Feature: Export files
     Then I should see a "rights statement"
     #And I should see a "licence"
     And I should see a link to full metadata
-    When I follow the link to "full metadata"
+    When I follow the link to full metadata
     Then I should see a "dri:obj1"
 
   Scenario: Export a DigitalObject's asset when I have edit/manage permissions
