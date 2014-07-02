@@ -7,29 +7,35 @@
     <%= form_for(@user) do |f| %>
         <%= render 'user_group/shared/error_messages', object: f.object %>
 
-        <div><%= f.label :first_name, (t :'user_groups.views.shared.first_name') %>
-          <%= f.text_field :first_name, :autofocus => "true" %></div>
+        <div>
+          <%= f.label :first_name, (t :'user_groups.views.shared.first_name') %>
+          <%= f.text_field :first_name, :autofocus => "true" %>
+        </div>
 
-        <div><%= f.label :second_name, (t :'user_groups.views.shared.second_name') %>
-          <%= f.text_field :second_name %></div>
+        <div>
+          <%= f.label :second_name, (t :'user_groups.views.shared.second_name') %>
+          <%= f.text_field :second_name %>
+        </div>
 
-        <div><%= f.label :email, (t :'user_groups.views.shared.email') %>
-          <%= f.email_field :email %></div>
+        <div>
+          <%= f.label :email, (t :'user_groups.views.shared.email') %>
+          <%= f.email_field :email %>
+        </div>
 
-        <div class="dri_signup_password"><%= f.label :password, (t :'user_groups.views.shared.password') %>
-          <%= f.password_field :password %></div>
+        <div class="dri_signup_password">
+          <%= f.label :password, (t :'user_groups.views.shared.password') %>
+          <%= f.password_field :password %>
+        </div>
 
-        <div class="dri_signup_password dri_input_error"><%= f.label :password_confirmation, (t :'user_groups.views.shared.password_confirm') %>
-          <%= f.password_field :password_confirmation %></div>
-          <%= f.hidden_field(:locale, :value => I18n.locale) %>
+        <div class="dri_signup_password dri_input_error">
+          <%= f.label :password_confirmation, (t :'user_groups.views.shared.password_confirm') %>
+          <%= f.password_field :password_confirmation %>
+        </div>
+        <%= f.hidden_field(:locale, :value => I18n.locale) %>
 
-       
-
-        <% if cookies[:accept_cookies] %>
-            <div class="dri_submit"><%= f.submit t('user_groups.views.shared.register'), :id => 'submit_new_user' %></div>
-        <% else %>
-            <div class="dri_submit"><%= f.submit t('user_groups.views.shared.register'), :id => 'submit_new_user', :confirm => "#{ t('dri.application.cookies.confirm') }" %></div>
-        <% end %>
+        <div class="dri_submit">
+          <%= f.submit t('user_groups.views.shared.register'), :id => 'submit_new_user' %>
+        </div>
         <div>&nbsp;</div>
     <% end %>
   </div>

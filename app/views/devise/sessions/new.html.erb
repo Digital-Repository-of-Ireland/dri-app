@@ -1,47 +1,37 @@
-
-
-
-
 <div id="dri_login_form_container_id" class="dri_login_form_container">
 
-	<div id="dri_login_form_block_id" class="dri_login_form_block">
+  <div id="dri_login_form_block_id" class="dri_login_form_block">
 
-	<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %> 
-	<%= devise_error_messages! %>
+    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+        <%= devise_error_messages! %>
+        <h2>
+          <%= t('.sign_in', :default => "Sign in") %>
+        </h2>
+        <div>
+          <%= f.label :email, (t :'user_groups.views.shared.email') %>
+          <%= f.email_field :email, :autofocus => "true" %>
+        </div>
+        <div>
+          <%= f.label :password, (t :'user_groups.views.shared.password') %>
+          <%= f.password_field :password %>
+        </div>
 
-			<h2>
-				<%= t('.sign_in', :default => "Sign in") %>
-			</h2>
-			<div>
-				<%= f.label :email, (t :'user_groups.views.shared.email') %>
-				<%= f.email_field :email, :autofocus => "true" %>
-			</div>
+        <% if devise_mapping.rememberable? -%>
+            <div class="dri_checkbox_text">
+              <%= f.check_box :remember_me %> <%= f.label :remember_me, (t :'user_groups.views.sign_in.remember_me') %>
+            </div>
+        <% end -%>
 
-			<div>
-			<%= f.label :password, (t :'user_groups.views.shared.password') %>
-			<%= f.password_field :password %>
-			</div>
-			<% if devise_mapping.rememberable? -%>
-				<div class="dri_checkbox_text">
-					<%= f.check_box :remember_me %> <%= f.label :remember_me, (t :'user_groups.views.sign_in.remember_me') %>
-				</div>
-			<% end -%>
+        <div class="dri_submit">
+          <%= f.submit t('.sign_in', :default => "Sign in") %>
+        </div>
+        <div class="dri_form_text">
+          <%= render "devise/shared/links" %>
+        </div>
+        <!--  close dri_form_text -->
 
-		<div class="dri_submit">
-			<% if cookies[:accept_cookies] %> 
-				<%= f.submit t('.sign_in', :default => "Sign in") %> 
-			<% else %> 
-				<%= f.submit t('.sign_in', :default => "Sign in"), :confirm => "#{ t('dri.application.cookies.confirm') }" %> 
-			<% end %>
-			
-		</div>
-		<div class="dri_form_text">
-			<%= render "devise/shared/links" %>
-		</div>
-		<!--  close dri_form_text -->
-
-	<% end %>
-	</div>
+    <% end %>
+  </div>
 
 
 
