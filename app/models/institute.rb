@@ -2,8 +2,6 @@ class Institute < ActiveRecord::Base
   require 'storage/s3_interface'
   require 'validators'
 
-  attr_accessible :name, :url, :logo
-
   validates_uniqueness_of :name
 
   def add_logo(upload,opts={})
