@@ -22,7 +22,7 @@ FactoryGirl.define do
 
  factory :admin,  parent: :user do |u|
    after(:create) do |user, evaluator|
-     @group = UserGroup::Group.find_or_create_by_name(name: SETTING_GROUP_ADMIN, description: "admin test group")
+     @group = UserGroup::Group.find_or_create_by(name: SETTING_GROUP_ADMIN, description: "admin test group")
      @membership = user.join_group(@group.id)
      @membership.approved_by = user.id
      @membership.save

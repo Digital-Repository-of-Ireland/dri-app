@@ -28,7 +28,7 @@ Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)"$/ do |login, group|
   @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   @user.confirm!
   @user.save
-  group_id = UserGroup::Group.find_or_create_by_name(group, description: "Test group", is_locked: true).id
+  group_id = UserGroup::Group.find_or_create_by(name: group, description: "Test group", is_locked: true).id
   membership = @user.join_group(group_id)
   membership.approved_by = @user.id
   membership.save
@@ -45,7 +45,7 @@ Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)" and accept cookies$
   @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   @user.confirm!
   @user.save
-  group_id = UserGroup::Group.find_or_create_by_name(group, description: "Test group", is_locked: true).id
+  group_id = UserGroup::Group.find_or_create_by(name: group, description: "Test group", is_locked: true).id
   membership = @user.join_group(group_id)
   membership.approved_by = @user.id
   membership.save
