@@ -4,7 +4,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '4.0.1'
-gem "protected_attributes"
+#gem "protected_attributes"
 gem 'rails-observers'
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
@@ -51,17 +51,13 @@ gem 'high_voltage', '~> 2.1.0'
 # is it working fork
 gem 'is_it_working-cbeer'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails' , '~> 4.0.2'
-  # gem 'coffee-rails', '~> 3.2.1'
+gem 'sass-rails' , '~> 4.0.2'
+# gem 'coffee-rails', '~> 3.2.1'
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'execjs'
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem 'execjs'
 
-  gem 'uglifier', '>= 1.0.3'
-end
+gem 'uglifier', '>= 1.0.3'
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.99'
