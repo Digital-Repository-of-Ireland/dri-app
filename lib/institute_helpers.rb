@@ -4,7 +4,7 @@ module InstituteHelpers
   # get the institues for this collection
   def self.get_collection_institutes(collection)
     return nil if collection.institute.blank?
-    allinstitutes = Institute.find(:all)
+    allinstitutes = Institute.all
     myinstitutes = []
     allinstitutes.each do |inst|
       if collection.institute.include?(inst.name)
@@ -51,7 +51,7 @@ module InstituteHelpers
   end
 
   def self.get_object_institutes_from_solr_doc(doc, depositing=nil)
-    allinstitutes = Institute.find(:all)
+    allinstitutes = Institute.all
     myinstitutes = []
     id = doc['is_governed_by_ssim'][0].gsub(/^info:fedora\//, '')
     solr_query = "id:#{id}"
@@ -67,7 +67,7 @@ module InstituteHelpers
 
   def self.get_collection_institutes_from_solr_doc(doc)
     return nil if doc['institute_tesim'].blank?
-    allinstitutes = Institute.find(:all)
+    allinstitutes = Institute.all
     myinstitutes = []
     allinstitutes.each do |inst|
       if doc['institute_tesim'].include?(inst.name)
