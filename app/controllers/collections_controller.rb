@@ -47,7 +47,7 @@ class CollectionsController < CatalogController
     enforce_permissions!("manage_collection",params[:id])
     @object = retrieve_object!(params[:id])
 
-    @institutes = Institute.find(:all)
+    @institutes = Institute.all
     @inst = Institute.new
 
     @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
@@ -77,7 +77,7 @@ class CollectionsController < CatalogController
     #For sub collections will have to set a governing_collection_id
     #Create a sub collections controller?
 
-    @institutes = Institute.find(:all)
+    @institutes = Institute.all
     @inst = Institute.new
 
     get_supported_licences()

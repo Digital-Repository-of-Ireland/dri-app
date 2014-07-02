@@ -120,7 +120,7 @@ class ApplicationController < ActionController::Base
   # Return a list of all supported licences (for populating select dropdowns)
   def get_supported_licences
     @licences = {}
-    Licence.find(:all).each do |licence|
+    Licence.all.each do |licence|
       @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
     end
   end
