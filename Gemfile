@@ -37,6 +37,9 @@ gem 'mimemagic'
 gem 'http_accept_language'
 gem 'it'
 
+# logging
+gem 'logstash-logger'
+
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-cookie-rails'

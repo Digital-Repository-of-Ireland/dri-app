@@ -42,6 +42,12 @@ NuigRnag::Application.configure do
   # See everything in the log (default is :info)
   config.log_level = :debug
 
+  # logstash
+  config.autoflush_log = true
+  config.logstash.host = Settings.logs.logstash_host
+  config.logstash.port = Settings.logs.logstash_port
+  config.logstash.type = :udp
+
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
 
