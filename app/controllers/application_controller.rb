@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
 
   include UserGroup::PermissionsCheck
   include UserGroup::SolrAccessControls
+  include UserGroup::Helpers
 
   include PermissionMethods
 

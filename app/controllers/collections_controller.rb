@@ -10,6 +10,7 @@ class CollectionsController < CatalogController
 
   include UserGroup::SolrAccessControls
 
+  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
   # Creates a new model.
