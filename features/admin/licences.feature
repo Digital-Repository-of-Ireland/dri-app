@@ -52,7 +52,7 @@ Feature:
     Then I should see a form for create new licence
     When I enter valid licence information for licence "TestLicence4" into the new licence form
     And I upload the logo virus file "sample_virus.png"
-    Then I should see a failure message for "virus detected"
+    Then I should see a failure message for virus detected
 
   Scenario: Editing a licence
     Given I have created a licence "TestLicence5"

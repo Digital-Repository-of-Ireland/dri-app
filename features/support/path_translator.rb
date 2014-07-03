@@ -4,61 +4,61 @@ module PathTranslator
 
     case page_name
 
-      when /ingest an object/
+      when /^ingest an object$/
         new_ingest_path
 
-      when /new Digital Object page/
+      when /^(the )?new Digital Object page$/
         new_ingest_path
 
-      when /show Digital Object page for id (.+)/
-        pid = ($1 == "@random")? "dri:o" + @random_pid : $1
+      when /^(the )?show Digital Object page for id (.+)$/
+        pid = ($2 == "@random")? "dri:o" + @random_pid : $2
         catalog_path(pid)
 
-      when /edit Digital Object page for id (.+)/
-        edit_object_path($1)
+      when /^(the )?edit Digital Object page for id (.+)$/
+        edit_object_path($2)
 
-      when /show page for the collection "(.+)"/
-        catalog_path($1)
+      when /^(the )?show page for the collection "(.+)"$/
+        catalog_path($2)
 
-      when /edit collection page for id (.+)/
-        edit_collection_path($1)
+      when /^(the )?edit collection page for id (.+)$/
+        edit_collection_path($2)
 
-      when /the home page/
+      when /^(the )?home page$/
         root_path
 
-      when /sign in/
+      when /^sign in$/
         user_group.new_user_session_path
 
       # This should not be used as we cannot send a delete
       # Instead we should follow the sign out link
-      when /sign out/
+      when /^sign out$/
         user_group.destroy_user_session_path
 
-      when /User Signin page/
+      when /^(the )?User Signin page$/
         user_group.new_user_session_path
 
-      when /User Sign up page/
+      when /^(the )?User Sign up page$/
         user_group.new_user_path
 
-      when /new Collection page/
+      when /^(the )?new Collection page$/
         new_collection_path
 
-      when /view collection page/
+      when /^(the )?view collection page$/
         collections_path
 
-      when /my collections page/
+      when /^(the )?my collections page$/
         collections_path
 
-      when /my saved search page/
+      when /^(the )?my saved search page$/
         saved_searches_path
 
-      when /show page for the collection/
+      when /^(the )?show page for the collection$/
         catalog_path(@collection.id)
 
-      when /licence index page/
+      when /^(the )?licence index page$/
         licences_path
 
-      when /new licence page/
+      when /^(the )?new licence page$/
         new_licence_path
 
       else

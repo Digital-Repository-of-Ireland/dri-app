@@ -125,7 +125,7 @@ en:
     headerlinks: 
       about: About
       admin: "Admin Tasks"
-      browse: Browse
+      browse: Discover
       collections: Collections
       contact: Contact
       current_collection: "Current Collection: %{collection}"

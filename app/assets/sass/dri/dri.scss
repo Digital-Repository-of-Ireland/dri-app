@@ -9,6 +9,7 @@
 $dri_green: #90993D;
 $dri_grey: #2F2F2F;
 $dri_lightgrey: #B3B3B3;
+$dri_thingrey: #D9DADB;
 
 html {
   margin-bottom: 0.5em;
@@ -1883,6 +1884,12 @@ p.dri_rss_link a {
 	
 .dri_result_container {
 	margin-top: 25px;
+	.dri_saved_search_title_block {
+	  height: 30px;
+	  padding-top: 5px;
+	  padding-bottom: 5px;
+	  border-top: 1px $dri_thingrey solid;
+	}
 }
 
 
@@ -1914,7 +1921,7 @@ p.dri_rss_link a {
 	.dri_image {
 		padding: 0;
 		margin: 0 14px 0 14px;
-		height: 113px;
+		max-height: 113px;
 		overflow: hidden;
 	}
 	
@@ -2099,11 +2106,18 @@ p.dri_rss_link a {
     } 
 	
 	 .dri_collection_image {
-		padding: 0;
-	    margin: 0 0 10px 0;
+		    padding: 0;
+	       margin: 0 0 10px 0;
         width:200px;
         float:right;
         max-height: 128px;
+        overflow: hidden;
+      }
+      
+   .dri_image {
+
+               max-height: 113px;
+               overflow:hidden;
       }
 
 }

@@ -74,6 +74,10 @@ If you are using homenbrew on OSX
 
   $ brew install ansible coreutils libtool libksba libxml2 libxslt automake autoconf openssl curl curl-ca-bundle readline lzlib gettext pkg-config libyaml mariadb redis clamav sqlite ffmpeg gource phantomjs fits glib imagemagick ghostscript node
 
+In order to properly ingest videos, please reinstall ffmpeg with all the the supported codecs andencoders available:
+
+ $ brew reinstall ffmpeg --with-fdk-aac --with-ffplay --with-freetype --with-frei0r --with-libass --with-libvo-aacenc --with-libvorbis --with-libvpx --with-opencore-amr --with-openjpeg --with-opus --with-rtmpdump --with-schroedinger --with-speex --with-theora --with-tools
+
 == Testing
 
 The unit tests are written using rspec and the functional tests are

@@ -41,7 +41,7 @@ Scenario: Constructing a collection with invalid permissions
   And I enter valid metadata for a collection
   And I enter invalid permissions for a collection
   And I press the button to create a collection
-  Then I should see a failure message for "invalid collection"
+  Then I should see a failure message for invalid collection
 
 Scenario: Updating a collection with invalid metadata
   Given a collection with pid "dri:collperm" created by "user1@user1.com"
@@ -49,7 +49,7 @@ Scenario: Updating a collection with invalid metadata
   When I follow the link to edit a collection
   And I enter invalid metadata for a collection
   And I press the button to save collection changes
-  Then I should see a failure message for "invalid object"
+  Then I should see a failure message for invalid object
 
 Scenario: Updating a collection with invalid permissions
   Given a collection with pid "dri:collperm" created by "user1@user1.com"
@@ -57,7 +57,7 @@ Scenario: Updating a collection with invalid permissions
   When I follow the link to edit a collection
   And I enter invalid permissions for a collection
   And I press the button to save collection changes
-  Then I should see a failure message for "invalid update collection"
+  Then I should see a failure message for invalid update collection
 
 Scenario Outline: Adding a Digital Object in a governing/non-governing collection
   Given a Digital Object with pid "<object_pid>", title "<object_title>", description "<object_desc>", type "<object_type>" and rights "<object_rights>"
@@ -111,7 +111,7 @@ Scenario: Deleting a collection as an admin
   And I follow the link to edit a collection
   Then I should see a button to delete collection with id dri:coll6
   When I press the button to delete collection with id dri:coll6
-  Then I should see a success message for "deleting a collection"
+  Then I should see a success message for deleting a collection
 
 Scenario: Non-admin should not be given option to delete
   Given a collection with pid "dri:coll7" created by "user1@user1.com"

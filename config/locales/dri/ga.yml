@@ -125,7 +125,7 @@ ga:
     headerlinks: 
       about: Eolas
       admin: "Admin Tasks"
-      browse: Brabhsáil
+      browse: Faigh
       collections: Bailiúchán
       contact: Teagmháil
       current_collection: "Bailiúchán Reatha: %{collection}"

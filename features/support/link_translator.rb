@@ -4,119 +4,120 @@ module LinkTranslator
 
     case link_name
 
-      when /ingest page/
+      when /^ingest page$/
         "ingest"
 
-      when /ingest an object/
+      when /^ingest an object$/
         "ingest"
 
-      when /edit an object/
+      when /^edit an object$/
         "edit_record"
 
-      when /edit a collection/
+      when /^edit a collection$/
         "edit_collection"
 
-      when /edit this record/
+      when /^edit this record$/
         "edit_record"
 
-      when /sign in/
+      when /^sign in$/
         "login"
 
-      when /sign out/
+      when /^sign out$/
         "logout"
 
-      when /reset my password/
+      when /^reset my password$/
         "password_reset"
 
-      when /password confirmation not sent/
+      when /^password confirmation not sent$/
         "password_reset_not_sent"
 
-      when /unlock instructions not sent/
+      when /^unlock instructions not sent$/
         "unlock_not_sent"
 
-      when /view my account/
+      when /^view my account$/
         "view_account"
 
-      when /edit my account/
+      when /^edit my account$/
         "edit_account"
 
-      when /cancel my account/
+      when /^cancel my account$/
         "cancel_account"
 
-      when /my workspace/
+      when /^my workspace$/
         "workspace"
 
-      when /my saved search/
+      when /^my saved search$/
         "saved_search"
 
-      when /sign up/
+      when /^sign up$/
         "signup"
 
-      when /view record/
+      when /^view record$/
         "view_record"
 
-      when /browse/
+      when /^browse$/
         "browse"
 
-      when /collections/
+      when /^collections$/
         "collections"
 
-      when /add to collection/
+      when /^add to collection$/
         "add_to_collection"
 
-      when /download metadata/
+      when /^download metadata$/
         "download_metadata"
 
-      when /full metadata/
+      when /^full metadata$/
         "styled_metadata"
 
-      when /download asset/
+      when /^download asset$/
         "download_asset"
 
-      when /download surrogate/
+      when /^download surrogate$/
         "download_surrogate_asset"
 
-      when /admin tasks/
+      when /^admin tasks$/
         "admin_tasks"
 
-      when /configure licences/
+      when /^configure licences$/
         "licences"
 
-      when /add new licence/
+      when /^add new licence$/
         "new_licence"
 
-      when /change to en/
+      when /^change to en$/
         "en"
 
-      when /change to ga/
+      when /^change to ga$/
         "ga"
 
-      when /generate surrogates/
+      when /^generate surrogates$/
         "surrogates_generate"
 
-      when /publish collection/
+      when /^publish collection$/
         "publish"
 
-      when /publish objects in the collection/
+      when /^publish objects in the collection$/
         "publish"
 
-      when /update status/
+      when /^update status$/
         "status_update"
 
-      when /accept terms/
+      when /^accept terms$/
         "accept_cookies"
-      
-      when /institutions/
+
+      when /^institutions$/
         "institutions"
 
-      when /manage bookmark/
+      when /^manage bookmark$/
         "manage_bookmark"
 
-      when /remove bookmark/
+      when /^remove bookmark$/
         "remove_bookmark"
 
-      when /clear bookmarks/
+      when /^clear bookmarks$/
         "clear_bookmarks"
+
       else "Unknown"
 
     end

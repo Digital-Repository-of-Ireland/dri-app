@@ -13,43 +13,43 @@ Feature:
     When I perform a search
     And I follow the link to browse
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
-    Then I should see a "Manage Your Bookmarks"
+    Then I should see "Manage Your Bookmarks"
     Given I follow the link to manage bookmark
-    Then I should see a "no bookmarks"
+    Then I should see "no bookmarks"
 
   Scenario: Add new bookmark
     Given I am on the home page
     When I perform a search
     And I follow the link to browse
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
-    Then I should see a "Manage Your Bookmarks"
+    Then I should see "Manage Your Bookmarks"
     Given I check "toggle_bookmark_dri:bookcoll"
     And I wait for the ajax request to finish
     Given I follow the link to manage bookmark
-    Then I should see a "Bookmark Test Collection"
+    Then I should see "Bookmark Test Collection"
 
   Scenario: Remove bookmark
     Given I am on the home page
     When I perform a search
     And I follow the link to browse
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
-    Then I should see a "Manage Your Bookmarks"
+    Then I should see "Manage Your Bookmarks"
     Given I check "toggle_bookmark_dri:bookcoll"
     And I wait for the ajax request to finish
     Given I follow the link to manage bookmark
-    Then I should see a "Bookmark Test Collection"
+    Then I should see "Bookmark Test Collection"
     Given I follow the link to remove bookmark
-    Then I should see a "no bookmarks"
+    Then I should see "no bookmarks"
 
   Scenario: Clear all bookmarks
     Given I am on the home page
     When I perform a search
     And I follow the link to browse
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
-    Then I should see a "Manage Your Bookmarks"
+    Then I should see "Manage Your Bookmarks"
     Given I check "toggle_bookmark_dri:bookcoll"
     And I wait for the ajax request to finish
     Given I follow the link to manage bookmark
-    Then I should see a "Bookmark Test Collection"
+    Then I should see "Bookmark Test Collection"
     Given I follow the link to clear bookmarks
-    Then I should see a "no bookmarks"
+    Then I should see "no bookmarks"
