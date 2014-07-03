@@ -9,7 +9,7 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
   def run
     Rails.logger.info "Deleting all objects in #{object.id}"
 
-    query = Solr::Query.new("collection_id_sim:\"#{object.id}\"")
+    query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\"")
 
     while query.has_more?
       collection_objects = query.pop

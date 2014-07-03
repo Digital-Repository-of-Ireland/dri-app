@@ -20,7 +20,7 @@ module Storage
       bucket = doc.id.sub('dri:', '')
       generic_file = file_doc.id.sub('dri:', '')
 
-      object_type = doc["object_type_ssm"][0]
+      object_type = doc[Solrizer.solr_name('object_type', :displayable, type: :string)][0]
       files = list_files(bucket)
 
       if list == nil
