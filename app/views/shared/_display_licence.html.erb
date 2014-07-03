@@ -1,5 +1,5 @@
 
-  <dt class="blacklight-rights_tesim"><%= t('dri.app.views.fields.licence') %></dd>
+  <dt class="blacklight-rights"><%= t('dri.app.views.fields.licence') %></dd>
   <dd><% if !@licence.nil? && !@licence.blank? %>
     <% if !@licence.url.blank? %>
       <%= link_to "#{@licence.name}", @licence.url, :target => "_blank" %>

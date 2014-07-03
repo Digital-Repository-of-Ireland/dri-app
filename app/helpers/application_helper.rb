@@ -38,8 +38,8 @@ module ApplicationHelper
   end
 
   def root_collection_solr( doc )
-    if doc[:root_collection_id_tesim]
-      id = doc[:root_collection_id_tesim][0]
+    if doc[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym]
+      id = doc[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
     end
@@ -47,8 +47,8 @@ module ApplicationHelper
   end
 
   def governing_collection_solr( doc )
-    if doc['is_governed_by_ssim']
-      id = doc['is_governed_by_ssim'][0].gsub(/^info:fedora\//, '')
+    if doc[Solrizer.solr_name('is_governed_by', :stored_searchable, type: :symbol)]
+      id = doc[Solrizer.solr_name('is_governed_by', :stored_searchable, type: :symbol)][0].gsub(/^info:fedora\//, '')
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
     return collection[0]
@@ -63,8 +63,8 @@ module ApplicationHelper
   def search_image ( document, file_document, image_name = "crop16_9_width_200_thumbnail" )
     path = nil
 
-    unless file_document['file_type_tesim'].blank?
-      format = file_document['file_type_tesim'].first
+    unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
+      format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
 
       case format
       when "image"
@@ -81,8 +81,8 @@ module ApplicationHelper
     path = "no_image.png"
 
     unless file_document.nil?
-      unless file_document['file_type_tesim'].blank?
-        format = file_document['file_type_tesim'].first
+      unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
+        format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
 
         path = "dri/formats/#{format}.png"
 
@@ -98,12 +98,12 @@ module ApplicationHelper
   def cover_image ( document )
     path = nil
 
-    if document[:cover_image_tesim] && document[:cover_image_tesim].first
-        path = document[:cover_image_tesim].first
-    elsif !document[:root_collection_tesim].blank?
+    if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
+        path = document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
+    elsif !document[Solrizer.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
       collection = root_collection_solr(document)
-      if collection['cover_image_tesim'] && collection['cover_image_tesim'].first
-        path = collection['cover_image_tesim'].first
+      if collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)].first
+        path = collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)].first
       end
     end
 
@@ -117,7 +117,7 @@ module ApplicationHelper
   end
 
   def reader_group_name( document )
-    id = document[:root_collection_id_tesim][0]
+    id = document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
     name = id.sub(':','_')
     return name
   end
@@ -126,36 +126,36 @@ module ApplicationHelper
     solr_query = collection_children_query( collection_id )
 
     unless signed_in? && can?(:edit, collection_id)
-      solr_query = "status_ssim:published AND " + solr_query
+      solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
     end
 
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
   def collection_children_query ( collection_id )
-    "(ancestor_id_sim:\"" + collection_id +
-    "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" )"
+    "(#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
+    "\" OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
   end
 
   def count_items_in_collection_by_type_and_status( collection_id, type, status )
-    solr_query = "status_ssim:" + status + " AND (ancestor_id_sim:\"" + collection_id +
-    "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
-    "file_type_display_tesim:"+ type
+    solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:" + status + " AND (#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
+    "\" OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
+    "#{Solrizer.solr_name('file_type_display', :stored_searchable, type: :string)}:"+ type
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
-  def count_collections_institute( institute_tesim, status )
-    solr_query = "status_ssim:" + status + " AND institute_tesim:" + institute_tesim + " AND " +
-    "type_tesim:Collection"
+  def count_collections_institute( institute, status )
+    solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:" + status + " AND #{Solrizer.solr_name('institute', :stored_searchable, type: :string)}:" + institute + " AND " +
+    "#{Solrizer.solr_name('type', :stored_searchable, type: :string)}:Collection"
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
   def count_items_in_collection_by_type(collection_id, type)
-    solr_query = "(ancestor_id_sim:\"" + collection_id +
-        "\" OR is_member_of_collection_ssim:\"info:fedora/" + collection_id + "\" ) AND " +
-        "file_type_display_tesim:"+ type
+    solr_query = "(#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
+        "\" OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
+        "#{Solrizer.solr_name('file_type_display', :stored_searchable, type: :string)}:"+ type
     unless signed_in? && can?(:edit, collection_id)
-      solr_query = "status_ssim:published AND " + solr_query
+      solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
     end
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
@@ -184,7 +184,7 @@ module ApplicationHelper
   end
 
   def get_cover_image( document )
-    files_query = "is_part_of_ssim:\"info:fedora/#{document[:id]}\""
+    files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{document[:id]}\""
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
@@ -198,12 +198,12 @@ module ApplicationHelper
   end
 
   def get_licence( document )
-    if !document[:licence_tesim].blank?
-      @licence = Licence.where(:name => document[:licence_tesim]).first
-    elsif !document[:root_collection_tesim].blank?
+    if !document[Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym].blank?
+      @licence = Licence.where(:name => document[Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym]).first
+    elsif !document[Solrizer.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
       collection = root_collection_solr(document)
-      if !collection['licence_tesim'].blank?
-        @licence = Licence.where(:name => collection['licence_tesim']).first
+      if !collection[Solrizer.solr_name('licence', :stored_searchable, type: :string)].blank?
+        @licence = Licence.where(:name => collection[Solrizer.solr_name('licence', :stored_searchable, type: :string)]).first
       end
     end
   end

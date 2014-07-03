@@ -15,9 +15,9 @@ class SurrogatesController < ApplicationController
       result_docs.each do | r |
         doc = SolrDocument.new(r)
 
-        if doc['file_type_tesim'].present? && doc['file_type_tesim'].first.eql?("collection")
+        if doc[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].present? && doc[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first.eql?("collection")
 
-          query = Solr::Query.new("collection_id_sim:\"#{doc.id}\"")
+          query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{doc.id}\"")
           while query.has_more?
             objects = query.pop
 
@@ -57,12 +57,12 @@ class SurrogatesController < ApplicationController
       result_docs.each do | r |
         doc = SolrDocument.new(r)
 
-        if doc['file_type_tesim'].present? && doc['file_type_tesim'].first.eql?("collection")
-       
-          query = Solr::Query.new("collection_id_sim:\"#{doc.id}\"")
+        if doc[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].present? && doc[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first.eql?("collection")
+
+          query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{doc.id}\"")
           while query.has_more?
             objects = query.pop
-          
+
             objects.each do |object|
               object_doc = SolrDocument.new(object)
               generate_surrogates(object_doc.id)
@@ -94,12 +94,12 @@ class SurrogatesController < ApplicationController
     def generate_surrogates(object_id)
       enforce_permissions!("edit", object_id)
 
-      query = Solr::Query.new("is_part_of_ssim:\"info:fedora/#{object_id}\"")
-      
+      query = Solr::Query.new("#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{object_id}\"")
+
       while query.has_more?
-      
-        files = query.pop 
-      
+
+        files = query.pop
+
         unless files.empty?
           files.each do |mf|
             file_doc = SolrDocument.new(mf)
@@ -111,9 +111,9 @@ class SurrogatesController < ApplicationController
             end
           end
         end
-      
+
       end
-    
+
     end
 
     def surrogates(object)
@@ -122,10 +122,10 @@ class SurrogatesController < ApplicationController
       if can? :read, object
         storage = Storage::S3Interface.new
 
-        query = Solr::Query.new("is_part_of_ssim:\"info:fedora/#{object.id}\"")
-        
+        query = Solr::Query.new("#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{object.id}\"")
+
         while query.has_more?
-          files = query.pop  
+          files = query.pop
 
           unless files.empty?
             files.each do |mf|
@@ -138,7 +138,7 @@ class SurrogatesController < ApplicationController
 
         storage.close
       end
-      
+
       surrogates
     end
 

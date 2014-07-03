@@ -2,7 +2,7 @@ module DocumentHelper
 
   def get_document_type document
 
-    case document[:file_type_display_tesim].first.to_s.downcase
+    case document[Solrizer.solr_name('file_type_display', :stored_searchable, type: :string)].first.to_s.downcase
       when "image"
         return t("dri.data.types.Image")
       when "audio"
@@ -20,7 +20,7 @@ module DocumentHelper
   end
 
   def get_collection_media_type_params collectionId, mediaType
-    searchFacets = { :file_type_display_sim => [mediaType], :root_collection_id_sim => [collectionId] }
+    searchFacets = { Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [mediaType], Solrizer.solr_name('root_collection_id', :facetable, type: :string).to_sym => [collectionId] }
     searchParams = { :mode => "objects", :search_field => "all_fields", :utf8 => "✓", :f => searchFacets }
     return searchParams
   end

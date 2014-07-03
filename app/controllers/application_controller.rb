@@ -102,16 +102,16 @@ class ApplicationController < ActionController::Base
 
   def ingest_collections
     results = Array.new
-    solr_query = "+is_collection_sim:true"
+    solr_query = "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
 
     fq = manager_and_edit_filter unless (current_user && current_user.is_admin?)
 
-    query = Solr::Query.new(solr_query, 50, {:defType => "edismax", :fl => "id,title_tesim", :fq => fq})
+    query = Solr::Query.new(solr_query, 50, {:defType => "edismax", :fl => "id,#{Solrizer.solr_name('title', :stored_searchable, type: :string)}", :fq => fq})
     while query.has_more?
       result_docs = query.pop
 
       result_docs.each do | doc |
-        results.push([doc["title_tesim"][0], doc['id']])
+        results.push([doc[Solrizer.solr_name('title', :stored_searchable, type: :string)][0], doc['id']])
       end
     end
 
@@ -131,7 +131,7 @@ class ApplicationController < ActionController::Base
   def duplicates(object)
     unless object.governing_collection.blank?
       collection_id = object.governing_collection.id
-      solr_query = "metadata_md5_tesim:\"#{object.metadata_md5}\" AND is_governed_by_ssim:\"info:fedora/#{collection_id}\""
+      solr_query = "#{Solrizer.solr_name('metadata_md5', :stored_searchable, type: :string)}:\"#{object.metadata_md5}\" AND #{Solrizer.solr_name('is_governed_by', :stored_searchable, type: :symbol)}:\"info:fedora/#{collection_id}\""
       ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "10", :fl => "id").delete_if{|obj| obj["id"] == object.pid}
     end
   end
