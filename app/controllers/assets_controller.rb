@@ -40,8 +40,8 @@ class AssetsController < ApplicationController
 
     unless @gf.nil?
 
-      @local_file_info = LocalFile.all(:conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                                { :f => @gf.id, :d => datastream } ],
+      @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
+                                            { :f => @gf.id, :d => datastream },
                                             :order => "version DESC",
                                             :limit => 1)
 
@@ -253,7 +253,7 @@ class AssetsController < ApplicationController
     end
 
     def create_file(filedata, generic_file_id, datastream, checksum)
-      count = LocalFile.all(:conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => generic_file_id, :d => datastream } ]).count
+      count = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => generic_file_id, :d => datastream }).count
 
       dir = local_storage_dir.join(generic_file_id).join(datastream+count.to_s)
 
