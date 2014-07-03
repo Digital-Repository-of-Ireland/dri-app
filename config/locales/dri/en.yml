@@ -65,7 +65,7 @@ en:
         MixedType: "Mixed Types"
         MovingImage: Video
         Sound: Audio
-        Text: Document
+        Text: Text
         Title: "Media Types"
         Unknown: Unknown
     flash: 
