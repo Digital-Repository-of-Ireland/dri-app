@@ -1,4 +1,3 @@
-<%# fanculo.stronzo %>
 
 <!--overides view params if missing-->
 <% if (params[:view].blank?) %>
@@ -7,7 +6,7 @@
 
 <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
 
-<% extra_head_content << render_opensearch_response_metadata.html_safe %>
+<% render_opensearch_response_metadata.html_safe %>
 
 <%= render :partial => 'did_you_mean' %>
 <div id="dri_second_navigation_container_id"

@@ -5,6 +5,7 @@ class ExportController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
 
+  before_filter :authenticate_user_from_token!, :only => [:show]
   before_filter :authenticate_user!, :only => [:show]
 
   # Exports an entire digital object

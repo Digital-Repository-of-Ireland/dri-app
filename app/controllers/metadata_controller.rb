@@ -5,6 +5,7 @@ require 'metadata_helpers'
 # 
 class MetadataController < CatalogController
 
+  before_filter :authenticate_user_from_token!, :only => [:update]
   before_filter :authenticate_user!, :only => [:update]
 
   # Renders the metadata XML stored in the descMetadata datastream.
