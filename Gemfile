@@ -3,7 +3,7 @@
 
 source 'http://rubygems.org'
 
-gem 'rails', '4.0.6'
+gem 'rails', '~> 4.0.0'
 #gem "protected_attributes"
 gem 'rails-observers'
 gem 'actionpack-page_caching'
@@ -11,8 +11,8 @@ gem 'actionpack-action_caching'
 gem 'activerecord-deprecated_finders'
 
 gem 'blacklight', '4.7.0'
-gem 'hydra-head', '6.4.1'
-gem 'sufia-models', '3.7.0'
+gem 'hydra-head', '6.5.2'
+gem 'sufia-models', '3.7.2'
 
 gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'rails4'
 gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'rails4'
