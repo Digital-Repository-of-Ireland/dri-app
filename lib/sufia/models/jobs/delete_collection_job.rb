@@ -41,7 +41,6 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
 
     storage = Storage::S3Interface.new
     storage.delete_bucket(object.id.sub('dri:', ''))
-    storage.close
   end
 
 end

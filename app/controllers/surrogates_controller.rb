@@ -136,7 +136,6 @@ class SurrogatesController < ApplicationController
           end
         end
 
-        storage.close
       end
       
       surrogates

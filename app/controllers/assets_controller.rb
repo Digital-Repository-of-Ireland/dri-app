@@ -209,8 +209,6 @@ class AssetsController < ApplicationController
         end
       end
 
-      storage.close
-
     else
       raise Exceptions::BadRequest
     end

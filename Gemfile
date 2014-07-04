@@ -26,7 +26,7 @@ gem 'omniauth-shibboleth'
 gem 'feedjira'
 
 # Storage-related gems
-gem 'aws-s3'
+gem 'aws-sdk'
 
 #gem 'clamav'
 

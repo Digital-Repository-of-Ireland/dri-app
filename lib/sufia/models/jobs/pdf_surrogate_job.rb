@@ -20,8 +20,6 @@ class PdfSurrogateJob < ActiveFedoraPidBasedJob
 
     storage = Storage::S3Interface.new
     storage.store_surrogate(bucket_id, out_file, surrogate_filename)
-    storage.close
-
   end
 
 end
