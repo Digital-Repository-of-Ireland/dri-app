@@ -371,6 +371,7 @@ ga:
           object_type: "Roghnaigh cineál oibiachta"
           upload: "Uaslódáil comhad meiteashonraí"
       licences: 
+        all_rights_reserved: "Please see copyright statement"
         buttons: 
           edit: "Edit Licence"
           new: "Add a new licence"
