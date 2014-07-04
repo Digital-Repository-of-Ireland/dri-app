@@ -210,6 +210,7 @@ en:
         headers: 
           files: "File Tools"
         legends: 
+          no_bookmarked: "You have no bookmarked"
           no_bookmarks: "You have no bookmarks"
           no_files: "No file has been uploaded."
           no_permission: "You do not have permission to view the asset file associated with this object."

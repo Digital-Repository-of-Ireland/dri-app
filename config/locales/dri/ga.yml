@@ -210,6 +210,7 @@ ga:
         headers: 
           files: Comhaid
         legends: 
+          no_bookmarked: "You have no bookmarked"
           no_bookmarks: "You have no bookmarks"
           no_files: "Níor uaslódáladh comhad ar bith."
           no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo."
