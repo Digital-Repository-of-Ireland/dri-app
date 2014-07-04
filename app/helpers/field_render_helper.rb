@@ -103,7 +103,7 @@ module FieldRenderHelper
 
   def standardise_value args
 
-    if args[:facet_name] == "temporal_coverage_sim" || args[:facet_name] == "geographical_coverage_sim"
+    if args[:facet_name] == Solrizer.solr_name('temporal_coverage', :facetable, type: :string) || args[:facet_name] == Solrizer.solr_name('geographical_coverage', :facetable, type: :string)
       return get_value_from_solr_field args[:value], "name"
     else
       return args[:value]

@@ -6,7 +6,7 @@
     <% style='not_first' unless i.eql?(0) %>
     <% collection_count = get_institute_collection_counts institute[:name].to_s.html_safe %>
     <div class="dri_collection_institutes_pages <%= style %>">
-      <% institute_browse_params[:f] = { :institute_sim => [institute[:name].to_s.html_safe] } %>
+      <% institute_browse_params[:f] = { Solrizer.solr_name('institute', :facetable, type: :string).to_sym => [institute[:name].to_s.html_safe] } %>
       <%= link_to main_app.catalog_index_path(institute_browse_params) do %>
           <div class="dri_collection_institutes_pages_img">
             <%= image_tag institute[:logo], alt: institute[:name].to_s.html_safe unless institute[:logo].blank? %>

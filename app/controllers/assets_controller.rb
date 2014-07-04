@@ -175,7 +175,7 @@ class AssetsController < ApplicationController
         doc.each do |r|
           doc = SolrDocument.new(r)
 
-          files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
+          files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{doc.id}\""
           query = Solr::Query.new(files_query)
 
           item = {}
