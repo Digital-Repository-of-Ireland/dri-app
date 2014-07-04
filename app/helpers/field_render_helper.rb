@@ -19,12 +19,10 @@ module FieldRenderHelper
     value ||= args[:document].get(args[:field], :sep => nil) if args[:document] and args[:field]
     value = [value] unless value.is_a? Array
     value = value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x}
-    value = value.map { |v| html_escape v }
 
     indexed_value = args[:document].get(args[:field], :sep => nil) if args[:document] and args[:field]
     indexed_value = [indexed_value] unless indexed_value.is_a? Array
     indexed_value = indexed_value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x}
-    indexed_value = indexed_value.map { |v| html_escape v }
 
     last_index = args[:field].rindex('_')
     field = args[:field][0..last_index-1]
