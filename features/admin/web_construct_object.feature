@@ -37,7 +37,7 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
   And I press the button to continue
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
-  Then I should see a failure message for "<case>"
+  Then I should see a failure message for <case>
 
   Examples:
     | object_type | metadata_file                 | case             |
@@ -105,7 +105,7 @@ Scenario: Constructing an invalid Digital Object using the web form
   And I press the button to continue
   When I enter invalid metadata
   And I press the button to continue
-  Then I should see a failure message for "invalid object"
+  Then I should see a failure message for invalid object
 
 @review
 Scenario: Constructing a Digital Object using the web form without setting a collection
@@ -135,7 +135,7 @@ Scenario: Editing the metadata of a Digital Object with invalid metadata
   When I follow the link to edit an object
   And I enter invalid metadata
   And I press the button to save changes
-  Then I should see a failure message for "invalid object"
+  Then I should see a failure message for invalid object
 
 Scenario: Adding multiple audio files for a Digital Object
   Given I have created a Digital Object
@@ -155,7 +155,7 @@ Scenario Outline: Adding an audio file that is not valid
   When I follow the link to edit an object
   And I attach the asset file "<asset_name>"
   And I press the button to upload a file
-  Then I should see a failure message for "<case>"
+  Then I should see a failure message for <case>
 
   Examples:
     | asset_name               | case              |
@@ -167,7 +167,7 @@ Scenario: Adding a file that contains a virus
   Then I should see a link to edit an object
   When I follow the link to edit an object
   And I upload the virus file "sample_virus.mp3"
-  Then I should see a failure message for "virus detected"
+  Then I should see a failure message for virus detected
 
 Scenario Outline: Editing an audio file where the file is invalid
   Given I have created a Digital Object
@@ -175,7 +175,7 @@ Scenario Outline: Editing an audio file where the file is invalid
   When I follow the link to edit an object
   And I attach the asset file "<asset_name>"
   And I press the button to add a file
-  Then I should see a failure message for "<case>"
+  Then I should see a failure message for <case>
 
   Examples:
     | asset_name               | case              |

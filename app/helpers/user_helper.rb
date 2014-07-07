@@ -1,13 +1,74 @@
 module UserHelper
-  #TO BE DELETED once the functionality has been developed
+
+
+  # Return all collection permissions
   def get_collection_permission
-    if current_user.is_admin? || current_user.is_cm?
-      fake_data = [{:collection_title => "Fake Collection 1", :permission => "Collection Manager"}, {:collection_title => "Fake Collection 2", :permission => "Editor"}]
-      return fake_data
-    else
-      return ""
-    end
+    manage = get_manage_collections(@current_user.email)
+    manage.map{ |item| item[:permission] = "Collection Manager" }
+    edit = get_edit_collections(@current_user.email)
+    edit.map{ |item| item[:permission] = "Editor" }
+    read = get_read_collections(@current_user.email)
+    read.map{ |item| item[:permission] = "Reader" }
+    return manage.concat(edit).concat(read)
   end
+
+
+  # Return array of collections managed by a given user
+  def get_manage_collections(user)
+    query = Solr::Query.new("#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{user}")
+
+    collections = []
+    while query.has_more?
+      objects = query.pop
+      objects.each do |object|
+        collection = {}
+        collection[:id] = object['id']
+        collection[:collection_title] = object[Solrizer.solr_name('title', :stored_searchable, type: :string)]
+        collections.push(collection)
+      end
+    end
+    return collections
+  end
+
+
+  # Return array of collections editable by a given user
+  def get_edit_collections(user)
+    query = Solr::Query.new("#{Solrizer.solr_name('edit_access_person', :stored_searchable, type: :symbol)}:#{user}")
+
+    collections = []
+    while query.has_more?
+      objects = query.pop
+      objects.each do |object|
+        collection = {}
+        collection[:id] = object['id']
+        collection[:collection_title] = object[Solrizer.solr_name('title', :stored_searchable, type: :string)]
+        collections.push(collection)
+      end
+    end
+    return collections
+  end
+
+
+  def get_read_collections(user)
+
+    group_query_fragments = UserGroup::User.where(:email => user).first.groups.map{ |group| "#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}:#{group.name}" }
+    return [] if group_query_fragments.blank?
+    group_query_string = group_query_fragments.join(" OR ")
+    query = Solr::Query.new("#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}:dri* AND (#{group_query_string})")
+
+    collections = []
+    while query.has_more?
+      objects = query.pop
+      objects.each do |object|
+        collection = {}
+        collection[:id] = object['id']
+        collection[:collection_title] = object[Solrizer.solr_name('title', :stored_searchable, type: :string)]
+        collections.push(collection)
+      end
+    end
+    return collections
+  end
+
 
   def get_saved_search_snippet_documents(search_params)
     solr_query = get_saved_search_solr_query(search_params)

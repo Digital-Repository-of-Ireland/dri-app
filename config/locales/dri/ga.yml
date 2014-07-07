@@ -210,6 +210,7 @@ ga:
         headers: 
           files: Comhaid
         legends: 
+          no_bookmarked: "You have no bookmarked"
           no_bookmarks: "You have no bookmarks"
           no_files: "Níor uaslódáladh comhad ar bith."
           no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo."
@@ -370,6 +371,7 @@ ga:
           object_type: "Roghnaigh cineál oibiachta"
           upload: "Uaslódáil comhad meiteashonraí"
       licences: 
+        all_rights_reserved: "Please see copyright statement"
         buttons: 
           edit: "Edit Licence"
           new: "Add a new licence"

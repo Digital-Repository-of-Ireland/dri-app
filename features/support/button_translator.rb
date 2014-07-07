@@ -4,103 +4,103 @@ module ButtonTranslator
 
     case button_name
 
-      when /ingest page/
+      when /^ingest page$/
         "ingest"
 
-      when /ingest metadata/
+      when /^ingest metadata$/
         "ingest_metadata"
 
-      when /upload metadata/
+      when /^upload metadata$/
         "replace_metadata"
 
-      when /create record/
+      when /^create record$/
         "create_new"
 
-      when /save changes/
+      when /^save changes$/
         "save_edit"
 
-      when /save search/
+      when /^save search$/
         "save_search"
 
-      when /delete saved search/
+      when /^delete saved search$/
         "delete_saved_search"
 
-      when /clear saved search/
+      when /^clear saved search$/
         "clear_saved_search"
 
-      when /edit a collection/
+      when /^edit a collection$/
         "edit_collection"
 
-      when /save collection changes/
+      when /^save collection changes$/
         "edit_collection"
 
-      when /upload a file/
+      when /^upload a file$/
         "upload_file"
 
-      when /replace a file/
+      when /^replace a file$/
         "replace_file"
 
-      when /add a file/
+      when /^add a file$/
         "add_file"
 
-      when /continue/
+      when /^continue$/
         "continue"
 
-      when /update language/
+      when /^update language$/
         "commit"
 
-      when /add new collection/
+      when /^add new collection$/
         "new_collection"
 
-      when /create a collection/
+      when /^create a collection$/
         "create_new_collection"
 
-      when /add to collection for id (.+)/
+      when /^add to collection for id (.+)$/
         "collection_toggle_#{$1.parameterize}"
 
-      when /remove from collection (.+)/
+      when /^remove from collection (.+)$/
         "remove_#{$1}"
 
-      when /set the current collection to (.+)/
+      when /^set the current collection to (.+)$/
         "set_collection_#{$1}"
 
-      when /delete collection with id (.+)/
+      when /^delete collection with id (.+)$/
         "delete_collection_#{$1}"
 
-      when /accept the end user agreement/
+      when /^accept the end user agreement$/
         "accept_cookies"
 
-      when /search/
+      when /^search$/
         "search"
 
-      when /request access/
+      when /^request access$/
         "request_access"
 
-      when /approve membership request/
+      when /^approve membership request$/
         "approve_access"
 
-      when /cancel membership request/
+      when /^cancel membership request$/
         "deny_access"
 
-      when /add an institute/
+      when /^add an institute$/
         "add_institute"
 
-      when /associate an institute/
+      when /^associate an institute$/
         "associate_inst"
 
-      when /add a licence/
+      when /^add a licence$/
         "add_licence"
 
-      when /save licence/
+      when /^save licence$/
         "save_licence"
 
-      when /generate surrogates/
+      when /^generate surrogates$/
         generate_surrogates
 
-      when /publish collection/
+      when /^publish collection$/
         publish
 
-      when /publish objects in collection/
+      when /^publish objects in collection$/
         publish
 
       else "Unknown"

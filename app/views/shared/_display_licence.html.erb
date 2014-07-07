@@ -1,12 +1,14 @@
-
-  <dt class="blacklight-rights"><%= t('dri.app.views.fields.licence') %></dd>
-  <dd><% if !@licence.nil? && !@licence.blank? %>
-    <% if !@licence.url.blank? %>
-      <%= link_to "#{@licence.name}", @licence.url, :target => "_blank" %>
-    <% else %>
-      <%= "#{@licence.name}" %>
-    <% end %>
-    <%# these logos are too ugly - text looks better %>
-    <%# image_tag(@licence.logo) unless @licence.logo.blank? %>
+<dt class="blacklight-rights_tesim"><%= t('dri.app.views.fields.licence') %></dd>
+<dd><% if !@licence.nil? && !@licence.blank? %>
+      <% if @licence.name == "All Rights Reserved" %>
+        <% @licence.name = t('dri.views.licences.all_rights_reserved') %>
+      <% end %>
+      <% if !@licence.url.blank? %>
+          <%= link_to "#{@licence.name}", @licence.url, :target => "_blank" %>
+      <% else %>
+          <%= "#{@licence.name}" %>
+      <% end %>
+      <%# these logos are too ugly - text looks better %>
+      <%# image_tag(@licence.logo) unless @licence.logo.blank? %>
   <% end %>
-  </dd>
+</dd>

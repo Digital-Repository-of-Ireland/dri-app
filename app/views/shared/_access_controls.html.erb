@@ -288,7 +288,7 @@
     <%= f.label :read_groups_public, t('dri.views.objects.access_controls.public'), :class=> "label label-success inline" %>
     <%= f.radio_button :read_groups_string, "radio_logged", :onclick => "read_field_toggle();" %>
     <%= f.label :read_groups_registered, t('dri.views.objects.access_controls.registered'), :class => "label label-info inline"  %>
-    <%= f.radio_button :read_groups_string, "radio_restricted", :onclick => "read_field_toggle();", :disabled=> true %>
+    <%= f.radio_button :read_groups_string, "radio_restricted", :onclick => "read_field_toggle();" %>
     <%= f.label :read_groups_restricted, t('dri.views.objects.access_controls.restricted'), :class => "label label-important inline" %>
   </div>
   <div id="read_access_entries">
