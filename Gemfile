@@ -3,12 +3,7 @@
 
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.0.0'
-#gem "protected_attributes"
-gem 'rails-observers'
-gem 'actionpack-page_caching'
-gem 'actionpack-action_caching'
-gem 'activerecord-deprecated_finders'
+gem 'rails', '~> 4.1.0'
 
 gem 'blacklight', '4.7.0'
 gem 'hydra-head', '6.5.2'
