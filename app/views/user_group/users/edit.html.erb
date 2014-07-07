@@ -48,7 +48,7 @@
 <div  class="dri_account_block dri_clearfix">
     <h4 class="dri_account_block_heading"><%= t('dri.application.edit_user_profile.settings') %></h4>
     <div class="dri_account_block_info">
-        
+
         <h5><%= t ('dri.application.edit_user_profile.help_bubbles') %></h5>
         <!-- not functional - needs the setting to be stored on the user data model-->
         <input type="checkbox" name="dri_slider_checkbox" data-size="mini" data-on-text="<%= t('dri.application.edit_user_profile.on_text') %>" data-off-text="<%= t('dri.application.edit_user_profile.off_text') %>"checked>
@@ -56,7 +56,7 @@
     </div>
 </div>
 <!--TO BE CHANGED placeholder for real functionality when it is developed-->
-    <% collection_data = get_collection_permission %>
+    <% collection_data = get_collection_permission(@user.email) %>
     <% if (collection_data != "") %>
     <div class="dri_account_block dri_clearfix">
 
@@ -116,13 +116,13 @@
 <div class="dri_account_block dri_clearfix dri_noborder dri_float_right">
 
 		<div class="dri_account_block_info_buttons dri_float_right">
-		
-      
+
+
         	<button class="dri_button_grey dri_w230">
                 <%= t ('dri.application.edit_user_profile.cancel') %>
             </button>
 
-		    
+
 			<%= f.submit (t :'user_groups.views.shared.update'), :id => "commit", :class => "dri_button_green dri_w230"%>
 			<% if current_user.is_admin? %>
 			<%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account") do %>
