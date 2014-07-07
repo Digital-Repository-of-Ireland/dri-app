@@ -15,7 +15,7 @@ Feature:
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
     Then I should see "Manage Your Bookmarks"
     Given I follow the link to manage bookmark
-    Then I should see "no bookmarks"
+    Then I should see "no bookmark"
 
   Scenario: Add new bookmark
     Given I am on the home page
@@ -37,7 +37,7 @@ Feature:
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
     Given I follow the link to remove bookmark
-    Then I should see "no bookmarks"
+    Then I should see "no bookmark"
 
   Scenario: Clear all bookmarks
     Given I am on the home page
@@ -49,4 +49,4 @@ Feature:
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
     Given I follow the link to clear bookmarks
-    Then I should see "no bookmarks"
+    Then I should see "no bookmark"
