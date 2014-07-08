@@ -237,7 +237,6 @@ class ObjectsController < CatalogController
         end
       end
 
-      storage.close
     else
       logger.error "No objects in params #{params.inspect}"
       raise raise Exceptions::BadRequest

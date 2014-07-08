@@ -12,7 +12,6 @@ class CreateBucketJob < ActiveFedoraPidBasedJob
 
     storage = Storage::S3Interface.new
     storage.create_bucket(bucket_id.sub('dri:', ''))
-    storage.close
 
     after_create_bucket
   end
