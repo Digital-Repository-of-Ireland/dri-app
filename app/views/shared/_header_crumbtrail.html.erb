@@ -2,12 +2,12 @@
 <% if @document %>
     <div id="dri_crumbtrail_nav_container_id">
       <ol class="breadcrumb">
-        <% unless @document[:ancestor_id_tesim].blank? %>
-            <% @document[:ancestor_id_tesim].each_with_index do |ancestor_id, index| %>
-                <li><%= link_to @document[:ancestor_title_tesim][index], main_app.catalog_path(ancestor_id) %></li>
+        <% unless @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].blank? %>
+            <% @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].each_with_index do |ancestor_id, index| %>
+                <li><%= link_to @document[Solrizer.solr_name('ancestor_title', :stored_searchable, type: :string).to_sym][index], main_app.catalog_path(ancestor_id) %></li>
             <% end %>
         <% end %>
-        <li class="active"><%= @document[:title_tesim].first %></li>
+        <li class="active"><%= @document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first %></li>
       </ol>
     </div>
 <% end %>

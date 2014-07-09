@@ -2,15 +2,15 @@
   <div class="dri_content_list_collection">
     <div class="dri_content_list_collection_data">
       <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
-          <h4><%= document[:title_tesim][0] %></h4>
+          <h4><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h4>
       <% end %>
       <p class="dri_list_description">
-        <%= truncate_description(document[:description_tesim][0], 280).html_safe %>
+        <%= truncate_description(document[Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym][0], 280).html_safe %>
       </p>
       <p class="dri_list_subject">
-        <% if document[:subject_tesim] %>
-            <% document[:subject_tesim].each do |subject| %>
-                <%= subject %> <% if !document[:subject_tesim].last %> , <% end %>
+        <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
+            <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
+                <%= subject %> <% if !document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last %> , <% end %>
             <% end %>
         <% else %>
             n/a
@@ -20,7 +20,7 @@
         <% unless format?(document).eql?("unknown") %>
             <span class="dri_icon_image"><%= image_tag(icon_path(document)) %> &nbsp; <%= get_document_type document %></span>
         <% else %>
-            <span class="dri_icon_text"><%= document[:object_type_ssm].first %></span>
+            <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable).to_sym].first %></span>
         <% end %>
       </div>
       <!-- close dri_icon -->

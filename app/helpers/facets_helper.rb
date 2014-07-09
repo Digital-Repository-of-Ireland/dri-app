@@ -107,7 +107,7 @@ module FacetsHelper
 
     doc = docs.first
 
-    return doc["title_tesim"].first
+    return doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
   end
 
   def transform_is_collection value

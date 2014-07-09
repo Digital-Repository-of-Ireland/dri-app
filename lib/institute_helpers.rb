@@ -4,7 +4,7 @@ module InstituteHelpers
   # get the institues for this collection
   def self.get_collection_institutes(collection)
     return nil if collection.institute.blank?
-    allinstitutes = Institute.find(:all)
+    allinstitutes = Institute.all
     myinstitutes = []
     allinstitutes.each do |inst|
       if collection.institute.include?(inst.name)
@@ -21,18 +21,18 @@ module InstituteHelpers
   end
 
   def self.get_institutes_from_solr_doc(doc)
-    doc['object_type_ssm'][0] == 'Collection' ? self.get_collection_institutes_from_solr_doc(doc) : self.get_object_institutes_from_solr_doc(doc)
+    doc[Solrizer.solr_name('object_type', :displayable, type: :string)][0] == 'Collection' ? self.get_collection_institutes_from_solr_doc(doc) : self.get_object_institutes_from_solr_doc(doc)
   end
 
 
   def self.get_depositing_institute_from_solr_doc(doc)
-    doc['object_type_ssm'][0] == 'Collection' ? self.get_collection_depositing_institute_from_solr_doc(doc) : self.get_object_depositing_institute_from_solr_doc(doc)
+    doc[Solrizer.solr_name('object_type', :displayable, type: :string)][0] == 'Collection' ? self.get_collection_depositing_institute_from_solr_doc(doc) : self.get_object_depositing_institute_from_solr_doc(doc)
   end
 
 
   def self.get_collection_depositing_institute_from_solr_doc(doc)
-    if !doc['depositing_institute_ssm'].blank?
-      return Institute.where(:name => doc['depositing_institute_ssm']).first
+    if !doc[Solrizer.solr_name('depositing_institute', :displayable, type: :string)].blank?
+      return Institute.where(:name => doc[Solrizer.solr_name('depositing_institute', :displayable, type: :string)]).first
     else
       return nil
     end
@@ -40,25 +40,25 @@ module InstituteHelpers
 
 
   def self.get_object_depositing_institute_from_solr_doc(doc)
-    id = doc['is_governed_by_ssim'][0].gsub(/^info:fedora\//, '')
+    id = doc[Solrizer.solr_name('is_governed_by', :stored_searchable, type: :symbol)][0].gsub(/^info:fedora\//, '')
     solr_query = "id:#{id}"
-    collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1", :fl => "id,depositing_institute_ssm").first
-    if !collection['depositing_institute_ssm'].blank?
-      return Institute.where(:name => collection['depositing_institute_ssm']).first
+    collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1", :fl => "id,#{Solrizer.solr_name('depositing_institute', :displayable, type: :string)}").first
+    if !collection[Solrizer.solr_name('depositing_institute', :displayable, type: :string)].blank?
+      return Institute.where(:name => collection[Solrizer.solr_name('depositing_institute', :displayable, type: :string)]).first
     else
       return nil
     end
   end
 
   def self.get_object_institutes_from_solr_doc(doc, depositing=nil)
-    allinstitutes = Institute.find(:all)
+    allinstitutes = Institute.all
     myinstitutes = []
-    id = doc['is_governed_by_ssim'][0].gsub(/^info:fedora\//, '')
+    id = doc[Solrizer.solr_name('is_governed_by', :stored_searchable, type: :symbol)][0].gsub(/^info:fedora\//, '')
     solr_query = "id:#{id}"
-    collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1", :fl => "id,institute_tesim")
-    return nil if collection[0]['institute_tesim'].blank?
+    collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1", :fl => "id,#{Solrizer.solr_name('institute', :stored_searchable, type: :string)}")
+    return nil if collection[0][Solrizer.solr_name('institute', :stored_searchable, type: :string)].blank?
     allinstitutes.each do |inst|
-      if collection[0]['institute_tesim'].include?(inst.name)
+      if collection[0][Solrizer.solr_name('institute', :stored_searchable, type: :string)].include?(inst.name)
         myinstitutes.push(inst)
       end
     end
@@ -66,11 +66,11 @@ module InstituteHelpers
   end
 
   def self.get_collection_institutes_from_solr_doc(doc)
-    return nil if doc['institute_tesim'].blank?
-    allinstitutes = Institute.find(:all)
+    return nil if doc[Solrizer.solr_name('institute', :stored_searchable, type: :string)].blank?
+    allinstitutes = Institute.all
     myinstitutes = []
     allinstitutes.each do |inst|
-      if doc['institute_tesim'].include?(inst.name)
+      if doc[Solrizer.solr_name('institute', :stored_searchable, type: :string)].include?(inst.name)
         myinstitutes.push(inst)
       end
     end

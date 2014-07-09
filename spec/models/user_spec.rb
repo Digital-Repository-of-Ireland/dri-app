@@ -47,7 +47,7 @@ module UserTests
 
             context "not an admin" do
                 it "should not be true" do
-                    @user.is_admin?.should be_false
+                    @user.is_admin?.should be_falsey
                 end
             end
         end
@@ -66,7 +66,7 @@ module UserTests
                 end
 
                 it "should not be a pending member of the group" do
-                    @user.pending_member?(@group.id).should be_false
+                    @user.pending_member?(@group.id).should be_falsey
                 end
             end
         end
@@ -83,7 +83,7 @@ module UserTests
                 end
 
                 it "should not be a member of the group" do
-                    @user.member?(@group.id).should be_false
+                    @user.member?(@group.id).should be_falsey
                 end
             end        
         end
@@ -104,7 +104,7 @@ module UserTests
             context "invalid group" do
                 it "should return an invalid membership" do
                     membership = @user.join_group(nil)
-                    membership.valid?.should be_false
+                    membership.valid?.should be false
                 end
             end
         end
@@ -124,7 +124,7 @@ module UserTests
 
                 it "should remove the user from the group" do
                     @user.leave_group(@group.id)
-                    @user.member?(@group_id).should be_false and @user.pending_member?(@group.id).should be_false
+                    @user.member?(@group_id).should be_falsey and @user.pending_member?(@group.id).should be_falsey
                 end  
             end
 
@@ -135,7 +135,7 @@ module UserTests
 
                 it "should remove the user from the group" do
                     @user.leave_group(@group.id)
-                    @user.member?(@group_id).should be_false and @user.pending_member?(@group.id).should be_false
+                    @user.member?(@group_id).should be_falsey and @user.pending_member?(@group.id).should be_falsey
                 end
             end
         end
@@ -148,7 +148,7 @@ module UserTests
             it "should create a login token" do
                 @user.authentication_token.should be_nil
                 @user.create_token
-                @user.authentication_token.empty?.should be_false
+                @user.authentication_token.empty?.should be false
             end
         end
 

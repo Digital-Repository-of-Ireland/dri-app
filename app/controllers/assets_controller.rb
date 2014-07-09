@@ -40,8 +40,8 @@ class AssetsController < ApplicationController
 
     unless @gf.nil?
 
-      @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                                { :f => @gf.id, :d => datastream } ],
+      @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
+                                            { :f => @gf.id, :d => datastream },
                                             :order => "version DESC",
                                             :limit => 1)
 
@@ -175,7 +175,7 @@ class AssetsController < ApplicationController
         doc.each do |r|
           doc = SolrDocument.new(r)
 
-          files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
+          files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{doc.id}\""
           query = Solr::Query.new(files_query)
 
           item = {}
@@ -208,8 +208,6 @@ class AssetsController < ApplicationController
           @list << item
         end
       end
-
-      storage.close
 
     else
       raise Exceptions::BadRequest
@@ -253,7 +251,7 @@ class AssetsController < ApplicationController
     end
 
     def create_file(filedata, generic_file_id, datastream, checksum)
-      count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => generic_file_id, :d => datastream } ]).count
+      count = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => generic_file_id, :d => datastream }).count
 
       dir = local_storage_dir.join(generic_file_id).join(datastream+count.to_s)
 

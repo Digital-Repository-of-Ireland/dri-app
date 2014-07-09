@@ -103,7 +103,7 @@ module UserHelper
     if current_user.is_admin? || current_user.is_cm?
       return ""
     else
-      return "status_ssim:published"
+      return "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published"
     end
   end
 
@@ -116,7 +116,7 @@ module UserHelper
   end
 
   def get_saved_search_mode(search_mode)
-    mode = "file_type_tesim:collection"
+    mode = "#{Solrizer.solr_name('file_type', :stored_searchable, type: :string)}:collection"
     unless search_mode == "collections"
       mode = "-#{mode}"
     end

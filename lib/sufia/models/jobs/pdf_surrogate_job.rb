@@ -7,10 +7,7 @@ class PdfSurrogateJob < ActiveFedoraPidBasedJob
   def run
     Rails.logger.info "Creating pdf surrogate of #{generic_file_id} asset"
 
-    local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE 'content'",
-                                                             { :f => generic_file_id } ],
-                                      :order => "version DESC",
-                                      :limit => 1)
+    @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE 'content'", { :f => generic_file_id }).order("version DESC").limit(1).to_a
     filename = local_file_info.first.path
 
     bucket_id = object.batch.nil? ? object.pid : object.batch.pid
@@ -20,8 +17,6 @@ class PdfSurrogateJob < ActiveFedoraPidBasedJob
 
     storage = Storage::S3Interface.new
     storage.store_surrogate(bucket_id, out_file, surrogate_filename)
-    storage.close
-    
   end
 
 end

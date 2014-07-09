@@ -1,23 +1,22 @@
-AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                   :access_key_id => Settings.S3.access_key_id,
-                                   :secret_access_key => Settings.S3.secret_access_key)
 
+AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key)
+s3 = AWS::S3.new(ssl_verify_peer: false)
 
 if Settings.data.cover_image_bucket.blank?
   logger.error "Storage bucket for cover images not configured"
 else
   bucket = Settings.data.cover_image_bucket
   begin
-    unless AWS::S3::Bucket.find(bucket)
+    unless s3.buckets.exists?(bucket)
       begin
-        AWS::S3::Bucket.create(bucket)
+        s3.buckets.create(bucket)
       rescue Exception => e
         logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
       end
     end
   rescue
     begin
-      AWS::S3::Bucket.create(bucket)
+      s3.buckets.create(bucket)
     rescue Exception => e
       logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
     end
@@ -30,21 +29,18 @@ if Settings.data.logos_bucket.blank?
 else
   bucket = Settings.data.logos_bucket
   begin
-    unless AWS::S3::Bucket.find(bucket)
+    unless s3.buckets.exists?(bucket)
       begin
-        AWS::S3::Bucket.create(bucket)
+        s3.buckets.create(bucket)
       rescue Exception => e
         logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
       end
     end
   rescue
     begin
-      AWS::S3::Bucket.create(bucket)
+      s3.buckets.create(bucket)
     rescue Exception => e
       logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
     end
   end
 end
-
-AWS::S3::Base.disconnect!()
-
