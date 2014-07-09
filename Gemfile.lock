@@ -1,7 +1,7 @@
 GIT
   remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: e44af87c1cc4d1df6bd735ce239d0e15380ea072
-  branch: rails4
+  revision: 4ca4c14ec523625d30d29fe3226927086cbfc0a5
+  branch: develop
   specs:
     dri_data_models (1.0.6)
       hydra-access-controls
@@ -14,7 +14,7 @@ GIT
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
   revision: 98ded8d9a73ac1e68990a61290dbde80b20ea73e
-  branch: rails4
+  branch: develop
   specs:
     user_group (1.0.5)
       devise (~> 3.1.0)
