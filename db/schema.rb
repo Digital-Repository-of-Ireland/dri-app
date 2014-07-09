@@ -11,16 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140526163754) do
+ActiveRecord::Schema.define(version: 20140708132006) do
 
   create_table "bookmarks", force: true do |t|
-    t.integer  "user_id",     null: false
+    t.integer  "user_id",       null: false
     t.string   "document_id"
     t.string   "title"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.string   "user_type"
+    t.string   "document_type"
   end
+
+  add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
 
   create_table "institutes", force: true do |t|
     t.string   "name"

@@ -13,7 +13,7 @@ describe "workers" do
     tmpdir = Dir::tmpdir
      
     @gf = GenericFile.new
-    @gf.stub(:characterize_if_changed).and_yield
+    @gf.apply_depositor_metadata('tester')
     @gf.save
 
     @file = LocalFile.new

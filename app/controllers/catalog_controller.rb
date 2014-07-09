@@ -6,6 +6,7 @@ require 'institute_helpers'
 #
 class CatalogController < ApplicationController
   include Blacklight::Catalog
+  include Hydra::Controller::ControllerBehavior
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
   include UserGroup::SolrAccessControls
   #This method shows the DO if the metadata is open

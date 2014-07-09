@@ -5,12 +5,12 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 4.1.0'
 
-gem 'blacklight', '4.7.0'
-gem 'hydra-head', '6.5.2'
-gem 'sufia-models', '3.7.2'
+gem 'blacklight', "5.4.0" #'4.7.0'
+gem 'hydra-head', "7.1.0" #'6.5.2'
+gem 'sufia-models', "4.0.0rc1" #'3.7.2'
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'rails4'
-gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'rails4'
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'hydra7'
+gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'hydra7'
 
 gem 'rails_config'
 gem 'sqlite3'

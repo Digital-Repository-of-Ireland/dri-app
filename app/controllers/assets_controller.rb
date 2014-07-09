@@ -128,6 +128,9 @@ class AssetsController < ApplicationController
         @gf.update_file_reference datastream, :url=>@url, :mimeType=>@mime_type.to_s
         begin
           @gf.save
+
+          Sufia.queue.push(CharacterizeJob.new(@gf.pid))
+
           flash[:notice] = t('dri.flash.notice.file_uploaded')
         rescue Exception => e
           flash[:alert] = t('dri.flash.alert.error_saving_file', :error => e.message)

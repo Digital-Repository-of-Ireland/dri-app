@@ -216,5 +216,9 @@ module ApplicationHelper
     return has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
   end
 
+  def has_search_parameters?
+    !params[:q].blank? or !params[:f].blank? or !params[:search_field].blank?
+  end
+
 end
 
