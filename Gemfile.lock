@@ -1,15 +1,16 @@
 GIT
   remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: c122d7328e67507f753dcfb6bcfd2320deecc618
+  revision: 1a3444acd4d5a77df241b48d3b2055c6f1ea3c2a
   branch: hydra7
   specs:
     dri_data_models (1.0.6)
       hydra-access-controls
-      hydra-head
+      hydra-collections
+      hydra-head (>= 7.0)
       iso-639
       rails (>= 4.0)
       sass-rails (~> 4.0.3)
-      sufia-models
+      sufia-models (= 4.0.0rc1)
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
@@ -222,6 +223,9 @@ GEM
       deprecation
       om (~> 3.0, >= 3.0.7)
       sass-rails
+    hydra-collections (2.0.3)
+      blacklight
+      hydra-head (~> 7.0)
     hydra-core (7.1.0)
       block_helpers
       hydra-access-controls (= 7.1.0)
@@ -314,7 +318,7 @@ GEM
     mini_magick (3.7.0)
       subexec (~> 0.2.1)
     mini_portile (0.6.0)
-    minitest (5.3.5)
+    minitest (5.4.0)
     mono_logger (1.1.0)
     multi_json (1.10.1)
     multi_test (0.1.1)
@@ -325,6 +329,7 @@ GEM
     nest (1.1.2)
       redis
     net-http-persistent (1.9)
+    netrc (0.7.7)
     noid (0.6.6)
       backports
     nokogiri (1.6.2.1)
@@ -385,7 +390,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.13.0)
     rake (10.3.2)
-    rdf (1.1.4.1)
+    rdf (1.1.4.2)
     rdf-aggregate-repo (1.1.0)
       rdf (>= 1.1)
     rdf-isomorphic (1.1.0)
@@ -433,8 +438,9 @@ GEM
       rake
       resque (~> 1.20)
       trollop (~> 1.16)
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
+    rest-client (1.7.1)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     retriable (1.4.1)
     rsolr (1.0.10)
       builder (>= 2.1.2)
