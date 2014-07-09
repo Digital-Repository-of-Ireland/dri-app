@@ -121,6 +121,7 @@ class AssetsController < ApplicationController
       else
         @gf = GenericFile.new(:pid => Sufia::IdService.mint)
         @gf.batch = @object
+        @gf.apply_depositor_metadata(current_user)
 
         create_file(file_upload, @gf.id, datastream, params[:checksum])
 
