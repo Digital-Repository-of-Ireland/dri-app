@@ -2,19 +2,17 @@
   <div id="document">
     <div class="document">
       <h2><%= t('dri.views.objects.edit.title') %></h2>
-
-        <%= render :partial => "form_#{get_partial_name(@object)}", :object  => @object %>
-
-   </div>
+      <%= render :partial => "form_#{get_partial_name(@object)}", :object  => @object %>
+    </div>
   </div>
 </div>
 
 <div id="sidebar" class="span3">
-<div class="well" id="sidebar-nav">
-  <ul class="nav nav-list">
-  <li class="nav-header"><%= t('dri.views.objects.edit.sidebar.nav_header') %></li>
-    <%= link_to t('dri.views.objects.edit.links.view_record'), url_for(:controller => "catalog", :action => "show", :id => @object.id), :id => "view_record" %>
-  </ul>
-</div><!--/well -->
+  <div class="well" id="sidebar-nav">
+    <ul class="nav nav-list">
+      <li class="nav-header"><%= t('dri.views.objects.edit.sidebar.nav_header') %></li>
+      <%= link_to t('dri.views.objects.edit.links.view_record'), url_for(:controller => "catalog", :action => "show", :id => @object.id), :id => "view_record" %>
+    </ul>
+  </div><!--/well -->
 </div>
 <!--/span -->
