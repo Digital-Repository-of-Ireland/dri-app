@@ -19,7 +19,10 @@ After('@random_pid') do
   AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key)
   s3 = AWS::S3.new(ssl_verify_peer: false)
   bucket = s3.buckets["o"+@random_pid]
-  bucket.delete!
+  bucket.objects.each do |obj|
+    obj.delete
+  end
+  bucket.delete
 
   @random_pid = ""
 end
@@ -32,7 +35,10 @@ After('@api') do
   buckets.each do |bucket|
     begin
       bucket = s3.buckets[bucket]
-      bucket.delete!
+      bucket.objects.each do |obj|
+        obj.delete
+      end
+      bucket.delete
     rescue Exception
     end
   end

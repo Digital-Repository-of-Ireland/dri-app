@@ -70,7 +70,10 @@ module Storage
     def delete_bucket(bucket_name)
       begin
         bucket = @s3.buckets[bucket_name]
-        bucket.delete!
+        bucket.objects.each do |obj|
+          obj.delete
+        end
+        bucket.delete
       rescue Exception => e
         logger.error "Could not delete Storage Bucket #{bucket}: #{e.to_s}"
         return false
