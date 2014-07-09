@@ -1,8 +1,6 @@
 # -*- encoding : utf-8 -*-
-require "#{Blacklight.controllers_dir}/saved_searches_controller"
+require "#{Blacklight.root}/app/controllers/saved_searches_controller"
 class SavedSearchesController < ApplicationController
-
-
 
   def index
     @searches = current_user.searches.order("created_at DESC")

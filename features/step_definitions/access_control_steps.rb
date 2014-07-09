@@ -163,6 +163,5 @@ Given(/^the object with pid "(.*?)" has a deliverable surrogate file$/) do |pid|
     when "Image"
       storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'sample_image.png'), "#{generic_file.pid}_thumbnail.png")
   end
-  storage.close
 end
 

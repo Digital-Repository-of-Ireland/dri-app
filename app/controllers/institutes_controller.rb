@@ -4,7 +4,7 @@ class InstitutesController < ApplicationController
 
   # Get the list of institutes
   def show
-    @institutes = Institute.find(:all)
+    @institutes = Institute.all
   end
 
 
@@ -34,7 +34,7 @@ class InstitutesController < ApplicationController
     @inst.url = params[:institute][:url]
     @inst.save
 
-    @institutes = Institute.find(:all)
+    @institutes = Institute.all
 
     if params[:object]
       @object = ActiveFedora::Base.find(params[:object], {:cast => true})

@@ -16,26 +16,25 @@ Before('@random_pid') do
 end
 
 After('@random_pid') do
-  AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                      :access_key_id => Settings.S3.access_key_id,
-                                      :secret_access_key => Settings.S3.secret_access_key)
-  AWS::S3::Bucket.delete("o"+@random_pid, :force => true)
-  AWS::S3::Base.disconnect!()
+  AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key)
+  s3 = AWS::S3.new(ssl_verify_peer: false)
+  bucket = s3.buckets["o"+@random_pid]
+  bucket.delete!
 
   @random_pid = ""
 end
 
 After('@api') do
   buckets = ['apitest1', 'apitest2']
-  AWS::S3::Base.establish_connection!(:server => Settings.S3.server,
-                                     :access_key_id => Settings.S3.access_key_id,
-                                     :secret_access_key => Settings.S3.secret_access_key)
+  AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key)
+  s3 = AWS::S3.new(ssl_verify_peer: false)
+
   buckets.each do |bucket|
     begin
-      AWS::S3::Bucket.delete(bucket, :force => true)
+      bucket = s3.buckets[bucket]
+      bucket.delete!
     rescue Exception
     end
   end
-  AWS::S3::Base.disconnect!()
 end
 

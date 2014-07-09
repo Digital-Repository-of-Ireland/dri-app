@@ -12,6 +12,7 @@ include Utils
 class ObjectsController < CatalogController
   include SteppedForms
 
+  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
   # Edits an existing model.
@@ -71,12 +72,12 @@ class ObjectsController < CatalogController
         duplicates?(@object)
 
         DOI.mint_doi( @object )
-      
+
         flash[:notice] = t('dri.flash.notice.metadata_updated')
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
         format.json  { render :json => @object }
       else
-        flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect) 
+        flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
         format.html  { render :action => "edit" }
         format.json  { render :json => @object }
       end
@@ -205,7 +206,7 @@ class ObjectsController < CatalogController
 
           # Get files
           if can? :read, doc
-            files_query = "is_part_of_ssim:\"info:fedora/#{doc.id}\""
+            files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{doc.id}\""
             query = Solr::Query.new(files_query)
 
             while query.has_more?
@@ -236,7 +237,6 @@ class ObjectsController < CatalogController
         end
       end
 
-      storage.close
     else
       logger.error "No objects in params #{params.inspect}"
       raise raise Exceptions::BadRequest
@@ -258,9 +258,10 @@ class ObjectsController < CatalogController
     if params.has_key?("object") && !params[:object].blank?
       solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
       result = ActiveFedora::SolrService.instance.conn.get('select',
-                                                           :params=>{:q=>solr_query, :qt => 'standard',
-                                                                     :mlt => 'true', :'mlt.fl' => 'subject_tesim,subject_tesim',
-                                                                     :'mlt.count' => count, :fl => 'id,score', :'mlt.match.include'=> 'false'})
+                        :params=>{:q=>solr_query, :qt => 'standard',
+                        :mlt => 'true',
+                        :'mlt.fl' => "#{Solrizer.solr_name('subject', :stored_searchable, type: :string)},#{Solrizer.solr_name('subject', :stored_searchable, type: :string)}",
+                        :'mlt.count' => count, :fl => 'id,score', :'mlt.match.include'=> 'false'})
     end
 
     # TODO: fixme!

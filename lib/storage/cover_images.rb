@@ -17,7 +17,6 @@ module Storage
                                           Settings.data.cover_image_bucket)
           url = storage.get_link_for_file(Settings.data.cover_image_bucket,
                             "#{collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}")
-          storage.close
 
           collection.properties.cover_image = url
           collection.save

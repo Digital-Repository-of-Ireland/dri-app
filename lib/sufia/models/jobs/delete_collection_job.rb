@@ -9,7 +9,7 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
   def run
     Rails.logger.info "Deleting all objects in #{object.id}"
 
-    query = Solr::Query.new("collection_id_sim:\"#{object.id}\"")
+    query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\"")
 
     while query.has_more?
       collection_objects = query.pop
@@ -21,8 +21,8 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
           delete_files(o)
         rescue Exception => e
           Rails.logger.error "Unable to delete files"
-        end        
-      
+        end
+
         o.delete
       end
 
@@ -33,7 +33,7 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
   end
 
   def delete_files(object)
-    local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
+    local_file_info = LocalFile.find.all(:conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
                                                             { :f => object.id, :d => 'content' } ],
                                      :order => "version DESC")
     local_file_info.each { |file| file.destroy }
@@ -41,7 +41,6 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
 
     storage = Storage::S3Interface.new
     storage.delete_bucket(object.id.sub('dri:', ''))
-    storage.close
   end
 
 end

@@ -5,7 +5,9 @@ require 'stepped_forms'
 
 class IngestController < CatalogController
   include SteppedForms
+  include UserGroup::Helpers
 
+  before_filter :authenticate_user_from_token!, :only => [:create, :new]
   before_filter :authenticate_user!, :only => [:create, :new]
 
   # Form for a new dri_data_models model.

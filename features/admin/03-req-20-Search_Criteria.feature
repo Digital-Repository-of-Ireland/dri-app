@@ -77,7 +77,6 @@ Scenario Outline: Faceted Search for admin user
 # Boolean Logic seeems to be "and" right now in gui, the search box may allow for more/less
 # need to be broken up into two scenarios
 # Scenario: Search using basic and advanced facet searching including Boolean logic
-
 Scenario: Successful search using AND boolean search string
   Given I am logged in as "user1"
   Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"

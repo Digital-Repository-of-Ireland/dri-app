@@ -31,3 +31,6 @@ data:
   cover_image_bucket: coverimages
   logos_bucket: institutelogos
   types: [Sound, MovingImage, Image, Text]
+logs:
+  logstash_host: dri-guest042.tchpc.tcd.ie
+  logstash_port: 5545

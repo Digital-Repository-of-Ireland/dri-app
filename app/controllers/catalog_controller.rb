@@ -42,13 +42,13 @@ class CatalogController < ApplicationController
     }
 
     # solr field configuration for search results/index views
-    config.index.show_link = 'title_tesim'
-    config.index.record_tsim_type = 'has_model_ssim'
+    config.index.show_link = solr_name('title', :stored_searchable, type: :string)
+    config.index.record_tsim_type = solr_name('has_model', :stored_searchable, type: :symbol)
 
     # solr field configuration for document/show views
-    config.show.html_title = 'title_tesim'
-    config.show.heading = 'title_tesim'
-    config.show.display_type = 'file_type_tesim'
+    config.show.html_title = solr_name('title', :stored_searchable, type: :string)
+    config.show.heading = solr_name('title', :stored_searchable, type: :string)
+    config.show.display_type = solr_name('file_type', :stored_searchable, type: :string)
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -247,13 +247,13 @@ class CatalogController < ApplicationController
 
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "+has_model_ssim:\"info:fedora/afmodel:Batch\""
+    solr_parameters[:fq] << "+#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"info:fedora/afmodel:Batch\""
     if user_parameters[:mode].eql?('collections')
-      solr_parameters[:fq] << "+is_collection_sim:true"
-      solr_parameters[:fq] << "-ancestor_id_sim:[* TO *]"
+      solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
+      solr_parameters[:fq] << "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
     else
-      solr_parameters[:fq] << "+is_collection_sim:false"
-      solr_parameters[:fq] << "+root_collection_id_sim:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
+      solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:false"
+      solr_parameters[:fq] << "+#{Solrizer.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
     end
   end
 

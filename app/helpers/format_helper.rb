@@ -25,8 +25,8 @@ module FormatHelper
   end
 
   def format? ( document )
-    unless document['file_type_tesim'].blank?
-      format = document['file_type_tesim'].first 
+    unless document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
+      format = document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
     else
       format = "unknown"
     end

@@ -3,7 +3,7 @@ class LicencesController < ApplicationController
 
   # Get the list of licences
   def index
-    @licences = Licence.find(:all)
+    @licences = Licence.all
   end
 
 
@@ -64,7 +64,7 @@ class LicencesController < ApplicationController
     respond_to do |format|
       format.html  {
         flash[:notice] = t('dri.flash.notice.licence_created')
-        @licences = Licence.find(:all)
+        @licences = Licence.all
         render :action => "index"
       }
     end
@@ -109,7 +109,7 @@ class LicencesController < ApplicationController
     respond_to do |format|
       format.html  {
         flash[:notice] = t('dri.flash.notice.licence_updated')
-        @licences = Licence.find(:all)
+        @licences = Licence.all
         render :action => "index"
       }
     end

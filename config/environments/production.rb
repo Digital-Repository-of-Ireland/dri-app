@@ -1,10 +1,10 @@
 ENV["RAILS_RELATIVE_URL_ROOT"] = "/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/"
 NuigRnag::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
-  
+
   # the following might fail for high_voltage
   config.content_path = ENV["RAILS_RELATIVE_URL_ROOT"]
-  
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -41,6 +41,12 @@ NuigRnag::Application.configure do
 
   # See everything in the log (default is :info)
   config.log_level = :debug
+
+  # logstash
+  config.autoflush_log = true
+  config.logstash.host = Settings.logs.logstash_host
+  config.logstash.port = Settings.logs.logstash_port
+  config.logstash.type = :udp
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
@@ -90,5 +96,7 @@ NuigRnag::Application.configure do
   Devise.setup do |config|
     config.omniauth_path_prefix = "/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/users/auth"
   end
+
+  config.eager_load = true
 
 end

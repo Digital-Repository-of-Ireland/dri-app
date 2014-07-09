@@ -3,13 +3,14 @@
 
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.13'
-gem 'blacklight', '4.5.0'
-gem 'hydra-head', '6.4.0'
-gem 'sufia-models', '3.4.0'
+gem 'rails', '~> 4.1.0'
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'develop'
-gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'develop'
+gem 'blacklight', '4.7.0'
+gem 'hydra-head', '6.5.2'
+gem 'sufia-models', '3.7.2'
+
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'rails4'
+gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'rails4'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -20,7 +21,7 @@ gem 'omniauth-shibboleth'
 gem 'feedjira'
 
 # Storage-related gems
-gem 'aws-s3'
+gem 'aws-sdk'
 
 #gem 'clamav'
 
@@ -30,6 +31,9 @@ gem 'mimemagic'
 # Language and translation related gems
 gem 'http_accept_language'
 gem 'it'
+
+# logging
+gem 'logstash-logger'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
@@ -45,20 +49,16 @@ gem 'high_voltage', '~> 2.1.0'
 # is it working fork
 gem 'is_it_working-cbeer'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  # gem 'coffee-rails', '~> 3.2.1'
+gem 'sass-rails' , '~> 4.0.2'
+# gem 'coffee-rails', '~> 3.2.1'
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'execjs'
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem 'execjs'
 
-  gem 'uglifier', '>= 1.0.3'
-end
+gem 'uglifier', '>= 1.0.3'
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 2.99'
   gem 'poltergeist', '>= 1.4.1'
   gem 'jettywrapper'
   gem 'simplecov'

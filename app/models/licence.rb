@@ -2,8 +2,6 @@ class Licence < ActiveRecord::Base
   require 'storage/s3_interface'
   require 'validators'
 
-  attr_accessible :name, :url, :logo, :description
-
   validates_uniqueness_of :name
 
   def add_logo(upload,opts={})
@@ -46,8 +44,6 @@ class Licence < ActiveRecord::Base
                          Settings.data.logos_bucket)
       self.logo = storage.get_link_for_file(Settings.data.logos_bucket,
                                             "#{name}.#{logo.original_filename.split(".").last}")
-
-      storage.close
     end
   end
 end

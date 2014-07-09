@@ -5,7 +5,7 @@ When(/^"(.*?)" has been granted "(.*?)" permissions(?: on "(.*?)")?$/) do |user,
     # do nothing
   elsif permission == "admin"
     user = User.find_by_email(user)
-    group_id = UserGroup::Group.find_or_create_by_name('admin', description: "Test group", is_locked: true).id
+    group_id = UserGroup::Group.find_or_create_by(name: 'admin', description: "Test group", is_locked: true).id
     membership = user.join_group(group_id)
     membership.approved_by = user.id
     membership.save

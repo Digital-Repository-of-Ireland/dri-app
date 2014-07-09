@@ -9,7 +9,7 @@ class PublishJob < ActiveFedoraPidBasedJob
   def run
     Rails.logger.info "Publishing collection #{object.id}"
 
-    query = Solr::Query.new("collection_id_sim:\"#{object.id}\" AND status_ssim:reviewed")
+    query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\" AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:reviewed")
 
     while query.has_more?
       collection_objects = query.pop
