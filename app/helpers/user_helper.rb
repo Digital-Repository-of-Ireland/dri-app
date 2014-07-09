@@ -2,12 +2,14 @@ module UserHelper
 
 
   # Return all collection permissions
-  def get_collection_permission
-    manage = get_manage_collections(@current_user.email)
+  # if no user passed in use @current_user
+  def get_collection_permission(user=nil)
+    email = user ? user : @current_user.email
+    manage = get_manage_collections(email)
     manage.map{ |item| item[:permission] = "Collection Manager" }
-    edit = get_edit_collections(@current_user.email)
+    edit = get_edit_collections(email)
     edit.map{ |item| item[:permission] = "Editor" }
-    read = get_read_collections(@current_user.email)
+    read = get_read_collections(email)
     read.map{ |item| item[:permission] = "Reader" }
     return manage.concat(edit).concat(read)
   end
