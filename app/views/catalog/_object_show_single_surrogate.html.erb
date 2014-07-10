@@ -10,10 +10,12 @@
     <% end %>
 
 <% elsif generic_file.video? %>
-    <% @surrogate = surrogate_url(document.id, generic_file.id, "webm") %>
-    <% unless @surrogate.nil? %>
+    <% @surrogate_webm = surrogate_url(document.id, generic_file.id, "webm") %>
+    <% @surrogate_mp4 = surrogate_url(document.id, generic_file.id, "mp4") %>
+    <% @surrogate = @surrogate_webm %>
+    <% unless @surrogate_webm.nil? %>
     <!-- Video JS handels video playback but requires javascript -->
-    <%= videojs_rails sources: { webm: @surrogate, setup: "{}", controls: true }, width:"100%", height: "270px" %>
+    <%= videojs_rails sources: { webm: @surrogate_webm, mp4: @surrogate_mp4, setup: "{}", controls: true }, width:"100%", height: "270px" %>
         <!-- ><video controls>
           <source src="<%= @surrogate %>" type="video/webm">
         </video> -->
