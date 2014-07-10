@@ -175,7 +175,7 @@ module ApplicationHelper
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
-    if can?(:read, document)
+    if can?(:read, document[:id])
       @cover_image = search_image( document, file_doc ) unless file_doc.nil?
     end
 

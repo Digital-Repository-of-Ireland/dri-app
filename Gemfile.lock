@@ -207,10 +207,10 @@ GEM
       rack
     haml (4.0.5)
       tilt
-    hashie (2.1.2)
+    hashie (3.2.0)
     high_voltage (2.1.0)
     hike (1.2.3)
-    hitimes (1.2.1)
+    hitimes (1.2.2)
     hooks (0.3.6)
       uber (~> 0.0.4)
     htmlentities (4.3.2)
@@ -242,7 +242,7 @@ GEM
       hydra-access-controls (= 7.1.0)
       hydra-core (= 7.1.0)
       rails (>= 3.2.6)
-    i18n (0.6.9)
+    i18n (0.6.11)
     i18n_sync (0.5.1)
       ya2yaml
     is_it_working-cbeer (1.0.16)
@@ -351,8 +351,8 @@ GEM
       mediashelf-loggable
       nokogiri (>= 1.4.2)
       solrizer (~> 3.1.0)
-    omniauth (1.2.1)
-      hashie (>= 1.2, < 3)
+    omniauth (1.2.2)
+      hashie (>= 1.2, < 4)
       rack (~> 1.0)
     omniauth-shibboleth (1.1.1)
       omniauth (>= 1.0.0)

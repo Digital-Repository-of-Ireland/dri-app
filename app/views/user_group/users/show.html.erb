@@ -18,7 +18,7 @@
 </div>
 
 <!--TO BE CHANGED placeholder for real functionality when it is developed-->
-    <% collection_data = get_collection_permission %>
+    <% collection_data = get_collection_permission(@user.email) %>
     <% if (collection_data != "") %>
     <div class="dri_account_block dri_clearfix">
 
