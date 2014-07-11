@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20140708132006) do
     t.string   "document_type"
   end
 
-  add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
+  add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id", using: :btree
 
   create_table "institutes", force: true do |t|
     t.string   "name"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20140708132006) do
     t.string   "logo"
   end
 
-  add_index "institutes", ["name"], name: "index_institutes_on_name"
+  add_index "institutes", ["name"], name: "index_institutes_on_name", using: :btree
 
   create_table "licences", force: true do |t|
     t.string   "name"
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20140708132006) do
     t.string   "user_type"
   end
 
-  add_index "searches", ["user_id"], name: "index_searches_on_user_id"
+  add_index "searches", ["user_id"], name: "index_searches_on_user_id", using: :btree
 
   create_table "user_group_authentications", force: true do |t|
     t.integer "user_id"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20140708132006) do
     t.boolean  "is_locked",   default: false
   end
 
-  add_index "user_group_groups", ["name"], name: "index_groups_on_name", unique: true
+  add_index "user_group_groups", ["name"], name: "index_groups_on_name", unique: true, using: :btree
 
   create_table "user_group_memberships", force: true do |t|
     t.integer  "group_id"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20140708132006) do
     t.integer  "approved_by"
   end
 
-  add_index "user_group_memberships", ["group_id", "user_id"], name: "index_memberships_on_group_id_and_user_id", unique: true
+  add_index "user_group_memberships", ["group_id", "user_id"], name: "index_memberships_on_group_id_and_user_id", unique: true, using: :btree
 
   create_table "user_group_users", force: true do |t|
     t.string   "email",                  default: "",    null: false
@@ -116,9 +116,9 @@ ActiveRecord::Schema.define(version: 20140708132006) do
     t.datetime "confirmation_sent_at"
   end
 
-  add_index "user_group_users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true
-  add_index "user_group_users", ["confirmation_token"], name: "index_user_group_users_on_confirmation_token", unique: true
-  add_index "user_group_users", ["email"], name: "index_users_on_email", unique: true
-  add_index "user_group_users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "user_group_users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
+  add_index "user_group_users", ["confirmation_token"], name: "index_user_group_users_on_confirmation_token", unique: true, using: :btree
+  add_index "user_group_users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "user_group_users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
