@@ -7,7 +7,6 @@ I want to ingest an asset with metadata
 
 Background:
   Given I am logged in as "user1"
-  Then show me the page
 
 @wip
 Scenario: Ingesting a Digital Object of 1 file
