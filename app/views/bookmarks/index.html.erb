@@ -1,8 +1,8 @@
 <div id="dri_result_container_id" class="dri_result_container">
   <%- if current_or_guest_user.blank? -%>
-      <h2><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></h2>
+      <h5><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></h5>
   <%- elsif @document_list.blank? -%>
-      <h3>
+      <h5>
         <% if (params[:mode] == "collections") %>
             <%= "#{t('dri.views.catalog.legends.no_bookmarked')} #{t('dri.headerlinks.collections').to_s.downcase}" %>
         <% elsif (params[:mode] == "objects") %>
@@ -10,7 +10,7 @@
         <% else %>
             <%= t('dri.views.catalog.legends.no_bookmarks') %>
         <% end %>
-      </h3>
+      </h5>
   <% else %>
       <%= render_document_index %>
   <% end %>

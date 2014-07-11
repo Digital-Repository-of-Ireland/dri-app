@@ -10,7 +10,7 @@ dri:
   files: dri_files
   logos: dri_files/logos
 plugins:
-  ffmpeg_path: /opt/local/bin/ffmpeg
+  ffmpeg_path: /usr/local/bin/ffmpeg
 restrict:
   mime_types:
     image: ['image/png','image/jpeg', 'image/jpg', 'image/jp2', 'image/bmp', 'image/gif', 'image/tiff']

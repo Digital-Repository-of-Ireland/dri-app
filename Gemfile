@@ -112,3 +112,4 @@ gem 'rvm'
 # UI widgets
 gem 'colorbox-rails'
 gem 'bootstrap-switch-rails'
+gem 'videojs_rails'

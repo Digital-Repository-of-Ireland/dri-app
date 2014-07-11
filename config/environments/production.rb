@@ -43,10 +43,10 @@ NuigRnag::Application.configure do
   config.log_level = :debug
 
   # logstash
-  config.autoflush_log = true
-  config.logstash.host = Settings.logs.logstash_host
-  config.logstash.port = Settings.logs.logstash_port
-  config.logstash.type = :udp
+  #config.autoflush_log = true
+  #config.logstash.host = Settings.logs.logstash_host
+  #config.logstash.port = Settings.logs.logstash_port
+  #config.logstash.type = :udp
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
@@ -88,7 +88,8 @@ NuigRnag::Application.configure do
   #config.middleware.use '::Rack::Auth::Basic' do |u, p|
   #  [u, p] == ['navr', 'navr']
   #end
-  config.assets.precompile += ['dri/dri_grid.css','dri/dri_layouts.css']
+  # The vjs entries are specified in the Video-JS docs to be included in the production.rd configuration - unsure if this is the right way to pass them in though {EK]}
+  config.assets.precompile += [%w( video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff ),'dri/dri_grid.css','dri/dri_layouts.css']
 
   # google analytics
   GA.tracker = "UA-27838653-2"

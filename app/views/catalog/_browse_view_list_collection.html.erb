@@ -18,7 +18,7 @@
 				N/A
 				<% end %>
 			</p>
-      <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable)facetablelr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+      <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
       <%= link_to (catalog_index_path(collection_objects_params)) do %>
           <div class="dri_num_list_objects">
             <span class="dri_object_text_num">
