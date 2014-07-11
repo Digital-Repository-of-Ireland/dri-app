@@ -15,7 +15,7 @@
 //= require jquery_ujs
 //= require jquery.remotipart
 //= require jquery.cookie
-//= require bootstrap
+//= require_tree .
 //= require bootstrap-player.js
 //= require bootstrap-switch
 // Required by Blacklight
