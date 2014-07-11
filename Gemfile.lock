@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
-  revision: ae406b55c0cf010062d8b2132844c6a7d18eee16
+  revision: f2513ed71abc4bd356eba55fa710a77aa1d697f4
   branch: develop
   specs:
     user_group (1.0.5)
@@ -475,6 +475,7 @@ GEM
       raindrops (~> 0.7)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    videojs_rails (4.6.1)
     warden (1.2.3)
       rack (>= 1.0)
     websocket-driver (0.3.4)
@@ -543,5 +544,6 @@ DEPENDENCIES
   unicode
   unicorn
   user_group!
+  videojs_rails
   yard
   zeus

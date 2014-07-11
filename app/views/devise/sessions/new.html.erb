@@ -5,7 +5,7 @@
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
         <%= devise_error_messages! %>
         <h2>
-          <%= t('.sign_in', :default => "Sign in") %>
+          <%= t('dri.sign_in.title') %>
         </h2>
         <div>
           <%= f.label :email, (t :'user_groups.views.shared.email') %>
@@ -23,7 +23,7 @@
         <% end -%>
 
         <div class="dri_submit">
-          <%= f.submit t('.sign_in', :default => "Sign in") %>
+          <%= f.submit t('dri.sign_in.title' , :default => "Login") %>
         </div>
         <div class="dri_form_text">
           <%= render "devise/shared/links" %>

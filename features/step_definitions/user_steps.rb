@@ -6,7 +6,7 @@ Given /^I am logged in as "([^\"]*)"$/ do |login|
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
-  click_button("Sign in")
+  click_button("Login")
   step 'I should be logged in'
 end
 
@@ -19,7 +19,7 @@ Given /^I am logged in as "([^\"]*)" and accept cookies$/ do |login|
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
   step 'I accept cookies terms'
-  click_button("Sign in")
+  click_button("Login")
   step 'I should be logged in'
 end
 
@@ -36,7 +36,7 @@ Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)"$/ do |login, group|
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
-  click_button("Sign in")
+  click_button("Login")
   step 'I should be logged in'
 end
 
@@ -54,7 +54,7 @@ Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)" and accept cookies$
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
   step 'I accept cookies terms'
-  click_button("Sign in")
+  click_button("Login")
   step 'I should be logged in'
 end
 
@@ -66,7 +66,7 @@ Given /^I am logged in as "([^\"]*)" with password "([^\"]*)"$/ do |login, passw
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
-  click_button("Sign in")
+  click_button("Login")
   step 'I should be logged in'
 end
 
@@ -79,7 +79,7 @@ Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" and accept cookies
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
   step 'I accept cookies terms'
-  click_button("Sign in")
+  click_button("Login")
   step 'I should be logged in'
 end
 
@@ -91,7 +91,7 @@ Given /^I am logged in as "([^\"]*)" with language "([^\"]*)"$/ do |login, lang|
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
-  click_button("Sign in")
+  click_button("Login")
   step 'I should be logged in'
 end
 
@@ -103,7 +103,7 @@ Given /^I am logged in as "([^\"]*)" with no language$/ do |login|
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
-  click_button("Sign in")
+  click_button("Login")
   step 'I should be logged in'
 end
 
@@ -173,7 +173,7 @@ end
 When /^I submit the User Sign in page with credentials "([^\"]*)" and "([^\"]*)"$/ do |email, password|
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
-  click_button 'Sign in'
+  click_button 'Login'
 end
 
 Then /^I should be logged in$/ do
@@ -213,12 +213,12 @@ Then /^my authentication details should be updated from "([^\"]*)", "([^\"]*)" t
   visit path_to("sign in")
   fill_in("user_email", :with => oldemail)
   fill_in("user_password", :with => oldpassword)
-  click_button("Sign in")
+  click_button("Login")
   step 'I should see the error "Invalid email or password"'
   step 'I should be logged out'
   fill_in("user_email", :with => newemail)
   fill_in("user_password", :with => newpassword)
-  click_button("Sign in")
+  click_button("Login")
   step 'I should be logged in'
 end
 
