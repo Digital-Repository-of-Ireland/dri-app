@@ -475,6 +475,7 @@ GEM
       raindrops (~> 0.7)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    videojs_rails (4.6.1)
     warden (1.2.3)
       rack (>= 1.0)
     websocket-driver (0.3.4)
@@ -543,5 +544,6 @@ DEPENDENCIES
   unicode
   unicorn
   user_group!
+  videojs_rails
   yard
   zeus
