@@ -31,10 +31,11 @@
       <% signWith = t('dri.sign_in.sign_in_with') %>
       <%- resource_class.omniauth_providers.each do |provider| %>
           <%= link_to (omniauth_authorize_path(resource_name, provider)) do %>
-              <div class="dri_signin_edugate"><%= signWith + provider.to_s.titleize %></div>
+              <!-- ><div class="dri_signin_edugate"><%= signWith + provider.to_s.titleize %></div> -->
+              <div class="dri_signin_edugate"><%= t('dri.sign_in.sign_in_with') + 'EduGate' %></div>
           <% end %>
       <% end -%>
-
+      <!-- 
       <% comingSoon = t('dri.window.alert.coming_soon') %>
       <%= link_to '', onclick: "alert('#{comingSoon}');" do %>
           <div class="dri_signin_google"><%= t('dri.sign_in.sign_in_with') + 'Google' %></div>
@@ -46,7 +47,7 @@
 
       <%= link_to '', onclick: "alert('#{comingSoon}');" do %>
           <div class="dri_signin_twitter"><%= t('dri.sign_in.sign_in_with') + 'Twitter' %></div>
-      <% end %>
+      <% end %> -->
 
     </div>
 
