@@ -23,6 +23,7 @@
   <% end %>
   <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path({:mode => 'collections', :view => 'grid'}), :tabindex => "-1" %>
   </li>
+  <!-- hide for July UAT>
   <% if request.path.include? "/search_history" %>
       <li role="presentation" class="selected">
   <% else %>
@@ -30,6 +31,7 @@
   <% end %>
   <%= link_to t('blacklight.header_links.search_history'), search_history_path, :tabindex => "-1" %>
   </li>
+  -->
   <% if request.path.include? "/saved_searches" %>
       <li role="presentation" class="selected">
   <% else %>
