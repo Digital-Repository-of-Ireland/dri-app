@@ -1916,11 +1916,22 @@ p.dri_rss_link a {
       right: 10px;
       color: darken($dri_green, 5);
       font-size:3.5em;
+      z-index: 100;
    }
    span.dri_remove_bookmark:hover {
       color: darken(red, 20);
    }
-	
+	input[type="submit"].dri_delete_button  {
+  	
+  	  background: transparent;
+      cursor: pointer;
+      border: none;
+      color: #2f2f2f;
+      text-decoration: none;
+      background: image-url('dri/clear_all_close.png') no-repeat left;
+      padding: 2px 8px 0 22px;
+  	
+	}
 	
 	.dri_saved_search_title_block {
 	  height: 30px;
