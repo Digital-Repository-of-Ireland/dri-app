@@ -1,8 +1,10 @@
 <%- if current_or_guest_user.blank? -%>
 <div>
 	<h2><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></h2>
+</div>
 	<%- elsif @searches.blank? -%>
-	<h2><%= t('dri.views.catalog.legends.no_saved_search') %></h2>
+<div>	
+	<h4><%= t('dri.views.catalog.legends.no_saved_search') %></h4>
 </div>
 <%- else -%>
 
@@ -11,19 +13,22 @@
 
 	<div class="dri_result_container">
 		<div class="dri_saved_search_title_block">
-			<div class=" dri_float_right">
+			<div class="dri_float_right">
 
-				<%= button_to t('blacklight.saved_searches.delete'), forget_search_path(search.id), :id => 'delete_saved_search', :class => "btn btn-default dri_delete_button" %>
+				<%= button_to t('blacklight.saved_searches.delete'), forget_search_path(search.id), :id => 'delete_saved_search', :class => "btn btn-danger btn-small dri_delete_button" %>
 			</div>
-			<h5> <%= link_to_saved_search(search.query_params) %>
+			<div class="dri_float_left dri_saved_search_params">
+			<%= link_to_saved_search(search.query_params) %>
 			<% search_count = get_saved_search_count(search.query_params) %>
-			<% if search.query_params[:mode] == "collections" %>
+			 </div>
+			 <span class="dri_result_count_label">
+			 <% if search.query_params[:mode] == "collections" %>
 			<%= "#{search_count} #{t('dri.headerlinks.collections')}" %>
 			<% else %>
+			
 			<%= "#{search_count} #{t('dri.headerlinks.objects')}" %>
-			<% end %> </h5>
-
-		</div>
+			<% end %>
+			</span>
 
 		<% snippet_documents = get_saved_search_snippet_documents(search.query_params) %>
 		<% if search_count > 0 %>
