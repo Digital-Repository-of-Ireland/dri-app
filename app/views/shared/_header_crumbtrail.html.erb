@@ -8,7 +8,7 @@
               <li><%= link_to @document[Solrizer.solr_name('ancestor_title', :stored_searchable, type: :string).to_sym][index], main_app.catalog_path(ancestor_id) %></li>
             <% end %>
           <% end %>
-        <li class="active"><%= @document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first %></li>
+        <li class="active"><%= truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50) %></li>
       <% end %>
       </ol>
     </div>
