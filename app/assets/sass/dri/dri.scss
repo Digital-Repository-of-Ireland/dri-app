@@ -1080,7 +1080,7 @@ ol.breadcrumb {
 	padding: 0;
 	float: left;
 	
-	.dri_clear_all_saved_search {
+	.dri_clear_all_saved {
     margin-top: 5px;
     
     span.dri_clear_all {
@@ -1909,6 +1909,19 @@ p.dri_rss_link a {
 	
 .dri_result_container {
 	margin-top: 25px;
+	
+	span.dri_remove_bookmark {
+      position: absolute;
+      top: -15px;
+      right: 10px;
+      color: darken($dri_green, 5);
+      font-size:3.5em;
+   }
+   span.dri_remove_bookmark:hover {
+      color: darken(red, 20);
+   }
+	
+	
 	.dri_saved_search_title_block {
 	  height: 30px;
 	  padding-top: 5px;
@@ -1995,6 +2008,7 @@ p.dri_rss_link a {
 	  #margin: 0 14px 0 14px;
 	  height: 128px;
 	  overflow: hidden;
+
 	}
 	
 	h1 {
@@ -2078,6 +2092,7 @@ p.dri_rss_link a {
 	border: 1px solid #E1E1E1;
 	position: relative;
 	border-top: none;
+	
 	
 	.dri_collection_image {
 		padding: 0;
