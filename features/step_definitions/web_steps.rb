@@ -118,6 +118,14 @@ When /^(?:|I )follow the link to (.+)$/ do |link_name|
   click_link(link_to_id(link_name))
 end
 
+# Use this step when overlaping elements might confuse Capybara 
+# - it ignores overlaping <a> elements and just fires the click 
+# event on the selected element.
+When /^(?:|I )click the link to (.+)$/ do |link_name|
+  element = page.find(:id, link_to_id(link_name))
+  element.trigger('click')
+end
+
 When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
   with_scope(selector) do
     click_link(link)
