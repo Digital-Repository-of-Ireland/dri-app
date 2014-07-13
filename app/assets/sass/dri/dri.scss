@@ -1914,8 +1914,8 @@ p.dri_rss_link a {
       position: absolute;
       top: -15px;
       right: 10px;
-      color: darken($dri_green, 5);
-      font-size:3.5em;
+      color: $dri_green;
+      font-size:2.5em;
       z-index: 100;
    }
    span.dri_remove_bookmark:hover {
