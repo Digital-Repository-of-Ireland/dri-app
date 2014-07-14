@@ -863,6 +863,8 @@ ol.breadcrumb {
 		height: 25px;
  
 	}
+	
+
 
 }
 
@@ -1077,6 +1079,18 @@ ol.breadcrumb {
 	margin: 0 0 0 0;
 	padding: 0;
 	float: left;
+	
+	.dri_clear_all_saved {
+    margin-top: 5px;
+    
+    span.dri_clear_all {
+      a {
+        border-left:none;
+        margin-left:0px;
+      }
+    }
+
+  }
 	
 	ul {
 		margin: 0;
@@ -1895,11 +1909,75 @@ p.dri_rss_link a {
 	
 .dri_result_container {
 	margin-top: 25px;
+	
+	span.dri_remove_bookmark {
+      position: absolute;
+      top: -15px;
+      right: 10px;
+      color: darken($dri_green, 5);
+      font-size:3.5em;
+      z-index: 100;
+   }
+   span.dri_remove_bookmark:hover {
+      color: darken(red, 20);
+   }
+	input[type="submit"].dri_delete_button  {
+  	
+  	  background: transparent;
+      cursor: pointer;
+      border: none;
+      color: #2f2f2f;
+      text-decoration: none;
+      background: image-url('dri/clear_all_close.png') no-repeat left;
+      padding: 2px 8px 0 22px;
+  	
+	}
+	
 	.dri_saved_search_title_block {
 	  height: 30px;
 	  padding-top: 5px;
 	  padding-bottom: 5px;
 	  border-top: 1px $dri_thingrey solid;
+	  font-size: 110%;
+	  
+	  .dri_saved_search_params {
+	    width: 75%;
+	    padding-bottom: 15px;
+	    color: $dri_grey;
+	    a {
+	      color: $dri_grey;
+	      font-weight: 900;
+	      
+	    }
+	    span.constraint {
+	      color: $dri_grey;
+	      font-weight: 500;
+	    }
+	  }
+	}
+	
+	.dri_result_count_label {
+	  margin-top: 2px;
+	  margin-left: 5px
+	}
+	
+	.dri_save_search_link_block {
+	  .dri_num_objects {
+    border-top: 1px solid #E1E1E1;
+    color: #808080;
+    line-height: 1.4em;
+    display: block;
+    height: 22px;
+    margin: 0px 0 0 0;
+    background-color: #F5F5F5;
+    padding: 6px 14px 2px 14px;
+    display: block;
+  }
+  
+  .dri_num_objects span.object_total {
+    margin: 0 0 0 6px;
+    color: #2F2F2F;
+  }
 	}
 }
 
@@ -1941,6 +2019,7 @@ p.dri_rss_link a {
 	  #margin: 0 14px 0 14px;
 	  height: 128px;
 	  overflow: hidden;
+
 	}
 	
 	h1 {
@@ -2025,6 +2104,7 @@ p.dri_rss_link a {
 	position: relative;
 	border-top: none;
 	
+	
 	.dri_collection_image {
 		padding: 0;
 		margin: 0;
@@ -2090,6 +2170,7 @@ p.dri_rss_link a {
 		padding: 6px 14px 2px 14px;
 		display: block;
 	}
+	
 	a .dri_num_objects:hover {
 		background-color: #ECECEC;
 	}

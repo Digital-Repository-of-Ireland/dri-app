@@ -1,10 +1,11 @@
-<% if current_user && (params[:controller] == 'saved_searches' && params[:action] == 'index') %>
-    <%= render :partial => "saved_searches/paginate_compact" %>
-    <div class="dri_facet_restrictions_links">
-      <span class="dri_clear_all">
-        <%= link_to t('dri.views.catalog.buttons.clear_all_saved_searches'), clear_saved_searches_path, :id => 'clear_saved_search' , :method => :delete, :data => { :confirm => "#{t('dri.views.catalog.buttons.clear_all_saved_searches')}?" } %>
-      </span>
-    </div>
+<% if current_user && (params[:controller] == 'saved_searches' && params[:action] == 'index') && !@searches.blank? %>
+
+<div class="dri_facet_restrictions_links ">
+	<div class="dri_clear_all_saved">
+		<span class="dri_clear_all"> <%= link_to t('dri.views.catalog.buttons.clear_all_saved_searches'), clear_saved_searches_path, :id => 'clear_saved_search' , :method => :delete, :data => { :confirm => "#{t('dri.views.catalog.buttons.clear_all_saved_searches')}?" } %> </span>
+	</div>
+</div>
+<%= render :partial => "saved_searches/paginate_compact" %>
 
 <% end %>
 

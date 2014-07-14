@@ -14,8 +14,8 @@
     <% @surrogate_mp4 = surrogate_url(document.id, generic_file.id, "mp4") %>
     <% @surrogate = @surrogate_webm %>
     <% unless @surrogate_webm.nil? %>
-    <!-- Video JS handels video playback but requires javascript -->
-    <%= videojs_rails sources: { webm: @surrogate_webm, mp4: @surrogate_mp4, setup: "{}", controls: true }, width:"100%", height: "270px" %>
+        <!-- Video JS handels video playback but requires javascript -->
+        <%= videojs_rails sources: { webm: @surrogate_webm, mp4: @surrogate_mp4, setup: "{}", controls: true }, width:"100%", height: "270px" %>
         <!-- ><video controls>
           <source src="<%= @surrogate %>" type="video/webm">
         </video> -->
@@ -28,6 +28,15 @@
         <%= link_to @surrogate_colorbox, :data => { :colorbox => true } do %>
             <img class="dri_carousel_img" src="<%= @surrogate %>">
         <% end %>
+    <% end %>
+
+<% elsif generic_file.text? %>
+    <% @surrogate = surrogate_url(document.id, generic_file.id, "rtf") %>
+    <% unless @surrogate.nil? %>
+        <h2 class="dri_restrict_title"><%= t('dri.views.objects.legends.rtf_surrogate_title') %></h2>
+        <p class="dri_restrict_message" id="asset_not_available">
+          <%= t('dri.views.objects.legends.rtf_surrogate_text') %>
+        </p>
     <% end %>
 
 <% elsif generic_file.image? %>

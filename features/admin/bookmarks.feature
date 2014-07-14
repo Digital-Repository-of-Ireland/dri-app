@@ -36,7 +36,7 @@ Feature:
     Given I check "toggle_bookmark_dri:bookcoll"
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
-    Given I follow the link to remove bookmark
+    Given I click the link to remove bookmark
     Then I should see "no bookmark"
 
   Scenario: Clear all bookmarks

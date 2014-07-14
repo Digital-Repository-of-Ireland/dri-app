@@ -1,5 +1,11 @@
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block_collection">
+     <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+     
+                <%= link_to bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' do %>
+                <span class="dri_remove_bookmark"><i class="fa fa-bookmark"></i></span>
+                <% end %>
+            <% end %>
     <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
         <div>
           <div class="dri_collection_image">
@@ -28,10 +34,6 @@
           <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %></span>
         </div>
     <% end %> <!-- close dri_num_objects -->
-
-    <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-        <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' %>
-    <% end %>
   </div>
   <!-- close content_block -->
 </article>
