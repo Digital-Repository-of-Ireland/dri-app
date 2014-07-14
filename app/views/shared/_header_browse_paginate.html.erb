@@ -1,5 +1,6 @@
 <% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index')%>
-    <%= render :partial => 'shared/results_paginator' %>
+	<%= render 'sort_and_per_page' %>
+  
 <% end %>
 
 <% if @previous_document || @next_document %>
