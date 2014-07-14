@@ -21,7 +21,6 @@ Hydra::Derivatives::ShellBasedProcessor.module_eval do
 
         storage = Storage::S3Interface.new
         storage.store_surrogate(bucket_id, out_file, filename)
-        storage.close
         File.unlink(output_file)
   end
 
