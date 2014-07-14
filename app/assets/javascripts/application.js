@@ -16,6 +16,8 @@
 //= require jquery.remotipart
 //= require jquery.cookie
 //= require bootstrap/carousel
+//= require bootstrap/tooltip
+//= require bootstrap/popover
 //= require bootstrap-player.js
 //= require bootstrap-switch
 //= require_tree .
