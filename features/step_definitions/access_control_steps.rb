@@ -18,6 +18,7 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
   GenericFile.any_instance.stub(:characterize_if_changed)
 
   gf = GenericFile.new
+  gf.apply_depositor_metadata(object.depositor)
   gf.batch = object
   gf.save
 
