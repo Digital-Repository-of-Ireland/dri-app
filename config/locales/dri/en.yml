@@ -460,6 +460,8 @@ en:
           metadata: Metadata
           replace_caption: "Replace metadata using XML file."
           replace_metadata: "Replace Metadata"
+          rtf_surrogate_text: "Please download the asset from the url below."
+          rtf_surrogate_title: "RTF Asset"
           upload_audio: "Upload Audio File"
           upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
           upload_file: "Upload File"

@@ -4,6 +4,8 @@
     <% surrogate_type_name = "webm" %>
 <% elsif generic_file.pdf? %>
     <% surrogate_type_name = "pdf" %>
+<% elsif generic_file.text? %>
+    <% surrogate_type_name = "rtf" %>
 <% elsif generic_file.image? %>
     <% surrogate_type_name = "full_size_web_format" %>
 <% end %>

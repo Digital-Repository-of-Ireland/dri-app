@@ -460,6 +460,8 @@ ga:
           metadata: Meiteashonraí
           replace_caption: "Athchuir meiteashonraí trí chomhad XML a úsáid."
           replace_metadata: "Athchuir meiteashonraí"
+          rtf_surrogate_text: "Please download the asset from the url below."
+          rtf_surrogate_title: "RTF Asset"
           upload_audio: "Uaslódáil comhad fuaime"
           upload_audio_caption: "Níor uaslódáladh comhad fuaime ar bith. Uaslódáil máistirchomhad fuaime le do thoil."
           upload_file: "Upload File"
