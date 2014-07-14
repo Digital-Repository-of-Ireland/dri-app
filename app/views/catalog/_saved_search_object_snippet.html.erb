@@ -20,7 +20,7 @@
         </div>
         <div class="dri_num_objects">
           <span class="dri_object_text_num">
-            <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %>
+            <%= count_items_in_collection(document[:id]).to_s + " (" + t('dri.views.catalog.forms.objects_in_collection') + ")" %>
           </span>
         </div>
       </div>

@@ -1,7 +1,12 @@
 <% if has_browse_params? && current_user && (params[:controller] == 'bookmarks' && params[:action] == 'index') %>
-    <nav id="dri_clear_bookmarks" class="dri_clear_bookmarks">
+<div class="dri_facet_restrictions_links dri_clearfix">
+    <div id="dri_clear_bookmarks" class="dri_clear_all_saved">
         <span class="dri_clear_all">
           <%= link_to t('dri.views.catalog.buttons.clear_all_bookmarks'), clear_bookmarks_path, :method => :delete, :data => { :confirm => "#{t('dri.views.catalog.buttons.clear_all_bookmarks')}?"}, :id => 'clear_bookmarks' %>
         </span>
-    </nav>
+    </div>
+</div>
 <% end %>
+
+
+

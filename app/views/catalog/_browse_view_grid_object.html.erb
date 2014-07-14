@@ -1,5 +1,11 @@
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block">
+           <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+     
+                <%= link_to bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' do %>
+                <span class="dri_remove_bookmark"><i class="fa fa-bookmark"></i></span>
+                <% end %>
+            <% end %>
     <% get_cover_image document %>
     <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
         <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
@@ -28,9 +34,6 @@
     </div>
     <!-- close dri_icon -->
 
-    <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-        <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' %>
-    <% end %>
   </div>
   <!-- close content_block -->
 </article>
