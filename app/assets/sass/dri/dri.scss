@@ -9,6 +9,7 @@
 $dri_green: #90993D;
 $dri_grey: #2F2F2F;
 $dri_darkgrey: #2E2E2E;
+$dri_extra_lightgray: #9E9E9E;
 $dri_lightgrey: #B3B3B3;
 $dri_thingrey: #D9DADB;
 
@@ -1934,7 +1935,7 @@ p.dri_rss_link a {
   	  background: transparent;
       cursor: pointer;
       border: none;
-      color: #2f2f2f;
+      color: $dri_extra_lightgray;
       text-decoration: none;
       background: image-url('dri/clear_all_close.png') no-repeat left;
       padding: 2px 8px 0 22px;
@@ -1942,9 +1943,8 @@ p.dri_rss_link a {
 	}
 	
 	.dri_saved_search_title_block {
-	  height: 30px;
-	  padding-top: 5px;
-	  padding-bottom: 5px;
+	  margin: 0;
+	  padding-top: 15px;
 	  border-top: 1px $dri_thingrey solid;
 	  font-size: 110%;
 	  
