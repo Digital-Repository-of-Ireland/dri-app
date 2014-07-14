@@ -8,10 +8,7 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
     return unless has_content?
 
     if ['E','R'].include? controlGroup
-      @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                                { :f => pid, :d => "content" } ],
-                                            :order => "version DESC",
-                                            :limit => 1)
+      @local_file_info = LocalFile.where(fedora_id: pid, ds_id: "content").order("VERSION DESC").limit(1).to_a
       path = @local_file_info[0].path
 
       # Bit of a hack here to force mp2 files to be characterized in FITS
@@ -43,10 +40,7 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
     source = nil
 
     if ['E','R'].include? controlGroup
-      @local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                                { :f => pid, :d => "content" } ],
-                                            :order => "version DESC",
-                                            :limit => 1)
+      @local_file_info = LocalFile.where(fedora_id: pid, ds_id: "content").order("VERSION DESC").limit(1).to_a
       source = File.open(@local_file_info[0].path, 'r')
     else
       source = content
@@ -70,10 +64,7 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
   def filename_for_characterization
       extension = ""
       if ['E','R'].include? controlGroup
-      local_file_info = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                                { :f => pid, :d => "content" } ],
-                                            :order => "version DESC",
-                                            :limit => 1)
+        local_file_info = LocalFile.where(fedora_id: pid, ds_id: "content").order("VERSION DESC").limit(1).to_a
         extension = "."+local_file_info[0].path.split(".").last
       else
         mime_type = MIME::Types[mimeType].first
