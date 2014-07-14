@@ -8,6 +8,7 @@
 /* Anna updated html and body */
 $dri_green: #90993D;
 $dri_grey: #2F2F2F;
+$dri_darkgrey: #2E2E2E;
 $dri_lightgrey: #B3B3B3;
 $dri_thingrey: #D9DADB;
 
@@ -1912,15 +1913,22 @@ p.dri_rss_link a {
 	
 	span.dri_remove_bookmark {
       position: absolute;
-      top: -15px;
-      right: 10px;
-      color: darken($dri_green, 5);
-      font-size:3.5em;
+      top: -9px;
+      right: -3px;
+      color: white;
+      font-size: 100%;
       z-index: 100;
    }
-   span.dri_remove_bookmark:hover {
-      color: darken(red, 20);
+   
+   span.dri_remove_bookmark_back {
+      position: absolute;
+      top: -13px;
+      right: -8px;
+      font-size: 160%;
+      color: $dri_grey;
+      z-index: 99;
    }
+
 	input[type="submit"].dri_delete_button  {
   	
   	  background: transparent;
