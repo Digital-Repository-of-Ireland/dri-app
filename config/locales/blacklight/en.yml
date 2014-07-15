@@ -92,7 +92,7 @@ en:
         action_title: "Clear Saved Searches"
         failure: "There was a problem clearing your searches."
         success: "Cleared your saved searches."
-      delete: delete
+      delete: "clear search"
       list_title: "Your saved searches"
       need_login: "Please log in to manage and view your saved searches."
       no_searches: "You have no saved searches"

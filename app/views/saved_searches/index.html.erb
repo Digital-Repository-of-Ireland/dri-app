@@ -18,17 +18,12 @@
 				<%= button_to t('blacklight.saved_searches.delete'), forget_search_path(search.id), :id => 'delete_saved_search', :class => "btn btn-danger btn-small dri_delete_button" %>
 			</div>
 			<div class="dri_float_left dri_saved_search_params">
-			<%= link_to_saved_search(search.query_params) %>
 			<% search_count = get_saved_search_count(search.query_params) %>
-			 </div>
-			 <span class="dri_result_count_label">
-			 <% if search.query_params[:mode] == "collections" %>
-			<%= "#{search_count} #{t('dri.headerlinks.collections')}" %>
-			<% else %>
+			<b><%= "#{search_count} " %></b>
+			<%= link_to_saved_search(search.query_params) %>
 			
-			<%= "#{search_count} #{t('dri.headerlinks.objects')}" %>
-			<% end %>
-			</span>
+			 </div>
+
 
 		<% snippet_documents = get_saved_search_snippet_documents(search.query_params) %>
 		<% if search_count > 0 %>
