@@ -2,7 +2,7 @@ module DocumentHelper
 
   def get_document_type document
 
-    case document[Solrizer.solr_name('file_type_display', :stored_searchable, type: :string)].first.to_s.downcase
+    case document[Solrizer.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
       when "image"
         return t("dri.data.types.Image")
       when "audio"

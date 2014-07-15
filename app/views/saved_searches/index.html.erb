@@ -1,55 +1,49 @@
 <%- if current_or_guest_user.blank? -%>
-<div>
-	<h2><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></h2>
-</div>
-	<%- elsif @searches.blank? -%>
-<div>	
-	<h4><%= t('dri.views.catalog.legends.no_saved_search') %></h4>
-</div>
+    <div>
+      <h2><%= t('dri.views.catalog.legends.request_permission_not_logged_in') %></h2>
+    </div>
+<%- elsif @searches.blank? -%>
+    <div>
+      <h4><%= t('dri.views.catalog.legends.no_saved_search') %></h4>
+    </div>
 <%- else -%>
 
-<% @searches.each do |search| %>
-<div class="dri_clearfix dri_lightgrey_bottom_border">
+    <% @searches.each do |search| %>
+        <div class="dri_clearfix dri_lightgrey_bottom_border">
 
-	<div class="dri_result_container">
-		<div class="dri_saved_search_title_block">
-			<div class="dri_float_right">
+          <div class="dri_result_container">
+            <div class="dri_saved_search_title_block">
+              <div class="dri_float_right">
 
-				<%= button_to t('blacklight.saved_searches.delete'), forget_search_path(search.id), :id => 'delete_saved_search', :class => "btn btn-danger btn-small dri_delete_button" %>
-			</div>
-			<div class="dri_float_left dri_saved_search_params">
-			<%= link_to_saved_search(search.query_params) %>
-			<% search_count = get_saved_search_count(search.query_params) %>
-			 </div>
-			 <span class="dri_result_count_label">
-			 <% if search.query_params[:mode] == "collections" %>
-			<%= "#{search_count} #{t('dri.headerlinks.collections')}" %>
-			<% else %>
-			
-			<%= "#{search_count} #{t('dri.headerlinks.objects')}" %>
-			<% end %>
-			</span>
+                <%= button_to t('blacklight.saved_searches.delete'), forget_search_path(search.id), :id => 'delete_saved_search', :class => "btn btn-danger btn-small dri_delete_button" %>
+              </div>
+              <div class="dri_float_left dri_saved_search_params">
+                <% search_count = get_saved_search_count(search.query_params) %>
+                <b><%= "#{search_count} " %></b>
+                <%= link_to_saved_search(search.query_params) %>
 
-		<% snippet_documents = get_saved_search_snippet_documents(search.query_params) %>
-		<% if search_count > 0 %>
+              </div>
 
-		<%= link_to catalog_index_path(search.query_params), :class => "dri_save_search_link_block" do %>
 
-		<% snippet_documents.each do |document| %>
-		<% document = document.symbolize_keys! %>
-		<article class="dri_no_mobile_display">
-			<%= render :partial => 'catalog/saved_search_object_snippet', :locals => {:document => document, :mode => search.query_params[:mode]}%>
-		</article>
-		<% end %>
+              <% snippet_documents = get_saved_search_snippet_documents(search.query_params) %>
+              <% if search_count > 0 %>
 
-		<% end %>
-		<% end %>
-	</div>
-</div>
+                  <%= link_to catalog_index_path(search.query_params), :class => "dri_save_search_link_block" do %>
 
-<% end %>
-<div class="dri_result_container dri_clearfix">
-	<%= render :partial => "saved_searches/paginate_compact" %>
-</div>
+                      <% snippet_documents.each do |document| %>
+                          <% document = document.symbolize_keys! %>
+                          <article class="dri_no_mobile_display">
+                            <%= render :partial => 'catalog/saved_search_object_snippet', :locals => {:document => document, :mode => search.query_params[:mode]}%>
+                          </article>
+                      <% end %>
+
+                  <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+    <% end %>
+    <div class="dri_result_container dri_clearfix">
+      <%= render :partial => "saved_searches/paginate_compact" %>
+    </div>
 <%- end -%>
-
