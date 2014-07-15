@@ -1,3 +1,3 @@
 <% if @response.total_pages > 1 %>
-  <%= paginate_rsolr_response @response, :outer_window => 1, :theme => :blacklight %>
+  <%= paginate_rsolr_response @response, :window => 1, :theme => :blacklight %>
 <% end %>

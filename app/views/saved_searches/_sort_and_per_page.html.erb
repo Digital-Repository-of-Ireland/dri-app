@@ -5,7 +5,6 @@
 		<span class="dri_clear_all"> <%= link_to t('dri.views.catalog.buttons.clear_all_saved_searches'), clear_saved_searches_path, :id => 'clear_saved_search' , :method => :delete, :data => { :confirm => "#{t('dri.views.catalog.buttons.clear_all_saved_searches')}?" } %> </span>
 	</div>
 </div>
-<%= render :partial => "saved_searches/paginate_compact" %>
 
 <% end %>
 
