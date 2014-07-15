@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
-  revision: 98ded8d9a73ac1e68990a61290dbde80b20ea73e
+  revision: 06c365969deba83af976406c0b8e176e32e5a5f7
   branch: hydra7
   specs:
     user_group (1.0.5)
