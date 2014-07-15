@@ -98,9 +98,13 @@ module ApplicationHelper
   end
 
   def icon_path ( document )
-    format = format?(document)
+    format = document[Solrizer.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
 
-    format.eql?("unknown") ? "no_image.png" : "dri/formats/#{format}_icon.png"
+    if (format != 'image' && format != 'audio' && format != 'text' && format != 'video' && format != 'mixed_types')
+      "no_image.png"
+    else
+      "dri/formats/#{format}_icon.png"
+    end
   end
 
   def reader_group_name( document )

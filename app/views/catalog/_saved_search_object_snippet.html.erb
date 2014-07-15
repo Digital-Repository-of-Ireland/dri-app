@@ -1,55 +1,55 @@
 <% if mode == "collections" %>
 
-      <div class="dri_content_block_collection">
-        <div>
-          <div class="dri_collection_image">
-            <% image = cover_image ( document ) %>
-            <% unless image.nil? %>
-                <%= image_tag image, :width=>"228" %>
-            <% else %>
-                <%= image_tag "no_image.png", :width=>"228" %>
-            <% end %>
-          </div>
-          <!-- close image -->
-          <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
-          <p class="dri_publishing_institute">
-            <% unless document[Solrizer.solr_name('institute', :stored_searchable, type: :string).to_sym].nil? %>
-                <%= document[Solrizer.solr_name('institute', :stored_searchable, type: :string).to_sym][0] %>
-            <% end %>
-          </p>
+    <div class="dri_content_block_collection">
+      <div>
+        <div class="dri_collection_image">
+          <% image = cover_image ( document ) %>
+          <% unless image.nil? %>
+              <%= image_tag image, :width=>"228" %>
+          <% else %>
+              <%= image_tag "no_image.png", :width=>"228" %>
+          <% end %>
         </div>
-        <div class="dri_num_objects">
-          <span class="dri_object_text_num">
-            <%= count_items_in_collection(document[:id]).to_s + " (" + t('dri.views.catalog.forms.objects_in_collection') + ")" %>
-          </span>
-        </div>
+        <!-- close image -->
+        <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
+        <p class="dri_publishing_institute">
+          <% unless document[Solrizer.solr_name('institute', :stored_searchable, type: :string).to_sym].nil? %>
+              <%= document[Solrizer.solr_name('institute', :stored_searchable, type: :string).to_sym][0] %>
+          <% end %>
+        </p>
       </div>
+      <div class="dri_num_objects">
+          <span class="dri_object_text_num">
+            <%= "#{t('dri.views.catalog.forms.objects_in_collection')} (#{count_items_in_collection(document[:id]).to_s})" %>
+          </span>
+      </div>
+    </div>
 
 <% else %>
 
-      <div class="dri_content_block">
-        <% get_cover_image document %>
-        <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
-        <div class="dri_image">
+    <div class="dri_content_block">
+      <% get_cover_image document %>
+      <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
+      <div class="dri_image">
 
-          <%= image_tag @cover_image, :width=>"200" %>
-        </div><!-- close image -->
-        <p class="dri_subject">
-          <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
-              <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
-                  <%= subject %> <% if !document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last %> , <% end %>
-              <% end %>
-          <% else %>
-              n/a
-          <% end %>
-        </p>
-        <div class="dri_icon">
-          <% unless format?(document).eql?("unknown") %>
-              <span class="dri_icon_image"><%= image_tag(icon_path(document)) %> &nbsp; <%= get_document_type document %></span>
-          <% else %>
-              <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
-          <% end %>
-        </div>
+        <%= image_tag @cover_image, :width=>"200" %>
+      </div><!-- close image -->
+      <p class="dri_subject">
+        <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
+            <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
+                <%= subject %> <% if !document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last %> , <% end %>
+            <% end %>
+        <% else %>
+            n/a
+        <% end %>
+      </p>
+      <div class="dri_icon">
+        <% unless get_document_type(document).eql?(t("dri.data.types.Unknown")) %>
+            <span class="dri_icon_image"><%= image_tag(icon_path(document)) %> &nbsp; <%= get_document_type document %></span>
+        <% else %>
+            <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
+        <% end %>
       </div>
+    </div>
 
 <% end %>

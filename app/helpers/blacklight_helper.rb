@@ -32,6 +32,9 @@ module BlacklightHelper
   end
 
   def link_to_saved_search(params)
+    if (params[:mode].blank?)
+      params[:mode] = 'objects'
+    end
     label = "#{params[:mode].to_s.capitalize} (" + render_search_to_s_q(params) + render_search_to_s_filters(params) + ")"
     link_to(raw(label), catalog_index_path(params)).html_safe
   end
