@@ -97,6 +97,7 @@ gem 'unicorn'
 # gem 'debugger'
 
 gem "unicode", :platforms => [:mri_18, :mri_19]
+gem 'font-awesome-rails'
 gem 'bootstrap-sass'
 gem 'yard'
 

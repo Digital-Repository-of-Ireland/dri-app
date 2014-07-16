@@ -441,7 +441,7 @@ a .dri_signin_edugate:hover {
 /*--------------Terms of Use --------------------*/
 
 .dri_cookie_acceptance_text {
-  height: 150px;
+  /*height: 150px;*/
   overflow: scrolling;
 }
 
@@ -2345,6 +2345,9 @@ p.dri_rss_link a {
 	padding: 0px;
 }
 
+.dri_bottom_stack {
+  z-index: -1;
+}
 
 h2.dri_no_asset_availiable {
 	margin: 0px 0 0 0;
