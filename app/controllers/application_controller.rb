@@ -4,7 +4,7 @@ require 'solr/query'
 
 class ApplicationController < ActionController::Base
 
-  before_filter :set_locale, :set_cookie
+  before_filter :set_locale, :set_cookie, :get_my_collections
 
   include HttpAcceptLanguage
 
@@ -125,6 +125,13 @@ class ApplicationController < ActionController::Base
       @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
     end
   end
+
+  def get_my_collections
+    if signed_in?
+      @collections = ingest_collections
+    end
+  end
+
 
   private
 
