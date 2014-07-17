@@ -1,6 +1,5 @@
-
-    <% if has_search_parameters? %>
-        <% if @response.total_pages > 1 %>
-           <%= paginate @response, :window => 1, :theme => 'blacklight' %>
-        <% end %>
+<% if has_search_parameters? %>
+    <% if @response.total_pages > 1 %>
+        <%= paginate @response, :window => 1, :theme => 'blacklight' %>
     <% end %>
+<% end %>
