@@ -37,7 +37,8 @@
       <p class="dri_subject">
         <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
             <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
-                <%= subject %> <% if !document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last %> , <% end %>
+                <%= subject %>
+                <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject %> | <% end %>
             <% end %>
         <% else %>
             n/a
