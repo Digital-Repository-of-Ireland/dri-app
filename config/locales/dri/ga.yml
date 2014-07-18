@@ -126,6 +126,7 @@ ga:
       about: Eolas
       admin: "Admin Tasks"
       browse: Faigh
+      collection: Collection
       collections: Bailiúchán
       contact: Teagmháil
       current_collection: "Bailiúchán Reatha: %{collection}"
@@ -133,6 +134,7 @@ ga:
       home: "Leathanach Baile"
       ingest: "Glac isteach"
       institutions: Institiúidí
+      object: Object
       objects: Objects
       privacy: "Polasaí um Príobháideachas agus Fianáin"
       resque: "Resque Server"
@@ -197,7 +199,7 @@ ga:
             format: Format
             last_modified: "Last Update"
           audio_file: "Comhad Fuaime"
-          bookmark_object: "Bookmark Object"
+          bookmark_object: Bookmark
           file: File
           image_file: Image
           manage_bookmark: "Manage Your Bookmarks"

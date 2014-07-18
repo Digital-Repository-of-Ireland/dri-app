@@ -12,7 +12,11 @@
         <% end %>
     <% end %>
     <label class="bookmark_object" >
-      <%= t('dri.views.catalog.forms.bookmark_object') %>
+      <% if local_assigns[:document][Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first == 'Collection' %>
+          <%= "#{t('dri.views.catalog.forms.bookmark_object')} #{t('dri.headerlinks.collection')}" %>
+      <% else %>
+          <%= "#{t('dri.views.catalog.forms.bookmark_object')} #{t('dri.headerlinks.object')}" %>
+      <% end %>
     </label>
     <label class="bookmark_manage">
       <i class="fa fa-bookmark"></i>&nbsp;&nbsp;
