@@ -5,7 +5,7 @@
 
       <div class="dri_head_title"><%= t('blacklight.search.facets.title') %><span class="dri_search_num" id="browse_results_count"><%= @response.response[:numFound] %></span></div>
 
-      <div id="facet-panel-collapse" class="panel-group">
+      <div id="facet-panel-collapse" class="panel-group dri_clearfix">
         <%= render_facet_partials %>
       </div>
     </div>
