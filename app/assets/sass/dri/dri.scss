@@ -94,12 +94,10 @@ input[type="tel"],
 input[type="color"],
 .uneditable-input {
   display: inline-block;
-  height: 20px;
-  padding: 2px 2px 2px 30px;
-  margin-bottom: 10px;
-  font-size: 14px;
-  line-height: 20px;
-  color: #555555;
+  *padding: 2px 2px 2px 30px;
+  *margin-bottom: 10px;
+  font-size:  100%;
+  *line-height: 20px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -671,7 +669,7 @@ a .dri_signin_edugate:hover {
 			text-decoration: none;
 			color: #3E3E3E;
 			margin: 0;
-			padding: 19px 20px 18px 20px;
+			padding: 19px 20px 20px 20px;
 			display: block;
 			border-top: 3px solid #fff;
 		
@@ -727,8 +725,6 @@ a .dri_signin_edugate:hover {
 		
   	  }
     }
-
-
 
 }
 
@@ -877,26 +873,15 @@ ol.breadcrumb {
 
 .dri_search_term_text_input {
 	margin: 24px 0 0 0;
-	width: 189px;
-	padding: 4px 10px 4px 29px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	border: 1px solid #E1E1E1;
+	width: 226px;
+	padding: 4px 0 4px 30px;
+	border: 1px solid $dri_thingrey;
 	color: $dri_greytext;
 	background:image-url('dri/search_icon.png') no-repeat left;
 	font-size: 100%;
+	
 	}
 
-.dri_search_term_text_submit_button {
-	margin: 25px 0 0 0;
-	padding: 5px 8px 6px 8px;
-	background-color: #808082;
-	border: none;
-	color: #FFF;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	float: right;
-}
 
 /*-------------- Grid / table display--------------*/
 .dri_display_grid_table_nav {
@@ -1212,7 +1197,7 @@ ol.breadcrumb {
 .dri_search_save_submit_button {
 	box-shadow: 1px 1px 4px  #f0f0f0;
 	margin: 23px 8px 0 0;
-	padding: 2px 62px 2px 62px;
+	padding: 4px 62px 4px 62px;
 	float: right;
 	border: none;
 	-moz-border-radius: 2px;
@@ -1390,74 +1375,62 @@ h4.suggest {
 
 /* ----------- Facet Filter block ---------- */
 .dri_facet_filters_block {
-	*font-size: 100%;
-  margin: 25px 20px 20px 0;
-	*padding: 0 0 0 0;
-	//width: 228px;
+ 	 margin: 25px 0 0 0;
+	 padding: 0px;
 	float: left;
 	display: block;
 	color: #2F2F2F;
 	border: 1px solid #E1E1E1;
 	box-shadow: 1px 2px 6px  #E3E3E3;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 .dri_facet_filters  {
-	*padding: 0;
-	*margin: 0;
-	*list-style: none;
-	*text-decoration: none;		
-	*float: left;
-	*display: block;
+	border-bottom: none;
+
 	
 	.dri_head_title {
 		*color: #2F2F2F;
 		font-weight: bold;
 		padding: 15px 0 15px 20px;
-		* margin:  0;
-		* list-style: none;
-		* text-decoration: none;
-		* font-size: 100%;
-		float: left;
-		* display: block;
 		width: 100%;
 	}
 	
 	.dri_search_num {
 		float: right;
-		*display: block;
 		padding: 0 15px 0 0;
-		*margin:  0;
-		*color: #2F2F2F;
-		font-weight: normal;
-		*font-size: 100%;
 	}
-	
+	.panel {
+	 margin: 0px;
+	padding: 0px;
+	border: none;
+	}
 	.panel-group {
 	  width:237px;
+	  margin-bottom: 2px;
 
 	  
 	  .panel-default {
-	    border: none;
-	    border-bottom: 1px solid $dri_thingrey;
+		  margin: 0px;
+		  padding: 0px;
+	      border: none; 
+		  border-top: 1px solid $dri_thingrey;
 
 	    .panel-heading {
-        background-color: white;
-        width: 100%;
-
-
-
-  
-      
+       		 background-color: white;
+       		 width: 100%;
 
       h5 {
         margin:0;
         margin-left: 6px;
+		padding: 0;
+		
         background:image-url('dri/arrow_down.png') no-repeat right;
         a {
           text-decoration: none;
-          color: $dri_greytext;
+          color: $dri_darkgrey;
+		  font-size: 90%;
         }
 
         
@@ -1467,6 +1440,7 @@ h4.suggest {
       .collapsed {
         h5 {
           background:image-url('dri/arrow_up.png') no-repeat right;
+			 
         }
 	  }
 	  .panel-body {
@@ -1475,9 +1449,7 @@ h4.suggest {
 	  }
 
 	  }
-	  
-
-	  
+	
 	  ul {
     margin: 0;
     padding: 0;
@@ -1492,11 +1464,9 @@ h4.suggest {
       a {
         text-decoration: none;
         color: $dri_greytext;
-        *font-weight: normal;
-        *float: left;
         display: block;
-        *background-color: #F8F8F8;
-        *border-bottom: 2px solid #FFF;
+        background-color: #F8F8F8;
+        border-bottom: 2px solid #FFF;
         margin-left: -15px;
         margin-right: -15px;
         
