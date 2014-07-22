@@ -107,9 +107,13 @@ input[type="color"],
   vertical-align: middle;
 }
 
-.modal.fade.in {
-  top: 50%;
+.dri_modal {
+  top: 25%;
+  max-width: 50%;
+  margin: auto;
 }
+
+
 
 h1,
 h2,
