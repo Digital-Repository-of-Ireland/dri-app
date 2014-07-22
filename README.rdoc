@@ -70,7 +70,7 @@ To start the resque workers for development
 
 == Dependencies
 
-If you are using homenbrew on OSX
+If you are using homebrew on OSX
 
   $ brew install ansible coreutils libtool libksba libxml2 libxslt automake autoconf openssl curl curl-ca-bundle readline lzlib gettext pkg-config libyaml mariadb redis clamav sqlite ffmpeg gource phantomjs fits glib imagemagick ghostscript node
 
@@ -254,7 +254,7 @@ In the mysql console create the 3 environment databases required by rails.
   mysql> flush privileges;
 
   mysql> exit
-  
+
 The next step is to change the database configurations in the [yourProjectLocation]/config/database.yml as follows:
 
   development:
@@ -285,8 +285,8 @@ The last step is to install the mysql and mysql2 gems and to setup your new mysq
 
   $ gem install mysql
   $ gem install mysql2
-  
+
   $ bundle exec rake db:migrate
   $ bundle exec rake db:seed
   $ bundle exec rake db:test:prepare
-  
+
