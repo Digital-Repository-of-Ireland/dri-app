@@ -2040,7 +2040,7 @@ p.dri_rss_link a {
   overflow: hidden;
   color: #fff;
   background-color: #2F2F2F;
-  width: 71%;
+  width: 73%;
   font-weight: bold;
 }
 
@@ -2374,27 +2374,30 @@ ul.dri_view_collection {
 .dri_bookmark_object {
   margin: 20px 0 0 0;
   padding: 0;
-  float: left;
+ 
   form input {
     padding: 0;
-    float: left;
+	 margin: 0;
   }
   label {
-    font-size: 95%;
-    display: block;
     color: #2F2F2F;
-    font-weight: bold;
-    float: left;
+    font-weight: bold;	
+	margin: 0;
+  	padding: 0;
+	
   }
+  
   label.bookmark_object {
     margin: 0;
-    padding: 0 0 0 4px;
+    padding: 0 0 0 4px; 
+	
   }
   label.bookmark_manage {
     border-top: 1px solid #E1E1E1;
     padding-top: 5px;
     margin-top: 5px;
     width: 230px;
+	
     a {
       color: #2F2F2F;
     }
