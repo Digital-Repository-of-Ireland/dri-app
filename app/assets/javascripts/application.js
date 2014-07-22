@@ -23,8 +23,6 @@
 //= require_tree .
 // Required by Blacklight
 //= require blacklight/blacklight
-//= Required by Dropit dropdown menu library
-//= require dropit/dropit
 //
 //= require dri/
 //= require colorbox-rails
