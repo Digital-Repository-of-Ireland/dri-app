@@ -20,8 +20,8 @@ if Hydra.respond_to?(:configure)
       :manager => {:group =>ActiveFedora::SolrService.solr_name("manager_access_group", indexer), :individual=>ActiveFedora::SolrService.solr_name("manager_access_person", indexer)},
       #:owner => ActiveFedora::SolrService.solr_name("depositor", indexer),
       :private_metadata => ActiveFedora::SolrService.solr_name("private_metadata", Solrizer::Descriptor.new(:integer,:stored, :indexed)),
-      :embargo_release_date => ActiveFedora::SolrService.solr_name("embargo_release_date", Solrizer::Descriptor.new(:date, :stored, :indexed))
     }
+    config.permissions.embargo.release_date = ActiveFedora::SolrService.solr_name("embargo_release_date", Solrizer::Descriptor.new(:date, :stored, :indexed))
 
     # specify the user model
     config[:user_model] = 'User'
