@@ -47,7 +47,7 @@ The db:seed step above will create 3 initial accounts:
 * manager@dri.ie (collection manager)
 * user@dri.ie (public user)
 
-The password for all 3 accounts is 'password'
+The password for all 3 accounts is 'J3xG9ABC'
 
 To run the unit tests
 
