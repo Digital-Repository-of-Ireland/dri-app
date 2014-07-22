@@ -2033,9 +2033,9 @@ p.dri_rss_link a {
 
 .dri_object_title_top {
   font-size: 110%;
-  padding: 5px 20px 0 10px;
-  margin: 0px 0 10px 0;
-  height: 24px;
+  padding: 6px 20px 0 10px;
+  margin: 20px 0 10px 0;
+  height: 27px;
   text-overflow: ellipsis;
   overflow: hidden;
   color: #fff;
@@ -2344,7 +2344,7 @@ ul.dri_view_collection {
   border-bottom: 1px solid #E1E1E1;
   li {
     margin: 0;
-    padding: 4px 0 3px 0;
+    padding: 6px 0 6px 0;
     list-style: none;
     border-top: 1px solid #E1E1E1;
     color: $dri_greytext;
@@ -2407,7 +2407,7 @@ ul.dri_view_collection {
 .dri_title {
   color: #2F2F2F;
   font-weight: bold;
-  margin: 0 0 4px 0;
+  margin: 0;
   padding: 0;
 }
 
