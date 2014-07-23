@@ -791,9 +791,8 @@ ol.breadcrumb {
 }
 
 /*-------------- Sort by --------------*/
-.dri_sort_nav {
-  float: left;
-  margin: 0;
+.dri_sort_nav {  
+margin: 0;
   padding: 25px 0 0 0;
   select {
     margin: 0;
@@ -823,8 +822,10 @@ ol.breadcrumb {
 
 /*-------------- Grid / table display--------------*/
 .dri_display_grid_table_nav {
-  margin: 24px 0 0 0;
+  margin: 26px 0 0 0;
   padding: 0;
+  
+  
   ul {
     margin: 0;
     padding: 0;
@@ -841,11 +842,12 @@ ol.breadcrumb {
   li.grid {
     margin: 0;
     padding: 0;
+	float:left;
+
     a {
       background: image-url("dri/grid_icon.png") no-repeat center;
-      display: block;
-      float: left;
-      width: 25px;
+	 display:inline-block;
+	  width: 25px;
       height: 24px;
       border: 1px solid #D9DADB;
       border-right: none;
@@ -857,9 +859,8 @@ ol.breadcrumb {
     margin: 0;
     padding: 0;
     a {
-      background: image-url("dri/table_icon.png") no-repeat center;
-      display: block;
-      float: left;
+      display:inline-block;
+	  background: image-url("dri/table_icon.png") no-repeat center;
       width: 25px;
       height: 24px;
       border: 1px solid #D9DADB;
@@ -881,13 +882,13 @@ ol.breadcrumb {
   margin: 25px 0 0 0;
   padding: 0;
   p {
-    margin: 2px 0 0 0;
+    margin: 6px 0 0 0;
     padding: 0 6px 0 0;
     color: #9E9E9E;
-    float: left;
+	float: left;
   }
   select {
-    margin: 2px 0 0 0;
+    margin: 4px 0 0 0;
     padding: 4px;
     border: 1px solid #D9DADB;
     -moz-border-radius: 2px;
@@ -901,12 +902,10 @@ ol.breadcrumb {
     padding: 0;
   }
   li {
-    float: left;
     margin: 0 0 0 4px;
     padding: 3px 8px 0px 8px;
     text-decoration: none;
     list-style: none;
-    display: block;
     border: 1px solid #D9DADB;
     a {
       margin: 0;
@@ -995,7 +994,7 @@ ol.breadcrumb {
   }
   li {
     margin: 15px 10px 0 0;
-    padding: 4px 0 4px 15px;
+    padding: 5px 0 5px 15px;
     list-style: none;
     text-decoration: none;
     color: #FFF;
@@ -1043,7 +1042,7 @@ ol.breadcrumb {
   margin: 0 0 0 0;
   padding: 0;
   float: left;
-  width: 94%;
+  width: 95%;
   border-bottom: 1px solid #D9DADB;
   ul {
     margin: 0;
