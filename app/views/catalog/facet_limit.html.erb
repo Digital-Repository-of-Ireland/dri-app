@@ -10,7 +10,7 @@
       </li>
   <% end %>
 
-  <% unless paginator.last_page? and params[:action] == "facet" %>
+  <% if paginator.last_page? && params[:_].blank? %>
       <li class="more_facets_link"><%= link_to(t('blacklight.search.facets.more'), params.merge(:id => solr_field, :action=>"facet", :page => nil), :class => "more_facets_link") %></li>
   <% end %>
 
