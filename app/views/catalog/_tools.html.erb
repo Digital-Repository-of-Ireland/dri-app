@@ -1,49 +1,67 @@
 <div class="dri_bookmark_object">
-  <%= render_show_doc_actions %>
+	<%= render_show_doc_actions %>
 </div>
 <!-- close dri_bookmark_object -->
 
 <div class="dri_objecttools_title">
-  <i class="fa fa-lg fa-gear"></i>&nbsp;<%= t('dri.views.catalog.titles.object_tools') %>
+	<i class="fa fa-lg fa-gear"></i>&nbsp;<%= t('dri.views.catalog.titles.object_tools') %>
 </div>
 <!-- close vc_title -->
 
 <ul class="dri_view_collection">
-  <li><%= link_to t('dri.views.catalog.forms.metadata_full'), object_styled_metadata_path(@document.id), :id => "styled_metadata", :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %></li>
-  <li><%= link_to t('dri.views.catalog.forms.metadata'), object_metadata_path(@document.id), :id => "download_metadata" %></li>
-  <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
-  <li><%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citatation_modal_id' %></li>
+	<li>
+		<%= link_to t('dri.views.catalog.forms.metadata_full'), object_styled_metadata_path(@document.id), :id => "styled_metadata", :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %>
+	</li>
+	<li>
+		<%= link_to t('dri.views.catalog.forms.metadata'), object_metadata_path(@document.id), :id => "download_metadata" %>
+	</li>
+	<li>
+		<%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %>
+	</li>
+	<li>
+		<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citatation_modal_id' %>
+	</li>
 </ul>
 
+<div class="modal fade" id="dri_metadata_modal_id">
+	<div class="modal-dialog">
+		<div class="modal-body">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">
+				<span aria-hidden="true">×</span><span class="sr-only"><%= t('dri.window.modal.close') %></span>
+			</button>
+			<h4 class="modal-title"><%= t('dri.views.catalog.forms.metadata_full') %></h4>
+		</div>
+		
+			<div class="modal-content"></div>
+		
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">
+				<%= t('dri.window.modal.close') %>
+			</button>
+		</div>
+		</div>
+	</div><!-- /.modal-dialog -->
+</div>
 
 <div class="modal fade" id="dri_citatation_modal_id">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><%= t('blacklight.tools.cite') %></h4>
-      </div>
-      <div class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('dri.window.modal.close') %></button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+	<div class="modal-dialog dri_modal">
+		<div class="modal-body">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title"><%= t('blacklight.tools.cite') %></h4>
+			</div>
+			<div class="modal-content"></div><!-- /.modal-content -->
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					<%= t('dri.window.modal.close') %>
+				</button>
+			</div>
+		</div>
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="dri_metadata_modal_id">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><%= t('dri.views.catalog.forms.metadata_full') %></h4>
-      </div>
-      <div class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('dri.window.modal.close') %></button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+

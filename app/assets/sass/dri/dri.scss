@@ -107,8 +107,25 @@ input[type="color"],
   vertical-align: middle;
 }
 
-.modal.fade.in {
-  top: 50%;
+.modal-body {
+  background: white;
+  dl.dri_object_metadata_readview {
+    max-height: 400px;
+    overflow: scroll;
+  }
+
+}
+
+.modal-content {
+position: relative;
+padding-left: 10px;
+background-color: white;
+border: none;
+border-radius: none;
+-webkit-box-shadow: none;
+box-shadow: none;
+background-clip: padding-box;
+outline: 0;
 }
 
 h1,
@@ -2266,6 +2283,7 @@ dl.dri_object_metadata_readview {
     }
   }
 }
+
 
 /*-------------- Collection status and Features  --------------*/
 
