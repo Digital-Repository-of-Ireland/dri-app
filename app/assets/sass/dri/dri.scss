@@ -22,11 +22,21 @@ html {
     *font-size: small;
     *font: x-small;
     margin: 0;
+
+
   }
 }
 
 /* Video-JS Overrides */
-
+    a {
+      color: none;
+      text-decoration: none;
+    }
+		a:hover, a:focus {
+	  color: none;
+	  text-decoration: none;
+	}
+	
 .vjs-default-skin .vjs-big-play-button {
   left: 35%;
   top: 35%;
@@ -36,18 +46,26 @@ html {
 
 /* bootstrap overrides */
 
+.span4 {
+  width: 338px;
+}
+
+.span12 {
+  width: 1018px;
+}
+
+.span6 {
+  width: 509px;
+}
+
 .carousel-caption {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
+  padding: 15px;
+  background: #333333;
   background: rgba(144, 154, 60, 0.75);
-  p {
-    position:absolute;
-    left:10%;
-    bottom:10px;
-    padding-top:10px;
-  }
 }
 
 .carousel-indicators .active {
@@ -81,7 +99,7 @@ input[type="color"],
   display: inline-block;
   *padding: 2px 2px 2px 30px;
   *margin-bottom: 10px;
-  font-size: 100%;
+  *font-size: 110%;
   *line-height: 20px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -89,13 +107,9 @@ input[type="color"],
   vertical-align: middle;
 }
 
-.dri_modal {
-  top: 25%;
-  max-width: 50%;
-  margin: auto;
+.modal.fade.in {
+  top: 50%;
 }
-
-
 
 h1,
 h2,
@@ -785,9 +799,9 @@ ol.breadcrumb {
   width: 226px;
   padding: 4px 0 4px 30px;
   border: 1px solid $dri_thingrey;
-  color: $dri_greytext;
+  color: $dri_extra_lightgray;
+  font-size: 112%;
   background: image-url("dri/search_icon.png") no-repeat left;
-  font-size: 100%;
 }
 
 /*-------------- Grid / table display--------------*/
@@ -1856,7 +1870,7 @@ p.dri_rss_link a {
   p.dri_publishing_institute {
     color: $dri_greytext;
     line-height: 1.3em;
-    height: 28px;
+    height: 40px;
     overflow: hidden;
     padding: 6px 0 6px 0;
     margin: 0 14px 0 14px;
@@ -1876,14 +1890,14 @@ p.dri_rss_link a {
     color: $dri_greytext;
     line-height: 1.4em;
     display: block;
-    height: 22px;
     margin: 0px 0 0 0;
     background-color: #F5F5F5;
-    padding: 6px 14px 2px 14px;
+    padding: 8px 14px 8px 14px;
     display: block;
   }
   a .dri_num_objects:hover {
     background-color: #ECECEC;
+    text-decoration: none;
   }
   a .dri_num_objects span.object_total {
     margin: 0 0 0 6px;
@@ -2023,7 +2037,7 @@ p.dri_rss_link a {
   overflow: hidden;
   color: #fff;
   background-color: #2F2F2F;
-  width: 71%;
+  width: 73%;
   font-weight: bold;
 }
 
@@ -2357,27 +2371,30 @@ ul.dri_view_collection {
 .dri_bookmark_object {
   margin: 20px 0 0 0;
   padding: 0;
-  float: left;
+ 
   form input {
     padding: 0;
-    float: left;
+	 margin: 0;
   }
   label {
-    font-size: 95%;
-    display: block;
     color: #2F2F2F;
-    font-weight: bold;
-    float: left;
+    font-weight: bold;	
+	margin: 0;
+  	padding: 0;
+	
   }
+  
   label.bookmark_object {
     margin: 0;
-    padding: 0 0 0 4px;
+    padding: 0 0 0 4px; 
+	
   }
   label.bookmark_manage {
     border-top: 1px solid #E1E1E1;
     padding-top: 5px;
     margin-top: 5px;
     width: 230px;
+	
     a {
       color: #2F2F2F;
     }
