@@ -2388,6 +2388,10 @@ ul.dri_view_collection {
 .dri_bookmark_object {
   margin: 20px 0 0 0;
   padding: 0;
+  
+  .toggle_bookmark {
+    margin-left: 10px;
+  }
  
   form input {
     padding: 0;
