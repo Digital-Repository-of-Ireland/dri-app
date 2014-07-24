@@ -283,20 +283,20 @@
   <h5><%= t('dri.views.objects.access_controls.read') %></h5>
   <div class="controls">
     <%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled=> disabled_inherit %>
-    <%= f.label :read_groups_inherit, t('dri.views.objects.access_controls.inherit'), :class => "label inline" %>
+    <%= f.label :read_groups_inherit, t('dri.views.objects.access_controls.inherit'), :class => "label label-default inline" %>
     <%= f.radio_button :read_groups_string, "radio_public", :onclick => "read_field_toggle();" %>
     <%= f.label :read_groups_public, t('dri.views.objects.access_controls.public'), :class=> "label label-success inline" %>
     <%= f.radio_button :read_groups_string, "radio_logged", :onclick => "read_field_toggle();" %>
-    <%= f.label :read_groups_registered, t('dri.views.objects.access_controls.registered'), :class => "label label-info inline"  %>
+    <%= f.label :read_groups_registered, t('dri.views.objects.access_controls.registered'), :class => "label label-warning inline"  %>
     <%= f.radio_button :read_groups_string, "radio_restricted", :onclick => "read_field_toggle();" %>
-    <%= f.label :read_groups_restricted, t('dri.views.objects.access_controls.restricted'), :class => "label label-important inline" %>
+    <%= f.label :read_groups_restricted, t('dri.views.objects.access_controls.restricted'), :class => "label label-danger inline" %>
   </div>
   <div id="read_access_entries">
     <br />
-    <%= f.label :read_users, t('user_groups.views.shared.users'), :class => "label access_control_label" %>
+    <%= f.label :read_users, t('user_groups.views.shared.users'), :class => "label label-default" %>
     <%= f.text_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
     <br />
-    <%= f.label :read_groups, t('user_groups.views.shared.groups'), :class => "label access_control_label" %>
+    <%= f.label :read_groups, t('user_groups.views.shared.groups'), :class => "label label-default" %>
     <%= f.text_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
   </div>
 </div>
@@ -308,11 +308,11 @@
   <br />
   <div class="controls">
     <%= f.radio_button :master_file, "radio_inherit", :checked=>record.master_file.nil?, :disabled=> disabled_inherit %>
-    <%= f.label :master_file, t('dri.views.objects.access_controls.inherit'), :class => "label inline" %>
+    <%= f.label :master_file, t('dri.views.objects.access_controls.inherit'), :class => "label label-default inline" %>
     <%= f.radio_button :master_file, "radio_public", :checked=>record.master_file==true %>
     <%= f.label :master_file, t('dri.views.objects.access_controls.accessible_master_file'), :class => "label label-success inline" %>
     <%= f.radio_button :master_file, "radio_private", :checked=>record.master_file==false %>
-    <%= f.label :master_file, t('dri.views.objects.access_controls.private_master_file'), :class => "label label-important inline" %>
+    <%= f.label :master_file, t('dri.views.objects.access_controls.private_master_file'), :class => "label label-danger inline" %>
   </div>
 </div>
 
@@ -320,13 +320,13 @@
   <h5><%= t('dri.views.objects.access_controls.edit') %></h5>
   <div class="control">
     <%= f.radio_button :edit_groups_string, "radio_inherit", :onclick => "edit_field_toggle();", :disabled=> disabled_inherit  %>
-    <%= f.label :edit_users, t('dri.views.objects.access_controls.inherit'), :class => "label inline" %>
+    <%= f.label :edit_users, t('dri.views.objects.access_controls.inherit'), :class => "label label-default inline" %>
     <%= f.radio_button :edit_groups_string, "radio_restricted", :onclick => "edit_field_toggle();" %>
-    <%= f.label :edit_users, t('dri.views.objects.access_controls.restricted'), :class => "label label-important inline" %>
+    <%= f.label :edit_users, t('dri.views.objects.access_controls.restricted'), :class => "label label-danger inline" %>
 
     <div id="edit_access_entries">
       <br />
-      <%= f.label :edit_users, t('user_groups.views.shared.users'), :class => "label access_control_label" %>
+      <%= f.label :edit_users, t('user_groups.views.shared.users'), :class => "label label-default" %>
       <%= f.text_field :edit_users_string, :onkeyup=>"edit_user_textbox.catch_tb_value();" %>
     </div>
   </div>
