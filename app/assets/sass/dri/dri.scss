@@ -2064,7 +2064,7 @@ p.dri_rss_link a {
 }
 
 .dri_bottom_stack {
-  z-index: -1;
+  *z-index: -1;
 }
 
 h2.dri_no_asset_availiable {
@@ -2091,7 +2091,7 @@ h2.dri_no_asset_availiable {
   }
   .carousel-control.left {
     //background-image: url("previous_carousel_arrow.png");
-    top: 95%;
+    top: 50%;
     width: 12px;
     height: 8px;
     margin-top: -5px;
@@ -2099,7 +2099,7 @@ h2.dri_no_asset_availiable {
   }
   .carousel-control.right {
     //background-image: url("next_carousel_arrow.png");
-    top: 95%;
+    top: 50%;
     width: 12px;
     height: 10px;
     margin-top: -5px;

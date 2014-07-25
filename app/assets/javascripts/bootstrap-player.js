@@ -36,13 +36,13 @@ $(document).ready(function($) {
 			play.setPlayState = function(toggle){
 					$(play).removeClass('disabled');
 				if (toggle === 'play') {
-					$(play).html('<i class="icon-play"></i>');
+					$(play).html('<i class="fa fa-play"></i>');
 					$(play).click(function () {
 						song.play();
 					});
 				}
 				if (toggle === 'pause') {
-					$(play).html('<i class="icon-pause"></i>');
+					$(play).html('<i class="fa fa-pause"></i>');
 					$(play).click(function () {
 						song.pause();
 					});
@@ -202,11 +202,11 @@ $(document).ready(function($) {
 				$(mute).addClass('btn span1');
 			mute.checkVolume = function () {
 				if (song.volume > 0.5 && !song.muted) {
-					$(mute).html('<i class="icon-volume-up"></i>');
+					$(mute).html('<i class="fa fa-volume-up"></i>');
 				} else if (song.volume < 0.5 && song.volume > 0 && !song.muted) {
-					$(mute).html('<i class="icon-volume-down"></i>');
+					$(mute).html('<i class="fa fa-volume-down"></i>');
 				} else {
-					$(mute).html('<i class="icon-volume-off"></i>');
+					$(mute).html('<i class="fa fa-volume-mute"></i>');
 				}
 			};
 			$(mute).click(function () {
