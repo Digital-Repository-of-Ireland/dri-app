@@ -34,7 +34,7 @@
     <% @surrogate = surrogate_url(document.id, generic_file.id, "rtf") %>
     <% unless @surrogate.nil? %>
         <h2 class="dri_restrict_title"><%= t('dri.views.objects.legends.rtf_surrogate_title') %></h2>
-        <p class="dri_restrict_message" id="asset_not_available">
+        <p class="dri_restrict_message" >
           <%= t('dri.views.objects.legends.rtf_surrogate_text') %>
         </p>
     <% end %>
