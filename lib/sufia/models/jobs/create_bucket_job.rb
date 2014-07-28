@@ -26,9 +26,9 @@ class CreateBucketJob < ActiveFedoraPidBasedJob
       Sufia.queue.push(IndexTextJob.new(generic_file_id))
       Sufia.queue.push(TextSurrogateJob.new(generic_file_id))
     elsif generic_file.video?
-      Sufia.queue.push(TranscodeVideoJob.new(generic_file_id))
+      Sufia.queue.push(CreateDerivativesJob.new(generic_file_id))
     elsif generic_file.audio?
-      Sufia.queue.push(TranscodeAudioJob.new(generic_file_id))
+      Sufia.queue.push(CreateDerivativesJob.new(generic_file_id))
     elsif generic_file.image?
       Sufia.queue.push(ThumbnailJob.new(generic_file_id))
     end

@@ -11,21 +11,18 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require video
+
 //= require jquery
-//= require jquery_ujs
 //= require jquery.remotipart
 //= require jquery.cookie
-//= require bootstrap/carousel
-//= require bootstrap/tooltip
-//= require bootstrap/popover
-//= require bootstrap-player.js
-//= require bootstrap-switch
-//= require_tree .
+//= require bootstrap
+//= require bootstrap-player
 // Required by Blacklight
 //= require blacklight/blacklight
 //
-//= require dri/
+//= require dri
 //= require colorbox-rails
+
 
 
 
@@ -36,9 +33,9 @@
 $(document).ready(function() {
     $('dropdown').dropdown();
     $('#dri_cookie_modal').modal();
-    $('.carousel').carousel();
+    //$('#oject-multiple-asset-carousel').carousel('pause');
+    
     $('#q, #facets, #dri_social_media_links_id, #dri_sort_options_id, #dri_change_sort_view_id, #dri_page_options_id, #dri_facet_restrictions_links_id, #dri_pagination_nav_links_id, #dri_browse_sort_tabs_collections_id, #dri_browse_sort_tabs_objects_id').popover( {delay: { show: 1500, hide: 100 }} );
-    $("[name='dri_slider_checkbox']").bootstrapSwitch();
 });
 
 $(function(){
