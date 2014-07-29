@@ -2034,9 +2034,9 @@ p.dri_rss_link a {
 
 .dri_object_title_top {
   font-size: 110%;
-  padding: 5px 20px 0 10px;
-  margin: 0px 0 10px 0;
-  height: 24px;
+  padding: 6px 20px 4px 10px;
+  margin: 10px 0 10px 0;
+  height: 26px;
   text-overflow: ellipsis;
   overflow: hidden;
   color: #fff;
@@ -2391,6 +2391,7 @@ ul.dri_view_collection {
   label.bookmark_object {
     margin: 0;
     padding: 0 0 0 4px; 
+	
 	
   }
   label.bookmark_manage {
