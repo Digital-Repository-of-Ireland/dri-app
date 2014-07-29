@@ -18,8 +18,6 @@ class IngestController < CatalogController
 
     @current_step = session[:ingest][:current_step]
 
-    @collections = ingest_collections
-
     respond_to do |format|
       format.html
     end

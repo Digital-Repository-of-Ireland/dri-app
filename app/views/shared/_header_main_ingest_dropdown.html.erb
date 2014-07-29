@@ -1,6 +1,6 @@
 <!--to be refactored into a dropdown?-->
 
-<% if signed_in? && (current_user.is_cm? || current_user.is_admin?) %>
+<% if signed_in? && (current_user.is_cm? || current_user.is_admin? || @collections.count >0 ) %>
     <% if ((controller.controller_name == 'ingest'  && (controller.action_name == 'new' || controller.action_name == 'create')) ||
             (controller.controller_name == 'collections' && controller.action_name == 'new')) %>
         <li class="selected">
