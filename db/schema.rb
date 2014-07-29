@@ -17,28 +17,28 @@ ActiveRecord::Schema.define(version: 20140526163754) do
     t.integer  "user_id",     null: false
     t.string   "document_id"
     t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "user_type"
   end
 
   create_table "institutes", force: true do |t|
     t.string   "name"
     t.string   "url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string   "logo"
   end
 
-  add_index "institutes", ["name"], name: "index_institutes_on_name", using: :btree
+  add_index "institutes", ["name"], name: "index_institutes_on_name"
 
   create_table "licences", force: true do |t|
     t.string   "name"
     t.string   "url"
     t.string   "logo"
     t.string   "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "local_files", force: true do |t|
@@ -53,12 +53,12 @@ ActiveRecord::Schema.define(version: 20140526163754) do
   create_table "searches", force: true do |t|
     t.text     "query_params"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.string   "user_type"
   end
 
-  add_index "searches", ["user_id"], name: "index_searches_on_user_id", using: :btree
+  add_index "searches", ["user_id"], name: "index_searches_on_user_id"
 
   create_table "user_group_authentications", force: true do |t|
     t.integer "user_id"
@@ -69,22 +69,22 @@ ActiveRecord::Schema.define(version: 20140526163754) do
   create_table "user_group_groups", force: true do |t|
     t.string   "name"
     t.string   "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.boolean  "is_locked",   default: false
   end
 
-  add_index "user_group_groups", ["name"], name: "index_user_group_groups_on_name", unique: true, using: :btree
+  add_index "user_group_groups", ["name"], name: "index_groups_on_name", unique: true
 
   create_table "user_group_memberships", force: true do |t|
     t.integer  "group_id"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "approved_by"
   end
 
-  add_index "user_group_memberships", ["group_id", "user_id"], name: "index_user_group_memberships_on_group_id_and_user_id", unique: true, using: :btree
+  add_index "user_group_memberships", ["group_id", "user_id"], name: "index_memberships_on_group_id_and_user_id", unique: true
 
   create_table "user_group_users", force: true do |t|
     t.string   "email",                  default: "",    null: false
@@ -98,8 +98,8 @@ ActiveRecord::Schema.define(version: 20140526163754) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.string   "authentication_token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.string   "first_name"
     t.string   "second_name"
     t.string   "locale"
@@ -113,9 +113,9 @@ ActiveRecord::Schema.define(version: 20140526163754) do
     t.datetime "confirmation_sent_at"
   end
 
-  add_index "user_group_users", ["authentication_token"], name: "index_user_group_users_on_authentication_token", unique: true, using: :btree
-  add_index "user_group_users", ["confirmation_token"], name: "index_user_group_users_on_confirmation_token", unique: true, using: :btree
-  add_index "user_group_users", ["email"], name: "index_user_group_users_on_email", unique: true, using: :btree
-  add_index "user_group_users", ["reset_password_token"], name: "index_user_group_users_on_reset_password_token", unique: true, using: :btree
+  add_index "user_group_users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true
+  add_index "user_group_users", ["confirmation_token"], name: "index_user_group_users_on_confirmation_token", unique: true
+  add_index "user_group_users", ["email"], name: "index_users_on_email", unique: true
+  add_index "user_group_users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end
