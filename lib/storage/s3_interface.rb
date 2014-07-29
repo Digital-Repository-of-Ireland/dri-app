@@ -99,9 +99,12 @@ module Storage
         bucket = @s3.buckets[bucket_name]
         object = bucket.objects[file_key]
         object.write(Pathname.new(file), {:acl => :public_read})
+
+        return true
       rescue Exception => e
         logger.error "Problem saving file #{file_key} : #{e.to_s}"
-        raise
+        
+        return false
       end
     end
 
