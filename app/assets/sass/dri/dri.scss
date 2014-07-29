@@ -108,30 +108,8 @@ input[type="color"],
   vertical-align: middle;
 }
 
-<<<<<<< HEAD
 .modal.fade.in {
   top: 25%;
-=======
-.modal-body {
-  background: white;
-  dl.dri_object_metadata_readview {
-    max-height: 400px;
-    overflow: scroll;
-  }
-
-}
-
-.modal-content {
-position: relative;
-padding-left: 10px;
-background-color: white;
-border: none;
-border-radius: none;
--webkit-box-shadow: none;
-box-shadow: none;
-background-clip: padding-box;
-outline: 0;
->>>>>>> 5075f1fe7cb7c8faf1b423e88a52007d4b246dfc
 }
 
 h1,
@@ -797,8 +775,9 @@ ol.breadcrumb {
 }
 
 /*-------------- Sort by --------------*/
-.dri_sort_nav {  
-margin: 0;
+.dri_sort_nav {
+  float: left;
+  margin: 0;
   padding: 25px 0 0 0;
   select {
     margin: 0;
@@ -828,10 +807,8 @@ margin: 0;
 
 /*-------------- Grid / table display--------------*/
 .dri_display_grid_table_nav {
-  margin: 26px 0 0 0;
+  margin: 24px 0 0 0;
   padding: 0;
-  
-  
   ul {
     margin: 0;
     padding: 0;
@@ -848,12 +825,11 @@ margin: 0;
   li.grid {
     margin: 0;
     padding: 0;
-	float:left;
-
     a {
       background: image-url("dri/grid_icon.png") no-repeat center;
-	 display:inline-block;
-	  width: 25px;
+      display: block;
+      float: left;
+      width: 25px;
       height: 24px;
       border: 1px solid #D9DADB;
       border-right: none;
@@ -865,8 +841,9 @@ margin: 0;
     margin: 0;
     padding: 0;
     a {
-      display:inline-block;
-	  background: image-url("dri/table_icon.png") no-repeat center;
+      background: image-url("dri/table_icon.png") no-repeat center;
+      display: block;
+      float: left;
       width: 25px;
       height: 24px;
       border: 1px solid #D9DADB;
@@ -888,13 +865,13 @@ margin: 0;
   margin: 25px 0 0 0;
   padding: 0;
   p {
-    margin: 6px 0 0 0;
+    margin: 2px 0 0 0;
     padding: 0 6px 0 0;
     color: #9E9E9E;
-	float: left;
+    float: left;
   }
   select {
-    margin: 4px 0 0 0;
+    margin: 2px 0 0 0;
     padding: 4px;
     border: 1px solid #D9DADB;
     -moz-border-radius: 2px;
@@ -908,10 +885,12 @@ margin: 0;
     padding: 0;
   }
   li {
+    float: left;
     margin: 0 0 0 4px;
     padding: 3px 8px 0px 8px;
     text-decoration: none;
     list-style: none;
+    display: block;
     border: 1px solid #D9DADB;
     a {
       margin: 0;
@@ -1000,7 +979,7 @@ margin: 0;
   }
   li {
     margin: 15px 10px 0 0;
-    padding: 5px 0 5px 15px;
+    padding: 4px 0 4px 15px;
     list-style: none;
     text-decoration: none;
     color: #FFF;
@@ -1048,7 +1027,7 @@ margin: 0;
   margin: 0 0 0 0;
   padding: 0;
   float: left;
-  width: 95%;
+  width: 94%;
   border-bottom: 1px solid #D9DADB;
   ul {
     margin: 0;
@@ -1264,19 +1243,22 @@ h4.suggest {
 .dri_facet_filters_block {
   margin: 25px 0 0 0;
   padding: 0px;
+  float: left;
+  display: block;
   color: #2F2F2F;
-  border: 1px solid $dri_thingrey;
+  border: 1px solid #E1E1E1;
   box-shadow: 1px 2px 6px  #E3E3E3;
   -moz-border-radius: 5px;
-  border-radius: 5px; 
-  width: 237px;
+  border-radius: 5px;
 }
 
 .dri_facet_filters {
   border-bottom: none;
   .dri_head_title {
+    *color: #2F2F2F;
     font-weight: bold;
-    padding: 15px 0 15px 20px; 
+    padding: 15px 0 15px 20px;
+    width: 100%;
   }
   .dri_search_num {
     float: right;
@@ -1288,16 +1270,16 @@ h4.suggest {
     border: none;
   }
   .panel-group {
+    width: 237px;
     margin-bottom: 2px;
     .panel-default {
       margin: 0px;
       padding: 0px;
-	  
+      border: none;
+      border-top: 1px solid $dri_thingrey;
       .panel-heading {
-		-moz-border-radius: 0;
-  		border-radius: 0; 
-		border-top: 1px solid $dri_thingrey;
         background-color: white;
+        width: 100%;
         h5 {
           margin: 0;
           margin-left: 6px;
@@ -1319,7 +1301,6 @@ h4.suggest {
         padding-top: 0px;
         padding-bottom: 0px;
       }
-	  
     }
     ul {
       margin: 0;
@@ -1333,7 +1314,7 @@ h4.suggest {
         color: $dri_greytext;
         display: block;
         background-color: #F8F8F8;
-        border-top: 2px solid #FFF;
+        border-bottom: 2px solid #FFF;
         margin-left: -15px;
         margin-right: -15px;
         padding: 10px 5px 10px 20px;
@@ -2050,11 +2031,12 @@ p.dri_rss_link a {
 }
 
 /*-------------- OBJECT VIEW --------------*/
+
 .dri_object_title_top {
   font-size: 110%;
-  padding: 6px 20px 0 10px;
-  margin: 20px 0 10px 0;
-  height: 27px;
+  padding: 5px 20px 0 10px;
+  margin: 0px 0 10px 0;
+  height: 24px;
   text-overflow: ellipsis;
   overflow: hidden;
   color: #fff;
@@ -2070,7 +2052,7 @@ p.dri_rss_link a {
 }
 
 .dri_bottom_stack {
-  *z-index: -1;
+  z-index: -1;
 }
 
 h2.dri_no_asset_availiable {
@@ -2097,7 +2079,7 @@ h2.dri_no_asset_availiable {
   }
   .carousel-control.left {
     //background-image: url("previous_carousel_arrow.png");
-    top: 50%;
+    top: 95%;
     width: 12px;
     height: 8px;
     margin-top: -5px;
@@ -2105,7 +2087,7 @@ h2.dri_no_asset_availiable {
   }
   .carousel-control.right {
     //background-image: url("next_carousel_arrow.png");
-    top: 50%;
+    top: 95%;
     width: 12px;
     height: 10px;
     margin-top: -5px;
@@ -2289,7 +2271,6 @@ dl.dri_object_metadata_readview {
   }
 }
 
-
 /*-------------- Collection status and Features  --------------*/
 
 .dri_object_second_block {
@@ -2364,7 +2345,7 @@ ul.dri_view_collection {
   border-bottom: 1px solid #E1E1E1;
   li {
     margin: 0;
-    padding: 6px 0 6px 0;
+    padding: 4px 0 3px 0;
     list-style: none;
     border-top: 1px solid #E1E1E1;
     color: $dri_greytext;
@@ -2394,10 +2375,6 @@ ul.dri_view_collection {
 .dri_bookmark_object {
   margin: 20px 0 0 0;
   padding: 0;
-  
-  .toggle_bookmark {
-    margin-left: 10px;
-  }
  
   form input {
     padding: 0;
@@ -2431,7 +2408,7 @@ ul.dri_view_collection {
 .dri_title {
   color: #2F2F2F;
   font-weight: bold;
-  margin: 0;
+  margin: 0 0 4px 0;
   padding: 0;
 }
 
