@@ -21,6 +21,9 @@ module Interface
       within_fieldset('rights') do
         fill_in("batch_rights][", :with => "This is a statement of rights")
       end
+      within_fieldset('type') do
+        fill_in("batch_type][", :with => "Sound")
+      end
     end
 
     def enter_invalid_metadata(title)
@@ -40,6 +43,9 @@ module Interface
       within_fieldset('rights') do
         fill_in("batch_rights][", :with => "")
       end
+      within_fieldset('type') do
+        fill_in("batch_type][", :with => "Sound")
+      end
     end
 
     def enter_valid_pdf_metadata(title)
@@ -56,6 +62,9 @@ module Interface
       end
       within_fieldset('rights') do
         fill_in("batch_rights][", :with => "This is a statement of rights")
+      end
+      within_fieldset('type') do
+        fill_in("batch_type][", :with => "Text")
       end
     end
 
