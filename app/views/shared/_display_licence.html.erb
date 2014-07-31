@@ -1,5 +1,5 @@
-<dt class="blacklight-rights_tesim"><%= t('dri.app.views.fields.licence') %></dd>
-<dd><% if !@licence.nil? && !@licence.blank? %>
+<dt class="dri_licence"><%= t('dri.app.views.fields.licence') %></dd>
+<dd class="dri_licence"><% if !@licence.nil? && !@licence.blank? %>
       <% if @licence.name == "All Rights Reserved" %>
         <% @licence.name = t('dri.views.licences.all_rights_reserved') %>
       <% end %>
