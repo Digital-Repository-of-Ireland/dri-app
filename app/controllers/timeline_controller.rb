@@ -6,18 +6,20 @@ class TimelineController < ApplicationController
 
     query = get_query(params)
 
+    ######## TO BE REMOVED BEGIN
     puts "###################"
     puts query
     puts "###################"
+    ######## TO BE REMOVED END
 
     response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "150")
 
 
+    ######## TO BE REMOVED BEGIN
     puts "±±±±±±±±±±±±±±±±±±"
     puts response.inspect
     puts "±±±±±±±±±±±±±±±±±±"
 
-    ######## TO BE REMOVED BEGIN
     iso_date = "1986-02-18"
     w3c_date = "Wed, 09 Feb 1994"
     dcmi_date = "name=Phanerozoic Eon; end=2009-09-25T16:40+10:00; start=1999-09-25T14:20+10:00; scheme=W3C-DTF;"
@@ -33,6 +35,7 @@ class TimelineController < ApplicationController
 
     response.each do |document|
       document = document.symbolize_keys
+      ######## TODO make timeline_data data mapping
       puts document[Solrizer.solr_name('creation_date', :stored_searchable, type: :string).to_sym].first
     end
     render :json => timeline_data.to_json
