@@ -14,8 +14,6 @@ Scenario: Ingesting a duplicate Digital Object using metadata file upload
   And I am on the new Digital Object page
   When I select the text "Test Collection" from the selectbox for ingest collection
   And I press the button to continue
-  And I select "Sound" from the selectbox for object type
-  And I press the button to continue
   And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "SAMPLEA.xml"
@@ -27,8 +25,6 @@ Scenario: Ingesting a duplicate Digital Object using form input
   Given I have created a "Sound" object with title "SAMPLE OBJECT A" in the collection "Test Collection"  
   And I am on the new Digital Object page
   When I select the text "Test Collection" from the selectbox for ingest collection
-  And I press the button to continue
-  And I select "Sound" from the selectbox for object type
   And I press the button to continue
   And I select "input" from the selectbox for ingest methods
   And I press the button to continue

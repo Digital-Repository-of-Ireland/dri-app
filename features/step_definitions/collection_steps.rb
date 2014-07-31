@@ -29,7 +29,6 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
   digital_object = Batch.new(:pid => pid)
   digital_object.title = title ? [title] : "Test Object"
   digital_object.type = type ? [type] : "Sound"
-  digital_object.object_type = type ? [type] : "Sound"
   digital_object.description = desc ? [desc] : "A test object"
   if user
     User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
@@ -95,8 +94,6 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
     Given I am on the new Digital Object page
     And I select "#{collection_pid}" from the selectbox for ingest collection
-    And I press the button to continue
-    And I select "Text" from the selectbox for object type
     And I press the button to continue
     And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
