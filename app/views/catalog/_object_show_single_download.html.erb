@@ -31,7 +31,7 @@
       </div>
     </div>
 <% end %>
-<% if surrogate.nil? && !@files.empty? && (can? :read, @document ) %>
+<% if surrogate.nil? && !@files.empty? && (can? :read_master, @document ) %>
     <div class="dri_asset_holder">
       <div class="dri_asset_tools">
         <div class="dri_green_button">
