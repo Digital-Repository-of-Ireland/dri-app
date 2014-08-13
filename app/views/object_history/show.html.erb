@@ -1,0 +1,15 @@
+<div class="dri_report_container">
+    <% @datastreams.each do |datastream| %>
+      <h2><%= datastream %></h2>
+      <table>
+        <tr><th>Date</th><th>Action</th><th>Datastream</th></tr>
+        <% @records[datastream].keys.sort.each do |key| %>
+          <tr>
+            <td><%= key %></td>
+            <td><%= @records[datastream][key] %></td>
+            <td><%= link_to('Datastream', datastream_version_path(:id => @object.id, :stream => datastream, :date => key )) %>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+</div>
