@@ -1,15 +1,47 @@
 <div class="dri_report_container">
-    <% @datastreams.each do |datastream| %>
-      <h2><%= datastream %></h2>
+
+  <h3><%= t('dri.reports.headings.object') %></h3>
+  <table>
+    <tr><td> <%= t('dri.reports.object.object_id') %> </td><td> <%= @object.id %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.doi') %> </td><td> <%= @object.doi %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.title') %> </td><td> <%= @object.title.join(' : ') %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.created_at') %> </td><td> <%= @object.create_date %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.last_mod') %> </td><td> <%= @object.modified_date %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.depositor') %> </td><td> <%= @object.depositor %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.status') %> </td><td> <%= @object.status %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.metadata_md5') %> </td><td> <%= @object.metadata_md5 %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.licence') %> </td><td> <%= @licence %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.copyright') %> </td><td> <%= @object.rights.join(' : ') %> </td></tr>
+  </table>
+
+
+  <h3><%= t('dri.reports.headings.permissions') %></h3>
+  <table>
+    <tr><td> <%= t('dri.reports.object.institute_manager') %> </td><td> <%= @institute_manager %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.read_groups') %> </td><td> <%= @read_groups %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.read_users') %> </td><td>
+      <% @read_users.each do |user| %>
       <table>
-        <tr><th>Date</th><th>Action</th><th>Datastream</th></tr>
-        <% @records[datastream].keys.sort.each do |key| %>
-          <tr>
-            <td><%= key %></td>
-            <td><%= @records[datastream][key] %></td>
-            <td><%= link_to('Datastream', datastream_version_path(:id => @object.id, :stream => datastream, :date => key )) %>
-          </tr>
-        <% end %>
+        <tr><td><%= user[0] %></td><td><%= user[1] %></td><td><%= user[2] %></td></tr>
       </table>
-    <% end %>
+      <% end %>
+    </td></tr>
+    <tr><td> <%= t('dri.reports.object.edit_users') %> </td><td> <%= @edit_users %>  </td></tr>
+    <tr><td> <%= t('dri.reports.object.manage_users') %> </td><td><%= @manager_users %></td></tr>
+  </table>
+
+
+  <% @datastreams.each do |datastream| %>
+    <h3><%= datastream %></h3>
+    <table>
+      <tr><th>Date</th><th>Action</th><th>Datastream</th></tr>
+      <% @records[datastream].keys.sort.each do |key| %>
+        <tr>
+          <td><%= key %></td>
+          <td><%= @records[datastream][key] %></td>
+          <td><%= link_to('Datastream', datastream_version_path(:id => @object.id, :stream => datastream, :date => key )) %>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
 </div>
