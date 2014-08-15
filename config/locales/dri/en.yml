@@ -1241,10 +1241,10 @@ en:
     reports:
       headings:
         object: "Object Info"
-      datastreams:
         date: Date
         action: Action
         link: Link
+        datastream_version: "View Datastream Version"
       object:
         object_id: "Object ID"
         doi: DOI
@@ -1266,7 +1266,11 @@ en:
         asset_type: "Asset Type"
         created_at: "Created at"
         depositor: "Created by"
-        checksum: Checksum
+        checksum_orig: "Original checksum"
+        checksum_md5: "md5 checksum"
+        checksum_sha_256: "sha256 checksum"
+        checksum_rmd160: "rmd160 checksum"
         verified: Verified
         virus_scan: "Virus Scan"
-
+        last_modified: "Last modified at"
+        file_size: "File size"

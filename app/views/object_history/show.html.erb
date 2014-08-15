@@ -34,14 +34,29 @@
   <% @datastreams.each do |datastream| %>
     <h3><%= datastream %></h3>
     <table>
-      <tr><th>Date</th><th>Action</th><th>Datastream</th></tr>
+      <tr><th><%= t('dri.reports.headings.date') %></th><th><%= t('dri.reports.headings.action') %></th><th><%= t('dri.reports.headings.link') %></th></tr>
       <% @records[datastream].keys.sort.each do |key| %>
         <tr>
           <td><%= key %></td>
           <td><%= @records[datastream][key] %></td>
-          <td><%= link_to('Datastream', datastream_version_path(:id => @object.id, :stream => datastream, :date => key )) %>
+          <td><%= link_to(t('dri.reports.headings.datastream_version'), datastream_version_path(:id => @object.id, :stream => datastream, :date => key )) %>
         </tr>
       <% end %>
+    </table>
+  <% end %>
+
+
+  <h3><%= t('dri.reports.headings.files') %></h3>
+  <% @object.generic_files.each do |file| %>
+    <table>
+      <tr><td><%= t('dri.reports.assets.asset_id') %></td><td><%= file.pid %></td></tr>
+      <tr><td><%= t('dri.reports.assets.asset_type') %></td><td><%= file.format_label.join(' : ') %></td></tr>
+      <tr><td><%= t('dri.reports.assets.file_size') %></td><td><%= file.file_size.join(' : ') %></td></tr>
+      <tr><td><%= t('dri.reports.assets.last_modified') %></td><td><%= file.last_modified.join(' : ') %></td></tr>
+      <tr><td><%= t('dri.reports.assets.checksum_orig') %></td><td><%= file.original_checksum.join(' : ') %></td></tr>
+      <tr><td><%= t('dri.reports.assets.checksum_md5') %></td><td><%= file.checksum_md5 %></td></tr>
+      <tr><td><%= t('dri.reports.assets.checksum_sha256') %></td><td><%= file.checksum_sha256 %></td></tr>
+      <tr><td><%= t('dri.reports.assets.checksum_rmd160') %></td><td><%= file.checksum_rmd160 %></td></tr>
     </table>
   <% end %>
 </div>
