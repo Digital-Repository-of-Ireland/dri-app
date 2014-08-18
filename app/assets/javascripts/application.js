@@ -20,6 +20,8 @@
 //= require bootstrap/popover
 //= require bootstrap-player.js
 //= require bootstrap-switch
+//= require timelineJS/embed
+//=require timelineJS/locale/en
 //= require_tree .
 // Required by Blacklight
 //= require blacklight/blacklight

@@ -13,4 +13,18 @@
     <% end %>
   </ul>
 </div>
+
+<script>
+    $(document).ready(function() {
+        createStoryJS({
+            type: 'timeline',
+            width: '400',
+            height: '400',
+            source: '<%= timeline_json_path(params) %>',
+            embed_id: 'time_line'
+        });
+    });
+</script>
+
+<div id="time_line"></div>
 <!-- close dri_facet_restrictions_container -->

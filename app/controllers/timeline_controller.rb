@@ -79,7 +79,7 @@ class TimelineController < ApplicationController
     dcmi_date.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if (k == 'start' || k == 'end')
-        parsed_dcmi[k.to_sym] = Date.parse(v)
+        parsed_dcmi[k.to_sym] = Date.parse(v).to_s.gsub(/[-]/, ',')
       end
     end
 
@@ -115,8 +115,8 @@ class TimelineController < ApplicationController
           timeline_data[:timeline][:date][index][:endDate] = parsed_date[:end]
         else
           parsed_date = Date.parse(creation_date)
-          timeline_data[:timeline][:date][index][:startDate] = parsed_date
-          timeline_data[:timeline][:date][index][:endDate] = parsed_date
+          timeline_data[:timeline][:date][index][:startDate] = parsed_date.to_s.gsub(/[-]/, ',')
+          timeline_data[:timeline][:date][index][:endDate] = (parsed_date + 1).to_s.gsub(/[-]/, ',')
         end
 
         timeline_data[:timeline][:date][index][:headline] = document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first
