@@ -16,31 +16,18 @@ Before('@random_pid') do
 end
 
 After('@random_pid') do
-  AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key)
-  s3 = AWS::S3.new(ssl_verify_peer: false)
-  bucket = s3.buckets["o"+@random_pid]
-  bucket.objects.each do |obj|
-    obj.delete
-  end
-  bucket.delete
+  storage = Storage::S3Interface.new
+  storage.delete_bucket("o"+@random_pid)
 
   @random_pid = ""
 end
 
 After('@api') do
   buckets = ['apitest1', 'apitest2']
-  AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key)
-  s3 = AWS::S3.new(ssl_verify_peer: false)
 
+  storage = Storage::S3Interface.new
   buckets.each do |bucket|
-    begin
-      bucket = s3.buckets[bucket]
-      bucket.objects.each do |obj|
-        obj.delete
-      end
-      bucket.delete
-    rescue Exception
-    end
+    storage.delete_bucket(bucket)
   end
 end
 

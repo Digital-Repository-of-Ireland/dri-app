@@ -5,8 +5,8 @@ module Storage
     include Utils
 
     def initialize
-      AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key)
-      @s3 = AWS::S3.new(ssl_verify_peer: false)
+      AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key, :s3_force_path_style => true)
+      @s3 = AWS::S3.new(ssl_verify_peer: false, use_ssl: Settings.S3.use_ssl)
     end
 
     # Get a hash of all surrogates for an object
@@ -17,7 +17,6 @@ module Storage
       generic_file = file_doc.id.sub('dri:','')
 
       files = list_files(bucket)
-
       @surrogates_hash = {}
       files.each do |file|
         begin
@@ -29,7 +28,6 @@ module Storage
           logger.debug "Problem getting url for file #{file} : #{e.to_s}"
         end
       end
-
       return @surrogates_hash
     end
 

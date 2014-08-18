@@ -24,7 +24,6 @@ html {
     *font: x-small;
     margin: 0;
 
-
   }
 }
 
@@ -1580,7 +1579,7 @@ p.dri_rss_link a {
   }
   .dri_about_07 {
     margin: 0;
-    padding: 0;
+    padding: 0 0 23px 0;
     min-height: 332px;
     h1 {
       margin: 10px 0 6px 0;
@@ -1596,8 +1595,7 @@ p.dri_rss_link a {
     }
   }
   .dri_about_08 {
-    padding: 0;
-    padding: 0;
+    padding: 0 0 23px 0;
     min-height: 322px;
     h1 {
       margin: 10px 0 6px 0;
@@ -2345,7 +2343,7 @@ ul.dri_view_collection {
   border-bottom: 1px solid #E1E1E1;
   li {
     margin: 0;
-    padding: 4px 0 3px 0;
+    padding: 5px 0 5px 0;
     list-style: none;
     border-top: 1px solid #E1E1E1;
     color: $dri_greytext;
@@ -2375,10 +2373,13 @@ ul.dri_view_collection {
 .dri_bookmark_object {
   margin: 20px 0 0 0;
   padding: 0;
+  display: block;
+  float:left; 
  
   form input {
     padding: 0;
-	 margin: 0;
+	 margin: 0; 
+	
   }
   label {
     color: #2F2F2F;
@@ -2394,7 +2395,14 @@ ul.dri_view_collection {
 	
 	
   }
-  label.bookmark_manage {
+  
+  .documentFunctions {
+	margin: 0;
+  padding: 0;
+  a { 
+  color: #2F2F2F;
+  }
+  label.bookmark_manage  {
     border-top: 1px solid #E1E1E1;
     padding-top: 5px;
     margin-top: 5px;
@@ -2405,6 +2413,8 @@ ul.dri_view_collection {
     }
   }
 }
+}
+
 
 .dri_title {
   color: #2F2F2F;
