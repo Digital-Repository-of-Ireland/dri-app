@@ -51,6 +51,13 @@ en:
         header: "DRI End User Agreement"
         message: "Aliquam erat volutpat. Integer fermentum est at risus condimentum accumsan. Sed imperdiet ac lectus vitae commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam rutrum arcu at lorem sodales, sed mollis nibh scelerisque. Proin congue ipsum eget velit gravida, non fringilla est ultrices. Duis lobortis sem et imperdiet tempor. In gravida tortor vulputate nibh vestibulum lobortis. Curabitur fermenm, ipsum id ultrices fermentum, nisi metus tristique justo, faucibus tempor nulla massa semper dolor. Donec tellus felis, luctus eu aliquet quis, scelerisque ut diam. Duis luctus turpis lectus, et feugiat mauris feugiat vitae. Sed interdum commodo est, consectetur suscipit lectus viverra et. Integer a consequat massa. Praesent arcu purus, auctor sed ante vel, blandit molestie neque.Aenean posuere pharetra ligula in aliquam. Maecenas tristique felis felis, id posuere metus bibendum accumsan. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent at velit quis nunc rhoncus laoreet. Sed ornare, leo et tincidunt malesuada, ligula ligula gravida lacus, quis ultrices lacus mi venenatis lacus. Nunc id interdum erat. Suspendisse eu molestie mauris. Suspendisse pharetra dapibus euismo. Pellentesque a ligula velit. Ut volutpat pretium risus adipiscing porta. In lectus augue, interdum sit amet iaculis eu, vehicula a nibh. Etiam lectus ligula, rhoncus id facilisis molestie, pellentesque vitae elit. Nulla elit dolor, mollis vitae ultrices sed, tristique vel erat. Nam mattis aliquam porta. Sed sagittis velit eu feugiat tincidunt. Etiam vulputate augue eleifend facilisis faucibus. Sed at turpis ut massa tristique feugiat eget et arcu. Fusce suscipit egestas elementum. Duis ac quam at elit scelerisque scelerisque quis et dui. Nulla sit amet porttitor quam, eget porta libero."
         reject: "Reject End User Agreement"
+      timeline: 
+        description: 
+          no_results: "No valid results have been found"
+          results_found: "Please explore the search results timeline"
+        headline: 
+          no_results: "No results found"
+          results_found: "Current Search Timeline"
       user_profile: 
         collection_title: "Collection Title"
         edit: Edit
@@ -86,11 +93,11 @@ en:
         unknown_permission: "Unsupported Permission Level: %{action}"
         virus_detected: "Virus detected in uploaded file: %{virus}"
       error: 
+        cover_image_not_saved: "Unable to save cover image"
         no_type_specified: "You must specify a valid object type"
         not_created: "Unable to create. Check set permissions"
         not_updated: "%{item} was not updated. Check set permissions"
         validation_errors: "Validation Errors: %{error}"
-        cover_image_not_saved: "Unable to save cover image" 
       notice: 
         added_to_collection: "Object has been added to collection."
         collection_created: "Collection object has been successfully created."

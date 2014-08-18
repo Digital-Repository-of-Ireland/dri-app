@@ -2,7 +2,7 @@ class TimelineController < ApplicationController
 
   def get
 
-    timeline_data = { :timeline => {} }
+
 
     query = get_query(params)
 
@@ -12,32 +12,31 @@ class TimelineController < ApplicationController
     puts "###################"
     ######## TO BE REMOVED END
 
-    response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "150")
+    response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "30")
 
 
-    ######## TO BE REMOVED BEGIN
-    puts "±±±±±±±±±±±±±±±±±±"
-    puts response.inspect
-    puts "±±±±±±±±±±±±±±±±±±"
+    # ######## TO BE REMOVED BEGIN
+    # iso_date = "1986-02-18"
+    # w3c_date = "Wed, 09 Feb 1994"
+    # dcmi_date = "name=Phanerozoic Eon; end=2009-09-25T16:40+10:00; start=1999-09-25T14:20+10:00; scheme=W3C-DTF;"
+    # iso_conv_date = Date.parse(iso_date)
+    # w3c_conv_date = Date.parse(w3c_date)
+    # parsed_dcmi = parse_dcmi(dcmi_date)
+    # puts parse_dcmi?(w3c_date).to_s
+    # puts iso_conv_date.inspect
+    # puts w3c_conv_date.inspect
+    # puts parse_dcmi?(dcmi_date).to_s
+    # puts parsed_dcmi.inspect
+    # puts Solrizer.solr_name('description', :stored_searchable, type: :string)
+    # ######## TO BE REMOVED END
 
-    iso_date = "1986-02-18"
-    w3c_date = "Wed, 09 Feb 1994"
-    dcmi_date = "name=Phanerozoic Eon; end=2009-09-25T16:40+10:00; start=1999-09-25T14:20+10:00; scheme=W3C-DTF;"
-    iso_conv_date = Date.parse(iso_date)
-    w3c_conv_date = Date.parse(w3c_date)
-    parsed_dcmi = parse_dcmi(dcmi_date)
-    puts parse_dcmi?(w3c_date).to_s
-    puts iso_conv_date.inspect
-    puts w3c_conv_date.inspect
-    puts parse_dcmi?(dcmi_date).to_s
-    puts parsed_dcmi.inspect
-    ######## TO BE REMOVED END
+    timeline_data = create_timeline_data(response)
 
-    response.each do |document|
-      document = document.symbolize_keys
-      ######## TODO make timeline_data data mapping
-      puts document[Solrizer.solr_name('creation_date', :stored_searchable, type: :string).to_sym].first
-    end
+    # ######## TO BE REMOVED BEGIN
+    # puts "-----------------"
+    # puts timeline_data.inspect
+    # puts "-----------------"
+    # ######## TO BE REMOVED END
     render :json => timeline_data.to_json
   end
 
@@ -65,6 +64,7 @@ class TimelineController < ApplicationController
       end
     end
 
+    # creation date exists and it is valid
     query += " AND #{Solrizer.solr_name('creation_date', :stored_searchable, type: :string)}:[* TO *]"
     query += " AND (-#{Solrizer.solr_name('creation_date', :stored_searchable, type: :string)}:unknown"
     query += " AND -#{Solrizer.solr_name('creation_date', :stored_searchable, type: :string)}:\"n/a\")"
@@ -92,5 +92,41 @@ class TimelineController < ApplicationController
 
   def parse_dcmi? dcmi_date
     return dcmi_date != parse_dcmi(dcmi_date)
+  end
+
+  def create_timeline_data(response)
+    timeline_data = { :timeline => { :type => "default", :asset => { :media => "assets/dri/dri_ident.png" }, :date => [] } }
+
+    if response.blank?
+      timeline_data[:timeline][:headline] = t('dri.application.timeline.headline.no_results')
+      timeline_data[:timeline][:text] = t('dri.application.timeline.description.no_results')
+    else
+      timeline_data[:timeline][:headline] = t('dri.application.timeline.headline.results_found')
+      timeline_data[:timeline][:text] = t('dri.application.timeline.description.results_found')
+
+      response.each_with_index do |document, index|
+        document = document.symbolize_keys
+        creation_date = document[Solrizer.solr_name('creation_date', :stored_searchable, type: :string).to_sym].first
+        timeline_data[:timeline][:date][index] = {}
+
+        if parse_dcmi?(creation_date)
+          parsed_date = parsed_dcmi(creation_date)
+          timeline_data[:timeline][:date][index][:startDate] = parsed_date[:start]
+          timeline_data[:timeline][:date][index][:endDate] = parsed_date[:end]
+        else
+          parsed_date = Date.parse(creation_date)
+          timeline_data[:timeline][:date][index][:startDate] = parsed_date
+          timeline_data[:timeline][:date][index][:endDate] = parsed_date
+        end
+
+        timeline_data[:timeline][:date][index][:headline] = document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first
+        timeline_data[:timeline][:date][index][:text] = document[Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym].first
+        timeline_data[:timeline][:date][index][:asset] = {}
+        timeline_data[:timeline][:date][index][:asset][:media] = catalog_path(document[:id])
+      end
+
+    end
+
+    return timeline_data
   end
 end
