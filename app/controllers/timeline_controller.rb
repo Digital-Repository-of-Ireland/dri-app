@@ -95,7 +95,7 @@ class TimelineController < ApplicationController
   end
 
   def create_timeline_data(response)
-    timeline_data = { :timeline => { :type => "default", :asset => { :media => "assets/dri/dri_ident.png" }, :date => [] } }
+    timeline_data = { :timeline => { :type => "default", :date => [] } }
 
     if response.blank?
       timeline_data[:timeline][:headline] = t('dri.application.timeline.headline.no_results')
