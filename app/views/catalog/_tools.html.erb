@@ -13,6 +13,9 @@
   <li><%= link_to t('dri.views.catalog.forms.metadata'), object_metadata_path(@document.id), :id => "download_metadata" %></li>
   <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
   <li><%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citatation_modal_id' %></li>
+  <% if (can? :edit, @document) %>
+    <li><%= link_to t('dri.views.catalog.links.history'), object_history_path(@document.id), :id => 'show_object_history_report' %></li>
+  <% end %>
 </ul>
 
 
