@@ -32,9 +32,11 @@ module InheritanceMethods
     users = []
     if object.read_groups.present?
       object.read_groups.each do |group_name|
-        group = UserGroup::Group.where(:name => group_name)
-        group.first.users.each do |user|
-          users << [user.first_name, user.second_name, user.email]
+        if !['public','registered'].include?(group_name)
+          group = UserGroup::Group.where(:name => group_name)
+          group.first.users.each do |user|
+            users << [user.first_name, user.second_name, user.email]
+          end
         end
       end
       return users
