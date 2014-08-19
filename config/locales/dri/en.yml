@@ -226,8 +226,10 @@ en:
           characterization: Characterization
           details: "File Details"
           download: "Download asset"
+          download_nth: "Download %{index} asset"
           download_master: "Download master asset"
-          download_not_available: "not available"
+          unknown_size: "Unknown size"
+          download_not_available: "%{index} asset not available"
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
           listen: listen
@@ -1261,6 +1263,8 @@ en:
         manage_users: "Users with manager access"
         licence: "Reuse Licence"
         copyright: "Copyright Statement"
+        catalog_url: "View in catalog"
+        fedora_url: "View in Fedora"
       assets:
         asset_id: "Asset Generic File ID"
         asset_type: "Asset Type"
