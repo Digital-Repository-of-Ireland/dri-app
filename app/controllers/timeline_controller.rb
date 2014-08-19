@@ -1,4 +1,7 @@
+
+
 class TimelineController < ApplicationController
+require 'application_helper'
 
   def get
 
@@ -114,10 +117,11 @@ class TimelineController < ApplicationController
           timeline_data[:timeline][:date][index][:endDate] = (parsed_date + 1).to_s.gsub(/[-]/, ',')
         end
 
-        timeline_data[:timeline][:date][index][:headline] = document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first
+        timeline_data[:timeline][:date][index][:headline] = '<a href="' +  catalog_path(document[:id])+  '">' + document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first + '</a>'
         timeline_data[:timeline][:date][index][:text] = document[Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym].first
         timeline_data[:timeline][:date][index][:asset] = {}
-        timeline_data[:timeline][:date][index][:asset][:media] = catalog_url(document[:id])
+        timeline_data[:timeline][:date][index][:asset][:media] = 'assets/no_image.png'
+        timeline_data[:timeline][:date][index][:asset][:thumbnail] = 'assets/no_image.png'
       end
 
     end
