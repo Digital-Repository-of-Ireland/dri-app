@@ -10,10 +10,12 @@
             <li class="table">
               <%= link_to ' ', changeViewParams, :id => 'table_view' %>
             </li>
-            <% changeViewParams[:view] = "timeline" %>
-            <li class="grid">
-              <%= link_to ' ', changeViewParams, :id => 'timeline_view' %>
-            </li>
+            <% if params[:controller] == 'catalog' %>
+                <% changeViewParams[:view] = "timeline" %>
+                <li class="grid">
+                  <%= link_to ' ', changeViewParams, :id => 'timeline_view' %>
+                </li>
+            <% end %>
         <% elsif params[:view] == "list" %>
             <% changeViewParams[:view] = "grid" %>
             <li class="grid">
@@ -22,10 +24,12 @@
             <li class="table">
               <%= link_to ' ', '#', :class => "selected", :id => 'table_view' %>
             </li>
-            <% changeViewParams[:view] = "timeline" %>
-            <li class="grid">
-              <%= link_to ' ', changeViewParams, :id => 'timeline_view' %>
-            </li>
+            <% if params[:controller] == 'catalog' %>
+                <% changeViewParams[:view] = "timeline" %>
+                <li class="grid">
+                  <%= link_to ' ', changeViewParams, :id => 'timeline_view' %>
+                </li>
+            <% end %>
         <% elsif params[:view] == "timeline" %>
             <% changeViewParams[:view] = "grid" %>
             <li class="grid">
@@ -35,9 +39,11 @@
             <li class="table">
               <%= link_to ' ', changeViewParams, :id => 'table_view' %>
             </li>
-            <li class="grid">
-              <%= link_to ' ', '#', :class => "selected", :id => 'timeline_view' %>
-            </li>
+            <% if params[:controller] == 'catalog' %>
+                <li class="grid">
+                  <%= link_to ' ', '#', :class => "selected", :id => 'timeline_view' %>
+                </li>
+            <% end %>
         <% end %>
       </ul>
     </nav>

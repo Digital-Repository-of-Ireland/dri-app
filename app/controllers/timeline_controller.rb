@@ -12,9 +12,9 @@ class TimelineController < ApplicationController
     puts "###################"
     ######## TO BE REMOVED END
 
-    response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "30")
+    response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "100")
 
-
+    # ######## parsing dates examples
     # ######## TO BE REMOVED BEGIN
     # iso_date = "1986-02-18"
     # w3c_date = "Wed, 09 Feb 1994"
@@ -32,11 +32,6 @@ class TimelineController < ApplicationController
 
     timeline_data = create_timeline_data(response)
 
-    # ######## TO BE REMOVED BEGIN
-    # puts "-----------------"
-    # puts timeline_data.inspect
-    # puts "-----------------"
-    # ######## TO BE REMOVED END
     render :json => timeline_data.to_json
   end
 
@@ -110,7 +105,7 @@ class TimelineController < ApplicationController
         timeline_data[:timeline][:date][index] = {}
 
         if parse_dcmi?(creation_date)
-          parsed_date = parsed_dcmi(creation_date)
+          parsed_date = parse_dcmi(creation_date)
           timeline_data[:timeline][:date][index][:startDate] = parsed_date[:start]
           timeline_data[:timeline][:date][index][:endDate] = parsed_date[:end]
         else
@@ -122,7 +117,7 @@ class TimelineController < ApplicationController
         timeline_data[:timeline][:date][index][:headline] = document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first
         timeline_data[:timeline][:date][index][:text] = document[Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym].first
         timeline_data[:timeline][:date][index][:asset] = {}
-        timeline_data[:timeline][:date][index][:asset][:media] = catalog_path(document[:id])
+        timeline_data[:timeline][:date][index][:asset][:media] = catalog_url(document[:id])
       end
 
     end
