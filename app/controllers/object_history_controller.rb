@@ -25,6 +25,7 @@ class ObjectHistoryController < ApplicationController
     end
 
     @datastreams = @records.keys
+    @fedora_url = "#{ActiveFedora.config.credentials[:url]}/objects/#{@object.id}/datastreams"
 
     # Get inherited values
     @institute_manager = get_institute_manager(@object)
@@ -32,7 +33,7 @@ class ObjectHistoryController < ApplicationController
     @read_users = get_read_users_via_group(@object)
     @edit_users = get_governing_attribute(@object, 'edit_users_string')
     @manager_users = get_governing_attribute(@object, 'manager_users_string')
-    @licence = get_governing_attribute(@object, 'licence').to_s
+    @licence = get_governing_attribute(@object, 'licence')
 
     respond_to do |format|
       format.html
