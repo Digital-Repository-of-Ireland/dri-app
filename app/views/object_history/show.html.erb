@@ -12,6 +12,9 @@
     <tr><td> <%= t('dri.reports.object.metadata_md5') %> </td><td> <%= @object.metadata_md5 %> </td></tr>
     <tr><td> <%= t('dri.reports.object.licence') %> </td><td> <%= @licence %> </td></tr>
     <tr><td> <%= t('dri.reports.object.copyright') %> </td><td> <%= @object.rights.join(' : ') %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.catalog_url') %> </td><td> <%= link_to(catalog_path(@object.id), catalog_path(@object.id)) %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.fedora_url') %> </td><td> <%= link_to(@fedora_url, @fedora_url) %>
+
   </table>
 
 
