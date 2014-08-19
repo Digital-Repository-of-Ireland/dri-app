@@ -65,16 +65,16 @@ module ApplicationHelper
   end
 
   def default_image ( file_document )
-    path = "no_image.png"
+    path = asset_url "no_image.png"
 
     unless file_document.nil?
       unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
         format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
 
-        path = "dri/formats/#{format}.png"
+        path = asset_url "dri/formats/#{format}.png"
 
         if Rails.application.assets.find_asset(path).nil?
-          path = "no_image.png"
+          path = asset_url "no_image.png"
         end
       end
     end

@@ -117,11 +117,92 @@ class TimelineController < ApplicationController
         timeline_data[:timeline][:date][index][:headline] = document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first
         timeline_data[:timeline][:date][index][:text] = document[Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym].first
         timeline_data[:timeline][:date][index][:asset] = {}
-        timeline_data[:timeline][:date][index][:asset][:media] = catalog_url(document[:id])
+        timeline_data[:timeline][:date][index][:asset][:media] = get_cover_image(document)
       end
 
     end
 
     return timeline_data
   end
+
+  def get_cover_image( document )
+    files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{document[:id]}\""
+    files = ActiveFedora::SolrService.query(files_query)
+    file_doc = SolrDocument.new(files.first) unless files.empty?
+
+    if can?(:read, document[:id])
+      @cover_image = search_image( document, file_doc ) unless file_doc.nil?
+    end
+
+    @cover_image = cover_image ( document ) if @cover_image.nil?
+
+    @cover_image = default_image ( file_doc ) if @cover_image.nil?
+  end
+
+  def search_image ( document, file_document, image_name = "crop16_9_width_200_thumbnail" )
+    path = nil
+
+    unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
+      format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
+
+      case format
+        when "image"
+          path = surrogate_url(document[:id], file_document.id, image_name)
+        when "text"
+          path = surrogate_url(document[:id], file_document.id, "thumbnail_medium")
+      end
+    end
+
+    path
+  end
+
+  def surrogate_url( doc, file_doc, name )
+    storage = Storage::S3Interface.new
+    url = storage.surrogate_url(doc, file_doc, name)
+
+    url
+  end
+
+  def cover_image ( document )
+    path = nil
+
+    if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
+      path = document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
+    elsif !document[Solrizer.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
+      collection = root_collection_solr(document)
+      if collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)].first
+        path = collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)].first
+      end
+    end
+
+    path
+  end
+
+  def root_collection_solr( doc )
+    if doc[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym]
+      id = doc[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
+      solr_query = "id:#{id}"
+      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
+    end
+    collection[0]
+  end
+
+  def default_image ( file_document )
+    path = "assets/no_image.png"
+
+    unless file_document.nil?
+      unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
+        format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
+
+        path = "assets/dri/formats/#{format}.png"
+
+        if Rails.application.assets.find_asset(path).nil?
+          path = "assets/no_image.png"
+        end
+      end
+    end
+
+    path
+  end
+
 end
