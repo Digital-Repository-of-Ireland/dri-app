@@ -1,4 +1,5 @@
 class TimelineController < ApplicationController
+  include ApplicationHelper
 
   def get
 
@@ -117,11 +118,8 @@ class TimelineController < ApplicationController
         timeline_data[:timeline][:date][index][:headline] = '<a href="' +  catalog_path(document[:id])+  '">' + document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first + '</a>'
         timeline_data[:timeline][:date][index][:text] = document[Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym].first
         timeline_data[:timeline][:date][index][:asset] = {}
-        timeline_data[:timeline][:date][index][:asset][:media] = view_context.get_cover_image(document)
-        
-            puts "###################"
-            puts view_context.get_cover_image(document)
-            puts "###################"
+        timeline_data[:timeline][:date][index][:asset][:media] = view_context.cover_image(document)
+
       end
 
     end
