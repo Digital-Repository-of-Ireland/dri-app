@@ -12,7 +12,7 @@ class TimelineController < ApplicationController
     puts "###################"
     ######## TO BE REMOVED END
 
-    response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "100")
+    response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "50")
 
     # ######## parsing dates examples
     # ######## TO BE REMOVED BEGIN
