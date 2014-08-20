@@ -63,9 +63,11 @@ html {
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 15px;
   background: #333333;
   background: rgba(144, 154, 60, 0.75);
+  p a {
+	  padding: 10px 10px 0 10px;
+  }
 }
 
 .carousel-indicators .active {
