@@ -57,22 +57,72 @@ html {
 .span6 {
   width: 509px;
 }
-
+/* Object carousel Controls */
 .carousel-caption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #333333;
-  background: rgba(144, 154, 60, 0.75);
-  p a {
-	  padding: 10px 10px 0 10px;
-  }
-}
+      padding: 0 0 0 0;
+	  position: absolute;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background: #333333;
+	  background: rgba(144, 154, 60, 0.75);
+ 	
+	 p {
+		font-size: 100%;
+		color:#FFF;
+		padding: 0;
+		margin: 0;
+	
 
-.carousel-indicators .active {
-  background-color: rgba(144, 154, 60, 1);
+	}
 }
+/* Homepage carousel Controls */
+
+.dri_slideshow_block {
+	
+	.carousel-caption {
+      padding: 10px 0 0 0;
+	  position: absolute;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background: #333333;
+	  background: rgba(144, 154, 60, 0.75);
+ 	
+	 p {
+		font-size: 140%;
+		color:#FFF;
+		padding: 0 0 26px 0;
+
+	}
+}
+ ol.carousel-indicators {
+	 height: 0;
+	 padding: 0 0 0 0;
+	
+	 li.active {
+		 background-color: #FFF;  
+		 margin: 8px 0 0 0;
+	 }
+	}
+.carousel-indicators .active {
+	  background-color: rgba(144, 154, 60, 1);
+	}
+}
+a.carousel-control {
+	position: absolute;
+	top: 130px;
+	left: 0;
+	bottom: 0;
+	width: 15%;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	font-size: 180%;
+	color: white;
+	text-align: center;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+
+	}
 
 input,
 button,
