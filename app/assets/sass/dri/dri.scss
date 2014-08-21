@@ -111,7 +111,8 @@ html {
 }
 a.carousel-control {
 	position: absolute;
-	top: 130px;
+	padding-top: 130px;
+	top: 0;
 	left: 0;
 	bottom: 0;
 	width: 15%;
@@ -586,6 +587,7 @@ a .dri_signin_edugate:hover {
     .on {
       a {
         text-decoration: underline;
+		color: $dri_grey;
       }
     }
     .dri_language_links {
