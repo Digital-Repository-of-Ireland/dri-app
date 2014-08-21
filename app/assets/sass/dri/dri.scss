@@ -158,7 +158,26 @@ input[type="color"],
   border-radius: 4px;
   vertical-align: middle;
 }
+.btn {
+	display: inline-block;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: none;
+	white-space: nowrap;
+	 padding: 0;
+  	margin: 0;
+	font-size: 100%;
+	line-height: none;
+	border-radius: 3px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 
+}
 .modal.fade.in {
   top: 25%;
 }
@@ -236,7 +255,7 @@ a {
   -moz-border-radius: 3px;
   border-radius: 3px;
   border: none;
-  padding: 4px 0 4px 0;
+  padding: 6px 0 6px 0;
   margin: 10px 0 10px 0;
 }
 
@@ -261,6 +280,16 @@ a {
 
 .dri_button_black:hover {}
 
+.btn {
+  @extend .dri_button;
+  background-color: $dri_lightgrey;
+  padding: 5px 0 4px 0;
+  margin: 0;
+}
+.btn:hover {
+	background-color: darken($dri_lightgrey, 10%);
+	color: #FFF;
+}
 .dri_w230 {
   width: 230px;
 }
@@ -272,6 +301,8 @@ input.dri_w230 {
 .dri_w330 {
   width: 330px;
 }
+
+
 
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
@@ -291,15 +322,22 @@ input.dri_w230 {
     font-weight: bold;
     font-size: 120%;
   }
-  input {
-    margin: 0 0 4px 0;
-    padding: 6px 15px 6px 15px;
+  
+  label {
+	margin: 0 0 0 0;
+    padding: 0 0 0 0;
     width: 300px;
+  }
+  input {
+    margin: 6px 0 14px 0;
+    padding: 6px 15px 6px 15px;
+    width: 310px;
     background-color: #2F2F2F;
     border: none;
     color: #FFF;
     font-size: 106%;
     font-weight: normal;
+	
   }
   .dri_submit {
     input {
@@ -312,7 +350,7 @@ input.dri_w230 {
       padding: 6px 0 6px 0;
       margin: 10px 0 10px 0;
       cursor: pointer;
-      width: 330px;
+      width: 310px;
     }
     input:hover {
       background-color: #7C842B;
@@ -345,13 +383,13 @@ input.dri_w230 {
   display: block;
   margin: 0 4px 0 0;
   padding: 0;
-  width: 330px;
+  width: 310px;
   a {
     margin: 0 0 0 0;
     padding: 0;
     color: #3E3E3E;
     span.text_right {
-      margin: 0 0 0 151px;
+      margin: 0 0 0 136px;
       padding: 0;
       color: #3E3E3E;
     }
@@ -459,12 +497,13 @@ a .dri_signin_edugate {
   background: image-url("dri/signin_edugate.png") no-repeat;
   background-color: #7D4391;
   margin: 0 0 6px 0;
-  padding: 4px 0 4px 55px;
+  padding: 6px 0 6px 55px;
   border: 1px solid #612E76;
   -moz-border-radius: 2px;
   border-radius: 2px;
   color: #FFF;
   font-size: 110%;
+  width: 310px;
 }
 
 a .dri_signin_edugate:hover {
@@ -1396,7 +1435,14 @@ h4.suggest {
   }
   .dri_account_block_info {
     .dri_account_block_info_item {
+		padding: 0 0 20px 0;
       border-bottom: 1px lightgrey solid;
+	  
+	  a {
+		  color: $dri_green;
+		  font-weight: bold;
+		  text-decoration: underline;
+	  }
     }
     h5 {
       color: #2F2F2F;
@@ -1569,12 +1615,12 @@ p.dri_rss_link a {
       line-height: 1.3em;
     }
     .dri_green_button {
-      margin: 13px 0 0 0;
+      margin: 25px 0 0 0;
       padding: 0px;
       a {
         width: 300px;
         margin: 0;
-        padding: 2px 9px 2px 9px;
+        padding: 5px 9px 5px 9px;
         border: none;
         -moz-border-radius: 2px;
         border-radius: 2px;
