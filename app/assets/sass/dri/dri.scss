@@ -58,7 +58,14 @@ html {
   width: 509px;
 }
 /* Object carousel Controls */
-.carousel-caption {
+
+
+.carousel {
+	.item {
+		padding: 0; 
+		margin: 0;
+	}
+	.carousel-caption {
       padding: 0 0 0 0;
 	  position: absolute;
 	  left: 0;
@@ -66,14 +73,23 @@ html {
 	  bottom: 0;
 	  background: #333333;
 	  background: rgba(144, 154, 60, 0.75);
- 	
-	 p {
+	}
+	
+	p {
 		font-size: 100%;
 		color:#FFF;
 		padding: 0;
-		margin: 0;
+		margin: 3px 0 0 0;
+		text-shadow: none;
+	}
 	
-
+	.left {
+		text-shadow: none;
+		margin-left: 6px;
+	}
+		.right {
+		text-shadow: none;
+		margin-right: 6px;
 	}
 }
 /* Homepage carousel Controls */
@@ -93,6 +109,7 @@ html {
 		font-size: 140%;
 		color:#FFF;
 		padding: 0 0 26px 0;
+		text-shadow: none;
 
 	}
 }
@@ -107,6 +124,14 @@ html {
 	}
 .carousel-indicators .active {
 	  background-color: rgba(144, 154, 60, 1);
+	}
+	.left {
+		text-shadow: none;
+		margin-left: 0;
+	}
+		.right {
+		text-shadow: none;
+		margin-right: 0;
 	}
 }
 a.carousel-control {
