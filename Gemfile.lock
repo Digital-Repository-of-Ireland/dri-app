@@ -562,6 +562,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    timelineJS-rails (1.1.5)
+      jquery-rails
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -646,6 +648,7 @@ DEPENDENCIES
   sqlite3
   sufia-models (= 4.0.0rc1)
   syntax
+  timelineJS-rails (~> 1.1.5)
   uglifier (>= 1.0.3)
   unicode
   unicorn
