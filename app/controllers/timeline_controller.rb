@@ -142,7 +142,6 @@ class TimelineController < ApplicationController
 
     unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
       format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
-      puts "format=#{format.inspect}"
       case format
         when "image"
           path = surrogate_url(document[:id], file_document.id, image_name)
