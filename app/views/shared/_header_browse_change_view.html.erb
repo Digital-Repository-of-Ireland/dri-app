@@ -15,6 +15,10 @@
                 <li class="grid">
                   <%= link_to ' ', changeViewParams, :id => 'timeline_view' %>
                 </li>
+                <% changeViewParams[:view] = "maps" %>
+                <li class="table">
+                  <%= link_to ' ', changeViewParams, :id => 'maps_view' %>
+                </li>
             <% end %>
         <% elsif params[:view] == "list" %>
             <% changeViewParams[:view] = "grid" %>
@@ -29,6 +33,10 @@
                 <li class="grid">
                   <%= link_to ' ', changeViewParams, :id => 'timeline_view' %>
                 </li>
+                <% changeViewParams[:view] = "maps" %>
+                <li class="table">
+                  <%= link_to ' ', changeViewParams, :id => 'maps_view' %>
+                </li>
             <% end %>
         <% elsif params[:view] == "timeline" %>
             <% changeViewParams[:view] = "grid" %>
@@ -42,6 +50,28 @@
             <% if params[:controller] == 'catalog' %>
                 <li class="grid">
                   <%= link_to ' ', '#', :class => "selected", :id => 'timeline_view' %>
+                </li>
+                <% changeViewParams[:view] = "maps" %>
+                <li class="table">
+                  <%= link_to ' ', changeViewParams, :id => 'maps_view' %>
+                </li>
+            <% end %>
+        <% elsif params[:view] == "maps" %>
+            <% changeViewParams[:view] = "grid" %>
+            <li class="grid">
+              <%= link_to ' ', changeViewParams , :id => 'grid_view'%>
+            </li>
+            <% changeViewParams[:view] = "list" %>
+            <li class="table">
+              <%= link_to ' ', changeViewParams, :id => 'table_view' %>
+            </li>
+            <% if params[:controller] == 'catalog' %>
+                <% changeViewParams[:view] = "timeline" %>
+                <li class="grid">
+                  <%= link_to ' ', changeViewParams, :id => 'timeline_view' %>
+                </li>
+                <li class="table">
+                  <%= link_to ' ', '#', :class => "selected", :id => 'maps_view' %>
                 </li>
             <% end %>
         <% end %>

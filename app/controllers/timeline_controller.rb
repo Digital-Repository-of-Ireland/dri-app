@@ -6,7 +6,7 @@ class TimelineController < ApplicationController
     puts "retrievieng objacts based on the following query:"
     puts query
 
-    response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "50")
+    response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "40")
 
     # ######## parsing dates examples
     # ######## TO BE REMOVED BEGIN

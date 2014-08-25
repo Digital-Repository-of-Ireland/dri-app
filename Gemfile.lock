@@ -358,6 +358,8 @@ GEM
       rack (~> 1.0)
     omniauth-shibboleth (1.1.1)
       omniauth (>= 1.0.0)
+    openlayers-rails (0.0.4)
+      railties (>= 3.1)
     orm_adapter (0.5.0)
     poltergeist (1.5.1)
       capybara (~> 2.1)
@@ -632,6 +634,7 @@ DEPENDENCIES
   mysql
   mysql2
   omniauth-shibboleth
+  openlayers-rails
   poltergeist (>= 1.4.1)
   railroady
   rails (~> 4.1.0)
