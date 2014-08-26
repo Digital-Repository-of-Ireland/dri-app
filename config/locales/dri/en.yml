@@ -45,6 +45,9 @@ en:
         en: English
         ga: Irish
       locale: Language
+      maps: 
+        loading_maps: "Loading Maps"
+        no_results: "No valid results have been found"
       terms: 
         accept: "Accept End User Agreement"
         confirm: "By signing in or signing up you are deemed to be accepting the DRI End User Agreement"

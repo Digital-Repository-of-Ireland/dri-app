@@ -110,7 +110,7 @@ class MapsController < ApplicationController
             maps_data[:location_list][maps_data[:num_found]][:location] = parse_dcmi(location)
             maps_data[:location_list][maps_data[:num_found]][:object] = {}
             maps_data[:location_list][maps_data[:num_found]][:object][:name] = document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first
-            maps_data[:location_list][maps_data[:num_found]][:object][:id] = document[:id]
+            maps_data[:location_list][maps_data[:num_found]][:object][:url] = catalog_url(document[:id])
             maps_data[:num_found] += 1
           end
         end

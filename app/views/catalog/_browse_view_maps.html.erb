@@ -1,5 +1,19 @@
-<div id="map_container" class="smallmap" style="width: 640px; height: 480px;"></div>
-<script src="assets/maps/osm-marker-popup.js"></script>
+<div id="map_container" class="smallmap" style="width: 720px; height: 480px;">
+    <%= t('dri.application.maps.loading_maps') %>...
+</div>
+<script src="assets/maps/generate_map.js"></script>
 <script>
-  init();
+
+    $.getJSON("<%= maps_json_url(params) %>",function(result){
+        console.log("num_found=" + result.num_found);
+        console.log("err_code=" + result.err_code);
+        var map_container = document.getElementById("map_container");
+        if (result.err_code == 0 && result.num_found > 0) {
+            map_container.innerHTML = "";
+            generate_map(result.location_list)
+        } else {
+            map_container.innerHTML = "<%= t('dri.application.maps.no_results') %>";
+        }
+    });
+
 </script>

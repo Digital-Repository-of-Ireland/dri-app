@@ -45,6 +45,9 @@ ga:
         en: Béarla
         ga: Gaeilge
       locale: Teanga
+      maps: 
+        loading_maps: "Loading Maps"
+        no_results: "No valid results have been found"
       terms: 
         accept: "Accept terms and hide message"
         confirm: "By signing in or signing up you are deemed to be accepting the DRI terms of use"
