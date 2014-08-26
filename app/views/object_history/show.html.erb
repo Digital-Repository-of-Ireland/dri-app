@@ -60,6 +60,38 @@
       <tr><td><%= t('dri.reports.assets.checksum_md5') %></td><td><%= file.checksum_md5 %></td></tr>
       <tr><td><%= t('dri.reports.assets.checksum_sha256') %></td><td><%= file.checksum_sha256 %></td></tr>
       <tr><td><%= t('dri.reports.assets.checksum_rmd160') %></td><td><%= file.checksum_rmd160 %></td></tr>
+      <tr><td><%= t('dri.reports.assets.file_info_link') %></td><td><%= link_to(object_file_path(@object.id, file.id), object_file_path(@object.id, file.id)) %></td></tr>
+      <tr><td><%= t('dri.reports.assets.file_download_link') %></td><td><%= link_to(file_download_path(@object.id, file.id), file_download_path(@object.id, file.id)) %></td></tr>
+
+
+      <% versions = get_asset_version_list(file.pid, 'content') %>
+      <tr><td><%= t('dri.reports.assets.version') %></td><td><%= versions.count - 1 %></td></tr>
+
+      <% if versions.count > 0 %>
+
+        <tr><td><%= t('dri.reports.assets.previous_versions') %></td><td>
+          <ul>
+            <% versions.pop %>
+            <% versions.each do |f| %>
+            <li><%= link_to(file_download_path(@object.id, file.id, :version => f.version),
+                            file_download_path(@object.id, file.id, :version => f.version)) %></li>
+            <% end %>
+          </ul>
+        </td></tr>
+      <% end %>
+
+      <tr><td><%= t('dri.reports.assets.surrogates') %></td><td>
+
+        <% get_surrogate_info(@object.id, file.id).each do |key,value| %>
+          <table>
+            <tr><td><%= t('dri.reports.surrogates.name') %></td><td><%= key %></td></tr>
+            <tr><td><%= t('dri.reports.surrogates.mime_type') %></td><td><%= value[:content_type] %></td></tr>
+            <tr><td><%= t('dri.reports.surrogates.size') %></td><td><%= number_to_human_size(value[:content_length]) %></td></tr>
+            <tr><td><%= t('dri.reports.surrogates.hash') %></td><td><%= value[:etag] %></td></tr>
+            <tr><td><%= t('dri.reports.surrogates.last_modified') %></td><td><%= value[:last_modified] %></td></tr>
+          </table>
+        <% end %>
+      </td></tr>
     </table>
   <% end %>
 </div>

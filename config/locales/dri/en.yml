@@ -1278,3 +1278,12 @@ en:
         virus_scan: "Virus Scan"
         last_modified: "Last modified at"
         file_size: "File size"
+        file_info_link: "View file info"
+        version: "Version"
+        previous_versions: "Previous Versions"
+      surrogates:
+        name: "File name"
+        mime_type: "Type"
+        size: "Size"
+        hash: "MD5 Hash"
+        last_modified: "Last Modified at"

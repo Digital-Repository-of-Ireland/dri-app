@@ -167,6 +167,53 @@ ga:
       items: Items
       per_page: "per page"
       saved_searches: Searches
+    reports: 
+      assets: 
+        asset_id: "Asset Generic File ID"
+        asset_type: "Asset Type"
+        checksum_md5: "md5 checksum"
+        checksum_orig: "Original checksum"
+        checksum_rmd160: "rmd160 checksum"
+        checksum_sha_256: "sha256 checksum"
+        created_at: "Created at"
+        depositor: "Created by"
+        file_info_link: "View file info"
+        file_size: "File size"
+        last_modified: "Last modified at"
+        previous_versions: "Previous Versions"
+        verified: Verified
+        version: Version
+        virus_scan: "Virus Scan"
+      headings: 
+        action: Action
+        datastream_version: "View Datastream Version"
+        date: Date
+        link: Link
+        object: "Object Info"
+      object: 
+        catalog_url: "View in catalog"
+        copyright: "Copyright Statement"
+        created_at: "Created at"
+        depositor: "Created by"
+        doi: DOI
+        edit_users: "Users with edit access"
+        fedora_url: "View in Fedora"
+        last_mod: "Last modified at"
+        licence: "Reuse Licence"
+        location: Location
+        manage_users: "Users with manager access"
+        metadata_md5: "Descriptive Metadata Hash"
+        object_id: "Object ID"
+        read_groups: "Reader Groups"
+        read_users: "Users with read access"
+        status: Status
+        title: "Object title"
+      surrogates: 
+        hash: "MD5 Hash"
+        last_modified: "Last Modified at"
+        mime_type: Type
+        name: "File name"
+        size: Size
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
@@ -228,6 +275,7 @@ ga:
           download: Íoslódáil
           download_master: "Download master asset"
           download_not_available: "not available"
+          download_nth: "Download %{index} asset"
           edit_this_record: "Cuir an taifead seo in eagar"
           generate_surrogates: "Generate surrogates"
           listen: Éist
@@ -236,6 +284,7 @@ ga:
           publish_reviewed: "Publish reviewed objects"
           related: "Related Files"
           status_update: "Update status"
+          unknown_size: "Unknown size"
           view_metadata: Féach
         sidebar: 
           more_like_this: "Tuilleadh mar seo"
