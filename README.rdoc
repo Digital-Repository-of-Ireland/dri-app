@@ -290,3 +290,10 @@ The last step is to install the mysql and mysql2 gems and to setup your new mysq
   $ bundle exec rake db:seed
   $ bundle exec rake db:test:prepare
 
+
+== Patches and notes
+The following files contain patches that should be reviewed after future
+updates to dependencies:
+
+ * lib/active_fedora/fixture_exporter.rb (remove entire file when bug fixed in
+     active_fedora)
