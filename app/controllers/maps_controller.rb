@@ -74,7 +74,7 @@ class MapsController < ApplicationController
 
     dcmi_location.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
-      if (k == 'north' || k == 'east' || k == 'name')
+      if (k == 'north' || k == 'east' || k == 'name' || k == 'northlimit' || k == 'southlimit' || k == 'eastlimit' || k == 'westlimit')
         parsed_dcmi[k.to_sym] = v
       end
     end
@@ -83,11 +83,24 @@ class MapsController < ApplicationController
       return dcmi_location
     end
 
+    if (!parsed_dcmi[:name].blank? && !parsed_dcmi[:north].blank? && !parsed_dcmi[:east].blank?)
+      parsed_dcmi[:type] = 'point'
+    elsif (!parsed_dcmi[:name].blank? && !parsed_dcmi[:northlimit].blank? && !parsed_dcmi[:southlimit].blank? && !parsed_dcmi[:eastlimit].blank? && !parsed_dcmi[:westlimit].blank?)
+      parsed_dcmi[:type] = 'box'
+    else
+      parsed_dcmi[:type] = 'unknown'
+    end
+
     return parsed_dcmi
   end
 
   def parse_dcmi? dcmi_location
-    return dcmi_location != parse_dcmi(dcmi_location)
+    parsed_location = parse_dcmi(dcmi_location)
+    is_valid = dcmi_location != parsed_location
+    if is_valid
+      is_valid = is_valid && parsed_location[:type] != 'unknown'
+    end
+    return is_valid
   end
 
   def create_maps_data(response)
@@ -95,12 +108,9 @@ class MapsController < ApplicationController
 
     maps_data[:num_found] = 0
     maps_data[:location_list] = []
-    
-    if response.blank?
-      maps_data[:err_code] = -1
-    else
-      maps_data[:err_code] = 0
-      
+    maps_data[:err_code] = -1
+
+    unless response.blank?
       response.each do |document|
         document = document.symbolize_keys
         location_list = document[Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string).to_sym]
@@ -115,9 +125,13 @@ class MapsController < ApplicationController
           end
         end
       end
-  
+
+      if (maps_data[:num_found] > 0)
+        maps_data[:err_code] = 0
+      end
+
     end
-  
+
     return maps_data
   end
 
