@@ -20,7 +20,6 @@
 //= require bootstrap/popover
 //= require bootstrap-player.js
 //= require bootstrap-switch
-//= require_tree .
 // Required by Blacklight
 //= require blacklight/blacklight
 //= Required by Dropit dropdown menu library
