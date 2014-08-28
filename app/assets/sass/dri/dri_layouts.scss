@@ -22,11 +22,20 @@
 .dri_header_container {
 
   	@include zen-grid-container;
+  	.dri_authentication_search_container {
+
+    float:right;
+    	.dri_authentication_menus_container {
+  
+      }
+      .dri_search_term_input {
+  
+      //@include zen-grid-item(1, 4.08);
+      }
+    
+  	}
 	 	
-  	.dri_authentication_menus_container {
-  	  	@include zen-grid-item(1, 4);
-		}
-		
+
 	  .dri_social_media_container {
 	
 		@include zen-grid-item(1, 1.8);
@@ -37,9 +46,7 @@
 	 .dri_ident {
 		 @include zen-grid-item(1.25, 1);
 	}
-	 .dri_search_term_input {
-		@include zen-grid-item(1, 4.08);
-  }
+
   
 
 }
