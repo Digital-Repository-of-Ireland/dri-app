@@ -20,6 +20,7 @@
 }
 
 .dri_header_container {
+    padding-top: 20px;
 
   	@include zen-grid-container;
   	.dri_authentication_search_container {
@@ -30,7 +31,6 @@
       }
       .dri_search_term_input {
   
-      //@include zen-grid-item(1, 4.08);
       }
     
   	}
@@ -38,13 +38,14 @@
 
 	  .dri_social_media_container {
 	
-		@include zen-grid-item(1, 1.8);
-		@include zen-clear();
-		
+		float: left;
+		padding-left: 50px;
 		}
 		
 	 .dri_ident {
-		 @include zen-grid-item(1.25, 1);
+	   width: 300px;
+	   float: left;
+
 	}
 
   
@@ -98,7 +99,7 @@
 
 .dri_facet_restrictions_container {
   	@include zen-grid-container;
-	@include zen-grid-flow-item(3, 4, $alpha-gutter: 20px);
+	 @include zen-grid-flow-item(3, 4, $alpha-gutter: 20px);
 
 }
 
@@ -220,10 +221,61 @@
 	width: 780px;
 	margin: 0 auto;
 	$zen-column-count:3;
+	
+	.dri_header_container {
+
+
+    @include zen-grid-container;
+    
+    .dri_authentication_search_container {
+
+      float:right;
+      .dri_authentication_menus_container {
+  
+      }
+      .dri_search_term_input {
+        
+        .dri_search_term_text_input {
+
+          margin: 3px 0 15px 0;
+
+        }
+  
+      }
+    
+    }
+    
+
+    .dri_social_media_container {
+
+              padding-left: 30px;
+
+      .dri_social_media_nav {
+              margin-top: 45px;
+
+      }
+  
+    }
+    
+    .dri_ident {
+      background: image-url('dri/dri_ident_small.png');
+      background-repeat: no-repeat;
+      width: 230px;
+      height: 77px;
+      margin-left: 3px;
+    }
+
+  
+
+}
 
 }
 
 .dri_search_features_nav_container {
+  
+  .dri_search_save_submit_button {
+  clear:both;
+}
   
 .dri_display_grid_table_nav {
 
@@ -235,6 +287,7 @@
     @include zen-grid-item(1, 2);
   }
 }
+
 .dri_main_content_container {
 
   .dri_result_object {
@@ -274,7 +327,7 @@
 			display: block;
 	}
 
-}
+
 .dri_browse_sort_tabs {
 	margin: 0 0 0 0;
 	padding: 0;
@@ -282,38 +335,6 @@
 	width: 81%;
 	border-bottom: 1px solid #D9DADB;
 }
-
-.dri_header_container {
-  	.dri_authentication_menus_container {
-  	  	@include zen-grid-item(3, 1);
-        
-		}
-		
-	.dri_social_media_container {
-        @include zen-grid-item(2, 1);
-          .dri_social_media_nav {
- 			 margin: 50px 0 0 0;
-  			padding: 0px;
-  }
-
-
-		}
-		
-	.dri_ident {
-		@include zen-grid-item(1, 1);
-		background: image-url('dri/dri_ident_small.png');
-		background-repeat: no-repeat;
-		height: 77px;
-		margin-left: 3px;
-	}
-	
-	  .dri_search_term_input {
-  
-    @include zen-grid-item(1, 3);
-    padding-top: 28px;
-    padding-left: 42px;
-
-  }
 	
 
 }
