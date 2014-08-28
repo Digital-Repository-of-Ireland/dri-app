@@ -23,7 +23,6 @@
 //= require timelineJS/embed
 //= require timelineJS/locale/en
 //= require openlayers-rails
-//= require_tree .
 // Required by Blacklight
 //= require blacklight/blacklight
 //= Required by Dropit dropdown menu library
