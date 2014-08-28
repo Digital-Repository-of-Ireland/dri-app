@@ -33,7 +33,7 @@ gem 'http_accept_language'
 gem 'it'
 
 # logging
-gem 'logstash-logger'
+gem 'syslog-logger'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
