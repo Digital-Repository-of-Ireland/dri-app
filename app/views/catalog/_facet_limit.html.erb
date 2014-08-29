@@ -10,8 +10,10 @@
       </li>
   <% end %>
 
-  <% unless paginator.last_page? and params[:action] == "facet" %>
-      <li class="more_facets_link"><%= link_to(t('blacklight.search.facets.more'), params.merge(:id => solr_field, :action=>"facet", :page => nil), :class => "more_facets_link") %></li>
-  <% end %>
+  <% unless params[:action] == "facet" %>
+      <li><%= link_to t('blacklight.search.facets.more'), catalog_facet_path(params.merge(id: solr_field))%></li>
+      <!--how it should be-->
+      <!--<li><%# link_to t('blacklight.search.facets.more'), catalog_facet_path(params.merge(id: solr_field)), :data => {:ajax_modal => "trigger"}%></li>-->
 
+  <% end %>
 </ul>
