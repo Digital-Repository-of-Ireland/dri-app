@@ -20,6 +20,7 @@
     <field name="lng" type="tdouble" stored="true" indexed="true" multiValued="false"/>
 
     <!-- NOTE:  not all possible Solr field types are represented in the dynamic fields -->
+    <dynamicField name="ignored_*" type="ignored"/>
 
     <!-- text (_t...) -->
     <dynamicField name="*_ti" type="text" stored="false" indexed="true" multiValued="false"/>
@@ -325,7 +326,8 @@
         <tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
       </analyzer>
     </fieldType>
-    
+   
+    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" /> 
   </types>
   
 </schema>
