@@ -26,6 +26,90 @@ html {
 
   }
 }
+/* Timeline-CSS Overrides */
+.storyjs-embed {
+	padding: 0;
+	margin: 0;
+
+	.storyjs-embed.full-embed {
+		overflow: hidden;
+		border: 0 !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		clear: both;
+		-webkit-border-radius: 0 !important;
+		-moz-border-radius: 0 !important;
+		border-radius: 0 !important;
+		-webkit-box-shadow: 0 0 0 rgba(0,0,0,0.25) !important;
+		-moz-box-shadow: 0 0 0 rgba(0,0,0,0.25) !important;
+		box-shadow: 0 0 0 rgba(0,0,0,0.25) !important;
+}	
+	
+		
+	.vco-storyjs {
+		width: 730px;
+		height: 100%;
+		padding: 0;
+		margin: 0;
+		background-color: #fff;
+		position: absolute;
+		z-index: 100;
+		clear: both;
+		overflow: hidden;
+		
+		
+	
+		.img {
+			border: $dri_thingrey;
+			
+		}
+		.content {
+			
+			margin: 0;
+			padding: 0;
+			width: 470px;
+			height: 180px;
+		}
+		.content-container {
+			
+			margin: 0;
+			padding: 0;
+		}
+		.media {
+		padding: 0;
+		margin: 0;
+		}
+		
+		.text {
+			margin: 0px;
+			padding:0px;
+			
+		.container {
+		width: 200px;
+		margin: 0;
+		padding: 0;
+		display: block;
+		
+		}	
+		
+		}
+		
+		h2.date {
+			font-size: 80%;
+			line-height: 15px;
+			font-weight: normal;
+			margin: 0;
+			padding: 0;
+		}
+			h3 {
+		font-size: 120%;
+		font-weight: bold;
+	}
+	}
+		
+
+}
+
 
 /* Video-JS Overrides */
     a {
@@ -57,20 +141,98 @@ html {
 .span6 {
   width: 509px;
 }
+/* Object carousel Controls */
 
-.carousel-caption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 15px;
-  background: #333333;
-  background: rgba(144, 154, 60, 0.75);
+
+.carousel {
+	.item {
+		padding: 0; 
+		margin: 0;
+	}
+	.carousel-caption {
+      padding: 0 0 0 0;
+	  position: absolute;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background: #333333;
+	  background: rgba(144, 154, 60, 0.75);
+	}
+	
+	p {
+		font-size: 100%;
+		color:#FFF;
+		padding: 0;
+		margin: 3px 0 0 0;
+		text-shadow: none;
+	}
+	
+	.left {
+		text-shadow: none;
+		margin-left: 6px;
+	}
+		.right {
+		text-shadow: none;
+		margin-right: 6px;
+	}
 }
+/* Homepage carousel Controls */
 
+.dri_slideshow_block {
+	
+	.carousel-caption {
+      padding: 10px 0 0 0;
+	  position: absolute;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background: #333333;
+	  background: rgba(144, 154, 60, 0.75);
+ 	
+	 p {
+		font-size: 140%;
+		color:#FFF;
+		padding: 0 0 26px 0;
+		text-shadow: none;
+
+	}
+}
+ ol.carousel-indicators {
+	 height: 0;
+	 padding: 0 0 0 0;
+	
+	 li.active {
+		 background-color: #FFF;  
+		 margin: 8px 0 0 0;
+	 }
+	}
 .carousel-indicators .active {
-  background-color: rgba(144, 154, 60, 1);
+	  background-color: rgba(144, 154, 60, 1);
+	}
+	.left {
+		text-shadow: none;
+		margin-left: 0;
+	}
+		.right {
+		text-shadow: none;
+		margin-right: 0;
+	}
 }
+a.carousel-control {
+	position: absolute;
+	padding-top: 130px;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 15%;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	font-size: 180%;
+	color: white;
+	text-align: center;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+
+	}
 
 input,
 button,
@@ -106,7 +268,26 @@ input[type="color"],
   border-radius: 4px;
   vertical-align: middle;
 }
+.btn {
+	display: inline-block;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: none;
+	white-space: nowrap;
+	 padding: 0;
+  	margin: 0;
+	font-size: 100%;
+	line-height: none;
+	border-radius: 3px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 
+}
 .modal.fade.in {
   top: 25%;
 }
@@ -184,7 +365,7 @@ a {
   -moz-border-radius: 3px;
   border-radius: 3px;
   border: none;
-  padding: 4px 0 4px 0;
+  padding: 6px 0 6px 0;
   margin: 10px 0 10px 0;
 }
 
@@ -209,6 +390,16 @@ a {
 
 .dri_button_black:hover {}
 
+.btn {
+  @extend .dri_button;
+  background-color: $dri_lightgrey;
+  padding: 5px 0 4px 0;
+  margin: 0;
+}
+.btn:hover {
+	background-color: darken($dri_lightgrey, 10%);
+	color: #FFF;
+}
 .dri_w230 {
   width: 230px;
 }
@@ -220,6 +411,8 @@ input.dri_w230 {
 .dri_w330 {
   width: 330px;
 }
+
+
 
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
@@ -239,15 +432,22 @@ input.dri_w230 {
     font-weight: bold;
     font-size: 120%;
   }
-  input {
-    margin: 0 0 4px 0;
-    padding: 6px 15px 6px 15px;
+  
+  label {
+	margin: 0 0 0 0;
+    padding: 0 0 0 0;
     width: 300px;
+  }
+  input {
+    margin: 6px 0 14px 0;
+    padding: 6px 15px 6px 15px;
+    width: 310px;
     background-color: #2F2F2F;
     border: none;
     color: #FFF;
     font-size: 106%;
     font-weight: normal;
+	
   }
   .dri_submit {
     input {
@@ -260,14 +460,16 @@ input.dri_w230 {
       padding: 6px 0 6px 0;
       margin: 10px 0 10px 0;
       cursor: pointer;
-      width: 330px;
+      width: 310px;
     }
     input:hover {
       background-color: #7C842B;
     }
   }
 }
-
+.dri_signup_password {
+	
+}
 .dri_checkbox_text {
   margin: 0;
   padding: 0;
@@ -293,13 +495,13 @@ input.dri_w230 {
   display: block;
   margin: 0 4px 0 0;
   padding: 0;
-  width: 330px;
+  width: 310px;
   a {
     margin: 0 0 0 0;
     padding: 0;
     color: #3E3E3E;
     span.text_right {
-      margin: 0 0 0 151px;
+      margin: 0 0 0 136px;
       padding: 0;
       color: #3E3E3E;
     }
@@ -333,8 +535,8 @@ input.dri_w230 {
 .dri_input_error input {
   background-color: #fff;
   color: #9F2931;
-  margin: 0 0 4px 0;
-  padding: 6px 13px 6px 15px;
+  margin: 6px 0 14px 0;
+  padding: 6px 15px 6px 15px;
   -moz-border-radius: 2px;
   border-radius: 2px;
   border: 1px solid  #E18191;
@@ -407,12 +609,13 @@ a .dri_signin_edugate {
   background: image-url("dri/signin_edugate.png") no-repeat;
   background-color: #7D4391;
   margin: 0 0 6px 0;
-  padding: 4px 0 4px 55px;
+  padding: 6px 0 6px 55px;
   border: 1px solid #612E76;
   -moz-border-radius: 2px;
   border-radius: 2px;
   color: #FFF;
   font-size: 110%;
+  width: 310px;
 }
 
 a .dri_signin_edugate:hover {
@@ -493,6 +696,7 @@ a .dri_signin_edugate:hover {
     .on {
       a {
         text-decoration: underline;
+		color: $dri_grey;
       }
     }
     .dri_language_links {
@@ -795,6 +999,7 @@ ol.breadcrumb {
 /*-------------- Search --------------*/
 
 .dri_search_term_text_input {
+  float: right;
   margin: 24px 0 0 0;
   width: 226px;
   padding: 4px 0 4px 30px;
@@ -1344,7 +1549,14 @@ h4.suggest {
   }
   .dri_account_block_info {
     .dri_account_block_info_item {
+		padding: 0 0 20px 0;
       border-bottom: 1px lightgrey solid;
+	  
+	  a {
+		  color: $dri_green;
+		  font-weight: bold;
+		  text-decoration: underline;
+	  }
     }
     h5 {
       color: #2F2F2F;
@@ -1517,12 +1729,12 @@ p.dri_rss_link a {
       line-height: 1.3em;
     }
     .dri_green_button {
-      margin: 13px 0 0 0;
+      margin: 25px 0 0 0;
       padding: 0px;
       a {
         width: 300px;
         margin: 0;
-        padding: 2px 9px 2px 9px;
+        padding: 5px 9px 5px 9px;
         border: none;
         -moz-border-radius: 2px;
         border-radius: 2px;
@@ -2050,7 +2262,7 @@ p.dri_rss_link a {
 }
 
 .dri_bottom_stack {
-  z-index: -1;
+  z-index: 0;
 }
 
 h2.dri_no_asset_availiable {
