@@ -135,10 +135,26 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
-  def count_collections_institute( institute, status )
-    solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:" + status + " AND #{Solrizer.solr_name('institute', :stored_searchable, type: :string)}:" + institute + " AND " +
-    "#{Solrizer.solr_name('type', :stored_searchable, type: :string)}:Collection"
-    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+  def get_query_collections_by_institute( institute )
+    solr_query = ""
+    if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
+      solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
+    end
+    solr_query = solr_query + "#{Solrizer.solr_name('institute', :stored_searchable, type: :string)}:" + institute + " AND " +
+        "#{Solrizer.solr_name('type', :stored_searchable, type: :string)}:Collection"
+    return solr_query
+  end
+
+  def count_collections_institute( institute )
+    solr_query = get_query_collections_by_institute(institute)
+    count = ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+    return count
+  end
+
+  def get_collections_institute( institute )
+    solr_query = get_query_collections_by_institute(institute)
+    response = ActiveFedora::SolrService.query(solr_query, :defType => "edismax")
+    return response
   end
 
   def count_items_in_collection_by_type(collection_id, type)
@@ -166,7 +182,7 @@ module ApplicationHelper
   end
 
   def get_institute_collection_counts( institute )
-      @coll_counts = count_collections_institute(institute, "published")
+      @coll_counts = count_collections_institute(institute)
   end
 
   def get_institutes( document )
