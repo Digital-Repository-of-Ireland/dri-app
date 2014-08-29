@@ -1,5 +1,5 @@
 module MetadataValidator
- 
+
   def MetadataValidator.is_valid_dc?(xml)
     result = false
     @msg = ""
@@ -15,7 +15,7 @@ module MetadataValidator
       # Firstly, if the root schema has no namespace, retrieve it from xsi:noNamespaceSchemaLocation
       if (xml.root.namespace == nil)
         no_ns_schema_location = map_to_localfile(xml.root.attr("xsi:noNamespaceSchemaLocation"))
-        schema_imports = ["<xs:include schemaLocation=\""+no_ns_schema_location+"\"/>\n"]
+        schema_imports = ["<xs:include schemaLocation=\""+no_ns_schema_location+"\"/>\n"] unless no_ns_schema_location.blank?
       end
 
       # Then, find all elments that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
@@ -47,24 +47,27 @@ module MetadataValidator
         end
       end
    end
-  
+
    return result, @msg
-  end          
+  end
 
   private
 
     # Maps a URI to a local filename if the file is found in config/schemas. Otherwise returns the original URI.
     #
     def MetadataValidator.map_to_localfile(uri)
-      filename = URI.parse(uri).path[%r{[^/]+\z}]
-      file = Rails.root.join('config').join('schemas', filename)
-      if Pathname.new(file).exist?
-        location = filename
+      if uri
+        filename = URI.parse(uri).path[%r{[^/]+\z}]
+        file = Rails.root.join('config').join('schemas', filename)
+        if Pathname.new(file).exist?
+          location = filename
+        else
+          location = uri
+        end
       else
-        location = uri
+        location = nil
       end
-
       return location
-    end 
+    end
 
 end

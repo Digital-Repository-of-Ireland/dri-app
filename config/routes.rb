@@ -23,6 +23,9 @@ NuigRnag::Application.routes.draw do
   resources :ingest, :only => ['new', 'create']
 
   resources :institutes, :only => ['show', 'new', 'create']
+  resources :object_history, :only => ['show']
+  resources :datastream_version, :only => ['show']
+
   match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
   match 'newdepositingassociation' => 'institutes#associate_depositing', :via => :post, :as => :new_depositing_association
   match 'institutions' => 'institutes#index', :via => :get, :as => :institutions

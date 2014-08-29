@@ -35,15 +35,20 @@ class AssetsController < ApplicationController
 
     # Check if user can view a master file
     enforce_permissions!("show_master", params[:object_id]) if (datastream == "content")
+    enforce_permissions!("edit", params[:object_id]) if params[:version].present?
 
     @gf = retrieve_object! params[:id]
 
     unless @gf.nil?
 
-      @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
-                                            { :f => @gf.id, :d => datastream },
-                                            :order => "version DESC",
+      if (params[:version].present?)
+        @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d AND version = :v",
+                                            { :f => @gf.id, :d => datastream, :v => params[:version] },
                                             :limit => 1)
+      else
+        @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
+                                            { :f => @gf.id, :d => datastream }).order("version DESC").limit(1).to_a
+      end
 
       unless @local_file_info.empty?
         logger.error "Using path: "+@local_file_info[0].path
