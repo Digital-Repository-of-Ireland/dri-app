@@ -10,12 +10,29 @@
       <%= link_to main_app.catalog_index_path(institute_browse_params) do %>
           <div class="dri_collection_institutes_pages_img">
             <%= image_tag institute[:logo], alt: institute[:name].to_s.html_safe unless institute[:logo].blank? %>
-          </div>
-          <div class="dri_collection_institutes_pages_text" >
             <h6>
               <%= institute[:name].to_s.html_safe %>
             </h6>
-            <p><%= t('dri.headerlinks.collections') %>
+          </div>
+          <div class="dri_collection_institutes_pages_text" >
+            <div>
+              <% if (collection_count > 0) %>
+                  <% collections = get_collections_institute institute[:name].to_s.html_safe %>
+                  <% collections.each_with_index do |collection, index| %>
+                      <% if index < 3 %>
+                          <% collection = collection.symbolize_keys! %>
+                          <% image = cover_image collection %>
+                          <% unless image.nil? %>
+                              <%= image_tag image, :width=>"150" %>
+                          <% else %>
+                              <%= image_tag "no_image.png", :width=>"150" %>
+                          <% end %>
+                      <% end %>
+                  <% end %>
+              <% end %>
+            </div>
+            <p>
+              <%= t('dri.headerlinks.collections') %>
               <span class="dri_bold_text">
                 <%= "(#{collection_count})" %>
               </span>
