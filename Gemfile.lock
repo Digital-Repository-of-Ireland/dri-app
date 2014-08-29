@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
-  revision: 06c365969deba83af976406c0b8e176e32e5a5f7
+  revision: ef7a48727be234b1e012a74d0605bf749d918fe0
   branch: hydra7
   specs:
     user_group (1.0.5)
@@ -157,7 +157,7 @@ GEM
       warden (~> 1.2.3)
     devise-guests (0.3.3)
       devise
-    devise-i18n-views (0.2.8)
+    devise-i18n-views (0.3.1)
     diff-lcs (1.2.5)
     docile (1.1.5)
     ebnf (0.3.6)
@@ -209,7 +209,7 @@ GEM
       rack
     haml (4.0.5)
       tilt
-    hashie (3.2.0)
+    hashie (3.3.1)
     high_voltage (2.1.0)
     hike (1.2.3)
     hitimes (1.2.2)
@@ -354,7 +354,7 @@ GEM
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
       rack (~> 1.0)
-    omniauth-shibboleth (1.1.1)
+    omniauth-shibboleth (1.1.2)
       omniauth (>= 1.0.0)
     orm_adapter (0.5.0)
     poltergeist (1.5.1)
