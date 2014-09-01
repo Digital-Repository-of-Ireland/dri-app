@@ -70,7 +70,8 @@ group :development, :test do
 
   gem "zeus", require: false
 
-  gem 'ci_reporter'
+  gem 'ci_reporter_cucumber'
+  gem 'ci_reporter_rspec'
 end
 
 group :test do

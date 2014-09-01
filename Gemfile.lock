@@ -123,6 +123,12 @@ GEM
       ffi (~> 1.0, >= 1.0.11)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
+    ci_reporter_cucumber (1.0.0)
+      ci_reporter (~> 2.0)
+      cucumber (~> 1.3.3)
+    ci_reporter_rspec (1.0.0)
+      ci_reporter (~> 2.0)
+      rspec (>= 2.14, < 4)
     cliver (0.3.2)
     coderay (1.1.0)
     colorbox-rails (0.1.2)
@@ -590,7 +596,8 @@ DEPENDENCIES
   blacklight (= 5.5.2)
   bootstrap-sass
   bootstrap-switch-rails
-  ci_reporter
+  ci_reporter_cucumber
+  ci_reporter_rspec
   colorbox-rails
   cucumber-api-steps
   cucumber-rails
