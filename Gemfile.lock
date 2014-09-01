@@ -1,9 +1,9 @@
 GIT
   remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: ef4b74d4f8e905dbe1a3a24a2c535ab5b3619b6b
-  branch: hydra7
+  revision: b3b594e417f94299035de1cde11ee610dfbd71af
+  branch: develop
   specs:
-    dri_data_models (1.0.6)
+    dri_data_models (1.1.0)
       hydra-access-controls
       hydra-collections
       hydra-head (>= 7.0)
