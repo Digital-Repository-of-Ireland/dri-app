@@ -3,14 +3,14 @@
 
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.0.0'
+gem 'rails', '~> 4.1.0'
 
-gem 'blacklight', '4.7.0'
-gem 'hydra-head', '6.5.2'
-gem 'sufia-models', '3.7.2'
+gem 'blacklight', "5.5.2"
+gem 'hydra-head', "7.1.0"
+gem 'sufia-models', "4.0.0rc2"
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'develop'
-gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'develop'
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'hydra7'
+gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'hydra7'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -97,6 +97,7 @@ gem 'unicorn'
 # gem 'debugger'
 
 gem "unicode", :platforms => [:mri_18, :mri_19]
+gem 'font-awesome-rails'
 gem 'bootstrap-sass'
 gem 'yard'
 

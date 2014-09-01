@@ -39,6 +39,7 @@ describe SurrogatesController do
     @collection.save
     
     @gf = GenericFile.new
+    @gf.apply_depositor_metadata(@login_user)
     @gf.batch = @object
     @gf.save
   end
@@ -67,6 +68,7 @@ describe SurrogatesController do
 
     it 'should update multiple files' do
       @gf2 = GenericFile.new
+      @gf2.apply_depositor_metadata(@login_user)
       @gf2.batch = @object
       @gf2.save
       

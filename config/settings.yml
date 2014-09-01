@@ -1,8 +1,7 @@
 ingest:
-  steps: [collection, object_type, ingestmethod, metadata]
+  steps: [collection, ingestmethod, metadata]
   step_data:
     collection: [ingestcollection]
-    object_type: [ingesttype]
     ingestmethod: [ingestmethod]
 interface:
   languages: [en, ga]
@@ -20,6 +19,7 @@ restrict:
     video: ['video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/avi', 'video/quicktime', 'application/mxf']
 S3:
   server: 10.0.1.201
+  use_ssl: true
   access_key_id: FIXME
   secret_access_key: FIXME
   expiry: 2592000

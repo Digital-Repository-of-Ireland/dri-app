@@ -90,6 +90,7 @@ en:
         not_created: "Unable to create. Check set permissions"
         not_updated: "%{item} was not updated. Check set permissions"
         validation_errors: "Validation Errors: %{error}"
+        cover_image_not_saved: "Unable to save cover image"
       notice:
         added_to_collection: "Object has been added to collection."
         collection_created: "Collection object has been successfully created."
@@ -126,6 +127,7 @@ en:
       about: About
       admin: "Admin Tasks"
       browse: Discover
+      collection: Collection
       collections: Collections
       contact: Contact
       current_collection: "Current Collection: %{collection}"
@@ -133,6 +135,7 @@ en:
       home: Home
       ingest: Ingest
       institutions: Institutions
+      object: Object
       objects: Objects
       privacy: "Privacy & Cookies policy"
       resque: "Resque Server"
@@ -197,7 +200,7 @@ en:
             format: Format
             last_modified: "Last Update"
           audio_file: "Audio File"
-          bookmark_object: "Bookmark Object"
+          bookmark_object: Bookmark
           file: File
           image_file: Image
           manage_bookmark: "Manage Your Bookmarks"

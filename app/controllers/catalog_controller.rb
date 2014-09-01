@@ -6,6 +6,7 @@ require 'institute_helpers'
 #
 class CatalogController < ApplicationController
   include Blacklight::Catalog
+  include Hydra::Controller::ControllerBehavior
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
   include UserGroup::SolrAccessControls
   #This method shows the DO if the metadata is open
@@ -42,13 +43,12 @@ class CatalogController < ApplicationController
     }
 
     # solr field configuration for search results/index views
-    config.index.show_link = solr_name('title', :stored_searchable, type: :string)
+    config.index.title_field = solr_name('title', :stored_searchable, type: :string)
     config.index.record_tsim_type = solr_name('has_model', :stored_searchable, type: :symbol)
 
     # solr field configuration for document/show views
-    config.show.html_title = solr_name('title', :stored_searchable, type: :string)
-    config.show.heading = solr_name('title', :stored_searchable, type: :string)
-    config.show.display_type = solr_name('file_type', :stored_searchable, type: :string)
+    config.show.title_field = solr_name('title', :stored_searchable, type: :string)
+    config.show.display_type_field = solr_name('file_type', :stored_searchable, type: :string)
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -126,7 +126,7 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name('subject', :stored_searchable, type: :string), :label => 'subjects'
     config.add_index_field solr_name('creator', :stored_searchable, type: :string), :label => 'creators'
     config.add_index_field solr_name('format', :stored_searchable), :label => 'Format:'
-    config.add_index_field solr_name('object_type', :stored_searchable, type: :string), :label => 'Format'
+    config.add_index_field solr_name('file_type_display', :stored_searchable, type: :string), :label => 'Mediatype'
     config.add_index_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_index_field solr_name('published', :stored_searchable, type: :string), :label => 'Published:'
 
@@ -152,7 +152,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), :label => 'name_coverage'
     config.add_show_field solr_name('format', :stored_searchable), :label => 'Format:'
     config.add_show_field solr_name('physdesc', :stored_searchable), :label => 'physdesc'
-    config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'format'
+    #config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'format'
     config.add_show_field solr_name('type', :stored_searchable, type: :string), :label => 'type'
     config.add_show_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'

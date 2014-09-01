@@ -126,6 +126,7 @@ class AssetsController < ApplicationController
       else
         @gf = GenericFile.new(:pid => Sufia::IdService.mint)
         @gf.batch = @object
+        @gf.apply_depositor_metadata(current_user)
 
         create_file(file_upload, @gf.id, datastream, params[:checksum])
 
@@ -133,6 +134,9 @@ class AssetsController < ApplicationController
         @gf.update_file_reference datastream, :url=>@url, :mimeType=>@mime_type.to_s
         begin
           @gf.save
+
+          Sufia.queue.push(CharacterizeJob.new(@gf.pid))
+
           flash[:notice] = t('dri.flash.notice.file_uploaded')
         rescue Exception => e
           flash[:alert] = t('dri.flash.alert.error_saving_file', :error => e.message)

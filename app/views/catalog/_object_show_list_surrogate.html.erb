@@ -3,31 +3,30 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <!--First item set to active-->
-      <div class="item dri_asset_carousel_item active">
+      <div class="item dri_asset_carousel_item dri_bottom_stack active">
         <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files.first} %>
         <%= render :partial => "object_show_list_download", :locals => {:document => document, :generic_file => files.first, :index => 1} %>
       </div>
 
       <% for i in 1..(files.count - 1) %>
-          <div class="item dri_asset_carousel_item">
+          <div class="item dri_asset_carousel_item dri_bottom_stack">
             <%= render :partial => "object_show_single_surrogate", :locals => {:document => document, :generic_file => files[i]} %>
             <%= render :partial => "object_show_list_download", :locals => {:document => document, :generic_file => files[i], :index => i + 1} %>
           </div>
       <% end %>
     </div>
+    <div>
+      <a class="left carousel-control" href="#oject-multiple-asset-carousel" data-slide="prev">
+        <i class="fa fa-arrow-left"></i>
+      </a>
+      <a class="right carousel-control" href="#oject-multiple-asset-carousel" data-slide="next">
+        <i class="fa fa-arrow-right"></i>
+      </a>
+    </div>
   </div>
   <!-- Controls -->
-  <div>
-    <a class="left carousel-control" href="#oject-multiple-asset-carousel" data-slide="prev">
-
-      <p><i class="fa fa-arrow-left"></i></p>
-    </a>
-    <a class="right carousel-control" href="#oject-multiple-asset-carousel" data-slide="next">
-
-      <p><i class="fa fa-arrow-right"></i></p>
-    </a>
-  </div>
 </div>
+
 <!--Stops cousel's autoplay-->
 <script>
     $(document).ready(function() {

@@ -13,5 +13,8 @@
       </h5>
   <% else %>
       <%= render_document_index %>
+      <div class="dri_result_container dri_clearfix">
+        <%= render :partial => "bookmarks/paginate_compact" %>
+      </div>
   <% end %>
 </div>

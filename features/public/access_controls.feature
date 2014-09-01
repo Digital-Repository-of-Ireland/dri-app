@@ -18,7 +18,7 @@ Scenario: I should see the asset file where masterfile is accesible and object i
 
 Scenario: I should not see the asset file if it is under embargo
   Given a collection with pid "dri:c22222" and title "Access Controls Test Collection" created by "user1"
-  And a Digital Object with pid "dri:o22222" and title "Access Controls Test Object" created by "user1"
+  And a Digital Object with pid "dri:o22222", title "Access Controls Test Object" created by "user1"
   And the object with pid "dri:o22222" is governed by the collection with pid "dri:c22222"
   And the object with pid "dri:o22222" has "accessible" masterfile
   And the object with pid "dri:c22222" has status published

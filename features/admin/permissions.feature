@@ -33,8 +33,6 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
   And I am on the new Digital Object page
   When I select a collection
   And I press the button to continue
-  And I select "<object_type>" from the selectbox for object type
-  And I press the button to continue
   And I select "input" from the selectbox for ingest methods
   And I press the button to continue
   When I enter valid "<object_type>" metadata
@@ -55,8 +53,6 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
   And I am on the new Digital Object page
   When I select a collection
   And I press the button to continue
-  And I select "<object_type>" from the selectbox for object type
-  And I press the button to continue
   And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "<metadata_file>"
@@ -66,9 +62,9 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
   And the hidden "batch_read_groups_string" field should contain ""
 
   Examples:
-    | object_type | metadata_file                 | format_type |
-    | Text        | dublin_core_pdfdoc_sample.xml | Article     |
-    | Sound       | SAMPLEA.xml                   | Audio       |
+    | metadata_file                 |
+    | dublin_core_pdfdoc_sample.xml |
+    | SAMPLEA.xml                   |
 
 Scenario Outline: Collection visibility
   Given a collection with pid "dri:coll8" and title "Access Test" created by "test@test.com"

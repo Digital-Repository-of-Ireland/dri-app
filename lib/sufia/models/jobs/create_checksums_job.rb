@@ -10,7 +10,7 @@ class CreateChecksumsJob < ActiveFedoraPidBasedJob
     Rails.logger.info "Creating checksums of #{generic_file_id} asset"
 
     @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE 'content'", { :f => generic_file_id }).order("version DESC").limit(1).to_a
-    
+ 
     filename = @local_file_info.first.path
 
     # If the checksum is already set should we be comparing them?

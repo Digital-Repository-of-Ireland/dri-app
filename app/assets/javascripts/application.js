@@ -15,7 +15,9 @@
 //= require jquery_ujs
 //= require jquery.remotipart
 //= require jquery.cookie
-//= require bootstrap
+//= require bootstrap/carousel
+//= require bootstrap/tooltip
+//= require bootstrap/popover
 //= require bootstrap-player.js
 //= require bootstrap-switch
 // Required by Blacklight

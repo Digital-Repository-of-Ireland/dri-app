@@ -6,22 +6,28 @@ module Storage
         begin
           Validators.virus_scan(cover_image)
         rescue Exceptions::VirusDetected => e
-          virus = true
-          flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+          logger.error("Virus detected in cover image: #{e.message}")
+
+          return false
         end
 
-        unless virus
-          storage = Storage::S3Interface.new
-          storage.store_file(cover_image.tempfile.path,
-                                          "#{collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
-                                          Settings.data.cover_image_bucket)
+        storage = Storage::S3Interface.new
+        if (storage.store_file(cover_image.tempfile.path,
+                                   "#{collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
+                                   Settings.data.cover_image_bucket))
           url = storage.get_link_for_file(Settings.data.cover_image_bucket,
-                            "#{collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}")
+                          "#{collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}")
 
           collection.properties.cover_image = url
           collection.save
+ 
+          return true
+        else
+          logger.error "Unable to save cover image."
+          return false
         end
       end
     end
+
   end
 end

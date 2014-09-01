@@ -43,7 +43,7 @@ describe CollectionsController do
 
       @collection.governed_items << @object
 
-      @collection.governed_items.length.should == 1
+      @collection.governed_items.size.should == 1
 
       Sufia.queue.should_receive(:push).with(an_instance_of(DeleteCollectionJob)).once
       delete :destroy, :id => @collection.id

@@ -15,8 +15,8 @@
       <div>
         </br>
         <% if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status.eql?('draft')) %>
-            <%= form_tag (collection_path(@object)), :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
-                <%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "btn", :class => "btn-primary btn-large", :id => "delete_collection_#{@object.id}", :data => { :confirm => "#{ t('dri.views.collection.confirm_delete') }" } %>
+            <%= form_tag (collection_path(@object.pid)), :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+                <%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "btn", :class => "btn-primary btn-large", :id => "delete_collection_#{@object.id}", :data => { :confirm => t('dri.views.collection.confirm_delete') } %>
             <% end %>
         <% end %>
       </div>
