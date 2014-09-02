@@ -1,20 +1,24 @@
 <div class="modal fade" id="dri_cookie_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="myModalLabel"><%= t('dri.application.terms.header') %></h4>
-			</div>
-			<div class="modal-body">
-				<div class="dri_cookie_acceptance_text">
-					<p><%= render :partial => 'pages/terms' %></p>
-				</div>
-			</div>
-			<div class="modal-footer">
-                <a href="http://dri.ie/end-user-agreement"><button type="button" class="btn btn-secondary" id="reject_agreement"><%= t('dri.application.terms.reject') %></button></a>
-				<button type="button" id="accept_cookies" class="btn btn-primary" data-dismiss="modal" onclick="$.cookie('accept_cookies', 'yes', { path: '/', expires: 10000 });">
-					<%= t('dri.application.terms.accept') %>
-                </button>
-			</div>
-		</div>
-	</div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel"><%= t('dri.application.terms.header') %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="dri_cookie_acceptance_text">
+          <% if I18n.locale == :en %>
+              <p><%= render :partial => 'pages/terms_en' %></p>
+          <% else %>
+              <p><%= render :partial => 'pages/terms_ga' %></p>
+          <% end %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="http://dri.ie/end-user-agreement"><button type="button" class="btn btn-secondary" id="reject_agreement"><%= t('dri.application.terms.reject') %></button></a>
+        <button type="button" id="accept_cookies" class="btn btn-primary" data-dismiss="modal" onclick="$.cookie('accept_cookies', 'yes', { path: '/', expires: 10000 });">
+          <%= t('dri.application.terms.accept') %>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
