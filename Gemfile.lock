@@ -1,6 +1,6 @@
 GIT
   remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: b3b594e417f94299035de1cde11ee610dfbd71af
+  revision: ae3ccfb72143f1248b4cd85a3d7f0d88b48542a5
   branch: develop
   specs:
     dri_data_models (1.1.0)
@@ -10,7 +10,7 @@ GIT
       iso-639
       rails (>= 4.0)
       sass-rails (~> 4.0.3)
-      sufia-models (= 4.0.0rc2)
+      sufia-models (= 4.0.0)
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
@@ -103,7 +103,7 @@ GEM
       rsolr (~> 1.0.6)
     block_helpers (0.3.3)
       activesupport (>= 2.0)
-    bootstrap-sass (3.2.0.1)
+    bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
     bootstrap-switch-rails (3.0.2)
     builder (3.2.2)
@@ -534,7 +534,7 @@ GEM
     sqlite3 (1.3.9)
     stomp (1.3.3)
     subexec (0.2.3)
-    sufia-models (4.0.0.rc2)
+    sufia-models (4.0.0)
       activerecord-import (~> 0.5)
       activeresource (~> 4.0)
       acts_as_follower (>= 0.1.1, < 0.3)
@@ -638,7 +638,7 @@ DEPENDENCIES
   simplecov
   simplecov-rcov
   sqlite3
-  sufia-models (= 4.0.0rc2)
+  sufia-models (= 4.0.0)
   syntax
   syslog-logger
   uglifier (>= 1.0.3)

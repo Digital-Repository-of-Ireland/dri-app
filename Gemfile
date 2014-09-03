@@ -7,7 +7,7 @@ gem 'rails', '~> 4.1.0'
 
 gem 'blacklight', "5.5.2"
 gem 'hydra-head', "7.1.0"
-gem 'sufia-models', "4.0.0rc2"
+gem 'sufia-models', "4.0.0"
 
 gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'develop'
 gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'develop'
