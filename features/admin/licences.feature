@@ -15,8 +15,7 @@ Feature:
 
   Scenario: Navigating to the licences pages
     Given I am on the home page
-    When I follow the link to admin tasks
-    And I follow the link to configure licences
+    When I go to "licence index page"
     Then I should see a link to add new licence
     When I follow the link to add new licence
     Then I should see a form for create new licence

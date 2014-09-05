@@ -86,11 +86,11 @@ en:
         unknown_permission: "Unsupported Permission Level: %{action}"
         virus_detected: "Virus detected in uploaded file: %{virus}"
       error: 
+        cover_image_not_saved: "Unable to save cover image"
         no_type_specified: "You must specify a valid object type"
         not_created: "Unable to create. Check set permissions"
         not_updated: "%{item} was not updated. Check set permissions"
         validation_errors: "Validation Errors: %{error}"
-        cover_image_not_saved: "Unable to save cover image" 
       notice: 
         added_to_collection: "Object has been added to collection."
         collection_created: "Collection object has been successfully created."
@@ -133,8 +133,10 @@ en:
       current_collection: "Current Collection: %{collection}"
       end_user_agreement: "End User Agreement"
       home: Home
-      ingest: Ingest
+      ingest: "Ingest Object"
       institutions: Institutions
+      manage: Manage
+      new_collection: "New collection"
       object: Object
       objects: Objects
       privacy: "Privacy & Cookies policy"
@@ -479,7 +481,7 @@ en:
           view_record: "View Record"
       static: 
         admin: 
-          licences: "Configure Supported Licences"
+          licences: "Supported Licences"
         workspace: 
           account: "My Account"
     vocabulary: 
