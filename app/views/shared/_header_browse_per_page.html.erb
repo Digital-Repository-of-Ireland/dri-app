@@ -1,31 +1,42 @@
-<% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index')%>
-    <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
-    <nav id="dri_pager_nav_id" class="dri_pager_nav">
-      <p>
-        <% if params[:controller] == 'catalog' %>
-            <%= t('dri.navbar.items') %>
-        <% elsif params[:controller] == 'bookmarks' %>
-            <%= t('dri.navbar.bookmarks') %>
-        <% else %>
-            <%= t('dri.navbar.saved_searches') %>
-        <% end %>
-        <%= t('dri.navbar.per_page') %>
-      </p>
-      <select id="dri_page_options_id" class="dri_sort_options" name="sort_options" data-content="<%= t('dri.help.dri_page_options') %>"  data-original-title="<%= t('dri.help.dri_page_options_title')%>" data-trigger="hover" data-placement="right">
-        <%- blacklight_config.per_page.each do |count| %>
-            <% current_params = params.clone %>
-            <% current_params[:per_page] = count %>
-            <% unless current_params[:page].blank? %>
-                <% current_params.delete(:page) %>
-            <% end %>
-            <% if current_per_page == count %>
-                <option value="<%= url_for(current_params) %>" selected>
-            <% else %>
-                <option value="<%= url_for(current_params) %>">
-            <% end %>
-            <%= t(:'blacklight.search.per_page.label', :count => count).html_safe %>
-            </option>
-        <%- end -%>
-      </select>
-    </nav>
+<% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index')%> <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
+<nav id="dri_pager_nav_id" class="dri_pager_nav">
+	<p>
+		<% if params[:controller] == 'catalog' %>
+		<%= t('dri.navbar.items') %>
+		<% elsif params[:controller] == 'bookmarks' %>
+		<%= t('dri.navbar.bookmarks') %>
+		<% else %>
+		<%= t('dri.navbar.saved_searches') %>
+		<% end %>
+		<%= t('dri.navbar.per_page') %>
+	</p>
+	<select id="dri_page_options_id" class="dri_sort_options" name="sort_options" data-content="<%= t('dri.help.dri_page_options') %>"  data-original-title="<%= t('dri.help.dri_page_options_title')%>" data-trigger="hover" data-placement="right">
+		<%- blacklight_config.per_page.each do |count| %>
+		<% current_params = params.clone %>
+		<% current_params[:per_page] = count %>
+		<% unless current_params[:page].blank? %>
+		<% current_params.delete(:page) %>
+		<% end %>
+		<% if current_per_page == count %>
+		<option value="<%= url_for(current_params) %>" selected> <% else %> <option value="<%= url_for(current_params) %>"> <% end %>
+			<%= t(:'blacklight.search.per_page.label', :count => count).html_safe %> </option>
+		<%- end -%>
+	</select>
+<% if current_user and current_user.is_cm? %>
+<%# if current_user and current_user.is_cm? isn't right - we need to check if the user has anything they can edit %>   	
+<div>
+		<label class="dri_toggle_checkbox" for="can_edit_checkbox" title="">
+			<p>
+				<%= t('dri.navbar.my_items') %>
+			</p> 
+			<% if !params[:can_edit].blank? || params[:can_edit] == 'true' %>
+			 <input type="checkbox" id="dri_can_edit_checkbox" checked value=<%= url_for(params_for_search.merge(:can_edit => "false")) %>>
+			<% else %>
+			 <input type="checkbox" id="dri_can_edit_checkbox"  value=<%= url_for(params_for_search.merge(:can_edit => "true")) %>>
+			<% end %> 
+		</label>
+</div>
+<% end %>
+</nav>
+
 <% end %>
