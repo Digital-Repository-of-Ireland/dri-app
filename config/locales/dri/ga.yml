@@ -86,6 +86,7 @@ ga:
         unknown_permission: "Ní ghlactar leis an leibhéal ceada atá agat."
         virus_detected: "Aimsíodh víreas sa chomhad a uaslódáladh: %{virus}"
       error: 
+        cover_image_not_saved: "Unable to save cover image"
         no_type_specified: "Ní mór cineál oibiachta bailí a shonrú"
         not_created: "Unable to create. Check set permissions"
         not_updated: "Níor tugadh %{item} cothrom le dáta. Seiceáil na ceadanna socraithe"
@@ -134,6 +135,8 @@ ga:
       home: "Leathanach Baile"
       ingest: "Glac isteach"
       institutions: Institiúidí
+      manage: Manage
+      new_collection: "New collection"
       object: Object
       objects: Objects
       privacy: "Polasaí um Príobháideachas agus Fianáin"
@@ -527,7 +530,7 @@ ga:
           view_record: "Féach ar an taifead"
       static: 
         admin: 
-          licences: "Configure Supported Licences"
+          licences: "Supported Licences"
         workspace: 
           account: "My Account"
     vocabulary: 
