@@ -19,16 +19,14 @@ Scenario: Navigating to the collections page
 
 Scenario: Constructing a valid collection
   Given I am on the home page
-  When I follow the link to ingest page
-  And I press the button to add new collection
+  When I go to "create new collection"
   And I enter valid metadata for a collection
   And I press the button to create a collection
   Then I should see a success message for creating a collection
 
 Scenario: Constructing a collection with valid permissions
   Given I am on the home page
-  When I follow the link to ingest page
-  And I press the button to add new collection
+  When I go to "create new collection"
   And I enter valid metadata for a collection
   And I enter valid permissions for a collection
   And I press the button to create a collection
@@ -36,8 +34,7 @@ Scenario: Constructing a collection with valid permissions
 
 Scenario: Constructing a collection with invalid permissions
   Given I am on the home page
-  When I follow the link to ingest page
-  And I press the button to add new collection
+  When I go to "create new collection"
   And I enter valid metadata for a collection
   And I enter invalid permissions for a collection
   And I press the button to create a collection

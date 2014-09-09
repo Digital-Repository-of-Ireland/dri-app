@@ -143,8 +143,10 @@ en:
       current_collection: "Current Collection: %{collection}"
       end_user_agreement: "End User Agreement"
       home: Home
-      ingest: Ingest
+      ingest: "Ingest Object"
       institutions: Institutions
+      manage: Manage
+      new_collection: "New collection"
       object: Object
       objects: Objects
       privacy: "Privacy & Cookies policy"
@@ -489,7 +491,7 @@ en:
           view_record: "View Record"
       static: 
         admin: 
-          licences: "Configure Supported Licences"
+          licences: "Supported Licences"
         workspace: 
           account: "My Account"
     vocabulary: 

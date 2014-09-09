@@ -61,6 +61,9 @@ module PathTranslator
       when /^(the )?new licence page$/
         new_licence_path
 
+      when /^(the )?create new collection$/
+        new_collection_path
+
       else
         raise('You specified an invalid path')
 
