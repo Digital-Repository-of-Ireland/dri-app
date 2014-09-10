@@ -1,0 +1,97 @@
+<div class="dri_report_container">
+
+  <h3><%= t('dri.reports.headings.object') %></h3>
+  <table>
+    <tr><td> <%= t('dri.reports.object.object_id') %> </td><td> <%= @object.id %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.doi') %> </td><td> <%= @object.doi %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.title') %> </td><td> <%= @object.title.join(' : ') %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.created_at') %> </td><td> <%= @object.create_date %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.last_mod') %> </td><td> <%= @object.modified_date %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.depositor') %> </td><td> <%= @object.depositor %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.status') %> </td><td> <%= @object.status %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.metadata_md5') %> </td><td> <%= @object.metadata_md5 %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.licence') %> </td><td> <%= @licence %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.copyright') %> </td><td> <%= @object.rights.join(' : ') %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.catalog_url') %> </td><td> <%= link_to(catalog_path(@object.id), catalog_path(@object.id)) %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.fedora_url') %> </td><td> <%= link_to(@fedora_url, @fedora_url) %>
+
+  </table>
+
+
+  <h3><%= t('dri.reports.headings.permissions') %></h3>
+  <table>
+    <tr><td> <%= t('dri.reports.object.institute_manager') %> </td><td> <%= @institute_manager %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.read_groups') %> </td><td> <%= @read_groups %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.read_users') %> </td><td>
+      <% @read_users.each do |user| %>
+      <table>
+        <tr><td><%= user[0] %></td><td><%= user[1] %></td><td><%= user[2] %></td></tr>
+      </table>
+      <% end %>
+    </td></tr>
+    <tr><td> <%= t('dri.reports.object.edit_users') %> </td><td> <%= @edit_users %>  </td></tr>
+    <tr><td> <%= t('dri.reports.object.manage_users') %> </td><td><%= @manager_users %></td></tr>
+  </table>
+
+
+  <% @datastreams.each do |datastream| %>
+    <h3><%= datastream %></h3>
+    <table>
+      <tr><th><%= t('dri.reports.headings.date') %></th><th><%= t('dri.reports.headings.action') %></th><th><%= t('dri.reports.headings.link') %></th></tr>
+      <% @records[datastream].keys.sort.each do |key| %>
+        <tr>
+          <td><%= key %></td>
+          <td><%= @records[datastream][key] %></td>
+          <td><%= link_to(t('dri.reports.headings.datastream_version'), datastream_version_path(:id => @object.id, :stream => datastream, :date => key )) %>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+
+  <h3><%= t('dri.reports.headings.files') %></h3>
+  <% @object.generic_files.each do |file| %>
+    <table>
+      <tr><td><%= t('dri.reports.assets.asset_id') %></td><td><%= file.pid %></td></tr>
+      <tr><td><%= t('dri.reports.assets.asset_type') %></td><td><%= file.format_label.join(' : ') %></td></tr>
+      <tr><td><%= t('dri.reports.assets.file_size') %></td><td><%= file.file_size.join(' : ') %></td></tr>
+      <tr><td><%= t('dri.reports.assets.last_modified') %></td><td><%= file.last_modified.join(' : ') %></td></tr>
+      <tr><td><%= t('dri.reports.assets.checksum_orig') %></td><td><%= file.original_checksum.join(' : ') %></td></tr>
+      <tr><td><%= t('dri.reports.assets.checksum_md5') %></td><td><%= file.checksum_md5 %></td></tr>
+      <tr><td><%= t('dri.reports.assets.checksum_sha256') %></td><td><%= file.checksum_sha256 %></td></tr>
+      <tr><td><%= t('dri.reports.assets.checksum_rmd160') %></td><td><%= file.checksum_rmd160 %></td></tr>
+      <tr><td><%= t('dri.reports.assets.file_info_link') %></td><td><%= link_to(object_file_path(@object.id, file.id), object_file_path(@object.id, file.id)) %></td></tr>
+      <tr><td><%= t('dri.reports.assets.file_download_link') %></td><td><%= link_to(file_download_path(@object.id, file.id), file_download_path(@object.id, file.id)) %></td></tr>
+
+
+      <% versions = get_asset_version_list(file.pid, 'content') %>
+      <tr><td><%= t('dri.reports.assets.version') %></td><td><%= versions.count - 1 %></td></tr>
+
+      <% if versions.count > 0 %>
+
+        <tr><td><%= t('dri.reports.assets.previous_versions') %></td><td>
+          <ul>
+            <% versions.pop %>
+            <% versions.each do |f| %>
+            <li><%= link_to(file_download_path(@object.id, file.id, :version => f.version),
+                            file_download_path(@object.id, file.id, :version => f.version)) %></li>
+            <% end %>
+          </ul>
+        </td></tr>
+      <% end %>
+
+      <tr><td><%= t('dri.reports.assets.surrogates') %></td><td>
+
+        <% get_surrogate_info(@object.id, file.id).each do |key,value| %>
+          <table>
+            <tr><td><%= t('dri.reports.surrogates.name') %></td><td><%= key %></td></tr>
+            <tr><td><%= t('dri.reports.surrogates.mime_type') %></td><td><%= value[:content_type] %></td></tr>
+            <tr><td><%= t('dri.reports.surrogates.size') %></td><td><%= number_to_human_size(value[:content_length]) %></td></tr>
+            <tr><td><%= t('dri.reports.surrogates.hash') %></td><td><%= value[:etag] %></td></tr>
+            <tr><td><%= t('dri.reports.surrogates.last_modified') %></td><td><%= value[:last_modified] %></td></tr>
+          </table>
+        <% end %>
+      </td></tr>
+    </table>
+  <% end %>
+</div>

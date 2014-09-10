@@ -15,7 +15,7 @@ class ExportController < ApplicationController
 
     begin
       @document = ActiveFedora::FixtureExporter.export(params[:id])
-      render :xml => @document    
+      render :xml => @document
     rescue ActiveFedora::ObjectNotFoundError => e
       render :xml => { :error => 'Not found' }, :status => 404
       return

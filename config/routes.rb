@@ -23,6 +23,9 @@ NuigRnag::Application.routes.draw do
   resources :ingest, :only => ['new', 'create']
 
   resources :institutes, :only => ['show', 'new', 'create']
+  resources :object_history, :only => ['show']
+  resources :datastream_version, :only => ['show']
+
   match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
   match 'newdepositingassociation' => 'institutes#associate_depositing', :via => :post, :as => :new_depositing_association
   match 'institutions' => 'institutes#index', :via => :get, :as => :institutions
@@ -41,8 +44,7 @@ NuigRnag::Application.routes.draw do
 
   match 'export/:id' => 'export#show', :via => :get, :as => :object_export
 
-  match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata
-  match 'objects/:id/styled_metadata' => 'metadata#show_styled', :via => :get, :as => :object_styled_metadata
+  match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata, :defaults => { :format => 'xml' }
   match 'objects/:id/metadata' => 'metadata#update', :via => :put
   match 'objects/:id/citation' => 'objects#citation', :via => :get, :as => :citation_object
   match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download

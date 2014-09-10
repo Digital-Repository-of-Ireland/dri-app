@@ -5,6 +5,8 @@
     <% surrogate_type_name = "webm" %>
 <% elsif generic_file.pdf? %>
     <% surrogate_type_name = "pdf" %>
+<% elsif generic_file.text? %>
+    <% surrogate_type_name = "rtf" %>
 <% elsif generic_file.image? %>
     <% surrogate_type_name = "full_size_web_format" %>
 <% end %>
@@ -12,17 +14,17 @@
 <% surrogate = surrogate_url(document.id, generic_file.id, surrogate_type_name) %>
 <div class="carousel-caption">
   <p>
-    <% if surrogate.nil? %>
-        <%= "#{t('dri.views.catalog.links.asset')} #{index} #{t('dri.views.catalog.links.download_not_available')}" %>
-    <% else %>
+    <% if surrogate.nil? && !(can? :read_master, @document) %>
+      <%= t('dri.views.catalog.links.download_not_available', :index => index.ordinalize) %>
+    <% elsif surrogate.nil? && (can? :read_master, @document) %>
+        <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{generic_file[:file_size].first.present? ? number_to_human_size(generic_file[:file_size].first.to_f) : t('dri.views.catalog.links.unknown_size')})", file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
+    <% elsif surrogate.present? %>
         <% mime_type_list = MIME::Types[generic_file[:mime_type].first] %>
         <% file_extension = mime_type_list.first.extensions.first %>
         <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.#{file_extension}"} %>
-        <% converted_file_size = convert_file_size(generic_file[:file_size].first.to_f) %>
-        <%= link_to "#{t('dri.views.catalog.links.download')} #{index}", download_surrogate_path(download_params), :id => "download_asset" %>
+        <%= link_to t('dri.views.catalog.links.download_nth', :index => index.ordinalize), download_surrogate_path(download_params), :id => "download_asset" %>
         <% if can? :read_master, @document %>
-            - <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{converted_file_size[:size]} #{converted_file_size[:unit]})",
-                          file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
+            - <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{generic_file[:file_size].first.present? ? number_to_human_size(generic_file[:file_size].first.to_f) : t('dri.views.catalog.links.unknown_size')})", file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
         <% end %>
     <% end %>
   </p>

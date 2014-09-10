@@ -31,6 +31,28 @@ module Storage
       return @surrogates_hash
     end
 
+
+    # Get information about surrogates for a generic_file
+    def get_surrogate_info(object_id, file_id)
+      bucket = object_id.sub('dri:', '')
+
+      surrogates_hash = {}
+      begin
+        bucketobj = @s3.buckets[bucket]
+        bucketobj.objects.each do |fileobj|
+          if fileobj.key.match(/#{file_id}_([-a-zA-z0-9]*)\..*/)
+            surrogates_hash[fileobj.key] = fileobj.head
+          end
+        end
+      rescue Exception => e
+        logger.debug "Problem getting info for file #{file_id} : #{e.to_s}"
+      end
+
+      return surrogates_hash
+    end
+
+
+    # Get url for a specific surrogate
     def surrogate_url( object_id, file_id, name, expire=nil )
 
       expire = Settings.S3.expiry unless (!expire.blank? && numeric?(expire))
@@ -142,7 +164,7 @@ module Storage
     end
 
   private
-    
+
     def create_url(bucket, object, expire=nil, authenticated=true)
       bucket_obj = @s3.buckets[bucket]
       object = bucket_obj.objects[object]

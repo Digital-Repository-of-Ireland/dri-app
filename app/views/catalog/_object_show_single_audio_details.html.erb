@@ -20,9 +20,7 @@
   <% unless(generic_file[:file_size].empty?) %>
       <dt><%= t("dri.views.catalog.forms.audio.file_size") %></dt>
       <dd>
-        <% file_size = generic_file[:file_size].first.to_f %>
-        <% converted_file_size = convert_file_size(file_size) %>
-        <%= "#{converted_file_size[:size]} #{converted_file_size[:unit]}"%>
+        <%= number_to_human_size(generic_file[:file_size].first.to_f) %>
       </dd>
   <% end %>
 </dl>

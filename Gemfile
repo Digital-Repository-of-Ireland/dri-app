@@ -7,10 +7,10 @@ gem 'rails', '~> 4.1.0'
 
 gem 'blacklight', "5.5.2"
 gem 'hydra-head', "7.1.0"
-gem 'sufia-models', "4.0.0rc2"
+gem 'sufia-models', "4.0.0"
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'hydra7'
-gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'hydra7'
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'develop'
+gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'develop'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -33,7 +33,7 @@ gem 'http_accept_language'
 gem 'it'
 
 # logging
-gem 'logstash-logger'
+gem 'syslog-logger'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
@@ -70,10 +70,12 @@ group :development, :test do
 
   gem "zeus", require: false
 
-  gem 'ci_reporter'
+  gem 'ci_reporter_cucumber'
+  gem 'ci_reporter_rspec'
 end
 
 group :test do
+  gem 'cucumber', '1.3.15'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', '1.0.1'
   gem 'launchy'

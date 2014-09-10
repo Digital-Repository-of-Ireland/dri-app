@@ -1,23 +1,23 @@
 GIT
   remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: ef4b74d4f8e905dbe1a3a24a2c535ab5b3619b6b
-  branch: hydra7
+  revision: ae3ccfb72143f1248b4cd85a3d7f0d88b48542a5
+  branch: develop
   specs:
-    dri_data_models (1.0.6)
+    dri_data_models (1.1.0)
       hydra-access-controls
       hydra-collections
       hydra-head (>= 7.0)
       iso-639
       rails (>= 4.0)
       sass-rails (~> 4.0.3)
-      sufia-models (= 4.0.0rc2)
+      sufia-models (= 4.0.0)
 
 GIT
   remote: ssh://git@tracker.dri.ie/navr/user_group
-  revision: ef7a48727be234b1e012a74d0605bf749d918fe0
-  branch: hydra7
+  revision: 7133e0801891fff6469d94b8d9bc55a5ad5d6e24
+  branch: develop
   specs:
-    user_group (1.0.5)
+    user_group (1.0.6)
       devise (~> 3.1.0)
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -76,21 +76,22 @@ GEM
     acts_as_follower (0.2.1)
     addressable (2.3.6)
     arel (5.0.1.20140414130214)
-    atomic (1.1.16)
     autoparse (0.3.3)
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    avl_tree (1.1.3)
-    aws-sdk (1.46.0)
+    aws-sdk (1.52.0)
+      aws-sdk-v1 (= 1.52.0)
+    aws-sdk-v1 (1.52.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
     bcrypt (3.1.7)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
-    better_errors (1.1.0)
+    better_errors (2.0.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
+      rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     blacklight (5.5.2)
@@ -102,9 +103,9 @@ GEM
       rsolr (~> 1.0.6)
     block_helpers (0.3.3)
       activesupport (>= 2.0)
-    bootstrap-sass (3.2.0.1)
+    bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
-    bootstrap-switch-rails (3.0.0)
+    bootstrap-switch-rails (3.0.2)
     builder (3.2.2)
     cancancan (1.9.2)
     capybara (2.4.1)
@@ -120,8 +121,14 @@ GEM
       mime-types (>= 1.16)
     childprocess (0.5.3)
       ffi (~> 1.0, >= 1.0.11)
-    ci_reporter (1.9.2)
+    ci_reporter (2.0.0)
       builder (>= 2.1.2)
+    ci_reporter_cucumber (1.0.0)
+      ci_reporter (~> 2.0)
+      cucumber (~> 1.3.3)
+    ci_reporter_rspec (1.0.0)
+      ci_reporter (~> 2.0)
+      rspec (>= 2.14, < 4)
     cliver (0.3.2)
     coderay (1.1.0)
     colorbox-rails (0.1.2)
@@ -143,7 +150,7 @@ GEM
       mime-types (~> 1.16)
       nokogiri (~> 1.5)
       rails (>= 3, < 5)
-    curb (0.8.5)
+    curb (0.8.6)
     daemons (1.1.9)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
@@ -174,19 +181,19 @@ GEM
     factory_girl_rails (4.4.1)
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
-    faker (1.4.1)
+    faker (1.4.3)
       i18n (~> 0.5)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     fastercsv (1.5.5)
     fastimage (1.6.3)
       addressable (~> 2.3, >= 2.3.5)
-    feedjira (1.3.0)
+    feedjira (1.3.1)
       curb (~> 0.8.1)
       loofah (~> 2.0.0)
       sax-machine (~> 0.2.1)
     ffi (1.9.3)
-    font-awesome-rails (4.1.0.0)
+    font-awesome-rails (4.2.0.0)
       railties (>= 3.2, < 5.0)
     foreigner (1.6.1)
       activerecord (>= 3.0.0)
@@ -212,11 +219,10 @@ GEM
     hashie (3.3.1)
     high_voltage (2.1.0)
     hike (1.2.3)
-    hitimes (1.2.2)
     hooks (0.3.6)
       uber (~> 0.0.4)
     htmlentities (4.3.2)
-    http_accept_language (2.0.1)
+    http_accept_language (2.0.2)
     hydra-access-controls (7.1.0)
       active-fedora (~> 7.0.0)
       activesupport
@@ -258,7 +264,7 @@ GEM
       logger
     jquery-cookie-rails (1.3.1.1)
       railties (>= 3.2.0, < 5.0)
-    jquery-rails (3.1.1)
+    jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.0)
@@ -295,25 +301,17 @@ GEM
       sparql (>= 1.1.2)
       sparql-client (>= 1.1.1)
     logger (1.2.8)
-    logstash-event (1.2.02)
-    logstash-logger (0.6.0)
-      logstash-event (~> 1.2)
-      stud
-    loofah (2.0.0)
+    loofah (2.0.1)
       nokogiri (>= 1.5.9)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mailboxer (0.12.2)
+    mailboxer (0.12.3)
       carrierwave (>= 0.5.8)
       foreigner (>= 0.9.1)
       rails (>= 3.2.0)
     mediashelf-loggable (0.4.10)
     method_source (0.8.2)
-    metriks (0.9.9.6)
-      atomic (~> 1.0)
-      avl_tree (~> 1.1.2)
-      hitimes (~> 1.1)
     mime-types (1.25.1)
     mimemagic (0.2.1)
     mini_magick (3.8.0)
@@ -370,7 +368,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    railroady (1.1.1)
+    railroady (1.1.2)
     rails (4.1.5)
       actionmailer (= 4.1.5)
       actionpack (= 4.1.5)
@@ -452,10 +450,10 @@ GEM
       rspec-mocks (~> 2.99.0)
     rspec-collection_matchers (1.0.0)
       rspec-expectations (>= 2.99.0.beta1)
-    rspec-core (2.99.1)
-    rspec-expectations (2.99.1)
+    rspec-core (2.99.2)
+    rspec-expectations (2.99.2)
       diff-lcs (>= 1.1.3, < 2.0)
-    rspec-mocks (2.99.1)
+    rspec-mocks (2.99.2)
     rspec-rails (2.99.0)
       actionpack (>= 3.0)
       activemodel (>= 3.0)
@@ -488,7 +486,7 @@ GEM
       shoulda-context (~> 1.0, >= 1.0.1)
       shoulda-matchers (>= 1.4.1, < 3.0)
     shoulda-context (1.2.1)
-    shoulda-matchers (2.6.1)
+    shoulda-matchers (2.7.0)
       activesupport (>= 3.0.0)
     show_me_the_cookies (2.5.0)
       capybara (~> 2.0)
@@ -497,7 +495,7 @@ GEM
       faraday (>= 0.9.0.rc5)
       jwt (>= 0.1.5)
       multi_json (>= 1.0.0)
-    simplecov (0.8.2)
+    simplecov (0.9.0)
       docile (~> 1.1.0)
       multi_json
       simplecov-html (~> 0.8.0)
@@ -531,17 +529,14 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-rails (2.1.3)
+    sprockets-rails (2.1.4)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
     sqlite3 (1.3.9)
     stomp (1.3.3)
-    stud (0.0.17)
-      ffi
-      metriks
     subexec (0.2.3)
-    sufia-models (4.0.0.rc2)
+    sufia-models (4.0.0)
       activerecord-import (~> 0.5)
       activeresource (~> 4.0)
       acts_as_follower (>= 0.1.1, < 0.3)
@@ -559,6 +554,7 @@ GEM
       resque-pool (~> 0.3)
     sxp (0.1.5)
     syntax (1.2.0)
+    syslog-logger (1.6.8)
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
@@ -571,7 +567,7 @@ GEM
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uber (0.0.8)
-    uglifier (2.5.1)
+    uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     unicode (0.4.4.1)
@@ -604,8 +600,10 @@ DEPENDENCIES
   blacklight (= 5.5.2)
   bootstrap-sass
   bootstrap-switch-rails
-  ci_reporter
+  ci_reporter_cucumber
+  ci_reporter_rspec
   colorbox-rails
+  cucumber (= 1.3.15)
   cucumber-api-steps
   cucumber-rails
   database_cleaner (= 1.0.1)
@@ -627,7 +625,6 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   launchy
-  logstash-logger
   mimemagic
   mysql
   mysql2
@@ -647,8 +644,9 @@ DEPENDENCIES
   simplecov
   simplecov-rcov
   sqlite3
-  sufia-models (= 4.0.0rc2)
+  sufia-models (= 4.0.0)
   syntax
+  syslog-logger
   timelineJS-rails (~> 1.1.5)
   uglifier (>= 1.0.3)
   unicode
