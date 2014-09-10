@@ -57,9 +57,9 @@
   <% if flash  %>
   	<%= render :partial=>'/flash_msg' %>
   <% end %>
-
   <!-- This condition identifies the browse section of the application and every search result and/or facet refinement -->
-  <% if ((controller_name == 'catalog' || controller_name == 'bookmarks') && action_name == 'index') && has_browse_params? %>
+  <% if (((controller_name == 'catalog' || controller_name == 'bookmarks') && action_name == 'index') && has_browse_params?) ||
+       (controller_name == 'saved_searches' && action_name == 'index')%>
       <%= render 'catalog/browse_mode_swap' %>
   <% end %>
 
