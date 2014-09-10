@@ -1,8 +1,4 @@
-<% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index')%>
-    <%= render 'shared/results_paginator' %>
-    
-  
-<% end %>
+
 
 <% if params[:controller] == 'saved_searches' && params[:action] == 'index' %>
 <div class="dri_facet_restrictions_links ">

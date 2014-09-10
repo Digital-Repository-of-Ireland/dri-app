@@ -1109,7 +1109,7 @@ ol.breadcrumb {
 /*-------------- Pagination --------------*/
 
 .dri_pagination_nav {
-  margin: 25px 0 10px 0;
+  //margin: 25px 0 10px 0;
   padding: 0x;
   p {
     margin: 0;
@@ -1268,7 +1268,22 @@ ol.breadcrumb {
         color: #FFF;
       }
     }
+    
   }
+  .dri_pagination_nav {
+    margin-top: 10px; 
+    li a {
+      color: none;
+      margin: 0px 0 0px 0;
+      padding: 6px 8px 6px 8px;
+      border: none;
+      border-top-right-radius: none;
+      border-top-left-radius: none;
+      border-bottom: none;
+      display: block;
+      font-size: 100%; 
+      }
+    }
 }
 
 /*-------------- Save Search --------------*/
