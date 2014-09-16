@@ -1,8 +1,4 @@
 <div>
 	<h4 id="end_user_agreement_title"><%= t('dri.headerlinks.end_user_agreement') %></h4>
-  <% if I18n.locale == :ga %>
-      <p><%= render :partial => 'pages/terms_ga' %></p>
-  <% else %>
-      <p><%= render :partial => 'pages/terms_en' %></p>
-  <% end %>
+  <p><%= render :partial => 'pages/terms' %></p>
 </div>
