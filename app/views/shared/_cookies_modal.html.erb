@@ -6,11 +6,7 @@
       </div>
       <div class="modal-body">
         <div class="dri_cookie_acceptance_text">
-          <% if I18n.locale == :ga %>
-              <p><%= render :partial => 'pages/terms_ga' %></p>
-          <% else %>
-              <p><%= render :partial => 'pages/terms_en' %></p>
-          <% end %>
+           <p><%= render :partial => 'pages/terms' %></p>
         </div>
       </div>
       <div class="modal-footer">
