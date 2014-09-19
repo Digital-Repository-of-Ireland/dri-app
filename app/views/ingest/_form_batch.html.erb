@@ -1,7 +1,17 @@
 <%= form_for @object, :as => :batch, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
-  <%= f.hidden_field :governing_collection, {:value => @collection} %> 
+  <%= f.hidden_field :governing_collection, {:value => @collection} %>
 
-  <%= render :partial => "shared/form_metadata", :locals => { :f => f, :action => "create" } %>
+    <!--Metadata Standard Parameter-->
+    <%=
+        case params[:metadata_standard]
+          when "DC"
+            render :partial => "shared/form_metadata", :locals => { :f => f, :action => "create" }
+          when "Marc"
+            render :partial => "shared/form_metadata_marc", :locals => { :f => f, :action => "create" }
+          else
+        end
+    %>
+
   <%= render :partial => "shared/form_default_permissions", :locals => {:f => f,:record => @object } %>
 
   <%= f.submit t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>

@@ -1,0 +1,52 @@
+<fieldset id="datafield_336_ind1__ind2__subfield_a">
+  <%= f.label "Marc" %>
+  <% @object.datafield_336_ind1__ind2__subfield_a.each do |i| %>
+      <%= f.text_field "datafield_336_ind1__ind2__subfield_a][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
+  <% end %>
+  <p class="add-text-field"><a href="#" model-name="batch" title="Add Marc"><%= t('dri.views.objects.forms.add_title') %></a></p>
+</fieldset>
+
+<fieldset id="title">
+  <%= f.label "#{t('dri.views.fields.title')}:" %>
+  <% @object.title.each do |i| %>
+      <%= f.text_field "title][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
+  <% end %>
+  <p class="add-text-field"><a href="#" model-name="batch" title="Add Title"><%= t('dri.views.objects.forms.add_title') %></a></p>
+</fieldset>
+
+<fieldset id="metadata">
+  <% if action.eql?("update") && params[:controller] != "collections" %>
+      <%= f.label "#{t('dri.views.objects.forms.governing_collection')}:" %>
+      <%= f.select :governing_collection_id,  options_for_select(@collections, governing_collection(@object)), :prompt => t('dri.views.ingest.forms.collection_prompt'), :class => "edit span6" %>
+  <% end %>
+</fieldset>
+
+<fieldset id="type">
+  <%= f.label "#{t('dri.views.fields.types')}:" %>
+  <% @object.type.each do |i| %>
+      <%= f.text_field "type][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
+  <% end %>
+  <p class="add-text-field"><a href="#" model-name="batch" title="Add Type"><%= t('dri.views.objects.forms.add_type') %></a></p>
+</fieldset>
+<fieldset id="rights">
+  <%= f.label "#{t('dri.views.fields.rights')}:" %>
+  <% @object.rights.each do |i| %>
+      <%= f.text_area "rights][", :value=>i, :class => "edit span6 dri-textarea" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
+  <% end %>
+  <p class="add-text-field"><a href="#" model-name="batch" title="Add Rights"><%= t('dri.views.objects.forms.add_rights') %></a></p>
+</fieldset>
+
+<fieldset id="cover_image">
+  <% if (params[:controller] == "collections" ) %>
+      <%= f.label "#{t('dri.views.fields.cover_image')}:" %>
+      <%= f.file_field :cover_image, :class => "edit span6" %>
+      <%= image_tag @object[:cover_image].first, :width=>"230", :height=>"139" unless @object[:cover_image].blank? %>
+
+      <%= f.label "#{t('dri.views.fields.cover_image')}:" %>
+  <% end %>
+</fieldset>
+
+<fieldset id="licence">
+  <%= f.label "#{t('dri.views.fields.licence')}:" %>
+  <%= f.select :licence, options_for_select(@licences, @object[:licence]), :class => "edit span6" %>
+</fieldset>

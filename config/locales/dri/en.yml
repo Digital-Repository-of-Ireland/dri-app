@@ -363,6 +363,7 @@ en:
           reset: Reset
         forms: 
           collection_prompt: "Select collection"
+          metadata_standard_prompt: "Select metadata"
           ingest_method_prompt: "Select ingest method"
           object_type_prompt: "Select object type"
           status_prompt: "Select status"

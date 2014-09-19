@@ -2,6 +2,7 @@
 
 <%= form_tag :action=>"create" do %>
   <%= select_tag "ingestcollection",  options_for_select(@collections), :prompt => t('dri.views.ingest.forms.collection_prompt'), :required => "true" %>
-  <%= submit_tag t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>
+  <%= select_tag "metadata_standard",  options_for_select([ "DC", "Marc" ], "DC"), :prompt => t('dri.views.ingest.forms.metadata_standard_prompt'), :required => "true" %>
+    <%= submit_tag t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>
 
 <% end %>
