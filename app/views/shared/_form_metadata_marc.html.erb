@@ -1,3 +1,11 @@
+<fieldset id="leader">
+  <%= f.label "leader" %>
+  <% @object.leader.each do |i| %>
+      <%= f.text_field "leader][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
+  <% end %>
+  <p class="add-text-field"><a href="#" model-name="batch" title="Add Marc"><%= t('dri.views.objects.forms.add_title') %></a></p>
+</fieldset>
+
 <fieldset id="datafield_336_ind1__ind2__subfield_a">
   <%= f.label "Marc" %>
   <% @object.datafield_336_ind1__ind2__subfield_a.each do |i| %>
@@ -28,6 +36,23 @@
   <% end %>
   <p class="add-text-field"><a href="#" model-name="batch" title="Add Type"><%= t('dri.views.objects.forms.add_type') %></a></p>
 </fieldset>
+
+<fieldset id="description">
+  <%= f.label "#{t('dri.views.fields.description')}:" %>
+  <% @object.description.each do |i| %>
+      <%= f.text_area "description][", :value=>i, :class => "edit span6 dri-textarea" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
+  <% end %>
+  <p class="add-text-field"><a href="#" model-name="batch" title="Add Description"><%= t('dri.views.objects.forms.add_description') %></a></p>
+</fieldset>
+
+<fieldset id="creation_date">
+  <%= f.label "#{t('dri.views.fields.creation_date')}:" %>
+  <% @object.creation_date.each do |i| %>
+      <%= f.text_field "creation_date][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
+  <% end %>
+  <p class="add-text-field"><a href="#" model-name="batch" title="Add Creation Date"><%= t('dri.views.objects.forms.add_creation_date') %></a></p>
+</fieldset>
+
 <fieldset id="rights">
   <%= f.label "#{t('dri.views.fields.rights')}:" %>
   <% @object.rights.each do |i| %>
