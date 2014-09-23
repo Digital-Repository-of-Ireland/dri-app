@@ -2,17 +2,7 @@
   <%= f.hidden_field :governing_collection, {:value => @collection} %>
   <%= f.hidden_field :standard, {:value => @standard} %>
 
-    <!--Metadata Standard Parameter-->
-    <%=
-        case @standard 
-          when "DC"
-            render :partial => "shared/form_metadata", :locals => { :f => f, :action => "create" }
-          when "Marc"
-            render :partial => "shared/form_metadata_marc", :locals => { :f => f, :action => "create" }
-          else
-        end
-    %>
-
+  <%= render :partial => "shared/form_metadata_#{@standard}", :locals => { :f => f, :action => "create" } %>
   <%= render :partial => "shared/form_default_permissions", :locals => {:f => f,:record => @object } %>
 
   <%= f.submit t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>

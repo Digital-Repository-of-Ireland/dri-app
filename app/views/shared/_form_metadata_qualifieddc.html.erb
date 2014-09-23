@@ -1,4 +1,3 @@
-<%= hidden_field_tag :metadata_standard, params[:metadata_standard]  %>
 <fieldset id="metadata">
   <% if action.eql?("update") && params[:controller] != "collections" %>
       <%= f.label "#{t('dri.views.objects.forms.governing_collection')}:" %>

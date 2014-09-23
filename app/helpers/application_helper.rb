@@ -59,6 +59,11 @@ module ApplicationHelper
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
+  def get_metadata_name( object )
+    doc = Nokogiri::XML(object.descMetadata.to_xml)
+    doc.xpath('/*').first.name
+  end
+
   def search_image ( document, file_document, image_name = "crop16_9_width_200_thumbnail" )
     path = nil
 

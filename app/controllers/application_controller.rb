@@ -136,9 +136,9 @@ class ApplicationController < ActionController::Base
   def get_batch_class_from_param param
     # Metadata Standard Parameter
     case param
-      when "DC"
+      when "qualifieddc"
         'DRI::Metadata::QualifiedDublinCore'
-      when "Marc"
+      when "marc"
         'DRI::Metadata::Marc'
       else
     end
