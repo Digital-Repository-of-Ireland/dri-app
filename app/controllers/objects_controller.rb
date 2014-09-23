@@ -102,7 +102,8 @@ class ObjectsController < CatalogController
     standard = params[:batch].delete(:standard)
     
     set_access_permissions(:batch)
-    @object = Batch.new :desc_metadata_class => standard
+
+    @object = Batch.new :desc_metadata_class => get_batch_class_from_param(params[:ingest][:standard])
 
     if request.content_type == "multipart/form-data"
       xml = MetadataHelpers.load_xml(params[:metadata_file])

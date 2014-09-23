@@ -28,7 +28,8 @@ class IngestController < CatalogController
   def create
     get_supported_licences()
 
-    @object = Batch.new :desc_metadata_class => session[:ingest][:standard]
+    # Passing Metadata Class for dynamic loading of attributes
+    @object = Batch.new :desc_metadata_class => get_batch_class_from_param(params[:ingest][:standard])
 
     if params[:batch].present?
       @object.update_attributes params[:batch]
