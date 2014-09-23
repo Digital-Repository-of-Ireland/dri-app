@@ -1,7 +1,6 @@
 <h2><% t('dri.views.ingest.steps.ingest_method') %></h2>
 
 <%= form_tag :action=>"create" do %>
-    <%= hidden_field_tag :metadata_standard, params[:metadata_standard]  %>
     <%= select_tag "ingestmethod", options_for_select(@ingest_methods), :prompt => t('dri.views.ingest.forms.ingest_method_prompt'), :required => "true" %>
 
   <%= submit_tag t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>

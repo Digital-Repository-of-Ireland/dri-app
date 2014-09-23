@@ -1,7 +1,8 @@
 ingest:
-  steps: [collection, ingestmethod, metadata]
+  steps: [collection, standard, ingestmethod, metadata]
   step_data:
     collection: [ingestcollection]
+    standard: [standard]
     ingestmethod: [ingestmethod]
 interface:
   languages: [en, ga]
