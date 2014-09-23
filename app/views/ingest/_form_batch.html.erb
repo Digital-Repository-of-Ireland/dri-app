@@ -5,9 +5,9 @@
     <!--Metadata Standard Parameter-->
     <%=
         case @standard 
-          when "DRI::Metadata::QualifiedDublinCore"
+          when "DC"
             render :partial => "shared/form_metadata", :locals => { :f => f, :action => "create" }
-          when "DRI::Metadata::Marc"
+          when "Marc"
             render :partial => "shared/form_metadata_marc", :locals => { :f => f, :action => "create" }
           else
         end
