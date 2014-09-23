@@ -100,7 +100,8 @@ class ObjectsController < CatalogController
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
 
     set_access_permissions(:batch)
-    @object = Batch.new
+
+    @object = Batch.new :desc_metadata_class => get_batch_class_from_param(params[:metadata_standard])
 
     if request.content_type == "multipart/form-data"
       xml = MetadataHelpers.load_xml(params[:metadata_file])

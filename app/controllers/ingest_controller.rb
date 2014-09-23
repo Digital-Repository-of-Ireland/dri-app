@@ -26,18 +26,9 @@ class IngestController < CatalogController
   # Handles the ingest process using partial forms
   #
   def create
-    # Metadata Standard Parameter
-    case params[:metadata_standard]
-      when "DC"
-        klass = 'DRI::Metadata::QualifiedDublinCore'
-      when "Marc"
-        klass = 'DRI::Metadata::Marc'
-      else
-    end
-
     get_supported_licences()
-
-    @object = Batch.new :desc_metadata_class => klass
+    # Passing Metadata Class for dynamic loading of attributes
+    @object = Batch.new :desc_metadata_class => get_batch_class_from_param(params[:metadata_standard])
 
     if params[:batch].present?
       @object.update_attributes params[:batch]

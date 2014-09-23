@@ -132,6 +132,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Gets Metadata Class
+  def get_batch_class_from_param param
+    # Metadata Standard Parameter
+    case param
+      when "DC"
+        'DRI::Metadata::QualifiedDublinCore'
+      when "Marc"
+        'DRI::Metadata::Marc'
+      else
+    end
+  end
 
   private
 
