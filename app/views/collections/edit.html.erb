@@ -5,7 +5,7 @@
 
       <%= form_for @object, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
 
-          <%= render :partial => "shared/form_metadata", :locals => { :f => f, :action => "update" } %>
+          <%= render :partial => "shared/form_metadata_qualifieddc", :locals => { :f => f, :action => "update" } %>
           <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
 
           <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "edit_collection" %>
