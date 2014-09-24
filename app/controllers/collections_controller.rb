@@ -204,7 +204,7 @@ class CollectionsController < CatalogController
       return
     else
 
-      xml = MetadataHelpers.load_xml_bypass_validation(params[:metadata_file])
+      xml = MetadataHelpers.load_xml(params[:metadata_file])
       metadata_class = MetadataHelpers.get_metadata_class_from_xml xml
 
       if metadata_class.nil?

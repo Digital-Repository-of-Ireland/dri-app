@@ -25,7 +25,8 @@ module MetadataHelpers
         return
       end
 
-      result, @msg = MetadataValidator.is_valid_dc?(xml)
+      standard = get_metadata_class_from_xml(xml)
+      result, @msg = MetadataValidator.valid?(xml, standard)
 
       unless result
         raise Exceptions::ValidationErrors, @msg
@@ -35,20 +36,6 @@ module MetadataHelpers
       return xml
     end
 
-  end
-
-  def self.load_xml_bypass_validation(upload)
-    if MIME::Types.type_for(upload.original_filename).first.content_type.eql? 'application/xml'
-      tmp = upload.tempfile
-
-      begin
-        xml = Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
-      rescue Nokogiri::XML::SyntaxError => e
-        raise Exceptions::InvalidXML, e
-        return
-      end
-      return xml
-    end
   end
 
   def self.get_metadata_class_from_xml xml_text

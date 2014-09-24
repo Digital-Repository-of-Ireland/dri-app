@@ -1,5 +1,14 @@
 module MetadataValidator
 
+  def MetadataValidator.valid?(xml, standard)
+    case standard
+    when "DRI::Metadata::QualifiedDublinCore"
+      return is_valid_dc?(xml)
+    else
+      return true
+    end  
+  end
+
   def MetadataValidator.is_valid_dc?(xml)
     result = false
     @msg = ""
