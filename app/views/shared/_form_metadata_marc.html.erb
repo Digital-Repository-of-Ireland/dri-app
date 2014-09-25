@@ -48,13 +48,15 @@
 <!--Marc Field from Vocabulary-->
 <%# TODO: move DRI::Vocabulary::marcDatafields to controller if accepted %>
 <%  DRI::Vocabulary::marcDatafields.each do |df| %>
-    <fieldset id="<%= 'sf_' + df[:code] + df[:sf] %>">
-      <%= f.label df[:code]+ '$' + df[:sf] %>
-      <% @object.send("sf_" + df[:code] + df[:sf]).each do |i| %>
-          <%= f.text_field "#{'sf_' + df[:code] + df[:sf]}][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
+    <% df[:sf].each do |sf| %>
+    <fieldset id="<%= 'sf_' + df[:code] + sf %>">
+      <%= f.label df[:code]+ '$' + sf %>
+      <% @object.send("sf_" + df[:code] + sf).each do |i| %>
+          <%= f.text_field "#{'sf_' + df[:code] + sf}][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
       <% end %>
-      <p class="add-text-field"><a href="#" model-name="batch" title="Add Title"><%= 'Add ' + df[:code] + '$' + df[:sf] %></a></p>
+      <p class="add-text-field"><a href="#" model-name="batch" title="Add Title"><%= 'Add ' + df[:code] + '$' + sf %></a></p>
     </fieldset>
+  <% end %>
 <% end %>
 
 <fieldset id="rights">
