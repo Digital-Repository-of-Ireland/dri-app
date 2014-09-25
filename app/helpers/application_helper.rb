@@ -257,5 +257,20 @@ module ApplicationHelper
     !params[:q].blank? or !params[:f].blank? or !params[:search_field].blank?
   end
 
+  def custom_label_for_marc_field(sf)
+    case sf
+      when '245$a'
+        'Title'
+      when '100$a'
+        'Creator'
+      when '260$c'
+        'Creation Date'
+      when '500$a'
+        'Description'
+      when '506$a'
+        'Rights'
+    end
+  end
+
 end
 
