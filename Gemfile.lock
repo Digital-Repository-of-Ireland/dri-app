@@ -1,7 +1,7 @@
 GIT
   remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: ae3ccfb72143f1248b4cd85a3d7f0d88b48542a5
-  branch: develop
+  revision: e57a85e5317b7d738d68cb3a98b8867a6e5e4068
+  branch: marc-nccb
   specs:
     dri_data_models (1.1.0)
       hydra-access-controls
