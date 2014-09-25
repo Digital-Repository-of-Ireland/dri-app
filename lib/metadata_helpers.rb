@@ -2,10 +2,6 @@ require 'checksum'
 require 'metadata_validator'
 
 module MetadataHelpers
-
-  def self.set_metadata_datastream(object, xml)
-    object.update_metadata xml
-  end
     
   def self.checksum_metadata(object)
     if object.datastreams.keys.include?("descMetadata")

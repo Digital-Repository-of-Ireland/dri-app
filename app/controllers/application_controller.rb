@@ -4,7 +4,7 @@ require 'solr/query'
 
 class ApplicationController < ActionController::Base
 
-  before_filter :set_locale, :set_cookie, :get_my_collections
+  before_filter :set_locale, :set_cookie, :my_collections
 
   include HttpAcceptLanguage
 
@@ -119,14 +119,14 @@ class ApplicationController < ActionController::Base
   end
 
   # Return a list of all supported licences (for populating select dropdowns)
-  def get_supported_licences
+  def supported_licences
     @licences = {}
     Licence.all.each do |licence|
       @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
     end
   end
 
-  def get_my_collections
+  def my_collections
     if signed_in?
       @collections = ingest_collections
     end

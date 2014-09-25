@@ -59,7 +59,7 @@ class MetadataController < CatalogController
       if @object.nil?
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
-        MetadataHelpers.set_metadata_datastream(@object, xml)
+        @object.update_metadata xml
         MetadataHelpers.checksum_metadata(@object)
         duplicates?(@object)
 
