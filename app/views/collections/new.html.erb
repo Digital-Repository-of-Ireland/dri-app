@@ -2,7 +2,7 @@
 
 <%= form_for @object, :url => {:controller=>"collections", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
 
-    <%= render :partial => "shared/form_metadata_qualifieddc", :locals => { :f => f, :action => "update" } %>
+    <%= render :partial => "shared/form_metadata_qualifieddublincore", :locals => { :f => f, :action => "update" } %>
 
     <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
 
