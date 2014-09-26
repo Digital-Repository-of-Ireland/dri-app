@@ -60,8 +60,7 @@ module ApplicationHelper
   end
 
   def get_metadata_name( object )
-    doc = Nokogiri::XML(object.descMetadata.to_xml)
-    doc.xpath('/*').first.name
+    object.descMetadata.class.to_s.downcase.split('::').last
   end
 
   def search_image ( document, file_document, image_name = "crop16_9_width_200_thumbnail" )
