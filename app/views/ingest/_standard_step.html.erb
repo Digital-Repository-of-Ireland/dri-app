@@ -1,7 +1,7 @@
 <h2><%= t('dri.views.ingest.steps.standard') %></h2>
 
 <%= form_tag :action=>"create" do %>
-  <%= select_tag "standard",  options_for_select([["DC", "qualifieddc"], ["Marc", "marc"]], "DC"), :prompt => t('dri.views.ingest.forms.metadata_standard_prompt'), :required => "true" %>
+  <%= select_tag "standard",  options_for_select([["DC", "qualifieddublincore"], ["Marc", "marc"]], "DC"), :prompt => t('dri.views.ingest.forms.metadata_standard_prompt'), :required => "true" %>
     <%= submit_tag t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>
 
 <% end %>

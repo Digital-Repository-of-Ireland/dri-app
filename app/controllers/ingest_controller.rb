@@ -33,7 +33,7 @@ class IngestController < CatalogController
 
     if params[:batch].present?
       @object.update_attributes params[:batch]
-    elsif session[:ingest][:standard] == 'qualifieddc'
+    elsif session[:ingest][:standard] == 'qualifieddublincore'
       @object.title = [""]
       @object.description = [""]
       @object.type = [""]
