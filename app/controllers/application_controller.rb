@@ -138,7 +138,8 @@ class ApplicationController < ActionController::Base
     case param
       when "qualifieddc"
         'DRI::Metadata::QualifiedDublinCore'
-      when "marc"
+      # "marc" is a form param, "collection" is xml root, when bulk_ingest
+      when "marc", "collection"
         'DRI::Metadata::Marc'
       else
     end

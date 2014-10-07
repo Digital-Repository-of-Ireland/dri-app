@@ -103,6 +103,14 @@ class ObjectsController < CatalogController
     
     set_access_permissions(:batch)
 
+    if standard.nil?
+      file_obj = params[:metadata_file].tempfile
+      file = File.open(file_obj.path)
+      ng_doc = Nokogiri::XML(file)
+      file.close
+      standard = ng_doc.root.name
+    end
+
     @object = Batch.new :desc_metadata_class => get_batch_class_from_param(standard)
 
     if request.content_type == "multipart/form-data"
