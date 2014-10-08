@@ -2904,9 +2904,12 @@ ul.dri_collection_institutes_list {
   color: #808082;
 }
 
+
+//******INGEST**********/
 .dri_ingest_form_container {
   padding-top:20px;
   .dri_ingest_form {
+    width: 60%;
     .dri_xml_upload {
       //float:right;
     }
@@ -2988,10 +2991,13 @@ ul.dri_collection_institutes_list {
         border-radius: -1px;
         height: 2em;
         font-size: 1.1em;
+        -webkit-border-style: none;
         -webkit-border-radius: none;
         -moz-border-radius: 0px;
         vertical-align: top;
         padding-bottom: 12px;
+        width: 150px;
+      overflow-wrap: initial;
 
       }
       .span6 {
