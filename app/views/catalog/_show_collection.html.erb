@@ -46,10 +46,12 @@
         <%= t('dri.views.catalog.titles.editor_tools') %>
       </div>
             <div class="dri_grey_button" >
-        <%= link_to t('dri.views.catalog.links.add_object'), '#', :id => "add_object" %>
+        <%= link_to t('dri.views.catalog.links.add_object'), new_object_path(collection: document.id, method: 'form'), :id => "add_object" %>
       </div>
             <div class="dri_grey_button" >
-        <%= link_to t('dri.views.catalog.links.add_object_xml'), '#', :id => "add_object_xml" %>
+
+              <%= link_to t('dri.views.catalog.links.add_object_xml'), new_object_path(collection: document.id, method: 'upload'), :id => "add_object" %>
+
       </div>
       <div class="dri_grey_button"><%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %></div>
       <div class="dri_grey_button" >

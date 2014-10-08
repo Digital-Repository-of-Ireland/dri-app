@@ -15,6 +15,16 @@ class ObjectsController < CatalogController
   before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
+  # Displays the New Object form
+  #
+  def new
+    @collection = params[:collection]
+
+    @object = Batch.new
+    supported_licences()
+  end
+
+
   # Edits an existing model.
   #
   def edit
@@ -122,7 +132,7 @@ class ObjectsController < CatalogController
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-        redirect_to :controller => "catalog", :action => "show", :id => @object.id
+        redirect_to :controller => "objects", :action => "edit", :id => @object.id
         }
         format.json {
           if  !@warnings.nil?
