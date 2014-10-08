@@ -15,7 +15,7 @@ add_text_field = function() {
       var fieldset_name = $(this).parent().parent().attr('id');
       var model_name = $(this).attr('model-name');
       $(this).parent().before(  
-      '<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" size="30" type="text" value=""> <a class="destructive">delete</a><br />');
+      '<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" size="30" type="text" value=""> <a class="destructive">&nbsp;<i class="fa fa-times-circle"></i> Remove</a>');
       $(this).parent().siblings('a').last().click(function() {
         $(this).prev('input[type="text"]').remove();
         $(this).prev('br').remove();

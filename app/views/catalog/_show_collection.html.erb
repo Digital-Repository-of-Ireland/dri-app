@@ -45,6 +45,12 @@
       <div class="dri_objecttools_title">
         <%= t('dri.views.catalog.titles.editor_tools') %>
       </div>
+            <div class="dri_grey_button" >
+        <%= link_to t('dri.views.catalog.links.add_object'), '#', :id => "add_object" %>
+      </div>
+            <div class="dri_grey_button" >
+        <%= link_to t('dri.views.catalog.links.add_object_xml'), '#', :id => "add_object" %>
+      </div>
       <div class="dri_grey_button"><%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %></div>
       <div class="dri_grey_button" >
         <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" %>

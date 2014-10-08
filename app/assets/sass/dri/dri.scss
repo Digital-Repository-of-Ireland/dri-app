@@ -26,6 +26,8 @@ html {
 
   }
 }
+
+
 /* Timeline-CSS Overrides */
 .storyjs-embed {
 	padding: 0;
@@ -2905,42 +2907,56 @@ ul.dri_collection_institutes_list {
 }
 
 
+
 //******INGEST**********/
+
+
 .dri_ingest_form_container {
   padding-top:20px;
-  .dri_ingest_form {
-    width: 60%;
-    .dri_xml_upload {
-      //float:right;
-    }
+  
+   .dri_ingest_form {
+	   width: 50%;
+	
+	label {
+		font-size: 100%;
+		color: $dri_darkgrey;
+	}
+	
+
+
     .dri_file_upload {
-      //float: right;
       display: inline-block;
       position:relative;
       margin-top: 10px;
       margin-bottom: 10px;
       width:480px;
+	  
       .dri_cover_image_img {
+		  background-color:#FFF;
         width:228px;
         height:128px;
         overflow:hidden;
         float:right;
         margin-right: 10px;
+		
         h2 {
           position:absolute;
           top: 20%;
           right: 25px;
+		 
         }
+		
         img {
           opacity: .7;
         }
       }
 
-      a{
+      a {
+		color: #000;
         padding:10px;
-              height: 128px;
-      width: 228px;
-      vertical-align: center;
+        height: 128px;
+      	width: 228px;
+      	vertical-align: center;
         input {
           position:absolute;
           z-index:2;
@@ -2964,7 +2980,9 @@ ul.dri_collection_institutes_list {
       label {
         display: block;
         clear:both;
-        font-size: 1.2em;
+        font-size: 100%;
+		color: #2F2F2F;
+		font-weight: bold;
 
       }
       .dri_form_multiline_block {
@@ -2973,8 +2991,8 @@ ul.dri_collection_institutes_list {
           clear:both;
           padding-left: 5px;
           margin-bottom: 5px;
-          border-radius: 0px;
-          font-size: 1.1em;
+          border-radius: 3px;
+          font-size: 100%;
           border: 1px solid $dri_lightgrey;
         }
       }
@@ -2982,12 +3000,15 @@ ul.dri_collection_institutes_list {
         clear:both;
         padding-left: 5px;
         margin-bottom: 5px;
-        border-radius: 0px;
+        border-radius: 3px;
         min-height: 2em;
-        font-size: 1.1em;
+        font-size: 100%;
+		color: #808080;
+		 border: 1px solid $dri_lightgrey;
+		 width: 250px;
       }
       select {
-        //width: 10%;
+        width: 150px;
         border-radius: -1px;
         height: 2em;
         font-size: 1.1em;
@@ -2997,12 +3018,26 @@ ul.dri_collection_institutes_list {
         vertical-align: top;
         padding-bottom: 12px;
         width: 150px;
-      overflow-wrap: initial;
+        overflow-wrap: initial;
+
 
       }
       .span6 {
-        max-width: 55%;
+		  
       }
+	  
+	  .dri-textarea {
+		  width: 410px;
+		 height: 260px;
+	  }
+	  
+	  p a {
+		  	color: $dri_green;
+	  }
+	  
+	  a.destructive {
+		   color: #808080;
+	  }
     }
   }
 }
