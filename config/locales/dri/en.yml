@@ -236,6 +236,8 @@ en:
           download_not_available: "not available"
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
+          add_object: "Add an Object"
+          add_object_xml: "Upload Object XML"
           listen: listen
           not_caracterized: "not yet characterized"
           publish: "Publish collection"
@@ -440,7 +442,7 @@ en:
           authors: Authors
           broadcast_date: "Broadcast Date"
           creation_date: "Creation Date"
-          delete: delete
+          delete: Remove
           description: Description
           editors: Editors
           governing_collection: "Governing Collection"
