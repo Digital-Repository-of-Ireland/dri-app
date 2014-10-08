@@ -1,40 +1,4 @@
-<% if (params[:controller] != "collections" ) %>
-<div class="panel-group" id="accordion">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-          Collapsible Group Item #1
-        </a>
-      </h4>
-    </div>
-    <div id="collapseOne" class="panel-collapse collapse out">
-    <div class="dri_file_upload ">
-         <form id="metadata_uploader" action="<%= url_for(:action=>"create", :controller=>"objects") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-        <a class='btn btn-default' href='javascript:;'>
-        <h4 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= t('dri.views.ingest.legends.upload_legend') %></h4>
-        <input type="file" name="metadata_file" accept="application/xml" required   onchange='$("#metadata_file").html(($(this).val()).replace("C:\\fakepath\\", ""))'>
-        <h5 class='dri_cover_image_file' id="metadata_file">No File</h5>
-        </a>
-        <input type="hidden" name="batch[object_type]" value="<%=@type%>">
-        <input type="hidden" name="batch[governing_collection]" value="<%=@collection%>">
 
-        <input type="hidden" name="batch[read_groups_string]" value="registered" />
-        <input type="hidden" name="batch[discover_groups_string]" value="public" />
-        <input type="hidden" name="batch[private_metadata]" value="radio_public" />
-        <input type="hidden" name="batch[master_file]" value="radio_private" />
-            <%= submit_tag t('dri.views.ingest.buttons.continue'), :class => "", :name => "ingest_metadata", :id => "ingest_metadata" %>
-
-
-
-        </form>
-    </div>
-    </div>
-  </div>
-  </div>
-
-<% end %>
 
 <fieldset id="metadata">
   <% if action.eql?("update") && params[:controller] != "collections" %>
@@ -82,6 +46,8 @@
   </span>
   <p class="add-text-field"><a href="#" model-name="batch" title="Add Description"><%= t('dri.views.objects.forms.add_description') %></a></p>
 </fieldset>
+<%# we don't want the Collection type to be output as we don't want it modified %>
+<% unless  @object.type.first == 'Collection' %>
 <fieldset id="type">
   <%= f.label "#{t('dri.views.fields.types')}"%>
   <% @object.type.each do |i| %>
@@ -89,6 +55,7 @@
   <% end %>
   <p class="add-text-field"><a href="#" model-name="batch" title="Add Type"><%= t('dri.views.objects.forms.add_type') %></a></p>
 </fieldset>
+<% end %>
 <fieldset id="rights" class="dri_rights_metadata_fieldset">
   <%= f.label "#{t('dri.views.fields.rights')}"%>
     <span class="dri_form_multiline_block">
