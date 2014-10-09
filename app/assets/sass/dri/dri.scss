@@ -2918,7 +2918,17 @@ ul.dri_collection_institutes_list {
    .dri_ingest_form {
 	   width: 50%;
 	   
-
+	   
+	   	input.btn-primary {
+		margin: 30px 0 0 0;
+		padding: 6px;
+		width: 410px;
+		background: $dri_green;
+		border: none;
+		border-radius: 2px;
+		color: #fff;
+		
+ } 
 	   
 	.dri_form_multiline_block {
         textarea {
@@ -2926,7 +2936,7 @@ ul.dri_collection_institutes_list {
           clear:both;
           padding-left: 5px;
           margin-bottom: 5px;
-          border-radius: 3px;
+          border-radius: 2px;
           font-size: 100%;
           border: 1px solid $dri_lightgrey;
         }
@@ -2999,7 +3009,8 @@ ul.dri_collection_institutes_list {
     
 	  width: 410px;
     }
-      
+
+
     
     .dri_description_metadata_fieldset > textarea,
     .dri_rights_metadata_fieldset > textarea { 
@@ -3024,7 +3035,7 @@ ul.dri_collection_institutes_list {
         clear:both;
         padding-left: 5px;
         margin-bottom: 5px;
-        border-radius: 3px;
+        border-radius: 2px;
         min-height: 2em;
         font-size: 100%;
 		color: #808080;
@@ -3054,6 +3065,7 @@ ul.dri_collection_institutes_list {
 	  
 	  p a {
 		  	color: $dri_green;
+			cursor: pointer;
 	  }
 	  
 	  a.destructive {
@@ -3070,6 +3082,7 @@ ul.dri_collection_institutes_list {
 			font-size: 140%;
 			font-weight: bold;
 			color: #2F2F2F;
+			
 }
   @extend .dri_ingest_form_container;
 
@@ -3081,9 +3094,9 @@ ul.dri_collection_institutes_list {
     background: none;
     label {
         font-size: 100%;
-    color: #2F2F2F;
-    font-weight: normal;
-    margin-left: 3px;
+    	color: #2F2F2F;
+    	font-weight: normal;
+   		margin-left: 3px;
         margin-right: 3px;
     }
   }
@@ -3093,9 +3106,9 @@ ul.dri_collection_institutes_list {
 		   padding: 0;
 		   
 		   li label {
-			color: #808080;
-			margin: 8px 0 8px 0;
-		   padding: 0;
+				color: #808080;
+				margin: 8px 0 8px 0;
+		   		padding: 0;
 		   }
 	   }
 	   
