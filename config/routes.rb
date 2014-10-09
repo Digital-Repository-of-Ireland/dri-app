@@ -49,6 +49,8 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/citation' => 'objects#citation', :via => :get, :as => :citation_object
   match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download
   match 'download_surrogate' => 'surrogates#download', :via => :get
+  match 'maps_json' => 'maps#get', :via => :get
+  match 'timeline_json' => 'timeline#get', :via => :get
 
   match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
   match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status

@@ -354,6 +354,8 @@ GEM
       rack (~> 1.0)
     omniauth-shibboleth (1.1.2)
       omniauth (>= 1.0.0)
+    openlayers-rails (0.0.4)
+      railties (>= 3.1)
     orm_adapter (0.5.0)
     poltergeist (1.5.1)
       capybara (~> 2.1)
@@ -556,6 +558,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    timelineJS-rails (1.1.5)
+      jquery-rails
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -625,6 +629,7 @@ DEPENDENCIES
   mysql
   mysql2
   omniauth-shibboleth
+  openlayers-rails
   poltergeist (>= 1.4.1)
   railroady
   rails (~> 4.1.0)
@@ -642,6 +647,7 @@ DEPENDENCIES
   sufia-models (= 4.0.0)
   syntax
   syslog-logger
+  timelineJS-rails (~> 1.1.5)
   uglifier (>= 1.0.3)
   unicode
   unicorn

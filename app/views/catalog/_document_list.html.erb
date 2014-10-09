@@ -1,3 +1,8 @@
 <% # container for all documents in index view -%>
-<%= render documents, :as => :document %>
-  
+<% if params[:view] == 'grid' || params[:view] == 'list' %>
+    <%= render documents, :as => :document %>
+<% elsif params[:view] == 'timeline' %>
+    <%= render 'catalog/browse_view_timeline' %>
+<% elsif params[:view] == 'maps' %>
+    <%= render 'catalog/browse_view_maps' %>
+<% end %>
