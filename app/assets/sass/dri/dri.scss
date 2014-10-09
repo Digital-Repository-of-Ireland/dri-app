@@ -387,7 +387,7 @@ a {
 
 .dri_button_black {
   @extend .dri_button;
-  background-color: #2F2F2F;
+  background-color: $dri_grey;
 }
 
 .dri_button_black:hover {}
@@ -444,7 +444,7 @@ input.dri_w230 {
     margin: 6px 0 14px 0;
     padding: 6px 15px 6px 15px;
     width: 310px;
-    background-color: #2F2F2F;
+    background-color: $dri_grey;
     border: none;
     color: #FFF;
     font-size: 106%;
@@ -970,7 +970,7 @@ ol.breadcrumb {
 }
 
 .breadcrumb .active {
-  color: #2F2F2F;
+  color: $dri_grey;
 }
 
 /*-------------- Search/Sort features --------------*/
@@ -1189,7 +1189,7 @@ ol.breadcrumb {
     list-style: none;
     text-decoration: none;
     color: #FFF;
-    background-color: #2F2F2F;
+    background-color: $dri_grey;
     -moz-border-radius: 3px;
     border-radius: 3px;
     box-shadow: 1px 1px 4px  #888888;
@@ -1218,7 +1218,7 @@ ol.breadcrumb {
     background: image-url("dri/clear_all_close.png") no-repeat left;
   }
   a:hover {
-    color: #2F2F2F;
+    color: $dri_grey;
     background: image-url("dri/clear_all_close_hover.png") no-repeat left;
   }
   .empty {
@@ -1321,12 +1321,12 @@ h4.suggest {
   display: block;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  color: #2F2F2F;
+  color: $dri_grey;
   font-weight: normal;
   font-size: 110%;
   font-style: italic;
   a {
-    color: #2F2F2F;
+    color: $dri_grey;
     font-weight: bold;
   }
   a:hover {
@@ -1466,7 +1466,7 @@ h4.suggest {
   padding: 0px;
   float: left;
   display: block;
-  color: #2F2F2F;
+  color: $dri_grey;
   border: 1px solid #E1E1E1;
   box-shadow: 1px 2px 6px  #E3E3E3;
   -moz-border-radius: 5px;
@@ -1476,7 +1476,7 @@ h4.suggest {
 .dri_facet_filters {
   border-bottom: none;
   .dri_head_title {
-    *color: #2F2F2F;
+    *color: $dri_grey;
     font-weight: bold;
     padding: 15px 0 15px 20px;
     width: 100%;
@@ -1546,7 +1546,7 @@ h4.suggest {
       }
       a.selected {
         background-color: #E0E0E0;
-        color: #2F2F2F;
+        color: $dri_grey;
         text-decoration: none;
       }
     }
@@ -1561,7 +1561,7 @@ h4.suggest {
   height: 100%;
   padding: 30px 0 30px 0;
   .dri_account_block_heading {
-    color: #2F2F2F;
+    color: $dri_grey;
     font-size: 150%;
   }
   .dri_account_block_info {
@@ -1576,7 +1576,7 @@ h4.suggest {
 	  }
     }
     h5 {
-      color: #2F2F2F;
+      color: $dri_grey;
       font-size: 110%;
       margin: 10px 0 0 0;
       padding: 0px;
@@ -1588,7 +1588,7 @@ h4.suggest {
       margin-bottom: 15px;
     }
     h5 label {
-      color: #2F2F2F;
+      color: $dri_grey;
       font-size: 100%;
       margin: 0 0 4px 0;
       padding: 0px;
@@ -1604,7 +1604,13 @@ h4.suggest {
 }
 
 /* -----------Main Content Container ---------- */
-
+.dri_main_content_container > h2 {
+  margin: 10px 0 20px 0;
+  padding: 0 0 8px 0;
+  font-size: 140%;
+  font-weight: bold;
+  color: $dri_grey;
+}
 /* -----------Home page styling ---------- */
 .dri_welcome_block {
   margin: 30px 0 40px 0;
@@ -1613,27 +1619,27 @@ h4.suggest {
     margin: 0 0 4px 0;
     padding: 0;
     font-size: 240%;
-    color: #2F2F2F;
+    color: $dri_grey;
   }
   p {
     margin: 0 0 15px 0;
     padding: 0;
     font-size: 160%;
     line-height: 1.4em;
-    color: #2F2F2F;
+    color: $dri_grey;
   }
   .dri_home_link {
     margin: 30px 0 0 0;
     padding: 0;
     font-size: 140%;
     line-height: 1.4em;
-    color: #2F2F2F;
+    color: $dri_grey;
     font-weight: bold;
   }
   .dri_home_link a {
     margin: 0 0 0 0;
     padding: 0 0 0 15px;
-    color: #2F2F2F;
+    color: $dri_grey;
     background: image-url("dri/arrow_black.png") no-repeat left center;
   }
   .dri_home_link a:hover {
@@ -1649,11 +1655,11 @@ h4.suggest {
     margin: 0 0 0 0;
     padding: 0 0 0 0;
     font-size: 130%;
-    color: #2F2F2F;
+    color: $dri_grey;
     border-bottom: 1px solid #E1E1E1;
   }
   .dri_border_bottom {
-    background-color: #2F2F2F;
+    background-color: $dri_grey;
     width: 230px;
     height: 3px;
     display: block;
@@ -1665,8 +1671,8 @@ h1.dri_rss_title {
   margin: 0 0 4px 0;
   padding: 0;
   font-size: 130%;
-  color: #2F2F2F;
-  border-bottom: 3px solid #2F2F2F;
+  color: $dri_grey;
+  border-bottom: 3px solid $dri_grey;
 }
 
 h5.dri_rss_subtitle {
@@ -1674,7 +1680,7 @@ h5.dri_rss_subtitle {
   padding: 0;
   font-size: 110%;
   line-height: 1.4em;
-  color: #2F2F2F;
+  color: $dri_grey;
 }
 
 .dri_rss_description {
@@ -1691,7 +1697,7 @@ h5.dri_rss_subtitle {
 p.dri_rss_link a {
   border-bottom: 1px solid #D9DADB;
   font-size: 93%;
-  color: #2F2F2F;
+  color: $dri_grey;
   display: block;
   font-weight: bold;
   padding: 0 0 8px 0;
@@ -1723,7 +1729,7 @@ p.dri_rss_link a {
     h4 {
       padding: 0;
       margin: 0;
-      color: #2F2F2F;
+      color: $dri_grey;
       font-size: 170%;
       line-height: 1.3em;
     }
@@ -1734,14 +1740,14 @@ p.dri_rss_link a {
     h4 {
       padding: 0;
       margin: 0 0 8px 0;
-      color: #2F2F2F;
+      color: $dri_grey;
       font-size: 140%;
       line-height: 1.3em;
     }
     p {
       padding: 0;
       margin: 0;
-      color: #2F2F2F;
+      color: $dri_grey;
       font-size: 120%;
       line-height: 1.3em;
     }
@@ -1774,7 +1780,7 @@ p.dri_rss_link a {
     p {
       padding: 6px 0 6px 0;
       margin: 0;
-      color: #2F2F2F;
+      color: $dri_grey;
       font-size: 130%;
       line-height: 1.3em;
     }
@@ -1785,7 +1791,7 @@ p.dri_rss_link a {
     p {
       padding: 0 20px 10px 0;
       margin: 0;
-      color: #2F2F2F;
+      color: $dri_grey;
       font-size: 115%;
       line-height: 1.3em;
     }
@@ -1818,7 +1824,7 @@ p.dri_rss_link a {
     p {
       margin: 0;
       padding: 0 10px 0 10px;
-      color: #2F2F2F;
+      color: $dri_grey;
       font-size: 115%;
       line-height: 1.3em;
     }
@@ -1834,7 +1840,7 @@ p.dri_rss_link a {
     p {
       margin: 0;
       padding: 0 10px 0 10px;
-      color: #2F2F2F;
+      color: $dri_grey;
       font-size: 115%;
       line-height: 1.3em;
     }
@@ -1850,7 +1856,7 @@ p.dri_rss_link a {
     li a {
       margin: 0;
       padding: 0 10px 0 10px;
-      color: #2F2F2F;
+      color: $dri_grey;
       font-size: 115%;
       line-height: 1.3em;
       font-weight: bold;
@@ -1955,7 +1961,7 @@ p.dri_rss_link a {
     }
     .dri_num_objects span.object_total {
       margin: 0 0 0 6px;
-      color: #2F2F2F;
+      color: $dri_grey;
     }
   }
 }
@@ -1974,7 +1980,7 @@ p.dri_rss_link a {
   //height:270px;
   float: left;
   display: block;
-  color: #2F2F2F;
+  color: $dri_grey;
   -moz-border-radius: 3px;
   border-radius: 3px;
   border: 1px solid #E1E1E1;
@@ -1996,7 +2002,7 @@ p.dri_rss_link a {
     overflow: hidden;
   }
   h1 {
-    color: #2F2F2F;
+    color: $dri_grey;
     font-size: 100%;
     padding: 0;
     margin: 12px 14px 12px 14px;
@@ -2006,7 +2012,7 @@ p.dri_rss_link a {
     line-height: 1.3em;
     font-weight: bold;
     a {
-      color: #2F2F2F;
+      color: $dri_grey;
       text-decoration: none;
     }
     a:hover h1 {
@@ -2030,7 +2036,7 @@ p.dri_rss_link a {
       cursor: pointer;
     }
     .dri_subject a:hover {
-      color: #2F2F2F;
+      color: $dri_grey;
     }
   }
   .dri_icon {
@@ -2064,7 +2070,7 @@ p.dri_rss_link a {
   width: 228px;
   float: left;
   display: block;
-  color: #2F2F2F;
+  color: $dri_grey;
   -moz-border-radius: 3px;
   border-radius: 3px;
   border: 1px solid #E1E1E1;
@@ -2080,7 +2086,7 @@ p.dri_rss_link a {
     }
   }
   h1 {
-    color: #2F2F2F;
+    color: $dri_grey;
     font-size: 100%;
     padding: 0 0 0 0;
     margin: 6px 14px 8px 14px;
@@ -2090,7 +2096,7 @@ p.dri_rss_link a {
     line-height: 1.3em;
     font-weight: bold;
     a {
-      color: #2F2F2F;
+      color: $dri_grey;
       text-decoration: none;
     }
     a:hover {
@@ -2131,7 +2137,7 @@ p.dri_rss_link a {
   }
   a .dri_num_objects span.object_total {
     margin: 0 0 0 6px;
-    color: #2F2F2F;
+    color: $dri_grey;
   }
 }
 
@@ -2169,7 +2175,7 @@ p.dri_rss_link a {
   a h4 {
     margin: 3px 0 10px 15px;
     padding: 0;
-    color: #2F2F2F;
+    color: $dri_grey;
     font-size: 100%;
     line-height: 1.3em;
     font-weight: bold;
@@ -2267,7 +2273,7 @@ p.dri_rss_link a {
   text-overflow: ellipsis;
   overflow: hidden;
   color: #fff;
-  background-color: #2F2F2F;
+  background-color: $dri_grey;
   width: 73%;
   font-weight: bold;
 }
@@ -2285,7 +2291,7 @@ p.dri_rss_link a {
 h2.dri_no_asset_availiable {
   margin: 0px 0 0 0;
   padding: 0px;
-  color: #2F2F2F;
+  color: $dri_grey;
   font-weight: bold;
   font-size: 100%;
   font-style: italic;
@@ -2350,7 +2356,7 @@ h2.dri_no_asset_availiable {
     padding: 10px 0 0 0;
     margin: 0 0 20px 0;
     font-weight: bold;
-    color: #2F2F2F;
+    color: $dri_grey;
     font-size: 100%;
   }
 }
@@ -2370,7 +2376,7 @@ h2.dri_no_asset_availiable {
     float: left;
   }
   p a:hover {
-    color: #2F2F2F;
+    color: $dri_grey;
   }
   ul {
     margin: 0 20px 0 0;
@@ -2393,7 +2399,7 @@ h2.dri_no_asset_availiable {
       padding: 0 10px 0 10px;
     }
     a:hover {
-      color: #2F2F2F;
+      color: $dri_grey;
       text-decoration: underline;
     }
   }
@@ -2436,7 +2442,7 @@ h2.dri_no_asset_availiable {
 h2.dri_restrict_title {
   margin: 0px 0 0 0;
   padding: 0px;
-  color: #2F2F2F;
+  color: $dri_grey;
   font-weight: bold;
   font-size: 100%;
 }
@@ -2478,7 +2484,7 @@ dl.dri_object_metadata_readview {
   dt {
     margin: 10px 0 0 0;
     padding: 0px;
-    color: #2F2F2F;
+    color: $dri_grey;
     font-weight: bold;
   }
   dd {
@@ -2512,7 +2518,7 @@ dl.dri_object_metadata_readview {
   display: block;
   font-size: 100%;
   font-weight: bold;
-  color: #2F2F2F;
+  color: $dri_grey;
 }
 
 .dri_back_search a:hover {
@@ -2551,11 +2557,11 @@ ul.dri_stats {
 
 .dri_vc_title {
   margin: 20px 0 10px 0;
-  color: #2F2F2F;
+  color: $dri_grey;
   font-weight: bold;
   a {
     margin: 20px 0 0 0;
-    color: #2F2F2F;
+    color: $dri_grey;
     font-size: 100%;
   }
   a:hover {
@@ -2611,7 +2617,7 @@ ul.dri_view_collection {
 	
   }
   label {
-    color: #2F2F2F;
+    color: $dri_grey;
     font-weight: bold;	
 	margin: 0;
   	padding: 0;
@@ -2629,7 +2635,7 @@ ul.dri_view_collection {
 	margin: 0;
   padding: 0;
   a { 
-  color: #2F2F2F;
+  color: $dri_grey;
   }
   label.bookmark_manage  {
     border-top: 1px solid #E1E1E1;
@@ -2638,7 +2644,7 @@ ul.dri_view_collection {
     width: 230px;
 	
     a {
-      color: #2F2F2F;
+      color: $dri_grey;
     }
   }
 }
@@ -2646,7 +2652,7 @@ ul.dri_view_collection {
 
 
 .dri_title {
-  color: #2F2F2F;
+  color: $dri_grey;
   font-weight: bold;
   margin: 0 0 4px 0;
   padding: 0;
@@ -2656,7 +2662,7 @@ ul.dri_view_collection {
   margin: 20px 0 0 0;
   padding: 0;
   width: 230px;
-  color: #2F2F2F;
+  color: $dri_grey;
   display: block;
   float: left;
   font-weight: bold;
@@ -2667,7 +2673,7 @@ ul.dri_view_collection {
   margin: 20px 0 5px 0;
   padding: 0;
   width: 230px;
-  color: #2F2F2F;
+  color: $dri_grey;
   display: block;
   float: left;
   font-weight: bold;
@@ -2690,7 +2696,7 @@ ul.dri_view_collection {
 .dri_institutes_title {
   margin: 20px 0 0 0;
   padding: 0px;
-  color: #2F2F2F;
+  color: $dri_grey;
   font-weight: normal;
   font-size: 120%;
   font-weight: bold;
@@ -2719,7 +2725,7 @@ ul.dri_view_collection {
   .dri_collection_institutes_pages_text {
     margin-top: 25px;
     h6 {
-      color: #2F2F2F;
+      color: $dri_grey;
     }
     p {
       color: $dri_greytext;
@@ -2739,7 +2745,7 @@ ul.dri_collection_institutes_list {
   margin: 20px 0 0 0;
   padding: 0;
   display: block;
-  color: #2F2F2F;
+  color: $dri_grey;
   img {
     max-height: 75px;
   }
@@ -2747,7 +2753,7 @@ ul.dri_collection_institutes_list {
     margin: 20px 0 0 0;
     padding: 0;
     display: block;
-    color: #2F2F2F;
+    color: $dri_grey;
     list-style: none;
     float: left;
     a {
@@ -2764,7 +2770,7 @@ ul.dri_collection_institutes_list {
   a {
     margin: 0;
     padding: 0px;
-    color: #2F2F2F;
+    color: $dri_grey;
     font-weight: bold;
   }
 }
@@ -3025,7 +3031,7 @@ ul.dri_collection_institutes_list {
         display: block;
         clear:both;
         font-size: 100%;
-		color: #2F2F2F;
+		color: $dri_grey;
 		font-weight: bold;
 
       }
@@ -3081,7 +3087,7 @@ ul.dri_collection_institutes_list {
 			padding: 0 0 8px 0;
 			font-size: 140%;
 			font-weight: bold;
-			color: #2F2F2F;
+			color: $dri_grey;
 			
 }
   @extend .dri_ingest_form_container;
@@ -3094,7 +3100,7 @@ ul.dri_collection_institutes_list {
     background: none;
     label {
         font-size: 100%;
-    	color: #2F2F2F;
+    	color: $dri_grey;
     	font-weight: normal;
    		margin-left: 3px;
         margin-right: 3px;
@@ -3116,7 +3122,7 @@ ul.dri_collection_institutes_list {
     display: block;
 	clear: both;
 	font-size: 100%;
-	color: #2F2F2F;
+	color: $dri_grey;
 	font-weight: bold;
 	 margin: 15px 0 0 0;
 	padding: 0;
