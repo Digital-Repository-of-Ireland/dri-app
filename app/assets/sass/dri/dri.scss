@@ -3064,6 +3064,13 @@ ul.dri_collection_institutes_list {
 }
 
 .dri_access_controls {
+		legend {
+			margin: 10px 0 20px 0;
+			padding: 0 0 8px 0;
+			font-size: 140%;
+			font-weight: bold;
+			color: #2F2F2F;
+}
   @extend .dri_ingest_form_container;
 
   .breadcrumb > li + li:before {
