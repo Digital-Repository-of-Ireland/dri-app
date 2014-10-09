@@ -3074,12 +3074,21 @@ ul.dri_collection_institutes_list {
     }
   }
    .field {
+	   ul {
+		   margin: 0;
+		   padding: 0;
+	   }
+	   
+	   
      h5 {
-       display: block;
-clear: both;
-font-size: 100%;
-color: #2F2F2F;
-font-weight: bold;
+    display: block;
+	clear: both;
+	font-size: 100%;
+	color: #2F2F2F;
+	font-weight: bold;
+	 margin: 15px 0 0 0;
+	padding: 0;
+
 i {
   padding-left: 5px;
 }
