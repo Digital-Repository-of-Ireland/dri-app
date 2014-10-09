@@ -306,21 +306,21 @@
 			<%= f.label :read_groups_restricted, t('dri.views.objects.access_controls.restricted')%></li>
 
 		</ul>
-		<ul class="breadcrumb" id="read_access_entries">
+		<fieldset id="read_access_entries">
 
-			<li>
+
 				<%= f.label :read_users, t('user_groups.views.shared.users')%>
-							<%= f.text_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %></li>
+							<%= f.text_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
 
 
-			<li>
+
 				<%= f.label :read_groups, t('user_groups.views.shared.groups')%>
-			<%= f.text_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %></li>
+			<%= f.text_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
 
-		</ul>
+		</fieldset>
 
 		<div class="field">
-			<h5><%= t('dri.views.objects.access_controls.master_file') %><i id="dri_view_objects_access_controls_master_file_info" class="fa fa-info-circle"></i></h5>><%= t('dri.views.objects.access_controls.master_file_desc') %>
+			<h5><%= t('dri.views.objects.access_controls.master_file') %><i id="dri_view_objects_access_controls_master_file_info" class="fa fa-info-circle"></i></h5><%= t('dri.views.objects.access_controls.master_file_desc') %>
 
 			<ul class="breadcrumb">
 				<li>
@@ -350,13 +350,11 @@
 				<%= f.label :edit_users, t('dri.views.objects.access_controls.restricted')%>	</li>
 
 			</ul>
-			<ul class="breadcrumb" id="edit_access_entries">
-
-				<li>
+			<fieldset id="edit_access_entries">
 					<%= f.label :edit_users, t('user_groups.views.shared.users')%>
 					<%= f.text_field :edit_users_string, :onkeyup=>"edit_user_textbox.catch_tb_value();" %></li>
 
-			</ul>
+			</fieldset>
 		</div>
 	</div>
 
@@ -372,13 +370,10 @@
 				<%= f.radio_button :manager_groups_string, "radio_restricted", :onclick => "manager_field_toggle();" %>
 			<%= f.label :manager_users, t('dri.views.objects.access_controls.restricted') %>	</li>
 
-
-			<ul class="breadcrumb" id="manager_access_entries">
-				<li>
-					<%= f.label :manager_users, t('user_groups.views.shared.users')%>
-					<%= f.text_field :manager_users_string, :onkeyup=>"manager_user_textbox.catch_tb_value();" %>		<li>
-		
-			</ul>
+			<fieldset id="manager_access_entries">
+                    <%= f.label :manager_users, t('user_groups.views.shared.users')%>
+                    <%= f.text_field :manager_users_string, :onkeyup=>"manager_user_textbox.catch_tb_value();" %>   
+</fieldset>
 	</div>
 </div>
 <% end %>

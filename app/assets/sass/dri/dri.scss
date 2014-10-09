@@ -3049,6 +3049,7 @@ ul.dri_collection_institutes_list {
 
 .dri_access_controls {
   @extend .dri_ingest_form_container;
+
   .breadcrumb > li + li:before {
     
     content: "|\00a0";
@@ -3070,6 +3071,14 @@ clear: both;
 font-size: 100%;
 color: #2F2F2F;
 font-weight: bold;
+i {
+  padding-left: 5px;
+}
      }
+       fieldset {
+    label {
+      font-weight: normal;
+    }
+  }
    }
 }
