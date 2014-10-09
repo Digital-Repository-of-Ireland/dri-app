@@ -2917,6 +2917,8 @@ ul.dri_collection_institutes_list {
    .dri_ingest_form {
 	   width: 50%;
 	   
+
+	   
 	.dri_form_multiline_block {
         textarea {
           max-width: 410px;
@@ -2986,6 +2988,11 @@ ul.dri_collection_institutes_list {
         clear:left;
       }
     }
+    
+   .dri_title_metadata_fieldset > input {
+      width:410px;
+    }
+    
     fieldset {
       margin-top: 5px;
       
@@ -2997,6 +3004,8 @@ ul.dri_collection_institutes_list {
 		font-weight: bold;
 
       }
+      
+      
 
       input {
         clear:both;
@@ -3005,10 +3014,9 @@ ul.dri_collection_institutes_list {
         border-radius: 3px;
         min-height: 2em;
         font-size: 100%;
-		color: #808080;
-		 border: 1px solid $dri_lightgrey;
-		 width: 250px;
-		 
+		    color: #808080;
+		    border: 1px solid $dri_lightgrey;
+		    width: 250px;	 
       }
       select {
         width: 150px;
@@ -3022,8 +3030,6 @@ ul.dri_collection_institutes_list {
         padding-bottom: 12px;
         width: 150px;
         overflow-wrap: initial;
-
-
       }
       .add-text-field {
         i {
