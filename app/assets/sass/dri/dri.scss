@@ -2916,11 +2916,22 @@ ul.dri_collection_institutes_list {
   
    .dri_ingest_form {
 	   width: 50%;
+	         .dri_form_multiline_block {
+        textarea {
+          max-width: 410px;
+          clear:both;
+          padding-left: 5px;
+          margin-bottom: 5px;
+          border-radius: 3px;
+          font-size: 100%;
+          border: 1px solid $dri_lightgrey;
+        }
+      }
 	
-	label {
-		font-size: 100%;
-		color: $dri_darkgrey;
-	}
+    	label {
+    		font-size: 100%;
+    		color: $dri_darkgrey;
+    	}
 	
 
 
@@ -2985,17 +2996,7 @@ ul.dri_collection_institutes_list {
 		font-weight: bold;
 
       }
-      .dri_form_multiline_block {
-        textarea {
-          max-width: 509px;
-          clear:both;
-          padding-left: 5px;
-          margin-bottom: 5px;
-          border-radius: 3px;
-          font-size: 100%;
-          border: 1px solid $dri_lightgrey;
-        }
-      }
+
       input {
         clear:both;
         padding-left: 5px;
@@ -3023,7 +3024,10 @@ ul.dri_collection_institutes_list {
 
 
       }
-      .span6 {
+      .add-text-field {
+        i {
+          color: $dri_green;
+        }
 		  
       }
 	  
