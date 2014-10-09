@@ -2915,10 +2915,24 @@ ul.dri_collection_institutes_list {
 
 
 //******INGEST**********/
-
+.dri_main_content_container > 
+	h2 { 
+		background-color:$dri_darkgrey;
+		color: #FFF;
+		font-size: 110%;
+		padding: 4px 20px 4px 10px;
+		margin: 20px 0 0 0;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		color: #fff;
+		background-color: #2F2F2F;
+		width: 73%;
+		font-weight: bold;
+		
+		}
 
 .dri_ingest_form_container {
-  padding-top:20px;
+  padding-top:10px;
   
   
    .dri_ingest_form {
@@ -3083,9 +3097,9 @@ ul.dri_collection_institutes_list {
 
 .dri_access_controls {
 		legend {
-			margin: 10px 0 20px 0;
+			margin: 15px 0 15px 0;
 			padding: 0 0 8px 0;
-			font-size: 140%;
+			font-size: 120%;
 			font-weight: bold;
 			color: $dri_grey;
 			
