@@ -2989,8 +2989,14 @@ ul.dri_collection_institutes_list {
       }
     }
     
-   .dri_title_metadata_fieldset > input {
+    .dri_title_metadata_fieldset > input {
       width:410px;
+    }
+    
+    .dri_description_metadata_fieldset > textarea,
+    .dri_rights_metadata_fieldset > textarea    { 
+      vertical-align: -50%;
+      height: 100px;
     }
     
     fieldset {
@@ -3037,11 +3043,7 @@ ul.dri_collection_institutes_list {
         }
 		  
       }
-	  
-	  .dri-textarea {
-		  width: 410px;
-		 height: 260px;
-	  }
+	 
 	  
 	  p a {
 		  	color: $dri_green;

@@ -39,11 +39,9 @@
 
 <fieldset id="description" class="dri_description_metadata_fieldset dri_form_multiline_block">
   <%= f.label "#{t('dri.views.fields.description')}"%>
-  <span class="dri_form_multiline_block">
   <% @object.description.each do |i| %>
-      <%= f.text_area "description][", :value=>i, :class => "edit span6 dri-textarea", :required=>'required'  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+      <%= f.text_area "description][", :value=>i, :class => "edit span6 dri-textarea", :required=>'required'  %><a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
   <% end %>
-  </span>
   <p class="add-text-field"><i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Description"><%= t('dri.views.objects.forms.add_description') %></a></p>
 </fieldset>
 <%# we don't want the Collection type to be output as we don't want it modified %>
@@ -177,7 +175,7 @@
 
 
 
-<fieldset id="licence">
+<fieldset class="dri_licence_metadata_fieldset" id="licence">
   <%= f.label "#{t('dri.views.fields.licence')}"%>
   <%= f.select :licence, options_for_select(@licences, @object[:licence]), :class => "edit span6" %>
 </fieldset>

@@ -430,6 +430,7 @@ en:
             nav_header: "Edit Tools"
           title: "Edit Object"
         forms: 
+          add_another: "Add Another"
           add_author: "Add Author"
           add_editor: "Add Editor"
           add_guest: "Add Guest"
