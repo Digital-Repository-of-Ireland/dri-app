@@ -2914,6 +2914,7 @@ ul.dri_collection_institutes_list {
 .dri_ingest_form_container {
   padding-top:20px;
   
+  
    .dri_ingest_form {
 	   width: 50%;
 	   
@@ -2994,9 +2995,14 @@ ul.dri_collection_institutes_list {
     .dri_title_metadata_fieldset > input {
       width:410px;
     }
+	   .dri_licence_metadata_fieldset > select   { 
+    
+	  width: 410px;
+    }
+      
     
     .dri_description_metadata_fieldset > textarea,
-    .dri_rights_metadata_fieldset > textarea    { 
+    .dri_rights_metadata_fieldset > textarea { 
       vertical-align: -50%;
       height: 100px;
     }
@@ -3012,8 +3018,7 @@ ul.dri_collection_institutes_list {
 		font-weight: bold;
 
       }
-      
-      
+  
 
       input {
         clear:both;
@@ -3022,9 +3027,9 @@ ul.dri_collection_institutes_list {
         border-radius: 3px;
         min-height: 2em;
         font-size: 100%;
-		    color: #808080;
-		    border: 1px solid $dri_lightgrey;
-		    width: 250px;	 
+		color: #808080;
+		border: 1px solid $dri_lightgrey;
+		width: 250px;	 
       }
       select {
         width: 150px;
@@ -3079,8 +3084,13 @@ ul.dri_collection_institutes_list {
 	   ul {
 		   margin: 0;
 		   padding: 0;
+		   
+		   li label {
+			color: #808080;
+			margin: 8px 0 8px 0;
+		   padding: 0;
+		   }
 	   }
-	   
 	   
      h5 {
     display: block;
@@ -3090,6 +3100,7 @@ ul.dri_collection_institutes_list {
 	font-weight: bold;
 	 margin: 15px 0 0 0;
 	padding: 0;
+	
 
 i {
   padding-left: 5px;
@@ -3098,6 +3109,7 @@ i {
        fieldset {
     label {
       font-weight: normal;
+	  color: #808080;
     }
   }
    }
