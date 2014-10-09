@@ -400,7 +400,7 @@ en:
           embargo: Embargo
           inherit: Inherit
           manage: Managers
-          master_file: "Access Master File?"
+          master_file: "Access Master File"
           master_file_desc: "If accessible then users with read access can download the master file(s)"
           page: "Page Access"
           private: Private
