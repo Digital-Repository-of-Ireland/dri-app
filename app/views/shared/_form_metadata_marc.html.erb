@@ -6,34 +6,32 @@
 </fieldset>
 
 <fieldset id="type">
-  <%= f.label "#{t('dri.views.fields.types')} leader:" %>
+  <%= f.label "#{t('dri.views.fields.types')}:" %>
   <% @object.type.each do |i| %>
       <%= f.text_field "type][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
   <% end %>
   <p class="add-text-field"><a href="#" model-name="batch" title="Add Type"><%= t('dri.views.objects.forms.add_type') %></a></p>
 </fieldset>
 
-<!--Marc DataFields from Vocabulary-->
-<%  DRI::Vocabulary::marcDatafields.each do |df| %>
-    <% df[:sf].each do |sf| %>
-    <% sf_code = "sf_" + df[:code] + sf %>
-    <% df_code = df[:code]+ '$' + sf %>
-    <fieldset id="<%= sf_code %>">
-      <%= f.label df_code %>
-      <!-- Initialize empty mandatory subfields-->
-      <% subfield = @object.send(sf_code) %>
-      <% if ["sf_245a", "sf_500a", "sf_100a", "sf_245a", "sf_260c", "sf_100a", "sf_506a", ].include? sf_code and subfield.empty? %>
-          <% subfield << "" %>
-      <% end %>
-      <!--Render fields-->
-      <% subfield.each do |i| %>
-          <%= custom_label_for_marc_field(df_code)  %>
-          <%= f.text_field "#{sf_code}][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
-      <% end %>
-      <p class="add-text-field"><a href="#" model-name="batch" title="Add Title"><%= 'Add ' + df_code %></a></p>
-    </fieldset>
+<fieldset id="datafield">
+  <%= f.label "datafield:" %>
+  <% @object.datafield_tag.each_index do |i| %>
+    <%= f.label "tag:" %>
+    <%= f.text_field "datafield_tag][", :value=>@object.datafield_tag[i], :class => "edit dri-textfield" %>
+    <%= f.label "ind1:" %>
+    <%= f.text_field "datafield_ind1][", :value=>@object.datafield_ind1[i], :class => "edit dri-textfield" %>
+    <%= f.label "ind2:" %>
+    <%= f.text_field "datafield_ind2][", :value=>@object.datafield_ind2[i], :class => "edit dri-textfield" %></br>
+
+    <% @object.datafield(i).subfield.each_index do |s| %>
+      <%= f.label "subfield:" %>
+      <%= f.text_field "subfield_code][", :value=>@object.datafield(i).subfield(s).code.first, :class => "edit dri-textfield" %>
+      <%= f.text_field "subfield_value][", :value=>@object.datafield(i).subfield[s], :class => "edit dri-textfield" %></br>
+    <% end %>
+
   <% end %>
-<% end %>
+  <p class="add-text-field"><a href="#" model-name="batch" title="Add Datafield">Add Datafield</a></p>
+</fieldset>
 
 <!--Collection related:-->
 <fieldset id="cover_image">
