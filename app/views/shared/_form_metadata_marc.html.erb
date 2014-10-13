@@ -34,8 +34,8 @@
 
     <% @object.datafield(i).subfield.each_index do |s| %>
       <%= f.label "subfield:" %>
-      <%= f.text_field "subfield_code][", :value=>@object.datafield(i).subfield(s).code.first, :class => "edit dri-textfield" %>
-      <%= f.text_field "subfield_value][", :value=>@object.datafield(i).subfield[s], :class => "edit dri-textfield" %></br>
+      <%= f.text_field "datafield_subfields][#{i}][subfield_code][", :value=>@object.datafield(i).subfield(s).code.first, :class => "edit dri-textfield" %>
+      <%= f.text_field "datafield_subfields][#{i}][subfield_value][", :value=>@object.datafield(i).subfield[s], :class => "edit dri-textfield" %></br>
     <% end %>
 
   <% end %>
