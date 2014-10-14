@@ -74,20 +74,20 @@ class CatalogController < ApplicationController
     #config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :label_permission
     #config.add_facet_field "master_file_isi", :label => 'Master File Access',  :helper_method => :label_permission
     #}
-    config.add_facet_field solr_name('subject', :facetable), :label => 'Subjects', :limit => 20
+    config.add_facet_field solr_name('subject', :facetable), :limit => 20
     #config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
     #config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
-    config.add_facet_field solr_name('geographical_coverage', :facetable), :label => 'Places', :helper_method => :parse_location, :limit => 20
+    config.add_facet_field solr_name('geographical_coverage', :facetable), :helper_method => :parse_location, :limit => 20
     #config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
     #config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
-    config.add_facet_field solr_name('temporal_coverage', :facetable), :label => 'Era', :helper_method => :parse_era, :limit => 20
+    config.add_facet_field solr_name('temporal_coverage', :facetable), :helper_method => :parse_era, :limit => 20
     #config.add_facet_field solr_name('temporal_coverage_gle', :facetable), :label => 'Subject (Era) (in Irish)', :limit => 20
     #config.add_facet_field solr_name('temporal_coverage_eng', :facetable), :label => 'Subject (Era) (in English)', :limit => 20
     #config.add_facet_field solr_name('name_coverage', :facetable), :label => 'Subject (Name)', :limit => 20
     #config.add_facet_field solr_name('creator', :facetable), :label => 'creators', :show => false
     #config.add_facet_field solr_name('contributor', :facetable), :label => 'contributors', :show => false
-    config.add_facet_field solr_name('person', :facetable), :label => 'Names', :limit => 20
-    config.add_facet_field solr_name('language', :facetable), :label => 'Language', :helper_method => :label_language, :limit => true
+    config.add_facet_field solr_name('person', :facetable), :limit => 20
+    config.add_facet_field solr_name('language', :facetable), :helper_method => :label_language, :limit => true
     #config.add_facet_field solr_name('creation_date', :dateable), :label => 'Creation Date', :date => true
     #config.add_facet_field solr_name('published_date', :dateable), :label => 'Published/Broadcast Date', :date => true
     #config.add_facet_field solr_name('width', :facetable, type: :integer), :label => 'Image Width'
@@ -104,11 +104,11 @@ class CatalogController < ApplicationController
     #config.add_facet_field solr_name('file_size_total', :stored_sortable, type: :integer), :label => 'Total File Size'
     #config.add_facet_field solr_name('mime_type', :facetable), :label => 'MIME Type'
     #config.add_facet_field solr_name('file_format', :facetable), :label => 'File Format'
-    config.add_facet_field solr_name('file_type_display', :facetable), :label => 'Mediatype'
+    config.add_facet_field solr_name('file_type_display', :facetable)
     #config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
     #config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
-    config.add_facet_field solr_name('institute', :facetable), :label => 'Institute'
-    config.add_facet_field solr_name('root_collection_id', :facetable), :label => 'Collection', :helper_method => :collection_title
+    config.add_facet_field solr_name('institute', :facetable)
+    config.add_facet_field solr_name('root_collection_id', :facetable), :helper_method => :collection_title
 
     config.add_facet_field solr_name('is_collection', :facetable), :label => 'is_collection', :helper_method => :is_collection, :show => false
 
