@@ -24,18 +24,18 @@
 
 <fieldset id="datafield">
   <%= f.label "datafield:" %></br>
-  <% @object.datafield_tag.each_index do |i| %>
+  <% @object.datafield.each_index do |i| %>
     <%= f.label "tag:" %>
-    <%= f.text_field "datafield_tag][", :value=>@object.datafield_tag[i], :class => "edit dri-textfield" %>
+    <%= f.text_field "datafield][#{i}][datafield_tag][", :value=>@object.datafield(i).tag.first, :class => "edit dri-textfield" %>
     <%= f.label "ind1:" %>
-    <%= f.text_field "datafield_ind1][", :value=>@object.datafield_ind1[i], :class => "edit dri-textfield" %>
+    <%= f.text_field "datafield][#{i}]datafield_ind1][", :value=>@object.datafield(i).ind1.first, :class => "edit dri-textfield" %>
     <%= f.label "ind2:" %>
-    <%= f.text_field "datafield_ind2][", :value=>@object.datafield_ind2[i], :class => "edit dri-textfield" %></br>
+    <%= f.text_field "datafield][#{i}]datafield_ind2][", :value=>@object.datafield(i).ind2.first, :class => "edit dri-textfield" %></br>
 
     <% @object.datafield(i).subfield.each_index do |s| %>
       <%= f.label "subfield:" %>
-      <%= f.text_field "datafield_subfields][#{i}][subfield_code][", :value=>@object.datafield(i).subfield(s).code.first, :class => "edit dri-textfield" %>
-      <%= f.text_field "datafield_subfields][#{i}][subfield_value][", :value=>@object.datafield(i).subfield[s], :class => "edit dri-textfield" %></br>
+      <%= f.text_field "datafield]][#{i}][subfield][#{s}][subfield_code][", :value=>@object.datafield(i).subfield(s).code.first, :class => "edit dri-textfield" %>
+      <%= f.text_field "datafield]][#{i}][subfield][#{s}][subfield_value][", :value=>@object.datafield(i).subfield[s], :class => "edit dri-textfield" %></br>
     <% end %>
 
   <% end %>
