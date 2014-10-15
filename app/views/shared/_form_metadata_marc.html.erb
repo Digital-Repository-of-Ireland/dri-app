@@ -15,10 +15,10 @@
 
 <fieldset id="controlfield">
   <%= f.label "controlfield" %></br>
-  <% @object.controlfield_tag.each_index do |c| %>
+  <% @object.controlfield.each_index do |c| %>
     <%= f.label "tag:" %>
-    <%= f.text_field "controlfield_tag][", :value=>@object.controlfield_tag[c], :class => "edit dri-textfield" %>
-    <%= f.text_field "controlfield_value][", :value=>@object.controlfield_value[c], :class => "edit dri-textfield" %></br>
+    <%= f.text_field "controlfield][#{c}][controlfield_tag][", :value=>@object.controlfield(c).controlfield_tag.first, :class => "edit dri-textfield" %>
+    <%= f.text_field "controlfield][#{c}][controlfield_value][", :value=>@object.controlfield[c], :class => "edit dri-textfield" %></br>
   <% end %>
 </fieldset>
 
