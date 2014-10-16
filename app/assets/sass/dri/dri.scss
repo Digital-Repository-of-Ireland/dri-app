@@ -2715,18 +2715,37 @@ ul.dri_view_collection {
     }
   }
   .dri_collection_institutes_pages_text {
+    width: 600px;
     margin-top: 25px;
     h6 {
       color: #2F2F2F;
     }
     p {
+      padding-top: 10px;
+      margin-left: 55px;
       color: $dri_greytext;
+      clear: both;
     }
     p span.dri_bold_text {
       font-weight: bold;
     }
     p:hover {
       text-decoration: underline;
+    }
+    ul {
+      //float:left;
+      li {
+        float:left;
+        display:block;
+        padding: 4px 0 4px 15px;
+        list-style: none;
+        text-decoration: none;
+        max-height: 96px;
+        overflow:hidden;
+        img {
+          
+        }
+      }
     }
   }
 }

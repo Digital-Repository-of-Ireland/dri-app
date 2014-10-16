@@ -15,7 +15,7 @@
             </h6>
           </div>
           <div class="dri_collection_institutes_pages_text" >
-            <div>
+            <ul>
               <% if (collection_count > 0) %>
                   <% collections = get_collections_institute institute[:name].to_s.html_safe %>
                   <% collections.each_with_index do |collection, index| %>
@@ -23,14 +23,14 @@
                           <% collection = collection.symbolize_keys! %>
                           <% image = cover_image collection %>
                           <% unless image.nil? %>
-                              <%= image_tag image, :width=>"150" %>
+                              <li><%= image_tag image, :width=>"150" %></li>
                           <% else %>
-                              <%= image_tag "no_image.png", :width=>"150" %>
+                              <li><%= image_tag "no_image.png", :width=>"150" %></li>
                           <% end %>
                       <% end %>
                   <% end %>
               <% end %>
-            </div>
+            </ul>
             <p>
               <%= t('dri.headerlinks.collections') %>
               <span class="dri_bold_text">
