@@ -429,6 +429,7 @@ en:
           sidebar: 
             nav_header: "Edit Tools"
           title: "Edit Object"
+          title_collection: "Edit Collection"
         forms: 
           add_another: "Add Another"
           add_author: "Add Author"
@@ -483,6 +484,7 @@ en:
           download: download
           listen: listen
           view_record: "View Record"
+          cancel: Cancel
       static: 
         admin: 
           licences: "Supported Licences"

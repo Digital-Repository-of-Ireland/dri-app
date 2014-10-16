@@ -275,46 +275,44 @@
 </script>
 
 <div class="dri_access_controls">
-        <legend>
-        <%= t('dri.views.objects.legends.access_control') %>
-    </legend>
-<fieldset id="language">
-  <label for="depositor"><%= t('dri.views.objects.access_controls.depositor') %></label>
-      <input class="edit span6 dri-textfield" id="depositor" name="depositor" type="text" value="<%= record.depositor %>" readonly>
-</fieldset>
-
-
-
+	<legend>
+		<%= t('dri.views.objects.legends.access_control') %>
+	</legend>
+	<fieldset id="language">
+		<label for="depositor"><%= t('dri.views.objects.access_controls.depositor') %></label>
+		<input class="edit span6 dri-textfield" id="depositor" name="depositor" type="text" value="<%= record.depositor %>" readonly>
+	</fieldset>
 
 	<div class="field">
 		<h5><%= t('dri.views.objects.access_controls.read') %></h5>
 		<ul class="breadcrumb">
 			<li>
 				<%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled=> disabled_inherit %>
-			<%= f.label :read_groups_inherit, t('dri.views.objects.access_controls.inherit')%></li>
+				<%= f.label :read_groups_inherit, t('dri.views.objects.access_controls.inherit')%>
+			</li>
 
 			<li>
 				<%= f.radio_button :read_groups_string, "radio_public", :onclick => "read_field_toggle();" %>
-			<%= f.label :read_groups_public, t('dri.views.objects.access_controls.public')%></li>
+				<%= f.label :read_groups_public, t('dri.views.objects.access_controls.public')%>
+			</li>
 
 			<li>
 				<%= f.radio_button :read_groups_string, "radio_logged", :onclick => "read_field_toggle();" %>
-			<%= f.label :read_groups_registered, t('dri.views.objects.access_controls.registered') %></li>
+				<%= f.label :read_groups_registered, t('dri.views.objects.access_controls.registered') %>
+			</li>
 
 			<li>
 				<%= f.radio_button :read_groups_string, "radio_restricted", :onclick => "read_field_toggle();" %>
-			<%= f.label :read_groups_restricted, t('dri.views.objects.access_controls.restricted')%></li>
+				<%= f.label :read_groups_restricted, t('dri.views.objects.access_controls.restricted')%>
+			</li>
 
 		</ul>
 		<fieldset id="read_access_entries">
 
+			<%= f.label :read_users, t('user_groups.views.shared.users')%>
+			<%= f.text_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
 
-				<%= f.label :read_users, t('user_groups.views.shared.users')%>
-							<%= f.text_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
-
-
-
-				<%= f.label :read_groups, t('user_groups.views.shared.groups')%>
+			<%= f.label :read_groups, t('user_groups.views.shared.groups')%>
 			<%= f.text_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
 
 		</fieldset>
@@ -325,16 +323,19 @@
 			<ul class="breadcrumb">
 				<li>
 					<%= f.radio_button :master_file, "radio_inherit", :checked=>record.master_file.nil?, :disabled=> disabled_inherit %>
-						<%= f.label :master_file, t('dri.views.objects.access_controls.inherit')%></li>
+					<%= f.label :master_file, t('dri.views.objects.access_controls.inherit')%>
+				</li>
 
 				<li>
 					<%= f.radio_button :master_file, "radio_public", :checked=>record.master_file==true %>
-				<%= f.label :master_file, t('dri.views.objects.access_controls.accessible_master_file') %></li>
+					<%= f.label :master_file, t('dri.views.objects.access_controls.accessible_master_file') %>
+				</li>
 
 				<li>
 					<%= f.radio_button :master_file, "radio_private", :checked=>record.master_file==false %>
-							<%= f.label :master_file, t('dri.views.objects.access_controls.private_master_file')%></li>
-	
+					<%= f.label :master_file, t('dri.views.objects.access_controls.private_master_file')%>
+				</li>
+
 			</ul>
 		</div>
 
@@ -343,16 +344,18 @@
 			<ul class="breadcrumb">
 				<li>
 					<%= f.radio_button :edit_groups_string, "radio_inherit", :onclick => "edit_field_toggle();", :disabled=> disabled_inherit  %>
-									<%= f.label :edit_users, t('dri.views.objects.access_controls.inherit')%></li>
+					<%= f.label :edit_users, t('dri.views.objects.access_controls.inherit')%>
+				</li>
 
 				<li>
 					<%= f.radio_button :edit_groups_string, "radio_restricted", :onclick => "edit_field_toggle();" %>
-				<%= f.label :edit_users, t('dri.views.objects.access_controls.restricted')%>	</li>
+					<%= f.label :edit_users, t('dri.views.objects.access_controls.restricted')%>
+				</li>
 
 			</ul>
 			<fieldset id="edit_access_entries">
-					<%= f.label :edit_users, t('user_groups.views.shared.users')%>
-					<%= f.text_field :edit_users_string, :onkeyup=>"edit_user_textbox.catch_tb_value();" %></li>
+				<%= f.label :edit_users, t('user_groups.views.shared.users')%>
+				<%= f.text_field :edit_users_string, :onkeyup=>"edit_user_textbox.catch_tb_value();" %></li>
 
 			</fieldset>
 		</div>
@@ -364,16 +367,18 @@
 		<ul class="breadcrumb">
 			<li>
 				<%= f.radio_button :manager_groups_string, "radio_inherit", :onclick => "manager_field_toggle();", :disabled=> disabled_inherit  %>
-			<%= f.label :manager_users, t('dri.views.objects.access_controls.inherit') %></li>
+				<%= f.label :manager_users, t('dri.views.objects.access_controls.inherit') %>
+			</li>
 
 			<li>
 				<%= f.radio_button :manager_groups_string, "radio_restricted", :onclick => "manager_field_toggle();" %>
-			<%= f.label :manager_users, t('dri.views.objects.access_controls.restricted') %>	</li>
+				<%= f.label :manager_users, t('dri.views.objects.access_controls.restricted') %>
+			</li>
 
 			<fieldset id="manager_access_entries">
-                    <%= f.label :manager_users, t('user_groups.views.shared.users')%>
-                    <%= f.text_field :manager_users_string, :onkeyup=>"manager_user_textbox.catch_tb_value();" %>   
-</fieldset>
+				<%= f.label :manager_users, t('user_groups.views.shared.users')%>
+				<%= f.text_field :manager_users_string, :onkeyup=>"manager_user_textbox.catch_tb_value();" %>
+			</fieldset>
 	</div>
 </div>
 <% end %>

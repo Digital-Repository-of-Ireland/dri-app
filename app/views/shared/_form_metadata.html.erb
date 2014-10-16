@@ -100,7 +100,7 @@
           <%= f.text_field "roles][name][", :value=>value, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
       <% end %>
   <% end %>
-  <p class="add-person-fields"><a model-name="batch" title="Add Role"><%= t('dri.views.objects.forms.add_role') %></a></p>
+  <p class="add-person-fields"><i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Role"><%= t('dri.views.objects.forms.add_role') %></a></p>
 </fieldset>
 <fieldset id="published_date">
   <%= f.label "#{t('dri.views.fields.published_date')}"%>

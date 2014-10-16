@@ -1,38 +1,37 @@
 <div id="content" class="span9 show-document">
-    <div id="document" class="document">
-        
-      <h4><%= t('dri.views.objects.edit.title') %></h4>
-      <div class="dri_ingest_form_container">
-      <%= form_for @object, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'dri_ingest_form'} do |f| %>
+	<div id="document" class="document">
+		<% if (params[:controller] == "collections" ) %>
+		<h4><%= t('dri.views.objects.edit.title_collection') %></h4>
+		<% else %>
+		<h4><%= t('dri.views.objects.edit.title') %></h4>
+		<% end %>
+		<div class="dri_ingest_form_container">
+			<%= form_for @object, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'dri_ingest_form'} do |f| %>
 
-          <%= render :partial => "shared/form_metadata", :locals => { :f => f, :action => "update" } %>
-          <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
+			<%= render :partial => "shared/form_metadata", :locals => { :f => f, :action => "update" } %>
+			<%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
 
-          <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "edit_collection" %>
+			<%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "edit_collection" %>
+			<% end %>
 
-      <% end %>
-      </div>
+			<% if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status.eql?('draft')) %>
+			<%= form_tag (collection_path(@object.pid)), :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+			<%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_danger", :id => "delete_collection_#{@object.id}", :data => { :confirm => t('dri.views.collection.confirm_delete') } %>
+			<% end %>
+			<% end %>
+			
 
-      <div>
-        </br>
-        <% if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status.eql?('draft')) %>
-            <%= form_tag (collection_path(@object.pid)), :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
-                <%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "btn", :class => "btn-primary btn-large", :id => "delete_collection_#{@object.id}", :data => { :confirm => t('dri.views.collection.confirm_delete') } %>
-            <% end %>
-        <% end %>
-      </div>
+			<div id='dri_collection_institutes_dropdown' name='dri_collection_institutes_dropdown' class='dri_associate_institutes_block'>
+				<%= render :partial => "shared/associate_institute" %>
+				<%= render :partial => "shared/add_institute" %>
+			</div>
 
-      <div id='dri_collection_institutes_dropdown' name='dri_collection_institutes_dropdown'>
-        <%= render :partial => "shared/associate_institute" %>
-      </div>
 
-      <div name='dri_collection_add_institute' id='dri_collection_add_institute'>
-        <%= render :partial => "shared/add_institute" %>
-      </div>
 
-      <div id="dri_object_institutes_block" class="dri_object_institutes_block">
-        <%= render :partial => "shared/display_institutes" %>
-      </div>
 
-  </div>
+			<div id="dri_object_institutes_block" class="dri_object_institutes_block">
+				<%= render :partial => "shared/display_institutes" %>
+			</div>
+		</div>
+	</div>
 </div>

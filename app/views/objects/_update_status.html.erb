@@ -7,3 +7,4 @@
 
   <br /><%= submit_tag t('dri.views.objects.buttons.update_status'), :id => 'status_update' %>
 <% end %>
+     <%= link_to t('dri.views.objects.edit.links.view_record'), url_for(:controller => "catalog", :action => "show", :id => @object.id), :id => "view_record", :class => 'dri_cancel' %>

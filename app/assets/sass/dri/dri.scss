@@ -2694,12 +2694,13 @@ ul.dri_view_collection {
 }
 
 .dri_institutes_title {
-  margin: 20px 0 0 0;
-  padding: 0px;
+  clear:both;
+  margin: 20px 0 10px 0;
   color: $dri_grey;
   font-weight: normal;
-  font-size: 120%;
+  font-size: 100%;
   font-weight: bold;
+  
 }
 
 // static page of institutes
@@ -2948,6 +2949,16 @@ ul.dri_collection_institutes_list {
 		border-radius: 2px;
 		color: #fff;
 		
+ }
+ 
+ .dri_danger {
+   @extend input.btn-primary;
+   background: darkred;
+ } 
+  .dri_cancel {
+   @extend input.btn-primary;
+   clear:both;
+   background: $dri_thingrey;
  } 
 	   
 	.dri_form_multiline_block {
@@ -3009,7 +3020,7 @@ ul.dri_collection_institutes_list {
         z-index:2;
         top:0;
         left:0;
-        height:100%;
+        height:inherit;
         filter: alpha(opacity=0);
         -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
         opacity:0;
@@ -3075,7 +3086,7 @@ ul.dri_collection_institutes_list {
         width: 150px;
         overflow-wrap: initial;
       }
-      .add-text-field {
+      .add-text-field, .add-person-fields {
         i {
           color: $dri_green;
         }
@@ -3153,4 +3164,112 @@ i {
     }
   }
    }
+}
+
+.dri_associate_institutes_block, .dri_collection_institutes_dropdown {
+  clear:both;
+  border-top: 1px solid #E1E1E1;
+  margin: 20px 0 0 0;
+  .dri_select_institution {
+    select {
+      width: 410px;
+    }
+  }
+
+        
+        label {
+        display: block;
+        clear:both;
+        font-size: 100%;
+    color: $dri_grey;
+    font-weight: bold;
+
+      }
+  
+
+      input {
+        clear:both;
+        padding-left: 5px;
+        margin-bottom: 5px;
+        border-radius: 2px;
+        min-height: 2em;
+        font-size: 100%;
+        color: #808080;
+        border: 1px solid $dri_lightgrey;
+        width: 250px;  
+      }
+      input[type="submit"] {
+        color: white;
+      }
+      select {
+        width: 150px;
+        border-radius: -1px;
+        height: 2em;
+        font-size: 1.1em;
+        -webkit-border-style: none;
+        -webkit-border-radius: none;
+        -moz-border-radius: 0px;
+        vertical-align: top;
+        padding-bottom: 12px;
+        width: 150px;
+        overflow-wrap: initial;
+      }
+  
+  .dri_add_institute_link {
+      a {
+        color: #90993d;
+        cursor: pointer;
+        padding-top: 5px;
+    }
+  }
+      .dri_file_upload {
+      clear:both;
+      display: inline-block;
+      position:relative;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      width:480px;
+
+      a {
+        font-size: 100%;
+        color: #808080;
+        border: 1px solid $dri_lightgrey;
+        background-color:#FFF;
+        padding:0 0 0 0;
+        height: 75px;
+        width: 250px;
+        //vertical-align: 10%;
+
+        
+        input {
+          position:absolute;
+          z-index:2;
+          top:0;
+          left:0;
+          height:75px;
+          filter: alpha(opacity=0);
+          -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+          opacity:0;
+          background-color:transparent;
+          color:transparent;
+                 
+        }
+        h5 {
+          margin: 9px 0 3px 0;
+           text-overflow: ellipsis;
+        }
+        p {
+          margin-bottom: 0px;
+        }
+      }
+    }
+}
+
+.dri_collection_institutes_item {
+  a.remove {
+    display: block;
+    float:right;
+    margin-right:10px;
+    color: #808080;
+  }
 }
