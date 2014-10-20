@@ -1,3 +1,14 @@
+<style type="text/css">
+    .form-control {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .ctrlfield-tag{
+        width: 28px;
+    }
+
+</style>
+<% @marc = DRI::Metadata::Marc.marc_vocabulary %>
 <fieldset id="metadata">
   <% if action.eql?("update") && params[:controller] != "collections" %>
       <%= f.label "#{t('dri.views.objects.forms.governing_collection')}:" %>
@@ -13,13 +24,35 @@
   <p class="add-text-field"><a href="#" model-name="batch" title="Add Type"><%= t('dri.views.objects.forms.add_type') %></a></p>
 </fieldset>
 
-<fieldset id="controlfield">
+<fieldset id="controlfields" class="input-group-sm">
   <%= f.label "controlfield" %></br>
-  <% @object.controlfield.each_index do |c| %>
-    <%= f.label "tag:" %>
-    <%= f.text_field "controlfield][#{c}][controlfield_tag][", :value=>@object.controlfield(c).controlfield_tag.first, :class => "edit dri-textfield" %>
-    <%= f.text_field "controlfield][#{c}][controlfield_value][", :value=>@object.controlfield[c], :class => "edit dri-textfield" %></br>
-  <% end %>
+  <% @marc[:controlfield].each_with_index do |i, index| %>
+      <fieldset class="controlfield">
+      <%= f.label i[1][:tag], class: "ctrlfield-tag-label" %>
+      <%= f.label i[1][:label] %> <i class="fa fa-times"></i> <a class="add-fieldset" model-name="batch">
+        <% if i[1][:multivalue] %>
+            <i class="fa fa-plus"></i>
+        <% end %>
+        <br /></a>
+          <%# TODO: Why is index in initialized df 0? for the moment I reindex after DOM is loaded %>
+          <% @object.controlfield.each_index do |c| %>
+            <!--Initialize non existing ctr fields-->
+            <% if not @object.controlfield_tag.include? i[1][:tag] %>
+                <% @object.controlfield(c).controlfield_tag = i[1][:tag] %>
+                <% @object.controlfield(c).val = "" %>
+            <% end %>
+            <% next if i[1][:tag] != @object.controlfield(c).controlfield_tag.first %>
+                <fieldset class="subfield">
+                  <%= f.hidden_field "controlfield][#{c}][controlfield_tag][", :value=>@object.controlfield(c).controlfield_tag.first, :class => "edit dri-textfield ctrlfield-tag" %><br>
+                  <!--Controlfields' Subfield-->
+                  <i class="fa fa-sort-asc"></i>
+                  <%= f.label i[1][:subfield][:label] %>
+                  <%= f.text_field "controlfield][#{c}][controlfield_value][", :value=>@object.controlfield[c], :class => "edit dri-textfield ctrlfield-value" %>
+                  <a class="destroy-fieldset" model-name="batch"><i class="fa fa-times"></i><br /></a>
+                </fieldset>
+          <% end %>
+      </fieldset>
+<% end %>
 </fieldset>
 
 <fieldset id="datafield">
