@@ -271,5 +271,9 @@ module ApplicationHelper
     end
   end
 
+  def link_to_loc(field)
+    return link_to('?', "http://www.loc.gov/marc/bibliographic/bd" + field + ".html" )
+  end
+
 end
 
