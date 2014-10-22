@@ -1,6 +1,6 @@
 GIT
   remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: 517359c925a8e8c7d4b13c6d355628204afdc39a
+  revision: c8fc09a4b39661dd7f1c090401b347a691d39da3
   branch: marc-nccb
   specs:
     dri_data_models (1.1.0)
@@ -327,7 +327,7 @@ GEM
     nest (1.1.2)
       redis
     net-http-persistent (2.9.4)
-    netrc (0.7.8)
+    netrc (0.8.0)
     noid (0.7.1)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)

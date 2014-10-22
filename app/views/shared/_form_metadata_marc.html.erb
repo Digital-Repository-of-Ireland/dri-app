@@ -16,12 +16,9 @@
   <% end %>
 </fieldset>
 
-<fieldset id="type">
-  <%= f.label "#{t('dri.views.fields.types')}:" %>
-  <% @object.type.each do |i| %>
-      <%= f.text_field "type][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch"><%= t('dri.views.objects.forms.delete') %></a><br />
-  <% end %>
-  <p class="add-text-field"><a href="#" model-name="batch" title="Add Type"><%= t('dri.views.objects.forms.add_type') %></a></p>
+<fieldset id="leader">
+  <%= f.label "leader:" %>
+  <%= f.text_field "leader][", :value=>@object.leader, :class => "edit span6 dri-textfield" %><br/>
 </fieldset>
 
 <fieldset id="controlfields" class="input-group-sm">
