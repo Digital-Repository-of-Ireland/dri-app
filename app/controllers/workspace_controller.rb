@@ -17,7 +17,7 @@ class WorkspaceController < ApplicationController
   # These before_filters apply the hydra access controls
   before_filter :enforce_search_for_show_permissions, :only=>:show
   # This applies appropriate access controls to all solr queries
-  WorkspaceController.solr_search_params_logic += [:add_access_controls_to_solr_params]
+  WorkspaceController.solr_search_params_logic += [:add_access_controls_to_solr_params_no_pub]
   # This filters out objects that you want to exclude from search results, like FileAssets
   WorkspaceController.solr_search_params_logic += [:exclude_unwanted_models]
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
