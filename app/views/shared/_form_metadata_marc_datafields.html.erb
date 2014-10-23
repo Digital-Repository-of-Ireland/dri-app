@@ -1,0 +1,117 @@
+<%= f.label "datafields:" %>
+<% @marc[:datafield][tab].each_with_index do |i, index| %>
+    <%# Render empty df with sfs  %>
+    <% if not @object.datafield_tag.include? i[0] %>
+        <fieldset class="datafield">
+
+          <%= f.label i[1][:tag], class: "datafield-tag-label" %>
+          <%= link_to_loc(i[1][:tag]) %>
+          <%= hidden_field_tag "batch[datafield][#{index}][datafield_tag][", i[1][:tag], :id => "batch_datafield][#{index}][datafield_tag][", :class => "form-control span6 datafield-tag" %>
+          <%= f.label "ind1:" %>
+          <%= text_field_tag "batch[datafield][#{index}][datafield_ind1][", "", :id => "batch_datafield][#{index}][datafield_ind1][", :class => "form-control span6 ind1-tag"%>
+          <%= f.label "ind2:" %>
+          <%= text_field_tag "batch[datafield][#{index}][datafield_ind2][", "", :id => "batch_datafield][#{index}][datafield_ind2][", :class => "form-control span6 ind2-tag"%>
+          <%= f.label i[1][:label], class: "datafield-tag-label" %> <a class="destroy-datafield" model-name="batch"><i class="fa fa-times"></i> </a>
+          <% if i[1][:multivalue] %>
+              <a class="add-datafield" model-name="batch">
+                <i class="fa fa-plus"></i>
+              </a>
+          <% end %>
+          <br>
+
+          <fieldset class="subfields">
+            <% i[1][:subfield].each_with_index do |sf, indexx| %>
+                <fieldset class="subfield <%= "sf_" + sf[1][:code] %>">
+                  <div class="form-group">
+                    <i class="fa fa-sort-asc"></i>
+                    <span class="subfield-tag-label"><%= sf[1][:code] %></span>
+                    <%= sf[1][:label] %>
+                    <% if sf[1][:required] %><span class="required">*</span><% end %>
+                    <%= f.hidden_field "datafield]][#{indexx}][subfield][][subfield_code][", :value=>sf[1][:code], :class => "form-control span6 subfield-tag" %>
+                    <%= f.text_field "datafield]][#{indexx}][subfield][][subfield_value][", :value=>"", :class => "form-control span6 subfield-value", :required => sf[1][:required] %>
+                    <a class="destroy-subfield" model-name="batch"><i class="fa fa-times"></i></a>
+                    <% if sf[1][:multivalue] %>
+                        <a class="add-df-subfield" model-name="batch">
+                          <i class="fa fa-plus"></i>
+                        </a>
+                    <% end %>
+                  </div>
+
+                </fieldset>
+            <% end  %>
+          </fieldset>
+        </fieldset>
+    <% end %>
+
+    <%# Render existing df  %>
+    <% @object.datafield.each_index do |d| %>
+        <%#= a + 0 %>
+        <% next if i[1][:tag] != @object.datafield(d).tag.first %>
+        <fieldset class="datafield">
+          <%= f.label i[1][:tag] %>
+          <%= link_to_loc(i[1][:tag]) %>
+          <%= f.hidden_field "datafield][#{d}][datafield_tag][", :value=>@object.datafield(d).tag.first, :class => "form-control span6 datafield-tag" %>
+          <%= f.label "ind1:" %>
+          <%= f.text_field "datafield][#{d}][datafield_ind1][", :value=>@object.datafield(d).ind1.first, :class => "form-control span6 ind1-tag" %>
+          <%= f.label "ind2:" %>
+          <%= f.text_field "datafield][#{d}][datafield_ind2][", :value=>@object.datafield(d).ind2.first, :class => "form-control span6 ind2-tag" %>
+          <%= f.label i[1][:label], class: "datafield-tag-label" %> <a class="destroy-datafield" model-name="batch"><i class="fa fa-times"></i> </a>
+
+          <% if i[1][:multivalue] %>
+              <a class="add-datafield" model-name="batch"><i class="fa fa-plus"></i></a>
+          <% end %><br>
+
+          <fieldset class="subfields">
+            <% @xml_sf_pool = [] %>
+            <% @object.datafield(d).subfield.each_with_index do |sf, s| %>
+                <fieldset class="subfield <%= "sf_" + @object.datafield(d).subfield(s).code.first %>">
+                  <div class="form-group">
+                    <i class="fa fa-sort-asc"></i>
+                    <span class="subfield-tag-label"><%= @object.datafield(d).subfield(s).code.first %></span>
+                    <%= i[1][:subfield][@object.datafield(d).subfield(s).code.first][:label] %>
+                    <% if i[1][:subfield][@object.datafield(d).subfield(s).code.first][:required] %><span class="required">*</span><% end %>
+                    <%= f.hidden_field "datafield]][#{d}][subfield][#{s}][subfield_code][", :value=>@object.datafield(d).subfield(s).code.first, :class => "form-control span6 subfield-tag" %>
+                    <%= f.text_field "datafield]][#{d}][subfield][#{s}][subfield_value][", :value=>@object.datafield(d).subfield[s], :class => "form-control span6 subfield-value", :required => i[1][:subfield][@object.datafield(d).subfield(s).code.first][:required] %>
+                    <% if i[1][:subfield][@object.datafield(d).subfield.code.first][:multivalue] %>
+                        <a class="add-df-subfield" model-name="batch">
+                          <i class="fa fa-plus"></i>
+                        </a>
+                    <% end %>
+                    <a class="destroy-subfield" model-name="batch"><i class="fa fa-times"></i></a>
+                  </div>
+
+                  <%
+                     @xml_sf_pool << @object.datafield(d).subfield(s).code.first
+                  %>
+                </fieldset>
+            <% end %>
+            <%# Render empty sf %>
+            <% @yaml_sf_pool = i[1][:subfield].keys %>
+            <% @diff = [] %>
+            <% @diff = @yaml_sf_pool - @xml_sf_pool %>
+            <% if (@diff).size > 0 %>
+                <% @diff.each do |sf| %>
+                    <fieldset class="subfield <%= "sf_" + sf %>">
+                      <div class="form-group">
+                        <i class="fa fa-sort-asc"></i>
+                        <span class="subfield-tag-label"><%= sf %></span>
+                        <%= i[1][:subfield][sf][:label] %>
+                        <% if i[1][:subfield][sf][:required] %><span class="required">*</span><% end %>
+                        <%= f.hidden_field "datafield][#{index}][subfield][][subfield_code][", :value=>sf, :class => "form-control span6 subfield-tag" %>
+                        <%= f.text_field "datafield][#{index}][subfield][][subfield_value][", :value=>"", :class => "form-control span6 subfield-value", :required => i[1][:subfield][sf][:required] %>
+                        <a class="destroy-subfield" model-name="batch"><i class="fa fa-times"></i></a>
+                        <% if i[1][:subfield][sf][:multivalue] %>
+                            <a class="add-df-subfield" model-name="batch">
+                              <i class="fa fa-plus"></i>
+                            </a>
+                        <% end %>
+                      </div>
+
+                    </fieldset>
+                <% end %>
+            <% end  %>
+
+          </fieldset>
+        </fieldset>
+    <% end %>
+<% end %>
