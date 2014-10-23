@@ -33,7 +33,7 @@ destroy_marc_controlfield = function() {
 
 // Destroy .datafield fieldset
 destroy_marc_datafield = function() {
-    $("#datafields").on("click", ".destroy-datafield", function(){
+    $(".datafields").on("click", ".destroy-datafield", function(){
         $(this).closest("fieldset").remove();
         reindex_marc();
         return false;
@@ -52,7 +52,7 @@ add_marc_controlfield = function() {
 }
 // Add closest fieldset
 add_marc_datafield = function() {
-    $("#datafields").on("click", ".add-datafield", function() {
+    $(".datafields").on("click", ".add-datafield", function() {
         var $clone = $(this).parent().clone();
         $clone.find('.subfield-value').val('');
         $clone.find('.ind1-tag').val('');
@@ -65,7 +65,7 @@ add_marc_datafield = function() {
 
 // Add marc subfield
 add_marc_subfield = function() {
-    $("#datafields").on("click", ".add-df-subfield", function() {
+    $(".datafields").on("click", ".add-df-subfield", function() {
         var $clone = $(this).parent().parent().clone();
         $clone.find('.subfield-value').val('');
         var $target = $(this).closest("fieldset");
@@ -76,7 +76,7 @@ add_marc_subfield = function() {
 
 // Destroy .controlfield fieldset
 destroy_marc_subfield = function() {
-    $("#datafields").on("click", ".destroy-subfield", function(){
+    $(".datafields").on("click", ".destroy-subfield", function(){
         var className = '.' + $(this).parent().parent().attr('class').split(' ').join('.');
         var noOfSubfields = $(this).closest("fieldset").parent().find(className).length;
         if (noOfSubfields > 1) {
@@ -119,12 +119,12 @@ reindex_marc = function() {
     });
 }
 
-// Whenever an "add" link is clicked, a new text field is added to the bottom of the list 
+// Whenever an "add" link is clicked, a new text field is added to the bottom of the list
 add_text_field = function() {
     $('.add-text-field a').click(function() {
       var fieldset_name = $(this).parent().parent().attr('id');
       var model_name = $(this).attr('model-name');
-      $(this).parent().before(  
+      $(this).parent().before(
       '<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" size="30" type="text" value=""> <a class="destructive">delete</a><br />');
       $(this).parent().siblings('a').last().click(function() {
         $(this).prev('input[type="text"]').remove();
@@ -143,7 +143,7 @@ destroy_text_field = function() {
       var model_name = $(this).attr('model-name');
 
       if ((fieldset_name == 'roles') && $(this).siblings('select').length > 1) {
-        
+
         $(this).prev('input[type="text"]').remove();
         var selected_value = $(this).prev('select').val();
         $(this).prev('select').remove();
@@ -158,7 +158,7 @@ destroy_text_field = function() {
         $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" value="">');
         $(this).remove();
       }
-      
+
       return false;
     });
 }
@@ -169,7 +169,7 @@ add_person_fields = function() {
       var model_name = $(this).attr('model-name')
       var previous_select = $(this).parent().siblings('select').last();
       $(this).parent().before(
-      '<select id="'+model_name+'_'+fieldset_name+'][type][" selected="'+previous_select.val()+'" name="'+model_name+'['+fieldset_name+'][type][]">'+previous_select.html()+'</select> '+  
+      '<select id="'+model_name+'_'+fieldset_name+'][type][" selected="'+previous_select.val()+'" name="'+model_name+'['+fieldset_name+'][type][]">'+previous_select.html()+'</select> '+
       '<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_name+'][name][" name="'+model_name+'['+fieldset_name+'][name][]" size="30" type="text" value=""> <a class="destructive" model-name="'+model_name+'">delete</a><br />');
       $(this).parent().siblings('select').last().val(previous_select.val())
       $(this).parent().siblings('a').last().click(function() {
@@ -192,15 +192,15 @@ add_person_fields = function() {
   }
 
 // Adds audio player in asset display for audio file
-$(document).ready(function() {  
-    var audioSection = $('section#audio');  
-    $('a.player').click(function() {  
-        var audio = $('<audio>', {  
-             controls : 'controls'  
-        });  
-        var url = $(this).attr('href');  
-        $('<source>').attr('src', url).appendTo(audio);  
-        audioSection.html(audio);  
-        return false;  
-    });  
+$(document).ready(function() {
+    var audioSection = $('section#audio');
+    $('a.player').click(function() {
+        var audio = $('<audio>', {
+             controls : 'controls'
+        });
+        var url = $(this).attr('href');
+        $('<source>').attr('src', url).appendTo(audio);
+        audioSection.html(audio);
+        return false;
+    });
 });
