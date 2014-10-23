@@ -214,7 +214,8 @@ en:
             format: Format
             last_modified: "Last Update"
           audio_file: "Audio File"
-          bookmark_object: Bookmark
+          bookmark_collection: "Bookmark Collection"
+          bookmark_object: "Bookmark Object"
           file: File
           image_file: Image
           manage_bookmark: "Manage Your Bookmarks"
@@ -227,7 +228,8 @@ en:
         headers: 
           files: "File Tools"
         legends: 
-          no_bookmarked: "You have no bookmarked"
+          no_bookmarked_collections: "You have no bookmarked collections"
+          no_bookmarked_objects: "You have no bookmarked objects"
           no_bookmarks: "You have no bookmarks"
           no_files: "No file has been uploaded."
           no_permission: "You do not have permission to view the asset file associated with this object."
