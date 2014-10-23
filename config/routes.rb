@@ -58,7 +58,7 @@ NuigRnag::Application.routes.draw do
   match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
 
   match '/privacy' => 'static_pages#privacy', :via => :get
-  match '/workspace' => 'static_pages#workspace', :via => :get
+  match '/workspace' => 'workspace#index', :via => :get
   match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
   match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 
