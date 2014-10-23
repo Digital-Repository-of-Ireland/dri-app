@@ -34,7 +34,7 @@
       <% else %>
         <li role="presentation">
       <% end %>
-      <%= link_to t('dri.headerlinks.my_collections'), workspace_path, :id => "my_collections", :tabindex => "-1" %>
+      <%= link_to t('dri.headerlinks.my_collections'), workspace_path(:mode => "collections"), :id => "my_collections", :tabindex => "-1" %>
       </li>
 
   <% end %>
