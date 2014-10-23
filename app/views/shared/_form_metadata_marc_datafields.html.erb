@@ -35,7 +35,6 @@
                         </a>
                     <% end %>
                   </div>
-
                 </fieldset>
             <% end  %>
           </fieldset>
@@ -44,7 +43,6 @@
 
     <%# Render existing df  %>
     <% @object.datafield.each_index do |d| %>
-        <%#= a + 0 %>
         <% next if i[1][:tag] != @object.datafield(d).tag.first %>
         <fieldset class="datafield">
           <%= f.label i[1][:tag] %>
@@ -78,7 +76,6 @@
                     <% end %>
                     <a class="destroy-subfield" model-name="batch"><i class="fa fa-times"></i></a>
                   </div>
-
                   <%
                      @xml_sf_pool << @object.datafield(d).subfield(s).code.first
                   %>
