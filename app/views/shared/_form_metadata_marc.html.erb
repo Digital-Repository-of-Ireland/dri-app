@@ -26,6 +26,14 @@
         padding-bottom: 10px;
         margin-bottom: 20px;
     }
+    .vertical-align {
+        display: flex;
+        align-items: center;
+    }
+    .indented {
+        width: 35px;
+        padding-right: 0px;
+    }
 </style>
 <% @marc = DRI::Metadata::Marc.marc_vocabulary %>
 
@@ -53,13 +61,13 @@
 
 <div class="tab-content">
     <%= content_tag(:div, :class => 'tab-pane active', :id => "tab00X") do %>
-        <fieldset id="leader">
+      <legend>Controlfields</legend>
+      <fieldset id="leader">
           <%= f.label "leader:" %>
           <%= f.text_field "leader][", :value=>@object.leader, :class => "edit span6 dri-textfield form-control" %><br/>
         </fieldset>
 
         <fieldset id="controlfields" class="input-group-sm">
-          <%= f.label "controlfields" %></br>
           <% @marc[:controlfield].each_with_index do |i, index| %>
               <fieldset class="controlfield">
                 <%= i[1][:tag] %>
@@ -80,12 +88,22 @@
                     <% end %>
                     <% next if i[1][:tag] != @object.controlfield(c).controlfield_tag.first %>
                     <fieldset class="subfield">
-                      <%= f.hidden_field "controlfield][#{c}][controlfield_tag][", :value=>@object.controlfield(c).controlfield_tag.first, :class => "form-control span6 ctrlfield-tag" %><br>
-                      <%# Controlfields' Subfield %>
-                      <i class="fa fa-sort-asc"></i>
-                      <%= i[1][:subfield][:label] %>
-                      <%= f.text_field "controlfield][#{c}][controlfield_value][", :value=>@object.controlfield[c], :class => "form-control span6 ctrlfield-value" %>
-                      <a class="destroy-ctrlfield" model-name="batch"><i class="fa fa-times"></i><br /></a>
+                      <div class="row vertical-align">
+                        <%# Controlfields' Subfield %>
+                        <div class="col-md-1 indented">
+                          <%= f.hidden_field "controlfield][#{c}][controlfield_tag][", :value=>@object.controlfield(c).controlfield_tag.first, :class => "form-control ctrlfield-tag" %><br>
+                          <i class="fa fa-sort-asc"></i>
+                        </div>
+                        <div class="col-md-2">
+                          <%= i[1][:subfield][:label] %>
+                        </div>
+                        <div class="col-md-9">
+                            <%= f.text_field "controlfield][#{c}][controlfield_value][", :value=>@object.controlfield[c], :class => "form-control ctrlfield-value" %>
+                        </div>
+                        <div class="col-md-1">
+                          <a class="destroy-ctrlfield" model-name="batch"><i class="fa fa-times"></i><br /></a>
+                        </div>
+                      </div>
                     </fieldset>
                 <% end %>
               </fieldset>

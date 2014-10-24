@@ -19,7 +19,7 @@ $(document).ready(function() {
 // Destroy .controlfield fieldset
 destroy_marc_controlfield = function() {
     $("#controlfields").on("click", ".destroy-ctrlfield", function(){
-        var no_of_subfields = $(this).parent().parent().find('.subfield').length;
+        var no_of_subfields = $(this).parent().parent().parent().parent().find('.subfield').length;
         if (no_of_subfields > 1) {
             $(this).closest("fieldset").remove();
             reindex_marc();
@@ -66,7 +66,7 @@ add_marc_datafield = function() {
 // Add marc subfield
 add_marc_subfield = function() {
     $(".datafields").on("click", ".add-df-subfield", function() {
-        var $clone = $(this).parent().parent().clone();
+        var $clone = $(this).parent().parent().parent().parent().clone();
         $clone.find('.subfield-value').val('');
         var $target = $(this).closest("fieldset");
         $clone.insertAfter($target);
@@ -77,7 +77,7 @@ add_marc_subfield = function() {
 // Destroy .controlfield fieldset
 destroy_marc_subfield = function() {
     $(".datafields").on("click", ".destroy-subfield", function(){
-        var className = '.' + $(this).parent().parent().attr('class').split(' ').join('.');
+        var className = '.' + $(this).parent().parent().parent().parent().attr('class').split(' ').join('.');
         var noOfSubfields = $(this).closest("fieldset").parent().find(className).length;
         if (noOfSubfields > 1) {
             $(this).closest("fieldset").remove();
