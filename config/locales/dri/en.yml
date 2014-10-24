@@ -367,6 +367,7 @@ en:
         temporal_coverage_gle: "Subject (Era) in Irish"
         temporal_coverages: "Subjects (Eras)"
         title: Title
+        collection_title: "Collection Title"
         total_assets: "Total number of assets"
         type: Type
         types: Types

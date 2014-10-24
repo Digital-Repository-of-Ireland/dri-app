@@ -30,6 +30,7 @@
 //
 //= require dri/
 //= require colorbox-rails
+//= require bootstrap-datepicker
 
 
 

@@ -10,11 +10,17 @@
 
 
 <fieldset id="title" class="dri_title_metadata_fieldset">
-  <%= f.label "#{t('dri.views.fields.title')}"%>
-  <% @object.title.each do |i| %>
-      <%= f.text_field "title][", :value=>i, :class => "edit span6 dri-textfield", :required=>'required' %><a class="destructive" model-name="batch">&nbsp;&nbsp;<i class="fa fa-times-circle">&nbsp;</i> <%= t('dri.views.objects.forms.delete') %></a>
-  <% end %>
-  <p class="add-text-field"><i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Title"><%= t('dri.views.objects.forms.add_title') %></a></p>
+	<% if (params[:controller] == "collections" ) %>
+	<%= f.label "#{t('dri.views.fields.collection_title')}"%>
+	<% else %>
+	<%= f.label "#{t('dri.views.fields.title')}"%>
+	<% end%>
+	<% @object.title.each do |i| %>
+	<%= f.text_field "title][", :value=>i, :class => "edit span6 dri-textfield", :required=>'required' %><a class="destructive" model-name="batch">&nbsp;&nbsp;<i class="fa fa-times-circle">&nbsp;</i> <%= t('dri.views.objects.forms.delete') %></a>
+	<% end %>
+	<p class="add-text-field">
+		<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Title"><%= t('dri.views.objects.forms.add_title') %></a>
+	</p>
 </fieldset>
 
 <% if (params[:controller] == "collections" ) %>
@@ -73,10 +79,10 @@
 <fieldset id="creation_date">
   <%= f.label "#{t('dri.views.fields.creation_date')}"%>
   <% if @object.creation_date.count == 0 %>
-      <%= f.text_field "creation_date][", :value=>'', :class => "edit span6 dri-textfield", :required=>'required'  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+      <%= f.text_field "creation_date][", :value=>'', :class => "edit span6 dri-textfield", :required=>'required', 'data-provide' => 'datepicker', 'data-date-force-parse' => 'false', 'data-date-min-view-mode' => 'days', 'data-date-format'=>'yyyy-mm-dd' %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
   <% end %>
   <% @object.creation_date.each do |i| %>
-      <%= f.text_field "creation_date][", :value=>i, :class => "edit span6 dri-textfield", :required=>'required'  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+      <%= f.text_field "creation_date][", :value=>i, :class => "edit span6 dri-textfield", :required=>'required' , 'data-provide' => 'datepicker', 'data-date-force-parse' => 'false', 'data-date-min-view-mode' => 'days', 'data-date-format'=>'yyyy-mm-dd' %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
   <% end %>
   <p class="add-text-field"><i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Creation Date"><%= t('dri.views.objects.forms.add_creation_date') %></a></p>
 </fieldset>

@@ -633,6 +633,7 @@ a .dri_signin_edugate:hover {
 
 /*--------------Preferred Language --------------*/
 /*-------------- Account and Language Styling--------------*/
+.dri_main_nav_links.uppercase > li {
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -662,6 +663,13 @@ a .dri_signin_edugate:hover {
   a {
     margin-left: 5px;
     color: #808082;
+  }
+}
+}
+.datepicker {
+  width: auto;
+  table {
+    margin:auto;
   }
 }
 
@@ -2952,6 +2960,7 @@ ul.dri_collection_institutes_list {
 		}
 
 .dri_ingest_form_container {
+
   padding-top:10px;
   
   
@@ -2977,7 +2986,9 @@ ul.dri_collection_institutes_list {
   .dri_cancel {
    @extend input.btn-primary;
    clear:both;
-   background: $dri_thingrey;
+   background: #B3B3B3;
+   display: block;
+   text-align: center;
  } 
 	   
 	.dri_form_multiline_block {
