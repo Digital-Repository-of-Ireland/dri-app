@@ -4,7 +4,7 @@ require 'institute_helpers'
 
 # Blacklight catalog controller
 #
-class CatalogController < ApplicationController
+class WorkspaceController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
@@ -17,9 +17,9 @@ class CatalogController < ApplicationController
   # These before_filters apply the hydra access controls
   before_filter :enforce_search_for_show_permissions, :only=>:show
   # This applies appropriate access controls to all solr queries
-  CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
+  WorkspaceController.solr_search_params_logic += [:add_access_controls_to_solr_params_no_pub]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  CatalogController.solr_search_params_logic += [:exclude_unwanted_models]
+  WorkspaceController.solr_search_params_logic += [:exclude_unwanted_models]
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
   def rows_per_page
@@ -70,43 +70,42 @@ class CatalogController < ApplicationController
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
 
-    #config.add_facet_field solr_name('status', :facetable), :label => 'Record Status'
-    #config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :label_permission
-    #config.add_facet_field "master_file_isi", :label => 'Master File Access',  :helper_method => :label_permission
-    #}
+    config.add_facet_field solr_name('status', :facetable), :label => 'Record Status'
+    config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :label_permission
+    config.add_facet_field "master_file_isi", :label => 'Master File Access',  :helper_method => :label_permission
     config.add_facet_field solr_name('subject', :facetable), :limit => 20
-    #config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
-    #config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
+    config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
+    config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
     config.add_facet_field solr_name('geographical_coverage', :facetable), :helper_method => :parse_location, :limit => 20
-    #config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
-    #config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
+    config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
+    config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
     config.add_facet_field solr_name('temporal_coverage', :facetable), :helper_method => :parse_era, :limit => 20
-    #config.add_facet_field solr_name('temporal_coverage_gle', :facetable), :label => 'Subject (Era) (in Irish)', :limit => 20
-    #config.add_facet_field solr_name('temporal_coverage_eng', :facetable), :label => 'Subject (Era) (in English)', :limit => 20
-    #config.add_facet_field solr_name('name_coverage', :facetable), :label => 'Subject (Name)', :limit => 20
-    #config.add_facet_field solr_name('creator', :facetable), :label => 'creators', :show => false
-    #config.add_facet_field solr_name('contributor', :facetable), :label => 'contributors', :show => false
+    config.add_facet_field solr_name('temporal_coverage_gle', :facetable), :label => 'Subject (Era) (in Irish)', :limit => 20
+    config.add_facet_field solr_name('temporal_coverage_eng', :facetable), :label => 'Subject (Era) (in English)', :limit => 20
+    config.add_facet_field solr_name('name_coverage', :facetable), :label => 'Subject (Name)', :limit => 20
+    config.add_facet_field solr_name('creator', :facetable), :label => 'creators', :show => false
+    config.add_facet_field solr_name('contributor', :facetable), :label => 'contributors', :show => false
     config.add_facet_field solr_name('person', :facetable), :limit => 20
     config.add_facet_field solr_name('language', :facetable), :helper_method => :label_language, :limit => true
-    #config.add_facet_field solr_name('creation_date', :dateable), :label => 'Creation Date', :date => true
-    #config.add_facet_field solr_name('published_date', :dateable), :label => 'Published/Broadcast Date', :date => true
-    #config.add_facet_field solr_name('width', :facetable, type: :integer), :label => 'Image Width'
-    #config.add_facet_field solr_name('height', :facetable, type: :integer), :label => 'Image Height'
-    #config.add_facet_field solr_name('area', :facetable, type: :integer), :label => 'Image Size'
+    config.add_facet_field solr_name('creation_date', :dateable), :label => 'Creation Date', :date => true
+    config.add_facet_field solr_name('published_date', :dateable), :label => 'Published/Broadcast Date', :date => true
+    config.add_facet_field solr_name('width', :facetable, type: :integer), :label => 'Image Width'
+    config.add_facet_field solr_name('height', :facetable, type: :integer), :label => 'Image Height'
+    config.add_facet_field solr_name('area', :facetable, type: :integer), :label => 'Image Size'
 
     # duration is measured in milliseconds
-    #config.add_facet_field solr_name('duration_total', :stored_sortable, type: :integer), :label => 'Total Duration'
+    config.add_facet_field solr_name('duration_total', :stored_sortable, type: :integer), :label => 'Total Duration'
 
-    #config.add_facet_field solr_name('channels', :facetable, type: :integer), :label => 'Audio Channels'
-    #config.add_facet_field solr_name('sample_rate', :facetable, type: :integer), :label => 'Sample Rate'
-    #config.add_facet_field solr_name('bit_depth', :facetable, type: :integer), :label => 'Bit Depth'
-    #config.add_facet_field solr_name('file_count', :stored_sortable, type: :integer), :label => 'Number of Files'
-    #config.add_facet_field solr_name('file_size_total', :stored_sortable, type: :integer), :label => 'Total File Size'
-    #config.add_facet_field solr_name('mime_type', :facetable), :label => 'MIME Type'
-    #config.add_facet_field solr_name('file_format', :facetable), :label => 'File Format'
+    config.add_facet_field solr_name('channels', :facetable, type: :integer), :label => 'Audio Channels'
+    config.add_facet_field solr_name('sample_rate', :facetable, type: :integer), :label => 'Sample Rate'
+    config.add_facet_field solr_name('bit_depth', :facetable, type: :integer), :label => 'Bit Depth'
+    config.add_facet_field solr_name('file_count', :stored_sortable, type: :integer), :label => 'Number of Files'
+    config.add_facet_field solr_name('file_size_total', :stored_sortable, type: :integer), :label => 'Total File Size'
+    config.add_facet_field solr_name('mime_type', :facetable), :label => 'MIME Type'
+    config.add_facet_field solr_name('file_format', :facetable), :label => 'File Format'
     config.add_facet_field solr_name('file_type_display', :facetable)
-    #config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
-    #config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
+    config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
+    config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
     config.add_facet_field solr_name('institute', :facetable)
     config.add_facet_field solr_name('root_collection_id', :facetable), :helper_method => :collection_title
 
@@ -255,6 +254,10 @@ class CatalogController < ApplicationController
       solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:false"
       solr_parameters[:fq] << "+#{Solrizer.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
     end
+  end
+
+  def self.controller_path
+    "catalog"
   end
 
 end

@@ -20,6 +20,9 @@
 //= require bootstrap/popover
 //= require bootstrap-player.js
 //= require bootstrap-switch
+//= require timelineJS/embed
+//= require timelineJS/locale/en
+//= require openlayers-rails
 // Required by Blacklight
 //= require blacklight/blacklight
 //= Required by Dropit dropdown menu library

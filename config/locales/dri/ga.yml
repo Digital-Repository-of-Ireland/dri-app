@@ -1,14 +1,14 @@
 
---- 
-ga: 
-  dri: 
-    application: 
-      cookies: 
+---
+ga:
+  dri:
+    application:
+      cookies:
         accept: "Glac le agus folaigh an teachtaireacht"
         confirm: "Meastar go nglacann tú le polasaí fhianáin an TDÉ ar chlárú duit agus gach uair a shíníonn tú isteach."
         header: "Fógra tábhachtach faoi fhianáin"
         message: "Baineann Taisclann Dhigiteach na hÉireann úsáid as fianáin chun rialú rochtana ar acmhainní digiteacha a chur i bhfeidhm. Más mian leat diúltú d'fhianáin a fháil ó TDÉ, cas as na fianáin don suíomh idirlín seo i sainroghanna do bhrabhsálaí. Tabhair d'aire nach mbeidh úsáideoirí a dhiúltaíonn in ann roinnt de ghnéithe na Taisclainne Digití a úsáid. Le tuilleadh eolais a fháil féach ar ár %{privacy_statement:ráiteas um príobháideachas} agus ar na leathanaigh a bhaineann le %{cookies_help:treoir faoi fhianáin}."
-      edit_user_profile: 
+      edit_user_profile:
         cancel: Cancel
         change_password: "Change Password"
         confirm_new_password: "Confirm New Password"
@@ -26,32 +26,42 @@ ga:
         requested_to_leave: "You have requested to leave this group"
         save_edits: "Save Edits"
         settings: Settings
-      home: 
+      home:
         featured: Featured
         featured_collections: "Featured Collections"
-        introtext: 
+        introtext:
           admin: "Dea-scéala a chairde! Leathanach bréige anseo le líonadh isteach agus le deisiú!"
           public: "Fáilte chuig Taisclann an TDÉ."
-        links: 
+        links:
           news_dri: "Read our News"
           register_dri: "Sign Up Now"
           visit_dri: "Visit the DRI Website"
         new_collections: "New Collections"
         newly_added: "Newly Added"
-        rss_feed: 
+        rss_feed:
           read_more: "Read More"
           title: News
-      lang: 
+      lang:
         en: Béarla
         ga: Gaeilge
       locale: Teanga
-      terms: 
+      maps:
+        loading_maps: "Loading Maps"
+        no_results: "No valid results have been found"
+      terms:
         accept: "Accept terms and hide message"
         confirm: "By signing in or signing up you are deemed to be accepting the DRI terms of use"
         header: "DRI Terms of Use"
         message: "Aliquam erat volutpat. Integer fermentum est at risus condimentum accumsan. Sed imperdiet ac lectus vitae commodo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam rutrum arcu at lorem sodales, sed mollis nibh scelerisque. Proin congue ipsum eget velit gravida, non fringilla est ultrices. Duis lobortis sem et imperdiet tempor. In gravida tortor vulputate nibh vestibulum lobortis. Curabitur fermenm, ipsum id ultrices fermentum, nisi metus tristique justo, faucibus tempor nulla massa semper dolor. Donec tellus felis, luctus eu aliquet quis, scelerisque ut diam. Duis luctus turpis lectus, et feugiat mauris feugiat vitae. Sed interdum commodo est, consectetur suscipit lectus viverra et. Integer a consequat massa. Praesent arcu purus, auctor sed ante vel, blandit molestie neque.Aenean posuere pharetra ligula in aliquam. Maecenas tristique felis felis, id posuere metus bibendum accumsan. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent at velit quis nunc rhoncus laoreet. Sed ornare, leo et tincidunt malesuada, ligula ligula gravida lacus, quis ultrices lacus mi venenatis lacus. Nunc id interdum erat. Suspendisse eu molestie mauris. Suspendisse pharetra dapibus euismo. Pellentesque a ligula velit. Ut volutpat pretium risus adipiscing porta. In lectus augue, interdum sit amet iaculis eu, vehicula a nibh. Etiam lectus ligula, rhoncus id facilisis molestie, pellentesque vitae elit. Nulla elit dolor, mollis vitae ultrices sed, tristique vel erat. Nam mattis aliquam porta. Sed sagittis velit eu feugiat tincidunt. Etiam vulputate augue eleifend facilisis faucibus. Sed at turpis ut massa tristique feugiat eget et arcu. Fusce suscipit egestas elementum. Duis ac quam at elit scelerisque scelerisque quis et dui. Nulla sit amet porttitor quam, eget porta libero."
         reject: "Reject End User Agreement"
-      user_profile: 
+      timeline:
+        description:
+          no_results: "No valid results have been found"
+          results_found: "Please explore the search results timeline"
+        headline:
+          no_results: "No results found"
+          results_found: "Current Search Timeline"
+      user_profile:
         collection_title: "Collection Title"
         edit: Edit
         email: Email
@@ -59,8 +69,8 @@ ga:
         name: Name
         user_type: "User Type"
         your_collection_details: "Your Collection Details"
-    data: 
-      types: 
+    data:
+      types:
         Image: Íomhánna
         MixedType: "Mixed Types"
         MovingImage: Video
@@ -68,8 +78,8 @@ ga:
         Text: Doiciméid
         Title: "Media Types"
         Unknown: Unknown
-    flash: 
-      alert: 
+    flash:
+      alert:
         create_permission: "Níl cead agat an doiciméad seo a chruthú."
         delete_permission: "You do not have permission to delete this document."
         edit_permission: "Níl cead agat an doiciméad seo a chur in eagar."
@@ -85,13 +95,13 @@ ga:
         read_permission: "Níl cead agat an doiciméad seo a léamh."
         unknown_permission: "Ní ghlactar leis an leibhéal ceada atá agat."
         virus_detected: "Aimsíodh víreas sa chomhad a uaslódáladh: %{virus}"
-      error: 
+      error:
         cover_image_not_saved: "Unable to save cover image"
         no_type_specified: "Ní mór cineál oibiachta bailí a shonrú"
         not_created: "Unable to create. Check set permissions"
         not_updated: "Níor tugadh %{item} cothrom le dáta. Seiceáil na ceadanna socraithe"
         validation_errors: "Earráidí Bailíochtaithe: %{error}"
-      notice: 
+      notice:
         added_to_collection: "Cuireadh an oibiacht leis an mbailiúchán."
         collection_created: "D'éirigh leat an oibiacht bhailiúcháin a chruthú."
         collection_deleted: "Collection has been deleted."
@@ -114,16 +124,16 @@ ga:
         specify_valid_file: "Ní mór duit comhad bailí a shonrú le huaslódáil."
         specify_xml_file: "Ní mór duit comhad XML a shonrú."
         updated: "Tugtha cothrom le dáta %{item}"
-    footer: 
-      contacts: 
+    footer:
+      contacts:
         email: Email
         phone: Tel
-      ria_address: 
+      ria_address:
         name: "Royal Irish Academy"
         project: "Digital Repository of Ireland"
         street: "19 Dawson Street"
         zip: "Dublin 2"
-    headerlinks: 
+    headerlinks:
       about: Eolas
       admin: "Admin Tasks"
       browse: Faigh
@@ -136,6 +146,7 @@ ga:
       ingest: "Glac isteach"
       institutions: Institiúidí
       manage: Manage
+      my_collections: "My Collections"
       new_collection: "New collection"
       object: Object
       objects: Objects
@@ -144,7 +155,7 @@ ga:
       sitemap: Sitemap
       usergroups: "Úsáideoirí agus Grúpaí"
       workspace: "Spás Oibre"
-    help: 
+    help:
       dri_browse_sort_tabs_collections: "Use this tab to search for Collections"
       dri_browse_sort_tabs_collections_title: "Collections Search"
       dri_browse_sort_tabs_objects: "Use this tab to search for Objects"
@@ -167,13 +178,13 @@ ga:
       social_media_links: "Use these buttons to vist our Facebook, Linked-In, Slideshare and Twitter pages"
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
-    navbar: 
+    navbar:
       bookmarks: Bookmarks
       items: Items
       my_items: "My Items"
       per_page: "per page"
       saved_searches: Searches
-    sign_in: 
+    sign_in:
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
       no_unlock: "Didn't receive unlock instructions?"
@@ -181,29 +192,30 @@ ga:
       sign_in_with: "Login with "
       title: Login
       with_another_account: "Login with another Account"
-    views: 
-      alt_tags: 
+    views:
+      alt_tags:
         cover_image: "Cover Image"
-      catalog: 
-        buttons: 
+      catalog:
+        buttons:
           add_to_collection: "Cuir leis an mbailiúchán"
           clear_all_bookmarks: "Clear All Bookmarks"
           clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
           remove_from_collection: "Bain ón mbailiúchán"
-        facets: 
-          values: 
+        facets:
+          values:
             collections: Collections
             no_collections: "No collections"
-        forms: 
+        forms:
           all_objects_in_collection: "All Objects in this Collection"
-          audio: 
+          audio:
             duration: Duration
             file_size: "File Size"
             format: Format
             last_modified: "Last Update"
           audio_file: "Comhad Fuaime"
-          bookmark_object: Bookmark
+          bookmark_collection: "Bookmark Collection"
+          bookmark_object: "Bookmark Object"
           file: File
           image_file: Image
           manage_bookmark: "Manage Your Bookmarks"
@@ -213,10 +225,11 @@ ga:
           pdf_file: PDF
           restricted_asset: "Restricted Asset"
           video_file: Video
-        headers: 
+        headers:
           files: Comhaid
-        legends: 
-          no_bookmarked: "You have no bookmarked"
+        legends:
+          no_bookmarked_collections: "You have no bookmarked collections"
+          no_bookmarked_objects: "You have no bookmarked objects"
           no_bookmarks: "You have no bookmarks"
           no_files: "Níor uaslódáladh comhad ar bith."
           no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo."
@@ -227,7 +240,7 @@ ga:
           request_permission_not_logged_in: "Sign up/Login to get access."
           surrogate_not_available: "Surrogate not avilable yet"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
-        links: 
+        links:
           asset: Asset
           characterization: Characterization
           details: "File Details"
@@ -243,14 +256,14 @@ ga:
           related: "Related Files"
           status_update: "Update status"
           view_metadata: Féach
-        sidebar: 
+        sidebar:
           more_like_this: "Tuilleadh mar seo"
           nav_header: "Uirlisí Eagarthóireachta"
-        titles: 
+        titles:
           editor_tools: "Editor Tools"
           object_tools: "Object Tools"
-      collection: 
-        buttons: 
+      collection:
+        buttons:
           clear_collection: "Glan mar Bhailiúchán Reatha"
           create_collection: "Cruthaigh Bailiúchán"
           delete_collection: "Delete Collection"
@@ -261,39 +274,39 @@ ga:
         confirm_publish: "This will make all reviewed objects accessible. Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
         edit: "Cuir an bailiúchán in eagar"
-        index: 
-          items: 
+        index:
+          items:
             one: "%{count} mír"
             other: "%{count} míreanna"
-          no_collections: 
+          no_collections:
             admin: "Níl bailiúchán ar bith agat go fóill."
             public: "Níl bailiúchán ar bith go fóill."
-          object_count: 
+          object_count:
             one: "%{count}"
             other: "%{count}"
           objects: Objects
-          title: 
+          title:
             admin: "Mo Chuid Bailiúchán"
             public: Bailiúchán
-        institute: 
+        institute:
           add: "Add a new Institute"
           associate: "Associate Institute"
           associate_depositing: "Select Depositing Institute"
-          form: 
+          form:
             logo: Logo
             name: Name
             url: Url
           more: "Show more"
           title: "Institutes and Sponsors"
-        legends: 
+        legends:
           governed_objects: "Oibiachtaí Rialaithe"
           members: Baill
           objects: "Oibiachtaí sa bhailiúchán"
-        new: 
+        new:
           title: "Bailiúchán Nua"
-      devise: 
+      devise:
         locale: Teanga
-      exceptions: 
+      exceptions:
         access_denied: "Thriail tú oibríocht nach bhfuil cead agat a chur i bhfeidhm."
         internal_error: "Fuips. Chuaigh rud éigin amú! Bain triail eile as níos déanaí le do thoil, nó téigh i dteagmháil le support@dri.ie"
         invalid_asset: "Ní féidir sócmhainn a chruthú. Leasaigh na hearráidí le do thoil, agus bain triail eile as."
@@ -305,7 +318,7 @@ ga:
         resque_error: "Error connecting to Resque."
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
-      fields: 
+      fields:
         contributor: Contributor
         contributors: Rannpháirtithe
         cover_image: "Upload a cover image"
@@ -355,42 +368,42 @@ ga:
         total_assets: "Total number of assets"
         type: Type
         types: Types
-      ingest: 
-        buttons: 
+      ingest:
+        buttons:
           continue: "Lean ort"
           delete: Scrios
           new_collection: "Bailiúchán Nua"
           reset: Athshocraigh
-        forms: 
+        forms:
           collection_prompt: "Roghnaigh Bailiúchán"
           ingest_method_prompt: "Roghnaigh modh glactha isteach"
           object_type_prompt: "Roghnaigh cineál oibiachta"
           status_prompt: "Select status"
           title: "Cuir oibiacht dhigiteach nua leis"
-        legends: 
+        legends:
           upload_caption: "Glac comhad XML meiteashonraí isteach."
           upload_legend: "Uaslódáil Meiteashonraí:"
-        steps: 
+        steps:
           collection: "Roghnaigh Bailiúchán"
           ingest_method: "Roghnaigh modh glactha isteach"
           input: Ionchuir
           object_type: "Roghnaigh cineál oibiachta"
           upload: "Uaslódáil comhad meiteashonraí"
-      licences: 
+      licences:
         all_rights_reserved: "Please see copyright statement"
-        buttons: 
+        buttons:
           edit: "Edit Licence"
           new: "Add a new licence"
-        forms: 
+        forms:
           description: Description
           logo: Logo
           name: Name
           url: Url
-      metadata: 
+      metadata:
         dublin_core: "Dublin Core"
         qualified_dublin_core: "Qualifed Dublin Core"
-      objects: 
-        access_controls: 
+      objects:
+        access_controls:
           accessible_master_file: "Máistirchomha(i)d Inrochtana"
           date: "Dáta: "
           depositor: Taisceoir
@@ -412,7 +425,7 @@ ga:
           registered: "Logáilte Isteach"
           restricted: Teoranta
           search: "Rochtain Cuardaigh"
-        buttons: 
+        buttons:
           add_master: "Add Master File"
           add_to_collection: "Cuir leis an mbailiúchán"
           replace_master: "Athchuir Máistirchomhad"
@@ -421,13 +434,13 @@ ga:
           save_current_search: "Save Current Search"
           update_status: "Update Status"
           upload_master: "Uaslódáil Máistirchomhad"
-        confirm: 
+        confirm:
           surrogates: "This will (re)generate surrogates for all files. Continue?"
-        edit: 
-          sidebar: 
+        edit:
+          sidebar:
             nav_header: "Uirlisí Eagarthóireachta"
           title: "Cuir Oibiacht in eagar"
-        forms: 
+        forms:
           add_author: "Cuir Údar leis"
           add_editor: "Cuir Eagarthóir leis"
           add_guest: "Cuir Aoi leis"
@@ -456,7 +469,7 @@ ga:
           status: Stádas
           subjects: Ábhair
           title: Teideal
-        legends: 
+        legends:
           access_control: "Rialúcháin Rochtana"
           audio_caption: "Uaslódáladh máistirchomhad fuaime cheana féin."
           cite: Cite
@@ -475,18 +488,18 @@ ga:
           upload_pdf: "Uaslódáil comhad PDF"
           view_collection: "View Collection"
           viewcount: Amhairc
-        links: 
+        links:
           all_objects: "Gach Oibiacht"
           download: íoslódáil
           listen: éist
           view_record: "Féach ar an taifead"
-      static: 
-        admin: 
+      static:
+        admin:
           licences: "Supported Licences"
-        workspace: 
+        workspace:
           account: "My Account"
-    vocabulary: 
-      iso_639_2: 
+    vocabulary:
+      iso_639_2:
         aar: Afar
         abk: Abkhazian
         ace: Achinese
@@ -972,7 +985,7 @@ ga:
         zun: Zuni
         zxx: "No linguistic content; Not applicable"
         zza: "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
-      marc_relator: 
+      marc_relator:
         abr: Abridger
         acp: "Art copyist"
         act: Actor
@@ -1237,10 +1250,10 @@ ga:
         wdc: Woodcutter
         wde: "Wood engraver"
         wit: Witness
-      name: 
+      name:
         marc_relators: "MARC Relators"
-    window: 
-      alert: 
+    window:
+      alert:
         coming_soon: "Coming Soon"
-      modal: 
+      modal:
         close: Close

@@ -6,6 +6,7 @@
 @import "video-js";
 @import "dri_colorbox.scss";
 @import url('http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
+@import url('http://cdn.knightlab.com/libs/timeline/latest/css/timeline.css');
 @import "../zen/_grids.scss";
 @import "../zen/_base.scss";
 @import "../zen/_background";
@@ -209,7 +210,7 @@
   }	
   
   .dri_collection_institutes_pages_text {
-        @include zen-grid-item(1, 2.75, $gutter-width: 0px);
+        @include zen-grid-item(2.5, 2.5, $gutter-width: 0px);
   }
 
 }

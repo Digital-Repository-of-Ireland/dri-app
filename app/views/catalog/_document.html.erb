@@ -4,7 +4,7 @@
     <% else %>
         <%= render :partial => 'catalog/browse_view_grid_object', :locals => {:document => document, :document_counter => document_counter} %>
     <% end %>
-<% else %>
+<% elsif (params[:view] == 'list') %>
     <% if collection?(document) %>
         <%= render :partial => 'catalog/browse_view_list_collection', :locals => {:document => document, :document_counter => document_counter} %>
     <% else %>

@@ -49,6 +49,8 @@ NuigRnag::Application.routes.draw do
   match 'objects/:id/citation' => 'objects#citation', :via => :get, :as => :citation_object
   match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download
   match 'download_surrogate' => 'surrogates#download', :via => :get
+  match 'maps_json' => 'maps#get', :via => :get
+  match 'timeline_json' => 'timeline#get', :via => :get
 
   match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
   match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
@@ -56,7 +58,7 @@ NuigRnag::Application.routes.draw do
   match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
 
   match '/privacy' => 'static_pages#privacy', :via => :get
-  match '/workspace' => 'static_pages#workspace', :via => :get
+  match '/workspace' => 'workspace#index', :via => :get
   match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
   match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 
