@@ -1,6 +1,0 @@
-[submodule "jetty"]
-	path = jetty
-	url = ssh://git@tracker.dri.ie/navr/hydra-jetty
-[submodule "deploy"]
-	path = deploy
-	url = ssh://git@tracker.dri.ie/navr/ansible-hydra
