@@ -9,8 +9,9 @@ gem 'blacklight', "5.5.2"
 gem 'hydra-head', "7.1.0"
 gem 'sufia-models', "4.0.0"
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'marc-nccb'
-gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'develop'
+gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'marc-nccb'
+gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'develop'
+
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -116,3 +117,5 @@ gem 'rvm'
 gem 'colorbox-rails'
 gem 'bootstrap-switch-rails'
 gem 'videojs_rails'
+gem 'timelineJS-rails', '~> 1.1.5'
+gem 'openlayers-rails'

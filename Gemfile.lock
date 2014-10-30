@@ -1,6 +1,6 @@
 GIT
-  remote: ssh://git@tracker.dri.ie/navr/dri_data_models
-  revision: cda5f5089b20e904184061c246ccf21f3cd7140c
+  remote: git@tracker.dri.ie:drirepo/dri-data-models.git
+  revision: 79af5bbeafc377b9f9e63e62039187142decb917
   branch: marc-nccb
   specs:
     dri_data_models (1.1.0)
@@ -13,8 +13,8 @@ GIT
       sufia-models (= 4.0.0)
 
 GIT
-  remote: ssh://git@tracker.dri.ie/navr/user_group
-  revision: 7133e0801891fff6469d94b8d9bc55a5ad5d6e24
+  remote: git@tracker.dri.ie:drirepo/dri-user-group.git
+  revision: ce6714f14246f643a1e430491541060201741ed3
   branch: develop
   specs:
     user_group (1.0.6)
@@ -85,7 +85,7 @@ GEM
     aws-sdk-v1 (1.52.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
-    bcrypt (3.1.7)
+    bcrypt (3.1.9)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
     better_errors (2.0.0)
@@ -186,7 +186,7 @@ GEM
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     fastercsv (1.5.5)
-    fastimage (1.6.3)
+    fastimage (1.6.4)
       addressable (~> 2.3, >= 2.3.5)
     feedjira (1.3.1)
       curb (~> 0.8.1)
@@ -353,6 +353,8 @@ GEM
       rack (~> 1.0)
     omniauth-shibboleth (1.1.2)
       omniauth (>= 1.0.0)
+    openlayers-rails (0.0.4)
+      railties (>= 3.1)
     orm_adapter (0.5.0)
     poltergeist (1.5.1)
       capybara (~> 2.1)
@@ -555,6 +557,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    timelineJS-rails (1.1.5)
+      jquery-rails
     trollop (1.16.2)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -621,6 +625,7 @@ DEPENDENCIES
   mysql
   mysql2
   omniauth-shibboleth
+  openlayers-rails
   poltergeist (>= 1.4.1)
   railroady
   rails (~> 4.1.0)
@@ -638,6 +643,7 @@ DEPENDENCIES
   sufia-models (= 4.0.0)
   syntax
   syslog-logger
+  timelineJS-rails (~> 1.1.5)
   uglifier (>= 1.0.3)
   unicode
   unicorn
