@@ -9,8 +9,8 @@ gem 'blacklight', '4.7.0'
 gem 'hydra-head', '6.5.2'
 gem 'sufia-models', '3.7.2'
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/navr/dri_data_models', :branch => 'develop'
-gem 'user_group', :git => 'ssh://git@tracker.dri.ie/navr/user_group', :branch => 'develop'
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/drirepo/dri-data-models', :branch => 'develop', :ref => '4ca4c14ec523625d30d29fe3226927086cbfc0a5'
+gem 'user_group', :git => 'ssh://git@tracker.dri.ie/drirepo/dri-user-group', :branch => 'develop', :ref => 'f2513ed71abc4bd356eba55fa710a77aa1d697f4'
 
 gem 'rails_config'
 gem 'sqlite3'
