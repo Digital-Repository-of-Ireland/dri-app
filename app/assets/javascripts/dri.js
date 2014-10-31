@@ -94,10 +94,10 @@ destroy_marc_subfield = function() {
 
 // Reindex marc subfields
 reindex_marc = function() {
-    $("fieldset .controlfield > .subfield > .ctrlfield-tag").each(function(index) {
+    $("fieldset .controlfield > .subfield .ctrlfield-tag").each(function(index) {
         $(this).attr('id', 'batch_controlfield][' + index + '][controlfield_tag][').attr('name', 'batch[controlfield][' + index + '][controlfield_tag][]');
     });
-    $("fieldset .controlfield > .subfield > .ctrlfield-value").each(function(index) {
+    $("fieldset .controlfield > .subfield .ctrlfield-value").each(function(index) {
         $(this).attr('id', 'batch_controlfield][' + index + '][controlfield_value][').attr('name', 'batch[controlfield][' + index + '][controlfield_value][]');
     });
     $("fieldset .datafield > .datafield-tag").each(function(index) {
