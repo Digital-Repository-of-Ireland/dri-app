@@ -1,6 +1,6 @@
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = "dri:c" + @random_pid if (pid == "@random")
-  collection = Batch.new(:pid => pid)
+  collection = Batch.with_standard(:qdc, {:pid => pid})
   collection.title = title ? title : SecureRandom.hex(5)
   collection.description = SecureRandom.hex(20)
   collection.rights = SecureRandom.hex(20)
@@ -26,7 +26,7 @@ end
 
 Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?/ do |pid, title, desc, type, user|
   pid = "dri:o" + @random_pid if (pid == "@random")
-  digital_object = Batch.new(:pid => pid)
+  digital_object = Batch.with_standard(:qdc, {:pid => pid})
   digital_object.title = title ? [title] : "Test Object"
   digital_object.type = type ? [type] : "Sound"
   digital_object.description = desc ? [desc] : "A test object"
@@ -94,6 +94,8 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
     Given I am on the new Digital Object page
     And I select "#{collection_pid}" from the selectbox for ingest collection
+    And I press the button to continue
+    And I select "qualifieddublincore" from the selectbox for metadata standard
     And I press the button to continue
     And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
@@ -192,7 +194,7 @@ Then /^I should be given a choice of using the existing object or creating a new
 end
 
 Then /^I should see the Digital Object "(.*?)" as part of the collection$/ do |object_pid|
-  object = Batchfind(object_pid)
+  object = Batch.find(object_pid)
   page.should have_content object.title
 end
 

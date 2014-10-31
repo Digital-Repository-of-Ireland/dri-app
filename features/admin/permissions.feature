@@ -32,6 +32,8 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
   And I am on the new Digital Object page
   When I select a collection
   And I press the button to continue
+  And I select "qualifieddublincore" from the selectbox for metadata standard
+  And I press the button to continue
   And I select "input" from the selectbox for ingest methods
   And I press the button to continue
   When I enter valid "<object_type>" metadata
@@ -51,6 +53,8 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
   And I have created a collection
   And I am on the new Digital Object page
   When I select a collection
+  And I press the button to continue
+  And I select "qualifieddublincore" from the selectbox for metadata standard
   And I press the button to continue
   And I select "upload" from the selectbox for ingest methods
   And I press the button to continue

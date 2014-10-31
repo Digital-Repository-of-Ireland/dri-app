@@ -111,7 +111,7 @@ class ObjectsController < CatalogController
       standard = ng_doc.root.name
     end
 
-    @object = Batch.new :desc_metadata_class => get_batch_class_from_param(standard)
+    @object = Batch.with_standard get_batch_standard_from_param(standard)
 
     if request.content_type == "multipart/form-data"
       xml = MetadataHelpers.load_xml(params[:metadata_file])

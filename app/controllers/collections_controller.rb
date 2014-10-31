@@ -17,7 +17,7 @@ class CollectionsController < CatalogController
   #
   def new
     enforce_permissions!("create", Batch)
-    @object = Batch.new
+    @object = Batch.with_standard :qdc
 
     # configure default permissions
     @object.apply_depositor_metadata(current_user.to_s)
@@ -133,7 +133,7 @@ class CollectionsController < CatalogController
 
     set_access_permissions(:batch, true)
 
-    @collection = Batch.new
+    @collection = Batch.with_standard :qdc
 
     @collection.type = ["Collection"] if @collection.type == nil
     @collection.type.push("Collection") unless @collection.type.include?("Collection")
@@ -205,16 +205,16 @@ class CollectionsController < CatalogController
     else
 
       xml = MetadataHelpers.load_xml(params[:metadata_file])
-      metadata_class = MetadataHelpers.get_metadata_class_from_xml xml
+      standard = MetadataHelpers.get_metadata_standard_from_xml xml
 
-      if metadata_class.nil?
+      if standard.nil?
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @object = @collection
         render :action => :new
         return
       end
 
-      @collection = Batch.new :desc_metadata_class => metadata_class.constantize
+      @collection = Batch.with_standard standard
       MetadataHelpers.set_metadata_datastream(@collection, xml)
       MetadataHelpers.checksum_metadata(@collection)
       duplicates?(@collection)

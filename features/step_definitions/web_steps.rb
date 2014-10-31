@@ -11,6 +11,8 @@ Given /^I have created a Digital Object$/ do
     And I am on the new Digital Object page
     And I select a collection
     And I press the button to continue
+    And I select "qualifieddublincore" from the selectbox for metadata standard
+    And I press the button to continue
     And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
     And I attach the metadata file "valid_metadata.xml"
@@ -24,6 +26,8 @@ Given /^I have created a (Text|Sound) object$/ do |type|
     And I am on the new Digital Object page
     And I select a collection
     And I press the button to continue
+    And I select "qualifieddublincore" from the selectbox for metadata standard
+    And I press the button to continue
     And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
     And I attach the metadata file "valid_metadata.xml"
@@ -36,6 +40,8 @@ Given /^I have created a "(.*?)" object with metadata "(.*?)" in the collection 
     Given I am on the new Digital Object page
     When I select the text "#{collection_title}" from the selectbox for ingest collection
     And I press the button to continue
+    And I select "qualifieddublincore" from the selectbox for metadata standard
+    And I press the button to continue
     And I select "upload" from the selectbox for ingest methods
     And I press the button to continue
     And I attach the metadata file "#{metadata}"
@@ -47,6 +53,8 @@ Given /^I have created a "(.*?)" object with title "(.*?)" in the collection "(.
   steps %{
     Given I am on the new Digital Object page
     When I select the text "#{collection_title}" from the selectbox for ingest collection
+    And I press the button to continue
+    And I select "qualifieddublincore" from the selectbox for metadata standard
     And I press the button to continue
     And I select "input" from the selectbox for ingest methods
     And I press the button to continue

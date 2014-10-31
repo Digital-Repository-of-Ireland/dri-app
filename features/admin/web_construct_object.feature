@@ -12,6 +12,8 @@ Scenario: Constructing a valid Digital Object
   And I am on the new Digital Object page
   When I select a collection
   And I press the button to continue
+  And I select "qualifieddublincore" from the selectbox for metadata standard
+  And I press the button to continue
   And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
   And I attach the metadata file "valid_metadata.xml"
@@ -22,6 +24,8 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
   Given I have created a collection
   And I am on the new Digital Object page
   When I select a collection
+  And I press the button to continue
+  And I select "qualifieddublincore" from the selectbox for metadata standard
   And I press the button to continue
   And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
@@ -39,6 +43,8 @@ Scenario Outline: Constructing a valid Digital Object
   Given I have created a collection
   And I am on the new Digital Object page
   When I select a collection
+  And I press the button to continue
+  And I select "qualifieddublincore" from the selectbox for metadata standard
   And I press the button to continue
   And I select "upload" from the selectbox for ingest methods
   And I press the button to continue
@@ -73,6 +79,8 @@ Scenario: Constructing a Digital Object using the web form
   And I am on the new Digital Object page
   When I select a collection
   And I press the button to continue
+  And I select "qualifieddublincore" from the selectbox for metadata standard
+  And I press the button to continue
   And I select "input" from the selectbox for ingest methods
   And I press the button to continue
   When I enter valid metadata
@@ -84,6 +92,8 @@ Scenario: Constructing an invalid Digital Object using the web form
   Given I have created a collection
   And I am on the new Digital Object page
   When I select a collection
+  And I press the button to continue
+  And I select "qualifieddublincore" from the selectbox for metadata standard
   And I press the button to continue
   And I select "input" from the selectbox for ingest methods
   And I press the button to continue

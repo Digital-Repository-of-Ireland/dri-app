@@ -7,7 +7,7 @@ describe SurrogatesController do
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
 
-    @collection = Batch.new
+    @collection = Batch.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -18,7 +18,7 @@ describe SurrogatesController do
     @collection[:status] = ["draft"]
     @collection.save
 
-    @object = Batch.new    
+    @object = Batch.with_standard :qdc
     @object[:title] = ["An Audio Title"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
     @object[:role_hst] = ["Collins, Michael"]

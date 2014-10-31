@@ -66,4 +66,21 @@ module MetadataHelpers
     return result
   end
 
+  def self.get_metadata_standard_from_xml xml_text
+    metadata_class = get_metadata_class_from_xml xml_text
+
+    case metadata_class
+    when "DRI::Metadata::QualifiedDublinCore"
+      :qdc
+    when "DRI::Metadata::MODS"
+      :mods
+    when "DRI::Metadata::EncodedArchivalDescription"
+      :ead_collection
+    when "DRI::Metadata::EncodedArchivalDescriptionComponent"
+      :ead_component
+    when "DRI::Metadata::Marc"
+      :marc
+    end
+  end
+
 end

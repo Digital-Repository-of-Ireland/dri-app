@@ -133,14 +133,14 @@ class ApplicationController < ActionController::Base
   end
 
   # Gets Metadata Class
-  def get_batch_class_from_param param
+  def get_batch_standard_from_param param
     # Metadata Standard Parameter
     case param
       when "qualifieddc"
-        'DRI::Metadata::QualifiedDublinCore'
+        :qdc
       # "marc" is a form param, "collection" is xml root, when bulk_ingest
       when "marc", "collection"
-        'DRI::Metadata::Marc'
+        :marc
       else
     end
   end
