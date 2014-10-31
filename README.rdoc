@@ -9,7 +9,7 @@ run and deployed.
 
 For testing and development you will need to bootstrap the project
 
-  $ git clone ssh://git@tracker.dri.ie/navr/nuig-rnag
+  $ git clone git@tracker.dri.ie:drirepo/dri-app.git
   $ cd nuig-rnag
   $ git submodule update --init --recursive
   $ bundle
@@ -200,7 +200,7 @@ Run bundler. Virus scanning should now take place when an asset is uploaded.
 == Storage
 
 Surrogate files are stored using the S3 interface. To create surrogates
-you will need access to an S3 server. A Ceph VM with S3 Rados Gateway is available 
+you will need access to an S3 server. A Ceph VM with S3 Rados Gateway is available
 in the drirepo repository. To start up Ceph run
 
   $ vagrant up ceph
