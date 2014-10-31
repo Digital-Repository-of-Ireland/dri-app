@@ -78,7 +78,7 @@ Scenario: Logging out
   Then I should be logged out
 
 Scenario: A user should be able to edit their details
-  Given I am logged in as "user1" with password "password1" and accept cookies
+  Given I am logged in as "user1" with password "password1"
   Then I should see a link to view my account
   And I follow the link to view my account
   Then I should see a link to edit my account
@@ -105,6 +105,7 @@ Scenario: A user should be able to edit their details
 Scenario: A user should be able to recover their password
 # Not sure how to test this as it involves sending an email...
 
+@javascript
 Scenario: an admin user creates a new user account
   Given I am logged in as "adminuser" in the group "admin" and accept cookies
   And I am on the User Sign up page
