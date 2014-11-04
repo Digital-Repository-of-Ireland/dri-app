@@ -1,6 +1,6 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: f002e808afa9149ed4447b165e16213248130ad8
+  revision: 289217082c47fc2411b78dc5299fa3814702bf4b
   branch: marc-nccb
   specs:
     dri_data_models (1.1.0)
@@ -279,7 +279,7 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.9.2)
-    launchy (2.4.2)
+    launchy (2.4.3)
       addressable (~> 2.3)
     legato (0.4.0)
       multi_json
@@ -303,7 +303,7 @@ GEM
     logger (1.2.8)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
-    mail (2.6.1)
+    mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mailboxer (0.12.4)
       carrierwave (>= 0.5.8)

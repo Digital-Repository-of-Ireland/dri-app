@@ -112,15 +112,13 @@ class ObjectsController < CatalogController
     end
 
     @object = Batch.with_standard get_batch_standard_from_param(standard)
+    @object.depositor = current_user.to_s
+    @object.update_attributes params[:batch]
 
     if request.content_type == "multipart/form-data"
       xml = MetadataHelpers.load_xml(params[:metadata_file])
       MetadataHelpers.set_metadata_datastream(@object, xml)
     end
-
-    @object.depositor = current_user.to_s
-
-    @object.update_attributes params[:batch]
 
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
