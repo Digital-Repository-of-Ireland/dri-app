@@ -4,7 +4,7 @@
       <ol class="breadcrumb">
       <% unless @document.is_a?(Batch) %>
           <% if @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].present? %>
-            <% @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].each_with_index do |ancestor_id, index| %>
+            <% @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].to_enum.with_index.reverse_each do |ancestor_id, index| %>
               <li><%= link_to @document[Solrizer.solr_name('ancestor_title', :stored_searchable, type: :string).to_sym][index], main_app.catalog_path(ancestor_id) %></li>
             <% end %>
           <% end %>
