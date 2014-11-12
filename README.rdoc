@@ -241,6 +241,14 @@ The settings should then be modified to the following:
     access_key_id: anything
     secret_access_key: anything
 
+To use a port other than port 80, change the server setting to be:
+
+  server: localhost:8081/
+
+and start fakes3 using this port number
+
+ $ fakes3 -r /path/to/fakes3_root -p 8081
+
 == Migrating from sqlite3 to mysql
 
 This paragraph will explain the steps requires to migrate the database configuration from sqlite3 to mysql.
