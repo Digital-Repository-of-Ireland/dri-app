@@ -68,7 +68,7 @@ module Storage
         begin
           url = create_url(bucket, surrogate, expire)
         rescue Exception => e
-          logger.debug "Problem getting url for file #{file} : #{e.to_s}"
+          logger.debug "Problem getting url for file #{surrogate} : #{e.to_s}"
         end
       end
 
