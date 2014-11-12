@@ -46,4 +46,4 @@ spec/fixtures/dri_1234.foxml.xml
 
 libiconv*
 app/assets/stylesheets/dri/*
-dump.rdb
+dump.rdbfakes3
