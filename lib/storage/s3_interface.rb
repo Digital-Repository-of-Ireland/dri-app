@@ -5,7 +5,13 @@ module Storage
     include Utils
 
     def initialize
-      AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key, :s3_force_path_style => true)
+      endpoint = Settings.S3.server
+      
+      host_port = endpoint.partition(":")
+      @host = host_port[0]
+      @port = host_port[2].chomp("/")
+
+      AWS.config(s3_endpoint: endpoint, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key, :s3_force_path_style => true)
       @s3 = AWS::S3.new(ssl_verify_peer: false, use_ssl: Settings.S3.use_ssl)
     end
 
@@ -169,16 +175,11 @@ module Storage
       bucket_obj = @s3.buckets[bucket]
       object = bucket_obj.objects[object]
 
-      endpoint = Settings.S3.server
-      host_port = endpoint.partition(":")
-      host = host_port[0]
-      port = host_port[2].chomp("/")
-
       options = { :secure => false, :force_path_style => true }
 
-      unless port.empty?
-        options[:endpoint] = host
-        options[:port] = port.to_i
+      unless @port.empty?
+        options[:endpoint] = @host
+        options[:port] = @port.to_i
       end
 
       if authenticated
