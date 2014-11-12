@@ -169,14 +169,26 @@ module Storage
       bucket_obj = @s3.buckets[bucket]
       object = bucket_obj.objects[object]
 
+      endpoint = Settings.S3.server
+      host_port = endpoint.partition(":")
+      host = host_port[0]
+      port = host_port[2].chomp("/")
+
+      options = { :secure => false, :force_path_style => true }
+
+      unless port.empty?
+        options[:endpoint] = host
+        options[:port] = port.to_i
+      end
+
       if authenticated
         unless expire.nil?
-          object.url_for(:read, :secure => false, :force_path_style => true, :expires => expire).to_s
+          object.url_for(:read, options.merge({:expires => expire})).to_s
         else
-          object.url_for(:read, :secure => false, :force_path_style => true).to_s
+          object.url_for(:read, options).to_s
         end
       else
-        object.public_url(:secure => false, :force_path_style => true).to_s
+        object.public_url(options).to_s
       end
     end
 
