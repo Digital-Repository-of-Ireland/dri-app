@@ -181,7 +181,6 @@ ga:
     navbar:
       bookmarks: Bookmarks
       items: Items
-      my_items: "My Items"
       per_page: "per page"
       saved_searches: Searches
     sign_in:

@@ -22,21 +22,6 @@
 			<%= t(:'blacklight.search.per_page.label', :count => count).html_safe %> </option>
 		<%- end -%>
 	</select>
-<% if current_user and current_user.is_cm? %>
-<%# if current_user and current_user.is_cm? isn't right - we need to check if the user has anything they can edit %>   	
-<div>
-		<label class="dri_toggle_checkbox" for="can_edit_checkbox" title="">
-			<p>
-				<%= t('dri.navbar.my_items') %>
-			</p> 
-			<% if !params[:can_edit].blank? || params[:can_edit] == 'true' %>
-			 <input type="checkbox" id="dri_can_edit_checkbox" checked value=<%= url_for(params_for_search.merge(:can_edit => "false")) %>>
-			<% else %>
-			 <input type="checkbox" id="dri_can_edit_checkbox"  value=<%= url_for(params_for_search.merge(:can_edit => "true")) %>>
-			<% end %> 
-		</label>
-</div>
-<% end %>
 </nav>
 
 <% end %>
