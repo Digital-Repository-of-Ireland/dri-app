@@ -5,7 +5,13 @@ module Storage
     include Utils
 
     def initialize
-      AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key, :s3_force_path_style => true)
+      endpoint = Settings.S3.server
+      
+      host_port = endpoint.partition(":")
+      @host = host_port[0]
+      @port = host_port[2].chomp("/")
+
+      AWS.config(s3_endpoint: endpoint, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key, :s3_force_path_style => true)
       @s3 = AWS::S3.new(ssl_verify_peer: false, use_ssl: Settings.S3.use_ssl)
     end
 
@@ -68,7 +74,7 @@ module Storage
         begin
           url = create_url(bucket, surrogate, expire)
         rescue Exception => e
-          logger.debug "Problem getting url for file #{file} : #{e.to_s}"
+          logger.debug "Problem getting url for file #{surrogate} : #{e.to_s}"
         end
       end
 
@@ -169,14 +175,21 @@ module Storage
       bucket_obj = @s3.buckets[bucket]
       object = bucket_obj.objects[object]
 
+      options = { :secure => false, :force_path_style => true }
+
+      unless @port.empty?
+        options[:endpoint] = @host
+        options[:port] = @port.to_i
+      end
+
       if authenticated
         unless expire.nil?
-          object.url_for(:read, :secure => false, :force_path_style => true, :expires => expire).to_s
+          object.url_for(:read, options.merge({:expires => expire})).to_s
         else
-          object.url_for(:read, :secure => false, :force_path_style => true).to_s
+          object.url_for(:read, options).to_s
         end
       else
-        object.public_url(:secure => false, :force_path_style => true).to_s
+        object.public_url(options).to_s
       end
     end
 

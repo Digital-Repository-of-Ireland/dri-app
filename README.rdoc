@@ -231,8 +231,8 @@ An alternative, if the Ceph VM is not working for you, is to use the FakeS3 gem.
 
 Create a directory for the server to use to store files, and then start the server with:
 
- $ sudo fakes3 -r /path/to/fakes3_root -p 80
-
+ $ sudo fakes3 -r /path/to/fakes3_root -p 80 -h localhost
+ 
 The settings should then be modified to the following:
 
   S3:
@@ -240,6 +240,14 @@ The settings should then be modified to the following:
     use_ssl: false
     access_key_id: anything
     secret_access_key: anything
+
+To use a port other than port 80, change the server setting to be:
+
+  server: localhost:8081/
+
+and start fakes3 using this port number
+
+ $ fakes3 -r /path/to/fakes3_root -p 8081
 
 == Migrating from sqlite3 to mysql
 

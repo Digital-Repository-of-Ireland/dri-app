@@ -28,7 +28,7 @@ module ApplicationHelper
   end
 
   def get_asset_version_list( file_id, datastream )
-    files = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => file_id, :d => datastream })
+    files = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => file_id, :d => datastream }).to_a
     return files
   end
 
