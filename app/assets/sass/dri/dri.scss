@@ -2627,9 +2627,9 @@ ul.dri_view_collection {
   label {
     color: $dri_grey;
     font-weight: bold;	
-	margin: 0;
+	   margin: 0;
   	padding-right: 10px;
-	
+  		
   }
   
   label.bookmark_object {
@@ -2637,6 +2637,13 @@ ul.dri_view_collection {
     padding: 0 0 0 4px; 
 	
 	
+  }
+  
+  label.dri_bookmark_object_label {
+    float: left;
+    span.dri_bookmark_label_text {
+      padding-left: 6px;
+    }
   }
   
   .documentFunctions {
@@ -2667,14 +2674,17 @@ ul.dri_view_collection {
 }
 
 .dri_objecttools_title {
-  margin: 20px 0 0 0;
-  padding: 0;
+  @extend .dri_object_title_top;
+  
+  //margin: 20px 0 0 0;
+  //padding: 0;
   width: 230px;
-  color: $dri_grey;
+  //color: $dri_grey;
   display: block;
   float: left;
   font-weight: bold;
 }
+
 
 /*-------------- publishing institute  --------------*/
 .dri_publishing_institute_title {
