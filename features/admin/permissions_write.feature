@@ -1,3 +1,4 @@
+@javascript
 Feature: Access controls
   In order to control write access to collections, digital objects and assets
   I should be able to set manage and edit permissions
@@ -59,7 +60,6 @@ Feature: Access controls
       | none       |
 
 
-  @javascript
   Scenario Outline: I should see a button to Publish if I have manager or higher permissions on the collection
     Given I am logged in as "foo" and accept cookies
     And "foo@foo.com" has been granted "<permission>" permissions on "dri:c11111"

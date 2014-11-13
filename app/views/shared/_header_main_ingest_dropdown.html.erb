@@ -1,7 +1,8 @@
-<% if ((controller.controller_name == 'collections' && controller.action_name == 'new') ||
-        (controller.controller_name == 'ingest'  && (controller.action_name == 'new' || controller.action_name == 'create')) ||
-        (controller.controller_name == 'licences'  && (controller.action_name == 'new' || controller.action_name == 'edit' || controller.action_name == 'index')) ||
-        (controller.controller_name == 'static' && controller.action_name == 'admin')) %>
+<% if ((controller.controller_name.eql?('collections') && controller.action_name.eql?('new')) ||
+        (controller.controller_name.eql?('ingest')  && (controller.action_name.eql?('new') || controller.action_name.eql?('create'))) ||
+        (controller.controller_name.eql?('licences')  && (controller.action_name.eql?('new') || controller.action_name.eql?('edit') || controller.action_name.eql?('index'))) ||
+        (controller.controller_name.eql?('static') && controller.action_name.eql?('admin'))) ||
+        controller.controller_name.eql?('workspace') %>
     <li class="dri_main_nav_top dropdown selected">
 <% else %>
     <li class="dri_main_nav_top dropdown">
@@ -14,33 +15,42 @@
 <ul class="dropdown-menu dri_main_nav_sub" role="menu" aria-labelledby="dri_manage_id">
   <% if signed_in? && (current_user.is_cm? || current_user.is_admin? || @collections.count > 0 ) %>
 
-      <% if (controller.controller_name == 'collections' && controller.action_name == 'new') %>
+      <% if (controller.controller_name.eql?('collections') && controller.action_name.eql?('new')) %>
           <li role="presentation" class="selected">
       <% else %>
           <li role="presentation">
       <% end %>
       <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, :id => "new_collection", :tabindex => "-1" %>
       </li>
-      <% if (controller.controller_name == 'ingest'  && (controller.action_name == 'new' || controller.action_name == 'create')) %>
+      <% if (controller.controller_name.eql?('ingest')  && (controller.action_name.eql?('new') || controller.action_name.eql?('create'))) %>
           <li role="presentation" class="selected">
       <% else %>
           <li role="presentation">
       <% end %>
       <%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest", :tabindex => "-1" %>
       </li>
+      <% if (controller.controller_name.eql?('workspace')) %>
+        <li role="presentation" class="selected">
+      <% else %>
+        <li role="presentation">
+      <% end %>
+      <%= link_to t('dri.headerlinks.my_collections'), workspace_path(:mode => "collections"), :id => "my_collections", :tabindex => "-1" %>
+      </li>
+
   <% end %>
   <% if signed_in? && current_user.is_admin? %> <!-- ok -->
           <li role="presentation">
       <%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, :id => "resque", :tabindex => "-1" %>
       </li>
-      <% if (controller.controller_name == 'licences'  && (controller.action_name == 'new' || controller.action_name == 'edit' || controller.action_name == 'index')) %>
+      <% if (controller.controller_name.eql?('licences')  && (controller.action_name.eql?('new') ||
+             controller.action_name.eql?('edit') || controller.action_name.eql?('index'))) %>
           <li role="presentation" class="selected">
       <% else %>
           <li role="presentation">
       <% end %>
       <%= link_to t('dri.views.static.admin.licences'), main_app.licences_path, :id => "licences", :tabindex => "-1" %>
       </li>
-      <% if (controller.controller_name == 'static' && controller.action_name == 'admin') %>
+      <% if (controller.controller_name.eql?('static') && controller.action_name.eql?('admin')) %>
           <li role="presentation" class="selected">
       <% else %>
           <li role="presentation">

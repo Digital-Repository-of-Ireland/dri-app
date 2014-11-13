@@ -19,7 +19,7 @@ class ObjectsController < CatalogController
   #
   def edit
     enforce_permissions!("edit",params[:id])
-    get_supported_licences()
+    supported_licences()
     @object = retrieve_object!(params[:id])
     respond_to do |format|
       format.html
@@ -45,7 +45,7 @@ class ObjectsController < CatalogController
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
 
     update_object_permission_check(params[:batch][:manager_groups_string], params[:batch][:manager_users_string], params[:id])
-    get_supported_licences()
+    supported_licences()
 
     @object = retrieve_object!(params[:id])
 
@@ -123,7 +123,7 @@ class ObjectsController < CatalogController
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
 
-    get_supported_licences()
+    supported_licences()
 
     if @object.valid? && @object.save
 
