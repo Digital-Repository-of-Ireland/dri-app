@@ -15,7 +15,7 @@ describe CollectionsController do
   describe 'DELETE destroy' do
 
     it 'should delete a collection' do
-      @collection = Batch.with_standard :qdc
+      @collection = DRI::Batch.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -25,7 +25,7 @@ describe CollectionsController do
       @collection[:published_date] = ["1916-04-01"]
       @collection.save
       
-      @object = Batch.with_standard :qdc
+      @object = DRI::Batch.with_standard :qdc
       @object[:title] = ["An Audio Title"]
       @object[:rights] = ["This is a statement about the rights associated with this object"]
       @object[:role_hst] = ["Collins, Michael"]
@@ -54,7 +54,7 @@ describe CollectionsController do
   describe 'publish' do
 
     it 'should publish a collection' do
-      @collection = Batch.with_standard :qdc
+      @collection = DRI::Batch.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -65,7 +65,7 @@ describe CollectionsController do
       @collection[:status] = ["draft"]
       @collection.save
 
-      @object = Batch.with_standard :qdc
+      @object = DRI::Batch.with_standard :qdc
       @object[:title] = ["An Audio Title"]
       @object[:rights] = ["This is a statement about the rights associated with this object"]
       @object[:role_hst] = ["Collins, Michael"]

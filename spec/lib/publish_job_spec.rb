@@ -9,7 +9,7 @@ end
 describe "PublishJob" do
 
   before(:each) do
-    @collection = Batch.with_standard :qdc
+    @collection = DRI::Batch.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -20,7 +20,7 @@ describe "PublishJob" do
     @collection[:status] = ["draft"]
     @collection.save
 
-    @object = Batch.with_standard :qdc
+    @object = DRI::Batch.with_standard :qdc
     @object[:title] = ["An Audio Title"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
     @object[:role_hst] = ["Collins, Michael"]
@@ -60,7 +60,7 @@ describe "PublishJob" do
     end
 
     it "should not set a collection's draft objects to published" do
-      @draft = Batch.with_standard :qdc
+      @draft = DRI::Batch.with_standard :qdc
       @draft[:title] = ["An Audio Title"]
       @draft[:rights] = ["This is a statement about the rights associated with this object"]
       @draft[:role_hst] = ["Collins, Michael"]

@@ -7,7 +7,7 @@ describe SurrogatesController do
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
 
-    @collection = Batch.with_standard :qdc
+    @collection = DRI::Batch.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -18,7 +18,7 @@ describe SurrogatesController do
     @collection[:status] = ["draft"]
     @collection.save
 
-    @object = Batch.with_standard :qdc
+    @object = DRI::Batch.with_standard :qdc
     @object[:title] = ["An Audio Title"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
     @object[:role_hst] = ["Collins, Michael"]
@@ -38,7 +38,7 @@ describe SurrogatesController do
     @collection.governed_items << @object    
     @collection.save
     
-    @gf = GenericFile.new
+    @gf = DRI::GenericFile.new
     @gf.apply_depositor_metadata(@login_user)
     @gf.batch = @object
     @gf.save
@@ -67,7 +67,7 @@ describe SurrogatesController do
     end
 
     it 'should update multiple files' do
-      @gf2 = GenericFile.new
+      @gf2 = DRI::GenericFile.new
       @gf2.apply_depositor_metadata(@login_user)
       @gf2.batch = @object
       @gf2.save

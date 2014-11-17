@@ -50,7 +50,7 @@ class ObjectsController < CatalogController
     @object = retrieve_object!(params[:id])
 
     if params[:batch][:governing_collection_id].present?
-      collection = Batch.find(params[:batch][:governing_collection_id])
+      collection = DRI::Batch.find(params[:batch][:governing_collection_id])
       @object.governing_collection = collection
     end
 
@@ -95,7 +95,7 @@ class ObjectsController < CatalogController
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
 
-    params[:batch][:governing_collection] = Batch.find(params[:batch][:governing_collection]) unless params[:batch][:governing_collection].blank?
+    params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection]) unless params[:batch][:governing_collection].blank?
 
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
 
@@ -111,7 +111,7 @@ class ObjectsController < CatalogController
       standard = ng_doc.root.name
     end
 
-    @object = Batch.with_standard get_batch_standard_from_param(standard)
+    @object = DRI::Batch.with_standard get_batch_standard_from_param(standard)
     @object.depositor = current_user.to_s
     @object.update_attributes params[:batch]
 

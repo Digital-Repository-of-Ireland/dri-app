@@ -124,7 +124,7 @@ class AssetsController < ApplicationController
       if @object == nil
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
-        @gf = GenericFile.new(:pid => Sufia::IdService.mint)
+        @gf = DRI::GenericFile.new(:pid => Sufia::IdService.mint)
         @gf.batch = @object
         @gf.apply_depositor_metadata(current_user)
 

@@ -1,6 +1,6 @@
 FactoryGirl.define do
 
-  factory(:sound, :class => QualifiedDublinCore) do
+  factory(:sound, :class => DRI::QualifiedDublinCore) do
     title                  ["An Audio Title"]
     rights                 ["This is a statement about the rights associated with this object"]
     role_hst               ["Collins, Michael"]
@@ -16,7 +16,7 @@ FactoryGirl.define do
     type                   ["Sound"]
   end
 
-  factory(:audio, :class => QualifiedDublinCore) do
+  factory(:audio, :class => DRI::QualifiedDublinCore) do
     title                  ["An Audio Title"]
     rights                 ["This is a statement about the rights associated with this object"]
     role_hst               ["Collins, Michael"]
@@ -32,7 +32,7 @@ FactoryGirl.define do
     type                   ["Sound"]
   end
 
-  factory(:text, :class => QualifiedDublinCore) do
+  factory(:text, :class => DRI::QualifiedDublinCore) do
     title                  ["A PDF Title"]
     rights                 ["This is a statement about the rights associated with this object"]
     role_aut               ["Collins, Michael"]
@@ -47,7 +47,7 @@ FactoryGirl.define do
     type                   ["Text"]
   end
 
-  factory(:collection, :class => QualifiedDublinCore) do
+  factory(:collection, :class => DRI::QualifiedDublinCore) do
     title                  ["A collection"]
     description            ["This is a Collection"]
     rights                 ["This is a statement about the rights associated with this object"]

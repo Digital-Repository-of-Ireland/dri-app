@@ -16,8 +16,8 @@ class CollectionsController < CatalogController
   # Creates a new model.
   #
   def new
-    enforce_permissions!("create", Batch)
-    @object = Batch.with_standard :qdc
+    enforce_permissions!("create", DRI::Batch)
+    @object = DRI::Batch.with_standard :qdc
 
     # configure default permissions
     @object.apply_depositor_metadata(current_user.to_s)
@@ -129,11 +129,11 @@ class CollectionsController < CatalogController
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
     params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
 
-    enforce_permissions!("create", Batch)
+    enforce_permissions!("create", DRI::Batch)
 
     set_access_permissions(:batch, true)
 
-    @collection = Batch.with_standard :qdc
+    @collection = DRI::Batch.with_standard :qdc
 
     @collection.type = ["Collection"] if @collection.type == nil
     @collection.type.push("Collection") unless @collection.type.include?("Collection")
@@ -195,7 +195,7 @@ class CollectionsController < CatalogController
   # Create a collection from an uploaded XML file.
   #
   def ingest
-    enforce_permissions!("create", Batch)
+    enforce_permissions!("create", DRI::Batch)
 
     unless params[:metadata_file].present?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
@@ -214,7 +214,7 @@ class CollectionsController < CatalogController
         return
       end
 
-      @collection = Batch.with_standard standard
+      @collection = DRI::Batch.with_standard standard
       MetadataHelpers.set_metadata_datastream(@collection, xml)
       MetadataHelpers.checksum_metadata(@collection)
       duplicates?(@collection)

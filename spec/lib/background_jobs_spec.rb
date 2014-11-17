@@ -12,7 +12,7 @@ describe "workers" do
     uploadhash = OpenStruct.new uploadfile
     tmpdir = Dir::tmpdir
      
-    @gf = GenericFile.new
+    @gf = DRI::GenericFile.new
     @gf.apply_depositor_metadata('tester')
     @gf.save
 
