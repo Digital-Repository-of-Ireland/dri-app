@@ -1,4 +1,5 @@
 require 'doi/doi'
+require 'utils'
 
 class DeleteCollectionJob < ActiveFedoraPidBasedJob
 
@@ -20,7 +21,7 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
           # this makes a connection to s3, should really test if connection is available somewhere else
           delete_files(o)
         rescue Exception => e
-          Rails.logger.error "Unable to delete files"
+          Rails.logger.error "Unable to delete files: #{e}"
         end
 
         o.delete
@@ -33,14 +34,13 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
   end
 
   def delete_files(object)
-    local_file_info = LocalFile.find.all(:conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d",
-                                                            { :f => object.id, :d => 'content' } ],
-                                     :order => "version DESC")
+    local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
+                                      { :f => object.id, :d => 'content' }).order("version DESC").to_a
     local_file_info.each { |file| file.destroy }
     FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
 
     storage = Storage::S3Interface.new
-    storage.delete_bucket(object.id.sub('dri:', ''))
+    storage.delete_bucket(Utils.split_id(object.id))
   end
 
 end
