@@ -1,6 +1,7 @@
 class CreateBucketJob < ActiveFedoraPidBasedJob
 
   require 'storage/s3_interface'
+  require 'utils'
 
   def queue_name
     :create_bucket
@@ -11,7 +12,7 @@ class CreateBucketJob < ActiveFedoraPidBasedJob
     Rails.logger.info "Creating bucket for object #{bucket_id}"
 
     storage = Storage::S3Interface.new
-    storage.create_bucket(bucket_id.sub('dri:', ''))
+    storage.create_bucket(Utils.split_id(bucket_id))
 
     after_create_bucket
   end

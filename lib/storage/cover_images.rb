@@ -1,6 +1,8 @@
 module Storage
   module CoverImages
 
+    require 'utils'
+
     def self.validate(cover_image, collection)
       if !cover_image.blank? && Validators.file_type?(cover_image).mediatype == "image"
         begin
@@ -13,10 +15,10 @@ module Storage
 
         storage = Storage::S3Interface.new
         if (storage.store_file(cover_image.tempfile.path,
-                                   "#{collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}",
+                                   "#{Utils.split_id(collection.pid)}.#{cover_image.original_filename.split(".").last}",
                                    Settings.data.cover_image_bucket))
           url = storage.get_link_for_file(Settings.data.cover_image_bucket,
-                          "#{collection.pid.sub('dri:', '')}.#{cover_image.original_filename.split(".").last}")
+                          "#{Utils.split_id(collection.pid)}.#{cover_image.original_filename.split(".").last}")
 
           collection.properties.cover_image = url
           collection.save
