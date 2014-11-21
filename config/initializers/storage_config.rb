@@ -3,7 +3,7 @@ AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access
 s3 = AWS::S3.new(ssl_verify_peer: false)
 
 if Settings.data.cover_image_bucket.blank?
-  logger.error "Storage bucket for cover images not configured"
+  Rails.logger.error "Storage bucket for cover images not configured"
 else
   bucket = Settings.data.cover_image_bucket
   begin
@@ -11,21 +11,21 @@ else
       begin
         s3.buckets.create(bucket)
       rescue Exception => e
-        logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
+        Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
       end
     end
   rescue
     begin
       s3.buckets.create(bucket)
     rescue Exception => e
-      logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
+      Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
     end
   end
 end
 
 
 if Settings.data.logos_bucket.blank?
-  logger.error "Storage bucket for logos not configured"
+  Rails.logger.error "Storage bucket for logos not configured"
 else
   bucket = Settings.data.logos_bucket
   begin
@@ -33,14 +33,14 @@ else
       begin
         s3.buckets.create(bucket)
       rescue Exception => e
-        logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
+        Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
       end
     end
   rescue
     begin
       s3.buckets.create(bucket)
     rescue Exception => e
-      logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
+      Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
     end
   end
 end
