@@ -232,7 +232,7 @@ An alternative, if the Ceph VM is not working for you, is to use the FakeS3 gem.
 Create a directory for the server to use to store files, and then start the server with:
 
  $ sudo fakes3 -r /path/to/fakes3_root -p 80 -h localhost
- 
+
 The settings should then be modified to the following:
 
   S3:
