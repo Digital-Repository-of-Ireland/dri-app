@@ -86,6 +86,7 @@ Given /^I have associated the institute "(.?*)" with the collection entitled "(.
     And I follow the link to browse
     And I follow "#{collection}" within "div.dri_result_container"
     And I follow the link to edit a collection
+    And I press the button to add a new institute
     And I fill in "institute[name]" with "#{institute}"
     And I fill in "institute[url]" with "http://www.dri.ie/"
     And I attach the institute logo file "sample_logo.png"

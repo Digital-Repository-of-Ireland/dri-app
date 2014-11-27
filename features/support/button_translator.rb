@@ -91,6 +91,9 @@ module ButtonTranslator
       when /^add an institute$/
         "add_institute"
 
+      when /^add a new institute$/
+        "new_institute"
+
       when /^associate an institute$/
         "associate_inst"
 
