@@ -7,7 +7,7 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.description = SecureRandom.hex(20)
   collection.rights = SecureRandom.hex(20)
   collection.type = ["Collection"]
-  collection.date = ["2000-01-01"]
+  collection.creation_date = ["2000-01-01"]
   if user
     email = "#{user}@#{user}.com"
     User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
