@@ -355,8 +355,7 @@
 			</ul>
 			<fieldset id="edit_access_entries">
 				<%= f.label :edit_users, t('user_groups.views.shared.users')%>
-				<%= f.text_field :edit_users_string, :onkeyup=>"edit_user_textbox.catch_tb_value();" %></li>
-
+				<%= f.text_field :edit_users_string, :onkeyup=>"edit_user_textbox.catch_tb_value();" %>
 			</fieldset>
 		</div>
 	</div>
@@ -380,6 +379,6 @@
 				<%= f.text_field :manager_users_string, :onkeyup=>"manager_user_textbox.catch_tb_value();" %>
 			</fieldset>
 	</div>
+        <% end %>
 </div>
-<% end %>
 

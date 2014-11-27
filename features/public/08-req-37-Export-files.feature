@@ -15,7 +15,7 @@ And the asset file to my local drive
 
 Background:
   Given I am logged in as "user1"
-  Given a Digital Object with pid "dri:1234", title "Object 1" created by "user1@user1.com"
+  Given a Digital Object with pid "dri:1234", title "Object 1" created by "user1"
   And a collection with pid "dri:coll1" created by "user1@user1.com"
   When I add the Digital Object "dri:1234" to the collection "dri:coll1" as type "governing"
   And I add the asset "sample_audio.mp3" to "dri:1234"

@@ -59,6 +59,7 @@ Scenario: I should see no files message when master file is not accessible and s
   And I should not see a link to download surrogate
   And I should see "No file has been uploaded"
 
+@test
 Scenario Outline: When I do have access by group or id then I should see the asset file
   Given a collection with pid "dri:c55555" and title "Access Controls Test Collection" created by "user1"
   And a Digital Object with pid "dri:o55555", title "Access Controls Test Object" created by "user1"

@@ -4,14 +4,14 @@ Feature: Saved Search criteria
 
   Scenario: Check no saved searches
     Given I am logged in as "user1"
-    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
+    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
     And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
     And I go to "my saved search page"
     Then I should see a "no saved search"
 
   Scenario: Save collection search
     Given I am logged in as "user1"
-    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
+    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
     And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
     When I fill in "q" with "sample"
     And I press the button to search
@@ -23,7 +23,7 @@ Feature: Saved Search criteria
 
   Scenario: Delete collection saved search
     Given I am logged in as "user1"
-    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
+    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
     And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
     When I fill in "q" with "sample"
     And I press the button to search
@@ -38,7 +38,7 @@ Feature: Saved Search criteria
 
   Scenario: Clear saved collection search
     Given I am logged in as "user1"
-    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
+    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
     And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
     When I fill in "q" with "sample"
     And I press the button to search
@@ -53,7 +53,7 @@ Feature: Saved Search criteria
 
   Scenario: Save object search
     Given I am logged in as "user1"
-    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
+    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
     And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
     When I fill in "q" with "sample"
     And I press the button to search
@@ -65,7 +65,7 @@ Feature: Saved Search criteria
 
   Scenario: Delete object saved search
     Given I am logged in as "user1"
-    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
+    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
     And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
     When I fill in "q" with "sample"
     And I press the button to search
@@ -80,7 +80,7 @@ Feature: Saved Search criteria
 
   Scenario: Clear saved object search
     Given I am logged in as "user1"
-    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
+    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
     And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
     When I fill in "q" with "sample"
     And I press the button to search

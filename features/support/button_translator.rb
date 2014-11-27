@@ -12,6 +12,12 @@ module ButtonTranslator
 
       when /^upload metadata$/
         "replace_metadata"
+ 
+     when /^add an object$/
+       "add_object"
+
+      when /^upload XML$/
+        "add_object_xml"
 
       when /^create record$/
         "create_new"

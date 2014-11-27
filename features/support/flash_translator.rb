@@ -53,6 +53,9 @@ module FlashTranslator
       when /^deleting a collection$/
         I18n.t('dri.flash.notice.collection_deleted', :locale => @user.locale)
 
+      when /^updating a collection$/
+        strip_vars( I18n.t('dri.flash.notice.updated', :locale => @user.locale) )
+
       when /^removing an object from a collection$/
         I18n.t('dri.flash.notice.removed_from_collection', :locale => @user.locale)
 

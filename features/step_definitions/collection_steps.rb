@@ -1,3 +1,5 @@
+require 'metadata_helpers'
+
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = "dri:c" + @random_pid if (pid == "@random")
   collection = Batch.new(:pid => pid)
@@ -7,10 +9,11 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.type = ["Collection"]
   collection.date = ["2000-01-01"]
   if user
-    User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
+    email = "#{user}@#{user}.com"
+    User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
 
-    collection.depositor = User.find_by_email(user).to_s
-    collection.manager_users_string=User.find_by_email(user).to_s
+    collection.depositor = User.find_by_email(email).to_s
+    collection.manager_users_string=User.find_by_email(email).to_s
     collection.discover_groups_string="public"
     collection.read_groups_string="registered"
   end
@@ -31,14 +34,17 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
   digital_object.type = type ? [type] : "Sound"
   digital_object.description = desc ? [desc] : "A test object"
   if user
-    User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
+    email = "#{user}@#{user}.com"
+    User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
 
-    digital_object.depositor=User.find_by_email(user).to_s
-    digital_object.manager_users_string=User.find_by_email(user).to_s
+    digital_object.depositor=User.find_by_email(email).to_s
+    digital_object.manager_users_string=User.find_by_email(email).to_s
     digital_object.edit_groups_string="registered"
   end
   digital_object.rights = ["This is a statement of rights"]
-  digital_object.date = ["2000-01-01"]
+  digital_object.creation_date = ["2000-01-01"]
+
+  MetadataHelpers.checksum_metadata(digital_object)
   digital_object.save
 end
 
@@ -65,9 +71,12 @@ end
 Given /^the object with pid "(.*?)" is in the collection with pid "(.*?)"$/ do |objid,colid|
   object = ActiveFedora::Base.find(objid, {:cast => true})
   collection = ActiveFedora::Base.find(colid, {:cast => true})
-  collection.governed_items << object
-  collection.save
+  object.governing_collection = collection
+
+  MetadataHelpers.checksum_metadata(object)
+  object.update_index
   object.save
+  collection.save
 end
 
 Given /^I have associated the institute "(.?*)" with the collection entitled "(.?*)"$/ do |institute,collection|
@@ -92,11 +101,8 @@ end
 
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
-    Given I am on the new Digital Object page
-    And I select "#{collection_pid}" from the selectbox for ingest collection
-    And I press the button to continue
-    And I select "upload" from the selectbox for ingest methods
-    And I press the button to continue
+    When I go to the "collection" "show" page for "#{collection_pid}" 
+    And I press the button to upload XML
     And I attach the metadata file "valid_metadata.xml"
     And I press the button to ingest metadata
   }
@@ -119,8 +125,6 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
     And I fill in "batch_rights][" with "Test rights"
     And I fill in "batch_type][" with "Collection"
     And I fill in "batch_creation_date][" with "2000-01-01"
-    And I select "publisher" from the selectbox number 0 for role type
-    And I fill in "batch_roles][name][" number 0 with "Test publisher"
   }
   #{}  And I select "publisher" from the selectbox number 0 for role type
   #{}  And I fill in "batch_roles][name][" number 0 with "Test publisher"
@@ -132,6 +136,7 @@ When /^I enter invalid metadata for a collection(?: with title (.*?))?$/ do |tit
   steps %{
     When I fill in "batch_title][" with "#{title}"
     And I fill in "batch_description][" with "Test description"
+    And I fill in "batch_creation_date][" with "2000-01-01"  
     And I fill in "batch_rights][" with ""
     And I fill in "batch_type][" with "Collection"
   }

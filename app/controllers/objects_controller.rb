@@ -77,6 +77,7 @@ class ObjectsController < CatalogController
     respond_to do |format|
       if updated
         MetadataHelpers.checksum_metadata(@object)
+        @object.save
         duplicates?(@object)
 
         DOI.mint_doi( @object )
@@ -132,7 +133,7 @@ class ObjectsController < CatalogController
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-        redirect_to :controller => "objects", :action => "edit", :id => @object.id
+        redirect_to :controller => "catalog", :action => "show", :id => @object.id
         }
         format.json {
           if  !@warnings.nil?
