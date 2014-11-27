@@ -5,7 +5,13 @@ module Storage
     include Utils
 
     def initialize
-      AWS.config(s3_endpoint: Settings.S3.server, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key, :s3_force_path_style => true)
+      endpoint = Settings.S3.server
+      
+      host_port = endpoint.partition(":")
+      @host = host_port[0]
+      @port = host_port[2].chomp("/")
+
+      AWS.config(s3_endpoint: endpoint, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key, :s3_force_path_style => true)
       @s3 = AWS::S3.new(ssl_verify_peer: false, use_ssl: Settings.S3.use_ssl)
     end
 
@@ -13,14 +19,14 @@ module Storage
     def get_surrogates(doc, file_doc, expire=nil)
 
       expire = Settings.S3.expiry unless (!expire.blank? && numeric?(expire))
-      bucket = doc.id.sub('dri:', '')
-      generic_file = file_doc.id.sub('dri:','')
+      bucket = Utils.split_id(doc.id)
+      generic_file = Utils.split_id(file_doc.id)
 
       files = list_files(bucket)
       @surrogates_hash = {}
       files.each do |file|
         begin
-          if file.match(/dri:#{generic_file}_([-a-zA-z0-9]*)\..*/)
+          if file.match(/#{Rails.application.config.id_namespace}:#{generic_file}_([-a-zA-z0-9]*)\..*/)
             url = create_url(bucket, file, expire)
             @surrogates_hash[$1] = url
           end
@@ -34,7 +40,7 @@ module Storage
 
     # Get information about surrogates for a generic_file
     def get_surrogate_info(object_id, file_id)
-      bucket = object_id.sub('dri:', '')
+      bucket = Utils.split_id(object_id)
 
       surrogates_hash = {}
       begin
@@ -57,18 +63,18 @@ module Storage
 
       expire = Settings.S3.expiry unless (!expire.blank? && numeric?(expire))
 
-      bucket = object_id.sub('dri:', '')
-      generic_file = file_id.sub('dri:', '')
+      bucket = Utils.split_id(object_id)
+      generic_file = Utils.split_id(file_id)
       files = list_files(bucket)
 
-      filename = "dri:#{generic_file}_#{name}"
+      filename = "#{Rails.application.config.id_namespace}:#{generic_file}_#{name}"
       surrogate = files.find { |e| /#{filename}/ =~ e }
 
       unless surrogate.blank?
         begin
           url = create_url(bucket, surrogate, expire)
         rescue Exception => e
-          logger.debug "Problem getting url for file #{file} : #{e.to_s}"
+          logger.debug "Problem getting url for file #{surrogate} : #{e.to_s}"
         end
       end
 
@@ -103,7 +109,7 @@ module Storage
 
     # Save Surrogate File
     def store_surrogate(object_id, surrogate_file, surrogate_key)
-      bucket_name = object_id.sub('dri:', '')
+      bucket_name = Utils.split_id(object_id)
       begin
         bucket = @s3.buckets[bucket_name]
         object = bucket.objects[surrogate_key]
@@ -169,14 +175,21 @@ module Storage
       bucket_obj = @s3.buckets[bucket]
       object = bucket_obj.objects[object]
 
+      options = { :secure => false, :force_path_style => true }
+
+      unless @port.empty?
+        options[:endpoint] = @host
+        options[:port] = @port.to_i
+      end
+
       if authenticated
         unless expire.nil?
-          object.url_for(:read, :secure => false, :force_path_style => true, :expires => expire).to_s
+          object.url_for(:read, options.merge({:expires => expire})).to_s
         else
-          object.url_for(:read, :secure => false, :force_path_style => true).to_s
+          object.url_for(:read, options).to_s
         end
       else
-        object.public_url(:secure => false, :force_path_style => true).to_s
+        object.public_url(options).to_s
       end
     end
 
