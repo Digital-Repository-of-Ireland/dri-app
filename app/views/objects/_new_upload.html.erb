@@ -5,7 +5,6 @@
         <form id="metadata_uploader" action="<%= url_for(:action=>"create", :controller=>"objects") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
         <input type="file" name="metadata_file" accept="application/xml" required >
-        <input type="hidden" name="batch[object_type]" value="<%=@type%>">
         <input type="hidden" name="batch[governing_collection]" value="<%=@collection%>">
 
         <input type="hidden" name="batch[read_groups_string]" value="registered" />

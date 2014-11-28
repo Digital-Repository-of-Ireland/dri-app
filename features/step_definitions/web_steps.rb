@@ -5,41 +5,11 @@ module WithinHelpers
 end
 World(WithinHelpers)
 
-Given /^I have created a Digital Object$/ do
+Given /^"(.*?)" has created a Digital Object$/ do |user|
+  pid = "dri:#{rand.to_s[2..11]}"
   steps %{
-    Given I have created a collection
-    And I am on the new Digital Object page
-    And I select a collection
-    And I press the button to continue
-    And I select "upload" from the selectbox for ingest methods
-    And I press the button to continue
-    And I attach the metadata file "valid_metadata.xml"
-    And I press the button to ingest metadata
-  }
-end
-
-Given /^I have created a (Text|Sound) object$/ do |type|
-  steps %{
-    Given I have created a collection
-    And I am on the new Digital Object page
-    And I select a collection
-    And I press the button to continue
-    And I select "upload" from the selectbox for ingest methods
-    And I press the button to continue
-    And I attach the metadata file "valid_metadata.xml"
-    And I press the button to ingest metadata
-  }
-end
-
-Given /^I have created a "(.*?)" object with metadata "(.*?)" in the collection "(.*?)"$/ do |type, metadata, collection_title|
-  steps %{
-    Given I am on the new Digital Object page
-    When I select the text "#{collection_title}" from the selectbox for ingest collection
-    And I press the button to continue
-    And I select "upload" from the selectbox for ingest methods
-    And I press the button to continue
-    And I attach the metadata file "#{metadata}"
-    And I press the button to ingest metadata
+    Given a collection with pid "#{pid}" created by "#{user}"
+    And I have created an object with metadata "valid_metadata.xml" in the collection with pid "#{pid}"
   }
 end
 
@@ -49,18 +19,6 @@ Given /^I have created an object with metadata "(.*?)" in the collection with pi
     And I press the button to upload XML
     And I attach the metadata file "#{metadata_file}"
     And I press the button to ingest metadata
-  }
-end
-
-Given /^I have created a "(.*?)" object with title "(.*?)" in the collection "(.*?)"$/ do |type, title, collection_title|
-  steps %{
-    Given I am on the new Digital Object page
-    When I select the text "#{collection_title}" from the selectbox for ingest collection
-    And I press the button to continue
-    And I select "input" from the selectbox for ingest methods
-    And I press the button to continue
-    When I enter valid metadata with title "#{title}"
-    And I press the button to continue
   }
 end
 
