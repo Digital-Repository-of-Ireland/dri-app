@@ -8,23 +8,17 @@ Background:
   Given I am logged in as "user1" in the group "cm" and accept cookies
 
 Scenario: Constructing a valid Digital Object
-  Given I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "upload" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:xxxx" created by "user1"
+  When I go to the "collection" "show" page for "web:xxxx"
+  And I press the button to upload XML
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
 
 Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
-  Given I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "upload" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:xxxx" created by "user1"
+  When I go to the "collection" "show" page for "web:xxxx"
+  And I press the button to upload XML
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
   Then I should see a failure message for <case>
@@ -36,12 +30,9 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
     | invalid_xml_metadata.xml      | invalid metadata |
 
 Scenario Outline: Constructing a valid Digital Object
-  Given I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "upload" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:xxxx" created by "user1"
+  When I go to the "collection" "show" page for "web:xxxx"
+  And I press the button to upload XML
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
@@ -69,27 +60,21 @@ Scenario: Replacing the metadata file of a Digital Object
   Then I should see a success message for updating metadata
 
 Scenario: Constructing a Digital Object using the web form
-  Given I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "input" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:xxxx" created by "user1"
+  When I go to the "collection" "show" page for "web:xxxx"
+  And I press the button to add an object
   When I enter valid metadata
   And I press the button to continue
   Then I should see a success message for ingestion
   And I should see the valid metadata
 
 Scenario: Constructing an invalid Digital Object using the web form
-  Given I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "input" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:xxxx" created by "user1"
+  When I go to the "collection" "show" page for "web:xxxx"
+  And I press the button to add an object
   When I enter invalid metadata
   And I press the button to continue
-  Then I should see a failure message for invalid object
+  Then I should not see a success message for ingestion
 
 @review
 Scenario: Constructing a Digital Object using the web form without setting a collection
@@ -117,7 +102,7 @@ Scenario: Editing the metadata of a Digital Object with invalid metadata
   When I follow the link to edit an object
   And I enter invalid metadata
   And I press the button to save changes
-  Then I should see a failure message for invalid object
+  Then I should not see a success message for updating metadata
 
 Scenario: Adding multiple audio files for a Digital Object
   Given I have created a Digital Object

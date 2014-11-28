@@ -15,6 +15,16 @@ class ObjectsController < CatalogController
   before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
+  # Displays the New Object form
+  #
+  def new
+    @collection = params[:collection]
+
+    @object = Batch.new
+    supported_licences()
+  end
+
+
   # Edits an existing model.
   #
   def edit
@@ -67,6 +77,7 @@ class ObjectsController < CatalogController
     respond_to do |format|
       if updated
         MetadataHelpers.checksum_metadata(@object)
+        @object.save
         duplicates?(@object)
 
         DOI.mint_doi( @object )

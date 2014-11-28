@@ -43,6 +43,15 @@ Given /^I have created a "(.*?)" object with metadata "(.*?)" in the collection 
   }
 end
 
+Given /^I have created an object with metadata "(.*?)" in the collection with pid "(.*?)"$/ do |metadata_file, collection_pid|
+  steps %{
+    When I go to the "collection" "show" page for "#{collection_pid}"
+    And I press the button to upload XML
+    And I attach the metadata file "#{metadata_file}"
+    And I press the button to ingest metadata
+  }
+end
+
 Given /^I have created a "(.*?)" object with title "(.*?)" in the collection "(.*?)"$/ do |type, title, collection_title|
   steps %{
     Given I am on the new Digital Object page
@@ -50,6 +59,15 @@ Given /^I have created a "(.*?)" object with title "(.*?)" in the collection "(.
     And I press the button to continue
     And I select "input" from the selectbox for ingest methods
     And I press the button to continue
+    When I enter valid metadata with title "#{title}"
+    And I press the button to continue
+  }
+end
+
+Given /^I have created an object with title "(.*?)" in the collection with pid "(.*?)"$/ do |title, collection_pid|
+  steps %{
+    When I go to the "collection" "show" page for "#{collection_pid}"
+    And I press the button to add an object  
     When I enter valid metadata with title "#{title}"
     And I press the button to continue
   }
@@ -252,9 +270,9 @@ Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
   page.should have_select id
 end
 
-Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |success_failure, message|
+Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negate, success_failure, message|
   begin
-    page.should have_selector ".dri_messages_container", text: flash_for(message)
+    negate ? (page.should_not have_selector ".dri_messages_container", text: flash_for(message)): (page.should have_selector ".dri_messages_container", text: flash_for(message))
   rescue
     #save_and_open_page
     raise

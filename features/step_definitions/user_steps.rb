@@ -25,7 +25,7 @@ end
 
 Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)"$/ do |login, group|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
+  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
   @user.confirm!
   @user.save
   group_id = UserGroup::Group.find_or_create_by(name: group, description: "Test group", is_locked: true).id
@@ -42,9 +42,14 @@ end
 
 Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)" and accept cookies$/ do |login, group|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
-  @user.confirm!
-  @user.save
+  if User.find_by_email(email).nil?
+    @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
+    @user.confirm!
+    @user.save
+  else
+    @user = User.find_by_email(email)
+    @user.confirm!
+  end
   group_id = UserGroup::Group.find_or_create_by(name: group, description: "Test group", is_locked: true).id
   membership = @user.join_group(group_id)
   membership.approved_by = @user.id

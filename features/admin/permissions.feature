@@ -66,7 +66,7 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
     | SAMPLEA.xml                   |
 
 Scenario Outline: Collection visibility
-  Given a collection with pid "dri:coll8" and title "Access Test" created by "test@test.com"
+  Given a collection with pid "dri:coll8" and title "Access Test" created by "test"
   Given I am not logged in
   Given I am logged in as "user2" and accept cookies
   And I am on the new Digital Object page

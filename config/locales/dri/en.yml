@@ -181,7 +181,6 @@ en:
     navbar: 
       bookmarks: Bookmarks
       items: Items
-      my_items: "My Items"
       per_page: "per page"
       saved_searches: Searches
     sign_in: 
@@ -249,6 +248,8 @@ en:
           download_not_available: "not available"
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
+          add_object: "Add an Object"
+          add_object_xml: "Upload Object XML"
           listen: listen
           not_caracterized: "not yet characterized"
           publish: "Publish collection"
@@ -365,6 +366,7 @@ en:
         temporal_coverage_gle: "Subject (Era) in Irish"
         temporal_coverages: "Subjects (Eras)"
         title: Title
+        collection_title: "Collection Title"
         total_assets: "Total number of assets"
         type: Type
         types: Types
@@ -411,7 +413,7 @@ en:
           embargo: Embargo
           inherit: Inherit
           manage: Managers
-          master_file: "Access Master File?"
+          master_file: "Access Master File"
           master_file_desc: "If accessible then users with read access can download the master file(s)"
           page: "Page Access"
           private: Private
@@ -440,7 +442,9 @@ en:
           sidebar: 
             nav_header: "Edit Tools"
           title: "Edit Object"
+          title_collection: "Edit Collection"
         forms: 
+          add_another: "Add Another"
           add_author: "Add Author"
           add_editor: "Add Editor"
           add_guest: "Add Guest"
@@ -453,7 +457,7 @@ en:
           authors: Authors
           broadcast_date: "Broadcast Date"
           creation_date: "Creation Date"
-          delete: delete
+          delete: Remove
           description: Description
           editors: Editors
           governing_collection: "Governing Collection"
@@ -493,6 +497,7 @@ en:
           download: download
           listen: listen
           view_record: "View Record"
+          cancel: Cancel
       static: 
         admin: 
           licences: "Supported Licences"

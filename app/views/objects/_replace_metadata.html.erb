@@ -1,9 +1,32 @@
+<script>
+function metadataFileUploadHelper(thisObj) {
+    $("#metadata_file_name").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
+}
+</script>
+
+<%= get_files @object %>
+<div class="dri_ingest_form_container">
+<div class="dri_ingest_form">
+    
 <fieldset>
   <legend><%= t('dri.views.objects.legends.replace_metadata') %></legend>
   <p class="legend-caption"><%= t('dri.views.objects.legends.replace_caption') %></p>
+
   <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@object.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
-    <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-    <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true" %>
-    <%= button_tag t('dri.views.objects.buttons.replace_metadata'), :id => "replace_metadata", :name => "upload_metadata", :class => "btn-primary" %>
+  <div class="dri_file_upload">
+                        <a class='btn btn-default' href='javascript:;'>
+                        <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= t('dri.views.objects.legends.upload_file') %></h5>
+                        <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :onchange=>'metadataFileUploadHelper($(this));' %>
+                        <h5 id="metadata_file_name">No File</h5>
+                        </a>
+                    </div>
+                     <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+                     <%= hidden_field_tag 'datastream', "content" %>
+                      <div>
+                          <%= button_tag t('dri.views.objects.buttons.replace_metadata'), :id => "replace_metadata", :name => "upload_metadata", :class => "btn-primary btn-large dri_cancel dri_clearfix" %>
+                      </div>
   <% end %>
 </fieldset>
+
+</div>
+</div>

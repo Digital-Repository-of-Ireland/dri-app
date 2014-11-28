@@ -31,7 +31,7 @@ module Storage
             @surrogates_hash[$1] = url
           end
         rescue Exception => e
-          logger.debug "Problem getting url for file #{file} : #{e.to_s}"
+          Rails.logger.debug "Problem getting url for file #{file} : #{e.to_s}"
         end
       end
       return @surrogates_hash
@@ -51,7 +51,7 @@ module Storage
           end
         end
       rescue Exception => e
-        logger.debug "Problem getting info for file #{file_id} : #{e.to_s}"
+        Rails.logger.debug "Problem getting info for file #{file_id} : #{e.to_s}"
       end
 
       return surrogates_hash
@@ -74,7 +74,7 @@ module Storage
         begin
           url = create_url(bucket, surrogate, expire)
         rescue Exception => e
-          logger.debug "Problem getting url for file #{surrogate} : #{e.to_s}"
+          Rails.logger.debug "Problem getting url for file #{surrogate} : #{e.to_s}"
         end
       end
 
@@ -86,7 +86,7 @@ module Storage
       begin
         @s3.buckets.create(bucket)
       rescue Exception => e
-        logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
+        Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
         return false
       end
       return true
@@ -101,7 +101,7 @@ module Storage
         end
         bucket.delete
       rescue Exception => e
-        logger.error "Could not delete Storage Bucket #{bucket}: #{e.to_s}"
+        Rails.logger.error "Could not delete Storage Bucket #{bucket}: #{e.to_s}"
         return false
       end
       return true
@@ -115,7 +115,7 @@ module Storage
         object = bucket.objects[surrogate_key]
         object.write(Pathname.new(surrogate_file))
       rescue Exception  => e
-        logger.error "Problem saving Surrogate file #{surrogate_key} : #{e.to_s}"
+        Rails.logger.error "Problem saving Surrogate file #{surrogate_key} : #{e.to_s}"
       end
     end
 
@@ -128,7 +128,7 @@ module Storage
 
         return true
       rescue Exception => e
-        logger.error "Problem saving file #{file_key} : #{e.to_s}"
+        Rails.logger.error "Problem saving file #{file_key} : #{e.to_s}"
         
         return false
       end
@@ -140,7 +140,7 @@ module Storage
       begin
         url = create_url(bucket, file, expire)
       rescue Exception => e
-        logger.error "Problem getting link for file #{file} : #{e.to_s}"
+        Rails.logger.error "Problem getting link for file #{file} : #{e.to_s}"
       end
       return url
     end
@@ -150,7 +150,7 @@ module Storage
       begin
         url = create_url(bucket, file, nil, false)
       rescue Exception => e
-        logger.error "Problem getting link for file #{file} : #{e.to_s}"
+        Rails.logger.error "Problem getting link for file #{file} : #{e.to_s}"
       end
       return url
     end
@@ -163,7 +163,7 @@ module Storage
           files << fileobj.key
         end
       rescue
-        logger.debug "Problem listing files in bucket #{bucket}"
+        Rails.logger.debug "Problem listing files in bucket #{bucket}"
       end
 
       files
