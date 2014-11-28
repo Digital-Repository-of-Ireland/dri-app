@@ -595,8 +595,8 @@ DEPENDENCIES
   aws-sdk
   better_errors
   binding_of_caller
-  bootstrap-datepicker-rails
   blacklight (= 5.7.2)
+  bootstrap-datepicker-rails
   bootstrap-sass
   bootstrap-switch-rails
   ci_reporter_cucumber
