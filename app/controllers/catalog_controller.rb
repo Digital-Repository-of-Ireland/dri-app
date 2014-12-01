@@ -35,6 +35,8 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|
+    config.per_page = [6,9,18,36]
+    config.default_per_page = 9
 
     config.default_solr_params = {
       :defType => "edismax",
