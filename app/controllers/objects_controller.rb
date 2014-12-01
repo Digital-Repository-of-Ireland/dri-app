@@ -297,7 +297,7 @@ class ObjectsController < CatalogController
     raise Exceptions::BadRequest if @object.is_collection?
 
     unless @object.status.eql?("published")
-      @object.status = [params[:status]] if params[:status].present?
+      @object.status = params[:status] if params[:status].present?
       @object.save
     end
 
