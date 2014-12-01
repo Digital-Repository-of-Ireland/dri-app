@@ -215,6 +215,10 @@
 
 }
 
+.dri_clearfix {
+  @include zen-clear;
+}
+
 
 @media screen and (max-width:1043px) {
 	

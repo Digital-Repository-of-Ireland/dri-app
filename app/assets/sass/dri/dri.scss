@@ -2486,6 +2486,12 @@ input.dri_request_access_button:hover {
 }
 
 /*-------------- MetaData Readview  --------------*/
+.modal-content {
+  dl.dri_object_metadata_readview {
+    padding: 15px;
+  }
+}
+
 dl.dri_object_metadata_readview {
   margin: 0 0 20px 0;
   padding: 0px 80px 0 0;
@@ -2512,6 +2518,16 @@ dl.dri_object_metadata_readview {
   }
 }
 
+/*-------------- Citation Readview  --------------*/
+#dri_citatation_modal_id   {
+  .modal-content {
+    padding: 15px;
+      h4 {
+      text-transform: uppercase; 
+      } 
+  } 
+}
+
 /*-------------- Collection status and Features  --------------*/
 
 .dri_object_second_block {
@@ -2529,7 +2545,7 @@ dl.dri_object_metadata_readview {
   color: $dri_grey;
 }
 
-.dri_back_search a:hover {
+.dri_back_search a:hover { 
   text-decoration: underline;
 }
 
