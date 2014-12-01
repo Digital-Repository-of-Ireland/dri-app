@@ -14,13 +14,13 @@ module DOI
       url = File.join(@url, 'catalog', @object.id)
       params = { "doi" => @identifier, "url" => url }
       response = @service['doi'].post(params, :content_type => 'text/plain;charset=UTF-8')
-      logger.info("Minted DOI (#{response.code} #{response.body})")
+      Rails.logger.info("Minted DOI (#{response.code} #{response.body})")
     end
 
     def metadata
       xml = to_xml
       response = @service['metadata'].post(xml, :content_type => 'application/xml;charset=UTF-8')
-      logger.info("Created DOI metadata (#{response.code} #{response.body})")
+      Rails.logger.info("Created DOI metadata (#{response.code} #{response.body})")
     end
 
     def to_xml

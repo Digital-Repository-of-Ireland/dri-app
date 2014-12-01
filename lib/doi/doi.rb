@@ -6,7 +6,7 @@ module DOI
         begin
           Sufia.queue.push(MintDoiJob.new(object.id))
 	rescue Exception => e
-          logger.error "Unable to mint DOI: #{e.message}"
+          Rails.logger.error "Unable to mint DOI: #{e.message}"
         end
       end
     end
