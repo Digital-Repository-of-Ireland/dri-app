@@ -2919,9 +2919,7 @@ ul.dri_collection_institutes_list {
 /*-------------- Standard CSS --------------*/
 // Hide, clear etc.
 
-.dri_clearfix {
-  @include zen-clear;
-}
+
 
 .dri_invisible {
   visibility: hidden;
