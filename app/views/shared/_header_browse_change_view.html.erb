@@ -12,11 +12,11 @@
             </li>
             <% if params[:controller] == 'catalog' %>
                 <% changeViewParams[:view] = "timeline" %>
-                <li class="grid">
+                <li class="grid dri_no_display">
                   <%= link_to ' ', changeViewParams, :id => 'timeline_view' %>
                 </li>
                 <% changeViewParams[:view] = "maps" %>
-                <li class="table">
+                <li class="table dri_no_display">
                   <%= link_to ' ', changeViewParams, :id => 'maps_view' %>
                 </li>
             <% end %>
@@ -30,11 +30,11 @@
             </li>
             <% if params[:controller] == 'catalog' %>
                 <% changeViewParams[:view] = "timeline" %>
-                <li class="grid">
+                <li class="grid dri_no_display">
                   <%= link_to ' ', changeViewParams, :id => 'timeline_view' %>
                 </li>
                 <% changeViewParams[:view] = "maps" %>
-                <li class="table">
+                <li class="table dri_no_display">
                   <%= link_to ' ', changeViewParams, :id => 'maps_view' %>
                 </li>
             <% end %>
@@ -48,11 +48,11 @@
               <%= link_to ' ', changeViewParams, :id => 'table_view' %>
             </li>
             <% if params[:controller] == 'catalog' %>
-                <li class="grid">
+                <li class="grid dri_no_display">
                   <%= link_to ' ', '#', :class => "selected", :id => 'timeline_view' %>
                 </li>
                 <% changeViewParams[:view] = "maps" %>
-                <li class="table">
+                <li class="table dri_no_display">
                   <%= link_to ' ', changeViewParams, :id => 'maps_view' %>
                 </li>
             <% end %>
@@ -67,10 +67,10 @@
             </li>
             <% if params[:controller] == 'catalog' %>
                 <% changeViewParams[:view] = "timeline" %>
-                <li class="grid">
+                <li class="grid dri_no_display">
                   <%= link_to ' ', changeViewParams, :id => 'timeline_view' %>
                 </li>
-                <li class="table">
+                <li class="table dri_no_display">
                   <%= link_to ' ', '#', :class => "selected", :id => 'maps_view' %>
                 </li>
             <% end %>
