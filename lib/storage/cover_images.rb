@@ -8,7 +8,7 @@ module Storage
         begin
           Validators.virus_scan(cover_image)
         rescue Exceptions::VirusDetected => e
-          logger.error("Virus detected in cover image: #{e.message}")
+          Rails.logger.error("Virus detected in cover image: #{e.message}")
 
           return false
         end
@@ -25,7 +25,7 @@ module Storage
  
           return true
         else
-          logger.error "Unable to save cover image."
+          Rails.logger.error "Unable to save cover image."
           return false
         end
       end
