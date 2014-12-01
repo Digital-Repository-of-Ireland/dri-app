@@ -22,13 +22,6 @@
       <% end %>
       <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, :id => "new_collection", :tabindex => "-1" %>
       </li>
-      <% if (controller.controller_name.eql?('ingest')  && (controller.action_name.eql?('new') || controller.action_name.eql?('create'))) %>
-          <li role="presentation" class="selected">
-      <% else %>
-          <li role="presentation">
-      <% end %>
-      <%= link_to t('dri.headerlinks.ingest'), main_app.new_ingest_path, :id => "ingest", :tabindex => "-1" %>
-      </li>
       <% if (controller.controller_name.eql?('workspace')) %>
         <li role="presentation" class="selected">
       <% else %>
