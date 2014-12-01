@@ -58,6 +58,7 @@ gem 'execjs'
 gem 'uglifier', '>= 1.0.3'
 
 group :development, :test do
+  gem 'guard'
   gem 'rspec-rails', '~> 2.99'
   gem 'poltergeist', '>= 1.4.1'
   gem 'jettywrapper'
@@ -67,6 +68,7 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'guard-livereload', require: false
 
   gem "zeus", require: false
 
