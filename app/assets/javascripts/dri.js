@@ -103,5 +103,15 @@ $(document).ready(function() {
         $('<source>').attr('src', url).appendTo(audio);  
         audioSection.html(audio);  
         return false;  
-    });  
+    });
+    
+   
 });
+
+function fileUploadHelper(thisObj) {
+    $("#file_name").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
+};
+
+function coverImageFileUploadHelper(thisObj) {
+    $("#cover_image").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
+};

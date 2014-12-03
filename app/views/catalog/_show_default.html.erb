@@ -35,7 +35,7 @@
   <% unless collection.nil? %>
       <% if collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0] %>
           <div class="dri_vc_image">
-            <%= image_tag(collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :width=>"230", :height=>"129", :alt=> t('dri.views.alt_tags.cover_image') ) %><!-- needs callback -->
+            <%= image_tag(collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :width=>"230", :alt=> t('dri.views.alt_tags.cover_image') ) %><!-- needs callback -->
           </div>
       <% end %>
   <% end %>
