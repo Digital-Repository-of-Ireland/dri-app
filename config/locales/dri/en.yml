@@ -257,6 +257,7 @@ en:
           related: "Related Files"
           status_update: "Update status"
           view_metadata: "View Metadata (XML)"
+          unknown_size: "Unknown Size"
         sidebar: 
           more_like_this: "More Like This"
           nav_header: "Edit Tools"
