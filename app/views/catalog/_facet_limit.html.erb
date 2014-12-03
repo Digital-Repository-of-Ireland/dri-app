@@ -3,7 +3,9 @@
   <%= render_facet_limit_list paginator, solr_field %>
 
   <% unless paginator.last_page? || params[:action] == "facet" %>
-    <li class="more_facets_link"><%= link_to t('blacklight.search.facets.more'), 
-       search_facet_url(id: solr_field), class: "more_facets_link" %></li>
+      <li><%= link_to t('blacklight.search.facets.more'), catalog_facet_path(params.merge(id: solr_field))%></li>
+      <!--how it should be-->
+      <!--<li><%# link_to t('blacklight.search.facets.more'), catalog_facet_path(params.merge(id: solr_field)), :data => {:ajax_modal => "trigger"}%></li>-->
+
   <% end %>
 </ul>
