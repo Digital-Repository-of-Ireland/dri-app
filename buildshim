@@ -10,8 +10,8 @@ else
   printf "ERROR: An RVM installation was not found.\n"
 fi
 
-rvm use ruby-2.0.0-p481 || exit 100
-rvm use ruby-2.0.0-p481@build --create || exit 100
+rvm use ruby-2.1.5-p273 || exit 100
+rvm use ruby-2.1.5-p273@build --create || exit 100
 
 branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
@@ -24,7 +24,7 @@ install_deps)
     ;;
 configure)
 
-rvm --force gemset empty ruby-2.0.0p481@build || exit 100
+rvm --force gemset empty ruby-2.1.5-p273@build || exit 100
 
 cp config/jetty.yml.sample config/jetty.yml
 cp config/fedora.yml.sample config/fedora.yml
