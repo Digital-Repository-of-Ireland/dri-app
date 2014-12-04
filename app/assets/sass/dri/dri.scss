@@ -2089,9 +2089,8 @@ p.dri_rss_link a {
     margin: 0;
     border-bottom: 1px solid #E1E1E1;
     border-top: 1px solid #E1E1E1;
-    img {
-      max-height: 128px;
-    }
+    height: 128px;
+    overflow: hidden;
   }
   h1 {
     color: $dri_grey;

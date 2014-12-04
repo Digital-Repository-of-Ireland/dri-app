@@ -1,9 +1,7 @@
-<script>
-function fileUploadHelper(thisObj) {
-    $("#filename").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
-}
-</script>
+
 <%= get_files @object %>
+
+
 <div class="dri_ingest_form_container">
 <div class="dri_ingest_form">
 <fieldset>
@@ -13,26 +11,9 @@ function fileUploadHelper(thisObj) {
   <%= form_tag(url_for(object_files_path(@object.pid)), :multipart => true, :method => :post, :id => "file_uploader") do %>
     <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
     <%= hidden_field_tag 'datastream', "content" %>
-    <%= file_field_tag 'Filedata', :required => "true" %>
+    <%= file_field_tag 'Filedata', :required => "true", :onchange=>'coverImageFileUploadHelper($(this));' %>
     <%= button_tag t('dri.views.objects.buttons.add_master'), :id => "add_file", :name => "upload_file", :class => "btn-primary btn-large" %>
   <% end %>
-
-
-    <div class="dri_file_upload">
-            <% unless @object[:cover_image].blank? %>
-            <div class="dri_cover_image_img">
-
-            <%= image_tag @object[:cover_image].first, :width=>"228" unless @object[:cover_image].blank? %>            <h2>Current Image</h2></div>
-            <% end %>
-            <a class='btn btn-default' href='javascript:;'>
-                <h4 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.fields.cover_image')}"%></h4>
-                <p>(228 x 128px)</p>
-                <input type="file" name="file_source" size="40"  onchange='$("#cover_image").html(($(this).val()).replace("C:\\fakepath\\", ""))'>
-                <h4 class='dri_cover_image_file' id="cover_image">No File</h4>
-            </a>
-
-
-    </div>
 <% else %>
 
   <p class="legend-caption"><%= t('dri.views.objects.legends.upload_file_caption') %></p>

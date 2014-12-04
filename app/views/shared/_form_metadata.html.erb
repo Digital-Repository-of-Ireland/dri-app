@@ -35,7 +35,7 @@
                 <h4 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.fields.cover_image')}"%></h4>
                 <p>(228 x 128px)</p>
                 
-                <%= f.file_field :cover_image, :class => "edit span6" %>
+                <%= f.file_field :cover_image, :class => "edit span6",:onchange=>'coverImageFileUploadHelper($(this));'  %>
                  <h4 class='dri_cover_image_file' id="cover_image">No File</h4>
             </a>
 
@@ -59,7 +59,7 @@
 <% end %>
   <%= f.label "#{t('dri.views.fields.types')}"%>
   <% if @object.type.count == 0 %>
-      <%= f.text_field "type][", :value=>'', :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+      <%= f.text_field "type][", :value=>'', :class => "edit span6 dri-textfield", :required=>'required'  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
   <% end %>
   <% @object.type.each do |i| %>
       <%= f.text_field "type][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
@@ -112,7 +112,7 @@
 <fieldset id="published_date">
   <%= f.label "#{t('dri.views.fields.published_date')}"%>
   <% @object.published_date.each do |i| %>
-      <%= f.text_field "published_date][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+      <%= f.text_field "published_date][", :value=>i, :class => "edit span6 dri-textfield", :required=>'required', 'data-provide' => 'datepicker', 'data-date-force-parse' => 'false', 'data-date-min-view-mode' => 'days', 'data-date-format'=>'yyyy-mm-dd'  %><a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
   <% end %>
   <p class="add-text-field"><i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Published Date"><%= t('dri.views.objects.forms.add_published_date') %></a></p>
 </fieldset>
