@@ -23,7 +23,7 @@ DRI::ModelSupport::Files.module_eval do
       gf.batch = self
       gf.save
 
-      create_file(file, file_name, gf.id, dsid, "")
+      create_file(file, file_name, gf.id, dsid, "", mime_type)
 
       url = "http://repository.dri.ie/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/objects/#{gf.id}/file"
       gf.update_file_reference dsid, :url=>url, :mimeType=>mime_type.to_s
@@ -44,13 +44,13 @@ DRI::ModelSupport::Files.module_eval do
       Rails.root.join(Settings.dri.files)
     end
 
-    def create_file(file, file_name, object_id, datastream, checksum)
+    def create_file(file, file_name, object_id, datastream, checksum, mime_type)
       count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => object_id, :d => datastream } ]).count
 
       dir = local_storage_dir.join(object_id).join(datastream+count.to_s)
 
       local_file = LocalFile.new
-      local_file.add_file file, {:fedora_id => object_id, :file_name => file_name, :ds_id => datastream, :directory => dir.to_s, :version => count, :checksum => checksum}
+      local_file.add_file file, {:fedora_id => object_id, :file_name => file_name, :ds_id => datastream, :directory => dir.to_s, :version => count, :checksum => checksum, :mime_type => mime_type}
 
       begin
         local_file.save!

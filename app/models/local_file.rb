@@ -24,7 +24,7 @@ class LocalFile < ActiveRecord::Base
     self.fedora_id = opts[:fedora_id]
     self.ds_id = opts[:ds_id]
     self.version = opts[:version]
-    self.mime_type = MIME::Types.type_for(file_name).first.content_type 
+    self.mime_type = opts[:mime_type] 
 
     FileUtils.mkdir_p(opts[:directory])
     if upload.respond_to?('path')

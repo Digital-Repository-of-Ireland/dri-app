@@ -265,11 +265,11 @@ class AssetsController < ApplicationController
       dir = local_storage_dir.join(generic_file_id).join(datastream+count.to_s)
 
       @file = LocalFile.new
-      @file.add_file filedata, {:fedora_id => generic_file_id, :ds_id => datastream, :directory => dir.to_s, :version => count, :checksum => checksum}
+      @file.add_file filedata, {:fedora_id => generic_file_id, :ds_id => datastream, :directory => dir.to_s, :version => count, :mime_type => @mime_type.to_s, :checksum => checksum}
 
       begin
         raise Exceptions::InternalError unless @file.save!
-      rescue ActiveRecordError => e
+      rescue ActiveRecord::ActiveRecordError => e
         logger.error "Could not save the asset file #{@file.path} for #{generic_file_id} to #{datastream}: #{e.message}"
         raise Exceptions::InternalError
       end
