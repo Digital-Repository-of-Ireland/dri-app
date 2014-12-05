@@ -102,11 +102,9 @@ end
 
 namespace :solr do
   namespace :dri do
-    desc 'reindex'
-    task :reindex do
-        #Batch.reindex_everything
-        GenericFile.all.each { |obj| obj.update_index }
-        Batch.all.each { |obj| obj.update_index }
+    desc 'Reindex Solr as background task in the correct order (GenericFiles followed by Batch objects)'
+    task reindex: :environment do
+      Sufia.queue.push(ReindexSolrJob.new)
     end
   end
 end
