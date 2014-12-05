@@ -75,7 +75,7 @@ Sufia.config do |config|
   config.id_namespace = "dri"
 
   # Specify the path to the file characterization tool:
-  config.fits_path = "/opt/local/fits/fits.sh"
+  config.fits_path = "/usr/local/bin/fits"
 
 end
 
