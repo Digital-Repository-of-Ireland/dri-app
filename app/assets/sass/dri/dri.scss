@@ -2199,11 +2199,11 @@ p.dri_rss_link a {
     overflow: hidden;
   }
   .dri_list_description {
-    max-height: 40px;
+    max-height: 2.6em;
     overflow: hidden;
   }
   .dri_list_subject {
-    max-height: 12px;
+    max-height: 1.3em;
     overflow: hidden;
   }
   a .dri_num_list_objects {
@@ -2486,6 +2486,7 @@ input.dri_request_access_button:hover {
 
 /*-------------- MetaData Readview  --------------*/
 .modal-content {
+  padding: 10px;
   dl.dri_object_metadata_readview {
     padding: 15px;
   }
