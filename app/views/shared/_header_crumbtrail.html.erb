@@ -1,4 +1,4 @@
-<!-- no crumbtrail for the moment - hidden 	-->
+<!-- start dri_crumbtrail_nav_container -->
 <% if @document %>
     <div id="dri_crumbtrail_nav_container_id">
       <ol class="breadcrumb">
@@ -10,6 +10,14 @@
           <% end %>
         <li class="active"><%= truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50) %></li>
       <% end %>
+      </ol>
+    </div>
+<% end %>
+
+<% if @collection %>
+    <div id="dri_crumbtrail_nav_container_id">
+      <ol class="breadcrumb">
+              <li class="active"><%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(@collection), :id => 'view_collection' ) %></li>
       </ol>
     </div>
 <% end %>

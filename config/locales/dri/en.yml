@@ -178,6 +178,9 @@ en:
       social_media_links: "Use these buttons to vist our Facebook, Linked-In, Slideshare and Twitter pages"
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
+      dummy_text: "Help text goes here"
+      dummy_title: "Title of help here"
+      metadata_identifiers: "<a href='http://loc.org'>LOC</a>"
     navbar: 
       bookmarks: Bookmarks
       items: Items
@@ -348,8 +351,8 @@ en:
         licence: Licence
         name_coverage: "Subject (Name)"
         name_coverages: "Subjects (Names)"
-        published_date: "Published/Broadcast Date"
-        published_dates: "Published/Broadcast Dates"
+        published_date: "Published Date"
+        published_dates: "Published Dates"
         publisher: Publisher
         relation: Relation
         relations: Relations
