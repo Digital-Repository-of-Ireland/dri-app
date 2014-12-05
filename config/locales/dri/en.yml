@@ -362,10 +362,10 @@ en:
         subjects: Subjects
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
-        temporal_coverage: "Subject (Era)"
-        temporal_coverage_eng: "Subject (Era) in English"
-        temporal_coverage_gle: "Subject (Era) in Irish"
-        temporal_coverages: "Subjects (Eras)"
+        temporal_coverage: "Subject (Temporal)"
+        temporal_coverage_eng: "Subject (Temporal) in English"
+        temporal_coverage_gle: "Subject (Temporal) in Irish"
+        temporal_coverages: "Subjects (Temporal)"
         title: Title
         collection_title: "Collection Title"
         total_assets: "Total number of assets"

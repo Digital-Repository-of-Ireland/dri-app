@@ -128,7 +128,8 @@ en:
           person_sim: Names
           root_collection_id_sim: Collection
           subject_sim: Subjects
-          temporal_coverage_sim: Era
+          temporal_coverage_sim: "Subject (Temporal)"
+          institute_sim: Institute
       filters: 
         label: "%{label}:"
         remove: 
