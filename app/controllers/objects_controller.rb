@@ -21,6 +21,9 @@ class ObjectsController < CatalogController
     @collection = params[:collection]
 
     @object = Batch.new
+    @object.creator = [""]
+
+
     supported_licences()
   end
 
@@ -31,6 +34,9 @@ class ObjectsController < CatalogController
     enforce_permissions!("edit",params[:id])
     supported_licences()
     @object = retrieve_object!(params[:id])
+    if @object.creator[0] == nil
+      @object.creator = [""]
+    end
     respond_to do |format|
       format.html
       format.json  { render :json => @object }
