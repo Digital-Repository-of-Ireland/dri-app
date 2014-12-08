@@ -14,7 +14,7 @@ class IngestController < CatalogController
   #
   def new
     reset_ingest_state
-    get_supported_licences()
+    supported_licences()
 
     @current_step = session[:ingest][:current_step]
 
@@ -26,26 +26,19 @@ class IngestController < CatalogController
   # Handles the ingest process using partial forms
   #
   def create
-    get_supported_licences()
-
-    if session[:ingest][:object_type].present?
-      @type = session[:ingest][:object_type]
-    else
-      @type = "Text"
-    end
+    supported_licences()
 
     @object = Batch.new
-    @object.object_type = [@type]
 
     if params[:batch].present?
       @object.update_attributes params[:batch]
     else
       @object.title = [""]
       @object.description = [""]
+      @object.type = [""]
       @object.creator = [""]
       @object.rights = [""]
       @object.creation_date = [""]
-      @object.type = [@type]
     end
 
     @collection = session[:ingest][:collection] if session[:ingest][:collection].present?

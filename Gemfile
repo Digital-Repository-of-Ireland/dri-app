@@ -3,14 +3,14 @@
 
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.0.0'
+gem 'rails','~> 4.1.0'
 
-gem 'blacklight', '4.7.0'
-gem 'hydra-head', '6.5.2'
-gem 'sufia-models', '3.7.2'
+gem 'blacklight', "5.7.2"
+gem 'hydra-head', "7.2.2"
+gem 'sufia-models', "4.1.0"
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie/drirepo/dri-data-models', :branch => 'develop', :ref => '4ca4c14ec523625d30d29fe3226927086cbfc0a5'
-gem 'user_group', :git => 'ssh://git@tracker.dri.ie/drirepo/dri-user-group', :branch => 'develop', :ref => 'f2513ed71abc4bd356eba55fa710a77aa1d697f4'
+gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'develop'
+gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'develop'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -58,6 +58,7 @@ gem 'execjs'
 gem 'uglifier', '>= 1.0.3'
 
 group :development, :test do
+  gem 'guard'
   gem 'rspec-rails', '~> 2.99'
   gem 'poltergeist', '>= 1.4.1'
   gem 'jettywrapper'
@@ -67,13 +68,16 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'guard-livereload', require: false
 
   gem "zeus", require: false
 
-  gem 'ci_reporter'
+  gem 'ci_reporter_cucumber'
+  gem 'ci_reporter_rspec'
 end
 
 group :test do
+  gem 'cucumber', '1.3.15'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner', '1.0.1'
   gem 'launchy'
@@ -97,6 +101,7 @@ gem 'unicorn'
 # gem 'debugger'
 
 gem "unicode", :platforms => [:mri_18, :mri_19]
+gem 'font-awesome-rails'
 gem 'bootstrap-sass'
 gem 'yard'
 
@@ -113,3 +118,6 @@ gem 'rvm'
 gem 'colorbox-rails'
 gem 'bootstrap-switch-rails'
 gem 'videojs_rails'
+gem 'timelineJS-rails', '~> 1.1.5'
+gem 'openlayers-rails'
+gem 'bootstrap-datepicker-rails'

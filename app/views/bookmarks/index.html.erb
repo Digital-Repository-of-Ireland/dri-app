@@ -4,14 +4,17 @@
   <%- elsif @document_list.blank? -%>
       <h5>
         <% if (params[:mode] == "collections") %>
-            <%= "#{t('dri.views.catalog.legends.no_bookmarked')} #{t('dri.headerlinks.collections').to_s.downcase}" %>
+            <%= t('dri.views.catalog.legends.no_bookmarked_collections') %>
         <% elsif (params[:mode] == "objects") %>
-            <%= "#{t('dri.views.catalog.legends.no_bookmarked')} #{t('dri.headerlinks.objects').to_s.downcase}" %>
+            <%= t('dri.views.catalog.legends.no_bookmarked_objects') %>
         <% else %>
             <%= t('dri.views.catalog.legends.no_bookmarks') %>
         <% end %>
       </h5>
   <% else %>
       <%= render_document_index %>
+      <div class="dri_result_container dri_clearfix">
+        <%= render :partial => "bookmarks/paginate_compact" %>
+      </div>
   <% end %>
 </div>

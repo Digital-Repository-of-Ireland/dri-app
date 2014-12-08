@@ -37,7 +37,7 @@ class Institute < ActiveRecord::Base
         Validators.virus_scan(logo)
       rescue Exceptions::VirusDetected => e
         virus = true
-        flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+        logger.error "Virus detected in institute logo: #{e.message}"
       end
 
       unless virus

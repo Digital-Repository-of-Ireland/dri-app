@@ -1,5 +1,14 @@
 module MetadataValidator
 
+  def MetadataValidator.valid?(xml, standard)
+    case standard
+    when "DRI::Metadata::QualifiedDublinCore"
+      return is_valid_dc?(xml)
+    else
+      return true
+    end
+  end
+
   def MetadataValidator.is_valid_dc?(xml)
     result = false
     @msg = ""
@@ -21,6 +30,7 @@ module MetadataValidator
       # Then, find all elments that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
       xml.xpath("//*[@xsi:schemaLocation]").each do |node|
         schemata_by_ns = Hash[node.attr("xsi:schemaLocation").scan(/(\S+)\s+(\S+)/)]
+        return result = false if schemata_by_ns.empty?
         schemata_by_ns.each do |ns,loc|
           loc = map_to_localfile(loc)
           schema_imports = schema_imports | ["<xs:import namespace=\""+ns+"\" schemaLocation=\""+loc+"\"/>\n"]

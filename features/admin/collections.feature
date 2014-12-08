@@ -19,16 +19,14 @@ Scenario: Navigating to the collections page
 
 Scenario: Constructing a valid collection
   Given I am on the home page
-  When I follow the link to ingest page
-  And I press the button to add new collection
+  When I go to "create new collection"
   And I enter valid metadata for a collection
   And I press the button to create a collection
   Then I should see a success message for creating a collection
 
 Scenario: Constructing a collection with valid permissions
   Given I am on the home page
-  When I follow the link to ingest page
-  And I press the button to add new collection
+  When I go to "create new collection"
   And I enter valid metadata for a collection
   And I enter valid permissions for a collection
   And I press the button to create a collection
@@ -36,25 +34,25 @@ Scenario: Constructing a collection with valid permissions
 
 Scenario: Constructing a collection with invalid permissions
   Given I am on the home page
-  When I follow the link to ingest page
-  And I press the button to add new collection
+  When I go to "create new collection"
   And I enter valid metadata for a collection
   And I enter invalid permissions for a collection
   And I press the button to create a collection
   Then I should see a failure message for invalid collection
 
 Scenario: Updating a collection with invalid metadata
-  Given a collection with pid "dri:collperm" created by "user1@user1.com"
+  Given a collection with pid "dri:collperm" created by "user1"
   When I go to the "collection" "show" page for "dri:collperm"
   When I follow the link to edit a collection
   And I enter invalid metadata for a collection
   And I press the button to save collection changes
-  Then I should see a failure message for invalid object
+  Then I should not see a success message for updating a collection
 
 Scenario: Updating a collection with invalid permissions
-  Given a collection with pid "dri:collperm" created by "user1@user1.com"
+  Given a collection with pid "dri:collperm" created by "user1"
   When I go to the "collection" "show" page for "dri:collperm"
   When I follow the link to edit a collection
+  And I enter valid metadata for a collection
   And I enter invalid permissions for a collection
   And I press the button to save collection changes
   Then I should see a failure message for invalid update collection
@@ -73,7 +71,7 @@ Scenario Outline: Adding a Digital Object in a governing/non-governing collectio
     | dri:obj4   | Object 4     | Test 4      | Text        | Test Rights   | dri:coll2      | non-governing   |
 
 Scenario Outline: Creating Digital Object in a governing collection using the web forms
-  Given a collection with pid "<collection_pid>" created by "user1@user1.com"
+  Given a collection with pid "<collection_pid>" created by "user1"
   When I create a Digital Object in the collection "<collection_pid>"
   Then the collection "<collection_pid>" should contain the new digital object
 
@@ -83,16 +81,16 @@ Scenario Outline: Creating Digital Object in a governing collection using the we
 
 @review
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
-  Given a Digital Object with pid "dri:obj4" and title "Object 4" created by "user1@user1.com"
-  And a collection with pid "dri:coll4" created by "user1@user1.com"
+  Given a Digital Object with pid "dri:obj4" and title "Object 4" created by "user1"
+  And a collection with pid "dri:coll4" created by "user1"
   When I add the Digital Object "dri:obj4" to the non-governing collection "dri:coll4" using the web forms
   And I go to the "collection" "show" page for "dri:coll4"
   Then I should see the Digital Object "dri:obj4" as part of the collection
 
 @review
 Scenario: Removing a Digital Object from a non-governing collection using the web forms
-  Given a Digital Object with pid "dri:obj5" and title "Object 5" created by "user1@user1.com"
-  And a collection with pid "dri:coll5" created by "user1@user1.com"
+  Given a Digital Object with pid "dri:obj5" and title "Object 5" created by "user1"
+  And a collection with pid "dri:coll5" created by "user1"
   When I add the Digital Object "dri:obj5" to the collection "dri:coll5" as type "non-governing"
   Then the collection "dri:coll5" should contain the Digital Object "dri:obj5" as type "non-governing"
   When I go to the "collection" "show" page for "dri:coll5"
@@ -114,7 +112,7 @@ Scenario: Deleting a collection as an admin
   Then I should see a success message for deleting a collection
 
 Scenario: Non-admin should not be given option to delete
-  Given a collection with pid "dri:coll7" created by "user1@user1.com"
+  Given a collection with pid "dri:coll7" created by "user1"
   And the collection with pid "dri:coll7" has status published
   When I go to the "collection" "show" page for "dri:coll7"
   And I follow the link to edit a collection

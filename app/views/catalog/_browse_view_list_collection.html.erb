@@ -35,12 +35,12 @@
     </div>
   </div>
   <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
-      <div class="dri_collection_image">
+      <div class="dri_image">
         <% image = cover_image ( document ) %>
         <% unless image.nil? %>
-            <%= image_tag image, :width=>"228" %>
+            <%= image_tag image, :width=>"200" %>
         <% else %>
-            <%= image_tag "no_image.png", :width=>"228" %>
+            <%= image_tag "no_image.png", :width=>"200" %>
         <% end %>
       </div>
   <% end %>

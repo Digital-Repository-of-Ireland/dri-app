@@ -47,7 +47,7 @@ describe ObjectsController do
     end
 
     it 'should not set the status of a published object' do
-      @object.status = ["published"]
+      @object.status = "published"
       @object.save
 
       post :status, :id => @object.id, :status => "draft"

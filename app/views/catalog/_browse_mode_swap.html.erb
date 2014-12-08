@@ -1,4 +1,5 @@
 <div class="dri_facet_restrictions_container">
+<% unless (controller_name == 'saved_searches' && action_name == 'index') %>
   <ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs" >
     <% copySearchParams = params.clone %>
     <% copySearchParams.delete(:page) %>
@@ -11,6 +12,12 @@
         <li id="dri_browse_sort_tabs_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.collections'), copySearchParams, :id=>"collections" %></li>
         <li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.objects'), "#", :id=>"objects", :class=>'selected' %></li>
     <% end %>
+    <%= render 'shared/header_browse_paginate' %>
   </ul>
+  <% else %>
+  <%= render 'shared/header_browse_paginate' %>
+  <% end %>
+
 </div>
+
 <!-- close dri_facet_restrictions_container -->

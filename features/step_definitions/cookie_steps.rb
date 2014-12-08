@@ -46,5 +46,5 @@ Then /^The language cookie content should be (.*)$/ do |value|
 end
 
 Given /^I accept cookies terms$/ do
-  click_button("Accept End User Agreement")
+  find('#accept_cookies').trigger('click')
 end

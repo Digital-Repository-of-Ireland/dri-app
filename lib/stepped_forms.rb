@@ -14,7 +14,6 @@ module SteppedForms
     def update_ingest_state
       session[:ingest][:method] = params[:ingestmethod] if params[:ingestmethod]
       session[:ingest][:collection] = params[:ingestcollection] if params[:ingestcollection]
-      session[:ingest][:object_type] = params[:ingesttype] if params[:ingesttype]
       session[:ingest][:current_step] = next_ingest_step
     end
 

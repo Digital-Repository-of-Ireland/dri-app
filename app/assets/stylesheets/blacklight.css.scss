@@ -1,11 +1,10 @@
 @import 'bootstrap';
-@import 'bootstrap-responsive';
 
 @import 'blacklight/blacklight';
 
 #documents .documentFunctions
 {
-        float:right;
+  float:right;
   margin: 10px 0;
 
   .bookmark_toggle

@@ -28,7 +28,7 @@ module ApplicationHelper
   end
 
   def get_asset_version_list( file_id, datastream )
-    files = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => file_id, :d => datastream })
+    files = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => file_id, :d => datastream }).to_a
     return files
   end
 
@@ -77,16 +77,16 @@ module ApplicationHelper
   end
 
   def default_image ( file_document )
-    path = "no_image.png"
+    path = asset_url "no_image.png"
 
     unless file_document.nil?
       unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
         format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
 
-        path = "dri/formats/#{format}.png"
+        path = asset_url "dri/formats/#{format}.png"
 
         if Rails.application.assets.find_asset(path).nil?
-          path = "no_image.png"
+          path = asset_url "no_image.png"
         end
       end
     end
@@ -147,10 +147,26 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
-  def count_collections_institute( institute, status )
-    solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:" + status + " AND #{Solrizer.solr_name('institute', :stored_searchable, type: :string)}:" + institute + " AND " +
-    "#{Solrizer.solr_name('type', :stored_searchable, type: :string)}:Collection"
-    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+  def get_query_collections_by_institute( institute )
+    solr_query = ""
+    if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
+      solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
+    end
+    solr_query = solr_query + "#{Solrizer.solr_name('institute', :stored_searchable, type: :string)}:" + institute + " AND " +
+        "#{Solrizer.solr_name('type', :stored_searchable, type: :string)}:Collection"
+    return solr_query
+  end
+
+  def count_collections_institute( institute )
+    solr_query = get_query_collections_by_institute(institute)
+    count = ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+    return count
+  end
+
+  def get_collections_institute( institute )
+    solr_query = get_query_collections_by_institute(institute)
+    response = ActiveFedora::SolrService.query(solr_query, :defType => "edismax")
+    return response
   end
 
   def count_items_in_collection_by_type(collection_id, type)
@@ -178,7 +194,7 @@ module ApplicationHelper
   end
 
   def get_institute_collection_counts( institute )
-      @coll_counts = count_collections_institute(institute, "published")
+      @coll_counts = count_collections_institute(institute)
   end
 
   def get_institutes( document )
@@ -230,6 +246,10 @@ module ApplicationHelper
 
   def has_browse_params?
     return has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
+  end
+
+  def has_search_parameters?
+    !params[:q].blank? or !params[:f].blank? or !params[:search_field].blank?
   end
 
 end

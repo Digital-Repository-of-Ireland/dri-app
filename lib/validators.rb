@@ -87,11 +87,11 @@ module Validators
   #
   def Validators.virus_scan(file)
       if defined? ClamAV
-        logger.info "Performing virus scan."
+        Rails.logger.info "Performing virus scan."
         result = ClamAV.instance.scanfile( file.respond_to?(:path) ? file.path : file )
         raise Exceptions::VirusDetected.new(result) unless result == 0
       else
-        logger.warn "Virus scanning is disabled."
+        Rails.logger.warn "Virus scanning is disabled."
       end
   end
 

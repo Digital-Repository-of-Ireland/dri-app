@@ -15,11 +15,21 @@ class ObjectsController < CatalogController
   before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
+  # Displays the New Object form
+  #
+  def new
+    @collection = params[:collection]
+
+    @object = Batch.new
+    supported_licences()
+  end
+
+
   # Edits an existing model.
   #
   def edit
     enforce_permissions!("edit",params[:id])
-    get_supported_licences()
+    supported_licences()
     @object = retrieve_object!(params[:id])
     respond_to do |format|
       format.html
@@ -45,7 +55,7 @@ class ObjectsController < CatalogController
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
 
     update_object_permission_check(params[:batch][:manager_groups_string], params[:batch][:manager_users_string], params[:id])
-    get_supported_licences()
+    supported_licences()
 
     @object = retrieve_object!(params[:id])
 
@@ -67,6 +77,7 @@ class ObjectsController < CatalogController
     respond_to do |format|
       if updated
         MetadataHelpers.checksum_metadata(@object)
+        @object.save
         duplicates?(@object)
 
         DOI.mint_doi( @object )
@@ -104,7 +115,7 @@ class ObjectsController < CatalogController
 
     if request.content_type == "multipart/form-data"
       xml = MetadataHelpers.load_xml(params[:metadata_file])
-      MetadataHelpers.set_metadata_datastream(@object, xml)
+      @object.update_metadata xml
     end
 
     @object.depositor = current_user.to_s
@@ -114,7 +125,7 @@ class ObjectsController < CatalogController
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
 
-    get_supported_licences()
+    supported_licences()
 
     if @object.valid? && @object.save
 
@@ -286,7 +297,7 @@ class ObjectsController < CatalogController
     raise Exceptions::BadRequest if @object.is_collection?
 
     unless @object.status.eql?("published")
-      @object.status = [params[:status]] if params[:status].present?
+      @object.status = params[:status] if params[:status].present?
       @object.save
     end
 

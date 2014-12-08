@@ -32,7 +32,7 @@ I want to be able to use the faceted search interface
 # Thus we need to perform an empty search first
 # This is probably a bug, need confirmation of what should appear on main page
   Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
-  Given a collection with pid "dri:collection" and title "Test collection" created by "admin@admin.com"
+  Given a collection with pid "dri:collection" and title "Test collection" created by "admin"
   And an object in collection "dri:collection" with metadata from file "SAMPLEA.xml"
   And I am not logged in
   When I go to "the home page"
@@ -45,7 +45,7 @@ I want to be able to use the faceted search interface
     | facetname  | facetid                              | search          | result             |
     | Subjects   | blacklight-subject_sim               | subject1        | SAMPLE AUDIO TITLE |
     | Places     | blacklight-geographical_coverage_sim | SAMPLE COUNTRY  | SAMPLE AUDIO TITLE |
-    | Era        | blacklight-temporal_coverage_sim     | SAMPLE ERA      | SAMPLE AUDIO TITLE |
+    | Subject (Temporal) | blacklight-temporal_coverage_sim     | SAMPLE ERA      | SAMPLE AUDIO TITLE |
     | Names      | blacklight-person_sim                | Collins         | SAMPLE AUDIO TITLE |
     | Language   | blacklight-language_sim              | English         | SAMPLE AUDIO TITLE |
     | Mediatype  | blacklight-file_type_display_sim     | Audio           | SAMPLE AUDIO TITLE |
@@ -55,7 +55,7 @@ I want to be able to use the faceted search interface
 @wip
 Scenario Outline: Faceted Search for admin user
   Given I am logged in as "admin" in the group "admin"
-  Given a collection with pid "dri:collection" and title "Test collection" created by "user1@user1.com"
+  Given a collection with pid "dri:collection" and title "Test collection" created by "user1"
   And an object in collection "dri:collection" with metadata from file "SAMPLEA.xml"
   When I go to "the home page"
   And I press the button to search
@@ -79,8 +79,8 @@ Scenario Outline: Faceted Search for admin user
 # Scenario: Search using basic and advanced facet searching including Boolean logic
 Scenario: Successful search using AND boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "sample AND audio"
   And I press the button to search
   And I select the "objects" tab
@@ -91,8 +91,8 @@ Scenario: Successful search using AND boolean search string
 
 Scenario: Unsuccessful search using AND boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "invalidstring AND audio"
   And I press the button to search
   And I select the "objects" tab
@@ -100,8 +100,8 @@ Scenario: Unsuccessful search using AND boolean search string
 
 Scenario: Successful search using OR boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "sample OR audio"
   And I press the button to search
   And I select the "objects" tab
@@ -112,8 +112,8 @@ Scenario: Successful search using OR boolean search string
 
 Scenario: Unsuccessful search using OR boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "invalidstring1 OR invalidstring2"
   And I press the button to search
   And I select the "objects" tab
@@ -121,8 +121,8 @@ Scenario: Unsuccessful search using OR boolean search string
 
 Scenario: Successful search using NOT boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "NOT invalidstring"
   And I press the button to search
   And I select the "objects" tab
@@ -130,8 +130,8 @@ Scenario: Successful search using NOT boolean search string
 
 Scenario: Unsuccessful search using NOT boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "NOT sample"
   And I press the button to search
   And I select the "objects" tab
@@ -139,8 +139,8 @@ Scenario: Unsuccessful search using NOT boolean search string
 
 Scenario: Successful search using "+"
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "+sample"
   And I press the button to search
   And I select the "objects" tab
@@ -148,8 +148,8 @@ Scenario: Successful search using "+"
 
 Scenario: Unsuccessful search using "+"
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "+invalidstring"
   And I press the button to search
   And I select the "objects" tab
@@ -157,8 +157,8 @@ Scenario: Unsuccessful search using "+"
 
 Scenario: Successful search using "-"
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "-invalidstring"
   And I press the button to search
   And I select the "objects" tab
@@ -166,8 +166,8 @@ Scenario: Successful search using "-"
 
 Scenario: Unsuccessful search using "-"
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "-sample"
   And I press the button to search
   And I select the "objects" tab
@@ -175,8 +175,8 @@ Scenario: Unsuccessful search using "-"
 
 Scenario: Wildcard search
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1@user1.com"
-  And I have created a "Sound" object with metadata "SAMPLEA.xml" in the collection "Sample Collection"
+  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
   When I fill in "q" with "*"
   And I press the button to search
   And I select the "objects" tab

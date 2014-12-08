@@ -199,9 +199,9 @@ Run bundler. Virus scanning should now take place when an asset is uploaded.
 
 == Storage
 
-Surrogate files are stored using the Ceph S3 interface. To create surrogates
-you will need a Ceph instance running. A Ceph VM is available in the drirepo
-repository. To start up Ceph run
+Surrogate files are stored using the S3 interface. To create surrogates
+you will need access to an S3 server. A Ceph VM with S3 Rados Gateway is available
+in the drirepo repository. To start up Ceph run
 
   $ vagrant up ceph
 
@@ -224,8 +224,30 @@ to the hydra head's config/settings.yml or config/settings.local.yml file as fol
 Note that the keys should be pasted in as they appear in the output of the radosgw-admin command,
 but all '\' characters should be stripped.
 
-Note that the storage code is stubbed for the Cucumber tests, but you must have a ceph
-host available and configured in order to run the rspec tests.
+An alternative, if the Ceph VM is not working for you, is to use the FakeS3 gem. Install
+ the gem with:
+
+ $ gem install fakes3
+
+Create a directory for the server to use to store files, and then start the server with:
+
+ $ sudo fakes3 -r /path/to/fakes3_root -p 80 -h localhost
+
+The settings should then be modified to the following:
+
+  S3:
+    server: localhost
+    use_ssl: false
+    access_key_id: anything
+    secret_access_key: anything
+
+To use a port other than port 80, change the server setting to be:
+
+  server: localhost:8081/
+
+and start fakes3 using this port number
+
+ $ fakes3 -r /path/to/fakes3_root -p 8081
 
 == Migrating from sqlite3 to mysql
 

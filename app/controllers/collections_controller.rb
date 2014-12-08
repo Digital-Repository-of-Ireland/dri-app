@@ -35,7 +35,7 @@ class CollectionsController < CatalogController
     @object.rights = [""]
     @object.type = [ "Collection" ]
 
-    get_supported_licences()
+    supported_licences()
 
     respond_to do |format|
       format.html
@@ -54,7 +54,7 @@ class CollectionsController < CatalogController
     @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
     @depositing_institute = InstituteHelpers.get_depositing_institute(@object)
 
-    get_supported_licences()
+    supported_licences()
 
     respond_to do |format|
       format.html
@@ -81,7 +81,7 @@ class CollectionsController < CatalogController
     @institutes = Institute.all
     @inst = Institute.new
 
-    get_supported_licences()
+    supported_licences()
 
     set_access_permissions(:batch, true)
 
@@ -93,7 +93,11 @@ class CollectionsController < CatalogController
       if updated
         DOI.mint_doi( @object )
 
-        Storage::CoverImages.validate(cover_image, @object)
+        unless cover_image.blank?
+          unless Storage::CoverImages.validate(cover_image, @object)
+            flash[:error] = t('dri.flash.error.cover_image_not_saved')
+          end
+        end
       else
         flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
       end
@@ -134,7 +138,7 @@ class CollectionsController < CatalogController
     @collection.type = ["Collection"] if @collection.type == nil
     @collection.type.push("Collection") unless @collection.type.include?("Collection")
 
-    get_supported_licences()
+    supported_licences()
 
     # If a cover image was uploaded, remove it from the params hash
     cover_image = params[:batch].delete(:cover_image)
@@ -158,7 +162,11 @@ class CollectionsController < CatalogController
       # We have to create a default reader group
       create_reader_group
 
-      Storage::CoverImages.validate(cover_image, @collection)
+      unless cover_image.blank?
+        unless Storage::CoverImages.validate(cover_image, @collection)
+          flash[:error] = t('dri.flash.error.cover_image_not_saved')
+        end
+      end
     end
 
     respond_to do |format|
@@ -196,7 +204,7 @@ class CollectionsController < CatalogController
       return
     else
 
-      xml = MetadataHelpers.load_xml_bypass_validation(params[:metadata_file])
+      xml = MetadataHelpers.load_xml(params[:metadata_file])
       metadata_class = MetadataHelpers.get_metadata_class_from_xml xml
 
       if metadata_class.nil?
@@ -207,7 +215,7 @@ class CollectionsController < CatalogController
       end
 
       @collection = Batch.new :desc_metadata_class => metadata_class.constantize
-      MetadataHelpers.set_metadata_datastream(@collection, xml)
+      @collection.update_metadata xml
       MetadataHelpers.checksum_metadata(@collection)
       duplicates?(@collection)
 
@@ -240,8 +248,6 @@ class CollectionsController < CatalogController
 
         # We have to create a default reader group
         create_reader_group
-
-        Storage::CoverImages.validate(nil, @collection)
       end
 
       respond_to do |format|

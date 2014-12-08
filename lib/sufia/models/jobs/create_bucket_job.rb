@@ -1,6 +1,7 @@
 class CreateBucketJob < ActiveFedoraPidBasedJob
 
   require 'storage/s3_interface'
+  require 'utils'
 
   def queue_name
     :create_bucket
@@ -11,7 +12,7 @@ class CreateBucketJob < ActiveFedoraPidBasedJob
     Rails.logger.info "Creating bucket for object #{bucket_id}"
 
     storage = Storage::S3Interface.new
-    storage.create_bucket(bucket_id.sub('dri:', ''))
+    storage.create_bucket(Utils.split_id(bucket_id))
 
     after_create_bucket
   end
@@ -26,9 +27,9 @@ class CreateBucketJob < ActiveFedoraPidBasedJob
       Sufia.queue.push(IndexTextJob.new(generic_file_id))
       Sufia.queue.push(TextSurrogateJob.new(generic_file_id))
     elsif generic_file.video?
-      Sufia.queue.push(TranscodeVideoJob.new(generic_file_id))
+      Sufia.queue.push(CreateDerivativesJob.new(generic_file_id))
     elsif generic_file.audio?
-      Sufia.queue.push(TranscodeAudioJob.new(generic_file_id))
+      Sufia.queue.push(CreateDerivativesJob.new(generic_file_id))
     elsif generic_file.image?
       Sufia.queue.push(ThumbnailJob.new(generic_file_id))
     end

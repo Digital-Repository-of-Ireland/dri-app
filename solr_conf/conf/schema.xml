@@ -7,6 +7,11 @@
   <uniqueKey>id</uniqueKey>
   
   <fields>
+    <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
+      or Solr won't start. _version_ and update log are required for SolrCloud
+    -->
+    <field name="_version_" type="long" indexed="true" stored="true"/> 
+  
     <field name="id" type="string" stored="true" indexed="true" multiValued="false" required="true"/>
     <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
     <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>   
@@ -15,6 +20,7 @@
     <field name="lng" type="tdouble" stored="true" indexed="true" multiValued="false"/>
 
     <!-- NOTE:  not all possible Solr field types are represented in the dynamic fields -->
+    <dynamicField name="ignored_*" type="ignored"/>
 
     <!-- text (_t...) -->
     <dynamicField name="*_ti" type="text" stored="false" indexed="true" multiValued="false"/>
@@ -320,7 +326,8 @@
         <tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
       </analyzer>
     </fieldType>
-    
+   
+    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" /> 
   </types>
   
 </schema>
