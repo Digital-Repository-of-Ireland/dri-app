@@ -21,6 +21,7 @@ class ObjectsController < CatalogController
     @collection = params[:collection]
 
     @object = Batch.new
+    @object.creator = [""]
     supported_licences()
   end
 
