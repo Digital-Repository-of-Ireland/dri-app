@@ -2308,7 +2308,8 @@ h2.dri_no_asset_availiable {
 .dri_asset_holder {
   margin: 20px 0 0 0;
   padding: 0px;
-  width: 400px;
+  max-width: 400px;
+  max-height: 300px;
   display: block;
   .carousel-control {
     background: none;
