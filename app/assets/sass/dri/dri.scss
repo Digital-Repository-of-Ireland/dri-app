@@ -27,6 +27,9 @@ html {
   }
 }
 
+.bold {
+  font-weight: bold;
+}
 
 /* Timeline-CSS Overrides */
 .storyjs-embed {
@@ -2626,6 +2629,9 @@ ul.dri_view_collection {
     a:hover span.dri_stat_num {
       color: #505050;
       float: right;
+    }
+    i {
+      margin-right: 5px;
     }
   }
 }
