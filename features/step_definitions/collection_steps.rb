@@ -86,7 +86,7 @@ Given /^I have associated the institute "(.?*)" with the collection entitled "(.
     And I follow the link to browse
     And I follow "#{collection}" within "div.dri_result_container"
     And I follow the link to edit a collection
-    And I press the button to add a new institute
+    And I follow the link to add a new institute
     And I fill in "institute[name]" with "#{institute}"
     And I fill in "institute[url]" with "http://www.dri.ie/"
     And I attach the institute logo file "sample_logo.png"
@@ -103,7 +103,7 @@ end
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
     When I go to the "collection" "show" page for "#{collection_pid}" 
-    And I press the button to upload XML
+    And I click the link to upload XML
     And I attach the metadata file "valid_metadata.xml"
     And I press the button to ingest metadata
   }
