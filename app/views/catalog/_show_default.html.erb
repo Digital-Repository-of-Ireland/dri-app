@@ -50,22 +50,32 @@
       <div class="dri_objecttools_title">
         <%= t('dri.views.catalog.titles.editor_tools') %>
       </div>
-
-      <div class="dri_grey_button" >
-        <%= link_to t('dri.views.catalog.links.edit_this_record'), edit_object_path(@document), :id => "edit_record" %>
-      </div>
+      <ul class="dri_view_collection bold">
+          <%= link_to  edit_object_path(@document), :id => "edit_record" do %>
+                <li>
+        <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
+      </li>
+      
+      <% end %>
 
       <% unless @files.nil? || @files.empty? %>
-          <div class="dri_grey_button" >
-            <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
-          </div>
+           <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
+          <li  >
+              <%= t('dri.views.catalog.links.generate_surrogates') %>
+           </li>
+           <% end %>
       <% end %>
 
       <% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
-          <div class="dri_grey_button" >
-            <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
-          </div>
+          <%= link_to status_path(@document), {:id => 'status_update', :"data-toggle" => "modal", :"data-target" => "#ajax-modal" } do %>
+
+          <li >
+              <i class="fa fa-eye fa-lg"></i><%= t('dri.views.catalog.links.status_update') %>
+            </li>
+            <% end %>
       <% end %>
+        
+      </ul>
 
   <% end %>
 
