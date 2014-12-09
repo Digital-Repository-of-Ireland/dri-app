@@ -24,6 +24,7 @@ Feature:
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
     Then I should see "Manage Your Bookmarks"
     Given I check "toggle_bookmark_dri:bookcoll"
+    And I wait for the ajax request to finish
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
 
@@ -34,9 +35,11 @@ Feature:
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
     Then I should see "Manage Your Bookmarks"
     Given I check "toggle_bookmark_dri:bookcoll"
+    And I wait for the ajax request to finish
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
     Given I click the link to remove bookmark
+    And I wait for the ajax request to finish
     Then I should see "no bookmark"
 
   Scenario: Clear all bookmarks
@@ -46,7 +49,9 @@ Feature:
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
     Then I should see "Manage Your Bookmarks"
     Given I check "toggle_bookmark_dri:bookcoll"
+    And I wait for the ajax request to finish
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
     Given I follow the link to clear bookmarks
+    And I wait for the ajax request to finish
     Then I should see "no bookmark"
