@@ -1,10 +1,24 @@
-<%= form_tag status_update_path(@object.id) ,:method => :put do %>
-  <%= label_tag :status, t('dri.views.objects.forms.status') %>:
-  <%= select_tag(:status, options_for_select(['draft','reviewed'], selected: @object.status)) %><br />
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal">
+		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+	</button>
+	<h4 class="modal-title" id="myModalLabel"><%= t('dri.views.catalog.links.status_update') %></h4>
+</div>
+<div class="modal-body dri_login_form_block">
+	<%= form_tag status_update_path(@object.id) ,:method => :put do %>
+	<div>
+		<%= label_tag :status, t('dri.views.objects.forms.status') %>:
+		<%= select_tag(:status, options_for_select(['draft','reviewed'], selected: @object.status)) %>
+	</div>
+	<div>
+		<%= label_tag :apply_all, t('dri.views.objects.forms.apply_to_all') %>:
+		<%= check_box_tag 'apply_all', 'yes', false %>
+	</div>
 
-  <%= label_tag :apply_all, t('dri.views.objects.forms.apply_to_all') %>:
-  <%= check_box_tag 'apply_all', 'yes', false %><br />
+	<div>
+		<%= submit_tag t('dri.views.objects.buttons.update_status'), :id => 'status_update' %>
+	</div>
+	<% end %>
+	<%= link_to t('dri.views.objects.edit.links.view_record'), url_for(:controller => "catalog", :action => "show", :id => @object.id), :id => "view_record", :class => 'dri_cancel' %>
 
-  <br /><%= submit_tag t('dri.views.objects.buttons.update_status'), :id => 'status_update' %>
-<% end %>
-     <%= link_to t('dri.views.objects.edit.links.view_record'), url_for(:controller => "catalog", :action => "show", :id => @object.id), :id => "view_record", :class => 'dri_cancel' %>
+</div>

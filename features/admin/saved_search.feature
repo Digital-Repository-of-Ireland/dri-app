@@ -39,7 +39,7 @@ Feature: Saved Search criteria
     When I press the button to save search
     And I go to "my saved search page"
     Then I should see a search result "Collections (sample)"
-    When I press the button to clear saved search
+    When I follow the link to clear saved search
     Then I should see a "Successfully removed that saved search"
     And I should see a "no saved search"
 
@@ -72,6 +72,6 @@ Feature: Saved Search criteria
     When I press the button to save search
     And I go to "my saved search page"
     Then I should see a search result "Objects (sample)"
-    When I press the button to clear saved search
+    When I follow the link to clear saved search
     Then I should see a "Successfully removed that saved search"
     And I should see a "no saved search"

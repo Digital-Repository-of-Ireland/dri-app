@@ -79,31 +79,30 @@ Given /^the object with pid "(.*?)" is in the collection with pid "(.*?)"$/ do |
   collection.save
 end
 
-Given /^I have associated the institute "(.?*)" with the collection entitled "(.?*)"$/ do |institute,collection|
-  steps %{
-    Given I am on the home page
-    When I perform a search
-    And I follow the link to browse
-    And I follow "#{collection}" within "div.dri_result_container"
-    And I follow the link to edit a collection
-    And I press the button to add a new institute
-    And I fill in "institute[name]" with "#{institute}"
-    And I fill in "institute[url]" with "http://www.dri.ie/"
-    And I attach the institute logo file "sample_logo.png"
-    And I press the button to add an institute
-    And I wait for the ajax request to finish
-    Then the "institute" drop-down should contain the option "#{institute}"
-    When I select "#{institute}" from the selectbox for institute
-    And I press the button to associate an institute
-    And I wait for the ajax request to finish
-    Then I should see the image "#{institute}.png"
-  }
+Given /^I have associated the institute "(.?*)" with the collection with pid "(.?*)"$/ do |institute_name,pid|
+  collection = ActiveFedora::Base.find(pid ,{:cast => true})
+
+  institute = Institute.new #Institute.where(:name => params[:institute_name]).first
+  institute.name = institute_name
+  institute.url = "http://www.dri.ie"
+
+  logo = Rack::Test::UploadedFile.new(File.join(cc_fixture_path, "sample_logo.png"), "image/png")
+  storage = Storage::S3Interface.new
+  storage.store_file(logo.path,
+                     "#{name}.#{logo.original_filename.split(".").last}",
+                     Settings.data.logos_bucket)
+  institute.logo = storage.get_link_for_file(Settings.data.logos_bucket,
+                   "#{institute_name}.#{logo.original_filename.split(".").last}")
+  institute.save
+
+  collection.institute = collection.institute.push(institute.name)
+  collection.save
 end
 
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
     When I go to the "collection" "show" page for "#{collection_pid}" 
-    And I press the button to upload XML
+    And I click the link to upload XML
     And I attach the metadata file "valid_metadata.xml"
     And I press the button to ingest metadata
   }

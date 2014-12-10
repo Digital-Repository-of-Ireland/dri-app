@@ -6,17 +6,12 @@
 <div class="dri_ingest_form">
 <fieldset>
 <legend><%= t('dri.views.objects.legends.upload_file') %></legend>
+
     <% if !@files.empty? %>
   <p class="legend-caption"><%= t('dri.views.objects.legends.file_caption') %></p>
-  <%= form_tag(url_for(object_files_path(@object.pid)), :multipart => true, :method => :post, :id => "file_uploader") do %>
-    <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-    <%= hidden_field_tag 'datastream', "content" %>
-    <%= file_field_tag 'Filedata', :required => "true", :onchange=>'coverImageFileUploadHelper($(this));' %>
-    <%= button_tag t('dri.views.objects.buttons.add_master'), :id => "add_file", :name => "upload_file", :class => "btn-primary btn-large" %>
-  <% end %>
-<% else %>
-
+  <% else %>
   <p class="legend-caption"><%= t('dri.views.objects.legends.upload_file_caption') %></p>
+  <% end %>
     <div class="dri_file_upload">
                 <%= form_tag(url_for(object_files_path(@object.pid)), :multipart => true, :method => :post, :id => "file_uploader") do %>
 
@@ -34,7 +29,6 @@
                       </div>
                 <% end %>
     </div>
-<% end %>
 </fieldset>
 </div>
 </div>

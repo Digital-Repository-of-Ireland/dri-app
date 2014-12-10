@@ -10,7 +10,7 @@ Background:
 Scenario: Constructing a valid Digital Object
   Given a collection with pid "web:xxxx" created by "user1"
   When I go to the "collection" "show" page for "web:xxxx"
-  And I press the button to upload XML
+  And I follow the link to upload XML
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
@@ -18,7 +18,7 @@ Scenario: Constructing a valid Digital Object
 Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
   Given a collection with pid "web:xxxx" created by "user1"
   When I go to the "collection" "show" page for "web:xxxx"
-  And I press the button to upload XML
+  And I follow the link to upload XML
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
   Then I should see a failure message for <case>
@@ -32,7 +32,7 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
 Scenario Outline: Constructing a valid Digital Object
   Given a collection with pid "web:xxxx" created by "user1"
   When I go to the "collection" "show" page for "web:xxxx"
-  And I press the button to upload XML
+  And I follow the link to upload XML
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
@@ -62,7 +62,7 @@ Scenario: Replacing the metadata file of a Digital Object
 Scenario: Constructing a Digital Object using the web form
   Given a collection with pid "web:xxxx" created by "user1"
   When I go to the "collection" "show" page for "web:xxxx"
-  And I press the button to add an object
+  And I follow the link to add an object
   When I enter valid metadata
   And I press the button to continue
   Then I should see a success message for ingestion
@@ -71,7 +71,7 @@ Scenario: Constructing a Digital Object using the web form
 Scenario: Constructing an invalid Digital Object using the web form
   Given a collection with pid "web:xxxx" created by "user1"
   When I go to the "collection" "show" page for "web:xxxx"
-  And I press the button to add an object
+  And I follow the link to add an object
   When I enter invalid metadata
   And I press the button to continue
   Then I should not see a success message for ingestion
@@ -113,7 +113,7 @@ Scenario: Adding multiple audio files for a Digital Object
   Then I should see a success message for file upload
   When I follow the link to edit an object
   And I attach the asset file "sample_audio.mp3"
-  And I press the button to add a file
+  And I press the button to upload a file
   Then I should see a success message for file upload
 
 Scenario Outline: Adding an audio file that is not valid
@@ -141,7 +141,7 @@ Scenario Outline: Editing an audio file where the file is invalid
   And I have added an audio file
   When I follow the link to edit an object
   And I attach the asset file "<asset_name>"
-  And I press the button to add a file
+  And I press the button to upload a file
   Then I should see a failure message for <case>
 
   Examples:

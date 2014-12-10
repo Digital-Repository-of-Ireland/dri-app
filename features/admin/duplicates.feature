@@ -12,7 +12,7 @@ Background:
 Scenario: Ingesting a duplicate Digital Object using metadata file upload
   Given I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dup:xxxx"
   When I go to the "collection" "show" page for "dup:xxxx"
-  And I press the button to upload XML 
+  And I follow the link to upload XML 
   And I attach the metadata file "SAMPLEA.xml"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
@@ -21,7 +21,7 @@ Scenario: Ingesting a duplicate Digital Object using metadata file upload
 Scenario: Ingesting a duplicate Digital Object using form input
   Given I have created an object with title "SAMPLE OBJECT A" in the collection with pid "dup:xxxx"  
   When I go to the "collection" "show" page for "dup:xxxx"
-  And I press the button to add an object
+  And I follow the link to add an object
   When I enter valid metadata with title "SAMPLE OBJECT A"
   And I press the button to continue
   Then I should see a success message for ingestion
