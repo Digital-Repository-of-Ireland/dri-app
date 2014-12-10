@@ -42,7 +42,7 @@ Feature:
     Then I should see the image "TestInstitute.png"
 
   Scenario: Viewing associated institutes for a collection
-    Given I have associated the institute "TestInstitute" with the collection entitled "Institute Test Collection"
+    Given I have associated the institute "TestInstitute" with the collection with pid "dri:instcoll"
     When I perform a search
     And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"
@@ -50,11 +50,11 @@ Feature:
     
   Scenario: Viewing institutes page
     Given I am on the home page
-    And I have associated the institute "TestInstitute" with the collection entitled "Institute Test Collection"
+    And I have associated the institute "TestInstitute" with the collection with pid "dri:instcoll"
     And I follow the link to institutions
     Then I should see the image "TestInstitute.png"
 
   Scenario: viewing associated institutes for an object
-    Given I have associated the institute "TestInstitute" with the collection entitled "Institute Test Collection"
+    Given I have associated the institute "TestInstitute" with the collection with pid "dri:instcoll"
     When I go to the "object" "show" page for "dri:instobj"
     Then I should see the image "TestInstitute.png"

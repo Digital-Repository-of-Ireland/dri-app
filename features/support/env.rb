@@ -24,7 +24,7 @@ Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new(app,
     :timeout => 180,
     :js_errors => false,
-    :debug => true)
+    :debug => false)
 end
 
 Capybara.ignore_hidden_elements = false
