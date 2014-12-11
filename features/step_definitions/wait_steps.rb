@@ -7,10 +7,8 @@ Then /^I should wait for "(.*?)" seconds$/ do |time|
 end
 
 When /^I wait for the ajax request to finish$/ do
-  counter = 0
-  while page.execute_script("return $.active").to_i > 0
-    counter += 1
-    sleep(0.1)
-    raise "AJAX request took longer than 5 seconds." if counter >= 50
+  start_time = Time.now
+  page.evaluate_script('jQuery.isReady&&jQuery.active==0').class.should_not eql(String) until page.evaluate_script('jQuery.isReady&&jQuery.active==0') or (start_time + 5.seconds) < Time.now do
+    sleep 1
   end
 end
