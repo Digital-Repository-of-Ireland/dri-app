@@ -19,17 +19,28 @@ DRI::ModelSupport::Files.module_eval do
       	return false
       end
 
-      gf = GenericFile.new(:pid => Sufia::IdService.mint)
+      gf = DRI::GenericFile.new(:pid => Sufia::IdService.mint)
       gf.batch = self
+      
+      # FIXME - Temporary (needs to be explored in detail), apply_depositor_metadata before save
+      gf.apply_depositor_metadata(self.manager_users_string)
+      gf.manager_users_string=self.manager_users_string
+      gf.discover_groups_string="public"
+      gf.read_groups_string="public"
+      gf.private_metadata="0"
+      gf.master_file="0"
+      
+      # FIXME Error when saving - @messages={:edit_users=>["Depositor must have edit access"]
       gf.save
 
       create_file(file, file_name, gf.id, dsid, "")
-
+      # TODO - Remove hardcoded URL!
       url = "http://repository.dri.ie/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/objects/#{gf.id}/file"
       gf.update_file_reference dsid, :url=>url, :mimeType=>mime_type.to_s
 
       begin
           gf.save!
+          Sufia.queue.push(CharacterizeJob.new(gf.id))
       rescue Exception => e
           logger.error "Error saving file: #{e.message}"
         return false
@@ -45,7 +56,12 @@ DRI::ModelSupport::Files.module_eval do
     end
 
     def create_file(file, file_name, object_id, datastream, checksum)
-      count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => object_id, :d => datastream } ]).count
+      # Error: Couldn't find all LocalFiles with 'id': (all, {:conditions=>[\"fedora_id LIKE 
+        # :f AND ds_id LIKE :d\", {:f=>\"dri:z603r3626\", :d=>\"content\"}]}) (found 0 results, but was looking for 2)
+      # count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => object_id, :d => datastream } ]).count
+      
+      # Changed to update use of deprecated method
+      count = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => object_id, :d => datastream }).count
 
       dir = local_storage_dir.join(object_id).join(datastream+count.to_s)
 
