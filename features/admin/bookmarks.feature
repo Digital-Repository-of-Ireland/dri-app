@@ -27,6 +27,7 @@ Feature:
     And I wait for the ajax request to finish
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
+    And I wait for the ajax request to finish
 
   Scenario: Remove bookmark
     Given I am on the home page
