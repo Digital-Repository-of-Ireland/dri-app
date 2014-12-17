@@ -46,7 +46,7 @@
   <%= render :partial => "tools" %>
 
   <% if signed_in? && (can?(:read_master, @document)) %>
-      <%= render :partial => "show_downloads" %>
+      <%= render :partial => "show_file_tools" %>
       <div class="dri_objecttools_title">
         <%= t('dri.views.catalog.titles.editor_tools') %>
       </div>
@@ -55,7 +55,7 @@
                 <li>
         <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
       </li>
-      
+
       <% end %>
 
       <% unless @files.nil? || @files.empty? %>
@@ -74,7 +74,7 @@
             </li>
             <% end %>
       <% end %>
-        
+
       </ul>
 
   <% end %>
