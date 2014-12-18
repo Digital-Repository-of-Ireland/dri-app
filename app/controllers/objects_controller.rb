@@ -1,7 +1,6 @@
 # Controller for Digital Objects
 #
 
-require 'stepped_forms'
 require 'metadata_helpers'
 require 'institute_helpers'
 require 'doi/doi'
@@ -10,7 +9,6 @@ require 'solr/query'
 include Utils
 
 class ObjectsController < CatalogController
-  include SteppedForms
 
   before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
