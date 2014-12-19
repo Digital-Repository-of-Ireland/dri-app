@@ -19,9 +19,7 @@
     <% elsif surrogate.nil? && (can? :read_master, @document) %>
         <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{generic_file[:file_size].first.present? ? number_to_human_size(generic_file[:file_size].first.to_f) : t('dri.views.catalog.links.unknown_size')})", file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
     <% elsif surrogate.present? %>
-        <% mime_type_list = MIME::Types[generic_file[:mime_type].first] %>
-        <% file_extension = mime_type_list.first.extensions.first %>
-        <% download_params = {:path => surrogate, :type => generic_file[:mime_type], :name => "#{document.id}.#{file_extension}"} %>
+        <% download_params = surrogate_download_params(@document, surrogate) %>
         <%= link_to t('dri.views.catalog.links.download_nth', :index => index.ordinalize), download_surrogate_path(download_params), :id => "download_asset" %>
         <% if can? :read_master, @document %>
             - <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{generic_file[:file_size].first.present? ? number_to_human_size(generic_file[:file_size].first.to_f) : t('dri.views.catalog.links.unknown_size')})", file_download_path(@document, generic_file.id), :id => "download_master_asset" %>

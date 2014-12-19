@@ -85,8 +85,10 @@ class SurrogatesController < ApplicationController
   end
 
   def download
+    path = params[:path]
+    content_type = MIME::Types.of(path)
     data = open(params[:path])
-    send_data data.read, :filename => params[:name], :type => params[:type], disposition: 'attachment', stream: 'true', buffer_size: '4096'
+    send_data data.read, :filename => params[:name], :type => content_type, disposition: 'attachment', stream: 'true', buffer_size: '4096'
   end
 
   private

@@ -1,5 +1,6 @@
 module ApplicationHelper
   require 'storage/s3_interface'
+  require 'uri'
 
   def get_files doc
     @files = ActiveFedora::Base.find(doc.id, {:cast => true}).generic_files
@@ -25,6 +26,15 @@ module ApplicationHelper
     url = storage.surrogate_url(doc, file_doc, name)
 
     url
+  end
+
+  def surrogate_download_params( document, surrogate_url )
+    uri = URI(surrogate_url)
+    ext = File.extname(uri.path)
+
+    type = MIME::Types.of(ext).first.content_type
+
+    {:path => surrogate_url, :type => type, :name => "#{document.id}#{ext}"}    
   end
 
   def get_asset_version_list( file_id, datastream )
