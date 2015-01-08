@@ -4,7 +4,7 @@ require 'solr/query'
 
 class ApplicationController < ActionController::Base
 
-  before_filter :set_locale, :set_cookie, :my_collections
+  before_filter :set_locale, :set_cookie
 
   include HttpAcceptLanguage
 
@@ -100,24 +100,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def ingest_collections
-    results = Array.new
-    solr_query = "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
-
-    fq = manager_and_edit_filter unless (current_user && current_user.is_admin?)
-
-    query = Solr::Query.new(solr_query, 50, {:defType => "edismax", :fl => "id,#{Solrizer.solr_name('title', :stored_searchable, type: :string)}", :fq => fq})
-    while query.has_more?
-      result_docs = query.pop
-
-      result_docs.each do | doc |
-        results.push([doc[Solrizer.solr_name('title', :stored_searchable, type: :string)][0], doc['id']])
-      end
-    end
-
-    return results
-  end
-
   # Return a list of all supported licences (for populating select dropdowns)
   def supported_licences
     @licences = {}
@@ -125,13 +107,6 @@ class ApplicationController < ActionController::Base
       @licences["#{licence['name']}: #{licence[:description]}"] = licence['name']
     end
   end
-
-  def my_collections
-    if signed_in?
-      @collections = ingest_collections
-    end
-  end
-
 
   private
 

@@ -170,17 +170,17 @@ en:
       dri_pagination_nav_links_title: "Result Pagination"
       dri_sort_options: "Select from this list to sort your results by Newest, Title or Relevance. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
       dri_sort_options_title: "Search Sort Options"
+      dummy_text: "Help text goes here"
+      dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
       facets_title: "Facet Filters"
+      metadata_identifiers: "<a href='http://loc.org'>LOC</a>"
       no_results_found: "No search results found"
       q: "Type a search term and press Enter. Use AND and OR to narrow or broaden your search"
       q_title: "Search the repository"
       social_media_links: "Use these buttons to vist our Facebook, Linked-In, Slideshare and Twitter pages"
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
-      dummy_text: "Help text goes here"
-      dummy_title: "Title of help here"
-      metadata_identifiers: "<a href='http://loc.org'>LOC</a>"
     navbar: 
       bookmarks: Bookmarks
       items: Items
@@ -243,24 +243,25 @@ en:
           surrogate_not_available: "Surrogate not available yet"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
         links: 
+          add_object: "Add an Object"
+          add_object_xml: "Upload Object XML"
           asset: Asset
           characterization: Characterization
           details: "File Details"
           download: "Download asset"
           download_master: "Download master asset"
           download_not_available: "not available"
+          download_nth: "Download %{index}"
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
-          add_object: "Add an Object"
-          add_object_xml: "Upload Object XML"
           listen: listen
           not_caracterized: "not yet characterized"
           publish: "Publish collection"
           publish_reviewed: "Publish reviewed objects"
           related: "Related Files"
           status_update: "Update status"
-          view_metadata: "View Metadata (XML)"
           unknown_size: "Unknown Size"
+          view_metadata: "View Metadata (XML)"
         sidebar: 
           more_like_this: "More Like This"
           nav_header: "Edit Tools"
@@ -324,6 +325,7 @@ en:
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
       fields: 
+        collection_title: "Collection Title"
         contributor: Contributor
         contributors: Contributors
         cover_image: "Upload a cover image"
@@ -370,7 +372,6 @@ en:
         temporal_coverage_gle: "Subject (Temporal) in Irish"
         temporal_coverages: "Subjects (Temporal)"
         title: Title
-        collection_title: "Collection Title"
         total_assets: "Total number of assets"
         type: Type
         types: Types
@@ -498,10 +499,10 @@ en:
           viewcount: Views
         links: 
           all_objects: "All Objects"
+          cancel: Cancel
           download: download
           listen: listen
           view_record: "View Record"
-          cancel: Cancel
       static: 
         admin: 
           licences: "Supported Licences"

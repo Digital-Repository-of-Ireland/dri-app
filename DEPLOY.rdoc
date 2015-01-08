@@ -1,12 +1,9 @@
 == Deployment
 
 Once the test suite passes and the code base has been reviewed and agreed
-upon, a branch is created for deployment, it should contain the version number
-and be dated in the form YYYY-MM-DD.
-If more than one deploy occurs on a given day then .n should
-be appended (where n is an incrementing integer). For example
-v2.0.0rc2-2014-05-06.4 would be the fifth release on 6th May 2014 for
-version 2.0.0rc2.
+upon, a branch is created for deployment, in the form release-YY.MM.0.
+
+The release number should be incremented as required.
 
 The assets should be compiled and committed.
 
@@ -31,14 +28,14 @@ These steps will only work if your user is in the merge group and has write acce
 ==== manual
 From the develop branch
   $ git tag -l # list current tags
-  $ git branch v2.0.0rc2-YYYY-MM-DD
-  $ git checkout v2.0.0rc2-YYYY-MM-DD # you should now be on the deploy branch
+  $ git branch release-YY.MM.0 # increase the version number as required
+  $ git checkout release-YY.MM.0 # you should now be on the deploy branch
   $ git log # get current hash and check on the buildbot that it is passing tests in develop branch
-  $ git tag -a v2.0.0rc2-YYYY-MM-DD # tag the realease when you are happy with it
   $ git checkout master # switch to master to perform the merge
   $ git pull
-  $ git merge v2.0.0rc2-YYYY-MM-DD # perform the merge
+  $ git merge --no-ff release-YY.MM.0 # perform the merge
   $ git push
+  $ git tag -a YY.MM.0
   $ git push --tags
 
 === Manually deploying
@@ -46,8 +43,8 @@ From the develop branch
 Pushing to Master will cause the builder to run, but if you need to deploy
 manually you can do so on dri-admin. You should log in as you with agent forwarding enabled.
 
-  $ cd /srv/infrastructure/ansible-hydra/
-  $ ansible-playbook -i hosts.production playbooks/setup-dri_app-nuig-rnag.yml -e "deploy_branch=v2.0.0rc2-YYYY-MM-DD"
+  $ cd /srv/infrastructure/ansible-dri-infrastructure/
+  $ ansible-playbook -i inventory/hosts.production site.yml --tags=getfacts,dri_app,dri_app_worker -e "deploy_branch=YY.MM.0"
 
 === TODO
 

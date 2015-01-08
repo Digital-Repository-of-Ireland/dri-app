@@ -1,8 +1,3 @@
-ingest:
-  steps: [collection, ingestmethod, metadata]
-  step_data:
-    collection: [ingestcollection]
-    ingestmethod: [ingestmethod]
 interface:
   languages: [en, ga]
 dri:

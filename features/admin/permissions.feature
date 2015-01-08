@@ -5,6 +5,9 @@ Feature:
   I want to be able to set permissions on my Digital Objects
   And to retrieve my Digital Objects by collection
 
+Background:
+  Given I am logged in as "user1" in the group "cm" and accept cookies
+
 @wip @disabled-pilot
 Scenario: Setting a list of users for restricted access
   Given I am logged in as "user1" in the group "cm" and accept cookies
@@ -20,20 +23,15 @@ Scenario: Setting a list of users for restricted access
   Then the "batch_read_users_string" field should contain "test, test2, test3"
 
 Scenario: Constructing a Collection using the web form should set default permissions
-  Given I am logged in as "user1" in the group "cm" and accept cookies
-  And I am on the home page
+  Given I am on the home page
   And I go to "create new collection"
   And the radio button "batch_read_groups_string_radio_public" should be "checked"
   And the "batch_manager_users_string" field should contain "user1@user1.com"
 
 Scenario Outline: Constructing a Digital Object using the web form should set default permissions
-  Given I am logged in as "user1" in the group "cm" and accept cookies
-  And I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "input" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:perm1" created by "user1"
+  When I go to the "collection" "show" page for "web:perm1"
+  And I follow the link to add an object
   When I enter valid "<object_type>" metadata
   And I press the button to continue
   Then I should see a success message for ingestion
@@ -47,13 +45,9 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
     | Sound       |
 
 Scenario Outline: Constructing a Digital Object using XML upload should set default permissions
-  Given I am logged in as "user1" in the group "cm" and accept cookies
-  And I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "upload" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:perm2" created by "user1"
+  When I go to the "collection" "show" page for "web:perm2"
+  And I follow the link to upload XML
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
@@ -65,6 +59,7 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
     | dublin_core_pdfdoc_sample.xml |
     | SAMPLEA.xml                   |
 
+@wip
 Scenario Outline: Collection visibility
   Given a collection with pid "dri:coll8" and title "Access Test" created by "test"
   Given I am not logged in
