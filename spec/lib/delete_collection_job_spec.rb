@@ -9,7 +9,7 @@ end
 describe "DeleteCollectionJob" do
 
   before(:each) do
-    @collection = Batch.new
+    @collection = DRI::Batch.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -20,7 +20,7 @@ describe "DeleteCollectionJob" do
     @collection[:status] = ["draft"]
     @collection.save
 
-    @object = Batch.new
+    @object = DRI::Batch.with_standard :qdc
     @object[:title] = ["An Audio Title"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
     @object[:role_hst] = ["Collins, Michael"]

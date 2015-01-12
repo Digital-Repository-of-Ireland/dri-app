@@ -18,6 +18,7 @@
 //= require bootstrap/carousel
 //= require bootstrap/tooltip
 //= require bootstrap/popover
+//= require bootstrap/tab
 //= require bootstrap-player.js
 //= require bootstrap-switch
 //= require timelineJS/embed
@@ -71,6 +72,6 @@ $(function(){
         }
         return false;
     });
-  });
+});
   
 

@@ -7,6 +7,9 @@ module ButtonTranslator
     when /^ingest methods$/
       "ingestmethod"
 
+    when /^metadata standard$/
+      "standard"
+
     when /^object type$/
       "ingesttype"
 

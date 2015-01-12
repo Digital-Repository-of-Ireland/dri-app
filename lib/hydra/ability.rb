@@ -36,13 +36,13 @@ module Hydra
         test_edit(pid)
       end
 
-      can [:edit, :update, :destroy], Batch do |obj|
-        Rails.logger.debug("[EDITPERM] Checking from Batch")
+      can [:edit, :update, :destroy], DRI::Batch do |obj|
+        logger.debug("[EDITPERM] Checking from Batch")
         test_edit(obj.pid)
       end
 
-      can [:edit, :update, :destroy], GenericFile do |obj|
-        Rails.logger.debug("[EDITPERM] Checking from GenericFile")
+      can [:edit, :update, :destroy], DRI::GenericFile do |obj|
+        logger.debug("[EDITPERM] Checking from GenericFile")
         test_edit(obj.pid)
       end
 
@@ -60,8 +60,8 @@ module Hydra
         test_read(pid)
       end
 
-      can :read, [Batch] do |obj|
-        Rails.logger.debug("[READPERM] Checking from Object")
+      can :read, [DRI::Batch] do |obj|
+        logger.debug("[READPERM] Checking from Object")
         test_read(obj.pid)
       end
 
@@ -83,8 +83,8 @@ module Hydra
         test_search(pid)
       end
 
-      can :search, [Batch] do |obj|
-        Rails.logger.debug("[SEARCHPERM] Checking from Object")
+      can :search, [DRI::Batch] do |obj|
+        logger.debug("[SEARCHPERM] Checking from Object")
         test_search(obj.pid)
       end
 
@@ -101,8 +101,8 @@ module Hydra
         test_read_master(pid)
       end
 
-      can :read_master, Batch do |obj|
-        Rails.logger.debug("[master_file_permissions] Checking from Object")
+      can :read_master, DRI::Batch do |obj|
+        logger.debug("[master_file_permissions] Checking from Object")
         test_read_master(obj.pid)
       end
 
@@ -121,8 +121,8 @@ module Hydra
         test_manager(pid)
       end
 
-      can :manage_collection, Batch do |obj|
-        Rails.logger.debug("[MANPERM] Checking from Object")
+      can :manage_collection, DRI::Batch do |obj|
+        logger.debug("[MANPERM] Checking from Object")
         test_manager(obj.pid)
       end
 
@@ -140,7 +140,7 @@ module Hydra
       if current_user.applicable_policy?(SETTING_POLICY_COLLECTION_MANAGER)
         #Marked as being able to :manage_collection
         can :manage_collection_flag, :all
-        can :create, [Batch, GenericFile]
+        can :create, [DRI::Batch, DRI::GenericFile]
       end
 
 
@@ -156,7 +156,7 @@ module Hydra
         test_create(pid)
       end
 
-      can :create_do, Batch do |collection|
+      can :create_do, DRI::Batch do |collection|
         test_create(collection)
       end
     end

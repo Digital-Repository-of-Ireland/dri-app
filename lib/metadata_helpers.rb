@@ -2,6 +2,10 @@ require 'checksum'
 require 'metadata_validator'
 
 module MetadataHelpers
+
+  def self.set_metadata_datastream(object, xml)
+    object.update_metadata xml
+  end
     
   def self.checksum_metadata(object)
     if object.datastreams.keys.include?("descMetadata")
@@ -51,13 +55,32 @@ module MetadataHelpers
      result = "DRI::Metadata::QualifiedDublinCore"
     elsif namespace.has_value?("http://www.loc.gov/mods/v3")
       result = "DRI::Metadata::MODS"
-    elsif xml.internal_subset != nil && xml.internal_subset.name == 'ead'
+    elsif (xml.internal_subset != nil && xml.internal_subset.name == 'ead' || namespace.has_value?("urn:isbn:1-931666-22-9"))
       result = "DRI::Metadata::EncodedArchivalDescription"
     elsif ['c', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10', 'c11', 'c12'].include? root_name
       result = "DRI::Metadata::EncodedArchivalDescriptionComponent"
-    end       
+    elsif namespace.has_value?("http://www.loc.gov/MARC21/slim")
+      result = "DRI::Metadata::Marc"
+    end
 
     return result
+  end
+
+  def self.get_metadata_standard_from_xml xml_text
+    metadata_class = get_metadata_class_from_xml xml_text
+
+    case metadata_class
+    when "DRI::Metadata::QualifiedDublinCore"
+      :qdc
+    when "DRI::Metadata::MODS"
+      :mods
+    when "DRI::Metadata::EncodedArchivalDescription"
+      :ead_collection
+    when "DRI::Metadata::EncodedArchivalDescriptionComponent"
+      :ead_component
+    when "DRI::Metadata::Marc"
+      :marc
+    end
   end
 
 end

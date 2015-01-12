@@ -30,13 +30,19 @@
 		<%= link_back_to_catalog %>
 	</div>
 
-	<div class="dri_vc_title">
-		<i class="fa fa-lg fa-folder-open"></i>
-		<%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
-		<% objectsCount = count_items_in_collection document[:id] %>
-		<% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-		<%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
-	</div>
+  <div class="dri_vc_title">
+    <i class="fa fa-lg fa-folder-open"></i>
+    <%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
+    <% objectsCount = count_items_in_collection document[:id] %>
+    <!-- If it's a root collection, we show all the objects within it -->
+    <% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil %>
+      <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
+      <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
+    <% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
+      <% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
+      <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
+    <% end %>
+  </div>
 
 	<div class="dri_vc_image">
 		<!-- fix link -->
