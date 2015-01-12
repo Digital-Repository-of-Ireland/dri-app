@@ -55,7 +55,7 @@ module MetadataHelpers
      result = "DRI::Metadata::QualifiedDublinCore"
     elsif namespace.has_value?("http://www.loc.gov/mods/v3")
       result = "DRI::Metadata::MODS"
-    elsif xml.internal_subset != nil && xml.internal_subset.name == 'ead'
+    elsif (xml.internal_subset != nil && xml.internal_subset.name == 'ead' || namespace.has_value?("urn:isbn:1-931666-22-9"))
       result = "DRI::Metadata::EncodedArchivalDescription"
     elsif ['c', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10', 'c11', 'c12'].include? root_name
       result = "DRI::Metadata::EncodedArchivalDescriptionComponent"
