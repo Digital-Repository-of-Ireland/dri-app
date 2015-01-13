@@ -18,7 +18,7 @@ class ObjectsController < CatalogController
   def new
     @collection = params[:collection]
 
-    @object = Batch.new
+    @object = DRI::Batch.with_standard :qdc
     @object.creator = [""]
 
 
@@ -113,20 +113,10 @@ class ObjectsController < CatalogController
     params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection]) unless params[:batch][:governing_collection].blank?
 
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
-
-    standard = params[:batch].delete(:standard)
     
     set_access_permissions(:batch)
 
-    if standard.nil?
-      file_obj = params[:metadata_file].tempfile
-      file = File.open(file_obj.path)
-      ng_doc = Nokogiri::XML(file)
-      file.close
-      standard = ng_doc.root.name
-    end
-
-    @object = DRI::Batch.with_standard get_batch_standard_from_param(standard)
+    @object = DRI::Batch.with_standard :qdc
     @object.depositor = current_user.to_s
     @object.update_attributes params[:batch]
 

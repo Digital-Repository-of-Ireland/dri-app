@@ -37,12 +37,12 @@ module Hydra
       end
 
       can [:edit, :update, :destroy], DRI::Batch do |obj|
-        logger.debug("[EDITPERM] Checking from Batch")
+        Rails.logger.debug("[EDITPERM] Checking from Batch")
         test_edit(obj.pid)
       end
 
       can [:edit, :update, :destroy], DRI::GenericFile do |obj|
-        logger.debug("[EDITPERM] Checking from GenericFile")
+        Rails.logger.debug("[EDITPERM] Checking from GenericFile")
         test_edit(obj.pid)
       end
 
@@ -61,7 +61,7 @@ module Hydra
       end
 
       can :read, [DRI::Batch] do |obj|
-        logger.debug("[READPERM] Checking from Object")
+        Rails.logger.debug("[READPERM] Checking from Object")
         test_read(obj.pid)
       end
 
@@ -84,7 +84,7 @@ module Hydra
       end
 
       can :search, [DRI::Batch] do |obj|
-        logger.debug("[SEARCHPERM] Checking from Object")
+        Rails.logger.debug("[SEARCHPERM] Checking from Object")
         test_search(obj.pid)
       end
 
@@ -102,7 +102,7 @@ module Hydra
       end
 
       can :read_master, DRI::Batch do |obj|
-        logger.debug("[master_file_permissions] Checking from Object")
+        Rails.logger.debug("[master_file_permissions] Checking from Object")
         test_read_master(obj.pid)
       end
 
@@ -122,7 +122,7 @@ module Hydra
       end
 
       can :manage_collection, DRI::Batch do |obj|
-        logger.debug("[MANPERM] Checking from Object")
+        Rails.logger.debug("[MANPERM] Checking from Object")
         test_manager(obj.pid)
       end
 

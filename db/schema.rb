@@ -121,4 +121,5 @@ ActiveRecord::Schema.define(version: 20140708132006) do
   add_index "user_group_users", ["email"], name: "index_user_group_users_on_email", unique: true
   add_index "user_group_users", ["reset_password_token"], name: "index_user_group_users_on_reset_password_token", unique: true
 
+  Foreigner.load
 end

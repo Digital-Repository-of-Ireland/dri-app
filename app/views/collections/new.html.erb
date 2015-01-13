@@ -1,6 +1,6 @@
 <h2><%= t('dri.views.collection.new.title') %></h2>
 <div class="dri_ingest_form_container">
-<%= form_for @object, :url => {:controller=>"collections", :action=>"create"}, :method=>"post", :html => {:class => 'dri_ingest_form'} do |f| %>
+<%= form_for @object, as: :batch, :url => {:controller=>"collections", :action=>"create"}, :method=>"post", :html => {:class => 'dri_ingest_form'} do |f| %>
 
     <%= render :partial => "shared/form_metadata_qualifieddublincore", :locals => { :f => f, :action => "update" } %>
 

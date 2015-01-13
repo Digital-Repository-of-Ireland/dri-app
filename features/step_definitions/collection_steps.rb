@@ -3,9 +3,9 @@ require 'metadata_helpers'
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = "dri:c" + @random_pid if (pid == "@random")
   collection = DRI::Batch.with_standard(:qdc, {:pid => pid})
-  collection.title = title ? title : SecureRandom.hex(5)
-  collection.description = SecureRandom.hex(20)
-  collection.rights = SecureRandom.hex(20)
+  collection.title = title ? [title] : [SecureRandom.hex(5)]
+  collection.description = [SecureRandom.hex(20)]
+  collection.rights = [SecureRandom.hex(20)]
   collection.type = ["Collection"]
   collection.creation_date = ["2000-01-01"]
   if user
@@ -30,9 +30,9 @@ end
 Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?/ do |pid, title, desc, type, user|
   pid = "dri:o" + @random_pid if (pid == "@random")
   digital_object = DRI::Batch.with_standard(:qdc, {:pid => pid})
-  digital_object.title = title ? [title] : "Test Object"
-  digital_object.type = type ? [type] : "Sound"
-  digital_object.description = desc ? [desc] : "A test object"
+  digital_object.title = title ? [title] : ["Test Object"]
+  digital_object.type = type ? [type] : ["Sound"]
+  digital_object.description = desc ? [desc] : ["A test object"]
   if user
     email = "#{user}@#{user}.com"
     User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
@@ -102,7 +102,7 @@ end
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
     When I go to the "collection" "show" page for "#{collection_pid}" 
-    And I click the link to upload XML
+    And I follow the link to upload XML
     And I attach the metadata file "valid_metadata.xml"
     And I press the button to ingest metadata
   }
