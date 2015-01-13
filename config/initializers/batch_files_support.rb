@@ -71,7 +71,7 @@ DRI::ModelSupport::Files.module_eval do
 
       begin
         local_file.save!
-      rescue ActiveRecordError => e
+      rescue ActiveRecord::ActiveRecordError => e
         logger.error "Could not save the asset file #{@file.path} for #{object_id} to #{datastream}: #{e.message}"
       end
     end
