@@ -9,7 +9,7 @@
 <!-- close vc_title -->
 
 <ul class="dri_view_collection">
-  <li><%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, :format => :html), :id => "styled_metadata", :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %></li>
+  <li><%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, :format => :html), :id => "styled_metadata", :'data-toggle' => 'modal',  :'data-target' => '#ajax-modal' %></li>
   <li><%= link_to t('dri.views.catalog.forms.metadata'), object_metadata_path(@document.id, :format => :xml), :id => "download_metadata" %></li>
   <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
   <li><%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citatation_modal_id' %></li>
