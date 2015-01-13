@@ -21,7 +21,6 @@ class ObjectsController < CatalogController
     @object = DRI::Batch.with_standard :qdc
     @object.creator = [""]
 
-
     supported_licences()
   end
 
@@ -47,7 +46,7 @@ class ObjectsController < CatalogController
     @object = retrieve_object!(params[:id])
 
     respond_to do |format|
-      format.html { redirect_to(catalog_url(@object)) }
+      format.html { redirect_to(catalog_url(@object.id)) }
       format.endnote { render :text => @object.export_as_endnote, :layout => false }
     end
   end
@@ -144,7 +143,7 @@ class ObjectsController < CatalogController
           else
             response = { :pid => @object.id }
           end
-          render :json => response, :location => catalog_url(@object), :status => :created }
+          render :json => response, :location => catalog_url(@object.id), :status => :created }
       end
     else
       respond_to do |format|
