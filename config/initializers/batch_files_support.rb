@@ -11,7 +11,7 @@ DRI::ModelSupport::Files.module_eval do
 	  begin
         pass_validation = Validators.validate_file(file.path, mime_type)
       rescue Exception => e
-        logger.error "Error validating file: #{e.message}"
+        Rails.logger.error "Error validating file: #{e.message}"
         return false
       end
 
@@ -33,7 +33,7 @@ DRI::ModelSupport::Files.module_eval do
       # FIXME Error when saving - @messages={:edit_users=>["Depositor must have edit access"]
       gf.save
 
-      create_file(file, file_name, gf.id, dsid, "", mime_type)
+      create_file(file, file_name, gf.id, dsid, "", mime_type.to_s)
 
       # TODO - Remove hardcoded URL!
       url = "http://repository.dri.ie/00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/objects/#{gf.id}/file"
@@ -43,7 +43,7 @@ DRI::ModelSupport::Files.module_eval do
           gf.save!
           Sufia.queue.push(CharacterizeJob.new(gf.id))
       rescue Exception => e
-          logger.error "Error saving file: #{e.message}"
+        Rails.logger.error "Error saving file: #{e.message}"
         return false
       else
         return true
@@ -72,7 +72,7 @@ DRI::ModelSupport::Files.module_eval do
       begin
         local_file.save!
       rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not save the asset file #{@file.path} for #{object_id} to #{datastream}: #{e.message}"
+        Rails.logger.error "Could not save the asset file #{@file.path} for #{object_id} to #{datastream}: #{e.message}"
       end
     end
 
