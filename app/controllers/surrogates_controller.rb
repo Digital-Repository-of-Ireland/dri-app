@@ -47,7 +47,6 @@ class SurrogatesController < ApplicationController
   def update
     unless params[:id].blank?
       enforce_permissions!("edit",params[:id])
-      binding.pry
       result_docs = solr_query ( ActiveFedora::SolrService.construct_query_for_pids([params[:id]]) )
 
       if result_docs.empty?
