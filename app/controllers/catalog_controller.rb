@@ -112,6 +112,9 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('institute', :facetable)
     config.add_facet_field solr_name('root_collection_id', :facetable), :helper_method => :collection_title
 
+    # TODO Temporarily added to test sub-collection belonging objects filter in object results view
+    config.add_facet_field solr_name('ancestor_id', :facetable), :label => 'ancestor_id', :helper_method => :collection_title, :show => false
+
     config.add_facet_field solr_name('is_collection', :facetable), :label => 'is_collection', :helper_method => :is_collection, :show => false
 
     # Have BL send all facet field names to Solr, which has been the default
@@ -246,7 +249,7 @@ class CatalogController < ApplicationController
 
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "+#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"info:fedora/afmodel:Batch\""
+    solr_parameters[:fq] << "+#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"info:fedora/afmodel:DRI_Batch\""
     if user_parameters[:mode].eql?('collections')
       solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
       solr_parameters[:fq] << "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"

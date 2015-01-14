@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Batch do
   it "should have an audio type with the level 1 required metadata fields" do
-    @t = Batch.new
+    @t = DRI::Batch.with_standard :qdc
     @t.title = nil
     @t.rights = nil
     @t.language = nil
@@ -11,7 +11,7 @@ describe Batch do
   end
 
   it "should not index null date values" do
-    @t = Batch.new
+    @t = DRI::Batch.with_standard :qdc
     @t.title = ["A fake record"]
     @t.rights = ["Rights"]
     @t.creation_date = ["null"]
@@ -26,7 +26,7 @@ describe Batch do
   end
 
   it "should only hide the null values" do
-    @t = Batch.new
+    @t = DRI::Batch.with_standard :qdc
     @t.title = ["A fake record"]
     @t.rights = ["Rights"]
     @t.creation_date = ["2014-10-17", "null"]
@@ -45,7 +45,7 @@ describe Batch do
   end
 
   it "should not index null creator values" do
-    @t = Batch.new
+    @t = DRI::Batch.with_standard :qdc
     @t.title = ["A fake record"]
     @t.rights = ["Rights"]
     @t.creator = ["null"]
@@ -59,7 +59,7 @@ describe Batch do
   end
 
   it "should only not index null creator values" do
-    @t = Batch.new
+    @t = DRI::Batch.with_standard :qdc
     @t.title = ["A fake record"]
     @t.rights = ["Rights"]
     @t.creator = ["A Creator", "null"]
@@ -74,7 +74,7 @@ describe Batch do
   end
 
   it "should make a case insensitive check for null" do
-    @t = Batch.new
+    @t = DRI::Batch.with_standard :qdc
     @t.title = ["A fake record"]
     @t.rights = ["Rights"]
     @t.creator = ["NuLl"]

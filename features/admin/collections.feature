@@ -70,7 +70,6 @@ Scenario Outline: Adding a Digital Object in a governing/non-governing collectio
     | dri:obj3   | Object 3     | Test 3      | Sound       | Test Rights   | dri:coll2      | non-governing   |
     | dri:obj4   | Object 4     | Test 4      | Text        | Test Rights   | dri:coll2      | non-governing   |
 
-@test
 Scenario Outline: Creating Digital Object in a governing collection using the web forms
   Given a collection with pid "<collection_pid>" created by "user1"
   When I create a Digital Object in the collection "<collection_pid>"

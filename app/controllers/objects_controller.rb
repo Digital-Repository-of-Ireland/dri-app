@@ -18,9 +18,8 @@ class ObjectsController < CatalogController
   def new
     @collection = params[:collection]
 
-    @object = Batch.new
+    @object = DRI::Batch.with_standard :qdc
     @object.creator = [""]
-
 
     supported_licences()
   end
@@ -47,7 +46,7 @@ class ObjectsController < CatalogController
     @object = retrieve_object!(params[:id])
 
     respond_to do |format|
-      format.html { redirect_to(catalog_url(@object)) }
+      format.html { redirect_to(catalog_url(@object.id)) }
       format.endnote { render :text => @object.export_as_endnote, :layout => false }
     end
   end
@@ -64,7 +63,7 @@ class ObjectsController < CatalogController
     @object = retrieve_object!(params[:id])
 
     if params[:batch][:governing_collection_id].present?
-      collection = Batch.find(params[:batch][:governing_collection_id])
+      collection = DRI::Batch.find(params[:batch][:governing_collection_id])
       @object.governing_collection = collection
     end
 
@@ -110,21 +109,20 @@ class ObjectsController < CatalogController
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
 
-    params[:batch][:governing_collection] = Batch.find(params[:batch][:governing_collection]) unless params[:batch][:governing_collection].blank?
+    params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection]) unless params[:batch][:governing_collection].blank?
 
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
-
+    
     set_access_permissions(:batch)
-    @object = Batch.new
+
+    @object = DRI::Batch.with_standard :qdc
+    @object.depositor = current_user.to_s
+    @object.update_attributes params[:batch]
 
     if request.content_type == "multipart/form-data"
       xml = MetadataHelpers.load_xml(params[:metadata_file])
-      @object.update_metadata xml
+      MetadataHelpers.set_metadata_datastream(@object, xml)
     end
-
-    @object.depositor = current_user.to_s
-
-    @object.update_attributes params[:batch]
 
     MetadataHelpers.checksum_metadata(@object)
     duplicates?(@object)
@@ -145,7 +143,7 @@ class ObjectsController < CatalogController
           else
             response = { :pid => @object.id }
           end
-          render :json => response, :location => catalog_url(@object), :status => :created }
+          render :json => response, :location => catalog_url(@object.id), :status => :created }
       end
     else
       respond_to do |format|

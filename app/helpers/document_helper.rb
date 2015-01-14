@@ -19,8 +19,12 @@ module DocumentHelper
 
   end
 
-  def get_collection_media_type_params collectionId, mediaType
-    searchFacets = { Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [mediaType], Solrizer.solr_name('root_collection_id', :facetable, type: :string).to_sym => [collectionId] }
+  def get_collection_media_type_params document, collectionId, mediaType
+    if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil
+      searchFacets = { Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [mediaType], Solrizer.solr_name('root_collection_id', :facetable, type: :string).to_sym => [collectionId] }
+    else
+      searchFacets = { Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [mediaType], Solrizer.solr_name('ancestor_id', :facetable, type: :string).to_sym => [collectionId] }
+    end
     searchParams = { :mode => "objects", :search_field => "all_fields", :utf8 => "✓", :f => searchFacets }
     return searchParams
   end
