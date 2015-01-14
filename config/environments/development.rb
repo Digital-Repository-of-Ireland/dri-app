@@ -10,6 +10,8 @@ NuigRnag::Application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
+  Rails.application.routes.default_url_options[:host] = "localhost:3000"
+  
   config.exceptions_app = self.routes
 
   # Don't care if the mailer can't send

@@ -4,7 +4,7 @@ require 'validators'
 
 DRI::ModelSupport::Files.module_eval do
 
-  def add_file file, dsid="content",file_name
+  def add_file file, dsid="content", file_name
     mime_type = Validators.file_type?(file.path)
     pass_validation = false
 
@@ -22,15 +22,9 @@ DRI::ModelSupport::Files.module_eval do
     gf = DRI::GenericFile.new(:pid => Sufia::IdService.mint)
     gf.batch = self
       
-    # FIXME - Temporary (needs to be explored in detail), apply_depositor_metadata before save
-    gf.apply_depositor_metadata(self.manager_users_string)
-    gf.manager_users_string=self.manager_users_string
-    gf.discover_groups_string="public"
-    gf.read_groups_string="public"
-    gf.private_metadata="0"
-    gf.master_file="0"
+    # Apply depositor metadata, other permissions currently unused for generic files
+    gf.apply_depositor_metadata(gf.batch.depositor)
       
-    # FIXME Error when saving - @messages={:edit_users=>["Depositor must have edit access"]
     gf.save
 
     create_file(file, file_name, gf.id, dsid, "", mime_type.to_s)
