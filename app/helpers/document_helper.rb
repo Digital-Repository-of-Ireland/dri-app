@@ -37,4 +37,9 @@ module DocumentHelper
     end
   end
 
+  # Check, based on the document type (Fedora active_fedora_model), whether edit functions are available
+  def edit_functionality_available? document
+    (document['active_fedora_model_ssi'] && document['active_fedora_model_ssi'] == 'DRI::EncodedArchivalDescription') ? false : true
+  end
+
 end
