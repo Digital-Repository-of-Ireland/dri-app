@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140708132006) do
+ActiveRecord::Schema.define(version: 20150106142408) do
 
   create_table "bookmarks", force: true do |t|
     t.integer  "user_id",       null: false
@@ -120,6 +120,17 @@ ActiveRecord::Schema.define(version: 20140708132006) do
   add_index "user_group_users", ["confirmation_token"], name: "index_user_group_users_on_confirmation_token", unique: true
   add_index "user_group_users", ["email"], name: "index_user_group_users_on_email", unique: true
   add_index "user_group_users", ["reset_password_token"], name: "index_user_group_users_on_reset_password_token", unique: true
+
+  create_table "versions", force: true do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
 
   Foreigner.load
 end

@@ -50,6 +50,13 @@
       <% end %>
       <%= link_to t('user_groups.views.header.admin'), user_group.admin_path, :tabindex => "-1" %>
       </li>
+      <% if (controller.controller_name.eql?('static') && controller.action_name.eql?('admin')) %>
+        <li role="presentation" class="selected">
+      <% else %>
+        <li>
+      <% end %>
+      <%= link_to t('user_groups.views.header.reports'), main_app.page_path('reports'), :tabindex => "-1" %>
+      </li>
   <% end %>
 </ul>
 </li>
