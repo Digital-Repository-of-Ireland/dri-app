@@ -1,0 +1,30 @@
+<div class="dri_report_container">
+
+  <h3><%= t('dri.reports.headings.object') %></h3>
+  <table>
+  <tr><th>ID</th><th>Name</th><th>Change</th><th>Who</th><th>Version</th><th>Date</th></tr>
+
+  <% @users.each do |user| %>
+    <tr>
+      <td> <%= user.id %> </td>
+      <td> <%= user.first_name %> <%= user.second_name %> </td>
+      <td> Create </td>
+      <td> </td>
+      <td> 0 </td>
+      <td> <%= user.created_at %> </td>
+    </tr>
+
+    <% user.versions.each do |version| %>
+      <tr>
+        <td> <%= user.id  %> </td>
+        <td> <%= user.first_name %> <%= user.second_name %> </td>
+        <td> <%= version.event %> </td>
+        <td> <%= version.whodunnit %> </td>
+        <td> <%= version.id %> </td>
+        <td> <%= version.created_at %> </td>
+      </tr>
+    <% end %>
+  <% end %>
+
+  </table>
+</div>
