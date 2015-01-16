@@ -1,6 +1,5 @@
 # Controller for Digital Objects
 #
-
 require 'metadata_helpers'
 require 'institute_helpers'
 require 'doi/doi'
@@ -10,8 +9,8 @@ include Utils
 
 class ObjectsController < CatalogController
 
-  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
-  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
+  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update, :show]
+  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update, :show]
 
   # Displays the New Object form
   #
