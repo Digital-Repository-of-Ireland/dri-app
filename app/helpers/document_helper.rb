@@ -42,4 +42,29 @@ module DocumentHelper
     (document['active_fedora_model_ssi'] && document['active_fedora_model_ssi'] == 'DRI::EncodedArchivalDescription') ? false : true
   end
 
+  # For a given EAD collection object returns a list of the immediate child sub-collections
+  def show_ead_tree document, limit
+    html_display = ""
+    solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{document['id']}\""
+    # FIXME I've put a fixed number of results back to avoid the solr default of 10 but need to investigate how to return ALL
+    docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => limit)
+    if (docs != [])
+      html_display = "<ul>"
+      docs.each do |curr_doc|
+        # array_ancestors = curr_doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string)]
+        # if (array_ancestors.last == document['id'])
+          html_display = html_display + "<li>"
+
+          link_text = curr_doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first + " (" +
+            curr_doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].first + ")"
+
+          html_display = html_display + link_to( link_text, catalog_path(curr_doc['id']), :id => 'view_collection' ) + "</li>"
+        #end
+      end
+      html_display = html_display + "</ul>"
+    end
+
+    return html_display
+  end
+
 end

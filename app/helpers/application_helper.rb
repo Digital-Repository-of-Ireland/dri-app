@@ -149,6 +149,11 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
+  def count_immediate_children_in_collection collection_id
+    solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{collection_id}\""
+    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+  end
+
   def collection_children_query ( collection_id )
     "(#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
     "\" AND is_collection_sim:false" +
