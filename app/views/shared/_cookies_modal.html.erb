@@ -11,7 +11,7 @@
       </div>
       <div class="modal-footer">
         <a href="http://dri.ie/end-user-agreement"><button type="button" class="btn btn-secondary" id="reject_agreement"><%= t('dri.application.terms.reject') %></button></a>
-        <button type="button" id="accept_cookies" class="btn btn-primary" data-dismiss="modal" onclick="$.cookie('accept_cookies', 'yes', { path: '/', expires: 10000 });">
+        <button type="button" id="accept_cookies" class="btn btn-primary dri_green_button" data-dismiss="modal" onclick="$.cookie('accept_cookies', 'yes', { path: '/', expires: 10000 });">
           <%= t('dri.application.terms.accept') %>
         </button>
       </div>

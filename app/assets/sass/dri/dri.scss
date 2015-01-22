@@ -2498,7 +2498,10 @@ input.dri_request_access_button:hover {
     dl {
       padding: 15px;
     }
-  } 
+  }
+  .dri_child_links > a {
+    color: $dri_grey;
+  }
 }
 
 dl.dri_object_metadata_readview {
