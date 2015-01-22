@@ -2492,9 +2492,13 @@ input.dri_request_access_button:hover {
 /*-------------- MetaData Readview  --------------*/
 .modal-content {
   padding: 10px;
-  dl.dri_object_metadata_readview {
-    padding: 15px;
-  }
+  .dri_object_metadata_readview {
+    max-height: 400px;
+    overflow: scroll;
+    dl {
+      padding: 15px;
+    }
+  } 
 }
 
 dl.dri_object_metadata_readview {
