@@ -1,16 +1,33 @@
+<!-- Display Tree Structure, for EAD collection objects only -->
 
-	<!-- Display Tree Structure, for EAD collection objects only -->
+<% # Showing only the first 10 results %>
+<% children = get_collection_children(@document, 5) %>
 
-	<% # Showing only the first 10 results %>
-	<% tree_html = show_ead_tree(@document, "4") %>
-	<% if (!tree_html.blank?) %>
-	<% # PLACE HERE THE DIV AND STYLING %>
-	<%= tree_html.html_safe %>
-	<% if (count_immediate_children_in_collection(@document['id']) > 3) %>
-	MORE
-	<% # ADD SHOW_MORE LINK HERE %>
+<% if (!children.blank?) %>
+<div class="dri_object_institutes_block">
+	<div class="dri_institutes_title">
+		<span>Children</span>
+	</div>
+	<% children.take(4).each do |child| -%>
+	<article class="block5">
+		<div class="dri_content_block">
+			<%= link_to (child[1])  do %>
+			<h1><%= child[0] %></h1>
+			<% end %>
+			<div class="dri_icon">
+				<span class="dri_icon_image"><%= child[2] %></span>
+			</div>
+			<!-- close dri_icon -->
+
+		</div>
+		<!-- close content_block -->
+	</article>
 	<% end %>
+	<% if (children.count > 4) %>
+	<div class="dri_collection_image">
+		MORE...
+	</div>
+
 	<% end %>
-<div class="dri_collection_image">
-						
 </div>
+<% end %>
