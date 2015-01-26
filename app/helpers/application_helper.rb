@@ -222,6 +222,7 @@ module ApplicationHelper
     @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc(document)
   end
 
+  # Called from grid view
   def get_cover_image( document )
     files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{document[:id]}\""
     files = ActiveFedora::SolrService.query(files_query)

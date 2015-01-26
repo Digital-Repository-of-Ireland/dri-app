@@ -52,11 +52,13 @@ module DocumentHelper
 
     if (docs != [])
       docs.each do |curr_doc|
-          link_text = curr_doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
-          # FIXME For now, the EAD type is indexed last in the type solr index, review in the future
-          type = curr_doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
+          if (curr_doc[Solrizer.solr_name('is_collection', :stored_searchable, type: :string)].first == "true")
+            link_text = curr_doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+            # FIXME For now, the EAD type is indexed last in the type solr index, review in the future
+            type = curr_doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
 
-          children_array = children_array.to_a.push [link_text, catalog_path(curr_doc['id']).to_s, type.to_s]
+            children_array = children_array.to_a.push [link_text, catalog_path(curr_doc['id']).to_s, type.to_s]
+          end
       end
     end
 
