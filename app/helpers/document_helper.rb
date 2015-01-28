@@ -42,4 +42,27 @@ module DocumentHelper
     (document['active_fedora_model_ssi'] && document['active_fedora_model_ssi'] == 'DRI::EncodedArchivalDescription') ? false : true
   end
 
+  # For a given collection (sub-collection) object returns a list of the immediate child sub-collections
+  def get_collection_children document, limit
+    children_array = []
+
+    solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{document['id']}\""
+    
+    docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => limit)
+
+    if (docs != [])
+      docs.each do |curr_doc|
+          if (curr_doc[Solrizer.solr_name('is_collection', :stored_searchable, type: :string)].first == "true")
+            link_text = curr_doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+            # FIXME For now, the EAD type is indexed last in the type solr index, review in the future
+            type = curr_doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
+
+            children_array = children_array.to_a.push [link_text, catalog_path(curr_doc['id']).to_s, type.to_s]
+          end
+      end
+    end
+
+    return children_array
+  end
+
 end

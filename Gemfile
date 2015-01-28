@@ -76,6 +76,7 @@ group :development, :test do
 
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_rspec'
+  gem 'fakes3', :git => 'git@tracker.dri.ie:drirepo/fake-s3.git', :branch => 'issue22'
 end
 
 group :test do

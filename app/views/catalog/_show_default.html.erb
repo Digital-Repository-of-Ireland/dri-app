@@ -61,7 +61,7 @@
         <% unless @files.nil? || @files.empty? %>
           <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
           <li>
-            <%= t('dri.views.catalog.links.generate_surrogates') %>
+            <i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
           </li>
           <% end %>
         <% end %>

@@ -5,8 +5,8 @@ class ReindexSolrJob
   end
 
   def run
-    GenericFile.find_each { |obj| obj.update_index }
-    Batch.find_each { |obj| obj.update_index }
+    DRI::GenericFile.find_each { |obj| obj.update_index }
+    DRI::Batch.find_each { |obj| obj.update_index }
   end
 
 end

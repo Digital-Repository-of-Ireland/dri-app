@@ -29,6 +29,15 @@ GIT
       paper_trail (~> 3.0.6)
       rails (~> 4.1.0)
 
+GIT
+  remote: git@tracker.dri.ie:drirepo/fake-s3.git
+  revision: 3809cfb06eceed32246523f11171a16b2b4f9330
+  branch: issue22
+  specs:
+    fakes3 (0.1.6.1)
+      builder
+      thor
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -655,6 +664,7 @@ DEPENDENCIES
   execjs
   factory_girl_rails
   faker
+  fakes3!
   feedjira
   font-awesome-rails
   google-analytics-rails

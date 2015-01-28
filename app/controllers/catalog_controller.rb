@@ -147,6 +147,7 @@ class CatalogController < ApplicationController
     # config.add_show_field solr_name('bioghist', :stored_searchable, type: :string), :label => 'bioghist'
     config.add_show_field solr_name('contributor', :stored_searchable, type: :string), :label => 'contributors'
     config.add_show_field solr_name('creation_date', :stored_searchable), :label => 'creation_date', :date => true
+    config.add_show_field solr_name('publisher', :stored_searchable), :label => 'publishers'
     config.add_show_field solr_name('published_date', :stored_searchable), :label => 'published_date', :date => true
     config.add_show_field solr_name('subject', :stored_searchable, type: :string), :label => 'subjects'
     config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), :label => 'geographical_coverage'

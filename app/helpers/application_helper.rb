@@ -149,6 +149,11 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
+  def count_immediate_children_in_collection collection_id
+    solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{collection_id}\""
+    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+  end
+
   def collection_children_query ( collection_id )
     "(#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
     "\" AND is_collection_sim:false" +
@@ -217,6 +222,7 @@ module ApplicationHelper
     @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc(document)
   end
 
+  # Called from grid view
   def get_cover_image( document )
     files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{document[:id]}\""
     files = ActiveFedora::SolrService.query(files_query)
