@@ -1,5 +1,29 @@
 <div class="dri_report_container">
 
+
+  <h3><%= t('dri.reports.headings.object') %></h3>
+  <table>
+    <tr><th>ID</th><th>Type</th><th>Item id</th><th>Event</th><th>Who</th><th>Date</th><th>Object</th></tr>
+
+    <% @audit.each do |line| %>
+      <tr>
+        <td> <%= line.id %> </td>
+        <td> <%= line.item_type %> </td>
+        <td> <% if line.item_type.eql?('UserGroup::User') %>
+               <%= line.item_id %>
+             <% elsif line.item_type.eql?('UserGroup::Membership') %>
+               <%= line.object %>
+             <% end %>
+        </td>
+        <td> <%= line.event %> </td>
+        <td> <%= line.whodunnit %> </td>
+        <td> <%= line.created_at %> </td>
+        <td> <%= line.object %> </td>
+      </tr>
+    <% end %>
+  </table>
+
+
   <h3><%= t('dri.reports.headings.object') %></h3>
   <table>
   <tr><th>ID</th><th>Name</th><th>Change</th><th>Who</th><th>Version</th><th>Date</th></tr>
