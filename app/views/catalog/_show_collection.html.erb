@@ -22,8 +22,6 @@
 		<% end %>
 	</dl>
 
-	
-
 </div>
 
 <!-- close dri_object_first_block -->
@@ -49,7 +47,7 @@
 	</div>
 
 	<div class="dri_vc_image">
-		<!-- fix link -->
+		
 		<% if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first %>
 		<%= image_tag(document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first, :width=>"230", :alt=> t('dri.views.alt_tags.cover_image')) %></a>
 		<% else %>
@@ -64,7 +62,7 @@
 
 	<% if signed_in? && (can? :manage_collection, document) %>
 	<div class="dri_objecttools_title">
-		<%= t('dri.views.catalog.titles.editor_tools') %>
+		<i class="fa fa-pencil fa-lg"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
 	</div>
 	<ul class="dri_view_collection bold">
 		<% if (edit_functionality_available?(@document)) %>
@@ -89,6 +87,12 @@
 		<% else %>
 		<% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
 		<% end %>
+		<!-- TODO Fix Callback -->
+		<%= link_to  '', data: { confirm: t('dri.views.collection.confirm_all_reviewed') }, :id => "all_objects_reviewed" do %>
+		<li>
+			<i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_all_reviewed') %>
+		</li>
+		<% end %>
 		<%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
 		<li >
 			<i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
@@ -99,6 +103,7 @@
 			<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
 		</li>
 		<% end %>
+
 	</ul>
 
 	<% end %>

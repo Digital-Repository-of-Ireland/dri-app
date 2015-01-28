@@ -70,6 +70,15 @@
           <li>
             <i class="fa fa-eye fa-lg"></i><%= t('dri.views.catalog.links.status_update') %>
           </li>
+          <% if@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") %>
+          <li>
+            <i class="fa fa-check fa-lg red"></i><%= t('dri.views.catalog.links.mark_object_reviewed') %>
+          </li>
+          <% else %>
+          <li>
+            <i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_object_draft') %>
+          </li>
+          <% end %>
           <% end %>
         <% end %>
       </ul>
