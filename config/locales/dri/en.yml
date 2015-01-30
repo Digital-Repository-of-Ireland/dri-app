@@ -254,6 +254,9 @@ en:
           download_nth: "Download %{index}"
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
+          mark_all_reviewed: "Mark Collection as Reviewed"
+          mark_object_reviewed: "Mark Object as Reviewed"
+          mark_object_draft: "Mark Object as Draft"
           listen: listen
           not_caracterized: "not yet characterized"
           publish: "Publish collection"
@@ -279,6 +282,7 @@ en:
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         confirm_publish: "This will make all reviewed objects accessible. Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
+        confirm_all_reviewed: "This will mark all objects within the collection as Reviewed. Continue?"
         edit: "Edit Collection"
         index: 
           items: 
