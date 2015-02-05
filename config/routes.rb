@@ -46,12 +46,13 @@ NuigRnag::Application.routes.draw do
     match 'objects/:id/history' => 'object_history#show', :via => :get, :as => :object_history
     match 'objects/:id/datastreams/:stream' => 'datastream_version#show', :via => :get, :as => :datastream_version
     match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download
+    
+    match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
+    match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
+
     match 'download_surrogate' => 'surrogates#download', :via => :get
     match 'maps_json' => 'maps#get', :via => :get
     match 'timeline_json' => 'timeline#get', :via => :get
-
-    match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
-    match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
 
     match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
 
@@ -64,7 +65,6 @@ NuigRnag::Application.routes.draw do
     match 'surrogates/:id' => 'surrogates#show', :via => :get, :as => :surrogates
 
     match 'collections/:id' => 'catalog#show', :via => :get
-    match 'collections/ingest' => 'collections#ingest', :via => :post
 
     #API paths
     match 'get_objects' => 'objects#index', :via => :post

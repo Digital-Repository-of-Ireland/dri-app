@@ -125,6 +125,11 @@ class CollectionsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
+    if params[:metadata_file].present?
+      create_from_xml
+      return
+    end
+
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
     params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
@@ -192,9 +197,59 @@ class CollectionsController < CatalogController
     end
   end
 
+  def destroy
+    enforce_permissions!("manage_collection",params[:id])
+
+    @collection = retrieve_object!(params[:id])
+
+    if current_user.is_admin? || ((can? :manage_collection, @collection) && @collection.status.eql?('draft'))
+      begin
+        delete_collection
+        flash[:notice] = t('dri.flash.notice.collection_deleted')
+      rescue Exception => e
+        flash[:alert] = t('dri.flash.alert.error_deleting_collection', :error => e.message)
+      end
+    else
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, "")
+    end
+
+    respond_to do |format|
+      format.html { redirect_to :controller => "catalog", :action => "index" }
+    end
+  end
+
+  def publish
+    enforce_permissions!("manage_collection", params[:id])
+
+    @object = retrieve_object!(params[:id])
+
+    raise Exceptions::BadRequest unless @object.is_collection?
+
+    begin
+      publish_collection
+      flash[:notice] = t('dri.flash.notice.collection_publishing')
+    rescue Exception => e
+      flash[:alert] = t('dri.flash.alert.error_publishing_collection', :error => e.message)
+      @warnings = t('dri.flash.alert.error_publishing_collection', :error => e.message)
+    end
+
+    respond_to do |format|
+      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+      format.json {
+          unless @warnings.nil?
+            response = { :warning => @warnings, :id => @object.id, :status => @object.status }
+          else
+            response = { :id => @object.id, :status => @object.status }
+          end
+          render :json => response, :status => :accepted }
+    end
+  end
+
+  private
+
   # Create a collection from an uploaded XML file.
   #
-  def ingest
+  def create_from_xml
     enforce_permissions!("create", DRI::Batch)
 
     unless params[:metadata_file].present?
@@ -274,56 +329,6 @@ class CollectionsController < CatalogController
 
     end
   end
-
-  def destroy
-    enforce_permissions!("manage_collection",params[:id])
-
-    @collection = retrieve_object!(params[:id])
-
-    if current_user.is_admin? || ((can? :manage_collection, @collection) && @collection.status.eql?('draft'))
-      begin
-        delete_collection
-        flash[:notice] = t('dri.flash.notice.collection_deleted')
-      rescue Exception => e
-        flash[:alert] = t('dri.flash.alert.error_deleting_collection', :error => e.message)
-      end
-    else
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, "")
-    end
-
-    respond_to do |format|
-      format.html { redirect_to :controller => "catalog", :action => "index" }
-    end
-  end
-
-  def publish
-    enforce_permissions!("manage_collection", params[:id])
-
-    @object = retrieve_object!(params[:id])
-
-    raise Exceptions::BadRequest unless @object.is_collection?
-
-    begin
-      publish_collection
-      flash[:notice] = t('dri.flash.notice.collection_publishing')
-    rescue Exception => e
-      flash[:alert] = t('dri.flash.alert.error_publishing_collection', :error => e.message)
-      @warnings = t('dri.flash.alert.error_publishing_collection', :error => e.message)
-    end
-
-    respond_to do |format|
-      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
-      format.json {
-          unless @warnings.nil?
-            response = { :warning => @warnings, :id => @object.id, :status => @object.status }
-          else
-            response = { :id => @object.id, :status => @object.status }
-          end
-          render :json => response, :status => :accepted }
-    end
-  end
-
-  private
 
   def valid_permissions?
     if (
