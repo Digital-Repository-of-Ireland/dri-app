@@ -296,6 +296,43 @@ class CollectionsController < CatalogController
     end
   end
 
+  def review
+    enforce_permissions!("edit",params[:id])
+
+    @object = retrieve_object!(params[:id])
+
+    return if request.get?
+
+    raise Exceptions::BadRequest unless @object.is_collection?
+
+    unless @object.status.eql?("reviewed")
+      @object.status = "reviewed"
+      @object.save
+    end
+
+    if params[:apply_all].present? && params[:apply_all].eql?("yes")
+      begin
+        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless @object.governed_items.nil?
+      rescue Exception => e
+        logger.error "Unable to submit status job: #{e.message}"
+        flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)
+        @warnings = t('dri.flash.alert.error_review_job', :error => e.message)
+      end
+    end
+
+    respond_to do |format|
+      flash[:notice] = t('dri.flash.notice.metadata_updated')
+      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+      format.json {
+        unless @warnings.nil?
+          response = { :warning => @warnings, :id => @object.id, :status => @object.status }
+        else
+          response = { :id => @object.id, :status => @object.status }
+        end
+        render :json => response, :status => :accepted }
+    end
+  end
+
   def publish
     enforce_permissions!("manage_collection", params[:id])
 
