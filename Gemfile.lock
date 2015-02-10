@@ -1,9 +1,9 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: 310d8859b00f36390faf2e915fb97e697b8968af
-  branch: develop
+  revision: bc65cc5a973ede8304ecf97248c869eee4cf2014
+  tag: v2.0.1
   specs:
-    dri_data_models (2.0.0)
+    dri_data_models (2.0.1)
       hydra-access-controls
       hydra-collections
       hydra-head (>= 7.0)
@@ -14,10 +14,10 @@ GIT
 
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-user-group.git
-  revision: 7228690db985533e3a96ac23f7fe71ee4419f0f6
-  branch: develop
+  revision: 5bbd96a69920d27b8a7ffaa5461817c98d26862b
+  tag: v1.0.7
   specs:
-    user_group (1.0.6)
+    user_group (1.0.7)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -89,7 +89,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     acts_as_follower (0.2.1)
-    addressable (2.3.6)
+    addressable (2.3.7)
     arel (5.0.1.20140414130214)
     autoparse (0.3.3)
       addressable (>= 2.3.1)
@@ -103,7 +103,7 @@ GEM
     aws-sdk-v1 (1.58.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
-    bcrypt (3.1.9)
+    bcrypt (3.1.10)
     better_errors (2.0.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -186,7 +186,7 @@ GEM
       warden (~> 1.2.3)
     devise-guests (0.3.3)
       devise
-    devise-i18n-views (0.3.3)
+    devise-i18n-views (0.3.4)
     diff-lcs (1.2.5)
     docile (1.1.5)
     ebnf (0.3.6)
@@ -252,7 +252,7 @@ GEM
       multi_json (~> 1.8)
     haml (4.0.6)
       tilt
-    hashie (3.3.2)
+    hashie (3.4.0)
     high_voltage (2.1.0)
     hike (1.2.3)
     hitimes (1.2.2)
