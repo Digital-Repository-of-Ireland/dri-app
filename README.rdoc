@@ -309,3 +309,4 @@ updates to dependencies:
 
  * lib/active_fedora/fixture_exporter.rb (remove entire file when bug fixed in
      active_fedora)
+
