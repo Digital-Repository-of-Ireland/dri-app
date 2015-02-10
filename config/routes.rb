@@ -20,8 +20,7 @@ NuigRnag::Application.routes.draw do
     resources :collections, :only => ['new','create','update','edit','destroy']
 
     resources :institutes, :only => ['show', 'new', 'create']
-    resources :object_history, :only => ['show']
-    resources :datastream_version, :only => ['show']
+    resources :user_report, :only => ['index']
 
     match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
     match 'newdepositingassociation' => 'institutes#associate_depositing', :via => :post, :as => :new_depositing_association
@@ -44,13 +43,16 @@ NuigRnag::Application.routes.draw do
     match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata, :defaults => { :format => 'xml' }
     match 'objects/:id/metadata' => 'metadata#update', :via => :put
     match 'objects/:id/citation' => 'objects#citation', :via => :get, :as => :citation_object
+    match 'objects/:id/history' => 'object_history#show', :via => :get, :as => :object_history
+    match 'objects/:id/datastreams/:stream' => 'datastream_version#show', :via => :get, :as => :datastream_version
     match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download
+    
+    match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
+    match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
+
     match 'download_surrogate' => 'surrogates#download', :via => :get
     match 'maps_json' => 'maps#get', :via => :get
     match 'timeline_json' => 'timeline#get', :via => :get
-
-    match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
-    match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
 
     match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
 
@@ -63,7 +65,6 @@ NuigRnag::Application.routes.draw do
     match 'surrogates/:id' => 'surrogates#show', :via => :get, :as => :surrogates
 
     match 'collections/:id' => 'catalog#show', :via => :get
-    match 'collections/ingest' => 'collections#ingest', :via => :post
 
     #API paths
     match 'get_objects' => 'objects#index', :via => :post

@@ -17,7 +17,7 @@ Then /^it should validate presence of attribute "(.*?)"$/ do |attribute_name|
 end
 
 When /^we test an empty "(.*?)" Model$/ do |model_name|
-  @test_model = Batch.new
+  @test_model = DRI::Batch.with_standard :qdc
   @test_model.type = [ model_name ]
 end
 
@@ -26,10 +26,10 @@ Then /^the "(.*?)" Model should not be valid$/ do |model_name|
 end
 
 Given /^an object in collection "(.*?)" with metadata from file "(.*?)"$/ do |collection,file|
-  col = Batch.find(collection)
+  col = DRI::Batch.find(collection)
   col.status = 'published'
   col.save
-  obj = Batch.new(:pid => "dri:9999")
+  obj = DRI::Batch.with_standard(:qdc, {:pid => "dri:9999"})
   tmp_xml = Nokogiri::XML(File.new(File.join(cc_fixture_path, file)).read)
   obj.update_metadata tmp_xml
   obj.status = 'published'

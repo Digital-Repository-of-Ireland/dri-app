@@ -16,8 +16,8 @@ class CollectionsController < CatalogController
   # Creates a new model.
   #
   def new
-    enforce_permissions!("create", Batch)
-    @object = Batch.new
+    enforce_permissions!("create", DRI::Batch)
+    @object = DRI::Batch.with_standard :qdc
 
     # configure default permissions
     @object.apply_depositor_metadata(current_user.to_s)
@@ -125,47 +125,13 @@ class CollectionsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
-    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
-    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
-
-    enforce_permissions!("create", Batch)
-
-    set_access_permissions(:batch, true)
-
-    @collection = Batch.new
-
-    @collection.type = ["Collection"] if @collection.type == nil
-    @collection.type.push("Collection") unless @collection.type.include?("Collection")
-
-    supported_licences()
-
-    # If a cover image was uploaded, remove it from the params hash
-    cover_image = params[:batch].delete(:cover_image)
-
-    @collection.update_attributes(params[:batch])
-
-    # depositor is not submitted as part of the form
-    @collection.depositor = current_user.to_s
-
-    unless valid_permissions?
-      flash[:alert] = t('dri.flash.error.not_created')
-      @object = @collection
-      render :action => :new
-      return
-    end
-
-    # We need to save to get a pid at this point
-    if @collection.save
-      DOI.mint_doi( @collection )
-
-      # We have to create a default reader group
-      create_reader_group
-
-      unless cover_image.blank?
-        unless Storage::CoverImages.validate(cover_image, @collection)
-          flash[:error] = t('dri.flash.error.cover_image_not_saved')
-        end
+    if params[:metadata_file].present?
+      unless create_from_xml
+        return
+      end
+    else
+      unless create_from_form
+        return
       end
     end
 
@@ -189,89 +155,6 @@ class CollectionsController < CatalogController
         format.json { render(:json => @collection.errors.messages.values.to_s) }
         raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_collection')
       end
-    end
-  end
-
-  # Create a collection from an uploaded XML file.
-  #
-  def ingest
-    enforce_permissions!("create", Batch)
-
-    unless params[:metadata_file].present?
-      flash[:notice] = t('dri.flash.notice.specify_valid_file')
-      @object = @collection
-      render :action => :new
-      return
-    else
-
-      xml = MetadataHelpers.load_xml(params[:metadata_file])
-      metadata_class = MetadataHelpers.get_metadata_class_from_xml xml
-
-      if metadata_class.nil?
-        flash[:notice] = t('dri.flash.notice.specify_valid_file')
-        @object = @collection
-        render :action => :new
-        return
-      end
-
-      @collection = Batch.new :desc_metadata_class => metadata_class.constantize
-      @collection.update_metadata xml
-      MetadataHelpers.checksum_metadata(@collection)
-      duplicates?(@collection)
-
-      if @collection.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
-        flash[:notice] = t('dri.flash.notice.specify_valid_file')
-        @object = @collection
-        render :action => :new
-        return
-      end
-
-      unless @collection.is_collection?
-        flash[:notice] = "Metadata file does not specify that the object is a collection."
-        @object = @collection
-        render :action => :new
-        return
-      end
-
-      @collection.apply_depositor_metadata(current_user.to_s)
-      @collection.manager_users_string=current_user.to_s
-      @collection.discover_groups_string="public"
-      @collection.read_groups_string="public"
-      @collection.private_metadata="0"
-      @collection.master_file="0"
-
-      @collection.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?
-
-      # We need to save to get a pid at this point
-      if @collection.save
-        DOI.mint_doi( @collection )
-
-        # We have to create a default reader group
-        create_reader_group
-      end
-
-      respond_to do |format|
-        if @collection.save
-
-          format.html { flash[:notice] = t('dri.flash.notice.collection_created')
-          redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
-          format.json {
-            @response = {}
-            @response[:id] = @collection.pid
-            @response[:title] = @collection.title
-            @response[:description] = @collection.description
-            render(:json => @response, :status => :created)
-          }
-        else
-          format.html {
-            flash[:alert] = @collection.errors.messages.values.to_s
-            render :action => :new
-          }
-          format.json { render(:json => @collection.errors.messages.values.to_s) }
-          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_collection')
-        end
-      end
-
     end
   end
 
@@ -324,6 +207,109 @@ class CollectionsController < CatalogController
   end
 
   private
+
+  # Create a collection with the web form
+  #
+  def create_from_form
+    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
+    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
+    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
+
+    enforce_permissions!("create", DRI::Batch)
+
+    set_access_permissions(:batch, true)
+
+    @collection = DRI::Batch.with_standard :qdc
+
+    @collection.type = ["Collection"] if @collection.type == nil
+    @collection.type.push("Collection") unless @collection.type.include?("Collection")
+
+    supported_licences()
+
+    # If a cover image was uploaded, remove it from the params hash
+    cover_image = params[:batch].delete(:cover_image)
+
+    @collection.update_attributes(params[:batch])
+
+    # depositor is not submitted as part of the form
+    @collection.depositor = current_user.to_s
+
+    unless valid_permissions?
+      flash[:alert] = t('dri.flash.error.not_created')
+      @object = @collection
+      render :action => :new
+      return false
+    end
+
+    # We need to save to get a pid at this point
+    if @collection.save
+      DOI.mint_doi( @collection )
+
+      # We have to create a default reader group
+      create_reader_group
+
+      unless cover_image.blank?
+        unless Storage::CoverImages.validate(cover_image, @collection)
+          flash[:error] = t('dri.flash.error.cover_image_not_saved')
+        end
+      end
+    end
+
+    true
+  end
+  
+  # Create a collection from an uploaded XML file.
+  #
+  def create_from_xml
+    enforce_permissions!("create", DRI::Batch)
+
+    unless params[:metadata_file].present?
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @object = @collection
+      render :action => :new
+      return false
+    end
+
+    xml = MetadataHelpers.load_xml(params[:metadata_file])
+    standard = MetadataHelpers.get_metadata_standard_from_xml xml
+
+    if standard.nil?
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @object = @collection
+      render :action => :new
+      return false
+    end
+
+    @collection = DRI::Batch.with_standard standard
+    MetadataHelpers.set_metadata_datastream(@collection, xml)
+    MetadataHelpers.checksum_metadata(@collection)
+    duplicates?(@collection)
+
+    if @collection.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @object = @collection
+      render :action => :new
+      return false
+    end
+
+    unless @collection.is_collection?
+      flash[:notice] = "Metadata file does not specify that the object is a collection."
+      @object = @collection
+      render :action => :new
+      return false
+    end
+
+    @collection.apply_depositor_metadata(current_user.to_s)
+    @collection.manager_users_string=current_user.to_s
+    @collection.discover_groups_string="public"
+    @collection.read_groups_string="public"
+    @collection.private_metadata="0"
+    @collection.master_file="0"
+
+    @collection.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?   
+
+    true
+  end
 
   def valid_permissions?
     if (

@@ -9,8 +9,10 @@ gem 'blacklight', "5.7.2"
 gem 'hydra-head', "7.2.2"
 gem 'sufia-models', "4.1.0"
 
-gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'develop'
-gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'develop'
+gem 'paper_trail', '~> 3.0.6'
+
+gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :tag => 'v2.0.1'
+gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :tag => 'v1.0.7'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -74,6 +76,7 @@ group :development, :test do
 
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_rspec'
+  gem 'fakes3', :git => 'git@tracker.dri.ie:drirepo/fake-s3.git', :branch => 'issue22'
 end
 
 group :test do

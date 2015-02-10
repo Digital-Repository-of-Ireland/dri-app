@@ -15,7 +15,7 @@ describe CollectionsController do
   describe 'DELETE destroy' do
 
     it 'should delete a collection' do
-      @collection = Batch.new
+      @collection = DRI::Batch.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -25,7 +25,7 @@ describe CollectionsController do
       @collection[:published_date] = ["1916-04-01"]
       @collection.save
       
-      @object = Batch.new
+      @object = DRI::Batch.with_standard :qdc
       @object[:title] = ["An Audio Title"]
       @object[:rights] = ["This is a statement about the rights associated with this object"]
       @object[:role_hst] = ["Collins, Michael"]
@@ -54,7 +54,7 @@ describe CollectionsController do
   describe 'publish' do
 
     it 'should publish a collection' do
-      @collection = Batch.new
+      @collection = DRI::Batch.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -65,7 +65,7 @@ describe CollectionsController do
       @collection[:status] = ["draft"]
       @collection.save
 
-      @object = Batch.new
+      @object = DRI::Batch.with_standard :qdc
       @object[:title] = ["An Audio Title"]
       @object[:rights] = ["This is a statement about the rights associated with this object"]
       @object[:role_hst] = ["Collins, Michael"]
@@ -95,6 +95,7 @@ describe CollectionsController do
 
     it 'should create a collection from a metadata file' do
       request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
 
       @file = fixture_file_upload("/collection_metadata.xml", "text/xml")
       class << @file
@@ -103,7 +104,7 @@ describe CollectionsController do
         attr_reader :tempfile
       end
 
-      post :ingest, :metadata_file => @file
+      post :create, :metadata_file => @file
       response.should be_success    
     end
 

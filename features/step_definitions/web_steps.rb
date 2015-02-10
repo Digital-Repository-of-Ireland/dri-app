@@ -25,7 +25,7 @@ end
 Given /^I have created an object with title "(.*?)" in the collection with pid "(.*?)"$/ do |title, collection_pid|
   steps %{
     When I go to the "collection" "show" page for "#{collection_pid}"
-    And I follow the link to add an object  
+    And I follow the link to add an object
     When I enter valid metadata with title "#{title}"
     And I press the button to continue
   }
@@ -82,14 +82,14 @@ end
 
 When /^(?:|I )follow the link to (.+)$/ do |link_name|
   if Capybara.current_driver == Capybara.javascript_driver
-    page.find_link(link_to_id(link_name)).trigger('click')  
+    page.find_link(link_to_id(link_name)).trigger('click')
   else
     page.find_link(link_to_id(link_name)).click
   end
 end
 
-# Use this step when overlaping elements might confuse Capybara 
-# - it ignores overlaping <a> elements and just fires the click 
+# Use this step when overlaping elements might confuse Capybara
+# - it ignores overlaping <a> elements and just fires the click
 # event on the selected element.
 When /^(?:|I )click the link to (.+)$/ do |link_name|
   element = page.find(:id, link_to_id(link_name))

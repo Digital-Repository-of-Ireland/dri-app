@@ -26,7 +26,7 @@ class MetadataController < CatalogController
         format.html  { 
           xml_data = @object.datastreams["descMetadata"].content
           xml = Nokogiri::XML(xml_data)
-          xslt_data = File.read("app/assets/stylesheets/dri_style_metadata.xsl")
+          xslt_data = File.read("app/assets/stylesheets/#{xml.root.name}.xsl")
           xslt = Nokogiri::XSLT(xslt_data)
           styled_xml = xslt.transform(xml)
           render :text => styled_xml.to_html

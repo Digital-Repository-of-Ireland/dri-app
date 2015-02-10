@@ -294,7 +294,7 @@ input[type="color"],
 
 }
 .modal.fade.in {
-  top: 25%;
+  padding-top: 15%;
 }
 
 h1,
@@ -2492,8 +2492,15 @@ input.dri_request_access_button:hover {
 /*-------------- MetaData Readview  --------------*/
 .modal-content {
   padding: 10px;
-  dl.dri_object_metadata_readview {
-    padding: 15px;
+  .dri_object_metadata_readview {
+    max-height: 400px;
+    overflow: scroll;
+    dl {
+      padding: 15px;
+    }
+  }
+  .dri_child_links > a {
+    color: $dri_grey;
   }
 }
 

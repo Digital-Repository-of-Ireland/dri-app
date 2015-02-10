@@ -383,6 +383,7 @@ ga:
           reset: Athshocraigh
         forms: 
           collection_prompt: "Roghnaigh Bailiúchán"
+          metadata_standard_prompt: "Select metadata"
           ingest_method_prompt: "Roghnaigh modh glactha isteach"
           object_type_prompt: "Roghnaigh cineál oibiachta"
           status_prompt: "Select status"

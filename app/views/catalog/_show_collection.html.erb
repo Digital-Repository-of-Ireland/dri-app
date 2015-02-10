@@ -21,7 +21,9 @@
 		</dd>
 		<% end %>
 	</dl>
+
 </div>
+
 <!-- close dri_object_first_block -->
 
 <div class="dri_object_second_block">
@@ -34,12 +36,18 @@
 		<i class="fa fa-lg fa-folder-open"></i>
 		<%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
 		<% objectsCount = count_items_in_collection document[:id] %>
+		<!-- If it's a root collection, we show all the objects within it -->
+		<% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil %>
 		<% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
 		<%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
+		<% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
+		<% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
+		<%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
+		<% end %>
 	</div>
 
 	<div class="dri_vc_image">
-		<!-- fix link -->
+		
 		<% if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first %>
 		<%= image_tag(document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first, :width=>"230", :alt=> t('dri.views.alt_tags.cover_image')) %></a>
 		<% else %>
@@ -54,15 +62,15 @@
 
 	<% if signed_in? && (can? :manage_collection, document) %>
 	<div class="dri_objecttools_title">
-		<%= t('dri.views.catalog.titles.editor_tools') %>
+		<i class="fa fa-pencil fa-lg"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
 	</div>
 	<ul class="dri_view_collection bold">
+		<% if (edit_functionality_available?(@document)) %>
 		<%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
 		<li>
 			<i class="fa fa-plus-square-o fa-lg"></i><%= t('dri.views.catalog.links.add_object') %>
 		</li>
 		<% end %>
-
 		<%= link_to new_object_path(collection: document.id, method: 'upload'), :id => "add_object_xml" do %>
 		<li >
 			<i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.add_object_xml') %>
@@ -70,25 +78,32 @@
 		<% end %>
 		<%= link_to edit_collection_path, :id => "edit_collection" do %>
 		<li>
-		    <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.edit') %>
-        
-        </li>
-        <% end %>
-            <% if @document[Solrizer.solr_name('status', :stored_searchable, type: :symbol).to_sym].first.eql?("draft") %>
-            <% publish_label = t('dri.views.catalog.links.publish') %>
-            <% else %>
-            <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
-            <% end %>
-            <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
-            <li >
-                <i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
-            </li>
-            <% end %>
-            <%= link_to  surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
-            <li>
-                <i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
-            </li>
-            <% end %>
+			<i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.edit') %>
+		</li>
+		<% end %>
+		<% end %> <!-- if end (non-EAD collections) -->
+		<% if @document[Solrizer.solr_name('status', :stored_searchable, type: :symbol).to_sym].first.eql?("draft") %>
+		<% publish_label = t('dri.views.catalog.links.publish') %>
+		<% else %>
+		<% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
+		<% end %>
+		<!-- TODO Fix Callback -->
+		<%= link_to  '', data: { confirm: t('dri.views.collection.confirm_all_reviewed') }, :id => "all_objects_reviewed" do %>
+		<li>
+			<i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_all_reviewed') %>
+		</li>
+		<% end %>
+		<%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
+		<li >
+			<i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
+		</li>
+		<% end %>
+		<%= link_to  surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
+		<li>
+			<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
+		</li>
+		<% end %>
+
 	</ul>
 
 	<% end %>

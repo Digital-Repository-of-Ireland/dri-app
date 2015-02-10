@@ -17,7 +17,7 @@ describe "inheritance" do
     @membership.approved_by = @user.id
     @membership.save
 
-    @collection = Batch.new
+    @collection = DRI::Batch.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -32,7 +32,7 @@ describe "inheritance" do
     @collection.read_groups = ["test group"]
     @collection.save
 
-    @object = Batch.new
+    @object = DRI::Batch.with_standard :qdc
     @object[:title] = ["An Audio Title"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
     @object[:role_hst] = ["Collins, Michael"]

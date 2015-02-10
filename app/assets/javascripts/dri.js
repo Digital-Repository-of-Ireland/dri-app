@@ -4,12 +4,12 @@
 
 // When the document has loaded run these functions
 $(document).ready(function() {
-  add_text_field();
-  destroy_text_field();
-  add_person_fields();
+    add_text_field();
+    destroy_text_field();
+    add_person_fields();
 });
 
-// Whenever an "add" link is clicked, a new text field is added to the bottom of the list 
+// Whenever an "add" link is clicked, a new text field is added to the bottom of the list
 add_text_field = function() {
     $('.add-text-field a').click(function() {
       var fieldset_name = $(this).parents('fieldset').attr('id');
@@ -60,7 +60,7 @@ destroy_text_field = function() {
         $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name+'][]" value="">');
         $(this).remove();
       }
-      
+
       return false;
     });
 };

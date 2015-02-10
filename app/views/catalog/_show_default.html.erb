@@ -51,33 +51,37 @@
         <%= t('dri.views.catalog.titles.editor_tools') %>
       </div>
       <ul class="dri_view_collection bold">
-          <%= link_to  edit_object_path(@document), :id => "edit_record" do %>
-                <li>
-        <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
-      </li>
-
-      <% end %>
-
-      <% unless @files.nil? || @files.empty? %>
-           <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
-          <li  >
-              <%= t('dri.views.catalog.links.generate_surrogates') %>
-           </li>
-           <% end %>
-      <% end %>
-
-      <% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
+        <% if (edit_functionality_available?(@document)) %>
+          <%= link_to edit_object_path(@document), :id => "edit_record" do %>
+          <li>
+            <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
+          </li>
+          <% end %>
+        <% end %> <!-- if end (non-EAD collections) -->
+        <% unless @files.nil? || @files.empty? %>
+          <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
+          <li>
+            <i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
+          </li>
+          <% end %>
+        <% end %>
+        <% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
           <%= link_to status_path(@document), {:id => 'status_update', :"data-toggle" => "modal", :"data-target" => "#ajax-modal" } do %>
-
-          <li >
-              <i class="fa fa-eye fa-lg"></i><%= t('dri.views.catalog.links.status_update') %>
-            </li>
-            <% end %>
-      <% end %>
-
+          <li>
+            <i class="fa fa-eye fa-lg"></i><%= t('dri.views.catalog.links.status_update') %>
+          </li>
+          <% if@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") %>
+          <li>
+            <i class="fa fa-check fa-lg red"></i><%= t('dri.views.catalog.links.mark_object_reviewed') %>
+          </li>
+          <% else %>
+          <li>
+            <i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_object_draft') %>
+          </li>
+          <% end %>
+          <% end %>
+        <% end %>
       </ul>
-
   <% end %>
-
 </div>
 <!-- close dri_object_second_block -->
