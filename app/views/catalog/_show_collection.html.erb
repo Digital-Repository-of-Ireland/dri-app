@@ -88,7 +88,7 @@
 		<% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
 		<% end %>
 		<!-- TODO Fix Callback -->
-		<%= link_to  '', data: { confirm: t('dri.views.collection.confirm_all_reviewed') }, :id => "all_objects_reviewed" do %>
+		<%= link_to  review_path(:apply_all => 'yes'), data: { confirm: t('dri.views.collection.confirm_all_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
 		<li>
 			<i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_all_reviewed') %>
 		</li>
