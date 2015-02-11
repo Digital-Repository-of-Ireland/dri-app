@@ -245,6 +245,9 @@ en:
         links: 
           add_object: "Add an Object"
           add_object_xml: "Upload Object XML"
+          add_documentation: "Add Documentation"
+          add_documentation_help_title: "Help Title Here"
+          add_documentation_help_text: "Help Text Goes Here"
           asset: Asset
           characterization: Characterization
           details: "File Details"
