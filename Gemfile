@@ -23,7 +23,7 @@ gem 'omniauth-shibboleth'
 gem 'feedjira'
 
 # Storage-related gems
-gem 'aws-sdk'
+gem 'aws-sdk', '< 2.0'
 
 #gem 'clamav'
 
@@ -120,7 +120,7 @@ gem 'rvm'
 # UI widgets
 gem 'colorbox-rails'
 gem 'bootstrap-switch-rails'
-gem 'videojs_rails'
+gem 'videojs_rails', :git => 'git@github.com:ekilfeather/videojs_rails.git', :ref => '605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'bootstrap-datepicker-rails'
