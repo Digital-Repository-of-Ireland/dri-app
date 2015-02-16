@@ -267,6 +267,7 @@ en:
           related: "Related Files"
           status_update: "Update status"
           unknown_size: "Unknown Size"
+          upload_file: "Upload File"
           view_metadata: "View Metadata (XML)"
         sidebar: 
           more_like_this: "More Like This"
