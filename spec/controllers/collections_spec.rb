@@ -95,6 +95,7 @@ describe CollectionsController do
 
     it 'should create a collection from a metadata file' do
       request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
 
       @file = fixture_file_upload("/collection_metadata.xml", "text/xml")
       class << @file
@@ -103,7 +104,7 @@ describe CollectionsController do
         attr_reader :tempfile
       end
 
-      post :ingest, :metadata_file => @file
+      post :create, :metadata_file => @file
       response.should be_success    
     end
 
