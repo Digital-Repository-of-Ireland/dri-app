@@ -6,13 +6,9 @@ module Storage
 
     def initialize
       endpoint = Settings.S3.server
-      
-      host_port = endpoint.partition(":")
-      @host = host_port[0]
-      @port = host_port[2].chomp("/")
 
-      AWS.config(s3_endpoint: endpoint, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key, :s3_force_path_style => true)
-      @s3 = AWS::S3.new(ssl_verify_peer: false, use_ssl: Settings.S3.use_ssl)
+      credentials = Aws::Credentials.new(Settings.S3.access_key_id, Settings.S3.secret_access_key)
+      @client = Aws::S3::Client.new(region: 'us-east-1', endpoint: endpoint, credentials: credentials, ssl_verify_peer: false, force_path_style: true)
     end
 
     # Get a hash of all surrogates for an object
@@ -44,8 +40,8 @@ module Storage
 
       surrogates_hash = {}
       begin
-        bucketobj = @s3.buckets[bucket]
-        bucketobj.objects.each do |fileobj|
+        bucketobj = @client.list_objects(bucket: bucket)
+        bucketobj.each do |fileobj|
           if fileobj.key.match(/#{file_id}_([-a-zA-z0-9]*)\..*/)
             surrogates_hash[fileobj.key] = fileobj.head
           end
@@ -65,6 +61,7 @@ module Storage
 
       bucket = Utils.split_id(object_id)
       generic_file = Utils.split_id(file_id)
+
       files = list_files(bucket)
 
       filename = "#{Rails.application.config.id_namespace}:#{generic_file}_#{name}"
@@ -77,14 +74,14 @@ module Storage
           Rails.logger.debug "Problem getting url for file #{surrogate} : #{e.to_s}"
         end
       end
-
+ 
       return url
     end
 
     # Create bucket
     def create_bucket(bucket)
       begin
-        @s3.buckets.create(bucket)
+        @client.create_bucket(bucket: bucket)
       rescue Exception => e
         Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
         return false
@@ -95,13 +92,13 @@ module Storage
     # Delete bucket
     def delete_bucket(bucket_name)
       begin
-        bucket = @s3.buckets[bucket_name]
-        bucket.objects.each do |obj|
+        objects = @client.list_objects(bucket: bucket_name)
+        objects.each do |obj|
           obj.delete
         end
-        bucket.delete
+        @client.delete_bucket(bucket: bucket_name)
       rescue Exception => e
-        Rails.logger.error "Could not delete Storage Bucket #{bucket}: #{e.to_s}"
+        Rails.logger.error "Could not delete Storage Bucket #{bucket_name}: #{e.to_s}"
         return false
       end
       return true
@@ -111,9 +108,10 @@ module Storage
     def store_surrogate(object_id, surrogate_file, surrogate_key)
       bucket_name = Utils.split_id(object_id)
       begin
-        bucket = @s3.buckets[bucket_name]
-        object = bucket.objects[surrogate_key]
-        object.write(Pathname.new(surrogate_file))
+        @client.put_object(
+          bucket: bucket_name,
+          body: File.open(Pathname.new(surrogate_file)),
+          key: surrogate_key)
       rescue Exception  => e
         Rails.logger.error "Problem saving Surrogate file #{surrogate_key} : #{e.to_s}"
       end
@@ -122,9 +120,14 @@ module Storage
     # Save arbitrary file
     def store_file(file, file_key, bucket_name)
       begin
-        bucket = @s3.buckets[bucket_name]
-        object = bucket.objects[file_key]
-        object.write(Pathname.new(file), {:acl => :public_read})
+        @client.put_object(
+          bucket: bucket_name,
+          body: File.open(Pathname.new(file)),
+          key: file_key)
+        @client.put_object_acl(
+          acl: "public_read",
+          bucket: bucket_name,
+          key: file_key)
 
         return true
       rescue Exception => e
@@ -158,10 +161,8 @@ module Storage
     def list_files(bucket)
       files = []
       begin
-        bucketobj = @s3.buckets[bucket]
-        bucketobj.objects.each do |fileobj|
-          files << fileobj.key
-        end
+        response = @client.list_objects(bucket: bucket)
+        files = response.contents.map(&:key)
       rescue
         Rails.logger.debug "Problem listing files in bucket #{bucket}"
       end
@@ -169,27 +170,21 @@ module Storage
       files
     end
 
-  private
+  #private
 
     def create_url(bucket, object, expire=nil, authenticated=true)
-      bucket_obj = @s3.buckets[bucket]
-      object = bucket_obj.objects[object]
-
-      options = { :secure => false, :force_path_style => true }
-
-      unless @port.empty?
-        options[:endpoint] = @host
-        options[:port] = @port.to_i
-      end
+      object = Aws::S3::Object.new(bucket_name: bucket, key: object, client: @client)
+      
+      options = {:secure => false}
 
       if authenticated
         unless expire.nil?
-          object.url_for(:read, options.merge({:expires => expire})).to_s
+          object.presigned_url(:get, options.merge({:expires_in => expire})).to_s
         else
-          object.url_for(:read, options).to_s
+          object.presigned_url(:get, options).to_s
         end
       else
-        object.public_url(options).to_s
+        object.public_url
       end
     end
 

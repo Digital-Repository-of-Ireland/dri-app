@@ -23,7 +23,7 @@ gem 'omniauth-shibboleth'
 gem 'feedjira'
 
 # Storage-related gems
-gem 'aws-sdk'
+gem 'aws-sdk', '~> 2'
 
 #gem 'clamav'
 
