@@ -9,7 +9,11 @@ class PublishJob < ActiveFedoraPidBasedJob
   def run
     Rails.logger.info "Publishing collection #{object.id}"
 
-    query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\" AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:reviewed")
+    # query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\" AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:reviewed")
+    
+    # Querying by root_collection_id gets all objects, subcollections belonging to the collectionid passed as parameter
+    # Publishing all object/subcollections with a reviewed status
+    query = Solr::Query.new("#{Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)}:\"#{object.id}\" AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:reviewed")
 
     while query.has_more?
       collection_objects = query.pop
