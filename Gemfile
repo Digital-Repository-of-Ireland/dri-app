@@ -11,7 +11,7 @@ gem 'sufia-models', "4.1.0"
 
 gem 'paper_trail', '~> 3.0.6'
 
-gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :tag => 'v2.0.2'
+gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :tag => 'v2.0.3'
 gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :tag => 'v1.0.7'
 
 gem 'rails_config'
@@ -23,7 +23,7 @@ gem 'omniauth-shibboleth'
 gem 'feedjira'
 
 # Storage-related gems
-gem 'aws-sdk'
+gem 'aws-sdk', '~> 2'
 
 #gem 'clamav'
 
@@ -120,7 +120,7 @@ gem 'rvm'
 # UI widgets
 gem 'colorbox-rails'
 gem 'bootstrap-switch-rails'
-gem 'videojs_rails'
+gem 'videojs_rails', :git => 'https://github.com/ekilfeather/videojs_rails.git', :ref => '605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'bootstrap-datepicker-rails'

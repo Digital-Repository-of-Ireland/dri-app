@@ -52,6 +52,11 @@
       </div>
       <ul class="dri_view_collection bold">
         <% if (edit_functionality_available?(@document)) %>
+          <%= link_to edit_object_path(@document), :id => "upload_file" do %>
+          <li>
+            <i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.upload_file') %>
+          </li>
+          <% end %>
           <%= link_to edit_object_path(@document), :id => "edit_record" do %>
           <li>
             <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>

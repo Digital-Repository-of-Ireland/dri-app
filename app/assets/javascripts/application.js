@@ -19,7 +19,6 @@
 //= require bootstrap/tooltip
 //= require bootstrap/popover
 //= require bootstrap/tab
-//= require bootstrap-player.js
 //= require bootstrap-switch
 //= require timelineJS/embed
 //= require timelineJS/locale/en

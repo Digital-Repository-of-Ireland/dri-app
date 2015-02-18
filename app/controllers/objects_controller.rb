@@ -225,13 +225,13 @@ class ObjectsController < CatalogController
               files.each do |mf|
                 file_list = {}
                 file_doc = SolrDocument.new(mf)
-
+                
                 if can? :read_master, doc
                   url = url_for(file_download_url(doc.id, file_doc.id))
                   file_list['masterfile'] = url
                 end
 
-                timeout = 60 * 60 * 24 * 30 # 30 days
+                timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
                 surrogates = storage.get_surrogates doc, file_doc, timeout
                 surrogates.each do |file,loc|
                   file_list[file] = loc
