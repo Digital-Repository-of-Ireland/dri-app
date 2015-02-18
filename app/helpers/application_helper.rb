@@ -141,7 +141,8 @@ module ApplicationHelper
 
   def collection_children_query ( collection_id )
     "(#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
-    "\" OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
+    "\" AND is_collection_sim:false" +
+    " OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
   end
 
   def count_items_in_collection_by_type_and_status( collection_id, type, status )
@@ -223,6 +224,9 @@ module ApplicationHelper
   def get_licence( document )
     if !document[Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym].blank?
       @licence = Licence.where(:name => document[Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym]).first
+      if (@licence == nil)
+        @licence = document[Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym]
+      end
     elsif !document[Solrizer.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
       collection = root_collection_solr(document)
       if !collection[Solrizer.solr_name('licence', :stored_searchable, type: :string)].blank?

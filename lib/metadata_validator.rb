@@ -2,8 +2,10 @@ module MetadataValidator
 
   def MetadataValidator.valid?(xml, standard)
     case standard
-    when "DRI::Metadata::QualifiedDublinCore"
+    when "DRI::Metadata::QualifiedDublinCore"#, "DRI::Metadata::EncodedArchivalDescription"
       return is_valid_dc?(xml)
+    #when "DRI::Metadata::EncodedArchivalDescription"
+    #  return is_valid_ead?(xml)
     else
       return true, ""
     end
@@ -16,7 +18,8 @@ module MetadataValidator
     namespace = xml.namespaces
 
    if namespace.has_key?("xmlns:dc") &&
-      namespace["xmlns:dc"].eql?("http://purl.org/dc/elements/1.1/")
+      namespace["xmlns:dc"].eql?("http://purl.org/dc/elements/1.1/") || namespace.has_key?("xmlns:ead") &&
+      namespace["xmlns:ead"].eql?("urn:isbn:1-931666-22-9")
 
       # We have to extract all the schemata from the XML Document in order to validate correctly
       schema_imports = []
@@ -57,8 +60,16 @@ module MetadataValidator
         end
       end
    end
-
+   
    return result, @msg
+  end
+
+  # TODO Implement EAD Schema Validation
+  def MetadataValidator.is_valid_ead?(xml)
+    result = true
+    @msg = ""
+
+    return result, @msg
   end
 
   private
