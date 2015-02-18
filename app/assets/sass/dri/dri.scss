@@ -1990,7 +1990,7 @@ p.dri_rss_link a {
   .dri_collection_image {
     padding: 0;
     #margin: 0 14px 0 14px;
-    height: 128px;
+    min-height: 128px;
     overflow: hidden;
   }
   h1 {

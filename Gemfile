@@ -9,7 +9,8 @@ gem 'blacklight', "5.5.2"
 gem 'hydra-head', "7.1.0"
 gem 'sufia-models', "4.0.0"
 
-gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'marc-nccb'
+# gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'marc-nccb'
+gem 'dri_data_models', :path => '../dri-data-models'
 gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'develop'
 
 
@@ -119,3 +120,4 @@ gem 'bootstrap-switch-rails'
 gem 'videojs_rails'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
+gem 'jazz_hands'
