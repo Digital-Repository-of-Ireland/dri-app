@@ -1,9 +1,9 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: d493b272367f6e0a790dc552c0b69c8c92f8a8c4
-  branch: develop
+  revision: 71cbda329f1820111ece190749f38ef90691fcc0
+  branch: marc-nccb
   specs:
-    dri_data_models (2.0.3)
+    dri_data_models (2.0.0)
       hydra-access-controls
       hydra-collections
       hydra-head (>= 7.0)
@@ -14,10 +14,10 @@ GIT
 
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-user-group.git
-  revision: 7228690db985533e3a96ac23f7fe71ee4419f0f6
+  revision: 2c1c8bb176a5282037f2895e58963ece14e87035
   branch: develop
   specs:
-    user_group (1.0.6)
+    user_group (1.0.7)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -102,9 +102,10 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    autoprefixer-rails (5.1.5)
+    autoprefixer-rails (5.1.6)
       execjs
       json
+    awesome_print (1.6.1)
     aws-sdk (2.0.24)
       aws-sdk-resources (= 2.0.24)
     aws-sdk-core (2.0.24)
@@ -114,7 +115,7 @@ GEM
       multi_xml (~> 0.5)
     aws-sdk-resources (2.0.24)
       aws-sdk-core (= 2.0.24)
-    bcrypt (3.1.9)
+    bcrypt (3.1.10)
     better_errors (2.0.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -137,6 +138,9 @@ GEM
       sass (>= 3.2.19)
     bootstrap-switch-rails (3.0.2)
     builder (3.2.2)
+    byebug (2.7.0)
+      columnize (~> 0.3)
+      debugger-linecache (~> 1.2)
     cancancan (1.10.1)
     capybara (2.4.4)
       mime-types (>= 1.16)
@@ -201,7 +205,7 @@ GEM
       warden (~> 1.2.3)
     devise-guests (0.3.3)
       devise
-    devise-i18n-views (0.3.3)
+    devise-i18n-views (0.3.4)
     diff-lcs (1.2.5)
     diffy (3.0.7)
     docile (1.1.5)
@@ -272,7 +276,7 @@ GEM
       multi_json (~> 1.8)
     haml (4.0.6)
       tilt
-    hashie (3.3.2)
+    hashie (3.4.0)
     high_voltage (2.1.0)
     hike (1.2.3)
     hirb (0.7.3)
@@ -390,7 +394,7 @@ GEM
       foreigner (>= 0.9.1)
       rails (>= 3.2.0)
     method_source (0.8.2)
-    mime-types (2.4.3)
+    mime-types (1.25.1)
     mimemagic (0.2.1)
     mini_magick (4.1.0)
     mini_portile (0.6.2)
