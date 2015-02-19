@@ -17,10 +17,10 @@ class ObjectsController < CatalogController
   def new
     @collection = params[:collection]
         
-    standard = params[:standard].present? ? get_batch_standard_from_param(params[:standard]) : :qdc
+    @standard = params[:standard].present? ? get_batch_standard_from_param(params[:standard]) : :qdc
 
     @object = DRI::Batch.with_standard standard
-    if standard == 'qualifieddublincore'
+    if @standard == 'qualifieddublincore'
       @object.creator = [""]
     end
 
