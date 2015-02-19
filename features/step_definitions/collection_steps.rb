@@ -1,16 +1,19 @@
+require 'metadata_helpers'
+
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = "dri:c" + @random_pid if (pid == "@random")
   collection = DRI::Batch.with_standard(:qdc, {:pid => pid})
-  collection.title = title ? title : SecureRandom.hex(5)
-  collection.description = SecureRandom.hex(20)
-  collection.rights = SecureRandom.hex(20)
+  collection.title = title ? [title] : [SecureRandom.hex(5)]
+  collection.description = [SecureRandom.hex(20)]
+  collection.rights = [SecureRandom.hex(20)]
   collection.type = ["Collection"]
-  collection.date = ["2000-01-01"]
+  collection.creation_date = ["2000-01-01"]
   if user
-    User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
+    email = "#{user}@#{user}.com"
+    User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
 
-    collection.depositor = User.find_by_email(user).to_s
-    collection.manager_users_string=User.find_by_email(user).to_s
+    collection.depositor = User.find_by_email(email).to_s
+    collection.manager_users_string=User.find_by_email(email).to_s
     collection.discover_groups_string="public"
     collection.read_groups_string="registered"
   end
@@ -27,18 +30,21 @@ end
 Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?/ do |pid, title, desc, type, user|
   pid = "dri:o" + @random_pid if (pid == "@random")
   digital_object = DRI::Batch.with_standard(:qdc, {:pid => pid})
-  digital_object.title = title ? [title] : "Test Object"
-  digital_object.type = type ? [type] : "Sound"
-  digital_object.description = desc ? [desc] : "A test object"
+  digital_object.title = title ? [title] : ["Test Object"]
+  digital_object.type = type ? [type] : ["Sound"]
+  digital_object.description = desc ? [desc] : ["A test object"]
   if user
-    User.create(:email => user, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(user).nil?
+    email = "#{user}@#{user}.com"
+    User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
 
-    digital_object.depositor=User.find_by_email(user).to_s
-    digital_object.manager_users_string=User.find_by_email(user).to_s
+    digital_object.depositor=User.find_by_email(email).to_s
+    digital_object.manager_users_string=User.find_by_email(email).to_s
     digital_object.edit_groups_string="registered"
   end
   digital_object.rights = ["This is a statement of rights"]
-  digital_object.date = ["2000-01-01"]
+  digital_object.creation_date = ["2000-01-01"]
+
+  MetadataHelpers.checksum_metadata(digital_object)
   digital_object.save
 end
 
@@ -51,7 +57,7 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
     digital_object = DRI::Model::Pdfdoc.new(:pid => pid)
   end
 
-  digital_object.title = title
+  digital_object.title = [title]
   if user
     digital_object.depositor = User.find_by_email(user).to_s
     digital_object.manager_users_string=User.find_by_email(user).to_s
@@ -65,40 +71,38 @@ end
 Given /^the object with pid "(.*?)" is in the collection with pid "(.*?)"$/ do |objid,colid|
   object = ActiveFedora::Base.find(objid, {:cast => true})
   collection = ActiveFedora::Base.find(colid, {:cast => true})
-  collection.governed_items << object
-  collection.save
+  object.governing_collection = collection
+
+  MetadataHelpers.checksum_metadata(object)
+  object.update_index
   object.save
+  collection.save
 end
 
-Given /^I have associated the institute "(.?*)" with the collection entitled "(.?*)"$/ do |institute,collection|
-  steps %{
-    Given I am on the home page
-    When I perform a search
-    And I follow the link to browse
-    And I follow "#{collection}" within "div.dri_result_container"
-    And I follow the link to edit a collection
-    And I fill in "institute[name]" with "#{institute}"
-    And I fill in "institute[url]" with "http://www.dri.ie/"
-    And I attach the institute logo file "sample_logo.png"
-    And I press the button to add an institute
-    And I wait for the ajax request to finish
-    Then the "institute" drop-down should contain the option "#{institute}"
-    When I select "#{institute}" from the selectbox for institute
-    And I press the button to associate an institute
-    And I wait for the ajax request to finish
-    Then I should see the image "#{institute}.png"
-  }
+Given /^I have associated the institute "(.?*)" with the collection with pid "(.?*)"$/ do |institute_name,pid|
+  collection = ActiveFedora::Base.find(pid ,{:cast => true})
+
+  institute = Institute.new #Institute.where(:name => params[:institute_name]).first
+  institute.name = institute_name
+  institute.url = "http://www.dri.ie"
+
+  logo = Rack::Test::UploadedFile.new(File.join(cc_fixture_path, "sample_logo.png"), "image/png")
+  storage = Storage::S3Interface.new
+  storage.store_file(logo.path,
+                     "#{name}.#{logo.original_filename.split(".").last}",
+                     Settings.data.logos_bucket)
+  institute.logo = storage.get_link_for_file(Settings.data.logos_bucket,
+                   "#{institute_name}.#{logo.original_filename.split(".").last}")
+  institute.save
+
+  collection.institute = collection.institute.push(institute.name)
+  collection.save
 end
 
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
-    Given I am on the new Digital Object page
-    And I select "#{collection_pid}" from the selectbox for ingest collection
-    And I press the button to continue
-    And I select "qualifieddublincore" from the selectbox for metadata standard
-    And I press the button to continue
-    And I select "upload" from the selectbox for ingest methods
-    And I press the button to continue
+    When I go to the "collection" "show" page for "#{collection_pid}" 
+    And I follow the link to upload XML
     And I attach the metadata file "valid_metadata.xml"
     And I press the button to ingest metadata
   }
@@ -121,8 +125,6 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
     And I fill in "batch_rights][" with "Test rights"
     And I fill in "batch_type][" with "Collection"
     And I fill in "batch_creation_date][" with "2000-01-01"
-    And I select "publisher" from the selectbox number 0 for role type
-    And I fill in "batch_roles][name][" number 0 with "Test publisher"
   }
   #{}  And I select "publisher" from the selectbox number 0 for role type
   #{}  And I fill in "batch_roles][name][" number 0 with "Test publisher"
@@ -134,6 +136,7 @@ When /^I enter invalid metadata for a collection(?: with title (.*?))?$/ do |tit
   steps %{
     When I fill in "batch_title][" with "#{title}"
     And I fill in "batch_description][" with "Test description"
+    And I fill in "batch_creation_date][" with "2000-01-01"  
     And I fill in "batch_rights][" with ""
     And I fill in "batch_type][" with "Collection"
   }
@@ -156,10 +159,10 @@ When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type "(.*?)
   collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
   case type
     when "governing"
-      object.title = SecureRandom.hex(5)
+      object.title = [SecureRandom.hex(5)]
       collection.governed_items << object
     when "non-governing"
-      object.title = SecureRandom.hex(5)
+      object.title = [SecureRandom.hex(5)]
       collection.items << object
   end
 end

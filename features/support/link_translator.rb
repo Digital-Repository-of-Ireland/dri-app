@@ -10,6 +10,9 @@ module LinkTranslator
       when /^ingest an object$/
         "ingest"
 
+      when /^add an object$/
+       "add_object"
+
       when /^edit an object$/
         "edit_record"
 
@@ -21,6 +24,9 @@ module LinkTranslator
 
       when /^sign in$/
         "login"
+
+      when /^upload XML$/
+        "add_object_xml"
 
       when /^sign out$/
         "logout"
@@ -109,6 +115,9 @@ module LinkTranslator
       when /^institutions$/
         "institutions"
 
+      when /^add a new institute$/
+        "new_institute"
+
       when /^manage bookmark$/
         "manage_bookmark"
 
@@ -117,6 +126,18 @@ module LinkTranslator
 
       when /^clear bookmarks$/
         "clear_bookmarks"
+
+      when /^clear saved search$/
+        "clear_saved_search"
+
+      when /^upload a file$/
+        "upload_file"
+
+      when /^replace a file$/
+        "replace_file"
+
+      when /^add a file$/
+        "add_file"
 
       else "Unknown"
 

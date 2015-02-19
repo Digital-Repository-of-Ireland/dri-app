@@ -170,8 +170,11 @@ en:
       dri_pagination_nav_links_title: "Result Pagination"
       dri_sort_options: "Select from this list to sort your results by Newest, Title or Relevance. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
       dri_sort_options_title: "Search Sort Options"
+      dummy_text: "Help text goes here"
+      dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
       facets_title: "Facet Filters"
+      metadata_identifiers: "<a href='http://loc.org'>LOC</a>"
       no_results_found: "No search results found"
       q: "Type a search term and press Enter. Use AND and OR to narrow or broaden your search"
       q_title: "Search the repository"
@@ -181,7 +184,6 @@ en:
     navbar: 
       bookmarks: Bookmarks
       items: Items
-      my_items: "My Items"
       per_page: "per page"
       saved_searches: Searches
     sign_in: 
@@ -241,20 +243,31 @@ en:
           surrogate_not_available: "Surrogate not available yet"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
         links: 
+          add_object: "Add an Object"
+          add_object_xml: "Upload Object XML"
+          add_documentation: "Add Documentation"
+          add_documentation_help_title: "Help Title Here"
+          add_documentation_help_text: "Help Text Goes Here"
           asset: Asset
           characterization: Characterization
           details: "File Details"
           download: "Download asset"
           download_master: "Download master asset"
           download_not_available: "not available"
+          download_nth: "Download %{index}"
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
+          mark_all_reviewed: "Mark Collection as Reviewed"
+          mark_object_reviewed: "Mark Object as Reviewed"
+          mark_object_draft: "Mark Object as Draft"
           listen: listen
           not_caracterized: "not yet characterized"
           publish: "Publish collection"
           publish_reviewed: "Publish reviewed objects"
           related: "Related Files"
           status_update: "Update status"
+          unknown_size: "Unknown Size"
+          upload_file: "Upload File"
           view_metadata: "View Metadata (XML)"
         sidebar: 
           more_like_this: "More Like This"
@@ -273,6 +286,7 @@ en:
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         confirm_publish: "This will make all reviewed objects accessible. Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
+        confirm_all_reviewed: "This will mark all objects within the collection as Reviewed. Continue?"
         edit: "Edit Collection"
         index: 
           items: 
@@ -319,6 +333,7 @@ en:
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
       fields: 
+        collection_title: "Collection Title"
         contributor: Contributor
         contributors: Contributors
         cover_image: "Upload a cover image"
@@ -346,8 +361,8 @@ en:
         licence: Licence
         name_coverage: "Subject (Name)"
         name_coverages: "Subjects (Names)"
-        published_date: "Published/Broadcast Date"
-        published_dates: "Published/Broadcast Dates"
+        published_date: "Published Date"
+        published_dates: "Published Dates"
         publisher: Publisher
         relation: Relation
         relations: Relations
@@ -360,10 +375,10 @@ en:
         subjects: Subjects
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
-        temporal_coverage: "Subject (Era)"
-        temporal_coverage_eng: "Subject (Era) in English"
-        temporal_coverage_gle: "Subject (Era) in Irish"
-        temporal_coverages: "Subjects (Eras)"
+        temporal_coverage: "Subject (Temporal)"
+        temporal_coverage_eng: "Subject (Temporal) in English"
+        temporal_coverage_gle: "Subject (Temporal) in Irish"
+        temporal_coverages: "Subjects (Temporal)"
         title: Title
         total_assets: "Total number of assets"
         type: Type
@@ -412,7 +427,7 @@ en:
           embargo: Embargo
           inherit: Inherit
           manage: Managers
-          master_file: "Access Master File?"
+          master_file: "Access Master File"
           master_file_desc: "If accessible then users with read access can download the master file(s)"
           page: "Page Access"
           private: Private
@@ -441,7 +456,9 @@ en:
           sidebar: 
             nav_header: "Edit Tools"
           title: "Edit Object"
+          title_collection: "Edit Collection"
         forms: 
+          add_another: "Add Another"
           add_author: "Add Author"
           add_editor: "Add Editor"
           add_guest: "Add Guest"
@@ -454,7 +471,7 @@ en:
           authors: Authors
           broadcast_date: "Broadcast Date"
           creation_date: "Creation Date"
-          delete: delete
+          delete: Remove
           description: Description
           editors: Editors
           governing_collection: "Governing Collection"
@@ -491,6 +508,7 @@ en:
           viewcount: Views
         links: 
           all_objects: "All Objects"
+          cancel: Cancel
           download: download
           listen: listen
           view_record: "View Record"

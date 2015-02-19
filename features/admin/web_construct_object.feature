@@ -8,27 +8,17 @@ Background:
   Given I am logged in as "user1" in the group "cm" and accept cookies
 
 Scenario: Constructing a valid Digital Object
-  Given I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "qualifieddublincore" from the selectbox for metadata standard
-  And I press the button to continue
-  And I select "upload" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:xxxx" created by "user1"
+  When I go to the "collection" "show" page for "web:xxxx"
+  And I follow the link to upload XML
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
 
 Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
-  Given I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "qualifieddublincore" from the selectbox for metadata standard
-  And I press the button to continue
-  And I select "upload" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:xxxx" created by "user1"
+  When I go to the "collection" "show" page for "web:xxxx"
+  And I follow the link to upload XML
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
   Then I should see a failure message for <case>
@@ -40,14 +30,9 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
     | invalid_xml_metadata.xml      | invalid metadata |
 
 Scenario Outline: Constructing a valid Digital Object
-  Given I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "qualifieddublincore" from the selectbox for metadata standard
-  And I press the button to continue
-  And I select "upload" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:xxxx" created by "user1"
+  When I go to the "collection" "show" page for "web:xxxx"
+  And I follow the link to upload XML
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
@@ -59,7 +44,7 @@ Scenario Outline: Constructing a valid Digital Object
     | SAMPLEA.xml                   | Sound       |
 
 Scenario: Adding a pdf asset to an object
-  Given I have created a Text object
+  Given "user1" has created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
   And I attach the asset file "sample_pdf.pdf"
@@ -67,7 +52,7 @@ Scenario: Adding a pdf asset to an object
   Then I should see a success message for file upload
 
 Scenario: Replacing the metadata file of a Digital Object
-  Given I have created a Digital Object
+  Given "user1" has created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
   And I attach the metadata file "valid_metadata.xml"
@@ -75,31 +60,21 @@ Scenario: Replacing the metadata file of a Digital Object
   Then I should see a success message for updating metadata
 
 Scenario: Constructing a Digital Object using the web form
-  Given I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "qualifieddublincore" from the selectbox for metadata standard
-  And I press the button to continue
-  And I select "input" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:xxxx" created by "user1"
+  When I go to the "collection" "show" page for "web:xxxx"
+  And I follow the link to add an object
   When I enter valid metadata
   And I press the button to continue
   Then I should see a success message for ingestion
   And I should see the valid metadata
 
 Scenario: Constructing an invalid Digital Object using the web form
-  Given I have created a collection
-  And I am on the new Digital Object page
-  When I select a collection
-  And I press the button to continue
-  And I select "qualifieddublincore" from the selectbox for metadata standard
-  And I press the button to continue
-  And I select "input" from the selectbox for ingest methods
-  And I press the button to continue
+  Given a collection with pid "web:xxxx" created by "user1"
+  When I go to the "collection" "show" page for "web:xxxx"
+  And I follow the link to add an object
   When I enter invalid metadata
   And I press the button to continue
-  Then I should see a failure message for invalid object
+  Then I should not see a success message for ingestion
 
 @review
 Scenario: Constructing a Digital Object using the web form without setting a collection
@@ -113,7 +88,7 @@ Scenario: Constructing a Digital Object using the web form without setting a col
   And I should see the valid metadata
 
 Scenario: Editing the metadata of a Digital Object using the web form
-  Given I have created a Digital Object
+  Given "user1" has created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
   And I enter modified metadata
@@ -122,15 +97,15 @@ Scenario: Editing the metadata of a Digital Object using the web form
   And I should see a success message for updating metadata
 
 Scenario: Editing the metadata of a Digital Object with invalid metadata
-  Given I have created a Digital Object
+  Given "user1" has created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
   And I enter invalid metadata
   And I press the button to save changes
-  Then I should see a failure message for invalid object
+  Then I should not see a success message for updating metadata
 
 Scenario: Adding multiple audio files for a Digital Object
-  Given I have created a Digital Object
+  Given "user1" has created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
   And I attach the asset file "sample_audio.mp3"
@@ -138,11 +113,11 @@ Scenario: Adding multiple audio files for a Digital Object
   Then I should see a success message for file upload
   When I follow the link to edit an object
   And I attach the asset file "sample_audio.mp3"
-  And I press the button to add a file
+  And I press the button to upload a file
   Then I should see a success message for file upload
 
 Scenario Outline: Adding an audio file that is not valid
-  Given I have created a Digital Object
+  Given "user1" has created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
   And I attach the asset file "<asset_name>"
@@ -155,18 +130,18 @@ Scenario Outline: Adding an audio file that is not valid
 #    | sample_invalid_audio.mp3 | invalid file type |
 
 Scenario: Adding a file that contains a virus
-  Given I have created a Digital Object
+  Given "user1" has created a Digital Object
   Then I should see a link to edit an object
   When I follow the link to edit an object
   And I upload the virus file "sample_virus.mp3"
   Then I should see a failure message for virus detected
 
 Scenario Outline: Editing an audio file where the file is invalid
-  Given I have created a Digital Object
+  Given "user1" has created a Digital Object
   And I have added an audio file
   When I follow the link to edit an object
   And I attach the asset file "<asset_name>"
-  And I press the button to add a file
+  And I press the button to upload a file
   Then I should see a failure message for <case>
 
   Examples:

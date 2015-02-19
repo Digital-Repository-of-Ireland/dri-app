@@ -1,8 +1,8 @@
+
 <%= form_for @object, :as => :batch, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
   <%= f.hidden_field :governing_collection, {:value => @collection} %>
-  <%= f.hidden_field :standard, {:value => @standard} %>
 
-  <%= render :partial => "shared/form_metadata_#{@standard}", :locals => { :f => f, :action => "create" } %>
+  <%= render :partial => "shared/form_metadata_qualifieddublincore", :locals => { :f => f, :action => "create" } %>
   <%= render :partial => "shared/form_default_permissions", :locals => {:f => f,:record => @object } %>
 
   <%= f.submit t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>

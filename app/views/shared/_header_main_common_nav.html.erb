@@ -27,5 +27,5 @@
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us", :id => 'about_us' %>
+<%= link_to t('dri.headerlinks.about'), main_app.page_path('about_us'), :id => 'about_us' %>
 </li>

@@ -5,59 +5,27 @@ module WithinHelpers
 end
 World(WithinHelpers)
 
-Given /^I have created a Digital Object$/ do
+Given /^"(.*?)" has created a Digital Object$/ do |user|
+  pid = "dri:#{rand.to_s[2..11]}"
   steps %{
-    Given I have created a collection
-    And I am on the new Digital Object page
-    And I select a collection
-    And I press the button to continue
-    And I select "qualifieddublincore" from the selectbox for metadata standard
-    And I press the button to continue
-    And I select "upload" from the selectbox for ingest methods
-    And I press the button to continue
-    And I attach the metadata file "valid_metadata.xml"
+    Given a collection with pid "#{pid}" created by "#{user}"
+    And I have created an object with metadata "valid_metadata.xml" in the collection with pid "#{pid}"
+  }
+end
+
+Given /^I have created an object with metadata "(.*?)" in the collection with pid "(.*?)"$/ do |metadata_file, collection_pid|
+  steps %{
+    When I go to the "collection" "show" page for "#{collection_pid}"
+    And I follow the link to upload XML
+    And I attach the metadata file "#{metadata_file}"
     And I press the button to ingest metadata
   }
 end
 
-Given /^I have created a (Text|Sound) object$/ do |type|
+Given /^I have created an object with title "(.*?)" in the collection with pid "(.*?)"$/ do |title, collection_pid|
   steps %{
-    Given I have created a collection
-    And I am on the new Digital Object page
-    And I select a collection
-    And I press the button to continue
-    And I select "qualifieddublincore" from the selectbox for metadata standard
-    And I press the button to continue
-    And I select "upload" from the selectbox for ingest methods
-    And I press the button to continue
-    And I attach the metadata file "valid_metadata.xml"
-    And I press the button to ingest metadata
-  }
-end
-
-Given /^I have created a "(.*?)" object with metadata "(.*?)" in the collection "(.*?)"$/ do |type, metadata, collection_title|
-  steps %{
-    Given I am on the new Digital Object page
-    When I select the text "#{collection_title}" from the selectbox for ingest collection
-    And I press the button to continue
-    And I select "qualifieddublincore" from the selectbox for metadata standard
-    And I press the button to continue
-    And I select "upload" from the selectbox for ingest methods
-    And I press the button to continue
-    And I attach the metadata file "#{metadata}"
-    And I press the button to ingest metadata
-  }
-end
-
-Given /^I have created a "(.*?)" object with title "(.*?)" in the collection "(.*?)"$/ do |type, title, collection_title|
-  steps %{
-    Given I am on the new Digital Object page
-    When I select the text "#{collection_title}" from the selectbox for ingest collection
-    And I press the button to continue
-    And I select "qualifieddublincore" from the selectbox for metadata standard
-    And I press the button to continue
-    And I select "input" from the selectbox for ingest methods
-    And I press the button to continue
+    When I go to the "collection" "show" page for "#{collection_pid}"
+    And I follow the link to add an object
     When I enter valid metadata with title "#{title}"
     And I press the button to continue
   }
@@ -113,11 +81,15 @@ When /^(?:|I )go to the "([^"]*)" "([^"]*)" page for "([^"]*)"$/ do |type, page,
 end
 
 When /^(?:|I )follow the link to (.+)$/ do |link_name|
-  click_link(link_to_id(link_name))
+  if Capybara.current_driver == Capybara.javascript_driver
+    page.find_link(link_to_id(link_name)).trigger('click')
+  else
+    page.find_link(link_to_id(link_name)).click
+  end
 end
 
-# Use this step when overlaping elements might confuse Capybara 
-# - it ignores overlaping <a> elements and just fires the click 
+# Use this step when overlaping elements might confuse Capybara
+# - it ignores overlaping <a> elements and just fires the click
 # event on the selected element.
 When /^(?:|I )click the link to (.+)$/ do |link_name|
   element = page.find(:id, link_to_id(link_name))
@@ -226,7 +198,8 @@ end
 
 Then /^(?:|I )press the button to (.+)$/ do |button|
   Capybara.ignore_hidden_elements = false
-  click_link_or_button(button_to_id(button))
+  page.find_button(button_to_id(button)).click
+  #click_link_or_button(button_to_id(button))
 end
 
 Then /^I check "(.*?)"$/ do |checkbox|
@@ -260,9 +233,9 @@ Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
   page.should have_select id
 end
 
-Then /^(?:|I )should see a (success|failure) message for (.+)$/ do |success_failure, message|
+Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negate, success_failure, message|
   begin
-    page.should have_selector ".dri_messages_container", text: flash_for(message)
+    negate ? (page.should_not have_selector ".dri_messages_container", text: flash_for(message)): (page.should have_selector ".dri_messages_container", text: flash_for(message))
   rescue
     #save_and_open_page
     raise

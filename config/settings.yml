@@ -1,9 +1,3 @@
-ingest:
-  steps: [collection, standard, ingestmethod, metadata]
-  step_data:
-    collection: [ingestcollection]
-    standard: [standard]
-    ingestmethod: [ingestmethod]
 interface:
   languages: [en, ga]
 dri:
@@ -19,11 +13,11 @@ restrict:
     audio: ['audio/mp3', 'audio/mpeg', 'audio/mpeg3', 'audio/mp2', 'audio/wav', 'audio/x-wave', 'audio/x-wav', 'audio/ogg']
     video: ['video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/avi', 'video/quicktime', 'application/mxf']
 S3:
-  server: localhost
+  server: http://localhost:8081
   use_ssl: false
   access_key_id: anything
   secret_access_key: anything
-  expiry: 2592000
+  expiry: 604800
 surrogates:
   sound: [mp3, ogg]
   text: [thumbnail]

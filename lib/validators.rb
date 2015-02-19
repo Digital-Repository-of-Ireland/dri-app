@@ -31,6 +31,10 @@ module Validators
     if file.class.to_s == "ActionDispatch::Http::UploadedFile"
       path = file.tempfile.path
       extension = file.original_filename.split(".").last
+    elsif (file.class.to_s == "Tempfile")
+      # Tempfile object path is accessed through file.path
+      path = file.path
+      extension = file.path.split(".").last
     else
       path = file
       extension = file.split(".").last
@@ -64,6 +68,10 @@ module Validators
     if file.class.to_s == "ActionDispatch::Http::UploadedFile"
       path = file.tempfile.path
       extension = file.original_filename.split(".").last
+    # For Tempfiles (cover_image) sourced from the Data models
+    elsif (file.class.to_s == "Tempfile")
+      path = file.path
+      extension = file.path.split(".").last
     else
       path = file
       extension = file.split(".").last
@@ -87,11 +95,11 @@ module Validators
   #
   def Validators.virus_scan(file)
       if defined? ClamAV
-        logger.info "Performing virus scan."
+        Rails.logger.info "Performing virus scan."
         result = ClamAV.instance.scanfile( file.respond_to?(:path) ? file.path : file )
         raise Exceptions::VirusDetected.new(result) unless result == 0
       else
-        logger.warn "Virus scanning is disabled."
+        Rails.logger.warn "Virus scanning is disabled."
       end
   end
 

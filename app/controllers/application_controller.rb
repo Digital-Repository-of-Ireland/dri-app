@@ -4,7 +4,7 @@ require 'solr/query'
 
 class ApplicationController < ActionController::Base
 
-  before_filter :set_locale, :set_cookie, :my_collections
+  before_filter :set_locale, :set_cookie
 
   include HttpAcceptLanguage
 
@@ -100,24 +100,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def ingest_collections
-    results = Array.new
-    solr_query = "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
-
-    fq = manager_and_edit_filter unless (current_user && current_user.is_admin?)
-
-    query = Solr::Query.new(solr_query, 50, {:defType => "edismax", :fl => "id,#{Solrizer.solr_name('title', :stored_searchable, type: :string)}", :fq => fq})
-    while query.has_more?
-      result_docs = query.pop
-
-      result_docs.each do | doc |
-        results.push([doc[Solrizer.solr_name('title', :stored_searchable, type: :string)][0], doc['id']])
-      end
-    end
-
-    return results
-  end
-
   # Return a list of all supported licences (for populating select dropdowns)
   def supported_licences
     @licences = {}
@@ -126,26 +108,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def my_collections
-    if signed_in?
-      @collections = ingest_collections
-    end
-  end
-
-  # Gets Metadata Class
-  def get_batch_standard_from_param param
-    # Metadata Standard Parameter
-    case param
-      when "qualifieddc"
-        :qdc
-      # "marc" is a form param, "collection" is xml root, when bulk_ingest
-      when "marc", "collection"
-        :marc
-      else
-    end
-  end
-
   private
+
+  def authenticate_user_from_token!
+    user_email = params[:user_email].presence
+    user       = user_email && User.find_by_email(user_email)
+
+    # Notice how we use Devise.secure_compare to compare the token
+    # in the database with the token given in the params, mitigating
+    # timing attacks.
+    if user && Devise.secure_compare(user.authentication_token, params[:user_token])
+      sign_in user, store: true
+    end
+  end 
 
   def duplicates(object)
     unless object.governing_collection.blank?

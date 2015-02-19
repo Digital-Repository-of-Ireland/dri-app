@@ -1,5 +1,6 @@
 module ApplicationHelper
   require 'storage/s3_interface'
+  require 'uri'
 
   def get_files doc
     @files = ActiveFedora::Base.find(doc.id, {:cast => true}).generic_files
@@ -25,6 +26,15 @@ module ApplicationHelper
     url = storage.surrogate_url(doc, file_doc, name)
 
     url
+  end
+
+  def surrogate_download_params( document, surrogate_url )
+    uri = URI(surrogate_url)
+    ext = File.extname(uri.path)
+
+    type = MIME::Types.of(ext).first.content_type
+
+    {:path => surrogate_url, :type => type, :name => "#{document.id}#{ext}"}    
   end
 
   def get_asset_version_list( file_id, datastream )
@@ -139,6 +149,11 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
+  def count_immediate_children_in_collection collection_id
+    solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{collection_id}\""
+    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+  end
+
   def collection_children_query ( collection_id )
     "(#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
     "\" AND is_collection_sim:false" +
@@ -207,6 +222,7 @@ module ApplicationHelper
     @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc(document)
   end
 
+  # Called from grid view
   def get_cover_image( document )
     files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{document[:id]}\""
     files = ActiveFedora::SolrService.query(files_query)
@@ -258,21 +274,6 @@ module ApplicationHelper
 
   def has_search_parameters?
     !params[:q].blank? or !params[:f].blank? or !params[:search_field].blank?
-  end
-
-  def custom_label_for_marc_field(sf)
-    case sf
-      when '245$a'
-        'Title'
-      when '100$a'
-        'Creator'
-      when '260$c'
-        'Creation Date'
-      when '500$a'
-        'Description'
-      when '506$a'
-        'Rights'
-    end
   end
 
   def link_to_loc(field)

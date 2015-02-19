@@ -32,22 +32,22 @@ module Hydra
     #TEMP:: Removed some permissions, must find out what an edit user can do
     def edit_permissions
       can [:edit, :update], String do |pid|
-        logger.debug("[EDITPERM] Checking from STRING")
+        Rails.logger.debug("[EDITPERM] Checking from STRING")
         test_edit(pid)
       end
 
       can [:edit, :update, :destroy], DRI::Batch do |obj|
-        logger.debug("[EDITPERM] Checking from Batch")
+        Rails.logger.debug("[EDITPERM] Checking from Batch")
         test_edit(obj.pid)
       end
 
       can [:edit, :update, :destroy], DRI::GenericFile do |obj|
-        logger.debug("[EDITPERM] Checking from GenericFile")
+        Rails.logger.debug("[EDITPERM] Checking from GenericFile")
         test_edit(obj.pid)
       end
 
       can :edit, SolrDocument do |obj|
-        logger.debug("[EDITPERM] Checking from SOLRDOC")
+        Rails.logger.debug("[EDITPERM] Checking from SOLRDOC")
         cache.put(obj.id, obj)
         test_edit(obj.id)
       end
@@ -56,18 +56,18 @@ module Hydra
     #383 - Now means access to assets
     def read_permissions
       can :read, String do |pid|
-        logger.debug("[READPERM] Checking from STRING")
+        Rails.logger.debug("[READPERM] Checking from STRING")
         test_read(pid)
       end
 
       can :read, [DRI::Batch] do |obj|
-        logger.debug("[READPERM] Checking from Object")
+        Rails.logger.debug("[READPERM] Checking from Object")
         test_read(obj.pid)
       end
 
 
       can :read, SolrDocument do |obj|
-        logger.debug("[READPERM] Checking from SolrDoc")
+        Rails.logger.debug("[READPERM] Checking from SolrDoc")
         cache.put(obj.id, obj)
         test_read(obj.id)
       end
@@ -79,17 +79,17 @@ module Hydra
     #Search access which allows them to view the DO but NOT the assets
     def search_permissions
       can :search, String do |pid|
-        logger.debug("[SEARCHPERM] Checking from STRING")
+        Rails.logger.debug("[SEARCHPERM] Checking from STRING")
         test_search(pid)
       end
 
       can :search, [DRI::Batch] do |obj|
-        logger.debug("[SEARCHPERM] Checking from Object")
+        Rails.logger.debug("[SEARCHPERM] Checking from Object")
         test_search(obj.pid)
       end
 
       can :search, SolrDocument do |obj|
-        logger.debug("[SEARCHPERM] Checking from SolrDoc")
+        Rails.logger.debug("[SEARCHPERM] Checking from SolrDoc")
         cache.put(obj.id, obj)
         test_search(obj.id)
       end
@@ -97,17 +97,17 @@ module Hydra
 
     def master_file_permissions
       can :read_master, String do |pid|
-        logger.debug("[master_file_permissions] Checking from STRING")
+        Rails.logger.debug("[master_file_permissions] Checking from STRING")
         test_read_master(pid)
       end
 
       can :read_master, DRI::Batch do |obj|
-        logger.debug("[master_file_permissions] Checking from Object")
+        Rails.logger.debug("[master_file_permissions] Checking from Object")
         test_read_master(obj.pid)
       end
 
       can :read_master, SolrDocument do |obj|
-        logger.debug("[master_file_permissions] Checking from SolrDoc")
+        Rails.logger.debug("[master_file_permissions] Checking from SolrDoc")
         cache.put(obj.id, obj)
         test_read_master(obj.id)
       end
@@ -117,17 +117,17 @@ module Hydra
     #NOT the permissions a user gets if they are a collection manager
     def manager_permissions
       can :manage_collection, String do |pid|
-        logger.debug("[MANPERM] Checking from STRING")
+        Rails.logger.debug("[MANPERM] Checking from STRING")
         test_manager(pid)
       end
 
       can :manage_collection, DRI::Batch do |obj|
-        logger.debug("[MANPERM] Checking from Object")
+        Rails.logger.debug("[MANPERM] Checking from Object")
         test_manager(obj.pid)
       end
 
       can :manage_collection, SolrDocument do |obj|
-        logger.debug("[MANPERM] Checking from SolrDoc")
+        Rails.logger.debug("[MANPERM] Checking from SolrDoc")
         cache.put(obj.id, obj)
         test_manager(obj.id)
       end

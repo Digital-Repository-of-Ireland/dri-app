@@ -23,7 +23,10 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
         rescue Exception => e
           Rails.logger.error "Unable to delete files: #{e}"
         end
-
+        
+        o.generic_files.each do |gf|
+          gf.delete
+        end
         o.delete
       end
 

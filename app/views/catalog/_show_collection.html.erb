@@ -1,78 +1,123 @@
 <div class="dri_object_first_block">
-  <dl class="dri_object_metadata_readview">
-    <% document_show_fields.each do |solr_fname, field| -%>
-        <% if should_render_show_field? document, field %>
-            <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
-            <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
-        <% end -%>
-    <% end -%>
+	<dl class="dri_object_metadata_readview">
+		<% document_show_fields.each do |solr_fname, field| -%>
+		<% if should_render_show_field? document, field %>
+		<dt class="blacklight-<%= solr_fname.parameterize %>">
+			<%= render_document_show_field_label :field => solr_fname %>
+		</dt>
+		<dd class="blacklight-<%= solr_fname.parameterize %>">
+			<%= render_document_show_field_value :document => document, :field => solr_fname %>
+		</dd>
+		<% end -%>
+		<% end -%>
 
-    <% if (@document[Solrizer.solr_name('depositing_institute', :stored_searchable, type: :string).to_sym]) %>
-        <% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { Solrizer.solr_name('institute', :facetable).to_sym => @document[Solrizer.solr_name('depositing_institute', :stored_searchable, type: :string).to_sym] } } %>
-        <dt class="blacklight-depositing_institute"><%= t('dri.views.fields.depositing_institute') %></dt>
-        <dd class="blacklight-depositing_institute"><%= link_to @document[Solrizer.solr_name('depositing_institute', :stored_searchable, type: :string).to_sym].first, main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %></dd>
-    <% end %>
-  </dl>
+		<% if (@document[Solrizer.solr_name('depositing_institute', :stored_searchable, type: :string).to_sym]) %>
+		<% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { Solrizer.solr_name('institute', :facetable).to_sym => @document[Solrizer.solr_name('depositing_institute', :stored_searchable, type: :string).to_sym] } } %>
+		<dt class="blacklight-depositing_institute">
+			<%= t('dri.views.fields.depositing_institute') %>
+		</dt>
+		<dd class="blacklight-depositing_institute">
+			<%= link_to @document[Solrizer.solr_name('depositing_institute', :stored_searchable, type: :string).to_sym].first, main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
+		</dd>
+		<% end %>
+	</dl>
+
 </div>
+
 <!-- close dri_object_first_block -->
 
 <div class="dri_object_second_block">
 
-  <div class="dri_back_search"><%= link_back_to_catalog %></div>
+	<div class="dri_back_search">
+		<%= link_back_to_catalog %>
+	</div>
 
-  <div class="dri_vc_title">
-    <i class="fa fa-lg fa-folder-open"></i>
-    <%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
-    <% objectsCount = count_items_in_collection document[:id] %>
-    <!-- If it's a root collection, we show all the objects within it -->
-    <% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil %>
-      <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-      <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
-    <% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
-      <% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-      <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
-    <% end %>
-  </div>
+	<div class="dri_vc_title">
+		<i class="fa fa-lg fa-folder-open"></i>
+		<%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
+		<% objectsCount = count_items_in_collection document[:id] %>
+		<!-- If it's a root collection, we show all the objects within it -->
+		<% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil %>
+		<% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
+		<%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
+		<% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
+		<% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
+		<%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
+		<% end %>
+	</div>
 
-  <div class="dri_vc_image"><!-- fix link -->
-    <% if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first %>
-        <%= image_tag(document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first, :width=>"230", :height=>"139", :alt=> t('dri.views.alt_tags.cover_image')) %></a>
-    <% else %>
-        <% image = "dri/formats/collection.png".downcase %>
-        <%= image_tag(image, :width=>"230", :height=>"139", :alt=>t('dri.views.alt_tags.cover_image')) %></a>
-    <% end %>
-  </div>
+	<div class="dri_vc_image">
+		
+		<% if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first %>
+		<%= image_tag(document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first, :width=>"230", :alt=> t('dri.views.alt_tags.cover_image')) %></a>
+		<% else %>
+		<% image = "dri/formats/collection.png".downcase %>
+		<%= image_tag(image, :width=>"230", :height=>"139", :alt=>t('dri.views.alt_tags.cover_image')) %></a>
+		<% end %>
+	</div>
 
-  <%= render :partial => "catalog/collection_show_objects_types", :locals => {:document => document, :objectsCount => objectsCount} %>
+	<%= render :partial => "catalog/collection_show_objects_types", :locals => {:document => document, :objectsCount => objectsCount} %>
 
-  <%= render :partial => "tools", :locals => {:document => document} %>
+	<%= render :partial => "tools", :locals => {:document => document} %>
 
-  <% if signed_in? && (can? :manage_collection, document) %>
-      <div class="dri_objecttools_title">
-        <%= t('dri.views.catalog.titles.editor_tools') %>
-      </div>
-      <div class="dri_grey_button"><%= link_to t('dri.views.collection.edit'), edit_collection_path, :id => "edit_collection" %></div>
-      <div class="dri_grey_button" >
-        <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" %>
-      </div>
+	<% if signed_in? && (can? :manage_collection, document) %>
+	<div class="dri_objecttools_title">
+		<i class="fa fa-pencil fa-lg"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
+	</div>
+	<ul class="dri_view_collection bold">
+		<% if (edit_functionality_available?(@document)) %>
+		<%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
+		<li>
+			<i class="fa fa-plus-square-o fa-lg"></i><%= t('dri.views.catalog.links.add_object') %>
+		</li>
+		<% end %>
+		<%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %>
+		<li class="dri_help_popover" data-content="<%= t('dri.views.catalog.links.add_documentation_help_text') %>" data-original-title="<%= t('dri.views.catalog.links.add_documentation_help_title')%>" data-trigger="hover" data-placement="right">
+			<i class="fa fa-file-text-o fa-lg"></i></i><%= t('dri.views.catalog.links.add_documentation') %>
+		</li>
+		<% end %>
+		<%= link_to new_object_path(collection: document.id, method: 'upload'), :id => "add_object_xml" do %>
+		<li >
+			<i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.add_object_xml') %>
+		</li>
+		<% end %>
+		<%= link_to edit_collection_path, :id => "edit_collection" do %>
+		<li>
+			<i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.edit') %>
+		</li>
+		<% end %>
+		<% end %> <!-- if end (non-EAD collections) -->
+		<% if @document[Solrizer.solr_name('status', :stored_searchable, type: :symbol).to_sym].first.eql?("draft") %>
+		<% publish_label = t('dri.views.catalog.links.publish') %>
+		<% else %>
+		<% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
+		<% end %>
+		<!-- TODO Fix Callback -->
+		<%= link_to  review_path(:apply_all => 'yes'), data: { confirm: t('dri.views.collection.confirm_all_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
+		<li>
+			<i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_all_reviewed') %>
+		</li>
+		<% end %>
+		<%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
+		<li >
+			<i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
+		</li>
+		<% end %>
+		<%= link_to  surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
+		<li>
+			<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
+		</li>
+		<% end %>
 
-      <% if @document[Solrizer.solr_name('status', :stored_searchable, type: :symbol).to_sym].first.eql?("draft") %>
-          <% publish_label = t('dri.views.catalog.links.publish') %>
-      <% else %>
-          <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
-      <% end %>
+	</ul>
 
-      <div class="dri_grey_button" >
-        <%= link_to publish_label, publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" %>
-      </div>
+	<% end %>
 
-  <% end %>
-
-  <% if signed_in? && (document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym] == document[:id]) && (can? :manage_collection, document) %>
-      <% pending = pending_memberships( document ) %>
-      <% unless pending.blank? %>
-          <%= render :partial => 'collections/approve_membership', :locals => {:pending => pending} %>
-      <% end %>
-  <% end %>
+	<% if signed_in? && (document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym] == document[:id]) && (can? :manage_collection, document) %>
+	<% pending = pending_memberships( document ) %>
+	<% unless pending.blank? %>
+	<%= render :partial => 'collections/approve_membership', :locals => {:pending => pending} %>
+	<% end %>
+	<% end %>
 
 </div>

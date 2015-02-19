@@ -35,7 +35,7 @@
   <% unless collection.nil? %>
       <% if collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0] %>
           <div class="dri_vc_image">
-            <%= image_tag(collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :width=>"230", :height=>"129", :alt=> t('dri.views.alt_tags.cover_image') ) %><!-- needs callback -->
+            <%= image_tag(collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :width=>"230", :alt=> t('dri.views.alt_tags.cover_image') ) %><!-- needs callback -->
           </div>
       <% end %>
   <% end %>
@@ -46,28 +46,47 @@
   <%= render :partial => "tools" %>
 
   <% if signed_in? && (can?(:read_master, @document)) %>
-      <%= render :partial => "show_downloads" %>
+      <%= render :partial => "show_file_tools" %>
       <div class="dri_objecttools_title">
         <%= t('dri.views.catalog.titles.editor_tools') %>
       </div>
-
-      <div class="dri_grey_button" >
-        <%= link_to t('dri.views.catalog.links.edit_this_record'), edit_object_path(@document), :id => "edit_record" %>
-      </div>
-
-      <% unless @files.nil? || @files.empty? %>
-          <div class="dri_grey_button" >
-            <%= link_to t('dri.views.catalog.links.generate_surrogates'), surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" %>
-          </div>
-      <% end %>
-
-      <% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
-          <div class="dri_grey_button" >
-            <%= link_to t('dri.views.catalog.links.status_update'), status_path(@document), {:id => 'status_update', :data => { :colorbox => true }, :remote => :true } %>
-          </div>
-      <% end %>
-
+      <ul class="dri_view_collection bold">
+        <% if (edit_functionality_available?(@document)) %>
+          <%= link_to edit_object_path(@document), :id => "upload_file" do %>
+          <li>
+            <i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.upload_file') %>
+          </li>
+          <% end %>
+          <%= link_to edit_object_path(@document), :id => "edit_record" do %>
+          <li>
+            <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
+          </li>
+          <% end %>
+        <% end %> <!-- if end (non-EAD collections) -->
+        <% unless @files.nil? || @files.empty? %>
+          <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
+          <li>
+            <i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
+          </li>
+          <% end %>
+        <% end %>
+        <% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
+          <%= link_to status_path(@document), {:id => 'status_update', :"data-toggle" => "modal", :"data-target" => "#ajax-modal" } do %>
+          <li>
+            <i class="fa fa-eye fa-lg"></i><%= t('dri.views.catalog.links.status_update') %>
+          </li>
+          <% if@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") %>
+          <li>
+            <i class="fa fa-check fa-lg red"></i><%= t('dri.views.catalog.links.mark_object_reviewed') %>
+          </li>
+          <% else %>
+          <li>
+            <i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_object_draft') %>
+          </li>
+          <% end %>
+          <% end %>
+        <% end %>
+      </ul>
   <% end %>
-
 </div>
 <!-- close dri_object_second_block -->

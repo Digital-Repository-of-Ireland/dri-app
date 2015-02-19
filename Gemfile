@@ -3,11 +3,13 @@
 
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.1.0'
+gem 'rails','~> 4.1.0'
 
-gem 'blacklight', "5.5.2"
-gem 'hydra-head', "7.1.0"
-gem 'sufia-models', "4.0.0"
+gem 'blacklight', "5.7.2"
+gem 'hydra-head', "7.2.2"
+gem 'sufia-models', "4.1.0"
+
+gem 'paper_trail', '~> 3.0.6'
 
 gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'marc-nccb'
 gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'develop'
@@ -21,7 +23,7 @@ gem 'omniauth-shibboleth'
 gem 'feedjira'
 
 # Storage-related gems
-gem 'aws-sdk'
+gem 'aws-sdk', '~> 2'
 
 #gem 'clamav'
 
@@ -58,6 +60,7 @@ gem 'execjs'
 gem 'uglifier', '>= 1.0.3'
 
 group :development, :test do
+  gem 'guard'
   gem 'rspec-rails', '~> 2.99'
   gem 'poltergeist', '>= 1.4.1'
   gem 'jettywrapper'
@@ -67,11 +70,13 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'guard-livereload', require: false
 
   gem "zeus", require: false
 
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_rspec'
+  gem 'fakes3', :git => 'git@tracker.dri.ie:drirepo/fake-s3.git', :branch => 'issue22'
 end
 
 group :test do
@@ -115,7 +120,8 @@ gem 'rvm'
 # UI widgets
 gem 'colorbox-rails'
 gem 'bootstrap-switch-rails'
-gem 'videojs_rails'
+gem 'videojs_rails', :git => 'https://github.com/ekilfeather/videojs_rails.git', :ref => '605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'jazz_fingers'
+gem 'bootstrap-datepicker-rails'

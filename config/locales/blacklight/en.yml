@@ -124,11 +124,12 @@ en:
         facet: 
           file_type_display_sim: Mediatype
           geographical_coverage_sim: Places
+          institute_sim: Institute
           language_sim: Language
           person_sim: Names
           root_collection_id_sim: Collection
           subject_sim: Subjects
-          temporal_coverage_sim: Era
+          temporal_coverage_sim: "Subject (Temporal)"
       filters: 
         label: "%{label}:"
         remove: 

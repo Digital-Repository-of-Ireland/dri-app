@@ -1,7 +1,5 @@
 # Controller for Digital Objects
 #
-
-require 'stepped_forms'
 require 'metadata_helpers'
 require 'institute_helpers'
 require 'doi/doi'
@@ -10,10 +8,21 @@ require 'solr/query'
 include Utils
 
 class ObjectsController < CatalogController
-  include SteppedForms
 
-  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
-  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
+  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update, :show]
+  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update, :show]
+
+  # Displays the New Object form
+  #
+  def new
+    @collection = params[:collection]
+
+    @object = DRI::Batch.with_standard :qdc
+    @object.creator = [""]
+
+    supported_licences()
+  end
+
 
   # Edits an existing model.
   #
@@ -21,6 +30,9 @@ class ObjectsController < CatalogController
     enforce_permissions!("edit",params[:id])
     supported_licences()
     @object = retrieve_object!(params[:id])
+    if @object.creator[0] == nil
+      @object.creator = [""]
+    end
     respond_to do |format|
       format.html
       format.json  { render :json => @object }
@@ -33,7 +45,7 @@ class ObjectsController < CatalogController
     @object = retrieve_object!(params[:id])
 
     respond_to do |format|
-      format.html { redirect_to(catalog_url(@object)) }
+      format.html { redirect_to(catalog_url(@object.id)) }
       format.endnote { render :text => @object.export_as_endnote, :layout => false }
     end
   end
@@ -67,6 +79,7 @@ class ObjectsController < CatalogController
     respond_to do |format|
       if updated
         MetadataHelpers.checksum_metadata(@object)
+        @object.save
         duplicates?(@object)
 
         DOI.mint_doi( @object )
@@ -98,20 +111,10 @@ class ObjectsController < CatalogController
     params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection]) unless params[:batch][:governing_collection].blank?
 
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
-
-    standard = params[:batch].delete(:standard)
     
     set_access_permissions(:batch)
 
-    if standard.nil?
-      file_obj = params[:metadata_file].tempfile
-      file = File.open(file_obj.path)
-      ng_doc = Nokogiri::XML(file)
-      file.close
-      standard = ng_doc.root.name
-    end
-
-    @object = DRI::Batch.with_standard get_batch_standard_from_param(standard)
+    @object = DRI::Batch.with_standard :qdc
     @object.depositor = current_user.to_s
     @object.update_attributes params[:batch]
 
@@ -139,7 +142,7 @@ class ObjectsController < CatalogController
           else
             response = { :pid => @object.id }
           end
-          render :json => response, :location => catalog_url(@object), :status => :created }
+          render :json => response, :location => catalog_url(@object.id), :status => :created }
       end
     else
       respond_to do |format|
@@ -222,13 +225,13 @@ class ObjectsController < CatalogController
               files.each do |mf|
                 file_list = {}
                 file_doc = SolrDocument.new(mf)
-
+                
                 if can? :read_master, doc
                   url = url_for(file_download_url(doc.id, file_doc.id))
                   file_list['masterfile'] = url
                 end
 
-                timeout = 60 * 60 * 24 * 30 # 30 days
+                timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
                 surrogates = storage.get_surrogates doc, file_doc, timeout
                 surrogates.each do |file,loc|
                   file_list[file] = loc
@@ -295,7 +298,7 @@ class ObjectsController < CatalogController
     raise Exceptions::BadRequest if @object.is_collection?
 
     unless @object.status.eql?("published")
-      @object.status = [params[:status]] if params[:status].present?
+      @object.status = params[:status] if params[:status].present?
       @object.save
     end
 
