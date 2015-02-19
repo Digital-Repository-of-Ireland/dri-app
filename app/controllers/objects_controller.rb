@@ -19,8 +19,8 @@ class ObjectsController < CatalogController
         
     @standard = params[:standard].present? ? get_batch_standard_from_param(params[:standard]) : :qdc
 
-    @object = DRI::Batch.with_standard standard
-    if @standard == 'qualifieddublincore'
+    @object = DRI::Batch.with_standard @standard
+    if @standard == :qdc
       @object.creator = [""]
     end
 
