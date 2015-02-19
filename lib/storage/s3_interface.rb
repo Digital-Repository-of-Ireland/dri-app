@@ -4,11 +4,12 @@ module Storage
     require 'utils'
     include Utils
 
-    def initialize
+    def initialize(options={})
       endpoint = Settings.S3.server
-
       credentials = Aws::Credentials.new(Settings.S3.access_key_id, Settings.S3.secret_access_key)
-      @client = Aws::S3::Client.new(region: 'us-east-1', endpoint: endpoint, credentials: credentials, ssl_verify_peer: false, force_path_style: true)
+
+      params = options.merge({region: 'us-east-1', endpoint: endpoint, credentials: credentials, ssl_verify_peer: false, force_path_style: true})
+      @client = Aws::S3::Client.new(params)
     end
 
     # Get a hash of all surrogates for an object
@@ -170,23 +171,50 @@ module Storage
       files
     end
 
-  #private
+  private
 
     def create_url(bucket, object, expire=nil, authenticated=true)
-      object = Aws::S3::Object.new(bucket_name: bucket, key: object, client: @client)
-      
-      options = {:secure => false}
-
       if authenticated
-        unless expire.nil?
-          object.presigned_url(:get, options.merge({:expires_in => expire})).to_s
-        else
-          object.presigned_url(:get, options).to_s
-        end
+        signed_url(bucket, object, expiration_timestamp(expire))
       else
         object.public_url
       end
     end
+
+    def expiration_timestamp(input)
+      input = input.to_int if input.respond_to?(:to_int)
+      case input
+      when Time then input.to_i
+      when DateTime then Time.parse(input.to_s).to_i
+      when Integer then (Time.now + input).to_i
+      when String then Time.parse(input).to_i
+      else (Time.now + 60*60).to_i
+      end
+    end
+
+    def signed_url(bucket, path, expire_date=nil)
+      can_string = "GET\n\n\n#{expire_date}\n/#{bucket}/#{path}"
+
+      signature = URI.encode_www_form_component(Base64.encode64(hmac(Settings.S3.secret_access_key, can_string)).strip)
+   
+      querystring = "AWSAccessKeyId=#{Settings.S3.access_key_id}&Expires=#{expire_date}&Signature=#{signature}"
+      
+      endpoint = URI.parse(Settings.S3.server)
+      uri_class = endpoint.scheme.eql?("https") ? URI::HTTPS : URI::HTTP
+      uri_class.build(:host => endpoint.host,
+                      :port => endpoint.port,
+                      :path => "/#{bucket}/#{path}",
+                      :query => querystring).to_s
+    end
+
+    # Computes an HMAC digest of the passed string.
+    # @param [String] key
+    # @param [String] value
+    # @param [String] digest ('sha256')
+    # @return [String]
+    def hmac key, value, digest = 'sha1'
+      OpenSSL::HMAC.digest(OpenSSL::Digest.new(digest), key, value)
+    end 
 
   end
 end
