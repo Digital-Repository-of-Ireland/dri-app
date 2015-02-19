@@ -37,13 +37,6 @@
 </style>
 <% @marc = DRI::Metadata::Marc.marc_vocabulary %>
 
-<fieldset id="metadata">
-  <% if action.eql?("update") && params[:controller] != "collections" %>
-      <%= f.label "#{t('dri.views.objects.forms.governing_collection')}:" %>
-      <%= f.select :governing_collection_id,  options_for_select(@collections, governing_collection(@object)), :prompt => t('dri.views.ingest.forms.collection_prompt'), :class => "edit span6" %>
-  <% end %>
-</fieldset>
-
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
   <li class="active"><a href="#tab00X" role="tab" data-toggle="tab">C</a></li>

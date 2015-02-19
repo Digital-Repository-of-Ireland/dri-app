@@ -1,9 +1,9 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: 71cbda329f1820111ece190749f38ef90691fcc0
+  revision: d493b272367f6e0a790dc552c0b69c8c92f8a8c4
   branch: marc-nccb
   specs:
-    dri_data_models (2.0.0)
+    dri_data_models (2.0.3)
       hydra-access-controls
       hydra-collections
       hydra-head (>= 7.0)

@@ -108,6 +108,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Gets Metadata Class
+  def get_batch_standard_from_param param
+    # Metadata Standard Parameter
+    case param
+      when "qualifieddc"
+        :qdc
+      # "marc" is a form param, "collection" is xml root, when bulk_ingest
+      when "marc", "collection"
+        :marc
+      else
+    end
+  end
+
   private
 
   def authenticate_user_from_token!
