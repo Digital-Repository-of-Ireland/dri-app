@@ -1,40 +1,8 @@
-<style type="text/css">
-    .form-control {
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-    .ctrlfield-tag{
-        width: 28px;
-    }
-    .datafield-tag {
-        width: 28px;
-    }
-    .input-sm {
-        width: 35px;
-    }
-    span.required {
-        color: red;
-        font-size: 20px;
-    }
-    .tab-content {
-        border: solid;
-        border-color: #ddd;
-        border-top: none;
-        border-width: 1px;
-        padding-top: 10px;
-        padding-left: 10px;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-    }
-    .vertical-align {
-        display: flex;
-        align-items: center;
-    }
-    .indented {
-        width: 35px;
-        padding-right: 0px;
-    }
-</style>
+<!--Load custom styling, just for marc forms-->
+<% content_for :head do
+    stylesheet_link_tag 'marc'
+end %>
+
 <% @marc = DRI::Metadata::Marc.marc_vocabulary %>
 
 <!-- Nav tabs -->

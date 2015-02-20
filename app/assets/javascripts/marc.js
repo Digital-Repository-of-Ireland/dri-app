@@ -32,8 +32,18 @@ destroy_marc_controlfield = function() {
 // Destroy .datafield fieldset
 destroy_marc_datafield = function() {
     $(".datafields").on("click", ".destroy-datafield", function(){
-        $(this).closest("fieldset").remove();
-        reindex_marc();
+        var className = '.' + $(this).parent().attr('class').split(' ').join('.');
+        var noOfDatafields = $(this).closest("fieldset").parent().find(className).length;
+        if (noOfDatafields > 1) {
+            $(this).closest("fieldset").remove();
+            reindex_marc();
+            return false;
+        }
+        else {
+            $(this).closest("fieldset").find(".subfield-value").attr('value', '').val("");
+            $(this).closest("fieldset").find(".ind1-tag").attr('value', '').val("");
+            $(this).closest("fieldset").find(".ind2-tag").attr('value', '').val("");
+        }
         return false;
     });
 }

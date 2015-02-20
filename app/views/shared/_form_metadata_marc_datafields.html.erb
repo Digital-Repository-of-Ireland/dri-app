@@ -2,7 +2,7 @@
 <% @marc[:datafield][tab].each_with_index do |i, index| %>
     <%# Render empty df with sfs  %>
     <% if not @object.datafield_tag.include? i[0] %>
-        <fieldset class="datafield">
+        <fieldset class="datafield <%= "df_" + i[1][:tag] %>">
 
           <%= f.label i[1][:tag], class: "datafield-tag-label" %>
           <%= link_to_loc(i[1][:tag]) %>
@@ -54,7 +54,7 @@
     <%# Render existing df  %>
     <% @object.datafield.each_index do |d| %>
         <% next if i[1][:tag] != @object.datafield(d).tag.first %>
-        <fieldset class="datafield">
+        <fieldset class="datafield <%= "df_" + i[1][:tag] %>">
           <%= f.label i[1][:tag] %>
           <%= link_to_loc(i[1][:tag]) %>
           <%= f.hidden_field "datafield][#{d}][datafield_tag][", :value=>@object.datafield(d).tag.first, :class => "form-control datafield-tag" %>
