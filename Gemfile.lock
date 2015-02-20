@@ -1,7 +1,7 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
   revision: 229a935b12d7eec6d11bb0e3277e440e0b5fbd05
-  branch: v2.0.3
+  tag: v2.0.3
   specs:
     dri_data_models (2.0.3)
       hydra-access-controls
@@ -15,7 +15,7 @@ GIT
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-user-group.git
   revision: 5bbd96a69920d27b8a7ffaa5461817c98d26862b
-  branch: v1.0.7
+  tag: v1.0.7
   specs:
     user_group (1.0.7)
       devise
