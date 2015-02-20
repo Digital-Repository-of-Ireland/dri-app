@@ -57,6 +57,7 @@ class ObjectsController < CatalogController
   # Updates the attributes of an existing model.
   #
   def update
+    params[:batch].delete :standard # only needed for create
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
 
