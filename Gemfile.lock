@@ -102,7 +102,7 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    autoprefixer-rails (5.1.5)
+    autoprefixer-rails (5.1.7)
       execjs
       json
     aws-sdk (2.0.24)
@@ -186,7 +186,7 @@ GEM
     daemons (1.1.9)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
-    deprecation (0.1.0)
+    deprecation (0.2.0)
       activesupport
     devise (3.4.1)
       bcrypt (~> 3.0)
@@ -510,7 +510,7 @@ GEM
       rake
       resque (~> 1.22)
       trollop (~> 1.16)
-    rest-client (1.7.2)
+    rest-client (1.7.3)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     retriable (1.4.1)
