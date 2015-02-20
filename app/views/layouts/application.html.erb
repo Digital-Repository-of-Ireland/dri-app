@@ -19,7 +19,10 @@
 
 		<%= stylesheet_link_tag "dri/dri_layouts" %>
 
-		<%= javascript_include_tag "application" %>
+        <!--Yields custom styling, i.e. marc form to override future DRI changes-->
+        <%= yield :head %>
+
+      <%= javascript_include_tag "application" %>
 		<%= csrf_meta_tags %>
 		<%= content_for(:head) %>
 

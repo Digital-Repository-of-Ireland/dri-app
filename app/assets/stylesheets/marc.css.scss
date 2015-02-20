@@ -1,0 +1,53 @@
+.form-control {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.ctrlfield-tag{
+  width: 28px;
+}
+.datafield-tag {
+  width: 28px;
+}
+.input-sm {
+  width: 35px;
+}
+span.required {
+  color: red;
+  font-size: 20px;
+}
+.tab-content {
+  border: solid;
+  border-color: #ddd;
+  border-top: none;
+  border-width: 1px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+.vertical-align {
+  display: flex;
+  align-items: center;
+}
+.indented {
+  width: 35px;
+  padding-right: 0px;
+}
+.dri_ingest_form_container .dri_ingest_form, .dri_access_controls .dri_ingest_form {
+  width: 100%;
+}
+.dri_ingest_form_container .dri_ingest_form fieldset input, .dri_access_controls .dri_ingest_form fieldset input {
+  width: 100%;
+}
+.dri_ingest_form_container .dri_ingest_form fieldset label, .dri_access_controls .dri_ingest_form fieldset label {
+  display: inline-block;
+}
+fieldset#leader {
+  width: 91%;
+}
+fieldset.datafield {
+  width: 94%;
+}
+.ind1-tag, .ind2-tag {
+  width: 32px!important;
+}
