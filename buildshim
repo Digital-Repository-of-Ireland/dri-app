@@ -62,7 +62,7 @@ ogg_web_quality_out_options:
   bitrate: "96k" # default is same as input file
   frequency: "44100" # default is same as input file
 S3:
-  server: objects.tchpc.tcd.ie
+  server: http://objects.tchpc.tcd.ie
   access_key_id: OMZPBA7D6U3MZ6MBVJZQ
   secret_access_key: nnXKfE/+0zfEsHW8n55ffP18Bvn+N9sJ83AmWPOS
 __EOF__

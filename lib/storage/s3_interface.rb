@@ -4,15 +4,12 @@ module Storage
     require 'utils'
     include Utils
 
-    def initialize
+    def initialize(options={})
       endpoint = Settings.S3.server
-      
-      host_port = endpoint.partition(":")
-      @host = host_port[0]
-      @port = host_port[2].chomp("/")
+      credentials = Aws::Credentials.new(Settings.S3.access_key_id, Settings.S3.secret_access_key)
 
-      AWS.config(s3_endpoint: endpoint, :access_key_id => Settings.S3.access_key_id, :secret_access_key => Settings.S3.secret_access_key, :s3_force_path_style => true)
-      @s3 = AWS::S3.new(ssl_verify_peer: false, use_ssl: Settings.S3.use_ssl)
+      params = options.merge({region: 'us-east-1', endpoint: endpoint, credentials: credentials, ssl_verify_peer: false, force_path_style: true})
+      @client = Aws::S3::Client.new(params)
     end
 
     # Get a hash of all surrogates for an object
@@ -44,8 +41,8 @@ module Storage
 
       surrogates_hash = {}
       begin
-        bucketobj = @s3.buckets[bucket]
-        bucketobj.objects.each do |fileobj|
+        bucketobj = @client.list_objects(bucket: bucket)
+        bucketobj.each do |fileobj|
           if fileobj.key.match(/#{file_id}_([-a-zA-z0-9]*)\..*/)
             surrogates_hash[fileobj.key] = fileobj.head
           end
@@ -65,6 +62,7 @@ module Storage
 
       bucket = Utils.split_id(object_id)
       generic_file = Utils.split_id(file_id)
+
       files = list_files(bucket)
 
       filename = "#{Rails.application.config.id_namespace}:#{generic_file}_#{name}"
@@ -77,14 +75,14 @@ module Storage
           Rails.logger.debug "Problem getting url for file #{surrogate} : #{e.to_s}"
         end
       end
-
+ 
       return url
     end
 
     # Create bucket
     def create_bucket(bucket)
       begin
-        @s3.buckets.create(bucket)
+        @client.create_bucket(bucket: bucket)
       rescue Exception => e
         Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
         return false
@@ -95,13 +93,13 @@ module Storage
     # Delete bucket
     def delete_bucket(bucket_name)
       begin
-        bucket = @s3.buckets[bucket_name]
-        bucket.objects.each do |obj|
+        objects = @client.list_objects(bucket: bucket_name)
+        objects.each do |obj|
           obj.delete
         end
-        bucket.delete
+        @client.delete_bucket(bucket: bucket_name)
       rescue Exception => e
-        Rails.logger.error "Could not delete Storage Bucket #{bucket}: #{e.to_s}"
+        Rails.logger.error "Could not delete Storage Bucket #{bucket_name}: #{e.to_s}"
         return false
       end
       return true
@@ -111,9 +109,10 @@ module Storage
     def store_surrogate(object_id, surrogate_file, surrogate_key)
       bucket_name = Utils.split_id(object_id)
       begin
-        bucket = @s3.buckets[bucket_name]
-        object = bucket.objects[surrogate_key]
-        object.write(Pathname.new(surrogate_file))
+        @client.put_object(
+          bucket: bucket_name,
+          body: File.open(Pathname.new(surrogate_file)),
+          key: surrogate_key)
       rescue Exception  => e
         Rails.logger.error "Problem saving Surrogate file #{surrogate_key} : #{e.to_s}"
       end
@@ -122,9 +121,14 @@ module Storage
     # Save arbitrary file
     def store_file(file, file_key, bucket_name)
       begin
-        bucket = @s3.buckets[bucket_name]
-        object = bucket.objects[file_key]
-        object.write(Pathname.new(file), {:acl => :public_read})
+        @client.put_object(
+          bucket: bucket_name,
+          body: File.open(Pathname.new(file)),
+          key: file_key)
+        @client.put_object_acl(
+          acl: "public_read",
+          bucket: bucket_name,
+          key: file_key)
 
         return true
       rescue Exception => e
@@ -158,10 +162,8 @@ module Storage
     def list_files(bucket)
       files = []
       begin
-        bucketobj = @s3.buckets[bucket]
-        bucketobj.objects.each do |fileobj|
-          files << fileobj.key
-        end
+        response = @client.list_objects(bucket: bucket)
+        files = response.contents.map(&:key)
       rescue
         Rails.logger.debug "Problem listing files in bucket #{bucket}"
       end
@@ -172,26 +174,47 @@ module Storage
   private
 
     def create_url(bucket, object, expire=nil, authenticated=true)
-      bucket_obj = @s3.buckets[bucket]
-      object = bucket_obj.objects[object]
-
-      options = { :secure => false, :force_path_style => true }
-
-      unless @port.empty?
-        options[:endpoint] = @host
-        options[:port] = @port.to_i
-      end
-
       if authenticated
-        unless expire.nil?
-          object.url_for(:read, options.merge({:expires => expire})).to_s
-        else
-          object.url_for(:read, options).to_s
-        end
+        signed_url(bucket, object, expiration_timestamp(expire))
       else
-        object.public_url(options).to_s
+        object.public_url
       end
     end
+
+    def expiration_timestamp(input)
+      input = input.to_int if input.respond_to?(:to_int)
+      case input
+      when Time then input.to_i
+      when DateTime then Time.parse(input.to_s).to_i
+      when Integer then (Time.now + input).to_i
+      when String then Time.parse(input).to_i
+      else (Time.now + 60*60).to_i
+      end
+    end
+
+    def signed_url(bucket, path, expire_date=nil)
+      can_string = "GET\n\n\n#{expire_date}\n/#{bucket}/#{path}"
+
+      signature = URI.encode_www_form_component(Base64.encode64(hmac(Settings.S3.secret_access_key, can_string)).strip)
+   
+      querystring = "AWSAccessKeyId=#{Settings.S3.access_key_id}&Expires=#{expire_date}&Signature=#{signature}"
+      
+      endpoint = URI.parse(Settings.S3.server)
+      uri_class = endpoint.scheme.eql?("https") ? URI::HTTPS : URI::HTTP
+      uri_class.build(:host => endpoint.host,
+                      :port => endpoint.port,
+                      :path => "/#{bucket}/#{path}",
+                      :query => querystring).to_s
+    end
+
+    # Computes an HMAC digest of the passed string.
+    # @param [String] key
+    # @param [String] value
+    # @param [String] digest ('sha256')
+    # @return [String]
+    def hmac key, value, digest = 'sha1'
+      OpenSSL::HMAC.digest(OpenSSL::Digest.new(digest), key, value)
+    end 
 
   end
 end
