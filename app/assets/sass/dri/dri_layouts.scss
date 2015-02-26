@@ -1,8 +1,8 @@
 /*Import the Zen Grids files*/
+@import "dri_base.scss";
 @import "bootstrap.scss";
 @import "bootstrap-player.scss";
 /* for bootstrap3 */
-@import "bootstrap2-switch";
 @import "video-js";
 @import "dri_colorbox.scss";
 @import url('http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
@@ -13,6 +13,7 @@
 @import "dri.scss";
 @import "../smoothness/jquery-ui.scss";
 @import "dri_pages.scss";
+
 
 
 
@@ -263,7 +264,7 @@
     }
     
     .dri_ident {
-      background: image-url('dri/dri_ident_small.png');
+      background: image-url($dri_logo_small_url);
       background-repeat: no-repeat;
       width: 230px;
       height: 77px;
