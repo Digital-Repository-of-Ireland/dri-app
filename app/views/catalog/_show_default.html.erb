@@ -1,92 +1,101 @@
 <div class="dri_object_first_block">
-  <%= render :partial => 'show_surrogate' %>
-  <dl class="dri_object_metadata_readview">
-    <% document_show_fields.each do |solr_fname, field| -%>
-        <% if should_render_show_field? document, field %>
-            <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label :field => solr_fname %></dt>
-            <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value :document => document, :field => solr_fname %></dd>
-        <% end -%>
-    <% end -%>
-    <%= render :partial => 'shared/display_licence' %>
-    <% if (@depositing_institute) %>
-        <% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { Solrizer.solr_name('institute', :facetable).to_sym => [@depositing_institute[:name]] } } %>
-        <dt class="blacklight-depositing_institute"><%= t('dri.views.fields.depositing_institute') %></dt>
-        <dd class="blacklight-depositing_institute"><%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %></dd>
-    <% end %>
-  </dl>
+	<%= render :partial => 'show_surrogate' %>
+	<dl class="dri_object_metadata_readview">
+		<% document_show_fields.each do |solr_fname, field| -%>
+		<% if should_render_show_field? document, field %>
+		<dt class="blacklight-<%= solr_fname.parameterize %>">
+			<%= render_document_show_field_label :field => solr_fname %>
+		</dt>
+		<dd class="blacklight-<%= solr_fname.parameterize %>">
+			<%= render_document_show_field_value :document => document, :field => solr_fname %>
+		</dd>
+		<% end -%>
+		<% end -%>
+		<%= render :partial => 'shared/display_licence' %>
+		<% if (@depositing_institute) %>
+		<% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { Solrizer.solr_name('institute', :facetable).to_sym => [@depositing_institute[:name]] } } %>
+		<dt class="blacklight-depositing_institute">
+			<%= t('dri.views.fields.depositing_institute') %>
+		</dt>
+		<dd class="blacklight-depositing_institute">
+			<%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
+		</dd>
+		<% end %>
+	</dl>
 </div>
 <!-- close dri_object_first_block -->
 
 <div class="dri_object_second_block">
 
-  <div class="dri_back_search"><%= link_back_to_catalog %></div>
+	<div class="dri_back_search">
+		<%= link_back_to_catalog %>
+	</div>
 
-  <% collection = governing_collection_solr(@document) %>
+	<% collection = governing_collection_solr(@document) %>
 
-  <% unless collection.nil? %>
-      <div class="dri_vc_title">
-        <%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
-        <i class="fa fa-lg fa-folder-open"></i>
-        <%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(collection['id']), :id => 'view_collection' ) %>
-      </div>
-  <% end %>
-  <!-- close vc_title -->
+	<% unless collection.nil? %>
+	<div class="dri_vc_title">
+		<%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
+		<i class="fa fa-lg fa-folder-open"></i>
+		<%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(collection['id']), :id => 'view_collection' ) %>
+	</div>
+	<% end %>
+	<!-- close vc_title -->
 
-  <% unless collection.nil? %>
-      <% if collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0] %>
-          <div class="dri_vc_image">
-            <%= image_tag(collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :width=>"230", :alt=> t('dri.views.alt_tags.cover_image') ) %><!-- needs callback -->
-          </div>
-      <% end %>
-  <% end %>
-  <!-- close vc_title -->
+	<% unless collection.nil? %>
+	<% if collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0] %>
+	<div class="dri_vc_image">
+		<%= image_tag(collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :width=>"230", :alt=> t('dri.views.alt_tags.cover_image') ) %><!-- needs callback -->
+	</div>
+	<% end %>
+	<% end %>
+	<!-- close vc_title -->
 
+	<%= render :partial => "tools" %>
 
+	<% if signed_in? && (can?(:read_master, @document)) %>
+	<%= render :partial => "show_file_tools" %>
+	<div class="dri_objecttools_title">
+		<%= t('dri.views.catalog.titles.editor_tools') %>
+	</div>
+	<ul class="dri_view_collection bold">
+		<% if (edit_functionality_available?(@document)) %>
+		<%= link_to edit_object_path(@document), :id => "upload_file" do %>
+		<li>
+			<i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.upload_file') %>
+		</li>
+		<% end %>
+		<%= link_to edit_object_path(@document), :id => "edit_record" do %>
+		<li>
+			<i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
+		</li>
+		<% end %>
+		<% end %> <!-- if end (non-EAD collections) -->
+		<% unless @files.nil? || @files.empty? %>
+		<%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
+		<li>
+			<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
+		</li>
+		<% end %>
+		<% end %>
+		<% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
+		<li>
+			<%= form_tag status_update_path(@document.id) ,:method => :put do %>
+			<% if@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") %>
+			<%= hidden_field_tag( :status, "reviewed") %>
+			<span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), :id => 'status_update' %>
 
-  <%= render :partial => "tools" %>
+			<% else %>
 
-  <% if signed_in? && (can?(:read_master, @document)) %>
-      <%= render :partial => "show_file_tools" %>
-      <div class="dri_objecttools_title">
-        <%= t('dri.views.catalog.titles.editor_tools') %>
-      </div>
-      <ul class="dri_view_collection bold">
-        <% if (edit_functionality_available?(@document)) %>
-          <%= link_to edit_object_path(@document), :id => "upload_file" do %>
-          <li>
-            <i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.upload_file') %>
-          </li>
-          <% end %>
-          <%= link_to edit_object_path(@document), :id => "edit_record" do %>
-          <li>
-            <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
-          </li>
-          <% end %>
-        <% end %> <!-- if end (non-EAD collections) -->
-        <% unless @files.nil? || @files.empty? %>
-          <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
-          <li>
-            <i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
-          </li>
-          <% end %>
-        <% end %>
-        <% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
-          <%= link_to status_path(@document), {:id => 'status_update', :"data-toggle" => "modal", :"data-target" => "#ajax-modal" } do %>
-          <li>
-            <i class="fa fa-eye fa-lg"></i><%= t('dri.views.catalog.links.status_update') %>
-          </li>
-          <% if@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") %>
-          <li>
-            <i class="fa fa-check fa-lg red"></i><%= t('dri.views.catalog.links.mark_object_reviewed') %>
-          </li>
-          <% else %>
-          <li>
-            <i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_object_draft') %>
-          </li>
-          <% end %>
-          <% end %>
-        <% end %>
-      </ul>
-  <% end %>
+			<%= hidden_field_tag( :status, "draft") %>
+			<span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update' %>
+
+			<% end %>
+		</li>
+
+		<% end %>
+		<% end %>
+	</ul>
+	<% end %>
 </div>
 <!-- close dri_object_second_block -->
