@@ -55,47 +55,7 @@
 
 	<% if signed_in? && (can?(:read_master, @document)) %>
 	<%= render :partial => "show_file_tools" %>
-	<div class="dri_objecttools_title">
-		<%= t('dri.views.catalog.titles.editor_tools') %>
-	</div>
-	<ul class="dri_view_collection bold">
-		<% if (edit_functionality_available?(@document)) %>
-		<%= link_to edit_object_path(@document), :id => "upload_file" do %>
-		<li>
-			<i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.upload_file') %>
-		</li>
-		<% end %>
-		<%= link_to edit_object_path(@document), :id => "edit_record" do %>
-		<li>
-			<i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
-		</li>
-		<% end %>
-		<% end %> <!-- if end (non-EAD collections) -->
-		<% unless @files.nil? || @files.empty? %>
-		<%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
-		<li>
-			<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
-		</li>
-		<% end %>
-		<% end %>
-		<% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
-		<li>
-			<%= form_tag status_update_path(@document.id) ,:method => :put do %>
-			<% if@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") %>
-			<%= hidden_field_tag( :status, "reviewed") %>
-			<span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), :id => 'status_update' %>
-
-			<% else %>
-
-			<%= hidden_field_tag( :status, "draft") %>
-			<span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update' %>
-
-			<% end %>
-		</li>
-
-		<% end %>
-		<% end %>
-	</ul>
+	<%= render :partial => "show_editor_tools" %>
 	<% end %>
-</div>
+	</div>
 <!-- close dri_object_second_block -->
