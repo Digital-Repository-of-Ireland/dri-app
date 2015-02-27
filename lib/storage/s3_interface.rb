@@ -126,7 +126,7 @@ module Storage
           body: File.open(Pathname.new(file)),
           key: file_key)
         @client.put_object_acl(
-          acl: "public_read",
+          acl: "public-read",
           bucket: bucket_name,
           key: file_key)
 
@@ -177,7 +177,13 @@ module Storage
       if authenticated
         signed_url(bucket, object, expiration_timestamp(expire))
       else
-        object.public_url
+        s3 = Aws::S3::Resource.new(client: @client) 
+        
+        s3.bucket(bucket).objects.each do |o|        
+          if o.key.eql?(object)
+            return o.object.public_url
+          end
+        end
       end
     end
 
