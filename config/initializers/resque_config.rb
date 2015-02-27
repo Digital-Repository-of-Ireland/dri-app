@@ -3,3 +3,6 @@ Resque.redis = Redis.new(host: config[:host], port: config[:port], password: con
 
 Resque.inline = Rails.env.test?
 #Resque.redis.namespace = "#{Sufia.config.id_namespace}:#{Rails.env}"
+
+Resque.logger = Logger::Syslog.new
+Resque.logger.level = Logger::WARN
