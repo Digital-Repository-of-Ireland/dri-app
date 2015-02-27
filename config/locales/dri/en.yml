@@ -258,6 +258,8 @@ en:
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
           mark_all_reviewed: "Mark Collection as Reviewed"
+          reviewed: "Reviewed"
+          draft: "Draft"
           mark_object_reviewed: "Mark Object as Reviewed"
           mark_object_draft: "Mark Object as Draft"
           listen: listen
