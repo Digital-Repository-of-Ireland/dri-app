@@ -87,8 +87,8 @@ module MetadataValidator
    return result, @msg
   end
 
-  # Checks whether an EAD XML file uses DTD
-  # @return true if EAD DTD declaration present; false otherwise
+  # Checks whether an XML file uses DTD
+  # @return true if DTD declaration present; false otherwise
   #
   def MetadataValidator.uses_dtd?(xml, dtd_name)
     (xml.internal_subset != nil && xml.internal_subset.name == dtd_name) ? true : false
@@ -107,7 +107,7 @@ module MetadataValidator
     end
   end
   
-  # Validates a XML file against DTD
+  # Validates an XML file against DTD
   # @param[xml] the XML file to validate
   # @param[dtd_name] the name of the DTD
   # @return true if valid; false and error messages array otherwise
