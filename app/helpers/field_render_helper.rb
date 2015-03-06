@@ -4,7 +4,16 @@ module FieldRenderHelper
   def field_value_separator
     ''
   end
-
+  
+  # Helper method to display the description field if it contains multiple paragraphs/values
+  # @param[SolrDocument] :document
+  # @param[SolrField] :field
+  # @return array of field values with HTML paragraph mark-up
+  #
+  def render_description args
+    args[:document][args[:field]].size > 1 ? args[:document][args[:field]].collect!.each { |value| "<p>" << value << "</p>" } : args[:document][args[:field]]
+  end
+  
   # Overwrites the method located in Blacklight::BlacklightHelperBehavior,
   # allowing DRI to customise how metadata fields are rendered.
   def render_document_show_field_value args
