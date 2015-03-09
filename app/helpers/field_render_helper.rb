@@ -11,7 +11,11 @@ module FieldRenderHelper
   # @return array of field values with HTML paragraph mark-up
   #
   def render_description args
-    args[:document][args[:field]].size > 1 ? args[:document][args[:field]].collect!.each { |value| "<p>" << value << "</p>" } : args[:document][args[:field]]
+    if args[:document][args[:field]].size > 1
+      return args[:document][args[:field]].collect!.each { |value| "<p>" << value << "</p>" }
+     else
+      return simple_format(args[:document][args[:field]].first)
+    end
   end
   
   # Overwrites the method located in Blacklight::BlacklightHelperBehavior,
