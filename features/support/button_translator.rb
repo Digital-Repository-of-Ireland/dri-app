@@ -111,6 +111,9 @@ module ButtonTranslator
 
       when /^publish objects in collection$/
         publish
+      
+      when /^update status$/
+        "status_update"
 
       else "Unknown"
 

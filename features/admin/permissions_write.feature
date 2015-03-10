@@ -142,7 +142,7 @@ Feature: Access controls
     When I am logged in as "foo" and accept cookies
     And "foo@foo.com" has been granted "<permission>" permissions on "dri:collection01"
     And I go to "show Digital Object page for id dri:object01"
-    Then I should see a link to update status
+    Then I should see a button to update status
 
     Examples:
       | permission |
@@ -155,7 +155,7 @@ Feature: Access controls
     When I am logged in as "foo" and accept cookies
     And "foo@foo.com" has been granted "<permission>" permissions on "dri:collection01"
     And I go to "show Digital Object page for id dri:object01"
-    Then I should not see a link to update status
+    Then I should not see a button to update status
 
     Examples:
       | permission |
