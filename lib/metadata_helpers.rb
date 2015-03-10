@@ -54,8 +54,9 @@ module MetadataHelpers
     if namespace.has_value?("http://purl.org/dc/elements/1.1/")
      result = "DRI::Metadata::QualifiedDublinCore"
     elsif namespace.has_value?("http://www.loc.gov/mods/v3")
-      result = "DRI::Metadata::MODS"
-    elsif (xml.internal_subset != nil && xml.internal_subset.name == 'ead' || namespace.has_value?("urn:isbn:1-931666-22-9"))
+      # Assign correct class, based on whether the object is a collection
+      result = (!xml.xpath("/mods:mods/mods:typeOfResource[@collection='yes']").empty?) ? "DRI::Metadata::ModsCollection" : "DRI::Metadata::Mods"
+    elsif ((xml.internal_subset != nil && xml.internal_subset.name == 'ead') || namespace.has_value?("urn:isbn:1-931666-22-9"))
       result = "DRI::Metadata::EncodedArchivalDescription"
     elsif ['c', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10', 'c11', 'c12'].include? root_name
       result = "DRI::Metadata::EncodedArchivalDescriptionComponent"
@@ -72,8 +73,10 @@ module MetadataHelpers
     case metadata_class
     when "DRI::Metadata::QualifiedDublinCore"
       :qdc
-    when "DRI::Metadata::MODS"
-      :mods
+    when "DRI::Metadata::ModsCollection"
+      :mods_collection  
+    when "DRI::Metadata::Mods"
+      :mods_record
     when "DRI::Metadata::EncodedArchivalDescription"
       :ead_collection
     when "DRI::Metadata::EncodedArchivalDescriptionComponent"

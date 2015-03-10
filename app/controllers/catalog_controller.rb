@@ -136,7 +136,7 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_show_field solr_name('title', :stored_searchable, type: :string), :label => 'title'
     config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), :label => 'subtitle:'
-    config.add_show_field solr_name('description', :stored_searchable, type: :string), :label => 'description'
+    config.add_show_field solr_name('description', :stored_searchable, type: :string), :label => 'description', :helper_method => :render_description
     # config.add_show_field solr_name('scope_content', :stored_searchable, type: :string), :label => 'scope_content'
     # config.add_show_field solr_name('scopecontent', :stored_searchable, type: :string), :label => 'scope_content'
     # config.add_show_field solr_name('abstract', :stored_searchable, type: :string), :label => 'abstract'
