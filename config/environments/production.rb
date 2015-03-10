@@ -83,9 +83,18 @@ NuigRnag::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   # Add a default host for devise mailer
-  config.action_mailer.default_url_options = { :host => 'repository.dri.ie' }
+  # config.action_mailer.default_url_options = { :host => 'repository.dri.ie' }
+  # config.action_mailer.delivery_method = :sendmail
 
-  config.action_mailer.delivery_method = :sendmail
+  # Devise mailer setting
+  config.action_mailer.default_url_options = { :host => 'dri-guest066.tchpc.tcd.ie' }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address => "smtp.tchpc.tcd.ie",
+    :port    => 25,
+    :domain  => 'dri-guest066.tchpc.tcd.ie'
+  }
 
   #config.middleware.use '::Rack::Auth::Basic' do |u, p|
   #  [u, p] == ['navr', 'navr']
