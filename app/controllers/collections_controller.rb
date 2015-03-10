@@ -72,6 +72,21 @@ class CollectionsController < CatalogController
 
     @object = retrieve_object!(params[:id])
 
+    # Check if we have new manager users and add them to the CM group
+    if params[:batch][:manager_users_string].present?
+      params[:batch][:manager_users_string].split(/,\s/).each do |muser|
+        if !@object.manager_users.include?(muser)
+          user = UserGroup::User.find_by_email(muser)
+          if user.present?
+            group_id = UserGroup::Group.find_by_name("cm").id
+            membership = user.join_group(group_id)
+            membership.approved_by = current_user.id
+            membership.save
+          end
+        end
+      end
+    end
+
     # If a cover image was uploaded, remove it from the params hash
     cover_image = params[:batch].delete(:cover_image)
 
@@ -294,7 +309,7 @@ class CollectionsController < CatalogController
 
     true
   end
-  
+
   # Create a collection from an uploaded XML file.
   #
   def create_from_xml
@@ -343,7 +358,7 @@ class CollectionsController < CatalogController
     @collection.private_metadata="0"
     @collection.master_file="0"
 
-    @collection.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?   
+    @collection.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?
 
     true
   end

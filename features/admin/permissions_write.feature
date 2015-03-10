@@ -222,3 +222,10 @@ Feature: Access controls
     When I press the button to delete collection with id dri:collection01
     Then I should see a message for deleting a collection
 
+  Scenario: Entering an invalid user in the manager user string box should result in an error
+
+  Scenario: Entering an invalid user in the edit user string box should probably also result in an error
+
+  Scenario: After adding a manager user that user should now be in the CM group
+
+  Scenario: Removing a manager user should possibly do something with their CM membership?
