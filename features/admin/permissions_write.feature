@@ -142,7 +142,7 @@ Feature: Access controls
     When I am logged in as "foo" and accept cookies
     And "foo@foo.com" has been granted "<permission>" permissions on "dri:collection01"
     And I go to "show Digital Object page for id dri:object01"
-    Then I should see a link to update status
+    Then I should see a button to update status
 
     Examples:
       | permission |
@@ -155,7 +155,7 @@ Feature: Access controls
     When I am logged in as "foo" and accept cookies
     And "foo@foo.com" has been granted "<permission>" permissions on "dri:collection01"
     And I go to "show Digital Object page for id dri:object01"
-    Then I should not see a link to update status
+    Then I should not see a button to update status
 
     Examples:
       | permission |
@@ -222,3 +222,10 @@ Feature: Access controls
     When I press the button to delete collection with id dri:collection01
     Then I should see a message for deleting a collection
 
+  Scenario: Entering an invalid user in the manager user string box should result in an error
+
+  Scenario: Entering an invalid user in the edit user string box should probably also result in an error
+
+  Scenario: After adding a manager user that user should now be in the CM group
+
+  Scenario: Removing a manager user should possibly do something with their CM membership?

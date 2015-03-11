@@ -108,7 +108,9 @@ class ObjectsController < CatalogController
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
 
-    params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection]) unless params[:batch][:governing_collection].blank?
+    if params[:batch][:governing_collection].present?
+      params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection])
+    end
 
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
     

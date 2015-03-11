@@ -1,25 +1,48 @@
 module MetadataValidator
 
+  MODS_NS_PREFIX = "xmlns:mods"
+  MODS_NS_URI = "http://www.loc.gov/mods/v3"
+  EAD_NS_PREFIX = "xmlns:ead"
+  EAD_NS_URI = "urn:isbn:1-931666-22-9"
+  DC_NS_PREFIX = "xmlns:dc"
+  DC_NS_URI = "http://purl.org/dc/elements/1.1/"
+  MARC_NS_PREFIX = "xmlns:marc"
+  MARC_NS_URI = "http://www.loc.gov/MARC21/slim"
+
+  # Performs XML validation
+  # @param[xml] the XMl file to validate
+  # @param[standard] the metadata class associated with the XML
+  # @return true if valid; false and error messages otherwise
+  #
   def MetadataValidator.valid?(xml, standard)
     case standard
-    when "DRI::Metadata::QualifiedDublinCore"#, "DRI::Metadata::EncodedArchivalDescription"
-      return is_valid_dc?(xml)
-    #when "DRI::Metadata::EncodedArchivalDescription"
-    #  return is_valid_ead?(xml)
-    else
-      return true, ""
+      when "DRI::Metadata::QualifiedDublinCore"
+        return is_schema_valid?(xml, DC_NS_PREFIX, DC_NS_URI)
+      when "DRI::Metadata::EncodedArchivalDescription"
+        return is_valid_ead?(xml)
+      when "DRI::Metadata::ModsCollection", "DRI::Metadata::Mods" 
+        return is_schema_valid?(xml, MODS_NS_PREFIX, MODS_NS_URI)
+      # Add Marc validation
+      # when "DRI::Metadata::Marc"
+        # return is_schema_valid?(xml, MARC_NS_PREFIX, MARC_NS_URI)
+      else
+        return true, ""
     end
   end
 
-  def MetadataValidator.is_valid_dc?(xml)
+  # Validate an XML file against all the XSD files it uses
+  # @param[xml] the XML to validate
+  # @param[ns_prefix] the namespace prefix
+  # @param[ns_uri] the namespace URI declaration
+  # @return true if valid; false and error messages otherwise
+  #
+  def MetadataValidator.is_schema_valid?(xml, ns_prefix, ns_uri)
     result = false
     @msg = ""
 
     namespace = xml.namespaces
 
-   if namespace.has_key?("xmlns:dc") &&
-      namespace["xmlns:dc"].eql?("http://purl.org/dc/elements/1.1/") || namespace.has_key?("xmlns:ead") &&
-      namespace["xmlns:ead"].eql?("urn:isbn:1-931666-22-9")
+   if namespace.has_key?(ns_prefix) && namespace[ns_prefix].eql?(ns_uri)
 
       # We have to extract all the schemata from the XML Document in order to validate correctly
       schema_imports = []
@@ -30,7 +53,7 @@ module MetadataValidator
         schema_imports = ["<xs:include schemaLocation=\""+no_ns_schema_location+"\"/>\n"] unless no_ns_schema_location.blank?
       end
 
-      # Then, find all elments that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
+      # Then, find all elements that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
       xml.xpath("//*[@xsi:schemaLocation]").each do |node|
         schemata_by_ns = Hash[node.attr("xsi:schemaLocation").scan(/(\S+)\s+(\S+)/)]
         return result = false if schemata_by_ns.empty?
@@ -64,11 +87,58 @@ module MetadataValidator
    return result, @msg
   end
 
-  # TODO Implement EAD Schema Validation
+  # Checks whether an XML file uses DTD
+  # @return true if DTD declaration present; false otherwise
+  #
+  def MetadataValidator.uses_dtd?(xml, dtd_name)
+    (xml.internal_subset != nil && xml.internal_subset.name == dtd_name) ? true : false
+  end
+
+  # Performs EAD XML validation
+  # @param[xml] the XML file to validate
+  # @return true if valid; false and error messages otherwise
+  #
   def MetadataValidator.is_valid_ead?(xml)
-    result = true
+    if uses_dtd?(xml, 'ead')
+      return is_dtd_valid?(xml, 'ead')
+    else
+      # XSD validation
+      return is_schema_valid?(xml, EAD_NS_PREFIX, EAD_NS_URI)
+    end
+  end
+  
+  # Validates an XML file against DTD
+  # @param[xml] the XML file to validate
+  # @param[dtd_name] the name of the DTD
+  # @return true if valid; false and error messages array otherwise
+  #
+  def MetadataValidator.is_dtd_valid?(xml, dtd_name)
+    result = false
     @msg = ""
 
+    if !uses_dtd?(xml, dtd_name)
+      @msg = "The document does not include a DTD declaration." 
+      return result, @msg.html_safe
+    end
+    # Loading External DTD in Nokogiri does not work: https://github.com/sparklemotion/nokogiri/issues/440#issuecomment-3031164
+    # Workaround to load the local instance of the DTD under config/schemas (*.dtd) for use in validation
+    new_xml = Dir.chdir(Rails.root.join('config').join('schemas')) do |path|
+      # Replace original DTD reference with a reference to the local DTD
+      xml.to_xml.gsub(/<!DOCTYPE.*?>/,"<!DOCTYPE #{dtd_name} SYSTEM \"#{path}/#{dtd_name}.dtd\" >") 
+    end
+    # Tell Nokogiri to load DTD (which is not active by default)
+    options = Nokogiri::XML::ParseOptions::DEFAULT_XML | Nokogiri::XML::ParseOptions::DTDLOAD
+    # No url and encoding parameters needed
+    doc = Nokogiri::XML::Document.parse(new_xml, nil, nil, options)
+      
+    # Validate against the DTD, if it has one
+    validate_errors = doc.external_subset.nil? ? ["Could not load document DTD (#{dtd_name})"] : doc.external_subset.validate(doc)
+    if validate_errors == nil || validate_errors.size == 0
+      result = true
+    else
+      @msg = validate_errors.join("<br/>").html_safe
+    end
+      
     return result, @msg
   end
 
