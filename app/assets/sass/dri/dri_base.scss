@@ -8,3 +8,8 @@ $dri_thingrey: #d9dadb;
 
 $dri_logo_url: "dri/dri_ident.png";
 $dri_logo_small_url: 'dri/dri_ident_small.png';
+.translation_missing {
+  border: 1px red;
+  background: red;
+  text-color: white;
+}
