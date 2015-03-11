@@ -6,6 +6,7 @@ source 'http://rubygems.org'
 gem 'rails','~> 4.1.0'
 
 gem 'blacklight', "5.7.2"
+gem "blacklight_range_limit"
 gem 'hydra-head', "7.2.2"
 gem 'sufia-models', "4.1.0"
 
