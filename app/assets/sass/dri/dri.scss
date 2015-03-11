@@ -309,7 +309,7 @@ h3 {
   padding: 6px 13px 6px 15px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  border: 1px solid  #E18191;
+  border: 1px solid  $dri_grey_border;
 }
 
 form {
@@ -324,6 +324,7 @@ form {
   color: $dri_green;
   background-color: $dri_green;
   background-image: none;
+  
 }
 
 /* breadcrumbs */
@@ -535,7 +536,7 @@ input.dri_w230 {
   padding: 6px 15px 6px 15px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  border: 1px solid  #E18191;
+  border: 1px solid  $dri_grey_border;
 }
 
 /*-------------- Signin Social Media--------------*/
@@ -712,9 +713,17 @@ a .dri_signin_edugate:hover {
       display: block;
       -moz-border-radius: 2px;
       border-radius: 2px;
-      a {
-        color: #808082;
+      ul {
+          a {
+          color: #808082;
+          size: 1em;
+        }
+        .dropdown-menu > a {
+         font-size: 12px;
+          margin-left: 3px;
+        }
       }
+      
       .dri_language_links li {
         float: right;
         text-decoration: none;
@@ -723,6 +732,14 @@ a .dri_signin_edugate:hover {
         padding: 0;
         margin: 0;
       }
+      
+       .dropdown-menu > a {
+         font-size: 12px;
+          margin-left: 3px;
+        }
+       .dropdown-menu > a:hover {
+          color: $dri_green;
+        }
     }
   }
 }
@@ -1440,7 +1457,7 @@ h4.suggest {
   background-color: #FFD9DC;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  border: 1px solid  #E18191;
+  border: 1px solid  $dri_grey_border;
   float: left;
   h1 {
     margin: 0;
