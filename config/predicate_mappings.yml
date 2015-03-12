@@ -51,3 +51,31 @@
     :is_governed_by: isGovernedBy
   http://dri.ie/ns/relations#:
     :is_preceded_by: isPrecededBy
+  # MODS RDF relationships
+  # preceding, succeeding, original, host, constituent, series,
+  # otherVersion, otherFormat, isReferencedBy, references, reviewOf
+  http://www.loc.gov/mods/rdf/v1#:
+    :related_preceding: isPrecededBy
+    :related_succeeding: isSuccededBy
+    :related_original: hasOriginal
+    :related_host: isPartOf
+    :related_constituent: hasPart
+    :related_series: isPartOfSeries
+    :related_version: isVersionOf
+    :related_format: isFormatOf
+    :related_referenced_by: isReferencedBy
+    :related_reference: references
+    :related_review: isReviewOf
+  # DC RDF relationships
+  # Relation, IsPartOf, IsReferencedBy, References, Source??, IsVersionOf, HasVersion, isFormatOf
+  http://purl.org/dc/terms/:
+    :dcterms_relation: isRelatedTo
+    :dcterms_is_part_of: isPartOf
+    :dcterms_has_part: hasPart
+    :dcterms_is_referenced_by: isReferencedBy
+    :dcterms_references: references
+    :dcterms_is_version_of: isVersionOf
+    :dcterms_has_version: hasVersion
+    :dcterms_is_format_of: isFormatOf
+    #:dcterms_has_source: hasSource
+    
