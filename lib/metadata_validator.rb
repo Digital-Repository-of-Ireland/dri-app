@@ -20,7 +20,7 @@ module MetadataValidator
         return is_schema_valid?(xml, DC_NS_PREFIX, DC_NS_URI)
       when "DRI::Metadata::EncodedArchivalDescription"
         return is_valid_ead?(xml)
-      when "DRI::Metadata::ModsCollection", "DRI::Metadata::Mods" 
+      when "DRI::Metadata::Mods" 
         return is_schema_valid?(xml, MODS_NS_PREFIX, MODS_NS_URI)
       # Add Marc validation
       # when "DRI::Metadata::Marc"
@@ -85,7 +85,7 @@ module MetadataValidator
    end
    
    return result, @msg
-  end
+  end # is_schema_valid?
 
   # Checks whether an XML file uses DTD
   # @return true if DTD declaration present; false otherwise
@@ -105,7 +105,7 @@ module MetadataValidator
       # XSD validation
       return is_schema_valid?(xml, EAD_NS_PREFIX, EAD_NS_URI)
     end
-  end
+  end # is_valid_ead?
   
   # Validates an XML file against DTD
   # @param[xml] the XML file to validate
@@ -140,25 +140,25 @@ module MetadataValidator
     end
       
     return result, @msg
-  end
+  end # is_dtd_valid?
 
   private
 
-    # Maps a URI to a local filename if the file is found in config/schemas. Otherwise returns the original URI.
-    #
-    def MetadataValidator.map_to_localfile(uri)
-      if uri
-        filename = URI.parse(uri).path[%r{[^/]+\z}]
-        file = Rails.root.join('config').join('schemas', filename)
-        if Pathname.new(file).exist?
-          location = filename
-        else
-          location = uri
-        end
+  # Maps a URI to a local filename if the file is found in config/schemas. Otherwise returns the original URI.
+  #
+  def MetadataValidator.map_to_localfile(uri)
+    if uri
+      filename = URI.parse(uri).path[%r{[^/]+\z}]
+      file = Rails.root.join('config').join('schemas', filename)
+      if Pathname.new(file).exist?
+        location = filename
       else
-        location = nil
+        location = uri
       end
-      return location
+    else
+      location = nil
     end
+    return location
+  end # map_to_localfile
 
-end
+end # MetadataValidator

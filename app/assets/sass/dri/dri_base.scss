@@ -5,6 +5,12 @@ $dri_darkgrey: #2e2e2e;
 $dri_extra_lightgray: #9e9e9e;
 $dri_lightgrey: #b3b3b3;
 $dri_thingrey: #d9dadb;
+$dri_grey_border: #E18191;
 
 $dri_logo_url: "dri/dri_ident.png";
 $dri_logo_small_url: 'dri/dri_ident_small.png';
+.translation_missing {
+  border: 1px red;
+  background: red;
+  text-color: white;
+}
