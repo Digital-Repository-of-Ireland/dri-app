@@ -16,8 +16,8 @@ module Storage
     def get_surrogates(doc, file_doc, expire=nil)
 
       expire = Settings.S3.expiry unless (!expire.blank? && numeric?(expire))
-      bucket = Utils.split_id(doc.id)
-      generic_file = Utils.split_id(file_doc.id)
+      bucket = doc.id
+      generic_file = file_doc.id
 
       files = list_files(bucket)
       @surrogates_hash = {}
@@ -37,7 +37,7 @@ module Storage
 
     # Get information about surrogates for a generic_file
     def get_surrogate_info(object_id, file_id)
-      bucket = Utils.split_id(object_id)
+      bucket = object_id
 
       surrogates_hash = {}
       begin
@@ -60,8 +60,8 @@ module Storage
 
       expire = Settings.S3.expiry unless (!expire.blank? && numeric?(expire))
 
-      bucket = Utils.split_id(object_id)
-      generic_file = Utils.split_id(file_id)
+      bucket = object_id
+      generic_file = file_id
 
       files = list_files(bucket)
 
@@ -107,7 +107,7 @@ module Storage
 
     # Save Surrogate File
     def store_surrogate(object_id, surrogate_file, surrogate_key)
-      bucket_name = Utils.split_id(object_id)
+      bucket_name = object_id
       begin
         @client.put_object(
           bucket: bucket_name,

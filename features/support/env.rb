@@ -1,5 +1,6 @@
 require 'simplecov'
 require 'simplecov-rcov'
+require 'active_fedora/cleaner'
 
 class SimpleCov::Formatter::MergedFormatter
   def format(result)
@@ -102,6 +103,8 @@ end
 Before do
   require 'factory_girl'
   Sufia.queue.stub(:push) 
+
+  ActiveFedora::Cleaner.clean!
 end
 
 def last_json

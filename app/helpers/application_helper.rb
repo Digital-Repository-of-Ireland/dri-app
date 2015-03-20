@@ -56,8 +56,8 @@ module ApplicationHelper
   end
 
   def governing_collection_solr( doc )
-    if doc[Solrizer.solr_name('is_governed_by', :stored_searchable, type: :symbol)]
-      id = doc[Solrizer.solr_name('is_governed_by', :stored_searchable, type: :symbol)][0].gsub(/^info:fedora\//, '')
+    if doc.collection_id
+      id = doc.collection_id
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
     return collection[0]

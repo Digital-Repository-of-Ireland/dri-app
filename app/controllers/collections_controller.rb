@@ -8,7 +8,8 @@ require 'doi/doi'
 
 class CollectionsController < CatalogController
 
-  include UserGroup::SolrAccessControls
+  #include UserGroup::SolrAccessControls
+  include Hydra::AccessControlsEnforcement
 
   before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
@@ -24,8 +25,8 @@ class CollectionsController < CatalogController
     @object.manager_users_string=current_user.to_s
     @object.discover_groups_string="public"
     @object.read_groups_string="public"
-    @object.private_metadata="0"
-    @object.master_file="0"
+    #@object.private_metadata="0"
+    #@object.master_file="0"
     @object.object_type = ["Collection"]
     @object.title = [""]
     @object.description = [""]
@@ -83,12 +84,12 @@ class CollectionsController < CatalogController
 
     supported_licences()
 
-    set_access_permissions(:batch, true)
+    #set_access_permissions(:batch, true)
 
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
     else
-      updated = @object.update_attributes(params[:batch])
+      updated = @object.update_attributes(upate_params)
 
       if updated
         DOI.mint_doi( @object )
@@ -258,7 +259,7 @@ class CollectionsController < CatalogController
 
     enforce_permissions!("create", DRI::Batch)
 
-    set_access_permissions(:batch, true)
+    #set_access_permissions(:batch, true)
 
     @object = DRI::Batch.with_standard :qdc
 
@@ -270,7 +271,7 @@ class CollectionsController < CatalogController
     # If a cover image was uploaded, remove it from the params hash
     cover_image = params[:batch].delete(:cover_image)
 
-    @object.update_attributes(params[:batch])
+    @object.update_attributes(create_params)
 
     # depositor is not submitted as part of the form
     @object.depositor = current_user.to_s
@@ -335,12 +336,22 @@ class CollectionsController < CatalogController
     @object.manager_users_string=current_user.to_s
     @object.discover_groups_string="public"
     @object.read_groups_string="public"
-    @object.private_metadata="0"
-    @object.master_file="0"
+    #@object.private_metadata="0"
+    #@object.master_file="0"
 
     @object.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?   
 
     true
+  end
+
+  private 
+
+  def create_params
+    params.require(:batch).permit!
+  end
+
+  def update_params
+    params.require(:batch).permit!
   end
 
   def valid_permissions?
@@ -361,7 +372,7 @@ class CollectionsController < CatalogController
   end
 
   def reader_group_name
-    @object.id.sub(':', '_')
+    @object.id
   end
 
   def delete_collection

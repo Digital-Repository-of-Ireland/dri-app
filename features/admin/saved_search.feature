@@ -3,8 +3,8 @@ Feature: Saved Search criteria
 
   Background:
     Given I am logged in as "user1"
-    Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-    And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+    Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+    And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
 
   Scenario: Check no saved searches
     And I go to "my saved search page"

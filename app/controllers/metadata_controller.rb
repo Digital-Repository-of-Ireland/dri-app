@@ -20,11 +20,11 @@ class MetadataController < CatalogController
       return
     end
 
-    if @object && @object.datastreams.keys.include?("descMetadata")
+    if @object && @object.attached_files.key?(:descMetadata)
       respond_to do |format|
-        format.xml { render :xml => @object.datastreams["descMetadata"].content }
+        format.xml { render :xml => @object.attached_files[:descMetadata].content }
         format.html  { 
-          xml_data = @object.datastreams["descMetadata"].content
+          xml_data = @object.attached_files[:descMetadata].content
           xml = Nokogiri::XML(xml_data)
           xslt_data = File.read("app/assets/stylesheets/#{xml.root.name}.xsl")
           xslt = Nokogiri::XSLT(xslt_data)

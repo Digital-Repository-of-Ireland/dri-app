@@ -1,11 +1,11 @@
 Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, pid, permission|
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "o" + @random_pid if (pid == "@random")
 
   if type == "title"
     query = "title_tesim:#{URI.encode(pid)}"
     pid = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
   else
-    pid = "dri:o" + @random_pid if (pid == "@random")
+    pid = "o" + @random_pid if (pid == "@random")
   end
 
   mapping = {}
@@ -49,7 +49,7 @@ Given /the masterfile for object with title "(.*?)" is "(.*?)"$/ do |title, perm
 end
 
 Given /^the object with pid "(.*?)" is under embargo$/ do |pid|
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
   object.embargo = 2.weeks.from_now
   object.save
@@ -61,7 +61,7 @@ Given /^the object with (pid|title) "(.*?)" has no read access for my user$/ do 
     pid = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
   end
 
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
   object.rightsMetadata.read_access.machine.person = ["another@user.com"]
   object.rightsMetadata.read_access.machine.group = []
@@ -70,7 +70,7 @@ Given /^the object with (pid|title) "(.*?)" has no read access for my user$/ do 
 end
 
 Given /^the object with pid "(.*?)" has no read access for my group$/ do |pid|
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
   object.rightsMetadata.read_access.machine.group = ["notmygroup"]
   object.save
@@ -81,7 +81,7 @@ Given /^the object with (pid|title) "(.*?)" is restricted to the reader group$/ 
     query = "title_tesim:#{URI.encode(pid)}"
     pid = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
   else
-    pid = "dri:o" + @random_pid if (pid == "@random")
+    pid = "o" + @random_pid if (pid == "@random")
   end
 
   object = ActiveFedora::Base.find(pid, {:cast => true})
@@ -90,7 +90,7 @@ Given /^the object with (pid|title) "(.*?)" is restricted to the reader group$/ 
 end
 
 Given /^the object with pid "(.*?)" has public discover access and metadata$/ do |pid|
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
   object.rightsMetadata.discover_access.machine.group = ["public"]
   object.rightsMetadata.metadata.machine.integer = "0"
@@ -98,10 +98,10 @@ Given /^the object with pid "(.*?)" has public discover access and metadata$/ do
 end
 
 Given /^the object with pid "(.*?)" has permission "(.*?)" for "(.*?)" "(.*?)"$/ do |pid, permission, entity, id|
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "o" + @random_pid if (pid == "@random")
   if permission == 'inherited access'
     object = ActiveFedora::Base.find(pid, {:cast => true})
-    fedora_document = ActiveFedora::Base.find(object.governing_collection.pid, {:cast => true})
+    fedora_document = ActiveFedora::Base.find(object.governing_collection.id, {:cast => true})
   elsif permission == 'read access'
     fedora_document = ActiveFedora::Base.find(pid, {:cast => true})
   else
@@ -119,8 +119,8 @@ Given /^the object with pid "(.*?)" has permission "(.*?)" for "(.*?)" "(.*?)"$/
 end
 
 Given(/^the object with pid "(.*?)" is governed by the collection with pid "(.*?)"$/) do |obj, coll|
-  coll = "dri:c" + @random_pid if (coll == "@random")
-  obj = "dri:o" + @random_pid if (obj == "@random")
+  coll = "c" + @random_pid if (coll == "@random")
+  obj = "o" + @random_pid if (obj == "@random")
   object = ActiveFedora::Base.find(obj, {:cast => true})
   collection = ActiveFedora::Base.find(coll, {:cast => true})
   collection.governed_items << object
@@ -128,7 +128,7 @@ Given(/^the object with pid "(.*?)" is governed by the collection with pid "(.*?
 end
 
 Given /^the (collection|object) with pid "(.*?)" has status (.*?)$/ do |type,pid,status|
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
   object.status = status
   object.save
@@ -143,25 +143,25 @@ Given /^the (collection|object) with title "(.*?)" has status (.*?)$/ do |type,t
 end
 
 Given /^the object with pid "(.*?)" is publicly readable$/ do |pid|
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
   object.rightsMetadata.read_access.machine.group = ["public"]
   object.save
 end
 
 Given(/^the object with pid "(.*?)" has a deliverable surrogate file$/) do |pid|
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  generic_file = DRI::GenericFile.find(:is_part_of_ssim => "info:fedora/#{object.pid}").first
+  generic_file = DRI::GenericFile.find(:is_part_of_ssim => "#{object.id}").first
   storage = Storage::S3Interface.new
-  storage.create_bucket(object.pid.sub('dri:', ''))
+  storage.create_bucket(object.id)
   case object.type.first
     when "Sound"
-      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'SAMPLEA.mp3'), generic_file.pid + '_mp3.mp3')
+      storage.store_surrogate(object.id, File.join(cc_fixture_path, 'SAMPLEA.mp3'), generic_file.id + '_mp3.mp3')
     when "Text"
-      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'SAMPLEA.pdf'), generic_file.pid + '_thumbnail.png')
+      storage.store_surrogate(object.id, File.join(cc_fixture_path, 'SAMPLEA.pdf'), generic_file.id + '_thumbnail.png')
     when "Image"
-      storage.store_surrogate(object.pid, File.join(cc_fixture_path, 'sample_image.png'), "#{generic_file.pid}_thumbnail.png")
+      storage.store_surrogate(object.id, File.join(cc_fixture_path, 'sample_image.png'), "#{generic_file.id}_thumbnail.png")
   end
 end
 

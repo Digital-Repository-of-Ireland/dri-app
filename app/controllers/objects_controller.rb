@@ -66,8 +66,8 @@ class ObjectsController < CatalogController
       @object.governing_collection = collection
     end
 
-    set_access_permissions(:batch)
-    updated = @object.update_attributes(params[:batch])
+    #set_access_permissions(:batch)
+    updated = @object.update_attributes(update_params)
 
     #purge params from update action
     params.delete(:batch)
@@ -112,13 +112,13 @@ class ObjectsController < CatalogController
       params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection])
     end
 
-    enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
+    enforce_permissions!("create_digital_object",params[:batch][:governing_collection].id)
     
-    set_access_permissions(:batch)
+    #set_access_permissions(:batch)
 
     @object = DRI::Batch.with_standard :qdc
     @object.depositor = current_user.to_s
-    @object.update_attributes params[:batch]
+    @object.update_attributes create_params
 
     if request.content_type == "multipart/form-data"
       xml = MetadataHelpers.load_xml(params[:metadata_file])
@@ -326,6 +326,16 @@ class ObjectsController < CatalogController
         render :json => response, :status => :accepted }
     end
   end
+
+  private
+
+    def create_params
+      params.require(:batch).permit!
+    end
+
+    def update_params
+      params.require(:batch).permit!
+    end
 
 end
 

@@ -97,7 +97,7 @@ module FacetsHelper
     pid = value
 
     unless pid.blank?
-      solr_query = ActiveFedora::SolrService.construct_query_for_pids([pid])
+      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([pid])
       docs = ActiveFedora::SolrService.query(solr_query)
     else
       return value

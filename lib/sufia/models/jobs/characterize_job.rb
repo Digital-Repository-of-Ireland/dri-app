@@ -16,7 +16,7 @@ class CharacterizeJob < ActiveFedoraPidBasedJob
     # Update the Batch object's Solr index now that the GenericFile
     # has characterization metadata
     if generic_file.batch != nil
-      Sufia.queue.push(UpdateIndexJob.new(generic_file.batch.pid))
+      Sufia.queue.push(UpdateIndexJob.new(generic_file.batch.id))
     end
   end
 

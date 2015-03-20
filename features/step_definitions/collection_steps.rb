@@ -1,8 +1,8 @@
 require 'metadata_helpers'
 
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
-  pid = "dri:c" + @random_pid if (pid == "@random")
-  collection = DRI::Batch.with_standard(:qdc, {:pid => pid})
+  pid = @random_pid if (pid == "@random")
+  collection = DRI::Batch.with_standard(:qdc, {:id => pid})
   collection.title = title ? [title] : [SecureRandom.hex(5)]
   collection.description = [SecureRandom.hex(20)]
   collection.rights = [SecureRandom.hex(20)]
@@ -17,19 +17,19 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
     collection.discover_groups_string="public"
     collection.read_groups_string="registered"
   end
-  collection.save
+  collection.save!
   collection.items.count.should == 0
   collection.governed_items.count.should == 0
 
-  group = UserGroup::Group.new(:name => collection.id.sub(':', '_'),
+  group = UserGroup::Group.new(:name => collection.id,
                               :description => "Default Reader group for collection #{collection.id}")
   group.save
 end
 
 
 Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?/ do |pid, title, desc, type, user|
-  pid = "dri:o" + @random_pid if (pid == "@random")
-  digital_object = DRI::Batch.with_standard(:qdc, {:pid => pid})
+  pid = @random_pid if (pid == "@random")
+  digital_object = DRI::Batch.with_standard(:qdc, {:id => pid})
   digital_object.title = title ? [title] : ["Test Object"]
   digital_object.type = type ? [type] : ["Sound"]
   digital_object.description = desc ? [desc] : ["A test object"]
@@ -45,7 +45,7 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
   digital_object.creation_date = ["2000-01-01"]
 
   MetadataHelpers.checksum_metadata(digital_object)
-  digital_object.save
+  digital_object.save!
 end
 
 Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |type, pid, title, user|
@@ -151,12 +151,13 @@ end
 When /^I enter invalid permissions for a collection$/ do
   steps %{
     And I fill in "batch_manager_users_string" with ""
+    And I fill in "batch_edit_users_string" with ""
   }
 end
 
 When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type "(.*?)"$/ do |object_pid,collection_pid,type|
-  object = ActiveFedora::Base.find(object_pid, {:cast => true})
-  collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
+  object = DRI::Batch.find(object_pid)
+  collection = DRI::Batch.find(collection_pid)
   case type
     when "governing"
       object.title = [SecureRandom.hex(5)]

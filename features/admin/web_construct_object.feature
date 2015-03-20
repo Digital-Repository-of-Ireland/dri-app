@@ -8,16 +8,16 @@ Background:
   Given I am logged in as "user1" in the group "cm" and accept cookies
 
 Scenario: Constructing a valid Digital Object
-  Given a collection with pid "web:xxxx" created by "user1"
-  When I go to the "collection" "show" page for "web:xxxx"
+  Given a collection with pid "xxxx" created by "user1"
+  When I go to the "collection" "show" page for "xxxx"
   And I follow the link to upload XML
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
 
 Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
-  Given a collection with pid "web:xxxx" created by "user1"
-  When I go to the "collection" "show" page for "web:xxxx"
+  Given a collection with pid "xxxx" created by "user1"
+  When I go to the "collection" "show" page for "xxxx"
   And I follow the link to upload XML
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
@@ -30,8 +30,8 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
     | invalid_xml_metadata.xml      | invalid metadata |
 
 Scenario Outline: Constructing a valid Digital Object
-  Given a collection with pid "web:xxxx" created by "user1"
-  When I go to the "collection" "show" page for "web:xxxx"
+  Given a collection with pid "xxxx" created by "user1"
+  When I go to the "collection" "show" page for "xxxx"
   And I follow the link to upload XML
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
@@ -60,8 +60,8 @@ Scenario: Replacing the metadata file of a Digital Object
   Then I should see a success message for updating metadata
 
 Scenario: Constructing a Digital Object using the web form
-  Given a collection with pid "web:xxxx" created by "user1"
-  When I go to the "collection" "show" page for "web:xxxx"
+  Given a collection with pid "xxxx" created by "user1"
+  When I go to the "collection" "show" page for "xxxx"
   And I follow the link to add an object
   When I enter valid metadata
   And I press the button to continue
@@ -69,8 +69,8 @@ Scenario: Constructing a Digital Object using the web form
   And I should see the valid metadata
 
 Scenario: Constructing an invalid Digital Object using the web form
-  Given a collection with pid "web:xxxx" created by "user1"
-  When I go to the "collection" "show" page for "web:xxxx"
+  Given a collection with pid "xxxx" created by "user1"
+  When I go to the "collection" "show" page for "xxxx"
   And I follow the link to add an object
   When I enter invalid metadata
   And I press the button to continue

@@ -77,7 +77,7 @@ class AssetsController < ApplicationController
       create_file(file_upload, @gf.id, datastream, params[:checksum])
 
       @url = url_for :controller=>"assets", :action=>"download", :object_id => params[:object_id], :id=>@gf.id
-      @gf.update_file_reference datastream, :url=>@url, :mimeType=>@mime_type.to_s
+      @gf.update_file_reference datastream, :url=>@url, :mimeType=>@mime_type
 
       begin
         @gf.save
@@ -124,14 +124,14 @@ class AssetsController < ApplicationController
       if @object == nil
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
-        @gf = DRI::GenericFile.new(:pid => Sufia::IdService.mint)
+        @gf = DRI::GenericFile.new(id: Sufia::IdService.mint)
         @gf.batch = @object
         @gf.apply_depositor_metadata(current_user)
 
         create_file(file_upload, @gf.id, datastream, params[:checksum])
 
         @url = url_for :controller=>"assets", :action=>"download", :object_id => @object.id, :id=>@gf.id
-        @gf.update_file_reference datastream, :url=>@url, :mimeType=>@mime_type.to_s
+        @gf.update_file_reference datastream, :url=>@url, :mimeType=>@mime_type
         begin
           @gf.save
 
@@ -265,7 +265,7 @@ class AssetsController < ApplicationController
       dir = local_storage_dir.join(generic_file_id).join(datastream+count.to_s)
 
       @file = LocalFile.new
-      @file.add_file filedata, {:fedora_id => generic_file_id, :ds_id => datastream, :directory => dir.to_s, :version => count, :mime_type => @mime_type.to_s, :checksum => checksum}
+      @file.add_file filedata, {:fedora_id => generic_file_id, :ds_id => datastream, :directory => dir.to_s, :version => count, :mime_type => @mime_type, :checksum => checksum}
 
       begin
         raise Exceptions::InternalError unless @file.save!

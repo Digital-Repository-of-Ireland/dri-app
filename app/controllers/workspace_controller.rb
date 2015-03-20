@@ -8,7 +8,9 @@ class WorkspaceController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
-  include UserGroup::SolrAccessControls
+  #include UserGroup::SolrAccessControls
+  include Hydra::AccessControlsEnforcement
+
   #This method shows the DO if the metadata is open
   #Rather than before where the user had to have read permissions on the object all the time
   def enforce_search_for_show_permissions

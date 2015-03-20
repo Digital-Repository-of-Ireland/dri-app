@@ -16,16 +16,16 @@ class ObjectHistoryController < ApplicationController
 
     @object = retrieve_object!(params[:id])
 
-    @audit_trail = @object.audit_trail
+    @audit_trail = @object.versions
 
     @records = Hash.new
-    @object.audit_trail.records.each do |record|
-      @records[record.component_id] ||= Hash.new
-      @records[record.component_id][record.date] = record.action
-    end
+    #@audit_trail.each do |record|
+    #  @records[record.uri] ||= Hash.new
+    #  @records[record.uri][record.created] = record.
+    #end
 
-    @datastreams = @records.keys
-    @fedora_url = "#{ActiveFedora.config.credentials[:url]}/objects/#{@object.id}/datastreams"
+    #@datastreams = @records.keys
+    #@fedora_url = "#{ActiveFedora.config.credentials[:url]}/objects/#{@object.id}/datastreams"
 
     # Get inherited values
     @institute_manager = get_institute_manager(@object)

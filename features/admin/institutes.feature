@@ -5,9 +5,9 @@ Feature:
 
   Background:
     Given I am logged in as "admin" in the group "admin" and accept cookies
-    And a collection with pid "dri:instcoll" and title "Institute Test Collection"
-    And a Digital Object with pid "dri:instobj" and title "Institute Test Object"
-    And the object with pid "dri:instobj" is in the collection with pid "dri:instcoll"
+    And a collection with pid "instcoll" and title "Institute Test Collection"
+    And a Digital Object with pid "instobj" and title "Institute Test Object"
+    And the object with pid "instobj" is in the collection with pid "instcoll"
 
   Scenario: Adding a new institute
     Given I am on the home page
@@ -42,7 +42,7 @@ Feature:
     Then I should see the image "TestInstitute.png"
 
   Scenario: Viewing associated institutes for a collection
-    Given I have associated the institute "TestInstitute" with the collection with pid "dri:instcoll"
+    Given I have associated the institute "TestInstitute" with the collection with pid "instcoll"
     When I perform a search
     And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"
@@ -50,11 +50,11 @@ Feature:
     
   Scenario: Viewing institutes page
     Given I am on the home page
-    And I have associated the institute "TestInstitute" with the collection with pid "dri:instcoll"
+    And I have associated the institute "TestInstitute" with the collection with pid "instcoll"
     And I follow the link to institutions
     Then I should see the image "TestInstitute.png"
 
   Scenario: viewing associated institutes for an object
-    Given I have associated the institute "TestInstitute" with the collection with pid "dri:instcoll"
-    When I go to the "object" "show" page for "dri:instobj"
+    Given I have associated the institute "TestInstitute" with the collection with pid "instcoll"
+    When I go to the "object" "show" page for "instobj"
     Then I should see the image "TestInstitute.png"

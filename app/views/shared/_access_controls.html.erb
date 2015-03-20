@@ -149,7 +149,7 @@
         }
     }
 
-    function search_field_toggle(){
+    /* function search_field_toggle(){
         var val = $('input[name="'+model_str+'[private_metadata]"]:checked').val();
         if(val=="radio_public" || val=="radio_inherit"){
             discover_group_textbox.val("");
@@ -162,7 +162,7 @@
         }else{
             console.log("Unknown textbox selected: search_field_toggle")
         }
-    }
+    }*/
 
     function read_field_toggle(){
         var val = $('input[name="'+model_str+'[read_groups_string]"]:checked').val();
@@ -316,7 +316,8 @@
 			<%= f.text_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
 
 		</fieldset>
-
+                
+                <% if false %> 
 		<div class="field">
 			<h5><%= t('dri.views.objects.access_controls.master_file') %><i id="dri_view_objects_access_controls_master_file_info" class="fa fa-info-circle"></i></h5><%= t('dri.views.objects.access_controls.master_file_desc') %>
 
@@ -337,7 +338,8 @@
 				</li>
 
 			</ul>
-		</div>
+		</div> 
+                <% end %>
 
 		<div class="field">
 			<h5><%= t('dri.views.objects.access_controls.edit') %></h5>

@@ -8,8 +8,8 @@ module MetadataHelpers
   end
     
   def self.checksum_metadata(object)
-    if object.datastreams.keys.include?("descMetadata")
-      xml = object.datastreams["descMetadata"].content
+    if object.attached_files.has_key?(:descMetadata)
+      xml = object.attached_files[:descMetadata].content
       object.metadata_md5 = Checksum.md5_string(xml)
     end
   end

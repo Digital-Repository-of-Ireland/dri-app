@@ -29,7 +29,7 @@ Given /^an object in collection "(.*?)" with metadata from file "(.*?)"$/ do |co
   col = DRI::Batch.find(collection)
   col.status = 'published'
   col.save
-  obj = DRI::Batch.with_standard(:qdc, {:pid => "dri:9999"})
+  obj = DRI::Batch.with_standard(:qdc, {:id => "9999"})
   tmp_xml = Nokogiri::XML(File.new(File.join(cc_fixture_path, file)).read)
   obj.update_metadata tmp_xml
   obj.status = 'published'

@@ -12,7 +12,7 @@ class CreateBucketJob < ActiveFedoraPidBasedJob
     Rails.logger.info "Creating bucket for object #{bucket_id}"
 
     storage = Storage::S3Interface.new
-    storage.create_bucket(Utils.split_id(bucket_id))
+    storage.create_bucket(bucket_id)
 
     after_create_bucket
   end

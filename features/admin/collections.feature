@@ -41,16 +41,16 @@ Scenario: Constructing a collection with invalid permissions
   Then I should see a failure message for invalid collection
 
 Scenario: Updating a collection with invalid metadata
-  Given a collection with pid "dri:collperm" created by "user1"
-  When I go to the "collection" "show" page for "dri:collperm"
+  Given a collection with pid "collperm" created by "user1"
+  When I go to the "collection" "show" page for "collperm"
   When I click the link to edit a collection
   And I enter invalid metadata for a collection
   And I press the button to save collection changes
   Then I should not see a success message for updating a collection
 
 Scenario: Updating a collection with invalid permissions
-  Given a collection with pid "dri:collperm" created by "user1"
-  When I go to the "collection" "show" page for "dri:collperm"
+  Given a collection with pid "collperm" created by "user1"
+  When I go to the "collection" "show" page for "collperm"
   When I click the link to edit a collection
   And I enter valid metadata for a collection
   And I enter invalid permissions for a collection
@@ -65,10 +65,10 @@ Scenario Outline: Adding a Digital Object in a governing/non-governing collectio
 
   Examples:
     | object_pid | object_title | object_desc | object_type | object_rights | collection_pid | governance_type |
-    | dri:obj1   | Object 1     | Test 1      | Sound       | Test Rights   | dri:coll1      | governing       |
-    | dri:obj2   | Object 2     | Test 2      | Text        | Test Rights   | dri:coll1      | governing       |
-    | dri:obj3   | Object 3     | Test 3      | Sound       | Test Rights   | dri:coll2      | non-governing   |
-    | dri:obj4   | Object 4     | Test 4      | Text        | Test Rights   | dri:coll2      | non-governing   |
+    | obj1   | Object 1     | Test 1      | Sound       | Test Rights   | coll1      | governing       |
+    | obj2   | Object 2     | Test 2      | Text        | Test Rights   | coll1      | governing       |
+    | obj3   | Object 3     | Test 3      | Sound       | Test Rights   | coll2      | non-governing   |
+    | obj4   | Object 4     | Test 4      | Text        | Test Rights   | coll2      | non-governing   |
 
 Scenario Outline: Creating Digital Object in a governing collection using the web forms
   Given a collection with pid "<collection_pid>" created by "user1"
@@ -77,46 +77,46 @@ Scenario Outline: Creating Digital Object in a governing collection using the we
 
   Examples:
     | object_pid | object_title | collection_pid | governance_type |
-    | dri:obj1   | Object 1     | dri:coll2      | governing       |
+    | obj1   | Object 1     | coll2      | governing       |
 
 @review
 Scenario: Adding a Digital Object to a non-governing collection using the web forms
-  Given a Digital Object with pid "dri:obj4" and title "Object 4" created by "user1"
-  And a collection with pid "dri:coll4" created by "user1"
-  When I add the Digital Object "dri:obj4" to the non-governing collection "dri:coll4" using the web forms
-  And I go to the "collection" "show" page for "dri:coll4"
-  Then I should see the Digital Object "dri:obj4" as part of the collection
+  Given a Digital Object with pid "obj4" and title "Object 4" created by "user1"
+  And a collection with pid "coll4" created by "user1"
+  When I add the Digital Object "obj4" to the non-governing collection "coll4" using the web forms
+  And I go to the "collection" "show" page for "coll4"
+  Then I should see the Digital Object "obj4" as part of the collection
 
 @review
 Scenario: Removing a Digital Object from a non-governing collection using the web forms
-  Given a Digital Object with pid "dri:obj5" and title "Object 5" created by "user1"
-  And a collection with pid "dri:coll5" created by "user1"
-  When I add the Digital Object "dri:obj5" to the collection "dri:coll5" as type "non-governing"
-  Then the collection "dri:coll5" should contain the Digital Object "dri:obj5" as type "non-governing"
-  When I go to the "collection" "show" page for "dri:coll5"
-  Then I should see the Digital Object "dri:obj5" as part of the collection
-  When I press the remove from collection button for Digital Object "dri:obj5"
+  Given a Digital Object with pid "obj5" and title "Object 5" created by "user1"
+  And a collection with pid "coll5" created by "user1"
+  When I add the Digital Object "obj5" to the collection "coll5" as type "non-governing"
+  Then the collection "coll5" should contain the Digital Object "obj5" as type "non-governing"
+  When I go to the "collection" "show" page for "coll5"
+  Then I should see the Digital Object "obj5" as part of the collection
+  When I press the remove from collection button for Digital Object "obj5"
   Then I should see a success message for removing an object from a collection
-  When I go to the "collection" "show" page for "dri:coll5"
-  Then I should not see the Digital Object "dri:obj5" as part of the non-governing collection
+  When I go to the "collection" "show" page for "coll5"
+  Then I should not see the Digital Object "obj5" as part of the non-governing collection
 
 Scenario: Deleting a collection as an admin
   Given I am not logged in
   Given I am logged in as "admin" in the group "admin" and accept cookies
-  Given a collection with pid "dri:coll6" created by "user1@user1.com"
-  And the collection with pid "dri:coll6" has status published
-  When I go to the "collection" "show" page for "dri:coll6"
+  Given a collection with pid "coll6" created by "user1@user1.com"
+  And the collection with pid "coll6" has status published
+  When I go to the "collection" "show" page for "coll6"
   And I click the link to edit a collection
-  Then I should see a button to delete collection with id dri:coll6
-  When I press the button to delete collection with id dri:coll6
+  Then I should see a button to delete collection with id coll6
+  When I press the button to delete collection with id coll6
   Then I should see a success message for deleting a collection
 
 Scenario: Non-admin should not be given option to delete
-  Given a collection with pid "dri:coll7" created by "user1"
-  And the collection with pid "dri:coll7" has status published
-  When I go to the "collection" "show" page for "dri:coll7"
+  Given a collection with pid "coll7" created by "user1"
+  And the collection with pid "coll7" has status published
+  When I go to the "collection" "show" page for "coll7"
   And I click the link to edit a collection
-  Then I should not see a button to delete collection with id dri:coll7
+  Then I should not see a button to delete collection with id coll7
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
 #  Given a Digital Object with pid "dri:obj6" and title "Object 6"

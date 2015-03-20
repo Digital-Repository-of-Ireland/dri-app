@@ -9,9 +9,9 @@ Feature:
 
   Background:
     Given I am logged in as "admin" in the group "admin" and accept cookies
-    And a collection with pid "dri:lcoll" and title "Licence Test Collection" created by "admin@admin.com"
-    And a Digital Object with pid "dri:lobj" and title "Licence Test Object"
-    And the object with pid "dri:lobj" is in the collection with pid "dri:lcoll"
+    And a collection with pid "lcoll" and title "Licence Test Collection" created by "admin@admin.com"
+    And a Digital Object with pid "lobj" and title "Licence Test Object"
+    And the object with pid "lobj" is in the collection with pid "lcoll"
 
   Scenario: Navigating to the licences pages
     Given I am on the home page
@@ -72,6 +72,6 @@ Feature:
     Then the "licence" drop-down should contain the option "TestLicence7"
     When I select "TestLicence7" from the selectbox for licence
     And I press the button to save collection changes
-    And I go to the "object" "show" page for "dri:lobj"
+    And I go to the "object" "show" page for "lobj"
     Then I should see "TestLicence7"
 

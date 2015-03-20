@@ -5,14 +5,14 @@ source 'http://rubygems.org'
 
 gem 'rails','~> 4.1.0'
 
-gem 'blacklight', "5.7.2"
-gem 'hydra-head', "7.2.2"
-gem 'sufia-models', "4.1.0"
+gem 'blacklight', "5.9.3"
+gem 'hydra-head', "9.0.1"
+gem 'sufia-models', "6.0.0.rc4"
 
 gem 'paper_trail', '~> 3.0.6'
 
-gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'develop'
-gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'develop'
+gem 'dri_data_models', :path => "/Users/skenny/Development/dri/dri-data-models" #:git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'hydra9'
+gem 'user_group', :path => "/Users/skenny/Development/dri/dri-user-group" #:git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'hydra9'
 
 gem 'rails_config'
 gem 'sqlite3'

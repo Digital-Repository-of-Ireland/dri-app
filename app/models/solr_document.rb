@@ -33,4 +33,14 @@ class SolrDocument
                          :language => "language_facet",
                          :format => "format"
                          )
+
+  def collection_id
+    id = nil
+    if self[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
+      id = self[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)][0]
+    end
+
+    id
+  end
+
 end

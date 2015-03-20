@@ -29,8 +29,8 @@ Scenario: Constructing a Collection using the web form should set default permis
   And the "batch_manager_users_string" field should contain "user1@user1.com"
 
 Scenario Outline: Constructing a Digital Object using the web form should set default permissions
-  Given a collection with pid "web:perm1" created by "user1"
-  When I go to the "collection" "show" page for "web:perm1"
+  Given a collection with pid "perm1" created by "user1"
+  When I go to the "collection" "show" page for "perm1"
   And I follow the link to add an object
   When I enter valid "<object_type>" metadata
   And I press the button to continue
@@ -45,8 +45,8 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
     | Sound       |
 
 Scenario Outline: Constructing a Digital Object using XML upload should set default permissions
-  Given a collection with pid "web:perm2" created by "user1"
-  When I go to the "collection" "show" page for "web:perm2"
+  Given a collection with pid "perm2" created by "user1"
+  When I go to the "collection" "show" page for "perm2"
   And I follow the link to upload XML
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
@@ -61,14 +61,14 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
 
 @wip
 Scenario Outline: Collection visibility
-  Given a collection with pid "dri:coll8" and title "Access Test" created by "test"
+  Given a collection with pid "coll8" and title "Access Test" created by "test"
   Given I am not logged in
   Given I am logged in as "user2" and accept cookies
   And I am on the new Digital Object page
-  Then the "ingest collection" drop-down should not contain the option "dri:coll8"
-  When "user2@user2.com" has been granted "<permission>" permissions on "dri:coll8"
+  Then the "ingest collection" drop-down should not contain the option "coll8"
+  When "user2@user2.com" has been granted "<permission>" permissions on "coll8"
   And I am on the new Digital Object page
-  Then the "ingest collection" drop-down should contain the option "dri:coll8"
+  Then the "ingest collection" drop-down should contain the option "coll8"
 
   Examples:
     | permission |

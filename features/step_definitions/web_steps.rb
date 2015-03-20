@@ -6,7 +6,7 @@ end
 World(WithinHelpers)
 
 Given /^"(.*?)" has created a Digital Object$/ do |user|
-  pid = "dri:#{rand.to_s[2..11]}"
+  pid = "#{rand.to_s[2..11]}"
   steps %{
     Given a collection with pid "#{pid}" created by "#{user}"
     And I have created an object with metadata "valid_metadata.xml" in the collection with pid "#{pid}"
