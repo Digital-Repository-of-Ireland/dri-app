@@ -117,6 +117,19 @@ class CatalogController < ApplicationController
 
     config.add_facet_field solr_name('is_collection', :facetable), :label => 'is_collection', :helper_method => :is_collection, :show => false
 
+    config.add_facet_field 'creation_date_tesim', :label => 'Publication Year', :query => {
+      :last_5_years => { :label => 'Last 5 Years', :fq => "[#{Time.now.year-5} TO *]"}
+    } 
+
+    #config.add_facet_field 'dateRangeField', :label => 'Date Range'#, :helper_method => :display_date_range
+    #:query => {
+    #  :last_5_years => { :label => 'Last 5 Years', :fq => "[#{Time.now.year-5} TO *]"},
+    #}
+
+    #config.add_facet_field solr_name('creation_date', :facetable), :label => 'Creation Date', query: {
+    #  a_to_n: { label: 'A-N', q: 'dateRangeField:["-9999 #{}" TO "#{} 9999"]' }
+    #} 
+
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.
@@ -160,7 +173,13 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'rights'
-    config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), :label => 'status'
+    config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), :label => 'status' 
+    config.add_show_field 'cdateRange', :label => 'Creation Date Range' 
+    config.add_show_field 'pdateRange', :label => 'Pubished Date Range' 
+    config.add_show_field 'sdateRange', :label => 'Subject Date Range' 
+    #config.add_show_field solr_name('cdate_range', :stored_searchable, type: :string), :label => 'Creation Date Range' 
+    #config.add_show_field solr_name('pdate_range', :stored_searchable, type: :string), :label => 'Published Date Range' 
+    #config.add_show_field solr_name('sdate_range', :stored_searchable, type: :string), :label => 'Subject Date Range' 
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
