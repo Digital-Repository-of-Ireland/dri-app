@@ -206,6 +206,11 @@ en:
           values:
             collections: Collections
             no_collections: "No collections"
+          dates:
+            date_range: "Date Range"
+            date_range_from: "Year From"
+            date_range_to: "Year To"
+            date_set: Set
         forms:
           all_objects_in_collection: "All Objects in this Collection"
           audio:
