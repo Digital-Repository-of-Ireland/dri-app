@@ -116,12 +116,17 @@ class ObjectsController < CatalogController
     
     set_access_permissions(:batch)
 
-    @object = DRI::Batch.with_standard :qdc
+    # TODO Review this - added as MODS objects can also be added now
+    xml = MetadataHelpers.load_xml(params[:metadata_file])
+    standard = MetadataHelpers.get_metadata_standard_from_xml xml
+
+    @object = DRI::Batch.with_standard standard
     @object.depositor = current_user.to_s
     @object.update_attributes params[:batch]
 
     if request.content_type == "multipart/form-data"
-      xml = MetadataHelpers.load_xml(params[:metadata_file])
+      # FIXME commented for now as XML has already been loaded before
+      # xml = MetadataHelpers.load_xml(params[:metadata_file])
       MetadataHelpers.set_metadata_datastream(@object, xml)
     end
 
