@@ -160,7 +160,13 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'rights'
-    config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), :label => 'status'
+    config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), :label => 'status' 
+    config.add_show_field 'cdateRange', :label => 'Creation Date Range' 
+    config.add_show_field 'pdateRange', :label => 'Pubished Date Range' 
+    config.add_show_field 'sdateRange', :label => 'Subject Date Range' 
+    #config.add_show_field solr_name('cdate_range', :stored_searchable, type: :string), :label => 'Creation Date Range' 
+    #config.add_show_field solr_name('pdate_range', :stored_searchable, type: :string), :label => 'Published Date Range' 
+    #config.add_show_field solr_name('sdate_range', :stored_searchable, type: :string), :label => 'Subject Date Range' 
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

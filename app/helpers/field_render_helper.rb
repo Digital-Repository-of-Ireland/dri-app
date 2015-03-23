@@ -38,7 +38,11 @@ module FieldRenderHelper
     indexed_value = indexed_value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x}
 
     last_index = args[:field].rindex('_')
-    field = args[:field][0..last_index-1]
+    if !last_index.nil?
+      field = args[:field][0..last_index-1]
+    else
+      field = args[:field]
+    end
 
     # if (args[:field] and args[:field].match(/_facet$/))
     if (args[:field] and (args[:field][0,5] == "role_" or blacklight_config.facet_fields[ActiveFedora::SolrService.solr_name(field, :facetable)]))
