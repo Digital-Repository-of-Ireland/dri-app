@@ -117,19 +117,6 @@ class CatalogController < ApplicationController
 
     config.add_facet_field solr_name('is_collection', :facetable), :label => 'is_collection', :helper_method => :is_collection, :show => false
 
-    config.add_facet_field 'creation_date_tesim', :label => 'Publication Year', :query => {
-      :last_5_years => { :label => 'Last 5 Years', :fq => "[#{Time.now.year-5} TO *]"}
-    } 
-
-    #config.add_facet_field 'dateRangeField', :label => 'Date Range'#, :helper_method => :display_date_range
-    #:query => {
-    #  :last_5_years => { :label => 'Last 5 Years', :fq => "[#{Time.now.year-5} TO *]"},
-    #}
-
-    #config.add_facet_field solr_name('creation_date', :facetable), :label => 'Creation Date', query: {
-    #  a_to_n: { label: 'A-N', q: 'dateRangeField:["-9999 #{}" TO "#{} 9999"]' }
-    #} 
-
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.
