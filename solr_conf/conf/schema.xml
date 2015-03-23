@@ -172,9 +172,9 @@
       Another way to map multiple source fields to the same
       destination field is to use the dynamic field syntax.
       copyField also supports a maxChars to copy setting.  -->
-    <copyField source="cdateRange" dest="cdate_range_tesim"/>
+    <!-- <copyField source="cdateRange" dest="cdate_range_tesim"/>
     <copyField source="pdateRange" dest="pdate_range_tesim"/>
-    <copyField source="sdateRange" dest="sdate_range_tesim"/>
+    <copyField source="sdateRange" dest="sdate_range_tesim"/> -->
     
     <!-- <copyField source="*_tesim" dest="all_text_timv" maxChars="3000"/> -->
    <copyField source="title_tesim" dest="title_unstem_search"/>

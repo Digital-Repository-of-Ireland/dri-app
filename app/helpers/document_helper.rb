@@ -109,9 +109,11 @@ module DocumentHelper
       solr_fields_array = *(DRI::Vocabulary::qdcRelationshipTypes.map { |s| s.prepend("ext_related_items_ids_").to_sym})
     end
 
-    solr_fields_array.each do |elem|
-      if (!document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].nil? && !document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].empty?)
-        html_array = html_array.to_a.push("<p><a href='#{document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].first}'>#{document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].first}</a></p>".html_safe)
+    unless solr_fields_array.nil?
+      solr_fields_array.each do |elem|
+        if (!document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].nil? && !document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].empty?)
+          html_array = html_array.to_a.push("<p><a href='#{document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].first}'>#{document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].first}</a></p>".html_safe)
+        end
       end
     end
     
