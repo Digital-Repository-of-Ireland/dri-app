@@ -57,7 +57,7 @@ module MetadataHelpers
       result = "DRI::Metadata::Mods"
     elsif ((xml.internal_subset != nil && xml.internal_subset.name == 'ead') || namespace.has_value?("urn:isbn:1-931666-22-9"))
       result = "DRI::Metadata::EncodedArchivalDescription"
-    elsif ['c', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10', 'c11', 'c12'].include? root_name
+    elsif ['c', 'c01', 'c02', 'c03', 'c04', 'c05', 'c06', 'c07', 'c08', 'c09', 'c10', 'c11', 'c12'].include? root_name
       result = "DRI::Metadata::EncodedArchivalDescriptionComponent"
     elsif namespace.has_value?("http://www.loc.gov/MARC21/slim")
       result = "DRI::Metadata::Marc"
@@ -70,16 +70,16 @@ module MetadataHelpers
     metadata_class = get_metadata_class_from_xml xml_text
 
     case metadata_class
-      when "DRI::Metadata::QualifiedDublinCore"
-        :qdc
-      when "DRI::Metadata::Mods"
-        :mods
-      when "DRI::Metadata::EncodedArchivalDescription"
-        :ead_collection
-      when "DRI::Metadata::EncodedArchivalDescriptionComponent"
-        :ead_component
-      when "DRI::Metadata::Marc"
-        :marc
+    when "DRI::Metadata::QualifiedDublinCore"
+      :qdc
+    when "DRI::Metadata::Mods"
+      :mods
+    when "DRI::Metadata::EncodedArchivalDescription"
+      :ead_collection
+    when "DRI::Metadata::EncodedArchivalDescriptionComponent"
+      :ead_component
+    when "DRI::Metadata::Marc"
+      :marc
     end
   end
 
