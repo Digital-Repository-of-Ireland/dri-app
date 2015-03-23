@@ -158,15 +158,24 @@
 
     <!-- you must define copyField source and dest fields explicity or schemaBrowser doesn't work -->
     <field name="all_text_timv" type="text" stored="false" indexed="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true"/>
-
+    
+    <!-- Creation date dateRange field -->
+    <field name="cdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
+    <!-- Published date dateRange field -->
+    <field name="pdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
+    <!-- Subject (temporal) dateRange field -->
+    <field name="sdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
 
   </fields>
-
+  
   <!-- Above, multiple source fields are copied to the [text] field.
       Another way to map multiple source fields to the same
       destination field is to use the dynamic field syntax.
       copyField also supports a maxChars to copy setting.  -->
-
+    <copyField source="cdateRange" dest="cdate_range_tesim"/>
+    <copyField source="pdateRange" dest="pdate_range_tesim"/>
+    <copyField source="sdateRange" dest="sdate_range_tesim"/>
+    
     <!-- <copyField source="*_tesim" dest="all_text_timv" maxChars="3000"/> -->
    <copyField source="title_tesim" dest="title_unstem_search"/>
    <copyField source="author_tesim" dest="author_unstem_search"/>
@@ -327,7 +336,15 @@
       </analyzer>
     </fieldType>
    
-    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" /> 
+    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
+
+    <!-- dateRange field will be updated to the DateRangeField Solr field type that will be available in Solr 5 -->
+    <fieldType name="dateRange" class="solr.SpatialRecursivePrefixTreeFieldType"
+      geo="false"
+      worldBounds="-9999 -9999 9999 9999"
+      distErrPct="0"
+      maxDistErr="1"
+      units="degrees"/>
   </types>
   
 </schema>
