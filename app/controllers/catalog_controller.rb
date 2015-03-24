@@ -293,7 +293,7 @@ class CatalogController < ApplicationController
           end_date = start_date
         end
         # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits 
-        solr_parameters[:fq] << "+sdateRange:[\"-9999 #{(start_date[0,4].to_i - 0.5).to_s}\" TO \"#{(end_date[0,4].to_i + 0.5).to_s} 9999\"]"
+        solr_parameters[:fq][0] = "sdateRange:[\"-9999 #{(start_date[0,4].to_i - 0.5).to_s}\" TO \"#{(end_date[0,4].to_i + 0.5).to_s} 9999\"]"
       end
     end
   end
