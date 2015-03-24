@@ -82,7 +82,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('geographical_coverage', :facetable), :helper_method => :parse_location, :limit => 20
     #config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
     #config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
-    config.add_facet_field solr_name('temporal_coverage', :facetable), :helper_method => :parse_era, :limit => 20
+    config.add_facet_field solr_name('temporal_coverage', :facetable), :helper_method => :parse_era, :limit => 20, :show => false
     #config.add_facet_field solr_name('temporal_coverage_gle', :facetable), :label => 'Subject (Era) (in Irish)', :limit => 20
     #config.add_facet_field solr_name('temporal_coverage_eng', :facetable), :label => 'Subject (Era) (in English)', :limit => 20
     #config.add_facet_field solr_name('name_coverage', :facetable), :label => 'Subject (Name)', :limit => 20
@@ -164,9 +164,6 @@ class CatalogController < ApplicationController
     config.add_show_field 'cdateRange', :label => 'Creation Date Range' 
     config.add_show_field 'pdateRange', :label => 'Pubished Date Range' 
     config.add_show_field 'sdateRange', :label => 'Subject Date Range' 
-    #config.add_show_field solr_name('cdate_range', :stored_searchable, type: :string), :label => 'Creation Date Range' 
-    #config.add_show_field solr_name('pdate_range', :stored_searchable, type: :string), :label => 'Published Date Range' 
-    #config.add_show_field solr_name('sdate_range', :stored_searchable, type: :string), :label => 'Subject Date Range' 
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
