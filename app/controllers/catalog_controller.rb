@@ -19,7 +19,7 @@ class CatalogController < ApplicationController
   # This applies appropriate access controls to all solr queries
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  CatalogController.solr_search_params_logic += [:exclude_unwanted_models]
+  CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :subject_temporal_filter]
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
   def rows_per_page
@@ -146,7 +146,7 @@ class CatalogController < ApplicationController
     end
     # config.add_show_field solr_name('bioghist', :stored_searchable, type: :string), :label => 'bioghist'
     config.add_show_field solr_name('contributor', :stored_searchable, type: :string), :label => 'contributors'
-    config.add_show_field solr_name('creation_date', :stored_searchable), :label => 'creation_date', :date => true
+    config.add_show_field solr_name('creation_date', :stored_searchable), :label => 'creation_date', :date => true, :helper_method => :parse_era
     config.add_show_field solr_name('publisher', :stored_searchable), :label => 'publishers'
     config.add_show_field solr_name('published_date', :stored_searchable), :label => 'published_date', :date => true
     config.add_show_field solr_name('subject', :stored_searchable, type: :string), :label => 'subjects'
@@ -263,6 +263,38 @@ class CatalogController < ApplicationController
     else
       solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:false"
       solr_parameters[:fq] << "+#{Solrizer.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
+    end
+  end
+
+  # If querying temporal_coverage, then query the Solr date range field for Subject(Temporal)
+  # (sdateRange) as opposed to querying by temporal_coverage String
+  # Query: sdateRange:["-9999 #{start_date_year - 0.5}" TO "#{end_date_year + 0.5} 9999\"]
+  # the Solr field for subject temporal date ranges stores a pair of (start_year end_year)
+  # the lower and upper boundaries for this field are -9999 and 9999 respectively, to cover
+  # BC Years - this will be properly documented!!
+  #
+  def subject_temporal_filter(solr_parameters, user_parameters)
+    # Temporal facet filter query contains in :fq, as the first parameter the string value
+    # for the field temporal_coveage_sim
+    if solr_parameters[:fq].first.include?("temporal_coverage_sim")
+      solr_parameters[:fq] ||= []
+      start_date = end_date = ""
+
+      solr_parameters[:fq].first.split(/\s*;\s*/).each do |component|
+        (k,v) = component.split(/\s*=\s*/)
+        if k.eql?('start')
+          start_date = v
+        elsif k.eql?('end')
+          end_date = v
+        end
+      end
+      unless start_date == "" # If date is formatted in DCMI Period, then use the date range Solr field query
+        if end_date == ""
+          end_date = start_date
+        end
+        # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits 
+        solr_parameters[:fq] << "+sdateRange:[\"-9999 #{(start_date[0,4].to_i - 0.5).to_s}\" TO \"#{(end_date[0,4].to_i + 0.5).to_s} 9999\"]"
+      end
     end
   end
 
