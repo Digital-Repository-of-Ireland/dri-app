@@ -113,12 +113,14 @@ class ObjectsController < CatalogController
     end
 
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].id)
-    
+   
     #set_access_permissions(:batch)
 
     @object = DRI::Batch.with_standard :qdc
     @object.depositor = current_user.to_s
     @object.update_attributes create_params
+
+    @object.governing_collection = params[:batch][:governing_collection]
 
     if request.content_type == "multipart/form-data"
       xml = MetadataHelpers.load_xml(params[:metadata_file])
@@ -218,7 +220,7 @@ class ObjectsController < CatalogController
 
           # Get files
           if can? :read, doc
-            files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{doc.id}\""
+            files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
             query = Solr::Query.new(files_query)
 
             while query.has_more?

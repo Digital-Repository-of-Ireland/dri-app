@@ -47,8 +47,8 @@ module ApplicationHelper
   end
 
   def root_collection_solr( doc )
-    if doc[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym]
-      id = doc[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
+    if doc[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym]
+      id = doc[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
     end
@@ -76,8 +76,8 @@ module ApplicationHelper
   def search_image ( document, file_document, image_name = "crop16_9_width_200_thumbnail" )
     path = nil
 
-    unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
-      format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
+    unless file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].blank?
+      format = file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].first
 
       case format
       when "image"
@@ -94,8 +94,8 @@ module ApplicationHelper
     path = asset_url "no_image.png"
 
     unless file_document.nil?
-      unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
-        format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
+      unless file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].blank?
+        format = file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].first
 
         path = asset_url "dri/formats/#{format}.png"
 
@@ -111,12 +111,12 @@ module ApplicationHelper
   def cover_image ( document )
     path = nil
 
-    if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-        path = document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-    elsif !document[Solrizer.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
+    if document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
+        path = document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
+    elsif !document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
       collection = root_collection_solr(document)
-      if collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)].first
-        path = collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)].first
+      if collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)] && collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
+        path = collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
       end
     end
 
@@ -124,7 +124,7 @@ module ApplicationHelper
   end
 
   def icon_path ( document )
-    format = document[Solrizer.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
+    format = document[ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
 
     if (format != 'image' && format != 'audio' && format != 'text' && format != 'video' && format != 'mixed_types')
       "no_image.png"
@@ -134,7 +134,7 @@ module ApplicationHelper
   end
 
   def reader_group_name( document )
-    id = document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
+    id = document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
     name = id.sub(':','_')
     return name
   end
@@ -143,37 +143,37 @@ module ApplicationHelper
     solr_query = collection_children_query( collection_id )
 
     unless signed_in? && can?(:edit, collection_id)
-      solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
+      solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
     end
 
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
   def count_immediate_children_in_collection collection_id
-    solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{collection_id}\""
+    solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{collection_id}\""
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
   def collection_children_query ( collection_id )
-    "(#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
+    "(#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
     "\" AND is_collection_sim:false" +
-    " OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
+    " OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
   end
 
   def count_items_in_collection_by_type_and_status( collection_id, type, status )
-    solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:" + status + " AND (#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
-    "\" OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
-    "#{Solrizer.solr_name('file_type_display', :stored_searchable, type: :string)}:"+ type
+    solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:" + status + " AND (#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
+    "\" OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
+    "#{ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string)}:"+ type
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
   def get_query_collections_by_institute( institute )
     solr_query = ""
     if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
-      solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
+      solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
     end
-    solr_query = solr_query + "#{Solrizer.solr_name('institute', :stored_searchable, type: :string)}:" + institute + " AND " +
-        "#{Solrizer.solr_name('type', :stored_searchable, type: :string)}:Collection"
+    solr_query = solr_query + "#{ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)}:" + institute + " AND " +
+        "#{ActiveFedora::SolrQueryBuilder.solr_name('type', :stored_searchable, type: :string)}:Collection"
     return solr_query
   end
 
@@ -190,11 +190,11 @@ module ApplicationHelper
   end
 
   def count_items_in_collection_by_type(collection_id, type)
-    solr_query = "(#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
-        "\" OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
-        "#{Solrizer.solr_name('file_type_display', :stored_searchable, type: :string)}:"+ type
+    solr_query = "(#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
+        "\" OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
+        "#{ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string)}:"+ type
     unless signed_in? && can?(:edit, collection_id)
-      solr_query = "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
+      solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
     end
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
@@ -224,7 +224,7 @@ module ApplicationHelper
 
   # Called from grid view
   def get_cover_image( document )
-    files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{document[:id]}\""
+    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\""
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
@@ -238,15 +238,15 @@ module ApplicationHelper
   end
 
   def get_licence( document )
-    if !document[Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym].blank?
-      @licence = Licence.where(:name => document[Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym]).first
+    if !document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym].blank?
+      @licence = Licence.where(:name => document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym]).first
       if (@licence == nil)
-        @licence = document[Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym]
+        @licence = document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym]
       end
-    elsif !document[Solrizer.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
+    elsif !document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
       collection = root_collection_solr(document)
-      if !collection[Solrizer.solr_name('licence', :stored_searchable, type: :string)].blank?
-        @licence = Licence.where(:name => collection[Solrizer.solr_name('licence', :stored_searchable, type: :string)]).first
+      if !collection[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string)].blank?
+        @licence = Licence.where(:name => collection[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string)]).first
       end
     end
   end

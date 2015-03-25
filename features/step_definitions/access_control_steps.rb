@@ -31,7 +31,7 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
   gf.update_file_reference "content", :url=>url, :mimeType=>"audio/mpeg3"
   gf.save
 
-  object.rightsMetadata.masterfile.machine.integer = mapping[permission].to_s
+  #object.rightsMetadata.masterfile.machine.integer = mapping[permission].to_s
   object.save
 end
 
@@ -63,8 +63,8 @@ Given /^the object with (pid|title) "(.*?)" has no read access for my user$/ do 
 
   pid = "o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  object.rightsMetadata.read_access.machine.person = ["another@user.com"]
-  object.rightsMetadata.read_access.machine.group = []
+  object.read_users_string = "another@user.com"
+  object.read_groups_string = ""
   object.save
   object.reload
 end
@@ -72,7 +72,7 @@ end
 Given /^the object with pid "(.*?)" has no read access for my group$/ do |pid|
   pid = "o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  object.rightsMetadata.read_access.machine.group = ["notmygroup"]
+  object.read_groups_string = "notmygroup"
   object.save
 end
 
@@ -85,15 +85,15 @@ Given /^the object with (pid|title) "(.*?)" is restricted to the reader group$/ 
   end
 
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  object.rightsMetadata.read_access.machine.group = pid
+  object.read_groups_string = pid
   object.save
 end
 
 Given /^the object with pid "(.*?)" has public discover access and metadata$/ do |pid|
   pid = "o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  object.rightsMetadata.discover_access.machine.group = ["public"]
-  object.rightsMetadata.metadata.machine.integer = "0"
+  object.discover_groups_string = "public"
+  #object.rightsMetadata.metadata.machine.integer = "0"
   object.save
 end
 
@@ -111,9 +111,9 @@ Given /^the object with pid "(.*?)" has permission "(.*?)" for "(.*?)" "(.*?)"$/
   case entity
     when 'user'
       email = "#{id}@#{id}.com"
-        fedora_document.rightsMetadata.read_access.machine.person = [email]
+        fedora_document.read_users_string = email
     when 'group'
-        fedora_document.rightsMetadata.read_access.machine.group = id
+        fedora_document.read_groups_string = id
   end
   fedora_document.save
 end
@@ -145,14 +145,14 @@ end
 Given /^the object with pid "(.*?)" is publicly readable$/ do |pid|
   pid = "o" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  object.rightsMetadata.read_access.machine.group = ["public"]
+  object.read_groups_string = "public"
   object.save
 end
 
 Given(/^the object with pid "(.*?)" has a deliverable surrogate file$/) do |pid|
   pid = "" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
-  generic_file = DRI::GenericFile.find(:is_part_of_ssim => "#{object.id}").first
+  generic_file = DRI::GenericFile.find(:isPartOf_ssim => "#{object.id}").first
   storage = Storage::S3Interface.new
   storage.create_bucket(object.id)
   case object.type.first

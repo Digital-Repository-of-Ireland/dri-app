@@ -10,6 +10,10 @@ class AssetsController < ApplicationController
     Rails.root.join(Settings.dri.files)
   end
 
+  def actor
+    @actor ||= Sufia::GenericFile::Actor.new(@generic_file, current_user)
+  end
+
   def show
 
     datastream = params[:datastream].presence || "content"
@@ -37,17 +41,17 @@ class AssetsController < ApplicationController
     enforce_permissions!("show_master", params[:object_id]) if (datastream == "content")
     enforce_permissions!("edit", params[:object_id]) if params[:version].present?
 
-    @gf = retrieve_object! params[:id]
+    @generic_file = retrieve_object! params[:id]
 
-    unless @gf.nil?
+    unless @generic_file.nil?
 
       if (params[:version].present?)
         @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d AND version = :v",
-                                            { :f => @gf.id, :d => datastream, :v => params[:version] },
+                                            { :f => @generic_file.id, :d => datastream, :v => params[:version] },
                                             :limit => 1)
       else
         @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
-                                            { :f => @gf.id, :d => datastream }).order("version DESC").limit(1).to_a
+                                            { :f => @generic_file.id, :d => datastream }).order("version DESC").limit(1).to_a
       end
 
       unless @local_file_info.empty?
@@ -72,25 +76,21 @@ class AssetsController < ApplicationController
     file_upload = upload_from_params
 
     if datastream.eql?("content")
-      @gf = retrieve_object! params[:id]
+      @generic_file = retrieve_object! params[:id]
 
-      create_file(file_upload, @gf.id, datastream, params[:checksum])
+      create_file(file_upload, @generic_file.id, datastream, params[:checksum])
 
-      @url = url_for :controller=>"assets", :action=>"download", :object_id => params[:object_id], :id=>@gf.id
-      @gf.update_file_reference datastream, :url=>@url, :mimeType=>@mime_type
-
-      begin
-        @gf.save
-        Sufia.queue.push(CharacterizeJob.new(@gf.id))
+      if actor.update_content(file_upload, datastream)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
-      rescue Exception => e
-        flash[:alert] = t('dri.flash.alert.error_saving_file', :error => e.message)
-        @warnings = t('dri.flash.alert.error_saving_file', :error => e.message)
-        logger.error "Error saving file: #{e.message}"
+      else 
+        message = @generic_file.errors.full_messages.join(', ')
+        flash[:alert] = t('dri.flash.alert.error_saving_file', :error => message)
+        @warnings = t('dri.flash.alert.error_saving_file', :error => message)
+        logger.error "Error saving file: #{message}"
       end
 
       respond_to do |format|
-        format.html {redirect_to object_file_url(params[:object_id], @gf.id)}
+        format.html {redirect_to object_file_url(params[:object_id], @generic_file.id)}
         format.json  {
           if  !@warnings.nil?
             response = { :checksum => @file.checksum, :warning => @warnings }
@@ -124,24 +124,19 @@ class AssetsController < ApplicationController
       if @object == nil
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
-        @gf = DRI::GenericFile.new(id: Sufia::IdService.mint)
-        @gf.batch = @object
-        @gf.apply_depositor_metadata(current_user)
+        @generic_file = DRI::GenericFile.new(id: Sufia::IdService.mint)
+        @generic_file.batch = @object
+        @generic_file.apply_depositor_metadata(current_user)
 
-        create_file(file_upload, @gf.id, datastream, params[:checksum])
-
-        @url = url_for :controller=>"assets", :action=>"download", :object_id => @object.id, :id=>@gf.id
-        @gf.update_file_reference datastream, :url=>@url, :mimeType=>@mime_type
-        begin
-          @gf.save
-
-          Sufia.queue.push(CharacterizeJob.new(@gf.pid))
-
+        create_file(file_upload, @generic_file.id, datastream, params[:checksum])
+        
+        if actor.create_content(file_upload, file_upload.original_filename, datastream, file_upload.content_type)
           flash[:notice] = t('dri.flash.notice.file_uploaded')
-        rescue Exception => e
-          flash[:alert] = t('dri.flash.alert.error_saving_file', :error => e.message)
-          @warnings = t('dri.flash.alert.error_saving_file', :error => e.message)
-          logger.error "Error saving file: #{e.message}"
+        else
+          message = @generic_file.errors.full_messages.join(', ')
+          flash[:alert] = t('dri.flash.alert.error_saving_file', :error => message)
+          @warnings = t('dri.flash.alert.error_saving_file', :error => message)
+          logger.error "Error saving file: #{message}"
         end
 
         respond_to do |format|
@@ -172,7 +167,7 @@ class AssetsController < ApplicationController
 
     if params[:objects].present?
 
-      solr_query = ActiveFedora::SolrService.construct_query_for_pids(params[:objects].map{|o| o.values.first})
+      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(params[:objects].map{|o| o.values.first})
       result_docs = Solr::Query.new(solr_query)
 
       storage = Storage::S3Interface.new
@@ -184,7 +179,7 @@ class AssetsController < ApplicationController
         doc.each do |r|
           doc = SolrDocument.new(r)
 
-          files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{doc.id}\""
+          files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
           query = Solr::Query.new(files_query)
 
           item = {}

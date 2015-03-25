@@ -6,7 +6,7 @@ class SurrogatesController < ApplicationController
 
       @surrogates = {}
 
-      result_docs = solr_query ( ActiveFedora::SolrService.construct_query_for_pids([params[:id]]) )
+      result_docs = solr_query ( ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]) )
 
       if result_docs.empty?
         raise Exceptions::NotFound
@@ -15,9 +15,9 @@ class SurrogatesController < ApplicationController
       result_docs.each do | r |
         doc = SolrDocument.new(r)
 
-        if doc[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].present? && doc[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first.eql?("collection")
+        if doc[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].present? && doc[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].first.eql?("collection")
 
-          query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{doc.id}\"")
+          query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{doc.id}\"")
           while query.has_more?
             objects = query.pop
 
@@ -47,7 +47,7 @@ class SurrogatesController < ApplicationController
   def update
     unless params[:id].blank?
       enforce_permissions!("edit",params[:id])
-      result_docs = solr_query ( ActiveFedora::SolrService.construct_query_for_pids([params[:id]]) )
+      result_docs = solr_query ( ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]) )
 
       if result_docs.empty?
         raise Exceptions::NotFound
@@ -56,7 +56,7 @@ class SurrogatesController < ApplicationController
       result_docs.each do | r |
         doc = SolrDocument.new(r)
 
-        if doc[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].present? && doc[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first.eql?("collection")
+        if doc[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].present? && doc[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].first.eql?("collection")
           # Changed query to work with collections that have sub-collectionc (e.g. EAD) - ancestor_id rather than collection_id field
           query = Solr::Query.new("#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
           while query.has_more?
@@ -95,7 +95,7 @@ class SurrogatesController < ApplicationController
     def generate_surrogates(object_id)
       enforce_permissions!("edit", object_id)
 
-      query = Solr::Query.new("#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{object_id}\"")
+      query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object_id}\"")
 
       while query.has_more?
 
@@ -123,7 +123,7 @@ class SurrogatesController < ApplicationController
       if can? :read, object
         storage = Storage::S3Interface.new
 
-        query = Solr::Query.new("#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{object.id}\"")
+        query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object.id}\"")
 
         while query.has_more?
           files = query.pop

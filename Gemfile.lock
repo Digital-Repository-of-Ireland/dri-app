@@ -14,6 +14,23 @@ GIT
   specs:
     videojs_rails (4.11.4)
 
+GIT
+  remote: https://github.com/projecthydra/active_fedora.git
+  revision: c0885c2d3ea8ccf61ab8236c40d77fd369ea0ed9
+  ref: c0885c2d3ea8ccf61ab8236c40d77fd369ea0ed9
+  specs:
+    active-fedora (9.0.4)
+      active-triples (~> 0.6.0)
+      activesupport (>= 4.1.0)
+      deprecation
+      ldp (~> 0.2.1)
+      linkeddata
+      nom-xml (>= 0.5.1)
+      om (~> 3.1)
+      rdf-ldp
+      rdf-rdfxml (~> 1.1.0)
+      rsolr (~> 1.0.10)
+
 PATH
   remote: /Users/skenny/Development/dri/dri-data-models
   specs:
@@ -57,17 +74,6 @@ GEM
       activesupport (= 4.1.9)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-    active-fedora (9.0.4)
-      active-triples (~> 0.6.0)
-      activesupport (>= 4.1.0)
-      deprecation
-      ldp (~> 0.2.1)
-      linkeddata
-      nom-xml (>= 0.5.1)
-      om (~> 3.1)
-      rdf-ldp
-      rdf-rdfxml (~> 1.1.0)
-      rsolr (~> 1.0.10)
     active-triples (0.6.1)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -179,7 +185,7 @@ GEM
       nokogiri (~> 1.5)
       rails (>= 3, < 5)
     curb (0.8.6)
-    daemons (1.2.1)
+    daemons (1.2.2)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
     deprecation (0.1.0)
@@ -196,7 +202,7 @@ GEM
     devise-i18n-views (0.3.4)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    ebnf (0.3.6)
+    ebnf (0.3.7)
       haml (~> 4.0)
       rdf (~> 1.1)
       sxp (~> 0.1, >= 0.1.3)
@@ -452,7 +458,7 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    rdf (1.1.9)
+    rdf (1.1.10)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (1.1.0)
       rdf (>= 1.1)
@@ -657,6 +663,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active-fedora!
   aws-sdk (~> 2)
   better_errors
   binding_of_caller

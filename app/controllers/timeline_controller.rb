@@ -34,13 +34,13 @@ class TimelineController < ApplicationController
     query = ""
 
     if params[:mode] == 'collections'
-      query += "#{Solrizer.solr_name('file_type', :stored_searchable, type: :string)}:collection"
+      query += "#{ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)}:collection"
     else
-      query += "-#{Solrizer.solr_name('file_type', :stored_searchable, type: :string)}:collection"
+      query += "-#{ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)}:collection"
     end
 
     unless signed_in?
-      query += " AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published"
+      query += " AND #{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published"
     end
 
     unless params[:q].blank?
@@ -54,9 +54,9 @@ class TimelineController < ApplicationController
     end
 
     # creation date exists and it is valid
-    query += " AND #{Solrizer.solr_name('creation_date', :stored_searchable, type: :string)}:[* TO *]"
-    query += " AND (-#{Solrizer.solr_name('creation_date', :stored_searchable, type: :string)}:unknown"
-    query += " AND -#{Solrizer.solr_name('creation_date', :stored_searchable, type: :string)}:\"n/a\")"
+    query += " AND #{ActiveFedora::SolrQueryBuilder.solr_name('creation_date', :stored_searchable, type: :string)}:[* TO *]"
+    query += " AND (-#{ActiveFedora::SolrQueryBuilder.solr_name('creation_date', :stored_searchable, type: :string)}:unknown"
+    query += " AND -#{ActiveFedora::SolrQueryBuilder.solr_name('creation_date', :stored_searchable, type: :string)}:\"n/a\")"
 
     return query
   end
@@ -95,7 +95,7 @@ class TimelineController < ApplicationController
 
       response.each_with_index do |document, index|
         document = document.symbolize_keys
-        creation_date = document[Solrizer.solr_name('creation_date', :stored_searchable, type: :string).to_sym].first
+        creation_date = document[ActiveFedora::SolrQueryBuilder.solr_name('creation_date', :stored_searchable, type: :string).to_sym].first
         timeline_data[:timeline][:date][index] = {}
 
         if parse_dcmi?(creation_date)
@@ -108,8 +108,8 @@ class TimelineController < ApplicationController
           timeline_data[:timeline][:date][index][:endDate] = (parsed_date + 1).to_s.gsub(/[-]/, ',')
         end
 
-        timeline_data[:timeline][:date][index][:headline] = '<a href="' +  catalog_path(document[:id])+  '">' + document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first + '</a>'
-        timeline_data[:timeline][:date][index][:text] = document[Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym].first
+        timeline_data[:timeline][:date][index][:headline] = '<a href="' +  catalog_path(document[:id])+  '">' + document[ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string).to_sym].first + '</a>'
+        timeline_data[:timeline][:date][index][:text] = document[ActiveFedora::SolrQueryBuilder.solr_name('description', :stored_searchable, type: :string).to_sym].first
         timeline_data[:timeline][:date][index][:asset] = {}
         timeline_data[:timeline][:date][index][:asset][:media] = get_cover_image(document)
 
@@ -122,7 +122,7 @@ class TimelineController < ApplicationController
 
   # I had to add explicit returns and change the url to the static assets
   def get_cover_image( document )
-    files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{document[:id]}\""
+    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\""
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
@@ -140,8 +140,8 @@ class TimelineController < ApplicationController
   def search_image ( document, file_document, image_name = "crop16_9_width_200_thumbnail" )
     path = nil
 
-    unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
-      format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
+    unless file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].blank?
+      format = file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].first
       case format
         when "image"
           path = surrogate_url(document[:id], file_document.id, image_name)
@@ -157,8 +157,8 @@ class TimelineController < ApplicationController
     path = "assets/no_image.png"
 
     unless file_document.nil?
-      unless file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].blank?
-        format = file_document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
+      unless file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].blank?
+        format = file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].first
 
         path = "assets/dri/formats/#{format}.png"
 
@@ -174,12 +174,12 @@ class TimelineController < ApplicationController
   def cover_image ( document )
     path = nil
 
-    if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-      path = document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-    elsif !document[Solrizer.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
+    if document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
+      path = document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
+    elsif !document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
       collection = root_collection_solr(document)
-      if collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)].first
-        path = collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)].first
+      if collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)] && collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
+        path = collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
       end
     end
 

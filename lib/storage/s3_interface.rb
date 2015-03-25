@@ -23,7 +23,7 @@ module Storage
       @surrogates_hash = {}
       files.each do |file|
         begin
-          if file.match(/#{Rails.application.config.id_namespace}:#{generic_file}_([-a-zA-z0-9]*)\..*/)
+          if file.match(/#{generic_file}_([-a-zA-z0-9]*)\..*/)
             url = create_url(bucket, file, expire)
             @surrogates_hash[$1] = url
           end
@@ -65,7 +65,7 @@ module Storage
 
       files = list_files(bucket)
 
-      filename = "#{Rails.application.config.id_namespace}:#{generic_file}_#{name}"
+      filename = "#{generic_file}_#{name}"
       surrogate = files.find { |e| /#{filename}/ =~ e }
 
       unless surrogate.blank?

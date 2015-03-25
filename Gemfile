@@ -14,6 +14,8 @@ gem 'paper_trail', '~> 3.0.6'
 gem 'dri_data_models', :path => "/Users/skenny/Development/dri/dri-data-models" #:git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'hydra9'
 gem 'user_group', :path => "/Users/skenny/Development/dri/dri-user-group" #:git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'hydra9'
 
+gem 'active-fedora', git: 'https://github.com/projecthydra/active_fedora.git', ref: 'c0885c2d3ea8ccf61ab8236c40d77fd369ea0ed9'
+
 gem 'rails_config'
 gem 'sqlite3'
 gem 'mysql'

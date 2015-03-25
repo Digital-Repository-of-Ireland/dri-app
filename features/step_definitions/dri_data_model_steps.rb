@@ -34,8 +34,8 @@ Given /^an object in collection "(.*?)" with metadata from file "(.*?)"$/ do |co
   obj.update_metadata tmp_xml
   obj.status = 'published'
   obj.governing_collection = col
-  obj.rightsMetadata.metadata.machine.integer = '0'
-  obj.rightsMetadata.discover_access.machine.group = 'public'
-  obj.rightsMetadata.masterfile.machine.integer = '1'
+  #obj.rightsMetadata.metadata.machine.integer = '0'
+  obj.discover_groups_string = 'public'
+  #obj.rightsMetadata.masterfile.machine.integer = '1'
   obj.save
 end

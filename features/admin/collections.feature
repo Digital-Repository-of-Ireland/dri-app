@@ -70,14 +70,14 @@ Scenario Outline: Adding a Digital Object in a governing/non-governing collectio
     | obj3   | Object 3     | Test 3      | Sound       | Test Rights   | coll2      | non-governing   |
     | obj4   | Object 4     | Test 4      | Text        | Test Rights   | coll2      | non-governing   |
 
-Scenario Outline: Creating Digital Object in a governing collection using the web forms
-  Given a collection with pid "<collection_pid>" created by "user1"
-  When I create a Digital Object in the collection "<collection_pid>"
-  Then the collection "<collection_pid>" should contain the new digital object
-
-  Examples:
-    | object_pid | object_title | collection_pid | governance_type |
-    | obj1   | Object 1     | coll2      | governing       |
+@test
+Scenario: Creating Digital Object in a governing collection using the web forms
+  Given a collection with pid "coll2" created by "user1"
+  When I go to the "collection" "show" page for "coll2"
+  And I follow the link to upload XML
+  And I attach the metadata file "valid_metadata.xml"
+  And I press the button to ingest metadata
+  Then the collection "coll2" should contain the new digital object
 
 @review
 Scenario: Adding a Digital Object to a non-governing collection using the web forms

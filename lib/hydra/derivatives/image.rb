@@ -6,9 +6,10 @@ module Hydra
         directives.each do |name, args| 
           opts = args.kind_of?(Hash) ? args : {size: args}
           format = opts.fetch(:format, 'png')
-          output_datastream_name = opts.fetch(:datastream, output_datastream_id(name))
-          create_cropped_resized_image(output_datastream_name, opts[:size], opts[:crop], opts[:gravity], format) if opts[:crop].present?
-          create_resized_image(output_datastream_name, opts[:size], format) if (opts[:size].present? && !opts[:crop].present?)
+          output_file_name = opts.fetch(:datastream, output_file_id(name))
+          output_datastream_name = opts.fetch(:datastream, output_file_id(name))
+          create_cropped_resized_image(output_file_name, opts[:size], opts[:crop], opts[:gravity], format) if opts[:crop].present?
+          create_resized_image(output_file_name, opts[:size], format) if (opts[:size].present? && !opts[:crop].present?)
         end
       end
 
@@ -53,8 +54,8 @@ module Hydra
         xfrm.write(output_file)
 
         format = xfrm["format"].downcase
-        bucket_id = object.batch.nil? ? object.pid : object.batch.pid
-        filename = "#{object.pid}_#{output_datastream}.#{format}"
+        bucket_id = object.batch.nil? ? object.id : object.batch.id
+        filename = "#{object.id}_#{output_datastream}.#{format}"
 
         out_file = File.open(output_file, "rb")
 
@@ -65,9 +66,9 @@ module Hydra
       end
 
       def load_image_transformer
-        source_datastream.to_tempfile do |f|
-          MiniMagick::Image.read(f.read)
-        end
+        #source_datastream.to_tempfile do |f|
+          MiniMagick::Image.read(source_file.content)
+        #end
       end
     end
   end

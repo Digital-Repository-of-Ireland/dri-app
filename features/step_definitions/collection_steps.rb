@@ -49,7 +49,7 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
 end
 
 Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |type, pid, title, user|
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "o" + @random_pid if (pid == "@random")
   case type
    when 'Audio'
     digital_object = DRI::Model::Audio.new(:pid => pid)
@@ -161,10 +161,12 @@ When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type "(.*?)
   case type
     when "governing"
       object.title = [SecureRandom.hex(5)]
-      collection.governed_items << object
+      object.governing_collection = collection
+      object.save
     when "non-governing"
       object.title = [SecureRandom.hex(5)]
       collection.items << object
+      collection.save
   end
 end
 
