@@ -1,8 +1,20 @@
+require 'uri'
+
 module FieldRenderHelper
 
   # Returns the default html field separator characters
   def field_value_separator
     ''
+  end
+  
+ #URI Checker
+  def uri?(string)
+    uri = URI.parse(string)
+    %w( http https ).include?(uri.scheme)
+  rescue URI::BadURIError
+    false
+  rescue URI::InvalidURIError
+    false
   end
   
   # Helper method to display the description field if it contains multiple paragraphs/values
@@ -53,12 +65,17 @@ module FieldRenderHelper
       facet_arg = get_search_arg_from_facet :facet => facet_name
 
       value = value.each_with_index.map do |v,i|
+        #don't show URLs in the UI
+        unless uri?(indexed_value[i])
         "<a href=\"" << url_for({:action => 'index', :controller => 'catalog', facet_arg => standardise_facet(:facet => facet_name, :value => indexed_value[i])}) << "\">" << standardise_value(:facet_name => facet_name, :value => v) << "</a>"
+        end
       end
     else
       if value.length > 1
         value = value.each_with_index.map do |v,i|
-          '<dd>' << indexed_value[i] << '</dd>'
+          unless uri?(indexed_value[i]) 
+            '<dd>' << indexed_value[i] << '</dd>'
+          end
         end
 
       end
