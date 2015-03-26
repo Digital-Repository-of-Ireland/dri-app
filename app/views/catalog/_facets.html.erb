@@ -1,45 +1,12 @@
 <% # main container for facets/limits menu -%>
-
 <% if has_facet_values?  %>
-<div id="facets" class="facets sidenav dri_facet_filters" data-content="<%= t('dri.help.facets') %>"
-data-original-title="<%= t('dri.help.facets_title') %>" data-trigger="hover" data-placement="top">
+    <div id="facets" class="facets sidenav dri_facet_filters" data-content="<%= t('dri.help.facets') %>"
+         data-original-title="<%= t('dri.help.facets_title') %>" data-trigger="hover" data-placement="top">
 
-	<div class="dri_head_title">
-		<%= t('blacklight.search.facets.title') %><span class="dri_search_num" id="browse_results_count"><%= @response.response[:numFound] %></span>
-	</div>
+      <div class="dri_head_title"><%= t('blacklight.search.facets.title') %><span class="dri_search_num" id="browse_results_count"><%= @response.response[:numFound] %></span></div>
 
-	<div id="facet-panel-collapse" class="panel-group dri_clearfix">
-
-		<div class="panel panel-default facet_limit blacklight-subject_sim ">
-			<div class="collapsed collapse-toggle panel-heading" data-toggle="collapse" data-target="#facet-date-range">
-				<h5 class="dri_title_dropdown"><a data-no-turbolink="true" href="#"><%= t('dri.views.catalog.facets.dates.date_range') %></a></h5>
-			</div>
-			<div id="facet-date-range" class="panel-collapse facet-content collapse">
-				<!-- a form to help set the date range restriction on a search -->
-				<%= form_tag do %>
-				<div class="panel-body">
-					<ul class="facet-values list-unstyled">
-						<li>
-							<span class="dri_date_range"><%= number_field_tag(:year_from, '1970') %><span class="dri_date_range_label"><%= t('dri.views.catalog.facets.dates.date_range_from') %></span></a>
-						</li>
-						<li>
-							<span class="dri_date_range"><%= number_field_tag(:year_to, Time.now.year) %><span class="dri_date_range_label"><%= t('dri.views.catalog.facets.dates.date_range_to') %></span></a>
-						</li>
-						<li>
-							        <%= button_tag(type: 'submit') do %>
-                                    <%= t('dri.views.catalog.facets.dates.date_set') %>
-                                    <% end %>
-
-						</li>
-
-					</ul>
-				</div>
-				<% end %>
-				<!-- end of date range form -->
-			</div>
-		</div>
-		<%= render_facet_partials %>
-	</div>
-
-</div>
+      <div id="facet-panel-collapse" class="panel-group dri_clearfix">
+        <%= render_facet_partials %>
+      </div>
+    </div>
 <% end %>
