@@ -12,7 +12,7 @@ gem 'sufia-models', "4.1.0"
 
 gem 'paper_trail', '~> 3.0.6'
 
-gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'develop'
+gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'mods-b'
 gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'develop'
 
 gem 'rails_config'
@@ -53,6 +53,7 @@ gem 'high_voltage', '~> 2.1.0'
 gem 'is_it_working-cbeer'
 
 gem 'sass-rails' , '~> 4.0.2'
+gem 'compass-rails'
 # gem 'coffee-rails', '~> 3.2.1'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -72,6 +73,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'guard-livereload', require: false
+  gem 'compass'
 
   gem "zeus", require: false
 
