@@ -362,7 +362,7 @@ a {
   -moz-border-radius: 3px;
   border-radius: 3px;
   border: none;
-  padding: 6px 0 6px 0;
+  padding: 6px 10px 6px 10px;
   margin: 10px 0 10px 0;
 }
 
@@ -373,6 +373,15 @@ a {
 
 .dri_button_green:hover {
   background-color: darken($dri_green, 10%);
+}
+
+.dri_button_red {
+  @extend .dri_button;
+  background-color: $dri_red;
+}
+
+.dri_button_red:hover {
+  background-color: darken($dri_red, 10%);
 }
 
 .dri_button_grey {

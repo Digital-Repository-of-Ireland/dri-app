@@ -53,7 +53,7 @@ gem 'high_voltage', '~> 2.1.0'
 gem 'is_it_working-cbeer'
 
 gem 'sass-rails' , '~> 4.0.2'
-
+gem 'compass-rails'
 # gem 'coffee-rails', '~> 3.2.1'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
