@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'blacklight/catalog'
 require 'institute_helpers'
+require 'iso8601'
 
 # Blacklight catalog controller
 #
@@ -19,7 +20,7 @@ class CatalogController < ApplicationController
   # This applies appropriate access controls to all solr queries
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :subject_temporal_filter]
+  CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :search_date_dange, :subject_temporal_filter]
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
   def rows_per_page
@@ -76,6 +77,13 @@ class CatalogController < ApplicationController
     #config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :label_permission
     #config.add_facet_field "master_file_isi", :label => 'Master File Access',  :helper_method => :label_permission
     #}
+    # Configure facets for dateRange although NOT displayed
+    #config.add_facet_field "cdateRange", :show => false
+    #config.add_facet_field "pdateRange", :show => false
+    #config.add_facet_field "sdateRange", :show => false
+
+    config.add_facet_field "cdateRange", :label => 'Date Range', :partial => 'custom_date_range'
+
     config.add_facet_field solr_name('subject', :facetable), :limit => 20
     #config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
     #config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
@@ -148,7 +156,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('contributor', :stored_searchable, type: :string), :label => 'contributors'
     config.add_show_field solr_name('creation_date', :stored_searchable), :label => 'creation_date', :date => true, :helper_method => :parse_era
     config.add_show_field solr_name('publisher', :stored_searchable), :label => 'publishers'
-    config.add_show_field solr_name('published_date', :stored_searchable), :label => 'published_date', :date => true
+    config.add_show_field solr_name('published_date', :stored_searchable), :label => 'published_date', :date => true, :helper_method => :parse_era
     config.add_show_field solr_name('subject', :stored_searchable, type: :string), :label => 'subjects'
     config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), :label => 'geographical_coverage'
     config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), :label => 'temporal_coverage'
@@ -289,9 +297,50 @@ class CatalogController < ApplicationController
         if end_date == ""
           end_date = start_date
         end
-        # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits 
-        solr_parameters[:fq][0] = "sdateRange:[\"-9999 #{(start_date[0,4].to_i - 0.5).to_s}\" TO \"#{(end_date[0,4].to_i + 0.5).to_s} 9999\"]"
+        begin
+          sdate_str = ISO8601::DateTime.new(start_date).year
+          edate_str = ISO8601::DateTime.new(end_date).year
+          # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits 
+          solr_parameters[:fq][0] = "sdateRange:[\"-9999 #{(sdate_str.to_i - 0.5).to_s}\" TO \"#{(edate_str.to_i + 0.5).to_s} 9999\"]"
+        rescue ISO8601::Errors::UnknownPattern => e
+        end
       end
+    end
+  end
+
+  def search_date_dange(solr_parameters, user_parameters)
+    if (user_parameters[:year_from].present? && user_parameters[:year_to].present?)
+      solr_parameters[:fq] ||= []
+      if user_parameters[:c_date].present?
+        #solr_parameters[:fq].push "{!raw f=cdateRange}#{user_parameters[:year_from]} #{user_parameters[:year_to]}"
+        #solr_parameters[:q] = "#{user_parameters[:year_from]} #{user_parameters[:year_to]}"
+        query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+        if user_parameters[:p_date].present?
+          query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+        end
+        if user_parameters[:s_date].present?
+          query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+        end
+      elsif user_parameters[:p_date].present?
+        query = "pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+        if user_parameters[:s_date].present?
+          query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+        end
+      elsif user_parameters[:s_date].present?
+        query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      end
+      
+      if (!user_parameters[:c_date].present? && !user_parameters[:p_date].present? && !user_parameters[:s_date].present?)
+        query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+        query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+        query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      end
+      user_parameters.delete(:year_from)
+      user_parameters.delete(:year_to)
+      user_parameters.delete(:c_date)
+      user_parameters.delete(:p_date)
+      user_parameters.delete(:s_date)
+      solr_parameters[:q] << query
     end
   end
 
