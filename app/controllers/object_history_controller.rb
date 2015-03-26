@@ -15,17 +15,26 @@ class ObjectHistoryController < ApplicationController
     enforce_permissions!("edit", params[:id])
 
     @object = retrieve_object!(params[:id])
+    @fedora_url = @object.uri
 
-    @audit_trail = @object.versions
+    @audit_trail = @object.versions.all
 
-    @records = Hash.new
-    #@audit_trail.each do |record|
-    #  @records[record.uri] ||= Hash.new
-    #  @records[record.uri][record.created] = record.
-    #end
+    @datastreams = @object.attached_files.keys
+    metadata_streams = @object.attached_files
 
-    #@datastreams = @records.keys
-    #@fedora_url = "#{ActiveFedora.config.credentials[:url]}/objects/#{@object.id}/datastreams"
+    @metadata_versions = Hash.new
+
+    @datastreams.each do |datastream|
+      @metadata_versions[datastream] = { version: { created: @object.create_date, uri: @object.uri, committer: @object.depositor } }
+
+      if metadata_streams[datastream].has_versions?
+        versions = metadata_streams[datastream].versions.all
+
+        versions.each do |v|
+          @metadata_versions[datastream][v.label.to_sym] = { created: v.created, uri: v.uri, committer: committer(v) }
+        end
+      end
+    end
 
     # Get inherited values
     @institute_manager = get_institute_manager(@object)
@@ -39,6 +48,13 @@ class ObjectHistoryController < ApplicationController
       format.html
     end
   end
+
+  private
+  
+    def committer version
+      vc = VersionCommitter.where(version_id: version.uri)
+      return vc.empty? ? nil : vc.first.committer_login
+    end
 
 end
 

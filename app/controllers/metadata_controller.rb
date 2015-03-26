@@ -73,6 +73,10 @@ class MetadataController < CatalogController
         if @object.valid?
           begin
             raise Exceptions::InternalError unless @object.save
+
+            version = @object.versions.last
+            VersionCommitter.create(version_id: version.uri, committer_login: current_user.to_s)
+            
           rescue RuntimeError => e
             logger.error "Could not save object #{@object.id}: #{e.message}"
             raise Exceptions::InternalError

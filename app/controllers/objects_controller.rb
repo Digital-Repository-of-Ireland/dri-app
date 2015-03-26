@@ -80,6 +80,12 @@ class ObjectsController < CatalogController
       if updated
         MetadataHelpers.checksum_metadata(@object)
         @object.save
+
+        unless @object.versions.empty?
+          version = @object.versions.last
+          VersionCommitter.create(version_id: version.uri, committer_login: current_user.to_s)
+        end
+
         duplicates?(@object)
 
         DOI.mint_doi( @object )
