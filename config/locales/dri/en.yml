@@ -142,7 +142,7 @@ en:
       end_user_agreement: "End User Agreement"
       home: Home
       ingest: "Ingest Object"
-      institutions: Institutions
+      institutions: Organisations
       manage: Manage
       my_collections: "My Collections"
       new_collection: "New collection"
@@ -303,15 +303,15 @@ en:
             admin: "My Collections"
             public: Collections
         institute:
-          add: "Add a new Institute"
-          associate: "Associate Institute"
-          associate_depositing: "Select Depositing Institute"
+          add: "Add a new Organisation"
+          associate: "Associate Organisation"
+          associate_depositing: "Select Depositing Organisation"
           form:
             logo: Logo
             name: Name
             url: Url
           more: "Show more"
-          title: "Institutes and Sponsors"
+          title: "Organisations and Sponsors"
         legends:
           governed_objects: "Governed Objects"
           members: Members
@@ -345,7 +345,7 @@ en:
         creators: Creators
         date: Date
         dates: Dates
-        depositing_institute: "Depositing Institute"
+        depositing_institute: "Depositing Organisation"
         description: Description
         format: Format
         formats: Formats
