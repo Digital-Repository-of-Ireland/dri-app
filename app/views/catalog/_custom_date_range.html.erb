@@ -3,6 +3,8 @@
 <%= form_tag catalog_index_path, :method => :get, :id => 'daterangeform' do %>
 	<% if (params[:mode].blank?) %>
 		<%= hidden_field_tag 'mode', 'objects' %>
+	<% else %>
+	  <%= hidden_field_tag 'mode', params[:mode] %>
 	<% end %>
 	<!-- we need to add f[cdateRange][] to the request to trigger the faceted date range -->
 	<%= hidden_field_tag "f[cdateRange][]", "", :id => "f" %>
@@ -11,23 +13,43 @@
 	<ul class="facet-values list-unstyled">
 		<li>
 			<span class="dri_date_range">
-				<%= number_field_tag(:year_from, '1970') %>
+				<% if params[:year_from] %>
+				  <%= number_field_tag(:year_from, params[:year_from]) %>
+				<% else %>
+				  <%= number_field_tag(:year_from, '1970') %>
+				<% end %>
 				<span class="dri_date_range_label"><%= t('dri.views.catalog.facets.dates.date_range_from') %></span>
 			</span>
 		</li>
 		<li>
 			<span class="dri_date_range">
-				<%= number_field_tag(:year_to, Time.now.year) %>
+				<% if params[:year_to] %>
+				  <%= number_field_tag(:year_to, params[:year_to]) %>
+				<% else %>
+				  <%= number_field_tag(:year_to, Time.now.year) %>
+				<% end %>
 				<span class="dri_date_range_label"><%= t('dri.views.catalog.facets.dates.date_range_to') %></span>
 			</span>
 		</li>
 		<li>
 			<!-- Persist values of date range field search -->
-			<%= check_box_tag(:c_date) %>
+			<% if params[:c_date] == '1' %>
+			  <%= check_box_tag(:c_date, "1", :html => {:checked => "checked"}) %>
+			<% else %>
+			  <%= check_box_tag(:c_date) %>
+			<% end %>
 			<%= label_tag(:c_date, "Creation") %>
-			<%= check_box_tag(:p_date) %>
+			<% if params[:p_date] == '1' %>
+			  <%= check_box_tag(:p_date, "1", :html => {:checked => "checked"}) %>
+			<% else %>
+			  <%= check_box_tag(:p_date) %>
+			<% end %>
 			<%= label_tag(:p_date, "Published") %>
-			<%= check_box_tag(:s_date) %>
+			<% if params[:s_date] == '1' %>
+			  <%= check_box_tag(:s_date, "1", :html => {:checked => "checked"}) %>
+			<% else %>
+			  <%= check_box_tag(:s_date) %>
+			<% end %>
 			<%= label_tag(:s_date, "Subject") %>
 		</li>
 		<li>

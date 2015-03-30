@@ -2,6 +2,23 @@ module ConstraintsHelper
   include Blacklight::RenderConstraintsHelperBehavior
 
   ##
+  # OVERRIDEN. Render a single facet's constraint
+  #
+  # @param [String] facet field
+  # @param [Array<String>] selected facet values
+  # @param [Hash] query parameters
+  # @return [String]
+  def render_filter_element(facet, values, localized_params)
+    # Overrride BL's render_filter_element
+    # When creating remove filter links exclude the date range added parameters, if present
+    # Otherwise the filter gets removed but the parameters stay in the URL
+    excluded_params = [:c_date, :p_date, :s_date, :year_from, :year_to]
+    new_localized_params = localized_params.clone
+    new_localized_params.except!(*excluded_params)
+
+    super(facet, values, new_localized_params)
+  end
+  ##
   # OVERRIDE. Check if the query has any constraints defined (a query, facet, etc)
   # our search points by ID  are :q_text for DRI search text box, :f for facets and :q_date for date range search
   # @param [Hash] query parameters
