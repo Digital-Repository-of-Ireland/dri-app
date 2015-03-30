@@ -5,7 +5,7 @@
 	<% if (params[:mode].blank?) %>
 		<%= hidden_field_tag 'mode', 'objects' %>
 	<% end %>
-	<%= hidden_field_tag :q, "" %>
+	<%= hidden_field_tag :q_date, "", :id => "q_date" %>
 	<% params_to_hide = get_params_to_hide(params) %>
 	<%= render_hash_as_hidden_fields(params_to_hide).html_safe %>
 	<ul class="facet-values list-unstyled">

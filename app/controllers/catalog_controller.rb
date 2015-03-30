@@ -312,8 +312,6 @@ class CatalogController < ApplicationController
     if (user_parameters[:year_from].present? && user_parameters[:year_to].present?)
       solr_parameters[:fq] ||= []
       if user_parameters[:c_date].present?
-        #solr_parameters[:fq].push "{!raw f=cdateRange}#{user_parameters[:year_from]} #{user_parameters[:year_to]}"
-        #solr_parameters[:q] = "#{user_parameters[:year_from]} #{user_parameters[:year_to]}"
         query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
         if user_parameters[:p_date].present?
           query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
@@ -340,7 +338,8 @@ class CatalogController < ApplicationController
       user_parameters.delete(:c_date)
       user_parameters.delete(:p_date)
       user_parameters.delete(:s_date)
-      solr_parameters[:q] << query
+      solr_parameters[:q] = query
+      user_parameters[:q_date] << query
     end
   end
 
