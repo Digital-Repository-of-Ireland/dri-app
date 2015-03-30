@@ -339,6 +339,7 @@
     <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
 
     <!-- dateRange field will be updated to the DateRangeField Solr field type that will be available in Solr 5 -->
+    <!-- distErrPct="0" (no approximation); maxDistErr="1" (as data represents whole years)-->
     <fieldType name="dateRange" class="solr.SpatialRecursivePrefixTreeFieldType"
       geo="false"
       worldBounds="-9999 -9999 9999 9999"

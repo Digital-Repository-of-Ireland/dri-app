@@ -362,9 +362,10 @@ class CatalogController < ApplicationController
         end
       end # user_parameters[:s_date].present?
     end # if
-    user_parameters.delete(:c_date)
-    user_parameters.delete(:p_date)
-    user_parameters.delete(:s_date)
+    # The parameters for check boxes c_date, p_date and s_date also need to be persisted in the date range form
+    #user_parameters.delete(:c_date)
+    #user_parameters.delete(:p_date)
+    #user_parameters.delete(:s_date)
   end # search_date_dange
 
 end
