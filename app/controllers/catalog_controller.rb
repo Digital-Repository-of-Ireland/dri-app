@@ -333,8 +333,8 @@ class CatalogController < ApplicationController
         query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
         query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
       end
-      user_parameters.delete(:year_from)
-      user_parameters.delete(:year_to)
+      #user_parameters.delete(:year_from)
+      #user_parameters.delete(:year_to)
       user_parameters.delete(:c_date)
       user_parameters.delete(:p_date)
       user_parameters.delete(:s_date)
