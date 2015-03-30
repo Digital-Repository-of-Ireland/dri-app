@@ -330,42 +330,35 @@ class CatalogController < ApplicationController
           date_idx = idx
         end
       end
-      if user_parameters[:c_date].present?
+      query = ""
+
+      if user_parameters[:c_date] == '1'
         query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        if user_parameters[:p_date].present?
+        if user_parameters[:p_date] == '1'
           query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
         end
-        if user_parameters[:s_date].present?
+        if user_parameters[:s_date] == '1'
           query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
         end
-        if date_idx.nil? # date range query not present, append new query then
-          solr_parameters[:fq] << query
-        else
-          # date range query present, replace query then
-          solr_parameters[:fq][date_idx] = query
-        end
-      elsif user_parameters[:p_date].present?
+      elsif user_parameters[:p_date] == '1'
         query = "pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        if user_parameters[:s_date].present?
+        if user_parameters[:s_date] == '1'
           query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
         end
-        if date_idx.nil?
-          solr_parameters[:fq] << query 
-        else
-          solr_parameters[:fq][date_idx] = query
-        end
-      elsif user_parameters[:s_date].present?
-        if date_idx.nil?
-          solr_parameters[:fq] << "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        else
-          solr_parameters[:fq][date_idx] = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        end
-      end # user_parameters[:s_date].present?
+      elsif user_parameters[:s_date] == '1'
+        query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      else  # no field filter parameters: query all the date range fields
+        query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+        query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+        query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      end
+
+      if date_idx.nil?
+        solr_parameters[:fq] << query
+      else
+        solr_parameters[:fq][date_idx] = query
+      end
     end # if
-    # The parameters for check boxes c_date, p_date and s_date also need to be persisted in the date range form
-    #user_parameters.delete(:c_date)
-    #user_parameters.delete(:p_date)
-    #user_parameters.delete(:s_date)
   end # search_date_dange
 
 end

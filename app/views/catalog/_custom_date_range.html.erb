@@ -3,8 +3,6 @@
 <%= form_tag catalog_index_path, :method => :get, :id => 'daterangeform' do %>
 	<% if (params[:mode].blank?) %>
 		<%= hidden_field_tag 'mode', 'objects' %>
-	<% else %>
-	  <%= hidden_field_tag 'mode', params[:mode] %>
 	<% end %>
 	<!-- we need to add f[cdateRange][] to the request to trigger the faceted date range -->
 	<%= hidden_field_tag "f[cdateRange][]", "", :id => "f" %>
@@ -13,7 +11,7 @@
 	<ul class="facet-values list-unstyled">
 		<li>
 			<span class="dri_date_range">
-				<% if params[:year_from] %>
+				<% if params[:year_from].present? %>
 				  <%= number_field_tag(:year_from, params[:year_from]) %>
 				<% else %>
 				  <%= number_field_tag(:year_from, '1970') %>
@@ -23,7 +21,7 @@
 		</li>
 		<li>
 			<span class="dri_date_range">
-				<% if params[:year_to] %>
+				<% if params[:year_to].present? %>
 				  <%= number_field_tag(:year_to, params[:year_to]) %>
 				<% else %>
 				  <%= number_field_tag(:year_to, Time.now.year) %>
@@ -33,23 +31,14 @@
 		</li>
 		<li>
 			<!-- Persist values of date range field search -->
-			<% if params[:c_date] == '1' %>
-			  <%= check_box_tag(:c_date, "1", :html => {:checked => "checked"}) %>
-			<% else %>
-			  <%= check_box_tag(:c_date) %>
-			<% end %>
+			<%= hidden_field_tag :c_date, '0' %>
+			<%= check_box_tag(:c_date, '1', params[:c_date] == '1') %>
 			<%= label_tag(:c_date, "Creation") %>
-			<% if params[:p_date] == '1' %>
-			  <%= check_box_tag(:p_date, "1", :html => {:checked => "checked"}) %>
-			<% else %>
-			  <%= check_box_tag(:p_date) %>
-			<% end %>
+			<%= hidden_field_tag :p_date, '0' %>
+			<%= check_box_tag(:p_date, '1', params[:p_date] == '1') %>
 			<%= label_tag(:p_date, "Published") %>
-			<% if params[:s_date] == '1' %>
-			  <%= check_box_tag(:s_date, "1", :html => {:checked => "checked"}) %>
-			<% else %>
-			  <%= check_box_tag(:s_date) %>
-			<% end %>
+			<%= hidden_field_tag :s_date, '0' %>
+			<%= check_box_tag(:s_date, '1', params[:s_date] == '1') %>
 			<%= label_tag(:s_date, "Subject") %>
 		</li>
 		<li>
