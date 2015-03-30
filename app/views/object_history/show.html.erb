@@ -33,22 +33,21 @@
     <tr><td> <%= t('dri.reports.object.manage_users') %> </td><td><%= @manager_users %></td></tr>
   </table>
 
-
-  <% @datastreams.each do |datastream| %>
-    <h3><%= datastream %></h3>
-    <table>
-      <tr><th><%= t('dri.reports.headings.date') %></th><th><%= t('dri.reports.headings.committer') %></th><th><%= t('dri.reports.headings.label') %></th><th><%= t('dri.reports.headings.link') %></th></tr>
-        <% @metadata_versions[datastream].keys.sort.each do |label| %>
-          <tr>
-            <td><%= @metadata_versions[datastream][label][:created] %></td>
-            <td><%= label %></td>
-            <td><%= @metadata_versions[datastream][label][:committer] %></td>
-            <td><%= link_to(t('dri.reports.headings.datastream_version'), @metadata_versions[datastream][label][:uri]) %></td>
-          </tr>
-        <% end %>
-    </table>
-  <% end %>
-
+  <h3><%= t('dri.reports.headings.versions') %></h3>
+  <table>
+    <tr>
+      <th><%= t('dri.reports.headings.date') %></th>
+      <th><%= t('dri.reports.headings.committer') %></th>
+      <th><%= t('dri.reports.headings.label') %></th>
+    </tr>
+    <% @versions.keys.each do |label| %>
+    <tr>
+      <td><%= @versions[label][:created] %></td>
+      <td><%= @versions[label][:committer] %></td>
+      <td><a href="<%= @versions[label][:uri] %>"><%= label %></a></td>
+    </tr>
+    <% end %>
+  </table>
 
   <h3><%= t('dri.reports.headings.files') %></h3>
   <% @object.generic_files.each do |file| %>

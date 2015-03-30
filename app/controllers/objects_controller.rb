@@ -12,6 +12,10 @@ class ObjectsController < CatalogController
   before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update, :show]
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update, :show]
 
+  def actor
+    @actor ||= DRI::Object::Actor.new(@object, current_user)
+  end
+
   # Displays the New Object form
   #
   def new
@@ -81,10 +85,7 @@ class ObjectsController < CatalogController
         MetadataHelpers.checksum_metadata(@object)
         @object.save
 
-        unless @object.versions.empty?
-          version = @object.versions.last
-          VersionCommitter.create(version_id: version.uri, committer_login: current_user.to_s)
-        end
+        actor.version_and_record_committer
 
         duplicates?(@object)
 
@@ -141,6 +142,8 @@ class ObjectsController < CatalogController
     if @object.valid? && @object.save
 
       DOI.mint_doi( @object )
+
+      actor.version_and_record_committer
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')

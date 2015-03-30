@@ -8,6 +8,10 @@ class MetadataController < CatalogController
   before_filter :authenticate_user_from_token!, :only => [:update]
   before_filter :authenticate_user!, :only => [:update]
 
+  def actor
+    @actor ||= DRI::Object::Actor.new(@object, current_user)
+  end
+
   # Renders the metadata XML stored in the descMetadata datastream.
   # 
   #
@@ -73,10 +77,9 @@ class MetadataController < CatalogController
         if @object.valid?
           begin
             raise Exceptions::InternalError unless @object.save
-
-            version = @object.versions.last
-            VersionCommitter.create(version_id: version.uri, committer_login: current_user.to_s)
-            
+           
+            actor.version_and_record_committer
+ 
           rescue RuntimeError => e
             logger.error "Could not save object #{@object.id}: #{e.message}"
             raise Exceptions::InternalError

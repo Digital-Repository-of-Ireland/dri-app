@@ -19,22 +19,10 @@ class ObjectHistoryController < ApplicationController
 
     @audit_trail = @object.versions.all
 
-    @datastreams = @object.attached_files.keys
-    metadata_streams = @object.attached_files
-
-    @metadata_versions = Hash.new
-
-    @datastreams.each do |datastream|
-      @metadata_versions[datastream] = { version: { created: @object.create_date, uri: @object.uri, committer: @object.depositor } }
-
-      if metadata_streams[datastream].has_versions?
-        versions = metadata_streams[datastream].versions.all
-
-        versions.each do |v|
-          @metadata_versions[datastream][v.label.to_sym] = { created: v.created, uri: v.uri, committer: committer(v) }
-        end
-      end
-    end
+    @versions = {}
+    @audit_trail.each do |version|
+      @versions[version.label] = { uri: version.uri, created: version.created, committer: committer(version) }
+    end   
 
     # Get inherited values
     @institute_manager = get_institute_manager(@object)
