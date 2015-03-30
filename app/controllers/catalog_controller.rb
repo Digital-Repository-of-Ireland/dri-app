@@ -53,6 +53,10 @@ class CatalogController < ApplicationController
     config.show.title_field = solr_name('title', :stored_searchable, type: :string)
     config.show.display_type_field = solr_name('file_type', :stored_searchable, type: :string)
 
+    config.show.document_actions.delete(:email)
+    config.show.document_actions.delete(:sms)
+    config.show.document_actions.delete(:citation)
+
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
     #
