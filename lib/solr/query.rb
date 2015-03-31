@@ -14,7 +14,7 @@ module Solr
 
       result = ActiveFedora::SolrService.query(@query, query_args)
 
-      if result['response']['docs'].size < @chunk
+      if result['response']['docs'].size <= @chunk
         @has_more = false
       end
 
