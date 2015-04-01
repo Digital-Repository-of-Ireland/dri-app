@@ -103,6 +103,7 @@ end
 Before do
   require 'factory_girl'
   Sufia.queue.stub(:push) 
+  DRI::Object::Actor.any_instance.stub(:version_and_record_committer)
 
   ActiveFedora::Cleaner.clean!
 end

@@ -135,7 +135,7 @@ module ApplicationHelper
 
   def reader_group_name( document )
     id = document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
-    name = id.sub(':','_')
+    name = id
     return name
   end
 
@@ -252,7 +252,7 @@ module ApplicationHelper
   end
 
   def reader_group( collection )
-    UserGroup::Group.find_by_name(collection['id'].sub(':', '_'))
+    UserGroup::Group.find_by_name(collection['id'])
   end
 
   def pending_memberships ( collection )

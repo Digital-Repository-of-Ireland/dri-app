@@ -89,7 +89,7 @@ class CollectionsController < CatalogController
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
     else
-      updated = @object.update_attributes(upate_params)
+      updated = @object.update_attributes(update_params)
 
       if updated
         DOI.mint_doi( @object )

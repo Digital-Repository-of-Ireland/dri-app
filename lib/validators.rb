@@ -77,7 +77,7 @@ module Validators
       extension = file.split(".").last
     end
 
-    mime_type = MimeMagic.by_magic( File.open( path ) ).type
+    mime_type = MimeMagic.by_magic( File.open( path ) )
 
     if mime_type == nil
       # If we can't determine from file structure, then determine by extension
@@ -85,7 +85,10 @@ module Validators
       if !extension_results.empty?
         mime_type = extension_results[0]
       end
+    else
+      mime_type = mime_type.type
     end
+
     mime_type
   end
 
