@@ -12,8 +12,8 @@ ga:
           zero: "Níor aimsíodh %{entry_name}"
   views: 
     pagination: 
-      first: "&laquo; First"
-      last: "Last &raquo;"
-      next: "An chéad &rsaquo; eile"
-      previous: "An &lsaquo; roimhe seo"
+      first: "&laquo; An chéad ceann"
+      last: "An ceann deireanach &raquo;"
+      next: "An chéad ceann eile &rsaquo;"
+      previous: "&lsaquo; An ceann roimhe seo"
       truncate: "&hellip;"

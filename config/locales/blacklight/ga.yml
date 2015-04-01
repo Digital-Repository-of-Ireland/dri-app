@@ -4,216 +4,216 @@ ga:
   active_record:
     attributes:
       feedback:
-        email: "Your email"
-        message: "Your message"
-        name: "Your name"
+        email: "Do Ríomhphost"
+        message: "Do theachtaireacht"
+        name: "D’ainm"
     models:
-      feedback: Réaction
+      feedback: "Aiseolas"
   blacklight:
-    and: agus
-    application_name: "Taisclann Dhigiteach na hÉireann"
-    back_to_bookmarks: " ⬅ Back to Bookmarks"
-    back_to_collection: " ⬅ Back to Collection"
+    and: "agus"
+    application_name:  "Taisclann Dhigiteach na hÉireann"
+    back_to_bookmarks: " ⬅ Siar chuig Leabharmharcanna"
+    back_to_collection: " ⬅ Siar chuig an mBailiúchán"
     back_to_search: " ⬅ Siar chuig Cuardach"
     bookmarks:
       add:
-        button: Bookmark
-        failure: "Sorry, there was a problem saving the bookmarks."
+        button: "Leabharmharc"
+        failure: "Gabh mo leithscéal, bhí fadhb ann agus na leabharmharacanna á sábháil"
         success:
-          one: "Successfully added bookmark."
-          other: "Successfully added bookmarks."
+          one: "D’éirigh leat Leabharmharc  a chur isteach"
+          other: "Leabharmharcanna curtha isteach go sásúil"
       clear:
-        action_confirm: "Clear your bookmarks?"
-        action_title: "Clear Bookmarks"
-        failure: "Sorry, there was a problem clearing your bookmarks."
-        success: "Cleared your bookmarks."
+        action_confirm: "Glan do chuid leabharmharcanna?"
+        action_title: "Glan na Leabharmharcanna"
+        failure: "Gabh mo leithscéal, bhí fadhb ann agus na leabharmharcanna á nglanadh"
+        success: "Glanadh do chuid leabharmharcanna"
       collection:
         add:
-          button: "Add to Bookmarks"
-      delete: Remove
-      list_title: "Your Bookmarks"
-      need_login: "Please log in to manage and view your bookmarks."
-      no_bookmarks: "You have no bookmarks"
+          button: "Cur le leabharmharcanna"
+      delete: "Bain"
+      list_title: "Do chuid Leabharmharcanna"
+      need_login: "Logáil isteach le do thoil chun bainistiú a dhéanamh agus féachaint ar do chuid leabharmharcanna"
+      no_bookmarks: "Níl aon leabharmharc agat"
       remove:
-        action_confirm: "Remove this bookmark?"
-        button: "Remove bookmark"
-        failure: "Sorry, there was a problem removing the bookmarks."
-        success: "Successfully removed bookmark."
-      title: Bookmarks
+        action_confirm: "Bain an leabharmharc seo?"
+        button: "Bain an leabharmharc"
+        failure: "Gabh mo leithscéal, bhí fadhb  ann agus na leabharmharcanna á mbaint"
+        success: "leabharmharc  bainte go sásúil"
+      title: "Leabharmharcanna"
     citation:
       apa: APA
       chicago: Chicago
       mla: MLA
-    did_you_mean: "Did you mean to type: %{options}?"
+    did_you_mean: "An raibh %{options} i gceist agat?"
     email:
       errors:
         to:
-          blank: "You must enter a recipient in order to send this message"
-          invalid: "You must enter a valid email address"
+          blank: "ní mór faighteoir a lua chun an teachtaireacht seo a sheoladh"
+          invalid: "ní mór seoladh bailí a chur isteach"
       form:
-        message: "Message:"
-        submit: Send
-        title: "Email This"
-        to: "Email:"
+        message: "Teachtaireacht"
+        submit: "Seol"
+        title: "Seol mar ríomhphost"
+        to: "Ríomhphost:"
       text:
-        author: "Author: %{value}"
-        format: "Format: %{value}"
-        language: "Language: %{value}"
-        message: "Message: %{message}"
+        author: "Údar: %{value}"
+        format: "Formáid: %{value}"
+        language: "Teanga: %{value}"
+        message: "Teachtaireacht: %{message}"
         subject:
-          one: "Item Record: %{title}"
-          other: "Item records"
-        title: "Title: %{value}"
+          one: "Taifead na míre: %{title}"
+          other: "Taifid na míre"
+        title: "Teideal: %{value}"
         url: "URL: %{url}"
     entry_name:
-      default: entry
+      default: iontráil
     feedback:
       complete:
-        title: "Thank-you for your feedback"
+        title: "Go raibh maith agat as ucht do chuid aiseolais"
       errors:
-        title: "Please fix the following form errors:"
-      need_message: "A message is required"
-      submit: Send!
-      valid_email: "A valid email address is required"
-      valid_name: "A valid name is required"
+        title: "Socraigh na hearráidí seo a leanas le do thoill."
+      need_message: "Tá Teachtaireacht ag teastáil"
+      submit: "Seol!"
+      valid_email: "Tá seoladh ríomhphoist bailí ag teastáil"
+      valid_name: "Tá ainm bailí ag teastáíl"
     header_links:
-      bookmarks: Leabharmharcanna
+      bookmarks: "Leabharmharcanna"
       login: "Logáil isteach"
       logout: "Logáil amach"
-      saved_searches: "Mo Chuardaigh"
-      search_history: Stair
+      saved_searches: "Mo chuid cuardach"
+      search_history: "Stair"
     or: nó
     saved_searches:
       add:
-        failure: "There was a problem saving your search."
-        success: "Successfully saved your search."
+        failure: "Bhí fadhb ann agus do chuardach á shábháil"
+        success: "Sábháladh do chuardach go sásúil"
       clear:
-        action_confirm: "Clear your saved searches?"
-        action_title: "Clear Saved Searches"
-        failure: "There was a problem clearing your searches."
-        success: "Cleared your saved searches."
-      delete: delete
-      list_title: "Your saved searches"
-      need_login: "Please log in to manage and view your saved searches."
-      no_searches: "You have no saved searches"
+        action_confirm: "Glan na cuardaigh a shábháíl tú?"
+        action_title: "Glan na cuardaigh a shábháil tú"
+        failure: "Bhí fadhb ann agus do chuid cuardach á nglanadh"
+        success: "Glanadh na cuardaigh a shábháil tú"
+      delete: "scrios"
+      list_title: "Na cuardaigh a shábháil tú"
+      need_login: "Logáil isteach le do thoil chun bainistiú a dhéanamh agus féachaint ar do chuid cuardach"
+      no_searches: "Níor shábháíl tú aon chuardach"
       remove:
-        failure: "There was a problem removing your search."
-        success: "Successfully removed that saved search."
-      title: "Saved Searches"
+        failure: "bhí fadhb ann agud do chuardach á bhaint"
+        success: "Baineadh an cuardach sin go sásúil"
+      title: "Na cuardaigh a shábhaíl tú"
     search:
-      atom_feed: "Atom for results"
+      atom_feed: "Atom le haghaidh torthaí"
       documents:
         counter: "%{counter}. "
       entry_pagination_info:
-        one: "<b>1 of 1</b>"
-        other: "<b>%{current}</b> of <b>%{total}</b>"
+        one: <b>1 as 1</b>"
+        other: "<b>%{current}</b> as <b>%{total}</b>"
       errors:
-        invalid_solr_id: "Sorry, you have requested a record that doesn't exist."
-        request_error: "Sorry, I don't understand your search."
+        invalid_solr_id: "Gabh mo leithscéal, d’iarr tú taifead nach bhfuil ann"
+        request_error: "Gabh mo leithscéal, ní thuigim do chuardach"
       facets:
         count: "%{number}"
-        more: "more »"
+        more: "Níos mó »"
         selected:
-          remove: "[remove]"
+          remove: "[Bain]"
         sort:
-          count: "Numerical Sort"
-          index: "A-Z Sort"
-        title: "Limit your search"
+          count: "Sórtáil de réir uimhreach"
+          index: "Sórtáil A-Z"
+        title: "Cuir teorainn le do chuardach"
       fields:
-        default: Keyword
+        default: "Eochairfhocal"
         facet:
-          file_type_display_sim: Mediatype
-          geographical_coverage_sim: Places
-          institute_sim: Institute
-          language_sim: Language
-          person_sim: Names
-          root_collection_id_sim: Collection
-          subject_sim: Subjects
-          temporal_coverage_sim: Era
+          file_type_display_sim: "Cineál meán"
+          geographical_coverage_sim: "Áiteanna"
+          institute_sim: "Institúid"
+          language_sim: "Teanga"
+          person_sim: "Ainmneacha"
+          root_collection_id_sim: "Bailiúchán"
+          subject_sim: "Ábhair"
+          temporal_coverage_sim: "Ré"
       filters:
         label: "%{label}:"
         remove:
-          label_value: "Remove constraint %{label}: %{value}"
-          value: "Remove constraint %{value}"
-        title: "You searched for:"
+          label_value: "Bain an srian %{label}: %{value}"
+          value: "Bain an srian: %{value}"
+        title: "Chuardaigh tú"
       form:
-        q: Search...
+        q: "Cuardaigh"
         search_field:
-          label: "Search in"
-          post_label: for
-          title: "Targeted search options"
-        submit: Search
+          label: "Cuardaigh"
+          post_label: "le haghaidh"
+          title: "Roghanna cuardach spriocdhírithe"
+        submit: "Cuardaigh"
       librarian_view:
         leader: "LEADER %{leader}"
-        title: "Librarian View"
+        title: "Amharc an leabharlannaí"
       pagination:
-        title: "Results navigation"
+        title: "Imeacht thrí na torthaí"
       pagination_info:
-        no_items_found: "No %{entry_name} found"
+        no_items_found: "níor aimsíodh %{entry_name} ar bith"
         pages:
-          one: "<b>%{start_num}</b> - <b>%{end_num}</b> of <b>%{total_num}</b>"
-          other: "<b>%{start_num}</b> - <b>%{end_num}</b> of <b>%{total_num}</b>"
-        single_item_found: "<b>1</b> to <b>1</b> of <b>1</b>"
+          one: "<b>%{start_num}</b> - <b>%{end_num}</b> as <b>%{total_num}</b>"
+          other: "<b>%{start_num}</b> - <b>%{end_num}</b> as <b>%{total_num}</b>"
+        single_item_found: "<b>1</b> go <b>1</b> as <b>1</b>"
       per_page:
-        button_label: "%{count} per page"
+        button_label: "%{count} in aghaidh an leathanaigh"
         label: "%{count}"
-        submit: Update
-        title: "Number of results to display per page"
-      rss_feed: "RSS for results"
-      search_results: "Search Results"
-      search_results_header: Search
+        submit: "Nuashonrú"
+        title: "Líon na dtorthaí in aghaidh an leathanaigh"
+      rss_feed: "RSS le haghaidh torthaí"
+      search_results: "Torthaí an chuardaigh"
+      search_results_header: "Cuardach"
       show:
         title: "%{document_title} - %{application_name}"
       sort:
         label: "Eagraigh de réir %{field}"
-        submit: "sort results"
-      start_over: "Start Over"
-      title: "%{application_name} Search Results"
+        submit: "sórtáil na torthaí"
+      start_over: "Ttosaigh arís"
+      title: "Torthaí an Chuardaigh %{application_name}"
     search_history:
       clear:
-        action_confirm: "Clear your search history?"
-        action_title: "Clear Search History"
-        failure: "There was a problem clearing your search history."
-        success: "Cleared your search history."
-      forget: forget
-      no_history: "You have no search history"
-      recent: "Your recent searches"
-      save: save
-      title: "Search History"
+        action_confirm: "Glan stair do chuardaigh?"
+        action_title: "Glan stair an chuardaigh"
+        failure: "Bhí fadhb ann ag glanadh stair do chuardaigh"
+        success: "Glanadh stair do chuardaigh"
+      forget: "Déan dearmad"
+      no_history: "Níl aon stair chuardaigh agat"
+      recent: "Do chuid cuardach le gairid"
+      save: "sábháil"
+      title: "Stair do Chuardaigh"
     sms:
       errors:
         carrier:
-          blank: "You must select a carrier"
+          blank: "Ní mór iomróir a roghnú"
         to:
-          blank: "You must enter a recipient's phone number in order to send this message"
-          invalid: "You must enter a valid 10 digit phone number"
+          blank: "Ní mór uimhir theileafóin an fhaighteora a chur isteach chun an teachtaireacht seo  a sheoladh"
+          invalid: "Ní mór uimhir theileafóin bhailí a chuir isteach a bhfuil 10 ndigit leis"
       form:
-        carrier: Carrier
-        carrier_prompt: "Please select your carrier"
-        submit: Send
-        title: "SMS This"
-        to: "Phone Number:"
+        carrier: "Iompróir"
+        carrier_prompt: "Roghnaigh d’impróir le do thoil"
+        submit: "Seol"
+        title: "SMS é seo"
+        to: "Teil"
       text:
-        author: " by %{value}"
+        author: " le %{value}"
         title: "%{value}"
-        url: "Link: %{url}"
+        url: "Nasc: %{url}"
     tools:
-      cite: Cite
-      clear: Clear
-      email: Email
-      endnote: "Export to EndNote"
-      librarian_view: "Librarian View"
-      refworks: "Export to Refworks"
-      sms: "SMS This"
-      title: Tools
-    welcome: Fáilte!
+      cite: "Luaigh"
+      clear: "Glan"
+      email: "Ríomhphost"
+      endnote: "Easportáíl go dtí EndNote"
+      librarian_view: "Amharc an Leabharlannaí"
+      refworks: "Easportáil go dtí Refworks"
+      sms: "SMS é seo"
+      title: "Uirlisí"
+    welcome: "Fáilte!"
   views:
     pagination:
-      first: "&laquo; First"
-      last: "Last &raquo;"
-      next: "Next &raquo;"
-      previous: "&laquo; Previous"
-      truncate: …
+      first: "&laquo; An chéad ceann"
+      last: "An ceann deireanach &raquo;"
+      next: "An chéad ceann eile &rsaquo;"
+      previous: "&lsaquo; An ceann roimhe seo"
+      truncate: "&hellip;"
     pagination_compact:
-      next: "Next &raquo;"
-      previous: "&laquo; Previous"
+      next: "An chéad ceann eile &rsaquo;"
+      previous: "&lsaquo; An ceann roimhe seo"
