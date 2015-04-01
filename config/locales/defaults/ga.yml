@@ -1,5 +1,5 @@
 ---
-ga: 
+ga:
   activemodel:
     errors:
       format: "%{attribute} %{message}"
@@ -103,7 +103,7 @@ ga:
       – "Déardaoin"
       – "Dé hAoine"
       – "Dé Sathairn"
-    formats: 
+    formats:
       default: "%d-%m-%Y"
       long: "%d %B, %Y"
       short: "%d %b"
@@ -173,7 +173,7 @@ ga:
     messages:
       accepted: "ní mór glacadh leis"
       blank: "Ní féidir leis a bheith folamh"
-      confirmation: "Ní ionann é agus an dearbhú" 
+      confirmation: "Ní ionann é agus an dearbhú"
       empty: "ní féidir leis a bheith folamh"
       equal_to: "ní mór dó a bheith cothrom le %{count}"
       even: "ní mór dó  a bheith cothrom"
@@ -207,9 +207,9 @@ ga:
     select:
       prompt: "Roghnaigh le do thoill"
     submit:
-      create: "Create %{model}"
-      submit: "Save %{model}"
-      update: "Update %{model}"
+      create: "Cruthaigh %{model}"
+      submit: "Sábháil %{model}"
+      update: "Nuashonraigh %{model}"
   number:
     currency:
       format:
@@ -236,14 +236,14 @@ ga:
           thousand: "Míle"
           trillion: "Trilliún"
           unit: ""
-      format: 
+      format:
         delimiter: ""
         precision: 3
         significant: true
         strip_insignificant_zeros: true
-      storage_units: 
+      storage_units:
         format: "%n %u"
-        units: 
+        units:
           byte:
             one: Beart
             other: Bearta
@@ -252,10 +252,10 @@ ga:
           mb: MB
           tb: TB
     percentage:
-      format: 
+      format:
         delimiter: ""
     precision:
-      format: 
+      format:
         delimiter: ""
   support:
     array:
