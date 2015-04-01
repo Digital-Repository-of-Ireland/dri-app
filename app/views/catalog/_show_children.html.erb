@@ -6,7 +6,8 @@
 <% if (!children.blank?) %>
 <div class="dri_object_institutes_block">
 	<div class="dri_institutes_title">
-		<span>Children</span>
+		<% # FIXME Add this to locale files %>
+		<span>Sub-collections</span>
 	</div>
 	<% children.take(4).each do |child| -%>
 	<article class="">

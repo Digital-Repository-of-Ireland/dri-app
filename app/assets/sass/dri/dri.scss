@@ -362,7 +362,7 @@ a {
   -moz-border-radius: 3px;
   border-radius: 3px;
   border: none;
-  padding: 6px 0 6px 0;
+  padding: 6px 10px 6px 10px;
   margin: 10px 0 10px 0;
 }
 
@@ -373,6 +373,15 @@ a {
 
 .dri_button_green:hover {
   background-color: darken($dri_green, 10%);
+}
+
+.dri_button_red {
+  @extend .dri_button;
+  background-color: $dri_red;
+}
+
+.dri_button_red:hover {
+  background-color: darken($dri_red, 10%);
 }
 
 .dri_button_grey {
@@ -1530,6 +1539,7 @@ h4.suggest {
             color: $dri_darkgrey;
             font-size: 90%;
           }
+
         }
       }
       .collapsed {
@@ -1568,6 +1578,20 @@ h4.suggest {
         color: $dri_grey;
         text-decoration: none;
       }
+      .dri_date_range {
+            text-decoration: none;
+            color: gray;
+            display: block;
+            background-color: #F8F8F8;
+            border-bottom: 2px solid #FFF;
+            margin-left: -15px;
+            margin-right: -15px;
+            padding: 10px 5px 10px 20px;
+       }
+       .dri_date_range_label {
+         float: right;
+         padding-right: 10px;
+       }
     }
   }
 }

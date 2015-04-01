@@ -6,6 +6,7 @@ source 'http://rubygems.org'
 gem 'rails','~> 4.1.0'
 
 gem 'blacklight', "5.7.2"
+gem "blacklight_range_limit"
 gem 'hydra-head', "7.2.2"
 gem 'sufia-models', "4.1.0"
 
@@ -52,6 +53,7 @@ gem 'high_voltage', '~> 2.1.0'
 gem 'is_it_working-cbeer'
 
 gem 'sass-rails' , '~> 4.0.2'
+gem 'compass-rails'
 # gem 'coffee-rails', '~> 3.2.1'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -71,6 +73,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'guard-livereload', require: false
+  gem 'compass'
 
   gem "zeus", require: false
 

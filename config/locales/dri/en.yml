@@ -206,6 +206,11 @@ en:
           values:
             collections: Collections
             no_collections: "No collections"
+          dates:
+            date_range: "Date Range"
+            date_range_from: "From"
+            date_range_to: "To"
+            date_set: Set
         forms:
           all_objects_in_collection: "All Objects in this Collection"
           audio:
@@ -257,7 +262,9 @@ en:
           edit_this_record: "Edit this record"
           generate_surrogates: "Generate surrogates"
           listen: listen
-          mark_all_reviewed: "Mark Collection as Reviewed"
+          review_objects: "Review Objects"
+          mark_all_reviewed: "Mark Collection Objects Reviewed"
+          mark_all_descendants_reviewed: "Mark Collection AND Sub-Collection Objects Reviewed"
           mark_object_draft: "Mark Object as Draft"
           mark_object_reviewed: "Mark Object as Reviewed"
           not_caracterized: "not yet characterized"
@@ -284,8 +291,9 @@ en:
           remove: Remove
           set_collection: "Set as Current"
         confirm_all_reviewed: "This will mark all objects within the collection as Reviewed. Continue?"
+        confirm_all_descendants_reviewed: "This will mark all objects within the collection AND sub-collections as Reviewed. Continue?"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
-        confirm_publish: "This will make all reviewed objects accessible. Continue?"
+        confirm_publish: "This will make all reviewed objects accessible. This can not be undone! Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
         edit: "Edit Collection"
         index:
