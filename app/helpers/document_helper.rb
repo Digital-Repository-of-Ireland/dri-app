@@ -45,20 +45,20 @@ module DocumentHelper
   # For a given collection (sub-collection) object returns a list of the immediate child sub-collections
   def get_collection_children document, limit
     children_array = []
-
+    # Find all immediate children of this collection
     solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{document['id']}\""
-    
-    docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => limit)
+    # Filter to only get those that are collections: fq=is_collection_tesim:true
+    q_result = Solr::Query.new(solr_query, limit, :fq => "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true")
 
-    if (docs != [])
-      docs.each do |curr_doc|
-          if (curr_doc[Solrizer.solr_name('is_collection', :stored_searchable, type: :string)].first == "true")
-            link_text = curr_doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
-            # FIXME For now, the EAD type is indexed last in the type solr index, review in the future
-            type = curr_doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
+    while (q_result.has_more?)
+      objects_docs = q_result.pop
+      objects_docs.each do |obj_doc|
+        doc = SolrDocument.new(obj_doc)
+        link_text = doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+        # FIXME For now, the EAD type is indexed last in the type solr index, review in the future
+        type = doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
 
-            children_array = children_array.to_a.push [link_text, catalog_path(curr_doc['id']).to_s, type.to_s]
-          end
+        children_array = children_array.to_a.push [link_text, catalog_path(doc['id']).to_s, type.to_s]
       end
     end
 
