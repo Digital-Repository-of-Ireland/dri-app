@@ -96,13 +96,13 @@ ga:
       - Samh
       - Noll
     day_names:
-      – "Dé Domhnaigh"
-      – "Dé Luain"
-      – "Dé Máirt"
-      – "Dé Céadaoin"
-      – "Déardaoin"
-      – "Dé hAoine"
-      – "Dé Sathairn"
+      - "Dé Domhnaigh"
+      - "Dé Luain"
+      - "Dé Máirt"
+      - "Dé Céadaoin"
+      - "Déardaoin"
+      - "Dé hAoine"
+      - "Dé Sathairn"
     formats:
       default: "%d-%m-%Y"
       long: "%d %B, %Y"
@@ -117,10 +117,10 @@ ga:
       - "Meitheamh"
       - "Iúil"
       - "Lúnasa"
-      – "Meán Fómhair"
-      – "Deireadh Fómhair"
+      - "Meán Fómhair"
+      - "Deireadh Fómhair"
       - "Samhain"
-      – "Nollaig"
+      - "Nollaig"
     order:
       - !ruby/symbol day
       - !ruby/symbol month
