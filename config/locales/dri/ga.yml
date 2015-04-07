@@ -1,3 +1,4 @@
+
 ---
 ga:
   dri:
@@ -17,16 +18,16 @@ ga:
         email: Ríomhphost
         first_name: "Céad Ainm"
         help_bubbles: "Taispeáin Bolgáin na Cabhrach"
-        last_name: "Sloinne"
+        last_name: Sloinne
         new_password: "Pasfhocal Nua"
-        off_text: "AS"
-        on_text: "AIR"
+        off_text: AS
+        on_text: AIR
         request_to_leave: "Iarratas Imeachta"
         requested_to_leave: "D'iarr tú imeacht as an ngrúpa seo"
         save_edits: "Sábháil an Eagarthóireacht"
         settings: Socruithe
       home:
-        featured: Faoi thrácht
+        featured: "Faoi thrácht"
         featured_collections: "Bailiúcháin Faoi Thrácht"
         introtext: "Taisclann dhigiteach iontaofa náisiúnta í Taisclann Dhigiteach na hÉireann d’ábhar sóisialta agus cultúrtha na hÉireann. Ar an suíomh seo is féidir bailiúcháin chomhaimseartha agus stairiúla a aimsiú agus a chuardach ó aon láthair amháin.  Tá súil againn go mbainfidh tú sult as do chuairt."
         links:
@@ -59,7 +60,7 @@ ga:
           results_found: "Amlíne Chuardaigh Reatha"
       user_profile:
         collection_title: "Teideal an Bhailiúcháin"
-        edit: Déan Eagarthóireacht
+        edit: "Déan Eagarthóireacht"
         email: Ríomhphost
         my_account: "Mo Chuntas"
         name: Ainm
@@ -68,11 +69,11 @@ ga:
     data:
       types:
         Image: Íomhá
-        MixedType: "Ilchineálach"
+        MixedType: Ilchineálach
         MovingImage: Físeán
         Sound: Fuaim
         Text: Téacs
-        Title: Cineálacha Meán
+        Title: "Cineálacha Meán"
         Unknown: Anaithnid
     flash:
       alert:
@@ -93,6 +94,7 @@ ga:
         virus_detected: "Aimsíodh víreas sa chomhad a uaslódáladh: %{virus}"
       error:
         cover_image_not_saved: "Ní féidir an íomhá chlúdaigh a shábháil"
+        manager_user_permission: "You do not have permission to create a manager user"
         no_type_specified: "Ní mór cineál oibiachta bailí a shonrú"
         not_created: "Ní féidir é seo a chruthú. Seiceáil na ceadanna socraithe"
         not_updated: "Níor tugadh %{item} cothrom le dáta. Seiceáil na ceadanna socraithe"
@@ -110,6 +112,8 @@ ga:
         generating_surrogates: "Tá ionadaithe dá nginiúint"
         licence_created: "D'éirigh leat an ceadúnas a chruthú"
         licence_updated: "D'éirigh leat an ceadúnas a thabhairt cothrom le dáta"
+        manager_user_created: "User %{email} successfully granted manager permissions"
+        manager_user_invalid: "User %{email} does not exist, please have the user create an account first"
         metadata_updated: "D'éirigh leat na meiteashonraí a thabhairt cothrom le dáta."
         no_xml_schema: "Níl scéimre sa chomhad XML lena bhailíochtú."
         removed_from_collection: "Baineadh an oibiacht as an mbailiúchán."
@@ -142,11 +146,13 @@ ga:
       ingest: "Glac isteach"
       institutions: Institiúidí
       manage: Bainistigh
+      manage_users: "Add Manager User"
       my_collections: "Mo chuid bailiúchán"
       new_collection: "Bailiúchán Nua"
-      object: "Oibiacht"
-      objects: "Oibiachtaí"
+      object: Oibiacht
+      objects: Oibiachtaí
       privacy: "Polasaí um Príobháideachas agus Fianáin"
+      reports: Reports
       resque: "Freastalaí Resque"
       sitemap: "Mapa Suímh"
       usergroups: "Úsáideoirí agus Grúpaí"
@@ -201,6 +207,11 @@ ga:
           clear_search_facet_list: "Glan Gach Rud"
           remove_from_collection: "Bain ón mbailiúchán"
         facets:
+          dates:
+            date_range: "Date Range"
+            date_range_from: From
+            date_range_to: To
+            date_set: Set
           values:
             collections: Bailiúcháin
             no_collections: "Bailiúchán Ar Bith"
@@ -215,7 +226,7 @@ ga:
           bookmark_collection: "Leabharmharcáil an Bailiúchán"
           bookmark_object: "Leabharmharcáil an Oibiacht"
           file: Comhad
-          image_file: "Íomhá"
+          image_file: Íomhá
           manage_bookmark: "Bainistigh do chuid Leabharmharcanna"
           metadata: "Meiteashonraí (XML)"
           metadata_full: "Meiteashonraí Iomlán"
@@ -255,14 +266,16 @@ ga:
           edit_this_record: "Cuir an taifead seo in eagar"
           generate_surrogates: "Gin na hionadaithe"
           listen: Éist
+          mark_all_descendants_reviewed: "Mark Collection AND Sub-Collection Objects Reviewed"
           mark_all_reviewed: "Bailiúchán Athbhreithnithe"
-          mark_object_draft: "Dréacht-Oibiacht"
+          mark_object_draft: Dréacht-Oibiacht
           mark_object_reviewed: "Oibiacht Athbhreithnithe"
           not_caracterized: "Níor aimsíodh an mianach go fóill"
           publish: "Foilsigh an bailiúchán"
           publish_reviewed: "Foilsigh na hoibiachtaí athbhreithnithe"
           related: "Comhaid bainteach leis"
-          reviewed: "Athbhreithnithe"
+          review_objects: "Review Objects"
+          reviewed: Athbhreithnithe
           status_update: "Stádas nuashonraithe"
           unknown_size: "Méid anaithnid"
           upload_file: "Uaslódáil an comhad"
@@ -279,8 +292,9 @@ ga:
           create_collection: "Cruthaigh Bailiúchán"
           delete_collection: "Scrios an Bailiúchán"
           new_collection: "Bailiúchán Nua"
-          remove: "Bain"
+          remove: Bain
           set_collection: "Socraigh mar Bhailiúchán Reatha"
+        confirm_all_descendants_reviewed: "This will mark all objects within the collection AND sub-collections as Reviewed. Continue?"
         confirm_all_reviewed: "Léireofar gur athbhreithníodh gach oibiacht sa mbailiúchán. Lean ar aghaidh?"
         confirm_delete: "Scriosfar an bailiúchán agus gach oibiacht sa mbailiúchán. Lean ar aghaidh?"
         confirm_publish: "Beidh rochtain ar gach oibiacht athbhreithnithe. Lean ar aghaidh?"
@@ -305,9 +319,9 @@ ga:
           associate: "Comhlachaigh Institiúid"
           associate_depositing: "Roghnaigh an Institiúid Taiscthe"
           form:
-            logo: "Lógó"
-            name: "Ainm"
-            url: "url"
+            logo: Lógó
+            name: Ainm
+            url: url
           more: "Taispeáin tuilleadh"
           title: "Institiúidí agus Urraitheoirí"
         legends:
@@ -410,9 +424,13 @@ ga:
           new: "Cuir ceadúnas nua leis"
         forms:
           description: "Cur síos"
-          logo: "Lógó"
-          name: "Ainm"
-          url: "url"
+          logo: Lógó
+          name: Ainm
+          url: url
+      manager_users:
+        buttons:
+          submit: Create
+        email: "Enter user's email:"
       metadata:
         dublin_core: "Dublin Core"
         qualified_dublin_core: "Qualifed Dublin Core"
@@ -423,12 +441,12 @@ ga:
           depositor: Taisceoir
           edit: "Rochtain Eagarthóireachta"
           embargo: Toirmeasc
-          inherit: Faigh le hoidhreacht
+          inherit: "Faigh le hoidhreacht"
           manage: Bainisteoirí
           master_file: "Máistirchomhad Inrochtana"
           master_file_desc: "Má tá sé  inrochtana, beidh úsáideoirí a bhfuil rochtain léitheoireachta acu in ann an máistirchomhad a íoslódáil"
           page: "Rochtain ar Leathanaigh"
-          private: "Príobháideach"
+          private: Príobháideach
           private_master_file: "Máistirchomha(i)d P(h)ríobháideach(a)"
           private_metadata: "Meiteashonraí Príobháideacha"
           private_metadata_access: "De bhrí gur rochtain phríobháideach a shocraigh tú ar na meiteashonraí, is féidir leat daoine a lua anseo gur mhaith leat rochtain a bheith acu orthu."
@@ -437,7 +455,7 @@ ga:
           public_metadata: "Meiteashonraí Poiblí"
           read: "Rochtain Léitheoireachta"
           registered: "Logáilte Isteach"
-          restricted: "Srianta"
+          restricted: Srianta
           search: "Rochtain Cuardaigh"
         buttons:
           add_master: "Cuir Máistirchomhad leis"
@@ -466,33 +484,33 @@ ga:
           add_source: "Cuir Foinse leis"
           add_subject: "Cuir Ábhar leis"
           apply_to_all: "Cuir i bhfeidhm ar gach ceann"
-          authors: "Údair"
+          authors: Údair
           broadcast_date: "Dáta Craolta"
           creation_date: "Dáta Cruthaithe"
-          delete: "Bain"
+          delete: Bain
           description: "Cur Síos"
-          editors: "Eagarthóirí"
+          editors: Eagarthóirí
           governing_collection: "Bailiúchán Rialaithe"
-          guests: "Aíonna"
-          language: "Teanga"
+          guests: Aíonna
+          language: Teanga
           object_status: "Stádas na hOibiachta"
-          places: "Áiteanna"
-          presenters: "Láithreoirí"
-          producers: "Léiritheoirí"
-          publisher: "Foilsitheoir"
-          rights: "Cearta"
-          sources: "Foinsí"
-          status: "Stádas"
-          subjects: "Ábhair"
-          title: "Teideal"
+          places: Áiteanna
+          presenters: Láithreoirí
+          producers: Léiritheoirí
+          publisher: Foilsitheoir
+          rights: Cearta
+          sources: Foinsí
+          status: Stádas
+          subjects: Ábhair
+          title: Teideal
         legends:
           access_control: "Rialúcháin Rochtana"
           audio_caption: "Uaslódáladh máistirchomhad fuaime cheana féin."
-          cite: "Luaigh"
-          comments: "Barúlacha"
+          cite: Luaigh
+          comments: Barúlacha
           file_caption: "Uaslódáladh máistirchomhad cheana féin."
           likes: "Is maith liom"
-          metadata: "Meiteashonraí"
+          metadata: Meiteashonraí
           replace_caption: "Athchuir meiteashonraí trí chomhad XML a úsáid."
           replace_metadata: "Athchuir meiteashonraí"
           rtf_surrogate_text: "Íoslódáil an tsócmhainn ón url thíos le do thoil."
@@ -503,12 +521,12 @@ ga:
           upload_file_caption: "Níor uaslódáladh comhad ar bith. Uaslódáil máistirchomhad le do thoil."
           upload_pdf: "Uaslódáil comhad PDF"
           view_collection: "Breathnaigh ar an mBailiúchán"
-          viewcount: "Amhairc"
+          viewcount: Amhairc
         links:
           all_objects: "Gach Oibiacht"
-          cancel: "Cealaigh"
-          download: "íoslódáil"
-          listen: "éist"
+          cancel: Cealaigh
+          download: íoslódáil
+          listen: éist
           view_record: "Féach ar an taifead"
       static:
         admin:
@@ -1003,281 +1021,274 @@ ga:
         zxx: "No linguistic content; Not applicable"
         zza: "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
       marc_relator:
-        abr: "Giorraitheoir"
+        abr: Giorraitheoir
         acp: "Cóipeálaí ealaíne"
-        act: "Aisteoir"
+        act: Aisteoir
         adi: "Stiúrthóir ealaíne"
-        adp: "Oiriúnóir"
+        adp: Oiriúnóir
         aft: "Údar iarfhocail, colafain, srl."
-        anl: "Anailísí"
-        anm: "Beochantóir"
-        ann: "Anótáileoir"
+        anl: Anailísí
+        anm: Beochantóir
+        ann: Anótáileoir
         ant: "Réamhtheachtaí bibleagrafach"
-        ape: "Achomharcaí"
-        apl: "Achomharcóir"
-        app: "Iarrthóir"
+        ape: Achomharcaí
+        apl: Achomharcóir
+        app: Iarrthóir
         aqt: "Údar i sleachta nó in achoimrí"
-        arc: "Ailtire"
+        arc: Ailtire
         ard: "Feidhmeannach ealaíne"
-        arr: "Cóiritheoir"
-        art: "Ealaíontóir"
-        asg: "Ionadaí"
+        arr: Cóiritheoir
+        art: Ealaíontóir
+        asg: Ionadaí
         asn: "Ainm comhcheangailte"
-        ato: "Sínitheoir"
+        ato: Sínitheoir
         att: "Ainm luaite"
-        auc: "Ceantálaí"
+        auc: Ceantálaí
         aud: "Údar an chomhrá"
         aui: "Údar an réamhrá"
         aus: "Scríbhneoir scáileáin"
-        aut: "Údar"
+        aut: Údar
         bdd: "Dearthóir ceangail"
         bjd: "Dearthóir chlúdach an leabhair"
         bkd: "Dearthóir leabhair"
         bkp: "Léiritheoir leabhair"
         blw: "Scríbhneoir achoimre"
-        bnd: "Ceanglóir"
+        bnd: Ceanglóir
         bpd: "Dearthóir leabharshuaitheantais"
-        brd: "Craoltóir"
+        brd: Craoltóir
         brl: "Cabhróir braille"
         bsl: "Díoltóir leabhar"
-        cas: "Múnlóir"
-        ccp: "Coincheapadóir"
-        chr: "Córagrafóir"
-        clb: "Comhoibrí"
-        cli: "Cliant"
-        cll: "Callagrafaí"
-        clr: "Dathadóir"
-        clt: "Collchlódóir"
-        cmm: "Tráchtaire"
-        cmp: "Cumadóir"
-        cmt: "Cló-eagraí"
-        cnd: "Stiúrthóir"
-        cng: "Cineamatagrafóir"
-        cns: "Cinsire"
-        coe: "Conspóideach-achomharcaí"
-        col: "Bailitheoir"
-        com: "Tiomsaitheoir"
-        con: "Coimeádaí"
+        cas: Múnlóir
+        ccp: Coincheapadóir
+        chr: Córagrafóir
+        clb: Comhoibrí
+        cli: Cliant
+        cll: Callagrafaí
+        clr: Dathadóir
+        clt: Collchlódóir
+        cmm: Tráchtaire
+        cmp: Cumadóir
+        cmt: Cló-eagraí
+        cnd: Stiúrthóir
+        cng: Cineamatagrafóir
+        cns: Cinsire
+        coe: Conspóideach-achomharcaí
+        col: Bailitheoir
+        com: Tiomsaitheoir
+        con: Coimeádaí
         cor: "Cláraitheoir bailiúcháin"
-        cos: "Conspóideach"
-        cot: "Conspóideach-achomharcóir"
+        cos: Conspóideach
+        cot: Conspóideach-achomharcóir
         cou: "Rialaithe ag an gcúirt"
         cov: "Dearthóir an chlúdaigh"
         cpc: "Éilitheoir an chóipchirt"
-        cpe: "Gearánach-achomharcaí"
+        cpe: Gearánach-achomharcaí
         cph: "Sealbhóir an chóipchirt"
-        cpl: "Gearánach"
-        cpt: "Gearánach-achomharcóir"
-        cre: "Cruthaitheoir"
-        crp: "Comhfhreagraí"
-        crr: "Ceartaitheoir"
+        cpl: Gearánach
+        cpt: Gearánach-achomharcóir
+        cre: Cruthaitheoir
+        crp: Comhfhreagraí
+        crr: Ceartaitheoir
         crt: "Tuairisceoir cúirte"
-        csl: "Comhairleoir"
+        csl: Comhairleoir
         csp: "Comhairleoir le tionscnamh"
         cst: "Dearthóir feistis"
-        ctb: "Rannpháirtí"
-        cte: "Conspóidí-achomharcaí"
-        ctg: "Cairtghrafaí"
-        ctr: "Conraitheoir"
-        cts: "Conspóidí"
-        ctt: "Conspóidí-achomharcóir"
-        cur: "Coimeádaí"
+        ctb: Rannpháirtí
+        cte: Conspóidí-achomharcaí
+        ctg: Cairtghrafaí
+        ctr: Conraitheoir
+        cts: Conspóidí
+        ctt: Conspóidí-achomharcóir
+        cur: Coimeádaí
         cwt: "Tráchtaire do théacs scríofa"
         dbp: "Láthair an dáileacháin"
-        dfd: "Cosantóir"
-        dfe: "Cosantóir-achomharcaí"
-        dft: "Cosantóir-achomharcóir"
+        dfd: Cosantóir
+        dfe: Cosantóir-achomharcaí
+        dft: Cosantóir-achomharcóir
         dgg: "Institiúid bhronnta na céime"
-        dgs: "Stiúrthóir na céime"
         dis: "Mac léinn a chuireann tráchtas i láthair"
-        dln: "Dreachadóir"
-        dnc: "Damhsóir"
-        dnr: "Bronntóir"
-        dpc: "Léirithe"
-        dpt: "Taisceoir"
-        drm: "Dréachtóir"
-        drt: "Stiúrthóir"
-        dsr: "Dearthóir"
-        dst: "Dáileoir"
+        dln: Dreachadóir
+        dnc: Damhsóir
+        dnr: Bronntóir
+        dpc: Léirithe
+        dpt: Taisceoir
+        drm: Dréachtóir
+        drt: Stiúrthóir
+        dsr: Dearthóir
+        dst: Dáileoir
         dtc: "Ranníocóir sonraí"
-        dte: "Tiomnaí"
+        dte: Tiomnaí
         dtm: "Bainisteoir sonraí"
-        dto: "Tiomnóir"
+        dto: Tiomnóir
         dub: "Údar éiginnte"
         edc: "Eagarthóir an tiomsacháin"
         edm: "Eagarthóir shaothar na n-íomhánna gluaisteacha"
-        edt: "Eagarthóir"
-        egr: "Greanadóir"
-        elg: "Leictreoir"
-        elt: "Leictreachlódóir"
-        eng: "Innealtóir"
+        edt: Eagarthóir
+        egr: Greanadóir
+        elg: Leictreoir
+        elt: Leictreachlódóir
+        eng: Innealtóir
         enj: "Dlínse an achtaithe"
-        etr: "Eitseálaí"
+        etr: Eitseálaí
         evp: "Láthair na hócáide"
-        exp: "Saineolaí"
+        exp: Saineolaí
         fac: "Déantóir facsamhla"
         fds: "Dáileoir scannáin"
         fld: "Stiúrthóir allamuigh"
         flm: "Eagarthóir scannáin"
         fmd: "Stiúrthóir scannáin"
-        fmk: "Scannánóir"
-        fmo: "Iar-úinéir"
+        fmk: Scannánóir
+        fmo: Iar-úinéir
         fmp: "Léiritheoir scannáin"
-        fnd: "Maoinitheoir"
+        fnd: Maoinitheoir
         fpy: "An chéad pháirtí"
-        frg: "Brionnóir"
+        frg: Brionnóir
         gis: "Speisialtóir le faisnéis thíreolaíoch"
         grt: "Teicneoir grafach"
-        his: "Óstinstitiúid"
-        hnr: "Gradamaí"
-        hst: "Óstach"
-        ill: "Maisitheoir"
-        ilu: "Maisitheoir"
-        ins: "Inscríobhaí"
-        inv: "Tionscnóir"
+        his: Óstinstitiúid
+        hnr: Gradamaí
+        hst: Óstach
+        ill: Maisitheoir
+        ilu: Maisitheoir
+        ins: Inscríobhaí
+        inv: Tionscnóir
         isb: "Comhlucht an eisithe"
-        itr: "Ionstramaí"
-        ive: "Agallaí"
-        ivr: "Agallóir"
-        jud: "Breitheamh"
+        itr: Ionstramaí
+        ive: Agallaí
+        ivr: Agallóir
+        jud: Breitheamh
         jug: "Dlínse atá rialaithe"
-        lbr: "Saotharlann"
+        lbr: Saotharlann
         lbt: "Údar leabhróige"
         ldr: "Stiúrthóir saotharlainne"
-        led: "Ceannasaí"
-        lee: "Leabhalaí-achomharcaí"
-        lel: "Leabhalaí"
-        len: "Iasachtóir"
-        let: "Leabhalaí-achomharcóir"
+        led: Ceannasaí
+        lee: Leabhalaí-achomharcaí
+        lel: Leabhalaí
+        len: Iasachtóir
+        let: Leabhalaí-achomharcóir
         lgd: "Dearthóir soilsithe"
-        lie: "Leabhalach-achomharcaí"
-        lil: "Leabhalach"
-        lit: "Leabhalach-achomharcóir"
+        lie: Leabhalach-achomharcaí
+        lil: Leabhalach
+        lit: Leabhalach-achomharcóir
         lsa: "Ailtire tírdhreacha"
-        lse: "Ceadúnaí"
-        lso: "Ceadúnóir"
-        ltg: "Liteagrafaí"
-        lyr: "Liriceoir"
+        lse: Ceadúnaí
+        lso: Ceadúnóir
+        ltg: Liteagrafaí
+        lyr: Liriceoir
         mcp: "Tras-scríobhaí ceoil"
         mdc: "Teagmhálaí meiteashonraí"
-        med: "Meán"
         mfp: "Láthair na déantúsaíochta"
-        mfr: "Déantúsóir"
-        mod: "Ceansaitheoir"
-        mon: "Monatóir"
-        mrb: "Marmaróir"
+        mfr: Déantúsóir
+        mod: Ceansaitheoir
+        mon: Monatóir
+        mrb: Marmaróir
         mrk: "Eagarthóir marcála"
         msd: "Stiúrthóir ceoil"
         mte: "Greanadóir miotail"
-        mtk: "Scríbhneoir miontuairiscí"
-        mus: "Ceoltóir"
-        nrt: "Tráchtaire"
-        opn: "Freasúra"
-        org: "Cruthaitheoir"
+        mus: Ceoltóir
+        nrt: Tráchtaire
+        opn: Freasúra
+        org: Cruthaitheoir
         orm: "Eagraí cruinnithe"
         osp: "Láithreoir ar scáileán"
-        oth: "Eile"
-        own: "Úinéir"
+        oth: Eile
+        own: Úinéir
         pan: "Ball painéil"
-        pat: "Pátrún"
+        pat: Pátrún
         pbd: "Stiúrthóir foilseacháin"
-        pbl: "Foilsitheoir"
+        pbl: Foilsitheoir
         pdr: "Stiúrthóir tionscnaimh"
         pfr: "Léitheoir profaí"
-        pht: "Grianghrafadóir"
+        pht: Grianghrafadóir
         plt: "Déantóir plátaí"
         pma: "Gníomhaireacht an cheadaithe"
         pmn: "Bainisteoir léirithe"
         pop: "Printéir plátaí"
         ppm: "Déantóir páipéir"
-        ppt: "Puipeadóir"
+        ppt: Puipeadóir
         pra: "Moltóir tráchtais"
         prc: "Teagmhálaí próisis"
         prd: "Pearsanra léirithe"
-        pre: "Láithreoir"
-        prf: "Taibheoir"
-        prg: "Cláraitheoir"
+        pre: Láithreoir
+        prf: Taibheoir
+        prg: Cláraitheoir
         prm: "Déantóir priontaí"
         prn: "Comhlucht léirithe"
-        pro: "Léiritheoir"
+        pro: Léiritheoir
         prp: "Láthair an léirithe"
         prs: "Dearthóir léirithe"
-        prt: "Printéir"
-        prv: "Soláthraí"
+        prt: Printéir
+        prv: Soláthraí
         pta: "Iarratasóir paitinne"
-        pte: "Gearánaí-achomharcaí"
-        ptf: "Gearánaí"
+        pte: Gearánaí-achomharcaí
+        ptf: Gearánaí
         pth: "Sealbhóir na paitinne"
-        ptt: "Gearánaí-achomharcóir"
+        ptt: Gearánaí-achomharcóir
         pup: "Láthair an fhoilsithe"
         rbr: "Déantóir ceannteideal"
-        rcd: "Taifeadóir"
+        rcd: Taifeadóir
         rce: "Innealtóir taifeadta"
-        rcp: "Seolaí"
+        rcp: Seolaí
         rdd: "Stiúrthóir raidió"
         red: "Forbróir chreatlach an tsaothair"
         ren: "Déantóir scáthaithe"
-        res: "Taighdeoir"
-        rev: "Léirmheastóir"
+        res: Taighdeoir
+        rev: Léirmheastóir
         rpc: "Léiritheoir raidió"
-        rps: "Taisclann"
-        rpt: "Tuairisceoir"
+        rps: Taisclann
+        rpt: Tuairisceoir
         rpy: "An pháirtí atá freagrach"
-        rse: "Freagróir-achomharcaí"
-        rsg: "Ath-léiritheoir"
-        rsp: "Freagróir"
-        rsr: "Deisitheoir"
-        rst: "Freagróir-achomharcóir"
+        rse: Freagróir-achomharcaí
+        rsg: Ath-léiritheoir
+        rsp: Freagróir
+        rsr: Deisitheoir
+        rst: Freagróir-achomharcóir
         rth: "Ceann na foirne taighde"
         rtm: "Ball na foirne taighde"
         sad: "Comhairleoir eolaíochta"
         sce: "Scríbhneoir radhairc"
-        scl: "Dealbhóir"
-        scr: "Scríobhaí"
+        scl: Dealbhóir
+        scr: Scríobhaí
         sds: "Dearthóir fuaime"
-        sec: "Rúnaí"
+        sec: Rúnaí
         sgd: "Stiúrthóir stáitse"
-        sgn: "Sínitheoir"
+        sgn: Sínitheoir
         sht: "Óstach cúnta"
-        sll: "Díoltóir"
-        sng: "Amhránaí"
-        spk: "Cainteoir"
-        spn: "Urraitheoir"
+        sll: Díoltóir
+        sng: Amhránaí
+        spk: Cainteoir
+        spn: Urraitheoir
         spy: "An dara páirtí"
-        srv: "Suirbhéir"
+        srv: Suirbhéir
         std: "Dearthóir seit"
-        stg: "Suíomh"
-        stl: "Scéalaí"
+        stg: Suíomh
+        stl: Scéalaí
         stm: "Bainisteoir stáitse"
         stn: "Comhlacht caighdeán"
-        str: "Steiréaclódóir"
+        str: Steiréaclódóir
         tcd: "Stiúrthóir teicniúil"
-        tch: "Múinteoir"
+        tch: Múinteoir
         ths: "Comhairleoir tráchtais"
         tld: "Stiúrthóir teilifíse"
         tlp: "Léiritheoir teilifíse"
-        trc: "Tras-scríobhaí"
-        trl: "Aistritheoir"
+        trc: Tras-scríobhaí
+        trl: Aistritheoir
         tyd: "Dearthóir cló-aghaidhe"
         tyg: "Bainisteoir cló-aghaidhe"
         uvp: "Láthair na hOllscoile"
-        vac: "Aisteoir gutha"
-        vdg: "Físghrafadóir"
-        voc: "Amhránaí"
+        vdg: Físghrafadóir
+        voc: Amhránaí
         wac: "Scríbhneoir tráchtaireachta breise"
         wal: "Scríbhneoir liricí breise"
         wam: "Scríbhneoir ábhair a ghabhann leis an mír"
         wat: "Scríbhneoir téacs bhreise"
         wdc: "Gearrthóir adhmaid"
         wde: "Greanadóir adhmaid"
-        win: "Scríbhneoir an réamhrá"
-        wit: "Finné"
-        wpr: "Scríbhneoir brollaigh"
-        wst: "Scríbhneoir ábhar téacsaigh bhreise"
+        wit: Finné
       name:
         marc_relators: "MARC Relators"
     window:
       alert:
         coming_soon: "Ag teacht go luath"
       modal:
-        close: "Dún"
+        close: Dún

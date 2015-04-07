@@ -2,7 +2,7 @@
         (controller.controller_name.eql?('ingest')  && (controller.action_name.eql?('new') || controller.action_name.eql?('create'))) ||
         (controller.controller_name.eql?('licences')  && (controller.action_name.eql?('new') || controller.action_name.eql?('edit') || controller.action_name.eql?('index'))) ||
         (controller.controller_name.eql?('static') && controller.action_name.eql?('admin'))) ||
-        controller.controller_name.eql?('workspace') %>
+        controller.controller_name.eql?('workspace') || controller_name.eql?('manage_users') %>
     <li class="dri_main_nav_top dropdown selected">
 <% else %>
     <li class="dri_main_nav_top dropdown">
@@ -31,6 +31,19 @@
       </li>
 
   <% end %>
+
+
+  <% if signed_in? && current_user.is_om? %>
+      <% if controller.controller_name.eql?('manage_users') %>
+          <li role="presentation" class="selected">
+      <% else %>
+          <li role="presentation">
+      <% end %>
+      <%= link_to t('dri.headerlinks.manage_users'), main_app.manage_users_path, :tabindex => "-1" %>
+      </li>
+  <% end %>
+
+
   <% if signed_in? && current_user.is_admin? %> <!-- ok -->
           <li role="presentation">
       <%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, :id => "resque", :tabindex => "-1" %>
@@ -55,8 +68,9 @@
       <% else %>
         <li>
       <% end %>
-      <%= link_to t('user_groups.views.header.reports'), main_app.page_path('reports'), :tabindex => "-1" %>
+      <%= link_to t('dri.headerlinks.reports'), main_app.page_path('reports'), :tabindex => "-1" %>
       </li>
   <% end %>
+
 </ul>
 </li>

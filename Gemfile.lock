@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-user-group.git
-  revision: c57af4b4b2d5974c36f4ff0c7de9771942979b94
+  revision: 64ef14feb15105e8c02b81b52de3eda2cecf53dc
   branch: develop
   specs:
     user_group (1.0.7)
