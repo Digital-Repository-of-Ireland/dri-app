@@ -61,7 +61,7 @@ end
 
 When /^I add the asset "(.*)" to "(.*?)"$/ do |asset, pid|
   steps %{
-    When I go to the "object" "edit" page for "#{pid}"
+    When I go to the "object" "show" page for "#{pid}"
     And I attach the asset file "#{asset}"
     And I press the button to upload a file
     Then I should see a success message for file upload

@@ -12,9 +12,12 @@ module ButtonTranslator
 
       when /^upload metadata$/
         "dri_upload_metadata_file"
+
+      when /^replace metadata$/
+        "replace_metadata"
  
-     when /^add an object$/
-       "add_object"
+      when /^add an object$/
+        "add_object"
 
       when /^upload XML$/
         "add_object_xml"

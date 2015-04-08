@@ -170,7 +170,6 @@ class ObjectsController < CatalogController
 
       while result_docs.has_more?
         doc = result_docs.pop
-        raise Exceptions::NotFound if doc.empty?
 
         doc.each do | r |
           item = {}
@@ -244,6 +243,8 @@ class ObjectsController < CatalogController
 
           @list << item
         end
+
+        raise Exceptions::NotFound if @list.empty?
       end
 
     else
