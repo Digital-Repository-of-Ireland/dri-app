@@ -41,7 +41,7 @@ module ButtonTranslator
         "edit_collection"
 
       when /^upload a file$/
-        "upload_file"
+        "dri_upload_asset_file"
 
       when /^replace a file$/
         "replace_file"
