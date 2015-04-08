@@ -116,18 +116,10 @@ class ObjectsController < CatalogController
     
     set_access_permissions(:batch)
 
-    # TODO Review this - added as MODS objects can also be added now
-    xml = MetadataHelpers.load_xml(params[:metadata_file])
-    standard = MetadataHelpers.get_metadata_standard_from_xml xml
-
-    @object = DRI::Batch.with_standard standard
-    @object.depositor = current_user.to_s
-    @object.update_attributes params[:batch]
-
-    if request.content_type == "multipart/form-data"
-      # FIXME commented for now as XML has already been loaded before
-      # xml = MetadataHelpers.load_xml(params[:metadata_file])
-      MetadataHelpers.set_metadata_datastream(@object, xml)
+    if params[:metadata_file].present?
+      create_from_upload
+    else
+      create_from_form
     end
 
     MetadataHelpers.checksum_metadata(@object)
@@ -332,5 +324,24 @@ class ObjectsController < CatalogController
     end
   end
 
+  private
+
+    def create_from_upload
+      xml = MetadataHelpers.load_xml(params[:metadata_file])
+      standard = MetadataHelpers.get_metadata_standard_from_xml xml
+
+      @object = DRI::Batch.with_standard standard
+      @object.depositor = current_user.to_s
+      @object.update_attributes params[:batch]
+
+      MetadataHelpers.set_metadata_datastream(@object, xml)
+    end
+ 
+    def create_from_form
+      @object = DRI::Batch.with_standard :qdc
+      @object.depositor = current_user.to_s
+      @object.update_attributes params[:batch]
+    end
+  
 end
 

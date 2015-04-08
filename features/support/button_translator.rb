@@ -11,7 +11,7 @@ module ButtonTranslator
         "ingest_metadata"
 
       when /^upload metadata$/
-        "replace_metadata"
+        "dri_upload_metadata_file"
  
      when /^add an object$/
        "add_object"
