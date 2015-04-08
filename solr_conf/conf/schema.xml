@@ -159,6 +159,12 @@
     <!-- you must define copyField source and dest fields explicity or schemaBrowser doesn't work -->
     <field name="all_text_timv" type="text" stored="false" indexed="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true"/>
 
+    <!-- Creation date dateRange field -->
+    <field name="cdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
+        <!-- Published date dateRange field -->
+    <field name="pdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
+        <!-- Subject (temporal) dateRange field -->
+    <field name="sdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
 
   </fields>
 
@@ -327,7 +333,16 @@
       </analyzer>
     </fieldType>
    
-    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" /> 
-  </types>
+    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
+  
+    <!-- dateRange field will be updated to the DateRangeField Solr field type that will be available in Solr 5 -->
+    <!-- distErrPct="0" (no approximation); maxDistErr="1" (as data represents whole years)-->
+    <fieldType name="dateRange" class="solr.SpatialRecursivePrefixTreeFieldType"
+      geo="false"
+      worldBounds="-9999 -9999 9999 9999"
+      distErrPct="0"
+      maxDistErr="1"
+      units="degrees"/>
+  </types> 
   
 </schema>

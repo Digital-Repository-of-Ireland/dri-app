@@ -1,20 +1,20 @@
 # The default namespace maps to the default namespace for generating rels_ext from solr
 :default_namespace: info:fedora/fedora-system:def/relations-external#
 
-# namespace mappings--- 
+# namespace mappings---
 # you can add specific mappings for your institution by providing the following:
 #   namespace_uri:
 #     :relationship_symbol: relationship_identifier
-# 
+#
 # For example, if you have the following element in your rels_ext:
-#  
+#
 #  <oai:itemID>oai:example.edu:changeme:500</oai:itemID>
-# 
+#
 # With the last two lines of this file uncommented, the relationships hash of your object will include:
 #   :oai_item_id => ["info:fedora/oai:example.edu:changeme:500"]
 #
 :predicate_mapping:
-  info:fedora/fedora-system:def/relations-external#: 
+  info:fedora/fedora-system:def/relations-external#:
     :conforms_to: conformsTo
     :has_annotation: hasAnnotation
     :has_collection_member: hasCollectionMember
@@ -45,9 +45,37 @@
     :is_deployment_of: isDeploymentOf
     :has_service: hasService
     :has_model: hasModel
-  http://www.openarchives.org/OAI/2.0/: 
+  http://www.openarchives.org/OAI/2.0/:
     :oai_item_id: itemID
   http://projecthydra.org/ns/relations#:
     :is_governed_by: isGovernedBy
   http://dri.ie/ns/relations#:
     :is_preceded_by: isPrecededBy
+    :is_documentation_for: isDocumentationFor
+  # MODS RDF relationships (http://www.loc.gov/standards/mods/modsrdf-primer.html#relatedItem)
+  # preceding, succeeding, original, host, constituent, series,
+  # otherVersion, otherFormat, isReferencedBy, references, reviewOf
+  http://www.loc.gov/mods/rdf/v1#:
+    :related_preceding: relatedPreceding
+    :related_succeeding: relatedSucceeding
+    :related_original: relatedOriginal
+    :related_host: relatedHost
+    :related_constituent: relatedConstituent
+    :related_series: relatedSeries
+    :related_version: relatedVersion
+    :related_format: relatedFormat
+    :related_referenced_by: relatedReferencedBy
+    :related_reference: relatedReference
+    :related_review: relatedReview
+  # DC RDF relationships
+  # Relation, IsPartOf, IsReferencedBy, References, Source??, IsVersionOf, HasVersion, isFormatOf
+  http://purl.org/dc/terms/:
+    :dcterms_relation: relation
+    :dcterms_is_part_of: isPartOf
+    :dcterms_has_part: hasPart
+    :dcterms_is_referenced_by: isReferencedBy
+    :dcterms_references: references
+    :dcterms_is_version_of: isVersionOf
+    :dcterms_has_version: hasVersion
+    :dcterms_is_format_of: isFormatOf
+    #:dcterms_has_source: hasSource
