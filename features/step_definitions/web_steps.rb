@@ -366,9 +366,7 @@ end
 
 Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |id, negate, value|
   expectation = negate ? :should_not : :should
-  patiently do
-    page.send(expectation,  have_xpath("//select[@id = '#{select_box_to_id(id)}']/option[@value = '#{value}']"))
-  end
+  page.send(expectation,  have_xpath("//select[@id = '#{select_box_to_id(id)}']/option[@value = '#{value}']"))
 end
 
 Then /^I should see the image "(.*?)"$/ do |src|

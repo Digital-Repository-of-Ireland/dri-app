@@ -20,6 +20,7 @@ Feature:
     And I fill in "institute[url]" with "http://www.dri.ie/"
     And I attach the institute logo file "sample_logo.png"
     And I press the button to add an institute
+    And I wait for the ajax request to finish
     Then the "institute" drop-down should contain the option "TestInstitute"
 
   Scenario: Associating an institute with a collection
@@ -33,9 +34,11 @@ Feature:
     And I fill in "institute[url]" with "http://www.dri.ie/"
     And I attach the institute logo file "sample_logo.png"
     And I press the button to add an institute
+    And I wait for the ajax request to finish
     Then the "institute" drop-down should contain the option "TestInstitute"
     When I select "TestInstitute" from the selectbox for institute
     And I press the button to associate an institute
+    And I wait for the ajax request to finish
     Then I should see the image "TestInstitute.png"
 
   Scenario: Viewing associated institutes for a collection
