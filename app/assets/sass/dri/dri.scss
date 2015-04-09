@@ -5,15 +5,6 @@
   margin: 0 auto;
 }
 
-/* Anna updated html and body */
-$dri_green: #90993d;
-$dri_grey: #2f2f2f;
-$dri_greytext: gray;
-$dri_darkgrey: #2e2e2e;
-$dri_extra_lightgray: #9e9e9e;
-$dri_lightgrey: #b3b3b3;
-$dri_thingrey: #d9dadb;
-
 
 html {
   margin-bottom: 0.5em;
@@ -318,7 +309,7 @@ h3 {
   padding: 6px 13px 6px 15px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  border: 1px solid  #E18191;
+  border: 1px solid  $dri_grey_border;
 }
 
 form {
@@ -333,6 +324,7 @@ form {
   color: $dri_green;
   background-color: $dri_green;
   background-image: none;
+  
 }
 
 /* breadcrumbs */
@@ -348,7 +340,7 @@ form {
 /*-------------- Layout for Identity and Search feature --------------*/
 
 .dri_ident {
-  background: image-url("dri/dri_ident.png");
+  background: image-url($dri_logo_url);
   background-repeat: no-repeat;
   height: 135px;
   margin: 0px;
@@ -370,7 +362,7 @@ a {
   -moz-border-radius: 3px;
   border-radius: 3px;
   border: none;
-  padding: 6px 0 6px 0;
+  padding: 6px 10px 6px 10px;
   margin: 10px 0 10px 0;
 }
 
@@ -381,6 +373,15 @@ a {
 
 .dri_button_green:hover {
   background-color: darken($dri_green, 10%);
+}
+
+.dri_button_red {
+  @extend .dri_button;
+  background-color: $dri_red;
+}
+
+.dri_button_red:hover {
+  background-color: darken($dri_red, 10%);
 }
 
 .dri_button_grey {
@@ -544,7 +545,7 @@ input.dri_w230 {
   padding: 6px 15px 6px 15px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  border: 1px solid  #E18191;
+  border: 1px solid  $dri_grey_border;
 }
 
 /*-------------- Signin Social Media--------------*/
@@ -721,9 +722,17 @@ a .dri_signin_edugate:hover {
       display: block;
       -moz-border-radius: 2px;
       border-radius: 2px;
-      a {
-        color: #808082;
+      ul {
+          a {
+          color: #808082;
+          size: 1em;
+        }
+        .dropdown-menu > a {
+         font-size: 12px;
+          margin-left: 3px;
+        }
       }
+      
       .dri_language_links li {
         float: right;
         text-decoration: none;
@@ -732,6 +741,14 @@ a .dri_signin_edugate:hover {
         padding: 0;
         margin: 0;
       }
+      
+       .dropdown-menu > a {
+         font-size: 12px;
+          margin-left: 3px;
+        }
+       .dropdown-menu > a:hover {
+          color: $dri_green;
+        }
     }
   }
 }
@@ -1449,7 +1466,7 @@ h4.suggest {
   background-color: #FFD9DC;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  border: 1px solid  #E18191;
+  border: 1px solid  $dri_grey_border;
   float: left;
   h1 {
     margin: 0;
@@ -1522,6 +1539,7 @@ h4.suggest {
             color: $dri_darkgrey;
             font-size: 90%;
           }
+
         }
       }
       .collapsed {
@@ -1560,6 +1578,20 @@ h4.suggest {
         color: $dri_grey;
         text-decoration: none;
       }
+      .dri_date_range {
+            text-decoration: none;
+            color: gray;
+            display: block;
+            background-color: #F8F8F8;
+            border-bottom: 2px solid #FFF;
+            margin-left: -15px;
+            margin-right: -15px;
+            padding: 10px 5px 10px 20px;
+       }
+       .dri_date_range_label {
+         float: right;
+         padding-right: 10px;
+       }
     }
   }
 }
@@ -2641,6 +2673,15 @@ ul.dri_view_collection {
     i {
       margin-right: 5px;
     }
+    input[type="submit"] {
+      border: none;
+      background: none;
+      padding: 1px;
+      padding-left: 5px;
+    }
+    input:focus {
+      outline: none;
+    }
   }
 }
 
@@ -3357,4 +3398,29 @@ i {
     margin-right:10px;
     color: #808080;
   }
+}
+
+.dri_fileUpload {
+  position: relative;
+  overflow: hidden;
+  span {
+     z-index: 0;
+  }
+  button {
+    position: relative;
+    margin-left: 5px;
+    z-index: 100;
+  }
+}
+.dri_fileUpload input.upload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+ 
 }

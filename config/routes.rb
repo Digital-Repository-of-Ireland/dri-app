@@ -25,6 +25,8 @@ NuigRnag::Application.routes.draw do
     match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
     match 'newdepositingassociation' => 'institutes#associate_depositing', :via => :post, :as => :new_depositing_association
     match 'institutions' => 'institutes#index', :via => :get, :as => :institutions
+    match 'manage_users' => 'manage_users#new', :via => :get, :as => :manage_users
+    match 'manage_users' => 'manage_users#create', :via => :post, :as => :new_manage_user
 
     resources :licences
 
@@ -46,11 +48,12 @@ NuigRnag::Application.routes.draw do
     match 'objects/:id/history' => 'object_history#show', :via => :get, :as => :object_history
     match 'objects/:id/datastreams/:stream' => 'datastream_version#show', :via => :get, :as => :datastream_version
     match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download
-    
+
     match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
     match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
 
     match 'download_surrogate' => 'surrogates#download', :via => :get
+    match 'map/:id' => 'maps#show', :via => :get, :as => :map
     match 'maps_json' => 'maps#get', :via => :get
     match 'timeline_json' => 'timeline#get', :via => :get
 

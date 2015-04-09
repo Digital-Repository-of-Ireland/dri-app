@@ -1,21 +1,45 @@
 class MapsController < ApplicationController
 
+  before_filter :authenticate_user_from_token!, :only => [:show]
+  before_filter :authenticate_user!, :only => [:show]
+
+  def show
+    enforce_permissions!("show_digital_object",params[:id])
+
+    @object = retrieve_object!(params[:id])
+
+    geocode = []
+    if @object.geocode_point.present?
+      @object.geocode_point.each do | point |
+        geocode << parse_dcmi(point)
+      end
+    end
+
+    if @object.geocode_box.present?
+      @object.geocode_box.each do | box |
+        geocode << parse_dcmi(box)
+      end
+    end
+
+    data = {}
+    data[:location] = geocode
+    data[:object] = {}
+    data[:object][:name] = @object.title 
+    data[:object][:url] = catalog_url(@object.id)
+
+    @locations = data.to_json
+  end
+
   def get
 
     query = get_query(params)
 
-    ######## TO BE REMOVED BEGIN
-    puts "###################"
-    puts query
-    puts "###################"
-    ######## TO BE REMOVED END
     num_found = ActiveFedora::SolrService.count(query, :defType => "edismax")
     if (num_found > 0)
       response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => num_found)
     else
       response = {}
     end
-
 
     # ######## parsing maps coordinates examples
     # ######## TO BE REMOVED BEGIN
@@ -75,7 +99,7 @@ class MapsController < ApplicationController
     dcmi_location.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if (k == 'north' || k == 'east' || k == 'name' || k == 'northlimit' || k == 'southlimit' || k == 'eastlimit' || k == 'westlimit')
-        parsed_dcmi[k.to_sym] = v
+        parsed_dcmi[k.to_sym] = v.strip
       end
     end
 

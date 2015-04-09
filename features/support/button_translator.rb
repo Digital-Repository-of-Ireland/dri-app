@@ -11,10 +11,13 @@ module ButtonTranslator
         "ingest_metadata"
 
       when /^upload metadata$/
+        "dri_upload_metadata_file"
+
+      when /^replace metadata$/
         "replace_metadata"
  
-     when /^add an object$/
-       "add_object"
+      when /^add an object$/
+        "add_object"
 
       when /^upload XML$/
         "add_object_xml"
@@ -41,7 +44,7 @@ module ButtonTranslator
         "edit_collection"
 
       when /^upload a file$/
-        "upload_file"
+        "dri_upload_asset_file"
 
       when /^replace a file$/
         "replace_file"
@@ -111,6 +114,9 @@ module ButtonTranslator
 
       when /^publish objects in collection$/
         publish
+      
+      when /^update status$/
+        "status_update"
 
       else "Unknown"
 

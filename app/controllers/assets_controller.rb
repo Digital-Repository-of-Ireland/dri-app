@@ -179,11 +179,9 @@ class AssetsController < ApplicationController
 
       while result_docs.has_more?
         doc = result_docs.pop
-        raise Exceptions::NotFound if doc.empty?
 
         doc.each do |r|
           doc = SolrDocument.new(r)
-
           files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{doc.id}\""
           query = Solr::Query.new(files_query)
 
@@ -197,7 +195,7 @@ class AssetsController < ApplicationController
             files.each do |mf|
               file_list = {}
               file_doc = SolrDocument.new(mf)
-
+ 
               if can? :read_master, doc
                 url = url_for(file_download_url(doc.id, file_doc.id))
                 file_list['masterfile'] = url
@@ -213,17 +211,18 @@ class AssetsController < ApplicationController
               item['files'].push(file_list)
             end
           end
-
           @list << item
         end
       end
+     
+      raise Exceptions::NotFound if @list.empty?
 
     else
       raise Exceptions::BadRequest
     end
 
     respond_to do |format|
-      format.json  { }
+      format.json 
     end
   end
 

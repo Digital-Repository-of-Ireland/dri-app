@@ -126,34 +126,38 @@ class CollectionsController < CatalogController
   #
   def create
     if params[:metadata_file].present?
-      unless create_from_xml
-        return
-      end
+      created = create_from_xml
     else
-      unless create_from_form
-        return
-      end
+      created = create_from_form
     end
 
-    respond_to do |format|
-      if @collection.save
+    unless created
+      respond_with_exception(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata_input')))
+      return
+    end
 
+    if @object.valid? && @object.save
+      respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
-        redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
+        redirect_to :controller => "catalog", :action => "show", :id => @object.id }
         format.json {
           @response = {}
-          @response[:id] = @collection.pid
-          @response[:title] = @collection.title
-          @response[:description] = @collection.description
+          @response[:id] = @object.pid
+          @response[:title] = @object.title
+          @response[:description] = @object.description
           render(:json => @response, :status => :created)
         }
-      else
+      end
+    else
+      respond_to do |format|
         format.html {
-          flash[:alert] = @collection.errors.messages.values.to_s
-          render :action => :new
+          flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
+          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
         }
-        format.json { render(:json => @collection.errors.messages.values.to_s) }
-        raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_collection')
+        format.json {
+          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
+          render :json => @object.errors.messages.values.to_s
+        }
       end
     end
   end
@@ -161,9 +165,9 @@ class CollectionsController < CatalogController
   def destroy
     enforce_permissions!("manage_collection",params[:id])
 
-    @collection = retrieve_object!(params[:id])
+    @object = retrieve_object!(params[:id])
 
-    if current_user.is_admin? || ((can? :manage_collection, @collection) && @collection.status.eql?('draft'))
+    if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status.eql?('draft'))
       begin
         delete_collection
         flash[:notice] = t('dri.flash.notice.collection_deleted')
@@ -195,7 +199,7 @@ class CollectionsController < CatalogController
 
     if params[:apply_all].present? && params[:apply_all].eql?("yes")
       begin
-        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless @object.governed_items.nil?
+        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless (@object.governed_items.nil? || @object.governed_items.empty?)
       rescue Exception => e
         logger.error "Unable to submit status job: #{e.message}"
         flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)
@@ -256,37 +260,35 @@ class CollectionsController < CatalogController
 
     set_access_permissions(:batch, true)
 
-    @collection = DRI::Batch.with_standard :qdc
+    @object = DRI::Batch.with_standard :qdc
 
-    @collection.type = ["Collection"] if @collection.type == nil
-    @collection.type.push("Collection") unless @collection.type.include?("Collection")
+    @object.type = ["Collection"] if @object.type == nil
+    @object.type.push("Collection") unless @object.type.include?("Collection")
 
     supported_licences()
 
     # If a cover image was uploaded, remove it from the params hash
     cover_image = params[:batch].delete(:cover_image)
 
-    @collection.update_attributes(params[:batch])
+    @object.update_attributes(params[:batch])
 
     # depositor is not submitted as part of the form
-    @collection.depositor = current_user.to_s
+    @object.depositor = current_user.to_s
 
     unless valid_permissions?
       flash[:alert] = t('dri.flash.error.not_created')
-      @object = @collection
-      render :action => :new
       return false
     end
 
     # We need to save to get a pid at this point
-    if @collection.save
-      DOI.mint_doi( @collection )
+    if @object.save
+      DOI.mint_doi( @object )
 
       # We have to create a default reader group
       create_reader_group
 
       unless cover_image.blank?
-        unless Storage::CoverImages.validate(cover_image, @collection)
+        unless Storage::CoverImages.validate(cover_image, @object)
           flash[:error] = t('dri.flash.error.cover_image_not_saved')
         end
       end
@@ -294,7 +296,7 @@ class CollectionsController < CatalogController
 
     true
   end
-  
+
   # Create a collection from an uploaded XML file.
   #
   def create_from_xml
@@ -302,8 +304,6 @@ class CollectionsController < CatalogController
 
     unless params[:metadata_file].present?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
-      @object = @collection
-      render :action => :new
       return false
     end
 
@@ -312,38 +312,33 @@ class CollectionsController < CatalogController
 
     if standard.nil?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
-      @object = @collection
-      render :action => :new
       return false
     end
 
-    @collection = DRI::Batch.with_standard standard
-    MetadataHelpers.set_metadata_datastream(@collection, xml)
-    MetadataHelpers.checksum_metadata(@collection)
-    duplicates?(@collection)
+    @object = DRI::Batch.with_standard standard
 
-    if @collection.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
+    MetadataHelpers.set_metadata_datastream(@object, xml)
+    MetadataHelpers.checksum_metadata(@object)
+    duplicates?(@object)
+
+    if @object.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
-      @object = @collection
-      render :action => :new
       return false
     end
 
-    unless @collection.is_collection?
+    unless @object.is_collection?
       flash[:notice] = "Metadata file does not specify that the object is a collection."
-      @object = @collection
-      render :action => :new
       return false
     end
 
-    @collection.apply_depositor_metadata(current_user.to_s)
-    @collection.manager_users_string=current_user.to_s
-    @collection.discover_groups_string="public"
-    @collection.read_groups_string="public"
-    @collection.private_metadata="0"
-    @collection.master_file="0"
+    @object.apply_depositor_metadata(current_user.to_s)
+    @object.manager_users_string=current_user.to_s
+    @object.discover_groups_string="public"
+    @object.read_groups_string="public"
+    @object.private_metadata="0"
+    @object.master_file="0"
 
-    @collection.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?   
+    @object.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?
 
     true
   end
@@ -360,18 +355,18 @@ class CollectionsController < CatalogController
   end
 
   def create_reader_group
-    @group = UserGroup::Group.new(:name => reader_group_name, :description => "Default Reader group for collection #{@collection.id}")
+    @group = UserGroup::Group.new(:name => reader_group_name, :description => "Default Reader group for collection #{@object.id}")
     @group.save
     @group
   end
 
   def reader_group_name
-    @collection.id.sub(':', '_')
+    @object.id.sub(':', '_')
   end
 
   def delete_collection
     begin
-      Sufia.queue.push(DeleteCollectionJob.new(@collection.id))
+      Sufia.queue.push(DeleteCollectionJob.new(@object.id))
     rescue Exception => e
       logger.error "Unable to delete collection: #{e.message}"
       raise Exceptions::ResqueError
@@ -385,6 +380,17 @@ class CollectionsController < CatalogController
       logger.error "Unable to submit publish job: #{e.message}"
       raise Exceptions::ResqueError
     end
+  end
+
+  def respond_with_exception exception
+    respond_to do |format|
+        format.html {
+          raise exception
+        }
+        format.json {
+          render :json => exception.message, :status => :bad_request
+        }
+      end
   end
 
 end
