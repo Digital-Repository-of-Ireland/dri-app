@@ -169,9 +169,10 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'rights'
     config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), :label => 'status' 
-    config.add_show_field 'cdateRange', :label => 'Creation Date Range' 
-    config.add_show_field 'pdateRange', :label => 'Pubished Date Range' 
-    config.add_show_field 'sdateRange', :label => 'Subject Date Range' 
+    # Commented date ranges show_fields (only for testing)
+    #config.add_show_field 'cdateRange', :label => 'Creation Date Range'
+    #config.add_show_field 'pdateRange', :label => 'Published Date Range'
+    #config.add_show_field 'sdateRange', :label => 'Subject Date Range'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

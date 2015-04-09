@@ -45,17 +45,13 @@ Scenario Outline: Constructing a valid Digital Object
 
 Scenario: Adding a pdf asset to an object
   Given "user1" has created a Digital Object
-  Then I should see a link to edit an object
-  When I follow the link to edit an object
-  And I attach the asset file "sample_pdf.pdf"
+  When I attach the asset file "sample_pdf.pdf"
   And I press the button to upload a file
   Then I should see a success message for file upload
 
 Scenario: Replacing the metadata file of a Digital Object
   Given "user1" has created a Digital Object
-  Then I should see a link to edit an object
-  When I follow the link to edit an object
-  And I attach the metadata file "valid_metadata.xml"
+  When I attach the metadata file "valid_metadata.xml"
   And I press the button to upload metadata
   Then I should see a success message for updating metadata
 
@@ -106,9 +102,7 @@ Scenario: Editing the metadata of a Digital Object with invalid metadata
 
 Scenario: Adding multiple audio files for a Digital Object
   Given "user1" has created a Digital Object
-  Then I should see a link to edit an object
-  When I follow the link to edit an object
-  And I attach the asset file "sample_audio.mp3"
+  When I attach the asset file "sample_audio.mp3"
   And I press the button to upload a file
   Then I should see a success message for file upload
   When I follow the link to edit an object
@@ -118,9 +112,7 @@ Scenario: Adding multiple audio files for a Digital Object
 
 Scenario Outline: Adding an audio file that is not valid
   Given "user1" has created a Digital Object
-  Then I should see a link to edit an object
-  When I follow the link to edit an object
-  And I attach the asset file "<asset_name>"
+  When I attach the asset file "<asset_name>"
   And I press the button to upload a file
   Then I should see a failure message for <case>
 
@@ -131,9 +123,7 @@ Scenario Outline: Adding an audio file that is not valid
 
 Scenario: Adding a file that contains a virus
   Given "user1" has created a Digital Object
-  Then I should see a link to edit an object
-  When I follow the link to edit an object
-  And I upload the virus file "sample_virus.mp3"
+  When I upload the virus file "sample_virus.mp3"
   Then I should see a failure message for virus detected
 
 Scenario Outline: Editing an audio file where the file is invalid
