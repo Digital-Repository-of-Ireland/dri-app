@@ -68,7 +68,7 @@
       <% else %>
         <li>
       <% end %>
-      <%= link_to t('dri.headerlinks.reports'), main_app.page_path('reports'), :tabindex => "-1" %>
+      <%= link_to t('dri.headerlinks.reports'), "#{main_app.root_url}/pages/reports", :tabindex => "-1" %>
       </li>
   <% end %>
 
