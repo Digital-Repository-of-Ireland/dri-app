@@ -12,7 +12,7 @@
 </div>
 
 <% # Render partial for Related Materials (QDC and MODS)  %>
-<%= render :partial => "catalog/show_related_items", :locals => {:document => @document} %>
+<% # = render :partial => "catalog/show_related_items", :locals => {:document => @document} %>
 
 <% if count_immediate_children_in_collection(@document['id']) > 0 %>
   <%= render :partial => "catalog/show_children", :locals => {:document => @document} %>
