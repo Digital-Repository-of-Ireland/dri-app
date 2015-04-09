@@ -1,9 +1,9 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: 9886ffec53087fa3d1525bd3e6a8c69626e135f2
-  branch: develop
+  revision: 77a7e563c0fdf7549ad79426fe73a2a4243f89eb
+  tag: v2.1.0
   specs:
-    dri_data_models (2.0.4)
+    dri_data_models (2.1.0)
       hydra-access-controls
       hydra-collections
       hydra-head (>= 7.0)
@@ -15,10 +15,10 @@ GIT
 
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-user-group.git
-  revision: 64ef14feb15105e8c02b81b52de3eda2cecf53dc
-  branch: develop
+  revision: e18fdbc27119437ad120925dafe4140f1a954a7b
+  tag: v1.0.8
   specs:
-    user_group (1.0.7)
+    user_group (1.0.8)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -103,6 +103,9 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
+    autoprefixer-rails (5.1.8.1)
+      execjs
+      json
     aws-sdk (2.0.33)
       aws-sdk-resources (= 2.0.33)
     aws-sdk-core (2.0.33)
@@ -134,8 +137,9 @@ GEM
       activesupport (>= 2.0)
     bootstrap-datepicker-rails (1.4.0)
       railties (>= 3.0)
-    bootstrap-sass (3.3.1.0)
-      sass (~> 3.2)
+    bootstrap-sass (3.3.4.1)
+      autoprefixer-rails (>= 5.0.0.1)
+      sass (>= 3.2.19)
     bootstrap-switch-rails (3.3.2)
     builder (3.2.2)
     cancancan (1.10.1)
@@ -152,7 +156,7 @@ GEM
       mime-types (>= 1.16)
     celluloid (0.16.0)
       timers (~> 4.0.0)
-    childprocess (0.5.5)
+    childprocess (0.5.6)
       ffi (~> 1.0, >= 1.0.11)
     chunky_png (1.3.4)
     ci_reporter (2.0.0)
@@ -401,7 +405,7 @@ GEM
     method_source (0.8.2)
     mime-types (2.4.3)
     mimemagic (0.3.0)
-    mini_magick (4.2.0)
+    mini_magick (4.2.1)
     mini_portile (0.6.2)
     minitest (5.5.1)
     mono_logger (1.1.0)
@@ -487,15 +491,15 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    rdf (1.1.10)
+    rdf (1.1.11)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (1.1.0)
       rdf (>= 1.1)
     rdf-isomorphic (1.1.0)
       rdf (>= 1.1)
-    rdf-json (1.1.1)
+    rdf-json (1.1.2)
       rdf (~> 1.1)
-    rdf-microdata (2.0)
+    rdf-microdata (2.0.1)
       htmlentities (~> 4.3)
       nokogiri (~> 1.6)
       rdf (~> 1.1)
@@ -508,7 +512,7 @@ GEM
       rdf (~> 1.1, >= 1.1.6)
       rdf-aggregate-repo
       rdf-xsd (~> 1.1)
-    rdf-rdfxml (1.1.3)
+    rdf-rdfxml (1.1.4)
       htmlentities (~> 4.3)
       rdf (~> 1.1, >= 1.1.6)
       rdf-rdfa (~> 1.1, >= 1.1.4.1)
@@ -523,9 +527,9 @@ GEM
       rdf-turtle (~> 1.1, >= 1.1.3)
     rdf-trix (1.1.0)
       rdf (>= 1.1)
-    rdf-turtle (1.1.5)
+    rdf-turtle (1.1.6)
       ebnf (~> 0.3, >= 0.3.6)
-      rdf (~> 1.1, >= 1.1.4)
+      rdf (~> 1.1, >= 1.1.10)
     rdf-xsd (1.1.3)
       rdf (~> 1.1, >= 1.1.9)
     redis (3.2.1)
