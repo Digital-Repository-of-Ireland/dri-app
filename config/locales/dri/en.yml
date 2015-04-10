@@ -3,11 +3,6 @@
 en:
   dri:
     application:
-      cookies:
-        accept: "Accept and hide message"
-        confirm: "By signing in or signing up you are deemed to be accepting the DRI cookie policy."
-        header: "Important notice about cookies"
-        message: "The Digital Repository of Ireland uses cookies to implement access control to digital resources. To opt out of receiving cookies from DRI, please turn off cookies for this website in your browser preferences. Note that users who opt out will be unable to use some of the features of the Digital Repository. For more information please see our %{privacy_statement:privacy statement} and our %{cookies_help:cookies help} pages."
       edit_user_profile:
         cancel: Cancel
         change_password: "Change Password"
@@ -47,10 +42,10 @@ en:
         loading_maps: "Loading Maps"
         no_results: "No valid results have been found"
       terms:
-        accept: "Accept End User Agreement"
-        confirm: "By signing in or signing up you are deemed to be accepting the DRI End User Agreement"
-        header: "DRI End User Agreement"
-        reject: "Reject End User Agreement"
+        accept: "I agree"
+        header: "The Digital Repository of Ireland End User Agreement."
+        reject: "I disagree"
+        message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='http://dri.ie/privacy-statement'>Privacy Policy</a>."
       timeline:
         description:
           no_results: "No valid results have been found"
