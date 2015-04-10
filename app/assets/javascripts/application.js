@@ -40,7 +40,7 @@
 
 $(document).ready(function() {
     $('dropdown').dropdown();
-    $('#dri_cookie_modal').modal();
+    $('#dri_cookie_modal').modal({keyboard: false, backdrop: 'static'});
     $('.carousel').carousel();
     $('#q, #facets, #dri_social_media_links_id, #dri_sort_options_id, #dri_change_sort_view_id, #dri_page_options_id, #dri_facet_restrictions_links_id, #dri_pagination_nav_links_id, #dri_browse_sort_tabs_collections_id, #dri_browse_sort_tabs_objects_id').popover( {delay: { show: 1500, hide: 100 }} );
     $('.dri_help_popover').popover( {delay: { show: 100, hide: 100 }} );
