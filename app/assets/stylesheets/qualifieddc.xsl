@@ -7,7 +7,7 @@
 	</button>
 	<h4 class="modal-title" id="">Dublin Core Metadata</h4>
 </div>
-	<div>
+	<div class="modal-body">
         <dl class="dri_object_metadata_readview">
             <xsl:for-each select="qualifieddc/*">
                 <dt class="dri_capitalize">
