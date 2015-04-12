@@ -114,7 +114,7 @@ module FieldRenderHelper
     else
       if value.length > 1
         value = value.each_with_index.map do |v,i|
-          unless uri?(indexed_value[i]) 
+          unless uri?(indexed_value[i])
             '<dd>' << indexed_value[i] << '</dd>'
           end
         end
@@ -232,7 +232,7 @@ module FieldRenderHelper
     solrField.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if k.eql?(value)
-        return v
+        return v unless v.nil?
       end
     end
     return solrField
