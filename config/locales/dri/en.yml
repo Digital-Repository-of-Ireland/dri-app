@@ -354,6 +354,12 @@ en:
         dates: Dates
         depositing_institute: "Depositing Organisation"
         description: Description
+        description_gle: "Description (Irish)"
+        hide_description_gle: "Hide Irish"
+        show_description_gle: "Show Irish"
+        description_eng: "Description (English)"
+        hide_description_eng: "Hide English"
+        show_description_eng: "Show English"
         format: Format
         formats: Formats
         geographical_coverage: "Subject (Place)"

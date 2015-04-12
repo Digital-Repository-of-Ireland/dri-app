@@ -2,6 +2,7 @@
 require 'blacklight/catalog'
 require 'institute_helpers'
 require 'iso8601'
+require 'iso-639'
 
 # Blacklight catalog controller
 #
@@ -23,6 +24,7 @@ class CatalogController < ApplicationController
   CatalogController.solr_search_params_logic += [:search_date_dange, :subject_temporal_filter, :exclude_unwanted_models]
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
+  
   def rows_per_page
     result = 15
 
@@ -38,6 +40,8 @@ class CatalogController < ApplicationController
   configure_blacklight do |config|
     config.per_page = [6,9,18,36]
     config.default_per_page = 9
+    config.metadata_lang = ['all','gle','enl']
+    config.default_metadata_lang = 'all'
 
     config.default_solr_params = {
       :defType => "edismax",
@@ -145,6 +149,8 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('title', :stored_searchable, type: :string), :label => 'title'
     config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), :label => 'subtitle:'
     config.add_show_field solr_name('description', :stored_searchable, type: :string), :label => 'description', :helper_method => :render_description
+    config.add_show_field solr_name('description_eng', :stored_searchable, type: :string), :label => 'description_eng', :helper_method => :render_description
+    config.add_show_field solr_name('description_gle', :stored_searchable, type: :string), :label => 'description_gle', :helper_method => :render_description
     # config.add_show_field solr_name('scope_content', :stored_searchable, type: :string), :label => 'scope_content'
     # config.add_show_field solr_name('scopecontent', :stored_searchable, type: :string), :label => 'scope_content'
     # config.add_show_field solr_name('abstract', :stored_searchable, type: :string), :label => 'abstract'
