@@ -1,10 +1,15 @@
 /*-------------- DRI Wrapper--------------*/
 
 .dri_wrapper {
-  width: 1024px;
+  width: 1224px;
+  padding: 100px;
   margin: 0 auto;
 }
 
+.dri_search_term_text_submit_button {
+  height: 20px;
+  width: 100px;
+}
 
 html {
   margin-bottom: 0.5em;
@@ -1500,7 +1505,24 @@ h4.suggest {
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
-
+.dri_date_range_block {
+        height: 150px;
+        .dri_date_range {
+              text-decoration: none;
+              color: gray;
+              display: block;
+              background-color: #F8F8F8;
+              border-bottom: 2px solid #FFF;
+              margin-left: -15px;
+              margin-right: -15px;
+              padding: 10px 5px 10px 20px;
+         }
+         .dri_date_range_label {
+           float: right;
+           padding-right: 10px;
+         }
+      }
+      
 .dri_facet_filters {
   border-bottom: none;
   .dri_head_title {
@@ -1578,20 +1600,8 @@ h4.suggest {
         color: $dri_grey;
         text-decoration: none;
       }
-      .dri_date_range {
-            text-decoration: none;
-            color: gray;
-            display: block;
-            background-color: #F8F8F8;
-            border-bottom: 2px solid #FFF;
-            margin-left: -15px;
-            margin-right: -15px;
-            padding: 10px 5px 10px 20px;
-       }
-       .dri_date_range_label {
-         float: right;
-         padding-right: 10px;
-       }
+      
+
     }
   }
 }
