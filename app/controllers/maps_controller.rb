@@ -1,22 +1,17 @@
 class MapsController < ApplicationController
 
-  before_filter :authenticate_user_from_token!, :only => [:show]
-  before_filter :authenticate_user!, :only => [:show]
-
   def show
-    enforce_permissions!("show_digital_object",params[:id])
-
-    @object = retrieve_object!(params[:id])
+    object = retrieve_object!(params[:id])
 
     geocode = []
-    if @object.geocode_point.present?
-      @object.geocode_point.each do | point |
+    if object.geocode_point.present?
+      object.geocode_point.each do | point |
         geocode << parse_dcmi(point)
       end
     end
 
-    if @object.geocode_box.present?
-      @object.geocode_box.each do | box |
+    if object.geocode_box.present?
+      object.geocode_box.each do | box |
         geocode << parse_dcmi(box)
       end
     end
@@ -24,8 +19,8 @@ class MapsController < ApplicationController
     data = {}
     data[:location] = geocode
     data[:object] = {}
-    data[:object][:name] = @object.title 
-    data[:object][:url] = catalog_url(@object.id)
+    data[:object][:name] = object.title 
+    data[:object][:url] = catalog_url(object.id)
 
     @locations = data.to_json
   end

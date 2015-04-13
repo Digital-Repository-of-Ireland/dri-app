@@ -42,7 +42,9 @@
 
 		<div id="dri_wrapper_id" class="block1 dri_wrapper">
 
-			<%# render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
+			
+			<%# debug cookies %>
+			
 
 			<%= render :partial => 'shared/cookies_modal' unless cookies[:accept_cookies]%>
 			<%= render :partial => 'shared/header_navbar' %>

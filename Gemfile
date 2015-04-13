@@ -12,7 +12,7 @@ gem 'sufia-models', "4.1.0"
 
 gem 'paper_trail', '~> 3.0.6'
 
-gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :tag => 'v2.1.0'
+gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :tag => 'v2.1.1'
 gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :tag => 'v1.0.8'
 
 gem 'rails_config'

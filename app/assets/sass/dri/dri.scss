@@ -285,7 +285,7 @@ input[type="color"],
 
 }
 .modal.fade.in {
-  padding-top: 15%;
+  //padding-top: 5%;
 }
 
 h1,
@@ -399,7 +399,7 @@ a {
 .btn {
   @extend .dri_button;
   background-color: $dri_lightgrey;
-  padding: 5px 0 4px 0;
+  padding: 5px 10px 4px 10px;
   margin: 0;
 }
 .btn:hover {
@@ -2309,7 +2309,7 @@ p.dri_rss_link a {
 
 .dri_object_title_top {
   font-size: 110%;
-  padding: 6px 20px 4px 10px;
+  padding: 1px 20px 4px 10px;
   margin: 10px 0 10px 0;
   height: 26px;
   text-overflow: ellipsis;
@@ -2318,6 +2318,7 @@ p.dri_rss_link a {
   background-color: $dri_grey;
   width: 73%;
   font-weight: bold;
+  line-height: 26px
 }
 
 /*-------------- Media asset/ Multiple Media Assets Carousel --------------*/
@@ -2522,6 +2523,15 @@ input.dri_request_access_button:hover {
 }
 
 /*-------------- MetaData Readview  --------------*/
+
+
+a.dri_toggle_metadata::after {
+  content: ' »';
+  font-size: 120%;
+  font-weight: bold;
+  color: $dri_green;
+}
+
 .modal-content {
   padding: 10px;
   .dri_object_metadata_readview {
@@ -3424,3 +3434,4 @@ i {
   filter: alpha(opacity=0);
  
 }
+
