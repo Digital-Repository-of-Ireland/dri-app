@@ -2523,6 +2523,15 @@ input.dri_request_access_button:hover {
 }
 
 /*-------------- MetaData Readview  --------------*/
+
+
+a.dri_toggle_metadata::after {
+  content: ' »';
+  font-size: 120%;
+  font-weight: bold;
+  color: $dri_green;
+}
+
 .modal-content {
   padding: 10px;
   .dri_object_metadata_readview {
@@ -3425,3 +3434,4 @@ i {
   filter: alpha(opacity=0);
  
 }
+
