@@ -17,17 +17,58 @@ module FieldRenderHelper
     false
   end
   
-  # Helper method to display the description field if it contains multiple paragraphs/values
+  # Helper method to display to toggle the description metadata language
+  # @param[SolrDocument] :document
+  # @param[SolrField] :field
+  #
+  def render_description args
+    path = {:path => request.fullpath}
+    currentML = cookies[:metadata_language]
+    if (I18n.locale == :ga )
+      path[:id] = 'ga'
+    else
+      path[:id] = 'en'
+    end
+    if (args[:document]['description_gle_tesim'])
+      if (currentML == 'all' && args[:field] == 'description_gle_tesim')
+        path[:metadata_language] = "en"
+        return parse_description(args) << (link_to t('dri.views.fields.hide_description_gle'), lang_path(path), class: :dri_toggle_metadata)
+      elsif (currentML == 'all' && args[:field] == 'description_eng_tesim')
+        path[:metadata_language] = "ga"
+        return parse_description(args) << (link_to t('dri.views.fields.hide_description_eng'), lang_path(path), class: :dri_toggle_metadata)
+      else
+        if (currentML == 'ga' && args[:field] == 'description_gle_tesim')
+          path[:metadata_language] = "en"
+          return parse_description(args) << (link_to t('dri.views.fields.hide_description_gle'), lang_path(path), class: :dri_toggle_metadata)
+        elsif (currentML == 'ga' && args[:field] == 'description_eng_tesim')
+          path[:metadata_language] = "all"
+          return (link_to t('dri.views.fields.show_description_eng'), lang_path(path), class: :dri_toggle_metadata)
+        elsif (currentML == 'en' && args[:field] == 'description_eng_tesim')
+          path[:metadata_language] = "ga"
+          return parse_description(args) << (link_to t('dri.views.fields.hide_description_eng'), lang_path(path), class: :dri_toggle_metadata)
+        elsif (currentML == 'en' && args[:field] == 'description_gle_tesim')
+          path[:metadata_language] = "all"
+          return (link_to t('dri.views.fields.show_description_gle'), lang_path(path), class: :dri_toggle_metadata)
+        else
+            return parse_description(args) 
+        end
+      end
+    else
+      return parse_description(args) 
+  end
+  end
+  
+  # Helper method to display the description field if it contains multiple paragraphs/values 
   # @param[SolrDocument] :document
   # @param[SolrField] :field
   # @return array of field values with HTML paragraph mark-up
   #
-  def render_description args
-    if args[:document][args[:field]].size > 1
-      return args[:document][args[:field]].collect!.each { |value| "<p>" << value << "</p>" }
+  def parse_description args
+      if args[:document][args[:field]].size > 1
+        return args[:document][args[:field]].collect!.each { |value| "<p>" << value << "</p>" }
      else
-      return simple_format(args[:document][args[:field]].first)
-    end
+        return simple_format(args[:document][args[:field]].first)
+     end
   end
   
   # Overwrites the method located in Blacklight::BlacklightHelperBehavior,
@@ -73,7 +114,7 @@ module FieldRenderHelper
     else
       if value.length > 1
         value = value.each_with_index.map do |v,i|
-          unless uri?(indexed_value[i]) 
+          unless uri?(indexed_value[i])
             '<dd>' << indexed_value[i] << '</dd>'
           end
         end
@@ -191,7 +232,7 @@ module FieldRenderHelper
     solrField.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if k.eql?(value)
-        return v
+        return v unless v.nil?
       end
     end
     return solrField

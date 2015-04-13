@@ -86,8 +86,8 @@
       }
       var feature = new OpenLayers.Feature.Vector(
         new OpenLayers.Geometry.Point( location.east, location.north ).transform(epsg4326, projectTo),
-        {description: description} ,
-        {externalGraphic: asset_location + 'img/marker.png', graphicHeight: 25, graphicWidth: 21, graphicXOffset:-12, graphicYOffset:-25  }
+        {description: description} //,
+        //{externalGraphic: asset_location + 'img/marker.png', graphicHeight: 25, graphicWidth: 21, graphicXOffset:-12, graphicYOffset:-25  }
       );
 
       return feature;
