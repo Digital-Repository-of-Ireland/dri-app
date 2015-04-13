@@ -77,7 +77,7 @@ module BlacklightHelper
     split_fields = field_no_tesim.split(/\s*_\s*/)
     if (ISO_639.find(split_fields[-1]).nil?)
       if (!document[split_fields.join('_') << "_gle_tesim"].nil?)
-        return false
+        return super(document, solr_field) || false
       else
         super(document, solr_field)
       end
