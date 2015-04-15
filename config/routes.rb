@@ -53,7 +53,7 @@ NuigRnag::Application.routes.draw do
     match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
 
     match 'download_surrogate' => 'surrogates#download', :via => :get
-    match 'map/:id' => 'maps#show', :via => :get, :as => :map
+    match 'maps/:id' => 'maps#show', :via => :get, :as => :maps
     match 'maps_json' => 'maps#get', :via => :get
     match 'timeline_json' => 'timeline#get', :via => :get
 

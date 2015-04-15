@@ -8,7 +8,7 @@
 	<%= hidden_field_tag "f[cdateRange][]", "", :id => "f" %>
 	<% params_to_hide = get_params_to_hide(params) %>
 	<%= render_hash_as_hidden_fields(params_to_hide).html_safe %>
-	<ul class="facet-values list-unstyled">
+	<ul class="facet-values list-unstyled dri_date_range_block">
 		<li>
 			<span class="dri_date_range">
 				<% if params[:year_from].present? %>
@@ -42,7 +42,7 @@
 			<%= label_tag(:s_date, "Subject") %>
 		</li>
 		<li>
-		     <button type="submit" class="dri_search_term_text_submit_button" id="date_range_search">
+		     <button type="submit" class="dri_button_green" id="date_range_search">
         		<%=t('Set')%>
       		</button>
 		</li>

@@ -18,10 +18,6 @@ S3:
   access_key_id: anything
   secret_access_key: anything
   expiry: 604800
-surrogates:
-  sound: [mp3, ogg]
-  text: [thumbnail]
-  image: [thumbnail]
 data:
   cover_image_bucket: coverimages
   logos_bucket: institutelogos
