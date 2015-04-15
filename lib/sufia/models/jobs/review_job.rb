@@ -14,8 +14,10 @@ class ReviewJob < ActiveFedoraPidBasedJob
 
       collection_objects.each do |object|
         o = ActiveFedora::Base.find(object["id"], {:cast => true})
-        o.status = "reviewed" if o.status.eql?("draft")
-        o.save
+        if o.status.eql?("draft")
+          o.status = "reviewed"
+          o.save
+        end
       end
     end
 

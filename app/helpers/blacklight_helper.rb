@@ -73,20 +73,24 @@ module BlacklightHelper
   # @param [Blacklight::Solr::Configuration::SolrField] solr_field
   # @return [Boolean]
   def should_render_show_field? document, solr_field
-    field_no_tesim = solr_field.field.gsub("_tesim", "")
-    split_fields = field_no_tesim.split(/\s*_\s*/)
-    if (ISO_639.find(split_fields[-1]).nil?)
-      if (!document[split_fields.join('_') << "_gle_tesim"].nil?)
-        return super(document, solr_field) || false
+    if (solr_field.field.include?("description"))
+      field_no_tesim = solr_field.field.gsub("_tesim", "")
+      split_fields = field_no_tesim.split(/\s*_\s*/)
+      if (ISO_639.find(split_fields[-1]).nil?)
+        if (!document[split_fields.join('_') << "_gle_tesim"].nil?)
+          return false
+        else
+          super(document, solr_field)
+        end
+      elsif(ISO_639.find(split_fields[-1]).include?("eng"))
+        split_fields.pop
+        if (!document[split_fields.join('_') << "_gle_tesim"].nil?)
+          super(document, solr_field)
+        else
+          return false
+        end
       else
         super(document, solr_field)
-      end
-    elsif(ISO_639.find(split_fields[-1]).include?("eng"))
-      split_fields.pop
-      if (!document[split_fields.join('_') << "_gle_tesim"].nil?)
-        super(document, solr_field)
-      else
-        return false
       end
     else
       super(document, solr_field)
