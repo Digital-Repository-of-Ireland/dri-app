@@ -126,6 +126,12 @@ GEM
       nokogiri (~> 1.6)
       rails (>= 3.2.6, < 5)
       rsolr (~> 1.0.6)
+    blacklight-maps (0.3.2)
+      blacklight (>= 5.1.0)
+      bootstrap-sass (~> 3.0)
+      leaflet-markercluster-rails
+      leaflet-rails
+      rails
     blacklight_range_limit (5.0.4)
       blacklight (>= 5.0.0.pre4, < 6)
       jquery-rails
@@ -358,6 +364,9 @@ GEM
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
+    leaflet-markercluster-rails (0.7.0)
+      railties (>= 3.1)
+    leaflet-rails (0.7.4)
     legato (0.4.0)
       multi_json
     link_header (0.0.8)
@@ -708,6 +717,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   blacklight (= 5.7.2)
+  blacklight-maps
   blacklight_range_limit
   bootstrap-datepicker-rails
   bootstrap-sass

@@ -13,6 +13,9 @@
 //= require video
 //= require jquery
 //= require jquery_ujs
+//
+// Required by Blacklight-Maps
+//= require blacklight-maps
 //= require jquery.remotipart
 //= require jquery.cookie
 //= require bootstrap/carousel
