@@ -96,6 +96,14 @@ module PathTranslator
             raise('Unknown route')
         end
 
+      when /metadata/
+        case page
+          when /upload/
+            new_object_path(collection: pid, method: 'upload')
+          else
+            raise('Unknown route')
+        end 
+
       else
         raise('Unknown route')
     end
