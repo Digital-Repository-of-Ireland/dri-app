@@ -86,7 +86,7 @@ class CatalogController < ApplicationController
     #config.add_facet_field "pdateRange", :label => 'Published Date', :show => false
     #config.add_facet_field "sdateRange", :label => 'Subject (temporal)', :show => false
 
-    config.add_facet_field "cdateRange", :label => 'Date Range', :partial => 'custom_date_range'
+    config.add_facet_field "sdateRange", :label => 'Subject (Temporal)', :partial => 'custom_date_range'
 
     config.add_facet_field solr_name('subject', :facetable), :limit => 20
     #config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
@@ -264,6 +264,13 @@ class CatalogController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+
+    config.view.maps.placename_property = "placename"
+    config.view.maps.tileurl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    config.view.maps.mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    config.view.maps.maxzoom = 18
+    config.view.maps.show_initial_zoom = 5
+
   end
 
   def exclude_unwanted_models(solr_parameters, user_parameters)
@@ -290,7 +297,7 @@ class CatalogController < ApplicationController
     # if present then modify query to target sdateRange Solr field
     temporal_idx = nil
     solr_parameters[:fq].each.with_index do |f_elem, idx|
-      if f_elem.include?("temporal_coverage_sim")
+      if f_elem.include?("temporal_coverage")
         temporal_idx = idx
       end
     end
@@ -322,10 +329,10 @@ class CatalogController < ApplicationController
   end
 
   def search_date_dange(solr_parameters, user_parameters)
-    if (!user_parameters[:f].nil? && !user_parameters[:f]["cdateRange"].nil?)
+    if (!user_parameters[:f].nil? && !user_parameters[:f]["sdateRange"].nil?)
       solr_parameters[:fq] ||= []
       # Asign facet filter contraint text (we don't want to show ugly Solr query)
-      user_parameters[:f]["cdateRange"] = user_parameters[:year_from] == user_parameters[:year_to] ? 
+      user_parameters[:f]["sdateRange"] = user_parameters[:year_from] == user_parameters[:year_to] ?
         ["#{user_parameters[:year_from]}"] : 
         ["#{user_parameters[:year_from]} - #{user_parameters[:year_to]}"]
 
@@ -333,32 +340,33 @@ class CatalogController < ApplicationController
       date_idx = nil
       
       solr_parameters[:fq].each.with_index do |f_elem, idx|
-        if f_elem.include?("cdateRange")
+        if f_elem.include?("sdateRange")
           date_idx = idx
         end
       end
-      query = ""
+      #query = ""
+      query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
 
-      if user_parameters[:c_date] == '1'
-        query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        if user_parameters[:p_date] == '1'
-          query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        end
-        if user_parameters[:s_date] == '1'
-          query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        end
-      elsif user_parameters[:p_date] == '1'
-        query = "pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        if user_parameters[:s_date] == '1'
-          query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        end
-      elsif user_parameters[:s_date] == '1'
-        query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      else  # no field filter parameters: query all the date range fields
-        query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-        query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      end
+      #if user_parameters[:c_date] == '1'
+      #  query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      #  if user_parameters[:p_date] == '1'
+      #    query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      #  end
+      #  if user_parameters[:s_date] == '1'
+      #    query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      #  end
+      #elsif user_parameters[:p_date] == '1'
+      #  query = "pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      #  if user_parameters[:s_date] == '1'
+      #    query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      #  end
+      #elsif user_parameters[:s_date] == '1'
+      #  query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      #else  # no field filter parameters: query all the date range fields
+      #  query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      #  query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      #  query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      #end
 
       if date_idx.nil?
         solr_parameters[:fq] << query

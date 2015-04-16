@@ -22,7 +22,9 @@ class MetadataController < CatalogController
 
     if @object && @object.datastreams.keys.include?("descMetadata")
       respond_to do |format|
-        format.xml { render :xml => @object.datastreams["descMetadata"].content }
+        format.xml { render :xml => (@object.datastreams.keys.include?("fullMetadata") && !@object.datastreams["fullMetadata"].content.nil?) ?
+                                @object.datastreams["fullMetadata"].content : @object.datastreams["descMetadata"].content
+        }
         format.html  { 
           xml_data = @object.datastreams["descMetadata"].content
           xml = Nokogiri::XML(xml_data)

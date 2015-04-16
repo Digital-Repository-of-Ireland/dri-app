@@ -223,8 +223,8 @@ en:
           file: File
           image_file: Image
           manage_bookmark: "Manage Your Bookmarks"
-          metadata: "Metadata (XML)"
-          metadata_full: "Full Metadata"
+          metadata: "Metadata"
+          metadata_full: "Full Metadata (XML)"
           objects_in_collection: Objects
           pdf_file: PDF
           restricted_asset: "Restricted Asset"
