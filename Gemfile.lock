@@ -3,7 +3,7 @@ GIT
   revision: 1411ebfd6850dedc619e345d04563bdd6dd0026c
   branch: develop
   specs:
-    dri_data_models (2.0.4)
+    dri_data_models (2.1.1)
       hydra-access-controls
       hydra-collections
       hydra-head (>= 7.0)
@@ -15,10 +15,10 @@ GIT
 
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-user-group.git
-  revision: 1411ebfd6850dedc619e345d04563bdd6dd0026c
+  revision: c489f58e75c91d9c0a918b2c99d745b8cd436ef8
   branch: develop
   specs:
-    user_group (1.0.7)
+    user_group (1.0.8)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
