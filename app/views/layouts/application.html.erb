@@ -43,7 +43,7 @@
 		<div id="dri_wrapper_id" class="block1 dri_wrapper">
 
 			
-			<%# debug cookies %>
+			<%= debug params %>
 			
 
 			<%= render :partial => 'shared/cookies_modal' unless cookies[:accept_cookies]%>
@@ -56,7 +56,7 @@
 				</div>
 			</div>
 
-			<% if query_has_constraints?%>
+			<% if query_has_constraints? && (!params[:f].nil?) || (!params[:q].nil?) %>
 			<%= render 'constraints' %>
 			<% end %>
 
