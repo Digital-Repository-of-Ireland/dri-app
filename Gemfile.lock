@@ -1,6 +1,6 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: 9886ffec53087fa3d1525bd3e6a8c69626e135f2
+  revision: 1411ebfd6850dedc619e345d04563bdd6dd0026c
   branch: develop
   specs:
     dri_data_models (2.0.4)
@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-user-group.git
-  revision: 64ef14feb15105e8c02b81b52de3eda2cecf53dc
+  revision: 1411ebfd6850dedc619e345d04563bdd6dd0026c
   branch: develop
   specs:
     user_group (1.0.7)
