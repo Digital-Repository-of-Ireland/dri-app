@@ -223,8 +223,8 @@ ga:
           file: Comhad
           image_file: Íomhá
           manage_bookmark: "Bainistigh do chuid Leabharmharcanna"
-          metadata: "Meiteashonraí (XML)"
-          metadata_full: "Meiteashonraí Iomlán"
+          metadata: "Meiteashonraí"
+          metadata_full: "Meiteashonraí Iomlán (XML)"
           objects_in_collection: Oibiachtaí
           pdf_file: PDF
           restricted_asset: "Sócmhainn Shrianta"
