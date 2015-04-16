@@ -55,7 +55,8 @@
 					</div>
 				</div>
 			</div>
-
+			<%#  the blacklight maps gem seems to set a 'constraint' even when none appears to exist %>
+			<%# - check below is to see if a facet or text query exists %>
 			<% if query_has_constraints? && (!params[:f].nil?) || (!params[:q].nil?) %>
 			<%= render 'constraints' %>
 			<% end %>
