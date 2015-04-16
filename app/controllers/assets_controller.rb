@@ -127,6 +127,7 @@ class AssetsController < ApplicationController
         @gf = DRI::GenericFile.new(:pid => Sufia::IdService.mint)
         @gf.batch = @object
         @gf.apply_depositor_metadata(current_user)
+        @gf.preservation_only = "true" if params[:preservation].eql?('true')
 
         create_file(file_upload, @gf.id, datastream, params[:checksum])
 
@@ -195,7 +196,7 @@ class AssetsController < ApplicationController
             files.each do |mf|
               file_list = {}
               file_doc = SolrDocument.new(mf)
- 
+
               if can? :read_master, doc
                 url = url_for(file_download_url(doc.id, file_doc.id))
                 file_list['masterfile'] = url
@@ -214,7 +215,7 @@ class AssetsController < ApplicationController
           @list << item
         end
       end
-     
+
       raise Exceptions::NotFound if @list.empty?
 
     else
@@ -222,7 +223,7 @@ class AssetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.json 
+      format.json
     end
   end
 
@@ -230,13 +231,18 @@ class AssetsController < ApplicationController
   private
 
     def upload_from_params
-      if params[:Filedata].blank?
+      if params[:Filedata].blank? && params[:Presfiledata].blank?
         flash[:notice] = t('dri.flash.notice.specify_file')
         redirect_to :controller => "catalog", :action => "show", :id => params[:object_id]
         return
       end
 
-      file_upload = params[:Filedata]
+      if params[:Filedata].present?
+        file_upload = params[:Filedata]
+      elsif params[:Presfiledata].present?
+        file_upload = params[:Presfiledata]
+      end
+
       validate_upload(file_upload)
 
       file_upload
