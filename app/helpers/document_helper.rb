@@ -61,8 +61,8 @@ module DocumentHelper
         children_array = children_array.to_a.push [link_text, catalog_path(doc['id']).to_s, type.to_s]
       end
     end
-
-    return children_array
+    paged_children = Kaminari.paginate_array(children_array).page(params[:subs_page]).per(4)
+    return paged_children
   end
 
   # Returns a Hash with relationship groups and generated links to related objects for UI Display
@@ -101,7 +101,7 @@ module DocumentHelper
   end # get_object_relationships
 
   def get_object_external_relationships document
-    html_array = []
+    url_array = []
     
     if document['active_fedora_model_ssi'] && document['active_fedora_model_ssi'] == 'DRI::Mods'
       solr_fields_array = *(DRI::Vocabulary::modsRelationshipTypes.map { |s| s.prepend("ext_related_items_ids_").to_sym})
@@ -112,12 +112,12 @@ module DocumentHelper
     unless solr_fields_array.nil?
       solr_fields_array.each do |elem|
         if (!document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].nil? && !document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].empty?)
-          html_array = html_array.to_a.push("<p><a href='#{document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].first}'>#{document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].first}</a></p>".html_safe)
+          url_array = url_array.to_a.push(document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].first)
         end
       end
     end
     
-    return html_array
+    return Kaminari.paginate_array(url_array).page(params[:externs_page]).per(4)
   end # get_object_external_relationships
 
 end
