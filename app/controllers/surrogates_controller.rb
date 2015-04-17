@@ -95,7 +95,7 @@ class SurrogatesController < ApplicationController
     def generate_surrogates(object_id)
       enforce_permissions!("edit", object_id)
 
-      query = Solr::Query.new("#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{object_id}\"")
+      query = Solr::Query.new("#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{object_id}\" AND NOT #{Solrizer.solr_name('preservation_only', :stored_searchable)}:true")
 
       while query.has_more?
 

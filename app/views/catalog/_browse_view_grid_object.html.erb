@@ -1,3 +1,4 @@
+
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block">
            <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
@@ -19,8 +20,8 @@
     <p class="dri_subject">
       <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
           <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
-              <%= subject %>
-              <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject %> | <% end %>
+              <% unless uri?(subject) %> <%= subject %> <% end %>
+              <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject || uri?(subject) %> | <% end %>
           <% end %>
       <% else %>
           n/a

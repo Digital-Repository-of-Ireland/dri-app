@@ -1,3 +1,4 @@
+
 <div class="dri_object_first_block">
 	<dl class="dri_object_metadata_readview">
 		<% document_show_fields.each do |solr_fname, field| -%>
@@ -47,7 +48,7 @@
 	</div>
 
 	<div class="dri_vc_image">
-		
+
 		<% if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first %>
 		<%= image_tag(document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first, :width=>"230", :alt=> t('dri.views.alt_tags.cover_image')) %></a>
 		<% else %>
@@ -61,55 +62,8 @@
 	<%= render :partial => "tools", :locals => {:document => document} %>
 
 	<% if signed_in? && (can? :manage_collection, document) %>
-	<div class="dri_objecttools_title">
-		<i class="fa fa-pencil fa-lg"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
-	</div>
-	<ul class="dri_view_collection bold">
-		<% if (edit_functionality_available?(@document)) %>
-		<%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
-		<li>
-			<i class="fa fa-plus-square-o fa-lg"></i><%= t('dri.views.catalog.links.add_object') %>
-		</li>
-		<% end %>
-		<%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %>
-		<li class="dri_help_popover" data-content="<%= t('dri.views.catalog.links.add_documentation_help_text') %>" data-original-title="<%= t('dri.views.catalog.links.add_documentation_help_title')%>" data-trigger="hover" data-placement="right">
-			<i class="fa fa-file-text-o fa-lg"></i></i><%= t('dri.views.catalog.links.add_documentation') %>
-		</li>
-		<% end %>
-		<%= link_to new_object_path(collection: document.id, method: 'upload'), :id => "add_object_xml" do %>
-		<li >
-			<i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.add_object_xml') %>
-		</li>
-		<% end %>
-		<%= link_to edit_collection_path, :id => "edit_collection" do %>
-		<li>
-			<i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.edit') %>
-		</li>
-		<% end %>
-		<% end %> <!-- if end (non-EAD collections) -->
-		<% if @document[Solrizer.solr_name('status', :stored_searchable, type: :symbol).to_sym].first.eql?("draft") %>
-		<% publish_label = t('dri.views.catalog.links.publish') %>
-		<% else %>
-		<% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
-		<% end %>
-		<!-- TODO Fix Callback -->
-		<%= link_to  review_path(:apply_all => 'yes'), data: { confirm: t('dri.views.collection.confirm_all_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
-		<li>
-			<i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_all_reviewed') %>
-		</li>
-		<% end %>
-		<%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
-		<li >
-			<i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
-		</li>
-		<% end %>
-		<%= link_to  surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
-		<li>
-			<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
-		</li>
-		<% end %>
+	<%= render :partial => "catalog/show_collection_editor_tools", :locals => {:document => document} %>
 
-	</ul>
 
 	<% end %>
 
@@ -121,3 +75,28 @@
 	<% end %>
 
 </div>
+
+<div class="modal fade" id="dri_review_modal_id">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title"><%= t('dri.views.catalog.links.review_objects') %></h4>
+			</div>
+
+			<div class="modal-body">
+				<%= button_to  review_path(), :class =>"dri_button_green", data: { confirm: t('dri.views.collection.confirm_all_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
+				<%= t('dri.views.catalog.links.mark_all_reviewed') %>
+				<% end %>
+				<%= button_to  review_path(:apply_all => 'yes'),:class =>"dri_button_red", data: { confirm: t('dri.views.collection.confirm_all_descendants_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
+				<%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
+				<% end %>
+			</div>
+			<div class="modal-footer">
+
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

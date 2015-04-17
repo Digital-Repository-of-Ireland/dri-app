@@ -127,6 +127,7 @@ class AssetsController < ApplicationController
         @gf = DRI::GenericFile.new(:pid => Sufia::IdService.mint)
         @gf.batch = @object
         @gf.apply_depositor_metadata(current_user)
+        @gf.preservation_only = "true" if params[:preservation].eql?('true')
 
         create_file(file_upload, @gf.id, datastream, params[:checksum])
 
@@ -179,11 +180,9 @@ class AssetsController < ApplicationController
 
       while result_docs.has_more?
         doc = result_docs.pop
-        raise Exceptions::NotFound if doc.empty?
 
         doc.each do |r|
           doc = SolrDocument.new(r)
-
           files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{doc.id}\""
           query = Solr::Query.new(files_query)
 
@@ -213,17 +212,18 @@ class AssetsController < ApplicationController
               item['files'].push(file_list)
             end
           end
-
           @list << item
         end
       end
+
+      raise Exceptions::NotFound if @list.empty?
 
     else
       raise Exceptions::BadRequest
     end
 
     respond_to do |format|
-      format.json  { }
+      format.json
     end
   end
 
@@ -231,13 +231,18 @@ class AssetsController < ApplicationController
   private
 
     def upload_from_params
-      if params[:Filedata].blank?
+      if params[:Filedata].blank? && params[:Presfiledata].blank?
         flash[:notice] = t('dri.flash.notice.specify_file')
         redirect_to :controller => "catalog", :action => "show", :id => params[:object_id]
         return
       end
 
-      file_upload = params[:Filedata]
+      if params[:Filedata].present?
+        file_upload = params[:Filedata]
+      elsif params[:Presfiledata].present?
+        file_upload = params[:Presfiledata]
+      end
+
       validate_upload(file_upload)
 
       file_upload

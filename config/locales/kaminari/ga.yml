@@ -1,19 +1,19 @@
 
----
-ga:
-  helpers:
-    page_entries_info:
-      more_pages:
+--- 
+ga: 
+  helpers: 
+    page_entries_info: 
+      more_pages: 
         display_entries: "%{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> de <b>%{total}</b> san iomlán"
-      one_page:
-        display_entries:
+      one_page: 
+        display_entries: 
           one: "Ag taispeáint  <b>1</b> %{entry_name}"
           other: "Ag taispeáint  <b>gach %{count}</b> %{entry_name}"
           zero: "Níor aimsíodh %{entry_name}"
-  views:
-    pagination:
-      first: "&laquo; First"
-      last: "Last &raquo;"
-      next: "An chéad &rsaquo; eile"
-      previous: "An &lsaquo; roimhe seo"
+  views: 
+    pagination: 
+      first: "&laquo; An chéad ceann"
+      last: "An ceann deireanach &raquo;"
+      next: "An chéad ceann eile &rsaquo;"
+      previous: "&lsaquo; An ceann roimhe seo"
       truncate: "&hellip;"

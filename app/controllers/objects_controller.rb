@@ -116,13 +116,10 @@ class ObjectsController < CatalogController
     
     set_access_permissions(:batch)
 
-    @object = DRI::Batch.with_standard :qdc
-    @object.depositor = current_user.to_s
-    @object.update_attributes params[:batch]
-
-    if request.content_type == "multipart/form-data"
-      xml = MetadataHelpers.load_xml(params[:metadata_file])
-      MetadataHelpers.set_metadata_datastream(@object, xml)
+    if params[:metadata_file].present?
+      create_from_upload
+    else
+      create_from_form
     end
 
     MetadataHelpers.checksum_metadata(@object)
@@ -173,7 +170,6 @@ class ObjectsController < CatalogController
 
       while result_docs.has_more?
         doc = result_docs.pop
-        raise Exceptions::NotFound if doc.empty?
 
         doc.each do | r |
           item = {}
@@ -247,6 +243,8 @@ class ObjectsController < CatalogController
 
           @list << item
         end
+
+        raise Exceptions::NotFound if @list.empty?
       end
 
     else
@@ -327,5 +325,24 @@ class ObjectsController < CatalogController
     end
   end
 
+  private
+
+    def create_from_upload
+      xml = MetadataHelpers.load_xml(params[:metadata_file])
+      standard = MetadataHelpers.get_metadata_standard_from_xml xml
+
+      @object = DRI::Batch.with_standard standard
+      @object.depositor = current_user.to_s
+      @object.update_attributes params[:batch]
+
+      MetadataHelpers.set_metadata_datastream(@object, xml)
+    end
+ 
+    def create_from_form
+      @object = DRI::Batch.with_standard :qdc
+      @object.depositor = current_user.to_s
+      @object.update_attributes params[:batch]
+    end
+  
 end
 

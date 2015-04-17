@@ -72,7 +72,7 @@ module Storage
         begin
           url = create_url(bucket, surrogate, expire)
         rescue Exception => e
-          Rails.logger.debug "Problem getting url for file #{surrogate} : #{e.to_s}"
+          Rails.logger.debug "Problem getting url for file #{surrogate}: #{e.to_s}"
         end
       end
  
@@ -93,7 +93,7 @@ module Storage
     # Delete bucket
     def delete_bucket(bucket_name)
       begin
-        objects = @client.list_objects(bucket: bucket_name)
+        objects = list_files(bucket_name)
         objects.each do |obj|
           obj.delete
         end
@@ -114,7 +114,7 @@ module Storage
           body: File.open(Pathname.new(surrogate_file)),
           key: surrogate_key)
       rescue Exception  => e
-        Rails.logger.error "Problem saving Surrogate file #{surrogate_key} : #{e.to_s}"
+        Rails.logger.error "Problem saving Surrogate file #{surrogate_key}: #{e.to_s}"
       end
     end
 
@@ -132,7 +132,7 @@ module Storage
 
         return true
       rescue Exception => e
-        Rails.logger.error "Problem saving file #{file_key} : #{e.to_s}"
+        Rails.logger.error "Problem saving file #{file_key}: #{e.to_s}"
         
         return false
       end
@@ -144,7 +144,7 @@ module Storage
       begin
         url = create_url(bucket, file, expire)
       rescue Exception => e
-        Rails.logger.error "Problem getting link for file #{file} : #{e.to_s}"
+        Rails.logger.error "Problem getting link for file #{file}: #{e.to_s}"
       end
       return url
     end
@@ -154,7 +154,7 @@ module Storage
       begin
         url = create_url(bucket, file, nil, false)
       rescue Exception => e
-        Rails.logger.error "Problem getting link for file #{file} : #{e.to_s}"
+        Rails.logger.error "Problem getting link for file #{file}: #{e.to_s}"
       end
       return url
     end
