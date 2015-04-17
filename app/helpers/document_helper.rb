@@ -61,8 +61,8 @@ module DocumentHelper
         children_array = children_array.to_a.push [link_text, catalog_path(doc['id']).to_s, type.to_s]
       end
     end
-
-    return children_array
+    paged_children = Kaminari.paginate_array(children_array).page(params[:subs_page]).per(4)
+    return paged_children
   end
 
   # Returns a Hash with relationship groups and generated links to related objects for UI Display
@@ -117,7 +117,7 @@ module DocumentHelper
       end
     end
     
-    return url_array
+    return Kaminari.paginate_array(url_array).page(params[:externs_page]).per(4)
   end # get_object_external_relationships
 
 end
