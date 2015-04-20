@@ -128,3 +128,4 @@ gem 'videojs_rails', :git => 'https://github.com/ekilfeather/videojs_rails.git',
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'bootstrap-datepicker-rails'
+gem 'social-share-button'

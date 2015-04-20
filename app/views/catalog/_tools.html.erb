@@ -19,6 +19,10 @@
   <% if (can? :edit, @document) %>
     <li><%= link_to t('dri.views.catalog.links.history'), object_history_path(@document.id), :id => 'show_object_history_report' %></li>
   <% end %>
+  <li><%= t('dri.views.catalog.links.share') %> &raquo;</li>
+  <% get_cover_image @document %>
+  <li><%= social_share_button_tag(document_show_html_title, :image => @cover_image, :popup => 'true') %></li>
+  
 </ul>
 
 <div class="modal fade" id="dri_citatation_modal_id">
@@ -29,6 +33,7 @@
         <h4 class="modal-title"><%= t('blacklight.tools.cite') %></h4>
       </div>
       <div class="modal-body">
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('dri.window.modal.close') %></button>
