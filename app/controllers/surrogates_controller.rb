@@ -84,10 +84,20 @@ class SurrogatesController < ApplicationController
   end
 
   def download
-    path = params[:path]
+    file_id = params[:id]    
+    object_id = params[:object_id] 
+    surrogate_url = params[:surrogate_url]
+
+    uri = URI(surrogate_url)
+    ext = File.extname(uri.path)
+    type = MIME::Types.of(ext).first.content_type
+
+    name = "#{object_id}#{ext}"
+
+    path = surrogate_url
     content_type = MIME::Types.of(path)
-    data = open(params[:path])
-    send_data data.read, :filename => params[:name], :type => content_type, disposition: 'attachment', stream: 'true', buffer_size: '4096'
+    data = open(path)
+    send_data data.read, :filename => name, :type => content_type, disposition: 'attachment', stream: 'true', buffer_size: '4096'
   end
 
   private

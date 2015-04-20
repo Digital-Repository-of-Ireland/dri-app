@@ -28,15 +28,6 @@ module ApplicationHelper
     url
   end
 
-  def surrogate_download_params( document, surrogate_url )
-    uri = URI(surrogate_url)
-    ext = File.extname(uri.path)
-
-    type = MIME::Types.of(ext).first.content_type
-
-    {:path => surrogate_url, :type => type, :name => "#{document.id}#{ext}"}    
-  end
-
   def get_asset_version_list( file_id, datastream )
     files = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => file_id, :d => datastream }).to_a
     return files
