@@ -37,7 +37,7 @@
 	<div class="dri_clearfix">
 	<% external_rels.each do |url| -%>
 	
-	<article class=""><%= link_to (url)  do %>
+	<article class=""><%= link_to url, :target => "_blank"  do %>
 		<div class="dri_content_block">
 
 			<h1><%= url %></h1>
