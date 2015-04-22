@@ -15,31 +15,25 @@ DRI::ModelSupport::Files.module_eval do
       return false
     end
 
-    if !pass_validation
+    unless pass_validation
       return false
     end
 
-    gf = DRI::GenericFile.new(:pid => Sufia::IdService.mint)
+    gf = DRI::GenericFile.new(:id => Sufia::IdService.mint)
     gf.batch = self
       
     # Apply depositor metadata, other permissions currently unused for generic files
+    ingest_user = UserGroup::User.find_by_email(gf.batch.depositor)    
     gf.apply_depositor_metadata(gf.batch.depositor)
-      
-    gf.save
-
+    
     create_file(file, file_name, gf.id, dsid, "", mime_type.to_s)
 
-    url = Rails.application.routes.url_helpers.url_for :controller=>"assets", :action=>"download", :object_id => gf.batch.id, :id=> gf.id
-    gf.update_file_reference dsid, :url=>url, :mimeType=>mime_type.to_s
-
-    begin
-      gf.save!
-      Sufia.queue.push(CharacterizeJob.new(gf.id))
-    rescue Exception => e
+    actor = Sufia::GenericFile::Actor.new(gf, ingest_user)
+    if actor.create_content(file, file_name, dsid, mime_type.to_s)
+      return true
+    else
       Rails.logger.error "Error saving file: #{e.message}"
       return false
-    else
-      return true
     end
   end
 
