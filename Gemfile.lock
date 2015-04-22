@@ -1,9 +1,9 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: 065c37c7d927b14e46b4910400c7b99be8d9c361
+  revision: 56249b5156eeb114e8b73b73a4e7ab4d68edab41
   branch: hydra9
   specs:
-    dri_data_models (2.0.4)
+    dri_data_models (2.1.1)
       hydra-access-controls
       hydra-collections
       hydra-head (~> 9.0)
@@ -15,10 +15,10 @@ GIT
 
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-user-group.git
-  revision: 15cbca839d9b5cb534d888c7559b0bde532569cd
+  revision: 2d373c608ee36801ac94d9288cd799c6fefd59e4
   branch: hydra9
   specs:
-    user_group (1.0.7)
+    user_group (1.0.8)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -47,9 +47,9 @@ GIT
     videojs_rails (4.11.4)
 
 GIT
-  remote: https://github.com/stkenny/active_fedora.git
-  revision: 56c3168092073ba578a350e9591b72d351e9b4b5
-  branch: model_inheritance
+  remote: https://github.com/projecthydra/active_fedora.git
+  revision: ab1f946e63f3d92b5fd5fa86a50ca3ab1bba38de
+  ref: ab1f946e63f3d92b5fd5fa86a50ca3ab1bba38de
   specs:
     active-fedora (9.0.6)
       active-triples (~> 0.6.0)
@@ -111,7 +111,7 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    autoprefixer-rails (5.1.9)
+    autoprefixer-rails (5.1.11)
       execjs
       json
     aws-sdk (2.0.33)
@@ -149,8 +149,6 @@ GEM
       blacklight (>= 5.0.0.pre4, < 6)
       jquery-rails
       rails (>= 3.0, < 5.0)
-    block_helpers (0.3.3)
-      activesupport (>= 2.0)
     bootstrap-datepicker-rails (1.4.0)
       railties (>= 3.0)
     bootstrap-sass (3.3.4.1)
@@ -221,7 +219,7 @@ GEM
     daemons (1.2.2)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
-    deprecation (0.2.2)
+    deprecation (0.1.0)
       activesupport
     devise (3.4.1)
       bcrypt (~> 3.0)
@@ -244,11 +242,11 @@ GEM
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
-    equivalent-xml (0.5.1)
+    equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
     eventmachine (1.0.7)
-    execjs (2.4.0)
+    execjs (2.5.2)
     extlib (0.9.16)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
@@ -259,7 +257,6 @@ GEM
       i18n (~> 0.5)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
-    fastercsv (1.5.5)
     fastimage (1.6.8)
       addressable (~> 2.3, >= 2.3.5)
     feedjira (1.6.0)
@@ -320,6 +317,7 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     http_accept_language (2.0.5)
+    http_logger (0.5.1)
     http_parser.rb (0.6.0)
     hydra-access-controls (9.0.1)
       active-fedora (~> 9.0.0)
@@ -353,7 +351,7 @@ GEM
       ya2yaml
     is_it_working-cbeer (1.0.16)
     iso-639 (0.2.5)
-    iso8601 (0.8.5)
+    iso8601 (0.8.6)
     it (0.2.5)
       actionpack (>= 3.0.0)
     jettywrapper (2.0.3)
@@ -394,7 +392,7 @@ GEM
     legato (0.4.0)
       multi_json
     link_header (0.0.8)
-    linkeddata (1.1.11)
+    linkeddata (1.1.11.1)
       equivalent-xml (~> 0.5)
       json-ld (~> 1.1, >= 1.1.8)
       nokogiri (~> 1.6)
@@ -435,7 +433,7 @@ GEM
       rails (>= 3.2.0)
     memoist (0.12.0)
     method_source (0.8.2)
-    mime-types (2.4.3)
+    mime-types (1.25.1)
     mimemagic (0.3.0)
     mini_magick (4.2.3)
     mini_portile (0.6.2)
@@ -715,7 +713,6 @@ GEM
     trollop (2.1.2)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uber (0.0.13)
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
