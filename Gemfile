@@ -5,16 +5,18 @@ source 'http://rubygems.org'
 
 gem 'rails','~> 4.1.0'
 
-gem 'blacklight', "5.9.3"
-gem 'hydra-head', "9.0.1"
-gem 'sufia-models', "6.0.0.rc4"
+gem 'blacklight', '5.9.3'
+gem 'blacklight_range_limit'
+gem 'blacklight-maps'
+gem 'hydra-head', '9.0.1'
+gem 'sufia-models', '6.0.0.rc4'
 
 gem 'paper_trail', '~> 3.0.6'
 
 gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'hydra9'
 gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'hydra9'
 
-gem 'active-fedora', git: 'https://github.com/stkenny/active_fedora.git', :branch => 'model_inheritance' #git: 'https://github.com/projecthydra/active_fedora.git', ref: 'c0885c2d3ea8ccf61ab8236c40d77fd369ea0ed9'
+gem 'active-fedora', '9.1.1'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -53,7 +55,8 @@ gem 'high_voltage', '~> 2.1.0'
 # is it working fork
 gem 'is_it_working-cbeer'
 
-gem 'sass-rails' , '~> 4.0.2'
+gem 'sass-rails' , '~> 4.0.4'
+gem 'compass-rails'
 # gem 'coffee-rails', '~> 3.2.1'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -73,6 +76,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'guard-livereload', require: false
+  gem 'compass'
 
   gem "zeus", require: false
 
@@ -126,3 +130,4 @@ gem 'videojs_rails', :git => 'https://github.com/ekilfeather/videojs_rails.git',
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'bootstrap-datepicker-rails'
+gem 'social-share-button'

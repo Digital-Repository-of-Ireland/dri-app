@@ -84,10 +84,20 @@ class SurrogatesController < ApplicationController
   end
 
   def download
-    path = params[:path]
+    file_id = params[:id]    
+    object_id = params[:object_id] 
+    surrogate_url = params[:surrogate_url]
+
+    uri = URI(surrogate_url)
+    ext = File.extname(uri.path)
+    type = MIME::Types.of(ext).first.content_type
+
+    name = "#{object_id}#{ext}"
+
+    path = surrogate_url
     content_type = MIME::Types.of(path)
-    data = open(params[:path])
-    send_data data.read, :filename => params[:name], :type => content_type, disposition: 'attachment', stream: 'true', buffer_size: '4096'
+    data = open(path)
+    send_data data.read, :filename => name, :type => content_type, disposition: 'attachment', stream: 'true', buffer_size: '4096'
   end
 
   private
@@ -95,7 +105,7 @@ class SurrogatesController < ApplicationController
     def generate_surrogates(object_id)
       enforce_permissions!("edit", object_id)
 
-      query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object_id}\"")
+      query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object_id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('preservation_only', :stored_searchable)}:true")
 
       while query.has_more?
 

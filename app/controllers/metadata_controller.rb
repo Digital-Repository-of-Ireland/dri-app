@@ -26,7 +26,9 @@ class MetadataController < CatalogController
 
     if @object && @object.attached_files.key?(:descMetadata)
       respond_to do |format|
-        format.xml { render :xml => @object.attached_files[:descMetadata].content }
+        format.xml { render :xml => (@object.attached_files.key?(:fullMetadata) && !@object.attached_files[:fullMetadata].content.nil?) ?
+                                @object.attached_files[:fullMetadata].content : @object.attached_files[:descMetadata].content
+        }
         format.html  { 
           xml_data = @object.attached_files[:descMetadata].content
           xml = Nokogiri::XML(xml_data)

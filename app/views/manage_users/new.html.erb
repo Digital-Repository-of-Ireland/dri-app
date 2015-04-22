@@ -1,0 +1,9 @@
+
+
+<%= form_tag(manage_users_path, :method => :post) do %>
+
+  <%= label_tag(:user, t('dri.views.manager_users.email') ) %>
+  <%= text_field_tag(:user) %>
+  <%= submit_tag( t('dri.views.manager_users.buttons.submit') ) %>
+
+<% end %>

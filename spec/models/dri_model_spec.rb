@@ -35,13 +35,13 @@ describe Batch do
     @t.description = ["A fake object"]
 
     solr_doc = @t.to_solr
-    solr_doc[Solrizer.solr_name('creation_date', :stored_searchable)].should_not include("null")
-    solr_doc[Solrizer.solr_name('published_date', :stored_searchable)].should_not include("null")
-    solr_doc[Solrizer.solr_name('date', :stored_searchable)].should_not include("null")
+    expect(solr_doc[Solrizer.solr_name('creation_date', :stored_searchable)].size).to eq(1)
+    expect(solr_doc[Solrizer.solr_name('published_date', :stored_searchable)].size).to eq(1)
+    expect(solr_doc[Solrizer.solr_name('date', :stored_searchable)].size).to eq(1)
 
-    solr_doc[Solrizer.solr_name('creation_date', :stored_searchable)].should include("2014-10-17")
-    solr_doc[Solrizer.solr_name('published_date', :stored_searchable)].should include("2014-10-17")
-    solr_doc[Solrizer.solr_name('date', :stored_searchable)].should include("2014-10-17")
+    solr_doc[Solrizer.solr_name('creation_date', :stored_searchable)].any?{ |val| /2014-10-17/ =~ val}.should be true
+    solr_doc[Solrizer.solr_name('published_date', :stored_searchable)].any?{ |val| /2014-10-17/ =~ val}.should be true
+    solr_doc[Solrizer.solr_name('date', :stored_searchable)].any?{ |val| /2014-10-17/ =~ val}.should be true
   end
 
   it "should not index null creator values" do

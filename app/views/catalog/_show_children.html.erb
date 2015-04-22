@@ -1,12 +1,13 @@
 <!-- Display Tree Structure, for EAD collection objects only -->
 
 <% # Showing only the first 10 results %>
-<% children = get_collection_children(@document, 5) %>
+<% children = get_collection_children(@document, 500) %>
 
 <% if (!children.blank?) %>
 <div class="dri_object_institutes_block">
 	<div class="dri_institutes_title">
-		<span>Children</span>
+		<% # FIXME Add this to locale files %>
+		<span>Sub-collections</span>
 	</div>
 	<% children.take(4).each do |child| -%>
 	<article class="">
@@ -24,12 +25,11 @@
 		<!-- close content_block -->
 	</article>
 	<% end %>
-	<% if (children.count > 4) %>
-	<div class="dri_collection_image">
-		<%= link_to t('dri.views.collection.institute.more'), '' , :id => "all_children", :'data-toggle' => 'modal',  :'data-target' => '#dri_children_modal_id' %>
+	<div class="dri_clearfix dri_float_right">
+		<nav class="">
+		<%# link_to t('dri.views.collection.institute.more'), '' , :id => "all_children", :'data-toggle' => 'modal',  :'data-target' => '#dri_children_modal_id' %>
+		<%= paginate children, :param_name => 'subs_page'%> </nav>
 	</div>
-
-	<% end %>
 </div>
 <% end %>
 <%= render :partial => "catalog/show_all_children", :locals => {:document => @document} %>

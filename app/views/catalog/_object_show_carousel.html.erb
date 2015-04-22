@@ -9,10 +9,12 @@
       </div>
 
       <% for i in 1..(files.count - 1) %>
+        <% if !files[i].preservation_only.eql?('true') %>
           <div class="item dri_asset_carousel_item dri_bottom_stack">
             <%= render :partial => "object_show_surrogate", :locals => {:document => document, :generic_file => files[i]} %>
             <%= render :partial => "object_show_download", :locals => {:document => document, :generic_file => files[i], :index => i + 1} %>
           </div>
+        <% end %>
       <% end %>
     </div>
 

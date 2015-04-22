@@ -7,10 +7,15 @@ This is a ruby on rails application, as such to run this application
 the user must be somewhat aware of how ruby on rails applications are
 run and deployed.
 
+There are a number of other depedencies (see below) but at this point you 
+will need to have a functional Rails stack and at least Java version 7. You
+can check your Java version by running 'java -version' anything below 1.7x
+in the output and you should update from https://java.com/en/download/
+
 For testing and development you will need to bootstrap the project
 
   $ git clone git@tracker.dri.ie:drirepo/dri-app.git
-  $ cd nuig-rnag
+  $ cd dri-app
   $ git submodule update --init --recursive
   $ bundle
   $ cp config/database.yml.sample config/database.yml (and edit as appropriate)

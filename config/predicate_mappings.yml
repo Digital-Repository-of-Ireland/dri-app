@@ -51,7 +51,6 @@
     :is_governed_by: isGovernedBy
   http://dri.ie/ns/relations#:
     :is_preceded_by: isPrecededBy
-    :is_documentation_for: isDocumentationFor
   # MODS RDF relationships (http://www.loc.gov/standards/mods/modsrdf-primer.html#relatedItem)
   # preceding, succeeding, original, host, constituent, series,
   # otherVersion, otherFormat, isReferencedBy, references, reviewOf
@@ -70,7 +69,7 @@
   # DC RDF relationships
   # Relation, IsPartOf, IsReferencedBy, References, Source??, IsVersionOf, HasVersion, isFormatOf
   http://purl.org/dc/terms/:
-    :dcterms_relation: relation
+    :dcterms_relation: isRelatedTo
     :dcterms_is_part_of: isPartOf
     :dcterms_has_part: hasPart
     :dcterms_is_referenced_by: isReferencedBy

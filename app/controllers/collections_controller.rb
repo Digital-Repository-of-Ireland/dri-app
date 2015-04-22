@@ -200,7 +200,7 @@ class CollectionsController < CatalogController
 
     if params[:apply_all].present? && params[:apply_all].eql?("yes")
       begin
-        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless @object.governed_items.nil?
+        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless (@object.governed_items.nil? || @object.governed_items.empty?)
       rescue Exception => e
         logger.error "Unable to submit status job: #{e.message}"
         flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)
@@ -297,12 +297,12 @@ class CollectionsController < CatalogController
 
     true
   end
-  
+
   # Create a collection from an uploaded XML file.
   #
   def create_from_xml
     enforce_permissions!("create", DRI::Batch)
-    
+
     unless params[:metadata_file].present?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
       return false
@@ -339,7 +339,7 @@ class CollectionsController < CatalogController
     #@object.private_metadata="0"
     #@object.master_file="0"
 
-    @object.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?   
+    @object.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?
 
     true
   end

@@ -4,7 +4,9 @@ require 'solr/query'
 
 class ApplicationController < ActionController::Base
 
-  before_filter :set_locale, :set_cookie
+  before_filter :set_locale, :set_cookie, :set_metadata_language
+
+
 
   include HttpAcceptLanguage
 
@@ -60,6 +62,13 @@ class ApplicationController < ActionController::Base
       I18n.locale = current_user.locale
     else
       I18n.locale = cookies[:lang]
+    end
+  end
+  
+  def set_metadata_language
+    currentMetaLang = 'all'
+    if cookies[:metadata_language].nil? 
+      cookies.permanent[:metadata_language] = currentMetaLang
     end
   end
 

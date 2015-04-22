@@ -17,7 +17,8 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
     collection.discover_groups_string="public"
     collection.read_groups_string="registered"
   end
-  collection.save!
+  collection.save
+  collection.collections.count.should == 0
   collection.governed_items.count.should == 0
 
   group = UserGroup::Group.new(:name => collection.id,
@@ -164,8 +165,7 @@ When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type "(.*?)
       object.save
     when "non-governing"
       object.title = [SecureRandom.hex(5)]
-      #collection.items << object
-      collection.save
+      collection.collections << object
   end
 end
 
@@ -181,8 +181,8 @@ Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as ty
       collection.governed_items.length.should == 1
       collection.governed_items[0].title.should == object.title
     when "non-governing"
-      #collection.items.length.should == 1
-      #collection.items[0].title.should == object.title
+      collection.collections.length.should == 1
+      collection.collections[0].title.should == object.title
   end
 end
 
