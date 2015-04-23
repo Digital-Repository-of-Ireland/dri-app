@@ -1,6 +1,6 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: 99ab3abd9171b81a4fd7f9f3a65bd64322f311a1
+  revision: c3ba32ae285756c97020f3adc0f2081daf2f631a
   branch: hydra9
   specs:
     dri_data_models (2.1.1)
@@ -568,7 +568,7 @@ GEM
     rdf-turtle (1.1.6)
       ebnf (~> 0.3, >= 0.3.6)
       rdf (~> 1.1, >= 1.1.10)
-    rdf-vocab (0.8.0)
+    rdf-vocab (0.8.1)
       rdf (~> 1.1, >= 1.1.10)
     rdf-xsd (1.1.3)
       rdf (~> 1.1, >= 1.1.9)
