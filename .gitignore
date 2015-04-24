@@ -11,7 +11,7 @@
 /db/*.sqlite3
 
 # ignore schema
-db/schema.rb
+/db/schema.rb
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
