@@ -66,5 +66,40 @@
 		<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
 	</li>
 	<% end %>
+	<%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal' do %>
+    <li>
+       <i class="fa fa-trash-o fa-lg"></i><%= t('dri.views.collection.buttons.delete_collection') %>
+    </li>
+    <% end %>
 
 </ul>
+
+
+<% if current_user.is_admin? || ((can? :manage_collection, @document) && @document.status.eql?('draft')) %>
+<div class="modal fade" id="dri_delete_modal_id">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title"><%= t('dri.views.collection.buttons.delete_collection') %></h4>
+            </div>
+
+            <div class="modal-body">
+                <span class="label label-danger"><%= t('dri.views.collection.confirm_delete') %></span><br />
+            <%= form_tag (collection_path(@document.id)), :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+            <%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_button_red", :id => "delete_collection_#{@document.id}", :data => { :confirm => t('dri.views.collection.confirm_delete') } %>
+            <% end %>
+            
+            </div>
+            
+            <div class="modal-footer">
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<% end %>
