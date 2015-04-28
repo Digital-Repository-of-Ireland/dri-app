@@ -19,10 +19,12 @@ class AssetsController < ApplicationController
     datastream = params[:datastream].presence || "content"
 
     # Check if user can view a master file
-    enforce_permissions!("show_master", params[:object_id]) if (datastream == "content")
-
     @document = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
+
+    if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
+        raise Hydra::AccessDenied.new("This item is not available. You do not have sufficient access privileges to view the master file(s).", :read_master, params[:object_id])
+      end
 
     respond_to do |format|
       format.html
@@ -38,12 +40,15 @@ class AssetsController < ApplicationController
     datastream = params[:datastream].presence || "content"
 
     # Check if user can view a master file
-    enforce_permissions!("show_master", params[:object_id]) if (datastream == "content")
     enforce_permissions!("edit", params[:object_id]) if params[:version].present?
 
     @generic_file = retrieve_object! params[:id]
 
     unless @generic_file.nil?
+
+      if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
+        raise Hydra::AccessDenied.new("This item is not available. You do not have sufficient access privileges to view the master file(s).", :read_master, params[:object_id])
+      end
 
       if (params[:version].present?)
         @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d AND version = :v",
@@ -193,7 +198,7 @@ class AssetsController < ApplicationController
               file_list = {}
               file_doc = SolrDocument.new(mf)
 
-              if can? :read_master, doc
+              if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
                 url = url_for(file_download_url(doc.id, file_doc.id))
                 file_list['masterfile'] = url
               end

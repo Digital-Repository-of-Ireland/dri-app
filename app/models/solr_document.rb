@@ -54,4 +54,22 @@ class SolrDocument
     end
   end
 
+  def read_master?
+    master_file_key = ActiveFedora::SolrQueryBuilder.solr_name('master_file_access', :stored_searchable, type: :string)
+
+    governing_object = self
+
+    while governing_object[master_file_key].nil? || governing_object[master_file_key] == "inherit"
+      parent_id = governing_object[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
+      return false if parent_id.nil?
+      
+      parent_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([parent_id.first])
+    
+      parent = ActiveFedora::SolrService.query(parent_query)
+      governing_object = SolrDocument.new(parent.first)      
+    end
+
+    governing_object[master_file_key] == ["public"]
+  end
+
 end

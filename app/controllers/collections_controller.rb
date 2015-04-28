@@ -25,8 +25,7 @@ class CollectionsController < CatalogController
     @object.manager_users_string=current_user.to_s
     @object.discover_groups_string="public"
     @object.read_groups_string="public"
-    #@object.private_metadata="0"
-    #@object.master_file="0"
+    @object.master_file_access="private"
     @object.object_type = ["Collection"]
     @object.title = [""]
     @object.description = [""]
@@ -83,8 +82,6 @@ class CollectionsController < CatalogController
     @inst = Institute.new
 
     supported_licences()
-
-    #set_access_permissions(:batch, true)
 
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
@@ -259,8 +256,6 @@ class CollectionsController < CatalogController
 
     enforce_permissions!("create", DRI::Batch)
 
-    #set_access_permissions(:batch, true)
-
     @object = DRI::Batch.with_standard :qdc
 
     @object.type = ["Collection"] if @object.type == nil
@@ -336,8 +331,7 @@ class CollectionsController < CatalogController
     @object.manager_users_string=current_user.to_s
     @object.discover_groups_string="public"
     @object.read_groups_string="public"
-    #@object.private_metadata="0"
-    #@object.master_file="0"
+    @object.master_file_access="private"
 
     @object.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?
 

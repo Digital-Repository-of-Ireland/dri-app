@@ -317,30 +317,28 @@
 
 		</fieldset>
                 
-                <% if false %> 
 		<div class="field">
 			<h5><%= t('dri.views.objects.access_controls.master_file') %><i id="dri_view_objects_access_controls_master_file_info" class="fa fa-info-circle"></i></h5><%= t('dri.views.objects.access_controls.master_file_desc') %>
 
 			<ul class="breadcrumb">
 				<li>
-					<%= f.radio_button :master_file, "radio_inherit", :checked=>record.master_file.nil?, :disabled=> disabled_inherit %>
-					<%= f.label :master_file, t('dri.views.objects.access_controls.inherit')%>
+					<%= f.radio_button :master_file_access, "inherit", :checked=>record.master_file_access=="inherit", :disabled=> disabled_inherit %>
+					<%= f.label :master_file_access, t('dri.views.objects.access_controls.inherit')%>
 				</li>
 
 				<li>
-					<%= f.radio_button :master_file, "radio_public", :checked=>record.master_file==true %>
-					<%= f.label :master_file, t('dri.views.objects.access_controls.accessible_master_file') %>
+					<%= f.radio_button :master_file_access, "public", :checked=>record.master_file_access=="public" %>
+					<%= f.label :master_file_access, t('dri.views.objects.access_controls.accessible_master_file') %>
 				</li>
 
 				<li>
-					<%= f.radio_button :master_file, "radio_private", :checked=>record.master_file==false %>
-					<%= f.label :master_file, t('dri.views.objects.access_controls.private_master_file')%>
+					<%= f.radio_button :master_file_access, "private", :checked=>record.master_file_access=="private" %>
+					<%= f.label :master_file_access, t('dri.views.objects.access_controls.private_master_file')%>
 				</li>
 
 			</ul>
 		</div> 
-                <% end %>
-
+            
 		<div class="field">
 			<h5><%= t('dri.views.objects.access_controls.edit') %></h5>
 			<ul class="breadcrumb">

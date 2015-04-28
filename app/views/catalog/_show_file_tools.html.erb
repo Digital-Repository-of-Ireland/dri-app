@@ -18,7 +18,7 @@
 
 					<% @files.each_with_index do |file, index| %>
 
-					<% if can? :read_master, @document %>
+					<% if ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
 					<% #<li></li>
 %>
 					<li>
