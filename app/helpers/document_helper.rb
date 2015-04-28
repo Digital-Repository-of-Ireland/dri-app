@@ -121,7 +121,7 @@ module DocumentHelper
         when 'DRI::QualifiedDublinCore'
           solr_fields_array = *(DRI::Vocabulary::qdcRelationshipTypes.map { |s| s.prepend("ext_related_items_ids_").to_sym})
         when 'DRI::Marc', 'DRI::EncodedArchivalDescription'
-          solr_fields_array = [:related_material]
+          solr_fields_array = [:related_material, :alternative_form]
         else
           solr_fields_array = nil
       end

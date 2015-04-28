@@ -21,7 +21,7 @@
             <% unless @object[:cover_image].blank? %>
             <div class="dri_cover_image_img">
 
-            <%= image_tag @object[:cover_image].first, :width=>"228" unless @object[:cover_image].blank? %>            <h2>Current Image</h2></div>
+            <%= image_tag @object[:cover_image], :width=>"228" unless @object[:cover_image].blank? %>            <h2>Current Image</h2></div>
             <% end %>
             <a class='btn btn-default' href='javascript:;'>
                 <h4 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.fields.cover_image')}"%></h4>
