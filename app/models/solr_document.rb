@@ -72,4 +72,10 @@ class SolrDocument
     governing_object[master_file_key] == ["public"]
   end
 
+  def status
+    status_key = ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :string).to_sym
+
+    return self[status_key]
+  end
+
 end
