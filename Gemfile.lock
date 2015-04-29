@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-user-group.git
-  revision: 2d373c608ee36801ac94d9288cd799c6fefd59e4
+  revision: 623bf26eaeed4aebb74b2a86fc4424a5c41480bf
   branch: hydra9
   specs:
     user_group (1.0.8)
