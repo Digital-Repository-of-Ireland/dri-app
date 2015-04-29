@@ -44,12 +44,12 @@
   <p class="add-text-field"><i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Description"><%= t('dri.views.objects.forms.add_description') %></a></p>
 </fieldset>
 <%# we don't want the Collection type to be output as we don't want it modified %>
-<% if  @object.type.first == 'Collection' || params[:is_sub_collection] == 'true'%>
+<% if  @object.type.first == 'Collection' %>
 <fieldset id="type" class="dri_no_display">
 <% else %>
 <fieldset id="type">
 <% end %>
-  <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.types')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.dummy_text') %>" data-original-title="<%= t('dri.help.dummy_title')%>" data-trigger="hover" data-placement="right"></i></span>
+  <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.types')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.dummy_text') %>" data-original-title="<%= t('dri.help.dummy_title')%>" data-trigger="hover" data-placement="right"></i></span>
   <% if params[:is_sub_collection] == 'true' %>
   <%= f.hidden_field "type][", :value=>'Collection' %>
   <% end %>
