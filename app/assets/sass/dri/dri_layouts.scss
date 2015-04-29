@@ -358,18 +358,33 @@
 
 }
 
-@media screen and (max-width:400px) {
+@media only screen and (max-device-width:600px) {
+
+  .dri_wrapper {
+    width: 100%;
+    margin: 0 auto;
+    $zen-column-count:1;
+    .dri_header_container {
+      .dri_ident {
+          background: image-url($dri_logo_tiny_url);
+          background-repeat: no-repeat;
+          width: 100px;
+          height: 50px;
+          margin-left: 3px;
+      }
+    }
+  }
   
-.dri_wrapper {
-  width: 380px;
-  margin: 0 auto;
-  $zen-column-count:2;
 
-}
-.dri_no_mobile_display {
-  display: none;
+    
+  .dri_home_container, #dri_rss_feed_id, #dri_slideshow_block_id {
+    display:none;
+  }
+  .dri_welcome_block {
+    @include zen-grid-item(1, 1, $gutter-width: 0);
+  
+  }
 }
 
-}
 
 
