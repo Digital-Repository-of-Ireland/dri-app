@@ -10,15 +10,15 @@ describe "ReviewJob" do
 
   before(:each) do
     @collection = FactoryGirl.create(:collection)
-    @collection[:status] = ["draft"]
+    @collection[:status] = "draft"
     @collection.save
 
     @object = FactoryGirl.create(:sound)
-    @object[:status] = ["draft"]
+    @object[:status] = "draft"
     @object.save
 
     @object2 = FactoryGirl.create(:sound)
-    @object2[:status] = ["draft"]
+    @object2[:status] = "draft"
     @object2.save
 
     @collection.governed_items << @object
@@ -46,7 +46,7 @@ describe "ReviewJob" do
 
     it "should ignore published objects" do
       @published = FactoryGirl.create(:sound)
-      @published[:status] = ["published"]
+      @published[:status] = "published"
       @published.save
 
       job = ReviewJob.new(@object.governing_collection.id)
@@ -66,7 +66,7 @@ describe "ReviewJob" do
     it "should handle more than 10 objects", :slow => true do
       20.times do
         o = FactoryGirl.create(:sound)
-        o[:status] = ["draft"]
+        o[:status] = "draft"
         o.save
 
         @collection.governed_items << o

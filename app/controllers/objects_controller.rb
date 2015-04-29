@@ -138,7 +138,7 @@ class ObjectsController < CatalogController
 
       DOI.mint_doi( @object )
 
-      actor.version_and_record_committer
+      #actor.version_and_record_committer
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -233,7 +233,7 @@ class ObjectsController < CatalogController
                 file_list = {}
                 file_doc = SolrDocument.new(mf)
                 
-                if can? :read_master, doc
+                if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
                   url = url_for(file_download_url(doc.id, file_doc.id))
                   file_list['masterfile'] = url
                 end

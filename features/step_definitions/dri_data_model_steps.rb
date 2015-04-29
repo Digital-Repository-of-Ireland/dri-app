@@ -36,6 +36,6 @@ Given /^an object in collection "(.*?)" with metadata from file "(.*?)"$/ do |co
   obj.governing_collection = col
   #obj.rightsMetadata.metadata.machine.integer = '0'
   obj.discover_groups_string = 'public'
-  #obj.rightsMetadata.masterfile.machine.integer = '1'
+  obj.master_file_access = 'private'
   obj.save
 end

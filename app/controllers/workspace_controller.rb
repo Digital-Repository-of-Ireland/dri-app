@@ -73,8 +73,7 @@ class WorkspaceController < ApplicationController
     # facet bar
 
     config.add_facet_field solr_name('status', :facetable), :label => 'Record Status'
-    config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :label_permission
-    config.add_facet_field "master_file_isi", :label => 'Master File Access',  :helper_method => :label_permission
+    config.add_facet_field solr_name('master_file_access', :facetable), :label => 'Master File Access'
     config.add_facet_field solr_name('subject', :facetable), :limit => 20
     config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
     config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
@@ -248,7 +247,7 @@ class WorkspaceController < ApplicationController
 
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "+#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"info:fedora/afmodel:DRI_Batch\""
+    solr_parameters[:fq] << "-#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
     if user_parameters[:mode].eql?('collections')
       solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
       solr_parameters[:fq] << "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"

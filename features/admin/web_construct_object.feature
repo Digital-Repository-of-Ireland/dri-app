@@ -6,7 +6,7 @@ Feature:
 
 Background:
   Given I am logged in as "user1" in the group "cm" and accept cookies
-  And a collection with pid "web:xxxx" and title "Test Collection" created by "user1"
+  And a collection with pid "xxxx" and title "Test Collection" created by "user1"
 
 Scenario: Constructing a valid Digital Object
   When I go to the "metadata" "upload" page for "xxxx"

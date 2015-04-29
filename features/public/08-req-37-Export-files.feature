@@ -18,6 +18,7 @@ Background:
   Given a Digital Object with pid "1234", title "Object 1" created by "user1"
   And a collection with pid "coll1" created by "user1@user1.com"
   When I add the Digital Object "1234" to the collection "coll1" as type "governing"
+  And I go to the "object" "show" page for "1234"
   And I add the asset "sample_audio.mp3" to "1234"
   And the object with pid "coll1" has status published
   And the object with pid "1234" has status published

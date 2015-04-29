@@ -9,9 +9,9 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
   end
 
   mapping = {}
-  mapping['accessible'] = "1"
-  mapping['inaccessible'] = "0"
-  mapping['inherited'] = "-1"
+  mapping['accessible'] = "public"
+  mapping['inaccessible'] = "private"
+  mapping['inherited'] = "inherit"
 
   object = ActiveFedora::Base.find(pid, {:cast => true})
 
@@ -27,24 +27,24 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
   file.add_file(uploaded, { :directory => Dir.tmpdir, :fedora_id => gf.id, :ds_id => "content", :version => "0" })
   file.save
 
-  url = url_for :controller=>"assets", :action=>"download", :object_id=>object.id, :id=>gf.id
-  gf.update_file_reference "content", :url=>url, :mimeType=>"audio/mpeg3"
+  actor = Sufia::GenericFile::Actor.new(gf, current_user)  
+  actor.create_content(uploaded, uploaded.original_filename, "content", uploaded.content_type)
   gf.save
 
-  #object.rightsMetadata.masterfile.machine.integer = mapping[permission].to_s
+  object.master_file_access = mapping[permission].to_s
   object.save
 end
 
 Given /the masterfile for object with title "(.*?)" is "(.*?)"$/ do |title, permission|
   mapping = {}
-  mapping['accessible'] = "1"
-  mapping['inaccessible'] = "0"
-  mapping['inherited'] = "-1"
+  mapping['accessible'] = "public"
+  mapping['inaccessible'] = "private"
+  mapping['inherited'] = "inherit"
 
   query = "title_tesim:#{URI.encode(title)}"
   id = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
   object = ActiveFedora::Base.find(id, {:cast => true})
-  object.master_file = mapping[permission].to_s
+  object.master_file_access = mapping[permission].to_s
   object.save
 end
 

@@ -19,10 +19,10 @@ class AssetsController < ApplicationController
     datastream = params[:datastream].presence || "content"
 
     # Check if user can view a master file
-    enforce_permissions!("show_master", params[:object_id]) if (datastream == "content")
-
     @document = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
+
+    can_view?
 
     respond_to do |format|
       format.html
@@ -38,12 +38,12 @@ class AssetsController < ApplicationController
     datastream = params[:datastream].presence || "content"
 
     # Check if user can view a master file
-    enforce_permissions!("show_master", params[:object_id]) if (datastream == "content")
     enforce_permissions!("edit", params[:object_id]) if params[:version].present?
 
     @generic_file = retrieve_object! params[:id]
 
     unless @generic_file.nil?
+      can_view?
 
       if (params[:version].present?)
         @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d AND version = :v",
@@ -78,9 +78,9 @@ class AssetsController < ApplicationController
     if datastream.eql?("content")
       @generic_file = retrieve_object! params[:id]
 
-      create_file(file_upload, @generic_file.id, datastream, params[:checksum])
-
       if actor.update_content(file_upload, datastream)
+        create_file(file_upload, @generic_file.id, datastream, params[:checksum])
+
         flash[:notice] = t('dri.flash.notice.file_uploaded')
       else 
         message = @generic_file.errors.full_messages.join(', ')
@@ -128,10 +128,10 @@ class AssetsController < ApplicationController
         @generic_file.batch = @object
         @generic_file.apply_depositor_metadata(current_user)
         @generic_file.preservation_only = "true" if params[:preservation].eql?('true')
-
-        create_file(file_upload, @generic_file.id, datastream, params[:checksum])
         
         if actor.create_content(file_upload, file_upload.original_filename, datastream, file_upload.content_type)
+          create_file(file_upload, @generic_file.id, datastream, params[:checksum])
+
           flash[:notice] = t('dri.flash.notice.file_uploaded')
         else
           message = @generic_file.errors.full_messages.join(', ')
@@ -193,7 +193,7 @@ class AssetsController < ApplicationController
               file_list = {}
               file_doc = SolrDocument.new(mf)
 
-              if can? :read_master, doc
+              if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
                 url = url_for(file_download_url(doc.id, file_doc.id))
                 file_list['masterfile'] = url
               end
@@ -225,6 +225,12 @@ class AssetsController < ApplicationController
 
 
   private
+
+    def can_view?
+      if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
+        raise Hydra::AccessDenied.new("This item is not available. You do not have sufficient access privileges to view the master file(s).", :read_master, params[:object_id])
+      end
+    end
 
     def upload_from_params
       if params[:Filedata].blank? && params[:Presfiledata].blank?

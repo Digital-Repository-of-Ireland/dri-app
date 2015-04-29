@@ -53,9 +53,9 @@
 
 	<%= render :partial => "tools" %>
 
-	<% #if signed_in? && (can?(:read_master, @document)) %>
-	<%= render :partial => "show_file_tools" %>
-	<%= render :partial => "show_editor_tools" %>
-	<% #end %>
+	<% if signed_in? && ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
+	  <%= render :partial => "show_file_tools" %>
+	  <%= render :partial => "show_editor_tools" %>
+	<% end %>
 	</div>
 <!-- close dri_object_second_block -->

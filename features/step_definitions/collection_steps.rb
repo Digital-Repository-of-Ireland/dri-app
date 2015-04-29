@@ -17,6 +17,7 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
     collection.discover_groups_string="public"
     collection.read_groups_string="registered"
   end
+  collection.master_file_access="private"
   collection.save
   collection.collections.count.should == 0
   collection.governed_items.count.should == 0

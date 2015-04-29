@@ -179,11 +179,11 @@ module FacetsHelper
   # Used as helper_method in CatalogController's add_facet_field, doesn't seem to get called.
   def transform_permission value
     case value
-      when "0"
+      when "public"
         return t('dri.views.objects.access_controls.public')
-      when "1"
+      when "private"
         return t('dri.views.objects.access_controls.private')
-      when "-1"
+      when "inherit"
         return t('dri.views.objects.access_controls.inherited')
       else
         return "unknown?"
