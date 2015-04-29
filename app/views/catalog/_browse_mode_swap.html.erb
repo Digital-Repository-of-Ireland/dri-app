@@ -1,22 +1,56 @@
 <div class="dri_facet_restrictions_container">
-<% unless (controller_name == 'saved_searches' && action_name == 'index') %>
-  <ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs" >
-    <% copySearchParams = params.clone %>
-    <% copySearchParams.delete(:page) %>
-    <% if params[:mode].eql?('collections') %>
-        <% copySearchParams[:mode] = 'objects' %>
-        <li id="dri_browse_sort_tabs_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.collections'), "#", :id=>"collections", :class=>'selected' %></li>
-        <li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.objects'), copySearchParams, :id=>"objects" %></li>
-    <% else %>
-        <% copySearchParams[:mode] = 'collections' %>
-        <li id="dri_browse_sort_tabs_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.collections'), copySearchParams, :id=>"collections" %></li>
-        <li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="right"><%= link_to t('dri.headerlinks.objects'), "#", :id=>"objects", :class=>'selected' %></li>
-    <% end %>
-    <%= render 'shared/header_browse_paginate' %>
-  </ul>
-  <% else %>
-  <%= render 'shared/header_browse_paginate' %>
-  <% end %>
+	<% unless (controller_name == 'saved_searches' && action_name == 'index') %>
+	<ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs" >
+		<% copySearchParams = params.clone %>
+		<% initialSub = copySearchParams[:show_subs] %>
+		<% copySearchParams.delete(:page) %>
+		<% if params[:mode].eql?('collections') %>
+		<% copySearchParams[:mode] = 'objects' %>
+		<li id="dri_browse_sort_tabs_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="right">
+			<%= link_to t('dri.headerlinks.collections'), "#", :id=>"collections", :class=>'selected' %>
+		</li>
+		<% if !params[:show_subs].eql?('true') %>
+		<% copySearchParams[:mode] = 'collections' %>
+		<% copySearchParams[:show_subs] = 'true' %>
+		<li id="dri_browse_sort_tabs_sub_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="right">
+			<%= link_to '+', copySearchParams, :id=>"sub_collections"  %>
+		</li>
+		<% else %>
+		<% copySearchParams[:show_subs] = 'false' %>
+		<% copySearchParams[:mode] = 'collections' %>
+		<li id="dri_browse_sort_tabs_sub_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="right">
+			<%= link_to '+', copySearchParams, :id=>"sub_collections", :class=>"selected" %>
+		</li>
+		<% end %>
+		<% copySearchParams[:mode] = 'objects' %>
+		<% copySearchParams[:show_subs] = initialSub %>
+		<li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="right">
+			<%= link_to t('dri.headerlinks.objects'), copySearchParams, :id=>"objects" %>
+		</li>
+		<% else %>
+		<% copySearchParams[:mode] = 'collections' %>
+		<li id="dri_browse_sort_tabs_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="right">
+			<%= link_to t('dri.headerlinks.collections'), copySearchParams, :id=>"collections" %>
+		</li>
+		<% if !params[:show_subs].eql?('true') %>
+		<% copySearchParams[:show_subs] = 'true' %>
+		<li id="dri_browse_sort_tabs_sub_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="right">
+			<%= link_to '+', copySearchParams, :id=>"sub_collections" %>
+		</li>
+		<% else %>
+		    <li id="dri_browse_sort_tabs_sub_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="right">
+            <%= link_to '+', copySearchParams, :id=>"sub_collections" %>
+        </li>
+        <% end %>
+		<li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="right">
+			<%= link_to t('dri.headerlinks.objects'), "#", :id=>"objects", :class=>'selected' %>
+		</li>
+		<% end %>
+		<%= render 'shared/header_browse_paginate' %>
+	</ul>
+	<% else %>
+	<%= render 'shared/header_browse_paginate' %>
+	<% end %>
 
 </div>
 
