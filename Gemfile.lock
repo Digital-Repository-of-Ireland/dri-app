@@ -1,6 +1,6 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: 840049b72cadc7b4ee505ded41b924a235e1792a
+  revision: dbe53824e06eab81d2073baf83d239a3d56e9811
   branch: hydra9
   specs:
     dri_data_models (2.1.1)
@@ -529,7 +529,8 @@ GEM
       rdf (>= 1.1)
     rdf-json (1.1.2)
       rdf (~> 1.1)
-    rdf-ldp (0.0.4)
+    rdf-ldp (0.1.0)
+      deprecation
       rdf
     rdf-microdata (2.0.1)
       htmlentities (~> 4.3)

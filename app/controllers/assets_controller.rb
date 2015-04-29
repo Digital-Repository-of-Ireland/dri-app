@@ -22,9 +22,7 @@ class AssetsController < ApplicationController
     @document = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
 
-    if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
-        raise Hydra::AccessDenied.new("This item is not available. You do not have sufficient access privileges to view the master file(s).", :read_master, params[:object_id])
-      end
+    can_view?
 
     respond_to do |format|
       format.html
@@ -45,10 +43,7 @@ class AssetsController < ApplicationController
     @generic_file = retrieve_object! params[:id]
 
     unless @generic_file.nil?
-
-      if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
-        raise Hydra::AccessDenied.new("This item is not available. You do not have sufficient access privileges to view the master file(s).", :read_master, params[:object_id])
-      end
+      can_view?
 
       if (params[:version].present?)
         @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d AND version = :v",
@@ -230,6 +225,12 @@ class AssetsController < ApplicationController
 
 
   private
+
+    def can_view?
+      if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
+        raise Hydra::AccessDenied.new("This item is not available. You do not have sufficient access privileges to view the master file(s).", :read_master, params[:object_id])
+      end
+    end
 
     def upload_from_params
       if params[:Filedata].blank? && params[:Presfiledata].blank?
