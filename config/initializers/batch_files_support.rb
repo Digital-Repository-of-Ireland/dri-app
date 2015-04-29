@@ -25,11 +25,12 @@ DRI::ModelSupport::Files.module_eval do
     # Apply depositor metadata, other permissions currently unused for generic files
     ingest_user = UserGroup::User.find_by_email(gf.batch.depositor)    
     gf.apply_depositor_metadata(gf.batch.depositor)
-    
-    create_file(file, file_name, gf.id, dsid, "", mime_type.to_s)
 
     actor = Sufia::GenericFile::Actor.new(gf, ingest_user)
+   
     if actor.create_content(file, file_name, dsid, mime_type.to_s)
+      create_file(file, file_name, gf.id, dsid, "", mime_type.to_s)
+
       return true
     else
       Rails.logger.error "Error saving file: #{e.message}"

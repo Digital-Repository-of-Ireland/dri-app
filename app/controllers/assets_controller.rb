@@ -83,9 +83,9 @@ class AssetsController < ApplicationController
     if datastream.eql?("content")
       @generic_file = retrieve_object! params[:id]
 
-      create_file(file_upload, @generic_file.id, datastream, params[:checksum])
-
       if actor.update_content(file_upload, datastream)
+        create_file(file_upload, @generic_file.id, datastream, params[:checksum])
+
         flash[:notice] = t('dri.flash.notice.file_uploaded')
       else 
         message = @generic_file.errors.full_messages.join(', ')
@@ -133,10 +133,10 @@ class AssetsController < ApplicationController
         @generic_file.batch = @object
         @generic_file.apply_depositor_metadata(current_user)
         @generic_file.preservation_only = "true" if params[:preservation].eql?('true')
-
-        create_file(file_upload, @generic_file.id, datastream, params[:checksum])
         
         if actor.create_content(file_upload, file_upload.original_filename, datastream, file_upload.content_type)
+          create_file(file_upload, @generic_file.id, datastream, params[:checksum])
+
           flash[:notice] = t('dri.flash.notice.file_uploaded')
         else
           message = @generic_file.errors.full_messages.join(', ')
