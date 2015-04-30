@@ -1,4 +1,5 @@
-
+<% @cover_image = "no_image.png" %>
+<% get_cover_image(document) %>
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block">
            <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
@@ -8,7 +9,7 @@
                 <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
                 <% end %>
             <% end %>
-    <% get_cover_image document %>
+
     <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
         <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
         <div class="dri_image">
