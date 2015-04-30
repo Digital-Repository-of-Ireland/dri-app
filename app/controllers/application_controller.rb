@@ -4,6 +4,7 @@ require 'solr/query'
 
 class ApplicationController < ActionController::Base
 
+  before_filter :authenticate_user_from_token!
   before_filter :set_locale, :set_cookie, :set_metadata_language
 
 
@@ -64,10 +65,10 @@ class ApplicationController < ActionController::Base
       I18n.locale = cookies[:lang]
     end
   end
-  
+
   def set_metadata_language
     currentMetaLang = 'all'
-    if cookies[:metadata_language].nil? 
+    if cookies[:metadata_language].nil?
       cookies.permanent[:metadata_language] = currentMetaLang
     end
   end
@@ -130,7 +131,7 @@ class ApplicationController < ActionController::Base
     if user && Devise.secure_compare(user.authentication_token, params[:user_token])
       sign_in user, store: true
     end
-  end 
+  end
 
   def duplicates(object)
     unless object.governing_collection.blank?
