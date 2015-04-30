@@ -202,10 +202,13 @@ Then /^I press "(.*?)"$/ do |button|
   click_link_or_button(button)
 end
 
+Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|
+  page.find_by_id(modal, :visible=>false).find_by_id(button_to_id(button)).trigger('click')
+end
+
 Then /^(?:|I )press the button to (.+)$/ do |button|
   Capybara.ignore_hidden_elements = false
   page.find_button(button_to_id(button)).click
-  #click_link_or_button(button_to_id(button))
 end
 
 Then /^I check "(.*?)"$/ do |checkbox|

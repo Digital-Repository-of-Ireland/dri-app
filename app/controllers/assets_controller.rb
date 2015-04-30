@@ -15,10 +15,8 @@ class AssetsController < ApplicationController
   end
 
   def show
-
     datastream = params[:datastream].presence || "content"
 
-    # Check if user can view a master file
     @document = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
 
@@ -34,9 +32,6 @@ class AssetsController < ApplicationController
   # Retrieves external datastream files that have been stored in the filesystem.
   # By default, it retrieves the file in the content datastream
   def download
-
-    datastream = params[:datastream].presence || "content"
-
     # Check if user can view a master file
     enforce_permissions!("edit", params[:object_id]) if params[:version].present?
 
@@ -45,19 +40,12 @@ class AssetsController < ApplicationController
     unless @generic_file.nil?
       can_view?
 
-      if (params[:version].present?)
-        @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d AND version = :v",
-                                            { :f => @generic_file.id, :d => datastream, :v => params[:version] },
-                                            :limit => 1)
-      else
-        @local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
-                                            { :f => @generic_file.id, :d => datastream }).order("version DESC").limit(1).to_a
-      end
+      datastream = params[:datastream].presence || "content"
 
-      unless @local_file_info.empty?
-        logger.error "Using path: "+@local_file_info[0].path
-        send_file @local_file_info[0].path,
-                      :type => @local_file_info[0].mime_type,
+      unless local_file.nil?
+        logger.error "Using path: "+local_file.path
+        send_file local_file.path,
+                      :type => local_file.mime_type,
                       :stream => true,
                       :buffer => 4096,
                       :disposition => 'attachment'
@@ -92,12 +80,12 @@ class AssetsController < ApplicationController
       respond_to do |format|
         format.html {redirect_to object_file_url(params[:object_id], @generic_file.id)}
         format.json  {
-          if  !@warnings.nil?
+          if @warnings
             response = { :checksum => @file.checksum, :warning => @warnings }
           else
             response = { :checksum => @file.checksum }
           end
-            render :json => response, :status => :created
+            render :json => response, :status => :ok
         }
       end
       return
@@ -143,7 +131,7 @@ class AssetsController < ApplicationController
         respond_to do |format|
           format.html {redirect_to :controller => "catalog", :action => "show", :id => params[:object_id]}
           format.json  {
-            if  !@warnings.nil?
+            if @warnings
               response = { :checksum => @file.checksum, :warning => @warnings }
             else
               response = { :checksum => @file.checksum }
@@ -279,6 +267,16 @@ class AssetsController < ApplicationController
       rescue ActiveRecord::ActiveRecordError => e
         logger.error "Could not save the asset file #{@file.path} for #{generic_file_id} to #{datastream}: #{e.message}"
         raise Exceptions::InternalError
+      end
+    end
+
+    def local_file
+      if (params[:version].present?)
+        LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d AND version = :v",
+                       { :f => @generic_file.id, :d => datastream, :v => params[:version] }).take
+      else
+        LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
+                       { :f => @generic_file.id, :d => datastream }).order("version DESC").take
       end
     end
 
