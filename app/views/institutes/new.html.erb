@@ -1,0 +1,38 @@
+<script>
+	function fileUploadHelper(thisObj) {
+		$("#institution_logo").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
+	}
+</script>
+<h5>Are you sure you need a new Organisation?</h5>
+<p>You can check <%= link_to "here", institutions_path %> for existing Orgaisations.</p>
+
+<div class="dri_collection_institutes_dropdown">
+	<div class="dri_institutes_title">
+		<div class="dri_file_upload">
+			<div class="dri_add_institute_link">
+				<h5><%= t('dri.views.collection.institute.add') %></h5>
+
+			</div>
+			<div id="dri_add_institutes_block">
+				<div class="dri_file_upload">
+					<%= form_for(@inst, remote: true) do |f| %>
+					<div>
+						<a class='btn btn-default' href='javascript:;'> <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.collection.institute.form.logo')}"%></h5>
+						<p>
+							(recommended height 75px)
+						</p> <%= f.file_field :logo, :required=>'required', :accept=>'image/png,image/jpeg', :onchange=>'fileUploadHelper($(this));' %> <h5 id="institution_logo">No File</h5> </a>
+					</div>
+					<%# hidden_field_tag 'object', @object.id %>
+					<label> <%= t('dri.views.collection.institute.form.name') %></label>
+					<%= f.text_field :name, :required=>'required' %>
+					<label><%= t('dri.views.collection.institute.form.url') %></label>
+					<%= f.url_field :url, :required=>'required'  %>
+
+					<%= f.submit t('dri.views.collection.institute.add'), :id => 'add_institute', :class=>'btn dri_grey_button' %>
+					<% end %>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
