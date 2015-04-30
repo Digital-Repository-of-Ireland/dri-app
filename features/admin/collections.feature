@@ -42,8 +42,7 @@ Scenario: Constructing a collection with invalid permissions
 
 Scenario: Updating a collection with invalid metadata
   Given a collection with pid "collperm" created by "user1"
-  When I go to the "collection" "show" page for "collperm"
-  When I click the link to edit a collection
+  When I go to the "collection" "edit" page for "collperm"
   And I enter invalid metadata for a collection
   And I press the button to save collection changes
   Then I should not see a success message for updating a collection
@@ -70,7 +69,6 @@ Scenario Outline: Adding a Digital Object in a governing/non-governing collectio
     | obj3   | Object 3     | Test 3      | Sound       | Test Rights   | coll2      | non-governing   |
     | obj4   | Object 4     | Test 4      | Text        | Test Rights   | coll2      | non-governing   |
 
-@test
 Scenario: Creating Digital Object in a governing collection using the web forms
   Given a collection with pid "coll2" created by "user1"
   When I go to the "collection" "show" page for "coll2"
@@ -106,9 +104,8 @@ Scenario: Deleting a collection as an admin
   Given a collection with pid "coll6" created by "user1@user1.com"
   And the collection with pid "coll6" has status published
   When I go to the "collection" "show" page for "coll6"
-  And I click the link to edit a collection
   Then I should see a button to delete collection with id coll6
-  When I press the button to delete collection with id coll6
+  When I press the modal button to "delete collection with id coll6" in "dri_delete_modal_id"
   Then I should see a success message for deleting a collection
 
 Scenario: Non-admin should not be given option to delete
