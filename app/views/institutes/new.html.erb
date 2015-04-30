@@ -15,14 +15,13 @@
 			</div>
 			<div id="dri_add_institutes_block">
 				<div class="dri_file_upload">
-					<%= form_for(@inst, remote: true) do |f| %>
+					<%= form_for(@inst) do |f| %>
 					<div>
 						<a class='btn btn-default' href='javascript:;'> <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.collection.institute.form.logo')}"%></h5>
 						<p>
 							(recommended height 75px)
 						</p> <%= f.file_field :logo, :required=>'required', :accept=>'image/png,image/jpeg', :onchange=>'fileUploadHelper($(this));' %> <h5 id="institution_logo">No File</h5> </a>
 					</div>
-					<%# hidden_field_tag 'object', @object.id %>
 					<label> <%= t('dri.views.collection.institute.form.name') %></label>
 					<%= f.text_field :name, :required=>'required' %>
 					<label><%= t('dri.views.collection.institute.form.url') %></label>

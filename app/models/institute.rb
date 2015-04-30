@@ -32,7 +32,7 @@ class Institute < ActiveRecord::Base
 
 
   def validate_and_store_logo(logo, name)
-    if !logo.blank? && Validators.file_type?(logo).mediatype == "image"
+    if !logo.blank? && Validators.media_type?(logo) == "image"
       begin
         Validators.virus_scan(logo)
       rescue Exceptions::VirusDetected => e
