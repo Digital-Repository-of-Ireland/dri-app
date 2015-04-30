@@ -155,6 +155,8 @@ en:
     help:
       dri_browse_sort_tabs_collections: "Use this tab to search for Collections"
       dri_browse_sort_tabs_collections_title: "Collections Search"
+      dri_browse_sort_tabs_sub_collection: "Use this tab to toggle Sub-Collections in your search"
+      dri_browse_sort_tabs_sub_collection_title: "Sub-Collections Search"
       dri_browse_sort_tabs_objects: "Use this tab to search for Objects"
       dri_browse_sort_tabs_objects_title: "Objects Search"
       dri_change_sort_view: "Use these buttons to select between a Grid or Tabular layout for your search result"
