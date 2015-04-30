@@ -163,7 +163,7 @@ module ApplicationHelper
     if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
       solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
     end
-    solr_query = solr_query + "#{ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)}:" + institute + " AND " +
+    solr_query = solr_query + "#{ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)}:\"" + institute + "\" AND " +
         "#{ActiveFedora::SolrQueryBuilder.solr_name('type', :stored_searchable, type: :string)}:Collection"
     return solr_query
   end
