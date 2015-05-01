@@ -44,16 +44,14 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
     | Text        |
     | Sound       |
 
-@test
 Scenario Outline: Constructing a Digital Object using XML upload should set default permissions
   Given a collection with pid "perm2" created by "user1"
-  When I go to the "collection" "show" page for "perm2"
-  And I follow the link to upload XML
+  When I go to the "metadata" "upload" page for "perm2"
   And I attach the metadata file "<metadata_file>"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
-  When I follow the link to edit an object
-  And the hidden "batch_read_groups_string" field should contain ""
+  When I go to the "object" "edit" page for "created"
+  Then the hidden "batch_read_groups_string" field should contain ""
 
   Examples:
     | metadata_file                 |
