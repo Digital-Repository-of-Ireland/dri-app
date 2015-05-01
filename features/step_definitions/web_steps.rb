@@ -6,10 +6,16 @@ end
 World(WithinHelpers)
 
 Given /^"(.*?)" has created a Digital Object$/ do |user|
-  pid = "#{rand.to_s[2..11]}"
+  col_pid = "#{rand.to_s[2..11]}"
+  @obj_pid = "#{rand.to_s[2..11]}"
   steps %{
-    Given a collection with pid "#{pid}" created by "#{user}"
-    And I have created an object with metadata "valid_metadata.xml" in the collection with pid "#{pid}"
+    Given a collection with pid "#{col_pid}" created by "#{user}"
+    And a Digital Object with pid "#{@obj_pid}", title "Object 1" created by "#{user}"
+    And the object with pid "#{@obj_pid}" is in the collection with pid "#{col_pid}"
+    When I go to the "object" "show" page for "#{@obj_pid}"
+    And I attach the metadata file "valid_metadata.xml"
+    And I press the button to upload metadata
+    Then I should see a success message for updating metadata
   }
 end
 
@@ -120,7 +126,8 @@ When /^I upload the metadata file "(.*?)"$/ do |file|
 end
 
 When /^I attach the metadata file "(.*?)"$/ do |file|
-  within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_file_upload')]") do
+  #within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_file_upload')]") do
+  within('#metadata_uploader') do
     attach_file("metadata_file", File.expand_path(File.join(cc_fixture_path, file)))
   end
 end
@@ -243,6 +250,8 @@ Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
 end
 
 Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negate, success_failure, message|
+  url = current_url
+  @obj_pid = URI(url).path.split('/').last
   begin
     negate ? (page.should_not have_selector ".dri_messages_container", text: flash_for(message)): (page.should have_selector ".dri_messages_container", text: flash_for(message))
   rescue

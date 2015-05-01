@@ -48,7 +48,7 @@ Scenario: Adding a pdf asset to an object
 
 Scenario: Replacing the metadata file of a Digital Object
   Given "user1" has created a Digital Object
-  When I upload the metadata file "valid_metadata.xml"
+  When I attach the metadata file "valid_metadata.xml"
   And I press the button to upload metadata
   Then I should see a success message for updating metadata
 
@@ -80,8 +80,7 @@ Scenario: Constructing a Digital Object using the web form without setting a col
 
 Scenario: Editing the metadata of a Digital Object using the web form
   Given "user1" has created a Digital Object
-  Then I should see a link to edit an object
-  When I follow the link to edit an object
+  When I go to the "object" "edit" page for "created" 
   And I enter modified metadata
   And I press the button to save changes
   Then I should see the modified metadata
@@ -89,8 +88,7 @@ Scenario: Editing the metadata of a Digital Object using the web form
 
 Scenario: Editing the metadata of a Digital Object with invalid metadata
   Given "user1" has created a Digital Object
-  Then I should see a link to edit an object
-  When I follow the link to edit an object
+  When I go to the "object" "edit" page for "created"  
   And I enter invalid metadata
   And I press the button to save changes
   Then I should not see a success message for updating metadata

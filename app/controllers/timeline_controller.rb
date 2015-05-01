@@ -3,9 +3,8 @@ class TimelineController < ApplicationController
 
   def get
     query = get_query(params)
-    puts "retrievieng objacts based on the following query:"
+    puts "retrievieng objects based on the following query:"
     puts query
-
     response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "40")
 
     # ######## parsing dates examples
@@ -34,9 +33,12 @@ class TimelineController < ApplicationController
     query = ""
 
     if params[:mode] == 'collections'
-      query += "#{ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)}:collection"
+      query += "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true"
+      if !params[:show_subs].eql?('true')
+        query += " -#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+      end
     else
-      query += "-#{ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)}:collection"
+      query += "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:false"
     end
 
     unless signed_in?
@@ -49,14 +51,13 @@ class TimelineController < ApplicationController
 
     unless params[:f].blank?
       params[:f].each do |facet_name, facet_value|
-        query += " AND #{facet_name}:\"#{facet_value.first}\""
+        if ['sdateRange'].include?(facet_name) && params[:year_to].present? && params[:year_from].present?
+          query += " AND #{facet_name}:[\"-9999 #{(params[:year_from].to_i - 0.5).to_s}\" TO \"#{(params[:year_to].to_i + 0.5).to_s} 9999\"]"
+        else
+          query += " AND #{facet_name}:\"#{facet_value.first}\""
+        end
       end
     end
-
-    # creation date exists and it is valid
-    query += " AND #{ActiveFedora::SolrQueryBuilder.solr_name('creation_date', :stored_searchable, type: :string)}:[* TO *]"
-    query += " AND (-#{ActiveFedora::SolrQueryBuilder.solr_name('creation_date', :stored_searchable, type: :string)}:unknown"
-    query += " AND -#{ActiveFedora::SolrQueryBuilder.solr_name('creation_date', :stored_searchable, type: :string)}:\"n/a\")"
 
     return query
   end
@@ -85,6 +86,7 @@ class TimelineController < ApplicationController
 
   def create_timeline_data(response)
     timeline_data = { :timeline => { :type => "default", :date => [] } }
+    document_date = nil
 
     if response.blank?
       timeline_data[:timeline][:headline] = t('dri.application.timeline.headline.no_results')
@@ -95,26 +97,22 @@ class TimelineController < ApplicationController
 
       response.each_with_index do |document, index|
         document = document.symbolize_keys
-        creation_date = document[ActiveFedora::SolrQueryBuilder.solr_name('creation_date', :stored_searchable, type: :string).to_sym].first
-        timeline_data[:timeline][:date][index] = {}
-
-        if parse_dcmi?(creation_date)
-          parsed_date = parse_dcmi(creation_date)
-          timeline_data[:timeline][:date][index][:startDate] = parsed_date[:start]
-          timeline_data[:timeline][:date][index][:endDate] = parsed_date[:end]
-        else
-          parsed_date = Date.parse(creation_date)
-          timeline_data[:timeline][:date][index][:startDate] = parsed_date.to_s.gsub(/[-]/, ',')
-          timeline_data[:timeline][:date][index][:endDate] = (parsed_date + 1).to_s.gsub(/[-]/, ',')
+        if (!document[:sdateRange].nil?)
+          document_date = document[:sdateRange].first
         end
 
-        timeline_data[:timeline][:date][index][:headline] = '<a href="' +  catalog_path(document[:id])+  '">' + document[ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string).to_sym].first + '</a>'
-        timeline_data[:timeline][:date][index][:text] = document[ActiveFedora::SolrQueryBuilder.solr_name('description', :stored_searchable, type: :string).to_sym].first
-        timeline_data[:timeline][:date][index][:asset] = {}
-        timeline_data[:timeline][:date][index][:asset][:media] = get_cover_image(document)
+        timeline_data[:timeline][:date][index] = {}
 
-      end
+        unless document_date.nil?
+          timeline_data[:timeline][:date][index][:startDate] = document_date.split(' ')[0]
+          timeline_data[:timeline][:date][index][:endDate] = document_date.split(' ')[1]
 
+          timeline_data[:timeline][:date][index][:headline] = '<a href="' +  catalog_path(document[:id])+  '">' + document[ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string).to_sym].first + '</a>'
+          timeline_data[:timeline][:date][index][:text] = document[ActiveFedora::SolrQueryBuilder.solr_name('description', :stored_searchable, type: :string).to_sym].first
+          timeline_data[:timeline][:date][index][:asset] = {}
+          timeline_data[:timeline][:date][index][:asset][:media] = get_cover_image(document)
+        end
+      end #for-each
     end
 
     return timeline_data

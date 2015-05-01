@@ -67,10 +67,10 @@ class MetadataController < CatalogController
       else
         @object.update_metadata xml
         MetadataHelpers.checksum_metadata(@object)
-        duplicates?(@object)
+        warn_if_duplicates
 
         begin
-          raise Exceptions::InternalError unless @object.datastreams["descMetadata"].save
+          raise Exceptions::InternalError unless @object.attached_files[:descMetadata].save
         rescue RuntimeError => e
           logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
           raise Exceptions::InternalError

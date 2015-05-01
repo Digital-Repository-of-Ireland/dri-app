@@ -70,7 +70,6 @@ class ObjectsController < CatalogController
       @object.governing_collection = collection
     end
 
-    #set_access_permissions(:batch)
     updated = @object.update_attributes(update_params)
 
     #purge params from update action
@@ -87,7 +86,7 @@ class ObjectsController < CatalogController
 
         actor.version_and_record_committer
 
-        duplicates?(@object)
+        warn_if_duplicates
 
         DOI.mint_doi( @object )
 
@@ -130,7 +129,8 @@ class ObjectsController < CatalogController
     end
 
     MetadataHelpers.checksum_metadata(@object)
-    duplicates?(@object)
+    
+    warn_if_duplicates
 
     supported_licences()
 

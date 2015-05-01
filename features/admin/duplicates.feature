@@ -11,8 +11,7 @@ Background:
 
 Scenario: Ingesting a duplicate Digital Object using metadata file upload
   Given I have created an object with metadata "SAMPLEA.xml" in the collection with pid "xxxx"
-  When I go to the "collection" "show" page for "xxxx"
-  And I follow the link to upload XML 
+  When I go to the "metadata" "upload" page for "xxxx" 
   And I attach the metadata file "SAMPLEA.xml"
   And I press the button to ingest metadata
   Then I should see a success message for ingestion
@@ -33,11 +32,11 @@ Scenario: Creating a duplicate Digital Object by replacing the metadata file
   And the object with pid "2222" is in the collection with pid "xxxx"
   When I go to the "object" "edit" page for "2222"
   And I attach the metadata file "SAMPLEB.xml"
-  And I press the button to upload metadata
+  And I press the button to replace metadata
   Then I should not see the message "Possible duplicate objects found"
   When I go to the "object" "edit" page for "2222"
   And I attach the metadata file "SAMPLEA.xml" 
-  And I press the button to upload metadata
+  And I press the button to replace metadata
   Then I should see a success message for updating metadata
   And I should see the message "Possible duplicate objects found"
 

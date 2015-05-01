@@ -49,8 +49,7 @@ Scenario: Updating a collection with invalid metadata
 
 Scenario: Updating a collection with invalid permissions
   Given a collection with pid "collperm" created by "user1"
-  When I go to the "collection" "show" page for "collperm"
-  When I click the link to edit a collection
+  When I go to the "collection" "edit" page for "collperm"
   And I enter valid metadata for a collection
   And I enter invalid permissions for a collection
   And I press the button to save collection changes
@@ -71,8 +70,7 @@ Scenario Outline: Adding a Digital Object in a governing/non-governing collectio
 
 Scenario: Creating Digital Object in a governing collection using the web forms
   Given a collection with pid "coll2" created by "user1"
-  When I go to the "collection" "show" page for "coll2"
-  And I follow the link to upload XML
+  When I go to the "metadata" "upload" page for "coll2"
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to ingest metadata
   Then the collection "coll2" should contain the new digital object

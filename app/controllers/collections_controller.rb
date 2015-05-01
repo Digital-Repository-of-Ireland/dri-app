@@ -14,6 +14,10 @@ class CollectionsController < CatalogController
   before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
 
+  def actor
+    @actor ||= DRI::Object::Actor.new(@object, current_user)
+  end
+
   # Creates a new model.
   #
   def new
@@ -315,7 +319,7 @@ class CollectionsController < CatalogController
 
     MetadataHelpers.set_metadata_datastream(@object, xml)
     MetadataHelpers.checksum_metadata(@object)
-    duplicates?(@object)
+    warn_if_duplicates
 
     if @object.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
