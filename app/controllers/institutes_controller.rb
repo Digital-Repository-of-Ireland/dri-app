@@ -33,6 +33,7 @@ class InstitutesController < ApplicationController
 
     @inst.url = params[:institute][:url]
     @inst.save
+    flash[:notice] = t('dri.flash.notice.organisation_created')
 
     @institutes = Institute.all
 
@@ -41,7 +42,7 @@ class InstitutesController < ApplicationController
     end
 
     respond_to do |format|
-      format.js
+      format.html { redirect_to institutions_path }
     end
   end
 

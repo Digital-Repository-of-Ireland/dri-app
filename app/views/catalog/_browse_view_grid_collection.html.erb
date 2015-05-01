@@ -29,7 +29,13 @@
           </p>
         </div>
     <% end %>
-    <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+    <%# If ROOT COLLECTION %>
+    <% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)].nil? %>
+      <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+    <% else %>
+      <%# If SUB-COLLECTION %>
+      <% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+    <% end %>
     <%= link_to (catalog_index_path(collection_objects_params)) do %>
         <div class="dri_num_objects">
           <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %></span>
