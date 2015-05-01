@@ -63,30 +63,8 @@
 }
 
 .dri_search_features_nav_container {
-	  @include zen-grid-flow-item(1, 1, $alpha-gutter: 20px, $omega-gutter: 0px);
-	  padding-right: 24px;
-   	
-	  .dri_sort_nav {
-	
-		@include zen-grid-item(1, 1, $gutter-width: 0px);
-		
-	  }
-	  
-	  .dri_display_grid_table_nav {
-		@include zen-grid-item(.75, 1.75);
-		
-	}
-		
-	.dri_pager_nav {
-		@include zen-grid-item(1, 2.5);
-		
-	}
-	
-	.dri_pagination_nav {
-		@include zen-grid-item(1.5,2.5);
 
-		
-	}
+   	
 	
 	.dri_document_pagination_nav {
 		@include zen-grid-item(1, 4);
@@ -284,18 +262,7 @@
   .dri_search_save_submit_button {
   clear:both;
 }
-  
-.dri_display_grid_table_nav {
-
-  padding-left: 55px;
-  width: 120px;
-
 }
-.dri_pager_nav {
-    @include zen-grid-item(1, 2);
-  }
-}
-
 .dri_main_content_container {
 
   .dri_result_object {
