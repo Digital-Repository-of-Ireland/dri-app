@@ -111,7 +111,7 @@ gem 'unicorn'
 
 gem "unicode", :platforms => [:mri_18, :mri_19]
 gem 'font-awesome-rails'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '~> 3.3.4'
 gem 'yard'
 
 group :translations do

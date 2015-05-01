@@ -49,6 +49,7 @@ class CatalogController < ApplicationController
       :qt => 'search',
       :rows => 9
     }
+    config.show.partials << :show_maplet
 
     # solr field configuration for search results/index views
     config.index.title_field = solr_name('title', :stored_searchable, type: :string)
@@ -148,6 +149,7 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name('file_type_display', :stored_searchable, type: :string), :label => 'Mediatype'
     config.add_index_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_index_field solr_name('published', :stored_searchable, type: :string), :label => 'Published:'
+    
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
@@ -180,6 +182,9 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'rights'
     config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), :label => 'status' 
+    config.add_show_field 'geospatial', :label => 'Geographical Coverage Index'
+    
+    config.view.maps.coordinates_field = 'geospatial'
     # Commented date ranges show_fields (only for testing)
     #config.add_show_field 'cdateRange', :label => 'Creation Date Range'
     #config.add_show_field 'pdateRange', :label => 'Published Date Range'

@@ -1,12 +1,13 @@
-/*Import the Zen Grids files*/
-@import "dri_base.scss";
+
+@import "bootstrap-sprockets";
 @import "bootstrap.scss";
-@import "bootstrap-player.scss";
 /* for bootstrap3 */
 @import "video-js";
 @import "dri_colorbox.scss";
 @import url('http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
 @import url('http://cdn.knightlab.com/libs/timeline/latest/css/timeline.css');
+/*Import the Zen Grids files*/
+@import "dri_base.scss";
 @import "../zen/_grids.scss";
 @import "../zen/_base.scss";
 @import "../zen/_background";
@@ -72,12 +73,12 @@
 	  }
 	  
 	  .dri_display_grid_table_nav {
-		@include zen-grid-item(.5, 1.7);
+		@include zen-grid-item(.75, 1.75);
 		
 	}
 		
 	.dri_pager_nav {
-		@include zen-grid-item(1, 2);
+		@include zen-grid-item(1, 2.5);
 		
 	}
 	
