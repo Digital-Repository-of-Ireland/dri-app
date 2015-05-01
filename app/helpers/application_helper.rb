@@ -262,6 +262,10 @@ module ApplicationHelper
   def has_browse_params?
     return has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
   end
+  
+  def is_root?
+    return request.env['PATH_INFO'] == '/' && request.query_string.blank?
+  end
 
   def has_search_parameters?
     !params[:q].blank? or !params[:f].blank? or !params[:search_field].blank?
