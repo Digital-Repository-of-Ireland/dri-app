@@ -67,7 +67,7 @@ class MetadataController < CatalogController
       else
         @object.update_metadata xml
         MetadataHelpers.checksum_metadata(@object)
-        duplicates?(@object)
+        warn_if_duplicates
 
         begin
           raise Exceptions::InternalError unless @object.attached_files[:descMetadata].save
