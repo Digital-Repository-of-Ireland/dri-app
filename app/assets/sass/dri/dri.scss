@@ -5,6 +5,10 @@
   margin: 0 auto;
 }
 
+#time_line {
+  width: 400px;
+}
+
 .dri_search_term_text_submit_button {
   height: 20px;
   width: 100px;
@@ -646,6 +650,89 @@ a .dri_signin_edugate:hover {
 .dri_cookie_acceptance_text {
   /*height: 150px;*/
   overflow: scrolling;
+}
+/*--------------Release Main Navbar--------------*/
+
+.dri_main_nav_new {
+
+          border-top: 1px solid $dri_thingrey;
+          font-size: 115%;
+          font-weight: bold;
+          background-color: white;
+          margin-bottom: 0px;
+          
+          .navbar-nav > li > a {
+            color: $dri_darkgrey;
+          }
+
+          .container-fluid {
+            padding-left: 0px;
+          }       
+          
+          .navbar-nav > li.active > a, 
+          .navbar-nav > li.active > a:hover {
+            background-color: white;
+          }
+          
+          .navbar-nav > li > a:hover {
+            background-color: white;
+          }
+          
+          li {
+            border-right: 1px solid $dri_thingrey;
+          }
+
+          li.active {
+            border-top: 3px solid $dri_green;
+            a {
+              padding-top: 12px;
+              background-color: inherit;
+            }           
+          }       
+
+        .dri_ident_tiny {
+          background: image-url($dri_logo_tiny_url);
+          background-repeat: no-repeat;
+          width: 100px;
+          height: 35px;
+          margin: 5px;
+          //margin-top:8px;
+      }
+      .dri_navbar_search {
+        .dri_search_term_text_input {
+          margin-top: 15px;
+          margin-right: 20px;
+          font-size: 100%;
+          font-weight: normal;
+        }
+      }
+      .dri_dropdown {
+        ul {
+          font-weight: normal;
+          text-transform: none;
+          li {
+          }
+          li.active {
+            border-top: none;
+            a {
+              padding-top: 12px;
+              background-color: inherit;
+            }   
+          }
+          li:hover {
+            a {
+              background-color: inherit;
+            }
+          }
+          li:focus {
+            a {
+              background-color: inherit;
+            }  
+          
+          }
+        }
+
+        }
 }
 
 /*--------------Preferred Language --------------*/
@@ -1788,7 +1875,7 @@ p.dri_rss_link a {
       margin: 25px 0 0 0;
       padding: 0px;
       a {
-        width: 300px;
+        //width: 300px;
         margin: 0;
         padding: 5px 9px 5px 9px;
         border: none;
@@ -2952,7 +3039,16 @@ ul.dri_collection_institutes_list {
 }
 
 .dri_funder_institutes {
-  padding-top: 20px;
+  padding-top: 10px;
+  ul {
+    list-style: none;
+    li {
+      display:block;
+      float: left;
+      padding:10px;
+      height:80px;
+    }
+  }
 }
 
 .dri_footer_address {

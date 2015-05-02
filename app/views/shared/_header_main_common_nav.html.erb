@@ -1,5 +1,5 @@
-<% if (controller.controller_name == 'catalog' && controller.action_name == 'index' && !has_browse_params?) %>
-    <li class="selected">
+<% if is_root? %>
+    <li class="active">
 <% else %>
     <li>
 <% end %>
@@ -7,7 +7,7 @@
 </li>
 
 <% if ((controller_name == 'catalog') and (controller.action_name != 'index')  or (request.path.include? "/catalog") ) %>
-    <li class="selected">
+    <li class="active">
 <% else %>
     <li>
 <% end %>
@@ -16,14 +16,14 @@
 </li>
 
 <% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>
-    <li class="selected">
+    <li class="active">
 <% else %>
     <li>
 <% end %>
 <%= link_to t('dri.headerlinks.institutions'), institutions_path, :id => 'institutions' %>
 </li>
 <% if (request.path.include? "/pages/about_us") %>
-    <li class="selected">
+    <li class="active">
 <% else %>
     <li>
 <% end %>

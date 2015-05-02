@@ -1,6 +1,7 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap.scss";
+
 /* for bootstrap3 */
 @import "video-js";
 @import "dri_colorbox.scss";
@@ -54,6 +55,10 @@
 
   
 
+}
+
+.navbar-fixed-top {
+  position: relative;
 }
 
 .dri_crumbtrail_nav_container {
@@ -201,14 +206,15 @@
 }
 
 
-@media screen and (max-width:1043px) {
+@media screen and (max-width:1200px) {
 	
 .dri_wrapper {
-	width: 780px;
+	width: 992px;
 	margin: 0 auto;
 	$zen-column-count:3;
 	
 	.dri_header_container {
+	  padding-bottom: 20px;
 
 
     @include zen-grid-container;
@@ -326,10 +332,14 @@
 
 }
 
-@media only screen and (max-device-width:600px) {
+
+
+
+
+@media only screen and (max-width: 768px) {
 
   .dri_wrapper {
-    width: 100%;
+    width: 80%;
     margin: 0 auto;
     $zen-column-count:1;
     .dri_header_container {
@@ -343,7 +353,9 @@
     }
   }
   
-
+.navbar-fixed-top {
+  position: fixed;
+}
     
   .dri_home_container, #dri_rss_feed_id, #dri_slideshow_block_id {
     display:none;
