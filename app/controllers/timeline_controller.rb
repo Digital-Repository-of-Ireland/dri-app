@@ -2,10 +2,23 @@ class TimelineController < ApplicationController
   include ApplicationHelper
 
   def get
+    response = []
     query = get_query(params)
     puts "retrievieng objects based on the following query:"
     puts query
-    response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => "40")
+
+    # Filter to only get those that are collections: fq=is_collection_tesim:true
+    #q_result = Solr::Query.new(query[:q], 40, :fq => query[:fq])
+
+    #while (q_result.has_more?)
+    #  objects_docs = q_result.pop
+    #  objects_docs.each do |obj_doc|
+    #    response << SolrDocument.new(obj_doc)
+    #  end
+    #end
+
+    # This only returns 40 for now - replace with Solr call above
+    response = ActiveFedora::SolrService.query(query[:q], :fq => query[:fq], :defType => "edismax", :rows => "40")
 
     # ######## parsing dates examples
     # ######## TO BE REMOVED BEGIN
@@ -30,33 +43,43 @@ class TimelineController < ApplicationController
 
   private
   def get_query params
-    query = ""
+    query = Hash.new
+    query[:q] = query[:fq] = ""
 
     if params[:mode] == 'collections'
-      query += "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true"
+      query[:fq] += "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true"
       if !params[:show_subs].eql?('true')
-        query += " -#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+        query[:fq] += " -#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
       end
     else
-      query += "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:false"
+      query[:fq] += "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:false"
     end
 
     unless signed_in?
-      query += " AND #{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published"
+      query[:q] += " AND #{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published"
     end
 
     unless params[:q].blank?
-      query += " AND #{params[:q]}"
+      query[:q] += " AND #{params[:q]}"
     end
 
     unless params[:f].blank?
       params[:f].each do |facet_name, facet_value|
+        # If the subject temporal is present, parse temporal query
         if ['sdateRange'].include?(facet_name) && params[:year_to].present? && params[:year_from].present?
-          query += " AND #{facet_name}:[\"-9999 #{(params[:year_from].to_i - 0.5).to_s}\" TO \"#{(params[:year_to].to_i + 0.5).to_s} 9999\"]"
+          query[:q] += " AND #{facet_name}:[\"-9999 #{(params[:year_from].to_i - 0.5).to_s}\" TO \"#{(params[:year_to].to_i + 0.5).to_s} 9999\"]"
         else
-          query += " AND #{facet_name}:\"#{facet_value.first}\""
+          query[:q] += " AND #{facet_name}:\"#{facet_value.first}\""
         end
       end
+    end
+
+    # Default subject range query (Any sdateRange value)
+    query[:q] += " AND sdateRange:[\"-9999 -9999\" TO \"9999 9999\"]"
+
+    # If there is not q parameters then, avoid the query starting with AND
+    if query[:q].start_with?(" AND ")
+      query[:q] = "#{query[:q][5..-1]}"
     end
 
     return query
