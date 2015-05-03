@@ -16,15 +16,21 @@
       <p>
         <%= truncate_description(document[Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym][0], 280).html_safe %>
       </p>
-			<p class="dri_publishing_institute">
-				<% @depositing_institute = get_institutes( document ) %>
-				<% if @depositing_institute %>
-				<%= @depositing_institute.name %>
-				<% else %>
-				N/A
-				<% end %>
-			</p>
-      <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+      <p class="dri_publishing_institute">
+	    <% @depositing_institute = get_institutes( document ) %>
+		<% if @depositing_institute %>
+		    <%= @depositing_institute.name %>
+		<% else %>
+			N/A
+		<% end %>
+      </p>
+      <%# If ROOT COLLECTION %>
+      <% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)].nil? %>
+          <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+      <% else %>
+          <%# If SUB-COLLECTION %>
+          <% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+      <% end %>
       <%= link_to (catalog_index_path(collection_objects_params)) do %>
           <div class="dri_num_list_objects">
             <span class="dri_object_text_num">
