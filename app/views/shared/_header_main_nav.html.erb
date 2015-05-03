@@ -9,7 +9,7 @@
 				<span class="icon-bar"></span>
 
 			</button>
-			<span class="dri_navbar_search hidden-sm hidden-md hidden-lg"> <%= render 'shared/dri_search_form' %></span>
+			<span class="dri_navbar_search hidden-sm hidden-md hidden-lg"> <%= render 'shared/header_main_search_form' %></span>
 			<%= link_to main_app.root_url do %>
 			<div class="dri_ident_tiny hidden-md hidden-lg"></div>
 			<% end %>
@@ -26,6 +26,7 @@
 				<%= render 'shared/header_main_ingest_dropdown' %>
 				<% end %>
 				<% end %>
+				<%= render 'shared/header_main_nav_lang' %>
 			</ul>
 
 			</li>

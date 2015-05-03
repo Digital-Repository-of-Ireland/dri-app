@@ -1,0 +1,26 @@
+<% lang_params = {:path => request.fullpath} %>
+
+<li class="dropdown dri_dropdown hidden-sm hidden-md hidden-lg">
+
+	<a href="#" id="dri_manage_id" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><%= t('dri.headerlinks.language') %> <span class="caret"></span></a>
+
+	<ul class="dropdown-menu" role="menu">
+		<% if I18n.locale == :en %>
+		<% lang_params[:id] = 'ga' %>
+		<li class="active">
+			English
+		</li>
+		<li>
+			<%= link_to 'Gaeilge', lang_path(lang_params), id: :ga %>
+		</li>
+		<% else %>
+		<% lang_params[:id] = 'en' %>
+		<li class="active">
+			Gaeilge
+		</li>
+		<li>
+			<%= link_to 'English', lang_path(lang_params), id: :en %>
+		</li>
+		<% end %>
+	</ul>
+</li>

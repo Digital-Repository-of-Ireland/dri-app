@@ -85,8 +85,8 @@
 }
 
 .dri_facet_restrictions_container {
-  	@include zen-grid-container;
-	 @include zen-grid-flow-item(3, 4, $alpha-gutter: 20px);
+  @include zen-grid-container;
+	 @include zen-grid-flow-item(3, 4, $alpha-gutter: 10px);
 
 }
 
@@ -353,8 +353,12 @@
     }
   }
   
+  
 .navbar-fixed-top {
   position: fixed;
+  .container-fluid {
+    padding-left: 10px;
+  }
 }
     
   .dri_home_container, #dri_rss_feed_id, #dri_slideshow_block_id {
@@ -364,6 +368,12 @@
     @include zen-grid-item(1, 1, $gutter-width: 0);
   
   }
+  
+  .dri_facet_restrictions_container {
+  @include zen-grid-container;
+   @include zen-grid-flow-item(1, 1, $alpha-gutter: 10px);
+
+}
 }
 
 

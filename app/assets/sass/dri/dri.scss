@@ -696,14 +696,17 @@ a .dri_signin_edugate:hover {
           width: 100px;
           height: 35px;
           margin: 5px;
+          margin-left: 25px;
           //margin-top:8px;
       }
       .dri_navbar_search {
+        
         .dri_search_term_text_input {
           margin-top: 15px;
           margin-right: 20px;
           font-size: 100%;
           font-weight: normal;
+          width: 45%;
         }
       }
       .dri_dropdown {
@@ -717,6 +720,7 @@ a .dri_signin_edugate:hover {
             a {
               padding-top: 12px;
               background-color: inherit;
+              color: $dri_green;
             }   
           }
           li:hover {
