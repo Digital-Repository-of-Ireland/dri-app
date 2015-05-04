@@ -3,9 +3,9 @@
 (controller.controller_name.eql?('licences')  && (controller.action_name.eql?('new') || controller.action_name.eql?('edit') || controller.action_name.eql?('index'))) ||
 (controller.controller_name.eql?('static') && controller.action_name.eql?('admin'))) ||
 controller.controller_name.eql?('workspace') || controller_name.eql?('manage_users') || (controller.controller_name.eql?('institutes') && controller.action_name.eql?('new')) %>
-<li class="dropdown active dri_dropdown">
+<li class="dropdown active dri_dropdown visible-lg">
 	<% else %>
-<li class="dropdown dri_dropdown">
+<li class="dropdown dri_dropdown visible-lg">
 	<% end %>
 
 	<a href="#" id="dri_manage_id" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><%= t('dri.headerlinks.manage') %> <span class="caret"></span></a>

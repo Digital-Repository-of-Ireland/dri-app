@@ -1,15 +1,17 @@
+<% if flash %>
 <!-- system messages container -->
 
 <div id="dri_messages_container_id" class="dri_messages_container dri_clearfix">
   <% [:success, :notice, :error, :alert].each do |type| %>
     <%- alert_class = type %>
     <% if flash[type] %>
-	<div class="dri_<%=alert_class%>_message">
-		<h1><%= flash[type] %></h1>
-		<a class="dri_close_message dri_float_right" data-dismiss="alert" href="#">&times;</a>
-	</div>
+    <div class="alert alert-<%=alert_class%> alert-dismissible fade in dri_<%=alert_class%>_message" role="alert">
+      <button type="button" class="dri_close close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+      <span class="dri_alert_text"><%= flash[type] %></span>
+    </div>
 	    <% end %>
   <% end %>
 </div>
 
 <!-- close dri_messages_container -->
+<% end %>

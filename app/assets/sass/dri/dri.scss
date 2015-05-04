@@ -1,10 +1,5 @@
 /*-------------- DRI Wrapper--------------*/
 
-.dri_wrapper {
-  width: 1024px;
-  margin: 0 auto;
-}
-
 #time_line {
   width: 400px;
 }
@@ -1150,6 +1145,8 @@ ol.breadcrumb {
   margin-left: 20px;
   padding-top: 25px;
   font-size: 100%;
+  width: 120px;
+  float:left;
   a {
     color: $dri_lightgrey;
   }
@@ -1394,27 +1391,11 @@ ol.breadcrumb {
 
 /*-------------- Save Search --------------*/
 
-.dri_search_save_input {
-  margin: 0;
-  padding: 0px;
-}
 
 .dri_search_save_submit_button {
-  box-shadow: 1px 1px 4px  #f0f0f0;
-  margin: 23px 8px 0 0;
-  padding: 5px 62px 5px 62px;
+  @extend .dri_button_green;
+  margin-top: 25px;
   float: right;
-  border: none;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  color: #fff;
-  background-color: #909A3C;
-  font-size: 100%;
-}
-
-.dri_search_save_submit_button:hover {
-  background-color: #7A8229;
-  cursor: pointer;
 }
 
 /*-------------- Warning Messages --------------*/
@@ -1440,128 +1421,45 @@ h4.suggest {
 
 /*-------------- Info Messages --------------*/
 .dri_notice_message {
-  margin: 20px 0 0 0;
-  padding: 2px 10px 2px 10px;
-  display: block;
-  width: 100%;
+  @extend .dri_alert_message;
   background-color: #DCECF6;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  border: 1px solid #288DC0;
-  float: left;
-  h1 {
-    margin: 0;
-    padding: 0;
-    font-size: 110%;
-    color: #288DC0;
-    float: left;
-    font-weight: normal;
-    float: left;
-  }
-  span.dri_close a {
-    margin: 0;
-    padding: 1px 0 0 0;
-    font-size: 100%;
-    color: #288DC0;
-    font-weight: bold;
-    float: right;
-    text-decoration: none;
-  }
 }
 
 /*-------------- Successful Messages --------------*/
 .dri_success_message {
-  margin: 20px 0 0 0;
-  padding: 2px 10px 2px 10px;
-  display: block;
-  width: 100%;
+  @extend .dri_alert_message;
   background-color: #D9F8B5;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  border: 1px solid #096;
-  float: left;
-  h1 {
-    margin: 0;
-    padding: 0;
-    font-size: 110%;
-    color: #096;
-    float: left;
-    font-weight: normal;
-    float: left;
-  }
-  span.dri_close a {
-    margin: 0;
-    padding: 1px 0 0 0;
-    font-size: 100%;
-    color: #096;
-    font-weight: bold;
-    float: right;
-    text-decoration: none;
-  }
 }
 
 /*-------------- Warning Messages --------------*/
 
 .dri_alert_message {
   margin: 20px 0 0 0;
-  padding: 2px 10px 2px 10px;
+  padding: 12px 10px 5px 10px;
   display: block;
   width: 100%;
   background-color: #F0E8B0;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  border: 1px solid #BC7F00;
+  border: 1px solid $dri_lightgrey;
   float: left;
-  h1 {
-    margin: 0;
-    padding: 0;
-    font-size: 110%;
-    color: #BC7F00;
+  .dri_alert_text {
+    font-size: 115%;
+    color: $dri_grey;
     float: left;
     font-weight: normal;
-    float: left;
   }
-  span.dri_close a {
-    margin: 0;
-    padding: 1px 0 0 0;
-    font-size: 100%;
-    color: #BC7F00;
-    font-weight: bold;
+  button.dri_close {
+    right: 0px;
     float: right;
-    text-decoration: none;
   }
 }
 
 /*-------------- Error Messages --------------*/
 
 .dri_error_message {
-  margin: 20px 0 0 0;
-  padding: 2px 10px 2px 10px;
-  display: block;
-  width: 100%;
+  @extend .dri_alert_message;
   background-color: #FFD9DC;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  border: 1px solid  $dri_grey_border;
-  float: left;
-  h1 {
-    margin: 0;
-    padding: 0;
-    font-size: 110%;
-    color: #903;
-    float: left;
-    font-weight: normal;
-    float: left;
-  }
-  span.dri_close a {
-    margin: 0;
-    padding: 1px 0 0 0;
-    font-size: 100%;
-    color: #903;
-    font-weight: bold;
-    float: right;
-    text-decoration: none;
-  }
 }
 
 /* ----------- Facet Filter block ---------- */
@@ -2397,7 +2295,7 @@ p.dri_rss_link a {
   overflow: hidden;
   color: #fff;
   background-color: $dri_grey;
-  width: 73%;
+  //width: 73%;
   font-weight: bold;
   line-height: 26px
 }
@@ -3052,6 +2950,9 @@ ul.dri_collection_institutes_list {
       padding:10px;
       height:80px;
     }
+  }
+  img {
+    vertical-align: middle;
   }
 }
 
