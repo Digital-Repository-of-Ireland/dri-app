@@ -8,7 +8,7 @@
 		<% if I18n.locale == :en %>
 		<% lang_params[:id] = 'ga' %>
 		<li class="active">
-			English
+			<a>English</a>
 		</li>
 		<li>
 			<%= link_to 'Gaeilge', lang_path(lang_params), id: :ga %>
@@ -16,7 +16,7 @@
 		<% else %>
 		<% lang_params[:id] = 'en' %>
 		<li class="active">
-			Gaeilge
+			<a>Gaeilge</a>
 		</li>
 		<li>
 			<%= link_to 'English', lang_path(lang_params), id: :en %>

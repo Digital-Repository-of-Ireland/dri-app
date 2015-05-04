@@ -9,7 +9,7 @@
     <%= blacklight_map_tag('blacklight-show-map',
                      {data:{viewpoint: set_viewpoint(geojson_features),
                      initialzoom:blacklight_config.view.maps.show_initial_zoom,
-                     singlemarkermode:false}, style: "height: 480px; width: 550px"}) %>
+                     singlemarkermode:false}, style: "height: 400px; width: 100%"}) %>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('dri.window.modal.close') %></button>

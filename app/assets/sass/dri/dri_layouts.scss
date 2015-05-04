@@ -127,14 +127,14 @@
  
 	
 	.dri_object_first_block {
-		@include zen-grid-item(2, 1, $gutter-width: 0px);
+		@include zen-grid-item(2.5, 1, $gutter-width: 0px);
 		@include zen-clear();
 
 		
 	}
 	
 	.dri_object_second_block {
-		@include zen-grid-item(1, 3, $gutter-width: 0px);
+		@include zen-grid-item(1, 3.5, $gutter-width: 0px);
 
 
 
@@ -286,8 +286,8 @@
     
 .dri_asset_holder {
 			margin: 20px 0 0 0;
-			padding: 0px;
-			width: 350px;
+			padding-right: 20px;
+			max-width: 100%;
 			display: block;
 	}
 
@@ -319,12 +319,13 @@
 
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 766px) {
 
   .dri_wrapper {
+    max-width: 760px;
     width: 100%;
     padding-left: 10px;
-    //padding-right: 50px;
+    padding-right: 10px;
     margin: 0 auto;
     margin-top: 50px;
     $zen-column-count:2;
@@ -356,6 +357,7 @@
     .dri_object_second_block {
             @include zen-clear();
       @include zen-grid-item(2, 1, $gutter-width: 0px);
+      width: 100%;
     }
     .dri_object_first_block {
       @include zen-clear();

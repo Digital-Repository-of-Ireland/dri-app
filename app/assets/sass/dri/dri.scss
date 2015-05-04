@@ -1,9 +1,5 @@
 /*-------------- DRI Wrapper--------------*/
 
-#time_line {
-  width: 400px;
-}
-
 .dri_search_term_text_submit_button {
   height: 20px;
   width: 100px;
@@ -654,7 +650,7 @@ a .dri_signin_edugate:hover {
           font-size: 115%;
           font-weight: bold;
           background-color: white;
-          margin-bottom: 0px;
+          margin-bottom: 20px;
           
           .navbar-nav > li > a {
             color: $dri_darkgrey;
@@ -1498,7 +1494,7 @@ h4.suggest {
     *color: $dri_grey;
     font-weight: bold;
     padding: 15px 0 15px 20px;
-    width: 100%;
+    min-width: 238px;
   }
   .dri_search_num {
     float: right;
@@ -2322,8 +2318,8 @@ h2.dri_no_asset_availiable {
 /* assets carousel */
 .dri_asset_holder {
   margin: 20px 0 0 0;
-  padding: 0px;
-  max-width: 400px;
+  padding-right:40px;
+  max-width: 100%;
   max-height: 300px;
   display: block;
   overflow: hidden;
@@ -2703,13 +2699,16 @@ ul.dri_view_collection {
   label.dri_bookmark_object_label {
     float: left;
     span.dri_bookmark_label_text {
-      padding-left: 6px;
+      padding-left: 16px;
     }
   }
   
   .documentFunctions {
 	margin: 0;
   padding: 0;
+  .toggle_bookmark {
+    margin-left: 0px;
+  }
   a { 
   color: $dri_grey;
   }
@@ -3256,6 +3255,7 @@ ul.dri_collection_institutes_list {
     	font-weight: normal;
    		margin-left: 3px;
         margin-right: 3px;
+        line-height: 2em;
     }
   }
    .field {

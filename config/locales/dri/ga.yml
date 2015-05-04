@@ -152,6 +152,7 @@ ga:
       sitemap: "Mapa Suímh"
       usergroups: "Úsáideoirí agus Grúpaí"
       workspace: "Spás Oibre"
+      language: Teanga
     help:
       dri_browse_sort_tabs_collections: "Bain úsáid as an táb seo chun Bailiúcháin a aimsiú"
       dri_browse_sort_tabs_collections_title: "Aimsigh Bailiúcháin"

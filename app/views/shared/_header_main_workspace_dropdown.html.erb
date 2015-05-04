@@ -10,7 +10,11 @@
 			<% else %>
 		<li role="presentation">
 			<% end %>
-			<%= link_to t('dri.views.static.workspace.account'), user_group.user_path(current_user), :tabindex => "-1" %>
+			     
+            <%= link_to user_group.user_path(current_user), :id => 'view_account' do %>
+            <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
+            <% end %>
+
 		</li>
 		<% if request.path.include? "/bookmarks" %>
 		<li role="presentation" class="active">
@@ -26,14 +30,5 @@
 			<% end %>
 			<%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path, :tabindex => "-1", :id => 'saved_search' %>
 		</li>
-		<li class="">
-		<%= link_to user_group.user_path(current_user), :id => 'view_account' do %>
-              
-              
-             
-                <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
-            
-          <% end %>
-            </li>
 	</ul>
 </li>

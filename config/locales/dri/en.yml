@@ -152,6 +152,7 @@ en:
       sitemap: Sitemap
       usergroups: "Users & Groups"
       workspace: Workspace
+      language: Language
     help:
       dri_browse_sort_tabs_collections: "Use this tab to search for Collections"
       dri_browse_sort_tabs_collections_title: "Collections Search"
