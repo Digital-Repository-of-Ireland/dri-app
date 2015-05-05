@@ -144,7 +144,7 @@ class CollectionsController < CatalogController
         redirect_to :controller => "catalog", :action => "show", :id => @object.id }
         format.json {
           @response = {}
-          @response[:id] = @object.pid
+          @response[:id] = @object.id
           @response[:title] = @object.title
           @response[:description] = @object.description
           render(:json => @response, :status => :created)
