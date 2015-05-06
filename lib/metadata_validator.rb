@@ -23,8 +23,8 @@ module MetadataValidator
       when "DRI::Metadata::Mods" 
         return is_schema_valid?(xml, MODS_NS_PREFIX, MODS_NS_URI)
       # Add Marc validation
-      # when "DRI::Metadata::Marc"
-        # return is_schema_valid?(xml, MARC_NS_PREFIX, MARC_NS_URI)
+      when "DRI::Metadata::Marc"
+        return is_schema_valid?(xml, MARC_NS_PREFIX, MARC_NS_URI)
       else
         return true, ""
     end
