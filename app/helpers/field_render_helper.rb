@@ -1,8 +1,20 @@
+require 'uri'
+
 module FieldRenderHelper
 
   # Returns the default html field separator characters
   def field_value_separator
     ''
+  end
+  
+ #URI Checker
+  def uri?(string)
+    uri = URI.parse(string)
+    %w( http https ).include?(uri.scheme)
+  rescue URI::BadURIError
+    false
+  rescue URI::InvalidURIError
+    false
   end
   
   # Helper method to display the description field if it contains multiple paragraphs/values
@@ -38,7 +50,11 @@ module FieldRenderHelper
     indexed_value = indexed_value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x}
 
     last_index = args[:field].rindex('_')
-    field = args[:field][0..last_index-1]
+    if !last_index.nil?
+      field = args[:field][0..last_index-1]
+    else
+      field = args[:field]
+    end
 
     # if (args[:field] and args[:field].match(/_facet$/))
     if (args[:field] and (args[:field][0,5] == "role_" or blacklight_config.facet_fields[ActiveFedora::SolrService.solr_name(field, :facetable)]))
@@ -49,12 +65,17 @@ module FieldRenderHelper
       facet_arg = get_search_arg_from_facet :facet => facet_name
 
       value = value.each_with_index.map do |v,i|
+        #don't show URLs in the UI
+        unless uri?(indexed_value[i])
         "<a href=\"" << url_for({:action => 'index', :controller => 'catalog', facet_arg => standardise_facet(:facet => facet_name, :value => indexed_value[i])}) << "\">" << standardise_value(:facet_name => facet_name, :value => v) << "</a>"
+        end
       end
     else
       if value.length > 1
         value = value.each_with_index.map do |v,i|
-          '<dd>' << indexed_value[i] << '</dd>'
+          unless uri?(indexed_value[i]) 
+            '<dd>' << indexed_value[i] << '</dd>'
+          end
         end
 
       end

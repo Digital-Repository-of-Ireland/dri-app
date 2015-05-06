@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="RUBY_MODULE" version="4">
-  <component name="CompassSettings">
-    <option name="compassSupportEnabled" value="true" />
-  </component>
   <component name="FacetManager">
     <facet type="RailsFacetType" name="Ruby on Rails">
       <configuration>
@@ -20,32 +17,9 @@
     </content>
     <orderEntry type="jdk" jdkName="RVM: ruby-2.0.0-p195" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="dri_data_models (v1.1.0, /Users/filipowj/Sites/DRI/dri-data-models) [path][gem]">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../dri-data-models/app" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/lib" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/.idea" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/jetty" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/config" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/script" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/hacking" />
-        </CLASSES>
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../dri-data-models/app" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/lib" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/.idea" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/jetty" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/config" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/script" />
-          <root url="file://$MODULE_DIR$/../dri-data-models/hacking" />
-        </SOURCES>
-      </library>
-    </orderEntry>
   </component>
   <component name="RModuleSettingsStorage">
     <LOAD_PATH number="0" />
     <I18N_FOLDERS number="1" string0="$MODULE_DIR$/config/locales" />
   </component>
 </module>
-

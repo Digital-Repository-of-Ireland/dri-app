@@ -10,7 +10,7 @@ run and deployed.
 For testing and development you will need to bootstrap the project
 
   $ git clone git@tracker.dri.ie:drirepo/dri-app.git
-  $ cd nuig-rnag
+  $ cd dri-app
   $ git submodule update --init --recursive
   $ bundle
   $ cp config/database.yml.sample config/database.yml (and edit as appropriate)

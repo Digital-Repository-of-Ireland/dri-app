@@ -72,21 +72,6 @@ class CollectionsController < CatalogController
 
     @object = retrieve_object!(params[:id])
 
-    # Check if we have new manager users and add them to the CM group
-    if params[:batch][:manager_users_string].present?
-      params[:batch][:manager_users_string].split(/,\s/).each do |muser|
-        if !@object.manager_users.include?(muser)
-          user = UserGroup::User.find_by_email(muser)
-          if user.present?
-            group_id = UserGroup::Group.find_by_name("cm").id
-            membership = user.join_group(group_id)
-            membership.approved_by = current_user.id
-            membership.save
-          end
-        end
-      end
-    end
-
     # If a cover image was uploaded, remove it from the params hash
     cover_image = params[:batch].delete(:cover_image)
 
@@ -214,7 +199,7 @@ class CollectionsController < CatalogController
 
     if params[:apply_all].present? && params[:apply_all].eql?("yes")
       begin
-        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless @object.governed_items.nil?
+        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless (@object.governed_items.nil? || @object.governed_items.empty?)
       rescue Exception => e
         logger.error "Unable to submit status job: #{e.message}"
         flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)

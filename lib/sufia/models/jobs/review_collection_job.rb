@@ -13,7 +13,7 @@ class ReviewCollectionJob < ActiveFedoraPidBasedJob
       curr_object.save
       # If object is a collection and has sub-collections, apply to governed_items
       if curr_object.is_collection?
-        Sufia.queue.push(ReviewCollectionJob.new(curr_object.id)) unless curr_object.governed_items.nil?
+        Sufia.queue.push(ReviewCollectionJob.new(curr_object.id)) unless (curr_object.governed_items.nil? || curr_object.governed_items.empty?)
       end
     end
 

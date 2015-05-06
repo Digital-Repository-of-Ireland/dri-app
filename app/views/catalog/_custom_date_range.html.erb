@@ -1,0 +1,51 @@
+
+<!-- a form to help set the date range restriction on a search -->
+<%= form_tag catalog_index_path, :method => :get, :id => 'daterangeform' do %>
+	<% if (params[:mode].blank?) %>
+		<%= hidden_field_tag 'mode', 'objects' %>
+	<% end %>
+	<!-- we need to add f[cdateRange][] to the request to trigger the faceted date range -->
+	<%= hidden_field_tag "f[cdateRange][]", "", :id => "f" %>
+	<% params_to_hide = get_params_to_hide(params) %>
+	<%= render_hash_as_hidden_fields(params_to_hide).html_safe %>
+	<ul class="facet-values list-unstyled">
+		<li>
+			<span class="dri_date_range">
+				<% if params[:year_from].present? %>
+				  <%= number_field_tag(:year_from, params[:year_from]) %>
+				<% else %>
+				  <%= number_field_tag(:year_from, '1970') %>
+				<% end %>
+				<span class="dri_date_range_label"><%= t('dri.views.catalog.facets.dates.date_range_from') %></span>
+			</span>
+		</li>
+		<li>
+			<span class="dri_date_range">
+				<% if params[:year_to].present? %>
+				  <%= number_field_tag(:year_to, params[:year_to]) %>
+				<% else %>
+				  <%= number_field_tag(:year_to, Time.now.year) %>
+				<% end %>
+				<span class="dri_date_range_label"><%= t('dri.views.catalog.facets.dates.date_range_to') %></span>
+			</span>
+		</li>
+		<li>
+			<!-- Persist values of date range field search -->
+			<%= hidden_field_tag :c_date, '0' %>
+			<%= check_box_tag(:c_date, '1', params[:c_date] == '1') %>
+			<%= label_tag(:c_date, "Creation") %>
+			<%= hidden_field_tag :p_date, '0' %>
+			<%= check_box_tag(:p_date, '1', params[:p_date] == '1') %>
+			<%= label_tag(:p_date, "Published") %>
+			<%= hidden_field_tag :s_date, '0' %>
+			<%= check_box_tag(:s_date, '1', params[:s_date] == '1') %>
+			<%= label_tag(:s_date, "Subject") %>
+		</li>
+		<li>
+		     <button type="submit" class="dri_search_term_text_submit_button" id="date_range_search">
+        		<%=t('Set')%>
+      		</button>
+		</li>
+	</ul>
+<% end %>
+<!-- end of date range form -->
