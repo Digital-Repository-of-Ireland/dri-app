@@ -10,7 +10,7 @@
     <!-- close image -->
 
     <div class="dri_content_list_collection_data">
-      <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+      <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter+1} )) do %>
           <h4><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h4>
       <% end %>
       <p>
@@ -40,7 +40,7 @@
       <% end %> <!-- close dri_num_objects -->
     </div>
   </div>
-  <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+  <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter+1} )) do %>
       <div class="dri_image">
         <% image = cover_image ( document ) %>
         <% unless image.nil? %>
