@@ -382,7 +382,7 @@ GEM
     legato (0.4.0)
       multi_json
     link_header (0.0.8)
-    linkeddata (1.1.11.1)
+    linkeddata (1.1.11)
       equivalent-xml (~> 0.5)
       json-ld (~> 1.1, >= 1.1.8)
       nokogiri (~> 1.6)
