@@ -9,31 +9,35 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
 
   def run
     Rails.logger.info "Deleting all objects in #{object.id}"
-    
-    o = ActiveFedora::Base.find(object.id, {:cast => true})
 
-    o.governed_items.each do | curr_object |
-      
-      # If object is a collection and has sub-collections, apply to governed_items
-      if curr_object.is_collection?
-        unless (curr_object.governed_items.nil? || curr_object.governed_items.empty?)
-          Sufia.queue.push(DeleteCollectionJob.new(curr_object.id))
+    query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\"")
+
+    while query.has_more?
+      collection_objects = query.pop
+
+      collection_objects.each do |object|
+        o = ActiveFedora::Base.find(object["id"], {:cast => true})
+        # If object is a collection and has sub-collections, apply to governed_items
+        if o.is_collection?
+          unless (o.governed_items.nil? || o.governed_items.empty?)
+            Sufia.queue.push(DeleteCollectionJob.new(o.id))
+          else
+            o.delete
+          end
         else
-          curr_object.delete
+          begin
+            # this makes a connection to s3, should really test if connection is available somewhere else
+            delete_files(o)
+          rescue Exception => e
+            Rails.logger.error "Unable to delete files: #{e}"
+          end
+
+          o.generic_files.each do |gf|
+            gf.delete
+          end
+
+          o.delete
         end
-      else
-        begin
-          # this makes a connection to s3, should really test if connection is available somewhere else
-          delete_files(curr_object)
-        rescue Exception => e
-          Rails.logger.error "Unable to delete files: #{e}"
-        end
-        
-        curr_object.generic_files.each do |gf|
-          gf.delete
-        end
-        
-        curr_object.delete
       end
     end
   

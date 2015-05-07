@@ -91,9 +91,12 @@ module DocumentHelper
         unless (object.send("#{rel}").nil?)
           if (object.send("#{rel}").respond_to?("push"))
             item_array = []
-            object.send("#{rel}").each do |item|
-              link_text = item.title.first
-              item_array.to_a.push [link_text, catalog_path(item.pid).to_s]
+            object.send("#{rel}".singularize << "_ids").each do |id|
+              rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+              unless rel_obj_doc.empty?
+                link_text = rel_obj_doc[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+                item_array.to_a.push [link_text, catalog_path(rel_obj_doc[0]["id"]).to_s]
+              end
             end
             relationships_hash["#{display_label}"] = item_array unless item_array.empty?
           else
