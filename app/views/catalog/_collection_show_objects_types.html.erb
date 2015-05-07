@@ -11,7 +11,7 @@
 
       <% if (imageCount > 0) %>
           <li>
-            <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "Image")) do %>
+            <%= link_to search_action_url(get_collection_media_type_params(document, document[:id], "Image")) do %>
                 <%= t("dri.data.types.Image") %>
                 <span class="dri_stat_num"><%= imageCount %></span>
             <% end %>
@@ -20,7 +20,7 @@
 
       <% if (audioCount > 0) %>
           <li>
-            <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "Audio")) do %>
+            <%= link_to search_action_url(get_collection_media_type_params(document, document[:id], "Audio")) do %>
                 <%= t("dri.data.types.Sound") %>
                 <span class="dri_stat_num"><%= audioCount %></span>
             <% end %>
@@ -29,7 +29,7 @@
 
       <% if (videoCount > 0) %>
           <li>
-            <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "Video")) do %>
+            <%= link_to search_action_url(get_collection_media_type_params(document, document[:id], "Video")) do %>
                 <%= t("dri.data.types.MovingImage") %>
                 <span class="dri_stat_num"><%= videoCount %></span>
             <% end %>
@@ -38,7 +38,7 @@
 
       <% if (textCount > 0) %>
           <li>
-            <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "Text")) do %>
+            <%= link_to search_action_url(get_collection_media_type_params(document, document[:id], "Text")) do %>
                 <%= t("dri.data.types.Text") %>
                 <span class="dri_stat_num"><%= textCount %></span>
             <% end %>
@@ -47,7 +47,7 @@
 
       <% if (mixedCount > 0) %>
           <li>
-            <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "Mixed_Types")) do %>
+            <%= link_to search_action_url(get_collection_media_type_params(document, document[:id], "Mixed_Types")) do %>
                 <%= t("dri.data.types.MixedType") %>
                 <span class="dri_stat_num"><%= mixedCount %></span>
             <% end %>

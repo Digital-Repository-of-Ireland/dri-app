@@ -12,7 +12,7 @@
     <li>
 <% end %>
 
-<%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
+<%= link_to t('dri.headerlinks.browse'), search_action_url(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
 </li>
 
 <% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>

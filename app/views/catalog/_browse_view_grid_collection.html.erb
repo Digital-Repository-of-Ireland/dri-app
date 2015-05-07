@@ -1,7 +1,7 @@
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block_collection">
      <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-     
+
                 <%= link_to bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' do %>
                 <span class="dri_remove_bookmark">x</span>
                 <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
@@ -36,7 +36,7 @@
       <%# If SUB-COLLECTION %>
       <% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
     <% end %>
-    <%= link_to (catalog_index_path(collection_objects_params)) do %>
+    <%= link_to (search_action_url(collection_objects_params)) do %>
         <div class="dri_num_objects">
           <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %></span>
         </div>

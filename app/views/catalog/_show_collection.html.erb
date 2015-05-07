@@ -18,7 +18,7 @@
 			<%= t('dri.views.fields.depositing_institute') %>
 		</dt>
 		<dd class="blacklight-depositing_institute">
-			<%= link_to @document[Solrizer.solr_name('depositing_institute', :stored_searchable, type: :string).to_sym].first, main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
+			<%= link_to @document[Solrizer.solr_name('depositing_institute', :stored_searchable, type: :string).to_sym].first, search_action_url(institute_browse_params), :id => 'depositing_institute' %>
 		</dd>
 		<% end %>
 	</dl>
@@ -40,10 +40,10 @@
 		<!-- If it's a root collection, we show all the objects within it -->
 		<% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil %>
 		<% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-		<%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
+		<%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", search_action_url(collection_objects_params), :id => 'collection_s_object' %>
 		<% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
 		<% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-		<%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
+		<%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", search_action_url(collection_objects_params), :id => 'collection_s_object' %>
 		<% end %>
 	</div>
 

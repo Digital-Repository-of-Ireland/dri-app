@@ -18,7 +18,7 @@
 			<%= t('dri.views.fields.depositing_institute') %>
 		</dt>
 		<dd class="blacklight-depositing_institute">
-			<%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
+			<%= link_to @depositing_institute[:name], search_action_url(institute_browse_params), :id => 'depositing_institute' %>
 		</dd>
 		<% end %>
 	</dl>
