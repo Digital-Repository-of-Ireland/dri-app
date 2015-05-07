@@ -88,6 +88,7 @@ class ObjectsController < CatalogController
 
         warn_if_duplicates
 
+        retrieve_linked_data
         DOI.mint_doi( @object )
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
@@ -136,6 +137,7 @@ class ObjectsController < CatalogController
 
     if @object.valid? && @object.save
 
+      retrieve_linked_data     
       DOI.mint_doi( @object )
 
       #actor.version_and_record_committer
@@ -361,5 +363,14 @@ class ObjectsController < CatalogController
       @object.update_attributes create_params
     end
   
+    def retrieve_linked_data
+      if AuthoritiesConfig
+        begin
+          Sufia.queue.push(LinkedDataJob.new(@object.id)) unless @object.geographical_coverage.blank?
+        rescue Exception => e
+          Rails.logger.error "Unable to submit linked data job: #{e.message}"
+        end
+      end
+    end
 end
 
