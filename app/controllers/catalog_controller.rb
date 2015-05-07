@@ -92,6 +92,8 @@ class CatalogController < ApplicationController
     #config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
     #config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
     config.add_facet_field solr_name('geographical_coverage', :facetable), :helper_method => :parse_location, :limit => 20
+    config.add_facet_field solr_name('placename_field', :facetable), :label => 'Placename', :show => false
+    config.add_facet_field solr_name('geojson', :symbol), :limit => -2, :label => 'Coordinates', :show => false
     #config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
     #config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
     config.add_facet_field solr_name('temporal_coverage', :facetable), :helper_method => :parse_era, :limit => 20, :show => false
@@ -270,6 +272,10 @@ class CatalogController < ApplicationController
     config.view.maps.mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     config.view.maps.maxzoom = 18
     config.view.maps.show_initial_zoom = 5
+    config.view.maps.facet_mode = "geojson"
+    config.view.maps.placename_field = ActiveFedora::SolrService.solr_name('placename_field', :facetable, type: :string)
+    config.view.maps.geojson_field = ActiveFedora::SolrService.solr_name('geojson', :stored_searchable, type: :symbol)
+    config.view.maps.search_mode = "placename"
 
   end
 
