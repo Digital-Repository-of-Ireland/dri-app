@@ -46,6 +46,7 @@ gem 'jquery-cookie-rails'
 gem 'remotipart'
 
 gem 'rest-client'
+gem 'sparql-client'
 
 # static pages
 gem 'high_voltage', '~> 2.1.0'
