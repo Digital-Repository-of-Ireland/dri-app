@@ -2,12 +2,12 @@
 <% get_institutes @document %>
 <% get_licence @document %>
 
-
 <% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>
 
 <% render_link_rel_alternates %>
 <div class="dri_object_container" id="object_container">
   <div class="dri_object_title_top"><%= document_heading %></div>
+  <%= render 'previous_next_doc' %>
   <%= render_document_partial @document, :show %>
 </div>
 
