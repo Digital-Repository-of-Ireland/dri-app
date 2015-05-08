@@ -2670,61 +2670,6 @@ ul.dri_view_collection {
   }
 }
 
-.dri_bookmark_object {
-  margin: 20px 0 10px 0;
-
-  display: block;
-  float:left; 
- 
-  form input {
-    padding: 0;
-	 margin: 0; 
-	
-  }
-  label {
-    color: $dri_grey;
-    font-weight: bold;	
-	   margin: 0;
-  	padding-right: 10px;
-  		
-  }
-  
-  label.bookmark_object {
-    margin: 0;
-    padding: 0 0 0 4px; 
-	
-	
-  }
-  
-  label.dri_bookmark_object_label {
-    float: left;
-    span.dri_bookmark_label_text {
-      padding-left: 16px;
-    }
-  }
-  
-  .documentFunctions {
-	margin: 0;
-  padding: 0;
-  .toggle_bookmark {
-    margin-left: 0px;
-  }
-  a { 
-  color: $dri_grey;
-  }
-  label.bookmark_manage  {
-    border-top: 1px solid #E1E1E1;
-    padding-top: 5px;
-    margin-top: 5px;
-    width: 230px;
-	
-    a {
-      color: $dri_grey;
-    }
-  }
-}
-}
-
 
 .dri_title {
   color: $dri_grey;
@@ -2745,6 +2690,38 @@ ul.dri_view_collection {
   font-weight: bold;
 }
 
+/*----- New Bookmark in Editor ----*/
+.dri_bookmark {
+  span {
+    display: none;
+  }
+  span.dri_bookmark_object_label {
+    display: inline;
+    margin-right: 10px;
+  }
+  form {
+    input[type="checkbox"] {
+      margin-top: 0px;
+      margin-left: 10px;
+    }
+    
+  }
+}
+
+/*---- Previous Next Doc Pagination ----*/
+
+.dri_pagination {
+  margin: 0px;
+  a {
+    
+  }
+  li.position {
+    a {
+      border-top: none;
+      border-bottom: none;
+    }
+  }
+}
 
 /*-------------- publishing institute  --------------*/
 .dri_publishing_institute_title {

@@ -1,16 +1,10 @@
-<div class="dri_bookmark_object">
-    <div class="documentFunctions">
-  <%= render_show_doc_actions %>
-  </div>
-</div>
-<!-- close dri_bookmark_object -->
-
 <div class="dri_objecttools_title">
   <i class="fa fa-lg fa-gear"></i>&nbsp;<%= t('dri.views.catalog.titles.object_tools') %>
 </div>
 <!-- close vc_title -->
 
 <ul class="dri_view_collection">
+    <%= render_show_doc_actions %>
   <% if @document.has_geocode? %>
     <li><%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id), :id => "logainm_map", :'data-toggle' => 'modal',  :'data-target' => '#dri_map_modal_id' %></li>
   <% end %>

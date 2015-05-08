@@ -61,7 +61,7 @@
 		<i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_all_reviewed') %>
 	</li>
 	<% end %>
-	<%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
+	<%= link_to publish_path(@document), :method => :update, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
 	<li >
 		<i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
 	</li>

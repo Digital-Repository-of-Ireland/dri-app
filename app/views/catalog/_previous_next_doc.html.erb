@@ -2,19 +2,14 @@
 
 
 <% if @previous_document || @next_document %>
-
-	<!-- navigation to allow the user to page through the search results  -->
-	<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
-		<ul id="dri_pagination_nav_links_id"
-			class="dri_pagination_nav_links">
-
-		<%if @previous_document %>
-		        <li class="previous"><%= link_to_previous_document @previous_document %></li>
-		<% end %>
-		        <li class="selected"> <%= item_page_entry_info %> &nbsp;</li>
-		<%if @next_document %>
-				<li class="next"><%= link_to_next_document @next_document %></li>
-		<% end %>
-		</ul>
-</nav>
+<nav id="dri_pagination_nav_id">
+  <ul class="pagination dri_pagination">
+        <%if @previous_document %>
+                <li aria-label="Previous"><%= link_to_previous_document @previous_document %></li>
+        <% end %>
+                <li aria-label="Selected"><%= link_back_to_catalog(:label => item_page_entry_info, :'data-toggle' => "tooltip", :'data-placement' => "top", :'title' => "Go back to Search") %></li>
+        <%if @next_document %>
+                <li aria-label="Previous"><%= link_to_next_document @next_document %></li>
+        <% end %>
+  </ul>
 <% end %>
