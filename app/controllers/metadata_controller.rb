@@ -67,10 +67,6 @@ class MetadataController < CatalogController
       else
         @object.update_metadata xml
         MetadataHelpers.checksum_metadata(@object)
-        # Only in Updates for now as there is no UI for adding relationships
-        # After descMetadata update, process this object's relationships
-        @object.process_relationships
-
         warn_if_duplicates
 
         begin
