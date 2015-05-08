@@ -12,12 +12,12 @@ Background:
 Scenario: Setting a list of users for restricted access
   Given I am logged in as "user1" in the group "cm" and accept cookies
   And I am on the home page
-  When I press the button to ingestion
-  And I press the button to add new collection
+  When I press the button to "ingestion"
+  And I press the button to "add new collection"
   And I enter valid metadata for a collection
   And I choose "batch_read_groups_string_radio_restricted"
   And I fill in "batch_read_users_string" with "test, test2, test3"
-  And I press the button to create a collection
+  And I press the button to "create a collection"
   Then I should see a success message for creating a collection
   When I follow the link to edit a collection
   Then the "batch_read_users_string" field should contain "test, test2, test3"
@@ -33,7 +33,7 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
   When I go to the "collection" "show" page for "perm1"
   And I follow the link to add an object
   When I enter valid "<object_type>" metadata
-  And I press the button to continue
+  And I press the button to "continue"
   Then I should see a success message for ingestion
   When I follow the link to edit an object
   And the radio button "batch_read_groups_string_radio_inherit" should be "checked"
@@ -48,7 +48,7 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
   Given a collection with pid "perm2" created by "user1"
   When I go to the "metadata" "upload" page for "perm2"
   And I attach the metadata file "<metadata_file>"
-  And I press the button to ingest metadata
+  And I press the button to "ingest metadata"
   Then I should see a success message for ingestion
   When I go to the "object" "edit" page for "created"
   Then the hidden "batch_read_groups_string" field should contain ""

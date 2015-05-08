@@ -21,7 +21,7 @@ Scenario: Constructing a valid collection
   Given I am on the home page
   When I go to "create new collection"
   And I enter valid metadata for a collection
-  And I press the button to create a collection
+  And I press the button to "create a collection"
   Then I should see a success message for creating a collection
 
 Scenario: Constructing a collection with valid permissions
@@ -29,7 +29,7 @@ Scenario: Constructing a collection with valid permissions
   When I go to "create new collection"
   And I enter valid metadata for a collection
   And I enter valid permissions for a collection
-  And I press the button to create a collection
+  And I press the button to "create a collection"
   Then I should see a success message for creating a collection
 
 Scenario: Constructing a collection with invalid permissions
@@ -37,14 +37,14 @@ Scenario: Constructing a collection with invalid permissions
   When I go to "create new collection"
   And I enter valid metadata for a collection
   And I enter invalid permissions for a collection
-  And I press the button to create a collection
+  And I press the button to "create a collection"
   Then I should see a failure message for invalid collection
 
 Scenario: Updating a collection with invalid metadata
   Given a collection with pid "collperm" created by "user1"
   When I go to the "collection" "edit" page for "collperm"
   And I enter invalid metadata for a collection
-  And I press the button to save collection changes
+  And I press the button to "save collection changes"
   Then I should not see a success message for updating a collection
 
 Scenario: Updating a collection with invalid permissions
@@ -52,7 +52,7 @@ Scenario: Updating a collection with invalid permissions
   When I go to the "collection" "edit" page for "collperm"
   And I enter valid metadata for a collection
   And I enter invalid permissions for a collection
-  And I press the button to save collection changes
+  And I press the button to "save collection changes"
   Then I should see a failure message for invalid update collection
 
 Scenario Outline: Adding a Digital Object in a governing collection
@@ -70,7 +70,7 @@ Scenario: Creating Digital Object in a governing collection using the web forms
   Given a collection with pid "coll2" created by "user1"
   When I go to the "metadata" "upload" page for "coll2"
   And I attach the metadata file "valid_metadata.xml"
-  And I press the button to ingest metadata
+  And I press the button to "ingest metadata"
   Then the collection "coll2" should contain the new digital object
 
 Scenario: Deleting a collection as an admin

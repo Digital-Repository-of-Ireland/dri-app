@@ -14,7 +14,7 @@ Given /^"(.*?)" has created a Digital Object$/ do |user|
     And the object with pid "#{@obj_pid}" is in the collection with pid "#{col_pid}"
     When I go to the "object" "show" page for "#{@obj_pid}"
     And I attach the metadata file "valid_metadata.xml"
-    And I press the button to upload metadata
+    And I press the button to "upload metadata"
     Then I should see a success message for updating metadata
   }
 end
@@ -24,7 +24,7 @@ Given /^I have created an object with metadata "(.*?)" in the collection with pi
     When I go to the "collection" "show" page for "#{collection_pid}"
     And I follow the link to upload XML
     And I attach the metadata file "#{metadata_file}"
-    And I press the button to ingest metadata
+    And I press the button to "ingest metadata"
   }
 end
 
@@ -33,7 +33,7 @@ Given /^I have created an object with title "(.*?)" in the collection with pid "
     When I go to the "collection" "show" page for "#{collection_pid}"
     And I follow the link to add an object
     When I enter valid metadata with title "#{title}"
-    And I press the button to continue
+    And I press the button to "continue"
   }
 end
 
@@ -42,7 +42,7 @@ Given /^I have created a collection$/ do
     Given I am on the home page
     And I go to "create new collection"
     And I enter valid metadata for a collection
-    And I press the button to create a collection
+    And I press the button to "create a collection"
   }
 end
 
@@ -51,7 +51,7 @@ Given /^I have created a collection with title "(.+)"$/ do |title|
     Given I am on the home page
     When I go to "create new collection"
     And I enter valid metadata for a collection with title #{title}
-    And I press the button to create a collection
+    And I press the button to "create a collection"
   }
 end
 
@@ -60,7 +60,7 @@ Given /^I have added an audio file$/ do
     Then I should see a link to edit an object
     When I follow the link to edit an object
     And I attach the asset file "sample_audio.mp3"
-    And I press the button to upload a file
+    And I press the button to "upload a file"
     Then I should see a success message for file upload
   }
 end
@@ -69,7 +69,7 @@ When /^I add the asset "(.*)" to "(.*?)"$/ do |asset, pid|
   steps %{
     When I go to the "object" "show" page for "#{pid}"
     And I attach the asset file "#{asset}"
-    And I press the button to upload a file
+    And I press the button to "upload a file"
     Then I should see a success message for file upload
   }
 end
@@ -213,9 +213,15 @@ Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|
   page.find_by_id(modal, :visible=>false).find_by_id(button_to_id(button)).trigger('click')
 end
 
-Then /^(?:|I )press the button to (.+)$/ do |button|
+Then /^(?:|I )press the button to "([^"]*)"(?: within "([^"]*)")?$/ do |button,selector|
   Capybara.ignore_hidden_elements = false
-  page.find_button(button_to_id(button)).click
+  if selector
+    within("//*[@id='#{selector}']") do
+      page.find_button(button_to_id(button)).click
+    end
+  else
+    page.find_button(button_to_id(button)).click
+  end
 end
 
 Then /^I check "(.*?)"$/ do |checkbox|
@@ -317,7 +323,7 @@ end
 
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"(?: within "([^"]*)")?$/ do |field, value, selector|
   with_scope(selector) do
-    fill_in(field, :with => value)
+    fill_in(field, :with => value, :match => :prefer_exact)
   end
 end
 

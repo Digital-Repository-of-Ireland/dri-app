@@ -104,7 +104,7 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
     When I go to the "collection" "show" page for "#{collection_pid}" 
     And I follow the link to upload XML
     And I attach the metadata file "valid_metadata.xml"
-    And I press the button to ingest metadata
+    And I press the button to "ingest metadata"
   }
 end
 
