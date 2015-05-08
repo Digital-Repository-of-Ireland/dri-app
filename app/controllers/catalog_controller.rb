@@ -185,8 +185,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'rights'
     config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), :label => 'status' 
     config.add_show_field 'geospatial', :label => 'Geographical Coverage Index'
-    
-    config.view.maps.coordinates_field = 'geospatial'
+
     # Commented date ranges show_fields (only for testing)
     #config.add_show_field 'cdateRange', :label => 'Creation Date Range'
     #config.add_show_field 'pdateRange', :label => 'Published Date Range'
@@ -277,6 +276,7 @@ class CatalogController < ApplicationController
     # mean") suggestion is offered.
     config.spell_max = 5
 
+    config.view.maps.coordinates_field = 'geospatial'
     config.view.maps.placename_property = "placename"
     config.view.maps.tileurl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     config.view.maps.mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
@@ -291,15 +291,15 @@ class CatalogController < ApplicationController
 
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "-#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
+    solr_parameters[:fq] << "-#{ActiveFedora::SolrQueryBuilder.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
     if user_parameters[:mode].eql?('collections')
-      solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
+      solr_parameters[:fq] << "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true"
       if !user_parameters[:show_subs].eql?('true')
-        solr_parameters[:fq] << "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+        solr_parameters[:fq] << "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
       end
     else
-      solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:false"
-      solr_parameters[:fq] << "+#{Solrizer.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
+      solr_parameters[:fq] << "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:false"
+      solr_parameters[:fq] << "+#{ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
     end
   end
 
@@ -340,7 +340,7 @@ class CatalogController < ApplicationController
           edate_str = ISO8601::DateTime.new(end_date).year
           # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits 
           solr_parameters[:fq][temporal_idx] = "sdateRange:[\"-9999 #{(sdate_str.to_i - 0.5).to_s}\" TO \"#{(edate_str.to_i + 0.5).to_s} 9999\"]"
-        rescue ISO8601::Errors::UnknownPattern => e
+        rescue ISO8601::Errors::StandardError
         end
       end
     end
