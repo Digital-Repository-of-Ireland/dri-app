@@ -1,6 +1,6 @@
 GIT
   remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: d45ea0dfaaeea2bdb89e4acea12427951b444755
+  revision: 3c2846555997ed093c7590814eff80edb512e506
   branch: hydra9
   specs:
     dri_data_models (2.1.1)
