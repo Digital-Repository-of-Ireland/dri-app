@@ -7,7 +7,7 @@
                 <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
                 <% end %>
             <% end %>
-    <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+    <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter+1} )) do %>
         <div>
           <div class="dri_collection_image">
             <% image = cover_image ( document ) %>

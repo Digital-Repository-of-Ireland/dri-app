@@ -19,7 +19,6 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   end
   collection.master_file_access="private"
   collection.save
-  collection.collections.count.should == 0
   collection.governed_items.count.should == 0
 
   group = UserGroup::Group.new(:name => collection.id,
@@ -109,15 +108,6 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   }
 end
 
-When /^I add the Digital Object "(.*?)" to the non-governing collection "(.*?)" using the web forms$/ do |object_pid,collection_pid|
-  steps %{
-    Given I am on the collections page
-    When I press the button to set the current collection to #{collection_pid}
-    And I go to the "object" "show" page for "#{object_pid}"
-    And I check add to collection for id #{object_pid}
-  }
-end
-
 When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title|
     title ||= "Test collection"
   steps %{
@@ -164,9 +154,6 @@ When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type "(.*?)
       object.title = [SecureRandom.hex(5)]
       object.governing_collection = collection
       object.save
-    when "non-governing"
-      object.title = [SecureRandom.hex(5)]
-      collection.collections << object
   end
 end
 
@@ -181,9 +168,6 @@ Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as ty
     when "governing"
       collection.governed_items.length.should == 1
       collection.governed_items[0].title.should == object.title
-    when "non-governing"
-      collection.collections.length.should == 1
-      collection.collections[0].title.should == object.title
   end
 end
 
@@ -202,11 +186,6 @@ end
 Then /^I should see the Digital Object "(.*?)" as part of the collection$/ do |object_pid|
   object = DRI::Batch.find(object_pid)
   page.should have_content object.title
-end
-
-Then /^I should not see the Digital Object "(.*?)" as part of the non-governing collection$/ do |object_pid|
-  object = DRI::Batch.find(object_pid)
-  page.should_not have_content object.title
 end
 
 Then /^the collection "(.*?)" should contain the new digital object$/ do |collection_pid|

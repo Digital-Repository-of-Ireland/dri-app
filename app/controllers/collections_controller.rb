@@ -11,8 +11,8 @@ class CollectionsController < CatalogController
   #include UserGroup::SolrAccessControls
   include Hydra::AccessControlsEnforcement
 
-  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
-  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
+  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update, :publish]
+  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update, :publish]
 
   def actor
     @actor ||= DRI::Object::Actor.new(@object, current_user)

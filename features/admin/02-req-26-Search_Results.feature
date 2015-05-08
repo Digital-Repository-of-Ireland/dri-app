@@ -22,6 +22,7 @@ edit permission.
     And a Digital Object with pid "obj1", title "Search Object 1" created by "admin"
     And the object with pid "obj1" is in the collection with pid "coll1"
     And I am on the home page
+    Then show me the page
     When I press the button to search
     Then I should see a search result "Search Collection 1"
     And I select the "objects" tab

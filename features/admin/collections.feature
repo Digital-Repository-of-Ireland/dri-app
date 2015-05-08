@@ -55,7 +55,7 @@ Scenario: Updating a collection with invalid permissions
   And I press the button to save collection changes
   Then I should see a failure message for invalid update collection
 
-Scenario Outline: Adding a Digital Object in a governing/non-governing collection
+Scenario Outline: Adding a Digital Object in a governing collection
   Given a Digital Object with pid "<object_pid>", title "<object_title>", description "<object_desc>", type "<object_type>" and rights "<object_rights>"
   And a collection with pid "<collection_pid>"
   When I add the Digital Object "<object_pid>" to the collection "<collection_pid>" as type "<governance_type>"
@@ -65,8 +65,6 @@ Scenario Outline: Adding a Digital Object in a governing/non-governing collectio
     | object_pid | object_title | object_desc | object_type | object_rights | collection_pid | governance_type |
     | obj1   | Object 1     | Test 1      | Sound       | Test Rights   | coll1      | governing       |
     | obj2   | Object 2     | Test 2      | Text        | Test Rights   | coll1      | governing       |
-    | obj3   | Object 3     | Test 3      | Sound       | Test Rights   | coll2      | non-governing   |
-    | obj4   | Object 4     | Test 4      | Text        | Test Rights   | coll2      | non-governing   |
 
 Scenario: Creating Digital Object in a governing collection using the web forms
   Given a collection with pid "coll2" created by "user1"
@@ -74,27 +72,6 @@ Scenario: Creating Digital Object in a governing collection using the web forms
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to ingest metadata
   Then the collection "coll2" should contain the new digital object
-
-@review
-Scenario: Adding a Digital Object to a non-governing collection using the web forms
-  Given a Digital Object with pid "obj4" and title "Object 4" created by "user1"
-  And a collection with pid "coll4" created by "user1"
-  When I add the Digital Object "obj4" to the non-governing collection "coll4" using the web forms
-  And I go to the "collection" "show" page for "coll4"
-  Then I should see the Digital Object "obj4" as part of the collection
-
-@review
-Scenario: Removing a Digital Object from a non-governing collection using the web forms
-  Given a Digital Object with pid "obj5" and title "Object 5" created by "user1"
-  And a collection with pid "coll5" created by "user1"
-  When I add the Digital Object "obj5" to the collection "coll5" as type "non-governing"
-  Then the collection "coll5" should contain the Digital Object "obj5" as type "non-governing"
-  When I go to the "collection" "show" page for "coll5"
-  Then I should see the Digital Object "obj5" as part of the collection
-  When I press the remove from collection button for Digital Object "obj5"
-  Then I should see a success message for removing an object from a collection
-  When I go to the "collection" "show" page for "coll5"
-  Then I should not see the Digital Object "obj5" as part of the non-governing collection
 
 Scenario: Deleting a collection as an admin
   Given I am not logged in
