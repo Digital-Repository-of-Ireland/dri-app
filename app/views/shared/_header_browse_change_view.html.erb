@@ -1,7 +1,6 @@
 <% if has_browse_params? %>
 <nav id="dri_display_grid_table_id" class="dri_display_grid_table_nav">
 	<% changeViewParams = params.clone %>
-	<%= debug params %>
 	<div class="dri_change_sort_view" id="dri_change_sort_view_id" data-content="<%= t('dri.help.dri_change_sort_view') %>"  data-original-title="<%= t('dri.help.dri_change_sort_view_title')%>" data-trigger="hover" data-placement="top">
 		<% if params[:view] == "grid" %>
 		<i class="fa fa-th fa-lg border"></i>
