@@ -1,7 +1,11 @@
-
+<%= debug params %>
 <!--overides view params if missing-->
 <% if (params[:view].blank?) %>
     <% params[:view] = "grid" %>
+<% end %>
+
+<% if (params[:view] = "maps") %>
+    <%= stylesheet_link_tag "blacklight_maps" %>
 <% end %>
 
 <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
