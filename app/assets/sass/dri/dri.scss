@@ -2762,6 +2762,15 @@ ul.dri_view_collection {
   
 }
 
+.dri_related_items {
+  width: 100%;
+  nav.pagination {
+    float: right;
+    padding-right: 50px;
+    margin: 0 0 10px 0;
+  }
+}
+
 // static page of institutes
 .not_first {
   border-bottom: 1px solid #D9DADB;
