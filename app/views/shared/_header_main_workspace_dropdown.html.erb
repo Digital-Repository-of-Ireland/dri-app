@@ -11,7 +11,7 @@
 		<li role="presentation">
 			<% end %>
 			     
-            <%= link_to user_group.user_path(current_user), :id => 'view_account' do %>
+            <%= link_to user_group.user_path(current_user) do %>
             <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
             <% end %>
 

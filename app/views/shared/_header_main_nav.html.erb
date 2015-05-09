@@ -33,14 +33,14 @@
       <% end %>
       <% if !current_user %>
           <li class="active">
-            <%= link_to "Sign Up", user_group.new_user_path, :id => 'sign_up' %>
+            <%= link_to "Sign Up", user_group.new_user_path %>
           </li>
       <% end %>
       <li class="noborder">
         <% if current_user %>
-            <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, :method => :delete, :id => "logout" %>
+            <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, :method => :delete %>
         <% else %>
-            <%= link_to t('blacklight.header_links.login'), user_group.new_user_session_path, :id => "login" %>
+            <%= link_to t('blacklight.header_links.login'), user_group.new_user_session_path%>
         <% end %>
 
       </li>
