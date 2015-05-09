@@ -1106,7 +1106,7 @@ ol.breadcrumb {
 .dri_sort_nav {
   float: left;
   margin: 0;
-  padding: 25px 25px 0 0;
+  padding: 0 25px 0 0;
   color: $dri_lightgrey;
   select {
     margin: 0;
@@ -1139,7 +1139,7 @@ ol.breadcrumb {
 /*-------------- Grid / table display--------------*/
 .dri_change_sort_view {
   margin-left: 20px;
-  padding-top: 25px;
+  //padding-top: 25px;
   font-size: 100%;
   width: 120px;
   float:left;
@@ -1390,8 +1390,9 @@ ol.breadcrumb {
 
 .dri_search_save_submit_button {
   @extend .dri_button_green;
-  margin-top: 25px;
+  //margin-top: 25px;
   float: right;
+  margin: 0px 0 10px 0;
 }
 
 /*-------------- Warning Messages --------------*/
@@ -1981,6 +1982,9 @@ p.dri_rss_link a {
       margin: 0 0 0 6px;
       color: $dri_grey;
     }
+  }
+  .map {
+    padding-right: 15px;
   }
 }
 

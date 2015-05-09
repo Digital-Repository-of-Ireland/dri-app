@@ -1,4 +1,4 @@
-<%= debug params %>
+
 <!--overides view params if missing-->
 <% if (params[:view].blank?) %>
     <% params[:view] = "grid" %>
@@ -16,11 +16,9 @@
 <div id="dri_second_navigation_container_id"
      class="dri_second_navigation_container">
   <!-- facet block -->
-  <% if params[:view] != 'timeline' && params[:view] != 'maps' %>
   <div class="dri_facet_filters_block" id="sidebar">
     <%= render :partial => 'facets' %>
   </div>
-  <% end %>
   <!-- close facet block -->
 </div>
   <% if params[:view] == 'timeline' %>
