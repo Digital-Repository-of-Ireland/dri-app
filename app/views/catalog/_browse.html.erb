@@ -4,7 +4,7 @@
     <% params[:view] = "grid" %>
 <% end %>
 
-<% if (params[:view] = "maps") %>
+<% if (params[:view] == "maps") %>
     <%= stylesheet_link_tag "blacklight_maps" %>
 <% end %>
 
