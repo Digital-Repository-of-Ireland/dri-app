@@ -1106,7 +1106,7 @@ ol.breadcrumb {
 .dri_sort_nav {
   float: left;
   margin: 0;
-  padding: 0 25px 0 0;
+  padding: 10px 25px 0 0;
   color: $dri_lightgrey;
   select {
     margin: 0;
@@ -1145,12 +1145,17 @@ ol.breadcrumb {
   float:left;
   a {
     color: $dri_lightgrey;
+    i {
+      color: $dri_lightgrey;
+    }
   }
   i { 
    
-    //padding-right: 10px;
+    color: $dri_green;
     }
-  .border {
+
+}
+  .dri_icon_border {
     border-radius: 10%;
     border: 1px solid $dri_thingrey;
     width: 25px;
@@ -1161,8 +1166,6 @@ ol.breadcrumb {
     padding-top: 4px;
 
   }
-}
-
 /*-------------- Page Grid --------------*/
 .dri_pager_nav {
   margin: 25px 0 0 0;
