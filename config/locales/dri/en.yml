@@ -40,7 +40,7 @@ en:
       locale: Language
       maps:
         loading_maps: "Loading Maps"
-        no_results: "No valid results have been found"
+        no_results: "No valid location results have been found. Try the Grid View to see all results."
       terms:
         accept: "I agree"
         header: "The Digital Repository of Ireland End User Agreement."
@@ -48,10 +48,10 @@ en:
         reject: "I disagree"
       timeline:
         description:
-          no_results: "No valid results have been found"
-          results_found: "Please explore the search results timeline"
+          no_results: "No valid date results have been found. Try the Grid View to see all results."
+          results_found: "Search results timeline..."
         headline:
-          no_results: "No results found"
+          no_results: "No valid date results have been found. Try the Grid View to see all results."
           results_found: "Current Search Timeline"
       user_profile:
         collection_title: "Collection Title"
@@ -318,6 +318,7 @@ en:
           add: "Add a new Organisation"
           associate: "Associate Organisation"
           associate_depositing: "Select Depositing Organisation"
+          set_depositor: "Set Depositor"
           form:
             logo: Logo
             name: Name
