@@ -10,7 +10,7 @@
     <%= blacklight_map_tag('blacklight-show-map',
                           {data:{viewpoint: set_viewpoint(geojson_features),
                                  initialzoom:blacklight_config.view.maps.show_initial_zoom,
-                                 singlemarkermode:false}, style: "height: 480px; width: 550px"}) %>
+                                 singlemarkermode:false}, style: "height: 480px; width: 100%"}) %>
     <%= javascript_tag "$('#blacklight-show-map').blacklight_leaflet_map(#{geojson_features});" %>
   <% end %>
 </div>
