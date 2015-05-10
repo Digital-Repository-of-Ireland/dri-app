@@ -1108,6 +1108,7 @@ ol.breadcrumb {
   margin: 0;
   padding: 10px 25px 0 0;
   color: $dri_lightgrey;
+  height: 35px;
   select {
     margin: 0;
     padding: 4px;
@@ -1138,10 +1139,10 @@ ol.breadcrumb {
 
 /*-------------- Grid / table display--------------*/
 .dri_change_sort_view {
-  margin-left: 20px;
+  //margin-left: 20px;
   //padding-top: 25px;
   font-size: 100%;
-  width: 120px;
+  //width: 120px;
   float:left;
   a {
     color: $dri_lightgrey;

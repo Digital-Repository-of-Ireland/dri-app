@@ -21,10 +21,7 @@
   </div>
   <!-- close facet block -->
 </div>
-  <% if params[:view] == 'timeline' %>
-    <% timeline_style = 'width: 100%;' %>
-  <% end %>
-<div id="dri_result_container_id" class="dri_result_container" style="<%= timeline_style %>">
+<div id="dri_result_container_id" class="dri_result_container">
   <% if (@document_list.count > 0) %>
       <%= render_document_index @document_list %>&nbsp;
   <% else %>
