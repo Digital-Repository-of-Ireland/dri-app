@@ -101,10 +101,10 @@ module DocumentHelper
                 item_array.to_a.push [link_text, catalog_path(rel_obj_doc[0]["id"]).to_s]
               end
             end
-            relationships_hash["#{display_label}"] = Kaminari.paginate_array(item_array).page(params[display_label.to_sym]).per(4) unless item_array.empty?
+            relationships_hash["#{display_label}"] = Kaminari.paginate_array(item_array).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4) unless item_array.empty?
           else
             link_text = object.send("#{rel}").title.first
-            relationships_hash["#{display_label}"] = Kaminari.paginate_array([[link_text, catalog_path(object.send("#{rel}").pid).to_s]]).page(params[display_label.to_sym]).per(4)
+            relationships_hash["#{display_label}"] = Kaminari.paginate_array([[link_text, catalog_path(object.send("#{rel}").pid).to_s]]).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4)
           end
         end
       end # each

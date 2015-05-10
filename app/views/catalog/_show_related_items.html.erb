@@ -31,7 +31,7 @@
 		<% end %>
 		<div class="dri_clearfix dri_float_right dri_related_items">
 
-			<%= paginate value, :param_name => key + '_page' %>
+			<%= paginate value, :param_name => key.downcase.gsub(/\s/,'_') + '_page' %>
 		</div>
 		<% end %>
 
@@ -62,4 +62,5 @@
 		</div>
 		<% end %>
 	</div>
-	<% end %>
+</div>
+<% end %>
