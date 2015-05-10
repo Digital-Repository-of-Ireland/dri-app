@@ -2534,6 +2534,9 @@ ul.dri_stats {
   height: 129px;
   margin: 8px 0 0 0;
   overflow: hidden;
+  img {
+    width: 230px;
+  }
 }
 
 .dri_vc_title {
@@ -2646,15 +2649,24 @@ ul.dri_view_collection {
 
 /*---- Previous Next Doc Pagination ----*/
 
-.dri_pagination {
+.dri_doc_pagination {
   margin: 0px;
-  a {
-    
+  display: table;
+  table-layout: fixed;
+   width: 240px;
+  li {
+    display: table-cell;
+    width: 80px;
+    padding: 1px;
+    a {
+      width: 100%;
+      text-align: center;
+      color: $dri_grey;
+    }
   }
   li.position {
-    a {
-      border-top: none;
-      border-bottom: none;
+    a.dri_no_border {
+      color: $dri_grey;
     }
   }
 }
@@ -2934,6 +2946,10 @@ ul.dri_collection_institutes_list {
 
 .dri_underline {
   text-decoration: underline;
+}
+
+.dri_no_border {
+  border: 0;
 }
 
 /* static blocks */
