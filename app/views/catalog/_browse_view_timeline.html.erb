@@ -3,15 +3,17 @@
 <% if valid_object_count > 0 %>
     <script>
         $(document).ready(function() {
+            var tlwidth = $('#dri_timeline_id').width();
             createStoryJS({
                 type: 'timeline',
+                width: tlwidth,
                 height: '400',
                 source: '<%= timeline_json_path(params) %>',
                 embed_id: 'time_line'
             });
         });
     </script>
-    <div class="dri_timeline">
+    <div id="dri_timeline_id">
             <div id="time_line" ></div>
     </div>
 
