@@ -1015,7 +1015,7 @@ ol.breadcrumb {
 
 /*-------------- Search/Sort features --------------*/
 .dri_search_features_nav_container {
-  margin: 0;
+  margin-left: 20px;
   padding: 0;
 }
 
@@ -1417,6 +1417,9 @@ h4.suggest {
     font-weight: bold;
     padding: 15px 0 15px 20px;
     min-width: 238px;
+    a {
+      color: $dri_grey;
+    }
   }
   .dri_search_num {
     float: right;
@@ -2616,22 +2619,30 @@ ul.dri_view_collection {
 }
 
 /*----- New Bookmark in Editor ----*/
-.dri_bookmark {
-  span {
-    display: none;
-  }
-  span.dri_bookmark_object_label {
-    display: inline;
-    margin-right: 10px;
-  }
-  form {
-    input[type="checkbox"] {
-      margin-top: 0px;
-      margin-left: 10px;
+.dri_bookmark_tool {
+  margin: 0px;
+  .dri_bookmark {
+    margin: 0px;
+    span {
+      display: none;
     }
-    
-  }
+    span.dri_bookmark_object_label {
+      display: inline;
+      margin-right: 10px;
+    }
+    form {
+      .checkbox {
+        margin: 0px;
+      }
+      input[type="checkbox"] {
+        margin-top: 0px;
+        margin-left: 10px;
+      }
+      
+    }
+  }  
 }
+
 
 /*---- Previous Next Doc Pagination ----*/
 
@@ -2852,6 +2863,7 @@ ul.dri_collection_institutes_list {
 
 .dri_funder_institutes {
   padding-top: 10px;
+  margin: auto;
   ul {
     list-style: none;
     li {
@@ -2920,6 +2932,10 @@ ul.dri_collection_institutes_list {
   border: inherit;
 }
 
+.dri_underline {
+  text-decoration: underline;
+}
+
 /* static blocks */
 
 .dri_about_box {
@@ -2931,7 +2947,12 @@ ul.dri_collection_institutes_list {
   color: #808082;
 }
 
-
+/*-- Popover Text *--/
+ * 
+ */
+.popover {
+  color: $dri_grey;
+}
 
 //******INGEST**********/
 .dri_main_content_container > 
