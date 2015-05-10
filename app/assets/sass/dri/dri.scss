@@ -2283,7 +2283,7 @@ h2.dri_no_asset_availiable {
     }
     .carousel-caption {
       background: rgba(47, 47, 47, 0.75);
-      height: 30px;
+      min-height: 30px;
       padding: 0px;
       margin: 0px;
       a {
