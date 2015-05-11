@@ -1,6 +1,6 @@
 
 <!-- a form to help set the date range restriction on a search -->
-<%= form_tag search_action_url, :method => :get, :id => 'daterangeform' do %>
+<%= form_tag catalog_index_path, :method => :get, :id => 'daterangeform' do %>
 	<% if (params[:mode].blank?) %>
 		<%= hidden_field_tag 'mode', 'objects' %>
 	<% end %>

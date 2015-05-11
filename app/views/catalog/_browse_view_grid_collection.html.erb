@@ -36,7 +36,7 @@
       <%# If SUB-COLLECTION %>
       <% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
     <% end %>
-    <%= link_to (search_action_url(collection_objects_params)) do %>
+    <%= link_to (catalog_index_path(collection_objects_params)) do %>
         <div class="dri_num_objects">
           <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %></span>
         </div>

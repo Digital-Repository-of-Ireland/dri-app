@@ -28,7 +28,7 @@
               <% snippet_documents = get_saved_search_snippet_documents(search.query_params) %>
               <% if search_count > 0 %>
 
-                  <%= link_to search_action_url(search.query_params), :class => "dri_save_search_link_block" do %>
+                  <%= link_to catalog_index_path(search.query_params), :class => "dri_save_search_link_block" do %>
 
                       <% snippet_documents.each do |document| %>
                           <% document = document.symbolize_keys! %>

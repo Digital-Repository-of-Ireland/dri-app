@@ -15,7 +15,7 @@
     <% copyParams = copyParams.except(*[:c_date, :p_date, :s_date, :year_from, :year_to]) %>
 
     <span class="dri_clear_all">
-      <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), search_action_url(copyParams), :id => 'browse_clear_all' %>
+      <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), main_app.catalog_index_path(copyParams), :id => 'browse_clear_all' %>
     </span>
   </ul>
 </div>
