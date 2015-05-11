@@ -1,36 +1,4 @@
 GIT
-  remote: git@tracker.dri.ie:drirepo/dri-data-models.git
-  revision: 3fa8bc7bdfae287175b8ab9fd6d6b7fdf61f9146
-  branch: develop
-  specs:
-    dri_data_models (2.1.1)
-      hydra-access-controls
-      hydra-collections
-      hydra-head (>= 7.0)
-      iso-639
-      iso8601
-      rails (>= 4.0)
-      sass-rails (~> 4.0.3)
-      sufia-models (>= 4.0.0)
-
-GIT
-  remote: git@tracker.dri.ie:drirepo/dri-user-group.git
-  revision: 5791452220c4d2f961b01224ccd6e540b9fbcdf1
-  branch: develop
-  specs:
-    user_group (1.0.8)
-      devise
-      devise-guests (~> 0.3)
-      devise-i18n-views
-      fastimage
-      gravatar-ultimate
-      kaminari
-      omniauth
-      omniauth-shibboleth
-      paper_trail (~> 3.0.6)
-      rails (~> 4.1.0)
-
-GIT
   remote: git@tracker.dri.ie:drirepo/fake-s3.git
   revision: 3809cfb06eceed32246523f11171a16b2b4f9330
   branch: issue22
@@ -45,6 +13,38 @@ GIT
   ref: 605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd
   specs:
     videojs_rails (4.11.4)
+
+GIT
+  remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
+  revision: 3d3930a77ffd7b55b84bc8a317cff4ec8be9f364
+  branch: develop
+  specs:
+    dri_data_models (2.1.1)
+      hydra-access-controls
+      hydra-collections
+      hydra-head (>= 7.0)
+      iso-639
+      iso8601
+      rails (>= 4.0)
+      sass-rails (~> 4.0.3)
+      sufia-models (>= 4.0.0)
+
+GIT
+  remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
+  revision: 4b4b21c2de7f3344b88f68495921d6a4303868fd
+  branch: develop
+  specs:
+    user_group (1.0.8)
+      devise
+      devise-guests (~> 0.3)
+      devise-i18n-views
+      fastimage
+      gravatar-ultimate
+      kaminari
+      omniauth
+      omniauth-shibboleth
+      paper_trail (~> 3.0.6)
+      rails (~> 4.1.0)
 
 GEM
   remote: http://rubygems.org/
