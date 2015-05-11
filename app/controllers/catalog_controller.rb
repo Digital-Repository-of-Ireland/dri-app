@@ -22,7 +22,7 @@ class CatalogController < ApplicationController
   # This applies appropriate access controls to all solr queries
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  CatalogController.solr_search_params_logic += [:search_date_dange, :subject_temporal_filter, :exclude_unwanted_models]
+  CatalogController.solr_search_params_logic += [:search_date_dange, :subject_temporal_filter, :subject_place_filter, :exclude_unwanted_models]
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
   
@@ -271,6 +271,7 @@ class CatalogController < ApplicationController
 
     config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', :label => 'relevance'
     config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', :label => 'title'
+    #config.add_sort_field 'id_asset_ssi asc, system_create_dtsi desc', :label => 'order/sequence'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
@@ -346,6 +347,27 @@ class CatalogController < ApplicationController
     end
   end
 
+  # If querying geographical_coverage, then query the Solr geospatial field
+  #
+  def subject_place_filter(solr_parameters, user_parameters)
+    # Find index of the facet geographical_coverage_sim
+    geographical_idx = nil
+    solr_parameters[:fq].each.with_index do |f_elem, idx|
+      if f_elem.include?("geographical_coverage")
+        geographical_idx = idx
+      end
+    end
+
+    if !geographical_idx.nil?
+      geo_string = solr_parameters[:fq][geographical_idx]
+      coordinates = DRI::Metadata::Transformations.get_spatial_coordinates(geo_string)
+
+      if (!coordinates.empty?)
+        solr_parameters[:fq][geographical_idx] = "geospatial:\"Intersects(#{coordinates})\""
+      end
+    end
+  end
+
   def search_date_dange(solr_parameters, user_parameters)
     if (!user_parameters[:f].nil? && !user_parameters[:f]["sdateRange"].nil?)
       solr_parameters[:fq] ||= []
@@ -362,29 +384,7 @@ class CatalogController < ApplicationController
           date_idx = idx
         end
       end
-      #query = ""
       query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-
-      #if user_parameters[:c_date] == '1'
-      #  query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  if user_parameters[:p_date] == '1'
-      #    query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  end
-      #  if user_parameters[:s_date] == '1'
-      #    query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  end
-      #elsif user_parameters[:p_date] == '1'
-      #  query = "pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  if user_parameters[:s_date] == '1'
-      #    query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  end
-      #elsif user_parameters[:s_date] == '1'
-      #  query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #else  # no field filter parameters: query all the date range fields
-      #  query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #end
 
       if date_idx.nil?
         solr_parameters[:fq] << query
