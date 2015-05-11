@@ -40,9 +40,9 @@ class AssetsController < ApplicationController
     unless @generic_file.nil?
       can_view?
 
-      datastream = params[:datastream].presence || "content"
+      @datastream = params[:datastream].presence || "content"
 
-      unless local_file.nil?
+      if local_file
         logger.error "Using path: "+local_file.path
         send_file local_file.path,
                       :type => local_file.mime_type,
@@ -273,10 +273,10 @@ class AssetsController < ApplicationController
     def local_file
       if (params[:version].present?)
         LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d AND version = :v",
-                       { :f => @generic_file.id, :d => datastream, :v => params[:version] }).take
+                       { :f => @generic_file.id, :d => @datastream, :v => params[:version] }).take
       else
         LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
-                       { :f => @generic_file.id, :d => datastream }).order("version DESC").take
+                       { :f => @generic_file.id, :d => @datastream }).order("version DESC").take
       end
     end
 
