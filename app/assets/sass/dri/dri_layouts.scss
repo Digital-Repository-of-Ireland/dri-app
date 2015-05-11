@@ -363,6 +363,30 @@
       @include zen-clear();
       @include zen-grid-item(2, 1, $gutter-width: 0px);
     }
+    .dri_login_form_container {
+
+    margin: auto;
+    max-width:100%;
+    .dri_login_form_block {
+      padding: 10% 0 10% 15%;
+      input {
+        max-width: 80%;
+      }
+      .dri_form_text {
+        max-width: 80%;
+        a.text_right {
+          float: left;
+        }
+        .dri_signin_socialmedia {
+          width:100%;
+          .dri_signin_edugate {
+            width: 100%;
+          }
+        }
+      }
+    }
+      
+    }
 }
 
 .navbar-fixed-top {
@@ -372,16 +396,26 @@
   }
 }
     
-  .dri_home_container, #dri_rss_feed_id, #dri_slideshow_block_id {
+  .dri_home_container, #dri_rss_feed_id {
     display:none;
   }
+  
+ .dri_slideshow_block {
+   padding-top: 0px;
+   @include zen-clear();
+   @include zen-grid-item(2, 1, $gutter-width: 10px);
+   .carousel-indicators {
+     display:none;
+   }
+ }
+ 
   .dri_welcome_block {
     @include zen-grid-item(2, 1, $gutter-width: 0);
   
   }
   
   .dri_facet_restrictions_container {
-  @include zen-grid-container;
+
    @include zen-grid-flow-item(1, 1, $alpha-gutter: 10px);
 
 }

@@ -16,7 +16,18 @@ $(document).ready(function() {
     $('.dri_help_popover').popover( {delay: { show: 100, hide: 100 }} );
     $('.dri_help_tooltip').tooltip( {delay: { show: 100, hide: 100 }} );
     $('a.dri_gallery').colorbox({rel:'group1', maxWidth:'95%', maxHeight:'95%'});
+    if (navigator.userAgent.indexOf('iPhone') != -1 || navigator.userAgent.indexOf('Android') != -1) {
+	    addEventListener("load", function() {
+	            setTimeout(hideURLbar, 0);
+	    }, false);
+	}
 });
+
+function hideURLbar() {
+	if (window.location.hash.indexOf('#') == -1) {
+		window.scrollTo(0, 1);
+	}
+}
 
 $(function(){
     // bind change event to select
