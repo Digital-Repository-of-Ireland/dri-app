@@ -25,10 +25,9 @@
 		<!-- close content_block -->
 	</article>
 	<% end %>
-	<div class="dri_clearfix dri_float_right">
-		<nav class="">
+	<div class="dri_clearfix dri_float_right dri_related_items">
 		<%# link_to t('dri.views.collection.institute.more'), '' , :id => "all_children", :'data-toggle' => 'modal',  :'data-target' => '#dri_children_modal_id' %>
-		<%= paginate children, :param_name => 'subs_page'%> </nav>
+		<%= paginate children, :param_name => 'subs_page'%>
 	</div>
 </div>
 <% end %>

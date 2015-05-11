@@ -91,6 +91,9 @@ module DocumentHelper
         unless (object.send("#{rel}").nil?)
           if (object.send("#{rel}").respond_to?("push"))
             item_array = []
+            # e.g. constituents rel: object.constituents (holds all the constituents object - inefficient)
+            # object.constituent_ids (returns an array of all the foreign-key IDS for the constituents)
+            # Use these instead: "constituents".singularize << "_ids"
             object.send("#{rel}".singularize << "_ids").each do |id|
               rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
               unless rel_obj_doc.empty?
@@ -98,15 +101,14 @@ module DocumentHelper
                 item_array.to_a.push [link_text, catalog_path(rel_obj_doc[0]["id"]).to_s]
               end
             end
-            relationships_hash["#{display_label}"] = item_array unless item_array.empty?
+            relationships_hash["#{display_label}"] = Kaminari.paginate_array(item_array).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4) unless item_array.empty?
           else
             link_text = object.send("#{rel}").title.first
-            relationships_hash["#{display_label}"] = [[link_text, catalog_path(object.send("#{rel}").pid).to_s]]
+            relationships_hash["#{display_label}"] = Kaminari.paginate_array([[link_text, catalog_path(object.send("#{rel}").pid).to_s]]).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4)
           end
         end
       end # each
     end 
-    
     return relationships_hash
   end # get_object_relationships
 

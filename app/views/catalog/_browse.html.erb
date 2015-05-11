@@ -4,6 +4,10 @@
     <% params[:view] = "grid" %>
 <% end %>
 
+<% if (params[:view] == "maps") %>
+    <%= stylesheet_link_tag "blacklight_maps" %>
+<% end %>
+
 <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
 
 <% render_opensearch_response_metadata.html_safe %>
@@ -12,17 +16,12 @@
 <div id="dri_second_navigation_container_id"
      class="dri_second_navigation_container">
   <!-- facet block -->
-  <% if params[:view] != 'timeline' && params[:view] != 'maps' %>
   <div class="dri_facet_filters_block" id="sidebar">
     <%= render :partial => 'facets' %>
   </div>
-  <% end %>
   <!-- close facet block -->
 </div>
-  <% if params[:view] == 'timeline' %>
-    <% timeline_style = 'width: 100%;' %>
-  <% end %>
-<div id="dri_result_container_id" class="dri_result_container" style="<%= timeline_style %>">
+<div id="dri_result_container_id" class="dri_result_container">
   <% if (@document_list.count > 0) %>
       <%= render_document_index @document_list %>&nbsp;
   <% else %>

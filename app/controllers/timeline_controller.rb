@@ -1,4 +1,5 @@
 class TimelineController < ApplicationController
+  include ActionView::Helpers::TextHelper
   include ApplicationHelper
   include TimelineHelper
 
@@ -93,7 +94,7 @@ class TimelineController < ApplicationController
           timeline_data[:timeline][:date][index][:endDate] = document_date.split(' ')[1]
 
           timeline_data[:timeline][:date][index][:headline] = '<a href="' +  catalog_path(document[:id])+  '">' + document[ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string).to_sym].first + '</a>'
-          timeline_data[:timeline][:date][index][:text] = document[ActiveFedora::SolrQueryBuilder.solr_name('description', :stored_searchable, type: :string).to_sym].first
+          timeline_data[:timeline][:date][index][:text] = truncate(document[ActiveFedora::SolrQueryBuilder.solr_name('description', :stored_searchable, type: :string).to_sym].first, length: 60, separator: ' ')
           timeline_data[:timeline][:date][index][:asset] = {}
           timeline_data[:timeline][:date][index][:asset][:media] = get_cover_image(document)
         end

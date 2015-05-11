@@ -47,7 +47,7 @@
 		<% end %>
 	</div>
 
-	<div class="dri_vc_image">
+	<div class="dri_vc_image hidden-xs">
 
 		<% if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first %>
 		<%= image_tag(document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first, :width=>"230", :alt=> t('dri.views.alt_tags.cover_image')) %></a>
