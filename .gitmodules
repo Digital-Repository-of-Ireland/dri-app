@@ -1,3 +1,3 @@
 [submodule "jetty"]
 	path = jetty
-	url = ssh://git@tracker.dri.ie/drirepo/hydra-jetty
+	url = ssh://git@tracker.dri.ie:2200/drirepo/hydra-jetty
