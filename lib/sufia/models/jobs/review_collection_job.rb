@@ -5,7 +5,7 @@ class ReviewCollectionJob < ActiveFedoraPidBasedJob
   end
 
   def run
-    Rails.logger.info "Setting subcollection objects in collection #{object.id} to reviewed"
+    Rails.logger.info "Setting sub-collection objects in collection #{object.id} to reviewed"
 
     query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\" AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:draft")
 

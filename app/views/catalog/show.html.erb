@@ -8,7 +8,7 @@
 <%= render partial: 'catalog/paginate_compact', object: @response %>
 <div class="dri_object_container" id="object_container">
   <div class="dri_object_title_top"><%= document_heading %></div>
-  
+  <%= render 'previous_next_doc' %>
   <%= render_document_partial @document, :show %>
 </div>
 

@@ -13,8 +13,8 @@ gem 'sufia-models', '6.0.0.rc4'
 
 gem 'paper_trail', '~> 3.0.6'
 
-gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'hydra9'
-gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'hydra9'
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :branch => 'hydra9'
+gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :branch => 'hydra9'
 
 gem 'active-fedora', git: 'https://github.com/projecthydra/active_fedora.git', ref: 'ab1f946e63f3d92b5fd5fa86a50ca3ab1bba38de'
 
@@ -83,7 +83,7 @@ group :development, :test do
 
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_rspec'
-  gem 'fakes3', :git => 'git@tracker.dri.ie:drirepo/fake-s3.git', :branch => 'issue22'
+  gem 'fakes3', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', :branch => 'issue22'
 end
 
 group :test do

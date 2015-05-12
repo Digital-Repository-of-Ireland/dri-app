@@ -1,7 +1,7 @@
 <article class="dri_result_object dri_clearfix" id="<%= document.id.to_s %>">
   <div class="dri_content_list_collection">
            <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-     
+
                 <%= link_to bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' do %>
                 <span class="dri_remove_bookmark"><i class="fa fa-bookmark"></i></span>
                 <% end %>

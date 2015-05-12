@@ -6,8 +6,7 @@
 	<% end %>
 	<!-- we need to add f[sdateRange][] to the request to trigger the faceted date range -->
 	<%= hidden_field_tag "f[sdateRange][]", "", :id => "f" %>
-	<% params_to_hide = get_params_to_hide(params) %>
-	<%= render_hash_as_hidden_fields(params_to_hide).html_safe %>
+  <%= render_hash_as_hidden_fields(params_for_search().except(:q, :search_field, :qt, :page, :utf8)) %>
 	<ul class="facet-values list-unstyled dri_date_range_block">
 		<li>
 			<span class="dri_date_range">

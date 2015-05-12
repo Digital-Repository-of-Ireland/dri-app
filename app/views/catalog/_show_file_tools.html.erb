@@ -27,6 +27,9 @@
 					<li>
 						<%= link_to t('dri.views.catalog.links.download'), file_download_path(@document, file.id), :id => "download_asset" %>
 					</li>
+          <% if file.preservation_only.eql?('true') %>
+            <%= t('dri.views.catalog.legends.preservation_only') %>
+          <% end %>
 					<% end %>
 
 					<% if can? :read, @document %>
