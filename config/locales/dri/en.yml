@@ -61,6 +61,8 @@ en:
         name: Name
         user_type: "User Type"
         your_collection_details: "Your Collection Details"
+    citation:
+      dri: DRI
     data:
       types:
         Image: Image
