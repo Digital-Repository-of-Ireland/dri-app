@@ -18,7 +18,7 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
     collection.read_groups_string="registered"
   end
   collection.save
-  collection.collections.count.should == 0
+  collection.member_collections.count.should == 0
   collection.governed_items.count.should == 0
 
   group = UserGroup::Group.new(:name => collection.id.sub(':', '_'),
@@ -101,7 +101,7 @@ end
 
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
-    When I go to the "collection" "show" page for "#{collection_pid}" 
+    When I go to the "collection" "show" page for "#{collection_pid}"
     And I follow the link to upload XML
     And I attach the metadata file "valid_metadata.xml"
     And I press the button to ingest metadata
@@ -136,7 +136,7 @@ When /^I enter invalid metadata for a collection(?: with title (.*?))?$/ do |tit
   steps %{
     When I fill in "batch_title][" with "#{title}"
     And I fill in "batch_description][" with "Test description"
-    And I fill in "batch_creation_date][" with "2000-01-01"  
+    And I fill in "batch_creation_date][" with "2000-01-01"
     And I fill in "batch_rights][" with ""
     And I fill in "batch_type][" with "Collection"
   }
@@ -163,7 +163,7 @@ When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type "(.*?)
       collection.governed_items << object
     when "non-governing"
       object.title = [SecureRandom.hex(5)]
-      collection.collections << object
+      collection.member_collections << object
   end
 end
 
