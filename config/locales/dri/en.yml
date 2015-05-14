@@ -42,7 +42,9 @@ en:
         loading_maps: "Loading Maps"
         no_results: "No valid location results have been found. Try the Grid View to see all results."
       terms:
+        deposit_agreement: "I agree to the terms of Deposit Agreement"
         accept: "I agree"
+        deposit_header: "The Digital Repository of Ireland Terms and Conditions of Deposit."
         header: "The Digital Repository of Ireland End User Agreement."
         message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='http://dri.ie/privacy-statement'>Privacy Policy</a>."
         reject: "I disagree"
@@ -446,6 +448,7 @@ en:
         qualified_dublin_core: "Qualifed Dublin Core"
       objects:
         access_controls:
+          alert: "Set an appropriate licence for this level of read access."
           accessible_master_file: "Accessible Master Asset(s)"
           date: "Date: "
           depositor: Depositor
