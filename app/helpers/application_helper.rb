@@ -4,6 +4,12 @@ module ApplicationHelper
 
   def get_files doc
     @files = ActiveFedora::Base.find(doc.id, {:cast => true}).generic_files
+    @displayfiles = []
+    for i in 1..(@files.count - 1)
+      if !@files[i].preservation_only.eql?('true')
+        @displayfiles << @files[i]
+      end
+    end
     ""
   end
 
@@ -215,7 +221,7 @@ module ApplicationHelper
 
   # Called from grid view
   def get_cover_image( document )
-    files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{document[:id]}\""
+    files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{document[:id]}\" AND NOT #{Solrizer.solr_name('preservation_only', :stored_searchable)}:true"
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
