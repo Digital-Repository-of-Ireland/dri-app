@@ -348,7 +348,7 @@ class ObjectsController < CatalogController
     end
  
     def create_from_form
-      @object = DRI::Batch.with_standard :qdc
+      @object = DRI::Batch.with_standard params[:batch][:leader].nil? ? :dcq : :marc
       @object.depositor = current_user.to_s
       @object.update_attributes params[:batch]
     end
