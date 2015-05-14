@@ -1,6 +1,6 @@
-<!-- <h4><%= t('dri.views.objects.legends.metadata') %></h4>-->
+<!-- <h4><%#= t('dri.views.objects.legends.metadata') %></h4>-->
 
-
+<% if (update_desc_metadata?(@object.class.to_s)) %>
 <fieldset id="title" class="dri_title_metadata_fieldset">
 	<% if (params[:controller] == "collections" ) %>
 	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.collection_title')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.dummy_text') %>" data-original-title="<%= t('dri.help.dummy_title')%>" data-trigger="hover" data-placement="right"></i></span>
@@ -14,7 +14,7 @@
 		<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Title"><%= t('dri.views.objects.forms.add_title') %></a>
 	</p>
 </fieldset>
-
+<% end %>
 <% if (params[:controller] == "collections") %>
 
     <div class="dri_file_upload">
@@ -26,7 +26,7 @@
             <a class='btn btn-default' href='javascript:;'>
                 <h4 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.fields.cover_image')}"%></h4>
                 <p>(228 x 128px)</p>
-                
+
                 <%= f.file_field :cover_image, :class => "edit span6",:onchange=>'coverImageFileUploadHelper($(this));', :accept => 'image/*'  %>
                  <h4 class='dri_cover_image_file' id="cover_image">No File</h4>
             </a>
@@ -35,7 +35,7 @@
     </div>
 
 <% end %>
-
+<% if (update_desc_metadata?(@object)) %>
 <fieldset id="description" class="dri_description_metadata_fieldset dri_form_multiline_block">
   <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.description')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.dummy_text') %>" data-original-title="<%= t('dri.help.dummy_title')%>" data-trigger="hover" data-placement="right"></i></span>
   <% @object.description.each do |i| %>
@@ -181,4 +181,4 @@
   <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.licence')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.dummy_text') %>" data-original-title="<%= t('dri.help.dummy_title')%>" data-trigger="hover" data-placement="right"></i></span>
   <%= f.select :licence, options_for_select(@licences, @object[:licence]), :class => "edit span6" %>
 </fieldset>
-
+<% end %>

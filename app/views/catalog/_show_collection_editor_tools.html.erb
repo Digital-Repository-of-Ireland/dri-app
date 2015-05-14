@@ -12,44 +12,44 @@
 </div>
 <ul class="dri_view_collection bold">
 	<% if (edit_functionality_available?(@document)) %>
-	<%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
-	<li>
-		<i class="fa fa-plus-square-o fa-lg"></i><%= t('dri.views.catalog.links.add_object') %>
-	</li>
-	<% end %>
-	<%= link_to new_object_path(collection: document.id, method: 'form', :is_sub_collection => 'true'), :id => "add_sub_collection" do %>
-    <li>
-        <i class="fa fa-folder fa-lg"></i><%= t('dri.views.catalog.links.add_sub_collection') %>
-    </li>
-    <% end %>
-	<%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %>
-	<li class="dri_help_popover" data-content="<%= t('dri.views.catalog.links.add_documentation_help_text') %>" data-original-title="<%= t('dri.views.catalog.links.add_documentation_help_title')%>" data-trigger="hover" data-placement="right">
-		<i class="fa fa-file-text-o fa-lg"></i></i><%= t('dri.views.catalog.links.add_documentation') %>
-	</li>
-	<% end %>
-	<%= link_to new_object_path(collection: document.id, method: 'upload'), :id => "add_object_xml" do %>
-	<li >
-		<i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.add_object_xml') %>
-	</li>
-	<% end %>
-	<%= link_to edit_collection_path, :id => "edit_collection" do %>
-	<li>
-		<i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.edit') %>
-	</li>
-	<% end %>
-	<li>
-
+      <% if get_active_fedora_model(@document) == 'DRI::QualifiedDublinCore' %>
+	    <%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
+	      <li>
+		    <i class="fa fa-plus-square-o fa-lg"></i><%= t('dri.views.catalog.links.add_object') %>
+	      </li>
+	    <% end %>
+      <% end %>
+	  <%= link_to new_object_path(collection: document.id, method: 'form', :is_sub_collection => 'true'), :id => "add_sub_collection" do %>
+        <li>
+          <i class="fa fa-folder fa-lg"></i><%= t('dri.views.catalog.links.add_sub_collection') %>
+        </li>
+      <% end %>
+	  <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %>
+	    <li class="dri_help_popover" data-content="<%= t('dri.views.catalog.links.add_documentation_help_text') %>" data-original-title="<%= t('dri.views.catalog.links.add_documentation_help_title')%>" data-trigger="hover" data-placement="right">
+		  <i class="fa fa-file-text-o fa-lg"></i></i><%= t('dri.views.catalog.links.add_documentation') %>
+	    </li>
+	  <% end %>
+	  <%= link_to new_object_path(collection: document.id, method: 'upload'), :id => "add_object_xml" do %>
+	    <li >
+		  <i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.add_object_xml') %>
+	    </li>
+	  <% end %>
+	  <%= link_to edit_collection_path, :id => "edit_collection" do %>
+	    <li>
+		  <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.edit') %>
+	    </li>
+      <% end %>
+	  <li>
 		<%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
-		<div class="dri_fileUpload">
+		  <div class="dri_fileUpload">
 			<span><i class="fa fa-code fa-lg"></i><%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %> </span>
 			<%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
-		</div>
-		<%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-		<%= hidden_field_tag 'datastream', "content" %>
-
+		  </div>
+		  <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+		  <%= hidden_field_tag 'datastream', "content" %>
 		<% end %>
-	</li>
-	<% end %> <!-- if end (non-EAD collections) -->
+	  </li>
+    <% end %> <!-- if end (non-EAD collections) -->
 	<% if @document[Solrizer.solr_name('status', :stored_searchable, type: :symbol).to_sym].first.eql?("draft") %>
 	<% publish_label = t('dri.views.catalog.links.publish') %>
 	<% else %>
