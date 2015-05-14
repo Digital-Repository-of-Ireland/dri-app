@@ -35,6 +35,7 @@
 //= require colorbox-rails
 //= require bootstrap-datepicker
 //= require social-share-button
+//= require marc
 
 $(document).ready(function() {
     $('dropdown').dropdown();
