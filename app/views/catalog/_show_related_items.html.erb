@@ -2,27 +2,60 @@
 <% external_rels = get_object_external_relationships(@document) %>
 
 <% if (!relationships.empty? || !external_rels.empty?) %>
-  <div class="dri_object_institutes_block">
-    <div class="dri_institutes_title">
-      <span>Related Materials</span>
+<div class="dri_object_institutes_block">
+	<div class="dri_institutes_title">
+		<span>Related Materials</span>
+	</div>
+	<% unless relationships.empty? %>
+	<% relationships.each do |key, value| -%>
+	<div class="dri_clearfix">
+
+	<% value.each do |item| -%>
+
+		<article class="">
+			<%= link_to (item[1])  do %>
+			<div class="dri_content_block">
+
+				<h1><%= item[0] %></h1>
+
+				<div class="dri_icon">
+					<span class="dri_icon_image"><i class="fa fa-link"></i> &nbsp;<%= key %></span>
+				</div>
+				<!-- close dri_icon -->
+
+			</div>
+			<% end %>
+			<!-- close content_block -->
+		</article>
+
+		<% end %>
+	</div>
+	<% end %>
+	<% end %>
+
+	<% unless external_rels.empty? %>
+	<div class="dri_clearfix">
+	<% external_rels.each do |url| -%>
+	
+	<article class=""><%= link_to url, :target => "_blank"  do %>
+		<div class="dri_content_block">
+
+			<h1><%= url %></h1>
+			<div class="dri_icon">
+				<span class="dri_icon_image"><i class="fa fa-link"></i> &nbsp;<%= t('dri.views.fields.related.external_link') %></span>
+			</div>
+			<!-- close dri_icon -->
+
+		</div><% end %>
+		<!-- close content_block -->
+	</article>
+	  <% end %>
+	<div class="dri_clearfix dri_float_right">
+		<nav class="">
+	
+		<%= paginate external_rels, :param_name => 'externs_page' %> </nav>
+	</div>
     </div>
-    <% unless relationships.empty? %>
-      <% relationships.each do |key, value| -%>
-        <span><%= key %></span>
-        <ul class="dri_child_links">
-        <% value.each do |item| -%>
-	      <li><%= link_to (item[1])  do %>
-	        <%= item[0] %></li>
-          <% end %>
-        <% end %>
-        </ul>
-      <% end %>
-    <% end %>
-    <% unless external_rels.empty? %>
-      <span>External Links</span>
-      <% external_rels.each do |value| -%>
-        <%= value %>
-      <% end %>
-    <% end %>
-  </div>
+	<% end %>
+</div>
 <% end %>

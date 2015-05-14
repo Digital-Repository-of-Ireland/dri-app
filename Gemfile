@@ -6,13 +6,19 @@ source 'http://rubygems.org'
 gem 'rails','~> 4.1.0'
 
 gem 'blacklight', "5.7.2"
+
+gem 'blacklight_range_limit'
+gem 'blacklight-maps'
+
 gem 'hydra-head', "7.2.2"
 gem 'sufia-models', "4.1.0"
 
 gem 'paper_trail', '~> 3.0.6'
 
-gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :branch => 'marc-nccb'
-gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :branch => 'develop'
+
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :branch => 'develop'
+gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :branch => 'develop'
+
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -44,6 +50,7 @@ gem 'jquery-cookie-rails'
 gem 'remotipart'
 
 gem 'rest-client'
+gem 'sparql-client'
 
 # static pages
 gem 'high_voltage', '~> 2.1.0'
@@ -125,3 +132,4 @@ gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'jazz_fingers'
 gem 'bootstrap-datepicker-rails'
+gem 'social-share-button'

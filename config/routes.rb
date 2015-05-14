@@ -20,7 +20,6 @@ NuigRnag::Application.routes.draw do
     resources :collections, :only => ['new','create','update','edit','destroy']
 
     resources :institutes, :only => ['show', 'new', 'create']
-    resources :user_report, :only => ['index']
 
     match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
     match 'newdepositingassociation' => 'institutes#associate_depositing', :via => :post, :as => :new_depositing_association
@@ -52,8 +51,7 @@ NuigRnag::Application.routes.draw do
     match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
     match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
 
-    match 'download_surrogate' => 'surrogates#download', :via => :get
-    match 'map/:id' => 'maps#show', :via => :get, :as => :map
+    match 'maps/:id' => 'maps#show', :via => :get, :as => :maps
     match 'maps_json' => 'maps#get', :via => :get
     match 'timeline_json' => 'timeline#get', :via => :get
 
@@ -68,6 +66,7 @@ NuigRnag::Application.routes.draw do
 
     match 'surrogates/:id' => 'surrogates#update', :via => :put, :as => :surrogates_generate
     match 'surrogates/:id' => 'surrogates#show', :via => :get, :as => :surrogates
+    match 'surrogates/:id/download' => 'surrogates#download', :via => :get, :as => :surrogate_download
 
     match 'collections/:id' => 'catalog#show', :via => :get
 

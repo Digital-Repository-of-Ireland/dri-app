@@ -1,99 +1,20 @@
+<%= stylesheet_link_tag "blacklight_maps" %>
+
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
   <h4 class="modal-title"><%= t('dri.views.catalog.forms.map') %></h4>
 </div>
 <div class="modal-body">
-  <div id="map" style="width: 550px; height: 480px;">
-  </div>
+  <% if @document[blacklight_config.view.maps.geojson_field.to_sym] || @document[blacklight_config.view.maps.coordinates_field.to_sym] %>
+    <% geojson_features = serialize_geojson(@document) %>
+    <%= blacklight_map_tag('blacklight-show-map',
+                          {data:{viewpoint: set_viewpoint(geojson_features),
+                                 initialzoom:blacklight_config.view.maps.show_initial_zoom,
+                                 singlemarkermode:false}, style: "height: 480px; width: 550px"}) %>
+    <%= javascript_tag "$('#blacklight-show-map').blacklight_leaflet_map(#{geojson_features});" %>
+  <% end %>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('dri.window.modal.close') %></button>
 </div>
-
-<script src="http://openlayers.org/api/OpenLayers.js"></script>
-<script defer="defer" type="text/javascript">
-    var geocode_data = <%= raw @locations %>;
-
-    var asset_location = OpenLayers._getScriptLocation();
-    
-    var map = new OpenLayers.Map("map");
-    map.addLayer(new OpenLayers.Layer.OSM()); 
-
-    epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
-    projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
-
-    var lonLat = new OpenLayers.LonLat( geocode_data.location[0].east, geocode_data.location[0].north ).transform(epsg4326, projectTo);
-
-    var zoom = 5;
-    map.setCenter (lonLat, zoom);
-
-    var marker_layer = new OpenLayers.Layer.Vector("Overlay");
-
-    for (var i = 0; i < geocode_data.location.length; i++) {
-      if (geocode_data.location[i].type == "point") {
-        var feature = createPoint(geocode_data.location[i])
-        marker_layer.addFeatures(feature);
-      } else if (geocode_data.location[i].type == "box") {
-        var feature = createBox(geocode_data.location[i])
-        marker_layer.addFeatures(feature);
-      }
-    }
-
-    // Define markers as "features" of the vector layer:
-    map.addLayer(marker_layer);
-
-    //Add a selector control to the marker_layer with popup functions
-    var controls = {
-        selector: new OpenLayers.Control.SelectFeature(marker_layer, { onSelect: createPopup, onUnselect: destroyPopup })
-    };
-
-    function createPopup(feature) {
-        feature.popup = new OpenLayers.Popup.FramedCloud("pop",
-            feature.geometry.getBounds().getCenterLonLat(),
-            null,
-            '<div class="markerContent">'+feature.attributes.description+'</div>',
-            null,
-            true,
-            function() { controls['selector'].unselectAll(); }
-        );
-        map.addPopup(feature.popup);
-    }
-
-    function destroyPopup(feature) {
-        feature.popup.destroy();
-        feature.popup = null;
-    }
-
-    function createBox(location) {
-      var description = "";
-      description += "<div style=\"white-space:nowrap; font-weight: bold;\">" + location.name + "</div>";
-
-      var bounds_array = [location.eastlimit, location.northlimit, location.westlimit, location.southlimit];
-      var bounds = OpenLayers.Bounds.fromArray(bounds_array);
-      var feature = new OpenLayers.Feature.Vector(
-          bounds.toGeometry().transform(epsg4326, projectTo),
-          {description: description}
-      );
-      return feature;
-    }
-
-    function createPoint(location) {
-      var description = "";
-      description += "<div style=\"white-space:nowrap; font-weight: bold;\">" + location.name + "</div>";
-
-      if (location.hasOwnProperty('description')) {
-        description += location.description + "<br><br>";
-      }
-      var feature = new OpenLayers.Feature.Vector(
-        new OpenLayers.Geometry.Point( location.east, location.north ).transform(epsg4326, projectTo),
-        {description: description} ,
-        {externalGraphic: asset_location + 'img/marker.png', graphicHeight: 25, graphicWidth: 21, graphicXOffset:-12, graphicYOffset:-25  }
-      );
-
-      return feature;
-    } 
-
-    map.addControl(controls['selector']);
-    controls['selector'].activate();    
-</script>
 

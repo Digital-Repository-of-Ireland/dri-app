@@ -61,8 +61,8 @@ module DocumentHelper
         children_array = children_array.to_a.push [link_text, catalog_path(doc['id']).to_s, type.to_s]
       end
     end
-
-    return children_array
+    paged_children = Kaminari.paginate_array(children_array).page(params[:subs_page]).per(4)
+    return paged_children
   end
 
   # Returns a Hash with relationship groups and generated links to related objects for UI Display
@@ -73,10 +73,17 @@ module DocumentHelper
     relationships_hash = Hash.new
     object = nil
 
-    if document['active_fedora_model_ssi'] && document['active_fedora_model_ssi'] == 'DRI::Mods'
-      object = DRI::Mods.find(document["id"])
-    elsif document['active_fedora_model_ssi'] && document['active_fedora_model_ssi'] == 'DRI::QualifiedDublinCore'
-      object = DRI::QualifiedDublinCore.find(document["id"])
+    if document['active_fedora_model_ssi']
+      case document['active_fedora_model_ssi']
+        when 'DRI::Mods'
+          object = DRI::Mods.find(document["id"])
+        when 'DRI::QualifiedDublinCore'
+          object = DRI::QualifiedDublinCore.find(document["id"])
+        when 'DRI::Marc'
+          object = DRI::Marc.find(document["id"])
+        else # case EAD, does not have internal DRI relationships
+          object = nil
+      end # end case
     end
         
     unless (object.nil?)
@@ -84,9 +91,12 @@ module DocumentHelper
         unless (object.send("#{rel}").nil?)
           if (object.send("#{rel}").respond_to?("push"))
             item_array = []
-            object.send("#{rel}").each do |item|
-              link_text = item.title.first
-              item_array.to_a.push [link_text, catalog_path(item.pid).to_s]
+            object.send("#{rel}".singularize << "_ids").each do |id|
+              rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+              unless rel_obj_doc.empty?
+                link_text = rel_obj_doc[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+                item_array.to_a.push [link_text, catalog_path(rel_obj_doc[0]["id"]).to_s]
+              end
             end
             relationships_hash["#{display_label}"] = item_array unless item_array.empty?
           else
@@ -100,24 +110,35 @@ module DocumentHelper
     return relationships_hash
   end # get_object_relationships
 
+  # Returns an Array with all the URLS of related materials for UI Display
+  # @param[Solr::Document] document the Solr document of the object to display relations for
+  # @return Array external related materials
+  #
   def get_object_external_relationships document
-    html_array = []
-    
-    if document['active_fedora_model_ssi'] && document['active_fedora_model_ssi'] == 'DRI::Mods'
-      solr_fields_array = *(DRI::Vocabulary::modsRelationshipTypes.map { |s| s.prepend("ext_related_items_ids_").to_sym})
-    elsif document['active_fedora_model_ssi'] && document['active_fedora_model_ssi'] == 'DRI::QualifiedDublinCore'
-      solr_fields_array = *(DRI::Vocabulary::qdcRelationshipTypes.map { |s| s.prepend("ext_related_items_ids_").to_sym})
+    url_array = []
+
+    if document['active_fedora_model_ssi']
+      case document['active_fedora_model_ssi']
+        when 'DRI::Mods'
+          solr_fields_array = *(DRI::Vocabulary::modsRelationshipTypes.map { |s| s.prepend("ext_related_items_ids_").to_sym})
+        when 'DRI::QualifiedDublinCore'
+          solr_fields_array = *(DRI::Vocabulary::qdcRelationshipTypes.map { |s| s.prepend("ext_related_items_ids_").to_sym})
+        when 'DRI::Marc', 'DRI::EncodedArchivalDescription'
+          solr_fields_array = [:related_material]
+        else
+          solr_fields_array = nil
+      end
     end
 
     unless solr_fields_array.nil?
       solr_fields_array.each do |elem|
         if (!document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].nil? && !document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].empty?)
-          html_array = html_array.to_a.push("<p><a href='#{document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].first}'>#{document[Solrizer.solr_name(elem, :stored_searchable, type: :string)].first}</a></p>".html_safe)
+          url_array = url_array.to_a.push(*document[Solrizer.solr_name(elem, :stored_searchable, type: :string)])
         end
       end
     end
     
-    return html_array
+    return Kaminari.paginate_array(url_array).page(params[:externs_page]).per(4)
   end # get_object_external_relationships
 
 end

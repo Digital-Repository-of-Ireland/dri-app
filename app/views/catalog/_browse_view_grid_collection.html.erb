@@ -1,13 +1,13 @@
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block_collection">
      <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-     
+
                 <%= link_to bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' do %>
                 <span class="dri_remove_bookmark">x</span>
                 <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
                 <% end %>
             <% end %>
-    <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+    <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter+1} )) do %>
         <div>
           <div class="dri_collection_image">
             <% image = cover_image ( document ) %>
@@ -29,7 +29,13 @@
           </p>
         </div>
     <% end %>
-    <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+    <%# If ROOT COLLECTION %>
+    <% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)].nil? %>
+      <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+    <% else %>
+      <%# If SUB-COLLECTION %>
+      <% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}, :mode => "objects", :search_field => "all_fields", :view => params[:view] } %>
+    <% end %>
     <%= link_to (catalog_index_path(collection_objects_params)) do %>
         <div class="dri_num_objects">
           <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %></span>

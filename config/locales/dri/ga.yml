@@ -3,11 +3,6 @@
 ga:
   dri:
     application:
-      cookies:
-        accept: "Glac le agus folaigh an teachtaireacht"
-        confirm: "Meastar go nglacann tú le polasaí fhianáin TDÉ ar chlárú duit agus gach uair a shíníonn tú isteach."
-        header: "Fógra tábhachtach faoi fhianáin"
-        message: "Baineann Taisclann Dhigiteach na hÉireann úsáid as fianáin chun rialú rochtana ar acmhainní digiteacha a chur i bhfeidhm. Más mian leat diúltú d'fhianáin a fháil ó TDÉ, cas as na fianáin don suíomh idirlín seo i sainroghanna do bhrabhsálaí. Tabhair d'aire nach mbeidh úsáideoirí a dhiúltaíonn in ann roinnt de ghnéithe na Taisclainne Digití a úsáid. Le tuilleadh eolais a fháil féach ar ár %{privacy_statement:ráiteas um príobháideachas} agus ar na leathanaigh a bhaineann le %{cookies_help:treoir faoi fhianáin}."
       edit_user_profile:
         cancel: Cealaigh
         change_password: "Athraigh an Pasfhocal"
@@ -47,10 +42,10 @@ ga:
         loading_maps: "Mapaí dá lódáil"
         no_results: "Níor aimsíodh torthaí bailí ar bith"
       terms:
-        accept: "Glac le Comhaontú TDÉ an Úsáideora Dheiridh"
-        confirm: "Meastar go nglacann tú le coinníollacha úsáide an TDÉ ar chlárú duit agus gach uair a shíníonn tú isteach."
-        header: "Comhaontú TDÉ an Úsáideora Dheiridh"
-        reject: "Diúltaigh do Chomhaontú an Úsáideora Dheiridh"
+        accept: Aontaím
+        header: "Comhaontú Úsáideora Deiridh Thaisclann Dhigiteach na hÉireann"
+        message: "Má chuireann tú tic le &quot;Aontaím&quot; thíos aontaíonn tú le húsáid fianán agus leis na téarmaí agus na coinníollacha mar a leagtar amach thuas iad. Tá siad sin ar fáil <a href='%{url}'>anseo</a> freisin. Féach ar ár <a href='http://dri.ie/privacy-statement'>bPolasaí Príobháideachta</a> le haghaidh tuilleadh eolais."
+        reject: "Ní aontaím"
       timeline:
         description:
           no_results: "Níor aimsíodh torthaí bailí ar bith"
@@ -228,8 +223,8 @@ ga:
           file: Comhad
           image_file: Íomhá
           manage_bookmark: "Bainistigh do chuid Leabharmharcanna"
-          metadata: "Meiteashonraí (XML)"
-          metadata_full: "Meiteashonraí Iomlán"
+          metadata: "Meiteashonraí"
+          metadata_full: "Meiteashonraí Iomlán (XML)"
           objects_in_collection: Oibiachtaí
           pdf_file: PDF
           restricted_asset: "Sócmhainn Shrianta"
@@ -359,6 +354,8 @@ ga:
         dates: Dátaí
         depositing_institute: "Institiúid Taiscthe"
         description: "Cur Síos"
+        description_eng: "Cur Síos (Béarla)"
+        description_gle: "Cur Síos (Gaeilge)"
         format: Formáid
         formats: Formáidí
         geographical_coverage: "Ábhar (Áit)"
@@ -366,6 +363,8 @@ ga:
         geographical_coverage_gle: "Ábhar (Áit) as Gaeilge"
         geographical_coverages: "Ábhair (Áiteanna)"
         governing_collection: "Bailiúchán Rialaithe"
+        hide_description_eng: "Hide English"
+        hide_description_gle: "Hide Irish"
         identifier: Aitheantóir
         identifiers: Aitheantóirí
         language: Teanga
@@ -380,6 +379,8 @@ ga:
         relations: Naisc
         rights: Cearta
         roles: Róil
+        show_description_eng: "Show English"
+        show_description_gle: "Show Irish"
         source: Foinse
         sources: Foinsí
         status: Stádas

@@ -1,33 +1,9 @@
 class MapsController < ApplicationController
 
-  before_filter :authenticate_user_from_token!, :only => [:show]
-  before_filter :authenticate_user!, :only => [:show]
-
   def show
-    enforce_permissions!("show_digital_object",params[:id])
+    object = retrieve_object!(params[:id])
 
-    @object = retrieve_object!(params[:id])
-
-    geocode = []
-    if @object.geocode_point.present?
-      @object.geocode_point.each do | point |
-        geocode << parse_dcmi(point)
-      end
-    end
-
-    if @object.geocode_box.present?
-      @object.geocode_box.each do | box |
-        geocode << parse_dcmi(box)
-      end
-    end
-
-    data = {}
-    data[:location] = geocode
-    data[:object] = {}
-    data[:object][:name] = @object.title 
-    data[:object][:url] = catalog_url(@object.id)
-
-    @locations = data.to_json
+    @document = SolrDocument.new(object.to_solr)
   end
 
   def get
@@ -40,20 +16,6 @@ class MapsController < ApplicationController
     else
       response = {}
     end
-
-    # ######## parsing maps coordinates examples
-    # ######## TO BE REMOVED BEGIN
-    # simple_location = "O'Connel Street"
-    # dcmi_location1 = "name=O'Connell Street Lower; north=53.3494; east=-6.26028"
-    # dcmi_location2 = "name=Dublin; north=53.3478 ; east=-6.25972"
-    # parsed_dcmi1 = parse_dcmi(dcmi_location1)
-    # parsed_dcmi2 = parse_dcmi(dcmi_location2)
-    # puts parse_dcmi?(simple_location).to_s
-    # puts parse_dcmi?(dcmi_location1).to_s
-    # puts parsed_dcmi1.inspect
-    # puts parsed_dcmi2
-    # puts Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string)
-    # ######## TO BE REMOVED END
 
     maps_data = create_maps_data(response)
 
@@ -158,6 +120,5 @@ class MapsController < ApplicationController
 
     return maps_data
   end
-
 
 end

@@ -5,6 +5,10 @@
   margin: 0 auto;
 }
 
+.dri_search_term_text_submit_button {
+  height: 20px;
+  width: 100px;
+}
 
 html {
   margin-bottom: 0.5em;
@@ -285,7 +289,7 @@ input[type="color"],
 
 }
 .modal.fade.in {
-  padding-top: 15%;
+  //padding-top: 5%;
 }
 
 h1,
@@ -399,7 +403,7 @@ a {
 .btn {
   @extend .dri_button;
   background-color: $dri_lightgrey;
-  padding: 5px 0 4px 0;
+  padding: 5px 10px 4px 10px;
   margin: 0;
 }
 .btn:hover {
@@ -546,6 +550,15 @@ input.dri_w230 {
   -moz-border-radius: 2px;
   border-radius: 2px;
   border: 1px solid  $dri_grey_border;
+}
+/*-------------- Social Media Sharing ------------*/
+
+.social-share-button {
+  margin: 0;
+  a {
+   float: left;
+    margin: 5px;   
+  }
 }
 
 /*-------------- Signin Social Media--------------*/
@@ -1500,7 +1513,24 @@ h4.suggest {
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
-
+.dri_date_range_block {
+        height: 150px;
+        .dri_date_range {
+              text-decoration: none;
+              color: gray;
+              display: block;
+              background-color: #F8F8F8;
+              border-bottom: 2px solid #FFF;
+              margin-left: -15px;
+              margin-right: -15px;
+              padding: 10px 5px 10px 20px;
+         }
+         .dri_date_range_label {
+           float: right;
+           padding-right: 10px;
+         }
+      }
+      
 .dri_facet_filters {
   border-bottom: none;
   .dri_head_title {
@@ -1578,20 +1608,8 @@ h4.suggest {
         color: $dri_grey;
         text-decoration: none;
       }
-      .dri_date_range {
-            text-decoration: none;
-            color: gray;
-            display: block;
-            background-color: #F8F8F8;
-            border-bottom: 2px solid #FFF;
-            margin-left: -15px;
-            margin-right: -15px;
-            padding: 10px 5px 10px 20px;
-       }
-       .dri_date_range_label {
-         float: right;
-         padding-right: 10px;
-       }
+      
+
     }
   }
 }
@@ -2309,7 +2327,7 @@ p.dri_rss_link a {
 
 .dri_object_title_top {
   font-size: 110%;
-  padding: 6px 20px 4px 10px;
+  padding: 1px 20px 4px 10px;
   margin: 10px 0 10px 0;
   height: 26px;
   text-overflow: ellipsis;
@@ -2318,6 +2336,7 @@ p.dri_rss_link a {
   background-color: $dri_grey;
   width: 73%;
   font-weight: bold;
+  line-height: 26px
 }
 
 /*-------------- Media asset/ Multiple Media Assets Carousel --------------*/
@@ -2522,6 +2541,15 @@ input.dri_request_access_button:hover {
 }
 
 /*-------------- MetaData Readview  --------------*/
+
+
+a.dri_toggle_metadata::after {
+  content: ' »';
+  font-size: 120%;
+  font-weight: bold;
+  color: $dri_green;
+}
+
 .modal-content {
   padding: 10px;
   .dri_object_metadata_readview {
@@ -2750,7 +2778,7 @@ ul.dri_view_collection {
   
   //margin: 20px 0 0 0;
   //padding: 0;
-  width: 230px;
+  width: 100%;
   //color: $dri_grey;
   display: block;
   float: left;
@@ -3424,3 +3452,4 @@ i {
   filter: alpha(opacity=0);
  
 }
+

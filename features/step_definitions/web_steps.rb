@@ -115,8 +115,14 @@ When /^I select the text "(.*?)" from the selectbox for (.*?)$/ do |option, sele
   select(option, :from => select_box_to_id(selector))
 end
 
+When /^I upload the metadata file "(.*?)"$/ do |file|
+    attach_file("dri_metadata_uploader", File.expand_path(File.join(cc_fixture_path, file)))
+end
+
 When /^I attach the metadata file "(.*?)"$/ do |file|
-  attach_file("metadata_file", File.join(cc_fixture_path, file))
+  within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_file_upload')]") do
+    attach_file("metadata_file", File.expand_path(File.join(cc_fixture_path, file)))
+  end
 end
 
 When /^I attach the institute logo file "(.*?)"$/ do |file|

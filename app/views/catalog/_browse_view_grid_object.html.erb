@@ -1,14 +1,15 @@
+
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block">
            <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-     
+
                 <%= link_to bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' do %>
                                 <span class="dri_remove_bookmark">x</span>
                 <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
                 <% end %>
             <% end %>
     <% get_cover_image document %>
-    <%= link_to(document, :data => {:counter => (document_counter + 1 + @response.params[:start].to_i)}) do %>
+    <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter+1} )) do %>
         <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
         <div class="dri_image">
 
@@ -19,8 +20,8 @@
     <p class="dri_subject">
       <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
           <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
-              <%= subject %>
-              <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject %> | <% end %>
+              <% unless uri?(subject) %> <%= subject %> <% end %>
+              <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject || uri?(subject) %> | <% end %>
           <% end %>
       <% else %>
           n/a

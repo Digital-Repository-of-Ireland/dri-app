@@ -3,11 +3,6 @@
 en:
   dri:
     application:
-      cookies:
-        accept: "Accept and hide message"
-        confirm: "By signing in or signing up you are deemed to be accepting the DRI cookie policy."
-        header: "Important notice about cookies"
-        message: "The Digital Repository of Ireland uses cookies to implement access control to digital resources. To opt out of receiving cookies from DRI, please turn off cookies for this website in your browser preferences. Note that users who opt out will be unable to use some of the features of the Digital Repository. For more information please see our %{privacy_statement:privacy statement} and our %{cookies_help:cookies help} pages."
       edit_user_profile:
         cancel: Cancel
         change_password: "Change Password"
@@ -47,10 +42,10 @@ en:
         loading_maps: "Loading Maps"
         no_results: "No valid results have been found"
       terms:
-        accept: "Accept End User Agreement"
-        confirm: "By signing in or signing up you are deemed to be accepting the DRI End User Agreement"
-        header: "DRI End User Agreement"
-        reject: "Reject End User Agreement"
+        accept: "I agree"
+        header: "The Digital Repository of Ireland End User Agreement."
+        message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='http://dri.ie/privacy-statement'>Privacy Policy</a>."
+        reject: "I disagree"
       timeline:
         description:
           no_results: "No valid results have been found"
@@ -66,6 +61,8 @@ en:
         name: Name
         user_type: "User Type"
         your_collection_details: "Your Collection Details"
+    citation:
+      dri: DRI
     data:
       types:
         Image: Image
@@ -108,7 +105,7 @@ en:
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
         duplicate_object_ingested: "Possible duplicate objects found: %{duplicates}"
-        file_uploaded: "File has been successfully uploaded."
+        file_uploaded: "Asset has been successfully uploaded."
         generating_surrogates: "Surrogates are being generated."
         licence_created: "Licence successfully created."
         licence_updated: "Licence successfully updated."
@@ -160,6 +157,8 @@ en:
     help:
       dri_browse_sort_tabs_collections: "Use this tab to search for Collections"
       dri_browse_sort_tabs_collections_title: "Collections Search"
+      dri_browse_sort_tabs_sub_collection: "Use this tab to toggle Sub-Collections in your search"
+      dri_browse_sort_tabs_sub_collection_title: "Sub-Collections Search"
       dri_browse_sort_tabs_objects: "Use this tab to search for Objects"
       dri_browse_sort_tabs_objects_title: "Objects Search"
       dri_change_sort_view: "Use these buttons to select between a Grid or Tabular layout for your search result"
@@ -219,31 +218,32 @@ en:
           all_objects_in_collection: "All Objects in this Collection"
           audio:
             duration: Duration
-            file_size: "File Size"
+            file_size: "Asset Size"
             format: Format
             last_modified: "Last Update"
-          audio_file: "Audio File"
+          audio_file: "Audio Asset"
           bookmark_collection: "Bookmark Collection"
           bookmark_object: "Bookmark Object"
           file: File
           image_file: Image
           manage_bookmark: "Manage Your Bookmarks"
-          metadata: "Metadata (XML)"
-          metadata_full: "Full Metadata"
+          metadata: "Metadata"
+          metadata_full: "Full Metadata (XML)"
           objects_in_collection: Objects
           pdf_file: PDF
           restricted_asset: "Restricted Asset"
           video_file: Video
         headers:
-          files: "File Tools"
+          files: "Asset Tools"
         legends:
           no_bookmarked_collections: "You have no bookmarked collections"
           no_bookmarked_objects: "You have no bookmarked objects"
           no_bookmarks: "You have no bookmarks"
-          no_files: "No file has been uploaded."
+          no_files: "No asset has been uploaded."
           no_permission: "You do not have permission to view the asset file associated with this object."
           no_saved_search: "You have no saved searches"
           no_surrogates: "No surrogates are available."
+          preservation_only: "Prervation-only file."
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Login to get access."
@@ -257,14 +257,14 @@ en:
           add_object_xml: "Upload Object XML"
           asset: Asset
           characterization: Characterization
-          details: "File Details"
+          details: "Asset Details"
           download: "Download asset"
           download_master: "Download master asset"
           download_not_available: "not available"
           download_nth: "Download %{index}"
           draft: Draft
           edit_this_record: "Edit this record"
-          generate_surrogates: "Generate surrogates"
+          generate_surrogates: "Regenerate surrogates"
           listen: listen
           mark_all_descendants_reviewed: "Mark Collection AND Sub-Collection Objects Reviewed"
           mark_all_reviewed: "Mark Collection Objects Reviewed"
@@ -273,12 +273,14 @@ en:
           not_caracterized: "not yet characterized"
           publish: "Publish collection"
           publish_reviewed: "Publish reviewed objects"
-          related: "Related Files"
+          related: "Related Assets"
           review_objects: "Review Objects"
           reviewed: Reviewed
+          share: Share
           status_update: "Update status"
           unknown_size: "Unknown Size"
-          upload_file: "Upload File"
+          upload_file: "Upload Asset"
+          upload_preservation_file: "Upload Preservation-only Asset"
           view_metadata: "View Metadata (XML)"
         sidebar:
           more_like_this: "More Like This"
@@ -359,6 +361,8 @@ en:
         dates: Dates
         depositing_institute: "Depositing Organisation"
         description: Description
+        description_eng: "Description (English)"
+        description_gle: "Description (Irish)"
         format: Format
         formats: Formats
         geographical_coverage: "Subject (Place)"
@@ -366,6 +370,8 @@ en:
         geographical_coverage_gle: "Subject (Place) in Irish"
         geographical_coverages: "Subjects (Places)"
         governing_collection: "Governing Collection"
+        hide_description_eng: "Hide English"
+        hide_description_gle: "Hide Irish"
         identifier: Identifier
         identifiers: Identifiers
         language: Language
@@ -380,6 +386,8 @@ en:
         relations: Relations
         rights: Rights
         roles: Roles
+        show_description_eng: "Show English"
+        show_description_gle: "Show Irish"
         source: Source
         sources: Sources
         status: Status
@@ -436,18 +444,18 @@ en:
         qualified_dublin_core: "Qualifed Dublin Core"
       objects:
         access_controls:
-          accessible_master_file: "Accessible Master File(s)"
+          accessible_master_file: "Accessible Master Asset(s)"
           date: "Date: "
           depositor: Depositor
           edit: "Edit Access"
           embargo: Embargo
           inherit: Inherit
           manage: Managers
-          master_file: "Access Master File"
-          master_file_desc: "If accessible then users with read access can download the master file(s)"
+          master_file: "Access Master Asset"
+          master_file_desc: "If accessible then users with read access can download the master asset(s)"
           page: "Page Access"
           private: Private
-          private_master_file: "Private Master File(s)"
+          private_master_file: "Private Master Asset(s)"
           private_metadata: "Private Metadata"
           private_metadata_access: "Since you have set access to metadata as private, you can add people here who you would like to be able to access the metadata."
           private_metadata_warn: "DRI have an Open Metadata Policy. We strongly encourage all depositors to allow open access to their object's metadata."
@@ -458,16 +466,16 @@ en:
           restricted: Restricted
           search: "Search Access"
         buttons:
-          add_master: "Add Master File"
+          add_master: "Add Master Asset"
           add_to_collection: "Add to Collection"
-          replace_master: "Replace Master File"
+          replace_master: "Replace Master Asset"
           replace_metadata: "Upload Metadata"
           save: "Save Changes"
           save_current_search: "Save Current Search"
           update_status: "Update Status"
-          upload_master: "Upload Master File"
+          upload_master: "Upload Master Asset"
         confirm:
-          surrogates: "This will (re)generate surrogates for all files. Continue?"
+          surrogates: "This will (re)generate surrogates for all assets. Continue?"
         edit:
           sidebar:
             nav_header: "Edit Tools"
@@ -505,21 +513,21 @@ en:
           title: Title
         legends:
           access_control: "Access Controls"
-          audio_caption: "A master audio file has already been uploaded."
+          audio_caption: "A master audio asset has already been uploaded."
           cite: Cite
           comments: Comments
-          file_caption: "A master file has already been uploaded."
+          file_caption: "A master asset has already been uploaded."
           likes: Likes
           metadata: Metadata
           replace_caption: "Replace metadata using XML file."
           replace_metadata: "Replace Metadata"
           rtf_surrogate_text: "Please download the asset from the url below."
           rtf_surrogate_title: "RTF Asset"
-          upload_audio: "Upload Audio File"
-          upload_audio_caption: "No audio files have been uploaded. Please upload a master audio file."
-          upload_file: "Upload File"
-          upload_file_caption: "No files have been uploaded. Please upload a master file."
-          upload_pdf: "Upload PDF File"
+          upload_audio: "Upload Audio Asset"
+          upload_audio_caption: "No audio assets have been uploaded. Please upload a master audio asset."
+          upload_file: "Upload Asset"
+          upload_file_caption: "No files have been uploaded. Please upload a master asset."
+          upload_pdf: "Upload PDF Asset"
           view_collection: "View Collection"
           viewcount: Views
         links:

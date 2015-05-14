@@ -4,7 +4,10 @@ require 'solr/query'
 
 class ApplicationController < ActionController::Base
 
-  before_filter :set_locale, :set_cookie
+  before_filter :authenticate_user_from_token!
+  before_filter :set_locale, :set_cookie, :set_metadata_language
+
+
 
   include HttpAcceptLanguage
 
@@ -62,9 +65,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_metadata_language
+    currentMetaLang = 'all'
+    if cookies[:metadata_language].nil?
+      cookies.permanent[:metadata_language] = currentMetaLang
+    end
+  end
+
   def set_cookie
     cookies[:accept_cookies] = "yes" if current_user
   end
+
 
   def set_access_permissions(key, collection=nil)
     params[key][:master_file] = master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
@@ -133,7 +144,7 @@ class ApplicationController < ActionController::Base
     if user && Devise.secure_compare(user.authentication_token, params[:user_token])
       sign_in user, store: true
     end
-  end 
+  end
 
   def duplicates(object)
     unless object.governing_collection.blank?

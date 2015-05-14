@@ -23,8 +23,8 @@ module MetadataValidator
       when "DRI::Metadata::Mods" 
         return is_schema_valid?(xml, MODS_NS_PREFIX, MODS_NS_URI)
       # Add Marc validation
-      # when "DRI::Metadata::Marc"
-        # return is_schema_valid?(xml, MARC_NS_PREFIX, MARC_NS_URI)
+      when "DRI::Metadata::Marc"
+        return is_schema_valid?(xml, MARC_NS_PREFIX, MARC_NS_URI)
       else
         return true, ""
     end
@@ -42,13 +42,14 @@ module MetadataValidator
 
     namespace = xml.namespaces
 
-   if namespace.has_key?(ns_prefix) && namespace[ns_prefix].eql?(ns_uri)
+    # Adapted to deal with XML using the default namespace xmlns="ns-uri"
+    if (namespace.has_key?(ns_prefix) || namespace.has_key?("xmlns")) && (namespace[ns_prefix].eql?(ns_uri) || namespace["xmlns"].eql?(ns_uri))
 
       # We have to extract all the schemata from the XML Document in order to validate correctly
       schema_imports = []
 
-      # Firstly, if the root schema has no namespace, retrieve it from xsi:noNamespaceSchemaLocation
-      if (xml.root.namespace == nil)
+      # Firstly, if the root schema has no namespace prefix AND no default namespace, retrieve it from xsi:noNamespaceSchemaLocation
+      if (xml.root.namespace == nil && !namespace.has_key?("xmlns"))
         no_ns_schema_location = map_to_localfile(xml.root.attr("xsi:noNamespaceSchemaLocation"))
         schema_imports = ["<xs:include schemaLocation=\""+no_ns_schema_location+"\"/>\n"] unless no_ns_schema_location.blank?
       end

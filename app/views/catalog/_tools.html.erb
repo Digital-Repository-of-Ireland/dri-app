@@ -10,15 +10,19 @@
 
 <ul class="dri_view_collection">
   <% if @document.has_geocode? %>
-    <li><%= link_to t('dri.views.catalog.forms.map'), map_path(@document.id), :id => "logainm_map", :'data-toggle' => 'modal',  :'data-target' => '#dri_map_modal_id' %></li>
+    <li><%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id), :id => "logainm_map", :'data-toggle' => 'modal',  :'data-target' => '#dri_map_modal_id' %></li>
   <% end %>
-  <li><%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, :format => :html), :id => "styled_metadata", :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %></li>
-  <li><%= link_to t('dri.views.catalog.forms.metadata'), object_metadata_path(@document.id, :format => :xml), :id => "download_metadata" %></li>
+  <li><%= link_to t('dri.views.catalog.forms.metadata'), object_metadata_path(@document.id, :format => :html), :id => "styled_metadata", :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %></li>
+  <li><%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, :format => :xml), :id => "download_metadata" %></li>
   <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
   <li><%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citatation_modal_id' %></li>
   <% if (can? :edit, @document) %>
     <li><%= link_to t('dri.views.catalog.links.history'), object_history_path(@document.id), :id => 'show_object_history_report' %></li>
   <% end %>
+  <li><%= t('dri.views.catalog.links.share') %> &raquo;</li>
+  <% get_cover_image @document %>
+  <li><%= social_share_button_tag(document_show_html_title, :image => @cover_image, :popup => 'true') %></li>
+  
 </ul>
 
 <div class="modal fade" id="dri_citatation_modal_id">
@@ -29,6 +33,7 @@
         <h4 class="modal-title"><%= t('blacklight.tools.cite') %></h4>
       </div>
       <div class="modal-body">
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('dri.window.modal.close') %></button>

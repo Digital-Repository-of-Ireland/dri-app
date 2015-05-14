@@ -5,15 +5,24 @@ class ReviewCollectionJob < ActiveFedoraPidBasedJob
   end
 
   def run
-    Rails.logger.info "Setting subcollection objects in collection #{object.id} to reviewed"
+    Rails.logger.info "Setting sub-collection objects in collection #{object.id} to reviewed"
 
-    o = ActiveFedora::Base.find(object.id, {:cast => true})
-    o.governed_items.each do | curr_object |
-      curr_object.status = "reviewed" if curr_object.status.eql?("draft")
-      curr_object.save
-      # If object is a collection and has sub-collections, apply to governed_items
-      if curr_object.is_collection?
-        Sufia.queue.push(ReviewCollectionJob.new(curr_object.id)) unless (curr_object.governed_items.nil? || curr_object.governed_items.empty?)
+    query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\" AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:draft")
+
+    while query.has_more?
+      collection_objects = query.pop
+
+      collection_objects.each do |object|
+        o = ActiveFedora::Base.find(object["id"], {:cast => true})
+        if o.status.eql?("draft")
+          o.status = "reviewed"
+          o.save
+        end
+
+        # If object is a collection and has sub-collections, apply to governed_items
+        if o.is_collection?
+          Sufia.queue.push(ReviewCollectionJob.new(o.id)) unless (o.governed_items.nil? || o.governed_items.empty?)
+        end
       end
     end
 

@@ -45,7 +45,9 @@
 
 		<div id="dri_wrapper_id" class="block1 dri_wrapper">
 
-			<%# render :partial => 'shared/cookies' unless cookies[:accept_cookies] %>
+			
+			
+			
 
 			<%= render :partial => 'shared/cookies_modal' unless cookies[:accept_cookies]%>
 			<%= render :partial => 'shared/header_navbar' %>
@@ -56,8 +58,9 @@
 					</div>
 				</div>
 			</div>
-
-			<% if query_has_constraints?%>
+			<%#  the blacklight maps gem seems to set a 'constraint' even when none appears to exist %>
+			<%# - check below is to see if a facet or text query exists %>
+			<% if query_has_constraints? && (!params[:f].nil?) || (!params[:q].nil?) %>
 			<%= render 'constraints' %>
 			<% end %>
 

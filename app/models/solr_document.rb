@@ -35,10 +35,9 @@ class SolrDocument
                          )
 
   def has_geocode?
-    box_key = ActiveFedora::SolrService.solr_name('geocode_box', :stored_searchable, type: :string).to_sym
-    point_key = ActiveFedora::SolrService.solr_name('geocode_point', :stored_searchable, type: :string).to_sym
+    geojson_key = ActiveFedora::SolrService.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
 
-    if self[point_key].present? || self[box_key].present?
+    if self[geojson_key].present?
       true
     else
       false
