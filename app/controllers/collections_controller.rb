@@ -357,7 +357,6 @@ class CollectionsController < CatalogController
   end
 
   def valid_permissions?
-    binding.pry
     if (
         #(params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
     (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
