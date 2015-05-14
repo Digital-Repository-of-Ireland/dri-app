@@ -90,19 +90,16 @@ class CollectionsController < CatalogController
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
     else
-      if MetadataHelpers.should_update_desc_metadata?(@object.class.to_s)
-        updated = @object.update_attributes(update_params)
-      end
-
-      unless cover_image.blank?
-        unless Storage::CoverImages.validate(cover_image, @object)
-          flash[:error] = t('dri.flash.error.cover_image_not_saved')
-        end
-      end
+      updated = @object.update_attributes(update_params)
 
       if updated
         DOI.mint_doi( @object )
-      elsif MetadataHelpers.should_update_desc_metadata?(@object.class.to_s)
+        unless cover_image.blank?
+          unless Storage::CoverImages.validate(cover_image, @object)
+            flash[:error] = t('dri.flash.error.cover_image_not_saved')
+          end
+        end
+      else
         flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
       end
 
@@ -117,7 +114,7 @@ class CollectionsController < CatalogController
     params.delete(:action)
 
     respond_to do |format|
-      if (!MetadataHelpers.should_update_desc_metadata?(@object.class.to_s) || updated)
+      if (updated)
         flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       else
