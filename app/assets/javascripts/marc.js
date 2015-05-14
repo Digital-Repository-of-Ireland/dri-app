@@ -11,6 +11,7 @@ $(document).ready(function() {
     add_marc_subfield();
     destroy_marc_subfield();
     reindex_marc();
+    insert_select_standard();
 });
 
 
@@ -124,5 +125,14 @@ reindex_marc = function() {
         $(this).find('.subfield-value').each(function(i) {
             $(this).attr('id', 'batch_datafield]][' + index + '][subfield][' + i + '][subfield_value][').attr('name', 'batch[datafield]][' + index + '][subfield][' + i + '][subfield_value][]');
         });
+    });
+}
+
+// Insert Select Standard for new record
+insert_select_standard = function() {
+    $( "#add_object" ).parent().prepend( 'Standard: <select id="standard"><option value="dcq">DCQ</option><option value="marc">Marc</option></select>' );
+    var uri = $("#add_object").attr("href");
+    $("#standard").change(function() {
+        $("#add_object").attr("href", uri + "&standard=" + encodeURIComponent( $(this).val() ) );
     });
 }
