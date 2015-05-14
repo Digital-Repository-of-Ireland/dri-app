@@ -39,7 +39,18 @@ module DocumentHelper
 
   # Check, based on the document type (Fedora active_fedora_model), whether edit functions are available
   def edit_functionality_available? document
-    (document['active_fedora_model_ssi'] && document['active_fedora_model_ssi'] == 'DRI::EncodedArchivalDescription') ? false : true
+    (!document['active_fedora_model_ssi'].nil? && document['active_fedora_model_ssi'] == 'DRI::EncodedArchivalDescription') ? false : true
+  end
+
+  # Workaround for reusing partials for add institution/permissions to non QDC collections
+  # Called in collections_controller to avoid triggering a model's attributes update as this should only
+  # happen for QDC collections
+  def update_desc_metadata? md_class
+    (["DRI::QualifiedDublinCore"].include? md_class) ? true : false
+  end
+
+  def get_active_fedora_model document
+    document['active_fedora_model_ssi'] unless document['active_fedora_model_ssi'].nil?
   end
 
   # For a given collection (sub-collection) object returns a list of the immediate child sub-collections

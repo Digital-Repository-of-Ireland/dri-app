@@ -90,7 +90,11 @@ class CollectionsController < CatalogController
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
     else
-      updated = @object.update_attributes(update_params)
+      if (MetadataHelpers.should_update_desc_metadata? @object.class.to_s)
+        updated = @object.update_attributes(update_params)
+      else
+        updated = true
+      end
 
       if updated
         DOI.mint_doi( @object )
@@ -353,6 +357,7 @@ class CollectionsController < CatalogController
   end
 
   def valid_permissions?
+    binding.pry
     if (
         #(params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
     (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
