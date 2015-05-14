@@ -7,7 +7,7 @@
         <%if @previous_document %>
                 <li aria-label="Previous"><%= link_to_previous_document @previous_document %></li>
         <% end %>
-                <li aria-label="Position"><%= link_back_to_catalog(:label => item_page_entry_info, :'data-toggle' => "tooltip", :'data-placement' => "top", :'title' => "Go back to Search") %></li>
+                <li class="position" aria-label="Position"><%= link_back_to_catalog(:label => item_page_entry_info, :'data-toggle' => "tooltip", :'data-placement' => "top", :'title' => "Go back to Search") %></li>
         <%if @next_document %>
                 <li aria-label="Previous"><%= link_to_next_document @next_document %></li>
         <% end %>

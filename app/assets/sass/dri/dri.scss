@@ -2656,7 +2656,7 @@ ul.dri_view_collection {
    width: 240px;
   li {
     display: table-cell;
-    width: 80px;
+    width: 60px;
     padding: 1px;
     a {
       width: 100%;
@@ -2665,6 +2665,7 @@ ul.dri_view_collection {
     }
   }
   li.position {
+    width:120px;
     a.dri_no_border {
       color: $dri_grey;
     }
