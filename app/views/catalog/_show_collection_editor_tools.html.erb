@@ -76,12 +76,13 @@
        <i class="fa fa-trash-o fa-lg"></i><%= t('dri.views.collection.buttons.delete_collection') %>
     </li>
     <% end %>
+    <% if@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") %>
     <%= link_to edit_collection_path, :id => "edit_collection" do %>
     <li>
         <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.edit') %>
     </li>
     <% end %>
-
+    <% end %>
 
 </ul>
 
