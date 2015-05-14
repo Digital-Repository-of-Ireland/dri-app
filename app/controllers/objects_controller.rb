@@ -124,28 +124,10 @@ class ObjectsController < CatalogController
 
     set_access_permissions(:batch)
 
-<<<<<<< HEAD
-    if standard.nil?
-      file_obj = params[:metadata_file].tempfile
-      file = File.open(file_obj.path)
-      ng_doc = Nokogiri::XML(file)
-      file.close
-      standard = ng_doc.root.name
-    end
-
-    @object = DRI::Batch.with_standard get_batch_standard_from_param(standard)
-    @object.depositor = current_user.to_s
-    @object.update_attributes params[:batch]
-
-    if request.content_type == "multipart/form-data"
-      xml = MetadataHelpers.load_xml(params[:metadata_file])
-      MetadataHelpers.set_metadata_datastream(@object, xml)
-=======
     if params[:metadata_file].present?
       create_from_upload
     else
       create_from_form
->>>>>>> develop
     end
 
     MetadataHelpers.checksum_metadata(@object)
