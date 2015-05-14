@@ -55,15 +55,9 @@
 	<% else %>
 	<% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
 	<% end %>
-	<!-- TODO Fix Callback -->
 	<%= link_to '', :'data-target' => '#dri_review_modal_id', :'data-toggle' => 'modal', :id => "all_objects_reviewed" do %>
 	<li>
 		<i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_all_reviewed') %>
-	</li>
-	<% end %>
-	<%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
-	<li >
-		<i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
 	</li>
 	<% end %>
 	<%= link_to  surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
@@ -71,12 +65,18 @@
 		<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
 	</li>
 	<% end %>
+	   <% if (@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") && !edit_functionality_available?(@document) && governing_collection_solr(@document).nil?)  %>
+	   <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
+    <li >
+        <i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
+    </li>
+    <% end %>
 	<%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal' do %>
     <li>
        <i class="fa fa-trash-o fa-lg"></i><%= t('dri.views.collection.buttons.delete_collection') %>
     </li>
     <% end %>
-    <% if@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") %>
+ 
     <%= link_to edit_collection_path, :id => "edit_collection" do %>
     <li>
         <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.edit') %>

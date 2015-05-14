@@ -1,4 +1,4 @@
-<% disabled_inherit = (record.is_collection?) ? true : false  %>
+<% disabled_inherit = ((record.is_collection? || update_desc_metadata?(@object.class.to_s)) && governing_collection(@object).nil?) ? true : false  %>
 <% allow_manage = (record.is_collection? && record.new_record?) ? true : false %>
 
 <script type="text/javascript">
@@ -57,6 +57,7 @@
     var manager_group_textbox;
 
     var embargo_textbox;
+    var disabled_inherit = "<%= disabled_inherit %>"
 
     $(document).ready(function () {
 
@@ -96,9 +97,9 @@
             $('#'+model_str+'_read_groups_string_radio_restricted').prop('checked', true);
             read_toggle_show_textboxes(true);
         }else{
-            if(original_value_group==empty_str){
+            if(original_value_group==empty_str && !disabled_inherit ){
                 $('#'+model_str+'_read_groups_string_radio_inherit').prop('checked', true);
-            }else if(original_value_group==public_str){
+            }else if(original_value_group==public_str || disabled_inherit){
                 $('#'+model_str+'_read_groups_string_radio_public').prop('checked', true);
             }else if(original_value_group==registered_str){
                 $('#'+model_str+'_read_groups_string_radio_logged').prop('checked', true);
@@ -113,7 +114,7 @@
         var original_value_user = edit_user_textbox.value();
         var original_value_group = edit_group_textbox.value();
 
-        if(original_value_user!=empty_str){
+        if(original_value_user!=empty_str || disabled_inherit){
             $('#'+model_str+'_edit_groups_string_radio_restricted').prop('checked', true);
             edit_toggle_show_textboxes(true);
         }else{
@@ -127,7 +128,7 @@
         var original_value_group = manager_group_textbox.value();
 
         if (typeof(batch_manager_groups_string_radio_restricted)!='undefined'){
-            if(original_value_user!=empty_str){
+            if(original_value_user!=empty_str || disabled_inherit){
                 $('#'+model_str+'_manager_groups_string_radio_restricted').prop('checked', true);
                 manager_toggle_show_textboxes(true);
             }else{
