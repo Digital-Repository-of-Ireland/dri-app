@@ -16,7 +16,7 @@ gem 'sufia-models', "4.1.0"
 gem 'paper_trail', '~> 3.0.6'
 
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :branch => 'develop'
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :branch => 'marc-nccb'
 gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :branch => 'develop'
 
 
