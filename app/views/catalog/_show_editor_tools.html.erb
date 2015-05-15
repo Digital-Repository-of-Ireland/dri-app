@@ -21,7 +21,7 @@
   <i class="fa fa-pencil fa-lg"></i> <%= t('dri.views.catalog.titles.editor_tools') %>
 </div>
 <ul class="dri_view_collection bold">
-  <% if (edit_functionality_available?(@document)) %>
+  
   <li>
 
     <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
@@ -52,7 +52,7 @@
   </li>
 
   <% end %>
-
+<% if (edit_functionality_available?(@document)) %>
   <li>
 
     <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
