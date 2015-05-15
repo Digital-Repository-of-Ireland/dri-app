@@ -57,9 +57,6 @@
       <tr><td><%= t('dri.reports.assets.file_size') %></td><td><%= file.file_size.join(' : ') %></td></tr>
       <tr><td><%= t('dri.reports.assets.last_modified') %></td><td><%= file.last_modified.join(' : ') %></td></tr>
       <tr><td><%= t('dri.reports.assets.checksum_orig') %></td><td><%= file.original_checksum.join(' : ') %></td></tr>
-      <tr><td><%= t('dri.reports.assets.checksum_md5') %></td><td><%= file.checksum_md5 %></td></tr>
-      <tr><td><%= t('dri.reports.assets.checksum_sha256') %></td><td><%= file.checksum_sha256 %></td></tr>
-      <tr><td><%= t('dri.reports.assets.checksum_rmd160') %></td><td><%= file.checksum_rmd160 %></td></tr>
       <tr><td><%= t('dri.reports.assets.file_info_link') %></td><td><%= link_to(object_file_path(@object.id, file.id), object_file_path(@object.id, file.id)) %></td></tr>
       <tr><td><%= t('dri.reports.assets.file_download_link') %></td><td><%= link_to(file_download_path(@object.id, file.id), file_download_path(@object.id, file.id)) %></td></tr>
 

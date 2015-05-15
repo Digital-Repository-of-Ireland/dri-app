@@ -11,7 +11,6 @@ class CharacterizeJob < ActiveFedoraPidBasedJob
 
   def after_characterize
     if !generic_file.preservation_only.eql?('true')
-      Sufia.queue.push(CreateChecksumsJob.new(generic_file_id))
       Sufia.queue.push(CreateBucketJob.new(generic_file_id))
     end
 
