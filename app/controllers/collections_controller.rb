@@ -94,7 +94,6 @@ class CollectionsController < CatalogController
 
       if updated
         DOI.mint_doi( @object )
-
         unless cover_image.blank?
           unless Storage::CoverImages.validate(cover_image, @object)
             flash[:error] = t('dri.flash.error.cover_image_not_saved')
@@ -115,7 +114,7 @@ class CollectionsController < CatalogController
     params.delete(:action)
 
     respond_to do |format|
-      if updated
+      if (updated)
         flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       else
