@@ -51,39 +51,37 @@
 	  </li>
     <% end %> <!-- if end (non-EAD collections) -->
 	<% if @document[Solrizer.solr_name('status', :stored_searchable, type: :symbol).to_sym].first.eql?("draft") %>
-	<% publish_label = t('dri.views.catalog.links.publish') %>
+	  <% publish_label = t('dri.views.catalog.links.publish') %>
 	<% else %>
-	<% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
+	  <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
 	<% end %>
 	<%= link_to '', :'data-target' => '#dri_review_modal_id', :'data-toggle' => 'modal', :id => "all_objects_reviewed" do %>
-	<li>
+	  <li>
 		<i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_all_reviewed') %>
-	</li>
+	  </li>
 	<% end %>
 	<%= link_to  surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
-	<li>
+	  <li>
 		<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
-	</li>
+	  </li>
 	<% end %>
-	   <% if (@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") && !edit_functionality_available?(@document) && governing_collection_solr(@document).nil?)  %>
-	   <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
-    <li >
-        <i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
-    </li>
+    <% if (@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") && !edit_functionality_available?(@document) && governing_collection_solr(@document).nil?)  %>
+	  <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
+        <li>
+          <i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
+        </li>
+      <% end %>
     <% end %>
-	<%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal' do %>
-    <li>
-       <i class="fa fa-trash-o fa-lg"></i><%= t('dri.views.collection.buttons.delete_collection') %>
-    </li>
+    <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal' do %>
+      <li>
+        <i class="fa fa-trash-o fa-lg"></i><%= t('dri.views.collection.buttons.delete_collection') %>
+      </li>
     <% end %>
- 
     <%= link_to edit_collection_path, :id => "edit_collection" do %>
-    <li>
+      <li>
         <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.edit') %>
-    </li>
+      </li>
     <% end %>
-    <% end %>
-
 </ul>
 
 
@@ -112,6 +110,4 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-
 <% end %>
