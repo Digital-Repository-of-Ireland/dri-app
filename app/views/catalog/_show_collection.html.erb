@@ -28,38 +28,10 @@
 <!-- close dri_object_first_block -->
 
 <div class="dri_object_second_block">
-
-	<%= render :partial => "show_navigation_tools", :locals => {:document => document} %>
-
-	<ul class="dri_view_collection">
-	
-		<%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
 		<% objectsCount = count_items_in_collection document[:id] %>
-		<!-- If it's a root collection, we show all the objects within it -->
-		<% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil %>
-		<% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-	    <%= link_to catalog_index_path(collection_objects_params), :id => 'collection_s_object' do %>
-	    <li><i class="fa fa-lg fa-folder-open"></i><%= t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})" %></li>
-	    <% end %> 
-		<% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
-		<% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-    <%= link_to catalog_index_path(collection_objects_params), :id => 'collection_s_object' do %>
-    <li>
-    <i class="fa fa-lg fa-folder-open"></i><%= t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})" %>
-		</li><% end %>
-		
-	<% end %>
+	<%= render :partial => "show_navigation_tools", :locals => {:document => document, :objectsCount => objectsCount} %>
 
-	<div class="dri_vc_image hidden-xs">
-
-		<% if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first %>
-		<%= image_tag(document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first, :width=>"230", :alt=> t('dri.views.alt_tags.cover_image')) %></a>
-		<% else %>
-		<% image = "dri/formats/collection.png".downcase %>
-		<%= image_tag(image, :width=>"230", :height=>"139", :alt=>t('dri.views.alt_tags.cover_image')) %></a>
-		<% end %>
-	</div>
-
+	
 	<%= render :partial => "catalog/collection_show_objects_types", :locals => {:document => document, :objectsCount => objectsCount} %>
 
 	<%= render :partial => "tools", :locals => {:document => document} %>
