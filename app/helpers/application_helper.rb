@@ -1,5 +1,6 @@
 module ApplicationHelper
   require 'storage/s3_interface'
+  require 'institute_helpers'
   require 'uri'
 
   def get_files doc
