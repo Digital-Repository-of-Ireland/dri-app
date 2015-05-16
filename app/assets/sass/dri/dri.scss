@@ -284,7 +284,7 @@ a {
 
 .dri_button_green {
   @extend .dri_button;
-  background-color: #90993D;
+  background-color: $dri_green;
 }
 
 .dri_button_green:hover {
@@ -374,7 +374,7 @@ input.dri_w230 {
   .dri_submit {
     input {
       font-size: 100%;
-      background-color: #90993D;
+      background-color: $dri_green;
       color: #FFF;
       -moz-border-radius: 3px;
       border-radius: 3px;
@@ -874,7 +874,7 @@ a .dri_signin_edugate:hover {
     }
   }
   li.selected a {
-    border-top: 3px solid #90993D;
+    border-top: 3px solid $dri_green;
     color: #3E3E3E;
   }
   .dri_main_nav_top {
@@ -1660,7 +1660,7 @@ p.dri_rss_link a {
     h1 {
       padding: 0;
       margin: 0;
-      color: #90993D;
+      color: $dri_green;
       line-height: 1.2em;
       font-size: 380%;
     }
@@ -2490,6 +2490,9 @@ dl.dri_object_metadata_readview {
 .dri_object_second_block {
   padding: 0;
   margin: 0;
+  li {
+    width: 250px;
+  }
 }
 
 .dri_back_search a {
@@ -2529,13 +2532,13 @@ ul.dri_stats {
 
 /*-------------- 320x180 Ratio - Image upload  --------------*/
 .dri_vc_image {
-  border: 1px solid #E1E1E1;
-  width: 230px;
-  height: 129px;
+  border: 1px solid $dri_thingrey;
+  width: 250px;
+  height: 141px;
   margin: 8px 0 0 0;
   overflow: hidden;
   img {
-    width: 230px;
+    width: 250px;
   }
 }
 
@@ -2558,7 +2561,7 @@ ul.dri_view_collection {
   padding: 0;
   display: block;
   float: left;
-  width: 230px;
+  width: 250px;
   border-bottom: 1px solid #E1E1E1;
   li {
     margin: 0;
@@ -2653,7 +2656,7 @@ ul.dri_view_collection {
   margin: 0px;
   display: table;
   table-layout: fixed;
-   width: 240px;
+   width: 250px;
   li {
     display: table-cell;
     width: 60px;
@@ -2665,7 +2668,7 @@ ul.dri_view_collection {
     }
   }
   li.position {
-    width:120px;
+    width:130px;
     a.dri_no_border {
       color: $dri_grey;
     }
@@ -2982,7 +2985,7 @@ ul.dri_collection_institutes_list {
 		text-overflow: ellipsis;
 		overflow: hidden;
 		color: #fff;
-		background-color: #2F2F2F;
+		background-color: $dri_grey;
 		width: 73%;
 		font-weight: bold;
 		
@@ -3293,7 +3296,7 @@ i {
   
   .dri_add_institute_link {
       a {
-        color: #90993d;
+        color: $dri_green;
         cursor: pointer;
         padding-top: 5px;
     }

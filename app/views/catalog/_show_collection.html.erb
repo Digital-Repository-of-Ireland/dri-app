@@ -28,12 +28,15 @@
 <!-- close dri_object_first_block -->
 
 <div class="dri_object_second_block">
-		<% objectsCount = count_items_in_collection document[:id] %>
-	<%= render :partial => "show_navigation_tools", :locals => {:document => document, :objectsCount => objectsCount} %>
 
-	
-	<%= render :partial => "catalog/collection_show_objects_types", :locals => {:document => document, :objectsCount => objectsCount} %>
-
+<% if @document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && @document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0] %>
+<div class="dri_vc_image hidden-xs">
+	<%= image_tag(@document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :alt=> t('dri.views.alt_tags.cover_image') ) %>
+</div>
+<% end %>
+     
+    <% objectsCount = count_items_in_collection document[:id] %>
+	<%= render :partial => "show_collection_navigation_tools", :locals => {:document => document, :objectsCount => objectsCount} %>	
 	<%= render :partial => "tools", :locals => {:document => document} %>
 
 	<% if signed_in? && (can? :manage_collection, document) %>
