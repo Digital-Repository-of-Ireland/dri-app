@@ -2451,7 +2451,7 @@ a.dri_toggle_metadata::after {
 
 dl.dri_object_metadata_readview {
   margin: 0 0 20px 0;
-  padding: 0px 80px 0 0;
+  padding: 0px 40px 0 0;
   dt {
     margin: 10px 0 0 0;
     padding: 0px;
@@ -2462,6 +2462,7 @@ dl.dri_object_metadata_readview {
     margin: 0;
     padding: 0;
     color: $dri_greytext;
+    text-align: justify;
     a {
       margin: 0 0 0 15px;
       padding: 0;
@@ -2985,7 +2986,7 @@ ul.dri_collection_institutes_list {
 		text-overflow: ellipsis;
 		overflow: hidden;
 		color: #fff;
-		background-color: $dri_grey;
+		background-color: #2F2F2F;
 		width: 73%;
 		font-weight: bold;
 		
