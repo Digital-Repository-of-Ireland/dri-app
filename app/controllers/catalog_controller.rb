@@ -184,7 +184,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'rights'
     config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), :label => 'status' 
-    config.add_show_field 'geospatial', :label => 'Geographical Coverage Index'
+    #config.add_show_field 'geospatial', :label => 'Geographical Coverage Index'
 
     # Commented date ranges show_fields (only for testing)
     #config.add_show_field 'cdateRange', :label => 'Creation Date Range'
@@ -271,7 +271,7 @@ class CatalogController < ApplicationController
 
     config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', :label => 'relevance'
     config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', :label => 'title'
-    #config.add_sort_field 'id_asset_ssi asc, system_create_dtsi desc', :label => 'order/sequence'
+    config.add_sort_field 'id_asset_ssi asc, system_create_dtsi desc', :label => 'order/sequence'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
