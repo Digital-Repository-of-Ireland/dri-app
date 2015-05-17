@@ -54,27 +54,4 @@
 
 </div>
 
-<div class="modal fade" id="dri_review_modal_id">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title"><%= t('dri.views.catalog.links.review_objects') %></h4>
-			</div>
 
-			<div class="modal-body">
-				<%= button_to  review_path(), :class =>"dri_button_green", data: { confirm: t('dri.views.collection.confirm_all_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
-				<%= t('dri.views.catalog.links.mark_all_reviewed') %>
-				<% end %>
-				<%= button_to  review_path(:apply_all => 'yes'),:class =>"dri_button_red", data: { confirm: t('dri.views.collection.confirm_all_descendants_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
-				<%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
-				<% end %>
-			</div>
-			<div class="modal-footer">
-
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
