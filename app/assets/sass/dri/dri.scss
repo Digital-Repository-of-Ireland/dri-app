@@ -2631,7 +2631,7 @@ ul.dri_view_collection {
   .dri_bookmark {
     margin: 0px;
     span {
-      display: none;
+      //display: none;
     }
     span.dri_bookmark_object_label {
       display: inline;
@@ -2645,6 +2645,19 @@ ul.dri_view_collection {
         margin-top: 0px;
         margin-left: 10px;
       }
+      /*** custom checkboxes ***/
+
+      input[type=checkbox] { display:none; } /* to hide the checkbox itself */
+      input[type=checkbox] + span:after {
+        font-family: FontAwesome;
+        display: inline-block;
+      }
+      
+      input[type=checkbox] + span:after { content: "\f02e"; color: $dri_thingrey; font-size: 110%;} /* unchecked icon */
+      input[type=checkbox] + span:after { letter-spacing: 10px; } /* space between checkbox and label */
+      
+      input[type=checkbox]:checked + span:after { content: "\f02e"; color: $dri_red; font-size: 110%;} /* checked icon */
+      input[type=checkbox]:checked + span:after { letter-spacing: 5px; } /* allow space for check mark */
       
     }
   }  
