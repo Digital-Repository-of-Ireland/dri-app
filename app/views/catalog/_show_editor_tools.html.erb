@@ -67,11 +67,7 @@
 
     <% end %>
   </li>
-  <%= link_to edit_object_path(@document), :id => "edit_record" do %>
-  <li>
-    <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
-  </li>
-  <% end %>
+
   <% end %> <!-- if end (non-EAD collections) -->
   <% unless @files.nil? || @files.empty? %>
   <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
@@ -94,7 +90,13 @@
 
     <% end %>
   </li>
+  
 
   <% end %>
+  <% end %>
+    <%= link_to edit_object_path(@document), :id => "edit_record" do %>
+  <li>
+    <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
+  </li>
   <% end %>
 </ul>

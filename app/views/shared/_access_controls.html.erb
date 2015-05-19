@@ -99,7 +99,7 @@
         }else{
             if(original_value_group==empty_str && !disabled_inherit ){
                 $('#'+model_str+'_read_groups_string_radio_inherit').prop('checked', true);
-            }else if(original_value_group==public_str || disabled_inherit){
+            }else if(original_value_group==public_str){
                 $('#'+model_str+'_read_groups_string_radio_public').prop('checked', true);
             }else if(original_value_group==registered_str){
                 $('#'+model_str+'_read_groups_string_radio_logged').prop('checked', true);
