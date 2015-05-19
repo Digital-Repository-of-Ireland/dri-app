@@ -26,11 +26,12 @@ DRI::ModelSupport::Files.module_eval do
     ingest_user = UserGroup::User.find_by_email(gf.batch.depositor)    
     gf.apply_depositor_metadata(gf.batch.depositor)
 
-    actor = Sufia::GenericFile::Actor.new(gf, ingest_user)
-   
-    if actor.create_content(file, file_name, dsid, mime_type.to_s)
-      create_file(file, file_name, gf.id, dsid, "", mime_type.to_s)
+    @actor = DRI::Asset::Actor.new(gf, ingest_user)
+    url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{build_path(gf.id,dsid)}/#{file_name}"
 
+    create_file(file, file_name, gf.id, dsid, "", mime_type.to_s)
+
+    if @actor.create_external_content(url, dsid, file_name)
       return true
     else
       Rails.logger.error "Error saving file: #{e.message}"
@@ -44,23 +45,20 @@ DRI::ModelSupport::Files.module_eval do
     Rails.root.join(Settings.dri.files)
   end
 
-  def create_file(file, file_name, object_id, datastream, checksum, mime_type)
-    # Error: Couldn't find all LocalFiles with 'id': (all, {:conditions=>[\"fedora_id LIKE 
-    # :f AND ds_id LIKE :d\", {:f=>\"dri:z603r3626\", :d=>\"content\"}]}) (found 0 results, but was looking for 2)
-    # count = LocalFile.find(:all, :conditions => [ "fedora_id LIKE :f AND ds_id LIKE :d", { :f => object_id, :d => datastream } ]).count
-      
-    # Changed to update use of deprecated method
-    count = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => object_id, :d => datastream }).count
+  def build_path(object_id, datastream)
+    "#{object_id}/#{datastream+@actor.version_number(datastream).to_s}"
+  end
 
-    dir = local_storage_dir.join(object_id).join(datastream+count.to_s)
+  def create_file(file, file_name, object_id, datastream, checksum, mime_type)
+    dir = local_storage_dir.join(build_path(object_id, datastream))
 
     local_file = LocalFile.new
-    local_file.add_file file, {:fedora_id => object_id, :file_name => file_name, :ds_id => datastream, :directory => dir.to_s, :version => count, :checksum => checksum, :mime_type => mime_type}
+    local_file.add_file file, {:fedora_id => object_id, :file_name => file_name, :ds_id => datastream, :directory => dir.to_s, :version => @actor.version_number(datastream), :checksum => checksum, :mime_type => mime_type}
 
     begin
       local_file.save!
     rescue ActiveRecord::ActiveRecordError => e
-      Rails.logger.error "Could not save the asset file #{@file.path} for #{object_id} to #{datastream}: #{e.message}"
+      Rails.logger.error "Could not save the asset file #{file.path} for #{object_id} to #{datastream}: #{e.message}"
     end
   end
 

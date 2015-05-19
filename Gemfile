@@ -17,6 +17,7 @@ gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-m
 gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :branch => 'hydra9'
 
 gem 'active-fedora', git: 'https://github.com/projecthydra/active_fedora.git', ref: 'ab1f946e63f3d92b5fd5fa86a50ca3ab1bba38de'
+gem 'ldp', git: 'https://github.com/stkenny/ldp.git', branch: 'redirects'
 
 gem 'rails_config'
 gem 'sqlite3'

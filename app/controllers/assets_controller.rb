@@ -11,7 +11,7 @@ class AssetsController < ApplicationController
   end
 
   def actor
-    @actor ||= Sufia::GenericFile::Actor.new(@generic_file, current_user)
+    @actor ||= DRI::Asset::Actor.new(@generic_file, current_user)
   end
 
   def show
@@ -36,7 +36,6 @@ class AssetsController < ApplicationController
     enforce_permissions!("edit", params[:object_id]) if params[:version].present?
 
     @generic_file = retrieve_object! params[:id]
-
     unless @generic_file.nil?
       can_view?
 
@@ -44,11 +43,13 @@ class AssetsController < ApplicationController
 
       if local_file
         logger.error "Using path: "+local_file.path
+        response.headers['Content-Length'] = File.size?(local_file.path).to_s
         send_file local_file.path,
                       :type => local_file.mime_type,
                       :stream => true,
                       :buffer => 4096,
-                      :disposition => 'attachment'
+                      :disposition => "attachment; filename=\"#{File.basename(local_file.path)}\";",
+                      :url_based_filename => true
         return
       end
     end
@@ -66,9 +67,12 @@ class AssetsController < ApplicationController
     if datastream.eql?("content")
       @generic_file = retrieve_object! params[:id]
 
-      if actor.update_content(file_upload, datastream)
-        create_file(file_upload, @generic_file.id, datastream, params[:checksum])
+      path = build_path(@generic_file, datastream)
+      url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
 
+      create_file(file_upload, @generic_file, datastream, params[:checksum])
+
+      if actor.update_external_content(url, file_upload, datastream)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
       else 
         message = @generic_file.errors.full_messages.join(', ')
@@ -117,9 +121,12 @@ class AssetsController < ApplicationController
         @generic_file.apply_depositor_metadata(current_user)
         @generic_file.preservation_only = "true" if params[:preservation].eql?('true')
         
-        if actor.create_content(file_upload, file_upload.original_filename, datastream, file_upload.content_type)
-          create_file(file_upload, @generic_file.id, datastream, params[:checksum])
+        path = build_path(@generic_file, datastream) 
+        url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
 
+        create_file(file_upload, @generic_file, datastream, params[:checksum])
+
+        if actor.create_external_content(url, datastream, file_upload.original_filename)
           flash[:notice] = t('dri.flash.notice.file_uploaded')
         else
           message = @generic_file.errors.full_messages.join(', ')
@@ -254,18 +261,20 @@ class AssetsController < ApplicationController
       end
     end
 
-    def create_file(filedata, generic_file_id, datastream, checksum)
-      count = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => generic_file_id, :d => datastream }).count
+    def build_path(generic_file, datastream)
+      "#{generic_file.id}/#{datastream+actor.version_number(datastream).to_s}"
+    end
 
-      dir = local_storage_dir.join(generic_file_id).join(datastream+count.to_s)
+    def create_file(filedata, generic_file, datastream, checksum)
+      dir = local_storage_dir.join(build_path(generic_file, datastream))
 
       @file = LocalFile.new
-      @file.add_file filedata, {:fedora_id => generic_file_id, :ds_id => datastream, :directory => dir.to_s, :version => count, :mime_type => @mime_type, :checksum => checksum}
+      @file.add_file filedata, {:fedora_id => generic_file.id, :ds_id => datastream, :directory => dir.to_s, :version => actor.version_number(datastream), :mime_type => @mime_type, :checksum => checksum}
 
       begin
         raise Exceptions::InternalError unless @file.save!
       rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not save the asset file #{@file.path} for #{generic_file_id} to #{datastream}: #{e.message}"
+        logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
         raise Exceptions::InternalError
       end
     end

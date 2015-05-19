@@ -7,8 +7,6 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user_from_token!
   before_filter :set_locale, :set_cookie, :set_metadata_language
 
-
-
   include HttpAcceptLanguage
 
   # Adds a few additional behaviors into the application controller
