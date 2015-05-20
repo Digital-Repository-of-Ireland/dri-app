@@ -9,6 +9,11 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
 
   def run
     Rails.logger.info "Deleting all objects in #{object.id}"
+    object.delete
+  end
+=begin
+  def run
+    Rails.logger.info "Deleting all objects in #{object.id}"
 
     query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\"")
 
@@ -41,11 +46,10 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
       end
     end
     # Delete collection
-    #FIXME Hydra9 calling reload on the root collection is causing a reset on descMetadata's class
-    #FIXME which is set to super class DRI::Metadata::Base as opposed to the appropriate sub-class
     object.reload
     object.delete
   end
+=end
 
   def delete_files(object)
     local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",

@@ -224,8 +224,6 @@ module ApplicationHelper
       @cover_image = search_image( document, file_doc ) unless file_doc.nil?
     end
 
-    @cover_image = cover_image ( document ) if @cover_image.nil?
-
     @cover_image = default_image ( file_doc ) if @cover_image.nil?
   end
 

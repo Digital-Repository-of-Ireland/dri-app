@@ -135,6 +135,7 @@
 	
 	.dri_object_second_block {
 		@include zen-grid-item(1, 3.5, $gutter-width: 0px);
+		width:250px;
 
 
 
@@ -362,7 +363,10 @@
     .dri_object_first_block {
       @include zen-clear();
       @include zen-grid-item(2, 1, $gutter-width: 0px);
-    }
+        dl.dri_object_metadata_readview {
+          padding: 0px 20px 0 0;
+        }
+      }
     .dri_login_form_container {
 
     margin: auto;

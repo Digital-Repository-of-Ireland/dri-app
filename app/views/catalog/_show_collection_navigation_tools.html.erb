@@ -1,4 +1,35 @@
-<% if (objectsCount > 0) %>
+<div class="dri_objecttools_title">
+	<i class="fa fa-lg fa-arrows"></i>&nbsp;<%= t('dri.views.catalog.titles.navigation_tools') %>
+</div>
+<%= render 'previous_next_doc' %>
+
+<ul class="dri_view_collection">
+	<li>
+		<%= link_back_to_catalog %>
+	</li>
+
+	<% collection = governing_collection_solr(@document) %>
+
+	<% unless collection.nil? %>
+
+	<!-- If it's a root collection, we show all the objects within it -->
+	<% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil %>
+	<% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
+	<%= link_to catalog_index_path(collection_objects_params), :id => 'collection_s_object' do %>
+	<li>
+		<i class="fa fa-lg fa-folder-open"></i><%= t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})" %>
+	</li>
+	<% end %>
+	<% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
+	<% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
+	<%= link_to catalog_index_path(collection_objects_params), :id => 'collection_s_object' do %>
+	<li>
+		<i class="fa fa-lg fa-folder-open"></i><%= t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})" %>
+	</li><% end %>
+
+	<% end %>
+	<% end %>
+	<% if (objectsCount > 0) %>
 
     <% imageCount = count_items_in_collection_by_type(document[:id], "Image") %>
     <% textCount = count_items_in_collection_by_type(document[:id], "Text") %>
@@ -6,9 +37,8 @@
     <% videoCount = count_items_in_collection_by_type(document[:id], "Video") %>
     <% mixedCount = count_items_in_collection_by_type(document[:id], "Mixed_Types") %>
 
-    <ul class="dri_view_collection">
-      <div class="dri_title"><%= t("dri.data.types.Title") %></div>
 
+	<li class="dri_title"><%= t("dri.data.types.Title") %></li>
       <% if (imageCount > 0) %>
           <li>
             <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "Image")) do %>
@@ -54,6 +84,6 @@
           </li>
       <% end %>
 
-    </ul>
 
 <% end %>
+</ul>
