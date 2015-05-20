@@ -117,27 +117,32 @@ class ObjectsController < CatalogController
 
     if params[:batch][:governing_collection].present?
       params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection])
+      # governing_collection present and also whether this is a documentation object?
+      if params[:batch][:documentation_for].present?
+        params[:batch][:documentation_for] = DRI::Batch.find(params[:batch][:documentation_for])
+      end
     end
 
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].id)
-   
-    #set_access_permissions(:batch)
 
-    if params[:metadata_file].present?
+    #set_access_permissions(:batch)
+    if params[:batch][:documentation_for].present?
+      create_from_form :documentation
+    elsif params[:metadata_file].present?
       create_from_upload
     else
       create_from_form
     end
 
     MetadataHelpers.checksum_metadata(@object)
-    
+
     warn_if_duplicates
 
     supported_licences()
 
     if @object.valid? && @object.save
 
-      retrieve_linked_data     
+      retrieve_linked_data
       DOI.mint_doi( @object )
 
       #actor.version_and_record_committer
@@ -356,9 +361,16 @@ class ObjectsController < CatalogController
 
       MetadataHelpers.set_metadata_datastream(@object, xml)
     end
- 
-    def create_from_form
-      @object = DRI::Batch.with_standard :qdc
+
+    # If no standard parameter then default to :qdc
+    # allow to create :documentation and :marc objects (improve merging into marc-nccb branch)
+    #
+    def create_from_form standard=nil
+      if (!standard.nil?)
+        @object = DRI::Batch.with_standard standard
+      else
+        @object = DRI::Batch.with_standard :qdc
+      end
       @object.depositor = current_user.to_s
       @object.update_attributes create_params
     end

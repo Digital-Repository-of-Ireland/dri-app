@@ -11,6 +11,12 @@
 	<i class="fa fa-pencil fa-lg"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
 </div>
 <ul class="dri_view_collection bold">
+    <!-- Add documentation should be available to any collection (MARC, MODS, QDC and EAD) -->
+    <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %>
+      <li class="dri_help_popover" data-content="<%= t('dri.views.catalog.links.add_documentation_help_text') %>" data-original-title="<%= t('dri.views.catalog.links.add_documentation_help_title')%>" data-trigger="hover" data-placement="right">
+        <i class="fa fa-file-text-o fa-lg"></i></i><%= t('dri.views.catalog.links.add_documentation') %>
+      </li>
+    <% end %>
 	<% if (edit_functionality_available?(@document)) %>
       <% if get_active_fedora_model(@document) == 'DRI::QualifiedDublinCore' %>
 	    <%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
@@ -24,11 +30,6 @@
           <i class="fa fa-folder fa-lg"></i><%= t('dri.views.catalog.links.add_sub_collection') %>
         </li>
       <% end %>
-	  <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %>
-	    <li class="dri_help_popover" data-content="<%= t('dri.views.catalog.links.add_documentation_help_text') %>" data-original-title="<%= t('dri.views.catalog.links.add_documentation_help_title')%>" data-trigger="hover" data-placement="right">
-		  <i class="fa fa-file-text-o fa-lg"></i></i><%= t('dri.views.catalog.links.add_documentation') %>
-	    </li>
-	  <% end %>
 	  <%= link_to new_object_path(collection: document.id, method: 'upload'), :id => "add_object_xml" do %>
 	    <li >
 		  <i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.add_object_xml') %>
@@ -66,11 +67,15 @@
           <i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
         </li>
       <% end %>
-    <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal' do %>
-      <li>
-        <i class="fa fa-trash-o fa-lg"></i><%= t('dri.views.collection.buttons.delete_collection') %>
-      </li>
     <% end %>
+    <!-- If (root collection OR not EAD collection) enable delete collection link -->
+    <!-- This is to allow to delete any sub-collection except for EAD -->
+    <% if governing_collection_solr(@document).nil? || edit_functionality_available?(@document) %>
+      <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal' do %>
+        <li>
+          <i class="fa fa-trash-o fa-lg"></i><%= t('dri.views.collection.buttons.delete_collection') %>
+        </li>
+      <% end %>
     <% end %>
     <%= link_to edit_collection_path, :id => "edit_collection" do %>
       <li>

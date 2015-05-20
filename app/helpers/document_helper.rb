@@ -43,10 +43,9 @@ module DocumentHelper
   end
 
   # Workaround for reusing partials for add institution/permissions to non QDC collections
-  # Called in collections_controller to avoid triggering a model's attributes update as this should only
-  # happen for QDC collections
+  #
   def update_desc_metadata? md_class
-    (["DRI::QualifiedDublinCore"].include? md_class) ? true : false
+    (["DRI::QualifiedDublinCore", "DRI::Documentation"].include? md_class) ? true : false
   end
 
   def get_active_fedora_model document

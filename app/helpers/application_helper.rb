@@ -171,13 +171,13 @@ module ApplicationHelper
 
   def count_collections_institute( institute )
     solr_query = get_query_collections_by_institute(institute)
-    count = ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+    count = ActiveFedora::SolrService.count(solr_query, :defType => "edismax", :fq => "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]")
     return count
   end
 
   def get_collections_institute( institute )
     solr_query = get_query_collections_by_institute(institute)
-    response = ActiveFedora::SolrService.query(solr_query, :defType => "edismax")
+    response = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fq => "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]")
     return response
   end
 
@@ -272,6 +272,46 @@ module ApplicationHelper
 
   def link_to_loc(field)
     return link_to('?', "http://www.loc.gov/marc/bibliographic/bd" + field + ".html" )
+  end
+
+  # Get the ID of the documentation object; nil if not available
+  #
+  def get_documentation_object(document)
+    # Try first to see if the parent collection has documentation objects
+    gov_col_doc = governing_collection_solr(document)
+
+    if gov_col_doc.nil? # root_collection
+      # Look then for documentation objects in the Root collection
+      root_doc = root_collection_solr(document)
+      if (root_doc.nil?)
+        return nil
+      else
+        root_col = DRI::Batch.find(root_doc["id"])
+        if !root_col.documentation_object_ids.first.nil?
+          return root_col.documentation_object_ids.first
+        else
+          return nil
+        end
+      end
+    else
+      gov_col = DRI::Batch.find(gov_col_doc["id"])
+      if !gov_col.documentation_object_ids.first.nil?
+        return gov_col.documentation_object_ids.first
+      else
+        # no doc for the immediate parent, then try with the root_collection
+        root_doc = root_collection_solr(document)
+        if (root_doc.nil?)
+          return nil
+        else
+          root_col = DRI::Batch.find(root_doc["id"])
+          if !root_col.documentation_object_ids.first.nil?
+            return root_col.documentation_object_ids.first
+          else
+            return nil
+          end
+        end
+      end
+    end
   end
 
 end
