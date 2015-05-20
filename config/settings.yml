@@ -1,7 +1,7 @@
 interface:
   languages: [en, ga]
 dri:
-  files: dri_files
+  files: dri_files/data
   logos: dri_files/logos
 plugins:
   ffmpeg_path: /usr/local/bin/ffmpeg
