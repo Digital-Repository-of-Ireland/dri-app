@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/stkenny/ldp.git
-  revision: 6399d4673f15e8006c5422b3bd916be368b9150d
+  revision: 263666b489ace5e669c3cdf5e6eddf84c8e32b96
   branch: redirects
   specs:
     ldp (0.3.1)
