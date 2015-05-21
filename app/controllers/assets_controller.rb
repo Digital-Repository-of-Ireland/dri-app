@@ -67,10 +67,11 @@ class AssetsController < ApplicationController
     if datastream.eql?("content")
       @generic_file = retrieve_object! params[:id]
 
-      path = build_path(@generic_file, datastream)
-      url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
+      version = actor.version_number(datastream)
+      create_file(file_upload, @generic_file, datastream, version, params[:checksum])
 
-      create_file(file_upload, @generic_file, datastream, params[:checksum])
+      path = build_path(@generic_file, datastream, version)
+      url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
 
       if actor.update_external_content(url, file_upload, datastream)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
@@ -121,10 +122,11 @@ class AssetsController < ApplicationController
         @generic_file.apply_depositor_metadata(current_user)
         @generic_file.preservation_only = "true" if params[:preservation].eql?('true')
         
-        path = build_path(@generic_file, datastream) 
-        url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
+        version = actor.version_number(datastream)
+        create_file(file_upload, @generic_file, datastream, version, params[:checksum])
 
-        create_file(file_upload, @generic_file, datastream, params[:checksum])
+        path = build_path(@generic_file, datastream, version)
+        url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
 
         if actor.create_external_content(url, datastream, file_upload.original_filename)
           flash[:notice] = t('dri.flash.notice.file_uploaded')
@@ -261,15 +263,15 @@ class AssetsController < ApplicationController
       end
     end
 
-    def build_path(generic_file, datastream)
-      "#{generic_file.id}/#{datastream+actor.version_number(datastream).to_s}"
+    def build_path(generic_file, datastream, version)
+      "#{generic_file.id}/#{datastream+version.to_s}"
     end
 
-    def create_file(filedata, generic_file, datastream, checksum)
-      dir = local_storage_dir.join(build_path(generic_file, datastream))
+    def create_file(filedata, generic_file, datastream, version, checksum)
+      dir = local_storage_dir.join(build_path(generic_file, datastream, version))
 
       @file = LocalFile.new
-      @file.add_file filedata, {:fedora_id => generic_file.id, :ds_id => datastream, :directory => dir.to_s, :version => actor.version_number(datastream), :mime_type => @mime_type, :checksum => checksum}
+      @file.add_file filedata, {:fedora_id => generic_file.id, :ds_id => datastream, :directory => dir.to_s, :version => version, :mime_type => @mime_type, :checksum => checksum}
 
       begin
         raise Exceptions::InternalError unless @file.save!

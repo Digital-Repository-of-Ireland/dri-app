@@ -1,7 +1,6 @@
 require "dri/model_support/files"
 require 'validators'
 
-
 DRI::ModelSupport::Files.module_eval do
 
   def add_file file, dsid="content", file_name
@@ -27,10 +26,11 @@ DRI::ModelSupport::Files.module_eval do
     gf.apply_depositor_metadata(gf.batch.depositor)
 
     @actor = DRI::Asset::Actor.new(gf, ingest_user)
-    url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{build_path(gf.id,dsid)}/#{file_name}"
 
-    create_file(file, file_name, gf.id, dsid, "", mime_type.to_s)
-
+    version = @actor.version_number(dsid)
+    create_file(file, file_name, gf.id, dsid, version, "", mime_type.to_s)
+ 
+    url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{build_path(gf.id,dsid,version)}/#{file_name}"
     if @actor.create_external_content(url, dsid, file_name)
       return true
     else
@@ -45,15 +45,15 @@ DRI::ModelSupport::Files.module_eval do
     Rails.root.join(Settings.dri.files)
   end
 
-  def build_path(object_id, datastream)
-    "#{object_id}/#{datastream+@actor.version_number(datastream).to_s}"
+  def build_path(object_id, datastream, version)
+    "#{object_id}/#{datastream+version.to_s}"
   end
 
-  def create_file(file, file_name, object_id, datastream, checksum, mime_type)
-    dir = local_storage_dir.join(build_path(object_id, datastream))
+  def create_file(file, file_name, object_id, datastream, version, checksum, mime_type)
+    dir = local_storage_dir.join(build_path(object_id, datastream, version))
 
     local_file = LocalFile.new
-    local_file.add_file file, {:fedora_id => object_id, :file_name => file_name, :ds_id => datastream, :directory => dir.to_s, :version => @actor.version_number(datastream), :checksum => checksum, :mime_type => mime_type}
+    local_file.add_file file, {:fedora_id => object_id, :file_name => file_name, :ds_id => datastream, :directory => dir.to_s, :version => version, :checksum => checksum, :mime_type => mime_type}
 
     begin
       local_file.save!
@@ -61,6 +61,5 @@ DRI::ModelSupport::Files.module_eval do
       Rails.logger.error "Could not save the asset file #{file.path} for #{object_id} to #{datastream}: #{e.message}"
     end
   end
-
 
 end

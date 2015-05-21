@@ -5,8 +5,12 @@ class CharacterizeJob < ActiveFedoraPidBasedJob
   end
 
   def run
-    generic_file.characterize
-    after_characterize
+    begin
+      generic_file.characterize
+      after_characterize
+    rescue => e
+      Rails.logger.error "Unable to characterize file #{generic_file_id}"
+    end
   end
 
   def after_characterize
