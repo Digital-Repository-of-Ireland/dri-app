@@ -23,6 +23,32 @@ GIT
       rsolr (~> 1.0.10)
 
 GIT
+  remote: https://github.com/ruby-rdf/linkeddata.git
+  revision: d321806ae030786f96d1b13f363b65236130f1fb
+  specs:
+    linkeddata (1.1.11.1)
+      equivalent-xml (~> 0.5)
+      json-ld (~> 1.1, >= 1.1.8)
+      nokogiri (~> 1.6)
+      rdf (~> 1.1, >= 1.1.11)
+      rdf-aggregate-repo (~> 1.1)
+      rdf-isomorphic (~> 1.1)
+      rdf-json (~> 1.1, >= 1.1.2)
+      rdf-microdata (~> 2.0, >= 2.0.1)
+      rdf-n3 (~> 1.1, >= 1.1.3)
+      rdf-rdfa (~> 1.1, >= 1.1.6)
+      rdf-rdfxml (~> 1.1, >= 1.1.4)
+      rdf-reasoner (~> 0.2, >= 0.2.1)
+      rdf-tabular (~> 0.1, >= 0.1.2)
+      rdf-trig (~> 1.1, >= 1.1.4)
+      rdf-trix (~> 1.1)
+      rdf-turtle (~> 1.1, >= 1.1.6)
+      rdf-vocab (~> 0.8)
+      rdf-xsd (~> 1.1, >= 1.1.3)
+      sparql (~> 1.1, >= 1.1.5)
+      sparql-client (~> 1.1, >= 1.1.3)
+
+GIT
   remote: https://github.com/stkenny/ldp.git
   revision: 263666b489ace5e669c3cdf5e6eddf84c8e32b96
   branch: redirects
@@ -35,7 +61,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 692a111904b68e45133cca66c844da880a2b6d45
+  revision: 9532c486734ed125ec8ed414340ab44dd842b9c5
   branch: hydra9
   specs:
     dri_data_models (2.1.1)
@@ -396,27 +422,6 @@ GEM
     legato (0.4.0)
       multi_json
     link_header (0.0.8)
-    linkeddata (1.1.11.1)
-      equivalent-xml (~> 0.5)
-      json-ld (~> 1.1, >= 1.1.8)
-      nokogiri (~> 1.6)
-      rdf (~> 1.1, >= 1.1.11)
-      rdf-aggregate-repo (~> 1.1)
-      rdf-isomorphic (~> 1.1)
-      rdf-json (~> 1.1, >= 1.1.2)
-      rdf-microdata (~> 2.0, >= 2.0.1)
-      rdf-n3 (~> 1.1, >= 1.1.3)
-      rdf-rdfa (~> 1.1, >= 1.1.6)
-      rdf-rdfxml (~> 1.1, >= 1.1.4)
-      rdf-reasoner (~> 0.2, >= 0.2.1)
-      rdf-tabular (~> 0.1, >= 0.1.2)
-      rdf-trig (~> 1.1, >= 1.1.4)
-      rdf-trix (~> 1.1)
-      rdf-turtle (~> 1.1, >= 1.1.6)
-      rdf-vocab (~> 0.8)
-      rdf-xsd (~> 1.1, >= 1.1.3)
-      sparql (~> 1.1, >= 1.1.5)
-      sparql-client (~> 1.1, >= 1.1.3)
     listen (2.10.0)
       celluloid (~> 0.16.0)
       rb-fsevent (>= 0.9.3)
@@ -789,6 +794,7 @@ DEPENDENCIES
   jquery-ui-rails
   launchy
   ldp!
+  linkeddata!
   mimemagic
   mysql
   mysql2
