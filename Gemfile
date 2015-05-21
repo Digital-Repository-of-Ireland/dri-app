@@ -13,8 +13,8 @@ gem 'sufia-models', "4.1.0"
 
 gem 'paper_trail', '~> 3.0.6'
 
-gem 'dri_data_models', :git => 'git@tracker.dri.ie:drirepo/dri-data-models.git', :tag => 'v2.1.1'
-gem 'user_group', :git => 'git@tracker.dri.ie:drirepo/dri-user-group.git', :tag => 'v1.0.8'
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :tag => 'v2.1.1'
+gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :tag => 'v1.0.8'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -80,7 +80,7 @@ group :development, :test do
 
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_rspec'
-  gem 'fakes3', :git => 'git@tracker.dri.ie:drirepo/fake-s3.git', :branch => 'issue22'
+  gem 'fakes3', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', :branch => 'issue22'
 end
 
 group :test do

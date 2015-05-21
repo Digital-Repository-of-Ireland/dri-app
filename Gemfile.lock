@@ -1,5 +1,12 @@
 GIT
-  remote: git@tracker.dri.ie:drirepo/dri-data-models.git
+  remote: https://github.com/ekilfeather/videojs_rails.git
+  revision: 605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd
+  ref: 605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd
+  specs:
+    videojs_rails (4.11.4)
+
+GIT
+  remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
   revision: 527780b2ffad49cd851b908fbbf6e3652c51a9bb
   tag: v2.1.1
   specs:
@@ -14,7 +21,7 @@ GIT
       sufia-models (>= 4.0.0)
 
 GIT
-  remote: git@tracker.dri.ie:drirepo/dri-user-group.git
+  remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
   revision: e18fdbc27119437ad120925dafe4140f1a954a7b
   tag: v1.0.8
   specs:
@@ -31,20 +38,13 @@ GIT
       rails (~> 4.1.0)
 
 GIT
-  remote: git@tracker.dri.ie:drirepo/fake-s3.git
+  remote: ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git
   revision: 3809cfb06eceed32246523f11171a16b2b4f9330
   branch: issue22
   specs:
     fakes3 (0.1.6.1)
       builder
       thor
-
-GIT
-  remote: https://github.com/ekilfeather/videojs_rails.git
-  revision: 605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd
-  ref: 605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd
-  specs:
-    videojs_rails (4.11.4)
 
 GEM
   remote: http://rubygems.org/
@@ -245,7 +245,7 @@ GEM
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     fastercsv (1.5.5)
-    fastimage (1.6.8)
+    fastimage (1.7.0)
       addressable (~> 2.3, >= 2.3.5)
     feedjira (1.6.0)
       curb (~> 0.8)
@@ -340,7 +340,7 @@ GEM
       ya2yaml
     is_it_working-cbeer (1.0.16)
     iso-639 (0.2.5)
-    iso8601 (0.8.5)
+    iso8601 (0.8.6)
     it (0.2.5)
       actionpack (>= 3.0.0)
     jettywrapper (2.0.3)
