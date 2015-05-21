@@ -53,7 +53,7 @@
 
 	<%= render :partial => "tools" %>
 
-	<% if signed_in? && (can?(:read_master, @document)) %>
+	<% if signed_in? && (can?(:edit, @document)) %>
 	<%= render :partial => "show_file_tools" %>
 	<%= render :partial => "show_editor_tools" %>
 	<% end %>
