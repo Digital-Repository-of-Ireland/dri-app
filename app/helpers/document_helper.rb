@@ -81,23 +81,12 @@ module DocumentHelper
   #
   def get_object_relationships document
     relationships_hash = Hash.new
-    object = nil
 
-    if document['active_fedora_model_ssi']
-      case document['active_fedora_model_ssi']
-        when 'DRI::Mods'
-          object = DRI::Mods.find(document["id"])
-        when 'DRI::QualifiedDublinCore'
-          object = DRI::QualifiedDublinCore.find(document["id"])
-        when 'DRI::Marc'
-          object = DRI::Marc.find(document["id"])
-        else # case EAD, does not have internal DRI relationships
-          object = nil
-      end # end case
-    end
+    object = DRI::Batch.find(document["id"])
         
-    unless (object.nil?)
-      object.get_relationships_records.each do |rel, value|
+    if (!object.nil? && object.class != DRI::Documentation)
+      unless (object.class == DRI::EncodedArchivalDescription)
+        object.get_relationships_records.each do |rel, value|
           display_label = object.get_relationships_names[rel]
           item_array = []
           value.each do |id|
@@ -108,7 +97,25 @@ module DocumentHelper
             end
           end
           relationships_hash["#{display_label}"] = Kaminari.paginate_array(item_array).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4) unless item_array.empty?
-      end # each
+        end # each
+      end
+      unless object.documentation_object_ids.nil? || object.documentation_object_ids.empty?
+        doc_array = []
+        object.documentation_object_ids.each do |id|
+          doc_obj = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+          unless doc_obj.empty?
+            link_text = doc_obj[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+            doc_array.to_a.push [link_text, catalog_path(doc_obj[0]["id"]).to_s]
+          end
+        end
+        relationships_hash["Has Documentation"] = Kaminari.paginate_array(doc_array).page(params["Has Documentation".downcase.gsub(/\s/,'_') << "_page"]).per(4) unless doc_array.empty?
+      end
+    elsif object.class == DRI::Documentation
+      unless object.documentation_for_id.nil?
+        link_text = object.documentation_for.title.first
+        relationships_hash["Is Documentation For"] = Kaminari.paginate_array([[link_text, catalog_path(object.documentation_for_id).to_s]]).page(params["Is Documentation For".downcase.gsub(/\s/,'_') << "_page"]).per(4)
+      end
+    end
 =begin
       object.get_relationships_names.each do |rel, display_label|
         unless (object.send("#{rel}").nil?)
@@ -132,7 +139,7 @@ module DocumentHelper
         end
       end # each
 =end
-    end
+
     return relationships_hash
   end # get_object_relationships
 

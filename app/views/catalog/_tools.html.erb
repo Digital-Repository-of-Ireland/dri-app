@@ -9,11 +9,11 @@
     <li><%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id), :id => "logainm_map", :'data-toggle' => 'modal',  :'data-target' => '#dri_map_modal_id' %></li>
   <% end %>
   <li><%= link_to t('dri.views.catalog.forms.metadata'), object_metadata_path(@document.id, :format => :html), :id => "styled_metadata", :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %></li>
-  <% doc_object_id = get_documentation_object(@document) %>
+  <%# doc_object_id = get_documentation_object(@document) %>
   <%# If non-documentation object and documentation available, then enable documentation link %>
-  <%if get_active_fedora_model(@document) != "DRI::Documentation" && doc_object_id != nil %>
-    <li><%= link_to t('dri.views.catalog.forms.documentation'), catalog_path(doc_object_id), :id => "object_documentation" %></li>
-  <% end %>
+  <%#if get_active_fedora_model(@document) != "DRI::Documentation" && doc_object_id != nil %>
+    <!--<li><%#= link_to t('dri.views.catalog.forms.documentation'), catalog_path(doc_object_id), :id => "object_documentation" %></li>-->
+  <%# end %>
   <li><%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, :format => :xml), :id => "download_metadata" %></li>
   <li><%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %></li>
   <li><%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citatation_modal_id' %></li>
