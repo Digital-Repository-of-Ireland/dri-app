@@ -5,9 +5,9 @@ module ApplicationHelper
   def get_files doc
     @files = ActiveFedora::Base.find(doc.id, {:cast => true}).generic_files
     @displayfiles = []
-    for i in 1..(@files.count - 1)
-      if !@files[i].preservation_only.eql?('true')
-        @displayfiles << @files[i]
+    @files.each do |file|
+      if !file.preservation_only.eql?('true')
+        @displayfiles << file
       end
     end
     ""
@@ -128,12 +128,6 @@ module ApplicationHelper
     else
       "dri/formats/#{format}_icon.png"
     end
-  end
-
-  def reader_group_name( document )
-    id = document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
-    name = id.sub(':','_')
-    return name
   end
 
   def count_items_in_collection collection_id
@@ -275,6 +269,15 @@ module ApplicationHelper
 
   def link_to_loc(field)
     return link_to('?', "http://www.loc.gov/marc/bibliographic/bd" + field + ".html" )
+  end
+
+  def get_reader_group(doc)
+    readgroups = doc["#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
+    group = reader_group(doc)
+    if readgroups.present? && readgroups.include?(group.name)
+      return @reader_group = group
+    end
+    return nil
   end
 
 end

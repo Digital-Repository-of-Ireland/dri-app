@@ -1,11 +1,11 @@
 <% if can? :read, @document %>
     <% get_files @document %>
 
-    <% unless @files.empty? %>
+    <% unless @displayfiles.empty? %>
 
       <!-- display the asset carousel -->
       <div class="dri_asset_holder">
-        <%= render :partial => "object_show_carousel", :locals => {:document => @document, :files => @files} %>
+        <%= render :partial => "object_show_carousel", :locals => {:document => @document, :files => @displayfiles} %>
       </div> <!-- ending dri_asset_holder -->
 
     <% end %>

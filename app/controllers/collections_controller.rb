@@ -356,7 +356,7 @@ class CollectionsController < CatalogController
 
   def create_reader_group
     @group = UserGroup::Group.new(:name => reader_group_name, :description => "Default Reader group for collection #{@object.id}")
-    @group.is_reader_group = true
+    @group.reader_group = true
     @group.save
     @group
   end

@@ -5,7 +5,7 @@
                 $('#dri_upload_metadata_file').attr('style', 'display: inherit;');
             }
         });
-    }); 
+    });
 </script>
 <div class="dri_objecttools_title">
 	<i class="fa fa-pencil fa-lg"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
@@ -66,5 +66,15 @@
 		<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
 	</li>
 	<% end %>
+
+
+  <!-- Link to manage pending memberships for the read group -->
+  <% if get_reader_group(@document) %>
+    <%= link_to user_group.manage_group_path(@reader_group), :id => "manage_read_requests" do %>
+      <li>
+        <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.manage_read_requests') %>
+      </li>
+    <% end %>
+  <% end %>
 
 </ul>
