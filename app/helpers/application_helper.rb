@@ -264,7 +264,7 @@ module ApplicationHelper
   
   def is_root?
     relative_root = ENV["RAILS_RELATIVE_URL_ROOT"]
-    relative_root.chomp("/") if relative_root
+    relative_root = relative_root.chomp("/") if relative_root
     root = relative_root || "/"
     return request.env['PATH_INFO'] == root && request.query_string.blank?
   end
