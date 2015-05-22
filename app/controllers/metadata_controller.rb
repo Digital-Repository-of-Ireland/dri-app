@@ -73,7 +73,7 @@ class MetadataController < CatalogController
           raise Exceptions::InternalError unless @object.attached_files[:descMetadata].save
           # Only in Updates for now as there is no UI for adding relationships
           # After descMetadata update, process this object's relationships
-          @object.process_relationships
+          #@object.process_relationships
         rescue RuntimeError => e
           logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
           raise Exceptions::InternalError

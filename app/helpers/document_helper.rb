@@ -97,6 +97,19 @@ module DocumentHelper
     end
         
     unless (object.nil?)
+      object.get_relationships_records.each do |rel, value|
+          display_label = object.get_relationships_names[rel]
+          item_array = []
+          value.each do |id|
+            rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+            unless rel_obj_doc.empty?
+              link_text = rel_obj_doc[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+              item_array.to_a.push [link_text, catalog_path(rel_obj_doc[0]["id"]).to_s]
+            end
+          end
+          relationships_hash["#{display_label}"] = Kaminari.paginate_array(item_array).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4) unless item_array.empty?
+      end # each
+=begin
       object.get_relationships_names.each do |rel, display_label|
         unless (object.send("#{rel}").nil?)
           if (object.send("#{rel}").respond_to?("push"))
@@ -118,7 +131,8 @@ module DocumentHelper
           end
         end
       end # each
-    end 
+=end
+    end
     return relationships_hash
   end # get_object_relationships
 
