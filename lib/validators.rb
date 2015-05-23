@@ -89,7 +89,7 @@ module Validators
       mime_type = mime_type.type
     end
 
-    mime_type
+    mime_type.respond_to?('content_type') ? mime_type.content_type : mime_type
   end
 
   # Returns a MimeMagic or Mime::Types mediatype
