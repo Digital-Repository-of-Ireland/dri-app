@@ -137,6 +137,11 @@ class CollectionsController < CatalogController
     end
 
     if @object.valid? && @object.save
+      DOI.mint_doi( @object )
+
+      # We have to create a default reader group
+      create_reader_group
+
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
         redirect_to :controller => "catalog", :action => "show", :id => @object.id }
@@ -282,11 +287,6 @@ class CollectionsController < CatalogController
 
     # We need to save to get a pid at this point
     if @object.save
-      DOI.mint_doi( @object )
-
-      # We have to create a default reader group
-      create_reader_group
-
       unless cover_image.blank?
         unless Storage::CoverImages.validate(cover_image, @object)
           flash[:error] = t('dri.flash.error.cover_image_not_saved')
