@@ -11,7 +11,7 @@ Hydra::Derivatives::ShellBasedProcessor.module_eval do
   def encode_file(dest_dsid, file_suffix, mime_type, options = '') #, pid)
         out_file = nil
         output_file = Dir::Tmpname.create(['sufia', ".#{file_suffix}"], Hydra::Derivatives.temp_file_base){}
-        source_datastream.to_tempfile do |f|
+        source_file.to_tempfile do |f|
           self.class.encode(f.path, options, output_file)
         end
         out_file = File.open(output_file, "rb")
