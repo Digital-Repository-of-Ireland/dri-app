@@ -82,7 +82,7 @@ module DocumentHelper
   def get_object_relationships document
     relationships_hash = Hash.new
     begin
-      object = DRI::Batch.find(document["id"], :cast => true)
+      object = DRI::Batch.find(document["id"])
 
       if (!object.nil? && object.class != DRI::Documentation)
         unless (object.class == DRI::EncodedArchivalDescription)
