@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20150325105915) do
+=======
+ActiveRecord::Schema.define(version: 20150519150421) do
+>>>>>>> develop
 
   create_table "bookmarks", force: true do |t|
     t.integer  "user_id",       null: false
@@ -74,7 +78,8 @@ ActiveRecord::Schema.define(version: 20150325105915) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_locked",   default: false
+    t.boolean  "is_locked",    default: false
+    t.boolean  "reader_group", default: false
   end
 
   add_index "user_group_groups", ["name"], name: "index_user_group_groups_on_name", unique: true

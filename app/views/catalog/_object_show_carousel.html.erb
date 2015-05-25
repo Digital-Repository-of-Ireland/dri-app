@@ -3,22 +3,23 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <!--First item set to active-->
+
+
       <div class="item dri_asset_carousel_item dri_bottom_stack active">
-        <%= render :partial => "object_show_surrogate", :locals => {:document => document, :generic_file => files.first} %>
-        <%= render :partial => "object_show_download", :locals => {:document => document, :generic_file => files.first, :index => 1} %>
+        <%= render :partial => "object_show_surrogate", :locals => {:document => document, :generic_file => @displayfiles.first} %>
+        <%= render :partial => "object_show_download", :locals => {:document => document, :generic_file => @displayfiles.first, :index => 1} %>
       </div>
 
-      <% for i in 1..(files.count - 1) %>
-        <% if !files[i].preservation_only.eql?('true') %>
-          <div class="item dri_asset_carousel_item dri_bottom_stack">
-            <%= render :partial => "object_show_surrogate", :locals => {:document => document, :generic_file => files[i]} %>
-            <%= render :partial => "object_show_download", :locals => {:document => document, :generic_file => files[i], :index => i + 1} %>
-          </div>
-        <% end %>
+
+      <% @displayfiles.each_with_index do |file,i| %>
+        <div class="item dri_asset_carousel_item dri_bottom_stack">
+          <%= render :partial => "object_show_surrogate", :locals => {:document => document, :generic_file => file} %>
+          <%= render :partial => "object_show_download", :locals => {:document => document, :generic_file => file, :index => i + 1} %>
+        </div>
       <% end %>
     </div>
 
-    <% if (files.count > 1) %>
+    <% if (@displayfiles.count > 1) %>
       <div>
         <a class="left carousel-control" href="#oject-multiple-asset-carousel" data-slide="prev">
           <i class="fa fa-arrow-left"></i>
@@ -38,6 +39,6 @@
         $('.carousel').carousel('pause');
     });
 </script>
-<% if (files.count > 0) %>
-    <p class="dri_assets_total"><%= "#{t('dri.views.fields.total_assets')} (#{files.count})" %></p>
+<% if (@displayfiles.count > 0) %>
+    <p class="dri_assets_total"><%= "#{t('dri.views.fields.total_assets')} (#{@displayfiles.count})" %></p>
 <% end %>

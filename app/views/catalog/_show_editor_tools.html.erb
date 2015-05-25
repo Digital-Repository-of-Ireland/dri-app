@@ -73,6 +73,8 @@
   </li>
   <% end %>
   <% end %>
+
+
   <% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
   <li>
     <%= form_tag status_update_path(@document.id) ,:method => :put do %>

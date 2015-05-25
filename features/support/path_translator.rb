@@ -64,6 +64,9 @@ module PathTranslator
       when /^(the )?create new collection$/
         new_collection_path
 
+      when /^(the )?new organisation page$/
+        new_institute_path
+
       else
         raise('You specified an invalid path')
 
@@ -103,7 +106,7 @@ module PathTranslator
             new_object_path(collection: pid, method: 'upload')
           else
             raise('Unknown route')
-        end 
+        end
 
       else
         raise('Unknown route')

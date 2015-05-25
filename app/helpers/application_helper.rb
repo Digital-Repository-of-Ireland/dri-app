@@ -5,6 +5,12 @@ module ApplicationHelper
 
   def get_files doc
     @files = ActiveFedora::Base.find(doc.id, {:cast => true}).generic_files
+    @displayfiles = []
+    @files.each do |file|
+      if !file.preservation_only.eql?('true')
+        @displayfiles << file
+      end
+    end
     ""
   end
 
@@ -125,12 +131,6 @@ module ApplicationHelper
     end
   end
 
-  def reader_group_name( document )
-    id = document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
-    name = id
-    return name
-  end
-
   def count_items_in_collection collection_id
     solr_query = collection_children_query( collection_id )
 
@@ -216,7 +216,7 @@ module ApplicationHelper
 
   # Called from grid view
   def get_cover_image( document )
-    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\""
+    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('preservation_only', :stored_searchable)}:true"
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
@@ -315,6 +315,15 @@ module ApplicationHelper
         end
       end
     end
+  end 
+ 
+  def get_reader_group(doc)
+    readgroups = doc["#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
+    group = reader_group(doc)
+    if readgroups.present? && readgroups.include?(group.name)
+      return @reader_group = group
+    end
+    return nil
   end
 
 end

@@ -5,6 +5,14 @@ s3 = Aws::S3::Resource.new(client: client)
 
 buckets = []
 
+def with_prefix(bucket)
+  if Settings.S3.bucket_prefix
+    "#{Settings.S3.bucket_prefix}.#{Rails.env}.#{bucket}"
+  else
+    bucket
+  end
+end
+
 begin
   buckets = s3.buckets.entries.map(&:name)
 
@@ -13,16 +21,16 @@ begin
   else
     bucket = Settings.data.cover_image_bucket
     begin
-      unless buckets.includes?(bucket)
+      unless buckets.includes?(with_prefix(bucket))
         begin
-          s3.create_bucket(bucket: bucket)
+          s3.create_bucket(bucket: with_prefix(bucket))
         rescue Exception => e
           Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
         end
       end
     rescue
       begin
-        s3.create_bucket(bucket: bucket)
+        s3.create_bucket(bucket: with_prefix(bucket))
       rescue Exception => e
         Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
       end
@@ -34,16 +42,16 @@ begin
   else
     bucket = Settings.data.logos_bucket
     begin
-      unless buckets.includes?(bucket)
+      unless buckets.includes?(with_prefix(bucket))
         begin
-          s3.create_bucket(bucket: bucket)
+          s3.create_bucket(bucket: with_prefix(bucket))
         rescue Exception => e
           Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
         end
       end
     rescue
       begin
-        s3.create_bucket(bucket: bucket)
+        s3.create_bucket(bucket: with_prefix(bucket))
       rescue Exception => e
         Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
       end

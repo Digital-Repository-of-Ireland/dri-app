@@ -41,7 +41,7 @@ module Storage
 
       surrogates_hash = {}
       begin
-        bucketobj = @client.list_objects(bucket: bucket)
+        bucketobj = @client.list_objects(bucket: with_prefix(bucket))
         bucketobj.each do |fileobj|
           if fileobj.key.match(/#{file_id}_([-a-zA-z0-9]*)\..*/)
             surrogates_hash[fileobj.key] = fileobj.head
@@ -82,7 +82,7 @@ module Storage
     # Create bucket
     def create_bucket(bucket)
       begin
-        @client.create_bucket(bucket: bucket)
+        @client.create_bucket(bucket: with_prefix(bucket))
       rescue Exception => e
         Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e.to_s}"
         return false
@@ -97,7 +97,7 @@ module Storage
         objects.each do |obj|
           obj.delete
         end
-        @client.delete_bucket(bucket: bucket_name)
+        @client.delete_bucket(bucket: with_prefix(bucket_name))
       rescue Exception => e
         Rails.logger.error "Could not delete Storage Bucket #{bucket_name}: #{e.to_s}"
         return false
@@ -110,7 +110,7 @@ module Storage
       bucket_name = object_id
       begin
         @client.put_object(
-          bucket: bucket_name,
+          bucket: with_prefix(bucket_name),
           body: File.open(Pathname.new(surrogate_file)),
           key: surrogate_key)
       rescue Exception  => e
@@ -122,12 +122,12 @@ module Storage
     def store_file(file, file_key, bucket_name)
       begin
         @client.put_object(
-          bucket: bucket_name,
+          bucket: with_prefix(bucket_name),
           body: File.open(Pathname.new(file)),
           key: file_key)
         @client.put_object_acl(
           acl: "public-read",
-          bucket: bucket_name,
+          bucket: with_prefix(bucket_name),
           key: file_key)
 
         return true
@@ -162,7 +162,7 @@ module Storage
     def list_files(bucket)
       files = []
       begin
-        response = @client.list_objects(bucket: bucket)
+        response = @client.list_objects(bucket: with_prefix(bucket))
         files = response.contents.map(&:key)
       rescue
         Rails.logger.debug "Problem listing files in bucket #{bucket}"
@@ -173,13 +173,25 @@ module Storage
 
   private
 
+    def bucket_prefix
+      if Settings.S3.bucket_prefix
+        "#{Settings.S3.bucket_prefix}.#{Rails.environment}"
+      else
+        nil
+      end
+    end 
+
+    def with_prefix bucket
+      bucket_prefix ? "#{bucket_prefix}.#{bucket}" : bucket
+    end
+
     def create_url(bucket, object, expire=nil, authenticated=true)
       if authenticated
-        signed_url(bucket, object, expiration_timestamp(expire))
+        signed_url(with_prefix(bucket), object, expiration_timestamp(expire))
       else
         s3 = Aws::S3::Resource.new(client: @client) 
         
-        s3.bucket(bucket).objects.each do |o|        
+        s3.bucket(with_prefix(bucket)).objects.each do |o|        
           if o.key.eql?(object)
             return o.object.public_url
           end
