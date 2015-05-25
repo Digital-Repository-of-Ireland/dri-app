@@ -65,7 +65,7 @@ class MetadataController < CatalogController
         MetadataHelpers.checksum_metadata(@object)
         # Only in Updates for now as there is no UI for adding relationships
         # After descMetadata update, process this object's relationships
-        @object.process_relationships
+        #@object.process_relationships
         duplicates?(@object)
 
         begin
