@@ -50,7 +50,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 623bf26eaeed4aebb74b2a86fc4424a5c41480bf
+  revision: ee86d7ae51ebd0fec8feb8d7f95d10a1a8e2d476
   branch: hydra9
   specs:
     user_group (1.0.8)
@@ -231,7 +231,7 @@ GEM
     debug_inspector (0.0.2)
     deprecation (0.1.0)
       activesupport
-    devise (3.4.1)
+    devise (3.5.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)

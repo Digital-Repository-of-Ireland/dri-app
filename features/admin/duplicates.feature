@@ -9,9 +9,9 @@ Background:
   Given I am logged in as "user1" in the group "cm" and accept cookies
 
 Scenario: Ingesting a duplicate Digital Object using metadata file upload
-  Given a collection with pid "xxxx" and title "Test Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "xxxx"
-  When I go to the "metadata" "upload" page for "xxxx" 
+  Given a collection with pid "dupxxxx" and title "Test Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dupxxxx"
+  When I go to the "metadata" "upload" page for "dupxxxx" 
   And I attach the metadata file "SAMPLEA.xml"
   And I press the button to "ingest metadata"
   Then I should see a success message for ingestion

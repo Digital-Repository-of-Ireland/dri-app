@@ -15,7 +15,7 @@ Feature: Saved Search criteria
     And I press the button to "search" within "searchform"
     And I select the "collections" tab
     Then I should see a search result "Sample Collection"
-    When I press the button to "search" within "searchform"
+    When I press the button to "save search"
     And I go to "my saved search page"
     Then I should see a search result "Collections (sample)"
 

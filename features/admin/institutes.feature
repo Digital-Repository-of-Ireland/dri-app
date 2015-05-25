@@ -14,9 +14,9 @@ Feature:
     When I fill in "institute[name]" with "TestInstitute"
     And I fill in "institute[url]" with "http://www.dri.ie/"
     And I attach the institute logo file "sample_logo.png"
-    And I press the button to add an institute
-    Given I am on the home page
-    When I perform a search
+    And I press the button to "add an institute"
+    When I am on the home page
+    And I perform a search
     And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"
     And I follow the link to edit a collection
@@ -27,7 +27,7 @@ Feature:
     When I fill in "institute[name]" with "TestInstitute"
     And I fill in "institute[url]" with "http://www.dri.ie/"
     And I attach the institute logo file "sample_logo.png"
-    And I press the button to add an institute
+    And I press the button to "add an institute"
     When I perform a search
     And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"

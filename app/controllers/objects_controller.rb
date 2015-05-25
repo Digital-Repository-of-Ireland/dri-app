@@ -135,7 +135,6 @@ class ObjectsController < CatalogController
     end
 
     MetadataHelpers.checksum_metadata(@object)
-
     warn_if_duplicates
 
     supported_licences()
