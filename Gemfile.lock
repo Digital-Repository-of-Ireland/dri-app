@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: dfe239bfb9343663dfd78f21f8ced3c936b1d903
+  revision: 731e4b66cba2b7330bbf7664bb907402ff41485f
   branch: develop
   specs:
     dri_data_models (2.1.1)
