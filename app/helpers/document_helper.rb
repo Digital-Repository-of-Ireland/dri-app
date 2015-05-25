@@ -81,40 +81,43 @@ module DocumentHelper
   #
   def get_object_relationships document
     relationships_hash = Hash.new
+    begin
+      object = DRI::Batch.find(document["id"])
 
-    object = DRI::Batch.find(document["id"])
-        
-    if (!object.nil? && object.class != DRI::Documentation)
-      unless (object.class == DRI::EncodedArchivalDescription)
-        object.get_relationships_records.each do |rel, value|
-          display_label = object.get_relationships_names[rel]
-          item_array = []
-          value.each do |id|
-            rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
-            unless rel_obj_doc.empty?
-              link_text = rel_obj_doc[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
-              item_array.to_a.push [link_text, catalog_path(rel_obj_doc[0]["id"]).to_s]
+      if (!object.nil? && object.class != DRI::Documentation)
+        unless (object.class == DRI::EncodedArchivalDescription)
+          object.get_relationships_records.each do |rel, value|
+            display_label = object.get_relationships_names[rel]
+            item_array = []
+            value.each do |id|
+              rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+              unless rel_obj_doc.empty?
+                link_text = rel_obj_doc[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+                item_array.to_a.push [link_text, catalog_path(rel_obj_doc[0]["id"]).to_s]
+              end
+            end
+            relationships_hash["#{display_label}"] = Kaminari.paginate_array(item_array).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4) unless item_array.empty?
+          end # each
+        end
+        unless object.documentation_object_ids.nil? || object.documentation_object_ids.empty?
+          doc_array = []
+          object.documentation_object_ids.each do |id|
+            doc_obj = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+            unless doc_obj.empty?
+              link_text = doc_obj[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+              doc_array.to_a.push [link_text, catalog_path(doc_obj[0]["id"]).to_s]
             end
           end
-          relationships_hash["#{display_label}"] = Kaminari.paginate_array(item_array).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4) unless item_array.empty?
-        end # each
-      end
-      unless object.documentation_object_ids.nil? || object.documentation_object_ids.empty?
-        doc_array = []
-        object.documentation_object_ids.each do |id|
-          doc_obj = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
-          unless doc_obj.empty?
-            link_text = doc_obj[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
-            doc_array.to_a.push [link_text, catalog_path(doc_obj[0]["id"]).to_s]
-          end
+          relationships_hash["Has Documentation"] = Kaminari.paginate_array(doc_array).page(params["Has Documentation".downcase.gsub(/\s/,'_') << "_page"]).per(4) unless doc_array.empty?
         end
-        relationships_hash["Has Documentation"] = Kaminari.paginate_array(doc_array).page(params["Has Documentation".downcase.gsub(/\s/,'_') << "_page"]).per(4) unless doc_array.empty?
+      elsif object.class == DRI::Documentation
+        unless object.documentation_for_id.nil?
+          link_text = object.documentation_for.title.first
+          relationships_hash["Is Documentation For"] = Kaminari.paginate_array([[link_text, catalog_path(object.documentation_for_id).to_s]]).page(params["Is Documentation For".downcase.gsub(/\s/,'_') << "_page"]).per(4)
+        end
       end
-    elsif object.class == DRI::Documentation
-      unless object.documentation_for_id.nil?
-        link_text = object.documentation_for.title.first
-        relationships_hash["Is Documentation For"] = Kaminari.paginate_array([[link_text, catalog_path(object.documentation_for_id).to_s]]).page(params["Is Documentation For".downcase.gsub(/\s/,'_') << "_page"]).per(4)
-      end
+    rescue ActiveFedora::ObjectNotFoundError
+      Rails.logger.error("Object not found: #{document["id"]}")
     end
 =begin
       object.get_relationships_names.each do |rel, display_label|
