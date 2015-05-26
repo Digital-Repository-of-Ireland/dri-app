@@ -1,5 +1,4 @@
-<div id="oject-multiple-asset-carousel" class="carousel slide dri_carousel_controls" data-ride="carousel" >
-  <div class="carousel slide" data-ride="carousel">
+<div id="oject-multiple-asset-carousel" class="carousel slide dri_carousel_controls" data-ride="carousel" data-interval = "false" >
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <!--First item set to active-->
@@ -31,14 +30,6 @@
     <% end %>
   </div>
   <!-- Controls -->
-</div>
-
-<!--Stops cousel's autoplay-->
-<script>
-    $(document).ready(function() {
-        $('.carousel').carousel('pause');
-    });
-</script>
 <% if (@displayfiles.count > 0) %>
     <p class="dri_assets_total"><%= "#{t('dri.views.fields.total_assets')} (#{@displayfiles.count})" %></p>
 <% end %>
