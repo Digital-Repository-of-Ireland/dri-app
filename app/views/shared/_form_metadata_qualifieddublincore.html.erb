@@ -40,15 +40,15 @@
     </fieldset>
     <%# we don't want the Collection type to be output as we don't want it modified %>
     <fieldset id="type" <% if @object.type.first == 'Collection' %>class="dri_no_display"<%end%>>
-      <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.types')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.dummy_text') %>" data-original-title="<%= t('dri.help.dummy_title')%>" data-trigger="hover" data-placement="right"></i></span>
+      <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.types')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.dummy_text') %>" data-original-title="<%= t('dri.help.dummy_title')%>" data-trigger="hover" data-placement="right"></i></span>
       <% if params[:is_sub_collection] == 'true' %>
       <%= f.hidden_field "type][", :value=>'Collection' %>
       <% end %>
       <% if @object.type.count == 0%>
-          <%= f.text_field "type][", :value=>'', :class => "edit span6 dri-textfield"  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+          <%= f.text_field "type][", :value=>'', :class => "edit span6 dri-textfield", :required => "true"  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
       <% end %>
       <% @object.type.each do |i| %>
-          <%= f.text_field "type][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+          <%= f.text_field "type][", :value=>i, :class => "edit span6 dri-textfield", :required => "true"  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
       <% end %>
       <p class="add-text-field"><i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Type"><%= t('dri.views.objects.forms.add_type') %></a></p>
     </fieldset>
