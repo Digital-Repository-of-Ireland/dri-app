@@ -175,7 +175,7 @@ module Storage
 
     def bucket_prefix
       if Settings.S3.bucket_prefix
-        "#{Settings.S3.bucket_prefix}.#{Rails.environment}"
+        "#{Settings.S3.bucket_prefix}.#{Rails.env}"
       else
         nil
       end
