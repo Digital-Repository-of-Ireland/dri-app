@@ -320,9 +320,12 @@ module ApplicationHelper
   def get_reader_group(doc)
     readgroups = doc["#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
     group = reader_group(doc)
-    if readgroups.present? && readgroups.include?(group.name)
-      return @reader_group = group
+    if group
+      if readgroups.present? && readgroups.include?(group.name)
+        return @reader_group = group
+      end
     end
+
     return nil
   end
 
