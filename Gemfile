@@ -5,18 +5,19 @@ source 'http://rubygems.org'
 
 gem 'rails','~> 4.1.0'
 
-gem 'blacklight', '5.9.3'
+gem 'blacklight', '5.10'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
-gem 'hydra-head', '9.0.1'
-gem 'sufia-models', '6.0.0.rc4'
+gem 'hydra-head', '9.1.4'
+gem 'sufia-models', '6.0.0'
 
 gem 'paper_trail', '~> 3.0.6'
 
 gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :branch => 'hydra9'
 gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :branch => 'hydra9'
 
-gem 'active-fedora', git: 'https://github.com/projecthydra/active_fedora.git', ref: 'ab1f946e63f3d92b5fd5fa86a50ca3ab1bba38de'
+#gem 'active-fedora', git: 'https://github.com/projecthydra/active_fedora.git', ref: 'ab1f946e63f3d92b5fd5fa86a50ca3ab1bba38de'
+gem 'active-fedora'
 gem 'ldp', git: 'https://github.com/stkenny/ldp.git', branch: 'redirects'
 
 gem 'rails_config'
@@ -113,7 +114,7 @@ gem 'unicorn'
 
 gem "unicode", :platforms => [:mri_18, :mri_19]
 gem 'font-awesome-rails'
-gem 'bootstrap-sass', '~> 3.3.4'
+gem 'bootstrap-sass' #, '~> 3.3.4'
 gem 'yard'
 
 group :translations do
