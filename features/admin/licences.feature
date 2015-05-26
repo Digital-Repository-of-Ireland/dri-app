@@ -45,7 +45,7 @@ Feature:
     And I press the button to "add a licence"
     Then I should be on the licence index page
     And I should see "TestLicence3"
-
+  
   Scenario: Adding a new licence with virus logo file
     Given I am on the new licence page
     Then I should see a form for create new licence
@@ -65,13 +65,9 @@ Feature:
 
   Scenario: Associating a licence with a collection
     Given I have created a licence "TestLicence7"
-    When I perform a search
-    And I follow the link to browse
-    And I follow "Licence Test Collection" within "div.dri_result_container"
-    And I follow the link to edit a collection
+    When I go to the "object" "edit" page for "lcoll"
     Then the "licence" drop-down should contain the option "TestLicence7"
     When I select "TestLicence7" from the selectbox for licence
-    And I press the button to "save collection changes"
+    And I press the button to "save changes"
     And I go to the "object" "show" page for "lobj"
     Then I should see "TestLicence7"
-

@@ -28,16 +28,11 @@ class LicencesController < ApplicationController
   def create
 
     @licence = Licence.new
+    @licence.name = params[:licence][:name]
 
-    if ((params[:licence][:logo].nil? || params[:licence][:logo].blank?) &&
-      (params[:logo_file].nil? || params[:logo_file].blank?))
-      @licence.name = params[:licence][:name]
-      @licence.save
-    elsif params[:licence][:logo] =~ URI::regexp
-      @licence.name = params[:licence][:name]
+    if (params[:licence][:logo].present? && params[:licence][:logo] =~ URI::regexp)
       @licence.logo = params[:licence][:logo]
-      @licence.save
-    elsif !params[:logo_file].blank?
+    elsif params[:logo_file].present?
       begin
         @licence.add_logo(params[:logo_file], {:name => params[:licence][:name]})
       rescue Exceptions::UnknownMimeType => e
@@ -50,16 +45,15 @@ class LicencesController < ApplicationController
       end
     end
 
-    if (!(params[:licence][:url].nil? || params[:licence][:url].blank?) && params[:licence][:url] =~ URI::regexp)
+    if (params[:licence][:url].present? && params[:licence][:url] =~ URI::regexp)
       @licence.url = params[:licence][:url]
     end
 
-    if !(params[:licence][:url].nil? || params[:licence][:url].blank?)
+    if params[:licence][:description].present?
       @licence.description = params[:licence][:description]
     end
 
     @licence.save
-
 
     respond_to do |format|
       format.html  {
@@ -74,16 +68,11 @@ class LicencesController < ApplicationController
   # Update existing licence
   def update
     @licence = Licence.find(params[:id])
+    @licence.name = params[:licence][:name]
 
-    if ((params[:licence][:logo].nil? || params[:licence][:logo].blank?) &&
-       (params[:logo_file].nil? || params[:logo_file].blank?))
-      @licence.name = params[:licence][:name]
-      @licence.save
-    elsif params[:licence][:logo] =~ URI::regexp
-      @licence.name = params[:licence][:name]
+    if (params[:licence][:logo].present? && params[:licence][:logo] =~ URI::regexp)
       @licence.logo = params[:licence][:logo]
-      @licence.save
-    elsif !params[:logo_file].blank?
+    elsif params[:logo_file].present?
       begin
         @licence.add_logo(params[:logo_file], {:name => params[:licence][:name]})
       rescue Exceptions::UnknownMimeType => e
@@ -96,11 +85,11 @@ class LicencesController < ApplicationController
       end
     end
 
-    if (!(params[:licence][:url].nil? || params[:licence][:url].blank?) && params[:licence][:url] =~ URI::regexp)
+    if (params[:licence][:url].present? && params[:licence][:url] =~ URI::regexp)
       @licence.url = params[:licence][:url]
     end
 
-    if !(params[:licence][:url].nil? || params[:licence][:url].blank?)
+    if params[:licence][:url].present?
       @licence.description = params[:licence][:description]
     end
 
