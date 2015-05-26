@@ -73,7 +73,7 @@ class AssetsController < ApplicationController
       path = build_path(@generic_file, datastream, version)
       url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
 
-      if actor.update_external_content(url, file_upload, datastream)
+      if actor.update_external_content(URI.escape(url), file_upload, datastream)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
       else 
         message = @generic_file.errors.full_messages.join(', ')
@@ -128,7 +128,7 @@ class AssetsController < ApplicationController
         path = build_path(@generic_file, datastream, version)
         url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
 
-        if actor.create_external_content(url, datastream, file_upload.original_filename)
+        if actor.create_external_content(URI.escape(url), datastream, file_upload.original_filename)
           flash[:notice] = t('dri.flash.notice.file_uploaded')
         else
           message = @generic_file.errors.full_messages.join(', ')

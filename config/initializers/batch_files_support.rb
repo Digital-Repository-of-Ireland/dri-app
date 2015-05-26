@@ -31,7 +31,7 @@ DRI::ModelSupport::Files.module_eval do
     create_file(file, file_name, gf.id, dsid, version, "", mime_type.to_s)
  
     url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{build_path(gf.id,dsid,version)}/#{file_name}"
-    if @actor.create_external_content(url, dsid, file_name)
+    if @actor.create_external_content(URI.escape(url), dsid, file_name)
       return true
     else
       Rails.logger.error "Error saving file: #{e.message}"
