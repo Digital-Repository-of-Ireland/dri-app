@@ -125,7 +125,6 @@ class ObjectsController < CatalogController
 
     enforce_permissions!("create_digital_object",params[:batch][:governing_collection].id)
 
-    #set_access_permissions(:batch)
     if params[:batch][:documentation_for].present?
       create_from_form :documentation
     elsif params[:metadata_file].present?
@@ -140,7 +139,8 @@ class ObjectsController < CatalogController
     supported_licences()
 
     if @object.valid? && @object.save
-
+      create_reader_group if @object.is_collection?
+    
       retrieve_linked_data
       DOI.mint_doi( @object )
 
@@ -372,6 +372,12 @@ class ObjectsController < CatalogController
       end
       @object.depositor = current_user.to_s
       @object.update_attributes create_params
+    end
+
+    def create_reader_group
+      group = UserGroup::Group.new(:name => "#{@object.id}", :description => "Default Reader group for collection #{@object.id}")
+      group.reader_group = true
+      group.save
     end
   
     def retrieve_linked_data
