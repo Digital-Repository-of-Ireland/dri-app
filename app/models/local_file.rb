@@ -33,6 +33,8 @@ class LocalFile < ActiveRecord::Base
       File.open(self.path, "wb") { |f| f.write(upload.read) }
     end
 
+    File.chmod(0644, self.path)
+
     unless opts[:checksum].blank?
       self.checksum = { opts[:checksum] => Checksum.checksum(opts[:checksum], self.path) }
     else
