@@ -28,7 +28,7 @@ class LocalFile < ActiveRecord::Base
 
     FileUtils.mkdir_p(opts[:directory])
     if upload.respond_to?('path')
-      FileUtils.mv(upload.path, self.path)
+      FileUtils.cp(upload.path, self.path)
     else
       File.open(self.path, "wb") { |f| f.write(upload.read) }
     end
