@@ -1,4 +1,4 @@
-<% disabled_inherit = ((record.is_collection? || update_desc_metadata?(@object.class.to_s)) && governing_collection(@object).nil?) ? true : false  %>
+<% inherit_disabled = record.is_root_collection? ? true : false %>
 <% allow_manage = (record.is_collection? && record.new_record?) ? true : false %>
 
 <script type="text/javascript">
@@ -57,7 +57,7 @@
     var manager_group_textbox;
 
     var embargo_textbox;
-    var disabled_inherit = "<%= disabled_inherit %>"
+    var inherit_disabled = <%= inherit_disabled %>
 
     $(document).ready(function () {
 
@@ -97,7 +97,7 @@
             $('#'+model_str+'_read_groups_string_radio_restricted').prop('checked', true);
             read_toggle_show_textboxes(true);
         }else{
-            if(original_value_group==empty_str && !disabled_inherit ){
+            if((original_value_group==empty_str) && (!inherit_disabled)){
                 $('#'+model_str+'_read_groups_string_radio_inherit').prop('checked', true);
             }else if(original_value_group==public_str){
                 $('#'+model_str+'_read_groups_string_radio_public').prop('checked', true);
@@ -114,7 +114,7 @@
         var original_value_user = edit_user_textbox.value();
         var original_value_group = edit_group_textbox.value();
 
-        if(original_value_user!=empty_str || disabled_inherit){
+        if(original_value_user!=empty_str || inherit_disabled){
             $('#'+model_str+'_edit_groups_string_radio_restricted').prop('checked', true);
             edit_toggle_show_textboxes(true);
         }else{
@@ -128,7 +128,7 @@
         var original_value_group = manager_group_textbox.value();
 
         if (typeof(batch_manager_groups_string_radio_restricted)!='undefined'){
-            if(original_value_user!=empty_str || disabled_inherit){
+            if(original_value_user!=empty_str || inherit_disabled){
                 $('#'+model_str+'_manager_groups_string_radio_restricted').prop('checked', true);
                 manager_toggle_show_textboxes(true);
             }else{
@@ -290,7 +290,7 @@
 		<h5><%= t('dri.views.objects.access_controls.read') %></h5>
 		<ul class="breadcrumb">
 			<li>
-				<%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled=> disabled_inherit %>
+				<%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled=> inherit_disabled %>
 				<%= f.label :read_groups_inherit, t('dri.views.objects.access_controls.inherit')%>
 			</li>
 
@@ -325,7 +325,7 @@
 
 			<ul class="breadcrumb">
 				<li>
-					<%= f.radio_button :master_file_access, "inherit", :checked=>record.master_file_access=="inherit", :disabled=> disabled_inherit %>
+					<%= f.radio_button :master_file_access, "inherit", :checked=>record.master_file_access=="inherit", :disabled=> inherit_disabled %>
 					<%= f.label :master_file_access, t('dri.views.objects.access_controls.inherit')%>
 				</li>
 
@@ -346,7 +346,7 @@
 			<h5><%= t('dri.views.objects.access_controls.edit') %></h5>
 			<ul class="breadcrumb">
 				<li>
-					<%= f.radio_button :edit_groups_string, "radio_inherit", :onclick => "edit_field_toggle();", :disabled=> disabled_inherit  %>
+					<%= f.radio_button :edit_groups_string, "radio_inherit", :onclick => "edit_field_toggle();", :disabled=> inherit_disabled  %>
 					<%= f.label :edit_users, t('dri.views.objects.access_controls.inherit')%>
 				</li>
 
@@ -368,7 +368,7 @@
 		<h5><%= t('dri.views.objects.access_controls.manage') %></h5>
 		<ul class="breadcrumb">
 			<li>
-				<%= f.radio_button :manager_groups_string, "radio_inherit", :onclick => "manager_field_toggle();", :disabled=> disabled_inherit  %>
+				<%= f.radio_button :manager_groups_string, "radio_inherit", :onclick => "manager_field_toggle();", :disabled=> inherit_disabled  %>
 				<%= f.label :manager_users, t('dri.views.objects.access_controls.inherit') %>
 			</li>
 

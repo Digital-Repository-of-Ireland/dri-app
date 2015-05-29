@@ -458,7 +458,7 @@ en:
           inherit: Inherit
           manage: Managers
           master_file: "Access Master Asset"
-          master_file_desc: "If accessible then users with read access can download the master asset(s)"
+          master_file_desc: "If accessible then users with access to surrogates can also download the master asset(s)"
           page: "Page Access"
           private: Private
           private_master_file: "Private Master Asset(s)"
@@ -467,7 +467,7 @@ en:
           private_metadata_warn: "DRI have an Open Metadata Policy. We strongly encourage all depositors to allow open access to their object's metadata."
           public: Public
           public_metadata: "Public Metadata"
-          read: "Read Access"
+          read: "Access Asset Surrogates"
           registered: "Logged In"
           restricted: Restricted
           search: "Search Access"
