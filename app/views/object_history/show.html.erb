@@ -34,20 +34,25 @@
   </table>
 
   <h3><%= t('dri.reports.headings.versions') %></h3>
-  <table>
-    <tr>
-      <th><%= t('dri.reports.headings.date') %></th>
-      <th><%= t('dri.reports.headings.committer') %></th>
-      <th><%= t('dri.reports.headings.label') %></th>
+
+  <% @file_versions.keys.each do |file| %>
+  <h4><%= file %></h4>
+  <% versions = @file_versions[file] %>
+    <table>
+      <tr>
+        <th><%= t('dri.reports.headings.date') %></th>
+        <th><%= t('dri.reports.headings.committer') %></th>
+        <th><%= t('dri.reports.headings.label') %></th>
     </tr>
-    <% @versions.keys.each do |label| %>
-    <tr>
-      <td><%= @versions[label][:created] %></td>
-      <td><%= @versions[label][:committer] %></td>
-      <td><a href="<%= @versions[label][:uri] %>"><%= label %></a></td>
-    </tr>
+    <% versions.keys.each do |label| %>
+      <tr>
+        <td><%= versions[label][:created] %></td>
+        <td><%= versions[label][:committer] %></td>
+        <td><a href="<%= versions[label][:uri] %>"><%= label %></a></td>
+      </tr>
     <% end %>
-  </table>
+    </table>
+  <% end %>
 
   <h3><%= t('dri.reports.headings.files') %></h3>
   <% @object.generic_files.each do |file| %>

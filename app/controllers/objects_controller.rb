@@ -84,12 +84,12 @@ class ObjectsController < CatalogController
         MetadataHelpers.checksum_metadata(@object)
         @object.save
 
-        actor.version_and_record_committer
-
         warn_if_duplicates
 
         retrieve_linked_data
         DOI.mint_doi( @object )
+
+        actor.version_and_record_committer
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
@@ -144,7 +144,7 @@ class ObjectsController < CatalogController
       retrieve_linked_data
       DOI.mint_doi( @object )
 
-      #actor.version_and_record_committer
+      actor.version_and_record_committer
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')

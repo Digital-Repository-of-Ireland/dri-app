@@ -17,12 +17,21 @@ class ObjectHistoryController < ApplicationController
     @object = retrieve_object!(params[:id])
     @fedora_url = @object.uri
 
-    @audit_trail = @object.versions.all
+    @file_versions = {}
 
-    @versions = {}
-    @audit_trail.each do |version|
-      @versions[version.label] = { uri: version.uri, created: version.created, committer: committer(version) }
-    end   
+    @object.attached_files.keys.each do |file_key|
+      file = @object.attached_files[file_key]
+      if file.has_versions?
+        @audit_trail = file.versions.all
+
+        @versions = {}
+        @audit_trail.each do |version|
+          @versions[version.label] = { uri: version.uri, created: version.created, committer: committer(version) }
+        end 
+     
+        @file_versions[file_key] = @versions
+      end
+    end  
 
     # Get inherited values
     @institute_manager = get_institute_manager(@object)
