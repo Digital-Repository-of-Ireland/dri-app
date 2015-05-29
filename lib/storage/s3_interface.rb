@@ -95,7 +95,7 @@ module Storage
       begin
         objects = list_files(bucket_name)
         objects.each do |obj|
-          obj.delete
+          @client.delete_object(bucket: with_prefix(bucket_name), key: obj)
         end
         @client.delete_bucket(bucket: with_prefix(bucket_name))
       rescue Exception => e
