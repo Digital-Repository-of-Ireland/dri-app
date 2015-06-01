@@ -10,7 +10,7 @@
       </div>
 
 
-      <% @displayfiles.each_with_index do |file,i| %>
+      <% @displayfiles[1..-1].each_with_index do |file,i| %>
         <div class="item dri_asset_carousel_item dri_bottom_stack">
           <%= render :partial => "object_show_surrogate", :locals => {:document => document, :generic_file => file} %>
           <%= render :partial => "object_show_download", :locals => {:document => document, :generic_file => file, :index => i + 1} %>
