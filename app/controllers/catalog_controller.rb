@@ -21,7 +21,7 @@ class CatalogController < ApplicationController
   before_filter :enforce_search_for_show_permissions, :only=>:show
 
   # Workaround to user_parameters not being persisted in search_params_filter
-  before_filter :render_daterange_filter_constraint
+  before_filter :render_daterange_filter_constraint, :only=>:index
 
   # This applies appropriate access controls to all solr queries
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
