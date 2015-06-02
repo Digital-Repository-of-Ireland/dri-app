@@ -86,4 +86,22 @@ module TimelineHelper
     return count
   end
 
+  def get_date_for_display_timeline document_dates, queried_date
+    return "" if queried_date.empty?
+
+    result_date = ""
+    year_from = queried_date.split(" ")[0]
+    year_to = queried_date.split(" ")[1]
+    document_dates.each do |date|
+      date_from = date.split(" ")[0]
+      date_to = date.split(" ")[1]
+      if (year_to <= date_to && year_from >= date_from)
+        result_date = queried_date
+        break
+      end
+    end
+
+    return result_date
+  end
+
 end

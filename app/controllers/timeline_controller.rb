@@ -38,7 +38,12 @@ class TimelineController < ApplicationController
     # puts Solrizer.solr_name('description', :stored_searchable, type: :string)
     # ######## TO BE REMOVED END
 
-    timeline_data = create_timeline_data(response)
+    queried_date = ""
+    if (params[:year_from].present? && params[:year_to].present?)
+      queried_date = "#{params[:year_from]} #{params[:year_to]}"
+    end
+
+    timeline_data = create_timeline_data(response, queried_date)
 
     render :json => timeline_data.to_json
   end
@@ -67,7 +72,7 @@ class TimelineController < ApplicationController
     return dcmi_date != parse_dcmi(dcmi_date)
   end
 
-  def create_timeline_data(response)
+  def create_timeline_data(response, queried_date="")
     timeline_data = { :timeline => { :type => "default", :date => [] } }
     document_date = nil
 
@@ -84,7 +89,12 @@ class TimelineController < ApplicationController
       response.each_with_index do |document, index|
         document = document.symbolize_keys
         if (!document[:sdateRange].nil?)
-          document_date = document[:sdateRange].first
+          document_date = get_date_for_display_timeline document[:sdateRange], queried_date
+          if !document_date.empty?
+            document_date = queried_date
+          else
+            document_date = document[:sdateRange].first
+          end
         end
 
         timeline_data[:timeline][:date][index] = {}

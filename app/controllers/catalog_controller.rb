@@ -19,6 +19,10 @@ class CatalogController < ApplicationController
   end
   # These before_filters apply the hydra access controls
   before_filter :enforce_search_for_show_permissions, :only=>:show
+
+  # Workaround to user_parameters not being persisted in search_params_filter
+  before_filter :render_daterange_filter_constraint
+
   # This applies appropriate access controls to all solr queries
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
@@ -311,7 +315,7 @@ class CatalogController < ApplicationController
   # the lower and upper boundaries for this field are -9999 and 9999 respectively, to cover
   # BC Years - this will be properly documented!!
   #
-  def subject_temporal_filter(solr_parameters, user_parameters)
+  def subject_temporal_filter solr_parameters, user_parameters
     # Find index of the facet temporal_coverage_sim
     # if present then modify query to target sdateRange Solr field
     temporal_idx = nil
@@ -339,7 +343,7 @@ class CatalogController < ApplicationController
         begin
           sdate_str = ISO8601::DateTime.new(start_date).year
           edate_str = ISO8601::DateTime.new(end_date).year
-          # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits 
+          # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits
           solr_parameters[:fq][temporal_idx] = "sdateRange:[\"-9999 #{(sdate_str.to_i - 0.5).to_s}\" TO \"#{(edate_str.to_i + 0.5).to_s} 9999\"]"
         rescue ISO8601::Errors::StandardError
         end
@@ -349,7 +353,7 @@ class CatalogController < ApplicationController
 
   # If querying geographical_coverage, then query the Solr geospatial field
   #
-  def subject_place_filter(solr_parameters, user_parameters)
+  def subject_place_filter solr_parameters, user_parameters
     # Find index of the facet geographical_coverage_sim
     geographical_idx = nil
     solr_parameters[:fq].each.with_index do |f_elem, idx|
@@ -368,17 +372,17 @@ class CatalogController < ApplicationController
     end
   end
 
-  def search_date_dange(solr_parameters, user_parameters)
+  def search_date_dange solr_parameters, user_parameters
     if (!user_parameters[:f].nil? && !user_parameters[:f]["sdateRange"].nil?)
       solr_parameters[:fq] ||= []
       # Asign facet filter contraint text (we don't want to show ugly Solr query)
-      user_parameters[:f]["sdateRange"] = user_parameters[:year_from] == user_parameters[:year_to] ?
-        ["#{user_parameters[:year_from]}"] : 
-        ["#{user_parameters[:year_from]} - #{user_parameters[:year_to]}"]
+      #user_parameters[:f]["sdateRange"] = user_parameters[:year_from] == user_parameters[:year_to] ?
+      #  ["#{user_parameters[:year_from]}"] :
+      #  ["#{user_parameters[:year_from]} - #{user_parameters[:year_to]}"]
 
       # Check whether parameters already contain a date range filter, then get the index of :fq for update
       date_idx = nil
-      
+
       solr_parameters[:fq].each.with_index do |f_elem, idx|
         if f_elem.include?("sdateRange")
           date_idx = idx
@@ -393,5 +397,18 @@ class CatalogController < ApplicationController
       end
     end # if
   end # search_date_dange
+
+  # Workaround for search_date_dange: BL 5.10 user_parameters being modified
+  # in the solr_search_params_logic filter methods are not being persisted
+  #
+  def render_daterange_filter_constraint
+    if (!params[:f].nil? && !params[:f]["sdateRange"].nil?)
+      # Asign facet filter contraint text (we don't want to show ugly Solr query)
+      params[:f]["sdateRange"] = params[:year_from] == params[:year_to] ?
+          ["#{params[:year_from]}"] :
+          ["#{params[:year_from]} - #{params[:year_to]}"]
+
+    end
+  end
 
 end
