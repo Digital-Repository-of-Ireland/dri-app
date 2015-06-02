@@ -322,6 +322,7 @@ en:
             public: Collections
         institute:
           add: "Add a new Organisation"
+          edit: "Update Organisation"
           associate: "Associate Organisation"
           associate_depositing: "Select Depositing Organisation"
           set_depositor: "Set Depositor"

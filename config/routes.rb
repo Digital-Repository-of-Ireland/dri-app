@@ -19,7 +19,7 @@ NuigRnag::Application.routes.draw do
 
     resources :collections, :only => ['new','create','update','edit','destroy']
 
-    resources :institutes, :only => ['show', 'new', 'create']
+    resources :institutes, :only => ['show', 'new', 'create', 'edit', 'update']
 
     match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
     match 'newdepositingassociation' => 'institutes#associate_depositing', :via => :post, :as => :new_depositing_association
