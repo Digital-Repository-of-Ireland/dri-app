@@ -218,10 +218,15 @@ module ApplicationHelper
   def get_cover_image( document )
     files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('preservation_only', :stored_searchable)}:true"
     files = ActiveFedora::SolrService.query(files_query)
-    file_doc = SolrDocument.new(files.first) unless files.empty?
-
-    if can?(:read, document[:id])
-      @cover_image = search_image( document, file_doc ) unless file_doc.nil?
+    file_doc = nil
+    files.each do |file|
+      file_doc = SolrDocument.new(file) unless files.empty?
+      if can?(:read, document[:id])
+        @cover_image = search_image( document, file_doc ) unless file_doc.nil?
+        if !@cover_image.nil? then
+          break
+        end
+      end    
     end
 
     @cover_image = default_image ( file_doc ) if @cover_image.nil?
