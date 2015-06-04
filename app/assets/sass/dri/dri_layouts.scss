@@ -68,8 +68,9 @@
 }
 
 .dri_facet_restrictions_container {
-  @include zen-grid-container;
+   @include zen-grid-container;
 	 @include zen-grid-flow-item(4, 4, $alpha-gutter: 10px);
+	 padding-left: 10px;
 
 }
 
