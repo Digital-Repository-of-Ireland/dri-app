@@ -2,7 +2,7 @@
     <ul id="dri_account_links_id" class="dri_account_links">
       <% if current_user %>
           <%= link_to user_group.user_path(current_user), :id => 'view_account' do %>
-              <li>
+              <li class="on">
                 <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
               </li>
           <% end %>

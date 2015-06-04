@@ -712,9 +712,15 @@ a .dri_signin_edugate:hover {
       color: $dri_midgrey;
 
     }
+    li:hover {
+        text-decoration: underline;
+    }
     
     li.no_border {
         border-right: none;
+    }
+    li.on {
+      color: $dri_grey;
     }
     .dri_language_links {
       float: right;
@@ -880,95 +886,7 @@ a .dri_signin_edugate:hover {
   }
 }
 
-/*-------------- Sub Navigation 
-.dri_sub_nav {
-	margin: 0px;
-	padding: 0px;
-	border-bottom: 1px solid $dri_thingrey;	
-	height: 40px;
-}
-.dri_sub_nav ul {
-	margin: 0px;
-	padding: 0px;
-}
 
-.dri_sub_nav ul.dri_nav_collections {
-	margin-left: 112px;
-}
-.dri_sub_nav li {
-	float: left;
-	margin: 10px 0 10px 0;
-	padding: 0;
-	font-size: 110%;
-	font-weight: normal;
-	list-style: none;
-	text-decoration: none;	
-	border-right: 1px solid $dri_thingrey;
-	
-}
-.dri_sub_nav li a {
-	list-style: none;
-	text-decoration: none;
-	color: #3E3E3E;
-	margin: 0;
-	padding: 0 20px 0 20px;
-	display: block;
-}
-
-.dri_sub_nav li a:hover  {
-	text-decoration: underline;
-}
-.dri_sub_nav li.no_border_right {
-		border-right: none;	
-}
-.dri_sub_nav li.selected a {
-	text-decoration: underline;
-}
---------------*/
-
-/*-------------- Crumb trail Navigation 
-
-.dri_crumbtrail_nav {
-	margin: 0px;
-	padding: 0px;
-}
-
-.dri_crumbtrail_nav  ul {
-	margin: 0px;
-	padding: 0 0 0 10px;
-	border-bottom: 1px solid $dri_thingrey;
-	height: 40px;
-}
-
-.dri_crumbtrail_nav  li {
-	float: left;
-	margin: 0;
-	padding: 0;
-	font-size: 100%;
-	font-weight: normal;
-	list-style: none;
-	text-decoration: none;	
-	
-}
-.dri_crumbtrail_nav  li a {
-	list-style: none;
-	text-decoration: none;
-	color: #9E9E9E;
-	margin: 10px 0 10px 0;
-	padding: 0 15px 0 10px;
-	display: block;
-	background: image-url('dri/dash.png') no-repeat right;
-}
-.dri_crumbtrail_nav  li a:hover  {
-	text-decoration: underline;
-}
-.dri_crumbtrail_nav  li.selected a {
-	border-right: none;
-	color: $dri_midgrey;
-	background: none;
-	text-decoration: underline;
-}
---------------*/
 ol.breadcrumb {
   background-color: #FFF;
   border-bottom: 1px solid $dri_thingrey;
@@ -1017,7 +935,7 @@ ol.breadcrumb {
 /*-------------- Search --------------*/
 
 .dri_search_term_text_input {
-  clear: right;
+  clear:right;
   float: right;
   margin: 24px 0 0 0;
   width: 226px;
@@ -2942,6 +2860,10 @@ ul.dri_collection_institutes_list {
 
 .dri_no_border {
   border: 0;
+}
+
+.dri_no_clear {
+  clear: none;
 }
 
 /* static blocks */
