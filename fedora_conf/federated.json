@@ -25,16 +25,4 @@
         ]
     },
     "node-types" : ["fedora-node-types.cnd"],
-    "externalSources" : {
-        "federated-directory" : {
-            "classname" : "org.fcrepo.connector.file.FedoraFileSystemConnector",
-            "directoryPath" : "../dri_files/data",
-            "propertiesDirectoryPath" : "../dri_files/meta",
-            "projections" : [ "default:/federated => /" ],
-            "contentBasedSha1" : "true",
-            "readonly" : false,
-            "extraPropertiesStorage" : "json",
-            "cacheTtlSeconds" : 5
-        }
-    } 
 }

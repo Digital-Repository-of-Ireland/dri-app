@@ -66,9 +66,9 @@ module Hydra
       end
 
       def load_image_transformer
-        #source_datastream.to_tempfile do |f|
-          MiniMagick::Image.read(source_file.content)
-        #end
+        source_file.to_tempfile do |f|
+          MiniMagick::Image.read(f.read)
+        end
       end
     end
   end

@@ -71,7 +71,8 @@ class AssetsController < ApplicationController
       create_file(file_upload, @generic_file, datastream, version, params[:checksum])
 
       path = build_path(@generic_file, datastream, version)
-      url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
+      #url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
+      url = url_for :controller=>"assets", :action=>"download", :object_id => @generic_file.batch.id, :id=>@generic_file.id
 
       if actor.update_external_content(URI.escape(url), file_upload, datastream)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
@@ -126,7 +127,8 @@ class AssetsController < ApplicationController
         create_file(file_upload, @generic_file, datastream, version, params[:checksum])
 
         path = build_path(@generic_file, datastream, version)
-        url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
+        #url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
+        url = url_for :controller=>"assets", :action=>"download", :object_id => @object.id, :id=>@generic_file.id
 
         if actor.create_external_content(URI.escape(url), datastream, file_upload.original_filename)
           flash[:notice] = t('dri.flash.notice.file_uploaded')
