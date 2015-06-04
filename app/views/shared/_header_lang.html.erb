@@ -1,22 +1,31 @@
 <% lang_params = {:path => request.fullpath} %>
 
 <% if I18n.locale == :en %>
-    <% lang_params[:id] = 'ga' %>
-    <ul class="dropdown dri_language_links">
-      <%= link_to 'English', '#',:"data-toggle" => "dropdown", id: :en %>
-      <%= image_tag("dri/account_arrow.png", :width=>"10", :height=>"5") %>
-
-      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <%= link_to 'Gaeilge', lang_path(lang_params), id: :ga %>
-      </ul>
-    </ul>
+<% lang_params[:id] = 'ga' %>
+<ul class="dropdown">
+	<li>
+		<%= link_to 'English', '#', :"data-toggle" => "dropdown", id: :en %>
+		 <i class="icon-caret-down"></i>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+			<%= link_to lang_path(lang_params), id: :ga do %>
+			<li>
+				Gaeilge
+			</li>
+			<% end %>
+		</ul>
+	</li>
+</ul>
 <% else %>
-    <% lang_params[:id] = 'en' %>
-    <ul class="dropdown dri_language_links">
-      <%= link_to 'Gaeilge', '#', :"data-toggle" => "dropdown", id: :ga %>
-      <%= image_tag("dri/account_arrow.png", :width=>"10", :height=>"5") %>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <%= link_to 'English', lang_path(lang_params), id: :en %>
-      </ul>
-    </ul>
+<% lang_params[:id] = 'en' %>
+<ul class="dropdown">
+	<%= link_to 'Gaeilge', '#', :"data-toggle" => "dropdown", id: :ga %>
+	<i class="icon-caret-down"></i>
+	<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+		<%= link_to lang_path(lang_params), id: :en  do %>
+		<li>
+			English
+		</li>
+		<% end %>
+	</ul>
+</ul>
 <% end %>

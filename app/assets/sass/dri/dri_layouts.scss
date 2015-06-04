@@ -193,25 +193,21 @@
 	
 	.dri_header_container {
 	  padding-bottom: 20px;
+        .dri_search_term_text_input {
 
+          margin: 3px 0 15px 0;
+          clear:right;
+
+        }
 
     @include zen-grid-container;
     
     .dri_authentication_search_container {
 
       float:right;
-      .dri_authentication_menus_container {
-  
-      }
-      .dri_search_term_input {
         
-        .dri_search_term_text_input {
 
-          margin: 3px 0 15px 0;
 
-        }
-  
-      }
     
     }
     

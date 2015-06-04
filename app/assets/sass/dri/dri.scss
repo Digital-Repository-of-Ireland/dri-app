@@ -346,7 +346,7 @@ input.dri_w230 {
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
   margin: auto;
-  border: 1px solid #D9DADB;
+  border: 1px solid $dri_thingrey;
   background-color: white;
   padding: 40px 0 40px 65px;
   display: block;
@@ -483,7 +483,7 @@ input.dri_w230 {
 /*-------------- Signin Social Media--------------*/
 
 .dri_signin_socialmedia {
-  border-top: 1px solid #D9DADB;
+  border-top: 1px solid $dri_thingrey;
   margin: 30px 0  0 0;
   padding: 0 0 0 0;
   width: 330px;
@@ -685,7 +685,7 @@ a .dri_signin_edugate:hover {
   background-clip: padding-box;
   a {
     margin-left: 5px;
-    color: #808082;
+    color: $dri_midgrey;
   }
 }
 }
@@ -697,77 +697,42 @@ a .dri_signin_edugate:hover {
 }
 
 .dri_account_nav {
-  float: right;
   margin: 10px 0 0 0;
   padding: 0px;
-  color: #333;
+  font-size: 1.1em;
   ul.dri_account_links {
-    margin: 0;
-    padding: 0;
     li {
       float: left;
-      text-decoration: none;
-      list-style: none;
+      
+      
       display: block;
       margin: 2px 0 0 10px;
       padding: 0 10px 0 0;
-      border-right: 1px solid #D9DADB;
-      .noborder {
-        border-right: none;
-      }
-      a {
-        float: left;
-        text-decoration: none;
-        list-style: none;
-        color: #808082;
-        padding: 0;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
+      border-right: 1px solid $dri_thingrey;
+      color: $dri_midgrey;
+
     }
-    .on {
-      a {
-        text-decoration: underline;
-		color: $dri_grey;
-      }
+    
+    li.no_border {
+        border-right: none;
     }
     .dri_language_links {
       float: right;
       display: block;
-      border: 1px solid #D9DADB;
+      border: 1px solid $dri_thingrey;
       margin: 0;
       padding: 2px 7px 2px 7px;
       display: block;
       -moz-border-radius: 2px;
       border-radius: 2px;
-      ul {
-          a {
-          color: #808082;
-          size: 1em;
-        }
-        .dropdown-menu > a {
-         font-size: 12px;
+      font-size: 1.1em;
+      .dropdown-menu > a {      
           margin-left: 3px;
-        }
-      }
-      
-      .dri_language_links li {
-        float: right;
-        text-decoration: none;
-        list-style: none;
-        border-right: none;
-        padding: 0;
-        margin: 0;
-      }
-      
-       .dropdown-menu > a {
-         font-size: 12px;
-          margin-left: 3px;
-        }
-       .dropdown-menu > a:hover {
-          color: $dri_green;
-        }
+          color: $dri_midgrey; 
+       }
+      .dropdown-menu > a:hover {    
+            color: $dri_green;   
+       }
     }
   }
 }
@@ -852,8 +817,8 @@ a .dri_signin_edugate:hover {
   ul {
     margin: 0px;
     padding: 0px;
-    border-bottom: 1px solid #D9DADB;
-    border-top: 1px solid #D9DADB;
+    border-bottom: 1px solid $dri_thingrey;
+    border-top: 1px solid $dri_thingrey;
     height: 60px;
   }
   li {
@@ -865,7 +830,7 @@ a .dri_signin_edugate:hover {
     font-weight: bold;
     list-style: none;
     text-decoration: none;
-    border-right: 1px solid #D9DADB;
+    border-right: 1px solid $dri_thingrey;
     a {
       text-transform: uppercase;
       list-style: none;
@@ -892,8 +857,8 @@ a .dri_signin_edugate:hover {
       border: 0;
       li {
         min-width: 200px;
-        border-bottom: 1px solid #D9DADB;
-        border-left: 1px solid #D9DADB;
+        border-bottom: 1px solid $dri_thingrey;
+        border-left: 1px solid $dri_thingrey;
         font-size: 100%;
         float: left;
         a {
@@ -919,7 +884,7 @@ a .dri_signin_edugate:hover {
 .dri_sub_nav {
 	margin: 0px;
 	padding: 0px;
-	border-bottom: 1px solid #D9DADB;	
+	border-bottom: 1px solid $dri_thingrey;	
 	height: 40px;
 }
 .dri_sub_nav ul {
@@ -938,7 +903,7 @@ a .dri_signin_edugate:hover {
 	font-weight: normal;
 	list-style: none;
 	text-decoration: none;	
-	border-right: 1px solid #D9DADB;
+	border-right: 1px solid $dri_thingrey;
 	
 }
 .dri_sub_nav li a {
@@ -971,7 +936,7 @@ a .dri_signin_edugate:hover {
 .dri_crumbtrail_nav  ul {
 	margin: 0px;
 	padding: 0 0 0 10px;
-	border-bottom: 1px solid #D9DADB;
+	border-bottom: 1px solid $dri_thingrey;
 	height: 40px;
 }
 
@@ -999,14 +964,14 @@ a .dri_signin_edugate:hover {
 }
 .dri_crumbtrail_nav  li.selected a {
 	border-right: none;
-	color: #808082;
+	color: $dri_midgrey;
 	background: none;
 	text-decoration: underline;
 }
 --------------*/
 ol.breadcrumb {
   background-color: #FFF;
-  border-bottom: 1px solid #D9DADB;
+  border-bottom: 1px solid $dri_thingrey;
   margin: 0px;
   li {
     font-size: 110%;
@@ -1039,10 +1004,10 @@ ol.breadcrumb {
     padding: 4px;
     padding-right: 10px;
     //width: 230px;
-    border: 1px solid #D9DADB;
+    border: 1px solid $dri_thingrey;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    color: #808082;
+    color: $dri_midgrey;
     //width: 160px;
     font-size: 100%;
     height: 25px;
@@ -1052,6 +1017,7 @@ ol.breadcrumb {
 /*-------------- Search --------------*/
 
 .dri_search_term_text_input {
+  clear: right;
   float: right;
   margin: 24px 0 0 0;
   width: 226px;
@@ -1105,10 +1071,10 @@ ol.breadcrumb {
   select {
     margin: 2px 0 0 0;
     padding: 4px;
-    border: 1px solid #D9DADB;
+    border: 1px solid $dri_thingrey;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    color: #808082;
+    color: $dri_midgrey;
     width: 60px;
     font-size: 100%;
   }
@@ -1123,13 +1089,13 @@ ol.breadcrumb {
     text-decoration: none;
     list-style: none;
     display: block;
-    border: 1px solid #D9DADB;
+    border: 1px solid $dri_thingrey;
     a {
       margin: 0;
       padding: 0;
       text-decoration: none;
       list-style: none;
-      color: #808082;
+      color: $dri_midgrey;
     }
   }
 }
@@ -1157,7 +1123,7 @@ ol.breadcrumb {
     display: block;
     margin: 0;
     padding: 0;
-    border-right: 1px solid #D9DADB;
+    border-right: 1px solid $dri_thingrey;
     a {
       float: left;
       list-style: none;
@@ -1167,7 +1133,7 @@ ol.breadcrumb {
       text-decoration: none;
     }
     a:hover {
-      color: #808082;
+      color: $dri_midgrey;
     }
   }
   .selected a {
@@ -1237,10 +1203,10 @@ ol.breadcrumb {
     padding: 2px 8px 0 22px;
     list-style: none;
     text-decoration: none;
-    color: #808082;
+    color: $dri_midgrey;
     float: left;
     display: block;
-    border-left: 1px solid #D9DADB;
+    border-left: 1px solid $dri_thingrey;
     background: image-url("dri/clear_all_close.png") no-repeat left;
   }
   a:hover {
@@ -1260,7 +1226,7 @@ ol.breadcrumb {
   padding: 0;
   float: left;
   width: 94%;
-  border-bottom: 1px solid #D9DADB;
+  border-bottom: 1px solid $dri_thingrey;
   ul {
     margin: 0;
     padding: 0;
@@ -1270,11 +1236,11 @@ ol.breadcrumb {
     text-decoration: none;
     float: left;
     a {
-      color: #808082;
+      color: $dri_midgrey;
       margin: 10px 4px 0 0;
       padding: 8px 13px 8px 13px;
       text-decoration: none;
-      border: 1px solid #D9DADB;
+      border: 1px solid $dri_thingrey;
       border-top-right-radius: 3px;
       border-top-left-radius: 3px;
       border-bottom: none;
@@ -1646,7 +1612,7 @@ h5.dri_rss_subtitle {
 }
 
 p.dri_rss_link a {
-  border-bottom: 1px solid #D9DADB;
+  border-bottom: 1px solid $dri_thingrey;
   font-size: 93%;
   color: $dri_grey;
   display: block;
@@ -1664,7 +1630,7 @@ p.dri_rss_link a {
   .dri_about_01 {
     padding: 0;
     margin: 20px 0 0 0;
-    border-right: 1px solid #D9DADB;
+    border-right: 1px solid $dri_thingrey;
     h1 {
       padding: 0;
       margin: 0;
@@ -1676,7 +1642,7 @@ p.dri_rss_link a {
   .dri_about_02 {
     padding: 0;
     margin: 20px 0 0 0;
-    border-right: 1px solid #D9DADB;
+    border-right: 1px solid $dri_thingrey;
     h4 {
       padding: 0;
       margin: 0;
@@ -1816,7 +1782,7 @@ p.dri_rss_link a {
   }
   .dri_about_09 {
     min-height: 189px;
-    border: 1px solid #D9DADB;
+    border: 1px solid $dri_thingrey;
     //padding: 20px 0 0 0;
     margin: 0 0 12px 0;
     //background-color: #BDBFC1;
@@ -1833,7 +1799,7 @@ p.dri_rss_link a {
   }
   .dri_about_10 {
     min-height: 189px;
-    border: 1px solid #D9DADB;
+    border: 1px solid $dri_thingrey;
     padding: 20px 0 0 0;
     h2 {
       margin: 0;
@@ -2168,9 +2134,9 @@ p.dri_rss_link a {
 .dri_dialog_example {
   margin: 0;
   padding: 12px;
-  border: 1px solid #D9DADB;
+  border: 1px solid $dri_thingrey;
   background-color: #FFF;
-  color: #808082;
+  color: $dri_midgrey;
 }
 
 /* Third Party CSS */
@@ -2203,7 +2169,7 @@ p.dri_rss_link a {
   z-index: 1000;
   display: none;
   list-style: none;
-  border: 1px solid #D9DADB;
+  border: 1px solid $dri_thingrey;
   margin: 2px 0 0 0;
   padding: 2px 16px 2px 7px;
   display: block;
@@ -2308,7 +2274,7 @@ h2.dri_no_asset_availiable {
     }
   }
   p.dri_assets_total {
-    border-top: 1px solid #D9DADB;
+    border-top: 1px solid $dri_thingrey;
     padding: 10px 0 0 0;
     margin: 0 0 20px 0;
     font-weight: bold;
@@ -2349,7 +2315,7 @@ h2.dri_no_asset_availiable {
       list-style: none;
       color: $dri_greytext;
       text-decoration: none;
-      border-right: 1px solid #D9DADB;
+      border-right: 1px solid $dri_thingrey;
       display: block;
       margin: 0;
       padding: 0 10px 0 10px;
@@ -2743,7 +2709,7 @@ ul.dri_view_collection {
 
 // static page of institutes
 .not_first {
-  border-bottom: 1px solid #D9DADB;
+  border-bottom: 1px solid $dri_thingrey;
 }
 
 .dri_collection_institutes_pages {
@@ -2751,7 +2717,7 @@ ul.dri_view_collection {
   margin-top: 30px;
   clear: both;
   .dri_collection_institutes_pages_img {
-    border-right: 1px solid #D9DADB;
+    border-right: 1px solid $dri_thingrey;
     padding-top: -30px;
     padding-bottom: -30px;
     margin-top: 40px;
@@ -2864,7 +2830,7 @@ ul.dri_collection_institutes_list {
 .dri_main_footer_navigation {
   margin: 100px 0 70px 0;
   padding: 0px;
-  border-top: 1px solid #D9DADB;
+  border-top: 1px solid $dri_thingrey;
   height: 40px;
   ul {
     margin: 0px;
@@ -2878,11 +2844,11 @@ ul.dri_collection_institutes_list {
     font-weight: normal;
     list-style: none;
     text-decoration: none;
-    border-right: 1px solid #D9DADB;
+    border-right: 1px solid $dri_thingrey;
     a {
       list-style: none;
       text-decoration: none;
-      color: #808082;
+      color: $dri_midgrey;
       margin: 0;
       padding: 0;
       display: block;
@@ -2983,10 +2949,10 @@ ul.dri_collection_institutes_list {
 .dri_about_box {
   margin: 0;
   height: 230px;
-  border: 1px solid #D9DADB;
+  border: 1px solid $dri_thingrey;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  color: #808082;
+  color: $dri_midgrey;
 }
 
 /*-- Popover Text *--/
