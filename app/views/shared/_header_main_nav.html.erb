@@ -32,11 +32,11 @@
           
       <% end %>
       <% if !current_user %>
-          <li class="active">
+          <li class="hidden-sm hidden-md hidden-lg">
             <%= link_to "Sign Up", user_group.new_user_path %>
           </li>
       <% end %>
-      <li class="noborder">
+      <li class="hidden-sm hidden-md hidden-lg">
         <% if current_user %>
             <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, :method => :delete %>
         <% else %>
