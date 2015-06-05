@@ -39,6 +39,8 @@ class AssetsController < ApplicationController
     unless @generic_file.nil?
       can_view?
 
+      @datastream = params[:datastream].presence || "content"
+
       if local_file
         logger.error "Using path: "+local_file.path
         response.headers['Content-Length'] = File.size?(local_file.path).to_s
