@@ -96,13 +96,19 @@ module TimelineHelper
     document_dates.each do |date|
       date_from = date.split(" ")[0]
       date_to = date.split(" ")[1]
-      if (year_to <= date_to && year_from >= date_from)
+      if overlaps?(year_from, date_from, year_to, date_to)
         result_date = queried_date
         break
       end
     end
 
     return result_date
+  end
+
+  private
+
+  def overlaps?(sdate, other_sdate, edate, other_edate)
+    (sdate.to_i - other_edate.to_i) * (other_sdate.to_i - edate.to_i) >= 0
   end
 
 end
