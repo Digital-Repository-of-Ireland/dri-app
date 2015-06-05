@@ -326,7 +326,8 @@ class CatalogController < ApplicationController
     end
 
     if !temporal_idx.nil?
-      start_date = end_date = ""
+      start_date = ""
+      end_date = ""
 
       solr_parameters[:fq][temporal_idx].split(/\s*;\s*/).each do |component|
         (k,v) = component.split(/\s*=\s*/)

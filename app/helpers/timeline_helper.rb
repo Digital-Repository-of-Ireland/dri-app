@@ -53,9 +53,10 @@ module TimelineHelper
 
   def get_temporal_fq_query query_string
     fq_query = ""
-    start_date = end_date = ""
+    start_date = ""
+    end_date = ""
 
-    query_string.split(/\s*;\s*/).each do |component|
+    query_string.first.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if k.eql?('start')
         start_date = v.strip
