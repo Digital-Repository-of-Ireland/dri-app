@@ -39,8 +39,6 @@ class AssetsController < ApplicationController
     unless @generic_file.nil?
       can_view?
 
-      @datastream = params[:datastream].presence || "content"
-
       if local_file
         logger.error "Using path: "+local_file.path
         response.headers['Content-Length'] = File.size?(local_file.path).to_s
@@ -70,8 +68,6 @@ class AssetsController < ApplicationController
       version = actor.version_number(datastream)
       create_file(file_upload, @generic_file, datastream, version, params[:checksum])
 
-      path = build_path(@generic_file, datastream, version)
-      #url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
       url = url_for :controller=>"assets", :action=>"download", :object_id => @generic_file.batch.id, :id=>@generic_file.id
 
       if actor.update_external_content(URI.escape(url), file_upload, datastream)
@@ -126,8 +122,6 @@ class AssetsController < ApplicationController
         version = actor.version_number(datastream)
         create_file(file_upload, @generic_file, datastream, version, params[:checksum])
 
-        path = build_path(@generic_file, datastream, version)
-        #url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
         url = url_for :controller=>"assets", :action=>"download", :object_id => @object.id, :id=>@generic_file.id
 
         if actor.create_external_content(URI.escape(url), datastream, file_upload.original_filename)
@@ -266,7 +260,7 @@ class AssetsController < ApplicationController
     end
 
     def build_path(generic_file, datastream, version)
-      "#{generic_file.id}/#{datastream+version.to_s}"
+      File.join(generic_file.id, datastream+version.to_s)
     end
 
     def create_file(filedata, generic_file, datastream, version, checksum)
