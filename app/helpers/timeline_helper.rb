@@ -35,7 +35,9 @@ module TimelineHelper
             query[:q] << " AND #{temporal_q}"
           end
         else
-          query[:q] += " AND #{facet_name}:\"#{facet_value.first}\""
+          facet_value.each do |val|
+            query[:q] += " AND #{facet_name}:\"#{val}\""
+          end
         end
       end
     end
