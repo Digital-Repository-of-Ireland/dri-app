@@ -4,12 +4,6 @@ class AssetsController < ApplicationController
 
   require 'validators'
 
-  # Returns the directory on the local filesystem to use for storing uploaded files.
-  #
-  def local_storage_dir
-    Rails.root.join(Settings.dri.files)
-  end
-
   def actor
     @actor ||= DRI::Asset::Actor.new(@generic_file, current_user)
   end
@@ -266,10 +260,8 @@ class AssetsController < ApplicationController
     end
 
     def create_file(filedata, generic_file, datastream, version, checksum)
-      dir = local_storage_dir.join(build_path(generic_file, datastream, version))
-
-      @file = LocalFile.new
-      @file.add_file filedata, {:fedora_id => generic_file.id, :ds_id => datastream, :directory => dir.to_s, :version => version, :mime_type => @mime_type, :checksum => checksum}
+      @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
+      @file.add_file filedata, {:version => version, :mime_type => @mime_type, :checksum => checksum}
 
       begin
         raise Exceptions::InternalError unless @file.save!

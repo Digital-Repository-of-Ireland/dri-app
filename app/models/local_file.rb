@@ -18,15 +18,14 @@ class LocalFile < ActiveRecord::Base
     else
       file_name = upload.original_filename
     end
-
     
-    self.path = File.join(opts[:directory], file_name)
-    self.fedora_id = opts[:fedora_id]
-    self.ds_id = opts[:ds_id]
     self.version = opts[:version]
-    self.mime_type = opts[:mime_type] 
+    self.mime_type = opts[:mime_type]
 
-    FileUtils.mkdir_p(opts[:directory])
+    base_dir = opts[:directory].present? ? opts[:directory] : File.join(local_storage_dir, content_path)
+    self.path = File.join(base_dir, file_name)
+
+    FileUtils.mkdir_p(base_dir)
     if upload.respond_to?('path')
       FileUtils.cp(upload.path, self.path)
     else
@@ -45,9 +44,7 @@ class LocalFile < ActiveRecord::Base
   # Remove the file from the filesystem if it exists
   #
   def delete_file
-    if self.path.nil?
-      return
-    end
+    return if self.path.nil?
 
     if File.exist?(self.path)
       File.delete(self.path)
@@ -56,5 +53,27 @@ class LocalFile < ActiveRecord::Base
       FileUtils.remove_dir(pn.dirname, :force => true)
     end
   end
+
+  private
+
+    def local_storage_dir
+      Rails.root.join(Settings.dri.files)
+    end
+
+    def content_path
+      File.join(build_hash_dir, self.ds_id+self.version.to_s)
+    end
+
+    def build_hash_dir
+      dir = ""
+      index = 0
+
+      4.times {
+        dir = File.join(dir, self.fedora_id[index..index+1])
+        index += 2
+      }
+
+      dir = File.join(dir, self.fedora_id)
+    end
 
 end

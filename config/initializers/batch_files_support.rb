@@ -42,19 +42,9 @@ DRI::ModelSupport::Files.module_eval do
 
   private
 
-  def local_storage_dir
-    Rails.root.join(Settings.dri.files)
-  end
-
-  def build_path(object_id, datastream, version)
-    File.join(object_id, datastream+version.to_s)
-  end
-
   def create_file(file, file_name, object_id, datastream, version, checksum, mime_type)
-    dir = local_storage_dir.join(build_path(object_id, datastream, version))
-
-    local_file = LocalFile.new
-    local_file.add_file file, {:fedora_id => object_id, :file_name => file_name, :ds_id => datastream, :directory => dir.to_s, :version => version, :checksum => checksum, :mime_type => mime_type}
+    local_file = LocalFile.new(fedora_id: object_id, ds_id: datastream)
+    local_file.add_file file, {:file_name => file_name, :version => version, :checksum => checksum, :mime_type => mime_type}
 
     begin
       local_file.save!
