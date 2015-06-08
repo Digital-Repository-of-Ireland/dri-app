@@ -19,7 +19,7 @@ class LocalFile < ActiveRecord::Base
       file_name = upload.original_filename
     end
     
-    self.version = opts[:version]
+    self.version = version_number
     self.mime_type = opts[:mime_type]
 
     base_dir = opts[:directory].present? ? opts[:directory] : File.join(local_storage_dir, content_path)
@@ -74,6 +74,10 @@ class LocalFile < ActiveRecord::Base
       }
 
       dir = File.join(dir, self.fedora_id)
+    end
+
+    def version_number
+      LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => self.fedora_id, :d => self.ds_id }).count
     end
 
 end

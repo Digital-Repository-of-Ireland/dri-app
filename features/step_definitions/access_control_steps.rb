@@ -24,7 +24,7 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
 
   file = LocalFile.new(fedora_id: gf.id, ds_id: "content")
   uploaded = Rack::Test::UploadedFile.new(File.join(cc_fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-  file.add_file(uploaded, { :directory => Dir.tmpdir, :version => "0" })
+  file.add_file(uploaded, { :directory => Dir.tmpdir })
   file.save
 
   actor = Sufia::GenericFile::Actor.new(gf, current_user)  

@@ -18,8 +18,8 @@ describe "workers" do
     @gf.apply_depositor_metadata(@user)
     @gf.save
 
-    @file = LocalFile.new
-    @file.add_file(uploadhash, {:fedora_id => @gf.id, :ds_id => "content", :directory => tmpdir} )
+    @file = LocalFile.new(fedora_id: @gf.id, ds_id: "content")
+    @file.add_file(uploadhash, {:directory => tmpdir} )
     @file.save
 
     actor = Sufia::GenericFile::Actor.new(@gf, @user)

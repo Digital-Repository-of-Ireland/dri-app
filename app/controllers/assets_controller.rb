@@ -61,8 +61,7 @@ class AssetsController < ApplicationController
     if datastream.eql?("content")
       @generic_file = retrieve_object! params[:id]
 
-      version = actor.version_number(datastream)
-      create_file(file_upload, @generic_file, datastream, version, params[:checksum])
+      create_file(file_upload, @generic_file, datastream, params[:checksum])
 
       url = url_for :controller=>"assets", :action=>"download", :object_id => @generic_file.batch.id, :id=>@generic_file.id
 
@@ -114,9 +113,8 @@ class AssetsController < ApplicationController
         @generic_file.batch = @object
         @generic_file.apply_depositor_metadata(current_user)
         @generic_file.preservation_only = "true" if params[:preservation].eql?('true')
-        
-        version = actor.version_number(datastream)
-        create_file(file_upload, @generic_file, datastream, version, params[:checksum])
+                
+        create_file(file_upload, @generic_file, datastream, params[:checksum])
 
         url = url_for :controller=>"assets", :action=>"download", :object_id => @object.id, :id=>@generic_file.id
 
@@ -259,9 +257,9 @@ class AssetsController < ApplicationController
       File.join(generic_file.id, datastream+version.to_s)
     end
 
-    def create_file(filedata, generic_file, datastream, version, checksum)
+    def create_file(filedata, generic_file, datastream, checksum)
       @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
-      @file.add_file filedata, {:version => version, :mime_type => @mime_type, :checksum => checksum}
+      @file.add_file filedata, {:mime_type => @mime_type, :checksum => checksum}
 
       begin
         raise Exceptions::InternalError unless @file.save!
@@ -278,15 +276,6 @@ class AssetsController < ApplicationController
       else
         LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
                        { :f => @generic_file.id, :d => @datastream }).order("version DESC").take
-      end
-    end
-
-    def save_file
-      begin
-        raise Exceptions::InternalError unless @gf.save!
-      rescue RuntimeError => e
-        logger.error "Could not save file #{@gf.id}: #{e.message}"
-        raise Exceptions::InternalError
       end
     end
 

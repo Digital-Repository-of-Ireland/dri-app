@@ -23,7 +23,6 @@ describe "collection associations" do
   end
 
   after :each do
-    @object.delete
     @collection.delete
   end
 
