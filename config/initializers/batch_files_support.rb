@@ -41,7 +41,7 @@ DRI::ModelSupport::Files.module_eval do
 
   private
 
-  def create_file(file, file_name, object_id, datastream, version, checksum, mime_type)
+  def create_file(file, file_name, object_id, datastream, checksum, mime_type)
     local_file = LocalFile.new(fedora_id: object_id, ds_id: datastream)
     local_file.add_file file, {:file_name => file_name, :checksum => checksum, :mime_type => mime_type}
 
