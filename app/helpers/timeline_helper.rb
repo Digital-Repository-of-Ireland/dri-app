@@ -2,11 +2,11 @@ module TimelineHelper
   include ApplicationHelper
   include ActionView::Helpers::TextHelper
 
-  def get_valid_timeline_count params
-    query = get_query params
-    count = ActiveFedora::SolrService.count(query[:q], :fq => query[:fq], :defType => "edismax")
-    return count
-  end
+  #def get_valid_timeline_count params
+  #  query = get_query params
+  #  count = ActiveFedora::SolrService.count(query[:q], :fq => query[:fq], :defType => "edismax")
+  #  return count
+  #end
 
   def create_timeline_data(response, queried_date="")
     timeline_data = { :timeline => { :type => "default", :date => [] } }
