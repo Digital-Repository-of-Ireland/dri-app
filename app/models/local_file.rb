@@ -11,18 +11,12 @@ class LocalFile < ActiveRecord::Base
   # Write the file to the filesystem
   #
   def add_file(upload,opts={})
-    file_name = ""
-
-    if opts.key?(:file_name)
-      file_name = opts[:file_name]
-    else
-      file_name = upload.original_filename
-    end
-    
+    file_name = opts[:file_name].presence || upload.original_filename
+        
     self.version = version_number
     self.mime_type = opts[:mime_type]
 
-    base_dir = opts[:directory].present? ? opts[:directory] : File.join(local_storage_dir, content_path)
+    base_dir = opts[:directory].presence || File.join(local_storage_dir, content_path)
     self.path = File.join(base_dir, file_name)
 
     FileUtils.mkdir_p(base_dir)
@@ -34,7 +28,7 @@ class LocalFile < ActiveRecord::Base
 
     File.chmod(0644, self.path)
 
-    unless opts[:checksum].blank?
+    if opts[:checksum]
       self.checksum = { opts[:checksum] => Checksum.checksum(opts[:checksum], self.path) }
     else
       self.checksum = {}
@@ -73,7 +67,7 @@ class LocalFile < ActiveRecord::Base
         index += 2
       }
 
-      dir = File.join(dir, self.fedora_id)
+      File.join(dir, self.fedora_id)
     end
 
     def version_number

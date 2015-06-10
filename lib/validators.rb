@@ -28,10 +28,10 @@ module Validators
   # a class variable for the object type (e.g. in DRI:Model:Audio)
   #
   def Validators.valid_file_type?(file, mime_type)
-    if file.class.to_s == "ActionDispatch::Http::UploadedFile"
+    if file.respond_to?(:original_filename)
       path = file.tempfile.path
       extension = file.original_filename.split(".").last
-    elsif (file.class.to_s == "Tempfile")
+    elsif file.respond_to?(:path)
       # Tempfile object path is accessed through file.path
       path = file.path
       extension = file.path.split(".").last
@@ -65,11 +65,11 @@ module Validators
   def Validators.file_type?(file)
     self.init_types()
 
-    if file.class.to_s == "ActionDispatch::Http::UploadedFile"
+    if file.respond_to?(:original_filename)
       path = file.tempfile.path
       extension = file.original_filename.split(".").last
     # For Tempfiles (cover_image) sourced from the Data models
-    elsif (file.class.to_s == "Tempfile")
+    elsif file.respond_to?(:path)
       path = file.path
       extension = file.path.split(".").last
     else

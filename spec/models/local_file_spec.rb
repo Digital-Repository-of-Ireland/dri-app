@@ -3,12 +3,13 @@ require 'spec_helper'
 describe LocalFile do
 
   before(:each) do
-    @file = LocalFile.new(fedora_id: "dri:1234", ds_id: "masterContent")
+    @file = LocalFile.new(fedora_id: "1234567", ds_id: "masterContent")
     @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
     @tmpdir = Dir.mktmpdir
   end
 
   after(:each) do
+    @file.destroy
     FileUtils.remove_dir(@tmpdir, :force => true)
   end
 
