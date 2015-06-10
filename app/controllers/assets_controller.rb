@@ -4,12 +4,6 @@ class AssetsController < ApplicationController
 
   require 'validators'
 
-  # Returns the directory on the local filesystem to use for storing uploaded files.
-  #
-  def local_storage_dir
-    Rails.root.join(Settings.dri.files)
-  end
-
   def actor
     @actor ||= DRI::Asset::Actor.new(@generic_file, current_user)
   end
@@ -67,11 +61,8 @@ class AssetsController < ApplicationController
     if datastream.eql?("content")
       @generic_file = retrieve_object! params[:id]
 
-      version = actor.version_number(datastream)
-      create_file(file_upload, @generic_file, datastream, version, params[:checksum])
+      create_file(file_upload, @generic_file, datastream, params[:checksum], params[:file_name])
 
-      path = build_path(@generic_file, datastream, version)
-      #url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
       url = url_for :controller=>"assets", :action=>"download", :object_id => @generic_file.batch.id, :id=>@generic_file.id
 
       if actor.update_external_content(URI.escape(url), file_upload, datastream)
@@ -122,15 +113,14 @@ class AssetsController < ApplicationController
         @generic_file.batch = @object
         @generic_file.apply_depositor_metadata(current_user)
         @generic_file.preservation_only = "true" if params[:preservation].eql?('true')
-        
-        version = actor.version_number(datastream)
-        create_file(file_upload, @generic_file, datastream, version, params[:checksum])
+                
+        create_file(file_upload, @generic_file, datastream, params[:checksum], params[:file_name])
 
-        path = build_path(@generic_file, datastream, version)
-        #url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{path}/#{file_upload.original_filename}"
         url = url_for :controller=>"assets", :action=>"download", :object_id => @object.id, :id=>@generic_file.id
 
-        if actor.create_external_content(URI.escape(url), datastream, file_upload.original_filename)
+        filename = params[:file_name].presence || file_upload.original_filename
+
+        if actor.create_external_content(URI.escape(url), datastream, filename)
           flash[:notice] = t('dri.flash.notice.file_uploaded')
         else
           message = @generic_file.errors.full_messages.join(', ')
@@ -232,7 +222,7 @@ class AssetsController < ApplicationController
     end
 
     def upload_from_params
-      if params[:Filedata].blank? && params[:Presfiledata].blank?
+      if params[:Filedata].blank? && params[:Presfiledata].blank? && params[:local_file].blank?
         flash[:notice] = t('dri.flash.notice.specify_file')
         redirect_to :controller => "catalog", :action => "show", :id => params[:object_id]
         return
@@ -242,13 +232,14 @@ class AssetsController < ApplicationController
         file_upload = params[:Filedata]
       elsif params[:Presfiledata].present?
         file_upload = params[:Presfiledata]
+      elsif params[:local_file].present?
+        file_upload = local_file_ingest(params[:local_file])
       end
 
       validate_upload(file_upload)
 
       file_upload
     end
-
 
     def validate_upload(file_upload)
       begin
@@ -265,15 +256,14 @@ class AssetsController < ApplicationController
       end
     end
 
-    def build_path(generic_file, datastream, version)
-      "#{generic_file.id}/#{datastream+version.to_s}"
-    end
+    def create_file(filedata, generic_file, datastream, checksum, filename = nil)
+      @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
+      options = {}
+      options[:mime_type] = @mime_type
+      options[:checksum] = checksum
+      options[:file_name] = filename unless filename.nil? 
 
-    def create_file(filedata, generic_file, datastream, version, checksum)
-      dir = local_storage_dir.join(build_path(generic_file, datastream, version))
-
-      @file = LocalFile.new
-      @file.add_file filedata, {:fedora_id => generic_file.id, :ds_id => datastream, :directory => dir.to_s, :version => version, :mime_type => @mime_type, :checksum => checksum}
+      @file.add_file filedata, options
 
       begin
         raise Exceptions::InternalError unless @file.save!
@@ -293,13 +283,9 @@ class AssetsController < ApplicationController
       end
     end
 
-    def save_file
-      begin
-        raise Exceptions::InternalError unless @gf.save!
-      rescue RuntimeError => e
-        logger.error "Could not save file #{@gf.id}: #{e.message}"
-        raise Exceptions::InternalError
-      end
+    def local_file_ingest(name)
+      upload_dir = Rails.root.join(Settings.dri.uploads)
+      File.new(File.join(upload_dir, name))
     end
 
 end

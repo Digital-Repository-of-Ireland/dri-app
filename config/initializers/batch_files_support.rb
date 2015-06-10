@@ -27,10 +27,8 @@ DRI::ModelSupport::Files.module_eval do
 
     @actor = DRI::Asset::Actor.new(gf, ingest_user)
 
-    version = @actor.version_number(dsid)
-    create_file(file, file_name, gf.id, dsid, version, "", mime_type.to_s)
+    create_file(file, file_name, gf.id, dsid, "", mime_type.to_s)
  
-    #url = "#{ActiveFedora.fedora_config.credentials[:url]}/federated/#{build_path(gf.id,dsid,version)}/#{file_name}"
     url = Rails.application.routes.url_helpers.url_for :controller=>"assets", :action=>"download", :object_id => gf.batch.id, :id=>gf.id
 
     if @actor.create_external_content(URI.escape(url), dsid, file_name)
@@ -43,19 +41,9 @@ DRI::ModelSupport::Files.module_eval do
 
   private
 
-  def local_storage_dir
-    Rails.root.join(Settings.dri.files)
-  end
-
-  def build_path(object_id, datastream, version)
-    "#{object_id}/#{datastream+version.to_s}"
-  end
-
-  def create_file(file, file_name, object_id, datastream, version, checksum, mime_type)
-    dir = local_storage_dir.join(build_path(object_id, datastream, version))
-
-    local_file = LocalFile.new
-    local_file.add_file file, {:fedora_id => object_id, :file_name => file_name, :ds_id => datastream, :directory => dir.to_s, :version => version, :checksum => checksum, :mime_type => mime_type}
+  def create_file(file, file_name, object_id, datastream, checksum, mime_type)
+    local_file = LocalFile.new(fedora_id: object_id, ds_id: datastream)
+    local_file.add_file file, {:file_name => file_name, :checksum => checksum, :mime_type => mime_type}
 
     begin
       local_file.save!

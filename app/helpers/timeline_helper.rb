@@ -35,7 +35,9 @@ module TimelineHelper
             query[:q] << " AND #{temporal_q}"
           end
         else
-          query[:q] += " AND #{facet_name}:\"#{facet_value.first}\""
+          facet_value.each do |val|
+            query[:q] += " AND #{facet_name}:\"#{val}\""
+          end
         end
       end
     end
@@ -53,9 +55,10 @@ module TimelineHelper
 
   def get_temporal_fq_query query_string
     fq_query = ""
-    start_date = end_date = ""
+    start_date = ""
+    end_date = ""
 
-    query_string.split(/\s*;\s*/).each do |component|
+    query_string.first.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if k.eql?('start')
         start_date = v.strip
@@ -95,13 +98,19 @@ module TimelineHelper
     document_dates.each do |date|
       date_from = date.split(" ")[0]
       date_to = date.split(" ")[1]
-      if (year_to <= date_to && year_from >= date_from)
+      if overlaps?(year_from, date_from, year_to, date_to)
         result_date = queried_date
         break
       end
     end
 
     return result_date
+  end
+
+  private
+
+  def overlaps?(sdate, other_sdate, edate, other_edate)
+    (sdate.to_i - other_edate.to_i) * (other_sdate.to_i - edate.to_i) >= 0
   end
 
 end

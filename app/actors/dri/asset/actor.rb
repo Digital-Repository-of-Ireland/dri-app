@@ -16,10 +16,6 @@ module DRI::Asset
       end
     end
 
-    def version_number(path)
-      LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => generic_file.id, :d => path }).count
-    end
-
     private
 
       def external_mime_type url
