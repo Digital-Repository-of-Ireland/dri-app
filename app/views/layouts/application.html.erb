@@ -13,7 +13,9 @@
 
 		<!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
 		<meta http-equiv="cleartype" content="on">
-
+		<% if content_for?(:head) %>
+		  <%= yield(:head) %>
+		<% end %>
 		<title><%= h(@page_title || application_name) %></title>
 
 		<link href="<%= opensearch_catalog_path(:format => 'xml', :only_path => false) %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>

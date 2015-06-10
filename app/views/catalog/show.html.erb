@@ -22,4 +22,11 @@
 <div class="dri_object_institutes_block" id="institutes_block">
   <%= render :partial => 'shared/display_institutes' %>
 </div>
+<% content_for :head do %>
+  <meta property="fb:app_id"          content="298965153560401" /> 
+    <meta property="og:type"            content="article" /> 
+    <meta property="og:url"             content="<%= request.original_url %>" /> 
+    <meta property="og:title"           content="<%= @page_title %>" /> 
+    <meta property="og:description"    content="DRI Object" />
+<% end %>
 
