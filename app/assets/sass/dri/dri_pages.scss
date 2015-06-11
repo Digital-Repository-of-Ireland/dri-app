@@ -5,12 +5,14 @@
     margin: 0 0 0 -10px;
   
     h5 {
-      margin-top: 15px;
+      margin: 0 0 10px 0;
       padding-bottom: 5px;
       color: $dri_grey;
       border-bottom: 3px solid $dri_grey;
+      font-weight: bold;
     }
     h6 {
+      margin: 0 0 5px 0;
       font-weight: bold;
     }
     img {
@@ -18,11 +20,28 @@
       padding: 5px 0 5px 0;
     }
     p {
-      color: $dri_grey;
+      color: $dri_midgrey;
+       margin: 0 0 20px 0;
     }
-    a {
-      color: $dri_grey;
+   
+      ul { 
+       margin: 0 0 25px 0;
+       padding: 0;
+       text-decoration: none;
+       
+        a {
+        color: $dri_midgrey; 
+        margin: 0;
+        padding: 0;
+        
+      li { 
+       margin: 0 0 2px 15px;
+       padding: 0; 
+       list-style: disc;
+       }
+
     }
+         }
     .dri_button_green {
       color: white;
     }
@@ -33,6 +52,8 @@
     }
     .dri_about_column {
       border-right: 1px solid $dri_thingrey;
+      min-height: 1200px;
+      margin: 20px 0 0 0;
     }
     .dri_about_col01 {
       @extend .dri_about_column;
