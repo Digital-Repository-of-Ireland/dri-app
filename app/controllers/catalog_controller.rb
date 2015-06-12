@@ -428,9 +428,9 @@ class CatalogController < ApplicationController
 
     end
 
-    if params[:view].present? && params[:view].include?("timeline")
-      params[:per_page] = "100"
-    end
+    #if params[:view].present? && params[:view].include?("timeline")
+    #  params[:per_page] = "100"
+    #end
   end
 
 end
