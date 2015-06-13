@@ -56,14 +56,14 @@
 .dri_about_container2 {
     @include zen-nested-container;
     $zen-column-count:2;
-    .dri_about_01 {
+    .dri_about_col01 {
       @include zen-grid-item(1, 1);
     }
-    .dri_about_02 {
+    .dri_about_col02 {
       border-right:0px;
       @include zen-grid-item(1, 2);      
     }
-    .dri_about_03 {
+    .dri_about_col03 {
       clear:left;
       @include zen-grid-item(1, 1);      
     }
@@ -74,16 +74,16 @@
 .dri_about_container2 {
     @include zen-nested-container;
     $zen-column-count:1;
-    .dri_about_01 {
+    .dri_about_col01 {
       border-right:0px;
       @include zen-grid-item(1, 1);
     }
-    .dri_about_02 {
+    .dri_about_col02 {
       clear:left;
       border-right:0px;
       @include zen-grid-item(1, 1);      
     }
-    .dri_about_03 {
+    .dri_about_col03 {
       clear:left;
       @include zen-grid-item(1, 1);      
     }
