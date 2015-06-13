@@ -21,12 +21,12 @@ module InstituteHelpers
   end
 
   def self.get_institutes_from_solr_doc(doc)
-    doc[ActiveFedora::SolrQueryBuilder.solr_name('type', :stored_searchable, type: :string)].include?  == 'Collection' ? self.get_collection_institutes_from_solr_doc(doc) : self.get_object_institutes_from_solr_doc(doc)
+    doc[ActiveFedora::SolrQueryBuilder.solr_name('type', :stored_searchable, type: :string)].include? 'Collection' ? self.get_collection_institutes_from_solr_doc(doc) : self.get_object_institutes_from_solr_doc(doc)
   end
 
 
   def self.get_depositing_institute_from_solr_doc(doc)
-    doc[ActiveFedora::SolrQueryBuilder.solr_name('type', :stored_searchable, type: :string)].include?  == 'Collection' ? self.get_collection_depositing_institute_from_solr_doc(doc) : self.get_object_depositing_institute_from_solr_doc(doc)
+    doc[ActiveFedora::SolrQueryBuilder.solr_name('type', :stored_searchable, type: :string)].include? 'Collection' ? self.get_collection_depositing_institute_from_solr_doc(doc) : self.get_object_depositing_institute_from_solr_doc(doc)
   end
 
 
