@@ -33,7 +33,7 @@ class CatalogController < ApplicationController
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
   configure_blacklight do |config|
-    config.per_page = [6,9,18,36]
+    config.per_page = [9,18,36]
     config.default_per_page = 9
     config.metadata_lang = ['all','gle','enl']
     config.default_metadata_lang = 'all'
@@ -428,9 +428,13 @@ class CatalogController < ApplicationController
 
     end
 
-    #if params[:view].present? && params[:view].include?("timeline")
-    #  params[:per_page] = "100"
-    #end
+    if params[:view].present? && params[:view].include?("timeline")
+      params[:per_page] = "100"
+    else
+      if params[:per_page].present? && params[:per_page].to_i > 36
+        params[:per_page] = "9"
+      end
+    end
   end
 
 end
