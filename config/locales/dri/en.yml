@@ -246,7 +246,7 @@ en:
           no_permission: "You do not have permission to view the asset file associated with this object."
           no_saved_search: "You have no saved searches"
           no_surrogates: "No surrogates are available."
-          preservation_only: "Prervation-only file."
+          preservation_only: "Preservation-only file."
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Login to get access."
