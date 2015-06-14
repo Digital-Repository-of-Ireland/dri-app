@@ -40,6 +40,7 @@ module TimelineHelper
           timeline_data[:timeline][:date][index][:text] = truncate(document[ActiveFedora::SolrQueryBuilder.solr_name('description', :stored_searchable, type: :string).to_sym].first, length: 60, separator: ' ')
           timeline_data[:timeline][:date][index][:asset] = {}
           timeline_data[:timeline][:date][index][:asset][:media] = get_cover_image_tm(document)
+          timeline_data[:timeline][:date][index][:asset][:thumbnail] = get_cover_image_tm(document)
         end
       end #for-each
     end
