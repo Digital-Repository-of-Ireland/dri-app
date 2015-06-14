@@ -233,6 +233,7 @@ ga:
           file: Comhad
           image_file: Íomhá
           manage_bookmark: "Bainistigh do chuid Leabharmharcanna"
+          map: Map
           metadata: Meiteashonraí
           metadata_full: "Meiteashonraí Iomlán (XML)"
           objects_in_collection: Oibiachtaí
@@ -261,6 +262,7 @@ ga:
           add_documentation_help_title: "Teideal na cabhrach anseo"
           add_object: "Cuir Oibiacht leis"
           add_object_xml: "Uaslódáil XML na hOibiachta"
+          add_sub_collection: "Add Sub-Collection"
           asset: Sócmhainn
           characterization: Mianach
           details: "Sonraí an Chomhaid"
@@ -271,6 +273,7 @@ ga:
           draft: Dréacht
           edit_this_record: "Cuir an taifead seo in eagar"
           generate_surrogates: "Gin na hionadaithe"
+          history: History
           listen: Éist
           mark_all_descendants_reviewed: "Mark Collection AND Sub-Collection Objects Reviewed"
           mark_all_reviewed: "Bailiúchán Athbhreithnithe"
@@ -293,6 +296,7 @@ ga:
           nav_header: "Uirlisí Eagarthóireachta"
         titles: 
           editor_tools: "Uirlisí Eagarthóireachta"
+          navigation_tools: "Navigation Tools"
           object_tools: "Uirlisí Oibiachta"
       collection: 
         buttons: 
@@ -356,6 +360,7 @@ ga:
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
       fields: 
+        Format: Format
         collection_title: "Teideal an Bhailiúcháin"
         contributor: Rannpháirtí
         contributors: Rannpháirtithe
@@ -391,6 +396,7 @@ ga:
         published_date: "Dáta Foilsithe"
         published_dates: "Dátaí Foilsithe "
         publisher: Foilsitheoir
+        publishers: Publishers
         relation: Nasc
         relations: Naisc
         rights: Cearta
@@ -444,6 +450,7 @@ ga:
           logo: Lógó
           name: Ainm
           url: url
+        licence: License
       manager_users: 
         buttons: 
           submit: Create

@@ -156,7 +156,7 @@ en:
         single_item_found: "<b>1</b> to <b>1</b> of <b>1</b>"
       per_page:
         button_label: "%{count}"
-        label: "%{count}"
+        label: "%{count} Results"
         submit: Update
         title: "Number of results to display per page"
       rss_feed: "RSS for results"

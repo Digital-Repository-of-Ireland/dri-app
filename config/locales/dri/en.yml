@@ -233,6 +233,7 @@ en:
           file: File
           image_file: Image
           manage_bookmark: "Manage Your Bookmarks"
+          map: Map
           metadata: Metadata
           metadata_full: "Full Metadata (XML)"
           objects_in_collection: Objects
@@ -261,6 +262,7 @@ en:
           add_documentation_help_title: "Help Title Here"
           add_object: "Add an Object"
           add_object_xml: "Upload Object XML"
+          add_sub_collection: "Add Sub-Collection"
           asset: Asset
           characterization: Characterization
           details: "Asset Details"
@@ -271,6 +273,7 @@ en:
           draft: Draft
           edit_this_record: "Edit this record"
           generate_surrogates: "Regenerate surrogates"
+          history: History
           listen: listen
           mark_all_descendants_reviewed: "Mark Collection AND Sub-Collection Objects Reviewed"
           mark_all_reviewed: "Mark Collection Objects Reviewed"
@@ -293,6 +296,7 @@ en:
           nav_header: "Edit Tools"
         titles: 
           editor_tools: "Editor Tools"
+          navigation_tools: "Navigation Tools"
           object_tools: "Object Tools"
       collection: 
         buttons: 
@@ -356,6 +360,7 @@ en:
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
       fields: 
+        Format: Format
         collection_title: "Collection Title"
         contributor: Contributor
         contributors: Contributors
@@ -391,6 +396,7 @@ en:
         published_date: "Published Date"
         published_dates: "Published Dates"
         publisher: Publisher
+        publishers: Publishers
         relation: Relation
         relations: Relations
         rights: Rights
