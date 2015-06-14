@@ -1,6 +1,5 @@
 <% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index')%> <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
 <nav id="dri_pager_nav_id" class="dri_sort_nav">
-		<i class="fa fa-th-large fa-lg dri_icon_border"></i>
 
 	<select id="dri_page_options_id" class="dri_sort_options" name="sort_options" data-content="<%= t('dri.help.dri_page_options') %>"  data-original-title="<%= t('dri.help.dri_page_options_title')%>" data-trigger="hover" data-placement="right">
 		<%- blacklight_config.per_page.each do |count| %>
