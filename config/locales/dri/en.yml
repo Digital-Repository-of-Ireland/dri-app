@@ -138,6 +138,7 @@ en:
       browse: Discover
       collection: Collection
       collections: Collections
+      sub_collections: "Sub-Collections"
       contact: Contact
       current_collection: "Current Collection: %{collection}"
       end_user_agreement: "End User Agreement"
@@ -164,7 +165,7 @@ en:
       dri_browse_sort_tabs_sub_collection_title: "Sub-Collections Search"
       dri_browse_sort_tabs_objects: "Use this tab to search for Objects"
       dri_browse_sort_tabs_objects_title: "Objects Search"
-      dri_change_sort_view: "Use these buttons to select between a Grid or Tabular layout for your search result"
+      dri_change_sort_view: "Use these buttons to select between a Grid, Tabular, Timeline or Map layout for your search result"
       dri_change_sort_view_title: "Search Result Layout"
       dri_facet_restrictions_links: "These are the Facets which are narrowing your search. You can disable them individually or Clear All"
       dri_facet_restrictions_links_title: "Selected Facets"
