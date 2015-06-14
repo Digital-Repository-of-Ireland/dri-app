@@ -24,13 +24,13 @@ ga:
       home: 
         featured: "Faoi thrácht"
         featured_collections: "Bailiúcháin Faoi Thrácht"
+        featured_objects: "Featured Objects"
         introtext: "Taisclann dhigiteach iontaofa náisiúnta í Taisclann Dhigiteach na hÉireann d’ábhar sóisialta agus cultúrtha na hÉireann. Ar an suíomh seo is féidir bailiúcháin chomhaimseartha agus stairiúla a aimsiú agus a chuardach ó aon láthair amháin.  Tá súil againn go mbainfidh tú sult as do chuairt."
         links: 
           news_dri: "Léigh ár Nuacht"
           register_dri: "Cláraigh anois"
           visit_dri: "Tabhair Cuairt ar Shuíomh Tionscnaimh TDÉ"
         new_collections: "Bailiúcháin Nua"
-        newly_added: "Curtha isteach le gairid"
         rss_feed: 
           read_more: "Léigh tuilleadh"
           title: Nuacht
