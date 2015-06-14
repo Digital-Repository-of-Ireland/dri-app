@@ -450,7 +450,6 @@ ga:
           logo: Lógó
           name: Ainm
           url: url
-        licence: License
       manager_users: 
         buttons: 
           submit: Create

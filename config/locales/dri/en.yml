@@ -175,7 +175,7 @@ en:
       dri_page_options_title: "Items per Page"
       dri_pagination_nav_links: "Use these links to move through your search results. You can change the number of pages selecting more or fewer items per page"
       dri_pagination_nav_links_title: "Result Pagination"
-      dri_sort_options: "Select from this list to sort your results by Newest, Title or Relevance. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
+      dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
       dri_sort_options_title: "Search Sort Options"
       dummy_text: "Help text goes here"
       dummy_title: "Title of help here"
@@ -185,7 +185,7 @@ en:
       no_results_found: "No search results found"
       q: "Type a search term and press Enter. Use AND and OR to narrow or broaden your search"
       q_title: "Search the repository"
-      social_media_links: "Use these buttons to vist our Facebook, Linked-In, Slideshare and Twitter pages"
+      social_media_links: "Use these buttons to vist our Twitter, Facebook, Vimeo and Slideshare pages"
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
     navbar: 
