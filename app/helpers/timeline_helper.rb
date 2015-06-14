@@ -9,7 +9,6 @@ module TimelineHelper
 
   def create_timeline_data(response, queried_date="")
     timeline_data = { :timeline => { :type => "default", :date => [] } }
-    document_date = nil
 
     if response.blank?
       timeline_data[:timeline][:headline] = t('dri.application.timeline.headline.no_results')
@@ -22,9 +21,10 @@ module TimelineHelper
       timeline_data[:timeline][:text] = t('dri.application.timeline.description.results_found')
 
       response.each_with_index do |document, index|
+        document_date = nil
         document = document.symbolize_keys
         if (!document[:sdateRange].nil?)
-          document_date = get_full_date document[:temporal_coverage_tesim], queried_date
+          document_date = get_full_date(document[:temporal_coverage_tesim], queried_date)
           if document_date.empty?
             document_date = document[:sdateRange].first
           end
@@ -60,7 +60,7 @@ module TimelineHelper
     end
 
     dates_array.each do |date|
-      if DRI::Metadata::Transformations.dcmi_period? date
+      if DRI::Metadata::Transformations.dcmi_period?(date)
         date.split(/\s*;\s*/).each do |component|
           (k,v) = component.split(/\s*=\s*/)
           if k.eql?('start')
