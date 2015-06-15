@@ -753,10 +753,14 @@ a .dri_signin_edugate:hover {
     margin: 0 8px 0 0;
     float: left;
     display: block;
+    i.fa-slideshare {
+      font-size: 23px;
+    }
   }
   li:hover {
     color: $dri_green;
   }
+  
 }
 
 /*-------------- Main Navigation --------------*/
