@@ -747,15 +747,15 @@ a .dri_signin_edugate:hover {
 
 .dri_social_media_nav {
   margin: 70px 0 0 0;
-  ul {
-    //float: right;
-  }
   li {
     font-size: 20px;
     color: $dri_grey;
     margin: 0 8px 0 0;
     float: left;
     display: block;
+  }
+  li:hover {
+    color: $dri_green;
   }
 }
 
