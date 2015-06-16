@@ -1,3 +1,20 @@
+%h5 {
+    h5 {
+      margin-top: 15px;
+      padding-bottom: 5px;
+      color: $dri_grey;
+      border-bottom: 3px solid $dri_grey;
+    }
+}
+.dri_faq {
+ @extend %h5;
+      h6 {
+      font-weight: bold;
+    }
+    p {
+      color: $dri_grey;
+    }
+}
 .dri_about_container2 {
     @include zen-nested-container;
     $zen-column-count:3;

@@ -22,10 +22,11 @@ en:
         save_edits: "Save Edits"
         settings: Settings
       home: 
+        welcome_to_dri: "Welcome to the DRI"
         featured: Featured
         featured_collections: "Featured Collections (Decade of Centenaries)"
         featured_objects: "Featured Objects"
-        introtext: "The Digital Repository of Ireland is the national trusted digital repository for Ireland’s social and cultural data. On this site, you can browse and search both contemporary and historical collections from one location. We hope you enjoy your visit."
+        introtext: "The Digital Repository of Ireland is a national digital repository for Ireland’s humanities, social sciences, and cultural heritage data. You can browse and search across multiple collections from some of the finest Irish institutions. These collections are safely preserved in the DRI. Please explore and enjoy."
         links: 
           news_dri: "Read our News"
           register_dri: "Sign Up Now"
