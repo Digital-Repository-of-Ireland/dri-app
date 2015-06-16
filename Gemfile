@@ -56,7 +56,8 @@ gem 'high_voltage', '~> 2.1.0'
 # is it working fork
 gem 'is_it_working-cbeer'
 
-gem 'sass-rails' , '~> 4.0.2'
+gem 'sass-rails' , '~> 4.0.4'
+gem 'compass-rails'
 # gem 'coffee-rails', '~> 3.2.1'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -76,6 +77,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'guard-livereload', require: false
+  gem 'compass'
 
   gem "zeus", require: false
 
@@ -128,6 +130,5 @@ gem 'bootstrap-switch-rails'
 gem 'videojs_rails', :git => 'https://github.com/ekilfeather/videojs_rails.git', :ref => '605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
-gem 'jazz_fingers'
 gem 'bootstrap-datepicker-rails'
 gem 'social-share-button'
