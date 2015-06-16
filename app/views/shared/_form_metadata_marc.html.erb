@@ -1,7 +1,6 @@
 <!--Load custom styling, just for marc forms-->
-<% content_for :head do
-    stylesheet_link_tag 'marc'
-end %>
+<% content_for :head do stylesheet_link_tag 'marc' end -%>
+<% content_for :head do javascript_include_tag 'marc' end -%>
 
 <% @marc = DRI::Metadata::Marc.marc_vocabulary %>
 
