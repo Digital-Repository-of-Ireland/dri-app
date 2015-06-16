@@ -7,13 +7,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-<<<<<<< HEAD
-  revision: e697e6963faaac5ffe72429f65521569113faf9f
-  branch: hydra9
-=======
   revision: 0333972271542ad82177ebb7d90f353ca4d5c39b
   branch: marc-nccb
->>>>>>> c722a750f34fde6f645c22da97b38e0523fe3909
   specs:
     dri_data_models (2.1.1)
       hydra-access-controls
@@ -113,16 +108,10 @@ GEM
     autoprefixer-rails (5.2.0)
       execjs
       json
-<<<<<<< HEAD
-    aws-sdk (2.0.45)
-      aws-sdk-resources (= 2.0.45)
-    aws-sdk-core (2.0.45)
-=======
     awesome_print (1.6.1)
     aws-sdk (2.0.33)
       aws-sdk-resources (= 2.0.33)
     aws-sdk-core (2.0.33)
->>>>>>> c722a750f34fde6f645c22da97b38e0523fe3909
       builder (~> 3.0)
       jmespath (~> 1.0)
       multi_json (~> 1.0)
@@ -558,11 +547,7 @@ GEM
     rb-fsevent (0.9.5)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-<<<<<<< HEAD
-    rdf (1.1.14)
-=======
     rdf (1.1.13)
->>>>>>> c722a750f34fde6f645c22da97b38e0523fe3909
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (1.1.0)
       rdf (>= 1.1)
@@ -611,11 +596,7 @@ GEM
     rdf-turtle (1.1.7)
       ebnf (~> 0.3, >= 0.3.6)
       rdf (~> 1.1, >= 1.1.10)
-<<<<<<< HEAD
-    rdf-vocab (0.8.3)
-=======
     rdf-vocab (0.8.2)
->>>>>>> c722a750f34fde6f645c22da97b38e0523fe3909
       rdf (~> 1.1, >= 1.1.10)
     rdf-xsd (1.1.3)
       rdf (~> 1.1, >= 1.1.9)
@@ -767,12 +748,8 @@ GEM
       unf_ext
     unf_ext (0.0.7.1)
     unicode (0.4.4.2)
-<<<<<<< HEAD
-    unicorn (4.9.0)
-=======
     unicode_utils (1.4.0)
     unicorn (4.8.3)
->>>>>>> c722a750f34fde6f645c22da97b38e0523fe3909
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
