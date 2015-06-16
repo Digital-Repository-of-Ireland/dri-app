@@ -21,7 +21,7 @@
   <i class="fa fa-pencil fa-lg"></i> <%= t('dri.views.catalog.titles.editor_tools') %>
 </div>
 <ul class="dri_view_collection bold">
-  <% if (edit_functionality_available?(@document)) %>
+  
   <li>
 
     <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
@@ -37,7 +37,7 @@
     <% end %>
   </li>
 
-  <% unless @files.nil? || @files.empty? %>
+  <% if @files.present? %>
   <li>
     <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
     <%= hidden_field_tag "preservation", "true" %>
@@ -52,34 +52,29 @@
   </li>
 
   <% end %>
-
-  <li>
-
-    <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
-      <div class="dri_fileUpload">
-      <span><i class="fa fa-code fa-lg"></i><%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %>
- </span>
-      <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
-      </div>
-    <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-    <%= hidden_field_tag 'datastream', "content" %>
-
-
+  <!-- Replace metadata only visible if non-EAD collection AND not a Documentation object -->
+  <% if (edit_functionality_available?(@document) && get_active_fedora_model(@document) != "DRI::Documentation") %>
+    <li>
+      <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
+        <div class="dri_fileUpload">
+          <span><i class="fa fa-code fa-lg"></i><%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %>
+          </span>
+          <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
+        </div>
+        <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+        <%= hidden_field_tag 'datastream', "content" %>
+      <% end %>
+    </li>
+  <% end %> <!-- END IF (non-EAD collections AND not Documentation Object) -->
+  <% if @files.present? %>
+    <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
+      <li>
+        <i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
+      </li>
     <% end %>
-  </li>
-  <%= link_to edit_object_path(@document), :id => "edit_record" do %>
-  <li>
-    <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
-  </li>
   <% end %>
-  <% end %> <!-- if end (non-EAD collections) -->
-  <% unless @files.nil? || @files.empty? %>
-  <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
-  <li>
-    <i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
-  </li>
-  <% end %>
-  <% end %>
+
+
   <% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
   <li>
     <%= form_tag status_update_path(@document.id) ,:method => :put do %>
@@ -94,7 +89,13 @@
 
     <% end %>
   </li>
+  
 
   <% end %>
+  <% end %>
+    <%= link_to edit_object_path(@document), :id => "edit_record" do %>
+  <li>
+    <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
+  </li>
   <% end %>
 </ul>

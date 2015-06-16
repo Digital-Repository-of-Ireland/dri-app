@@ -13,17 +13,10 @@
 
 			<%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "edit_collection" %>
 			<% end %>
-
-			<% if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status.eql?('draft')) %>
-			<%= form_tag (collection_path(@object.pid)), :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
-			<%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_danger", :id => "delete_collection_#{@object.id}", :data => { :confirm => t('dri.views.collection.confirm_delete') } %>
-			<% end %>
-			<% end %>
 			
 
 			<div id='dri_collection_institutes_dropdown' name='dri_collection_institutes_dropdown' class='dri_associate_institutes_block'>
 				<%= render :partial => "shared/associate_institute" %>
-				<%= render :partial => "shared/add_institute" %>
 			</div>
 
 

@@ -12,6 +12,10 @@ class ObjectsController < CatalogController
   before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update, :show]
   before_filter :authenticate_user!, :only => [:create, :new, :edit, :update, :show]
 
+  def actor
+    @actor ||= DRI::Object::Actor.new(@object, current_user)
+  end
+
   # Displays the New Object form
   #
   def new
@@ -71,8 +75,7 @@ class ObjectsController < CatalogController
       @object.governing_collection = collection
     end
 
-    set_access_permissions(:batch)
-    updated = @object.update_attributes(params[:batch])
+    updated = @object.update_attributes(update_params)
 
     #purge params from update action
     params.delete(:batch)
@@ -85,10 +88,13 @@ class ObjectsController < CatalogController
       if updated
         MetadataHelpers.checksum_metadata(@object)
         @object.save
-        duplicates?(@object)
+
+        warn_if_duplicates
 
         retrieve_linked_data
         DOI.mint_doi( @object )
+
+        actor.version_and_record_committer
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
@@ -116,29 +122,34 @@ class ObjectsController < CatalogController
 
     if params[:batch][:governing_collection].present?
       params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection])
+      # governing_collection present and also whether this is a documentation object?
+      if params[:batch][:documentation_for].present?
+        params[:batch][:documentation_for] = DRI::Batch.find(params[:batch][:documentation_for])
+      end
     end
 
-    enforce_permissions!("create_digital_object",params[:batch][:governing_collection].pid)
+    enforce_permissions!("create_digital_object",params[:batch][:governing_collection].id)
 
-    standard = params[:batch].delete(:standard)
-
-    set_access_permissions(:batch)
-
-    if params[:metadata_file].present?
+    if params[:batch][:documentation_for].present?
+      create_from_form :documentation
+    elsif params[:metadata_file].present?
       create_from_upload
     else
       create_from_form
     end
 
     MetadataHelpers.checksum_metadata(@object)
-    duplicates?(@object)
+    warn_if_duplicates
 
     supported_licences()
 
     if @object.valid? && @object.save
-
-      retrieve_linked_data     
+      create_reader_group if @object.is_collection?
+    
+      retrieve_linked_data
       DOI.mint_doi( @object )
+
+      actor.version_and_record_committer
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -223,7 +234,7 @@ class ObjectsController < CatalogController
 
           # Get files
           if can? :read, doc
-            files_query = "#{Solrizer.solr_name('is_part_of', :stored_searchable, type: :symbol)}:\"info:fedora/#{doc.id}\""
+            files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
             query = Solr::Query.new(files_query)
 
             while query.has_more?
@@ -233,7 +244,7 @@ class ObjectsController < CatalogController
                 file_list = {}
                 file_doc = SolrDocument.new(mf)
                 
-                if can? :read_master, doc
+                if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
                   url = url_for(file_download_url(doc.id, file_doc.id))
                   file_list['masterfile'] = url
                 end
@@ -336,21 +347,42 @@ class ObjectsController < CatalogController
 
   private
 
+    def create_params
+      params.require(:batch).permit!
+    end
+
+    def update_params
+      params.require(:batch).permit!
+    end
+
     def create_from_upload
       xml = MetadataHelpers.load_xml(params[:metadata_file])
       standard = MetadataHelpers.get_metadata_standard_from_xml xml
 
       @object = DRI::Batch.with_standard standard
       @object.depositor = current_user.to_s
-      @object.update_attributes params[:batch]
+      @object.update_attributes create_params
 
       MetadataHelpers.set_metadata_datastream(@object, xml)
     end
- 
-    def create_from_form
-      @object = DRI::Batch.with_standard params[:batch][:leader].nil? ? :dcq : :marc
+
+    # If no standard parameter then default to :qdc
+    # allow to create :documentation and :marc objects (improve merging into marc-nccb branch)
+    #
+    def create_from_form standard=nil
+      if (!standard.nil?)
+        @object = DRI::Batch.with_standard standard
+      else
+        @object = DRI::Batch.with_standard :qdc
+      end
       @object.depositor = current_user.to_s
-      @object.update_attributes params[:batch]
+      @object.update_attributes create_params
+    end
+
+    def create_reader_group
+      group = UserGroup::Group.new(:name => "#{@object.id}", :description => "Default Reader group for collection #{@object.id}")
+      group.reader_group = true
+      group.save
     end
   
     def retrieve_linked_data

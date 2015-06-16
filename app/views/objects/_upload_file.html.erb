@@ -13,7 +13,7 @@
   <p class="legend-caption"><%= t('dri.views.objects.legends.upload_file_caption') %></p>
   <% end %>
     <div class="dri_file_upload">
-                <%= form_tag(url_for(object_files_path(@object.pid)), :multipart => true, :method => :post, :id => "file_uploader") do %>
+                <%= form_tag(url_for(object_files_path(@object.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
 
                     <div>
                         <a class='btn btn-default' href='javascript:;'>

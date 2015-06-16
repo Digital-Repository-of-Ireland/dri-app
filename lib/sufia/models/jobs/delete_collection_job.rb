@@ -9,6 +9,11 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
 
   def run
     Rails.logger.info "Deleting all objects in #{object.id}"
+    object.delete
+  end
+=begin
+  def run
+    Rails.logger.info "Deleting all objects in #{object.id}"
 
     query = Solr::Query.new("#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\"")
 
@@ -40,11 +45,11 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
         end
       end
     end
-  
     # Delete collection
     object.reload
     object.delete
   end
+=end
 
   def delete_files(object)
     local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
@@ -53,7 +58,7 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
     FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
 
     storage = Storage::S3Interface.new
-    storage.delete_bucket(Utils.split_id(object.id))
+    storage.delete_bucket(object.id)
   end
 
 end

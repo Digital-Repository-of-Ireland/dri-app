@@ -10,7 +10,11 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
-  include UserGroup::SolrAccessControls
+  #include UserGroup::SolrAccessControls
+  include Hydra::AccessControlsEnforcement
+
+  include TimelineHelper
+
   #This method shows the DO if the metadata is open
   #Rather than before where the user had to have read permissions on the object all the time
   def enforce_search_for_show_permissions
@@ -18,27 +22,18 @@ class CatalogController < ApplicationController
   end
   # These before_filters apply the hydra access controls
   before_filter :enforce_search_for_show_permissions, :only=>:show
+
+  # Workaround to user_parameters not being persisted in search_params_filter
+  before_filter :modify_user_parameters, :only=>:index
+
   # This applies appropriate access controls to all solr queries
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  CatalogController.solr_search_params_logic += [:search_date_dange, :subject_temporal_filter, :exclude_unwanted_models]
+  CatalogController.solr_search_params_logic += [:search_date_dange, :subject_temporal_filter, :subject_place_filter, :exclude_unwanted_models]
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
-  
-  def rows_per_page
-    result = 15
-
-    if (params.include?(:per_page))
-      rows_per_page = params[:per_page].to_i
-
-      if (rows_per_page < 1) || (rows_per_page > 100)
-        rows_per_page = 9
-      end
-    end
-  end
-
   configure_blacklight do |config|
-    config.per_page = [6,9,18,36]
+    config.per_page = [9,18,36]
     config.default_per_page = 9
     config.metadata_lang = ['all','gle','enl']
     config.default_metadata_lang = 'all'
@@ -48,6 +43,7 @@ class CatalogController < ApplicationController
       :qt => 'search',
       :rows => 9
     }
+    config.show.partials << :show_maplet
 
     # solr field configuration for search results/index views
     config.index.title_field = solr_name('title', :stored_searchable, type: :string)
@@ -56,6 +52,10 @@ class CatalogController < ApplicationController
     # solr field configuration for document/show views
     config.show.title_field = solr_name('title', :stored_searchable, type: :string)
     config.show.display_type_field = solr_name('file_type', :stored_searchable, type: :string)
+
+    config.show.document_actions.delete(:email)
+    config.show.document_actions.delete(:sms)
+    config.show.document_actions.delete(:citation)
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -141,10 +141,11 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name('title', :stored_searchable, type: :string), :label => 'title'
     config.add_index_field solr_name('subject', :stored_searchable, type: :string), :label => 'subjects'
     config.add_index_field solr_name('creator', :stored_searchable, type: :string), :label => 'creators'
-    config.add_index_field solr_name('format', :stored_searchable), :label => 'Format:'
+    config.add_index_field solr_name('format', :stored_searchable), :label => 'Format'
     config.add_index_field solr_name('file_type_display', :stored_searchable, type: :string), :label => 'Mediatype'
     config.add_index_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_index_field solr_name('published', :stored_searchable, type: :string), :label => 'Published:'
+    
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
@@ -169,7 +170,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), :label => 'geographical_coverage'
     config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), :label => 'temporal_coverage'
     config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), :label => 'name_coverage'
-    config.add_show_field solr_name('format', :stored_searchable), :label => 'Format:'
+    config.add_show_field solr_name('format', :stored_searchable), :label => 'Format'
     # config.add_show_field solr_name('physdesc', :stored_searchable), :label => 'physdesc'
     #config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'format'
     config.add_show_field solr_name('type', :stored_searchable, type: :string), :label => 'type'
@@ -177,6 +178,8 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'rights'
     config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), :label => 'status' 
+    #config.add_show_field 'geospatial', :label => 'Geographical Coverage Index'
+
     # Commented date ranges show_fields (only for testing)
     #config.add_show_field 'cdateRange', :label => 'Creation Date Range'
     #config.add_show_field 'pdateRange', :label => 'Published Date Range'
@@ -262,34 +265,63 @@ class CatalogController < ApplicationController
 
     config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', :label => 'relevance'
     config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', :label => 'title'
+    config.add_sort_field 'id_asset_ssi asc, system_create_dtsi desc', :label => 'order/sequence'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
 
+    config.view.maps.coordinates_field = 'geospatial'
     config.view.maps.placename_property = "placename"
     config.view.maps.tileurl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     config.view.maps.mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     config.view.maps.maxzoom = 18
     config.view.maps.show_initial_zoom = 5
     config.view.maps.facet_mode = "geojson"
-    config.view.maps.placename_field = ActiveFedora::SolrService.solr_name('placename_field', :facetable, type: :string)
-    config.view.maps.geojson_field = ActiveFedora::SolrService.solr_name('geojson', :stored_searchable, type: :symbol)
+    config.view.maps.placename_field = ActiveFedora::SolrQueryBuilder.solr_name('placename_field', :facetable, type: :string)
+    config.view.maps.geojson_field = ActiveFedora::SolrQueryBuilder.solr_name('geojson', :stored_searchable, type: :symbol)
     config.view.maps.search_mode = "placename"
 
   end
 
+  # OVER-RIDDEN from BL
+  # Get Timeline data if view is Timeline
+  def index
+    (@response, @document_list) = search_results(params, search_params_logic)
+
+    if params[:view].present? && params[:view].include?("timeline")
+      queried_date = ""
+      if (params[:year_from].present? && params[:year_to].present?)
+        queried_date = "#{params[:year_from]} #{params[:year_to]}"
+      end
+      res = create_timeline_data(@document_list, queried_date)
+      @timeline_data = res.to_json
+    end
+
+    respond_to do |format|
+      format.html { store_preferred_view }
+      format.rss  { render :layout => false }
+      format.atom { render :layout => false }
+      format.json do
+        render json: render_search_results_as_json
+      end
+
+      additional_response_formats(format)
+      document_export_formats(format)
+    end
+  end
+
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "+#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"info:fedora/afmodel:DRI_Batch\""
+    solr_parameters[:fq] << "-#{ActiveFedora::SolrQueryBuilder.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
     if user_parameters[:mode].eql?('collections')
-      solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
+      solr_parameters[:fq] << "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true"
       if !user_parameters[:show_subs].eql?('true')
-        solr_parameters[:fq] << "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+        solr_parameters[:fq] << "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
       end
     else
-      solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:false"
-      solr_parameters[:fq] << "+#{Solrizer.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
+      solr_parameters[:fq] << "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:false"
+      solr_parameters[:fq] << "+#{ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
     end
   end
 
@@ -300,7 +332,7 @@ class CatalogController < ApplicationController
   # the lower and upper boundaries for this field are -9999 and 9999 respectively, to cover
   # BC Years - this will be properly documented!!
   #
-  def subject_temporal_filter(solr_parameters, user_parameters)
+  def subject_temporal_filter solr_parameters, user_parameters
     # Find index of the facet temporal_coverage_sim
     # if present then modify query to target sdateRange Solr field
     temporal_idx = nil
@@ -311,7 +343,8 @@ class CatalogController < ApplicationController
     end
 
     if !temporal_idx.nil?
-      start_date = end_date = ""
+      start_date = ""
+      end_date = ""
 
       solr_parameters[:fq][temporal_idx].split(/\s*;\s*/).each do |component|
         (k,v) = component.split(/\s*=\s*/)
@@ -328,53 +361,52 @@ class CatalogController < ApplicationController
         begin
           sdate_str = ISO8601::DateTime.new(start_date).year
           edate_str = ISO8601::DateTime.new(end_date).year
-          # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits 
+          # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits
           solr_parameters[:fq][temporal_idx] = "sdateRange:[\"-9999 #{(sdate_str.to_i - 0.5).to_s}\" TO \"#{(edate_str.to_i + 0.5).to_s} 9999\"]"
-        rescue ISO8601::Errors::UnknownPattern => e
+        rescue ISO8601::Errors::StandardError
         end
       end
     end
   end
 
-  def search_date_dange(solr_parameters, user_parameters)
+  # If querying geographical_coverage, then query the Solr geospatial field
+  #
+  def subject_place_filter solr_parameters, user_parameters
+    # Find index of the facet geographical_coverage_sim
+    geographical_idx = nil
+    solr_parameters[:fq].each.with_index do |f_elem, idx|
+      if f_elem.include?("geographical_coverage")
+        geographical_idx = idx
+      end
+    end
+
+    if !geographical_idx.nil?
+      geo_string = solr_parameters[:fq][geographical_idx]
+      coordinates = DRI::Metadata::Transformations.get_spatial_coordinates(geo_string)
+
+      if (!coordinates.empty?)
+        solr_parameters[:fq][geographical_idx] = "geospatial:\"Intersects(#{coordinates})\""
+      end
+    end
+  end
+
+  def search_date_dange solr_parameters, user_parameters
     if (!user_parameters[:f].nil? && !user_parameters[:f]["sdateRange"].nil?)
       solr_parameters[:fq] ||= []
       # Asign facet filter contraint text (we don't want to show ugly Solr query)
-      user_parameters[:f]["sdateRange"] = user_parameters[:year_from] == user_parameters[:year_to] ?
-        ["#{user_parameters[:year_from]}"] : 
-        ["#{user_parameters[:year_from]} - #{user_parameters[:year_to]}"]
+      #user_parameters[:f]["sdateRange"] = user_parameters[:year_from] == user_parameters[:year_to] ?
+      #  ["#{user_parameters[:year_from]}"] :
+      #  ["#{user_parameters[:year_from]} - #{user_parameters[:year_to]}"]
 
       # Check whether parameters already contain a date range filter, then get the index of :fq for update
       date_idx = nil
-      
+
       solr_parameters[:fq].each.with_index do |f_elem, idx|
         if f_elem.include?("sdateRange")
           date_idx = idx
         end
       end
-      #query = ""
       query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-
-      #if user_parameters[:c_date] == '1'
-      #  query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  if user_parameters[:p_date] == '1'
-      #    query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  end
-      #  if user_parameters[:s_date] == '1'
-      #    query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  end
-      #elsif user_parameters[:p_date] == '1'
-      #  query = "pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  if user_parameters[:s_date] == '1'
-      #    query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  end
-      #elsif user_parameters[:s_date] == '1'
-      #  query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #else  # no field filter parameters: query all the date range fields
-      #  query = "cdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  query << " OR pdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #  query << " OR sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
-      #end
 
       if date_idx.nil?
         solr_parameters[:fq] << query
@@ -383,5 +415,26 @@ class CatalogController < ApplicationController
       end
     end # if
   end # search_date_dange
+
+  # Workaround for search_date_dange: BL 5.10 user_parameters being modified
+  # in the solr_search_params_logic filter methods are not being persisted
+  #
+  def modify_user_parameters
+    if (!params[:f].nil? && !params[:f]["sdateRange"].nil?)
+      # Asign facet filter contraint text (we don't want to show ugly Solr query)
+      params[:f]["sdateRange"] = params[:year_from] == params[:year_to] ?
+          ["#{params[:year_from]}"] :
+          ["#{params[:year_from]} - #{params[:year_to]}"]
+
+    end
+
+    if params[:view].present? && params[:view].include?("timeline")
+      params[:per_page] = "100"
+    else
+      if params[:per_page].present? && params[:per_page].to_i > 36
+        params[:per_page] = "9"
+      end
+    end
+  end
 
 end

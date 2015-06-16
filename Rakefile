@@ -6,6 +6,8 @@ require File.expand_path('../config/application', __FILE__)
 
 NuigRnag::Application.load_tasks
 
+APP_ROOT= File.dirname(__FILE__)
+
 require 'rake/testtask'
 require 'bundler'
 require 'jettywrapper'
@@ -105,6 +107,40 @@ namespace :solr do
     desc 'Reindex Solr as background task in the correct order (GenericFiles followed by Batch objects)'
     task reindex: :environment do
       Sufia.queue.push(ReindexSolrJob.new)
+    end
+  end
+end
+
+
+namespace :jetty do
+  TEMPLATE_DIR = 'hydra-core/lib/generators/hydra/templates'
+  SOLR_DIR = "#{TEMPLATE_DIR}/solr_conf/conf"
+
+  desc "Config Jetty"
+  task :config do
+    Rake::Task["jetty:config_solr"].reenable
+    Rake::Task["jetty:config_solr"].invoke
+    Rake::Task["jetty:config_fedora"].reenable
+    Rake::Task["jetty:config_fedora"].invoke
+  end
+
+  desc "Copies the default SOLR config for the bundled Hydra Testing Server"
+  task :config_solr do
+    FileList["#{SOLR_DIR}/*"].each do |f|
+      cp("#{f}", 'jetty/solr/development-core/conf/', :verbose => true)
+      cp("#{f}", 'jetty/solr/test-core/conf/', :verbose => true)
+    end
+
+  end
+
+  desc "Copies a custom fedora config for the bundled jetty"
+  task :config_fedora do
+    fcfg = 'fedora_conf/federated.json'
+    if File.exists?(fcfg)
+      puts "copying over federated.json"
+      cp("#{fcfg}", APP_ROOT + '/jetty/etc/', :verbose => true)
+    else
+      puts "#{fcfg} file not found -- skipping fedora config"
     end
   end
 end

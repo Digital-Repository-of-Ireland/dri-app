@@ -3,35 +3,41 @@ require 'spec_helper'
 describe LocalFile do
 
   before(:each) do
-    @file = LocalFile.new
+    @file = LocalFile.new(fedora_id: "1234567", ds_id: "masterContent")
     @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
     @tmpdir = Dir.mktmpdir
   end
 
+  after(:each) do
+    @file.destroy
+    FileUtils.remove_dir(@tmpdir, :force => true)
+  end
+
   it "should accept an uploaded file" do
-    @file.add_file(@uploaded, { :directory => @tmpdir, :fedora_id => "dri:1234", :ds_id => "masterContent", :version => "0" })
+    @file.add_file(@uploaded, { :directory => @tmpdir })
     File.exist?(File.join(@tmpdir, "SAMPLEA.mp3")).should be true 
     File.unlink(File.join(@tmpdir, "SAMPLEA.mp3"))
-
-    FileUtils.remove_dir(@tmpdir, :force => true)
   end
 
   it "should delete a file" do
-    @file.add_file(@uploaded, { :directory => @tmpdir, :fedora_id => "dri:1234", :ds_id => "masterContent", :version => "0" })
+    @file.add_file(@uploaded, { :directory => @tmpdir })
     File.exist?(File.join(@tmpdir, "SAMPLEA.mp3")).should be true
     @file.delete_file
     File.exist?(File.join(@tmpdir, "SAMPLEA.mp3")).should_not be true
- 
-    FileUtils.remove_dir(@tmpdir, :force => true)
   end
 
   it "should clean up file on destroy" do
-    @file.add_file(@uploaded, { :directory => @tmpdir, :fedora_id => "dri:1234", :ds_id => "masterContent", :version => "0" })
+    @file.add_file(@uploaded, { :directory => @tmpdir })
     File.exist?(File.join(@tmpdir, "SAMPLEA.mp3")).should be true
     @file.destroy
     File.exist?(File.join(@tmpdir, "SAMPLEA.mp3")).should_not be true
+  end
 
-    FileUtils.remove_dir(@tmpdir, :force => true)
+  it "should increment the version" do
+    @file.add_file(@uploaded, { :directory => @tmpdir })
+    @file.save
+    @file.add_file(@uploaded, { :directory => @tmpdir })
+    expect(@file.version).to be(1)
   end
 
 end

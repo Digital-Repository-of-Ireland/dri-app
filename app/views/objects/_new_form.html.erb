@@ -1,6 +1,9 @@
 
 <%= form_for @object, :as => :batch, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
   <%= f.hidden_field :governing_collection, {:value => @collection} %>
+  <% if params[:is_documentation].present? && params[:is_documentation] == 'true' %>
+  <%= f.hidden_field :documentation_for, {:value => @collection} %>
+  <%end%>
 
   <%= render :partial => "shared/form_metadata_#{get_metadata_name(@object)}", :locals => { :f => f, :action => "create" } %>
   <%= render :partial => "shared/form_default_permissions", :locals => {:f => f,:record => @object } %>

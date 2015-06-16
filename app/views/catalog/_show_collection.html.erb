@@ -29,36 +29,14 @@
 
 <div class="dri_object_second_block">
 
-	<div class="dri_back_search">
-		<%= link_back_to_catalog %>
-	</div>
-
-	<div class="dri_vc_title">
-		<i class="fa fa-lg fa-folder-open"></i>
-		<%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder") %>
-		<% objectsCount = count_items_in_collection document[:id] %>
-		<!-- If it's a root collection, we show all the objects within it -->
-		<% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil %>
-		<% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-    <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
-		<% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
-		<% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-    <%= link_to t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})", catalog_index_path(collection_objects_params), :id => 'collection_s_object' %>
-		<% end %>
-	</div>
-
-	<div class="dri_vc_image">
-
-		<% if document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first %>
-		<%= image_tag(document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first, :width=>"230", :alt=> t('dri.views.alt_tags.cover_image')) %></a>
-		<% else %>
-		<% image = "dri/formats/collection.png".downcase %>
-		<%= image_tag(image, :width=>"230", :height=>"139", :alt=>t('dri.views.alt_tags.cover_image')) %></a>
-		<% end %>
-	</div>
-
-	<%= render :partial => "catalog/collection_show_objects_types", :locals => {:document => document, :objectsCount => objectsCount} %>
-
+<% if @document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && @document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0] %>
+<div class="dri_vc_image hidden-xs">
+	<%= image_tag(@document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :alt=> t('dri.views.alt_tags.cover_image') ) %>
+</div>
+<% end %>
+     
+    <% objectsCount = count_items_in_collection document[:id] %>
+	<%= render :partial => "show_collection_navigation_tools", :locals => {:document => document, :objectsCount => objectsCount} %>	
 	<%= render :partial => "tools", :locals => {:document => document} %>
 
 	<% if signed_in? && (can? :manage_collection, document) %>
@@ -76,27 +54,4 @@
 
 </div>
 
-<div class="modal fade" id="dri_review_modal_id">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title"><%= t('dri.views.catalog.links.review_objects') %></h4>
-			</div>
 
-			<div class="modal-body">
-				<%= button_to  review_path(), :class =>"dri_button_green", data: { confirm: t('dri.views.collection.confirm_all_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
-				<%= t('dri.views.catalog.links.mark_all_reviewed') %>
-				<% end %>
-				<%= button_to  review_path(:apply_all => 'yes'),:class =>"dri_button_red", data: { confirm: t('dri.views.collection.confirm_all_descendants_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
-				<%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
-				<% end %>
-			</div>
-			<div class="modal-footer">
-
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->

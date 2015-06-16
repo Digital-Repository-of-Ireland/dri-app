@@ -12,8 +12,6 @@
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
             <input type="hidden" name="batch[read_groups_string]" value="registered" />
             <input type="hidden" name="batch[discover_groups_string]" value="public" />
-            <input type="hidden" name="batch[private_metadata]" value="radio_public" />
-            <input type="hidden" name="batch[master_file]" value="radio_private" />
             <div>
                 <%= submit_tag t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large dri_clearfix", :name => "ingest_metadata", :id => "ingest_metadata" %>
             </div>

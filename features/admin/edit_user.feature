@@ -15,11 +15,11 @@ Feature: Workflows for an edit user
   Scenario: Adding edit users
     Given I am on the edit collection page
     When I enter a new user into the edit users list
-    And I press the button to save changes
+    And I press the button to "save changes"
     Then the new user should have edit permissions on the collection
 
   Scenario: Adding manager users
     Given I am on the edit collection page
     When I enter a new user into the manager users list
-    And I press the button to save changes
+    And I press the button to "save changes"
     Then the new user should have manager permissions on the collection

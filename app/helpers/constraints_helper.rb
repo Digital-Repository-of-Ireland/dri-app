@@ -13,7 +13,7 @@ module ConstraintsHelper
     # When creating remove filter links exclude the date range added parameters, if present
     # Otherwise the filter gets removed but the parameters stay in the URL
     if (facet == "sdateRange")
-      excluded_params = [:c_date, :p_date, :s_date, :year_from, :year_to]
+      excluded_params = [:year_from, :year_to]
       new_localized_params = localized_params.clone
       new_localized_params.except!(*excluded_params)
 

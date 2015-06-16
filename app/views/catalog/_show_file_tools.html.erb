@@ -18,7 +18,7 @@
 
 					<% @files.each_with_index do |file, index| %>
 
-					<% if can? :read_master, @document %>
+					<% if ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
 					<% #<li></li>
 %>
 					<li>
@@ -63,7 +63,7 @@
 					<li>
 						<%= t('dri.views.catalog.legends.request_permission_not_logged_in') %>
 					</li>
-					<% elsif (current_user.pending_member?(UserGroup::Group.find(UserGroup::Group.where(:name => reader_group_name( @document ))))) %>
+					<% elsif (current_user.pending_member?(get_reader_group(@document.governing_collection))) %>
 					<li>
 						<%= t('user_groups.views.groups.index.pending') %>
 					</li>
@@ -71,7 +71,7 @@
 					<li>
 						<%= form_tag(user_group.pending_memberships_path, :method => 'post') do %>
 						<%= hidden_field_tag('membership_user_id', current_user.id, {:name => "membership[user_id]"}) %>
-						<%= hidden_field_tag('membership_group_id', UserGroup::Group.find(UserGroup::Group.where(:name => reader_group_name( @document ))).id, {:name => "membership[group_id]"} ) %>
+						<%= hidden_field_tag('membership_group_id', @reader_group.id, {:name => "membership[group_id]"} ) %>
 						<%= submit_tag t('dri.views.catalog.legends.request_permission_logged_in'), :id=> "request_access" %>
 						<% end %>
 					</li>
@@ -88,3 +88,4 @@
 			</div>
 		</div>
 	</div>
+</div>
