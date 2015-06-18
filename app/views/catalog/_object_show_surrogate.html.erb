@@ -44,8 +44,7 @@
 <% elsif generic_file.image? %>
     <% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
     <% content_for :head do %>
-    
-        <meta property="og:image"           content="<%= @surrogate %>" /> 
+        <meta property="og:image" content="<%= @surrogate %>" /> 
     <% end %>
     <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "lightbox_format") %>
     <% unless @surrogate.nil? %>
