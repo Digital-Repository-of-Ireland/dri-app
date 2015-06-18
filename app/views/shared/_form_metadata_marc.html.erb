@@ -3,6 +3,7 @@
 <% content_for :head do javascript_include_tag 'marc' end -%>
 
 <% @marc = DRI::Metadata::Marc.marc_vocabulary %>
+<%= hidden_field_tag(:standard, 'marc') %>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">

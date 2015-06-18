@@ -119,6 +119,7 @@ class ObjectsController < CatalogController
   def create
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
+    @standard = params[:standard].to_sym if not params[:standard].nil?
 
     if params[:batch][:governing_collection].present?
       params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection])
@@ -135,7 +136,7 @@ class ObjectsController < CatalogController
     elsif params[:metadata_file].present?
       create_from_upload
     else
-      create_from_form
+      create_from_form @standard
     end
 
     MetadataHelpers.checksum_metadata(@object)
