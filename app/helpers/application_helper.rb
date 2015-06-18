@@ -4,12 +4,10 @@ module ApplicationHelper
   require 'uri'
 
   def get_files doc
-    @files = ActiveFedora::Base.find(doc.id, {:cast => true}).generic_files
+    @files = DRI::GenericFile.where({"#{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}" => "#{doc.id}"}).sort_by{ |f| f[:filename] }
     @displayfiles = []
     @files.each do |file|
-      if !file.preservation_only.eql?('true')
-        @displayfiles << file
-      end
+      @displayfiles << file unless file.preservation_only.eql?('true')
     end
     ""
   end
