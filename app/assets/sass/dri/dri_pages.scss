@@ -1,47 +1,55 @@
-%h5 {
+//* Extendable classes
+
+%pages_p {
+  font-size: 1.2em;
+  color: $dri_grey;
+}
+
+%pages_h5 {
     h5 {
+      font-size: 1.3em;
       margin-top: 15px;
       padding-bottom: 5px;
       color: $dri_grey;
       border-bottom: 3px solid $dri_grey;
-    }
-}
-.dri_faq {
- @extend %h5;
-      h6 {
-      font-weight: bold;
-    }
-    p {
       color: $dri_grey;
     }
 }
-.dri_about_container2 {
-    @include zen-nested-container;
+
+%pages_h6 {
+  h6 {
+      color: $dri_grey;
+      font-size: 1.3em;
+      font-weight: bold;
+    }
+}
+
+%thin_border {
+  border: 1px solid $dri_thingrey;
+}
+
+//* FAQ /pages/faq.html.erb
+
+.dri_faq {
+ @extend %pages_h5;
+ @extend %pages_h6;
+ @extend %pages_p;
+ 
+}
+
+//* Lifecycle /pages/lifecycle.html.erb
+
+.dri_about_lifecycle {
     $zen-column-count:3;
     $zen-gutter-width: 0px;
     margin: 0 0 0 -10px;
-  
-    h5 {
-      margin-top: 15px;
-      padding-bottom: 5px;
-      color: $dri_grey;
-      border-bottom: 3px solid $dri_grey;
-    }
-    h6 {
-      font-weight: bold;
-    }
+    @extend %pages_h5;
+    @extend %pages_h6;
+    @extend %pages_p;
+    
     img {
       max-width: 100%;
       padding: 5px 0 5px 0;
-    }
-    p {
-      color: $dri_grey;
-    }
-    a {
-      color: $dri_grey;
-    }
-    .dri_button_green {
-      color: white;
     }
     .dri_about_title_top {
       margin-left: 15px;
@@ -70,8 +78,7 @@
 }
 
 @media screen and (max-width:1100px) {
-.dri_about_container2 {
-    @include zen-nested-container;
+.dri_about_lifecycle {
     $zen-column-count:2;
     .dri_about_col01 {
       @include zen-grid-item(1, 1);
@@ -82,15 +89,24 @@
     }
     .dri_about_col03 {
       clear:left;
-      @include zen-grid-item(1, 1);      
+      @include zen-grid-item(2, 1);
+      img {
+        float: right;
+        max-width: 50%;
+      }         
     }
   }
 }
 
 @media only screen and (max-width: 766px) {
-.dri_about_container2 {
-    @include zen-nested-container;
+.dri_about_lifecycle {
+
     $zen-column-count:1;
+    img {
+      max-height: 500px;
+      display: block;
+      margin: auto;
+    }
     .dri_about_col01 {
       border-right:0px;
       @include zen-grid-item(1, 1);
@@ -101,116 +117,103 @@
       @include zen-grid-item(1, 1);      
     }
     .dri_about_col03 {
+
       clear:left;
-      @include zen-grid-item(1, 1);      
+      @include zen-grid-item(1, 1);
+      img {
+        float:inherit;
+        max-width: 100%;
+      }  
     }
   }
 }
 
-.dri_about_container {
-    @include zen-float();
-    $zen-column-count:12;
-    $bgcolour-1: #111;
-    $bgcolour-2: #eee;
-    $bgcolour-3: #ddd;
-    $bgcolour-4: #ccc;
-    $bgcolour-5: #bbb;
-    $about-text-1: #fff;
-    
- 
+//* Main About Page /pages/about_us.html.erb
 
+.dri_about {
+  $zen-column-count:3;
+  $zen-gutter-width: 15px;
+  @extend %pages_h5;
+  @extend %pages_h6;
+  @extend %pages_p;
   
-    .dri_about_01 {
-      @include zen-grid-item(3.9, 1);      
+  img {
+    max-width: 100%;
+  }
+  .dri_about_banner {
+    @include zen-grid-item(3, 1);
+    img {
+      margin-bottom: 10px;
     }
-    .dri_about_02 {
-      @include zen-grid-item(3.9, 5);      
+  }
+  .dri_about_text_row {
+    @include zen-clear();
+    .dri_about_repository {
+      @include zen-grid-item(2, 1);
     }
-    .dri_about_03 {
-      @include zen-grid-item(4, 9);      
+    .dri_about_who {
+      @include zen-grid-item(1, 3);
+    } 
+  }
+  .dri_about_last_row {
+    @include zen-clear();
+    @include zen-grid-container;
+    .dri_about_lifecycle_container {
+       @include zen-grid-item(2, 1);
+       @extend %thin_border;
+       min-height: 350px;
+       padding: 10px 0 10px 0;
+       .dri_about_lifecycle_infographic {
+         @include zen-grid-item(1.5, 1);
+       }     
+       .dri_about_lifecycle_text {
+         @include zen-grid-item(1.5, 2.5)
+       }
     }
-    .dri_about_04 {
-      @include zen-clear();
-      @include zen-grid-item(12, 1); 
-      background-color: $bgcolour-1;
-      p {
-        color: $about-text-1;
-      }   
-    }
-    .dri_about_05 {
-      @include zen-clear();
-      @include zen-grid-item(6, 0.89);     
-    }
-    .dri_about_06a {
-      @include zen-nested-container();
-      @include zen-grid-item(6, 7);   
-    }
-    .dri_about_06 {
-      //@include zen-grid-item(1, 6);   
-    }
+    .dri_about_demo {    
+          //delete this after positioning images
+          @extend %thin_border;
+          //
+          @include zen-grid-item(1, 1, right);
+          min-height: 175px;
 
-    .dri_about_06b {
-       //@include zen-grid-item(6, 1);
+       }
+    .dri_about_ii {
+          //delete this after positioning images
+          @extend %thin_border;
+          //
+          @include zen-clear(right);
+          @include zen-grid-item(1, 1, right);
+          min-height: 175px;
     }
-    .dri_about_07 {
-      @include zen-clear();
-      @include zen-grid-item(3.85, 1, $gutter-width: 20px);  
-            background-color: $bgcolour-2;    
-    }
-    .dri_about_08 {
-      @include zen-grid-item(3.85, 5);     
-            background-color: $bgcolour-3; 
-    }
-    .nested {
-      @include zen-grid-item(3.85, 9);
-      @include zen-nested-container();
-    }
-    .dri_about_09 {
-      @include zen-grid-item(12, 1, $gutter-width: 0px);  
-    }
-    .dri_about_10 {
-      @include zen-clear();
-      @include zen-grid-item(12, 1);    
-    }
-  
+  }
 }
 
+@media screen and (max-width:1100px) {
+  .dri_about {
+    $zen-column-count:2;
+    .dri_about_text_row {
+      @include zen-clear();
+      .dri_about_repository {
+        
+        @include zen-grid-item(2, 1);
+      }
+      .dri_about_who {
+        @include zen-clear(left);
+        @include zen-grid-item(2, 1);
+      } 
+    }
+  }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@media only screen and (max-width: 766px) {
+  .dri_about {
+  
+      $zen-column-count:1;
+        img {
+          max-height: 500px;
+          display: block;
+          margin: auto;
+        }
+    }
+}
