@@ -129,7 +129,7 @@ ga:
           person_sim: "Ainmneacha"
           root_collection_id_sim: "Bailiúchán"
           subject_sim: "Ábhair"
-          temporal_coverage_sim: "Ré"
+          temporal_coverage_sim: "Ábhar (Ré)"
       filters:
         label: "%{label}:"
         remove:
@@ -156,7 +156,7 @@ ga:
         single_item_found: "<b>1</b> go <b>1</b> as <b>1</b>"
       per_page:
         button_label: "%{count} in aghaidh an leathanaigh"
-        label: "%{count}"
+        label: "%{count} Torthaí"
         submit: "Nuashonrú"
         title: "Líon na dtorthaí in aghaidh an leathanaigh"
       rss_feed: "RSS le haghaidh torthaí"

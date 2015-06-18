@@ -29,8 +29,8 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 //
-//= require dri/
 //= require colorbox-rails
 //= require bootstrap-datepicker
 //= require social-share-button
+//= require dri/
 

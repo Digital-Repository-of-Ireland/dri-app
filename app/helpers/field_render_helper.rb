@@ -113,12 +113,17 @@ module FieldRenderHelper
       end
     else
       if value.length > 1
-        value = value.each_with_index.map do |v,i|
-          unless uri?(indexed_value[i])
-            '<dd>' << indexed_value[i] << '</dd>'
+        if !field.include?("date")
+          value = value.each_with_index.map do |v,i|
+            unless uri?(indexed_value[i])
+              '<dd>' << indexed_value[i] << '</dd>'
+            end
+          end
+        else
+          value = value.each.map do |v|
+            '<dd>' << v << '</dd>'
           end
         end
-
       end
     end
 

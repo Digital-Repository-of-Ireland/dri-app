@@ -4,18 +4,18 @@
 
 /* for bootstrap3 */
 @import "video-js";
-@import "dri_colorbox.scss";
-@import url('http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
-@import url('http://cdn.knightlab.com/libs/timeline/latest/css/timeline.css');
+@import "colorbox-rails";
+@import "font-awesome";
+@import "timelineJS/timeline";
 /*Import the Zen Grids files*/
 @import "dri_base.scss";
 @import "../zen/_grids.scss";
 @import "../zen/_base.scss";
 @import "../zen/_background";
 @import "dri.scss";
-@import "../smoothness/jquery-ui.scss";
 @import "dri_pages.scss";
 @import "social-share-button.scss";
+
 
 
 
@@ -82,6 +82,7 @@
 .dri_slideshow_block {
 	@include zen-grid-item(2.5, 2.5);
 	padding-top: 30px;
+	margin-bottom: 20px;
 
 }
 .dri_home_title {

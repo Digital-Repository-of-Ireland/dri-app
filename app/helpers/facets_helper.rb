@@ -126,7 +126,7 @@ module FacetsHelper
     value.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if k.eql?('name')
-        return v
+        return v unless v.nil? || v.empty?
       end
     end
     return value
@@ -140,7 +140,7 @@ module FacetsHelper
     value.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if k.eql?('name')
-        return v
+        return v unless v.nil? || v.empty?
       end
     end
     return value

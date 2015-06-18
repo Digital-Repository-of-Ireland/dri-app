@@ -746,74 +746,21 @@ a .dri_signin_edugate:hover {
 /*-------------- Social Media --------------*/
 
 .dri_social_media_nav {
-  margin: 65px 0 0 0;
-  padding: 0px;
-  ul {
-    margin: 0;
-    padding: 0;
-    float: right;
-  }
+  margin: 70px 0 0 0;
   li {
-    text-decoration: none;
-    list-style: none;
-    margin: 0 3px 0 0;
-    padding: 0;
+    font-size: 20px;
+    color: $dri_grey;
+    margin: 0 8px 0 0;
     float: left;
     display: block;
-    a {
-      text-decoration: none;
-      list-style: none;
-      padding: 0;
-    }
-    a.facebook {
-      background: image-url("dri/facebook.png") no-repeat;
-      height: 28px;
-      width: 28px;
-      display: block;
-      background-color: #2E2E2E;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-    }
-    a.facebook:hover {
-      background-color: #000;
-    }
-    a.linkedin {
-      background: image-url("dri/linkedin.png") no-repeat;
-      height: 28px;
-      width: 28px;
-      display: block;
-      background-color: #2E2E2E;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-    }
-    a.linkedin:hover {
-      background-color: #000;
-    }
-    a.share {
-      background: image-url("dri/share.png") no-repeat;
-      height: 28px;
-      width: 28px;
-      display: block;
-      background-color: #2E2E2E;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-    }
-    a.share:hover {
-      background-color: #000;
-    }
-    a.twitter {
-      background: image-url("dri/twitter.png") no-repeat;
-      height: 28px;
-      width: 28px;
-      display: block;
-      background-color: #2E2E2E;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-    }
-    a.twitter:hover {
-      background-color: #000;
+    i.fa-slideshare {
+      font-size: 23px;
     }
   }
+  li:hover {
+    color: $dri_green;
+  }
+  
 }
 
 /*-------------- Main Navigation --------------*/
@@ -1143,7 +1090,7 @@ ol.breadcrumb {
   margin: 0 0 0 0;
   padding: 0;
   float: left;
-  width: 94%;
+  width: 100%;
   border-bottom: 1px solid $dri_thingrey;
   ul {
     margin: 0;
@@ -2528,6 +2475,7 @@ ul.dri_view_collection {
     span.dri_bookmark_object_label {
       display: inline;
       margin-right: 10px;
+      cursor: pointer;
     }
     form {
       .checkbox {

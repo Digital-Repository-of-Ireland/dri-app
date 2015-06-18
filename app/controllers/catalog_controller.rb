@@ -12,6 +12,9 @@ class CatalogController < ApplicationController
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
   #include UserGroup::SolrAccessControls
   include Hydra::AccessControlsEnforcement
+
+  include TimelineHelper
+
   #This method shows the DO if the metadata is open
   #Rather than before where the user had to have read permissions on the object all the time
   def enforce_search_for_show_permissions
@@ -21,7 +24,7 @@ class CatalogController < ApplicationController
   before_filter :enforce_search_for_show_permissions, :only=>:show
 
   # Workaround to user_parameters not being persisted in search_params_filter
-  before_filter :render_daterange_filter_constraint, :only=>:index
+  before_filter :modify_user_parameters, :only=>:index
 
   # This applies appropriate access controls to all solr queries
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
@@ -29,21 +32,8 @@ class CatalogController < ApplicationController
   CatalogController.solr_search_params_logic += [:search_date_dange, :subject_temporal_filter, :subject_place_filter, :exclude_unwanted_models]
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
-  
-  def rows_per_page
-    result = 15
-
-    if (params.include?(:per_page))
-      rows_per_page = params[:per_page].to_i
-
-      if (rows_per_page < 1) || (rows_per_page > 100)
-        rows_per_page = 9
-      end
-    end
-  end
-
   configure_blacklight do |config|
-    config.per_page = [6,9,18,36]
+    config.per_page = [9,18,36]
     config.default_per_page = 9
     config.metadata_lang = ['all','gle','enl']
     config.default_metadata_lang = 'all'
@@ -151,7 +141,7 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name('title', :stored_searchable, type: :string), :label => 'title'
     config.add_index_field solr_name('subject', :stored_searchable, type: :string), :label => 'subjects'
     config.add_index_field solr_name('creator', :stored_searchable, type: :string), :label => 'creators'
-    config.add_index_field solr_name('format', :stored_searchable), :label => 'Format:'
+    config.add_index_field solr_name('format', :stored_searchable), :label => 'Format'
     config.add_index_field solr_name('file_type_display', :stored_searchable, type: :string), :label => 'Mediatype'
     config.add_index_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_index_field solr_name('published', :stored_searchable, type: :string), :label => 'Published:'
@@ -180,7 +170,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), :label => 'geographical_coverage'
     config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), :label => 'temporal_coverage'
     config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), :label => 'name_coverage'
-    config.add_show_field solr_name('format', :stored_searchable), :label => 'Format:'
+    config.add_show_field solr_name('format', :stored_searchable), :label => 'Format'
     # config.add_show_field solr_name('physdesc', :stored_searchable), :label => 'physdesc'
     #config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'format'
     config.add_show_field solr_name('type', :stored_searchable, type: :string), :label => 'type'
@@ -294,6 +284,33 @@ class CatalogController < ApplicationController
 
   end
 
+  # OVER-RIDDEN from BL
+  # Get Timeline data if view is Timeline
+  def index
+    (@response, @document_list) = search_results(params, search_params_logic)
+
+    if params[:view].present? && params[:view].include?("timeline")
+      queried_date = ""
+      if (params[:year_from].present? && params[:year_to].present?)
+        queried_date = "#{params[:year_from]} #{params[:year_to]}"
+      end
+      res = create_timeline_data(@document_list, queried_date)
+      @timeline_data = res.to_json
+    end
+
+    respond_to do |format|
+      format.html { store_preferred_view }
+      format.rss  { render :layout => false }
+      format.atom { render :layout => false }
+      format.json do
+        render json: render_search_results_as_json
+      end
+
+      additional_response_formats(format)
+      document_export_formats(format)
+    end
+  end
+
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << "-#{ActiveFedora::SolrQueryBuilder.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
@@ -402,13 +419,21 @@ class CatalogController < ApplicationController
   # Workaround for search_date_dange: BL 5.10 user_parameters being modified
   # in the solr_search_params_logic filter methods are not being persisted
   #
-  def render_daterange_filter_constraint
+  def modify_user_parameters
     if (!params[:f].nil? && !params[:f]["sdateRange"].nil?)
       # Asign facet filter contraint text (we don't want to show ugly Solr query)
       params[:f]["sdateRange"] = params[:year_from] == params[:year_to] ?
           ["#{params[:year_from]}"] :
           ["#{params[:year_from]} - #{params[:year_to]}"]
 
+    end
+
+    if params[:view].present? && params[:view].include?("timeline")
+      params[:per_page] = "100"
+    else
+      if params[:per_page].present? && params[:per_page].to_i > 36
+        params[:per_page] = "9"
+      end
     end
   end
 

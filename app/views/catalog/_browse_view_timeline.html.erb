@@ -8,7 +8,7 @@
                 type: 'timeline',
                 width: tlwidth,
                 height: '450',
-                source: '<%= timeline_json_path(params) %>',
+                source: <%= @timeline_data.html_safe %>,
                 embed_id: 'time_line'
             });
         });

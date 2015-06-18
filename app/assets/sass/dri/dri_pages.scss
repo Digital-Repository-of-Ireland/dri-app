@@ -1,3 +1,20 @@
+%h5 {
+    h5 {
+      margin-top: 15px;
+      padding-bottom: 5px;
+      color: $dri_grey;
+      border-bottom: 3px solid $dri_grey;
+    }
+}
+.dri_faq {
+ @extend %h5;
+      h6 {
+      font-weight: bold;
+    }
+    p {
+      color: $dri_grey;
+    }
+}
 .dri_about_container2 {
     @include zen-nested-container;
     $zen-column-count:3;
@@ -77,14 +94,14 @@
 .dri_about_container2 {
     @include zen-nested-container;
     $zen-column-count:2;
-    .dri_about_01 {
+    .dri_about_col01 {
       @include zen-grid-item(1, 1);
     }
-    .dri_about_02 {
+    .dri_about_col02 {
       border-right:0px;
       @include zen-grid-item(1, 2);      
     }
-    .dri_about_03 {
+    .dri_about_col03 {
       clear:left;
       @include zen-grid-item(1, 1);      
     }
@@ -95,16 +112,16 @@
 .dri_about_container2 {
     @include zen-nested-container;
     $zen-column-count:1;
-    .dri_about_01 {
+    .dri_about_col01 {
       border-right:0px;
       @include zen-grid-item(1, 1);
     }
-    .dri_about_02 {
+    .dri_about_col02 {
       clear:left;
       border-right:0px;
       @include zen-grid-item(1, 1);      
     }
-    .dri_about_03 {
+    .dri_about_col03 {
       clear:left;
       @include zen-grid-item(1, 1);      
     }

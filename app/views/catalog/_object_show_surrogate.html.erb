@@ -43,7 +43,6 @@
 
 <% elsif generic_file.image? %>
     <% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
-    <%= debug @surrogate %>
     <% content_for :head do %>
     
         <meta property="og:image"           content="<%= @surrogate %>" /> 
@@ -51,8 +50,9 @@
     <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "lightbox_format") %>
     <% unless @surrogate.nil? %>
         <%= link_to @surrogate_colorbox, :class => 'dri_gallery group1' do %>
-            <img class="dri_carousel_img" src="<%= @surrogate %>">!!!!!!
+            <img class="dri_carousel_img" src="<%= @surrogate %>">      
         <% end %>
+            
     <% end %>
 <% end %>
 

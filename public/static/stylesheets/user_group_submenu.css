@@ -1,6 +1,0 @@
- #usergroup{width:109px !important;max-width: 109px !important;}
-.navb li {margin:0px; padding:0px;display:inline;}
-.navb li a{padding:10px 15px 10px;color: #555555;text-decoration: none;text-shadow: 0 1px 0 white;}
-ul.first {left:-1px; top:100%;}
-ul.navb { display:none; }
-li:hover > .navb { display:block; z-index:1000; margin-left:-50px;}
