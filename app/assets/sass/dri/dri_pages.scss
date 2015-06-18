@@ -1,8 +1,22 @@
 //* Extendable classes
 
 %pages_p {
-  font-size: 1.2em;
-  color: $dri_grey;
+  p {
+    font-size: 1.2em;
+    color: $dri_midgrey;
+    line-height: 1.3em;
+  }
+}
+
+%pages_a {
+  a {
+    font-size: 1.2em;
+    color: darken($dri_green, 10%);
+    line-height: 1.3em;
+  }
+  a:hover {
+    color: $dri_green;
+  }
 }
 
 %pages_h5 {
@@ -19,7 +33,7 @@
 %pages_h6 {
   h6 {
       color: $dri_grey;
-      font-size: 1.3em;
+      font-size: 1.2em;
       font-weight: bold;
     }
 }
@@ -46,6 +60,7 @@
     @extend %pages_h5;
     @extend %pages_h6;
     @extend %pages_p;
+    @extend %pages_a;
     
     img {
       max-width: 100%;
@@ -136,6 +151,7 @@
   @extend %pages_h5;
   @extend %pages_h6;
   @extend %pages_p;
+  @extend %pages_a;
   
   img {
     max-width: 100%;
@@ -208,7 +224,6 @@
 
 @media only screen and (max-width: 766px) {
   .dri_about {
-  
       $zen-column-count:1;
         img {
           max-height: 500px;
