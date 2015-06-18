@@ -31,9 +31,10 @@
                         <%= sf[1][:label] %>
                       </div>
                       <div class="col-md-9">
-                        <% if sf[1][:required] %><span class="required">*</span><% end %>
+                        <!--<%# if sf[1][:required] %><span class="required">*</span><%# end %>-->
                         <%= f.hidden_field "datafield]][#{indexx}][subfield][][subfield_code][", :value=>sf[1][:code], :class => "form-control subfield-tag" %>
-                        <%= f.text_field "datafield]][#{indexx}][subfield][][subfield_value][", :value=>"", :class => "form-control subfield-value", :required => sf[1][:required] %>
+                        <%#= f.text_field "datafield]][#{indexx}][subfield][][subfield_value][", :value=>"", :class => "form-control subfield-value", :required => sf[1][:required] %>
+                        <%= f.text_field "datafield]][#{indexx}][subfield][][subfield_value][", :value=>"", :class => "form-control subfield-value" %>
                       </div>
                       <div class="col-md-1">
                         <a class="destroy-subfield" model-name="batch"><i class="fa fa-times"></i></a>
