@@ -45,7 +45,7 @@ module DocumentHelper
   # Workaround for reusing partials for add institution/permissions to non QDC collections
   #
   def update_desc_metadata? md_class
-    (["DRI::QualifiedDublinCore", "DRI::Documentation"].include? md_class) ? true : false
+    (["DRI::QualifiedDublinCore", "DRI::Documentation", "DRI::Marc"].include? md_class) ? true : false
   end
 
   def get_active_fedora_model document
