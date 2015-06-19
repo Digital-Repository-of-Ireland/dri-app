@@ -38,6 +38,7 @@ class ObjectsController < CatalogController
     enforce_permissions!("edit",params[:id])
     supported_licences()
     @object = retrieve_object!(params[:id])
+    @object.controlfield_tag = [""] if @object.class == DRI::Marc and  @object.controlfield.empty? # Initialize Controlfields with empty string to render blank fields
     if @object.creator[0] == nil
       @object.creator = [""]
     end
