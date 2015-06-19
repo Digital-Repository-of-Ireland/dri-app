@@ -195,7 +195,7 @@ class ObjectsController < CatalogController
           item['files'] = []
           item['metadata'] = {}
 
-          ['title','subject','type','rights','language','description','creator',
+          ['title','subject','creation_date','type','rights','language','description','creator',
            'contributor','publisher','date','format','source','temporal_coverage',
            'geographical_coverage','geocode_point','geocode_box','institute',
            'root_collection_id'].each do |field|
@@ -220,6 +220,14 @@ class ObjectsController < CatalogController
                     geojson_boxes << dcterms_box_to_geojson(box)
                   end
                   item['metadata'][field] = geojson_boxes
+                end
+              elsif field.eql?('creation_date') || field.eql?('date')
+                if !value.nil? && !value.blank?
+                  dates = []
+                  value.each do |d|
+                    dates << dcterms_period_to_string(d)
+                  end
+                  item['metadata']['date'] = dates
                 end
               else
                 item['metadata'][field] = value unless value.nil?
