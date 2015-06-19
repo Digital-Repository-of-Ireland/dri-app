@@ -129,7 +129,7 @@ ga:
           person_sim: "Ainmneacha"
           root_collection_id_sim: "Bailiúchán"
           subject_sim: "Ábhair"
-          temporal_coverage_sim: "Ré"
+          temporal_coverage_sim: "Ábhar (Ré)"
       filters:
         label: "%{label}:"
         remove:

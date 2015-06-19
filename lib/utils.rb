@@ -65,4 +65,17 @@ module Utils
 
     return geojson_hash
   end
+
+  def dcterms_period_to_string(period)
+    return nil if period.nil? || period.blank?
+
+    period.split(/\s*;\s*/).each do |component|
+      (k,v) = component.split(/\s*=\s*/)
+      if k.eql?('name')
+        return v unless v.nil? || v.empty?
+      end
+    end
+    return period
+
+  end
 end

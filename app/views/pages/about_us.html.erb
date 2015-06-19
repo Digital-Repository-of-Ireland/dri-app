@@ -1,148 +1,107 @@
-<div id="dri_about_id" class="dri_about_container">
-	<div class="dri_about_01">
-		<h1> CREATE ARCHIVE SHARE. </h1>
+<div id="dri_about_id" class="dri_about">
+	<div class="dri_about_banner">
+		<%= image_tag("dri/about/dri_about_banner.png", :alt=>"PRESERVATION ACCESS BISCOVER Banner Image" ) %>
 	</div>
-	<div class="dri_about_02">
-		<h4> The Digital Repository of Ireland is the national trusted digital
+	<div>
+		<div class="dri_about_text_row">
+			<div class="dri_about_repository">
 
-		repository for social and cultural data – both contemporary and
+				<h5>About the Repository</h5>
 
-		historical – held by Irish institutions. </h4>
+				<p>
+					As a trusted national infrastructure for Ireland’s social and cultural heritage, we preserve, curate,
 
-	</div>
-	<div class="dri_about_03">
+					and provide sustained access to a wealth of Ireland’s humanities and social sciences data.
 
-		<h4>Sign Up to become a user of DRI</h4>
+					When you explore or search the repository, you are entering a world of rich content that reflects
 
-		<p>
-			If you would like increased functionality – e.g. to save your
+					and shapes a broad portrait of Ireland.
+				</p>
+				<p>
 
-			searches or discovered objects – or to request authorisation
+					Through this single portal, you can view historical and contemporary content from across
 
-			to access certain restricted collections, click here to apply for a
+					institutions, domains, and formats. From the same search window, you can browse artworks
 
-			username.
-		</p>
-		<div class="dri_green_button" >
-			<%= link_to t('dri.application.home.links.register_dri'), user_group.new_user_path %>
+					and hear fascinating life histories, read cherished old letters and listen to music and archived
+
+					broadcasts, or dig through business records and ephemera. There are sound files, sharp and
+
+					luscious photographs, videos, historical documents, high quality images, publications, and more.
+
+				</p>
+				<p>
+					We have created this repository with two central purposes: to preserve Ireland’s digital heritage
+
+					for the long term, and to provide you, the user, with access to that heritage. Please enjoy browsing
+
+					and searching the available content.
+				</p>
+				</p>
+				<%= link_to "" do %>
+				<%= image_tag("dri/about/dri_about_explore_strap.png", :alt=>"PRESERVE" ) %>
+				<% end %>
+			</div>
+			<div class="dri_about_who">
+				<h5> Who we are </h5>
+				<p>
+					The Digital Repository of Ireland is a research organisation with staff members from a wide variety of backgrounds, 
+					including software engineers, designers, digital archivists and librarians, data curators, digital imaging experts, 
+					policy and requirements specialists, educators, social scientists and humanities scholars. DRI has been built by a 
+					research consortium of six academic partners:
+					<%= link_to  "Royal Irish Academy", "http://ria.ie/",:target=>"_blank" %> (RIA, lead institute),
+					<%= link_to  "Maynooth University","http://maynoothuniversity.ie/", :target=>"_blank" %> (MU), 
+					<%= link_to  "Trinity College Dublin","http://tcd.ie/", :target=>"_blank" %> (TCD), 
+					<%= link_to  "Dublin Institute of Technology", "http://dit.ie/", :target=>"_blank" %> (DIT), 
+					<%= link_to  "National University of Ireland, Galway","http://www.nuigalway.ie/", :target=>"_blank" %> (NUIG), and 
+					<%= link_to  "National College of Art and Design","http://www.ncad.ie/", :target=>"_blank" %> (NCAD). The Digital Repository 
+					of Ireland is funded by the Higher Education Authority (HEA) through a PRTLI Cycle 5 grant.
+				</p>
+			</div>
+		</div>
+		<div class="dri_about_last_row">
+			<div class="dri_about_lifecycle_container">
+				<div class="dri_about_lifecycle_block">
+					<div class="dri_about_lifecycle_infographic">
+						<%= link_to "/pages/lifecycle" do %>
+						<%= image_tag("dri/about/dri_about_lifecycle_infographic.png", :alt=>"PRESERVE" ) %>
+						<% end %>
+					</div>
+					<div class="dri_about_lifecycle_text">
+						<h6>Connect with DRI</h6>
+						<p>
+							There are two routes an organisation may
+							take to gain deposit authorisation for the DRI
+							Repository. An organisation may decide to
+							become a DRI member or instead utilise the
+							expertise and domain knowledge of an existing
+							DRI member. The route taken depends upon
+							your organisation and subject domain. A list of
+							all current DRI members is available here, while
+							you can review our membership policy and
+							procedure here. DRI are happy to advise on
+							the approach that best suits your needs.
+						</p>
+						<p>
+
+							However, whichever route your organisation
+							takes it is important to review the DRI life-cycle
+							which will guide you through the various pre
+							and post deposit processes.
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="dri_about_links_1">
+				<div class="dri_about_logo1">
+					<%= link_to "http://www.inspiring-ireland.ie/", :target => "_blank" do %><%= image_tag("dri/about/dri_about_inspiring_ireland.png", :alt=>"Inspiring Ireland" ) %><% end %>
+				</div>
+			</div>
+			<div class="dri_about_links_2">
+				<div class="dri_about_logo2">
+					<%= link_to "http://demo.dri.ie/" do %><%= image_tag("dri/about/dri_about_demo.png", :alt=>"DRI Demostrator Projects" ) %><% end %>
+				</div>
+			</div>
 		</div>
 
 	</div>
-	<div class="dri_about_04">
-		<p>
-			About the Repository
-		</p>
-
-	</div>
-	<div class="dri_about_05">
-		<p>
-			We are Ireland’s national trusted digital repository for social and
-
-			cultural data; as such, we archive, preserve, link, and provide
-
-			access to a wealth of content across the humanities and social
-
-			sciences. When you explore or search this repository, you are
-
-			entering a world of rich content that reflects and shapes a broad
-
-			portrait of Ireland.
-		</p>
-		<p>
-			Through this single portal, you can view both historical and
-
-			contemporary content that spans a wide variety of formats.
-
-			Currently, we have sound files, sharp and luscious photographs,
-
-			historical documents, high quality images of art works,
-
-			publications, and more. As we progress past our current pilot phase, we will continue to add more collections from different institutions, and to expand the picture of Ireland presented to the user.
-		</p>
-		<p>
-			We have created this repository with two central purposes: to preserve Ireland’s digital heritage over the long term, and to provide you, the user, with access to that heritage. Please enjoy browsing and searching the available content.
-		</p>
-		<div class="dri_about_06b">
-			<h3><span class="dri_colour_text">Explore</span> the wealth of collections available on DRI</h3><br />
-		</div>
-	</div>
-	<div class="dri_about_06a">
-		<div class="dri_about_06">
-
-		</div>
-
-
-	</div>
-
-	<div class="dri_about_07">
-		<h1>Who we are</h1>
-		<p>
-			The Digital Repository of Ireland is funded by the Higher
-
-			Education Authority (HEA) through a PRTLI Cycle 5 grant.
-
-			The project is built by a research consortium of six academic
-
-			partners, including the Royal Irish Academy (RIA, lead institute),
-
-			National University of Ireland, Maynooth (NUIM), Trinity College
-
-			Dublin (TCD), Dublin Institute of Technology (DIT), National
-
-			University of Ireland, Galway (NUIG), and National College of Art
-
-			and Design (NCAD). At present, the DRI has 36 staff members
-
-			drawn from a wide variety of backgrounds, including
-
-			software engineers, digital archivists and librarians, policy
-
-			and requirements specialists, social scientists and humanities
-
-			scholars.
-		</p><br />
-
-	</div>
-	<div class="dri_about_08">
-		<h1>What we do</h1>
-		<p>
-			The DRI is a repository, but it is also a research project into
-
-			best practices in digital archiving and preservation. We are
-
-			committed to the open sharing of our practices and discoveries
-
-			with the community. For some quick facts about digital
-
-			preservation and DRI, please see the first issues of our Digital
-
-			Repository of Ireland Fact Sheet series:
-		</p>
-
-		<ul>
-			<li>
-				<%= link_to "#{main_app.root_url}/catalog/dri:sx61dm316", :target => "_blank" do %>Metadata and the DRI<% end %>
-			</li>
-			<li>
-				<%= link_to "#{main_app.root_url}/catalog/dri:s1784p34b", :target => "_blank" do %>Copyright and Licensing<% end %>
-			</li>
-			<li>
-				<%= link_to "#{main_app.root_url}/catalog/dri:s1784p36w", :target => "_blank" do %>File Formats<% end %>
-			</li>
-			<li>
-				<%= link_to "#{main_app.root_url}/catalog/dri:s1784p38f", :target => "_blank" do %>Long term digital preservation<% end %>
-			</li>
-		</ul>
-
-	</div>
-	<br />
-	<div class="nested">
-		<div class="dri_about_09">
-			<%= link_to "#{main_app.root_url}/catalog/dri:sx61dm430" do %><%= image_tag("dri/institutes/motiff_322x189.png", :alt=>"MOTIF" ) %><% end %>
-		</div>
-		<div class="dri_about_10">
-			<%= link_to "http://www.inspiring-ireland.ie/", :target => "_blank" do %><%= image_tag("dri/institutes/ii_live_about.png", :alt=>"Inspiring Ireland" ) %><% end %>
-		</div>
-	</div>
-
-</div>

@@ -1,5 +1,5 @@
 <div id="dri_welcome_block_id" class="dri_welcome_block">
-  <h1><%= t('blacklight.welcome') %></h1>
+  <h1><%= t('dri.application.home.welcome_to_dri') %></h1>
   <p>
     <%= t('dri.application.home.introtext') %>
   </p>
@@ -15,36 +15,59 @@
       <li data-target="#carousel-example-generic" data-slide-to="0" ></li>
       <li data-target="#carousel-example-generic" data-slide-to="1" class="active"></li>
       <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="4"></li>
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
-        <%= link_to "#{main_app.root_url}/catalog/dri:1n79hb02h" do %>
-            <%= image_tag("dri/slides/slide1.png", :alt=>"Hardiman Atlas" ) %>
+        <%= link_to "#{main_app.root_url}/catalog/5999sh95k" do %>
+            <%= image_tag("dri/slides/1916_crop.jpg", :alt=>"Letters of 1916" ) %>
             <div class="carousel-caption">
               <p>
-                Hardiman Atlas
+                Letters of 1916
               </p>
         <% end %>
         </div>
       </div>
       <div class="item">
-        <%= link_to "#{main_app.root_url}/catalog/5999pn701" do %>
-            <%= image_tag("dri/home_tmp/rnag_tmp.jpg", :alt=>"RTE RnaG" ) %>
+        <%= link_to "#{main_app.root_url}/catalog/9593zf44k" do %>
+            <%= image_tag("dri/slides/hclarke_crop.jpeg", :alt=>"Clarke Stained Glass Studios Collection" ) %>
             <div class="carousel-caption">
               <p>
-                Bailiúchán Raidió na Gaeltachta (Seán Mac Giollarnáth)
+                Clarke Stained Glass Studios Collection
               </p>
             </div>
         <% end %>
       </div>
       <div class="item">
-        <%= link_to "#{main_app.root_url}/catalog/dri:1n79j099q" do %>
-            <%= image_tag("dri/slides/slide3.png", :alt=>"Recuiting Poster Collection" ) %>
+        <%= link_to "#{main_app.root_url}/catalog/9593xp97w" do %>
+            <%= image_tag("dri/slides/iqda_crop.jpg", :alt=>"Life Histories and Social Change" ) %>
             <div class="carousel-caption">
               <p>
-                World War I Recruiting Collection
+                Life Histories and Social Change<br />
+                <span style="font-size: 70%">Wiltshire Collection Courtesy of the National Library of Ireland</span>
+              </p>
+            </div>
+        <% end %>        
+      </div>
+       <div class="item">
+        <%= link_to "#{main_app.root_url}/catalog/95942h48r" do %>
+            <%= image_tag("dri/slides/nuig_crop.jpeg", :alt=>"Bailiúchán Sheáin Mhic Ghiollarnáth (Leathanaigh Scanta)" ) %>
+            <div class="carousel-caption">
+              <p>
+                Bailiúchán Sheáin Mhic Ghiollarnáth (Leathanaigh Scanta)
+              </p>
+            </div>
+        <% end %>
+      </div>
+      <div class="item">
+        <%= link_to "#{main_app.root_url}/catalog/5999n9755" do %>
+            <%= image_tag("dri/slides/kdw_crop.jpeg", :alt=>"Kilkenny Design Workshops" ) %>
+            <div class="carousel-caption">
+              <p>
+                Kilkenny Design Workshops
               </p>
             </div>
         <% end %>
