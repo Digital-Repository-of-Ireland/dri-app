@@ -1,6 +1,6 @@
 <div id="dri_about_id" class="dri_about">
 	<div class="dri_about_banner">
-		<%= image_tag("dri/about/dri_about_banner.png", :alt=>"PRESERVATION ACCESS BISCOVER Banner Image" ) %>
+		<%= image_tag("dri/about/dri_about_banner.png", :alt=>"PRESERVATION ACCESS DISCOVER Banner Image" ) %>
 	</div>
 	<div>
 		<div class="dri_about_text_row">
@@ -38,8 +38,8 @@
 					and searching the available content.
 				</p>
 				</p>
-				<%= link_to "" do %>
-				<%= image_tag("dri/about/dri_about_explore_strap.png", :alt=>"PRESERVE" ) %>
+				<%= link_to main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" do %>
+				<%= image_tag("dri/about/dri_about_explore_strap.png", :alt=>"EXPLORE" ) %>
 				<% end %>
 			</div>
 			<div class="dri_about_who">
@@ -63,7 +63,7 @@
 			<div class="dri_about_lifecycle_container">
 				<div class="dri_about_lifecycle_block">
 					<div class="dri_about_lifecycle_infographic">
-						<%= link_to "/pages/lifecycle" do %>
+						<%= link_to "#{main_app.root_url}/pages/about_lifecycle" do %>
 						<%= image_tag("dri/about/dri_about_lifecycle_infographic.png", :alt=>"PRESERVE" ) %>
 						<% end %>
 					</div>

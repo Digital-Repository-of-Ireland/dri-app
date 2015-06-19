@@ -1,0 +1,26 @@
+<% if (request.path.include? "/about")  %>
+<li class="dropdown active dri_dropdown">
+	<% else %>
+<li class="dropdown dri_dropdown">
+	<% end %>
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= t('dri.headerlinks.about') %> <span class="caret"></span></a>
+	<ul class="dropdown-menu" role="menu">
+		<% if request.path.include? "/about_us" %>
+		<li role="presentation" class="active">
+			<% else %>
+		<li role="presentation">
+			<% end %>
+			     
+            <%= link_to t('dri.headerlinks.about_us'), "#{main_app.root_url}/pages/about_us", :id => 'about_us' %>
+		</li>
+		<% if request.path.include? "/about_lifecycle" %>
+		<li role="presentation" class="active">
+			<% else %>
+		<li role="presentation">
+			<% end %>
+			     
+            <%= link_to t('dri.headerlinks.about_dri_lifecycle'), "#{main_app.root_url}/pages/about_lifecycle", :id => 'about_lifecycle' %>
+		</li>
+		<li class="divider"></li>
+	</ul>
+</li>
