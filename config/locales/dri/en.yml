@@ -22,7 +22,6 @@ en:
         save_edits: "Save Edits"
         settings: Settings
       home: 
-        welcome_to_dri: "Welcome to the DRI"
         featured: Featured
         featured_collections: "Featured Collections (Decade of Centenaries)"
         featured_objects: "Featured Objects"
@@ -35,6 +34,7 @@ en:
         rss_feed: 
           read_more: "Read More"
           title: News
+        welcome_to_dri: "Welcome to the DRI"
       lang: 
         en: English
         ga: Irish
@@ -135,8 +135,8 @@ en:
         zip: "Dublin 2"
     headerlinks: 
       about: About
-      about_us: "About Us"
       about_dri_lifecycle: "DRI Lifecycle"
+      about_us: "About Us"
       admin: "Admin Tasks"
       browse: Discover
       collection: Collection
