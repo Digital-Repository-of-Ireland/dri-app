@@ -12,26 +12,18 @@
   <div class="carousel slide" data-ride="carousel" data-interval="5000">
     <!-- Indicators -->
     <ol class="carousel-indicators">
-      <li data-target="#carousel-example-generic" data-slide-to="0" ></li>
-      <li data-target="#carousel-example-generic" data-slide-to="1" class="active"></li>
-      <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-      <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-      <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+      <li data-target="#" data-slide-to="0" class="active"></li>
+      <li data-target="#" data-slide-to="1"></li>
+      <li data-target="#" data-slide-to="2"></li>
+      <li data-target="#" data-slide-to="3"></li>
+      <li data-target="#" data-slide-to="4"></li>
+      <li data-target="#" data-slide-to="5"></li>
+      <li data-target="#" data-slide-to="6"></li>
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
-        <%= link_to "#{main_app.root_url}/catalog/5999sh95k" do %>
-            <%= image_tag("dri/slides/1916_crop.jpg", :alt=>"Letters of 1916" ) %>
-            <div class="carousel-caption">
-              <p>
-                Letters of 1916
-              </p>
-        <% end %>
-        </div>
-      </div>
-      <div class="item">
         <%= link_to "#{main_app.root_url}/catalog/9593zf44k" do %>
             <%= image_tag("dri/slides/hclarke_crop.jpeg", :alt=>"Clarke Stained Glass Studios Collection" ) %>
             <div class="carousel-caption">
@@ -42,12 +34,22 @@
         <% end %>
       </div>
       <div class="item">
+        <%= link_to "#{main_app.root_url}/catalog/5999sh95k" do %>
+            <%= image_tag("dri/slides/1916_crop.jpg", :alt=>"Letters of 1916" ) %>
+            <div class="carousel-caption">
+              <p>
+                Letters of 1916
+              </p>
+        <% end %>
+        </div>
+      </div>
+      <div class="item">
         <%= link_to "#{main_app.root_url}/catalog/9593xp97w" do %>
             <%= image_tag("dri/slides/iqda_crop.jpg", :alt=>"Life Histories and Social Change" ) %>
             <div class="carousel-caption">
               <p>
                 Life Histories and Social Change<br />
-                <span style="font-size: 70%">Wiltshire Collection Courtesy of the National Library of Ireland</span>
+                <span style="font-size: 70%">Irish Lifetimes Image: Wiltshire Collection Courtesy of the National Library of Ireland</span>
               </p>
             </div>
         <% end %>        
@@ -62,12 +64,32 @@
             </div>
         <% end %>
       </div>
+       <div class="item">
+        <%= link_to "#{main_app.root_url}/catalog/95944b38t" do %>
+            <%= image_tag("dri/slides/deevy_crop.jpg", :alt=>"The Teresa Deevy Archive" ) %>
+            <div class="carousel-caption">
+              <p>
+                The Teresa Deevy Archive
+              </p>
+            </div>
+        <% end %>
+      </div>
       <div class="item">
         <%= link_to "#{main_app.root_url}/catalog/5999n9755" do %>
             <%= image_tag("dri/slides/kdw_crop.jpeg", :alt=>"Kilkenny Design Workshops" ) %>
             <div class="carousel-caption">
               <p>
                 Kilkenny Design Workshops
+              </p>
+            </div>
+        <% end %>
+      </div>
+      <div class="item">
+        <%= link_to "#{main_app.root_url}/catalog/5999p401h" do %>
+            <%= image_tag("dri/slides/rte_crop.jpg", :alt=>"RTÉ Archives - Elections" ) %>
+            <div class="carousel-caption">
+              <p>
+                RTÉ Archives - Elections
               </p>
             </div>
         <% end %>
