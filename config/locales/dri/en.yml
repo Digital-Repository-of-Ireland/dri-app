@@ -135,6 +135,8 @@ en:
         zip: "Dublin 2"
     headerlinks: 
       about: About
+      about_us: "About Us"
+      about_dri_lifecycle: "DRI Lifecycle"
       admin: "Admin Tasks"
       browse: Discover
       collection: Collection
