@@ -5,6 +5,7 @@ class SolrDocument
  
   include Blacklight::Solr::Document
   include UserGroup::PermissionsSolrDocOverride
+  include FileDocument
 
   # self.unique_key = 'id'
   
