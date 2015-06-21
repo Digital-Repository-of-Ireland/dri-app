@@ -4,10 +4,11 @@ module ApplicationHelper
   require 'uri'
 
   def get_files doc
-    @files = DRI::GenericFile.where({"#{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}" => "#{doc.id}"}).sort_by{ |f| f[:filename] }
+    @files = ActiveFedora::SolrService.query("active_fedora_model_ssi:\"DRI::GenericFile\" AND #{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}:#{doc.id}", rows: 200)
+    @files = @files.map {|f| SolrDocument.new(f)}.sort_by{ |f| f[ActiveFedora::SolrQueryBuilder.solr_name("label")] }
     @displayfiles = []
     @files.each do |file|
-      @displayfiles << file unless file.preservation_only.eql?('true')
+      @displayfiles << file unless file.preservation_only?
     end
     ""
   end
