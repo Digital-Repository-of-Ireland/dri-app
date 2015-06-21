@@ -40,6 +40,13 @@ html {
   //height: 30%;
 }
 
+/* Colorbox Overrides */
+
+#cboxPrevious, #cboxNext {
+  border: inherit;
+}
+
+
 /* bootstrap overrides */
 
 .span4 {
