@@ -592,12 +592,14 @@ a .dri_signin_edugate:hover {
           }       
           
           .navbar-nav > li.active > a, 
+       
           .navbar-nav > li.active > a:hover {
             background-color: white;
+            
           }
           
           .navbar-nav > li > a:hover {
-            background-color: white;
+            background-color: #F1F1F1;
           }
           
           li {
@@ -606,6 +608,7 @@ a .dri_signin_edugate:hover {
 
           li.active {
             border-top: 3px solid $dri_green;
+            color: $dri_darkgrey;
             a {
               padding-top: 12px;
               background-color: inherit;
@@ -635,10 +638,12 @@ a .dri_signin_edugate:hover {
         ul {
           font-weight: normal;
           text-transform: none;
+           margin-top:0;
+            padding-top:0;
           li {
+            border-top:1px solid $dri_thingrey;
           }
           li.active {
-            border-top: none;
             a {
               padding-top: 12px;
               background-color: inherit;
