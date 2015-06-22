@@ -19,8 +19,6 @@ controller.controller_name.eql?('workspace') || controller_name.eql?('manage_use
 			<%= link_to t('dri.headerlinks.my_collections'), workspace_path(:mode => "collections"), :id => "my_collections", :tabindex => "-1" %>
 		</li>
 
-		<li class="divider"></li>
-
 		<% if signed_in? && (current_user.is_cm? || current_user.is_admin? || @collections.count > 0 ) %>
 
 		<% if (controller.controller_name.eql?('collections') && controller.action_name.eql?('new')) %>
@@ -39,7 +37,7 @@ controller.controller_name.eql?('workspace') || controller_name.eql?('manage_use
 		</li>
 
 		<% end %>
-		<li class="divider"></li>
+
 
 		<% if signed_in? && current_user.is_om? %>
 		<% if controller.controller_name.eql?('manage_users') %>
@@ -65,7 +63,6 @@ controller.controller_name.eql?('workspace') || controller_name.eql?('manage_use
             <% end %>
             <%= link_to t('dri.views.static.admin.licences'), main_app.licences_path, :id => "licences", :tabindex => "-1" %>
         </li>
-        <li class="divider"></li>
 
 		<% if signed_in? && current_user.is_admin? %> <!-- ok -->
 		<li role="presentation">

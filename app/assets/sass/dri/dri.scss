@@ -642,10 +642,15 @@ a .dri_signin_edugate:hover {
             padding-top:0;
           li {
             border-top:1px solid $dri_thingrey;
+            a {
+              padding-top: 12px;
+              padding-bottom: 8px;
+            }
           }
           li.active {
             a {
               padding-top: 12px;
+              padding-bottom: 8px;
               background-color: inherit;
               color: $dri_green;
             }   
