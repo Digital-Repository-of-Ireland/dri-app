@@ -22,7 +22,6 @@ en:
         save_edits: "Save Edits"
         settings: Settings
       home: 
-        welcome_to_dri: "Welcome to the DRI"
         featured: Featured
         featured_collections: "Featured Collections (Decade of Centenaries)"
         featured_objects: "Featured Objects"
@@ -35,6 +34,7 @@ en:
         rss_feed: 
           read_more: "Read More"
           title: News
+        welcome_to_dri: "Welcome to the DRI"
       lang: 
         en: English
         ga: Irish
@@ -135,6 +135,8 @@ en:
         zip: "Dublin 2"
     headerlinks: 
       about: About
+      about_dri_lifecycle: "DRI Lifecycle"
+      about_us: "About Us"
       admin: "Admin Tasks"
       browse: Discover
       collection: Collection
@@ -182,6 +184,45 @@ en:
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
       facets_title: "Facet Filters"
+      fields: 
+        collection_title: "Collection Title"
+        collection_title_text: "A name given to the collection."
+        coverages: Coverage
+        coverages_text: "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant."
+        creation_date: "Creation Date"
+        creation_date_text: "Date of creation of the resource. NOTE: You are required to enter at least one of Creation Date OR Published Date OR Date"
+        date: Date
+        date_text: "A point or period of time associated with an event in the lifecycle of the resource."
+        description: Description
+        description_text: "An account of the resource."
+        formats: Format
+        formats_text: "The Format of the resource"
+        geographical_coverages: Spatial
+        geographical_coverages_text: "Spatial characteristics of the resource."
+        identifiers: Identifier
+        identifiers_text: "Identifier for the resource."
+        languages: Language
+        languages_text: "A language of the resource."
+        licence: Licence
+        licence_text: "The reuse licence for this resource."
+        published_date: "Published Date / Issued"
+        published_date_text: "Date of formal issuance (e.g., publication) of the resource."
+        relations: Relation
+        relations_text: "A related resource."
+        rights: Rights
+        rights_text: "Information about rights held in and over the resource."
+        roles: Contributor
+        roles_text: "An entity responsible for making contributions to the resource."
+        sources: Source
+        sources_text: "A related resource from which the described resource is derived."
+        subjects: Subjects
+        subjects_text: "The topic of the resource."
+        temporal_coverage: Temporal
+        temporal_coverage_text: "Temporal characteristics of the resource."
+        title: Title
+        title_text: "A name given to the resource."
+        types: Types
+        types_text: "The nature or genre of the resource."
       metadata_identifiers: "<a href='http://loc.org'>LOC</a>"
       no_results_found: "No search results found"
       q: "Type a search term and press Enter. Use AND and OR to narrow or broaden your search"
@@ -380,7 +421,7 @@ en:
         description_gle: "Description (Irish)"
         format: Format
         formats: Formats
-        geographical_coverage: "Subject (Place)"
+        geographical_coverage: Spatial
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
         geographical_coverages: "Subjects (Places)"
@@ -401,7 +442,7 @@ en:
         relation: Relation
         relations: Relations
         rights: Rights
-        roles: Roles
+        roles: Contributor
         show_description_eng: "Show English"
         show_description_gle: "Show Irish"
         source: Source
@@ -411,7 +452,7 @@ en:
         subjects: Subjects
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
-        temporal_coverage: "Subject (Temporal)"
+        temporal_coverage: Temporal
         temporal_coverage_eng: "Subject (Temporal) in English"
         temporal_coverage_gle: "Subject (Temporal) in Irish"
         temporal_coverages: "Subjects (Temporal)"

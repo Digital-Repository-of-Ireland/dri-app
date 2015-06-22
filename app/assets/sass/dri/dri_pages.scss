@@ -14,9 +14,7 @@ $dri_about_logos_min_height: 100px;
 }
 %pages_a {
     a {
-        font-size: 1.1em;
         color: darken($dri_green, 10%);
-        line-height: 1.3em;
     }
     a:hover {
         color: $dri_green;
@@ -42,6 +40,13 @@ $dri_about_logos_min_height: 100px;
 %thin_border {
     border: 1px solid $dri_thingrey;
 }
+.padded_top {
+  padding-top: 10px;
+}
+li {
+      font-size: 1.1em;
+}
+
 //* FAQ /pages/faq.html.erb
 .dri_faq {
     @extend %pages_h5;
@@ -58,6 +63,9 @@ $dri_about_logos_min_height: 100px;
     @extend %pages_h6;
     @extend %pages_p;
     @extend %pages_a;
+    li {
+      padding-bottom:5px;
+    }
     img {
         max-width: 100%;
         padding: 5px 0 5px 0;
@@ -81,6 +89,11 @@ $dri_about_logos_min_height: 100px;
         @extend .dri_about_column;
         @include zen-grid-item(1, 2);
     }
+    .dri_about_col01_02 {
+        min-height: $dri_pages_min_height;
+        @extend .dri_about_column;
+        @include zen-grid-item(2, 1);
+    }
     .dri_about_col03 {
         @extend .dri_about_column;
         border-right: 0px;
@@ -101,6 +114,12 @@ $dri_about_logos_min_height: 100px;
             min-height: inherit;
             border-right: 0px;
             @include zen-grid-item(1, 2);
+        }
+        .dri_about_col01_02 {
+            min-height: inherit;
+            border-right: 0px;
+            @extend .dri_about_column;
+            @include zen-grid-item(2, 1);
         }
         .dri_about_col03 {
             clear: left;

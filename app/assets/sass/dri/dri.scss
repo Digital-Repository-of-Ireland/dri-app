@@ -40,6 +40,13 @@ html {
   //height: 30%;
 }
 
+/* Colorbox Overrides */
+
+#cboxPrevious, #cboxNext {
+  border: inherit;
+}
+
+
 /* bootstrap overrides */
 
 .span4 {
@@ -2513,16 +2520,17 @@ ul.dri_view_collection {
    width: 250px;
   li {
     display: table-cell;
-    width: 60px;
+    width: 70px;
     padding: 1px;
     a {
       width: 100%;
       text-align: center;
+      font-size: 90%;
       color: $dri_grey;
     }
   }
   li.position {
-    width:130px;
+    width:110px;
     a.dri_no_border {
       color: $dri_grey;
     }
