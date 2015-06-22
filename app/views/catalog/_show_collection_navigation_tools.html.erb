@@ -8,7 +8,7 @@
 		<%= link_back_to_catalog %>
 	</li>
 
-	<% collection = governing_collection_solr(@document) %>
+	<% collection = root_collection_solr(@document) %>
 
 	<% unless collection.nil? %>
 
