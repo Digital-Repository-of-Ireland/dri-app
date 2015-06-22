@@ -58,7 +58,9 @@ module ApplicationHelper
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
     return collection[0]
-    end
+  elsif !doc[ActiveFedora::SolrQueryBuilder.solr_name('governing_collection_id', :stored_searchable, type: :string).to_sym]
+    return doc
+  end
     return nil
   end
 
