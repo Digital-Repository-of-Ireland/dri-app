@@ -24,6 +24,9 @@ module FieldRenderHelper
   def render_description args
     path = {:path => request.fullpath}
     currentML = cookies[:metadata_language]
+    if (currentML.blank?)
+      currentML = 'all'
+    end
     if (I18n.locale == :ga )
       path[:id] = 'ga'
     else

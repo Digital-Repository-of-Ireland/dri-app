@@ -20,7 +20,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav dri_uppercase">
 				<%= render 'shared/header_main_common_nav' %>
-				
+				<%= render 'shared/header_main_about_dropdown' %>
 				<% if current_user %>
 				<%= render 'shared/header_main_workspace_dropdown' %>
 				<% if current_user.is_admin? || current_user.is_cm? %>
