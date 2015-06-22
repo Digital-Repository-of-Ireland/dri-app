@@ -45,16 +45,16 @@
 			<div class="dri_about_who">
 				<h5> Who we are </h5>
 				<p>
-					The Digital Repository of Ireland is a research organisation with staff members from a wide variety of backgrounds, 
-					including software engineers, designers, digital archivists and librarians, data curators, digital imaging experts, 
-					policy and requirements specialists, educators, social scientists and humanities scholars. DRI has been built by a 
+					The Digital Repository of Ireland is a research organisation with staff members from a wide variety of backgrounds,
+					including software engineers, designers, digital archivists and librarians, data curators, digital imaging experts,
+					policy and requirements specialists, educators, social scientists and humanities scholars. DRI has been built by a
 					research consortium of six academic partners:
 					<%= link_to  "Royal Irish Academy", "http://ria.ie/",:target=>"_blank" %> (RIA, lead institute),
-					<%= link_to  "Maynooth University","http://maynoothuniversity.ie/", :target=>"_blank" %> (MU), 
-					<%= link_to  "Trinity College Dublin","http://tcd.ie/", :target=>"_blank" %> (TCD), 
-					<%= link_to  "Dublin Institute of Technology", "http://dit.ie/", :target=>"_blank" %> (DIT), 
-					<%= link_to  "National University of Ireland, Galway","http://www.nuigalway.ie/", :target=>"_blank" %> (NUIG), and 
-					<%= link_to  "National College of Art and Design","http://www.ncad.ie/", :target=>"_blank" %> (NCAD). The Digital Repository 
+					<%= link_to  "Maynooth University","http://maynoothuniversity.ie/", :target=>"_blank" %> (MU),
+					<%= link_to  "Trinity College Dublin","http://tcd.ie/", :target=>"_blank" %> (TCD),
+					<%= link_to  "Dublin Institute of Technology", "http://dit.ie/", :target=>"_blank" %> (DIT),
+					<%= link_to  "National University of Ireland, Galway","http://www.nuigalway.ie/", :target=>"_blank" %> (NUIG), and
+					<%= link_to  "National College of Art and Design","http://www.ncad.ie/", :target=>"_blank" %> (NCAD). The Digital Repository
 					of Ireland is funded by the Higher Education Authority (HEA) through a PRTLI Cycle 5 grant.
 				</p>
 			</div>
@@ -63,7 +63,7 @@
 			<div class="dri_about_lifecycle_container">
 				<div class="dri_about_lifecycle_block">
 					<div class="dri_about_lifecycle_infographic">
-						<%= link_to "#{main_app.root_url}/pages/about_lifecycle" do %>
+						<%= link_to main_app.page_path('about_lifecycle') do %>
 						<%= image_tag("dri/about/dri_about_lifecycle_infographic.png", :alt=>"PRESERVE" ) %>
 						<% end %>
 					</div>
