@@ -9,8 +9,8 @@ include Utils
 
 class ObjectsController < CatalogController
 
-  before_filter :authenticate_user_from_token!, :except => :index
-  before_filter :authenticate_user!, :except => :index
+  before_filter :authenticate_user_from_token!, except: [:index, :citation, :related]
+  before_filter :authenticate_user!, except: [:index, :citation, :related]
 
   def actor
     @actor ||= DRI::Object::Actor.new(@object, current_user)
@@ -175,6 +175,7 @@ class ObjectsController < CatalogController
   end
 
   def index
+    enforce_permissions!("show_digital_object",params[:id])
     @list = []
 
     if params.has_key?("objects") && !params[:objects].blank?
@@ -282,6 +283,8 @@ class ObjectsController < CatalogController
 
 
   def related
+    enforce_permissions!("show_digital_object",params[:id])
+
     if params.has_key?("count") && !params[:count].blank? && numeric?(params[:count])
       count = params[:count]
     else
