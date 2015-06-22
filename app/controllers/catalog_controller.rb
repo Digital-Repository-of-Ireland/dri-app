@@ -123,8 +123,8 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('file_type_display', :facetable)
     #config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
     #config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
-    config.add_facet_field solr_name('institute', :facetable)
-    config.add_facet_field solr_name('root_collection_id', :facetable), :helper_method => :collection_title
+    config.add_facet_field solr_name('institute', :facetable), :limit => 10 
+    config.add_facet_field solr_name('root_collection_id', :facetable), :helper_method => :collection_title, :limit => 10 
 
     # TODO Temporarily added to test sub-collection belonging objects filter in object results view
     config.add_facet_field solr_name('ancestor_id', :facetable), :label => 'ancestor_id', :helper_method => :collection_title, :show => false
