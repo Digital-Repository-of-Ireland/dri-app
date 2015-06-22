@@ -14,12 +14,12 @@
           </li>
           <% end %>
       <% end %>
-      <%= link_to "#{main_app.root_url}/pages/about_faq", :id => "dri_header_help", :class => "muted" do %>
+      <%= link_to main_app.page_path('about_faq'), :id => "dri_header_help", :class => "muted" do %>
       <li>
         <%= t('dri.headerlinks.help') %>
       </li>
       <% end %>
-      
+
         <% if current_user %>
             <%= link_to user_group.destroy_user_session_path, :method => :delete, :id => 'logout' do %>
             <li class="no_border">
