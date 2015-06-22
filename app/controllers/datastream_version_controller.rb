@@ -1,7 +1,7 @@
 class DatastreamVersionController < CatalogController
 
-  before_filter :authenticate_user_from_token!, :only => [:show, :show_styled]
-  before_filter :authenticate_user!, :only => [:show, :show_styled]
+  before_filter :authenticate_user_from_token!
+  before_filter :authenticate_user!
 
   # Renders the metadata XML for a particular version of a datastream.
   #

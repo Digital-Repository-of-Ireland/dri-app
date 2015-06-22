@@ -5,8 +5,8 @@ require 'inheritance_methods'
 class ObjectHistoryController < ApplicationController
   include InheritanceMethods
 
-  before_filter :authenticate_user_from_token!, :only => [:show]
-  before_filter :authenticate_user!, :only => [:show]
+  before_filter :authenticate_user_from_token!
+  before_filter :authenticate_user!
 
   def show
     # TODO: determine what the permissions should be
@@ -27,11 +27,11 @@ class ObjectHistoryController < ApplicationController
         @versions = {}
         @audit_trail.each do |version|
           @versions[version.label] = { uri: version.uri, created: version.created, committer: committer(version) }
-        end 
-     
+        end
+
         @file_versions[file_key] = @versions
       end
-    end  
+    end
 
     # Get inherited values
     @institute_manager = get_institute_manager(@object)
@@ -47,7 +47,7 @@ class ObjectHistoryController < ApplicationController
   end
 
   private
-  
+
     def committer version
       vc = VersionCommitter.where(version_id: version.uri)
       return vc.empty? ? nil : vc.first.committer_login

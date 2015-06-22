@@ -1,8 +1,8 @@
 class InstitutesController < ApplicationController
   require 'institute_helpers'
 
-  before_filter :authenticate_user_from_token!, :only => [:edit, :update, :show]
-  before_filter :authenticate_user!, :only => [:edit, :update, :show]
+  before_filter :authenticate_user_from_token!, :except => [:index]
+  before_filter :authenticate_user!, :except => [:index]
 
   # Get the list of institutes
   def index
