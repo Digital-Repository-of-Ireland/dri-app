@@ -175,7 +175,6 @@ class ObjectsController < CatalogController
   end
 
   def index
-    enforce_permissions!("show_digital_object",params[:id])
     @list = []
 
     if params.has_key?("objects") && !params[:objects].blank?
@@ -191,81 +190,83 @@ class ObjectsController < CatalogController
           item = {}
           doc = SolrDocument.new(r)
 
-          # Get metadata
-          item['pid'] = doc.id
-          item['files'] = []
-          item['metadata'] = {}
+          if doc.status.first.eql?('published')
+            # Get metadata
+            item['pid'] = doc.id
+            item['files'] = []
+            item['metadata'] = {}
 
-          ['title','subject','creation_date','published_date','type','rights','language','description','creator',
-           'contributor','publisher','date','format','source','temporal_coverage',
-           'geographical_coverage','geocode_point','geocode_box','institute',
-           'root_collection_id'].each do |field|
+            ['title','subject','creation_date','published_date','type','rights','language','description','creator',
+             'contributor','publisher','date','format','source','temporal_coverage',
+             'geographical_coverage','geocode_point','geocode_box','institute',
+             'root_collection_id'].each do |field|
 
-            if params['metadata'].blank? || params['metadata'].include?(field)
-              value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
+              if params['metadata'].blank? || params['metadata'].include?(field)
+                value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
 
-              if field.eql?("institute")
-                item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
-              elsif field.eql?("geocode_point")
-                if !value.nil? && !value.blank?
-                  geojson_points = []
-                  value.each do |point|
-                    geojson_points << dcterms_point_to_geojson(point)
+                if field.eql?("institute")
+                  item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
+                elsif field.eql?("geocode_point")
+                  if !value.nil? && !value.blank?
+                    geojson_points = []
+                    value.each do |point|
+                      geojson_points << dcterms_point_to_geojson(point)
+                    end
+                    item['metadata'][field] = geojson_points
                   end
-                  item['metadata'][field] = geojson_points
-                end
-              elsif field.eql?("geocode_box")
-                if !value.nil? && !value.blank?
-                  geojson_boxes = []
-                  value.each do |box|
-                    geojson_boxes << dcterms_box_to_geojson(box)
+                elsif field.eql?("geocode_box")
+                  if !value.nil? && !value.blank?
+                    geojson_boxes = []
+                    value.each do |box|
+                      geojson_boxes << dcterms_box_to_geojson(box)
+                    end
+                    item['metadata'][field] = geojson_boxes
                   end
-                  item['metadata'][field] = geojson_boxes
-                end
-              elsif field.include?("date") || field.eql?("temporal_coverage")
-                if !value.nil? && !value.blank?
-                  dates = []
-                  value.each do |d|
-                    dates << dcterms_period_to_string(d)
+                elsif field.include?("date") || field.eql?("temporal_coverage")
+                  if !value.nil? && !value.blank?
+                    dates = []
+                    value.each do |d|
+                      dates << dcterms_period_to_string(d)
+                    end
+                    item['metadata'][field] = dates
                   end
-                  item['metadata'][field] = dates
+                else
+                  item['metadata'][field] = value unless value.nil?
                 end
-              else
-                item['metadata'][field] = value unless value.nil?
-              end
-            end
-           end
-
-          # Get files
-          if can? :read, doc
-            files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
-            query = Solr::Query.new(files_query)
-
-            while query.has_more?
-              files = query.pop
-
-              files.each do |mf|
-                file_list = {}
-                file_doc = SolrDocument.new(mf)
-
-                if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
-                  url = url_for(file_download_url(doc.id, file_doc.id))
-                  file_list['masterfile'] = url
-                end
-
-                timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
-                surrogates = storage.get_surrogates doc, file_doc, timeout
-                surrogates.each do |file,loc|
-                  file_list[file] = loc
-                end
-
-                item['files'].push(file_list)
               end
             end
 
+            # Get files
+            if can? :read, doc
+              files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
+              query = Solr::Query.new(files_query)
+
+              while query.has_more?
+                files = query.pop
+
+                files.each do |mf|
+                  file_list = {}
+                  file_doc = SolrDocument.new(mf)
+
+                  if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
+                    url = url_for(file_download_url(doc.id, file_doc.id))
+                    file_list['masterfile'] = url
+                  end
+
+                  timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
+                  surrogates = storage.get_surrogates doc, file_doc, timeout
+                  surrogates.each do |file,loc|
+                    file_list[file] = loc
+                  end
+
+                  item['files'].push(file_list)
+                end
+              end
+
+            end
+
+            @list << item
           end
-
-          @list << item
         end
 
         raise Exceptions::NotFound if @list.empty?
@@ -283,7 +284,7 @@ class ObjectsController < CatalogController
 
 
   def related
-    enforce_permissions!("show_digital_object",params[:id])
+    enforce_permissions!("show_digital_object",params[:object])
 
     if params.has_key?("count") && !params[:count].blank? && numeric?(params[:count])
       count = params[:count]
