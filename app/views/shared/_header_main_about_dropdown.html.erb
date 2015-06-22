@@ -10,16 +10,16 @@
 			<% else %>
 		<li role="presentation">
 			<% end %>
-			     
-            <%= link_to t('dri.headerlinks.about_us'), "#{main_app.root_url}/pages/about_us", :id => 'about_us' %>
+
+            <%= link_to t('dri.headerlinks.about_us'), main_app.page_path('about_us'), :id => 'about_us' %>
 		</li>
 		<% if request.path.include? "/about_lifecycle" %>
 		<li role="presentation" class="active">
 			<% else %>
 		<li role="presentation">
 			<% end %>
-			     
-            <%= link_to t('dri.headerlinks.about_dri_lifecycle'), "#{main_app.root_url}/pages/about_lifecycle", :id => 'about_lifecycle' %>
+
+            <%= link_to t('dri.headerlinks.about_dri_lifecycle'), main_app.page_path('about_lifecycle'), :id => 'about_lifecycle' %>
 		</li>
 	</ul>
 </li>
