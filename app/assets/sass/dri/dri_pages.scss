@@ -14,7 +14,9 @@ $dri_about_logos_min_height: 100px;
 }
 %pages_a {
     a {
-        color: darken($dri_green, 10%);
+        color: darken($dri_midgrey, 10%);
+        paddong:0;
+        margin:0;
     }
     a:hover {
         color: $dri_green;
@@ -22,12 +24,14 @@ $dri_about_logos_min_height: 100px;
 }
 %pages_h5 {
     h5 {
-        font-size: 1.3em;
+        font-size: 1.1em;
         margin-top: 15px;
         padding-bottom: 5px;
         color: $dri_grey;
         border-bottom: 3px solid $dri_grey;
-        color: $dri_grey;
+        color: $dri_grey;  
+        font-weight: bold;
+      
     }
 }
 %pages_h6 {
@@ -35,6 +39,7 @@ $dri_about_logos_min_height: 100px;
         color: $dri_grey;
         font-size: 1.1em;
         font-weight: bold;
+        padding:10px 0 0 0;
     }
 }
 %thin_border {
@@ -43,10 +48,17 @@ $dri_about_logos_min_height: 100px;
 .padded_top {
   padding-top: 10px;
 }
+ul { 
+       padding: 0;
+       margin: 0 0 0 15px;
 li {
       font-size: 1.1em;
+      list-style:disc;
+      text-decoration: none;
+      padding:0;
+      margin:0;
 }
-
+}
 //* FAQ /pages/faq.html.erb
 .dri_faq {
     @extend %pages_h5;
