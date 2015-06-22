@@ -80,5 +80,5 @@ NuigRnag::Application.routes.draw do
     end
   end
 
-  match '00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/pages/*id' => 'high_voltage/pages#show', :via => :get
+  match 'pages/*id' => 'high_voltage/pages#show', :via => :get
 end
