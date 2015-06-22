@@ -9,8 +9,8 @@ include Utils
 
 class ObjectsController < CatalogController
 
-  before_filter :authenticate_user_from_token!
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :except => :index
+  before_filter :authenticate_user!, :except => :index
 
   def actor
     @actor ||= DRI::Object::Actor.new(@object, current_user)
