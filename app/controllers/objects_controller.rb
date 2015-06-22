@@ -9,8 +9,8 @@ include Utils
 
 class ObjectsController < CatalogController
 
-  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update, :show]
-  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update, :show]
+  before_filter :authenticate_user_from_token!
+  before_filter :authenticate_user!
 
   def actor
     @actor ||= DRI::Object::Actor.new(@object, current_user)
@@ -140,7 +140,7 @@ class ObjectsController < CatalogController
 
     if @object.valid? && @object.save
       create_reader_group if @object.is_collection?
-    
+
       retrieve_linked_data
       DOI.mint_doi( @object )
 
@@ -246,7 +246,7 @@ class ObjectsController < CatalogController
               files.each do |mf|
                 file_list = {}
                 file_doc = SolrDocument.new(mf)
-                
+
                 if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
                   url = url_for(file_download_url(doc.id, file_doc.id))
                   file_list['masterfile'] = url
@@ -387,7 +387,7 @@ class ObjectsController < CatalogController
       group.reader_group = true
       group.save
     end
-  
+
     def retrieve_linked_data
       if AuthoritiesConfig
         begin
