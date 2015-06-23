@@ -25,8 +25,6 @@
               <% unless uri?(subject) %> <%= subject %> <% end %>
               <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject || uri?(subject) %> | <% end %>
           <% end %>
-      <% else %>
-          n/a
       <% end %>
     </p>
 
