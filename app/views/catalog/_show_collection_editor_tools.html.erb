@@ -61,7 +61,7 @@
 		<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
 	  </li>
 	<% end %>
-    <% if governing_collection_solr(@document).nil? && !@document[Solrizer.solr_name('status', :stored_searchable, type: :symbol).to_sym].first.eql?("published") %>
+    <% if governing_collection_solr(@document).nil? %>
 	  <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
         <li>
           <i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
