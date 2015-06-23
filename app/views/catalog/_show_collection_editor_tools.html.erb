@@ -86,7 +86,7 @@
   <% if get_reader_group(@document) %>
     <%= link_to user_group.manage_group_path(@reader_group), :id => "manage_read_requests" do %>
       <li>
-        <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.manage_read_requests') %>
+        <i class="fa fa-user-plus fa-lg"></i><%= t('dri.views.collection.manage_read_requests') %>
       </li>
     <% end %>
   <% end %>
