@@ -61,7 +61,7 @@
 		<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
 	  </li>
 	<% end %>
-    <% if governing_collection_solr(@document).nil? && !@document[Solrizer.solr_name('status', :stored_searchable, type: :symbol).to_sym].first.eql?("published") %>
+    <% if governing_collection_solr(@document).nil? %>
 	  <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
         <li>
           <i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
@@ -86,7 +86,7 @@
   <% if get_reader_group(@document) %>
     <%= link_to user_group.manage_group_path(@reader_group), :id => "manage_read_requests" do %>
       <li>
-        <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.manage_read_requests') %>
+        <i class="fa fa-user-plus fa-lg"></i><%= t('dri.views.collection.manage_read_requests') %>
       </li>
     <% end %>
   <% end %>
