@@ -22,7 +22,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: ee86d7ae51ebd0fec8feb8d7f95d10a1a8e2d476
+  revision: 4cf74a863bf1c478a5be4f5a520e381d26ef3e2a
   branch: hydra9
   specs:
     user_group (1.0.8)
