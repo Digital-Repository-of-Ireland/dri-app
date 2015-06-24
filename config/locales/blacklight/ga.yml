@@ -211,8 +211,8 @@ ga:
     pagination:
       first: "&laquo; An chéad ceann"
       last: "An ceann deireanach &raquo;"
-      next: "An chéad ceann eile &rsaquo;"
-      previous: "&lsaquo; An ceann roimhe seo"
+      next: "&rsaquo;"
+      previous: "&lsaquo;"
       truncate: "&hellip;"
     pagination_compact:
       next: "An chéad ceann eile &rsaquo;"
