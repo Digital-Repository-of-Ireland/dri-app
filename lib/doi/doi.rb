@@ -2,7 +2,7 @@ module DOI
 
   def self.mint_doi( object )
     unless DoiConfig.nil?
-      if object.status.eql?("published")
+      if object.status.eql?("published") && object.doi.nil?
         doi = DataciteDoi.create(object_id: object.id) 
 
         begin
