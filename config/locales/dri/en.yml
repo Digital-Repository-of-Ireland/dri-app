@@ -198,7 +198,7 @@ en:
         description_text: "An account of the resource."
         formats: Format
         formats_text: "The Format of the resource"
-        geographical_coverages: Spatial
+        geographical_coverages: "Subject (Place)"
         geographical_coverages_text: "Spatial characteristics of the resource."
         identifiers: Identifier
         identifiers_text: "Identifier for the resource."
@@ -210,7 +210,7 @@ en:
         published_date_text: "Date of formal issuance (e.g., publication) of the resource."
         relations: Relation
         relations_text: "A related resource."
-        rights: Rights
+        rights: "Rights statement"
         rights_text: "Information about rights held in and over the resource."
         roles: Contributor
         roles_text: "An entity responsible for making contributions to the resource."
@@ -218,7 +218,7 @@ en:
         sources_text: "A related resource from which the described resource is derived."
         subjects: Subjects
         subjects_text: "The topic of the resource."
-        temporal_coverage: Temporal
+        temporal_coverage: Subject (Temporal)
         temporal_coverage_text: "Temporal characteristics of the resource."
         title: Title
         title_text: "A name given to the resource."
@@ -424,7 +424,7 @@ en:
         description_gle: "Description (Irish)"
         format: Format
         formats: Formats
-        geographical_coverage: Spatial
+        geographical_coverage: "Subject (Place)"
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
         geographical_coverages: "Subjects (Places)"
@@ -455,7 +455,7 @@ en:
         subjects: Subjects
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
-        temporal_coverage: Temporal
+        temporal_coverage: Subject (Temporal)
         temporal_coverage_eng: "Subject (Temporal) in English"
         temporal_coverage_gle: "Subject (Temporal) in Irish"
         temporal_coverages: "Subjects (Temporal)"
