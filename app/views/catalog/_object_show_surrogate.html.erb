@@ -26,6 +26,7 @@
 <% elsif generic_file.pdf? %>
     <% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
     <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
+    <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "lightbox_format") unless @surrogate_colorbox %>
     <% if @surrogate %>
         <%= link_to @surrogate_colorbox, :data => { :colorbox => true } do %>
             <img class="dri_carousel_img" src="<%= @surrogate %>">
