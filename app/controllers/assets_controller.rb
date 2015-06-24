@@ -187,12 +187,13 @@ class AssetsController < ApplicationController
                 file_list['masterfile'] = url
               end
 
-              if can? :read, doc
+              # TODO: FIXME
+              #if can? :read, doc
                 surrogates = storage.get_surrogates doc, file_doc
                 surrogates.each do |file,loc|
                   file_list[file] = loc
                 end
-              end
+              #end
 
               item['files'].push(file_list)
             end

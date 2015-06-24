@@ -237,7 +237,8 @@ class ObjectsController < CatalogController
             end
 
             # Get files
-            if can? :read, doc
+            # TODO: FIXME
+            #if can? :read, doc
               files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
               query = Solr::Query.new(files_query)
 
@@ -263,7 +264,7 @@ class ObjectsController < CatalogController
                 end
               end
 
-            end
+            #end
 
             @list << item
           end
@@ -284,7 +285,8 @@ class ObjectsController < CatalogController
 
 
   def related
-    enforce_permissions!("show_digital_object",params[:object])
+    # TODO: FIXME
+    #enforce_permissions!("show_digital_object",params[:object])
 
     if params.has_key?("count") && !params[:count].blank? && numeric?(params[:count])
       count = params[:count]
