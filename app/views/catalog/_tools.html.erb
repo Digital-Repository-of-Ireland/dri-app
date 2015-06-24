@@ -5,6 +5,7 @@
 
 <ul class="dri_view_collection">
 	<%= render_show_doc_actions %>
+	<% if current_or_guest_user %>
 	<li>
 		<% if @document[:is_collection_tesim] %>
 		<%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({:mode => 'collections', :view => 'grid', :show_subs=> true}), :tabindex => "-1" %>
@@ -12,6 +13,7 @@
 		<%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({:mode => 'objects', :view => 'grid'}), :tabindex => "-1" %>
 		<% end %>
 	</li>
+	<% end %>
 	<% if @document.has_geocode? %>
 	<li>
 		<%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id), :id => "logainm_map", :'data-toggle' => 'modal',  :'data-target' => '#dri_map_modal_id' %>
