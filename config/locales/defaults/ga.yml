@@ -1,3 +1,4 @@
+# en-GB file from https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
 ---
 ga:
   activemodel:
@@ -14,7 +15,7 @@ ga:
         greater_than: "ní mór dó a bheith níos mó ná %{count}"
         greater_than_or_equal_to: "ní mór dó a bheith níos mó ná nó cothrom le %{count}"
         inclusion: "níl sé sa liosta"
-        invalid: "neamhbhailí"
+        invalid: neamhbhailí
         less_than: "ní mór dó a bheith níos lú ná %{count}"
         less_than_or_equal_to: "ní mór dó a bheith níos lú ná nó cothrom le %{count}"
         not_a_number: "ní uimhir é"
@@ -50,7 +51,7 @@ ga:
         greater_than: "ní mór dó a bheith níos mó ná %{count}"
         greater_than_or_equal_to: "ní mór dó a bheith níos mó ná nó cothrom le %{count}"
         inclusion: "níl sé le fáil sa liosta"
-        invalid: "neamhbhailí"
+        invalid: neamhbhailí
         less_than: "ní mór dó a bheith níos lú ná %{count}"
         less_than_or_equal_to: "ní mór dó a bheith níos lú ná nó cothrom le %{count}"
         not_a_number: "ní uimhir é"
@@ -96,13 +97,13 @@ ga:
       - Samh
       - Noll
     day_names:
-      – Dé Domhnaigh
-      – Dé Luain
-      – Dé Máirt
-      – Dé Céadaoin
-      – Déardaoin
-      – Dé hAoine
-      – Dé Sathairn
+      - Dé Domhnaigh
+      - Dé Luain
+      - Dé Máirt
+      - Dé Céadaoin
+      - Déardaoin
+      - Dé hAoine
+      - Dé Sathairn
     formats:
       default: "%d-%m-%Y"
       long: "%d %B, %Y"
@@ -117,8 +118,8 @@ ga:
       - Meitheamh
       - Iúil
       - Lúnasa
-      - Meán Fómhair
-      - Deireadh Fómhair
+      - "Meán Fómhair"
+      - "Deireadh Fómhair"
       - Samhain
       - Nollaig
     order:
@@ -139,7 +140,7 @@ ga:
       almost_x_years:
         one: "beagnach  bliain"
         other: "beagnach %{count}  bl."
-      half_a_minute: "leathnoiméad"
+      half_a_minute: leathnoiméad
       less_than_x_minutes:
         one: "níos lú ná nóiméad"
         other: "níos lú ná %{count} nóim"
@@ -150,16 +151,16 @@ ga:
         one: "níos mó ná  bliain"
         other: "níos mó ná %{count} bl."
       x_days:
-        one: "lá"
+        one: lá
         other: "%{count} lá"
       x_minutes:
-        one: "nóiméad"
+        one: nóiméad
         other: "%{count) nóim"
       x_months:
-        one: "mí"
+        one: mí
         other: "%{count} mí"
       x_seconds:
-        one: "soicind"
+        one: soicind
         other: "%{count}  soic."
     prompts:
       day: Lá
@@ -181,7 +182,7 @@ ga:
       greater_than: "ní mór dó a bheith níos mó ná %{count}"
       greater_than_or_equal_to: "ní mór dó a bheith níos mó ná nó cothrom le %{count}"
       inclusion: "níl sé sa liosta"
-      invalid: "neamhbhailí"
+      invalid: neamhbhailí
       less_than: "ní mór dó a bheith níos lú ná %{count}"
       less_than_or_equal_to: "ní mór dó a bheith níos lú ná nó cothrom le %{count}"
       not_a_number: "ní uimhir é"
@@ -230,11 +231,11 @@ ga:
       decimal_units:
         format: "%n %u"
         units:
-          billion: "Billiún"
-          million: "Milliún"
-          quadrillion: "Cuaidrilliún"
-          thousand: "Míle"
-          trillion: "Trilliún"
+          billion: Billiún
+          million: Milliún
+          quadrillion: Cuaidrilliún
+          thousand: Míle
+          trillion: Trilliún
           unit: ""
       format:
         delimiter: ""

@@ -6,18 +6,18 @@ ga:
       feedback:
         email: "Do Ríomhphost"
         message: "Do theachtaireacht"
-        name: "D’ainm"
+        name: D’ainm
     models:
-      feedback: "Aiseolas"
+      feedback: Aiseolas
   blacklight:
-    and: "agus"
-    application_name:  "Taisclann Dhigiteach na hÉireann"
+    and: agus
+    application_name: "Taisclann Dhigiteach na hÉireann"
     back_to_bookmarks: " ⬅ Siar chuig Leabharmharcanna"
     back_to_collection: " ⬅ Siar chuig an mBailiúchán"
     back_to_search: " ⬅ Siar chuig Cuardach"
     bookmarks:
       add:
-        button: "Leabharmharc"
+        button: Leabharmharc
         failure: "Gabh mo leithscéal, bhí fadhb ann agus na leabharmharacanna á sábháil"
         success:
           one: "D’éirigh leat Leabharmharc  a chur isteach"
@@ -30,7 +30,7 @@ ga:
       collection:
         add:
           button: "Cur le leabharmharcanna"
-      delete: "Bain"
+      delete: Bain
       list_title: "Do chuid Leabharmharcanna"
       need_login: "Logáil isteach le do thoil chun bainistiú a dhéanamh agus féachaint ar do chuid leabharmharcanna"
       no_bookmarks: "Níl aon leabharmharc agat"
@@ -39,7 +39,7 @@ ga:
         button: "Bain an leabharmharc"
         failure: "Gabh mo leithscéal, bhí fadhb  ann agus na leabharmharcanna á mbaint"
         success: "leabharmharc  bainte go sásúil"
-      title: "Leabharmharcanna"
+      title: Leabharmharcanna
     citation:
       apa: APA
       chicago: Chicago
@@ -51,8 +51,8 @@ ga:
           blank: "ní mór faighteoir a lua chun an teachtaireacht seo a sheoladh"
           invalid: "ní mór seoladh bailí a chur isteach"
       form:
-        message: "Teachtaireacht"
-        submit: "Seol"
+        message: Teachtaireacht
+        submit: Seol
         title: "Seol mar ríomhphost"
         to: "Ríomhphost:"
       text:
@@ -73,15 +73,15 @@ ga:
       errors:
         title: "Socraigh na hearráidí seo a leanas le do thoill."
       need_message: "Tá Teachtaireacht ag teastáil"
-      submit: "Seol!"
+      submit: Seol!
       valid_email: "Tá seoladh ríomhphoist bailí ag teastáil"
       valid_name: "Tá ainm bailí ag teastáíl"
     header_links:
-      bookmarks: "Leabharmharcanna"
+      bookmarks: Leabharmharcanna
       login: "Logáil isteach"
       logout: "Logáil amach"
       saved_searches: "Mo chuid cuardach"
-      search_history: "Stair"
+      search_history: Stair
     or: nó
     saved_searches:
       add:
@@ -92,7 +92,7 @@ ga:
         action_title: "Glan na cuardaigh a shábháil tú"
         failure: "Bhí fadhb ann agus do chuid cuardach á nglanadh"
         success: "Glanadh na cuardaigh a shábháil tú"
-      delete: "scrios"
+      delete: scrios
       list_title: "Na cuardaigh a shábháil tú"
       need_login: "Logáil isteach le do thoil chun bainistiú a dhéanamh agus féachaint ar do chuid cuardach"
       no_searches: "Níor shábháíl tú aon chuardach"
@@ -105,7 +105,7 @@ ga:
       documents:
         counter: "%{counter}. "
       entry_pagination_info:
-        one: <b>1 as 1</b>"
+        one: "<b>1 as 1</b>"
         other: "<b>%{current}</b> as <b>%{total}</b>"
       errors:
         invalid_solr_id: "Gabh mo leithscéal, d’iarr tú taifead nach bhfuil ann"
@@ -120,15 +120,15 @@ ga:
           index: "Sórtáil A-Z"
         title: "Cuir teorainn le do chuardach"
       fields:
-        default: "Eochairfhocal"
+        default: Eochairfhocal
         facet:
           file_type_display_sim: "Cineál meán"
-          geographical_coverage_sim: "Áiteanna"
-          institute_sim: "Institúid"
-          language_sim: "Teanga"
-          person_sim: "Ainmneacha"
-          root_collection_id_sim: "Bailiúchán"
-          subject_sim: "Ábhair"
+          geographical_coverage_sim: Áiteanna
+          institute_sim: Institúid
+          language_sim: Teanga
+          person_sim: Ainmneacha
+          root_collection_id_sim: Bailiúchán
+          subject_sim: Ábhair
           temporal_coverage_sim: "Ábhar (Ré)"
       filters:
         label: "%{label}:"
@@ -137,12 +137,12 @@ ga:
           value: "Bain an srian: %{value}"
         title: "Chuardaigh tú"
       form:
-        q: "Cuardaigh"
+        q: Cuardaigh
         search_field:
-          label: "Cuardaigh"
+          label: Cuardaigh
           post_label: "le haghaidh"
           title: "Roghanna cuardach spriocdhírithe"
-        submit: "Cuardaigh"
+        submit: Cuardaigh
       librarian_view:
         leader: "LEADER %{leader}"
         title: "Amharc an leabharlannaí"
@@ -157,11 +157,11 @@ ga:
       per_page:
         button_label: "%{count} in aghaidh an leathanaigh"
         label: "%{count} Torthaí"
-        submit: "Nuashonrú"
+        submit: Nuashonrú
         title: "Líon na dtorthaí in aghaidh an leathanaigh"
       rss_feed: "RSS le haghaidh torthaí"
       search_results: "Torthaí an chuardaigh"
-      search_results_header: "Cuardach"
+      search_results_header: Cuardach
       show:
         title: "%{document_title} - %{application_name}"
       sort:
@@ -178,7 +178,7 @@ ga:
       forget: "Déan dearmad"
       no_history: "Níl aon stair chuardaigh agat"
       recent: "Do chuid cuardach le gairid"
-      save: "sábháil"
+      save: sábháil
       title: "Stair do Chuardaigh"
     sms:
       errors:
@@ -188,25 +188,25 @@ ga:
           blank: "Ní mór uimhir theileafóin an fhaighteora a chur isteach chun an teachtaireacht seo  a sheoladh"
           invalid: "Ní mór uimhir theileafóin bhailí a chuir isteach a bhfuil 10 ndigit leis"
       form:
-        carrier: "Iompróir"
+        carrier: Iompróir
         carrier_prompt: "Roghnaigh d’impróir le do thoil"
-        submit: "Seol"
+        submit: Seol
         title: "SMS é seo"
-        to: "Teil"
+        to: Teil
       text:
         author: " le %{value}"
         title: "%{value}"
         url: "Nasc: %{url}"
     tools:
-      cite: "Luaigh"
-      clear: "Glan"
-      email: "Ríomhphost"
+      cite: Luaigh
+      clear: Glan
+      email: Ríomhphost
       endnote: "Easportáíl go dtí EndNote"
       librarian_view: "Amharc an Leabharlannaí"
       refworks: "Easportáil go dtí Refworks"
       sms: "SMS é seo"
-      title: "Uirlisí"
-    welcome: "Fáilte!"
+      title: Uirlisí
+    welcome: Fáilte!
   views:
     pagination:
       first: "&laquo; An chéad ceann"

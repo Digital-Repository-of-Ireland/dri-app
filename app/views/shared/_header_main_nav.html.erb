@@ -10,7 +10,7 @@
 
 			</button>
 			<span class="dri_navbar_search hidden-sm hidden-md hidden-lg"> <%= render 'shared/header_main_search_form' %></span>
-			<%= link_to main_app.root_url do %>
+			<%= link_to main_app.root_path do %>
 			<div class="dri_ident_tiny hidden-sm hidden-md hidden-lg"></div>
 			<% end %>
 
@@ -29,7 +29,7 @@
 				<% end %>
 				<%= render 'shared/header_main_nav_lang' %>
 				<% if current_user %>
-          
+
       <% end %>
       <% if !current_user %>
           <li class="hidden-sm hidden-md hidden-lg">

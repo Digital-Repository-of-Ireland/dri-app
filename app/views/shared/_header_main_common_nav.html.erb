@@ -3,7 +3,7 @@
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.home'), main_app.root_url, :id => "dri_home_id" %>
+<%= link_to t('dri.headerlinks.home'), main_app.root_path, :id => "dri_home_id" %>
 </li>
 
 <% if ((controller_name == 'catalog') and (controller.action_name != 'index')  or (request.path.include? "/catalog") ) %>

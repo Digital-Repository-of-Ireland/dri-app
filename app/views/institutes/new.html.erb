@@ -3,8 +3,7 @@
 		$("#institution_logo").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
 	}
 </script>
-<h5>Are you sure you need a new Organisation?</h5>
-<p>You can check <%= link_to "here", institutions_path %> for existing Orgaisations.</p>
+<h5><%= t('dri.views.collection.institute.are_you_sure') %> (<%=  link_to t('dri.views.collection.institute.see_orgs'), institutions_path %>)</h5>
 
 <div class="dri_collection_institutes_dropdown">
 	<div class="dri_institutes_title">

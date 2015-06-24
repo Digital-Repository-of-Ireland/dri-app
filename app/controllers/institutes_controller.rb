@@ -46,7 +46,7 @@ class InstitutesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to institutions_path }
+      format.html { redirect_to institutions_url }
     end
   end
 
