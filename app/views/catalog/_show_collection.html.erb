@@ -34,9 +34,9 @@
 	<%= image_tag(@document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :alt=> t('dri.views.alt_tags.cover_image') ) %>
 </div>
 <% end %>
-     
+
     <% objectsCount = count_items_in_collection document[:id] %>
-	<%= render :partial => "show_collection_navigation_tools", :locals => {:document => document, :objectsCount => objectsCount} %>	
+	<%= render :partial => "show_collection_navigation_tools", :locals => {:document => document, :objectsCount => objectsCount} %>
 	<%= render :partial => "tools", :locals => {:document => document} %>
 
 	<% if signed_in? && (can? :manage_collection, document) %>
@@ -45,12 +45,6 @@
 
 	<% end %>
 
-	<% if signed_in? && (document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym] == document[:id]) && (can? :manage_collection, document) %>
-	<% pending = pending_memberships( document ) %>
-	<% unless pending.blank? %>
-	<%= render :partial => 'collections/approve_membership', :locals => {:pending => pending} %>
-	<% end %>
-	<% end %>
 
 </div>
 
