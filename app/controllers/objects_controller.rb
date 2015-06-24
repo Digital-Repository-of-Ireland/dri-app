@@ -9,8 +9,8 @@ include Utils
 
 class ObjectsController < CatalogController
 
-  before_filter :authenticate_user_from_token!, except: [:index, :citation, :related]
-  before_filter :authenticate_user!, except: [:index, :citation, :related]
+  before_filter :authenticate_user_from_token!, except: [:citation]
+  before_filter :authenticate_user!, except: [:citation]
 
   def actor
     @actor ||= DRI::Object::Actor.new(@object, current_user)
@@ -237,8 +237,7 @@ class ObjectsController < CatalogController
             end
 
             # Get files
-            # TODO: FIXME
-            #if can? :read, doc
+            if can? :read, doc
               files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
               query = Solr::Query.new(files_query)
 
@@ -264,7 +263,7 @@ class ObjectsController < CatalogController
                 end
               end
 
-            #end
+            end
 
             @list << item
           end
@@ -285,8 +284,7 @@ class ObjectsController < CatalogController
 
 
   def related
-    # TODO: FIXME
-    #enforce_permissions!("show_digital_object",params[:object])
+    enforce_permissions!("show_digital_object",params[:object])
 
     if params.has_key?("count") && !params[:count].blank? && numeric?(params[:count])
       count = params[:count]

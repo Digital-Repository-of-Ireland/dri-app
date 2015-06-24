@@ -2,6 +2,9 @@
 #
 class AssetsController < ApplicationController
 
+  before_filter :authenticate_user_from_token!, only: [:list_assets]
+  before_filter :authenticate_user!, only: [:list_assets]
+
   require 'validators'
 
   def actor
@@ -187,13 +190,12 @@ class AssetsController < ApplicationController
                 file_list['masterfile'] = url
               end
 
-              # TODO: FIXME
-              #if can? :read, doc
+              if can? :read, doc
                 surrogates = storage.get_surrogates doc, file_doc
                 surrogates.each do |file,loc|
                   file_list[file] = loc
                 end
-              #end
+              end
 
               item['files'].push(file_list)
             end
