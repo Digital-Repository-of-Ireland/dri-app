@@ -4,7 +4,10 @@ class CreateDerivativesJob < ActiveFedoraIdBasedJob
   end
 
   def run
-    return if MIME::Types[generic_file.content.mime_type].first != "message/external-body" && !generic_file.content.has_content?
+    mime_type = MIME::Types[generic_file.content.mime_type].first
+    type = mime_type.respond_to?(:content_type) ? mime_type.content_type : mime_type
+    return if type != "message/external-body" && !generic_file.content.has_content?
+
     if generic_file.video?
       return unless Sufia.config.enable_ffmpeg
     end

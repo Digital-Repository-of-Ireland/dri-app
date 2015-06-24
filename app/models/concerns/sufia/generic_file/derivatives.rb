@@ -15,7 +15,7 @@ module Sufia
                 #:medium => {size: "200", datastream: 'thumbnail_medium'},
                 :large => {size: "400", datastream: 'thumbnail_large'},
                 :lightbox => {size: "600", datastream: 'lightbox_format'},
-                #:full => {size: "100%", datastream: 'full_size_web_format'},
+                :full => {size: "100%", datastream: 'full_size_web_format'},
                 :crop16_9_width_200 => {size: "200", crop: "200x113+0+0", gravity: "Center", datastream: 'crop16_9_width_200_thumbnail'}
                 #:crop16_9_width_2228 => {size: "228", crop: "228x127+0+0", gravity: "Center", datastream: 'crop16_9_width_228_thumbnail'}
               }
