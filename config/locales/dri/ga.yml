@@ -370,8 +370,8 @@ ga:
             admin: "Mo Chuid Bailiúchán"
             public: Bailiúcháin
         institute:
-          are_you_sure: "Are you sure you need a new Organisation?"
-          see_orgs: "Check existing Orgaisations"
+          are_you_sure: "An bhfuil tú cinnte go bhfuil institiúid nua ag teastáil uait?"
+          see_orgs: "Seiceáil le haghaidh institiúidí atá ann"
           add: "Cuir Eagraíocht nua leis"
           associate: "Comhlachaigh Eagraíocht"
           associate_depositing: "Roghnaigh an Eagraíocht Taiscthe"

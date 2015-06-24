@@ -67,7 +67,7 @@ class AssetsController < ApplicationController
 
       if actor.update_external_content(URI.escape(url), file_upload, datastream)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
-      else 
+      else
         message = @generic_file.errors.full_messages.join(', ')
         flash[:alert] = t('dri.flash.alert.error_saving_file', :error => message)
         @warnings = t('dri.flash.alert.error_saving_file', :error => message)
@@ -113,7 +113,7 @@ class AssetsController < ApplicationController
         @generic_file.batch = @object
         @generic_file.apply_depositor_metadata(current_user)
         @generic_file.preservation_only = "true" if params[:preservation].eql?('true')
-                
+
         create_file(file_upload, @generic_file, datastream, params[:checksum], params[:file_name])
 
         url = url_for :controller=>"assets", :action=>"download", :object_id => @object.id, :id=>@generic_file.id
@@ -168,7 +168,7 @@ class AssetsController < ApplicationController
         doc.each do |r|
           doc = SolrDocument.new(r)
 
-          files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
+          files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
           query = Solr::Query.new(files_query)
 
           item = {}
@@ -261,7 +261,7 @@ class AssetsController < ApplicationController
       options = {}
       options[:mime_type] = @mime_type
       options[:checksum] = checksum
-      options[:file_name] = filename unless filename.nil? 
+      options[:file_name] = filename unless filename.nil?
 
       @file.add_file filedata, options
 
