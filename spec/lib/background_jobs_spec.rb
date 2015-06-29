@@ -11,17 +11,19 @@ describe "workers" do
     uploadfile = { :path =>  tmp_file.path, :original_filename => "SAMPLEA.mp3"}
     uploadhash = OpenStruct.new uploadfile
     tmpdir = Dir::tmpdir
+
+    @user = FactoryGirl.create(:admin)
      
     @gf = DRI::GenericFile.new
-    @gf.apply_depositor_metadata('tester')
+    @gf.apply_depositor_metadata(@user)
     @gf.save
 
-    @file = LocalFile.new
-    @file.add_file(uploadhash, {:fedora_id => @gf.id, :ds_id => "content", :directory => tmpdir} )
+    @file = LocalFile.new(fedora_id: @gf.id, ds_id: "content")
+    @file.add_file(uploadhash, {:directory => tmpdir} )
     @file.save
 
-    @url = "file://#{@file.path}"
-    @gf.update_file_reference "content", :url=>@url, :mimeType=>'audio/mpeg'
+    actor = Sufia::GenericFile::Actor.new(@gf, @user)
+    actor.create_content(uploadhash, uploadhash.original_filename, "content", "audio/mpeg")
     
   end
 

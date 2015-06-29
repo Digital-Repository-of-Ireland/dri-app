@@ -4,6 +4,10 @@
     <% params[:view] = "grid" %>
 <% end %>
 
+<% if (params[:view] == "maps") %>
+    <%= stylesheet_link_tag "blacklight_maps" %>
+<% end %>
+
 <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
 
 <% render_opensearch_response_metadata.html_safe %>
@@ -17,7 +21,6 @@
   </div>
   <!-- close facet block -->
 </div>
-
 <div id="dri_result_container_id" class="dri_result_container">
   <% if (@document_list.count > 0) %>
       <%= render_document_index @document_list %>&nbsp;

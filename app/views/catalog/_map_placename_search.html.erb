@@ -3,3 +3,6 @@
   <%= render_placename_heading(geojson_hash) %>
   <%= content_tag(:small, pluralize(hits, t('blacklight.maps.interactions.item'))) if hits %>
 </h5>
+<%= link_to_placename_field(placename_value(geojson_hash),
+                            blacklight_config.view.maps.placename_field,
+                            t('blacklight.maps.interactions.placename_search')) %>

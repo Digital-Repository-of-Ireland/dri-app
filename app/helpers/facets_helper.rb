@@ -97,7 +97,7 @@ module FacetsHelper
     pid = value
 
     unless pid.blank?
-      solr_query = ActiveFedora::SolrService.construct_query_for_pids([pid])
+      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([pid])
       docs = ActiveFedora::SolrService.query(solr_query)
     else
       return value
@@ -126,7 +126,7 @@ module FacetsHelper
     value.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if k.eql?('name')
-        return v
+        return v unless v.nil? || v.empty?
       end
     end
     return value
@@ -140,7 +140,7 @@ module FacetsHelper
     value.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if k.eql?('name')
-        return v
+        return v unless v.nil? || v.empty?
       end
     end
     return value
@@ -179,11 +179,11 @@ module FacetsHelper
   # Used as helper_method in CatalogController's add_facet_field, doesn't seem to get called.
   def transform_permission value
     case value
-      when "0"
+      when "public"
         return t('dri.views.objects.access_controls.public')
-      when "1"
+      when "private"
         return t('dri.views.objects.access_controls.private')
-      when "-1"
+      when "inherit"
         return t('dri.views.objects.access_controls.inherited')
       else
         return "unknown?"

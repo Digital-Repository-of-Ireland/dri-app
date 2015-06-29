@@ -8,10 +8,15 @@ require 'doi/doi'
 
 class CollectionsController < CatalogController
 
-  include UserGroup::SolrAccessControls
+  #include UserGroup::SolrAccessControls
+  include Hydra::AccessControlsEnforcement
 
-  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update]
-  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update]
+  before_filter :authenticate_user_from_token!
+  before_filter :authenticate_user!
+
+  def actor
+    @actor ||= DRI::Object::Actor.new(@object, current_user)
+  end
 
   # Creates a new model.
   #
@@ -24,8 +29,7 @@ class CollectionsController < CatalogController
     @object.manager_users_string=current_user.to_s
     @object.discover_groups_string="public"
     @object.read_groups_string="public"
-    @object.private_metadata="0"
-    @object.master_file="0"
+    @object.master_file_access="private"
     @object.object_type = ["Collection"]
     @object.title = [""]
     @object.description = [""]
@@ -83,16 +87,13 @@ class CollectionsController < CatalogController
 
     supported_licences()
 
-    set_access_permissions(:batch, true)
-
     if !valid_permissions?
       flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
     else
-      updated = @object.update_attributes(params[:batch])
+      updated = @object.update_attributes(update_params)
 
       if updated
         DOI.mint_doi( @object )
-
         unless cover_image.blank?
           unless Storage::CoverImages.validate(cover_image, @object)
             flash[:error] = t('dri.flash.error.cover_image_not_saved')
@@ -113,7 +114,7 @@ class CollectionsController < CatalogController
     params.delete(:action)
 
     respond_to do |format|
-      if updated
+      if (updated)
         flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       else
@@ -137,12 +138,17 @@ class CollectionsController < CatalogController
     end
 
     if @object.valid? && @object.save
+      DOI.mint_doi( @object )
+
+      # We have to create a default reader group
+      create_reader_group
+
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
         redirect_to :controller => "catalog", :action => "show", :id => @object.id }
         format.json {
           @response = {}
-          @response[:id] = @object.pid
+          @response[:id] = @object.id
           @response[:title] = @object.title
           @response[:description] = @object.description
           render(:json => @response, :status => :created)
@@ -258,8 +264,6 @@ class CollectionsController < CatalogController
 
     enforce_permissions!("create", DRI::Batch)
 
-    set_access_permissions(:batch, true)
-
     @object = DRI::Batch.with_standard :qdc
 
     @object.type = ["Collection"] if @object.type == nil
@@ -270,7 +274,7 @@ class CollectionsController < CatalogController
     # If a cover image was uploaded, remove it from the params hash
     cover_image = params[:batch].delete(:cover_image)
 
-    @object.update_attributes(params[:batch])
+    @object.update_attributes(create_params)
 
     # depositor is not submitted as part of the form
     @object.depositor = current_user.to_s
@@ -282,11 +286,6 @@ class CollectionsController < CatalogController
 
     # We need to save to get a pid at this point
     if @object.save
-      DOI.mint_doi( @object )
-
-      # We have to create a default reader group
-      create_reader_group
-
       unless cover_image.blank?
         unless Storage::CoverImages.validate(cover_image, @object)
           flash[:error] = t('dri.flash.error.cover_image_not_saved')
@@ -319,7 +318,7 @@ class CollectionsController < CatalogController
 
     MetadataHelpers.set_metadata_datastream(@object, xml)
     MetadataHelpers.checksum_metadata(@object)
-    duplicates?(@object)
+    warn_if_duplicates
 
     if @object.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
@@ -335,12 +334,21 @@ class CollectionsController < CatalogController
     @object.manager_users_string=current_user.to_s
     @object.discover_groups_string="public"
     @object.read_groups_string="public"
-    @object.private_metadata="0"
-    @object.master_file="0"
+    @object.master_file_access="private"
 
     @object.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?
 
     true
+  end
+
+  private
+
+  def create_params
+    params.require(:batch).permit!
+  end
+
+  def update_params
+    params.require(:batch).permit!
   end
 
   def valid_permissions?
@@ -356,12 +364,13 @@ class CollectionsController < CatalogController
 
   def create_reader_group
     @group = UserGroup::Group.new(:name => reader_group_name, :description => "Default Reader group for collection #{@object.id}")
+    @group.reader_group = true
     @group.save
     @group
   end
 
   def reader_group_name
-    @object.id.sub(':', '_')
+    @object.id
   end
 
   def delete_collection

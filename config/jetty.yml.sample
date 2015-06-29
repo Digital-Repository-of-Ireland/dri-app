@@ -4,3 +4,4 @@ default:
   java_opts:
     - "-Xmx256m" 
     - "-XX:MaxPermSize=128m"
+    - "-Dfcrepo.modeshape.configuration=file://<%= Rails.root.join('jetty') %>/etc/federated.json"

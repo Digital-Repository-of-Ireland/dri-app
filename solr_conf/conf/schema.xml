@@ -165,8 +165,9 @@
     <field name="pdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
     <!-- Subject (temporal) dateRange field -->
     <field name="sdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
-
-  </fields>
+    <!-- geospatial stores any dcterms:Point or dcterms:Box values from the metadata -->
+    <field name="geospatial" type="location_rpt" stored="true" indexed="true" multiValued="true" />
+   </fields>
   
   <!-- Above, multiple source fields are copied to the [text] field.
       Another way to map multiple source fields to the same
@@ -175,8 +176,10 @@
     <!-- <copyField source="cdateRange" dest="cdate_range_tesim"/>
     <copyField source="pdateRange" dest="pdate_range_tesim"/>
     <copyField source="sdateRange" dest="sdate_range_tesim"/> -->
-    
-    <!-- <copyField source="*_tesim" dest="all_text_timv" maxChars="3000"/> -->
+
+  <!-- <copyField source="geospatial" dest="geospatial_facet" /> -->
+
+  <!-- <copyField source="*_tesim" dest="all_text_timv" maxChars="3000"/> -->
    <copyField source="title_tesim" dest="title_unstem_search"/>
    <copyField source="author_tesim" dest="author_unstem_search"/>
    <copyField source="subject_tesim" dest="subject_unstem_search"/>
@@ -337,7 +340,7 @@
     </fieldType>
    
     <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
-
+    
     <!-- dateRange field will be updated to the DateRangeField Solr field type that will be available in Solr 5 -->
     <!-- distErrPct="0" (no approximation); maxDistErr="1" (as data represents whole years)-->
     <fieldType name="dateRange" class="solr.SpatialRecursivePrefixTreeFieldType"

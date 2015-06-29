@@ -5,14 +5,15 @@
   <h4 class="modal-title"><%= t('dri.views.catalog.forms.map') %></h4>
 </div>
 <div class="modal-body">
-    <% geojson_features = @geojson_features %>
+  <% if @document[blacklight_config.view.maps.geojson_field.to_sym] || @document[blacklight_config.view.maps.coordinates_field.to_sym] %>
+    <% geojson_features = serialize_geojson(@document) %>
     <%= blacklight_map_tag('blacklight-show-map',
-                     {data:{viewpoint: set_viewpoint(geojson_features),
-                     initialzoom:blacklight_config.view.maps.show_initial_zoom,
-                     singlemarkermode:false}, style: "height: 480px; width: 550px"}) %>
+                          {data:{initialzoom:blacklight_config.view.maps.show_initial_zoom,
+                                 singlemarkermode:false}, style: "height: 480px; width: 100%"}) %>
+    <%= javascript_tag "$('#blacklight-show-map').blacklight_leaflet_map(#{geojson_features});" %>
+  <% end %>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('dri.window.modal.close') %></button>
 </div>
 
-<%= javascript_tag "$('#blacklight-show-map').blacklight_leaflet_map(#{geojson_features});" %>

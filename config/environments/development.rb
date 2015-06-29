@@ -42,4 +42,6 @@ NuigRnag::Application.configure do
   config.action_mailer.delivery_method = :sendmail
 
   config.eager_load = false
+
+  Deprecation.default_deprecation_behavior = :silence
 end

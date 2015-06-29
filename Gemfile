@@ -5,16 +5,18 @@ source 'http://rubygems.org'
 
 gem 'rails','~> 4.1.0'
 
-gem 'blacklight', "5.7.2"
+gem 'blacklight', '5.10'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
-gem 'hydra-head', "7.2.2"
-gem 'sufia-models', "4.1.0"
+gem 'hydra-head', '9.1.4'
+gem 'sufia-models', '6.0.0'
 
 gem 'paper_trail', '~> 3.0.6'
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :tag => 'v2.1.1'
-gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :tag => 'v1.0.8'
+gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :branch => 'v2.2.0'
+gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :branch => 'v1.1.0'
+
+gem 'active-fedora'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -46,6 +48,7 @@ gem 'jquery-cookie-rails'
 gem 'remotipart'
 
 gem 'rest-client'
+gem 'sparql-client'
 
 # static pages
 gem 'high_voltage', '~> 2.1.0'
@@ -109,7 +112,7 @@ gem 'unicorn'
 
 gem "unicode", :platforms => [:mri_18, :mri_19]
 gem 'font-awesome-rails'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass' #, '~> 3.3.4'
 gem 'yard'
 
 group :translations do
@@ -128,3 +131,4 @@ gem 'videojs_rails', :git => 'https://github.com/ekilfeather/videojs_rails.git',
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'bootstrap-datepicker-rails'
+gem 'social-share-button'

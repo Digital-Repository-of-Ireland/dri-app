@@ -6,11 +6,13 @@
 
 		<!-- Mobile viewport optimization h5bp.com/ad -->
 		<meta name="HandheldFriendly" content="True">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-title"
+          content="<%= application_name %>">
 		<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 		<!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
 		<meta http-equiv="cleartype" content="on">
-
 		<title><%= h(@page_title || application_name) %></title>
 
 		<link href="<%= opensearch_catalog_path(:format => 'xml', :only_path => false) %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
@@ -21,6 +23,7 @@
 
 		<%= javascript_include_tag "application" %>
 		<%= csrf_meta_tags %>
+		
 		<%= content_for(:head) %>
 
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -43,7 +46,7 @@
 		<div id="dri_wrapper_id" class="block1 dri_wrapper">
 
 			
-			<%# debug cookies %>
+			
 			
 
 			<%= render :partial => 'shared/cookies_modal' unless cookies[:accept_cookies]%>
@@ -55,8 +58,9 @@
 					</div>
 				</div>
 			</div>
-
-			<% if query_has_constraints?%>
+			<%#  the blacklight maps gem seems to set a 'constraint' even when none appears to exist %>
+			<%# - check below is to see if a facet or text query exists %>
+			<% if query_has_constraints? && (!params[:f].nil?) || (!params[:q].nil?) %>
 			<%= render 'constraints' %>
 			<% end %>
 

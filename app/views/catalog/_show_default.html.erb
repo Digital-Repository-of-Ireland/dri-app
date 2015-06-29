@@ -1,4 +1,5 @@
 <div class="dri_object_first_block">
+
 	<%= render :partial => 'show_surrogate' %>
 	<dl class="dri_object_metadata_readview">
 		<% document_show_fields.each do |solr_fname, field| -%>
@@ -18,7 +19,7 @@
 			<%= t('dri.views.fields.depositing_institute') %>
 		</dt>
 		<dd class="blacklight-depositing_institute">
-			<%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
+      <%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
 		</dd>
 		<% end %>
 	</dl>
@@ -26,36 +27,11 @@
 <!-- close dri_object_first_block -->
 
 <div class="dri_object_second_block">
-
-	<div class="dri_back_search">
-		<%= link_back_to_catalog %>
-	</div>
-
-	<% collection = governing_collection_solr(@document) %>
-
-	<% unless collection.nil? %>
-	<div class="dri_vc_title">
-		<%# image_tag("vc_folder.png", :width=>"22", :height=>"12", :alt=>"Vc_folder" ) %>
-		<i class="fa fa-lg fa-folder-open"></i>
-		<%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(collection['id']), :id => 'view_collection' ) %>
-	</div>
-	<% end %>
-	<!-- close vc_title -->
-
-	<% unless collection.nil? %>
-	<% if collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0] %>
-	<div class="dri_vc_image">
-		<%= image_tag(collection[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :width=>"230", :alt=> t('dri.views.alt_tags.cover_image') ) %><!-- needs callback -->
-	</div>
-	<% end %>
-	<% end %>
-	<!-- close vc_title -->
-
+	<%= render :partial => "show_object_navigation_tools" %>
 	<%= render :partial => "tools" %>
-
-	<% if signed_in? && (can?(:read_master, @document)) %>
+	<% if signed_in? && ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
 	<%= render :partial => "show_file_tools" %>
 	<%= render :partial => "show_editor_tools" %>
 	<% end %>
-	</div>
+</div>
 <!-- close dri_object_second_block -->

@@ -4,11 +4,19 @@ require "hydra/derivatives/extract_metadata"
 Hydra::Derivatives::ExtractMetadata.module_eval do
   # Quick fixes to get the content from storage and avoid using the REST API
 
-  def extract_metadata
-    return unless has_content?
+  def id
+    /\/([^\/]*)$/.match(uri.rpartition('/')[0])[1]
+  end
 
-    if ['E','R'].include? controlGroup
-      @local_file_info = LocalFile.where(fedora_id: pid, ds_id: "content").order("VERSION DESC").limit(1).to_a
+  def external_body?
+    registered_mime_type = MIME::Types[mime_type].first
+    registered_mime_type.content_type == "message/external-body"
+  end
+
+  def extract_metadata
+    
+    if external_body?
+      @local_file_info = LocalFile.where(fedora_id: id, ds_id: "content").order("VERSION DESC").limit(1).to_a
       path = @local_file_info[0].path
 
       # Bit of a hack here to force mp2 files to be characterized in FITS
@@ -32,15 +40,14 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
         config[:fits] = Hydra::Derivatives.fits_path
       end
     end
+
   end
 
   def to_tempfile(&block)
-    return unless has_content?
-
     source = nil
 
-    if ['E','R'].include? controlGroup
-      @local_file_info = LocalFile.where(fedora_id: pid, ds_id: "content").order("VERSION DESC").limit(1).to_a
+    if external_body?
+      @local_file_info = LocalFile.where(fedora_id: id, ds_id: "content").order("VERSION DESC").limit(1).to_a
       source = File.open(@local_file_info[0].path, 'r')
     else
       source = content
@@ -61,23 +68,23 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
 
   protected
 
-  def filename_for_characterization
+    def filename_for_characterization
       extension = ""
-      if ['E','R'].include? controlGroup
-        local_file_info = LocalFile.where(fedora_id: pid, ds_id: "content").order("VERSION DESC").limit(1).to_a
+      if external_body?
+        local_file_info = LocalFile.where(fedora_id: id, ds_id: "content").order("VERSION DESC").limit(1).to_a
         extension = "."+local_file_info[0].path.split(".").last
       else
-        mime_type = MIME::Types[mimeType].first
-        logger.warn "Unable to find a registered mime type for #{mimeType.inspect} on #{pid}" unless mime_type
-        extension = mime_type ? ".#{mime_type.extensions.first}" : ''
+        registered_mime_type = MIME::Types[mime_type].first
+        Logger.warn "Unable to find a registered mime type for #{mime_type.inspect} on #{uri}" unless registered_mime_type
+        extension = registered_mime_type ? ".#{registered_mime_type.extensions.first}" : ''
       end
-        
 
       if (extension == '.mp2')
         extension = '.mp3'
       end
+      version_id = 1 # TODO fixme
 
-      ["#{pid}-#{dsVersionID}", "#{extension}"]
-  end
+      ["#{id}-#{version_id}", "#{extension}"]
+    end
 
 end

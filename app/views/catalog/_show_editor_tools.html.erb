@@ -1,78 +1,101 @@
 <script>
-	$(document).ready(function() {
-		$('#dri_asset_uploader').change(function() {
-			if ($(this).val()) {
-				$('#dri_upload_asset_file').attr('style', 'display: inherit;');
-			}
-		});
-		$('#dri_metadata_uploader').change(function() {
-			if ($(this).val()) {
-				$('#dri_upload_metadata_file').attr('style', 'display: inherit;');
-			}
-		});
-	}); 
+  $(document).ready(function() {
+    $('#dri_asset_uploader').change(function() {
+      if ($(this).val()) {
+        $('#dri_upload_asset_file').attr('style', 'display: inherit;');
+      }
+    });
+    $('#dri_metadata_uploader').change(function() {
+      if ($(this).val()) {
+        $('#dri_upload_metadata_file').attr('style', 'display: inherit;');
+      }
+    });
+    $('#dri_preservation_asset_uploader').change(function() {
+      if ($(this).val()) {
+        $('#dri_upload_preservation_asset_file').attr('style', 'display: inherit;');
+      }
+    });
+  });
 </script>
 <div class="dri_objecttools_title">
-	<%= t('dri.views.catalog.titles.editor_tools') %>
+  <i class="fa fa-pencil fa-lg"></i> <%= t('dri.views.catalog.titles.editor_tools') %>
 </div>
 <ul class="dri_view_collection bold">
-	<% if (edit_functionality_available?(@document)) %>
-	<li>
-		
-		<%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
-			<div class="dri_fileUpload">
-			<span><i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.upload_file') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_asset_file", :name => "upload_file", :style => "display:none; margin-left: 5px;" %>
-	</span>		
-			<%= file_field_tag 'Filedata', :required=>'required', :class => 'upload', :id => 'dri_asset_uploader' %>
-			</div>
-		<%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-		<%= hidden_field_tag 'datastream', "content" %>
+  
+  <li>
 
-		
-		<% end %>
-	</li>
-	<li>
-		
-		<%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
-			<div class="dri_fileUpload">
-			<span><i class="fa fa-code fa-lg"></i><%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %>
-	</span>		
-			<%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
-			</div>
-		<%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-		<%= hidden_field_tag 'datastream', "content" %>
+    <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
+      <div class="dri_fileUpload">
+      <span><i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.upload_file') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_asset_file", :name => "upload_file", :style => "display:none; margin-left: 5px;" %>
+  </span>
+      <%= file_field_tag 'Filedata', :required=>'required', :class => 'upload', :id => 'dri_asset_uploader' %>
+      </div>
+    <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+    <%= hidden_field_tag 'datastream', "content" %>
 
-		
-		<% end %>
-	</li>
-	<%= link_to edit_object_path(@document), :id => "edit_record" do %>
-	<li>
-		<i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
-	</li>
-	<% end %>
-	<% end %> <!-- if end (non-EAD collections) -->
-	<% unless @files.nil? || @files.empty? %>
-	<%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
-	<li>
-		<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
-	</li>
-	<% end %>
-	<% end %>
-	<% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
-	<li>
-		<%= form_tag status_update_path(@document.id) ,:method => :put do %>
-		<% if@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") %>
-		<%= hidden_field_tag( :status, "reviewed") %>
-		<span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), :id => 'status_update' %>
 
-		<% else %>
+    <% end %>
+  </li>
 
-		<%= hidden_field_tag( :status, "draft") %>
-		<span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update' %>
+  <% if @files.present? %>
+  <li>
+    <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
+    <%= hidden_field_tag "preservation", "true" %>
+    <div class="dri_fileUpload">
+    <span><i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.upload_preservation_file') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_preservation_asset_file", :name => "upload_file", :style => "display:none; margin-left: 5px;" %>
+    </span>
+      <%= file_field_tag 'Presfiledata', :required=>'required', :class => 'upload', :id => 'dri_preservation_asset_uploader' %>
+      </div>
+    <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+    <%= hidden_field_tag 'datastream', "content" %>
+   <% end %>
+  </li>
 
-		<% end %>
-	</li>
+  <% end %>
+  <!-- Replace metadata only visible if non-EAD collection AND not a Documentation object -->
+  <% if (edit_functionality_available?(@document) && get_active_fedora_model(@document) != "DRI::Documentation") %>
+    <li>
+      <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
+        <div class="dri_fileUpload">
+          <span><i class="fa fa-code fa-lg"></i><%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %>
+          </span>
+          <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
+        </div>
+        <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+        <%= hidden_field_tag 'datastream', "content" %>
+      <% end %>
+    </li>
+  <% end %> <!-- END IF (non-EAD collections AND not Documentation Object) -->
+  <% if @files.present? %>
+    <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
+      <li>
+        <i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
+      </li>
+    <% end %>
+  <% end %>
 
-	<% end %>
-	<% end %>
+
+  <% unless @document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("published") %>
+  <li>
+    <%= form_tag status_update_path(@document.id) ,:method => :put do %>
+    <% if@document[Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym].first.eql?("draft") %>
+    <%= hidden_field_tag( :status, "reviewed") %>
+    <span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), :id => 'status_update' %>
+
+    <% else %>
+
+    <%= hidden_field_tag( :status, "draft") %>
+    <span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update' %>
+
+    <% end %>
+  </li>
+  
+
+  <% end %>
+  <% end %>
+    <%= link_to edit_object_path(@document), :id => "edit_record" do %>
+  <li>
+    <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
+  </li>
+  <% end %>
 </ul>

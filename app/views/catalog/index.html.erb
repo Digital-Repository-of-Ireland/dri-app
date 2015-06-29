@@ -1,4 +1,4 @@
-<% if (controller_name.eql?('catalog') && !has_browse_params?) %>
+<% if is_root? %>
     <%# if there are no input/search related params, display the "home" partial -%>
     <%= render 'home_text' %>
 <% else %>

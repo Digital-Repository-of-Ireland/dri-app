@@ -1,0 +1,19 @@
+common: &common
+
+development:
+  <<: *common
+  data.logainm.ie:
+    provider: Logainm 
+    endpoint: http://data.logainm.ie/sparql
+
+test:
+  <<: *common
+  data.logainm.ie:
+    provider: Logainm
+    endpoint: http://data.logainm.ie/sparql
+
+production:
+  <<: *common
+  data.logainm.ie:
+    provider: Logainm
+    endpoint: http://data.logainm.ie/sparql

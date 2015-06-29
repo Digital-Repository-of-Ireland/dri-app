@@ -24,18 +24,18 @@ Scenario: The DRI repository shall display social media "follow" buttons (e.g. f
 # and passes now. See the test below for restricted content for how we might
 # rewrite this when we have implemented content restrictions
 Scenario: Viewing a Digital Object may display social media sharing "buttons" for open content only.
-  Given a Digital Object with pid "dri:obj1" and title "A Test Object"
-  When I go to the "object" "show" page for "dri:obj1"
+  Given a Digital Object with pid "obj1" and title "A Test Object"
+  When I go to the "object" "show" page for "obj1"
   Then I should see a section with id "socialmedia"
 
 # This won't pass as functionality is not yet implemented
 Scenario: Social media "buttons" should not be shown for restricted content.
-  Given a Digital Object with pid "dri:obj1" and title "A Test Object"
-  When I set the permissions for object "dri:obj1" to restricted
-  And I go to the "object" "show" page for "dri:obj1"
+  Given a Digital Object with pid "obj1" and title "A Test Object"
+  When I set the permissions for object "obj1" to restricted
+  And I go to the "object" "show" page for "obj1"
   Then I should see a section with id "socialmedia"
   When I follow the link to sign out
-  And I go to the "object" "show" page for "dri:obj1"
+  And I go to the "object" "show" page for "obj1"
   Then I should not see a section with id "socialmedia"
 
 # similar to above, it repeats, same as social tagging

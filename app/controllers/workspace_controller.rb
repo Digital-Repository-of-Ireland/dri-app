@@ -8,7 +8,9 @@ class WorkspaceController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
-  include UserGroup::SolrAccessControls
+  #include UserGroup::SolrAccessControls
+  include Hydra::AccessControlsEnforcement
+
   #This method shows the DO if the metadata is open
   #Rather than before where the user had to have read permissions on the object all the time
   def enforce_search_for_show_permissions
@@ -71,8 +73,7 @@ class WorkspaceController < ApplicationController
     # facet bar
 
     config.add_facet_field solr_name('status', :facetable), :label => 'Record Status'
-    config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :label_permission
-    config.add_facet_field "master_file_isi", :label => 'Master File Access',  :helper_method => :label_permission
+    config.add_facet_field solr_name('master_file_access', :facetable), :label => 'Master File Access'
     config.add_facet_field solr_name('subject', :facetable), :limit => 20
     config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
     config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
@@ -246,7 +247,7 @@ class WorkspaceController < ApplicationController
 
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "+#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"info:fedora/afmodel:DRI_Batch\""
+    solr_parameters[:fq] << "-#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
     if user_parameters[:mode].eql?('collections')
       solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
       solr_parameters[:fq] << "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"

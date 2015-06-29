@@ -17,7 +17,7 @@ describe "Query" do
     @collection[:type] = ["Collection"]
     @collection[:creation_date] = ["1916-01-01"]
     @collection[:published_date] = ["1916-04-01"]
-    @collection[:status] = ["draft"]
+    @collection[:status] = "draft"
     @collection.save
   end
 

@@ -10,11 +10,11 @@ describe ObjectsController do
     @collection = FactoryGirl.create(:collection)
    
     @object = FactoryGirl.create(:sound) 
-    @object[:status] = ["draft"]
+    @object[:status] = "draft"
     @object.save
 
     @object2 = FactoryGirl.create(:sound)
-    @object2[:status] = ["draft"]
+    @object2[:status] = "draft"
     @object2.save
 
     @collection.governed_items << @object

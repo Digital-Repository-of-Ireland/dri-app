@@ -1,4 +1,4 @@
-<div id="dri_search_term_input_id" class="dri_search_term_input">
+
   <%= form_tag catalog_index_path, :method => :get, :id => 'searchform', :class => 'dri_search_term_input_form' do %>
 
       <%= hidden_field_tag 'search_field', 'all_fields' %>
@@ -6,15 +6,12 @@
           <%= hidden_field_tag 'mode', 'objects' %>
       <% end %>
 
-      <% params_to_hide = get_params_to_hide(params) %>
-      <%= render_hash_as_hidden_fields(params_to_hide).html_safe %>
+      <%= render_hash_as_hidden_fields(params_for_search().except(:q, :search_field, :qt, :page, :utf8)) %>
       <!-- ID for the search box of 'q_text', to distinguish from date range search when rendering filter constraints in the UI -->
-      <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :id => "q", :class => "dri_search_term_text_input", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "left" %>
+      <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :id => "q", :class => "dri_search_term_text_input dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "left" %>
       <button type="submit" class="dri_search_term_text_submit_button dri_no_display" id="search">
         <%=t('blacklight.search.form.submit')%>
       </button>
 
       <% end %><!-- end form -->
   <!-- close dri_search_term_input_form -->
-</div>
-<!-- close dri_search_term_input -->

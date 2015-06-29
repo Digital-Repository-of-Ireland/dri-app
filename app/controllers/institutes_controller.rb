@@ -1,17 +1,21 @@
 class InstitutesController < ApplicationController
   require 'institute_helpers'
 
+  before_filter :authenticate_user_from_token!, :except => [:index]
+  before_filter :authenticate_user!, :except => [:index]
 
   # Get the list of institutes
-  def show
+  def index
     @institutes = Institute.all
   end
-
 
   def new
     @inst = Institute.new
   end
 
+  def show
+    @inst = Institute.find(params[:id])
+  end
 
   # Create a new institute entry
   def create
@@ -33,6 +37,7 @@ class InstitutesController < ApplicationController
 
     @inst.url = params[:institute][:url]
     @inst.save
+    flash[:notice] = t('dri.flash.notice.organisation_created')
 
     @institutes = Institute.all
 
@@ -41,8 +46,36 @@ class InstitutesController < ApplicationController
     end
 
     respond_to do |format|
-      format.js
+      format.html { redirect_to institutions_url }
     end
+  end
+
+  def update
+    @inst = Institute.find(params[:id])
+
+    file_upload = params[:institute][:logo]
+
+    begin
+      @inst.add_logo(file_upload, {:name => params[:institute][:name]})
+    rescue Exceptions::UnknownMimeType => e
+      flash[:alert] = t('dri.flash.alert.invalid_file_type')
+    rescue Exceptions::VirusDetected => e
+      flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
+    rescue Exceptions::InternalError => e
+      logger.error "Could not save licence: #{e.message}"
+      raise Exceptions::InternalError
+    end
+
+    @inst.url = params[:institute][:url]
+    @inst.save
+
+    respond_to do |format|
+      format.html { redirect_to institute_url(@inst) }
+    end
+  end
+
+  def edit
+    @inst = Institute.find(params[:id])
   end
 
 
@@ -91,5 +124,11 @@ class InstitutesController < ApplicationController
     end
 
   end
+
+  private
+
+    def update_params
+      params.require(:institute).permit!
+    end
 
 end

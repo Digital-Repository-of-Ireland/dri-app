@@ -12,7 +12,7 @@ class CreateBucketJob < ActiveFedoraPidBasedJob
     Rails.logger.info "Creating bucket for object #{bucket_id}"
 
     storage = Storage::S3Interface.new
-    storage.create_bucket(Utils.split_id(bucket_id))
+    storage.create_bucket(bucket_id)
 
     after_create_bucket
   end
@@ -20,11 +20,9 @@ class CreateBucketJob < ActiveFedoraPidBasedJob
   # Now that we have a bucket set up, we can now save files into it
   def after_create_bucket
     if generic_file.pdf?
-      #Sufia.queue.push(IndexTextJob.new(generic_file_id))
       Sufia.queue.push(ThumbnailJob.new(generic_file_id))
       Sufia.queue.push(TextSurrogateJob.new(generic_file_id))
     elsif generic_file.text?
-      #Sufia.queue.push(IndexTextJob.new(generic_file_id))
       Sufia.queue.push(TextSurrogateJob.new(generic_file_id))
     elsif generic_file.video?
       Sufia.queue.push(CreateDerivativesJob.new(generic_file_id))

@@ -24,6 +24,9 @@ module FieldRenderHelper
   def render_description args
     path = {:path => request.fullpath}
     currentML = cookies[:metadata_language]
+    if (currentML.blank?)
+      currentML = 'all'
+    end
     if (I18n.locale == :ga )
       path[:id] = 'ga'
     else
@@ -65,7 +68,7 @@ module FieldRenderHelper
   #
   def parse_description args
       if args[:document][args[:field]].size > 1
-        return args[:document][args[:field]].collect!.each { |value| "<p>" << value << "</p>" }
+        return args[:document][args[:field]].collect!.each { |value| "<p>" << simple_format(value) << "</p>" }
      else
         return simple_format(args[:document][args[:field]].first)
      end
@@ -98,10 +101,10 @@ module FieldRenderHelper
     end
 
     # if (args[:field] and args[:field].match(/_facet$/))
-    if (args[:field] and (args[:field][0,5] == "role_" or blacklight_config.facet_fields[ActiveFedora::SolrService.solr_name(field, :facetable)]))
-      facet_name = ActiveFedora::SolrService.solr_name(field, :facetable)
+    if (args[:field] and (args[:field][0,5] == "role_" or blacklight_config.facet_fields[ActiveFedora::SolrQueryBuilder.solr_name(field, :facetable)]))
+      facet_name = ActiveFedora::SolrQueryBuilder.solr_name(field, :facetable)
       if args[:field][0,5] == "role_"
-        facet_name = ActiveFedora::SolrService.solr_name("person", :facetable)
+        facet_name = ActiveFedora::SolrQueryBuilder.solr_name("person", :facetable)
       end
       facet_arg = get_search_arg_from_facet :facet => facet_name
 
@@ -113,12 +116,17 @@ module FieldRenderHelper
       end
     else
       if value.length > 1
-        value = value.each_with_index.map do |v,i|
-          unless uri?(indexed_value[i])
-            '<dd>' << indexed_value[i] << '</dd>'
+        if !field.include?("date")
+          value = value.each_with_index.map do |v,i|
+            unless uri?(indexed_value[i])
+              '<dd>' << indexed_value[i] << '</dd>'
+            end
+          end
+        else
+          value = value.each.map do |v|
+            '<dd>' << v << '</dd>'
           end
         end
-
       end
     end
 
@@ -154,8 +162,8 @@ module FieldRenderHelper
     facet = args[:facet]
     search_arg = "f[" << facet << "][]"
 
-    if ((facet[0, 5] == 'role_') || (facet == ActiveFedora::SolrService.solr_name('creator', :facetable)) || (facet == ActiveFedora::SolrService.solr_name('contributor', :facetable)))
-      search_arg = "f[" << ActiveFedora::SolrService.solr_name('person', :facetable) << "][]"
+    if ((facet[0, 5] == 'role_') || (facet == ActiveFedora::SolrQueryBuilder.solr_name('creator', :facetable)) || (facet == ActiveFedora::SolrQueryBuilder.solr_name('contributor', :facetable)))
+      search_arg = "f[" << ActiveFedora::SolrQueryBuilder.solr_name('person', :facetable) << "][]"
     end
 
     return search_arg
@@ -167,7 +175,7 @@ module FieldRenderHelper
   def standardise_facet args
     facet = args[:facet]
 
-    if (facet == ActiveFedora::SolrService.solr_name('language', :facetable))
+    if (facet == ActiveFedora::SolrQueryBuilder.solr_name('language', :facetable))
       DRI::Metadata::Descriptors.standardise_language_code args[:value]
     else
       args[:value]
@@ -176,7 +184,7 @@ module FieldRenderHelper
 
   def standardise_value args
 
-    if args[:facet_name] == Solrizer.solr_name('temporal_coverage', :facetable, type: :string) || args[:facet_name] == Solrizer.solr_name('geographical_coverage', :facetable, type: :string)
+    if args[:facet_name] == ActiveFedora::SolrQueryBuilder.solr_name('temporal_coverage', :facetable, type: :string) || args[:facet_name] == ActiveFedora::SolrQueryBuilder.solr_name('geographical_coverage', :facetable, type: :string)
       return get_value_from_solr_field args[:value], "name"
     else
       return args[:value]
@@ -187,8 +195,8 @@ module FieldRenderHelper
   def render_arbitrary_facet_links(fields)
     url_args = {:action => 'index', :controller => 'catalog'}
     fields.each do |field, value|
-      if (blacklight_config.facet_fields[ActiveFedora::SolrService.solr_name(field, :facetable)])
-        facet_name = ActiveFedora::SolrService.solr_name(field, :facetable)
+      if (blacklight_config.facet_fields[ActiveFedora::SolrQueryBuilder.solr_name(field, :facetable)])
+        facet_name = ActiveFedora::SolrQueryBuilder.solr_name(field, :facetable)
         facet_arg = get_search_arg_from_facet :facet => facet_name
         url_args[facet_arg] = value
       end

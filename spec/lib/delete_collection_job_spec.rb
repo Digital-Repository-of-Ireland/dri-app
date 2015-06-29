@@ -17,7 +17,7 @@ describe "DeleteCollectionJob" do
     @collection[:type] = ["Collection"]
     @collection[:creation_date] = ["1916-01-01"]
     @collection[:published_date] = ["1916-04-01"]
-    @collection[:status] = ["draft"]
+    @collection[:status] = "draft"
     @collection.save
 
     @object = DRI::Batch.with_standard :qdc
@@ -34,7 +34,7 @@ describe "DeleteCollectionJob" do
     @object[:temporal_coverage] = ["1900s"]
     @object[:subject] = ["Ireland","something else"]
     @object[:type] = ["Sound"]
-    @object[:status] = ["reviewed"]
+    @object[:status] = "reviewed"
     @object.save
 
     @collection.governed_items << @object
@@ -47,8 +47,8 @@ describe "DeleteCollectionJob" do
       job = DeleteCollectionJob.new(@collection.id)
       job.run
 
-      expect { ActiveFedora::Base.find(@object.id, :cast => true) }.to raise_error(ActiveFedora::ObjectNotFoundError)
-      expect { ActiveFedora::Base.find(@collection.id, :cast => true) }.to raise_error(ActiveFedora::ObjectNotFoundError)
+      expect { ActiveFedora::Base.find(@object.id, :cast => true) }.to raise_error(Ldp::Gone)
+      expect { ActiveFedora::Base.find(@collection.id, :cast => true) }.to raise_error(Ldp::Gone)
     end
 
   end

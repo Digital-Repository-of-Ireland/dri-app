@@ -15,7 +15,7 @@ describe SurrogatesController do
     @collection[:type] = ["Collection"]
     @collection[:creation_date] = ["1916-01-01"]
     @collection[:published_date] = ["1916-04-01"]
-    @collection[:status] = ["draft"]
+    @collection[:status] = "draft"
     @collection.save
 
     @object = DRI::Batch.with_standard :qdc
@@ -32,7 +32,7 @@ describe SurrogatesController do
     @object[:temporal_coverage] = ["1900s"]
     @object[:subject] = ["Ireland","something else"]
     @object[:type] = ["Sound"]
-    @object[:status] = ["draft"]
+    @object[:status] = "draft"
     @object.save
 
     @collection.governed_items << @object    

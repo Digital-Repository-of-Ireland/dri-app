@@ -27,15 +27,16 @@ class Licence < ActiveRecord::Base
 
   def validate_and_store_logo(logo, name)
 
-    if (logo.nil? || logo.blank?)
+    if logo.blank?
       raise Exceptions::UnknownMimeType
     else
       mime_object = Validators.file_type?(logo)
       type = mime_object.mediatype if mime_object.respond_to?('mediatype')
       type = mime_object.media_type if mime_object.respond_to?('media_type')
+      type = mime_object if mime_object.is_a?(String)
     end
 
-    if type == "image"
+    if Settings.restrict.mime_types.image.include?(type)
       Validators.virus_scan(logo)
 
       storage = Storage::S3Interface.new

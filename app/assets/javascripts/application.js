@@ -13,73 +13,22 @@
 //= require video
 //= require jquery
 //= require jquery_ujs
+
 //
 // Required by Blacklight-Maps
 //= require blacklight-maps
 //= require jquery.remotipart
 //= require jquery.cookie
+//= require bootstrap/affix
 //= require bootstrap/carousel
 //= require bootstrap/tooltip
 //= require bootstrap/popover
 //= require bootstrap/tab
-//= require bootstrap-switch
-//= require timelineJS/embed
-//= require timelineJS/locale/en
-//= require openlayers-rails
 // Required by Blacklight
 //= require blacklight/blacklight
-//= Required by Dropit dropdown menu library
-//= require dropit/dropit
 //
-//= require dri/
 //= require colorbox-rails
 //= require bootstrap-datepicker
-
-
-
-!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-
-//* Dropit Script - uses JQuery-UI Drop function
-
-$(document).ready(function() {
-    $('dropdown').dropdown();
-    $('#dri_cookie_modal').modal({keyboard: false, backdrop: 'static'});
-    $('.carousel').carousel();
-    $('#q, #facets, #dri_social_media_links_id, #dri_sort_options_id, #dri_change_sort_view_id, #dri_page_options_id, #dri_facet_restrictions_links_id, #dri_pagination_nav_links_id, #dri_browse_sort_tabs_collections_id, #dri_browse_sort_tabs_objects_id').popover( {delay: { show: 1500, hide: 100 }} );
-    $('.dri_help_popover').popover( {delay: { show: 100, hide: 100 }} );
-    $('.dri_help_tooltip').tooltip( {delay: { show: 100, hide: 100 }} );
-    $("[name='dri_slider_checkbox']").bootstrapSwitch();
-});
-
-$(function(){
-    // bind change event to select
-    $('#dri_sort_options_id').bind('change', function () {
-        var url = $(this).val(); // get selected value
-        if (url) { // require a URL
-            window.location = url; // redirect
-        }
-        return false;
-    });
-    $('#dri_page_options_id').bind('change', function () {
-        var url = $(this).val(); // get selected value
-        if (url) { // require a URL
-            window.location = url; // redirect
-        }
-        return false;
-    });
-    $('#dri_can_edit_checkbox').bind('change', function () {
-        var url = $(this).val(); // get selected value
-        if (url) { // require a URL
-            window.location = url; // redirect
-        }
-        return false;
-    });
-});
-  
-
-
-
-// For blacklight_range_limit built-in JS, if you don't want it you don't need
-// this:
-//= require 'blacklight_range_limit'
+//= require social-share-button
+//= require dri/
 

@@ -9,6 +9,54 @@ $(document).ready(function() {
     add_person_fields();
 });
 
+$(document).ready(function() {
+    $('#dri_cookie_modal').modal({keyboard: false, backdrop: 'static'});
+    $('.carousel').carousel('pause');
+    $('.dri_help_popover_slow, #facets, #dri_social_media_links_id, #dri_sort_options_id, #dri_change_sort_view_id, #dri_page_options_id, #dri_facet_restrictions_links_id, #dri_pagination_nav_links_id, #dri_browse_sort_tabs_collections_id, #dri_browse_sort_tabs_objects_id').popover( {delay: { show: 1500, hide: 100 }} );
+    $('.dri_help_popover').popover( {delay: { show: 100, hide: 100 }} );
+    $('.dri_help_tooltip').tooltip( {delay: { show: 100, hide: 100 }} );
+    $('a.dri_gallery').colorbox({rel:'group1', maxWidth:'95%', maxHeight:'95%'});
+    if (navigator.userAgent.indexOf('iPhone') != -1 || navigator.userAgent.indexOf('Android') != -1) {
+	    addEventListener("load", function() {
+	            setTimeout(hideURLbar, 0);
+	    }, false);
+	}
+});
+
+function hideURLbar() {
+	if (window.location.hash.indexOf('#') == -1) {
+		window.scrollTo(0, 1);
+	}
+}
+
+$(function(){
+    // bind change event to select
+    $('#dri_sort_options_id').bind('change', function () {
+        var url = $(this).val(); // get selected value
+        if (url) { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+    $('#dri_page_options_id').bind('change', function () {
+        var url = $(this).val(); // get selected value
+        if (url) { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+    $('#dri_can_edit_checkbox').bind('change', function () {
+        var url = $(this).val(); // get selected value
+        if (url) { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+});
+  
+
+
+
 // Whenever an "add" link is clicked, a new text field is added to the bottom of the list
 add_text_field = function() {
     $('.add-text-field a').click(function() {

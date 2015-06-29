@@ -5,8 +5,14 @@
     <%= render :partial => "shared/form_metadata_qualifieddublincore", :locals => { :f => f, :action => "update" } %>
 
     <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
-
+            <div class="checkbox">
+            <label>
+                <input required type="checkbox" /> <span> <%= link_to t('dri.application.terms.deposit_agreement'), main_app.page_path('deposit_terms'), :id => "deposit_agreement", :target => "_blank"%> </span>
+            </label>
+            </div>
     <%= f.submit t('dri.views.collection.buttons.create_collection'), :class => "btn-primary btn-large", :id => "create_new_collection" %>
+
+
 
 <% end %>
 </div>
