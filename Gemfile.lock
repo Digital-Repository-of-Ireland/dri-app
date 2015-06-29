@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: d20a899f720b6e755f63420e445b49c785b1c63c
+  revision: 3c770b6e94522a77ad6f887b48392c789852c8a8
   branch: develop
   specs:
-    dri_data_models (2.1.1)
+    dri_data_models (2.2.0)
       hydra-access-controls
       hydra-collections
       hydra-head (~> 9.0)
@@ -22,10 +22,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 4cf74a863bf1c478a5be4f5a520e381d26ef3e2a
+  revision: 03035fc7a7328d46f481cad6f57fd86ef09916e0
   branch: develop
   specs:
-    user_group (1.0.8)
+    user_group (1.1.0)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
