@@ -58,7 +58,7 @@ class DeleteCollectionJob < ActiveFedoraPidBasedJob
     FileUtils.remove_dir(Rails.root.join(Settings.dri.files).join(object.id), :force => true)
 
     storage = Storage::S3Interface.new
-    storage.delete_bucket(Utils.split_id(object.id))
+    storage.delete_bucket(object.id)
   end
 
 end

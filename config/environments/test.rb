@@ -38,4 +38,6 @@ NuigRnag::Application.configure do
   config.action_mailer.default_url_options = { :host => 'localhost' }
 
   config.eager_load = false
+
+  Deprecation.default_deprecation_behavior = :silence
 end

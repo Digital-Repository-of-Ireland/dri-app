@@ -5,9 +5,10 @@
 <% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>
 
 <% render_link_rel_alternates %>
+<%= render partial: 'catalog/paginate_compact', object: @response %>
 <div class="dri_object_container" id="object_container">
   <div class="dri_object_title_top"><%= document_heading %></div>
-  <%= render 'previous_next_doc' %>
+
   <%= render_document_partial @document, :show %>
 </div>
 
@@ -21,4 +22,11 @@
 <div class="dri_object_institutes_block" id="institutes_block">
   <%= render :partial => 'shared/display_institutes' %>
 </div>
+<% content_for :head do %>
+  <meta property="fb:app_id"          content="298965153560401" /> 
+    <meta property="og:type"            content="article" /> 
+    <meta property="og:url"             content="<%= request.original_url %>" /> 
+    <meta property="og:title"           content="<%= @page_title %>" /> 
+    <meta property="og:description"    content="DRI Object" />
+<% end %>
 

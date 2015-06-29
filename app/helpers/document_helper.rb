@@ -39,7 +39,17 @@ module DocumentHelper
 
   # Check, based on the document type (Fedora active_fedora_model), whether edit functions are available
   def edit_functionality_available? document
-    (document['active_fedora_model_ssi'] && document['active_fedora_model_ssi'] == 'DRI::EncodedArchivalDescription') ? false : true
+    (!document['active_fedora_model_ssi'].nil? && document['active_fedora_model_ssi'] == 'DRI::EncodedArchivalDescription') ? false : true
+  end
+
+  # Workaround for reusing partials for add institution/permissions to non QDC collections
+  #
+  def update_desc_metadata? md_class
+    (["DRI::QualifiedDublinCore", "DRI::Documentation"].include? md_class) ? true : false
+  end
+
+  def get_active_fedora_model document
+    document['active_fedora_model_ssi'] unless document['active_fedora_model_ssi'].nil?
   end
 
   # For a given collection (sub-collection) object returns a list of the immediate child sub-collections
@@ -72,7 +82,7 @@ module DocumentHelper
   def get_object_relationships document
     relationships_hash = Hash.new
     begin
-      object = DRI::Batch.find(document["id"], :cast => true)
+      object = DRI::Batch.find(document["id"])
 
       if (!object.nil? && object.class != DRI::Documentation)
         unless (object.class == DRI::EncodedArchivalDescription)
@@ -150,7 +160,7 @@ module DocumentHelper
         when 'DRI::QualifiedDublinCore'
           solr_fields_array = *(DRI::Vocabulary::qdcRelationshipTypes.map { |s| s.prepend("ext_related_items_ids_").to_sym})
         when 'DRI::Marc', 'DRI::EncodedArchivalDescription'
-          solr_fields_array = [:related_material]
+          solr_fields_array = [:related_material, :alternative_form]
         else
           solr_fields_array = nil
       end

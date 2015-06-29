@@ -4,7 +4,7 @@ module Storage
     require 'utils'
 
     def self.validate(cover_image, collection)
-      if !cover_image.blank? && Validators.file_type?(cover_image).mediatype == "image"
+      if !cover_image.blank? && Validators.media_type?(cover_image) == "image"
         begin
           Validators.virus_scan(cover_image)
         rescue Exceptions::VirusDetected => e
@@ -33,7 +33,7 @@ module Storage
     
     # FIXME - Initial impl of creation of EAD cover images from the data models...
     def self.validate_from_tempfile(cover_image, collection)
-      if !cover_image.blank? && Validators.file_type?(cover_image).mediatype == "image"
+      if !cover_image.blank? && Validators.media_type?(cover_image) == "image"
         begin
           Validators.virus_scan(cover_image)
         rescue Exceptions::VirusDetected => e

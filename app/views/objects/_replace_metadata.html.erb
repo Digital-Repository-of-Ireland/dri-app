@@ -1,10 +1,10 @@
+<% unless @object.class.to_s == "DRI::Documentation" %>
 <script>
 function metadataFileUploadHelper(thisObj) {
     $("#metadata_file_name").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
 }
 </script>
 
-<%= get_files @object %>
 <div class="dri_ingest_form_container">
 <div class="dri_ingest_form">
     
@@ -30,3 +30,4 @@ function metadataFileUploadHelper(thisObj) {
 
 </div>
 </div>
+<% end %> <!-- unless obj == documentation -->

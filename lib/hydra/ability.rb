@@ -18,7 +18,7 @@ module Hydra
       class_attribute :ability_logic
       self.ability_logic = [:create_permissions, :edit_permissions, :read_permissions, :custom_permissions]
       #383 Addition
-      self.ability_logic +=[:manager_permissions, :search_permissions, :master_file_permissions]
+      self.ability_logic +=[:manager_permissions, :search_permissions]
     end
 
     def self.user_class
@@ -38,12 +38,12 @@ module Hydra
 
       can [:edit, :update, :destroy], DRI::Batch do |obj|
         Rails.logger.debug("[EDITPERM] Checking from Batch")
-        test_edit(obj.pid)
+        test_edit(obj.id)
       end
 
       can [:edit, :update, :destroy], DRI::GenericFile do |obj|
         Rails.logger.debug("[EDITPERM] Checking from GenericFile")
-        test_edit(obj.pid)
+        test_edit(obj.id)
       end
 
       can :edit, SolrDocument do |obj|
@@ -62,7 +62,7 @@ module Hydra
 
       can :read, [DRI::Batch] do |obj|
         Rails.logger.debug("[READPERM] Checking from Object")
-        test_read(obj.pid)
+        test_read(obj.id)
       end
 
 
@@ -85,31 +85,13 @@ module Hydra
 
       can :search, [DRI::Batch] do |obj|
         Rails.logger.debug("[SEARCHPERM] Checking from Object")
-        test_search(obj.pid)
+        test_search(obj.id)
       end
 
       can :search, SolrDocument do |obj|
         Rails.logger.debug("[SEARCHPERM] Checking from SolrDoc")
         cache.put(obj.id, obj)
         test_search(obj.id)
-      end
-    end
-
-    def master_file_permissions
-      can :read_master, String do |pid|
-        Rails.logger.debug("[master_file_permissions] Checking from STRING")
-        test_read_master(pid)
-      end
-
-      can :read_master, DRI::Batch do |obj|
-        Rails.logger.debug("[master_file_permissions] Checking from Object")
-        test_read_master(obj.pid)
-      end
-
-      can :read_master, SolrDocument do |obj|
-        Rails.logger.debug("[master_file_permissions] Checking from SolrDoc")
-        cache.put(obj.id, obj)
-        test_read_master(obj.id)
       end
     end
 
@@ -123,7 +105,7 @@ module Hydra
 
       can :manage_collection, DRI::Batch do |obj|
         Rails.logger.debug("[MANPERM] Checking from Object")
-        test_manager(obj.pid)
+        test_manager(obj.id)
       end
 
       can :manage_collection, SolrDocument do |obj|

@@ -17,7 +17,7 @@ describe "PublishJob" do
     @collection[:type] = ["Collection"]
     @collection[:creation_date] = ["1916-01-01"]
     @collection[:published_date] = ["1916-04-01"]
-    @collection[:status] = ["draft"]
+    @collection[:status] = "draft"
     @collection.save
 
     @object = DRI::Batch.with_standard :qdc
@@ -34,7 +34,7 @@ describe "PublishJob" do
     @object[:temporal_coverage] = ["1900s"]
     @object[:subject] = ["Ireland","something else"]
     @object[:type] = ["Sound"]
-    @object[:status] = ["reviewed"]
+    @object[:status] = "reviewed"
     @object.save
 
     @collection.governed_items << @object
@@ -74,7 +74,7 @@ describe "PublishJob" do
       @draft[:temporal_coverage] = ["1900s"]
       @draft[:subject] = ["Ireland","something else"]
       @draft[:type] = ["Sound"]
-      @draft[:status] = ["draft"]
+      @draft[:status] = "draft"
       @draft.save
 
       @collection.governed_items << @draft

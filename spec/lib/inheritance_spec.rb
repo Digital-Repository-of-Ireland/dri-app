@@ -12,7 +12,7 @@ describe "inheritance" do
     @user_password = "password"
     @user = User.create(:email => @user_email, :password => @user_password, :password_confirmation => @user_password, :locale => @user_locale, :first_name => @user_fname, :second_name => @user_sname)
 
-    @group = Group.create(name: "test group", description: "test group")
+    @group = Group.create(name: "test", description: "test group")
     @membership = @user.join_group(@group.id)
     @membership.approved_by = @user.id
     @membership.save
@@ -25,11 +25,11 @@ describe "inheritance" do
     @collection[:type] = ["Collection"]
     @collection[:creation_date] = ["1916-01-01"]
     @collection[:published_date] = ["1916-04-01"]
-    @collection[:status] = ["public"]
+    @collection[:status] = "public"
     @collection[:depositor] = "instmgr@dri.ie"
-    @collection.edit_users = ["edituser@dri.ie", "anotheruser@dri.ie"]
-    @collection.manager_users = ["manageruser@dri.ie"]
-    @collection.read_groups = ["test group"]
+    @collection.edit_users = ['edituser@dri.ie', 'anotheruser@dri.ie']
+    @collection.manager_users = ['manageruser@dri.ie']
+    @collection.read_groups = ['test']
     @collection.save
 
     @object = DRI::Batch.with_standard :qdc
@@ -42,7 +42,7 @@ describe "inheritance" do
     @object[:creation_date] = ["1916-01-01"]
     @object[:subject] = ["rspec", "inheritance"]
     @object[:type] = ["Sound"]
-    @object[:status] = ["published"]
+    @object[:status] = "published"
     @object[:depositor] = "edituser@dri.ie"
     @object.save
 
@@ -63,7 +63,7 @@ describe "inheritance" do
   end
 
   it 'should get the collection read groups' do
-    get_governing_attribute(@object, 'read_groups_string').should == "test group"
+    get_governing_attribute(@object, 'read_groups_string').should == "test"
   end
 
   it 'should get the collection read users via groups' do

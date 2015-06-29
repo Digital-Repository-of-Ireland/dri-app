@@ -1,5 +1,5 @@
 <!-- Header to be displayed to users -->
-<header id="dri_header_container_id" class="dri_header_container">
+<header id="dri_header_container_id" class="dri_header_container hidden-xs">
 <%= render 'shared/header_navbar_logo' %>
 
 	<%= render 'shared/header_navbar_social_media' %>
@@ -13,8 +13,8 @@
 </header><!-- close dri_header_container -->
 
 <%= render 'shared/header_main_nav' %>
-
+<% if !is_root? %>
 <%= render 'shared/header_crumbtrail' %>
 
 <%= render 'shared/header_browse_features' %>
-
+<% end %>

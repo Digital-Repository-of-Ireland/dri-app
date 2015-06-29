@@ -2,31 +2,35 @@ require 'metadata_helpers'
 
 #
 # Creates, updates, or retrieves, the descMetadata datastream for an object
-# 
+#
 class MetadataController < CatalogController
 
-  before_filter :authenticate_user_from_token!, :only => [:update]
-  before_filter :authenticate_user!, :only => [:update]
+  before_filter :authenticate_user_from_token!, :except => [:show]
+  before_filter :authenticate_user!, :except => [:show]
+
+  def actor
+    @actor ||= DRI::Object::Actor.new(@object, current_user)
+  end
 
   # Renders the metadata XML stored in the descMetadata datastream.
-  # 
+  #
   #
   def show
     enforce_permissions!("show_digital_object", params[:id])
-    begin 
+    begin
       @object = retrieve_object! params[:id]
     rescue ActiveFedora::ObjectNotFoundError => e
       render :xml => { :error => 'Not found' }, :status => 404
       return
     end
 
-    if @object && @object.datastreams.keys.include?("descMetadata")
+    if @object && @object.attached_files.key?(:descMetadata)
       respond_to do |format|
-        format.xml { render :xml => (@object.datastreams.keys.include?("fullMetadata") && !@object.datastreams["fullMetadata"].content.nil?) ?
-                                @object.datastreams["fullMetadata"].content : @object.datastreams["descMetadata"].content
+        format.xml { render :xml => (@object.attached_files.key?(:fullMetadata) && !@object.attached_files[:fullMetadata].content.nil?) ?
+                                @object.attached_files[:fullMetadata].content : @object.attached_files[:descMetadata].content
         }
-        format.html  { 
-          xml_data = @object.datastreams["descMetadata"].content
+        format.html  {
+          xml_data = @object.attached_files[:descMetadata].content
           xml = Nokogiri::XML(xml_data)
           xslt_data = File.read("app/assets/stylesheets/#{xml.root.name}.xsl")
           xslt = Nokogiri::XSLT(xslt_data)
@@ -44,11 +48,11 @@ class MetadataController < CatalogController
   # Replaces the current descMetadata datastream with the contents of the uploaded XML file.
   #
   #
-  def update 
+  def update
     enforce_permissions!("update",params[:id])
 
     unless params[:metadata_file].present?
-      flash[:notice] = t('dri.flash.notice.specify_valid_file') 
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
     else
       xml = MetadataHelpers.load_xml(params[:metadata_file])
 
@@ -57,19 +61,19 @@ class MetadataController < CatalogController
       unless can? :update, @object
         raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, "")
       end
-  
+
       if @object.nil?
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
         @object.update_metadata xml
         MetadataHelpers.checksum_metadata(@object)
-        # Only in Updates for now as there is no UI for adding relationships
-        # After descMetadata update, process this object's relationships
-        #@object.process_relationships
-        duplicates?(@object)
+        warn_if_duplicates
 
         begin
-          raise Exceptions::InternalError unless @object.datastreams["descMetadata"].save
+          raise Exceptions::InternalError unless @object.attached_files[:descMetadata].save
+          # Only in Updates for now as there is no UI for adding relationships
+          # After descMetadata update, process this object's relationships
+          #@object.process_relationships
         rescue RuntimeError => e
           logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
           raise Exceptions::InternalError
@@ -78,6 +82,9 @@ class MetadataController < CatalogController
         if @object.valid?
           begin
             raise Exceptions::InternalError unless @object.save
+
+            actor.version_and_record_committer
+
           rescue RuntimeError => e
             logger.error "Could not save object #{@object.id}: #{e.message}"
             raise Exceptions::InternalError

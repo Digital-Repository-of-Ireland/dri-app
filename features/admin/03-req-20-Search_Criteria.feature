@@ -32,11 +32,11 @@ I want to be able to use the faceted search interface
 # Thus we need to perform an empty search first
 # This is probably a bug, need confirmation of what should appear on main page
   Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
-  Given a collection with pid "dri:collection" and title "Test collection" created by "admin"
-  And an object in collection "dri:collection" with metadata from file "SAMPLEA.xml"
+  Given a collection with pid "collection" and title "Test collection" created by "admin"
+  And an object in collection "collection" with metadata from file "SAMPLEA.xml"
   And I am not logged in
   When I go to "the home page"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   And I search for "<search>" in facet "<facetname>" with id "<facetid>"
   Then I should see a search result "<result>"
@@ -54,10 +54,10 @@ I want to be able to use the faceted search interface
 @wip
 Scenario Outline: Faceted Search for admin user
   Given I am logged in as "admin" in the group "admin"
-  Given a collection with pid "dri:collection" and title "Test collection" created by "user1"
-  And an object in collection "dri:collection" with metadata from file "SAMPLEA.xml"
+  Given a collection with pid "collection" and title "Test collection" created by "user1"
+  And an object in collection "collection" with metadata from file "SAMPLEA.xml"
   When I go to "the home page"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I search for "<search>" in facet "<facetname>" with id "<facetid>"
   Then I should see a search result "<result>"
 
@@ -78,106 +78,106 @@ Scenario Outline: Faceted Search for admin user
 # Scenario: Search using basic and advanced facet searching including Boolean logic
 Scenario: Successful search using AND boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "sample AND audio"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
   When I fill in "q" with "sample + audio"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   Then I should see a search result "SAMPLE AUDIO TITLE"
 
 Scenario: Unsuccessful search using AND boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "invalidstring AND audio"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using OR boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "sample OR audio"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
   When I fill in "q" with "invalidstring OR audio"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   Then I should see a search result "SAMPLE AUDIO TITLE"
 
 Scenario: Unsuccessful search using OR boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "invalidstring1 OR invalidstring2"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using NOT boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "NOT invalidstring"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
 
 Scenario: Unsuccessful search using NOT boolean search string
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "NOT sample"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using "+"
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "+sample"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
 
 Scenario: Unsuccessful search using "+"
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "+invalidstring"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should not see a search result "Sample Object"
 
 Scenario: Successful search using "-"
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "-invalidstring"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
 
 Scenario: Unsuccessful search using "-"
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "-sample"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should not see a search result "Sample Object"
 
 Scenario: Wildcard search
   Given I am logged in as "user1"
-  Given a collection with pid "dri:coll55" and title "Sample Collection" created by "user1"
-  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "dri:coll55"
+  Given a collection with pid "coll55" and title "Sample Collection" created by "user1"
+  And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "coll55"
   When I fill in "q" with "*"
-  And I press the button to search
+  And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
 

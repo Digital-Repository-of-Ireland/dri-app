@@ -1,5 +1,4 @@
-<div id="oject-multiple-asset-carousel" class="carousel slide dri_carousel_controls" data-ride="carousel" >
-  <div class="carousel slide" data-ride="carousel">
+<div id="oject-multiple-asset-carousel" class="carousel slide dri_carousel_controls" data-ride="carousel" data-interval = "false" >
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <!--First item set to active-->
@@ -11,10 +10,10 @@
       </div>
 
 
-      <% @displayfiles.each_with_index do |file,i| %>
+      <% @displayfiles[1..-1].each_with_index do |file,i| %>
         <div class="item dri_asset_carousel_item dri_bottom_stack">
           <%= render :partial => "object_show_surrogate", :locals => {:document => document, :generic_file => file} %>
-          <%= render :partial => "object_show_download", :locals => {:document => document, :generic_file => file, :index => i + 1} %>
+          <%= render :partial => "object_show_download", :locals => {:document => document, :generic_file => file, :index => i + 2} %>
         </div>
       <% end %>
     </div>
@@ -31,14 +30,6 @@
     <% end %>
   </div>
   <!-- Controls -->
-</div>
-
-<!--Stops cousel's autoplay-->
-<script>
-    $(document).ready(function() {
-        $('.carousel').carousel('pause');
-    });
-</script>
 <% if (@displayfiles.count > 0) %>
     <p class="dri_assets_total"><%= "#{t('dri.views.fields.total_assets')} (#{@displayfiles.count})" %></p>
 <% end %>

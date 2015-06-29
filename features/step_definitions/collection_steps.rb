@@ -1,8 +1,8 @@
 require 'metadata_helpers'
 
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
-  pid = "dri:c" + @random_pid if (pid == "@random")
-  collection = DRI::Batch.with_standard(:qdc, {:pid => pid})
+  pid = @random_pid if (pid == "@random")
+  collection = DRI::Batch.with_standard(:qdc, {:id => pid})
   collection.title = title ? [title] : [SecureRandom.hex(5)]
   collection.description = [SecureRandom.hex(20)]
   collection.rights = [SecureRandom.hex(20)]
@@ -17,19 +17,20 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
     collection.discover_groups_string="public"
     collection.read_groups_string="registered"
   end
+  collection.master_file_access="private"
   collection.save
   collection.member_collections.count.should == 0
   collection.governed_items.count.should == 0
 
-  group = UserGroup::Group.new(:name => collection.id.sub(':', '_'),
+  group = UserGroup::Group.new(:name => collection.id,
                               :description => "Default Reader group for collection #{collection.id}")
   group.save
 end
 
 
 Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?/ do |pid, title, desc, type, user|
-  pid = "dri:o" + @random_pid if (pid == "@random")
-  digital_object = DRI::Batch.with_standard(:qdc, {:pid => pid})
+  pid = @random_pid if (pid == "@random")
+  digital_object = DRI::Batch.with_standard(:qdc, {:id => pid})
   digital_object.title = title ? [title] : ["Test Object"]
   digital_object.type = type ? [type] : ["Sound"]
   digital_object.description = desc ? [desc] : ["A test object"]
@@ -45,11 +46,11 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
   digital_object.creation_date = ["2000-01-01"]
 
   MetadataHelpers.checksum_metadata(digital_object)
-  digital_object.save
+  digital_object.save!
 end
 
 Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |type, pid, title, user|
-  pid = "dri:o" + @random_pid if (pid == "@random")
+  pid = "o" + @random_pid if (pid == "@random")
   case type
    when 'Audio'
     digital_object = DRI::Model::Audio.new(:pid => pid)
@@ -104,16 +105,7 @@ When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
     When I go to the "collection" "show" page for "#{collection_pid}"
     And I follow the link to upload XML
     And I attach the metadata file "valid_metadata.xml"
-    And I press the button to ingest metadata
-  }
-end
-
-When /^I add the Digital Object "(.*?)" to the non-governing collection "(.*?)" using the web forms$/ do |object_pid,collection_pid|
-  steps %{
-    Given I am on the collections page
-    When I press the button to set the current collection to #{collection_pid}
-    And I go to the "object" "show" page for "#{object_pid}"
-    And I check add to collection for id #{object_pid}
+    And I press the button to "ingest metadata"
   }
 end
 
@@ -151,19 +143,18 @@ end
 When /^I enter invalid permissions for a collection$/ do
   steps %{
     And I fill in "batch_manager_users_string" with ""
+    And I fill in "batch_edit_users_string" with ""
   }
 end
 
 When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type "(.*?)"$/ do |object_pid,collection_pid,type|
-  object = ActiveFedora::Base.find(object_pid, {:cast => true})
-  collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
+  object = DRI::Batch.find(object_pid)
+  collection = DRI::Batch.find(collection_pid)
   case type
     when "governing"
       object.title = [SecureRandom.hex(5)]
-      collection.governed_items << object
-    when "non-governing"
-      object.title = [SecureRandom.hex(5)]
-      collection.member_collections << object
+      object.governing_collection = collection
+      object.save
   end
 end
 
@@ -178,9 +169,6 @@ Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as ty
     when "governing"
       collection.governed_items.length.should == 1
       collection.governed_items[0].title.should == object.title
-    when "non-governing"
-      collection.collections.length.should == 1
-      collection.collections[0].title.should == object.title
   end
 end
 
@@ -199,11 +187,6 @@ end
 Then /^I should see the Digital Object "(.*?)" as part of the collection$/ do |object_pid|
   object = DRI::Batch.find(object_pid)
   page.should have_content object.title
-end
-
-Then /^I should not see the Digital Object "(.*?)" as part of the non-governing collection$/ do |object_pid|
-  object = DRI::Batch.find(object_pid)
-  page.should_not have_content object.title
 end
 
 Then /^the collection "(.*?)" should contain the new digital object$/ do |collection_pid|

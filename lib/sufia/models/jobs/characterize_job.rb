@@ -5,8 +5,12 @@ class CharacterizeJob < ActiveFedoraPidBasedJob
   end
 
   def run
-    generic_file.characterize
-    after_characterize
+    begin
+      generic_file.characterize
+      after_characterize
+    rescue => e
+      Rails.logger.error "Unable to characterize file #{generic_file_id}"
+    end
   end
 
   def after_characterize
@@ -17,7 +21,7 @@ class CharacterizeJob < ActiveFedoraPidBasedJob
     # Update the Batch object's Solr index now that the GenericFile
     # has characterization metadata
     if generic_file.batch != nil
-      Sufia.queue.push(UpdateIndexJob.new(generic_file.batch.pid))
+      Sufia.queue.push(UpdateIndexJob.new(generic_file.batch.id))
     end
   end
 

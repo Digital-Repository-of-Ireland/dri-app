@@ -1,19 +1,32 @@
 <% valid_object_count = get_valid_timeline_count params %>
+<%= javascript_include_tag "http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js" %>
 
-<% if valid_object_count > 0 %>
+<% if valid_object_count > 0 && valid_object_count < 100 %>
     <script>
         $(document).ready(function() {
+            var tlwidth = $('#dri_timeline_id').width();
             createStoryJS({
                 type: 'timeline',
-                width: '100%',
-                height: '400',
-                source: '<%= timeline_json_path(params) %>',
+                width: tlwidth,
+                height: '450',
+                source: <%= @timeline_data.html_safe %>,
                 embed_id: 'time_line'
             });
         });
     </script>
-    <div id="time_line"></div>
-<% else %>
+    <div id="dri_timeline_id">
+            <div id="time_line" ></div>
+    </div>
+
+<% elsif valid_object_count > 0 && valid_object_count > 100 %>
+    <h4>
+    <!-- TRANSLATE -->
+      Sorry there are too many results to show on Timeline.
+    </h4>
+    <p>
+      There are currently <%= valid_object_count %> results. Try filtering your results until you get less than 100.
+    </p>
+ <% else %>
     <h4>
       <%= t('dri.help.no_results_found') %>
     </h4>

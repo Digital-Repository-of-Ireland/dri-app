@@ -7,7 +7,7 @@ When /^I commit the Digital Object$/ do
 end
 
 Then /^I should be given a PID from the digital repository$/ do
-  @digital_object.id.should =~ /^#{NuigRnag::Application.config.id_namespace}:\w\w\d\d\w\w\d\d\w$/
+  @digital_object.id.should =~ /^\w\w\d\d\w\w\d\d\w$/
 end
 
 When /^I add (.*?) metadata$/ do |type|
@@ -19,7 +19,7 @@ When /^I add (.*?) metadata$/ do |type|
 
   @tmp_xml = Nokogiri::XML(File.new(File.join(cc_fixture_path, filename)).read)
 
-  if @digital_object.datastreams.has_key?("descMetadata")
+  if @digital_object.attached_files.has_key?(:descMetadata)
     @digital_object.datastreams["descMetadata"].ng_xml = @tmp_xml
   else
     ds = DRI::Metadata::DublinCoreAudio.from_xml(@tmp_xml)

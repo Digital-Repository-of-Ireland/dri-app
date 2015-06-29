@@ -79,12 +79,13 @@ module PathTranslator
     case type
 
       when /object/
-
+        
         case page
           when /show/
             catalog_path(pid)
           when /edit/
-            edit_object_path(pid)
+            id = (pid == "created") ? @obj_pid : pid
+            edit_object_path(id)
           else
             raise('Unknown route')
         end

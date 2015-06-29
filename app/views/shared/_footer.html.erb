@@ -16,15 +16,35 @@
     <ul id="dri_main_footer_navigation_links_id"
         class="dri_main_footer_navigation_links">
       <li class="">
-      <span> <%= link_to t('dri.headerlinks.end_user_agreement'), "#{main_app.root_url}/pages/terms", :id => "end_user_agreement", :class => "muted" %> </span>
+      <span> <%= link_to t('dri.headerlinks.end_user_agreement'), main_app.page_path('terms'), :id => "end_user_agreement", :class => "muted" %> </span>
+      </li>
+
+      <li>
+        <%= link_to t('dri.headerlinks.help'), main_app.page_path('about_faq'), :id => "dri_footer_help" %>
       </li>
       <li class=" no_border_right">
-        <span><%= link_to t('dri.headerlinks.about'), "#{main_app.root_url}/pages/about_us", :id => "about_us_footer", :class => "muted" %></span>
+        <span><%= link_to t('dri.headerlinks.about'), main_app.page_path('about_us'), :id => "about_us_footer", :class => "muted" %></span>
       </li>
     </ul>
   </nav>
   <div class="dri_funder_institutes" id="funder_institutes">
-    <%= image_tag("dri/dri_funder_logos.png", :alt=>"funder logos" ) %>
+
+		<ul>
+			<li>
+				<%= image_tag("dri/funders/01_ireland_eu_funds.png", :alt=>"EU Ireland Funds" ) %>
+			</li>
+			<li>
+				<%= image_tag("dri/funders/02_erdf.png", :alt=>"ERDF" ) %>
+			</li>
+			<li>
+				<%= image_tag("dri/funders/03_djei.png", :alt=>"DJEI" ) %>
+			</li>
+			<li>
+				<%= image_tag("dri/funders/04_hea.png", :alt=>"HEA" ) %>
+			</li>
+			<li class="dri_clearfix dri_underline">Investing in your future</li>
+		</ul>
+
   </div>
 
 </footer>

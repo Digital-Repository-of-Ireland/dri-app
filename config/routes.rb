@@ -19,7 +19,7 @@ NuigRnag::Application.routes.draw do
 
     resources :collections, :only => ['new','create','update','edit','destroy']
 
-    resources :institutes, :only => ['show', 'new', 'create']
+    resources :institutes, :only => ['show', 'new', 'create', 'edit', 'update']
 
     match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
     match 'newdepositingassociation' => 'institutes#associate_depositing', :via => :post, :as => :new_depositing_association
@@ -52,8 +52,7 @@ NuigRnag::Application.routes.draw do
     match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
 
     match 'maps/:id' => 'maps#show', :via => :get, :as => :maps
-    match 'maps_json' => 'maps#get', :via => :get
-    match 'timeline_json' => 'timeline#get', :via => :get
+    #match 'timeline_json' => 'timeline#get', :via => :get
 
     match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
     # Added review method to collections controller
@@ -81,5 +80,5 @@ NuigRnag::Application.routes.draw do
     end
   end
 
-  match '00D9DB5F-0CC1-4AE1-B014-968AFA0371AC/pages/*id' => 'high_voltage/pages#show', :via => :get
+  match 'pages/*id' => 'high_voltage/pages#show', :via => :get
 end

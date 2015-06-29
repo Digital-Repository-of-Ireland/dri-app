@@ -33,26 +33,31 @@
     <tr><td> <%= t('dri.reports.object.manage_users') %> </td><td><%= @manager_users %></td></tr>
   </table>
 
+  <h3><%= t('dri.reports.headings.versions') %></h3>
 
-  <% @datastreams.each do |datastream| %>
-    <h3><%= datastream %></h3>
+  <% @file_versions.keys.each do |file| %>
+  <h4><%= file %></h4>
+  <% versions = @file_versions[file] %>
     <table>
-      <tr><th><%= t('dri.reports.headings.date') %></th><th><%= t('dri.reports.headings.action') %></th><th><%= t('dri.reports.headings.link') %></th></tr>
-      <% @records[datastream].keys.sort.each do |key| %>
-        <tr>
-          <td><%= key %></td>
-          <td><%= @records[datastream][key] %></td>
-          <td><%= link_to(t('dri.reports.headings.datastream_version'), datastream_version_path(:id => @object.id, :stream => datastream, :date => key )) %>
-        </tr>
-      <% end %>
+      <tr>
+        <th><%= t('dri.reports.headings.date') %></th>
+        <th><%= t('dri.reports.headings.committer') %></th>
+        <th><%= t('dri.reports.headings.label') %></th>
+    </tr>
+    <% versions.keys.each do |label| %>
+      <tr>
+        <td><%= versions[label][:created] %></td>
+        <td><%= versions[label][:committer] %></td>
+        <td><a href="<%= versions[label][:uri] %>"><%= label %></a></td>
+      </tr>
+    <% end %>
     </table>
   <% end %>
-
 
   <h3><%= t('dri.reports.headings.files') %></h3>
   <% @object.generic_files.each do |file| %>
     <table>
-      <tr><td><%= t('dri.reports.assets.asset_id') %></td><td><%= file.pid %></td></tr>
+      <tr><td><%= t('dri.reports.assets.asset_id') %></td><td><%= file.id %></td></tr>
       <tr><td><%= t('dri.reports.assets.asset_type') %></td><td><%= file.format_label.join(' : ') %></td></tr>
       <tr><td><%= t('dri.reports.assets.file_size') %></td><td><%= file.file_size.join(' : ') %></td></tr>
       <tr><td><%= t('dri.reports.assets.last_modified') %></td><td><%= file.last_modified.join(' : ') %></td></tr>
@@ -61,7 +66,7 @@
       <tr><td><%= t('dri.reports.assets.file_download_link') %></td><td><%= link_to(file_download_path(@object.id, file.id), file_download_path(@object.id, file.id)) %></td></tr>
 
 
-      <% versions = get_asset_version_list(file.pid, 'content') %>
+      <% versions = get_asset_version_list(file.id, 'content') %>
       <tr><td><%= t('dri.reports.assets.version') %></td><td><%= versions.count - 1 %></td></tr>
 
       <% if versions.count > 0 %>

@@ -1,21 +1,29 @@
 <div id="dri_social_media_container_id"
-     class="dri_social_media_container">
+class="dri_social_media_container">
 
-  <nav id="dri_social_media_nav_id" class="dri_social_media_nav" >
-    <ul id="dri_social_media_links_id" class="dri_social_media_links" data-content="<%= t('dri.help.social_media_links') %>"  data-original-title="<%= t('dri.help.social_media_links_title')%>" data-trigger="hover" data-placement="right">
-      <li>
-        <a href="https://www.facebook.com/digitalrepositoryireland" class="facebook" id="follow_facebook"></a>
-      </li>
-      <li>
-        <a href="http://www.linkedin.com/company/digital-repository-of-ireland" class="linkedin" id="follow_linkedin"></a>
-      </li>
-      <li>
-        <a href="http://www.slideshare.net/dri_ireland" class="share" id="follow_slideshare"></a>
-      </li>
-      <li>
-        <a href="https://twitter.com/dri_ireland" class="twitter" id="follow_twitter"></a>
-      </li>
-    </ul>
-  </nav>
+	<nav id="dri_social_media_nav_id" class="dri_social_media_nav" >
+		<ul id="dri_social_media_links_id" class="dri_social_media_links" data-content="<%= t('dri.help.social_media_links') %>"  data-original-title="<%= t('dri.help.social_media_links_title')%>" data-trigger="hover" data-placement="right">
+			<%= link_to "https://twitter.com/dri_ireland", :id => "follow_twitter", :target => "_blank" do %>
+			<li> 
+				<i class="fa fa-twitter fa-lg"></i>
+			</li>
+			<% end %>
+			<%= link_to "https://www.facebook.com/digitalrepositoryireland", :id => "follow_facebook", :target => "_blank" do %>
+			<li>
+				<i class="fa fa-facebook-official fa-lg"></i>
+			</li>
+			<% end %>
+			<%= link_to "https://vimeo.com/digitalrepositoryireland", :id => "follow_vimeo", :target => "_blank" do %>
+			<li>
+				<i class="fa fa-vimeo-square fa-lg"></i>
+			</li>
+			<% end %>
+			<%= link_to "http://www.slideshare.net/dri_ireland", :id => "http://www.slideshare.net/dri_ireland", :target => "_blank" do %>
+			<li>
+				<i class="fa fa-slideshare"></i>
+			</li>
+			<% end %>
+		</ul>
+	</nav>
 </div>
 <!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->

@@ -7,8 +7,6 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user_from_token!
   before_filter :set_locale, :set_cookie, :set_metadata_language
 
-
-
   include HttpAcceptLanguage
 
   # Adds a few additional behaviors into the application controller
@@ -20,7 +18,8 @@ class ApplicationController < ActionController::Base
   include Exceptions
 
   include UserGroup::PermissionsCheck
-  include UserGroup::SolrAccessControls
+  #include UserGroup::SolrAccessControls
+  include Hydra::AccessControlsEnforcement
   include UserGroup::Helpers
 
   include PermissionMethods
@@ -76,16 +75,6 @@ class ApplicationController < ActionController::Base
     cookies[:accept_cookies] = "yes" if current_user
   end
 
-
-  def set_access_permissions(key, collection=nil)
-    params[key][:master_file] = master_file_permission(params[key].delete(:master_file)) if params[key][:master_file].present?
-    if !collection.blank?
-      params[key][:private_metadata] = private_metadata_permission('radio_public')
-    else
-      params[key][:private_metadata] = private_metadata_permission('radio_inherit')
-    end
-  end
-
   def after_sign_out_path_for(resource_or_scope)
     main_app.new_user_session_url
   end
@@ -101,14 +90,13 @@ class ApplicationController < ActionController::Base
     return objs
   end
 
-  def duplicates?(object)
-    @duplicates = duplicates(object)
+  def warn_if_duplicates
+    duplicates = actor.find_duplicates
+    return if duplicates.blank?
 
-    if @duplicates && !@duplicates.empty?
-      warning = t('dri.flash.notice.duplicate_object_ingested', :duplicates => @duplicates.map { |o| "'" + o["id"] + "'" }.join(", ").html_safe)
-      flash[:alert] = warning
-      @warnings = warning
-    end
+    warning = t('dri.flash.notice.duplicate_object_ingested', :duplicates => duplicates.map { |o| "'" + o["id"] + "'" }.join(", ").html_safe)
+    flash[:alert] = warning
+    @warnings = warning
   end
 
   # Return a list of all supported licences (for populating select dropdowns)
@@ -130,14 +118,6 @@ class ApplicationController < ActionController::Base
     # timing attacks.
     if user && Devise.secure_compare(user.authentication_token, params[:user_token])
       sign_in user, store: true
-    end
-  end
-
-  def duplicates(object)
-    unless object.governing_collection.blank?
-      collection_id = object.governing_collection.id
-      solr_query = "#{Solrizer.solr_name('metadata_md5', :stored_searchable, type: :string)}:\"#{object.metadata_md5}\" AND #{Solrizer.solr_name('is_governed_by', :stored_searchable, type: :symbol)}:\"info:fedora/#{collection_id}\""
-      ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "10", :fl => "id").delete_if{|obj| obj["id"] == object.pid}
     end
   end
 

@@ -3,7 +3,7 @@
     <div class="dri_content_block_collection">
       <div>
         <div class="dri_collection_image">
-          <% image = cover_image ( document ) %>
+          <% image = get_cover_image ( document ) %>
           <% unless image.nil? %>
               <%= image_tag image, :width=>"228" %>
           <% else %>

@@ -1,4 +1,8 @@
+<% unless params[:is_sub_collection] == 'true' %>
 <h2><%= t('dri.views.ingest.forms.title') %></h2>
+<% else %>
+<h2><%= t('dri.views.ingest.forms.sub_collection') %></h2>
+<% end %>
 <div class="dri_ingest_form_container">
 <div class="dri_ingest_form">
   <% method = params[:method] || "form" %>

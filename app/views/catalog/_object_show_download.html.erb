@@ -14,14 +14,14 @@
 <% surrogate = surrogate_url(document.id, generic_file.id, surrogate_type_name) %>
 <div class="carousel-caption">
   <p>
-    <% if surrogate.nil? && !(can? :read_master, @document) %>
+    <% if surrogate.nil? && !((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
       <%= t('dri.views.catalog.links.download_not_available', :index => index.ordinalize) %>
-    <% elsif surrogate.nil? && (can? :read_master, @document) %>
-        <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{generic_file[:file_size].first.present? ? number_to_human_size(generic_file[:file_size].first.to_f) : t('dri.views.catalog.links.unknown_size')})", file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
+    <% elsif surrogate.nil? && ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
+        <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{generic_file.file_size ? number_to_human_size(generic_file.file_size.to_f) : t('dri.views.catalog.links.unknown_size')})", file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
     <% elsif surrogate.present? %>
         <%= link_to t('dri.views.catalog.links.download_nth', :index => index.ordinalize), surrogate_download_path(generic_file.id, :object_id => document.id, :surrogate_url => surrogate), :id => "download_asset" %>
-        <% if can? :read_master, @document %>
-            - <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{generic_file[:file_size].first.present? ? number_to_human_size(generic_file[:file_size].first.to_f) : t('dri.views.catalog.links.unknown_size')})", file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
+        <% if (@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id) %>
+            - <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{generic_file.file_size ? number_to_human_size(generic_file.file_size.to_f) : t('dri.views.catalog.links.unknown_size')})", file_download_path(@document, generic_file.id), :id => "download_master_asset" %>
         <% end %>
     <% end %>
   </p>

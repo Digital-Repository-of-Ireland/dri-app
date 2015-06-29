@@ -1,108 +1,376 @@
-
-.dri_about_container {
-   //@include zen-float();
-    $zen-column-count:12;
-    $bgcolour-1: #111;
-    $bgcolour-2: #eee;
-    $bgcolour-3: #ddd;
-    $bgcolour-4: #ccc;
-    $bgcolour-5: #bbb;
-    $about-text-1: #fff;
-    
- 
-
-  
-    .dri_about_01 {
-      @include zen-grid-item(3.9, 1);      
+$dri_pages_min_height: 700px;
+$dri_column_margin_content_top: 36px;
+$dri_column_margin_top: -36px;
+$dri_demo_background: #755573;
+$dri_ii_background: #00948F;
+$dri_about_logos_min_height: 100px;
+//* Extendable classes
+%pages_p {
+    p {
+        font-size: 1.1em;
+        color: $dri_midgrey;
+        line-height: 1.3em;
     }
-    .dri_about_02 {
-      @include zen-grid-item(3.9, 5);      
-    }
-    .dri_about_03 {
-      @include zen-grid-item(4, 9);      
-    }
-    .dri_about_04 {
-      @include zen-clear();
-      @include zen-grid-item(12, 1); 
-      background-color: $bgcolour-1;
-      p {
-        color: $about-text-1;
-      }   
-    }
-    .dri_about_05 {
-      @include zen-clear();
-      @include zen-grid-item(6, 0.89);     
-    }
-    .dri_about_06a {
-      @include zen-nested-container();
-      @include zen-grid-item(6, 7);   
-    }
-    .dri_about_06 {
-      //@include zen-grid-item(1, 6);   
-    }
-
-    .dri_about_06b {
-       //@include zen-grid-item(6, 1);
-    }
-    .dri_about_07 {
-      @include zen-clear();
-      @include zen-grid-item(3.85, 1, $gutter-width: 20px);  
-            background-color: $bgcolour-2;    
-    }
-    .dri_about_08 {
-      @include zen-grid-item(3.85, 5);     
-            background-color: $bgcolour-3; 
-    }
-    .nested {
-      @include zen-grid-item(3.85, 9);
-      @include zen-nested-container();
-    }
-    .dri_about_09 {
-      @include zen-grid-item(12, 1, $gutter-width: 0px);  
-    }
-    .dri_about_10 {
-      @include zen-clear();
-      @include zen-grid-item(12, 1);    
-    }
-  
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+%pages_a {
+    a {
+        color: darken($dri_midgrey, 10%);
+        padding:0;
+        margin:0;
+    }
+    a:hover {
+        color: $dri_green;
+    }
+}
+%pages_h5 {
+    h5 {
+        font-size: 1.1em;
+        margin-top: 15px;
+        padding-bottom: 5px;
+        color: $dri_grey;
+        border-bottom: 3px solid $dri_grey;
+        color: $dri_grey;  
+        font-weight: bold;
+      
+    }
+}
+%pages_h6 {
+    h6 {
+        color: $dri_grey;
+        font-size: 1.1em;
+        font-weight: bold;
+        padding:10px 0 0 0;
+    }
+}
+%thin_border {
+    border: 1px solid $dri_thingrey;
+}
+.padded_top {
+  padding-top: 10px;
+}
+ul { 
+       padding: 0;
+       margin: 0 0 0 15px;
+li {
+      font-size: 1.1em;
+      text-decoration: none;
+      padding:0;
+      margin:0;
+}
+}
+//* FAQ /pages/faq.html.erb
+.dri_faq {
+    @extend %pages_h5;
+    @extend %pages_h6;
+    @extend %pages_p;
+    @extend %pages_a;
+}
+//* Lifecycle /pages/lifecycle.html.erb
+.dri_about_lifecycle {
+    $zen-column-count: 3;
+    $zen-gutter-width: 0px;
+    margin: 0 0 0 -10px;
+    @extend %pages_h5;
+    @extend %pages_h6;
+    @extend %pages_p;
+    @extend %pages_a;
+    li {
+      padding-bottom:5px;
+    }
+    img {
+        max-width: 100%;
+        padding: 5px 0 5px 0;
+    }
+    .dri_about_title_top {
+        margin-left: 15px;
+        @extend .dri_object_title_top;
+        background-color: $dri_grey;
+    }
+    .dri_about_column {
+        border-right: 1px solid $dri_thingrey;
+        margin-top: $dri_column_margin_content_top;
+    }
+    .dri_about_col01 {
+        min-height: $dri_pages_min_height;
+        @extend .dri_about_column;
+        @include zen-grid-item(1, 1);
+    }
+    .dri_about_col02 {
+        min-height: $dri_pages_min_height;
+        @extend .dri_about_column;
+        @include zen-grid-item(1, 2);
+    }
+    .dri_about_col01_02 {
+        min-height: $dri_pages_min_height;
+        @extend .dri_about_column;
+        @include zen-grid-item(2, 1);
+    }
+    .dri_about_col03 {
+        @extend .dri_about_column;
+        border-right: 0px;
+        @include zen-grid-item(1, 3);
+    }
+    .dri_about_content {
+        margin: $dri_column_margin_top 20px 0 20px;
+    }
+}
+@media screen and (max-width: 1100px) {
+    .dri_about_lifecycle {
+        $zen-column-count: 2;
+        .dri_about_col01 {
+            min-height: inherit;
+            @include zen-grid-item(1, 1);
+        }
+        .dri_about_col02 {
+            min-height: inherit;
+            border-right: 0px;
+            @include zen-grid-item(1, 2);
+        }
+        .dri_about_col01_02 {
+            min-height: inherit;
+            border-right: 0px;
+            @extend .dri_about_column;
+            @include zen-grid-item(2, 1);
+        }
+        .dri_about_col03 {
+            clear: left;
+            @include zen-grid-item(2, 1);
+            img {
+                float: right;
+                max-width: 50%;
+            }
+        }
+    }
+}
+@media only screen and (max-width: 766px) {
+    .dri_about_lifecycle {
+        $zen-column-count: 1;
+        img {
+            max-height: 500px;
+            display: block;
+            margin: auto;
+        }
+        .dri_about_col01 {
+            min-height: inherit;
+            border-right: 0px;
+            @include zen-grid-item(1, 1);
+        }
+        .dri_about_col02 {
+            min-height: inherit;
+            clear: left;
+            border-right: 0px;
+            @include zen-grid-item(1, 1);
+        }
+        .dri_about_col03 {
+            clear: left;
+            @include zen-grid-item(1, 1);
+            img {
+                float: inherit;
+                max-width: 100%;
+            }
+        }
+    }
+}
+//* Main About Page /pages/about_us.html.erb
+.dri_about {
+    $zen-column-count: 3;
+    $zen-gutter-width: 15px;
+    @extend %pages_h5;
+    @extend %pages_h6;
+    @extend %pages_p;
+    @extend %pages_a;
+    img {
+        max-width: 100%;
+    }
+    .dri_about_banner {
+        @include zen-grid-item(3, 1);
+        img {
+            margin-bottom: 10px;
+        }
+    }
+    .dri_about_text_row {
+        @include zen-clear();
+        .dri_about_repository {
+            @include zen-grid-item(2, 1);
+        }
+        .dri_about_who {
+            @include zen-grid-item(1, 3);
+        }
+    }
+    .dri_about_last_row {
+        @include zen-clear();
+        @include zen-grid-container;
+        padding-top: 15px;
+        .dri_about_lifecycle_container {
+            @include zen-grid-item(2, 1);
+            .dri_about_lifecycle_block {
+                display: block;
+                min-height: 344px;
+                padding: 20px 0 0 0;
+                @extend %thin_border;
+                .dri_about_lifecycle_infographic {
+                    @include zen-grid-item(1.5, 1);
+                    img {
+                        padding-top: 15px;
+                        padding-left: 5px;
+                    }
+                }
+                .dri_about_lifecycle_text {
+                    p, h6 {
+                        margin-left: 10px;
+                        margin-right: 10px;
+                    }
+                    @include zen-grid-item(1.5,
+                    2.5);
+                }
+            }
+        }
+        .dri_about_links_1 {
+            //delete this after positioning images
+            //@extend %thin_border;
+            //
+            @include zen-grid-item(1, 1, right);
+            .dri_about_logo1 {
+                min-height: $dri_about_logos_min_height;
+                background-color: $dri_demo_background;
+                margin-left: 1px;
+            }
+        }
+        .dri_about_links_2 {
+            //delete this after positioning images
+            //@extend %thin_border;
+            //
+            @include zen-clear(right);
+            @include zen-grid-item(1, 1, right);
+            .dri_about_logo2 {
+                min-height: $dri_about_logos_min_height;
+                margin-top: 10px;
+                background-color: $dri_ii_background;
+                margin-left: 1px;
+            }
+        }
+    }
+}
+@media screen and (max-width: 1100px) {
+    .dri_about {
+        $zen-column-count: 2;
+        .dri_about_text_row {
+            @include zen-clear();
+            .dri_about_repository {
+                @include zen-grid-item(2, 1);
+            }
+            .dri_about_who {
+                @include zen-clear(left);
+                @include zen-grid-item(2, 1);
+            }
+        }
+        .dri_about_last_row {
+            @include zen-clear();
+            @include zen-grid-container;
+            padding-top: 15px;
+            .dri_about_lifecycle_container {
+                @include zen-grid-item(2, 1);
+                .dri_about_lifecycle_block {
+                    display: block;
+                    //min-height: 344px;
+                    padding: 20px 0 0 0;
+                    @extend %thin_border;
+                    .dri_about_lifecycle_infographic {
+                        @include zen-grid-item(1, 1);
+                        img {
+                            padding-top: 15px;
+                            padding-left: 5px;
+                        }
+                    }
+                    .dri_about_lifecycle_text {
+                        p, h6 {
+                            margin-left: 10px;
+                            margin-right: 10px;
+                        }
+                        @include zen-grid-item(1,
+                        2)
+                    }
+                }
+            }
+            .dri_about_links_1 {
+                @include zen-clear(left);
+                @include zen-grid-item(1, 1);
+                .dri_about_logo1 {
+                    margin-top: 10px;
+                    img {
+                        max-height: 170px;
+                    }
+                }
+            }
+            .dri_about_links_2 {
+                @include zen-grid-item(1, 2);
+                .dri_about_logo2 {
+                    @include zen-grid-item(2, 1);
+                    img {
+                        max-height: 170px;
+                    }
+                }
+            }
+        }
+    }
+}
+@media only screen and (max-width: 766px) {
+    .dri_about {
+        $zen-column-count: 1;
+        img {
+            max-height: 500px;
+            display: block;
+            margin: auto;
+        }
+        .dri_about_last_row {
+            @include zen-clear();
+            @include zen-grid-container;
+            padding-top: 15px;
+            .dri_about_lifecycle_container {
+                @include zen-grid-item(1, 1);
+                .dri_about_lifecycle_block {
+                    display: block;
+                    padding: 0;
+                    border: 0;
+                    @extend %thin_border;
+                    .dri_about_lifecycle_infographic {
+                        @include zen-grid-item(1, 1);
+                        img {
+                            padding-top: 15px;
+                            padding-left: 5px;
+                        }
+                    }
+                    .dri_about_lifecycle_text {
+                        @include zen-clear();
+                        @include zen-grid-item(1, 1);
+                        float: left;
+                        p, h6 {
+                            margin-left: 10px;
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+            .dri_about_links_1 {
+                @include zen-clear(left);
+                @include zen-grid-item(1, 1);
+                .dri_about_logo1 {
+                    margin-top: 10px;
+                    img {
+                        max-height: 170px;
+                    }
+                }
+            }
+            .dri_about_links_2 {
+                @include zen-clear(left);
+                @include zen-grid-item(1, 1);
+                .dri_about_logo2 {
+                    @include zen-grid-item(1, 1);
+                    img {
+                        max-height: 170px;
+                    }
+                }
+            }
+        }
+    }
+}
