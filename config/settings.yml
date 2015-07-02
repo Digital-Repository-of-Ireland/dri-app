@@ -1,6 +1,7 @@
 interface:
   languages: [en, ga]
 dri:
+  password: CHANGEME
   files: dri_files/data
   uploads: dri_files/uploads
 plugins:
