@@ -1,15 +1,15 @@
 require 'spec_helper'
 require 'ostruct'
 require 'active_support/core_ext/hash/conversions'
-require 'doi/datacite'
 
-describe "DOI::Datacite" do
+describe "DataciteDoi" do
 
   before(:all) do
     DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
 
     @object = DRI::Batch.with_standard :qdc
     @object[:title] = ["An Audio Title"]
+    @object[:creator] = ["A. N. Other"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
     @object[:role_hst] = ["Collins, Michael"]
     @object[:contributor] = ["DeValera, Eamonn", "Connolly, James"]
@@ -30,17 +30,17 @@ describe "DOI::Datacite" do
   end
 
   it "should create a DOI" do
-    datacite = DOI::Datacite.new(@object)
-    datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, @object.id.sub(':', '.')))
+    datacite = DataciteDoi.new(object_id: @object.id)
+    datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
   end
 
   it "should get the publication year" do
-    datacite = DOI::Datacite.new(@object)
+    datacite = DataciteDoi.new(object_id: @object.id)
     datacite.publication_year.should equal(Time.now.year)
   end
 
   it "should create datacite XML" do
-    datacite = DOI::Datacite.new(@object)
+    datacite = DataciteDoi.new(object_id: @object.id)
     xml = datacite.to_xml
 
     doc = Nokogiri::XML(xml)
@@ -53,6 +53,34 @@ describe "DOI::Datacite" do
     hash["resource"]["dates"]["date"][0].should == @object.creation_date.first
     hash["resource"]["dates"]["date"][1].should == @object.published_date.first
     hash["resource"]["rights"].should == @object.rights.first
+  end
+
+  it "should return the latest version" do
+    first = DataciteDoi.create(object_id: @object.id)
+    first_time = first.created_at
+
+    second = DataciteDoi.create(object_id: @object.id)
+    second_time = second.created_at
+
+    expect(DataciteDoi.where(object_id: @object.id).first.created_at.to_s).to eq(second_time.to_s)
+  end
+
+  it "should require update if title changed" do
+    datacite = DataciteDoi.create(object_id: @object.id)
+    fields = { title: ["A modified title"], creator: @object.creator }
+    expect(datacite.update?(fields)).to be true
+  end
+
+  it "should require update if creator changed" do
+    datacite = DataciteDoi.create(object_id: @object.id)
+    fields = { title: @object.title, creator: ["A. Body"] }
+    expect(datacite.update?(fields)).to be true
+  end
+
+  it "should not need an update if no change" do
+    datacite = DataciteDoi.create(object_id: @object.id)
+    fields = { title: @object.title, creator: @object.creator }
+    expect(datacite.update?(fields)).to be false
   end
 
 end
