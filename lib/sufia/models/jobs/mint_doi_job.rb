@@ -9,9 +9,11 @@ class MintDoiJob < ActiveFedoraPidBasedJob
   def run
     Rails.logger.info "Mint DOI for #{pid}"
 
-    doi = DOI::Datacite.new(object)
-    doi.metadata
-    doi.mint
+    doi = DataciteDoi.where(object_id: pid).current
+
+    client = DOI::Datacite.new(doi)
+    client.metadata
+    client.mint
     object.doi = doi.doi
 
     object.save

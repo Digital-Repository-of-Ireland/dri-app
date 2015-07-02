@@ -55,16 +55,6 @@ describe "DataciteDoi" do
     hash["resource"]["rights"].should == @object.rights.first
   end
 
-  it "should return the latest version" do
-    first = DataciteDoi.create(object_id: @object.id)
-    first_time = first.created_at
-
-    second = DataciteDoi.create(object_id: @object.id)
-    second_time = second.created_at
-
-    expect(DataciteDoi.where(object_id: @object.id).first.created_at.to_s).to eq(second_time.to_s)
-  end
-
   it "should require update if title changed" do
     datacite = DataciteDoi.create(object_id: @object.id)
     fields = { title: ["A modified title"], creator: @object.creator }
