@@ -205,7 +205,7 @@ class CollectionsController < CatalogController
 
     if params[:apply_all].present? && params[:apply_all].eql?("yes")
       begin
-        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless (@object.governed_items.nil? || @object.governed_items.empty?)
+        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless @object.governed_items.blank?
       rescue Exception => e
         logger.error "Unable to submit status job: #{e.message}"
         flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)
