@@ -72,5 +72,17 @@ describe "DataciteDoi" do
     fields = { title: @object.title, creator: @object.creator }
     expect(datacite.update?(fields)).to be false
   end
+ 
+  it "should add version numbers to doi" do
+    datacite = DataciteDoi.create(object_id: @object.id)
+    
+    datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
+
+    datacite2 = DataciteDoi.create(object_id: @object.id)
+    datacite2.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-1"))
+
+    datacite3 = DataciteDoi.create(object_id: @object.id)
+    datacite3.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-2"))
+  end
 
 end

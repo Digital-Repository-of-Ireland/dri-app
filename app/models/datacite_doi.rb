@@ -56,6 +56,7 @@ class DataciteDoi < ActiveRecord::Base
 
   def doi
     doi = "DRI.#{self.object_id}"
+    doi = "#{doi}-#{version}" if version > 0
     File.join(DoiConfig.prefix.to_s, doi)
   end
 
@@ -67,6 +68,12 @@ class DataciteDoi < ActiveRecord::Base
 
     def fields_modified?(array_a, array_b)
       !((array_a.size == array_b.size) && (array_a.to_set == array_b.to_set))
+    end
+
+    def version
+      version = DataciteDoi.where(object_id: self.object_id).count
+
+      version <= 1 ? 0 : version - 1
     end
 
 end
