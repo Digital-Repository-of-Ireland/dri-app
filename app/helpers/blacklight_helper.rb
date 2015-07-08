@@ -16,21 +16,6 @@ module BlacklightHelper
     content_tag("div", content.join("\n").html_safe, :class=>"documentFunctions")
   end
 
-  def permissons_renderer args
-    #permission = args[:document][args[:field]]
-    #case permission
-    #when 0
-    #  return "public"
-    #when 1
-    #  return "private"
-    #when -1
-    #  return "inherited"
-    #else
-    #  return "unknown?"
-    #end
-    "huh?"
-  end
-
   def link_to_saved_search(params)
     label = title_to_saved_search(params)
     link_to(raw(label), catalog_index_path(params)).html_safe
@@ -51,8 +36,20 @@ module BlacklightHelper
   def link_back_to_catalog(opts={:label=>nil})
     scope = opts.delete(:route_set) || self
     query_params = current_search_session.try(:query_params) || {}
-    return if query_params.blank?
-    link_url = scope.url_for(query_params)
+
+    if search_session['counter']
+      per_page = (search_session['per_page'] || default_per_page).to_i
+      counter = search_session['counter'].to_i
+
+      query_params[:per_page] = per_page unless search_session['per_page'].to_i == default_per_page
+      query_params[:page] = ((counter - 1)/ per_page) + 1
+    end
+
+    link_url = if query_params.empty?
+      search_action_path(only_path: true)
+    else
+      scope.url_for(query_params)
+    end
     label = opts.delete(:label)
 
     if link_url =~ /bookmarks/
@@ -65,7 +62,7 @@ module BlacklightHelper
 
     link_to label, link_url, opts
   end
-  
+
   ##
   # Determine whether to render a given field in the show view
   #

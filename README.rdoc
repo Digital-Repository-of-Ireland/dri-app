@@ -7,7 +7,7 @@ This is a ruby on rails application, as such to run this application
 the user must be somewhat aware of how ruby on rails applications are
 run and deployed.
 
-There are a number of other depedencies (see below) but at this point you 
+There are a number of other depedencies (see below) but at this point you
 will need to have a functional Rails stack and at least Java version 7. You
 can check your Java version by running 'java -version' anything below 1.7x
 in the output and you should update from https://java.com/en/download/
@@ -52,7 +52,7 @@ The db:seed step above will create 3 initial accounts:
 * manager@dri.ie (collection manager)
 * user@dri.ie (public user)
 
-The password for all 3 accounts is 'J3xG9ABC'
+The password for all 3 accounts is configured in the settings.yml or settings.local.yml files.
 
 To run the unit tests
 
