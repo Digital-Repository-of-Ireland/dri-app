@@ -93,7 +93,6 @@ class CollectionsController < CatalogController
       updated = @object.update_attributes(update_params)
 
       if updated
-        DOI.mint_doi( @object )
         unless cover_image.blank?
           unless Storage::CoverImages.validate(cover_image, @object)
             flash[:error] = t('dri.flash.error.cover_image_not_saved')
@@ -138,8 +137,6 @@ class CollectionsController < CatalogController
     end
 
     if @object.valid? && @object.save
-      DOI.mint_doi( @object )
-
       # We have to create a default reader group
       create_reader_group
 

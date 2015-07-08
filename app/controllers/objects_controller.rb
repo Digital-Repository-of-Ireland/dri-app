@@ -85,9 +85,7 @@ class ObjectsController < CatalogController
         @object.save
 
         warn_if_duplicates
-
         retrieve_linked_data
-        DOI.mint_doi( @object )
 
         actor.version_and_record_committer
 
@@ -140,9 +138,7 @@ class ObjectsController < CatalogController
 
     if @object.valid? && @object.save
       create_reader_group if @object.is_collection?
-
       retrieve_linked_data
-      DOI.mint_doi( @object )
 
       actor.version_and_record_committer
 
@@ -286,7 +282,7 @@ class ObjectsController < CatalogController
   def related
     enforce_permissions!("show_digital_object",params[:object])
 
-    if params.has_key?("count") && !params[:count].blank? && numeric?(params[:count])
+    if params.has_key?("count") && params[:count].present? && numeric?(params[:count])
       count = params[:count]
     else
       count = 3
@@ -377,7 +373,7 @@ class ObjectsController < CatalogController
     # allow to create :documentation and :marc objects (improve merging into marc-nccb branch)
     #
     def create_from_form standard=nil
-      if (!standard.nil?)
+      if standard
         @object = DRI::Batch.with_standard standard
       else
         @object = DRI::Batch.with_standard :qdc

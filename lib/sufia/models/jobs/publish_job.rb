@@ -25,8 +25,6 @@ class PublishJob < ActiveFedoraPidBasedJob
         # If object is a collection and has sub-collections, apply to governed_items
         if o.is_collection?
           Sufia.queue.push(PublishJob.new(o.id)) unless o.governed_items.blank?
-        else
-          DOI.mint_doi( o )
         end
 
       end
@@ -36,8 +34,6 @@ class PublishJob < ActiveFedoraPidBasedJob
       object.status = "published"
       object.published_at = Time.now.utc.iso8601
       object.save
-
-      DOI.mint_doi( object )
     end
 
   end
