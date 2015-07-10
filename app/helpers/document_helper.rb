@@ -48,10 +48,6 @@ module DocumentHelper
     (["DRI::QualifiedDublinCore", "DRI::Documentation"].include? md_class) ? true : false
   end
 
-  def get_active_fedora_model document
-    document['active_fedora_model_ssi'] unless document['active_fedora_model_ssi'].nil?
-  end
-
   # For a given collection (sub-collection) object returns a list of the immediate child sub-collections
   def get_collection_children document, limit
     children_array = []

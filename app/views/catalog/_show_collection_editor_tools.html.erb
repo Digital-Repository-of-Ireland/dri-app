@@ -18,7 +18,7 @@
       </li>
     <% end %>
 	<% if (edit_functionality_available?(@document)) %>
-      <% if get_active_fedora_model(@document) == 'DRI::QualifiedDublinCore' %>
+      <% if @document.active_fedora_model == 'DRI::QualifiedDublinCore' %>
 	    <%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
 	      <li>
 		    <i class="fa fa-plus-square-o fa-lg"></i><%= t('dri.views.catalog.links.add_object') %>

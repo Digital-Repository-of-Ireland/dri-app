@@ -49,6 +49,10 @@ class SolrDocument
     end
   end
 
+  def active_fedora_model
+    self[ActiveFedora::SolrQueryBuilder.solr_name('active_fedora_model', :stored_sortable, type: :string)]
+  end
+
   def read_master?
     master_file_key = ActiveFedora::SolrQueryBuilder.solr_name('master_file_access', :stored_searchable, type: :string)
 
