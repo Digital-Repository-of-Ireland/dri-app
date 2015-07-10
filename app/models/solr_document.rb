@@ -9,13 +9,6 @@ class SolrDocument
 
   # self.unique_key = 'id'
   
-  # The following shows how to setup this blacklight document to display marc documents
-  #extension_parameters[:marc_source_field] = :marc_display
-  #extension_parameters[:marc_format_type] = :marcxml
-  #use_extension( Blacklight::Solr::Document::Marc) do |document|
-  #  document.key?( :marc_display  )
-  #end
-  
   # Email uses the semantic field mappings below to generate the body of an email.
   SolrDocument.use_extension( Blacklight::Solr::Document::Email )
   
@@ -36,9 +29,11 @@ class SolrDocument
                          )
 
   def collection_id
+    collection_key = ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
+
     id = nil
-    if self[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
-      id = self[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)][0]
+    if self[collection_key].present?
+      id = self[collection_key][0]
     end
 
     id
@@ -72,10 +67,35 @@ class SolrDocument
     governing_object[master_file_key] == ["public"]
   end
 
+  def root_collection
+    root_key = ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
+    root = nil
+    if self[root_key].present?
+      id = self[root_key][0]
+      solr_query = "id:#{id}"
+      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
+      root = collection[0]
+    end
+    
+    root
+  end
+
+  def is_root_collection?
+    self.collection_id ? true : false  
+  end
+
   def status
     status_key = ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :string).to_sym
 
-    return self[status_key]
+    return self[status_key].first
+  end
+
+  def published?
+    self.status == "published"
+  end
+
+  def draft?
+    self.status == "draft"
   end
 
 end

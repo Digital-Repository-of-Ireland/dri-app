@@ -1,8 +1,8 @@
 module DOI
 
   def self.mint_doi( doi )
-    unless DoiConfig.nil?
-      if object.status.eql?("published") && object.doi.nil?
+    if DoiConfig
+      if object.status == "published" && object.doi.nil?
         doi = DataciteDoi.create(object_id: object.id) 
 
         begin
@@ -15,8 +15,8 @@ module DOI
   end    
 
   def self.update_doi( object, modified, mod_version )
-    unless DoiConfig.nil?
-      if object.status.eql?("published")
+    if DoiConfig
+      if object.status == "published"
         doi = DataciteDoi.create(object_id: object.id, modified: modified, mod_version: mod_version)
 
         begin
@@ -28,6 +28,5 @@ module DOI
     end
   end
     
-  end
-
 end
+

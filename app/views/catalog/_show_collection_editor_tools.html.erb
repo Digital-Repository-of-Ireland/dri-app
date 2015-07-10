@@ -46,7 +46,7 @@
 		<% end %>
 	  </li>
     <% end %> <!-- if end (non-EAD collections) -->
-	<% if @document[Solrizer.solr_name('status', :stored_searchable, type: :symbol).to_sym].first.eql?("draft") %>
+	<% if @document.draft? %>
 	  <% publish_label = t('dri.views.catalog.links.publish') %>
 	<% else %>
 	  <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
@@ -61,7 +61,7 @@
 		<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
 	  </li>
 	<% end %>
-    <% if governing_collection_solr(@document).nil? %>
+    <% if @document.is_root_collection? %>
 	  <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
         <li>
           <i class="fa fa-share-square-o fa-lg"></i><%= publish_label %>
@@ -70,7 +70,7 @@
     <% end %>
     <!-- If (root collection OR not EAD collection) enable delete collection link -->
     <!-- This is to allow to delete any sub-collection except for EAD -->
-    <% if governing_collection_solr(@document).nil? || edit_functionality_available?(@document) %>
+    <% if @document.is_root_collection? || edit_functionality_available?(@document) %>
       <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal' do %>
         <li>
           <i class="fa fa-trash-o fa-lg"></i><%= t('dri.views.collection.buttons.delete_collection') %>
@@ -94,7 +94,7 @@
 </ul>
 
 
-<% if current_user.is_admin? || ((can? :manage_collection, @document) && @document.status.eql?('draft')) %>
+<% if current_user.is_admin? || ((can? :manage_collection, @document) && @document.draft?) %>
 <div class="modal fade" id="dri_delete_modal_id">
     <div class="modal-dialog">
         <div class="modal-content">
