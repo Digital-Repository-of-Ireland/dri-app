@@ -3,7 +3,16 @@ class InstitutesController < ApplicationController
 
   before_filter :authenticate_user_from_token!, :except => [:index]
   before_filter :authenticate_user!, :except => [:index]
+  before_filter :check_for_cancel, :only => [:create, :update]
 
+  # Was this action canceled by the user?
+  def check_for_cancel
+    if params[:commit] == "Cancel"
+      redirect_to institutions_path
+    end
+  end
+  
+  
   # Get the list of institutes
   def index
     @institutes = Institute.all
@@ -89,6 +98,32 @@ class InstitutesController < ApplicationController
     raise Exceptions::NotFound unless institute
 
     collection.institute = collection.institute.push(institute.name)
+
+    raise Exceptions::InternalError unless collection.save
+
+    @object = collection
+    @institutes = Institutes.all
+    @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
+    @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
+
+    respond_to do |format|
+      format.js
+    end
+
+  end
+  
+    # Dis-associate institute
+  def disassociate
+    # remove the institute name from the properties datastream
+    collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
+    raise Exceptions::NotFound unless collection
+
+    institute = Institute.where(:name => params[:institute_name]).first
+    raise Exceptions::NotFound unless institute
+    a = collection.institute
+    a.delete(institute.name)
+    collection.institute = a 
+
 
     raise Exceptions::InternalError unless collection.save
 
