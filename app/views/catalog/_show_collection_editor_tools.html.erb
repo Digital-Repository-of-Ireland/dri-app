@@ -17,7 +17,7 @@
         <i class="fa fa-file-text-o fa-lg"></i></i><%= t('dri.views.catalog.links.add_documentation') %>
       </li>
     <% end %>
-	<% if (edit_functionality_available?(@document)) %>
+	<% if @document.editable? %>
       <% if @document.active_fedora_model == 'DRI::QualifiedDublinCore' %>
 	    <%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
 	      <li>
@@ -70,7 +70,7 @@
     <% end %>
     <!-- If (root collection OR not EAD collection) enable delete collection link -->
     <!-- This is to allow to delete any sub-collection except for EAD -->
-    <% if @document.is_root_collection? || edit_functionality_available?(@document) %>
+    <% if @document.is_root_collection? || @document.editable? %>
       <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal' do %>
         <li>
           <i class="fa fa-trash-o fa-lg"></i><%= t('dri.views.collection.buttons.delete_collection') %>

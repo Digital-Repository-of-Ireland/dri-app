@@ -37,11 +37,6 @@ module DocumentHelper
     end
   end
 
-  # Check, based on the document type (Fedora active_fedora_model), whether edit functions are available
-  def edit_functionality_available? document
-    (!document['active_fedora_model_ssi'].nil? && document['active_fedora_model_ssi'] == 'DRI::EncodedArchivalDescription') ? false : true
-  end
-
   # Workaround for reusing partials for add institution/permissions to non QDC collections
   #
   def update_desc_metadata? md_class
@@ -149,8 +144,8 @@ module DocumentHelper
   def get_object_external_relationships document
     url_array = []
 
-    if document['active_fedora_model_ssi']
-      case document['active_fedora_model_ssi']
+    if document.active_fedora_model
+      case document.active_fedora_model
         when 'DRI::Mods'
           solr_fields_array = *(DRI::Vocabulary::modsRelationshipTypes.map { |s| s.prepend("ext_related_items_ids_").to_sym})
         when 'DRI::QualifiedDublinCore'

@@ -3,24 +3,18 @@
 #
 class SolrDocument 
  
-  include Blacklight::Solr::Document
+  include Blacklight::Document
   include UserGroup::PermissionsSolrDocOverride
   include FileDocument
 
   # self.unique_key = 'id'
   
-  # Email uses the semantic field mappings below to generate the body of an email.
-  SolrDocument.use_extension( Blacklight::Solr::Document::Email )
-  
-  # SMS uses the semantic field mappings below to generate the body of an SMS email.
-  SolrDocument.use_extension( Blacklight::Solr::Document::Sms )
-
   # DublinCore uses the semantic field mappings below to assemble an OAI-compliant Dublin Core document
   # Semantic mappings of solr stored fields. Fields may be multi or
   # single valued. See Blacklight::Solr::Document::ExtendableClassMethods#field_semantics
   # and Blacklight::Solr::Document#to_semantic_values
   # Recommendation: Use field names from Dublin Core
-  use_extension( Blacklight::Solr::Document::DublinCore)    
+  use_extension( Blacklight::Document::DublinCore)    
   field_semantics.merge!(    
                          :title => "title_display",
                          :author => "author_display",
@@ -28,47 +22,30 @@ class SolrDocument
                          :format => "format"
                          )
 
-  def collection_id
-    collection_key = ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
-
-    id = nil
-    if self[collection_key].present?
-      id = self[collection_key][0]
-    end
-
-    id
-  end  
-
-  def has_geocode?
-    geojson_key = ActiveFedora::SolrQueryBuilder.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
-
-    if self[geojson_key].present?
-      true
-    else
-      false
-    end
-  end
-
   def active_fedora_model
     self[ActiveFedora::SolrQueryBuilder.solr_name('active_fedora_model', :stored_sortable, type: :string)]
   end
 
-  def read_master?
-    master_file_key = ActiveFedora::SolrQueryBuilder.solr_name('master_file_access', :stored_searchable, type: :string)
+  def collection_id
+    collection_key = ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
 
-    governing_object = self
+    self[collection_key].present? ? self[collection_key][0] : nil
+  end  
 
-    while governing_object[master_file_key].nil? || governing_object[master_file_key] == "inherit"
-      parent_id = governing_object[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
-      return false if parent_id.nil?
-      
-      parent_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([parent_id.first])
-    
-      parent = ActiveFedora::SolrService.query(parent_query)
-      governing_object = SolrDocument.new(parent.first)      
-    end
+  def editable?
+    (self.active_fedora_model && self.active_fedora_model == 'DRI::EncodedArchivalDescription') ? false : true
+  end
 
-    governing_object[master_file_key] == ["public"]
+  def has_doi?
+    doi_key = ActiveFedora::SolrQueryBuilder.solr_name('doi', :displayable, type: :symbol).to_sym
+
+    self[doi_key].present? ? true : false
+  end
+
+  def has_geocode?
+    geojson_key = ActiveFedora::SolrQueryBuilder.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
+
+    self[geojson_key].present? ? true : false
   end
 
   def root_collection
