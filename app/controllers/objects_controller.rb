@@ -147,7 +147,7 @@ class ObjectsController < CatalogController
         redirect_to :controller => "catalog", :action => "show", :id => @object.id
         }
         format.json {
-          if  !@warnings.nil?
+          if @warnings
             response = { :pid => @object.id, :warning => @warnings }
           else
             response = { :pid => @object.id }

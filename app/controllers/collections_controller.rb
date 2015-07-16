@@ -8,7 +8,6 @@ require 'doi/doi'
 
 class CollectionsController < CatalogController
 
-  #include UserGroup::SolrAccessControls
   include Hydra::AccessControlsEnforcement
 
   before_filter :authenticate_user_from_token!
@@ -87,22 +86,18 @@ class CollectionsController < CatalogController
 
     supported_licences()
 
-    if !valid_permissions?
-      flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
-    else
+    if valid_permissions?
       updated = @object.update_attributes(update_params)
 
       if updated
-        unless cover_image.blank?
-          unless Storage::CoverImages.validate(cover_image, @object)
-            flash[:error] = t('dri.flash.error.cover_image_not_saved')
-          end
+        if cover_image.present?
+          flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
         end
       else
         flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
       end
-
-      #Apply private_metadata & properties to each DO/Subcollection within this collection
+    else
+      flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
     end
 
     #purge params from update action
@@ -113,7 +108,7 @@ class CollectionsController < CatalogController
     params.delete(:action)
 
     respond_to do |format|
-      if (updated)
+      if updated
         flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       else
@@ -214,7 +209,7 @@ class CollectionsController < CatalogController
       flash[:notice] = t('dri.flash.notice.metadata_updated')
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       format.json {
-        unless @warnings.nil?
+        if @warnings
           response = { :warning => @warnings, :id => @object.id, :status => @object.status }
         else
           response = { :id => @object.id, :status => @object.status }
@@ -241,7 +236,7 @@ class CollectionsController < CatalogController
     respond_to do |format|
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       format.json {
-          unless @warnings.nil?
+          if @warnings
             response = { :warning => @warnings, :id => @object.id, :status => @object.status }
           else
             response = { :id => @object.id, :status => @object.status }
@@ -283,10 +278,8 @@ class CollectionsController < CatalogController
 
     # We need to save to get a pid at this point
     if @object.save
-      unless cover_image.blank?
-        unless Storage::CoverImages.validate(cover_image, @object)
-          flash[:error] = t('dri.flash.error.cover_image_not_saved')
-        end
+      if cover_image.present?        
+        flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
       end
     end
 
@@ -349,13 +342,11 @@ class CollectionsController < CatalogController
   end
 
   def valid_permissions?
-    if (
-        #(params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
-    (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
+    if ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
         (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
-      return false
+      false
     else
-      return true
+      true
     end
   end
 
