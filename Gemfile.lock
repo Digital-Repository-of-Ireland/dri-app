@@ -22,10 +22,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: faa7d53b9ab63c6fe4e889e2c07cd89db3fa7f75
+  revision: 6fffb7424814eb06b65787bc45cdf0c382098fa3
   branch: develop
   specs:
-    user_group (1.1.1)
+    user_group (1.1.2)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views

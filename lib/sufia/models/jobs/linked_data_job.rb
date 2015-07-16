@@ -17,7 +17,7 @@ class LinkedDataJob < ActiveFedoraPidBasedJob
 
     uris.each do |uri|
       host = URI(uri).host
-      if AuthoritiesConfig[host].present?
+      if AuthoritiesConfig && AuthoritiesConfig[host].present?
         provider = "DRI::Sparql::Provider::#{AuthoritiesConfig[host]['provider']}".constantize.new
         provider.endpoint = AuthoritiesConfig[host]['endpoint']
         provider.retrieve_data(uri)
