@@ -1,4 +1,3 @@
-require 'doi/doi'
 require 'utils'
 
 class DeleteCollectionJob < ActiveFedoraPidBasedJob

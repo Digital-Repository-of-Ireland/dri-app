@@ -2,7 +2,6 @@
 #
 require 'metadata_helpers'
 require 'institute_helpers'
-require 'doi/doi'
 require 'solr/query'
 
 include Utils

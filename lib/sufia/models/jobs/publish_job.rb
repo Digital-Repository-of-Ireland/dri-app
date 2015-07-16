@@ -1,5 +1,3 @@
-require 'doi/doi'
-
 class PublishJob < ActiveFedoraIdBasedJob
 
   def queue_name

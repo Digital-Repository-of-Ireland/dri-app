@@ -4,7 +4,6 @@ require 'storage/cover_images'
 require 'validators'
 require 'institute_helpers'
 require 'metadata_helpers'
-require 'doi/doi'
 
 class CollectionsController < CatalogController
 
