@@ -48,7 +48,6 @@ class InstitutesController < ApplicationController
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
-    @institutes = Institute.all
 
     if params[:object]
       @object = ActiveFedora::Base.find(params[:object], {:cast => true})
@@ -101,13 +100,12 @@ class InstitutesController < ApplicationController
 
     raise Exceptions::InternalError unless collection.save
 
-    @object = collection
-    @institutes = Institutes.all
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
     @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
+   
 
     respond_to do |format|
-      format.js
+      format.html  { redirect_to :controller => "catalog", :action => "show", :id => collection.id }
     end
 
   end
@@ -127,12 +125,11 @@ class InstitutesController < ApplicationController
 
     raise Exceptions::InternalError unless collection.save
 
-    @object = collection
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
     @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
 
     respond_to do |format|
-      format.js
+      format.html { redirect_to :controller => "catalog", :action => "show", :id => collection.id }
     end
 
   end
@@ -150,12 +147,11 @@ class InstitutesController < ApplicationController
 
     raise Exceptions::InternalError unless collection.save
 
-    @object = collection
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
     @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
 
     respond_to do |format|
-      format.js
+      format.html { redirect_to :controller => "catalog", :action => "show", :id => collection.id }
     end
 
   end

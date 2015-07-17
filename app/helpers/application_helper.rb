@@ -208,9 +208,29 @@ module ApplicationHelper
       @coll_counts = count_collections_institute(institute)
   end
 
+  def get_institutes()
+      return Institute.all
+  end
+
   def get_institutes( document )
-    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(document)
-    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc(document)
+    @institutes = InstituteHelpers.get_all_institutes()
+    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc( document )
+    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
+    institutes = []
+    collection_institutes = [] 
+    institutes_to_add = []
+    depositing_institute = []
+    depositing_institute.push( @depositing_institute.name )
+    @institutes.each do |inst|
+      institutes.push( inst.name )
+    end
+    if @collection_institutes 
+      @collection_institutes.each do |inst|
+        collection_institutes.push( inst.name )
+      end
+    end  
+    @available_institutes = institutes - collection_institutes - depositing_institute
+    @removal_institutes = collection_institutes - depositing_institute
   end
 
   # Called from grid view
