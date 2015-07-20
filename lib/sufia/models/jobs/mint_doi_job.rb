@@ -9,11 +9,7 @@ class MintDoiJob < ActiveFedoraIdBasedJob
   def run
     Rails.logger.info "Mint DOI for #{id}"
     
-    if object.descMetadata.has_versions?
-      doi = DataciteDoi.create(object_id: id, mod_version: object.descMetadata.versions.last.uri)
-    else
-      doi = DataciteDoi.create(object_id: id)
-    end
+    doi = DataciteDoi.where(object_id: id).current
 
     client = DOI::Datacite.new(doi)
     client.metadata

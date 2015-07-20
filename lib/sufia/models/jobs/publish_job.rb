@@ -24,7 +24,7 @@ class PublishJob < ActiveFedoraIdBasedJob
             o.published_at = Time.now.utc.iso8601
             o.save
 
-            mint_doi(o.id)
+            mint_doi(o)
           end
         
         end
@@ -37,12 +37,18 @@ class PublishJob < ActiveFedoraIdBasedJob
       object.published_at = Time.now.utc.iso8601
       object.save
 
-      mint_doi(object.id)
+      mint_doi(object)
     end
 
   end
 
-  def mint_doi(id)
+  def mint_doi(object)
+    doi = if object.descMetadata.has_versions?
+      DataciteDoi.create(object_id: object.id, mod_version: object.descMetadata.versions.last.uri)
+    else
+      DataciteDoi.create(object_id: object.id)
+    end
+
     begin
       Sufia.queue.push(MintDoiJob.new(id))
     rescue Exception => e

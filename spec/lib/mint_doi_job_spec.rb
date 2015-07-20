@@ -50,6 +50,8 @@ describe "MintDoiJob" do
       DOI::Datacite.any_instance.stub(:mint)
       DOI::Datacite.any_instance.stub(:metadata)
       
+      DataciteDoi.create(object_id: @object.id)
+      
       job = MintDoiJob.new(@object.id)
       job.run
 

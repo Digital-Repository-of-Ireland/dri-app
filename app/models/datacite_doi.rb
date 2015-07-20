@@ -1,5 +1,5 @@
 class DataciteDoi < ActiveRecord::Base
-  scope :current, order("created_at DESC").first
+  scope :current, -> { order("created_at DESC").first }
 
   def object
     object ||= ActiveFedora::Base.find(self.object_id, cast: true)
@@ -67,6 +67,12 @@ class DataciteDoi < ActiveRecord::Base
   private
 
     def fields_modified?(array_a, array_b)
+      if (array_a.nil? && array_b.nil?)
+        return false
+      elsif ((array_a.nil? && array_b) || (array_a && array_b.nil?))
+        return true
+      end
+        
       !((array_a.size == array_b.size) && (array_a.to_set == array_b.to_set))
     end
 

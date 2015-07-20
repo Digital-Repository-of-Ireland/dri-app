@@ -66,6 +66,38 @@ describe ObjectsController do
       expect(@object.status).to eql("reviewed")
     end
 
+    it 'should mint a doi for an update of mandatory fields' do
+      @object.status = "published"
+      @object.save
+      DataciteDoi.create(object_id: @object.id)
+
+      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
+      params = {}
+      params[:batch] = {}
+      params[:batch][:title] = ["A modified title"]
+      params[:batch][:read_users_string] = "public"
+      params[:batch][:edit_users_string] = @login_user.email
+      put :update, :id => @object.id, :batch => params[:batch]
+
+      DataciteDoi.where(object_id: @object.id).first.delete
+    end
+
+    it 'should not mint a doi for no update of mandatory fields' do
+      @object.status = "published"
+      @object.save
+      DataciteDoi.create(object_id: @object.id)
+
+      Sufia.queue.should_not_receive(:push).with(an_instance_of(MintDoiJob)).once
+      params = {}
+      params[:batch] = {}
+      params[:batch][:title] = ["An Audio Title"]
+      params[:batch][:read_users_string] = "public"
+      params[:batch][:edit_users_string] = @login_user.email
+      put :update, :id => @object.id, :batch => params[:batch]
+
+      DataciteDoi.where(object_id: @object.id).first.delete
+    end
+
   end
 
 end

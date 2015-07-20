@@ -17,6 +17,20 @@ module DRI::Object
       end
     end
 
+    def mint_doi(modified)
+      doi = DataciteDoi.where(object_id: @object.id).current
+      
+      if (@object.status == "published" && (doi.is_a?(DataciteDoi)))
+        if @object.descMetadata.has_versions?
+          DataciteDoi.create(object_id: @object.id, modified: modified, mod_version: @object.descMetadata.versions.last.uri)
+        else
+          DataciteDoi.create(object_id: @object.id, modified: modified)
+        end
+
+        Sufia.queue.push(MintDoiJob.new(@object.id))
+      end
+    end
+
     def version_and_record_committer
       #TODO Investigate reverting back to full object versioning
       #@object.create_version

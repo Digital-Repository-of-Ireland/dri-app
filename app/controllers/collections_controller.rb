@@ -85,6 +85,13 @@ class CollectionsController < CatalogController
 
     supported_licences()
 
+    doi = DataciteDoi.where(object_id: params[:id]).current
+    update_doi = if doi.is_a?(DataciteDoi)
+      doi.update?(params[:batch])
+    else
+      false
+    end
+
     if valid_permissions?
       updated = @object.update_attributes(update_params)
 
@@ -108,6 +115,10 @@ class CollectionsController < CatalogController
 
     respond_to do |format|
       if updated
+
+        actor.version_and_record_committer
+        actor.mint_doi("metadata update") if update_doi
+
         flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       else
@@ -119,12 +130,8 @@ class CollectionsController < CatalogController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    if params[:metadata_file].present?
-      created = create_from_xml
-    else
-      created = create_from_form
-    end
-
+    created = params[:metadata_file].present? ? create_from_xml : create_from_form
+     
     unless created
       respond_with_exception(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata_input')))
       return
@@ -133,6 +140,8 @@ class CollectionsController < CatalogController
     if @object.valid? && @object.save
       # We have to create a default reader group
       create_reader_group
+
+      actor.version_and_record_committer
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
@@ -164,7 +173,7 @@ class CollectionsController < CatalogController
 
     @object = retrieve_object!(params[:id])
 
-    if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status.eql?('draft'))
+    if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status == "draft")
       begin
         delete_collection
         flash[:notice] = t('dri.flash.notice.collection_deleted')
