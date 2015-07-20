@@ -76,7 +76,7 @@ module InstituteHelpers
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1", :fl => "id,#{ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)}")
     end
 
-    return nil if collection[0][ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)].blank?
+    return [] if collection[0][ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)].blank?
     allinstitutes.each do |inst|
       if collection[0][ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)].include?(inst.name)
         myinstitutes.push(inst)
@@ -91,7 +91,7 @@ module InstituteHelpers
       id = doc[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string)][0]
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1", :fl => "id,#{ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)}")
-      return nil if collection[0][ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)].blank?
+      return [] if collection[0][ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)].blank?
     else
       # Institute info present in the document
       collection = [doc]

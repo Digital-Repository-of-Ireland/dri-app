@@ -217,18 +217,18 @@ module ApplicationHelper
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc( document )
     @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
     institutes = []
-    collection_institutes = [] 
+    collection_institutes = []
     institutes_to_add = []
     depositing_institute = []
-    depositing_institute.push( @depositing_institute.name )
+    depositing_institute.push( @depositing_institute.name ) unless @depositing_institute.blank?
     @institutes.each do |inst|
       institutes.push( inst.name )
     end
-    if @collection_institutes 
+    if @collection_institutes.any?
       @collection_institutes.each do |inst|
         collection_institutes.push( inst.name )
       end
-    end  
+    end
     @available_institutes = institutes - collection_institutes - depositing_institute
     @removal_institutes = collection_institutes - depositing_institute
   end
@@ -245,7 +245,7 @@ module ApplicationHelper
         if !@cover_image.nil? then
           break
         end
-      end    
+      end
     end
 
     @cover_image = default_image ( file_doc ) if @cover_image.nil?
@@ -285,7 +285,7 @@ module ApplicationHelper
   def has_browse_params?
     return has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
   end
-  
+
   def is_root?
     return request.env['PATH_INFO'] == '/' && request.query_string.blank?
   end
@@ -336,8 +336,8 @@ module ApplicationHelper
         end
       end
     end
-  end 
- 
+  end
+
   def get_reader_group(doc)
     readgroups = doc["#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
     group = reader_group(doc)

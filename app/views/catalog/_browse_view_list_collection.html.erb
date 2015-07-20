@@ -18,7 +18,7 @@
       </p>
       <p class="dri_publishing_institute">
 	    <% @depositing_institute = get_institutes( document ) %>
-		<% if @depositing_institute %>
+		<% if @depositing_institute.present? %>
 		    <%= @depositing_institute.name %>
 		<% else %>
 			N/A
