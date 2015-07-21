@@ -96,9 +96,13 @@ class InstitutesController < ApplicationController
     institute = Institute.where(:name => params[:institute_name]).first
     raise Exceptions::NotFound unless institute
 
-    collection.institute = collection.institute.push(institute.name)
+    collection.institute = collection.institute.push( institute.name )
 
-    raise Exceptions::InternalError unless collection.save
+    if collection.save
+      flash[:notice] = institute.name + " " +  t('dri.flash.notice.organisation_added')
+    else
+      raise Exceptions::InternalError
+    end 
 
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
     @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
@@ -122,8 +126,11 @@ class InstitutesController < ApplicationController
     a.delete(institute.name)
     collection.institute = a 
 
-
-    raise Exceptions::InternalError unless collection.save
+    if collection.save
+      flash[:notice] = institute.name + " " + t('dri.flash.notice.organisation_removed')
+    else
+      raise Exceptions::InternalError
+    end
 
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
     @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
@@ -145,7 +152,11 @@ class InstitutesController < ApplicationController
 
     collection.depositing_institute = institute.name
 
-    raise Exceptions::InternalError unless collection.save
+    if collection.save
+      flash[:notice] = institute.name + " " + t('dri.flash.notice.organisation_depositor')
+    else
+      raise Exceptions::InternalError
+    end
 
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
     @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
