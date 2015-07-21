@@ -69,6 +69,13 @@ class ObjectsController < CatalogController
       @object.governing_collection = collection
     end
 
+    doi = DataciteDoi.where(object_id: params[:id]).current
+    update_doi = if doi.is_a?(DataciteDoi)
+      doi.update?(params[:batch])
+    else
+      false
+    end
+
     updated = @object.update_attributes(update_params)
 
     #purge params from update action
@@ -87,6 +94,7 @@ class ObjectsController < CatalogController
         retrieve_linked_data
 
         actor.version_and_record_committer
+        actor.mint_doi("metadata update") if update_doi
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
