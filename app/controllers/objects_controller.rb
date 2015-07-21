@@ -1,19 +1,10 @@
 # Controller for Digital Objects
 #
-require 'metadata_helpers'
-require 'institute_helpers'
 require 'solr/query'
 
 include Utils
 
-class ObjectsController < CatalogController
-
-  before_filter :authenticate_user_from_token!, except: [:citation]
-  before_filter :authenticate_user!, except: [:citation]
-
-  def actor
-    @actor ||= DRI::Object::Actor.new(@object, current_user)
-  end
+class ObjectsController < BaseObjectsController
 
   # Displays the New Object form
   #
@@ -58,6 +49,7 @@ class ObjectsController < CatalogController
   def update
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
+    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
 
     update_object_permission_check(params[:batch][:manager_groups_string], params[:batch][:manager_users_string], params[:id])
     supported_licences()
@@ -69,21 +61,12 @@ class ObjectsController < CatalogController
       @object.governing_collection = collection
     end
 
-    doi = DataciteDoi.where(object_id: params[:id]).current
-    update_doi = if doi.is_a?(DataciteDoi)
-      doi.update?(params[:batch])
-    else
-      false
-    end
+    update_doi = doi_update_required?
 
     updated = @object.update_attributes(update_params)
 
     #purge params from update action
-    params.delete(:batch)
-    params.delete(:_method)
-    params.delete(:authenticity_token)
-    params.delete(:commit)
-    params.delete(:action)
+    purge_params
 
     respond_to do |format|
       if updated
@@ -139,11 +122,12 @@ class ObjectsController < CatalogController
     end
 
     MetadataHelpers.checksum_metadata(@object)
-    warn_if_duplicates
-
+    
     supported_licences()
 
     if @object.valid? && @object.save
+      warn_if_duplicates
+
       create_reader_group if @object.is_collection?
       retrieve_linked_data
 
@@ -356,14 +340,6 @@ class ObjectsController < CatalogController
   end
 
   private
-
-    def create_params
-      params.require(:batch).permit!
-    end
-
-    def update_params
-      params.require(:batch).permit!
-    end
 
     def create_from_upload
       xml = MetadataHelpers.load_xml(params[:metadata_file])

@@ -2,19 +2,8 @@
 #
 require 'storage/cover_images'
 require 'validators'
-require 'institute_helpers'
-require 'metadata_helpers'
 
-class CollectionsController < CatalogController
-
-  include Hydra::AccessControlsEnforcement
-
-  before_filter :authenticate_user_from_token!
-  before_filter :authenticate_user!
-
-  def actor
-    @actor ||= DRI::Object::Actor.new(@object, current_user)
-  end
+class CollectionsController < BaseObjectsController
 
   # Creates a new model.
   #
@@ -85,12 +74,7 @@ class CollectionsController < CatalogController
 
     supported_licences()
 
-    doi = DataciteDoi.where(object_id: params[:id]).current
-    update_doi = if doi.is_a?(DataciteDoi)
-      doi.update?(params[:batch])
-    else
-      false
-    end
+    update_doi = doi_update_required?
 
     if valid_permissions?
       updated = @object.update_attributes(update_params)
@@ -107,11 +91,7 @@ class CollectionsController < CatalogController
     end
 
     #purge params from update action
-    params.delete(:batch)
-    params.delete(:_method)
-    params.delete(:authenticity_token)
-    params.delete(:commit)
-    params.delete(:action)
+    purge_params
 
     respond_to do |format|
       if updated
@@ -258,10 +238,6 @@ class CollectionsController < CatalogController
   # Create a collection with the web form
   #
   def create_from_form
-    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
-    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
-    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
-
     enforce_permissions!("create", DRI::Batch)
 
     @object = DRI::Batch.with_standard :qdc
@@ -340,14 +316,6 @@ class CollectionsController < CatalogController
   end
 
   private
-
-  def create_params
-    params.require(:batch).permit!
-  end
-
-  def update_params
-    params.require(:batch).permit!
-  end
 
   def valid_permissions?
     if ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
