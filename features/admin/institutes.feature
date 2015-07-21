@@ -20,7 +20,7 @@ Feature:
     And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"
     And I follow the link to edit a collection
-    Then the "institute" drop-down should contain the option "TestInstitute"
+    Then the "add institute" drop-down should contain the option "TestInstitute"
 
   Scenario: Associating an institute with a collection
     Given I am on the new organisation page
@@ -31,11 +31,10 @@ Feature:
     When I perform a search
     And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"
-    And I follow the link to edit a collection
-    Then the "institute" drop-down should contain the option "TestInstitute"
-    When I select "TestInstitute" from the selectbox for institute
+    And I follow the link to manage organisations
+    Then the "add institute" drop-down should contain the option "TestInstitute"
+    When I select "TestInstitute" from the selectbox for add institute
     And I press the button to "associate an institute"
-    And I wait for the ajax request to finish
     Then I should see the image "TestInstitute.png"
 
   Scenario: Viewing associated institutes for a collection
