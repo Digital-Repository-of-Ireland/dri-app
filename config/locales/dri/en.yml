@@ -424,6 +424,7 @@ en:
         date: Date
         dates: Dates
         depositing_institute: "Depositing Organisation"
+        depositing_institute_not_set: "Depositing Organisation not Set"
         description: Description
         description_eng: "Description (English)"
         description_gle: "Description (Irish)"
