@@ -20,7 +20,7 @@
           <!-- close image -->
           <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
           <p class="dri_publishing_institute">
-            <% @depositing_institute = get_institutes( document ) %>
+            <% get_depositing_institute ( document ) %>
             <% if @depositing_institute.present? %>
                 <%= @depositing_institute.name %>
             <% else %>

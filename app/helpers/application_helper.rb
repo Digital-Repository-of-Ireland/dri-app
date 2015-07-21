@@ -212,26 +212,37 @@ module ApplicationHelper
       return Institute.all
   end
 
-  def get_institutes( document )
+  # method to find the Institutes associated with and available to add to or remove from the current collection (document) 
+  def get_available_institutes( document )
+    # the full list of Institutes
     @institutes = InstituteHelpers.get_all_institutes()
+    # the Institutes currently associated with this collection if any
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc( document )
+    # the Depositing Institute if any
     @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
-    institutes = []
-    collection_institutes = []
-    institutes_to_add = []
-    depositing_institute = []
-    depositing_institute.push( @depositing_institute.name ) unless @depositing_institute.blank?
+    institutes_array = []
+    collection_institutes_array = []
+    depositing_institute_array = []
+    depositing_institute_array.push( @depositing_institute.name ) unless @depositing_institute.blank?
     @institutes.each do |inst|
-      institutes.push( inst.name )
+      institutes_array.push( inst.name )
     end
     if @collection_institutes.any?
       @collection_institutes.each do |inst|
-        collection_institutes.push( inst.name )
+        collection_institutes_array.push( inst.name )
       end
     end
-    @available_institutes = institutes - collection_institutes - depositing_institute
-    @removal_institutes = collection_institutes - depositing_institute
+    # exclude the associated and depositing Institutes from the list of Institutes available
+    @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array
+    # exclude the depositing Institute from the list of Institutes which can be removed
+    @removal_institutes = collection_institutes_array - depositing_institute_array
   end
+  
+  # method to find the depositing Institute (if any) associated with the current collection (document) 
+  def get_depositing_institute ( document )
+    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
+  end
+
 
   # Called from grid view
   def get_cover_image( document )
