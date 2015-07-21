@@ -373,8 +373,10 @@ en:
           are_you_sure: "Are you sure you need a new Organisation?"
           see_orgs: "Check existing Orgaisations"
           add: "Add a new Organisation"
-          associate: "Associate Organisation"
+          associate: "Add Organisation"
+          manage: "Manage Organisations"
           associate_depositing: "Select Depositing Organisation"
+          remove: "Remove Organisation"
           edit: "Update Organisation"
           form:
             logo: Logo

@@ -3,7 +3,16 @@ class InstitutesController < ApplicationController
 
   before_filter :authenticate_user_from_token!, :except => [:index]
   before_filter :authenticate_user!, :except => [:index]
+  before_filter :check_for_cancel, :only => [:create, :update]
 
+  # Was this action canceled by the user?
+  def check_for_cancel
+    if params[:commit] == "Cancel"
+      redirect_to institutions_path
+    end
+  end
+  
+  
   # Get the list of institutes
   def index
     @institutes = Institute.all
@@ -39,7 +48,6 @@ class InstitutesController < ApplicationController
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
-    @institutes = Institute.all
 
     if params[:object]
       @object = ActiveFedora::Base.find(params[:object], {:cast => true})
@@ -92,12 +100,36 @@ class InstitutesController < ApplicationController
 
     raise Exceptions::InternalError unless collection.save
 
-    @object = collection
+    @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
+    @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
+   
+
+    respond_to do |format|
+      format.html  { redirect_to :controller => "catalog", :action => "show", :id => collection.id }
+    end
+
+  end
+  
+    # Dis-associate institute
+  def disassociate
+    # remove the institute name from the properties datastream
+    collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
+    raise Exceptions::NotFound unless collection
+
+    institute = Institute.where(:name => params[:institute_name]).first
+    raise Exceptions::NotFound unless institute
+    a = collection.institute
+    a.delete(institute.name)
+    collection.institute = a 
+
+
+    raise Exceptions::InternalError unless collection.save
+
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
     @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
 
     respond_to do |format|
-      format.js
+      format.html { redirect_to :controller => "catalog", :action => "show", :id => collection.id }
     end
 
   end
@@ -115,12 +147,11 @@ class InstitutesController < ApplicationController
 
     raise Exceptions::InternalError unless collection.save
 
-    @object = collection
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
     @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
 
     respond_to do |format|
-      format.js
+      format.html { redirect_to :controller => "catalog", :action => "show", :id => collection.id }
     end
 
   end

@@ -1,11 +1,12 @@
+
 <script>
-    $(document).ready(function() {
-        $('#dri_metadata_uploader').change(function() {
-            if ($(this).val()) {
-                $('#dri_upload_metadata_file').attr('style', 'display: inherit;');
-            }
-        });
-    });
+	$(document).ready(function() {
+		$('#dri_metadata_uploader').change(function() {
+			if ($(this).val()) {
+				$('#dri_upload_metadata_file').attr('style', 'display: inherit;');
+			}
+		});
+	}); 
 </script>
 <div class="dri_objecttools_title">
 	<i class="fa fa-pencil fa-lg"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
@@ -37,27 +38,27 @@
 	  <% end %>
 	  <li>
 		<%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
-		  <div class="dri_fileUpload">
+		<div class="dri_fileUpload">
 			<span><i class="fa fa-code fa-lg"></i><%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %> </span>
 			<%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
-		  </div>
-		  <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-		  <%= hidden_field_tag 'datastream', "content" %>
+		</div>
+		<%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+		<%= hidden_field_tag 'datastream', "content" %>
 		<% end %>
 	  </li>
     <% end %> <!-- if end (non-EAD collections) -->
 	<% if @document.draft? %>
 	  <% publish_label = t('dri.views.catalog.links.publish') %>
 	<% else %>
-	  <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
+	<% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
 	<% end %>
 	<%= link_to '', :'data-target' => '#dri_review_modal_id', :'data-toggle' => 'modal', :id => "all_objects_reviewed" do %>
-	  <li>
+	<li>
 		<i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_all_reviewed') %>
-	  </li>
+	</li>
 	<% end %>
 	<%= link_to  surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
-	  <li>
+	<li>
 		<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
 	  </li>
 	<% end %>
@@ -96,31 +97,32 @@
 
 <% if current_user.is_admin? || ((can? :manage_collection, @document) && @document.draft?) %>
 <div class="modal fade" id="dri_delete_modal_id">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title"><%= t('dri.views.collection.buttons.delete_collection') %></h4>
-            </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title"><%= t('dri.views.collection.buttons.delete_collection') %></h4>
+			</div>
 
-            <div class="modal-body">
-                <span class="label label-danger"><%= t('dri.views.collection.confirm_delete') %></span><br />
-            <%= form_tag (collection_path(@document.id)), :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
-            <%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_button_red", :id => "delete_collection_#{@document.id}", :data => { :confirm => t('dri.views.collection.confirm_delete') } %>
-            <% end %>
-            
-            </div>
-            
-            <div class="modal-footer">
+			<div class="modal-body">
+				<span class="label label-danger"><%= t('dri.views.collection.confirm_delete') %></span>
+				<br />
+				<%= form_tag (collection_path(@document.id)), :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+				<%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_button_red", :id => "delete_collection_#{@document.id}", :data => { :confirm => t('dri.views.collection.confirm_delete') } %>
+				<% end %>
 
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+			</div>
+
+			<div class="modal-footer">
+
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <% end %>
-<% if current_user.is_admin? %>
+<% if current_user.is_admin? || (can? :manage_collection, @document) %>
 <div class="modal fade" id="dri_review_modal_id">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -132,10 +134,33 @@
 			</div>
 
 			<div class="modal-body">
-				                <span class="label label-danger"><%= t('dri.views.collection.confirm_all_descendants_reviewed') %></span><br />
+				<span class="label label-danger"><%= t('dri.views.collection.confirm_all_descendants_reviewed') %></span>
+				<br />
 				<%= button_to  review_path(:apply_all => 'yes'),:class =>"dri_button_red", data: { confirm: t('dri.views.collection.confirm_all_descendants_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
 				<%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
 				<% end %>
+			</div>
+			<div class="modal-footer">
+
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<% end %>
+
+<% if current_user.is_admin? || (can? :manage_collection, @document) %>
+<div class="modal fade" id="dri_organisation_modal_id">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title"><%= t('dri.views.collection.institute.manage') %></h4>
+			</div>
+
+			<div class="modal-body">
+			<%= render :partial => "shared/manage_institute" %>
 			</div>
 			<div class="modal-footer">
 
