@@ -15,8 +15,7 @@ Scenario: Constructing a valid Digital Object
   Then I should see a success message for ingestion
 
 Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
-  When I go to the "collection" "show" page for "xxxx"
-  And I follow the link to upload XML
+  When I go to the "metadata" "upload" page for "xxxx"
   And I attach the metadata file "<metadata_file>"
   And I press the button to "ingest metadata"
   Then I should see a failure message for <case>
@@ -28,8 +27,7 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
     | invalid_xml_metadata.xml      | invalid metadata |
 
 Scenario Outline: Constructing a valid Digital Object
-  When I go to the "collection" "show" page for "xxxx"
-  And I follow the link to upload XML
+  When I go to the "metadata" "upload" page for "xxxx"
   And I attach the metadata file "<metadata_file>"
   And I press the button to "ingest metadata"
   Then I should see a success message for ingestion
@@ -81,7 +79,7 @@ Scenario: Constructing a Digital Object using the web form without setting a col
 
 Scenario: Editing the metadata of a Digital Object using the web form
   Given "user1" has created a Digital Object
-  When I go to the "object" "edit" page for "created" 
+  When I go to the "object" "edit" page for "created"
   And I enter modified metadata
   And I press the button to "save changes"
   Then I should see the modified metadata
@@ -89,7 +87,7 @@ Scenario: Editing the metadata of a Digital Object using the web form
 
 Scenario: Editing the metadata of a Digital Object with invalid metadata
   Given "user1" has created a Digital Object
-  When I go to the "object" "edit" page for "created"  
+  When I go to the "object" "edit" page for "created"
   And I enter invalid metadata
   And I press the button to "save changes"
   Then I should not see a success message for updating metadata
