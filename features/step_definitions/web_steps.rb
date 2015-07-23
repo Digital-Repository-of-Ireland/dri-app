@@ -21,10 +21,10 @@ end
 
 Given /^I have created an object with metadata "(.*?)" in the collection with pid "(.*?)"$/ do |metadata_file, collection_pid|
   steps %{
-    When I go to the "collection" "show" page for "#{collection_pid}"
-    And I follow the link to upload XML
+    When I go to the "metadata" "upload" page for "#{collection_pid}"
     And I attach the metadata file "#{metadata_file}"
     And I press the button to "ingest metadata"
+    Then I should see a success message for ingestion
   }
 end
 
