@@ -535,6 +535,7 @@ en:
         buttons:
           add_master: "Add Master Asset"
           add_to_collection: "Add to Collection"
+          cancel: Cancel
           replace_master: "Replace Master Asset"
           replace_metadata: "Upload Metadata"
           save: "Save Changes"
