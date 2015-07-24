@@ -107,6 +107,7 @@ en:
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
+        doi_not_latest: "A more recent version of this object exists."
         duplicate_object_ingested: "Possible duplicate objects found: %{duplicates}"
         file_uploaded: "Asset has been successfully uploaded."
         generating_surrogates: "Surrogates are being generated."
@@ -397,6 +398,10 @@ en:
           title: "New Collection"
       devise:
         locale: Language
+      doi:
+        fields:
+          modified: Change
+          modified_at: "Modification Date"
       exceptions:
         access_denied: "You do not have permission to perform the requested operation."
         internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"

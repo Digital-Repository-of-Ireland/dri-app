@@ -1,5 +1,7 @@
 class DataciteDoi < ActiveRecord::Base
-  scope :current, -> { order("created_at DESC").first }
+  scope :ordered, -> { order("created_at DESC") }
+  scope :current, -> { ordered.first }
+  scope :object_id, -> { pluck(:object_id).uniq }
 
   def object
     object ||= ActiveFedora::Base.find(self.object_id, cast: true)

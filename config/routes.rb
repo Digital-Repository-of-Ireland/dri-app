@@ -13,6 +13,7 @@ NuigRnag::Application.routes.draw do
     resources :objects, :only => ['new', 'edit', 'update', 'create', 'show'] do
       resources :files, :controller => :assets, :only => ['create','show','update']
       resources :pages
+      resources :doi, :only => ['show']
     end
 
     resources :session, :only => ['create']

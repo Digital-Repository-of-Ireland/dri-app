@@ -44,9 +44,9 @@ class PublishJob < ActiveFedoraIdBasedJob
 
   def mint_doi(object)
     doi = if object.descMetadata.has_versions?
-      DataciteDoi.create(object_id: object.id, mod_version: object.descMetadata.versions.last.uri)
+      DataciteDoi.create(object_id: object.id, modified: "DOI created", mod_version: object.descMetadata.versions.last.uri)
     else
-      DataciteDoi.create(object_id: object.id)
+      DataciteDoi.create(object_id: object.id, modified: "DOI created")
     end
 
     begin

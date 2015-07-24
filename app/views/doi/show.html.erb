@@ -1,0 +1,14 @@
+<table class="table table-bordered table-condensed">
+<thead>
+  <th>DOI</th>
+  <th><%= t('dri.views.doi.fields.modified') %></th>
+  <th><%= t('dri.views.doi.fields.modified_at') %></th>
+</thead>
+<% @history.each do |doi| %>
+  <tr>
+    <td><%= doi.doi %></td>
+    <td><%= doi.modified %></td>
+    <td><%= doi.created_at %></td>
+  </tr>
+<% end %>
+</table>    
