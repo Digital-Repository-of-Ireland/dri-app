@@ -429,6 +429,7 @@ en:
         date: Date
         dates: Dates
         depositing_institute: "Depositing Organisation"
+        depositing_institute_not_set: "Depositing Organisation not Set"
         description: Description
         description_eng: "Description (English)"
         description_gle: "Description (Irish)"
@@ -539,6 +540,7 @@ en:
         buttons:
           add_master: "Add Master Asset"
           add_to_collection: "Add to Collection"
+          cancel: Cancel
           replace_master: "Replace Master Asset"
           replace_metadata: "Upload Metadata"
           save: "Save Changes"

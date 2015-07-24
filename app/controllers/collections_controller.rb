@@ -4,6 +4,22 @@ require 'storage/cover_images'
 require 'validators'
 
 class CollectionsController < BaseObjectsController
+  include Hydra::AccessControlsEnforcement
+
+  before_filter :authenticate_user_from_token!
+  before_filter :authenticate_user!
+  before_filter :check_for_cancel, :only => [:create, :update, :add_cover_image]
+
+  # Was this action canceled by the user?
+  def check_for_cancel
+    if params[:commit] == t('dri.views.objects.buttons.cancel')
+      if params[:id]
+        redirect_to :controller => "catalog", :action => "show", :id => params[:id]
+      else
+        redirect_to :controller => "catalog", :action => "index"
+      end
+    end
+  end
 
   # Creates a new model.
   #
@@ -107,6 +123,37 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  # Updates the cover image of an existing model.
+  #
+  def add_cover_image
+
+    @object = retrieve_object!( params[:id] )
+
+    # If a cover image was uploaded, remove it from the params hash
+    cover_image = params[:batch][:cover_image]
+    updated = @object.update_attributes(update_params)
+
+    if updated
+      unless cover_image.blank?
+        unless Storage::CoverImages.validate( cover_image, @object )
+          flash[:error] = t('dri.flash.error.cover_image_not_saved')
+        end
+      end
+    else
+      flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
+    end
+    
+    #purge params from update action
+    purge_params
+
+    respond_to do |format|
+      if ( updated )
+        flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
+      end
+      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+    end
+  end
+  
   # Creates a new model using the parameters passed in the request.
   #
   def create

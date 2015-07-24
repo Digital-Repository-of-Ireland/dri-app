@@ -11,7 +11,11 @@
 			<%= render :partial => "shared/form_metadata_qualifieddublincore", :locals => { :f => f, :action => "update" } %>
 			<%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
 
-			<%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "edit_collection" %>
+			<%= f.submit t('dri.views.objects.buttons.save'), :class => "dri_button_green dri_w330", :id => "edit_collection" %>
+			
+			<% end %>
+			<%= form_for @object, as: :batch, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'dri_ingest_form'} do |f| %>
+			<%= f.submit t('dri.views.objects.buttons.cancel'), :class => "dri_button_grey dri_w330", :id => "cancel_edit" %>
 			<% end %>
 		</div>
 	</div>

@@ -59,8 +59,8 @@
 	<% end %>
 	<%= link_to  surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
 	<li>
-		<i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
-	  </li>
+	  <i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
+	 </li>
 	<% end %>
     <% if @document.is_root_collection? %>
 	  <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
@@ -83,14 +83,24 @@
         <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.collection.edit') %>
       </li>
     <% end %>
-     <!-- Link to manage pending memberships for the read group -->
-  <% if get_reader_group(@document) %>
-    <%= link_to user_group.manage_group_path(@reader_group), :id => "manage_read_requests" do %>
-      <li>
-        <i class="fa fa-user-plus fa-lg"></i><%= t('dri.views.collection.manage_read_requests') %>
-      </li>
-    <% end %>
-  <% end %>
+	<!-- Link to manage pending memberships for the read group -->
+	<% if get_reader_group(@document) %>
+	<%= link_to user_group.manage_group_path(@reader_group), :id => "manage_read_requests" do %>
+	<li>
+		<i class="fa fa-user-plus fa-lg"></i><%= t('dri.views.collection.manage_read_requests') %>
+	</li>
+	<% end %>
+	<% end %>
+	<%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', :id => "manage_organisations" do %>
+	<li>
+		<i class="fa fa-university fa-lg"></i><%= t('dri.views.collection.institute.manage') %>
+	</li>
+	<% end %>
+	<%= link_to '', :'data-target' => '#dri_cover_image_modal_id', :'data-toggle' => 'modal', :id => "add_cover_image" do %>
+	<li>
+		<i class="fa fa-image fa-lg"></i><%= t('dri.views.collection.add_cover_image') %>
+	</li>
+	<% end %>
 
 </ul>
 
@@ -161,6 +171,28 @@
 
 			<div class="modal-body">
 			<%= render :partial => "shared/manage_institute" %>
+			</div>
+			<div class="modal-footer">
+
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<% end %>
+
+<% if current_user.is_admin? || (can? :manage_collection, @document) %>
+<div class="modal fade" id="dri_cover_image_modal_id">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title"><%= t('dri.views.collection.institute.manage') %></h4>
+			</div>
+
+			<div class="modal-body">
+			<%= render :partial => "shared/add_cover_image" %>
 			</div>
 			<div class="modal-footer">
 
