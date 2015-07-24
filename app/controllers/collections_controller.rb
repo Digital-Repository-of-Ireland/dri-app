@@ -143,18 +143,10 @@ class CollectionsController < CatalogController
 
     # If a cover image was uploaded, remove it from the params hash
     cover_image = params[:batch][:cover_image]
-    updated = @object.update_attributes(update_params)
 
-    if updated
-      unless cover_image.blank?
-        unless Storage::CoverImages.validate( cover_image, @object )
-          flash[:error] = t('dri.flash.error.cover_image_not_saved')
-        end
-      end
-    else
-      flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
+    if cover_image.present?
+      updated = Storage::CoverImages.validate( cover_image, @object )
     end
-
 
     #purge params from update action
     params.delete( :batch )
@@ -166,6 +158,8 @@ class CollectionsController < CatalogController
     respond_to do |format|
       if ( updated )
         flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
+      else
+        flash[:error] = t('dri.flash.error.cover_image_not_saved')
       end
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
     end
