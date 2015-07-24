@@ -86,7 +86,6 @@ class InstitutesController < ApplicationController
     @inst = Institute.find(params[:id])
   end
 
-
   # Associate institute
   def associate
     # save the institute name to the properties datastream
@@ -96,7 +95,11 @@ class InstitutesController < ApplicationController
     institute = Institute.where(:name => params[:institute_name]).first
     raise Exceptions::NotFound unless institute
 
-    collection.institute = collection.institute.push( institute.name )
+    if(params[:type].present? && params[:type] == "depositing")
+      collection.depositing_institute = institute.name
+    else
+      collection.institute = collection.institute.push( institute.name )
+    end
 
     if collection.save
       flash[:notice] = institute.name + " " +  t('dri.flash.notice.organisation_added')
@@ -107,7 +110,6 @@ class InstitutesController < ApplicationController
     @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
     @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
    
-
     respond_to do |format|
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => collection.id }
     end
@@ -128,32 +130,6 @@ class InstitutesController < ApplicationController
 
     if collection.save
       flash[:notice] = institute.name + " " + t('dri.flash.notice.organisation_removed')
-    else
-      raise Exceptions::InternalError
-    end
-
-    @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
-    @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
-
-    respond_to do |format|
-      format.html { redirect_to :controller => "catalog", :action => "show", :id => collection.id }
-    end
-
-  end
-
-
-  # Associate depositing institute
-  def associate_depositing
-    collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
-    raise Exceptions::NotFound unless collection
-
-    institute = Institute.where(:name => params[:institute_name]).first
-    raise Exceptions::NotFound unless institute
-
-    collection.depositing_institute = institute.name
-
-    if collection.save
-      flash[:notice] = institute.name + " " + t('dri.flash.notice.organisation_depositor')
     else
       raise Exceptions::InternalError
     end
