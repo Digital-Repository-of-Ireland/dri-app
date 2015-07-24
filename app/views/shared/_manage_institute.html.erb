@@ -23,7 +23,7 @@
 <div class="dri_institutes_title dri_clearfix">
 	<%= t('dri.views.collection.institute.remove') %>
 </div>
-<%= form_tag disassociation_path, :id => 'disassociate_institute', :name => 'disassociate_institute' do %>
+<%= form_tag disassociation_path, :id => 'disassociate_institute', :name => 'disassociate_institute', method: :delete do %>
 <%= hidden_field_tag 'object', @document.id %>
 <div class="dri_select_institution">
 	<select name="institute_name" id="remove_institute" class="w240">

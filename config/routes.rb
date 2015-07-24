@@ -22,7 +22,7 @@ NuigRnag::Application.routes.draw do
     resources :institutes, :only => ['show', 'new', 'create', 'edit', 'update']
 
     match 'association' => 'institutes#associate', :via => :post, :as => :new_association
-    match 'disassociation' => 'institutes#disassociate', :via => :post, :as => :disassociation
+    match 'association' => 'institutes#disassociate', :via => :delete, :as => :disassociation
     match 'institutions' => 'institutes#index', :via => :get, :as => :institutions
     match 'manage_users' => 'manage_users#new', :via => :get, :as => :manage_users
     match 'manage_users' => 'manage_users#create', :via => :post, :as => :new_manage_user
