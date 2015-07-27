@@ -61,16 +61,6 @@ ActiveRecord::Schema.define(version: 20150702113017) do
     t.text    "checksum"
   end
 
-  create_table "page_turners", force: true do |t|
-    t.string   "batch_id"
-    t.string   "cover"
-    t.string   "template"
-    t.string   "title"
-    t.text     "preamble"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "searches", force: true do |t|
     t.text     "query_params"
     t.integer  "user_id"

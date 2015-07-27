@@ -1,4 +1,5 @@
 require 'rest_client'
+require 'uri'
 
 module DOI
   class Datacite
@@ -10,7 +11,7 @@ module DOI
     end
 
     def mint
-      url = File.join(@url, 'catalog', @doi.object_id)
+      url = URI.join(@url, 'objects', @doi.object_id, 'doi', @doi.doi)
       params = { "doi" => @doi.doi, "url" => url }
       response = @service['doi'].post(params, :content_type => 'text/plain;charset=UTF-8')
       Rails.logger.info("Minted DOI (#{response.code} #{response.body})")
