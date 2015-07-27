@@ -19,6 +19,12 @@ class Institute < ActiveRecord::Base
     self.save
   end
 
+  def self.find_collection_institutes(institute_list)
+    return nil if institute_list.blank?
+
+    institutes = where(name: institute_list)
+    institutes.blank? ? nil : institutes.to_a
+  end  
 
   def get_logo()
 
