@@ -88,65 +88,63 @@ class InstitutesController < ApplicationController
 
   # Associate institute
   def associate
-    # save the institute name to the properties datastream
-    collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
-    raise Exceptions::NotFound unless collection
-
-    institute = Institute.where(:name => params[:institute_name]).first
-    raise Exceptions::NotFound unless institute
-
-    if(params[:type].present? && params[:type] == "depositing")
-      collection.depositing_institute = institute.name
-    else
-      collection.institute = collection.institute.push( institute.name )
-    end
-
-    if collection.save
-      flash[:notice] = institute.name + " " +  t('dri.flash.notice.organisation_added')
-    else
-      raise Exceptions::InternalError
-    end 
-
-    @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
-    @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
-   
-    respond_to do |format|
-      format.html  { redirect_to :controller => "catalog", :action => "show", :id => collection.id }
-    end
-
+    add_or_remove_association
   end
   
     # Dis-associate institute
   def disassociate
-    # remove the institute name from the properties datastream
-    collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
-    raise Exceptions::NotFound unless collection
-
-    institute = Institute.where(:name => params[:institute_name]).first
-    raise Exceptions::NotFound unless institute
-    a = collection.institute
-    a.delete(institute.name)
-    collection.institute = a 
-
-    if collection.save
-      flash[:notice] = institute.name + " " + t('dri.flash.notice.organisation_removed')
-    else
-      raise Exceptions::InternalError
-    end
-
-    @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
-    @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
-
-    respond_to do |format|
-      format.html { redirect_to :controller => "catalog", :action => "show", :id => collection.id }
-    end
-
+    add_or_remove_association(true)
   end
 
   private
 
+    def add_or_remove_association(delete=false)
+      # save the institute name to the properties datastream
+      @collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
+      raise Exceptions::NotFound unless @collection
+
+      delete ? delete_association : add_association
+      
+      @collection_institutes = InstituteHelpers.get_collection_institutes(@collection)
+      @depositing_institute = InstituteHelpers.get_depositing_institute(@collection)
+   
+      respond_to do |format|
+        format.html  { redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
+      end
+    end
+
+    def add_association
+      institute_name = params[:institute_name]
+
+      if(params[:type].present? && params[:type] == "depositing")
+        @collection.depositing_institute = institute_name
+      else
+        @collection.institute = @collection.institute.push( institute_name )
+      end
+
+      if @collection.save
+        flash[:notice] = institute_name + " " +  t('dri.flash.notice.organisation_added')
+      else
+        raise Exceptions::InternalError
+      end 
+    end
+
+    def delete_association
+      institute_name = params[:institute_name]
+
+      institutes = @collection.institute
+      institutes.delete(institute_name)
+      @collection.institute = institutes 
+
+      if @collection.save
+        flash[:notice] = institute_name + " " + t('dri.flash.notice.organisation_removed')
+      else
+        raise Exceptions::InternalError
+      end
+    end
+
     def update_params
-      params.require(:institute).permit!
+      params.require(:institute).permit(:name, :logo, :url)
     end
 
 end
