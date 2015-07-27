@@ -105,8 +105,10 @@ class InstitutesController < ApplicationController
 
       delete ? delete_association : add_association
       
+      puts @collection.depositing_institute.inspect
+
       @collection_institutes = Institute.find_collection_institutes(@collection.institute)
-      @depositing_institute = @collection.depositing_institute.present? ? Institute.find(name: @collection.depositing_institute) : nil
+      @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
    
       respond_to do |format|
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
