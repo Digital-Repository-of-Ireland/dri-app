@@ -1,25 +1,6 @@
 module InstituteHelpers
 
-
-  # get the institues for this collection
-  def self.get_collection_institutes(collection)
-    return nil if collection.institute.blank?
-    allinstitutes = Institute.all
-    myinstitutes = []
-    allinstitutes.each do |inst|
-      if collection.institute.include?(inst.name)
-        myinstitutes.push(inst)
-      end
-    end
-    return myinstitutes
-  end
-
-
-  def self.get_depositing_institute(collection)
-    return nil if collection.depositing_institute.blank?
-    Institute.where(:name => collection.depositing_institute).first
-  end
-
+  
   def self.get_institutes_from_solr_doc(doc)
     doc[ActiveFedora::SolrQueryBuilder.solr_name('type', :stored_searchable, type: :string)].include?('Collection') ? self.get_collection_institutes_from_solr_doc(doc) : self.get_object_institutes_from_solr_doc(doc)
   end
