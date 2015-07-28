@@ -88,16 +88,20 @@ module ApplicationHelper
 
   def cover_image ( document )
     path = nil
+    
+    cover_key = ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym
 
-    if document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-        path = document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
+    if document[cover_key].present? && document[cover_key].first
+        path = document[cover_key].first
     elsif document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
-      collection = document.root_collection
-      if collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)] && collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
-        path = collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
+      solr_doc = SolrDocument.new(document)
+      
+      collection = solr_doc.root_collection
+      if collection[cover_key].present? && collection[cover_key].first
+        path = collection[cover_key].first
       end
     end
-
+    
     path
   end
 

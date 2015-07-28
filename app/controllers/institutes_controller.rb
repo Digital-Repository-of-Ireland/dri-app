@@ -104,8 +104,6 @@ class InstitutesController < ApplicationController
       raise Exceptions::NotFound unless @collection
 
       delete ? delete_association : add_association
-      
-      puts @collection.depositing_institute.inspect
 
       @collection_institutes = Institute.find_collection_institutes(@collection.institute)
       @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
