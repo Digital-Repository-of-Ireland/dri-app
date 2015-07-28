@@ -62,7 +62,7 @@ class SolrDocument
   end
 
   def is_root_collection?
-    self.collection_id ? true : false  
+    self.collection_id ? false : true  
   end
 
   def status
