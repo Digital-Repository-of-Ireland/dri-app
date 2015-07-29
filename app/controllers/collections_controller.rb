@@ -68,7 +68,7 @@ class CollectionsController < CatalogController
     @inst = Institute.new
 
     @collection_institutes = Institute.find_collection_institutes(@object.institute)
-    @depositing_institute = @object.depositing_institute.present? ? Institute.find(name: @object.depositing_institute) : nil
+    @depositing_institute = @object.depositing_institute.present? ? Institute.find_by(name: @object.depositing_institute) : nil
 
     supported_licences()
 
