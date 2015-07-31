@@ -87,7 +87,7 @@ describe ObjectsController do
       @object.save
       DataciteDoi.create(object_id: @object.id)
 
-      Sufia.queue.should_not_receive(:push).with(an_instance_of(MintDoiJob)).once
+      Sufia.queue.should_not_receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
       params[:batch] = {}
       params[:batch][:title] = ["An Audio Title"]

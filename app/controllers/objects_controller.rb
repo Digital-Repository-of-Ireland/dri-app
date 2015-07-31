@@ -61,7 +61,7 @@ class ObjectsController < BaseObjectsController
       @object.governing_collection = collection
     end
 
-    update_doi = doi_update_required?
+    doi.update_metadata(params[:batch].select{ |key, value| doi.metadata_fields.include?(key) }) if doi
 
     updated = @object.update_attributes(update_params)
 
@@ -77,7 +77,7 @@ class ObjectsController < BaseObjectsController
         retrieve_linked_data
 
         actor.version_and_record_committer
-        actor.mint_doi("metadata update") if update_doi
+        actor.update_doi(doi, "metadata update") if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }

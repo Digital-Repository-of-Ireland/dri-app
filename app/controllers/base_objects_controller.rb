@@ -10,6 +10,11 @@ class BaseObjectsController < CatalogController
     @actor ||= DRI::Object::Actor.new(@object, current_user)
   end
 
+  def doi
+    @doi ||= DataciteDoi.where(object_id: @object.id)
+    @doi.empty? ? nil : @doi.current
+  end
+
   protected
 
     def create_params

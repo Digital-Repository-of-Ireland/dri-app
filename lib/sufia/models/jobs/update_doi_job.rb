@@ -1,22 +1,18 @@
 require 'doi/datacite'
 
-class MintDoiJob < ActiveFedoraIdBasedJob
+class UpdateDoiJob < ActiveFedoraIdBasedJob
 
   def queue_name
     :doi
   end
 
   def run
-    Rails.logger.info "Mint DOI for #{id}"
+    Rails.logger.info "Update DOI metadata for #{id}"
     
     doi = DataciteDoi.where(object_id: id).current
 
     client = DOI::Datacite.new(doi)
     client.metadata
-    client.mint
-    object.doi = doi.doi
-
-    object.save
   end
 
 end

@@ -132,10 +132,10 @@ describe CollectionsController do
       @collection.save
       DataciteDoi.create(object_id: @collection.id)
 
-      Sufia.queue.should_not_receive(:push).with(an_instance_of(MintDoiJob)).once
+      Sufia.queue.should_not_receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
       params[:batch] = {}
-      params[:batch][:title] = ["A Collection"]
+      params[:batch][:title] = ["A collection"]
       params[:batch][:read_users_string] = "public"
       params[:batch][:edit_users_string] = @login_user.email
       put :update, :id => @collection.id, :batch => params[:batch]

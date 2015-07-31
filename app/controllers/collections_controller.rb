@@ -90,8 +90,8 @@ class CollectionsController < BaseObjectsController
 
     supported_licences()
 
-    update_doi = doi_update_required?
-
+    doi.update_metadata(params[:batch].select{ |key, value| doi.metadata_fields.include?(key) }) if doi
+        
     if valid_permissions?
       updated = @object.update_attributes(update_params)
 
@@ -113,7 +113,7 @@ class CollectionsController < BaseObjectsController
       if updated
 
         actor.version_and_record_committer
-        actor.mint_doi("metadata update") if update_doi
+        actor.update_doi(doi, "metadata update") if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
@@ -126,7 +126,6 @@ class CollectionsController < BaseObjectsController
   # Updates the cover image of an existing model.
   #
   def add_cover_image
-
     @object = retrieve_object!( params[:id] )
 
     # If a cover image was uploaded, remove it from the params hash

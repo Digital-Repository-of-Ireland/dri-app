@@ -17,18 +17,25 @@ module DRI::Object
       end
     end
 
-    def mint_doi(modified)
-      doi = DataciteDoi.where(object_id: @object.id).current
-      
-      if (@object.status == "published" && (doi.is_a?(DataciteDoi)))
-        if @object.descMetadata.has_versions?
-          DataciteDoi.create(object_id: @object.id, modified: modified, mod_version: @object.descMetadata.versions.last.uri)
-        else
-          DataciteDoi.create(object_id: @object.id, modified: modified)
-        end
-
-        Sufia.queue.push(MintDoiJob.new(@object.id))
+    def update_doi(doi, modified)
+      if (doi.changed? && @object.status == "published")
+        doi.mandatory_update? ? doi_mint(modified) : doi_metadata_update(modified)
+        doi.clear_changed
       end
+    end
+
+    def doi_mint(modified)
+      if @object.descMetadata.has_versions?
+        DataciteDoi.create(object_id: @object.id, modified: modified, mod_version: @object.descMetadata.versions.last.uri)
+      else
+        DataciteDoi.create(object_id: @object.id, modified: modified)
+      end
+
+      Sufia.queue.push(MintDoiJob.new(@object.id))
+    end
+
+    def doi_metadata_update
+      Sufia.queue.push(UpdateDoiJob.new(@object.id))
     end
 
     def version_and_record_committer

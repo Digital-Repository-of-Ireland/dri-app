@@ -34,15 +34,10 @@ describe "DataciteDoi" do
     datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
   end
 
-  it "should get the publication year" do
-    datacite = DataciteDoi.new(object_id: @object.id)
-    datacite.publication_year.should equal(Time.now.year)
-  end
-
   it "should create datacite XML" do
-    datacite = DataciteDoi.new(object_id: @object.id)
+    datacite = DataciteDoi.create(object_id: @object.id)
     xml = datacite.to_xml
-
+    
     doc = Nokogiri::XML(xml)
     hash = Hash.from_xml(doc.to_s)
     hash["resource"]["titles"]["title"].should == @object.title.first
@@ -52,25 +47,28 @@ describe "DataciteDoi" do
     hash["resource"]["descriptions"]["description"].should == @object.description.first
     hash["resource"]["dates"]["date"][0].should == @object.creation_date.first
     hash["resource"]["dates"]["date"][1].should == @object.published_date.first
-    hash["resource"]["rights"].should == @object.rights.first
+    hash["resource"]["rightsList"]["rights"].should == @object.rights.first
   end
 
   it "should require update if title changed" do
     datacite = DataciteDoi.create(object_id: @object.id)
-    fields = { title: ["A modified title"], creator: @object.creator }
-    expect(datacite.update?(fields)).to be true
+    fields = { title: ["A moidified title"], creator: @object.creator }
+    datacite.update_metadata(fields)
+    expect(datacite.changed?).to be true
   end
 
   it "should require update if creator changed" do
     datacite = DataciteDoi.create(object_id: @object.id)
     fields = { title: @object.title, creator: ["A. Body"] }
-    expect(datacite.update?(fields)).to be true
+    datacite.update_metadata(fields)
+    expect(datacite.changed?).to be true
   end
 
   it "should not need an update if no change" do
     datacite = DataciteDoi.create(object_id: @object.id)
     fields = { title: @object.title, creator: @object.creator }
-    expect(datacite.update?(fields)).to be false
+    datacite.update_metadata(fields)
+    expect(datacite.changed?).to be false
   end
  
   it "should add version numbers to doi" do

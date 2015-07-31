@@ -7,7 +7,7 @@ module DOI
     def initialize(doi)
       @doi = doi
       @url = DoiConfig.base_url
-      @service = RestClient::Resource.new DoiConfig.url, DoiConfig.username, DoiConfig.password
+      @service = RestClient::Resource.new(DoiConfig.url, user: DoiConfig.username, password: DoiConfig.password, verify_ssl: OpenSSL::SSL::VERIFY_NONE)
     end
 
     def mint
@@ -20,7 +20,8 @@ module DOI
     def metadata
       xml = @doi.to_xml
       response = @service['metadata'].post(xml, :content_type => 'application/xml;charset=UTF-8')
-      Rails.logger.info("Created DOI metadata (#{response.code} #{response.body})")
+      
+      Rails.logger.info("Created DOI metadata (#{response.code} #{response})")
     end
 
   end
