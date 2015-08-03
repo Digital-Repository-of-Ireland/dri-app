@@ -30,7 +30,7 @@ describe "DataciteDoi" do
   end
 
   it "should create a DOI" do
-    datacite = DataciteDoi.new(object_id: @object.id)
+    datacite = DataciteDoi.create(object_id: @object.id)
     datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
   end
 

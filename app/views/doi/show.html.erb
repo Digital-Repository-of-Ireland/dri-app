@@ -4,9 +4,9 @@
   <th><%= t('dri.views.doi.fields.modified') %></th>
   <th><%= t('dri.views.doi.fields.modified_at') %></th>
 </thead>
-<% @history.each_with_index do |doi, index| %>
+<% @history.each do |doi| %>
   <tr>
-    <td><%= "#{doi.doi.split("-")[0]}-#{index}" %></td>
+    <td><%= doi.doi %></td>
     <td><%= doi.modified %></td>
     <td><%= doi.created_at %></td>
   </tr>

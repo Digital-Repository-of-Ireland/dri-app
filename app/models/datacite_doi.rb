@@ -7,6 +7,7 @@ class DataciteDoi < ActiveRecord::Base
   delegate :to_xml, to: :doi_metadata
   delegate :metadata_fields, to: :doi_metadata
 
+  before_create :set_version
   before_create :set_metadata
 
   def object
@@ -36,7 +37,7 @@ class DataciteDoi < ActiveRecord::Base
       
   def doi
     doi = "DRI.#{self.object_id}"
-    doi = "#{doi}-#{version}" if version > 0
+    doi = "#{doi}-#{self.version}" if self.version && self.version > 0
     File.join(DoiConfig.prefix.to_s, doi)
   end
   
@@ -54,9 +55,9 @@ class DataciteDoi < ActiveRecord::Base
 
   private
     
-    def version
-      version = DataciteDoi.where(object_id: self.object_id).count
-      version <= 1 ? 0 : version - 1
+    def set_version
+      self.version = DataciteDoi.where(object_id: self.object_id).count
+      #self.version = version <= 1 ? 0 : version - 1
     end
 
     def set_metadata
