@@ -11,8 +11,10 @@ module DOI
     end
 
     def mint
-      url = URI.join(@url, 'objects', @doi.object_id, 'doi', @doi.doi)
-      params = { "doi" => @doi.doi, "url" => url }
+      path = @doi.doi.split("/")[1].split(".")[1]
+      url = URI.join(@url, 'objects/', "#{@doi.object_id}/", 'doi/', "#{path}") 
+  
+      params = { "doi" => "#{@doi.doi}", "url" => "#{url}" }
       response = @service['doi'].post(params, :content_type => 'text/plain;charset=UTF-8')
       Rails.logger.info("Minted DOI (#{response.code} #{response.body})")
     end

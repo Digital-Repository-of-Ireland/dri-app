@@ -402,6 +402,8 @@ en:
         fields:
           modified: Change
           modified_at: "Modification Date"
+        legends:
+          changelog: "Changelog for #{doi}" 
       exceptions:
         access_denied: "You do not have permission to perform the requested operation."
         internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"

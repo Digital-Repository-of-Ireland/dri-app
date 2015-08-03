@@ -42,15 +42,15 @@ class PublishJob < ActiveFedoraIdBasedJob
 
   end
 
-  def mint_doi(object)
-    doi = if object.descMetadata.has_versions?
-      DataciteDoi.create(object_id: object.id, modified: "DOI created", mod_version: object.descMetadata.versions.last.uri)
+  def mint_doi(obj)
+    doi = if obj.descMetadata.has_versions?
+      DataciteDoi.create(object_id: obj.id, modified: "DOI created", mod_version: obj.descMetadata.versions.last.uri)
     else
-      DataciteDoi.create(object_id: object.id, modified: "DOI created")
+      DataciteDoi.create(object_id: obj.id, modified: "DOI created")
     end
 
     begin
-      Sufia.queue.push(MintDoiJob.new(id))
+      Sufia.queue.push(MintDoiJob.new(obj.id))
     rescue Exception => e
       Rails.logger.error "Unable to submit mint doi job: #{e.message}"
     end
