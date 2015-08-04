@@ -92,6 +92,7 @@ en:
         read_permission: "You do not have permission to read this document."
         unknown_permission: "Unsupported Permission Level: %{action}"
         virus_detected: "Virus detected in uploaded file: %{virus}"
+        doi_not_configured: "DOI configuration settings not found."
       error:
         cover_image_not_saved: "Unable to save cover image"
         manager_user_permission: "You do not have permission to create a manager user"
