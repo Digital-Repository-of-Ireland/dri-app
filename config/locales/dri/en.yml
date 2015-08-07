@@ -247,6 +247,7 @@ en:
       no_unlock: "Didn't receive unlock instructions?"
       register: "Sign Up"
       sign_in_with: "Login with "
+      sign_in_with_institution: "Login via your institution"
       title: Login
       with_another_account: "Login with another Account"
     views:
