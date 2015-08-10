@@ -59,7 +59,7 @@ describe AssetsController do
       DRI::Asset::Actor.any_instance.stub(:create_external_content)
       DRI::Asset::Actor.any_instance.stub(:update_external_content)
 
-      generic_file = DRI::GenericFile.new(id: Sufia::IdService.mint)
+      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
       generic_file.batch = @object
       generic_file.apply_depositor_metadata('test@test.com')
       file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
@@ -84,7 +84,7 @@ describe AssetsController do
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
 
-      generic_file = DRI::GenericFile.new(id: Sufia::IdService.mint)
+      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
       generic_file.batch = @object
       generic_file.apply_depositor_metadata('test@test.com')
       file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")

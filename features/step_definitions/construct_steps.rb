@@ -1,5 +1,5 @@
 Given /^a Digital Object$/ do
-  @digital_object = DRI::Batch.with_standard(:qdc, {:pid => Sufia::IdService.mint})
+  @digital_object = DRI::Batch.with_standard(:qdc, {pid: ActiveFedora::Noid::Service.new.mint })
 end
 
 When /^I commit the Digital Object$/ do

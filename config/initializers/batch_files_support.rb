@@ -18,7 +18,7 @@ DRI::ModelSupport::Files.module_eval do
       return false
     end
 
-    gf = DRI::GenericFile.new(:id => Sufia::IdService.mint)
+    gf = DRI::GenericFile.new(:id => ActiveFedora::Noid::Service.new.mint)
     gf.batch = self
       
     # Apply depositor metadata, other permissions currently unused for generic files
