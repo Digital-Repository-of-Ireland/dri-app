@@ -17,8 +17,8 @@
         <% end %>
       </p>
       <div class="dri_list_icon">
-        <% unless get_document_type(document).eql?(t("dri.data.types.Unknown")) %>
-            <span class="dri_icon_image"><%= image_tag(icon_path(document)) %> &nbsp; <%= get_document_type document %></span>
+        <% unless document.file_type == t("dri.data.types.Unknown") %>
+            <span class="dri_icon_image"><%= image_tag(icon_path(document)) %> &nbsp; <%= document.file_type %></span>
         <% else %>
             <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
         <% end %>
