@@ -89,7 +89,7 @@ end
 group :test do
   gem 'cucumber', '1.3.15'
   gem 'cucumber-rails', require: false
-  gem 'database_cleaner', '1.0.1'
+  gem 'database_cleaner'
   gem 'launchy'
   gem 'shoulda'
   gem 'factory_girl_rails'
