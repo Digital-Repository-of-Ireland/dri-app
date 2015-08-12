@@ -41,7 +41,7 @@ dri:
 plugins:
   ffmpeg_path: /usr/bin/ffmpeg
 S3:
-  server: http://localhost:8081
+  server: http://objects.dri.ie
   access_key_id: OMZPBA7D6U3MZ6MBVJZQ
   secret_access_key: nnXKfE/+0zfEsHW8n55ffP18Bvn+N9sJ83AmWPOS
   bucket_prefix: buildbot
@@ -53,8 +53,6 @@ __EOF__
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
     bundle exec rake dri:fixtures:generate
-    bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &
-    echo $! > fakes3.pid
     ;;
 compile)
     ;;
@@ -84,6 +82,5 @@ compile_extra)
     #curl http://repository.dri.ie/v1 > /dev/null 2>&1
     ;;
 uninstall_deps)
-    kill -TERM $(cat fakes3.pid)
     ;;
 esac
