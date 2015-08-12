@@ -1,6 +1,9 @@
 require 'is_it_working'
 Rails.configuration.middleware.use(IsItWorking::Handler) do |h|
+    # check passanger stack
     h.check :active_record, :async => false
+
+    #check connection to fedora
     h.check :fedora_headers do |status|
       conn = Faraday.new(ActiveFedora.config.credentials[:url])
       conn.basic_auth(ActiveFedora.config.credentials[:user], ActiveFedora.config.credentials[:password])
@@ -10,6 +13,7 @@ Rails.configuration.middleware.use(IsItWorking::Handler) do |h|
         status.fail("Fedora down")
       end
     end
+
     #h.check :rubydora, :client => ActiveFedora::Base.connection_for_pid(0)
     #h.check :rsolr, :client => Dor::SearchService.solr
     #h.check :directory, :path => Rails.root + "tmp", :permission => [:read, :write]
