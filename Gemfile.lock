@@ -39,10 +39,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git
-  revision: 3809cfb06eceed32246523f11171a16b2b4f9330
+  revision: 38d5a22528e1a96943d6983b393b59e4db5d226d
   branch: issue22
   specs:
-    fakes3 (0.1.6.1)
+    fakes3 (0.2.1)
       builder
       thor
 
@@ -110,14 +110,12 @@ GEM
     autoprefixer-rails (5.2.1.1)
       execjs
       json
-    aws-sdk (2.0.45)
-      aws-sdk-resources (= 2.0.45)
-    aws-sdk-core (2.0.45)
-      builder (~> 3.0)
+    aws-sdk (2.1.13)
+      aws-sdk-resources (= 2.1.13)
+    aws-sdk-core (2.1.13)
       jmespath (~> 1.0)
-      multi_json (~> 1.0)
-    aws-sdk-resources (2.0.45)
-      aws-sdk-core (= 2.0.45)
+    aws-sdk-resources (2.1.13)
+      aws-sdk-core (= 2.1.13)
     bcp47 (0.3.3)
       i18n
     bcrypt (3.1.10)
@@ -216,7 +214,7 @@ GEM
     debug_inspector (0.0.2)
     deprecation (0.2.2)
       activesupport
-    devise (3.5.1)
+    devise (3.5.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -783,10 +781,10 @@ DEPENDENCIES
   mysql2
   omniauth-shibboleth
   openlayers-rails
-  paper_trail (~> 3.0.6)
+  paper_trail (~> 3)
   poltergeist (>= 1.4.1)
   railroady
-  rails (~> 4.1.0)
+  rails (~> 4.1)
   rails_config
   remotipart
   rest-client
