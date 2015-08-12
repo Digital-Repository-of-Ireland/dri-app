@@ -36,6 +36,28 @@ class SolrDocument
     (self.active_fedora_model && self.active_fedora_model == 'DRI::EncodedArchivalDescription') ? false : true
   end
 
+  def file_type
+    file_type_key = ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
+
+    return I18n.t("dri.data.types.Unknown") if self[file_type_key].blank?
+
+    case self[file_type_key].first.to_s.downcase
+    when "image"
+      I18n.t("dri.data.types.Image")
+    when "audio"
+      I18n.t("dri.data.types.Sound")
+    when "video"
+      I18n.t("dri.data.types.MovingImage")
+    when "text"
+      I18n.t("dri.data.types.Text")
+    when "mixed_types"
+      I18n.t("dri.data.types.MixedType")
+    else
+      return I18n.t("dri.data.types.Unknown")
+    end 
+
+  end
+
   def has_doi?
     doi_key = ActiveFedora::SolrQueryBuilder.solr_name('doi', :displayable, type: :symbol).to_sym
 

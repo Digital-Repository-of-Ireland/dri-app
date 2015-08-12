@@ -112,7 +112,7 @@ class AssetsController < ApplicationController
       if @object == nil
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
-        @generic_file = DRI::GenericFile.new(id: Sufia::IdService.mint)
+        @generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
         @generic_file.batch = @object
         @generic_file.apply_depositor_metadata(current_user)
         @generic_file.preservation_only = "true" if params[:preservation].eql?('true')

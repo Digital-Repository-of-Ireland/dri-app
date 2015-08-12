@@ -226,7 +226,7 @@ end
 
 Then /^I check "(.*?)"$/ do |checkbox|
   Capybara.ignore_hidden_elements = false
-  check(checkbox)
+  page.find_by_id(checkbox, { visible: false}).trigger('click')
 end
 
 When /^(?:|I )perform a search$/ do
