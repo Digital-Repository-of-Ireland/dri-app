@@ -34,35 +34,14 @@ cp config/redis.yml.sample config/redis.yml
 #cp config/doi.yml.sample config/doi.yml
 
 cat > config/settings.local.yml << __EOF__
-ingest:
-  steps: [collection, type, ingestmethod, metadata]
-  step_data:
-    collection: [ingestcollection]
-    type: [ingesttype]
-    ingestmethod: [ingestmethod]
 interface:
   languages: [en, ga]
 dri:
   files: dri_files
-queue:
-  audio: [CreateBucket, CreateChecksums, CreateMp3, CreateOgg]
-  pdfdoc: [CreateBucket, CreateChecksums, FullTextIndex]
 plugins:
   ffmpeg_path: /usr/bin/ffmpeg
-mp3_web_quality_out_options:
-  codec: # default is for ffmpeg to auto-detect appropriate codec, this should be good for most scenarios
-  strip_metadata: "yes" # default is to preserve global metadata
-  channel: "2" # default is same as input file
-  bitrate: "96k" # default is same as input file
-  frequency: "44100" # default is same as input file
-ogg_web_quality_out_options:
-  codec: libvorbis # Default for ogg will produce very large files
-  strip_metadata: "yes" # default is preserve global metadata
-  channel: "2" # default is same as input file
-  bitrate: "96k" # default is same as input file
-  frequency: "44100" # default is same as input file
 S3:
-  server: http://objects.dri.ie
+  server: http://localhost:8081
   access_key_id: OMZPBA7D6U3MZ6MBVJZQ
   secret_access_key: nnXKfE/+0zfEsHW8n55ffP18Bvn+N9sJ83AmWPOS
   bucket_prefix: buildbot
@@ -74,6 +53,8 @@ __EOF__
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
     bundle exec rake dri:fixtures:generate
+    bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &
+    echo $! > fakes3.pid
     ;;
 compile)
     ;;
@@ -93,8 +74,7 @@ upload)
     if [[ -s "$HOME/hosts.buildbot" ]] ; then
       cp $HOME/hosts.buildbot deploy/hosts.buildbot
       if [[ "$branch" == "master" ]]; then
-      #ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-common.yml
-        ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-nuig-rnag.yml -e "deploy_branch=$(git rev-parse HEAD)"
+        #ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-nuig-rnag.yml -e "deploy_branch=$(git rev-parse HEAD)"
       fi
     else
       printf "Can't upload and deploy, can't find hosts.buildbot file"
@@ -104,5 +84,6 @@ compile_extra)
     #curl http://repository.dri.ie/v1 > /dev/null 2>&1
     ;;
 uninstall_deps)
+    kill -TERM $(cat fakes3.pid)
     ;;
 esac
