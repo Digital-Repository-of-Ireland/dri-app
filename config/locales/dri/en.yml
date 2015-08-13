@@ -114,16 +114,17 @@ en:
         generating_surrogates: "Surrogates are being generated."
         licence_created: "Licence successfully created."
         licence_updated: "Licence successfully updated."
-        manager_user_created: "User %{email} successfully granted manager permissions"
-        manager_user_invalid: "User %{email} does not exist, please have the user create an account first"
+        manager_user_created: "User %{email} successfully granted manager permissions."
+        manager_user_invalid: "User %{email} does not exist, please have the user create an account first."
         metadata_updated: "Metadata has been successfully updated."
         no_xml_schema: "The XML file contains no schema to validate against."
+        object_deleted: "Object has been deleted."
         organisation_created: "Organisation successfully created."
         organisation_added: "Organisation successfully added to collection."
         organisation_removed: "Organisation successfully removed from collection."
         organisation_depositor: "Organisation successfully set as Depositor."
         removed_from_collection: "Object has been removed from the collection."
-        schema_validation_error: "The XML file could not validate against the Dublin Core schema"
+        schema_validation_error: "The XML file could not validate against the Dublin Core schema."
         specify_datastream: "You must specify a valid file datastream."
         specify_file: "You must specify a file to upload."
         specify_object_id: "Please specify a valid object id."
@@ -547,6 +548,7 @@ en:
           add_master: "Add Master Asset"
           add_to_collection: "Add to Collection"
           cancel: Cancel
+          delete_object: "Delete Object"
           replace_master: "Replace Master Asset"
           replace_metadata: "Upload Metadata"
           save: "Save Changes"
@@ -555,6 +557,7 @@ en:
           upload_master: "Upload Master Asset"
         confirm:
           surrogates: "This will (re)generate surrogates for all assets. Continue?"
+          delete: "This will delete the object and all assets attached to it. Continue?"
         edit:
           sidebar:
             nav_header: "Edit Tools"

@@ -3,34 +3,80 @@ require 'spec_helper'
 describe ObjectsController do
   include Devise::TestHelpers
 
-  before(:each) do
-    @login_user = FactoryGirl.create(:admin)
-    sign_in @login_user
+  describe 'destroy' do
+    
+    before(:each) do
+      @login_user = FactoryGirl.create(:admin)
+      sign_in @login_user
+    end
 
-    @collection = FactoryGirl.create(:collection)
+    after(:each) do
+      @login_user.delete
+    end
+
+    it 'should delete a draft object' do
+      @collection = FactoryGirl.create(:collection)
    
-    @object = FactoryGirl.create(:sound) 
-    @object[:status] = "draft"
-    @object.save
+      @object = FactoryGirl.create(:sound) 
+      @object[:status] = "draft"
+      @object.save
 
-    @object2 = FactoryGirl.create(:sound)
-    @object2[:status] = "draft"
-    @object2.save
+      @collection.governed_items << @object
 
-    @collection.governed_items << @object
-    @collection.governed_items << @object2
+      expect {
+        delete :destroy, :id => @object.id
+      }.to change { ActiveFedora::Base.exists?(@object.id) }.from(true).to(false)
 
-    @collection.save    
-  end
+      @collection.reload
+      @collection.delete
+    end
 
-  after(:each) do
-    @object2.delete
-    @object.delete
-    @collection.delete
-    @login_user.delete
+    it 'should not delete a published object' do
+      @collection = FactoryGirl.create(:collection)
+   
+      @object = FactoryGirl.create(:sound) 
+      @object[:status] = "published"
+      @object.save
+
+      @collection.governed_items << @object
+
+      delete :destroy, :id => @object.id
+
+      expect(ActiveFedora::Base.exists?(@object.id)).to be true
+
+      @collection.reload
+      @collection.delete
+    end
+
   end
 
   describe 'status' do
+
+    before(:each) do
+      @login_user = FactoryGirl.create(:admin)
+      sign_in @login_user
+      @collection = FactoryGirl.create(:collection)
+   
+      @object = FactoryGirl.create(:sound) 
+      @object[:status] = "draft"
+      @object.save
+
+      @object2 = FactoryGirl.create(:sound)
+      @object2[:status] = "draft"
+      @object2.save
+
+      @collection.governed_items << @object
+      @collection.governed_items << @object2
+
+      @collection.save    
+    end
+
+    after(:each) do
+      @object2.delete
+      @object.delete if ActiveFedora::Base.exists?(@object.id)
+      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      @login_user.delete
+    end
 
     it 'should set an object status' do
       post :status, :id => @object.id, :status => "reviewed"

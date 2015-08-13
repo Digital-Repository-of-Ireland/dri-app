@@ -22,7 +22,9 @@ class ObjectsController < BaseObjectsController
   #
   def edit
     enforce_permissions!("edit",params[:id])
+
     supported_licences()
+    
     @object = retrieve_object!(params[:id])
     if @object.creator[0] == nil
       @object.creator = [""]
@@ -47,11 +49,11 @@ class ObjectsController < BaseObjectsController
   # Updates the attributes of an existing model.
   #
   def update
+    enforce_permissions!("edit", params[:id])
+
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
-    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
-
-    update_object_permission_check(params[:batch][:manager_groups_string], params[:batch][:manager_users_string], params[:id])
+    
     supported_licences()
 
     @object = retrieve_object!(params[:id])
@@ -159,6 +161,23 @@ class ObjectsController < BaseObjectsController
       end
     end
 
+  end
+
+  def destroy
+    enforce_permissions!("edit", params[:id])
+
+    @object = retrieve_object!(params[:id])
+    
+    if @object.status != "published"
+      @object.delete 
+      flash[:notice] = t('dri.flash.notice.object_deleted')  
+    else
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, "")
+    end
+
+    respond_to do |format|
+      format.html { redirect_to :controller => "catalog", :action => "index" }
+    end
   end
 
   def index
