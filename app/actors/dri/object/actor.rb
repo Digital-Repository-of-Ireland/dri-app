@@ -19,7 +19,7 @@ module DRI::Object
 
     def update_doi(doi, modified)
       if (doi.changed? && @object.status == "published")
-        doi.mandatory_update? ? doi_mint(modified) : doi_metadata_update(modified)
+        doi.mandatory_update? ? doi_mint(modified) : doi_metadata_update
         doi.clear_changed
       end
     end
