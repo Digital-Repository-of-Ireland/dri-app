@@ -102,6 +102,7 @@ en:
         validation_errors: "Validation Errors: %{error}"
       notice:
         added_to_collection: "Object has been added to collection."
+        asset_deleted: "Asset deleted."
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Delete collection process successfully started."
         collection_publishing: "Collection is being published."
@@ -254,6 +255,11 @@ en:
     views:
       alt_tags:
         cover_image: "Cover Image"
+      assets:
+        buttons:
+          delete: "x"
+        confirm:
+          delete: "This will delete the asset and all surrogates. Continue?"
       catalog:
         buttons:
           add_to_collection: "Add to collection"

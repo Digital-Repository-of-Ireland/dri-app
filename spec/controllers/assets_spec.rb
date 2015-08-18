@@ -103,4 +103,31 @@ describe AssetsController do
 
   end
 
+  describe 'destroy' do
+    
+    it 'should delete a file' do
+      DRI::Asset::Actor.any_instance.stub(:create_external_content)
+      
+      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+      generic_file.batch = @object
+      generic_file.apply_depositor_metadata('test@test.com')
+      file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
+      options = {}
+      options[:mime_type] = "audio/mp3"
+      options[:file_name] = "SAMPLEA.mp3"
+       
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      file.add_file uploaded, options
+      file.save
+      generic_file.save
+      file_id = generic_file.id
+
+      expect {
+        delete :destroy, object_id: @object.id, id: file_id
+      }.to change { ActiveFedora::Base.exists?(file_id) }.from(true).to(false)
+      
+    end
+
+  end
+
 end

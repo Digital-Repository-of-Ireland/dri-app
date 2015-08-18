@@ -15,7 +15,7 @@ module Storage
     # Get a hash of all surrogates for an object
     def get_surrogates(doc, file_doc, expire=nil)
 
-      expire = Settings.S3.expiry unless (!expire.blank? && numeric?(expire))
+      expire = Settings.S3.expiry unless (expire.present? && numeric?(expire))
       bucket = doc.id
       generic_file = file_doc.id
 
@@ -58,7 +58,7 @@ module Storage
     # Get url for a specific surrogate
     def surrogate_url( object_id, file_id, name, expire=nil )
 
-      expire = Settings.S3.expiry unless (!expire.blank? && numeric?(expire))
+      expire = Settings.S3.expiry unless (expire.present? && numeric?(expire))
 
       bucket = object_id
       generic_file = file_id
@@ -100,6 +100,17 @@ module Storage
         @client.delete_bucket(bucket: with_prefix(bucket_name))
       rescue Exception => e
         Rails.logger.error "Could not delete Storage Bucket #{bucket_name}: #{e.to_s}"
+        return false
+      end
+      return true
+    end
+
+    def delete_surrogates(object_id, file_id)
+      begin
+        objects = list_files(object_id, file_id)
+        objects.each { |obj| @client.delete_object(bucket: with_prefix(object_id), key: obj)}
+      rescue Exception => e
+        Rails.logger.error "Could not delete surrogate for #{file_id}: #{e.to_s}"
         return false
       end
       return true
@@ -159,10 +170,14 @@ module Storage
       return url
     end
 
-    def list_files(bucket)
+    def list_files(bucket, file_prefix=nil)
+      options = {}
+      options[:bucket] = with_prefix(bucket)
+      options[:prefix] = file_prefix if file_prefix
+
       files = []
       begin
-        response = @client.list_objects(bucket: with_prefix(bucket))
+        response = @client.list_objects(options)
         files = response.contents.map(&:key)
       rescue
         Rails.logger.debug "Problem listing files in bucket #{bucket}"
@@ -192,9 +207,7 @@ module Storage
         s3 = Aws::S3::Resource.new(client: @client) 
         
         s3.bucket(with_prefix(bucket)).objects.each do |o|        
-          if o.key.eql?(object)
-            return o.object.public_url
-          end
+          return o.object.public_url if o.key.eql?(object)
         end
       end
     end
