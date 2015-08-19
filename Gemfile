@@ -9,7 +9,7 @@ gem 'blacklight', '5.10.2'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
 gem 'hydra-head', '9.2.2'
-gem 'sufia-models', '6.2.0'
+gem 'sufia-models', '6.3.0'
 
 gem 'paper_trail', '~> 3'
 
@@ -24,6 +24,8 @@ gem 'mysql'
 gem 'mysql2'
 
 gem 'omniauth-shibboleth'
+gem 'oauth'
+
 gem 'feedjira'
 
 # Storage-related gems
