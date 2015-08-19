@@ -62,17 +62,17 @@ GEM
       activesupport (= 4.1.12)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-    active-fedora (9.3.0)
-      active-triples (~> 0.7.1)
+    active-fedora (9.1.2)
+      active-triples (~> 0.6.0)
       activesupport (>= 4.1.0)
       deprecation
-      ldp (~> 0.3.1)
+      ldp (~> 0.3.0)
       linkeddata
       nom-xml (>= 0.5.1)
       om (~> 3.1)
       rdf-rdfxml (~> 1.1.0)
       rsolr (~> 1.0.10)
-    active-triples (0.7.1)
+    active-triples (0.6.1)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
       deprecation (~> 0.1)
@@ -125,7 +125,7 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    blacklight (5.10.2)
+    blacklight (5.10.3)
       bootstrap-sass (~> 3.2)
       deprecation
       kaminari (~> 0.13)
@@ -737,11 +737,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora
+  active-fedora (~> 9.1.0)
   aws-sdk (~> 2)
   better_errors
   binding_of_caller
-  blacklight (= 5.10.2)
+  blacklight (~> 5.10.0)
   blacklight-maps
   blacklight_range_limit
   bootstrap-datepicker-rails

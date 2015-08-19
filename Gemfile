@@ -5,7 +5,7 @@ source 'http://rubygems.org'
 
 gem 'rails','~> 4.1'
 
-gem 'blacklight', '5.10.2'
+gem 'blacklight', '~> 5.10.0'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
 gem 'hydra-head', '9.2.2'
@@ -16,7 +16,7 @@ gem 'paper_trail', '~> 3'
 gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :branch => 'develop'
 gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :branch => 'develop'
 
-gem 'active-fedora'
+gem 'active-fedora', '~> 9.1.0'
 
 gem 'rails_config'
 gem 'sqlite3'
