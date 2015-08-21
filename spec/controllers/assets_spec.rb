@@ -52,6 +52,20 @@ describe AssetsController do
       expect(Dir.glob("#{@tmp_assets_dir}/**/SAMPLEA.mp3")).not_to be_empty
     end
 
+    it 'should mint a doi when an asset is added to a published object' do
+      @object.status = "published"
+      @object.save
+      DataciteDoi.create(object_id: @object.id)
+
+      DRI::Asset::Actor.any_instance.stub(:create_external_content).and_return(true)
+
+      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
+      @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      post :create, { :object_id => @object.id, :Filedata => @uploaded }
+
+      DataciteDoi.where(object_id: @object.id).first.delete
+    end
+
    end
 
    describe 'update' do  
@@ -99,6 +113,35 @@ describe AssetsController do
 
       put :update, { :object_id => @object.id, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
       expect(Dir.glob("#{@tmp_assets_dir}/**/content1/SAMPLEA.mp3")).not_to be_empty
+    end
+
+    it 'should mint a doi when an asset is modified' do
+      DRI::Asset::Actor.any_instance.stub(:create_external_content)
+      DRI::Asset::Actor.any_instance.stub(:update_external_content).and_return(true)
+
+      FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
+
+      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+      generic_file.batch = @object
+      generic_file.apply_depositor_metadata('test@test.com')
+      file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
+      options = {}
+      options[:mime_type] = "audio/mp3"
+      options[:file_name] = "SAMPLEA.mp3"
+
+      file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
+      file.save
+      generic_file.save
+      file_id = generic_file.id
+
+      @object.status = "published"
+      @object.save
+      DataciteDoi.create(object_id: @object.id)
+
+      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
+      put :update, { :object_id => @object.id, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
+       
+      DataciteDoi.where(object_id: @object.id).each { |d| d.delete }
     end
 
   end

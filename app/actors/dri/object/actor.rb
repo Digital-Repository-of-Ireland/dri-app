@@ -16,28 +16,7 @@ module DRI::Object
         ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "10", :fl => "id").delete_if{|obj| obj["id"] == @object.id}
       end
     end
-
-    def update_doi(doi, modified)
-      if (doi.changed? && @object.status == "published")
-        doi.mandatory_update? ? doi_mint(modified) : doi_metadata_update
-        doi.clear_changed
-      end
-    end
-
-    def doi_mint(modified)
-      if @object.descMetadata.has_versions?
-        DataciteDoi.create(object_id: @object.id, modified: modified, mod_version: @object.descMetadata.versions.last.uri)
-      else
-        DataciteDoi.create(object_id: @object.id, modified: modified)
-      end
-
-      Sufia.queue.push(MintDoiJob.new(@object.id))
-    end
-
-    def doi_metadata_update
-      Sufia.queue.push(UpdateDoiJob.new(@object.id))
-    end
-
+    
     def version_and_record_committer
       #TODO Investigate reverting back to full object versioning
       #@object.create_version

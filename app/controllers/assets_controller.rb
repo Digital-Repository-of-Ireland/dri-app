@@ -7,6 +7,8 @@ class AssetsController < ApplicationController
 
   require 'validators'
 
+  include DRI::Doi
+
   def actor
     @actor ||= DRI::Asset::Actor.new(@generic_file, current_user)
   end
@@ -89,6 +91,9 @@ class AssetsController < ApplicationController
 
       if actor.update_external_content(URI.escape(url), file_upload, datastream)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
+
+        object = @generic_file.batch
+        mint_doi(object, "asset modified") if object.status = "published"
       else
         message = @generic_file.errors.full_messages.join(', ')
         flash[:alert] = t('dri.flash.alert.error_saving_file', :error => message)
@@ -128,7 +133,7 @@ class AssetsController < ApplicationController
     if datastream.eql?("content")
       @object = retrieve_object! params[:object_id]
 
-      if @object == nil
+      if @object.nil?
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
         @generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
@@ -144,6 +149,8 @@ class AssetsController < ApplicationController
 
         if actor.create_external_content(URI.escape(url), datastream, filename)
           flash[:notice] = t('dri.flash.notice.file_uploaded')
+          
+          mint_doi(@object, "asset added") if @object.status == "published"
         else
           message = @generic_file.errors.full_messages.join(', ')
           flash[:alert] = t('dri.flash.alert.error_saving_file', :error => message)

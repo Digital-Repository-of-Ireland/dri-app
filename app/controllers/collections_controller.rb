@@ -113,7 +113,7 @@ class CollectionsController < BaseObjectsController
       if updated
 
         actor.version_and_record_committer
-        actor.update_doi(doi, "metadata update") if doi && doi.changed?
+        update_doi(@object, doi, "metadata update") if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
