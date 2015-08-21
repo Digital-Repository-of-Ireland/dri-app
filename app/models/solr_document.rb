@@ -70,6 +70,16 @@ class SolrDocument
     self[geojson_key].present? ? true : false
   end
 
+  def is_collection?
+    is_collection_key = ActiveFedora::SolrQueryBuilder.solr_name('is_collection')
+    
+    self[is_collection_key].present? && self[is_collection_key].include?("true")
+  end
+
+  def is_root_collection?
+    self.collection_id ? false : true  
+  end
+
   def root_collection
     root_key = ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
     root = nil
@@ -82,11 +92,7 @@ class SolrDocument
     
     root
   end
-
-  def is_root_collection?
-    self.collection_id ? false : true  
-  end
-
+  
   def status
     status_key = ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :string).to_sym
 

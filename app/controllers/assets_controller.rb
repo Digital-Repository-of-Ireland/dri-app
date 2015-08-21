@@ -72,7 +72,7 @@ class AssetsController < ApplicationController
       format.html { redirect_to :controller => "catalog", :action => "show", :id => params[:object_id] }
     end
   end
-0
+
   def update
     enforce_permissions!("edit", params[:object_id])
 

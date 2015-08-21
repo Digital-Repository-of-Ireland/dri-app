@@ -15,9 +15,9 @@ class SurrogatesController < ApplicationController
       result_docs.each do | r |
         doc = SolrDocument.new(r)
 
-        if doc[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].present? && doc[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].first.eql?("collection")
-
+        if doc.is_collection?
           query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{doc.id}\"")
+
           while query.has_more?
             objects = query.pop
 
@@ -56,7 +56,7 @@ class SurrogatesController < ApplicationController
       result_docs.each do | r |
         doc = SolrDocument.new(r)
 
-        if doc[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].present? && doc[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].first.eql?("collection")
+        if doc.is_collection?
           # Changed query to work with collections that have sub-collectionc (e.g. EAD) - ancestor_id rather than collection_id field
           query = Solr::Query.new("#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
           while query.has_more?
@@ -112,8 +112,8 @@ class SurrogatesController < ApplicationController
         files = query.pop
 
         unless files.empty?
-          files.each do |mf|
-            file_doc = SolrDocument.new(mf)
+          files.each do |f|
+            file_doc = SolrDocument.new(f)
             begin
               Sufia.queue.push(CharacterizeJob.new(file_doc.id))
               flash[:notice] = t('dri.flash.notice.generating_surrogates')
