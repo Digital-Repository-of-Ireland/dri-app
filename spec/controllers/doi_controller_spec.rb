@@ -30,6 +30,27 @@ describe DoiController do
       expect(flash[:notice]).to be_present
     end
 
+    it "should update doi" do
+      @collection = DRI::Batch.with_standard :qdc
+      @collection[:title] = ["A collection"]
+      @collection[:description] = ["This is a Collection"]
+      @collection[:creator] = [@login_user.email]
+      @collection[:rights] = ["This is a statement about the rights associated with this object"]
+      @collection[:publisher] = ["RnaG"]
+      @collection[:type] = ["Collection"]
+      @collection[:creation_date] = ["1916-01-01"]
+      @collection[:published_date] = ["1916-04-01"]
+      @collection[:status] = "published"
+      @collection.save
+      DataciteDoi.create(object_id: @collection.id)
+
+      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
+      put :update, :object_id => @collection.id, :modified => "objects added"
+
+      DataciteDoi.where(object_id: @collection.id).first.delete
+      @collection.delete
+    end
+
   end
 
 end

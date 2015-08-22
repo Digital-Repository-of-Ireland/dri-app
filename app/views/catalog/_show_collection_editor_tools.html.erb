@@ -50,12 +50,19 @@
 	<% if @document.draft? %>
 	  <% publish_label = t('dri.views.catalog.links.publish') %>
 	<% else %>
-	<% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
+	  <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
 	<% end %>
 	<%= link_to '', :'data-target' => '#dri_review_modal_id', :'data-toggle' => 'modal', :id => "all_objects_reviewed" do %>
 	<li>
 		<i class="fa fa-check fa-lg"></i><%= t('dri.views.catalog.links.mark_all_reviewed') %>
 	</li>
+	<% end %>
+	<% if @document.published? && @document.doi %>
+      <%= link_to '', :'data-target' => '#dri_doi_modal_id', :'data-toggle' => 'modal', :id => "request_doi" do %>
+	  <li>
+		<i class="fa fa-share fa-lg"></i><%= t('dri.views.catalog.links.request_doi') %>
+	  </li>
+	  <% end %>
 	<% end %>
 	<%= link_to  surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
 	<li>
@@ -149,6 +156,32 @@
 				<%= button_to  review_path(:apply_all => 'yes'),:class =>"dri_button_red", data: { confirm: t('dri.views.collection.confirm_all_descendants_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
 				<%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
 				<% end %>
+			</div>
+			<div class="modal-footer">
+
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<% end %>
+
+<% if current_user.is_admin? || (can? :manage_collection, @document) %>
+<div class="modal fade" id="dri_doi_modal_id">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title"><%= t('dri.views.catalog.links.request_doi') %></h4>
+			</div>
+
+			<div class="modal-body">
+				<%= form_tag(collection_doi_path(@document.id), method: "post") do %>
+				  <%= label_tag 'modified', t('dri.views.collection.doi_modification') %>
+				  <%= text_field_tag :modified, nil, size: 50, required: true  %>
+                  <%= submit_tag(t('dri.views.catalog.buttons.submit')) %>
+                <% end %>
 			</div>
 			<div class="modal-footer">
 

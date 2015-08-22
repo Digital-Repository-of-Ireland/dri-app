@@ -27,6 +27,7 @@ NuigRnag::Application.routes.draw do
     resources :session, :only => ['create']
 
     resources :collections, :only => ['new','create','update','edit','destroy']
+    post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
 
     resources :institutes, :only => ['show', 'new', 'create', 'edit', 'update']
 

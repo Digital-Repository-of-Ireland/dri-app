@@ -32,6 +32,12 @@ class SolrDocument
     self[collection_key].present? ? self[collection_key][0] : nil
   end  
 
+  def doi
+    doi_key = ActiveFedora::SolrQueryBuilder.solr_name('doi')
+
+    self[doi_key]
+  end    
+
   def editable?
     (self.active_fedora_model && self.active_fedora_model == 'DRI::EncodedArchivalDescription') ? false : true
   end

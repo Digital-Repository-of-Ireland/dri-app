@@ -106,6 +106,7 @@ en:
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Delete collection process successfully started."
         collection_publishing: "Collection is being published."
+        collection_doi_request: "New DOI requested."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
@@ -267,6 +268,7 @@ en:
           clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
           remove_from_collection: "Remove from collection"
+          submit: "Submit"
         facets:
           dates:
             date_range: "Date Range"
@@ -339,6 +341,7 @@ en:
           publish: "Publish collection"
           publish_reviewed: "Publish reviewed objects"
           related: "Related Assets"
+          request_doi: "Request DOI"
           review_objects: "Review Objects"
           reviewed: Reviewed
           share: Share
@@ -367,6 +370,7 @@ en:
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         confirm_publish: "This will make all reviewed objects accessible. This can not be undone! Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
+        doi_modification: "DOI change log entry"
         edit: "Edit Collection"
         index:
           items:
