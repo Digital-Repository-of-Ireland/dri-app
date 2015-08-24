@@ -12,7 +12,7 @@ module Sufia
             obj.transform_file :content,
        		  {
                 #:small => {size: "75", datastream: 'thumbnail_small'},
-                #:medium => {size: "200", datastream: 'thumbnail_medium'},
+                :medium => {size: "200", datastream: 'thumbnail_medium'},
                 :large => {size: "400", datastream: 'thumbnail_large'},
                 :lightbox => {size: "600", datastream: 'lightbox_format'},
                 :full => {size: "100%", datastream: 'full_size_web_format'},
