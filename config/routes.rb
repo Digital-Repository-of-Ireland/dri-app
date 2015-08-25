@@ -4,25 +4,35 @@ NuigRnag::Application.routes.draw do
   scope ENV["RAILS_RELATIVE_URL_ROOT"] || "/" do
     root :to => "catalog#index"
 
-    Blacklight.add_routes(self)
+    #Blacklight.add_routes(self)
 
     mount UserGroup::Engine => "/user_groups"
 
-    devise_for :users, :skip => [ :sessions, :registrations, :passwords], class_name: 'UserGroup::User', :controllers => { :omniauth_callbacks => "user_group/omniauth_callbacks" }
+    Blacklight.add_routes(self)
 
-    resources :objects, :only => ['new', 'edit', 'update', 'create', 'show'] do
-      resources :files, :controller => :assets, :only => ['create','show','update']
+    devise_for :users, :skip => [:sessions, :registrations, :passwords], class_name: 'UserGroup::User', :controllers => { :omniauth_callbacks => "user_group/omniauth_callbacks" }
+
+    devise_scope :user do
+      get '/users/sign_in', :to => 'sessions#new', :as => :new_user_session
+      post '/users/sign_in', :to => 'sessions#create', :as => :user_session
+      delete '/users/sign_out', :to => 'sessions#destroy', :as => :destroy_user_session
+    end
+
+    resources :objects, :only => ['new', 'edit', 'update', 'create', 'show', 'destroy'] do
+      resources :files, :controller => :assets, :only => ['create','show','update','destroy']
       resources :pages
+      resources :doi, :only => ['show']
     end
 
     resources :session, :only => ['create']
 
     resources :collections, :only => ['new','create','update','edit','destroy']
+    post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
 
     resources :institutes, :only => ['show', 'new', 'create', 'edit', 'update']
 
-    match 'newassociation' => 'institutes#associate', :via => :post, :as => :new_association
-    match 'newdepositingassociation' => 'institutes#associate_depositing', :via => :post, :as => :new_depositing_association
+    match 'association' => 'institutes#associate', :via => :post, :as => :new_association
+    match 'association' => 'institutes#disassociate', :via => :delete, :as => :disassociation
     match 'institutions' => 'institutes#index', :via => :get, :as => :institutions
     match 'manage_users' => 'manage_users#new', :via => :get, :as => :manage_users
     match 'manage_users' => 'manage_users#create', :via => :post, :as => :new_manage_user
@@ -57,11 +67,12 @@ NuigRnag::Application.routes.draw do
     match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
     # Added review method to collections controller
     match 'collections/:id/review' => 'collections#review', :via => :put, :as => :review
+    
+    match 'collections/:id/cover' => 'collections#add_cover_image', :via => :put, :as => :add_cover_image
 
     match '/privacy' => 'static_pages#privacy', :via => :get
     match '/workspace' => 'workspace#index', :via => :get
     match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
-    match 'user_groups/users/sign_in' => 'devise/sessions_controller#new', :via => :get, :as => :new_user_session
 
     match 'surrogates/:id' => 'surrogates#update', :via => :put, :as => :surrogates_generate
     match 'surrogates/:id' => 'surrogates#show', :via => :get, :as => :surrogates

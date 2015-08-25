@@ -21,13 +21,13 @@
       <% end %>
 
         <% if current_user %>
-            <%= link_to user_group.destroy_user_session_path, :method => :delete, :id => 'logout' do %>
+            <%= link_to main_app.destroy_user_session_path, :method => :delete, :id => 'logout' do %>
             <li class="no_border">
             	<%= t('blacklight.header_links.logout') %>
             </li>
             <% end %>
         <% else %>
-            <%= link_to user_group.new_user_session_path, :id => 'login' do %>
+            <%= link_to main_app.new_user_session_path, :id => 'login' do %>
                         <li class="no_border">
                         	<%= t('blacklight.header_links.login') %>
             </li>

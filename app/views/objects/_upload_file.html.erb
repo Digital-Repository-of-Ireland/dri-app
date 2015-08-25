@@ -7,7 +7,7 @@
 <fieldset>
 <legend><%= t('dri.views.objects.legends.upload_file') %></legend>
 
-    <% if !@files.empty? %>
+    <% unless @files.empty? %>
   <p class="legend-caption"><%= t('dri.views.objects.legends.file_caption') %></p>
   <% else %>
   <p class="legend-caption"><%= t('dri.views.objects.legends.upload_file_caption') %></p>

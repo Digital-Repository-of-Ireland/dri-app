@@ -43,25 +43,6 @@ module ApplicationHelper
     object.governing_collection.pid unless object.governing_collection.nil?
   end
 
-  def root_collection_solr( doc )
-    if doc[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym]
-      id = doc[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
-      solr_query = "id:#{id}"
-      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
-    end
-    collection[0]
-  end
-
-  def governing_collection_solr( doc )
-    if doc.collection_id
-      id = doc.collection_id
-      solr_query = "id:#{id}"
-      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
-    return collection[0]
-  end
-    return nil
-  end
-
   def get_partial_name( object )
     object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
@@ -107,16 +88,20 @@ module ApplicationHelper
 
   def cover_image ( document )
     path = nil
+    
+    cover_key = ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym
 
-    if document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-        path = document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-    elsif !document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
-      collection = root_collection_solr(document)
-      if collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)] && collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
-        path = collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
+    if document[cover_key].present? && document[cover_key].first
+        path = document[cover_key].first
+    elsif document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
+      solr_doc = SolrDocument.new(document)
+      
+      collection = solr_doc.root_collection
+      if collection[cover_key].present? && collection[cover_key].first
+        path = collection[cover_key].first
       end
     end
-
+    
     path
   end
 
@@ -208,10 +193,41 @@ module ApplicationHelper
       @coll_counts = count_collections_institute(institute)
   end
 
-  def get_institutes( document )
-    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(document)
-    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc(document)
+  def get_institutes()
+      return Institute.all
   end
+
+  # method to find the Institutes associated with and available to add to or remove from the current collection (document) 
+  def get_available_institutes( document )
+    # the full list of Institutes
+    @institutes = InstituteHelpers.get_all_institutes()
+    # the Institutes currently associated with this collection if any
+    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc( document )
+    # the Depositing Institute if any
+    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
+    institutes_array = []
+    collection_institutes_array = []
+    depositing_institute_array = []
+    depositing_institute_array.push( @depositing_institute.name ) unless @depositing_institute.blank?
+    @institutes.each do |inst|
+      institutes_array.push( inst.name )
+    end
+    if @collection_institutes.any?
+      @collection_institutes.each do |inst|
+        collection_institutes_array.push( inst.name )
+      end
+    end
+    # exclude the associated and depositing Institutes from the list of Institutes available
+    @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array
+    # exclude the depositing Institute from the list of Institutes which can be removed
+    @removal_institutes = collection_institutes_array - depositing_institute_array
+  end
+  
+  # method to find the depositing Institute (if any) associated with the current collection (document) 
+  def get_depositing_institute ( document )
+    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
+  end
+
 
   # Called from grid view
   def get_cover_image( document )
@@ -225,28 +241,28 @@ module ApplicationHelper
         if !@cover_image.nil? then
           break
         end
-      end    
+      end
     end
 
     @cover_image = default_image ( file_doc ) if @cover_image.nil?
   end
 
   def get_licence( document )
-    if !document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym].blank?
+    if document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym].present?
       @licence = Licence.where(:name => document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym]).first
       if (@licence == nil)
         @licence = document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym]
       end
-    elsif !document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
-      collection = root_collection_solr(document)
-      if !collection[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string)].blank?
+    elsif document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
+      collection = document.root_collection
+      if collection[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string)].present?
         @licence = Licence.where(:name => collection[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string)]).first
       end
     end
   end
 
-  def reader_group( collection )
-    UserGroup::Group.find_by_name(collection['id'])
+  def reader_group( collection_id )
+    UserGroup::Group.find_by_name(collection_id)
   end
 
   def pending_memberships ( collection )
@@ -265,13 +281,13 @@ module ApplicationHelper
   def has_browse_params?
     return has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
   end
-  
+
   def is_root?
     return request.env['PATH_INFO'] == '/' && request.query_string.blank?
   end
 
   def has_search_parameters?
-    !params[:q].blank? or !params[:f].blank? or !params[:search_field].blank?
+    params[:q].present? or params[:f].present? or params[:search_field].present?
   end
 
   def link_to_loc(field)
@@ -282,11 +298,11 @@ module ApplicationHelper
   #
   def get_documentation_object(document)
     # Try first to see if the parent collection has documentation objects
-    gov_col_doc = governing_collection_solr(document)
+    gov_col_doc_id = document.collection_id
 
-    if gov_col_doc.nil? # root_collection
+    if gov_col_doc_id.nil? # root_collection
       # Look then for documentation objects in the Root collection
-      root_doc = root_collection_solr(document)
+      root_doc = document.root_collection
       if (root_doc.nil?)
         return nil
       else
@@ -298,12 +314,12 @@ module ApplicationHelper
         end
       end
     else
-      gov_col = DRI::Batch.find(gov_col_doc["id"])
+      gov_col = DRI::Batch.find(gov_col_doc_id)
       if !gov_col.documentation_object_ids.first.nil?
         return gov_col.documentation_object_ids.first
       else
         # no doc for the immediate parent, then try with the root_collection
-        root_doc = root_collection_solr(document)
+        root_doc = document.root_collection
         if (root_doc.nil?)
           return nil
         else
@@ -316,11 +332,11 @@ module ApplicationHelper
         end
       end
     end
-  end 
- 
+  end
+
   def get_reader_group(doc)
     readgroups = doc["#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
-    group = reader_group(doc)
+    group = reader_group(doc['id'])
     if group
       if readgroups.present? && readgroups.include?(group.name)
         return @reader_group = group

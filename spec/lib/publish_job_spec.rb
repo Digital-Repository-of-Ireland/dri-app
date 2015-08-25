@@ -48,7 +48,7 @@ describe "PublishJob" do
   
   describe "run" do
     it "should set a collection's reviewed objects status to published" do
-      
+      Sufia.queue.stub(:push).with(an_instance_of(MintDoiJob))
       job = PublishJob.new(@collection.id)
       job.run
 
@@ -89,6 +89,19 @@ describe "PublishJob" do
       expect(@draft.status).to eql("draft")
 
       @draft.delete
+    end
+
+    it "should queue a doi job when publishing an object" do
+      job = PublishJob.new(@collection.id)
+
+      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).twice
+      job.run
+
+      @collection.reload
+      @object.reload
+    
+      expect(@collection.status).to eql("published")
+      expect(@object.status).to eql("published")       
     end
 
     @slow

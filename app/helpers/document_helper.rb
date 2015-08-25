@@ -1,24 +1,5 @@
 module DocumentHelper
 
-  def get_document_type document
-
-    case document[Solrizer.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
-      when "image"
-        return t("dri.data.types.Image")
-      when "audio"
-        return t("dri.data.types.Sound")
-      when "video"
-        return t("dri.data.types.MovingImage")
-      when "text"
-        return t("dri.data.types.Text")
-      when "mixed_types"
-        return t("dri.data.types.MixedType")
-      else
-        return t("dri.data.types.Unknown")
-    end
-
-  end
-
   def get_collection_media_type_params document, collectionId, mediaType
     if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil
       searchFacets = { Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [mediaType], Solrizer.solr_name('root_collection_id', :facetable, type: :string).to_sym => [collectionId] }
@@ -26,7 +7,8 @@ module DocumentHelper
       searchFacets = { Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [mediaType], Solrizer.solr_name('ancestor_id', :facetable, type: :string).to_sym => [collectionId] }
     end
     searchParams = { :mode => "objects", :search_field => "all_fields", :utf8 => "✓", :f => searchFacets }
-    return searchParams
+    
+    searchParams
   end
 
   def truncate_description description, count
@@ -37,19 +19,10 @@ module DocumentHelper
     end
   end
 
-  # Check, based on the document type (Fedora active_fedora_model), whether edit functions are available
-  def edit_functionality_available? document
-    (!document['active_fedora_model_ssi'].nil? && document['active_fedora_model_ssi'] == 'DRI::EncodedArchivalDescription') ? false : true
-  end
-
   # Workaround for reusing partials for add institution/permissions to non QDC collections
   #
   def update_desc_metadata? md_class
     (["DRI::QualifiedDublinCore", "DRI::Documentation"].include? md_class) ? true : false
-  end
-
-  def get_active_fedora_model document
-    document['active_fedora_model_ssi'] unless document['active_fedora_model_ssi'].nil?
   end
 
   # For a given collection (sub-collection) object returns a list of the immediate child sub-collections
@@ -153,8 +126,8 @@ module DocumentHelper
   def get_object_external_relationships document
     url_array = []
 
-    if document['active_fedora_model_ssi']
-      case document['active_fedora_model_ssi']
+    if document.active_fedora_model
+      case document.active_fedora_model
         when 'DRI::Mods'
           solr_fields_array = *(DRI::Vocabulary::modsRelationshipTypes.map { |s| s.prepend("ext_related_items_ids_").to_sym})
         when 'DRI::QualifiedDublinCore'

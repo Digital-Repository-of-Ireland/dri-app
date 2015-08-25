@@ -15,7 +15,7 @@ class ObjectHistoryController < ApplicationController
     enforce_permissions!("edit", params[:id])
 
     @object = retrieve_object!(params[:id])
-    @fedora_url = @object.uri
+    @fedora_url = @object.uri.to_str
 
     @file_versions = {}
 

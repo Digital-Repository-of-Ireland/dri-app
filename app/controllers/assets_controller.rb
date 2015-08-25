@@ -7,6 +7,8 @@ class AssetsController < ApplicationController
 
   require 'validators'
 
+  include DRI::Doi
+
   def actor
     @actor ||= DRI::Asset::Actor.new(@generic_file, current_user)
   end
@@ -33,7 +35,7 @@ class AssetsController < ApplicationController
     enforce_permissions!("edit", params[:object_id]) if params[:version].present?
 
     @generic_file = retrieve_object! params[:id]
-    unless @generic_file.nil?
+    if @generic_file
       can_view?
 
       @datastream = params[:datastream].presence || "content"
@@ -54,6 +56,25 @@ class AssetsController < ApplicationController
     render :text => "Unable to find file"
   end
 
+  def destroy
+    enforce_permissions!("edit", params[:object_id])
+
+    @generic_file = retrieve_object!(params[:id])
+    
+    if @generic_file.batch.status != "published"
+      @generic_file.delete 
+      delete_surrogates(params[:object_id], @generic_file.id)
+
+      flash[:notice] = t('dri.flash.notice.asset_deleted')  
+    else
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, "")
+    end
+
+    respond_to do |format|
+      format.html { redirect_to :controller => "catalog", :action => "show", :id => params[:object_id] }
+    end
+  end
+
   def update
     enforce_permissions!("edit", params[:object_id])
 
@@ -70,6 +91,9 @@ class AssetsController < ApplicationController
 
       if actor.update_external_content(URI.escape(url), file_upload, datastream)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
+
+        object = @generic_file.batch
+        mint_doi(object, "asset modified") if object.status = "published"
       else
         message = @generic_file.errors.full_messages.join(', ')
         flash[:alert] = t('dri.flash.alert.error_saving_file', :error => message)
@@ -109,10 +133,10 @@ class AssetsController < ApplicationController
     if datastream.eql?("content")
       @object = retrieve_object! params[:object_id]
 
-      if @object == nil
+      if @object.nil?
         flash[:notice] = t('dri.flash.notice.specify_object_id')
       else
-        @generic_file = DRI::GenericFile.new(id: Sufia::IdService.mint)
+        @generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
         @generic_file.batch = @object
         @generic_file.apply_depositor_metadata(current_user)
         @generic_file.preservation_only = "true" if params[:preservation].eql?('true')
@@ -125,6 +149,8 @@ class AssetsController < ApplicationController
 
         if actor.create_external_content(URI.escape(url), datastream, filename)
           flash[:notice] = t('dri.flash.notice.file_uploaded')
+          
+          mint_doi(@object, "asset added") if @object.status == "published"
         else
           message = @generic_file.errors.full_messages.join(', ')
           flash[:alert] = t('dri.flash.alert.error_saving_file', :error => message)
@@ -224,6 +250,43 @@ class AssetsController < ApplicationController
       end
     end
 
+    def create_file(filedata, generic_file, datastream, checksum, filename = nil)
+      @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
+      options = {}
+      options[:mime_type] = @mime_type
+      options[:checksum] = checksum
+      options[:file_name] = filename unless filename.nil?
+
+      @file.add_file filedata, options
+
+      begin
+        raise Exceptions::InternalError unless @file.save!
+      rescue ActiveRecord::ActiveRecordError => e
+        logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
+        raise Exceptions::InternalError
+      end
+    end
+
+    def delete_surrogates(bucket_name, file_prefix)
+      storage = Storage::S3Interface.new
+      storage.delete_surrogates(bucket_name, file_prefix)
+    end
+
+    def local_file
+      if (params[:version].present?)
+        LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d AND version = :v",
+                       { :f => @generic_file.id, :d => @datastream, :v => params[:version] }).take
+      else
+        LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
+                       { :f => @generic_file.id, :d => @datastream }).order("version DESC").take
+      end
+    end
+
+    def local_file_ingest(name)
+      upload_dir = Rails.root.join(Settings.dri.uploads)
+      File.new(File.join(upload_dir, name))
+    end
+
     def upload_from_params
       if params[:Filedata].blank? && params[:Presfiledata].blank? && params[:local_file].blank?
         flash[:notice] = t('dri.flash.notice.specify_file')
@@ -257,38 +320,6 @@ class AssetsController < ApplicationController
         raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', :name => file_upload.original_filename)
         return
       end
-    end
-
-    def create_file(filedata, generic_file, datastream, checksum, filename = nil)
-      @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
-      options = {}
-      options[:mime_type] = @mime_type
-      options[:checksum] = checksum
-      options[:file_name] = filename unless filename.nil?
-
-      @file.add_file filedata, options
-
-      begin
-        raise Exceptions::InternalError unless @file.save!
-      rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
-        raise Exceptions::InternalError
-      end
-    end
-
-    def local_file
-      if (params[:version].present?)
-        LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d AND version = :v",
-                       { :f => @generic_file.id, :d => @datastream, :v => params[:version] }).take
-      else
-        LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d",
-                       { :f => @generic_file.id, :d => @datastream }).order("version DESC").take
-      end
-    end
-
-    def local_file_ingest(name)
-      upload_dir = Rails.root.join(Settings.dri.uploads)
-      File.new(File.join(upload_dir, name))
     end
 
 end

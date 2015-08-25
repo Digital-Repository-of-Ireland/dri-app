@@ -17,8 +17,8 @@
         <%= truncate_description(document[Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym][0], 280).html_safe %>
       </p>
       <p class="dri_publishing_institute">
-	    <% @depositing_institute = get_institutes( document ) %>
-		<% if @depositing_institute %>
+	    <% get_depositing_institute ( document ) %>
+		<% if @depositing_institute.present? %>
 		    <%= @depositing_institute.name %>
 		<% else %>
 			N/A

@@ -1,13 +1,13 @@
-Before do
-  DatabaseCleaner.start
-end
+#Before do
+#  DatabaseCleaner.start
+#end
 
 Before('~@javascript') do
   page.driver.browser.header('Accept-Language', 'en')
 end
 
 After do
-  DatabaseCleaner.clean
+  #DatabaseCleaner.clean
   clean_repo
 end
 

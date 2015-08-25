@@ -1,7 +1,7 @@
 module ActiveFedora
   class UnsavedDigitalObject
     def assign_pid
-      @pid ||= Sufia::IdService.mint
+      @pid ||= ActiveFedora::Noid::Service.new.mint
     end
   end
 end

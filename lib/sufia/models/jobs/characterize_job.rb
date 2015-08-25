@@ -1,4 +1,4 @@
-class CharacterizeJob < ActiveFedoraPidBasedJob
+class CharacterizeJob < ActiveFedoraIdBasedJob
 
   def queue_name
     :characterize
@@ -7,6 +7,8 @@ class CharacterizeJob < ActiveFedoraPidBasedJob
   def run
     begin
       generic_file.characterize
+      generic_file.save
+
       after_characterize
     rescue => e
       Rails.logger.error "Unable to characterize file #{generic_file_id}"
@@ -14,13 +16,13 @@ class CharacterizeJob < ActiveFedoraPidBasedJob
   end
 
   def after_characterize
-    if !generic_file.preservation_only.eql?('true')
+    unless generic_file.preservation_only.eql?('true')
       Sufia.queue.push(CreateBucketJob.new(generic_file_id))
     end
 
     # Update the Batch object's Solr index now that the GenericFile
     # has characterization metadata
-    if generic_file.batch != nil
+    unless generic_file.batch.nil?
       Sufia.queue.push(UpdateIndexJob.new(generic_file.batch.id))
     end
   end

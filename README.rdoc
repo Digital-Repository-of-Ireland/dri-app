@@ -49,11 +49,16 @@ running.  (E.G. MariaDB start alias: alias mariadbstart='cd
 The db:seed step above will create 3 initial accounts:
 
 * admin@dri.ie (admin user)
+* orgmanager@dri.ie (organisation manager)
 * manager@dri.ie (collection manager)
 * user@dri.ie (public user)
 
-The password for all 3 accounts is configured in the settings.yml or settings.local.yml files.
-
+The default password for all 3 accounts is set at install time from the password
+setting in the settings.yml file. Typically this will be set to "CHANGEME" and
+it should be updated as soon as possible after installation. To change the password log into the
+application as each of the default users, navigate to their profile page by
+clicking on the username at the top of the screen, and clicking on the 'Edit' button.
+ 
 To run the unit tests
 
   $ cd nuig-rnag
