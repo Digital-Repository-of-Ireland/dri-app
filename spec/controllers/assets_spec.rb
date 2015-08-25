@@ -67,6 +67,7 @@ describe AssetsController do
       post :create, { :object_id => @object.id, :Filedata => @uploaded }
 
       DataciteDoi.where(object_id: @object.id).first.delete
+      DoiConfig = nil
     end
 
    end
@@ -147,6 +148,7 @@ describe AssetsController do
       put :update, { :object_id => @object.id, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
        
       DataciteDoi.where(object_id: @object.id).each { |d| d.delete }
+      DoiConfig = nil
     end
 
   end

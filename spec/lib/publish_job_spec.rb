@@ -92,6 +92,8 @@ describe "PublishJob" do
     end
 
     it "should queue a doi job when publishing an object" do
+      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
+
       job = PublishJob.new(@collection.id)
 
       Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).twice
@@ -102,6 +104,8 @@ describe "PublishJob" do
     
       expect(@collection.status).to eql("published")
       expect(@object.status).to eql("published")       
+ 
+      DoiConfig = nil
     end
 
     @slow

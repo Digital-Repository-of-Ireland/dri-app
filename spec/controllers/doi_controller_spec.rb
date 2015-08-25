@@ -7,6 +7,10 @@ describe DoiController do
     DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
   end
 
+  after(:all) do
+    DoiConfig = nil
+  end
+
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
