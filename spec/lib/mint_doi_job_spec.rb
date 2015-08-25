@@ -7,6 +7,10 @@ describe "MintDoiJob" do
     DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
   end
 
+  after(:all) do
+    DoiConfig = nil
+  end
+
   before(:each) do
     @collection = DRI::Batch.with_standard :qdc
     @collection[:title] = ["A collection"]
