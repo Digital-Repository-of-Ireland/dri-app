@@ -7,16 +7,18 @@ class MintDoiJob < ActiveFedoraIdBasedJob
   end
 
   def run
-    Rails.logger.info "Mint DOI for #{id}"
+    unless DoiConfig.nil?
+      Rails.logger.info "Mint DOI for #{id}"
     
-    doi = DataciteDoi.where(object_id: id).current
+      doi = DataciteDoi.where(object_id: id).current
 
-    client = DOI::Datacite.new(doi)
-    client.metadata
-    client.mint
-    object.doi = doi.doi
+      client = DOI::Datacite.new(doi)
+      client.metadata
+      client.mint
+      object.doi = doi.doi
 
-    object.save
+      object.save
+    end
   end
 
 end
