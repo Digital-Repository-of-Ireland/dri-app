@@ -13,25 +13,30 @@ module Storage
     end
 
     # Get a hash of all surrogates for an object
-    def get_surrogates(doc, file_doc, expire=nil)
+    # object - SolrDocument or object ID
+    # file = SolrDocument or GenericFile ID
+    def get_surrogates(object, file, expire=nil)
 
       expire = Settings.S3.expiry unless (expire.present? && numeric?(expire))
-      bucket = doc.id
-      generic_file = file_doc.id
+      bucket = object.respond_to?(:id) ? object.id : object
+      generic_file_id = file.respond_to?(:id) ? file.id : file
 
-      files = list_files(bucket)
+      surrogate_file_names = list_files(bucket)
+
       @surrogates_hash = {}
-      files.each do |file|
+      
+      surrogate_file_names.each do |filename|
         begin
-          if file.match(/#{generic_file}_([-a-zA-z0-9]*)\..*/)
-            url = create_url(bucket, file, expire)
-            @surrogates_hash[$1] = url
+          if match = filename_match?(filename, generic_file_id)
+            url = create_url(bucket, filename, expire)
+            @surrogates_hash[match] = url
           end
         rescue Exception => e
           Rails.logger.debug "Problem getting url for file #{file} : #{e.to_s}"
         end
       end
-      return @surrogates_hash
+      
+      @surrogates_hash
     end
 
 
@@ -41,17 +46,20 @@ module Storage
 
       surrogates_hash = {}
       begin
-        bucketobj = @client.list_objects(bucket: with_prefix(bucket))
-        bucketobj.each do |fileobj|
-          if fileobj.key.match(/#{file_id}_([-a-zA-z0-9]*)\..*/)
-            surrogates_hash[fileobj.key] = fileobj.head
+        response = @client.list_objects(bucket: with_prefix(bucket))
+
+        if response.successful?
+          response.contents.each do |fileobj|
+            surrogates_hash[fileobj.key] = @client.head_object(bucket: with_prefix(bucket), key: fileobj.key) if filename_match?(fileobj.key, file_id)
           end
+        else
+          Rails.logger.debug "Problem getting surrogate info for file #{file_id}"
         end
       rescue Exception => e
-        Rails.logger.debug "Problem getting info for file #{file_id} : #{e.to_s}"
+        Rails.logger.debug "Problem getting surrogate info for file #{file_id} : #{e.to_s}"
       end
 
-      return surrogates_hash
+      surrogates_hash
     end
 
 
@@ -68,7 +76,7 @@ module Storage
       filename = "#{generic_file}_#{name}"
       surrogate = files.find { |e| /#{filename}/ =~ e }
 
-      unless surrogate.blank?
+      if surrogate.present?
         begin
           url = create_url(bucket, surrogate, expire)
         rescue Exception => e
@@ -76,7 +84,7 @@ module Storage
         end
       end
  
-      return url
+      url
     end
 
     # Create bucket
@@ -167,7 +175,8 @@ module Storage
       rescue Exception => e
         Rails.logger.error "Problem getting link for file #{file}: #{e.to_s}"
       end
-      return url
+
+      url
     end
 
     def list_files(bucket, file_prefix=nil)
@@ -195,11 +204,7 @@ module Storage
         nil
       end
     end 
-
-    def with_prefix bucket
-      bucket_prefix ? "#{bucket_prefix}.#{bucket}" : bucket
-    end
-
+    
     def create_url(bucket, object, expire=nil, authenticated=true)
       if authenticated
         signed_url(with_prefix(bucket), object, expiration_timestamp(expire))
@@ -221,6 +226,16 @@ module Storage
       when String then Time.parse(input).to_i
       else (Time.now + 60*60).to_i
       end
+    end
+
+    def filename_match?(filename, generic_file_id)
+      filename.match(/#{generic_file_id}_([-a-zA-z0-9]*)\..*/)
+
+      $1
+    end
+
+    def with_prefix bucket
+      bucket_prefix ? "#{bucket_prefix}.#{bucket}" : bucket
     end
 
     def signed_url(bucket, path, expire_date=nil)
