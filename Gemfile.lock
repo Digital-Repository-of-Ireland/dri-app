@@ -62,17 +62,17 @@ GEM
       activesupport (= 4.1.12)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-    active-fedora (9.1.2)
-      active-triples (~> 0.6.0)
+    active-fedora (9.3.0)
+      active-triples (~> 0.7.1)
       activesupport (>= 4.1.0)
       deprecation
-      ldp (~> 0.3.0)
+      ldp (~> 0.3.1)
       linkeddata
       nom-xml (>= 0.5.1)
       om (~> 3.1)
       rdf-rdfxml (~> 1.1.0)
       rsolr (~> 1.0.10)
-    active-triples (0.6.1)
+    active-triples (0.7.1)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
       deprecation (~> 0.1)
@@ -516,7 +516,7 @@ GEM
     rb-fsevent (0.9.5)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    rdf (1.1.14)
+    rdf (1.1.15)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (1.1.0)
       rdf (>= 1.1)
@@ -737,7 +737,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora (~> 9.1.0)
+  active-fedora (~> 9.3.0)
   aws-sdk (~> 2)
   better_errors
   binding_of_caller
