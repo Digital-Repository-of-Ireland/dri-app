@@ -55,6 +55,9 @@ describe AssetsController do
     it 'should mint a doi when an asset is added to a published object' do
       @object.status = "published"
       @object.save
+
+      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+
       DataciteDoi.create(object_id: @object.id)
 
       DRI::Asset::Actor.any_instance.stub(:create_external_content).and_return(true)
@@ -118,6 +121,8 @@ describe AssetsController do
     it 'should mint a doi when an asset is modified' do
       DRI::Asset::Actor.any_instance.stub(:create_external_content)
       DRI::Asset::Actor.any_instance.stub(:update_external_content).and_return(true)
+
+      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
 
