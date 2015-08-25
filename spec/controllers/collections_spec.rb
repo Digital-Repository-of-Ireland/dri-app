@@ -105,6 +105,9 @@ describe CollectionsController do
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "published"
       @collection.save
+
+      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+
       DataciteDoi.create(object_id: @collection.id)
 
       Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
@@ -130,6 +133,9 @@ describe CollectionsController do
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "published"
       @collection.save
+
+      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+
       DataciteDoi.create(object_id: @collection.id)
 
       Sufia.queue.should_not_receive(:push).with(an_instance_of(MintDoiJob))
