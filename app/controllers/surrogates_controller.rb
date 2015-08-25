@@ -115,7 +115,12 @@ class SurrogatesController < ApplicationController
           files.each do |f|
             file_doc = SolrDocument.new(f)
             begin
-              Sufia.queue.push(CharacterizeJob.new(file_doc.id))
+              # only characterize if necessary
+              if file_doc[ActiveFedora::SolrQueryBuilder.solr_name('characterization__mime_type')].present?
+                Sufia.queue.push(CreateBucketJob.new(file_doc.id))
+              else
+                Sufia.queue.push(CharacterizeJob.new(file_doc.id))
+              end
               flash[:notice] = t('dri.flash.notice.generating_surrogates')
             rescue Exception => e
               flash[:alert] = t('dri.flash.alert.error_generating_surrogates', :error => e.message)

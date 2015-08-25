@@ -12,6 +12,5 @@ class CreateDerivativesJob < ActiveFedoraIdBasedJob
       return unless Sufia.config.enable_ffmpeg
     end
     generic_file.create_derivatives
-    generic_file.save
   end
 end
