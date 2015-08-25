@@ -119,6 +119,7 @@ describe CollectionsController do
       put :update, :id => @collection.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @collection.id).first.delete
+      DoiConfig = nil
     end
 
     it 'should not mint a doi for no update of mandatory fields' do
@@ -147,6 +148,7 @@ describe CollectionsController do
       put :update, :id => @collection.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @collection.id).first.delete
+      DoiConfig = nil
     end
 
   end

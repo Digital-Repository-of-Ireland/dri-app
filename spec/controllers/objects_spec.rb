@@ -113,6 +113,8 @@ describe ObjectsController do
     end
 
     it 'should mint a doi for an update of mandatory fields' do
+      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+
       @object.status = "published"
       @object.save
       DataciteDoi.create(object_id: @object.id)
@@ -126,9 +128,12 @@ describe ObjectsController do
       put :update, :id => @object.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @object.id).first.delete
+      DoiConfig = nil
     end
 
     it 'should not mint a doi for no update of mandatory fields' do
+      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+
       @object.status = "published"
       @object.save
       DataciteDoi.create(object_id: @object.id)
@@ -142,6 +147,7 @@ describe ObjectsController do
       put :update, :id => @object.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @object.id).first.delete
+      DoiConfig = nil
     end
 
   end
