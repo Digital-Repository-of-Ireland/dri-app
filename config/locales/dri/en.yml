@@ -550,7 +550,8 @@ en:
           private_metadata_warn: "DRI have an Open Metadata Policy. We strongly encourage all depositors to allow open access to their object's metadata."
           public: Public
           public_metadata: "Public Metadata"
-          read: "Access Asset Surrogates"
+          read: "Surrogate Access"
+          read_file_desc: "Set access to surrogates of the master asset (i.e. thumbnails etc)"
           registered: "Logged In"
           restricted: Restricted
           search: "Search Access"
