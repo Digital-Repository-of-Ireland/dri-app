@@ -287,7 +287,8 @@
 	</fieldset>
 
 	<div class="field">
-		<h5><%= t('dri.views.objects.access_controls.read') %></h5>
+		<h5><%= t('dri.views.objects.access_controls.read') %><i id="dri_view_objects_access_controls_read_file_info" class="fa fa-info-circle"></i></h5>
+                <%= t('dri.views.objects.access_controls.read_file_desc') %>
 		<ul class="breadcrumb">
 			<li>
 				<%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled=> inherit_disabled %>
@@ -325,7 +326,7 @@
 
 			<ul class="breadcrumb">
 				<li>
-					<%= f.radio_button :master_file_access, "inherit", :checked=>record.master_file_access=="inherit", :disabled=> inherit_disabled %>
+					<%= f.radio_button :master_file_access, "inherit", :checked=>(record.master_file_access.blank? || record.master_file_access=="inherit"), :disabled=> inherit_disabled %>
 					<%= f.label :master_file_access, t('dri.views.objects.access_controls.inherit')%>
 				</li>
 
