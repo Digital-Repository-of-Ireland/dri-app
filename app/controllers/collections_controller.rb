@@ -111,7 +111,6 @@ class CollectionsController < BaseObjectsController
 
     respond_to do |format|
       if updated
-
         actor.version_and_record_committer
         update_doi(@object, doi, "metadata update") if doi && doi.changed?
 
@@ -359,8 +358,9 @@ class CollectionsController < BaseObjectsController
   private
 
   def valid_permissions?
-    if ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
-        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
+    if (@object.governing_collection_id.blank? &&
+        ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
+        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?)))
       false
     else
       true
