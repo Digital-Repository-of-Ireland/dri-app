@@ -184,7 +184,7 @@ class ObjectsController < BaseObjectsController
     @list = []
 
     if params.has_key?("objects") && !params[:objects].blank?
-      solr_query = ActiveFedora::SolrService.construct_query_for_pids(params[:objects].map{|o| o.values.first})
+      solr_query = ActiveFedora::SolrService.construct_query_for_ids(params[:objects].map{|o| o.values.first})
       result_docs = Solr::Query.new(solr_query)
 
       storage = Storage::S3Interface.new
@@ -195,8 +195,8 @@ class ObjectsController < BaseObjectsController
         doc.each do | r |
           item = {}
           doc = SolrDocument.new(r)
-
-          if doc.status.first.eql?('published')
+                  
+          if doc.published?
             # Get metadata
             item['pid'] = doc.id
             item['files'] = []
