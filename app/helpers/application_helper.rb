@@ -94,9 +94,8 @@ module ApplicationHelper
     if document[cover_key].present? && document[cover_key].first
         path = document[cover_key].first
     elsif document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
-      solr_doc = SolrDocument.new(document)
-      
-      collection = solr_doc.root_collection
+      collection = document.root_collection
+
       if collection[cover_key].present? && collection[cover_key].first
         path = collection[cover_key].first
       end

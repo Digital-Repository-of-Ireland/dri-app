@@ -93,7 +93,7 @@ class SolrDocument
       id = self[root_key][0]
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
-      root = collection[0]
+      root = SolrDocument.new(collection[0])
     end
     
     root
