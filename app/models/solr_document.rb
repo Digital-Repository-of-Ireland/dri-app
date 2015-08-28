@@ -7,6 +7,7 @@ class SolrDocument
   include UserGroup::PermissionsSolrDocOverride
   include DRI::Solr::Document::File
   include DRI::Solr::Document::Relations
+  include DRI::Solr::Document::Documentation
 
   # self.unique_key = 'id'
   
