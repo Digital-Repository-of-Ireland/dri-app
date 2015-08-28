@@ -30,8 +30,15 @@ module DocumentHelper
     children_array = []
     # Find all immediate children of this collection
     solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{document['id']}\""
+    f_query = if current_user && current_user.is_admin?
+           "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true "
+         else
+           "(#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true " +
+           "AND #{Solrizer.solr_name('status', :stored_searchable, type: :string)}:published)"
+         end
+
     # Filter to only get those that are collections: fq=is_collection_tesim:true
-    q_result = Solr::Query.new(solr_query, limit, :fq => "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true")
+    q_result = Solr::Query.new(solr_query, limit, :fq => f_query)
 
     while (q_result.has_more?)
       objects_docs = q_result.pop
@@ -62,8 +69,15 @@ module DocumentHelper
           object.get_relationships_records.each do |rel, value|
             display_label = object.get_relationships_names[rel]
             item_array = []
+
             value.each do |id|
-              rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+              if current_user && current_user.is_admin?
+                rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+              else
+                rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}",
+                  :fq => "#{Solrizer.solr_name('status', :stored_searchable, type: :string)}:published",
+                  :defType => "edismax")
+              end
               unless rel_obj_doc.empty?
                 link_text = rel_obj_doc[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
                 item_array.to_a.push [link_text, catalog_path(rel_obj_doc[0]["id"]).to_s]
@@ -75,7 +89,13 @@ module DocumentHelper
         unless object.documentation_object_ids.nil? || object.documentation_object_ids.empty?
           doc_array = []
           object.documentation_object_ids.each do |id|
-            doc_obj = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+            if current_user && current_user.is_admin?
+              doc_obj = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+            else
+              doc_obj = ActiveFedora::SolrService.query("id:#{id}",
+                :fq => "#{Solrizer.solr_name('status', :stored_searchable, type: :string)}:published",
+                :defType => "edismax")
+            end
             unless doc_obj.empty?
               link_text = doc_obj[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
               doc_array.to_a.push [link_text, catalog_path(doc_obj[0]["id"]).to_s]
@@ -85,36 +105,15 @@ module DocumentHelper
         end
       elsif object.class == DRI::Documentation
         unless object.documentation_for_id.nil?
-          link_text = object.documentation_for.title.first
-          relationships_hash["Is Documentation For"] = Kaminari.paginate_array([[link_text, catalog_path(object.documentation_for_id).to_s]]).page(params["Is Documentation For".downcase.gsub(/\s/,'_') << "_page"]).per(4)
+          if object.published? || (current_user && current_user.is_admin?)
+            link_text = object.documentation_for.title.first
+            relationships_hash["Is Documentation For"] = Kaminari.paginate_array([[link_text, catalog_path(object.documentation_for_id).to_s]]).page(params["Is Documentation For".downcase.gsub(/\s/,'_') << "_page"]).per(4)
+          end
         end
       end
     rescue ActiveFedora::ObjectNotFoundError
       Rails.logger.error("Object not found: #{document["id"]}")
     end
-=begin
-      object.get_relationships_names.each do |rel, display_label|
-        unless (object.send("#{rel}").nil?)
-          if (object.send("#{rel}").respond_to?("push"))
-            item_array = []
-            # e.g. constituents rel: object.constituents (holds all the constituents object - inefficient)
-            # object.constituent_ids (returns an array of all the foreign-key IDS for the constituents)
-            # Use these instead: "constituents".singularize << "_ids"
-            object.send("#{rel}".singularize << "_ids").each do |id|
-              rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
-              unless rel_obj_doc.empty?
-                link_text = rel_obj_doc[0][Solrizer.solr_name('title', :stored_searchable, type: :string)].first
-                item_array.to_a.push [link_text, catalog_path(rel_obj_doc[0]["id"]).to_s]
-              end
-            end
-            relationships_hash["#{display_label}"] = Kaminari.paginate_array(item_array).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4) unless item_array.empty?
-          else
-            link_text = object.send("#{rel}").title.first
-            relationships_hash["#{display_label}"] = Kaminari.paginate_array([[link_text, catalog_path(object.send("#{rel}").pid).to_s]]).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4)
-          end
-        end
-      end # each
-=end
 
     return relationships_hash
   end # get_object_relationships
