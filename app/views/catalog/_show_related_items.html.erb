@@ -1,5 +1,5 @@
-<% relationships = get_object_relationships(@document) %>
-<% external_rels = get_object_external_relationships(@document) %>
+<% relationships = @document.object_relationships(params) %>
+<% external_rels = @document.external_relationships(params) %>
 
 <% if (!relationships.empty? || !external_rels.empty?) %>
 <div class="dri_object_institutes_block">
@@ -11,7 +11,7 @@
         <div class="dri_clearfix">
           <% value.take(4).each do |item| -%>
             <article class="">
-              <%= link_to (item[1])  do %>
+              <%= link_to catalog_path(item[1])  do %>
                 <div class="dri_content_block">
                   <h1><%= item[0] %></h1>
                   <div class="dri_icon">
