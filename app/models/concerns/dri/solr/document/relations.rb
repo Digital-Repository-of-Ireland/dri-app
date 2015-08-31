@@ -35,7 +35,7 @@ module DRI::Solr::Document::Relations
   # @param[Solr::Document] document the Solr document of the object to display relations for
   # @return Hash related items grouped by type of relationship
   #
-  def object_relationships params
+  def object_relationships params, current_user
     relationships_hash = Hash.new
     
     begin
@@ -48,8 +48,8 @@ module DRI::Solr::Document::Relations
           relationships_hash["Is Documentation For"] = Kaminari.paginate_array([[link_text, documentation.id]]).page(params["Is Documentation For".downcase.gsub(/\s/,'_') << "_page"]).per(4)
         end
       else
-        relationships_hash.merge!(get_relationships params) unless active_fedora_model == "DRI::EncodedArchivalDescription"
-        relationships_hash.merge!(get_documentation params["Has Documentation".downcase.gsub(/\s/,'_') << "_page"])
+        relationships_hash.merge!(get_relationships(params, current_user)) unless active_fedora_model == "DRI::EncodedArchivalDescription"
+        relationships_hash.merge!(get_documentation(params["Has Documentation".downcase.gsub(/\s/,'_') << "_page"], current_user))
       end
 
     rescue ActiveFedora::ObjectNotFoundError
@@ -61,7 +61,7 @@ module DRI::Solr::Document::Relations
 
   private
 
-  def get_documentation has_documentation_page
+  def get_documentation has_documentation_page, current_user
     docs = {}
     doc_array = []
     
@@ -70,8 +70,12 @@ module DRI::Solr::Document::Relations
       doc_obj = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
 
       unless doc_obj.empty?
-        link_text = doc_obj[0][ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string)].first
-        doc_array.to_a.push [link_text, doc_obj[0]["id"]]
+        solr_doc = SolrDocument.new(doc_obj[0])
+        
+        if solr_doc.published? || (current_user && current_user.is_admin?)
+          link_text = solr_doc[ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string)].first
+          doc_array.to_a.push [link_text, solr_doc.id]
+        end
       end
 
     end
@@ -80,14 +84,21 @@ module DRI::Solr::Document::Relations
     docs
   end
 
-  def get_relationships params
+  def get_relationships params, current_user
     rels = {}
 
     relationships_records.each do |rel, value|
       display_label = active_fedora_model.constantize.relationships[rel][:label]
       item_array = []
       value.each do |id|
-        rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+        if current_user && current_user.is_admin?
+          rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
+        else
+          rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}",
+                       :fq => "#{Solrizer.solr_name('status', :stored_searchable, type: :string)}:published",
+                       :defType => "edismax")
+        end
+
         unless rel_obj_doc.empty?
           link_text = rel_obj_doc[0][ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string)].first
           item_array.to_a.push [link_text, rel_obj_doc[0]["id"]]

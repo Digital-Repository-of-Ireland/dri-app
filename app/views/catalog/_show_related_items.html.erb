@@ -1,4 +1,4 @@
-<% relationships = @document.object_relationships(params) %>
+<% relationships = @document.object_relationships(params, current_user) %>
 <% external_rels = @document.external_relationships(params) %>
 
 <% if (!relationships.empty? || !external_rels.empty?) %>
