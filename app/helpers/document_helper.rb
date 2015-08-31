@@ -30,8 +30,15 @@ module DocumentHelper
     children_array = []
     # Find all immediate children of this collection
     solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{document['id']}\""
+    f_query = if current_user && current_user.is_admin?
+           "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true "
+         else
+           "(#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true " +
+           "AND #{Solrizer.solr_name('status', :stored_searchable, type: :string)}:published)"
+         end
+
     # Filter to only get those that are collections: fq=is_collection_tesim:true
-    q_result = Solr::Query.new(solr_query, limit, :fq => "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true")
+    q_result = Solr::Query.new(solr_query, limit, :fq => f_query)
 
     while (q_result.has_more?)
       objects_docs = q_result.pop
