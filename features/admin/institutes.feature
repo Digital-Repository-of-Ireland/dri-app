@@ -45,9 +45,8 @@ Feature:
     Then I should see the image "TestInstitute.png"
 
   Scenario: Viewing institutes page
-    Given I am on the home page
-    And I have associated the institute "TestInstitute" with the collection with pid "instcoll"
-    And I follow the link to institutions
+    Given I have associated the institute "TestInstitute" with the collection with pid "instcoll"
+    When I go to "the organisations page"
     Then I should see the image "TestInstitute.png"
 
   Scenario: viewing associated institutes for an object

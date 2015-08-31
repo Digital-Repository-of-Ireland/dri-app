@@ -67,6 +67,9 @@ module PathTranslator
       when /^(the )?new organisation page$/
         new_institute_path
 
+      when /^(the )?organisations page$/
+        '/institutions'
+
       else
         raise('You specified an invalid path')
 

@@ -5,7 +5,9 @@ class SolrDocument
  
   include Blacklight::Document
   include UserGroup::PermissionsSolrDocOverride
-  include FileDocument
+  include DRI::Solr::Document::File
+  include DRI::Solr::Document::Relations
+  include DRI::Solr::Document::Documentation
 
   # self.unique_key = 'id'
   
@@ -84,6 +86,12 @@ class SolrDocument
 
   def is_root_collection?
     self.collection_id ? false : true  
+  end
+
+  def object_profile
+    key = ActiveFedora::SolrQueryBuilder.solr_name('object_profile', :displayable)
+
+    self[key].present? ? JSON.parse(self[key].first) : {}
   end
 
   def root_collection
