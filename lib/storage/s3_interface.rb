@@ -87,6 +87,16 @@ module Storage
       url
     end
 
+    def bucket_exists?(bucket)
+      begin
+        @client.head_bucket(bucket: with_prefix(bucket))
+
+        true
+      rescue Aws::S3::Errors::NotFound
+        false
+      end
+    end
+
     # Create bucket
     def create_bucket(bucket)
       begin
@@ -100,17 +110,20 @@ module Storage
 
     # Delete bucket
     def delete_bucket(bucket_name)
-      begin
-        objects = list_files(bucket_name)
-        objects.each do |obj|
-          @client.delete_object(bucket: with_prefix(bucket_name), key: obj)
+      if bucket_exists?(bucket_name)
+        begin
+          objects = list_files(bucket_name)
+          objects.each { |obj| @client.delete_object(bucket: with_prefix(bucket_name), key: obj) }
+          
+          @client.delete_bucket(bucket: with_prefix(bucket_name))
+        rescue Exception => e
+          Rails.logger.error "Could not delete Storage Bucket #{bucket_name}: #{e.to_s}"
+          false
         end
-        @client.delete_bucket(bucket: with_prefix(bucket_name))
-      rescue Exception => e
-        Rails.logger.error "Could not delete Storage Bucket #{bucket_name}: #{e.to_s}"
-        return false
+        true
+      else
+        false
       end
-      return true
     end
 
     def delete_surrogates(object_id, file_id)

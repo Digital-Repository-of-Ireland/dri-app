@@ -24,9 +24,7 @@ module DRI::Solr::Document::Relations
       solr_fields_array.each do |elem|
         key = ActiveFedora::SolrQueryBuilder.solr_name(elem, :stored_searchable, type: :string)
 
-        if self[key].present?
-          url_array = url_array.to_a.push(*self[key])
-        end
+        url_array = url_array.to_a.push(*self[key]) if self[key].present?
       end
     end
     
@@ -42,18 +40,18 @@ module DRI::Solr::Document::Relations
     
     begin
       
-      if (active_fedora_model != "DRI::Documentation")
-        relationships_hash.merge!(get_relationships) unless (active_fedora_model == "DRI::EncodedArchivalDescription")
-        relationships_hash.merge!(get_documentation params)
-
-      elsif active_fedora_model == "DRI::Documentation"
+      if active_fedora_model == "DRI::Documentation"
         documentation = documentation_for
 
         if documentation
           link_text = documentation[ActiveFedora::SolrQueryBuilder.solr_name('title')].first
           relationships_hash["Is Documentation For"] = Kaminari.paginate_array([[link_text, documentation.id]]).page(params["Is Documentation For".downcase.gsub(/\s/,'_') << "_page"]).per(4)
         end
+      else
+        relationships_hash.merge!(get_relationships params) unless active_fedora_model == "DRI::EncodedArchivalDescription"
+        relationships_hash.merge!(get_documentation params["Has Documentation".downcase.gsub(/\s/,'_') << "_page"])
       end
+
     rescue ActiveFedora::ObjectNotFoundError
       Rails.logger.error("Object not found: #{document["id"]}")
     end
@@ -63,7 +61,7 @@ module DRI::Solr::Document::Relations
 
   private
 
-  def get_documentation params
+  def get_documentation has_documentation_page
     docs = {}
     doc_array = []
     
@@ -77,12 +75,12 @@ module DRI::Solr::Document::Relations
       end
 
     end
-    docs["Has Documentation"] = Kaminari.paginate_array(doc_array).page(params["Has Documentation".downcase.gsub(/\s/,'_') << "_page"]).per(4) unless doc_array.empty?
+    docs["Has Documentation"] = Kaminari.paginate_array(doc_array).page(has_documentation_page).per(4) unless doc_array.empty?
 
     docs
   end
 
-  def get_relationships
+  def get_relationships params
     rels = {}
 
     relationships_records.each do |rel, value|
@@ -92,7 +90,7 @@ module DRI::Solr::Document::Relations
         rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
         unless rel_obj_doc.empty?
           link_text = rel_obj_doc[0][ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string)].first
-          item_array.to_a.push [link_text, catalog_path(rel_obj_doc[0]["id"]).to_s]
+          item_array.to_a.push [link_text, rel_obj_doc[0]["id"]]
         end
       end
       rels["#{display_label}"] = Kaminari.paginate_array(item_array).page(params[display_label.downcase.gsub(/\s/,'_') << "_page"]).per(4) unless item_array.empty?
@@ -116,39 +114,28 @@ module DRI::Solr::Document::Relations
     records = []
 
     # Get Root collection of current object.
-    # This is to restrict relationship processing only within the given collection
-    solr_query = "id:\"#{id.to_s}\""
-    # The query service returns back a set of Solr Documents, therefore need to be casted later on
-    solr_docs = ActiveFedora::SolrService.query(solr_query, :defType => "edismax")
+    root = root_collection
 
-    if solr_docs.present?  
-      doc = SolrDocument.new(solr_docs[0])
-      root_collection = doc[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string)]
+    if (root)
+      rels_array.each do |item_id|
+        # We need to index the identifier element value to be able to search in Solr and then retrieve the document by id
+        solr_query = "#{solr_id_field}:\"#{item_id.to_s}\""
+        solr_query << " AND #{ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string)}:\"#{root.id}\""
+        solr_results = ActiveFedora::SolrService.query(solr_query, :defType => "edismax")
 
-      if (root_collection)
-        rels_array.each do |item_id|
-          # We need to index the identifier element value to be able to search in Solr and then retrieve the document by id
-          solr_query = "#{solr_id_field}:\"#{item_id.to_s}\""
-          solr_query << " AND #{ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string)}:\"#{root_collection.first.to_s}\""
-          solr_results = ActiveFedora::SolrService.query(solr_query, :defType => "edismax")
-
-          if solr_results.empty?
-            Rails.logger.error("Relationship target object #{item_id} not found in Solr for object #{self.id}")
-          else
-            solr_results.each do |item|
-              doc = SolrDocument.new(item)
-              records << doc.id
-            end
+        if solr_results.present?
+          solr_results.each do |item|
+            doc = SolrDocument.new(item)
+            records << doc.id
           end
+        else
+          Rails.logger.error("Relationship target object #{item_id} not found in Solr for object #{self.id}")
         end
-      else
-        Rails.logger.error("Root collection ID for object with PID #{self.id} not found in Solr")
       end
-
     else
-      Rails.logger.error("Solr document for object with PID #{self.id} not found in Solr")
+      Rails.logger.error("Root collection ID for object with PID #{self.id} not found in Solr")
     end
-
+   
     records
   end # end retrieve_rela
 
