@@ -102,9 +102,11 @@ en:
         validation_errors: "Validation Errors: %{error}"
       notice:
         added_to_collection: "Object has been added to collection."
+        asset_deleted: "Asset deleted."
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Delete collection process successfully started."
         collection_publishing: "Collection is being published."
+        collection_doi_request: "New DOI requested."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
@@ -114,16 +116,17 @@ en:
         generating_surrogates: "Surrogates are being generated."
         licence_created: "Licence successfully created."
         licence_updated: "Licence successfully updated."
-        manager_user_created: "User %{email} successfully granted manager permissions"
-        manager_user_invalid: "User %{email} does not exist, please have the user create an account first"
+        manager_user_created: "User %{email} successfully granted manager permissions."
+        manager_user_invalid: "User %{email} does not exist, please have the user create an account first."
         metadata_updated: "Metadata has been successfully updated."
         no_xml_schema: "The XML file contains no schema to validate against."
+        object_deleted: "Object has been deleted."
         organisation_created: "Organisation successfully created."
         organisation_added: "Organisation successfully added to collection."
         organisation_removed: "Organisation successfully removed from collection."
         organisation_depositor: "Organisation successfully set as Depositor."
         removed_from_collection: "Object has been removed from the collection."
-        schema_validation_error: "The XML file could not validate against the Dublin Core schema"
+        schema_validation_error: "The XML file could not validate against the Dublin Core schema."
         specify_datastream: "You must specify a valid file datastream."
         specify_file: "You must specify a file to upload."
         specify_object_id: "Please specify a valid object id."
@@ -253,6 +256,11 @@ en:
     views:
       alt_tags:
         cover_image: "Cover Image"
+      assets:
+        buttons:
+          delete: "x"
+        confirm:
+          delete: "This will delete the asset and all surrogates. Continue?"
       catalog:
         buttons:
           add_to_collection: "Add to collection"
@@ -260,6 +268,7 @@ en:
           clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
           remove_from_collection: "Remove from collection"
+          submit: "Submit"
         facets:
           dates:
             date_range: "Date Range"
@@ -332,6 +341,7 @@ en:
           publish: "Publish collection"
           publish_reviewed: "Publish reviewed objects"
           related: "Related Assets"
+          request_doi: "Request DOI"
           review_objects: "Review Objects"
           reviewed: Reviewed
           share: Share
@@ -360,6 +370,7 @@ en:
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         confirm_publish: "This will make all reviewed objects accessible. This can not be undone! Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
+        doi_modification: "DOI change log entry"
         edit: "Edit Collection"
         index:
           items:
@@ -539,7 +550,8 @@ en:
           private_metadata_warn: "DRI have an Open Metadata Policy. We strongly encourage all depositors to allow open access to their object's metadata."
           public: Public
           public_metadata: "Public Metadata"
-          read: "Access Asset Surrogates"
+          read: "Surrogate Access"
+          read_file_desc: "Set access to surrogates of the master asset (i.e. thumbnails etc)"
           registered: "Logged In"
           restricted: Restricted
           search: "Search Access"
@@ -547,6 +559,7 @@ en:
           add_master: "Add Master Asset"
           add_to_collection: "Add to Collection"
           cancel: Cancel
+          delete_object: "Delete Object"
           replace_master: "Replace Master Asset"
           replace_metadata: "Upload Metadata"
           save: "Save Changes"
@@ -555,6 +568,7 @@ en:
           upload_master: "Upload Master Asset"
         confirm:
           surrogates: "This will (re)generate surrogates for all assets. Continue?"
+          delete: "This will delete the object and all assets attached to it. Continue?"
         edit:
           sidebar:
             nav_header: "Edit Tools"

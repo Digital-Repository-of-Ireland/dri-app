@@ -5,7 +5,7 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
   # Quick fixes to get the content from storage and avoid using the REST API
 
   def id
-    /\/([^\/]*)$/.match(uri.rpartition('/')[0])[1]
+    /\/([^\/]*)$/.match(uri.to_str.rpartition('/')[0])[1]
   end
 
   def external_body?

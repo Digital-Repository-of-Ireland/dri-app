@@ -33,7 +33,9 @@ module UserTests
         describe "#is_admin?" do
             context "is an admin" do
                 before :each do
-                    group_admin = Group.create(name: SETTING_GROUP_ADMIN, description: "admin group")
+                    group_admin = Group.find_or_create_by(name: SETTING_GROUP_ADMIN) do |group|
+                        group.description = "admin group"
+                    end
                     group_id = group_admin.id
                     membership = @user.join_group(group_id)
                     membership.approved_by = @user.id

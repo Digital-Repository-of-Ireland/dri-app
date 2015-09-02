@@ -6,6 +6,11 @@ include Utils
 
 class ObjectsController < BaseObjectsController
 
+  DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
+       'contributor','publisher','date','format','source','temporal_coverage',
+       'geographical_coverage','geocode_point','geocode_box','institute',
+       'root_collection_id'].freeze
+
   # Displays the New Object form
   #
   def new
@@ -22,7 +27,9 @@ class ObjectsController < BaseObjectsController
   #
   def edit
     enforce_permissions!("edit",params[:id])
+
     supported_licences()
+    
     @object = retrieve_object!(params[:id])
     if @object.creator[0] == nil
       @object.creator = [""]
@@ -47,11 +54,11 @@ class ObjectsController < BaseObjectsController
   # Updates the attributes of an existing model.
   #
   def update
+    enforce_permissions!("edit", params[:id])
+
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
-    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
-
-    update_object_permission_check(params[:batch][:manager_groups_string], params[:batch][:manager_users_string], params[:id])
+    
     supported_licences()
 
     @object = retrieve_object!(params[:id])
@@ -77,7 +84,7 @@ class ObjectsController < BaseObjectsController
         retrieve_linked_data
 
         actor.version_and_record_committer
-        actor.update_doi(doi, "metadata update") if doi && doi.changed?
+        update_doi(@object, doi, "metadata update") if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
@@ -161,96 +168,40 @@ class ObjectsController < BaseObjectsController
 
   end
 
+  def destroy
+    enforce_permissions!("edit", params[:id])
+
+    @object = retrieve_object!(params[:id])
+    
+    if @object.status != "published"
+      @object.delete 
+      flash[:notice] = t('dri.flash.notice.object_deleted')  
+    else
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, "")
+    end
+
+    respond_to do |format|
+      format.html { redirect_to :controller => "catalog", :action => "index" }
+    end
+  end
+
   def index
     @list = []
 
     if params.has_key?("objects") && !params[:objects].blank?
-      solr_query = ActiveFedora::SolrService.construct_query_for_pids(params[:objects].map{|o| o.values.first})
-      result_docs = Solr::Query.new(solr_query)
+      solr_query = ActiveFedora::SolrService.construct_query_for_ids(params[:objects].map{|o| o.values.first})
+      results = Solr::Query.new(solr_query)
+      
+      while results.has_more?
+        docs = results.pop
 
-      storage = Storage::S3Interface.new
-
-      while result_docs.has_more?
-        doc = result_docs.pop
-
-        doc.each do | r |
-          item = {}
-          doc = SolrDocument.new(r)
-
-          if doc.status.first.eql?('published')
-            # Get metadata
-            item['pid'] = doc.id
-            item['files'] = []
-            item['metadata'] = {}
-
-            ['title','subject','creation_date','published_date','type','rights','language','description','creator',
-             'contributor','publisher','date','format','source','temporal_coverage',
-             'geographical_coverage','geocode_point','geocode_box','institute',
-             'root_collection_id'].each do |field|
-
-              if params['metadata'].blank? || params['metadata'].include?(field)
-                value = doc[ActiveFedora::SolrService.solr_name(field, :stored_searchable)]
-
-                if field.eql?("institute")
-                  item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
-                elsif field.eql?("geocode_point")
-                  if !value.nil? && !value.blank?
-                    geojson_points = []
-                    value.each do |point|
-                      geojson_points << dcterms_point_to_geojson(point)
-                    end
-                    item['metadata'][field] = geojson_points
-                  end
-                elsif field.eql?("geocode_box")
-                  if !value.nil? && !value.blank?
-                    geojson_boxes = []
-                    value.each do |box|
-                      geojson_boxes << dcterms_box_to_geojson(box)
-                    end
-                    item['metadata'][field] = geojson_boxes
-                  end
-                elsif field.include?("date") || field.eql?("temporal_coverage")
-                  if !value.nil? && !value.blank?
-                    dates = []
-                    value.each do |d|
-                      dates << dcterms_period_to_string(d)
-                    end
-                    item['metadata'][field] = dates
-                  end
-                else
-                  item['metadata'][field] = value unless value.nil?
-                end
-              end
-            end
-
-            # Get files
-            if can? :read, doc
-              files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
-              query = Solr::Query.new(files_query)
-
-              while query.has_more?
-                files = query.pop
-
-                files.each do |mf|
-                  file_list = {}
-                  file_doc = SolrDocument.new(mf)
-
-                  if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
-                    url = url_for(file_download_url(doc.id, file_doc.id))
-                    file_list['masterfile'] = url
-                  end
-
-                  timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
-                  surrogates = storage.get_surrogates doc, file_doc, timeout
-                  surrogates.each do |file,loc|
-                    file_list[file] = loc
-                  end
-
-                  item['files'].push(file_list)
-                end
-              end
-
-            end
+        docs.each do | doc |
+          solr_doc = SolrDocument.new(doc)
+          item = extract_metadata solr_doc
+                  
+          if solr_doc.published?
+            item = extract_metadata solr_doc
+            item.merge!(find_assets_and_surrogates solr_doc)
 
             @list << item
           end
@@ -371,10 +322,96 @@ class ObjectsController < BaseObjectsController
       group.save
     end
 
+    def extract_metadata doc
+      item = {}
+
+      # Get metadata
+      item['pid'] = doc.id
+      item['metadata'] = {}
+
+      DEFAULT_METADATA_FIELDS.each do |field|
+
+        if params['metadata'].blank? || params['metadata'].include?(field)
+          value = doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable)]
+
+          case field
+          when "institute"
+            item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
+          
+          when "geocode_point"
+            if value.present?
+              geojson_points = []
+              value.each { |point| geojson_points << dcterms_point_to_geojson(point) }
+
+              item['metadata'][field] = geojson_points
+            end
+          
+          when "geocode_box"
+            if value.present?
+              geojson_boxes = []
+              value.each { |box| geojson_boxes << dcterms_box_to_geojson(box) }
+    
+              item['metadata'][field] = geojson_boxes
+            end
+          
+          when field.include?("date") || field == "temporal_coverage"
+            if value.present?
+              dates = []
+              value.each { |d| dates << dcterms_period_to_string(d) }
+
+              item['metadata'][field] = dates
+            end
+          
+          else
+            item['metadata'][field] = value if value
+          end
+
+        end
+      end
+
+      item
+    end
+
+    def find_assets_and_surrogates doc
+      item = {}
+      item['files'] = []
+
+      # Get files
+      if can? :read, doc
+        storage = Storage::S3Interface.new
+
+        files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
+        query = Solr::Query.new(files_query)
+
+        while query.has_more?
+          files = query.pop
+
+          files.each do |mf|
+            file_list = {}
+            file_doc = SolrDocument.new(mf)
+
+            if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
+              url = url_for(file_download_url(doc.id, file_doc.id))
+              file_list['masterfile'] = url
+            end
+
+            timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
+            surrogates = storage.get_surrogates doc, file_doc, timeout
+            surrogates.each { |file,loc| file_list[file] = loc }
+
+            item['files'].push(file_list)
+          end
+        end
+
+      end
+
+      item
+    end
+
     def retrieve_linked_data
       if AuthoritiesConfig
         begin
-          Sufia.queue.push(LinkedDataJob.new(@object.id)) unless @object.geographical_coverage.blank?
+          Sufia.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present?
         rescue Exception => e
           Rails.logger.error "Unable to submit linked data job: #{e.message}"
         end

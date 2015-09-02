@@ -27,6 +27,7 @@ describe "DataciteDoi" do
 
   after(:all) do
     @object.delete
+    DoiConfig = nil
   end
 
   it "should create a DOI" do

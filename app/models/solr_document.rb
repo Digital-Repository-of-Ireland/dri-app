@@ -5,7 +5,9 @@ class SolrDocument
  
   include Blacklight::Document
   include UserGroup::PermissionsSolrDocOverride
-  include FileDocument
+  include DRI::Solr::Document::File
+  include DRI::Solr::Document::Relations
+  include DRI::Solr::Document::Documentation
 
   # self.unique_key = 'id'
   
@@ -31,6 +33,12 @@ class SolrDocument
 
     self[collection_key].present? ? self[collection_key][0] : nil
   end  
+
+  def doi
+    doi_key = ActiveFedora::SolrQueryBuilder.solr_name('doi')
+
+    self[doi_key]
+  end    
 
   def editable?
     (self.active_fedora_model && self.active_fedora_model == 'DRI::EncodedArchivalDescription') ? false : true
@@ -70,6 +78,22 @@ class SolrDocument
     self[geojson_key].present? ? true : false
   end
 
+  def is_collection?
+    is_collection_key = ActiveFedora::SolrQueryBuilder.solr_name('is_collection')
+    
+    self[is_collection_key].present? && self[is_collection_key].include?("true")
+  end
+
+  def is_root_collection?
+    self.collection_id ? false : true  
+  end
+
+  def object_profile
+    key = ActiveFedora::SolrQueryBuilder.solr_name('object_profile', :displayable)
+
+    self[key].present? ? JSON.parse(self[key].first) : {}
+  end
+
   def root_collection
     root_key = ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
     root = nil
@@ -77,16 +101,12 @@ class SolrDocument
       id = self[root_key][0]
       solr_query = "id:#{id}"
       collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
-      root = collection[0]
+      root = SolrDocument.new(collection[0])
     end
     
     root
   end
-
-  def is_root_collection?
-    self.collection_id ? false : true  
-  end
-
+  
   def status
     status_key = ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :string).to_sym
 

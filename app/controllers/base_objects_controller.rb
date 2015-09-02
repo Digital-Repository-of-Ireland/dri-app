@@ -6,6 +6,8 @@ class BaseObjectsController < CatalogController
   before_filter :authenticate_user_from_token!
   before_filter :authenticate_user!
 
+  include DRI::Doi
+
   def actor
     @actor ||= DRI::Object::Actor.new(@object, current_user)
   end

@@ -1,4 +1,4 @@
-module FileDocument
+module DRI::Solr::Document::File
 
     def preservation_only?
       key = 'dri_properties__preservation_only_tesim'
