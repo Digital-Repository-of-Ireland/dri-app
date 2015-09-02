@@ -3,16 +3,6 @@ module ApplicationHelper
   require 'institute_helpers'
   require 'uri'
 
-  def get_files doc
-    @files = ActiveFedora::SolrService.query("active_fedora_model_ssi:\"DRI::GenericFile\" AND #{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}:#{doc.id}", rows: 200)
-    @files = @files.map {|f| SolrDocument.new(f)}.sort_by{ |f| f[ActiveFedora::SolrQueryBuilder.solr_name("label")] }
-    @displayfiles = []
-    @files.each do |file|
-      @displayfiles << file unless file.preservation_only?
-    end
-    ""
-  end
-
   def get_surrogates doc, file_doc
     storage = Storage::S3Interface.new
     surrogates = storage.get_surrogates doc, file_doc

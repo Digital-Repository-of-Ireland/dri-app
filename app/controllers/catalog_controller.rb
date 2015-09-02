@@ -317,6 +317,7 @@ class CatalogController < ApplicationController
     @response, @document = fetch params[:id]
 
     get_available_institutes
+    get_files
    
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
@@ -362,6 +363,15 @@ class CatalogController < ApplicationController
     @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array
     # exclude the depositing Institute from the list of Institutes which can be removed
     @removal_institutes = collection_institutes_array - depositing_institute_array
+  end
+
+  def get_files
+    @files = ActiveFedora::SolrService.query("active_fedora_model_ssi:\"DRI::GenericFile\" AND #{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}:#{@document.id}", rows: 200)
+    @files = @files.map {|f| SolrDocument.new(f)}.sort_by{ |f| f[ActiveFedora::SolrQueryBuilder.solr_name("label")] }
+    @displayfiles = []
+    @files.each { |file| @displayfiles << file unless file.preservation_only? }
+
+    ""
   end
 
   # If querying temporal_coverage, then query the Solr date range field for Subject(Temporal)
