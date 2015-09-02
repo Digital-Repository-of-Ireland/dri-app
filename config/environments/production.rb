@@ -89,7 +89,7 @@ NuigRnag::Application.configure do
   # config.action_mailer.delivery_method = :sendmail
 
   # Devise mailer setting
-  config.action_mailer.default_url_options = { :host => 'dri-guest022.tchpc.tcd.ie' }
+  config.action_mailer.default_url_options = { :host => 'dri-guest020.tchpc.tcd.ie' }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
