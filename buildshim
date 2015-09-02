@@ -42,8 +42,8 @@ plugins:
   ffmpeg_path: /usr/bin/ffmpeg
 S3:
   server: http://localhost:8081
-  access_key_id: OMZPBA7D6U3MZ6MBVJZQ
-  secret_access_key: nnXKfE/+0zfEsHW8n55ffP18Bvn+N9sJ83AmWPOS
+  access_key_id: anykey
+  secret_access_key: anykey
   bucket_prefix: buildbot
 __EOF__
 
@@ -53,7 +53,7 @@ __EOF__
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
     bundle exec rake dri:fixtures:generate
-    bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &
+    bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &>/dev/null &
     echo $! > fakes3.pid
     ;;
 compile)
