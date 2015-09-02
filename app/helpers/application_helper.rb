@@ -19,14 +19,7 @@ module ApplicationHelper
 
     surrogates
   end
-
-  def get_surrogate_info object_id, file_id
-    storage = Storage::S3Interface.new
-    surrogates = storage.get_surrogate_info object_id, file_id
-
-    surrogates
-  end
-
+  
   def surrogate_url( doc, file_doc, name )
     storage = Storage::S3Interface.new
     url = storage.surrogate_url(doc, file_doc, name)
@@ -136,14 +129,7 @@ module ApplicationHelper
     "\" AND is_collection_sim:false" +
     " OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
   end
-
-  def count_items_in_collection_by_type_and_status( collection_id, type, status )
-    solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:" + status + " AND (#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
-    "\" OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
-    "#{ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string)}:"+ type
-    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
-  end
-
+  
   def get_query_collections_by_institute( institute )
     solr_query = ""
     if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
@@ -176,20 +162,6 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
-  def get_object_type_counts( document )
-    id = document.key?(:root_collection) ? document[:root_collection][0] : document.id
-
-    @type_counts = {}
-    Settings.data.types.each do |type|
-      @type_counts[type] = { :published => count_items_in_collection_by_type_and_status( id, type, "published" ) }
-
-      if signed_in? && (can? :edit, id)
-        @type_counts[type][:draft] = count_items_in_collection_by_type_and_status( id, type, "draft" )
-      end
-
-    end
-  end
-
   def get_institute_collection_counts( institute )
       @coll_counts = count_collections_institute(institute)
   end
@@ -198,32 +170,6 @@ module ApplicationHelper
       return Institute.all
   end
 
-  # method to find the Institutes associated with and available to add to or remove from the current collection (document) 
-  def get_available_institutes( document )
-    # the full list of Institutes
-    @institutes = InstituteHelpers.get_all_institutes()
-    # the Institutes currently associated with this collection if any
-    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc( document )
-    # the Depositing Institute if any
-    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
-    institutes_array = []
-    collection_institutes_array = []
-    depositing_institute_array = []
-    depositing_institute_array.push( @depositing_institute.name ) unless @depositing_institute.blank?
-    @institutes.each do |inst|
-      institutes_array.push( inst.name )
-    end
-    if @collection_institutes.any?
-      @collection_institutes.each do |inst|
-        collection_institutes_array.push( inst.name )
-      end
-    end
-    # exclude the associated and depositing Institutes from the list of Institutes available
-    @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array
-    # exclude the depositing Institute from the list of Institutes which can be removed
-    @removal_institutes = collection_institutes_array - depositing_institute_array
-  end
-  
   # method to find the depositing Institute (if any) associated with the current collection (document) 
   def get_depositing_institute ( document )
     @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
@@ -247,21 +193,7 @@ module ApplicationHelper
 
     @cover_image = default_image ( file_doc ) if @cover_image.nil?
   end
-
-  def get_licence( document )
-    if document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym].present?
-      @licence = Licence.where(:name => document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym]).first
-      if (@licence == nil)
-        @licence = document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym]
-      end
-    elsif document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
-      collection = document.root_collection
-      if collection[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string)].present?
-        @licence = Licence.where(:name => collection[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string)]).first
-      end
-    end
-  end
-
+ 
   def reader_group( collection_id )
     UserGroup::Group.find_by_name(collection_id)
   end

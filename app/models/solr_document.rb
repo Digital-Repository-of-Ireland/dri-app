@@ -88,6 +88,20 @@ class SolrDocument
     self.collection_id ? false : true  
   end
 
+  def licence
+    licence_key = ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym
+
+    if self[licence_key].present?
+      licence = Licence.where(:name => self[licence_key]).first
+      licence ||= self[licence_key]
+    elsif root_collection
+      collection = root_collection
+      licence = Licence.where(:name => collection[licence_key]).first if collection[licence_key].present?
+    end
+    
+    licence
+  end
+
   def object_profile
     key = ActiveFedora::SolrQueryBuilder.solr_name('object_profile', :displayable)
 
