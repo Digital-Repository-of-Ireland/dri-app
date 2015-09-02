@@ -89,13 +89,13 @@ NuigRnag::Application.configure do
   # config.action_mailer.delivery_method = :sendmail
 
   # Devise mailer setting
-  config.action_mailer.default_url_options = { :host => 'dri-guest066.tchpc.tcd.ie' }
+  config.action_mailer.default_url_options = { :host => 'dri-guest022.tchpc.tcd.ie' }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :address => "smtp.tchpc.tcd.ie",
     :port    => 25,
-    :domain  => 'dri-guest066.tchpc.tcd.ie'
+    :domain  => 'dri-guest020.tchpc.tcd.ie'
   }
 
   #config.middleware.use '::Rack::Auth::Basic' do |u, p|
