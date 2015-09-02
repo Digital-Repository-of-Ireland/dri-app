@@ -19,14 +19,7 @@ module ApplicationHelper
 
     surrogates
   end
-
-  def get_surrogate_info object_id, file_id
-    storage = Storage::S3Interface.new
-    surrogates = storage.get_surrogate_info object_id, file_id
-
-    surrogates
-  end
-
+  
   def surrogate_url( doc, file_doc, name )
     storage = Storage::S3Interface.new
     url = storage.surrogate_url(doc, file_doc, name)

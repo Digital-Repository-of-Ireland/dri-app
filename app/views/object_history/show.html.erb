@@ -66,7 +66,7 @@
       <tr><td><%= t('dri.reports.assets.file_download_link') %></td><td><%= link_to(file_download_path(@object.id, file.id), file_download_path(@object.id, file.id)) %></td></tr>
 
 
-      <% versions = get_asset_version_list(file.id, 'content') %>
+      <% versions = @asset_info[file.id][:versions] %>
       <tr><td><%= t('dri.reports.assets.version') %></td><td><%= versions.count - 1 %></td></tr>
 
       <% if versions.count > 0 %>
@@ -84,7 +84,7 @@
 
       <tr><td><%= t('dri.reports.assets.surrogates') %></td><td>
 
-        <% get_surrogate_info(@object.id, file.id).each do |key,value| %>
+        <% @asset_info[file.id][:surrogates].each do |key,value| %>
           <table>
             <tr><td><%= t('dri.reports.surrogates.name') %></td><td><%= key %></td></tr>
             <tr><td><%= t('dri.reports.surrogates.mime_type') %></td><td><%= value[:content_type] %></td></tr>
