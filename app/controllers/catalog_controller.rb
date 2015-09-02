@@ -311,6 +311,21 @@ class CatalogController < ApplicationController
     end
   end
 
+  # get a single document from the index
+  # to add responses for formats other than html or json see _Blacklight::Document::Export_
+  def show
+    @response, @document = fetch params[:id]
+
+    get_available_institutes
+   
+    respond_to do |format|
+      format.html { setup_next_and_previous_documents }
+      format.json { render json: { response: { document: @document } } }
+
+      additional_export_formats(@document, format)
+    end
+  end
+
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << "-#{ActiveFedora::SolrQueryBuilder.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
@@ -323,6 +338,30 @@ class CatalogController < ApplicationController
       solr_parameters[:fq] << "+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:false"
       solr_parameters[:fq] << "+#{ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
     end
+  end
+
+  # method to find the Institutes associated with and available to add to or remove from the current collection (document) 
+  def get_available_institutes
+    # the full list of Institutes
+    @institutes = InstituteHelpers.get_all_institutes()
+    # the Institutes currently associated with this collection if any
+    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc( @document )
+    # the Depositing Institute if any
+    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( @document )
+    institutes_array = []
+    collection_institutes_array = []
+    depositing_institute_array = []
+    depositing_institute_array.push( @depositing_institute.name ) unless @depositing_institute.blank?
+    @institutes.each { |inst| institutes_array.push( inst.name ) }
+    
+    if @collection_institutes.any?
+      @collection_institutes.each { |inst| collection_institutes_array.push( inst.name ) }
+    end
+    
+    # exclude the associated and depositing Institutes from the list of Institutes available
+    @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array
+    # exclude the depositing Institute from the list of Institutes which can be removed
+    @removal_institutes = collection_institutes_array - depositing_institute_array
   end
 
   # If querying temporal_coverage, then query the Solr date range field for Subject(Temporal)
