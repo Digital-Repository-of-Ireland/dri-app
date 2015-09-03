@@ -12,11 +12,7 @@ module DocumentHelper
   end
 
   def truncate_description description, count
-    if (description.length > count)
-      return description.first(count)
-    else
-      return description
-    end
+    (description.length > count) ? description.first(count) : description
   end
 
   # Workaround for reusing partials for add institution/permissions to non QDC collections

@@ -42,13 +42,12 @@
 			  <% end %>
 
 			  <% if can? :read, @document %>
-			    <% surrogates = get_surrogates @document, file %>
-				<% if surrogates.empty? %>
+			    <% if @surrogates[file.id].blank? %>
 				  <li>
 				    <%= t('dri.views.catalog.legends.no_surrogates') %>
 				  </li>
 				<% else %>
-				  <% surrogates.each do |desc, url| %>
+				  <% @surrogates[file.id].each do |desc, url| %>
 				  <li>
 				    <%= link_to desc, url, :id => desc %>
 				   </li>
