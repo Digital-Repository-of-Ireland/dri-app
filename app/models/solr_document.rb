@@ -78,6 +78,18 @@ class SolrDocument
     self[geojson_key].present? ? true : false
   end
 
+  def icon_path
+    format = self[ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
+
+    if ['image','audio','text','video','mixed_types'].include?(format)
+      icon = "dri/formats/#{format}_icon.png"
+    else
+      icon = "no_image.png"
+    end
+
+    icon
+  end
+
   def is_collection?
     is_collection_key = ActiveFedora::SolrQueryBuilder.solr_name('is_collection')
     

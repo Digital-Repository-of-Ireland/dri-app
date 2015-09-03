@@ -69,16 +69,6 @@ module ApplicationHelper
     path
   end
 
-  def icon_path ( document )
-    format = document[ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
-
-    if (format != 'image' && format != 'audio' && format != 'text' && format != 'video' && format != 'mixed_types')
-      "no_image.png"
-    else
-      "dri/formats/#{format}_icon.png"
-    end
-  end
-
   def count_items_in_collection collection_id
     solr_query = collection_children_query( collection_id )
 

@@ -189,45 +189,17 @@ class AssetsController < ApplicationController
       solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(params[:objects].map{|o| o.values.first})
       result_docs = Solr::Query.new(solr_query)
 
-      storage = Storage::S3Interface.new
-
       while result_docs.has_more?
         doc = result_docs.pop
 
+        item = {}
+
         doc.each do |r|
           doc = SolrDocument.new(r)
-
-          files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
-          query = Solr::Query.new(files_query)
-
-          item = {}
-          item['pid'] = doc.id
-          item['files'] = []
-
-          while query.has_more?
-            files = query.pop
-
-            files.each do |mf|
-              file_list = {}
-              file_doc = SolrDocument.new(mf)
-
-              if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
-                url = url_for(file_download_url(doc.id, file_doc.id))
-                file_list['masterfile'] = url
-              end
-
-              if can? :read, doc
-                surrogates = storage.get_surrogates doc, file_doc
-                surrogates.each do |file,loc|
-                  file_list[file] = loc
-                end
-              end
-
-              item['files'].push(file_list)
-            end
-          end
-          @list << item
+          item = list_files_with_surrogates(doc)
         end
+
+        @list << item unless item.empty?
       end
 
       raise Exceptions::NotFound if @list.empty?
@@ -270,6 +242,40 @@ class AssetsController < ApplicationController
     def delete_surrogates(bucket_name, file_prefix)
       storage = Storage::S3Interface.new
       storage.delete_surrogates(bucket_name, file_prefix)
+    end
+
+    def list_files_with_surrogates doc
+      files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
+      query = Solr::Query.new(files_query)
+
+      item = {}
+      item['pid'] = doc.id
+      item['files'] = []
+
+      storage = Storage::S3Interface.new
+
+      while query.has_more?
+        files = query.pop
+
+        files.each do |mf|
+          file_list = {}
+          file_doc = SolrDocument.new(mf)
+
+          if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
+            url = url_for(file_download_url(doc.id, file_doc.id))
+            file_list['masterfile'] = url
+          end
+
+          if can? :read, doc
+            surrogates = storage.get_surrogates doc, file_doc
+            surrogates.each { |file,loc| file_list[file] = loc }
+          end
+
+          item['files'].push(file_list)
+        end
+      end
+
+      item
     end
 
     def local_file
