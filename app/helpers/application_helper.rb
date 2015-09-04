@@ -3,41 +3,11 @@ module ApplicationHelper
   require 'institute_helpers'
   require 'uri'
 
-  def get_files doc
-    @files = ActiveFedora::SolrService.query("active_fedora_model_ssi:\"DRI::GenericFile\" AND #{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}:#{doc.id}", rows: 200)
-    @files = @files.map {|f| SolrDocument.new(f)}.sort_by{ |f| f[ActiveFedora::SolrQueryBuilder.solr_name("label")] }
-    @displayfiles = []
-    @files.each do |file|
-      @displayfiles << file unless file.preservation_only?
-    end
-    ""
-  end
-
-  def get_surrogates doc, file_doc
-    storage = Storage::S3Interface.new
-    surrogates = storage.get_surrogates doc, file_doc
-
-    surrogates
-  end
-  
   def surrogate_url( doc, file_doc, name )
     storage = Storage::S3Interface.new
     url = storage.surrogate_url(doc, file_doc, name)
 
     url
-  end
-
-  def get_asset_version_list( file_id, datastream )
-    files = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => file_id, :d => datastream }).to_a
-    return files
-  end
-
-  def governing_collection( object )
-    object.governing_collection.pid unless object.governing_collection.nil?
-  end
-
-  def get_partial_name( object )
-    object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
   def get_metadata_name( object )
@@ -99,16 +69,6 @@ module ApplicationHelper
     path
   end
 
-  def icon_path ( document )
-    format = document[ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
-
-    if (format != 'image' && format != 'audio' && format != 'text' && format != 'video' && format != 'mixed_types')
-      "no_image.png"
-    else
-      "dri/formats/#{format}_icon.png"
-    end
-  end
-
   def count_items_in_collection collection_id
     solr_query = collection_children_query( collection_id )
 
@@ -166,15 +126,10 @@ module ApplicationHelper
       @coll_counts = count_collections_institute(institute)
   end
 
-  def get_institutes()
-      return Institute.all
-  end
-
   # method to find the depositing Institute (if any) associated with the current collection (document) 
   def get_depositing_institute ( document )
     @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
   end
-
 
   # Called from grid view
   def get_cover_image( document )
@@ -225,46 +180,6 @@ module ApplicationHelper
 
   def link_to_loc(field)
     return link_to('?', "http://www.loc.gov/marc/bibliographic/bd" + field + ".html" )
-  end
-
-  # Get the ID of the documentation object; nil if not available
-  #
-  def get_documentation_object(document)
-    # Try first to see if the parent collection has documentation objects
-    gov_col_doc_id = document.collection_id
-
-    if gov_col_doc_id.nil? # root_collection
-      # Look then for documentation objects in the Root collection
-      root_doc = document.root_collection
-      if (root_doc.nil?)
-        return nil
-      else
-        root_col = DRI::Batch.find(root_doc["id"])
-        if !root_col.documentation_object_ids.first.nil?
-          return root_col.documentation_object_ids.first
-        else
-          return nil
-        end
-      end
-    else
-      gov_col = DRI::Batch.find(gov_col_doc_id)
-      if !gov_col.documentation_object_ids.first.nil?
-        return gov_col.documentation_object_ids.first
-      else
-        # no doc for the immediate parent, then try with the root_collection
-        root_doc = document.root_collection
-        if (root_doc.nil?)
-          return nil
-        else
-          root_col = DRI::Batch.find(root_doc["id"])
-          if !root_col.documentation_object_ids.first.nil?
-            return root_col.documentation_object_ids.first
-          else
-            return nil
-          end
-        end
-      end
-    end
   end
 
   def get_reader_group(doc)

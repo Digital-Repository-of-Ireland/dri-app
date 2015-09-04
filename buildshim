@@ -42,8 +42,8 @@ plugins:
   ffmpeg_path: /usr/bin/ffmpeg
 S3:
   server: http://localhost:8081
-  access_key_id: OMZPBA7D6U3MZ6MBVJZQ
-  secret_access_key: nnXKfE/+0zfEsHW8n55ffP18Bvn+N9sJ83AmWPOS
+  access_key_id: anykey
+  secret_access_key: anykey
   bucket_prefix: buildbot
 __EOF__
 
