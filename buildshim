@@ -85,12 +85,12 @@ compile_extra)
      #check application
     OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://dri-vm44.maynoothuniversity.ie/is_it_working`
     if [[ $OUTPUT -ne 200 ]] ; then
-      printf "Application FAULT! test code: $OUTPUT\n"
+      printf "Test Application Stack FAULT! [HTTP: $OUTPUT]\n"
       if [[ "$branch" == "master" ]]; then
           exit 1
       fi
     else
-      printf "Application Working. Test code: $OUTPUT\n"
+      printf "Test Application Stack OK. [HTTP: $OUTPUT]\n"
     fi 
     ;;
 uninstall_deps)
