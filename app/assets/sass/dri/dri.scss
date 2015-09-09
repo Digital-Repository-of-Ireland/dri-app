@@ -290,11 +290,16 @@ a {
 }
 
 /*-------------- Button Styling--------------*/
-.dri_button {
-  font-size: 100%;
-  color: #FFF;
+
+@mixin radius3 {
   -moz-border-radius: 3px;
   border-radius: 3px;
+}
+}
+.dri_button {
+  @include  radius3;
+  font-size: 100%;
+  color: #FFF;
   border: none;
   padding: 6px 10px 6px 10px;
   margin: 10px 0 10px 0;
@@ -394,8 +399,7 @@ input.dri_w230 {
       font-size: 100%;
       background-color: $dri_green;
       color: #FFF;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
+      @include  radius3;
       border: none;
       padding: 6px 0 6px 0;
       margin: 10px 0 10px 0;
@@ -463,6 +467,10 @@ input.dri_w230 {
 }
 
 /*-------------- Signin Error message styling --------------*/
+@mixin radius2 {
+    -moz-border-radius: 2px;
+  border-radius: 2px;
+}
 .dri_login_form_block .field_with_errors {
   background-color: #FFF;
 }
@@ -475,12 +483,11 @@ input.dri_w230 {
 }
 
 .dri_input_error input {
+  @include radius2;
   background-color: #fff;
   color: #9F2931;
   margin: 6px 0 14px 0;
   padding: 6px 15px 6px 15px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
   border: 1px solid  $dri_grey_border;
 }
 /*-------------- Social Media Sharing ------------*/
@@ -495,6 +502,13 @@ input.dri_w230 {
 
 /*-------------- Signin Social Media--------------*/
 // scss update & symbol references the parent selector (a .dri_signin_facebook:hover = &hover)
+
+@mixin socialbutton {
+   margin: 0 0 6px 0;
+   padding: 6px 0 6px 55px;
+   color: #FFF;
+   font-size: 110%;
+}
 .dri_signin_socialmedia {
   border-top: 1px solid $dri_thingrey;
   margin: 30px 0  0 0;
@@ -511,13 +525,9 @@ input.dri_w230 {
 a .dri_signin_facebook {
   background: image-url("dri/signin_facebook.png") no-repeat;
   background-color: #3B5998;
-  margin: 0 0 6px 0;
-  padding: 4px 0 4px 55px;
   border: 1px solid #132547;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  color: #FFF;
-  font-size: 110%;
+  @include radius2;
+  @include socialbutton;
  &:hover {
   background-color: #244685;
 }
@@ -528,13 +538,9 @@ a .dri_signin_facebook {
 a .dri_signin_google {
   background: image-url("dri/signin_google.png") no-repeat;
   background-color: #D7515D;
-  margin: 0 0 6px 0;
-  padding: 4px 0 4px 55px;
   border: 1px solid #A32E38;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  color: #FFF;
-  font-size: 110%;
+  @include radius2;
+  @include socialbutton;
   &:hover {
   background-color: #CC3945;
 }
@@ -545,13 +551,9 @@ a .dri_signin_google {
 a .dri_signin_twitter {
   background: image-url("dri/signin_twitter.png") no-repeat;
   background-color: #4195C1;
-  margin: 0 0 6px 0;
-  padding: 4px 0 4px 55px;
   border: 1px solid #1A658B;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  color: #FFF;
-  font-size: 110%;
+  @include radius2;
+  @include socialbutton;
   &:hover {
   background-color: #207BAA;
 }
@@ -562,14 +564,9 @@ a .dri_signin_twitter {
 a .dri_signin_edugate {
   background: image-url("dri/signin_edugate.png") no-repeat;
   background-color: #7D4391;
-  margin: 0 0 6px 0;
-  padding: 6px 0 6px 55px;
   border: 1px solid #612E76;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  color: #FFF;
-  font-size: 110%;
-  width: 310px;
+  @include radius2;
+  @include socialbutton;
   &:hover {
   background-color: #66317C;
 }
