@@ -402,7 +402,7 @@ input.dri_w230 {
       cursor: pointer;
       width: 310px;
     }
-    input:hover {
+    &:hover {
       background-color: #7C842B;
     }
   }
@@ -440,14 +440,18 @@ input.dri_w230 {
     margin: 0 0 0 0;
     padding: 0;
     color: #3E3E3E;
+     &:hover {
+    text-decoration: underline;
+  }
     span.text_right {
       margin: 0 0 0 136px;
       padding: 0;
-      color: #3E3E3E;
+      color: #3E3E3E; 
+        &:hover {
+       text-decoration: underline;
+      }
     }
-    span.text_right:hover {
-      text-decoration: underline;
-    }
+   
     span.text_line {
       margin: 20px 0 0 0;
       padding: 0 0 0 0;
@@ -455,9 +459,7 @@ input.dri_w230 {
       font-weight: bold;
     }
   }
-  a:hover {
-    text-decoration: underline;
-  }
+ 
 }
 
 /*-------------- Signin Error message styling --------------*/
@@ -492,7 +494,7 @@ input.dri_w230 {
 }
 
 /*-------------- Signin Social Media--------------*/
-
+// scss update & symbol references the parent selector (a .dri_signin_facebook:hover = &hover)
 .dri_signin_socialmedia {
   border-top: 1px solid $dri_thingrey;
   margin: 30px 0  0 0;
@@ -516,11 +518,12 @@ a .dri_signin_facebook {
   border-radius: 2px;
   color: #FFF;
   font-size: 110%;
-}
-
-a .dri_signin_facebook:hover {
+ &:hover {
   background-color: #244685;
 }
+
+}
+
 
 a .dri_signin_google {
   background: image-url("dri/signin_google.png") no-repeat;
@@ -532,11 +535,12 @@ a .dri_signin_google {
   border-radius: 2px;
   color: #FFF;
   font-size: 110%;
-}
-
-a .dri_signin_google:hover {
+  &:hover {
   background-color: #CC3945;
 }
+}
+
+
 
 a .dri_signin_twitter {
   background: image-url("dri/signin_twitter.png") no-repeat;
@@ -548,11 +552,12 @@ a .dri_signin_twitter {
   border-radius: 2px;
   color: #FFF;
   font-size: 110%;
-}
-
-a .dri_signin_twitter:hover {
+  &:hover {
   background-color: #207BAA;
 }
+}
+
+
 
 a .dri_signin_edugate {
   background: image-url("dri/signin_edugate.png") no-repeat;
@@ -565,11 +570,12 @@ a .dri_signin_edugate {
   color: #FFF;
   font-size: 110%;
   width: 310px;
-}
-
-a .dri_signin_edugate:hover {
+  &:hover {
   background-color: #66317C;
 }
+}
+
+
 
 /*--------------Terms of Use --------------------*/
 
@@ -577,8 +583,8 @@ a .dri_signin_edugate:hover {
   /*height: 150px;*/
   overflow: scrolling;
 }
-/*--------------Release Main Navbar--------------*/
-
+/*--------------Release Main Navbar --------------*/
+// Web and Mobile Version - clean up
 .dri_main_nav_new {
 
           border-top: 1px solid $dri_thingrey;
@@ -588,7 +594,10 @@ a .dri_signin_edugate:hover {
           margin-bottom: 20px;
           
           .navbar-nav > li > a {
-            color: $dri_darkgrey;
+            color: $dri_darkgrey;   
+            &:hover {
+            background-color: #F1F1F1;
+            }
           }
 
           .container-fluid {
@@ -596,29 +605,24 @@ a .dri_signin_edugate:hover {
           }       
           
           .navbar-nav > li.active > a, 
-       
-          .navbar-nav > li.active > a:hover {
+         &:hover {
             background-color: white;
             
           }
-          
-          .navbar-nav > li > a:hover {
-            background-color: #F1F1F1;
-          }
-          
+
           li {
             border-right: 1px solid $dri_thingrey;
-          }
-
-          li.active {
+          &.active {
             border-top: 3px solid $dri_green;
             color: $dri_darkgrey;
             a {
               padding-top: 12px;
               background-color: inherit;
             }           
-          }       
+          }    }
 
+             
+// mobile logo version
         .dri_ident_tiny {
           background: image-url($dri_logo_tiny_url);
           background-repeat: no-repeat;
@@ -716,33 +720,31 @@ a .dri_signin_edugate:hover {
     margin:auto;
   }
 }
-
+// scss update for account styling
 .dri_account_nav {
   margin: 10px 0 0 0;
   padding: 0px;
-  font-size: 1.1em;
+  font-size: 100%;
+  
   ul.dri_account_links {
     li {
       float: left;
-      
-      
       display: block;
       margin: 2px 0 0 10px;
       padding: 0 10px 0 0;
       border-right: 1px solid $dri_thingrey;
       color: $dri_midgrey;
-
-    }
-    li:hover {
+   &:hover {
         text-decoration: underline;
-    }
-    
-    li.no_border {
+    } 
+    &.no_border {
         border-right: none;
     }
-    li.on {
+    &.on {
       color: $dri_grey;
     }
+   }
+
     .dri_language_links {
       float: right;
       display: block;
@@ -754,13 +756,15 @@ a .dri_signin_edugate:hover {
       border-radius: 2px;
       font-size: 1.1em;
       .dropdown-menu > a {      
-          margin-left: 3px;
+          margin-left: 6px;
+          font-weight: normal;
           color: $dri_midgrey; 
-       }
-      .dropdown-menu > a:hover {    
+          &:hover {    
             color: $dri_green;   
        }
     }
+       }
+      
   }
 }
 
@@ -777,14 +781,13 @@ a .dri_signin_edugate:hover {
     i.fa-slideshare {
       font-size: 23px;
     }
-  }
-  li:hover {
+  &:hover {
     color: $dri_green;
+  } 
   }
-  
 }
 
-/*-------------- Main Navigation --------------*/
+/*-------------- Main Navigation 
 .dri_main_nav {
   margin: 0px;
   padding: 0px;
@@ -814,15 +817,16 @@ a .dri_signin_edugate:hover {
       padding: 19px 20px 20px 20px;
       display: block;
       border-top: 3px solid #fff;
-    }
-    a:hover {
+    &:hover {
       border-top: 3px solid #6D6E71;
+    } 
     }
-  }
-  li.selected a {
+     &.selected a {
     border-top: 3px solid $dri_green;
     color: #3E3E3E;
+    }
   }
+
   .dri_main_nav_top {
     ul.dropdown-menu {
       background-color: white;
@@ -840,21 +844,23 @@ a .dri_signin_edugate:hover {
           margin: 0;
           padding: 8px 0 8px 20px;
           border-top: none;
-          text-transform: none;
-        }
-        a:hover {
+          text-transform: none;  
+          
+          &:hover {
           background-color: white;
           color: $dri_green;
         }
-      }
-      li.selected a {
+        }
+       &.selected a {
         color: $dri_green;
       }
+      }
+     
     }
   }
 }
 
-
+--------------*/
 ol.breadcrumb {
   background-color: #FFF;
   border-bottom: 1px solid $dri_thingrey;
