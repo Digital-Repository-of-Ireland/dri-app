@@ -22,6 +22,9 @@ html {
 }
 
 
+/* mixins */
+
+
 
 /* Video-JS Overrides */
     a {
@@ -467,9 +470,10 @@ input.dri_w230 {
 }
 
 /*-------------- Signin Error message styling --------------*/
-@mixin radius2 {
-    -moz-border-radius: 2px;
-  border-radius: 2px;
+//mixin example
+@mixin border_radius ($br: 2px){
+  -moz-border-radius: $br;
+  border-radius: $br;
 }
 .dri_login_form_block .field_with_errors {
   background-color: #FFF;
@@ -483,7 +487,7 @@ input.dri_w230 {
 }
 
 .dri_input_error input {
-  @include radius2;
+  @include border_radius;
   background-color: #fff;
   color: #9F2931;
   margin: 6px 0 14px 0;
@@ -526,7 +530,7 @@ a .dri_signin_facebook {
   background: image-url("dri/signin_facebook.png") no-repeat;
   background-color: #3B5998;
   border: 1px solid #132547;
-  @include radius2;
+  @include border_radius;
   @include socialbutton;
  &:hover {
   background-color: #244685;
@@ -539,7 +543,7 @@ a .dri_signin_google {
   background: image-url("dri/signin_google.png") no-repeat;
   background-color: #D7515D;
   border: 1px solid #A32E38;
-  @include radius2;
+  @include border_radius;
   @include socialbutton;
   &:hover {
   background-color: #CC3945;
@@ -552,7 +556,7 @@ a .dri_signin_twitter {
   background: image-url("dri/signin_twitter.png") no-repeat;
   background-color: #4195C1;
   border: 1px solid #1A658B;
-  @include radius2;
+  @include border_radius;
   @include socialbutton;
   &:hover {
   background-color: #207BAA;
@@ -565,7 +569,7 @@ a .dri_signin_edugate {
   background: image-url("dri/signin_edugate.png") no-repeat;
   background-color: #7D4391;
   border: 1px solid #612E76;
-  @include radius2;
+  @include border_radius;
   @include socialbutton;
   &:hover {
   background-color: #66317C;
