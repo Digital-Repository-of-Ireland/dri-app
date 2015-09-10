@@ -293,14 +293,13 @@ a {
 }
 
 /*-------------- Button Styling--------------*/
-
-@mixin radius3 {
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
+//mixin example
+@mixin border_radius ($br: 2px){
+  -moz-border-radius: $br;
+  border-radius: $br;
 }
 .dri_button {
-  @include  radius3;
+  @include border_radius (3px);
   font-size: 100%;
   color: #FFF;
   border: none;
@@ -402,7 +401,8 @@ input.dri_w230 {
       font-size: 100%;
       background-color: $dri_green;
       color: #FFF;
-      @include  radius3;
+       -moz-border-radius: 3px;
+  border-radius: 3px;
       border: none;
       padding: 6px 0 6px 0;
       margin: 10px 0 10px 0;
@@ -470,11 +470,7 @@ input.dri_w230 {
 }
 
 /*-------------- Signin Error message styling --------------*/
-//mixin example
-@mixin border_radius ($br: 2px){
-  -moz-border-radius: $br;
-  border-radius: $br;
-}
+
 .dri_login_form_block .field_with_errors {
   background-color: #FFF;
 }
