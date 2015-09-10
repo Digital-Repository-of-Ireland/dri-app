@@ -23,7 +23,11 @@ html {
 
 
 /* mixins */
-
+//mixin example for border radius
+@mixin border_radius ($br: 2px){
+  -moz-border-radius: $br;
+  border-radius: $br;
+}
 
 
 /* Video-JS Overrides */
@@ -81,7 +85,7 @@ html {
 	  left: 0;
 	  right: 0;
 	  bottom: 0;
-	  background: #333333;
+	  background: $dri_darkgrey;
 	  background: rgba(144, 154, 60, 0.75);
 	}
 	
@@ -119,7 +123,7 @@ html {
 	  left: 0;
 	  right: 0;
 	  bottom: 0;
-	  background: #333333;
+	  background: $dri_darkgrey;
 	  background: rgba(144, 154, 60, 0.75);
  	
 	 p {
@@ -135,7 +139,7 @@ html {
 	 padding: 0 0 0 0;
 	
 	 li.active {
-		 background-color: #FFF;  
+		 background-color: $dri_white;  
 		 margin: 8px 0 0 0;
 	 }
 	}
@@ -161,7 +165,7 @@ a.carousel-control {
 	opacity: 0.5;
 	filter: alpha(opacity=50);
 	font-size: 180%;
-	color: white;
+	color: $dri_white;
 	text-align: center;
 	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 
@@ -196,9 +200,8 @@ input[type="color"],
   *margin-bottom: 10px;
   *font-size: 110%;
   *line-height: 20px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 3px;
+   @include border_radius (3px);
   vertical-align: middle;
 }
 .btn {
@@ -214,8 +217,7 @@ input[type="color"],
   	margin: 0;
 	font-size: 100%;
 	line-height: none;
-	border-radius: 3px;
-	-webkit-user-select: none;
+  @include border_radius (3px);
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
@@ -232,20 +234,19 @@ h3 {
 }
 
 .field_with_errors label {
-  background-color: #FFF;
-  color: #B3232B;
+  background-color: $dri_white;
+  color: $dri_red;
   margin: 0 0 10px 0;
   padding: 0 40px 0 0;
   font-size: 110%;
 }
 
 .field_with_errors input {
-  background-color: #fff;
-  color: #9F2931;
+  background-color: $dri_white;
+  color: darkenn($dri_red, 20%);
   margin: 0 0 4px 0;
   padding: 6px 13px 6px 15px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  @include border_radius (3px);
   border: 1px solid  $dri_grey_border;
 }
 
@@ -269,7 +270,7 @@ form {
 .breadcrumb > li + li:before {
   content: "/\00a0";
   padding: 0 5px;
-  color: #ccc;
+  color: $dri_grey;
 }
 
 /* end bootstrap override */
@@ -293,18 +294,12 @@ a {
 }
 
 /*-------------- Button Styling--------------*/
-//mixin example
-@mixin border_radius ($br: 2px){
-  -moz-border-radius: $br;
-  border-radius: $br;
-}
+
 .dri_button {
   @include border_radius (3px);
-  font-size: 100%;
-  color: #FFF;
+  color: $dri_white;
   border: none;
-  padding: 6px 10px 6px 10px;
-  margin: 10px 0 10px 0;
+  font-weight: normal;
 }
 
 .dri_button_green {
@@ -327,7 +322,7 @@ a {
 
 .dri_button_grey {
   @extend .dri_button;
-  background-color: #848587;
+  background-color: $dri_midgrey;
 }
 
 .dri_button_black {
@@ -339,12 +334,12 @@ a {
 
 .btn {
   @extend .dri_button;
-  background-color: $dri_lightgrey;
+  background-color: $dri_midgrey;
   padding: 5px 10px 4px 10px;
   margin: 0;
 }
 .btn:hover {
-	background-color: darken($dri_lightgrey, 10%);
+	background-color: darken($dri_midgrey, 10%);
 	color: #FFF;
 }
 .dri_w230 {
@@ -365,11 +360,10 @@ input.dri_w230 {
 .dri_login_form_block {
   margin: auto;
   border: 1px solid $dri_thingrey;
-  background-color: white;
+  background-color: $dri_white;
   padding: 40px 0 40px 65px;
   display: block;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  @include border_radius (10px);
   label {
     cursor: auto;
   }
@@ -391,7 +385,7 @@ input.dri_w230 {
     width: 310px;
     background-color: $dri_grey;
     border: none;
-    color: #FFF;
+    color: $dri_white;
     font-size: 106%;
     font-weight: normal;
 	
@@ -401,15 +395,14 @@ input.dri_w230 {
       font-size: 100%;
       background-color: $dri_green;
       color: #FFF;
-       -moz-border-radius: 3px;
-  border-radius: 3px;
+      @include border_radius (3px);
       border: none;
       padding: 6px 0 6px 0;
       margin: 10px 0 10px 0;
       cursor: pointer;
       width: 310px;
     }
-    &:hover {
+    & :hover {
       background-color: #7C842B;
     }
   }
@@ -446,14 +439,14 @@ input.dri_w230 {
   a {
     margin: 0 0 0 0;
     padding: 0;
-    color: #3E3E3E;
+    color: $dri_darkgrey;
      &:hover {
     text-decoration: underline;
   }
     span.text_right {
       margin: 0 0 0 136px;
       padding: 0;
-      color: #3E3E3E; 
+      color: $dri_darkgrey; 
         &:hover {
        text-decoration: underline;
       }
@@ -472,11 +465,11 @@ input.dri_w230 {
 /*-------------- Signin Error message styling --------------*/
 
 .dri_login_form_block .field_with_errors {
-  background-color: #FFF;
+  background-color: $dri_white;
 }
 
 .dri_input_error_message {
-  color: #B3232B;
+  color: $dri_red;
   margin: 0 0 10px 0;
   padding: 0 40px 0 0;
   font-size: 110%;
@@ -484,8 +477,8 @@ input.dri_w230 {
 
 .dri_input_error input {
   @include border_radius;
-  background-color: #fff;
-  color: #9F2931;
+  background-color: $dri_white;
+  color: darken ($dri_red, 20%);
   margin: 6px 0 14px 0;
   padding: 6px 15px 6px 15px;
   border: 1px solid  $dri_grey_border;
@@ -506,7 +499,7 @@ input.dri_w230 {
 @mixin socialbutton {
    margin: 0 0 6px 0;
    padding: 6px 0 6px 55px;
-   color: #FFF;
+   color: $dri_white;
    font-size: 110%;
 }
 .dri_signin_socialmedia {
@@ -569,6 +562,7 @@ a .dri_signin_edugate {
   @include socialbutton;
   &:hover {
   background-color: #66317C;
+  text-decoration: none;
 }
 }
 
@@ -587,13 +581,13 @@ a .dri_signin_edugate {
           border-top: 1px solid $dri_thingrey;
           font-size: 115%;
           font-weight: bold;
-          background-color: white;
-          margin-bottom: 20px;
+          background-color: $dri_white;
+          margin-bottom: 10px;
           
           .navbar-nav > li > a {
             color: $dri_darkgrey;   
             &:hover {
-            background-color: #F1F1F1;
+            background-color: $dri_extralightgrey;
             }
           }
 
@@ -691,14 +685,13 @@ a .dri_signin_edugate {
   padding: 3px 5px 3px 0;
   margin: 0;
   list-style: none;
-  background-color: white;
+  background-color: $dri_white;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
   *border-right-width: 2px;
   *border-bottom-width: 2px;
   -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 0px;
+  @include border_radius (6px);
   -webkit-box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
   box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
@@ -749,8 +742,7 @@ a .dri_signin_edugate {
       margin: 0;
       padding: 2px 7px 2px 7px;
       display: block;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
+      @include border_radius (3px);
       font-size: 1.1em;
       .dropdown-menu > a {      
           margin-left: 6px;
@@ -858,20 +850,23 @@ a .dri_signin_edugate {
 }
 
 --------------*/
-ol.breadcrumb {
-  background-color: #FFF;
+ol.breadcrumb { 
+  color: $dri_thingrey;
+  background-color: $dri_white;
   border-bottom: 1px solid $dri_thingrey;
-  margin: 0px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  font-weight:normal;
   li {
     font-size: 110%;
     a {
-      color: #9E9E9E;
+      color: $dri_midgrey;
     }
   }
 }
 
 .breadcrumb .active {
-  color: $dri_grey;
+  color: $dri_darkgrey;
 }
 
 /*-------------- Search/Sort features --------------*/
@@ -885,19 +880,16 @@ ol.breadcrumb {
 .dri_sort_nav {
   float: left;
   margin: 0;
-  padding: 10px 25px 0 0;
+  padding: 6px 25px 0 0;
   color: $dri_lightgrey;
-  height: 35px;
+  height: 36px;
   select {
     margin: 0;
     padding: 4px;
     padding-right: 10px;
-    //width: 230px;
     border: 1px solid $dri_thingrey;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
+    @include border_radius;
     color: $dri_midgrey;
-    //width: 160px;
     font-size: 100%;
     height: 25px;
   }
@@ -937,7 +929,7 @@ ol.breadcrumb {
 
 }
   .dri_icon_border {
-    border-radius: 10%;
+    @include border_radius (3px);
     border: 1px solid $dri_thingrey;
     width: 25px;
     height: 25px;
@@ -961,8 +953,7 @@ ol.breadcrumb {
     margin: 2px 0 0 0;
     padding: 4px;
     border: 1px solid $dri_thingrey;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
+    @include border_radius;
     color: $dri_midgrey;
     width: 60px;
     font-size: 100%;
@@ -1048,11 +1039,11 @@ ol.breadcrumb {
 /*-------------- Facet Restriction --------------*/
 
 .dri_facet_restrictions_links {
-  margin: 0 0 0 0;
+  margin: 0 0 6px 0;
   padding: 0;
   float: left;
   .dri_clear_all_saved {
-    margin-top: 5px;
+    margin-top: 0;
     span.dri_clear_all {
       a {
         border-left: none;
@@ -1065,14 +1056,13 @@ ol.breadcrumb {
     padding: 0;
   }
   li {
-    margin: 15px 10px 0 0;
+    margin: 10px 10px 0 0;
     padding: 4px 0 4px 15px;
     list-style: none;
     text-decoration: none;
     color: #FFF;
     background-color: $dri_grey;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    @include border_radius (3px);
     box-shadow: 1px 1px 4px  #888888;
     float: left;
     display: block;
@@ -1088,7 +1078,7 @@ ol.breadcrumb {
     }
   }
   span.dri_clear_all a {
-    margin: 19px 10px 0 10px;
+    margin: 14px 10px 0 10px;
     padding: 2px 8px 0 22px;
     list-style: none;
     text-decoration: none;
@@ -1185,8 +1175,7 @@ h4.suggest {
   margin: 20px 0 0 0;
   padding: 0;
   display: block;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  @include border_radius;
   color: $dri_grey;
   font-weight: normal;
   font-size: 110%;
@@ -1220,8 +1209,7 @@ h4.suggest {
   display: block;
   width: 100%;
   background-color: #F0E8B0;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  @include border_radius;
   border: 1px solid $dri_lightgrey;
   float: left;
   .dri_alert_text {
@@ -1252,8 +1240,7 @@ h4.suggest {
   color: $dri_grey;
   border: 1px solid #E1E1E1;
   box-shadow: 1px 2px 6px  #E3E3E3;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  @include border_radius (5px);
 }
 .dri_date_range_block {
         height: 150px;
@@ -1601,8 +1588,7 @@ p.dri_rss_link a {
   float: left;
   display: block;
   color: $dri_grey;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  @include border_radius (3px);
   border: 1px solid #E1E1E1;
   position: relative;
   .top {
@@ -1691,8 +1677,7 @@ p.dri_rss_link a {
   float: left;
   display: block;
   color: $dri_grey;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  @include border_radius (3px);
   border: 1px solid #E1E1E1;
   position: relative;
   border-top: none;
@@ -1873,8 +1858,7 @@ p.dri_rss_link a {
   margin: 2px 0 0 0;
   padding: 2px 16px 2px 7px;
   display: block;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  @include border_radius;
   background-color: #f0f0f0;
 }
 
@@ -2050,8 +2034,7 @@ h2.dri_no_asset_availiable {
     border: none;
     font-weight: bold;
     display: block;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
+   @include border_radius;
   }
   a:hover {
     color: #007F79;
@@ -2091,8 +2074,7 @@ input.dri_request_access_button {
   width: 230px;
   height: 26px;
   display: block;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  @include border_radius;
 }
 
 input.dri_request_access_button:hover {
@@ -2512,8 +2494,7 @@ ul.dri_collection_institutes_list {
   border: none;
   background-color: #B3B3B3;
   margin: 20px 0 20px 0;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  @include border_radius;
   float: left;
   text-align: center;
   a {
@@ -2656,8 +2637,7 @@ ul.dri_collection_institutes_list {
   margin: 0;
   height: 230px;
   border: 1px solid $dri_thingrey;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  @include border_radius;
   color: $dri_midgrey;
 }
 
