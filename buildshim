@@ -84,6 +84,7 @@ upload)
 compile_extra)
      #check application
     OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://dri-vm44.maynoothuniversity.ie/is_it_working`
+
     if [[ $OUTPUT -ne 200 ]] ; then
       printf "Test Application Stack FAULT! [HTTP: $OUTPUT]\n"
       if [[ "$branch" == "master" ]]; then
