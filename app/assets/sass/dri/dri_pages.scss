@@ -28,7 +28,7 @@ $dri_about_logos_min_height: 100px;
         margin-top: 15px;
         padding-bottom: 5px;
         color: $dri_grey;
-        border-bottom: 3px solid $dri_grey;
+        border-bottom: 3px solid $dri_darkgrey;
         color: $dri_grey;  
         font-weight: bold;
       
@@ -84,7 +84,7 @@ li {
     .dri_about_title_top {
         margin-left: 15px;
         @extend .dri_object_title_top;
-        background-color: $dri_grey;
+        background-color: $dri_darkgrey;
     }
     .dri_about_column {
         border-right: 1px solid $dri_thingrey;
