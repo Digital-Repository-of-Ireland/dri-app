@@ -327,7 +327,7 @@ a {
 
 .dri_button_black {
   @extend .dri_button;
-  background-color: $dri_grey;
+  background-color: $dri_darkgrey;
 }
 
 .dri_button_black:hover {}
@@ -383,7 +383,7 @@ input.dri_w230 {
     margin: 6px 0 14px 0;
     padding: 6px 15px 6px 15px;
     width: 310px;
-    background-color: $dri_grey;
+    background-color: $dri_darkgrey;
     border: none;
     color: $dri_white;
     font-size: 106%;
@@ -763,7 +763,7 @@ a .dri_signin_edugate {
   margin: 70px 0 0 0;
   li {
     font-size: 20px;
-    color: $dri_grey;
+    color: $dri_darkgrey;
     margin: 0 8px 0 0;
     float: left;
     display: block;
@@ -946,7 +946,7 @@ ol.breadcrumb {
   p {
     margin: 2px 0 0 0;
     padding: 0 6px 0 0;
-    color: #9E9E9E;
+    color: $dri_midgrey;
     float: left;
   }
   select {
@@ -988,7 +988,7 @@ ol.breadcrumb {
   p {
     margin: 0;
     padding: 3px 6px 0 0;
-    color: #9E9E9E;
+    color: $dri_midgrey;
     float: left;
     font-size: 95%;
   }
@@ -1009,7 +1009,7 @@ ol.breadcrumb {
       list-style: none;
       display: block;
       padding: 0 6px 0 6px;
-      color: #9E9E9E;
+      color: $dri_midgrey;
       text-decoration: none;
     }
     a:hover {
@@ -1017,7 +1017,7 @@ ol.breadcrumb {
     }
   }
   .selected a {
-    color: #757575;
+    color: $dri_midgrey;
     text-decoration: underline;
   }
   .first a {
@@ -1061,7 +1061,7 @@ ol.breadcrumb {
     list-style: none;
     text-decoration: none;
     color: #FFF;
-    background-color: $dri_grey;
+    background-color: $dri_darkgrey;
     @include border_radius (3px);
     box-shadow: 1px 1px 4px  #888888;
     float: left;
@@ -1093,8 +1093,8 @@ ol.breadcrumb {
     background: image-url("dri/clear_all_close_hover.png") no-repeat left;
   }
   .empty {
-    background-color: #fff;
-    box-shadow: 1px 1px 4px  #fff;
+    background-color: $dri_white;
+    box-shadow: 1px 1px 4px  $dri_white;
   }
 }
 
@@ -1127,18 +1127,18 @@ ol.breadcrumb {
       font-size: 115%;
     }
     a:hover {
-      background-color: #F5F5F5;
+      background-color: $dri_extralightgrey;
     }
     span.tab_total_number {
       margin: 0;
       font-size: 90%;
-      color: #A6A9AF;
+      color: $dri_midgrey;
     }
     a.selected {
-      background-color: #909A3C;
+      background-color: $dri_green;
       color: #FFF;
       span.tab_total_number {
-        color: #FFF;
+        color: $dri_white;
       }
     }
     
@@ -1176,12 +1176,12 @@ h4.suggest {
   padding: 0;
   display: block;
   @include border_radius;
-  color: $dri_grey;
+  color: $dri_darkgrey;
   font-weight: normal;
   font-size: 110%;
   font-style: italic;
   a {
-    color: $dri_grey;
+    color: $dri_darkgrey;
     font-weight: bold;
   }
   a:hover {
@@ -1192,13 +1192,13 @@ h4.suggest {
 /*-------------- Info Messages --------------*/
 .dri_notice_message {
   @extend .dri_alert_message;
-  background-color: #DCECF6;
+  background-color: $dri_paleblue;
 }
 
 /*-------------- Successful Messages --------------*/
 .dri_success_message {
   @extend .dri_alert_message;
-  background-color: #D9F8B5;
+  background-color: $dri_palegreen;
 }
 
 /*-------------- Warning Messages --------------*/
@@ -1208,13 +1208,13 @@ h4.suggest {
   padding: 12px 10px 5px 10px;
   display: block;
   width: 100%;
-  background-color: #F0E8B0;
+  background-color: $dri_paleorange;
   @include border_radius;
   border: 1px solid $dri_lightgrey;
   float: left;
   .dri_alert_text {
     font-size: 115%;
-    color: $dri_grey;
+    color: $dri_darkgrey;
     float: left;
     font-weight: normal;
   }
@@ -1228,7 +1228,7 @@ h4.suggest {
 
 .dri_error_message {
   @extend .dri_alert_message;
-  background-color: #FFD9DC;
+  background-color: $dri_palered;
 }
 
 /* ----------- Facet Filter block ---------- */
@@ -1238,18 +1238,18 @@ h4.suggest {
   float: left;
   display: block;
   color: $dri_grey;
-  border: 1px solid #E1E1E1;
-  box-shadow: 1px 2px 6px  #E3E3E3;
-  @include border_radius (5px);
+  border: 1px solid $dri_thingrey;
+  //box-shadow: 1px 2px 6px  #E3E3E3;
+  @include border_radius (3px);
 }
 .dri_date_range_block {
         height: 150px;
         .dri_date_range {
               text-decoration: none;
-              color: gray;
+              color: $dri_darkgrey;
               display: block;
-              background-color: #F8F8F8;
-              border-bottom: 2px solid #FFF;
+              background-color: $dri_thingrey;
+              border-bottom: 2px solid $dri_white;
               margin-left: -15px;
               margin-right: -15px;
               padding: 10px 5px 10px 20px;
@@ -1263,7 +1263,7 @@ h4.suggest {
 .dri_facet_filters {
   border-bottom: none;
   .dri_head_title {
-    *color: $dri_grey;
+    *color: $dri_darkgrey;
     font-weight: bold;
     padding: 15px 0 15px 20px;
     min-width: 238px;
@@ -1281,7 +1281,7 @@ h4.suggest {
     border: none;
   }
   .panel-group {
-    width: 237px;
+    width: 238px;
     margin-bottom: 2px;
     .panel-default {
       margin: 0px;
@@ -1289,7 +1289,7 @@ h4.suggest {
       border: none;
       border-top: 1px solid $dri_thingrey;
       .panel-heading {
-        background-color: white;
+        background-color: $dri_white;
         width: 100%;
         h5 {
           margin: 0;
@@ -1322,24 +1322,25 @@ h4.suggest {
       font-weight: normal;
       list-style: none;
       a {
+         font-size: 90%;
         text-decoration: none;
-        color: $dri_greytext;
+        color: $dri_darkgrey;
         display: block;
-        background-color: #F8F8F8;
-        border-bottom: 2px solid #FFF;
+        background-color: $dri_extralightgrey;
+        border-bottom: 1px solid $dri_white;
         margin-left: -15px;
         margin-right: -15px;
         padding: 10px 5px 10px 20px;
-      }
-      a:hover {
-        text-decoration: none;
-        background-color: #F0F0F0;
-      }
-      a.selected {
-        background-color: #E0E0E0;
+     &:hover {
+        text-decoration: underline;
+      } 
+       &.selected {
+        background-color: $dri_thingrey;
         color: $dri_grey;
-        text-decoration: none;
+        text-decoration: underline;
+      } 
       }
+    
       
 
     }
@@ -1354,13 +1355,13 @@ h4.suggest {
   height: 100%;
   padding: 30px 0 30px 0;
   .dri_account_block_heading {
-    color: $dri_grey;
+    color: $dri_darkgrey;
     font-size: 150%;
   }
   .dri_account_block_info {
     .dri_account_block_info_item {
 		padding: 0 0 20px 0;
-      border-bottom: 1px lightgrey solid;
+      border-bottom: 1px solid $dri_thingrey;
 	  
 	  a {
 		  color: $dri_green;
@@ -1369,26 +1370,26 @@ h4.suggest {
 	  }
     }
     h5 {
-      color: $dri_grey;
+      color: $dri_darkgrey;
       font-size: 110%;
       margin: 10px 0 0 0;
       padding: 0px;
       font-weight: normal;
     }
     p {
-      color: $dri_greytext;
+      color: $dri_midgrey;
       font-size: 110%;
       margin-bottom: 15px;
     }
     h5 label {
-      color: $dri_grey;
+      color: $dri_darkgrey;
       font-size: 100%;
       margin: 0 0 4px 0;
       padding: 0px;
     }
     p input {
       width: 230px;
-      color: $dri_greytext;
+      color: $dri_darkgrey;
       font-size: 100%;
       padding: 3px 10px 3px 10px;
       margin: 0 0 0 0;
@@ -1402,7 +1403,7 @@ h4.suggest {
   padding: 0 0 8px 0;
   font-size: 140%;
   font-weight: bold;
-  color: $dri_grey;
+  color: $dri_darkgrey;
 }
 /* -----------Home page styling ---------- */
 .dri_welcome_block {
@@ -1412,7 +1413,7 @@ h4.suggest {
     margin: 0 0 4px 0;
     padding: 0;
     font-size: 240%;
-    color: $dri_grey;
+    color: $dri_darkgrey;
   }
   p {
     margin: 0 0 15px 0;
