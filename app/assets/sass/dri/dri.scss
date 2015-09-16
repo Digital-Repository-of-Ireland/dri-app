@@ -1,10 +1,4 @@
 /*-------------- DRI Wrapper--------------*/
-
-.dri_search_term_text_submit_button {
-  height: 20px;
-  width: 100px;
-}
-
 html {
   margin-bottom: 0.5em;
   height: 100%;
@@ -16,20 +10,31 @@ html {
 
   }
 }
-
-.bold {
-  font-weight: bold;
+/*-------------- Fonts--------------*/
+h1,
+h2,
+h3 {
+  line-height: 150%;
 }
 
+/*.dri_search_term_text_submit_button {
+  height: 20px;
+  width: 100px;
+}*/
 
-/* mixins */
+/*.bold {
+  font-weight: bold;
+}*/
+
+
+/*-------------- Mixins --------------*/
 //mixin example for border radius
 @mixin border_radius ($br: 2px){
   -moz-border-radius: $br;
   border-radius: $br;
 }
 
-
+/*----------------- set up and overrides scss file for this block of styling -----------------------*/
 /* Video-JS Overrides */
     a {
       color: none;
@@ -80,7 +85,7 @@ html {
 		margin: 0;
 	}
 	.carousel-caption {
-      padding: 0 0 0 0;
+    padding: 0 0 0 0;
 	  position: absolute;
 	  left: 0;
 	  right: 0;
@@ -118,7 +123,7 @@ html {
 .dri_slideshow_block {
 	
 	.carousel-caption {
-      padding: 10px 0 0 0;
+    padding: 10px 0 0 0;
 	  position: absolute;
 	  left: 0;
 	  right: 0;
@@ -170,7 +175,31 @@ a.carousel-control {
 	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 
 	}
+	
+	
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus, 
+.dropdown-submenu:hover > a,
+.dropdown-submenu:focus > a {
+  text-decoration: none;
+  color: $dri_green;
+  background-color: $dri_green;
+  background-image: none;
+  
+}
 
+/* breadcrumbs */
+
+.breadcrumb > li + li:before {
+  content: "/\00a0";
+  padding: 0 5px;
+  color: $dri_grey;
+}
+
+/* end bootstrap override */
+/*----------------- set up and overrides scss file for this block of styling -----------------------*/
+
+/*-------------- Forms and input fields --------------*/
 input,
 button,
 select,
@@ -204,33 +233,9 @@ input[type="color"],
    @include border_radius (3px);
   vertical-align: middle;
 }
-.btn {
-	display: inline-block;
-	font-weight: normal;
-	text-align: center;
-	vertical-align: middle;
-	cursor: pointer;
-	background-image: none;
-	border: none;
-	white-space: nowrap;
-	 padding: 0;
-  	margin: 0;
-	font-size: 100%;
-	line-height: none;
-  @include border_radius (3px);
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 
-}
 .modal.fade.in {
   //padding-top: 5%;
-}
-
-h1,
-h2,
-h3 {
-  line-height: 150%;
 }
 
 .field_with_errors label {
@@ -254,49 +259,48 @@ form {
   margin: 0 0 0 0;
 }
 
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus, 
-.dropdown-submenu:hover > a,
-.dropdown-submenu:focus > a {
-  text-decoration: none;
-  color: $dri_green;
-  background-color: $dri_green;
-  background-image: none;
-  
-}
-
-/* breadcrumbs */
-
-.breadcrumb > li + li:before {
-  content: "/\00a0";
-  padding: 0 5px;
-  color: $dri_grey;
-}
-
-/* end bootstrap override */
-
-/*-------------- Layout for Identity and Search feature --------------*/
-
-.dri_ident {
-  background: image-url($dri_logo_url);
-  background-repeat: no-repeat;
-  height: 135px;
-  margin: 0px;
-  padding: 0px;
-}
-
-a {
-  text-decoration: none;
-}
-
-.dri_search_term_input {
-  padding-top: 45px;
-}
 
 /*-------------- Button Styling--------------*/
-
-.dri_button {
+.btn {
+  display: inline-block;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: none;
+  white-space: nowrap;
+   padding: 0;
+    margin: 0;
+  font-size: 100%;
+  line-height: none;
   @include border_radius (3px);
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+}
+/*--------------%btn {
+  display: inline-block;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: none;
+  white-space: nowrap;
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  line-height: none;
+  @include border_radius (3px);
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+}--------------*/
+.dri_button {
+//  @extend %btn;
   color: $dri_white;
   border: none;
   font-weight: normal;
@@ -305,32 +309,34 @@ a {
 .dri_button_green {
   @extend .dri_button;
   background-color: $dri_green;
-}
-
-.dri_button_green:hover {
-  background-color: darken($dri_green, 10%);
+ &:hover {
+    background-color: darken($dri_green, 10%);
+  }
 }
 
 .dri_button_red {
   @extend .dri_button;
   background-color: $dri_red;
-}
-
-.dri_button_red:hover {
-  background-color: darken($dri_red, 10%);
+  &:hover {
+    background-color: darken($dri_red, 10%);
+  }
 }
 
 .dri_button_grey {
   @extend .dri_button;
   background-color: $dri_midgrey;
+    &:hover {
+    background-color: darken($dri_midgrey, 10%);
+  }
 }
 
 .dri_button_black {
   @extend .dri_button;
   background-color: $dri_darkgrey;
+   &:hover {
+    background-color: lighten($dri_darkgrey, 10%);
+  }
 }
-
-.dri_button_black:hover {}
 
 .btn {
   @extend .dri_button;
@@ -353,9 +359,23 @@ input.dri_w230 {
 .dri_w330 {
   width: 330px;
 }
+/*-------------- Layout for Identity and Search feature --------------*/
 
+.dri_ident {
+  background: image-url($dri_logo_url);
+  background-repeat: no-repeat;
+  height: 135px;
+  margin: 0px;
+  padding: 0px;
+}
 
+a {
+  text-decoration: none;
+}
 
+.dri_search_term_input {
+  padding-top: 45px;
+}
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
   margin: auto;
@@ -375,7 +395,7 @@ input.dri_w230 {
   }
   
   label {
-	margin: 0 0 0 0;
+	  margin: 0 0 0 0;
     padding: 0 0 0 0;
     width: 300px;
   }
@@ -407,9 +427,7 @@ input.dri_w230 {
     }
   }
 }
-.dri_signup_password {
-	
-}
+
 .dri_checkbox_text {
   margin: 0;
   padding: 0;
@@ -486,10 +504,12 @@ input.dri_w230 {
 /*-------------- Social Media Sharing ------------*/
 
 .social-share-button {
+  border: none;  
   margin: 0;
   a {
    float: left;
-    margin: 5px;   
+    margin: 5px;
+     
   }
 }
 
@@ -2279,8 +2299,7 @@ ul.dri_view_collection {
 
 .dri_objecttools_title {
   @extend .dri_object_title_top;
-  
-  //margin: 20px 0 0 0;
+  margin: 10px 0 0 0;
   //padding: 0;
   width: 100%;
   //color: $dri_darkgrey;
@@ -2301,6 +2320,7 @@ ul.dri_view_collection {
       display: inline;
       margin-right: 10px;
       cursor: pointer;
+      font-weight:normal;
     }
     form {
       .checkbox {
@@ -2667,8 +2687,7 @@ ul.dri_collection_institutes_list {
 		margin: 20px 0 0 0;
 		text-overflow: ellipsis;
 		overflow: hidden;
-		color: #fff;
-		background-color: $dri_extralightgrey;
+		color: $dri_white;
 		width: 73%;
 		font-weight: bold;
 		
@@ -2881,15 +2900,13 @@ i {
     select {
       width: 410px;
     }
-  }
-
-        
+  } 
         label {
         display: block;
         clear:both;
         font-size: 100%;
-    color: $dri_darkgrey;
-    font-weight: bold;
+        color: $dri_darkgrey;
+        font-weight: bold;
 
       }
   
@@ -2929,7 +2946,7 @@ i {
         padding-top: 5px;
     }
   }
-      .dri_file_upload {
+     .dri_file_upload {
       clear:both;
       display: inline-block;
       position:relative;
@@ -2947,7 +2964,6 @@ i {
         width: 250px;
         //vertical-align: 10%;
 
-        
         input {
           position:absolute;
           z-index:2;
@@ -2959,7 +2975,7 @@ i {
           opacity:0;
           background-color:transparent;
           color:transparent;
-                 
+              
         }
         h5 {
           margin: 9px 0 3px 0;
