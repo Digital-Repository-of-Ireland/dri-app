@@ -310,7 +310,7 @@ form {
   @extend .dri_button;
   background-color: $dri_green;
  &:hover {
-    background-color: darken($dri_green, 10%);
+    background-color: darken($dri_green, 3%);
   }
 }
 
@@ -318,7 +318,7 @@ form {
   @extend .dri_button;
   background-color: $dri_red;
   &:hover {
-    background-color: darken($dri_red, 10%);
+    background-color: darken($dri_red, 3%);
   }
 }
 
@@ -326,7 +326,7 @@ form {
   @extend .dri_button;
   background-color: $dri_midgrey;
     &:hover {
-    background-color: darken($dri_midgrey, 10%);
+    background-color: darken($dri_midgrey, 3%);
   }
 }
 
@@ -345,7 +345,7 @@ form {
   margin: 0;
 }
 .btn:hover {
-	background-color: darken($dri_midgrey, 10%);
+	background-color: darken($dri_midgrey, 3%);
 	color: #FFF;
 }
 .dri_w230 {
@@ -360,7 +360,6 @@ input.dri_w230 {
   width: 330px;
 }
 /*-------------- Layout for Identity and Search feature --------------*/
-
 .dri_ident {
   background: image-url($dri_logo_url);
   background-repeat: no-repeat;
@@ -376,9 +375,27 @@ a {
 .dri_search_term_input {
   padding-top: 45px;
 }
+
+// mobile logo version
+        .dri_ident_tiny {
+          background: image-url($dri_logo_tiny_url);
+          background-repeat: no-repeat;
+          width: 100px;
+          height: 35px;
+          margin: 5px;
+          margin-left: 25px;
+          //margin-top:8px;
+      }
+/*--------------Terms of Use --------------------*/
+
+.dri_cookie_acceptance_text {
+  /*height: 150px;*/
+  overflow: scrolling;
+}
 /*-------------- Signin Model--------------*/
 .dri_login_form_block {
   margin: auto;
+  margin-top: 20px;
   border: 1px solid $dri_thingrey;
   background-color: $dri_white;
   padding: 40px 0 40px 65px;
@@ -388,12 +405,11 @@ a {
     cursor: auto;
   }
   h2 {
-    margin: 0 0 10px 0;
+    margin: 0 0 20px 0;
     padding: 0px;
     font-weight: bold;
-    font-size: 120%;
+    font-size: 140%;
   }
-  
   label {
 	  margin: 0 0 0 0;
     padding: 0 0 0 0;
@@ -408,10 +424,9 @@ a {
     color: $dri_white;
     font-size: 106%;
     font-weight: normal;
-	
   }
-  .dri_submit {
-    input {
+  }  
+.dri_submit input {
       font-size: 100%;
       background-color: $dri_green;
       color: #FFF;
@@ -421,18 +436,15 @@ a {
       margin: 10px 0 10px 0;
       cursor: pointer;
       width: 310px;
+      &:hover {
+      background-color: darken($dri_green, 3%);
     }
-    & :hover {
-      background-color: darken ($dri_green, 10%);
-    }
-  }
 }
-
 .dri_checkbox_text {
   margin: 0;
   padding: 0;
   input {
-    margin: 10px 4px 0 0;
+    margin: 0 4px 10px 0;
     padding: 0;
     width: 14px;
     height: 14px;
@@ -441,7 +453,7 @@ a {
   }
   label {
     span {
-      margin: 10px 4px 0 0;
+      margin: 0 4px 10px 0;
       padding: 0;
       float: left;
       cursor: pointer;
@@ -477,7 +489,6 @@ a {
       font-weight: bold;
     }
   }
- 
 }
 
 /*-------------- Signin Error message styling --------------*/
@@ -485,14 +496,12 @@ a {
 .dri_login_form_block .field_with_errors {
   background-color: $dri_white;
 }
-
 .dri_input_error_message {
   color: $dri_red;
   margin: 0 0 10px 0;
   padding: 0 40px 0 0;
   font-size: 110%;
 }
-
 .dri_input_error input {
   @include border_radius;
   background-color: $dri_white;
@@ -509,7 +518,6 @@ a {
   a {
    float: left;
     margin: 5px;
-     
   }
 }
 
@@ -528,10 +536,10 @@ a {
   padding: 0 0 0 0;
   width: 330px;
   h2 {
-    margin: 30px 0 10px 0;
+    margin: 30px 0 20px 0;
     padding: 0px;
     font-weight: bold;
-    font-size: 120%;
+    font-size: 130%;
   }
 }
 
@@ -586,14 +594,6 @@ a .dri_signin_edugate {
 }
 }
 
-
-
-/*--------------Terms of Use --------------------*/
-
-.dri_cookie_acceptance_text {
-  /*height: 150px;*/
-  overflow: scrolling;
-}
 /*--------------Release Main Navbar --------------*/
 // Web and Mobile Version - clean up
 .dri_main_nav_new {
@@ -616,8 +616,9 @@ a .dri_signin_edugate {
           }       
           
           .navbar-nav > li.active > a, 
+          
          &:hover {
-            background-color: white;
+            background-color: $dri_white;
             
           }
 
@@ -630,30 +631,10 @@ a .dri_signin_edugate {
               padding-top: 12px;
               background-color: inherit;
             }           
-          }    }
-
-             
-// mobile logo version
-        .dri_ident_tiny {
-          background: image-url($dri_logo_tiny_url);
-          background-repeat: no-repeat;
-          width: 100px;
-          height: 35px;
-          margin: 5px;
-          margin-left: 25px;
-          //margin-top:8px;
-      }
-      .dri_navbar_search {
-        
-        .dri_search_term_text_input {
-          margin-top: 15px;
-          margin-right: 20px;
-          font-size: 100%;
-          font-weight: normal;
-          width: 45%;
-        }
-      }
-      .dri_dropdown {
+          }   
+         }  
+}
+  .dri_dropdown {
         ul {
           font-weight: normal;
           text-transform: none;
@@ -661,6 +642,7 @@ a .dri_signin_edugate {
             padding-top:0;
           li {
             border-top:1px solid $dri_thingrey;
+             
             a {
               padding-top: 12px;
               padding-bottom: 8px;
@@ -687,31 +669,26 @@ a .dri_signin_edugate {
           }
         }
 
-        }
-}
-
+ }
 /*--------------Preferred Language --------------*/
 /*-------------- Account and Language Styling--------------*/
+
+/*--------------  Delete this?
+
 .dri_main_nav_links.uppercase > li {
 .dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
   z-index: 1000;
-  display: none;
-  float: left;
-  width: 62px;
-  min-width: 62px;
   padding: 3px 5px 3px 0;
   margin: 0;
   list-style: none;
-  background-color: $dri_white;
   border: 1px solid $dri_thingrey;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  @include border_radius (3px);  
   *border-right-width: 2px;
   *border-bottom-width: 2px;
   -webkit-border-radius: 6px;
-  @include border_radius (6px);
   -webkit-box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
   box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
@@ -724,6 +701,8 @@ a .dri_signin_edugate {
   }
 }
 }
+
+--------------*/
 .datepicker {
   width: auto;
   table {
