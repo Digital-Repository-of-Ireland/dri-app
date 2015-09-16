@@ -542,7 +542,6 @@ a {
     font-size: 130%;
   }
 }
-
 a .dri_signin_facebook {
   background: image-url("dri/signin_facebook.png") no-repeat;
   background-color: #3B5998;
@@ -551,11 +550,8 @@ a .dri_signin_facebook {
   @include socialbutton;
  &:hover {
   background-color: #244685;
+  }
 }
-
-}
-
-
 a .dri_signin_google {
   background: image-url("dri/signin_google.png") no-repeat;
   background-color: #D7515D;
@@ -564,7 +560,7 @@ a .dri_signin_google {
   @include socialbutton;
   &:hover {
   background-color: #CC3945;
-}
+  }
 }
 
 
@@ -577,11 +573,8 @@ a .dri_signin_twitter {
   @include socialbutton;
   &:hover {
   background-color: #207BAA;
+  }
 }
-}
-
-
-
 a .dri_signin_edugate {
   background: image-url("dri/signin_edugate.png") no-repeat;
   background-color: #7D4391;
@@ -1062,7 +1055,7 @@ ol.breadcrumb {
     padding: 4px 0 4px 15px;
     list-style: none;
     text-decoration: none;
-    color: #FFF;
+    color: $dri_white;
     background-color: $dri_darkgrey;
     @include border_radius (3px);
     box-shadow: 1px 1px 4px  #888888;
@@ -1409,18 +1402,18 @@ h4.suggest {
 }
 /* -----------Home page styling ---------- */
 .dri_welcome_block {
-  margin: 30px 0 40px 0;
+  margin: 20px 0 40px 0;
   padding: 0;
   h1 {
     margin: 0 0 4px 0;
     padding: 0;
-    font-size: 240%;
+    font-size: 230%;
     color: $dri_darkgrey;
   }
   p {
     margin: 0 0 15px 0;
     padding: 0;
-    font-size: 160%;
+    font-size: 150%;
     line-height: 1.4em;
     color: $dri_darkgrey;
   }
