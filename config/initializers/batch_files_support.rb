@@ -27,7 +27,7 @@ DRI::ModelSupport::Files.module_eval do
 
     @actor = DRI::Asset::Actor.new(gf, ingest_user)
 
-    create_file(file, file_name, gf.id, dsid, "", mime_type.to_s)
+    create_file(file, file_name, gf.id, gf.batch.id, dsid, "", mime_type.to_s)
  
     url = Rails.application.routes.url_helpers.url_for :controller=>"assets", :action=>"download", :object_id => gf.batch.id, :id=>gf.id
 
@@ -41,9 +41,9 @@ DRI::ModelSupport::Files.module_eval do
 
   private
 
-  def create_file(file, file_name, object_id, datastream, checksum, mime_type)
+  def create_file(file, file_name, object_id, batch_id, datastream, checksum, mime_type)
     local_file = LocalFile.new(fedora_id: object_id, ds_id: datastream)
-    local_file.add_file file, {:file_name => file_name, :checksum => checksum, :mime_type => mime_type}
+    local_file.add_file file, {:batch_id => batch_id, :file_name => file_name, :checksum => checksum, :mime_type => mime_type}
 
     begin
       local_file.save!

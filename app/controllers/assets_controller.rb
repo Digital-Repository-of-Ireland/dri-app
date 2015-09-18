@@ -256,6 +256,7 @@ class AssetsController < ApplicationController
       options[:mime_type] = @mime_type
       options[:checksum] = checksum
       options[:file_name] = filename unless filename.nil?
+      options[:batch_id] = generic_file.batch.id
 
       @file.add_file filedata, options
 

@@ -1,8 +1,10 @@
 # Controller for Digital Objects
 #
 require 'solr/query'
+require 'moab/moab_helpers'
 
 include Utils
+include MoabHelpers 
 
 class ObjectsController < BaseObjectsController
 
@@ -132,6 +134,8 @@ class ObjectsController < BaseObjectsController
     
     supported_licences()
 
+    @object.object_version = "1"
+
     if @object.valid? && @object.save
       warn_if_duplicates
 
@@ -139,6 +143,9 @@ class ObjectsController < BaseObjectsController
       retrieve_linked_data
 
       actor.version_and_record_committer
+
+      # Create MOAB dir
+      moabify(@object.id, @object.object_version) unless @object.is_collection?      
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -417,5 +424,18 @@ class ObjectsController < BaseObjectsController
         end
       end
     end
+
+
+    # moabify
+    # Creates MOAB preservation directory structure and saves metadata there
+    #
+    def moabify(object_id, version)
+
+      base_dir = File.join(local_storage_dir, build_hash_dir(object_id), MoabHelpers.version_string(version))
+      FileUtils.mkdir_p(base_dir)
+
+    end
+
+
 end
 
