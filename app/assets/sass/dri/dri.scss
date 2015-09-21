@@ -1,212 +1,148 @@
-/*-------------- DRI Wrapper--------------*/
-html {
-  margin-bottom: 0.5em;
-  height: 100%;
-  body {
-    font: 120% Arial, Helvetica, clean,sans-serif;
-    *font-size: small;
-    *font: x-small;
-    margin: 0;
-
-  }
-}
-/*-------------- Fonts--------------*/
-h1,
-h2,
-h3 {
-  line-height: 150%;
-}
-
-/*.dri_search_term_text_submit_button {
-  height: 20px;
-  width: 100px;
-}*/
-
-/*.bold {
-  font-weight: bold;
-}*/
-
-
-/*-------------- Mixins --------------*/
-//mixin example for border radius
-@mixin border_radius ($br: 2px){
-  -moz-border-radius: $br;
-  border-radius: $br;
-}
-
 /*----------------- set up and overrides scss file for this block of styling -----------------------*/
 /* Video-JS Overrides */
-    a {
-      color: none;
-      text-decoration: none;
-    }
-		a:hover, a:focus {
-	  color: none;
-	  text-decoration: none;
-	}
-	
-.vjs-default-skin .vjs-big-play-button {
-  left: 35%;
-  top: 13%;
-  width: 30%;
-  //height: 30%;
-}
 
+.vjs-default-skin .vjs-big-play-button {
+    left: 35%;
+    top: 13%;
+    width: 30%;
+    //height: 30%;
+}
 /* Colorbox Overrides */
 
-#cboxPrevious, #cboxNext {
-  border: inherit;
+#cboxPrevious,
+#cboxNext {
+    border: inherit;
 }
-
-
 /* bootstrap overrides */
 
 .span4 {
-  width: 338px;
+    width: 338px;
 }
-
 .span12 {
-  width: 1018px;
+    width: 1018px;
 }
-
 .span6 {
-  width: 509px;
+    width: 509px;
 }
-
 .w240 {
-  width: 240px;
+    width: 240px;
 }
 /* Object carousel Controls */
 
-
 .carousel {
-	.item {
-		padding: 0; 
-		margin: 0;
-	}
-	.carousel-caption {
-    padding: 0 0 0 0;
-	  position: absolute;
-	  left: 0;
-	  right: 0;
-	  bottom: 0;
-	  background: $dri_darkgrey;
-	  background: rgba(144, 154, 60, 0.75);
-	}
-	
-	p {
-		font-size: 100%;
-		color:#FFF;
-		padding: 0;
-		margin: 3px 0 0 0;
-		text-shadow: none;
-	}
-	
-	.left {
-		text-shadow: none;
-		margin-left: 6px;
-	}
-		.right {
-		text-shadow: none;
-		margin-right: 6px;
-	}
+    .item {
+        padding: 0;
+        margin: 0;
+    }
+    .carousel-caption {
+        padding: 0 0 0 0;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: $dri_darkgrey;
+        background: rgba(144, 154, 60, 0.75);
+    }
+    p {
+        font-size: 100%;
+        color: #FFF;
+        padding: 0;
+        margin: 3px 0 0 0;
+        text-shadow: none;
+    }
+    .left {
+        text-shadow: none;
+        margin-left: 6px;
+    }
+    .right {
+        text-shadow: none;
+        margin-right: 6px;
+    }
 }
 /* Timeline Override */
+
 .vco-feature h3 {
-  font-size: 1.2em;
-  line-height: 1.2em;
+    font-size: 1.2em;
+    line-height: 1.2em;
 }
-
-
 /* Homepage carousel Controls */
 
 .dri_slideshow_block {
-	
-	.carousel-caption {
-    padding: 10px 0 0 0;
-	  position: absolute;
-	  left: 0;
-	  right: 0;
-	  bottom: 0;
-	  background: $dri_darkgrey;
-	  background: rgba(144, 154, 60, 0.75);
- 	
-	 p {
-		font-size: 140%;
-		color:#FFF;
-		padding: 0 0 26px 0;
-		text-shadow: none;
-
-	}
-}
- ol.carousel-indicators {
-	 height: 0;
-	 padding: 0 0 0 0;
-	
-	 li.active {
-		 background-color: $dri_white;  
-		 margin: 8px 0 0 0;
-	 }
-	}
-.carousel-indicators .active {
-	  background-color: rgba(144, 154, 60, 1);
-	}
-	.left {
-		text-shadow: none;
-		margin-left: 0;
-	}
-		.right {
-		text-shadow: none;
-		margin-right: 0;
-	}
+    .carousel-caption {
+        padding: 10px 0 0 0;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: $dri_darkgrey;
+        background: rgba(144, 154, 60, 0.75);
+        p {
+            font-size: 140%;
+            color: #FFF;
+            padding: 0 0 26px 0;
+            text-shadow: none;
+        }
+    }
+    ol.carousel-indicators {
+        height: 0;
+        padding: 0 0 0 0;
+        li.active {
+            background-color: $dri_white;
+            margin: 8px 0 0 0;
+        }
+    }
+    .carousel-indicators .active {
+        background-color: rgba(144, 154, 60, 1);
+    }
+    .left {
+        text-shadow: none;
+        margin-left: 0;
+    }
+    .right {
+        text-shadow: none;
+        margin-right: 0;
+    }
 }
 a.carousel-control {
-	position: absolute;
-	padding-top: 130px;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 15%;
-	opacity: 0.5;
-	filter: alpha(opacity=50);
-	font-size: 180%;
-	color: $dri_white;
-	text-align: center;
-	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-
-	}
-	
-	
+    position: absolute;
+    padding-top: 130px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 15%;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+    font-size: 180%;
+    color: $dri_white;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
 .dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus, 
+.dropdown-menu > li > a:focus,
 .dropdown-submenu:hover > a,
 .dropdown-submenu:focus > a {
-  text-decoration: none;
-  color: $dri_green;
-  background-color: $dri_green;
-  background-image: none;
-  
+    text-decoration: none;
+    color: $dri_green;
+    background-color: $dri_green;
+    background-image: none;
 }
-
 /* breadcrumbs */
 
 .breadcrumb > li + li:before {
-  content: "/\00a0";
-  padding: 0 5px;
-  color: $dri_grey;
+    content: "/\00a0";
+    padding: 0 5px;
+    color: $dri_grey;
 }
-
 /* end bootstrap override */
 /*----------------- set up and overrides scss file for this block of styling -----------------------*/
-
 /*-------------- Forms and input fields --------------*/
+
 input,
 button,
 select,
 textarea {
-  font-family: Arial, Helvetica, clean,sans-serif;
+    font-family: Arial, Helvetica, clean, sans-serif;
 }
-
 select,
 textarea,
 input[type="text"],
@@ -224,61 +160,55 @@ input[type="search"],
 input[type="tel"],
 input[type="color"],
 .uneditable-input {
-  display: inline-block;
-  *padding: 2px 2px 2px 30px;
-  *margin-bottom: 10px;
-  *font-size: 110%;
-  *line-height: 20px;
-  -webkit-border-radius: 3px;
-   @include border_radius (3px);
-  vertical-align: middle;
+    display: inline-block;
+    *padding: 2px 2px 2px 30px;
+    *margin-bottom: 10px;
+    *font-size: 110%;
+    *line-height: 20px;
+    -webkit-border-radius: 3px;
+    @include border_radius (3px);
+    vertical-align: middle;
 }
-
 .modal.fade.in {
-  //padding-top: 5%;
+    //padding-top: 5%;
 }
-
 .field_with_errors label {
-  background-color: $dri_white;
-  color: $dri_red;
-  margin: 0 0 10px 0;
-  padding: 0 40px 0 0;
-  font-size: 110%;
+    background-color: $dri_white;
+    color: $dri_red;
+    margin: 0 0 10px 0;
+    padding: 0 40px 0 0;
+    font-size: 110%;
 }
-
 .field_with_errors input {
-  background-color: $dri_white;
-  color: darkenn($dri_red, 20%);
-  margin: 0 0 4px 0;
-  padding: 6px 13px 6px 15px;
-  @include border_radius (3px);
-  border: 1px solid  $dri_grey_border;
+    background-color: $dri_white;
+    color: darkenn($dri_red, 20%);
+    margin: 0 0 4px 0;
+    padding: 6px 13px 6px 15px;
+    @include border_radius (3px);
+    border: 1px solid $dri_grey_border;
 }
-
 form {
-  margin: 0 0 0 0;
+    margin: 0 0 0 0;
 }
-
-
 /*-------------- Button Styling--------------*/
-.btn {
-  display: inline-block;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  background-image: none;
-  border: none;
-  white-space: nowrap;
-   padding: 0;
-    margin: 0;
-  font-size: 100%;
-  line-height: none;
-  @include border_radius (3px);
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 
+.btn {
+    display: inline-block;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: none;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    line-height: none;
+    @include border_radius (3px);
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 /*--------------%btn {
   display: inline-block;
@@ -299,373 +229,349 @@ form {
   user-select: none;
 
 }--------------*/
+
 .dri_button {
-//  @extend %btn;
-  color: $dri_white;
-  border: none;
-  font-weight: normal;
+    //  @extend %btn;
+    color: $dri_white;
+    border: none;
+    font-weight: normal;
 }
-
 .dri_button_green {
-  @extend .dri_button;
-  background-color: $dri_green;
- &:hover {
-    background-color: darken($dri_green, 3%);
-  }
-}
-
-.dri_button_red {
-  @extend .dri_button;
-  background-color: $dri_red;
-  &:hover {
-    background-color: darken($dri_red, 3%);
-  }
-}
-
-.dri_button_grey {
-  @extend .dri_button;
-  background-color: $dri_midgrey;
+    @extend .dri_button;
+    background-color: $dri_green;
     &:hover {
-    background-color: darken($dri_midgrey, 3%);
-  }
+        background-color: darken($dri_green, 3%);
+    }
 }
-
+.dri_button_red {
+    @extend .dri_button;
+    background-color: $dri_red;
+    &:hover {
+        background-color: darken($dri_red, 3%);
+    }
+}
+.dri_button_grey {
+    @extend .dri_button;
+    background-color: $dri_midgrey;
+    &:hover {
+        background-color: darken($dri_midgrey, 3%);
+    }
+}
 .dri_button_black {
-  @extend .dri_button;
-  background-color: $dri_darkgrey;
-   &:hover {
-    background-color: lighten($dri_darkgrey, 10%);
-  }
+    @extend .dri_button;
+    background-color: $dri_darkgrey;
+    &:hover {
+        background-color: lighten($dri_darkgrey, 10%);
+    }
 }
-
 .btn {
-  @extend .dri_button;
-  background-color: $dri_midgrey;
-  padding: 5px 10px 4px 10px;
-  margin: 0;
+    @extend .dri_button;
+    background-color: $dri_midgrey;
+    padding: 5px 10px 4px 10px;
+    margin: 0;
 }
 .btn:hover {
-	background-color: darken($dri_midgrey, 3%);
-	color: #FFF;
+    background-color: darken($dri_midgrey, 3%);
+    color: #FFF;
 }
 .dri_w230 {
-  width: 230px;
+    width: 230px;
 }
-
 input.dri_w230 {
-  width: 230px;
+    width: 230px;
 }
-
 .dri_w330 {
-  width: 330px;
+    width: 330px;
 }
 /*-------------- Layout for Identity and Search feature --------------*/
+
 .dri_ident {
-  background: image-url($dri_logo_url);
-  background-repeat: no-repeat;
-  height: 135px;
-  margin: 0px;
-  padding: 0px;
+    background: image-url($dri_logo_url);
+    background-repeat: no-repeat;
+    height: 135px;
+    margin: 0px;
+    padding: 0px;
 }
-
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
-
 .dri_search_term_input {
-  padding-top: 45px;
+    padding-top: 45px;
 }
-
 // mobile logo version
-        .dri_ident_tiny {
-          background: image-url($dri_logo_tiny_url);
-          background-repeat: no-repeat;
-          width: 100px;
-          height: 35px;
-          margin: 5px;
-          margin-left: 25px;
-          //margin-top:8px;
-      }
+.dri_ident_tiny {
+    background: image-url($dri_logo_tiny_url);
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 35px;
+    margin: 5px;
+    margin-left: 25px;
+    //margin-top:8px;
+}
 /*--------------Terms of Use --------------------*/
 
 .dri_cookie_acceptance_text {
-  /*height: 150px;*/
-  overflow: scrolling;
+    /*height: 150px;*/
+    
+    overflow: scrolling;
 }
 /*-------------- Signin Model--------------*/
+
 .dri_login_form_block {
-  margin: auto;
-  margin-top: 20px;
-  border: 1px solid $dri_thingrey;
-  background-color: $dri_white;
-  padding: 40px 0 40px 65px;
-  display: block;
-  @include border_radius (10px);
-  label {
-    cursor: auto;
-  }
-  h2 {
-    margin: 0 0 20px 0;
-    padding: 0px;
-    font-weight: bold;
-    font-size: 140%;
-  }
-  label {
-	  margin: 0 0 0 0;
-    padding: 0 0 0 0;
-    width: 300px;
-  }
-  input {
-    margin: 6px 0 14px 0;
-    padding: 6px 15px 6px 15px;
-    width: 310px;
-    background-color: $dri_darkgrey;
-    border: none;
-    color: $dri_white;
-    font-size: 106%;
-    font-weight: normal;
-  }
-  }  
+    margin: auto;
+    margin-top: 20px;
+    border: 1px solid $dri_thingrey;
+    background-color: $dri_white;
+    padding: 40px 0 40px 65px;
+    display: block;
+    @include border_radius (10px);
+    label {
+        cursor: auto;
+    }
+    h2 {
+        margin: 0 0 20px 0;
+        padding: 0px;
+        font-weight: bold;
+        font-size: 140%;
+    }
+    label {
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
+        width: 300px;
+    }
+    input {
+        margin: 6px 0 14px 0;
+        padding: 6px 15px 6px 15px;
+        width: 310px;
+        background-color: $dri_darkgrey;
+        border: none;
+        color: $dri_white;
+        font-size: 106%;
+        font-weight: normal;
+    }
+}
 .dri_submit input {
-      font-size: 100%;
-      background-color: $dri_green;
-      color: #FFF;
-      @include border_radius (3px);
-      border: none;
-      padding: 6px 0 6px 0;
-      margin: 10px 0 10px 0;
-      cursor: pointer;
-      width: 310px;
-      &:hover {
-      background-color: darken($dri_green, 3%);
+    font-size: 100%;
+    background-color: $dri_green;
+    color: #FFF;
+    @include border_radius (3px);
+    border: none;
+    padding: 6px 0 6px 0;
+    margin: 10px 0 10px 0;
+    cursor: pointer;
+    width: 310px;
+    &:hover {
+        background-color: darken($dri_green, 3%);
     }
 }
 .dri_checkbox_text {
-  margin: 0;
-  padding: 0;
-  input {
-    margin: 0 4px 10px 0;
+    margin: 0;
     padding: 0;
-    width: 14px;
-    height: 14px;
-    font-size: 106%;
-    float: left;
-  }
-  label {
-    span {
-      margin: 0 4px 10px 0;
-      padding: 0;
-      float: left;
-      cursor: pointer;
+    input {
+        margin: 0 4px 10px 0;
+        padding: 0;
+        width: 14px;
+        height: 14px;
+        font-size: 106%;
+        float: left;
     }
-  }
+    label {
+        span {
+            margin: 0 4px 10px 0;
+            padding: 0;
+            float: left;
+            cursor: pointer;
+        }
+    }
 }
-
 .dri_form_text {
-  display: block;
-  margin: 0 4px 0 0;
-  padding: 0;
-  width: 310px;
-  a {
-    margin: 0 0 0 0;
+    display: block;
+    margin: 0 4px 0 0;
     padding: 0;
-    color: $dri_darkgrey;
-     &:hover {
-    text-decoration: underline;
-  }
-    span.text_right {
-      margin: 0 0 0 136px;
-      padding: 0;
-      color: $dri_darkgrey; 
+    width: 310px;
+    a {
+        margin: 0 0 0 0;
+        padding: 0;
+        color: $dri_darkgrey;
         &:hover {
-       text-decoration: underline;
-      }
+            text-decoration: underline;
+        }
+        span.text_right {
+            margin: 0 0 0 136px;
+            padding: 0;
+            color: $dri_darkgrey;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        span.text_line {
+            margin: 20px 0 0 0;
+            padding: 0 0 0 0;
+            display: block;
+            font-weight: bold;
+        }
     }
-   
-    span.text_line {
-      margin: 20px 0 0 0;
-      padding: 0 0 0 0;
-      display: block;
-      font-weight: bold;
-    }
-  }
 }
-
 /*-------------- Signin Error message styling --------------*/
 
 .dri_login_form_block .field_with_errors {
-  background-color: $dri_white;
+    background-color: $dri_white;
 }
 .dri_input_error_message {
-  color: $dri_red;
-  margin: 0 0 10px 0;
-  padding: 0 40px 0 0;
-  font-size: 110%;
+    color: $dri_red;
+    margin: 0 0 10px 0;
+    padding: 0 40px 0 0;
+    font-size: 110%;
 }
 .dri_input_error input {
-  @include border_radius;
-  background-color: $dri_white;
-  color: darken ($dri_red, 20%);
-  margin: 6px 0 14px 0;
-  padding: 6px 15px 6px 15px;
-  border: 1px solid  $dri_grey_border;
+    @include border_radius;
+    background-color: $dri_white;
+    color: darken ($dri_red, 20%);
+    margin: 6px 0 14px 0;
+    padding: 6px 15px 6px 15px;
+    border: 1px solid $dri_grey_border;
 }
 /*-------------- Social Media Sharing ------------*/
 
 .social-share-button {
-  border: none;  
-  margin: 0;
-  a {
-   float: left;
-    margin: 5px;
-  }
+    border: none;
+    margin: 0;
+    a {
+        float: left;
+        margin: 5px;
+    }
 }
-
 /*-------------- Signin Social Media--------------*/
-// scss update & symbol references the parent selector (a .dri_signin_facebook:hover = &hover)
 
+// scss update & symbol references the parent selector (a .dri_signin_facebook:hover = &hover)
 @mixin socialbutton {
-   margin: 0 0 6px 0;
-   padding: 6px 0 6px 55px;
-   color: $dri_white;
-   font-size: 110%;
+    margin: 0 0 6px 0;
+    padding: 6px 0 6px 55px;
+    color: $dri_white;
+    font-size: 110%;
 }
 .dri_signin_socialmedia {
-  border-top: 1px solid $dri_thingrey;
-  margin: 30px 0  0 0;
-  padding: 0 0 0 0;
-  width: 330px;
-  h2 {
-    margin: 30px 0 20px 0;
-    padding: 0px;
-    font-weight: bold;
-    font-size: 130%;
-  }
+    border-top: 1px solid $dri_thingrey;
+    margin: 30px 0 0 0;
+    padding: 0 0 0 0;
+    width: 330px;
+    h2 {
+        margin: 30px 0 20px 0;
+        padding: 0px;
+        font-weight: bold;
+        font-size: 130%;
+    }
 }
 a .dri_signin_facebook {
-  background: image-url("dri/signin_facebook.png") no-repeat;
-  background-color: #3B5998;
-  border: 1px solid #132547;
-  @include border_radius;
-  @include socialbutton;
- &:hover {
-  background-color: #244685;
-  }
+    background: image-url("dri/signin_facebook.png") no-repeat;
+    background-color: #3B5998;
+    border: 1px solid #132547;
+    @include border_radius;
+    @include socialbutton;
+    &:hover {
+        background-color: #244685;
+    }
 }
 a .dri_signin_google {
-  background: image-url("dri/signin_google.png") no-repeat;
-  background-color: #D7515D;
-  border: 1px solid #A32E38;
-  @include border_radius;
-  @include socialbutton;
-  &:hover {
-  background-color: #CC3945;
-  }
+    background: image-url("dri/signin_google.png") no-repeat;
+    background-color: #D7515D;
+    border: 1px solid #A32E38;
+    @include border_radius;
+    @include socialbutton;
+    &:hover {
+        background-color: #CC3945;
+    }
 }
-
-
-
 a .dri_signin_twitter {
-  background: image-url("dri/signin_twitter.png") no-repeat;
-  background-color: #4195C1;
-  border: 1px solid #1A658B;
-  @include border_radius;
-  @include socialbutton;
-  &:hover {
-  background-color: #207BAA;
-  }
+    background: image-url("dri/signin_twitter.png") no-repeat;
+    background-color: #4195C1;
+    border: 1px solid #1A658B;
+    @include border_radius;
+    @include socialbutton;
+    &:hover {
+        background-color: #207BAA;
+    }
 }
 a .dri_signin_edugate {
-  background: image-url("dri/signin_edugate.png") no-repeat;
-  background-color: #7D4391;
-  border: 1px solid #612E76;
-  @include border_radius;
-  @include socialbutton;
-  &:hover {
-  background-color: #66317C;
-  text-decoration: none;
+    background: image-url("dri/signin_edugate.png") no-repeat;
+    background-color: #7D4391;
+    border: 1px solid #612E76;
+    @include border_radius;
+    @include socialbutton;
+    &:hover {
+        background-color: #66317C;
+        text-decoration: none;
+    }
 }
-}
-
 /*--------------Release Main Navbar --------------*/
+
 // Web and Mobile Version - clean up
 .dri_main_nav_new {
-
-          border-top: 1px solid $dri_thingrey;
-          font-size: 115%;
-          font-weight: bold;
-          background-color: $dri_white;
-          margin-bottom: 10px;
-          
-          .navbar-nav > li > a {
-            color: $dri_darkgrey;   
-            &:hover {
+    border-top: 1px solid $dri_thingrey;
+    font-size: 115%;
+    font-weight: bold;
+    background-color: $dri_white;
+    margin-bottom: 10px;
+    .navbar-nav > li > a {
+        color: $dri_darkgrey;
+        &:hover {
             background-color: $dri_extralightgrey;
-            }
-          }
-
-          .container-fluid {
-            padding-left: 0px;
-          }       
-          
-          .navbar-nav > li.active > a, 
-          
-         &:hover {
-            background-color: $dri_white;
-            
-          }
-
-          li {
-            border-right: 1px solid $dri_thingrey;
-          &.active {
+        }
+    }
+    .container-fluid {
+        padding-left: 0px;
+    }
+    .navbar-nav > li.active > a,
+    &:hover {
+        background-color: $dri_white;
+    }
+    li {
+        border-right: 1px solid $dri_thingrey;
+        &.active {
             border-top: 3px solid $dri_green;
             color: $dri_darkgrey;
             a {
-              padding-top: 12px;
-              background-color: inherit;
-            }           
-          }   
-         }  
-}
-  .dri_dropdown {
-        ul {
-          font-weight: normal;
-          text-transform: none;
-           margin-top:0;
-            padding-top:0;
-          li {
-            border-top:1px solid $dri_thingrey;
-             
-            a {
-              padding-top: 12px;
-              padding-bottom: 8px;
+                padding-top: 12px;
+                background-color: inherit;
             }
-          }
-          li.active {
-            a {
-              padding-top: 12px;
-              padding-bottom: 8px;
-              background-color: inherit;
-              color: $dri_green;
-            }   
-          }
-          li:hover {
-            a {
-              background-color: inherit;
-            }
-          }
-          li:focus {
-            a {
-              background-color: inherit;
-            }  
-          
-          }
         }
-
- }
+    }
+}
+.dri_dropdown {
+    ul {
+        font-weight: normal;
+        text-transform: none;
+        margin-top: 0;
+        padding-top: 0;
+        li {
+            border-top: 1px solid $dri_thingrey;
+            a {
+                padding-top: 12px;
+                padding-bottom: 8px;
+            }
+        }
+        li.active {
+            a {
+                padding-top: 12px;
+                padding-bottom: 8px;
+                background-color: inherit;
+                color: $dri_green;
+            }
+        }
+        li:hover {
+            a {
+                background-color: inherit;
+            }
+        }
+        li:focus {
+            a {
+                background-color: inherit;
+            }
+        }
+    }
+}
 /*--------------Preferred Language --------------*/
 /*-------------- Account and Language Styling--------------*/
-
 /*--------------  Delete this?
 
 .dri_main_nav_links.uppercase > li {
@@ -696,81 +602,78 @@ a .dri_signin_edugate {
 }
 
 --------------*/
+
 .datepicker {
-  width: auto;
-  table {
-    margin:auto;
-  }
+    width: auto;
+    table {
+        margin: auto;
+    }
 }
 // scss update for account styling
 .dri_account_nav {
-  margin: 10px 0 0 0;
-  padding: 0px;
-  font-size: 100%;
-  
-  ul.dri_account_links {
-    li {
-      float: left;
-      display: block;
-      margin: 2px 0 0 10px;
-      padding: 0 10px 0 0;
-      border-right: 1px solid $dri_thingrey;
-      color: $dri_midgrey;
-   &:hover {
-        text-decoration: underline;
-    } 
-    &.no_border {
-        border-right: none;
+    margin: 10px 0 0 0;
+    padding: 0px;
+    font-size: 100%;
+    ul.dri_account_links {
+        li {
+            float: left;
+            display: block;
+            margin: 2px 0 0 10px;
+            padding: 0 10px 0 0;
+            border-right: 1px solid $dri_thingrey;
+            color: $dri_midgrey;
+            &:hover {
+                text-decoration: underline;
+            }
+            &.no_border {
+                border-right: none;
+            }
+            &.on {
+                color: $dri_grey;
+            }
+        }
     }
-    &.on {
-      color: $dri_grey;
-    }
-   }
-      
-  }
 }
- .dri_language_links {
-      float: right;
-      display: block;
-      border: 1px solid $dri_thingrey;
-      margin: 0;
-      padding: 2px 7px 2px 7px;
-      display: block;
-      @include border_radius (3px);
-      font-size: 1.1em;
-       color: $dri_midgrey; 
-      .dropdown-menu > a {      
-          margin-left: 6px;
-          font-weight: normal;
-          color: $dri_midgrey; 
+.dri_language_links {
+    float: right;
+    display: block;
+    border: 1px solid $dri_thingrey;
+    margin: 0;
+    padding: 2px 7px 2px 7px;
+    display: block;
+    @include border_radius (3px);
+    font-size: 1.1em;
+    color: $dri_midgrey;
+    .dropdown-menu > a {
+        margin-left: 6px;
+        font-weight: normal;
+        color: $dri_midgrey;
     }
-       }
-        ul.dropdown a {
-         color: $dri_midgrey; 
-           &:hover {    
-            color: $dri_darkgrey; 
-       }
-         }
-         
+}
+ul.dropdown a {
+    color: $dri_midgrey;
+    &:hover {
+        color: $dri_darkgrey;
+    }
+}
 /*-------------- Social Media --------------*/
 
 .dri_social_media_nav {
-  margin: 70px 0 0 0;
-  li {
-    font-size: 20px;
-    color: $dri_darkgrey;
-    margin: 0 8px 0 0;
-    float: left;
-    display: block;
-    i.fa-slideshare {
-      font-size: 23px;
+    margin: 70px 0 0 0;
+    li {
+        font-size: 20px;
+        color: $dri_darkgrey;
+        margin: 0 8px 0 0;
+        float: left;
+        display: block;
+        i.fa-slideshare {
+            font-size: 23px;
+        }
+        &:hover {
+            color: $dri_green;
+        }
     }
-  &:hover {
-    color: $dri_green;
-  } 
-  }
 }
-
 /*-------------- Main Navigation 
 .dri_main_nav {
   margin: 0px;
@@ -845,85 +748,81 @@ a .dri_signin_edugate {
 }
 
 --------------*/
-ol.breadcrumb { 
-  color: $dri_thingrey;
-  background-color: $dri_white;
-  border-bottom: 1px solid $dri_thingrey;
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  font-weight:normal;
-  li {
-    font-size: 110%;
-    a {
-      color: $dri_midgrey;
+
+ol.breadcrumb {
+    color: $dri_thingrey;
+    background-color: $dri_white;
+    border-bottom: 1px solid $dri_thingrey;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    font-weight: normal;
+    li {
+        font-size: 110%;
+        a {
+            color: $dri_midgrey;
+        }
     }
-  }
 }
-
 .breadcrumb .active {
-  color: $dri_darkgrey;
+    color: $dri_darkgrey;
 }
-
 /*-------------- Search/Sort features --------------*/
+
 .dri_search_features_nav_container {
-  margin-left: 10px;
-  padding: 0;
-  
+    margin-left: 10px;
+    padding: 0;
 }
-
 /*-------------- Sort by --------------*/
-.dri_sort_nav {
-  float: left;
-  margin: 0;
-  padding: 6px 25px 0 0;
-  color: $dri_lightgrey;
-  height: 36px;
-  select {
-    margin: 0;
-    padding: 4px;
-    padding-right: 10px;
-    border: 1px solid $dri_thingrey;
-    @include border_radius;
-    color: $dri_midgrey;
-    font-size: 100%;
-    height: 25px;
-  }
-}
 
+.dri_sort_nav {
+    float: left;
+    margin: 0;
+    padding: 6px 25px 0 0;
+    color: $dri_lightgrey;
+    height: 36px;
+    select {
+        margin: 0;
+        padding: 4px;
+        padding-right: 10px;
+        border: 1px solid $dri_thingrey;
+        @include border_radius;
+        color: $dri_midgrey;
+        font-size: 100%;
+        height: 25px;
+    }
+}
 /*-------------- Search --------------*/
 
 .dri_search_term_text_input {
-  clear:right;
-  float: right;
-  margin: 24px 0 0 0;
-  width: 226px;
-  padding: 4px 0 4px 30px;
-  border: 1px solid $dri_thingrey;
-  color: $dri_midgrey;
-  font-size: 112%;
-  background: image-url("dri/search_icon.png") no-repeat left;
+    clear: right;
+    float: right;
+    margin: 24px 0 0 0;
+    width: 226px;
+    padding: 4px 0 4px 30px;
+    border: 1px solid $dri_thingrey;
+    color: $dri_midgrey;
+    font-size: 112%;
+    background: image-url("dri/search_icon.png") no-repeat left;
 }
-
 /*-------------- Grid / table display--------------*/
-.dri_change_sort_view {
-  //margin-left: 20px;
-  //padding-top: 25px;
-  font-size: 100%;
-  //width: 120px;
-  float:left;
-  a {
-    color: $dri_lightgrey;
-    i {
-      color: $dri_lightgrey;
-    }
-  }
-  i { 
-   
-    color: $dri_green;
-    }
 
+.dri_change_sort_view {
+    //margin-left: 20px;
+    //padding-top: 25px;
+    font-size: 100%;
+    //width: 120px;
+    float: left;
+    a {
+        color: $dri_lightgrey;
+        i {
+            color: $dri_lightgrey;
+        }
+    }
+    i {
+        color: $dri_green;
+    }
 }
-  .dri_icon_border {
+.dri_icon_border {
     @include border_radius (3px);
     border: 1px solid $dri_thingrey;
     width: 25px;
@@ -932,899 +831,868 @@ ol.breadcrumb {
     line-height: 100%;
     vertical-align: middle;
     padding-top: 4px;
-
-  }
-/*-------------- Page Grid --------------*/
-.dri_pager_nav {
-  margin: 25px 0 0 0;
-  padding: 0;
-  p {
-    margin: 2px 0 0 0;
-    padding: 0 6px 0 0;
-    color: $dri_midgrey;
-    float: left;
-  }
-  select {
-    margin: 2px 0 0 0;
-    padding: 4px;
-    border: 1px solid $dri_thingrey;
-    @include border_radius;
-    color: $dri_midgrey;
-    width: 60px;
-    font-size: 100%;
-  }
-  ul {
-    margin: 0;
-    padding: 0;
-  }
-  li {
-    float: left;
-    margin: 0 0 0 4px;
-    padding: 3px 8px 0px 8px;
-    text-decoration: none;
-    list-style: none;
-    display: block;
-    border: 1px solid $dri_thingrey;
-    a {
-      margin: 0;
-      padding: 0;
-      text-decoration: none;
-      list-style: none;
-      color: $dri_midgrey;
-    }
-  }
 }
+/*-------------- Page Grid --------------*/
 
+.dri_pager_nav {
+    margin: 25px 0 0 0;
+    padding: 0;
+    p {
+        margin: 2px 0 0 0;
+        padding: 0 6px 0 0;
+        color: $dri_midgrey;
+        float: left;
+    }
+    select {
+        margin: 2px 0 0 0;
+        padding: 4px;
+        border: 1px solid $dri_thingrey;
+        @include border_radius;
+        color: $dri_midgrey;
+        width: 60px;
+        font-size: 100%;
+    }
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+    li {
+        float: left;
+        margin: 0 0 0 4px;
+        padding: 3px 8px 0px 8px;
+        text-decoration: none;
+        list-style: none;
+        display: block;
+        border: 1px solid $dri_thingrey;
+        a {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            list-style: none;
+            color: $dri_midgrey;
+        }
+    }
+}
 /*-------------- Pagination --------------*/
 
 .dri_pagination_nav {
-  //margin: 25px 0 10px 0;
-  padding: 0x;
-  p {
-    margin: 0;
-    padding: 3px 6px 0 0;
-    color: $dri_midgrey;
-    float: left;
-    font-size: 95%;
-  }
-  ul {
-    margin: 0;
-    padding: 0;
-    float: right;
-  }
-  li {
-    float: left;
-    list-style: none;
-    display: block;
-    margin: 0;
-    padding: 0;
-    border-right: 1px solid $dri_thingrey;
-    a {
-      float: left;
-      list-style: none;
-      display: block;
-      padding: 0 6px 0 6px;
-      color: $dri_midgrey;
-      text-decoration: none;
+    //margin: 25px 0 10px 0;
+    padding: 0x;
+    p {
+        margin: 0;
+        padding: 3px 6px 0 0;
+        color: $dri_midgrey;
+        float: left;
+        font-size: 95%;
     }
-    a:hover {
-      color: $dri_midgrey;
+    ul {
+        margin: 0;
+        padding: 0;
+        float: right;
     }
-  }
-  .selected a {
-    color: $dri_midgrey;
-    text-decoration: underline;
-  }
-  .first a {
-    background: image-url("dri/prev_arrow.png") no-repeat center;
-    background-color: none;
-    margin-right: 4px;
-  }
-  .last a {
-    background: image-url("dri/next_arrow.png") no-repeat center;
-    background-color: none;
-    border-right: none;
-    margin-left: 4px;
-  }
-  .last {
-    border-right: none;
-  }
+    li {
+        float: left;
+        list-style: none;
+        display: block;
+        margin: 0;
+        padding: 0;
+        border-right: 1px solid $dri_thingrey;
+        a {
+            float: left;
+            list-style: none;
+            display: block;
+            padding: 0 6px 0 6px;
+            color: $dri_midgrey;
+            text-decoration: none;
+        }
+        a:hover {
+            color: $dri_midgrey;
+        }
+    }
+    .selected a {
+        color: $dri_midgrey;
+        text-decoration: underline;
+    }
+    .first a {
+        background: image-url("dri/prev_arrow.png") no-repeat center;
+        background-color: none;
+        margin-right: 4px;
+    }
+    .last a {
+        background: image-url("dri/next_arrow.png") no-repeat center;
+        background-color: none;
+        border-right: none;
+        margin-left: 4px;
+    }
+    .last {
+        border-right: none;
+    }
 }
-
 /*-------------- Facet Restriction --------------*/
 
 .dri_facet_restrictions_links {
-  margin: 0 0 6px 0;
-  padding: 0;
-  float: left;
-  .dri_clear_all_saved {
-    margin-top: 0;
-    span.dri_clear_all {
-      a {
-        border-left: none;
-        margin-left: 0px;
-      }
-    }
-  }
-  ul {
-    margin: 0;
+    margin: 0 0 6px 0;
     padding: 0;
-  }
-  li {
-    margin: 10px 10px 0 0;
-    padding: 4px 0 4px 15px;
-    list-style: none;
-    text-decoration: none;
-    color: $dri_white;
-    background-color: $dri_darkgrey;
-    @include border_radius (3px);
-    box-shadow: 1px 1px 4px  #888888;
     float: left;
-    display: block;
-    a {
-      margin: 0 0 0 20px;
-      padding: 0 10px 0 10px;
-      color: $dri_white;
-      border-left: 1px solid $dri_thingrey;
-      text-decoration: none;
+    .dri_clear_all_saved {
+        margin-top: 0;
+        span.dri_clear_all {
+            a {
+                border-left: none;
+                margin-left: 0px;
+            }
+        }
+    }
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+    li {
+        margin: 10px 10px 0 0;
+        padding: 4px 0 4px 15px;
+        list-style: none;
+        text-decoration: none;
+        color: $dri_white;
+        background-color: $dri_darkgrey;
+        @include border_radius (3px);
+        box-shadow: 1px 1px 4px #888888;
+        float: left;
+        display: block;
+        a {
+            margin: 0 0 0 20px;
+            padding: 0 10px 0 10px;
+            color: $dri_white;
+            border-left: 1px solid $dri_thingrey;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #ccc;
+        }
+    }
+    span.dri_clear_all a {
+        margin: 14px 10px 0 10px;
+        padding: 2px 8px 0 22px;
+        list-style: none;
+        text-decoration: none;
+        color: $dri_midgrey;
+        float: left;
+        display: block;
+        border-left: 1px solid $dri_thingrey;
+        background: image-url("dri/clear_all_close.png") no-repeat left;
     }
     a:hover {
-      color: #ccc;
+        color: $dri_grey;
+        background: image-url("dri/clear_all_close_hover.png") no-repeat left;
     }
-  }
-  span.dri_clear_all a {
-    margin: 14px 10px 0 10px;
-    padding: 2px 8px 0 22px;
-    list-style: none;
-    text-decoration: none;
-    color: $dri_midgrey;
-    float: left;
-    display: block;
-    border-left: 1px solid $dri_thingrey;
-    background: image-url("dri/clear_all_close.png") no-repeat left;
-  }
-  a:hover {
-    color: $dri_grey;
-    background: image-url("dri/clear_all_close_hover.png") no-repeat left;
-  }
-  .empty {
-    background-color: $dri_white;
-    box-shadow: 1px 1px 4px  $dri_white;
-  }
+    .empty {
+        background-color: $dri_white;
+        box-shadow: 1px 1px 4px $dri_white;
+    }
 }
-
 /*-------------- Browse Sort Collections/Objects --------------*/
 
 .dri_browse_sort_tabs {
-  margin: 0 0 0 0;
-  padding: 0;
-  float: left;
-  width: 100%;
-  border-bottom: 1px solid $dri_thingrey;
-  ul {
-    margin: 0;
+    margin: 0 0 0 0;
     padding: 0;
-  }
-  li {
-    list-style: none;
-    text-decoration: none;
     float: left;
-    a {
-      color: $dri_midgrey;
-      margin: 10px 4px 0 0;
-      padding: 8px 13px 8px 13px;
-      text-decoration: none;
-      border: 1px solid $dri_thingrey;
-      border-top-right-radius: 3px;
-      border-top-left-radius: 3px;
-      border-bottom: none;
-      display: block;
-      font-size: 115%;
+    width: 100%;
+    border-bottom: 1px solid $dri_thingrey;
+    ul {
+        margin: 0;
+        padding: 0;
     }
-    a:hover {
-      background-color: $dri_extralightgrey;
+    li {
+        list-style: none;
+        text-decoration: none;
+        float: left;
+        a {
+            color: $dri_midgrey;
+            margin: 10px 4px 0 0;
+            padding: 8px 13px 8px 13px;
+            text-decoration: none;
+            border: 1px solid $dri_thingrey;
+            border-top-right-radius: 3px;
+            border-top-left-radius: 3px;
+            border-bottom: none;
+            display: block;
+            font-size: 115%;
+        }
+        a:hover {
+            background-color: $dri_extralightgrey;
+        }
+        span.tab_total_number {
+            margin: 0;
+            font-size: 90%;
+            color: $dri_midgrey;
+        }
+        a.selected {
+            background-color: $dri_green;
+            color: $dri_white;
+            span.tab_total_number {
+                color: $dri_white;
+            }
+        }
     }
-    span.tab_total_number {
-      margin: 0;
-      font-size: 90%;
-      color: $dri_midgrey;
-    }
-    a.selected {
-      background-color: $dri_green;
-      color: $dri_white;
-      span.tab_total_number {
-        color: $dri_white;
-      }
-    }
-    
-  }
-  .dri_pagination_nav {
-    margin-top: 10px; 
-    li a {
-      color: none;
-      margin: 0px 0 0px 0;
-      padding: 6px 8px 6px 8px;
-      border: none;
-      border-top-right-radius: none;
-      border-top-left-radius: none;
-      border-bottom: none;
-      display: block;
-      font-size: 100%; 
-      }
+    .dri_pagination_nav {
+        margin-top: 10px;
+        li a {
+            color: none;
+            margin: 0px 0 0px 0;
+            padding: 6px 8px 6px 8px;
+            border: none;
+            border-top-right-radius: none;
+            border-top-left-radius: none;
+            border-bottom: none;
+            display: block;
+            font-size: 100%;
+        }
     }
 }
-
 /*-------------- Save Search --------------*/
 
-
 .dri_search_save_submit_button {
-  @extend .dri_button_green;
-  //margin-top: 25px;
-  float: right;
-  margin: 0px 0 10px 0;
+    @extend .dri_button_green;
+    //margin-top: 25px;
+    float: right;
+    margin: 0px 0 10px 0;
 }
-
 /*-------------- Warning Messages --------------*/
 /*-------------- Suggest Message --------------*/
+
 h4.suggest {
-  margin: 20px 0 0 0;
-  padding: 0;
-  display: block;
-  @include border_radius;
-  color: $dri_darkgrey;
-  font-weight: normal;
-  font-size: 110%;
-  font-style: italic;
-  a {
+    margin: 20px 0 0 0;
+    padding: 0;
+    display: block;
+    @include border_radius;
     color: $dri_darkgrey;
-    font-weight: bold;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
+    font-weight: normal;
+    font-size: 110%;
+    font-style: italic;
+    a {
+        color: $dri_darkgrey;
+        font-weight: bold;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
 }
-
 /*-------------- Info Messages --------------*/
+
 .dri_notice_message {
-  @extend .dri_alert_message;
-  background-color: $dri_paleblue;
+    @extend .dri_alert_message;
+    background-color: $dri_paleblue;
 }
-
 /*-------------- Successful Messages --------------*/
-.dri_success_message {
-  @extend .dri_alert_message;
-  background-color: $dri_palegreen;
-}
 
+.dri_success_message {
+    @extend .dri_alert_message;
+    background-color: $dri_palegreen;
+}
 /*-------------- Warning Messages --------------*/
 
 .dri_alert_message {
-  margin: 20px 0 0 0;
-  padding: 12px 10px 5px 10px;
-  display: block;
-  width: 100%;
-  background-color: $dri_paleorange;
-  @include border_radius;
-  border: 1px solid $dri_lightgrey;
-  float: left;
-  .dri_alert_text {
-    font-size: 115%;
-    color: $dri_darkgrey;
+    margin: 20px 0 0 0;
+    padding: 12px 10px 5px 10px;
+    display: block;
+    width: 100%;
+    background-color: $dri_paleorange;
+    @include border_radius;
+    border: 1px solid $dri_lightgrey;
     float: left;
-    font-weight: normal;
-  }
-  button.dri_close {
-    right: 0px;
-    float: right;
-  }
+    .dri_alert_text {
+        font-size: 115%;
+        color: $dri_darkgrey;
+        float: left;
+        font-weight: normal;
+    }
+    button.dri_close {
+        right: 0px;
+        float: right;
+    }
 }
-
 /*-------------- Error Messages --------------*/
 
 .dri_error_message {
-  @extend .dri_alert_message;
-  background-color: $dri_palered;
+    @extend .dri_alert_message;
+    background-color: $dri_palered;
 }
-
 /* ----------- Facet Filter block ---------- */
+
 .dri_facet_filters_block {
-  margin: 25px 0 0 0;
-  padding: 0px;
-  float: left;
-  display: block;
-  color: $dri_grey;
-  border: 1px solid $dri_thingrey;
-  //box-shadow: 1px 2px 6px  #E3E3E3;
-  @include border_radius (3px);
+    margin: 25px 0 0 0;
+    padding: 0px;
+    float: left;
+    display: block;
+    color: $dri_grey;
+    border: 1px solid $dri_thingrey;
+    //box-shadow: 1px 2px 6px  #E3E3E3;
+    @include border_radius (3px);
 }
 .dri_date_range_block {
-        height: 150px;
-        .dri_date_range {
-              text-decoration: none;
-              color: $dri_darkgrey;
-              display: block;
-              background-color: $dri_thingrey;
-              border-bottom: 2px solid $dri_white;
-              margin-left: -15px;
-              margin-right: -15px;
-              padding: 10px 5px 10px 20px;
-         }
-         .dri_date_range_label {
-           float: right;
-           padding-right: 10px;
-         }
-      }
-      
-.dri_facet_filters {
-  border-bottom: none;
-  .dri_head_title {
-    *color: $dri_darkgrey;
-    font-weight: bold;
-    padding: 15px 0 15px 20px;
-    min-width: 238px;
-    a {
-      color: $dri_darkgrey;
-    }
-  }
-  .dri_search_num {
-    float: right;
-    padding: 0 15px 0 0;
-  }
-  .panel {
-    margin: 0px;
-    padding: 0px;
-    border: none;
-  }
-  .panel-group {
-    width: 238px;
-    margin-bottom: 2px;
-    .panel-default {
-      margin: 0px;
-      padding: 0px;
-      border: none;
-      border-top: 1px solid $dri_thingrey;
-      .panel-heading {
-        background-color: $dri_white;
-        width: 100%;
-        h5 {
-          margin: 0;
-          margin-left: 6px;
-          padding: 0;
-          background: image-url("dri/arrow_down.png") no-repeat right;
-          a {
-            text-decoration: none;
-            color: $dri_darkgrey;
-            font-size: 90%;
-          }
-
-        }
-      }
-      .collapsed {
-        h5 {
-          background: image-url("dri/arrow_up.png") no-repeat right;
-        }
-      }
-      .panel-body {
-        padding-top: 0px;
-        padding-bottom: 0px;
-      }
-    }
-    ul {
-      margin: 0;
-      padding: 0;
-    }
-    li {
-      font-weight: normal;
-      list-style: none;
-      a {
-         font-size: 90%;
+    height: 150px;
+    .dri_date_range {
         text-decoration: none;
         color: $dri_darkgrey;
         display: block;
-        background-color: $dri_extralightgrey;
-        border-bottom: 1px solid $dri_white;
+        background-color: $dri_thingrey;
+        border-bottom: 2px solid $dri_white;
         margin-left: -15px;
         margin-right: -15px;
         padding: 10px 5px 10px 20px;
-     &:hover {
-        text-decoration: underline;
-      } 
-       &.selected {
-        background-color: $dri_thingrey;
-        color: $dri_grey;
-        text-decoration: underline;
-      } 
-      }
-    
-      
-
     }
-  }
+    .dri_date_range_label {
+        float: right;
+        padding-right: 10px;
+    }
 }
-
+.dri_facet_filters {
+    border-bottom: none;
+    .dri_head_title {
+        *color: $dri_darkgrey;
+        font-weight: bold;
+        padding: 15px 0 15px 20px;
+        min-width: 238px;
+        a {
+            color: $dri_darkgrey;
+        }
+    }
+    .dri_search_num {
+        float: right;
+        padding: 0 15px 0 0;
+    }
+    .panel {
+        margin: 0px;
+        padding: 0px;
+        border: none;
+    }
+    .panel-group {
+        width: 238px;
+        margin-bottom: 2px;
+        .panel-default {
+            margin: 0px;
+            padding: 0px;
+            border: none;
+            border-top: 1px solid $dri_thingrey;
+            .panel-heading {
+                background-color: $dri_white;
+                width: 100%;
+                h5 {
+                    margin: 0;
+                    margin-left: 6px;
+                    padding: 0;
+                    background: image-url("dri/arrow_down.png") no-repeat right;
+                    a {
+                        text-decoration: none;
+                        color: $dri_darkgrey;
+                        font-size: 90%;
+                    }
+                }
+            }
+            .collapsed {
+                h5 {
+                    background: image-url("dri/arrow_up.png") no-repeat right;
+                }
+            }
+            .panel-body {
+                padding-top: 0px;
+                padding-bottom: 0px;
+            }
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+        li {
+            font-weight: normal;
+            list-style: none;
+            a {
+                font-size: 90%;
+                text-decoration: none;
+                color: $dri_darkgrey;
+                display: block;
+                background-color: $dri_extralightgrey;
+                border-bottom: 1px solid $dri_white;
+                margin-left: -15px;
+                margin-right: -15px;
+                padding: 10px 5px 10px 20px;
+                &:hover {
+                    text-decoration: underline;
+                }
+                &.selected {
+                    background-color: $dri_thingrey;
+                    color: $dri_grey;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
 /*-------------- Accounts page --------------*/
 
 .dri_account_block {
-  border-bottom: 1px solid $dri_thingrey;
-  display: flex;
-  height: 100%;
-  padding: 30px 0 30px 0;
-  .dri_account_block_heading {
-    color: $dri_darkgrey;
-    font-size: 150%;
-  }
-  .dri_account_block_info {
-    .dri_account_block_info_item {
-		padding: 0 0 20px 0;
-      border-bottom: 1px solid $dri_thingrey;
-	  
-	  a {
-		  color: $dri_green;
-		  font-weight: bold;
-		  text-decoration: underline;
-	  }
+    border-bottom: 1px solid $dri_thingrey;
+    display: flex;
+    height: 100%;
+    padding: 30px 0 30px 0;
+    .dri_account_block_heading {
+        color: $dri_darkgrey;
+        font-size: 150%;
     }
-    h5 {
-      color: $dri_darkgrey;
-      font-size: 110%;
-      margin: 10px 0 0 0;
-      padding: 0px;
-      font-weight: normal;
+    .dri_account_block_info {
+        .dri_account_block_info_item {
+            padding: 0 0 20px 0;
+            border-bottom: 1px solid $dri_thingrey;
+            a {
+                color: $dri_green;
+                font-weight: bold;
+                text-decoration: underline;
+            }
+        }
+        h5 {
+            color: $dri_darkgrey;
+            font-size: 110%;
+            margin: 10px 0 0 0;
+            padding: 0px;
+            font-weight: normal;
+        }
+        p {
+            color: $dri_midgrey;
+            font-size: 110%;
+            margin-bottom: 15px;
+        }
+        h5 label {
+            color: $dri_darkgrey;
+            font-size: 100%;
+            margin: 0 0 4px 0;
+            padding: 0px;
+        }
+        p input {
+            width: 230px;
+            color: $dri_darkgrey;
+            font-size: 100%;
+            padding: 3px 10px 3px 10px;
+            margin: 0 0 0 0;
+        }
     }
-    p {
-      color: $dri_midgrey;
-      font-size: 110%;
-      margin-bottom: 15px;
-    }
-    h5 label {
-      color: $dri_darkgrey;
-      font-size: 100%;
-      margin: 0 0 4px 0;
-      padding: 0px;
-    }
-    p input {
-      width: 230px;
-      color: $dri_darkgrey;
-      font-size: 100%;
-      padding: 3px 10px 3px 10px;
-      margin: 0 0 0 0;
-    }
-  }
 }
-
 /* -----------Main Content Container ---------- */
+
 .dri_main_content_container > h2 {
-  margin: 10px 0 20px 0;
-  padding: 0 0 8px 0;
-  font-size: 140%;
-  font-weight: bold;
-  color: $dri_darkgrey;
+    margin: 10px 0 20px 0;
+    padding: 0 0 8px 0;
+    font-size: 140%;
+    font-weight: bold;
+    color: $dri_darkgrey;
 }
 /* -----------Home page styling ---------- */
+
 .dri_welcome_block {
-  margin: 20px 0 40px 0;
-  padding: 0;
-  h1 {
+    margin: 20px 0 40px 0;
+    padding: 0;
+    h1 {
+        margin: 0 0 4px 0;
+        padding: 0;
+        font-size: 230%;
+        color: $dri_darkgrey;
+    }
+    p {
+        margin: 0 0 15px 0;
+        padding: 0;
+        font-size: 150%;
+        line-height: 1.4em;
+        color: $dri_darkgrey;
+    }
+    .dri_home_link {
+        margin: 30px 0 0 0;
+        padding: 0;
+        font-size: 140%;
+        line-height: 1.4em;
+        color: $dri_darkgrey;
+        font-weight: bold;
+    }
+    .dri_home_link a {
+        margin: 0 0 0 0;
+        padding: 0 0 0 15px;
+        color: $dri_darkgrey;
+        background: image-url("dri/arrow_black.png") no-repeat left center;
+    }
+    .dri_home_link a:hover {
+        text-decoration: underline;
+    }
+}
+.dri_home_title {
+    margin: 0 0 30px 0;
+    padding: 0 0 0 0;
+    width: 500px;
+    h2 {
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
+        font-size: 130%;
+        color: $dri_darkgrey;
+        border-bottom: 1px solid $dri_thingrey;
+    }
+    .dri_border_bottom {
+        background-color: $dri_darkgrey;
+        width: 230px;
+        height: 3px;
+        display: block;
+    }
+}
+/* ----------- News / Events styling ---------- */
+
+h1.dri_rss_title {
     margin: 0 0 4px 0;
     padding: 0;
-    font-size: 230%;
-    color: $dri_darkgrey;
-  }
-  p {
-    margin: 0 0 15px 0;
-    padding: 0;
-    font-size: 150%;
-    line-height: 1.4em;
-    color: $dri_darkgrey;
-  }
-  .dri_home_link {
-    margin: 30px 0 0 0;
-    padding: 0;
-    font-size: 140%;
-    line-height: 1.4em;
-    color: $dri_darkgrey;
-    font-weight: bold;
-  }
-  .dri_home_link a {
-    margin: 0 0 0 0;
-    padding: 0 0 0 15px;
-    color: $dri_darkgrey;
-    background: image-url("dri/arrow_black.png") no-repeat left center;
-  }
-  .dri_home_link a:hover {
-    text-decoration: underline;
-  }
-}
-
-.dri_home_title {
-  margin: 0 0 30px 0;
-  padding: 0 0 0 0;
-  width: 500px;
-  h2 {
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
     font-size: 130%;
     color: $dri_darkgrey;
-    border-bottom: 1px solid $dri_thingrey;
-  }
-  .dri_border_bottom {
-    background-color: $dri_darkgrey;
-    width: 230px;
-    height: 3px;
-    display: block;
-  }
+    border-bottom: 3px solid $dri_darkgrey;
 }
-
-/* ----------- News / Events styling ---------- */
-h1.dri_rss_title {
-  margin: 0 0 4px 0;
-  padding: 0;
-  font-size: 130%;
-  color: $dri_darkgrey;
-  border-bottom: 3px solid $dri_darkgrey;
-}
-
 h5.dri_rss_subtitle {
-  margin: 10px 0 4px 0;
-  padding: 0;
-  font-size: 110%;
-  line-height: 1.4em;
-  color: $dri_darkgrey;
+    margin: 10px 0 4px 0;
+    padding: 0;
+    font-size: 110%;
+    line-height: 1.4em;
+    color: $dri_darkgrey;
 }
-
 .dri_rss_description {
-  padding: 0;
-  margin: 0;
-  line-height: 1.4em;
-  color: $dri_midgrey;
-  .field-items a {
+    padding: 0;
+    margin: 0;
+    line-height: 1.4em;
     color: $dri_midgrey;
-    text-decoration: underline;
-  }
+    .field-items a {
+        color: $dri_midgrey;
+        text-decoration: underline;
+    }
 }
-
 p.dri_rss_link a {
-  border-bottom: 1px solid $dri_thingrey;
-  font-size: 93%;
-  color: $dri_darkgrey;
-  display: block;
-  font-weight: bold;
-  padding: 0 0 8px 0;
-  margin: 0 0 0 0;
+    border-bottom: 1px solid $dri_thingrey;
+    font-size: 93%;
+    color: $dri_darkgrey;
+    display: block;
+    font-weight: bold;
+    padding: 0 0 8px 0;
+    margin: 0 0 0 0;
 }
-
-
-
 /* ----------- Object block ---------- */
 
 .dri_result_container {
-  margin-top: 25px;
-  span.dri_remove_bookmark {
-    position: absolute;
-    top: -6px;
-    right: -3px;
-    color: 1px solid $dri_white;
-    font-size: 100%;
-    z-index: 100;
-  }
-  span.dri_remove_bookmark_back {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    font-size: 160%;
-    color: $dri_darkgrey;
-    z-index: 99;
-  }
-  input[type="submit"].dri_delete_button {
-    background: transparent;
-    cursor: pointer;
-    border: none;
-    color: $dri_lightgrey;
-    text-decoration: none;
-    background: image-url("dri/clear_all_close.png") no-repeat left;
-    padding: 2px 8px 0 22px;
-  }
-  .dri_saved_search_title_block {
-    margin: 0;
-    padding-top: 15px;
-    border-top: 1px $dri_thingrey solid;
-    font-size: 110%;
-    .dri_saved_search_params {
-      width: 75%;
-      padding-bottom: 15px;
-      color: $dri_darkgrey;
-      a {
+    margin-top: 25px;
+    span.dri_remove_bookmark {
+        position: absolute;
+        top: -6px;
+        right: -3px;
+        color: 1px solid $dri_white;
+        font-size: 100%;
+        z-index: 100;
+    }
+    span.dri_remove_bookmark_back {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        font-size: 160%;
         color: $dri_darkgrey;
-        font-weight: 900;
-      }
-      span.constraint {
-        color: $dri_darkgrey;
-        font-weight: 500;
-      }
+        z-index: 99;
     }
-  }
-  .dri_result_count_label {
-    margin-top: 2px;
-    margin-left: 5px;
-  }
-  .dri_save_search_link_block {
-    .dri_num_objects {
-      border-top: 1px solid $dri_thingrey;
-      color: $dri_midgrey;
-      line-height: 1.4em;
-      display: block;
-      //height: 22px;
-      margin: 0px 0 0 0;
-      background-color: $dri_extralightgrey;
-      padding: 6px 14px 8px 14px;
-      display: block;
+    input[type="submit"].dri_delete_button {
+        background: transparent;
+        cursor: pointer;
+        border: none;
+        color: $dri_lightgrey;
+        text-decoration: none;
+        background: image-url("dri/clear_all_close.png") no-repeat left;
+        padding: 2px 8px 0 22px;
     }
-    .dri_num_objects span.object_total {
-      margin: 0 0 0 6px;
-      color: $dri_grey;
+    .dri_saved_search_title_block {
+        margin: 0;
+        padding-top: 15px;
+        border-top: 1px $dri_thingrey solid;
+        font-size: 110%;
+        .dri_saved_search_params {
+            width: 75%;
+            padding-bottom: 15px;
+            color: $dri_darkgrey;
+            a {
+                color: $dri_darkgrey;
+                font-weight: 900;
+            }
+            span.constraint {
+                color: $dri_darkgrey;
+                font-weight: 500;
+            }
+        }
     }
-  }
-  .map {
-    padding-right: 15px;
-  }
+    .dri_result_count_label {
+        margin-top: 2px;
+        margin-left: 5px;
+    }
+    .dri_save_search_link_block {
+        .dri_num_objects {
+            border-top: 1px solid $dri_thingrey;
+            color: $dri_midgrey;
+            line-height: 1.4em;
+            display: block;
+            //height: 22px;
+            margin: 0px 0 0 0;
+            background-color: $dri_extralightgrey;
+            padding: 6px 14px 8px 14px;
+            display: block;
+        }
+        .dri_num_objects span.object_total {
+            margin: 0 0 0 6px;
+            color: $dri_grey;
+        }
+    }
+    .map {
+        padding-right: 15px;
+    }
 }
-
 .content_block_wrap {
-  width: 730px;
-  margin: 0 20px 0 20px;
-  float: left;
-  padding: 0;
+    width: 730px;
+    margin: 0 20px 0 20px;
+    float: left;
+    padding: 0;
 }
-
 .dri_content_block {
-  margin: 0 20px 20px 0;
-  padding: 0;
-  width: 228px;
-  //height:270px;
-  float: left;
-  display: block;
-  color: $dri_darkgrey;
-  @include border_radius (3px);
-  border: 1px solid $dri_thingrey;
-  position: relative;
-  .top {
-    border-top: 5px solid $dri_thingrey;
-  }
-  .dri_image {
+    margin: 0 20px 20px 0;
     padding: 0;
-    margin: 0 14px 0 14px;
-    max-height: 113px;
-    min-height: 113px;
-    overflow: hidden;
-  }
-  .dri_collection_image {
-    padding: 0;
-    #margin: 0 14px 0 14px;
-    height: 128px;
-    overflow: hidden;
-  }
-  h1 {
+    width: 228px;
+    //height:270px;
+    float: left;
+    display: block;
     color: $dri_darkgrey;
-    font-size: 100%;
-    padding: 0;
-    margin: 12px 14px 12px 14px;
-    height: 47px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.3em;
-    font-weight: bold;
-    a {
-      color: $dri_darkgrey;
-      text-decoration: none;
+    @include border_radius (3px);
+    border: 1px solid $dri_thingrey;
+    position: relative;
+    .top {
+        border-top: 5px solid $dri_thingrey;
     }
-    a:hover h1 {
-      text-decoration: underline;
+    .dri_image {
+        padding: 0;
+        margin: 0 14px 0 14px;
+        max-height: 113px;
+        min-height: 113px;
+        overflow: hidden;
     }
-  }
-  p.dri_subject {
-    font-size: 100%;
-    color: $dri_midgrey;
-    padding: 0;
-    margin: 4px 14px 10px 14px;
-    font-weight: normal;
-    height: 30px;
-    white-space: wrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.3em;
-    .dri_subject a {
-      color: $dri_midgrey;
-      text-decoration: none;
-      cursor: pointer;
-    &:hover {
-      color: $dri_darkgrey;
+    .dri_collection_image {
+        padding: 0;
+        #margin: 0 14px 0 14px;
+        height: 128px;
+        overflow: hidden;
     }
-    
+    h1 {
+        color: $dri_darkgrey;
+        font-size: 100%;
+        padding: 0;
+        margin: 12px 14px 12px 14px;
+        height: 47px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3em;
+        font-weight: bold;
+        a {
+            color: $dri_darkgrey;
+            text-decoration: none;
+        }
+        a:hover h1 {
+            text-decoration: underline;
+        }
     }
-    
-  }
-  .dri_icon {
-    color: $dri_midgrey;
-    line-height: 1.4em;
-    display: block;
-    height: 27px;
-    margin: 6px 14px 4px 14px;
-    border-top: 1px solid $dri_thingrey;
-    padding: 0 0 0 0;
-  }
-  .dri_icon_image {
-    margin: 6px 0 0 0;
-    padding: 0;
-    display: block;
-    float: left;
-  }
-  .dri_icon_text {
-    margin: 8px 0 0 6px;
-    padding: 0;
-    display: block;
-    float: left;
-  }
+    p.dri_subject {
+        font-size: 100%;
+        color: $dri_midgrey;
+        padding: 0;
+        margin: 4px 14px 10px 14px;
+        font-weight: normal;
+        height: 30px;
+        white-space: wrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3em;
+        .dri_subject a {
+            color: $dri_midgrey;
+            text-decoration: none;
+            cursor: pointer;
+            &:hover {
+                color: $dri_darkgrey;
+            }
+        }
+    }
+    .dri_icon {
+        color: $dri_midgrey;
+        line-height: 1.4em;
+        display: block;
+        height: 27px;
+        margin: 6px 14px 4px 14px;
+        border-top: 1px solid $dri_thingrey;
+        padding: 0 0 0 0;
+    }
+    .dri_icon_image {
+        margin: 6px 0 0 0;
+        padding: 0;
+        display: block;
+        float: left;
+    }
+    .dri_icon_text {
+        margin: 8px 0 0 6px;
+        padding: 0;
+        display: block;
+        float: left;
+    }
 }
-
 /* ----------- Collection block ---------- */
 
 .dri_content_block_collection {
-  margin: 0 20px 20px 0;
-  padding: 0;
-  width: 228px;
-  float: left;
-  display: block;
-  color: $dri_darkgrey;
-  @include border_radius (3px);
-  border: 1px solid $dri_thingrey;
-  position: relative;
-  border-top: none;
-  .dri_collection_image {
+    margin: 0 20px 20px 0;
     padding: 0;
-    margin: 0;
-    border-bottom: 1px solid $dri_thingrey;
-    border-top: 1px solid $dri_thingrey;
-    height: 128px;
-    overflow: hidden;
-  }
-  h1 {
-    color: $dri_grey;
-    font-size: 100%;
-    padding: 0 0 0 0;
-    margin: 6px 14px 8px 14px;
-    height: 47px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.3em;
-    font-weight: bold;
-    a {
-      color: $dri_darkgrey;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  }
-  p.dri_publishing_institute {
-    color: $dri_midgrey;
-    line-height: 1.3em;
-    height: 40px;
-    overflow: hidden;
-    padding: 6px 0 6px 0;
-    margin: 0 14px 0 14px;
-    font-weight: normal;
-    border-top: 1px solid $dri_thingrey;
-    text-decoration: none;
-    a {
-      color: $dri_midgrey;
-      text-decoration: none;
-    &:hover {
-      text-decoration: none;
-    } 
-    }
-   
-  }
-  a .dri_num_objects {
-    border-top: 1px solid $dri_thingrey;
-    color: $dri_greytext;
-    line-height: 1.4em;
+    width: 228px;
+    float: left;
     display: block;
-    margin: 0px 0 0 0;
-    background-color: $dri_extralightgrey;
-    padding: 8px 14px 8px 14px;
-    display: block;
-  }
-  a .dri_num_objects:hover {
-    background-color: darken($dri_extralightgrey, 3%);
-    text-decoration: none;
-  }
-  a .dri_num_objects span.object_total {
-    margin: 0 0 0 6px;
     color: $dri_darkgrey;
-  }
+    @include border_radius (3px);
+    border: 1px solid $dri_thingrey;
+    position: relative;
+    border-top: none;
+    .dri_collection_image {
+        padding: 0;
+        margin: 0;
+        border-bottom: 1px solid $dri_thingrey;
+        border-top: 1px solid $dri_thingrey;
+        height: 128px;
+        overflow: hidden;
+    }
+    h1 {
+        color: $dri_grey;
+        font-size: 100%;
+        padding: 0 0 0 0;
+        margin: 6px 14px 8px 14px;
+        height: 47px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3em;
+        font-weight: bold;
+        a {
+            color: $dri_darkgrey;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+    p.dri_publishing_institute {
+        color: $dri_midgrey;
+        line-height: 1.3em;
+        height: 40px;
+        overflow: hidden;
+        padding: 6px 0 6px 0;
+        margin: 0 14px 0 14px;
+        font-weight: normal;
+        border-top: 1px solid $dri_thingrey;
+        text-decoration: none;
+        a {
+            color: $dri_midgrey;
+            text-decoration: none;
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+    a .dri_num_objects {
+        border-top: 1px solid $dri_thingrey;
+        color: $dri_greytext;
+        line-height: 1.4em;
+        display: block;
+        margin: 0px 0 0 0;
+        background-color: $dri_extralightgrey;
+        padding: 8px 14px 8px 14px;
+        display: block;
+    }
+    a .dri_num_objects:hover {
+        background-color: darken($dri_extralightgrey, 3%);
+        text-decoration: none;
+    }
+    a .dri_num_objects span.object_total {
+        margin: 0 0 0 6px;
+        color: $dri_darkgrey;
+    }
 }
-
 /*-------------- Tabular View styling --------------*/
 
 .dri_result_object {
-  padding: 0 0 20px 0;
-  margin-bottom: 20px;
-  border-bottom: 1px solid $dri_extralightgrey;
-  height: 140px;
-  width: 96%;
-  .dri_content_list_collection {
-    width: 700px;
-  }
-  .dri_collection_image {
-    padding: 0;
-    margin: 0 0 10px 0;
-    width: 200px;
-    float: right;
-    max-height: 128px;
-    overflow: hidden;
-  }
-  .dri_image {
-    max-height: 113px;
-    overflow: hidden;
-  }
+    padding: 0 0 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $dri_extralightgrey;
+    height: 140px;
+    width: 96%;
+    .dri_content_list_collection {
+        width: 700px;
+    }
+    .dri_collection_image {
+        padding: 0;
+        margin: 0 0 10px 0;
+        width: 200px;
+        float: right;
+        max-height: 128px;
+        overflow: hidden;
+    }
+    .dri_image {
+        max-height: 113px;
+        overflow: hidden;
+    }
 }
-
 .dri_content_list_collection_data {
-  margin: 0;
-  padding: 0;
-  height: 128px;
-  width: 500px;
-  float: right;
-  a h4 {
-    margin: 3px 0 10px 15px;
+    margin: 0;
     padding: 0;
-    color: $dri_darkgrey;
-    font-size: 100%;
-    line-height: 1.3em;
-    font-weight: bold;
-    max-height: 28px;
-    overflow: hidden;
-  }
-  p {
-    margin: 0 0 10px 15px;
-    padding: 0;
-    color: $dri_midgrey;
-    font-size: 100%;
-    line-height: 1.3em;
-    max-height: 42px;
-    overflow: hidden;
-  }
-  .dri_list_description {
-    max-height: 2.6em;
-    overflow: hidden;
-  }
-  .dri_list_subject {
-    max-height: 1.3em;
-    overflow: hidden;
-  }
-  a .dri_num_list_objects {
-    margin: 10px 0 0 15px;
-    padding: 0;
-    color: $dri_midgrey;
-    font-size: 100%;
-    line-height: 1.3em;
-  }
-  .dri_list_icon {
-    padding-left: 15px;
-  }
+    height: 128px;
+    width: 500px;
+    float: right;
+    a h4 {
+        margin: 3px 0 10px 15px;
+        padding: 0;
+        color: $dri_darkgrey;
+        font-size: 100%;
+        line-height: 1.3em;
+        font-weight: bold;
+        max-height: 28px;
+        overflow: hidden;
+    }
+    p {
+        margin: 0 0 10px 15px;
+        padding: 0;
+        color: $dri_midgrey;
+        font-size: 100%;
+        line-height: 1.3em;
+        max-height: 42px;
+        overflow: hidden;
+    }
+    .dri_list_description {
+        max-height: 2.6em;
+        overflow: hidden;
+    }
+    .dri_list_subject {
+        max-height: 1.3em;
+        overflow: hidden;
+    }
+    a .dri_num_list_objects {
+        margin: 10px 0 0 15px;
+        padding: 0;
+        color: $dri_midgrey;
+        font-size: 100%;
+        line-height: 1.3em;
+    }
+    .dri_list_icon {
+        padding-left: 15px;
+    }
 }
-
 /*-------------- Dialog Box --------------*/
+
 .dri_dialog_example {
-  margin: 0;
-  padding: 12px;
-  border: 1px solid $dri_thingrey;
-  background-color: $dri_white;
-  color: $dri_midgrey;
+    margin: 0;
+    padding: 12px;
+    border: 1px solid $dri_thingrey;
+    background-color: $dri_white;
+    color: $dri_midgrey;
 }
-
 /* Third Party CSS */
-
 /*
  * Dropit v1.0
  * http://dev7studios.com/dropit
@@ -1833,1058 +1701,980 @@ p.dri_rss_link a {
  * Free to use and abuse under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
  */
-
 /* These styles assume you are using ul and li */
+
 .dropit {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
-
 .dropit .dropit-trigger {
-  position: relative;
+    position: relative;
 }
-
 .dropit .dropit-submenu {
-  position: absolute;
-  top: 100%;
-  right: -14%;
-  /* dropdown left or right */
-  z-index: 1000;
-  display: none;
-  list-style: none;
-  border: 1px solid $dri_thingrey;
-  margin: 2px 0 0 0;
-  padding: 2px 16px 2px 7px;
-  display: block;
-  @include border_radius;
-  background-color: $dri_extralightgrey;
+    position: absolute;
+    top: 100%;
+    right: -14%;
+    /* dropdown left or right */
+    
+    z-index: 1000;
+    display: none;
+    list-style: none;
+    border: 1px solid $dri_thingrey;
+    margin: 2px 0 0 0;
+    padding: 2px 16px 2px 7px;
+    display: block;
+    @include border_radius;
+    background-color: $dri_extralightgrey;
 }
-
 .dropit .dropit-open .dropit-submenu {
-  display: block;
+    display: block;
 }
-
 /*-------------- OBJECT VIEW --------------*/
 
 .dri_object_title_top {
-  font-size: 110%;
-  padding: 1px 20px 4px 10px;
-  margin: 10px 0 10px 0;
-  height: 26px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  color: $dri_white;
-  background-color: $dri_darkgrey;
-  //width: 73%;
-  font-weight: bold;
-  line-height: 26px
+    font-size: 110%;
+    padding: 1px 20px 4px 10px;
+    margin: 10px 0 10px 0;
+    height: 26px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: $dri_white;
+    background-color: $dri_darkgrey;
+    //width: 73%;
+    font-weight: bold;
+    line-height: 26px
 }
-
 /*-------------- Media asset/ Multiple Media Assets Carousel --------------*/
+
 .dri_object_render_block {
-  margin: 10px 0 10px 0;
-  padding: 0px;
+    margin: 10px 0 10px 0;
+    padding: 0px;
 }
-
 .dri_bottom_stack {
-  z-index: 0;
+    z-index: 0;
 }
-
 h2.dri_no_asset_availiable {
-  margin: 0px 0 0 0;
-  padding: 0px;
-  color: $dri_darkgrey;
-  font-weight: bold;
-  font-size: 100%;
-  font-style: italic;
+    margin: 0px 0 0 0;
+    padding: 0px;
+    color: $dri_darkgrey;
+    font-weight: bold;
+    font-size: 100%;
+    font-style: italic;
 }
-
 /* assets carousel */
+
 .dri_asset_holder {
-  margin: 20px 0 0 0;
-  padding-right:40px;
-  max-width: 100%;
-  max-height: 300px;
-  display: block;
-  overflow: hidden;
-  .carousel-control {
-    background: none;
-    border: none;
-    opacity: 1.0;
-    font-size: 100%;
-    line-height: 100%;
-  }
-  .carousel-control.left {
-    //background-image: url("previous_carousel_arrow.png");
-    top: 95%;
-    width: 12px;
-    height: 8px;
-    margin-top: -5px;
-    padding: 0;
-  }
-  .carousel-control.right {
-    //background-image: url("next_carousel_arrow.png");
-    top: 95%;
-    width: 12px;
-    height: 10px;
-    margin-top: -5px;
-    padding: 0;
-  }
-  .dri_asset_carousel_item {
-    height: 300px;
-    p {
-      padding: 5px 0 5px 0;
+    margin: 20px 0 0 0;
+    padding-right: 40px;
+    max-width: 100%;
+    max-height: 300px;
+    display: block;
+    overflow: hidden;
+    .carousel-control {
+        background: none;
+        border: none;
+        opacity: 1.0;
+        font-size: 100%;
+        line-height: 100%;
     }
-    a {
-      img {
-        max-height: 300px;
-      }
+    .carousel-control.left {
+        //background-image: url("previous_carousel_arrow.png");
+        top: 95%;
+        width: 12px;
+        height: 8px;
+        margin-top: -5px;
+        padding: 0;
     }
-    .carousel-caption {
-      background: rgba(47, 47, 47, 0.75);
-      min-height: 30px;
-      padding: 0px;
-      margin: 0px;
-      a {
-        color: $dri_white;
-      }
+    .carousel-control.right {
+        //background-image: url("next_carousel_arrow.png");
+        top: 95%;
+        width: 12px;
+        height: 10px;
+        margin-top: -5px;
+        padding: 0;
     }
-    p.dri_restrict_message {
-      margin: 8px 0 0 0;
-      padding: 0;
-      color: $dri_midgrey;
+    .dri_asset_carousel_item {
+        height: 300px;
+        p {
+            padding: 5px 0 5px 0;
+        }
+        a {
+            img {
+                max-height: 300px;
+            }
+        }
+        .carousel-caption {
+            background: rgba(47, 47, 47, 0.75);
+            min-height: 30px;
+            padding: 0px;
+            margin: 0px;
+            a {
+                color: $dri_white;
+            }
+        }
+        p.dri_restrict_message {
+            margin: 8px 0 0 0;
+            padding: 0;
+            color: $dri_midgrey;
+        }
     }
-  }
-  p.dri_assets_total {
-    border-top: 1px solid $dri_thingrey;
-    padding: 10px 0 0 0;
-    margin: 0 0 20px 0;
-    font-weight: bold;
-    color: $dri_darkgrey;
-    font-size: 100%;
-  }
+    p.dri_assets_total {
+        border-top: 1px solid $dri_thingrey;
+        padding: 10px 0 0 0;
+        margin: 0 0 20px 0;
+        font-weight: bold;
+        color: $dri_darkgrey;
+        font-size: 100%;
+    }
 }
-
 /*-------------- Media asset Image Tools  --------------*/
+
 .dri_asset_tools {
-  margin: 5px 0 15px 0;
-  padding: 0;
-  display: block;
-  width: 500px;
-  float: left;
-  p a {
-    margin: 0;
+    margin: 5px 0 15px 0;
     padding: 0;
-    color: $dri_midgrey;
-    text-decoration: underline;
-    float: left;
-  }
-  p a:hover {
-    color: $dri_darkgrey;
-  }
-  ul {
-    margin: 0 20px 0 0;
-    padding: 0;
-    float: left;
-  }
-  li {
-    float: left;
-    list-style: none;
     display: block;
-    margin: 0;
-    padding: 0;
-    a {
-      list-style: none;
-      color: $dri_midgrey;
-      text-decoration: none;
-      border-right: 1px solid $dri_thingrey;
-      display: block;
-      margin: 0;
-      padding: 0 10px 0 10px;
+    width: 500px;
+    float: left;
+    p a {
+        margin: 0;
+        padding: 0;
+        color: $dri_midgrey;
+        text-decoration: underline;
+        float: left;
     }
-    a:hover {
-      color: $dri_darkgrey;
-      text-decoration: underline;
+    p a:hover {
+        color: $dri_darkgrey;
     }
-  }
-  li.selected a {
-    color: $dri_green;
-    font-weight: bold;
-  }
-  li.first a {
-    background: image-url("dri/prev_arrow.png") no-repeat center;
-  }
-  li.last a {
-    border-right: none;
-    background: image-url("dri/next_arrow.png") no-repeat center;
-  }
+    ul {
+        margin: 0 20px 0 0;
+        padding: 0;
+        float: left;
+    }
+    li {
+        float: left;
+        list-style: none;
+        display: block;
+        margin: 0;
+        padding: 0;
+        a {
+            list-style: none;
+            color: $dri_midgrey;
+            text-decoration: none;
+            border-right: 1px solid $dri_thingrey;
+            display: block;
+            margin: 0;
+            padding: 0 10px 0 10px;
+        }
+        a:hover {
+            color: $dri_darkgrey;
+            text-decoration: underline;
+        }
+    }
+    li.selected a {
+        color: $dri_green;
+        font-weight: bold;
+    }
+    li.first a {
+        background: image-url("dri/prev_arrow.png") no-repeat center;
+    }
+    li.last a {
+        border-right: none;
+        background: image-url("dri/next_arrow.png") no-repeat center;
+    }
 }
-
 .dri_green_button {
-  padding: 0;
-  margin: 0;
-  float: left;
-  margin: 0 20px 0 0;
-  a {
     padding: 0;
     margin: 0;
-    color: $dri_teal;
-    border: none;
-    font-weight: bold;
-    display: block;
-   @include border_radius;
-  &:hover {
-    color: darken($dri_teal, 6%);
-    text-decoration: underline;
-  } 
-  }
- 
+    float: left;
+    margin: 0 20px 0 0;
+    a {
+        padding: 0;
+        margin: 0;
+        color: $dri_teal;
+        border: none;
+        font-weight: bold;
+        display: block;
+        @include border_radius;
+        &:hover {
+            color: darken($dri_teal, 6%);
+            text-decoration: underline;
+        }
+    }
 }
-
 /*-------------- Restricted Media asset --------------*/
 
 h2.dri_restrict_title {
-  margin: 0px 0 0 0;
-  padding: 0px;
-  color: $dri_darkgrey;
-  font-weight: bold;
-  font-size: 100%;
-}
-
-p.dri_restrict_message {
-  margin: 0px;
-  padding: 0;
-  color: $dri_midgrey;
-}
-
-p.dri_restrict_progress {
-  margin: 0px;
-  padding: 0px 80px 10px 0;
-  color: $dri_teal;
-  text-decoration: underline;
-}
-
-input.dri_request_access_button {
-  color: #FFF;
-  border: none;
-  background-color: $dri_teal;
-  padding: 0;
-  margin: 0px 0 20px 0;
-  width: 230px;
-  height: 26px;
-  display: block;
-  @include border_radius;
-  &:hover {
-   background-color: darken($dri_teal, 6%);
-  }
-}
-
-
-
-/*-------------- MetaData Readview  --------------*/
-
-
-a.dri_toggle_metadata::after {
-  content: ' »';
-  font-size: 120%;
-  font-weight: bold;
-  color: $dri_green;
-}
-
-.modal-content {
-  padding: 10px;
-  .dri_object_metadata_readview {
-    max-height: 400px;
-    overflow: scroll;
-    dl {
-      padding: 15px;
-    }
-  }
-  .dri_child_links > a {
-    color: $dri_darkgrey;
-  }
-}
-
-dl.dri_object_metadata_readview {
-  margin: 0 0 20px 0;
-  padding: 0px 40px 0 0;
-  dt {
-    margin: 10px 0 0 0;
+    margin: 0px 0 0 0;
     padding: 0px;
     color: $dri_darkgrey;
     font-weight: bold;
-  }
-  dd {
-    margin: 0;
+    font-size: 100%;
+}
+p.dri_restrict_message {
+    margin: 0px;
     padding: 0;
     color: $dri_midgrey;
-    text-align: left;
-    a {
-      margin: 0 0 0 15px;
-      padding: 0;
-      display: list-item;
-      list-style-type: square;
-      color: $dri_midgrey;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  }
 }
+p.dri_restrict_progress {
+    margin: 0px;
+    padding: 0px 80px 10px 0;
+    color: $dri_teal;
+    text-decoration: underline;
+}
+input.dri_request_access_button {
+    color: #FFF;
+    border: none;
+    background-color: $dri_teal;
+    padding: 0;
+    margin: 0px 0 20px 0;
+    width: 230px;
+    height: 26px;
+    display: block;
+    @include border_radius;
+    &:hover {
+        background-color: darken($dri_teal, 6%);
+    }
+}
+/*-------------- MetaData Readview  --------------*/
 
+a.dri_toggle_metadata::after {
+    content: ' »';
+    font-size: 120%;
+    font-weight: bold;
+    color: $dri_green;
+}
+.modal-content {
+    padding: 10px;
+    .dri_object_metadata_readview {
+        max-height: 400px;
+        overflow: scroll;
+        dl {
+            padding: 15px;
+        }
+    }
+    .dri_child_links > a {
+        color: $dri_darkgrey;
+    }
+}
+dl.dri_object_metadata_readview {
+    margin: 0 0 20px 0;
+    padding: 0px 40px 0 0;
+    dt {
+        margin: 10px 0 0 0;
+        padding: 0px;
+        color: $dri_darkgrey;
+        font-weight: bold;
+    }
+    dd {
+        margin: 0;
+        padding: 0;
+        color: $dri_midgrey;
+        text-align: left;
+        a {
+            margin: 0 0 0 15px;
+            padding: 0;
+            display: list-item;
+            list-style-type: square;
+            color: $dri_midgrey;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+}
 /*-------------- Citation Readview  --------------*/
-#dri_citatation_modal_id   {
-  .modal-content {
-    padding: 15px;
-      h4 {
-      text-transform: uppercase; 
-      } 
-  } 
-}
 
+#dri_citatation_modal_id {
+    .modal-content {
+        padding: 15px;
+        h4 {
+            text-transform: uppercase;
+        }
+    }
+}
 /*-------------- Collection status and Features  --------------*/
 
 .dri_object_second_block {
-  padding: 0;
-  margin: 0;
-  li {
-    width: 250px;
-  }
+    padding: 0;
+    margin: 0;
+    li {
+        width: 250px;
+    }
 }
-
 .dri_back_search a {
-  padding: 0;
-  margin: 10px 0 0 0;
-  font-weight: normal;
-  display: block;
-  font-size: 100%;
-  font-weight: bold;
-  color: $dri_darkgrey;
-}
-
-.dri_back_search a:hover { 
-  text-decoration: underline;
-}
-
-ul.dri_stats {
-  margin: 20px 0 20px 0;
-  padding: 4px 0 0px 0;
-  width: 230px;
-  float: left;
-  border-top: 1px solid $dri_thingrey;
-  border-bottom: 1px solid $dri_thingrey;
-  li {
-    float: left;
-    width: 230px;
+    padding: 0;
+    margin: 10px 0 0 0;
+    font-weight: normal;
     display: block;
-    margin: 0;
-    padding: 2px 0 2px 0;
-    list-style: none;
-    color: $dri_midgrey;
-  }
-  .dri_stat_num {
-    float: right;
-  }
-}
-
-/*-------------- 320x180 Ratio - Image upload  --------------*/
-.dri_vc_image {
-  border: 1px solid $dri_thingrey;
-  width: 250px;
-  height: 141px;
-  margin: 8px 0 0 0;
-  overflow: hidden;
-  img {
-    width: 250px;
-  }
-}
-
-.dri_vc_title {
-  margin: 20px 0 10px 0;
-  color: $dri_grey;
-  font-weight: bold;
-  a {
-    margin: 20px 0 0 0;
-    color: $dri_grey;
     font-size: 100%;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
-}
-
-ul.dri_view_collection {
-  margin: 0 0 15px 0;
-  padding: 0;
-  display: block;
-  float: left;
-  width: 250px;
-  border-bottom: none;
-  li {
-    margin: 0;
-    padding: 5px 0 5px 0;
-    list-style: none;
-    border-bottom: 1px solid $dri_thingrey;
+    font-weight: bold;
     color: $dri_darkgrey;
+}
+.dri_back_search a:hover {
+    text-decoration: underline;
+}
+ul.dri_stats {
+    margin: 20px 0 20px 0;
+    padding: 4px 0 0px 0;
+    width: 230px;
+    float: left;
+    border-top: 1px solid $dri_thingrey;
+    border-bottom: 1px solid $dri_thingrey;
+    li {
+        float: left;
+        width: 230px;
+        display: block;
+        margin: 0;
+        padding: 2px 0 2px 0;
+        list-style: none;
+        color: $dri_midgrey;
+    }
+    .dri_stat_num {
+        float: right;
+    }
+}
+/*-------------- 320x180 Ratio - Image upload  --------------*/
+
+.dri_vc_image {
+    border: 1px solid $dri_thingrey;
+    width: 250px;
+    height: 141px;
+    margin: 8px 0 0 0;
+    overflow: hidden;
+    img {
+        width: 250px;
+    }
+}
+.dri_vc_title {
+    margin: 20px 0 10px 0;
+    color: $dri_grey;
+    font-weight: bold;
     a {
-      list-style: none;
-      color: $dri_midgrey;
-      display: block;
+        margin: 20px 0 0 0;
+        color: $dri_grey;
+        font-size: 100%;
     }
     a:hover {
-      display: block;
-      text-decoration: underline;
+        text-decoration: underline;
     }
-    span.dri_stat_num {
-      float: right;
-      font-size: 100%;
-      font-weight: bold;
-      color: $dri_midgrey;
-    }
-    a:hover span.dri_stat_num {
-      color: $dri_darkgrey;
-      float: right;
-    }
-    i {
-      margin-right: 5px;
-    }
-    input[type="submit"] {
-      border: none;
-      background: none;
-      padding: 1px;
-      padding-left: 5px;
-    }
-    input:focus {
-      outline: none;
-    }
-  }
 }
-
-
+ul.dri_view_collection {
+    margin: 0 0 15px 0;
+    padding: 0;
+    display: block;
+    float: left;
+    width: 250px;
+    border-bottom: none;
+    li {
+        margin: 0;
+        padding: 5px 0 5px 0;
+        list-style: none;
+        border-bottom: 1px solid $dri_thingrey;
+        color: $dri_darkgrey;
+        a {
+            list-style: none;
+            color: $dri_midgrey;
+            display: block;
+        }
+        a:hover {
+            display: block;
+            text-decoration: underline;
+        }
+        span.dri_stat_num {
+            float: right;
+            font-size: 100%;
+            font-weight: bold;
+            color: $dri_midgrey;
+        }
+        a:hover span.dri_stat_num {
+            color: $dri_darkgrey;
+            float: right;
+        }
+        i {
+            margin-right: 5px;
+        }
+        input[type="submit"] {
+            border: none;
+            background: none;
+            padding: 1px;
+            padding-left: 5px;
+        }
+        input:focus {
+            outline: none;
+        }
+    }
+}
 .dri_title {
-  color: $dri_darkgrey;
-  font-weight: bold;
-  margin: 0 0 4px 0;
-  padding: 0;
+    color: $dri_darkgrey;
+    font-weight: bold;
+    margin: 0 0 4px 0;
+    padding: 0;
 }
-
 .dri_objecttools_title {
-  @extend .dri_object_title_top;
-  margin: 10px 0 0 0;
-  //padding: 0;
-  width: 100%;
-  //color: $dri_darkgrey;
-  display: block;
-  float: left;
-  font-weight: bold;
+    @extend .dri_object_title_top;
+    margin: 10px 0 0 0;
+    //padding: 0;
+    width: 100%;
+    //color: $dri_darkgrey;
+    display: block;
+    float: left;
+    font-weight: bold;
 }
-
 /*----- New Bookmark in Editor ----*/
+
 .dri_bookmark_tool {
-  margin: 0px;
-  .dri_bookmark {
     margin: 0px;
-    span {
-      //display: none;
-    }
-    span.dri_bookmark_object_label {
-      display: inline;
-      margin-right: 10px;
-      cursor: pointer;
-      font-weight:normal;
-    }
-    form {
-      .checkbox {
+    .dri_bookmark {
         margin: 0px;
-      }
-      input[type="checkbox"] {
-        margin-top: 0px;
-        margin-left: 10px;
-      }
-      /*** custom checkboxes ***/
-
-      input[type=checkbox] { display:none; } /* to hide the checkbox itself */
-      input[type=checkbox] + span:after {
-        font-family: FontAwesome;
-        display: inline-block;
-      }
-      
-      input[type=checkbox] + span:after { content: "\f02e"; color: $dri_thingrey; font-size: 110%;} /* unchecked icon */
-      input[type=checkbox] + span:after { letter-spacing: 10px; } /* space between checkbox and label */
-      
-      input[type=checkbox]:checked + span:after { content: "\f02e"; color: $dri_red; font-size: 110%;} /* checked icon */
-      input[type=checkbox]:checked + span:after { letter-spacing: 5px; } /* allow space for check mark */
-      
+        span {
+            //display: none;
+        }
+        span.dri_bookmark_object_label {
+            display: inline;
+            margin-right: 10px;
+            cursor: pointer;
+            font-weight: normal;
+        }
+        form {
+            .checkbox {
+                margin: 0px;
+            }
+            input[type="checkbox"] {
+                margin-top: 0px;
+                margin-left: 10px;
+            }
+            /*** custom checkboxes ***/
+            
+            input[type=checkbox] {
+                display: none;
+            }
+            /* to hide the checkbox itself */
+            
+            input[type=checkbox] + span:after {
+                font-family: FontAwesome;
+                display: inline-block;
+            }
+            input[type=checkbox] + span:after {
+                content: "\f02e";
+                color: $dri_thingrey;
+                font-size: 110%;
+            }
+            /* unchecked icon */
+            
+            input[type=checkbox] + span:after {
+                letter-spacing: 10px;
+            }
+            /* space between checkbox and label */
+            
+            input[type=checkbox]:checked + span:after {
+                content: "\f02e";
+                color: $dri_red;
+                font-size: 110%;
+            }
+            /* checked icon */
+            
+            input[type=checkbox]:checked + span:after {
+                letter-spacing: 5px;
+            }
+            /* allow space for check mark */
+        }
     }
-  }  
 }
-
-
 /*---- Previous Next Doc Pagination ----*/
 
 .dri_doc_pagination {
-  margin: 0px;
-  display: table;
-  table-layout: fixed;
-   width: 250px;
-  li {
-    display: table-cell;
-    width: 70px;
-    padding: 1px;
-    a {
-      width: 100%;
-      text-align: center;
-      font-size: 90%;
-      color: $dri_darkgrey;
+    margin: 0px;
+    display: table;
+    table-layout: fixed;
+    width: 250px;
+    li {
+        display: table-cell;
+        width: 70px;
+        padding: 1px;
+        a {
+            width: 100%;
+            text-align: center;
+            font-size: 90%;
+            color: $dri_darkgrey;
+        }
     }
-  }
-  li.position {
-    width:110px;
-    a.dri_no_border {
-      color: $dri_darkgrey;
+    li.position {
+        width: 110px;
+        a.dri_no_border {
+            color: $dri_darkgrey;
+        }
     }
-  }
 }
-
 /*-------------- publishing institute  --------------*/
+
 .dri_publishing_institute_title {
-  margin: 20px 0 5px 0;
-  padding: 0;
-  width: 230px;
-  color: $dri_darkgrey;
-  display: block;
-  float: left;
-  font-weight: bold;
+    margin: 20px 0 5px 0;
+    padding: 0;
+    width: 230px;
+    color: $dri_darkgrey;
+    display: block;
+    float: left;
+    font-weight: bold;
 }
-
 .dri_publishing_institute_image {
-  border: 1px solid $dri_thingrey;
-  width: 230px;
-  float: left;
+    border: 1px solid $dri_thingrey;
+    width: 230px;
+    float: left;
 }
-
 /*-------------- Institutes  --------------*/
+
 .dri_object_institutes_block {
-  border-top: 1px solid $dri_thingrey;
-  margin: 20px 0 0 0;
-  padding: 0;
-  display: block;
+    border-top: 1px solid $dri_thingrey;
+    margin: 20px 0 0 0;
+    padding: 0;
+    display: block;
 }
-
 .dri_institutes_title {
-  clear:both;
-  margin: 20px 0 10px 0;
-  color: $dri_darkgrey;
-  font-weight: normal;
-  font-size: 100%;
-  font-weight: bold;
-  
+    clear: both;
+    margin: 20px 0 10px 0;
+    color: $dri_darkgrey;
+    font-weight: normal;
+    font-size: 100%;
+    font-weight: bold;
 }
-
 .dri_related_items {
-  width: 100%;
-  nav.pagination {
-    float: right;
-    padding-right: 50px;
-    margin: 0 0 10px 0;
-  }
+    width: 100%;
+    nav.pagination {
+        float: right;
+        padding-right: 50px;
+        margin: 0 0 10px 0;
+    }
 }
-
 // static page of institutes
 .not_first {
-  border-bottom: 1px solid $dri_thingrey;
+    border-bottom: 1px solid $dri_thingrey;
 }
-
 .dri_collection_institutes_pages {
-  margin-bottom: 30px;
-  margin-top: 30px;
-  clear: both;
-  .dri_collection_institutes_pages_img {
-    border-right: 1px solid $dri_thingrey;
-    padding-top: -30px;
-    padding-bottom: -30px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    img {
-      max-height: 75px;
-      max-width: 90%;
-    }
-  }
-  .dri_collection_institutes_pages_text {
-    width: 600px;
-    margin-top: 25px;
-    h6 {
-      color: $dri_darkgrey;
-    }
-    p {
-      padding-top: 10px;
-      margin-left: 55px;
-      color: $dri_midgrey;
-      clear: both;
-    }
-    p span.dri_bold_text {
-      font-weight: bold;
-    }
-    p:hover {
-      text-decoration: underline;
-    }
-    ul {
-      //float:left;
-      li {
-        float:left;
-        display:block;
-        padding: 4px 0 4px 15px;
-        list-style: none;
-        text-decoration: none;
-        max-height: 96px;
-        overflow:hidden;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    clear: both;
+    .dri_collection_institutes_pages_img {
+        border-right: 1px solid $dri_thingrey;
+        padding-top: -30px;
+        padding-bottom: -30px;
+        margin-top: 40px;
+        margin-bottom: 40px;
         img {
-          
+            max-height: 75px;
+            max-width: 90%;
         }
-      }
     }
-  }
+    .dri_collection_institutes_pages_text {
+        width: 600px;
+        margin-top: 25px;
+        h6 {
+            color: $dri_darkgrey;
+        }
+        p {
+            padding-top: 10px;
+            margin-left: 55px;
+            color: $dri_midgrey;
+            clear: both;
+        }
+        p span.dri_bold_text {
+            font-weight: bold;
+        }
+        p:hover {
+            text-decoration: underline;
+        }
+        ul {
+            //float:left;
+            li {
+                float: left;
+                display: block;
+                padding: 4px 0 4px 15px;
+                list-style: none;
+                text-decoration: none;
+                max-height: 96px;
+                overflow: hidden;
+                img {}
+            }
+        }
+    }
 }
-
 // close static page of institutes
-
 ul.dri_collection_institutes_list {
-  margin: 20px 0 0 0;
-  padding: 0;
-  display: block;
-  color: $dri_darkgrey;
-  img {
-    max-height: 75px;
-  }
-  li {
     margin: 20px 0 0 0;
     padding: 0;
     display: block;
     color: $dri_darkgrey;
-    list-style: none;
-    float: left;
-    a {
-      margin: 0 0 0 0;
-      padding: 0;
-      list-style: none;
+    img {
+        max-height: 75px;
     }
-  }
-}
-
-.dri_institutes_show_more {
-  margin: 0;
-  padding: 0;
-  a {
-    margin: 0;
-    padding: 0px;
-    color: $dri_darkgrey;
-    font-weight: bold;
-  }
-}
-
-.dri_collection_institutes_item img {
-  margin: 10px;
-  padding: 10px;
-}
-
-/*-------------- General Buttons --------------*/
-.dri_grey_button {
-  color: #FFF;
-  border: none;
-  background-color: $dri_lightgrey;
-  margin: 20px 0 20px 0;
-  @include border_radius;
-  float: left;
-  text-align: center;
-  a {
-    padding: 4px 0 0 0;
-    color: $dri_white;
-    width: 230px;
-    height: 22px;
-    display: block;
-   &:hover {
-    background-color: darken($dri_lightgrey, 6%);
-  }
-  }
- 
-}
-
-/*-------------- Footer navigation --------------*/
-.dri_main_footer_navigation {
-  margin: 100px 0 70px 0;
-  padding: 0px;
-  border-top: 1px solid $dri_thingrey;
-  height: 40px;
-  ul {
-    margin: 0px;
-    padding: 0px;
-  }
-  li {
-    float: left;
-    margin: 10px 0 10px 0;
-    padding: 0 20px 0 20px;
-    font-size: 100%;
-    font-weight: normal;
-    list-style: none;
-    text-decoration: none;
-    border-right: 1px solid $dri_thingrey;
-    a {
-      list-style: none;
-      text-decoration: none;
-      color: $dri_midgrey;
-      margin: 0;
-      padding: 0;
-      display: block;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  }
-  li.selected {
-    text-decoration: underline;
-  }
-  li.no_border_right {
-    border-right: none;
-  }
-}
-
-.dri_funder_institutes {
-  padding-top: 10px;
-  margin: auto;
-  ul {
-    list-style: none;
     li {
-      display:block;
-      float: left;
-      padding:10px;
-      height:80px;
+        margin: 20px 0 0 0;
+        padding: 0;
+        display: block;
+        color: $dri_darkgrey;
+        list-style: none;
+        float: left;
+        a {
+            margin: 0 0 0 0;
+            padding: 0;
+            list-style: none;
+        }
     }
-  }
-  img {
-    vertical-align: middle;
-  }
 }
+.dri_institutes_show_more {
+    margin: 0;
+    padding: 0;
+    a {
+        margin: 0;
+        padding: 0px;
+        color: $dri_darkgrey;
+        font-weight: bold;
+    }
+}
+.dri_collection_institutes_item img {
+    margin: 10px;
+    padding: 10px;
+}
+/*-------------- General Buttons --------------*/
 
+.dri_grey_button {
+    color: #FFF;
+    border: none;
+    background-color: $dri_lightgrey;
+    margin: 20px 0 20px 0;
+    @include border_radius;
+    float: left;
+    text-align: center;
+    a {
+        padding: 4px 0 0 0;
+        color: $dri_white;
+        width: 230px;
+        height: 22px;
+        display: block;
+        &:hover {
+            background-color: darken($dri_lightgrey, 6%);
+        }
+    }
+}
+/*-------------- Footer navigation --------------*/
+
+.dri_main_footer_navigation {
+    margin: 100px 0 70px 0;
+    padding: 0px;
+    border-top: 1px solid $dri_thingrey;
+    height: 40px;
+    ul {
+        margin: 0px;
+        padding: 0px;
+    }
+    li {
+        float: left;
+        margin: 10px 0 10px 0;
+        padding: 0 20px 0 20px;
+        font-size: 100%;
+        font-weight: normal;
+        list-style: none;
+        text-decoration: none;
+        border-right: 1px solid $dri_thingrey;
+        a {
+            list-style: none;
+            text-decoration: none;
+            color: $dri_midgrey;
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+    li.selected {
+        text-decoration: underline;
+    }
+    li.no_border_right {
+        border-right: none;
+    }
+}
+.dri_funder_institutes {
+    padding-top: 10px;
+    margin: auto;
+    ul {
+        list-style: none;
+        li {
+            display: block;
+            float: left;
+            padding: 10px;
+            height: 80px;
+        }
+    }
+    img {
+        vertical-align: middle;
+    }
+}
 .dri_footer_address {
-  margin: 10px 0 10px 0;
-  color: $dri_greytext;
-  a {
-    color: $dri_midgrey;
-    text-decoration: underline;
-  }
+    margin: 10px 0 10px 0;
+    color: $dri_greytext;
+    a {
+        color: $dri_midgrey;
+        text-decoration: underline;
+    }
 }
-
 .dri_main_footer {
-  .dri_footer_address {
-    float: right;
-    text-align: right;
-    padding-right: 5px;
-  }
+    .dri_footer_address {
+        float: right;
+        text-align: right;
+        padding-right: 5px;
+    }
 }
-
 /*-------------- Standard CSS --------------*/
+
 // Hide, clear etc.
-
-
-
 .dri_invisible {
-  visibility: hidden;
+    visibility: hidden;
 }
-
 .dri_uppercase {
-  text-transform: uppercase;
+    text-transform: uppercase;
 }
-
 .dri_capitalize {
-  text-transform: capitalize;
+    text-transform: capitalize;
 }
-
 .dri_no_display {
-  display: none;
+    display: none;
 }
-
 .dri_float_right {
-  float: right;
+    float: right;
 }
-
 .dri_float_left {
-  float: left;
+    float: left;
 }
-
 .dri_bold_text {
-  font-weight: bold;
+    font-weight: bold;
 }
-
 .dri_noborder {
-  border: inherit;
+    border: inherit;
 }
-
 .dri_underline {
-  text-decoration: underline;
+    text-decoration: underline;
 }
-
 .dri_no_border {
-  border: 0;
+    border: 0;
 }
-
 .dri_no_clear {
-  clear: none;
+    clear: none;
 }
-
 /* static blocks */
 
 .dri_about_box {
-  margin: 0;
-  height: 230px;
-  border: 1px solid $dri_thingrey;
-  @include border_radius;
-  color: $dri_midgrey;
+    margin: 0;
+    height: 230px;
+    border: 1px solid $dri_thingrey;
+    @include border_radius;
+    color: $dri_midgrey;
 }
-
 /*-- Popover Text *--/
  * 
  */
+
 .popover {
-  color: $dri_grey;
+    color: $dri_grey;
 }
-
 //******INGEST**********/
-.dri_main_content_container > 
-	h2 { 
-		background-color:$dri_darkgrey;
-		color: #FFF;
-		font-size: 110%;
-		padding: 4px 20px 4px 10px;
-		margin: 20px 0 0 0;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		color: $dri_white;
-		width: 73%;
-		font-weight: bold;
-		
-		}
-
+.dri_main_content_container > h2 {
+    background-color: $dri_darkgrey;
+    color: #FFF;
+    font-size: 110%;
+    padding: 4px 20px 4px 10px;
+    margin: 20px 0 0 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: $dri_white;
+    width: 73%;
+    font-weight: bold;
+}
 .dri_ingest_form_container {
-
-  padding-top:10px;
-  
-  
-   .dri_ingest_form {
-	   width: 50%;
-	   
-	   
-	input.btn-primary {
-		margin: 30px 0 0 0;
-		padding: 6px;
-		width: 410px;
-		background: $dri_green;
-		border: none;
-		border-radius: 2px;
-		color: #fff;
-		
- }
- 
- .dri_danger {
-   @extend input.btn-primary;
-   background: darken($dri_red, 10%);
- } 
-  .dri_cancel {
-   @extend input.btn-primary;
-   clear:both;
-   background: $dri_lightgrey;
-   display: block;
-   text-align: center;
- } 
-	   
-	.dri_form_multiline_block {
-        textarea {
-          max-width: 410px;
-          clear:both;
-          padding-left: 5px;
-          margin-bottom: 5px;
-          border-radius: 2px;
-          font-size: 100%;
-          border: 1px solid $dri_lightgrey;
+    padding-top: 10px;
+    .dri_ingest_form {
+        width: 50%;
+        input.btn-primary {
+            margin: 30px 0 0 0;
+            padding: 6px;
+            width: 410px;
+            background: $dri_green;
+            border: none;
+            border-radius: 2px;
+            color: #fff;
         }
-      }
-	
-    	label {
-    		font-size: 100%;
-    		color: $dri_darkgrey;
-    	}
-	
-
-
-
-    .dri_metadata_label_span {
-      display: block;
-      label {
-        display: inline-block;
-      }
-      i {
-        padding-left: 5px;
-        color: $dri_darkgrey;
-      }
-      i.red {
-        color: darken($dri_red, 10%);
-      }
-    }
-    .dri_title_metadata_fieldset > input {
-      width:410px;
-    }
-	   .dri_licence_metadata_fieldset > select   { 
-    
-	  width: 410px;
-    }
-
-
-    
-    .dri_description_metadata_fieldset > textarea,
-    .dri_rights_metadata_fieldset > textarea { 
-      vertical-align: -50%;
-      height: 100px;
-    }
-    
-    fieldset {
-      margin-top: 5px;
-      
-      label {
-        display: block;
-        clear:both;
-        font-size: 100%;
-		color: $dri_darkgrey;
-		font-weight: bold;
-
-      }
-  
-
-      input {
-        clear:both;
-        padding-left: 5px;
-        margin-bottom: 5px;
-        border-radius: 2px;
-        min-height: 2em;
-        font-size: 100%;
-		color: $dri_midgrey;
-		border: 1px solid $dri_lightgrey;
-		width: 250px;	 
-      }
-      select {
-        width: 150px;
-        border-radius: -1px;
-        height: 2em;
-        font-size: 1.1em;
-        -webkit-border-style: none;
-        -webkit-border-radius: none;
-        -moz-border-radius: 0px;
-        vertical-align: top;
-        padding-bottom: 12px;
-        width: 150px;
-        overflow-wrap: initial;
-      }
-      .add-text-field, .add-person-fields {
-        i {
-          color: $dri_green;
+        .dri_danger {
+            @extend input.btn-primary;
+            background: darken($dri_red, 10%);
         }
-		  
-      }
-	 
-	  
-	  p a {
-		  	color: $dri_green;
-			cursor: pointer;
-	  }
-	  
-	  a.destructive {
-		   color: $dri_midgrey;
-	  }
-    }
-  }
-}
-
-.dri_access_controls {
-		legend {
-			margin: 15px 0 15px 0;
-			padding: 0 0 8px 0;
-			font-size: 120%;
-			font-weight: bold;
-			color: $dri_darkgrey;
-			
-}
-  @extend .dri_ingest_form_container;
-
-  .breadcrumb > li + li:before {
-    
-    content: "|\00a0";
-  }
-  .breadcrumb {
-    background: none;
-    label {
-        font-size: 100%;
-    	color: $dri_darkgrey;
-    	font-weight: normal;
-   		margin-left: 3px;
-        margin-right: 3px;
-        line-height: 2em;
-    }
-  }
-   .field {
-	   ul {
-		   margin: 0;
-		   padding: 0;
-		   
-		   li label {
-				color: $dri_midgrey;
-				margin: 8px 0 8px 0;
-		   		padding: 0;
-		   }
-	   }
-	   
-     h5 {
-    display: block;
-	clear: both;
-	font-size: 100%;
-	color: $dri_darkgrey;
-	font-weight: bold;
-	 margin: 15px 0 0 0;
-	padding: 0;
-	
-
-i {
-  padding-left: 5px;
-}
-     }
-       fieldset {
-    label {
-      font-weight: normal;
-	  color: $dri_midgrey;
-    }
-  }
-   }
-}
-
-.dri_associate_institutes_block, .dri_collection_institutes_dropdown {
-  clear:both;
-  border-top: 1px solid $dri_thingrey;
-  margin: 20px 0 0 0;
-  .dri_select_institution {
-    select {
-      width: 410px;
-    }
-  } 
+        .dri_cancel {
+            @extend input.btn-primary;
+            clear: both;
+            background: $dri_lightgrey;
+            display: block;
+            text-align: center;
+        }
+        .dri_form_multiline_block {
+            textarea {
+                max-width: 410px;
+                clear: both;
+                padding-left: 5px;
+                margin-bottom: 5px;
+                border-radius: 2px;
+                font-size: 100%;
+                border: 1px solid $dri_lightgrey;
+            }
+        }
         label {
+            font-size: 100%;
+            color: $dri_darkgrey;
+        }
+        .dri_metadata_label_span {
+            display: block;
+            label {
+                display: inline-block;
+            }
+            i {
+                padding-left: 5px;
+                color: $dri_darkgrey;
+            }
+            i.red {
+                color: darken($dri_red, 10%);
+            }
+        }
+        .dri_title_metadata_fieldset > input {
+            width: 410px;
+        }
+        .dri_licence_metadata_fieldset > select {
+            width: 410px;
+        }
+        .dri_description_metadata_fieldset > textarea,
+        .dri_rights_metadata_fieldset > textarea {
+            vertical-align: -50%;
+            height: 100px;
+        }
+        fieldset {
+            margin-top: 5px;
+            label {
+                display: block;
+                clear: both;
+                font-size: 100%;
+                color: $dri_darkgrey;
+                font-weight: bold;
+            }
+            input {
+                clear: both;
+                padding-left: 5px;
+                margin-bottom: 5px;
+                border-radius: 2px;
+                min-height: 2em;
+                font-size: 100%;
+                color: $dri_midgrey;
+                border: 1px solid $dri_lightgrey;
+                width: 250px;
+            }
+            select {
+                width: 150px;
+                border-radius: -1px;
+                height: 2em;
+                font-size: 1.1em;
+                -webkit-border-style: none;
+                -webkit-border-radius: none;
+                -moz-border-radius: 0px;
+                vertical-align: top;
+                padding-bottom: 12px;
+                width: 150px;
+                overflow-wrap: initial;
+            }
+            .add-text-field,
+            .add-person-fields {
+                i {
+                    color: $dri_green;
+                }
+            }
+            p a {
+                color: $dri_green;
+                cursor: pointer;
+            }
+            a.destructive {
+                color: $dri_midgrey;
+            }
+        }
+    }
+}
+.dri_access_controls {
+    legend {
+        margin: 15px 0 15px 0;
+        padding: 0 0 8px 0;
+        font-size: 120%;
+        font-weight: bold;
+        color: $dri_darkgrey;
+    }
+    @extend .dri_ingest_form_container;
+    .breadcrumb > li + li:before {
+        content: "|\00a0";
+    }
+    .breadcrumb {
+        background: none;
+        label {
+            font-size: 100%;
+            color: $dri_darkgrey;
+            font-weight: normal;
+            margin-left: 3px;
+            margin-right: 3px;
+            line-height: 2em;
+        }
+    }
+    .field {
+        ul {
+            margin: 0;
+            padding: 0;
+            li label {
+                color: $dri_midgrey;
+                margin: 8px 0 8px 0;
+                padding: 0;
+            }
+        }
+        h5 {
+            display: block;
+            clear: both;
+            font-size: 100%;
+            color: $dri_darkgrey;
+            font-weight: bold;
+            margin: 15px 0 0 0;
+            padding: 0;
+            i {
+                padding-left: 5px;
+            }
+        }
+        fieldset {
+            label {
+                font-weight: normal;
+                color: $dri_midgrey;
+            }
+        }
+    }
+}
+.dri_associate_institutes_block,
+.dri_collection_institutes_dropdown {
+    clear: both;
+    border-top: 1px solid $dri_thingrey;
+    margin: 20px 0 0 0;
+    .dri_select_institution {
+        select {
+            width: 410px;
+        }
+    }
+    label {
         display: block;
-        clear:both;
+        clear: both;
         font-size: 100%;
         color: $dri_darkgrey;
         font-weight: bold;
-
-      }
-  
-
-      input {
-        clear:both;
+    }
+    input {
+        clear: both;
         padding-left: 5px;
         margin-bottom: 5px;
         border-radius: 2px;
@@ -2892,12 +2682,12 @@ i {
         font-size: 100%;
         color: $dri_midgrey;
         border: 1px solid $dri_thingrey;
-        width: 250px;  
-      }
-      input[type="submit"] {
+        width: 250px;
+    }
+    input[type="submit"] {
         color: white;
-      }
-      select {
+    }
+    select {
         width: 150px;
         border-radius: -1px;
         height: 2em;
@@ -2909,88 +2699,80 @@ i {
         padding-bottom: 12px;
         width: 150px;
         overflow-wrap: initial;
-      }
-  
-  .dri_add_institute_link {
-      a {
-        color: $dri_green;
-        cursor: pointer;
-        padding-top: 5px;
     }
-  }
-     .dri_file_upload {
-      clear:both;
-      display: inline-block;
-      position:relative;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      width:480px;
-
-      a {
-        font-size: 100%;
-        color: $dri_midgrey;
-        border: 1px solid $dri_thingrey;
-        background-color:$dri_white;
-        padding:0 0 0 0;
-        height: 75px;
-        width: 250px;
-        //vertical-align: 10%;
-
-        input {
-          position:absolute;
-          z-index:2;
-          top:0;
-          left:0;
-          height:75px;
-          filter: alpha(opacity=0);
-          -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-          opacity:0;
-          background-color:transparent;
-          color:transparent;
-              
+    .dri_add_institute_link {
+        a {
+            color: $dri_green;
+            cursor: pointer;
+            padding-top: 5px;
         }
-        h5 {
-          margin: 9px 0 3px 0;
-           text-overflow: ellipsis;
+    }
+    .dri_file_upload {
+        clear: both;
+        display: inline-block;
+        position: relative;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 480px;
+        a {
+            font-size: 100%;
+            color: $dri_midgrey;
+            border: 1px solid $dri_thingrey;
+            background-color: $dri_white;
+            padding: 0 0 0 0;
+            height: 75px;
+            width: 250px;
+            //vertical-align: 10%;
+            input {
+                position: absolute;
+                z-index: 2;
+                top: 0;
+                left: 0;
+                height: 75px;
+                filter: alpha(opacity=0);
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+                opacity: 0;
+                background-color: transparent;
+                color: transparent;
+            }
+            h5 {
+                margin: 9px 0 3px 0;
+                text-overflow: ellipsis;
+            }
+            p {
+                margin-bottom: 0px;
+            }
         }
-        p {
-          margin-bottom: 0px;
-        }
-      }
     }
 }
-
 .dri_collection_institutes_item {
-  a.remove {
-    display: block;
-    float:right;
-    margin-right:10px;
-    color: $dri_midgrey;
-  }
+    a.remove {
+        display: block;
+        float: right;
+        margin-right: 10px;
+        color: $dri_midgrey;
+    }
 }
-
 .dri_fileUpload {
-  position: relative;
-  overflow: hidden;
-  span {
-     z-index: 0;
-  }
-  button {
     position: relative;
-    margin-left: 5px;
-    z-index: 100;
-  }
+    overflow: hidden;
+    span {
+        z-index: 0;
+    }
+    button {
+        position: relative;
+        margin-left: 5px;
+        z-index: 100;
+    }
 }
 .dri_fileUpload input.upload {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  font-size: 20px;
-  cursor: pointer;
-  opacity: 0;
-  filter: alpha(opacity=0);
- 
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
 }
-
