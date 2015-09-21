@@ -1,17 +1,19 @@
-<% relationships = @document.object_relationships(params, current_user) %>
-<% external_rels = @document.external_relationships(params) %>
+<% relationships = get_object_relationships @document %>
+<% external_rels = get_external_relationships @document %>
 
 <% if (!relationships.empty? || !external_rels.empty?) %>
 <div class="dri_object_institutes_block">
   <div class="dri_institutes_title">
-	<span>Related Materials</span>
+	  <span>Related Materials</span>
   </div>
+
   <% unless relationships.empty? %>
       <% relationships.each do |key, value| -%>
+        
         <div class="dri_clearfix">
           <% value.take(4).each do |item| -%>
             <article class="">
-              <%= link_to catalog_path(item[1])  do %>
+              <%= link_to catalog_path(item[1].id)  do %>
                 <div class="dri_content_block">
                   <h1><%= item[0] %></h1>
                   <div class="dri_icon">
@@ -24,11 +26,14 @@
             </article>
           <% end %>
         </div>
+        
         <div class="dri_clearfix dri_float_right dri_related_items">
           <%= paginate value, :param_name => key.downcase.gsub(/\s/,'_') + '_page' %>
         </div>
+
       <% end %>
   <% end %>
+  
   <% unless external_rels.empty? %>
     <div class="dri_clearfix">
 	  <% external_rels.each do |url| -%>

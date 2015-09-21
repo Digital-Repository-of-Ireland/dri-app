@@ -83,6 +83,7 @@ en:
         error_generating_surrogates: "Error generating surrogates: %{error}"
         error_publishing_collection: "Error publishing collection: %{error}"
         error_review_job: "Unable to submit background task, all objects will not be updated: %{error}"
+        error_set_depositing_institute_job: "Unable to submit background task, all objects will not be updated: %{error}"
         error_saving_file: "Error saving file: %{error}"
         invalid_file_type: "Warning: The file does not appear to be a valid type"
         invalid_object: "Invalid Object: %{error}."

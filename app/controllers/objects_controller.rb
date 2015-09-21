@@ -6,6 +6,9 @@ include Utils
 
 class ObjectsController < BaseObjectsController
 
+  before_filter :authenticate_user_from_token!, except: [:show, :citation]
+  before_filter :authenticate_user!, except: [:show, :citation]
+
   DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
        'contributor','publisher','date','format','source','temporal_coverage',
        'geographical_coverage','geocode_point','geocode_box','institute',
@@ -99,9 +102,12 @@ class ObjectsController < BaseObjectsController
   end
 
   def citation
+    Rails.logger.info "*** In citation ***"
     enforce_permissions!("show_digital_object",params[:id])
 
     @object = retrieve_object!(params[:id])
+
+    Rails.logger.info @object.export_as_dri_citation
   end
 
   # Creates a new model using the parameters passed in the request.

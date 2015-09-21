@@ -78,6 +78,18 @@ class SolrDocument
     self[geojson_key].present? ? true : false
   end
 
+  def icon_path
+    format = self[ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
+
+    if ['image','audio','text','video','mixed_types'].include?(format)
+      icon = "dri/formats/#{format}_icon.png"
+    else
+      icon = "no_image.png"
+    end
+
+    icon
+  end
+
   def is_collection?
     is_collection_key = ActiveFedora::SolrQueryBuilder.solr_name('is_collection')
     
@@ -86,6 +98,20 @@ class SolrDocument
 
   def is_root_collection?
     self.collection_id ? false : true  
+  end
+
+  def licence
+    licence_key = ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym
+
+    if self[licence_key].present?
+      licence = Licence.where(:name => self[licence_key]).first
+      licence ||= self[licence_key]
+    elsif root_collection
+      collection = root_collection
+      licence = Licence.where(:name => collection[licence_key]).first if collection[licence_key].present?
+    end
+    
+    licence
   end
 
   def object_profile
@@ -110,7 +136,7 @@ class SolrDocument
   def status
     status_key = ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :string).to_sym
 
-    return self[status_key].first
+    self[status_key].first
   end
 
   def published?

@@ -107,7 +107,7 @@ class InstitutesController < ApplicationController
 
       @collection_institutes = Institute.find_collection_institutes(@collection.institute)
       @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
-   
+
       respond_to do |format|
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
       end
@@ -123,6 +123,15 @@ class InstitutesController < ApplicationController
       end
 
       if @collection.save
+        if params[:type] == "depositing"
+          begin
+            Sufia.queue.push(SetDepositingInstituteJob.new(@collection.id)) unless @collection.governed_items.blank?
+          rescue Exception => e
+            logger.error "Unable to submit SetDepositingInstitute job: #{e.message}"
+            flash[:alert] = t('dri.flash.alert.error_set_depositing_institute_job', :error => e.message)
+            @warnings = t('dri.flash.alert.error_set_depositing_institute_job', :error => e.message)
+          end
+        end
         flash[:notice] = institute_name + " " +  t('dri.flash.notice.organisation_added')
       else
         raise Exceptions::InternalError

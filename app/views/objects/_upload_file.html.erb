@@ -1,17 +1,9 @@
-
-<%= get_files @object %>
-
-
 <div class="dri_ingest_form_container">
 <div class="dri_ingest_form">
 <fieldset>
 <legend><%= t('dri.views.objects.legends.upload_file') %></legend>
 
-    <% unless @files.empty? %>
-  <p class="legend-caption"><%= t('dri.views.objects.legends.file_caption') %></p>
-  <% else %>
   <p class="legend-caption"><%= t('dri.views.objects.legends.upload_file_caption') %></p>
-  <% end %>
     <div class="dri_file_upload">
                 <%= form_tag(url_for(object_files_path(@object.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
 
