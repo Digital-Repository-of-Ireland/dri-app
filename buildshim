@@ -45,6 +45,8 @@ S3:
   access_key_id: anykey
   secret_access_key: anykey
   bucket_prefix: buildbot
+doi:
+  enable: false
 __EOF__
 
     bundle install --quiet
