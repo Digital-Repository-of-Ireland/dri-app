@@ -10,11 +10,11 @@
 
 /*Import the Zen Grids files*/
 @import "_dri_init.scss";
-@import "../zen/_grids.scss";
-@import "../zen/_base.scss";
-@import "../zen/_background.scss";
-@import "dri.scss";
-@import "social-share-button.scss";
+@import "vendor/zen/_grids.scss";
+@import "vendor/zen/_base.scss";
+@import "vendor/zen/_background.scss";
+@import "_dri.scss";
+@import "vendor/social-share-button.scss";
 
 /* modules */
 @import "modules.scss";
