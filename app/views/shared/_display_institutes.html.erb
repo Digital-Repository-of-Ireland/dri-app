@@ -1,17 +1,11 @@
+
 <div class="dri_display_institutes">
+	<% if @collection_institutes || @depositing_institute %>
 	<div class="dri_institutes_title">
 		<span><%= t('dri.views.collection.institute.title') %></span>
 	</div>
 
-	<% if /edit/.match(request.path) || /newdepositingassociation/.match(request.path) || /newassociation/.match(request.path) %>
-	<div id='dri_collection_institutes_dropdown' name='dri_collection_institutes_dropdown'>
-		<%= render :partial => "shared/associate_depositing_institute" %>
-	</div>
-	<% is_edit_page = TRUE %>
-	<% end %>
-	<!-- close vc_title -->
 
-	<% if @collection_institutes %>
 	<ul class="dri_collection_institutes_list">
 		<% if @depositing_institute %>
 		<li>
@@ -25,18 +19,11 @@
 				<% else %>
 				<%= link_to image_tag(@depositing_institute.logo, :height => "75px"), @depositing_institute.url, :target => "_blank" %>
 				<% end %>
-                <% if is_edit_page %>
-                <div>
-                    <%= link_to '#', :class => 'remove' do %>
-                    <i class="fa fa-times-circle">&nbsp;</i> <%= t('dri.views.objects.forms.delete') %>
-                    <% end %>
-         
-                <% end %>
-                </div>
 			</div>
 
 		</li>
 		<% end %>
+		<% if @collection_institutes %>
 		<% @collection_institutes.each do |inst| %>
 		<% if @depositing_institute %>
 		<% next if @depositing_institute.name == inst.name %>
@@ -52,17 +39,12 @@
 				<% else %>
 				<%= link_to image_tag(inst.logo, :height => "75px"), inst.url, :target => "_blank" %>
 				<% end %>
-				<% if is_edit_page %>
-				<div>
-					<%= link_to '#', :class => 'remove' do %>
-					<i class="fa fa-times-circle">&nbsp;</i> <%= t('dri.views.objects.forms.delete') %>
-					<% end %>
-				</div>
-				<% end %>
 			</div>
 		</li>
 		<% end %>
+		<% end %>
 
 	</ul>
+	
 	<% end %>
 

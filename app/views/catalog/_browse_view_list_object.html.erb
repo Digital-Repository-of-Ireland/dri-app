@@ -1,7 +1,7 @@
 <article class="dri_result_object dri_clearfix" id="<%= document.id.to_s %>">
   <div class="dri_content_list_collection">
     <div class="dri_content_list_collection_data">
-      <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter+1} )) do %>
+      <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
           <h4><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h4>
       <% end %>
       <p class="dri_list_description">
@@ -17,8 +17,8 @@
         <% end %>
       </p>
       <div class="dri_list_icon">
-        <% unless get_document_type(document).eql?(t("dri.data.types.Unknown")) %>
-            <span class="dri_icon_image"><%= image_tag(icon_path(document)) %> &nbsp; <%= get_document_type document %></span>
+        <% unless document.file_type == t("dri.data.types.Unknown") %>
+            <span class="dri_icon_image"><%= image_tag(document.icon_path) %> &nbsp; <%= document.file_type %></span>
         <% else %>
             <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
         <% end %>
@@ -26,7 +26,7 @@
       <!-- close dri_icon -->
     </div>
     <% get_cover_image document %>
-    <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter+1} )) do %>
+    <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
         <div class="dri_image">
           <%= image_tag @cover_image, :width=>"200" %>
         </div><!-- close image -->

@@ -31,40 +31,22 @@ cp config/fedora.yml.sample config/fedora.yml
 cp config/solr.yml.sample config/solr.yml
 cp config/database.yml.sample config/database.yml
 cp config/redis.yml.sample config/redis.yml
-cp config/doi.yml.sample config/doi.yml
+#cp config/doi.yml.sample config/doi.yml
 
 cat > config/settings.local.yml << __EOF__
-ingest:
-  steps: [collection, type, ingestmethod, metadata]
-  step_data:
-    collection: [ingestcollection]
-    type: [ingesttype]
-    ingestmethod: [ingestmethod]
 interface:
   languages: [en, ga]
 dri:
   files: dri_files
-queue:
-  audio: [CreateBucket, CreateChecksums, CreateMp3, CreateOgg]
-  pdfdoc: [CreateBucket, CreateChecksums, FullTextIndex]
 plugins:
   ffmpeg_path: /usr/bin/ffmpeg
-mp3_web_quality_out_options:
-  codec: # default is for ffmpeg to auto-detect appropriate codec, this should be good for most scenarios
-  strip_metadata: "yes" # default is to preserve global metadata
-  channel: "2" # default is same as input file
-  bitrate: "96k" # default is same as input file
-  frequency: "44100" # default is same as input file
-ogg_web_quality_out_options:
-  codec: libvorbis # Default for ogg will produce very large files
-  strip_metadata: "yes" # default is preserve global metadata
-  channel: "2" # default is same as input file
-  bitrate: "96k" # default is same as input file
-  frequency: "44100" # default is same as input file
 S3:
-  server: http://objects.tchpc.tcd.ie
-  access_key_id: OMZPBA7D6U3MZ6MBVJZQ
-  secret_access_key: nnXKfE/+0zfEsHW8n55ffP18Bvn+N9sJ83AmWPOS
+  server: http://localhost:8081
+  access_key_id: anykey
+  secret_access_key: anykey
+  bucket_prefix: buildbot
+doi:
+  enable: false
 __EOF__
 
     bundle install --quiet
@@ -73,6 +55,8 @@ __EOF__
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
     bundle exec rake dri:fixtures:generate
+    bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &>/dev/null &
+    echo $! > fakes3.pid
     ;;
 compile)
     ;;
@@ -89,19 +73,30 @@ check)
 package)
     ;;
 upload)
-    if [[ -s "$HOME/hosts.buildbot" ]] ; then
-      cp $HOME/hosts.buildbot deploy/hosts.buildbot
-      if [[ "$branch" == "master" ]]; then
-      #ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-common.yml
-        ansible-playbook -i deploy/hosts.buildbot deploy/playbooks/setup-dri_app-nuig-rnag.yml -e "deploy_branch=$(git rev-parse HEAD)"
-      fi
-    else
-      printf "Can't upload and deploy, can't find hosts.buildbot file"
-    fi
+
+    #setup ssh agent for key forwarding to work
+#    eval ssh-agent $SHELL
+    eval "$(ssh-agent)"
+    ssh-add ~/.ssh/id_rsa
+
+    #Now deploy update app repo codebase
+    ansible-playbook -i ../../ansible-dri-infrastructure-trusty64-master/build/inventory/hosts.buildbot ../../ansible-dri-infrastructure-trusty64-master/build/site-vagrant.yml --vault-password-file ~/.vault-pass.txt -e "deploy_branch=$(git rev-parse HEAD)" --tags=getfacts,dri_app,dri_app_worker
+
     ;;
 compile_extra)
-    #curl http://repository.dri.ie/v1 > /dev/null 2>&1
+     #check application
+    OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://dri-vm44.maynoothuniversity.ie/is_it_working`
+
+    if [[ $OUTPUT -ne 200 ]] ; then
+      printf "Test Application Stack FAULT! [HTTP: $OUTPUT]\n"
+      if [[ "$branch" == "master" ]]; then
+          exit 1
+      fi
+    else
+      printf "Test Application Stack OK. [HTTP: $OUTPUT]\n"
+    fi 
     ;;
 uninstall_deps)
+    kill -TERM $(cat fakes3.pid) || true
     ;;
 esac

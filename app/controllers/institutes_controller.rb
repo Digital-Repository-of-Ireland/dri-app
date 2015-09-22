@@ -1,9 +1,18 @@
 class InstitutesController < ApplicationController
   require 'institute_helpers'
 
-  before_filter :authenticate_user_from_token!, :only => [:edit, :update, :show]
-  before_filter :authenticate_user!, :only => [:edit, :update, :show]
+  before_filter :authenticate_user_from_token!, :except => [:index]
+  before_filter :authenticate_user!, :except => [:index]
+  before_filter :check_for_cancel, :only => [:create, :update]
 
+  # Was this action canceled by the user?
+  def check_for_cancel
+    if params[:commit] == "Cancel"
+      redirect_to institutions_path
+    end
+  end
+  
+  
   # Get the list of institutes
   def index
     @institutes = Institute.all
@@ -39,14 +48,13 @@ class InstitutesController < ApplicationController
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
-    @institutes = Institute.all
 
     if params[:object]
       @object = ActiveFedora::Base.find(params[:object], {:cast => true})
     end
 
     respond_to do |format|
-      format.html { redirect_to institutions_path }
+      format.html { redirect_to institutions_url }
     end
   end
 
@@ -78,57 +86,74 @@ class InstitutesController < ApplicationController
     @inst = Institute.find(params[:id])
   end
 
-
   # Associate institute
   def associate
-    # save the institute name to the properties datastream
-    collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
-    raise Exceptions::NotFound unless collection
-
-    institute = Institute.where(:name => params[:institute_name]).first
-    raise Exceptions::NotFound unless institute
-
-    collection.institute = collection.institute.push(institute.name)
-
-    raise Exceptions::InternalError unless collection.save
-
-    @object = collection
-    @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
-    @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
-
-    respond_to do |format|
-      format.js
-    end
-
+    add_or_remove_association
   end
-
-
-  # Associate depositing institute
-  def associate_depositing
-    collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
-    raise Exceptions::NotFound unless collection
-
-    institute = Institute.where(:name => params[:institute_name]).first
-    raise Exceptions::NotFound unless institute
-
-    collection.depositing_institute = institute.name
-
-    raise Exceptions::InternalError unless collection.save
-
-    @object = collection
-    @collection_institutes = InstituteHelpers.get_collection_institutes(collection)
-    @depositing_institute = InstituteHelpers.get_depositing_institute(collection)
-
-    respond_to do |format|
-      format.js
-    end
-
+  
+    # Dis-associate institute
+  def disassociate
+    add_or_remove_association(true)
   end
 
   private
 
+    def add_or_remove_association(delete=false)
+      # save the institute name to the properties datastream
+      @collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
+      raise Exceptions::NotFound unless @collection
+
+      delete ? delete_association : add_association
+
+      @collection_institutes = Institute.find_collection_institutes(@collection.institute)
+      @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
+
+      respond_to do |format|
+        format.html  { redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
+      end
+    end
+
+    def add_association
+      institute_name = params[:institute_name]
+
+      if(params[:type].present? && params[:type] == "depositing")
+        @collection.depositing_institute = institute_name
+      else
+        @collection.institute = @collection.institute.push( institute_name )
+      end
+
+      if @collection.save
+        if params[:type] == "depositing"
+          begin
+            Sufia.queue.push(SetDepositingInstituteJob.new(@collection.id)) unless @collection.governed_items.blank?
+          rescue Exception => e
+            logger.error "Unable to submit SetDepositingInstitute job: #{e.message}"
+            flash[:alert] = t('dri.flash.alert.error_set_depositing_institute_job', :error => e.message)
+            @warnings = t('dri.flash.alert.error_set_depositing_institute_job', :error => e.message)
+          end
+        end
+        flash[:notice] = institute_name + " " +  t('dri.flash.notice.organisation_added')
+      else
+        raise Exceptions::InternalError
+      end 
+    end
+
+    def delete_association
+      institute_name = params[:institute_name]
+
+      institutes = @collection.institute
+      institutes.delete(institute_name)
+      @collection.institute = institutes 
+
+      if @collection.save
+        flash[:notice] = institute_name + " " + t('dri.flash.notice.organisation_removed')
+      else
+        raise Exceptions::InternalError
+      end
+    end
+
     def update_params
-      params.require(:institute).permit!
+      params.require(:institute).permit(:name, :logo, :url)
     end
 
 end

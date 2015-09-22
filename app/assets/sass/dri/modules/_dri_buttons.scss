@@ -1,0 +1,75 @@
+/*-------------- Button Styling--------------*/
+
+.dri_button {
+  font-size: 100%;
+  color: white;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: none;
+  padding: 6px 10px 6px 10px;
+  margin: 10px 0 10px 0;
+}
+
+.dri_button_green {
+  @extend .dri_button;
+  background-color: $dri_green;
+}
+
+.dri_button_green:hover {
+  background-color: darken($dri_green, 10%);
+}
+
+.dri_button_red {
+  @extend .dri_button;
+  background-color: $dri_red;
+}
+
+.dri_button_red:hover {
+  background-color: darken($dri_red, 10%);
+}
+
+.dri_button_grey {
+  @extend .dri_button;
+  background-color: $dri_lightgrey;
+}
+
+.dri_button_grey:hover {
+  background-color: darken($dri_lightgrey, 10%);
+}
+
+.dri_button_black {
+  @extend .dri_button;
+  background-color: $dri_grey;
+}
+
+.dri_button_black:hover {}
+
+.btn {
+  @extend .dri_button;
+  background-color: $dri_lightgrey;
+  padding: 5px 10px 4px 10px;
+  margin: 0;
+}
+
+.btn:hover {
+  background-color: darken($dri_lightgrey, 10%);
+  color: #FFF;
+}
+
+.dri_w230 {
+  width: 230px;
+}
+
+.dri_w330 {
+  width: 330px;
+}
+
+/*-------------- Save Search --------------*/
+
+
+.dri_search_save_submit_button {
+  @extend .dri_button_green;
+  //margin-top: 25px;
+  float: right;
+  margin: 0px 0 10px 0;
+}

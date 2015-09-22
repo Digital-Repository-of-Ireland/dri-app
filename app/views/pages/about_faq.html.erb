@@ -18,7 +18,7 @@
 </p>
 <h6> How do I get access to the DRI API? </h6>
 <p>
-	To get access to the DRI API, you must first be registered with DRI. You must then apply for an API key by contacting info@dri.ie.
+	To get access to the DRI API, you must first be registered with DRI. You must then apply for an API key by contacting <%= mail_to( "info@dri.ie", "info@dri.ie", {:subject => "API Key Request" } ) %>.
 </p>
 <h6> How does DRI cite data? </h6>
 <p>
@@ -26,24 +26,24 @@
 </p>
 <h6> How do I generate a DRI citation? </h6>
 <p>
-	When you are viewing an object or collection, you can generate a DRI citation by clicking "Cite" under the "Object Tools" section of features.
+	When you are viewing an object or collection, you can generate a DRI citation by clicking "Cite" under the "Object Tools" menu in the sidebar.
 </p>
 <h6> How much data can DRI hold? </h6>
 <p>
-	The DRI utilised "Elastic Storage", which can be expanded as required.
+	The DRI utilises "Elastic Storage", which can be expanded as required.
 </p>
 <h6> What is an Orphan Work? </h6>
 <p>
-	A orphan work is a work protected by copyright, where the rightholder cannot be determined and/or contacted.
+	An orphan work is a work protected by copyright, where the rightholder cannot be determined and/or contacted.
 </p>
 <h5> Users FAQ </h5><p></p>
 <h6> What is a DRI Collection? </h6>
 <p>
-	A DRI collection is a group of digital objects. A collection may contain different types of objects e.g. images, audio, text, metadata. A collection is an aggregation of digital objects which may be linked by subject, location, ownership, etc,.
+	A DRI collection is a group of digital objects. A collection may contain different types of objects e.g. images, audio, text, metadata. A collection is an aggregation of digital objects which may be linked by subject, location, ownership, etc.
 </p>
 <h6> What is metadata? </h6>
 <p>
-	Metadata is data about data.
+	Metadata is data about data. Usually the metadata of an object describes and explains the related digital or physical asset.
 </p>
 <h6> What type of data can I access in DRI? </h6>
 <p>
@@ -51,8 +51,10 @@
 </p>
 <h6> Can I reuse the data I discover on DRI? </h6>
 <p>
-	The reuse of data discovered on the DRI is dependant on the licence that is assigned to the data. You can get more information on what each type of licence means in the DRI Copyright, Licencing, and Open Access Factsheet (http://www.dri.ie/sites/default/files/files/Fact%20Sheet%20No%202%20Copyright%20and%20Licensing%20ver%203.pdf)
+	The reuse of data discovered on the DRI is dependent on the licence that is assigned to the data. You can get more information on what each type of licence means in the <%= link_to "DRI Copyright, Licencing, and Open Access Factsheet", "http://www.dri.ie/sites/default/files/files/Fact%20Sheet%20No%202%20Copyright%20and%20Licensing%20ver%203.pdf"%>
 </p>
+<h6> Can I reuse images I find on DRI? </h6>	
+<p>	When reusing images on DRI, you must consult the licence metadata that has been applied to the image. 	</p>																							
 <h6> Who can use DRI? </h6>
 <p>
 	DRI can be used by anyone, including but not limited to, primary and second level pupils, undergraduate and postgraduate students, educators and academic researchers, historians, local interest groups and public researchers with a specific interest in Irish cultural heritage.
@@ -71,11 +73,11 @@
 </p>
 <h6> How can I carry out an advanced search on DRI? </h6>
 <p>
-	DRI uses the Lucene Query Syntax for searching. You can make use of various different types of queries including, keyword matching, wildcard matching, and proximity matching. For more details on how to use these types of queries, please see the Lucene (https://lucene.apache.org/core/2_9_4/queryparsersyntax.html) guide.
+	DRI uses the Lucene Query Syntax for searching. You can make use of various different types of queries including, keyword matching, wildcard matching, and proximity matching. For more details on how to use these types of queries, please see the <%= link_to "Lucene guide", "https://lucene.apache.org/core/2_9_4/queryparsersyntax.html", :target=>"_blank" %> .
 </p>
 <h6> How do I bookmark an object or collection? </h6>
 <p>
-	When you are viewing an object or collection, you can bookmark an object or collection by pressing "Bookmark Object" or "Bookmark Collection" respectively, under the "Object Tools" section of features.
+	When you are viewing an object or collection, you can bookmark an object or collection by pressing "Bookmark Object" or "Bookmark Collection" respectively, under the "Object Tools" menu in the sidebar.
 </p>
 <h6> Can I share content on social media? </h6>
 <p>
@@ -84,19 +86,19 @@
 <h5> Depositors FAQ </h5><p></p>
 <h6> What types of files can I ingest into the DRI? </h6>
 <p>
-	You can ingest any file format into DRI, however not all file formats will be rendered on the Repository website. Please see DRI File Formats Factsheet (http://www.dri.ie/sites/default/files/files/Fact%20Sheet%20No%203%20File%20Formats%20ver%202.pdf) on the recommended file formats for ingestion into DRI.
+	You can ingest any file format into DRI, however not all file formats will be rendered on the Repository website. Please see <%= link_to "DRI File Formats Factsheet", "http://www.dri.ie/sites/default/files/files/Fact%20Sheet%20No%203%20File%20Formats%20ver%202.pdf", :target=>"_blank" %> on the recommended file formats for ingestion into DRI.
 </p>
 <h6> Can I ingest my data into DRI? </h6>
 <p>
-	You should first evaluate your collection. For help doing this you should look at the DRI Life-Cycle Step 1: Evaluate your Collection (link).
+	You should first evaluate your collection. For help doing this you should look at the <%= link_to "DRI Life-Cycle Step 1: Evaluate your Collection", main_app.page_path('about_lifecycle') %>.
 </p>
 <h6> How do I need to prepare my data for DRI? </h6>
 <p>
-	You should look at the DRI Life-Cycle Step 2: Data Preparation (link) for guidelines on how you can prepare your data for DRI.
+	You should look at the <%= link_to 'DRI Life-Cycle Step 2: Data Preparation', main_app.page_path('about_lifecycle') %>  for guidelines on how you can prepare your data for DRI.
 </p>
 <h6> Where can I get help to prepare my data? </h6>
 <p>
-	The DRI Life-Cycle (link) resources will help you prepare your data for DRI. In addition, DRI offer a range of training sessions, so keep eye on our events (http://www.dri.ie/events) and our Twitter @dri_ireland for information on upcoming events.
+	The <%= link_to 'DRI Life-Cycle', main_app.page_path('about_lifecycle') %> resources will help you prepare your data for DRI. In addition, DRI offer a range of training sessions, so keep an eye on our <%= link_to 'events', "http://www.dri.ie/events" %> and our Twitter account <%= link_to "@dri_ireland", "https://twitter.com/dri_ireland" %> for information on upcoming events.
 </p>
 <h6> Will I retain ownership of my data after ingesting? </h6>
 <p>
@@ -112,7 +114,7 @@
 </p>
 <h6> How secure is DRI? </h6>
 <p>
-	Details of our security procedures are detailed in our Security Policy. This Security Policy will be reviewed regularly to ensure that our security procedures remain robust and comprehensive as the DRI’s technology choices and policies evolve. To request a copy of our Security Policy, please contact info@dri.ie.
+	Details of our security procedures are detailed in our Security Policy. This Security Policy will be reviewed regularly to ensure that our security procedures remain robust and comprehensive as the DRI’s technology choices and policies evolve. To request a copy of our Security Policy, please contact <%= mail_to( "info@dri.ie", "info@dri.ie", {:subject => "Security Policy Request" } ) %>.
 </p>
 <h6> Will DRI preserve my data, without my input, forever? </h6>
 <p>
@@ -120,7 +122,7 @@
 </p>
 <h6> What will DRI allow others to do with my data? </h6>
 <p>
-	This is dependant on the type of licence you attach to your data. For more information on licences and copyright, please see our fact sheet on Copyright, Licensing and Open Access (http://www.dri.ie/sites/default/files/files/Fact%20Sheet%20No%202%20Copyright%20and%20Licensing%20ver%203.pdf).
+	This is dependent on the type of licence you attach to your data. For more information on licences and copyright, please see our fact sheet on <%= link_to "Copyright, Licensing and Open Access", "http://www.dri.ie/sites/default/files/files/Fact%20Sheet%20No%202%20Copyright%20and%20Licensing%20ver%203.pdf" %>.
 </p>
 <h6> If I create a collection and assign a CC license, can this licence be changed? </h6>
 <p>
@@ -132,10 +134,6 @@
 </p>
 <h6> Are there different levels of users in the depositing process? </h6>
 <p>
-	Yes, DRI have developed a user hierarchy to facilitate different institutional structures and allow organisations to distribute the work required to deposit data into the DRI repository. There are currently three different administrative users; Organisational Manager, Manager User, and Edit User. For more information on permissions attached to each of these users, please see the How To DRI: Understanding Administrative Roles (link).
-</p>
-<h6> Can I ingest digital objects for which I don't own copyright rights to? </h6>
-<p>
-	You can, with the permission of the copyright holder, or if the asset is registered as an Orphan Work.
+	Yes, DRI have developed a user hierarchy to facilitate different institutional structures and allow organisations to distribute the work required to deposit data into the DRI repository. There are currently three different administrative users; Organisational Manager, Manager User, and Edit User. For more information on permissions attached to each of these users, please see the <%= link_to "How To DRI: Understanding Administrative Roles", "http://dri.ie/sites/default/files/files/HowtoDRI_UserRoles%20v2.pdf" %>.
 </p>
 </div>

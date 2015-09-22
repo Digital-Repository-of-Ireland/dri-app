@@ -2,20 +2,23 @@
 #
 require 'storage/cover_images'
 require 'validators'
-require 'institute_helpers'
-require 'metadata_helpers'
-require 'doi/doi'
 
-class CollectionsController < CatalogController
-
-  #include UserGroup::SolrAccessControls
+class CollectionsController < BaseObjectsController
   include Hydra::AccessControlsEnforcement
 
-  before_filter :authenticate_user_from_token!, :only => [:create, :new, :edit, :update, :publish]
-  before_filter :authenticate_user!, :only => [:create, :new, :edit, :update, :publish]
+  before_filter :authenticate_user_from_token!
+  before_filter :authenticate_user!
+  before_filter :check_for_cancel, :only => [:create, :update, :add_cover_image]
 
-  def actor
-    @actor ||= DRI::Object::Actor.new(@object, current_user)
+  # Was this action canceled by the user?
+  def check_for_cancel
+    if params[:commit] == t('dri.views.objects.buttons.cancel')
+      if params[:id]
+        redirect_to :controller => "catalog", :action => "show", :id => params[:id]
+      else
+        redirect_to :controller => "catalog", :action => "index"
+      end
+    end
   end
 
   # Creates a new model.
@@ -55,8 +58,8 @@ class CollectionsController < CatalogController
     @institutes = Institute.all
     @inst = Institute.new
 
-    @collection_institutes = InstituteHelpers.get_collection_institutes(@object)
-    @depositing_institute = InstituteHelpers.get_depositing_institute(@object)
+    @collection_institutes = Institute.find_collection_institutes(@object.institute)
+    @depositing_institute = @object.depositing_institute.present? ? Institute.find_by(name: @object.depositing_institute) : nil
 
     supported_licences()
 
@@ -87,34 +90,30 @@ class CollectionsController < CatalogController
 
     supported_licences()
 
-    if !valid_permissions?
-      flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
-    else
+    doi.update_metadata(params[:batch].select{ |key, value| doi.metadata_fields.include?(key) }) if doi
+        
+    if valid_permissions?
       updated = @object.update_attributes(update_params)
 
       if updated
-        DOI.mint_doi( @object )
-        unless cover_image.blank?
-          unless Storage::CoverImages.validate(cover_image, @object)
-            flash[:error] = t('dri.flash.error.cover_image_not_saved')
-          end
+        if cover_image.present?
+          flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
         end
       else
         flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
       end
-
-      #Apply private_metadata & properties to each DO/Subcollection within this collection
+    else
+      flash[:alert] = t('dri.flash.error.not_updated', :item => params[:id])
     end
 
     #purge params from update action
-    params.delete(:batch)
-    params.delete(:_method)
-    params.delete(:authenticity_token)
-    params.delete(:commit)
-    params.delete(:action)
+    purge_params
 
     respond_to do |format|
-      if (updated)
+      if updated
+        actor.version_and_record_committer
+        update_doi(@object, doi, "metadata update") if doi && doi.changed?
+
         flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
         format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       else
@@ -123,25 +122,46 @@ class CollectionsController < CatalogController
     end
   end
 
+  # Updates the cover image of an existing model.
+  #
+  def add_cover_image
+    @object = retrieve_object!( params[:id] )
+
+    # If a cover image was uploaded, remove it from the params hash
+    cover_image = params[:batch][:cover_image]
+
+    if cover_image.present?
+      updated = Storage::CoverImages.validate( cover_image, @object )
+    end
+    
+    #purge params from update action
+    purge_params
+
+    respond_to do |format|
+      if ( updated )
+        flash[:notice] = t('dri.flash.notice.updated', :item => params[:id])
+      else
+        flash[:error] = t('dri.flash.error.cover_image_not_saved')
+      end
+      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+    end
+  end
+  
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    if params[:metadata_file].present?
-      created = create_from_xml
-    else
-      created = create_from_form
-    end
-
+    created = params[:metadata_file].present? ? create_from_xml : create_from_form
+     
     unless created
       respond_with_exception(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata_input')))
       return
     end
 
     if @object.valid? && @object.save
-      DOI.mint_doi( @object )
-
       # We have to create a default reader group
       create_reader_group
+
+      actor.version_and_record_committer
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
@@ -173,7 +193,7 @@ class CollectionsController < CatalogController
 
     @object = retrieve_object!(params[:id])
 
-    if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status.eql?('draft'))
+    if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status == "draft")
       begin
         delete_collection
         flash[:notice] = t('dri.flash.notice.collection_deleted')
@@ -205,7 +225,7 @@ class CollectionsController < CatalogController
 
     if params[:apply_all].present? && params[:apply_all].eql?("yes")
       begin
-        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless (@object.governed_items.nil? || @object.governed_items.empty?)
+        Sufia.queue.push(ReviewCollectionJob.new(@object.id)) unless @object.governed_items.blank?
       rescue Exception => e
         logger.error "Unable to submit status job: #{e.message}"
         flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)
@@ -217,7 +237,7 @@ class CollectionsController < CatalogController
       flash[:notice] = t('dri.flash.notice.metadata_updated')
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       format.json {
-        unless @warnings.nil?
+        if @warnings
           response = { :warning => @warnings, :id => @object.id, :status => @object.status }
         else
           response = { :id => @object.id, :status => @object.status }
@@ -244,7 +264,7 @@ class CollectionsController < CatalogController
     respond_to do |format|
       format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
       format.json {
-          unless @warnings.nil?
+          if @warnings
             response = { :warning => @warnings, :id => @object.id, :status => @object.status }
           else
             response = { :id => @object.id, :status => @object.status }
@@ -258,10 +278,6 @@ class CollectionsController < CatalogController
   # Create a collection with the web form
   #
   def create_from_form
-    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
-    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
-    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
-
     enforce_permissions!("create", DRI::Batch)
 
     @object = DRI::Batch.with_standard :qdc
@@ -286,10 +302,8 @@ class CollectionsController < CatalogController
 
     # We need to save to get a pid at this point
     if @object.save
-      unless cover_image.blank?
-        unless Storage::CoverImages.validate(cover_image, @object)
-          flash[:error] = t('dri.flash.error.cover_image_not_saved')
-        end
+      if cover_image.present?        
+        flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
       end
     end
 
@@ -341,24 +355,15 @@ class CollectionsController < CatalogController
     true
   end
 
-  private 
-
-  def create_params
-    params.require(:batch).permit!
-  end
-
-  def update_params
-    params.require(:batch).permit!
-  end
+  private
 
   def valid_permissions?
-    if (
-        #(params[:batch][:master_file].blank? || params[:batch][:master_file]==UserGroup::Permissions::INHERIT_MASTERFILE) ||
-    (params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
-        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
-      return false
+    if (@object.governing_collection_id.blank? &&
+        ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
+        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?)))
+      false
     else
-      return true
+      true
     end
   end
 

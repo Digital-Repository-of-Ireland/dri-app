@@ -14,9 +14,9 @@ $dri_about_logos_min_height: 100px;
 }
 %pages_a {
     a {
-        font-size: 1.1em;
-        color: darken($dri_green, 10%);
-        line-height: 1.3em;
+        color: darken($dri_midgrey, 10%);
+        padding:0;
+        margin:0;
     }
     a:hover {
         color: $dri_green;
@@ -24,12 +24,14 @@ $dri_about_logos_min_height: 100px;
 }
 %pages_h5 {
     h5 {
-        font-size: 1.3em;
+        font-size: 1.1em;
         margin-top: 15px;
         padding-bottom: 5px;
         color: $dri_grey;
         border-bottom: 3px solid $dri_grey;
-        color: $dri_grey;
+        color: $dri_grey;  
+        font-weight: bold;
+      
     }
 }
 %pages_h6 {
@@ -37,10 +39,24 @@ $dri_about_logos_min_height: 100px;
         color: $dri_grey;
         font-size: 1.1em;
         font-weight: bold;
+        padding:10px 0 0 0;
     }
 }
 %thin_border {
     border: 1px solid $dri_thingrey;
+}
+.padded_top {
+  padding-top: 10px;
+}
+ul { 
+       padding: 0;
+       margin: 0 0 0 15px;
+li {
+      font-size: 1.1em;
+      text-decoration: none;
+      padding:0;
+      margin:0;
+}
 }
 //* FAQ /pages/faq.html.erb
 .dri_faq {
@@ -58,6 +74,9 @@ $dri_about_logos_min_height: 100px;
     @extend %pages_h6;
     @extend %pages_p;
     @extend %pages_a;
+    li {
+      padding-bottom:5px;
+    }
     img {
         max-width: 100%;
         padding: 5px 0 5px 0;
@@ -81,6 +100,11 @@ $dri_about_logos_min_height: 100px;
         @extend .dri_about_column;
         @include zen-grid-item(1, 2);
     }
+    .dri_about_col01_02 {
+        min-height: $dri_pages_min_height;
+        @extend .dri_about_column;
+        @include zen-grid-item(2, 1);
+    }
     .dri_about_col03 {
         @extend .dri_about_column;
         border-right: 0px;
@@ -101,6 +125,12 @@ $dri_about_logos_min_height: 100px;
             min-height: inherit;
             border-right: 0px;
             @include zen-grid-item(1, 2);
+        }
+        .dri_about_col01_02 {
+            min-height: inherit;
+            border-right: 0px;
+            @extend .dri_about_column;
+            @include zen-grid-item(2, 1);
         }
         .dri_about_col03 {
             clear: left;

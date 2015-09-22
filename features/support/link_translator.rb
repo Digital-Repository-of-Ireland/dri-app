@@ -120,6 +120,9 @@ module LinkTranslator
 
       when /^add a new institute$/
         "new_institute"
+        
+      when /^manage organisations$/
+        "manage_organisations"
 
       when /^manage bookmark$/
         "manage_bookmark"

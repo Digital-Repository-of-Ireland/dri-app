@@ -1,6 +1,7 @@
 interface:
   languages: [en, ga]
 dri:
+  password: CHANGEME
   files: dri_files/data
   uploads: dri_files/uploads
 plugins:
@@ -22,3 +23,5 @@ data:
   cover_image_bucket: coverimages
   logos_bucket: institutelogos
   types: [Sound, MovingImage, Image, Text]
+doi:
+  enable: false

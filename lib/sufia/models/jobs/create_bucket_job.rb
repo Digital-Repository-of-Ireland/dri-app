@@ -1,4 +1,4 @@
-class CreateBucketJob < ActiveFedoraPidBasedJob
+class CreateBucketJob < ActiveFedoraIdBasedJob
 
   require 'storage/s3_interface'
   require 'utils'

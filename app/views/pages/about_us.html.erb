@@ -1,6 +1,6 @@
 <div id="dri_about_id" class="dri_about">
 	<div class="dri_about_banner">
-		<%= image_tag("dri/about/dri_about_banner.png", :alt=>"PRESERVATION ACCESS BISCOVER Banner Image" ) %>
+		<%= image_tag("dri/about/dri_about_banner.png", :alt=>"PRESERVATION ACCESS DISCOVER Banner Image" ) %>
 	</div>
 	<div>
 		<div class="dri_about_text_row">
@@ -9,53 +9,62 @@
 				<h5>About the Repository</h5>
 
 				<p>
-					As a trusted national infrastructure for Ireland’s social and cultural heritage, we preserve, curate,
+					As a trusted national infrastructure for Ireland’s social and cultural heritage, we preserve, curate, 
 
-					and provide sustained access to a wealth of Ireland’s humanities and social sciences data.
+and provide sustained access to a wealth of Ireland’s humanities and social sciences data.  When you 
 
-					When you explore or search the repository, you are entering a world of rich content that reflects
+explore or search the repository, you are entering a world of rich content that reflects and shapes a 
 
-					and shapes a broad portrait of Ireland.
+broad portrait of Ireland.
 				</p>
 				<p>
 
-					Through this single portal, you can view historical and contemporary content from across
+Through this single portal, you can view historical and contemporary content from across
 
-					institutions, domains, and formats. From the same search window, you can browse artworks
+institutions, domains, and formats. From the same search window, you can browse artworks and 
 
-					and hear fascinating life histories, read cherished old letters and listen to music and archived
+hear fascinating life histories, read cherished old letters and listen to music and archived broadcasts, 
 
-					broadcasts, or dig through business records and ephemera. There are sound files, sharp and
+or dig through business records and ephemera. There are sound files, sharp and luscious 
 
-					luscious photographs, videos, historical documents, high quality images, publications, and more.
-
+photographs, videos, historical documents, high quality images, publications, and more.
 				</p>
 				<p>
-					We have created this repository with two central purposes: to preserve Ireland’s digital heritage
 
-					for the long term, and to provide you, the user, with access to that heritage. Please enjoy browsing
+We have created this repository with two central purposes: to preserve Ireland’s digital heritage for 
 
-					and searching the available content.
+the long term, and to provide you, the user, with access to that heritage. Please enjoy browsing and 
+
+searching the available content.
 				</p>
-				</p>
-				<%= link_to "" do %>
-				<%= image_tag("dri/about/dri_about_explore_strap.png", :alt=>"PRESERVE" ) %>
+				<%= link_to main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" do %>
+				<%= image_tag("dri/about/dri_about_explore_strap.png", :alt=>"EXPLORE" ) %>
 				<% end %>
 			</div>
 			<div class="dri_about_who">
 				<h5> Who we are </h5>
 				<p>
-					The Digital Repository of Ireland is a research organisation with staff members from a wide variety of backgrounds, 
-					including software engineers, designers, digital archivists and librarians, data curators, digital imaging experts, 
-					policy and requirements specialists, educators, social scientists and humanities scholars. DRI has been built by a 
-					research consortium of six academic partners:
+					The Digital Repository of Ireland is a research organisation with staff members from a wide variety of 
+
+backgrounds, including software engineers, designers, digital archivists and librarians, data curators, 
+
+digital imaging experts, policy and requirements specialists, educators, programme and project 
+
+managers, social scientists and humanities scholars. DRI has been built by a research consortium of 
+
+six academic partners:
 					<%= link_to  "Royal Irish Academy", "http://ria.ie/",:target=>"_blank" %> (RIA, lead institute),
-					<%= link_to  "Maynooth University","http://maynoothuniversity.ie/", :target=>"_blank" %> (MU), 
-					<%= link_to  "Trinity College Dublin","http://tcd.ie/", :target=>"_blank" %> (TCD), 
-					<%= link_to  "Dublin Institute of Technology", "http://dit.ie/", :target=>"_blank" %> (DIT), 
-					<%= link_to  "National University of Ireland, Galway","http://www.nuigalway.ie/", :target=>"_blank" %> (NUIG), and 
-					<%= link_to  "National College of Art and Design","http://www.ncad.ie/", :target=>"_blank" %> (NCAD). The Digital Repository 
-					of Ireland is funded by the Higher Education Authority (HEA) through a PRTLI Cycle 5 grant.
+					<%= link_to  "Maynooth University","http://maynoothuniversity.ie/", :target=>"_blank" %> (MU),
+					<%= link_to  "Trinity College Dublin","http://tcd.ie/", :target=>"_blank" %> (TCD),
+					<%= link_to  "Dublin Institute of Technology", "http://dit.ie/", :target=>"_blank" %> (DIT),
+					<%= link_to  "National University of Ireland, Galway","http://www.nuigalway.ie/", :target=>"_blank" %> (NUIG), and
+					<%= link_to  "National College of Art and Design","http://www.ncad.ie/", :target=>"_blank" %> (NCAD). The Digital Repository of Ireland is funded by the Higher Education Authority (HEA) through
+
+a PRTLI Cycle 5 grant, and has also received funding from Science Foundation Ireland, the Irish 
+
+Research Council, the EU Commission Horizon 2020 and FP7 programmes, the Department of Arts, 
+
+Heritage & the Gaeltacht and Enterprise Ireland.
 				</p>
 			</div>
 		</div>
@@ -63,31 +72,17 @@
 			<div class="dri_about_lifecycle_container">
 				<div class="dri_about_lifecycle_block">
 					<div class="dri_about_lifecycle_infographic">
-						<%= link_to "/pages/lifecycle" do %>
+						<%= link_to main_app.page_path('about_lifecycle') do %>
 						<%= image_tag("dri/about/dri_about_lifecycle_infographic.png", :alt=>"PRESERVE" ) %>
 						<% end %>
 					</div>
 					<div class="dri_about_lifecycle_text">
 						<h6>Connect with DRI</h6>
 						<p>
-							There are two routes an organisation may
-							take to gain deposit authorisation for the DRI
-							Repository. An organisation may decide to
-							become a DRI member or instead utilise the
-							expertise and domain knowledge of an existing
-							DRI member. The route taken depends upon
-							your organisation and subject domain. A list of
-							all current DRI members is available here, while
-							you can review our membership policy and
-							procedure here. DRI are happy to advise on
-							the approach that best suits your needs.
+							There are two routes an organisation may take to gain deposit authorisation for the DRI Repository. An organisation may decide to become a DRI member or instead utilise the expertise and domain knowledge of an existing DRI member. The route taken depends upon your organisation and subject domain. You  can review our membership policy and procedure here - <%= link_to "DRI Membership Policy (Nov. 2014)", 'http://dri.ie/sites/default/files/files/DRI-membership-policy-nov2014.pdf' %>. DRI are happy to advise on the approach that best suits your needs.
 						</p>
 						<p>
-
-							However, whichever route your organisation
-							takes it is important to review the DRI life-cycle
-							which will guide you through the various pre
-							and post deposit processes.
+							However, whichever route your organisation takes it is important to review the DRI life-cycle which will guide you through the various pre and post deposit processes.
 						</p>
 					</div>
 				</div>

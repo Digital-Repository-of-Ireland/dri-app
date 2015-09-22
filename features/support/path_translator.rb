@@ -27,15 +27,15 @@ module PathTranslator
         root_path
 
       when /^sign in$/
-        user_group.new_user_session_path
+        new_user_session_path
 
       # This should not be used as we cannot send a delete
       # Instead we should follow the sign out link
       when /^sign out$/
-        user_group.destroy_user_session_path
+        destroy_user_session_path
 
       when /^(the )?User Signin page$/
-        user_group.new_user_session_path
+        new_user_session_path
 
       when /^(the )?User Sign up page$/
         user_group.new_user_path
@@ -66,6 +66,9 @@ module PathTranslator
 
       when /^(the )?new organisation page$/
         new_institute_path
+
+      when /^(the )?organisations page$/
+        '/institutions'
 
       else
         raise('You specified an invalid path')

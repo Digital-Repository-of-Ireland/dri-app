@@ -3,20 +3,20 @@
 
 source 'http://rubygems.org'
 
-gem 'rails','~> 4.1.0'
+gem 'rails','~> 4.1'
 
-gem 'blacklight', '5.10'
+gem 'blacklight', '~> 5.10.0'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
-gem 'hydra-head', '9.1.4'
-gem 'sufia-models', '6.0.0'
+gem 'hydra-head', '9.2.2'
+gem 'sufia-models', '6.3.0'
 
-gem 'paper_trail', '~> 3.0.6'
+gem 'paper_trail', '~> 3'
 
 gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :branch => 'marc-nccb'
 gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :branch => 'develop'
 
-gem 'active-fedora'
+gem 'active-fedora', '~> 9.3.0'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -24,6 +24,8 @@ gem 'mysql'
 gem 'mysql2'
 
 gem 'omniauth-shibboleth'
+gem 'oauth'
+
 gem 'feedjira'
 
 # Storage-related gems
@@ -89,7 +91,7 @@ end
 group :test do
   gem 'cucumber', '1.3.15'
   gem 'cucumber-rails', require: false
-  gem 'database_cleaner', '1.0.1'
+  gem 'database_cleaner'
   gem 'launchy'
   gem 'shoulda'
   gem 'factory_girl_rails'

@@ -4,7 +4,7 @@ Feature:
 
   Background:
     Given I am logged in as "admin" in the group "admin" and accept cookies
-    And a collection with pid "bookcoll" and title "Bookmark Test Collection
+    And a collection with pid "bookcoll" and title "Bookmark Test Collection"
     And a Digital Object with pid "bookobj" and title "Bookmark Test Object"
     And the object with pid "bookobj" is in the collection with pid "bookcoll"
 
@@ -27,7 +27,6 @@ Feature:
     And I wait for the ajax request to finish
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
-    And I wait for the ajax request to finish
 
   Scenario: Remove bookmark
     Given I am on the home page

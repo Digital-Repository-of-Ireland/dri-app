@@ -3,66 +3,11 @@ module ApplicationHelper
   require 'institute_helpers'
   require 'uri'
 
-  def get_files doc
-    @files = DRI::GenericFile.where({"#{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}" => "#{doc.id}"}).sort_by{ |f| f[:filename] }
-    @displayfiles = []
-    @files.each do |file|
-      @displayfiles << file unless file.preservation_only.eql?('true')
-    end
-    ""
-  end
-
-  def get_surrogates doc, file_doc
-    storage = Storage::S3Interface.new
-    surrogates = storage.get_surrogates doc, file_doc
-
-    surrogates
-  end
-
-  def get_surrogate_info object_id, file_id
-    storage = Storage::S3Interface.new
-    surrogates = storage.get_surrogate_info object_id, file_id
-
-    surrogates
-  end
-
   def surrogate_url( doc, file_doc, name )
     storage = Storage::S3Interface.new
     url = storage.surrogate_url(doc, file_doc, name)
 
     url
-  end
-
-  def get_asset_version_list( file_id, datastream )
-    files = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => file_id, :d => datastream }).to_a
-    return files
-  end
-
-  def governing_collection( object )
-    object.governing_collection.pid unless object.governing_collection.nil?
-  end
-
-  def root_collection_solr( doc )
-    if doc[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym]
-      id = doc[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
-      solr_query = "id:#{id}"
-      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
-    end
-    collection[0]
-  end
-
-  def governing_collection_solr( doc )
-    if doc.collection_id
-      id = doc.collection_id
-      solr_query = "id:#{id}"
-      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
-    return collection[0]
-    end
-    return nil
-  end
-
-  def get_partial_name( object )
-    object.class.to_s.downcase.gsub("-"," ").parameterize("_")
   end
 
   def get_metadata_name( object )
@@ -104,29 +49,24 @@ module ApplicationHelper
     path
   end
 
-  def cover_image ( document )
+  def cover_image ( doc )
     path = nil
+   
+    document = doc.is_a?(SolrDocument) ? doc : SolrDocument.new(doc)
+ 
+    cover_key = ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym
 
-    if document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-        path = document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-    elsif !document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
-      collection = root_collection_solr(document)
-      if collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)] && collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
-        path = collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
+    if document[cover_key].present? && document[cover_key].first
+        path = document[cover_key].first
+    elsif document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
+      collection = document.root_collection
+
+      if collection[cover_key].present? && collection[cover_key].first
+        path = collection[cover_key].first
       end
     end
-
+    
     path
-  end
-
-  def icon_path ( document )
-    format = document[ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
-
-    if (format != 'image' && format != 'audio' && format != 'text' && format != 'video' && format != 'mixed_types')
-      "no_image.png"
-    else
-      "dri/formats/#{format}_icon.png"
-    end
   end
 
   def count_items_in_collection collection_id
@@ -149,14 +89,7 @@ module ApplicationHelper
     "\" AND is_collection_sim:false" +
     " OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
   end
-
-  def count_items_in_collection_by_type_and_status( collection_id, type, status )
-    solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:" + status + " AND (#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
-    "\" OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
-    "#{ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string)}:"+ type
-    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
-  end
-
+  
   def get_query_collections_by_institute( institute )
     solr_query = ""
     if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
@@ -189,27 +122,13 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
   end
 
-  def get_object_type_counts( document )
-    id = document.key?(:root_collection) ? document[:root_collection][0] : document.id
-
-    @type_counts = {}
-    Settings.data.types.each do |type|
-      @type_counts[type] = { :published => count_items_in_collection_by_type_and_status( id, type, "published" ) }
-
-      if signed_in? && (can? :edit, id)
-        @type_counts[type][:draft] = count_items_in_collection_by_type_and_status( id, type, "draft" )
-      end
-
-    end
-  end
-
   def get_institute_collection_counts( institute )
       @coll_counts = count_collections_institute(institute)
   end
 
-  def get_institutes( document )
-    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(document)
-    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc(document)
+  # method to find the depositing Institute (if any) associated with the current collection (document) 
+  def get_depositing_institute ( document )
+    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
   end
 
   # Called from grid view
@@ -224,28 +143,14 @@ module ApplicationHelper
         if !@cover_image.nil? then
           break
         end
-      end    
+      end
     end
 
     @cover_image = default_image ( file_doc ) if @cover_image.nil?
   end
-
-  def get_licence( document )
-    if !document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym].blank?
-      @licence = Licence.where(:name => document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym]).first
-      if (@licence == nil)
-        @licence = document[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym]
-      end
-    elsif !document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
-      collection = root_collection_solr(document)
-      if !collection[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string)].blank?
-        @licence = Licence.where(:name => collection[ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string)]).first
-      end
-    end
-  end
-
-  def reader_group( collection )
-    UserGroup::Group.find_by_name(collection['id'])
+ 
+  def reader_group( collection_id )
+    UserGroup::Group.find_by_name(collection_id)
   end
 
   def pending_memberships ( collection )
@@ -264,65 +169,22 @@ module ApplicationHelper
   def has_browse_params?
     return has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
   end
-  
+
   def is_root?
-    relative_root = ENV["RAILS_RELATIVE_URL_ROOT"]
-    relative_root = relative_root.chomp("/") if relative_root
-    root = relative_root || "/"
-    return request.env['PATH_INFO'] == root && request.query_string.blank?
+    return request.env['PATH_INFO'] == '/' && request.query_string.blank?
   end
 
   def has_search_parameters?
-    !params[:q].blank? or !params[:f].blank? or !params[:search_field].blank?
+    params[:q].present? or params[:f].present? or params[:search_field].present?
   end
 
   def link_to_loc(field)
     return link_to('?', "http://www.loc.gov/marc/bibliographic/bd" + field + ".html" )
   end
 
-  # Get the ID of the documentation object; nil if not available
-  #
-  def get_documentation_object(document)
-    # Try first to see if the parent collection has documentation objects
-    gov_col_doc = governing_collection_solr(document)
-
-    if gov_col_doc.nil? # root_collection
-      # Look then for documentation objects in the Root collection
-      root_doc = root_collection_solr(document)
-      if (root_doc.nil?)
-        return nil
-      else
-        root_col = DRI::Batch.find(root_doc["id"])
-        if !root_col.documentation_object_ids.first.nil?
-          return root_col.documentation_object_ids.first
-        else
-          return nil
-        end
-      end
-    else
-      gov_col = DRI::Batch.find(gov_col_doc["id"])
-      if !gov_col.documentation_object_ids.first.nil?
-        return gov_col.documentation_object_ids.first
-      else
-        # no doc for the immediate parent, then try with the root_collection
-        root_doc = root_collection_solr(document)
-        if (root_doc.nil?)
-          return nil
-        else
-          root_col = DRI::Batch.find(root_doc["id"])
-          if !root_col.documentation_object_ids.first.nil?
-            return root_col.documentation_object_ids.first
-          else
-            return nil
-          end
-        end
-      end
-    end
-  end 
- 
   def get_reader_group(doc)
     readgroups = doc["#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
-    group = reader_group(doc)
+    group = reader_group(doc['id'])
     if group
       if readgroups.present? && readgroups.include?(group.name)
         return @reader_group = group

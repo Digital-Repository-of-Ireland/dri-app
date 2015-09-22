@@ -23,8 +23,6 @@
 //= require bootstrap/tooltip
 //= require bootstrap/popover
 //= require bootstrap/tab
-//= require timelineJS/embed
-//= require timelineJS/locale/en
 // Required by Blacklight
 //= require blacklight/blacklight
 //

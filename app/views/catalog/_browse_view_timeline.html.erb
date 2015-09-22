@@ -1,4 +1,5 @@
 <% valid_object_count = get_valid_timeline_count params %>
+<%= javascript_include_tag "https://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js" %>
 
 <% if valid_object_count > 0 && valid_object_count < 100 %>
     <script>

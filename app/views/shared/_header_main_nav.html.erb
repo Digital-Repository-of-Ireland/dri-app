@@ -10,7 +10,7 @@
 
 			</button>
 			<span class="dri_navbar_search hidden-sm hidden-md hidden-lg"> <%= render 'shared/header_main_search_form' %></span>
-			<%= link_to main_app.root_url do %>
+			<%= link_to main_app.root_path do %>
 			<div class="dri_ident_tiny hidden-sm hidden-md hidden-lg"></div>
 			<% end %>
 
@@ -20,7 +20,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav dri_uppercase">
 				<%= render 'shared/header_main_common_nav' %>
-				
+				<%= render 'shared/header_main_about_dropdown' %>
 				<% if current_user %>
 				<%= render 'shared/header_main_workspace_dropdown' %>
 				<% if current_user.is_admin? || current_user.is_cm? %>
@@ -29,7 +29,7 @@
 				<% end %>
 				<%= render 'shared/header_main_nav_lang' %>
 				<% if current_user %>
-          
+
       <% end %>
       <% if !current_user %>
           <li class="hidden-sm hidden-md hidden-lg">
@@ -38,9 +38,9 @@
       <% end %>
       <li class="hidden-sm hidden-md hidden-lg">
         <% if current_user %>
-            <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, :method => :delete %>
+            <%= link_to t('blacklight.header_links.logout'), main_app.destroy_user_session_path, :method => :delete %>
         <% else %>
-            <%= link_to t('blacklight.header_links.login'), user_group.new_user_session_path%>
+            <%= link_to t('blacklight.header_links.login'), main_app.new_user_session_path%>
         <% end %>
 
       </li>

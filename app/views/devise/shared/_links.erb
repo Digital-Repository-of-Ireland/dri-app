@@ -32,7 +32,7 @@
       <%- resource_class.omniauth_providers.each do |provider| %>
           <%= link_to (user_omniauth_authorize_path(provider)) do %>
               <!-- ><div class="dri_signin_edugate"><%= signWith + provider.to_s.titleize %></div> -->
-              <div class="dri_signin_edugate"><%= t('dri.sign_in.sign_in_with') + 'EduGate' %></div>
+              <div class="dri_signin_edugate"><%= t('dri.sign_in.sign_in_with_institution') %></div>
           <% end %>
       <% end -%>
       <!-- 

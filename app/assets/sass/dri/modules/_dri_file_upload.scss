@@ -1,0 +1,51 @@
+.dri_file_upload {
+    display: inline-block;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 480px;
+    .dri_cover_image_img {
+        width: 228px;
+        height: 128px;
+        overflow: hidden;
+        float: right;
+        margin-right: 10px;
+        h2 {
+            position: absolute;
+            top: 20%;
+            right: 25px;
+        }
+        img {
+            opacity: .7;
+        }
+    }
+    a {
+        font-size: 100%;
+        color: $dri_midgrey;
+        border: 1px solid $dri_lightgrey;
+        background-color: white;
+        padding: 20px 0 0 0;
+        height: 128px;
+        width: 228px;
+        vertical-align: center;
+        input {
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            height: inherit;
+            filter: alpha(opacity=0);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            opacity: 0;
+            background-color: transparent;
+            color: transparent;
+        }
+    }
+    .dri_cover_image_file {
+        clear: left;
+        max-width: 90%;
+        overflow: hidden;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}

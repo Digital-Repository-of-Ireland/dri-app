@@ -48,7 +48,7 @@ describe "PublishJob" do
   
   describe "run" do
     it "should set a collection's reviewed objects status to published" do
-      
+      Sufia.queue.stub(:push).with(an_instance_of(MintDoiJob))
       job = PublishJob.new(@collection.id)
       job.run
 
@@ -89,6 +89,25 @@ describe "PublishJob" do
       expect(@draft.status).to eql("draft")
 
       @draft.delete
+    end
+
+    it "should queue a doi job when publishing an object" do
+      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
+      Settings.doi.enable = "true"
+
+      job = PublishJob.new(@collection.id)
+
+      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).twice
+      job.run
+
+      @collection.reload
+      @object.reload
+    
+      expect(@collection.status).to eql("published")
+      expect(@object.status).to eql("published")       
+ 
+      DoiConfig = nil
+      Settings.doi.enable = "false"
     end
 
     @slow

@@ -25,7 +25,7 @@ ga:
         featured: "Faoi thrácht"
         featured_collections: "Bailiúcháin Faoi Thrácht"
         featured_objects: "Oibiachtaí faoi thrácht"
-        introtext: "Taisclann dhigiteach iontaofa náisiúnta í Taisclann Dhigiteach na hÉireann d’ábhar sóisialta agus cultúrtha na hÉireann. Ar an suíomh seo is féidir bailiúcháin chomhaimseartha agus stairiúla a aimsiú agus a chuardach ó aon láthair amháin.  Tá súil againn go mbainfidh tú sult as do chuairt."
+        introtext: "Taisclann dhigiteach náisiúnta le haghaidh sonraí daonnachtaí, eolaíochtaí sóisialta agus oidhreacht chultúrtha na hÉireann í Taisclann Dhigiteach na hÉireann. Is féidir an iliomad bailiúchán ó roinnt de mhór-insitiúidí na hÉireann a aimsiú agus a chuardach. Caomhnaítear na bailiúcháin seo go sábháilte i TDÉ. Breathnaígí orthu agus bainigí sult astu."
         links:
           news_dri: "Léigh ár Nuacht"
           register_dri: "Cláraigh anois"
@@ -34,6 +34,7 @@ ga:
         rss_feed:
           read_more: "Léigh tuilleadh"
           title: Nuacht
+        welcome_to_dri: "Welcome to the DRI"
       lang:
         en: English
         ga: Gaeilge
@@ -82,6 +83,7 @@ ga:
         error_generating_surrogates: "Bhí earráid ann le linn cruthú ionadaithe: %{error}"
         error_publishing_collection: "Bhí earráid ann le linn foilsiú an bhailiúcháin: %{error}"
         error_review_job: "Ní féidir an tasc cúlra a chur isteach, ní thabharfar na hoibiachtaí cothrom le dáta: %{error}"
+        error_set_depositing_institute_job: "Ní féidir an tasc cúlra a chur isteach, ní thabharfar na hoibiachtaí cothrom le dáta: %{error}"
         error_saving_file: "Bhí earráid ann le linn sábháil an chomhaid: %{error}"
         invalid_file_type: "Rabhadh: Is cosúil nach cineál bailí comhaid é an comhad seo"
         invalid_object: "Oibiacht Neamhbhailí: %{error}."
@@ -115,6 +117,7 @@ ga:
         manager_user_invalid: "Ní hann d’úsáideoir %{email}, iarr ar an úsáideoir cuntas a chruthú ar dtús le do thoil"
         metadata_updated: "D'éirigh leat na meiteashonraí a thabhairt cothrom le dáta."
         no_xml_schema: "Níl scéimre sa chomhad XML lena bhailíochtú."
+        organisation_created: "D'éirigh leat an Eagraíocht a chruthú."
         removed_from_collection: "Baineadh an oibiacht as an mbailiúchán."
         schema_validation_error: "Ní fhéadfaí an comhad XML a bhailíochtú de réir scéimre Dublin Core"
         specify_datastream: "Ní mór duit sruth sonraí bailí comhaid a shonrú."
@@ -134,6 +137,8 @@ ga:
         zip: "Baile Átha Cliath 2"
     headerlinks:
       about: Eolas
+      about_dri_lifecycle: "DRI Lifecycle"
+      about_us: "About Us"
       admin: "Tascanna Riaracháin"
       browse: Aimsigh
       collection: Bailiúchán
@@ -144,7 +149,7 @@ ga:
       help: Cabhair
       home: "Leathanach Baile"
       ingest: "Glac isteach"
-      institutions: Institiúidí
+      institutions: Eagraíochtaí
       language: Teanga
       manage: Bainistigh
       manage_users: "Cuir úsáideoir bainisteora leis"
@@ -181,6 +186,45 @@ ga:
       dummy_title: "Teideal na cabhrach anseo"
       facets: "Bain úsáid as Gnéithe chun do chuardach a chaolú le réimsí áirithe meiteashonraíochta"
       facets_title: "Scagairí Gnéithe"
+      fields:
+        collection_title: "Collection Title"
+        collection_title_text: "A name given to the collection."
+        coverages: Coverage
+        coverages_text: "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant."
+        creation_date: "Creation Date"
+        creation_date_text: "Date of creation of the resource. NOTE: You are required to enter at least one of Creation Date OR Published Date OR Date"
+        date: Date
+        date_text: "A point or period of time associated with an event in the lifecycle of the resource."
+        description: Description
+        description_text: "An account of the resource."
+        formats: Format
+        formats_text: "The Format of the resource"
+        geographical_coverages: Spatial
+        geographical_coverages_text: "Spatial characteristics of the resource."
+        identifiers: Identifier
+        identifiers_text: "Identifier for the resource."
+        languages: Language
+        languages_text: "A language of the resource."
+        licence: Licence
+        licence_text: "The reuse licence for this resource."
+        published_date: "Published Date / Issued"
+        published_date_text: "Date of formal issuance (e.g., publication) of the resource."
+        relations: Relation
+        relations_text: "A related resource."
+        rights: Rights
+        rights_text: "Information about rights held in and over the resource."
+        roles: Contributor
+        roles_text: "An entity responsible for making contributions to the resource."
+        sources: Source
+        sources_text: "A related resource from which the described resource is derived."
+        subjects: Subjects
+        subjects_text: "The topic of the resource."
+        temporal_coverage: Temporal
+        temporal_coverage_text: "Temporal characteristics of the resource."
+        title: Title
+        title_text: "A name given to the resource."
+        types: Types
+        types_text: "The nature or genre of the resource."
       metadata_identifiers: "<a href='http://loc.org'>LOC</a>"
       no_results_found: "Níor aimsíodh torthaí ar bith. Bain triail as"
       q: "Iontráil téarma cuardaigh. Is féidir do chuardach a chaolú nó a leathnú le AND nó OR"
@@ -327,9 +371,11 @@ ga:
             admin: "Mo Chuid Bailiúchán"
             public: Bailiúcháin
         institute:
-          add: "Cuir Institiúid nua leis"
-          associate: "Comhlachaigh Institiúid"
-          associate_depositing: "Roghnaigh an Institiúid Taiscthe"
+          are_you_sure: "An bhfuil tú cinnte go bhfuil institiúid nua ag teastáil uait?"
+          see_orgs: "Seiceáil le haghaidh institiúidí atá ann"
+          add: "Cuir Eagraíocht nua leis"
+          associate: "Comhlachaigh Eagraíocht"
+          associate_depositing: "Roghnaigh an Eagraíocht Taiscthe"
           edit: "Tabhair an eagraíocht cothrom le dáta"
           form:
             logo: Lógó
@@ -337,7 +383,7 @@ ga:
             url: url
           more: "Taispeáin tuilleadh"
           set_depositor: "Socraigh taisceoir"
-          title: "Institiúidí agus Urraitheoirí"
+          title: "Eagraíochtaí agus Urraitheoirí"
         legends:
           governed_objects: "Oibiachtaí Rialaithe"
           members: Baill
@@ -360,6 +406,7 @@ ga:
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
       fields:
+        Format: Format
         collection_title: "Teideal an Bhailiúcháin"
         contributor: Rannpháirtí
         contributors: Rannpháirtithe
@@ -372,7 +419,7 @@ ga:
         creators: Cruthaitheoirí
         date: Dáta
         dates: Dátaí
-        depositing_institute: "Institiúid Taiscthe"
+        depositing_institute: "Eagraíocht Taiscthe"
         description: "Cur Síos"
         description_eng: "Cur Síos (Béarla)"
         description_gle: "Cur Síos (Gaeilge)"

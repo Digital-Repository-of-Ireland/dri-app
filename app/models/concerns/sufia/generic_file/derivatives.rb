@@ -12,10 +12,10 @@ module Sufia
             obj.transform_file :content,
        		  {
                 #:small => {size: "75", datastream: 'thumbnail_small'},
-                #:medium => {size: "200", datastream: 'thumbnail_medium'},
+                :medium => {size: "200", datastream: 'thumbnail_medium'},
                 :large => {size: "400", datastream: 'thumbnail_large'},
                 :lightbox => {size: "600", datastream: 'lightbox_format'},
-                #:full => {size: "100%", datastream: 'full_size_web_format'},
+                :full => {size: "100%", datastream: 'full_size_web_format'},
                 :crop16_9_width_200 => {size: "200", crop: "200x113+0+0", gravity: "Center", datastream: 'crop16_9_width_200_thumbnail'}
                 #:crop16_9_width_2228 => {size: "228", crop: "228x127+0+0", gravity: "Center", datastream: 'crop16_9_width_228_thumbnail'}
               }
@@ -35,7 +35,7 @@ module Sufia
                 :large => {size: "400", datastream: 'thumbnail_large', format: 'jpg'},
                 :lightbox => {size: "600", datastream: 'lightbox_format', format: 'jpg'},
                 :full => {size: "100%", datastream: 'full_size_web_format', format: 'jpg'},
-                #:optimized => {size: "980>", datastream: 'optimized_web_format', format: 'jpg'},
+                :optimized => {size: "980>", datastream: 'optimized_web_format', format: 'jpg'},
                 :crop16_9_width_200 => {size: "200", crop: "200x113+0+0", gravity: "Center", datastream: 'crop16_9_width_200_thumbnail', format: 'jpg'}
                 #:crop16_9_width_2228 => {size: "228", crop: "228x127+0+0", gravity: "Center", datastream: 'crop16_9_width_228_thumbnail', format: 'jpg'}
               }

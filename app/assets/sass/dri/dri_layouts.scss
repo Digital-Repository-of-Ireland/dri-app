@@ -6,7 +6,6 @@
 @import "video-js";
 @import "colorbox-rails";
 @import "font-awesome";
-@import "timelineJS/timeline";
 /*Import the Zen Grids files*/
 @import "dri_base.scss";
 @import "../zen/_grids.scss";
@@ -16,6 +15,8 @@
 @import "dri_pages.scss";
 @import "social-share-button.scss";
 
+/* modules */
+@import "modules.scss";
 
 
 
@@ -69,7 +70,8 @@
 
 .dri_facet_restrictions_container {
    @include zen-grid-container;
-	 @include zen-grid-flow-item(4, 4, $alpha-gutter: 10px);
+	 @include zen-grid-flow-item(4, 4, $alpha-gutter: 0px);
+	 margin-left: 0px;
 	 padding-left: 10px;
 
 }
@@ -399,7 +401,7 @@
 }
     
   .dri_home_container, #dri_rss_feed_id {
-    display:none;
+    clear:both;
   }
   
  .dri_slideshow_block {

@@ -3,30 +3,20 @@
 #
 class SolrDocument 
  
-  include Blacklight::Solr::Document
+  include Blacklight::Document
   include UserGroup::PermissionsSolrDocOverride
+  include DRI::Solr::Document::File
+  include DRI::Solr::Document::Relations
+  include DRI::Solr::Document::Documentation
 
   # self.unique_key = 'id'
   
-  # The following shows how to setup this blacklight document to display marc documents
-  #extension_parameters[:marc_source_field] = :marc_display
-  #extension_parameters[:marc_format_type] = :marcxml
-  #use_extension( Blacklight::Solr::Document::Marc) do |document|
-  #  document.key?( :marc_display  )
-  #end
-  
-  # Email uses the semantic field mappings below to generate the body of an email.
-  SolrDocument.use_extension( Blacklight::Solr::Document::Email )
-  
-  # SMS uses the semantic field mappings below to generate the body of an SMS email.
-  SolrDocument.use_extension( Blacklight::Solr::Document::Sms )
-
   # DublinCore uses the semantic field mappings below to assemble an OAI-compliant Dublin Core document
   # Semantic mappings of solr stored fields. Fields may be multi or
   # single valued. See Blacklight::Solr::Document::ExtendableClassMethods#field_semantics
   # and Blacklight::Solr::Document#to_semantic_values
   # Recommendation: Use field names from Dublin Core
-  use_extension( Blacklight::Solr::Document::DublinCore)    
+  use_extension( Blacklight::Document::DublinCore)    
   field_semantics.merge!(    
                          :title => "title_display",
                          :author => "author_display",
@@ -34,47 +24,127 @@ class SolrDocument
                          :format => "format"
                          )
 
-  def collection_id
-    id = nil
-    if self[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
-      id = self[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)][0]
-    end
+  def active_fedora_model
+    self[ActiveFedora::SolrQueryBuilder.solr_name('active_fedora_model', :stored_sortable, type: :string)]
+  end
 
-    id
+  def collection_id
+    collection_key = ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
+
+    self[collection_key].present? ? self[collection_key][0] : nil
   end  
+
+  def doi
+    doi_key = ActiveFedora::SolrQueryBuilder.solr_name('doi')
+
+    self[doi_key]
+  end    
+
+  def editable?
+    (self.active_fedora_model && self.active_fedora_model == 'DRI::EncodedArchivalDescription') ? false : true
+  end
+
+  def file_type
+    file_type_key = ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
+
+    return I18n.t("dri.data.types.Unknown") if self[file_type_key].blank?
+
+    case self[file_type_key].first.to_s.downcase
+    when "image"
+      I18n.t("dri.data.types.Image")
+    when "audio"
+      I18n.t("dri.data.types.Sound")
+    when "video"
+      I18n.t("dri.data.types.MovingImage")
+    when "text"
+      I18n.t("dri.data.types.Text")
+    when "mixed_types"
+      I18n.t("dri.data.types.MixedType")
+    else
+      return I18n.t("dri.data.types.Unknown")
+    end 
+
+  end
+
+  def has_doi?
+    doi_key = ActiveFedora::SolrQueryBuilder.solr_name('doi', :displayable, type: :symbol).to_sym
+
+    self[doi_key].present? ? true : false
+  end
 
   def has_geocode?
     geojson_key = ActiveFedora::SolrQueryBuilder.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
 
-    if self[geojson_key].present?
-      true
+    self[geojson_key].present? ? true : false
+  end
+
+  def icon_path
+    format = self[ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
+
+    if ['image','audio','text','video','mixed_types'].include?(format)
+      icon = "dri/formats/#{format}_icon.png"
     else
-      false
+      icon = "no_image.png"
     end
+
+    icon
   end
 
-  def read_master?
-    master_file_key = ActiveFedora::SolrQueryBuilder.solr_name('master_file_access', :stored_searchable, type: :string)
-
-    governing_object = self
-
-    while governing_object[master_file_key].nil? || governing_object[master_file_key] == "inherit"
-      parent_id = governing_object[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
-      return false if parent_id.nil?
-      
-      parent_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([parent_id.first])
+  def is_collection?
+    is_collection_key = ActiveFedora::SolrQueryBuilder.solr_name('is_collection')
     
-      parent = ActiveFedora::SolrService.query(parent_query)
-      governing_object = SolrDocument.new(parent.first)      
-    end
-
-    governing_object[master_file_key] == ["public"]
+    self[is_collection_key].present? && self[is_collection_key].include?("true")
   end
 
+  def is_root_collection?
+    self.collection_id ? false : true  
+  end
+
+  def licence
+    licence_key = ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym
+
+    if self[licence_key].present?
+      licence = Licence.where(:name => self[licence_key]).first
+      licence ||= self[licence_key]
+    elsif root_collection
+      collection = root_collection
+      licence = Licence.where(:name => collection[licence_key]).first if collection[licence_key].present?
+    end
+    
+    licence
+  end
+
+  def object_profile
+    key = ActiveFedora::SolrQueryBuilder.solr_name('object_profile', :displayable)
+
+    self[key].present? ? JSON.parse(self[key].first) : {}
+  end
+
+  def root_collection
+    root_key = ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
+    root = nil
+    if self[root_key].present?
+      id = self[root_key][0]
+      solr_query = "id:#{id}"
+      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
+      root = SolrDocument.new(collection[0])
+    end
+    
+    root
+  end
+  
   def status
     status_key = ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :string).to_sym
 
-    return self[status_key]
+    self[status_key].first
+  end
+
+  def published?
+    self.status == "published"
+  end
+
+  def draft?
+    self.status == "draft"
   end
 
 end

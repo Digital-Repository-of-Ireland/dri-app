@@ -16,7 +16,7 @@ module DRI::Object
         ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "10", :fl => "id").delete_if{|obj| obj["id"] == @object.id}
       end
     end
-
+    
     def version_and_record_committer
       #TODO Investigate reverting back to full object versioning
       #@object.create_version

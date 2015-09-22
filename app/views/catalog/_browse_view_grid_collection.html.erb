@@ -7,7 +7,7 @@
                 <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
                 <% end %>
             <% end %>
-    <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter+1} )) do %>
+    <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
         <div>
           <div class="dri_collection_image">
             <% image = cover_image ( document ) %>
@@ -20,8 +20,8 @@
           <!-- close image -->
           <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
           <p class="dri_publishing_institute">
-            <% @depositing_institute = get_institutes( document ) %>
-            <% if @depositing_institute %>
+            <% get_depositing_institute ( document ) %>
+            <% if @depositing_institute.present? %>
                 <%= @depositing_institute.name %>
             <% else %>
                 Depositing Organisation not Set

@@ -1,6 +1,6 @@
 require 'rack/mime'
 
-class TextSurrogateJob < ActiveFedoraPidBasedJob
+class TextSurrogateJob < ActiveFedoraIdBasedJob
 
   def queue_name
     :text
