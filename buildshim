@@ -97,6 +97,6 @@ compile_extra)
     fi 
     ;;
 uninstall_deps)
-    kill -TERM $(cat fakes3.pid)
+    kill -TERM $(cat fakes3.pid) || true
     ;;
 esac
