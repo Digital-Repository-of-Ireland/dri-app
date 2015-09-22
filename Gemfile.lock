@@ -62,11 +62,11 @@ GEM
       activesupport (= 4.1.13)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-    active-fedora (9.3.0)
+    active-fedora (9.4.1)
       active-triples (~> 0.7.1)
       activesupport (>= 4.1.0)
       deprecation
-      ldp (~> 0.3.1)
+      ldp (~> 0.4.0)
       linkeddata
       nom-xml (>= 0.5.1)
       om (~> 3.1)
@@ -375,7 +375,7 @@ GEM
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
-    ldp (0.3.1)
+    ldp (0.4.0)
       faraday
       http_logger
       linkeddata (>= 1.1)
@@ -516,7 +516,7 @@ GEM
     rb-fsevent (0.9.5)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    rdf (1.1.15)
+    rdf (1.1.16)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (1.1.0)
       rdf (>= 1.1)
@@ -562,7 +562,7 @@ GEM
     rdf-turtle (1.1.7)
       ebnf (~> 0.3, >= 0.3.6)
       rdf (~> 1.1, >= 1.1.10)
-    rdf-vocab (0.8.4)
+    rdf-vocab (0.8.5)
       rdf (~> 1.1, >= 1.1.10)
     rdf-xsd (1.1.4)
       rdf (~> 1.1, >= 1.1.9)
@@ -653,7 +653,7 @@ GEM
       nokogiri
       stomp
       xml-simple
-    sparql (1.1.8)
+    sparql (1.1.9)
       builder (~> 3.2)
       ebnf (~> 0.3, >= 0.3.9)
       rdf (~> 1.1, >= 1.1.13)
@@ -737,7 +737,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora (~> 9.3.0)
+  active-fedora (~> 9.4.1)
   aws-sdk (~> 2)
   better_errors
   binding_of_caller
