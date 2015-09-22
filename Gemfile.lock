@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: a0dde5a91066ef64126001f01903d77c3318595d
-  branch: develop
+  revision: 40abb1a77eca633ea855f026149023f92dcf85a5
+  branch: marc-nccb
   specs:
-    dri_data_models (2.1.1)
+    dri_data_models (2.2.2)
       hydra-access-controls
       hydra-collections
       hydra-head (~> 9.0)
@@ -22,10 +22,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 4cf74a863bf1c478a5be4f5a520e381d26ef3e2a
-  branch: hydra9
+  revision: a66f760ac8cd12d25f32ca9ee719c128bd02c4bd
+  branch: develop
   specs:
-    user_group (1.0.8)
+    user_group (1.1.3)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -214,7 +214,7 @@ GEM
     debug_inspector (0.0.2)
     deprecation (0.2.2)
       activesupport
-    devise (3.5.1)
+    devise (3.5.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -223,7 +223,7 @@ GEM
       warden (~> 1.2.3)
     devise-guests (0.3.3)
       devise
-    devise-i18n-views (0.3.4)
+    devise-i18n-views (0.3.5)
     diff-lcs (1.2.5)
     docile (1.1.5)
     domain_name (0.5.24)
