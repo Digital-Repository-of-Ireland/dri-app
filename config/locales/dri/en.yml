@@ -80,6 +80,7 @@ en:
         create_permission: "You do not have permission to create this document."
         delete_permission: "You do not have permission to delete this document."
         edit_permission: "You do not have permission to edit this document."
+        error_deleting_collection: "Unable to submit delete collection background task: %{error}"
         error_generating_surrogates: "Error generating surrogates: %{error}"
         error_publishing_collection: "Error publishing collection: %{error}"
         error_review_job: "Unable to submit background task, all objects will not be updated: %{error}"
