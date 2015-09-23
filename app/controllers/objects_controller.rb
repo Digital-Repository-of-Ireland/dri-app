@@ -102,12 +102,9 @@ class ObjectsController < BaseObjectsController
   end
 
   def citation
-    Rails.logger.info "*** In citation ***"
     enforce_permissions!("show_digital_object",params[:id])
 
     @object = retrieve_object!(params[:id])
-
-    Rails.logger.info @object.export_as_dri_citation
   end
 
   # Creates a new model using the parameters passed in the request.

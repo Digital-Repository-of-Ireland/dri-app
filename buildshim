@@ -45,6 +45,8 @@ S3:
   access_key_id: anykey
   secret_access_key: anykey
   bucket_prefix: buildbot
+doi:
+  enable: false
 __EOF__
 
     bundle install --quiet
@@ -95,6 +97,6 @@ compile_extra)
     fi 
     ;;
 uninstall_deps)
-    kill -TERM $(cat fakes3.pid)
+    kill -TERM $(cat fakes3.pid) || true
     ;;
 esac
