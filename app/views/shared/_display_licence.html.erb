@@ -1,15 +1,15 @@
 <dt class="dri_licence"><%= t('dri.app.views.fields.licence') %></dd>
-<dd class="dri_licence"><% if !@licence.nil? && !@licence.blank? %>
-      <% if @licence.is_a? Array %>
-        <%= "#{@licence.first}" %>
+<dd class="dri_licence"><% if @document.licence.present? %>
+      <% if @document.licence.is_a? Array %>
+        <%= "#{@document.licence.first}" %>
       <% else %>
-        <% if @licence.name == "All Rights Reserved" %>
-          <% @licence.name = t('dri.views.licences.all_rights_reserved') %>
+        <% if @document.licence.name == "All Rights Reserved" %>
+          <% @document.licence.name = t('dri.views.licences.all_rights_reserved') %>
         <% end %>
-        <% if !@licence.url.blank? %>
-          <%= link_to "#{@licence.name}", @licence.url, :target => "_blank" %>
+        <% if @document.licence.url.present? %>
+          <%= link_to "#{@document.licence.name}", @document.licence.url, :target => "_blank" %>
         <% else %>
-          <%= "#{@licence.name}" %>
+          <%= "#{@document.licence.name}" %>
         <% end %>
       <% end %>
       <%# these logos are too ugly - text looks better %>

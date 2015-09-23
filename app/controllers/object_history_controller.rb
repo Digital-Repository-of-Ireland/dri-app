@@ -33,6 +33,8 @@ class ObjectHistoryController < ApplicationController
       end
     end
 
+    get_asset_info
+
     # Get inherited values
     @institute_manager = get_institute_manager(@object)
     @read_groups = get_governing_attribute(@object, 'read_groups_string')
@@ -52,6 +54,28 @@ class ObjectHistoryController < ApplicationController
       vc = VersionCommitter.where(version_id: version.uri)
       return vc.empty? ? nil : vc.first.committer_login
     end
+
+    def get_asset_info
+      @asset_info = {}
+      
+
+      @object.generic_files.each do |file|
+        @asset_info[file.id] = {}
+
+        files = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { f: file.id, d: "content" }).to_a
+        
+        @asset_info[file.id][:versions] = files
+        @asset_info[file.id][:surrogates] = get_surrogate_info(file.id)
+      end
+    end
+
+    def get_surrogate_info file_id
+      storage = Storage::S3Interface.new
+      surrogates = storage.get_surrogate_info @object.id, file_id
+
+      surrogates
+    end
+
 
 end
 

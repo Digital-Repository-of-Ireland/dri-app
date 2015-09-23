@@ -12,11 +12,7 @@ module DocumentHelper
   end
 
   def truncate_description description, count
-    if (description.length > count)
-      return description.first(count)
-    else
-      return description
-    end
+    (description.length > count) ? description.first(count) : description
   end
 
   # Workaround for reusing partials for add institution/permissions to non QDC collections
@@ -53,6 +49,22 @@ module DocumentHelper
     end
     paged_children = Kaminari.paginate_array(children_array).page(params[:subs_page]).per(4)
     return paged_children
+  end
+
+  def get_object_relationships document
+    relationships = document.object_relationships
+    filtered_relationships = {}
+
+    relationships.each do |key, array|
+      filtered_array = array.select{|item| item[1].published? || ((current_user && current_user.is_admin?) || can?(:edit, item[1]))}
+      filtered_relationships[key] = Kaminari.paginate_array(filtered_array).page(params[key.downcase.gsub(/\s/,'_') << "_page"]).per(4) unless filtered_array.empty?
+    end
+
+    filtered_relationships
+  end
+
+  def get_external_relationships document
+    Kaminari.paginate_array(document.external_relationships).page(params[:externs_page]).per(4)
   end
 
 end

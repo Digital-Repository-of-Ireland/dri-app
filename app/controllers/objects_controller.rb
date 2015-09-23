@@ -6,6 +6,9 @@ include Utils
 
 class ObjectsController < BaseObjectsController
 
+  before_filter :authenticate_user_from_token!, except: [:show, :citation]
+  before_filter :authenticate_user!, except: [:show, :citation]
+
   DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
        'contributor','publisher','date','format','source','temporal_coverage',
        'geographical_coverage','geocode_point','geocode_box','institute',
