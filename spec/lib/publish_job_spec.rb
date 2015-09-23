@@ -93,7 +93,7 @@ describe "PublishJob" do
 
     it "should queue a doi job when publishing an object" do
       DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
-      Settings.doi.enable = "true"
+      Settings.doi.enable = true
 
       job = PublishJob.new(@collection.id)
 
@@ -107,7 +107,7 @@ describe "PublishJob" do
       expect(@object.status).to eql("published")       
  
       DoiConfig = nil
-      Settings.doi.enable = "false"
+      Settings.doi.enable = false
     end
 
     @slow
