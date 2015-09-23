@@ -19,6 +19,7 @@ S3:
   access_key_id: anything
   secret_access_key: anything
   expiry: 604800
+  bucket_prefix: ie.dri
 data:
   cover_image_bucket: coverimages
   logos_bucket: institutelogos
