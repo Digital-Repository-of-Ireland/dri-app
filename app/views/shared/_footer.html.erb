@@ -9,7 +9,8 @@
     <%= t('dri.footer.contacts.phone') + ' ' + phoneNum %><br/>
     <% emailAddress = 'info@dri.ie' %>
     <%= t('dri.footer.contacts.email') + ' ' %>
-    <%= link_to emailAddress, "mailto:#{emailAddress}", :id => 'contact_email' %>
+    <%= link_to emailAddress, "mailto:#{emailAddress}", :id => 'contact_email' %><br/><br/>
+    <%= render partial: "shared/version" %>
   </div>
   <nav id="dri_main_footer_navigation_id"
        class="dri_main_footer_navigation">
@@ -44,7 +45,6 @@
 			</li>
 			<li class="dri_clearfix dri_underline">Investing in your future</li>
 		</ul>
-
   </div>
 
 </footer>
