@@ -24,4 +24,4 @@ data:
   logos_bucket: institutelogos
   types: [Sound, MovingImage, Image, Text]
 doi:
-  enable: false
+  enable: "false"
