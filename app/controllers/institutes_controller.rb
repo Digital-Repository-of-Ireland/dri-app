@@ -15,7 +15,7 @@ class InstitutesController < ApplicationController
   
   # Get the list of institutes
   def index
-    @institutes = Institute.all
+    @institutes = Institute.all.order('name asc')
   end
 
   def new
