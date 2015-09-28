@@ -34,9 +34,8 @@ class ObjectsController < BaseObjectsController
     supported_licences()
     
     @object = retrieve_object!(params[:id])
-    if @object.creator[0] == nil
-      @object.creator = [""]
-    end
+    @object.creator = [""] unless @object.creator[0]
+    
     respond_to do |format|
       format.html
       format.json  { render :json => @object }
@@ -215,7 +214,7 @@ class ObjectsController < BaseObjectsController
 
     else
       logger.error "No objects in params #{params.inspect}"
-      raise raise Exceptions::BadRequest
+      raise Exceptions::BadRequest
     end
 
     respond_to do |format|
