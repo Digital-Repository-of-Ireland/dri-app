@@ -28,25 +28,25 @@ class DoiMetadata < ActiveRecord::Base
       }
       xml.titles {
         self.title.each do |t|
-          xml.title t
+          xml.title t unless t.blank?
         end
       }
       xml.publisher DoiConfig.publisher
       xml.publicationYear publication_year
       xml.subjects {
         self.subject.each do |s|
-          xml.subject s
+          xml.subject s unless s.blank?
         end
       }
       xml.descriptions {
         self.description.each do |d|
-          xml.description d, :descriptionType => 'Abstract'
+          xml.description d, :descriptionType => 'Abstract' unless d.blank?
         end
       }
       if self.creation_date.present? || self.published_date.present?
         xml.dates {
-          xml.date(self.creation_date.first, :dateType => 'Created') unless self.creation_date.blank?
-          xml.date(self.published_date.first, :dateType => 'Issued') unless self.published_date.blank?
+          xml.date(self.creation_date.first, :dateType => 'Created') unless self.creation_date.blank? || self.creation_date.first.blank?
+          xml.date(self.published_date.first, :dateType => 'Issued') unless self.published_date.blank? || self.published_date.first.blank?
         }
       end
       if self.rights.present?

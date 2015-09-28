@@ -45,6 +45,8 @@ S3:
   access_key_id: anykey
   secret_access_key: anykey
   bucket_prefix: buildbot
+doi:
+  enable: false
 __EOF__
 
     bundle install --quiet
@@ -84,6 +86,7 @@ upload)
 compile_extra)
      #check application
     OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://dri-vm44.maynoothuniversity.ie/is_it_working`
+
     if [[ $OUTPUT -ne 200 ]] ; then
       printf "Test Application Stack FAULT! [HTTP: $OUTPUT]\n"
       if [[ "$branch" == "master" ]]; then
@@ -94,6 +97,6 @@ compile_extra)
     fi 
     ;;
 uninstall_deps)
-    kill -TERM $(cat fakes3.pid)
+    kill -TERM $(cat fakes3.pid) || true
     ;;
 esac

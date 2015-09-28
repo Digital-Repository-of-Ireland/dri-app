@@ -23,3 +23,5 @@ data:
   cover_image_bucket: coverimages
   logos_bucket: institutelogos
   types: [Sound, MovingImage, Image, Text]
+doi:
+  enable: "false"

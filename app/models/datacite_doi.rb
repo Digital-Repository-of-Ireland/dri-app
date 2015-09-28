@@ -57,7 +57,6 @@ class DataciteDoi < ActiveRecord::Base
     
     def set_version
       self.version = DataciteDoi.where(object_id: self.object_id).count
-      #self.version = version <= 1 ? 0 : version - 1
     end
 
     def set_metadata

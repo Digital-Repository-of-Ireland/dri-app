@@ -1,3 +1,10 @@
-<h4><%= t('dri.citations.dri') %></h4>
-<%= @object.export_as_dri_citation %>
-<br/><br/>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <h4 class="modal-title"><%= t('blacklight.tools.cite') %></h4>
+</div>
+<div class="modal-body">
+	<%= @object.export_as_dri_citation %>     
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('dri.window.modal.close') %></button>
+</div>
