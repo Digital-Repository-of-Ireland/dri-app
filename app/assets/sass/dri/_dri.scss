@@ -522,34 +522,37 @@ a .dri_signin_edugate {
         font-weight: normal;
         text-transform: none;
         margin-top: 0;
-        padding-top: 0;
+        padding-top: 0;  background-color: $dri_white;
         li {
             border-top: 1px solid $dri_thingrey;
+          
             a {
                 padding-top: 12px;
                 padding-bottom: 8px;
             }
         }
+        
         li.active {
             a {
                 padding-top: 12px;
                 padding-bottom: 8px;
-                background-color: inherit;
+                background-color: $dri_white;
                 color: $dri_green;
             }
         }
         li:hover {
             a {
-                background-color: inherit;
+                background-color: $dri_white;
             }
         }
         li:focus {
             a {
-                background-color: inherit;
+                 background-color: $dri_white;
             }
         }
     }
 }
+
 /*--------------Preferred Language --------------*/
 /*-------------- Account and Language Styling--------------*/
 /*--------------  Delete this?
