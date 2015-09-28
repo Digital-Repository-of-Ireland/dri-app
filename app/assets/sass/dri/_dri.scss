@@ -210,28 +210,8 @@ form {
     -ms-user-select: none;
     user-select: none;
 }
-/*--------------%btn {
-  display: inline-block;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  background-image: none;
-  border: none;
-  white-space: nowrap;
-  padding: 0;
-  margin: 0;
-  font-size: 100%;
-  line-height: none;
-  @include border_radius (3px);
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-}--------------*/
 
 .dri_button {
-    //  @extend %btn;
     color: $dri_white;
     border: none;
     font-weight: normal;
