@@ -96,28 +96,18 @@ class SurrogatesController < ApplicationController
       enforce_permissions!("edit", object_id)
 
       query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object_id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('preservation_only', :stored_searchable)}:true")
-
-      while query.has_more?
-
-        files = query.pop
-
-        unless files.empty?
-          files.each do |f|
-            file_doc = SolrDocument.new(f)
-            begin
-              # only characterize if necessary
-              if file_doc[ActiveFedora::SolrQueryBuilder.solr_name('characterization__mime_type')].present?
-                Sufia.queue.push(CreateBucketJob.new(file_doc.id))
-              else
-                Sufia.queue.push(CharacterizeJob.new(file_doc.id))
-              end
-              flash[:notice] = t('dri.flash.notice.generating_surrogates')
-            rescue Exception => e
-              flash[:alert] = t('dri.flash.alert.error_generating_surrogates', :error => e.message)
-            end
+      query.each_solr_document do |file_doc|
+        begin
+          # only characterize if necessary
+          if file_doc[ActiveFedora::SolrQueryBuilder.solr_name('characterization__mime_type')].present?
+            Sufia.queue.push(CreateBucketJob.new(file_doc.id))
+          else
+            Sufia.queue.push(CharacterizeJob.new(file_doc.id))
           end
+          flash[:notice] = t('dri.flash.notice.generating_surrogates')
+        rescue Exception => e
+          flash[:alert] = t('dri.flash.alert.error_generating_surrogates', :error => e.message)
         end
-
       end
 
     end
@@ -129,19 +119,10 @@ class SurrogatesController < ApplicationController
         storage = Storage::S3Interface.new
 
         query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object.id}\"")
-
-        while query.has_more?
-          files = query.pop
-
-          unless files.empty?
-            files.each do |mf|
-              file_doc = SolrDocument.new(mf)
-              file_surrogates = storage.get_surrogates(object, file_doc)
-              surrogates[file_doc.id] = file_surrogates unless file_surrogates.empty?
-            end
-          end
+        query.each_solr_document do |file_doc|
+          file_surrogates = storage.get_surrogates(object, file_doc)
+          surrogates[file_doc.id] = file_surrogates unless file_surrogates.empty?
         end
-
       end
 
       surrogates
