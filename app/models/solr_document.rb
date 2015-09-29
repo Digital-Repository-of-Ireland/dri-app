@@ -9,20 +9,20 @@ class SolrDocument
   include DRI::Solr::Document::Relations
   include DRI::Solr::Document::Documentation
 
-  # self.unique_key = 'id'
-  
-  # DublinCore uses the semantic field mappings below to assemble an OAI-compliant Dublin Core document
+  # DublinCore uses the semantic field mappings below to assemble
+  # an OAI-compliant Dublin Core document
   # Semantic mappings of solr stored fields. Fields may be multi or
-  # single valued. See Blacklight::Solr::Document::ExtendableClassMethods#field_semantics
+  # single valued. See
+  # Blacklight::Solr::Document::ExtendableClassMethods#field_semantics
   # and Blacklight::Solr::Document#to_semantic_values
   # Recommendation: Use field names from Dublin Core
-  use_extension( Blacklight::Document::DublinCore)    
-  field_semantics.merge!(    
-                         :title => "title_display",
-                         :author => "author_display",
-                         :language => "language_facet",
-                         :format => "format"
-                         )
+  use_extension(Blacklight::Document::DublinCore)
+  field_semantics.merge!(
+    title: 'title_display',
+    author: 'author_display',
+    language: 'language_facet',
+    format: 'format'
+  )
 
   def active_fedora_model
     self[ActiveFedora::SolrQueryBuilder.solr_name('active_fedora_model', :stored_sortable, type: :string)]
@@ -32,37 +32,37 @@ class SolrDocument
     collection_key = ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
 
     self[collection_key].present? ? self[collection_key][0] : nil
-  end  
+  end
 
   def doi
     doi_key = ActiveFedora::SolrQueryBuilder.solr_name('doi')
 
     self[doi_key]
-  end    
+  end
 
   def editable?
-    (self.active_fedora_model && self.active_fedora_model == 'DRI::EncodedArchivalDescription') ? false : true
+    (active_fedora_model && active_fedora_model == 'DRI::EncodedArchivalDescription') ? false : true
   end
 
   def file_type
     file_type_key = ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
 
-    return I18n.t("dri.data.types.Unknown") if self[file_type_key].blank?
+    return I18n.t('dri.data.types.Unknown') if self[file_type_key].blank?
 
     case self[file_type_key].first.to_s.downcase
-    when "image"
-      I18n.t("dri.data.types.Image")
-    when "audio"
-      I18n.t("dri.data.types.Sound")
-    when "video"
-      I18n.t("dri.data.types.MovingImage")
-    when "text"
-      I18n.t("dri.data.types.Text")
-    when "mixed_types"
-      I18n.t("dri.data.types.MixedType")
+    when 'image'
+      I18n.t('dri.data.types.Image')
+    when 'audio'
+      I18n.t('dri.data.types.Sound')
+    when 'video'
+      I18n.t('dri.data.types.MovingImage')
+    when 'text'
+      I18n.t('dri.data.types.Text')
+    when 'mixed_types'
+      I18n.t('dri.data.types.MixedType')
     else
-      return I18n.t("dri.data.types.Unknown")
-    end 
+      return I18n.t('dri.data.types.Unknown')
+    end
 
   end
 
@@ -81,10 +81,10 @@ class SolrDocument
   def icon_path
     format = self[ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
 
-    if ['image','audio','text','video','mixed_types'].include?(format)
+    if %w(image audio text video mixed_types).include?(format)
       icon = "dri/formats/#{format}_icon.png"
     else
-      icon = "no_image.png"
+      icon = 'no_image.png'
     end
 
     icon
@@ -97,18 +97,18 @@ class SolrDocument
   end
 
   def is_root_collection?
-    self.collection_id ? false : true  
+    collection_id ? false : true  
   end
 
   def licence
     licence_key = ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym
 
     if self[licence_key].present?
-      licence = Licence.where(:name => self[licence_key]).first
+      licence = Licence.where(name: self[licence_key]).first
       licence ||= self[licence_key]
     elsif root_collection
       collection = root_collection
-      licence = Licence.where(:name => collection[licence_key]).first if collection[licence_key].present?
+      licence = Licence.where(name: collection[licence_key]).first if collection[licence_key].present?
     end
     
     licence
@@ -126,7 +126,7 @@ class SolrDocument
     if self[root_key].present?
       id = self[root_key][0]
       solr_query = "id:#{id}"
-      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
+      collection = ActiveFedora::SolrService.query(solr_query, defType: 'edismax', rows: '1')
       root = SolrDocument.new(collection[0])
     end
     
@@ -140,11 +140,11 @@ class SolrDocument
   end
 
   def published?
-    self.status == "published"
+    status == 'published'
   end
 
   def draft?
-    self.status == "draft"
+    status == 'draft'
   end
 
 end
