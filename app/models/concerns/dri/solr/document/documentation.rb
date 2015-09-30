@@ -12,18 +12,16 @@ module DRI::Solr::Document::Documentation
 
   def retrieve_documentation_for
     key = ActiveFedora::SolrQueryBuilder.solr_name('isDescriptionOf', :stored_searchable, type: :symbol)
+    return nil unless self[key].present?
 
-    if self[key].present?
-      results = ActiveFedora::SolrService.query("id:#{self[key].first}")
-
-      results.present? ? SolrDocument.new(results.first) : nil
-    else
-      nil
-    end
+    results = ActiveFedora::SolrService.query("id:#{self[key].first}")
+    results.present? ? SolrDocument.new(results.first) : nil
   end
 
   def retrieve_document_ids
-    ActiveFedora::SolrService.query("#{ActiveFedora::SolrQueryBuilder.solr_name('isDescriptionOf', :stored_searchable, type: :symbol)}:\"#{self.id}\"", fl: 'id').map(&:values).flatten
+    key = ActiveFedora::SolrQueryBuilder.solr_name('isDescriptionOf', :stored_searchable, type: :symbol)
+    ids = ActiveFedora::SolrService.query("#{key}:\"#{id}\"", fl: 'id')
+    ids.map(&:values).flatten
   end
 
 end
