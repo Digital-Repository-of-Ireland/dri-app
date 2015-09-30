@@ -1,8 +1,8 @@
 # -*- encoding : utf-8 -*-
 # Generated Solr Document model
 #
-class SolrDocument 
- 
+class SolrDocument
+
   include Blacklight::Document
   include UserGroup::PermissionsSolrDocOverride
   include DRI::Solr::Document::File
@@ -23,6 +23,14 @@ class SolrDocument
     language: 'language_facet',
     format: 'format'
   )
+
+  FILE_TYPE_LABELS = {
+    'image' => 'Image',
+    'audio' => 'Sound',
+    'video' => 'MovingImage',
+    'text' => 'Text',
+    'mixed_types' => 'MixedType'
+  }
 
   def active_fedora_model
     self[ActiveFedora::SolrQueryBuilder.solr_name('active_fedora_model', :stored_sortable, type: :string)]
@@ -49,21 +57,9 @@ class SolrDocument
 
     return I18n.t('dri.data.types.Unknown') if self[file_type_key].blank?
 
-    case self[file_type_key].first.to_s.downcase
-    when 'image'
-      I18n.t('dri.data.types.Image')
-    when 'audio'
-      I18n.t('dri.data.types.Sound')
-    when 'video'
-      I18n.t('dri.data.types.MovingImage')
-    when 'text'
-      I18n.t('dri.data.types.Text')
-    when 'mixed_types'
-      I18n.t('dri.data.types.MixedType')
-    else
-      return I18n.t('dri.data.types.Unknown')
-    end
+    label = FILE_TYPE_LABELS[self[file_type_key].first.to_s.downcase] || 'Unknown'
 
+    I18n.t("dri.data.types.#{label}")
   end
 
   def has_doi?
@@ -79,7 +75,8 @@ class SolrDocument
   end
 
   def icon_path
-    format = self[ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym].first.to_s.downcase
+    key = ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
+    format = self[key].first.to_s.downcase
 
     if %w(image audio text video mixed_types).include?(format)
       icon = "dri/formats/#{format}_icon.png"
