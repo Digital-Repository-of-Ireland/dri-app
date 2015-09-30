@@ -745,16 +745,13 @@ ol.breadcrumb {
     border-bottom: 1px solid $dri_thingrey;
     border-top: 1px solid $dri_thingrey;
     margin-bottom: 10px;
-    margin-top: 20px;
     padding-bottom: 8px;
     font-weight: normal;
-    font-style:italic;
     @include border_radius (0px);
     li {
         font-size: 100%;
         a {
             color: $dri_lightgrey;
-          
              &:hover {
             color: $dri_midgrey;
        
@@ -2059,7 +2056,7 @@ ul.dri_stats {
     }
 }
 ul.dri_view_collection {
-    margin: 0 0 20px 0;
+    margin: 0 0 15px 0;
     padding: 0;
     display: block;
     float: left;
@@ -2111,15 +2108,14 @@ ul.dri_view_collection {
     padding: 0;
 }
 .dri_objecttools_title {
+    @extend .dri_object_title_top;
     margin: 10px 0 0 0;
-    padding: 0 0 8px 0;
-    font-size: 110%;
+    //padding: 0;
     width: 100%;
-    color: $dri_darkgrey;
+    //color: $dri_darkgrey;
     display: block;
     float: left;
     font-weight: bold;
-    border-bottom: 1px solid $dri_thingrey;
 }
 /*----- New Bookmark in Editor ----*/
 
@@ -2185,21 +2181,22 @@ ul.dri_view_collection {
 
 .dri_doc_pagination {
     margin: 0px;
-    padding:0px;
     display: table;
-    table-layout: none; 
+    table-layout: fixed;
+    width: 250px;
     li {
         display: table-cell;
-        width:50px;
-        border:none;
+        width: 70px;
+        padding: 1px;
         a {
-            color: $dri_midgrey;   
-            margin: 0px;
-            padding:4px 0 0 0;
-            border:none;
+            width: 100%;
+            text-align: center;
+            font-size: 90%;
+            color: $dri_darkgrey;
         }
     }
     li.position {
+        width: 110px;
         a.dri_no_border {
             color: $dri_darkgrey;
         }
