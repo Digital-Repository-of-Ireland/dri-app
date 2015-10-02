@@ -8,6 +8,7 @@ describe InstitutesController do
     sign_in @login_user
 
     @collection = FactoryGirl.create(:collection)
+    @subcollection = FactoryGirl.create(:collection)
     @institute = Institute.new
     @institute.name = "Test Institute"
     @institute.url = "http://www.test.ie"
@@ -33,6 +34,17 @@ describe InstitutesController do
 
       @collection.reload
       expect(@collection.depositing_institute).to eq(@institute.name)
+    end
+
+    it "should associate depositing institute for sub-collections" do
+      @collection.governed_items << @subcollection
+      @collection.save
+
+      post :associate, object: @collection.id, institute_name: @institute.name, type: "depositing"
+
+      @collection.reload
+      @subcollection.reload
+      expect(@subcollection.depositing_institute).to eq(@collection.depositing_institute)
     end
 
   end
