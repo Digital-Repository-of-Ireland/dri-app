@@ -81,11 +81,11 @@ class ApplicationController < ActionController::Base
 
   # Retrieves a Fedora Digital Object by ID
   def retrieve_object(id)
-    return ActiveFedora::Base.find(id,{:cast => true})
+    return ActiveFedora::Base.find(id, {cast: true})
   end
 
   def retrieve_object!(id)
-    objs = ActiveFedora::Base.find(id,{:cast => true})
+    objs = ActiveFedora::Base.find(id, {cast: true})
     raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') +" ID: #{id}" if objs.nil?
     return objs
   end
