@@ -98,7 +98,7 @@ describe 'PublishJob' do
 
       expect(@collection.status).to eql('published')
       expect(@subcollection.status).to eql('draft')
-      expect(@object.status).to eql('reviewed')
+      expect(@reviewed.status).to eql('reviewed')
     end
 
     it "should not set a collection\'s draft objects to published" do
