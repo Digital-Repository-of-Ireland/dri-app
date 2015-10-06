@@ -34,5 +34,16 @@ module Solr
       self.query
     end
 
+    def each_solr_document
+      while has_more?
+        objects = pop
+
+        objects.each do |object|
+          object_doc = SolrDocument.new(object)
+          yield(object_doc)
+        end
+      end
+    end
+
   end
 end
