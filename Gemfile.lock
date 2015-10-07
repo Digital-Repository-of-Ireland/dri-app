@@ -62,7 +62,7 @@ GEM
       activesupport (= 4.1.13)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-    active-fedora (9.4.2)
+    active-fedora (9.4.3)
       active-triples (~> 0.7.1)
       activesupport (>= 4.1.0)
       deprecation

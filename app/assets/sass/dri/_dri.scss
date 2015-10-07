@@ -210,28 +210,8 @@ form {
     -ms-user-select: none;
     user-select: none;
 }
-/*--------------%btn {
-  display: inline-block;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  background-image: none;
-  border: none;
-  white-space: nowrap;
-  padding: 0;
-  margin: 0;
-  font-size: 100%;
-  line-height: none;
-  @include border_radius (3px);
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-}--------------*/
 
 .dri_button {
-    //  @extend %btn;
     color: $dri_white;
     border: none;
     font-weight: normal;
@@ -521,18 +501,19 @@ a .dri_signin_edugate {
     .container-fluid {
         padding-left: 0px;
     }
-    .navbar-nav > li.active > a,
-    &:hover {
-        background-color: $dri_white;
+    .navbar-nav > li.active > a {
+    border-top: 3px solid $dri_green;
+    background-color: $dri_extralightgrey;
+  
     }
     li {
         border-right: 1px solid $dri_thingrey;
         &.active {
-            border-top: 3px solid $dri_green;
+             background-color: $dri_extralightgrey;
             color: $dri_darkgrey;
             a {
                 padding-top: 12px;
-                background-color: inherit;
+                background-color: $dri_white;
             }
         }
     }
@@ -542,34 +523,43 @@ a .dri_signin_edugate {
         font-weight: normal;
         text-transform: none;
         margin-top: 0;
-        padding-top: 0;
+        padding-top: 0; 
         li {
             border-top: 1px solid $dri_thingrey;
+         
             a {
                 padding-top: 12px;
                 padding-bottom: 8px;
             }
         }
+        
         li.active {
             a {
+              
                 padding-top: 12px;
                 padding-bottom: 8px;
-                background-color: inherit;
                 color: $dri_green;
             }
         }
         li:hover {
             a {
-                background-color: inherit;
+                background-color: $dri_white;
             }
         }
         li:focus {
             a {
-                background-color: inherit;
+                 background-color: $dri_white; 
             }
         }
     }
+ 
 }
+  .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+     color: $dri_green;
+    text-decoration: none;
+    outline: 0;
+    background-color: $dri_white;
+    }
 /*--------------Preferred Language --------------*/
 /*-------------- Account and Language Styling--------------*/
 /*--------------  Delete this?
@@ -751,20 +741,26 @@ ul.dropdown a {
 
 ol.breadcrumb {
     color: $dri_thingrey;
-    background-color: $dri_white;
+    background-color:  $dri_extralightgrey;;
     border-bottom: 1px solid $dri_thingrey;
+    border-top: 1px solid $dri_thingrey;
     margin-bottom: 10px;
     padding-bottom: 8px;
     font-weight: normal;
+    @include border_radius (0px);
     li {
-        font-size: 110%;
+        font-size: 100%;
         a {
+            color: $dri_lightgrey;
+             &:hover {
             color: $dri_midgrey;
+       
+        }
         }
     }
 }
 .breadcrumb .active {
-    color: $dri_darkgrey;
+    color: $dri_midgrey;
 }
 /*-------------- Search/Sort features --------------*/
 
