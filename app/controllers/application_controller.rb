@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   # Please be sure to impelement current_user and user_session. Blacklight depends on
   # these methods in order to perform user specific actions.
 
-  protect_from_forgery with: :exception
+  protect_from_forgery
 
   rescue_from Exceptions::InternalError, :with => :render_internal_error
   rescue_from Exceptions::BadRequest, :with => :render_bad_request
