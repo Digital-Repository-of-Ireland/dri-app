@@ -84,10 +84,6 @@ NuigRnag::Application.configure do
   # Add a default host for devise mailer
   config.action_mailer.default_url_options = { protocol: 'https', host: 'repository.dri.ie' }
 
-  config.to_prepare { Devise::SessionsController.force_ssl }
-  config.to_prepare { Devise::RegistrationsController.force_ssl }
-  config.to_prepare { Devise::PasswordsController.force_ssl }
-
   config.action_mailer.delivery_method = :sendmail
 
   #config.middleware.use '::Rack::Auth::Basic' do |u, p|
