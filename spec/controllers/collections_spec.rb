@@ -126,8 +126,8 @@ describe CollectionsController do
       params[:batch] = {}
       params[:batch][:title] = ["A modified sub collection title"]
       put :update, :id => @subcollection.id, :batch => params[:batch]
+      @subcollection.reload
       expect(@subcollection.title).to eq(["A modified sub collection title"])
-      #expect(page.find('.dri_alert_text')).to have_content I18n.t('dri.flash.notice.updated', item: @subcollection.id)
 
       @collection.delete
     end
