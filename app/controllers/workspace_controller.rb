@@ -7,17 +7,16 @@ require 'institute_helpers'
 class WorkspaceController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
-  # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
-  #include UserGroup::SolrAccessControls
+  
   include Hydra::AccessControlsEnforcement
 
   #This method shows the DO if the metadata is open
   #Rather than before where the user had to have read permissions on the object all the time
   def enforce_search_for_show_permissions
-    enforce_permissions!("show_digital_object",params[:id])
+    enforce_permissions!('show_digital_object', params[:id])
   end
   # These before_filters apply the hydra access controls
-  before_filter :enforce_search_for_show_permissions, :only=>:show
+  before_filter :enforce_search_for_show_permissions, only: :show
   # This applies appropriate access controls to all solr queries
   WorkspaceController.solr_search_params_logic += [:add_access_controls_to_solr_params_no_pub]
   # This filters out objects that you want to exclude from search results, like FileAssets
@@ -39,9 +38,9 @@ class WorkspaceController < ApplicationController
   configure_blacklight do |config|
 
     config.default_solr_params = {
-      :defType => "edismax",
-      :qt => 'search',
-      :rows => 9
+      defType: 'edismax',
+      qt: 'search',
+      rows: 9
     }
 
     # solr field configuration for search results/index views
@@ -177,7 +176,7 @@ class WorkspaceController < ApplicationController
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise.
 
-    config.add_search_field 'all_fields', :label => 'All Fields'
+    config.add_search_field 'all_fields', label: 'All Fields'
 
 
     # Now we see how to over-ride Solr request handler defaults, in this
@@ -193,8 +192,8 @@ class WorkspaceController < ApplicationController
       # Solr parameter de-referencing like $title_qf.
       # See: http://wiki.apache.org/solr/LocalParams
       field.solr_local_parameters = {
-        :qf => '$title_qf',
-        :pf => '$title_pf'
+        qf: '$title_qf',
+        pf: '$title_pf'
       }
     end
 
@@ -209,8 +208,8 @@ class WorkspaceController < ApplicationController
     config.add_search_field('person') do |field|
         field.solr_parameters = { :'spellcheck.dictionary' => 'person'}
         field.solr_local_parameters = {
-          :qf => '$person_qf',
-          :pf => '$person_pf',
+          qf: '$person_qf',
+          pf: '$person_pf',
        }
     end
 
@@ -221,8 +220,8 @@ class WorkspaceController < ApplicationController
       field.solr_parameters = { :'spellcheck.dictionary' => 'subject' }
       field.qt = 'search'
       field.solr_local_parameters = {
-        :qf => '$subject_qf',
-        :pf => '$subject_pf'
+        qf: '$subject_qf',
+        pf: '$subject_pf'
       }
     end
 
@@ -230,15 +229,15 @@ class WorkspaceController < ApplicationController
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
-    config.add_sort_field 'system_create_dtsi desc', :label => 'newest'
+    config.add_sort_field 'system_create_dtsi desc', label: 'newest'
     # The year created sort throws an error as the date type is not enforced and so a string can be passed in - it is commented out for this reason.
     # config.add_sort_field 'creation_date_dtsim, title_sorted_ssi asc', :label => 'year created'
 
     # We son't use the author_tesi field in DRI so disabling this sort - Damien
     #config.add_sort_field 'author_tesi asc, title_sorted_ssi asc', :label => 'author'
 
-    config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', :label => 'relevance'
-    config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', :label => 'title'
+    config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', label: 'relevance'
+    config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', label: 'title'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
@@ -248,7 +247,7 @@ class WorkspaceController < ApplicationController
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << "-#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
-    if user_parameters[:mode].eql?('collections')
+    if user_parameters[:mode] == 'collections'
       solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
       solr_parameters[:fq] << "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
     else
@@ -258,7 +257,7 @@ class WorkspaceController < ApplicationController
   end
 
   def self.controller_path
-    "catalog"
+    'catalog'
   end
 
 end

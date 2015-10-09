@@ -126,8 +126,8 @@ describe CollectionsController do
       params[:batch] = {}
       params[:batch][:title] = ["A modified sub collection title"]
       put :update, :id => @subcollection.id, :batch => params[:batch]
+      @subcollection.reload
       expect(@subcollection.title).to eq(["A modified sub collection title"])
-      #expect(page.find('.dri_alert_text')).to have_content I18n.t('dri.flash.notice.updated', item: @subcollection.id)
 
       @collection.delete
     end
@@ -146,7 +146,7 @@ describe CollectionsController do
       @collection.save
 
       DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
-      Settings.doi.enable = "true"
+      Settings.doi.enable = true
 
       DataciteDoi.create(object_id: @collection.id)
 
@@ -160,7 +160,7 @@ describe CollectionsController do
 
       DataciteDoi.where(object_id: @collection.id).first.delete
       DoiConfig = nil
-      Settings.doi.enable = "false"
+      Settings.doi.enable = false
     end
 
     it 'should not mint a doi for no update of mandatory fields' do
@@ -177,7 +177,7 @@ describe CollectionsController do
       @collection.save
 
       DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
-      Settings.doi.enable = "true"
+      Settings.doi.enable = true
 
       DataciteDoi.create(object_id: @collection.id)
 
@@ -191,7 +191,7 @@ describe CollectionsController do
 
       DataciteDoi.where(object_id: @collection.id).first.delete
       DoiConfig = nil
-      Settings.doi.enable = "false"
+      Settings.doi.enable = false
     end
 
   end

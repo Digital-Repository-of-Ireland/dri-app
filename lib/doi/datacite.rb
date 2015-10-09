@@ -11,20 +11,19 @@ module DOI
     end
 
     def mint
-      path = @doi.doi.split("/")[1].split(".")[1]
+      path = @doi.doi.split('/')[1].split('.')[1]
       url = URI.join(@url, 'objects/', "#{@doi.object_id}/", 'doi/', "#{path}") 
   
-      params = { "doi" => "#{@doi.doi}", "url" => "#{url}" }
-      response = @service['doi'].post(params, :content_type => 'text/plain;charset=UTF-8')
+      params = { 'doi' => "#{@doi.doi}", 'url' => "#{url}" }
+      response = @service['doi'].post(params, content_type: 'text/plain;charset=UTF-8')
       Rails.logger.info("Minted DOI (#{response.code} #{response.body})")
     end
 
     def metadata
       xml = @doi.to_xml
-      response = @service['metadata'].post(xml, :content_type => 'application/xml;charset=UTF-8')
-      
+      response = @service['metadata'].post(xml, content_type: 'application/xml;charset=UTF-8')
+
       Rails.logger.info("Created DOI metadata (#{response.code} #{response})")
     end
-
   end
 end

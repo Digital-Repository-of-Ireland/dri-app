@@ -57,7 +57,7 @@ describe AssetsController do
       @object.save
 
       DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
-      Settings.doi.enable = "true"
+      Settings.doi.enable = true
 
       DataciteDoi.create(object_id: @object.id)
 
@@ -69,7 +69,7 @@ describe AssetsController do
 
       DataciteDoi.where(object_id: @object.id).first.delete
       DoiConfig = nil
-      Settings.doi.enable = "false"
+      Settings.doi.enable = false
     end
 
    end
@@ -126,7 +126,7 @@ describe AssetsController do
       DRI::Asset::Actor.any_instance.stub(:update_external_content).and_return(true)
 
       DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
-      Settings.doi.enable = "true"
+      Settings.doi.enable = true
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
 
@@ -152,7 +152,7 @@ describe AssetsController do
        
       DataciteDoi.where(object_id: @object.id).each { |d| d.delete }
       DoiConfig = nil
-      Settings.doi.enable = "false"
+      Settings.doi.enable = false
     end
 
   end

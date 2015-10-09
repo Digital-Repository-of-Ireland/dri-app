@@ -35,18 +35,14 @@ module DocumentHelper
 
     # Filter to only get those that are collections: fq=is_collection_tesim:true
     q_result = Solr::Query.new(solr_query, limit, :fq => f_query)
+    q_result.each_solr_document do |doc|
+      link_text = doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+      # FIXME For now, the EAD type is indexed last in the type solr index, review in the future
+      type = doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
 
-    while (q_result.has_more?)
-      objects_docs = q_result.pop
-      objects_docs.each do |obj_doc|
-        doc = SolrDocument.new(obj_doc)
-        link_text = doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
-        # FIXME For now, the EAD type is indexed last in the type solr index, review in the future
-        type = doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
-
-        children_array = children_array.to_a.push [link_text, catalog_path(doc['id']).to_s, type.to_s]
-      end
+      children_array = children_array.to_a.push [link_text, catalog_path(doc['id']).to_s, type.to_s]
     end
+    
     paged_children = Kaminari.paginate_array(children_array).page(params[:subs_page]).per(4)
     return paged_children
   end
