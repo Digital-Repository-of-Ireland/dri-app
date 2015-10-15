@@ -14,6 +14,7 @@ describe "DeleteCollectionJob" do
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
     @collection[:publisher] = ["RnaG"]
+    @collection[:creator] = ["Creator"]
     @collection[:type] = ["Collection"]
     @collection[:creation_date] = ["1916-01-01"]
     @collection[:published_date] = ["1916-04-01"]

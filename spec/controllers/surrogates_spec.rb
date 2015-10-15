@@ -13,6 +13,7 @@ describe SurrogatesController do
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
     @collection[:publisher] = ["RnaG"]
     @collection[:type] = ["Collection"]
+    @collection[:creator] = ["#{@login_user.email}"]
     @collection[:creation_date] = ["1916-01-01"]
     @collection[:published_date] = ["1916-04-01"]
     @collection[:status] = "draft"
