@@ -367,7 +367,7 @@ en:
           new_collection: "New Collection"
           remove: Remove
           set_collection: "Set as Current"
-        confirm_all_descendants_reviewed: "This will mark all objects within the collection AND sub-collections as Reviewed. Continue?"
+        confirm_all_descendants_reviewed: "This will mark %{draft_count} draft objects within the collection AND sub-collections as Reviewed. Continue?"
         confirm_all_reviewed: "This will mark all objects within the collection as Reviewed. Continue?"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         confirm_publish: "This will make all reviewed objects accessible. This can not be undone! Continue?"
