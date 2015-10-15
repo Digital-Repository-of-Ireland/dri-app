@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 70e5475fd06af90af073933cafa3bc54ccd34c3f
+  revision: dbc1da9e0cd0faf5d080eee58098c12a83048fa8
   branch: develop
   specs:
-    dri_data_models (2.2.3)
+    dri_data_models (2.2.4)
       hydra-access-controls
       hydra-collections
       hydra-head (~> 9.0)
