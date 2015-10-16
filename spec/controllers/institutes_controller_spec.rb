@@ -36,7 +36,8 @@ describe InstitutesController do
       expect(@collection.depositing_institute).to eq(@institute.name)
     end
 
-    it "should associate depositing institute for sub-collections" do
+    # Cascading of depositing institute for sub-colls disabled
+    xit "should associate depositing institute for sub-collections" do
       @collection.governed_items << @subcollection
       @collection.save
 

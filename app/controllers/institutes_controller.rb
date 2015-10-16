@@ -112,13 +112,14 @@ class InstitutesController < ApplicationController
 
     return unless params[:type] == 'depositing'
 
-    begin
-      Sufia.queue.push(SetDepositingInstituteJob.new(@collection.id)) if @collection.governed_items.present?
-    rescue Exception => e
-      logger.error "Unable to submit SetDepositingInstitute job: #{e.message}"
-      flash[:alert] = t('dri.flash.alert.error_set_depositing_institute_job', error: e.message)
-      @warnings = t('dri.flash.alert.error_set_depositing_institute_job', error: e.message)
-    end
+    # Reverted to inheritance as opposed to cascading dep institute
+    # begin
+    #   Sufia.queue.push(SetDepositingInstituteJob.new(@collection.id)) if @collection.governed_items.present?
+    # rescue Exception => e
+    #   logger.error "Unable to submit SetDepositingInstitute job: #{e.message}"
+    #   flash[:alert] = t('dri.flash.alert.error_set_depositing_institute_job', error: e.message)
+    #   @warnings = t('dri.flash.alert.error_set_depositing_institute_job', error: e.message)
+    # end
   end
 
   def delete_association
