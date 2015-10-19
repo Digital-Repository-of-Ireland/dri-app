@@ -6,19 +6,24 @@
     border-bottom: 3px solid $dri_grey;
 }
 .dri_sidenav {
-    margin-top: 10px;
+    margin-top: 20px;
     color: $dri_midgrey;
     font-size: 1em;
     line-height: 1.75em;
+
     a {
         color: $dri_midgrey;
+    }
+    button {
+      float:right;
     }
     a:hover,
     form:hover {
         color: $dri_darkgrey;
     }
     h5 {
-        line-height: 1.75em;
+        line-height: 2em;
+        font-size: 1.1em;
         font-style: bold;
         color: $dri_grey;
         border-bottom: 1px solid $dri_thingrey;
@@ -27,23 +32,34 @@
         margin-left: 0px;
         li {
             height: 1.75em;
+            height: 2em;
             border-bottom: 1px solid $dri_thingrey;
             list-style-type: none;
+          }
+        li.dri_share {
+          height: 2em;
         }
+         
+         
+    }
+    span.dri_stat_num {
+      float: right;
+      margin-right: 20px;
     }
 }
+
+
+
 /*---- Previous Next Doc Pagination ----*/
 
 .dri_doc_pagination {
     margin: 0px;
-    display: table;
-    table-layout: fixed;
+    margin-top: 10px;
     color: $dri_darkgrey;
-        li {
-            display: table-cell;
+    .dri_doc_pagination_links {
+     float:right;
+
             a {
-                width: 100%;
-                text-align: center;
                 font-size: 90%;
                 color: $dri_darkgrey;
             }
@@ -55,17 +71,7 @@
                 font-family: FontAwesome;
                 content: "\f061";
             }
-        }
-        li.position {
-            width: 200px;
-            a.dri_no_border {
-                color: $dri_darkgrey;
-            }
-        }
-        li.dri_pagination_label {
-            text-align: left;
-            width: 70px;
-        }
+}
 }
 .dri_fileUpload {
     position: relative;
