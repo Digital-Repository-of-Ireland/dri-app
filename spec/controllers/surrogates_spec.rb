@@ -13,6 +13,7 @@ describe SurrogatesController do
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
     @collection[:publisher] = ["RnaG"]
     @collection[:type] = ["Collection"]
+    @collection[:creator] = ["#{@login_user.email}"]
     @collection[:creation_date] = ["1916-01-01"]
     @collection[:published_date] = ["1916-04-01"]
     @collection[:status] = "draft"
@@ -79,6 +80,14 @@ describe SurrogatesController do
       @gf2.delete
     end
 
+  end
+
+  describe 'download' do
+
+    it 'should validate the surrogate url' do
+      get :download, id: @object.id, object_id: @object.id, surrogate_url: 'config/database.yml'
+      expect(response.status).to eq 400
+    end
   end
 
 end

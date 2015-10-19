@@ -20,6 +20,7 @@ describe CollectionsController do
       @collection[:description] = ["This is a Collection"]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
+      @collection[:creator] = ["Creator"]
       @collection[:type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
@@ -59,6 +60,7 @@ describe CollectionsController do
       @collection[:description] = ["This is a Collection"]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
+      @collection[:creator] = ["Creator"]
       @collection[:type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
@@ -126,8 +128,8 @@ describe CollectionsController do
       params[:batch] = {}
       params[:batch][:title] = ["A modified sub collection title"]
       put :update, :id => @subcollection.id, :batch => params[:batch]
+      @subcollection.reload
       expect(@subcollection.title).to eq(["A modified sub collection title"])
-      #expect(page.find('.dri_alert_text')).to have_content I18n.t('dri.flash.notice.updated', item: @subcollection.id)
 
       @collection.delete
     end

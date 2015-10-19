@@ -1,7 +1,5 @@
 module Validators
-
   # Contains File validator methods for uploaded files
-
   require 'mimemagic'
 
   # Validate the file upload
@@ -9,9 +7,9 @@ module Validators
   # Takes an uploaded file (ActionDispatch::Http::UploadedFile),
   # or a path to a localfile, and calls the required validations.
   #
-  def Validators.validate_file(file, mime_type=nil)
-    self.virus_scan(file)
-    self.valid_file_type?(file, mime_type)
+  def self.validate_file(file, mime_type=nil)
+    virus_scan(file)
+    valid_file_type?(file, mime_type)
   end
 
   # Validate file mime-types
@@ -27,17 +25,14 @@ module Validators
   # Finally it compares the mime-type to a whitelist of allowed mime-types which is stored in
   # a class variable for the object type (e.g. in DRI:Model:Audio)
   #
-  def Validators.valid_file_type?(file, mime_type)
+  def self.valid_file_type?(file, mime_type)
     if file.respond_to?(:original_filename)
-      path = file.tempfile.path
-      extension = file.original_filename.split(".").last
+      extension = file.original_filename.split('.').last
     elsif file.respond_to?(:path)
       # Tempfile object path is accessed through file.path
-      path = file.path
-      extension = file.path.split(".").last
+      extension = file.path.split('.').last
     else
-      path = file
-      extension = file.split(".").last
+      extension = file.split('.').last
     end
 
     # MimeMagic could return null if it can't find a match. If so raise UnknownMimeType error
@@ -56,35 +51,32 @@ module Validators
     end
 
     # If we haven't encountered a problem we return true
-    return true
-
+    true
   end  # End validate_file_type method
 
 
   # Returns a MimeMagic or Mime::Types object
-  def Validators.file_type?(file)
-    self.init_types()
+  def self.file_type?(file)
+    init_types
 
     if file.respond_to?(:original_filename)
       path = file.tempfile.path
-      extension = file.original_filename.split(".").last
+      extension = file.original_filename.split('.').last
     # For Tempfiles (cover_image) sourced from the Data models
     elsif file.respond_to?(:path)
       path = file.path
-      extension = file.path.split(".").last
+      extension = file.path.split('.').last
     else
       path = file
-      extension = file.split(".").last
+      extension = file.split('.').last
     end
 
-    mime_type = MimeMagic.by_magic( File.open( path ) )
+    mime_type = MimeMagic.by_magic(File.open(path))
 
-    if mime_type == nil
+    if mime_type.nil?
       # If we can't determine from file structure, then determine by extension
       extension_results = MIME::Types.type_for(extension)
-      if !extension_results.empty?
-        mime_type = extension_results[0]
-      end
+      mime_type = extension_results[0] unless extension_results.empty?
     else
       mime_type = mime_type.type
     end
@@ -93,57 +85,54 @@ module Validators
   end
 
   # Returns a MimeMagic or Mime::Types mediatype
-  def Validators.media_type?(file)
-    self.init_types()
+  def self.media_type?(file)
+    init_types
 
-    if file.class.to_s == "ActionDispatch::Http::UploadedFile"
+    if file.class.to_s == 'ActionDispatch::Http::UploadedFile'
       path = file.tempfile.path
-      extension = file.original_filename.split(".").last
+      extension = file.original_filename.split('.').last
     # For Tempfiles (cover_image) sourced from the Data models
-    elsif (file.class.to_s == "Tempfile")
+    elsif (file.class.to_s == 'Tempfile')
       path = file.path
-      extension = file.path.split(".").last
+      extension = file.path.split('.').last
     else
       path = file
-      extension = file.split(".").last
+      extension = file.split('.').last
     end
+    mime_type = MimeMagic.by_magic(File.open(path))
 
-    mime_type = MimeMagic.by_magic( File.open( path ) )
-
-    if mime_type == nil
+    if mime_type.nil?
       # If we can't determine from file structure, then determine by extension
       extension_results = MIME::Types.type_for(extension)
-      if !extension_results.empty?
-        mime_type = extension_results[0]
-      end
+      mime_type = extension_results[0] unless extension_results.empty?
     else
       mime_type = mime_type.mediatype
     end
 
     mime_type
   end
+
   # Performs a virus scan on a single file
   #
   # Throws an exception if a virus is detected
   #
-  def Validators.virus_scan(file)
-      if defined? ClamAV
-        Rails.logger.info "Performing virus scan."
-        result = ClamAV.instance.scanfile( file.respond_to?(:path) ? file.path : file )
-        raise Exceptions::VirusDetected.new(result) unless result == 0
-      else
-        Rails.logger.warn "Virus scanning is disabled."
-      end
+  def self.virus_scan(file)
+    if defined? ClamAV
+      Rails.logger.info 'Performing virus scan.'
+      result = ClamAV.instance.scanfile( file.respond_to?(:path) ? file.path : file )
+      raise Exceptions::VirusDetected.new(result) unless result == 0
+    else
+      Rails.logger.warn 'Virus scanning is disabled.'
+    end
   end
 
   private
 
-    #
-    # Add additional mime types
-    #
-    def Validators.init_types()
-      MimeMagic.add( "audio/mpeg", {:magic => [[0, "\377\372"], [0, "\377\373"], [0, "\377\362"], [0, "\377\363"]] } )
-      MimeMagic.add( "audio/mp2", {:extensions => "mp2, mpeg", :magic => [[0, "\377\364"], [0, "\377\365"], [0, "\377\374"], [0, "\377\375"] ] } )
-    end
-
+  #
+  # Add additional mime types
+  #
+  def self.init_types()
+    MimeMagic.add('audio/mpeg', { magic: [[0, "\377\372"], [0, "\377\373"], [0, "\377\362"], [0, "\377\363"]] })
+    MimeMagic.add('audio/mp2', { extensions: 'mp2, mpeg', magic: [[0, '\377\364'], [0, '\377\365'], [0, '\377\374'], [0, '\377\375']] })
+  end
 end  # End Validators module

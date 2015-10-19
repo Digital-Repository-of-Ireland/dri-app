@@ -7,40 +7,35 @@ class MapsController < ApplicationController
   end
 
   def get
-
     query = get_query(params)
 
-    num_found = ActiveFedora::SolrService.count(query, :defType => "edismax")
+    num_found = ActiveFedora::SolrService.count(query, defType: 'edismax')
     if (num_found > 0)
-      response = ActiveFedora::SolrService.query(query, :defType => "edismax", :rows => num_found)
+      response = ActiveFedora::SolrService.query(query, defType: 'edismax', rows: num_found)
     else
       response = {}
     end
 
     maps_data = create_maps_data(response)
 
-    render :json => maps_data.to_json
+    render json: maps_data.to_json
   end
 
   private
-  def get_query params
-    query = ""
 
-    if params[:mode] == 'collections'
-      query += "#{Solrizer.solr_name('file_type', :stored_searchable, type: :string)}:collection"
-    else
-      query += "-#{Solrizer.solr_name('file_type', :stored_searchable, type: :string)}:collection"
-    end
+  def get_query(params)
+    query = ''
 
+    collections_mode = params[:mode] == 'collections' ? '' : '-'
+    query += "#{collections_mode}#{Solrizer.solr_name('file_type', :stored_searchable, type: :string)}:collection"
+    
     unless signed_in?
       query += " AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published"
     end
 
-    unless params[:q].blank?
-      query += " AND #{params[:q]}"
-    end
+    query += " AND #{params[:q]}" unless params[:q].blank?
 
-    unless params[:f].blank?
+    if params[:f].present?
       params[:f].each do |facet_name, facet_value|
         query += " AND #{facet_name}:\"#{facet_value.first}\""
       end
@@ -51,24 +46,22 @@ class MapsController < ApplicationController
     query += " AND (-#{Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string)}:unknown"
     query += " AND -#{Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string)}:\"n/a\")"
 
-    return query
+    query
   end
 
-  def parse_dcmi dcmi_location
+  def parse_dcmi(dcmi_location)
     parsed_dcmi = {}
     return 'nil' if dcmi_location.nil?
 
     dcmi_location.split(/\s*;\s*/).each do |component|
-      (k,v) = component.split(/\s*=\s*/)
+      (k, v) = component.split(/\s*=\s*/)
       if (k == 'north' || k == 'east' || k == 'name' || k == 'northlimit' || k == 'southlimit' || k == 'eastlimit' || k == 'westlimit')
         parsed_dcmi[k.to_sym] = v.strip
       end
     end
 
-    if parsed_dcmi.blank?
-      return dcmi_location
-    end
-
+    return dcmi_location unless parsed_dcmi.present?
+    
     if (!parsed_dcmi[:name].blank? && !parsed_dcmi[:north].blank? && !parsed_dcmi[:east].blank?)
       parsed_dcmi[:type] = 'point'
     elsif (!parsed_dcmi[:name].blank? && !parsed_dcmi[:northlimit].blank? && !parsed_dcmi[:southlimit].blank? && !parsed_dcmi[:eastlimit].blank? && !parsed_dcmi[:westlimit].blank?)
@@ -77,16 +70,17 @@ class MapsController < ApplicationController
       parsed_dcmi[:type] = 'unknown'
     end
 
-    return parsed_dcmi
+    parsed_dcmi
   end
 
-  def parse_dcmi? dcmi_location
+  def parse_dcmi?(dcmi_location)
     parsed_location = parse_dcmi(dcmi_location)
     is_valid = dcmi_location != parsed_location
     if is_valid
       is_valid = is_valid && parsed_location[:type] != 'unknown'
     end
-    return is_valid
+    
+    is_valid
   end
 
   def create_maps_data(response)
@@ -112,13 +106,10 @@ class MapsController < ApplicationController
         end
       end
 
-      if (maps_data[:num_found] > 0)
-        maps_data[:err_code] = 0
-      end
-
+      maps_data[:err_code] = 0 if maps_data[:num_found] > 0
     end
 
-    return maps_data
+    maps_data
   end
 
 end

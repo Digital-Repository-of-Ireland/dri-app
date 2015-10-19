@@ -1,18 +1,15 @@
 class InstitutesController < ApplicationController
   require 'institute_helpers'
 
-  before_filter :authenticate_user_from_token!, :except => [:index]
-  before_filter :authenticate_user!, :except => [:index]
-  before_filter :check_for_cancel, :only => [:create, :update]
+  before_filter :authenticate_user_from_token!, except: [:index]
+  before_filter :authenticate_user!, except: [:index]
+  before_filter :check_for_cancel, only: [:create, :update]
 
   # Was this action canceled by the user?
   def check_for_cancel
-    if params[:commit] == "Cancel"
-      redirect_to institutions_path
-    end
+    redirect_to institutions_path if params[:commit] == 'Cancel'
   end
-  
-  
+
   # Get the list of institutes
   def index
     @institutes = Institute.all.order('name asc')
@@ -28,30 +25,15 @@ class InstitutesController < ApplicationController
 
   # Create a new institute entry
   def create
-
     @inst = Institute.new
 
-    file_upload = params[:institute][:logo]
-
-    begin
-      @inst.add_logo(file_upload, {:name => params[:institute][:name]})
-    rescue Exceptions::UnknownMimeType => e
-      flash[:alert] = t('dri.flash.alert.invalid_file_type')
-    rescue Exceptions::VirusDetected => e
-      flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
-    rescue Exceptions::InternalError => e
-      logger.error "Could not save licence: #{e.message}"
-      raise Exceptions::InternalError
-    end
+    add_logo
 
     @inst.url = params[:institute][:url]
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
-
-    if params[:object]
-      @object = ActiveFedora::Base.find(params[:object], {:cast => true})
-    end
+    @object = ActiveFedora::Base.find(params[:object], cast: true) if params[:object]
 
     respond_to do |format|
       format.html { redirect_to institutions_url }
@@ -61,18 +43,7 @@ class InstitutesController < ApplicationController
   def update
     @inst = Institute.find(params[:id])
 
-    file_upload = params[:institute][:logo]
-
-    begin
-      @inst.add_logo(file_upload, {:name => params[:institute][:name]})
-    rescue Exceptions::UnknownMimeType => e
-      flash[:alert] = t('dri.flash.alert.invalid_file_type')
-    rescue Exceptions::VirusDetected => e
-      flash[:error] = t('dri.flash.alert.virus_detected', :virus => e.message)
-    rescue Exceptions::InternalError => e
-      logger.error "Could not save licence: #{e.message}"
-      raise Exceptions::InternalError
-    end
+    add_logo
 
     @inst.url = params[:institute][:url]
     @inst.save
@@ -98,62 +69,72 @@ class InstitutesController < ApplicationController
 
   private
 
-    def add_or_remove_association(delete=false)
-      # save the institute name to the properties datastream
-      @collection = ActiveFedora::Base.find(params[:object] ,{:cast => true})
-      raise Exceptions::NotFound unless @collection
+  def add_logo
+    file_upload = params[:institute][:logo]
 
-      delete ? delete_association : add_association
+    begin
+      @inst.add_logo(file_upload, { name: params[:institute][:name] })
+    rescue Exceptions::UnknownMimeType
+      flash[:alert] = t('dri.flash.alert.invalid_file_type')
+    rescue Exceptions::VirusDetected => e
+      flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
+    rescue Exceptions::InternalError => e
+      logger.error "Could not save licence: #{e.message}"
+      raise Exceptions::InternalError
+    end
+  end
 
-      @collection_institutes = Institute.find_collection_institutes(@collection.institute)
-      @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
+  def add_or_remove_association(delete = false)
+    # save the institute name to the properties datastream
+    @collection = ActiveFedora::Base.find(params[:object], cast: true)
+    raise Exceptions::NotFound unless @collection
 
-      respond_to do |format|
-        format.html  { redirect_to :controller => "catalog", :action => "show", :id => @collection.id }
-      end
+    delete ? delete_association : add_association
+
+    @collection_institutes = Institute.find_collection_institutes(@collection.institute)
+    @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
+
+    respond_to do |format|
+      format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.id }
+    end
+  end
+
+  def add_association
+    institute_name = params[:institute_name]
+
+    if params[:type].present? && params[:type] == 'depositing'
+      @collection.depositing_institute = institute_name
+    else
+      @collection.institute = @collection.institute.push(institute_name)
     end
 
-    def add_association
-      institute_name = params[:institute_name]
+    raise Exceptions::InternalError unless @collection.save
 
-      if(params[:type].present? && params[:type] == "depositing")
-        @collection.depositing_institute = institute_name
-      else
-        @collection.institute = @collection.institute.push( institute_name )
-      end
+    return unless params[:type] == 'depositing'
 
-      if @collection.save
-        if params[:type] == "depositing"
-          begin
-            Sufia.queue.push(SetDepositingInstituteJob.new(@collection.id)) unless @collection.governed_items.blank?
-          rescue Exception => e
-            logger.error "Unable to submit SetDepositingInstitute job: #{e.message}"
-            flash[:alert] = t('dri.flash.alert.error_set_depositing_institute_job', :error => e.message)
-            @warnings = t('dri.flash.alert.error_set_depositing_institute_job', :error => e.message)
-          end
-        end
-        flash[:notice] = institute_name + " " +  t('dri.flash.notice.organisation_added')
-      else
-        raise Exceptions::InternalError
-      end 
-    end
+    # Reverted to inheritance as opposed to cascading dep institute
+    # begin
+    #   Sufia.queue.push(SetDepositingInstituteJob.new(@collection.id)) if @collection.governed_items.present?
+    # rescue Exception => e
+    #   logger.error "Unable to submit SetDepositingInstitute job: #{e.message}"
+    #   flash[:alert] = t('dri.flash.alert.error_set_depositing_institute_job', error: e.message)
+    #   @warnings = t('dri.flash.alert.error_set_depositing_institute_job', error: e.message)
+    # end
+  end
 
-    def delete_association
-      institute_name = params[:institute_name]
+  def delete_association
+    institute_name = params[:institute_name]
 
-      institutes = @collection.institute
-      institutes.delete(institute_name)
-      @collection.institute = institutes 
+    institutes = @collection.institute
+    institutes.delete(institute_name)
+    @collection.institute = institutes
 
-      if @collection.save
-        flash[:notice] = institute_name + " " + t('dri.flash.notice.organisation_removed')
-      else
-        raise Exceptions::InternalError
-      end
-    end
+    raise Exceptions::InternalError unless @collection.save
 
-    def update_params
-      params.require(:institute).permit(:name, :logo, :url)
-    end
+    flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_removed')}"
+  end
 
+  def update_params
+    params.require(:institute).permit(:name, :logo, :url)
+  end
 end

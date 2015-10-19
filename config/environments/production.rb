@@ -82,7 +82,7 @@ NuigRnag::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   # Add a default host for devise mailer
-  config.action_mailer.default_url_options = { :host => 'repository.dri.ie' }
+  config.action_mailer.default_url_options = { protocol: 'https', host: 'repository.dri.ie' }
 
   config.action_mailer.delivery_method = :sendmail
 

@@ -4,47 +4,51 @@ class Licence < ActiveRecord::Base
 
   validates_uniqueness_of :name
 
-  def add_logo(upload,opts={})
+  def add_logo(upload, opts = {})
     self.name = opts[:name]
     self.url = opts[:url]
 
     begin
-      self.save
+      save
     rescue ActiveRecord::ActiveRecordError, Exceptions::LicenceError => e
       logger.error "Could not save licence: #{e.message}"
       raise Exceptions::InternalError
     end
 
-    validate_and_store_logo(upload, self.name)
-    self.save
+    validate_logo(upload)
+    store_logo(upload, name)
+    save
   end
 
-
-  def get_logo()
+  def get_logo
     self.logo
   end
 
+  def logo_mime_type(logo)
+    mime_object = Validators.file_type?(logo)
+    return mime_object.mediatype if mime_object.respond_to?('mediatype')
+    return mime_object.media_type if mime_object.respond_to?('media_type')
+    return mime_object if mime_object.is_a?(String)
+  end
 
-  def validate_and_store_logo(logo, name)
-
-    if logo.blank?
-      raise Exceptions::UnknownMimeType
-    else
-      mime_object = Validators.file_type?(logo)
-      type = mime_object.mediatype if mime_object.respond_to?('mediatype')
-      type = mime_object.media_type if mime_object.respond_to?('media_type')
-      type = mime_object if mime_object.is_a?(String)
-    end
+  def store_logo(logo, name)
+    type = logo_mime_type(logo)
 
     if Settings.restrict.mime_types.image.include?(type)
-      Validators.virus_scan(logo)
+      ext = logo.original_filename.split(".").last
 
       storage = Storage::S3Interface.new
       storage.store_file(logo.tempfile.path,
-                         "#{name}.#{logo.original_filename.split(".").last}",
+                         "#{name}.#{ext}",
                          Settings.data.logos_bucket)
       self.logo = storage.get_link_for_file(Settings.data.logos_bucket,
-                                            "#{name}.#{logo.original_filename.split(".").last}")
+                                            "#{name}.#{ext}")
     end
+  end
+
+  def validate_logo(logo)
+    raise Exceptions::UnknownMimeType if logo.blank?
+
+    Validators.virus_scan(logo)
   end
 end
