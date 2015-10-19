@@ -4,10 +4,6 @@ module Utils
     Integer(number) rescue false
   end
 
-  def self.split_id(pid)
-    pid.sub("#{Rails.application.config.id_namespace}:", '')
-  end
-
   def dcterms_point_to_geojson(point)
     return nil if point.blank?
     point_hash = {}

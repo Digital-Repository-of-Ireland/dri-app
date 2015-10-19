@@ -93,11 +93,18 @@ Given /^I have associated the institute "(.?*)" with the collection with pid "(.
   institute.url = "http://www.dri.ie"
 
   logo = Rack::Test::UploadedFile.new(File.join(cc_fixture_path, "sample_logo.png"), "image/png")
+
+  if Settings.data.nil? || Settings.data.logos_bucket.nil?
+    bucket = 'institutelogos'
+  else
+    bucket = Settings.data.logos_bucket
+  end
+
   storage = Storage::S3Interface.new
   storage.store_file(logo.path,
                      "#{name}.#{logo.original_filename.split(".").last}",
-                     Settings.data.logos_bucket)
-  institute.logo = storage.get_link_for_file(Settings.data.logos_bucket,
+                     bucket)
+  institute.logo = storage.get_link_for_file(bucket,
                    "#{institute_name}.#{logo.original_filename.split(".").last}")
   institute.save
 
