@@ -17,16 +17,16 @@
     });
   });
 </script>
-<div class="dri_objecttools_title">
-  <i class="fa fa-pencil fa-lg"></i> <%= t('dri.views.catalog.titles.editor_tools') %>
-</div>
-<ul class="dri_view_collection bold">
+<div class="dri_sidenav">
+<h5>
+  <i class="fa fa-pencil"></i> <%= t('dri.views.catalog.titles.editor_tools') %>
+</h5>
+<ul>
   
   <li>
     <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
       <div class="dri_fileUpload">
-        <span><i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.upload_file') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_asset_file", :name => "upload_file", :style => "display:none; margin-left: 5px;" %>
-        </span>
+       <%= t('dri.views.catalog.links.upload_file') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_asset_file", :name => "upload_file", :style => "display:none; margin-left: 5px;" %>
         <%= file_field_tag 'Filedata', :required=>'required', :class => 'upload', :id => 'dri_asset_uploader' %>
       </div>
       <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
@@ -39,8 +39,7 @@
       <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
         <%= hidden_field_tag "preservation", "true" %>
         <div class="dri_fileUpload">
-        <span><i class="fa fa-upload fa-lg"></i><%= t('dri.views.catalog.links.upload_preservation_file') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_preservation_asset_file", :name => "upload_file", :style => "display:none; margin-left: 5px;" %>
-        </span>
+        <%= t('dri.views.catalog.links.upload_preservation_file') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_preservation_asset_file", :name => "upload_file", :style => "display:none; margin-left: 5px;" %>
         <%= file_field_tag 'Presfiledata', :required=>'required', :class => 'upload', :id => 'dri_preservation_asset_uploader' %>
         </div>
         <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
@@ -54,8 +53,7 @@
     <li>
       <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
         <div class="dri_fileUpload">
-          <span><i class="fa fa-code fa-lg"></i><%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %>
-          </span>
+          <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %>
           <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
         </div>
         <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
@@ -67,7 +65,7 @@
   <% if @files.present? %>
     <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
       <li>
-        <i class="fa fa-refresh fa-lg"></i><%= t('dri.views.catalog.links.generate_surrogates') %>
+        <%= t('dri.views.catalog.links.generate_surrogates') %>
       </li>
     <% end %>
   <% end %>
@@ -88,7 +86,7 @@
     <% if @document.editable? %>
       <%= link_to '', :'data-target' => '#dri_delete_object_modal_id', :'data-toggle' => 'modal' do %>
         <li>
-          <i class="fa fa-trash-o fa-lg"></i><%= t('dri.views.objects.buttons.delete_object') %>
+          <%= t('dri.views.objects.buttons.delete_object') %>
         </li>
       <% end %>
     <% end %>
@@ -97,11 +95,12 @@
 
   <%= link_to edit_object_path(@document), :id => "edit_record" do %>
   <li>
-    <i class="fa fa-pencil fa-lg"></i><%= t('dri.views.catalog.links.edit_this_record') %>
+    <%= t('dri.views.catalog.links.edit_this_record') %>
   </li>
   <% end %>
 
 </ul>
+</div>
 
 <% if can? :edit, @document && @document.editable? && !@document.published? %>
 <div class="modal fade" id="dri_delete_object_modal_id">

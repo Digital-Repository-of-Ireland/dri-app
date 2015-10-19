@@ -1,12 +1,9 @@
-<div class="dri_objecttools_title">
-	<i class="fa fa-lg fa-arrows"></i>&nbsp;<%= t('dri.views.catalog.titles.navigation_tools') %>
-</div>
+
 <%= render 'previous_next_doc' %>
 
-<ul class="dri_view_collection">
-	<li>
-		<%= link_back_to_catalog %>
-	</li>
+
+<div class="dri_sidenav">
+<ul>
 
 	<% collection = @document.root_collection %>
 
@@ -87,3 +84,4 @@
 
 <% end %>
 </ul>
+</div>
