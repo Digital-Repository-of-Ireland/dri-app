@@ -15,12 +15,11 @@ $dri_about_logos_min_height: 100px;
 %pages_a {
     a {
         color: $dri_midgrey;
-         text-decoration: underline;
         padding:0;
         margin:0;
     }
     a:hover {
-        color: $dri_darkgrey;
+        text-decoration: underline;
     }
 }
 %pages_h5 {
