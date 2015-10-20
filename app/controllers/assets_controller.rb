@@ -115,7 +115,7 @@ class AssetsController < ApplicationController
     enforce_permissions!('edit', params[:object_id])
 
     datastream = params[:datastream].presence || 'content'
-    unless datastream.eql?('content')
+    unless datastream == 'content'
       flash[:notice] = t('dri.flash.notice.specify_datastream')
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803180844) do
+ActiveRecord::Schema.define(version: 20151020102748) do
 
   create_table "bookmarks", force: true do |t|
     t.integer  "user_id",       null: false
@@ -50,6 +50,14 @@ ActiveRecord::Schema.define(version: 20150803180844) do
 
   add_index "doi_metadata", ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
 
+  create_table "ingest_statuses", force: true do |t|
+    t.string   "object_id"
+    t.string   "asset_id"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "institutes", force: true do |t|
     t.string   "name"
     t.string   "url"
@@ -59,6 +67,17 @@ ActiveRecord::Schema.define(version: 20150803180844) do
   end
 
   add_index "institutes", ["name"], name: "index_institutes_on_name"
+
+  create_table "job_statuses", force: true do |t|
+    t.integer  "ingest_status_id"
+    t.string   "job"
+    t.string   "status"
+    t.string   "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "job_statuses", ["ingest_status_id"], name: "index_job_statuses_on_ingest_status_id"
 
   create_table "licences", force: true do |t|
     t.string   "name"
