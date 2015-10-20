@@ -1,12 +1,9 @@
-<div class="dri_objecttools_title">
-	<i class="fa fa-lg fa-arrows"></i>&nbsp;<%= t('dri.views.catalog.titles.navigation_tools') %>
-</div>
+
 <%= render 'previous_next_doc' %>
 
-<ul class="dri_view_collection">
-	<li>
-		<%= link_back_to_catalog %>
-	</li>
+
+<div class="dri_sidenav">
+<ul>
 
 	<% collection = @document.root_collection %>
 
@@ -16,16 +13,16 @@
 	<% if document.is_root_collection? %>
 	<% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
 	<%= link_to catalog_index_path(collection_objects_params), :id => 'collection_s_object' do %>
-	<li>
-		<i class="fa fa-lg fa-folder-open"></i><%= t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})" %>
-	</li>
+	<h5>
+		<i class="fa fa-folder-open"></i>&nbsp;<%= t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})" %>
+	</h5>
 	<% end %>
 	<% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
 	<% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
 	<%= link_to catalog_index_path(collection_objects_params), :id => 'collection_s_object' do %>
-	<li>
-		<i class="fa fa-lg fa-folder-open"></i><%= t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})" %>
-	</li><% end %>
+	<h5>
+		<i class="fafa-folder-open"></i>&nbsp;<%= t('dri.views.catalog.forms.all_objects_in_collection') + " (#{objectsCount})" %>
+	</h5><% end %>
 
 	<% end %>
 	<% end %>
@@ -38,7 +35,7 @@
     <% mixedCount = count_items_in_collection_by_type(document[:id], "Mixed_Types") %>
 
 
-	<li class="dri_title"><%= t("dri.data.types.Title") %></li>
+	
       <% if (imageCount > 0) %>
           <li>
             <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "Image")) do %>
@@ -87,3 +84,4 @@
 
 <% end %>
 </ul>
+</div>

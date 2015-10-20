@@ -158,7 +158,7 @@ class CatalogController < ApplicationController
     # config.add_show_field solr_name('scopecontent', :stored_searchable, type: :string), :label => 'scope_content'
     # config.add_show_field solr_name('abstract', :stored_searchable, type: :string), :label => 'abstract'
     config.add_show_field solr_name('creator', :stored_searchable, type: :string), :label => 'creators'
-    DRI::Vocabulary::marcRelators.each do |role|
+    DRI::Vocabulary.marc_relators.each do |role|
       config.add_show_field solr_name('role_'+role, :stored_searchable, type: :string), :label => 'role_'+role
     end
     # config.add_show_field solr_name('bioghist', :stored_searchable, type: :string), :label => 'bioghist'

@@ -93,6 +93,10 @@
 	
 }
 
+.dri_messages_container {
+  margin-bottom: 25px;
+}
+
 .dri_main_content_container {
 
   	@include zen-grid-item(4, 1);
@@ -132,14 +136,14 @@
  
 	
 	.dri_object_first_block {
-		@include zen-grid-item(2.5, 1, $gutter-width: 0px);
+		@include zen-grid-item(3, 1, $gutter-width: 0px);
 		@include zen-clear();
 
 		
 	}
 	
 	.dri_object_second_block {
-		@include zen-grid-item(1, 3.5, $gutter-width: 0px);
+		@include zen-grid-item(1, 4, $gutter-width: 0px);
 		width:250px;
 
 
