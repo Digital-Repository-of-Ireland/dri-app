@@ -2,7 +2,18 @@ module BackgroundTasks
   module Status
 
     def status
-      @status ||= IngestStatus.where(asset_id: generic_file_id).first
+      @status ||= IngestStatus.find_or_create_by(asset_id: generic_file_id) do |ingest_status|
+        ingest_status.batch_id = generic_file.batch.id
+        ingest_status.status = 'processing'
+      end
+
+      if @status.status == 'success'
+        @status.status = 'processing'
+        @status.job_status.each { |j| j.delete }
+        @status.save
+      end
+
+      @status
     end 
 
     def with_status_update(job)

@@ -1,5 +1,5 @@
 class IngestStatus < ActiveRecord::Base
-  has_many :job_status
+  has_many :job_status, dependent: :destroy
 
   PDF_JOBS = %w(text thumbnail)
   TEXT_JOBS = %w(text)

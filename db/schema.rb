@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
   add_index "doi_metadata", ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
 
   create_table "ingest_statuses", force: true do |t|
-    t.string   "object_id"
+    t.string   "batch_id"
     t.string   "asset_id"
     t.string   "status"
     t.datetime "created_at"
