@@ -19,6 +19,8 @@ class AssetsController < ApplicationController
     @document = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
 
+    status(@generic_file.id)
+
     can_view?
 
     respond_to do |format|
@@ -115,7 +117,7 @@ class AssetsController < ApplicationController
     enforce_permissions!('edit', params[:object_id])
 
     datastream = params[:datastream].presence || 'content'
-    unless datastream.eql?('content')
+    unless datastream == 'content'
       flash[:notice] = t('dri.flash.notice.specify_datastream')
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end
@@ -253,6 +255,21 @@ class AssetsController < ApplicationController
   def local_file_ingest(name)
     upload_dir = Rails.root.join(Settings.dri.uploads)
     File.new(File.join(upload_dir, name))
+  end
+
+  def status(file_id)
+    ingest_status = IngestStatus.where(asset_id: file_id)
+
+    @status = {}
+    if ingest_status.present?
+      status = ingest_status.first
+      @status[:status] = status.status
+
+      @status[:jobs] = {}
+      status.job_status.each do |job|
+        @status[:jobs][job.job] = { status: job.status, message: job.message }
+      end
+    end
   end
 
   def upload_from_params
