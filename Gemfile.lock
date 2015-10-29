@@ -7,8 +7,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: dbc1da9e0cd0faf5d080eee58098c12a83048fa8
-  branch: develop
+  revision: d2af1e97e2d09a2d42c850a0c65dd172ad0ddc24
+  tag: v2.2.4
   specs:
     dri_data_models (2.2.4)
       hydra-access-controls
@@ -22,10 +22,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 6fffb7424814eb06b65787bc45cdf0c382098fa3
-  branch: develop
+  revision: 9d7be3b5a92157757fdf79987b597833759bc3ac
+  tag: v1.1.3
   specs:
-    user_group (1.1.2)
+    user_group (1.1.3)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -223,7 +223,7 @@ GEM
       warden (~> 1.2.3)
     devise-guests (0.3.3)
       devise
-    devise-i18n-views (0.3.4)
+    devise-i18n-views (0.3.6)
     diff-lcs (1.2.5)
     docile (1.1.5)
     domain_name (0.5.24)
@@ -345,7 +345,7 @@ GEM
       ya2yaml
     is_it_working-cbeer (1.0.16)
     iso-639 (0.2.5)
-    iso8601 (0.8.6)
+    iso8601 (0.8.7)
     it (0.2.5)
       actionpack (>= 3.0.0)
     jettywrapper (2.0.3)
