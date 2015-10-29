@@ -18,14 +18,9 @@ class SurrogatesController < ApplicationController
         if doc.is_collection?
           query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{doc.id}\"")
 
-          while query.has_more?
-            objects = query.pop
-
-            objects.each do |object|
-              object_doc = SolrDocument.new(object)
-              object_surrogates = surrogates(object_doc)
-              @surrogates[object_doc.id] = object_surrogates unless object_surrogates.empty?
-            end
+          query.each_solr_document do |object_doc|
+            object_surrogates = surrogates(object_doc)
+            @surrogates[object_doc.id] = object_surrogates unless object_surrogates.empty?
           end
 
         else
@@ -58,14 +53,9 @@ class SurrogatesController < ApplicationController
 
         if doc.is_collection?
           # Changed query to work with collections that have sub-collectionc (e.g. EAD) - ancestor_id rather than collection_id field
-          query = Solr::Query.new("#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
-          while query.has_more?
-            objects = query.pop
-
-            objects.each do |object|
-              object_doc = SolrDocument.new(object)
-              generate_surrogates(object_doc.id)
-            end
+          query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
+          query.each_solr_document do |object_doc|
+            generate_surrogates(object_doc.id)
           end
 
         else
@@ -101,7 +91,7 @@ class SurrogatesController < ApplicationController
   end
 
   private
-
+    
     def generate_surrogates(object_id)
       enforce_permissions!("edit", object_id)
 

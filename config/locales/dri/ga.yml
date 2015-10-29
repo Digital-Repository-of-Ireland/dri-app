@@ -83,6 +83,7 @@ ga:
         error_generating_surrogates: "Bhí earráid ann le linn cruthú ionadaithe: %{error}"
         error_publishing_collection: "Bhí earráid ann le linn foilsiú an bhailiúcháin: %{error}"
         error_review_job: "Ní féidir an tasc cúlra a chur isteach, ní thabharfar na hoibiachtaí cothrom le dáta: %{error}"
+        error_set_depositing_institute_job: "Ní féidir an tasc cúlra a chur isteach, ní thabharfar na hoibiachtaí cothrom le dáta: %{error}"
         error_saving_file: "Bhí earráid ann le linn sábháil an chomhaid: %{error}"
         invalid_file_type: "Rabhadh: Is cosúil nach cineál bailí comhaid é an comhad seo"
         invalid_object: "Oibiacht Neamhbhailí: %{error}."

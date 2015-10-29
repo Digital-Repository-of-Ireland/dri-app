@@ -317,7 +317,7 @@ class CatalogController < ApplicationController
     @response, @document = fetch params[:id]
 
     get_available_institutes
-    get_files
+    get_files_and_surrogates
    
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
@@ -349,15 +349,15 @@ class CatalogController < ApplicationController
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc( @document )
     # the Depositing Institute if any
     @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( @document )
+
     institutes_array = []
     collection_institutes_array = []
     depositing_institute_array = []
+    
     depositing_institute_array.push( @depositing_institute.name ) unless @depositing_institute.blank?
     @institutes.each { |inst| institutes_array.push( inst.name ) }
-    
-    if @collection_institutes.any?
-      @collection_institutes.each { |inst| collection_institutes_array.push( inst.name ) }
-    end
+        
+    @collection_institutes.each { |inst| collection_institutes_array.push( inst.name ) } if @collection_institutes.any?
     
     # exclude the associated and depositing Institutes from the list of Institutes available
     @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array
@@ -365,11 +365,19 @@ class CatalogController < ApplicationController
     @removal_institutes = collection_institutes_array - depositing_institute_array
   end
 
-  def get_files
+  def get_files_and_surrogates
     @files = ActiveFedora::SolrService.query("active_fedora_model_ssi:\"DRI::GenericFile\" AND #{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}:#{@document.id}", rows: 200)
     @files = @files.map {|f| SolrDocument.new(f)}.sort_by{ |f| f[ActiveFedora::SolrQueryBuilder.solr_name("label")] }
+    
     @displayfiles = []
-    @files.each { |file| @displayfiles << file unless file.preservation_only? }
+    @surrogates = {}
+
+    storage = Storage::S3Interface.new
+    
+    @files.each do |file| 
+        @displayfiles << file unless file.preservation_only?
+        @surrogates[file.id] = storage.get_surrogates(@document, file)
+    end
 
     ""
   end

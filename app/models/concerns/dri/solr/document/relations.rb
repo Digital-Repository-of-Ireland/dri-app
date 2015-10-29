@@ -87,13 +87,10 @@ module DRI::Solr::Document::Relations
     relationships_records.each do |rel, value|
       display_label = active_fedora_model.constantize.relationships[rel][:label]
       item_array = []
-      value.each do |id|
-        rel_obj_doc = ActiveFedora::SolrService.query("id:#{id}", :defType => "edismax")
-        
-        unless rel_obj_doc.empty?
-          link_text = rel_obj_doc[0][ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string)].first
-          item_array.to_a.push [link_text, SolrDocument.new(rel_obj_doc[0])]
-        end
+      
+      value.each do |rel_obj_doc|
+        link_text = rel_obj_doc[ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string)].first
+        item_array.to_a.push [link_text, rel_obj_doc]
       end
       
       rels["#{display_label}"] = item_array unless item_array.empty?
@@ -108,32 +105,30 @@ module DRI::Solr::Document::Relations
     object_class = self.active_fedora_model.constantize
     relationships = object_class.relationships
 
-    relationships.each { |key, value| records[key] = retrieve_relation_records(self.object_profile[value[:field]], object_class.solr_relationships_field)}
+    relationships.each do |key, value| 
+      relations_array = self.object_profile[value[:field]]
+      records[key] = retrieve_relation_records(relations_array, object_class.solr_relationships_field) unless relations_array.blank?
+    end
 
     records
   end
 
-  def retrieve_relation_records rels_array, solr_id_field
+  def retrieve_relation_records relations_array, solr_id_field
     records = []
 
     # Get Root collection of current object.
     root = root_collection
 
     if (root)
-      rels_array.each do |item_id|
-        # We need to index the identifier element value to be able to search in Solr and then retrieve the document by id
-        solr_query = "#{solr_id_field}:\"#{item_id.to_s}\""
-        solr_query << " AND #{ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string)}:\"#{root.id}\""
-        solr_results = ActiveFedora::SolrService.query(solr_query, :defType => "edismax")
+      solr_query = "#{solr_id_field}:(#{relations_array.map { |r| "\"#{r}\"" }.join(' OR ')})"
+      solr_query << " AND #{ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string)}:\"#{root.id}\""
+        
+      solr_results = ActiveFedora::SolrService.query(solr_query, rows: relations_array.length, defType: "edismax")
 
-        if solr_results.present?
-          solr_results.each do |item|
-            doc = SolrDocument.new(item)
-            records << doc.id
-          end
-        else
-          Rails.logger.error("Relationship target object #{item_id} not found in Solr for object #{self.id}")
-        end
+      if solr_results.present?
+        solr_results.each { |item| records << SolrDocument.new(item) }
+      else
+        Rails.logger.error("Relationship target objects not found in Solr for object #{self.id}")
       end
     else
       Rails.logger.error("Root collection ID for object with PID #{self.id} not found in Solr")

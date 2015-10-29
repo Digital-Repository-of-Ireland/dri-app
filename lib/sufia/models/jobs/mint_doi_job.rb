@@ -7,7 +7,7 @@ class MintDoiJob < ActiveFedoraIdBasedJob
   end
 
   def run
-    unless DoiConfig.nil?
+    if Settings.doi.enable == true && DoiConfig
       Rails.logger.info "Mint DOI for #{id}"
     
       doi = DataciteDoi.where(object_id: id).current
