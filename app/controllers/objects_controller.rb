@@ -1,10 +1,9 @@
 # Controller for Digital Objects
 #
 require 'solr/query'
-require 'moab/moab_helpers'
+require 'preservation/preservator'
 
 include Utils
-include MoabHelpers 
 
 class ObjectsController < BaseObjectsController
 
@@ -72,6 +71,7 @@ class ObjectsController < BaseObjectsController
 
     doi.update_metadata(params[:batch].select{ |key, value| doi.metadata_fields.include?(key) }) if doi
 
+    @object.object_version = (@object.object_version.to_i+1).to_s
     updated = @object.update_attributes(update_params)
 
     #purge params from update action
@@ -86,14 +86,21 @@ class ObjectsController < BaseObjectsController
         retrieve_linked_data
 
         actor.version_and_record_committer
-        update_doi(@object, doi, "metadata update") if doi && doi.changed?
+        update_doi(@object, doi, 'metadata update') if doi && doi.changed?
+
+        # Moabify the descMetadata & properties (checksum_md5 and doi)  datastream
+        @object.reload # we must refresh the datastreams list 
+        preservation = Preservation::Preservator.new(@object.id, @object.object_version)
+        preservation.create_moab_dirs()
+        preservation.moabify_datastream('descMetadata', @object.datastreams['descMetadata'])
+        preservation.moabify_datastream('properties', @object.datastreams['properties'])
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
-        format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+        format.html  { redirect_to :controller => 'catalog', :action => 'show', :id => @object.id }
         format.json  { render :json => @object }
       else
         flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
-        format.html  { render :action => "edit" }
+        format.html  { render :action => 'edit' }
         format.json  { render :json => @object }
       end
     end
@@ -144,8 +151,14 @@ class ObjectsController < BaseObjectsController
 
       actor.version_and_record_committer
 
+      @object.reload # we must refresh the datastreams list
+
       # Create MOAB dir
-      moabify(@object.id, @object.object_version) unless @object.is_collection?      
+      preservation = Preservation::Preservator.new(@object.id, @object.object_version)
+      preservation.create_moab_dirs()
+      @object.datastreams.each do |key,value|
+        preservation.moabify_datastream(key, value)
+      end
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -424,18 +437,6 @@ class ObjectsController < BaseObjectsController
         end
       end
     end
-
-
-    # moabify
-    # Creates MOAB preservation directory structure and saves metadata there
-    #
-    def moabify(object_id, version)
-
-      base_dir = File.join(local_storage_dir, build_hash_dir(object_id), MoabHelpers.version_string(version))
-      FileUtils.mkdir_p(base_dir)
-
-    end
-
 
 end
 

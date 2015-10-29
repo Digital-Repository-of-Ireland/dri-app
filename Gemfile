@@ -30,6 +30,7 @@ gem 'feedjira'
 
 # Storage-related gems
 gem 'aws-sdk', '~> 2'
+gem 'moab-versioning'
 
 #gem 'clamav'
 

@@ -1,11 +1,13 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
+
+require 'preservation/preservator'
+require 'validators'
+
 class AssetsController < ApplicationController
 
   before_filter :authenticate_user_from_token!, only: [:list_assets]
   before_filter :authenticate_user!, only: [:list_assets]
-
-  require 'validators'
 
   include DRI::Doi
 
@@ -251,21 +253,39 @@ class AssetsController < ApplicationController
     end
 
     def create_file(filedata, generic_file, datastream, checksum, filename = nil)
+      # prepare file
       @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
       options = {}
       options[:mime_type] = @mime_type
       options[:checksum] = checksum
       options[:file_name] = filename unless filename.nil?
       options[:batch_id] = generic_file.batch.id
+      options[:object_version] = (generic_file.batch.object_version.to_i+1).to_s
 
+      # Create MOAB dir and files
+      preservation = Preservation::Preservator.new(generic_file.batch.id, options[:object_version])
+      preservation.create_moab_dirs()
+      generic_file.batch.object_version = options[:object_version]
+      preservation.moabify_datastream('properties', generic_file.batch.datastreams['properties'])
+
+      # Update object version
+      begin
+        generic_file.batch.save!
+      rescue ActiveRecord::ActiveRecordError => e
+        logger.error "Could not update object version number for #{generic_file.batch.id} to version #{options[:object_version]}"
+        raise Exceptions::InternalError
+      end
+
+      # Add and save the file
       @file.add_file filedata, options
 
       begin
-        raise Exceptions::InternalError unless @file.save!
+        @file.save!
       rescue ActiveRecord::ActiveRecordError => e
         logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
         raise Exceptions::InternalError
       end
+
     end
 
     def delete_surrogates(bucket_name, file_prefix)

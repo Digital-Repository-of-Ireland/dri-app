@@ -22,7 +22,8 @@ class LocalFile < ActiveRecord::Base
       raise Exceptions::InternalError
     end
 
-    self.version = version_number
+    #self.version = version_number
+    self.version = opts[:object_version] || 1
     self.mime_type = opts[:mime_type]
 
     base_dir = opts[:directory].presence || File.join(local_storage_dir, content_path(batch_id))
@@ -71,7 +72,7 @@ class LocalFile < ActiveRecord::Base
     # output: partial path string e.g. "1c/18/df/87/1c18df87m/v0001"
     def content_path(batch=nil)
       pid = batch ? batch : self.fedora_id
-      File.join(build_hash_dir(batch), version_path)
+      File.join(build_hash_dir(batch), version_path, "content")
     end
 
 
@@ -79,7 +80,7 @@ class LocalFile < ActiveRecord::Base
     # versions start at 0, but MOAB expects v0001 as first version
     # output: incremented & formatted version number String of format vxxxx
     def version_path
-      'v%04d' % self.version+1.to_s
+      'v%04d' % (self.version).to_s
     end
 
 

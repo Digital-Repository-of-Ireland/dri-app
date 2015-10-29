@@ -2,6 +2,7 @@
 #
 require 'storage/cover_images'
 require 'validators'
+require 'preservation/preservator'
 
 class CollectionsController < BaseObjectsController
   include Hydra::AccessControlsEnforcement
@@ -162,6 +163,15 @@ class CollectionsController < BaseObjectsController
       create_reader_group
 
       actor.version_and_record_committer
+
+      @object.reload # we must refresh the datastreams list
+
+      # Create MOAB dir
+      preservation = Preservation::Preservator.new(@object.id, @object.object_version)
+      preservation.create_moab_dirs()
+      @object.datastreams.each do |key,value|
+        preservation.moabify_datastream(key, value)
+      end
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')
