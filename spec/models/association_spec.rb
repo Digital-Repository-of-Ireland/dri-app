@@ -6,6 +6,7 @@ describe "collection associations" do
     @collection = DRI::Batch.with_standard(:qdc)
     @collection.title = ["Test Associations Collection"]
     @collection.description = ["Description"]
+    @collection.creator = ["Creator"]
     @collection.rights = ["Rights"]
     @collection.type = ["Collection"]
     @collection.creation_date = ["2015-04-01"]
@@ -15,6 +16,7 @@ describe "collection associations" do
     @object = DRI::Batch.with_standard(:qdc)
     @object.title = ["Test Associations Object"]
     @object.description = ["Description"]
+    @object.creator = ["Creator"]
     @object.rights = ["Rights"]
     @object.type = ["Sound"]
     @object.creation_date = ["2015-04-01"]

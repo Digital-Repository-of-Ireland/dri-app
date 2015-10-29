@@ -1,22 +1,21 @@
 class CharacterizeJob < ActiveFedoraIdBasedJob
+  include BackgroundTasks::Status
 
   def queue_name
     :characterize
   end
 
   def run
-    begin
+    with_status_update('characterize') do
       generic_file.characterize
       generic_file.save
 
       after_characterize
-    rescue => e
-      Rails.logger.error "Unable to characterize file #{generic_file_id}"
     end
   end
 
   def after_characterize
-    unless generic_file.preservation_only.eql?('true')
+    unless generic_file.preservation_only == 'true'
       Sufia.queue.push(CreateBucketJob.new(generic_file_id))
     end
 
@@ -26,5 +25,4 @@ class CharacterizeJob < ActiveFedoraIdBasedJob
       Sufia.queue.push(UpdateIndexJob.new(generic_file.batch.id))
     end
   end
-
 end

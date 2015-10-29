@@ -53,7 +53,6 @@ class MetadataController < CatalogController
       redirect_to controller: 'catalog', action: 'show', id: params[:id]
       return
     end
-
     xml = MetadataHelpers.load_xml(params[:metadata_file])
 
     @object = retrieve_object! params[:id]
@@ -63,6 +62,12 @@ class MetadataController < CatalogController
     end
 
     @object.update_metadata xml
+    unless @object.valid?
+      flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
+      redirect_to controller: 'catalog', action: 'show', id: params[:id]
+      return
+    end
+
     MetadataHelpers.checksum_metadata(@object)
     warn_if_duplicates
 
@@ -72,21 +77,17 @@ class MetadataController < CatalogController
       logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
       raise Exceptions::InternalError
     end
+    
+    begin
+      raise Exceptions::InternalError unless @object.save
 
-    if @object.valid?
-      begin
-        raise Exceptions::InternalError unless @object.save
-
-        actor.version_and_record_committer
-
-      rescue RuntimeError => e
-        logger.error "Could not save object #{@object.id}: #{e.message}"
-        raise Exceptions::InternalError
-      end
-
+      actor.version_and_record_committer
       flash[:notice] = t('dri.flash.notice.metadata_updated')
+    rescue RuntimeError => e
+      logger.error "Could not save object #{@object.id}: #{e.message}"
+      raise Exceptions::InternalError
     end
-        
+
     redirect_to controller: 'catalog', action: 'show', id: params[:id]
   end
 end
