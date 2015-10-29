@@ -223,11 +223,7 @@ GEM
       warden (~> 1.2.3)
     devise-guests (0.3.3)
       devise
-<<<<<<< HEAD
-    devise-i18n-views (0.3.5)
-=======
     devise-i18n-views (0.3.6)
->>>>>>> release-15.11.0
     diff-lcs (1.2.5)
     docile (1.1.5)
     domain_name (0.5.24)
@@ -521,11 +517,7 @@ GEM
     rb-fsevent (0.9.5)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-<<<<<<< HEAD
-    rdf (1.1.17)
-=======
     rdf (1.1.17.1)
->>>>>>> release-15.11.0
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (1.1.0)
       rdf (>= 1.1)
