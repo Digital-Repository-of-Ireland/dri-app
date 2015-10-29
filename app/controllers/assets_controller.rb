@@ -54,7 +54,7 @@ class AssetsController < ApplicationController
       end
     end
 
-    render text: 'Unable to find file'
+    render text: 'Unable to find file', status: 500
   end
 
   def destroy
@@ -248,8 +248,14 @@ class AssetsController < ApplicationController
     search_params = { f: @generic_file.id, d: @datastream }
     search_params[:v] = params[:version] if params[:version].present?
 
-    LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d AND version = :v',
-                     search_params).take
+    query = 'fedora_id LIKE :f AND ds_id LIKE :d'
+    query << ' AND version = :v' if search_params[:v].present?
+
+    LocalFile.where(query, search_params).take
+  rescue ActiveRecord::RecordNotFound
+    raise Exceptions::InternalError, "Unable to find requested file"
+  rescue ActiveRecord::ActiveRecordError
+    raise Exceptions::InternalError, "Error finding file"
   end
 
   def local_file_ingest(name)

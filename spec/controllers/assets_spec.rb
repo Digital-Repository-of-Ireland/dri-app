@@ -184,4 +184,36 @@ describe AssetsController do
 
   end
 
+  describe 'download' do
+  
+    it "should be possible to download the master asset" do
+      DRI::Asset::Actor.any_instance.stub(:create_external_content)
+
+      @object.master_file_access = 'public'
+      @object.edit_users_string = @login_user.email
+      @object.read_users_string = @login_user.email
+      @object.save
+      @object.reload
+
+      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+      generic_file.batch = @object
+      generic_file.apply_depositor_metadata(@login_user.email)
+      file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
+      options = {}
+      options[:mime_type] = "audio/mp3"
+      options[:file_name] = "SAMPLEA.mp3"
+
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      file.add_file uploaded, options
+      file.save
+      generic_file.save
+      file_id = generic_file.id
+
+      get :download, id: file_id, object_id: @object.id 
+      expect(response.status).to eq(200)
+      expect(response.header['Content-Type']).to eq('audio/mp3')
+      expect(response.header['Content-Length']).to eq("#{File.size(File.join(fixture_path, "SAMPLEA.mp3"))}")      
+    end
+  end
+
 end
