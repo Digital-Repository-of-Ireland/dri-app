@@ -747,6 +747,7 @@ ol.breadcrumb {
     margin-bottom: 10px;
     padding-bottom: 8px;
     font-weight: normal;
+    font-style:italic;
     @include border_radius (0px);
     li {
         font-size: 100%;
