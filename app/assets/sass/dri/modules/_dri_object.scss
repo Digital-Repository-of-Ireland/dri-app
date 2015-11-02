@@ -70,12 +70,14 @@ h2.dri_no_asset_availiable {
             }
         }
         .carousel-caption {
-            background: rgba(47, 47, 47, 0.75);
+            background: $dri_extralightgrey;
+            border-top: 1px solid $dri_thingrey;
+             border-bottom: 1px solid $dri_thingrey;
             min-height: 30px;
             padding: 0px;
-            margin: 0px;
+            margin: 0 0 10px 0;
             a {
-                color: $dri_white;
+                color: $dri_midgrey;
             }
         }
         p.dri_restrict_message {
