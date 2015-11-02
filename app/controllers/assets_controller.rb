@@ -205,7 +205,7 @@ class AssetsController < ApplicationController
       preservation = Preservation::Preservator.new(generic_file.batch.id, options[:object_version])
       preservation.create_moab_dirs()
       generic_file.batch.object_version = options[:object_version]
-      preservation.moabify_datastream('properties', generic_file.batch.datastreams['properties'])
+      preservation.moabify_datastream('properties', generic_file.batch.attached_files['properties'])
 
       # Update object version
       begin

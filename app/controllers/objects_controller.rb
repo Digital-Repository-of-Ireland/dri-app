@@ -94,8 +94,8 @@ class ObjectsController < BaseObjectsController
         @object.reload # we must refresh the datastreams list 
         preservation = Preservation::Preservator.new(@object.id, @object.object_version)
         preservation.create_moab_dirs()
-        preservation.moabify_datastream('descMetadata', @object.datastreams['descMetadata'])
-        preservation.moabify_datastream('properties', @object.datastreams['properties'])
+        preservation.moabify_datastream('descMetadata', @object.attached_files['descMetadata'])
+        preservation.moabify_datastream('properties', @object.attached_files['properties'])
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
         format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
@@ -158,7 +158,7 @@ class ObjectsController < BaseObjectsController
       # Create MOAB dir
       preservation = Preservation::Preservator.new(@object.id, @object.object_version)
       preservation.create_moab_dirs()
-      @object.datastreams.each do |key,value|
+      @object.attached_files.each do |key,value|
         preservation.moabify_datastream(key, value)
       end
 

@@ -15,7 +15,7 @@ class DatastreamVersionController < CatalogController
       return
     end
 
-    if @object && @object.datastreams.keys.include?(params[:stream])
+    if @object && @object.attached_files.keys.include?(params[:stream])
       begin
         data = open("#{ActiveFedora.config.credentials[:url]}/objects/#{@object.id}/datastreams/#{params[:stream]}/content?asOfDateTime=#{params[:date]}")
       rescue OpenURI::HTTPError
