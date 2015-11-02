@@ -4,16 +4,17 @@ require 'checksum'
 require 'pathname'
 
 class LocalFile < ActiveRecord::Base
+  include MoabHelpers
+
   serialize :checksum
 
   before_destroy :delete_file
 
   # Write the file to the filesystem
   #
-  def add_file(upload,opts={})
-
+  def add_file(upload, opts = {})
     file_name = opts[:file_name].presence || upload.original_filename
-    file_name = "#{self.fedora_id}_#{file_name}"
+    file_name = "#{fedora_id}_#{file_name}"
 
     # Batch ID will be used in the MOAB directory name, check it exists
     batch_id = opts[:batch_id]
@@ -22,24 +23,17 @@ class LocalFile < ActiveRecord::Base
       raise Exceptions::InternalError
     end
 
-    #self.version = version_number
     self.version = opts[:object_version] || 1
     self.mime_type = opts[:mime_type]
 
-    base_dir = opts[:directory].presence || File.join(local_storage_dir, content_path(batch_id))
-    self.path = File.join(base_dir, file_name)
-
+    base_dir = opts[:directory].presence || File.join(local_storage_dir, content_path(batch_id, version))
     FileUtils.mkdir_p(base_dir)
-    if upload.respond_to?('path')
-      FileUtils.cp(upload.path, self.path)
-    else
-      File.open(self.path, "wb") { |f| f.write(upload.read) }
-    end
-
-    File.chmod(0644, self.path)
+    self.path = File.join(base_dir, file_name)
+   
+    upload_to_file(base_dir, upload)
 
     if opts[:checksum]
-      self.checksum = { opts[:checksum] => Checksum.checksum(opts[:checksum], self.path) }
+      self.checksum = { opts[:checksum] => Checksum.checksum(opts[:checksum], path) }
     else
       self.checksum = {}
     end
@@ -48,14 +42,12 @@ class LocalFile < ActiveRecord::Base
   # Remove the file from the filesystem if it exists
   #
   def delete_file
-    return if self.path.nil?
+    return if path.nil? || !File.exist?(path)
 
-    if File.exist?(self.path)
-      File.delete(self.path)
+    File.delete(path)
 
-      pn = Pathname.new(self.path)
-      FileUtils.remove_dir(pn.dirname, :force => true)
-    end
+    pn = Pathname.new(path)
+    FileUtils.remove_dir(pn.dirname, force: true)
   end
 
   private
@@ -70,42 +62,52 @@ class LocalFile < ActiveRecord::Base
     # otherwise will use generic_file id
     # input (optional): batch string (fedora object id)
     # output: partial path string e.g. "1c/18/df/87/1c18df87m/v0001"
-    def content_path(batch=nil)
-      pid = batch ? batch : self.fedora_id
-      File.join(build_hash_dir(batch), version_path, "content")
-    end
+    #def content_path(batch=nil)
+    #  pid = batch ? batch : self.fedora_id
+    #  File.join(build_hash_dir(batch), version_path, "content")
+    #end
 
 
     # Return formatted version number for the file path
     # versions start at 0, but MOAB expects v0001 as first version
     # output: incremented & formatted version number String of format vxxxx
-    def version_path
-      'v%04d' % (self.version).to_s
-    end
+    #def version_path
+    #  'v%04d' % (self.version).to_s
+    #end
 
 
     # Return the hash part of the file path
     # input (optional): batch String (fedora object id) 
     # output: partial path String e.g. "1c/18/df/87/1c18df87m"
-    def build_hash_dir(batch)
-      dir = ""
-      index = 0
-      pid = batch ? batch : self.fedora_id
+    #def build_hash_dir(batch)
+    #  dir = ''
+    #  index = 0
+    #  pid = batch ? batch : self.fedora_id
       
 
-      4.times {
-        dir = File.join(dir, pid[index..index+1])
-        index += 2
-      }
+    #  4.times {
+    #    dir = File.join(dir, pid[index..index+1])
+    #    index += 2
+    #  }
 
-      File.join(dir, pid)
+    #  File.join(dir, pid)
+    #end
+
+    def upload_to_file(base_dir, upload)
+      if upload.respond_to?('path')
+        FileUtils.cp(upload.path, path)
+      else
+        File.open(path, 'wb') { |f| f.write(upload.read) }
+      end
+
+      File.chmod(0644, path)
     end
 
 
     # Return the version number
     # output: count Fixnum
-    def version_number
-      LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => self.fedora_id, :d => self.ds_id }).count
-    end
+    #def version_number
+    #  LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d', { f: fedora_id, d: self.ds_id }).count
+    #end
 
 end

@@ -10,8 +10,8 @@ module MoabHelpers
     # otherwise will use generic_file id
     # input (optional): batch string (fedora object id)
     # output: partial path string e.g. "1c/18/df/87/1c18df87m/v0001"
-    def content_path(batch)
-      File.join(build_hash_dir(batch), version_string(batch.object_version))
+    def content_path(batch, version)
+      File.join(build_hash_dir(batch), version_string(version), "content")
     end
 
 
@@ -29,15 +29,13 @@ module MoabHelpers
     def build_hash_dir(batch)
       dir = ""
       index = 0
-      pid = batch ? batch : self.fedora_id
-
 
       4.times {
-        dir = File.join(dir, pid[index..index+1])
+        dir = File.join(dir, batch[index..index+1])
         index += 2
       }
 
-      File.join(dir, pid)
+      File.join(dir, batch)
     end
 
 

@@ -4,16 +4,12 @@ module Utils
     Integer(number) rescue false
   end
 
-  def self.split_id(pid)
-    pid.sub("#{Rails.application.config.id_namespace}:", '')
-  end
-
   def dcterms_point_to_geojson(point)
     return nil if point.blank?
     point_hash = {}
 
     point.split(/\s*;\s*/).each do |component|
-      (key,value) = component.split(/\s*=\s*/)
+      (key, value) = component.split(/\s*=\s*/)
       point_hash[key] = value
     end
 
@@ -31,16 +27,15 @@ module Utils
     geojson_hash[:geometry][:coordinates] = coords
     geojson_hash[:properties] = tmp_hash
 
-    return geojson_hash
+    geojson_hash
   end
-
 
   def dcterms_box_to_geojson(box)
     return nil if box.blank?
     point_hash = {}
 
     box.split(/\s*;\s*/).each do |component|
-      (key,value) = component.split(/\s*=\s*/)
+      (key, value) = component.split(/\s*=\s*/)
       point_hash[key] = value
     end
 
@@ -63,7 +58,7 @@ module Utils
     geojson_hash[:geometry][:coordinates] = coords
     geojson_hash[:properties] = tmp_hash
 
-    return geojson_hash
+    geojson_hash
   end
 
   def dcterms_period_to_string(period)
@@ -75,7 +70,7 @@ module Utils
         return v unless v.nil? || v.empty?
       end
     end
-    return period
-
+    
+    period
   end
 end

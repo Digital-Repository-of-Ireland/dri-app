@@ -221,7 +221,7 @@ module FieldRenderHelper
       end
     end
 
-    DRI::Vocabulary.marcRelators.each do |role|
+    DRI::Vocabulary.marc_relators.each do |role|
       array_result = @object.send("role_"+role)
       marc_relator_select_list.push [ role + " - " + t("dri.vocabulary.marc_relator."+role), "role_"+role]
       if (array_result != nil || array_result.length > 0)

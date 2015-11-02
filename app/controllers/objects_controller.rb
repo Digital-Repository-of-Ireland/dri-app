@@ -21,48 +21,48 @@ class ObjectsController < BaseObjectsController
     @collection = params[:collection]
 
     @object = DRI::Batch.with_standard :qdc
-    @object.creator = [""]
+    @object.creator = ['']
 
-    supported_licences()
+    supported_licences
   end
 
 
   # Edits an existing model.
   #
   def edit
-    enforce_permissions!("edit",params[:id])
+    enforce_permissions!('edit',params[:id])
 
-    supported_licences()
+    supported_licences
     
     @object = retrieve_object!(params[:id])
-    @object.creator = [""] unless @object.creator[0]
+    @object.creator = [''] unless @object.creator[0]
     
     respond_to do |format|
       format.html
-      format.json  { render :json => @object }
+      format.json  { render json: @object }
     end
   end
 
   def show
-    enforce_permissions!("show_digital_object",params[:id])
+    enforce_permissions!('show_digital_object', params[:id])
 
     @object = retrieve_object!(params[:id])
 
     respond_to do |format|
       format.html { redirect_to(catalog_url(@object.id)) }
-      format.endnote { render :text => @object.export_as_endnote, :layout => false }
+      format.endnote { render text: @object.export_as_endnote, layout: false }
     end
   end
 
   # Updates the attributes of an existing model.
   #
   def update
-    enforce_permissions!("edit", params[:id])
+    enforce_permissions!('edit', params[:id])
 
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
     
-    supported_licences()
+    supported_licences
 
     @object = retrieve_object!(params[:id])
 
@@ -98,19 +98,19 @@ class ObjectsController < BaseObjectsController
         preservation.moabify_datastream('properties', @object.datastreams['properties'])
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
-        format.html  { redirect_to :controller => 'catalog', :action => 'show', :id => @object.id }
-        format.json  { render :json => @object }
+        format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+        format.json  { render json: @object }
       else
         flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
-        format.html  { render :action => 'edit' }
-        format.json  { render :json => @object }
+        format.html  { render action: 'edit' }
+        format.json  { render json: @object }
       end
     end
 
   end
 
   def citation
-    enforce_permissions!("show_digital_object",params[:id])
+    enforce_permissions!('show_digital_object', params[:id])
 
     @object = retrieve_object!(params[:id])
   end
@@ -129,7 +129,7 @@ class ObjectsController < BaseObjectsController
       end
     end
 
-    enforce_permissions!("create_digital_object",params[:batch][:governing_collection].id)
+    enforce_permissions!('create_digital_object', params[:batch][:governing_collection].id)
 
     if params[:batch][:documentation_for].present?
       create_from_form :documentation
@@ -141,7 +141,7 @@ class ObjectsController < BaseObjectsController
 
     MetadataHelpers.checksum_metadata(@object)
     
-    supported_licences()
+    supported_licences
 
     @object.object_version = "1"
 
@@ -164,26 +164,25 @@ class ObjectsController < BaseObjectsController
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-        redirect_to :controller => "catalog", :action => "show", :id => @object.id
+        redirect_to controller: 'catalog', action: 'show', id: @object.id
         }
         format.json {
-          if @warnings
-            response = { :pid => @object.id, :warning => @warnings }
-          else
-            response = { :pid => @object.id }
-          end
-          render :json => response, :location => catalog_url(@object.id), :status => :created }
+          response = { pid: @object.id }
+          response[:warning] = @warnings if @warnings
+          
+          render json: response, location: catalog_url(@object.id), status: :created 
+        }
       end
     else
       respond_to do |format|
         format.html {
-          flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
+          flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
           raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
           return
         }
         format.json {
           raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
-          render :json => @object.errors
+          render json: @object.errors
         }
       end
     end
@@ -191,26 +190,26 @@ class ObjectsController < BaseObjectsController
   end
 
   def destroy
-    enforce_permissions!("edit", params[:id])
+    enforce_permissions!('edit', params[:id])
 
     @object = retrieve_object!(params[:id])
     
-    if @object.status != "published"
+    if @object.status != 'published'
       @object.delete 
       flash[:notice] = t('dri.flash.notice.object_deleted')  
     else
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, "")
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
     respond_to do |format|
-      format.html { redirect_to :controller => "catalog", :action => "index" }
+      format.html { redirect_to controller: 'catalog', action: 'index' }
     end
   end
 
   def index
     @list = []
 
-    if params.has_key?("objects") && !params[:objects].blank?
+    if params.key?('objects') && params[:objects].present?
       solr_query = ActiveFedora::SolrService.construct_query_for_ids(params[:objects].map{|o| o.values.first})
       results = Solr::Query.new(solr_query)
       
@@ -244,15 +243,15 @@ class ObjectsController < BaseObjectsController
 
 
   def related
-    enforce_permissions!("show_digital_object",params[:object])
+    enforce_permissions!('show_digital_object', params[:object])
 
-    if params.has_key?("count") && params[:count].present? && numeric?(params[:count])
+    if params.key?('count') && params[:count].present? && numeric?(params[:count])
       count = params[:count]
     else
       count = 3
     end
 
-    if params.has_key?("object") && !params[:object].blank?
+    if params.key?('object') && params[:object].present?
       solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
       result = ActiveFedora::SolrService.instance.conn.get('select',
                         :params=>{:q=>solr_query, :qt => 'standard',
@@ -276,7 +275,7 @@ class ObjectsController < BaseObjectsController
   end
 
   def status
-    enforce_permissions!("edit",params[:id])
+    enforce_permissions!('edit', params[:id])
 
     @object = retrieve_object!(params[:id])
 
@@ -284,31 +283,29 @@ class ObjectsController < BaseObjectsController
 
     raise Exceptions::BadRequest if @object.is_collection?
 
-    unless @object.status.eql?("published")
+    unless @object.status.eql?('published')
       @object.status = params[:status] if params[:status].present?
       @object.save
     end
 
-    if params[:apply_all].present? && params[:apply_all].eql?("yes")
+    if params[:apply_all].present? && params[:apply_all] == 'yes'
       begin
         Sufia.queue.push(ReviewJob.new(@object.governing_collection.id)) unless @object.governing_collection.nil?
       rescue Exception => e
         logger.error "Unable to submit status job: #{e.message}"
-        flash[:alert] = t('dri.flash.alert.error_review_job', :error => e.message)
-        @warnings = t('dri.flash.alert.error_review_job', :error => e.message)
+        flash[:alert] = t('dri.flash.alert.error_review_job', error: e.message)
+        @warnings = t('dri.flash.alert.error_review_job', error: e.message)
       end
     end
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html  { redirect_to :controller => "catalog", :action => "show", :id => @object.id }
+      format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
       format.json {
-        unless @warnings.nil?
-          response = { :warning => @warnings, :id => @object.id, :status => @object.status }
-        else
           response = { :id => @object.id, :status => @object.status }
-        end
-        render :json => response, :status => :accepted }
+          response[:warning] = @warnings if @warnings
+          render :json => response, :status => :accepted 
+      }
     end
   end
 
@@ -339,7 +336,7 @@ class ObjectsController < BaseObjectsController
     end
 
     def create_reader_group
-      group = UserGroup::Group.new(:name => "#{@object.id}", :description => "Default Reader group for collection #{@object.id}")
+      group = UserGroup::Group.new(name: "#{@object.id}", description: "Default Reader group for collection #{@object.id}")
       group.reader_group = true
       group.save
     end
@@ -357,10 +354,10 @@ class ObjectsController < BaseObjectsController
           value = doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable)]
 
           case field
-          when "institute"
+          when 'institute'
             item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
           
-          when "geocode_point"
+          when 'geocode_point'
             if value.present?
               geojson_points = []
               value.each { |point| geojson_points << dcterms_point_to_geojson(point) }
@@ -368,7 +365,7 @@ class ObjectsController < BaseObjectsController
               item['metadata'][field] = geojson_points
             end
           
-          when "geocode_box"
+          when 'geocode_box'
             if value.present?
               geojson_boxes = []
               value.each { |box| geojson_boxes << dcterms_box_to_geojson(box) }
@@ -376,7 +373,7 @@ class ObjectsController < BaseObjectsController
               item['metadata'][field] = geojson_boxes
             end
           
-          when field.include?("date") || field == "temporal_coverage"
+          when field.include?('date') || field == 'temporal_coverage'
             if value.present?
               dates = []
               value.each { |d| dates << dcterms_period_to_string(d) }

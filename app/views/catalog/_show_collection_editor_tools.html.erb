@@ -151,7 +151,7 @@
 			</div>
 
 			<div class="modal-body">
-				<span class="label label-danger"><%= t('dri.views.collection.confirm_all_descendants_reviewed') %></span>
+				<span class="label label-danger"><%= t('dri.views.collection.confirm_all_descendants_reviewed', draft_count: @document.draft_objects) %></span>
 				<br />
 				<%= button_to  review_path(:apply_all => 'yes'),:class =>"dri_button_red", data: { confirm: t('dri.views.collection.confirm_all_descendants_reviewed') }, :id => "all_objects_reviewed", :method => :put do %>
 				<%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>

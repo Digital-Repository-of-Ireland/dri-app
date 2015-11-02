@@ -1,7 +1,7 @@
 <!-- <h4><%#= t('dri.views.objects.legends.metadata') %></h4>-->
-<% if (update_desc_metadata?(@object.class.to_s)) %>
+<% if update_desc_metadata?(@object.class.to_s) %>
 <fieldset id="title" class="dri_title_metadata_fieldset">
-	<% if (params[:controller] == "collections" ) %>
+	<% if params[:controller] == 'collections' %>
 	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.collection_title')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.collection_title_text') %>" data-original-title="<%= t('dri.help.fields.collection_title')%>" data-trigger="hover" data-placement="right"></i></span>
 	<% else %>
 	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.title')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.title_text') %>" data-original-title="<%= t('dri.help.fields.title')%>" data-trigger="hover" data-placement="right"></i></span>
@@ -28,7 +28,7 @@
 	</p> <%= f.file_field :cover_image, :class => "edit span6",:onchange=>'coverImageFileUploadHelper($(this));', :accept => 'image/*'  %> <h4 class='dri_cover_image_file' id="cover_image">No File</h4> </a>
 </div>
 <% end %>
-<% if (update_desc_metadata?(@object.class.to_s)) %>
+<% if update_desc_metadata?(@object.class.to_s) %>
 <fieldset id="description" class="dri_description_metadata_fieldset dri_form_multiline_block">
 	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.description')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.description_text') %>" data-original-title="<%= t('dri.help.fields.description')%>" data-trigger="hover" data-placement="right"></i></span>
 	<% @object.description.each do |i| %>
@@ -209,8 +209,8 @@
 		<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Rights"><%= t('dri.views.objects.forms.add_rights') %></a>
 	</p>
 </fieldset>
-<fieldset class="dri_licence_metadata_fieldset" id="licence">
-	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.licence')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.licence_text') %>" data-original-title="<%= t('dri.help.fields.licence')%>" data-trigger="hover" data-placement="right"></i></span>
-	<%= f.select :licence, options_for_select(@licences, @object[:licence]), :class => "edit span6" %>
-</fieldset>
 <% end %>
+<fieldset class="dri_licence_metadata_fieldset" id="licence">
+  <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.licence')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.licence_text') %>" data-original-title="<%= t('dri.help.fields.licence')%>" data-trigger="hover" data-placement="right"></i></span>
+  <%= f.select(:licence, options_for_select(@licences, @object[:licence]), class: 'edit span6') %>
+</fieldset>

@@ -2,6 +2,7 @@
 
   <%= render partial: 'show_details' %>
   
+  <br/>
   <legend><%= t('dri.views.objects.legends.upload_file') %></legend>
   
   <%= form_tag(url_for(object_file_path(@document.pid, @generic_file.id)), :multipart => true, :method => :put, :id => "file_uploader") do %>

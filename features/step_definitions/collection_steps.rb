@@ -16,7 +16,9 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
     collection.manager_users_string=User.find_by_email(email).to_s
     collection.discover_groups_string="public"
     collection.read_groups_string="registered"
+    collection.creator = ["#{user}@#{user}.com"]
   end
+  collection.creator = ["test@test.com"] if collection.creator.empty?
   collection.master_file_access="private"
   collection.save
   collection.member_collections.count.should == 0
@@ -41,9 +43,12 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
     digital_object.depositor=User.find_by_email(email).to_s
     digital_object.manager_users_string=User.find_by_email(email).to_s
     digital_object.edit_groups_string="registered"
+    digital_object.creator = ["#{user}@#{user}.com"]
   end
+  digital_object.creator = ["test@test.com"] if digital_object.creator.empty?
   digital_object.rights = ["This is a statement of rights"]
   digital_object.creation_date = ["2000-01-01"]
+  
 
   MetadataHelpers.checksum_metadata(digital_object)
   digital_object.save!
@@ -88,11 +93,18 @@ Given /^I have associated the institute "(.?*)" with the collection with pid "(.
   institute.url = "http://www.dri.ie"
 
   logo = Rack::Test::UploadedFile.new(File.join(cc_fixture_path, "sample_logo.png"), "image/png")
+
+  if Settings.data.nil? || Settings.data.logos_bucket.nil?
+    bucket = 'institutelogos'
+  else
+    bucket = Settings.data.logos_bucket
+  end
+
   storage = Storage::S3Interface.new
   storage.store_file(logo.path,
                      "#{name}.#{logo.original_filename.split(".").last}",
-                     Settings.data.logos_bucket)
-  institute.logo = storage.get_link_for_file(Settings.data.logos_bucket,
+                     bucket)
+  institute.logo = storage.get_link_for_file(bucket,
                    "#{institute_name}.#{logo.original_filename.split(".").last}")
   institute.save
 
@@ -116,6 +128,7 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
     And I fill in "batch_description][" with "Test description"
     And I fill in "batch_rights][" with "Test rights"
     And I fill in "batch_type][" with "Collection"
+    And I fill in "batch_roles][name][" with "test@test.com"
     And I fill in "batch_creation_date][" with "2000-01-01"
   }
   #{}  And I select "publisher" from the selectbox number 0 for role type

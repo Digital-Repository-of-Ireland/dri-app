@@ -51,9 +51,31 @@ describe "DataciteDoi" do
     hash["resource"]["rightsList"]["rights"].should == @object.rights.first
   end
 
+  it 'should use roles if no creator' do
+    @creator = DRI::Batch.with_standard :qdc
+    @creator[:title] = ["An Audio Title"]
+    @creator[:description] = ["This is an Audio file"]
+    @creator[:rights] = ["This is a statement about the rights associated with this object"]
+    @creator[:role_hst] = ["Collins, Michael"]
+    @creator[:creation_date] = ["1916-01-01"]
+    @creator[:type] = ["Sound"]
+    @creator.save
+
+    datacite = DataciteDoi.create(object_id: @creator.id)
+    xml = datacite.to_xml
+
+    doc = Nokogiri::XML(xml)
+    hash = Hash.from_xml(doc.to_s)
+
+    hash["resource"]["creators"]["creator"]["creatorName"] == @creator.role_hst[0]
+
+    @creator.delete
+    datacite.delete
+  end
+
   it "should require update if title changed" do
     datacite = DataciteDoi.create(object_id: @object.id)
-    fields = { title: ["A moidified title"], creator: @object.creator }
+    fields = { title: ["A modified title"], creator: @object.creator }
     datacite.update_metadata(fields)
     expect(datacite.changed?).to be true
   end

@@ -3,7 +3,7 @@ require 'validators'
 
 DRI::ModelSupport::Files.module_eval do
 
-  def add_file file, dsid="content", file_name
+  def add_file file, dsid='content', file_name
     mime_type = Validators.file_type?(file.path)
     pass_validation = false
 
@@ -14,11 +14,9 @@ DRI::ModelSupport::Files.module_eval do
       return false
     end
 
-    unless pass_validation
-      return false
-    end
+    return false unless pass_validation
 
-    gf = DRI::GenericFile.new(:id => ActiveFedora::Noid::Service.new.mint)
+    gf = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
     gf.batch = self
       
     # Apply depositor metadata, other permissions currently unused for generic files
@@ -27,9 +25,9 @@ DRI::ModelSupport::Files.module_eval do
 
     @actor = DRI::Asset::Actor.new(gf, ingest_user)
 
-    create_file(file, file_name, gf.id, gf.batch.id, dsid, "", mime_type.to_s)
+    create_file(file, file_name, gf.id, gf.batch.id, dsid, '', mime_type.to_s)
  
-    url = Rails.application.routes.url_helpers.url_for :controller=>"assets", :action=>"download", :object_id => gf.batch.id, :id=>gf.id
+    url = Rails.application.routes.url_helpers.url_for controller: 'assets', action: 'download', object_id: gf.batch.id, id: gf.id
 
     if @actor.create_external_content(URI.escape(url), dsid, file_name)
       return true
@@ -43,7 +41,7 @@ DRI::ModelSupport::Files.module_eval do
 
   def create_file(file, file_name, object_id, batch_id, datastream, checksum, mime_type)
     local_file = LocalFile.new(fedora_id: object_id, ds_id: datastream)
-    local_file.add_file file, {:batch_id => batch_id, :file_name => file_name, :checksum => checksum, :mime_type => mime_type}
+    local_file.add_file file, { batch_id: batch_id, file_name: file_name, checksum: checksum, mime_type: mime_type}
 
     begin
       local_file.save!
