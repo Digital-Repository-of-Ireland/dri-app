@@ -94,12 +94,21 @@ class CollectionsController < BaseObjectsController
     doi.update_metadata(params[:batch].select{ |key, value| doi.metadata_fields.include?(key) }) if doi
         
     if valid_permissions?
+      @object.object_version = (@object.object_version.to_i+1).to_s
       updated = @object.update_attributes(update_params)
 
       if updated
         if cover_image.present?
           flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
         end
+
+        # Moabify the descMetadata & properties (checksum_md5 and doi)  datastream
+        @object.reload # we must refresh the datastreams list 
+        preservation = Preservation::Preservator.new(@object.id, @object.object_version)
+        preservation.create_moab_dirs()
+        preservation.moabify_datastream('descMetadata', @object.attached_files['descMetadata'])
+        preservation.moabify_datastream('properties', @object.attached_files['properties'])
+
       else
         flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       end
@@ -169,7 +178,7 @@ class CollectionsController < BaseObjectsController
       # Create MOAB dir
       preservation = Preservation::Preservator.new(@object.id, @object.object_version)
       preservation.create_moab_dirs()
-      @object.datastreams.each do |key,value|
+      @object.attached_files.each do |key,value|
         preservation.moabify_datastream(key, value)
       end
 

@@ -78,8 +78,18 @@ class MetadataController < CatalogController
       raise Exceptions::InternalError
     end
     
+    @object.object_version = (@object.object_version.to_i+1).to_s
+
+
     begin
       raise Exceptions::InternalError unless @object.save
+
+      # Moabify the descMetadata & properties (checksum_md5 and doi)  datastream
+      @object.reload # we must refresh the datastreams list 
+      preservation = Preservation::Preservator.new(@object.id, @object.object_version)
+      preservation.create_moab_dirs()
+      preservation.moabify_datastream('descMetadata', @object.attached_files['descMetadata'])
+      preservation.moabify_datastream('properties', @object.attached_files['properties'])
 
       actor.version_and_record_committer
       flash[:notice] = t('dri.flash.notice.metadata_updated')
