@@ -46,6 +46,11 @@
 				  <li>
 				    <%= t('dri.views.catalog.legends.no_surrogates') %>
 				  </li>
+				  <% if @status[file.id].present? %>
+				    <li>
+				      <%= t('dri.views.catalog.legends.file_status', status: @status[file.id][:status]) %>
+				    </li>
+				  <% end %>
 				<% else %>
 				  <% @surrogates[file.id].each do |desc, url| %>
 				  <li>

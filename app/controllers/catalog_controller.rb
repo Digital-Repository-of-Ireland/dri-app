@@ -316,8 +316,8 @@ class CatalogController < ApplicationController
   def show
     @response, @document = fetch params[:id]
 
-    get_available_institutes
-    get_files_and_surrogates
+    available_institutes
+    files_and_surrogates
    
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
@@ -342,7 +342,7 @@ class CatalogController < ApplicationController
   end
 
   # method to find the Institutes associated with and available to add to or remove from the current collection (document) 
-  def get_available_institutes
+  def available_institutes
     # the full list of Institutes
     @institutes = InstituteHelpers.get_all_institutes()
     # the Institutes currently associated with this collection if any
@@ -365,21 +365,32 @@ class CatalogController < ApplicationController
     @removal_institutes = collection_institutes_array - depositing_institute_array
   end
 
-  def get_files_and_surrogates
+  def files_and_surrogates
     @files = ActiveFedora::SolrService.query("active_fedora_model_ssi:\"DRI::GenericFile\" AND #{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}:#{@document.id}", rows: 200)
-    @files = @files.map {|f| SolrDocument.new(f)}.sort_by{ |f| f[ActiveFedora::SolrQueryBuilder.solr_name("label")] }
+    @files = @files.map { |f| SolrDocument.new(f)}.sort_by{ |f| f[ActiveFedora::SolrQueryBuilder.solr_name('label')] }
     
     @displayfiles = []
     @surrogates = {}
+    @status = {}
 
     storage = Storage::S3Interface.new
     
     @files.each do |file| 
         @displayfiles << file unless file.preservation_only?
         @surrogates[file.id] = storage.get_surrogates(@document, file)
+
+        file_status(file.id) if @surrogates[file.id].blank?
     end
 
     ""
+  end
+
+  def file_status(file_id)
+    ingest_status = IngestStatus.where(asset_id: file_id)
+    if ingest_status.present?
+      status = ingest_status.first
+      @status[file_id] = { status: status.status } 
+    end
   end
 
   # If querying temporal_coverage, then query the Solr date range field for Subject(Temporal)
