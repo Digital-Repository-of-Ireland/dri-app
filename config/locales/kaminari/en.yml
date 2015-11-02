@@ -14,6 +14,6 @@ en:
     pagination: 
       first: "&laquo; First"
       last: "Last &raquo;"
-      next: "Next &rsaquo;"
-      previous: "&lsaquo; Prev"
+      next: ""
+      previous: ""
       truncate: "&hellip;"

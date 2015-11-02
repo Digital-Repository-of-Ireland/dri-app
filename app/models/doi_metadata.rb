@@ -31,12 +31,19 @@ class DoiMetadata < ActiveRecord::Base
         }
         xml.publisher DoiConfig.publisher
         xml.publicationYear publication_year
-        xml.subjects {
-          subject.each { |s| xml.subject s unless s.blank? }
-        }
-        xml.descriptions {
-          description.each { |d| xml.description d, :descriptionType => 'Abstract' unless d.blank? }
-        }
+
+        unless subject.blank?
+          xml.subjects {
+            subject.each { |s| xml.subject s unless s.blank? }
+          }
+        end
+
+        unless description.blank?
+          xml.descriptions {
+            description.each { |d| xml.description d, :descriptionType => 'Abstract' unless d.blank? }
+          }
+        end
+
         if creation_date.present? || published_date.present?
           xml.dates {
             xml.date(creation_date.first, :dateType => 'Created') unless creation_date.blank? || creation_date.first.blank?

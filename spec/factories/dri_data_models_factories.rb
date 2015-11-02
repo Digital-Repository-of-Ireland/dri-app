@@ -51,6 +51,7 @@ FactoryGirl.define do
     title                  ["A collection"]
     description            ["This is a Collection"]
     rights                 ["This is a statement about the rights associated with this object"]
+    creator                ["A. User"]
     publisher              ["RnaG"]
     type                   ["Collection"]
     creation_date          ["1916-01-01"]

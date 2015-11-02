@@ -47,12 +47,13 @@ h3 {
     line-height: 150%;
 }
 a {
-    color: none;
-    text-decoration: none;
+    
+    text-decoration: none; 
+    color: $dri_midgrey;
 }
 a:hover,
 a:focus {
-    color: none;
+    
     text-decoration: none;
 }
 /*-------------- Mixins --------------*/

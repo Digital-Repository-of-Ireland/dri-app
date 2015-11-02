@@ -25,7 +25,7 @@ class SurrogatesController < ApplicationController
 
     result_docs = solr_query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
     raise Exceptions::NotFound if result_docs.empty?
- 
+
     result_docs.each do |r|
       doc = SolrDocument.new(r)
 
@@ -51,14 +51,13 @@ class SurrogatesController < ApplicationController
     object_id = params[:object_id]
     surrogate_url = params[:surrogate_url]
 
-    uri = URI(surrogate_url)
+    uri = validate_uri(surrogate_url)
     ext = File.extname(uri.path)
 
     name = "#{object_id}#{ext}"
 
-    path = surrogate_url
-    content_type = MIME::Types.of(path)
-    data = open(path)
+    content_type = MIME::Types.of(surrogate_url)
+    data = open(uri)
     send_data data.read, filename: name, type: content_type, disposition: 'attachment', stream: 'true', buffer_size: '4096'
   end
 
@@ -120,5 +119,16 @@ class SurrogatesController < ApplicationController
 
   def solr_query(query)
     ActiveFedora::SolrService.query(query)
+  end
+
+  def validate_uri(surrogate_url)
+    uri = URI(surrogate_url)
+
+    raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_url') unless %w(http https).include? uri.scheme
+    raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_url') unless uri.host == URI.parse(Settings.S3.server).host
+
+    uri
+  rescue URI::InvalidURIError
+    raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_url')
   end
 end

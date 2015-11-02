@@ -127,9 +127,9 @@ module DRI::Solr::Document::Relations
   def solr_fields_for_standard
     case active_fedora_model
     when 'DRI::Mods'
-      solr_field_array = *(DRI::Vocabulary::modsRelationshipTypes.map { |s| s.prepend('ext_related_items_ids_').to_sym })
+      solr_field_array = *(DRI::Vocabulary.mods_relationship_types.map { |s| s.prepend('ext_related_items_ids_').to_sym })
     when 'DRI::QualifiedDublinCore'
-      solr_field_array = *(DRI::Vocabulary::qdcRelationshipTypes.map { |s| s.prepend('ext_related_items_ids_').to_sym })
+      solr_field_array = *(DRI::Vocabulary.qdc_relationship_types.map { |s| s.prepend('ext_related_items_ids_').to_sym })
     when 'DRI::Marc', 'DRI::EncodedArchivalDescription'
       solr_field_array = [:related_material, :alternative_form]
     else

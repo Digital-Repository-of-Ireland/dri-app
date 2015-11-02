@@ -2,6 +2,7 @@
 <dc:title>A collection</dc:title>
 <dc:description>This is a Collection</dc:description>
 <dc:rights>This is a statement about the rights associated with this object</dc:rights>
+<dc:creator>DRI</dc:creator>
 <dcterms:created>1916-01-01</dcterms:created>
 <dc:type>Collection</dc:type>
 </qualifieddc>
