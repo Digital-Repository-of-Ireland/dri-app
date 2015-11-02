@@ -1,15 +1,19 @@
 /*-------------- Sidenav Styling--------------*/
 
 .dri_sidenav_top {
-    font-size: 1.1em;
-    line-height: 1.75em;
     border-bottom: 3px solid $dri_grey;
+    padding-bottom:3px;
+    a { 
+      color: $dri_darkgrey;
+      font-weight: bold;
+      font-size: 100%;
+      }
 }
 .dri_sidenav {
     margin-top: 20px;
     color: $dri_midgrey;
-    font-size: 1em;
-    line-height: 1.75em;
+    font-size: 100%;
+    
 
     a {
         color: $dri_midgrey;
@@ -22,22 +26,27 @@
         color: $dri_darkgrey;
     }
     h5 {
-        line-height: 2em;
-        font-size: 1.1em;
-        font-style: bold;
+        margin:0;
+        padding-bottom:6px;
+        font-size: 100%;
+        font-weight: bold;
         color: $dri_grey;
         border-bottom: 1px solid $dri_thingrey;
+      
     }
     ul {
-        margin-left: 0px;
+        margin:0;
         li {
-            height: 1.75em;
-            height: 2em;
+            padding:5px 0 5px 0;
             border-bottom: 1px solid $dri_thingrey;
             list-style-type: none;
+              font-size: 100%;
           }
         li.dri_share {
-          height: 2em;
+          margin-top: 15px;
+          margin-bottom: 15px;
+          float: right;
+          border:none;
         }
          
          
@@ -53,14 +62,17 @@
 /*---- Previous Next Doc Pagination ----*/
 
 .dri_doc_pagination {
-    margin: 0px;
     margin-top: 10px;
     color: $dri_darkgrey;
+     border-bottom: 1px solid $dri_thingrey;
+     padding-bottom: 6px;
+     font-size: 100%;
+     font-weight:bold;
     .dri_doc_pagination_links {
      float:right;
 
             a {
-                font-size: 90%;
+               
                 color: $dri_darkgrey;
             }
             a.previous:before {
