@@ -93,14 +93,12 @@ module Storage
 
     # Create bucket
     def create_bucket(bucket)
-      begin
-        @client.create_bucket(bucket: with_prefix(bucket))
-      rescue Exception => e
-        Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e}"
-        false
-      end
+      @client.create_bucket(bucket: with_prefix(bucket))
 
       true
+    rescue Exception => e
+      Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e}"
+      false
     end
 
     # Delete bucket
@@ -136,8 +134,11 @@ module Storage
         bucket: with_prefix(bucket_name),
         body: File.open(Pathname.new(surrogate_file)),
         key: surrogate_key)
+
+      true
     rescue Exception  => e
       Rails.logger.error "Problem saving Surrogate file #{surrogate_key}: #{e}"
+      false
     end
 
     # Save arbitrary file

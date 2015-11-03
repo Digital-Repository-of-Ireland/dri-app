@@ -90,12 +90,12 @@ class SolrDocument
 
   def is_collection?
     is_collection_key = ActiveFedora::SolrQueryBuilder.solr_name('is_collection')
-    
-    self[is_collection_key].present? && self[is_collection_key].include?("true")
+
+    self[is_collection_key].present? && self[is_collection_key].include?('true')
   end
 
   def is_root_collection?
-    collection_id ? false : true  
+    collection_id ? false : true
   end
 
   def licence
@@ -104,11 +104,10 @@ class SolrDocument
     if self[licence_key].present?
       licence = Licence.where(name: self[licence_key]).first
       licence ||= self[licence_key]
-    elsif root_collection
-      collection = root_collection
-      licence = Licence.where(name: collection[licence_key]).first if collection[licence_key].present?
+    else
+      licence = retrieve_ancestor_licence
     end
-    
+
     licence
   end
 
@@ -127,10 +126,26 @@ class SolrDocument
       collection = ActiveFedora::SolrService.query(solr_query, defType: 'edismax', rows: '1')
       root = SolrDocument.new(collection[0])
     end
-    
+
     root
   end
-  
+
+  def retrieve_ancestor_licence
+    ancestors_key = ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
+    return nil unless self[ancestors_key].present?
+
+    licence_key = ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym
+
+    ancestors_ids = self[ancestors_key]
+    ancestors_ids.each do |id|
+      collection = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
+      doc = SolrDocument.new(collection[0])
+      return Licence.where(name: doc[licence_key]).first if doc[licence_key].present?
+    end
+
+    nil
+  end
+
   def status
     status_key = ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :string).to_sym
 
@@ -144,5 +159,4 @@ class SolrDocument
   def draft?
     status == 'draft'
   end
-
 end

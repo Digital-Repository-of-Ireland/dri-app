@@ -49,8 +49,6 @@ NuigRnag::Application.routes.draw do
     get '/422' => 'error#error_422'
     get '/500' => 'error#error_500'
 
-    match 'export/:id' => 'export#show', :via => :get, :as => :object_export
-
     match 'objects/:id/metadata' => 'metadata#show', :via => :get, :as => :object_metadata, :defaults => { :format => 'xml' }
     match 'objects/:id/metadata' => 'metadata#update', :via => :put
     match 'objects/:id/citation' => 'objects#citation', :via => :get, :as => :citation_object

@@ -16,7 +16,7 @@ end
 begin
   buckets = s3.buckets.entries.map(&:name)
 
-  if Settings.data.cover_image_bucket.blank?
+  if !Settings.data || Settings.data.cover_image_bucket.nil?
     Rails.logger.error "Storage bucket for cover images not configured"
   else
     bucket = Settings.data.cover_image_bucket
@@ -37,7 +37,7 @@ begin
     end
   end
 
-  if Settings.data.logos_bucket.blank?
+  if !Settings.data || Settings.data.logos_bucket.nil?
     Rails.logger.error "Storage bucket for logos not configured"
   else
     bucket = Settings.data.logos_bucket

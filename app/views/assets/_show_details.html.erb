@@ -22,7 +22,7 @@
   <tr>
     <th><%= t('dri.views.catalog.links.characterization') %></th>
     <td>
-      <%= t('dri.views.catalog.links.not_caracterized') if @generic_file.characterization_terms.values.flatten.map(&:empty?).reduce(true) { |sum, value| sum && value } %>
+      <%= t('dri.views.catalog.links.not_characterized') if @generic_file.characterization_terms.values.flatten.map(&:empty?).reduce(true) { |sum, value| sum && value } %>
       <% @generic_file.characterization_terms.each_pair do |term, values| %>
           <div>
             <% label = term.to_s %>
@@ -46,5 +46,15 @@
       <% end %>
     </td>
   </tr>
+  <% if @status[:status].present? %>
+  <tr>
+    <th><%= t('dri.views.catalog.legends.file_status', status: @status[:status]) %></th></tr>
+    <tr><th>Job</th><th>Status</th><th>Message</th></tr>
+    <% @status[:jobs].each do |name, job| %>
+    <tr>
+      <td><%= name %></td><td><%= job[:status] %></td><td><%= job[:message] %></td>
+    </tr>
+    <% end %>
+  <% end %>
   </tbody>
 </table> <!-- /verticalheadings -->
