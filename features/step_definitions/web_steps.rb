@@ -83,6 +83,7 @@ When /^(?:|I )go to "([^"]*)"$/ do |page_name|
 end
 
 When /^(?:|I )go to the "([^"]*)" "([^"]*)" page for "([^"]*)"$/ do |type, page, pid|
+  pid = @pid if pid.eql?('the saved pid')
   visit path_for(type, page, pid)
 end
 
