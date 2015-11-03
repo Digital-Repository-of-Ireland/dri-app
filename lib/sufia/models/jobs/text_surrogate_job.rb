@@ -1,6 +1,7 @@
 require 'rack/mime'
 
 class TextSurrogateJob < ActiveFedoraIdBasedJob
+  include BackgroundTasks::Status
 
   def queue_name
     :text
