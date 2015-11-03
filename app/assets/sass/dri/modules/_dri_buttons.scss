@@ -15,6 +15,12 @@
   background-color: $dri_green;
 }
 
+.dri_button_green_small {
+  @extend .dri_button_green;
+  font-size: 80%;
+  padding: 0px 5px 0px 5px;
+  margin: 2px 0px 0px 0px;
+}
 .dri_button_green:hover {
   background-color: darken($dri_green, 10%);
 }

@@ -1,0 +1,110 @@
+/*-------------- Sidenav Styling--------------*/
+
+.dri_sidenav_top {
+    border-bottom: 3px solid $dri_grey;
+    padding-bottom:3px;
+    a { 
+      color: $dri_darkgrey;
+      font-weight: bold;
+      font-size: 100%;
+      }
+}
+.dri_sidenav {
+    margin-top: 20px;
+    color: $dri_midgrey;
+    font-size: 100%;
+    
+
+    a {
+        color: $dri_midgrey;
+    }
+    button {
+      float:right;
+    }
+    a:hover,
+    form:hover {
+        color: $dri_darkgrey;
+    }
+    h5 {
+        margin:0;
+        padding-bottom:6px;
+        font-size: 100%;
+        font-weight: bold;
+        color: $dri_grey;
+        border-bottom: 1px solid $dri_thingrey;
+      
+    }
+    ul {
+        margin:0;
+        li {
+            padding:5px 0 5px 0;
+            border-bottom: 1px solid $dri_thingrey;
+            list-style-type: none;
+              font-size: 100%;
+          }
+        li.dri_share {
+          margin-top: 15px;
+          margin-bottom: 15px;
+          float: right;
+          border:none;
+        }
+         
+         
+    }
+    span.dri_stat_num {
+      float: right;
+      margin-right: 20px;
+    }
+}
+
+
+
+/*---- Previous Next Doc Pagination ----*/
+
+.dri_doc_pagination {
+    margin-top: 10px;
+    color: $dri_darkgrey;
+     border-bottom: 1px solid $dri_thingrey;
+     padding-bottom: 6px;
+     font-size: 100%;
+     font-weight:bold;
+    .dri_doc_pagination_links {
+     float:right;
+
+            a {
+               
+                color: $dri_darkgrey;
+            }
+            a.previous:before {
+                font-family: FontAwesome;
+                content: "\f060";
+            }
+            a.next:before {
+                font-family: FontAwesome;
+                content: "\f061";
+            }
+}
+}
+.dri_fileUpload {
+    position: relative;
+    overflow: hidden;
+    span {
+        z-index: 0;
+    }
+    button {
+        position: relative;
+        margin-left: 5px;
+        z-index: 100;
+    }
+}
+.dri_fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}

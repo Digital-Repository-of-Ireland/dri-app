@@ -7,28 +7,28 @@ $dri_about_logos_min_height: 100px;
 //* Extendable classes
 %pages_p {
     p {
-        font-size: 1.1em;
+        font-size: 110%;
         color: $dri_midgrey;
         line-height: 1.3em;
     }
 }
 %pages_a {
     a {
-        color: darken($dri_midgrey, 10%);
+        color: $dri_midgrey;
         padding:0;
         margin:0;
     }
     a:hover {
-        color: $dri_green;
+        text-decoration: underline;
     }
 }
 %pages_h5 {
     h5 {
-        font-size: 1.1em;
+        font-size: 120%;
         margin-top: 15px;
         padding-bottom: 5px;
         color: $dri_grey;
-        border-bottom: 3px solid $dri_grey;
+        border-bottom: 3px solid $dri_darkgrey;
         color: $dri_grey;  
         font-weight: bold;
       
@@ -84,7 +84,7 @@ li {
     .dri_about_title_top {
         margin-left: 15px;
         @extend .dri_object_title_top;
-        background-color: $dri_grey;
+        background-color: $dri_darkgrey;
     }
     .dri_about_column {
         border-right: 1px solid $dri_thingrey;
@@ -180,6 +180,7 @@ li {
     @extend %pages_p;
     @extend %pages_a;
     img {
+      margin-top:30px;
         max-width: 100%;
     }
     .dri_about_banner {
@@ -205,7 +206,7 @@ li {
             @include zen-grid-item(2, 1);
             .dri_about_lifecycle_block {
                 display: block;
-                min-height: 344px;
+                min-height: 404px;
                 padding: 20px 0 0 0;
                 @extend %thin_border;
                 .dri_about_lifecycle_infographic {
@@ -213,6 +214,7 @@ li {
                     img {
                         padding-top: 15px;
                         padding-left: 5px;
+                         padding-bottom: 15px;
                     }
                 }
                 .dri_about_lifecycle_text {

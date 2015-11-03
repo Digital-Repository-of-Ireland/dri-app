@@ -1,5 +1,8 @@
 <div class="dri_object_first_block">
-
+<div class="dri_object_title_top"><%= document_heading %></div>
+<div class="dri_border_bottom">
+        &nbsp;
+      </div>
 	<%= render :partial => 'show_surrogate' %>
 	<dl class="dri_object_metadata_readview">
 		<% document_show_fields.each do |solr_fname, field| -%>
@@ -30,6 +33,9 @@
 <!-- close dri_object_first_block -->
 
 <div class="dri_object_second_block">
+	<div class="dri_sidenav_top">
+	<%= link_back_to_catalog %>
+	</div>
 	<%= render :partial => "show_object_navigation_tools" %>
 	<%= render :partial => "tools" %>
 	<% if signed_in? && ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>

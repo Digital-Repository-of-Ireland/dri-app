@@ -1,17 +1,17 @@
 <!-- close vc_title -->
 <div class="accordion" id="dri_asset_tools_id">
-  <div class="accordion-group">
+  <div class="accordion-group dri_sidenav">
     <div class="accordion-heading">
 
 	  <a class="accordion-toggle" data-toggle="collapse" data-parent="#dri_asset_tools_id" href="#dri_asset_tools_collapsed_id">
-	    <div class="dri_objecttools_title">
+	    <h5>
 		  <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.catalog.headers.files') %> (<%= @files.count %>)
-		</div> </a>
+		</h5> </a>
 	</div>
 
 	<div id="dri_asset_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
-	  <div class="accordion-inner">
-	    <ul class="dl-horizontal  dl-invert dri_view_collection">
+	  <div class="accordion-inner ">
+	    <ul>
 
 		<% unless @files.empty? %>
     		<% @files.each_with_index do |file, index| %>
@@ -59,10 +59,7 @@
 				<% end %>
 			  <% end %>
 			<% end %>
-			
-				  <li>
-				    &nbsp;
-				  </li>
+		
 		<% end %>
 
 		<% unless can? :read, @document %>
