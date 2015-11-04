@@ -90,7 +90,7 @@ upload)
 compile_extra)
 
     #only check test instance on develop branch
-    if [[ "$branch" == "develop" ]]; th
+    if [[ "$branch" == "develop" ]]; then
 
       #check application
       OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://test.dri.ie/is_it_working`
