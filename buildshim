@@ -74,29 +74,38 @@ package)
     ;;
 upload)
 
-    #setup ssh agent for key forwarding to work
-#    eval ssh-agent $SHELL
-    eval "$(ssh-agent)"
-    ssh-add ~/.ssh/id_rsa
+    #only deploy to test instance on develop branch
+    if [[ "$branch" == "develop" ]]; then
 
-    #Now deploy update app repo codebase
-    ansible-playbook -i ../../ansible-dri-infrastructure-trusty64-master/build/inventory/hosts.buildbot ../../ansible-dri-infrastructure-trusty64-master/build/site.yml --vault-password-file ~/.vault-pass.txt -e "deploy_branch=develop" --tags=getfacts,dri_app,dri_app_worker
+      #setup ssh agent for key forwarding to work
+      #eval ssh-agent $SHELL
+      eval "$(ssh-agent)"
+      ssh-add ~/.ssh/id_rsa
+
+      #Now deploy update app repo codebase
+      ansible-playbook -i ../../ansible-dri-infrastructure-trusty64-master/build/inventory/hosts.buildbot ../../ansible-dri-infrastructure-trusty64-master/build/site.yml --vault-password-file ~/.vault-pass.txt -e "deploy_branch=develop" --tags=getfacts,dri_app,dri_app_worker
+    fi
 
     ;;
 compile_extra)
-     #check application
-    OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://test.dri.ie/is_it_working`
-    sleep 60
-    OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://test.dri.ie/is_it_working`
 
-    if [[ $OUTPUT -ne 200 ]] ; then
-      printf "Test Application Stack FAULT! [HTTP: $OUTPUT]\n"
-      if [[ "$branch" == "master" ]]; then
-          exit 0
+    #only check test instance on develop branch
+    if [[ "$branch" == "develop" ]]; th
+
+      #check application
+      OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://test.dri.ie/is_it_working`
+      sleep 60
+      OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://test.dri.ie/is_it_working`
+
+      if [[ $OUTPUT -ne 200 ]] ; then
+        printf "Test Application Stack FAULT! [HTTP: $OUTPUT]\n"
+        exit 1
+      else
+        printf "Test Application Stack OK. [HTTP: $OUTPUT]\n"
       fi
-    else
-      printf "Test Application Stack OK. [HTTP: $OUTPUT]\n"
-    fi 
+
+    fi
+
     ;;
 uninstall_deps)
     kill -TERM $(cat fakes3.pid) || true
