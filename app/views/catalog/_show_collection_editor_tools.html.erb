@@ -79,7 +79,7 @@
     <!-- If (root collection OR not EAD collection) enable delete collection link -->
     <!-- This is to allow to delete any sub-collection except for EAD -->
     <% if @document.is_root_collection? || @document.editable? %>
-      <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal' do %>
+      <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal', :id => 'delete_collection' do %>
         <li>
           <%= t('dri.views.collection.buttons.delete_collection') %>
         </li>
