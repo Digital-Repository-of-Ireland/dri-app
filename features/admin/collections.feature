@@ -79,8 +79,9 @@ Scenario: Deleting a collection as an admin
   Given a collection with pid "coll6" created by "user1@user1.com"
   And the collection with pid "coll6" has status published
   When I go to the "collection" "show" page for "coll6"
-  Then I should see a button to delete collection with id coll6
-  When I press the modal button to "delete collection with id coll6" in "dri_delete_modal_id"
+  Then I should see a link to delete a collection
+  When I follow the link to delete a collection
+  And I press the button to "confirm delete collection"
   Then I should see a success message for deleting a collection
 
 Scenario: Non-admin should not be given option to delete
@@ -88,7 +89,7 @@ Scenario: Non-admin should not be given option to delete
   And the collection with pid "coll7" has status published
   When I go to the "collection" "show" page for "coll7"
   And I click the link to edit a collection
-  Then I should not see a button to delete collection with id coll7
+  Then I should not see a link to delete a collection
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
 #  Given a Digital Object with pid "dri:obj6" and title "Object 6"

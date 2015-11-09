@@ -145,6 +145,15 @@ module LinkTranslator
       when /^add a file$/
         "add_file"
 
+      when /^add a cover image$/
+        "add_cover_image"
+
+      when /^view asset details$/
+        "asset_details"
+
+      when /^view asset tools$/
+        "show_asset_tools"
+
       else "Unknown"
 
     end

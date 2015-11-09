@@ -65,6 +65,16 @@ Given /^I have added an audio file$/ do
   }
 end
 
+Given /^I have created an institute "(.+)"$/ do |institute|
+  steps %{
+    Given I am on the new organisation page
+    When I fill in "institute[name]" with "#{institute}"
+    And I fill in "institute[url]" with "http://www.dri.ie/"
+    And I attach the institute logo file "sample_logo.png"
+    And I press the button to "add an institute"
+  }
+end
+
 When /^I add the asset "(.*)" to "(.*?)"$/ do |asset, pid|
   steps %{
     When I go to the "object" "show" page for "#{pid}"
@@ -135,6 +145,10 @@ end
 
 When /^I attach the institute logo file "(.*?)"$/ do |file|
   attach_file("institute[logo]", File.join(cc_fixture_path, file))
+end
+
+When /^I attach the cover image file "(.*?)"$/ do |file|
+  attach_file("batch_cover_image", File.join(cc_fixture_path, file))
 end
 
 When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|

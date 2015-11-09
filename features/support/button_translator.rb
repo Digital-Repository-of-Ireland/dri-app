@@ -73,8 +73,8 @@ module ButtonTranslator
       when /^set the current collection to (.+)$/
         "set_collection_#{$1}"
 
-      when /^delete collection with id (.+)$/
-        "delete_collection_#{$1}"
+      when /^confirm delete collection$/
+        "confirm_delete_collection"
 
       when /^accept the end user agreement$/
         "accept_cookies"
@@ -117,6 +117,9 @@ module ButtonTranslator
       
       when /^update status$/
         "status_update"
+
+      when /^save cover image$/
+        "add_cover_image"
 
       else "Unknown"
 
