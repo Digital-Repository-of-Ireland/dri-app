@@ -5,7 +5,7 @@ module Storage
       if cover_image.present? && Validators.media_type?(cover_image) == 'image'
         return false if self.virus?(cover_image)
 
-        url = self.store_cover(cover_image.tempfile.path, collection)
+        url = self.store_cover(cover_image, collection)
         if url
           collection.properties.cover_image = url
           collection.save
@@ -56,7 +56,7 @@ module Storage
       
       url = nil
       storage = Storage::S3Interface.new
-      if (storage.store_file(cover_image,
+      if (storage.store_file(cover_image.tempfile.path,
                             "#{collection.pid}.#{cover_image.original_filename.split(".").last}",
                              Settings.data.cover_image_bucket))
         url = storage.get_link_for_file(Settings.data.cover_image_bucket,
