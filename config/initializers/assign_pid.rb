@@ -13,7 +13,7 @@ Sufia::Noid.module_eval do
 
   def new_id
     service.mint
-  rescue Exception
+  rescue Ldp::Gone
     nil
   end
 
