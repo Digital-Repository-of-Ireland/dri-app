@@ -1,0 +1,65 @@
+//Bootstrap Override
+$screen-lg: 1100px;
+//End Bootstarp Override
+$dri_green: #90993d;
+$dri_grey: #2f2f2f;
+$dri_greytext: gray;
+//title color
+$dri_darkgrey: #2b2b2b;
+//paragraph text color
+$dri_midgrey: #808082;
+$dri_extra_lightgray: #9e9e9e;
+$dri_lightgrey: #b3b3b3;
+$dri_thingrey: #d9dadb;
+$dri_grey_border: #E18191;
+$dri_red: #902222;
+$dri_extralightgrey: #F1F1F1;
+$dri_white: #ffffff;
+//alerts & messgaes
+$dri_paleblue: #DCECF6;
+$dri_palegreen: #D9F8B5;
+$dri_paleorange: #F0E8B0;
+$dri_palered: #FFD9DC;
+$dri_teal: #00948F;
+$dri_logo_url: "dri/dri_ident.png";
+$dri_logo_small_url: 'dri/dri_ident_small.png';
+$dri_logo_tiny_url: 'dri/dri_ident_tiny.png';
+//.translation_missing {
+// border: 1px red;
+//background: red;
+//text-color: white;
+//}
+/*-------------- DRI Body --------------*/
+
+html {
+    margin-bottom: 0.5em;
+    height: 100%;
+    body {
+        font: 120% Arial, Helvetica, clean, sans-serif;
+        *font-size: small;
+        *font: x-small;
+        margin: 0;
+    }
+}
+h1,
+h2,
+h3 {
+    line-height: 150%;
+}
+a {
+    
+    text-decoration: none; 
+    color: $dri_midgrey;
+}
+a:hover,
+a:focus {
+    
+    text-decoration: none;
+}
+/*-------------- Mixins --------------*/
+
+//mixin example for border radius
+@mixin border_radius ($br: 2px) {
+    -moz-border-radius: $br;
+    border-radius: $br;
+}

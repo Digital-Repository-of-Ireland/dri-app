@@ -13,8 +13,8 @@ gem 'sufia-models', '6.3.0'
 
 gem 'paper_trail', '~> 3'
 
-gem 'dri_data_models', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', :tag => 'v2.2.5'
-gem 'user_group', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', :tag => 'v1.1.3'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.2.6'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.1.3'
 
 gem 'active-fedora', '~> 9.4.1'
 
@@ -85,7 +85,7 @@ group :development, :test do
 
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_rspec'
-  gem 'fakes3', :git => 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', :branch => 'issue22'
+  gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
 end
 
 group :test do
@@ -112,7 +112,7 @@ gem 'unicorn'
 # To use debugger
 # gem 'debugger'
 
-gem "unicode", :platforms => [:mri_18, :mri_19]
+gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
 gem 'bootstrap-sass' #, '~> 3.3.4'
 gem 'yard'
@@ -129,7 +129,7 @@ gem 'rvm'
 # UI widgets
 gem 'colorbox-rails'
 gem 'bootstrap-switch-rails'
-gem 'videojs_rails', :git => 'https://github.com/ekilfeather/videojs_rails.git', :ref => '605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd'
+gem 'videojs_rails', git: 'https://github.com/ekilfeather/videojs_rails.git', ref: '605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'bootstrap-datepicker-rails'

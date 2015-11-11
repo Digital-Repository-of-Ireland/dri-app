@@ -5,30 +5,10 @@ module Storage
       if cover_image.present? && Validators.media_type?(cover_image) == 'image'
         return false if self.virus?(cover_image)
 
-        url = self.store_cover(cover_image.tempfile.path, collection)
+        url = self.store_cover(cover_image, collection)
         if url
           collection.properties.cover_image = url
           collection.save
- 
-          return true
-        else
-          Rails.logger.error "Unable to save cover image."
-          return false
-        end
-      end
-    end
-    
-    # FIXME - Initial impl of creation of EAD cover images from the data models...
-    def self.validate_from_tempfile(cover_image, collection)
-      if cover_image.present? && Validators.media_type?(cover_image) == "image"
-        return false if self.virus?(cover_image)
-
-        url = self.store_cover(cover_image.path, collection)
-        if url
-          collection.properties.cover_image = url
-
-          # From data models, when creating cover image, no need to save the object here!!
-          #collection.save
  
           return true
         else
@@ -56,7 +36,7 @@ module Storage
       
       url = nil
       storage = Storage::S3Interface.new
-      if (storage.store_file(cover_image,
+      if (storage.store_file(cover_image.tempfile.path,
                             "#{collection.pid}.#{cover_image.original_filename.split(".").last}",
                              Settings.data.cover_image_bucket))
         url = storage.get_link_for_file(Settings.data.cover_image_bucket,

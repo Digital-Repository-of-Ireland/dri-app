@@ -3,8 +3,9 @@
 <% if I18n.locale == :en %>
     <% lang_params[:id] = 'ga' %>
     <ul class="dropdown dri_language_links">
-      <%= link_to 'English', '#',:"data-toggle" => "dropdown" %>
-      <%= image_tag("dri/account_arrow.png", :width=>"10", :height=>"5") %>
+      <%= link_to '#',:"data-toggle" => "dropdown" do %>
+      English <i class="fa fa-sml fa-caret-down"></i>
+      <% end %>
 
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
         <%= link_to 'Gaeilge', lang_path(lang_params) %>
@@ -13,8 +14,9 @@
 <% else %>
     <% lang_params[:id] = 'en' %>
     <ul class="dropdown dri_language_links">
-      <%= link_to 'Gaeilge', '#', :"data-toggle" => "dropdown"%>
-      <%= image_tag("dri/account_arrow.png", :width=>"10", :height=>"5") %>
+      <%= link_to '#', :"data-toggle" => "dropdown" do %>
+      Gaeilge <i class="fa fa-sml fa-caret-down"></i>
+      <% end %>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
         <%= link_to 'English', lang_path(lang_params) %>
       </ul>
