@@ -1,14 +1,15 @@
 module TimelineHelper
   include ActionView::Helpers::TextHelper
 
-  def get_valid_timeline_count params
-    query = get_query params
-    count = ActiveFedora::SolrService.count(query[:q], :fq => query[:fq], :defType => "edismax")
-    return count
+  def get_valid_timeline_count(params)
+    query = get_query(params)
+    count = ActiveFedora::SolrService.count(query[:q], fq: query[:fq], defType: 'edismax')
+
+    count
   end
 
-  def create_timeline_data(response, queried_date="")
-    timeline_data = { :timeline => { :type => "default", :date => [] } }
+  def create_timeline_data(response, queried_date = '')
+    timeline_data = { timeline: { type: 'default', date: [] } }
 
     if response.blank?
       timeline_data[:timeline][:headline] = t('dri.application.timeline.headline.no_results')
@@ -23,7 +24,7 @@ module TimelineHelper
       response.each_with_index do |document, index|
         document_date = nil
         document = document.symbolize_keys
-        if (!document[:sdateRange].nil?)
+        unless document[:sdateRange].nil?
           document_date = get_full_date(document[:temporal_coverage_tesim], queried_date)
           if document_date.empty?
             document_date = document[:sdateRange].first
@@ -32,12 +33,15 @@ module TimelineHelper
 
         timeline_data[:timeline][:date][index] = {}
 
+        title_key = ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string).to_sym
+        description_key = ActiveFedora::SolrQueryBuilder.solr_name('description', :stored_searchable, type: :string).to_sym
+
         unless document_date.nil?
           timeline_data[:timeline][:date][index][:startDate] = document_date.split(' ')[0]
           timeline_data[:timeline][:date][index][:endDate] = document_date.split(' ')[1]
 
-          timeline_data[:timeline][:date][index][:headline] = '<a href="' +  catalog_path(document[:id])+  '">' + document[ActiveFedora::SolrQueryBuilder.solr_name('title', :stored_searchable, type: :string).to_sym].first + '</a>'
-          timeline_data[:timeline][:date][index][:text] = truncate(document[ActiveFedora::SolrQueryBuilder.solr_name('description', :stored_searchable, type: :string).to_sym].first, length: 60, separator: ' ')
+          timeline_data[:timeline][:date][index][:headline] = '<a href="' +  catalog_path(document[:id])+  '">' + document[title_key].first + '</a>'
+          timeline_data[:timeline][:date][index][:text] = truncate(document[description_key].first, length: 60, separator: ' ')
           timeline_data[:timeline][:date][index][:asset] = {}
           timeline_data[:timeline][:date][index][:asset][:media] = get_cover_image_tm(document)
           timeline_data[:timeline][:date][index][:asset][:thumbnail] = get_cover_image_tm(document)
@@ -45,18 +49,18 @@ module TimelineHelper
       end #for-each
     end
 
-    return timeline_data
+    timeline_data
   end
 
   private
 
-  def get_full_date dates_array, queried_date=""
-    result_date = ""
-    date_from = ""
-    date_to = ""
+  def get_full_date(dates_array, queried_date = '')
+    result_date = ''
+    date_from = ''
+    date_to = ''
     unless queried_date.empty?
-      year_from = queried_date.split(" ")[0]
-      year_to = queried_date.split(" ")[1]
+      year_from = queried_date.split(' ')[0]
+      year_to = queried_date.split(' ')[1]
     end
 
     dates_array.each do |date|
@@ -78,27 +82,30 @@ module TimelineHelper
             sdate_str = ISO8601::DateTime.new(date_from).year
             edate_str = ISO8601::DateTime.new(date_to).year
 
-            if (!queried_date.empty?)
+            if queried_date.empty?
+              result_date = "#{ISO8601::DateTime.new(date_from).strftime("%m/%d/%Y")} #{ISO8601::DateTime.new(date_to).strftime("%m/%d/%Y")}"
+              break
+            else
               if overlaps?(year_from, sdate_str, year_to, edate_str)
                 result_date = "#{ISO8601::DateTime.new(date_from).strftime("%m/%d/%Y")} #{ISO8601::DateTime.new(date_to).strftime("%m/%d/%Y")}"
                 break
               end
-            else
-              result_date = "#{ISO8601::DateTime.new(date_from).strftime("%m/%d/%Y")} #{ISO8601::DateTime.new(date_to).strftime("%m/%d/%Y")}"
-              break
             end
           rescue ISO8601::Errors::StandardError
+            Rails.logger.error('Timeline helper. Invalid date (non-ISO8601)')
           end
         end
       end
     end
 
-    return result_date
+    result_date
   end
 
-  def get_query params
-    query = Hash.new
-    query[:q] = query[:fq] = ""
+  def get_query(params)
+    query = {}
+    query[:q] = ''
+    query[:fq] = ''
+
     f_subject_present = false
 
     if params[:mode] == 'collections'
@@ -146,13 +153,13 @@ module TimelineHelper
       query[:q] = "#{query[:q][5..-1]}"
     end
 
-    return query
+    query
   end
 
-  def get_temporal_fq_query query_string
-    fq_query = ""
-    start_date = ""
-    end_date = ""
+  def get_temporal_fq_query(query_string)
+    fq_query = ''
+    start_date = ''
+    end_date = ''
 
     query_string.first.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
@@ -163,43 +170,46 @@ module TimelineHelper
       end
     end
 
-    unless start_date == "" # If date is formatted in DCMI Period, then use the date range Solr field query
-      if end_date == ""
-        end_date = start_date
-      end
+    # If date is formatted in DCMI Period, then use the date range Solr field query
+    unless start_date.empty?
+      end_date = start_date if end_date.empty?
+
       begin
         sdate_str = ISO8601::DateTime.new(start_date).year
         edate_str = ISO8601::DateTime.new(end_date).year
         # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits
         fq_query = "sdateRange:[\"-9999 #{(sdate_str.to_i - 0.5).to_s}\" TO \"#{(edate_str.to_i + 0.5).to_s} 9999\"]"
       rescue ISO8601::Errors::StandardError => e
+        Rails.logger.error("Timeline helper. Invalid date (non-ISO8601): #{e}")
       end
     end
 
-    return fq_query
+    fq_query
   end
 
-  def get_date_for_display_timeline document_dates, queried_date
-    return "" if queried_date.empty?
+  def get_date_for_display_timeline(document_dates, queried_date)
+    return '' if queried_date.empty?
 
-    result_date = ""
-    year_from = queried_date.split(" ")[0]
-    year_to = queried_date.split(" ")[1]
+    result_date = ''
+    year_from = queried_date.split(' ')[0]
+    year_to = queried_date.split(' ')[1]
     document_dates.each do |date|
-      date_from = date.split(" ")[0]
-      date_to = date.split(" ")[1]
+      date_from = date.split(' ')[0]
+      date_to = date.split(' ')[1]
       if overlaps?(year_from, date_from, year_to, date_to)
         result_date = queried_date
         break
       end
     end
 
-    return result_date
+    result_date
   end
 
   # I had to add explicit returns and change the url to the static assets
   def get_cover_image_tm(document)
-    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\""
+    rel_key = ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)
+
+    files_query = "#{rel_key}:\"#{document[:id]}\""
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
@@ -211,77 +221,81 @@ module TimelineHelper
 
     cover_image = default_image_tm(file_doc) if cover_image.nil?
 
-    return cover_image
+    cover_image
   end
 
-  def search_image_tm(document, file_document, image_name = "crop16_9_width_200_thumbnail")
+  def search_image_tm(document, file_document, image_name = 'crop16_9_width_200_thumbnail')
     path = nil
+    file_type_key = ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)
 
-    unless file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].blank?
-      format = file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].first
+    unless file_document[file_type_key].blank?
+      format = file_document[file_type_key].first
       case format
-        when "image"
+        when 'image'
           path = surrogate_url_tm(document[:id], file_document.id, image_name)
-        when "text"
-          path = surrogate_url_tm(document[:id], file_document.id, "thumbnail_medium")
+        when 'text'
+          path = surrogate_url_tm(document[:id], file_document.id, 'thumbnail_medium')
       end
     end
 
-    return path
+    path
   end
 
   def default_image_tm(file_document)
-    path = "assets/no_image.png"
+    path = 'assets/no_image.png'
+    file_type_key = ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)
 
     unless file_document.nil?
-      unless file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].blank?
-        format = file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].first
+      unless file_document[file_type_key].blank?
+        format = file_document[file_type_key].first
 
         path = "assets/dri/formats/#{format}.png"
-
-        if Rails.application.assets.find_asset(path).nil?
-          path = "assets/no_image.png"
-        end
+        path = 'assets/no_image.png' if Rails.application.assets.find_asset(path).nil?
       end
     end
 
-    return path
+    path
   end
 
   def cover_image_tm(document)
     path = nil
+    cover_image_key = ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym
+    root_col_key = ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym
 
-    if document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym] && document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-      path = document[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym].first
-    elsif !document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].blank?
+    if document[cover_image_key] && document[cover_image_key].first
+      path = document[cover_image_key].first
+    elsif !document[root_col_key].blank?
       collection = root_collection_solr_tm(document)
-      if collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)] && collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
-        path = collection[ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)].first
+      if collection[cover_image_key] && collection[cover_image_key].first
+        path = collection[cover_image_key].first
       end
     end
 
-    return path
+    path
   end
 
-  def root_collection_solr_tm( doc )
-    if doc[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym]
-      id = doc[ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym][0]
+  def root_collection_solr_tm(doc)
+    root_col_key = ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym
+    root_col_id_key = ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
+
+    if doc[root_col_key]
+      id = doc[root_col_id_key][0]
       solr_query = "id:#{id}"
-      collection = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "1")
+      collection = ActiveFedora::SolrService.query(solr_query, defType: 'edismax', rows: '1')
+      return collection[0]
     end
-    collection[0]
+
+    nil
   end
 
   def surrogate_url_tm(doc, file_doc, name)
-
     storage = Storage::S3Interface.new
     url = storage.surrogate_url(doc, file_doc, name)
 
-    return url
+    url
   end
 
   def overlaps?(sdate, other_sdate, edate, other_edate)
     (sdate.to_i - other_edate.to_i) * (other_sdate.to_i - edate.to_i) >= 0
   end
-
 end
