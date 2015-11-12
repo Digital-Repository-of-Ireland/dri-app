@@ -7,8 +7,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: f213ecba1b9cbb7f5108e4415de22d50d2f10a97
-  branch: develop
+  revision: ea0bc0f8a38892e9d9c57623e604623ac58a6793
+  tag: v2.2.7
   specs:
     dri_data_models (2.2.7)
       hydra-access-controls
@@ -557,13 +557,8 @@ GEM
       rdf-xsd (~> 1.1)
     rdf-trig (1.1.5.1)
       ebnf (~> 0.3, >= 0.3.7)
-<<<<<<< HEAD
-      rdf (~> 1.1, >= 1.1.11)
-      rdf-turtle (~> 1.1, >= 1.1.7)
-=======
       rdf (~> 1.1, >= 1.1.11, < 1.99)
       rdf-turtle (~> 1.1, >= 1.1.7, < 1.99)
->>>>>>> develop
     rdf-trix (1.1.0.1)
       rdf (~> 1.1, < 1.99)
     rdf-turtle (1.1.8)
