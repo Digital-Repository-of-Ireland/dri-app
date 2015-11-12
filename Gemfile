@@ -11,10 +11,10 @@ gem 'blacklight-maps'
 gem 'hydra-head', '9.4.1'
 gem 'sufia-models', '6.3.0'
 
-gem 'paper_trail', '~> 3'
+gem 'paper_trail', '~> 4'
 
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'gem_updates'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
 
 gem 'active-fedora', '~> 9.6.2'
 
