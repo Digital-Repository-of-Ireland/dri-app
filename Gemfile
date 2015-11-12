@@ -13,7 +13,7 @@ gem 'sufia-models', '6.3.0'
 
 gem 'paper_trail', '~> 3'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.2.6'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.2.7'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.1.3'
 
 gem 'active-fedora', '~> 9.4.1'
