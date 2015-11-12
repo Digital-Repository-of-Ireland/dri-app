@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 7b807120e190d23a0439e2e7100d283448d1db7d
+  revision: f213ecba1b9cbb7f5108e4415de22d50d2f10a97
   branch: develop
   specs:
-    dri_data_models (2.2.6)
+    dri_data_models (2.2.7)
       hydra-access-controls
       hydra-collections
       hydra-head (~> 9.0)
@@ -545,11 +545,6 @@ GEM
       rdf (~> 1.99)
     rdf-json (1.99.0)
       rdf (~> 1.99)
-    rdf-microdata (2.0.2)
-      htmlentities (~> 4.3)
-      nokogiri (~> 1.6)
-      rdf (~> 1.1)
-      rdf-xsd (~> 1.1)
     rdf-n3 (1.99.0)
       rdf (~> 1.99)
     rdf-rdfa (1.99.0)
@@ -684,7 +679,7 @@ GEM
       sxp (~> 0.1)
     sparql-client (1.99.0)
       net-http-persistent (~> 2.9)
-      rdf (~> 1.1)
+      rdf (~> 1.1, < 1.99)
     sprockets (2.12.4)
       hike (~> 1.2)
       multi_json (~> 1.0)

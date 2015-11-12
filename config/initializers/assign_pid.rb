@@ -12,9 +12,15 @@ Sufia::Noid.module_eval do
   end
 
   def new_id
-    service.mint
+    id = service.mint
+    ActiveFedora::Base.find(id)
+
+    id
   rescue Ldp::Gone
+    Rails.logger.error "Tombstone ID #{id}"
     nil
+  rescue ActiveFedora::ObjectNotFoundError
+    id
   end
 
 end
