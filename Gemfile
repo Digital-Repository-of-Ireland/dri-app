@@ -9,7 +9,7 @@ gem 'blacklight', '~> 5.10.0'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
 gem 'hydra-head', '9.4.1'
-gem 'sufia-models', '6.3.0'
+gem 'sufia-models', '6.4.0'
 
 gem 'paper_trail', '~> 4'
 
