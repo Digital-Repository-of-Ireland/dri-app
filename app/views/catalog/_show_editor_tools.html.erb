@@ -84,7 +84,7 @@
     </li>  
 
     <% if @document.editable? %>
-      <%= link_to '', :'data-target' => '#dri_delete_object_modal_id', :'data-toggle' => 'modal' do %>
+      <%= link_to '', :'data-target' => '#dri_delete_object_modal_id', :'data-toggle' => 'modal', :id => 'delete_object' do %>
         <li>
           <%= t('dri.views.objects.buttons.delete_object') %>
         </li>
@@ -117,7 +117,7 @@
         <span class="label label-danger"><%= t('dri.views.objects.confirm.delete') %></span>
         <br />
         <%= form_tag (object_path(@document.id)), :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
-          <%= submit_tag t('dri.views.objects.buttons.delete_object'), :class => "dri_button_red", :id => "delete_object_#{@document.id}", :data => { :confirm => t('dri.views.objects.confirm.delete') } %>
+          <%= submit_tag t('dri.views.objects.buttons.delete_object'), :class => "dri_button_red", :id => "confirm_delete_object", :data => { :confirm => t('dri.views.objects.confirm.delete') } %>
         <% end %>
       </div>
 
