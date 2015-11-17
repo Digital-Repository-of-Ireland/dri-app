@@ -1,6 +1,6 @@
 require 'checksum'
 
-class CreateChecksumsJob < ActiveFedoraPidBasedJob
+class CreateChecksumsJob < ActiveFedoraIdBasedJob
 
   def queue_name
     :create_checksums
