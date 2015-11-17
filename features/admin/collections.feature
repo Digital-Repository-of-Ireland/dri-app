@@ -85,9 +85,9 @@ Scenario: Deleting a collection as an admin
   Then I should see a success message for deleting a collection
 
 Scenario: Non-admin should not be given option to delete
-  Given a collection with pid "coll7" created by "user1"
-  And the collection with pid "coll7" has status published
-  When I go to the "collection" "show" page for "coll7"
+  Given a collection with pid "collec7" created by "user1"
+  And the collection with pid "collec7" has status published
+  When I go to the "collection" "show" page for "collec7"
   And I click the link to edit a collection
   Then I should not see a link to delete a collection
 

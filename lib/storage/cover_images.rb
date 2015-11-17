@@ -17,26 +17,6 @@ module Storage
         end
       end
     end
-    
-    # FIXME - Initial impl of creation of EAD cover images from the data models...
-    def self.validate_from_tempfile(cover_image, collection)
-      if cover_image.present? && Validators.media_type?(cover_image) == "image"
-        return false if self.virus?(cover_image)
-
-        url = self.store_cover(cover_image.path, collection, cover_image.original_filename)
-        if url
-          collection.properties.cover_image = url
-
-          # From data models, when creating cover image, no need to save the object here!!
-          #collection.save
- 
-          return true
-        else
-          Rails.logger.error "Unable to save cover image."
-          return false
-        end
-      end
-    end
 
     private
 

@@ -1,4 +1,4 @@
-class IndexTextJob < ActiveFedoraPidBasedJob
+class IndexTextJob < ActiveFedoraIdBasedJob
 
   def queue_name
     :index_text

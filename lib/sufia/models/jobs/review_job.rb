@@ -1,4 +1,4 @@
-class ReviewJob < ActiveFedoraPidBasedJob
+class ReviewJob < ActiveFedoraIdBasedJob
 
   def queue_name
     :review
@@ -13,8 +13,8 @@ class ReviewJob < ActiveFedoraPidBasedJob
       collection_objects = query.pop
 
       collection_objects.each do |object|
-        o = ActiveFedora::Base.find(object["id"], {:cast => true})
-        if o.status.eql?("draft")
+        o = ActiveFedora::Base.find(object["id"], {cast: true})
+        if o.status == "draft"
           o.status = "reviewed"
           o.object_version = (o.object_version.to_i+1).to_s
           o.save

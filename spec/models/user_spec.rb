@@ -219,7 +219,7 @@ module UserTests
             it "should reset locale to default" do
                 @user.locale.should == ""
                 @user.set_locale
-                @user.locale.should == I18n.locale
+                @user.locale.should == I18n.locale.to_s
             end
         end
 
