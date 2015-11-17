@@ -2,7 +2,6 @@
 #
 require 'storage/cover_images'
 require 'validators'
-require 'preservation/preservator'
 
 class CollectionsController < BaseObjectsController
   include Hydra::AccessControlsEnforcement
@@ -102,13 +101,10 @@ class CollectionsController < BaseObjectsController
           flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
         end
 
-        # Moabify the descMetadata & properties (checksum_md5 and doi)  datastream
-        @object.reload # we must refresh the datastreams list 
-        preservation = Preservation::Preservator.new(@object.id, @object.object_version)
-        preservation.create_moab_dirs()
-        preservation.moabify_datastream('descMetadata', @object.attached_files['descMetadata'])
-        preservation.moabify_datastream('properties', @object.attached_files['properties'])
-
+        # Do the preservation actions
+        preservation = Preservation::Preservator.new(@object)
+        preservation.preserve(false, false, ['descMetadata','properties'])
+       
       else
         flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       end
@@ -137,11 +133,22 @@ class CollectionsController < BaseObjectsController
   def add_cover_image
     @object = retrieve_object!(params[:id])
 
-    # If a cover image was uploaded, remove it from the params hash
-    cover_image = params[:batch][:cover_image]
+    if params[:batch].present? && [:cover_image].present?
+      cover_image = params[:batch][:cover_image]
+    else
+      raise Exceptions::BadRequest, t('dri.views.exceptions.file_not_found')
+    end
+
+    @object.object_version = (@object.object_version.to_i+1).to_s
 
     if cover_image.present?
       updated = Storage::CoverImages.validate(cover_image, @object)
+    end
+
+    if updated
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(false, false, ['properties'])
     end
 
     #purge params from update action
@@ -175,12 +182,9 @@ class CollectionsController < BaseObjectsController
 
       @object.reload # we must refresh the datastreams list
 
-      # Create MOAB dir
-      preservation = Preservation::Preservator.new(@object.id, @object.object_version)
-      preservation.create_moab_dirs()
-      @object.attached_files.each do |key,value|
-        preservation.moabify_datastream(key, value)
-      end
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(true, true, ['descMetadata','properties'])
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.collection_created')

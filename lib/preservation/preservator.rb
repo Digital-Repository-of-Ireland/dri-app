@@ -5,10 +5,12 @@ module Preservation
 
     include MoabHelpers
 
-    attr_accessor :base_dir
+    attr_accessor :base_dir, :object, :version
 
-    def initialize(object_id, version)
-     self.base_dir = File.join(local_storage_dir, build_hash_dir(object_id), version_string(version))
+    def initialize(object)
+     self.object = object
+     self.version = object.object_version
+     self.base_dir = File.join(local_storage_dir, build_hash_dir(object.id), version_string(version))
     end
 
     # create_moab_dir
@@ -31,6 +33,38 @@ module Preservation
       File.write(File.join(self.base_dir, 'metadata', "#{name.to_s}.xml"), data)
     end
 
+
+    # moabify_resource
+    def moabify_resource
+      File.write(File.join(self.base_dir, 'metadata', 'resource.rdf'), object.resource.dump(:ttl) )
+    end
+
+
+    # moabify_permissions
+    def moabify_permissions
+      File.write(File.join(base_dir, 'metadata', 'permissions.rdf'), object.permissions )
+    end
+
+
+    # preserve
+    def preserve(resource=false, permissions=false, datastreams=nil)
+      create_moab_dirs()
+
+      if resource
+        moabify_resource
+      end
+      
+      if permissions
+        moabify_permissions
+      end
+
+      if datastreams.present?
+        object.reload # we must refresh the datastreams list
+        datastreams.each do |ds|
+          moabify_datastream(ds, object.attached_files[ds])
+        end
+      end
+    end
 
     private
 

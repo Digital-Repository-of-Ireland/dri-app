@@ -1,7 +1,6 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
 
-require 'preservation/preservator'
 require 'validators'
 
 class AssetsController < ApplicationController
@@ -201,11 +200,10 @@ class AssetsController < ApplicationController
       options[:batch_id] = generic_file.batch.id
       options[:object_version] = (generic_file.batch.object_version.to_i+1).to_s
 
-      # Create MOAB dir and files
-      preservation = Preservation::Preservator.new(generic_file.batch.id, options[:object_version])
-      preservation.create_moab_dirs()
+      # Do the preservation actions
       generic_file.batch.object_version = options[:object_version]
-      preservation.moabify_datastream('properties', generic_file.batch.attached_files['properties'])
+      preservation = Preservation::Preservator.new(generic_file.batch)
+      preservation.preserve(false, false, ['properties'])
 
       # Update object version
       begin

@@ -5,7 +5,7 @@ module Storage
       if cover_image.present? && Validators.media_type?(cover_image) == 'image'
         return false if self.virus?(cover_image)
 
-        url = self.store_cover(cover_image.tempfile.path, collection)
+        url = self.store_cover(cover_image.tempfile.path, collection, cover_image.original_filename)
         if url
           collection.properties.cover_image = url
           collection.save
@@ -23,7 +23,7 @@ module Storage
       if cover_image.present? && Validators.media_type?(cover_image) == "image"
         return false if self.virus?(cover_image)
 
-        url = self.store_cover(cover_image.path, collection)
+        url = self.store_cover(cover_image.path, collection, cover_image.original_filename)
         if url
           collection.properties.cover_image = url
 
@@ -48,7 +48,7 @@ module Storage
       true
     end
 
-    def self.store_cover(cover_image, collection)
+    def self.store_cover(cover_image, collection, filename)
       if !Settings.data || Settings.data.cover_image_bucket.nil?
         Rails.logger.error "Storage bucket for cover images not configured"        
         return nil
@@ -57,10 +57,10 @@ module Storage
       url = nil
       storage = Storage::S3Interface.new
       if (storage.store_file(cover_image,
-                            "#{collection.pid}.#{cover_image.original_filename.split(".").last}",
+                            "#{collection.pid}.#{filename.split(".").last}",
                              Settings.data.cover_image_bucket))
         url = storage.get_link_for_file(Settings.data.cover_image_bucket,
-                         "#{collection.pid}.#{cover_image.original_filename.split(".").last}")
+                         "#{collection.pid}.#{filename.split(".").last}")
       end
       
       url

@@ -1,7 +1,6 @@
 # Controller for Digital Objects
 #
 require 'solr/query'
-require 'preservation/preservator'
 
 include Utils
 
@@ -90,12 +89,9 @@ class ObjectsController < BaseObjectsController
         actor.version_and_record_committer
         update_doi(@object, doi, 'metadata update') if doi && doi.changed?
 
-        # Moabify the descMetadata & properties (checksum_md5 and doi)  datastream
-        @object.reload # we must refresh the datastreams list 
-        preservation = Preservation::Preservator.new(@object.id, @object.object_version)
-        preservation.create_moab_dirs()
-        preservation.moabify_datastream('descMetadata', @object.attached_files['descMetadata'])
-        preservation.moabify_datastream('properties', @object.attached_files['properties'])
+        # Do the preservation actions
+        preservation = Preservation::Preservator.new(@object)
+        preservation.preserve(false, false,['descMetadata','properties'])
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
         format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
@@ -153,14 +149,9 @@ class ObjectsController < BaseObjectsController
 
       actor.version_and_record_committer
 
-      @object.reload # we must refresh the datastreams list
-
-      # Create MOAB dir
-      preservation = Preservation::Preservator.new(@object.id, @object.object_version)
-      preservation.create_moab_dirs()
-      @object.attached_files.each do |key,value|
-        preservation.moabify_datastream(key, value)
-      end
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(true, true, ['descMetadata','properties'])
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
@@ -285,7 +276,12 @@ class ObjectsController < BaseObjectsController
 
     unless @object.status.eql?('published')
       @object.status = params[:status] if params[:status].present?
+      @object.object_version = (@object.object_version.to_i+1).to_s
       @object.save
+
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(false, false, ['properties'])
     end
 
     if params[:apply_all].present? && params[:apply_all] == 'yes'

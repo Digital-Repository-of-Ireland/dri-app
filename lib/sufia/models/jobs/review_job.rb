@@ -16,7 +16,12 @@ class ReviewJob < ActiveFedoraPidBasedJob
         o = ActiveFedora::Base.find(object["id"], {:cast => true})
         if o.status.eql?("draft")
           o.status = "reviewed"
+          o.object_version = (o.object_version.to_i+1).to_s
           o.save
+
+          # Do the preservation actions
+          preservation = Preservation::Preservator.new(o)
+          preservation.preserve(false, false, ['properties'])
         end
       end
     end

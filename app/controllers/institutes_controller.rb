@@ -89,10 +89,15 @@ class InstitutesController < ApplicationController
     @collection = ActiveFedora::Base.find(params[:object], cast: true)
     raise Exceptions::NotFound unless @collection
 
+    @collection.object_version = (@collection.object_version.to_i+1).to_s
     delete ? delete_association : add_association
 
     @collection_institutes = Institute.find_collection_institutes(@collection.institute)
     @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
+
+    # Do the preservation actions
+    preservation = Preservation::Preservator.new(@collection)
+    preservation.preserve(false, false, ['properties'])
 
     respond_to do |format|
       format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.id }

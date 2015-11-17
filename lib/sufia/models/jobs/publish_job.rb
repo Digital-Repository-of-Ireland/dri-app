@@ -21,7 +21,12 @@ class PublishJob < ActiveFedoraIdBasedJob
           if o.status == 'reviewed'
             o.status = 'published'
             o.published_at = Time.now.utc.iso8601
+            o.object_version = (o.object_version.to_i+1).to_s
             o.save
+
+            # Do the preservation actions
+            preservation = Preservation::Preservator.new(o)
+            preservation.preserve(false, false, ['properties'])
 
             mint_doi(o)
           end
@@ -33,7 +38,12 @@ class PublishJob < ActiveFedoraIdBasedJob
     # publish the collection object
     object.status = 'published'
     object.published_at = Time.now.utc.iso8601
+    object.object_version = (object.object_version.to_i+1).to_s
     object.save
+
+    # Do the preservation actions
+    preservation = Preservation::Preservator.new(object)
+    preservation.preserve(false, false, ['properties'])
 
     mint_doi(object)
   end
