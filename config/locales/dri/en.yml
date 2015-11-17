@@ -435,6 +435,7 @@ en:
         resque_error: "Error connecting to Resque."
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
+        file_not_found: "Upload file not found"
       fields:
         Format: Format
         collection_title: "Collection Title"

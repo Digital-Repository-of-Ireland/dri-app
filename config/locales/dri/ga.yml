@@ -405,6 +405,7 @@ ga:
         resque_error: "Bhí earráid le linn ceangal le Resque"
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
+        file_not_found: "Upload file not found"
       fields:
         Format: Format
         collection_title: "Teideal an Bhailiúcháin"
