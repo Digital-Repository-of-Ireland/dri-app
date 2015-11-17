@@ -76,6 +76,9 @@ module ButtonTranslator
       when /^confirm delete collection$/
         "confirm_delete_collection"
 
+      when /^confirm delete object$/
+        "confirm_delete_object"
+
       when /^accept the end user agreement$/
         "accept_cookies"
 
@@ -119,7 +122,7 @@ module ButtonTranslator
         "status_update"
 
       when /^save cover image$/
-        "add_cover_image"
+        "save_cover_image"
 
       else "Unknown"
 

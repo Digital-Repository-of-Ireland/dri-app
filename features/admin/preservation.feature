@@ -30,15 +30,19 @@ Feature: Preservation
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
 
+  @noexec
   Scenario: Add collection cover image
     When I create a collection and save the pid
     And I go to the "collection" "show" page for "the saved pid"
     And I follow the link to add a cover image
-    And I attach the cover image file "sample_logo.png"
+    And I attach the cover image file "sample_image.png"
     And I press the button to "save cover image"
+    And I wait for the ajax request to finish
+    Then I should see a success message for updating a collection
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
 
+  @noexec
   Scenario: Publish collection 
     When I create a collection and save the pid
     And I go to the "collection" "show" page for "the saved pid"
@@ -47,7 +51,13 @@ Feature: Preservation
     And the AIP for the saved pid should have "2" versions
 
   Scenario: Add a licence for a collection
+    When I create a collection and save the pid
+    And I go to the "collection" "show" page for "the saved pid"
+    And I associate a licence with the collection
+    Then an AIP should exist for the saved pid
+    And the AIP for the saved pid should have "2" versions
 
+  @noexec
   Scenario: Delete an unpublished collection
     When I create a collection and save the pid
     And I go to the "collection" "show" page for "the saved pid"
@@ -115,4 +125,22 @@ Feature: Preservation
     And I press the button to "upload a file"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "3" versions
+
+  Scenario: Mark object as reviewed
+    When I create a collection and save the pid
+    And I create an object and save the pid
+    And I go to the "object" "show" page for "the saved pid"
+    And I press the button to "update status"
+    Then an AIP should exist for the saved pid
+    And the AIP for the saved pid should have "2" versions
+
+  @noexec
+  Scenario: Delete an unpublished object
+    When I create a collection and save the pid
+    And I create an object and save the pid
+    And I go to the "object" "show" page for "the saved pid"
+    And I follow the link to delete an object
+    And I press the button to "confirm delete object"
+    Then an AIP should exist for the saved pid
+    And the AIP for the saved pid should have "2" versions
 

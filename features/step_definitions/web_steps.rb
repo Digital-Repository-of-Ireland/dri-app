@@ -148,7 +148,7 @@ When /^I attach the institute logo file "(.*?)"$/ do |file|
 end
 
 When /^I attach the cover image file "(.*?)"$/ do |file|
-  attach_file("batch_cover_image", File.join(cc_fixture_path, file))
+  attach_file("batch_cover_image", File.expand_path(File.join(cc_fixture_path, file)))
 end
 
 When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|

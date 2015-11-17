@@ -22,6 +22,9 @@ module LinkTranslator
       when /^delete a collection$/
         "delete_collection"
 
+      when /^delete an object$/
+        "delete_object"
+
       when /^edit this record$/
         "edit_record"
 
