@@ -18,19 +18,7 @@ module DRI::Object
     end
     
     def version_and_record_committer
-      #TODO Investigate reverting back to full object versioning
-      #@object.create_version
-      #VersionCommitter.create(version_id: @object.versions.last.uri, committer_login: @user.to_s)
-
-      # For now, just versioning updates to descMetadata and properties datastreams
-      if @object.attached_files.key?(:descMetadata)
-        @object.descMetadata.create_version
-        VersionCommitter.create(version_id: @object.descMetadata.versions.last.uri, committer_login: @user.to_s)
-      end
-      if @object.attached_files.key?(:properties)
-        @object.properties.create_version
-        VersionCommitter.create(version_id: @object.properties.versions.last.uri, committer_login: @user.to_s)
-      end
+      VersionCommitter.create(obj_id: @object.id, committer_login: @user.to_s)
     end
 
   end
