@@ -22,7 +22,6 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.master_file_access="private"
   collection.status = 'draft'
   collection.save
-  collection.member_collections.count.should == 0
   collection.governed_items.count.should == 0
 
   group = UserGroup::Group.new(:name => collection.id,
