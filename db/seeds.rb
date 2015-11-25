@@ -22,6 +22,7 @@ def licences()
   Licence.create(:name => 'ODC-ODbL', :description => 'Open Data Commons Open Database Licence 1.0', :url => 'http://opendatacommons.org/licenses/odbl/summary/', :logo => '')
   Licence.create(:name => 'ODC-BY', :description => 'Open Data Commons Attribution License 1.0', :url => 'http://opendatacommons.org/licenses/by/1.0/', :logo => '')
   Licence.create(:name => 'ODC-PPDL', :description => 'Open Data Commons Public Domain Dedication and Licence', :url => 'http://opendatacommons.org/licenses/pddl/summary/', :logo => '')
+  Licence.create(:name => 'Orphan Work', :description => 'This asset has been registered in the OAMI EU Orphan Works Database', :url => 'https://oami.europa.eu/orphanworks/', :logo => '')
   puts "Ran seed licences"
 end
 
