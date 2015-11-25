@@ -2,11 +2,6 @@
 <% if (update_desc_metadata?(@object.class.to_s)) %>
   <%= render :partial => "shared/form_metadata_#{get_metadata_name(@object)}", :locals => { :f => f, :action => "update" } %>
 <% end %>
-  <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
   <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "save_edit" %>
   <%= link_to t('dri.views.objects.links.cancel'), url_for(:controller => "catalog", :action => "show", :id => @object.id), :id => "view_record", :class => 'btn-primary btn-large dri_cancel dri_clearfix' %>
-<% end %>
-<% if (update_desc_metadata?(@object.class.to_s)) %>
-  <%= render :partial => "replace_metadata", :locals => { :object => @object } %>
-  <%= render :partial => "upload_file", :locals => { :object => @object } %>
 <% end %>
