@@ -8,6 +8,7 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.rights = [SecureRandom.hex(20)]
   collection.type = ["Collection"]
   collection.creation_date = ["2000-01-01"]
+  user ||= 'test'
   if user
     email = "#{user}@#{user}.com"
     User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
@@ -18,10 +19,9 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
     collection.read_groups_string="registered"
     collection.creator = ["#{user}@#{user}.com"]
   end
-  collection.creator = ["test@test.com"] if collection.creator.empty?
   collection.master_file_access="private"
+  collection.status = 'draft'
   collection.save
-  collection.member_collections.count.should == 0
   collection.governed_items.count.should == 0
 
   group = UserGroup::Group.new(:name => collection.id,
@@ -30,12 +30,14 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
 end
 
 
-Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?/ do |pid, title, desc, type, user|
+Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
   pid = @random_pid if (pid == "@random")
   digital_object = DRI::Batch.with_standard(:qdc, {:id => pid})
   digital_object.title = title ? [title] : ["Test Object"]
   digital_object.type = type ? [type] : ["Sound"]
   digital_object.description = desc ? [desc] : ["A test object"]
+
+  user ||= 'test'
   if user
     email = "#{user}@#{user}.com"
     User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
@@ -45,10 +47,11 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
     digital_object.edit_groups_string="registered"
     digital_object.creator = ["#{user}@#{user}.com"]
   end
-  digital_object.creator = ["test@test.com"] if digital_object.creator.empty?
   digital_object.rights = ["This is a statement of rights"]
   digital_object.creation_date = ["2000-01-01"]
+  digital_object.status = 'draft'
   
+  digital_object.governing_collection = ActiveFedora::Base.find(coll, cast: true) if coll
 
   MetadataHelpers.checksum_metadata(digital_object)
   digital_object.save!
@@ -78,7 +81,6 @@ Given /^the object with pid "(.*?)" is in the collection with pid "(.*?)"$/ do |
   object = ActiveFedora::Base.find(objid, {:cast => true})
   collection = ActiveFedora::Base.find(colid, {:cast => true})
   object.governing_collection = collection
-
   MetadataHelpers.checksum_metadata(object)
   object.update_index
   object.save

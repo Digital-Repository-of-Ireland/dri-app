@@ -3,20 +3,22 @@
 
 source 'http://rubygems.org'
 
-gem 'rails','~> 4.1'
+gem 'rails','~> 4.2'
 
 gem 'blacklight', '~> 5.10.0'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
-gem 'hydra-head', '9.2.2'
-gem 'sufia-models', '6.3.0'
+gem 'hydra-head', '9.4.1'
 
-gem 'paper_trail', '~> 3'
+gem 'sufia-models', '6.4.0'
+gem 'redlock'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.2.7'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.1.3'
+gem 'paper_trail', '~> 4'
 
-gem 'active-fedora', '~> 9.4.1'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.2.9'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.1.4'
+
+gem 'active-fedora', '~> 9.6.2'
 
 gem 'rails_config'
 gem 'sqlite3'

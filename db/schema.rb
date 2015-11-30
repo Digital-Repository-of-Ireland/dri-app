@@ -13,7 +13,7 @@
 
 ActiveRecord::Schema.define(version: 20151021164626) do
 
-  create_table "bookmarks", force: true do |t|
+  create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
     t.string   "document_id"
     t.string   "title"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
 
   add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
 
-  create_table "datacite_dois", force: true do |t|
+  create_table "datacite_dois", force: :cascade do |t|
     t.string   "object_id"
     t.string   "modified"
     t.string   "mod_version"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
     t.integer  "version"
   end
 
-  create_table "doi_metadata", force: true do |t|
+  create_table "doi_metadata", force: :cascade do |t|
     t.integer  "datacite_doi_id"
     t.text     "title"
     t.text     "creator"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
 
   add_index "doi_metadata", ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
 
-  create_table "ingest_statuses", force: true do |t|
+  create_table "ingest_statuses", force: :cascade do |t|
     t.string   "batch_id"
     t.string   "asset_id"
     t.string   "status"
@@ -59,7 +59,10 @@ ActiveRecord::Schema.define(version: 20151021164626) do
     t.string   "asset_type"
   end
 
-  create_table "institutes", force: true do |t|
+  add_index "ingest_statuses", ["asset_id"], name: "index_ingest_statuses_on_asset_id"
+  add_index "ingest_statuses", ["batch_id"], name: "index_ingest_statuses_on_batch_id"
+
+  create_table "institutes", force: :cascade do |t|
     t.string   "name"
     t.string   "url"
     t.datetime "created_at"
@@ -69,7 +72,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
 
   add_index "institutes", ["name"], name: "index_institutes_on_name"
 
-  create_table "job_statuses", force: true do |t|
+  create_table "job_statuses", force: :cascade do |t|
     t.integer  "ingest_status_id"
     t.string   "job"
     t.string   "status"
@@ -80,7 +83,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
 
   add_index "job_statuses", ["ingest_status_id"], name: "index_job_statuses_on_ingest_status_id"
 
-  create_table "licences", force: true do |t|
+  create_table "licences", force: :cascade do |t|
     t.string   "name"
     t.string   "url"
     t.string   "logo"
@@ -89,7 +92,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
     t.datetime "updated_at"
   end
 
-  create_table "local_files", force: true do |t|
+  create_table "local_files", force: :cascade do |t|
     t.string  "path"
     t.string  "fedora_id"
     t.string  "ds_id"
@@ -98,7 +101,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
     t.text    "checksum"
   end
 
-  create_table "searches", force: true do |t|
+  create_table "searches", force: :cascade do |t|
     t.text     "query_params"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -108,13 +111,13 @@ ActiveRecord::Schema.define(version: 20151021164626) do
 
   add_index "searches", ["user_id"], name: "index_searches_on_user_id"
 
-  create_table "user_group_authentications", force: true do |t|
+  create_table "user_group_authentications", force: :cascade do |t|
     t.integer "user_id"
     t.string  "provider"
     t.string  "uid"
   end
 
-  create_table "user_group_groups", force: true do |t|
+  create_table "user_group_groups", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
     t.datetime "created_at"
@@ -125,7 +128,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
 
   add_index "user_group_groups", ["name"], name: "index_user_group_groups_on_name", unique: true
 
-  create_table "user_group_memberships", force: true do |t|
+  create_table "user_group_memberships", force: :cascade do |t|
     t.integer  "group_id"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -135,7 +138,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
 
   add_index "user_group_memberships", ["group_id", "user_id"], name: "index_user_group_memberships_on_group_id_and_user_id", unique: true
 
-  create_table "user_group_users", force: true do |t|
+  create_table "user_group_users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
@@ -167,7 +170,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
   add_index "user_group_users", ["email"], name: "index_user_group_users_on_email", unique: true
   add_index "user_group_users", ["reset_password_token"], name: "index_user_group_users_on_reset_password_token", unique: true
 
-  create_table "version_committers", force: true do |t|
+  create_table "version_committers", force: :cascade do |t|
     t.string   "obj_id"
     t.string   "datastream_id"
     t.string   "version_id"
@@ -176,7 +179,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
     t.datetime "updated_at"
   end
 
-  create_table "versions", force: true do |t|
+  create_table "versions", force: :cascade do |t|
     t.string   "item_type",  null: false
     t.integer  "item_id",    null: false
     t.string   "event",      null: false
@@ -187,5 +190,4 @@ ActiveRecord::Schema.define(version: 20151021164626) do
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
 
-  Foreigner.load
 end

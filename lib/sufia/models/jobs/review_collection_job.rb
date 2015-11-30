@@ -1,4 +1,4 @@
-class ReviewCollectionJob < ActiveFedoraPidBasedJob
+class ReviewCollectionJob < ActiveFedoraIdBasedJob
 
   def queue_name
     :review
@@ -13,14 +13,14 @@ class ReviewCollectionJob < ActiveFedoraPidBasedJob
       collection_objects = query.pop
 
       collection_objects.each do |object|
-        o = ActiveFedora::Base.find(object["id"], {:cast => true})
-        if o.status.eql?("draft")
-          o.status = "reviewed"
+        o = ActiveFedora::Base.find(object["id"], {cast: true})
+        if o.status == 'draft'
+          o.status = 'reviewed'
           o.save
         end
 
         # If object is a collection and has sub-collections, apply to governed_items
-        if o.is_collection?
+        if o.collection?
           Sufia.queue.push(ReviewCollectionJob.new(o.id)) unless o.governed_items.blank?
         end
       end

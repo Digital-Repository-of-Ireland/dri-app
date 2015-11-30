@@ -5,8 +5,7 @@ Feature:
   Background:
     Given I am logged in as "admin" in the group "admin" and accept cookies
     And a collection with pid "bookcoll" and title "Bookmark Test Collection"
-    And a Digital Object with pid "bookobj" and title "Bookmark Test Object"
-    And the object with pid "bookobj" is in the collection with pid "bookcoll"
+    And a Digital Object with pid "bookobj" and title "Bookmark Test Object" in collection "bookcoll"
 
   Scenario: Check no bookmarks
     Given I am on the home page

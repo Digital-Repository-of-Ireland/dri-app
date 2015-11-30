@@ -1,7 +1,7 @@
 require 'dri/sparql'
 require 'dri/sparql/provider'
 
-class LinkedDataJob < ActiveFedoraPidBasedJob
+class LinkedDataJob < ActiveFedoraIdBasedJob
 
   def queue_name
     :linked_data
@@ -12,7 +12,7 @@ class LinkedDataJob < ActiveFedoraPidBasedJob
 
     uris = []
     object.geographical_coverage.each do |g|
-      uris << g if g.start_with?("http")
+      uris << g if g.start_with?('http')
     end
 
     uris.each do |uri|

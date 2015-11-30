@@ -15,7 +15,7 @@ class PublishJob < ActiveFedoraIdBasedJob
       collection_objects.each do |object|
         o = ActiveFedora::Base.find(object['id'], cast: true)
 
-        if o.is_collection? && o.governed_items.present?
+        if o.collection? && o.governed_items.present?
           Sufia.queue.push(PublishJob.new(o.id))
         else
           if o.status == 'reviewed'

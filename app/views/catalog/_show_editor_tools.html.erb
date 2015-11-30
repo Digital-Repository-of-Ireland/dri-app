@@ -102,7 +102,7 @@
 </ul>
 </div>
 
-<% if can? :edit, @document && @document.editable? && !@document.published? %>
+<% if (can? :edit, @document) && @document.editable? && !@document.published? %>
 <div class="modal fade" id="dri_delete_object_modal_id">
   <div class="modal-dialog">
     <div class="modal-content">

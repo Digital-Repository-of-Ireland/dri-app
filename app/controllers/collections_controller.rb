@@ -217,7 +217,7 @@ class CollectionsController < BaseObjectsController
 
     return if request.get?
 
-    raise Exceptions::BadRequest unless @object.is_collection?
+    raise Exceptions::BadRequest unless @object.collection?
 
     unless @object.status == 'reviewed'
       @object.status = 'reviewed'
@@ -245,7 +245,7 @@ class CollectionsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
 
-    raise Exceptions::BadRequest unless @object.is_collection?
+    raise Exceptions::BadRequest unless @object.collection?
 
     begin
       publish_collection
@@ -332,7 +332,7 @@ class CollectionsController < BaseObjectsController
       return false
     end
 
-    unless @object.is_collection?
+    unless @object.collection?
       flash[:notice] = "Metadata file does not specify that the object is a collection."
       return false
     end

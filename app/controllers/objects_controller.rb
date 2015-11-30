@@ -137,7 +137,7 @@ class ObjectsController < BaseObjectsController
     if @object.valid? && @object.save
       warn_if_duplicates
 
-      create_reader_group if @object.is_collection?
+      create_reader_group if @object.collection?
       retrieve_linked_data
 
       actor.version_and_record_committer
@@ -261,7 +261,7 @@ class ObjectsController < BaseObjectsController
 
     return if request.get?
 
-    raise Exceptions::BadRequest if @object.is_collection?
+    raise Exceptions::BadRequest if @object.collection?
 
     unless @object.status.eql?('published')
       @object.status = params[:status] if params[:status].present?
