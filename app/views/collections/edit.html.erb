@@ -9,7 +9,7 @@
 			<%= form_for @object, as: :batch, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'dri_ingest_form'} do |f| %>
 
 			<%= render :partial => "shared/form_metadata_qualifieddublincore", :locals => { :f => f, :action => "update" } %>
-			<%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
+			
 
 			<%= f.submit t('dri.views.objects.buttons.save'), :class => "dri_button_green dri_w330", :id => "edit_collection" %>
 			
