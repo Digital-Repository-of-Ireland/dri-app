@@ -191,6 +191,8 @@ en:
       dri_pagination_nav_links_title: "Result Pagination"
       dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
       dri_sort_options_title: "Search Sort Options"
+      dri_publish_unavailable_title: "Publish not available"
+      dri_publish_unavailable: "You need to set this Collection's Depositing Organisation before publishing. Use the \"Manage Organisations\" link"
       dummy_text: "Help text goes here"
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"

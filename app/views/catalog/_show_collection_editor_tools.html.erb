@@ -49,7 +49,7 @@
     <% end %> <!-- if end (non-EAD collections) -->
 	<% if @document.draft? %>
 	  <% publish_label = t('dri.views.catalog.links.publish') %>
-	<% else %>
+	<% else%>
 	  <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
 	<% end %>
 	<%= link_to '', :'data-target' => '#dri_review_modal_id', :'data-toggle' => 'modal', :id => "all_objects_reviewed" do %>
@@ -69,13 +69,18 @@
 	  <%= t('dri.views.catalog.links.generate_surrogates') %>
 	 </li>
 	<% end %>
-    <% if @document.is_root_collection? %>
+    <% if @document.is_root_collection? && @depositing_institute %>
 	  <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
         <li>
           <%= publish_label %>
         </li>
       <% end %>
+    <% elsif  @document.is_root_collection? && !@depositing_institute %>
+            <li class="dri_help_popover dri_disabled" data-content="<%= t('dri.help.dri_publish_unavailable') %>" data-original-title="<%= t('dri.help.dri_publish_unavailable_title') %>" data-trigger="hover" data-placement="left">
+        <%= publish_label %>
+      </li>
     <% end %>
+    
     <!-- If (root collection OR not EAD collection) enable delete collection link -->
     <!-- This is to allow to delete any sub-collection except for EAD -->
     <% if @document.is_root_collection? || @document.editable? %>
