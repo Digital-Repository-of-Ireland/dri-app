@@ -67,7 +67,7 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    active-fedora (9.6.2)
+    active-fedora (9.7.0)
       active-triples (~> 0.7.1)
       activesupport (>= 4.1.0)
       deprecation
@@ -83,8 +83,8 @@ GEM
       deprecation (~> 0.1)
       linkeddata (~> 1.1)
       rdf (~> 1.1)
-    active_fedora-noid (1.0.2)
-      active-fedora (~> 9.0)
+    active_fedora-noid (1.0.3)
+      active-fedora (~> 9.7)
       noid (~> 0.7)
     activejob (4.2.5)
       activesupport (= 4.2.5)
@@ -109,7 +109,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     acts_as_follower (0.2.1)
-    addressable (2.3.8)
+    addressable (2.4.0)
     arel (6.0.3)
     autoparse (0.3.3)
       addressable (>= 2.3.1)
@@ -762,7 +762,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora (~> 9.6.2)
+  active-fedora (~> 9.7)
+  active_fedora-noid (= 1.0.3)
   aws-sdk (~> 2)
   better_errors
   binding_of_caller
