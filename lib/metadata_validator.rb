@@ -1,5 +1,4 @@
 module MetadataValidator
-
   MODS_NS_PREFIX = 'xmlns:mods'
   MODS_NS_URI = 'http://www.loc.gov/mods/v3'
   EAD_NS_PREFIX = 'xmlns:ead'
@@ -10,10 +9,9 @@ module MetadataValidator
   MARC_NS_URI = 'http://www.loc.gov/MARC21/slim'
 
   # Performs XML validation
-  # @param[xml] the XMl file to validate
-  # @param[standard] the metadata class associated with the XML
-  # @return true if valid; false and error messages otherwise
-  #
+  # @param[Nokogiri::XML::Document] xml the XMl file to validate
+  # @param[String] standard the metadata class associated with the XML
+  # @return [Boolean] true if valid; false and error messages otherwise
   def self.valid?(xml, standard)
     case standard
     when 'DRI::Metadata::QualifiedDublinCore'
@@ -31,11 +29,10 @@ module MetadataValidator
   end
 
   # Validate an XML file against all the XSD files it uses
-  # @param[xml] the XML to validate
-  # @param[ns_prefix] the namespace prefix
-  # @param[ns_uri] the namespace URI declaration
-  # @return true if valid; false and error messages otherwise
-  #
+  # @param[Nokogiri::XML::Document] xml the XML to validate
+  # @param[String] ns_prefix the namespace prefix
+  # @param[String] ns_uri the namespace URI declaration
+  # @return [Boolean] true if valid; false and error messages otherwise
   def self.is_schema_valid?(xml, ns_prefix, ns_uri)
     result = false
     @msg = ''
@@ -48,30 +45,33 @@ module MetadataValidator
       schema_imports = []
 
       # Firstly, if the root schema has no namespace prefix AND no default namespace, retrieve it from xsi:noNamespaceSchemaLocation
-      if xml.root.namespace.nil? && !namespace.key?("xmlns")
-        no_ns_schema_location = map_to_localfile(xml.root.attr("xsi:noNamespaceSchemaLocation"))
-        schema_imports = ["<xs:include schemaLocation=\""+no_ns_schema_location+"\"/>\n"] unless no_ns_schema_location.blank?
+      if xml.root.namespace.nil? && !namespace.key?('xmlns')
+        no_ns_schema_location = map_to_localfile(xml.root.attr('xsi:noNamespaceSchemaLocation'))
+        schema_imports = ["<xs:include schemaLocation=\"" + no_ns_schema_location + "\"/>\n"] unless no_ns_schema_location.blank?
       end
 
       # Then, find all elements that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
+      # No xsi:schemaLocation
+      return result, 'The metadata file is missing the XML SchemaLocation declaration' if xml.xpath('//*[@xsi:schemaLocation]').empty?
+
       xml.xpath('//*[@xsi:schemaLocation]').each do |node|
         schemata_by_ns = Hash[node.attr('xsi:schemaLocation').scan(/(\S+)\s+(\S+)/)]
         return result = false if schemata_by_ns.empty?
         schemata_by_ns.each do |ns,loc|
           loc = map_to_localfile(loc)
-          schema_imports = schema_imports | ["<xs:import namespace=\""+ns+"\" schemaLocation=\""+loc+"\"/>\n"]
+          schema_imports = schema_imports | ["<xs:import namespace=\"" + ns + "\" schemaLocation=\""+loc+"\"/>\n"]
         end
       end
 
-      if (schema_imports.size != 0)
+      if schema_imports.size != 0
         # Create a schema that imports and includes the schema used in the XML
         all_schemata = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                        "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" elementFormDefault=\"qualified\">\n" +
-                       schema_imports.join('') + "</xs:schema>"
+                       schema_imports.join('') + '</xs:schema>'
 
         # When parsing the schema, the local directory needs to point to the schema folder
         # as a work around to the problem Nokogiri has with parsing relative path imports.
-        xsd = Dir.chdir(Rails.root.join('config').join('schemas')) do |path|
+        xsd = Dir.chdir(Rails.root.join('config').join('schemas')) do |_path|
           Nokogiri::XML::Schema(all_schemata)
         end
 
@@ -88,16 +88,16 @@ module MetadataValidator
   end # is_schema_valid?
 
   # Checks whether an XML file uses DTD
-  # @return true if DTD declaration present; false otherwise
-  #
+  # @param [Nokogiri::XML::Document] xml the XML file
+  # @param [String] dtd_name the name of the DTD
+  # @return [Boolean] true if DTD declaration present; false otherwise
   def self.uses_dtd?(xml, dtd_name)
     xml.internal_subset && xml.internal_subset.name == dtd_name ? true : false
   end
 
   # Performs EAD XML validation
-  # @param[xml] the XML file to validate
-  # @return true if valid; false and error messages otherwise
-  #
+  # @param [Nokogiri::XML::Document] xml the XML file to validate
+  # @return [Boolean] true if valid; false and error messages otherwise
   def self.is_valid_ead?(xml)
     if uses_dtd?(xml, 'ead')
       is_dtd_valid?(xml, 'ead')
@@ -108,10 +108,9 @@ module MetadataValidator
   end # is_valid_ead?
   
   # Validates an XML file against DTD
-  # @param[xml] the XML file to validate
-  # @param[dtd_name] the name of the DTD
-  # @return true if valid; false and error messages array otherwise
-  #
+  # @param [Nokogiri::XML::Document] xml the XML file to validate
+  # @param [String] dtd_name the name of the DTD
+  # @return [Boolean] true if valid; false and error messages array otherwise
   def self.is_dtd_valid?(xml, dtd_name)
     result = false
     @msg = ''
@@ -124,7 +123,7 @@ module MetadataValidator
     # Workaround to load the local instance of the DTD under config/schemas (*.dtd) for use in validation
     new_xml = Dir.chdir(Rails.root.join('config').join('schemas')) do |path|
       # Replace original DTD reference with a reference to the local DTD
-      xml.to_xml.gsub(/<!DOCTYPE.*?>/,"<!DOCTYPE #{dtd_name} SYSTEM \"#{path}/#{dtd_name}.dtd\" >") 
+      xml.to_xml.gsub(/<!DOCTYPE.*?>/, "<!DOCTYPE #{dtd_name} SYSTEM \"#{path}/#{dtd_name}.dtd\" >")
     end
     # Tell Nokogiri to load DTD (which is not active by default)
     options = Nokogiri::XML::ParseOptions::DEFAULT_XML | Nokogiri::XML::ParseOptions::DTDLOAD
@@ -154,5 +153,4 @@ module MetadataValidator
     
     Pathname.new(file).exist? ? filename : uri
   end # map_to_localfile
-
 end # MetadataValidator
