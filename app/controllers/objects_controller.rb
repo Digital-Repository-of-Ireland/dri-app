@@ -12,7 +12,7 @@ class ObjectsController < BaseObjectsController
   DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
        'contributor','publisher','date','format','source','temporal_coverage',
        'geographical_coverage','geocode_point','geocode_box','institute',
-       'root_collection_id'].freeze
+       'root_collection_id','isGovernedBy','ancestor_id','ancestor_title'].freeze
 
   # Displays the New Object form
   #
@@ -331,7 +331,11 @@ class ObjectsController < BaseObjectsController
       DEFAULT_METADATA_FIELDS.each do |field|
 
         if params['metadata'].blank? || params['metadata'].include?(field)
-          value = doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable)]
+          if field.eql?('isGovernedBy')
+            value = doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable, type: :symbol)]
+          else
+            value = doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable)]
+          end
 
           case field
           when 'institute'
