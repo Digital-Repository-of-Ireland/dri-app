@@ -14,7 +14,17 @@
 		<p>
 			<%= @user.first_name %>&nbsp;<%= @user.second_name %>
 		</p>
-
+ 
+                <% if @user.groups.size > 1 %>
+                  <h5><%= (t :'user_groups.views.shared.group_membership') %></h5>
+                  <dl>
+                    <% @user.groups.each do |group| %>
+                      <% next if group.name == 'registered' %>
+                      <dt><%= group.name %></dt><dd><%= group.description %></dd>
+                    <% end %>
+                  </dl>
+                <% end %>
+                  
      <% unless @user.authentication_token.blank? %>
         <p>
         <div>
@@ -35,7 +45,7 @@
          <%= (t :'user_groups.views.shared.created') %><%= @user.token_creation_date.to_s %><br />
        </div>
        </p>
-    <% end %>
+     <% end %>
 
 
 	</div>
