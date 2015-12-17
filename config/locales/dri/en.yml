@@ -169,6 +169,7 @@ en:
       object: Object
       objects: Objects
       privacy: "Privacy & Cookies policy"
+      privacy_statement: "Privacy Statement"
       reports: Reports
       resque: "Resque Server"
       sitemap: Sitemap
