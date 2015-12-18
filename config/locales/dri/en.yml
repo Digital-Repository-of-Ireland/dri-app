@@ -57,11 +57,14 @@ en:
           no_results: "No valid date results have been found. Try the Grid View to see all results."
           results_found: "Current Search Timeline"
       user_profile:
+        administrator: "Administrator"
+        collection_manager: "Collection Manager"
         collection_title: "Collection Title"
         edit: Edit
         email: Email
         my_account: "My Account"
         name: Name
+        organisational_manager: "Organisational Manager"
         user_type: "User Type"
         your_collection_details: "Your Collection Details"
     citation:

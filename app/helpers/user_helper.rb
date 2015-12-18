@@ -1,74 +1,89 @@
 module UserHelper
+  
+  def admin_collections_data(admin)
+    query = Solr::Query.new(
+      "#{ActiveFedora::SolrService.solr_name('depositor', :searchable, type: :symbol)}:#{admin.email}", 
+      100, 
+      {fq: ["+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true",
+            "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+    )
 
+    collections = collections(admin_email, query)
+    collections.map{ |item| item[:permission] = 'Depositor' }
+    collections
+  end
+
+  def collections(user, query)
+    collections = []
+
+    while query.has_more?
+      objects = query.pop
+      objects.each do |object|
+        collection = {}
+        collection[:id] = object['id']
+        collection[:collection_title] = object[ActiveFedora::SolrQueryBuilder.solr_name(
+          'title', :stored_searchable, type: :string)]
+
+        permissions = []
+        type = user_type(user, object, 'manager', 'Collection Manager')
+        permissions << type if type
+
+        type = user_type(user, object, 'edit', 'Editor')
+        permissions << type if type
+        
+        collection[:permission] = permissions.join(', ') if permissions
+        collections.push(collection)
+      end
+    end
+    
+    collections
+  end
 
   # Return all collection permissions
   # if no user passed in use @current_user
-  def get_collection_permission(user=nil)
-    email = user ? user : @current_user.email
-    manage = get_manage_collections(email)
-    manage.map{ |item| item[:permission] = "Collection Manager" }
-    edit = get_edit_collections(email)
-    edit.map{ |item| item[:permission] = "Editor" }
-    read = get_read_collections(email)
-    read.map{ |item| item[:permission] = "Reader" }
-    return manage.concat(edit).concat(read)
-  end
+  def collection_permission(user=nil)
+    profile_user = user ? user : @current_user
 
-
-  # Return array of collections managed by a given user
-  def get_manage_collections(user)
-    query = Solr::Query.new("#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{user}")
-
-    collections = []
-    while query.has_more?
-      objects = query.pop
-      objects.each do |object|
-        collection = {}
-        collection[:id] = object['id']
-        collection[:collection_title] = object[Solrizer.solr_name('title', :stored_searchable, type: :string)]
-        collections.push(collection)
-      end
+    if profile_user.is_admin?
+      admin_collections_data(profile_user)
+    else
+      user_collections_data(profile_user)
     end
-    return collections
   end
 
+  def user_collections_data(user)
+    query = "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{user.email} OR "\
+      "#{Solrizer.solr_name('edit_access_person', :stored_searchable, type: :symbol)}:#{user.email} OR "\
+      "(" + read_group_query(user) + ")"
 
-  # Return array of collections editable by a given user
-  def get_edit_collections(user)
-    query = Solr::Query.new("#{Solrizer.solr_name('edit_access_person', :stored_searchable, type: :symbol)}:#{user}")
+    solr_query = Solr::Query.new(query, 100, 
+      {fq: ["+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true",
+            "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+      )
 
-    collections = []
-    while query.has_more?
-      objects = query.pop
-      objects.each do |object|
-        collection = {}
-        collection[:id] = object['id']
-        collection[:collection_title] = object[Solrizer.solr_name('title', :stored_searchable, type: :string)]
-        collections.push(collection)
-      end
-    end
-    return collections
+    collections(user, solr_query)
   end
-
-
-  def get_read_collections(user)
-
-    group_query_fragments = UserGroup::User.where(:email => user).first.groups.map{ |group| "#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}:#{group.name}" }
+  
+  def read_group_query(user)
+    group_query_fragments = user.groups.map{ 
+      |group| "#{ActiveFedora::SolrQueryBuilder.solr_name(
+        'read_access_group', :stored_searchable, type: :symbol)}:#{group.name}" unless group.name == "registered"
+    }
     return [] if group_query_fragments.blank?
-    group_query_string = group_query_fragments.join(" OR ")
-    query = Solr::Query.new("#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}:dri* AND (#{group_query_string})")
+    group_query_string = group_query_fragments.compact.join(" OR ")
+   
+    group_query_string
+  end
 
-    collections = []
-    while query.has_more?
-      objects = query.pop
-      objects.each do |object|
-        collection = {}
-        collection[:id] = object['id']
-        collection[:collection_title] = object[Solrizer.solr_name('title', :stored_searchable, type: :string)]
-        collections.push(collection)
-      end
+  def user_type(user, object, role, label)
+    user_type = nil
+    
+    key = ActiveFedora::SolrQueryBuilder.solr_name("#{role}_access_person", :stored_searchable, type: :symbol)
+    if object[key].present?
+      user_type = label if object[key].include?(user.email)
     end
-    return collections
+
+    user_type
   end
 
 
@@ -103,7 +118,7 @@ module UserHelper
     if current_user.is_admin? || current_user.is_cm?
       return ""
     else
-      return "#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published"
+      return "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published"
     end
   end
 
