@@ -10,7 +10,7 @@
       <% if !current_user %>
       <%= link_to user_group.new_user_path, :id => 'sign_up' do %>
           <li>
-            Sign Up
+            <%= t('user_groups.views.shared.register') %>          
           </li>
           <% end %>
       <% end %>
