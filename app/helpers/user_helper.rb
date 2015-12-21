@@ -8,7 +8,7 @@ module UserHelper
             "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
     )
 
-    collections = collections(admin_email, query)
+    collections = collections(admin, query)
     collections.map{ |item| item[:permission] = 'Depositor' }
     collections
   end
