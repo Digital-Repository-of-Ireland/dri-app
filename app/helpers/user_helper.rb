@@ -53,8 +53,10 @@ module UserHelper
 
   def user_collections_data(user)
     query = "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{user.email} OR "\
-      "#{Solrizer.solr_name('edit_access_person', :stored_searchable, type: :symbol)}:#{user.email} OR "\
-      "(" + read_group_query(user) + ")"
+      "#{Solrizer.solr_name('edit_access_person', :stored_searchable, type: :symbol)}:#{user.email}"
+
+    read_query = read_group_query(user)
+    query <<   " OR (" + read_query + ")" unless read_query.nil?
 
     solr_query = Solr::Query.new(query, 100, 
       {fq: ["+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true",
@@ -69,10 +71,8 @@ module UserHelper
       |group| "#{ActiveFedora::SolrQueryBuilder.solr_name(
         'read_access_group', :stored_searchable, type: :symbol)}:#{group.name}" unless group.name == "registered"
     }
-    return [] if group_query_fragments.blank?
-    group_query_string = group_query_fragments.compact.join(" OR ")
-   
-    group_query_string
+    return nil if group_query_fragments.compact.blank?
+    group_query_fragments.compact.join(" OR ")
   end
 
   def user_type(user, object, role, label)
