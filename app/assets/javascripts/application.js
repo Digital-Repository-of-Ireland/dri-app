@@ -19,6 +19,8 @@
 //= require blacklight-maps
 //= require jquery.remotipart
 //= require jquery.cookie
+//= require jquery.validate
+//= require additional-methods
 //= require bootstrap/affix
 //= require bootstrap/carousel
 //= require bootstrap/tooltip
