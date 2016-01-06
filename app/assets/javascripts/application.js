@@ -30,7 +30,6 @@
 //= require blacklight/blacklight
 //
 //= require colorbox-rails
-//= require bootstrap-datepicker
 //= require social-share-button
 //= require dri/
 
