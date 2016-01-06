@@ -165,71 +165,56 @@ function coverImageFileUploadHelper(thisObj) {
 };
 
 // ensure at least one date is entered
-$(document).ready(function () {
-  $("#new_batch").validate({
-    rules: {
-      "batch[creation_date][]": { require_from_group: [1, ".date-group"] },
-      "batch[published_date][]": { require_from_group: [1, ".date-group"] },
-      "batch[date][]": { require_from_group: [1, ".date-group"] }
-    },
-    tooltip_options: {
-      "batch[creation_date][]": {placement:'top'},
-      "batch[published_date][]": {placement:'top'},
-      "batch[date][]": {placement:'top'},
-    },
-    showErrors: function(errorMap, errorList) {
-          // Clean up any tooltips for valid elements
-          $.each(this.validElements(), function (index, element) {
-              var $element = $(element);
-              $element.data("title", "") // Clear the title - there is no error associated anymore
-                  .removeClass("dri_form_error")
-                  .tooltip("destroy");
-          });
-          // Create new tooltips for invalid elements
-          $.each(errorList, function (index, error) {
-              var $element = $(error.element);
-              $element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
-                  .data("title", error.message)
-                  .addClass("dri_form_error")
-                  .tooltip(); // Create a new tooltip based on the error messsage we just set in the title
-          });
-      },
 
+$(document).ready(function () {
+  jQuery.validator.setDefaults({
+   showErrors: function(errorMap, errorList) {
+     // Clean up any tooltips for valid elements
+     $.each(this.validElements(), function (index, element) {
+       var $element = $(element);
+       $element.data("title", "") // Clear the title - there is no error associated anymore
+               .removeClass("dri_form_error")
+               .tooltip("destroy");
+      });
+      // Create new tooltips for invalid elements
+      $.each(errorList, function (index, error) {
+        var $element = $(error.element);
+        $element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
+                .data("title", error.message)
+                .addClass("dri_form_error")
+                .tooltip(); // Create a new tooltip based on the error messsage we just set in the title
+      });
+    }, 
   });
 });
 
 // ensure at least one date is entered
 $(document).ready(function () {
+  $("#new_batch").validate({
+    rules: {
+      "batch[creation_date][]": { require_from_group: [1, ".date-group"] },
+      "batch[published_date][]": { require_from_group: [1, ".date-group"] },
+      "batch[date][]": { require_from_group: [1, ".date-group"] },
+    },
+    tooltip_options: {
+      "batch[creation_date][]": { placement:'top' },
+      "batch[published_date][]": { placement:'top' },
+      "batch[date][]": { placement:'top' },
+    },
+  });
+});
+
+$(document).ready(function () {
   $("#edit_batch").validate({
     rules: {
       "batch[creation_date][]": { require_from_group: [1, ".date-group"] },
       "batch[published_date][]": { require_from_group: [1, ".date-group"] },
-      "batch[date][]": { require_from_group: [1, ".date-group"] }
+      "batch[date][]": { require_from_group: [1, ".date-group"] },
     },
     tooltip_options: {
-      "batch[creation_date][]": {placement:'top'},
-      "batch[published_date][]": {placement:'top'},
-      "batch[date][]": {placement:'top'},
+      "batch[creation_date][]": { placement:'top' },
+      "batch[published_date][]": { placement:'top' },
+      "batch[date][]": { placement:'top' },
     },
-    errorPlacement: function(error, element) {
-      error.insertBefore(element);
-    },
-    showErrors: function(errorMap, errorList) {
-          // Clean up any tooltips for valid elements
-          $.each(this.validElements(), function (index, element) {
-              var $element = $(element);
-              $element.data("title", "") // Clear the title - there is no error associated anymore
-                  .removeClass("dri_form_error")
-                  .tooltip("destroy");
-          });
-          // Create new tooltips for invalid elements
-          $.each(errorList, function (index, error) {
-              var $element = $(error.element);
-              $element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
-                  .data("title", error.message)
-                  .addClass("dri_form_error")
-                  .tooltip(); // Create a new tooltip based on the error messsage we just set in the title
-          });
-      },
   });
 });
