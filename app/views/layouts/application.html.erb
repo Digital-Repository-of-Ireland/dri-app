@@ -40,9 +40,6 @@
 	<% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
 
 	<body>
-
-		<%= render :partial => 'shared/statcounter' if Rails.env.production? %>
-
 		<div id="dri_wrapper_id" class="block1 dri_wrapper">
 
 			
