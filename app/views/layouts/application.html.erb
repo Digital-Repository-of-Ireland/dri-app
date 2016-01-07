@@ -33,7 +33,7 @@
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
 
-		<%= analytics_init if Rails.env.production? %>
+		<%= analytics_init if Rails.env.production? && !(Settings.analytics && Settings.analytics.disable == true) %> 
 
 	</head>
 
