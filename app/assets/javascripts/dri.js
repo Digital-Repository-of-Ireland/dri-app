@@ -165,7 +165,6 @@ function coverImageFileUploadHelper(thisObj) {
 };
 
 // ensure at least one date is entered
-
 $(document).ready(function () {
   jQuery.validator.setDefaults({
    showErrors: function(errorMap, errorList) {
@@ -195,6 +194,7 @@ $(document).ready(function () {
       "batch[creation_date][]": { require_from_group: [1, ".date-group"] },
       "batch[published_date][]": { require_from_group: [1, ".date-group"] },
       "batch[date][]": { require_from_group: [1, ".date-group"] },
+      "batch[creator][]": "required",
     },
     tooltip_options: {
       "batch[creation_date][]": { placement:'top' },
@@ -210,6 +210,7 @@ $(document).ready(function () {
       "batch[creation_date][]": { require_from_group: [1, ".date-group"] },
       "batch[published_date][]": { require_from_group: [1, ".date-group"] },
       "batch[date][]": { require_from_group: [1, ".date-group"] },
+      "batch[creator][]": "required",
     },
     tooltip_options: {
       "batch[creation_date][]": { placement:'top' },

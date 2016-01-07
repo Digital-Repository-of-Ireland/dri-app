@@ -38,7 +38,6 @@ Scenario Outline: Constructing a valid Digital Object
     | dublin_core_pdfdoc_sample.xml | Text        |
     | SAMPLEA.xml                   | Sound       |
 
-@test
 Scenario: Adding a pdf asset to an object
   Given "user1" has created a Digital Object
   When I attach the asset file "sample_pdf.pdf"

@@ -207,6 +207,8 @@ en:
         coverages_text: "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant."
         creation_date: "Creation Date"
         creation_date_text: "Date of creation of the resource. NOTE: You are required to enter at least one of Creation Date OR Published Date OR Date"
+        creator: "Creator"
+        creator_text: "An entity primarily responsible for making the content of the resource."
         date: Date
         date_text: "A point or period of time associated with an event in the lifecycle of the resource."
         description: Description

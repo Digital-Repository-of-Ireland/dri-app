@@ -93,6 +93,20 @@
 	</p>
 </fieldset>
 </fieldset>
+
+<fieldset id="creator">
+        <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.creator')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.creator_text') %>" data-original-title="<%= t('dri.help.fields.creator')%>" data-trigger="hover" data-placement="right"></i></span>
+        <% if @object.creator.count == 0 %>
+        <%= f.text_field "creator][", :value=>'', :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+        <% end %>
+        <% @object.creator.each do |i| %>
+        <%= f.text_field "creator][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+        <% end %>
+        <p class="add-text-field">
+                <i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Creator"><%= t('dri.views.objects.forms.add_creator') %></a>
+        </p>
+</fieldset>
+
 <fieldset id="roles">
 	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.roles')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.roles_text') %>" data-original-title="<%= t('dri.help.fields.roles')%>" data-trigger="hover" data-placement="right"></i></span>
 	<% qdc_extract_people.each do |key, value_array| %>
