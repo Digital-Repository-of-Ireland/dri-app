@@ -411,6 +411,14 @@ a {
     padding: 6px 15px 6px 15px;
     border: 1px solid $dri_grey_border;
 }
+.dri_form_error {
+  @include border_radius;
+    background-color: #fee!important;
+    margin: 6px 0 14px 0;
+    padding: 6px 15px 6px 15px;
+    border: 1px solid $dri_grey_border;
+} 
+
 /*-------------- Social Media Sharing ------------*/
 
 .social-share-button {

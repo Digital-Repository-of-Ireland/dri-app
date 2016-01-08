@@ -3,8 +3,8 @@ class IngestStatus < ActiveRecord::Base
 
   PDF_JOBS = %w(text thumbnail)
   TEXT_JOBS = %w(text)
-  AUDIO_JOBS = %w(derivatives)
-  VIDEO_JOBS = %w(derivatives)
+  AUDIO_JOBS = %w(create_derivatives)
+  VIDEO_JOBS = %w(create_derivatives)
   IMAGE_JOBS = %w(thumbnail)
 
   def completed?(job_status)

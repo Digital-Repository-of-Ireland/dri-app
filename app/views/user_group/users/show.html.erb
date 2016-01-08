@@ -14,7 +14,24 @@
 		<p>
 			<%= @user.first_name %>&nbsp;<%= @user.second_name %>
 		</p>
-
+ 
+                <% if @user.groups.size > 1 || @user.is_admin? %>
+                  <h5><%= t('dri.application.user_profile.user_type') %></h5>
+                  <% if @user.is_admin? %>
+                    <p><%= t('dri.application.user_profile.administrator') %></p>
+                  <% else %>
+                    <% @user.groups.each do |group| %>
+                      <% next if group.name == SETTING_GROUP_DEFAULT %>
+                      <% if group.name == SETTING_GROUP_CM %>
+                          <p><%= t('dri.application.user_profile.collection_manager') %></p>
+                       <% end %>
+                      <% if group.name == SETTING_GROUP_OM %>
+                          <p><%= t('dri.application.user_profile.organisational_manager') %></p>
+                       <% end %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+                  
      <% unless @user.authentication_token.blank? %>
         <p>
         <div>
@@ -35,15 +52,15 @@
          <%= (t :'user_groups.views.shared.created') %><%= @user.token_creation_date.to_s %><br />
        </div>
        </p>
-    <% end %>
+     <% end %>
 
 
 	</div>
 </div>
 
 <!--TO BE CHANGED placeholder for real functionality when it is developed-->
-    <% collection_data = get_collection_permission(@user.email) %>
-    <% if (collection_data != "") %>
+    <% collection_data = collection_permission(@user) %>
+    <% unless collection_data.blank? %>
     <div class="dri_account_block dri_clearfix">
 
 	<h4 class="dri_account_block_heading"><%= t('dri.application.user_profile.your_collection_details') %></h4>

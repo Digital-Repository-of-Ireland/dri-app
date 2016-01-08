@@ -57,11 +57,14 @@ en:
           no_results: "No valid date results have been found. Try the Grid View to see all results."
           results_found: "Current Search Timeline"
       user_profile:
+        administrator: "Administrator"
+        collection_manager: "Collection Manager"
         collection_title: "Collection Title"
         edit: Edit
         email: Email
         my_account: "My Account"
         name: Name
+        organisational_manager: "Organisational Manager"
         user_type: "User Type"
         your_collection_details: "Your Collection Details"
     citation:
@@ -108,6 +111,7 @@ en:
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Delete collection process successfully started."
         collection_publishing: "Collection is being published."
+        collection_objects_review: "Review collection objects process successfully started."
         collection_doi_request: "New DOI requested."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
@@ -168,6 +172,7 @@ en:
       object: Object
       objects: Objects
       privacy: "Privacy & Cookies policy"
+      privacy_statement: "Privacy Statement"
       reports: Reports
       resque: "Resque Server"
       sitemap: Sitemap
@@ -204,6 +209,8 @@ en:
         coverages_text: "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant."
         creation_date: "Creation Date"
         creation_date_text: "Date of creation of the resource. NOTE: You are required to enter at least one of Creation Date OR Published Date OR Date"
+        creator: "Creator"
+        creator_text: "An entity primarily responsible for making the content of the resource."
         date: Date
         date_text: "A point or period of time associated with an event in the lifecycle of the resource."
         description: Description

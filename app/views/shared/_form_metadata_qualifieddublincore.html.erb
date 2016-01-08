@@ -55,42 +55,58 @@
 	</p>
 </fieldset>
 
+<fieldset id="date_group">
 <fieldset id="creation_date">
 	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.creation_date')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.creation_date_text') %>" data-original-title="<%= t('dri.help.fields.creation_date')%>" data-trigger="hover" data-placement="right"></i></span>
 	<% if @object.creation_date.count == 0 %>
-	<%= f.text_field "creation_date][", :value=>'', :class => "edit span6 dri-textfield",  'data-provide' => 'datepicker', 'data-date-force-parse' => 'false', 'data-date-min-view-mode' => 'days', 'data-date-format'=>'yyyy-mm-dd' %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+	<%= f.text_field "creation_date][", :value=>'', :class => "edit span6 dri-textfield date-group" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
 	<% end %>
 	<% @object.creation_date.each do |i| %>
-	<%= f.text_field "creation_date][", :value=>i, :class => "edit span6 dri-textfield", 'data-provide' => 'datepicker', 'data-date-force-parse' => 'false', 'data-date-min-view-mode' => 'days', 'data-date-format'=>'yyyy-mm-dd' %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+	<%= f.text_field "creation_date][", :value=>i, :class => "edit span6 dri-textfield date-group" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
 	<% end %>
 	<p class="add-text-field">
 		<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Creation Date"><%= t('dri.views.objects.forms.add_creation_date') %></a>
 	</p>
 </fieldset>
 <fieldset id="published_date">
-	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.published_date')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.published_date_text') %>" data-original-title="<%= t('dri.help.fields.published_date')%>" data-trigger="hover" data-placement="right"></i></span>
+	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.published_date')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.published_date_text') %>" data-original-title="<%= t('dri.help.fields.published_date')%>" data-trigger="hover" data-placement="right"></i></span>
 	<% if @object.published_date.count == 0 %>
-	<%= f.text_field "published_date][", :value=>'', :class => "edit span6 dri-textfield", 'data-provide' => 'datepicker', 'data-date-force-parse' => 'false', 'data-date-min-view-mode' => 'days', 'data-date-format'=>'yyyy-mm-dd'  %><a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+	<%= f.text_field "published_date][", :value=>'', :class => "edit span6 dri-textfield date-group" %><a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
 	<% end %>
 	<% @object.published_date.each do |i| %>
-	<%= f.text_field "published_date][", :value=>i, :class => "edit span6 dri-textfield", 'data-provide' => 'datepicker', 'data-date-force-parse' => 'false', 'data-date-min-view-mode' => 'days', 'data-date-format'=>'yyyy-mm-dd'  %><a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+	<%= f.text_field "published_date][", :value=>i, :class => "edit span6 dri-textfield date-group" %><a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
 	<% end %>
 	<p class="add-text-field">
 		<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Published Date"><%= t('dri.views.objects.forms.add_published_date') %></a>
 	</p>
 </fieldset>
 <fieldset id="date">
-	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.date')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.date_text') %>" data-original-title="<%= t('dri.help.fields.date')%>" data-trigger="hover" data-placement="right"></i></span>
+	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.date')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.date_text') %>" data-original-title="<%= t('dri.help.fields.date')%>" data-trigger="hover" data-placement="right"></i></span>
 	<% if @object.date.count == 0 %>
-	<%= f.text_field "date][", :value=>'', :class => "edit span6 dri-textfield", 'data-provide' => 'datepicker', 'data-date-force-parse' => 'false', 'data-date-min-view-mode' => 'days', 'data-date-format'=>'yyyy-mm-dd' %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+	<%= f.text_field "date][", :value=>'', :class => "edit span6 dri-textfield date-group" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
 	<% end %>
 	<% @object.date.each do |i| %>
-	<%= f.text_field "date][", :value=>i, :class => "edit span6 dri-textfield", 'data-provide' => 'datepicker', 'data-date-force-parse' => 'false', 'data-date-min-view-mode' => 'days', 'data-date-format'=>'yyyy-mm-dd' %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+	<%= f.text_field "date][", :value=>i, :class => "edit span6 dri-textfield date-group" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
 	<% end %>
 	<p class="add-text-field">
 		<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Date"><%= t('dri.views.objects.forms.add_date') %></a>
 	</p>
 </fieldset>
+</fieldset>
+
+<fieldset id="creator">
+        <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.creator')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.creator_text') %>" data-original-title="<%= t('dri.help.fields.creator')%>" data-trigger="hover" data-placement="right"></i></span>
+        <% if @object.creator.count == 0 %>
+        <%= f.text_field "creator][", :value=>'', :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+        <% end %>
+        <% @object.creator.each do |i| %>
+        <%= f.text_field "creator][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a>
+        <% end %>
+        <p class="add-text-field">
+                <i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Creator"><%= t('dri.views.objects.forms.add_creator') %></a>
+        </p>
+</fieldset>
+
 <fieldset id="roles">
 	<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.roles')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.roles_text') %>" data-original-title="<%= t('dri.help.fields.roles')%>" data-trigger="hover" data-placement="right"></i></span>
 	<% qdc_extract_people.each do |key, value_array| %>
@@ -98,7 +114,7 @@
 	<select id="batch_roles][type][" name="batch[roles][type][]">
 		<% @qdc_people_select_list.each do |optgroup| %>
 		<optgroup label="<%= optgroup[0] %>">
-			<% optgroup[1].each do |opt| %>
+                        <% optgroup[1].each do |opt| %>
 			<% if opt[1] == key %>
 			<option value="<%= opt[1] %>" selected="selected"><%= opt[0] %></option>
 			<% else %>
