@@ -27,7 +27,7 @@ class LocalFile < ActiveRecord::Base
     self.version = opts[:object_version] || 1
     self.mime_type = opts[:mime_type]
 
-    base_dir = opts[:directory].presence || File.join(local_storage_dir, content_path(batch_id, version))
+    base_dir = opts[:directory].presence || File.join(content_path(batch_id, version))
     FileUtils.mkdir_p(base_dir)
     self.path = File.join(base_dir, file_name)
    

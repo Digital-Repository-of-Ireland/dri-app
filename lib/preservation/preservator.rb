@@ -10,16 +10,15 @@ module Preservation
     def initialize(object)
      self.object = object
      self.version = object.object_version
-     self.base_dir = File.join(local_storage_dir, build_hash_dir(object.id), version_string(version))
     end
 
     # create_moab_dir
     # Creates MOAB preservation directory structure and saves metadata there
     #
     def create_moab_dirs()
-        make_dir self.base_dir
-        make_dir File.join(self.base_dir, "metadata")
-        make_dir File.join(self.base_dir, "content")
+        make_dir version_path(self.object.id, self.version) 
+        make_dir metadata_path(self.object.id, self.version)
+        make_dir content_path(self.object.id, self.version)
     end
 
     # moabify_datastream
@@ -30,19 +29,19 @@ module Preservation
       # TODO: what about content datastream?? won't exist yet but shouldn't go in metadata
       data = datastream.content
       return if data.nil?
-      File.write(File.join(self.base_dir, 'metadata', "#{name.to_s}.xml"), data)
+      File.write(File.join(metadata_path(self.object.id, self.version), "#{name.to_s}.xml"), data)
     end
 
 
     # moabify_resource
     def moabify_resource
-      File.write(File.join(self.base_dir, 'metadata', 'resource.rdf'), object.resource.dump(:ttl) )
+      File.write(File.join(metadata_path(self.object.id, self.version), 'resource.rdf'), object.resource.dump(:ttl) )
     end
 
 
     # moabify_permissions
     def moabify_permissions
-      File.write(File.join(base_dir, 'metadata', 'permissions.rdf'), object.permissions )
+      File.write(File.join(metadata_path(self.object.id, self.version), 'permissions.rdf'), object.permissions )
     end
 
 
