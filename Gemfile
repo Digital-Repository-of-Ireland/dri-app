@@ -9,14 +9,17 @@ gem 'blacklight', '~> 5.10.0'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
 gem 'hydra-head', '9.4.1'
+
 gem 'sufia-models', '6.4.0'
+gem 'redlock'
 
 gem 'paper_trail', '~> 4'
 
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
 
-gem 'active-fedora', '~> 9.6.2'
+gem 'active-fedora', '~> 9.7'
+gem 'active_fedora-noid', '1.0.3'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -133,5 +136,4 @@ gem 'bootstrap-switch-rails'
 gem 'videojs_rails', git: 'https://github.com/ekilfeather/videojs_rails.git', ref: '605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
-gem 'bootstrap-datepicker-rails'
 gem 'social-share-button'

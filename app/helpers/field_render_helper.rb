@@ -208,9 +208,9 @@ module FieldRenderHelper
   # Also sets @qdc_people_select_list, for creating a select list in HTML based on qualified dublin core people
   # fields.
   def qdc_extract_people
-    @qdc_people_select_list = [[t('dri.views.metadata.dublin_core'), [[t("dri.views.fields.creator"), "creator"],
-                                                                      [t("dri.views.fields.contributor"), "contributor"],
+    @qdc_people_select_list = [[t('dri.views.metadata.dublin_core'), [[t("dri.views.fields.contributor"), "contributor"],
                                                                       [t("dri.views.fields.publisher"), "publisher"]]]]
+
     qdc_people = Hash.new
     marc_relator_select_list = Array.new
 

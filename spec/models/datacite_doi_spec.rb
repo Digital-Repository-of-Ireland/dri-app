@@ -42,13 +42,9 @@ describe "DataciteDoi" do
     doc = Nokogiri::XML(xml)
     hash = Hash.from_xml(doc.to_s)
     hash["resource"]["titles"]["title"].should == @object.title.first
-    hash["resource"]["subjects"]["subject"][0].should == @object.subject[0]
-    hash["resource"]["subjects"]["subject"][1].should == @object.subject[1]
+    hash["resource"]["creators"]["creator"]["creatorName"] == @object.creator.first
     hash["resource"]["publisher"].should == DoiConfig.publisher
-    hash["resource"]["descriptions"]["description"].should == @object.description.first
-    hash["resource"]["dates"]["date"][0].should == @object.creation_date.first
-    hash["resource"]["dates"]["date"][1].should == @object.published_date.first
-    hash["resource"]["rightsList"]["rights"].should == @object.rights.first
+    hash["resource"]["publicationYear"].should == "#{Time.now.year}"
   end
 
   it 'should use roles if no creator' do

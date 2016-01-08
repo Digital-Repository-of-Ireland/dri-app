@@ -22,7 +22,6 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.master_file_access="private"
   collection.status = 'draft'
   collection.save
-  collection.member_collections.count.should == 0
   collection.governed_items.count.should == 0
 
   group = UserGroup::Group.new(:name => collection.id,
@@ -131,7 +130,7 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
     And I fill in "batch_description][" with "Test description"
     And I fill in "batch_rights][" with "Test rights"
     And I fill in "batch_type][" with "Collection"
-    And I fill in "batch_roles][name][" with "test@test.com"
+    And I fill in "batch_creator][" with "test@test.com"
     And I fill in "batch_creation_date][" with "2000-01-01"
   }
   #{}  And I select "publisher" from the selectbox number 0 for role type

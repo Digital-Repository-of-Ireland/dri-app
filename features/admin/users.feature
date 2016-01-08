@@ -105,7 +105,7 @@ Scenario: A user should be able to edit their details
 Scenario: A user should be able to recover their password
 # Not sure how to test this as it involves sending an email...
 
-@javascript
+@javascript 
 Scenario: an admin user creates a new user account
   Given I am logged in as "adminuser" in the group "admin" and accept cookies
   And I am on the User Sign up page
