@@ -1,10 +1,10 @@
 require 'moab'
-require 'preservation/moab_helpers'
+require 'preservation/preservation_helpers'
 
 module Preservation
   class Preservator
 
-    include MoabHelpers
+    include PreservationHelpers
 
     attr_accessor :base_dir, :object, :version
 

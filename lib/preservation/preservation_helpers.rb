@@ -1,4 +1,4 @@
-module MoabHelpers
+module PreservationHelpers
 
    def local_storage_dir
      Rails.root.join(Settings.dri.files)

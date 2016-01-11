@@ -2,7 +2,7 @@
 
 require 'checksum'
 require 'pathname'
-require 'preservation/moab_helpers'
+require 'preservation/preservation_helpers'
 
 class LocalFile < ActiveRecord::Base
   include MoabHelpers
