@@ -32,13 +32,13 @@ Scenario: Creating a duplicate Digital Object by replacing the metadata file
   And I have created an object with metadata "SAMPLEA.xml" in the collection with pid "xxxx3"
   And a Digital Object with pid "2222" created by "user1"
   And the object with pid "2222" is in the collection with pid "xxxx3"
-  When I go to the "object" "edit" page for "2222"
+  When I go to the "object" "show" page for "2222"
   And I attach the metadata file "SAMPLEB.xml"
-  And I press the button to "replace metadata"
+  And I press the button to "upload metadata"
   Then I should not see the message "Possible duplicate objects found"
-  When I go to the "object" "edit" page for "2222"
+  When I go to the "object" "show" page for "2222"
   And I attach the metadata file "SAMPLEA.xml" 
-  And I press the button to "replace metadata"
+  And I press the button to "upload metadata"
   Then I should see the message "Possible duplicate objects found"
 
 Scenario: Creating a duplicate Digital Object by editing with the metadata form

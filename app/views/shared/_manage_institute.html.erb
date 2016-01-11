@@ -1,80 +1,26 @@
-<% if @available_institutes.count > 0 && @depositing_institute %>
-<div class="dri_institutes_title dri_clearfix">
-	<%= t('dri.views.collection.institute.associate') %>
+<div id="dri_organisations_manage">
+  <%= form_tag collection_organisations_path(@document), :id => 'associate_institute', :name => 'associate_institute' do %>
+    <select multiple="multiple" size="10" id="select_institutes" name="selected_institutes[]" class="dri_select_institutes">
+      <% if @available_institutes %>
+        <% @available_institutes.each do |inst| %>
+          <option value="<%= inst %>"><%= inst %></option>
+        <% end %>
+      <% end %>
+                
+      <% @removal_institutes.each do |inst| %>
+        <option value="<%= inst %>" selected="selected"><%= inst %></option>
+      <% end %>
+    </select>
+
+    <%= submit_tag t('dri.views.collection.institute.set_institutes'), :id => "associate_inst", :class => 'dri_button_green w240' %>
+  <% end %>
 </div>
 
-<%= form_tag new_association_path, :id => 'associate_institute', :name => 'associate_institute' do %>
-<%= hidden_field_tag 'object', @document.id %>
-<div class="dri_select_institution">
-	<select name="institute_name" id="add_institute" class="w240">
-		<% if @available_institutes %>
-		<% @available_institutes.each do |inst| %>
-		<option value="<%= inst %>"><%= inst %></option>
-
-		<% end %>
-	</select>
-</div>
-<%= submit_tag t('dri.views.collection.institute.associate'), :id => "associate_inst", :class => 'dri_button_green w240' %>
-<% end %>
-<% end %>
-<% end %>
-
-<% if @removal_institutes.count > 0 %>
-<div class="dri_institutes_title dri_clearfix">
-	<%= t('dri.views.collection.institute.remove') %>
-</div>
-<%= form_tag disassociation_path, :id => 'disassociate_institute', :name => 'disassociate_institute', method: :delete do %>
-<%= hidden_field_tag 'object', @document.id %>
-<div class="dri_select_institution">
-	<select name="institute_name" id="remove_institute" class="w240">
-
-		<% @removal_institutes.each do |inst| %>
-		<option value="<%= inst %>"><%= inst %></option>
-
-		<% end %>
-	</select>
-</div>
-<%= submit_tag t('dri.views.collection.institute.remove'), :id => "associate_inst", :class => 'dri_button_green w240' %>
-<% end %>
-<% end %>
-
-<% if @collection_institutes %>
-<% if @depositing_institute %>
-<div class="dri_institutes_title">
-	<%= t('dri.views.fields.depositing_institute') %>: <%= @depositing_institute.name %>
-</div>
-<% else %>
-<%= form_tag new_association_path, :id => 'associate_depositing_institute', :name => 'associate_depositing_institute' do %>
-<%= hidden_field_tag 'type', "depositing" %>
-<%= hidden_field_tag 'object', @document.id %>
-<div class="dri_institutes_title">
-	<span><%= t('dri.views.collection.institute.associate_depositing') %></span>
-</div>
-<div class="dri_select_institution">
-	<select name="institute_name" id="select_depositing_institute" class="w240">
-		<% @institutes.each do |inst| %>
-				<option value="<%= inst.name %>"><%= inst.name %></option>
-		<% end %>
-	</select>
-</div>
-<%= submit_tag t('dri.views.collection.institute.set_depositor'), :id => "associate_depositing_inst", :class => 'dri_button_green w240' %>
-<% end %>
-
-
-<% if @depositing_institute %>
-<div class="dri_institutes_title">
-	<span><%= t('dri.views.collection.institute.associate_depositing') %></span>
-
-</div>
-	<div class="dri_select_institution">
-		<select name="institute_name" id="select_depositing_institute" class="w240">
-			<% @collection_institutes.each do |inst| %>
-			<option value="<%= inst.name %>"><%= inst.name %></option>
-			<% end %>
-		</select>
-	</div>
-	<%= submit_tag t('dri.views.collection.institute.set_depositor'), :id => "associate_depositing_inst", :class => 'dri_button_green w240' %>
-<% end %>
-
-<% end %>
-<% end %>
+<script>
+  var selectInstitutes = $('.dri_select_institutes').bootstrapDualListbox({
+                  nonSelectedListLabel: "<%= t('dri.views.collection.institute.available') %>",
+                  selectedListLabel: "<%= t('dri.views.collection.institute.selected') %>",
+                  preserveSelectionOnMove: 'moved',
+                  moveOnSelect: false,
+                });
+</script>

@@ -26,6 +26,7 @@
 //= require bootstrap/tooltip
 //= require bootstrap/popover
 //= require bootstrap/tab
+//= require jquery.bootstrap-duallistbox
 // Required by Blacklight
 //= require blacklight/blacklight
 //

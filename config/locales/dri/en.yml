@@ -129,6 +129,7 @@ en:
         object_deleted: "Object has been deleted."
         organisation_created: "Organisation successfully created."
         organisation_added: "Organisation successfully added to collection."
+        organisations_set: "Organisations successfully updated."
         organisation_removed: "Organisation successfully removed from collection."
         organisation_depositor: "Organisation successfully set as Depositor."
         removed_from_collection: "Object has been removed from the collection."
@@ -188,9 +189,11 @@ en:
       dri_browse_sort_tabs_sub_collection_title: "Sub-Collections Search"
       dri_change_sort_view: "Use these buttons to select between a Grid, Tabular, Timeline or Map layout for your search result"
       dri_change_sort_view_title: "Search Result Layout"
+      dri_depositing_organisation_title: "Set Depositing Organisation"
+      dri_depositing_organisation_text: "Set %{name} as the depositing organisation"
       dri_facet_restrictions_links: "These are the Facets which are narrowing your search. You can disable them individually or Clear All"
       dri_facet_restrictions_links_title: "Selected Facets"
-      dri_page_options: "Select from this list to chose the number of items shown on each page"
+      dri_page_options: "Select from this list to choose the number of items shown on each page"
       dri_page_options_title: "Items per Page"
       dri_pagination_nav_links: "Use these links to move through your search results. You can change the number of pages selecting more or fewer items per page"
       dri_pagination_nav_links_title: "Result Pagination"
@@ -400,9 +403,12 @@ en:
             public: Collections
         institute:
           are_you_sure: "Are you sure you need a new Organisation?"
-          see_orgs: "Check existing Orgaisations"
+          available: "Available"
+          see_orgs: "Check existing Organisations"
           add: "Add a new Organisation"
           associate: "Add Organisation"
+          selected: "Selected"
+          set_institutes: "Set Organisations"
           manage: "Manage Organisations"
           associate_depositing: "Select Depositing Organisation"
           remove: "Remove Organisation"
@@ -412,7 +418,7 @@ en:
             name: Name
             url: Url
           more: "Show more"
-          set_depositor: "Set Depositor"
+          set_depositor: "Depositor"
           title: "Organisations and Sponsors"
         legends:
           governed_objects: "Governed Objects"

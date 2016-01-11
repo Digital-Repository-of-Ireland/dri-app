@@ -20,16 +20,23 @@
 				<%= link_to image_tag(@depositing_institute.logo, :height => "75px"), @depositing_institute.url, :target => "_blank" %>
 				<% end %>
 			</div>
+			<div class="dri_collection_institutes_item_depositor">
+				<% if current_user.is_admin? || (can? :manage_collection, @document) %>
+				<label class="dri_depositor_checkbox_text">
+                  <input type="checkbox" disabled="disabled" checked="checked" id="depositor" name="checkbox" class="checkbox dri_depositor_checkbox"/>
+                  <%= t('dri.views.collection.institute.set_depositor') %>
+                </label>
+                <% end %>
+			</div>
 
 		</li>
 		<% end %>
+
 		<% if @collection_institutes %>
-		<% @collection_institutes.each do |inst| %>
-		<% if @depositing_institute %>
-		<% next if @depositing_institute.name == inst.name %>
-		<% end %>
-		<li>
-			<div class="dri_collection_institutes_item">
+		  <% @collection_institutes.each do |inst| %>
+		    <% next if (@depositing_institute && @depositing_institute.name == inst.name) %>
+		    <li>
+			  <div class="dri_collection_institutes_item">
 				<%if inst.logo.blank? && inst.url.blank? %>
 				<%= inst.name %>
 				<% elsif inst.logo.blank? && !inst.url.blank? %>
@@ -39,12 +46,25 @@
 				<% else %>
 				<%= link_to image_tag(inst.logo, :height => "75px"), inst.url, :target => "_blank" %>
 				<% end %>
-			</div>
-		</li>
+			  </div>
+			  <div class="dri_collection_institutes_item_depositor">
+				<% if current_user.is_admin? || (can? :manage_collection, @document) %>
+                  <%= form_tag new_association_path, id: 'associate_depositing_institute', name: 'associate_depositing_institute' do %>
+                      <%= hidden_field_tag 'type', 'depositing' %>
+                      <%= hidden_field_tag 'object', @document.id %>
+                      <%= hidden_field_tag 'institute_name', inst.name %>
+                      <label class="dri_depositor_checkbox_text">
+                        <input type="checkbox" id="set_depositor" onchange="$('#associate_depositing_institute').submit();"  name="checkbox" class="checkbox dri_depositor_checkbox"/>
+                        <%= t('dri.views.collection.institute.set_depositor') %>
+                      <i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.dri_depositing_organisation_text', name: inst.name) %>" data-original-title="<%= t('dri.help.dri_depositing_organisation_title')%>" data-trigger="hover" data-placement="right"></i>
+                      </label>
+                  <% end %>
+                <% end %>
+			  </div>
+		    </li>
+		  <% end %>
 		<% end %>
-		<% end %>
-
 	</ul>
-	
 	<% end %>
+</div>
 

@@ -29,7 +29,7 @@ module ButtonTranslator
       "dri_model_governing_collection_id"
 
     when /^add institute$/
-      "add_institute"
+      "select_institutes" #"add_institute"
 
     when /^licence$/
       "batch_licence"
