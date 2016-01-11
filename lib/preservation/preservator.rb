@@ -1,3 +1,4 @@
+require 'moab'
 require 'preservation/moab_helpers'
 
 module Preservation
@@ -64,6 +65,52 @@ module Preservation
         end
       end
     end
+
+    
+    # create_manifests
+    def create_manifests
+      signature_catalog = Moab::SignatureCatalog.new(:digital_object_id => @object.id, :version_id => 0)
+      new_version_id = signature_catalog.version_id + 1
+
+      version_inventory = Moab::FileInventory.new(:type => 'version', :version_id => new_version_id, :digital_object_id => @object.id)
+      file_group = Moab::FileGroup.new(:group_id=>'metadata').group_from_directory(Pathname.new(metadata_path(@object.id, new_version_id)))
+      version_inventory.groups << file_group
+      file_group = Moab::FileGroup.new(:group_id=>'content').group_from_directory(Pathname.new(content_path(@object.id, new_version_id)))
+      version_inventory.groups << file_group
+
+      version_additions = signature_catalog.version_additions(version_inventory)
+
+      signature_catalog.update(version_inventory, Pathname.new( data_path(@object.id, new_version_id) ))
+
+      file_inventory_difference = Moab::FileInventoryDifference.new
+      file_inventory_difference.compare(Moab::FileInventory.new(), version_inventory)
+      file_inventory_difference.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
+
+      signature_catalog.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
+      version_inventory.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
+      version_additions.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
+      file_inventory_difference.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
+
+      manifest_inventory = Moab::FileInventory.new(:type => 'manifests', :digital_object_id=>@object.id, :version_id => new_version_id)
+      manifest_inventory.groups << Moab::FileGroup.new(:group_id=>'manifests').group_from_directory(manifest_path(@object.id, new_version_id), recursive=false)
+      manifest_inventory.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
+
+    end
+
+    # update_manifests
+    def update_manifests(added, modified, deleted)
+
+      added.each do |file|
+      end
+
+      modified.each do |file|
+      end
+
+      deleted.each do |file|
+      end
+
+    end
+
 
     private
 

@@ -152,6 +152,7 @@ class ObjectsController < BaseObjectsController
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve(true, true, ['descMetadata','properties'])
+      preservation.create_manifests()
 
       respond_to do |format|
         format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
