@@ -444,6 +444,12 @@ GEM
     mini_magick (4.3.6)
     mini_portile2 (2.0.0)
     minitest (5.8.3)
+    moab-versioning (1.4.4)
+      confstruct
+      json
+      nokogiri
+      nokogiri-happymapper
+      systemu
     mono_logger (1.1.0)
     multi_json (1.11.2)
     multi_test (0.1.2)
@@ -459,6 +465,8 @@ GEM
     noid (0.8.0)
     nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
+    nokogiri-happymapper (0.5.9)
+      nokogiri (~> 1.5)
     nom-xml (0.5.4)
       activesupport (>= 3.2.18)
       i18n
