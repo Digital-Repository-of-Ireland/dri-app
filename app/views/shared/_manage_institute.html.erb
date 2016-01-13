@@ -40,11 +40,6 @@
                 });
 
   function setDepositingOrgs() {
-    //var selected_opts = document.getElementById('bootstrap-duallistbox-selected-list_institutes[]').options;
-    //var orgs = $.map(selected_opts, function(selected_opt) {
-    //                     return selected_opt.value;
-     //                });
-
     var orgs = $("#select_institutes").val();
 
     var select = $('#select_depositing_institute');
@@ -70,5 +65,12 @@
     
   $(document).ready(function(){
     setDepositingOrgs();
+
+    if (document.getElementById('select_institutes').options.length == 0) {
+    	$("input[type=submit]").attr('disabled','disabled');
+    } 
+    else {
+    	$("input[type=submit]").removeAttr('disabled');
+    }
   });
 </script>
