@@ -2466,39 +2466,12 @@ ul.dri_collection_institutes_list {
         }
     }
 }
-
 .dri_collection_institutes_item {
     a.remove {
         display: block;
         float: right;
         margin-right: 10px;
         color: $dri_midgrey;
-    }
-}
-
-.dri_collection_institutes_item_depositor {
-    padding-left: 25px;
-    //padding: 10px;
-
-    label.dri_depositor_checkbox_text {
-      color: $dri_midgrey;
-      display: block;
-      padding-left: 15px;
-      text-indent: -15px;
-    }
-    input[type=checkbox].dri_depositor_checkbox {
-    display: inline;
-    width: 13px;
-    height: 13px;
-    padding: 0;
-    margin:0;
-    vertical-align: bottom;
-    position: relative;
-    top: -1px;
-    *overflow: hidden;
-    }
-    i {
-      display: inline;
     }
 }
 .dri_fileUpload {

@@ -1,26 +1,74 @@
 <div id="dri_organisations_manage">
   <%= form_tag collection_organisations_path(@document), :id => 'associate_institute', :name => 'associate_institute' do %>
-    <select multiple="multiple" size="10" id="select_institutes" name="selected_institutes[]" class="dri_select_institutes">
+    <select multiple="multiple" size="10" id="select_institutes" name="institutes[]" 
+            onchange="setDepositingOrgs()">
+      
       <% if @available_institutes %>
         <% @available_institutes.each do |inst| %>
           <option value="<%= inst %>"><%= inst %></option>
         <% end %>
       <% end %>
-                
+      
+      <% if @depositing_institute %>
+        <option value="<%= @depositing_institute.name %>" selected="selected">
+        	<%= @depositing_institute.name %>
+        </option>
+      <% end %>
+          
       <% @removal_institutes.each do |inst| %>
         <option value="<%= inst %>" selected="selected"><%= inst %></option>
       <% end %>
     </select>
+
+    <div class="dri_institutes_title">
+        <span><%= t('dri.views.collection.institute.associate_depositing') %></span>
+    </div>
+    <select name="depositing_organisation" id="select_depositing_institute" class="w240">
+    </select>
+    <br/>
 
     <%= submit_tag t('dri.views.collection.institute.set_institutes'), :id => "associate_inst", :class => 'dri_button_green w240' %>
   <% end %>
 </div>
 
 <script>
-  var selectInstitutes = $('.dri_select_institutes').bootstrapDualListbox({
+  var selectInstitutes = $('select[name="institutes[]"]').bootstrapDualListbox({
                   nonSelectedListLabel: "<%= t('dri.views.collection.institute.available') %>",
                   selectedListLabel: "<%= t('dri.views.collection.institute.selected') %>",
                   preserveSelectionOnMove: 'moved',
                   moveOnSelect: false,
                 });
+
+  function setDepositingOrgs() {
+    //var selected_opts = document.getElementById('bootstrap-duallistbox-selected-list_institutes[]').options;
+    //var orgs = $.map(selected_opts, function(selected_opt) {
+    //                     return selected_opt.value;
+     //                });
+
+    var orgs = $("#select_institutes").val();
+
+    var select = $('#select_depositing_institute');
+    if(select.prop) {
+      var options = select.prop('options');
+    }
+    else {
+      var options = select.attr('options');
+    }
+    $('option', select).remove();
+    options[0] = new Option("<%= t('dri.views.collection.institute.not_set') %>", "not_set");   
+
+    if(orgs) {
+      $.each(orgs, function(val, text) {
+        options[options.length] = new Option(text, text);
+      });
+    
+      <% if @depositing_institute %>
+        select.val("<%= @depositing_institute.name %>");
+      <% end %>
+    }
+  } 
+    
+  $(document).ready(function(){
+    setDepositingOrgs();
+  });
 </script>

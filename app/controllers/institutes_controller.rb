@@ -71,7 +71,18 @@ class InstitutesController < ApplicationController
     enforce_permissions!('manage_collection', params[:id])
     @collection = retrieve_object!(params[:id])
 
-    @collection.institute = params[:selected_institutes]
+    institutes = nil
+    if params[:institutes].present?
+      institutes = params[:institutes].select { |i| i.is_a? String }
+    end
+
+    @collection.institute = institutes
+
+    depositor = nil
+    if params[:depositing_organisation].present?
+      depositor = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
+    end
+    @collection.depositing_institute = params[:depositing_organisation] 
 
     raise Exceptions::InternalError unless @collection.save
 
