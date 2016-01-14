@@ -282,6 +282,7 @@ en:
           clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
           remove_from_collection: "Remove from collection"
+          set_licence: "Set Licence"
           submit: "Submit"
         facets:
           dates:
@@ -305,6 +306,7 @@ en:
           file: File
           image_file: Image
           manage_bookmark: "Manage Your Bookmarks"
+          manage_licence: "Manage Licence"
           map: Map
           metadata: Metadata
           metadata_full: "Full Metadata (XML)"
@@ -373,13 +375,13 @@ en:
           navigation_tools: "Navigation Tools"
           object_tools: "Object Tools"
       collection:
+        manage_cover_image: "Cover Image"
         buttons:
-          clear_collection: "Clear as Current"
+          add_cover_image: "Add Cover Image"
           create_collection: "Create Collection"
           delete_collection: "Delete Collection"
           new_collection: "New Collection"
           remove: Remove
-          set_collection: "Set as Current"
         confirm_all_descendants_reviewed: "This will mark %{draft_count} draft objects within the collection AND sub-collections as Reviewed. Continue?"
         confirm_all_reviewed: "This will mark all objects within the collection as Reviewed. Continue?"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
@@ -419,7 +421,6 @@ en:
             name: Name
             url: Url
           more: "Show more"
-          set_depositor: "Depositor"
           title: "Organisations and Sponsors"
         legends:
           governed_objects: "Governed Objects"
