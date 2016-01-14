@@ -49,13 +49,16 @@ module Preservation
     # preserve
     def preserve(resource=false, permissions=false, datastreams=nil)
       create_moab_dirs()
+      list = []
 
       if resource
         moabify_resource
+        list << 'resource.rdf'
       end
       
       if permissions
         moabify_permissions
+        list << 'permissions.rdf'
       end
 
       if datastreams.present?
@@ -63,7 +66,17 @@ module Preservation
         datastreams.each do |ds|
           moabify_datastream(ds, object.attached_files[ds])
         end
+        list.push(datastreams.map { |item| item << ".xml" }).flatten!
       end
+
+      if @object.object_version.eql?('1')
+        create_manifests()
+      else
+        # This is an update to the existing metadata
+        # metadata files cannot be added or deleted after object creation
+        update_manifests({:added => {}, :deleted => {}, :modified => {'metadata' => list}})
+      end
+
     end
 
     
@@ -84,7 +97,6 @@ module Preservation
 
       file_inventory_difference = Moab::FileInventoryDifference.new
       file_inventory_difference.compare(Moab::FileInventory.new(), version_inventory)
-      file_inventory_difference.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
 
       signature_catalog.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
       version_inventory.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
@@ -98,16 +110,81 @@ module Preservation
     end
 
     # update_manifests
-    def update_manifests(added, modified, deleted)
+    # changes: hash with keys :added, :modified and :deleted. Each is an array of filenames (excluding directory paths)
+    def update_manifests(changes)
 
-      added.each do |file|
+      last_version_inventory = Moab::FileInventory.new(:type => 'version', :version_id => self.version.to_i-1, :digital_object_id => @object.id)
+      last_version_inventory.parse(Pathname.new(File.join(manifest_path(@object.id, self.version.to_i-1),'versionInventory.xml')).read)
+
+      version_inventory = Moab::FileInventory.new(:type => 'version', :version_id => self.version.to_i-1, :digital_object_id => @object.id)
+      version_inventory.parse(Pathname.new(File.join(manifest_path(@object.id, self.version.to_i-1),'versionInventory.xml')).read)
+      version_inventory.version_id = version_inventory.version_id+1
+
+      changes[:added].keys.each do |type|
+        if type.eql?('content')
+          path = content_path(@object.id, self.version)
+        elsif type.eql?('metadata')
+          path = metadata_path(@object.id, self.version)
+        end
+
+
+        changes[:added][type].each do |file|
+          file_signature = Moab::FileSignature.new()
+          file_signature.signature_from_file(Pathname.new(File.join(path, file)))
+
+          file_instance = Moab::FileInstance.new()
+          file_instance.instance_from_file(Pathname.new(File.join(path, file)), Pathname.new(path))
+
+          version_inventory.groups.keyfind(type.to_s).add_file_instance(file_signature, file_instance)
+        end
       end
 
-      modified.each do |file|
+      changes[:modified].keys.each do |type|
+        if type.eql?('content')
+          path = content_path(@object.id, self.version)
+        elsif type.eql?('metadata')
+          path = metadata_path(@object.id, self.version)
+        end
+
+        changes[:modified][type].each do |file|
+          version_inventory.groups.keyfind(type.to_s).remove_file_having_path(file)
+          file_signature = Moab::FileSignature.new()
+          file_signature.signature_from_file(Pathname.new(File.join(path, file)))
+
+          file_instance = Moab::FileInstance.new()
+          file_instance.instance_from_file(Pathname.new(File.join(path, file)), Pathname.new(path))
+
+          version_inventory.groups.keyfind(type.to_s).add_file_instance(file_signature, file_instance)
+        end
       end
 
-      deleted.each do |file|
+      changes[:deleted].keys.each do |type|
+        if type.eql?('content')
+          path = content_path(@object.id, self.version)
+        elsif type.eql?('metadata')
+          path = metadata_path(@object.id, self.version)
+        end
+
+        changes[:modified][type].each do |file|
+          version_inventory.groups.keyfind(type.to_s).remove_file_having_path(file)
+        end
       end
+
+      signature_catalog = Moab::SignatureCatalog.new(:digital_object_id => @object.id)
+      signature_catalog.parse(Pathname.new(File.join(manifest_path(@object.id, self.version.to_i-1),'signatureCatalog.xml')).read)
+      version_additions = signature_catalog.version_additions(version_inventory)
+      signature_catalog.update(version_inventory, Pathname.new( data_path(@object.id, self.version) ))
+      file_inventory_difference = Moab::FileInventoryDifference.new
+      file_inventory_difference.compare(last_version_inventory, version_inventory)
+
+      signature_catalog.write_xml_file(Pathname.new(manifest_path(@object.id, self.version)))
+      version_inventory.write_xml_file(Pathname.new(manifest_path(@object.id, self.version)))
+      version_additions.write_xml_file(Pathname.new(manifest_path(@object.id, self.version)))
+      file_inventory_difference.write_xml_file(Pathname.new(manifest_path(@object.id, self.version)))
+
+      manifest_inventory = Moab::FileInventory.new(:type => 'manifests', :digital_object_id=>@object.id, :version_id => self.version)
+      manifest_inventory.groups << Moab::FileGroup.new(:group_id=>'manifests').group_from_directory(manifest_path(@object.id, self.version), recursive=false)
+      manifest_inventory.write_xml_file(Pathname.new(manifest_path(@object.id, self.version)))
 
     end
 

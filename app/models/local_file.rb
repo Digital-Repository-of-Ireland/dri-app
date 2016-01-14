@@ -5,7 +5,7 @@ require 'pathname'
 require 'preservation/preservation_helpers'
 
 class LocalFile < ActiveRecord::Base
-  include MoabHelpers
+  include PreservationHelpers
 
   serialize :checksum
 
