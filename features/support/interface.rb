@@ -18,8 +18,8 @@ module Interface
         end
         fill_in("batch_creation_date][", :with => "2013-01-16")
       end
-      within_fieldset('roles') do
-        fill_in("batch_roles][name][", :with => "test@test.com")
+      within_fieldset('creator') do
+        fill_in("batch_creator][", :with => "test@test.com")
       end
       within_fieldset('rights') do
         fill_in("batch_rights][", :with => "This is a statement of rights")

@@ -1,5 +1,9 @@
 class LicencesController < ApplicationController
 
+  before_filter :authenticate_user_from_token!, except: [:index]
+  before_filter :authenticate_user!, except: [:index]
+  before_filter :admin?, except: [:index]
+
   # Get the list of licences
   def index
     @licences = Licence.all
@@ -75,6 +79,10 @@ class LicencesController < ApplicationController
   end
 
   private
+
+  def admin?
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
+  end
 
   def add_logo
     if params[:licence][:logo].present? && params[:licence][:logo] =~ URI::regexp

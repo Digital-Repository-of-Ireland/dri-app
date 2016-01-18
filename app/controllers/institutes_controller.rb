@@ -67,6 +67,31 @@ class InstitutesController < ApplicationController
     add_or_remove_association(true)
   end
 
+  def set
+    enforce_permissions!('manage_collection', params[:id])
+    @collection = retrieve_object!(params[:id])
+
+    institutes = nil
+    if params[:institutes].present?
+      institutes = params[:institutes].select { |i| i.is_a? String }
+    end
+
+    @collection.institute = institutes
+
+    depositor = nil
+    if params[:depositing_organisation].present?
+      depositor = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
+    end
+    @collection.depositing_institute = params[:depositing_organisation] 
+
+    raise Exceptions::InternalError unless @collection.save
+
+    respond_to do |format|
+      flash[:notice] = t('dri.flash.notice.organisations_set')
+      format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.id }
+    end
+  end
+
   private
 
   def add_logo
@@ -110,16 +135,11 @@ class InstitutesController < ApplicationController
 
     raise Exceptions::InternalError unless @collection.save
 
-    return unless params[:type] == 'depositing'
-
-    # Reverted to inheritance as opposed to cascading dep institute
-    # begin
-    #   Sufia.queue.push(SetDepositingInstituteJob.new(@collection.id)) if @collection.governed_items.present?
-    # rescue Exception => e
-    #   logger.error "Unable to submit SetDepositingInstitute job: #{e.message}"
-    #   flash[:alert] = t('dri.flash.alert.error_set_depositing_institute_job', error: e.message)
-    #   @warnings = t('dri.flash.alert.error_set_depositing_institute_job', error: e.message)
-    # end
+    if params[:type].present? && params[:type] == 'depositing'
+      flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_depositor')}"
+    else
+      flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_added')}"
+    end
   end
 
   def delete_association

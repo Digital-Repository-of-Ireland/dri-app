@@ -28,7 +28,11 @@ NuigRnag::Application.routes.draw do
 
     resources :collections, :only => ['new','create','update','edit','destroy']
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
-
+    post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
+  
+    put 'collections/:id/licences', to: 'collections#set_licence', as: :collection_licence
+    put 'objects/:id/licences', to: 'objects#set_licence', as: :object_licence
+  
     resources :institutes, :only => ['show', 'new', 'create', 'edit', 'update']
 
     match 'association' => 'institutes#associate', :via => :post, :as => :new_association

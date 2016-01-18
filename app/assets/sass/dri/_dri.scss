@@ -411,6 +411,14 @@ a {
     padding: 6px 15px 6px 15px;
     border: 1px solid $dri_grey_border;
 }
+.dri_form_error {
+  @include border_radius;
+    background-color: #fee!important;
+    margin: 6px 0 14px 0;
+    padding: 6px 15px 6px 15px;
+    border: 1px solid $dri_grey_border;
+} 
+
 /*-------------- Social Media Sharing ------------*/
 
 .social-share-button {
@@ -2043,9 +2051,16 @@ ul.dri_collection_institutes_list {
         font-weight: bold;
     }
 }
+
 .dri_collection_institutes_item img {
     margin: 10px;
     padding: 10px;
+}
+
+/*-------------- Set Licence ------------------*/
+.dri_licence_select{
+    width: 200px;
+    display: block;
 }
 /*-------------- General Buttons --------------*/
 
@@ -2487,4 +2502,11 @@ ul.dri_collection_institutes_list {
     cursor: pointer;
     opacity: 0;
     filter: alpha(opacity=0);
+}
+
+.dri_dsa_ident {
+  display: inline; 
+  float: right; 
+  width: 100px; 
+  height: 100px;
 }

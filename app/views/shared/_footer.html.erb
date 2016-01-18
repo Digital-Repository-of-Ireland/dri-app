@@ -17,7 +17,10 @@
     <ul id="dri_main_footer_navigation_links_id"
         class="dri_main_footer_navigation_links">
       <li class="">
-      <span> <%= link_to t('dri.headerlinks.end_user_agreement'), main_app.page_path('terms'), :id => "end_user_agreement", :class => "muted" %> </span>
+        <span> <%= link_to t('dri.headerlinks.end_user_agreement'), main_app.page_path('terms'), :id => "end_user_agreement", :class => "muted" %> </span>
+      </li>
+      <li class="">
+        <span> <%= link_to t('dri.headerlinks.privacy_statement'), 'http://www.dri.ie/privacy-statement', :id => "privacy_statement", :class => "muted", :target => '_blank' %> </span>
       </li>
 
       <li>

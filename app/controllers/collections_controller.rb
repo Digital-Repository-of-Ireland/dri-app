@@ -147,6 +147,14 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  # Updates the licence.
+  #
+  def set_licence
+    enforce_permissions!('edit', params[:id])
+    
+    super
+  end
+
   # Creates a new model using the parameters passed in the request.
   #
   def create
@@ -219,17 +227,11 @@ class CollectionsController < BaseObjectsController
 
     raise Exceptions::BadRequest unless @object.collection?
 
-    unless @object.status == 'reviewed'
-      @object.status = 'reviewed'
-      @object.save
-    end
-
     if params[:apply_all].present? && params[:apply_all] == 'yes'
       review_all unless @object.governed_items.blank?
     end
 
     respond_to do |format|
-      flash[:notice] = t('dri.flash.notice.metadata_updated')
       format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
       format.json {
         response = { id: @object.id, status: @object.status }
@@ -373,6 +375,7 @@ class CollectionsController < BaseObjectsController
 
   def review_all
     Sufia.queue.push(ReviewCollectionJob.new(@object.id))
+    flash[:notice] = t('dri.flash.notice.collection_objects_review')
   rescue Exception => e
     logger.error "Unable to submit status job: #{e.message}"
     flash[:alert] = t('dri.flash.alert.error_review_job', error: e.message)

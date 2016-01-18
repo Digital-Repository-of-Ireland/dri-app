@@ -57,11 +57,14 @@ en:
           no_results: "No valid date results have been found. Try the Grid View to see all results."
           results_found: "Current Search Timeline"
       user_profile:
+        administrator: "Administrator"
+        collection_manager: "Collection Manager"
         collection_title: "Collection Title"
         edit: Edit
         email: Email
         my_account: "My Account"
         name: Name
+        organisational_manager: "Organisational Manager"
         user_type: "User Type"
         your_collection_details: "Your Collection Details"
     citation:
@@ -108,6 +111,7 @@ en:
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Delete collection process successfully started."
         collection_publishing: "Collection is being published."
+        collection_objects_review: "Review collection objects process successfully started."
         collection_doi_request: "New DOI requested."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
@@ -125,6 +129,7 @@ en:
         object_deleted: "Object has been deleted."
         organisation_created: "Organisation successfully created."
         organisation_added: "Organisation successfully added to collection."
+        organisations_set: "Organisations successfully updated."
         organisation_removed: "Organisation successfully removed from collection."
         organisation_depositor: "Organisation successfully set as Depositor."
         removed_from_collection: "Object has been removed from the collection."
@@ -168,6 +173,7 @@ en:
       object: Object
       objects: Objects
       privacy: "Privacy & Cookies policy"
+      privacy_statement: "Privacy Statement"
       reports: Reports
       resque: "Resque Server"
       sitemap: Sitemap
@@ -183,14 +189,18 @@ en:
       dri_browse_sort_tabs_sub_collection_title: "Sub-Collections Search"
       dri_change_sort_view: "Use these buttons to select between a Grid, Tabular, Timeline or Map layout for your search result"
       dri_change_sort_view_title: "Search Result Layout"
+      dri_depositing_organisation_title: "Set Depositing Organisation"
+      dri_depositing_organisation_text: "Set %{name} as the depositing organisation"
       dri_facet_restrictions_links: "These are the Facets which are narrowing your search. You can disable them individually or Clear All"
       dri_facet_restrictions_links_title: "Selected Facets"
-      dri_page_options: "Select from this list to chose the number of items shown on each page"
+      dri_page_options: "Select from this list to choose the number of items shown on each page"
       dri_page_options_title: "Items per Page"
       dri_pagination_nav_links: "Use these links to move through your search results. You can change the number of pages selecting more or fewer items per page"
       dri_pagination_nav_links_title: "Result Pagination"
       dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
       dri_sort_options_title: "Search Sort Options"
+      dri_publish_unavailable_title: "Publish not available"
+      dri_publish_unavailable: "You need to set this Collection's Depositing Organisation before publishing. Use the \"Manage Organisations\" link"
       dummy_text: "Help text goes here"
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
@@ -202,6 +212,8 @@ en:
         coverages_text: "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant."
         creation_date: "Creation Date"
         creation_date_text: "Date of creation of the resource. NOTE: You are required to enter at least one of Creation Date OR Published Date OR Date"
+        creator: "Creator"
+        creator_text: "An entity primarily responsible for making the content of the resource."
         date: Date
         date_text: "A point or period of time associated with an event in the lifecycle of the resource."
         description: Description
@@ -270,6 +282,7 @@ en:
           clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
           remove_from_collection: "Remove from collection"
+          set_licence: "Set Licence"
           submit: "Submit"
         facets:
           dates:
@@ -293,6 +306,7 @@ en:
           file: File
           image_file: Image
           manage_bookmark: "Manage Your Bookmarks"
+          manage_licence: "Manage Licence"
           map: Map
           metadata: Metadata
           metadata_full: "Full Metadata (XML)"
@@ -361,13 +375,13 @@ en:
           navigation_tools: "Navigation Tools"
           object_tools: "Object Tools"
       collection:
+        manage_cover_image: "Cover Image"
         buttons:
-          clear_collection: "Clear as Current"
+          add_cover_image: "Add Cover Image"
           create_collection: "Create Collection"
           delete_collection: "Delete Collection"
           new_collection: "New Collection"
           remove: Remove
-          set_collection: "Set as Current"
         confirm_all_descendants_reviewed: "This will mark %{draft_count} draft objects within the collection AND sub-collections as Reviewed. Continue?"
         confirm_all_reviewed: "This will mark all objects within the collection as Reviewed. Continue?"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
@@ -391,10 +405,14 @@ en:
             public: Collections
         institute:
           are_you_sure: "Are you sure you need a new Organisation?"
-          see_orgs: "Check existing Orgaisations"
+          available: "Available"
+          see_orgs: "Check existing Organisations"
           add: "Add a new Organisation"
           associate: "Add Organisation"
+          selected: "Selected"
+          set_institutes: "Set Organisations"
           manage: "Manage Organisations"
+          not_set: "Not set"
           associate_depositing: "Select Depositing Organisation"
           remove: "Remove Organisation"
           edit: "Update Organisation"
@@ -403,7 +421,6 @@ en:
             name: Name
             url: Url
           more: "Show more"
-          set_depositor: "Set Depositor"
           title: "Organisations and Sponsors"
         legends:
           governed_objects: "Governed Objects"
