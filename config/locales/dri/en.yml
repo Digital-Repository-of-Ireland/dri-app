@@ -432,6 +432,7 @@ en:
       devise:
         locale: Language
       doi:
+        unavailable: "The object referenced by this DOI is not available. If you require more information please contact support@dri.ie."
         fields:
           modified: Change
           modified_at: "Modification Date"
