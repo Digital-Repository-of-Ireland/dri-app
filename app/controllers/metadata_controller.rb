@@ -1,5 +1,12 @@
 require 'metadata_helpers'
 
+TITLES = { 'qualifieddc' => 'Dublin Core Metadata', 
+           'mods' => 'MODS Metadata', 
+           'ead' => 'EAD Metadata',
+           'c' => 'EAD Metadata',
+           'RDF' => 'Dublin Core Metadata (in RDF/XML)'
+         }
+
 #
 # Creates, updates, or retrieves, the descMetadata datastream for an object
 #
@@ -25,16 +32,20 @@ class MetadataController < CatalogController
 
     if @object && @object.attached_files.key?(:descMetadata)
       respond_to do |format|
-        format.xml { render xml: (@object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].content) ?
+        format.xml { 
+          data = (@object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].content) ?
                                 @object.attached_files[:fullMetadata].content : @object.attached_files[:descMetadata].content
+          send_data(data, filename: "#{@object.id}.xml")
         }
-        format.html {
+        format.js {
           xml_data = @object.attached_files[:descMetadata].content
           xml = Nokogiri::XML(xml_data)
           xslt_data = File.read("app/assets/stylesheets/#{xml.root.name}.xsl")
           xslt = Nokogiri::XSLT(xslt_data)
           styled_xml = xslt.transform(xml)
-          render text: styled_xml.to_html
+
+          @title = TITLES[xml.root.name]
+          @display_xml = styled_xml.to_html
         }
       end
 

@@ -19,10 +19,7 @@
 		</li>
 		<% end %>
 		<li>
-			<%= link_to t('dri.views.catalog.forms.metadata'), object_metadata_path(@document.id, :format => :html), :id => "styled_metadata", :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %>
-		</li>
-		<li>
-			<%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, :format => :xml), :id => "download_metadata" %>
+			<%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, format: 'js'), :id => "styled_metadata", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %>
 		</li>
 		<li>
 			<%= link_to t('blacklight.tools.endnote'), object_path(@document, :format => 'endnote') %>
@@ -72,8 +69,12 @@
 				</button>
 				<h4 class="modal-title"><%= t('dri.views.catalog.forms.metadata_full') %></h4>
 			</div>
-			<div class="modal-body"></div>
+			<div class="modal-body">
+			</div>
 			<div class="modal-footer">
+				<%= link_to t('dri.views.catalog.buttons.download_metadata_xml'), 
+				    object_metadata_path(@document.id, :format => :xml), {:id => "download_metadata", :class => "btn btn-default"} 
+				%>
 				<button type="button" class="btn btn-default" data-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
 				</button>

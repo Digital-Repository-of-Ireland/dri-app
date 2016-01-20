@@ -281,6 +281,7 @@ en:
           clear_all_bookmarks: "Clear All Bookmarks"
           clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
+          download_metadata_xml: "Download as XML"
           remove_from_collection: "Remove from collection"
           set_licence: "Set Licence"
           submit: "Submit"
@@ -309,7 +310,7 @@ en:
           manage_licence: "Manage Licence"
           map: Map
           metadata: Metadata
-          metadata_full: "Full Metadata (XML)"
+          metadata_full: "Full Metadata"
           objects_in_collection: Objects
           pdf_file: PDF
           restricted_asset: "Restricted Asset"

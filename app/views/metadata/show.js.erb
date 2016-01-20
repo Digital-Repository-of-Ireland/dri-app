@@ -1,0 +1,3 @@
+$('#dri_metadata_modal_id .modal-title').html("<%= @title.html_safe %>")
+$('#dri_metadata_modal_id .modal-body').html("<%= escape_javascript(@display_xml.html_safe) %>")
+$('#dri_metadata_modal_id').modal()
