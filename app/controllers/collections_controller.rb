@@ -164,6 +164,14 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  # Updates the licence.
+  #
+  def set_licence
+    enforce_permissions!('edit', params[:id])
+    
+    super
+  end
+
   # Creates a new model using the parameters passed in the request.
   #
   def create

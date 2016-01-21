@@ -1,22 +1,20 @@
 <div id="content" class="span9 show-document">
 	<div id="document" class="document">
-		<% if (params[:controller] == "collections" ) %>
 		<h4><%= t('dri.views.objects.edit.title_collection') %></h4>
-		<% else %>
-		<h4><%= t('dri.views.objects.edit.title') %></h4>
-		<% end %>
 		<div class="dri_ingest_form_container">
-			<%= form_for @object, as: :batch, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'dri_ingest_form'} do |f| %>
+			<div class="dri_ingest_form">
+			  <%= form_for @object, as: :batch, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
 
-			<%= render :partial => "shared/form_metadata_qualifieddublincore", :locals => { :f => f, :action => "update" } %>
-			<%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
+			  <%= render :partial => "shared/form_metadata_qualifieddublincore", :locals => { :f => f, :action => "update" } %>
+			  <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
 
-			<%= f.submit t('dri.views.objects.buttons.save'), :class => "dri_button_green dri_w330", :id => "edit_collection" %>
+			  <%= f.submit t('dri.views.objects.buttons.save'), :class => "dri_button_green dri_w330", :id => "edit_collection" %>
 			
-			<% end %>
-			<%= form_for @object, as: :batch, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'dri_ingest_form'} do |f| %>
-			<%= f.submit t('dri.views.objects.buttons.cancel'), :class => "dri_button_grey dri_w330", :id => "cancel_edit" %>
-			<% end %>
+			  <% end %>
+			  <%= form_for @object, as: :batch, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'dri_ingest_form'} do |f| %>
+			    <%= f.submit t('dri.views.objects.buttons.cancel'), :class => "dri_button_grey dri_w330", :id => "cancel_edit" %>
+			  <% end %>
+		    </div>
 		</div>
 	</div>
 </div>

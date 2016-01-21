@@ -5,7 +5,7 @@
   <% [:success, :notice, :error, :alert].each do |type| %>
     <%- alert_class = type %>
     <% if flash[type] %>
-    <div class="alert alert-<%=alert_class%> alert-dismissible fade in dri_<%=alert_class%>_message" role="alert">
+    <div class="alert alert-<%=alert_class%> alert-dismissible dri_<%=alert_class%>_message" role="alert">
       <button type="button" class="dri_close close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
       <span class="dri_alert_text"><%= flash[type] %></span>
     </div>

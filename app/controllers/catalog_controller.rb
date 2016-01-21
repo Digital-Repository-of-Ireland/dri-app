@@ -318,7 +318,8 @@ class CatalogController < ApplicationController
 
     available_institutes
     files_and_surrogates
-   
+    supported_licences
+
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
       format.json { render json: { response: { document: @document } } }

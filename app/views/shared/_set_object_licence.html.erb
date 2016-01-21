@@ -1,0 +1,5 @@
+<%= form_for @document, as: :batch, :url => {:controller=>"objects", :action=>"set_licence"}, :method=>"put" do |f| %>
+
+<%= render partial: 'shared/form_licence', locals: { f: f } %>
+
+<% end %>

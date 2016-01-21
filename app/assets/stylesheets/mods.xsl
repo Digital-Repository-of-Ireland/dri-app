@@ -6,12 +6,6 @@
   <xsl:output method="html" indent="yes"/>
   <!-- Root element -->
   <xsl:template match="/mods:mods">
-    <div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal">
-		    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
-	    </button>
-	    <h4 class="modal-title" id="">MODS Metadata</h4>
-    </div>
     <div>
       <dl class="dri_object_metadata_readview">
         <ul style="list-style-type: none;">

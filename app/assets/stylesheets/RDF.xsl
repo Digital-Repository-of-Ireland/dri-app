@@ -6,12 +6,6 @@
   <xsl:output method="html" indent="yes"/>
   <!-- Root element -->
   <xsl:template match="/rdf:RDF">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">
-        <span aria-hidden="true">×</span><span class="sr-only">Close</span>
-      </button>
-      <h4 class="modal-title" id="">Dublin Core Metadata (in RDF/XML)</h4>
-    </div>
     <div>
       <dl class="dri_object_metadata_readview">
         <ul style="list-style-type: none;">

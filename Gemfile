@@ -12,6 +12,7 @@ gem 'hydra-head', '9.4.1'
 
 gem 'sufia-models', '6.4.0'
 gem 'redlock'
+gem 'google-api-client', '0.8.6'
 
 gem 'paper_trail', '~> 4'
 

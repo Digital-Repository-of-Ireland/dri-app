@@ -49,7 +49,7 @@
     <% end %> <!-- if end (non-EAD collections) -->
 	<% if @document.draft? %>
 	  <% publish_label = t('dri.views.catalog.links.publish') %>
-	<% else %>
+	<% else%>
 	  <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
 	<% end %>
 	<%= link_to '', :'data-target' => '#dri_review_modal_id', :'data-toggle' => 'modal', :id => "all_objects_reviewed" do %>
@@ -64,18 +64,23 @@
 	  </li>
 	  <% end %>
 	<% end %>
-	<%= link_to  surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
+	<%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
 	<li>
 	  <%= t('dri.views.catalog.links.generate_surrogates') %>
 	 </li>
 	<% end %>
-    <% if @document.is_root_collection? %>
+    <% if @document.is_root_collection? && @depositing_institute %>
 	  <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
         <li>
           <%= publish_label %>
         </li>
       <% end %>
+    <% elsif  @document.is_root_collection? && !@depositing_institute %>
+            <li class="dri_help_popover dri_disabled" data-content="<%= t('dri.help.dri_publish_unavailable') %>" data-original-title="<%= t('dri.help.dri_publish_unavailable_title') %>" data-trigger="hover" data-placement="left">
+        <%= publish_label %>
+      </li>
     <% end %>
+    
     <!-- If (root collection OR not EAD collection) enable delete collection link -->
     <!-- This is to allow to delete any sub-collection except for EAD -->
     <% if @document.is_root_collection? || @document.editable? %>
@@ -105,7 +110,12 @@
 	<% end %>
 	<%= link_to '', :'data-target' => '#dri_cover_image_modal_id', :'data-toggle' => 'modal', :id => "add_cover_image" do %>
 	<li>
-		<%= t('dri.views.collection.add_cover_image') %>
+		<%= t('dri.views.collection.buttons.add_cover_image') %>
+	</li>
+	<% end %>
+	<%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
+	<li>
+		<%= t('dri.views.catalog.buttons.set_licence') %>
 	</li>
 	<% end %>
 
@@ -221,7 +231,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title"><%= t('dri.views.collection.institute.manage') %></h4>
+				<h4 class="modal-title"><%= t('dri.views.collection.manage_cover_image') %></h4>
 			</div>
 
 			<div class="modal-body">
@@ -234,3 +244,23 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <% end %>
+
+<div class="modal fade" id="dri_licence_modal_id">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title"><%= t('dri.views.catalog.forms.manage_licence') %></h4>
+			</div>
+
+			<div class="modal-body">
+			  <%= render :partial => "shared/set_collection_licence" %>
+			</div>
+			<div class="modal-footer">
+
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
