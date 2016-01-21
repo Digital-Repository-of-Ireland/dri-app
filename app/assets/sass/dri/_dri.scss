@@ -411,6 +411,14 @@ a {
     padding: 6px 15px 6px 15px;
     border: 1px solid $dri_grey_border;
 }
+.dri_form_error {
+  @include border_radius;
+    background-color: #fee!important;
+    margin: 6px 0 14px 0;
+    padding: 6px 15px 6px 15px;
+    border: 1px solid $dri_grey_border;
+} 
+
 /*-------------- Social Media Sharing ------------*/
 
 .social-share-button {
@@ -1076,23 +1084,26 @@ h4.suggest {
 /*-------------- Info Messages --------------*/
 
 .dri_notice_message {
-    @extend .dri_alert_message;
+    @extend .dri_flash_message;
     background-color: $dri_paleblue;
 }
 /*-------------- Successful Messages --------------*/
 
 .dri_success_message {
-    @extend .dri_alert_message;
+    @extend .dri_flash_message;
     background-color: $dri_palegreen;
 }
 /*-------------- Warning Messages --------------*/
 
 .dri_alert_message {
-    margin: 20px 0 0 0;
+    @extend .dri_flash_message;
+    background-color: $dri_paleorange;
+}
+.dri_flash_message {
+  margin: 20px 0 0 0;
     padding: 12px 10px 5px 10px;
     display: block;
     width: 100%;
-    background-color: $dri_paleorange;
     @include border_radius;
     border: 1px solid $dri_lightgrey;
     float: left;
@@ -1110,7 +1121,7 @@ h4.suggest {
 /*-------------- Error Messages --------------*/
 
 .dri_error_message {
-    @extend .dri_alert_message;
+    @extend .dri_flash_message;
     background-color: $dri_palered;
 }
 /* ----------- Facet Filter block ---------- */
@@ -2043,9 +2054,16 @@ ul.dri_collection_institutes_list {
         font-weight: bold;
     }
 }
+
 .dri_collection_institutes_item img {
     margin: 10px;
     padding: 10px;
+}
+
+/*-------------- Set Licence ------------------*/
+.dri_licence_select{
+    width: 200px;
+    display: block;
 }
 /*-------------- General Buttons --------------*/
 
@@ -2487,4 +2505,11 @@ ul.dri_collection_institutes_list {
     cursor: pointer;
     opacity: 0;
     filter: alpha(opacity=0);
+}
+
+.dri_dsa_ident {
+  display: inline; 
+  float: right; 
+  width: 100px; 
+  height: 100px;
 }

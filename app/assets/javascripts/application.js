@@ -19,16 +19,18 @@
 //= require blacklight-maps
 //= require jquery.remotipart
 //= require jquery.cookie
+//= require jquery.validate
+//= require additional-methods
 //= require bootstrap/affix
 //= require bootstrap/carousel
 //= require bootstrap/tooltip
 //= require bootstrap/popover
 //= require bootstrap/tab
+//= require jquery.bootstrap-duallistbox
 // Required by Blacklight
 //= require blacklight/blacklight
 //
 //= require colorbox-rails
-//= require bootstrap-datepicker
 //= require social-share-button
 //= require dri/
 

@@ -289,6 +289,12 @@ class ObjectsController < BaseObjectsController
     end
   end
 
+  def set_licence
+    enforce_permissions!('edit', params[:id])
+    
+    super
+  end
+
   private
 
     def create_from_upload

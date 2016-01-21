@@ -30,4 +30,26 @@ class BaseObjectsController < CatalogController
     params.delete(:commit)
     params.delete(:action)
   end
+
+  # Updates the licence.
+  #
+  def set_licence
+    @object = retrieve_object!(params[:id])
+
+    licence = params[:batch][:licence]
+
+    if licence.present?
+      @object.licence = licence
+    end
+
+    respond_to do |format|
+      if @object.save
+        flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
+      else
+        flash[:error] = t('dri.flash.error.licence_not_updated')
+      end
+      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+    end
+  end
+  
 end

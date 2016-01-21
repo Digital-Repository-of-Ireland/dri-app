@@ -7,13 +7,7 @@
   
   <!-- Root element -->
   <xsl:template match="/c">
-  	<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal">
-		<span aria-hidden="true">×</span><span class="sr-only">Close</span>
-	</button>
-	<h4 class="modal-title" id="">EAD Metadata</h4>
-</div>
-    <div>
+  	<div>
       <dl class="dri_object_metadata_readview">
         <ul style="list-style-type: none;">
           <xsl:apply-templates select="node()"/>

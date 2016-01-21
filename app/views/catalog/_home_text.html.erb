@@ -19,11 +19,22 @@
       <li data-target="#" data-slide-to="4"></li>
       <li data-target="#" data-slide-to="5"></li>
       <li data-target="#" data-slide-to="6"></li>
+      <li data-target="#" data-slide-to="7"></li>
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
+         <%= link_to "#{main_app.root_url}/catalog/1c18df827" do %>
+            <%= image_tag("dri/slides/iipublic_crop.jpeg", :alt=>"Inspiring Ireland 1916 Public Memorabilia Collection" ) %>
+            <div class="carousel-caption">
+              <p>
+                Inspiring Ireland 1916 Public Memorabilia Collection
+              </p>
+            </div>
+        <% end %>
+      </div>
+      <div class="item">
         <%= link_to "#{main_app.root_url}/catalog/9593zf44k" do %>
             <%= image_tag("dri/slides/hclarke_crop.jpeg", :alt=>"Clarke Stained Glass Studios Collection" ) %>
             <div class="carousel-caption">

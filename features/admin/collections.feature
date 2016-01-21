@@ -21,6 +21,7 @@ Scenario: Constructing a valid collection
   Given I am on the home page
   When I go to "create new collection"
   And I enter valid metadata for a collection
+  And I check "deposit"
   And I press the button to "create a collection"
   Then I should see a success message for creating a collection
 
@@ -29,6 +30,7 @@ Scenario: Constructing a collection with valid permissions
   When I go to "create new collection"
   And I enter valid metadata for a collection
   And I enter valid permissions for a collection
+  And I check "deposit"
   And I press the button to "create a collection"
   Then I should see a success message for creating a collection
 
@@ -37,6 +39,7 @@ Scenario: Constructing a collection with invalid permissions
   When I go to "create new collection"
   And I enter valid metadata for a collection
   And I enter invalid permissions for a collection
+  And I check "deposit"
   And I press the button to "create a collection"
   Then I should see a failure message for invalid collection
 

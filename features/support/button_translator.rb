@@ -31,6 +31,9 @@ module ButtonTranslator
       when /^save search$/
         "save_search"
 
+      when /^set licence$/
+        "set_licence"
+
       when /^delete saved search$/
         "delete_saved_search"
 
