@@ -99,6 +99,10 @@
   </li>
   <% end %>
 
+  <li>
+    <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
+  </li>
+
   <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
   <li>
     <%= t('dri.views.catalog.buttons.set_licence') %>
@@ -128,7 +132,9 @@
       </div>
 
       <div class="modal-footer">
-
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -149,7 +155,29 @@
         <%= render :partial => "shared/set_object_licence" %>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
+<div class="modal fade" id="dri_access_controls_modal_id">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title"><%= t('dri.views.catalog.forms.access_controls') %></h4>
+      </div>
+
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

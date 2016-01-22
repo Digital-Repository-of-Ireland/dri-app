@@ -278,12 +278,9 @@
 </script>
 
 <div class="dri_access_controls">
-	<legend>
-		<%= t('dri.views.objects.legends.access_control') %>
-	</legend>
 	<fieldset id="language">
 		<label for="depositor"><%= t('dri.views.objects.access_controls.depositor') %></label>
-		<input class="edit span6 dri-textfield" id="depositor" name="depositor" type="text" value="<%= record.depositor %>" readonly>
+		<input class="edit dri-textfield" id="depositor" name="depositor" type="text" value="<%= record.depositor %>" readonly>
 	</fieldset>
 
 	<div class="field">
@@ -292,12 +289,12 @@
 		<ul class="breadcrumb">
 			<li>
 				<%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled=> inherit_disabled %>
-				<%= f.label :read_groups_inherit, t('dri.views.objects.access_controls.inherit')%>
+				<%= f.label :read_groups_inherit, t('dri.views.objects.access_controls.inherit') %>
 			</li>
 
 			<li>
 				<%= f.radio_button :read_groups_string, "radio_public", :onclick => "read_field_toggle();" %>
-				<%= f.label :read_groups_public, t('dri.views.objects.access_controls.public')%>
+				<%= f.label :read_groups_public, t('dri.views.objects.access_controls.public') %>
 			</li>
 
 			<li>
@@ -305,13 +302,12 @@
 				<%= f.label :read_groups_registered, t('dri.views.objects.access_controls.registered') %>
 			</li>
 
-			<li>
+		    <li>
 				<%= f.radio_button :read_groups_string, "radio_restricted", :onclick => "read_field_toggle();" %>
-				<%= f.label :read_groups_restricted, t('dri.views.objects.access_controls.restricted')%>
+				<%= f.label :read_groups_restricted, t('dri.views.objects.access_controls.restricted') %>
 			</li>
-
-		</ul>
-		<fieldset id="read_access_entries">
+	   </ul>
+       <fieldset id="read_access_entries">
 
 			<%= f.label :read_users, t('user_groups.views.shared.users')%>
 			<%= f.text_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
@@ -365,7 +361,7 @@
 	</div>
 
 	<% if record.collection? && (allow_manage || (can? :manage_collection, record)) %>
-	<div class="field">
+	  <div class="field">
 		<h5><%= t('dri.views.objects.access_controls.manage') %></h5>
 		<ul class="breadcrumb">
 			<li>
@@ -382,7 +378,8 @@
 				<%= f.label :manager_users, t('user_groups.views.shared.users')%>
 				<%= f.text_field :manager_users_string, :onkeyup=>"manager_user_textbox.catch_tb_value();" %>
 			</fieldset>
-	</div>
-        <% end %>
+	  </div>
+    <% end %>
 </div>
+
 

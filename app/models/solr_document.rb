@@ -88,13 +88,13 @@ class SolrDocument
     icon
   end
 
-  def is_collection?
+  def collection?
     is_collection_key = ActiveFedora::SolrQueryBuilder.solr_name('is_collection')
 
     self[is_collection_key].present? && self[is_collection_key].include?('true')
   end
 
-  def is_root_collection?
+  def root_collection?
     collection_id ? false : true
   end
 

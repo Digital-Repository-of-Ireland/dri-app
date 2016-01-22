@@ -106,6 +106,7 @@ en:
         not_updated: "%{item} was not updated. Check set permissions"
         validation_errors: "Validation Errors: %{error}"
       notice:
+        access_controls_updated: "Access controls updated."
         added_to_collection: "Object has been added to collection."
         asset_deleted: "Asset deleted."
         collection_created: "Collection object has been successfully created."
@@ -282,6 +283,7 @@ en:
           clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
           download_metadata_xml: "Download as XML"
+          edit_access_controls: "Edit Access Controls"
           remove_from_collection: "Remove from collection"
           set_licence: "Set Licence"
           submit: "Submit"
@@ -295,6 +297,7 @@ en:
             collections: Collections
             no_collections: "No collections"
         forms:
+          access_controls: "Access Controls"
           all_objects_in_collection: "All Objects in this Collection"
           audio:
             duration: Duration
