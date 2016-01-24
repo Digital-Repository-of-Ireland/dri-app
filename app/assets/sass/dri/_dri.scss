@@ -2342,6 +2342,12 @@ ul.dri_collection_institutes_list {
         color: $dri_darkgrey;
     }
     @extend .dri_ingest_form_container;
+    .dri_radio_label {
+        font-size: 100%;
+        color: $dri_midgrey !important;
+        margin: 8px 0 8px 0;
+        padding: 0;
+     }
     .breadcrumb > li + li:before {
         content: "|\00a0";
     }
