@@ -92,23 +92,40 @@
     <% end %>
 
   <% end %>
-
-  <%= link_to edit_object_path(@document), :id => "edit_record" do %>
+  
   <li>
-    <%= t('dri.views.catalog.links.edit_this_record') %>
-  </li>
-  <% end %>
+  <div class="accordion" id="dri_edit_record_tools_id">
+    <div class="accordion-group">
+      <!-- <div class="accordion-heading"> -->
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#dri_edit_record_tools_id" href="#dri_edit_record_tools_collapsed_id">
+            <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.catalog.links.edit_this_record') %>
+          </a>
+      <!-- </div> -->
 
-  <li>
-    <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
-  </li>
+      <div id="dri_edit_record_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
+        <div class="accordion-inner">
+          <ul class="dri_subnav_edit_list">              
+            <%= link_to edit_object_path(@document), :id => "edit_record" do %>
+              <li>
+                <%= t('dri.views.catalog.buttons.edit_metadata') %>
+              </li>
+            <% end %>
 
-  <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
-  <li>
-    <%= t('dri.views.catalog.buttons.set_licence') %>
-  </li>
-  <% end %>
+            <li>
+             <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
+            </li>
 
+            <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
+              <li>
+                <%= t('dri.views.catalog.buttons.set_licence') %>
+               </li>
+            <% end %>
+          </ul>
+      </div>
+    </div>
+  </div>
+  </div>
+  </li>
 </ul>
 </div>
 

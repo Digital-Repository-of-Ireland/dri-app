@@ -283,9 +283,10 @@ en:
           clear_all_saved_searches: "Clear All Saved Searches"
           clear_search_facet_list: "Clear All"
           download_metadata_xml: "Download as XML"
-          edit_access_controls: "Edit Access Controls"
+          edit_access_controls: "Access Controls"
+          edit_metadata: "Edit Metadata"
           remove_from_collection: "Remove from collection"
-          set_licence: "Set Licence"
+          set_licence: "Licence"
           submit: "Submit"
         facets:
           dates:
@@ -350,8 +351,8 @@ en:
           download_not_available: "not available"
           download_nth: "Download %{index}"
           draft: Draft
-          edit_this_record: "Edit this record"
-          generate_surrogates: "Regenerate surrogates"
+          edit_this_record: "Edit"
+          generate_surrogates: "Regenerate Surrogates"
           history: History
           listen: listen
           mark_all_descendants_reviewed: "Mark Collection AND Sub-Collection Objects Reviewed"
@@ -359,7 +360,7 @@ en:
           mark_object_draft: "Mark Object as Draft"
           mark_object_reviewed: "Mark Object as Reviewed"
           not_characterized: "not yet characterized"
-          publish: "Publish collection"
+          publish: "Publish"
           publish_reviewed: "Publish reviewed objects"
           related: "Related Assets"
           request_doi: "Request DOI"
@@ -381,7 +382,8 @@ en:
       collection:
         manage_cover_image: "Cover Image"
         buttons:
-          add_cover_image: "Add Cover Image"
+          add_cover_image: "Cover Image"
+          edit_metadata: "Edit Metadata"
           create_collection: "Create Collection"
           delete_collection: "Delete Collection"
           new_collection: "New Collection"

@@ -69,6 +69,13 @@
 	  <%= t('dri.views.catalog.links.generate_surrogates') %>
 	 </li>
 	<% end %>
+    
+    <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', :id => "manage_organisations" do %>
+	<li>
+		<%= t('dri.views.collection.institute.manage') %>
+	</li>
+	<% end %>
+
     <% if @document.root_collection? && @depositing_institute %>
 	  <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
         <li>
@@ -80,7 +87,7 @@
         <%= publish_label %>
       </li>
     <% end %>
-    
+        
     <!-- If (root collection OR not EAD collection) enable delete collection link -->
     <!-- This is to allow to delete any sub-collection except for EAD -->
     <% if @document.root_collection? || @document.editable? %>
@@ -90,24 +97,41 @@
         </li>
       <% end %>
     <% end %>
-    <%= link_to edit_collection_path, :id => "edit_collection" do %>
-      <li>
-        <%= t('dri.views.collection.edit') %>
-      </li>
-    <% end %>
+
     <li>
-    <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
+	  <div class="accordion" id="dri_edit_record_tools_id">
+	    <div class="accordion-group">
+	        <a class="accordion-toggle" data-toggle="collapse" data-parent="#dri_edit_record_tools_id" href="#dri_edit_record_tools_collapsed_id">
+	          <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.collection.edit') %>
+	        </a>
+	      
+	        <div id="dri_edit_record_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
+	          <div class="accordion-inner">
+		            <ul class="dri_subnav_edit_list">
+		            <%= link_to edit_collection_path, :id => "edit_collection" do %>
+		              <li>
+		              <%= t('dri.views.collection.buttons.edit_metadata') %>
+		              </li>
+		            <% end %>
+		            <li>
+		              <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
+		            </li>
+			        <%= link_to '', :'data-target' => '#dri_cover_image_modal_id', :'data-toggle' => 'modal', :id => "add_cover_image" do %>
+			       <li>
+				    <%= t('dri.views.collection.buttons.add_cover_image') %>
+			       </li>
+			       <% end %>
+			       <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
+			       <li>
+				     <%= t('dri.views.catalog.buttons.set_licence') %>
+			       </li>
+			       <% end %>
+			      </ul>
+	          </div>
+	      </div>
+	    </div>
+	  </div>
     </li>
-	<%= link_to '', :'data-target' => '#dri_cover_image_modal_id', :'data-toggle' => 'modal', :id => "add_cover_image" do %>
-	<li>
-		<%= t('dri.views.collection.buttons.add_cover_image') %>
-	</li>
-	<% end %>
-	<%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
-	<li>
-		<%= t('dri.views.catalog.buttons.set_licence') %>
-	</li>
-	<% end %>
 
 	<!-- Link to manage pending memberships for the read group -->
 	<% if get_reader_group(@document) %>
@@ -116,11 +140,6 @@
 		<%= t('dri.views.collection.manage_read_requests') %>
 	</li>
 	<% end %>
-	<% end %>
-	<%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', :id => "manage_organisations" do %>
-	<li>
-		<%= t('dri.views.collection.institute.manage') %>
-	</li>
 	<% end %>
 	
 
