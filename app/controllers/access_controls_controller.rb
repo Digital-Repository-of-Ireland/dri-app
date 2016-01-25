@@ -15,6 +15,7 @@ class AccessControlsController < ApplicationController
 
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
+    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase if params[:batch][:manager_users_string].present?
     
     if @object.collection?
       if valid_permissions?
