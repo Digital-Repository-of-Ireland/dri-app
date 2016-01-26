@@ -4,7 +4,10 @@
 class SolrDocument
 
   include Blacklight::Document
+  include Blacklight::Document::ActiveModelShim
+  
   include UserGroup::PermissionsSolrDocOverride
+ 
   include DRI::Solr::Document::File
   include DRI::Solr::Document::Relations
   include DRI::Solr::Document::Documentation
