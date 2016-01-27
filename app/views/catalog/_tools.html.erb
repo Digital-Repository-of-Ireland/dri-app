@@ -6,7 +6,7 @@
 		<%= render_show_doc_actions %>
 		<% if current_or_guest_user %>
 		<li>
-			<% if @document.is_collection? %>
+			<% if @document.collection? %>
 			<%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({:mode => 'collections', :view => 'grid', :show_subs=> true}), :tabindex => "-1", id: "manage_bookmark" %>
 			<% else %>
 			<%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({:mode => 'objects', :view => 'grid'}), :tabindex => "-1" %>

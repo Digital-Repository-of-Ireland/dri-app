@@ -1,0 +1,11 @@
+<div class="dri_ingest_form_container">
+	<div class="dri_ingest_form" style="width: 100%">
+
+        <%= form_for @object, as: :batch, :url => {:controller=>"access_controls", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
+
+        <%= render :partial => "shared/access_controls", :locals => {:f => f,:record => @object } %>
+        <%= f.submit t('dri.views.objects.buttons.save'), :class => "dri_button_green dri_w330", :id => "save_access_controls" %>
+            
+    <% end %>
+  </div>
+</div>

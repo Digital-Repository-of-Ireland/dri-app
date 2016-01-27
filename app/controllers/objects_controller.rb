@@ -29,7 +29,7 @@ class ObjectsController < BaseObjectsController
   # Edits an existing model.
   #
   def edit
-    enforce_permissions!('edit',params[:id])
+    enforce_permissions!('edit', params[:id])
 
     supported_licences
     
@@ -58,9 +58,6 @@ class ObjectsController < BaseObjectsController
   def update
     enforce_permissions!('edit', params[:id])
 
-    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
-    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
-    
     supported_licences
 
     @object = retrieve_object!(params[:id])
