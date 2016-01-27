@@ -1,5 +1,4 @@
 # -*- encoding : utf-8 -*-
-require 'blacklight/catalog'
 require 'institute_helpers'
 require 'iso8601'
 require 'iso-639'
@@ -10,7 +9,6 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
-  #include UserGroup::SolrAccessControls
   include Hydra::AccessControlsEnforcement
 
   include TimelineHelper
