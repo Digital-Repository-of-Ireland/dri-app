@@ -150,6 +150,10 @@ GEM
       leaflet-markercluster-rails
       leaflet-rails
       rails
+    blacklight_range_limit (5.0.4)
+      blacklight (>= 5.0.0.pre4, < 6)
+      jquery-rails
+      rails (>= 3.0, < 5.0)
     bootstrap-sass (3.3.5)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
@@ -769,6 +773,7 @@ DEPENDENCIES
   binding_of_caller
   blacklight (~> 5.16.0)
   blacklight-maps
+  blacklight_range_limit
   bootstrap-sass
   bootstrap-switch-rails
   ci_reporter_cucumber
