@@ -64,9 +64,11 @@ task :ci => ['jetty:reset', 'jetty:config', 'ci_clean'] do
   jetty_params = Jettywrapper.load_config
   jetty_params[:startup_wait]= 120
   error = Jettywrapper.wrap(jetty_params) do
-    Rake::Task['first_try'].invoke
-    Rake::Task['second_try'].invoke
-#    Rake::Task['spec'].invoke
+    begin
+      Rake::Task['first_try'].invoke
+    rescue Exception => e
+      Rake::Task['second_try'].invoke
+    end
   end
   raise "test failures: #{error}" if error
 
