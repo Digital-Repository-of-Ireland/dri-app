@@ -141,7 +141,7 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name('title', :stored_searchable, type: :string), :label => 'title'
     config.add_index_field solr_name('subject', :stored_searchable, type: :string), :label => 'subjects'
     config.add_index_field solr_name('creator', :stored_searchable, type: :string), :label => 'creators'
-    config.add_index_field solr_name('format', :stored_searchable), :label => 'Format'
+    config.add_index_field solr_name('format', :stored_searchable), :label => 'format'
     config.add_index_field solr_name('file_type_display', :stored_searchable, type: :string), :label => 'Mediatype'
     config.add_index_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_index_field solr_name('published', :stored_searchable, type: :string), :label => 'Published:'
@@ -170,7 +170,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), :label => 'geographical_coverage'
     config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), :label => 'temporal_coverage'
     config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), :label => 'name_coverage'
-    config.add_show_field solr_name('format', :stored_searchable), :label => 'Format'
+    config.add_show_field solr_name('format', :stored_searchable), :label => 'format'
     # config.add_show_field solr_name('physdesc', :stored_searchable), :label => 'physdesc'
     #config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'format'
     config.add_show_field solr_name('type', :stored_searchable, type: :string), :label => 'type'
