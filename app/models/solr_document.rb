@@ -4,7 +4,10 @@
 class SolrDocument
 
   include Blacklight::Document
+  include Blacklight::Document::ActiveModelShim
+  
   include UserGroup::PermissionsSolrDocOverride
+ 
   include DRI::Solr::Document::File
   include DRI::Solr::Document::Relations
   include DRI::Solr::Document::Documentation
@@ -88,13 +91,13 @@ class SolrDocument
     icon
   end
 
-  def is_collection?
+  def collection?
     is_collection_key = ActiveFedora::SolrQueryBuilder.solr_name('is_collection')
 
     self[is_collection_key].present? && self[is_collection_key].include?('true')
   end
 
-  def is_root_collection?
+  def root_collection?
     collection_id ? false : true
   end
 

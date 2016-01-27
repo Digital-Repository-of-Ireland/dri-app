@@ -32,6 +32,9 @@ NuigRnag::Application.routes.draw do
   
     put 'collections/:id/licences', to: 'collections#set_licence', as: :collection_licence
     put 'objects/:id/licences', to: 'objects#set_licence', as: :object_licence
+
+    get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
+    put 'objects/:id/access', to: 'access_controls#update'
   
     resources :institutes, :only => ['show', 'new', 'create', 'edit', 'update']
 

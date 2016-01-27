@@ -25,6 +25,9 @@ module LinkTranslator
       when /^edit this record$/
         "edit_record"
 
+      when /^edit access controls$/
+        "edit_access_controls"
+
       when /^sign in$/
         "login"
 

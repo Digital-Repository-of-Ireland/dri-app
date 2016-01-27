@@ -20,7 +20,7 @@ class BaseObjectsController < CatalogController
   end
 
   def update_params
-    params.require(:batch).permit!
+    params.require(:batch).except!(:read_groups_string, :read_users_string, :master_file_access, :edit_groups_string, :edit_users_string).permit!
   end
 
   def purge_params

@@ -67,15 +67,11 @@ class CollectionsController < BaseObjectsController
       format.html
     end
   end
-
+  
   # Updates the attributes of an existing model.
   #
   def update
-    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
-    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
-    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
-
-    update_object_permission_check(params[:batch][:manager_groups_string],params[:batch][:manager_users_string], params[:id])
+    enforce_permissions!('manage_collection', params[:id])
 
     @object = retrieve_object!(params[:id])
 
@@ -92,20 +88,16 @@ class CollectionsController < BaseObjectsController
 
     doi.update_metadata(params[:batch].select{ |key, value| doi.metadata_fields.include?(key) }) if doi
         
-    if valid_permissions?
-      updated = @object.update_attributes(update_params)
+    updated = @object.update_attributes(update_params)
 
-      if updated
-        if cover_image.present?
-          flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
-        end
-      else
-        flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+    if updated
+      if cover_image.present?
+        flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
       end
     else
-      flash[:alert] = t('dri.flash.error.not_updated', item: params[:id])
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
     end
-
+    
     #purge params from update action
     purge_params
 
@@ -125,6 +117,8 @@ class CollectionsController < BaseObjectsController
   # Updates the cover image of an existing model.
   #
   def add_cover_image
+    enforce_permissions!('manage_collection', params[:id])
+
     @object = retrieve_object!(params[:id])
 
     # If a cover image was uploaded, remove it from the params hash
@@ -150,7 +144,7 @@ class CollectionsController < BaseObjectsController
   # Updates the licence.
   #
   def set_licence
-    enforce_permissions!('edit', params[:id])
+    enforce_permissions!('manage_collection', params[:id])
     
     super
   end
@@ -219,7 +213,7 @@ class CollectionsController < BaseObjectsController
   end
 
   def review
-    enforce_permissions!('edit', params[:id])
+    enforce_permissions!('manage_collection', params[:id])
 
     @object = retrieve_object!(params[:id])
 
@@ -352,16 +346,6 @@ class CollectionsController < BaseObjectsController
 
   private
 
-  def valid_permissions?
-    if (@object.governing_collection_id.blank? &&
-        ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
-        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?)))
-      false
-    else
-      true
-    end
-  end
-
   def create_reader_group
     @group = UserGroup::Group.new(name: reader_group_name, description: "Default Reader group for collection #{@object.id}")
     @group.reader_group = true
@@ -405,6 +389,16 @@ class CollectionsController < BaseObjectsController
           render json: exception.message, status: :bad_request
         }
       end
+  end
+
+  def valid_permissions?
+    if (@object.governing_collection_id.blank? &&
+       ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
+       (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?)))
+      false
+    else
+      true
+    end
   end
 end
 

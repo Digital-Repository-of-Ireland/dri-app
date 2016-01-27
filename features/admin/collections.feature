@@ -52,10 +52,10 @@ Scenario: Updating a collection with invalid metadata
 
 Scenario: Updating a collection with invalid permissions
   Given a collection with pid "collperm" created by "user1"
-  When I go to the "collection" "edit" page for "collperm"
-  And I enter valid metadata for a collection
+  When I go to the "collection" "show" page for "collperm"
+  And I follow the link to edit access controls
   And I enter invalid permissions for a collection
-  And I press the button to "save collection changes"
+  And I press the button to "save access controls"
   Then I should see a failure message for invalid update collection
 
 Scenario Outline: Adding a Digital Object in a governing collection

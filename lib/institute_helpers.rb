@@ -7,7 +7,7 @@ module InstituteHelpers
 
 
   def self.get_depositing_institute_from_solr_doc(doc)
-    doc.is_collection? ? get_collection_depositing_institute_from_solr_doc(doc) :
+    doc.collection? ? get_collection_depositing_institute_from_solr_doc(doc) :
                          get_inherited_depositing_institute_from_solr_doc(doc)
   end
 
@@ -16,7 +16,7 @@ module InstituteHelpers
     if doc[ActiveFedora::SolrQueryBuilder.solr_name('depositing_institute', :displayable, type: :string)].present?
       Institute.where(name: doc[ActiveFedora::SolrQueryBuilder.solr_name('depositing_institute', :displayable, type: :string)]).first
     else
-      return nil if doc.is_root_collection?
+      return nil if doc.root_collection?
 
       get_inherited_depositing_institute_from_solr_doc(doc)
     end
