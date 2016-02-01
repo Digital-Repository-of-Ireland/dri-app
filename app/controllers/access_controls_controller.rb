@@ -51,7 +51,7 @@ class AccessControlsController < ApplicationController
     end
 
     def update_params
-      params.require(:batch).permit(:read_groups_string, :read_users_string, :master_file_access, :edit_groups_string, :edit_users_string)
+      params.require(:batch).permit(:read_groups_string, :read_users_string, :master_file_access, :edit_groups_string, :edit_users_string, :manager_users_string)
     end
 
     def valid_permissions?
