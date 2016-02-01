@@ -8,3 +8,15 @@ wip: --tags @wip:3 --wip features
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip --tags ~@review --tags ~@public --tags ~@noexec --tags ~@public-broken -r features
 guard: --format progress --strict --tags ~@wip --tags ~@review --tags ~@public --tags ~@noexec --tags ~@public-broken -r features
 html: --tags ~@wip --tags ~@review --tags ~@public --tags ~@noexec --tags ~@public-broken --format html --out=features_report.html -r features
+
+<%
+rerun_tests = File.file?('tmp/cucumber-rerun.txt') ? IO.read('tmp/cucumber-rerun.txt') : ""
+rerun_tests_opts = if rerun_tests.to_s.strip.empty?
+  "--tags @none_so_will_pass --strict"
+else
+  "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --strict #{rerun_tests} -r features"
+end
+first_try = "--format rerun --out tmp/cucumber-rerun.txt #{std_opts} features --format junit --out features/reports"
+%>
+first_try: <%= first_try %>
+second_try: <%= rerun_tests_opts %>
