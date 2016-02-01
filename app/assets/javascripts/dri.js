@@ -127,9 +127,9 @@ add_person_fields = function() {
         var model_name = $(this).attr('model-name');
 
         if ($(this).siblings('select').length > 1) {
-          $(this).prev('input[type="text"]').remove();
+          $(this).prevAll('input[type="text"]:first').remove();
           var selected_value = $(this).prev('select').val();
-          $(this).prev('select').remove();
+          $(this).prevAll('select:first').remove();
           $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][type][" name="'+model_name+'['+fieldset_name+'][type][]" value="'+selected_value+'">');
           $(this).before('<input type="hidden" id="'+model_name+'_'+fieldset_name+'][name][" name="'+model_name+'['+fieldset_name+'][name][]" value="">');
           $(this).remove();
