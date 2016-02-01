@@ -1,5 +1,4 @@
 # -*- encoding : utf-8 -*-
-require 'blacklight/catalog'
 require 'institute_helpers'
 
 # Blacklight catalog controller
