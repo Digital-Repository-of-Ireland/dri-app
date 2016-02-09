@@ -3,6 +3,10 @@ require 'ostruct'
 class ProcessBatchIngest
   @queue = :process_batch_ingest
   
+  def self.auth_url(user, url)
+    "#{url}?user_email=#{user.email}&user_token=#{user.authentication_token}"
+  end
+
   def self.perform(user_id, collection_id, ingest_json)
     ingest_batch = JSON.parse(ingest_json)
     
@@ -17,8 +21,6 @@ class ProcessBatchIngest
 
     object = ingest_metadata(collection, user, metadata)
     ingest_assets(user, object, assets)
-
-    #send status to callback url
   end
 
   def self.ingest_assets(user, object, assets)
@@ -29,24 +31,33 @@ class ProcessBatchIngest
       generic_file.preservation_only = 'true' if asset[:label] == 'preservation'
 
       filename = File.basename(asset[:path]) 
-      create_file(asset[:path], generic_file, 'content', filename)
-
-      DRI::Asset::Actor.new(generic_file, user).create_external_content(
-        URI.escape(download_url(generic_file)), 
-        'content', filename)
+      if create_file(asset[:path], generic_file, 'content', filename)
+        saved = DRI::Asset::Actor.new(generic_file, user).create_external_content(
+          URI.escape(download_url(generic_file)), 
+          'content', filename)
+      else
+        saved = false
+      end
+      
+      status = saved ? 'COMPLETED' : 'FAILED'
+      send_message(auth_url(user, asset[:callback_url]), status)
     end
   end
 
   def self.ingest_metadata(collection, user, metadata)
-    xml = MetadataHelpers.load_xml(file_data(metadata))
+    xml = MetadataHelpers.load_xml(file_data(metadata[:path]))
     object = create_object(collection, user, xml)
     
     if object.valid? && object.save
       create_reader_group if object.collection?
       
       DRI::Object::Actor.new(object, user).version_and_record_committer
+      status = 'COMPLETED'
+    else
+      status = 'FAILED'
     end
 
+    send_message(auth_url(user, metadata[:callback_url]), status)
     object
   end
 
@@ -63,9 +74,13 @@ class ProcessBatchIngest
 
     begin
       file.save!
+      saved = true
     rescue ActiveRecord::ActiveRecordError => e
       Rails.logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
+      saved = false
     end
+
+    saved
   end
 
   def self.create_object(collection, user, xml)
@@ -105,7 +120,7 @@ class ProcessBatchIngest
   def self.retrieve_files(download_path, files)
     retriever = BrowseEverything::Retriever.new
 
-    metadata = ''
+    metadata = {}
     assets = []
 
     files.each do |file|
@@ -120,13 +135,17 @@ class ProcessBatchIngest
       end
 
       if file['label'] == 'metadata'
-        metadata = download_location
+        metadata = { path: download_location, callback_url: file['callback_url'] }
       else
-        asset = { label: file['label'], path: download_location }
+        asset = { label: file['label'], path: download_location, callback_url: file['callback_url'] }
         assets << asset
       end
     end
     
     return metadata, assets
+  end
+
+  def self.send_message(url, message)
+    RestClient.put url, { 'master_file' => { status_code: message} }, content_type: :json, accept: :json
   end
 end
