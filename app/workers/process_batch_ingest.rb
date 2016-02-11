@@ -155,5 +155,7 @@ class ProcessBatchIngest
 
   def self.send_message(url, message)
     RestClient.put url, { 'master_file' => message }, content_type: :json, accept: :json
+  rescue RestClient::Exception => e
+    Rails.logger.error "Error sending callback: #{e}"
   end
 end
