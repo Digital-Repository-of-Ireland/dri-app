@@ -39,8 +39,14 @@ class ProcessBatchIngest
         saved = false
       end
       
-      status = saved ? 'COMPLETED' : 'FAILED'
-      send_message(auth_url(user, asset[:callback_url]), status)
+      if saved
+        message = { status_code: 'COMPLETED', 
+          file_location: Rails.application.routes.url_helpers.object_file_path(object, generic_file) }
+      else
+        message = { status_code: 'FAILED' }
+      end
+
+      send_message(auth_url(user, asset[:callback_url]), message)
     end
   end
 
@@ -53,11 +59,13 @@ class ProcessBatchIngest
       
       DRI::Object::Actor.new(object, user).version_and_record_committer
       status = 'COMPLETED'
+      message = { status_code: 'COMPLETED', 
+        file_location: Rails.application.routes.url_helpers.catalog_path(object) }
     else
-      status = 'FAILED'
+      message = { status_code: 'FAILED' }
     end
 
-    send_message(auth_url(user, metadata[:callback_url]), status)
+    send_message(auth_url(user, metadata[:callback_url]), message)
     object
   end
 
@@ -146,6 +154,6 @@ class ProcessBatchIngest
   end
 
   def self.send_message(url, message)
-    RestClient.put url, { 'master_file' => { status_code: message} }, content_type: :json, accept: :json
+    RestClient.put url, { 'master_file' => message }, content_type: :json, accept: :json
   end
 end
