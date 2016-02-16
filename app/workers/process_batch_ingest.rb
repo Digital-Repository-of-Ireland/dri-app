@@ -16,10 +16,19 @@ class ProcessBatchIngest
     download_path = File.join(Settings.downloads.directory, collection_id)
     FileUtils.mkdir_p(download_path)
 
-    ingest_files = ingest_batch['files']
-    metadata, assets = retrieve_files(download_path, ingest_files)
+    ingest_metadata = ingest_batch['metadata']
 
-    object = ingest_metadata(collection, user, metadata)
+    if ingest_metadata['object_id'].present?
+      # metadata ingest was successful so only ingest missing assets
+      object = DRI::Batch.find(ingest_metadata['object_id'], cast: true)
+    else
+      metadata = retrieve_files(download_path, [ingest_metadata])[0]
+      object = ingest_metadata(collection, user, metadata)
+    end
+
+    ingest_files = ingest_batch['files']
+    assets = retrieve_files(download_path, ingest_files)
+
     ingest_assets(user, object, assets)
   end
 
@@ -128,8 +137,7 @@ class ProcessBatchIngest
   def self.retrieve_files(download_path, files)
     retriever = BrowseEverything::Retriever.new
 
-    metadata = {}
-    assets = []
+    downloaded_files = []
 
     files.each do |file|
       download_location = File.join(download_path, file['download_spec']['file_name'])
@@ -142,15 +150,11 @@ class ProcessBatchIngest
         end
       end
 
-      if file['label'] == 'metadata'
-        metadata = { path: download_location, callback_url: file['callback_url'] }
-      else
-        asset = { label: file['label'], path: download_location, callback_url: file['callback_url'] }
-        assets << asset
-      end
+      download = { label: file['label'], path: download_location, callback_url: file['callback_url'] }
+      downloaded_files << download
     end
     
-    return metadata, assets
+    return downloaded_files
   end
 
   def self.send_message(url, message)
