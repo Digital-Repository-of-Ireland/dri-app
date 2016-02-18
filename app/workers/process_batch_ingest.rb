@@ -34,7 +34,7 @@ class ProcessBatchIngest
 
   def self.ingest_assets(user, object, assets)
     assets.each do | asset|
-      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+      generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
       generic_file.batch = object
       generic_file.apply_depositor_metadata(user)
       generic_file.preservation_only = 'true' if asset[:label] == 'preservation'

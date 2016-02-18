@@ -130,7 +130,7 @@ class AssetsController < ApplicationController
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end
 
-    @generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+    @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
     @generic_file.batch = @object
     @generic_file.apply_depositor_metadata(current_user)
     @generic_file.preservation_only = 'true' if params[:preservation] == 'true'
