@@ -1,20 +1,8 @@
-require 'uri'
-
 module FieldRenderHelper
 
   # Returns the default html field separator characters
   def field_value_separator
     ''
-  end
-  
- #URI Checker
-  def uri?(string)
-    uri = URI.parse(string)
-    %w( http https ).include?(uri.scheme)
-  rescue URI::BadURIError
-    false
-  rescue URI::InvalidURIError
-    false
   end
   
   # Helper method to display to toggle the description metadata language
