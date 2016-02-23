@@ -194,5 +194,15 @@ module ApplicationHelper
     return nil
   end
 
+  #URI Checker
+  def uri?(string)
+    uri = URI.parse(string)
+    %w( http https ).include?(uri.scheme)
+  rescue URI::BadURIError
+    false
+  rescue URI::InvalidURIError
+    false
+  end
+
 end
 
