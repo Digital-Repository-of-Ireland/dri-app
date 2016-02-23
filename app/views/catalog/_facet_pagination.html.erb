@@ -1,10 +1,10 @@
     <div class="prev_next_links btn-group pull-left">
-      <%= link_to_previous_page @pagination, raw(t('views.pagination.previous')), :params => params, :param_name => Blacklight::Solr::FacetPaginator.request_keys[:page], :class => 'btn btn-link', :data => {:ajax_modal => "preserve"} do %>
-       <span class="disabled btn btn-disabled"><%= raw(t('views.pagination.previous')) %></span>
+      <%= link_to_previous_page @pagination, image_tag('dri/previous_carousel_arrow.png'), :params => params, :param_name => Blacklight::Solr::FacetPaginator.request_keys[:page], :class => 'btn btn-link', :data => {:ajax_modal => "preserve"} do %>
+       <span class="disabled btn btn-disabled"><%= image_tag('dri/previous_carousel_arrow.png') %></span>
      <% end %>
-      <%= link_to_next_page @pagination, raw(t('views.pagination.next')), :params => params, :param_name => Blacklight::Solr::FacetPaginator.request_keys[:page], :class => 'btn btn-link',  :data => {:ajax_modal => "preserve"} do %>
+      <%= link_to_next_page @pagination, image_tag('dri/next_carousel_arrow.png'), :params => params, :param_name => Blacklight::Solr::FacetPaginator.request_keys[:page], :class => 'btn btn-link',  :data => {:ajax_modal => "preserve"} do %>
        
-       <span class="disabled btn  btn-disabled"><%= raw(t('views.pagination.next')) %></span>
+       <span class="disabled btn  btn-disabled"><%= image_tag('dri/next_carousel_arrow.png') %></span>
       <% end %>
      
     </div>
