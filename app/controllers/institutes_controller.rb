@@ -4,10 +4,11 @@ class InstitutesController < ApplicationController
   before_filter :authenticate_user_from_token!, except: [:index]
   before_filter :authenticate_user!, except: [:index]
   before_filter :check_for_cancel, only: [:create, :update]
+  before_filter :admin?, only: [:destroy]
 
   # Was this action canceled by the user?
   def check_for_cancel
-    redirect_to institutions_path if params[:commit] == 'Cancel'
+    redirect_to organisations_path if params[:commit] == 'Cancel'
   end
 
   # Get the list of institutes
@@ -36,9 +37,19 @@ class InstitutesController < ApplicationController
     @object = ActiveFedora::Base.find(params[:object], cast: true) if params[:object]
 
     respond_to do |format|
-      format.html { redirect_to institutions_url }
+      format.html { redirect_to organisations_url }
     end
   end
+
+  def destroy
+    @inst = Institute.find(params[:id])
+    @inst.delete
+
+    respond_to do |format|
+      format.html { redirect_to organisations_url }
+    end
+  end
+
 
   def update
     @inst = Institute.find(params[:id])
@@ -49,7 +60,7 @@ class InstitutesController < ApplicationController
     @inst.save
 
     respond_to do |format|
-      format.html { redirect_to institute_url(@inst) }
+      format.html { redirect_to organisations_url }
     end
   end
 
@@ -157,4 +168,11 @@ class InstitutesController < ApplicationController
   def update_params
     params.require(:institute).permit(:name, :logo, :url)
   end
+
+  private
+
+  def admin?
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
+  end
+
 end

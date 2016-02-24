@@ -11,6 +11,10 @@
             <h6>
               <%= institute[:name].to_s.html_safe %>
             </h6>
+            <% if signed_in? && current_user.is_admin? %>
+              <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_organisation_path(institute) %>
+              <%= link_to '<i class="fa fa-times-circle"></i>'.html_safe, organisation_path(institute), method: :delete %>
+            <% end %>
           </div>
           <div class="dri_collection_institutes_pages_text" >
             <ul>

@@ -12,7 +12,7 @@
 			</div>
 			<div id="dri_add_institutes_block">
 				<div class="dri_file_upload">
-					<%= form_for(@inst) do |f| %>
+					<%= form_for(@inst, url: organisation_path) do |f| %>
 					<div>
 						<a class='btn btn-default' href='javascript:;'> <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.collection.institute.form.logo')}"%></h5>
 						<p>
@@ -26,7 +26,7 @@
 
 					<%= f.submit t('dri.views.collection.institute.edit'), :id => 'edit_institute', :class=>'btn dri_grey_button' %>
 					<% end %>
-					<%= form_for(@inst) do |f| %>
+					<%= form_for(@inst, url: organisation_path) do |f| %>
 					<%= f.submit "Cancel", :class=>'btn dri_green_button' %>
 					<% end %>
 				</div>
