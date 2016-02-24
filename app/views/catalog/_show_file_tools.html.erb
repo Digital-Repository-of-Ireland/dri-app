@@ -24,7 +24,7 @@
 
                           <% unless @document.published? %>
 				            <%= form_tag(object_file_path(@document.id, file.id), method: :delete, id: "file_delete", style: "display:inline-block") do %>
-                              <%= button_tag t('dri.views.assets.buttons.delete'), :id => "dri_delete_asset_file", :name => "delete_file", :style => "display:inherit; margin-left: 5px;", data: { confirm: t('dri.views.assets.confirm.delete') } %>
+                              <%= button_tag t('dri.views.assets.buttons.delete'), :id => "dri_delete_asset_file", :name => "delete_file", :style => "display:inherit; margin-left: 5px;", class: 'dri_button_red_small', data: { confirm: t('dri.views.assets.confirm.delete') } %>
                               <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
                             <% end %>
                           <% end %>
@@ -34,29 +34,36 @@
 			    <li>
 				  <%= link_to t('dri.views.catalog.links.download'), file_download_path(@document, file.id), :id => "download_asset" %>
 				</li>
-                <% if file.preservation_only? %>
-                  <li>
-                    <%= t('dri.views.catalog.legends.preservation_only') %>
-                  <li>
-               <% end %>
 			  <% end %>
 
-			  <% if can? :read, @document %>
-			    <% if @surrogates[file.id].blank? %>
-				  <li>
-				    <%= t('dri.views.catalog.legends.no_surrogates') %>
-				  </li>
-				  <% if @status[file.id].present? %>
+              <% if file.preservation_only? %>
+                  <li>
+                    <%= t('dri.views.catalog.legends.preservation_only') %>
+                  </li>
+                  <% if @status[file.id].present? && @status[file.id][:status] != 'success' %>
 				    <li>
 				      <%= t('dri.views.catalog.legends.file_status', status: @status[file.id][:status]) %>
 				    </li>
 				  <% end %>
-				<% else %>
-				  <% @surrogates[file.id].each do |desc, url| %>
-				  <li>
-				    <%= link_to desc, url, :id => desc %>
-				   </li>
-				<% end %>
+              <% else %>
+
+			    <% if can? :read, @document %>
+			      <% if @surrogates[file.id].blank? %>
+				    <li>
+				      <%= t('dri.views.catalog.legends.no_surrogates') %>
+				    </li>
+				    <% if @status[file.id].present? %>
+				      <li>
+				        <%= t('dri.views.catalog.legends.file_status', status: @status[file.id][:status]) %>
+				      </li>
+				    <% end %>
+				  <% else %>
+				    <% @surrogates[file.id].each do |desc, url| %>
+				    <li>
+				      <%= link_to desc, url, :id => desc %>
+				     </li>
+				  <% end %>
+			    <% end %>
 			  <% end %>
 			<% end %>
 		

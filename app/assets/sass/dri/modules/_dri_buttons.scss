@@ -30,6 +30,13 @@
   background-color: $dri_red;
 }
 
+.dri_button_red_small {
+  @extend .dri_button_red;
+  font-size: 80%;
+  padding: 0px 5px 0px 5px;
+  margin: 2px 0px 0px 0px;
+}
+
 .dri_button_red:hover {
   background-color: darken($dri_red, 10%);
 }
