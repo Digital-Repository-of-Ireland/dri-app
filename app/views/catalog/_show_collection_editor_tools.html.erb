@@ -108,11 +108,13 @@
 	        <div id="dri_edit_record_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
 	          <div class="accordion-inner">
 		            <ul class="dri_subnav_edit_list">
-		            <%= link_to edit_collection_path, :id => "edit_collection" do %>
-		              <li>
-		              <%= t('dri.views.collection.buttons.edit_metadata') %>
-		              </li>
-		            <% end %>
+		              <% if @document.editable? %>
+                                <%= link_to edit_collection_path, :id => "edit_collection" do %>
+		                <li>
+		                  <%= t('dri.views.collection.buttons.edit_metadata') %>
+		                </li>
+		                <% end %>
+                              <% end %>
 		            <li>
 		              <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
 		            </li>
