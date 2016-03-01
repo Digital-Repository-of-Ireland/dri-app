@@ -65,10 +65,10 @@ module PathTranslator
         new_collection_path
 
       when /^(the )?new organisation page$/
-        new_institute_path
+        new_organisation_path
 
       when /^(the )?organisations page$/
-        '/institutions'
+        '/organisations'
 
       else
         raise('You specified an invalid path')

@@ -3,7 +3,7 @@
 		$("#institution_logo").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
 	}
 </script>
-<h5><%= t('dri.views.collection.institute.are_you_sure') %> (<%=  link_to t('dri.views.collection.institute.see_orgs'), institutions_path %>)</h5>
+<h5><%= t('dri.views.collection.institute.are_you_sure') %> (<%=  link_to t('dri.views.collection.institute.see_orgs'), organisations_path %>)</h5>
 
 <div class="dri_collection_institutes_dropdown">
 	<div class="dri_institutes_title">
@@ -14,7 +14,7 @@
 			</div>
 			<div id="dri_add_institutes_block">
 				<div class="dri_file_upload">
-					<%= form_for(@inst) do |f| %>
+					<%= form_for(@inst, url: organisations_path) do |f| %>
 					<div>
 						<a class='btn btn-default' href='javascript:;'> <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.collection.institute.form.logo')}"%></h5>
 						<p>
@@ -28,7 +28,7 @@
 
 					<%= f.submit t('dri.views.collection.institute.add'), :id => 'add_institute', :class=>'dri_button_green' %>
 					<% end %>
-										<%= form_for(@inst) do |f| %>
+										<%= form_for(@inst, url: organisations_path) do |f| %>
 					<%= f.submit t('dri.views.objects.links.cancel'), :class=>'btn dri_grey_button' %>
 					<% end %>
 				</div>

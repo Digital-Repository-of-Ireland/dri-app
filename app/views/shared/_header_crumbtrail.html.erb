@@ -8,7 +8,12 @@
               <li><%= link_to @document[Solrizer.solr_name('ancestor_title', :stored_searchable, type: :string).to_sym][index], main_app.catalog_path(ancestor_id) %></li>
             <% end %>
           <% end %>
-        <li class="active"><%= truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50) %></li>
+          <% if @generic_file %>
+            <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50), main_app.catalog_path(@document.id) %></li>
+            <li class="active"><%= @generic_file.label %></li>
+          <% else %>
+            <li class="active"><%= truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50) %></li>
+          <% end %>
       <% end %>
       </ol>
     </div>
