@@ -71,7 +71,7 @@ class ProcessBatchIngest
       message = { status_code: 'COMPLETED', 
         file_location: Rails.application.routes.url_helpers.catalog_path(object) }
     else
-      message = { status_code: 'FAILED' }
+      message = { status_code: 'FAILED', file_location: "error:#{object.errors.full_messages.inspect}" }
     end
 
     send_message(auth_url(user, metadata[:callback_url]), message)

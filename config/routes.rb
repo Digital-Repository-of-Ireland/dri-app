@@ -37,11 +37,10 @@ NuigRnag::Application.routes.draw do
     get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
     put 'objects/:id/access', to: 'access_controls#update'
   
-    resources :institutes, :only => ['show', 'new', 'create', 'edit', 'update']
+    resources :organisations, controller: :institutes, :only => ['index','show', 'new', 'create', 'destroy', 'edit', 'update']
 
     match 'association' => 'institutes#associate', :via => :post, :as => :new_association
     match 'association' => 'institutes#disassociate', :via => :delete, :as => :disassociation
-    match 'institutions' => 'institutes#index', :via => :get, :as => :institutions
     match 'manage_users' => 'manage_users#new', :via => :get, :as => :manage_users
     match 'manage_users' => 'manage_users#create', :via => :post, :as => :new_manage_user
 

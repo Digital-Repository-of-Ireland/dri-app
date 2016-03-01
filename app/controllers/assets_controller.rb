@@ -16,7 +16,9 @@ class AssetsController < ApplicationController
   def show
     datastream = params[:datastream].presence || 'content'
 
-    @document = retrieve_object! params[:object_id]
+    result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
+    @document = SolrDocument.new(result.first)
+
     @generic_file = retrieve_object! params[:id]
 
     status(@generic_file.id)
