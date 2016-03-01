@@ -60,8 +60,6 @@
     }
 }
 
-
-
 /*---- Previous Next Doc Pagination ----*/
 
 .dri_doc_pagination {
@@ -125,4 +123,8 @@
 }
 .dri_subnav_edit_list .dri_subnav_edit_list_last {
     border-bottom-style: none;
+}
+
+#dri_asset_tools_collapsed_id .dri_asset_tools_entry {
+  border-top: 2px solid $dri_thingrey;
 }
