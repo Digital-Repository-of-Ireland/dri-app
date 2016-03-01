@@ -18,63 +18,58 @@
         <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %><%= t('dri.views.catalog.links.add_documentation') %><% end %>
       </li>
     
-	<% if @document.editable? %>
-      <% if @document.active_fedora_model == 'DRI::QualifiedDublinCore' %>
-	    <%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
-	      <li>
-		    <%= t('dri.views.catalog.links.add_object') %>
-	      </li>
-	    <% end %>
-      <% end %>
-	  <%= link_to new_object_path(collection: document.id, method: 'form', :is_sub_collection => 'true'), :id => "add_sub_collection" do %>
-        <li>
-          <%= t('dri.views.catalog.links.add_sub_collection') %>
-        </li>
-      <% end %>
-	  <%= link_to new_object_path(collection: document.id, method: 'upload'), :id => "add_object_xml" do %>
-	    <li >
-		  <%= t('dri.views.catalog.links.add_object_xml') %>
+      <% if @document.editable? %>
+        <% if @document.active_fedora_model == 'DRI::QualifiedDublinCore' %>
+	  <%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
+	    <li>
+	      <%= t('dri.views.catalog.links.add_object') %>
 	    </li>
-	  <% end %>
-	  <li>
-		<%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
-		<div class="dri_fileUpload">
-			<%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %> 
-			<%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
-		</div>
-		<%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-		<%= hidden_field_tag 'datastream', "content" %>
-		<% end %>
-	  </li>
-    <% end %> <!-- if end (non-EAD collections) -->
-	<% if @document.draft? %>
-	  <% publish_label = t('dri.views.catalog.links.publish') %>
-	<% else%>
-	  <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
-	<% end %>
-	<%= link_to '', :'data-target' => '#dri_review_modal_id', :'data-toggle' => 'modal', :id => "all_objects_reviewed" do %>
-	<li>
-		<%= t('dri.views.catalog.links.mark_all_reviewed') %>
-	</li>
-	<% end %>
-	<% if @document.published? && @document.doi %>
-      <%= link_to '', :'data-target' => '#dri_doi_modal_id', :'data-toggle' => 'modal', :id => "request_doi" do %>
-	  <li>
-		<%= t('dri.views.catalog.links.request_doi') %>
-	  </li>
-	  <% end %>
-	<% end %>
-	<%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
-	<li>
-	  <%= t('dri.views.catalog.links.generate_surrogates') %>
-	 </li>
-	<% end %>
+          <% end %>
+        <% end %>
+
+        <%= link_to new_object_path(collection: document.id, method: 'form', :is_sub_collection => 'true'), :id => "add_sub_collection" do %>
+          <li><%= t('dri.views.catalog.links.add_sub_collection') %></li>
+        <% end %>
+
+        <%= link_to new_object_path(collection: document.id, method: 'upload'), :id => "add_object_xml" do %>
+          <li ><%= t('dri.views.catalog.links.add_object_xml') %></li>
+        <% end %>
+
+        <li>
+	  <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
+	    <div class="dri_fileUpload">
+              <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %> 
+              <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
+            </div>
+	    <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+	    <%= hidden_field_tag 'datastream', "content" %>
+          <% end %>
+        </li>
+      <% end %> <!-- if end (non-EAD collections) -->
+	
+      <% if @document.draft? %>
+        <% publish_label = t('dri.views.catalog.links.publish') %>
+      <% else%>
+        <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
+      <% end %>
+      
+       <%= link_to '', :'data-target' => '#dri_review_modal_id', :'data-toggle' => 'modal', :id => "all_objects_reviewed" do %>
+         <li><%= t('dri.views.catalog.links.mark_all_reviewed') %></li>
+       <% end %>
+
+       <% if @document.published? && @document.doi %>
+         <%= link_to '', :'data-target' => '#dri_doi_modal_id', :'data-toggle' => 'modal', :id => "request_doi" do %>
+	   <li><%= t('dri.views.catalog.links.request_doi') %></li>
+	 <% end %>
+       <% end %>
+
+       <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
+         <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
+       <% end %>
     
-    <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', :id => "manage_organisations" do %>
-	<li>
-		<%= t('dri.views.collection.institute.manage') %>
-	</li>
-	<% end %>
+       <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', :id => "manage_organisations" do %>
+         <li><%= t('dri.views.collection.institute.manage') %></li>
+       <% end %>
 
     <% if @document.root_collection? && @depositing_institute %>
 	  <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
@@ -124,7 +119,7 @@
 			       </li>
 			       <% end %>
 			       <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
-			       <li>
+			       <li class="dri_subnav_edit_list_last">
 				     <%= t('dri.views.catalog.buttons.set_licence') %>
 			       </li>
 			       <% end %>
