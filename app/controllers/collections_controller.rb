@@ -21,6 +21,34 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  def index
+    query = "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
+
+    solr_query = Solr::Query.new(query, 100, 
+      {fq: ["+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true",
+            "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+      )
+
+    collections = []
+
+    while solr_query.has_more?
+      objects = solr_query.pop
+      objects.each do |object|
+        collection = {}
+        collection[:id] = object['id']
+        collection[:collection_title] = object[ActiveFedora::SolrQueryBuilder.solr_name(
+          'title', :stored_searchable, type: :string)]
+        collections.push(collection)
+      end
+    end
+    
+    respond_to do |format|
+        format.json {
+          render(json: collections.to_json)
+        }
+      end
+  end
+
   # Creates a new model.
   #
   def new
