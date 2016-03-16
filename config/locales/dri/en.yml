@@ -356,7 +356,7 @@ en:
           history: History
           listen: listen
           mark_all_descendants_reviewed: "Mark Collection AND Sub-Collection Objects Reviewed"
-          mark_all_reviewed: "Mark Collection Objects Reviewed"
+          mark_all_reviewed: "Mark as Reviewed"
           mark_object_draft: "Mark Object as Draft"
           mark_object_reviewed: "Mark Object as Reviewed"
           not_characterized: "not yet characterized"

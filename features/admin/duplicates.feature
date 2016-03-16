@@ -33,10 +33,12 @@ Scenario: Creating a duplicate Digital Object by replacing the metadata file
   And a Digital Object with pid "2222" created by "user1"
   And the object with pid "2222" is in the collection with pid "xxxx3"
   When I go to the "object" "show" page for "2222"
+  And I click the link to edit
   And I attach the metadata file "SAMPLEB.xml"
   And I press the button to "upload metadata"
   Then I should not see the message "Possible duplicate objects found"
   When I go to the "object" "show" page for "2222"
+  And I click the link to edit
   And I attach the metadata file "SAMPLEA.xml" 
   And I press the button to "upload metadata"
   Then I should see the message "Possible duplicate objects found"
