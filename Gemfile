@@ -36,7 +36,7 @@ gem 'feedjira'
 gem 'aws-sdk', '~> 2'
 gem 'browse-everything', git: 'https://github.com/stkenny/browse-everything.git', branch: 's3_provider'
 
-#gem 'clamav'
+gem 'clamav'
 
 # File processing gems
 gem 'mimemagic'
