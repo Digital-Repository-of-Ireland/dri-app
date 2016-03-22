@@ -36,8 +36,6 @@ gem 'feedjira'
 gem 'aws-sdk', '~> 2'
 gem 'browse-everything', git: 'https://github.com/stkenny/browse-everything.git', branch: 's3_provider'
 
-#gem 'clamav'
-
 # File processing gems
 gem 'mimemagic'
 
@@ -71,6 +69,10 @@ gem 'compass-rails'
 gem 'execjs'
 
 gem 'uglifier', '>= 1.0.3'
+
+group :production do
+  gem 'clamav'
+end
 
 group :development, :test do
   gem 'guard'

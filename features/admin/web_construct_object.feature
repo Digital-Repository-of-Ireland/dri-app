@@ -44,9 +44,11 @@ Scenario: Adding a pdf asset to an object
   And I press the button to "upload a file"
   Then I should see a success message for file upload
 
+@test
 Scenario: Replacing the metadata file of a Digital Object
   Given "user1" has created a Digital Object
-  When I attach the metadata file "valid_metadata.xml"
+  When I click the link to edit
+  And I attach the metadata file "valid_metadata.xml"
   And I press the button to "upload metadata"
   Then I should see a success message for updating metadata
 

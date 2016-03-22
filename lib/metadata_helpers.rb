@@ -15,7 +15,12 @@ module MetadataHelpers
   end
 
   def self.load_xml(upload)
-    if MIME::Types.type_for(upload.original_filename).first.content_type.eql? 'application/xml'
+    types = MIME::Types.type_for(upload.original_filename)
+    if types.blank?
+      raise Exceptions::InvalidXML
+    end
+
+    if types.first.content_type.eql? 'application/xml'
       tmp = upload.tempfile
 
       begin
@@ -26,7 +31,6 @@ module MetadataHelpers
 
       standard = get_metadata_class_from_xml(xml)
       result, @msg = MetadataValidator.valid?(xml, standard)
-
       raise Exceptions::ValidationErrors, @msg unless result
         
       xml

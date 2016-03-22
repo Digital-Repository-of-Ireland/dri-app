@@ -21,6 +21,34 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  def index
+    query = "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
+
+    solr_query = Solr::Query.new(query, 100, 
+      {fq: ["+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true",
+            "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+      )
+
+    collections = []
+
+    while solr_query.has_more?
+      objects = solr_query.pop
+      objects.each do |object|
+        collection = {}
+        collection[:id] = object['id']
+        collection[:collection_title] = object[ActiveFedora::SolrQueryBuilder.solr_name(
+          'title', :stored_searchable, type: :string)]
+        collections.push(collection)
+      end
+    end
+    
+    respond_to do |format|
+        format.json {
+          render(json: collections.to_json)
+        }
+      end
+  end
+
   # Creates a new model.
   #
   def new
@@ -154,12 +182,7 @@ class CollectionsController < BaseObjectsController
   def create
     created = params[:metadata_file].present? ? create_from_xml : create_from_form
 
-    unless created
-      respond_with_exception(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata_input')))
-      return
-    end
-
-    if @object.valid? && @object.save
+    if created && (@object.valid? && @object.save)
       # We have to create a default reader group
       create_reader_group
 
@@ -180,12 +203,18 @@ class CollectionsController < BaseObjectsController
     else
       respond_to do |format|
         format.html {
-          flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+          unless @object.nil? || @object.valid?
+            flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+          end
           raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
         }
         format.json {
-          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
-          render json: @object.errors.messages.values.to_s
+          unless @object.nil? || @object.valid?
+            @error = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+          end
+          response = {}
+          response[:error] = @error
+          render json: response, status: :bad_request
         }
       end
     end
@@ -306,30 +335,44 @@ class CollectionsController < BaseObjectsController
 
     unless params[:metadata_file].present?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @error = t('dri.flash.notice.specify_valid_file')
       return false
     end
 
-    xml = MetadataHelpers.load_xml(params[:metadata_file])
+    begin
+      xml = MetadataHelpers.load_xml(params[:metadata_file])
+    rescue Exceptions::InvalidXML
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @error = t('dri.flash.notice.specify_valid_file')
+      return false
+    rescue Exceptions::ValidationErrors => e
+      flash[:notice] = e.message
+      @error = e.message
+      return false
+    end
+    
     standard = MetadataHelpers.get_metadata_standard_from_xml xml
 
     if standard.nil?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @error = t('dri.flash.notice.specify_valid_file')
       return false
     end
 
     @object = DRI::Batch.with_standard standard
-
     MetadataHelpers.set_metadata_datastream(@object, xml)
     MetadataHelpers.checksum_metadata(@object)
     warn_if_duplicates
 
     if @object.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @error = t('dri.flash.notice.specify_valid_file')
       return false
     end
 
     unless @object.collection?
       flash[:notice] = "Metadata file does not specify that the object is a collection."
+      @error = "Metadata file does not specify that the object is a collection."
       return false
     end
 

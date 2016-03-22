@@ -325,7 +325,7 @@ ga:
           history: Stair
           listen: Éist
           mark_all_descendants_reviewed: "Léirigh gur athbhreithníodh na hoibiachtaí sa mbailiúchán AGUS sa bhfo-bhailiúchán"
-          mark_all_reviewed: "Léirigh gur athbhreithníodh an bailiúchán"
+          mark_all_reviewed: "Léirigh gur athbhreithníodh"
           mark_object_draft: "Léirigh gur dréachtoibiacht í seo"
           mark_object_reviewed: "Léirigh gur athbhreithníodh an oibiacht"
           not_caracterized: "Níor aimsíodh an mianach go fóill"
