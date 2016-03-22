@@ -3,11 +3,11 @@
 	<select class="dri_licence_select" name="batch[licence]" id="batch_licence">
     <% @licences.each do |text, value| %>
       <% if @document[:licence_tesim].present? &&  @document[:licence_tesim].first == value %>
-        <option selected="selected" label="<%= value %>" title="<%= text %>"><%= text %></option>
+        <option selected="selected" value="<%= value %>" label="<%= value %>" title="<%= text %>"><%= text %></option>
       <% else %>
         <option value="<%= value %>" label="<%= value %>" title="<%= text %>"><%= text %></option>
       <% end %>
     <% end %>
 </fieldset>
 
-<%= f.submit t('dri.views.catalog.buttons.set_licence'), :class => "dri_button_green dri_w230", :id => "set_licence" %>
+<%= f.submit t('dri.views.catalog.buttons.submit'), :class => "dri_button_green dri_w230", :id => "set_licence" %>

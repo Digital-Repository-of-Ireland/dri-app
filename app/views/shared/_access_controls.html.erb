@@ -115,11 +115,11 @@
         var original_value_group = edit_group_textbox.value();
 
         if(original_value_user!=empty_str || inherit_disabled){
-            $('#'+model_str+'_edit_groups_string_radio_restricted').prop('checked', true);
+            $('#'+model_str+'_edit_users_string_radio_restricted').prop('checked', true);
             edit_toggle_show_textboxes(true);
         }else{
             edit_toggle_show_textboxes(false);
-            $('#'+model_str+'_edit_groups_string_radio_inherit').prop('checked', true);
+            $('#'+model_str+'_edit_users_string_radio_inherit').prop('checked', true);
         }
     }
 
@@ -127,13 +127,13 @@
         var original_value_user = manager_user_textbox.value();
         var original_value_group = manager_group_textbox.value();
 
-        if (typeof(batch_manager_groups_string_radio_restricted)!='undefined'){
+        if (typeof(batch_manager_users_string_radio_restricted)!='undefined'){
             if(original_value_user!=empty_str || inherit_disabled){
-                $('#'+model_str+'_manager_groups_string_radio_restricted').prop('checked', true);
+                $('#'+model_str+'_manager_users_string_radio_restricted').prop('checked', true);
                 manager_toggle_show_textboxes(true);
             }else{
                 manager_toggle_show_textboxes(false);
-                $('#'+model_str+'_manager_groups_string_radio_inherit').prop('checked', true);
+                $('#'+model_str+'_manager_users_string_radio_inherit').prop('checked', true);
             }
         }
     }
@@ -149,21 +149,6 @@
             embargo_toggle_show_textbox(true);
         }
     }
-
-    /* function search_field_toggle(){
-        var val = $('input[name="'+model_str+'[private_metadata]"]:checked').val();
-        if(val=="radio_public" || val=="radio_inherit"){
-            discover_group_textbox.val("");
-            discover_user_textbox.val("");
-            $('#page_access_entries').hide();
-        }else if(val=="radio_private"){
-            var text= "<%= t('dri.views.objects.access_controls.private_metadata_warn') %>"
-            alert(text);
-            $('#page_access_entries').show();
-        }else{
-            console.log("Unknown textbox selected: search_field_toggle")
-        }
-    }*/
 
     function read_field_toggle(){
         var val = $('input[name="'+model_str+'[read_groups_string]"]:checked').val();
@@ -193,7 +178,7 @@
     }
 
     function edit_field_toggle(){
-        var val = $('input[name="'+model_str+'[edit_groups_string]"]:checked').val();
+        var val = $('input[name="'+model_str+'[edit_users_string]"]:checked').val();
         if(val=="radio_inherit"){
             edit_group_textbox.val("");
             edit_user_textbox.val("");
@@ -208,7 +193,7 @@
     }
 
     function manager_field_toggle(){
-        var val = $('input[name="'+model_str+'[manager_groups_string]"]:checked').val();
+        var val = $('input[name="'+model_str+'[manager_users_string]"]:checked').val();
         if(val=="radio_inherit"){
             manager_group_textbox.val("");
             manager_user_textbox.val("");
@@ -331,11 +316,11 @@
 		<div class="field">
 			<h5><%= t('dri.views.objects.access_controls.edit') %></h5>
 			<div>
-			  <%= f.radio_button :edit_groups_string, "radio_inherit", :onclick => "edit_field_toggle();", :disabled=> inherit_disabled  %>
+			  <%= f.radio_button :edit_users_string, "radio_inherit", :onclick => "edit_field_toggle();", :disabled=> inherit_disabled  %>
 			  <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %></label>
               <span class="divider">|&nbsp;</span>
 
-              <%= f.radio_button :edit_groups_string, "radio_restricted", :onclick => "edit_field_toggle();" %>
+              <%= f.radio_button :edit_users_string, "radio_restricted", :onclick => "edit_field_toggle();" %>
               <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.restricted') %></label>
 			</div>
 			<fieldset id="edit_access_entries">
@@ -349,11 +334,11 @@
 	  <div class="field">
 		<h5><%= t('dri.views.objects.access_controls.manage') %></h5>
 		<div>
-			<%= f.radio_button :manager_groups_string, "radio_inherit", :onclick => "manager_field_toggle();", :disabled=> inherit_disabled  %>
+			<%= f.radio_button :manager_users_string, "radio_inherit", :onclick => "manager_field_toggle();", :disabled=> inherit_disabled  %>
 			<label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %></label>
             <span class="divider">|&nbsp;</span>
 
-		    <%= f.radio_button :manager_groups_string, "radio_restricted", :onclick => "manager_field_toggle();" %>
+		    <%= f.radio_button :manager_users_string, "radio_restricted", :onclick => "manager_field_toggle();" %>
 			<label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.restricted') %></label>
         </div>
 

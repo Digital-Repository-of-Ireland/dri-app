@@ -26,7 +26,7 @@ NuigRnag::Application.routes.draw do
 
     resources :session, :only => ['create']
 
-    resources :collections, :only => ['new','create','update','edit','destroy']
+    resources :collections, :only => ['index','new','create','update','edit','destroy']
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
     post 'collections/:id/batch', to: 'batch_ingest#create', as: :batch_ingest

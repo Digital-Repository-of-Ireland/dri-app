@@ -37,7 +37,7 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
   Then I should see a success message for ingestion
   When I follow the link to edit access controls
   And the radio button "batch_read_groups_string_radio_inherit" should be "checked"
-  And the radio button "batch_edit_groups_string_radio_inherit" should be "checked"
+  And the radio button "batch_edit_users_string_radio_inherit" should be "checked"
 
   Examples:
     | object_type |

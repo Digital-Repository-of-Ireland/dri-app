@@ -125,6 +125,22 @@
     border-bottom-style: none;
 }
 
+.dri_subnav_review_list {
+    li {
+       text-indent: 0.5em;
+     }
+    li:before {
+      content: "\f06e"; /* FontAwesome Unicode */
+      font-family: FontAwesome;
+      display: inline-block;
+      float: left;
+      margin-left: 0.5em;
+    }
+}
+.dri_subnav_review_list .dri_subnav_review_list_last {
+    border-bottom-style: none;
+}
+
 #dri_asset_tools_collapsed_id .dri_asset_tools_entry {
   border-top: 2px solid $dri_thingrey;
 }
