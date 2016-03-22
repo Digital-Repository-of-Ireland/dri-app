@@ -201,6 +201,7 @@ GEM
     ci_reporter_rspec (1.0.0)
       ci_reporter (~> 2.0)
       rspec (>= 2.14, < 4)
+    clamav (0.4.1)
     cliver (0.3.2)
     coderay (1.1.0)
     coffee-rails (4.1.0)
@@ -819,6 +820,7 @@ DEPENDENCIES
   browse-everything!
   ci_reporter_cucumber
   ci_reporter_rspec
+  clamav
   colorbox-rails
   compass
   compass-rails
