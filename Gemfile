@@ -8,7 +8,7 @@ gem 'rails','~> 4.2'
 gem 'blacklight', '~> 5.16.0'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
-gem 'hydra-head', '9.6.0'
+gem 'hydra-head', '9.8.1'
 
 gem 'sufia-models', '6.5.0'
 gem 'redlock'
