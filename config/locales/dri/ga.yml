@@ -166,6 +166,8 @@ ga:
       usergroups: "Úsáideoirí agus Grúpaí"
       workspace: "Spás Oibre"
     help:
+      add_documentation_help_text: "Add contextual information object. These objects appear in the Related Materials section of the Collection show page."
+      add_documentation_help_title: "Add contextual information"
       dri_browse_sort_tabs_collections: "Bain úsáid as an táb seo chun Bailiúcháin a aimsiú"
       dri_browse_sort_tabs_collections_title: "Aimsigh Bailiúcháin"
       dri_browse_sort_tabs_objects: "Bain úsáid as an táb seo chun Oibiachtaí a aimsiú"
@@ -307,8 +309,6 @@ ga:
           surrogate_not_available_why: "Seans gur cuireadh an oibiacht isteach le gairid agus go bhfuil an córas dá próiseáil go fóill. Níor mhór duit é a thiail arís i gceann tamaill."
         links:
           add_documentation: "Cuir doiciméadacht leis"
-          add_documentation_help_text: "Téann an Téacs Cabhrach anseo"
-          add_documentation_help_title: "Teideal na cabhrach anseo"
           add_object: "Cuir Oibiacht leis"
           add_object_xml: "Uaslódáil XML na hOibiachta"
           add_sub_collection: "Cuir fo-bhailiúchán leis"
