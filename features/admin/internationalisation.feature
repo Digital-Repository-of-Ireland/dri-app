@@ -1,6 +1,5 @@
 @language
-Feature:
-
+Feature: Internationalisation
   In order to provide a bi-lingual repository
   As a user
   I should be able to see the website in English or Irish

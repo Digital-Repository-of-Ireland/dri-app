@@ -1,5 +1,5 @@
 @javascript
-Feature:
+Feature: Licences
   As an admin user I should be able to configure available end-user licences
 
   As a user with manage permissions on a collection I should be able to choose a licence for my collection

@@ -1,5 +1,5 @@
 @web @req-17.6 @done @javascript
-Feature:
+Feature: Constructing objects with the webapp
   In order to add a digital object into the repository
   As an authenticated and authorised depositor
   I want to construct a Digital Object with web forms

@@ -1,5 +1,5 @@
 @users @req-23 @done @req-22.2
-Feature:
+Feature: User sign up
 
   In order for the digital repository to control access to digital objects
   As a user

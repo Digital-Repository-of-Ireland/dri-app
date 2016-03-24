@@ -90,14 +90,14 @@ group :development, :test do
 
   gem "zeus", require: false
 
-  gem 'ci_reporter_cucumber'
+  #gem 'ci_reporter_cucumber'
   gem 'ci_reporter_rspec'
   gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
 end
 
 group :test do
-  gem 'cucumber', '1.3.15'
-  gem 'cucumber-rails', require: false
+  gem 'cucumber', '2.3.3'
+  gem 'cucumber-rails', '1.4.3', require: false
   gem 'database_cleaner'
   gem 'launchy'
   gem 'shoulda'
@@ -121,6 +121,7 @@ gem 'unicorn'
 
 gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
+gem 'jwt', '1.5.2'
 gem 'bootstrap-sass' #, '~> 3.3.4'
 gem 'yard'
 
