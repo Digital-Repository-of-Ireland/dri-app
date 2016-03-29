@@ -24,7 +24,7 @@ install_deps)
     ;;
 configure)
 
-rvm --force gemset empty ruby-2.1.5@build || exit 100
+rvm --force gemset empty ruby-2.2.4@build || exit 100
 
 cp config/jetty.yml.sample config/jetty.yml
 cp config/fedora.yml.sample config/fedora.yml
