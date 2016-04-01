@@ -13,7 +13,7 @@ FactoryGirl.define do
     geographical_coverage  ["Dublin"]
     temporal_coverage      ["1900s"]
     subject                ["Ireland","something else"]
-    type                   ["Sound"]
+    resource_type                   ["Sound"]
   end
 
   factory(:audio, :class => DRI::QualifiedDublinCore) do
@@ -29,7 +29,7 @@ FactoryGirl.define do
     geographical_coverage  ["Dublin"]
     temporal_coverage      ["1900s"]
     subject                ["Ireland","something else"]
-    type                   ["Sound"]
+    resource_type                   ["Sound"]
   end
 
   factory(:text, :class => DRI::QualifiedDublinCore) do
@@ -44,7 +44,7 @@ FactoryGirl.define do
     geographical_coverage  ["Dublin"]
     temporal_coverage      ["1900s"]
     subject                ["Ireland","something else"]
-    type                   ["Text"]
+    resource_type                   ["Text"]
   end
 
   factory(:collection, :class => DRI::QualifiedDublinCore) do
@@ -53,7 +53,7 @@ FactoryGirl.define do
     rights                 ["This is a statement about the rights associated with this object"]
     creator                ["A. User"]
     publisher              ["RnaG"]
-    type                   ["Collection"]
+    resource_type          ["Collection"]
     creation_date          ["1916-01-01"]
     published_date         ["1916-01-02"]
   end
