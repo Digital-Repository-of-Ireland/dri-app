@@ -19,7 +19,7 @@ describe "MintDoiJob" do
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
     @collection[:publisher] = ["RnaG"]
-    @collection[:type] = ["Collection"]
+    @collection[:resource_type] = ["Collection"]
     @collection[:creation_date] = ["1916-01-01"]
     @collection[:published_date] = ["1916-04-01"]
     @collection[:status] = "draft"
@@ -38,7 +38,7 @@ describe "MintDoiJob" do
     @object[:geographical_coverage] = ["Dublin"]
     @object[:temporal_coverage] = ["1900s"]
     @object[:subject] = ["Ireland","something else"]
-    @object[:type] = ["Sound"]
+    @object[:resource_type] = ["Sound"]
     @object[:status] = "reviewed"
     @object.save
 

@@ -22,7 +22,7 @@ describe "inheritance" do
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
     @collection[:publisher] = ["Rspec"]
-    @collection[:type] = ["Collection"]
+    @collection[:resource_type] = ["Collection"]
     @collection[:creation_date] = ["1916-01-01"]
     @collection[:published_date] = ["1916-04-01"]
     @collection[:status] = "public"
@@ -41,7 +41,7 @@ describe "inheritance" do
     @object[:published_date] = ["1916-04-01"]
     @object[:creation_date] = ["1916-01-01"]
     @object[:subject] = ["rspec", "inheritance"]
-    @object[:type] = ["Sound"]
+    @object[:resource_type] = ["Sound"]
     @object[:status] = "published"
     @object[:depositor] = "edituser@dri.ie"
     @object.save

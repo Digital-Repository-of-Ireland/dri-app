@@ -21,7 +21,7 @@ describe "DataciteDoi" do
     @object[:geographical_coverage] = ["Dublin"]
     @object[:temporal_coverage] = ["1900s"]
     @object[:subject] = ["Ireland","something else"]
-    @object[:type] = ["Sound"]
+    @object[:resource_type] = ["Sound"]
     @object.save
   end
 
@@ -54,7 +54,7 @@ describe "DataciteDoi" do
     @creator[:rights] = ["This is a statement about the rights associated with this object"]
     @creator[:role_hst] = ["Collins, Michael"]
     @creator[:creation_date] = ["1916-01-01"]
-    @creator[:type] = ["Sound"]
+    @creator[:resource_type] = ["Sound"]
     @creator.save
 
     datacite = DataciteDoi.create(object_id: @creator.id)

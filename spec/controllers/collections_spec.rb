@@ -21,7 +21,7 @@ describe CollectionsController do
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
       @collection[:creator] = ["Creator"]
-      @collection[:type] = ["Collection"]
+      @collection[:resource_type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection.save
@@ -39,7 +39,7 @@ describe CollectionsController do
       @object[:geographical_coverage] = ["Dublin"]
       @object[:temporal_coverage] = ["1900s"]
       @object[:subject] = ["Ireland","something else"]
-      @object[:type] = ["Sound"]
+      @object[:resource_type] = ["Sound"]
       @object.save
 
       @collection.governed_items << @object
@@ -61,7 +61,7 @@ describe CollectionsController do
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
       @collection[:creator] = ["Creator"]
-      @collection[:type] = ["Collection"]
+      @collection[:resource_type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "draft"
@@ -80,7 +80,7 @@ describe CollectionsController do
       @object[:geographical_coverage] = ["Dublin"]
       @object[:temporal_coverage] = ["1900s"]
       @object[:subject] = ["Ireland","something else"]
-      @object[:type] = ["Sound"]
+      @object[:resource_type] = ["Sound"]
       @object[:status] = "draft"
       @object.save
 
@@ -102,7 +102,7 @@ describe CollectionsController do
       @collection[:creator] = [@login_user.email]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
-      @collection[:type] = ["Collection"]
+      @collection[:resource_type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "draft"
@@ -114,7 +114,7 @@ describe CollectionsController do
       @subcollection[:creator] = [@login_user.email]
       @subcollection[:rights] = ["This is a statement about the rights associated with this object"]
       @subcollection[:publisher] = ["RnaG"]
-      @subcollection[:type] = ["Collection"]
+      @subcollection[:resource_type] = ["Collection"]
       @subcollection[:creation_date] = ["1916-01-01"]
       @subcollection[:published_date] = ["1916-04-01"]
       @subcollection[:status] = "draft"
@@ -141,7 +141,7 @@ describe CollectionsController do
       @collection[:creator] = [@login_user.email]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
-      @collection[:type] = ["Collection"]
+      @collection[:resource_type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "published"
@@ -172,7 +172,7 @@ describe CollectionsController do
       @collection[:creator] = [@login_user.email]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
-      @collection[:type] = ["Collection"]
+      @collection[:resource_type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "published"

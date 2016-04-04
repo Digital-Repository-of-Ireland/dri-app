@@ -1,5 +1,5 @@
 @javascript
-Feature:
+Feature: Institutes
   I should be able to add institutes, associate them with collections,
   and view them in the repository
 

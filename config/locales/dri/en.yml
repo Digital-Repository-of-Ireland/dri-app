@@ -182,6 +182,8 @@ en:
       usergroups: "Users & Groups"
       workspace: Workspace
     help:
+      add_documentation_help_text: "These objects appear in the Related Materials section of the Collection show page."
+      add_documentation_help_title: "Add contextual information"
       dri_browse_sort_tabs_collections: "Use this tab to search for Collections"
       dri_browse_sort_tabs_collections_title: "Collections Search"
       dri_browse_sort_tabs_objects: "Use this tab to search for Objects"
@@ -338,8 +340,6 @@ en:
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
         links:
           add_documentation: "Add Documentation"
-          add_documentation_help_text: "Help Text Goes Here"
-          add_documentation_help_title: "Help Title Here"
           add_object: "Add an Object"
           add_object_xml: "Upload Object XML"
           add_sub_collection: "Add Sub-Collection"

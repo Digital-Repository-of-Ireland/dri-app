@@ -12,7 +12,7 @@ describe 'PublishJob' do
     @collection[:rights] = ['This is a statement about the rights associated with this object']
     @collection[:creator] = ["test@test.com"]
     @collection[:publisher] = ['RnaG']
-    @collection[:type] = ['Collection']
+    @collection[:resource_type] = ['Collection']
     @collection[:creation_date] = ['1916-01-01']
     @collection[:published_date] = ['1916-04-01']
     @collection[:status] = 'draft'
@@ -31,7 +31,7 @@ describe 'PublishJob' do
     @object[:geographical_coverage] = ['Dublin']
     @object[:temporal_coverage] = ['1900s']
     @object[:subject] = ['Ireland', 'something else']
-    @object[:type] = ['Sound']
+    @object[:resource_type] = ['Sound']
     @object[:status] = 'reviewed'
     @object.save
 
@@ -71,7 +71,7 @@ describe 'PublishJob' do
       @reviewed[:geographical_coverage] = ['Dublin']
       @reviewed[:temporal_coverage] = ['1900s']
       @reviewed[:subject] = ['Ireland']
-      @reviewed[:type] = ['Sound']
+      @reviewed[:resource_type] = ['Sound']
       @reviewed[:status] = 'reviewed'
       @reviewed.save
 
@@ -81,7 +81,7 @@ describe 'PublishJob' do
       @subcollection[:rights] = ['This is a statement about the rights associated with this object']
       @subcollection[:publisher] = ['DRI']
       @subcollection[:creator] = ['DRI']
-      @subcollection[:type] = ['Collection']
+      @subcollection[:resource_type] = ['Collection']
       @subcollection[:creation_date] = ['1916-01-01']
       @subcollection[:published_date] = ['1916-04-01']
       @subcollection[:status] = 'draft'
@@ -118,7 +118,7 @@ describe 'PublishJob' do
       @draft[:geographical_coverage] = ['Dublin']
       @draft[:temporal_coverage] = ['1900s']
       @draft[:subject] = ['Ireland', 'something else']
-      @draft[:type] = ['Sound']
+      @draft[:resource_type] = ['Sound']
       @draft[:status] = 'draft'
       @draft.save
 

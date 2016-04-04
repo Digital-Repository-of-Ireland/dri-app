@@ -1,5 +1,5 @@
 @permissions @javascript
-Feature:
+Feature: Permissions
   In order to manage my Digital Objects
   As an authorized user
   I want to be able to set permissions on my Digital Objects

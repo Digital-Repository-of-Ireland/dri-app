@@ -1,5 +1,5 @@
 @collections @req-17 @done @req-61 @req-63 @javascript
-Feature:
+Feature: Collections
   In order to manage my Digital Objects
   As an authorized user
   I want to be able to add my Digital Objects to a collection
