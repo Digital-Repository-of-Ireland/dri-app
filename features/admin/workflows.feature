@@ -1,5 +1,5 @@
 @noexec @wip
-Feature:
+Feature: Workflows
   As a member of the public
   I should be able to interact with the DRI public repository
 

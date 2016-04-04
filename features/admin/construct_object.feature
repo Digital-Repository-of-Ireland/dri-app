@@ -1,5 +1,5 @@
 @construct @req-17 @done
-Feature:
+Feature: Construct Object
   In order to add a digital object into the repository
   As an authenticated and authorised depositor
   I want to construct a Digital Object

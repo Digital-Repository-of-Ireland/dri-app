@@ -13,10 +13,9 @@
 </h5>
 <ul>
     <!-- Add documentation should be available to any collection (MARC, MODS, QDC and EAD) -->
-    
-      <li>
-        <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %><%= t('dri.views.catalog.links.add_documentation') %><% end %>
-      </li>
+    <li class="dri_help_popover" data-content="<%= t('dri.help.add_documentation_help_text') %>" data-original-title="<%= t('dri.help.add_documentation_help_title') %>" data-trigger="hover" data-placement="left">
+      <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %><%= t('dri.views.catalog.links.add_documentation') %><% end %>
+    </li>
     
       <% if @document.editable? %>
         <% if @document.active_fedora_model == 'DRI::QualifiedDublinCore' %>

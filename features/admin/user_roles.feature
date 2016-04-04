@@ -1,5 +1,5 @@
 @wip
-Feature:
+Feature: User roles
   In order to allow permissions based on user roles
   Users should be able to apply for and be granted different roles
   on a per-collection or -object basis

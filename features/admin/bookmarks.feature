@@ -1,5 +1,5 @@
 @javascript
-Feature:
+Feature: Bookmarks Feature
   I should be able to add, remove and show bookmarks
 
   Background:
