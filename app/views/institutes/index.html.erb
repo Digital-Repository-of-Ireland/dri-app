@@ -24,9 +24,9 @@
                      <% collection = collection.symbolize_keys! %>
                      <% image = cover_image collection %>
                      <% if image %>
-                        <li><%= image_tag image, :width=>"150" %></li>
+                        <li><%= image_tag image, :width=>"150", title: collection[:title_tesim].first %></li>
                      <% else %>
-                        <li><%= image_tag "no_image.png", :width=>"150" %></li>
+                        <li><%= image_tag "no_image.png", :width=>"150", title: collection[:title_tesim].first %></li>
                      <% end %>
                   <% end %>
               <% end %>
