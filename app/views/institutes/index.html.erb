@@ -1,8 +1,8 @@
 <% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => {} } %>
 <% style='' %>
 <% @institutes.each_with_index do |institute, i| %>
-    <% style='not_first' unless i.eql?(0) %>
-    <% collection_count = get_institute_collection_counts institute[:name].to_s.html_safe %>
+    <% style='not_first' unless i == 0 %>
+    <% collection_count = @collections[institute.id].count %>
     <div class="dri_collection_institutes_pages <%= style %>">
       <% institute_browse_params[:f] = { Solrizer.solr_name('institute', :facetable, type: :string).to_sym => [institute[:name].to_s.html_safe] } %>
       <%= link_to main_app.catalog_index_path(institute_browse_params) do %>
@@ -19,17 +19,15 @@
           <div class="dri_collection_institutes_pages_text" >
             <ul>
               <% if (collection_count > 0) %>
-                  <% collections = get_collections_institute institute[:name].to_s.html_safe %>
-                  <% collections.each_with_index do |collection, index| %>
-                      <% if index < 3 %>
-                          <% collection = collection.symbolize_keys! %>
-                          <% image = cover_image collection %>
-                          <% unless image.nil? %>
-                              <li><%= image_tag image, :width=>"150" %></li>
-                          <% else %>
-                              <li><%= image_tag "no_image.png", :width=>"150" %></li>
-                          <% end %>
-                      <% end %>
+                  <% collections = @collections[institute.id] %>
+                  <% collections[0..2].each do |collection| %>
+                     <% collection = collection.symbolize_keys! %>
+                     <% image = cover_image collection %>
+                     <% if image %>
+                        <li><%= image_tag image, :width=>"150" %></li>
+                     <% else %>
+                        <li><%= image_tag "no_image.png", :width=>"150" %></li>
+                     <% end %>
                   <% end %>
               <% end %>
             </ul>
