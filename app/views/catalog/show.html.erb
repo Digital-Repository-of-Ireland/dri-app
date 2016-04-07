@@ -1,4 +1,4 @@
-<% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>
+<% @page_title = t('blacklight.search.show.title', document_title: document_show_html_title, application_name: application_name) %>
 
 <% render_link_rel_alternates %>
 <%= render partial: 'catalog/paginate_compact', object: @response %>
@@ -9,14 +9,15 @@
 </div>
 
 <% # Render partial for Related Materials (QDC and MODS)  %>
-<%= render :partial => "catalog/show_related_items", :locals => {:params => params, :document => @document} %>
+<%= render :partial => "catalog/show_related_items", locals: { params: params, document: @document } %>
 
-<% if count_immediate_children_in_collection(@document['id']) > 0 %>
-  <%= render :partial => "catalog/show_children", :locals => {:document => @document} %>
+<% children_count = count_immediate_children_in_collection(@document['id']) %>
+<% if children_count > 0 %>
+  <%= render :partial => "catalog/show_children", locals: { document: @document } %>
 <% end %>
 
 <div class="dri_object_institutes_block" id="institutes_block">
-  <%= render :partial => 'shared/display_institutes' %>
+  <%= render partial: 'shared/display_institutes' %>
 </div>
 <% content_for :head do %>
   <meta property="fb:app_id"          content="298965153560401" /> 

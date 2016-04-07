@@ -293,6 +293,7 @@ ga:
           video_file: Físeán
         headers:
           files: "Uirlisí Comhaid"
+          sub_collections: Fo-bhailiúcháín
         legends:
           no_bookmarked_collections: "Níor leabharmharcáil tú bailiúchán ar bith"
           no_bookmarked_objects: "Níor leabharmharcáil tú oibiacht ar bith"

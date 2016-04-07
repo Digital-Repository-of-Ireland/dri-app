@@ -324,6 +324,7 @@ en:
           video_file: Video
         headers:
           files: "Asset Tools"
+          sub_collections: "Sub-collections"
         legends:
           no_bookmarked_collections: "You have no bookmarked collections"
           no_bookmarked_objects: "You have no bookmarked objects"

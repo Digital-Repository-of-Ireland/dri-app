@@ -1,34 +1,15 @@
-<!-- Display Tree Structure, for EAD collection objects only -->
+<% children = collection_children(@document, 500) %>
 
-<% # Showing only the first 10 results %>
-<% children = get_collection_children(@document, 500) %>
-
-<% if (!children.blank?) %>
-<div class="dri_object_institutes_block">
-	<div class="dri_institutes_title">
-		<% # FIXME Add this to locale files %>
-		<span>Sub-collections</span>
-	</div>
-	<% children.take(4).each do |child| -%>
-	<article class="">
-		<div class="dri_content_block">
-			<%= link_to (child[1])  do %>
-			<h1><%= child[0] %></h1>
-			<% end %>
-			<div class="dri_icon">
-				<span class="dri_icon_image"><% if child[2] == 'Item'%><i class="fa fa-file"></i><% else %><i class="fa fa-folder"></i><% end %>
-				&nbsp;<%= child[2] %></span>
-			</div>
-			<!-- close dri_icon -->
-
+<% if children.present? %>
+	<div class="dri_object_institutes_block">
+		<div class="dri_institutes_title">
+			<span><%= "#{t('dri.views.catalog.headers.sub_collections')} (#{children.total_count})" %></span>
 		</div>
-		<!-- close content_block -->
-	</article>
-	<% end %>
-	<div class="dri_clearfix dri_float_right dri_related_items">
-		<%# link_to t('dri.views.collection.institute.more'), '' , :id => "all_children", :'data-toggle' => 'modal',  :'data-target' => '#dri_children_modal_id' %>
-		<%= paginate children, :param_name => 'subs_page'%>
+		<div id="dri_sub_collection_list">
+		  <%= render children %>
+	  </div>
+		<div class="dri_clearfix dri_float_right dri_related_items" id="subcoll_paginator">
+			<%= paginate children, param_name: 'subs_page', remote: true %>
+		</div>
 	</div>
-</div>
 <% end %>
-<%= render :partial => "catalog/show_all_children", :locals => {:document => @document} %>
