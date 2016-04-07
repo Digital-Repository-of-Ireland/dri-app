@@ -321,7 +321,7 @@ class CatalogController < ApplicationController
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
       format.json { render json: { response: { document: @document } } }
-      format.js
+      format.js { render layout: false }
 
       additional_export_formats(@document, format)
     end
