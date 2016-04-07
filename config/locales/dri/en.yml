@@ -352,6 +352,7 @@ en:
           download_not_available: "not available"
           download_nth: "Download %{index}"
           draft: Draft
+          duplicates: Duplicates
           edit_this_record: "Edit"
           generate_surrogates: "Regenerate Surrogates"
           history: History
@@ -395,6 +396,7 @@ en:
         confirm_publish: "This will make all reviewed objects accessible. This can not be undone! Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
         doi_modification: "DOI change log entry"
+        duplicates_found: "%{duplicates_count} duplicate objects have been found."
         edit: "Edit Collection"
         index:
           items:

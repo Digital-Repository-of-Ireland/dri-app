@@ -68,8 +68,22 @@
 		          		</div>
                 </li>
 		            	
+		            <% duplicate_query, duplicate_total = @document.duplicate_objects %>
+                
 		          	<%= link_to "#{catalog_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=reviewed&mode=objects&view=grid" do %>
-		          	  <li class="dri_subnav_review_list_last"><%= "#{t('dri.views.catalog.links.reviewed')} (#{@document.reviewed_objects})" %></li>
+		          	  <% if duplicate_total > 0 %>
+		          	    <li>
+		          	  <% else %>
+		          	  	<li class="dri_subnav_review_list_last">
+		          	  <% end %>
+		          	  <%= "#{t('dri.views.catalog.links.reviewed')} (#{@document.reviewed_objects})" %>
+		          	  </li>
+		          	<% end %>
+
+                <% if duplicate_total > 0 %>
+                  <%= link_to "#{catalog_index_path}?q=metadata_md5_tesim:#{duplicate_query}&f[ancestor_id_sim][]=#{@document.id}&mode=objects&view=grid" do %>
+		          	    <li class="dri_subnav_review_list_last dri_warning"><%= "#{t('dri.views.catalog.links.duplicates')} (#{duplicate_total})" %></li>
+		          	  <% end %>
 		          	<% end %>
 		          </ul>
 			      </div>
@@ -205,6 +219,9 @@
 			<div class="modal-body">
 				<span class="label label-danger"><%= t('dri.views.collection.confirm_all_descendants_reviewed', draft_count: @document.draft_objects) %></span>
 				<br />
+				<% if duplicate_total && duplicate_total > 0 %>
+				  <span class="label label-danger"><%= t('dri.views.collection.duplicates_found', duplicates_count: duplicate_total) %></span>
+				<% end %>
 				<%= button_to review_path(:apply_all => 'yes'),:class =>"dri_button_red", :id => "all_objects_reviewed", :method => :put do %>
 				<%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
 				<% end %>
