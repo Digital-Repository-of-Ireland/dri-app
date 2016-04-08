@@ -27,7 +27,7 @@
           <%= f.password_field :password, :disabled => @user.password_required? ? false : true %>
         </div>
 
-        <div class="dri_signup_password dri_input_error">
+        <div class="dri_signup_password">
           <%= f.label :password_confirmation, (t :'user_groups.views.shared.password_confirm') %>
           <%= f.password_field :password_confirmation, :disabled => @user.password_required? ? false : true %>
         </div>
