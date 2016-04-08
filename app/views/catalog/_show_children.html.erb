@@ -3,10 +3,9 @@
 <% if children.present? %>
 	<div class="dri_object_institutes_block">
 		<div class="dri_institutes_title">
-			<span><%= "#{t('dri.views.catalog.headers.sub_collections')}" %></span>
-			<div id="dri_sub_collection_page_info">
-				<%= page_entries_info children %>
-			</div>
+			<span id="dri_sub_collection_page_info">
+				<%= "#{t('dri.views.catalog.headers.sub_collections')}" %> <%= page_entries_info children %>
+			</span>
 		</div>
 		<div id="dri_sub_collection_list">
 		  <%= render children %>
