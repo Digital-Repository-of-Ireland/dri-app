@@ -213,7 +213,8 @@ module FacetsHelper
   def render_selected_facet_value(facet_solr_field, item)
     #Updated class for Bootstrap Blacklight.
 
-    link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), remove_facet_params(facet_solr_field, item, params), :class=>"selected")
+    link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), 
+      remove_facet_params(facet_solr_field, item, params), :class=>"selected")
   end
 
   # Overwriting this helper so that values containing colons are automatically enclosed in double-quoted strings,
@@ -228,7 +229,6 @@ module FacetsHelper
     end
 
     if (value.include? ":")
-      #value = '"'+value+'"'
       value = value.html_safe
     end
 

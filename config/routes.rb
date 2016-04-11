@@ -30,6 +30,7 @@ NuigRnag::Application.routes.draw do
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
     post 'collections/:id/batch', to: 'batch_ingest#create', as: :batch_ingest
+    get 'collections/:id/duplicates', to: 'collections#duplicates', as: :collection_duplicates
   
     put 'collections/:id/licences', to: 'collections#set_licence', as: :collection_licence
     put 'objects/:id/licences', to: 'objects#set_licence', as: :object_licence

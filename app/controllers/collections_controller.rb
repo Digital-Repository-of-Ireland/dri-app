@@ -241,6 +241,15 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  def duplicates
+    enforce_permissions!('manage_collection', params[:id])
+
+    @object = retrieve_object!(params[:id])
+
+    @response, document_list = duplicate_objects
+    @document_list = Kaminari.paginate_array(document_list).page(params[:page]).per(params[:per_page])
+  end
+
   def review
     enforce_permissions!('manage_collection', params[:id])
 
@@ -416,6 +425,33 @@ class CollectionsController < BaseObjectsController
     raise Exceptions::ResqueError
   end
 
+  def duplicate_objects
+    metadata_field = ActiveFedora.index_field_mapper.solr_name('metadata_md5', :stored_searchable, type: :string)
+
+    query_params = { fq: ["+root_collection_id_sim:3t945q76s", "+has_model_ssim:\"DRI::Batch\"", "+is_collection_sim:false"], 
+      "facet.pivot" => "#{metadata_field},id", facet: true, "facet.mincount" => 2, 
+      "facet.field" => "#{metadata_field}" }
+    
+    response = ActiveFedora::SolrService.get('*:*', query_params)
+    
+    ids = []
+    duplicates = response['facet_counts']['facet_pivot']["#{metadata_field},id"].select { |f| f['count'] > 1 }
+    duplicates.each do |dup|
+      pivot = dup["pivot"]
+      pivot.each { |p| ids << p['value'] }
+    end
+
+    query = ActiveFedora::SolrService.construct_query_for_ids(ids)
+    response = ActiveFedora::SolrService.get(query)
+    
+    docs = response['response']['docs']
+
+    duplicates = []
+    docs.each { |d| duplicates << SolrDocument.new(d) }
+      
+    return Blacklight::Solr::Response.new(response['response'], response['responseHeader']), duplicates
+  end
+ 
   def publish_collection
     Sufia.queue.push(PublishJob.new(@object.id))
   rescue Exception => e

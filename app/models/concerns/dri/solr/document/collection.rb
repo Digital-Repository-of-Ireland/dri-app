@@ -28,8 +28,8 @@ module DRI::Solr::Document::Collection
     status_count('reviewed')
   end
 
-  def duplicate_objects
-    find_duplicates
+  def duplicate_total
+    duplicate_count
   end
 
   private
@@ -39,7 +39,7 @@ module DRI::Solr::Document::Collection
       AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}")
   end
 
-  def find_duplicates
+  def duplicate_count
     metadata_field = ActiveFedora.index_field_mapper.solr_name('metadata_md5', :stored_searchable, type: :string)
 
     response = ActiveFedora::SolrService.get('*:*', 
@@ -52,17 +52,12 @@ module DRI::Solr::Document::Collection
 
     duplicates = response['facet_counts']['facet_fields']["#{metadata_field}"]
     total = 0
-    md5 = []
-
+    
     duplicates.each_slice(2) do |duplicate|
       total += duplicate[1].to_i
-      md5 << duplicate[0]
-    end
+   end
 
-    query = ''
-    query = md5.join(' OR ') if md5.count > 0
-
-    return query, total
+    total
   end
 
 end

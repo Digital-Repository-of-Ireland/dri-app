@@ -68,7 +68,7 @@
 		          		</div>
                 </li>
 		            	
-		            <% duplicate_query, duplicate_total = @document.duplicate_objects %>
+		            <% duplicate_total = @document.duplicate_total %>
                 
 		          	<%= link_to "#{catalog_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=reviewed&mode=objects&view=grid" do %>
 		          	  <% if duplicate_total > 0 %>
@@ -81,7 +81,7 @@
 		          	<% end %>
 
                 <% if duplicate_total > 0 %>
-                  <%= link_to "#{catalog_index_path}?q=metadata_md5_tesim:#{duplicate_query}&f[ancestor_id_sim][]=#{@document.id}&mode=objects&view=grid" do %>
+                  <%= link_to collection_duplicates_path(@document.id) do %>
 		          	    <li class="dri_subnav_review_list_last dri_warning"><%= "#{t('dri.views.catalog.links.duplicates')} (#{duplicate_total})" %></li>
 		          	  <% end %>
 		          	<% end %>

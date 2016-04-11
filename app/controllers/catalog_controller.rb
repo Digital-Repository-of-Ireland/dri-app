@@ -461,7 +461,7 @@ class CatalogController < ApplicationController
   def search_date_dange solr_parameters, user_parameters
     if (!user_parameters[:f].nil? && !user_parameters[:f]["sdateRange"].nil?)
       solr_parameters[:fq] ||= []
-      # Asign facet filter contraint text (we don't want to show ugly Solr query)
+      # Assign facet filter contraint text (we don't want to show ugly Solr query)
       #user_parameters[:f]["sdateRange"] = user_parameters[:year_from] == user_parameters[:year_to] ?
       #  ["#{user_parameters[:year_from]}"] :
       #  ["#{user_parameters[:year_from]} - #{user_parameters[:year_to]}"]
@@ -470,9 +470,7 @@ class CatalogController < ApplicationController
       date_idx = nil
 
       solr_parameters[:fq].each.with_index do |f_elem, idx|
-        if f_elem.include?("sdateRange")
-          date_idx = idx
-        end
+        date_idx = idx if f_elem.include?("sdateRange")
       end
       query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
 
@@ -489,7 +487,7 @@ class CatalogController < ApplicationController
   #
   def modify_user_parameters
     if (!params[:f].nil? && !params[:f]["sdateRange"].nil?)
-      # Asign facet filter contraint text (we don't want to show ugly Solr query)
+      # Assign facet filter contraint text (we don't want to show ugly Solr query)
       params[:f]["sdateRange"] = params[:year_from] == params[:year_to] ?
           ["#{params[:year_from]}"] :
           ["#{params[:year_from]} - #{params[:year_to]}"]
