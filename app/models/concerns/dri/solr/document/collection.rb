@@ -28,36 +28,58 @@ module DRI::Solr::Document::Collection
     status_count('reviewed')
   end
 
-  def duplicate_total
-    duplicate_count
+ def duplicate_total
+    response = duplicate_query
+
+    duplicates = response['facet_counts']['facet_fields']["#{metadata_field}"]
+   
+    total = 0
+    duplicates.each_slice(2) { |duplicate| total += duplicate[1].to_i }
+   
+    total
+  end
+
+  def duplicates
+    response = duplicate_query
+    
+    ids = []
+    duplicates = response['facet_counts']['facet_pivot']["#{metadata_field},id"].select { |f| f['count'] > 1 }
+    duplicates.each do |dup|
+      pivot = dup["pivot"]
+      pivot.each { |p| ids << p['value'] }
+    end
+
+    query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
+    response = ActiveFedora::SolrService.get(query)
+    
+    docs = response['response']['docs']
+
+    duplicates = []
+    docs.each { |d| duplicates << SolrDocument.new(d) }
+      
+    return Blacklight::Solr::Response.new(response['response'], response['responseHeader']), duplicates
   end
 
   private
+
+  def metadata_field
+    ActiveFedora.index_field_mapper.solr_name('metadata_md5', :stored_searchable, type: :string)
+  end
 
   def status_count(status)
     ActiveFedora::SolrService.count("#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id} 
       AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}")
   end
-
-  def duplicate_count
-    metadata_field = ActiveFedora.index_field_mapper.solr_name('metadata_md5', :stored_searchable, type: :string)
-
-    response = ActiveFedora::SolrService.get('*:*', 
-      fq: ["+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}", 
-        "+has_model_ssim:\"DRI::Batch\"", "+is_collection_sim:false"], 
-        "facet.pivot" => "#{metadata_field},id", 
-        facet: true, 
-        "facet.mincount" => 2, 
-        "facet.field" => "#{metadata_field}")
-
-    duplicates = response['facet_counts']['facet_fields']["#{metadata_field}"]
-    total = 0
+  
+  def duplicate_query
+    query_params = { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}", 
+      "+has_model_ssim:\"DRI::Batch\"", "+is_collection_sim:false"], 
+      "facet.pivot" => "#{metadata_field},id", 
+      facet: true, 
+      "facet.mincount" => 2, 
+      "facet.field" => "#{metadata_field}" }
     
-    duplicates.each_slice(2) do |duplicate|
-      total += duplicate[1].to_i
-   end
-
-    total
+    ActiveFedora::SolrService.get('*:*', query_params)
   end
 
 end
