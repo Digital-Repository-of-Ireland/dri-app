@@ -9,6 +9,7 @@ class CollectionsController < BaseObjectsController
   before_filter :authenticate_user_from_token!
   before_filter :authenticate_user!
   before_filter :check_for_cancel, only: [:create, :update, :add_cover_image]
+  before_filter :read_only, except: [:index]
 
   # Was this action canceled by the user?
   def check_for_cancel

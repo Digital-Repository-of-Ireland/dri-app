@@ -8,6 +8,7 @@ class ObjectsController < BaseObjectsController
 
   before_filter :authenticate_user_from_token!, except: [:show, :citation]
   before_filter :authenticate_user!, except: [:show, :citation]
+  before_filter :read_only, except: [:index, :show, :citation, :related]
 
   DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
        'contributor','publisher','date','format','source','temporal_coverage',

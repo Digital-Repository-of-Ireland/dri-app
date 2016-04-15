@@ -5,6 +5,7 @@ class InstitutesController < ApplicationController
   before_filter :authenticate_user!, except: [:index]
   before_filter :check_for_cancel, only: [:create, :update]
   before_filter :admin?, only: [:edit, :update, :destroy]
+  before_filter :read_only, except: [:index, :show]
 
   # Was this action canceled by the user?
   def check_for_cancel

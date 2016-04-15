@@ -216,4 +216,39 @@ describe AssetsController do
     end
   end
 
+  describe 'read only' do
+
+    before(:each) do
+        Settings.reload_from_files(
+          Rails.root.join(fixture_path, "settings-ro.yml").to_s
+        )
+        @login_user = FactoryGirl.create(:admin)
+        sign_in @login_user
+        @object = FactoryGirl.create(:sound) 
+
+        request.env["HTTP_REFERER"] = catalog_index_path
+      end
+
+      after(:each) do
+        @object.delete if ActiveFedora::Base.exists?(@object.id)
+        @login_user.delete
+
+        Settings.reload_from_files(
+          Rails.root.join("config", "settings.yml").to_s
+        )
+      end
+
+    describe 'create' do
+
+      it 'should not create an asset' do
+        DRI::Asset::Actor.any_instance.stub(:create_external_content)
+
+        @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+        post :create, { :object_id => @object.id, :Filedata => @uploaded }
+        
+        expect(flash[:error]).to be_present
+      end
+    end
+  end
+
 end

@@ -105,6 +105,7 @@ en:
         not_created: "Unable to create. Check set permissions"
         not_updated: "%{item} was not updated. Check set permissions"
         organisation_cannot_be_deleted: "The organisation cannot be deleted as it is still associated with collections"
+        read_only: "Repository is currently undergoing maintenance. Updates are temporarily disabled."
       validation_errors: "Validation Errors: %{error}"
       notice:
         access_controls_updated: "Access controls updated."
