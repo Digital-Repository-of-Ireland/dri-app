@@ -50,15 +50,6 @@ module PreservationHelpers
 
       File.join(dir, batch)
 
-#      @storage_repository = Dri::StorageRepository.new()
-#      @storage_repository.storage_branch(batch)
-    end
-
-
-    # Return the version number
-    # output: count Fixnum
-    def version_number
-      LocalFile.where("fedora_id LIKE :f AND ds_id LIKE :d", { :f => self.fedora_id, :d => self.ds_id }).count
     end
 
   end

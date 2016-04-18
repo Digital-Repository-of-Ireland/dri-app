@@ -25,7 +25,7 @@ DRI::ModelSupport::Files.module_eval do
 
     @actor = DRI::Asset::Actor.new(gf, ingest_user)
 
-    create_file(file, file_name, gf.id, gf.batch.id, dsid, '', mime_type.to_s)
+    create_file(file, file_name, gf, dsid, '', mime_type.to_s)
  
     url = Rails.application.routes.url_helpers.url_for controller: 'assets', action: 'download', object_id: gf.batch.id, id: gf.id
 
@@ -39,9 +39,26 @@ DRI::ModelSupport::Files.module_eval do
 
   private
 
-  def create_file(file, file_name, object_id, batch_id, datastream, checksum, mime_type)
+  def create_file(file, file_name, gf, datastream, checksum, mime_type)
+    object_version = (gf.batch.object_version.to_i+1).to_s
+    object_id = gf.id
+    batch_id = gf.batch.id
+
     local_file = LocalFile.new(fedora_id: object_id, ds_id: datastream)
-    local_file.add_file file, { batch_id: batch_id, file_name: file_name, checksum: checksum, mime_type: mime_type}
+    local_file.add_file file, { batch_id: batch_id, file_name: file_name, checksum: checksum, mime_type: mime_type, object_version: object_version}
+
+    # Do the preservation actions
+    gf.batch.object_version = object_version
+    preservation = Preservation::Preservator.new(gf.batch)
+    preservation.preserve(false, false, ['properties'])
+
+    # Update object version
+    begin
+      generic_file.batch.save!
+    rescue ActiveRecord::ActiveRecordError => e
+      logger.error "Could not update object version number for #{generic_file.batch.id} to version #{options[:object_version]}"
+      raise Exceptions::InternalError
+    end
 
     begin
       local_file.save!

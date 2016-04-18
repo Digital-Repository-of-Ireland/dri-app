@@ -42,12 +42,12 @@ module Preservation
 
     # moabify_permissions
     def moabify_permissions
-      File.write(File.join(metadata_path(self.object.id, self.version), 'permissions.rdf'), object.permissions )
+      File.write(File.join(metadata_path(self.object.id, self.version), 'permissions.rdf'), object.permissions.inspect )
     end
 
 
     # preserve
-    def preserve(resource=false, permissions=false, datastreams=nil)
+    def preserve(asset=false, resource=false, permissions=false, datastreams=nil)
       create_moab_dirs()
       list = []
 
@@ -75,6 +75,7 @@ module Preservation
         # This is an update to the existing metadata
         # metadata files cannot be added or deleted after object creation
         update_manifests({:added => {}, :deleted => {}, :modified => {'metadata' => list}})
+        # TODO!! Adding assets
       end
 
     end
