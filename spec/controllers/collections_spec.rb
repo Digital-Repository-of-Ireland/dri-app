@@ -21,7 +21,7 @@ describe CollectionsController do
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
       @collection[:creator] = ["Creator"]
-      @collection[:type] = ["Collection"]
+      @collection[:resource_type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection.save
@@ -39,7 +39,7 @@ describe CollectionsController do
       @object[:geographical_coverage] = ["Dublin"]
       @object[:temporal_coverage] = ["1900s"]
       @object[:subject] = ["Ireland","something else"]
-      @object[:type] = ["Sound"]
+      @object[:resource_type] = ["Sound"]
       @object.save
 
       @collection.governed_items << @object
@@ -61,7 +61,7 @@ describe CollectionsController do
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
       @collection[:creator] = ["Creator"]
-      @collection[:type] = ["Collection"]
+      @collection[:resource_type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "draft"
@@ -80,7 +80,7 @@ describe CollectionsController do
       @object[:geographical_coverage] = ["Dublin"]
       @object[:temporal_coverage] = ["1900s"]
       @object[:subject] = ["Ireland","something else"]
-      @object[:type] = ["Sound"]
+      @object[:resource_type] = ["Sound"]
       @object[:status] = "draft"
       @object.save
 
@@ -102,7 +102,7 @@ describe CollectionsController do
       @collection[:creator] = [@login_user.email]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
-      @collection[:type] = ["Collection"]
+      @collection[:resource_type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "draft"
@@ -114,7 +114,7 @@ describe CollectionsController do
       @subcollection[:creator] = [@login_user.email]
       @subcollection[:rights] = ["This is a statement about the rights associated with this object"]
       @subcollection[:publisher] = ["RnaG"]
-      @subcollection[:type] = ["Collection"]
+      @subcollection[:resource_type] = ["Collection"]
       @subcollection[:creation_date] = ["1916-01-01"]
       @subcollection[:published_date] = ["1916-04-01"]
       @subcollection[:status] = "draft"
@@ -141,7 +141,7 @@ describe CollectionsController do
       @collection[:creator] = [@login_user.email]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
-      @collection[:type] = ["Collection"]
+      @collection[:resource_type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "published"
@@ -172,7 +172,7 @@ describe CollectionsController do
       @collection[:creator] = [@login_user.email]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
       @collection[:publisher] = ["RnaG"]
-      @collection[:type] = ["Collection"]
+      @collection[:resource_type] = ["Collection"]
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "published"
@@ -213,6 +213,55 @@ describe CollectionsController do
 
       post :create, :metadata_file => @file
       response.should be_success    
+    end
+
+  end
+
+  describe "read only is set" do
+
+    before(:each) do
+      Settings.reload_from_files(
+        Rails.root.join(fixture_path, "settings-ro.yml").to_s
+      )
+      @login_user = FactoryGirl.create(:admin)
+      sign_in @login_user
+      @collection = FactoryGirl.create(:collection)
+      
+      request.env["HTTP_REFERER"] = catalog_index_path
+    end
+
+    after(:each) do
+      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      @login_user.delete
+
+      Settings.reload_from_files(
+        Rails.root.join("config", "settings.yml").to_s
+      )
+    end
+
+    it 'should not allow object creation' do
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/collection_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      post :create, metadata_file: @file
+      expect(flash[:error]).to be_present
+    end
+
+    it 'should not allow object updates' do
+      params = {}
+      params[:batch] = {}
+      params[:batch][:title] = ["A collection"]
+      params[:batch][:read_users_string] = "public"
+      params[:batch][:edit_users_string] = @login_user.email
+      put :update, :id => @collection.id, :batch => params[:batch]
+
+      expect(flash[:error]).to be_present
     end
 
   end

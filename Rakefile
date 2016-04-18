@@ -49,16 +49,32 @@ RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
   rspec.pattern = FileList['spec/*_spec.rb']
 end
 
+Cucumber::Rake::Task.new(:first_try) do |t|
+  t.cucumber_opts = "--profile first_try"
+end
+
+Cucumber::Rake::Task.new(:second_try) do |t|
+  t.cucumber_opts = "--profile second_try"
+end
+
 desc "Run Continuous Integration"
 task :ci => ['jetty:reset', 'jetty:config', 'ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
   jetty_params = Jettywrapper.load_config
   jetty_params[:startup_wait]= 120
+  
   error = Jettywrapper.wrap(jetty_params) do
-    Rake::Task['cucumber'].invoke
-#    Rake::Task['spec'].invoke
+    begin
+      Rake::Task['first_try'].invoke
+    rescue Exception => e
+    end
   end
+
+  error = Jettywrapper.wrap(jetty_params) do
+      Rake::Task['second_try'].invoke
+  end
+
   raise "test failures: #{error}" if error
 
   Rake::Task["rdoc"].invoke

@@ -1,5 +1,7 @@
 class SurrogatesController < ApplicationController
 
+  before_filter :read_only, except: [:show, :download]
+
   def show
     raise Exceptions::BadRequest unless params[:id].present?
 
@@ -29,7 +31,7 @@ class SurrogatesController < ApplicationController
     result_docs.each do |r|
       doc = SolrDocument.new(r)
 
-      if doc.is_collection?
+      if doc.collection?
         # Changed query to work with collections that have sub-collectionc (e.g. EAD) - ancestor_id rather than collection_id field
         query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
         query.each_solr_document do |object_doc|
@@ -67,7 +69,7 @@ class SurrogatesController < ApplicationController
     result_docs.each do |r|
       doc = SolrDocument.new(r)
 
-      if doc.is_collection?
+      if doc.collection?
         query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{doc.id}\"")
 
         query.each_solr_document do |object_doc|

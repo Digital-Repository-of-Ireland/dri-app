@@ -9,6 +9,7 @@ class CollectionsController < BaseObjectsController
   before_filter :authenticate_user_from_token!
   before_filter :authenticate_user!
   before_filter :check_for_cancel, only: [:create, :update, :add_cover_image]
+  before_filter :read_only, except: [:index]
 
   # Was this action canceled by the user?
   def check_for_cancel
@@ -19,6 +20,34 @@ class CollectionsController < BaseObjectsController
         redirect_to controller: 'catalog', action: 'index'
       end
     end
+  end
+
+  def index
+    query = "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
+
+    solr_query = Solr::Query.new(query, 100, 
+      {fq: ["+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true",
+            "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+      )
+
+    collections = []
+
+    while solr_query.has_more?
+      objects = solr_query.pop
+      objects.each do |object|
+        collection = {}
+        collection[:id] = object['id']
+        collection[:collection_title] = object[ActiveFedora::SolrQueryBuilder.solr_name(
+          'title', :stored_searchable, type: :string)]
+        collections.push(collection)
+      end
+    end
+    
+    respond_to do |format|
+        format.json {
+          render(json: collections.to_json)
+        }
+      end
   end
 
   # Creates a new model.
@@ -67,15 +96,11 @@ class CollectionsController < BaseObjectsController
       format.html
     end
   end
-
+  
   # Updates the attributes of an existing model.
   #
   def update
-    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
-    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
-    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase
-
-    update_object_permission_check(params[:batch][:manager_groups_string],params[:batch][:manager_users_string], params[:id])
+    enforce_permissions!('manage_collection', params[:id])
 
     @object = retrieve_object!(params[:id])
 
@@ -92,26 +117,22 @@ class CollectionsController < BaseObjectsController
 
     doi.update_metadata(params[:batch].select{ |key, value| doi.metadata_fields.include?(key) }) if doi
         
-    if valid_permissions?
-      @object.object_version = (@object.object_version.to_i+1).to_s
-      updated = @object.update_attributes(update_params)
+    @object.object_version = (@object.object_version.to_i+1).to_s
+    updated = @object.update_attributes(update_params)
 
-      if updated
-        if cover_image.present?
-          flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
-        end
-
-        # Do the preservation actions
-        preservation = Preservation::Preservator.new(@object)
-        preservation.preserve(false, false, ['descMetadata','properties'])
-       
-      else
-        flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+    if updated
+      if cover_image.present?
+        flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
       end
-    else
-      flash[:alert] = t('dri.flash.error.not_updated', item: params[:id])
-    end
 
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(false, false, ['descMetadata','properties'])
+
+    else
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+    end
+    
     #purge params from update action
     purge_params
 
@@ -131,6 +152,8 @@ class CollectionsController < BaseObjectsController
   # Updates the cover image of an existing model.
   #
   def add_cover_image
+    enforce_permissions!('manage_collection', params[:id])
+
     @object = retrieve_object!(params[:id])
 
     if params[:batch].present? && [:cover_image].present?
@@ -167,7 +190,7 @@ class CollectionsController < BaseObjectsController
   # Updates the licence.
   #
   def set_licence
-    enforce_permissions!('edit', params[:id])
+    enforce_permissions!('manage_collection', params[:id])
     
     super
   end
@@ -177,12 +200,7 @@ class CollectionsController < BaseObjectsController
   def create
     created = params[:metadata_file].present? ? create_from_xml : create_from_form
 
-    unless created
-      respond_with_exception(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata_input')))
-      return
-    end
-
-    if @object.valid? && @object.save
+    if created && (@object.valid? && @object.save)
       # We have to create a default reader group
       create_reader_group
 
@@ -209,12 +227,18 @@ class CollectionsController < BaseObjectsController
     else
       respond_to do |format|
         format.html {
-          flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+          unless @object.nil? || @object.valid?
+            flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+          end
           raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
         }
         format.json {
-          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
-          render json: @object.errors.messages.values.to_s
+          unless @object.nil? || @object.valid?
+            @error = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+          end
+          response = {}
+          response[:error] = @error
+          render json: response, status: :bad_request
         }
       end
     end
@@ -241,8 +265,20 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  def duplicates
+    enforce_permissions!('manage_collection', params[:id])
+
+    result = ActiveFedora::SolrService.query("id:#{params[:id]}")
+    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if result.blank?
+
+    @object = SolrDocument.new(result.first)
+
+    @response, document_list = @object.duplicates
+    @document_list = Kaminari.paginate_array(document_list).page(params[:page]).per(params[:per_page])
+  end
+
   def review
-    enforce_permissions!('edit', params[:id])
+    enforce_permissions!('manage_collection', params[:id])
 
     @object = retrieve_object!(params[:id])
 
@@ -335,30 +371,44 @@ class CollectionsController < BaseObjectsController
 
     unless params[:metadata_file].present?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @error = t('dri.flash.notice.specify_valid_file')
       return false
     end
 
-    xml = MetadataHelpers.load_xml(params[:metadata_file])
+    begin
+      xml = MetadataHelpers.load_xml(params[:metadata_file])
+    rescue Exceptions::InvalidXML
+      flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @error = t('dri.flash.notice.specify_valid_file')
+      return false
+    rescue Exceptions::ValidationErrors => e
+      flash[:notice] = e.message
+      @error = e.message
+      return false
+    end
+    
     standard = MetadataHelpers.get_metadata_standard_from_xml xml
 
     if standard.nil?
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @error = t('dri.flash.notice.specify_valid_file')
       return false
     end
 
     @object = DRI::Batch.with_standard standard
-
     MetadataHelpers.set_metadata_datastream(@object, xml)
     MetadataHelpers.checksum_metadata(@object)
     warn_if_duplicates
 
     if @object.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
+      @error = t('dri.flash.notice.specify_valid_file')
       return false
     end
 
     unless @object.collection?
       flash[:notice] = "Metadata file does not specify that the object is a collection."
+      @error = "Metadata file does not specify that the object is a collection."
       return false
     end
 
@@ -374,16 +424,6 @@ class CollectionsController < BaseObjectsController
   end
 
   private
-
-  def valid_permissions?
-    if (@object.governing_collection_id.blank? &&
-        ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
-        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?)))
-      false
-    else
-      true
-    end
-  end
 
   def create_reader_group
     @group = UserGroup::Group.new(name: reader_group_name, description: "Default Reader group for collection #{@object.id}")
@@ -411,7 +451,7 @@ class CollectionsController < BaseObjectsController
     logger.error "Unable to delete collection: #{e.message}"
     raise Exceptions::ResqueError
   end
-
+   
   def publish_collection
     Sufia.queue.push(PublishJob.new(@object.id))
   rescue Exception => e
@@ -428,6 +468,16 @@ class CollectionsController < BaseObjectsController
           render json: exception.message, status: :bad_request
         }
       end
+  end
+
+  def valid_permissions?
+    if (@object.governing_collection_id.blank? &&
+       ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
+       (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?)))
+      false
+    else
+      true
+    end
   end
 end
 

@@ -1,0 +1,4 @@
+<fieldset class="dri_licence_metadata_fieldset" id="licence">
+  <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.licence')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.licence_text') %>" data-original-title="<%= t('dri.help.fields.licence')%>" data-trigger="hover" data-placement="right"></i></span>
+  <%= f.select(:licence, options_for_select(@licences, @object[:licence]), class: 'edit span6') %>
+</fieldset>

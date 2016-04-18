@@ -5,12 +5,12 @@ source 'http://rubygems.org'
 
 gem 'rails','~> 4.2'
 
-gem 'blacklight', '~> 5.10.0'
+gem 'blacklight', '~> 5.16.0'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
-gem 'hydra-head', '9.4.1'
+gem 'hydra-head', '9.9.0'
 
-gem 'sufia-models', '6.4.0'
+gem 'sufia-models', '6.5.0'
 gem 'redlock'
 gem 'google-api-client', '0.8.6'
 
@@ -19,7 +19,7 @@ gem 'paper_trail', '~> 4'
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'moab'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
 
-gem 'active-fedora', '~> 9.7'
+gem 'active-fedora', '9.10.4'
 gem 'active_fedora-noid', '1.0.3'
 
 gem 'rails_config'
@@ -35,8 +35,7 @@ gem 'feedjira'
 # Storage-related gems
 gem 'aws-sdk', '~> 2'
 gem 'moab-versioning'
-
-#gem 'clamav'
+gem 'browse-everything', git: 'https://github.com/stkenny/browse-everything.git', branch: 's3_provider'
 
 # File processing gems
 gem 'mimemagic'
@@ -72,6 +71,10 @@ gem 'execjs'
 
 gem 'uglifier', '>= 1.0.3'
 
+group :production do
+  gem 'clamav'
+end
+
 group :development, :test do
   gem 'guard'
   gem 'rspec-rails', '~> 2.99'
@@ -88,14 +91,14 @@ group :development, :test do
 
   gem "zeus", require: false
 
-  gem 'ci_reporter_cucumber'
+  #gem 'ci_reporter_cucumber'
   gem 'ci_reporter_rspec'
   gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
 end
 
 group :test do
-  gem 'cucumber', '1.3.15'
-  gem 'cucumber-rails', require: false
+  gem 'cucumber', '2.3.3'
+  gem 'cucumber-rails', '1.4.3', require: false
   gem 'database_cleaner'
   gem 'launchy'
   gem 'shoulda'
@@ -119,6 +122,7 @@ gem 'unicorn'
 
 gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
+gem 'jwt', '1.5.2'
 gem 'bootstrap-sass' #, '~> 3.3.4'
 gem 'yard'
 

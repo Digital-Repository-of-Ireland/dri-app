@@ -13,6 +13,7 @@ TITLES = { 'qualifieddc' => 'Dublin Core Metadata',
 class MetadataController < CatalogController
   before_filter :authenticate_user_from_token!, except: :show
   before_filter :authenticate_user!, except: :show
+  before_filter :read_only, except: :show
 
   def actor
     @actor ||= DRI::Object::Actor.new(@object, current_user)

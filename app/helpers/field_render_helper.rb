@@ -1,20 +1,8 @@
-require 'uri'
-
 module FieldRenderHelper
 
   # Returns the default html field separator characters
   def field_value_separator
     ''
-  end
-  
- #URI Checker
-  def uri?(string)
-    uri = URI.parse(string)
-    %w( http https ).include?(uri.scheme)
-  rescue URI::BadURIError
-    false
-  rescue URI::InvalidURIError
-    false
   end
   
   # Helper method to display to toggle the description metadata language
@@ -216,7 +204,7 @@ module FieldRenderHelper
 
     @qdc_people_select_list[0][1].each do | value |
       array_result = @object.send(value[1])
-      if (array_result != nil || array_result.length > 0)
+      if (array_result != nil && array_result.length > 0)
         qdc_people.merge!( value[1] => array_result)
       end
     end
@@ -224,7 +212,7 @@ module FieldRenderHelper
     DRI::Vocabulary.marc_relators.each do |role|
       array_result = @object.send("role_"+role)
       marc_relator_select_list.push [ role + " - " + t("dri.vocabulary.marc_relator."+role), "role_"+role]
-      if (array_result != nil || array_result.length > 0)
+      if (array_result != nil && array_result.length > 0)
         qdc_people.merge!( "role_"+role => array_result)
       end
     end

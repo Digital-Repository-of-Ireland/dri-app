@@ -1,5 +1,5 @@
 @cookies @javascript @done @req-67
-Feature:
+Feature: Cookies alert
   In order to comply with EU e-Privacy Directive
   As an new visitor to the DRI
   I should be informed of the DRI cookie policy

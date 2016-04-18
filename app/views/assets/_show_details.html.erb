@@ -33,7 +33,7 @@
             <% label = label.humanize %>
             <% if values.is_a? Array %>
                 <% length = values.length %>
-                <% length = Sufia.config.fits_message_length-1  if term == :status_message && values.length > Sufia.config.fits_message_length-1  %>
+                <% length = Sufia.config.fits_message_length-1  if term == :message && values.length > Sufia.config.fits_message_length-1  %>
                 <% values[0..length].each_with_index do |value, idx| %>
                     <% next if value.empty? %>
                     <%= "#{label}: #{value.truncate(250)}" %>

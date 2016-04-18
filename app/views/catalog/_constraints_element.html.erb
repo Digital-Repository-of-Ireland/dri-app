@@ -9,5 +9,5 @@
     options[:escape_value] = true unless options.has_key?(:escape_value)
 -%>
   
-            	<li><span class="search_mini_icon"></span><%= options[:escape_value] ? h(value) : raw(value) %> <%= link_to("x", options[:remove], :class => "remove") %> </li>
+<li><span class="search_mini_icon"></span><%= options[:escape_value] ? h(value) : raw(value) %> <%= link_to("x", options[:remove], :class => "remove") %> </li>
 

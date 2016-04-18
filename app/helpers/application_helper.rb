@@ -89,29 +89,7 @@ module ApplicationHelper
     "\" AND is_collection_sim:false" +
     " OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
   end
-  
-  def get_query_collections_by_institute( institute )
-    solr_query = ""
-    if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
-      solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
-    end
-    solr_query = solr_query + "#{ActiveFedora::SolrQueryBuilder.solr_name('institute', :stored_searchable, type: :string)}:\"" + institute + "\" AND " +
-        "#{ActiveFedora::SolrQueryBuilder.solr_name('type', :stored_searchable, type: :string)}:Collection"
-    return solr_query
-  end
-
-  def count_collections_institute( institute )
-    solr_query = get_query_collections_by_institute(institute)
-    count = ActiveFedora::SolrService.count(solr_query, :defType => "edismax", :fq => "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]")
-    return count
-  end
-
-  def get_collections_institute( institute )
-    solr_query = get_query_collections_by_institute(institute)
-    response = ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :fq => "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]")
-    return response
-  end
-
+        
   def count_items_in_collection_by_type(collection_id, type)
     solr_query = "(#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
         "\" OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
@@ -120,10 +98,6 @@ module ApplicationHelper
       solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
     end
     ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
-  end
-
-  def get_institute_collection_counts( institute )
-      @coll_counts = count_collections_institute(institute)
   end
 
   # method to find the depositing Institute (if any) associated with the current collection (document) 
@@ -192,6 +166,16 @@ module ApplicationHelper
     end
 
     return nil
+  end
+
+  #URI Checker
+  def uri?(string)
+    uri = URI.parse(string)
+    %w( http https ).include?(uri.scheme)
+  rescue URI::BadURIError
+    false
+  rescue URI::InvalidURIError
+    false
   end
 
 end

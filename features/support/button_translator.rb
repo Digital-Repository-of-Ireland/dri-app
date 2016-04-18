@@ -46,6 +46,9 @@ module ButtonTranslator
       when /^save collection changes$/
         "edit_collection"
 
+      when /^save access controls$/
+        "save_access_controls"
+
       when /^upload a file$/
         "dri_upload_asset_file"
 

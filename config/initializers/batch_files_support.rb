@@ -16,7 +16,7 @@ DRI::ModelSupport::Files.module_eval do
 
     return false unless pass_validation
 
-    gf = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+    gf = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
     gf.batch = self
       
     # Apply depositor metadata, other permissions currently unused for generic files

@@ -3,6 +3,7 @@ class LicencesController < ApplicationController
   before_filter :authenticate_user_from_token!, except: [:index]
   before_filter :authenticate_user!, except: [:index]
   before_filter :admin?, except: [:index]
+  before_filter :read_only, except: [:index]
 
   # Get the list of licences
   def index

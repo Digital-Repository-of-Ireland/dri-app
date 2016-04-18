@@ -7,6 +7,7 @@ class AssetsController < ApplicationController
 
   before_filter :authenticate_user_from_token!, only: [:list_assets]
   before_filter :authenticate_user!, only: [:list_assets]
+  before_filter :read_only, except: [:show, :download, :list_assets, ]
 
   include DRI::Doi
 
@@ -17,7 +18,9 @@ class AssetsController < ApplicationController
   def show
     datastream = params[:datastream].presence || 'content'
 
-    @document = retrieve_object! params[:object_id]
+    result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
+    @document = SolrDocument.new(result.first)
+
     @generic_file = retrieve_object! params[:id]
 
     status(@generic_file.id)
@@ -131,7 +134,7 @@ class AssetsController < ApplicationController
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end
 
-    @generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+    @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
     @generic_file.batch = @object
     @generic_file.apply_depositor_metadata(current_user)
     @generic_file.preservation_only = 'true' if params[:preservation] == 'true'

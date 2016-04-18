@@ -16,6 +16,9 @@ module LinkTranslator
       when /^edit an object$/
         "edit_record"
 
+      when /^edit$/
+        "edit_menu"
+
       when /^edit a collection$/
         "edit_collection"
 
@@ -27,6 +30,9 @@ module LinkTranslator
 
       when /^edit this record$/
         "edit_record"
+
+      when /^edit access controls$/
+        "edit_access_controls"
 
       when /^sign in$/
         "login"

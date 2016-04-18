@@ -21,7 +21,6 @@ module FacetsHelper
     return results
   end
 
-
   def parse_era args
     results = nil
 
@@ -39,7 +38,6 @@ module FacetsHelper
     return results
   end
 
-
   def parse_location args
     results = nil
 
@@ -47,9 +45,7 @@ module FacetsHelper
       results = Array.new
       value_list = args[:document][args[:field]]
 
-      value_list.each do |value|
-        results.push(transform_loc value)
-      end
+      value_list.each { |value| results.push(transform_loc value) }
     else
       results = transform_loc args
     end
@@ -118,7 +114,6 @@ module FacetsHelper
     value.eql?("false") ? t('dri.views.facets.values.no_collections') : t('dri.views.facets.values.collections')
   end
 
-
   # parses encoded era values
   def transform_era value
     return 'nil' if value.nil?
@@ -131,7 +126,6 @@ module FacetsHelper
     end
     return value
   end
-
 
   # parses encoded location values
   def transform_loc value
@@ -202,6 +196,8 @@ module FacetsHelper
   # @option options [Boolean] :suppress_link display the facet, but don't link to it
   # @return [String]
   def render_facet_value(facet_solr_field, item, options ={})
+    return if uri?(item.value)
+
     path = search_action_path(add_facet_params_and_redirect(facet_solr_field, item))
     link_to_unless(options[:suppress_link], facet_display_value(facet_solr_field, item) + " (#{item.hits})", path, :class=>"facet_select")
   end
@@ -217,7 +213,8 @@ module FacetsHelper
   def render_selected_facet_value(facet_solr_field, item)
     #Updated class for Bootstrap Blacklight.
 
-    link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), remove_facet_params(facet_solr_field, item, params), :class=>"selected")
+    link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), 
+      remove_facet_params(facet_solr_field, item, params), :class=>"selected")
   end
 
   # Overwriting this helper so that values containing colons are automatically enclosed in double-quoted strings,
@@ -232,7 +229,6 @@ module FacetsHelper
     end
 
     if (value.include? ":")
-      #value = '"'+value+'"'
       value = value.html_safe
     end
 

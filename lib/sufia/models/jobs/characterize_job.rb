@@ -7,6 +7,8 @@ class CharacterizeJob < ActiveFedoraIdBasedJob
 
   def run
     with_status_update('characterize') do
+      status_for_type('preservation') if generic_file.preservation?
+      
       generic_file.characterize
       generic_file.save
 

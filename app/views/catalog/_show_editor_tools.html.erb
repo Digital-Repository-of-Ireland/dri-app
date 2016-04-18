@@ -46,23 +46,7 @@
         <%= hidden_field_tag 'datastream', "content" %>
      <% end %>
     </li>
-  <% end %>
-
-  <!-- Replace metadata only visible if non-EAD collection AND not a Documentation object -->
-  <% if (@document.editable? && @document.active_fedora_model != "DRI::Documentation") %>
-    <li>
-      <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
-        <div class="dri_fileUpload">
-          <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => "dri_button_green_small" %>
-          <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
-        </div>
-        <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-        <%= hidden_field_tag 'datastream', "content" %>
-      <% end %>
-    </li>
-  <% end %> <!-- END IF (non-EAD collections AND not Documentation Object) -->
-  
-  <% if @files.present? %>
+ 
     <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
       <li>
         <%= t('dri.views.catalog.links.generate_surrogates') %>
@@ -75,10 +59,10 @@
       <%= form_tag status_update_path(@document.id) ,:method => :put do %>
         <% if @document.draft? %>
           <%= hidden_field_tag( :status, "reviewed") %>
-          <span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), :id => 'status_update' %>
+          <span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), :id => 'status_update', :class => "pull-right dri_button_green_small" %>
         <% else %>
           <%= hidden_field_tag( :status, "draft") %>
-          <span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update' %>
+          <span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update', :class => "pull-right dri_button_red_small" %>
         <% end %>
       <% end %>
     </li>  
@@ -90,21 +74,55 @@
         </li>
       <% end %>
     <% end %>
-
   <% end %>
-
-  <%= link_to edit_object_path(@document), :id => "edit_record" do %>
+  
   <li>
-    <%= t('dri.views.catalog.links.edit_this_record') %>
-  </li>
-  <% end %>
+  <div class="accordion" id="dri_edit_record_tools_id">
+    <div class="accordion-group">
+      <a class="accordion-toggle" id="edit_menu" data-toggle="collapse" data-parent="#dri_edit_record_tools_id" href="#dri_edit_record_tools_collapsed_id">
+        <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.catalog.links.edit_this_record') %>
+      </a>
+     
+      <div id="dri_edit_record_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
+        <div class="accordion-inner">
+          <ul class="dri_subnav_edit_list">              
+           <% if @document.editable? %> 
+            <%= link_to edit_object_path(@document), :id => "edit_record" do %>
+              <li>
+                <%= t('dri.views.catalog.buttons.edit_metadata') %>
+              </li>
+            <% end %>
+            
+            <!-- Replace metadata only visible if non-EAD collection AND not a Documentation object -->
+            <% if @document.active_fedora_model != "DRI::Documentation" %>
+              <li>
+                <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
+                  <div class="dri_fileUpload">
+                    <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => "dri_button_green_small" %>
+                    <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
+                  </div>
+                  <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+                  <%= hidden_field_tag 'datastream', "content" %>
+                <% end %>
+              </li>
+            <% end %> <!-- END IF (non-EAD collections AND not Documentation Object) -->
+           <% end %>
 
-  <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
-  <li>
-    <%= t('dri.views.catalog.buttons.set_licence') %>
-  </li>
-  <% end %>
+            <li>
+             <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
+            </li>
 
+            <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
+              <li class="dri_subnav_edit_list_last">
+                <%= t('dri.views.catalog.buttons.set_licence') %>
+               </li>
+            <% end %>
+          </ul>
+      </div>
+    </div>
+  </div>
+  </div>
+  </li>
 </ul>
 </div>
 
@@ -128,7 +146,9 @@
       </div>
 
       <div class="modal-footer">
-
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -149,7 +169,29 @@
         <%= render :partial => "shared/set_object_licence" %>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
+<div class="modal fade" id="dri_access_controls_modal_id">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title"><%= t('dri.views.catalog.forms.access_controls') %></h4>
+      </div>
+
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

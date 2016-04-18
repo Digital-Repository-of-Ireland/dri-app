@@ -11,6 +11,9 @@ class IngestStatus < ActiveRecord::Base
     if (job_status.job == 'characterize' || job_status.job == 'create_bucket') && job_status.status == 'failed'
       self.status = 'error'
       save
+    elsif asset_type == 'preservation' && (job_status.job == 'characterize' && job_status.status == 'success')
+      self.status = completed_status
+      save
     elsif asset_type && job_names.sort == IngestStatus.const_get("#{asset_type}_jobs".upcase).sort
       self.status = completed_status
       save

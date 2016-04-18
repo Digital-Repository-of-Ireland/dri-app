@@ -13,6 +13,7 @@ Given /^"(.*?)" has created a Digital Object$/ do |user|
     And a Digital Object with pid "#{@obj_pid}", title "Object 1" created by "#{user}"
     And the object with pid "#{@obj_pid}" is in the collection with pid "#{col_pid}"
     When I go to the "object" "show" page for "#{@obj_pid}"
+    And I click the link to edit
     And I attach the metadata file "valid_metadata.xml"
     And I press the button to "upload metadata"
     Then I should see a success message for updating metadata
@@ -235,7 +236,7 @@ Then /^(?:|I )press the button to "([^"]*)"(?: within "([^"]*)")?$/ do |button,s
       page.find_button(button_to_id(button)).click
     end
   else
-    page.find_button(button_to_id(button)).click
+    page.find_button(button_to_id(button), {visible: false}).click
   end
 end
 

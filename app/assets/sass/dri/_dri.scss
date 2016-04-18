@@ -1100,7 +1100,7 @@ h4.suggest {
     background-color: $dri_paleorange;
 }
 .dri_flash_message {
-  margin: 20px 0 0 0;
+  margin: 10px 0 10px 0;
     padding: 12px 10px 5px 10px;
     display: block;
     width: 100%;
@@ -2342,6 +2342,12 @@ ul.dri_collection_institutes_list {
         color: $dri_darkgrey;
     }
     @extend .dri_ingest_form_container;
+    .dri_radio_label {
+        font-size: 100%;
+        color: $dri_midgrey !important;
+        margin: 8px 0 8px 0;
+        padding: 0;
+     }
     .breadcrumb > li + li:before {
         content: "|\00a0";
     }
@@ -2506,7 +2512,6 @@ ul.dri_collection_institutes_list {
     opacity: 0;
     filter: alpha(opacity=0);
 }
-
 .dri_dsa_ident {
   display: inline; 
   float: right; 

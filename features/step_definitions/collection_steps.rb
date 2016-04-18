@@ -44,7 +44,7 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
 
     digital_object.depositor=User.find_by_email(email).to_s
     digital_object.manager_users_string=User.find_by_email(email).to_s
-    digital_object.edit_groups_string="registered"
+    #digital_object.edit_groups_string="registered"
     digital_object.creator = ["#{user}@#{user}.com"]
   end
   digital_object.rights = ["This is a statement of rights"]
@@ -70,7 +70,7 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
   if user
     digital_object.depositor = User.find_by_email(user).to_s
     digital_object.manager_users_string=User.find_by_email(user).to_s
-    digital_object.edit_groups_string="registered"
+    #digital_object.edit_groups_string="registered"
   end
   digital_object.date = ["2000-01-01"]
   digital_object.rights = ["This is a statement of rights"]

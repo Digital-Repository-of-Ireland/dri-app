@@ -101,12 +101,11 @@ ga:
         not_updated: "Níor tugadh %{item} cothrom le dáta. Seiceáil na ceadanna socraithe"
         validation_errors: "Earráidí Bailíochtaithe: %{error}"
       notice:
+        access_controls_updated: "Tugtha cothrom le dáta."
         added_to_collection: "Cuireadh an oibiacht leis an mbailiúchán."
         collection_created: "D'éirigh leat an oibiacht bhailiúcháin a chruthú."
         collection_deleted: "D'éirigh leat próiseas scriosta an bhailiúcháin a thosú."
         collection_publishing: "Tá an Bailiúchán dá fhoilsiú"
-        current_collection_cleared: "Níor socraíodh bailiúchán ar bith."
-        current_collection_set: "Socraíodh an bailiúchán reatha ag: %{collection}"
         digital_object_ingested: "Glacadh an oibiacht dhigiteach isteach go sásúil."
         duplicate_object_ingested: "D'fhéadfadh gur aimsíodh oibiachtaí dúblacha: %{duplicates}"
         file_uploaded: "D'éirigh leat an comhad a uaslódáil."
@@ -159,6 +158,7 @@ ga:
       object: Oibiacht
       objects: Oibiachtaí
       privacy: "Polasaí um Príobháideachas agus Fianáin"
+      privacy_statement: "Ráiteas Príobháideachais"
       reports: Tuairiscí
       resque: "Freastalaí Resque"
       sitemap: "Mapa Suímh"
@@ -166,6 +166,8 @@ ga:
       usergroups: "Úsáideoirí agus Grúpaí"
       workspace: "Spás Oibre"
     help:
+      add_documentation_help_text: "Add contextual information object. These objects appear in the Related Materials section of the Collection show page."
+      add_documentation_help_title: "Add contextual information"
       dri_browse_sort_tabs_collections: "Bain úsáid as an táb seo chun Bailiúcháin a aimsiú"
       dri_browse_sort_tabs_collections_title: "Aimsigh Bailiúcháin"
       dri_browse_sort_tabs_objects: "Bain úsáid as an táb seo chun Oibiachtaí a aimsiú"
@@ -205,7 +207,7 @@ ga:
         identifiers_text: "Identifier for the resource."
         languages: Language
         languages_text: "A language of the resource."
-        licence: Licence
+        licence: Ceadúnas 
         licence_text: "The reuse licence for this resource."
         published_date: "Published Date / Issued"
         published_date_text: "Date of formal issuance (e.g., publication) of the resource."
@@ -254,7 +256,10 @@ ga:
           clear_all_bookmarks: "Glan Gach Leabharmharc"
           clear_all_saved_searches: "Glan Gach Cuardach Sábháilte"
           clear_search_facet_list: "Glan Gach Rud"
+          edit_metadata: Meiteashonraí
+          edit_access_controls: "Rialuithe Rochtana"
           remove_from_collection: "Bain ón mbailiúchán"
+          set_licence: Ceadúnas
         facets:
           dates:
             date_range: "Raon dáta"
@@ -265,6 +270,7 @@ ga:
             collections: Bailiúcháin
             no_collections: "Bailiúchán Ar Bith"
         forms:
+          access_controls: "Rialuithe Rochtana"
           all_objects_in_collection: "Gach Oibiacht sa mBailiúchán seo"
           audio:
             duration: "Fad ama"
@@ -277,7 +283,8 @@ ga:
           file: Comhad
           image_file: Íomhá
           manage_bookmark: "Bainistigh do chuid Leabharmharcanna"
-          map: Map
+          manage_licence: Ceadúnas
+          map: Léarscáil
           metadata: Meiteashonraí
           metadata_full: "Meiteashonraí Iomlán (XML)"
           objects_in_collection: Oibiachtaí
@@ -286,6 +293,7 @@ ga:
           video_file: Físeán
         headers:
           files: "Uirlisí Comhaid"
+          sub_collections: Fo-bhailiúcháín
         legends:
           no_bookmarked_collections: "Níor leabharmharcáil tú bailiúchán ar bith"
           no_bookmarked_objects: "Níor leabharmharcáil tú oibiacht ar bith"
@@ -302,8 +310,6 @@ ga:
           surrogate_not_available_why: "Seans gur cuireadh an oibiacht isteach le gairid agus go bhfuil an córas dá próiseáil go fóill. Níor mhór duit é a thiail arís i gceann tamaill."
         links:
           add_documentation: "Cuir doiciméadacht leis"
-          add_documentation_help_text: "Téann an Téacs Cabhrach anseo"
-          add_documentation_help_title: "Teideal na cabhrach anseo"
           add_object: "Cuir Oibiacht leis"
           add_object_xml: "Uaslódáil XML na hOibiachta"
           add_sub_collection: "Cuir fo-bhailiúchán leis"
@@ -320,7 +326,7 @@ ga:
           history: Stair
           listen: Éist
           mark_all_descendants_reviewed: "Léirigh gur athbhreithníodh na hoibiachtaí sa mbailiúchán AGUS sa bhfo-bhailiúchán"
-          mark_all_reviewed: "Léirigh gur athbhreithníodh an bailiúchán"
+          mark_all_reviewed: "Léirigh gur athbhreithníodh"
           mark_object_draft: "Léirigh gur dréachtoibiacht í seo"
           mark_object_reviewed: "Léirigh gur athbhreithníodh an oibiacht"
           not_caracterized: "Níor aimsíodh an mianach go fóill"
@@ -343,10 +349,13 @@ ga:
           navigation_tools: "Uirlisí nascleanúna"
           object_tools: "Uirlisí Oibiachta"
       collection:
+        manage_cover_image: "Íomhá Chlúdaigh"
         buttons:
+          add_cover_image: "Íomhá Chlúdaigh"
           clear_collection: "Glan mar Bhailiúchán Reatha"
           create_collection: "Cruthaigh Bailiúchán"
           delete_collection: "Scrios an Bailiúchán"
+          edit_metadata: Meiteashonraí 
           new_collection: "Bailiúchán Nua"
           remove: Bain
           set_collection: "Socraigh mar Bhailiúchán Reatha"
@@ -407,7 +416,6 @@ ga:
         unknown_object: "Oibiacht Anaithnid."
         file_not_found: "Upload file not found"
       fields:
-        Format: Format
         collection_title: "Teideal an Bhailiúcháin"
         contributor: Rannpháirtí
         contributors: Rannpháirtithe
@@ -531,6 +539,7 @@ ga:
         buttons:
           add_master: "Cuir Máistirchomhad leis"
           add_to_collection: "Cuir leis an mbailiúchán"
+          delete_object: "Scrios an Oibiacht"
           replace_master: "Athchuir Máistirchomhad"
           replace_metadata: "Uaslódáil Meiteashonraí"
           save: "Sábháil na hathruithe"

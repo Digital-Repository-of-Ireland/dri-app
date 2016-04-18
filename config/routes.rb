@@ -26,18 +26,22 @@ NuigRnag::Application.routes.draw do
 
     resources :session, :only => ['create']
 
-    resources :collections, :only => ['new','create','update','edit','destroy']
+    resources :collections, :only => ['index','new','create','update','edit','destroy']
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
+    post 'collections/:id/batch', to: 'batch_ingest#create', as: :batch_ingest
+    get 'collections/:id/duplicates', to: 'collections#duplicates', as: :collection_duplicates
   
     put 'collections/:id/licences', to: 'collections#set_licence', as: :collection_licence
     put 'objects/:id/licences', to: 'objects#set_licence', as: :object_licence
+
+    get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
+    put 'objects/:id/access', to: 'access_controls#update'
   
-    resources :institutes, :only => ['show', 'new', 'create', 'edit', 'update']
+    resources :organisations, controller: :institutes, :only => ['index','show', 'new', 'create', 'destroy', 'edit', 'update']
 
     match 'association' => 'institutes#associate', :via => :post, :as => :new_association
     match 'association' => 'institutes#disassociate', :via => :delete, :as => :disassociation
-    match 'institutions' => 'institutes#index', :via => :get, :as => :institutions
     match 'manage_users' => 'manage_users#new', :via => :get, :as => :manage_users
     match 'manage_users' => 'manage_users#create', :via => :post, :as => :new_manage_user
 
