@@ -103,7 +103,18 @@ class InstitutesController < ApplicationController
     end
     @collection.depositing_institute = params[:depositing_organisation] 
 
-    raise Exceptions::InternalError unless @collection.save
+    @collection.object_version = (@collection.object_version.to_i+1).to_s
+
+    updated = @collection.save
+
+    if updated
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@collection)
+      preservation.preserve(false, false, ['properties'])
+    else
+      raise Exceptions::InternalError
+    end
+
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.organisations_set')

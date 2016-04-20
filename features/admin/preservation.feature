@@ -25,6 +25,7 @@ Feature: Preservation
   Scenario: Replace collection metadata
     When I create a collection and save the pid
     And I go to the "collection" "show" page for "the saved pid"
+    And I follow the link to edit
     And I attach the metadata file "SAMPLEA.xml"
     And I press the button to "upload metadata"
     Then an AIP should exist for the saved pid
@@ -51,9 +52,12 @@ Feature: Preservation
     And the AIP for the saved pid should have "2" versions
 
   Scenario: Add a licence for a collection
+    Given I have created a licence "Test"
     When I create a collection and save the pid
     And I go to the "collection" "show" page for "the saved pid"
-    And I associate a licence with the collection
+    And I follow the link to associate a licence
+    And I select "Test" from the selectbox for licence 
+    And I press the button to "set licence"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
 
@@ -95,6 +99,7 @@ Feature: Preservation
     When I create a collection and save the pid
     And I create an object and save the pid
     And I go to the "object" "show" page for "the saved pid"
+    And I follow the link to edit
     And I attach the metadata file "SAMPLEA.xml"
     And I press the button to "upload metadata"
     Then an AIP should exist for the saved pid
@@ -112,9 +117,6 @@ Feature: Preservation
   Scenario: Replace asset
     When I create a collection and save the pid
     And I create an object and save the pid
-    And I go to the "object" "show" page for "the saved pid"
-    And I attach the metadata file "SAMPLEA.xml"
-    And I press the button to "upload metadata"
     And I go to the "object" "show" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "upload a file"

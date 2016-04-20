@@ -163,6 +163,9 @@ module LinkTranslator
       when /^view asset tools$/
         "show_asset_tools"
 
+      when /^associate a licence$/
+        "manage_licence"
+
       else "Unknown"
 
     end

@@ -47,7 +47,7 @@ module Preservation
 
 
     # preserve
-    def preserve(asset=false, resource=false, permissions=false, datastreams=nil)
+    def preserve(resource=false, permissions=false, datastreams=nil)
       create_moab_dirs()
       list = []
 
@@ -62,7 +62,7 @@ module Preservation
       end
 
       if datastreams.present?
-        object.reload # we must refresh the datastreams list
+        #object.reload # we must refresh the datastreams list
         datastreams.each do |ds|
           moabify_datastream(ds, object.attached_files[ds])
         end
@@ -136,7 +136,7 @@ module Preservation
           file_instance = Moab::FileInstance.new()
           file_instance.instance_from_file(Pathname.new(File.join(path, file)), Pathname.new(path))
 
-          version_inventory.groups.keyfind(type.to_s).add_file_instance(file_signature, file_instance)
+          version_inventory.groups.find {|g| g.group_id == type.to_s }.add_file_instance(file_signature, file_instance)
         end
       end
 
@@ -148,14 +148,14 @@ module Preservation
         end
 
         changes[:modified][type].each do |file|
-          version_inventory.groups.keyfind(type.to_s).remove_file_having_path(file)
+          version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
           file_signature = Moab::FileSignature.new()
           file_signature.signature_from_file(Pathname.new(File.join(path, file)))
 
           file_instance = Moab::FileInstance.new()
           file_instance.instance_from_file(Pathname.new(File.join(path, file)), Pathname.new(path))
 
-          version_inventory.groups.keyfind(type.to_s).add_file_instance(file_signature, file_instance)
+          version_inventory.groups.find {|g| g.group_id == type.to_s }.add_file_instance(file_signature, file_instance)
         end
       end
 
@@ -167,7 +167,7 @@ module Preservation
         end
 
         changes[:modified][type].each do |file|
-          version_inventory.groups.keyfind(type.to_s).remove_file_having_path(file)
+          add_file_instance(file_signature, file_instance).remove_file_having_path(file)
         end
       end
 
