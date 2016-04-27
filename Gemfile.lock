@@ -903,6 +903,3 @@ DEPENDENCIES
   videojs_rails!
   yard
   zeus
-
-BUNDLED WITH
-   1.11.2
