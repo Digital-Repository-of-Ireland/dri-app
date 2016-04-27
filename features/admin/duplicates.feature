@@ -12,12 +12,13 @@ Scenario: Ingesting a duplicate Digital Object using metadata file upload
   When I create a collection and save the pid
   And I go to the "collection" "show" page for "the saved pid"
   And I follow the link to upload XML
-  And I should wait for "10" seconds
+  And I should wait for "1" seconds
   And I attach the metadata file "SAMPLEA.xml"
   And I press the button to "ingest metadata"
   Then I should see a success message for ingestion
   When I go to the "collection" "show" page for "the saved pid"
   And I follow the link to upload XML
+  And I should wait for "1" seconds
   And I attach the metadata file "SAMPLEA.xml"
   And I press the button to "ingest metadata"
   Then I should see a success message for ingestion
@@ -41,6 +42,7 @@ Scenario: Creating a duplicate Digital Object by replacing the metadata file
   When I create a collection and save the pid
   And I go to the "collection" "show" page for "the saved pid"
   And I follow the link to upload XML
+  And I should wait for "1" seconds
   And I attach the metadata file "SAMPLEA.xml"
   And I press the button to "ingest metadata"
   Then I should see a success message for ingestion
