@@ -43,6 +43,7 @@ Given /^I have created a collection$/ do
     Given I am on the home page
     And I go to "create new collection"
     And I enter valid metadata for a collection
+    And I check "deposit"
     And I press the button to "create a collection"
   }
 end
@@ -52,6 +53,7 @@ Given /^I have created a collection with title "(.+)"$/ do |title|
     Given I am on the home page
     When I go to "create new collection"
     And I enter valid metadata for a collection with title #{title}
+    And I check "deposit"
     And I press the button to "create a collection"
   }
 end
@@ -94,7 +96,11 @@ When /^(?:|I )go to "([^"]*)"$/ do |page_name|
 end
 
 When /^(?:|I )go to the "([^"]*)" "([^"]*)" page for "([^"]*)"$/ do |type, page, pid|
-  pid = @pid if pid.eql?('the saved pid')
+  if (pid.eql?('the saved pid') && type.eql?("collection"))
+    pid = @collection_pid ? @collection_pid : @pid
+  elsif (pid.eql?('the saved pid') && type.eql?("object"))
+    pid = @pid if pid.eql?('the saved pid')
+  end
   visit path_for(type, page, pid)
 end
 

@@ -3,6 +3,7 @@ When /^I create a collection and save the pid$/ do
     Given I am on the home page
     And I go to "create new collection"
     And I enter valid metadata for a collection
+    And I check "deposit"
     And I press the button to "create a collection"
   }
   @pid = URI.parse(current_url).path.split('/').last

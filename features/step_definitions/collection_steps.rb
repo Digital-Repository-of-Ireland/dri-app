@@ -131,7 +131,6 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
     And I fill in "batch_rights][" with "Test rights"
     And I fill in "batch_creator][" with "test@test.com"
     And I fill in "batch_creation_date][" with "2000-01-01"
-    And I check "deposit"
   }
 end
 

@@ -80,14 +80,12 @@ Feature: Preservation
     And the AIP for the saved pid should have "2" versions
 
   Scenario: Create an object
-    When I create a collection and save the pid
-    And I create an object and save the pid
+    When I create an object and save the pid
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "1" version 
 
   Scenario: Edit object metadata
-    When I create a collection and save the pid
-    And I create an object and save the pid
+    When I create an object and save the pid
     And I go to the "object" "show" page for "the saved pid"
     And I follow the link to edit an object
     And I enter valid metadata with title "Test Edit"
@@ -96,8 +94,7 @@ Feature: Preservation
     And the AIP for the saved pid should have "2" versions
 
   Scenario: Replace object metadata
-    When I create a collection and save the pid
-    And I create an object and save the pid
+    When I create an object and save the pid
     And I go to the "object" "show" page for "the saved pid"
     And I follow the link to edit
     And I attach the metadata file "SAMPLEA.xml"
@@ -106,8 +103,7 @@ Feature: Preservation
     And the AIP for the saved pid should have "2" versions
 
   Scenario: Upload an asset
-    When I create a collection and save the pid
-    And I create an object and save the pid
+    When I create an object and save the pid
     And I go to the "object" "show" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "upload a file"
@@ -115,8 +111,7 @@ Feature: Preservation
     And the AIP for the saved pid should have "2" versions
 
   Scenario: Replace asset
-    When I create a collection and save the pid
-    And I create an object and save the pid
+    When I create an object and save the pid
     And I go to the "object" "show" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "upload a file"
@@ -129,8 +124,7 @@ Feature: Preservation
     And the AIP for the saved pid should have "3" versions
 
   Scenario: Mark object as reviewed
-    When I create a collection and save the pid
-    And I create an object and save the pid
+    When I create an object and save the pid
     And I go to the "object" "show" page for "the saved pid"
     And I press the button to "update status"
     Then an AIP should exist for the saved pid
@@ -138,8 +132,7 @@ Feature: Preservation
 
   @noexec
   Scenario: Delete an unpublished object
-    When I create a collection and save the pid
-    And I create an object and save the pid
+    When I create an object and save the pid
     And I go to the "object" "show" page for "the saved pid"
     And I follow the link to delete an object
     And I press the button to "confirm delete object"
