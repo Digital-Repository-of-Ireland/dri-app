@@ -42,10 +42,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: d19aebf20bfdb5d76731ab312dcc805acf8d6ab8
+  revision: bc174922069698dd5eb6b3fbdeaad634403a931c
   branch: develop
   specs:
-    user_group (1.1.6)
+    user_group (1.1.7)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -249,12 +249,11 @@ GEM
     debug_inspector (0.0.2)
     deprecation (0.2.2)
       activesupport
-    devise (3.5.6)
+    devise (4.0.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 3.2.6, < 5)
+      railties (>= 4.1.0, < 5.1)
       responders
-      thread_safe (~> 0.1)
       warden (~> 1.2.3)
     devise-guests (0.5.0)
       devise
@@ -485,7 +484,7 @@ GEM
     mini_portile2 (2.0.0)
     minitest (5.8.4)
     mono_logger (1.1.0)
-    multi_json (1.11.2)
+    multi_json (1.11.3)
     multi_test (0.1.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
