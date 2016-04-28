@@ -20,12 +20,20 @@ module DRI::Solr::Document::Collection
     status_count('draft')
   end
 
+  def draft_subcollections
+    status_count('draft', true)
+  end
+
   def published_objects
     status_count('published')
   end
 
   def reviewed_objects
     status_count('reviewed')
+  end
+
+  def reviewed_subcollections
+    status_count('reviewed', true)
   end
 
  def duplicate_total
@@ -66,9 +74,12 @@ module DRI::Solr::Document::Collection
     ActiveFedora.index_field_mapper.solr_name('metadata_md5', :stored_searchable, type: :string)
   end
 
-  def status_count(status)
-    ActiveFedora::SolrService.count("#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id} 
-      AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}")
+  def status_count(status, subcoll=false)
+    query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id} 
+      AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}
+      AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
+
+    ActiveFedora::SolrService.count(query)
   end
   
   def duplicate_query
