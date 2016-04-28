@@ -92,12 +92,9 @@
         @include zen-grid-item(1, 4, $gutter-width: 0px);
         width: 250px;
     }
-    .dri_object_institutes_block {
+    .dri_section_block {
         @include zen-grid-item(4, 1, $gutter-width: 0px);
         @include zen-clear();
-        .dri_institutes_show_more {
-            @include zen-clear();
-        }
     }
     //* User Accounts *//
     .dri_account_block {

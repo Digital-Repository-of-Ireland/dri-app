@@ -1,8 +1,8 @@
 <% children = collection_children(@document, 500) %>
 
 <% if children.present? %>
-	<div class="dri_object_institutes_block">
-		<div class="dri_institutes_title">
+	<div class="dri_section_block" id="collection_children">
+		<div class="dri_section_title">
 			<span id="dri_sub_collection_page_info">
 				<%= "#{t('dri.views.catalog.headers.sub_collections')}" %> <%= page_entries_info children %>
 			</span>

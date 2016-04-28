@@ -326,6 +326,7 @@ en:
         headers:
           files: "Asset Tools"
           sub_collections: "Sub-collections"
+          related_materials: "Related Materials"
         legends:
           no_bookmarked_collections: "You have no bookmarked collections"
           no_bookmarked_objects: "You have no bookmarked objects"

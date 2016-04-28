@@ -2,9 +2,9 @@
 <% external_rels = get_external_relationships @document %>
 
 <% if (!relationships.empty? || !external_rels.empty?) %>
-<div class="dri_object_institutes_block">
-  <div class="dri_institutes_title">
-	  <span>Related Materials</span>
+<div class="dri_section_block" id="related_materials">
+  <div class="dri_section_title">
+	  <span><%= "#{t('dri.views.catalog.headers.related_materials')}" %></span>
   </div>
 
   <% unless relationships.empty? %>
@@ -36,23 +36,23 @@
   
   <% unless external_rels.empty? %>
     <div class="dri_clearfix">
-	  <% external_rels.each do |url| -%>
+  	  <% external_rels.each do |url| -%>
         <article class="">
-		  <%= link_to url, :target => "_blank"  do %>
-			<div class="dri_content_block">
-              <h1><%= url %></h1>
-				<div class="dri_icon">
-			      <span class="dri_icon_image"><i class="fa fa-link"></i> &nbsp;<%= t('dri.views.fields.related.external_link') %></span>
-				</div>
-				<!-- close dri_icon -->
-			</div>
-          <% end %> <!-- close content_block -->
-		</article>
+  		  <%= link_to url, :target => "_blank"  do %>
+  			  <div class="dri_content_block">
+            <h1><%= url %></h1>
+  			    <div class="dri_icon">
+  			      <span class="dri_icon_image"><i class="fa fa-link"></i> &nbsp;<%= t('dri.views.fields.related.external_link') %></span>
+  			    </div>
+  				<!-- close dri_icon -->
+  			  </div>
+        <% end %> <!-- close content_block -->
+  		  </article>
       <% end %>
-	  <div class="dri_clearfix dri_float_right dri_related_items">
+  	  <div class="dri_clearfix dri_float_right dri_related_items">
         <%= paginate external_rels, :param_name => 'externs_page' %>
       </div>
-	</div>
+	  </div>
   <% end %>
 </div>
 <% end %>
