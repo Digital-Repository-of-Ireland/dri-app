@@ -74,54 +74,17 @@ class CatalogController < ApplicationController
     #
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
-
-    #config.add_facet_field solr_name('status', :facetable), :label => 'Record Status'
-    #config.add_facet_field "private_metadata_isi", :label => 'Metadata Search Access', :helper_method => :label_permission
-    #config.add_facet_field "master_file_isi", :label => 'Master File Access',  :helper_method => :label_permission
-    #}
-    # Configure facets for dateRange although NOT displayed
-    #config.add_facet_field "cdateRange", :show => false
-    #config.add_facet_field "pdateRange", :label => 'Published Date', :show => false
-    #config.add_facet_field "sdateRange", :label => 'Subject (temporal)', :show => false
-
     config.add_facet_field "sdateRange", :label => 'Subject (Temporal)', :partial => 'custom_date_range'
 
     config.add_facet_field solr_name('subject', :facetable), :limit => 20
-    #config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
-    #config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
     config.add_facet_field solr_name('geographical_coverage', :facetable), :helper_method => :parse_location, :limit => 20
     config.add_facet_field solr_name('placename_field', :facetable), :label => 'Placename', :show => false
     config.add_facet_field solr_name('geojson', :symbol), :limit => -2, :label => 'Coordinates', :show => false
-    #config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
-    #config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
     config.add_facet_field solr_name('temporal_coverage', :facetable), :helper_method => :parse_era, :limit => 20, :show => false
-    #config.add_facet_field solr_name('temporal_coverage_gle', :facetable), :label => 'Subject (Era) (in Irish)', :limit => 20
-    #config.add_facet_field solr_name('temporal_coverage_eng', :facetable), :label => 'Subject (Era) (in English)', :limit => 20
-    #config.add_facet_field solr_name('name_coverage', :facetable), :label => 'Subject (Name)', :limit => 20
-    #config.add_facet_field solr_name('creator', :facetable), :label => 'creators', :show => false
-    #config.add_facet_field solr_name('contributor', :facetable), :label => 'contributors', :show => false
     config.add_facet_field solr_name('person', :facetable), :limit => 20
     config.add_facet_field solr_name('language', :facetable), :helper_method => :label_language, :limit => true
-    #config.add_facet_field solr_name('creation_date', :dateable), :label => 'Creation Date', :date => true
-    #config.add_facet_field solr_name('published_date', :dateable), :label => 'Published/Broadcast Date', :date => true
-    #config.add_facet_field solr_name('width', :facetable, type: :integer), :label => 'Image Width'
-    #config.add_facet_field solr_name('height', :facetable, type: :integer), :label => 'Image Height'
-    #config.add_facet_field solr_name('area', :facetable, type: :integer), :label => 'Image Size'
-
-    # duration is measured in milliseconds
-    #config.add_facet_field solr_name('duration_total', :stored_sortable, type: :integer), :label => 'Total Duration'
-
-    #config.add_facet_field solr_name('channels', :facetable, type: :integer), :label => 'Audio Channels'
-    #config.add_facet_field solr_name('sample_rate', :facetable, type: :integer), :label => 'Sample Rate'
-    #config.add_facet_field solr_name('bit_depth', :facetable, type: :integer), :label => 'Bit Depth'
-    #config.add_facet_field solr_name('file_count', :stored_sortable, type: :integer), :label => 'Number of Files'
-    #config.add_facet_field solr_name('file_size_total', :stored_sortable, type: :integer), :label => 'Total File Size'
-    #config.add_facet_field solr_name('mime_type', :facetable), :label => 'MIME Type'
-    #config.add_facet_field solr_name('file_format', :facetable), :label => 'File Format'
     config.add_facet_field solr_name('file_type_display', :facetable)
-    #config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
-    #config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
-    config.add_facet_field solr_name('institute', :facetable), :limit => 10 
+     config.add_facet_field solr_name('institute', :facetable), :limit => 10 
     config.add_facet_field solr_name('root_collection_id', :facetable), :helper_method => :collection_title, :limit => 10 
 
     # TODO Temporarily added to test sub-collection belonging objects filter in object results view
@@ -146,20 +109,16 @@ class CatalogController < ApplicationController
     
 
     # solr fields to be displayed in the show (single result) view
-    #   The ordering of the field names is the order of the display
+    # The ordering of the field names is the order of the display
     config.add_show_field solr_name('title', :stored_searchable, type: :string), :label => 'title'
     config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), :label => 'subtitle:'
     config.add_show_field solr_name('description', :stored_searchable, type: :string), :label => 'description', :helper_method => :render_description
     config.add_show_field solr_name('description_eng', :stored_searchable, type: :string), :label => 'description_eng', :helper_method => :render_description
     config.add_show_field solr_name('description_gle', :stored_searchable, type: :string), :label => 'description_gle', :helper_method => :render_description
-    # config.add_show_field solr_name('scope_content', :stored_searchable, type: :string), :label => 'scope_content'
-    # config.add_show_field solr_name('scopecontent', :stored_searchable, type: :string), :label => 'scope_content'
-    # config.add_show_field solr_name('abstract', :stored_searchable, type: :string), :label => 'abstract'
     config.add_show_field solr_name('creator', :stored_searchable, type: :string), :label => 'creators'
     DRI::Vocabulary.marc_relators.each do |role|
       config.add_show_field solr_name('role_'+role, :stored_searchable, type: :string), :label => 'role_'+role
     end
-    # config.add_show_field solr_name('bioghist', :stored_searchable, type: :string), :label => 'bioghist'
     config.add_show_field solr_name('contributor', :stored_searchable, type: :string), :label => 'contributors'
     config.add_show_field solr_name('creation_date', :stored_searchable), :label => 'creation_date', :date => true, :helper_method => :parse_era
     config.add_show_field solr_name('publisher', :stored_searchable), :label => 'publishers'
@@ -169,8 +128,6 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), :label => 'temporal_coverage'
     config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), :label => 'name_coverage'
     config.add_show_field solr_name('format', :stored_searchable), :label => 'format'
-    # config.add_show_field solr_name('physdesc', :stored_searchable), :label => 'physdesc'
-    #config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'format'
     config.add_show_field solr_name('type', :stored_searchable, type: :string), :label => 'type'
     config.add_show_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
     config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'
@@ -221,15 +178,7 @@ class CatalogController < ApplicationController
         :pf => '$title_pf'
       }
     end
-
-    #config.add_search_field('author') do |field|
-    #  field.solr_parameters = { :'spellcheck.dictionary' => 'author' }
-    #  field.solr_local_parameters = {
-    #    :qf => '$author_qf',
-    #    :pf => '$author_pf'
-    #  }
-    #end
-
+    
     config.add_search_field('person') do |field|
         field.solr_parameters = { :'spellcheck.dictionary' => 'person'}
         field.solr_local_parameters = {
@@ -288,7 +237,7 @@ class CatalogController < ApplicationController
     (@response, @document_list) = search_results(params, search_params_logic)
 
     if params[:view].present? && params[:view].include?("timeline")
-      queried_date = ""
+      queried_date = ''
       if (params[:year_from].present? && params[:year_to].present?)
         queried_date = "#{params[:year_from]} #{params[:year_to]}"
       end
@@ -321,6 +270,7 @@ class CatalogController < ApplicationController
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
       format.json { render json: { response: { document: @document } } }
+      format.js { render layout: false }
 
       additional_export_formats(@document, format)
     end
@@ -375,13 +325,12 @@ class CatalogController < ApplicationController
     storage = Storage::S3Interface.new
     
     @files.each do |file| 
-        @displayfiles << file unless file.preservation_only?
-        @surrogates[file.id] = storage.get_surrogates(@document, file)
-
-        file_status(file.id) if @surrogates[file.id].blank?
+      @displayfiles << file unless file.preservation_only?
+      @surrogates[file.id] = storage.get_surrogates(@document, file)
+      file_status(file.id) if @surrogates[file.id].blank?
     end
 
-    ""
+    ''
   end
 
   def file_status(file_id)
@@ -404,14 +353,12 @@ class CatalogController < ApplicationController
     # if present then modify query to target sdateRange Solr field
     temporal_idx = nil
     solr_parameters[:fq].each.with_index do |f_elem, idx|
-      if f_elem.include?("temporal_coverage")
-        temporal_idx = idx
-      end
+      temporal_idx = idx if f_elem.include?("temporal_coverage")
     end
 
-    if !temporal_idx.nil?
-      start_date = ""
-      end_date = ""
+    unless temporal_idx.nil?
+      start_date = ''
+      end_date = ''
 
       solr_parameters[:fq][temporal_idx].split(/\s*;\s*/).each do |component|
         (k,v) = component.split(/\s*=\s*/)
@@ -421,10 +368,10 @@ class CatalogController < ApplicationController
           end_date = v
         end
       end
-      unless start_date == "" # If date is formatted in DCMI Period, then use the date range Solr field query
-        if end_date == ""
-          end_date = start_date
-        end
+
+      unless start_date == '' # If date is formatted in DCMI Period, then use the date range Solr field query
+        end_date = start_date if end_date == ''
+        
         begin
           sdate_str = ISO8601::DateTime.new(start_date).year
           edate_str = ISO8601::DateTime.new(end_date).year
@@ -447,11 +394,11 @@ class CatalogController < ApplicationController
       end
     end
 
-    if !geographical_idx.nil?
+    unless geographical_idx.nil?
       geo_string = solr_parameters[:fq][geographical_idx]
       coordinates = DRI::Metadata::Transformations.get_spatial_coordinates(geo_string)
 
-      if (!coordinates.empty?)
+      if coordinates.present?
         solr_parameters[:fq][geographical_idx] = "geospatial:\"Intersects(#{coordinates})\""
       end
     end
@@ -460,7 +407,7 @@ class CatalogController < ApplicationController
   def search_date_dange solr_parameters, user_parameters
     if (!user_parameters[:f].nil? && !user_parameters[:f]["sdateRange"].nil?)
       solr_parameters[:fq] ||= []
-      # Asign facet filter contraint text (we don't want to show ugly Solr query)
+      # Assign facet filter contraint text (we don't want to show ugly Solr query)
       #user_parameters[:f]["sdateRange"] = user_parameters[:year_from] == user_parameters[:year_to] ?
       #  ["#{user_parameters[:year_from]}"] :
       #  ["#{user_parameters[:year_from]} - #{user_parameters[:year_to]}"]
@@ -469,9 +416,7 @@ class CatalogController < ApplicationController
       date_idx = nil
 
       solr_parameters[:fq].each.with_index do |f_elem, idx|
-        if f_elem.include?("sdateRange")
-          date_idx = idx
-        end
+        date_idx = idx if f_elem.include?("sdateRange")
       end
       query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
 
@@ -488,7 +433,7 @@ class CatalogController < ApplicationController
   #
   def modify_user_parameters
     if (!params[:f].nil? && !params[:f]["sdateRange"].nil?)
-      # Asign facet filter contraint text (we don't want to show ugly Solr query)
+      # Assign facet filter contraint text (we don't want to show ugly Solr query)
       params[:f]["sdateRange"] = params[:year_from] == params[:year_to] ?
           ["#{params[:year_from]}"] :
           ["#{params[:year_from]} - #{params[:year_to]}"]

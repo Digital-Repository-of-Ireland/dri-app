@@ -217,4 +217,53 @@ describe CollectionsController do
 
   end
 
+  describe "read only is set" do
+
+    before(:each) do
+      Settings.reload_from_files(
+        Rails.root.join(fixture_path, "settings-ro.yml").to_s
+      )
+      @login_user = FactoryGirl.create(:admin)
+      sign_in @login_user
+      @collection = FactoryGirl.create(:collection)
+      
+      request.env["HTTP_REFERER"] = catalog_index_path
+    end
+
+    after(:each) do
+      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      @login_user.delete
+
+      Settings.reload_from_files(
+        Rails.root.join("config", "settings.yml").to_s
+      )
+    end
+
+    it 'should not allow object creation' do
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/collection_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      post :create, metadata_file: @file
+      expect(flash[:error]).to be_present
+    end
+
+    it 'should not allow object updates' do
+      params = {}
+      params[:batch] = {}
+      params[:batch][:title] = ["A collection"]
+      params[:batch][:read_users_string] = "public"
+      params[:batch][:edit_users_string] = @login_user.email
+      put :update, :id => @collection.id, :batch => params[:batch]
+
+      expect(flash[:error]).to be_present
+    end
+
+  end
+
 end

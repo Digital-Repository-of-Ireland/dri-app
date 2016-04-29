@@ -1,0 +1,25 @@
+
+<!--overides view params if missing-->
+<% if (params[:view].blank?) %>
+    <% params[:view] = "grid" %>
+<% end %>
+
+<% @page_title = t('blacklight.search.title', application_name: application_name) %>
+
+<div id="dri_crumbtrail_nav_container_id">
+  <ol class="breadcrumb">
+    <li class="active"><%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(@object), id: 'view_collection' ) %></li>
+  </ol>
+</div>
+
+ <%= paginate @document_list, :theme => 'blacklight' %>
+
+<div id="dri_result_container_id" class="dri_result_container">
+  <% if (@document_list.count > 0) %>
+      <%= render_document_index @document_list %>&nbsp;
+  <% else %>
+      <h4>
+        <%= t('dri.help.no_results_found') %>
+      </h4>
+  <% end %>
+</div><!-- close dri_result_container -->

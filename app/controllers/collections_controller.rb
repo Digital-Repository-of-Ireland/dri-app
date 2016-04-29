@@ -9,6 +9,7 @@ class CollectionsController < BaseObjectsController
   before_filter :authenticate_user_from_token!
   before_filter :authenticate_user!
   before_filter :check_for_cancel, only: [:create, :update, :add_cover_image]
+  before_filter :read_only, except: [:index]
 
   # Was this action canceled by the user?
   def check_for_cancel
@@ -241,6 +242,18 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  def duplicates
+    enforce_permissions!('manage_collection', params[:id])
+
+    result = ActiveFedora::SolrService.query("id:#{params[:id]}")
+    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if result.blank?
+
+    @object = SolrDocument.new(result.first)
+
+    @response, document_list = @object.duplicates
+    @document_list = Kaminari.paginate_array(document_list).page(params[:page]).per(params[:per_page])
+  end
+
   def review
     enforce_permissions!('manage_collection', params[:id])
 
@@ -415,7 +428,7 @@ class CollectionsController < BaseObjectsController
     logger.error "Unable to delete collection: #{e.message}"
     raise Exceptions::ResqueError
   end
-
+   
   def publish_collection
     Sufia.queue.push(PublishJob.new(@object.id))
   rescue Exception => e

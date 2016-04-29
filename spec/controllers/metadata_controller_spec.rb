@@ -2,22 +2,22 @@ require 'spec_helper'
 
 describe MetadataController do
   include Devise::TestHelpers
-
-  before(:each) do
-    @login_user = FactoryGirl.create(:admin)
-    sign_in @login_user
-
-    @object = FactoryGirl.create(:sound)
-    @object[:status] = 'draft'
-    @object.save  
-  end
-
-  after(:each) do
-    @login_user.delete
-    @object.delete
-  end
-  
+    
   describe 'update' do
+
+    before(:each) do
+      @login_user = FactoryGirl.create(:admin)
+      sign_in @login_user
+
+      @object = FactoryGirl.create(:sound)
+      @object[:status] = 'draft'
+      @object.save  
+    end
+
+    after(:each) do
+      @login_user.delete
+      @object.delete
+    end
 
     it 'should update an object with a valid metadata file' do
       request.env["HTTP_ACCEPT"] = 'application/json'
@@ -51,6 +51,45 @@ describe MetadataController do
 
       @object.reload
       expect(@object.title).to eq(['An Audio Title'])
+    end
+
+  end
+
+  describe 'read only set' do
+
+    before(:each) do
+        Settings.reload_from_files(
+          Rails.root.join(fixture_path, "settings-ro.yml").to_s
+        )
+        @login_user = FactoryGirl.create(:admin)
+        sign_in @login_user
+        @object = FactoryGirl.create(:sound) 
+
+        request.env["HTTP_REFERER"] = catalog_index_path
+      end
+
+      after(:each) do
+        @object.delete if ActiveFedora::Base.exists?(@object.id)
+        @login_user.delete
+
+        Settings.reload_from_files(
+          Rails.root.join("config", "settings.yml").to_s
+        )
+      end
+
+    it 'should not update an object' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/valid_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      put :update, id: @object.id, metadata_file: @file
+      expect(response.status).to eq(503)
     end
 
   end

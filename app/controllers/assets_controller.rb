@@ -4,6 +4,7 @@ class AssetsController < ApplicationController
 
   before_filter :authenticate_user_from_token!, only: [:list_assets]
   before_filter :authenticate_user!, only: [:list_assets]
+  before_filter :read_only, except: [:show, :download, :list_assets, ]
 
   require 'validators'
 

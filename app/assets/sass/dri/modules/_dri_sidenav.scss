@@ -51,7 +51,9 @@
         li.dri_disabled {
           color: $dri_red;
         }
-         
+        li.dri_warning {
+          color: $dri_red;
+        }
          
     }
     span.dri_stat_num {

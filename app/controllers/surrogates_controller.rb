@@ -1,5 +1,7 @@
 class SurrogatesController < ApplicationController
 
+  before_filter :read_only, except: [:show, :download]
+
   def show
     raise Exceptions::BadRequest unless params[:id].present?
 

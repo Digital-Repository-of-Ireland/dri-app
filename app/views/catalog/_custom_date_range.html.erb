@@ -28,18 +28,7 @@
 				<span class="dri_date_range_label"><%= t('dri.views.catalog.facets.dates.date_range_to') %></span>
 			</span>
 		</li>
-		<!-- <li> -->
-			<!-- Persist values of date range field search -->
-			<%#= hidden_field_tag :c_date, '0' %>
-			<%#= check_box_tag(:c_date, '1', params[:c_date] == '1') %>
-			<%#= label_tag(:c_date, "Creation") %>
-			<%#= hidden_field_tag :p_date, '0' %>
-			<%#= check_box_tag(:p_date, '1', params[:p_date] == '1') %>
-			<%#= label_tag(:p_date, "Published") %>
-			<%#= hidden_field_tag :s_date, '0' %>
-			<%#= check_box_tag(:s_date, '1', params[:s_date] == '1') %>
-			<%#= label_tag(:s_date, "Subject") %>
-		<!-- </li> -->
+		
 		<li>
 		     <button type="submit" class="dri_button_green" id="date_range_search">
         		<%=t('dri.views.catalog.facets.dates.date_set')%>

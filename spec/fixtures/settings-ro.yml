@@ -1,0 +1,28 @@
+read_only: true
+interface:
+  languages: [en, ga]
+dri:
+  password: CHANGEME
+  files: dri_files/data
+  uploads: dri_files/uploads
+plugins:
+  ffmpeg_path: /usr/local/bin/ffmpeg
+restrict:
+  mime_types:
+    image: ['image/png','image/jpeg', 'image/jpg', 'image/jp2', 'image/bmp', 'image/gif', 'image/tiff']
+    text: ['application/rtf', 'text/plain', 'text/xml']
+    pdf: ['application/pdf', 'application/x-pdf']
+    audio: ['audio/mp3', 'audio/mpeg', 'audio/mpeg3', 'audio/mp2', 'audio/wav', 'audio/x-wave', 'audio/x-wav', 'audio/ogg']
+    video: ['video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/avi', 'video/quicktime', 'application/mxf']
+S3:
+  server: http://localhost:8081
+  use_ssl: false
+  access_key_id: anything
+  secret_access_key: anything
+  expiry: 604800
+data:
+  cover_image_bucket: coverimages
+  logos_bucket: institutelogos
+  types: [Sound, MovingImage, Image, Text]
+doi:
+  enable: "false"
