@@ -41,7 +41,7 @@ class Licence < ActiveRecord::Base
       storage.store_file(logo.tempfile.path,
                          "#{name}.#{ext}",
                          Settings.data.logos_bucket)
-      self.logo = storage.get_link_for_file(Settings.data.logos_bucket,
+      self.logo = storage.file_url(Settings.data.logos_bucket,
                                             "#{name}.#{ext}")
     end
   end

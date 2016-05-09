@@ -77,7 +77,7 @@ class ObjectHistoryController < ApplicationController
 
   def surrogate_info(file_id)
     storage = Storage::S3Interface.new
-    surrogates = storage.get_surrogate_info @object.id, file_id
+    surrogates = storage.surrogate_info @object.id, file_id
 
     surrogates
   end

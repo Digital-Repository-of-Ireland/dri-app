@@ -55,7 +55,7 @@ class Institute < ActiveRecord::Base
                        "#{name}.#{file_ext}",
                        Settings.data.logos_bucket)
 
-    self.logo = storage.get_link_for_file(Settings.data.logos_bucket,
+    self.logo = storage.file_url(Settings.data.logos_bucket,
                                           "#{name}.#{file_ext}")
   end
 end
