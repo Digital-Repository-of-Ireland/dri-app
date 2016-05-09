@@ -106,7 +106,7 @@ Given /^I have associated the institute "(.?*)" with the collection with pid "(.
   storage.store_file(logo.path,
                      "#{name}.#{logo.original_filename.split(".").last}",
                      bucket)
-  institute.logo = storage.get_link_for_file(bucket,
+  institute.logo = storage.file_url(bucket,
                    "#{institute_name}.#{logo.original_filename.split(".").last}")
   institute.save
 
