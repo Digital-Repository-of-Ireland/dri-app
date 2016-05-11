@@ -35,11 +35,11 @@ module Storage
       end
       
       url = nil
-      storage = Storage::S3Interface.new
+      storage = StorageService.new
       if (storage.store_file(cover_image.tempfile.path,
                             "#{collection.pid}.#{cover_image.original_filename.split(".").last}",
                              Settings.data.cover_image_bucket))
-        url = storage.get_link_for_file(Settings.data.cover_image_bucket,
+        url = storage.file_url(Settings.data.cover_image_bucket,
                          "#{collection.pid}.#{cover_image.original_filename.split(".").last}")
       end
       
