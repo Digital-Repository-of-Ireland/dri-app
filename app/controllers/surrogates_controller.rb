@@ -107,7 +107,7 @@ class SurrogatesController < ApplicationController
     surrogates = {}
 
     if can? :read, object
-      storage = Storage::S3Interface.new
+      storage = StorageService.new
 
       query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object.id}\"")
       query.each_solr_document do |file_doc|

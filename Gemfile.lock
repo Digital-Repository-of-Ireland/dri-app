@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: b59d97259f5ac9bba6972e13e6c2632e4c6e5ea8
+  revision: 655e7eed614b631f1f1304f8a2d2ce2db296a3c1
   branch: develop
   specs:
     dri_data_models (2.4.0)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: bc174922069698dd5eb6b3fbdeaad634403a931c
+  revision: da54bb77da960b9c650b6b0d35f4762661f7c3fc
   branch: develop
   specs:
     user_group (1.1.7)
@@ -188,11 +188,12 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    carrierwave (0.11.0)
+    carrierwave (0.11.2)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
       json (>= 1.7)
       mime-types (>= 1.16)
+      mimemagic (>= 0.3.0)
     celluloid (0.16.0)
       timers (~> 4.0.0)
     childprocess (0.5.9)
@@ -249,7 +250,7 @@ GEM
     debug_inspector (0.0.2)
     deprecation (0.2.2)
       activesupport
-    devise (4.0.1)
+    devise (4.1.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
@@ -344,7 +345,7 @@ GEM
       multi_json (~> 1.8)
     haml (4.0.7)
       tilt
-    hashie (3.4.3)
+    hashie (3.4.4)
     high_voltage (2.1.0)
     hike (1.2.3)
     hitimes (1.2.2)
@@ -393,7 +394,7 @@ GEM
     i18n_sync (0.5.1)
       ya2yaml
     is_it_working-cbeer (1.0.16)
-    iso-639 (0.2.5)
+    iso-639 (0.2.6)
     iso8601 (0.9.0)
     it (0.2.5)
       actionpack (>= 3.0.0)
@@ -484,7 +485,7 @@ GEM
     mini_portile2 (2.0.0)
     minitest (5.8.4)
     mono_logger (1.1.0)
-    multi_json (1.11.3)
+    multi_json (1.12.0)
     multi_test (0.1.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -594,7 +595,7 @@ GEM
       rdf-xsd (~> 1.1)
     rdf-n3 (1.99.0)
       rdf (~> 1.99)
-    rdf-rdfa (1.99.0)
+    rdf-rdfa (1.99.1)
       haml (~> 4.0)
       htmlentities (~> 4.3)
       rdf (~> 1.99)
@@ -626,18 +627,18 @@ GEM
     rdf-turtle (1.99.0)
       ebnf (~> 1.0)
       rdf (~> 1.99)
-    rdf-vocab (0.8.7.1)
+    rdf-vocab (0.8.8)
       rdf (~> 1.1, >= 1.1.10)
     rdf-xsd (1.99.0)
       rdf (~> 1.99)
-    redis (3.2.2)
+    redis (3.3.0)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
     redlock (0.1.4)
       redis (~> 3, >= 3.0.5)
     remotipart (1.2.1)
     request_store (1.3.1)
-    responders (2.1.2)
+    responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
     resque (1.26.0)
       mono_logger (~> 1.0)

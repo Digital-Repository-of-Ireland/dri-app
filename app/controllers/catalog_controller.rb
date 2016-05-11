@@ -322,7 +322,7 @@ class CatalogController < ApplicationController
     @surrogates = {}
     @status = {}
 
-    storage = Storage::S3Interface.new
+    storage = StorageService.new
     
     @files.each do |file| 
       @displayfiles << file unless file.preservation_only?

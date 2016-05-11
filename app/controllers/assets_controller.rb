@@ -210,7 +210,7 @@ class AssetsController < ApplicationController
   end
 
   def delete_surrogates(bucket_name, file_prefix)
-    storage = Storage::S3Interface.new
+    storage = StorageService.new
     storage.delete_surrogates(bucket_name, file_prefix)
   end
 
@@ -226,7 +226,7 @@ class AssetsController < ApplicationController
     item['pid'] = doc.id
     item['files'] = []
 
-    storage = Storage::S3Interface.new
+    storage = StorageService.new
 
     query.each_solr_document do |file_doc|
       file_list = {}

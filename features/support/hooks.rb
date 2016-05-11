@@ -16,7 +16,7 @@ Before('@random_pid') do
 end
 
 After('@random_pid') do
-  storage = Storage::S3Interface.new
+  storage = StorageService.new
   storage.delete_bucket("o"+@random_pid)
 
   @random_pid = ""
@@ -25,9 +25,8 @@ end
 After('@api') do
   buckets = ['apitest1', 'apitest2']
 
-  storage = Storage::S3Interface.new
-  buckets.each do |bucket|
-    storage.delete_bucket(bucket)
-  end
+  storage = StorageService.new
+
+  buckets.each { |bucket| storage.delete_bucket(bucket) }
 end
 

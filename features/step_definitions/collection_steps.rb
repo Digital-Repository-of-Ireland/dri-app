@@ -102,7 +102,7 @@ Given /^I have associated the institute "(.?*)" with the collection with pid "(.
     bucket = Settings.data.logos_bucket
   end
 
-  storage = Storage::S3Interface.new
+  storage = StorageService.new
   storage.store_file(logo.path,
                      "#{name}.#{logo.original_filename.split(".").last}",
                      bucket)

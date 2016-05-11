@@ -289,10 +289,8 @@ module TimelineHelper
   end
 
   def surrogate_url_tm(doc, file_doc, name)
-    storage = Storage::S3Interface.new
-    url = storage.surrogate_url(doc, file_doc, name)
-
-    url
+    storage = StorageService.new
+    storage.surrogate_url(doc, file_doc, name)
   end
 
   def overlaps?(sdate, other_sdate, edate, other_edate)

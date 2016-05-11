@@ -9,6 +9,24 @@ module Storage
       @client = Aws::S3::Client.new(params)
     end
 
+    def bucket_exists?(bucket)
+      @client.head_bucket(bucket: with_prefix(bucket))
+
+      true
+    rescue Aws::S3::Errors::NotFound
+      false
+    end
+
+    # Create bucket
+    def create_bucket(bucket)
+      @client.create_bucket(bucket: with_prefix(bucket))
+
+      true
+    rescue Exception => e
+      Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e}"
+      false
+    end
+
     # Delete bucket
     def delete_bucket(bucket_name)
       return false unless bucket_exists?(bucket_name)
@@ -97,7 +115,6 @@ module Storage
       generic_file = file_id
 
       files = list_files(bucket)
-
       filename = "#{generic_file}_#{name}"
       surrogate = files.find { |e| /#{filename}/ =~ e }
 
@@ -150,25 +167,7 @@ module Storage
     def bucket_prefix
       Settings.S3.bucket_prefix ? "#{Settings.S3.bucket_prefix}.#{Rails.env}" : nil
     end 
-    
-    def bucket_exists?(bucket)
-      @client.head_bucket(bucket: with_prefix(bucket))
-
-      true
-    rescue Aws::S3::Errors::NotFound
-      false
-    end
-
-    # Create bucket
-    def create_bucket(bucket)
-      @client.create_bucket(bucket: with_prefix(bucket))
-
-      true
-    rescue Exception => e
-      Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e}"
-      false
-    end
-    
+        
     def expiration_timestamp(input)
       input = input.to_int if input.respond_to?(:to_int)
       case input

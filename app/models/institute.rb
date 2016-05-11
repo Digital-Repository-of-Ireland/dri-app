@@ -48,7 +48,7 @@ class Institute < ActiveRecord::Base
   end
 
   def store_logo(logo, name)
-    storage = Storage::S3Interface.new
+    storage = StorageService.new
 
     file_ext = logo.original_filename.split('.').last
     storage.store_file(logo.tempfile.path,

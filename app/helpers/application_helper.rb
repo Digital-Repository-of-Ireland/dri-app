@@ -4,7 +4,7 @@ module ApplicationHelper
   require 'uri'
 
   def surrogate_url( doc, file_doc, name )
-    storage = Storage::S3Interface.new
+    storage = StorageService.new
     url = storage.surrogate_url(doc, file_doc, name)
 
     url

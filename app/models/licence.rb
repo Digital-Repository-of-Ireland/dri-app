@@ -37,7 +37,8 @@ class Licence < ActiveRecord::Base
     if Settings.restrict.mime_types.image.include?(type)
       ext = logo.original_filename.split(".").last
 
-      storage = Storage::S3Interface.new
+      storage = StorageService.new
+      
       storage.store_file(logo.tempfile.path,
                          "#{name}.#{ext}",
                          Settings.data.logos_bucket)

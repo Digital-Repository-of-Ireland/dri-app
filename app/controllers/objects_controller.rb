@@ -385,7 +385,7 @@ class ObjectsController < BaseObjectsController
 
       # Get files
       if can? :read, doc
-        storage = Storage::S3Interface.new
+        storage = StorageService.new
 
         files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
         query = Solr::Query.new(files_query)
