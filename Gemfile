@@ -10,6 +10,8 @@ gem 'blacklight_range_limit'
 gem 'blacklight-maps'
 gem 'hydra-head', '9.9.0'
 
+gem 'riiif'
+
 gem 'sufia-models', '6.5.0'
 gem 'redlock'
 gem 'google-api-client', '0.8.6'

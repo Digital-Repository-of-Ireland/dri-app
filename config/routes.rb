@@ -4,9 +4,8 @@ NuigRnag::Application.routes.draw do
   scope ENV["RAILS_RELATIVE_URL_ROOT"] || "/" do
     root :to => "catalog#index"
 
-    #Blacklight.add_routes(self)
-
     mount UserGroup::Engine => "/user_groups"
+    mount Riiif::Engine => '/images'
 
     Blacklight.add_routes(self)
 
