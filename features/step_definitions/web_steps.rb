@@ -395,5 +395,5 @@ Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |
 end
 
 Then /^I should see the image "(.*?)"$/ do |src|
-  page.should have_xpath("//img[contains(@src, \"#{src}\")]")
+  page.should have_xpath("//img[contains(@alt, \"#{src}\")]")
 end

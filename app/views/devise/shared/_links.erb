@@ -30,7 +30,7 @@
       <h2><%= t('dri.sign_in.with_another_account') %></h2>
       <% signWith = t('dri.sign_in.sign_in_with') %>
       <%- resource_class.omniauth_providers.each do |provider| %>
-          <%= link_to (user_omniauth_authorize_path(provider)) do %>
+          <%= link_to (send("user_#{provider}_omniauth_authorize_path")) do %>
               <!-- ><div class="dri_signin_edugate"><%= signWith + provider.to_s.titleize %></div> -->
               <div class="dri_signin_edugate"><%= t('dri.sign_in.sign_in_with_institution') %></div>
           <% end %>
