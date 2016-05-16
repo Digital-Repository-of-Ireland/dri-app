@@ -1,21 +1,29 @@
-<%= form_for @licence, :html => { :id => "dri_edit_licence_form", :multipart => true }  do |f| %>
-  <%= f.label "#{t('dri.views.licences.forms.name')}:" %>
-  <%= f.text_field :name %>
-  <br />
+<div class="dri_ingest_form_container">
+  <div class="dri_ingest_form" style="width: 100%">
 
-  <%= f.label "#{t('dri.views.licences.forms.url')}:" %>
-  <%= f.text_field :url %>
-  <br />
+    <%= form_for @licence, :html => { id: 'dri_edit_licence_form', multipart: true, class: 'form-vertical' }  do |f| %>
+      <fieldset>
+        <%= f.label "#{t('dri.views.licences.forms.name')}:" %>
+        <%= f.text_field :name %>
+      </fieldset>
 
-  <%= f.label "#{t('dri.views.licences.forms.logo')}:" %>
-  <%= f.text_field :logo %>
-  <%= file_field_tag :logo_file %>
-  <br />
+      <fieldset>
+        <%= f.label "#{t('dri.views.licences.forms.url')}:" %>
+        <%= f.text_field :url %>
+      </fieldset>
 
-  <%= f.label "#{t('dri.views.licences.forms.description')}:" %>
-  <%= f.text_field :description %>
-  <br />
+      <fieldset>
+        <%= f.label "#{t('dri.views.licences.forms.logo')}:" %>
+        <%= f.text_field :logo %>
+      </fieldset>
 
-  <%= f.submit :id => "save_licence" %>
+      <fieldset>
+      <%= f.label "#{t('dri.views.licences.forms.description')}:" %>
+      <%= f.text_field :description %>
+      </fieldset>
 
-<% end %>
+      <%= f.submit id: 'save_licence', class: 'dri_button_green dri_w330' %>
+
+    <% end %>
+  </div>
+</div>
