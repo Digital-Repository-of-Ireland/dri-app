@@ -74,8 +74,8 @@ NuigRnag::Application.routes.draw do
     match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
     # Added review method to collections controller
     match 'collections/:id/review' => 'collections#review', :via => :put, :as => :review
-    
     match 'collections/:id/cover' => 'collections#add_cover_image', :via => :put, :as => :add_cover_image
+    get 'collections/:id/cover' => 'collections#cover', as: :cover_image
 
     match '/privacy' => 'static_pages#privacy', :via => :get
     match '/workspace' => 'workspace#index', :via => :get

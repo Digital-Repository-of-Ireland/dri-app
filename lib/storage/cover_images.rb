@@ -36,10 +36,11 @@ module Storage
       
       url = nil
       storage = StorageService.new
-      if (storage.store_file(cover_image.tempfile.path,
-                            "#{collection.pid}.#{cover_image.original_filename.split(".").last}",
-                             Settings.data.cover_image_bucket))
-        url = storage.file_url(Settings.data.cover_image_bucket,
+      storage.create_bucket(collection.pid)
+
+      if (storage.store_surrogate(collection.pid, cover_image.tempfile.path,
+                            "#{collection.pid}.#{cover_image.original_filename.split(".").last}"))
+        url = storage.surrogate_url(collection.pid,
                          "#{collection.pid}.#{cover_image.original_filename.split(".").last}")
       end
       

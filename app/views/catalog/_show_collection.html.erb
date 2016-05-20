@@ -39,9 +39,9 @@
 	<div class="dri_sidenav_top">
 		<%= link_back_to_catalog %>
 	</div>
-	<% if @document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && @document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0] %>
+	<% if @document.cover_image %>
 	<div class="dri_vc_image hidden-xs">
-		<%= image_tag(@document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :alt=> t('dri.views.alt_tags.cover_image') ) %>
+		<%= image_tag(cover_image_path(@document), :alt=> t('dri.views.alt_tags.cover_image') ) %>
 	</div>
 	<% end %>
 

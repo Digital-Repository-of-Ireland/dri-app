@@ -16,6 +16,11 @@ module DRI::Solr::Document::Collection
     children_array
   end
 
+  def cover_image
+    cover_field = ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)
+    self[cover_field] && self[cover_field][0] ? self[cover_field][0] : nil
+  end
+
   def draft_objects
     status_count('draft')
   end

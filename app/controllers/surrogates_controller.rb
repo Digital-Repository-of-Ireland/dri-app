@@ -4,19 +4,25 @@ class SurrogatesController < ApplicationController
 
   def show
     raise Exceptions::BadRequest unless params[:id].present?
+    enforce_permissions!('read', params[:id])
 
-    enforce_permissions!('show', params[:id])
+    if params[:surrogate].present?
+      storage = StorageService.new
+      file = storage.surrogate_url(params[:id], params[:surrogate])
+      File.open(file, 'rb') do |f|
+        send_data f.read, :type => "image/jpeg", disposition: "inline"
+      end
+    else
+      @surrogates = {}
 
-    @surrogates = {}
+      object_docs = solr_query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
+      raise Exceptions::NotFound if object_docs.empty?
 
-    object_docs = solr_query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
-    raise Exceptions::NotFound if object_docs.empty?
+      all_surrogates object_docs
 
-    all_surrogates object_docs
-
-    respond_to do |format|
-      format.html { render text: @surrogates.to_json }
-      format.json { @surrogates.to_json }
+      respond_to do |format|
+        format.json { @surrogates.to_json }
+      end
     end
   end
 
@@ -49,6 +55,7 @@ class SurrogatesController < ApplicationController
     end
   end
 
+  # Used in Carousel for download links
   def download
     object_id = params[:object_id]
     surrogate_url = params[:surrogate_url]

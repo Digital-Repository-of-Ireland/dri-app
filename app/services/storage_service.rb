@@ -10,8 +10,8 @@ class StorageService
   end
       
   # Create bucket
-  def create_bucket(bucket)
-    @driver.create_bucket(bucket)
+  def create_bucket(bucket_name)
+    @driver.create_bucket(bucket_name)
   end
 
   def delete_bucket(bucket_name)
@@ -21,29 +21,21 @@ class StorageService
   def delete_surrogates(object_id, file_id)
     @driver.delete_surrogates(object_id, file_id)
   end
-
-  def file_url(bucket, file)
-    @driver.file_url(bucket, file)
+  
+  def get_surrogates(object, file, expire=nil)
+    @driver.get_surrogates(object, file, expire)
   end
 
-  def get_surrogates(object, file, expire = nil)
-    @driver.get_surrogates(object, file, expire = nil)
+  def surrogate_info(bucket, key)
+    @driver.surrogate_info(bucket, key)
   end
 
-  def surrogate_info(object_id, file_id)
-    @driver.surrogate_info(object_id, file_id)
+  def surrogate_url(bucket, key, expire=nil)
+    @driver.surrogate_url(bucket, key, expire)
   end
 
-  def surrogate_url(object_id, file_id, name, expire = nil)
-    @driver.surrogate_url(object_id, file_id, name, expire = nil)
+  def store_surrogate(bucket, surrogate_file, surrogate_key)
+    @driver.store_surrogate(bucket, surrogate_file, surrogate_key)
   end
-
-  def store_surrogate(object_id, surrogate_file, surrogate_key)
-    @driver.store_surrogate(object_id, surrogate_file, surrogate_key)
-  end
-
-  def store_file(file, file_key, bucket_name)
-    @driver.store_file(file, file_key, bucket_name)
-  end
-      
+         
 end

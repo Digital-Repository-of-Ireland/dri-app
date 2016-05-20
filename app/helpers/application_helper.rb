@@ -5,9 +5,7 @@ module ApplicationHelper
 
   def surrogate_url( doc, file_doc, name )
     storage = StorageService.new
-    url = storage.surrogate_url(doc, file_doc, name)
-
-    url
+    storage.surrogate_url(doc, "#{file_doc}_#{name}")
   end
 
   def get_metadata_name( object )
@@ -57,12 +55,12 @@ module ApplicationHelper
     cover_key = ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym
 
     if document[cover_key].present? && document[cover_key].first
-        path = document[cover_key].first
+        path = cover_image_path(document)
     elsif document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
       collection = document.root_collection
 
       if collection[cover_key].present? && collection[cover_key].first
-        path = collection[cover_key].first
+        path = cover_image_path(collection)
       end
     end
     
@@ -106,21 +104,22 @@ module ApplicationHelper
   end
 
   # Called from grid view
-  def get_cover_image( document )
+  def image_for_search( document )
     files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('preservation_only', :stored_searchable)}:true"
     files = ActiveFedora::SolrService.query(files_query)
+    
     file_doc = nil
+    image = nil
+
     files.each do |file|
       file_doc = SolrDocument.new(file) unless files.empty?
       if can?(:read, document[:id])
-        @cover_image = search_image( document, file_doc ) unless file_doc.nil?
-        if !@cover_image.nil? then
-          break
-        end
+        image = search_image( document, file_doc ) unless file_doc.nil?
+        break if image
       end
     end
 
-    @cover_image = default_image ( file_doc ) if @cover_image.nil?
+    @search_image = image || default_image( file_doc )
   end
  
   def reader_group( collection_id )

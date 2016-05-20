@@ -170,6 +170,30 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  def cover
+    enforce_permissions!('show_digital_object', params[:id])
+
+    solr_result = ActiveFedora::SolrService.query(
+      ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])
+    )
+    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if solr_result.blank?
+
+    object = SolrDocument.new(solr_result.first)
+
+    cover_url = object.cover_image
+    uri = URI.parse(cover_url)
+    cover_name = File.basename(uri.path)
+    
+    storage = StorageService.new
+    cover_file = storage.surrogate_url(object.id, cover_name)
+    
+    open(cover_file) do |f|
+      send_data f.read, 
+        type: MIME::Types.type_for(cover_name).first.content_type, 
+        disposition: 'inline'
+    end
+  end
+
   # Updates the licence.
   #
   def set_licence
