@@ -10,7 +10,7 @@ class CreateBucketJob < ActiveFedoraIdBasedJob
       bucket_id = object.batch.nil? ? object.id : object.batch.id
       Rails.logger.info "Creating bucket for object #{bucket_id}"
 
-      storage = Storage::S3Interface.new
+      storage = StorageService.new
       created = storage.create_bucket(bucket_id)
       
       raise "Unable to create storage bucket" unless created

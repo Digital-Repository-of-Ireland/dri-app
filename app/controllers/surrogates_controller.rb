@@ -4,13 +4,16 @@ class SurrogatesController < ApplicationController
 
   def show
     raise Exceptions::BadRequest unless params[:id].present?
-    enforce_permissions!('read', params[:id])
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:id])
 
     if params[:surrogate].present?
-      storage = StorageService.new
-      file = storage.surrogate_url(params[:id], params[:surrogate])
-      File.open(file, 'rb') do |f|
-        send_data f.read, :type => "image/jpeg", disposition: "inline"
+      file = file_path(params[:id], params[:file], params[:surrogate])
+      type, ext = mime_type(file)
+
+      open(file) do |f|
+        send_data f.read, 
+          type: type, 
+          disposition: 'inline'
       end
     else
       @surrogates = {}
@@ -22,6 +25,27 @@ class SurrogatesController < ApplicationController
 
       respond_to do |format|
         format.json { @surrogates.to_json }
+      end
+    end
+  end
+
+  # Used in Carousel for download links
+  def download
+    raise Exceptions::BadRequest unless params[:id].present?
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:id])
+
+    if params[:surrogate].present?
+      file = file_path(params[:id], params[:file], params[:surrogate])
+      type, ext = mime_type(file)
+
+      name = "#{params[:id]}#{ext}"
+
+      open(file) do |f|
+        send_data f.read, filename: name, 
+          type: type, 
+          disposition: 'attachment', 
+          stream: 'true', 
+          buffer_size: '4096'
       end
     end
   end
@@ -54,22 +78,7 @@ class SurrogatesController < ApplicationController
       format.json {}
     end
   end
-
-  # Used in Carousel for download links
-  def download
-    object_id = params[:object_id]
-    surrogate_url = params[:surrogate_url]
-
-    uri = validate_uri(surrogate_url)
-    ext = File.extname(uri.path)
-
-    name = "#{object_id}#{ext}"
-
-    content_type = MIME::Types.of(surrogate_url)
-    data = open(uri)
-    send_data data.read, filename: name, type: content_type, disposition: 'attachment', stream: 'true', buffer_size: '4096'
-  end
-
+  
   private
 
   def all_surrogates(result_docs)
@@ -89,6 +98,20 @@ class SurrogatesController < ApplicationController
         @surrogates[doc.id] = object_surrogates unless object_surrogates.empty?
       end
     end
+  end
+
+  def mime_type(file_uri)
+    uri = URI.parse(file_uri)
+    file_name = File.basename(uri.path)
+    ext = File.extname(file_name)
+
+    return MIME::Types.type_for(file_name).first.content_type, ext
+  end
+
+  def file_path(object_id, file_id, surrogate)
+    storage = StorageService.new
+    storage.surrogate_url(object_id, 
+           "#{file_id}_#{surrogate}")
   end
 
   def generate_surrogates(object_id)

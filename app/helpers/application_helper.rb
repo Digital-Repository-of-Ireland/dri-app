@@ -3,13 +3,35 @@ module ApplicationHelper
   require 'institute_helpers'
   require 'uri'
 
-  def surrogate_url( doc, file_doc, name )
+  def surrogate_url( doc_id, file_doc_id, name )
     storage = StorageService.new
-    storage.surrogate_url(doc, "#{file_doc}_#{name}")
+    return nil unless storage.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
+    
+    surrogates_url(id: doc_id, file: file_doc_id, surrogate: name)
   end
 
   def get_metadata_name( object )
     object.descMetadata.class.to_s.downcase.split('::').last
+  end
+
+   # Called from grid view
+  def image_for_search( document )
+    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\" 
+                  AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('preservation_only', :stored_searchable)}:true"
+    files = ActiveFedora::SolrService.query(files_query)
+    
+    file_doc = nil
+    image = nil
+
+    files.each do |file|
+      file_doc = SolrDocument.new(file) unless files.empty?
+      if can?(:read, document[:id])
+        image = search_image( document, file_doc ) unless file_doc.nil?
+        break if image
+      end
+    end
+
+    @search_image = image || default_image( file_doc )
   end
 
   def search_image ( document, file_document, image_name = "crop16_9_width_200_thumbnail" )
@@ -103,26 +125,7 @@ module ApplicationHelper
     @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
   end
 
-  # Called from grid view
-  def image_for_search( document )
-    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('preservation_only', :stored_searchable)}:true"
-    files = ActiveFedora::SolrService.query(files_query)
-    
-    file_doc = nil
-    image = nil
-
-    files.each do |file|
-      file_doc = SolrDocument.new(file) unless files.empty?
-      if can?(:read, document[:id])
-        image = search_image( document, file_doc ) unless file_doc.nil?
-        break if image
-      end
-    end
-
-    @search_image = image || default_image( file_doc )
-  end
- 
-  def reader_group( collection_id )
+ def reader_group( collection_id )
     UserGroup::Group.find_by_name(collection_id)
   end
 

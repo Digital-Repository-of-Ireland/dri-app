@@ -26,6 +26,10 @@ class StorageService
     @driver.get_surrogates(object, file, expire)
   end
 
+  def surrogate_exists?(bucket, key)
+    @driver.surrogate_exists?(bucket, key)
+  end
+
   def surrogate_info(bucket, key)
     @driver.surrogate_info(bucket, key)
   end

@@ -59,7 +59,7 @@ module Hydra
 
         out_file = File.open(output_file, "rb")
 
-        storage = Storage::S3Interface.new
+        storage = StorageService.new
         storage.store_surrogate(bucket_id, out_file, filename)
         
         File.unlink(output_file)

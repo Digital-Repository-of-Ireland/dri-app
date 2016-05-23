@@ -26,7 +26,7 @@ module Storage
       Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e}"
       false
     end
-
+   
     # Delete bucket
     def delete_bucket(bucket_name)
       return false unless bucket_exists?(bucket_name)
@@ -43,20 +43,13 @@ module Storage
       end
     end
 
-    def delete_surrogates(object_id, file_id)
-      objects = list_files(object_id, file_id)
-      objects.each { |obj| @client.delete_object(bucket: with_prefix(object_id), key: obj)}
+    def delete_surrogates(bucket, key)
+      objects = list_files(bucket, key)
+      objects.each { |obj| @client.delete_object(bucket: with_prefix(bucket), key: obj)}
       true
     rescue Exception => e
-      Rails.logger.error "Could not delete surrogate for #{file_id}: #{e}"
+      Rails.logger.error "Could not delete surrogate for #{key}: #{e}"
       false
-    end
-
-    # Get link for arbitrary file
-    def file_url(bucket, file)
-      create_url(bucket, file, nil, false)
-    rescue Exception => e
-      Rails.logger.error "Problem getting link for file #{file}: #{e}"
     end
 
     # Get a hash of all surrogates for an object
@@ -85,38 +78,42 @@ module Storage
       @surrogates_hash
     end
 
-    # Get information about surrogates for a generic_file
-    def surrogate_info(object_id, file_id)
-      bucket = object_id
+     # Get url for a specific surrogate
+    def surrogate_exists?(bucket, key)
+      files = list_files(bucket)
+      surrogate = files.find { |e| /#{key}/ =~ e }
 
+      return nil unless surrogate.present?
+      
+      true
+    end
+    
+    # Get information about surrogates for a generic_file
+    def surrogate_info(bucket, key)
       surrogates_hash = {}
       begin
         response = @client.list_objects(bucket: with_prefix(bucket))
 
         if response.successful?
           response.contents.each do |fileobj|
-            surrogates_hash[fileobj.key] = @client.head_object(bucket: with_prefix(bucket), key: fileobj.key) if filename_match?(fileobj.key, file_id)
+            surrogates_hash[fileobj.key] = @client.head_object(bucket: with_prefix(bucket), key: fileobj.key) if filename_match?(fileobj.key, key)
           end
         else
-          Rails.logger.debug "Problem getting surrogate info for file #{file_id}"
+          Rails.logger.debug "Problem getting surrogate info for file #{key}"
         end
       rescue Exception => e
-        Rails.logger.debug "Problem getting surrogate info for file #{file_id} : #{e}"
+        Rails.logger.debug "Problem getting surrogate info for file #{key} : #{e}"
       end
 
       surrogates_hash
     end
 
     # Get url for a specific surrogate
-    def surrogate_url(object_id, file_id, name, expire = nil)
+    def surrogate_url(bucket, key, expire=nil)
       expire = Settings.S3.expiry unless expire.present? && numeric?(expire)
 
-      bucket = object_id
-      generic_file = file_id
-
       files = list_files(bucket)
-      filename = "#{generic_file}_#{name}"
-      surrogate = files.find { |e| /#{filename}/ =~ e }
+      surrogate = files.find { |e| /#{key}/ =~ e }
 
       if surrogate.present?
         begin
@@ -130,35 +127,15 @@ module Storage
     end
     
     # Save Surrogate File
-    def store_surrogate(object_id, surrogate_file, surrogate_key)
-      bucket_name = object_id
-      
+    def store_surrogate(bucket, surrogate_file, surrogate_key)
       @client.put_object(
-        bucket: with_prefix(bucket_name),
+        bucket: with_prefix(bucket),
         body: File.open(Pathname.new(surrogate_file)),
         key: surrogate_key)
 
       true
     rescue Exception  => e
       Rails.logger.error "Problem saving Surrogate file #{surrogate_key}: #{e}"
-      false
-    end
-
-    # Save arbitrary file
-    def store_file(file, file_key, bucket_name)
-      @client.put_object(
-        bucket: with_prefix(bucket_name),
-        body: File.open(Pathname.new(file)),
-        key: file_key)
-      @client.put_object_acl(
-        acl: "public-read",
-        bucket: with_prefix(bucket_name),
-        key: file_key)
-
-      true
-    rescue Exception => e
-      Rails.logger.error "Problem saving file #{file_key}: #{e}"
-        
       false
     end
         

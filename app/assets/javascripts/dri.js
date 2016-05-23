@@ -15,7 +15,7 @@ $(document).ready(function() {
     $('.dri_help_popover_slow, #facets, #dri_social_media_links_id, #dri_sort_options_id, #dri_change_sort_view_id, #dri_page_options_id, #dri_facet_restrictions_links_id, #dri_pagination_nav_links_id, #dri_browse_sort_tabs_collections_id, #dri_browse_sort_tabs_objects_id').popover( {delay: { show: 1500, hide: 100 }} );
     $('.dri_help_popover').popover( {delay: { show: 100, hide: 100 }} );
     $('.dri_help_tooltip').tooltip( {delay: { show: 100, hide: 100 }} );
-    $('a.dri_gallery').colorbox({rel:'group1', maxWidth:'95%', maxHeight:'95%'});
+    $('a.dri_gallery').colorbox({rel:'group1', maxWidth:'95%', maxHeight:'95%', photo: true});
     if (navigator.userAgent.indexOf('iPhone') != -1 || navigator.userAgent.indexOf('Android') != -1) {
 	    addEventListener("load", function() {
 	            setTimeout(hideURLbar, 0);
