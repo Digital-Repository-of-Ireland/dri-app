@@ -198,12 +198,12 @@ class ObjectsController < BaseObjectsController
           solr_doc = SolrDocument.new(doc)
           item = extract_metadata solr_doc
                   
-          if solr_doc.published?
+          #if solr_doc.published?
             item = extract_metadata solr_doc
             item.merge!(find_assets_and_surrogates solr_doc)
 
             @list << item
-          end
+          #end
         end
 
         raise Exceptions::NotFound if @list.empty?
@@ -404,7 +404,9 @@ class ObjectsController < BaseObjectsController
 
             timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
             surrogates = storage.get_surrogates doc, file_doc, timeout
-            surrogates.each { |file,loc| file_list[file] = loc }
+            surrogates.each do |file,loc| 
+              file_list[file] = url_for(object_file_url(object_id: doc.id, id: file_doc.id, surrogate: file))
+            end
 
             item['files'].push(file_list)
           end

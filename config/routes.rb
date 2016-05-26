@@ -81,9 +81,8 @@ NuigRnag::Application.routes.draw do
     match '/workspace' => 'workspace#index', :via => :get
     match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
 
-    put 'surrogates/:id' => 'surrogates#update', :as => :surrogates_generate
     get 'surrogates/:id' => 'surrogates#show', :as => :surrogates
-    get 'surrogates/:id/download' => 'surrogates#download', :as => :surrogate_download
+    put 'surrogates/:id' => 'surrogates#update', :as => :surrogates_generate
 
     match 'collections/:id' => 'catalog#show', :via => :get
 

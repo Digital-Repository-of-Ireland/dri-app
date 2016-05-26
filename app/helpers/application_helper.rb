@@ -7,7 +7,7 @@ module ApplicationHelper
     storage = StorageService.new
     return nil unless storage.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
     
-    surrogates_url(id: doc_id, file: file_doc_id, surrogate: name)
+    object_file_url(object_id: doc_id, id: file_doc_id, surrogate: name)
   end
 
   def get_metadata_name( object )

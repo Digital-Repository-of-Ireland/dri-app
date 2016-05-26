@@ -1,55 +1,23 @@
 class SurrogatesController < ApplicationController
 
-  before_filter :read_only, except: [:show, :download]
+  before_filter :read_only, except: [:show]
 
   def show
     raise Exceptions::BadRequest unless params[:id].present?
     raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:id])
 
-    if params[:surrogate].present?
-      file = file_path(params[:id], params[:file], params[:surrogate])
-      type, ext = mime_type(file)
+    @surrogates = {}
 
-      open(file) do |f|
-        send_data f.read, 
-          type: type, 
-          disposition: 'inline'
-      end
-    else
-      @surrogates = {}
+    object_docs = solr_query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
+    raise Exceptions::NotFound if object_docs.empty?
 
-      object_docs = solr_query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
-      raise Exceptions::NotFound if object_docs.empty?
+    all_surrogates object_docs
 
-      all_surrogates object_docs
-
-      respond_to do |format|
-        format.json { @surrogates.to_json }
-      end
+    respond_to do |format|
+      format.json { @surrogates.to_json }
     end
   end
-
-  # Used in Carousel for download links
-  def download
-    raise Exceptions::BadRequest unless params[:id].present?
-    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:id])
-
-    if params[:surrogate].present?
-      file = file_path(params[:id], params[:file], params[:surrogate])
-      type, ext = mime_type(file)
-
-      name = "#{params[:id]}#{ext}"
-
-      open(file) do |f|
-        send_data f.read, filename: name, 
-          type: type, 
-          disposition: 'attachment', 
-          stream: 'true', 
-          buffer_size: '4096'
-      end
-    end
-  end
-
+  
   def update
     raise Exceptions::BadRequest unless params[:id].present?
 
@@ -98,20 +66,6 @@ class SurrogatesController < ApplicationController
         @surrogates[doc.id] = object_surrogates unless object_surrogates.empty?
       end
     end
-  end
-
-  def mime_type(file_uri)
-    uri = URI.parse(file_uri)
-    file_name = File.basename(uri.path)
-    ext = File.extname(file_name)
-
-    return MIME::Types.type_for(file_name).first.content_type, ext
-  end
-
-  def file_path(object_id, file_id, surrogate)
-    storage = StorageService.new
-    storage.surrogate_url(object_id, 
-           "#{file_id}_#{surrogate}")
   end
 
   def generate_surrogates(object_id)

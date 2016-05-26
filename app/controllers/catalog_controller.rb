@@ -326,7 +326,19 @@ class CatalogController < ApplicationController
     
     @files.each do |file| 
       @displayfiles << file unless file.preservation_only?
-      @surrogates[file.id] = storage.get_surrogates(@document, file)
+
+      # get the surrogates for this file if they exist
+      surrogates = storage.get_surrogates(@document, file)
+      if surrogates
+        file_list = {}
+        surrogates.each do |key,_path|
+          file_list[key] = url_for(object_file_url(
+            object_id: @document.id, id: file.id, surrogate: key))
+        end
+
+        @surrogates[file.id] = file_list unless file_list.empty?
+      end
+
       file_status(file.id) if @surrogates[file.id].blank?
     end
 

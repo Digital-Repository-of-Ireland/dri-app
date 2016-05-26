@@ -19,7 +19,7 @@
     <% elsif surrogate.nil? && ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
         <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{generic_file.file_size ? number_to_human_size(generic_file.file_size.to_f) : t('dri.views.catalog.links.unknown_size')})", file_download_path(@document, generic_file.id), id: "download_master_asset" %>
     <% elsif surrogate.present? %>
-        <%= link_to t('dri.views.catalog.links.download_nth', :index => index.ordinalize), surrogate_download_path(document.id, file: generic_file.id, surrogate: surrogate_type_name), id: "download_asset" %>
+        <%= link_to t('dri.views.catalog.links.download_nth', :index => index.ordinalize), file_download_path(object_id: document.id, id: generic_file.id, surrogate: surrogate_type_name), id: "download_asset" %>
         <% if (@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id) %>
             - <%= link_to "#{t('dri.views.catalog.links.download_master')} (#{generic_file.file_size ? number_to_human_size(generic_file.file_size.to_f) : t('dri.views.catalog.links.unknown_size')})", file_download_path(@document, generic_file.id), id: "download_master_asset" %>
         <% end %>

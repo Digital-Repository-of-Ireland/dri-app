@@ -15,27 +15,36 @@ class AssetsController < ApplicationController
   end
 
   def show
-    datastream = params[:datastream].presence || 'content'
+    if params[:surrogate].present?
+      show_surrogate
+      return
+    else
+      datastream = params[:datastream].presence || 'content'
 
-    result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
-    @document = SolrDocument.new(result.first)
+      result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
+      @document = SolrDocument.new(result.first)
 
-    @generic_file = retrieve_object! params[:id]
+      @generic_file = retrieve_object! params[:id]
 
-    status(@generic_file.id)
+      status(@generic_file.id)
 
-    can_view?
+      can_view?
 
-    respond_to do |format|
-      format.html
-      format.json { render json: @generic_file }
+      respond_to do |format|
+        format.html
+        format.json { render json: @generic_file }
+      end
     end
-
   end
 
   # Retrieves external datastream files that have been stored in the filesystem.
   # By default, it retrieves the file in the content datastream
   def download
+    if params[:surrogate].present?
+      download_surrogate 
+      return
+    end
+
     # Check if user can view a master file
     enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
@@ -170,7 +179,8 @@ class AssetsController < ApplicationController
 
     raise Exceptions::BadRequest unless params[:objects].present?
 
-    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(params[:objects].map{ |o| o.values.first })
+    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(
+      params[:objects].map{ |o| o.values.first })
     result_docs = Solr::Query.new(solr_query)
     result_docs.each_solr_document do |doc|
       item = list_files_with_surrogates(doc)
@@ -185,6 +195,14 @@ class AssetsController < ApplicationController
   end
 
   private
+
+  def mime_type(file_uri)
+    uri = URI.parse(file_uri)
+    file_name = File.basename(uri.path)
+    ext = File.extname(file_name)
+
+    return MIME::Types.type_for(file_name).first.content_type, ext
+  end
 
   def can_view?
     if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
@@ -214,10 +232,48 @@ class AssetsController < ApplicationController
     storage.delete_surrogates(bucket_name, file_prefix)
   end
 
+  def download_surrogate
+    raise Exceptions::BadRequest unless params[:object_id].present?
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:object_id])
+
+    file = file_path(params[:object_id], params[:id], params[:surrogate])
+    type, ext = mime_type(file)
+
+    name = "#{params[:id]}#{ext}"
+
+    open(file) do |f|
+      send_data f.read, filename: name, 
+        type: type, 
+        disposition: 'attachment', 
+        stream: 'true', 
+        buffer_size: '4096'
+    end
+  end
+
+  def show_surrogate
+    raise Exceptions::BadRequest unless params[:object_id].present?
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:object_id])
+
+    file = file_path(params[:object_id], params[:id], params[:surrogate])
+    type, ext = mime_type(file)
+
+    open(file) do |f|
+      send_data f.read, 
+        type: type, 
+        disposition: 'inline'
+    end
+  end
+
   def download_url
     url_for controller: 'assets', action: 'download', object_id: @generic_file.batch.id, id: @generic_file.id
   end
 
+  def file_path(object_id, file_id, surrogate)
+    storage = StorageService.new
+    storage.surrogate_url(object_id, 
+           "#{file_id}_#{surrogate}")
+  end
+  
   def list_files_with_surrogates(doc)
     files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
     query = Solr::Query.new(files_query)
@@ -238,7 +294,7 @@ class AssetsController < ApplicationController
 
       if can? :read, doc
         surrogates = storage.get_surrogates doc, file_doc
-        surrogates.each { |file, loc| file_list[file] = loc }
+        surrogates.each { |file, _loc| file_list[file] = object_file_url(object_id: doc.id, id: file_doc.id, surrogate: file) }
       end
 
       item['files'].push(file_list)
