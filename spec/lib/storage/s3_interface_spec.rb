@@ -20,7 +20,10 @@ describe "Storage::S3Interface" do
     endpoint.scheme.should == signed_url.scheme
     endpoint.host.should == signed_url.host
     endpoint.port.should == signed_url.port
-    signed_url.path.should == "/1n79j1386/x059d075t_crop16_9_width_200_thumbnail.png"
+
+    prefix = Settings.S3.bucket_prefix ? "#{Settings.S3.bucket_prefix}.#{Rails.env}." : ''
+    
+    signed_url.path.should == "/#{prefix}1n79j1386/x059d075t_crop16_9_width_200_thumbnail.png"
 
     signed_url.query.should include(Settings.S3.access_key_id)
     signed_url.query.should include("Signature=")
