@@ -69,6 +69,17 @@ describe "StorageService" do
     expect(File.basename(URI.parse(uri).path)).to be == "#{@gf.id}_mp3.mp3"
   end
 
+  it "should list surrogates" do
+    storage = StorageService.new
+    storage.create_bucket(@object.id)
+    storage.store_surrogate(@object.id, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.id}_mp3.mp3")
+
+    list = storage.get_surrogates(@object.id, @gf.id)
+
+    expect(list.key?('mp3')).to be true
+    expect { URI.parse(list['mp3']) }.not_to raise_error(URI::InvalidURIError)
+  end
+
   it "should delete surrogates" do
     storage = StorageService.new
     storage.create_bucket(@object.id)
