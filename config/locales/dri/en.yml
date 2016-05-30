@@ -360,7 +360,7 @@ en:
           generate_surrogates: "Regenerate Surrogates"
           history: History
           listen: listen
-          mark_all_descendants_reviewed: "Mark Collection AND Sub-Collection Objects Reviewed"
+          mark_all_descendants_reviewed: "Proceed"
           mark_all_reviewed: "Mark as Reviewed"
           mark_object_draft: "Mark Object as Draft"
           mark_object_reviewed: "Mark Object as Reviewed"
@@ -370,6 +370,7 @@ en:
           related: "Related Assets"
           request_doi: "Request DOI"
           review_objects: "Review Objects"
+          review_collection: "Review Collection"
           reviewed: Reviewed
           share: Share
           status_update: "Update status"
@@ -393,8 +394,11 @@ en:
           delete_collection: "Delete Collection"
           new_collection: "New Collection"
           remove: Remove
-        confirm_all_descendants_reviewed: "This will mark %{draft_count} draft objects within the collection AND sub-collections as Reviewed. Continue?"
+        confirm_all_descendants_reviewed: "By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed."
         confirm_all_reviewed: "This will mark all objects within the collection as Reviewed. Continue?"
+        confirm_review_collection: "This collection record will be marked as reviewed."
+        confirm_review_subcollection: "Bear in mind that for this collection to be published you will have to mark all of its parent sub-collections as reviewed beforehand, otherwise the collection won't be accessible after publishing"
+        confirm_review_summary: "(This operation will affect %{subcolls} sub-collections and %{objects} objects)"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         confirm_publish: "This will make all reviewed objects accessible. This can not be undone! Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"

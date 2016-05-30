@@ -226,23 +226,31 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title"><%= t('dri.views.catalog.links.review_objects') %></h4>
+				<h4 class="modal-title"><%= t('dri.views.catalog.links.review_collection') %></h4>
 			</div>
 
 			<div class="modal-body">
-				<span class="label label-danger"><%= t('dri.views.collection.confirm_all_descendants_reviewed', draft_count: (@document.draft_objects + @document.draft_subcollections)) %></span>
+				<p><b><%= t('dri.views.collection.confirm_review_collection') %></b>
+				<% if @document.sub_collection? %>
+				  </br><%= t('dri.views.collection.confirm_review_subcollection') %>
+				<% end %>
+			  </p>
+				<p><%= t('dri.views.collection.confirm_all_descendants_reviewed') %></p>
+				<p><%= t('dri.views.collection.confirm_review_summary', 
+					      objects: @document.draft_objects, 
+				        subcolls: @document.draft_subcollections) %></p>
 				<br />
 				<% if duplicate_total && duplicate_total > 0 %>
 				  <span class="label label-danger"><%= t('dri.views.collection.duplicates_found', duplicates_count: duplicate_total) %></span>
 				<% end %>
-				<%= button_to review_path(:apply_all => 'yes'),:class =>"dri_button_red", :id => "all_objects_reviewed", :method => :put do %>
-				<%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
-				<% end %>
 			</div>
 			<div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">
-					<%= t('dri.window.modal.close') %>
-				</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+						<%= t('dri.window.modal.close') %>
+					</button>
+					<%= button_to review_path(:apply_all => 'yes'), :class =>"btn-primary dri_button_green", form: {style: 'display:inline-block;'}, :id => "all_objects_reviewed", :method => :put do %>
+					  <%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
+					<% end %>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
