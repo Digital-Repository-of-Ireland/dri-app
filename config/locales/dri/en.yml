@@ -366,7 +366,7 @@ en:
           mark_object_reviewed: "Mark Object as Reviewed"
           not_characterized: "not yet characterized"
           publish: "Publish"
-          publish_reviewed: "Publish reviewed objects"
+          publish_reviewed: "Publish Reviewed"
           related: "Related Assets"
           request_doi: "Request DOI"
           review_objects: "Review Objects"

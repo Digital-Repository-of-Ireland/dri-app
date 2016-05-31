@@ -105,16 +105,10 @@
 			</div>
     </li>
 
-    <% if @document.draft? %>
-      <% publish_label = t('dri.views.catalog.links.publish') %>
-    <% else %>
-      <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
-    <% end %>
-
     <% if @document.root_collection? && @depositing_institute %>
 	    <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
         <li>
-          <%= publish_label %>
+          <%= t('dri.views.catalog.links.publish_reviewed') %>
         </li>
       <% end %>
     <% elsif  @document.root_collection? && !@depositing_institute %>
