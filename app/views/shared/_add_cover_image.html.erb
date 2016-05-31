@@ -1,4 +1,5 @@
-<%= form_for @document, as: :batch, :url => {:controller=>"collections", :action=>"add_cover_image"}, :method=>"put" do |f| %>
+<%= form_for @document, as: :batch, html: { id: 'choose_cover_image' }, 
+    :url => {:controller=>"collections", :action=>"add_cover_image"}, :method=>"put" do |f| %>
 
 <div class="dri_file_upload">
 	
@@ -15,7 +16,7 @@
 
 </div>
 <div>
-<%= f.submit t('dri.views.objects.buttons.save'), :class => "dri_button_green dri_w230", :id => "add_cover_image" %>
+<%= f.submit t('dri.views.objects.buttons.save'), :class => "hidden" %>
 <% end %>
 </div>
 

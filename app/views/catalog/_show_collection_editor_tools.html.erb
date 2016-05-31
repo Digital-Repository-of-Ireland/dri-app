@@ -7,6 +7,15 @@
 		});
 	}); 
 </script>
+<script>
+  function confirmDelete() {
+		if (confirm("<%= t('dri.views.collection.confirm_delete') %>")) {
+           $('#delete_collection').submit();
+       } else {
+           return false;
+       }
+  }
+</script>
 <div class="dri_sidenav">
 <h5>
 	<i class="fa fa-pencil"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
@@ -113,7 +122,7 @@
       <% end %>
     <% elsif  @document.root_collection? && !@depositing_institute %>
       <li class="dri_help_popover dri_disabled" data-content="<%= t('dri.help.dri_publish_unavailable') %>" data-original-title="<%= t('dri.help.dri_publish_unavailable_title') %>" data-trigger="hover" data-placement="left">
-        <%= publish_label %>
+        <%= t('dri.views.catalog.links.publish_reviewed') %>
       </li>
     <% end %>
         
@@ -199,14 +208,17 @@
 			<div class="modal-body">
 				<span class="label label-danger"><%= t('dri.views.collection.confirm_delete') %></span>
 				<br />
-				<%= form_tag (collection_path(@document.id)), :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
-				<%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_button_red", :id => "delete_collection_#{@document.id}", :data => { :confirm => t('dri.views.collection.confirm_delete') } %>
+				<%= form_tag (collection_path(@document.id)), id: 'delete_collection', :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+				<%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "hidden" %>
 				<% end %>
 
 			</div>
 
 			<div class="modal-footer">
-
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
+        <%= button_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_button_red", :id => "delete_collection_#{@document.id}", onclick: "confirmDelete();" %>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
@@ -239,10 +251,10 @@
 				<% end %>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">
+				<button type="button" class="dri_button" data-dismiss="modal">
 						<%= t('dri.window.modal.close') %>
 					</button>
-					<%= button_to review_path(:apply_all => 'yes'), :class =>"btn-primary dri_button_green", form: {style: 'display:inline-block;'}, :id => "all_objects_reviewed", :method => :put do %>
+					<%= button_to review_path(:apply_all => 'yes'), :class =>"dri_button_green", form: {style: 'display:inline-block;'}, :id => "all_objects_reviewed", :method => :put do %>
 					  <%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
 					<% end %>
 			</div>
@@ -294,8 +306,11 @@
 			<%= render :partial => "shared/manage_institute" %>
 			</div>
 			<div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">
+              <button type="button" class="dri_button_grey" data-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
+				</button>
+				<button id="associate_inst" type="submit" class="dri_button_green" onclick="$('#associate_institute').submit();">
+					<%= t('dri.views.collection.institute.set_institutes') %>
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
@@ -318,8 +333,11 @@
 			<%= render :partial => "shared/add_cover_image" %>
 			</div>
 			<div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
+				</button>
+				<button id="add_cover_image" type="submit" class="dri_button_green" onclick="$('#choose_cover_image').submit();">
+					<%= t('dri.views.objects.buttons.save') %>
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
@@ -341,8 +359,11 @@
 			  <%= render :partial => "shared/set_collection_licence" %>
 			</div>
 			<div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
+				</button>
+				<button id="set_licence" type="submit" class="dri_button_green" onclick="$('#choose_licence').submit();">
+					<%= t('dri.views.catalog.buttons.submit') %>
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
@@ -361,9 +382,12 @@
 
       <div class="modal-body"></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
 	      <%= t('dri.window.modal.close') %>
-		</button>
+		  </button>
+		  <button id="save_access_controls" type="submit" class="dri_button_green" onclick="$('#set_access_controls').submit();">
+          <%= t('dri.views.objects.buttons.save') %>
+        </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
