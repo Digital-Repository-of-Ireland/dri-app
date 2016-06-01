@@ -44,7 +44,7 @@
         <% end %>
       <% end %> <!-- if end (non-EAD collections) -->
 	      
-      <% if !@document.published? && !@document.doi %>
+      <% if @document.published? && @document.doi %>
          <%= link_to '', :'data-target' => '#dri_doi_modal_id', :'data-toggle' => 'modal', :id => "request_doi" do %>
 	         <li><%= t('dri.views.catalog.links.request_doi') %></li>
 	       <% end %>
