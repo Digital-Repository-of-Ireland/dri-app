@@ -44,7 +44,7 @@
         <% end %>
       <% end %> <!-- if end (non-EAD collections) -->
 	      
-      <% if @document.published? && @document.doi %>
+      <% if !@document.published? && !@document.doi %>
          <%= link_to '', :'data-target' => '#dri_doi_modal_id', :'data-toggle' => 'modal', :id => "request_doi" do %>
 	         <li><%= t('dri.views.catalog.links.request_doi') %></li>
 	       <% end %>
@@ -278,7 +278,7 @@
 				<%= form_tag(collection_doi_path(@document.id), method: "post") do %>
 				  <%= label_tag 'modified', t('dri.views.collection.doi_modification') %>
 				  <%= text_field_tag :modified, nil, size: 50, required: true  %>
-                  <%= submit_tag(t('dri.views.catalog.buttons.submit')) %>
+                  <%= submit_tag(t('dri.views.catalog.buttons.submit'), class: 'dri_button_green') %>
                 <% end %>
 			</div>
 			<div class="modal-footer">
