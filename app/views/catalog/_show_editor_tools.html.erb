@@ -150,7 +150,7 @@
         <span class="label label-danger"><%= t('dri.views.objects.confirm.delete') %></span>
         <br />
         <%= form_tag (object_path(@document.id)), id: "delete_object", :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
-          <%= submit_tag t('dri.views.objects.buttons.delete_object'), :class => "hidden" %>
+          <%= submit_tag t('dri.views.objects.buttons.delete_object'), id: 'submit_delete', class: "hidden" %>
         <% end %>
       </div>
 
