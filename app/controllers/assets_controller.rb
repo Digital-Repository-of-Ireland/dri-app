@@ -237,6 +237,8 @@ class AssetsController < ApplicationController
     raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:object_id])
 
     file = file_path(params[:object_id], params[:id], params[:surrogate])
+    raise Exceptions::NotFound unless file
+    
     type, ext = mime_type(file)
 
     name = "#{params[:id]}#{ext}"
@@ -255,6 +257,8 @@ class AssetsController < ApplicationController
     raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:object_id])
 
     file = file_path(params[:object_id], params[:id], params[:surrogate])
+    raise Exceptions::NotFound unless file
+
     type, ext = mime_type(file)
 
     open(file) do |f|
