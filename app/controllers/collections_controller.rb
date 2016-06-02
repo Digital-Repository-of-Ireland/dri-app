@@ -181,12 +181,15 @@ class CollectionsController < BaseObjectsController
     object = SolrDocument.new(solr_result.first)
 
     cover_url = object.cover_image
+    raise Exceptions::NotFound if cover_url.blank?
+
     uri = URI.parse(cover_url)
     cover_name = File.basename(uri.path)
     
     storage = StorageService.new
     cover_file = storage.surrogate_url(object.id, cover_name)
-    
+    raise Exceptions::NotFound unless cover_file
+
     open(cover_file) do |f|
       send_data f.read, 
         type: MIME::Types.type_for(cover_name).first.content_type, 
