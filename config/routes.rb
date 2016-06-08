@@ -38,7 +38,8 @@ NuigRnag::Application.routes.draw do
     get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
     put 'objects/:id/access', to: 'access_controls#update'
   
-    resources :organisations, controller: :institutes, :only => ['index','show', 'new', 'create', 'destroy', 'edit', 'update']
+    resources :organisations, controller: :institutes
+    get 'organisations/:id/logo', to: 'institutes#logo', as: :logo
 
     match 'association' => 'institutes#associate', :via => :post, :as => :new_association
     match 'association' => 'institutes#disassociate', :via => :delete, :as => :disassociation
@@ -73,16 +74,15 @@ NuigRnag::Application.routes.draw do
     match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
     # Added review method to collections controller
     match 'collections/:id/review' => 'collections#review', :via => :put, :as => :review
-    
     match 'collections/:id/cover' => 'collections#add_cover_image', :via => :put, :as => :add_cover_image
+    get 'collections/:id/cover' => 'collections#cover', as: :cover_image
 
     match '/privacy' => 'static_pages#privacy', :via => :get
     match '/workspace' => 'workspace#index', :via => :get
     match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
 
-    match 'surrogates/:id' => 'surrogates#update', :via => :put, :as => :surrogates_generate
-    match 'surrogates/:id' => 'surrogates#show', :via => :get, :as => :surrogates
-    match 'surrogates/:id/download' => 'surrogates#download', :via => :get, :as => :surrogate_download
+    get 'surrogates/:id' => 'surrogates#show', :as => :surrogates
+    put 'surrogates/:id' => 'surrogates#update', :as => :surrogates_generate
 
     match 'collections/:id' => 'catalog#show', :via => :get
 

@@ -29,6 +29,15 @@ class InstitutesController < ApplicationController
     @inst = Institute.find(params[:id])
   end
 
+  def logo
+    @brand = Institute.find(params[:id]).brand
+
+    send_data(@brand.file_contents,
+            type: @brand.content_type,
+            filename: @brand.filename,
+            disposition: 'inline')
+  end
+
   # Create a new institute entry
   def create
     @inst = Institute.new

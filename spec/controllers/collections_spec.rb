@@ -93,6 +93,32 @@ describe CollectionsController do
 
   end
 
+  describe 'cover' do
+
+    it 'should return not-found for no cover image' do
+      @collection = FactoryGirl.create(:collection)
+      @collection[:creator] = [@login_user.email]
+      @collection[:status] = "draft"
+      @collection.save
+
+      get :cover, { id: @collection.id }
+      expect(response.status).to eq(404)
+    end
+
+    it 'should return not found if cover image cannot be found for storage interface' do
+      @collection = FactoryGirl.create(:collection)
+      @collection[:creator] = [@login_user.email]
+      @collection[:status] = "draft"
+
+      @collection[:cover_image] = "/path/to/nonexistent.jpg"
+      @collection.save
+
+      get :cover, { id: @collection.id }
+      expect(response.status).to eq(404)
+    end
+
+  end
+
   describe 'update' do
     
     it 'should allow a subcollection to be updated' do

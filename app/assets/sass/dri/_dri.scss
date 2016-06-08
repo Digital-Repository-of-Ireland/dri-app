@@ -1223,13 +1223,21 @@ h4.suggest {
                 margin-left: -15px;
                 margin-right: -15px;
                 padding: 10px 5px 10px 20px;
+                &.selected {
+                  background-color: $dri_thingrey;
+                  color: $dri_grey;
+                  text-decoration: underline;
+                  &:hover {
+                    .fa { color: $dri_darkgrey; }
+                  }
+                }
                 &:hover {
                     text-decoration: underline;
                 }
-                &.selected {
-                    background-color: $dri_thingrey;
-                    color: $dri_grey;
-                    text-decoration: underline;
+                .fa {
+                  float: right;
+                  padding: 0 10px 0 0;
+                  color: $dri_white;
                 }
             }
         }

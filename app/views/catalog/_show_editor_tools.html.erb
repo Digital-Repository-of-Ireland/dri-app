@@ -17,6 +17,15 @@
     });
   });
 </script>
+<script>
+  function confirmDelete() {
+    if (confirm("<%= t('dri.views.objects.confirm.delete') %>")) {
+           $('#delete_object').submit();
+       } else {
+           return false;
+       }
+  }
+</script>
 <div class="dri_sidenav">
 <h5>
   <i class="fa fa-pencil"></i> <%= t('dri.views.catalog.titles.editor_tools') %>
@@ -140,15 +149,16 @@
       <div class="modal-body">
         <span class="label label-danger"><%= t('dri.views.objects.confirm.delete') %></span>
         <br />
-        <%= form_tag (object_path(@document.id)), :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
-          <%= submit_tag t('dri.views.objects.buttons.delete_object'), :class => "dri_button_red", :id => "delete_object_#{@document.id}", :data => { :confirm => t('dri.views.objects.confirm.delete') } %>
+        <%= form_tag (object_path(@document.id)), id: "delete_object", :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+          <%= submit_tag t('dri.views.objects.buttons.delete_object'), id: 'submit_delete', class: "hidden" %>
         <% end %>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
           <%= t('dri.window.modal.close') %>
         </button>
+        <%= button_tag t('dri.views.objects.buttons.delete_object'), :class => "dri_button_red", :id => "delete_object_#{@document.id}", onclick: "confirmDelete();" %>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -169,8 +179,11 @@
         <%= render :partial => "shared/set_object_licence" %>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
           <%= t('dri.window.modal.close') %>
+        </button>
+        <button id="set_licence" type="submit" class="dri_button_green" onclick="$('#choose_licence').submit();">
+          <%= t('dri.views.catalog.buttons.submit') %>
         </button>
       </div>
     </div><!-- /.modal-content -->
@@ -189,8 +202,11 @@
 
       <div class="modal-body"></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
           <%= t('dri.window.modal.close') %>
+        </button>
+        <button id="save_access_controls" type="submit" class="dri_button_green" onclick="$('#set_access_controls').submit();">
+          <%= t('dri.views.objects.buttons.save') %>
         </button>
       </div>
     </div><!-- /.modal-content -->

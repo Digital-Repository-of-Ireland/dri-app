@@ -101,6 +101,10 @@ class SolrDocument
     collection_id ? false : true
   end
 
+  def sub_collection?
+    collection? && !root_collection?
+  end
+
   def licence
     licence_key = ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym
 

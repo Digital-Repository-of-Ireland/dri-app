@@ -1,12 +1,10 @@
 require 'spec_helper'
 
-describe SurrogatesController do
-  include Devise::TestHelpers
+describe "StorageService" do
 
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
-    sign_in @login_user
-
+    
     @collection = DRI::Batch.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
@@ -53,32 +51,45 @@ describe SurrogatesController do
     @login_user.delete
   end
 
-  describe 'update' do
+  it "should store a surrogate" do
+    storage = StorageService.new
+    storage.create_bucket(@object.id)
+    storage.store_surrogate(@object.id, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.id}_mp3.mp3")
 
-    it 'should update a collections surrogates' do
-      request.env["HTTP_REFERER"] = "/"
-      Sufia.queue.should_receive(:push).with(an_instance_of(CharacterizeJob)).once
-      put :update, :id => @collection.id
-    end
-
-    it 'should update an objects surrogates' do
-      request.env["HTTP_REFERER"] = "/"
-      Sufia.queue.should_receive(:push).with(an_instance_of(CharacterizeJob)).once
-      put :update, :id => @object.id
-    end
-
-    it 'should update multiple files' do
-      @gf2 = DRI::GenericFile.new
-      @gf2.apply_depositor_metadata(@login_user)
-      @gf2.batch = @object
-      @gf2.save
-      
-      request.env["HTTP_REFERER"] = "/"
-      Sufia.queue.should_receive(:push).with(an_instance_of(CharacterizeJob)).twice
-      put :update, :id => @object.id
-
-      @gf2.delete
-    end
-
+    expect(storage.surrogate_exists?(@object.id, "#{@gf.id}_mp3")).to be true
   end
+
+  it "should return a uri to the file" do
+    storage = StorageService.new
+    storage.create_bucket(@object.id)
+    storage.store_surrogate(@object.id, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.id}_mp3.mp3")
+
+    uri = storage.surrogate_url(@object.id, "#{@gf.id}_mp3")
+    
+    expect(File.basename(URI.parse(uri).path)).to be == "#{@gf.id}_mp3.mp3"
+  end
+
+  it "should list surrogates" do
+    storage = StorageService.new
+    storage.create_bucket(@object.id)
+    storage.store_surrogate(@object.id, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.id}_mp3.mp3")
+
+    list = storage.get_surrogates(@object.id, @gf.id)
+
+    expect(list.key?('mp3')).to be true
+    expect { URI.parse(list['mp3']) }.not_to raise_error(URI::InvalidURIError)
+  end
+
+  it "should delete surrogates" do
+    storage = StorageService.new
+    storage.create_bucket(@object.id)
+    storage.store_surrogate(@object.id, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.id}_mp3.mp3")
+
+    expect(storage.surrogate_exists?(@object.id, "#{@gf.id}_mp3")).to be true
+
+    storage.delete_surrogates(@object.id, @gf.id)
+    expect(storage.surrogate_exists?(@object.id, "#{@gf.id}_mp3")).to be_nil
+  end 
+
 end
+

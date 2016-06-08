@@ -26,7 +26,9 @@
 			<% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { Solrizer.solr_name('institute', :facetable).to_sym => [@depositing_institute[:name]] } } %>
 			<%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
 			<% else %>
-			  <span class="label label-danger"><%= t('dri.views.fields.depositing_institute_not_set') %></span>
+        <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', class: 'dri_manage_org_link' do %>
+			    <span class="label label-danger"><%= t('dri.views.fields.depositing_institute_not_set') %></span>
+			  <% end %>
 			<% end %>
 		</dd>
 	</dl>
@@ -39,9 +41,9 @@
 	<div class="dri_sidenav_top">
 		<%= link_back_to_catalog %>
 	</div>
-	<% if @document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)] && @document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0] %>
+	<% if @document.cover_image %>
 	<div class="dri_vc_image hidden-xs">
-		<%= image_tag(@document[Solrizer.solr_name('cover_image', :stored_searchable, type: :string)][0], :alt=> t('dri.views.alt_tags.cover_image') ) %>
+		<%= image_tag(cover_image_path(@document), :alt=> t('dri.views.alt_tags.cover_image') ) %>
 	</div>
 	<% end %>
 

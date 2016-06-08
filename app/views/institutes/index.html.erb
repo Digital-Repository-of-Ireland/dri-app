@@ -7,7 +7,7 @@
       <% institute_browse_params[:f] = { Solrizer.solr_name('institute', :facetable, type: :string).to_sym => [institute[:name].to_s.html_safe] } %>
       <%= link_to main_app.catalog_index_path(institute_browse_params) do %>
           <div class="dri_collection_institutes_pages_img">
-            <%= image_tag institute[:logo], alt: institute[:name].to_s.html_safe unless institute[:logo].blank? %>
+            <%= image_tag logo_url(institute), alt: institute[:name].to_s.html_safe if institute.brand %>
             <h6>
               <%= institute[:name].to_s.html_safe %>
             </h6>

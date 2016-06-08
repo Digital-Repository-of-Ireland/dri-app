@@ -35,21 +35,21 @@ Feature: Institutes
     Then the "add institute" drop-down should contain the option "TestInstitute"
     When I select "TestInstitute" from the selectbox for add institute
     And I press the button to "associate an institute"
-    Then I should see the image "TestInstitute.png"
+    Then I should see the image "sample_logo.png"
 
   Scenario: Viewing associated institutes for a collection
     Given I have associated the institute "TestInstitute" with the collection with pid "instcoll"
     When I perform a search
     And I follow the link to browse
     And I follow "Institute Test Collection" within "div.dri_result_container"
-    Then I should see the image "TestInstitute.png"
+    Then I should see the image "sample_logo.png"
 
   Scenario: Viewing institutes page
     Given I have associated the institute "TestInstitute" with the collection with pid "instcoll"
     When I go to "the organisations page"
-    Then I should see the image "TestInstitute.png"
+    Then I should see the image "TestInstitute"
 
   Scenario: viewing associated institutes for an object
     Given I have associated the institute "TestInstitute" with the collection with pid "instcoll"
     When I go to the "object" "show" page for "instobj"
-    Then I should see the image "TestInstitute.png"
+    Then I should see the image "sample_logo.png"

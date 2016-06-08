@@ -19,7 +19,7 @@ Feature: Licences
     Then I should see a link to add new licence
     When I follow the link to add new licence
     Then I should see a form for create new licence
-
+  
   Scenario: Adding a new licence with no logo
     Given I am on the new licence page
     Then I should see a form for create new licence
@@ -36,22 +36,6 @@ Feature: Licences
     And I press the button to "add a licence"
     Then I should be on the licence index page
     And I should see "TestLicence2"
-
-  Scenario: Adding a new licence with uploaded logo
-    Given I am on the new licence page
-    Then I should see a form for create new licence
-    When I enter valid licence information for licence "TestLicence3" into the new licence form
-    And I attach the licence logo file "sample_logo.png"
-    And I press the button to "add a licence"
-    Then I should be on the licence index page
-    And I should see "TestLicence3"
-  
-  Scenario: Adding a new licence with virus logo file
-    Given I am on the new licence page
-    Then I should see a form for create new licence
-    When I enter valid licence information for licence "TestLicence4" into the new licence form
-    And I upload the logo virus file "sample_virus.png"
-    Then I should see a failure message for virus detected
 
   Scenario: Editing a licence
     Given I have created a licence "TestLicence5"

@@ -2,6 +2,8 @@ class Institute < ActiveRecord::Base
   require 'storage/s3_interface'
   require 'validators'
 
+  has_one :brand
+
   validates_uniqueness_of :name
 
   def add_logo(upload, opts = {})
@@ -47,15 +49,13 @@ class Institute < ActiveRecord::Base
     valid
   end
 
-  def store_logo(logo, name)
-    storage = Storage::S3Interface.new
+  def store_logo(upload, name)
+    b = self.brand || Brand.new
+    b.filename = upload.original_filename 
+    b.content_type = upload.content_type
+    b.file_contents = upload.read
+    b.save
 
-    file_ext = logo.original_filename.split('.').last
-    storage.store_file(logo.tempfile.path,
-                       "#{name}.#{file_ext}",
-                       Settings.data.logos_bucket)
-
-    self.logo = storage.get_link_for_file(Settings.data.logos_bucket,
-                                          "#{name}.#{file_ext}")
+    self.brand = b
   end
 end

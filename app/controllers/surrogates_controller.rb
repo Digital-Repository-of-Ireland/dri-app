@@ -1,11 +1,10 @@
 class SurrogatesController < ApplicationController
 
-  before_filter :read_only, except: [:show, :download]
+  before_filter :read_only, except: [:show]
 
   def show
     raise Exceptions::BadRequest unless params[:id].present?
-
-    enforce_permissions!('show', params[:id])
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:id])
 
     @surrogates = {}
 
@@ -15,11 +14,10 @@ class SurrogatesController < ApplicationController
     all_surrogates object_docs
 
     respond_to do |format|
-      format.html { render text: @surrogates.to_json }
       format.json { @surrogates.to_json }
     end
   end
-
+  
   def update
     raise Exceptions::BadRequest unless params[:id].present?
 
@@ -48,21 +46,7 @@ class SurrogatesController < ApplicationController
       format.json {}
     end
   end
-
-  def download
-    object_id = params[:object_id]
-    surrogate_url = params[:surrogate_url]
-
-    uri = validate_uri(surrogate_url)
-    ext = File.extname(uri.path)
-
-    name = "#{object_id}#{ext}"
-
-    content_type = MIME::Types.of(surrogate_url)
-    data = open(uri)
-    send_data data.read, filename: name, type: content_type, disposition: 'attachment', stream: 'true', buffer_size: '4096'
-  end
-
+  
   private
 
   def all_surrogates(result_docs)
@@ -107,7 +91,7 @@ class SurrogatesController < ApplicationController
     surrogates = {}
 
     if can? :read, object
-      storage = Storage::S3Interface.new
+      storage = StorageService.new
 
       query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object.id}\"")
       query.each_solr_document do |file_doc|
