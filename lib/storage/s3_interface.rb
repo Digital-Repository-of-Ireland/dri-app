@@ -126,6 +126,12 @@ module Storage
       url
     end
     
+    def file_url(bucket, key)
+      create_url(bucket, key, nil, false)
+    rescue Exception => e
+      Rails.logger.error "Problem getting url for file #{file}: #{e}"
+    end
+
     # Save Surrogate File
     def store_surrogate(bucket, surrogate_file, surrogate_key)
       @client.put_object(
@@ -139,6 +145,23 @@ module Storage
       false
     end
         
+    # Save arbitrary file
+    def store_file(bucket, file, file_key)
+      @client.put_object(
+        bucket: with_prefix(bucket),
+        body: File.open(Pathname.new(file)),
+        key: file_key)
+      @client.put_object_acl(
+        acl: "public-read",
+        bucket: with_prefix(bucket),
+        key: file_key)
+
+      true
+    rescue Exception => e
+      Rails.logger.error "Problem saving file #{file_key}: #{e}"
+      false
+    end
+
     private
 
     def bucket_prefix
