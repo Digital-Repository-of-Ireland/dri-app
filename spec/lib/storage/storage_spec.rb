@@ -77,7 +77,7 @@ describe "StorageService" do
     list = storage.get_surrogates(@object.id, @gf.id)
 
     expect(list.key?('mp3')).to be true
-    expect { URI.parse(list['mp3']) }.not_to raise_error(URI::InvalidURIError)
+    expect { URI.parse(list['mp3']) }.to_not raise_error
   end
 
   it "should delete surrogates" do
@@ -90,6 +90,22 @@ describe "StorageService" do
     storage.delete_surrogates(@object.id, @gf.id)
     expect(storage.surrogate_exists?(@object.id, "#{@gf.id}_mp3")).to be_nil
   end 
+
+  it "should store a public file" do
+    storage = StorageService.new
+    storage.create_bucket(@object.id)
+    response = storage.store_file(@object.id, File.join(fixture_path, "sample_image.png"), "sample_image.png")
+
+    expect(response).to be true
+  end
+
+  it "should return a public file url" do
+    storage = StorageService.new
+    storage.create_bucket(@object.id)
+    storage.store_file(@object.id, File.join(fixture_path, "sample_image.png"), "sample_image.png")
+
+    expect{ URI.parse(storage.file_url(@object.id, 'sample_image.png')) }.not_to raise_error
+  end
 
 end
 
