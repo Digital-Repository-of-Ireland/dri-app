@@ -258,6 +258,10 @@ class AssetsController < ApplicationController
 
     file = file_path(params[:object_id], params[:id], params[:surrogate])
     raise Exceptions::NotFound unless file
+    if file =~ /\A#{URI::regexp(['http', 'https'])}\z/
+      redirect_to file
+      return
+    end
 
     type, ext = mime_type(file)
 
