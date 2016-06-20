@@ -194,11 +194,9 @@ class CollectionsController < BaseObjectsController
     cover_file = storage.surrogate_url(object.id, cover_name)
     raise Exceptions::NotFound unless cover_file
 
-    open(cover_file) do |f|
-      send_data f.read, 
-        type: MIME::Types.type_for(cover_name).first.content_type, 
-        disposition: 'inline'
-    end
+    response.headers['Accept-Ranges'] = 'bytes'
+    response.headers['Content-Length'] = File.size(cover_file).to_s
+    send_file cover_file, { type: MIME::Types.type_for(cover_name).first.content_type, disposition: 'inline' }
   end
 
   # Updates the licence.
