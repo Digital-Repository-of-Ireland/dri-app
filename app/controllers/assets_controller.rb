@@ -258,6 +258,7 @@ class AssetsController < ApplicationController
 
     file = file_path(params[:object_id], params[:id], params[:surrogate])
     raise Exceptions::NotFound unless file
+
     if file =~ /\A#{URI::regexp(['http', 'https'])}\z/
       redirect_to file
       return
@@ -265,11 +266,10 @@ class AssetsController < ApplicationController
 
     type, ext = mime_type(file)
 
-    open(file) do |f|
-      send_data f.read, 
-        type: type, 
-        disposition: 'inline'
-    end
+    # For derivatives stored on the local file system
+    response.headers['Accept-Ranges'] = 'bytes'
+    response.headers['Content-Length'] = File.size(file).to_s
+    send_file file, { type: type, disposition: 'inline' }
   end
 
   def download_url
