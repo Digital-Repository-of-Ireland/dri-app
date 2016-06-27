@@ -1,8 +1,8 @@
 class InstitutesController < ApplicationController
   require 'institute_helpers'
 
-  before_filter :authenticate_user_from_token!, except: [:index]
-  before_filter :authenticate_user!, except: [:index]
+  before_filter :authenticate_user_from_token!, except: [:index, :logo]
+  before_filter :authenticate_user!, except: [:index, :logo]
   before_filter :check_for_cancel, only: [:create, :update]
   before_filter :admin?, only: [:edit, :update, :destroy]
   before_filter :read_only, except: [:index, :show]
@@ -68,7 +68,6 @@ class InstitutesController < ApplicationController
       format.html { redirect_to organisations_url }
     end
   end
-
 
   def update
     @inst = Institute.find(params[:id])
