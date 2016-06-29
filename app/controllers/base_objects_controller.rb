@@ -40,7 +40,7 @@ class BaseObjectsController < CatalogController
 
     if licence.present?
       @object.licence = licence
-      @object.object_version = (@object.object_version.to_i+1).to_s
+      @object.object_version = @object.object_version.to_i + 1
     end
 
     updated = @object.save

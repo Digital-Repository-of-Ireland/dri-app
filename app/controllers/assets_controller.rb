@@ -90,7 +90,7 @@ class AssetsController < ApplicationController
     file_upload = upload_from_params
     @generic_file = retrieve_object! params[:id]
 
-    create_file(file_upload, @generic_file, datastream, params[:checksum], params[:file_name])
+    preserve_file(file_upload, @generic_file, datastream, params)
 
     if actor.update_external_content(URI.escape(download_url), file_upload, datastream)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
@@ -139,9 +139,8 @@ class AssetsController < ApplicationController
     @generic_file.apply_depositor_metadata(current_user)
     @generic_file.preservation_only = 'true' if params[:preservation] == 'true'
 
-    create_file(file_upload, @generic_file, datastream, params[:checksum], params[:file_name])
-
-    filename = params[:file_name].presence || file_upload.original_filename
+    preserve_file(file_upload, @generic_file, datastream, params)
+    filename = params[:file_name].presence || file_upload.original_filename    
 
     if actor.create_external_content(URI.escape(download_url), datastream, filename)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
@@ -193,28 +192,48 @@ class AssetsController < ApplicationController
       end
     end
 
+
+    def preserve_file(filedata, generic_file, datastream, params)
+      checksum = params[:checksum]
+      filename = params[:file_name].presence || filedata.original_filename
+
+      generic_file.batch.object_version = generic_file.batch.object_version.to_i + 1
+
+      # Update object version
+      begin
+        generic_file.batch.save!
+      rescue ActiveRecord::ActiveRecordError => e
+        logger.error "Could not update object version number for #{generic_file.batch.id} to version #{generic_file.batch.object_version}"
+        raise Exceptions::InternalError
+      end
+
+      create_file(filedata, generic_file, datastream, checksum, filename)
+
+      # Do the preservation actions
+      preservation_filename = "#{generic_file.id}_#{filename}"
+      addfiles = []
+      delfiles = []
+      if params[:action].eql?('update')
+        addfiles = [preservation_filename]
+        delfiles = generic_file.label
+      elsif
+        addfiles = [preservation_filename]
+      end
+      preservation = Preservation::Preservator.new(generic_file.batch)
+      # TODO: preservation_filename shouldn't be a string, should say added or deleted...
+      preservation.preserve_assets(addfiles, delfiles)
+    end
+
+
     def create_file(filedata, generic_file, datastream, checksum, filename = nil)
       # prepare file
       @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
       options = {}
       options[:mime_type] = @mime_type
       options[:checksum] = checksum
-      options[:file_name] = filename unless filename.nil?
+      options[:file_name] = filename
       options[:batch_id] = generic_file.batch.id
-      options[:object_version] = (generic_file.batch.object_version.to_i+1).to_s
-
-      # Do the preservation actions
-      generic_file.batch.object_version = options[:object_version]
-      preservation = Preservation::Preservator.new(generic_file.batch)
-      preservation.preserve(false, false, ['properties'])
-
-      # Update object version
-      begin
-        generic_file.batch.save!
-      rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not update object version number for #{generic_file.batch.id} to version #{options[:object_version]}"
-        raise Exceptions::InternalError
-      end
+      options[:object_version] = generic_file.batch.object_version
 
       # Add and save the file
       @file.add_file filedata, options
@@ -227,6 +246,7 @@ class AssetsController < ApplicationController
       end
 
     end
+
 
     def delete_surrogates(bucket_name, file_prefix)
       storage = Storage::S3Interface.new

@@ -90,7 +90,7 @@ class MetadataController < CatalogController
       raise Exceptions::InternalError
     end
     
-    @object.object_version = (@object.object_version.to_i+1).to_s
+    @object.object_version = @object.object_version.to_i + 1
 
 
     begin

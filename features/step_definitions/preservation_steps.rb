@@ -43,3 +43,18 @@ Then /^the AIP for the saved pid should have "(.*?)" version(?:|s)$/ do |count|
   aip_dir = File.join(Settings.dri.files, dir, @pid)
   (Dir.entries(aip_dir).size - 2).to_s.should eql count
 end
+
+Then /^the manifest for version "(.*?)" for the saved pid should be be valid$/ do |version|
+puts "+++++++++ pid is #{@pid}"
+  dir = ""
+  index = 0
+  4.times {
+    dir = File.join(dir, @pid[index..index+1])
+    index += 2
+  }
+  aip_dir = File.join(Settings.dri.files, dir, @pid)
+  storage_object = Moab::StorageObject.new(@pid, aip_dir)
+  storage_object_version = Moab::StorageObjectVersion.new(storage_object, version_id=version.to_i)
+  result = storage_object_version.verify_version_storage
+  result.verified.should be true
+end

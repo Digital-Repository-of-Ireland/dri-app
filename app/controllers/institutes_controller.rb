@@ -103,7 +103,7 @@ class InstitutesController < ApplicationController
     end
     @collection.depositing_institute = params[:depositing_organisation] 
 
-    @collection.object_version = (@collection.object_version.to_i+1).to_s
+    @collection.object_version = @collection.object_version.to_i + 1
 
     updated = @collection.save
 
@@ -144,7 +144,7 @@ class InstitutesController < ApplicationController
     @collection = ActiveFedora::Base.find(params[:object], cast: true)
     raise Exceptions::NotFound unless @collection
 
-    @collection.object_version = (@collection.object_version.to_i+1).to_s
+    @collection.object_version = @collection.object_version.to_i + 1
     delete ? delete_association : add_association
 
     @collection_institutes = Institute.find_collection_institutes(@collection.institute)

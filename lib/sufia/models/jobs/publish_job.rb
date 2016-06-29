@@ -21,7 +21,7 @@ class PublishJob < ActiveFedoraIdBasedJob
           if o.status == 'reviewed'
             o.status = 'published'
             o.published_at = Time.now.utc.iso8601
-            o.object_version = (o.object_version.to_i+1).to_s
+            o.object_version = o.object_version.to_i + 1
             o.save
 
             # Do the preservation actions
@@ -38,7 +38,7 @@ class PublishJob < ActiveFedoraIdBasedJob
     # publish the collection object
     object.status = 'published'
     object.published_at = Time.now.utc.iso8601
-    object.object_version = (object.object_version.to_i+1).to_s
+    object.object_version = object.object_version.to_i + 1
     object.save
 
     # Do the preservation actions

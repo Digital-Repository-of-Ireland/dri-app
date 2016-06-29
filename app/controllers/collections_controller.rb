@@ -117,7 +117,7 @@ class CollectionsController < BaseObjectsController
 
     doi.update_metadata(params[:batch].select{ |key, value| doi.metadata_fields.include?(key) }) if doi
         
-    @object.object_version = (@object.object_version.to_i+1).to_s
+    @object.object_version = @object.object_version.to_i + 1
     updated = @object.update_attributes(update_params)
 
     if updated
@@ -162,7 +162,7 @@ class CollectionsController < BaseObjectsController
       raise Exceptions::BadRequest, t('dri.views.exceptions.file_not_found')
     end
 
-    @object.object_version = (@object.object_version.to_i+1).to_s
+    @object.object_version = @object.object_version.to_i + 1
 
     if cover_image.present?
       updated = Storage::CoverImages.validate(cover_image, @object)

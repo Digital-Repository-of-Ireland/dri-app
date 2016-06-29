@@ -70,7 +70,7 @@ class ObjectsController < BaseObjectsController
 
     doi.update_metadata(params[:batch].select{ |key, value| doi.metadata_fields.include?(key) }) if doi
 
-    @object.object_version = (@object.object_version.to_i+1).to_s
+    @object.object_version = @object.object_version.to_i + 1
     updated = @object.update_attributes(update_params)
 
     #purge params from update action
@@ -137,7 +137,7 @@ class ObjectsController < BaseObjectsController
     
     supported_licences
 
-    @object.object_version = "1"
+    @object.object_version = 1
 
     if @object.valid? && @object.save
       warn_if_duplicates
@@ -274,7 +274,7 @@ class ObjectsController < BaseObjectsController
 
     unless @object.status.eql?('published')
       @object.status = params[:status] if params[:status].present?
-      @object.object_version = (@object.object_version.to_i+1).to_s
+      @object.object_version = @object.object_version.to_i + 1
       @object.save
 
       # Do the preservation actions
