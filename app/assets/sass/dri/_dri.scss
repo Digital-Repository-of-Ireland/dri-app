@@ -1223,13 +1223,21 @@ h4.suggest {
                 margin-left: -15px;
                 margin-right: -15px;
                 padding: 10px 5px 10px 20px;
+                &.selected {
+                  background-color: $dri_thingrey;
+                  color: $dri_grey;
+                  text-decoration: underline;
+                  &:hover {
+                    .fa { color: $dri_darkgrey; }
+                  }
+                }
                 &:hover {
                     text-decoration: underline;
                 }
-                &.selected {
-                    background-color: $dri_thingrey;
-                    color: $dri_grey;
-                    text-decoration: underline;
+                .fa {
+                  float: right;
+                  padding: 0 10px 0 0;
+                  color: $dri_white;
                 }
             }
         }
@@ -1945,15 +1953,14 @@ ul.dri_view_collection {
     width: 230px;
     float: left;
 }
-/*-------------- Institutes  --------------*/
-
-.dri_object_institutes_block {
+/*-------------- Page Sections ------------*/
+.dri_section_block {
     border-top: 1px solid $dri_thingrey;
     margin: 20px 0 0 0;
     padding: 0;
     display: block;
 }
-.dri_institutes_title {
+.dri_section_title {
     clear: both;
     margin: 20px 0 10px 0;
     color: $dri_darkgrey;
@@ -1961,6 +1968,7 @@ ul.dri_view_collection {
     font-size: 100%;
     font-weight: bold;
 }
+/*-------------- Institutes  --------------*/
 .dri_related_items {
     width: 100%;
     nav.pagination {
@@ -2022,6 +2030,14 @@ ul.dri_view_collection {
     }
 }
 // close static page of institutes
+.dri_collection_institutes_item {
+    a.remove {
+        display: block;
+        float: right;
+        margin-right: 10px;
+        color: $dri_midgrey;
+    }
+}
 ul.dri_collection_institutes_list {
     margin: 20px 0 0 0;
     padding: 0;
@@ -2042,16 +2058,6 @@ ul.dri_collection_institutes_list {
             padding: 0;
             list-style: none;
         }
-    }
-}
-.dri_institutes_show_more {
-    margin: 0;
-    padding: 0;
-    a {
-        margin: 0;
-        padding: 0px;
-        color: $dri_darkgrey;
-        font-weight: bold;
     }
 }
 
@@ -2479,14 +2485,6 @@ ul.dri_collection_institutes_list {
                 margin-bottom: 0px;
             }
         }
-    }
-}
-.dri_collection_institutes_item {
-    a.remove {
-        display: block;
-        float: right;
-        margin-right: 10px;
-        color: $dri_midgrey;
     }
 }
 .dri_fileUpload {

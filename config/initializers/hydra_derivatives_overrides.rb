@@ -2,8 +2,6 @@ require "hydra/derivatives/shell_based_processor"
 require "hydra/derivatives/processor"
 require "hydra/derivatives/image"
 require 'open3'
-require 'storage/s3_interface'
-
 
 Hydra::Derivatives::ShellBasedProcessor.module_eval do
 
@@ -19,7 +17,8 @@ Hydra::Derivatives::ShellBasedProcessor.module_eval do
     bucket_id = object.batch.nil? ? object.id : object.batch.id
     filename = "#{object.id}_#{dest_dsid}.#{file_suffix}"
 
-    storage = Storage::S3Interface.new
+    storage = StorageService.new
+    
     storage.store_surrogate(bucket_id, out_file, filename)
     File.unlink(output_file)
   end

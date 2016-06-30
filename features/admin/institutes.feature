@@ -29,7 +29,7 @@ Feature: Institutes
     Then the "add institute" drop-down should contain the option "TestInstitute"
     When I select "TestInstitute" from the selectbox for add institute
     And I press the button to "associate an institute"
-    Then I should see the image "TestInstitute.png"
+    Then I should see the image "sample_logo.png"
 
   Scenario: Viewing institutes page
     Given I create a collection and save the pid
@@ -43,7 +43,7 @@ Feature: Institutes
     When I select "TestInstitute" from the selectbox for add institute
     And I press the button to "associate an institute"
     When I go to "the organisations page"
-    Then I should see the image "TestInstitute.png"
+    Then I should see the image "TestInstitute"
 
   Scenario: viewing associated institutes for an object
     Given I create a collection and save the pid
@@ -56,9 +56,9 @@ Feature: Institutes
     And I follow the link to manage organisations
     When I select "TestInstitute" from the selectbox for add institute
     And I press the button to "associate an institute"
-    Then I should see the image "TestInstitute.png"
+    Then I should see the image "sample_logo.png"
     When I go to the "collection" "show" page for "the saved pid"
     When I follow the link to add an object
     And I enter valid metadata
     And I press the button to "continue"
-    Then I should see the image "TestInstitute.png"
+    Then I should see the image "sample_logo.png"

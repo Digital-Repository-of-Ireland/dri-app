@@ -252,5 +252,14 @@ dl.dri_object_metadata_readview {
         a:hover {
             text-decoration: underline;
         }
+        .dri_manage_org_link {
+          list-style-type: none;
+          text-decoration: none;
+          margin: 0;
+          padding: 0;
+        }
+        .dri_manage_org_link:hover {
+          text-decoration: none;
+        }
     }
 }

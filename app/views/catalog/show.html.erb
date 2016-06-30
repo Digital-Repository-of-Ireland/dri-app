@@ -3,8 +3,6 @@
 <% render_link_rel_alternates %>
 <%= render partial: 'catalog/paginate_compact', object: @response %>
 <div class="dri_object_container" id="object_container">
-  
-
   <%= render_document_partial @document, :show %>
 </div>
 
@@ -16,7 +14,7 @@
   <%= render :partial => "catalog/show_children", locals: { document: @document } %>
 <% end %>
 
-<div class="dri_object_institutes_block" id="institutes_block">
+<div class="dri_section_block" id="institutes_block">
   <%= render partial: 'shared/display_institutes' %>
 </div>
 <% content_for :head do %>

@@ -153,7 +153,7 @@ Given(/^the object with pid "(.*?)" has a deliverable surrogate file$/) do |pid|
   pid = "" + @random_pid if (pid == "@random")
   object = ActiveFedora::Base.find(pid, {:cast => true})
   generic_file = DRI::GenericFile.find(:isPartOf_ssim => "#{object.id}").first
-  storage = Storage::S3Interface.new
+  storage = StorageService.new
   storage.create_bucket(object.id)
   case object.type.first
     when "Sound"

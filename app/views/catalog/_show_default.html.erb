@@ -24,8 +24,8 @@
 		<% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { Solrizer.solr_name('institute', :facetable).to_sym => [@depositing_institute[:name]] } } %>
       	<%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
       	<% else %>
-      	<span class="label label-danger"><%= t('dri.views.fields.depositing_institute_not_set') %></span>
-		<% end %>
+          <span class="label label-danger"><%= t('dri.views.fields.depositing_institute_not_set_object') %></span>
+	      <% end %>
 		</dd>
 		
 	</dl>

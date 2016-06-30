@@ -1,13 +1,13 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
 
-require 'validators'
-
 class AssetsController < ApplicationController
 
   before_filter :authenticate_user_from_token!, only: [:list_assets]
   before_filter :authenticate_user!, only: [:list_assets]
-  before_filter :read_only, except: [:show, :download, :list_assets, ]
+  before_filter :read_only, except: [:show, :download, :list_assets]
+
+  require 'validators'
 
   include DRI::Doi
 
@@ -16,27 +16,36 @@ class AssetsController < ApplicationController
   end
 
   def show
-    datastream = params[:datastream].presence || 'content'
+    if params[:surrogate].present?
+      show_surrogate
+      return
+    else
+      datastream = params[:datastream].presence || 'content'
 
-    result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
-    @document = SolrDocument.new(result.first)
+      result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
+      @document = SolrDocument.new(result.first)
 
-    @generic_file = retrieve_object! params[:id]
+      @generic_file = retrieve_object! params[:id]
 
-    status(@generic_file.id)
+      status(@generic_file.id)
 
-    can_view?
+      can_view?
 
-    respond_to do |format|
-      format.html
-      format.json { render json: @generic_file }
+      respond_to do |format|
+        format.html
+        format.json { render json: @generic_file }
+      end
     end
-
   end
 
   # Retrieves external datastream files that have been stored in the filesystem.
   # By default, it retrieves the file in the content datastream
   def download
+    if params[:surrogate].present?
+      download_surrogate 
+      return
+    end
+
     # Check if user can view a master file
     enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
@@ -170,7 +179,8 @@ class AssetsController < ApplicationController
 
     raise Exceptions::BadRequest unless params[:objects].present?
 
-    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(params[:objects].map{ |o| o.values.first })
+    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(
+      params[:objects].map{ |o| o.values.first })
     result_docs = Solr::Query.new(solr_query)
     result_docs.each_solr_document do |doc|
       item = list_files_with_surrogates(doc)
@@ -186,170 +196,221 @@ class AssetsController < ApplicationController
 
   private
 
-    def can_view?
-      if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
-        raise Hydra::AccessDenied.new('This item is not available. You do not have sufficient access privileges to view the master file(s).', :read_master, params[:object_id])
-      end
+  def mime_type(file_uri)
+    uri = URI.parse(file_uri)
+    file_name = File.basename(uri.path)
+    ext = File.extname(file_name)
+
+    return MIME::Types.type_for(file_name).first.content_type, ext
+  end
+
+  def can_view?
+    if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
+      raise Hydra::AccessDenied.new('This item is not available. You do not have sufficient access privileges to view the master file(s).', :read_master, params[:object_id])
+    end
+  end
+
+  def preserve_file(filedata, generic_file, datastream, params)
+    checksum = params[:checksum]
+    filename = params[:file_name].presence || filedata.original_filename
+
+    generic_file.batch.object_version = generic_file.batch.object_version.to_i + 1
+
+    # Update object version
+    begin
+      generic_file.batch.save!
+    rescue ActiveRecord::ActiveRecordError => e
+      logger.error "Could not update object version number for #{generic_file.batch.id} to version #{generic_file.batch.object_version}"
+      raise Exceptions::InternalError
     end
 
+    create_file(filedata, generic_file, datastream, checksum, filename)
 
-    def preserve_file(filedata, generic_file, datastream, params)
-      checksum = params[:checksum]
-      filename = params[:file_name].presence || filedata.original_filename
+    # Do the preservation actions
+    preservation_filename = "#{generic_file.id}_#{filename}"
+    addfiles = []
+    delfiles = []
+    if params[:action].eql?('update')
+      addfiles = [preservation_filename]
+      delfiles = generic_file.label
+    elsif
+      addfiles = [preservation_filename]
+    end
+    preservation = Preservation::Preservator.new(generic_file.batch)
+    # TODO: preservation_filename shouldn't be a string, should say added or deleted...
+    preservation.preserve_assets(addfiles, delfiles)
+  end
 
-      generic_file.batch.object_version = generic_file.batch.object_version.to_i + 1
+  def create_file(filedata, generic_file, datastream, checksum, filename = nil)
+    # prepare file
+    @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
+    options = {}
+    options[:mime_type] = @mime_type
+    options[:checksum] = checksum
+    options[:file_name] = filename unless filename.nil?
+    options[:batch_id] = generic_file.batch.id
+    options[:object_version] = generic_file.batch.object_version
 
-      # Update object version
-      begin
-        generic_file.batch.save!
-      rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not update object version number for #{generic_file.batch.id} to version #{generic_file.batch.object_version}"
-        raise Exceptions::InternalError
-      end
+    # Add and save the file
+    @file.add_file filedata, options
 
-      create_file(filedata, generic_file, datastream, checksum, filename)
-
-      # Do the preservation actions
-      preservation_filename = "#{generic_file.id}_#{filename}"
-      addfiles = []
-      delfiles = []
-      if params[:action].eql?('update')
-        addfiles = [preservation_filename]
-        delfiles = generic_file.label
-      elsif
-        addfiles = [preservation_filename]
-      end
-      preservation = Preservation::Preservator.new(generic_file.batch)
-      # TODO: preservation_filename shouldn't be a string, should say added or deleted...
-      preservation.preserve_assets(addfiles, delfiles)
+    begin
+      @file.save!
+    rescue ActiveRecord::ActiveRecordError => e
+      logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
+      raise Exceptions::InternalError
     end
 
+  end
 
-    def create_file(filedata, generic_file, datastream, checksum, filename = nil)
-      # prepare file
-      @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
-      options = {}
-      options[:mime_type] = @mime_type
-      options[:checksum] = checksum
-      options[:file_name] = filename
-      options[:batch_id] = generic_file.batch.id
-      options[:object_version] = generic_file.batch.object_version
+  def delete_surrogates(bucket_name, file_prefix)
+    storage = StorageService.new
+    storage.delete_surrogates(bucket_name, file_prefix)
+  end
 
-      # Add and save the file
-      @file.add_file filedata, options
+  def download_surrogate
+    raise Exceptions::BadRequest unless params[:object_id].present?
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:object_id])
 
-      begin
-        @file.save!
-      rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
-        raise Exceptions::InternalError
-      end
+    file = file_path(params[:object_id], params[:id], params[:surrogate])
+    raise Exceptions::NotFound unless file
+    
+    type, ext = mime_type(file)
 
+    name = "#{params[:id]}#{ext}"
+
+    open(file) do |f|
+      send_data f.read, filename: name, 
+        type: type, 
+        disposition: 'attachment', 
+        stream: 'true', 
+        buffer_size: '4096'
+    end
+  end
+
+  def show_surrogate
+    raise Exceptions::BadRequest unless params[:object_id].present?
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:object_id])
+
+    file = file_path(params[:object_id], params[:id], params[:surrogate])
+    raise Exceptions::NotFound unless file
+
+    if file =~ /\A#{URI::regexp(['http', 'https'])}\z/
+      redirect_to file
+      return
     end
 
+    type, ext = mime_type(file)
 
-    def delete_surrogates(bucket_name, file_prefix)
-      storage = Storage::S3Interface.new
-      storage.delete_surrogates(bucket_name, file_prefix)
-    end
+    # For derivatives stored on the local file system
+    response.headers['Accept-Ranges'] = 'bytes'
+    response.headers['Content-Length'] = File.size(file).to_s
+    send_file file, { type: type, disposition: 'inline' }
+  end
 
-    def download_url
-      url_for controller: 'assets', action: 'download', object_id: @generic_file.batch.id, id: @generic_file.id
-    end
+  def download_url
+    url_for controller: 'assets', action: 'download', object_id: @generic_file.batch.id, id: @generic_file.id
+  end
 
-    def list_files_with_surrogates(doc)
-      files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
-      query = Solr::Query.new(files_query)
+  def file_path(object_id, file_id, surrogate)
+    storage = StorageService.new
+    storage.surrogate_url(object_id, 
+           "#{file_id}_#{surrogate}")
+  end
 
-      item = {}
-      item['pid'] = doc.id
-      item['files'] = []
+  def list_files_with_surrogates(doc)
+    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
+    query = Solr::Query.new(files_query)
 
-      storage = Storage::S3Interface.new
+    item = {}
+    item['pid'] = doc.id
+    item['files'] = []
 
-      query.each_solr_document do |file_doc|
-        file_list = {}
+    storage = StorageService.new
 
-        if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
-          url = url_for(file_download_url(doc.id, file_doc.id))
-          file_list['masterfile'] = url
-        end
+    query.each_solr_document do |file_doc|
+      file_list = {}
 
-        if can? :read, doc
-          surrogates = storage.get_surrogates doc, file_doc
-          surrogates.each { |file, loc| file_list[file] = loc }
-        end
-
-        item['files'].push(file_list)
-      end
-
-      item
-    end
-
-    def local_file
-      search_params = { f: @generic_file.id, d: @datastream }
-      search_params[:v] = params[:version] if params[:version].present?
-
-      query = 'fedora_id LIKE :f AND ds_id LIKE :d'
-      query << ' AND version = :v' if search_params[:v].present?
-
-      LocalFile.where(query, search_params).take
-    rescue ActiveRecord::RecordNotFound
-      raise Exceptions::InternalError, 'Unable to find requested file'
-    rescue ActiveRecord::ActiveRecordError
-      raise Exceptions::InternalError, 'Error finding file'
-    end
-
-    def local_file_ingest(name)
-      upload_dir = Rails.root.join(Settings.dri.uploads)
-      File.new(File.join(upload_dir, name))
-    end
-
-    def status(file_id)
-      ingest_status = IngestStatus.where(asset_id: file_id)
-
-      @status = {}
-      if ingest_status.present?
-        status = ingest_status.first
-        @status[:status] = status.status
-
-        @status[:jobs] = {}
-        status.job_status.each do |job|
-          @status[:jobs][job.job] = { status: job.status, message: job.message }
-        end
-      end
-    end
-
-    def upload_from_params
-      if params[:Filedata].blank? && params[:Presfiledata].blank? && params[:local_file].blank?
-        flash[:notice] = t('dri.flash.notice.specify_file')
-        redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
-        return
-      end
-
-      if params[:Filedata].present?
-        file_upload = params[:Filedata]
-      elsif params[:Presfiledata].present?
-        file_upload = params[:Presfiledata]
-      elsif params[:local_file].present?
-        file_upload = local_file_ingest(params[:local_file])
+      if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
+        url = url_for(file_download_url(doc.id, file_doc.id))
+        file_list['masterfile'] = url
       end
 
-      validate_upload(file_upload)
+      if can? :read, doc
+        surrogates = storage.get_surrogates doc, file_doc
+        surrogates.each { |file| file_list[file] = object_file_url(object_id: doc.id, id: file_doc.id, surrogate: file }
+      end
 
-      file_upload
+      item['files'].push(file_list)
     end
 
-    def validate_upload(file_upload)
-      @mime_type = Validators.file_type?(file_upload)
-      Validators.validate_file(file_upload, @mime_type)
-    rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
-      message = t('dri.flash.alert.invalid_file_type')
-      flash[:alert] = message
-      @warnings = message
-    rescue Exceptions::VirusDetected => e
-      flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
-      raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', name: file_upload.original_filename)
+    item
+  end
+
+  def local_file
+    search_params = { f: @generic_file.id, d: @datastream }
+    search_params[:v] = params[:version] if params[:version].present?
+
+    query = 'fedora_id LIKE :f AND ds_id LIKE :d'
+    query << ' AND version = :v' if search_params[:v].present?
+
+    LocalFile.where(query, search_params).take
+  rescue ActiveRecord::RecordNotFound
+    raise Exceptions::InternalError, 'Unable to find requested file'
+  rescue ActiveRecord::ActiveRecordError
+    raise Exceptions::InternalError, 'Error finding file'
+  end
+
+  def local_file_ingest(name)
+    upload_dir = Rails.root.join(Settings.dri.uploads)
+    File.new(File.join(upload_dir, name))
+  end
+
+  def status(file_id)
+    ingest_status = IngestStatus.where(asset_id: file_id)
+
+    @status = {}
+    if ingest_status.present?
+      status = ingest_status.first
+      @status[:status] = status.status
+
+      @status[:jobs] = {}
+      status.job_status.each do |job|
+        @status[:jobs][job.job] = { status: job.status, message: job.message }
+      end
     end
+  end
+
+  def upload_from_params
+    if params[:Filedata].blank? && params[:Presfiledata].blank? && params[:local_file].blank?
+      flash[:notice] = t('dri.flash.notice.specify_file')
+      redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
+      return
+    end
+
+    if params[:Filedata].present?
+      file_upload = params[:Filedata]
+    elsif params[:Presfiledata].present?
+      file_upload = params[:Presfiledata]
+    elsif params[:local_file].present?
+      file_upload = local_file_ingest(params[:local_file])
+    end
+
+    validate_upload(file_upload)
+
+    file_upload
+  end
+
+  def validate_upload(file_upload)
+    @mime_type = Validators.file_type?(file_upload)
+    Validators.validate_file(file_upload, @mime_type)
+  rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
+    message = t('dri.flash.alert.invalid_file_type')
+    flash[:alert] = message
+    @warnings = message
+  rescue Exceptions::VirusDetected => e
+    flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
+    raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', name: file_upload.original_filename)
+  end
 
 end

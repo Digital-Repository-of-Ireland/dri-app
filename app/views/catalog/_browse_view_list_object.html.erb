@@ -25,10 +25,10 @@
       </div>
       <!-- close dri_icon -->
     </div>
-    <% get_cover_image document %>
+    <% image_for_search document %>
     <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
         <div class="dri_image">
-          <%= image_tag @cover_image, :width=>"200" %>
+          <%= image_tag @search_image, :width=>"200" %>
         </div><!-- close image -->
     <% end %>
 

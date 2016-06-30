@@ -7,10 +7,12 @@
     <%= t('dri.footer.ria_address.zip') %><br/>
     <% phoneNum = '+353 1 609 0674' %>
     <%= t('dri.footer.contacts.phone') + ' ' + phoneNum %><br/>
-    <% emailAddress = 'info@dri.ie' %>
+    <% emailAddress = 'dri@ria.ie' %>
     <%= t('dri.footer.contacts.email') + ' ' %>
     <%= link_to emailAddress, "mailto:#{emailAddress}", :id => 'contact_email' %><br/><br/>
-    <%= render partial: "shared/version" %>
+    <% if current_user && current_user.is_admin? %>
+      <%= render partial: "shared/version" %>
+    <% end %>
   </div>
   <nav id="dri_main_footer_navigation_id"
        class="dri_main_footer_navigation">
@@ -53,6 +55,5 @@
 			<li class="dri_clearfix dri_underline">Investing in your future</li>
 		</ul>
   </div>
-
 </footer>
 <!-- close dri_main_footer_id -->

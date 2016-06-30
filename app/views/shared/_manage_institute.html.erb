@@ -27,7 +27,7 @@
     </select>
     <br/>
 
-    <%= submit_tag t('dri.views.collection.institute.set_institutes'), :id => "associate_inst", :class => 'dri_button_green w240' %>
+    <%= submit_tag t('dri.views.collection.institute.set_institutes'), :class => 'hidden' %>
   <% end %>
 </div>
 
@@ -35,6 +35,10 @@
   var selectInstitutes = $('select[name="institutes[]"]').bootstrapDualListbox({
                   nonSelectedListLabel: "<%= t('dri.views.collection.institute.available') %>",
                   selectedListLabel: "<%= t('dri.views.collection.institute.selected') %>",
+                  moveSelectedLabel: "<%= t('dri.views.collection.institute.move_selected_label') %>",
+                  moveAllLabel: "<%= t('dri.views.collection.institute.move_all_label') %>",
+                  removeSelectedLabel: "<%= t('dri.views.collection.institute.remove_selected_label') %>",
+                  removeAllLabel: "<%= t('dri.views.collection.institute.remove_all_label') %>",
                   preserveSelectionOnMove: 'moved',
                   moveOnSelect: false,
                 });

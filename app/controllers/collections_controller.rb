@@ -6,8 +6,8 @@ require 'validators'
 class CollectionsController < BaseObjectsController
   include Hydra::AccessControlsEnforcement
 
-  before_filter :authenticate_user_from_token!
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, except: [:cover]
+  before_filter :authenticate_user!, except: [:cover]
   before_filter :check_for_cancel, only: [:create, :update, :add_cover_image]
   before_filter :read_only, except: [:index]
 
@@ -185,6 +185,35 @@ class CollectionsController < BaseObjectsController
       end
       format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
     end
+  end
+
+  def cover
+    enforce_permissions!('show_digital_object', params[:id])
+
+    solr_result = ActiveFedora::SolrService.query(
+      ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])
+    )
+    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if solr_result.blank?
+
+    object = SolrDocument.new(solr_result.first)
+
+    cover_url = object.cover_image
+    raise Exceptions::NotFound if cover_url.blank?
+    if cover_url =~ /\A#{URI::regexp(['http', 'https'])}\z/
+      redirect_to cover_url
+      return
+    end
+
+    uri = URI.parse(cover_url)
+    cover_name = File.basename(uri.path)
+    
+    storage = StorageService.new
+    cover_file = storage.surrogate_url(object.id, cover_name)
+    raise Exceptions::NotFound unless cover_file
+
+    response.headers['Accept-Ranges'] = 'bytes'
+    response.headers['Content-Length'] = File.size(cover_file).to_s
+    send_file cover_file, { type: MIME::Types.type_for(cover_name).first.content_type, disposition: 'inline' }
   end
 
   # Updates the licence.

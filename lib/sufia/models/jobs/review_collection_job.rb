@@ -22,10 +22,19 @@ class ReviewCollectionJob < ActiveFedoraIdBasedJob
         # If object is a collection and has sub-collections, apply to governed_items
         if o.collection?
           Sufia.queue.push(ReviewCollectionJob.new(o.id)) unless o.governed_items.blank?
-        end
+        end      
       end
     end
 
+    # Need to set sub-collection to reviewed
+    if subcollection?(object)
+      object.status = 'reviewed'
+      object.save
+    end
+  end
+
+  def subcollection?(object)
+    object.collection? && !object.root_collection?
   end
 
 end
