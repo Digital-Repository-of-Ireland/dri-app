@@ -238,8 +238,7 @@ en:
         relations: Relation
         relations_text: "A related resource."
         rights: "Rights statement"
-        rights_text: "Information about rights held in and over the resource. If the asset is an orphan work it must be registered with the EUIPO Orphan Works
-Database, and the associated file number must be included here."
+        rights_text: "Information about rights held in and over the resource. If the asset is an orphan work it must be registered with the EUIPO Orphan Works Database, and the associated file number must be included here."
         roles: Contributor
         roles_text: "An entity responsible for making contributions to the resource."
         sources: Source
