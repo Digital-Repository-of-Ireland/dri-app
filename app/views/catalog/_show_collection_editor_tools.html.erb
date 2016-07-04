@@ -129,7 +129,7 @@
     <!-- If (root collection OR not EAD collection) enable delete collection link -->
     <!-- This is to allow to delete any sub-collection except for EAD -->
     <% if @document.root_collection? || @document.editable? %>
-      <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal', :id => 'delete_collection' do %>
+      <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal' do %>
         <li>
           <%= t('dri.views.collection.buttons.delete_collection') %>
         </li>
@@ -208,7 +208,7 @@
 			<div class="modal-body">
 				<span class="label label-danger"><%= t('dri.views.collection.confirm_delete') %></span>
 				<br />
-				<%= form_tag (collection_path(@document.id)), id: 'confirm_delete_collection', :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+				<%= form_tag (collection_path(@document.id)), id: 'delete_collection', :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
 				<%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "hidden" %>
 				<% end %>
 

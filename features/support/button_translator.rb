@@ -82,6 +82,9 @@ module ButtonTranslator
       when /^confirm delete collection$/
         "confirm_delete_collection"
 
+      when /^delete collection with id (.+)$/
+        "delete_collection_#{$1}"
+
       when /^confirm delete object$/
         "confirm_delete_object"
 
