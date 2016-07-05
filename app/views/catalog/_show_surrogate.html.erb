@@ -17,11 +17,8 @@
         <% pending = reader_group.pending_memberships %>
 
         <% if pending.find_by_user_id(current_user.id).nil? %>
-            <%= form_for(reader_group.memberships.build, url: user_group.pending_memberships_path, :method => :post) do |f| %>
-                <%= render partial: 'user_group/shared/error_messages', locals: {object: f.object} %>
-                <%= f.hidden_field :user_id, value: current_user.id %>
-                <%= f.hidden_field :group_id , value: reader_group.id %>
-                <%= f.submit t('dri.views.catalog.legends.request_permission_logged_in'), :class => 'dri_request_access_button' %>
+            <%= link_to '', :'data-target' => '#dri_request_access_modal_id', :'data-toggle' => 'modal', id: "request_access" do %>
+                <%= button_tag(t('dri.views.catalog.legends.request_permission_logged_in'), {class: 'dri_request_access_button'}) %>
             <% end %>
         <% else %>
             <p class="dri_restrict_progress"><%= t('dri.views.catalog.legends.request_permission_in_progress') %></p>
@@ -31,3 +28,30 @@
     <% end %>
 
 <% end %>
+
+<div class="modal fade" id="dri_request_access_modal_id">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title"><%= t('dri.views.catalog.forms.restricted_data_request') %></h4>
+      </div>
+
+      <div class="modal-body">
+        <% if reader_group %>
+          <%= render partial: "request_access_form", locals: { reader_group: reader_group }%>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
+        <button id="request_read_access" type="submit" class="dri_button_green" onclick="$('#submit_read_request').submit();">
+          <%= t('dri.views.catalog.legends.request_permission_logged_in') %>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

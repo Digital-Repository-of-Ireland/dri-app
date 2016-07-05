@@ -2398,6 +2398,24 @@ ul.dri_collection_institutes_list {
         }
     }
 }
+.dri_request_access {
+  input[type="radio"] {
+      margin-right: 5px;
+  }
+  label {
+    font-weight: normal;
+    color: $dri_midgrey;
+  }
+  h5 {
+            display: block;
+            clear: both;
+            font-size: 100%;
+            color: $dri_darkgrey;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 0px;
+  }
+}
 .dri_associate_institutes_block,
 .dri_collection_institutes_dropdown {
     clear: both;

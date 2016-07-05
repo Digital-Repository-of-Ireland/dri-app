@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160513093044) do
+ActiveRecord::Schema.define(version: 20160701083251) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -175,6 +175,7 @@ ActiveRecord::Schema.define(version: 20160513093044) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "approved_by"
+    t.text     "request_form"
   end
 
   add_index "user_group_memberships", ["group_id", "user_id"], name: "index_user_group_memberships_on_group_id_and_user_id", unique: true

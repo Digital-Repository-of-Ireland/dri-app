@@ -322,6 +322,7 @@ en:
           objects_in_collection: Objects
           pdf_file: PDF
           restricted_asset: "Restricted Asset"
+          restricted_data_request: "Restricted data access request form"
           video_file: Video
         headers:
           files: "Asset Tools"

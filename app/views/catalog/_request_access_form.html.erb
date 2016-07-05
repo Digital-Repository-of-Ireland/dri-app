@@ -1,0 +1,151 @@
+
+<div class="dri_request_access">
+<%= form_for(reader_group.memberships.build, url: user_group.pending_memberships_path, 
+    method: :post, html: {name: 'submit_read_request', id: 'submit_read_request'}) do |f| %>
+    <% if current_user %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+      <%= f.hidden_field :group_id, value: reader_group.id %>
+    <% end %>
+    <div class="form-group">
+      <label for="name"><%= (t :'user_groups.views.partials.request_form.name') %></label>
+      <%= text_field_tag 'name', nil, {class: 'form-control'} %>
+    </div>
+    <div class="form-group" id="organisation">
+      <label for="organisation"><%= (t :'user_groups.views.partials.request_form.organisation') %></label>
+      <%= text_field_tag 'organisation', nil, {class: 'form-control'} %>
+    </div>
+    <div class="form-group" id="position">
+      <label for="position"><%= (t :'user_groups.views.partials.request_form.position') %></label>
+      <%= text_field_tag 'position', nil, {class: 'form-control'} %>
+    </div>
+
+    <fieldset id="use">
+    <h5><%= (t :'user_groups.views.partials.request_form.use') %></h5>
+
+      <div>
+      <label for="use_academic"><%= radio_button_tag :use, 'academic', false %><%= (t :'user_groups.views.partials.request_form.academic_research') %></label>
+      <fieldset id="academic_use_fields" class="academic_use_fields">
+        <div class="form-group">
+          <label for="academic_project"><%= (t :'user_groups.views.partials.request_form.project_name') %></label>
+          <%= text_field_tag 'academic_project', nil, {class: 'form-control'} %>
+        </div>
+        <div class="form-group">
+          <label for="academic_funder"><%= (t :'user_groups.views.partials.request_form.funder') %></label>
+          <%= text_field_tag 'academic_funder', nil, {class: 'form-control'} %>
+        </div>
+        <div class="form-group">
+        <label for="academic_investigators"><%= (t :'user_groups.views.partials.request_form.investigators') %></label>
+        <%= text_field_tag 'academic_investigators', nil, {class: 'form-control'} %>
+        </div>
+      </fieldset>
+      </div>
+
+      <div>
+      <label><%= radio_button_tag :use, 'research', false %><%= (t :'user_groups.views.partials.request_form.research') %></label>
+      <fieldset id="research_use_fields" class="research_use_fields">
+        <div class="form-group">
+          <%= text_field_tag 'research_description', nil, {class: 'form-control', 
+            placeholder: (t :'user_groups.views.partials.request_form.research_description')} %>
+        </div>
+      </fieldset>
+      </div>
+
+      <div>
+      <label><%= radio_button_tag :use, 'education', false %><%= (t :'user_groups.views.partials.request_form.education') %></label>
+      <fieldset id="education_use_fields" class="education_use_fields">
+        <div class="form-group">
+          <label for="teaching_role"><%= (t :'user_groups.views.partials.request_form.teaching_role') %></label>
+          <%= text_field_tag 'teaching_role', nil, {class: 'form-control'} %>
+      </div>
+      <div class="form-group">
+          <label for="teaching_module"><%= (t :'user_groups.views.partials.request_form.teaching_module') %></label>
+          <%= text_field_tag 'teaching_module', nil, {class: 'form-control'} %>
+      </div>
+      <div class="form-group">
+          <label for="teaching_dates"><%= (t :'user_groups.views.partials.request_form.teaching_dates') %></label>
+          <%= text_field_tag 'teaching_dates', nil, {class: 'form-control'} %>
+      </div>
+      </fieldset>
+      </div>
+
+      <div>
+      <label><%= radio_button_tag :use, 'commercial', false %><%= (t :'user_groups.views.partials.request_form.commercial') %></label>
+      <fieldset id="commercial_use_fields" class="commercial_use_fields">
+          <div class="form-group">
+          <%= text_field_tag 'commercial_description', nil, {class: 'form-control', 
+            placeholder: (t :'user_groups.views.partials.request_form.description')} %>
+        </div>
+      </fieldset>
+      </div>
+
+      <label><%= radio_button_tag :use, 'other' %><%= (t :'user_groups.views.partials.request_form.other') %></label>
+      <fieldset id="other_use_fields" class="other_use_fields">
+          <div class="form-group">
+          <%= text_field_tag 'other_description]', nil, {class: 'form-control', 
+            placeholder: (t :'user_groups.views.partials.request_form.description')} %>
+        </div>
+      </fieldset>
+    </fieldset>
+    <%= f.submit t('dri.views.catalog.legends.request_permission_logged_in'), class: 'hidden' %>
+<% end %>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('fieldset.academic_use_fields').checked ? $('fieldset.academic_use_fields').show() : $('fieldset.academic_use_fields').hide();
+        $('fieldset.research_use_fields').checked ? $('fieldset.research_use_fields').show() : $('fieldset.research_use_fields').hide();
+        $('fieldset.education_use_fields').checked ? $('fieldset.education_use_fields').show() : $('fieldset.education_use_fields').hide();
+        $('fieldset.commercial_use_fields').checked ? $('fieldset.commercial_use_fields').show() : $('fieldset.commercial_use_fields').hide();
+        $('fieldset.other_use_fields').checked ? $('fieldset.other_use_fields').show() : $('fieldset.other_use_fields').hide();
+
+        $('#use_academic').click(function() {
+            if(this.checked) {
+              $('fieldset.academic_use_fields').show();
+              $('fieldset.research_use_fields').hide();
+              $('fieldset.education_use_fields').hide();
+              $('fieldset.commercial_use_fields').hide();
+              $('fieldset.other_use_fields').hide();
+            }
+        });
+
+        $('#use_research').click(function() {
+           if(this.checked) {
+             $('fieldset.academic_use_fields').hide();
+             $('fieldset.research_use_fields').show();
+             $('fieldset.education_use_fields').hide();
+             $('fieldset.commercial_use_fields').hide();
+             $('fieldset.other_use_fields').hide();
+           }
+        });
+
+        $('#use_education').click(function() {
+           if(this.checked) {
+             $('fieldset.academic_use_fields').hide();
+             $('fieldset.research_use_fields').hide();
+             $('fieldset.education_use_fields').show();
+             $('fieldset.commercial_use_fields').hide();
+             $('fieldset.other_use_fields').hide();
+           }
+        });
+
+        $('#use_commercial').click(function() {
+           if(this.checked) {
+             $('fieldset.academic_use_fields').hide();
+             $('fieldset.research_use_fields').hide();
+             $('fieldset.education_use_fields').hide();
+             $('fieldset.commercial_use_fields').show();
+             $('fieldset.other_use_fields').hide();
+           }
+        });
+
+        $('#use_other').click(function() {
+           if(this.checked) {
+             $('fieldset.academic_use_fields').hide();
+             $('fieldset.research_use_fields').hide();
+             $('fieldset.education_use_fields').hide();
+             $('fieldset.commercial_use_fields').hide();
+             $('fieldset.other_use_fields').show();
+           }
+        });
+    }); 
+</script>
