@@ -6,7 +6,9 @@ class PublishJob < ActiveFedoraIdBasedJob
   def run
     Rails.logger.info "Publishing collection #{object.id}"
 
-    q_str = "#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\" AND -#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:draft"
+    q_str = "#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\""
+    q_str += " AND -#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:draft"
+    
     query = Solr::Query.new(q_str)
 
     while query.has_more?
