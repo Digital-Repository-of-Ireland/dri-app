@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: f770cae77180dbc1a62e19df6f6c6bbf548661c3
+  revision: f84b18d87ad92f9154d334ec0d85addbcb2d26bc
   branch: develop
   specs:
     dri_data_models (2.4.1)
@@ -36,9 +36,9 @@ GIT
       hydra-head (~> 9.10)
       iso-639
       iso8601
-      rails (>= 4.0)
+      rails (~> 4.2)
       sass-rails (~> 4.0.3)
-      sufia-models (>= 6.0.0.rc4)
+      sufia-models (= 6.5.0)
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
@@ -377,12 +377,12 @@ GEM
     hydra-core (9.10.0)
       hydra-access-controls (= 9.10.0)
       rails (~> 4.0)
-    hydra-derivatives (1.0.0)
+    hydra-derivatives (1.2.1)
       active-fedora (~> 9.0)
       activesupport (~> 4.0)
       deprecation (~> 0.1)
       hydra-file_characterization (~> 0.3)
-      mime-types (~> 2.3)
+      mime-types (>= 1)
       mini_magick (>= 3.2, < 5)
     hydra-file_characterization (0.3.3)
       activesupport (>= 3.0.0)
