@@ -8,7 +8,8 @@
     <% end %>
     <div class="form-group">
       <label for="name"><%= (t :'user_groups.views.partials.request_form.name') %></label>
-      <%= text_field_tag 'name', nil, {class: 'form-control'} %>
+      <i class="fa fa-asterisk" aria-hidden="true"></i>
+      <%= text_field_tag 'name', nil, { required: true, class: 'form-control'} %>
     </div>
     <div class="form-group" id="organisation">
       <label for="organisation"><%= (t :'user_groups.views.partials.request_form.organisation') %></label>
@@ -20,10 +21,10 @@
     </div>
 
     <fieldset id="use">
-    <h5><%= (t :'user_groups.views.partials.request_form.use') %></h5>
+    <h5><%= (t :'user_groups.views.partials.request_form.use') %><i class="fa fa-asterisk" aria-hidden="true"></i></h5>
 
       <div>
-      <label for="use_academic"><%= radio_button_tag :use, 'academic', false %><%= (t :'user_groups.views.partials.request_form.academic_research') %></label>
+      <label for="use_academic"><%= radio_button_tag :use, 'academic', false, required: true %><%= (t :'user_groups.views.partials.request_form.academic_research') %></label>
       <fieldset id="academic_use_fields" class="academic_use_fields">
         <div class="form-group">
           <label for="academic_project"><%= (t :'user_groups.views.partials.request_form.project_name') %></label>
@@ -41,7 +42,7 @@
       </div>
 
       <div>
-      <label><%= radio_button_tag :use, 'research', false %><%= (t :'user_groups.views.partials.request_form.research') %></label>
+      <label><%= radio_button_tag :use, 'research', false, required: true %><%= (t :'user_groups.views.partials.request_form.research') %></label>
       <fieldset id="research_use_fields" class="research_use_fields">
         <div class="form-group">
           <%= text_field_tag 'research_description', nil, {class: 'form-control', 
@@ -51,7 +52,7 @@
       </div>
 
       <div>
-      <label><%= radio_button_tag :use, 'education', false %><%= (t :'user_groups.views.partials.request_form.education') %></label>
+      <label><%= radio_button_tag :use, 'education', false, required: true %><%= (t :'user_groups.views.partials.request_form.education') %></label>
       <fieldset id="education_use_fields" class="education_use_fields">
         <div class="form-group">
           <label for="teaching_role"><%= (t :'user_groups.views.partials.request_form.teaching_role') %></label>
@@ -69,7 +70,7 @@
       </div>
 
       <div>
-      <label><%= radio_button_tag :use, 'commercial', false %><%= (t :'user_groups.views.partials.request_form.commercial') %></label>
+      <label><%= radio_button_tag :use, 'commercial', false, required: true %><%= (t :'user_groups.views.partials.request_form.commercial') %></label>
       <fieldset id="commercial_use_fields" class="commercial_use_fields">
           <div class="form-group">
           <%= text_field_tag 'commercial_description', nil, {class: 'form-control', 
@@ -78,15 +79,15 @@
       </fieldset>
       </div>
 
-      <label><%= radio_button_tag :use, 'other' %><%= (t :'user_groups.views.partials.request_form.other') %></label>
+      <label><%= radio_button_tag :use, 'other', false, required: true %><%= (t :'user_groups.views.partials.request_form.other') %></label>
       <fieldset id="other_use_fields" class="other_use_fields">
           <div class="form-group">
-          <%= text_field_tag 'other_description]', nil, {class: 'form-control', 
+          <%= text_field_tag 'other_description', nil, {class: 'form-control', 
             placeholder: (t :'user_groups.views.partials.request_form.description')} %>
         </div>
       </fieldset>
     </fieldset>
-    <%= f.submit t('dri.views.catalog.legends.request_permission_logged_in'), class: 'hidden' %>
+    <%= f.submit t('dri.views.catalog.legends.request_permission_logged_in'), id: 'request_form_submit_btn', class: 'hidden' %>
 <% end %>
 </div>
 
