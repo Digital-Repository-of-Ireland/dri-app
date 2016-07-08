@@ -1,6 +1,6 @@
 
 <div class="dri_request_access">
-<%= form_for(reader_group.memberships.build, url: user_group.memberships_path, 
+<%= form_for(reader_group.memberships.build, url: user_group.pending_memberships_path, 
     method: :post, html: {name: 'submit_read_request', id: 'submit_read_request'}) do |f| %>
     <%= hidden_field_tag 'membership_type', 'pending' %> 
     <% if current_user %>
