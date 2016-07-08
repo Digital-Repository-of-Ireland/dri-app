@@ -45,7 +45,6 @@ Then /^the AIP for the saved pid should have "(.*?)" version(?:|s)$/ do |count|
 end
 
 Then /^the manifest for version "(.*?)" for the saved pid should be be valid$/ do |version|
-puts "+++++++++ pid is #{@pid}"
   dir = ""
   index = 0
   4.times {
