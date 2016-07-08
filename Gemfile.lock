@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: aacc43b3ce6912965f89c0936e8ea1997799ad6d
+  revision: 7306261e9756b36f7e41f094ff4910d39e018b71
   branch: develop
   specs:
     user_group (1.2.0)
