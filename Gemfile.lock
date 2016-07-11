@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: ba3e5efabd8444c2663bbf726debe9ca94490013
+  revision: b9a52bb3b1448b18f46f9b4ac614ce196867d3f4
   branch: moab
   specs:
     dri_data_models (2.4.0)
