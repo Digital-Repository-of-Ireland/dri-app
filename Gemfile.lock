@@ -25,10 +25,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: f84b18d87ad92f9154d334ec0d85addbcb2d26bc
-  branch: develop
+  revision: 0835cda37c4519f5d1473e603d7f908fc76f109e
+  tag: v2.4.2
   specs:
-    dri_data_models (2.4.1)
+    dri_data_models (2.4.2)
       active-fedora (= 9.11)
       google-api-client (= 0.8.6)
       hydra-access-controls
@@ -42,8 +42,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 3a0d6dcded68dc2cc3afed37eaae97d1f0a94148
-  branch: develop
+  revision: 5f7ab36cc826a27b4b06191a31df76d085698a79
+  tag: v1.2.0
   specs:
     user_group (1.2.0)
       devise
