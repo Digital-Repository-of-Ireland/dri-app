@@ -1,12 +1,7 @@
 
 <div class="dri_request_access">
-<%= form_for(reader_group.memberships.build, url: user_group.pending_memberships_path, 
-    method: :post, html: {name: 'submit_read_request', id: 'submit_read_request'}) do |f| %>
-    <%= hidden_field_tag 'membership_type', 'pending' %> 
-    <% if current_user %>
-      <%= f.hidden_field :user_id, value: current_user.id %>
-      <%= f.hidden_field :group_id, value: reader_group.id %>
-    <% end %>
+<%= form_tag(collection_request_read_path(@document.collection_id), 
+    method: :post, html: {name: 'submit_read_request', id: 'submit_read_request'}) do %>
     <div class="form-group">
       <label for="name"><%= (t :'user_groups.views.partials.request_form.name') %></label>
       <i class="fa fa-asterisk" aria-hidden="true"></i>
@@ -88,7 +83,7 @@
         </div>
       </fieldset>
     </fieldset>
-    <%= f.submit t('dri.views.catalog.legends.request_permission_logged_in'), id: 'request_form_submit_btn', class: 'hidden' %>
+    <%= submit_tag t('dri.views.catalog.legends.request_permission_logged_in'), id: 'request_form_submit_btn', class: 'hidden' %>
 <% end %>
 </div>
 
