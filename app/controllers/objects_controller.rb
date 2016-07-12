@@ -13,7 +13,7 @@ class ObjectsController < BaseObjectsController
   DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
        'contributor','publisher','date','format','source','temporal_coverage',
        'geographical_coverage','geocode_point','geocode_box','institute',
-       'root_collection_id','isGovernedBy','ancestor_id','ancestor_title'].freeze
+       'root_collection_id','isGovernedBy','ancestor_id','ancestor_title','role_dnr'].freeze
 
   # Displays the New Object form
   #
