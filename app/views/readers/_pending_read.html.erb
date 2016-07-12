@@ -1,26 +1,31 @@
 <%= paginate @pending_memberships %>
 
+<table>
 <% for membership in @pending_memberships %>
+  <tr>
   <% user = UserGroup::User.find(membership.user_id) %>
   <% identifier = user.full_name+'('+user.email+')' unless user.nil? %>
   
-  <%= "#{identifier} #{membership.created_at}" %>
-  <div class="btn-group inline">
-    <% if (current_user.is_admin? || (can? :manage_collection, @collection)) && !membership.id.nil? %>
-      <% unless membership.request_form.nil? %>
-        <%= link_to (t :'dri.views.readers.links.pending.view'), 
-              collection_view_read_request_path(@collection.id, membership.user_id, format: 'js'),
-              id: "request_form", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_request_form_modal_id' %>
+  <td><%= "#{identifier}" %></td>
+  <td><%= "#{membership.created_at}" %></td>
+  <td>
+    <div class="btn-group inline">
+      <% if (current_user.is_admin? || (can? :manage_collection, @collection)) && !membership.id.nil? %>
+        <% unless membership.request_form.nil? %>
+          <%= link_to (t :'dri.views.readers.links.pending.view'), 
+                collection_view_read_request_path(@collection.id, membership.user_id, format: 'js'),
+                id: "request_form", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_request_form_modal_id' %>
+        <% end %>
+        <%= link_to (t :'dri.views.readers.links.pending.approve'), 
+            collection_approve_read_request_path(@collection.id, membership.user_id), method: :put %>
       <% end %>
-      <%= link_to (t :'dri.views.readers.links.pending.approve'), 
-          collection_approve_read_request_path(@collection.id, membership.user_id), method: :put %>
-    <% end %>
-     <%= link_to (t :'dri.views.readers.links.pending.reject'), 
-          collection_remove_read_path(@collection.id, membership.user_id), method: :delete %>
-  </div>
-
- <br/>
+       <%= link_to (t :'dri.views.readers.links.pending.reject'), 
+            collection_remove_read_path(@collection.id, membership.user_id), method: :delete %>
+    </div>
+  </td>
+  </tr>
 <% end %>
+</table>
 
 <div class="modal fade" id="dri_request_form_modal_id">
   <div class="modal-dialog">
