@@ -198,12 +198,12 @@ class ObjectsController < BaseObjectsController
           solr_doc = SolrDocument.new(doc)
           item = extract_metadata solr_doc
                   
-          #if solr_doc.published?
+          if solr_doc.published?
             item = extract_metadata solr_doc
             item.merge!(find_assets_and_surrogates solr_doc)
 
             @list << item
-          #end
+          end
         end
 
         raise Exceptions::NotFound if @list.empty?
