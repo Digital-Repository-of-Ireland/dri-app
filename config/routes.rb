@@ -31,7 +31,13 @@ NuigRnag::Application.routes.draw do
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
     post 'collections/:id/batch', to: 'batch_ingest#create', as: :batch_ingest
     get 'collections/:id/duplicates', to: 'collections#duplicates', as: :collection_duplicates
-  
+
+    get 'collections/:id/readers', to: 'readers#index', as: :collection_manage_requests
+    post 'collections/:id/readers', to: 'readers#create', as: :collection_request_read
+    get 'collections/:id/readers/:user_id', to: 'readers#show', as: :collection_view_read_request
+    put 'collections/:id/readers/:user_id', to: 'readers#update', as: :collection_approve_read_request
+    delete 'collections/:id/readers/:user_id', to: 'readers#destroy', as: :collection_remove_read
+
     put 'collections/:id/licences', to: 'collections#set_licence', as: :collection_licence
     put 'objects/:id/licences', to: 'objects#set_licence', as: :object_licence
 

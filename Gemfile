@@ -8,7 +8,7 @@ gem 'rails','~> 4.2'
 gem 'blacklight', '~> 5.16.0'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
-gem 'hydra-head', '9.9.0'
+gem 'hydra-head', '9.10'
 
 gem 'sufia-models', '6.5.0'
 gem 'redlock'
@@ -16,11 +16,11 @@ gem 'google-api-client', '0.8.6'
 
 gem 'paper_trail', '~> 4'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.4.1'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.1.8'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.4.2'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.2.0'
 
-gem 'active-fedora', '9.10.4'
-gem 'active_fedora-noid', '1.0.3'
+gem 'active-fedora', '9.11'
+gem 'active_fedora-noid', '1.1.1'
 
 gem 'rails_config'
 gem 'sqlite3'
