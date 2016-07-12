@@ -12,6 +12,7 @@ class CatalogController < ApplicationController
   include Hydra::AccessControlsEnforcement
 
   include TimelineHelper
+  include DRI::Readable
 
   #This method shows the DO if the metadata is open
   #Rather than before where the user had to have read permissions on the object all the time
@@ -266,6 +267,8 @@ class CatalogController < ApplicationController
     available_institutes
     files_and_surrogates
     supported_licences
+
+    @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
