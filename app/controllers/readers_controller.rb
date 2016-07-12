@@ -3,6 +3,8 @@ class ReadersController < ApplicationController
   before_filter :authenticate_user_from_token!
   before_filter :authenticate_user!
 
+  include DRI::Readable
+
   # Manage the read access requests
   def index
     enforce_permissions!('manage_collection', params[:id])
@@ -17,18 +19,24 @@ class ReadersController < ApplicationController
   # User requesting read access to collection
   def create
     @collection = retrieve_object!(params[:id])
+    @reader_group = governing_reader_group(@collection.id)
 
-    group = UserGroup::Group.find_by(name: @collection.id)
-
-    action = current_user.join_group(group.id)
-    if action.errors.count >0
-      flash[:alert] = t('dri.flash.error.submitting_read_request', error: action.errors.full_messages.inspect)
+    unless @reader_group
+      flash[:alert] = t('dri.flash.error.no_read_group')
       redirect_to :back
       return
     end
 
-    store_request_form(group.id)
-    notify_managers(group)
+    action = current_user.join_group(@reader_group.id)
+    if action.errors.count >0
+      flash[:alert] = t('dri.flash.error.submitting_read_request', 
+        error: action.errors.full_messages.inspect)
+      redirect_to :back
+      return
+    end
+
+    store_request_form(@reader_group.id)
+    notify_managers(@reader_group)
    
     flash[:success] = t('dri.flash.notice.request_form_submitted')
     redirect_to :back
@@ -117,7 +125,8 @@ class ReadersController < ApplicationController
     end
 
     if managers.present? && managers.count > 0
-      AuthMailer.pending_mail(managers, current_user.email, collection_manage_requests_url(@collection.id)).deliver_now
+      AuthMailer.pending_mail(managers, current_user.email, 
+        collection_manage_requests_url(group.name)).deliver_now
     end
   end
 
