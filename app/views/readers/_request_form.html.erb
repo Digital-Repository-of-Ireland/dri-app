@@ -1,0 +1,52 @@
+<% request_form = membership.request_form %>
+<% request_use = JSON.parse(request_form[:use]) %>
+
+<table class="table">
+    <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.name') %></td><td><%= request_form[:name] %></td>
+    </tr>
+    <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.organisation') %></td><td><%= request_form[:organisation] %></td>
+    </tr>
+    <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.position') %></td><td><%= request_form[:position] %></td>
+    </tr>
+    <tr>
+        <% use = request_use.keys.first %>
+        <td><%= (t :'user_groups.views.partials.request_form.use') %></td><td><%= use.capitalize %></td>
+    </tr>
+    <% if use == 'academic' %>
+      <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.project_name') %></td><td><%= request_use['academic']['project'] %></td>
+      </tr>
+      <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.funder') %></td><td><%= request_use['academic']['funder'] %></td>
+      </tr>
+      <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.investigators') %></td><td><%= request_use['academic']['investigator'] %></td>
+      </tr>
+    <% elsif use == 'research' %>
+       <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.research_description') %></td><td><%= request_use['research']['description'] %></td>
+      </tr>
+    <% elsif use == 'education' %>
+        <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.teaching_role') %></td><td><%= request_use['education']['role'] %></td>
+      </tr>
+       <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.teaching_module') %></td><td><%= request_use['education']['module'] %></td>
+      </tr>
+       <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.teaching_dates') %></td><td><%= request_use['education']['dates'] %></td>
+      </tr>
+    <% elsif use == 'commercial' %>
+       <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.description') %></td><td><%= request_use['commercial']['description'] %></td>
+      </tr>
+    <% elsif use == 'other' %>
+       <tr>
+        <td><%= (t :'user_groups.views.partials.request_form.description') %></td><td><%= request_use['other']['description'] %></td>
+      </tr>
+    <% end %>
+
+</table>

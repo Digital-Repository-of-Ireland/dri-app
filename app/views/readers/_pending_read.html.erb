@@ -1,0 +1,44 @@
+<%= paginate @pending_memberships %>
+
+<% for membership in @pending_memberships %>
+  <% user = UserGroup::User.find(membership.user_id) %>
+  <% identifier = user.full_name+'('+user.email+')' unless user.nil? %>
+  
+  <%= "#{identifier} #{membership.created_at}" %>
+  <div class="btn-group inline">
+    <% if (current_user.is_admin? || (can? :manage_collection, @collection)) && !membership.id.nil? %>
+      <% unless membership.request_form.nil? %>
+        <%= link_to (t :'dri.views.readers.links.pending.view'), 
+              collection_view_read_request_path(@collection.id, membership.user_id, format: 'js'),
+              id: "request_form", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_request_form_modal_id' %>
+      <% end %>
+      <%= link_to (t :'dri.views.readers.links.pending.approve'), 
+          collection_approve_read_request_path(@collection.id, membership.user_id), method: :put %>
+    <% end %>
+     <%= link_to (t :'dri.views.readers.links.pending.reject'), 
+          collection_remove_read_path(@collection.id, membership.user_id), method: :delete %>
+  </div>
+
+ <br/>
+<% end %>
+
+<div class="modal fade" id="dri_request_form_modal_id">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title"><%= t('dri.views.catalog.forms.restricted_data_request') %></h4>
+      </div>
+
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

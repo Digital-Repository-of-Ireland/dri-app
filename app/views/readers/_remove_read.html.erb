@@ -1,0 +1,13 @@
+<%= paginate @memberships %>
+
+<% for membership in @memberships %>
+  <% user = UserGroup::User.find_by_id(membership.user_id) %>
+  <%= user.full_name + " (" + user.email + ")" unless user.nil? %>
+  <%= membership.updated_at %>
+
+  <%= link_to (t :'dri.views.readers.links.approved.remove'), 
+      collection_remove_read_path(@collection.id, membership.user_id), method: :delete %>
+  <br/>
+<% end %>
+
+
