@@ -55,6 +55,8 @@ gem 'remotipart'
 gem 'rest-client'
 gem 'sparql-client'
 
+gem 'honeybadger', '~> 2.0'
+
 # static pages
 gem 'high_voltage', '~> 2.1.0'
 

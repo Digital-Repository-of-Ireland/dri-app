@@ -349,6 +349,7 @@ GEM
     high_voltage (2.1.0)
     hike (1.2.3)
     hitimes (1.2.2)
+    honeybadger (2.6.0)
     htmlentities (4.3.4)
     httmultiparty (0.3.16)
       httparty (>= 0.7.3)
@@ -847,6 +848,7 @@ DEPENDENCIES
   guard
   guard-livereload
   high_voltage (~> 2.1.0)
+  honeybadger (~> 2.0)
   http_accept_language
   hydra-head (= 9.10)
   i18n_sync
