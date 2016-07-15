@@ -233,9 +233,14 @@ class ObjectsController < BaseObjectsController
       solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
       result = ActiveFedora::SolrService.instance.conn.get('select',
                         :params=>{:q=>solr_query, :qt => 'standard',
+                        :fq => "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false
+                                AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published",
                         :mlt => 'true',
-                        :'mlt.fl' => "#{Solrizer.solr_name('subject', :stored_searchable, type: :string)},#{Solrizer.solr_name('subject', :stored_searchable, type: :string)}",
-                        :'mlt.count' => count, :fl => 'id,score', :'mlt.match.include'=> 'false'})
+                        :'mlt.fl' => "#{Solrizer.solr_name('subject', :stored_searchable, type: :string)},
+                                      #{Solrizer.solr_name('subject', :stored_searchable, type: :string)}",
+                        :'mlt.count' => count,
+                        :fl => "id,score",
+                        :'mlt.match.include'=> 'false'})
     end
 
     # TODO: fixme!
