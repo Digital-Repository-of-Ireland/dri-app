@@ -13,7 +13,7 @@ class ObjectsController < BaseObjectsController
   DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
        'contributor','publisher','date','format','source','temporal_coverage',
        'geographical_coverage','geocode_point','geocode_box','institute',
-       'root_collection_id','isGovernedBy','ancestor_id','ancestor_title'].freeze
+       'root_collection_id','isGovernedBy','ancestor_id','ancestor_title','role_dnr'].freeze
 
   # Displays the New Object form
   #
@@ -209,12 +209,12 @@ class ObjectsController < BaseObjectsController
           solr_doc = SolrDocument.new(doc)
           item = extract_metadata solr_doc
                   
-          #if solr_doc.published?
+          if solr_doc.published?
             item = extract_metadata solr_doc
             item.merge!(find_assets_and_surrogates solr_doc)
 
             @list << item
-          #end
+          end
         end
 
         raise Exceptions::NotFound if @list.empty?
@@ -244,9 +244,14 @@ class ObjectsController < BaseObjectsController
       solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
       result = ActiveFedora::SolrService.instance.conn.get('select',
                         :params=>{:q=>solr_query, :qt => 'standard',
+                        :fq => "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false
+                                AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published",
                         :mlt => 'true',
-                        :'mlt.fl' => "#{Solrizer.solr_name('subject', :stored_searchable, type: :string)},#{Solrizer.solr_name('subject', :stored_searchable, type: :string)}",
-                        :'mlt.count' => count, :fl => 'id,score', :'mlt.match.include'=> 'false'})
+                        :'mlt.fl' => "#{Solrizer.solr_name('subject', :stored_searchable, type: :string)},
+                                      #{Solrizer.solr_name('subject', :stored_searchable, type: :string)}",
+                        :'mlt.count' => count,
+                        :fl => "id,score",
+                        :'mlt.match.include'=> 'false'})
     end
 
     # TODO: fixme!

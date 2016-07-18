@@ -498,7 +498,7 @@ class CollectionsController < BaseObjectsController
         }
       end
   end
-
+ 
   def valid_permissions?
     if (@object.governing_collection_id.blank? &&
        ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||

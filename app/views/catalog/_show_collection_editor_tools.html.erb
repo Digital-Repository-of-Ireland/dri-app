@@ -183,15 +183,14 @@
 
 	<!-- Link to manage pending memberships for the read group -->
 	<% if get_reader_group(@document) %>
-	<%= link_to user_group.manage_group_path(@reader_group), :id => "manage_read_requests" do %>
-	<li>
-		<%= t('dri.views.collection.manage_read_requests') %>
-	</li>
-	<% end %>
+	  <%= link_to collection_manage_requests_path(@document), id: "manage_read_requests" do %>
+	    <li>
+		    <%= t('dri.views.collection.manage_read_requests') %>
+	    </li>
+	  <% end %>
 	<% end %>
 	
-
-</ul>
+  </ul>
 </div>
 
 <% if current_user.is_admin? || ((can? :manage_collection, @document) && @document.draft?) %>

@@ -183,8 +183,10 @@ class AssetsController < ApplicationController
       params[:objects].map{ |o| o.values.first })
     result_docs = Solr::Query.new(solr_query)
     result_docs.each_solr_document do |doc|
-      item = list_files_with_surrogates(doc)
-      @list << item unless item.empty?
+      if doc.published?
+        item = list_files_with_surrogates(doc)
+        @list << item unless item.empty?
+      end
     end
 
     raise Exceptions::NotFound if @list.empty?
