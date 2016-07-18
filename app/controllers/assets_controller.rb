@@ -233,11 +233,10 @@ class AssetsController < ApplicationController
     if params[:action].eql?('update')
       addfiles = [preservation_filename]
       delfiles = generic_file.label
-    elsif
+    else
       addfiles = [preservation_filename]
     end
     preservation = Preservation::Preservator.new(generic_file.batch)
-    # TODO: preservation_filename shouldn't be a string, should say added or deleted...
     preservation.preserve_assets(addfiles, delfiles)
   end
 
