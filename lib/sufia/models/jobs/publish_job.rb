@@ -6,7 +6,10 @@ class PublishJob < ActiveFedoraIdBasedJob
   def run
     Rails.logger.info "Publishing collection #{object.id}"
 
+    # query for collection objects
     q_str = "#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{object.id}\""
+
+    # exclude draft objects
     q_str += " AND -#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:draft"
     
     query = Solr::Query.new(q_str)

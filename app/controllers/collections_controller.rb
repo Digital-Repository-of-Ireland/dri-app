@@ -443,7 +443,7 @@ class CollectionsController < BaseObjectsController
   end
 
   def review_all
-    Sufia.queue.push(ReviewCollectionJob.new(@object.id))
+    Resque.enqueue(ReviewCollectionJob, @object.id, current_user.id)
     flash[:notice] = t('dri.flash.notice.collection_objects_review')
   rescue Exception => e
     logger.error "Unable to submit status job: #{e.message}"

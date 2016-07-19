@@ -9,6 +9,8 @@ end
 describe "ReviewJob" do
 
   before(:each) do
+    @login_user = FactoryGirl.create(:collection_manager)
+
     @collection = FactoryGirl.create(:collection)
     @collection[:status] = "draft"
     @collection.save
@@ -30,13 +32,14 @@ describe "ReviewJob" do
     @object.delete
     @object2.delete
     @collection.delete
+
+    @login_user.delete
   end
   
   describe "run" do
     it "should set all objects status to reviewed" do
-      job = ReviewJob.new(@object.governing_collection.id)
-      job.run
-
+      ReviewJob.perform(@object.governing_collection.id, @login_user.id)
+      
       @object.reload
       @object2.reload
 
@@ -49,9 +52,8 @@ describe "ReviewJob" do
       @published[:status] = "published"
       @published.save
 
-      job = ReviewJob.new(@object.governing_collection.id)
-      job.run
-
+      ReviewJob.perform(@object.governing_collection.id, @login_user.id)
+      
       @object.reload
       @object2.reload
 
@@ -60,6 +62,30 @@ describe "ReviewJob" do
       expect(@published.status).to eql("published")
 
       @published.delete
+    end
+
+    it "should review sub-collections" do
+      @subcollection = FactoryGirl.create(:collection)
+      @subcollection[:status] = "draft"
+      @subcollection.save
+
+      @subobject = FactoryGirl.create(:sound)
+      @subobject[:status] = "draft"
+      @subobject.save
+
+      @subcollection.governed_items << @subobject
+      @subcollection.governing_collection = @collection
+      @subcollection.save
+
+      ReviewJob.perform(@subcollection.id, @login_user.id)
+
+      @subobject.reload
+      @subcollection.reload
+
+      expect(@subobject.status).to eql("reviewed")
+      expect(@subcollection.status).to eql("reviewed")
+
+      @subcollection.delete
     end
 
     @slow
@@ -73,10 +99,8 @@ describe "ReviewJob" do
       end
 
       @collection.save
-
-      job = ReviewJob.new(@collection.id)
-      job.run
-      
+      ReviewJob.perform(@collection.id, @login_user.id)
+            
       expect(ActiveFedora::SolrService.count("collection_id_sim:\"#{@collection.id}\" AND status_ssim:reviewed")).to eq(22)
     end     
       

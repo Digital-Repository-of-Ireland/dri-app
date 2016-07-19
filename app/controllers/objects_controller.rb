@@ -265,17 +265,7 @@ class ObjectsController < BaseObjectsController
       @object.status = params[:status] if params[:status].present?
       @object.save
     end
-
-    if params[:apply_all].present? && params[:apply_all] == 'yes'
-      begin
-        Sufia.queue.push(ReviewJob.new(@object.governing_collection.id)) unless @object.governing_collection.nil?
-      rescue Exception => e
-        logger.error "Unable to submit status job: #{e.message}"
-        flash[:alert] = t('dri.flash.alert.error_review_job', error: e.message)
-        @warnings = t('dri.flash.alert.error_review_job', error: e.message)
-      end
-    end
-
+    
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
       format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
@@ -320,7 +310,8 @@ class ObjectsController < BaseObjectsController
     end
 
     def create_reader_group
-      group = UserGroup::Group.new(name: "#{@object.id}", description: "Default Reader group for collection #{@object.id}")
+      group = UserGroup::Group.new(name: "#{@object.id}", 
+        description: "Default Reader group for collection #{@object.id}")
       group.reader_group = true
       group.save
     end
