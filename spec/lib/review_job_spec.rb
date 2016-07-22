@@ -38,7 +38,8 @@ describe "ReviewJob" do
   
   describe "run" do
     it "should set all objects status to reviewed" do
-      ReviewJob.perform(@object.governing_collection.id, @login_user.id)
+      job = ReviewJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job.perform
       
       @object.reload
       @object2.reload
@@ -52,7 +53,8 @@ describe "ReviewJob" do
       @published[:status] = "published"
       @published.save
 
-      ReviewJob.perform(@object.governing_collection.id, @login_user.id)
+      job = ReviewJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job.perform
       
       @object.reload
       @object2.reload
@@ -63,31 +65,7 @@ describe "ReviewJob" do
 
       @published.delete
     end
-
-    it "should review sub-collections" do
-      @subcollection = FactoryGirl.create(:collection)
-      @subcollection[:status] = "draft"
-      @subcollection.save
-
-      @subobject = FactoryGirl.create(:sound)
-      @subobject[:status] = "draft"
-      @subobject.save
-
-      @subcollection.governed_items << @subobject
-      @subcollection.governing_collection = @collection
-      @subcollection.save
-
-      ReviewJob.perform(@subcollection.id, @login_user.id)
-
-      @subobject.reload
-      @subcollection.reload
-
-      expect(@subobject.status).to eql("reviewed")
-      expect(@subcollection.status).to eql("reviewed")
-
-      @subcollection.delete
-    end
-
+    
     @slow
     it "should handle more than 10 objects", :slow => true do
       20.times do
@@ -99,7 +77,8 @@ describe "ReviewJob" do
       end
 
       @collection.save
-      ReviewJob.perform(@collection.id, @login_user.id)
+      job = ReviewJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id})
+      job.perform
             
       expect(ActiveFedora::SolrService.count("collection_id_sim:\"#{@collection.id}\" AND status_ssim:reviewed")).to eq(22)
     end     

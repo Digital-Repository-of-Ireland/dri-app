@@ -40,8 +40,9 @@ describe "ReviewCollectionJob" do
   
   describe "run" do
     it "should trigger jobs for subcollections" do
-      Resque.should_receive(:enqueue).exactly(3).times
-      ReviewCollectionJob.perform(@collection.id, @login_user.id)
+      ReviewJob.should_receive(:create).exactly(3).times
+      job = ReviewCollectionJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job.perform
     end  
   end
 
