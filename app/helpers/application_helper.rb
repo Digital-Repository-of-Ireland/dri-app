@@ -141,6 +141,10 @@ module ApplicationHelper
     params[:q].present? or params[:f].present? or params[:search_field].present?
   end
 
+  def has_tasks?
+    current_user && UserBackgroundTask.where(user_id: current_user.id).count > 0
+  end
+
   def link_to_loc(field)
     return link_to('?', "http://www.loc.gov/marc/bibliographic/bd" + field + ".html" )
   end
