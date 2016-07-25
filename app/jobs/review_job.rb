@@ -1,8 +1,6 @@
 class ReviewJob
   include Resque::Plugins::Status
 
-  @queue = :review
-
   def queue
     :review
   end

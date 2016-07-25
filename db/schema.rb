@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160701083251) do
+ActiveRecord::Schema.define(version: 20160725133248) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -151,6 +151,16 @@ ActiveRecord::Schema.define(version: 20160701083251) do
   end
 
   add_index "searches", ["user_id"], name: "index_searches_on_user_id"
+
+  create_table "user_background_tasks", force: :cascade do |t|
+    t.integer "user_id"
+    t.string  "job_id"
+    t.string  "name"
+    t.string  "message"
+    t.string  "status"
+  end
+
+  add_index "user_background_tasks", ["user_id"], name: "index_user_background_tasks_on_user_id"
 
   create_table "user_group_authentications", force: :cascade do |t|
     t.integer "user_id"

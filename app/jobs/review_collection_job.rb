@@ -1,8 +1,6 @@
 class ReviewCollectionJob
   include Resque::Plugins::Status
 
-  @queue = :review
-
   def queue
     :review
   end
@@ -55,7 +53,7 @@ class ReviewCollectionJob
       job_statuses = retrieve_status(job_ids)
       completed_jobs = total_jobs - job_statuses.length
       at(completed_jobs, total_jobs, "#{completed_jobs} of #{total_jobs} completed!")
-
+      
       status_codes = job_statuses.values
       break unless status_codes.include?('queued') || status_codes.include?('working')
     end
@@ -67,7 +65,7 @@ class ReviewCollectionJob
       status = Resque::Plugins::Status::Hash.get(job)
 
       state = status.status
-      if state == "completed" || state == "failed"
+      if %w(completed failed).include?(state)
         job_ids.delete(index)
       else
         statuses[job] = state

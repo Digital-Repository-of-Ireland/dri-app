@@ -432,7 +432,8 @@ class CollectionsController < BaseObjectsController
   private
 
   def create_reader_group
-    @group = UserGroup::Group.new(name: reader_group_name, description: "Default Reader group for collection #{@object.id}")
+    @group = UserGroup::Group.new(name: reader_group_name, 
+      description: "Default Reader group for collection #{@object.id}")
     @group.reader_group = true
     @group.save
     @group
@@ -443,7 +444,15 @@ class CollectionsController < BaseObjectsController
   end
 
   def review_all
-    Resque.enqueue(ReviewCollectionJob, @object.id, current_user.id)
+    job_id = ReviewCollectionJob.create(
+      'collection_id' => @object.id, 
+      'user_id' => current_user.id
+    )
+    UserBackgroundTask.create( 
+      user_id: current_user.id, 
+      job_id: job_id 
+    )
+
     flash[:notice] = t('dri.flash.notice.collection_objects_review')
   rescue Exception => e
     logger.error "Unable to submit status job: #{e.message}"

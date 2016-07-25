@@ -1,0 +1,17 @@
+<%= paginate @tasks %>
+
+<table class="table table-bordered table-condensed">
+<thead>
+  <th>Name</th>
+  <th>Status</th>
+  <th>Message</th>
+</thead>
+<% @tasks.each do |task| %>
+  <% task.update %>
+  <tr>
+    <td><%= task.name %></td>
+    <td><%= task.status %></td>
+    <td><%= task.message %></td>
+  </tr>
+<% end %>
+</table>    
