@@ -1,4 +1,8 @@
-<%= paginate @tasks %>
+<div>
+  <%= paginate @tasks %>
+  <%= link_to t('dri.views.tasks.links.delete_all_tasks'), destroy_user_tasks_path, 
+    :method => :delete, :id => "clear_tasks", :class => "pull-right btn"  %>
+</div>
 
 <table class="table table-bordered table-condensed">
 <thead>

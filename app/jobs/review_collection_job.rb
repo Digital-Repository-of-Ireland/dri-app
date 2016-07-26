@@ -18,8 +18,11 @@ class ReviewCollectionJob
 
     # review direct child objects of this collection
     job_ids << ReviewJob.create(collection_id: collection_id, user_id: user_id) 
-
-    wait_for_completion(job_ids)
+    failures = wait_for_completion(collection_id, job_ids)
+    
+    message = "Completed marking collection #{collection_id} as reviewed."
+    message += "Unable to set status for #{failures} objects." if failures > 0
+    completed(message)
   end
 
   def sub_collection_review_jobs(collection_id, user_id)
@@ -42,36 +45,42 @@ class ReviewCollectionJob
     job_ids
   end
 
-  def wait_for_completion(job_ids)
-    return unless job_ids.any?
+  def wait_for_completion(collection_id, job_ids)
+    return 0 unless job_ids.any?
 
     total_jobs = job_ids.length
+    running_jobs = total_jobs
     
+    completed = 0
+    failures = 0
     job_statuses = {}
 
-    while true
+    while running_jobs > 0
       job_statuses = retrieve_status(job_ids)
-      completed_jobs = total_jobs - job_statuses.length
-      at(completed_jobs, total_jobs, "#{completed_jobs} of #{total_jobs} completed!")
-      
-      status_codes = job_statuses.values
-      break unless status_codes.include?('queued') || status_codes.include?('working')
+
+      job_statuses.each do |job_id, status|
+        if %w(completed failed killed).include?(status.status)
+          completed += 1
+          job_ids.delete(job_id)
+          running_jobs -= 1
+          
+          failures += status['failed'] if status['failed'].present?
+        end
+
+        at(completed, total_jobs, 
+          "Reviewing #{collection_id}: #{completed} of #{total_jobs} sub-collections marked as reviewed"
+        )
+      end  
     end
+
+    failures
   end
 
   def retrieve_status(job_ids)
     statuses = {}
-    job_ids.each_with_index do |job, index|
-      status = Resque::Plugins::Status::Hash.get(job)
 
-      state = status.status
-      if %w(completed failed).include?(state)
-        job_ids.delete(index)
-      else
-        statuses[job] = state
-      end
-    end
-
+    job_ids.each { |job| statuses[job] = Resque::Plugins::Status::Hash.get(job) }
+    
     statuses  
   end
 

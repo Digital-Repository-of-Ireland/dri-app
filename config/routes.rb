@@ -90,7 +90,8 @@ NuigRnag::Application.routes.draw do
     get 'surrogates/:id' => 'surrogates#show', :as => :surrogates
     put 'surrogates/:id' => 'surrogates#update', :as => :surrogates_generate
 
-    get 'tasks' => 'user_background_tasks#index', :as => :user_tasks
+    get 'tasks' => 'user_background_tasks#index', as: :user_tasks
+    delete 'tasks' => 'user_background_tasks#destroy', as: :destroy_user_tasks  
 
     match 'collections/:id' => 'catalog#show', :via => :get
 

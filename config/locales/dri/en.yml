@@ -469,6 +469,9 @@ en:
           changelog: "Changelog for #{doi}"
         links:
           view_full_object: "View object" 
+      tasks:
+        links:
+          delete_all_tasks: "Clear all completed tasks"
       exceptions:
         access_denied: "You do not have permission to perform the requested operation."
         internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"
