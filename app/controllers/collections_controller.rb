@@ -363,7 +363,9 @@ class CollectionsController < BaseObjectsController
     # We need to save to get a pid at this point
     if @object.save
       if cover_image.present?
-        flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
+        unless Storage::CoverImages.validate(cover_image, @object)
+          flash[:error] = t('dri.flash.error.cover_image_not_saved')
+        end
       end
     end
 
@@ -468,6 +470,14 @@ class CollectionsController < BaseObjectsController
   end
    
   def publish_collection
+    job_id = PublishCollectionJob.create(
+      'collection_id' => @object.id, 
+      'user_id' => current_user.id
+    )
+    UserBackgroundTask.create( 
+      user_id: current_user.id, 
+      job_id: job_id 
+    )
     Sufia.queue.push(PublishJob.new(@object.id))
   rescue Exception => e
     logger.error "Unable to submit publish job: #{e.message}"

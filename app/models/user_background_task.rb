@@ -15,5 +15,4 @@ class UserBackgroundTask < ActiveRecord::Base
     save
   end
 
-
 end
