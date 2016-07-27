@@ -23,23 +23,7 @@ class PublishJob
     # excluding sub-collections
     f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false"
 
-    query = Solr::Query.new(q_str)
-
-    while query.has_more?
-      collection_objects = query.pop
-
-      collection_objects.each do |object|
-        o = ActiveFedora::Base.find(object['id'], cast: true)
-
-        if o.status == 'reviewed'
-          o.status = 'published'
-          o.published_at = Time.now.utc.iso8601
-          o.save
-
-          mint_doi(o)
-        end
-      end
-    end
+    completed, failed = set_as_published(collection_id, q_str, f_query)
 
     collection = ActiveFedora::Base.find(collection_id, cast: true)
 
@@ -49,9 +33,48 @@ class PublishJob
     # publish the collection object and mint a DOI
     collection.status = 'published'
     collection.published_at = Time.now.utc.iso8601
-    collection.save
+    if collection.save
+      mint_doi(collection)
+    else
+      failed += 1
+    end
 
-    mint_doi(collection)
+    completed(completed: completed, failed: failed)
+  end
+
+  def set_as_published(collection_id, q_str, f_query)
+    total_objects = ActiveFedora::SolrService.count(q_str, {fq: f_query})
+
+    query = Solr::Query.new(q_str, 100, fq: f_query)
+
+    completed = 0
+    failed = 0
+
+    while query.has_more?
+      collection_objects = query.pop
+
+      collection_objects.each do |object|
+        o = ActiveFedora::Base.find(object["id"], {cast: true})
+        
+        if o.status == 'reviewed'
+          o.status = 'published'
+        
+          if o.save 
+            completed += 1 
+            mint_doi(o)
+          else
+            failed += 1
+          end
+        end   
+      end
+      
+      unless total_objects == 0
+        at(completed, total_objects, 
+          "Publishing #{collection_id}: #{completed} of #{total_objects} marked as published")
+      end
+    end
+
+    return completed, failed
   end
 
   def mint_doi(obj)

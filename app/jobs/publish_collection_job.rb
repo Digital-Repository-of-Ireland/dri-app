@@ -1,6 +1,5 @@
 class PublishCollectionJob < StatusJob
   
-
   def queue
     :publish
   end
