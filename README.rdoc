@@ -76,7 +76,7 @@ nuig-rnag, rspec, cucumber and rails documentation.
 
 To start the resque workers for development
 
-  $ rake environment resque:work RAILS_ENV=development QUEUE="*" VERBOSE=1
+  $ rake environment resque:workers RAILS_ENV=development QUEUE="*" COUNT="2" VERBOSE=1
 
 == Dependencies
 
