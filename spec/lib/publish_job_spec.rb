@@ -5,6 +5,13 @@ require 'solr/query'
 RSpec.configure { |c| c.filter_run_excluding(slow: true) }
 
 describe 'PublishJob' do
+  
+  before do
+    PublishJob.any_instance.stub(:completed)
+    PublishJob.any_instance.stub(:set_status)
+    PublishJob.any_instance.stub(:at)
+  end
+
   before(:each) do
     @login_user = FactoryGirl.create(:collection_manager)
 

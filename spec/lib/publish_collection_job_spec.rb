@@ -8,6 +8,10 @@ end
 
 describe "PublishCollectionJob" do
 
+  before do
+    PublishCollectionJob.any_instance.stub(:completed)
+  end
+
   before(:each) do
     @login_user = FactoryGirl.create(:collection_manager)
 

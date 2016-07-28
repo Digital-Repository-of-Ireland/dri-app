@@ -8,6 +8,10 @@ end
 
 describe "ReviewCollectionJob" do
 
+  before do
+    ReviewCollectionJob.any_instance.stub(:completed)
+  end
+
   before(:each) do
     @login_user = FactoryGirl.create(:collection_manager)
 
