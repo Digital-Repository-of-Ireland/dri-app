@@ -349,8 +349,9 @@ en:
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Login to get access."
-          surrogate_not_available: "Surrogate not available yet"
+          surrogate_not_available: "Surrogate not available"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
+          surrogate_not_supported: "%{mime_type} assets are not supported for display. Please download the asset using the link below if available."
         links:
           add_documentation: "Add Documentation"
           add_object: "Add an Object"

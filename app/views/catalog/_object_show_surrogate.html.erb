@@ -5,7 +5,7 @@
     <% @surrogate = surrogate_url(document.id, generic_file.id, "mp3") %>
     <% if @surrogate %>
         <audio id="surrogate_audio" class="video-js vjs-default-skin" controls
-  preload="auto" width="100%" height="100"  data-setup='{}'>
+         preload="auto" width="100%" height="100"  data-setup='{}'>
           <source src="<%= @surrogate %>" type="audio/mpeg" >
         </audio>
         <%= render :partial => "object_show_single_audio_details", :locals => {:generic_file => generic_file} %>
@@ -61,6 +61,10 @@
 <% if @surrogate.blank?%>
     <h2 class="dri_restrict_title"><%= t('dri.views.catalog.legends.surrogate_not_available') %></h2>
     <p class="dri_restrict_message" id="asset_not_available">
+      <% if generic_file.supported_type? %>
       <%= t('dri.views.catalog.legends.surrogate_not_available_why') %>
+      <% else %>
+      <%= t('dri.views.catalog.legends.surrogate_not_supported', mime_type: generic_file.mime_type) %>
+      <% end %>
     </p>
 <% end %>
