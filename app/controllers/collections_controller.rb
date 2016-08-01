@@ -452,7 +452,7 @@ class CollectionsController < BaseObjectsController
     )
     UserBackgroundTask.create( 
       user_id: current_user.id, 
-      job_id: job_id 
+      job: job_id 
     )
 
     flash[:notice] = t('dri.flash.notice.collection_objects_review')
@@ -476,7 +476,7 @@ class CollectionsController < BaseObjectsController
     )
     UserBackgroundTask.create( 
       user_id: current_user.id, 
-      job_id: job_id 
+      job: job_id 
     )
     Sufia.queue.push(PublishJob.new(@object.id))
   rescue Exception => e

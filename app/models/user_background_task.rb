@@ -1,4 +1,5 @@
 class UserBackgroundTask < ActiveRecord::Base
+  belongs_to :user, class_name: 'UserGroup::User'
 
   paginates_per 10
 

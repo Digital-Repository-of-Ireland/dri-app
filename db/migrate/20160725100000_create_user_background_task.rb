@@ -1,8 +1,8 @@
 class CreateUserBackgroundTask < ActiveRecord::Migration
   def change
     create_table :user_background_tasks do |t|
-      t.references :user, index: true, foreign_key: true
-      t.string :job_id
+      t.references :user, references: :user_group_users
+      t.string :job
       t.string :name
     end
   end

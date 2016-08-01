@@ -26,6 +26,7 @@ gem 'rails_config'
 gem 'sqlite3'
 gem 'mysql'
 gem 'mysql2'
+gem 'schema_plus'
 
 gem 'omniauth-shibboleth'
 gem 'oauth'
