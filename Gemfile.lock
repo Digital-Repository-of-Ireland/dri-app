@@ -24,6 +24,12 @@ GIT
       skydrive
 
 GIT
+  remote: https://github.com/stkenny/jquery-xmleditor-rails.git
+  revision: 83b5e1e56c61de41723f6324b4c74f7e3b23e42d
+  specs:
+    jquery-xmleditor-rails (0.1.0)
+
+GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
   revision: 31baf510b4c230cfcacbaad593a348b46ba4b47f
   branch: develop
@@ -860,6 +866,7 @@ DEPENDENCIES
   jquery-cookie-rails
   jquery-rails
   jquery-ui-rails
+  jquery-xmleditor-rails!
   jwt (= 1.5.2)
   launchy
   mimemagic

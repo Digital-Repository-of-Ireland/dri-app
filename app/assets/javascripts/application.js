@@ -13,6 +13,7 @@
 //= require video
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 
 //
 // Required by Blacklight-Maps
@@ -32,5 +33,6 @@
 //
 //= require colorbox-rails
 //= require social-share-button
+//= require jquery-xmleditor
 //= require dri/
 

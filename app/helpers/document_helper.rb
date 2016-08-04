@@ -24,7 +24,7 @@ module DocumentHelper
   # Workaround for reusing partials for add
   # institution/permissions to non QDC collections
   def update_desc_metadata?(md_class)
-    %w(DRI::QualifiedDublinCore DRI::Documentation).include?(md_class) ? true : false
+    %w(DRI::QualifiedDublinCore DRI::Documentation DRI::Mods).include?(md_class) ? true : false
   end
 
   # For a given collection (sub-collection) object
