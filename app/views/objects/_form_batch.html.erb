@@ -1,3 +1,13 @@
 <% if (update_desc_metadata?(@object.class.to_s)) %>
-  <%= render :partial => "shared/form_metadata_#{get_metadata_name(@object)}", object: @object %>
+  <% standard = get_metadata_name(@object) %>
+
+  <% if standard == 'mods' %>
+    <%= render :partial => "shared/form_metadata_mods", object: @object %>
+  <% else %>
+    <%= form_for @object, :as => :batch, :url => {:controller=>"objects", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
+       <%= render :partial => "shared/form_metadata_#{get_metadata_name(@object)}", :locals => { :f => f, :action => "update" } %>
+       <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "save_edit" %>
+       <%= link_to t('dri.views.objects.links.cancel'), url_for(:controller => "catalog", :action => "show", :id => @object.id), :id => "view_record", :class => 'btn-primary btn-large dri_cancel dri_clearfix' %>
+    <% end %>
+  <% end %>
 <% end %>
