@@ -36,7 +36,10 @@ class ObjectsController < BaseObjectsController
     
     @object = retrieve_object!(params[:id])
     @object.creator = [''] unless @object.creator[0]
-    
+
+    # used for crumbtrail
+    @document = SolrDocument.new(@object.to_solr)
+
     respond_to do |format|
       format.html
       format.json  { render json: @object }
@@ -188,7 +191,8 @@ class ObjectsController < BaseObjectsController
     @list = []
 
     if params.key?('objects') && params[:objects].present?
-      solr_query = ActiveFedora::SolrService.construct_query_for_ids(params[:objects].map{|o| o.values.first})
+      solr_query = ActiveFedora::SolrService.construct_query_for_ids(
+        params[:objects].map{|o| o.values.first})
       results = Solr::Query.new(solr_query)
       
       while results.has_more?
@@ -383,7 +387,8 @@ class ObjectsController < BaseObjectsController
       if can? :read, doc
         storage = StorageService.new
 
-        files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
+        files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
+        files_query += " AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
         query = Solr::Query.new(files_query)
 
         while query.has_more?
@@ -401,7 +406,8 @@ class ObjectsController < BaseObjectsController
             timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
             surrogates = storage.get_surrogates doc, file_doc, timeout
             surrogates.each do |file,loc| 
-              file_list[file] = url_for(object_file_url(object_id: doc.id, id: file_doc.id, surrogate: file))
+              file_list[file] = url_for(object_file_url(
+                object_id: doc.id, id: file_doc.id, surrogate: file))
             end
 
             item['files'].push(file_list)

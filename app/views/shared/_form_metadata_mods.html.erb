@@ -7,8 +7,12 @@
 				xmlRetrievalPath: "<%= object_metadata_path(@object) %>",
 				xmlUploadPath : "<%= object_metadata_path(@object) %>"
 			},
+			submitResponseHandler: function(response) {
+                return false;
+       },
 			schema : "pages/mods-3-5.json",
 			libPath : '../../lib/'
-		});
+		}
+		);
 	});
 </script>

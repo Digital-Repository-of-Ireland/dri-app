@@ -15,26 +15,31 @@ module MetadataHelpers
   end
 
   def self.load_xml(upload)
-    types = MIME::Types.type_for(upload.original_filename)
-    if types.blank?
-      raise Exceptions::InvalidXML
-    end
-
-    if types.first.content_type.eql? 'application/xml'
-      tmp = upload.tempfile
-
-      begin
-        xml = Nokogiri::XML(tmp.read) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
-      rescue Nokogiri::XML::SyntaxError => e
-        raise Exceptions::InvalidXML, e
+    if upload.respond_to?(:original_filename)
+      types = MIME::Types.type_for(upload.original_filename)
+      if types.blank?
+        raise Exceptions::InvalidXML
       end
 
-      standard = get_metadata_class_from_xml(xml)
-      result, @msg = MetadataValidator.valid?(xml, standard)
-      raise Exceptions::ValidationErrors, @msg unless result
-        
-      xml
+      if types.first.content_type.eql? 'application/xml'
+        xml_upload = upload.tempfile
+      end
+    else
+      xml_upload = upload
     end
+      
+    begin
+      xml_content = xml_upload.respond_to?(:read) ? xml_upload.read : xml_upload
+      xml = Nokogiri::XML(xml_content) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
+    rescue Nokogiri::XML::SyntaxError => e
+      raise Exceptions::InvalidXML, e
+    end
+
+    standard = get_metadata_class_from_xml(xml)
+    result, @msg = MetadataValidator.valid?(xml, standard)
+    raise Exceptions::ValidationErrors, @msg unless result
+        
+    xml
   end
 
   def self.get_metadata_class_from_xml(xml_text)
