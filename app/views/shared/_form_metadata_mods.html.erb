@@ -8,7 +8,11 @@
 				xmlUploadPath : "<%= object_metadata_path(@object) %>"
 			},
 			submitResponseHandler: function(response) {
-                return false;
+        if (response.startsWith("<%= t('dri.flash.notice.metadata_updated') %>")) {
+          return false;
+        } else {
+         	return response;
+        }
        },
 			schema : "pages/mods-3-5.json",
 			libPath : '../../lib/'

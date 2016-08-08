@@ -59,7 +59,7 @@ class MetadataController < CatalogController
   # Replaces the current descMetadata datastream with the contents of the uploaded XML file.
   def update
     enforce_permissions!('update', params[:id])
-    
+
     param = params[:xml].presence || params[:metadata_file].presence
 
     if param
@@ -71,7 +71,7 @@ class MetadataController < CatalogController
     end
     
     @object = retrieve_object! params[:id] 
-    @errors = []
+    @errors = nil
 
     unless can? :update, @object
       raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
@@ -79,8 +79,8 @@ class MetadataController < CatalogController
 
     @object.update_metadata xml
     unless @object.valid?
-      flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
-      @errors << @object.errors.full_messages.inspect 
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+      @errors = @object.errors.full_messages.inspect 
     else
       MetadataHelpers.checksum_metadata(@object)
       warn_if_duplicates
@@ -89,7 +89,6 @@ class MetadataController < CatalogController
         raise Exceptions::InternalError unless @object.attached_files[:descMetadata].save
       rescue RuntimeError => e
         logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
-        @errors << "Could not save descMetadata for object #{@object.id}: #{e.message}"
         raise Exceptions::InternalError
       end
       
@@ -100,7 +99,6 @@ class MetadataController < CatalogController
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
         logger.error "Could not save object #{@object.id}: #{e.message}"
-        @errors << "Could not save object #{@object.id}: #{e.message}"
         raise Exceptions::InternalError
       end
     end
@@ -108,8 +106,13 @@ class MetadataController < CatalogController
     respond_to do |format|
       format.html { redirect_to controller: 'catalog', action: 'show', id: params[:id] }
       format.text { 
-        response = @errors.empty? ? t('dri.flash.notice.metadata_updated') : @errors.join(',')
-        render text: response 
+        if @errors
+          response = t('dri.flash.alert.invalid_object', error: @errors)
+        else
+          response = t('dri.flash.notice.metadata_updated')
+        end
+
+        render text: response
       }
     end
   end
