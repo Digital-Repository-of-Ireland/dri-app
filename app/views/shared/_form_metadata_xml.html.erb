@@ -4,8 +4,8 @@
 	$(function() {
 		$("#xml_editor").xmlEditor({
 			ajaxOptions: {
-				xmlRetrievalPath: "<%= object_metadata_path(@object) %>",
-				xmlUploadPath : "<%= object_metadata_path(@object) %>"
+				xmlRetrievalPath: "<%= object_metadata_path(object) %>",
+				xmlUploadPath : "<%= object_metadata_path(object) %>"
 			},
 			submitResponseHandler: function(response) {
         if (response.startsWith("<%= t('dri.flash.notice.metadata_updated') %>")) {
@@ -14,7 +14,7 @@
          	return response;
         }
        },
-			schema : "<%= asset_url('schemas/mods-3-5.json') %>",
+			schema : '<%= asset_url("schemas/#{schema}") %>',
 			libPath : '../../lib/'
 		}
 		);

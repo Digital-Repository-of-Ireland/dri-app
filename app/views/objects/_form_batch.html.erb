@@ -2,14 +2,18 @@
   <% standard = get_metadata_name(@object) %>
 
   <% if standard == 'mods' %>
-    <%= render :partial => "shared/form_metadata_mods", object: @object %>
+    <%= render partial: "shared/form_metadata_xml", locals: { object: @object, schema: 'mods-3-5.json' } %>
   <% else %>
-    <div class="dri_ingest_form_container"><div class="dri_ingest_form">
-    <%= form_for @object, :as => :batch, :url => {:controller=>"objects", :action=>"update"}, :method=>"put", :html => {:class => 'form-vertical'} do |f| %>
-       <%= render :partial => "shared/form_metadata_#{get_metadata_name(@object)}", :locals => { :f => f, :action => "update" } %>
-       <%= f.submit t('dri.views.objects.buttons.save'), :class => "btn-primary btn-large", :id => "save_edit" %>
-       <%= link_to t('dri.views.objects.links.cancel'), url_for(:controller => "catalog", :action => "show", :id => @object.id), :id => "view_record", :class => 'btn-primary btn-large dri_cancel dri_clearfix' %>
-    <% end %>
-    </div></div>
+    <div class="dri_ingest_form_container">
+      <div class="dri_ingest_form">
+        <%= form_for @object, as: :batch, url: { controller: "objects", action: "update" }, method: "put", html: { class: 'form-vertical' } do |f| %>
+          <%= render partial: "shared/form_metadata_#{get_metadata_name(@object)}", locals: { f: f, action: "update" } %>
+          <%= f.submit t('dri.views.objects.buttons.save'), class: "btn-primary btn-large", id: "save_edit" %>
+          <%= link_to t('dri.views.objects.links.cancel'), url_for(controller: "catalog", action: "show", id: @object.id), 
+              id: "view_record", class: 'btn-primary btn-large dri_cancel dri_clearfix' %>
+        <% end %>
+      </div>
+    </div>
   <% end %>
+
 <% end %>
