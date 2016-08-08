@@ -144,4 +144,4 @@ gem 'videojs_rails', git: 'https://github.com/ekilfeather/videojs_rails.git', re
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'social-share-button'
-gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git'
+gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'

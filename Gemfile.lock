@@ -25,7 +25,8 @@ GIT
 
 GIT
   remote: https://github.com/stkenny/jquery-xmleditor-rails.git
-  revision: 83b5e1e56c61de41723f6324b4c74f7e3b23e42d
+  revision: 4215179eb138644453cd547aa6aacaf40ea5f7b4
+  branch: form_upload
   specs:
     jquery-xmleditor-rails (0.1.0)
 
