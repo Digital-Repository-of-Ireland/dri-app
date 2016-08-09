@@ -1,6 +1,7 @@
 require 'metadata_helpers'
 
-TITLES = { 'qualifieddc' => 'Dublin Core Metadata', 
+TITLES = { 'qualifieddc' => 'Dublin Core Metadata',
+           'record' => 'MARC Metadata',
            'mods' => 'MODS Metadata', 
            'ead' => 'EAD Metadata',
            'c' => 'EAD Metadata',
