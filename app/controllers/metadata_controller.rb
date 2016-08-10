@@ -106,6 +106,7 @@ class MetadataController < CatalogController
 
     respond_to do |format|
       format.html { redirect_to controller: 'catalog', action: 'show', id: params[:id] }
+      format.json  { render json: @object }
       format.text { 
         if @errors
           response = t('dri.flash.alert.invalid_object', error: @errors)
