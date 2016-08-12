@@ -15,7 +15,22 @@
         }
        },
 			schema : '<%= asset_url("schemas/#{schema}") %>',
-			libPath : '../../lib/'
+			<% if standard == 'mods' %>
+			vocabularyConfigs : {
+			  vocabularies : {
+					"marcRelators" : {
+					"url" : '<%= asset_url("schemas/marc_relators.json") %>',
+					},
+				},
+			  xpathSelectors: {
+							"mods:mods/mods:name//mods:roleTerm" : "marcRelators"
+						},
+						xpathNamespaces: {
+							"mods" : "http://www.loc.gov/mods/v3"
+						}
+			},
+			<% end %>
+			libPath : '<%= asset_path("jquery-xmleditor/vendor") %>'
 		}
 		);
 	});
