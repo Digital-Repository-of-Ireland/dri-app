@@ -1,6 +1,7 @@
 require 'metadata_helpers'
 
-TITLES = { 'qualifieddc' => 'Dublin Core Metadata', 
+TITLES = { 'qualifieddc' => 'Dublin Core Metadata',
+           'record' => 'MARC Metadata',
            'mods' => 'MODS Metadata', 
            'ead' => 'EAD Metadata',
            'c' => 'EAD Metadata',
@@ -60,14 +61,18 @@ class MetadataController < CatalogController
   def update
     enforce_permissions!('update', params[:id])
 
-    unless params[:metadata_file].present?
+    param = params[:xml].presence || params[:metadata_file].presence
+
+    if param
+      xml = MetadataHelpers.load_xml(param)
+    else
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
       redirect_to controller: 'catalog', action: 'show', id: params[:id]
       return
     end
-    xml = MetadataHelpers.load_xml(params[:metadata_file])
-
-    @object = retrieve_object! params[:id]
+    
+    @object = retrieve_object! params[:id] 
+    @errors = nil
 
     unless can? :update, @object
       raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
@@ -75,31 +80,43 @@ class MetadataController < CatalogController
 
     @object.update_metadata xml
     unless @object.valid?
-      flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
-      redirect_to controller: 'catalog', action: 'show', id: params[:id]
-      return
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+      @errors = @object.errors.full_messages.inspect 
+    else
+      MetadataHelpers.checksum_metadata(@object)
+      warn_if_duplicates
+
+      begin
+        raise Exceptions::InternalError unless @object.attached_files[:descMetadata].save
+      rescue RuntimeError => e
+        logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
+        raise Exceptions::InternalError
+      end
+      
+      begin
+        raise Exceptions::InternalError unless @object.save
+
+        actor.version_and_record_committer
+        flash[:notice] = t('dri.flash.notice.metadata_updated')
+      rescue RuntimeError => e
+        logger.error "Could not save object #{@object.id}: #{e.message}"
+        raise Exceptions::InternalError
+      end
     end
 
-    MetadataHelpers.checksum_metadata(@object)
-    warn_if_duplicates
+    respond_to do |format|
+      format.html { redirect_to controller: 'catalog', action: 'show', id: params[:id] }
+      format.json  { render json: @object }
+      format.text { 
+        if @errors
+          response = t('dri.flash.alert.invalid_object', error: @errors)
+        else
+          response = t('dri.flash.notice.metadata_updated')
+        end
 
-    begin
-      raise Exceptions::InternalError unless @object.attached_files[:descMetadata].save
-    rescue RuntimeError => e
-      logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
-      raise Exceptions::InternalError
+        render text: response
+      }
     end
-    
-    begin
-      raise Exceptions::InternalError unless @object.save
-
-      actor.version_and_record_committer
-      flash[:notice] = t('dri.flash.notice.metadata_updated')
-    rescue RuntimeError => e
-      logger.error "Could not save object #{@object.id}: #{e.message}"
-      raise Exceptions::InternalError
-    end
-
-    redirect_to controller: 'catalog', action: 'show', id: params[:id]
   end
+
 end

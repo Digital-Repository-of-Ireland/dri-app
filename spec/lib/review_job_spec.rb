@@ -8,7 +8,15 @@ end
 
 describe "ReviewJob" do
 
+  before do
+    ReviewJob.any_instance.stub(:completed)
+    ReviewJob.any_instance.stub(:set_status)
+    ReviewJob.any_instance.stub(:at)
+  end
+
   before(:each) do
+    @login_user = FactoryGirl.create(:collection_manager)
+
     @collection = FactoryGirl.create(:collection)
     @collection[:status] = "draft"
     @collection.save
@@ -30,13 +38,15 @@ describe "ReviewJob" do
     @object.delete
     @object2.delete
     @collection.delete
+
+    @login_user.delete
   end
   
   describe "run" do
     it "should set all objects status to reviewed" do
-      job = ReviewJob.new(@object.governing_collection.id)
-      job.run
-
+      job = ReviewJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job.perform
+      
       @object.reload
       @object2.reload
 
@@ -49,9 +59,9 @@ describe "ReviewJob" do
       @published[:status] = "published"
       @published.save
 
-      job = ReviewJob.new(@object.governing_collection.id)
-      job.run
-
+      job = ReviewJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job.perform
+      
       @object.reload
       @object2.reload
 
@@ -61,7 +71,7 @@ describe "ReviewJob" do
 
       @published.delete
     end
-
+    
     @slow
     it "should handle more than 10 objects", :slow => true do
       20.times do
@@ -73,10 +83,9 @@ describe "ReviewJob" do
       end
 
       @collection.save
-
-      job = ReviewJob.new(@collection.id)
-      job.run
-      
+      job = ReviewJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id})
+      job.perform
+            
       expect(ActiveFedora::SolrService.count("collection_id_sim:\"#{@collection.id}\" AND status_ssim:reviewed")).to eq(22)
     end     
       

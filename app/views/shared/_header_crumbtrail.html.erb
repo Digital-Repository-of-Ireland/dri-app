@@ -1,29 +1,36 @@
 <!-- start dri_crumbtrail_nav_container -->
 <% if @document %>
-    <div id="dri_crumbtrail_nav_container_id">
-      <ol class="breadcrumb">
-      <% unless @document.is_a?(DRI::Batch) %>
-          <% if @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].present? %>
-            <% @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].to_enum.with_index.reverse_each do |ancestor_id, index| %>
-              <li><%= link_to @document[Solrizer.solr_name('ancestor_title', :stored_searchable, type: :string).to_sym][index], main_app.catalog_path(ancestor_id) %></li>
-            <% end %>
+  <div id="dri_crumbtrail_nav_container_id">
+    <ol class="breadcrumb">
+    <% unless @document.is_a?(DRI::Batch) %>
+        <% if @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].present? %>
+          <% @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].to_enum.with_index.reverse_each do |ancestor_id, index| %>
+            <li><%= link_to @document[Solrizer.solr_name('ancestor_title', :stored_searchable, type: :string).to_sym][index], main_app.catalog_path(ancestor_id) %></li>
           <% end %>
-          <% if @generic_file %>
-            <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50), main_app.catalog_path(@document.id) %></li>
-            <li class="active"><%= @generic_file.label %></li>
+        <% end %>
+        <% if @generic_file %>
+          <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50), main_app.catalog_path(@document.id) %></li>
+          <li class="active"><%= @generic_file.label %></li>
+        <% else %>
+          <% if controller.action_name == 'edit' %>
+            <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50),
+                     main_app.catalog_path(@document['id']) %></li>
+            <li class="active"><%= t('dri.views.objects.edit.title') %></li>
           <% else %>
             <li class="active"><%= truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50) %></li>
           <% end %>
-      <% end %>
-      </ol>
-    </div>
+        <% end %>
+    <% end %>
+    </ol>
+  </div>
 <% end %>
 
 <% if @collection %>
-    <div id="dri_crumbtrail_nav_container_id">
-      <ol class="breadcrumb">
-              <li class="active"><%= link_to( t('dri.views.objects.legends.view_collection'), catalog_path(@collection), :id => 'view_collection' ) %></li>
-      </ol>
-    </div>
+  <div id="dri_crumbtrail_nav_container_id">
+    <ol class="breadcrumb">
+      <li class="active"><%= link_to( t('dri.views.objects.legends.view_collection'), 
+        catalog_path(@collection), :id => 'view_collection' ) %></li>
+    </ol>
+  </div>
 <% end %>
 <!-- close dri_crumbtrail_nav_container -->

@@ -52,18 +52,21 @@ gem 'jquery-cookie-rails'
 
 gem 'remotipart'
 
+# clients
 gem 'rest-client'
 gem 'sparql-client'
 
 # static pages
 gem 'high_voltage', '~> 2.1.0'
 
+# monitoring 
 # is it working fork
 gem 'is_it_working-cbeer'
+gem 'honeybadger', '~> 2.0'
+gem 'resque-status'
 
 gem 'sass-rails' , '~> 4.0.4'
 gem 'compass-rails'
-# gem 'coffee-rails', '~> 3.2.1'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs'
@@ -141,3 +144,4 @@ gem 'videojs_rails', git: 'https://github.com/ekilfeather/videojs_rails.git', re
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'social-share-button'
+gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'

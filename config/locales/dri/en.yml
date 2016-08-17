@@ -117,7 +117,7 @@ en:
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Delete collection process successfully started."
         collection_publishing: "Collection is being published."
-        collection_objects_review: "Review collection objects process successfully started."
+        collection_objects_review: "Review collection objects process successfully started. This may take some time. When completed, use the publish button on the collection page to publish all reviewed objects and sub-collections."
         collection_doi_request: "New DOI requested."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
@@ -178,6 +178,7 @@ en:
       manage: Manage
       manage_users: "Add Manager User"
       my_collections: "My Collections"
+      my_tasks: "My Tasks"
       new_collection: "New Collection"
       new_organisation: "New Organisation"
       object: Object
@@ -348,8 +349,9 @@ en:
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Login to get access."
-          surrogate_not_available: "Surrogate not available yet"
+          surrogate_not_available: "Surrogate not available"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
+          surrogate_not_supported: "%{mime_type} assets are not supported for display. Please download the asset using the link below if available."
         links:
           add_documentation: "Add Documentation"
           add_object: "Add an Object"
@@ -468,6 +470,9 @@ en:
           changelog: "Changelog for #{doi}"
         links:
           view_full_object: "View object" 
+      tasks:
+        links:
+          delete_all_tasks: "Clear all completed tasks"
       exceptions:
         access_denied: "You do not have permission to perform the requested operation."
         internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"

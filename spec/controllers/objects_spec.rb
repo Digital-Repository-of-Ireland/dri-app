@@ -103,15 +103,6 @@ describe ObjectsController do
       expect(@object.status).to eql("published") 
     end
 
-    it 'should set the status of all objects in collection' do
-      Sufia.queue.should_receive(:push).with(an_instance_of(ReviewJob)).once
-      post :status, :id => @object.id, :status => "reviewed", :apply_all => "yes"
-
-      @object.reload
-
-      expect(@object.status).to eql("reviewed")
-    end
-
     it 'should mint a doi for an update of mandatory fields' do
       DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
       Settings.doi.enable = true

@@ -1,11 +1,7 @@
 <div id="content" class="span9 show-document">
   <div id="document">
     <div class="document">
-      <h4><%= t('dri.views.objects.edit.title') %></h4>
-            <div class="dri_ingest_form_container"><div class="dri_ingest_form">
-            <%= render :partial => "form_batch", :object  => @object %>
-      </div>
-      </div>
+      <%= render :partial => "form_batch", object: @object %>
     </div>
   </div>
 </div>
