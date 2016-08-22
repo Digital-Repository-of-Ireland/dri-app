@@ -1,4 +1,4 @@
-<% if @available && can?(:show_digital_object, @object_id) %>
+<% if @available %>
   <div><%= link_to t('dri.views.doi.links.view_full_object'), catalog_path(@object_id) %><div>
 <% else %>
   <p><i class="fa fa-exclamation-circle"></i><%= t('dri.views.doi.unavailable') %></p>
