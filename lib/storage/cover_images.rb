@@ -29,18 +29,14 @@ module Storage
     end
 
     def self.store_cover(cover_image, collection)
-      if !Settings.data || Settings.data.cover_image_bucket.nil?
-        Rails.logger.error "Storage bucket for cover images not configured"        
-        return nil
-      end
-      
       url = nil
       storage = StorageService.new
-      if (storage.store_file(cover_image.tempfile.path,
-                            "#{collection.pid}.#{cover_image.original_filename.split(".").last}",
-                             Settings.data.cover_image_bucket))
-        url = storage.file_url(Settings.data.cover_image_bucket,
-                         "#{collection.pid}.#{cover_image.original_filename.split(".").last}")
+      storage.create_bucket(collection.pid)
+
+      if (storage.store_file(collection.pid, cover_image.tempfile.path,
+            "#{collection.pid}.#{cover_image.original_filename.split(".").last}"))
+        url = storage.file_url(collection.pid,
+            "#{collection.pid}.#{cover_image.original_filename.split(".").last}")
       end
       
       url

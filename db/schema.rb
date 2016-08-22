@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151021164626) do
+ActiveRecord::Schema.define(version: 20160725133248) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -24,6 +24,17 @@ ActiveRecord::Schema.define(version: 20151021164626) do
   end
 
   add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
+
+  create_table "brands", force: :cascade do |t|
+    t.string   "filename"
+    t.string   "content_type"
+    t.binary   "file_contents"
+    t.integer  "institute_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "brands", ["institute_id"], name: "index_brands_on_institute_id"
 
   create_table "datacite_dois", force: :cascade do |t|
     t.string   "object_id"
@@ -49,6 +60,17 @@ ActiveRecord::Schema.define(version: 20151021164626) do
   end
 
   add_index "doi_metadata", ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
+
+  create_table "ingest_batches", force: :cascade do |t|
+    t.string   "email"
+    t.text     "media_object_ids"
+    t.boolean  "finished",         default: false
+    t.boolean  "email_sent",       default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_ingest_id"
+    t.string   "collection_id"
+  end
 
   create_table "ingest_statuses", force: :cascade do |t|
     t.string   "batch_id"
@@ -101,6 +123,25 @@ ActiveRecord::Schema.define(version: 20151021164626) do
     t.text    "checksum"
   end
 
+  create_table "master_files", force: :cascade do |t|
+    t.integer  "media_object_id"
+    t.string   "status_code"
+    t.string   "file_size"
+    t.string   "file_location"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.boolean  "metadata"
+    t.boolean  "preservation"
+  end
+
+  add_index "master_files", ["media_object_id"], name: "index_master_files_on_media_object_id"
+
+  create_table "media_objects", force: :cascade do |t|
+    t.string   "collection"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "searches", force: :cascade do |t|
     t.text     "query_params"
     t.integer  "user_id"
@@ -110,6 +151,14 @@ ActiveRecord::Schema.define(version: 20151021164626) do
   end
 
   add_index "searches", ["user_id"], name: "index_searches_on_user_id"
+
+  create_table "user_background_tasks", force: :cascade do |t|
+    t.integer "user_id"
+    t.string  "job"
+    t.string  "name"
+    t.string  "message"
+    t.string  "status"
+  end
 
   create_table "user_group_authentications", force: :cascade do |t|
     t.integer "user_id"
@@ -134,6 +183,7 @@ ActiveRecord::Schema.define(version: 20151021164626) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "approved_by"
+    t.text     "request_form"
   end
 
   add_index "user_group_memberships", ["group_id", "user_id"], name: "index_user_group_memberships_on_group_id_and_user_id", unique: true
@@ -169,6 +219,14 @@ ActiveRecord::Schema.define(version: 20151021164626) do
   add_index "user_group_users", ["confirmation_token"], name: "index_user_group_users_on_confirmation_token", unique: true
   add_index "user_group_users", ["email"], name: "index_user_group_users_on_email", unique: true
   add_index "user_group_users", ["reset_password_token"], name: "index_user_group_users_on_reset_password_token", unique: true
+
+  create_table "user_ingests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "user_ingests", ["user_id"], name: "index_user_ingests_on_user_id"
 
   create_table "version_committers", force: :cascade do |t|
     t.string   "obj_id"

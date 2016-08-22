@@ -23,6 +23,12 @@ module DRI::Solr::Document::File
     Settings.restrict.mime_types.pdf.include? mime_type
   end
 
+  def supported_type?
+    mime_type.nil? || (audio? || 
+      video? || pdf? || image? || 
+      text? && file_format.include?("RTF"))
+  end
+
   def read_master?
     master_file_key = ActiveFedora::SolrQueryBuilder.solr_name('master_file_access', :stored_searchable, type: :string)
 

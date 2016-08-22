@@ -263,14 +263,14 @@ module TimelineHelper
     root_col_key = ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym
 
     if document[cover_image_key] && document[cover_image_key].first
-      path = document[cover_image_key].first
+      path = Rails.application.routes.url_helpers.cover_image_url(SolrDocument.new(document))
     elsif !document[root_col_key].blank?
       collection = root_collection_solr_tm(document)
       if collection[cover_image_key] && collection[cover_image_key].first
-        path = collection[cover_image_key].first
+        path = Rails.application.routes.url_helpers.cover_image_url(SolrDocument.new(collection))
       end
     end
-
+    
     path
   end
 
@@ -290,7 +290,7 @@ module TimelineHelper
 
   def surrogate_url_tm(doc, file_doc, name)
     storage = StorageService.new
-    storage.surrogate_url(doc, file_doc, name)
+    storage.surrogate_url(doc, "#{file_doc}_#{name}")
   end
 
   def overlaps?(sdate, other_sdate, edate, other_edate)

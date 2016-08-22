@@ -101,11 +101,14 @@ en:
       error:
         cover_image_not_saved: "Unable to save cover image"
         manager_user_permission: "You do not have permission to create a manager user"
+        no_read_group: "No read group has been set for the collection"
         no_type_specified: "You must specify a valid object type"
         not_created: "Unable to create. Check set permissions"
         not_updated: "%{item} was not updated. Check set permissions"
         organisation_cannot_be_deleted: "The organisation cannot be deleted as it is still associated with collections"
+        read_access: "Unable to grant read access"
         read_only: "Repository is currently undergoing maintenance. Updates are temporarily disabled."
+        submitting_read_request: "Unable to submit read access request: %{error}"
       validation_errors: "Validation Errors: %{error}"
       notice:
         access_controls_updated: "Access controls updated."
@@ -114,7 +117,7 @@ en:
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Delete collection process successfully started."
         collection_publishing: "Collection is being published."
-        collection_objects_review: "Review collection objects process successfully started."
+        collection_objects_review: "Review collection objects process successfully started. This may take some time. When completed, use the publish button on the collection page to publish all reviewed objects and sub-collections."
         collection_doi_request: "New DOI requested."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
@@ -135,7 +138,11 @@ en:
         organisations_set: "Organisations successfully updated."
         organisation_removed: "Organisation successfully removed from collection."
         organisation_depositor: "Organisation successfully set as Depositor."
+        read_access_approved: "Read access request has been approved. The user has been notified."
+        read_access_removed: "Read access has been removed"
+        read_access_rejected: "Read access request has been rejected. The user has been notified."
         removed_from_collection: "Object has been removed from the collection."
+        request_form_submitted: "Your request for access has been submitted to the depositing organisation for this collection and will be reviewed shortly. Please note, you may be requested to provide additional information to the depositing organisation and/or agree to additional terms and conditions for access. You will receive an email to notify you of the outcome of this request. If you have any queries about this access request please contact the depositing organisation for this collection."
         schema_validation_error: "The XML file could not validate against the Dublin Core schema."
         specify_datastream: "You must specify a valid file datastream."
         specify_file: "You must specify a file to upload."
@@ -171,6 +178,7 @@ en:
       manage: Manage
       manage_users: "Add Manager User"
       my_collections: "My Collections"
+      my_tasks: "My Tasks"
       new_collection: "New Collection"
       new_organisation: "New Organisation"
       object: Object
@@ -238,7 +246,7 @@ en:
         relations: Relation
         relations_text: "A related resource."
         rights: "Rights statement"
-        rights_text: "Information about rights held in and over the resource."
+        rights_text: "Information about rights held in and over the resource. If the asset is an orphan work it must be registered with the EUIPO Orphan Works Database, and the associated file number must be included here."
         roles: Contributor
         roles_text: "An entity responsible for making contributions to the resource."
         sources: Source
@@ -322,6 +330,7 @@ en:
           objects_in_collection: Objects
           pdf_file: PDF
           restricted_asset: "Restricted Asset"
+          restricted_data_request: "Restricted data access request form"
           video_file: Video
         headers:
           files: "Asset Tools"
@@ -340,8 +349,9 @@ en:
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
           request_permission_not_logged_in: "Sign up/Login to get access."
-          surrogate_not_available: "Surrogate not available yet"
+          surrogate_not_available: "Surrogate not available"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
+          surrogate_not_supported: "%{mime_type} assets are not supported for display. Please download the asset using the link below if available."
         links:
           add_documentation: "Add Documentation"
           add_object: "Add an Object"
@@ -360,16 +370,17 @@ en:
           generate_surrogates: "Regenerate Surrogates"
           history: History
           listen: listen
-          mark_all_descendants_reviewed: "Mark Collection AND Sub-Collection Objects Reviewed"
+          mark_all_descendants_reviewed: "Proceed"
           mark_all_reviewed: "Mark as Reviewed"
           mark_object_draft: "Mark Object as Draft"
           mark_object_reviewed: "Mark Object as Reviewed"
           not_characterized: "not yet characterized"
           publish: "Publish"
-          publish_reviewed: "Publish reviewed objects"
+          publish_reviewed: "Publish Reviewed"
           related: "Related Assets"
           request_doi: "Request DOI"
           review_objects: "Review Objects"
+          review_collection: "Review Collection"
           reviewed: Reviewed
           share: Share
           status_update: "Update status"
@@ -393,8 +404,11 @@ en:
           delete_collection: "Delete Collection"
           new_collection: "New Collection"
           remove: Remove
-        confirm_all_descendants_reviewed: "This will mark %{draft_count} draft objects within the collection AND sub-collections as Reviewed. Continue?"
+        confirm_all_descendants_reviewed: "By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed."
         confirm_all_reviewed: "This will mark all objects within the collection as Reviewed. Continue?"
+        confirm_review_collection: "This collection record will be marked as reviewed."
+        confirm_review_subcollection: "Bear in mind that for this collection to be published you will have to mark all of its parent sub-collections as reviewed beforehand, otherwise the collection won't be accessible after publishing"
+        confirm_review_summary: "(This operation will affect %{subcolls} sub-collections and %{objects} objects)"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
         confirm_publish: "This will make all reviewed objects accessible. This can not be undone! Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
@@ -424,6 +438,10 @@ en:
           selected: "Selected"
           set_institutes: "Set Organisations"
           manage: "Manage Organisations"
+          move_selected_label: "Move selected"
+          move_all_label: "Move all"
+          remove_selected_label: "Remove selected"
+          remove_all_label: "Remove all"
           not_set: "Not set"
           associate_depositing: "Select Depositing Organisation"
           remove: "Remove Organisation"
@@ -452,6 +470,9 @@ en:
           changelog: "Changelog for #{doi}"
         links:
           view_full_object: "View object" 
+      tasks:
+        links:
+          delete_all_tasks: "Clear all completed tasks"
       exceptions:
         access_denied: "You do not have permission to perform the requested operation."
         internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"
@@ -480,7 +501,8 @@ en:
         date: Date
         dates: Dates
         depositing_institute: "Depositing Organisation"
-        depositing_institute_not_set: "Depositing Organisation not Set"
+        depositing_institute_not_set: "Depositing organisation not set. Click here to manage organisations."
+        depositing_institute_not_set_object: "Depositing organisation not set. Organisations can be set from the Collection view."
         description: Description
         description_eng: "Description (English)"
         description_gle: "Description (Irish)"
@@ -663,6 +685,17 @@ en:
           download: download
           listen: listen
           view_record: "View Record"
+      readers:
+        headers:
+          pending: "Pending Request"
+          remove: Approved
+        links:
+          pending:
+            approve: "Approve request"
+            reject: "Reject request"
+            view: "View request"
+          approved:
+            remove: "Remove access"
       static:
         admin:
           licences: "Supported Licences"

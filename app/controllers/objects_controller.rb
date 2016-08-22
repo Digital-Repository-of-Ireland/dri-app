@@ -13,7 +13,7 @@ class ObjectsController < BaseObjectsController
   DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
        'contributor','publisher','date','format','source','temporal_coverage',
        'geographical_coverage','geocode_point','geocode_box','institute',
-       'root_collection_id','isGovernedBy','ancestor_id','ancestor_title'].freeze
+       'root_collection_id','isGovernedBy','ancestor_id','ancestor_title','role_dnr'].freeze
 
   # Displays the New Object form
   #
@@ -36,7 +36,10 @@ class ObjectsController < BaseObjectsController
     
     @object = retrieve_object!(params[:id])
     @object.creator = [''] unless @object.creator[0]
-    
+
+    # used for crumbtrail
+    @document = SolrDocument.new(@object.to_solr)
+
     respond_to do |format|
       format.html
       format.json  { render json: @object }
@@ -188,7 +191,8 @@ class ObjectsController < BaseObjectsController
     @list = []
 
     if params.key?('objects') && params[:objects].present?
-      solr_query = ActiveFedora::SolrService.construct_query_for_ids(params[:objects].map{|o| o.values.first})
+      solr_query = ActiveFedora::SolrService.construct_query_for_ids(
+        params[:objects].map{|o| o.values.first})
       results = Solr::Query.new(solr_query)
       
       while results.has_more?
@@ -233,9 +237,14 @@ class ObjectsController < BaseObjectsController
       solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
       result = ActiveFedora::SolrService.instance.conn.get('select',
                         :params=>{:q=>solr_query, :qt => 'standard',
+                        :fq => "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false
+                                AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published",
                         :mlt => 'true',
-                        :'mlt.fl' => "#{Solrizer.solr_name('subject', :stored_searchable, type: :string)},#{Solrizer.solr_name('subject', :stored_searchable, type: :string)}",
-                        :'mlt.count' => count, :fl => 'id,score', :'mlt.match.include'=> 'false'})
+                        :'mlt.fl' => "#{Solrizer.solr_name('subject', :stored_searchable, type: :string)},
+                                      #{Solrizer.solr_name('subject', :stored_searchable, type: :string)}",
+                        :'mlt.count' => count,
+                        :fl => "id,score",
+                        :'mlt.match.include'=> 'false'})
     end
 
     # TODO: fixme!
@@ -265,17 +274,7 @@ class ObjectsController < BaseObjectsController
       @object.status = params[:status] if params[:status].present?
       @object.save
     end
-
-    if params[:apply_all].present? && params[:apply_all] == 'yes'
-      begin
-        Sufia.queue.push(ReviewJob.new(@object.governing_collection.id)) unless @object.governing_collection.nil?
-      rescue Exception => e
-        logger.error "Unable to submit status job: #{e.message}"
-        flash[:alert] = t('dri.flash.alert.error_review_job', error: e.message)
-        @warnings = t('dri.flash.alert.error_review_job', error: e.message)
-      end
-    end
-
+    
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
       format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
@@ -320,7 +319,8 @@ class ObjectsController < BaseObjectsController
     end
 
     def create_reader_group
-      group = UserGroup::Group.new(name: "#{@object.id}", description: "Default Reader group for collection #{@object.id}")
+      group = UserGroup::Group.new(name: "#{@object.id}", 
+        description: "Default Reader group for collection #{@object.id}")
       group.reader_group = true
       group.save
     end
@@ -387,7 +387,8 @@ class ObjectsController < BaseObjectsController
       if can? :read, doc
         storage = StorageService.new
 
-        files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
+        files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
+        files_query += " AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
         query = Solr::Query.new(files_query)
 
         while query.has_more?
@@ -404,7 +405,10 @@ class ObjectsController < BaseObjectsController
 
             timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
             surrogates = storage.get_surrogates doc, file_doc, timeout
-            surrogates.each { |file,loc| file_list[file] = loc }
+            surrogates.each do |file,loc| 
+              file_list[file] = url_for(object_file_url(
+                object_id: doc.id, id: file_doc.id, surrogate: file))
+            end
 
             item['files'].push(file_list)
           end

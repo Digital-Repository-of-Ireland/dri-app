@@ -30,14 +30,21 @@ NuigRnag::Application.routes.draw do
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
     post 'collections/:id/batch', to: 'batch_ingest#create', as: :batch_ingest
     get 'collections/:id/duplicates', to: 'collections#duplicates', as: :collection_duplicates
-  
+
+    get 'collections/:id/readers', to: 'readers#index', as: :collection_manage_requests
+    post 'collections/:id/readers', to: 'readers#create', as: :collection_request_read
+    get 'collections/:id/readers/:user_id', to: 'readers#show', as: :collection_view_read_request
+    put 'collections/:id/readers/:user_id', to: 'readers#update', as: :collection_approve_read_request
+    delete 'collections/:id/readers/:user_id', to: 'readers#destroy', as: :collection_remove_read
+
     put 'collections/:id/licences', to: 'collections#set_licence', as: :collection_licence
     put 'objects/:id/licences', to: 'objects#set_licence', as: :object_licence
 
     get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
     put 'objects/:id/access', to: 'access_controls#update'
   
-    resources :organisations, controller: :institutes, :only => ['index','show', 'new', 'create', 'destroy', 'edit', 'update']
+    resources :organisations, controller: :institutes
+    get 'organisations/:id/logo', to: 'institutes#logo', as: :logo
 
     match 'association' => 'institutes#associate', :via => :post, :as => :new_association
     match 'association' => 'institutes#disassociate', :via => :delete, :as => :disassociation
@@ -72,16 +79,18 @@ NuigRnag::Application.routes.draw do
     match 'collections/:id/publish' => 'collections#publish', :via => :put, :as => :publish
     # Added review method to collections controller
     match 'collections/:id/review' => 'collections#review', :via => :put, :as => :review
-    
     match 'collections/:id/cover' => 'collections#add_cover_image', :via => :put, :as => :add_cover_image
+    get 'collections/:id/cover' => 'collections#cover', as: :cover_image
 
     match '/privacy' => 'static_pages#privacy', :via => :get
     match '/workspace' => 'workspace#index', :via => :get
     match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
 
-    match 'surrogates/:id' => 'surrogates#update', :via => :put, :as => :surrogates_generate
-    match 'surrogates/:id' => 'surrogates#show', :via => :get, :as => :surrogates
-    match 'surrogates/:id/download' => 'surrogates#download', :via => :get, :as => :surrogate_download
+    get 'surrogates/:id' => 'surrogates#show', :as => :surrogates
+    put 'surrogates/:id' => 'surrogates#update', :as => :surrogates_generate
+
+    get 'tasks' => 'user_background_tasks#index', as: :user_tasks
+    delete 'tasks' => 'user_background_tasks#destroy', as: :destroy_user_tasks  
 
     match 'collections/:id' => 'catalog#show', :via => :get
 

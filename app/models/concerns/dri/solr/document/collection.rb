@@ -1,6 +1,6 @@
 module DRI::Solr::Document::Collection
 
-  def children(limit)
+  def children(chunk)
     children_array = []
     # Find immediate children of this collection
     solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{self.id}\""
@@ -8,12 +8,15 @@ module DRI::Solr::Document::Collection
 
     # Filter to only get those that are collections:
     # fq=is_collection_tesim:true
-    q_result = Solr::Query.new(solr_query, limit, fq: f_query)
-    q_result.each_solr_document do |doc|
-      children_array << doc
-    end
-
+    q_result = Solr::Query.new(solr_query, chunk, fq: f_query)
+    q_result.each_solr_document { |doc| children_array << doc }
+    
     children_array
+  end
+
+  def cover_image
+    cover_field = ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)
+    self[cover_field] && self[cover_field][0] ? self[cover_field][0] : nil
   end
 
   def draft_objects

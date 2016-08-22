@@ -6,8 +6,8 @@ require 'validators'
 class CollectionsController < BaseObjectsController
   include Hydra::AccessControlsEnforcement
 
-  before_filter :authenticate_user_from_token!
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, except: [:cover]
+  before_filter :authenticate_user!, except: [:cover]
   before_filter :check_for_cancel, only: [:create, :update, :add_cover_image]
   before_filter :read_only, except: [:index]
 
@@ -168,6 +168,35 @@ class CollectionsController < BaseObjectsController
       end
       format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
     end
+  end
+
+  def cover
+    enforce_permissions!('show_digital_object', params[:id])
+
+    solr_result = ActiveFedora::SolrService.query(
+      ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])
+    )
+    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if solr_result.blank?
+
+    object = SolrDocument.new(solr_result.first)
+
+    cover_url = object.cover_image
+    raise Exceptions::NotFound if cover_url.blank?
+    if cover_url =~ /\A#{URI::regexp(['http', 'https'])}\z/
+      redirect_to cover_url
+      return
+    end
+
+    uri = URI.parse(cover_url)
+    cover_name = File.basename(uri.path)
+    
+    storage = StorageService.new
+    cover_file = storage.surrogate_url(object.id, cover_name)
+    raise Exceptions::NotFound unless cover_file
+
+    response.headers['Accept-Ranges'] = 'bytes'
+    response.headers['Content-Length'] = File.size(cover_file).to_s
+    send_file cover_file, { type: MIME::Types.type_for(cover_name).first.content_type, disposition: 'inline' }
   end
 
   # Updates the licence.
@@ -334,7 +363,9 @@ class CollectionsController < BaseObjectsController
     # We need to save to get a pid at this point
     if @object.save
       if cover_image.present?
-        flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
+        unless Storage::CoverImages.validate(cover_image, @object)
+          flash[:error] = t('dri.flash.error.cover_image_not_saved')
+        end
       end
     end
 
@@ -403,7 +434,8 @@ class CollectionsController < BaseObjectsController
   private
 
   def create_reader_group
-    @group = UserGroup::Group.new(name: reader_group_name, description: "Default Reader group for collection #{@object.id}")
+    @group = UserGroup::Group.new(name: reader_group_name, 
+      description: "Default Reader group for collection #{@object.id}")
     @group.reader_group = true
     @group.save
     @group
@@ -414,7 +446,15 @@ class CollectionsController < BaseObjectsController
   end
 
   def review_all
-    Sufia.queue.push(ReviewCollectionJob.new(@object.id))
+    job_id = ReviewCollectionJob.create(
+      'collection_id' => @object.id, 
+      'user_id' => current_user.id
+    )
+    UserBackgroundTask.create( 
+      user_id: current_user.id, 
+      job: job_id 
+    )
+
     flash[:notice] = t('dri.flash.notice.collection_objects_review')
   rescue Exception => e
     logger.error "Unable to submit status job: #{e.message}"
@@ -430,6 +470,14 @@ class CollectionsController < BaseObjectsController
   end
    
   def publish_collection
+    job_id = PublishCollectionJob.create(
+      'collection_id' => @object.id, 
+      'user_id' => current_user.id
+    )
+    UserBackgroundTask.create( 
+      user_id: current_user.id, 
+      job: job_id 
+    )
     Sufia.queue.push(PublishJob.new(@object.id))
   rescue Exception => e
     logger.error "Unable to submit publish job: #{e.message}"
@@ -446,7 +494,7 @@ class CollectionsController < BaseObjectsController
         }
       end
   end
-
+ 
   def valid_permissions?
     if (@object.governing_collection_id.blank? &&
        ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||

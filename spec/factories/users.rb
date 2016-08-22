@@ -20,13 +20,22 @@ FactoryGirl.define do
     u.email nil
   end
 
- factory :admin,  parent: :user do |u|
-   after(:create) do |user, evaluator|
-     @group = UserGroup::Group.find_or_create_by(name: SETTING_GROUP_ADMIN, description: "admin test group")
-     @membership = user.join_group(@group.id)
-     @membership.approved_by = user.id
-     @membership.save
-   end
- end
+  factory :admin,  parent: :user do |u|
+    after(:create) do |user, evaluator|
+      @group = UserGroup::Group.find_or_create_by(name: SETTING_GROUP_ADMIN, description: "admin test group")
+      @membership = user.join_group(@group.id)
+      @membership.approved_by = user.id
+      @membership.save
+    end
+  end
+
+  factory :collection_manager,  parent: :user do |u|
+    after(:create) do |user, evaluator|
+      @group = UserGroup::Group.find_or_create_by(name: SETTING_GROUP_CM, description: "collection manager test group")
+      @membership = user.join_group(@group.id)
+      @membership.approved_by = user.id
+      @membership.save
+    end
+  end
 
 end

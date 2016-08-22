@@ -90,24 +90,12 @@ end
 Given /^I have associated the institute "(.?*)" with the collection with pid "(.?*)"$/ do |institute_name,pid|
   collection = ActiveFedora::Base.find(pid ,{:cast => true})
 
-  institute = Institute.new #Institute.where(:name => params[:institute_name]).first
+  institute = Institute.new
   institute.name = institute_name
   institute.url = "http://www.dri.ie"
 
   logo = Rack::Test::UploadedFile.new(File.join(cc_fixture_path, "sample_logo.png"), "image/png")
-
-  if Settings.data.nil? || Settings.data.logos_bucket.nil?
-    bucket = 'institutelogos'
-  else
-    bucket = Settings.data.logos_bucket
-  end
-
-  storage = StorageService.new
-  storage.store_file(logo.path,
-                     "#{name}.#{logo.original_filename.split(".").last}",
-                     bucket)
-  institute.logo = storage.file_url(bucket,
-                   "#{institute_name}.#{logo.original_filename.split(".").last}")
+  institute.store_logo(logo, institute_name)
   institute.save
 
   collection.institute = collection.institute.push(institute.name)

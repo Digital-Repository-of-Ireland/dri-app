@@ -1,29 +1,27 @@
-<% @cover_image = "no_image.png" %>
-<% get_cover_image(document) %>
+<% @search_image = "no_image.png" %>
+<% image_for_search(document) %>
+
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block">
-           <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+    <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+      <%= link_to bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' do %>
+        <span class="dri_remove_bookmark">x</span>
+        <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
+      <% end %>
+    <% end %>
 
-                <%= link_to bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' do %>
-                                <span class="dri_remove_bookmark">x</span>
-                <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
-                <% end %>
-            <% end %>
-
-    <% get_cover_image document %>
     <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
         <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
         <div class="dri_image">
-
-          <%= image_tag @cover_image, :width=>"200" %>
+          <%= image_tag @search_image, :width=>"200" %>
         </div><!-- close image -->
     <% end %>
 
     <p class="dri_subject">
       <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
           <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
-              <% unless uri?(subject) %> <%= subject %> <% end %>
-              <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject || uri?(subject) %> | <% end %>
+            <% unless uri?(subject) %> <%= subject %> <% end %>
+            <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject || uri?(subject) %> | <% end %>
           <% end %>
       <% end %>
     </p>

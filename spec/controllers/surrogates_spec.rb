@@ -81,13 +81,4 @@ describe SurrogatesController do
     end
 
   end
-
-  describe 'download' do
-
-    it 'should validate the surrogate url' do
-      get :download, id: @object.id, object_id: @object.id, surrogate_url: 'config/database.yml'
-      expect(response.status).to eq 400
-    end
-  end
-
 end

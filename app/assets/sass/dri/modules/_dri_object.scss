@@ -193,7 +193,7 @@ p.dri_restrict_progress {
     color: $dri_teal;
     text-decoration: underline;
 }
-input.dri_request_access_button {
+button.dri_request_access_button {
     color: #FFF;
     border: none;
     background-color: $dri_teal;
@@ -222,6 +222,9 @@ a.dri_toggle_metadata::after {
         overflow: scroll;
         dl {
             padding: 15px;
+        } 
+        ul {
+          list-style: none;
         }
     }
     .dri_child_links > a {
@@ -251,6 +254,15 @@ dl.dri_object_metadata_readview {
         }
         a:hover {
             text-decoration: underline;
+        }
+        .dri_manage_org_link {
+          list-style-type: none;
+          text-decoration: none;
+          margin: 0;
+          padding: 0;
+        }
+        .dri_manage_org_link:hover {
+          text-decoration: none;
         }
     }
 }

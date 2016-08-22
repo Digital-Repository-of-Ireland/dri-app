@@ -77,9 +77,7 @@ module FacetsHelper
       results = Array.new
       value_list = args[:document][args[:field]]
 
-      value_list.each do |value|
-        results.push(transform_collection_title value)
-      end
+      value_list.each { |value| results.push(transform_collection_title value) }
     else
       results = transform_collection_title args
     end
@@ -199,39 +197,33 @@ module FacetsHelper
     return if uri?(item.value)
 
     path = search_action_path(add_facet_params_and_redirect(facet_solr_field, item))
-    link_to_unless(options[:suppress_link], facet_display_value(facet_solr_field, item) + " (#{item.hits})", path, :class=>"facet_select")
+    link_to_unless(options[:suppress_link], 
+      facet_display_value(facet_solr_field, item) + " (#{item.hits})", 
+      path, class: 'facet_select')
   end
 
   # Renders a count value for facet limits. Can be over-ridden locally
   # to change style. And can be called by plugins to get consistent display
   def render_facet_count(num)
-    content_tag("b", t('blacklight.search.facets.count', :number => num))
+    content_tag("b", t('blacklight.search.facets.count', number: num))
   end
 
   # Standard display of a SELECTED facet value, no link, special span
   # with class, and 'remove' button.
   def render_selected_facet_value(facet_solr_field, item)
     #Updated class for Bootstrap Blacklight.
-
-    link_to(render_facet_value(facet_solr_field, item, :suppress_link => true), 
-      remove_facet_params(facet_solr_field, item, params), :class=>"selected")
+    link_to(
+      render_facet_value(facet_solr_field, item, suppress_link: true) + content_tag(:i,'', class: 'fa fa-remove'), 
+      remove_facet_params(facet_solr_field, item, params), 
+      class: 'selected')
   end
 
   # Overwriting this helper so that values containing colons are automatically enclosed in double-quoted strings,
   # otherwise SOLR will report an error.
   def facet_value_for_facet_item item
-    value = ""
-
-    if item.respond_to? :value
-      value = item.value
-    else
-      value = item
-    end
-
-    if (value.include? ":")
-      value = value.html_safe
-    end
-
+    value = item.respond_to?(:value) ? item.value : item
+    value = value.html_safe if (value.include? ":")
+      
     value
   end
 

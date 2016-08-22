@@ -12,6 +12,7 @@ class CatalogController < ApplicationController
   include Hydra::AccessControlsEnforcement
 
   include TimelineHelper
+  include DRI::Readable
 
   #This method shows the DO if the metadata is open
   #Rather than before where the user had to have read permissions on the object all the time
@@ -267,6 +268,8 @@ class CatalogController < ApplicationController
     files_and_surrogates
     supported_licences
 
+    @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
+
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
       format.json { render json: { response: { document: @document } } }
@@ -326,7 +329,19 @@ class CatalogController < ApplicationController
     
     @files.each do |file| 
       @displayfiles << file unless file.preservation_only?
-      @surrogates[file.id] = storage.get_surrogates(@document, file)
+
+      # get the surrogates for this file if they exist
+      surrogates = storage.get_surrogates(@document, file)
+      if surrogates
+        file_list = {}
+        surrogates.each do |key,_path|
+          file_list[key] = url_for(object_file_url(
+            object_id: @document.id, id: file.id, surrogate: key))
+        end
+
+        @surrogates[file.id] = file_list unless file_list.empty?
+      end
+
       file_status(file.id) if @surrogates[file.id].blank?
     end
 

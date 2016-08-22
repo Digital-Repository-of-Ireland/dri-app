@@ -7,6 +7,15 @@
 		});
 	}); 
 </script>
+<script>
+  function confirmDelete() {
+		if (confirm("<%= t('dri.views.collection.confirm_delete') %>")) {
+           $('#delete_collection').submit();
+       } else {
+           return false;
+       }
+  }
+</script>
 <div class="dri_sidenav">
 <h5>
 	<i class="fa fa-pencil"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
@@ -105,21 +114,15 @@
 			</div>
     </li>
 
-    <% if @document.draft? %>
-      <% publish_label = t('dri.views.catalog.links.publish') %>
-    <% else %>
-      <% publish_label = t('dri.views.catalog.links.publish_reviewed') %>
-    <% end %>
-
     <% if @document.root_collection? && @depositing_institute %>
 	    <%= link_to publish_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_publish') }, :id => "publish" do %>
         <li>
-          <%= publish_label %>
+          <%= t('dri.views.catalog.links.publish_reviewed') %>
         </li>
       <% end %>
     <% elsif  @document.root_collection? && !@depositing_institute %>
       <li class="dri_help_popover dri_disabled" data-content="<%= t('dri.help.dri_publish_unavailable') %>" data-original-title="<%= t('dri.help.dri_publish_unavailable_title') %>" data-trigger="hover" data-placement="left">
-        <%= publish_label %>
+        <%= t('dri.views.catalog.links.publish_reviewed') %>
       </li>
     <% end %>
         
@@ -180,15 +183,14 @@
 
 	<!-- Link to manage pending memberships for the read group -->
 	<% if get_reader_group(@document) %>
-	<%= link_to user_group.manage_group_path(@reader_group), :id => "manage_read_requests" do %>
-	<li>
-		<%= t('dri.views.collection.manage_read_requests') %>
-	</li>
-	<% end %>
+	  <%= link_to collection_manage_requests_path(@document), id: "manage_read_requests" do %>
+	    <li>
+		    <%= t('dri.views.collection.manage_read_requests') %>
+	    </li>
+	  <% end %>
 	<% end %>
 	
-
-</ul>
+  </ul>
 </div>
 
 <% if current_user.is_admin? || ((can? :manage_collection, @document) && @document.draft?) %>
@@ -205,14 +207,17 @@
 			<div class="modal-body">
 				<span class="label label-danger"><%= t('dri.views.collection.confirm_delete') %></span>
 				<br />
-				<%= form_tag (collection_path(@document.id)), :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
-				<%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_button_red", :id => "delete_collection_#{@document.id}", :data => { :confirm => t('dri.views.collection.confirm_delete') } %>
+				<%= form_tag (collection_path(@document.id)), id: 'delete_collection', :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+				<%= submit_tag t('dri.views.collection.buttons.delete_collection'), :class => "hidden" %>
 				<% end %>
 
 			</div>
 
 			<div class="modal-footer">
-
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
+        <%= button_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_button_red", :id => "delete_collection_#{@document.id}", onclick: "confirmDelete();" %>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
@@ -226,23 +231,31 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title"><%= t('dri.views.catalog.links.review_objects') %></h4>
+				<h4 class="modal-title"><%= t('dri.views.catalog.links.review_collection') %></h4>
 			</div>
 
 			<div class="modal-body">
-				<span class="label label-danger"><%= t('dri.views.collection.confirm_all_descendants_reviewed', draft_count: (@document.draft_objects + @document.draft_subcollections)) %></span>
+				<p><b><%= t('dri.views.collection.confirm_review_collection') %></b>
+				<% if @document.sub_collection? %>
+				  </br><%= t('dri.views.collection.confirm_review_subcollection') %>
+				<% end %>
+			  </p>
+				<p><%= t('dri.views.collection.confirm_all_descendants_reviewed') %></p>
+				<p><%= t('dri.views.collection.confirm_review_summary', 
+					      objects: @document.draft_objects, 
+				        subcolls: @document.draft_subcollections) %></p>
 				<br />
 				<% if duplicate_total && duplicate_total > 0 %>
 				  <span class="label label-danger"><%= t('dri.views.collection.duplicates_found', duplicates_count: duplicate_total) %></span>
 				<% end %>
-				<%= button_to review_path(:apply_all => 'yes'),:class =>"dri_button_red", :id => "all_objects_reviewed", :method => :put do %>
-				<%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
-				<% end %>
 			</div>
 			<div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">
-					<%= t('dri.window.modal.close') %>
-				</button>
+				<button type="button" class="dri_button" data-dismiss="modal">
+						<%= t('dri.window.modal.close') %>
+					</button>
+					<%= button_to review_path(:apply_all => 'yes'), :class =>"dri_button_green", form: {style: 'display:inline-block;'}, :id => "all_objects_reviewed", :method => :put do %>
+					  <%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
+					<% end %>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
@@ -264,7 +277,7 @@
 				<%= form_tag(collection_doi_path(@document.id), method: "post") do %>
 				  <%= label_tag 'modified', t('dri.views.collection.doi_modification') %>
 				  <%= text_field_tag :modified, nil, size: 50, required: true  %>
-                  <%= submit_tag(t('dri.views.catalog.buttons.submit')) %>
+                  <%= submit_tag(t('dri.views.catalog.buttons.submit'), class: 'dri_button_green') %>
                 <% end %>
 			</div>
 			<div class="modal-footer">
@@ -292,8 +305,11 @@
 			<%= render :partial => "shared/manage_institute" %>
 			</div>
 			<div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">
+              <button type="button" class="dri_button_grey" data-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
+				</button>
+				<button id="associate_inst" type="submit" class="dri_button_green" onclick="$('#associate_institute').submit();">
+					<%= t('dri.views.collection.institute.set_institutes') %>
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
@@ -316,8 +332,11 @@
 			<%= render :partial => "shared/add_cover_image" %>
 			</div>
 			<div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
+				</button>
+				<button id="add_cover_image" type="submit" class="dri_button_green" onclick="$('#choose_cover_image').submit();">
+					<%= t('dri.views.objects.buttons.save') %>
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
@@ -339,8 +358,11 @@
 			  <%= render :partial => "shared/set_collection_licence" %>
 			</div>
 			<div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
+				</button>
+				<button id="set_licence" type="submit" class="dri_button_green" onclick="$('#choose_licence').submit();">
+					<%= t('dri.views.catalog.buttons.submit') %>
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
@@ -359,9 +381,12 @@
 
       <div class="modal-body"></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-dismiss="modal">
 	      <%= t('dri.window.modal.close') %>
-		</button>
+		  </button>
+		  <button id="save_access_controls" type="submit" class="dri_button_green" onclick="$('#set_access_controls').submit();">
+          <%= t('dri.views.objects.buttons.save') %>
+        </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

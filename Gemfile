@@ -8,7 +8,7 @@ gem 'rails','~> 4.2'
 gem 'blacklight', '~> 5.16.0'
 gem 'blacklight_range_limit'
 gem 'blacklight-maps'
-gem 'hydra-head', '9.9.0'
+gem 'hydra-head', '9.10'
 
 gem 'riiif'
 
@@ -21,8 +21,8 @@ gem 'paper_trail', '~> 4'
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
 
-gem 'active-fedora', '9.10.4'
-gem 'active_fedora-noid', '1.0.3'
+gem 'active-fedora', '9.11'
+gem 'active_fedora-noid', '1.1.1'
 
 gem 'rails_config'
 gem 'sqlite3'
@@ -54,18 +54,21 @@ gem 'jquery-cookie-rails'
 
 gem 'remotipart'
 
+# clients
 gem 'rest-client'
 gem 'sparql-client'
 
 # static pages
 gem 'high_voltage', '~> 2.1.0'
 
+# monitoring 
 # is it working fork
 gem 'is_it_working-cbeer'
+gem 'honeybadger', '~> 2.0'
+gem 'resque-status'
 
 gem 'sass-rails' , '~> 4.0.4'
 gem 'compass-rails'
-# gem 'coffee-rails', '~> 3.2.1'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs'
@@ -143,3 +146,4 @@ gem 'videojs_rails', git: 'https://github.com/ekilfeather/videojs_rails.git', re
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'openlayers-rails'
 gem 'social-share-button'
+gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'

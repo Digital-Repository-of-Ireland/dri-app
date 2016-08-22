@@ -22,7 +22,7 @@ class TextSurrogateJob < ActiveFedoraIdBasedJob
 
       out_file = File.open(filename, "rb")
 
-      storage = Storage::S3Interface.new
+      storage = StorageService.new
       saved = storage.store_surrogate(bucket_id, out_file, surrogate_filename)
 
       raise "Unable to save text surrogate for #{generic_file_id}" unless saved

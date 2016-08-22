@@ -10,14 +10,14 @@
 		<% if @depositing_institute %>
 		<li>
 			<div class="dri_collection_institutes_item">
-				<%if @depositing_institute.logo.blank? && @depositing_institute.url.blank?%>
+				<%if @depositing_institute.brand.nil? && @depositing_institute.url.blank?%>
 				<%= @depositing_institute.name %>
-				<% elsif @depositing_institute.logo.blank? && !@depositing_institute.url.blank? %>
+				<% elsif @depositing_institute.brand.nil? && !@depositing_institute.url.blank? %>
 				<%= link_to @depositing_institute.name, @depositing_institute.url, :target => "_blank" %>
-				<% elsif !@depositing_institute.logo.blank? && @depositing_institute.url.blank? %>
-				<%= image_tag @depositing_institute.logo, :height => "75px" %>
+				<% elsif @depositing_institute.brand && @depositing_institute.url.blank? %>
+				<%= image_tag logo_path(@depositing_institute), :height => "75px", alt: @depositing_institute.brand.filename %>
 				<% else %>
-				<%= link_to image_tag(@depositing_institute.logo, :height => "75px"), @depositing_institute.url, :target => "_blank" %>
+				<%= link_to image_tag(logo_path(@depositing_institute), :height => "75px", alt: @depositing_institute.brand.filename), @depositing_institute.url, :target => "_blank" %>
 				<% end %>
 			</div>
 		</li>
@@ -28,14 +28,14 @@
 		    <% next if (@depositing_institute && @depositing_institute.name == inst.name) %>
 		    <li>
 			  <div class="dri_collection_institutes_item">
-				<%if inst.logo.blank? && inst.url.blank? %>
+				<%if inst.brand.nil? && inst.url.blank? %>
 				<%= inst.name %>
-				<% elsif inst.logo.blank? && !inst.url.blank? %>
+				<% elsif inst.brand.nil? && !inst.url.blank? %>
 				<%= link_to inst.name, inst.url, :target => "_blank" %>
-				<% elsif !inst.logo.blank? && inst.url.blank? %>
-				<%= image_tag inst.logo, :height => "75px" %>
+				<% elsif inst.brand && inst.url.blank? %>
+				<%= image_tag logo_path(inst), :height => "75px", alt: inst.brand.name %>
 				<% else %>
-				<%= link_to image_tag(inst.logo, :height => "75px"), inst.url, :target => "_blank" %>
+				<%= link_to image_tag(logo_path(inst), :height => "75px", alt: inst.brand.filename), inst.url, :target => "_blank" %>
 				<% end %>
 			  </div>
 		    </li>

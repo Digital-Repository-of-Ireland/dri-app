@@ -3,15 +3,35 @@ module ApplicationHelper
   require 'institute_helpers'
   require 'uri'
 
-  def surrogate_url( doc, file_doc, name )
+  def surrogate_url( doc_id, file_doc_id, name )
     storage = StorageService.new
-    url = storage.surrogate_url(doc, file_doc, name)
-
-    url
+    return nil unless storage.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
+    
+    object_file_url(object_id: doc_id, id: file_doc_id, surrogate: name)
   end
 
   def get_metadata_name( object )
     object.descMetadata.class.to_s.downcase.split('::').last
+  end
+
+   # Called from grid view
+  def image_for_search( document )
+    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\" 
+                  AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('preservation_only', :stored_searchable)}:true"
+    files = ActiveFedora::SolrService.query(files_query)
+    
+    file_doc = nil
+    image = nil
+
+    files.each do |file|
+      file_doc = SolrDocument.new(file) unless files.empty?
+      if can?(:read, document[:id])
+        image = search_image( document, file_doc ) unless file_doc.nil?
+        break if image
+      end
+    end
+
+    @search_image = image || default_image( file_doc )
   end
 
   def search_image ( document, file_document, image_name = "crop16_9_width_200_thumbnail" )
@@ -57,12 +77,12 @@ module ApplicationHelper
     cover_key = ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym
 
     if document[cover_key].present? && document[cover_key].first
-        path = document[cover_key].first
+        path = cover_image_path(document)
     elsif document[ActiveFedora::SolrQueryBuilder.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
       collection = document.root_collection
 
       if collection[cover_key].present? && collection[cover_key].first
-        path = collection[cover_key].first
+        path = cover_image_path(collection)
       end
     end
     
@@ -105,39 +125,8 @@ module ApplicationHelper
     @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
   end
 
-  # Called from grid view
-  def get_cover_image( document )
-    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\" AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('preservation_only', :stored_searchable)}:true"
-    files = ActiveFedora::SolrService.query(files_query)
-    file_doc = nil
-    files.each do |file|
-      file_doc = SolrDocument.new(file) unless files.empty?
-      if can?(:read, document[:id])
-        @cover_image = search_image( document, file_doc ) unless file_doc.nil?
-        if !@cover_image.nil? then
-          break
-        end
-      end
-    end
-
-    @cover_image = default_image ( file_doc ) if @cover_image.nil?
-  end
- 
-  def reader_group( collection_id )
-    UserGroup::Group.find_by_name(collection_id)
-  end
-
-  def pending_memberships ( collection )
-    pending = {}
-    pending_memberships = reader_group( collection ).pending_memberships
-    pending_memberships.each do |membership|
-      user = UserGroup::User.find_by_id(membership.user_id)
-      identifier = user.full_name+'('+user.email+')' unless user.nil?
-
-      pending[identifier] = membership
-    end
-
-    pending
+ def reader_group( collection_id )
+    UserGroup::Group.find_by(name: collection_id)
   end
 
   def has_browse_params?
@@ -150,6 +139,10 @@ module ApplicationHelper
 
   def has_search_parameters?
     params[:q].present? or params[:f].present? or params[:search_field].present?
+  end
+
+  def has_tasks?
+    current_user && UserBackgroundTask.where(user_id: current_user.id).count > 0
   end
 
   def link_to_loc(field)
