@@ -19,10 +19,14 @@ end
 # cached in Solr. The following block directs the info_service to return those values:
 HEIGHT_SOLR_FIELD = 'height_isi'
 WIDTH_SOLR_FIELD = 'width_isi'
+
 Riiif::Image.info_service = lambda do |id, file|
-  resp = get_solr_response_for_doc_id id
-  doc = resp.first['response']['docs'].first
-  { height: doc[HEIGHT_SOLR_FIELD], width: doc[WIDTH_SOLR_FIELD] }
+  resp = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
+  file_doc = resp.first
+  resp = ActiveFedora::SolrService.query("id:#{file_doc['isPartOf_ssim'].first}", defType: 'edismax', rows: '1')
+  object_doc = resp.first
+
+  { height: file_doc[HEIGHT_SOLR_FIELD], width: file_doc[WIDTH_SOLR_FIELD] }
 end
 
 def blacklight_config
