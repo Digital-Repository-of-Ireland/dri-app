@@ -28,7 +28,8 @@ class CatalogController < ApplicationController
   # This applies appropriate access controls to all solr queries
   CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  CatalogController.solr_search_params_logic += [:search_date_dange, :subject_temporal_filter, :subject_place_filter, :exclude_unwanted_models]
+  CatalogController.solr_search_params_logic += [:search_date_dange, 
+    :subject_temporal_filter, :subject_place_filter, :exclude_unwanted_models]
   #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
   configure_blacklight do |config|
@@ -85,7 +86,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('person', :facetable), :limit => 20
     config.add_facet_field solr_name('language', :facetable), :helper_method => :label_language, :limit => true
     config.add_facet_field solr_name('file_type_display', :facetable)
-     config.add_facet_field solr_name('institute', :facetable), :limit => 10 
+    config.add_facet_field solr_name('institute', :facetable), :limit => 10 
     config.add_facet_field solr_name('root_collection_id', :facetable), :helper_method => :collection_title, :limit => 10 
 
     # TODO Temporarily added to test sub-collection belonging objects filter in object results view
@@ -318,7 +319,10 @@ class CatalogController < ApplicationController
   end
 
   def files_and_surrogates
-    @files = ActiveFedora::SolrService.query("active_fedora_model_ssi:\"DRI::GenericFile\" AND #{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}:#{@document.id}", rows: 200)
+    query = "active_fedora_model_ssi:\"DRI::GenericFile\""
+    query += " AND #{ActiveFedora::SolrQueryBuilder.solr_name("isPartOf", :symbol)}:#{@document.id}"
+    
+    @files = ActiveFedora::SolrService.query(query, rows: 200)
     @files = @files.map { |f| SolrDocument.new(f)}.sort_by{ |f| f[ActiveFedora::SolrQueryBuilder.solr_name('label')] }
     
     @displayfiles = []

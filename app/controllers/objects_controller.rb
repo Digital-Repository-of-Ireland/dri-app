@@ -6,8 +6,10 @@ include Utils
 
 class ObjectsController < BaseObjectsController
 
-  before_filter :authenticate_user_from_token!, except: [:show, :citation]
-  before_filter :authenticate_user!, except: [:show, :citation]
+  include DRI::IIIFViewable
+
+  before_filter :authenticate_user_from_token!, except: [:show, :manifest, :citation]
+  before_filter :authenticate_user!, except: [:show, :manifest, :citation]
   before_filter :read_only, except: [:index, :show, :citation, :related]
 
   DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
@@ -223,6 +225,14 @@ class ObjectsController < BaseObjectsController
     end
   end
 
+  def manifest
+    #enforce_permissions!('show_digital_object', params[:id])
+    #raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:id])
+
+    @object = retrieve_object!(params[:id])
+    
+    render json: iiif_manifest.to_json, content_type: 'application/ld+json'
+  end
 
   def related
     enforce_permissions!('show_digital_object', params[:object])

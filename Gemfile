@@ -10,7 +10,8 @@ gem 'blacklight_range_limit'
 gem 'blacklight-maps'
 gem 'hydra-head', '9.10'
 
-gem 'riiif'
+gem 'riiif', git: 'https://github.com/curationexperts/riiif.git'
+gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 
 gem 'sufia-models', '6.5.0'
 gem 'redlock'
