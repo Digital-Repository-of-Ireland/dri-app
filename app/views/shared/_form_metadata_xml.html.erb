@@ -14,12 +14,12 @@
          	return response;
         }
        },
-			schema : '<%= asset_url("schemas/#{schema}") %>',
+			schema : '<%= asset_path("schemas/#{schema}") %>',
 			<% if standard == 'mods' %>
 			vocabularyConfigs : {
 			  vocabularies : {
 					"marcRelators" : {
-					"url" : '<%= asset_url("schemas/marc_relators.json") %>',
+					"url" : '<%= asset_path("schemas/marc_relators.json") %>',
 					},
 				},
 			  xpathSelectors: {
