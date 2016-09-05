@@ -1,6 +1,8 @@
 # Tell RIIIF to get files via HTTP (not from the local disk)
 Riiif::Image.file_resolver = Riiif::HTTPFileResolver.new
 
+Riiif::Image.authorization_service = RiiifAuthorizationService
+
 # This tells RIIIF how to resolve the identifier to a URI in Fedora
 Riiif::Image.file_resolver.id_to_uri = lambda do |id|
   generic_file = DRI::GenericFile.find(id)

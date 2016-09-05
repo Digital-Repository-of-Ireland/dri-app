@@ -226,11 +226,12 @@ class ObjectsController < BaseObjectsController
   end
 
   def manifest
-    #enforce_permissions!('show_digital_object', params[:id])
-    #raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:id])
+    enforce_permissions!('show_digital_object', params[:id])
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:id])
 
     @object = retrieve_object!(params[:id])
     
+    response.headers['Access-Control-Allow-Origin'] = '*'
     render json: iiif_manifest.to_json, content_type: 'application/ld+json'
   end
 
