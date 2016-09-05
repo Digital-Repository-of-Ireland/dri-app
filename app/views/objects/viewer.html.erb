@@ -1,0 +1,6 @@
+<div id="viewer">
+<%= content_tag(:iframe, '', src: "http://dri-guest035.tchpc.tcd.ie/mirador?id=#{@object.id}", 
+                   width: '100%', height: '680px', frameborder: 0, 
+                   allowfullscreen: true, webkitallowfullscreen: true, 
+                   mozallowfullscreen: true) %>
+</div>

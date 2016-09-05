@@ -44,7 +44,8 @@ NuigRnag::Application.routes.draw do
     put 'objects/:id/access', to: 'access_controls#update'
 
     get 'objects/:id/manifest', to: 'objects#manifest', as: :object_iiif_manifest
-  
+    get 'objects/:id/viewer', to: 'objects#viewer', as: :object_iiif_viewer 
+ 
     resources :organisations, controller: :institutes
     get 'organisations/:id/logo', to: 'institutes#logo', as: :logo
 
