@@ -478,7 +478,6 @@ class CollectionsController < BaseObjectsController
       user_id: current_user.id, 
       job: job_id 
     )
-    Sufia.queue.push(PublishJob.new(@object.id))
   rescue Exception => e
     logger.error "Unable to submit publish job: #{e.message}"
     raise Exceptions::ResqueError
