@@ -14,39 +14,35 @@ module DRI::IIIFViewable
       'label' => @object.title.first,
       'description' => @object.description.first
     }
-    # Any options you add are added to the object
+    
     manifest = IIIF::Presentation::Manifest.new(seed)
+    solr_doc = SolrDocument.new(@object.to_solr)
 
-    files = attached_images
-    files.each do |f| 
-      canvas = IIIF::Presentation::Canvas.new()
-      canvas['@id'] = "#{object_url}/canvas/#{f.id}"
-      # ...but there are also accessors and mutators for the properties mentioned in 
-      # the spec
-      canvas.width = f[HEIGHT_SOLR_FIELD]
-      canvas.height = f[WIDTH_SOLR_FIELD]
-      canvas.label = f[ActiveFedora.index_field_mapper.solr_name('label')]
+    org = InstituteHelpers.get_depositing_institute_from_solr_doc(solr_doc)
 
-      image_url = Riiif::Engine.routes.url_for controller: 'riiif/images', action: 'show', 
-          id: f.id, region: 'full', size: 'full', rotation: 0, quality: 'default', format: 'jpg', only_path: true   
-
-      image = IIIF::Presentation::ImageResource.create_image_api_image_resource({resource_id: "#{root_url}#{image_url}",
-        service_id: "#{root_url}/images/#{f.id}",
-        width: f[WIDTH_SOLR_FIELD], height: f[HEIGHT_SOLR_FIELD],
-        profile: 'http://iiif.io/api/image/2/profiles/level2.json'})
-      image['@type'] = 'dctypes:Image'
-
-      annotation = IIIF::Presentation::Annotation.new
-      annotation['on'] = canvas['@id']
-      annotation.resource = image
-
-      canvas.images << annotation
-      sequence = IIIF::Presentation::Sequence.new({'@id' => "#{object_url}/sequence/normal", 'viewing_hint' => 'individuals'})
-      sequence.canvases << canvas   
-
-      manifest.sequences << sequence
+    attributions = []
+    if org
+      attributions << org.name
+      manifest.logo = "#{root_url}/organisations/#{org.id}/logo"
     end
 
+    attributions.push(*@object.rights)
+
+    licence = solr_doc.licence
+    if licence && licence.url
+      manifest.license = licence.url 
+    end
+
+    manifest.attribution = attributions.join(', ')
+
+    sequence = IIIF::Presentation::Sequence.new(
+        {'@id' => "#{object_url}/sequence/normal", 
+        'viewing_hint' => 'individuals'})
+
+    files = attached_images
+    files.each { |f| sequence.canvases << create_canvas(f) }  
+    
+    manifest.sequences << sequence
     manifest
   end
 
@@ -62,6 +58,36 @@ module DRI::IIIFViewable
     query.each_solr_document { |file_doc| files << file_doc }
 
     files
+  end
+
+  def create_canvas(file)
+    canvas = IIIF::Presentation::Canvas.new()
+    canvas['@id'] = "#{object_url}/canvas/#{file.id}"
+    
+    canvas.width = file[HEIGHT_SOLR_FIELD]
+    canvas.height = file[WIDTH_SOLR_FIELD]
+    canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')]
+
+    image_url = Riiif::Engine.routes.url_for controller: 'riiif/images', action: 'show', 
+        id: file.id, region: 'full', size: 'full', rotation: 0, 
+        quality: 'default', format: 'jpg', only_path: true   
+
+    image = IIIF::Presentation::ImageResource.create_image_api_image_resource(
+    {
+      resource_id: "#{root_url}#{image_url}",
+      service_id: "#{root_url}/images/#{file.id}",
+      width: file[WIDTH_SOLR_FIELD], height: file[HEIGHT_SOLR_FIELD],
+      profile: 'http://iiif.io/api/image/2/profiles/level2.json'
+    })
+    image['@type'] = 'dctypes:Image'
+
+    annotation = IIIF::Presentation::Annotation.new
+    annotation['on'] = canvas['@id']
+    annotation.resource = image
+
+    canvas.images << annotation
+
+    canvas
   end
 
 end

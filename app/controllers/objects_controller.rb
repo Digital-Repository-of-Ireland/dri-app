@@ -12,8 +12,9 @@ class ObjectsController < BaseObjectsController
   before_filter :authenticate_user!, except: [:show, :manifest, :citation]
   before_filter :read_only, except: [:index, :show, :citation, :related]
 
-  DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
-       'contributor','publisher','date','format','source','temporal_coverage',
+  DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type',
+       'rights','language','description','creator','contributor','publisher',
+       'date','format','source','temporal_coverage',
        'geographical_coverage','geocode_point','geocode_box','institute',
        'root_collection_id','isGovernedBy','ancestor_id','ancestor_title','role_dnr'].freeze
 
@@ -301,6 +302,12 @@ class ObjectsController < BaseObjectsController
     enforce_permissions!('edit', params[:id])
     
     super
+  end
+
+  def viewer
+    enforce_permissions!('show_digital_object', params[:id])
+
+    @object = retrieve_object!(params[:id])
   end
 
   private
