@@ -8,8 +8,8 @@ class ObjectsController < BaseObjectsController
 
   include DRI::IIIFViewable
 
-  before_filter :authenticate_user_from_token!, except: [:show, :manifest, :citation]
-  before_filter :authenticate_user!, except: [:show, :manifest, :citation]
+  before_filter :authenticate_user_from_token!, except: [:show, :manifest, :citation, :viewer]
+  before_filter :authenticate_user!, except: [:show, :manifest, :citation, :viewer]
   before_filter :read_only, except: [:index, :show, :citation, :related]
 
   DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type',
