@@ -11,12 +11,14 @@ module DRI::IIIFViewable
 
     seed = {
       '@id' => seed_id,
-      'label' => @object.title.first,
-      'description' => @object.description.first
+      'label' => @object.title.join(','),
+      'description' => @object.description.join(' ')
     }
     
     manifest = IIIF::Presentation::Manifest.new(seed)
     solr_doc = SolrDocument.new(@object.to_solr)
+
+    manifest.metadata = create_metadata
 
     org = InstituteHelpers.get_depositing_institute_from_solr_doc(solr_doc)
 
@@ -88,6 +90,20 @@ module DRI::IIIFViewable
     canvas.images << annotation
 
     canvas
+  end
+
+  def create_metadata
+    metadata = [
+      { 'label' => 'Creator', 'value' => @object.creator.join(', ') },
+      { 'label' => 'Title', 'value' => @object.title.join(', ') }
+    ]
+
+    metadata << { 'label' => 'Creation date', 'value' => @object.creation_date.first } if @object.creation_date.first.present?
+    metadata << { 'label' => 'Published date', 'value' => @object.published_date.first } if @object.published_date.first.present?
+    metadata << { 'label' => 'Date', 'value' => @object.date.first } if @object.date.first.present?
+    metadata << { 'label' => 'Permalink', 'value' => "doi:#{@object.doi}" } if @object.doi
+
+    metadata
   end
 
 end
