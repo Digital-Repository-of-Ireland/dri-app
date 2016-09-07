@@ -11,12 +11,12 @@ class RiiifAuthorizationService
     file_doc = resp.first
     resp = ActiveFedora::SolrService.query("id:#{file_doc['isPartOf_ssim'].first}", 
       defType: 'edismax', rows: '1')
-    object_doc = resp.first
+    object_doc = SolrDocument.new(resp.first)
 
     if action == :show
-      @controller.can?(:show_digital_object, object_doc['id']) && @controller.can?(:read, object_doc['id'])
+      object_doc.published? && object_doc.public_read?
     elsif action == :info
-      @controller.can?(:show_digital_object, object_doc['id'])
+      object_doc.published?
     end
   end
 
