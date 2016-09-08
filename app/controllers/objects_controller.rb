@@ -231,7 +231,7 @@ class ObjectsController < BaseObjectsController
     raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:id])
 
     @object = retrieve_object!(params[:id])
-    
+
     response.headers['Access-Control-Allow-Origin'] = '*'
     render json: iiif_manifest.to_json, content_type: 'application/ld+json'
   end
@@ -308,6 +308,8 @@ class ObjectsController < BaseObjectsController
     enforce_permissions!('show_digital_object', params[:id])
 
     @object = retrieve_object!(params[:id])
+    @document = SolrDocument.new(@object.to_solr)
+    
   end
 
   private

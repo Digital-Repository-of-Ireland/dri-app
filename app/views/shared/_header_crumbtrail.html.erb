@@ -16,6 +16,10 @@
             <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50),
                      main_app.catalog_path(@document['id']) %></li>
             <li class="active"><%= t('dri.views.objects.edit.title') %></li>
+          <% elsif controller.action_name == 'viewer' %>
+            <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50),
+                     main_app.catalog_path(@document['id']) %></li>
+            <li class="active"><%= t('dri.views.catalog.links.iiif_viewer') %></li>
           <% else %>
             <li class="active"><%= truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50) %></li>
           <% end %>

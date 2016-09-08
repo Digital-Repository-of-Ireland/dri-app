@@ -7,12 +7,13 @@ Riiif::Image.authorization_service = RiiifAuthorizationService
 Riiif::Image.file_resolver.id_to_uri = lambda do |id|
   generic_file = DRI::GenericFile.find(id)
   object = generic_file.batch
-  surrogate =  'optimized_web_format'
+
+  surrogate =  'full'
 
   storage = StorageService.new
   url = storage.surrogate_url(object.id, 
            "#{generic_file.id}_#{surrogate}")
-
+  
   url 
 end
 
