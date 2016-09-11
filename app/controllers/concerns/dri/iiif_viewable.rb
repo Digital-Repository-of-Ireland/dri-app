@@ -6,8 +6,20 @@ module DRI::IIIFViewable
   WIDTH_SOLR_FIELD = 'width_isi'
 
   def iiif_manifest
-    object_url = url_for controller: 'objects', action: 'show', id: @object.id
-    seed_id = url_for controller: 'objects', action: 'manifest', id: @object.id, format: 'json'
+    object_url = ''
+
+    if @object.collection?
+      create_collection_manifest
+    else
+      create_object_manifest
+    end
+  end
+
+  def create_object_manifest
+    iiif_base_url = url_for controller: 'iiif', action: 'show', id: @object.id,
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+    seed_id = url_for controller: 'iiif', action: 'manifest', id: @object.id, format: 'json',
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
 
     seed = {
       '@id' => seed_id,
@@ -20,13 +32,10 @@ module DRI::IIIFViewable
 
     manifest.metadata = create_metadata
 
-    org = InstituteHelpers.get_depositing_institute_from_solr_doc(solr_doc)
-
     attributions = []
-    if org
-      attributions << org.name
-      manifest.logo = "#{root_url}/organisations/#{org.id}/logo"
-    end
+    depositing_org, logo = depositing_org_info(solr_doc)
+    attributions << depositing_org.name if depositing_org
+    manifest.logo = logo if logo
 
     attributions.push(*@object.rights)
 
@@ -38,13 +47,61 @@ module DRI::IIIFViewable
     manifest.attribution = attributions.join(', ')
 
     sequence = IIIF::Presentation::Sequence.new(
-        {'@id' => "#{object_url}/sequence/normal", 
+        {'@id' => "#{iiif_base_url}/sequence/normal", 
         'viewing_hint' => 'individuals'})
 
     files = attached_images
-    files.each { |f| sequence.canvases << create_canvas(f) }  
+    files.each { |f| sequence.canvases << create_canvas(f, iiif_base_url) }  
     
     manifest.sequences << sequence
+    manifest
+  end
+
+  def create_collection_manifest
+    iiif_base_url = url_for controller: 'iiif', action: 'show', id: @object.id,
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+    seed_id = iiif_collection_manifest_url id: @object.id, format: 'json',
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+
+    seed = {
+      '@id' => seed_id,
+      'label' => @object.title.join(','),
+      'description' => @object.description.join(' ')
+    }
+
+    manifest = IIIF::Presentation::Collection.new(seed)
+    solr_doc = SolrDocument.new(@object.to_solr)
+
+    manifest.metadata = create_metadata
+
+    attributions = []
+    depositing_org, logo = depositing_org_info(solr_doc)
+    attributions << depositing_org.name if depositing_org
+    manifest.logo = logo if logo
+
+    attributions.push(*@object.rights)
+
+    licence = solr_doc.licence
+    if licence && licence.url
+      manifest.license = licence.url 
+    end
+
+    manifest.attribution = attributions.join(', ')
+
+    if @object.governing_collection.nil?
+      manifest.viewing_hint = 'top'
+    end
+
+    sub_collections = child_collections
+    unless sub_collections.empty?
+      sub_collections.each { |c| manifest.collections << create_subcollection(c) }
+    end
+
+    objects = child_objects
+    unless objects.empty?
+      objects.each { |o| manifest.manifests << create_manifest(o) }
+    end
+
     manifest
   end
 
@@ -62,22 +119,56 @@ module DRI::IIIFViewable
     files.sort_by{ |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
   end
 
-  def create_canvas(file)
+  def child_collections
+    # query for objects within this collection
+    q_str = "#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{@object.id}\""
+    # that are also collections
+    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+
+    sub_collections = []
+
+    query = Solr::Query.new(q_str, 100, fq: f_query)
+    query.each_solr_document { |collection_doc| sub_collections << collection_doc }
+
+    sub_collections
+  end
+
+  def child_objects
+    # query for objects within this collection
+    q_str = "#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{@object.id}\""
+    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
+    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('object_type', :facetable, type: :string)}:\"Image\""
+    # excluding sub-collections
+    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false"
+
+    objects = []
+
+    query = Solr::Query.new(q_str, 100, fq: f_query)
+    query.each_solr_document { |object_doc| objects << object_doc }
+
+    objects
+  end
+
+  def create_canvas(file, iiif_base_url)
     canvas = IIIF::Presentation::Canvas.new()
-    canvas['@id'] = "#{object_url}/canvas/#{file.id}"
+    canvas['@id'] = "#{iiif_base_url}/canvas/#{file.id}"
     
     canvas.width = file[HEIGHT_SOLR_FIELD]
     canvas.height = file[WIDTH_SOLR_FIELD]
-    canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')]
+    canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')].first
 
     image_url = Riiif::Engine.routes.url_for controller: 'riiif/images', action: 'show', 
         id: file.id, region: 'full', size: 'full', rotation: 0, 
-        quality: 'default', format: 'jpg', only_path: true   
+        quality: 'default', format: 'jpg', only_path: false,
+        host: Rails.application.routes.default_url_options[:host],
+        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+ 
+    image_base = image_url.split(file.id).first
 
     image = IIIF::Presentation::ImageResource.create_image_api_image_resource(
     {
-      resource_id: "#{root_url}#{image_url}",
-      service_id: "#{root_url}/images/#{file.id}",
+      resource_id: "#{image_url}",
+      service_id: "#{image_base}/#{file.id}",
       width: file[WIDTH_SOLR_FIELD], height: file[HEIGHT_SOLR_FIELD],
       profile: 'http://iiif.io/api/image/2/profiles/level2.json'
     })
@@ -92,6 +183,15 @@ module DRI::IIIFViewable
     canvas
   end
 
+  def create_manifest(object)
+    { 
+        '@id' => url_for(controller: 'iiif', action: 'manifest', id: object.id, format: 'json',
+        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+        '@type' => 'sc:Manifest',
+        'label' => object[ActiveFedora.index_field_mapper.solr_name('title')].join(', ')
+    }
+  end
+
   def create_metadata
     metadata = [
       { 'label' => 'Creator', 'value' => @object.creator.join(', ') },
@@ -104,6 +204,30 @@ module DRI::IIIFViewable
     metadata << { 'label' => 'Permalink', 'value' => "doi:#{@object.doi}" } if @object.doi
 
     metadata
+  end
+
+  def create_subcollection(collection)
+    { 
+        '@id' => url_for(controller: 'iiif', action: 'manifest', id: collection.id, format: 'json',
+        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+        '@type' => 'sc:Collection',
+        'label' => collection[ActiveFedora.index_field_mapper.solr_name('title')].join(', ')
+    }
+  end
+
+  def depositing_org_info(solr_doc)
+    org = InstituteHelpers.get_depositing_institute_from_solr_doc(solr_doc)
+
+    depositing_org = nil
+    logo = nil
+
+    if org
+      depositing_org = org
+      logo = logo_url(id: org.id, 
+        protocol: Rails.application.config.action_mailer.default_url_options[:protocol])
+    end
+
+    return depositing_org, logo
   end
 
 end

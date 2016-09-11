@@ -6,10 +6,8 @@ include Utils
 
 class ObjectsController < BaseObjectsController
 
-  include DRI::IIIFViewable
-
-  before_filter :authenticate_user_from_token!, except: [:show, :manifest, :citation, :viewer]
-  before_filter :authenticate_user!, except: [:show, :manifest, :citation, :viewer]
+  before_filter :authenticate_user_from_token!, except: [:show, :citation, :viewer]
+  before_filter :authenticate_user!, except: [:show, :citation, :viewer]
   before_filter :read_only, except: [:index, :show, :citation, :related]
 
   DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type',
@@ -226,16 +224,6 @@ class ObjectsController < BaseObjectsController
     end
   end
 
-  def manifest
-    enforce_permissions!('show_digital_object', params[:id])
-    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:id])
-
-    @object = retrieve_object!(params[:id])
-
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    render json: iiif_manifest.to_json, content_type: 'application/ld+json'
-  end
-
   def related
     enforce_permissions!('show_digital_object', params[:object])
 
@@ -302,14 +290,6 @@ class ObjectsController < BaseObjectsController
     enforce_permissions!('edit', params[:id])
     
     super
-  end
-
-  def viewer
-    enforce_permissions!('show_digital_object', params[:id])
-
-    @object = retrieve_object!(params[:id])
-    @document = SolrDocument.new(@object.to_solr)
-    
   end
 
   private

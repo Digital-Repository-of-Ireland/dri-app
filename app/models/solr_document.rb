@@ -96,7 +96,7 @@ class SolrDocument
   def collection?
     is_collection_key = ActiveFedora::SolrQueryBuilder.solr_name('is_collection')
 
-    self[is_collection_key].present? && self[is_collection_key].include?('true')
+     self[is_collection_key].present? && (self[is_collection_key] || self[is_collection_key].include?('true'))
   end
 
   def root_collection?
