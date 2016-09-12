@@ -15,9 +15,12 @@ module DRI::IIIFViewable
     end
   end
 
-  def create_object_manifest
+  def iiif_base_url
     iiif_base_url = url_for controller: 'iiif', action: 'show', id: @object.id,
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+  end
+
+  def create_object_manifest
     seed_id = url_for controller: 'iiif', action: 'manifest', id: @object.id, format: 'json',
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
 
@@ -28,23 +31,11 @@ module DRI::IIIFViewable
     }
     
     manifest = IIIF::Presentation::Manifest.new(seed)
-    solr_doc = SolrDocument.new(@object.to_solr)
-
-    manifest.metadata = create_metadata
-
-    attributions = []
-    depositing_org, logo = depositing_org_info(solr_doc)
-    attributions << depositing_org.name if depositing_org
-    manifest.logo = logo if logo
-
-    attributions.push(*@object.rights)
-
-    licence = solr_doc.licence
-    if licence && licence.url
-      manifest.license = licence.url 
+    base_manifest(manifest)
+    
+    if @object.governing_collection
+      manifest.within = create_within
     end
-
-    manifest.attribution = attributions.join(', ')
 
     sequence = IIIF::Presentation::Sequence.new(
         {'@id' => "#{iiif_base_url}/sequence/normal", 
@@ -58,8 +49,6 @@ module DRI::IIIFViewable
   end
 
   def create_collection_manifest
-    iiif_base_url = url_for controller: 'iiif', action: 'show', id: @object.id,
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
     seed_id = iiif_collection_manifest_url id: @object.id, format: 'json',
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
 
@@ -70,26 +59,12 @@ module DRI::IIIFViewable
     }
 
     manifest = IIIF::Presentation::Collection.new(seed)
-    solr_doc = SolrDocument.new(@object.to_solr)
-
-    manifest.metadata = create_metadata
-
-    attributions = []
-    depositing_org, logo = depositing_org_info(solr_doc)
-    attributions << depositing_org.name if depositing_org
-    manifest.logo = logo if logo
-
-    attributions.push(*@object.rights)
-
-    licence = solr_doc.licence
-    if licence && licence.url
-      manifest.license = licence.url 
-    end
-
-    manifest.attribution = attributions.join(', ')
+    base_manifest(manifest)
 
     if @object.governing_collection.nil?
       manifest.viewing_hint = 'top'
+    else
+      manifest.within = create_within
     end
 
     sub_collections = child_collections
@@ -117,6 +92,26 @@ module DRI::IIIFViewable
     query.each_solr_document { |file_doc| files << file_doc }
 
     files.sort_by{ |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
+  end
+
+  def base_manifest(manifest)
+    solr_doc = SolrDocument.new(@object.to_solr)
+
+    manifest.metadata = create_metadata
+
+    attributions = []
+    depositing_org, logo = depositing_org_info(solr_doc)
+    attributions << depositing_org.name if depositing_org
+    manifest.logo = logo if logo
+
+    attributions.push(*@object.rights)
+
+    licence = solr_doc.licence
+    if licence && licence.url
+      manifest.license = licence.url 
+    end
+
+    manifest.attribution = attributions.join(', ')
   end
 
   def child_collections
@@ -208,10 +203,21 @@ module DRI::IIIFViewable
 
   def create_subcollection(collection)
     { 
-        '@id' => url_for(controller: 'iiif', action: 'manifest', id: collection.id, format: 'json',
-        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+        '@id' => iiif_collection_manifest_url(id: collection.id, format: 'json',
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
         '@type' => 'sc:Collection',
         'label' => collection[ActiveFedora.index_field_mapper.solr_name('title')].join(', ')
+    }
+  end
+
+  def create_within
+    governing_collection = @object.governing_collection
+
+    { 
+        '@id' => (iiif_collection_manifest_url id: governing_collection.id, format: 'json',
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+        '@type' => 'sc:Collection',
+        'label' => governing_collection.title.join(', ')
     }
   end
 

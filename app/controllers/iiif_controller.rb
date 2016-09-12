@@ -14,7 +14,11 @@ class IiifController < CatalogController
     end
 
     response.headers['Access-Control-Allow-Origin'] = '*'
-    render json: iiif_manifest.to_json, content_type: 'application/ld+json'
+
+    respond_to do |format|
+      format.html  { @manifest = iiif_manifest.to_json(pretty: true) }
+      format.json  { render json: iiif_manifest.to_json, content_type: 'application/ld+json' }
+    end
   end
 
   def view
