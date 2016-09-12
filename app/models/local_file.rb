@@ -14,14 +14,13 @@ class LocalFile < ActiveRecord::Base
   # Write the file to the filesystem
   #
   def add_file(upload, opts = {})
-    file_name = opts[:file_name].presence || upload.original_filename
-    file_name = "#{fedora_id}_#{file_name}"
-    #file_name = "#{fedora_id}_#{opts[:file_name]}"
+    #file_name = opts[:file_name].presence || upload.original_filename
+    #file_name = "#{fedora_id}_#{file_name}"
 
     # Batch ID will be used in the MOAB directory name, check it exists
     batch_id = opts[:batch_id]
     if batch_id.nil? or batch_id.blank?
-      logger.error "Could not save the asset file for #{file_name} because no batch_id was given."
+      logger.error "Could not save the asset file for #{opts[:file_name]} because no batch_id was given."
       raise Exceptions::InternalError
     end
 
@@ -30,7 +29,7 @@ class LocalFile < ActiveRecord::Base
 
     base_dir = opts[:directory].presence || File.join(content_path(batch_id, version))
     FileUtils.mkdir_p(base_dir)
-    self.path = File.join(base_dir, file_name)
+    self.path = File.join(base_dir, opts[:file_name])
 
     upload_to_file(base_dir, upload)
 
@@ -65,7 +64,6 @@ class LocalFile < ActiveRecord::Base
       else
         File.open(path, 'wb') { |f| f.write(upload.read) }
       end
-
       File.chmod(0644, path)
     end
 

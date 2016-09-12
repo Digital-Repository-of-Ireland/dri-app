@@ -17,6 +17,10 @@ module Preservation
     # Creates MOAB preservation directory structure and saves metadata there
     #
     def create_moab_dirs()
+        if File.directory?(version_path(self.object.id, self.version))
+          Rails.logger.error("the Moab directory for #{self.object.id} version #{self.version} already exits")
+          raise Exceptions::InternalError
+        end
         make_dir version_path(self.object.id, self.version) 
         make_dir metadata_path(self.object.id, self.version)
         make_dir content_path(self.object.id, self.version)
@@ -90,6 +94,7 @@ module Preservation
     
     # create_manifests
     def create_manifests
+
       signature_catalog = Moab::SignatureCatalog.new(:digital_object_id => @object.id, :version_id => 0)
       new_version_id = signature_catalog.version_id + 1
 

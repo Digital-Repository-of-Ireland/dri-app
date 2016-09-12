@@ -25,11 +25,11 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: b9a52bb3b1448b18f46f9b4ac614ce196867d3f4
+  revision: 406f9835970f4cb23d7051c68bc2a9e71319b83a
   branch: moab
   specs:
-    dri_data_models (2.4.0)
-      active-fedora (~> 9.10.4)
+    dri_data_models (2.4.2)
+      active-fedora (= 9.11)
       google-api-client (= 0.8.6)
       hydra-access-controls
       hydra-collections

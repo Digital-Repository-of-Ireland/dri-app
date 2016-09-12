@@ -7,7 +7,7 @@ module DRI::Asset
     end
 
     def update_external_content(url, file, path)
-      generic_file.add_file('', path: path, original_name: file.original_filename, mime_type: external_mime_type(url))
+      generic_file.add_file('', path: path, original_name: file_name, mime_type: external_mime_type(url))
       
       save_characterize_and_record_committer do
         if Sufia.config.respond_to?(:after_update_content)

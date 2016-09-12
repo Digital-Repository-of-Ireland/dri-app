@@ -215,6 +215,7 @@ class AssetsController < ApplicationController
   def preserve_file(filedata, generic_file, datastream, params)
     checksum = params[:checksum]
     filename = params[:file_name].presence || filedata.original_filename
+    filename = "#{generic_file.id}_#{filename}"
 
     generic_file.batch.object_version = generic_file.batch.object_version.to_i + 1
 
@@ -229,28 +230,27 @@ class AssetsController < ApplicationController
     create_file(filedata, generic_file, datastream, checksum, filename)
 
     # Do the preservation actions
-    preservation_filename = "#{generic_file.id}_#{filename}"
     addfiles = []
     delfiles = []
     if params[:action].eql?('update')
-      addfiles = [preservation_filename]
+      addfiles = [filename]
       delfiles = generic_file.label
     else
-      addfiles = [preservation_filename]
+      addfiles = [filename]
     end
     preservation = Preservation::Preservator.new(generic_file.batch)
     preservation.preserve_assets(addfiles, delfiles)
   end
 
-  def create_file(filedata, generic_file, datastream, checksum, filename = nil)
+  def create_file(filedata, generic_file, datastream, checksum, filename)
     # prepare file
     @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
     options = {}
     options[:mime_type] = @mime_type
     options[:checksum] = checksum
-    options[:file_name] = filename unless filename.nil?
     options[:batch_id] = generic_file.batch.id
     options[:object_version] = generic_file.batch.object_version
+    options[:file_name] = filename
 
     # Add and save the file
     @file.add_file filedata, options
