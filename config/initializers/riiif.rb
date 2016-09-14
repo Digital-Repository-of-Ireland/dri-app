@@ -3,7 +3,7 @@ Riiif::Image.file_resolver = Riiif::HTTPFileResolver.new
 
 Riiif::Image.authorization_service = RiiifAuthorizationService
 
-# This tells RIIIF how to resolve the identifier to a URI in Fedora
+# This tells RIIIF how to resolve the identifier to an asset URI
 Riiif::Image.file_resolver.id_to_uri = lambda do |id|
   generic_file = DRI::GenericFile.find(id)
   object = generic_file.batch
@@ -26,7 +26,8 @@ WIDTH_SOLR_FIELD = 'width_isi'
 Riiif::Image.info_service = lambda do |id, file|
   resp = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
   file_doc = resp.first
-  resp = ActiveFedora::SolrService.query("id:#{file_doc['isPartOf_ssim'].first}", defType: 'edismax', rows: '1')
+  resp = ActiveFedora::SolrService.query("id:#{file_doc['isPartOf_ssim'].first}", 
+    defType: 'edismax', rows: '1')
   object_doc = resp.first
 
   { height: file_doc[HEIGHT_SOLR_FIELD], width: file_doc[WIDTH_SOLR_FIELD] }

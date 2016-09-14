@@ -98,6 +98,7 @@ module DRI::IIIFViewable
     solr_doc = SolrDocument.new(@object.to_solr)
 
     manifest.metadata = create_metadata
+    manifest.see_also = see_also
 
     attributions = []
     depositing_org, logo = depositing_org_info(solr_doc)
@@ -234,6 +235,14 @@ module DRI::IIIFViewable
     end
 
     return depositing_org, logo
+  end
+
+  def see_also
+    {
+      "@id" => object_metadata_url(id: @object.id, 
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+      'format' => 'text/xml'
+    }
   end
 
 end
