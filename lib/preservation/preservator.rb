@@ -17,7 +17,7 @@ module Preservation
     # Creates MOAB preservation directory structure and saves metadata there
     #
     def create_moab_dirs()
-        if File.directory?(version_path(self.object.id, self.version))
+        if File.directory?(manifest_path(self.object.id, self.version))
           Rails.logger.error("the Moab directory for #{self.object.id} version #{self.version} already exits")
           raise Exceptions::InternalError
         end
