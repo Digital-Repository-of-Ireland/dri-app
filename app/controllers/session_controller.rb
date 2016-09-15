@@ -1,5 +1,4 @@
 class SessionController < ApplicationController
-
   def create
     cookies.delete :lang unless cookies[:lang].nil?
     

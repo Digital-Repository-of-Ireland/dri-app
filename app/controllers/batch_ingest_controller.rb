@@ -31,9 +31,8 @@ class BatchIngestController < ApplicationController
 
   def valid_json?(json)
     JSON.parse(json)  
-    return true  
+    return true
   rescue JSON::ParserError  
-    return false  
+    return false
   end  
-
 end

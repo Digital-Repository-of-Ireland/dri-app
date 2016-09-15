@@ -1,11 +1,11 @@
 class InstitutesController < ApplicationController
   require 'institute_helpers'
 
-  before_filter :authenticate_user_from_token!, except: [:index, :logo]
-  before_filter :authenticate_user!, except: [:index, :logo]
-  before_filter :check_for_cancel, only: [:create, :update]
-  before_filter :admin?, only: [:edit, :update, :destroy]
-  before_filter :read_only, except: [:index, :show]
+  before_action :authenticate_user_from_token!, except: [:index, :logo]
+  before_action :authenticate_user!, except: [:index, :logo]
+  before_action :check_for_cancel, only: [:create, :update]
+  before_action :admin?, only: [:edit, :update, :destroy]
+  before_action :read_only, except: [:index, :show]
 
   # Was this action canceled by the user?
   def check_for_cancel
@@ -32,10 +32,12 @@ class InstitutesController < ApplicationController
   def logo
     @brand = Institute.find(params[:id]).brand
 
-    send_data(@brand.file_contents,
-            type: @brand.content_type,
-            filename: @brand.filename,
-            disposition: 'inline')
+    send_data(
+      @brand.file_contents,
+      type: @brand.content_type,
+      filename: @brand.filename,
+      disposition: 'inline'
+    )
   end
 
   # Create a new institute entry
@@ -58,7 +60,7 @@ class InstitutesController < ApplicationController
   def destroy
     @institute = Institute.find(params[:id])
 
-    if institute_collections(@institute[:name]).count == 0
+    if institute_collections(@institute[:name]).count.zero?
       @institute.delete
     else
       flash[:error] = t('dri.flash.error.organisation_cannot_be_deleted')
@@ -90,8 +92,8 @@ class InstitutesController < ApplicationController
   def associate
     add_or_remove_association
   end
-  
-    # Dis-associate institute
+
+  # Dis-associate institute
   def disassociate
     add_or_remove_association(true)
   end
@@ -102,14 +104,12 @@ class InstitutesController < ApplicationController
 
     institutes = nil
     institutes = params[:institutes].select { |i| i.is_a? String } if params[:institutes].present?
-    
+
     @collection.institute = institutes
 
-    depositor = nil
     if params[:depositing_organisation].present?
-      depositor = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
+      @collection.depositing_institute = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
     end
-    @collection.depositing_institute = params[:depositing_organisation] 
 
     raise Exceptions::InternalError unless @collection.save
 
@@ -121,93 +121,92 @@ class InstitutesController < ApplicationController
 
   private
 
-  def add_logo
-    file_upload = params[:institute][:logo]
+    def add_logo
+      file_upload = params[:institute][:logo]
 
-    begin
-      @inst.add_logo(file_upload, { name: params[:institute][:name] })
-    rescue Exceptions::UnknownMimeType
-      flash[:alert] = t('dri.flash.alert.invalid_file_type')
-    rescue Exceptions::VirusDetected => e
-      flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
-    rescue Exceptions::InternalError => e
-      logger.error "Could not save licence: #{e.message}"
-      raise Exceptions::InternalError
-    end
-  end
-
-  def add_or_remove_association(delete = false)
-    # save the institute name to the properties datastream
-    @collection = ActiveFedora::Base.find(params[:object], cast: true)
-    raise Exceptions::NotFound unless @collection
-
-    delete ? delete_association : add_association
-
-    @collection_institutes = Institute.find_collection_institutes(@collection.institute)
-    @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
-
-    respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.id }
-    end
-  end
-
-  def add_association
-    institute_name = params[:institute_name]
-
-    if params[:type].present? && params[:type] == 'depositing'
-      @collection.depositing_institute = institute_name
-    else
-      @collection.institute = @collection.institute.push(institute_name)
+      begin
+        @inst.add_logo(file_upload, { name: params[:institute][:name] })
+      rescue Exceptions::UnknownMimeType
+        flash[:alert] = t('dri.flash.alert.invalid_file_type')
+      rescue Exceptions::VirusDetected => e
+        flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
+      rescue Exceptions::InternalError => e
+        logger.error "Could not save licence: #{e.message}"
+        raise Exceptions::InternalError
+      end
     end
 
-    raise Exceptions::InternalError unless @collection.save
+    def add_or_remove_association(delete = false)
+      # save the institute name to the properties datastream
+      @collection = ActiveFedora::Base.find(params[:object], cast: true)
+      raise Exceptions::NotFound unless @collection
 
-    if params[:type].present? && params[:type] == 'depositing'
-      flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_depositor')}"
-    else
-      flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_added')}"
+      delete ? delete_association : add_association
+
+      @collection_institutes = Institute.find_collection_institutes(@collection.institute)
+      @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
+
+      respond_to do |format|
+        format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.id }
+      end
     end
-  end
 
-  def delete_association
-    institute_name = params[:institute_name]
+    def add_association
+      institute_name = params[:institute_name]
 
-    institutes = @collection.institute
-    institutes.delete(institute_name)
-    @collection.institute = institutes
+      if params[:type].present? && params[:type] == 'depositing'
+        @collection.depositing_institute = institute_name
+      else
+        @collection.institute = @collection.institute.push(institute_name)
+      end
 
-    raise Exceptions::InternalError unless @collection.save
+      raise Exceptions::InternalError unless @collection.save
 
-    flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_removed')}"
-  end
-  
-  private
-
-  def admin?
-    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
-  end
-
-  def institute_collections(institute)
-    solr_query = institute_collections_query(institute)
-    response = ActiveFedora::SolrService.query(solr_query, defType: "edismax", 
-      fq: "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]")
-    
-    response
-  end
-   
-  def institute_collections_query(institute)
-    solr_query = ""
-    if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
-      solr_query = "#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
+      if params[:type].present? && params[:type] == 'depositing'
+        flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_depositor')}"
+      else
+        flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_added')}"
+      end
     end
-    solr_query = solr_query + "#{ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string)}:\"" + institute + "\" AND " +
-        "#{ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string)}:Collection"
-    
-    solr_query
-  end
 
-  def update_params
-    params.require(:institute).permit(:name, :logo, :url)
-  end
+    def delete_association
+      institute_name = params[:institute_name]
 
+      institutes = @collection.institute
+      institutes.delete(institute_name)
+      @collection.institute = institutes
+
+      raise Exceptions::InternalError unless @collection.save
+
+      flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_removed')}"
+    end
+
+    def admin?
+      raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
+    end
+
+    def institute_collections(institute)
+      solr_query = institute_collections_query(institute)
+
+      ActiveFedora::SolrService.query(
+        solr_query,
+        defType: 'edismax',
+        fq: "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+      )
+    end
+
+    def institute_collections_query(institute)
+      solr_query = ""
+      if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
+        solr_query = "#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
+      end
+      solr_query = solr_query + "#{ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string)}:\"" + institute + "\" AND " +
+          "#{ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string)}:Collection"
+
+      solr_query
+    end
+
+    def update_params
+      params.require(:institute).permit(:name, :logo, :url)
+    end
 end

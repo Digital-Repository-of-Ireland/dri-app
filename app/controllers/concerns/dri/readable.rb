@@ -3,13 +3,10 @@ module DRI::Readable
 
   # If the restricted read is inherited find the correct reader group to use
   def governing_reader_group(collection_id)
-    read_group = nil
-    
     result = ActiveFedora::SolrService.query("id:#{collection_id}")
-    doc = SolrDocument.new(result.pop) if result.count > 0
+    doc = SolrDocument.new(result.pop)
     read_groups = doc[Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)]
-    
-    # If the default reader group has been added to this collection return it
+
     if read_groups && read_groups.include?(collection_id)
       return UserGroup::Group.find_by(name: collection_id)
     end
@@ -36,5 +33,4 @@ module DRI::Readable
 
     read_group
   end
-
 end

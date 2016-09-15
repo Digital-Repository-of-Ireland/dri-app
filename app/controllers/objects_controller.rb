@@ -2,18 +2,17 @@
 #
 require 'solr/query'
 
-include Utils
-
 class ObjectsController < BaseObjectsController
+  include Utils
 
-  before_filter :authenticate_user_from_token!, except: [:show, :citation]
-  before_filter :authenticate_user!, except: [:show, :citation]
-  before_filter :read_only, except: [:index, :show, :citation, :related]
+  before_action :authenticate_user_from_token!, except: [:show, :citation]
+  before_action :authenticate_user!, except: [:show, :citation]
+  before_action :read_only, except: [:index, :show, :citation, :related]
 
-  DEFAULT_METADATA_FIELDS = ['title','subject','creation_date','published_date','type','rights','language','description','creator',
-       'contributor','publisher','date','format','source','temporal_coverage',
-       'geographical_coverage','geocode_point','geocode_box','institute',
-       'root_collection_id','isGovernedBy','ancestor_id','ancestor_title','role_dnr'].freeze
+  DEFAULT_METADATA_FIELDS = ['title', 'subject', 'creation_date', 'published_date', 'type', 'rights', 'language', 'description', 'creator',
+       'contributor', 'publisher', 'date', 'format', 'source', 'temporal_coverage',
+       'geographical_coverage', 'geocode_point', 'geocode_box', 'institute',
+       'root_collection_id', 'isGovernedBy', 'ancestor_id', 'ancestor_title', 'role_dnr'].freeze
 
   # Displays the New Object form
   #
@@ -26,14 +25,13 @@ class ObjectsController < BaseObjectsController
     supported_licences
   end
 
-
   # Edits an existing model.
   #
   def edit
     enforce_permissions!('edit', params[:id])
 
     supported_licences
-    
+
     @object = retrieve_object!(params[:id])
     @object.creator = [''] unless @object.creator[0]
 
@@ -42,7 +40,7 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       format.html
-      format.json  { render json: @object }
+      format.json { render json: @object }
     end
   end
 
@@ -71,7 +69,7 @@ class ObjectsController < BaseObjectsController
       @object.governing_collection = collection
     end
 
-    doi.update_metadata(params[:batch].select{ |key, value| doi.metadata_fields.include?(key) }) if doi
+    doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
     updated = @object.update_attributes(update_params)
 
@@ -90,15 +88,13 @@ class ObjectsController < BaseObjectsController
         update_doi(@object, doi, 'metadata update') if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
-        format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
-        format.json  { render json: @object }
+        format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
       else
-        flash[:alert] = t('dri.flash.alert.invalid_object', :error => @object.errors.full_messages.inspect)
-        format.html  { render action: 'edit' }
-        format.json  { render json: @object }
+        flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+        format.html { render action: 'edit' }
       end
+      format.json { render json: @object }
     end
-
   end
 
   def citation
@@ -132,7 +128,7 @@ class ObjectsController < BaseObjectsController
     end
 
     MetadataHelpers.checksum_metadata(@object)
-    
+
     supported_licences
 
     if @object.valid? && @object.save
@@ -144,40 +140,38 @@ class ObjectsController < BaseObjectsController
       actor.version_and_record_committer
 
       respond_to do |format|
-        format.html { flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-        redirect_to controller: 'catalog', action: 'show', id: @object.id
-        }
-        format.json {
+        format.html do
+          flash[:notice] = t('dri.flash.notice.digital_object_ingested')
+          redirect_to controller: 'catalog', action: 'show', id: @object.id
+        end
+        format.json do
           response = { pid: @object.id }
           response[:warning] = @warnings if @warnings
-          
-          render json: response, location: catalog_url(@object.id), status: :created 
-        }
+
+          render json: response, location: catalog_url(@object.id), status: :created
+        end
       end
     else
       respond_to do |format|
-        format.html {
+        format.html do
           flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
           raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
-          return
-        }
-        format.json {
+        end
+        format.json do
           raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
-          render json: @object.errors
-        }
+        end
       end
     end
-
   end
 
   def destroy
     enforce_permissions!('edit', params[:id])
 
     @object = retrieve_object!(params[:id])
-    
+
     if @object.status != 'published'
-      @object.delete 
-      flash[:notice] = t('dri.flash.notice.object_deleted')  
+      @object.delete
+      flash[:notice] = t('dri.flash.notice.object_deleted')
     else
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
@@ -192,22 +186,22 @@ class ObjectsController < BaseObjectsController
 
     if params.key?('objects') && params[:objects].present?
       solr_query = ActiveFedora::SolrService.construct_query_for_ids(
-        params[:objects].map{|o| o.values.first})
+        params[:objects].map { |o| o.values.first }
+      )
       results = Solr::Query.new(solr_query)
-      
+
       while results.has_more?
         docs = results.pop
 
-        docs.each do | doc |
+        docs.each do |doc|
           solr_doc = SolrDocument.new(doc)
-          item = extract_metadata solr_doc
-                  
-          if solr_doc.published?
-            item = extract_metadata solr_doc
-            item.merge!(find_assets_and_surrogates solr_doc)
 
-            @list << item
-          end
+          next unless solr_doc.published?
+            
+          item = extract_metadata(solr_doc)
+          item.merge!(find_assets_and_surrogates(solr_doc))
+
+          @list << item
         end
 
         raise Exceptions::NotFound if @list.empty?
@@ -219,38 +213,41 @@ class ObjectsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.json  { }
+      format.json {}
     end
   end
-
 
   def related
     enforce_permissions!('show_digital_object', params[:object])
 
-    if params.key?('count') && params[:count].present? && numeric?(params[:count])
-      count = params[:count]
-    else
-      count = 3
-    end
+    count = if params.key?('count') && params[:count].present? && numeric?(params[:count])
+              params[:count]
+            else
+              3
+            end
 
     if params.key?('object') && params[:object].present?
       solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
-      result = ActiveFedora::SolrService.instance.conn.get('select',
-                        :params=>{:q=>solr_query, :qt => 'standard',
-                        :fq => "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false
-                                AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published",
-                        :mlt => 'true',
-                        :'mlt.fl' => "#{Solrizer.solr_name('subject', :stored_searchable, type: :string)},
-                                      #{Solrizer.solr_name('subject', :stored_searchable, type: :string)}",
-                        :'mlt.count' => count,
-                        :fl => "id,score",
-                        :'mlt.match.include'=> 'false'})
+      result = ActiveFedora::SolrService.instance.conn.get(
+        'select',
+        params: {
+          q: solr_query, qt: 'standard',
+          fq: "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false
+               AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published",
+          mlt: 'true',
+          :'mlt.fl' => "#{Solrizer.solr_name('subject', :stored_searchable, type: :string)},
+                        #{Solrizer.solr_name('subject', :stored_searchable, type: :string)}",
+          :'mlt.count' => count,
+          fl: 'id,score',
+          :'mlt.match.include' => 'false'
+        }
+      )
     end
 
     # TODO: fixme!
     @related = []
     if result && result['moreLikeThis'] && result['moreLikeThis'].first &&
-        result['moreLikeThis'].first[1] && result['moreLikeThis'].first[1]['docs']
+       result['moreLikeThis'].first[1] && result['moreLikeThis'].first[1]['docs']
       result['moreLikeThis'].first[1]['docs'].each do |item|
         @related << item
       end
@@ -270,25 +267,25 @@ class ObjectsController < BaseObjectsController
 
     raise Exceptions::BadRequest if @object.collection?
 
-    unless @object.status.eql?('published')
+    unless @object.status == 'published'
       @object.status = params[:status] if params[:status].present?
       @object.save
     end
-    
+
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
       format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
-      format.json {
-          response = { :id => @object.id, :status => @object.status }
-          response[:warning] = @warnings if @warnings
-          render :json => response, :status => :accepted 
-      }
+      format.json do
+        response = { id: @object.id, status: @object.status }
+        response[:warning] = @warnings if @warnings
+        render json: response, status: :accepted
+      end
     end
   end
 
   def set_licence
     enforce_permissions!('edit', params[:id])
-    
+
     super
   end
 
@@ -308,24 +305,26 @@ class ObjectsController < BaseObjectsController
     # If no standard parameter then default to :qdc
     # allow to create :documentation and :marc objects (improve merging into marc-nccb branch)
     #
-    def create_from_form standard=nil
-      if standard
-        @object = DRI::Batch.with_standard standard
-      else
-        @object = DRI::Batch.with_standard :qdc
-      end
+    def create_from_form(standard = nil)
+      @object = if standard
+                  DRI::Batch.with_standard(standard)
+                else
+                  DRI::Batch.with_standard(:qdc)
+                end
       @object.depositor = current_user.to_s
       @object.update_attributes create_params
     end
 
     def create_reader_group
-      group = UserGroup::Group.new(name: "#{@object.id}", 
-        description: "Default Reader group for collection #{@object.id}")
+      group = UserGroup::Group.new(
+        name: @object.id.to_s,
+        description: "Default Reader group for collection #{@object.id}"
+      )
       group.reader_group = true
       group.save
     end
 
-    def extract_metadata doc
+    def extract_metadata(doc)
       item = {}
 
       # Get metadata
@@ -333,18 +332,17 @@ class ObjectsController < BaseObjectsController
       item['metadata'] = {}
 
       DEFAULT_METADATA_FIELDS.each do |field|
-
         if params['metadata'].blank? || params['metadata'].include?(field)
-          if field.eql?('isGovernedBy')
-            value = doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable, type: :symbol)]
-          else
-            value = doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable)]
-          end
+          value = if field.eql?('isGovernedBy')
+                    doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable, type: :symbol)]
+                  else
+                    doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable)]
+                  end
 
           case field
           when 'institute'
             item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
-          
+
           when 'geocode_point'
             if value.present?
               geojson_points = []
@@ -352,15 +350,15 @@ class ObjectsController < BaseObjectsController
 
               item['metadata'][field] = geojson_points
             end
-          
+
           when 'geocode_box'
             if value.present?
               geojson_boxes = []
               value.each { |box| geojson_boxes << dcterms_box_to_geojson(box) }
-    
+
               item['metadata'][field] = geojson_boxes
             end
-          
+
           when field.include?('date') || field == 'temporal_coverage'
             if value.present?
               dates = []
@@ -368,18 +366,17 @@ class ObjectsController < BaseObjectsController
 
               item['metadata'][field] = dates
             end
-          
+
           else
             item['metadata'][field] = value if value
           end
-
         end
       end
 
       item
     end
 
-    def find_assets_and_surrogates doc
+    def find_assets_and_surrogates(doc)
       item = {}
       item['files'] = []
 
@@ -405,9 +402,10 @@ class ObjectsController < BaseObjectsController
 
             timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
             surrogates = storage.get_surrogates doc, file_doc, timeout
-            surrogates.each do |file,loc| 
+            surrogates.each do |file, _loc|
               file_list[file] = url_for(object_file_url(
-                object_id: doc.id, id: file_doc.id, surrogate: file))
+                object_id: doc.id, id: file_doc.id, surrogate: file)
+              )
             end
 
             item['files'].push(file_list)
@@ -429,4 +427,3 @@ class ObjectsController < BaseObjectsController
       end
     end
 end
-

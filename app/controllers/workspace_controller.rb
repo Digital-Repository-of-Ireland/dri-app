@@ -6,26 +6,25 @@ require 'institute_helpers'
 class WorkspaceController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
-  
+
   include Hydra::AccessControlsEnforcement
 
-  #This method shows the DO if the metadata is open
-  #Rather than before where the user had to have read permissions on the object all the time
+  # This method shows the DO if the metadata is open
+  # Rather than before where the user had to have read permissions on the object all the time
   def enforce_search_for_show_permissions
     enforce_permissions!('show_digital_object', params[:id])
   end
   # These before_filters apply the hydra access controls
-  before_filter :enforce_search_for_show_permissions, only: :show
+  before_action :enforce_search_for_show_permissions, only: :show
   # This applies appropriate access controls to all solr queries
   WorkspaceController.solr_search_params_logic += [:add_access_controls_to_solr_params_no_pub]
   # This filters out objects that you want to exclude from search results, like FileAssets
   WorkspaceController.solr_search_params_logic += [:exclude_unwanted_models]
-  #CatalogController.solr_search_params_logic += [:exclude_unwanted_models, :exclude_collection_models]
 
   def rows_per_page
     result = 15
 
-    if (params.include?(:per_page))
+    if params.include?(:per_page)
       rows_per_page = params[:per_page].to_i
 
       if (rows_per_page < 1) || (rows_per_page > 100)
@@ -35,7 +34,6 @@ class WorkspaceController < ApplicationController
   end
 
   configure_blacklight do |config|
-
     config.default_solr_params = {
       defType: 'edismax',
       qt: 'search',
@@ -70,92 +68,92 @@ class WorkspaceController < ApplicationController
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
 
-    config.add_facet_field solr_name('status', :facetable), :label => 'Record Status'
-    config.add_facet_field solr_name('master_file_access', :facetable), :label => 'Master File Access'
-    config.add_facet_field solr_name('subject', :facetable), :limit => 20
-    config.add_facet_field solr_name('subject_gle', :facetable), :label => 'Subjects (in Irish)'
-    config.add_facet_field solr_name('subject_eng', :facetable), :label => 'Subjects (in English)'
-    config.add_facet_field solr_name('geographical_coverage', :facetable), :helper_method => :parse_location, :limit => 20
-    config.add_facet_field solr_name('geographical_coverage_gle', :facetable), :label => 'Subject (Place) (in Irish)', :limit => 20
-    config.add_facet_field solr_name('geographical_coverage_eng', :facetable), :label => 'Subject (Place) (in English)', :limit => 20
-    config.add_facet_field solr_name('temporal_coverage', :facetable), :helper_method => :parse_era, :limit => 20
-    config.add_facet_field solr_name('temporal_coverage_gle', :facetable), :label => 'Subject (Era) (in Irish)', :limit => 20
-    config.add_facet_field solr_name('temporal_coverage_eng', :facetable), :label => 'Subject (Era) (in English)', :limit => 20
-    config.add_facet_field solr_name('name_coverage', :facetable), :label => 'Subject (Name)', :limit => 20
-    config.add_facet_field solr_name('creator', :facetable), :label => 'creators', :show => false
-    config.add_facet_field solr_name('contributor', :facetable), :label => 'contributors', :show => false
-    config.add_facet_field solr_name('person', :facetable), :limit => 20
-    config.add_facet_field solr_name('language', :facetable), :helper_method => :label_language, :limit => true
-    config.add_facet_field solr_name('creation_date', :dateable), :label => 'Creation Date', :date => true
-    config.add_facet_field solr_name('published_date', :dateable), :label => 'Published/Broadcast Date', :date => true
-    config.add_facet_field solr_name('width', :facetable, type: :integer), :label => 'Image Width'
-    config.add_facet_field solr_name('height', :facetable, type: :integer), :label => 'Image Height'
-    config.add_facet_field solr_name('area', :facetable, type: :integer), :label => 'Image Size'
+    config.add_facet_field solr_name('status', :facetable), label: 'Record Status'
+    config.add_facet_field solr_name('master_file_access', :facetable), label: 'Master File Access'
+    config.add_facet_field solr_name('subject', :facetable), limit: 20
+    config.add_facet_field solr_name('subject_gle', :facetable), label: 'Subjects (in Irish)'
+    config.add_facet_field solr_name('subject_eng', :facetable), label: 'Subjects (in English)'
+    config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, limit: 20
+    config.add_facet_field solr_name('geographical_coverage_gle', :facetable), label: 'Subject (Place) (in Irish)', limit: 20
+    config.add_facet_field solr_name('geographical_coverage_eng', :facetable), label: 'Subject (Place) (in English)', limit: 20
+    config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20
+    config.add_facet_field solr_name('temporal_coverage_gle', :facetable), label: 'Subject (Era) (in Irish)', limit: 20
+    config.add_facet_field solr_name('temporal_coverage_eng', :facetable), label: 'Subject (Era) (in English)', limit: 20
+    config.add_facet_field solr_name('name_coverage', :facetable), label: 'Subject (Name)', limit: 20
+    config.add_facet_field solr_name('creator', :facetable), label: 'creators', show: false
+    config.add_facet_field solr_name('contributor', :facetable), label: 'contributors', show: false
+    config.add_facet_field solr_name('person', :facetable), limit: 20
+    config.add_facet_field solr_name('language', :facetable), helper_method: :label_language, limit: true
+    config.add_facet_field solr_name('creation_date', :dateable), label: 'Creation Date', date: true
+    config.add_facet_field solr_name('published_date', :dateable), label: 'Published/Broadcast Date', date: true
+    config.add_facet_field solr_name('width', :facetable, type: :integer), label: 'Image Width'
+    config.add_facet_field solr_name('height', :facetable, type: :integer), label: 'Image Height'
+    config.add_facet_field solr_name('area', :facetable, type: :integer), label: 'Image Size'
 
     # duration is measured in milliseconds
-    config.add_facet_field solr_name('duration_total', :stored_sortable, type: :integer), :label => 'Total Duration'
+    config.add_facet_field solr_name('duration_total', :stored_sortable, type: :integer), label: 'Total Duration'
 
-    config.add_facet_field solr_name('channels', :facetable, type: :integer), :label => 'Audio Channels'
-    config.add_facet_field solr_name('sample_rate', :facetable, type: :integer), :label => 'Sample Rate'
-    config.add_facet_field solr_name('bit_depth', :facetable, type: :integer), :label => 'Bit Depth'
-    config.add_facet_field solr_name('file_count', :stored_sortable, type: :integer), :label => 'Number of Files'
-    config.add_facet_field solr_name('file_size_total', :stored_sortable, type: :integer), :label => 'Total File Size'
-    config.add_facet_field solr_name('mime_type', :facetable), :label => 'MIME Type'
-    config.add_facet_field solr_name('file_format', :facetable), :label => 'File Format'
+    config.add_facet_field solr_name('channels', :facetable, type: :integer), label: 'Audio Channels'
+    config.add_facet_field solr_name('sample_rate', :facetable, type: :integer), label: 'Sample Rate'
+    config.add_facet_field solr_name('bit_depth', :facetable, type: :integer), label: 'Bit Depth'
+    config.add_facet_field solr_name('file_count', :stored_sortable, type: :integer), label: 'Number of Files'
+    config.add_facet_field solr_name('file_size_total', :stored_sortable, type: :integer), label: 'Total File Size'
+    config.add_facet_field solr_name('mime_type', :facetable), label: 'MIME Type'
+    config.add_facet_field solr_name('file_format', :facetable), label: 'File Format'
     config.add_facet_field solr_name('file_type_display', :facetable)
-    config.add_facet_field solr_name('object_type', :facetable), :label => 'Type (from Metadata)'
-    config.add_facet_field solr_name('depositor', :facetable), :label => 'Depositor'
+    config.add_facet_field solr_name('object_type', :facetable), label: 'Type (from Metadata)'
+    config.add_facet_field solr_name('depositor', :facetable), label: 'Depositor'
     config.add_facet_field solr_name('institute', :facetable)
-    config.add_facet_field solr_name('root_collection_id', :facetable), :helper_method => :collection_title
+    config.add_facet_field solr_name('root_collection_id', :facetable), helper_method: :collection_title
 
-    config.add_facet_field solr_name('is_collection', :facetable), :label => 'is_collection', :helper_method => :is_collection, :show => false
+    config.add_facet_field solr_name('is_collection', :facetable), label: 'is_collection', helper_method: :is_collection, show: false
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.
     config.default_solr_params[:'facet.field'] = config.facet_fields.keys
-    #use this instead if you don't want to query facets marked :show=>false
-    #config.default_solr_params[:'facet.field'] = config.facet_fields.select{ |k, v| v[:show] != false}.keys
+    # use this instead if you don't want to query facets marked :show=>false
+    # config.default_solr_params[:'facet.field'] = config.facet_fields.select{ |k, v| v[:show] != false}.keys
 
 
     # solr fields to be displayed in the index (search results) view
-    #   The ordering of the field names is the order of the display
-    config.add_index_field solr_name('title', :stored_searchable, type: :string), :label => 'title'
-    config.add_index_field solr_name('subject', :stored_searchable, type: :string), :label => 'subjects'
-    config.add_index_field solr_name('creator', :stored_searchable, type: :string), :label => 'creators'
-    config.add_index_field solr_name('format', :stored_searchable), :label => 'Format:'
-    config.add_index_field solr_name('file_type_display', :stored_searchable, type: :string), :label => 'Mediatype'
-    config.add_index_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
-    config.add_index_field solr_name('published', :stored_searchable, type: :string), :label => 'Published:'
+    # The ordering of the field names is the order of the display
+    config.add_index_field solr_name('title', :stored_searchable, type: :string), label: 'title'
+    config.add_index_field solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
+    config.add_index_field solr_name('creator', :stored_searchable, type: :string), label: 'creators'
+    config.add_index_field solr_name('format', :stored_searchable), label: 'Format:'
+    config.add_index_field solr_name('file_type_display', :stored_searchable, type: :string), label: 'Mediatype'
+    config.add_index_field solr_name('language', :stored_searchable, type: :string), label: 'language', :helper_method => :label_language
+    config.add_index_field solr_name('published', :stored_searchable, type: :string), label: 'Published:'
 
     # solr fields to be displayed in the show (single result) view
-    #   The ordering of the field names is the order of the display
-    config.add_show_field solr_name('title', :stored_searchable, type: :string), :label => 'title'
-    config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), :label => 'subtitle:'
-    config.add_show_field solr_name('description', :stored_searchable, type: :string), :label => 'description'
-    config.add_show_field solr_name('scope_content', :stored_searchable, type: :string), :label => 'scope_content'
-   config.add_show_field solr_name('scopecontent', :stored_searchable, type: :string), :label => 'scope_content'
-    config.add_show_field solr_name('abstract', :stored_searchable, type: :string), :label => 'abstract'
-    config.add_show_field solr_name('creator', :stored_searchable, type: :string), :label => 'creators'
+    # The ordering of the field names is the order of the display
+    config.add_show_field solr_name('title', :stored_searchable, type: :string), label: 'title'
+    config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), label: 'subtitle:'
+    config.add_show_field solr_name('description', :stored_searchable, type: :string), label: 'description'
+    config.add_show_field solr_name('scope_content', :stored_searchable, type: :string), label: 'scope_content'
+    config.add_show_field solr_name('scopecontent', :stored_searchable, type: :string), label: 'scope_content'
+    config.add_show_field solr_name('abstract', :stored_searchable, type: :string), label: 'abstract'
+    config.add_show_field solr_name('creator', :stored_searchable, type: :string), label: 'creators'
     DRI::Vocabulary.marc_relators.each do |role|
-      config.add_show_field solr_name('role_'+role, :stored_searchable, type: :string), :label => 'role_'+role
+      config.add_show_field solr_name('role_' + role, :stored_searchable, type: :string), label: 'role_' + role
     end
-    config.add_show_field solr_name('bioghist', :stored_searchable, type: :string), :label => 'bioghist'
-    config.add_show_field solr_name('contributor', :stored_searchable, type: :string), :label => 'contributors'
-    config.add_show_field solr_name('creation_date', :stored_searchable), :label => 'creation_date', :date => true
-    config.add_show_field solr_name('published_date', :stored_searchable), :label => 'published_date', :date => true
-    config.add_show_field solr_name('subject', :stored_searchable, type: :string), :label => 'subjects'
-    config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), :label => 'geographical_coverage'
-    config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), :label => 'temporal_coverage'
-    config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), :label => 'name_coverage'
-    config.add_show_field solr_name('format', :stored_searchable), :label => 'Format:'
-    config.add_show_field solr_name('physdesc', :stored_searchable), :label => 'physdesc'
-    #config.add_show_field solr_name('object_type', :stored_searchable, type: :string), :label => 'format'
-    config.add_show_field solr_name('type', :stored_searchable, type: :string), :label => 'type'
-    config.add_show_field solr_name('language', :stored_searchable, type: :string), :label => 'language', :helper_method => :label_language
-    config.add_show_field solr_name('source', :stored_searchable, type: :string), :label => 'sources'
-    config.add_show_field solr_name('rights', :stored_searchable, type: :string), :label => 'rights'
-    config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), :label => 'status'
+    config.add_show_field solr_name('bioghist', :stored_searchable, type: :string), label: 'bioghist'
+    config.add_show_field solr_name('contributor', :stored_searchable, type: :string), label: 'contributors'
+    config.add_show_field solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true
+    config.add_show_field solr_name('published_date', :stored_searchable), label: 'published_date', date: true
+    config.add_show_field solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
+    config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), label: 'geographical_coverage'
+    config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), label: 'temporal_coverage'
+    config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), label: 'name_coverage'
+    config.add_show_field solr_name('format', :stored_searchable), label: 'Format:'
+    config.add_show_field solr_name('physdesc', :stored_searchable), label: 'physdesc'
+    # config.add_show_field solr_name('object_type', :stored_searchable, type: :string), label: 'format'
+    config.add_show_field solr_name('type', :stored_searchable, type: :string), label: 'type'
+    config.add_show_field solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
+    config.add_show_field solr_name('source', :stored_searchable, type: :string), label: 'sources'
+    config.add_show_field solr_name('rights', :stored_searchable, type: :string), label: 'rights'
+    config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), label: 'status'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -177,7 +175,6 @@ class WorkspaceController < ApplicationController
 
     config.add_search_field 'all_fields', label: 'All Fields'
 
-
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields.
@@ -196,20 +193,20 @@ class WorkspaceController < ApplicationController
       }
     end
 
-    #config.add_search_field('author') do |field|
+    # config.add_search_field('author') do |field|
     #  field.solr_parameters = { :'spellcheck.dictionary' => 'author' }
     #  field.solr_local_parameters = {
     #    :qf => '$author_qf',
     #    :pf => '$author_pf'
     #  }
-    #end
+    # end
 
     config.add_search_field('person') do |field|
-        field.solr_parameters = { :'spellcheck.dictionary' => 'person'}
-        field.solr_local_parameters = {
-          qf: '$person_qf',
-          pf: '$person_pf',
-       }
+      field.solr_parameters = { :'spellcheck.dictionary' => 'person'}
+      field.solr_local_parameters = {
+        qf: '$person_qf',
+        pf: '$person_pf'
+      }
     end
 
     # Specifying a :qt only to show it's possible, and so our internal automated
@@ -230,10 +227,10 @@ class WorkspaceController < ApplicationController
     # except in the relevancy case).
     config.add_sort_field 'system_create_dtsi desc', label: 'newest'
     # The year created sort throws an error as the date type is not enforced and so a string can be passed in - it is commented out for this reason.
-    # config.add_sort_field 'creation_date_dtsim, title_sorted_ssi asc', :label => 'year created'
+    # config.add_sort_field 'creation_date_dtsim, title_sorted_ssi asc', label: 'year created'
 
     # We son't use the author_tesi field in DRI so disabling this sort - Damien
-    #config.add_sort_field 'author_tesi asc, title_sorted_ssi asc', :label => 'author'
+    # config.add_sort_field 'author_tesi asc, title_sorted_ssi asc', label: 'author'
 
     config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', label: 'relevance'
     config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', label: 'title'
@@ -245,18 +242,18 @@ class WorkspaceController < ApplicationController
 
   def exclude_unwanted_models(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "-#{Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
+    solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
     if user_parameters[:mode] == 'collections'
-      solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
-      solr_parameters[:fq] << "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+      solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"
+      solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
     else
-      solr_parameters[:fq] << "+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:false"
-      solr_parameters[:fq] << "+#{Solrizer.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
+      solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:false"
+      solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
     end
   end
 
   def self.controller_path
     'catalog'
   end
-
 end
+

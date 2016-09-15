@@ -1,20 +1,21 @@
 require 'metadata_helpers'
 
-TITLES = { 'qualifieddc' => 'Dublin Core Metadata',
-           'record' => 'MARC Metadata',
-           'mods' => 'MODS Metadata', 
-           'ead' => 'EAD Metadata',
-           'c' => 'EAD Metadata',
-           'RDF' => 'Dublin Core Metadata (in RDF/XML)'
-         }
+TITLES = { 
+  'qualifieddc' => 'Dublin Core Metadata',
+  'record' => 'MARC Metadata',
+  'mods' => 'MODS Metadata',
+  'ead' => 'EAD Metadata',
+  'c' => 'EAD Metadata',
+  'RDF' => 'Dublin Core Metadata (in RDF/XML)'
+}.freeze
 
 #
 # Creates, updates, or retrieves, the descMetadata datastream for an object
 #
 class MetadataController < CatalogController
-  before_filter :authenticate_user_from_token!, except: :show
-  before_filter :authenticate_user!, except: :show
-  before_filter :read_only, except: :show
+  before_action :authenticate_user_from_token!, except: :show
+  before_action :authenticate_user!, except: :show
+  before_action :read_only, except: :show
 
   def actor
     @actor ||= DRI::Object::Actor.new(@object, current_user)
@@ -34,12 +35,15 @@ class MetadataController < CatalogController
 
     if @object && @object.attached_files.key?(:descMetadata)
       respond_to do |format|
-        format.xml { 
-          data = (@object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].content) ?
-                                @object.attached_files[:fullMetadata].content : @object.attached_files[:descMetadata].content
+        format.xml do
+          data = if @object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].content
+                   @object.attached_files[:fullMetadata].content
+                 else
+                   @object.attached_files[:descMetadata].content
+                 end
           send_data(data, filename: "#{@object.id}.xml")
-        }
-        format.js {
+        end
+        format.js do
           xml_data = @object.attached_files[:descMetadata].content
           xml = Nokogiri::XML(xml_data)
           xslt_data = File.read("app/assets/stylesheets/#{xml.root.name}.xsl")
@@ -48,7 +52,7 @@ class MetadataController < CatalogController
 
           @title = TITLES[xml.root.name]
           @display_xml = styled_xml.to_html
-        }
+        end
       end
 
       return
@@ -70,7 +74,7 @@ class MetadataController < CatalogController
       redirect_to controller: 'catalog', action: 'show', id: params[:id]
       return
     end
-    
+
     @object = retrieve_object! params[:id] 
     @errors = nil
 
@@ -92,7 +96,7 @@ class MetadataController < CatalogController
         logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
         raise Exceptions::InternalError
       end
-      
+
       begin
         raise Exceptions::InternalError unless @object.save
 
@@ -107,16 +111,15 @@ class MetadataController < CatalogController
     respond_to do |format|
       format.html { redirect_to controller: 'catalog', action: 'show', id: params[:id] }
       format.json  { render json: @object }
-      format.text { 
-        if @errors
-          response = t('dri.flash.alert.invalid_object', error: @errors)
+      format.text do
+        response = if @errors
+          t('dri.flash.alert.invalid_object', error: @errors)
         else
-          response = t('dri.flash.notice.metadata_updated')
+          t('dri.flash.notice.metadata_updated')
         end
 
         render text: response
-      }
+      end
     end
   end
-
 end
