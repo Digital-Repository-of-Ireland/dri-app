@@ -3,38 +3,34 @@ module ApplicationHelper
   require 'institute_helpers'
   require 'uri'
 
-  def surrogate_url( doc_id, file_doc_id, name )
+  def surrogate_url(doc_id, file_doc_id, name)
     storage = StorageService.new
     return nil unless storage.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
-    
+
     object_file_url(object_id: doc_id, id: file_doc_id, surrogate: name)
   end
 
-  def get_metadata_name( object )
-    object.descMetadata.class.to_s.downcase.split('::').last
-  end
-
-   # Called from grid view
-  def image_for_search( document )
-    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\" 
+  # Called from grid view
+  def image_for_search(document)
+    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\"
                   AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('preservation_only', :stored_searchable)}:true"
     files = ActiveFedora::SolrService.query(files_query)
-    
+
     file_doc = nil
     image = nil
 
     files.each do |file|
       file_doc = SolrDocument.new(file) unless files.empty?
       if can?(:read, document[:id])
-        image = search_image( document, file_doc ) unless file_doc.nil?
+        image = search_image(document, file_doc) unless file_doc.nil?
         break if image
       end
     end
 
-    @search_image = image || default_image( file_doc )
+    @search_image = image || default_image(file_doc)
   end
 
-  def search_image ( document, file_document, image_name = "crop16_9_width_200_thumbnail" )
+  def search_image(document, file_document, image_name = 'crop16_9_width_200_thumbnail')
     path = nil
 
     unless file_document[ActiveFedora::SolrQueryBuilder.solr_name('file_type', :stored_searchable, type: :string)].blank?
@@ -51,7 +47,7 @@ module ApplicationHelper
     path
   end
 
-  def default_image ( file_document )
+  def default_image(file_document)
     path = asset_url "no_image.png"
 
     unless file_document.nil?
@@ -69,11 +65,11 @@ module ApplicationHelper
     path
   end
 
-  def cover_image ( doc )
+  def cover_image(doc)
     path = nil
-   
+
     document = doc.is_a?(SolrDocument) ? doc : SolrDocument.new(doc)
- 
+
     cover_key = ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string).to_sym
 
     if document[cover_key].present? && document[cover_key].first
@@ -85,31 +81,26 @@ module ApplicationHelper
         path = cover_image_path(collection)
       end
     end
-    
+
     path
   end
 
-  def count_items_in_collection collection_id
-    solr_query = collection_children_query( collection_id )
+  def count_items_in_collection(collection_id)
+    solr_query = collection_children_query(collection_id)
 
     unless signed_in? && can?(:edit, collection_id)
       solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
     end
 
-    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+    ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
   end
-
-  def count_immediate_children_in_collection collection_id
-    solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{collection_id}\""
-    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
-  end
-
-  def collection_children_query ( collection_id )
+  
+  def collection_children_query(collection_id)
     "(#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
     "\" AND is_collection_sim:false" +
     " OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
   end
-        
+
   def count_items_in_collection_by_type(collection_id, type)
     solr_query = "(#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
         "\" OR #{ActiveFedora::SolrQueryBuilder.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
@@ -117,36 +108,31 @@ module ApplicationHelper
     unless signed_in? && can?(:edit, collection_id)
       solr_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
     end
-    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+    ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
   end
 
-  # method to find the depositing Institute (if any) associated with the current collection (document) 
-  def get_depositing_institute ( document )
-    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc( document )
-  end
-
- def reader_group( collection_id )
+  def reader_group(collection_id)
     UserGroup::Group.find_by(name: collection_id)
   end
 
   def has_browse_params?
-    return has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
+    has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
   end
 
-  def is_root?
-    return request.env['PATH_INFO'] == '/' && request.query_string.blank?
+  def root?
+    request.env['PATH_INFO'] == '/' && request.query_string.blank?
   end
 
   def has_search_parameters?
-    params[:q].present? or params[:f].present? or params[:search_field].present?
+    params[:q].present? || params[:f].present? || params[:search_field].present?
   end
 
-  def has_tasks?
+  def tasks?
     current_user && UserBackgroundTask.where(user_id: current_user.id).count > 0
   end
 
   def link_to_loc(field)
-    return link_to('?', "http://www.loc.gov/marc/bibliographic/bd" + field + ".html" )
+    link_to('?', "http://www.loc.gov/marc/bibliographic/bd" + field + ".html")
   end
 
   def get_reader_group(doc)
@@ -158,18 +144,16 @@ module ApplicationHelper
       end
     end
 
-    return nil
+    nil
   end
 
-  #URI Checker
+  # URI Checker
   def uri?(string)
     uri = URI.parse(string)
-    %w( http https ).include?(uri.scheme)
+    %w(http https).include?(uri.scheme)
   rescue URI::BadURIError
     false
   rescue URI::InvalidURIError
     false
   end
-
 end
-

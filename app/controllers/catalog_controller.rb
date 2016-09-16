@@ -292,7 +292,7 @@ class CatalogController < ApplicationController
     # the Institutes currently associated with this collection if any
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
     # the Depositing Institute if any
-    @depositing_institute = InstituteHelpers.get_depositing_institute_from_solr_doc(@document)
+    @depositing_institute = @document.depositing_institute
 
     institutes_array = []
     collection_institutes_array = []

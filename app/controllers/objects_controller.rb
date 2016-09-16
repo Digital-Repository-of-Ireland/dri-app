@@ -34,7 +34,8 @@ class ObjectsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
     @object.creator = [''] unless @object.creator[0]
-
+    @standard = metadata_standard
+    
     # used for crumbtrail
     @document = SolrDocument.new(@object.to_solr)
 
@@ -334,9 +335,9 @@ class ObjectsController < BaseObjectsController
       DEFAULT_METADATA_FIELDS.each do |field|
         if params['metadata'].blank? || params['metadata'].include?(field)
           value = if field.eql?('isGovernedBy')
-                    doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable, type: :symbol)]
+                    doc[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable, type: :symbol)]
                   else
-                    doc[ActiveFedora::SolrQueryBuilder.solr_name(field, :stored_searchable)]
+                    doc[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable)]
                   end
 
           case field
@@ -384,8 +385,8 @@ class ObjectsController < BaseObjectsController
       if can? :read, doc
         storage = StorageService.new
 
-        files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
-        files_query += " AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
+        files_query = "#{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
+        files_query += " AND NOT #{ActiveFedora.index_field_mapper.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
         query = Solr::Query.new(files_query)
 
         while query.has_more?
@@ -415,6 +416,10 @@ class ObjectsController < BaseObjectsController
       end
 
       item
+    end
+
+    def metadata_standard
+      @object.descMetadata.class.to_s.downcase.split('::').last
     end
 
     def retrieve_linked_data
