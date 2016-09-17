@@ -37,27 +37,61 @@ class SolrDocument
   }
 
   def active_fedora_model
-    self[ActiveFedora::SolrQueryBuilder.solr_name('active_fedora_model', :stored_sortable, type: :string)]
+    self[ActiveFedora.index_field_mapper.solr_name('active_fedora_model', :stored_sortable, type: :string)]
   end
 
   def collection_id
-    collection_key = ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
+    collection_key = ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
 
     self[collection_key].present? ? self[collection_key][0] : nil
   end
 
   def doi
-    doi_key = ActiveFedora::SolrQueryBuilder.solr_name('doi')
+    doi_key = ActiveFedora.index_field_mapper.solr_name('doi')
 
     self[doi_key]
   end
+
+   def depositing_institute
+    collection? ? collection_depositing_institute : inherited_depositing_institute(self)
+  end
+
+
+  def collection_depositing_institute
+    if self[ActiveFedora.index_field_mapper.solr_name('depositing_institute', :displayable, type: :string)].present?
+      Institute.where(name: self[ActiveFedora.index_field_mapper.solr_name('depositing_institute', :displayable, type: :string)]).first
+    else
+      return nil if root_collection?
+
+      inherited_depositing_institute(self)
+    end
+  end
+
+
+  def inherited_depositing_institute(doc)
+    return nil unless doc[ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
+
+    id = doc[ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)].first
+    institute_key = ActiveFedora.index_field_mapper.solr_name('depositing_institute', :displayable, type: :string)
+    governed_key = ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
+
+    parent_doc = ActiveFedora::SolrService.query("id:#{id}",
+                                                 defType: 'edismax',
+                                                 rows: '1',
+                                                 fl: "id,#{governed_key},#{institute_key}").first
+
+    return Institute.where(name: parent_doc[institute_key]).first if parent_doc[institute_key].present?
+
+    inherited_depositing_institute(SolrDocument.new(parent_doc))
+  end
+
 
   def editable?
     (active_fedora_model && active_fedora_model == 'DRI::EncodedArchivalDescription') ? false : true
   end
 
   def file_type
-    file_type_key = ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
+    file_type_key = ActiveFedora.index_field_mapper.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
 
     return I18n.t('dri.data.types.Unknown') if self[file_type_key].blank?
 
@@ -67,19 +101,19 @@ class SolrDocument
   end
 
   def has_doi?
-    doi_key = ActiveFedora::SolrQueryBuilder.solr_name('doi', :displayable, type: :symbol).to_sym
+    doi_key = ActiveFedora.index_field_mapper.solr_name('doi', :displayable, type: :symbol).to_sym
 
     self[doi_key].present? ? true : false
   end
 
   def has_geocode?
-    geojson_key = ActiveFedora::SolrQueryBuilder.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
+    geojson_key = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
 
     self[geojson_key].present? ? true : false
   end
 
   def icon_path
-    key = ActiveFedora::SolrQueryBuilder.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
+    key = ActiveFedora.index_field_mapper.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
     format = self[key].first.to_s.downcase
 
     if %w(image audio text video mixed_types).include?(format)
@@ -92,7 +126,7 @@ class SolrDocument
   end
 
   def collection?
-    is_collection_key = ActiveFedora::SolrQueryBuilder.solr_name('is_collection')
+    is_collection_key = ActiveFedora.index_field_mapper.solr_name('is_collection')
 
     self[is_collection_key].present? && self[is_collection_key].include?('true')
   end
@@ -106,7 +140,7 @@ class SolrDocument
   end
 
   def licence
-    licence_key = ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym
+    licence_key = ActiveFedora.index_field_mapper.solr_name('licence', :stored_searchable, type: :string).to_sym
 
     if self[licence_key].present?
       licence = Licence.where(name: self[licence_key]).first
@@ -119,13 +153,13 @@ class SolrDocument
   end
 
   def object_profile
-    key = ActiveFedora::SolrQueryBuilder.solr_name('object_profile', :displayable)
+    key = ActiveFedora.index_field_mapper.solr_name('object_profile', :displayable)
 
     self[key].present? ? JSON.parse(self[key].first) : {}
   end
 
   def root_collection
-    root_key = ActiveFedora::SolrQueryBuilder.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
+    root_key = ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
     root = nil
     if self[root_key].present?
       id = self[root_key][0]
@@ -138,10 +172,10 @@ class SolrDocument
   end
 
   def retrieve_ancestor_licence
-    ancestors_key = ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
+    ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
     return nil unless self[ancestors_key].present?
 
-    licence_key = ActiveFedora::SolrQueryBuilder.solr_name('licence', :stored_searchable, type: :string).to_sym
+    licence_key = ActiveFedora.index_field_mapper.solr_name('licence', :stored_searchable, type: :string).to_sym
 
     ancestors_ids = self[ancestors_key]
     ancestors_ids.each do |id|
@@ -154,7 +188,7 @@ class SolrDocument
   end
 
   def status
-    status_key = ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :string).to_sym
+    status_key = ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :string).to_sym
 
     self[status_key].first
   end

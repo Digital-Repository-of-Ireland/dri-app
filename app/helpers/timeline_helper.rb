@@ -104,7 +104,7 @@ module TimelineHelper
 
     if params[:mode] == 'collections'
       query[:fq] += "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"
-      if !params[:show_subs].eql?('true')
+      unless params[:show_subs] == 'true'
         query[:fq] += " -#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
       end
     else

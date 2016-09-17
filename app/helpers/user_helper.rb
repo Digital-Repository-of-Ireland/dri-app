@@ -20,9 +20,11 @@ module UserHelper
       objects.each do |object|
         collection = {}
         collection[:id] = object['id']
-        collection[:collection_title] = object[ActiveFedora.index_field_mapper.solr_name(
+        collection[:collection_title] = object[
+          ActiveFedora.index_field_mapper.solr_name(
           'title', :stored_searchable, type: :string
-          )]
+          )
+        ]
 
         permissions = []
         type = user_type(user, object, 'manager', 'Collection Manager')
@@ -58,19 +60,21 @@ module UserHelper
     read_query = read_group_query(user)
     query <<   " OR (" + read_query + ")" unless read_query.nil?
 
-    solr_query = Solr::Query.new(query, 100,
-      {fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
+    solr_query = Solr::Query.new(
+      query,
+      100,
+      { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
             "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
-      )
+    )
 
     collections(user, solr_query)
   end
 
   def read_group_query(user)
-    group_query_fragments = user.groups.map {
-      |group| "#{ActiveFedora.index_field_mapper.solr_name(
+    group_query_fragments = user.groups.map do |group|
+      "#{ActiveFedora.index_field_mapper.solr_name(
         'read_access_group', :stored_searchable, type: :symbol)}:#{group.name}" unless group.name == "registered"
-    }
+    end
     return nil if group_query_fragments.compact.blank?
     group_query_fragments.compact.join(" OR ")
   end

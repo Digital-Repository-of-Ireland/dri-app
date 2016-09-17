@@ -1,13 +1,13 @@
 module DRI::Solr::Document::Collection
 
+  # Filter to only get those that are collections:
+  # fq=is_collection_tesim:true
   def children(chunk)
     children_array = []
     # Find immediate children of this collection
     solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{self.id}\""
     f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
-    # Filter to only get those that are collections:
-    # fq=is_collection_tesim:true
     q_result = Solr::Query.new(solr_query, chunk, fq: f_query)
     q_result.each_solr_document { |doc| children_array << doc }
     
