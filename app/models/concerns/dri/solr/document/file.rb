@@ -1,9 +1,8 @@
 module DRI::Solr::Document::File
-
   def preservation_only?
     key = 'dri_properties__preservation_only_tesim'
 
-    (self[key].present? && self[key] == ['true']) ? true : false
+    self[key].present? && self[key] == ['true'] ? true : false
   end
 
   def mime_type
@@ -24,18 +23,18 @@ module DRI::Solr::Document::File
   end
 
   def supported_type?
-    mime_type.nil? || (audio? || 
-      video? || pdf? || image? || 
+    mime_type.nil? || (audio? ||
+      video? || pdf? || image? ||
       text? && file_format.include?("RTF"))
   end
 
   def read_master?
-    master_file_key = ActiveFedora::SolrQueryBuilder.solr_name('master_file_access', :stored_searchable, type: :string)
+    master_file_key = ActiveFedora.index_field_mapper.solr_name('master_file_access', :stored_searchable, type: :string)
 
     governing_object = self
 
     while governing_object[master_file_key].nil? || governing_object[master_file_key] == 'inherit'
-      parent_id = governing_object[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
+      parent_id = governing_object[ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
       return false unless parent_id
 
       governing_object = parent_object(parent_id.first)
@@ -62,9 +61,9 @@ module DRI::Solr::Document::File
 
   private
 
-  def parent_object(id)
-    parent_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([id])
-    parent = ActiveFedora::SolrService.query(parent_query)
-    SolrDocument.new(parent.first)
-  end
+    def parent_object(id)
+      parent_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([id])
+      parent = ActiveFedora::SolrService.query(parent_query)
+      SolrDocument.new(parent.first)
+    end
 end

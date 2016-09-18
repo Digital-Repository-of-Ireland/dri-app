@@ -17,16 +17,16 @@ class LocalFile < ActiveRecord::Base
     self.mime_type = opts[:mime_type]
 
     base_dir = opts[:directory].presence || File.join(local_storage_dir, content_path)
-    FileUtils.mkdir_p(base_dir) 
+    FileUtils.mkdir_p(base_dir)
     self.path = File.join(base_dir, file_name)
-   
+
     upload_to_file(base_dir, upload)
 
-    if opts[:checksum]
-      self.checksum = { opts[:checksum] => Checksum.checksum(opts[:checksum], path) }
-    else
-      self.checksum = {}
-    end
+    self.checksum = if opts[:checksum]
+                      { opts[:checksum] => Checksum.checksum(opts[:checksum], path) }
+                    else
+                      {}
+                    end
   end
 
   # Remove the file from the filesystem if it exists
@@ -47,17 +47,17 @@ class LocalFile < ActiveRecord::Base
     end
 
     def content_path
-      File.join(build_hash_dir, ds_id+version.to_s)
+      File.join(build_hash_dir, ds_id + version.to_s)
     end
 
     def build_hash_dir
       dir = ''
       index = 0
 
-      4.times {
-        dir = File.join(dir, fedora_id[index..index+1])
+      4.times do
+        dir = File.join(dir, fedora_id[index..index + 1])
         index += 2
-      }
+      end
 
       File.join(dir, fedora_id)
     end
@@ -75,5 +75,4 @@ class LocalFile < ActiveRecord::Base
     def version_number
       LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d', { f: fedora_id, d: self.ds_id }).count
     end
-
 end

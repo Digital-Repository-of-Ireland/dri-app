@@ -19,10 +19,10 @@ class DataciteDoi < ActiveRecord::Base
 
     parameters = ActionController::Parameters.new(params)
     doi_metadata.assign_attributes(parameters.permit!)
-    
+
     set_update_type
   end
- 
+
   def changed?
     update_type == 'mandatory' || update_type == 'required'
   end
@@ -34,22 +34,22 @@ class DataciteDoi < ActiveRecord::Base
   def mandatory_update?
     update_type == 'mandatory'
   end
-      
+
   def doi
     doi = "DRI.#{object_id}"
     doi = "#{doi}-#{version}" if version && version > 0
     File.join(DoiConfig.prefix.to_s, doi)
   end
-  
+
   def set_update_type
-    if doi_metadata.title_changed? || doi_metadata.creator_changed?
-      self.update_type = 'mandatory'
-    elsif doi_metadata.changed?
-      self.update_type = 'required'
-    else
-      self.update_type = 'none'
-    end
-    
+    self.update_type = if doi_metadata.title_changed? || doi_metadata.creator_changed?
+                         'mandatory'
+                       elsif doi_metadata.changed?
+                         'required'
+                       else
+                         'none'
+                       end
+
     save
   end
 
@@ -60,7 +60,7 @@ class DataciteDoi < ActiveRecord::Base
 
       people = []
       DRI::Vocabulary.marc_relators.each do |r|
-        role = ActiveFedora::SolrQueryBuilder.solr_name("role_#{r}", :stored_searchable, type: :string)
+        role = ActiveFedora.index_field_mapper.solr_name("role_#{r}", :stored_searchable, type: :string)
         people << doc[role] if doc.key?(role)
       end
 
@@ -70,19 +70,19 @@ class DataciteDoi < ActiveRecord::Base
     def creator_solr
       doc = solr_document
 
-      key = ActiveFedora::SolrQueryBuilder.solr_name('creator', :stored_searchable, type: :string)
+      key = ActiveFedora.index_field_mapper.solr_name('creator', :stored_searchable, type: :string)
 
       doc.key?(key) ? doc[key] : nil
     end
 
     def find_creator
       return object.creator if object.creator.present?
-      
+
       creator = creator_solr
       return creator if creator.present?
-      
+
       return object.author if object.respond_to?(:author) && object.author.present?
-      
+
       creator = creator_relators
       return creator if creator.present?
     end

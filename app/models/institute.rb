@@ -51,7 +51,7 @@ class Institute < ActiveRecord::Base
 
   def store_logo(upload, name)
     b = self.brand || Brand.new
-    b.filename = upload.original_filename 
+    b.filename = upload.original_filename
     b.content_type = upload.content_type
     b.file_contents = upload.read
     b.save

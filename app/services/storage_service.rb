@@ -1,5 +1,4 @@
 class StorageService
-
   def initialize
     driver_class = "Storage::#{Settings.storage.driver.camelcase}".constantize
     @driver = driver_class.new
@@ -8,7 +7,7 @@ class StorageService
   def bucket_exists?(bucket_name)
     @driver.bucket_exists?(bucket_name)
   end
-      
+
   # Create bucket
   def create_bucket(bucket_name)
     @driver.create_bucket(bucket_name)
@@ -21,12 +20,12 @@ class StorageService
   def delete_surrogates(object_id, file_id)
     @driver.delete_surrogates(object_id, file_id)
   end
-  
+
   def file_url(bucket, key)
     @driver.file_url(bucket, key)
   end
 
-  def get_surrogates(object, file, expire=nil)
+  def get_surrogates(object, file, expire = nil)
     @driver.get_surrogates(object, file, expire)
   end
 
@@ -38,7 +37,7 @@ class StorageService
     @driver.surrogate_info(bucket, key)
   end
 
-  def surrogate_url(bucket, key, expire=nil)
+  def surrogate_url(bucket, key, expire = nil)
     @driver.surrogate_url(bucket, key, expire)
   end
 
@@ -48,6 +47,5 @@ class StorageService
 
   def store_file(bucket, file, file_key)
     @driver.store_file(bucket, file, file_key)
-  end
-         
+  end      
 end

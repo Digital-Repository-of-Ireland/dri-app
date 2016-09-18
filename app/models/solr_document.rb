@@ -2,12 +2,11 @@
 # Generated Solr Document model
 #
 class SolrDocument
-
   include Blacklight::Document
   include Blacklight::Document::ActiveModelShim
-  
+
   include UserGroup::PermissionsSolrDocOverride
- 
+
   include DRI::Solr::Document::File
   include DRI::Solr::Document::Relations
   include DRI::Solr::Document::Documentation
@@ -52,10 +51,9 @@ class SolrDocument
     self[doi_key]
   end
 
-   def depositing_institute
+  def depositing_institute
     collection? ? collection_depositing_institute : inherited_depositing_institute(self)
   end
-
 
   def collection_depositing_institute
     if self[ActiveFedora.index_field_mapper.solr_name('depositing_institute', :displayable, type: :string)].present?
@@ -66,7 +64,6 @@ class SolrDocument
       inherited_depositing_institute(self)
     end
   end
-
 
   def inherited_depositing_institute(doc)
     return nil unless doc[ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
@@ -85,9 +82,8 @@ class SolrDocument
     inherited_depositing_institute(SolrDocument.new(parent_doc))
   end
 
-
   def editable?
-    (active_fedora_model && active_fedora_model == 'DRI::EncodedArchivalDescription') ? false : true
+    active_fedora_model && active_fedora_model == 'DRI::EncodedArchivalDescription' ? false : true
   end
 
   def file_type
@@ -116,11 +112,11 @@ class SolrDocument
     key = ActiveFedora.index_field_mapper.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
     format = self[key].first.to_s.downcase
 
-    if %w(image audio text video mixed_types).include?(format)
-      icon = "dri/formats/#{format}_icon.png"
-    else
-      icon = 'no_image.png'
-    end
+    icon = if %w(image audio text video mixed_types).include?(format)
+             "dri/formats/#{format}_icon.png"
+           else
+             'no_image.png'
+           end
 
     icon
   end
