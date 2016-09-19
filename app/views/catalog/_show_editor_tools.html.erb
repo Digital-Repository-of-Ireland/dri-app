@@ -77,7 +77,7 @@
     </li>  
 
     <% if @document.editable? %>
-      <%= link_to '', :'data-target' => '#dri_delete_object_modal_id', :'data-toggle' => 'modal', :id => 'delete_object' do %>
+      <%= link_to '', :'data-target' => '#dri_delete_object_modal_id', :'data-toggle' => 'modal' do %>
         <li>
           <%= t('dri.views.objects.buttons.delete_object') %>
         </li>

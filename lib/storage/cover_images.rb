@@ -5,7 +5,7 @@ module Storage
       if cover_image.present? && Validators.media_type?(cover_image) == 'image'
         return false if self.virus?(cover_image)
 
-        url = self.store_cover(cover_image.tempfile.path, collection, cover_image.original_filename)
+        url = self.store_cover(cover_image, collection)
         if url
           collection.properties.cover_image = url
           collection.save
