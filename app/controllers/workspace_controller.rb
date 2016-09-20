@@ -256,4 +256,3 @@ class WorkspaceController < ApplicationController
     'catalog'
   end
 end
-

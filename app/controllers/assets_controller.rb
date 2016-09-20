@@ -110,12 +110,12 @@ class AssetsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to object_file_url(params[:object_id], @generic_file.id) }
-      format.json {
+      format.json do
         response = { checksum: @file.checksum }
         response[:warning] = @warnings if @warnings
 
         render json: response, status: :ok
-      }
+      end
     end
   end
 
@@ -266,7 +266,7 @@ class AssetsController < ApplicationController
       file = file_path(params[:object_id], params[:id], params[:surrogate])
       raise Exceptions::NotFound unless file
 
-      if file =~ /\A#{URI::regexp(['http', 'https'])}\z/
+      if file =~ /\A#{URI.regexp(['http', 'https'])}\z/
         redirect_to file
         return
       end

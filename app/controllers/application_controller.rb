@@ -127,13 +127,11 @@ class ApplicationController < ActionController::Base
       return unless Settings.read_only == true
 
       respond_to do |format|
-        format.json {
-          head status: 503
-        }
-        format.html {
+        format.json { head status: 503 }
+        format.html do
           flash[:error] = t('dri.flash.error.read_only')
           redirect_to :back
-        }
+        end
       end
     end
 end

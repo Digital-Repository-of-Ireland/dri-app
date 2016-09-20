@@ -28,8 +28,8 @@ class CollectionsController < BaseObjectsController
     solr_query = Solr::Query.new(
       query,
       100,
-      {fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
-            "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+      { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
+            "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"] }
     )
 
     collections = []
@@ -182,7 +182,7 @@ class CollectionsController < BaseObjectsController
 
     cover_url = object.cover_image
     raise Exceptions::NotFound if cover_url.blank?
-    if cover_url =~ /\A#{URI::regexp(['http', 'https'])}\z/
+    if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
       redirect_to cover_url
       return
     end

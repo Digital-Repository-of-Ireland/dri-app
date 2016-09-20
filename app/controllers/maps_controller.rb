@@ -10,10 +10,10 @@ class MapsController < ApplicationController
 
     num_found = ActiveFedora::SolrService.count(query, defType: 'edismax')
     response = if num_found > 0
-      ActiveFedora::SolrService.query(query, defType: 'edismax', rows: num_found)
-    else
-      {}
-    end
+                 ActiveFedora::SolrService.query(query, defType: 'edismax', rows: num_found)
+               else
+                 {}
+               end
 
     maps_data = create_maps_data(response)
 

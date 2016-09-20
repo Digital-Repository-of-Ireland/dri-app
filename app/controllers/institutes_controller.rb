@@ -162,11 +162,11 @@ class InstitutesController < ApplicationController
 
       raise Exceptions::InternalError unless @collection.save
 
-      if params[:type].present? && params[:type] == 'depositing'
-        flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_depositor')}"
-      else
-        flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_added')}"
-      end
+      flash[:notice] = if params[:type].present? && params[:type] == 'depositing'
+                         "#{institute_name} #{t('dri.flash.notice.organisation_depositor')}"
+                       else
+                         "#{institute_name} #{t('dri.flash.notice.organisation_added')}"
+                       end
     end
 
     def delete_association

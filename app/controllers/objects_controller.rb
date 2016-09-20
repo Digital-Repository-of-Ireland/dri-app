@@ -28,7 +28,7 @@ class ObjectsController < BaseObjectsController
     @object = retrieve_object!(params[:id])
     @object.creator = [''] unless @object.creator[0]
     @standard = metadata_standard
-    
+
     # used for crumbtrail
     @document = SolrDocument.new(@object.to_solr)
 
@@ -67,7 +67,7 @@ class ObjectsController < BaseObjectsController
 
     updated = @object.update_attributes(update_params)
 
-    #purge params from update action
+    # purge params from update action
     purge_params
 
     respond_to do |format|
@@ -206,7 +206,7 @@ class ObjectsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.json { }
+      format.json {}
     end
   end
 
@@ -267,7 +267,7 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
       format.json do
         response = { id: @object.id, status: @object.status }
         response[:warning] = @warnings if @warnings

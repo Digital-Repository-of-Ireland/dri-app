@@ -1,6 +1,6 @@
 require 'metadata_helpers'
 
-TITLES = { 
+TITLES = {
   'qualifieddc' => 'Dublin Core Metadata',
   'record' => 'MARC Metadata',
   'mods' => 'MODS Metadata',
@@ -75,7 +75,7 @@ class MetadataController < CatalogController
       return
     end
 
-    @object = retrieve_object! params[:id] 
+    @object = retrieve_object!(params[:id])
     @errors = nil
 
     unless can? :update, @object
@@ -83,10 +83,7 @@ class MetadataController < CatalogController
     end
 
     @object.update_metadata xml
-    unless @object.valid?
-      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-      @errors = @object.errors.full_messages.inspect 
-    else
+    if @object.valid?
       MetadataHelpers.checksum_metadata(@object)
       warn_if_duplicates
 
@@ -106,17 +103,20 @@ class MetadataController < CatalogController
         logger.error "Could not save object #{@object.id}: #{e.message}"
         raise Exceptions::InternalError
       end
+    else
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+      @errors = @object.errors.full_messages.inspect
     end
 
     respond_to do |format|
       format.html { redirect_to controller: 'catalog', action: 'show', id: params[:id] }
-      format.json  { render json: @object }
+      format.json { render json: @object }
       format.text do
         response = if @errors
-          t('dri.flash.alert.invalid_object', error: @errors)
-        else
-          t('dri.flash.notice.metadata_updated')
-        end
+                     t('dri.flash.alert.invalid_object', error: @errors)
+                   else
+                     t('dri.flash.notice.metadata_updated')
+                   end
 
         render text: response
       end

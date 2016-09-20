@@ -28,8 +28,7 @@ class ReadersController < ApplicationController
 
     action = current_user.join_group(@reader_group.id)
     if action.errors.count > 0
-      flash[:alert] = t('dri.flash.error.submitting_read_request',
-                      error: action.errors.full_messages.inspect)
+      flash[:alert] = t('dri.flash.error.submitting_read_request', error: action.errors.full_messages.inspect)
       redirect_to :back
       return
     end
@@ -47,7 +46,7 @@ class ReadersController < ApplicationController
 
     group = UserGroup::Group.find_by(name: params[:id])
     @membership = UserGroup::Membership.find_by(group_id: group.id, user_id: params[:user_id])
- 
+
     respond_to do |format|
       format.js
     end
@@ -64,13 +63,13 @@ class ReadersController < ApplicationController
 
     user = User.find(membership.user_id)
 
-    if(approve_membership(membership))
+    if approve_membership(membership)
       flash[:success] = t("dri.flash.notice.read_access_approved")
       AuthMailer.approved_mail(user, group, @collection.title.first).deliver_now
     else
       flash[:error] = t("dri.flash.error.read_access_approved")
     end
-    
+
     redirect_to :back
   end
 
