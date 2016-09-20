@@ -1,5 +1,3 @@
-require 'utils'
-
 class DeleteCollectionJob < ActiveFedoraIdBasedJob
 
   def queue_name

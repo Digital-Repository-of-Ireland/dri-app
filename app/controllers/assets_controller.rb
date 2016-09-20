@@ -292,18 +292,13 @@ class AssetsController < ApplicationController
     end
 
     def list_files_with_surrogates(doc)
-      is_part_of_field = ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)
-      pres_only_field = ActiveFedora.index_field_mapper.solr_name('dri_properties__preservation_only', :stored_searchable)
-      files_query = "#{is_part_of_field}:\"#{doc.id}\" AND NOT #{pres_only_field}:true"
-      query = Solr::Query.new(files_query)
-
       item = {}
       item['pid'] = doc.id
       item['files'] = []
 
-      storage = StorageService.new
+      files = doc.assets
 
-      query.each_solr_document do |file_doc|
+      files.each do |file_doc|
         file_list = {}
 
         if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
@@ -312,7 +307,7 @@ class AssetsController < ApplicationController
         end
 
         if can? :read, doc
-          surrogates = storage.get_surrogates doc, file_doc
+          surrogates = doc.surrogates(file_doc.id)
           surrogates.each { |file, _loc| file_list[file] = object_file_url(object_id: doc.id, id: file_doc.id, surrogate: file) }
         end
 

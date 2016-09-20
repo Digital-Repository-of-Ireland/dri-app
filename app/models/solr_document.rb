@@ -11,6 +11,7 @@ class SolrDocument
   include DRI::Solr::Document::Relations
   include DRI::Solr::Document::Documentation
   include DRI::Solr::Document::Collection
+  include DRI::Solr::Document::Metadata
 
   # DublinCore uses the semantic field mappings below to assemble
   # an OAI-compliant Dublin Core document

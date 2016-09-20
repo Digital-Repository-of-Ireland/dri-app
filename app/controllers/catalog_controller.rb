@@ -310,20 +310,19 @@ class CatalogController < ApplicationController
   end
 
   def files_and_surrogates
-    @files = ActiveFedora::SolrService.query("active_fedora_model_ssi:\"DRI::GenericFile\" AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{@document.id}", rows: 200)
-    @files = @files.map { |f| SolrDocument.new(f) }.sort_by { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
+    # get assets including preservation
+    @files = @document.assets(true)
+    @files.sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
 
     @displayfiles = []
     @surrogates = {}
     @status = {}
 
-    storage = StorageService.new
-
     @files.each do |file|
       @displayfiles << file unless file.preservation_only?
 
       # get the surrogates for this file if they exist
-      surrogates = storage.get_surrogates(@document, file)
+      surrogates = @document.surrogates(file.id)
       if surrogates
         file_list = {}
         surrogates.each do |key, _path|

@@ -1,4 +1,19 @@
 module DRI::Solr::Document::File
+  def assets(with_preservation = false)
+    files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
+    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{id}\""
+
+    unless with_preservation
+      files_query += " AND NOT #{ActiveFedora.index_field_mapper.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
+    end
+    query = Solr::Query.new(files_query)
+
+    assets = []
+    query.each_solr_document { |sd| assets << sd }
+
+    assets
+  end
+
   def preservation_only?
     key = 'dri_properties__preservation_only_tesim'
 
@@ -41,6 +56,11 @@ module DRI::Solr::Document::File
     end
 
     governing_object[master_file_key] == ['public']
+  end
+
+  def surrogates(file_id, timeout = nil)
+    storage = StorageService.new
+    storage.get_surrogates(self, file_id, timeout)
   end
 
   def text?

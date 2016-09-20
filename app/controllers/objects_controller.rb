@@ -3,16 +3,9 @@
 require 'solr/query'
 
 class ObjectsController < BaseObjectsController
-  include Utils
-
   before_action :authenticate_user_from_token!, except: [:show, :citation]
   before_action :authenticate_user!, except: [:show, :citation]
   before_action :read_only, except: [:index, :show, :citation, :related]
-
-  DEFAULT_METADATA_FIELDS = ['title', 'subject', 'creation_date', 'published_date', 'type', 'rights', 'language', 'description', 'creator',
-       'contributor', 'publisher', 'date', 'format', 'source', 'temporal_coverage',
-       'geographical_coverage', 'geocode_point', 'geocode_box', 'institute',
-       'root_collection_id', 'isGovernedBy', 'ancestor_id', 'ancestor_title', 'role_dnr'].freeze
 
   # Displays the New Object form
   #
@@ -185,7 +178,7 @@ class ObjectsController < BaseObjectsController
   def index
     @list = []
 
-    if params.key?('objects') && params[:objects].present?
+    if params[:objects].present?
       solr_query = ActiveFedora::SolrService.construct_query_for_ids(
         params[:objects].map { |o| o.values.first }
       )
@@ -193,13 +186,12 @@ class ObjectsController < BaseObjectsController
 
       while results.has_more?
         docs = results.pop
-
         docs.each do |doc|
           solr_doc = SolrDocument.new(doc)
 
           next unless solr_doc.published?
-            
-          item = extract_metadata(solr_doc)
+
+          item = solr_doc.extract_metadata(params[:metadata])
           item.merge!(find_assets_and_surrogates(solr_doc))
 
           @list << item
@@ -214,20 +206,20 @@ class ObjectsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.json {}
+      format.json { }
     end
   end
 
   def related
     enforce_permissions!('show_digital_object', params[:object])
 
-    count = if params.key?('count') && params[:count].present? && numeric?(params[:count])
+    count = if params[:count].present? && numeric?(params[:count])
               params[:count]
             else
               3
             end
 
-    if params.key?('object') && params[:object].present?
+    if params[:object].present?
       solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
       result = ActiveFedora::SolrService.instance.conn.get(
         'select',
@@ -325,94 +317,32 @@ class ObjectsController < BaseObjectsController
       group.save
     end
 
-    def extract_metadata(doc)
-      item = {}
-
-      # Get metadata
-      item['pid'] = doc.id
-      item['metadata'] = {}
-
-      DEFAULT_METADATA_FIELDS.each do |field|
-        if params['metadata'].blank? || params['metadata'].include?(field)
-          value = if field.eql?('isGovernedBy')
-                    doc[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable, type: :symbol)]
-                  else
-                    doc[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable)]
-                  end
-
-          case field
-          when 'institute'
-            item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(doc)
-
-          when 'geocode_point'
-            if value.present?
-              geojson_points = []
-              value.each { |point| geojson_points << dcterms_point_to_geojson(point) }
-
-              item['metadata'][field] = geojson_points
-            end
-
-          when 'geocode_box'
-            if value.present?
-              geojson_boxes = []
-              value.each { |box| geojson_boxes << dcterms_box_to_geojson(box) }
-
-              item['metadata'][field] = geojson_boxes
-            end
-
-          when field.include?('date') || field == 'temporal_coverage'
-            if value.present?
-              dates = []
-              value.each { |d| dates << dcterms_period_to_string(d) }
-
-              item['metadata'][field] = dates
-            end
-
-          else
-            item['metadata'][field] = value if value
-          end
-        end
-      end
-
-      item
-    end
-
     def find_assets_and_surrogates(doc)
       item = {}
       item['files'] = []
 
       # Get files
       if can? :read, doc
-        storage = StorageService.new
+        files = doc.assets
 
-        files_query = "#{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
-        files_query += " AND NOT #{ActiveFedora.index_field_mapper.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
-        query = Solr::Query.new(files_query)
+        files.each do |file_doc|
+          file_list = {}
 
-        while query.has_more?
-          files = query.pop
-
-          files.each do |mf|
-            file_list = {}
-            file_doc = SolrDocument.new(mf)
-
-            if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
-              url = url_for(file_download_url(doc.id, file_doc.id))
-              file_list['masterfile'] = url
-            end
-
-            timeout = 60 * 60 * 24 * 7 # 1 week, maximum allowed by AWS API
-            surrogates = storage.get_surrogates doc, file_doc, timeout
-            surrogates.each do |file, _loc|
-              file_list[file] = url_for(object_file_url(
-                object_id: doc.id, id: file_doc.id, surrogate: file)
-              )
-            end
-
-            item['files'].push(file_list)
+          if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
+            url = url_for(file_download_url(doc.id, file_doc.id))
+            file_list['masterfile'] = url
           end
-        end
 
+          timeout = 60 * 60 * 24 * 7
+          surrogates = doc.surrogates(file_doc.id, timeout)
+          surrogates.each do |file, _loc|
+            file_list[file] = url_for(object_file_url(
+              object_id: doc.id, id: file_doc.id, surrogate: file)
+            )
+          end
+
+          item['files'].push(file_list)
+        end
       end
 
       item
@@ -420,6 +350,10 @@ class ObjectsController < BaseObjectsController
 
     def metadata_standard
       @object.descMetadata.class.to_s.downcase.split('::').last
+    end
+
+    def numeric?(number)
+      Integer(number) rescue false
     end
 
     def retrieve_linked_data
