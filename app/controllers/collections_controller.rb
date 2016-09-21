@@ -5,6 +5,7 @@ require 'validators'
 
 class CollectionsController < BaseObjectsController
   include Hydra::AccessControlsEnforcement
+  include DRI::MetadataBehaviour
 
   before_action :authenticate_user_from_token!, except: [:cover]
   before_action :authenticate_user!, except: [:cover]
@@ -385,7 +386,7 @@ class CollectionsController < BaseObjectsController
       end
 
       begin
-        xml = MetadataHelpers.load_xml(params[:metadata_file])
+        xml = load_xml(params[:metadata_file])
       rescue Exceptions::InvalidXML
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @error = t('dri.flash.notice.specify_valid_file')
@@ -396,7 +397,7 @@ class CollectionsController < BaseObjectsController
         return false
       end
 
-      standard = MetadataHelpers.get_metadata_standard_from_xml xml
+      standard = metadata_standard_from_xml(xml)
 
       if standard.nil?
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
@@ -405,8 +406,8 @@ class CollectionsController < BaseObjectsController
       end
 
       @object = DRI::Batch.with_standard standard
-      MetadataHelpers.set_metadata_datastream(@object, xml)
-      MetadataHelpers.checksum_metadata(@object)
+      set_metadata_datastream(@object, xml)
+      checksum_metadata(@object)
       warn_if_duplicates
 
       if @object.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)

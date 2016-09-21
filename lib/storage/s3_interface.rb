@@ -128,7 +128,7 @@ module Storage
     def file_url(bucket, key)
       create_url(bucket, key, nil, false)
     rescue Exception => e
-      Rails.logger.error "Problem getting url for file #{file}: #{e}"
+      Rails.logger.error "Problem getting url for file #{bucket} #{key}: #{e}"
     end
 
     # Save Surrogate File

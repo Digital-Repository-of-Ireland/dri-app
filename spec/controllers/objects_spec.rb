@@ -215,7 +215,7 @@ describe ObjectsController do
 
     it 'should assign valid JSON to @list' do
       request.env["HTTP_ACCEPT"] = 'application/json'
-      
+
       post :index, objects: [{ 'pid' => @object.id }]
       list = controller.instance_variable_get(:@list)
       expect { JSON.parse(list.to_json) }.not_to raise_error
@@ -223,11 +223,11 @@ describe ObjectsController do
 
     it 'should contain the metadata fields' do
       request.env["HTTP_ACCEPT"] = 'application/json'
-      
+
       post :index, objects: [{ 'pid' => @object.id }]
       list = controller.instance_variable_get(:@list)
       json = JSON.parse(list.to_json)
-      
+
       expect(json.first['metadata']['title']).to eq(@object.title)
       expect(json.first['metadata']['description']).to eq(@object.description)
       expect(json.first['metadata']['contributor']).to eq(@object.contributor)
@@ -235,11 +235,11 @@ describe ObjectsController do
 
     it 'should only return the requested fields' do
       request.env["HTTP_ACCEPT"] = 'application/json'
-      
+
       post :index, objects: [{ 'pid' => @object.id }], metadata: ['title', 'description']
       list = controller.instance_variable_get(:@list)
       json = JSON.parse(list.to_json)
-      
+
       expect(json.first['metadata']['title']).to eq(@object.title)
       expect(json.first['metadata']['description']).to eq(@object.description)
       expect(json.first['metadata']['contributor']).to be nil
@@ -258,10 +258,10 @@ describe ObjectsController do
       request.env["HTTP_ACCEPT"] = 'application/json'
       post :index, objects: [{ 'pid' => @object.id }]
       list = controller.instance_variable_get(:@list)
+
       expect(list.first).to include('files')
       expect(list.first['files'].first).to include('masterfile')
       expect(list.first['files'].first).to include('mp3')
     end
   end
-  
 end

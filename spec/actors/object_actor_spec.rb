@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'DRI::Object::Actor' do
-
+  include DRI::MetadataBehaviour
   
   before(:each) do
     @user = FactoryGirl.create(:user)
@@ -10,18 +10,18 @@ describe 'DRI::Object::Actor' do
    
     @object = FactoryGirl.create(:sound) 
     @object[:status] = "draft"
-    MetadataHelpers.checksum_metadata(@object)
+    checksum_metadata(@object)
     @object.save
 
     @object2 = FactoryGirl.create(:sound) 
     @object2[:status] = "draft"
-    MetadataHelpers.checksum_metadata(@object2)
+    checksum_metadata(@object2)
     @object2.save
 
     @object3 = FactoryGirl.create(:sound) 
     @object3[:status] = "draft"
     @object3[:title] = ["Not a Duplicate"]
-    MetadataHelpers.checksum_metadata(@object3)
+    checksum_metadata(@object3)
     @object3.save
 
     @collection.governed_items << @object

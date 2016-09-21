@@ -1,5 +1,3 @@
-require 'metadata_helpers'
-
 TITLES = {
   'qualifieddc' => 'Dublin Core Metadata',
   'record' => 'MARC Metadata',
@@ -13,6 +11,8 @@ TITLES = {
 # Creates, updates, or retrieves, the descMetadata datastream for an object
 #
 class MetadataController < CatalogController
+  include DRI::MetadataBehaviour
+
   before_action :authenticate_user_from_token!, except: :show
   before_action :authenticate_user!, except: :show
   before_action :read_only, except: :show
@@ -68,7 +68,7 @@ class MetadataController < CatalogController
     param = params[:xml].presence || params[:metadata_file].presence
 
     if param
-      xml = MetadataHelpers.load_xml(param)
+      xml = load_xml(param)
     else
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
       redirect_to controller: 'catalog', action: 'show', id: params[:id]
@@ -84,7 +84,7 @@ class MetadataController < CatalogController
 
     @object.update_metadata xml
     if @object.valid?
-      MetadataHelpers.checksum_metadata(@object)
+      checksum_metadata(@object)
       warn_if_duplicates
 
       begin

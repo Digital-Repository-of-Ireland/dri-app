@@ -3,6 +3,8 @@
 require 'solr/query'
 
 class ObjectsController < BaseObjectsController
+  include DRI::MetadataBehaviour
+
   before_action :authenticate_user_from_token!, except: [:show, :citation]
   before_action :authenticate_user!, except: [:show, :citation]
   before_action :read_only, except: [:index, :show, :citation, :related]
@@ -72,7 +74,7 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       if updated
-        MetadataHelpers.checksum_metadata(@object)
+        checksum_metadata(@object)
         @object.save
 
         warn_if_duplicates
@@ -121,7 +123,7 @@ class ObjectsController < BaseObjectsController
       create_from_form
     end
 
-    MetadataHelpers.checksum_metadata(@object)
+    checksum_metadata(@object)
 
     supported_licences
 
@@ -285,14 +287,14 @@ class ObjectsController < BaseObjectsController
   private
 
     def create_from_upload
-      xml = MetadataHelpers.load_xml(params[:metadata_file])
-      standard = MetadataHelpers.get_metadata_standard_from_xml xml
+      xml = load_xml(params[:metadata_file])
+      standard = metadata_standard_from_xml(xml)
 
       @object = DRI::Batch.with_standard standard
       @object.depositor = current_user.to_s
       @object.update_attributes create_params
 
-      MetadataHelpers.set_metadata_datastream(@object, xml)
+      set_metadata_datastream(@object, xml)
     end
 
     # If no standard parameter then default to :qdc

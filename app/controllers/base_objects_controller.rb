@@ -1,4 +1,3 @@
-require 'metadata_helpers'
 require 'institute_helpers'
 
 class BaseObjectsController < CatalogController

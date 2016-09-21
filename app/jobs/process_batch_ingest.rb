@@ -1,6 +1,8 @@
 require 'ostruct'
 
 class ProcessBatchIngest
+  include DRI::MetadataBehaviour
+
   @queue = :process_batch_ingest
 
   def self.auth_url(user, url)
@@ -61,7 +63,7 @@ class ProcessBatchIngest
   end
 
   def self.ingest_metadata(collection, user, metadata)
-    xml = MetadataHelpers.load_xml(file_data(metadata[:path]))
+    xml = load_xml(file_data(metadata[:path]))
     object = create_object(collection, user, xml)
 
     if object.valid? && object.save
@@ -101,15 +103,15 @@ class ProcessBatchIngest
   end
 
   def self.create_object(collection, user, xml)
-    standard = MetadataHelpers.get_metadata_standard_from_xml xml
+    standard = metadata_standard_from_xml(xml)
 
     object = DRI::Batch.with_standard standard
     object.governing_collection = collection
     object.depositor = user.to_s
     object.status = 'draft'
 
-    MetadataHelpers.set_metadata_datastream(object, xml)
-    MetadataHelpers.checksum_metadata(object)
+    set_metadata_datastream(object, xml)
+    checksum_metadata(object)
 
     object
   end
