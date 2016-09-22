@@ -5,7 +5,7 @@ module DRI
     def set_metadata_datastream(object, xml)
       object.update_metadata xml
     end
-      
+
     def checksum_metadata(object)
       if object.attached_files.key?(:descMetadata)
         xml = object.attached_files[:descMetadata].content
@@ -16,9 +16,7 @@ module DRI
     def load_xml(upload)
       if upload.respond_to?(:original_filename)
         types = MIME::Types.type_for(upload.original_filename)
-        if types.blank?
-          raise Exceptions::InvalidXML
-        end
+        raise Exceptions::InvalidXML if types.blank?
 
         if types.first.content_type.eql? 'application/xml'
           xml_upload = upload.tempfile
@@ -26,7 +24,11 @@ module DRI
       else
         xml_upload = upload
       end
-        
+
+      read_xml(xml_upload)
+    end
+
+    def read_xml(xml_upload)
       begin
         xml_content = xml_upload.respond_to?(:read) ? xml_upload.read : xml_upload
         xml = Nokogiri::XML(xml_content) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
@@ -37,36 +39,18 @@ module DRI
       standard = metadata_class_from_xml(xml)
       result, @msg = MetadataValidator.valid?(xml, standard)
       raise Exceptions::ValidationErrors, @msg unless result
-          
+
       xml
     end
 
     def metadata_class_from_xml(xml_text)
-      result = nil
-      xml = nil
+      xml = if xml_text.is_a? Nokogiri::XML::Document
+              xml_text
+            else
+              Nokogiri::XML xml_text
+            end
 
-      if xml_text.is_a? Nokogiri::XML::Document
-        xml = xml_text
-      else
-        xml = Nokogiri::XML xml_text
-      end
-
-      namespace = xml.namespaces
-      root_name = xml.root.name
-
-      if namespace.value?('http://purl.org/dc/elements/1.1/')
-       result = 'DRI::Metadata::QualifiedDublinCore'
-      elsif namespace.value?('http://www.loc.gov/mods/v3')
-        result = 'DRI::Metadata::Mods'
-      elsif ((xml.internal_subset != nil && xml.internal_subset.name == 'ead') || namespace.value?('urn:isbn:1-931666-22-9'))
-        result = 'DRI::Metadata::EncodedArchivalDescription'
-      elsif ['c', 'c01', 'c02', 'c03', 'c04', 'c05', 'c06', 'c07', 'c08', 'c09', 'c10', 'c11', 'c12'].include? root_name
-        result = 'DRI::Metadata::EncodedArchivalDescriptionComponent'
-      elsif namespace.value?('http://www.loc.gov/MARC21/slim')
-        result = 'DRI::Metadata::Marc'
-      end
-
-      result
+      class_from_namespace(xml)
     end
 
     def metadata_standard_from_xml(xml_text)
@@ -83,6 +67,23 @@ module DRI
         :ead_component
       when 'DRI::Metadata::Marc'
         :marc
+      end
+    end
+
+    def class_from_namespace(xml)
+      namespace = xml.namespaces
+      root_name = xml.root.name
+
+      if namespace.value?('http://purl.org/dc/elements/1.1/')
+        'DRI::Metadata::QualifiedDublinCore'
+      elsif namespace.value?('http://www.loc.gov/mods/v3')
+        'DRI::Metadata::Mods'
+      elsif (!xml.internal_subset.nil? && xml.internal_subset.name == 'ead') || namespace.value?('urn:isbn:1-931666-22-9')
+        'DRI::Metadata::EncodedArchivalDescription'
+      elsif ['c', 'c01', 'c02', 'c03', 'c04', 'c05', 'c06', 'c07', 'c08', 'c09', 'c10', 'c11', 'c12'].include? root_name
+        'DRI::Metadata::EncodedArchivalDescriptionComponent'
+      elsif namespace.value?('http://www.loc.gov/MARC21/slim')
+        'DRI::Metadata::Marc'
       end
     end
   end
