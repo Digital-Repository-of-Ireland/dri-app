@@ -20,17 +20,17 @@
 
   <h3><%= t('dri.reports.headings.permissions') %></h3>
   <table>
-    <tr><td> <%= t('dri.reports.object.institute_manager') %> </td><td> <%= @institute_manager %> </td></tr>
-    <tr><td> <%= t('dri.reports.object.read_groups') %> </td><td> <%= @read_groups %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.institute_manager') %> </td><td> <%= @permission_info[:institute_manager] %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.read_groups') %> </td><td> <%= @permission_info[:read_groups] %> </td></tr>
     <tr><td> <%= t('dri.reports.object.read_users') %> </td><td>
-      <% @read_users.each do |user| %>
+      <% @permission_info[:read_users].each do |user| %>
       <table>
         <tr><td><%= user[0] %></td><td><%= user[1] %></td><td><%= user[2] %></td></tr>
       </table>
       <% end %>
     </td></tr>
-    <tr><td> <%= t('dri.reports.object.edit_users') %> </td><td> <%= @edit_users %>  </td></tr>
-    <tr><td> <%= t('dri.reports.object.manage_users') %> </td><td><%= @manager_users %></td></tr>
+    <tr><td> <%= t('dri.reports.object.edit_users') %> </td><td> <%= @permission_info[:edit_users] %>  </td></tr>
+    <tr><td> <%= t('dri.reports.object.manage_users') %> </td><td><%= @permission_info[:manager_users] %></td></tr>
   </table>
 
   <h3><%= t('dri.reports.headings.versions') %></h3>
@@ -75,8 +75,8 @@
           <ul>
             <% versions.pop %>
             <% versions.each do |f| %>
-            <li><%= link_to(file_download_path(@object.id, file.id, :version => f.version),
-                            file_download_path(@object.id, file.id, :version => f.version)) %></li>
+            <li><%= link_to(file_download_path(@object.id, file.id, version: f.version),
+                            file_download_path(@object.id, file.id, version: f.version)) %></li>
             <% end %>
           </ul>
         </td></tr>
