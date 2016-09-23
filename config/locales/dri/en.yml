@@ -109,7 +109,7 @@ en:
         read_access: "Unable to grant read access"
         read_only: "Repository is currently undergoing maintenance. Updates are temporarily disabled."
         submitting_read_request: "Unable to submit read access request: %{error}"
-      validation_errors: "Validation Errors: %{error}"
+        validation_errors: "Validation Errors: %{error}"
       notice:
         access_controls_updated: "Access controls updated."
         added_to_collection: "Object has been added to collection."
