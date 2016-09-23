@@ -111,7 +111,7 @@ class InstitutesController < ApplicationController
       @collection.depositing_institute = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
     end
 
-    raise Exceptions::InternalError unless @collection.save
+    raise DRI::Exceptions::InternalError unless @collection.save
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.organisations_set')
@@ -126,20 +126,20 @@ class InstitutesController < ApplicationController
 
       begin
         @inst.add_logo(file_upload, { name: params[:institute][:name] })
-      rescue Exceptions::UnknownMimeType
+      rescue DRI::Exceptions::UnknownMimeType
         flash[:alert] = t('dri.flash.alert.invalid_file_type')
-      rescue Exceptions::VirusDetected => e
+      rescue DRI::Exceptions::VirusDetected => e
         flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
-      rescue Exceptions::InternalError => e
+      rescue DRI::Exceptions::InternalError => e
         logger.error "Could not save licence: #{e.message}"
-        raise Exceptions::InternalError
+        raise DRI::Exceptions::InternalError
       end
     end
 
     def add_or_remove_association(delete = false)
       # save the institute name to the properties datastream
       @collection = ActiveFedora::Base.find(params[:object], cast: true)
-      raise Exceptions::NotFound unless @collection
+      raise DRI::Exceptions::NotFound unless @collection
 
       delete ? delete_association : add_association
 
@@ -160,7 +160,7 @@ class InstitutesController < ApplicationController
         @collection.institute = @collection.institute.push(institute_name)
       end
 
-      raise Exceptions::InternalError unless @collection.save
+      raise DRI::Exceptions::InternalError unless @collection.save
 
       flash[:notice] = if params[:type].present? && params[:type] == 'depositing'
                          "#{institute_name} #{t('dri.flash.notice.organisation_depositor')}"
@@ -176,7 +176,7 @@ class InstitutesController < ApplicationController
       institutes.delete(institute_name)
       @collection.institute = institutes
 
-      raise Exceptions::InternalError unless @collection.save
+      raise DRI::Exceptions::InternalError unless @collection.save
 
       flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_removed')}"
     end

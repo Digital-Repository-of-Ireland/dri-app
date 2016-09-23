@@ -151,10 +151,10 @@ class ObjectsController < BaseObjectsController
       respond_to do |format|
         format.html do
           flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
+          raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
         end
         format.json do
-          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
+          raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
         end
       end
     end
@@ -199,12 +199,12 @@ class ObjectsController < BaseObjectsController
           @list << item
         end
 
-        raise Exceptions::NotFound if @list.empty?
+        raise DRI::Exceptions::NotFound if @list.empty?
       end
 
     else
       logger.error "No objects in params #{params.inspect}"
-      raise Exceptions::BadRequest
+      raise DRI::Exceptions::BadRequest
     end
 
     respond_to do |format|
@@ -260,7 +260,7 @@ class ObjectsController < BaseObjectsController
 
     return if request.get?
 
-    raise Exceptions::BadRequest if @object.collection?
+    raise DRI::Exceptions::BadRequest if @object.collection?
 
     unless @object.status == 'published'
       @object.status = params[:status] if params[:status].present?

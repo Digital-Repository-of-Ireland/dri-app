@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   # Adds Hydra behaviors into the application controller
   include Hydra::Controller::ControllerBehavior
 
-  include Exceptions
+  include DRI::Exceptions  
 
   include UserGroup::PermissionsCheck
   include Hydra::AccessControlsEnforcement
@@ -20,19 +20,19 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  rescue_from Exceptions::InternalError, with: :render_internal_error
-  rescue_from Exceptions::BadRequest, with: :render_bad_request
   rescue_from Hydra::AccessDenied, with: :render_access_denied
-  rescue_from Exceptions::NotFound, with: :render_not_found
-  rescue_from Exceptions::InvalidXML do |exception|
+  rescue_from DRI::Exceptions::InternalError, with: :render_internal_error
+  rescue_from DRI::Exceptions::BadRequest, with: :render_bad_request
+  rescue_from DRI::Exceptions::NotFound, with: :render_not_found
+  rescue_from DRI::Exceptions::InvalidXML do |exception|
     flash[:error] = t('dri.flash.alert.invalid_xml', error: exception)
-    render_bad_request(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
+    render_bad_request(DRI::Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
   end
-  rescue_from Exceptions::ValidationErrors do |exception|
+  rescue_from DRI::Exceptions::ValidationErrors do |exception|
     flash[:error] = t('dri.flash.error.validation_errors', error: exception)
-    render_bad_request(Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
+    render_bad_request(DRI::Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
   end
-  rescue_from Exceptions::ResqueError, with: :render_resque_error
+  rescue_from DRI::Exceptions::ResqueError, with: :render_resque_error
 
   def set_locale
     current_lang = http_accept_language.preferred_language_from(Settings.interface.languages)
@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
 
   def retrieve_object!(id)
     objs = ActiveFedora::Base.find(id, cast: true)
-    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if objs.nil?
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if objs.nil?
     objs
   end
 

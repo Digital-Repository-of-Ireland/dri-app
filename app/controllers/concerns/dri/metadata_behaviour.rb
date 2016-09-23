@@ -16,7 +16,7 @@ module DRI
     def load_xml(upload)
       if upload.respond_to?(:original_filename)
         types = MIME::Types.type_for(upload.original_filename)
-        raise Exceptions::InvalidXML if types.blank?
+        raise DRI::Exceptions::InvalidXML if types.blank?
 
         if types.first.content_type.eql? 'application/xml'
           xml_upload = upload.tempfile
@@ -33,12 +33,12 @@ module DRI
         xml_content = xml_upload.respond_to?(:read) ? xml_upload.read : xml_upload
         xml = Nokogiri::XML(xml_content) { |config| config.options = Nokogiri::XML::ParseOptions::STRICT }
       rescue Nokogiri::XML::SyntaxError => e
-        raise Exceptions::InvalidXML, e
+        raise DRI::Exceptions::InvalidXML, e
       end
 
       standard = metadata_class_from_xml(xml)
       result, @msg = MetadataValidator.valid?(xml, standard)
-      raise Exceptions::ValidationErrors, @msg unless result
+      raise DRI::Exceptions::ValidationErrors, @msg unless result
 
       xml
     end

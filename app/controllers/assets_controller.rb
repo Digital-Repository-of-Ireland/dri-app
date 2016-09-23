@@ -174,7 +174,7 @@ class AssetsController < ApplicationController
   def list_assets
     @list = []
 
-    raise Exceptions::BadRequest unless params[:objects].present?
+    raise DRI::Exceptions::BadRequest unless params[:objects].present?
 
     solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(
       params[:objects].map { |o| o.values.first }
@@ -187,7 +187,7 @@ class AssetsController < ApplicationController
       end
     end
 
-    raise Exceptions::NotFound if @list.empty?
+    raise DRI::Exceptions::NotFound if @list.empty?
 
     respond_to do |format|
       format.json
@@ -224,10 +224,10 @@ class AssetsController < ApplicationController
       @file.add_file filedata, options
 
       begin
-        raise Exceptions::InternalError unless @file.save!
+        raise DRI::Exceptions::InternalError unless @file.save!
       rescue ActiveRecord::ActiveRecordError => e
         logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
-        raise Exceptions::InternalError
+        raise DRI::Exceptions::InternalError
       end
     end
 
@@ -237,11 +237,11 @@ class AssetsController < ApplicationController
     end
 
     def download_surrogate
-      raise Exceptions::BadRequest unless params[:object_id].present?
+      raise DRI::Exceptions::BadRequest unless params[:object_id].present?
       raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
 
       file = file_path(params[:object_id], params[:id], params[:surrogate])
-      raise Exceptions::NotFound unless file
+      raise DRI::Exceptions::NotFound unless file
 
       type, ext = mime_type(file)
 
@@ -260,11 +260,11 @@ class AssetsController < ApplicationController
     end
 
     def show_surrogate
-      raise Exceptions::BadRequest unless params[:object_id].present?
+      raise DRI::Exceptions::BadRequest unless params[:object_id].present?
       raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
 
       file = file_path(params[:object_id], params[:id], params[:surrogate])
-      raise Exceptions::NotFound unless file
+      raise DRI::Exceptions::NotFound unless file
 
       if file =~ /\A#{URI.regexp(['http', 'https'])}\z/
         redirect_to file
@@ -326,9 +326,9 @@ class AssetsController < ApplicationController
 
       LocalFile.where(query, search_params).take
     rescue ActiveRecord::RecordNotFound
-      raise Exceptions::InternalError, "Unable to find requested file"
+      raise DRI::Exceptions::InternalError, "Unable to find requested file"
     rescue ActiveRecord::ActiveRecordError
-      raise Exceptions::InternalError, "Error finding file"
+      raise DRI::Exceptions::InternalError, "Error finding file"
     end
 
     def local_file_ingest(name)
@@ -372,12 +372,12 @@ class AssetsController < ApplicationController
     def validate_upload(file_upload)
       @mime_type = Validators.file_type?(file_upload)
       Validators.validate_file(file_upload, @mime_type)
-    rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
+    rescue DRI::Exceptions::UnknownMimeType, DRI::Exceptions::WrongExtension, DRI::Exceptions::InappropriateFileType
       message = t('dri.flash.alert.invalid_file_type')
       flash[:alert] = message
       @warnings = message
-    rescue Exceptions::VirusDetected => e
+    rescue DRI::Exceptions::VirusDetected => e
       flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
-      raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', name: file_upload.original_filename)
+      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', name: file_upload.original_filename)
     end
 end

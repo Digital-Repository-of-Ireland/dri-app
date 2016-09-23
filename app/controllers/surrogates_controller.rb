@@ -2,13 +2,13 @@ class SurrogatesController < ApplicationController
   before_action :read_only, except: [:show]
 
   def show
-    raise Exceptions::BadRequest unless params[:id].present?
+    raise DRI::Exceptions::BadRequest unless params[:id].present?
     raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can? :read, params[:id]
 
     @surrogates = {}
 
     object_docs = solr_query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
-    raise Exceptions::NotFound if object_docs.empty?
+    raise DRI::Exceptions::NotFound if object_docs.empty?
 
     all_surrogates object_docs
 
@@ -18,12 +18,12 @@ class SurrogatesController < ApplicationController
   end
 
   def update
-    raise Exceptions::BadRequest unless params[:id].present?
+    raise DRI::Exceptions::BadRequest unless params[:id].present?
 
     enforce_permissions!('edit', params[:id])
 
     result_docs = solr_query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
-    raise Exceptions::NotFound if result_docs.empty?
+    raise DRI::Exceptions::NotFound if result_docs.empty?
 
     result_docs.each do |r|
       doc = SolrDocument.new(r)
@@ -108,11 +108,11 @@ class SurrogatesController < ApplicationController
     def validate_uri(surrogate_url)
       uri = URI(surrogate_url)
 
-      raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_url') unless %w(http https).include? uri.scheme
-      raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_url') unless uri.host == URI.parse(Settings.S3.server).host
+      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_url') unless %w(http https).include? uri.scheme
+      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_url') unless uri.host == URI.parse(Settings.S3.server).host
 
       uri
     rescue URI::InvalidURIError
-      raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_url')
+      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_url')
     end
 end

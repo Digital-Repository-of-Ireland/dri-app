@@ -88,20 +88,20 @@ class MetadataController < CatalogController
       warn_if_duplicates
 
       begin
-        raise Exceptions::InternalError unless @object.attached_files[:descMetadata].save
+        raise DRI::Exceptions::InternalError unless @object.attached_files[:descMetadata].save
       rescue RuntimeError => e
         logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
-        raise Exceptions::InternalError
+        raise DRI::Exceptions::InternalError
       end
 
       begin
-        raise Exceptions::InternalError unless @object.save
+        raise DRI::Exceptions::InternalError unless @object.save
 
         actor.version_and_record_committer
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
         logger.error "Could not save object #{@object.id}: #{e.message}"
-        raise Exceptions::InternalError
+        raise DRI::Exceptions::InternalError
       end
     else
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)

@@ -177,12 +177,12 @@ class CollectionsController < BaseObjectsController
     solr_result = ActiveFedora::SolrService.query(
       ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])
     )
-    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if solr_result.blank?
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if solr_result.blank?
 
     object = SolrDocument.new(solr_result.first)
 
     cover_url = object.cover_image
-    raise Exceptions::NotFound if cover_url.blank?
+    raise DRI::Exceptions::NotFound if cover_url.blank?
     if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
       redirect_to cover_url
       return
@@ -193,7 +193,7 @@ class CollectionsController < BaseObjectsController
 
     storage = StorageService.new
     cover_file = storage.surrogate_url(object.id, cover_name)
-    raise Exceptions::NotFound unless cover_file
+    raise DRI::Exceptions::NotFound unless cover_file
 
     response.headers['Accept-Ranges'] = 'bytes'
     response.headers['Content-Length'] = File.size(cover_file).to_s
@@ -238,7 +238,7 @@ class CollectionsController < BaseObjectsController
           unless @object.nil? || @object.valid?
             flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
           end
-          raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
+          raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
         end
         format.json do
           unless @object.nil? || @object.valid?
@@ -277,7 +277,7 @@ class CollectionsController < BaseObjectsController
     enforce_permissions!('manage_collection', params[:id])
 
     result = ActiveFedora::SolrService.query("id:#{params[:id]}")
-    raise Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if result.blank?
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if result.blank?
 
     @object = SolrDocument.new(result.first)
 
@@ -292,7 +292,7 @@ class CollectionsController < BaseObjectsController
 
     return if request.get?
 
-    raise Exceptions::BadRequest unless @object.collection?
+    raise DRI::Exceptions::BadRequest unless @object.collection?
 
     if params[:apply_all].present? && params[:apply_all] == 'yes'
       review_all unless @object.governed_items.blank?
@@ -314,7 +314,7 @@ class CollectionsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
 
-    raise Exceptions::BadRequest unless @object.collection?
+    raise DRI::Exceptions::BadRequest unless @object.collection?
 
     begin
       publish_collection
@@ -387,11 +387,11 @@ class CollectionsController < BaseObjectsController
 
       begin
         xml = load_xml(params[:metadata_file])
-      rescue Exceptions::InvalidXML
+      rescue DRI::Exceptions::InvalidXML
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @error = t('dri.flash.notice.specify_valid_file')
         return false
-      rescue Exceptions::ValidationErrors => e
+      rescue DRI::Exceptions::ValidationErrors => e
         flash[:notice] = e.message
         @error = e.message
         return false
@@ -468,7 +468,7 @@ class CollectionsController < BaseObjectsController
       Sufia.queue.push(DeleteCollectionJob.new(@object.id))
     rescue Exception => e
       logger.error "Unable to delete collection: #{e.message}"
-      raise Exceptions::ResqueError
+      raise DRI::Exceptions::ResqueError
     end
 
     def publish_collection
@@ -482,7 +482,7 @@ class CollectionsController < BaseObjectsController
       )
     rescue Exception => e
       logger.error "Unable to submit publish job: #{e.message}"
-      raise Exceptions::ResqueError
+      raise DRI::Exceptions::ResqueError
     end
 
     def respond_with_exception(exception)
