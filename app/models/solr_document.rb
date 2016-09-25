@@ -53,34 +53,11 @@ class SolrDocument
   end
 
   def depositing_institute
-    collection? ? collection_depositing_institute : inherited_depositing_institute(self)
-  end
+    institute_name = ancestor_field(ActiveFedora.index_field_mapper.solr_name('depositing_institute', :displayable, type: :string))
 
-  def collection_depositing_institute
-    if self[ActiveFedora.index_field_mapper.solr_name('depositing_institute', :displayable, type: :string)].present?
-      Institute.where(name: self[ActiveFedora.index_field_mapper.solr_name('depositing_institute', :displayable, type: :string)]).first
-    else
-      return nil if root_collection?
+    return Institute.find_by(name: institute_name) if institute_name
 
-      inherited_depositing_institute(self)
-    end
-  end
-
-  def inherited_depositing_institute(doc)
-    return nil unless doc[ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
-
-    id = doc[ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)].first
-    institute_key = ActiveFedora.index_field_mapper.solr_name('depositing_institute', :displayable, type: :string)
-    governed_key = ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
-
-    parent_doc = ActiveFedora::SolrService.query("id:#{id}",
-                                                 defType: 'edismax',
-                                                 rows: '1',
-                                                 fl: "id,#{governed_key},#{institute_key}").first
-
-    return Institute.where(name: parent_doc[institute_key]).first if parent_doc[institute_key].present?
-
-    inherited_depositing_institute(SolrDocument.new(parent_doc))
+    nil
   end
 
   def editable?
@@ -95,6 +72,26 @@ class SolrDocument
     label = FILE_TYPE_LABELS[self[file_type_key].first.to_s.downcase] || 'Unknown'
 
     I18n.t("dri.data.types.#{label}")
+  end
+
+  # Get the earliest ancestor for any inherited attribute
+  def ancestor_field(field, ancestor = nil)
+    governed_key = ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
+
+    current_doc = ancestor || self
+    begin
+      return current_doc[field] if current_doc[field].present?
+      return nil if current_doc[governed_key].nil?
+    rescue NoMethodError
+      return nil
+    end
+
+    id = current_doc[governed_key].first
+    ancestor_doc = ActiveFedora::SolrService.query("id:#{id}",
+                                                 defType: 'edismax',
+                                                 rows: '1',
+                                                 fl: "id,#{governed_key},#{field}").first
+    ancestor_field(field, ancestor_doc)
   end
 
   def has_doi?
@@ -125,7 +122,7 @@ class SolrDocument
   def collection?
     is_collection_key = ActiveFedora.index_field_mapper.solr_name('is_collection')
 
-    self[is_collection_key].present? && self[is_collection_key].include?('true')
+    self[is_collection_key].present? && (self[is_collection_key] || self[is_collection_key].include?('true'))
   end
 
   def root_collection?

@@ -288,7 +288,7 @@ class CatalogController < ApplicationController
   # method to find the Institutes associated with and available to add to or remove from the current collection (document)
   def available_institutes
     # the full list of Institutes
-    @institutes = InstituteHelpers.get_all_institutes
+    @institutes = Institute.all
     # the Institutes currently associated with this collection if any
     @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
     # the Depositing Institute if any

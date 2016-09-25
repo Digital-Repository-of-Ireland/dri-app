@@ -2,42 +2,7 @@ module InstituteHelpers
 
   
   def self.get_institutes_from_solr_doc(doc)
-    doc[ActiveFedora::SolrQueryBuilder.solr_name('type', :stored_searchable, type: :string)].include?('Collection') ? get_collection_institutes_from_solr_doc(doc) : self.get_object_institutes_from_solr_doc(doc)
-  end
-
-
-  def self.get_depositing_institute_from_solr_doc(doc)
-    doc.collection? ? get_collection_depositing_institute_from_solr_doc(doc) :
-                         get_inherited_depositing_institute_from_solr_doc(doc)
-  end
-
-
-  def self.get_collection_depositing_institute_from_solr_doc(doc)
-    if doc[ActiveFedora::SolrQueryBuilder.solr_name('depositing_institute', :displayable, type: :string)].present?
-      Institute.where(name: doc[ActiveFedora::SolrQueryBuilder.solr_name('depositing_institute', :displayable, type: :string)]).first
-    else
-      return nil if doc.root_collection?
-
-      get_inherited_depositing_institute_from_solr_doc(doc)
-    end
-  end
-
-
-  def self.get_inherited_depositing_institute_from_solr_doc(doc)
-    return nil unless doc[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
-
-    id = doc[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)].first
-    institute_key = ActiveFedora::SolrQueryBuilder.solr_name('depositing_institute', :displayable, type: :string)
-    governed_key = ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
-
-    parent_doc = ActiveFedora::SolrService.query("id:#{id}",
-                                                 defType: 'edismax',
-                                                 rows: '1',
-                                                 fl: "id,#{governed_key},#{institute_key}").first
-
-    return Institute.where(name: parent_doc[institute_key]).first if parent_doc[institute_key].present?
-
-    get_inherited_depositing_institute_from_solr_doc(SolrDocument.new(parent_doc))
+    doc.collection? ? get_collection_institutes_from_solr_doc(doc) : self.get_object_institutes_from_solr_doc(doc)
   end
 
   def self.get_object_institutes_from_solr_doc(doc, depositing = nil)
@@ -91,9 +56,5 @@ module InstituteHelpers
       end
     end
     myinstitutes
-  end
-
-  def self.get_all_institutes
-    Institute.all
   end
 end
