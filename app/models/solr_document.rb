@@ -122,7 +122,13 @@ class SolrDocument
   def collection?
     is_collection_key = ActiveFedora.index_field_mapper.solr_name('is_collection')
 
-    self[is_collection_key].present? && (self[is_collection_key] || self[is_collection_key].include?('true'))
+    return false unless self[is_collection_key].present?
+
+    if self[is_collection_key].is_a?(Array)
+      is_collection = self[is_collection_key].first
+    end
+
+    is_collection == 'true' ? true : false
   end
 
   def root_collection?
