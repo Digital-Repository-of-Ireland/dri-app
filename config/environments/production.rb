@@ -1,5 +1,5 @@
 ENV["RAILS_RELATIVE_URL_ROOT"] = "/"
-NuigRnag::Application.configure do
+DriApp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # the following might fail for high_voltage
