@@ -1,5 +1,3 @@
-require 'institute_helpers'
-
 class BaseObjectsController < CatalogController
   include DRI::Doi
 

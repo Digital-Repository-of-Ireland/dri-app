@@ -26,7 +26,7 @@ module DRI
 
             case field
             when 'institute'
-              item['metadata'][field] = InstituteHelpers.get_institutes_from_solr_doc(self)
+              item['metadata'][field] = institutes
 
             when 'geocode_point'
               if value.present?

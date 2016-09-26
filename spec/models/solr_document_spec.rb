@@ -16,12 +16,17 @@ describe SolrDocument do
     @institute.url = "http://www.test.ie"
     @institute.save
 
+    @institute_b = Institute.new
+    @institute_b.name = "Second Test Institute"
+    @institute_b.url = "http://www.secondtest.ie"
+    @institute_b.save
+
     @dinstitute = Institute.new
     @dinstitute.name = "Depositing Test Institute"
     @dinstitute.url = "http://www.test.ie"
     @dinstitute.save
   
-    @collection.institute = [@institute.name]
+    @collection.institute = [@institute.name, @institute_b.name]
     @collection.depositing_institute = @dinstitute.name
     @collection.save
   end
@@ -47,6 +52,22 @@ describe SolrDocument do
       doc = SolrDocument.new(@object.to_solr)
       expect(doc.depositing_institute).to eq @dinstitute
     end
+  end
 
+  context "when returning institutes" do
+    it "returns all a collections institutes" do
+      doc = SolrDocument.new(@collection.to_solr)
+      expect(doc.institutes).to match_array([@institute, @institute_b])
+    end
+
+    it "returns inherited collection institutes" do
+      doc = SolrDocument.new(@subcollection.to_solr)
+      expect(doc.institutes).to match_array([@institute, @institute_b])
+    end
+
+    it "returns collection institutes for object" do
+      doc = SolrDocument.new(@object.to_solr)
+      expect(doc.institutes).to match_array([@institute, @institute_b])
+    end
   end
 end

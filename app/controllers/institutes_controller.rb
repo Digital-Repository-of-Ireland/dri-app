@@ -1,6 +1,4 @@
 class InstitutesController < ApplicationController
-  require 'institute_helpers'
-
   before_action :authenticate_user_from_token!, except: [:index, :logo]
   before_action :authenticate_user!, except: [:index, :logo]
   before_action :check_for_cancel, only: [:create, :update]

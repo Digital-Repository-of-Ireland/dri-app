@@ -1,5 +1,4 @@
 # -*- encoding : utf-8 -*-
-require 'institute_helpers'
 require 'iso8601'
 require 'iso-639'
 
@@ -290,7 +289,7 @@ class CatalogController < ApplicationController
     # the full list of Institutes
     @institutes = Institute.all
     # the Institutes currently associated with this collection if any
-    @collection_institutes = InstituteHelpers.get_institutes_from_solr_doc(@document)
+    @collection_institutes = @document.institutes
     # the Depositing Institute if any
     @depositing_institute = @document.depositing_institute
 
@@ -301,7 +300,7 @@ class CatalogController < ApplicationController
     depositing_institute_array.push(@depositing_institute.name) unless @depositing_institute.blank?
     @institutes.each { |inst| institutes_array.push(inst.name) }
 
-    @collection_institutes.each { |inst| collection_institutes_array.push(inst.name) } if @collection_institutes.any?
+    @collection_institutes.each { |inst| collection_institutes_array.push(inst.name) } unless @collection_institutes.empty?
 
     # exclude the associated and depositing Institutes from the list of Institutes available
     @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array

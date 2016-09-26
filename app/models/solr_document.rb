@@ -139,6 +139,13 @@ class SolrDocument
     collection? && !root_collection?
   end
 
+  def institutes
+    institute_names = ancestor_field(ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string))
+    institutes = Institute.where(name: institute_names)
+
+    institutes.to_a 
+  end
+
   def licence
     licence_key = ActiveFedora.index_field_mapper.solr_name('licence', :stored_searchable, type: :string).to_sym
 

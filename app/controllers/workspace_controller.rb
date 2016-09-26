@@ -1,6 +1,4 @@
 # -*- encoding : utf-8 -*-
-require 'institute_helpers'
-
 # Blacklight catalog controller
 #
 class WorkspaceController < ApplicationController
