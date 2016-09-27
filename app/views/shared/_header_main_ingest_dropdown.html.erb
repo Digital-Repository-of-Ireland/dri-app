@@ -19,7 +19,7 @@ controller.controller_name.eql?('workspace') || controller_name.eql?('manage_use
       <%= link_to t('dri.headerlinks.my_collections'), workspace_path(:mode => "collections"), :id => "my_collections", :tabindex => "-1" %>
     </li>
 
-    <% if has_tasks? %>
+    <% if tasks? %>
       <% if (controller.controller_name.eql?('user_background_tasks')) %>
         <li role="presentation" class="active">
       <% else %>

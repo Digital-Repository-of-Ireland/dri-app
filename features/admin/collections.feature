@@ -50,14 +50,6 @@ Scenario: Updating a collection with invalid metadata
   And I press the button to "save collection changes"
   Then I should not see a success message for updating a collection
 
-Scenario: Updating a collection with invalid permissions
-  Given a collection with pid "collperm" created by "user1"
-  When I go to the "collection" "show" page for "collperm"
-  And I follow the link to edit access controls
-  And I enter invalid permissions for a collection
-  And I press the button to "save access controls"
-  Then I should see a failure message for invalid update collection
-
 Scenario Outline: Adding a Digital Object in a governing collection
   Given a Digital Object with pid "<object_pid>", title "<object_title>", description "<object_desc>", type "<object_type>" and rights "<object_rights>"
   And a collection with pid "<collection_pid>"

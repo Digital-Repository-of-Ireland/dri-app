@@ -1,4 +1,4 @@
-require 'metadata_helpers'
+include DRI::MetadataBehaviour
 
 Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = @random_pid if (pid == "@random")
@@ -53,7 +53,7 @@ Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(
   
   digital_object.governing_collection = ActiveFedora::Base.find(coll, cast: true) if coll
 
-  MetadataHelpers.checksum_metadata(digital_object)
+  checksum_metadata(digital_object)
   digital_object.save!
 end
 
@@ -81,7 +81,7 @@ Given /^the object with pid "(.*?)" is in the collection with pid "(.*?)"$/ do |
   object = ActiveFedora::Base.find(objid, {:cast => true})
   collection = ActiveFedora::Base.find(colid, {:cast => true})
   object.governing_collection = collection
-  MetadataHelpers.checksum_metadata(object)
+  checksum_metadata(object)
   object.update_index
   object.save
   collection.save

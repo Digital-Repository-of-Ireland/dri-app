@@ -1,15 +1,17 @@
 require 'ostruct'
 
 class ProcessBatchIngest
+  include DRI::MetadataBehaviour
+
   @queue = :process_batch_ingest
-  
+
   def self.auth_url(user, url)
     "#{url}?user_email=#{user.email}&user_token=#{user.authentication_token}"
   end
 
   def self.perform(user_id, collection_id, ingest_json)
     ingest_batch = JSON.parse(ingest_json)
-    
+
     user = UserGroup::User.find(user_id)
     collection = DRI::Batch.find(collection_id, cast: true)
 
@@ -33,43 +35,43 @@ class ProcessBatchIngest
   end
 
   def self.ingest_assets(user, object, assets)
-    assets.each do | asset|
+    assets.each do |asset|
       generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
       generic_file.batch = object
       generic_file.apply_depositor_metadata(user)
       generic_file.preservation_only = 'true' if asset[:label] == 'preservation'
 
-      filename = File.basename(asset[:path]) 
-      if create_file(asset[:path], generic_file, 'content', filename)
-        saved = DRI::Asset::Actor.new(generic_file, user).create_external_content(
-          URI.escape(download_url(generic_file)), 
-          'content', filename)
-      else
-        saved = false
-      end
-      
-      if saved
-        message = { status_code: 'COMPLETED', 
-          file_location: Rails.application.routes.url_helpers.object_file_path(object, generic_file) }
-      else
-        message = { status_code: 'FAILED' }
-      end
+      filename = File.basename(asset[:path])
+      saved = if create_file(asset[:path], generic_file, 'content', filename)
+                DRI::Asset::Actor.new(generic_file, user).create_external_content(
+                  URI.escape(download_url(generic_file)),
+                  'content', filename
+                )
+              else
+                false
+              end
+
+      message = if saved
+                  { status_code: 'COMPLETED',
+                    file_location: Rails.application.routes.url_helpers.object_file_path(object, generic_file) }
+                else
+                  { status_code: 'FAILED' }
+                end
 
       send_message(auth_url(user, asset[:callback_url]), message)
     end
   end
 
   def self.ingest_metadata(collection, user, metadata)
-    xml = MetadataHelpers.load_xml(file_data(metadata[:path]))
+    xml = load_xml(file_data(metadata[:path]))
     object = create_object(collection, user, xml)
-    
+
     if object.valid? && object.save
       create_reader_group if object.collection?
-      
+
       DRI::Object::Actor.new(object, user).version_and_record_committer
-      status = 'COMPLETED'
-      message = { status_code: 'COMPLETED', 
-        file_location: Rails.application.routes.url_helpers.catalog_path(object) }
+      message = { status_code: 'COMPLETED',
+                  file_location: Rails.application.routes.url_helpers.catalog_path(object) }
     else
       message = { status_code: 'FAILED', file_location: "error:#{object.errors.full_messages.inspect}" }
     end
@@ -101,29 +103,31 @@ class ProcessBatchIngest
   end
 
   def self.create_object(collection, user, xml)
-    standard = MetadataHelpers.get_metadata_standard_from_xml xml
+    standard = metadata_standard_from_xml(xml)
 
     object = DRI::Batch.with_standard standard
     object.governing_collection = collection
     object.depositor = user.to_s
     object.status = 'draft'
 
-    MetadataHelpers.set_metadata_datastream(object, xml)
-    MetadataHelpers.checksum_metadata(object)
+    set_metadata_datastream(object, xml)
+    checksum_metadata(object)
 
     object
   end
 
   def self.create_reader_group(object)
-    group = UserGroup::Group.new(name: "#{object.id}", 
-      description: "Default Reader group for collection #{object.id}")
+    group = UserGroup::Group.new(
+      name: object.id.to_s,
+      description: "Default Reader group for collection #{object.id}"
+    )
     group.reader_group = true
     group.save
   end
 
   def self.download_url(generic_file)
-    Rails.application.routes.url_helpers.url_for controller: 'assets', 
-         action: 'download', object_id: generic_file.batch.id, id: generic_file.id
+    Rails.application.routes.url_helpers.url_for controller: 'assets',
+             action: 'download', object_id: generic_file.batch.id, id: generic_file.id
   end
 
   def self.file_data(path)
@@ -153,8 +157,8 @@ class ProcessBatchIngest
       download = { label: file['label'], path: download_location, callback_url: file['callback_url'] }
       downloaded_files << download
     end
-    
-    return downloaded_files
+
+    downloaded_files
   end
 
   def self.send_message(url, message)

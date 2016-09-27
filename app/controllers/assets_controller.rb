@@ -1,10 +1,9 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
 class AssetsController < ApplicationController
-
-  before_filter :authenticate_user_from_token!, only: [:list_assets]
-  before_filter :authenticate_user!, only: [:list_assets]
-  before_filter :read_only, except: [:show, :download, :list_assets, ]
+  before_action :authenticate_user_from_token!, only: [:list_assets]
+  before_action :authenticate_user!, only: [:list_assets]
+  before_action :read_only, except: [:show, :download, :list_assets]
 
   require 'validators'
 
@@ -19,8 +18,6 @@ class AssetsController < ApplicationController
       show_surrogate
       return
     else
-      datastream = params[:datastream].presence || 'content'
-
       result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
       @document = SolrDocument.new(result.first)
 
@@ -41,7 +38,7 @@ class AssetsController < ApplicationController
   # By default, it retrieves the file in the content datastream
   def download
     if params[:surrogate].present?
-      download_surrogate 
+      download_surrogate
       return
     end
 
@@ -51,8 +48,6 @@ class AssetsController < ApplicationController
     @generic_file = retrieve_object! params[:id]
     if @generic_file
       can_view?
-
-      @datastream = params[:datastream].presence || 'content'
 
       if local_file
         response.headers['Content-Length'] = File.size?(local_file.path).to_s
@@ -113,12 +108,12 @@ class AssetsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to object_file_url(params[:object_id], @generic_file.id) }
-      format.json {
+      format.json do
         response = { checksum: @file.checksum }
         response[:warning] = @warnings if @warnings
 
         render json: response, status: :ok
-      }
+      end
     end
   end
 
@@ -164,12 +159,12 @@ class AssetsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to controller: 'catalog', action: 'show', id: params[:object_id] }
-      format.json  {
+      format.json do
         response = { checksum: @file.checksum }
         response[:warnings] = @warnings if @warnings
 
         render json: response, status: :created
-      }
+      end
     end
   end
 
@@ -177,10 +172,11 @@ class AssetsController < ApplicationController
   def list_assets
     @list = []
 
-    raise Exceptions::BadRequest unless params[:objects].present?
+    raise DRI::Exceptions::BadRequest unless params[:objects].present?
 
     solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(
-      params[:objects].map{ |o| o.values.first })
+      params[:objects].map { |o| o.values.first }
+    )
     result_docs = Solr::Query.new(solr_query)
     result_docs.each_solr_document do |doc|
       if doc.published?
@@ -189,7 +185,7 @@ class AssetsController < ApplicationController
       end
     end
 
-    raise Exceptions::NotFound if @list.empty?
+    raise DRI::Exceptions::NotFound if @list.empty?
 
     respond_to do |format|
       format.json
@@ -198,185 +194,188 @@ class AssetsController < ApplicationController
 
   private
 
-  def mime_type(file_uri)
-    uri = URI.parse(file_uri)
-    file_name = File.basename(uri.path)
-    ext = File.extname(file_name)
+    def mime_type(file_uri)
+      uri = URI.parse(file_uri)
+      file_name = File.basename(uri.path)
+      ext = File.extname(file_name)
 
-    return MIME::Types.type_for(file_name).first.content_type, ext
-  end
-
-  def can_view?
-    if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
-      raise Hydra::AccessDenied.new('This item is not available. You do not have sufficient access privileges to view the master file(s).', :read_master, params[:object_id])
-    end
-  end
-
-  def create_file(filedata, generic_file, datastream, checksum, filename = nil)
-    @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
-    options = {}
-    options[:mime_type] = @mime_type
-    options[:checksum] = checksum
-    options[:file_name] = filename unless filename.nil?
-
-    @file.add_file filedata, options
-
-    begin
-      raise Exceptions::InternalError unless @file.save!
-    rescue ActiveRecord::ActiveRecordError => e
-      logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
-      raise Exceptions::InternalError
-    end
-  end
-
-  def delete_surrogates(bucket_name, file_prefix)
-    storage = StorageService.new
-    storage.delete_surrogates(bucket_name, file_prefix)
-  end
-
-  def download_surrogate
-    raise Exceptions::BadRequest unless params[:object_id].present?
-    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:object_id])
-
-    file = file_path(params[:object_id], params[:id], params[:surrogate])
-    raise Exceptions::NotFound unless file
-    
-    type, ext = mime_type(file)
-
-    name = "#{params[:id]}#{ext}"
-
-    open(file) do |f|
-      send_data f.read, filename: name, 
-        type: type, 
-        disposition: 'attachment', 
-        stream: 'true', 
-        buffer_size: '4096'
-    end
-  end
-
-  def show_surrogate
-    raise Exceptions::BadRequest unless params[:object_id].present?
-    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless (can? :read, params[:object_id])
-
-    file = file_path(params[:object_id], params[:id], params[:surrogate])
-    raise Exceptions::NotFound unless file
-
-    if file =~ /\A#{URI::regexp(['http', 'https'])}\z/
-      redirect_to file
-      return
+      return MIME::Types.type_for(file_name).first.content_type, ext
     end
 
-    type, ext = mime_type(file)
-
-    # For derivatives stored on the local file system
-    response.headers['Accept-Ranges'] = 'bytes'
-    response.headers['Content-Length'] = File.size(file).to_s
-    send_file file, { type: type, disposition: 'inline' }
-  end
-
-  def download_url
-    url_for controller: 'assets', action: 'download', object_id: @generic_file.batch.id, id: @generic_file.id
-  end
-
-  def file_path(object_id, file_id, surrogate)
-    storage = StorageService.new
-    storage.surrogate_url(object_id, 
-           "#{file_id}_#{surrogate}")
-  end
-  
-  def list_files_with_surrogates(doc)
-    files_query = "#{ActiveFedora::SolrQueryBuilder.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{doc.id}\""
-    files_query += " AND NOT #{ActiveFedora::SolrQueryBuilder.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
-    query = Solr::Query.new(files_query)
-
-    item = {}
-    item['pid'] = doc.id
-    item['files'] = []
-
-    storage = StorageService.new
-
-    query.each_solr_document do |file_doc|
-      file_list = {}
-
-      if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
-        url = url_for(file_download_url(doc.id, file_doc.id))
-        file_list['masterfile'] = url
-      end
-
-      if can? :read, doc
-        surrogates = storage.get_surrogates doc, file_doc
-        surrogates.each { |file, _loc| file_list[file] = object_file_url(object_id: doc.id, id: file_doc.id, surrogate: file) }
-      end
-
-      item['files'].push(file_list)
-    end
-
-    item
-  end
-
-  def local_file
-    search_params = { f: @generic_file.id, d: @datastream }
-    search_params[:v] = params[:version] if params[:version].present?
-
-    query = 'fedora_id LIKE :f AND ds_id LIKE :d'
-    query << ' AND version = :v' if search_params[:v].present?
-
-    LocalFile.where(query, search_params).take
-  rescue ActiveRecord::RecordNotFound
-    raise Exceptions::InternalError, "Unable to find requested file"
-  rescue ActiveRecord::ActiveRecordError
-    raise Exceptions::InternalError, "Error finding file"
-  end
-
-  def local_file_ingest(name)
-    upload_dir = Rails.root.join(Settings.dri.uploads)
-    File.new(File.join(upload_dir, name))
-  end
-
-  def status(file_id)
-    ingest_status = IngestStatus.where(asset_id: file_id)
-
-    @status = {}
-    if ingest_status.present?
-      status = ingest_status.first
-      @status[:status] = status.status
-
-      @status[:jobs] = {}
-      status.job_status.each do |job|
-        @status[:jobs][job.job] = { status: job.status, message: job.message }
+    def can_view?
+      if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
+        raise Hydra::AccessDenied.new(
+          t('dri.views.exceptions.view_permission'),
+          :read_master,
+          params[:object_id]
+        )
       end
     end
-  end
 
-  def upload_from_params
-    if params[:Filedata].blank? && params[:Presfiledata].blank? && params[:local_file].blank?
-      flash[:notice] = t('dri.flash.notice.specify_file')
-      redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
-      return
+    def create_file(filedata, generic_file, datastream, checksum, filename = nil)
+      @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
+      options = {}
+      options[:mime_type] = @mime_type
+      options[:checksum] = checksum
+      options[:file_name] = filename unless filename.nil?
+
+      @file.add_file filedata, options
+
+      begin
+        raise DRI::Exceptions::InternalError unless @file.save!
+      rescue ActiveRecord::ActiveRecordError => e
+        logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
+        raise DRI::Exceptions::InternalError
+      end
     end
 
-    if params[:Filedata].present?
-      file_upload = params[:Filedata]
-    elsif params[:Presfiledata].present?
-      file_upload = params[:Presfiledata]
-    elsif params[:local_file].present?
-      file_upload = local_file_ingest(params[:local_file])
+    def delete_surrogates(bucket_name, file_prefix)
+      storage = StorageService.new
+      storage.delete_surrogates(bucket_name, file_prefix)
     end
 
-    validate_upload(file_upload)
+    def download_surrogate
+      raise DRI::Exceptions::BadRequest unless params[:object_id].present?
+      raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
 
-    file_upload
-  end
+      file = file_path(params[:object_id], params[:id], params[:surrogate])
+      raise DRI::Exceptions::NotFound unless file
 
-  def validate_upload(file_upload)
-    @mime_type = Validators.file_type?(file_upload)
-    Validators.validate_file(file_upload, @mime_type)
-  rescue Exceptions::UnknownMimeType, Exceptions::WrongExtension, Exceptions::InappropriateFileType
-    message = t('dri.flash.alert.invalid_file_type')
-    flash[:alert] = message
-    @warnings = message
-  rescue Exceptions::VirusDetected => e
-    flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
-    raise Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', name: file_upload.original_filename)
-  end
+      type, ext = mime_type(file)
+
+      name = "#{params[:id]}#{ext}"
+
+      open(file) do |f|
+        send_data(
+          f.read,
+          filename: name,
+          type: type,
+          disposition: 'attachment',
+          stream: 'true',
+          buffer_size: '4096'
+        )
+      end
+    end
+
+    def show_surrogate
+      raise DRI::Exceptions::BadRequest unless params[:object_id].present?
+      raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
+
+      file = file_path(params[:object_id], params[:id], params[:surrogate])
+      raise DRI::Exceptions::NotFound unless file
+
+      if file =~ /\A#{URI.regexp(['http', 'https'])}\z/
+        redirect_to file
+        return
+      end
+
+      type, _ext = mime_type(file)
+
+      # For derivatives stored on the local file system
+      response.headers['Accept-Ranges'] = 'bytes'
+      response.headers['Content-Length'] = File.size(file).to_s
+      send_file file, { type: type, disposition: 'inline' }
+    end
+
+    def download_url
+      url_for controller: 'assets', action: 'download', object_id: @generic_file.batch.id, id: @generic_file.id
+    end
+
+    def file_path(object_id, file_id, surrogate)
+      storage = StorageService.new
+      storage.surrogate_url(
+        object_id,
+        "#{file_id}_#{surrogate}"
+      )
+    end
+
+    def list_files_with_surrogates(doc)
+      item = {}
+      item['pid'] = doc.id
+      item['files'] = []
+
+      files = doc.assets
+
+      files.each do |file_doc|
+        file_list = {}
+
+        if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
+          url = url_for(file_download_url(doc.id, file_doc.id))
+          file_list['masterfile'] = url
+        end
+
+        if can? :read, doc
+          surrogates = doc.surrogates(file_doc.id)
+          surrogates.each { |file, _loc| file_list[file] = object_file_url(object_id: doc.id, id: file_doc.id, surrogate: file) }
+        end
+
+        item['files'].push(file_list)
+      end
+
+      item
+    end
+
+    def local_file
+      search_params = { f: @generic_file.id, d: @datastream }
+      search_params[:v] = params[:version] if params[:version].present?
+
+      query = 'fedora_id LIKE :f AND ds_id LIKE :d'
+      query << ' AND version = :v' if search_params[:v].present?
+
+      LocalFile.where(query, search_params).take
+    rescue ActiveRecord::RecordNotFound
+      raise DRI::Exceptions::InternalError, "Unable to find requested file"
+    rescue ActiveRecord::ActiveRecordError
+      raise DRI::Exceptions::InternalError, "Error finding file"
+    end
+
+    def local_file_ingest(name)
+      upload_dir = Rails.root.join(Settings.dri.uploads)
+      File.new(File.join(upload_dir, name))
+    end
+
+    def status(file_id)
+      ingest_status = IngestStatus.where(asset_id: file_id)
+
+      @status = {}
+      if ingest_status.present?
+        status = ingest_status.first
+        @status[:status] = status.status
+
+        @status[:jobs] = {}
+        status.job_status.each do |job|
+          @status[:jobs][job.job] = { status: job.status, message: job.message }
+        end
+      end
+    end
+
+    def upload_from_params
+      if params[:Filedata].blank? && params[:Presfiledata].blank? && params[:local_file].blank?
+        flash[:notice] = t('dri.flash.notice.specify_file')
+        redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
+        return
+      end
+
+      file_upload = if params[:local_file].present?
+                      local_file_ingest(params[:local_file])
+                    else
+                      params[:Filedata].presence || params[:Presfiledata].presence
+                    end
+
+      validate_upload(file_upload)
+
+      file_upload
+    end
+
+    def validate_upload(file_upload)
+      @mime_type = Validators.file_type?(file_upload)
+      Validators.validate_file(file_upload, @mime_type)
+    rescue DRI::Exceptions::UnknownMimeType, DRI::Exceptions::WrongExtension, DRI::Exceptions::InappropriateFileType
+      message = t('dri.flash.alert.invalid_file_type')
+      flash[:alert] = message
+      @warnings = message
+    rescue DRI::Exceptions::VirusDetected => e
+      flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
+      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', name: file_upload.original_filename)
+    end
 end

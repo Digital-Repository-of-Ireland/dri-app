@@ -182,7 +182,7 @@ When /^I submit the User Sign in page with credentials "([^\"]*)" and "([^\"]*)"
 end
 
 Then /^I should be logged in$/ do
-  step 'I should have a cookie _nuig-rnag_session'
+  step 'I should have a cookie _dri-app_session'
   step 'I should see a link to sign out'
 end
 

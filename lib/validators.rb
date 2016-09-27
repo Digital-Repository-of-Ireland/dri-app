@@ -36,10 +36,10 @@ module Validators
     end
 
     # MimeMagic could return null if it can't find a match. If so raise UnknownMimeType error
-    raise Exceptions::UnknownMimeType unless mime_type
+    raise DRI::Exceptions::UnknownMimeType unless mime_type
 
     # Ensure that the file extension matches the mime type
-    raise Exceptions::WrongExtension unless MIME::Types.type_for(extension).include?(mime_type)
+    raise DRI::Exceptions::WrongExtension unless MIME::Types.type_for(extension).include?(mime_type)
 
     lc_mime_type = mime_type.to_s.downcase
     unless (Settings.restrict.mime_types.image.include? lc_mime_type or
@@ -47,7 +47,7 @@ module Validators
            Settings.restrict.mime_types.pdf.include? lc_mime_type or
            Settings.restrict.mime_types.audio.include? lc_mime_type or
            Settings.restrict.mime_types.video.include? lc_mime_type)
-      raise Exceptions::InappropriateFileType
+      raise DRI::Exceptions::InappropriateFileType
     end
 
     # If we haven't encountered a problem we return true
@@ -120,7 +120,7 @@ module Validators
     if defined? ClamAV
       Rails.logger.info 'Performing virus scan.'
       result = ClamAV.instance.scanfile( file.respond_to?(:path) ? file.path : file )
-      raise Exceptions::VirusDetected.new(result) unless result == 0
+      raise DRI::Exceptions::VirusDetected.new(result) unless result == 0
     else
       Rails.logger.warn 'Virus scanning is disabled.'
     end

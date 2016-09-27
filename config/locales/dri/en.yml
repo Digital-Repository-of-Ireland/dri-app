@@ -487,6 +487,7 @@ en:
         resque_error: "Error connecting to Resque."
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
+        view_permission: "This item is not available. You do not have sufficient access privileges to view the master file(s)."
       fields:
         Format: Format
         collection_title: "Collection Title"

@@ -1,5 +1,4 @@
 class PublishCollectionJob < StatusJob
-  
   def queue
     :publish
   end
@@ -7,7 +6,7 @@ class PublishCollectionJob < StatusJob
   def name
     'PublishCollectionJob'
   end
-    
+
   def perform
     collection_id = options['collection_id']
     user_id = options['user_id']
@@ -16,9 +15,9 @@ class PublishCollectionJob < StatusJob
     job_ids = sub_collection_publish_jobs(collection_id, user_id)
 
     # review direct child objects of this collection
-    job_ids << PublishJob.create(collection_id: collection_id, user_id: user_id) 
+    job_ids << PublishJob.create(collection_id: collection_id, user_id: user_id)
     failures = wait_for_completion(collection_id, job_ids)
-    
+
     message = "Completed marking collection #{collection_id} as published."
     message += "Unable to set status for #{failures} objects." if failures > 0
     completed(message)
@@ -48,9 +47,7 @@ class PublishCollectionJob < StatusJob
   end
 
   def update(identifier, total, completed)
-    at(completed, total, 
-      "Publishing #{identifier}: #{completed} of #{total} sub-collections marked as published"
-    )
+    at(completed, total,
+        "Publishing #{identifier}: #{completed} of #{total} sub-collections marked as published")
   end
-
 end

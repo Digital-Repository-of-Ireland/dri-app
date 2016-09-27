@@ -1,6 +1,5 @@
 module Storage
   class S3Interface
-
     def initialize(options = {})
       endpoint = Settings.S3.server
       credentials = Aws::Credentials.new(Settings.S3.access_key_id, Settings.S3.secret_access_key)
@@ -56,7 +55,7 @@ module Storage
     # object - SolrDocument or object ID
     # file = SolrDocument or GenericFile ID
     def get_surrogates(object, file, expire = nil)
-      expire = Settings.S3.expiry unless (expire.present? && numeric?(expire))
+      expire = Settings.S3.expiry unless !expire.nil? && numeric?(expire)
       bucket = object.respond_to?(:id) ? object.id : object
       generic_file_id = file.respond_to?(:id) ? file.id : file
 
@@ -129,7 +128,7 @@ module Storage
     def file_url(bucket, key)
       create_url(bucket, key, nil, false)
     rescue Exception => e
-      Rails.logger.error "Problem getting url for file #{file}: #{e}"
+      Rails.logger.error "Problem getting url for file #{bucket} #{key}: #{e}"
     end
 
     # Save Surrogate File
@@ -199,6 +198,10 @@ module Storage
       end
 
       files
+    end
+
+    def numeric?(number)
+      Integer(number) rescue false
     end
 
     def with_prefix(bucket)
