@@ -1,5 +1,4 @@
 class ReviewCollectionJob < StatusJob
-  
   def queue
     :review
   end
@@ -7,7 +6,7 @@ class ReviewCollectionJob < StatusJob
   def name
     'ReviewCollectionJob'
   end
-    
+
   def perform
     collection_id = options['collection_id']
     user_id = options['user_id']
@@ -16,9 +15,9 @@ class ReviewCollectionJob < StatusJob
     job_ids = sub_collection_review_jobs(collection_id, user_id)
 
     # review direct child objects of this collection
-    job_ids << ReviewJob.create(collection_id: collection_id, user_id: user_id) 
+    job_ids << ReviewJob.create(collection_id: collection_id, user_id: user_id)
     failures = wait_for_completion(collection_id, job_ids)
-    
+
     message = "Completed marking collection #{collection_id} as reviewed."
     message += "Unable to set status for #{failures} objects." if failures > 0
     completed(message)
@@ -45,9 +44,7 @@ class ReviewCollectionJob < StatusJob
   end
 
   def update(identifier, total, completed)
-    at(completed, total, 
-      "Reviewing #{identifier}: #{completed} of #{total} sub-collections marked as reviewed"
-    )
+    at(completed, total,
+       "Reviewing #{identifier}: #{completed} of #{total} sub-collections marked as reviewed")
   end
-
 end

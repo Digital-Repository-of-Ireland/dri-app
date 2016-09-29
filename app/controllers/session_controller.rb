@@ -1,8 +1,7 @@
 class SessionController < ApplicationController
-
   def create
     cookies.delete :lang unless cookies[:lang].nil?
-    
+
     cookies.permanent[:lang] = params[:id]
     cookies.permanent[:metadata_language] = params[:metadata_language]
     cookies.permanent[:creator] = 'session controller'

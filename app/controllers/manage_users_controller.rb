@@ -1,5 +1,4 @@
 class ManageUsersController < ApplicationController
-
   def create
     if signed_in? && (current_user.is_admin? || current_user.is_om?)
       user = UserGroup::User.find_by_email(params[:user])
@@ -19,6 +18,5 @@ class ManageUsersController < ApplicationController
     respond_to do |format|
       format.html { render action: 'new' }
     end
-
   end
 end

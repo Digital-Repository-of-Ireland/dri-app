@@ -6,10 +6,9 @@ class StatusJob
 
     total_jobs = job_ids.length
     running_jobs = total_jobs
-    
+
     completed = 0
     failures = 0
-    job_statuses = {}
 
     while running_jobs > 0
       job_statuses = retrieve_status(job_ids)
@@ -19,13 +18,12 @@ class StatusJob
           completed += 1
           job_ids.delete(job_id)
           running_jobs -= 1
-          
+
           failures += status['failed'] if status['failed'].present?
         end
 
         update(identifier, total_jobs, completed)
-       
-      end  
+      end
     end
 
     failures
@@ -35,8 +33,7 @@ class StatusJob
     statuses = {}
 
     job_ids.each { |job| statuses[job] = Resque::Plugins::Status::Hash.get(job) }
-    
-    statuses  
-  end
 
+    statuses
+  end
 end

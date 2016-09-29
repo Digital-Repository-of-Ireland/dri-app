@@ -23,7 +23,7 @@ module Storage
     def self.virus?(cover_image)
       Validators.virus_scan(cover_image)
       false
-    rescue Exceptions::VirusDetected => e
+    rescue DRI::Exceptions::VirusDetected => e
       Rails.logger.error("Virus detected in cover image: #{e.message}")
       true
     end

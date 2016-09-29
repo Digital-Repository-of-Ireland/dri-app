@@ -1,18 +1,18 @@
-<% if is_root? %>
+<% if root? %>
     <li class="active">
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.home'), main_app.root_path, :id => "dri_home_id" %>
+<%= link_to t('dri.headerlinks.home'), main_app.root_path, id: 'dri_home_id' %>
 </li>
 
-<% if ((controller_name == 'catalog') and (controller.action_name != 'index')  or (request.path.include? "/catalog") ) %>
+<% if ((controller_name == 'catalog') && (controller.action_name != 'index')  || (request.path.include? "/catalog") ) %>
     <li class="active">
 <% else %>
     <li>
 <% end %>
 
-<%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(:mode=>'collections', :search_field=>'all_fields'), :id => "browse" %>
+<%= link_to t('dri.headerlinks.browse'), main_app.catalog_index_path(mode: 'collections', search_field: 'all_fields'), id: 'browse' %>
 </li>
 
 <% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>
@@ -20,6 +20,6 @@
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.institutions'), organisations_path, :id => 'institutions' %>
+<%= link_to t('dri.headerlinks.institutions'), organisations_path, id: 'institutions' %>
 </li>
 

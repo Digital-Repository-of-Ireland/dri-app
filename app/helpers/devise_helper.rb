@@ -9,17 +9,15 @@ module DeviseHelper
   # Overridden in DRI to use flash messages for consistency with the rest of the application
   #
   def devise_error_messages!
-
     messages = resource.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
     sentence = I18n.t("errors.messages.not_saved",
-                      :count => resource.errors.count,
-                      :resource => resource.class.model_name.human.downcase)
+                      count: resource.errors.count,
+                      resource: resource.class.model_name.human.downcase)
 
-   errortext = sentence + "<ul>#{messages}</ul>"
+    errortext = sentence + "<ul>#{messages}</ul>"
 
-   flash.now[:error] = errortext.html_safe unless messages.empty?
+    flash.now[:error] = errortext.html_safe unless messages.empty?
 
-   return ""
-
+    ''
   end
 end

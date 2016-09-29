@@ -1,9 +1,23 @@
 module DRI::Solr::Document::File
+  def assets(with_preservation = false)
+    files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
+    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{id}\""
+
+    unless with_preservation
+      files_query += " AND NOT #{ActiveFedora.index_field_mapper.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
+    end
+    query = Solr::Query.new(files_query)
+
+    assets = []
+    query.each_solr_document { |sd| assets << sd }
+
+    assets
+  end
 
   def preservation_only?
     key = 'dri_properties__preservation_only_tesim'
 
-    (self[key].present? && self[key] == ['true']) ? true : false
+    self[key].present? && self[key] == ['true'] ? true : false
   end
 
   def mime_type
@@ -24,24 +38,29 @@ module DRI::Solr::Document::File
   end
 
   def supported_type?
-    mime_type.nil? || (audio? || 
-      video? || pdf? || image? || 
+    mime_type.nil? || (audio? ||
+      video? || pdf? || image? ||
       text? && file_format.include?("RTF"))
   end
 
   def read_master?
-    master_file_key = ActiveFedora::SolrQueryBuilder.solr_name('master_file_access', :stored_searchable, type: :string)
+    master_file_key = ActiveFedora.index_field_mapper.solr_name('master_file_access', :stored_searchable, type: :string)
 
     governing_object = self
 
     while governing_object[master_file_key].nil? || governing_object[master_file_key] == 'inherit'
-      parent_id = governing_object[ActiveFedora::SolrQueryBuilder.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
+      parent_id = governing_object[ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
       return false unless parent_id
 
       governing_object = parent_object(parent_id.first)
     end
 
     governing_object[master_file_key] == ['public']
+  end
+
+  def surrogates(file_id, timeout = nil)
+    storage = StorageService.new
+    storage.get_surrogates(self, file_id, timeout)
   end
 
   def text?
@@ -62,9 +81,9 @@ module DRI::Solr::Document::File
 
   private
 
-  def parent_object(id)
-    parent_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([id])
-    parent = ActiveFedora::SolrService.query(parent_query)
-    SolrDocument.new(parent.first)
-  end
+    def parent_object(id)
+      parent_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([id])
+      parent = ActiveFedora::SolrService.query(parent_query)
+      SolrDocument.new(parent.first)
+    end
 end

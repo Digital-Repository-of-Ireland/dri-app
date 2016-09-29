@@ -1,15 +1,14 @@
 module UserHelper
-  
   def admin_collections_data(admin)
     query = Solr::Query.new(
-      "#{ActiveFedora::SolrService.solr_name('depositor', :searchable, type: :symbol)}:#{admin.email}", 
-      100, 
-      {fq: ["+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true",
-            "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+      "#{ActiveFedora::SolrService.solr_name('depositor', :searchable, type: :symbol)}:#{admin.email}",
+      100,
+      { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
+            "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"] }
     )
 
     collections = collections(admin, query)
-    collections.map{ |item| item[:permission] = 'Depositor' }
+    collections.map { |item| item[:permission] = 'Depositor' }
     collections
   end
 
@@ -21,8 +20,11 @@ module UserHelper
       objects.each do |object|
         collection = {}
         collection[:id] = object['id']
-        collection[:collection_title] = object[ActiveFedora::SolrQueryBuilder.solr_name(
-          'title', :stored_searchable, type: :string)]
+        collection[:collection_title] = object[
+          ActiveFedora.index_field_mapper.solr_name(
+          'title', :stored_searchable, type: :string
+          )
+        ]
 
         permissions = []
         type = user_type(user, object, 'manager', 'Collection Manager')
@@ -30,18 +32,18 @@ module UserHelper
 
         type = user_type(user, object, 'edit', 'Editor')
         permissions << type if type
-        
+
         collection[:permission] = permissions.join(', ') if permissions
         collections.push(collection)
       end
     end
-    
+
     collections
   end
 
   # Return all collection permissions
   # if no user passed in use @current_user
-  def collection_permission(user=nil)
+  def collection_permission(user = nil)
     profile_user = user ? user : @current_user
 
     if profile_user.is_admin?
@@ -58,19 +60,21 @@ module UserHelper
     read_query = read_group_query(user)
     query <<   " OR (" + read_query + ")" unless read_query.nil?
 
-    solr_query = Solr::Query.new(query, 100, 
-      {fq: ["+#{ActiveFedora::SolrQueryBuilder.solr_name('is_collection', :facetable, type: :string)}:true",
-            "-#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
-      )
+    solr_query = Solr::Query.new(
+      query,
+      100,
+      { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
+            "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+    )
 
     collections(user, solr_query)
   end
-  
+
   def read_group_query(user)
-    group_query_fragments = user.groups.map{ 
-      |group| "#{ActiveFedora::SolrQueryBuilder.solr_name(
+    group_query_fragments = user.groups.map do |group|
+      "#{ActiveFedora.index_field_mapper.solr_name(
         'read_access_group', :stored_searchable, type: :symbol)}:#{group.name}" unless group.name == "registered"
-    }
+    end
     return nil if group_query_fragments.compact.blank?
     group_query_fragments.compact.join(" OR ")
   end
@@ -78,7 +82,7 @@ module UserHelper
   def user_type(user, object, role, label)
     user_type = nil
     
-    key = ActiveFedora::SolrQueryBuilder.solr_name("#{role}_access_person", :stored_searchable, type: :symbol)
+    key = ActiveFedora.index_field_mapper.solr_name("#{role}_access_person", :stored_searchable, type: :symbol)
     if object[key].present?
       user_type = label if object[key].include?(user.email)
     end
@@ -86,15 +90,14 @@ module UserHelper
     user_type
   end
 
-
   def get_saved_search_snippet_documents(search_params)
     solr_query = get_saved_search_solr_query(search_params)
-    ActiveFedora::SolrService.query(solr_query, :defType => "edismax", :rows => "3")
+    ActiveFedora::SolrService.query(solr_query, defType: "edismax", rows: "3")
   end
 
   def get_saved_search_count(search_params)
     solr_query = get_saved_search_solr_query(search_params)
-    ActiveFedora::SolrService.count(solr_query, :defType => "edismax")
+    ActiveFedora::SolrService.count(solr_query, defType: "edismax")
   end
 
   def get_saved_search_solr_query(search_params)
@@ -111,22 +114,23 @@ module UserHelper
     unless query_facets.blank?
       solr_query = solr_query + " AND " + query_facets
     end
-    return solr_query
+
+    solr_query
   end
 
   def get_saved_search_permission_filter
     if current_user.is_admin? || current_user.is_cm?
-      return ""
+      ""
     else
-      return "#{ActiveFedora::SolrQueryBuilder.solr_name('status', :stored_searchable, type: :symbol)}:published"
+      "#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
     end
   end
 
   def get_saved_search_query(search_q)
-    if (search_q.blank?)
-      return ""
+    if search_q.blank?
+      ""
     else
-      return "#{search_q} "
+      "#{search_q} "
     end
   end
 
@@ -135,24 +139,21 @@ module UserHelper
     unless search_mode == "collections"
       mode = "-#{mode}"
     end
-    return "#{mode} "
+
+    "#{mode} "
   end
 
   def get_saved_search_facets(search_f)
-    if search_f.blank?
-      return ""
-    else
-      facets = ""
-      i = 0
-      search_f.each do |key, value|
-        i+=1
-        facets = facets + key.to_s + ":\"" + value.first.to_s + "\""
-        unless i == search_f.count
-          facets = facets + " AND "
-        end
-      end
-    return facets
-    end
-  end
+    return "" if search_f.blank?
 
+    facets = ""
+    i = 0
+    search_f.each do |key, value|
+      i += 1
+      facets += key.to_s + ":\"" + value.first.to_s + "\""
+      facets += " AND " unless i == search_f.count
+    end
+
+    facets
+  end
 end

@@ -1,11 +1,6 @@
-== Welcome to nuig-rnag
+== Welcome to the DRI Hydra Head
 
-This repository contains the proto-type of a Hydra-Head which targets the
-NUIG-RNAG dataset. This dataset contains primarily Audio and PDF files.
-
-This is a ruby on rails application, as such to run this application
-the user must be somewhat aware of how ruby on rails applications are
-run and deployed.
+This repository contains the Digital Repository of Ireland's Hydra application.
 
 There are a number of other depedencies (see below) but at this point you
 will need to have a functional Rails stack and at least Java version 7. You
@@ -23,7 +18,6 @@ For testing and development you will need to bootstrap the project
   $ cp config/jetty.yml.sample config/jetty.yml (and edit as appropriate)
   $ cp config/redis.yml.sample config/redis.yml (and edit as appropriate)
   $ cp config/solr.yml.sample config/solr.yml (and edit as appropriate)
-  $ cp config/doi.yml.sample config/doi.yml (and edit as appropriate)
   $ bundle exec rake db:migrate
   $ bundle exec rake db:seed
   $ bundle exec rake jetty:config
@@ -42,11 +36,11 @@ running.  (E.G. MariaDB start alias: alias mariadbstart='cd
 "/opt/local" ;sudo /opt/local/lib/mariadb/bin/mysqld_safe
 --datadir="/opt/local/var/db/mariadb"')
 
-  $ cd nuig-rnag
+  $ cd dri-app
   $ rake jetty:start
   $ bundle exec rails server
 
-The db:seed step above will create 3 initial accounts:
+The db:seed step above will create 4 initial accounts:
 
 * admin@dri.ie (admin user)
 * orgmanager@dri.ie (organisation manager)
@@ -61,22 +55,15 @@ clicking on the username at the top of the screen, and clicking on the 'Edit' bu
  
 To run the unit tests
 
-  $ cd nuig-rnag
+  $ cd dri-app
   $ rake jetty:start
-  $ rake spec
+  $ rake rspec
 
 To run the functional tests
 
-  $ cd nuig-rnag
+  $ cd dri-app
   $ rake jetty:start
   $ rake cucumber or bundle exec cucumber
-
-Additional information can be found by reading up on the drirepo,
-nuig-rnag, rspec, cucumber and rails documentation.
-
-To start the resque workers for development
-
-  $ rake environment resque:workers RAILS_ENV=development QUEUE="*" COUNT="2" VERBOSE=1
 
 == Dependencies
 
@@ -96,7 +83,7 @@ written with cucumber.
 This project is set up to use guard to automatically run tests as they
 are changed.
 
-  $ cd nuig-rnag
+  $ cd dri-app
   $ bundle exec guard
 
 The poltergeist gem is required for testing, as a result phantomjs binary
@@ -133,13 +120,13 @@ To override settings.yml with local settings please use settings.local.yml.
 
 == Configuation of database.yml, fedora.yml and solr.yml
 
-The configuration files for the NUIG-RNAG application
+The configuration files for the application
 
 * config/database.yml
 * config/solr.yml
 * config/fedora.yml
 
-are not configured initially, there are some sample configurations in
+are not configured initially. There are some sample configurations in
 the config directory. These configuration files must be created before
 development, testing, deployment. The default sample files can be copied
 into the correct locations for testing and development. It is suggested
@@ -173,7 +160,7 @@ For testing purposes Redis can be installed locally and started with the command
 
 The worker queues can be started with the following rake task
 
-  $ rake environment resque:work RAILS_ENV=development QUEUE="*" VERBOSE=1
+  $ rake environment resque:work RAILS_ENV=development QUEUE="*" COUNT="2" VERBOSE=1
 
 To view your queues and workers you can visit the path /resque on the web
 application where resque-web is mounted.
@@ -311,12 +298,4 @@ The last step is to install the mysql and mysql2 gems and to setup your new mysq
   $ bundle exec rake db:migrate
   $ bundle exec rake db:seed
   $ bundle exec rake db:test:prepare
-
-
-== Patches and notes
-The following files contain patches that should be reviewed after future
-updates to dependencies:
-
- * lib/active_fedora/fixture_exporter.rb (remove entire file when bug fixed in
-     active_fedora)
 

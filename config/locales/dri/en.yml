@@ -144,6 +144,7 @@ en:
         removed_from_collection: "Object has been removed from the collection."
         request_form_submitted: "Your request for access has been submitted to the depositing organisation for this collection and will be reviewed shortly. Please note, you may be requested to provide additional information to the depositing organisation and/or agree to additional terms and conditions for access. You will receive an email to notify you of the outcome of this request. If you have any queries about this access request please contact the depositing organisation for this collection."
         schema_validation_error: "The XML file could not validate against the Dublin Core schema."
+        specify_collection: "Metadata file does not specify that the object is a collection."
         specify_datastream: "You must specify a valid file datastream."
         specify_file: "You must specify a file to upload."
         specify_object_id: "Please specify a valid object id."
@@ -486,6 +487,7 @@ en:
         resque_error: "Error connecting to Resque."
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
+        view_permission: "This item is not available. You do not have sufficient access privileges to view the master file(s)."
       fields:
         Format: Format
         collection_title: "Collection Title"

@@ -14,13 +14,12 @@ class DoiMetadata < ActiveRecord::Base
   end
 
   def to_xml
-    builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
-      xml.resource('xmlns'=>'http://datacite.org/schema/kernel-3',
-                'xmlns:xsi'=>'http://www.w3.org/2001/XMLSchema-instance',
+    builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
+      xml.resource('xmlns' => 'http://datacite.org/schema/kernel-3',
+                'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
                 'xsi:schemaLocation'=>'http://datacite.org/schema/kernel-3 http://schema.datacite.org/meta/kernel-3/metadata.xsd') {
-
         # mandatory entries
-        xml.identifier self.datacite_doi.doi, :identifierType => 'DOI'
+        xml.identifier self.datacite_doi.doi, identifierType: 'DOI'
         xml.creators {
           creator.each do |c|
             xml.creator {
@@ -42,5 +41,4 @@ class DoiMetadata < ActiveRecord::Base
   def publication_year
     Time.now.year
   end
-
 end
