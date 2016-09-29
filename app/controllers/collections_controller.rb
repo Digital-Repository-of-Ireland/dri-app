@@ -24,7 +24,7 @@ class CollectionsController < BaseObjectsController
   end
 
   def index
-    query = "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
+    query = "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
 
     solr_query = Solr::Query.new(
       query,
@@ -417,8 +417,8 @@ class CollectionsController < BaseObjectsController
       end
 
       unless @object.collection?
-        flash[:notice] = "Metadata file does not specify that the object is a collection."
-        @error = "Metadata file does not specify that the object is a collection."
+        flash[:notice] = t('dri.flash.notice.specify_collection')
+        @error = t('dri.flash.notice.specify_collection')
         return false
       end
 

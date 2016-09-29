@@ -84,12 +84,7 @@ class AssetsController < ApplicationController
   def update
     enforce_permissions!('edit', params[:object_id])
 
-    datastream = params[:datastream].presence || 'content'
-    unless datastream.eql?('content')
-      flash[:notice] = t('dri.flash.notice.specify_datastream')
-      return redirect_to object_file_url(params[:object_id], params[:id])
-    end
-
+    datastream = 'content'
     file_upload = upload_from_params
     @generic_file = retrieve_object! params[:id]
 
@@ -123,25 +118,16 @@ class AssetsController < ApplicationController
   def create
     enforce_permissions!('edit', params[:object_id])
 
-    datastream = params[:datastream].presence || 'content'
-    unless datastream == 'content'
-      flash[:notice] = t('dri.flash.notice.specify_datastream')
-      return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
-    end
-
+    datastream = 'content'
     file_upload = upload_from_params
 
-    @object = retrieve_object! params[:object_id]
+    @object = retrieve_object!(params[:object_id])
     if @object.nil?
       flash[:notice] = t('dri.flash.notice.specify_object_id')
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end
 
-    @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
-    @generic_file.batch = @object
-    @generic_file.apply_depositor_metadata(current_user)
-    @generic_file.preservation_only = 'true' if params[:preservation] == 'true'
-
+    @generic_file = build_generic_file
     create_file(file_upload, @generic_file, datastream, params[:checksum], params[:file_name])
 
     filename = params[:file_name].presence || file_upload.original_filename
@@ -200,6 +186,15 @@ class AssetsController < ApplicationController
       ext = File.extname(file_name)
 
       return MIME::Types.type_for(file_name).first.content_type, ext
+    end
+
+    def build_generic_file
+      generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
+      generic_file.batch = @object
+      generic_file.apply_depositor_metadata(current_user)
+      generic_file.preservation_only = 'true' if params[:preservation] == 'true'
+
+      generic_file
     end
 
     def can_view?

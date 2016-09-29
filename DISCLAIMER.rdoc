@@ -1,4 +1,0 @@
-== WARNING and DISCLAIMER
-
-This code in its current state is not to be redistributed to parties
-outside of DRI.
