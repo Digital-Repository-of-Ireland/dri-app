@@ -1,7 +1,7 @@
 require 'ostruct'
 
 class ProcessBatchIngest
-  include DRI::MetadataBehaviour
+  extend DRI::MetadataBehaviour
 
   @queue = :process_batch_ingest
 
