@@ -117,9 +117,9 @@ module DRI::IIIFViewable
 
   def child_collections
     # query for objects within this collection
-    q_str = "#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{@object.id}\""
+    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{@object.id}\""
     # that are also collections
-    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
     sub_collections = []
 
@@ -131,11 +131,11 @@ module DRI::IIIFViewable
 
   def child_objects
     # query for objects within this collection
-    q_str = "#{ActiveFedora::SolrQueryBuilder.solr_name('collection_id', :facetable, type: :string)}:\"#{@object.id}\""
+    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{@object.id}\""
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('object_type', :facetable, type: :string)}:\"Image\""
     # excluding sub-collections
-    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false"
+    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false"
 
     objects = []
 
@@ -153,12 +153,15 @@ module DRI::IIIFViewable
     canvas.height = file[WIDTH_SOLR_FIELD]
     canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')].first
 
-    image_url = Riiif::Engine.routes.url_for controller: 'riiif/images', action: 'show', 
-        id: file.id, region: 'full', size: 'full', rotation: 0, 
-        quality: 'default', format: 'jpg', only_path: false,
-        host: Rails.application.routes.default_url_options[:host],
-        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+    #image_url = Riiif::Engine.routes.url_for controller: 'riiif/images', action: 'show', 
+    #    id: file.id, region: 'full', size: 'full', rotation: 0, 
+    #    quality: 'default', format: 'jpg', only_path: false,
+    #    host: Rails.application.routes.default_url_options[:host],
+    #    protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
  
+    image_url = Settings.iiif.server + '/' + @object.id + '/' + file.id + 
+                '_full_size_web_format.jpeg/full/full/0/default.jpg'
+
     image_base = image_url.split(file.id).first
 
     image = IIIF::Presentation::ImageResource.create_image_api_image_resource(
@@ -223,7 +226,7 @@ module DRI::IIIFViewable
   end
 
   def depositing_org_info(solr_doc)
-    org = InstituteHelpers.get_depositing_institute_from_solr_doc(solr_doc)
+    org = solr_doc.depositing_institute
 
     depositing_org = nil
     logo = nil
