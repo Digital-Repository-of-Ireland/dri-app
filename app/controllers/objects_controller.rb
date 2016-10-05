@@ -351,7 +351,9 @@ class ObjectsController < BaseObjectsController
     end
 
     def metadata_standard
-      @object.descMetadata.class.to_s.downcase.split('::').last
+      standard = @object.descMetadata.class.to_s.downcase.split('::').last
+
+      standard == 'documentation' ? 'qualifieddublincore' : standard
     end
 
     def numeric?(number)
