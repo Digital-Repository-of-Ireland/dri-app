@@ -153,21 +153,13 @@ module DRI::IIIFViewable
     canvas.height = file[WIDTH_SOLR_FIELD]
     canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')].first
 
-    #image_url = Riiif::Engine.routes.url_for controller: 'riiif/images', action: 'show', 
-    #    id: file.id, region: 'full', size: 'full', rotation: 0, 
-    #    quality: 'default', format: 'jpg', only_path: false,
-    #    host: Rails.application.routes.default_url_options[:host],
-    #    protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
- 
-    image_url = Settings.iiif.server + '/' + @object.id + '/' + file.id + 
-                '_full_size_web_format.jpeg/full/full/0/default.jpg'
-
-    image_base = image_url.split(file.id).first
+    base_uri = Settings.iiif.server + '/' + @object.id + ':' + file.id
+    image_url =  base_uri + '/full/full/0/default.jpg'
 
     image = IIIF::Presentation::ImageResource.create_image_api_image_resource(
     {
-      resource_id: "#{image_url}",
-      service_id: "#{image_base}/#{file.id}",
+      resource_id: image_url,
+      service_id: base_uri,
       width: file[WIDTH_SOLR_FIELD], height: file[HEIGHT_SOLR_FIELD],
       profile: 'http://iiif.io/api/image/2/profiles/level2.json'
     })
