@@ -5,7 +5,7 @@ class RiiifAuthorizationService
   end
 
   def can?(action, object)
-    id = object.id
+    id = object.id.split(':')[1]
 
     resp = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
     file_doc = resp.first
