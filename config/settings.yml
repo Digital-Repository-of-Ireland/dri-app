@@ -25,3 +25,6 @@ data:
   types: [Sound, MovingImage, Image, Text]
 doi:
   enable: "false"
+iiif:
+  viewer: http://localhost/mirador
+  server: http://localhost/loris

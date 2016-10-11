@@ -104,7 +104,9 @@ describe ObjectsController do
     end
 
     it 'should mint a doi for an update of mandatory fields' do
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", 
+        :prefix => '10.5072', :base_url => "http://repository.dri.ie", 
+        :publisher => "Digital Repository of Ireland" })
       Settings.doi.enable = true
 
       @object.status = "published"
@@ -125,7 +127,9 @@ describe ObjectsController do
     end
 
     it 'should not mint a doi for no update of mandatory fields' do
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", 
+        :prefix => '10.5072', :base_url => "http://repository.dri.ie", 
+        :publisher => "Digital Repository of Ireland" })
       Settings.doi.enable = true
 
       @object.status = "published"
