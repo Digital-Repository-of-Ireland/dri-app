@@ -49,15 +49,14 @@ class AssetsController < ApplicationController
     if @generic_file
       can_view?
 
-      @datastream = params[:datastream].presence || 'content'
-
-      if local_file
-        response.headers['Content-Length'] = File.size?(local_file.path).to_s
-        send_file local_file.path,
-                  type: local_file.mime_type,
+      lfile = local_file
+      if lfile
+        response.headers['Content-Length'] = File.size?(lfile.path).to_s
+        send_file lfile.path,
+                  type: lfile.mime_type,
                   stream: true,
                   buffer: 4096,
-                  disposition: "attachment; filename=\"#{File.basename(local_file.path)}\";",
+                  disposition: "attachment; filename=\"#{File.basename(lfile.path)}\";",
                   url_based_filename: true
         return
       end
@@ -312,8 +311,8 @@ class AssetsController < ApplicationController
       item
     end
 
-    def local_file
-      search_params = { f: @generic_file.id, d: @datastream }
+    def local_file(datastream = 'content')
+      search_params = { f: @generic_file.id, d: datastream }
       search_params[:v] = params[:version] if params[:version].present?
 
       query = 'fedora_id LIKE :f AND ds_id LIKE :d'

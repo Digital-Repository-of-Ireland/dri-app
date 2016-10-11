@@ -4,8 +4,10 @@
 class SolrDocument
   include Blacklight::Document
   include Blacklight::Document::ActiveModelShim
+  include Blacklight::AccessControls::PermissionsQuery
 
   include UserGroup::PermissionsSolrDocOverride
+  include UserGroup::InheritanceMethods
 
   include DRI::Solr::Document::File
   include DRI::Solr::Document::Relations
@@ -124,9 +126,11 @@ class SolrDocument
 
     return false unless self[is_collection_key].present?
 
-    if self[is_collection_key].is_a?(Array)
-      is_collection = self[is_collection_key].first
-    end
+    is_collection = if self[is_collection_key].is_a?(Array)
+                      self[is_collection_key].first
+                    else
+                      self[is_collection_key]
+                    end
 
     is_collection == 'true' ? true : false
   end
@@ -202,6 +206,18 @@ class SolrDocument
 
   def published?
     status == 'published'
+  end
+
+  def public_read?
+    read_access_groups_key = ActiveFedora.index_field_mapper.solr_name('read_access_group', :stored_searchable, type: :symbol)
+    groups = get_permission_key(self.id, read_access_groups_key)
+    return false if groups.nil? #groups could be nil if read access set to restricted
+
+    groups.include?(SETTING_GROUP_PUBLIC)
+  end
+
+  def permissions_doc(id)
+    get_permissions_solr_response_for_doc_id(id)
   end
 
   def draft?

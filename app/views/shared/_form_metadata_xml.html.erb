@@ -1,37 +1,36 @@
 <div id="xml_editor">
 </div>
 <script>
-	$(function() {
-		$("#xml_editor").xmlEditor({
-			ajaxOptions: {
-				xmlRetrievalPath: "<%= object_metadata_path(object) %>",
-				xmlUploadPath : "<%= object_metadata_path(object) %>"
-			},
-			submitResponseHandler: function(response) {
+  $(function() {
+    $("#xml_editor").xmlEditor({
+      ajaxOptions: {
+          xmlRetrievalPath: "<%= object_metadata_path(object) %>",
+          xmlUploadPath : "<%= object_metadata_path(object) %>"
+      },
+      submitResponseHandler: function(response) {
         if (response.startsWith("<%= t('dri.flash.notice.metadata_updated') %>")) {
           return false;
         } else {
-         	return response;
+          return response;
         }
-       },
-			schema : '<%= asset_path("schemas/#{schema}") %>',
-			<% if standard == 'mods' %>
-			vocabularyConfigs : {
-			  vocabularies : {
-					"marcRelators" : {
-					"url" : '<%= asset_path("schemas/marc_relators.json") %>',
-					},
-				},
-			  xpathSelectors: {
-							"mods:mods/mods:name//mods:roleTerm" : "marcRelators"
-						},
-						xpathNamespaces: {
-							"mods" : "http://www.loc.gov/mods/v3"
-						}
-			},
-			<% end %>
-			libPath : '<%= asset_path("jquery-xmleditor/vendor") %>'
-		}
-		);
-	});
+      },
+      schema : '<%= asset_path("schemas/#{schema}") %>',
+        <% if standard == 'mods' %>
+          vocabularyConfigs : {
+            vocabularies : {
+              "marcRelators" : {
+                "url" : '<%= asset_path("schemas/marc_relators.json") %>',
+              },
+            },
+            xpathSelectors: {
+              "mods:mods/mods:name//mods:roleTerm" : "marcRelators"
+            },
+            xpathNamespaces: {
+              "mods" : "http://www.loc.gov/mods/v3"
+            }
+          },
+        <% end %>
+        libPath : '<%= asset_path("jquery-xmleditor/vendor") %>'
+      });
+  });
 </script>

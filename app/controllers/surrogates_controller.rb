@@ -27,10 +27,11 @@ class SurrogatesController < ApplicationController
 
     result_docs.each do |r|
       doc = SolrDocument.new(r)
-
+      
       if doc.collection?
-        # Changed query to work with collections that have sub-collectionc (e.g. EAD) - ancestor_id rather than collection_id field
-        query = Solr::Query.new("#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
+        # Changed query to work with collections that have sub-collections (e.g. EAD) 
+        # - ancestor_id rather than collection_id field
+        query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
         query.each_solr_document do |object_doc|
           generate_surrogates(object_doc.id)
         end
@@ -68,7 +69,6 @@ class SurrogatesController < ApplicationController
 
     def generate_surrogates(object_id)
       enforce_permissions!('edit', object_id)
-
       query = Solr::Query.new("#{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object_id}\" AND NOT #{ActiveFedora.index_field_mapper.solr_name('preservation_only', :stored_searchable)}:true")
       query.each_solr_document do |file_doc|
         begin

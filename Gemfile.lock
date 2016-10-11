@@ -1,4 +1,20 @@
 GIT
+  remote: https://github.com/IIIF/osullivan.git
+  revision: 187995719d7c2b0f978616a41516c03238f00124
+  specs:
+    iiif-presentation (0.1.0)
+      activesupport (>= 3.2.18)
+      faraday (~> 0.9.0)
+      json
+
+GIT
+  remote: https://github.com/curationexperts/riiif.git
+  revision: d14e479154548550de9b9e9606fe70316b118bc0
+  specs:
+    riiif (0.4.1)
+      rails (> 3.2.0)
+
+GIT
   remote: https://github.com/ekilfeather/videojs_rails.git
   revision: 605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd
   ref: 605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd
@@ -861,6 +877,7 @@ DEPENDENCIES
   http_accept_language
   hydra-head (= 9.10)
   i18n_sync
+  iiif-presentation!
   is_it_working-cbeer
   it
   jettywrapper
@@ -885,6 +902,7 @@ DEPENDENCIES
   remotipart
   resque-status
   rest-client
+  riiif!
   rspec-rails (~> 2.99)
   rvm
   sass-rails (~> 4.0.4)
