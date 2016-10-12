@@ -191,7 +191,7 @@ module DRI::IIIFViewable
 
     metadata << { 'label' => 'Creation date', 'value' => @object.creation_date.first } if @object.creation_date.first.present?
     metadata << { 'label' => 'Published date', 'value' => @object.published_date.first } if @object.published_date.first.present?
-    metadata << { 'label' => 'Date', 'value' => @object.date.first } if @object.date.first.present?
+    metadata << { 'label' => 'Date', 'value' => @object.date.first } if @object.respond_to?(:date) && @object.date.first.present?
     metadata << { 'label' => 'Permalink', 'value' => "doi:#{@object.doi}" } if @object.doi
 
     metadata
