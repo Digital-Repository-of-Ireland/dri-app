@@ -145,7 +145,7 @@ describe DRI::IIIFViewable do
       expect(manifest.sequences.first.canvases.first.images.length).to be 1
 
       expect(manifest.sequences.first.canvases.first.images.first.resource['@id']).to end_with(
-        "loris/#{@object.id}:#{@generic_file.id}/full/full/0/default.jpg")
+        "#{@object.id}:#{@generic_file.id}/full/full/0/default.jpg")
     end
 
   end
