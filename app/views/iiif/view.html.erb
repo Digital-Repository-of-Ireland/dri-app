@@ -1,6 +1,4 @@
 <div id="viewer">
-  <%= content_tag(:iframe, '', src: "#{Settings.iiif.viewer}?id=#{@object.id}", 
-                   width: '100%', height: '680px', frameborder: 0, 
-                   allowfullscreen: true, webkitallowfullscreen: true, 
-                   mozallowfullscreen: true) %>
+  <script type="text/javascript" id="embedUV" src="/universalviewer/dist/uv-1.8.27/lib/embed.js"></script>
+  <div class="uv" style="height:100%" data-config="/universalviewer/dist/uv-1.8.27/lib/embed.js" data-uri="<%= iiif_manifest_path(@object.id, format: :json) %>"></div>
 </div>

@@ -26,6 +26,8 @@ class IiifController < CatalogController
 
     @object = retrieve_object!(params[:id])
     @document = SolrDocument.new(@object.to_solr)
+
+    render layout: false
   end
 
 end
