@@ -7,9 +7,11 @@ class IiifController < CatalogController
   def manifest
     enforce_permissions!('show_digital_object', params[:id])
     
-    @object = retrieve_object!(params[:id])
+    query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])
+    results = ActiveFedora::SolrService.query(query, rows: 1)
+    @object = SolrDocument.new(results.first)
 
-    unless (@object.collection? || can?(:read, params[:id]))
+    unless (@object.collection? || can?(:read, @object.id))
       raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied'))
     end
 

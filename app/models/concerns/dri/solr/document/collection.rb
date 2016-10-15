@@ -1,11 +1,11 @@
 module DRI::Solr::Document::Collection
   # Filter to only get those that are collections:
   # fq=is_collection_tesim:true
-  def children(chunk)
+  def children(chunk=100)
     children_array = []
     # Find immediate children of this collection
-    solr_query = "#{Solrizer.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{id}\""
-    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{id}\""
+    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
     q_result = Solr::Query.new(solr_query, chunk, fq: f_query)
     q_result.each_solr_document { |doc| children_array << doc }
@@ -14,7 +14,7 @@ module DRI::Solr::Document::Collection
   end
 
   def cover_image
-    cover_field = ActiveFedora::SolrQueryBuilder.solr_name('cover_image', :stored_searchable, type: :string)
+    cover_field = ActiveFedora.index_field_mapper.solr_name('cover_image', :stored_searchable, type: :string)
     self[cover_field] && self[cover_field][0] ? self[cover_field][0] : nil
   end
 

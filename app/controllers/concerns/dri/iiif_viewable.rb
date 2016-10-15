@@ -33,7 +33,7 @@ module DRI::IIIFViewable
     manifest = IIIF::Presentation::Manifest.new(seed)
     base_manifest(manifest)
     
-    if @object.governing_collection
+    if @object.collection_id
       manifest.within = create_within
     end
 
@@ -61,13 +61,13 @@ module DRI::IIIFViewable
     manifest = IIIF::Presentation::Collection.new(seed)
     base_manifest(manifest)
 
-    if @object.governing_collection.nil?
+    if @object.collection_id.nil?
       manifest.viewing_hint = 'top'
     else
       manifest.within = create_within
     end
 
-    sub_collections = child_collections
+    sub_collections = @object.children
     unless sub_collections.empty?
       sub_collections.each { |c| manifest.collections << create_subcollection(c) }
     end
@@ -95,7 +95,7 @@ module DRI::IIIFViewable
   end
 
   def base_manifest(manifest)
-    solr_doc = SolrDocument.new(@object.to_solr)
+    solr_doc = @object
 
     manifest.metadata = create_metadata
     manifest.see_also = see_also
@@ -115,23 +115,10 @@ module DRI::IIIFViewable
     manifest.attribution = attributions.join(', ')
   end
 
-  def child_collections
-    # query for objects within this collection
-    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{@object.id}\""
-    # that are also collections
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
-
-    sub_collections = []
-
-    query = Solr::Query.new(q_str, 100, fq: f_query)
-    query.each_solr_document { |collection_doc| sub_collections << collection_doc }
-
-    sub_collections
-  end
-
   def child_objects
     # query for objects within this collection
     q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{@object.id}\""
+    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:\"published\""
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('object_type', :facetable, type: :string)}:\"Image\""
     # excluding sub-collections
@@ -189,10 +176,10 @@ module DRI::IIIFViewable
       { 'label' => 'Title', 'value' => @object.title.join(', ') }
     ]
 
-    metadata << { 'label' => 'Creation date', 'value' => @object.creation_date.first } if @object.creation_date.first.present?
-    metadata << { 'label' => 'Published date', 'value' => @object.published_date.first } if @object.published_date.first.present?
-    metadata << { 'label' => 'Date', 'value' => @object.date.first } if @object.respond_to?(:date) && @object.date.first.present?
-    metadata << { 'label' => 'Permalink', 'value' => "doi:#{@object.doi}" } if @object.doi
+    metadata << { 'label' => 'Creation date', 'value' => @object.creation_date.first } unless @object.creation_date.blank?
+    metadata << { 'label' => 'Published date', 'value' => @object.published_date.first } unless @object.published_date.blank?
+    metadata << { 'label' => 'Date', 'value' => @object.date.first } unless @object.date.blank?
+    metadata << { 'label' => 'Permalink', 'value' => "doi:10.7486/DRI.#{@object.id}" }
 
     metadata
   end
