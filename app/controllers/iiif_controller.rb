@@ -10,6 +10,7 @@ class IiifController < CatalogController
     query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])
     results = ActiveFedora::SolrService.query(query, rows: 1)
     @object = SolrDocument.new(results.first)
+    @document = @object
 
     unless (@object.collection? || can?(:read, @object.id))
       raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied'))
@@ -17,9 +18,11 @@ class IiifController < CatalogController
 
     response.headers['Access-Control-Allow-Origin'] = '*'
 
+    manifest = Rails.cache.fetch(params[:id]) { iiif_manifest.to_json }
+    
     respond_to do |format|
-      format.html  { @manifest = iiif_manifest.to_json(pretty: true) }
-      format.json  { render json: iiif_manifest.to_json, content_type: 'application/ld+json' }
+      format.html  { @manifest = JSON.pretty_generate JSON.parse(manifest) }
+      format.json  { render json: manifest, content_type: 'application/ld+json' }
     end
   end
 
