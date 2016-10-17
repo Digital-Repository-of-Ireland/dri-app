@@ -8,6 +8,38 @@ module DRI
                                    'geographical_coverage', 'geocode_point', 'geocode_box', 'institute',
                                    'root_collection_id', 'isGovernedBy', 'ancestor_id', 'ancestor_title', 'role_dnr'].freeze
 
+        def metadata(field)
+          self[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable)]
+        end
+
+        def title
+          metadata('title')
+        end
+
+        def description
+          metadata('description')
+        end
+
+        def creator
+          metadata('creator')
+        end
+
+        def creation_date
+          metadata('creation_date')
+        end
+
+        def published_date
+          metadata('published_date')
+        end
+
+        def date
+          metadata('date')
+        end
+
+        def rights
+          metadata('rights')
+        end
+
         def extract_metadata(metadata_fields)
           item = {}
 

@@ -26,5 +26,4 @@ data:
 doi:
   enable: "false"
 iiif:
-  viewer: http://localhost/mirador
-  server: http://localhost/loris
+  server: http://localhost:3000/iiif

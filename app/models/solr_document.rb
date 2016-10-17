@@ -132,7 +132,7 @@ class SolrDocument
                       self[is_collection_key]
                     end
 
-    is_collection == 'true' ? true : false
+    is_collection == 'true' || is_collection == true ? true : false
   end
 
   def root_collection?
@@ -180,6 +180,16 @@ class SolrDocument
     end
 
     root
+  end
+
+  def governing_collection
+    governing_id = collection_id
+    return nil unless governing_id
+
+    solr_query = "id:#{governing_id}"
+    collection = ActiveFedora::SolrService.query(solr_query, defType: 'edismax', rows: '1')
+    
+    SolrDocument.new(collection[0])
   end
 
   def retrieve_ancestor_licence
