@@ -69,13 +69,14 @@ describe DRI::IIIFViewable do
 
     @collection = FactoryGirl.create(:collection)
     @collection[:creator] = [@login_user.email]
-    @collection[:status] = "draft"
+    @collection[:status] = 'published'
     @collection.save
 
-    @object = FactoryGirl.create(:sound)
-    @object[:status] = 'draft'
-    @object.governing_collection = @collection
-    @object.save
+    @sound = FactoryGirl.create(:sound)
+    @sound[:status] = 'published'
+    @sound[:creator] = [@login_user.email]
+    @sound.governing_collection = @collection
+    @sound.save
 
     DRI::Asset::Actor.any_instance.stub(:create_external_content)
     DRI::Asset::Actor.any_instance.stub(:update_external_content)
@@ -84,7 +85,7 @@ describe DRI::IIIFViewable do
       File.join(@tmp_upload_dir, 'sample_image.jpeg'))
 
     @generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
-    @generic_file.batch = @object
+    @generic_file.batch = @sound
     @generic_file.apply_depositor_metadata(@login_user.email)
     file = LocalFile.new(fedora_id: @generic_file.id, ds_id: 'content')
     options = {}
@@ -113,15 +114,15 @@ describe DRI::IIIFViewable do
   describe 'manifest' do
 
     it "should create a valid manifest for an object" do
-      expect{iiif_test.new(@object).iiif_manifest.to_json}.to_not raise_error
+      expect{iiif_test.new(SolrDocument.new(@sound.to_solr)).iiif_manifest.to_json}.to_not raise_error
     end
 
     it "should create a valid manifest for a collection" do
-      expect{iiif_test.new(@collection).iiif_manifest.to_json}.to_not raise_error
+      expect{iiif_test.new(SolrDocument.new(@collection.to_solr)).iiif_manifest.to_json}.to_not raise_error
     end
 
     it "should set within for collection objects" do
-      manifest = iiif_test.new(@object).iiif_manifest
+      manifest = iiif_test.new(SolrDocument.new(@sound.to_solr)).iiif_manifest
  
       expect(manifest.within['@id']).to end_with("#{@collection.id}.json")
     end
@@ -129,23 +130,27 @@ describe DRI::IIIFViewable do
     it "should include subcollections in the collection manifest" do
       @subcollection = FactoryGirl.create(:collection)
       @subcollection.governing_collection = @collection
+      @subcollection[:creator] = [@login_user.email]
+      @subcollection.status = 'published'
       @subcollection.save
 
-      manifest = iiif_test.new(@collection).iiif_manifest
+      @collection.reload
+
+      manifest = iiif_test.new(SolrDocument.new(@collection.to_solr)).iiif_manifest
 
       expect(manifest.collections.length).to be 1
       expect(manifest.collections.first['@id']).to end_with("collection/#{@subcollection.id}.json")
     end
 
     it 'should add images to objects' do
-      manifest = iiif_test.new(@object).iiif_manifest
+      manifest = iiif_test.new(SolrDocument.new(@sound.to_solr)).iiif_manifest
       
       expect(manifest.sequences.length).to be 1
       expect(manifest.sequences.first.canvases.length).to be 1
       expect(manifest.sequences.first.canvases.first.images.length).to be 1
 
       expect(manifest.sequences.first.canvases.first.images.first.resource['@id']).to end_with(
-        "loris/#{@object.id}:#{@generic_file.id}/full/full/0/default.jpg")
+        "#{@sound.id}:#{@generic_file.id}/full/full/0/default.jpg")
     end
 
   end
