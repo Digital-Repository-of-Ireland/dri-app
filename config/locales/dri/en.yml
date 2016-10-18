@@ -178,6 +178,7 @@ en:
       language: Language
       manage: Manage
       manage_users: "Add Manager User"
+      mirador: "Mirador"
       my_collections: "My Collections"
       my_tasks: "My Tasks"
       new_collection: "New Collection"
