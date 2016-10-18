@@ -1,6 +1,8 @@
 module FacetsHelper
   include Blacklight::FacetsHelperBehavior
 
+  DCMI_KEYS = %w(elevation northlimit eastlimit southlimit westlimit uplimit downlimit units zunits projection north east)
+
   # Used by CatalogController's language facet_field, show_field and index_field
   # to parse a language code into the full name when needed
   # NOTE: Requires Blacklight 4.2.0 for facet_field to work
@@ -125,9 +127,14 @@ module FacetsHelper
 
     value.split(/\s*;\s*/).each do |component|
       (k, v) = component.split(/\s*=\s*/)
+      dcmi = true if DCMI_KEYS.include?(k)
+
       if k.eql?('name')
         return v unless v.nil? || v.empty?
       end
+
+      # if DCMI encoding but no name, do not include in facets
+      return 'nil' if dcmi
     end
     value
   end
@@ -188,11 +195,14 @@ module FacetsHelper
   # @return [String]
   def render_facet_value(facet_solr_field, item, options = {})
     return if uri?(item.value)
+    
+    display_value = facet_display_value(facet_solr_field, item)
+    return if display_value == 'nil'
 
     path = search_action_path(add_facet_params_and_redirect(facet_solr_field, item))
     link_to_unless(
       options[:suppress_link],
-      facet_display_value(facet_solr_field, item) + " (#{item.hits})",
+      display_value + " (#{item.hits})",
       path, class: 'facet_select'
     )
   end
