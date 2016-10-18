@@ -53,7 +53,7 @@ describe DRI::IIIFViewable do
     include Rails.application.routes.url_helpers
 
     def initialize(object)
-      @object = object
+      @document = object
     end
   end
   }

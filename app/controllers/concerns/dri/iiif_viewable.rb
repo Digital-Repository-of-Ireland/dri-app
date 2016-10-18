@@ -8,7 +8,7 @@ module DRI::IIIFViewable
   def iiif_manifest
     object_url = ''
 
-    if @object.collection?
+    if @document.collection?
       create_collection_manifest
     else
       create_object_manifest
@@ -16,24 +16,24 @@ module DRI::IIIFViewable
   end
 
   def iiif_base_url
-    iiif_base_url = url_for controller: 'iiif', action: 'show', id: @object.id,
+    iiif_base_url = url_for controller: 'iiif', action: 'show', id: @document.id,
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
   end
 
   def create_object_manifest
-    seed_id = url_for controller: 'iiif', action: 'manifest', id: @object.id, format: 'json',
+    seed_id = url_for controller: 'iiif', action: 'manifest', id: @document.id, format: 'json',
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
 
     seed = {
       '@id' => seed_id,
-      'label' => @object.title.join(','),
-      'description' => @object.description.join(' ')
+      'label' => @document.title.join(','),
+      'description' => @document.description.join(' ')
     }
     
     manifest = IIIF::Presentation::Manifest.new(seed)
     base_manifest(manifest)
     
-    if @object.collection_id
+    if @document.collection_id
       manifest.within = create_within
     end
 
@@ -49,25 +49,25 @@ module DRI::IIIFViewable
   end
 
   def create_collection_manifest
-    seed_id = iiif_collection_manifest_url id: @object.id, format: 'json',
+    seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
 
     seed = {
       '@id' => seed_id,
-      'label' => @object.title.join(','),
-      'description' => @object.description.join(' ')
+      'label' => @document.title.join(','),
+      'description' => @document.description.join(' ')
     }
 
     manifest = IIIF::Presentation::Collection.new(seed)
     base_manifest(manifest)
 
-    if @object.collection_id.nil?
+    if @document.collection_id.nil?
       manifest.viewing_hint = 'top'
     else
       manifest.within = create_within
     end
 
-    sub_collections = @object.children
+    sub_collections = @document.children
     unless sub_collections.empty?
       sub_collections.each { |c| manifest.collections << create_subcollection(c) }
     end
@@ -82,7 +82,7 @@ module DRI::IIIFViewable
 
   def attached_images
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{@object.id}"
+    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{@document.id}"
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)}:\"image\""
     files_query += " AND NOT #{ActiveFedora.index_field_mapper.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
 
@@ -95,7 +95,7 @@ module DRI::IIIFViewable
   end
 
   def base_manifest(manifest)
-    solr_doc = @object
+    solr_doc = @document
 
     manifest.metadata = create_metadata
     manifest.see_also = see_also
@@ -105,7 +105,7 @@ module DRI::IIIFViewable
     attributions << depositing_org.name if depositing_org
     manifest.logo = logo if logo
 
-    attributions.push(*@object.rights)
+    attributions.push(*@document.rights)
 
     licence = solr_doc.licence
     if licence && licence.url
@@ -117,7 +117,7 @@ module DRI::IIIFViewable
 
   def child_objects
     # query for objects within this collection
-    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{@object.id}\""
+    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{@document.id}\""
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:\"published\""
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('object_type', :facetable, type: :string)}:\"Image\""
@@ -140,7 +140,7 @@ module DRI::IIIFViewable
     canvas.height = file[WIDTH_SOLR_FIELD]
     canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')].first
 
-    base_uri = Settings.iiif.server + '/' + @object.id + ':' + file.id
+    base_uri = Settings.iiif.server + '/' + @document.id + ':' + file.id
     image_url =  base_uri + '/full/full/0/default.jpg'
 
     image = IIIF::Presentation::ImageResource.create_image_api_image_resource(
@@ -172,14 +172,14 @@ module DRI::IIIFViewable
 
   def create_metadata
     metadata = [
-      { 'label' => 'Creator', 'value' => @object.creator.join(', ') },
-      { 'label' => 'Title', 'value' => @object.title.join(', ') }
+      { 'label' => 'Creator', 'value' => @document.creator.join(', ') },
+      { 'label' => 'Title', 'value' => @document.title.join(', ') }
     ]
 
-    metadata << { 'label' => 'Creation date', 'value' => @object.creation_date.first } unless @object.creation_date.blank?
-    metadata << { 'label' => 'Published date', 'value' => @object.published_date.first } unless @object.published_date.blank?
-    metadata << { 'label' => 'Date', 'value' => @object.date.first } unless @object.date.blank?
-    metadata << { 'label' => 'Permalink', 'value' => "doi:10.7486/DRI.#{@object.id}" }
+    metadata << { 'label' => 'Creation date', 'value' => @document.creation_date.first } unless @document.creation_date.blank?
+    metadata << { 'label' => 'Published date', 'value' => @document.published_date.first } unless @document.published_date.blank?
+    metadata << { 'label' => 'Date', 'value' => @document.date.first } unless @document.date.blank?
+    metadata << { 'label' => 'Permalink', 'value' => "doi:10.7486/DRI.#{@document.id}" }
 
     metadata
   end
@@ -194,7 +194,7 @@ module DRI::IIIFViewable
   end
 
   def create_within
-    governing_collection = @object.governing_collection
+    governing_collection = @document.governing_collection
 
     { 
         '@id' => (iiif_collection_manifest_url id: governing_collection.id, format: 'json',
@@ -221,7 +221,7 @@ module DRI::IIIFViewable
 
   def see_also
     {
-      "@id" => object_metadata_url(id: @object.id, 
+      "@id" => object_metadata_url(id: @document.id, 
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
       'format' => 'text/xml'
     }
