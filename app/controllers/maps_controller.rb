@@ -26,10 +26,10 @@ class MapsController < ApplicationController
       query = ''
 
       collections_mode = params[:mode] == 'collections' ? '' : '-'
-      query += "#{collections_mode}#{Solrizer.solr_name('file_type', :stored_searchable, type: :string)}:collection"
+      query += "#{collections_mode}#{ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)}:collection"
 
       unless signed_in?
-        query += " AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published"
+        query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
       end
 
       query += " AND #{params[:q]}" unless params[:q].blank?
@@ -41,9 +41,9 @@ class MapsController < ApplicationController
       end
 
       # geographical coverage exists and it is valid
-      query += " AND #{Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string)}:[* TO *]"
-      query += " AND (-#{Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string)}:unknown"
-      query += " AND -#{Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string)}:\"n/a\")"
+      query += " AND #{ActiveFedora.index_field_mapper.solr_name('geographical_coverage', :stored_searchable, type: :string)}:[* TO *]"
+      query += " AND (-#{ActiveFedora.index_field_mapper.solr_name('geographical_coverage', :stored_searchable, type: :string)}:unknown"
+      query += " AND -#{ActiveFedora.index_field_mapper.solr_name('geographical_coverage', :stored_searchable, type: :string)}:\"n/a\")"
 
       query
     end
