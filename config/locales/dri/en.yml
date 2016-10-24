@@ -371,7 +371,7 @@ en:
           edit_this_record: "Edit"
           generate_surrogates: "Regenerate Surrogates"
           history: History
-          iiif_viewer: "IIIF viewer"
+          iiif_viewer: "Open in IIIF viewer"
           listen: listen
           mark_all_descendants_reviewed: "Proceed"
           mark_all_reviewed: "Mark as Reviewed"

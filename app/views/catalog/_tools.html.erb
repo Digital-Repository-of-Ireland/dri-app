@@ -27,6 +27,11 @@
 		<li>
 			<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citation_modal_id' %>
 		</li>
+		<li>
+		<% if @document['mime_type_tesim'].present? && (Settings.restrict.mime_types.image & @document['mime_type_tesim']).any? %>
+     <%= link_to image_tag('iiif_logo.png', border: 0), "/mirador/view.html?id=#{@document.id}", title: t('dri.views.catalog.links.iiif_viewer') %>
+    <% end %>
+    </li>
 		<% if (can? :edit, @document) %>
 		<li>
 			<%= link_to t('dri.views.catalog.links.history'), object_history_path(@document.id), :id => 'show_object_history_report' %>
@@ -36,7 +41,6 @@
 		<li class="dri_share">
 			<%= social_share_button_tag(document_show_html_title, :image => @search_image, :popup => 'true') %>
 		</li>
-
 	</ul>
 </div>
 <div class="modal fade" id="dri_citation_modal_id">
