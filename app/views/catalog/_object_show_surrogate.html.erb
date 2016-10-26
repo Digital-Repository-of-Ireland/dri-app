@@ -50,27 +50,16 @@
         <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
         <% if @surrogate %>
             <% if (signed_in? && current_user.is_admin?) || (document.published? && document.public_read?) %>
-              <%= link_to "#dri_iiif_view", class: 'dri_leaflet_iiif' do %>
+            <% @current_file = generic_file %> 
+              <%= link_to "#dri_iiif_view", class: 'dri_iiif' do %>
                   <img class="dri_carousel_img" src="<%= @surrogate %>">      
               <% end %>
             <% else %>
                <%= link_to @surrogate_colorbox, :class => 'dri_gallery group1' do %>
                   <img class="dri_carousel_img" src="<%= @surrogate %>">      
-               <% end %>
+                <% end %>
             <% end %>    
         <% end %>
-
-        <% if (signed_in? && current_user.is_admin?) || (document.published? && document.public_read?) %>
-          <div style="display:none">
-            <%= content_tag(
-                  'div',
-                  id: 'dri_iiif_view',
-                  style: 'height:100%',
-                  data: { info: "#{Settings.iiif.server}/#{document.id}:#{generic_file.id}/info.json" }) do %>
-            <% end %>
-          </div>
-        <% end %>
-
     <% end %>
 
     <% if @surrogate.blank? %>

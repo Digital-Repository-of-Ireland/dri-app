@@ -221,26 +221,12 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    var map;
-    $('a.dri_leaflet_iiif').colorbox({
-        rel:'dri_iiif_view',
+    $('a.dri_iiif').colorbox({
         height:'80%' ,
         width:'80%',
-        inline: true,
-        onComplete:function(){
-          if (L.DomUtil.get('dri_iiif_view')._leaflet) {
-            map.invalidateSize(true);
-          } else {
-            map = L.map('dri_iiif_view', {
-              center: [0, 0],
-              crs: L.CRS.Simple,
-              zoom: 0,
-            })
-            map.addLayer(L.tileLayer.iiif($('#dri_iiif_view').data('info')));
-          }
-        },
+        inline: true
     });
-
+   
     $(window).resize(function(){
       $.colorbox.resize({
         width: '80%',

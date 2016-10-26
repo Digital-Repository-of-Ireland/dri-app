@@ -34,6 +34,6 @@
 //= require colorbox-rails
 //= require social-share-button
 //= require jquery-xmleditor
-//= require leaflet-iiif
+//= require openseadragon
 //= require dri/
 
