@@ -41,4 +41,8 @@
     <%= content_tag('div', id: 'dri_iiif_view', style: 'height:100%', data: { sources: @iiif_sources}) do %>
     <% end %>
   </div>
+
+  <% content_for :head do %>
+    <%= javascript_include_tag 'iiif_viewer' %>
+  <% end %>  
 <% end %>
