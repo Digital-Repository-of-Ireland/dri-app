@@ -226,7 +226,7 @@ $(document).ready(function () {
         width:'80%',
         inline: true
     });
-   
+
     $(window).resize(function(){
       $.colorbox.resize({
         width: '80%',

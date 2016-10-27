@@ -220,6 +220,7 @@ en:
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
       facets_title: "Facet Filters"
+      iiif_viewer: "Open in IIIF viewer"
       fields:
         collection_title: "Collection Title"
         collection_title_text: "A name given to the collection."
@@ -371,7 +372,7 @@ en:
           edit_this_record: "Edit"
           generate_surrogates: "Regenerate Surrogates"
           history: History
-          iiif_viewer: "Open in IIIF viewer"
+          iiif_viewer: "Viewer"
           listen: listen
           mark_all_descendants_reviewed: "Proceed"
           mark_all_reviewed: "Mark as Reviewed"

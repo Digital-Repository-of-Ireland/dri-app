@@ -35,5 +35,6 @@
 //= require social-share-button
 //= require jquery-xmleditor
 //= require openseadragon
+//= require iiif_viewer
 //= require dri/
 

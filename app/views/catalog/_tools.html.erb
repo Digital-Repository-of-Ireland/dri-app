@@ -27,11 +27,11 @@
 		<li>
 			<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citation_modal_id' %>
 		</li>
-		<li>
 		<% if @document['mime_type_tesim'].present? && (Settings.restrict.mime_types.image & @document['mime_type_tesim']).any? %>
-     <%= link_to image_tag('iiif_logo.png', border: 0), "/mirador/view.html?id=#{@document.id}", title: t('dri.views.catalog.links.iiif_viewer') %>
+		<li>
+     <%= link_to (image_tag('iiif_logo.png') + t('dri.views.catalog.links.iiif_viewer')).html_safe, "/mirador/view.html?id=#{@document.id}", title: t('dri.help.iiif_viewer') %>
+   </li>
     <% end %>
-    </li>
 		<% if (can? :edit, @document) %>
 		<li>
 			<%= link_to t('dri.views.catalog.links.history'), object_history_path(@document.id), :id => 'show_object_history_report' %>
