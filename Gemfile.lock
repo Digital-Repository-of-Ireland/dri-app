@@ -547,6 +547,8 @@ GEM
       omniauth (>= 1.0.0)
     openlayers-rails (0.0.4)
       railties (>= 3.1)
+    openseadragon (0.3.0)
+      rails (> 3.2.0)
     orm_adapter (0.5.0)
     os (0.9.6)
     paper_trail (4.2.0)
@@ -893,6 +895,7 @@ DEPENDENCIES
   oauth
   omniauth-shibboleth
   openlayers-rails
+  openseadragon
   paper_trail (~> 4)
   poltergeist (>= 1.4.1)
   railroady
@@ -926,4 +929,4 @@ DEPENDENCIES
   zeus
 
 BUNDLED WITH
-   1.11.2
+   1.13.6
