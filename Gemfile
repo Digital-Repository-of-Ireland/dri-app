@@ -12,6 +12,7 @@ gem 'hydra-head', '9.10'
 
 gem 'riiif', git: 'https://github.com/curationexperts/riiif.git'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
+gem 'openseadragon'
 
 gem 'sufia-models', '6.5.0'
 gem 'redlock'

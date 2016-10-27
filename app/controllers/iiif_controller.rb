@@ -25,12 +25,4 @@ class IiifController < CatalogController
     end
   end
 
-  def view
-    enforce_permissions!('show_digital_object', params[:id])
-
-    @object_id = params[:id]
-
-    render layout: false
-  end
-
 end
