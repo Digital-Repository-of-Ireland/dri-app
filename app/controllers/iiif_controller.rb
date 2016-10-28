@@ -17,7 +17,7 @@ class IiifController < CatalogController
 
     response.headers['Access-Control-Allow-Origin'] = '*'
 
-    manifest = Rails.cache.fetch(params[:id]) { iiif_manifest.to_json }
+    manifest = Rails.cache.fetch("#{@document.id}-#{@document['system_modified_dtsi']}") { iiif_manifest.to_json }
     
     respond_to do |format|
       format.html  { @manifest = JSON.pretty_generate JSON.parse(manifest) }

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  OpenSeadragon.DEFAULT_SETTINGS.timeout = 60000;
+  
   var sources = $('#dri_iiif_view').data('sources');
   var viewer = OpenSeadragon({
       id:                 "dri_iiif_view",
@@ -7,6 +9,7 @@ $(document).ready(function () {
       visibilityRatio:    1,
       sequenceMode: true,
       showNavigator: true,
+      timeout: 60000,
       navImages:          {
                             zoomIn: {
                               REST:     "<%= image_path('openseadragon/zoomin_rest.png') %>",

@@ -27,9 +27,9 @@
 		<li>
 			<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citation_modal_id' %>
 		</li>
-		<% if @document['mime_type_tesim'].present? && (Settings.restrict.mime_types.image & @document['mime_type_tesim']).any? %>
+		<% unless @iiif_sources.blank? %>
 		<li>
-     <%= link_to (image_tag('iiif_logo.png') + t('dri.views.catalog.links.iiif_viewer')).html_safe, "/mirador/view.html?id=#{@document.id}", title: t('dri.help.iiif_viewer') %>
+     <%= link_to (image_tag('iiif_logo.png') + t('dri.views.catalog.links.iiif_viewer')).html_safe, "/mirador/view.html?id=#{@document.id}", title: t('dri.help.iiif_viewer'), target: '_blank' %>
    </li>
     <% end %>
 		<% if (can? :edit, @document) %>
