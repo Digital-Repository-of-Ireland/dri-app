@@ -49,7 +49,7 @@
         <% end %>
         <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
         <% if @surrogate %>
-            <% if (signed_in? && current_user.is_admin?) || (document.published? && document.public_read?) %>
+            <% if document.published? && document.public_read? %>
               <% @iiif_sources << iiif_info_url(document.id, generic_file.id) %> 
               <%= link_to "#dri_iiif_view", class: 'dri_iiif' do %>
                   <img class="dri_carousel_img" src="<%= @surrogate %>">      
