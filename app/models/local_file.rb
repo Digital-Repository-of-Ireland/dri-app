@@ -14,9 +14,6 @@ class LocalFile < ActiveRecord::Base
   # Write the file to the filesystem
   #
   def add_file(upload, opts = {})
-    #file_name = opts[:file_name].presence || upload.original_filename
-    #file_name = "#{fedora_id}_#{file_name}"
-
     # Batch ID will be used in the MOAB directory name, check it exists
     batch_id = opts[:batch_id]
     if batch_id.nil? or batch_id.blank?
@@ -33,11 +30,11 @@ class LocalFile < ActiveRecord::Base
 
     upload_to_file(base_dir, upload)
 
-    if opts[:checksum]
-      self.checksum = { opts[:checksum] => Checksum.checksum(opts[:checksum], path) }
-    else
-      self.checksum = {}
-    end
+    self.checksum = if opts[:checksum]
+                      { opts[:checksum] => Checksum.checksum(opts[:checksum], path) }
+                    else
+                      {}
+                    end
   end
 
   # Remove the file from the filesystem if it exists
@@ -56,7 +53,6 @@ class LocalFile < ActiveRecord::Base
     def local_storage_dir
       Rails.root.join(Settings.dri.files)
     end
-
 
     def upload_to_file(base_dir, upload)
       if upload.respond_to?('path')

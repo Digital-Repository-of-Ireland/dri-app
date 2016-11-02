@@ -1,30 +1,35 @@
 module DocumentHelper
-
   Child = Struct.new(:link_text, :path, :type) do
     def to_partial_path
-      "child"
+      'child'
     end
   end
 
-  def get_collection_media_type_params(document, collectionId, mediaType)
-    if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)] == nil
-      searchFacets = { Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [mediaType], Solrizer.solr_name('root_collection_id', :facetable, type: :string).to_sym => [collectionId] }
+  def get_collection_media_type_params(document, collection_id, media_type)
+    search_facets = if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)].nil?
+      {
+        Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [media_type],
+        Solrizer.solr_name('root_collection_id', :facetable, type: :string).to_sym => [collection_id]
+      }
     else
-      searchFacets = { Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [mediaType], Solrizer.solr_name('ancestor_id', :facetable, type: :string).to_sym => [collectionId] }
+      {
+        Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [media_type],
+        Solrizer.solr_name('ancestor_id', :facetable, type: :string).to_sym => [collection_id]
+      }
     end
-    searchParams = { mode: 'objects', search_field: 'all_fields', utf8: '✓', f: searchFacets }
+    search_params = { mode: 'objects', search_field: 'all_fields', utf8: '✓', f: search_facets }
 
-    searchParams
+    search_params
   end
 
   def truncate_description(description, count)
-    (description.length > count) ? description.first(count) : description
+    description.length > count ? description.first(count) : description
   end
 
   # Workaround for reusing partials for add
   # institution/permissions to non QDC collections
   def update_desc_metadata?(md_class)
-    %w(DRI::QualifiedDublinCore DRI::Documentation).include?(md_class) ? true : false
+    %w(DRI::QualifiedDublinCore DRI::Documentation DRI::Mods DRI::Marc).include?(md_class) ? true : false
   end
 
   # For a given collection (sub-collection) object
@@ -32,7 +37,7 @@ module DocumentHelper
   def collection_children(document, limit)
     children_array = []
     children = document.children(limit)
-    
+
     children.each do |doc|
       next unless doc.published? || ((current_user && current_user.is_admin?) || can?(:edit, doc))
 
@@ -44,8 +49,8 @@ module DocumentHelper
       child.link_text = link_text
       child.path = catalog_path(doc['id'])
       child.type = type
-      
-      children_array = children_array.to_a.push( child )
+
+      children_array = children_array.to_a.push(child)
     end
 
     Kaminari.paginate_array(children_array).page(params[:subs_page]).per(4)
@@ -57,7 +62,9 @@ module DocumentHelper
 
     relationships.each do |key, array|
       filtered_array = array.select { |item| item[1].published? || ((current_user && current_user.is_admin?) || can?(:edit, item[1])) }
-      filtered_relationships[key] = Kaminari.paginate_array(filtered_array).page(params[key.downcase.gsub(/\s/, '_') << '_page']).per(4) unless filtered_array.empty?
+      unless filtered_array.empty?
+        filtered_relationships[key] = Kaminari.paginate_array(filtered_array).page(params[key.downcase.gsub(/\s/, '_') << '_page']).per(4)
+      end
     end
 
     filtered_relationships

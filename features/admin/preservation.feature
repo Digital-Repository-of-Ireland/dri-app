@@ -12,7 +12,7 @@ Feature: Preservation
     When I create a collection and save the pid
     Then an AIP should exist for the saved pid 
     And the AIP for the saved pid should have "1" version
-    And the manifest for version "1" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
 
   Scenario: Edit collection metadata
     When I create a collection and save the pid 
@@ -22,8 +22,8 @@ Feature: Preservation
     And I press the button to "save collection changes"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
   Scenario: Replace collection metadata
     When I create a collection and save the pid
@@ -33,10 +33,9 @@ Feature: Preservation
     And I press the button to "upload metadata"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
-  @noexec
   Scenario: Add collection cover image
     When I create a collection and save the pid
     And I go to the "collection" "show" page for "the saved pid"
@@ -47,18 +46,20 @@ Feature: Preservation
     Then I should see a success message for updating a collection
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
   @noexec
   Scenario: Publish collection 
+    Given I have created an institute "Test"
     When I create a collection and save the pid
+    And I have associated the institute "Test" with the collection with pid "the saved pid"
     And I go to the "collection" "show" page for "the saved pid"
     And I follow the link to publish collection
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
   Scenario: Add a licence for a collection
     Given I have created a licence "Test"
@@ -69,19 +70,19 @@ Feature: Preservation
     And I press the button to "set licence"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
   @noexec
   Scenario: Delete an unpublished collection
     When I create a collection and save the pid
     And I go to the "collection" "show" page for "the saved pid"
     And I follow the link to delete a collection
-    And I press the button to "confirm delete collection"
+    And I press the button to "delete collection with the saved pid"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
   Scenario: Add institutes for a collection
     Given I have created an institute "Test"
@@ -91,14 +92,14 @@ Feature: Preservation
     And I press the button to "associate an institute"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
   Scenario: Create an object
     When I create an object and save the pid
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "1" version 
-    And the manifest for version "1" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
 
   Scenario: Edit object metadata
     When I create an object and save the pid
@@ -108,8 +109,8 @@ Feature: Preservation
     And I press the button to "save changes"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
   Scenario: Replace object metadata
     When I create an object and save the pid
@@ -119,8 +120,8 @@ Feature: Preservation
     And I press the button to "upload metadata"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
   @noexec
   Scenario: Upload an asset
@@ -130,8 +131,8 @@ Feature: Preservation
     And I press the button to "upload a file"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
   @noexec
   Scenario: Replace asset
@@ -146,9 +147,9 @@ Feature: Preservation
     And I press the button to "upload a file"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "3" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
-    And the manifest for version "3" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
+    And the manifest for version "3" for the saved pid should be valid
 
   Scenario: Mark object as reviewed
     When I create an object and save the pid
@@ -156,8 +157,8 @@ Feature: Preservation
     And I press the button to "update status"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 
   @noexec
   Scenario: Delete an unpublished object
@@ -167,6 +168,6 @@ Feature: Preservation
     And I press the button to "confirm delete object"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
-    And the manifest for version "1" for the saved pid should be be valid
-    And the manifest for version "2" for the saved pid should be be valid
+    And the manifest for version "1" for the saved pid should be valid
+    And the manifest for version "2" for the saved pid should be valid
 

@@ -4,7 +4,7 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-NuigRnag::Application.load_tasks
+DriApp::Application.load_tasks
 
 APP_ROOT= File.dirname(__FILE__)
 

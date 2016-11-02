@@ -2,7 +2,7 @@
 (controller.controller_name.eql?('ingest')  && (controller.action_name.eql?('new') || controller.action_name.eql?('create'))) ||
 (controller.controller_name.eql?('licences')  && (controller.action_name.eql?('new') || controller.action_name.eql?('edit') || controller.action_name.eql?('index'))) ||
 (controller.controller_name.eql?('static') && controller.action_name.eql?('admin'))) ||
-controller.controller_name.eql?('workspace') || controller_name.eql?('manage_users') || (controller.controller_name.eql?('institutes') && controller.action_name.eql?('new')) %>
+controller.controller_name.eql?('workspace') || controller_name.eql?('manage_users') || (controller.controller_name.eql?('institutes') && controller.action_name.eql?('new')) || controller.controller_name.eql?('user_background_tasks') %>
 <li class="dropdown active dri_dropdown visible-sm visible-md visible-lg">
   <% else %>
 <li class="dropdown dri_dropdown visible-sm visible-md visible-lg">
@@ -18,6 +18,15 @@ controller.controller_name.eql?('workspace') || controller_name.eql?('manage_use
       <% end %>
       <%= link_to t('dri.headerlinks.my_collections'), workspace_path(:mode => "collections"), :id => "my_collections", :tabindex => "-1" %>
     </li>
+
+    <% if tasks? %>
+      <% if (controller.controller_name.eql?('user_background_tasks')) %>
+        <li role="presentation" class="active">
+      <% else %>
+        <li role="presentation">
+      <% end %>
+      <%= link_to t('dri.headerlinks.my_tasks'), user_tasks_path, id: "tasks" %>
+    <% end %>
 
     <% if signed_in? && (current_user.is_cm? || current_user.is_om? || current_user.is_admin? || @collections.count > 0 ) %>
 
@@ -59,7 +68,7 @@ controller.controller_name.eql?('workspace') || controller_name.eql?('manage_use
             <%= link_to t('dri.views.static.admin.licences'), main_app.licences_path, :id => "licences", :tabindex => "-1" %>
         </li>
     <% end %>
-
+    
     <% if signed_in? && current_user.is_admin? %> <!-- ok -->
       <li role="presentation">
         <%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, :id => "resque", :tabindex => "-1" %>

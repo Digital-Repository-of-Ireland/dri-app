@@ -4,116 +4,110 @@ module FacetsHelper
   # Used by CatalogController's language facet_field, show_field and index_field
   # to parse a language code into the full name when needed
   # NOTE: Requires Blacklight 4.2.0 for facet_field to work
-  def label_language args
+  def label_language(args)
     results = nil
 
     if args.is_a?(Hash)
-      results = Array.new
+      results = []
       value_list = args[:document][args[:field]]
 
       value_list.each do |value|
-        results.push(transform_language value)
+        results.push(transform_language(value))
       end
     else
-      results = transform_language args
+      results = transform_language(args)
     end
 
-    return results
+    results
   end
 
-  def parse_era args
+  def parse_era(args)
     results = nil
 
     if args.is_a?(Hash)
-      results = Array.new
+      results = []
       value_list = args[:document][args[:field]]
 
       value_list.each do |value|
-        results.push(transform_era value)
+        results.push(transform_era(value))
       end
     else
-      results = transform_era args
+      results = transform_era(args)
     end
 
-    return results
+    results
   end
 
-  def parse_location args
+  def parse_location(args)
     results = nil
 
     if args.is_a?(Hash)
-      results = Array.new
+      results = []
       value_list = args[:document][args[:field]]
 
-      value_list.each { |value| results.push(transform_loc value) }
+      value_list.each { |value| results.push(transform_loc(value)) }
     else
-      results = transform_loc args
+      results = transform_loc(args)
     end
 
-    return results
+    results
   end
 
-  def is_collection args
+  def is_collection(args)
     results = nil
 
     if args.is_a?(Hash)
-      results = Array.new
+      results = []
       value_list = args[:document][args[:field]]
 
       value_list.each do |value|
-        results.push(transform_is_collection value)
+        results.push(transform_is_collection(value))
       end
     else
-      results = transform_is_collection args
+      results = transform_is_collection(args)
     end
 
-    return results
+    results
   end
 
-  def collection_title args
+  def collection_title(args)
     results = nil
 
     if args.is_a?(Hash)
-      results = Array.new
+      results = []
       value_list = args[:document][args[:field]]
 
-      value_list.each { |value| results.push(transform_collection_title value) }
+      value_list.each { |value| results.push(transform_collection_title(value)) }
     else
-      results = transform_collection_title args
+      results = transform_collection_title(args)
     end
 
-    return results
+    results
   end
 
-  def transform_collection_title value
-    return 'nil' if value == nil
+  def transform_collection_title(value)
+    return 'nil' if value.nil?
 
     pid = value
+    return value if pid.blank?
 
-    unless pid.blank?
-      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([pid])
-      docs = ActiveFedora::SolrService.query(solr_query)
-    else
-      return value
-    end
+    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([pid])
+    docs = ActiveFedora::SolrService.query(solr_query)
 
     return 'nil' if docs.empty?
 
     doc = docs.first
-
-    return doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+    doc[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)].first
   end
 
-  def transform_is_collection value
-    if value == nil
-      return 'nil'
-    end
+  def transform_is_collection(value)
+    return 'nil' if value.nil?
 
-    value.eql?("false") ? t('dri.views.facets.values.no_collections') : t('dri.views.facets.values.collections')
+    value == 'false' ? t('dri.views.facets.values.no_collections') : t('dri.views.facets.values.collections')
   end
 
   # parses encoded era values
-  def transform_era value
+  def transform_era(value)
     return 'nil' if value.nil?
 
     value.split(/\s*;\s*/).each do |component|
@@ -122,66 +116,65 @@ module FacetsHelper
         return v unless v.nil? || v.empty?
       end
     end
-    return value
+    value
   end
 
   # parses encoded location values
-  def transform_loc value
+  def transform_loc(value)
     return 'nil' if value.nil?
 
     value.split(/\s*;\s*/).each do |component|
-      (k,v) = component.split(/\s*=\s*/)
+      (k, v) = component.split(/\s*=\s*/)
       if k.eql?('name')
         return v unless v.nil? || v.empty?
       end
     end
-    return value
+    value
   end
 
   # Fetches the correct internationalization translation for a given language code
-  def transform_language value
-    return 'nil' if value == nil
+  def transform_language(value)
+    return 'nil' if value.nil?
 
-    standard_lang = DRI::Metadata::Descriptors.standardise_language_code value
+    standard_lang = DRI::Metadata::Descriptors.standardise_language_code(value)
 
-    if standard_lang != nil
-      t('dri.vocabulary.iso_639_2.'+standard_lang)
+    unless standard_lang.nil?
+      t('dri.vocabulary.iso_639_2.' + standard_lang)
     else
       value
     end
   end
 
-  def label_permission args
+  def label_permission(args)
     results = nil
 
     if args.is_a?(Hash)
-      results = Array.new
+      results = []
       value_list = args[:document][args[:field]]
 
       value_list.each do |value|
-        results.push(transform_permission value)
+        results.push(transform_permission(value))
       end
     else
-      results = transform_permission args
+      results = transform_permission(args)
     end
 
-    return results
+    results
   end
 
   # Used as helper_method in CatalogController's add_facet_field, doesn't seem to get called.
-  def transform_permission value
+  def transform_permission(value)
     case value
-      when "public"
-        return t('dri.views.objects.access_controls.public')
-      when "private"
-        return t('dri.views.objects.access_controls.private')
-      when "inherit"
-        return t('dri.views.objects.access_controls.inherited')
-      else
-        return "unknown?"
+    when 'public'
+      t('dri.views.objects.access_controls.public')
+    when 'private'
+      t('dri.views.objects.access_controls.private')
+    when 'inherit'
+      t('dri.views.objects.access_controls.inherited')
+    else
+      'unknown?'
     end
   end
-
 
   ##
   # Standard display of a facet value in a list. Used in both _facets sidebar
@@ -193,38 +186,40 @@ module FacetsHelper
   # @param [Hash] options
   # @option options [Boolean] :suppress_link display the facet, but don't link to it
   # @return [String]
-  def render_facet_value(facet_solr_field, item, options ={})
+  def render_facet_value(facet_solr_field, item, options = {})
     return if uri?(item.value)
 
     path = search_action_path(add_facet_params_and_redirect(facet_solr_field, item))
-    link_to_unless(options[:suppress_link], 
-      facet_display_value(facet_solr_field, item) + " (#{item.hits})", 
-      path, class: 'facet_select')
+    link_to_unless(
+      options[:suppress_link],
+      facet_display_value(facet_solr_field, item) + " (#{item.hits})",
+      path, class: 'facet_select'
+    )
   end
 
   # Renders a count value for facet limits. Can be over-ridden locally
   # to change style. And can be called by plugins to get consistent display
   def render_facet_count(num)
-    content_tag("b", t('blacklight.search.facets.count', number: num))
+    content_tag('b', t('blacklight.search.facets.count', number: num))
   end
 
   # Standard display of a SELECTED facet value, no link, special span
   # with class, and 'remove' button.
   def render_selected_facet_value(facet_solr_field, item)
-    #Updated class for Bootstrap Blacklight.
+    # Updated class for Bootstrap Blacklight.
     link_to(
       render_facet_value(facet_solr_field, item, suppress_link: true) + content_tag(:i,'', class: 'fa fa-remove'), 
-      remove_facet_params(facet_solr_field, item, params), 
-      class: 'selected')
+      remove_facet_params(facet_solr_field, item, params),
+      class: 'selected'
+    )
   end
 
   # Overwriting this helper so that values containing colons are automatically enclosed in double-quoted strings,
   # otherwise SOLR will report an error.
-  def facet_value_for_facet_item item
+  def facet_value_for_facet_item(item)
     value = item.respond_to?(:value) ? item.value : item
     value = value.html_safe if (value.include? ":")
-      
+
     value
   end
-
 end

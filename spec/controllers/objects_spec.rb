@@ -103,15 +103,6 @@ describe ObjectsController do
       expect(@object.status).to eql("published") 
     end
 
-    it 'should set the status of all objects in collection' do
-      Sufia.queue.should_receive(:push).with(an_instance_of(ReviewJob)).once
-      post :status, :id => @object.id, :status => "reviewed", :apply_all => "yes"
-
-      @object.reload
-
-      expect(@object.status).to eql("reviewed")
-    end
-
     it 'should mint a doi for an update of mandatory fields' do
       DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
       Settings.doi.enable = true
@@ -205,5 +196,72 @@ describe ObjectsController do
       end
 
   end
-  
+
+  describe 'get_objects' do
+
+    before(:each) do
+      @login_user = FactoryGirl.create(:admin)
+      sign_in @login_user
+
+      @object = FactoryGirl.create(:sound)
+      @object.status = 'published'
+      @object.save
+    end
+
+    after(:each) do
+      @object.delete
+      @login_user.delete
+    end
+
+    it 'should assign valid JSON to @list' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+
+      post :index, objects: [{ 'pid' => @object.id }]
+      list = controller.instance_variable_get(:@list)
+      expect { JSON.parse(list.to_json) }.not_to raise_error
+    end
+
+    it 'should contain the metadata fields' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+
+      post :index, objects: [{ 'pid' => @object.id }]
+      list = controller.instance_variable_get(:@list)
+      json = JSON.parse(list.to_json)
+
+      expect(json.first['metadata']['title']).to eq(@object.title)
+      expect(json.first['metadata']['description']).to eq(@object.description)
+      expect(json.first['metadata']['contributor']).to eq(@object.contributor)
+    end
+
+    it 'should only return the requested fields' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+
+      post :index, objects: [{ 'pid' => @object.id }], metadata: ['title', 'description']
+      list = controller.instance_variable_get(:@list)
+      json = JSON.parse(list.to_json)
+
+      expect(json.first['metadata']['title']).to eq(@object.title)
+      expect(json.first['metadata']['description']).to eq(@object.description)
+      expect(json.first['metadata']['contributor']).to be nil
+    end
+
+    it 'should include assets and surrogates' do
+      @gf = DRI::GenericFile.new
+      @gf.apply_depositor_metadata(@login_user)
+      @gf.batch = @object
+      @gf.save
+
+      storage = StorageService.new
+      storage.create_bucket(@object.id)
+      storage.store_surrogate(@object.id, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.id}_mp3.mp3")
+
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      post :index, objects: [{ 'pid' => @object.id }]
+      list = controller.instance_variable_get(:@list)
+
+      expect(list.first).to include('files')
+      expect(list.first['files'].first).to include('masterfile')
+      expect(list.first['files'].first).to include('mp3')
+    end
+  end
 end

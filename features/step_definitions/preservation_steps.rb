@@ -44,7 +44,7 @@ Then /^the AIP for the saved pid should have "(.*?)" version(?:|s)$/ do |count|
   (Dir.entries(aip_dir).size - 2).to_s.should eql count
 end
 
-Then /^the manifest for version "(.*?)" for the saved pid should be be valid$/ do |version|
+Then /^the manifest for version "(.*?)" for the saved pid should be valid$/ do |version|
   dir = ""
   index = 0
   4.times {

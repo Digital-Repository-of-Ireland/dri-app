@@ -1,5 +1,4 @@
 class AccessControlsController < ApplicationController
-
   def edit
     enforce_permissions!('edit', params[:id])
     @object = retrieve_object!(params[:id])
@@ -20,13 +19,7 @@ class AccessControlsController < ApplicationController
 
     permissionchange = permissions_changed?
 
-    if @object.collection?
-      if valid_permissions?
-        updated = @object.update_attributes(update_params)
-      end
-    else
-      updated = @object.update_attributes(update_params)
-    end
+    updated = @object.update_attributes(update_params) unless @object.collection? && !valid_permissions?
 
     if updated
       flash[:notice] = t('dri.flash.notice.access_controls_updated')
@@ -46,13 +39,12 @@ class AccessControlsController < ApplicationController
     purge_params
 
     respond_to do |format|
-      format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
     end
   end
 
-
   private
-    
+
     def purge_params
       params.delete(:batch)
       params.delete(:_method)
@@ -62,13 +54,21 @@ class AccessControlsController < ApplicationController
     end
 
     def update_params
-      params.require(:batch).permit(:read_groups_string, :read_users_string, :master_file_access, :edit_groups_string, :edit_users_string, :manager_users_string, :object_version)
+      params.require(:batch).permit(
+        :read_groups_string,
+        :read_users_string,
+        :master_file_access,
+        :edit_groups_string,
+        :edit_users_string,
+        :manager_users_string,
+        :object_version
+      )
     end
 
     def valid_permissions?
-      if (@object.governing_collection_id.blank? &&
+      if @object.governing_collection_id.blank? &&
         ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
-        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?)))
+        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
         false
       else
         true

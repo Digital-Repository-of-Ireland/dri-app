@@ -1,5 +1,5 @@
 <div class="dri_facet_restrictions_container">
-	<% unless (controller_name == 'saved_searches' && action_name == 'index') || is_root? %>
+	<% unless (controller_name == 'saved_searches' && action_name == 'index') || root? %>
 	<ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs" >
 		<% copySearchParams = params.clone %>
 		<% initialSub = copySearchParams[:show_subs] %>

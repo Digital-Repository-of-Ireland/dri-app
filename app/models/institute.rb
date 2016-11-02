@@ -12,9 +12,9 @@ class Institute < ActiveRecord::Base
 
     begin
       save
-    rescue ActiveRecord::ActiveRecordError, Exceptions::InstituteError => e
+    rescue ActiveRecord::ActiveRecordError, DRI::Exceptions::InstituteError => e
       logger.error "Could not save institute: #{e.message}"
-      raise Exceptions::InternalError
+      raise DRI::Exceptions::InternalError
     end
 
     valid = validate_logo upload
@@ -41,7 +41,7 @@ class Institute < ActiveRecord::Base
       Validators.virus_scan(logo)
 
       valid = true
-    rescue Exceptions::VirusDetected => e
+    rescue DRI::Exceptions::VirusDetected => e
       logger.error "Virus detected in institute logo: #{e.message}"
       valid = false
     end
@@ -51,7 +51,7 @@ class Institute < ActiveRecord::Base
 
   def store_logo(upload, name)
     b = self.brand || Brand.new
-    b.filename = upload.original_filename 
+    b.filename = upload.original_filename
     b.content_type = upload.content_type
     b.file_contents = upload.read
     b.save

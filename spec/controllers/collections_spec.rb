@@ -87,7 +87,7 @@ describe CollectionsController do
       @collection.governed_items << @object
  
       DoiConfig = nil
-      Sufia.queue.should_receive(:push).with(an_instance_of(PublishJob)).once
+      PublishCollectionJob.should_receive(:create)
       post :publish, :id => @collection.id
     end    
 

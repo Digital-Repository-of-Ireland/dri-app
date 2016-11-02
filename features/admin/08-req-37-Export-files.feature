@@ -13,7 +13,6 @@ Feature: Export files
     Given I create an object and save the pid
     When I go to the "object" "show" page for "the saved pid"
     Then I should see a "rights statement"
-    #And I should see a "licence"
     And I should see a link to download metadata
 
 
@@ -21,7 +20,6 @@ Feature: Export files
     Given I create an object and save the pid
     When I go to the "object" "show" page for "the saved pid"
     Then I should see a "rights statement"
-    #And I should see a "licence"
     And I should see a link to full metadata
     Then I should see a section with id "dri_metadata_modal_id"
     When I follow the link to full metadata
@@ -33,6 +31,5 @@ Feature: Export files
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "upload a file"
     Then I should see a "rights statement"
-    #And I should see a "licence"
     And I should see a link to download asset
 

@@ -1,0 +1,99 @@
+#xml_editor {
+  ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;  
+  }
+
+  .element_header {
+    margin-bottom: 10px;
+    padding-left: 5px;
+  }
+
+  .element_name {
+    min-width: 100px;
+    font-size: 14px;
+    float: left;
+  }
+
+  .attribute_container > label {
+    //font-weight: bold;
+    line-height: 1.5em;
+    margin-right: 5px;
+    vertical-align: 28%;
+    display: inline-block;
+    *zoom: 1;
+    *display: inline;
+    min-width: 70px;
+  }
+
+  .attribute_container > textarea {
+    display: inline;
+    resize: horizontal;
+    min-width: 100px;
+    height: 1.5em;
+    width: 160px;
+    overflow: hidden;
+    vertical-align: 5%;
+  }
+}
+
+.ui-autocomplete { 
+    width: 200px;
+    line-height: 24px;
+}
+
+/* scroll results */
+.ui-autocomplete {
+    max-height: 250px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding for vertical scrollbar */
+    padding-right: 5px;
+}
+ 
+.ui-autocomplete li {
+    font-size: 14px;
+}
+
+.ui-menu
+{
+    display: block;
+    float: left;
+    list-style: none outside none;
+    margin: 0;
+    padding: 2px;
+}
+
+.ui-autocomplete
+{
+    cursor: default;
+    position: absolute;
+}
+
+.ui-menu .ui-menu-item
+{
+    clear: left;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.ui-menu .ui-menu-item a
+{
+    display: block;
+    padding: 3px 3px 3px 3px;
+    text-decoration: none;
+    cursor: pointer;
+}
+        
+.ui-menu .ui-menu-item a:hover
+{
+    display: block;
+    padding: 3px 3px 3px 3px;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #eef;
+}

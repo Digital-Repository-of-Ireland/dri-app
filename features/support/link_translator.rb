@@ -23,7 +23,7 @@ module LinkTranslator
         "edit_collection"
 
       when /^delete a collection$/
-        "delete_collection"
+        "delete_object"
 
       when /^delete an object$/
         "delete_object"

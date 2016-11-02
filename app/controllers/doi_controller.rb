@@ -9,15 +9,14 @@ class DoiController < ApplicationController
       @history = {}
     else
       @available = ActiveFedora::Base.exists?(@object_id)
-      
+
       doi = "#{DoiConfig.prefix}/DRI.#{params[:id]}"
 
       @history = DataciteDoi.where(object_id: @object_id).ordered
       current = @history.first
-      
-      flash[:notice] = t('dri.flash.notice.doi_not_latest') unless (doi == current.doi)
-    end
 
+      flash[:notice] = t('dri.flash.notice.doi_not_latest') unless doi == current.doi
+    end
   end
 
   def update
@@ -30,10 +29,10 @@ class DoiController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
-      format.json {
-              response = { id: @object.id }
-              render json: response, status: :accepted
-      }
+      format.json do
+        response = { id: @object.id }
+        render json: response, status: :accepted
+      end
     end
   end
 end

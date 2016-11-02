@@ -222,6 +222,9 @@ a.dri_toggle_metadata::after {
         overflow: scroll;
         dl {
             padding: 15px;
+        } 
+        ul {
+          list-style: none;
         }
     }
     .dri_child_links > a {

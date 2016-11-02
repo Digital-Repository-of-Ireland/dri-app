@@ -85,6 +85,9 @@ module ButtonTranslator
       when /^delete collection with id (.+)$/
         "delete_collection_#{$1}"
 
+      when /^delete collection with the saved pid$/
+        "delete_collection_#{@pid}"
+
       when /^confirm delete object$/
         "confirm_delete_object"
 
@@ -131,7 +134,7 @@ module ButtonTranslator
         "status_update"
 
       when /^save cover image$/
-        "save_cover_image"
+        "add_cover_image"
 
       else "Unknown"
 
