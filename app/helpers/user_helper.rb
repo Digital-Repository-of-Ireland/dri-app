@@ -1,7 +1,7 @@
 module UserHelper
   def admin_collections_data(admin)
     query = Solr::Query.new(
-      "#{ActiveFedora::SolrService.solr_name('depositor', :searchable, type: :symbol)}:#{admin.email}",
+      "#{ActiveFedora.index_field_mapper.solr_name('depositor', :searchable, type: :symbol)}:#{admin.email}",
       100,
       { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
             "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"] }
@@ -54,8 +54,8 @@ module UserHelper
   end
 
   def user_collections_data(user)
-    query = "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{user.email} OR "\
-      "#{Solrizer.solr_name('edit_access_person', :stored_searchable, type: :symbol)}:#{user.email}"
+    query = "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{user.email} OR "\
+      "#{ActiveFedora.index_field_mapper.solr_name('edit_access_person', :stored_searchable, type: :symbol)}:#{user.email}"
 
     read_query = read_group_query(user)
     query <<   " OR (" + read_query + ")" unless read_query.nil?
@@ -135,7 +135,7 @@ module UserHelper
   end
 
   def get_saved_search_mode(search_mode)
-    mode = "#{Solrizer.solr_name('file_type', :stored_searchable, type: :string)}:collection"
+    mode = "#{ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)}:collection"
     unless search_mode == "collections"
       mode = "-#{mode}"
     end

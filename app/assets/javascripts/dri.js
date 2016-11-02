@@ -219,3 +219,18 @@ $(document).ready(function () {
     },
   });
 });
+
+$(document).ready(function () {
+    $('a.dri_iiif').colorbox({
+        height:'80%' ,
+        width:'80%',
+        inline: true
+    });
+
+    $(window).resize(function(){
+      $.colorbox.resize({
+        width: '80%',
+        height: '80%'
+      });
+    });
+});

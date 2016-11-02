@@ -9,6 +9,10 @@ module ApplicationHelper
     object_file_url(object_id: doc_id, id: file_doc_id, surrogate: name)
   end
 
+  def iiif_info_url(doc_id, file_id)
+    "#{Settings.iiif.server}/#{doc_id}:#{file_id}/info.json"
+  end
+
   # Called from grid view
   def image_for_search(document)
     files_query = "#{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\"

@@ -1,3 +1,5 @@
+<% @iiif_sources = [] %>
+
 <div id="oject-multiple-asset-carousel" class="carousel slide dri_carousel_controls" data-ride="carousel" data-interval = "false" >
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
@@ -32,4 +34,15 @@
   <!-- Controls -->
 <% if (@displayfiles.count > 0) %>
     <p class="dri_assets_total"><%= "#{t('dri.views.fields.total_assets')} (#{@displayfiles.count})" %></p>
+<% end %>
+
+ <% if document.published? && document.public_read? %>
+  <div style="display:none">
+    <%= content_tag('div', id: 'dri_iiif_view', style: 'height:100%', data: { sources: @iiif_sources}) do %>
+    <% end %>
+  </div>
+
+  <% content_for :head do %>
+    <%= javascript_include_tag 'iiif_viewer' %>
+  <% end %>  
 <% end %>

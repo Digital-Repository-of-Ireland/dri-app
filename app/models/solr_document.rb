@@ -4,8 +4,10 @@
 class SolrDocument
   include Blacklight::Document
   include Blacklight::Document::ActiveModelShim
+  include Blacklight::AccessControls::PermissionsQuery
 
   include UserGroup::PermissionsSolrDocOverride
+  include UserGroup::InheritanceMethods
 
   include DRI::Solr::Document::File
   include DRI::Solr::Document::Relations
@@ -124,11 +126,13 @@ class SolrDocument
 
     return false unless self[is_collection_key].present?
 
-    if self[is_collection_key].is_a?(Array)
-      is_collection = self[is_collection_key].first
-    end
+    is_collection = if self[is_collection_key].is_a?(Array)
+                      self[is_collection_key].first
+                    else
+                      self[is_collection_key]
+                    end
 
-    is_collection == 'true' ? true : false
+    is_collection == 'true' || is_collection == true ? true : false
   end
 
   def root_collection?
@@ -178,6 +182,16 @@ class SolrDocument
     root
   end
 
+  def governing_collection
+    governing_id = collection_id
+    return nil unless governing_id
+
+    solr_query = "id:#{governing_id}"
+    collection = ActiveFedora::SolrService.query(solr_query, defType: 'edismax', rows: '1')
+    
+    SolrDocument.new(collection[0])
+  end
+
   def retrieve_ancestor_licence
     ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
     return nil unless self[ancestors_key].present?
@@ -202,6 +216,18 @@ class SolrDocument
 
   def published?
     status == 'published'
+  end
+
+  def public_read?
+    read_access_groups_key = ActiveFedora.index_field_mapper.solr_name('read_access_group', :stored_searchable, type: :symbol)
+    groups = get_permission_key(self.id, read_access_groups_key)
+    return false if groups.nil? #groups could be nil if read access set to restricted
+
+    groups.include?(SETTING_GROUP_PUBLIC)
+  end
+
+  def permissions_doc(id)
+    get_permissions_solr_response_for_doc_id(id)
   end
 
   def draft?

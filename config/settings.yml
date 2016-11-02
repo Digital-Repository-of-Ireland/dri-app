@@ -25,3 +25,5 @@ data:
   types: [Sound, MovingImage, Image, Text]
 doi:
   enable: "false"
+iiif:
+  server: http://localhost:3000/iiif

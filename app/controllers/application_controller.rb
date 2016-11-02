@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  helper Openseadragon::OpenseadragonHelper
   before_action :authenticate_user_from_token!
   before_action :set_locale, :set_cookie, :set_metadata_language
 

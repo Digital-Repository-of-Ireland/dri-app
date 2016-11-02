@@ -110,6 +110,8 @@ en:
         read_only: "Repository is currently undergoing maintenance. Updates are temporarily disabled."
         submitting_read_request: "Unable to submit read access request: %{error}"
         validation_errors: "Validation Errors: %{error}"
+        schema_location_missing: "The metadata file is missing the XML SchemaLocation declaration"
+        schema_location_parse: "Unable to parse XML schemaLocation declaration"
       notice:
         access_controls_updated: "Access controls updated."
         added_to_collection: "Object has been added to collection."
@@ -178,6 +180,7 @@ en:
       language: Language
       manage: Manage
       manage_users: "Add Manager User"
+      mirador: "Mirador"
       my_collections: "My Collections"
       my_tasks: "My Tasks"
       new_collection: "New Collection"
@@ -219,6 +222,7 @@ en:
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
       facets_title: "Facet Filters"
+      iiif_viewer: "Open in IIIF viewer"
       fields:
         collection_title: "Collection Title"
         collection_title_text: "A name given to the collection."
@@ -370,6 +374,7 @@ en:
           edit_this_record: "Edit"
           generate_surrogates: "Regenerate Surrogates"
           history: History
+          iiif_viewer: "Viewer"
           listen: listen
           mark_all_descendants_reviewed: "Proceed"
           mark_all_reviewed: "Mark as Reviewed"
