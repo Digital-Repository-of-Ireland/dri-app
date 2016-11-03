@@ -230,7 +230,7 @@ class AssetsController < ApplicationController
       delfiles = []
       if params[:action].eql?('update')
         addfiles = [filename]
-        delfiles = [generic_file.label]
+        delfiles = ["#{generic_file.id}_#{generic_file.label}"]
       else
         addfiles = [filename]
       end
