@@ -72,9 +72,18 @@ class AssetsController < ApplicationController
 
     raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @generic_file.batch.status == 'published'
 
+    @generic_file.batch.object_version = @generic_file.batch.object_version.to_i + 1
+    @generic_file.batch.save
+
     @generic_file.delete
     delete_surrogates(params[:object_id], @generic_file.id)
 
+    # Do the preservation actions
+    addfiles = []
+    delfiles = ["#{@generic_file.id}_#{@generic_file.label}"]
+    preservation = Preservation::Preservator.new(@generic_file.batch)
+    preservation.preserve_assets(addfiles, delfiles)
+ 
     flash[:notice] = t('dri.flash.notice.asset_deleted')
 
     respond_to do |format|
