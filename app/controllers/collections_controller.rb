@@ -24,30 +24,17 @@ class CollectionsController < BaseObjectsController
   end
 
   def index
-    query = "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
+    query = "_query_:\"{!join from=id to=ancestor_id_sim}manager_access_person_ssim:#{current_user.email}\""
+    query += " OR manager_access_person_ssim:#{current_user.email}"
 
-    solr_query = Solr::Query.new(
-      query,
-      100,
-      { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
-            "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"] }
-    )
-
-    collections = []
-
-    while solr_query.has_more?
-      objects = solr_query.pop
-      objects.each do |object|
-        collection = {}
-        collection[:id] = object['id']
-        collection[:collection_title] = object[
-          ActiveFedora.index_field_mapper.solr_name(
-          'title', :stored_searchable, type: :string
-          )
-        ]
-        collections.push(collection)
-      end
+    fq = ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"]
+    
+    if params[:governing].present?
+      fq << "+#{ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)}:#{params[:governing]}"
     end
+    
+    solr_query = Solr::Query.new(query, 100, { fq: fq })
+    collections = results_to_hash(solr_query)
 
     respond_to do |format|
       format.json { render(json: collections.to_json) }
@@ -445,6 +432,32 @@ class CollectionsController < BaseObjectsController
 
     def reader_group_name
       @object.id
+    end
+
+    def results_to_hash(solr_query)
+      collections = []
+
+      while solr_query.has_more?
+        objects = solr_query.pop
+        objects.each do |object|
+          collection = {}
+          collection[:id] = object['id']
+          collection[:collection_title] = object[
+            ActiveFedora.index_field_mapper.solr_name(
+            'title', :stored_searchable, type: :string
+            )
+          ]
+           governing = object[
+            ActiveFedora.index_field_mapper.solr_name(
+            'isGovernedBy', :stored_searchable, type: :symbol
+            )] 
+            collection[:governing_collection] = governing.present? ? governing.first : 'root'
+
+          collections.push(collection)
+        end
+      end
+
+      collections.group_by {|c| c[:governing_collection]}
     end
 
     def review_all
