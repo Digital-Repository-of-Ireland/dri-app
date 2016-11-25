@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe MetadataController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
     
   describe 'update' do
 

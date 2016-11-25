@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CollectionsController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
@@ -173,7 +173,16 @@ describe CollectionsController do
       @collection[:status] = "published"
       @collection.save
 
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       DataciteDoi.create(object_id: @collection.id)
@@ -187,7 +196,6 @@ describe CollectionsController do
       put :update, :id => @collection.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @collection.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 
@@ -204,7 +212,16 @@ describe CollectionsController do
       @collection[:status] = "published"
       @collection.save
 
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       DataciteDoi.create(object_id: @collection.id)
@@ -218,7 +235,6 @@ describe CollectionsController do
       put :update, :id => @collection.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @collection.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 

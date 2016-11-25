@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe LicencesController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   describe "permissions" do
   

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ObjectsController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   describe 'destroy' do
     
@@ -152,9 +152,16 @@ describe ObjectsController do
     end
 
     it 'should mint a doi for an update of mandatory fields' do
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", 
-        :prefix => '10.5072', :base_url => "http://repository.dri.ie", 
-        :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       @object.status = "published"
@@ -170,14 +177,20 @@ describe ObjectsController do
       put :update, :id => @object.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @object.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 
     it 'should not mint a doi for no update of mandatory fields' do
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", 
-        :prefix => '10.5072', :base_url => "http://repository.dri.ie", 
-        :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       @object.status = "published"
@@ -193,7 +206,6 @@ describe ObjectsController do
       put :update, :id => @object.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @object.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 

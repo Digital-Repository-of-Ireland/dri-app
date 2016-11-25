@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe BatchIngestController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   before(:each) do
     @login_user = FactoryGirl.create(:admin)

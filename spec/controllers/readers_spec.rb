@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe ReadersController do
-  include Devise::TestHelpers
-
+  include Devise::Test::ControllerHelpers
+  
   before(:each) do
     @manager_user = FactoryGirl.create(:collection_manager)
     @login_user = FactoryGirl.create(:user)

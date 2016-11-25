@@ -1,21 +1,23 @@
 require 'spec_helper'
 
 describe DoiController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
-  before(:all) do
-    DoiConfig = OpenStruct.new(
-      { username: "user",
-        password: "password",
-        prefix: '10.5072',
-        base_url: "http://repository.dri.ie",
-        publisher: "Digital Repository of Ireland" }
-    )
+  before(:each) do
+    stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
     Settings.doi.enable = true
   end
 
-  after(:all) do
-    DoiConfig = nil
+  after(:each) do
     Settings.doi.enable = false
   end
 

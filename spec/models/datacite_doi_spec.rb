@@ -4,8 +4,17 @@ require 'active_support/core_ext/hash/conversions'
 
 describe "DataciteDoi" do
 
-  before(:all) do
-    DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
+  before(:each) do
+    stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
 
     @object = DRI::Batch.with_standard :qdc
     @object[:title] = ["An Audio Title"]
@@ -25,9 +34,8 @@ describe "DataciteDoi" do
     @object.save
   end
 
-  after(:all) do
+  after(:each) do
     @object.delete
-    DoiConfig = nil
   end
 
   it "should create a DOI" do
