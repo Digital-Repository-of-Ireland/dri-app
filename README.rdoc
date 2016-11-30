@@ -11,7 +11,6 @@ For testing and development you will need to bootstrap the project
 
   $ git clone git@tracker.dri.ie:drirepo/dri-app.git
   $ cd dri-app
-  $ git submodule update --init --recursive
   $ bundle
   $ cp config/database.yml.sample config/database.yml (and edit as appropriate)
   $ cp config/fedora.yml.sample config/fedora.yml (and edit as appropriate)
@@ -20,12 +19,10 @@ For testing and development you will need to bootstrap the project
   $ cp config/solr.yml.sample config/solr.yml (and edit as appropriate)
   $ bundle exec rake db:migrate
   $ bundle exec rake db:seed
-  $ bundle exec rake jetty:config
 
 Dont forget to prepare the test database with
 
   $ bundle exec rake db:test:prepare
-  $ bundle exec rake dri:fixtures:generate
 
 You may also need to edit config/settings.yml and/or create config/settings.local.yml
 
@@ -38,6 +35,7 @@ running.  (E.G. MariaDB start alias: alias mariadbstart='cd
 
   $ cd dri-app
   $ rake jetty:start
+  $ rake jetty:config
   $ bundle exec rails server
 
 The db:seed step above will create 4 initial accounts:
@@ -57,12 +55,14 @@ To run the unit tests
 
   $ cd dri-app
   $ rake jetty:start
+  $ rake jetty:config
   $ rake rspec
 
 To run the functional tests
 
   $ cd dri-app
   $ rake jetty:start
+  $ rake jetty:config
   $ rake cucumber or bundle exec cucumber
 
 == Dependencies
