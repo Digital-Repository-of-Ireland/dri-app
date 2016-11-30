@@ -5,6 +5,9 @@
      as well as the default schema file included with Solr -->
   
   <uniqueKey>id</uniqueKey>
+
+  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
+  <solrQueryParser defaultOperator="OR"/>
   
   <fields>
     <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
@@ -167,6 +170,7 @@
     <field name="sdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
     <!-- geospatial stores any dcterms:Point or dcterms:Box values from the metadata -->
     <field name="geospatial" type="location_rpt" stored="true" indexed="true" multiValued="true" />
+    <dynamicField name="*suggest" type="textSuggest" indexed="true" stored="false" multiValued="true" />
    </fields>
   
   <!-- Above, multiple source fields are copied to the [text] field.
@@ -207,6 +211,9 @@
    <copyField source="geographical_coverage_sim" dest="geographical_coverage_spell" />
 
    <defaultSearchField>text</defaultSearchField>
+
+    <copyField source="*_tesim" dest="suggest"/>
+    <copyField source="*_ssim" dest="suggest"/>
 
   <types>
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
@@ -254,14 +261,20 @@
       http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4
     -->
     <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
-      geo="true" distErrPct="0.025" maxDistErr="0.000009" units="degrees" />
+      geo="true" distErrPct="0.025" maxDistErr="0.000009" distanceUnits="degrees" />
     
     <fieldType name="text" class="solr.TextField" omitNorms="false">
-      <analyzer>
-        <tokenizer class="solr.ICUTokenizerFactory"/>
-        <filter class="solr.ICUFoldingFilterFactory"/>  <!-- NFKC, case folding, diacritics removed -->
-        <filter class="solr.TrimFilterFactory"/>
-      </analyzer>
+     <analyzer type="index">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.StopFilterFactory" words="stopwords.txt" ignoreCase="true"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+    <analyzer type="query">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.StopFilterFactory" words="stopwords.txt" ignoreCase="true"/>
+      <filter class="solr.SynonymFilterFactory" expand="true" ignoreCase="true" synonyms="synonyms.txt"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer> 
     </fieldType>
     
     <!-- A text field that only splits on whitespace for exact matching of words -->
@@ -276,14 +289,17 @@
          cross-language defaults: it tokenizes with StandardTokenizer,
          and down cases.-->
     <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
-      <analyzer type="index">
-        <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>
-      <analyzer type="query">
-        <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>
+       <analyzer type="index">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.StopFilterFactory" words="stopwords.txt" ignoreCase="true"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+    <analyzer type="query">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.StopFilterFactory" words="stopwords.txt" ignoreCase="true"/>
+      <filter class="solr.SynonymFilterFactory" expand="true" ignoreCase="true" synonyms="synonyms.txt"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
     </fieldType>
 
     <!-- single token analyzed text, for sorting.  Punctuation is significant. -->
@@ -297,17 +313,23 @@
     
     <!-- A text field with defaults appropriate for English -->
     <fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
-      <analyzer>
-        <tokenizer class="solr.ICUTokenizerFactory"/>
-        <filter class="solr.ICUFoldingFilterFactory"/>  <!-- NFKC, case folding, diacritics removed -->
-        <filter class="solr.EnglishPossessiveFilterFactory"/>
-        <!-- EnglishMinimalStemFilterFactory is less aggressive than PorterStemFilterFactory: -->
-        <filter class="solr.EnglishMinimalStemFilterFactory"/>
-        <!--
-        <filter class="solr.PorterStemFilterFactory"/>
-        -->
-        <filter class="solr.TrimFilterFactory"/>
-      </analyzer>
+      <analyzer type="index">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.StopFilterFactory" words="stopwords_en.txt" ignoreCase="true"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+      <filter class="solr.EnglishPossessiveFilterFactory"/>
+      <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+      <filter class="solr.PorterStemFilterFactory"/>
+    </analyzer>
+    <analyzer type="query">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.SynonymFilterFactory" expand="true" ignoreCase="true" synonyms="synonyms.txt"/>
+      <filter class="solr.StopFilterFactory" words="stopwords_en.txt" ignoreCase="true"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+      <filter class="solr.EnglishPossessiveFilterFactory"/>
+      <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+      <filter class="solr.PorterStemFilterFactory"/>
+    </analyzer>
     </fieldType>
        
     <fieldType name="textSpell" class="solr.TextField" positionIncrementGap="100" >
@@ -338,7 +360,17 @@
         <tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
       </analyzer>
     </fieldType>
-   
+  
+    <fieldType class="solr.TextField" name="textSuggest" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.StandardFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    
+ 
     <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
     
     <!-- dateRange field will be updated to the DateRangeField Solr field type that will be available in Solr 5 -->
@@ -348,7 +380,7 @@
       worldBounds="-9999 -9999 9999 9999"
       distErrPct="0"
       maxDistErr="1"
-      units="degrees"/>
+      distanceUnits="degrees"/>
   </types>
   
 </schema>
