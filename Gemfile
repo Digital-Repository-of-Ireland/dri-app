@@ -83,7 +83,7 @@ end
 
 group :development, :test do
   gem 'guard'
-  gem 'rspec-rails', '~> 2.99'
+  gem 'rspec-rails', '~> 3.0'
   gem 'poltergeist', '>= 1.4.1'
   gem 'simplecov'
   gem 'simplecov-rcov'

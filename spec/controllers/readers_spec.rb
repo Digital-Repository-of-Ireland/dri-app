@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ReadersController do
   include Devise::Test::ControllerHelpers
@@ -64,10 +64,9 @@ describe ReadersController do
       expect(@login_user.member?(group.id)).to be_falsey
       expect(@login_user.pending_member?(group.id)).not_to be true
 
-      expect(AuthMailer).to receive(:pending_mail).and_return(AuthMailer)
-      expect(AuthMailer).to receive(:deliver_now)
-      post :create, { :id => @collection.id }
-
+      expect {
+        post :create, { :id => @collection.id }
+      }.to change { ActionMailer::Base.deliveries.size }.by(1)
       @login_user.reload
       expect(@login_user.pending_member?(group.id)).to be true
     end
@@ -122,10 +121,9 @@ describe ReadersController do
       expect(@login_user.member?(group.id)).to be_falsey
       expect(@login_user.pending_member?(group.id)).not_to be true
 
-      expect(AuthMailer).to receive(:pending_mail).and_return(AuthMailer)
-      expect(AuthMailer).to receive(:deliver_now)
-      post :create, { :id => @subcollection.id }
-
+      expect {
+        post :create, { :id => @subcollection.id }
+      }.to change { ActionMailer::Base.deliveries.size }.by(1)
       @login_user.reload
       expect(@login_user.pending_member?(group.id)).to be true
     end
@@ -145,9 +143,9 @@ describe ReadersController do
       expect(@login_user.member?(group.id)).to be_falsey
       expect(@login_user.pending_member?(group.id)).not_to be true
 
-      expect(AuthMailer).to receive(:pending_mail).and_return(AuthMailer)
-      expect(AuthMailer).to receive(:deliver_now)
-      post :create, { :id => @subcollection.id }
+      expect {
+        post :create, { :id => @subcollection.id }
+      }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
       @login_user.reload
       expect(@login_user.pending_member?(subgroup.id)).to be true
@@ -162,8 +160,6 @@ describe ReadersController do
 
       membership = @login_user.join_group(@group.id)
 
-      expect(AuthMailer).to receive(:approved_mail).and_return(AuthMailer)
-      expect(AuthMailer).to receive(:deliver_now)
       post :update, { id: @collection.id, user_id: @login_user.id }
 
       membership.reload
@@ -180,9 +176,9 @@ describe ReadersController do
       membership.approve_membership(@manager_user.id)
       membership.save
 
-      expect(AuthMailer).to receive(:removed_mail).and_return(AuthMailer)
-      expect(AuthMailer).to receive(:deliver_now)
-      delete :destroy, { id: @collection.id, user_id: @login_user.id }
+      expect {
+        delete :destroy, { id: @collection.id, user_id: @login_user.id }
+      }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
       expect(UserGroup::Membership.find_by(group_id: @group.id, user_id: @login_user.id)).to be nil
     end
