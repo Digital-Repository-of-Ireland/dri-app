@@ -1,22 +1,25 @@
 <%= form_for @document, as: :batch, html: { id: 'choose_cover_image' }, 
-    :url => {:controller=>"collections", :action=>"add_cover_image"}, :method=>"put" do |f| %>
+    :url => { controller: "collections", action: "add_cover_image" }, method: "put" do |f| %>
 
 <div class="dri_file_upload">
 	
 	<% unless @document[:cover_image].blank? %>
-	<div class="dri_cover_image_img">
-		<%= image_tag @document[:cover_image], :width=>"228" unless @document[:cover_image].blank? %>
-		<h2>Current Image</h2>
-	</div>
+	  <div class="dri_cover_image_img">
+		  <%= image_tag @document[:cover_image], width: "228" %>
+		  <h2>Current Image</h2>
+	  </div>
 	<% end %>
-	<a class='btn btn-default' href='javascript:;'> <h4 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.fields.cover_image')}"%></h4>
-	<p>
-		(228 x 128px)
-	</p> <%= f.file_field :cover_image, :class => "edit span6", :onchange=>'coverImageFileUploadHelper($(this));', :accept => 'image/*', :required => 'required'  %> <h4 class='dri_cover_image_file' id="cover_image">No File</h4> </a>
+	<a class='btn btn-default' href='javascript:;'>
+		<h4 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.fields.cover_image')}"%></h4>
+	  <p>
+		JPG PNG GIF (228 x 128px)
+	  </p>
+	  <%= f.file_field :cover_image, class: "edit span6", onchange: 'coverImageFileUploadHelper($(this));', accept: 'image/png,image/gif,image/jpeg', required: 'required'  %> <h4 class='dri_cover_image_file' id='cover_image'>No File</h4> 
+  </a>
 
 </div>
 <div>
-<%= f.submit t('dri.views.objects.buttons.save'), :class => "hidden" %>
+<%= f.submit t('dri.views.objects.buttons.save'), class: 'hidden' %>
 <% end %>
 </div>
 
