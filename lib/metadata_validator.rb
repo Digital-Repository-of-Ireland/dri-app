@@ -52,11 +52,14 @@ module MetadataValidator
 
       # Then, find all elements that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
       # No xsi:schemaLocation
-      return result, 'The metadata file is missing the XML SchemaLocation declaration' if xml.xpath('//*[@xsi:schemaLocation]').empty?
+      return result, I18n.t('dri.flash.error.schema_location_missing') if xml.xpath('//*[@xsi:schemaLocation]').empty?
 
       xml.xpath('//*[@xsi:schemaLocation]').each do |node|
-        schemata_by_ns = Hash[node.attr('xsi:schemaLocation').scan(/(\S+)\s+(\S+)/)]
-        return result = false if schemata_by_ns.empty?
+        schema_location = node.attr('xsi:schemaLocation')
+        schemata_by_ns = Hash[schema_location.scan(/(\S+)\s+(\S+)/)]
+
+        return false, "#{I18n.t('dri.flash.error.schema_location_parse')}: #{schema_location}" if schemata_by_ns.empty?
+
         schemata_by_ns.each do |ns,loc|
           loc = map_to_localfile(loc)
           schema_imports = schema_imports | ["<xs:import namespace=\"" + ns + "\" schemaLocation=\""+loc+"\"/>\n"]

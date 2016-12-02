@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe AssetsController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
@@ -70,7 +70,16 @@ describe AssetsController do
       @object.status = "published"
       @object.save
 
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       DataciteDoi.create(object_id: @object.id)
@@ -82,7 +91,6 @@ describe AssetsController do
       post :create, { :object_id => @object.id, :Filedata => @uploaded }
 
       DataciteDoi.where(object_id: @object.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 
@@ -139,7 +147,16 @@ describe AssetsController do
       DRI::Asset::Actor.any_instance.stub(:create_external_content)
       DRI::Asset::Actor.any_instance.stub(:update_external_content).and_return(true)
 
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
@@ -165,7 +182,6 @@ describe AssetsController do
       put :update, { :object_id => @object.id, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
        
       DataciteDoi.where(object_id: @object.id).each { |d| d.delete }
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 

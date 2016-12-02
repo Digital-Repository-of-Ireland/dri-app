@@ -10,12 +10,21 @@ class DoiController < ApplicationController
     else
       @available = ActiveFedora::Base.exists?(@object_id)
 
+      id, version = params[:id].split('-')
+      version = 0 if version.nil?
+      raise DRI::Exceptions::NotFound unless DataciteDoi.exists?(object_id: id, version: version)
+
       doi = "#{DoiConfig.prefix}/DRI.#{params[:id]}"
 
       @history = DataciteDoi.where(object_id: @object_id).ordered
       current = @history.first
 
-      flash[:notice] = t('dri.flash.notice.doi_not_latest') unless doi == current.doi
+      if @available && doi == current.doi
+        redirect_to(catalog_path(@object_id))
+        return
+      end
+
+      flash[:notice] = t('dri.flash.notice.doi_not_latest')
     end
   end
 

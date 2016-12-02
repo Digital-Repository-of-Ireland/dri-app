@@ -26,15 +26,8 @@ module Validators
   # a class variable for the object type (e.g. in DRI:Model:Audio)
   #
   def self.valid_file_type?(file, mime_type)
-    if file.respond_to?(:original_filename)
-      extension = file.original_filename.split('.').last
-    elsif file.respond_to?(:path)
-      # Tempfile object path is accessed through file.path
-      extension = file.path.split('.').last
-    else
-      extension = file.split('.').last
-    end
-
+    path, extension = file_path(file)
+    
     # MimeMagic could return null if it can't find a match. If so raise UnknownMimeType error
     raise DRI::Exceptions::UnknownMimeType unless mime_type
 
@@ -56,59 +49,33 @@ module Validators
 
 
   # Returns a MimeMagic or Mime::Types object
-  def self.file_type?(file)
+  def self.file_type(file)
     init_types
 
-    if file.respond_to?(:original_filename)
-      path = file.tempfile.path
-      extension = file.original_filename.split('.').last
-    # For Tempfiles (cover_image) sourced from the Data models
-    elsif file.respond_to?(:path)
-      path = file.path
-      extension = file.path.split('.').last
-    else
-      path = file
-      extension = file.split('.').last
-    end
-
+    path, extension = file_path(file)
     mime_type = MimeMagic.by_magic(File.open(path))
+    return mime_type.type unless mime_type.nil?
 
-    if mime_type.nil?
-      # If we can't determine from file structure, then determine by extension
-      extension_results = MIME::Types.type_for(extension)
-      mime_type = extension_results[0] unless extension_results.empty?
-    else
-      mime_type = mime_type.type
-    end
-
-    mime_type.respond_to?('content_type') ? mime_type.content_type : mime_type
+    # If we can't determine from file structure, then determine by extension
+    extension_results = MIME::Types.type_for(extension)
+    return nil if extension_results.empty?
+      
+    mime_type = extension_results[0]
+    mime_type.content_type
   end
 
   # Returns a MimeMagic or Mime::Types mediatype
-  def self.media_type?(file)
+  def self.media_type(file)
     init_types
 
-    if file.class.to_s == 'ActionDispatch::Http::UploadedFile'
-      path = file.tempfile.path
-      extension = file.original_filename.split('.').last
-    # For Tempfiles (cover_image) sourced from the Data models
-    elsif (file.class.to_s == 'Tempfile')
-      path = file.path
-      extension = file.path.split('.').last
-    else
-      path = file
-      extension = file.split('.').last
-    end
+    path, extension = file_path(file)
     mime_type = MimeMagic.by_magic(File.open(path))
+    return mime_type.mediatype unless mime_type.nil?
 
-    if mime_type.nil?
-      # If we can't determine from file structure, then determine by extension
-      extension_results = MIME::Types.type_for(extension)
-      mime_type = extension_results[0] unless extension_results.empty?
-    else
-      mime_type = mime_type.mediatype
-    end
-
+    # If we can't determine from file structure, then determine by extension
+    extension_results = MIME::Types.type_for(extension)
+    mime_type = extension_results[0] unless extension_results.empty?
+   
     mime_type
   end
 
@@ -131,8 +98,23 @@ module Validators
   #
   # Add additional mime types
   #
-  def self.init_types()
+  def self.init_types
     MimeMagic.add('audio/mpeg', { magic: [[0, "\377\372"], [0, "\377\373"], [0, "\377\362"], [0, "\377\363"]] })
     MimeMagic.add('audio/mp2', { extensions: 'mp2, mpeg', magic: [[0, '\377\364'], [0, '\377\365'], [0, '\377\374'], [0, '\377\375']] })
+  end
+
+  def self.file_path(file)
+    if file.class.to_s == 'ActionDispatch::Http::UploadedFile' || file.respond_to?(:original_filename)
+      path = file.tempfile.path
+      extension = file.original_filename.split('.').last
+    elsif file.class.to_s == 'Tempfile' || file.respond_to?(:path)
+      path = file.path
+      extension = file.path.split('.').last
+    else
+      path = file
+      extension = file.split('.').last
+    end
+
+    return path, extension
   end
 end  # End Validators module

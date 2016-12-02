@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ObjectsController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   describe 'destroy' do
     
@@ -49,6 +49,54 @@ describe ObjectsController do
     end
 
   end
+
+  describe 'create' do
+
+    before(:each) do
+      @login_user = FactoryGirl.create(:admin)
+      sign_in @login_user
+      @collection = FactoryGirl.create(:collection)
+    end
+
+    after(:each) do
+      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      @login_user.delete
+    end
+
+    it 'returns a bad request if no schema' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/invalid_metadata_noschema.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file 
+      expect(flash[:error]).to match(/Validation Errors/)
+      expect(response.status).to eq(400)
+    end
+
+    it 'returns a bad request if schema invalid' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/invalid_metadata_schemaparse.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file 
+      expect(flash[:error]).to match(/Validation Errors/)
+      expect(response.status).to eq(400)
+    end
+
+  end
+
 
   describe 'status' do
 
@@ -104,9 +152,16 @@ describe ObjectsController do
     end
 
     it 'should mint a doi for an update of mandatory fields' do
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", 
-        :prefix => '10.5072', :base_url => "http://repository.dri.ie", 
-        :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       @object.status = "published"
@@ -122,14 +177,20 @@ describe ObjectsController do
       put :update, :id => @object.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @object.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 
     it 'should not mint a doi for no update of mandatory fields' do
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", 
-        :prefix => '10.5072', :base_url => "http://repository.dri.ie", 
-        :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       @object.status = "published"
@@ -145,7 +206,6 @@ describe ObjectsController do
       put :update, :id => @object.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @object.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 

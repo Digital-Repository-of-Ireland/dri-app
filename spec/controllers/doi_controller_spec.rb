@@ -1,15 +1,23 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe DoiController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
-  before(:all) do
-    DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+  before(:each) do
+    stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
     Settings.doi.enable = true
   end
 
-  after(:all) do
-    DoiConfig = nil
+  after(:each) do
     Settings.doi.enable = false
   end
 
@@ -22,21 +30,30 @@ describe DoiController do
 
   describe "GET show" do
   
-    it "should assign @history" do
+    it "assigns @history" do
       doi = DataciteDoi.create(object_id: @object.id)
 
-      get :show, object_id: @object.id, id: doi
+      get :show, object_id: @object.id, id: doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
       expect(assigns(:history)).to eq([doi])      
     end
 
-    it "should alert if doi is not the latest" do
-      doi = DataciteDoi.create(object_id: @object.id)
+    it "alerts if doi is not the latest" do
+      initial_doi = DataciteDoi.create(object_id: @object.id)
+      updated_doi = DataciteDoi.create(object_id: @object.id, modified: 'test update')
 
-      get :show, object_id: @object.id, id: "test"
+      get :show, object_id: @object.id, id: initial_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
       expect(flash[:notice]).to be_present
     end
 
-    it "should update doi" do
+    it "redirects if DOI is current" do
+      initial_doi = DataciteDoi.create(object_id: @object.id)
+      updated_doi = DataciteDoi.create(object_id: @object.id, modified: 'test update')
+
+      get :show, object_id: @object.id, id: updated_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
+      expect(response).to redirect_to(catalog_path(@object.id))
+    end
+
+    it "updates doi" do
       @collection = DRI::Batch.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
@@ -51,10 +68,17 @@ describe DoiController do
       DataciteDoi.create(object_id: @collection.id)
 
       Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
-      put :update, :object_id => @collection.id, :modified => "objects added"
+      put :update, object_id: @collection.id, modified: 'objects added'
 
       DataciteDoi.where(object_id: @collection.id).first.delete
       @collection.delete
+    end
+
+    it "returns 404 for unknown DOI" do
+      doi = DataciteDoi.create(object_id: @object.id)
+
+      get :show, object_id: @object.id, id: 'aaa-9'
+      expect(response.status).to eq(404)
     end
 
   end

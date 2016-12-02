@@ -1,8 +1,10 @@
 module Storage
   module CoverImages
 
-    def self.validate(cover_image, collection)
-      if cover_image.present? && Validators.media_type?(cover_image) == 'image'
+    def self.validate_and_store(cover_image, collection)
+      if cover_image.present?
+        return false unless %w(image/jpeg image/png image/gif).include?(Validators.file_type(cover_image))
+
         return false if self.virus?(cover_image)
 
         url = self.store_cover(cover_image, collection)

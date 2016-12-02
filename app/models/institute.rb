@@ -35,7 +35,7 @@ class Institute < ActiveRecord::Base
   end
 
   def validate_logo(logo)
-    return false if logo.blank? || Validators.media_type?(logo) != 'image'
+    return false if logo.blank? || Validators.media_type(logo) != 'image'
 
     begin
       Validators.virus_scan(logo)
