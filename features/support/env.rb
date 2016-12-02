@@ -102,9 +102,9 @@ end
 
 Before do
   require 'factory_girl'
-  Sufia.queue.stub(:push) 
-  DRI::Object::Actor.any_instance.stub(:version_and_record_committer)
-  Feedjira::Feed.stub(:fetch_and_parse)
+  allow(Sufia.queue).to receive(:push) 
+  allow_any_instance_of(DRI::Object::Actor).to receive(:version_and_record_committer)
+  allow(Feedjira::Feed).to receive(:fetch_and_parse)
   
   ActiveFedora::Cleaner.clean!
 end

@@ -23,25 +23,25 @@ end
 
 Then /^I should have a cookie (.*)$/ do |cookie|
   if Capybara.current_driver.to_s != "rack_test"
-    page.driver.cookies.find(cookie).should_not be_nil
+    expect(page.driver.cookies.find(cookie)).to_not be_nil
   else
-    get_me_the_cookie(cookie).should_not be_nil
+    expect(get_me_the_cookie(cookie)).to_not be_nil
   end
 end
 
 Then /^I should not have a cookie (.*)$/ do |cookie|
   if Capybara.current_driver.to_s != "rack_test"
-    page.driver.cookies.find(cookie).should be_nil
+    expect(page.driver.cookies.find(cookie)).to be_nil
   else
-    get_me_the_cookie(cookie).should be_nil
+    expect(get_me_the_cookie(cookie)).to be_nil
   end
 end
 
 Then /^The language cookie content should be (.*)$/ do |value|
   if Capybara.current_driver.to_s != "rack_test"
-    page.driver.cookies.find('lang')[:value].should eq(value)
+    expect(page.driver.cookies.find('lang')[:value]).to eq(value)
   else
-    get_me_the_cookie('lang')[:value].should eq(value)
+    expect(get_me_the_cookie('lang')[:value]).to eq(value)
   end
 end
 
