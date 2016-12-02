@@ -86,7 +86,7 @@ class ProcessBatchIngest
 
     file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
     options = {}
-    options[:mime_type] = Validators.file_type?(filedata)
+    options[:mime_type] = Validators.file_type(filedata)
     options[:file_name] = filename unless filename.nil?
 
     file.add_file filedata, options

@@ -109,7 +109,7 @@ class CollectionsController < BaseObjectsController
 
     if updated
       if cover_image.present?
-        flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate(cover_image, @object)
+        flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate_and_store(cover_image, @object)
       end
     else
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
@@ -142,14 +142,14 @@ class CollectionsController < BaseObjectsController
     cover_image = params[:batch][:cover_image]
 
     if cover_image.present?
-      updated = Storage::CoverImages.validate(cover_image, @object)
+      saved = Storage::CoverImages.validate_and_store(cover_image, @object)
     end
 
     # purge params from update action
     purge_params
 
     respond_to do |format|
-      if updated
+      if saved
         flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
       else
         flash[:error] = t('dri.flash.error.cover_image_not_saved')
@@ -352,7 +352,7 @@ class CollectionsController < BaseObjectsController
       # We need to save to get a pid at this point
       if @object.save
         if cover_image.present?
-          unless Storage::CoverImages.validate(cover_image, @object)
+          unless Storage::CoverImages.validate_and_store(cover_image, @object)
             flash[:error] = t('dri.flash.error.cover_image_not_saved')
           end
         end
