@@ -76,13 +76,9 @@ task :ci_spec => ['ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
 
-  error = test_wrapper(
-    with_test_server do 
-      Rake::Task['spec'].invoke
-    end
-  )
-  
-  raise "test failures: #{error}" if error
+  with_test_server do 
+    Rake::Task['spec'].invoke
+  end
 
   Rake::Task["rdoc"].invoke
 end
