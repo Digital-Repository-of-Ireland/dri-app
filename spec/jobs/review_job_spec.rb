@@ -9,9 +9,9 @@ end
 describe "ReviewJob" do
 
   before do
-    ReviewJob.any_instance.stub(:completed)
-    ReviewJob.any_instance.stub(:set_status)
-    ReviewJob.any_instance.stub(:at)
+    allow_any_instance_of(ReviewJob).to receive(:completed)
+    allow_any_instance_of(ReviewJob).to receive(:set_status)
+    allow_any_instance_of(ReviewJob).to receive(:at)
   end
 
   before(:each) do

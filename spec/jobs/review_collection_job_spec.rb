@@ -9,7 +9,7 @@ end
 describe "ReviewCollectionJob" do
 
   before do
-    ReviewCollectionJob.any_instance.stub(:completed)
+    expect_any_instance_of(ReviewCollectionJob).to receive(:completed)
   end
 
   before(:each) do
@@ -44,7 +44,7 @@ describe "ReviewCollectionJob" do
   
   describe "run" do
     it "should trigger jobs for subcollections" do
-      ReviewJob.should_receive(:create).exactly(3).times
+      expect(ReviewJob).to receive(:create).exactly(3).times
       job = ReviewCollectionJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
     end  

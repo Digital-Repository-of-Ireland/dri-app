@@ -11,7 +11,7 @@ describe "Storage::S3Interface" do
   end
 
   it "should create a signed url" do
-    Storage::S3Interface.any_instance.stub(:list_files).and_return(["x059d075t_crop16_9_width_200_thumbnail.png"])
+    expect_any_instance_of(Storage::S3Interface).to receive(:list_files).and_return(["x059d075t_crop16_9_width_200_thumbnail.png"])
     response = @storage.surrogate_url("1n79j1386", "x059d075t_crop16_9_width_200_thumbnail.png")
 
     endpoint = URI.parse(Settings.S3.server)

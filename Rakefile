@@ -8,7 +8,8 @@ DriApp::Application.load_tasks
 
 APP_ROOT= File.dirname(__FILE__)
 
-require 'rake/testtask'
+require 'rspec/core'
+require 'rspec/core/rake_task'
 require 'bundler'
 require 'active_fedora/rake_support'
 
@@ -40,8 +41,6 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('app/**/*.rb')
   rdoc.rdoc_files.include('app/*.rb')
 end
-
-require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
   rspec.pattern = FileList['spec/*_spec.rb']
@@ -76,9 +75,12 @@ desc "Run Continuous Integration-spec"
 task :ci_spec => ['ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
-  with_test_server do 
-    error = test_wrapper(Rake::Task['spec'].invoke)
-  end
+
+  error = test_wrapper(
+    with_test_server do 
+      Rake::Task['spec'].invoke
+    end
+  )
   
   raise "test failures: #{error}" if error
 
