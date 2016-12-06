@@ -1,10 +1,10 @@
-require "dri/model_support/files"
+require 'dri/model_support/files'
 require 'validators'
 
 DRI::ModelSupport::Files.module_eval do
 
   def add_file file, dsid='content', original_file_name
-    mime_type = Validators.file_type?(file.path)
+    mime_type = Validators.file_type(file.path)
     pass_validation = false
 
     begin

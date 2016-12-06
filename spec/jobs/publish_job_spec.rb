@@ -7,9 +7,9 @@ RSpec.configure { |c| c.filter_run_excluding(slow: true) }
 describe 'PublishJob' do
   
   before do
-    PublishJob.any_instance.stub(:completed)
-    PublishJob.any_instance.stub(:set_status)
-    PublishJob.any_instance.stub(:at)
+    allow_any_instance_of(PublishJob).to receive(:completed)
+    allow_any_instance_of(PublishJob).to receive(:set_status)
+    allow_any_instance_of(PublishJob).to receive(:at)
   end
 
   before(:each) do
@@ -34,7 +34,7 @@ describe 'PublishJob' do
 
   describe 'run' do
     it "should set a collection\'s reviewed objects status to published" do
-      Sufia.queue.stub(:push).with(an_instance_of(MintDoiJob))
+      allow(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob))
       job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
 
@@ -58,7 +58,7 @@ describe 'PublishJob' do
       @collection.governed_items << @subcollection
       @collection.save
 
-      Sufia.queue.stub(:push).with(an_instance_of(MintDoiJob))
+      allow(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob))
       job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
 
@@ -91,17 +91,17 @@ describe 'PublishJob' do
     end
 
     it 'should queue a doi job when publishing an object' do
-      DoiConfig = OpenStruct.new(
+        stub_const("DoiConfig", OpenStruct.new(
         username: 'user', 
         password: 'password', 
         prefix: '10.5072', 
         base_url: 'http://www.dri.ie/repository', 
-        publisher: 'Digital Repository of Ireland')
+        publisher: 'Digital Repository of Ireland'))
       Settings.doi.enable = true
 
       job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       
-      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).twice
+      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).twice
       job.perform
 
       @collection.reload
@@ -110,7 +110,6 @@ describe 'PublishJob' do
       expect(@collection.status).to eql('published')
       expect(@object.status).to eql('published')
 
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 

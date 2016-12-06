@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe AssetsController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
@@ -48,7 +48,7 @@ describe AssetsController do
   describe 'create' do
 
     it 'should create an asset from a local file' do
-      DRI::Asset::Actor.any_instance.stub(:create_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
       options = { :file_name => "SAMPLEA.mp3" }      
@@ -58,7 +58,7 @@ describe AssetsController do
     end
 
     it 'should create an asset from an upload' do
-      DRI::Asset::Actor.any_instance.stub(:create_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
 
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       post :create, { :object_id => @object.id, :Filedata => @uploaded }
@@ -70,19 +70,27 @@ describe AssetsController do
       @object.status = "published"
       @object.save
 
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       DataciteDoi.create(object_id: @object.id)
 
-      DRI::Asset::Actor.any_instance.stub(:create_external_content).and_return(true)
+      expect_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content).and_return(true)
 
-      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       post :create, { :object_id => @object.id, :Filedata => @uploaded }
 
       DataciteDoi.where(object_id: @object.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 
@@ -90,8 +98,8 @@ describe AssetsController do
 
    describe 'update' do  
     it 'should create a new version' do
-      DRI::Asset::Actor.any_instance.stub(:create_external_content)
-      DRI::Asset::Actor.any_instance.stub(:update_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:update_external_content)
 
       generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
       generic_file.batch = @object
@@ -113,8 +121,8 @@ describe AssetsController do
     end
 
     it 'should create a new version from a local file' do
-      DRI::Asset::Actor.any_instance.stub(:create_external_content)
-      DRI::Asset::Actor.any_instance.stub(:update_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:update_external_content)
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
 
@@ -136,10 +144,19 @@ describe AssetsController do
     end
 
     it 'should mint a doi when an asset is modified' do
-      DRI::Asset::Actor.any_instance.stub(:create_external_content)
-      DRI::Asset::Actor.any_instance.stub(:update_external_content).and_return(true)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:update_external_content).and_return(true)
 
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
@@ -161,11 +178,10 @@ describe AssetsController do
       @object.save
       DataciteDoi.create(object_id: @object.id)
 
-      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       put :update, { :object_id => @object.id, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
        
       DataciteDoi.where(object_id: @object.id).each { |d| d.delete }
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 
@@ -174,7 +190,7 @@ describe AssetsController do
   describe 'destroy' do
     
     it 'should delete a file' do
-      DRI::Asset::Actor.any_instance.stub(:create_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
       
       generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
       generic_file.batch = @object
@@ -201,7 +217,7 @@ describe AssetsController do
   describe 'download' do
   
     it "should be possible to download the master asset" do
-      DRI::Asset::Actor.any_instance.stub(:create_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
 
       @object.master_file_access = 'public'
       @object.edit_users_string = @login_user.email
@@ -255,7 +271,7 @@ describe AssetsController do
     describe 'create' do
 
       it 'should not create an asset' do
-        DRI::Asset::Actor.any_instance.stub(:create_external_content)
+        allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
 
         @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
         post :create, { :object_id => @object.id, :Filedata => @uploaded }

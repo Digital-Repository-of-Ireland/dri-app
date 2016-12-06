@@ -408,7 +408,7 @@ class AssetsController < ApplicationController
     end
 
     def validate_upload(file_upload)
-      @mime_type = Validators.file_type?(file_upload)
+      @mime_type = Validators.file_type(file_upload)
       Validators.validate_file(file_upload, @mime_type)
     rescue DRI::Exceptions::UnknownMimeType, DRI::Exceptions::WrongExtension, DRI::Exceptions::InappropriateFileType
       message = t('dri.flash.alert.invalid_file_type')

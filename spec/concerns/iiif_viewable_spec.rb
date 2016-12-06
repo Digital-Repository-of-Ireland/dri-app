@@ -78,8 +78,8 @@ describe DRI::IIIFViewable do
     @sound.governing_collection = @collection
     @sound.save
 
-    DRI::Asset::Actor.any_instance.stub(:create_external_content)
-    DRI::Asset::Actor.any_instance.stub(:update_external_content)
+    allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+    allow_any_instance_of(DRI::Asset::Actor).to receive(:update_external_content)
 
     FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), 
       File.join(@tmp_upload_dir, 'sample_image.jpeg'))

@@ -1,7 +1,10 @@
-require 'spec_helper'
+require 'rails_helper'
+require 'shared_contexts'
 
 describe AccessControlsController, :type => :request do
-  include Devise::TestHelpers
+  #include Devise::Test::ControllerHelpers
+  include_context "api request authentication helper methods"
+  include_context "api request global before and after hooks"
 
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
@@ -23,14 +26,14 @@ describe AccessControlsController, :type => :request do
   describe 'update' do
 
     it 'should update valid permissions' do
-      put :update, id: @collection.id, batch: { read_groups_string: @collection.id.to_s, manager_users_string: @login_user.to_s }
+      put "/objects/#{@collection.id}/access", batch: { read_groups_string: @collection.id.to_s, manager_users_string: @login_user.to_s }
       @collection.reload
 
       expect(@collection.read_groups_string).to eq(@collection.id.to_s)
     end
 
     it 'should not update with invalid permissions' do
-      put :update, id: @collection.id, batch: { edit_users_string: '', manager_users_string: '' }
+      put "/objects/#{@collection.id}/access", batch: { edit_users_string: '', manager_users_string: '' }
       @collection.reload
 
       expect(@collection.manager_users_string).to eq(@login_user.to_s)

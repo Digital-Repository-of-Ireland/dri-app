@@ -3,17 +3,10 @@ require 'doi/datacite'
 
 describe "MintDoiJob" do
 
-  before(:all) do
-    DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" })
-    Settings.doi.enable = true
-  end
-
-  after(:all) do
-    DoiConfig = nil
-    Settings.doi.enable = false
-  end
-
   before(:each) do
+    stub_const('DoiConfig', OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" }))
+    Settings.doi.enable = true
+
     @collection = DRI::Batch.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
@@ -49,12 +42,14 @@ describe "MintDoiJob" do
   after(:each) do
     @object.delete
     @collection.delete
+
+    Settings.doi.enable = false
   end
   
   describe "run" do
     it "should mint a doi for an object" do
-      DOI::Datacite.any_instance.stub(:mint)
-      DOI::Datacite.any_instance.stub(:metadata)
+      expect_any_instance_of(DOI::Datacite).to receive(:mint)
+      expect_any_instance_of(DOI::Datacite).to receive(:metadata)
       
       DataciteDoi.create(object_id: @object.id)
       

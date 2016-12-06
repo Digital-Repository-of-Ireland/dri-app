@@ -3,7 +3,7 @@ class InstitutesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :logo]
   before_action :check_for_cancel, only: [:create, :update]
   before_action :admin?, only: [:edit, :update, :destroy]
-  before_action :read_only, except: [:index, :show]
+  before_action :read_only, except: [:index, :show, :logo]
 
   # Was this action canceled by the user?
   def check_for_cancel

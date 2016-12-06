@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ObjectsController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   describe 'destroy' do
     
@@ -152,16 +152,23 @@ describe ObjectsController do
     end
 
     it 'should mint a doi for an update of mandatory fields' do
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", 
-        :prefix => '10.5072', :base_url => "http://repository.dri.ie", 
-        :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       @object.status = "published"
       @object.save
       DataciteDoi.create(object_id: @object.id)
 
-      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       params = {}
       params[:batch] = {}
       params[:batch][:title] = ["A modified title"]
@@ -170,21 +177,27 @@ describe ObjectsController do
       put :update, :id => @object.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @object.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 
     it 'should not mint a doi for no update of mandatory fields' do
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", 
-        :prefix => '10.5072', :base_url => "http://repository.dri.ie", 
-        :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       @object.status = "published"
       @object.save
       DataciteDoi.create(object_id: @object.id)
 
-      Sufia.queue.should_not_receive(:push).with(an_instance_of(MintDoiJob))
+      expect(Sufia.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
       params[:batch] = {}
       params[:batch][:title] = ["An Audio Title"]
@@ -193,7 +206,6 @@ describe ObjectsController do
       put :update, :id => @object.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @object.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 

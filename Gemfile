@@ -84,9 +84,8 @@ end
 
 group :development, :test do
   gem 'guard'
-  gem 'rspec-rails', '~> 2.99'
+  gem 'rspec-rails', '~> 3.0'
   gem 'poltergeist', '>= 1.11.0'
-  gem 'jettywrapper'
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'railroady'
@@ -98,8 +97,11 @@ group :development, :test do
 
   gem "zeus", require: false
 
-  #gem 'ci_reporter_cucumber'
   gem 'ci_reporter_rspec'
+
+  gem 'solr_wrapper', '~> 0.18'
+  gem 'fcrepo_wrapper', '0.6.0'
+
   gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
 end
 

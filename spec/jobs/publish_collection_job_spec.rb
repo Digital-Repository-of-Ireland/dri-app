@@ -9,7 +9,7 @@ end
 describe "PublishCollectionJob" do
 
   before do
-    PublishCollectionJob.any_instance.stub(:completed)
+    expect_any_instance_of(PublishCollectionJob).to receive(:completed)
   end
 
   before(:each) do
@@ -44,7 +44,7 @@ describe "PublishCollectionJob" do
   
   describe "perform" do
     it "should trigger jobs for subcollections" do
-      PublishJob.should_receive(:create).exactly(3).times
+      expect(PublishJob).to receive(:create).exactly(3).times
       job = PublishCollectionJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
     end
@@ -53,7 +53,7 @@ describe "PublishCollectionJob" do
       @subcollection[:status] = "published"
       @subcollection.save
 
-      PublishJob.should_receive(:create).exactly(3).times
+      expect(PublishJob).to receive(:create).exactly(3).times
       job = PublishCollectionJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
     end
@@ -62,7 +62,7 @@ describe "PublishCollectionJob" do
       @subcollection[:status] = "draft"
       @subcollection.save
 
-      PublishJob.should_receive(:create).exactly(2).times
+      expect(PublishJob).to receive(:create).exactly(2).times
       job = PublishCollectionJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
     end

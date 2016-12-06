@@ -22,7 +22,7 @@ Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?
   collection.master_file_access="private"
   collection.status = 'draft'
   collection.save
-  collection.governed_items.count.should == 0
+  expect(collection.governed_items.count).to be == 0
 
   group = UserGroup::Group.new(:name => collection.id,
                               :description => "Default Reader group for collection #{collection.id}")

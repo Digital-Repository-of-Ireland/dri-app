@@ -1,7 +1,7 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe CollectionsController do
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
@@ -44,9 +44,9 @@ describe CollectionsController do
 
       @collection.governed_items << @object
 
-      @collection.governed_items.size.should == 1
+      expect(@collection.governed_items.size).to be == 1
 
-      Sufia.queue.should_receive(:push).with(an_instance_of(DeleteCollectionJob)).once
+      expect(Sufia.queue).to receive(:push).with(an_instance_of(DeleteCollectionJob)).once
       delete :destroy, :id => @collection.id
     end
 
@@ -86,35 +86,45 @@ describe CollectionsController do
 
       @collection.governed_items << @object
  
-      DoiConfig = nil
-      PublishCollectionJob.should_receive(:create)
-      post :publish, :id => @collection.id
+      expect(PublishCollectionJob).to receive(:create)
+      post :publish, id: @collection.id
     end    
 
   end
 
   describe 'cover' do
 
-    it 'should return not-found for no cover image' do
+    before(:each) do
       @collection = FactoryGirl.create(:collection)
       @collection[:creator] = [@login_user.email]
       @collection[:status] = "draft"
       @collection.save
+    end
 
+    after(:each) do
+      @collection.delete
+    end
+
+    it 'should return not-found for no cover image' do
       get :cover, { id: @collection.id }
       expect(response.status).to eq(404)
     end
 
     it 'should return not found if cover image cannot be found for storage interface' do
-      @collection = FactoryGirl.create(:collection)
-      @collection[:creator] = [@login_user.email]
-      @collection[:status] = "draft"
-
-      @collection[:cover_image] = "/path/to/nonexistent.jpg"
-      @collection.save
-
       get :cover, { id: @collection.id }
       expect(response.status).to eq(404)
+    end
+
+    it 'accepts a valid image' do
+      @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
+      put :add_cover_image, { id: @collection.id, batch: { cover_image: @uploaded } }
+      expect(flash[:notice]).to be_present
+    end
+
+    it 'rejects unsupported image format' do
+      @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.tiff"), "image/tiff")
+      put :add_cover_image, { id: @collection.id, batch: { cover_image: @uploaded } }
+      expect(flash[:error]).to be_present
     end
 
   end
@@ -173,12 +183,21 @@ describe CollectionsController do
       @collection[:status] = "published"
       @collection.save
 
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       DataciteDoi.create(object_id: @collection.id)
 
-      Sufia.queue.should_receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       params = {}
       params[:batch] = {}
       params[:batch][:title] = ["A modified title"]
@@ -187,7 +206,6 @@ describe CollectionsController do
       put :update, :id => @collection.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @collection.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 
@@ -204,12 +222,21 @@ describe CollectionsController do
       @collection[:status] = "published"
       @collection.save
 
-      DoiConfig = OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://repository.dri.ie", :publisher => "Digital Repository of Ireland" })
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
       Settings.doi.enable = true
 
       DataciteDoi.create(object_id: @collection.id)
 
-      Sufia.queue.should_not_receive(:push).with(an_instance_of(MintDoiJob))
+      expect(Sufia.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
       params[:batch] = {}
       params[:batch][:title] = ["A collection"]
@@ -218,7 +245,6 @@ describe CollectionsController do
       put :update, :id => @collection.id, :batch => params[:batch]
 
       DataciteDoi.where(object_id: @collection.id).first.delete
-      DoiConfig = nil
       Settings.doi.enable = false
     end
 
@@ -238,7 +264,7 @@ describe CollectionsController do
       end
 
       post :create, :metadata_file => @file
-      response.should be_success    
+      expect(response).to be_success    
     end
 
   end
