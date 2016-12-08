@@ -157,7 +157,7 @@ class CollectionsController < BaseObjectsController
       saved = Storage::CoverImages.validate_and_store(cover_image, @object)
     end
 
-    if updated
+    if saved
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve(false, false, ['properties'])
