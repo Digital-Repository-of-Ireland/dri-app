@@ -43,23 +43,23 @@ describe ObjectHistory  do
 
 
   it 'should get the root collection depositor as institute mgr' do
-    @object_history.institute_manager.should == 'instmgr@dri.ie'
+    expect(@object_history.institute_manager).to be == 'instmgr@dri.ie'
   end
 
   it 'should get the collection edit user' do
-    @object_history.governing_attribute('edit_users_string').should == "edituser@dri.ie, anotheruser@dri.ie"
+    expect(@object_history.governing_attribute('edit_users_string')).to be == "edituser@dri.ie, anotheruser@dri.ie"
   end
 
   it 'should get the collection manager user' do
-    @object_history.governing_attribute('manager_users_string').should == "manageruser@dri.ie"
+    expect(@object_history.governing_attribute('manager_users_string')).to be == "manageruser@dri.ie"
   end
 
   it 'should get the collection read groups' do
-    @object_history.governing_attribute('read_groups_string').should == "test"
+    expect(@object_history.governing_attribute('read_groups_string')).to be == "test"
   end
 
   it 'should get the collection read users via groups' do
-    @object_history.read_users_by_group.should == [['fname','sname','user@dri.ie']]
+    expect(@object_history.read_users_by_group).to be == [['fname','sname','user@dri.ie']]
   end
 
 end

@@ -48,8 +48,8 @@ describe "MintDoiJob" do
   
   describe "run" do
     it "should mint a doi for an object" do
-      DOI::Datacite.any_instance.stub(:mint)
-      DOI::Datacite.any_instance.stub(:metadata)
+      expect_any_instance_of(DOI::Datacite).to receive(:mint)
+      expect_any_instance_of(DOI::Datacite).to receive(:metadata)
       
       DataciteDoi.create(object_id: @object.id)
       

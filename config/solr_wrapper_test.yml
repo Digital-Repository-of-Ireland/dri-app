@@ -1,0 +1,4 @@
+#config/solr_wrapper_test.yml
+version: 6.3.0
+download_dir: tmp
+instance_dir: tmp/solr-test

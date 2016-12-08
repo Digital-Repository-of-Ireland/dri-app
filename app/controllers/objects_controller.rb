@@ -337,10 +337,8 @@ class ObjectsController < BaseObjectsController
 
           timeout = 60 * 60 * 24 * 7
           surrogates = doc.surrogates(file_doc.id, timeout)
-          surrogates.each do |file, _loc|
-            file_list[file] = url_for(object_file_url(
-              object_id: doc.id, id: file_doc.id, surrogate: file)
-            )
+          surrogates.each do |file, loc|
+            file_list[file] = loc
           end
 
           item['files'].push(file_list)

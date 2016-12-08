@@ -42,6 +42,23 @@ class SolrDocument
     self[ActiveFedora.index_field_mapper.solr_name('active_fedora_model', :stored_sortable, type: :string)]
   end
 
+  def ancestor_ids
+    ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
+    return [] unless self[ancestors_key].present?    
+
+    self[ancestors_key]
+  end
+
+  def ancestors_published?
+    ancestor_ids.each do |id|
+      collection = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
+      doc = SolrDocument.new(collection[0])
+      return false unless doc.status == 'published'
+    end
+
+    true
+  end
+
   def collection_id
     collection_key = ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
 
@@ -215,7 +232,7 @@ class SolrDocument
   end
 
   def published?
-    status == 'published'
+    ancestors_published? && status == 'published'
   end
 
   def public_read?

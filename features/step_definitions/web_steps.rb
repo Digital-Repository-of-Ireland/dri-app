@@ -236,11 +236,11 @@ When /^(?:|I )perform a search$/ do
 end
 
 Then /^(?:|I )should( not)? see a button to (.+)$/ do |negate,button|
-   negate ? (page.should_not have_button(button_to_id(button))) : (page.should have_button(button_to_id(button)))
+   negate ? (expect(page).to_not have_button(button_to_id(button))) : (expect(page).to have_button(button_to_id(button)))
 end
 
 Then /^(?:|I )should( not)? see a link to (.+)$/ do |negate,link|
-  negate ? (page.should_not have_link(link_to_id(link))) : (page.should have_link(link_to_id(link)))
+  negate ? (expect(page).to_not have_link(link_to_id(link))) : (expect(page).to have_link(link_to_id(link)))
 end
 
 Then /^(?:|I )should see a "([^"]*)"$/ do |element|
@@ -260,7 +260,7 @@ Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negat
   url = current_url
   @obj_pid = URI(url).path.split('/').last
   begin
-    negate ? (page.should_not have_selector ".dri_messages_container", text: flash_for(message)): (page.should have_selector ".dri_messages_container", text: flash_for(message))
+    negate ? (expect(page).to_not have_selector ".dri_messages_container", text: flash_for(message)): (expect(page).to have_selector ".dri_messages_container", text: flash_for(message))
   rescue
     #save_and_open_page
     raise
