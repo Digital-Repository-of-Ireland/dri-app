@@ -176,7 +176,6 @@ module Preservation
 
       if changes.key?(:deleted)
         changes[:deleted].keys.each do |type|
-        # TODO???? Not complete, path not used, was adding instead of deleting?? CHECK!
           if type.eql?('content')
             path = content_path(@object.id, self.version)
           elsif type.eql?('metadata')
@@ -185,7 +184,6 @@ module Preservation
 
           changes[:deleted][type].each do |file|
             version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
-            #add_file_instance(file_signature, file_instance).remove_file_having_path(file)
           end
         end
       end
