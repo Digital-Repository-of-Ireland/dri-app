@@ -63,7 +63,7 @@
     <% end %>
   <% end %>
 
-  <% unless @document.published? %>
+  <% unless @document.status == 'published' %>
     <li>
       <%= form_tag status_update_path(@document.id) ,:method => :put do %>
         <% if @document.draft? %>
@@ -135,7 +135,7 @@
 </ul>
 </div>
 
-<% if (can? :edit, @document) && @document.editable? && !@document.published? %>
+<% if (can? :edit, @document) && @document.editable? && !(@document.status == 'published') %>
 <div class="modal fade" id="dri_delete_object_modal_id">
   <div class="modal-dialog">
     <div class="modal-content">
