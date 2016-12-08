@@ -1,7 +1,16 @@
-class IiifController < CatalogController
+class IiifController < ApplicationController
+  include Hydra::AccessControlsEnforcement
   include DRI::IIIFViewable
 
   def show
+    id = params[:id].split(':')[0]
+    access = permitted?(params[:method], id)
+    
+    if access
+      head :ok, content_type: "text/html"
+    else
+      head :unauthorized, content_type: "text/html"
+    end
   end
 
   def manifest
@@ -25,4 +34,16 @@ class IiifController < CatalogController
     end
   end
 
+  private
+
+    def permitted?(method, id)
+      resp = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
+      object_doc = SolrDocument.new(resp.first)
+      
+      if method == 'show'
+        object_doc.published? && object_doc.public_read?
+      elsif method == 'info'
+        object_doc.published?
+      end
+    end
 end
