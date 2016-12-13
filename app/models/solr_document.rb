@@ -30,14 +30,6 @@ class SolrDocument
     format: 'format'
   )
 
-  FILE_TYPE_LABELS = {
-    'image' => 'Image',
-    'audio' => 'Sound',
-    'video' => 'MovingImage',
-    'text' => 'Text',
-    'mixed_types' => 'MixedType'
-  }
-
   def active_fedora_model
     self[ActiveFedora.index_field_mapper.solr_name('active_fedora_model', :stored_sortable, type: :string)]
   end
@@ -82,17 +74,7 @@ class SolrDocument
   def editable?
     active_fedora_model && active_fedora_model == 'DRI::EncodedArchivalDescription' ? false : true
   end
-
-  def file_type
-    file_type_key = ActiveFedora.index_field_mapper.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
-
-    return I18n.t('dri.data.types.Unknown') if self[file_type_key].blank?
-
-    label = FILE_TYPE_LABELS[self[file_type_key].first.to_s.downcase] || 'Unknown'
-
-    I18n.t("dri.data.types.#{label}")
-  end
-
+  
   # Get the earliest ancestor for any inherited attribute
   def ancestor_field(field, ancestor = nil)
     governed_key = ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
@@ -124,20 +106,7 @@ class SolrDocument
 
     self[geojson_key].present? ? true : false
   end
-
-  def icon_path
-    key = ActiveFedora.index_field_mapper.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
-    format = self[key].first.to_s.downcase
-
-    icon = if %w(image audio text video mixed_types).include?(format)
-             "dri/formats/#{format}_icon.png"
-           else
-             'no_image.png'
-           end
-
-    icon
-  end
-
+  
   def collection?
     is_collection_key = ActiveFedora.index_field_mapper.solr_name('is_collection')
 
