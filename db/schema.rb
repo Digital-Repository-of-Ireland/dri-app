@@ -14,13 +14,13 @@
 ActiveRecord::Schema.define(version: 20160725133248) do
 
   create_table "bookmarks", force: :cascade do |t|
-    t.integer  "user_id",                   null: false
-    t.string   "document_id",   limit: 255
-    t.string   "title",         limit: 255
+    t.integer  "user_id",       null: false
+    t.string   "document_id"
+    t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "user_type",     limit: 255
-    t.string   "document_type", limit: 255
+    t.string   "user_type"
+    t.string   "document_type"
   end
 
   add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
@@ -37,12 +37,12 @@ ActiveRecord::Schema.define(version: 20160725133248) do
   add_index "brands", ["institute_id"], name: "index_brands_on_institute_id"
 
   create_table "datacite_dois", force: :cascade do |t|
-    t.string   "object_id",   limit: 255
-    t.string   "modified",    limit: 255
-    t.string   "mod_version", limit: 255
+    t.string   "object_id"
+    t.string   "modified"
+    t.string   "mod_version"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "update_type", limit: 255
+    t.string   "update_type"
     t.integer  "version"
   end
 
@@ -62,29 +62,32 @@ ActiveRecord::Schema.define(version: 20160725133248) do
   add_index "doi_metadata", ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
 
   create_table "ingest_statuses", force: :cascade do |t|
-    t.string   "batch_id",   limit: 255
-    t.string   "asset_id",   limit: 255
-    t.string   "status",     limit: 255
+    t.string   "batch_id"
+    t.string   "asset_id"
+    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "asset_type", limit: 255
+    t.string   "asset_type"
   end
 
+  add_index "ingest_statuses", ["asset_id"], name: "index_ingest_statuses_on_asset_id"
+  add_index "ingest_statuses", ["batch_id"], name: "index_ingest_statuses_on_batch_id"
+
   create_table "institutes", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "url",        limit: 255
+    t.string   "name"
+    t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "logo",       limit: 255
+    t.string   "logo"
   end
 
   add_index "institutes", ["name"], name: "index_institutes_on_name"
 
   create_table "job_statuses", force: :cascade do |t|
     t.integer  "ingest_status_id"
-    t.string   "job",              limit: 255
-    t.string   "status",           limit: 255
-    t.string   "message",          limit: 255
+    t.string   "job"
+    t.string   "status"
+    t.string   "message"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -92,19 +95,19 @@ ActiveRecord::Schema.define(version: 20160725133248) do
   add_index "job_statuses", ["ingest_status_id"], name: "index_job_statuses_on_ingest_status_id"
 
   create_table "licences", force: :cascade do |t|
-    t.string   "name",        limit: 255
-    t.string   "url",         limit: 255
-    t.string   "logo",        limit: 255
-    t.string   "description", limit: 255
+    t.string   "name"
+    t.string   "url"
+    t.string   "logo"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "local_files", force: :cascade do |t|
-    t.string  "path",      limit: 255
-    t.string  "fedora_id", limit: 255
-    t.string  "ds_id",     limit: 255
-    t.string  "mime_type", limit: 255
+    t.string  "path"
+    t.string  "fedora_id"
+    t.string  "ds_id"
+    t.string  "mime_type"
     t.integer "version"
     t.text    "checksum"
   end
@@ -114,7 +117,7 @@ ActiveRecord::Schema.define(version: 20160725133248) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "user_type",    limit: 255
+    t.string   "user_type"
   end
 
   add_index "searches", ["user_id"], name: "index_searches_on_user_id"
@@ -129,17 +132,17 @@ ActiveRecord::Schema.define(version: 20160725133248) do
 
   create_table "user_group_authentications", force: :cascade do |t|
     t.integer "user_id"
-    t.string  "provider", limit: 255
-    t.string  "uid",      limit: 255
+    t.string  "provider"
+    t.string  "uid"
   end
 
   create_table "user_group_groups", force: :cascade do |t|
-    t.string   "name",         limit: 255
-    t.string   "description",  limit: 255
+    t.string   "name"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_locked",                default: false
-    t.boolean  "reader_group",             default: false
+    t.boolean  "is_locked",    default: false
+    t.boolean  "reader_group", default: false
   end
 
   add_index "user_group_groups", ["name"], name: "index_user_group_groups_on_name", unique: true
@@ -156,28 +159,28 @@ ActiveRecord::Schema.define(version: 20160725133248) do
   add_index "user_group_memberships", ["group_id", "user_id"], name: "index_user_group_memberships_on_group_id_and_user_id", unique: true
 
   create_table "user_group_users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "",    null: false
-    t.string   "encrypted_password",     limit: 255, default: "",    null: false
-    t.string   "reset_password_token",   limit: 255
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0
+    t.integer  "sign_in_count",          default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
-    t.string   "authentication_token",   limit: 255
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "authentication_token"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "first_name",             limit: 255
-    t.string   "second_name",            limit: 255
-    t.string   "locale",                 limit: 255
-    t.boolean  "guest",                              default: false
-    t.integer  "view_level",                         default: 0
-    t.string   "about_me",               limit: 255, default: ""
+    t.string   "first_name"
+    t.string   "second_name"
+    t.string   "locale"
+    t.boolean  "guest",                  default: false
+    t.integer  "view_level",             default: 0
+    t.string   "about_me",               default: ""
     t.datetime "token_creation_date"
-    t.string   "image_link",             limit: 255
-    t.string   "confirmation_token",     limit: 255
+    t.string   "image_link"
+    t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
   end
@@ -188,19 +191,19 @@ ActiveRecord::Schema.define(version: 20160725133248) do
   add_index "user_group_users", ["reset_password_token"], name: "index_user_group_users_on_reset_password_token", unique: true
 
   create_table "version_committers", force: :cascade do |t|
-    t.string   "obj_id",          limit: 255
-    t.string   "datastream_id",   limit: 255
-    t.string   "version_id",      limit: 255
-    t.string   "committer_login", limit: 255
+    t.string   "obj_id"
+    t.string   "datastream_id"
+    t.string   "version_id"
+    t.string   "committer_login"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "versions", force: :cascade do |t|
-    t.string   "item_type",  limit: 255, null: false
-    t.integer  "item_id",                null: false
-    t.string   "event",      limit: 255, null: false
-    t.string   "whodunnit",  limit: 255
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
     t.text     "object"
     t.datetime "created_at"
   end
