@@ -177,7 +177,15 @@ class ObjectsController < BaseObjectsController
     @object = retrieve_object!(params[:id])
 
     if @object.status != 'published'
+      # Do the preservation actions
+      @object.object_version = @object.object_version.to_i + 1
+      assets = []
+      @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
+      preservation = Preservation::Preservator.new(@object)
+      preservation.update_manifests(:deleted => {'content' => assets, 'metadata' => ['descMetadata.xml','permissions.rdf','properties.xml','resource.rdf']})
+
       @object.delete
+
       flash[:notice] = t('dri.flash.notice.object_deleted')
     else
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')

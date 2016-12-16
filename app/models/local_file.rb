@@ -9,7 +9,8 @@ class LocalFile < ActiveRecord::Base
 
   serialize :checksum
 
-  before_destroy :delete_file
+  # TODO: reenable this as an admin function
+  #before_destroy :delete_file
 
   # Write the file to the filesystem
   #
@@ -38,7 +39,8 @@ class LocalFile < ActiveRecord::Base
   end
 
   # Remove the file from the filesystem if it exists
-  #
+  # This has been disabled for now so that only soft delete is possible
+  # TODO reenable this as an admin function
   def delete_file
     return if path.nil? || !File.exist?(path)
 
