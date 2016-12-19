@@ -99,6 +99,8 @@ module PathTranslator
             catalog_path(pid)
           when /edit/
             edit_collection_path(pid)
+          when /new object/
+            new_object_path(collection: pid, method: 'form')            
           else
             raise('Unknown route')
         end

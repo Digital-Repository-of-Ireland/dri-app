@@ -27,9 +27,13 @@
     </p>
 
     <div class="dri_icon">
-      <% unless document.file_type == t("dri.data.types.Unknown") %>
-          <span class="dri_icon_image"><%= image_tag(document.icon_path) %> &nbsp; <%= document.file_type %></span>
+      <% if document.file_type_label != t("dri.data.types.Unknown") %>
+          <span class="dri_icon_image">
+            <% document.icon_path.each do |i| %>
+              <%= image_tag(i) %>
+            <% end %> &nbsp; <%= document.file_type_label %></span>
       <% else %>
+          <!-- takes value from metadata -->
           <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
       <% end %>
     </div>

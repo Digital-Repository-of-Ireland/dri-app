@@ -20,8 +20,7 @@ Scenario: Ingesting a duplicate Digital Object using metadata file upload
 Scenario: Ingesting a duplicate Digital Object using form input
   Given a collection with pid "xxxx2" and title "Test Collection" created by "user1"
   And I have created an object with title "SAMPLE OBJECT A" in the collection with pid "xxxx2"  
-  When I go to the "collection" "show" page for "xxxx2"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "xxxx2"
   When I enter valid metadata with title "SAMPLE OBJECT A"
   And I press the button to "continue"
   Then I should see a success message for ingestion
