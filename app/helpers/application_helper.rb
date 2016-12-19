@@ -36,7 +36,7 @@ module ApplicationHelper
   def search_image(document, file_document, image_name = 'crop16_9_width_200_thumbnail')
     path = nil
 
-    unless file_document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].blank?
+    if file_document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].present?
       format = file_document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].first
 
       case format
@@ -53,15 +53,13 @@ module ApplicationHelper
   def default_image(file_document)
     path = asset_url "no_image.png"
 
-    unless file_document.nil?
-      unless file_document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].blank?
+    if file_document
+      if file_document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].present?
         format = file_document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].first
 
-        path = asset_url "dri/formats/#{format}.png"
+        path = "dri/formats/#{format}.png"
 
-        if Rails.application.assets.find_asset(path).nil?
-          path = asset_url "no_image.png"
-        end
+        path = asset_url "no_image.png" if Rails.application.assets.find_asset(path).nil?
       end
     end
 

@@ -44,7 +44,6 @@ Scenario: Adding a pdf asset to an object
   And I press the button to "upload a file"
   Then I should see a success message for file upload
 
-@test
 Scenario: Replacing the metadata file of a Digital Object
   Given "user1" has created a Digital Object
   When I click the link to edit
@@ -53,16 +52,14 @@ Scenario: Replacing the metadata file of a Digital Object
   Then I should see a success message for updating metadata
 
 Scenario: Constructing a Digital Object using the web form
-  When I go to the "collection" "show" page for "xxxx"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "xxxx"
   When I enter valid metadata
   And I press the button to "continue"
   Then I should see a success message for ingestion
   And I should see the valid metadata
 
 Scenario: Constructing an invalid Digital Object using the web form
-  When I go to the "collection" "show" page for "xxxx"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "xxxx"
   When I enter invalid metadata
   And I press the button to "continue"
   Then I should not see a success message for ingestion
