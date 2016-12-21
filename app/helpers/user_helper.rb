@@ -9,7 +9,7 @@ module UserHelper
 
     collections = collections(admin, query)
     collections.map { |item| item[:permission] = 'Depositor' }
-    collections
+    Kaminari.paginate_array(collections).page(params[:page]).per(9)
   end
 
   def collections(user, query)
@@ -67,7 +67,7 @@ module UserHelper
             "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
     )
 
-    collections(user, solr_query)
+    Kaminari.paginate_array(collections(user, solr_query)).page(params[:page]).per(9)
   end
 
   def read_group_query(user)
