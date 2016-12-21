@@ -195,9 +195,9 @@ class ObjectsController < BaseObjectsController
 
           item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
             i = solr_doc.extract_metadata(params[:metadata])
-            i.merge!(find_assets_and_surrogates(solr_doc))
           end
 
+          item.merge!(find_assets_and_surrogates(solr_doc))
           @list << item
         end
 
