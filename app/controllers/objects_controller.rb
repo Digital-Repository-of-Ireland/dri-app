@@ -212,9 +212,11 @@ class ObjectsController < BaseObjectsController
 
           next unless solr_doc.published?
 
-          item = solr_doc.extract_metadata(params[:metadata])
-          item.merge!(find_assets_and_surrogates(solr_doc))
+          item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
+            i = solr_doc.extract_metadata(params[:metadata])
+          end
 
+          item.merge!(find_assets_and_surrogates(solr_doc))
           @list << item
         end
 
@@ -361,10 +363,8 @@ class ObjectsController < BaseObjectsController
 
           timeout = 60 * 60 * 24 * 7
           surrogates = doc.surrogates(file_doc.id, timeout)
-          surrogates.each do |file, _loc|
-            file_list[file] = url_for(object_file_url(
-              object_id: doc.id, id: file_doc.id, surrogate: file)
-            )
+          surrogates.each do |file, loc|
+            file_list[file] = loc
           end
 
           item['files'].push(file_list)

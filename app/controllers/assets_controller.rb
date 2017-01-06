@@ -346,7 +346,7 @@ class AssetsController < ApplicationController
 
         if can? :read, doc
           surrogates = doc.surrogates(file_doc.id)
-          surrogates.each { |file, _loc| file_list[file] = object_file_url(object_id: doc.id, id: file_doc.id, surrogate: file) }
+          surrogates.each { |file, loc| file_list[file] = loc }
         end
 
         item['files'].push(file_list)

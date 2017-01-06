@@ -54,7 +54,6 @@ Scenario: Adding a pdf asset to an object
   And I press the button to "upload a file"
   Then I should see a success message for file upload
 
-@test
 Scenario: Replacing the metadata file of a Digital Object
   When I create a collection and save the pid
   And I create an object and save the pid
@@ -66,8 +65,7 @@ Scenario: Replacing the metadata file of a Digital Object
 
 Scenario: Constructing a Digital Object using the web form
   When I create a collection and save the pid
-  And I go to the "collection" "show" page for "the saved pid"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "the saved pid"
   When I enter valid metadata
   And I press the button to "continue"
   Then I should see a success message for ingestion
@@ -75,8 +73,7 @@ Scenario: Constructing a Digital Object using the web form
 
 Scenario: Constructing an invalid Digital Object using the web form
   When I create a collection and save the pid
-  And I go to the "collection" "show" page for "the saved pid"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "the saved pid"
   When I enter invalid metadata
   And I press the button to "continue"
   Then I should not see a success message for ingestion

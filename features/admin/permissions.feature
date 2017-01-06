@@ -31,8 +31,7 @@ Scenario: Constructing a Collection using the web form should set default permis
 
 Scenario Outline: Constructing a Digital Object using the web form should set default permissions
   Given a collection with pid "perm1" created by "user1"
-  When I go to the "collection" "show" page for "perm1"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "perm1"
   When I enter valid "<object_type>" metadata
   And I press the button to "continue"
   Then I should see a success message for ingestion

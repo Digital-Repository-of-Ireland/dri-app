@@ -26,13 +26,11 @@ Scenario: Ingesting a duplicate Digital Object using metadata file upload
 
 Scenario: Ingesting a duplicate Digital Object using form input
   When I create a collection and save the pid
-  And I go to the "collection" "show" page for "the saved pid"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "the saved pid"
   And I enter valid metadata with title "SAMPLE OBJECT A"
   And I press the button to "continue"
   Then I should see a success message for ingestion
-  When I go to the "collection" "show" page for "the saved pid"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "the saved pid"
   And I enter valid metadata with title "SAMPLE OBJECT A"
   And I press the button to "continue"
   Then I should see a success message for ingestion
@@ -46,8 +44,7 @@ Scenario: Creating a duplicate Digital Object by replacing the metadata file
   And I attach the metadata file "SAMPLEA.xml"
   And I press the button to "ingest metadata"
   Then I should see a success message for ingestion
-  When I go to the "collection" "show" page for "the saved pid"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "the saved pid"
   And I enter valid metadata with title "SAMPLE OBJECT B"
   And I press the button to "continue"
   Then I should see a success message for ingestion
@@ -60,13 +57,11 @@ Scenario: Creating a duplicate Digital Object by replacing the metadata file
 
 Scenario: Creating a duplicate Digital Object by editing with the metadata form
   When I create a collection and save the pid
-  And I go to the "collection" "show" page for "the saved pid"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "the saved pid"
   And I enter valid metadata with title "SAMPLE OBJECT A"
   And I press the button to "continue"
   Then I should see a success message for ingestion
-  When I go to the "collection" "show" page for "the saved pid"
-  And I follow the link to add an object
+  When I go to the "collection" "new object" page for "the saved pid"
   And I enter valid metadata with title "SAMPLE OBJECT B"
   And I press the button to "continue"
   Then I should see a success message for ingestion
