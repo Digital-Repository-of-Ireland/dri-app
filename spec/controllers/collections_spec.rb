@@ -318,4 +318,34 @@ describe CollectionsController do
 
   end
 
+
+  describe "collection is locked" do
+
+    before(:each) do
+      @login_user = FactoryGirl.create(:admin)
+      sign_in @login_user
+      @collection = FactoryGirl.create(:collection)
+      CollectionLock.create(collection_id: @collection.id)
+      
+      request.env["HTTP_REFERER"] = catalog_index_path
+    end
+
+    after(:each) do
+      CollectionLock.delete_all(collection_id: @collection.id)
+      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      @login_user.delete
+    end
+
+    it 'should not allow object updates' do
+      params = {}
+      params[:batch] = {}
+      params[:batch][:title] = ["A collection"]
+      params[:batch][:read_users_string] = "public"
+      params[:batch][:edit_users_string] = @login_user.email
+      put :update, :id => @collection.id, :batch => params[:batch]
+
+      expect(flash[:error]).to be_present
+    end
+
+  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160725133248) do
+ActiveRecord::Schema.define(version: 20170106105332) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -35,6 +35,12 @@ ActiveRecord::Schema.define(version: 20160725133248) do
   end
 
   add_index "brands", ["institute_id"], name: "index_brands_on_institute_id"
+
+  create_table "collection_locks", force: :cascade do |t|
+    t.string   "collection_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
 
   create_table "datacite_dois", force: :cascade do |t|
     t.string   "object_id"
