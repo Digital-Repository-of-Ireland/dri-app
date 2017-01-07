@@ -100,6 +100,7 @@ en:
         doi_not_configured: "DOI configuration settings not found."
       error:
         cover_image_not_saved: "Unable to save cover image"
+        locked: "This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information."
         manager_user_permission: "You do not have permission to create a manager user"
         no_read_group: "No read group has been set for the collection"
         no_type_specified: "You must specify a valid object type"

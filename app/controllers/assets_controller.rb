@@ -4,6 +4,7 @@ class AssetsController < ApplicationController
   before_action :authenticate_user_from_token!, only: [:list_assets]
   before_action :authenticate_user!, only: [:list_assets]
   before_action :read_only, except: [:show, :download, :list_assets]
+  before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets]
 
   require 'validators'
 
