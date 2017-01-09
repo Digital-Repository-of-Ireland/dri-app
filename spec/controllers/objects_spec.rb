@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ObjectsController do
   include Devise::Test::ControllerHelpers
@@ -249,6 +249,54 @@ describe ObjectsController do
       end
 
       it 'should not allow object updates' do
+        params = {}
+        params[:batch] = {}
+        params[:batch][:title] = ["An Audio Title"]
+        params[:batch][:read_users_string] = "public"
+        params[:batch][:edit_users_string] = @login_user.email
+        put :update, :id => @object.id, :batch => params[:batch]
+
+        expect(flash[:error]).to be_present
+      end
+
+  end
+
+  describe "collection is locked" do
+
+      before(:each) do
+        @login_user = FactoryGirl.create(:admin)
+        sign_in @login_user
+        @collection = FactoryGirl.create(:collection)
+        @object = FactoryGirl.create(:sound)
+        CollectionLock.create(collection_id: @collection.id)
+
+        request.env["HTTP_REFERER"] = catalog_path(@collection.id)
+      end
+
+      after(:each) do
+        CollectionLock.delete_all(collection_id: @collection.id)
+        @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+        @login_user.delete
+      end
+
+      it 'should not allow object creation' do
+        @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+        @file = fixture_file_upload("/valid_metadata.xml", "text/xml")
+        class << @file
+          # The reader method is present in a real invocation,
+          # but missing from the fixture object for some reason (Rails 3.1.1)
+          attr_reader :tempfile
+        end
+
+        post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
+        expect(flash[:error]).to be_present
+      end
+
+      it 'should not allow object updates' do
+        @object.governing_collection = @collection
+        @object.save
+        
         params = {}
         params[:batch] = {}
         params[:batch][:title] = ["An Audio Title"]

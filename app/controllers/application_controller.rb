@@ -123,4 +123,19 @@ class ApplicationController < ActionController::Base
         end
       end
     end
+
+    def locked(id)
+      docs = ActiveFedora::SolrService.query("id:#{id}")
+      obj = SolrDocument.new(docs.first)
+      
+      return unless CollectionLock.exists?(collection_id: obj.root_collection_id)
+
+      respond_to do |format|
+        format.json { head status: 403 }
+        format.html do
+          flash[:error] = t('dri.flash.error.locked')
+          redirect_to :back
+        end
+      end
+    end
 end

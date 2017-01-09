@@ -40,6 +40,9 @@ DriApp::Application.routes.draw do
     put 'collections/:id/licences', to: 'collections#set_licence', as: :collection_licence
     put 'objects/:id/licences', to: 'objects#set_licence', as: :object_licence
 
+    post 'collections/:id/lock', to: 'collections#lock', as: :collection_lock
+    delete 'collections/:id/lock', to: 'collections#lock', as: :collection_unlock
+
     get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
     put 'objects/:id/access', to: 'access_controls#update'
 
