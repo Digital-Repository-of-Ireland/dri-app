@@ -319,7 +319,7 @@ class AssetsController < ApplicationController
       query = 'fedora_id LIKE :f AND ds_id LIKE :d'
       query << ' AND version = :v' if search_params[:v].present?
 
-      LocalFile.where(query, search_params).take
+      LocalFile.where(query, search_params).order(version: :desc).first
     rescue ActiveRecord::RecordNotFound
       raise DRI::Exceptions::InternalError, "Unable to find requested file"
     rescue ActiveRecord::ActiveRecordError
