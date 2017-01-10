@@ -45,22 +45,16 @@ class ObjectHistory
   end
 
   def audit_trail
-    file_versions = {}
+    versions = {}
 
-    object.attached_files.keys.each do |file_key|
-      file = @object.attached_files[file_key]
-      next unless file.has_versions?
-
-      audit_trail = file.versions.all
-      versions = {}
+    if @object.has_versions?
+      audit_trail = @object.versions.all
       audit_trail.each do |version|
         versions[version.label] = { uri: version.uri, created: version.created, committer: committer(version) }
       end
-
-      file_versions[file_key] = versions
     end
 
-    file_versions
+    versions
   end
 
   def asset_info
