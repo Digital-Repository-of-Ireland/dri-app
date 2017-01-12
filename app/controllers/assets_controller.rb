@@ -4,6 +4,7 @@ class AssetsController < ApplicationController
   before_action :authenticate_user_from_token!, only: [:list_assets]
   before_action :authenticate_user!, only: [:list_assets]
   before_action :read_only, except: [:show, :download, :list_assets]
+  before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets]
 
   require 'validators'
 
@@ -100,7 +101,9 @@ class AssetsController < ApplicationController
 
     preserve_file(file_upload, @generic_file, datastream, params)
 
-    if actor.update_external_content(URI.escape(download_url), file_upload, datastream)
+    url = "#{URI.escape(download_url)}?version=#{@file.version}"
+
+    if actor.update_external_content(url, file_upload, datastream)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
       object = @generic_file.batch
@@ -142,7 +145,9 @@ class AssetsController < ApplicationController
     preserve_file(file_upload, @generic_file, datastream, params)
     filename = params[:file_name].presence || file_upload.original_filename    
 
-    if actor.create_external_content(URI.escape(download_url), datastream, filename)
+    url = "#{URI.escape(download_url)}?version=#{@file.version}"
+
+    if actor.create_external_content(url, datastream, filename)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
       mint_doi(@object, 'asset added') if @object.status == 'published'
@@ -258,7 +263,7 @@ class AssetsController < ApplicationController
       options[:file_name] = filename
 
       # Add and save the file
-      @file.add_file filedata, options
+      @file.add_file(filedata, options)
 
       begin
         raise DRI::Exceptions::InternalError unless @file.save!
@@ -318,7 +323,7 @@ class AssetsController < ApplicationController
     end
 
     def download_url
-      url_for controller: 'assets', action: 'download', object_id: @generic_file.batch.id, id: @generic_file.id
+      url_for(controller: 'assets', action: 'download', object_id: @generic_file.batch.id, id: @generic_file.id)
     end
 
     def file_path(object_id, file_id, surrogate)
@@ -362,7 +367,7 @@ class AssetsController < ApplicationController
       query = 'fedora_id LIKE :f AND ds_id LIKE :d'
       query << ' AND version = :v' if search_params[:v].present?
 
-      LocalFile.where(query, search_params).take
+      LocalFile.where(query, search_params).order(version: :desc).first
     rescue ActiveRecord::RecordNotFound
       raise DRI::Exceptions::InternalError, "Unable to find requested file"
     rescue ActiveRecord::ActiveRecordError

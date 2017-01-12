@@ -3,7 +3,7 @@ require 'validators'
 
 DRI::ModelSupport::Files.module_eval do
 
-  def add_file file, dsid='content', original_file_name
+  def add_file(file, dsid='content', file_name)
     mime_type = Validators.file_type(file.path)
     pass_validation = false
 
@@ -26,9 +26,15 @@ DRI::ModelSupport::Files.module_eval do
 
     @actor = DRI::Asset::Actor.new(gf, ingest_user)
 
-    create_file(file, file_name, gf, dsid, '', mime_type.to_s)
-
-    url = Rails.application.routes.url_helpers.url_for controller: 'assets', action: 'download', object_id: gf.batch.id, id: gf.id
+    version = create_file(file, file_name, gf.id, dsid, '', mime_type.to_s)
+ 
+    url = Rails.application.routes.url_helpers.url_for(
+      controller: 'assets',
+      action: 'download',
+      object_id: gf.batch.id,
+      id: gf.id,
+      version: version
+    )
 
     if @actor.create_external_content(URI.escape(url), dsid, file_name)
       return true
@@ -66,6 +72,8 @@ DRI::ModelSupport::Files.module_eval do
     rescue ActiveRecord::ActiveRecordError => e
       Rails.logger.error "Could not save the asset file #{file.path} for #{object_id} to #{datastream}: #{e.message}"
     end
+
+    local_file.version
   end
 
 end

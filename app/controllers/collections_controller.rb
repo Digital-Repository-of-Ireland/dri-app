@@ -11,6 +11,7 @@ class CollectionsController < BaseObjectsController
   before_action :authenticate_user!, except: [:cover]
   before_action :check_for_cancel, only: [:create, :update, :add_cover_image]
   before_action :read_only, except: [:index, :cover]
+  before_action ->(id=params[:id]) { locked(id) }, except: %i|index cover lock new create|
 
   # Was this action canceled by the user?
   def check_for_cancel
@@ -88,6 +89,24 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  def lock
+    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
+
+    @object = retrieve_object!(params[:id])
+    raise DRI::Exceptions::BadRequest unless @object.collection?
+
+    if request.post?
+      CollectionLock.create(collection_id: @object.root_collection.first)
+    elsif request.delete?
+      CollectionLock.delete_all("collection_id = '#{@object.root_collection.first}'")
+    end
+
+    respond_to do |format|
+      flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
+      format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+    end
+  end
+  
   # Updates the attributes of an existing model.
   #
   def update
@@ -217,7 +236,7 @@ class CollectionsController < BaseObjectsController
   #
   def create
     created = params[:metadata_file].present? ? create_from_xml : create_from_form
-
+    
     if created && (@object.valid? && @object.save)
       # We have to create a default reader group
       create_reader_group

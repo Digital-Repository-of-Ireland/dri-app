@@ -155,12 +155,17 @@ class SolrDocument
     self[key].present? ? JSON.parse(self[key].first) : {}
   end
 
-  def root_collection
+  def root_collection_id
     root_key = ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
+
+    self[root_key].present? ? self[root_key].first : nil
+  end
+
+  def root_collection
+    root_id = root_collection_id
     root = nil
-    if self[root_key].present?
-      id = self[root_key][0]
-      solr_query = "id:#{id}"
+    if root_id
+      solr_query = "id:#{root_id}"
       collection = ActiveFedora::SolrService.query(solr_query, defType: 'edismax', rows: '1')
       root = SolrDocument.new(collection[0])
     end

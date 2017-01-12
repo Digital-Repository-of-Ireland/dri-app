@@ -16,6 +16,7 @@ class MetadataController < CatalogController
   before_action :authenticate_user_from_token!, except: :show
   before_action :authenticate_user!, except: :show
   before_action :read_only, except: :show
+  before_action ->(id=params[:id]) { locked(id) }, except: :show
 
   def actor
     @actor ||= DRI::Object::Actor.new(@object, current_user)

@@ -1,4 +1,7 @@
 class AccessControlsController < ApplicationController
+  before_action :read_only, except: :edit
+  before_action ->(id=params[:id]) { locked(id) }, except: :edit
+
   def edit
     enforce_permissions!('edit', params[:id])
     @object = retrieve_object!(params[:id])

@@ -8,11 +8,14 @@ class ObjectsController < BaseObjectsController
   before_action :authenticate_user_from_token!, except: [:show, :citation]
   before_action :authenticate_user!, except: [:show, :citation]
   before_action :read_only, except: [:index, :show, :citation, :related]
+  before_action ->(id=params[:id]) { locked(id) }, except: [:index, :show, :citation, :related, :new, :create]
 
   # Displays the New Object form
   #
   def new
     @collection = params[:collection]
+
+    locked(@collection); return if performed?
 
     @object = DRI::Batch.with_standard :qdc
     @object.creator = ['']
@@ -119,6 +122,7 @@ class ObjectsController < BaseObjectsController
     end
 
     enforce_permissions!('create_digital_object', params[:batch][:governing_collection].id)
+    locked(params[:batch][:governing_collection].id); return if performed?
 
     if params[:batch][:documentation_for].present?
       create_from_form :documentation
