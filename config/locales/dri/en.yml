@@ -78,6 +78,14 @@ en:
         Text: Text
         Title: "Media Types"
         Unknown: Unknown
+    datatables:
+      activity:
+        updated_at: "Updated At"
+        object_id: "Object ID"
+        type: "Type"
+        in_collection: "In Collection"
+        committer: "Committer"
+        status: "Status"
     flash:
       alert:
         create_permission: "You do not have permission to create this document."
@@ -705,6 +713,9 @@ en:
             view: "View request"
           approved:
             remove: "Remove access"
+      reports:
+        links:
+          activity_report: "Activity Report"
       static:
         admin:
           licences: "Supported Licences"

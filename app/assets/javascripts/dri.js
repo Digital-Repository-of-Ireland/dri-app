@@ -234,3 +234,12 @@ $(document).ready(function () {
       });
     });
 });
+
+$(document).ready(function() {
+    $('#datatable_activity').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "order": [[ 0, "desc" ]],
+        "ajax": $('#datatable_activity').data('source')
+    } );
+} );
