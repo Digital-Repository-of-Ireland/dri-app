@@ -53,6 +53,7 @@ gem 'syslog-logger'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-cookie-rails'
+gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 
 gem 'remotipart'
 
