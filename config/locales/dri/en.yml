@@ -86,6 +86,11 @@ en:
         in_collection: "In Collection"
         committer: "Committer"
         status: "Status"
+      user_activity:
+        type: "Type"
+        item: "Item"
+        event: "Event"
+        object: "Object"
     flash:
       alert:
         create_permission: "You do not have permission to create this document."
@@ -175,7 +180,7 @@ en:
       about: About
       about_dri_lifecycle: "DRI Lifecycle"
       about_us: "About Us"
-      admin: "Admin Tasks"
+      admin: "Admin"
       browse: Discover
       collection: Collection
       collections: Collections

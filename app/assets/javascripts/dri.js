@@ -240,6 +240,23 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "order": [[ 0, "desc" ]],
-        "ajax": $('#datatable_activity').data('source')
+        "ajax": $('#datatable_activity').data('source'),
+        columnDefs: [
+          { targets: [0, 4], orderable: true },
+          { targets: '_all', orderable: false }
+        ]
+    } );
+} );
+
+$(document).ready(function() {
+    $('#datatable_user_activity').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "order": [[ 0, "desc" ]],
+        "ajax": $('#datatable_user_activity').data('source'),
+        columnDefs: [
+          { targets: [0, 1, 3], orderable: true },
+          { targets: '_all', orderable: false }
+        ]
     } );
 } );

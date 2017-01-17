@@ -37,7 +37,7 @@ private
   def fetch_versions
     versions = VersionCommitter.order("#{sort_column} #{sort_direction}")
     if params[:search][:value].present?
-      versions = versions.where("committer_login like :search", search: "%#{params[:search][:value]}%")
+      versions = versions.where("committer_login like :search or created_at like :search", search: "%#{params[:search][:value]}%")
     end
     versions
   end
@@ -55,7 +55,7 @@ private
   end
 
   def sort_column
-    columns = %w[created_at committer_login]
+    columns = %w[created_at obj_id type collection committer_login status]
     columns[params[:order][:'0'][:column].to_i]
   end
 
