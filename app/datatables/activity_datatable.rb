@@ -55,7 +55,7 @@ private
   end
 
   def sort_column
-    columns = %w[created_at committer_login]
+    columns = %w[created_at obj_id type collection committer_login status]
     columns[params[:order][:'0'][:column].to_i]
   end
 

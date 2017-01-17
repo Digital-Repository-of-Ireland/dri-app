@@ -240,6 +240,10 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "order": [[ 0, "desc" ]],
-        "ajax": $('#datatable_activity').data('source')
+        "ajax": $('#datatable_activity').data('source'),
+        columnDefs: [
+          { targets: [0, 4], orderable: true },
+          { targets: '_all', orderable: false }
+        ]
     } );
 } );
