@@ -43,6 +43,7 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
     | Text        |
     | Sound       |
 
+@wip
 Scenario Outline: Constructing a Digital Object using XML upload should set default permissions
   Given a collection with pid "perm2" created by "user1"
   When I go to the "metadata" "upload" page for "perm2"
