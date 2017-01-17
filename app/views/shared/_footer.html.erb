@@ -28,8 +28,11 @@
       <li>
         <%= link_to t('dri.headerlinks.help'), main_app.page_path('about_faq'), :id => "dri_footer_help" %>
       </li>
+      <li>
+        <%= link_to t('dri.headerlinks.about'), main_app.page_path('about_us'), :id => "about_us_footer", :class => "muted" %>
+      </li>
       <li class=" no_border_right">
-        <span><%= link_to t('dri.headerlinks.about'), main_app.page_path('about_us'), :id => "about_us_footer", :class => "muted" %></span>
+      <span><%= link_to t('dri.headerlinks.about_dri_lifecycle'), main_app.page_path('about_lifecycle'), :id => 'about_lifecycle_footer', :class => "muted" %></span>
       </li>
     </ul>
   </nav>
