@@ -1,4 +1,4 @@
-<% if (controller.controller_name.eql?('licences')  && (controller.action_name.eql?('new') || controller.action_name.eql?('edit') || controller.action_name.eql?('index'))) || (controller.controller_name.eql?('static') && controller.action_name.eql?('admin')) %>
+<% if (controller.controller_name.eql?('licences')  && (controller.action_name.eql?('new') || controller.action_name.eql?('edit') || controller.action_name.eql?('index'))) || (controller.controller_name.eql?('static') && controller.action_name.eql?('admin')) || (controller.controller_name.eql?('activity')) || request.path.include?("/reports") %>
 <li class="dropdown active dri_dropdown visible-sm visible-md visible-lg">
   <% else %>
 <li class="dropdown dri_dropdown visible-sm visible-md visible-lg">
@@ -30,7 +30,7 @@
      <%= link_to t('user_groups.views.header.admin'), user_group.admin_path, :tabindex => "-1" %>
      </li>
 
-      <% if controller.controller_name.eql?('pages') %>
+      <% if controller.controller_name.eql?('activity') || request.path.include?("/reports") %>
         <li role="presentation" class="active">
       <% else %>
         <li>
