@@ -6,7 +6,13 @@ class ActivityController < ApplicationController
   def index
     respond_to do |format|
       format.html
-      format.json { render json: ActivityDatatable.new(view_context) }
+      format.json do
+        if params[:report].presence == 'user'
+          render json: UserActivityDatatable.new(view_context)
+        else
+          render json: ActivityDatatable.new(view_context)
+        end
+      end
     end
   end
 

@@ -247,3 +247,16 @@ $(document).ready(function() {
         ]
     } );
 } );
+
+$(document).ready(function() {
+    $('#datatable_user_activity').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "order": [[ 0, "desc" ]],
+        "ajax": $('#datatable_user_activity').data('source'),
+        columnDefs: [
+          { targets: [0, 1, 3], orderable: true },
+          { targets: '_all', orderable: false }
+        ]
+    } );
+} );

@@ -37,7 +37,7 @@ private
   def fetch_versions
     versions = VersionCommitter.order("#{sort_column} #{sort_direction}")
     if params[:search][:value].present?
-      versions = versions.where("committer_login like :search", search: "%#{params[:search][:value]}%")
+      versions = versions.where("committer_login like :search or created_at like :search", search: "%#{params[:search][:value]}%")
     end
     versions
   end
