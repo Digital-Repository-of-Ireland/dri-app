@@ -1,21 +1,18 @@
-<% if ((controller.controller_name.eql?('collections') && controller.action_name.eql?('new')) ||
-(controller.controller_name.eql?('ingest')  && (controller.action_name.eql?('new') || controller.action_name.eql?('create'))) ||
-(controller.controller_name.eql?('licences')  && (controller.action_name.eql?('new') || controller.action_name.eql?('edit') || controller.action_name.eql?('index'))) ||
-(controller.controller_name.eql?('static') && controller.action_name.eql?('admin'))) ||
+<% if (controller.controller_name.eql?('collections') && controller.action_name.eql?('new')) ||
 controller.controller_name.eql?('workspace') || controller_name.eql?('manage_users') || (controller.controller_name.eql?('institutes') && controller.action_name.eql?('new')) || controller.controller_name.eql?('user_background_tasks') %>
-<li class="dropdown active dri_dropdown visible-sm visible-md visible-lg">
-  <% else %>
-<li class="dropdown dri_dropdown visible-sm visible-md visible-lg">
-  <% end %>
+  <li class="dropdown active dri_dropdown visible-sm visible-md visible-lg">
+<% else %>
+  <li class="dropdown dri_dropdown visible-sm visible-md visible-lg">
+<% end %>
 
   <a href="#" id="dri_manage_id" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><%= t('dri.headerlinks.manage') %> <span class="caret"></span></a>
 
   <ul class="dropdown-menu" role="menu">
     <% if (controller.controller_name.eql?('workspace')) %>
-    <li role="presentation" class="active">
-      <% else %>
-    <li role="presentation">
-      <% end %>
+      <li role="presentation" class="active">
+    <% else %>
+      <li role="presentation">
+    <% end %>
       <%= link_to t('dri.headerlinks.my_collections'), workspace_path(:mode => "collections"), :id => "my_collections", :tabindex => "-1" %>
     </li>
 
@@ -30,13 +27,13 @@ controller.controller_name.eql?('workspace') || controller_name.eql?('manage_use
 
     <% if signed_in? && (current_user.is_cm? || current_user.is_om? || current_user.is_admin? || @collections.count > 0 ) %>
 
-    <% if (controller.controller_name.eql?('collections') && controller.action_name.eql?('new')) %>
-    <li role="presentation" class="active">
-      <% else %>
-    <li role="presentation">
+      <% if (controller.controller_name.eql?('collections') && controller.action_name.eql?('new')) %>
+        <li role="presentation" class="active">
+          <% else %>
+        <li role="presentation">
       <% end %>
-      <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, :id => "new_collection", :tabindex => "-1" %>
-    </li>
+        <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, :id => "new_collection", :tabindex => "-1" %>
+      </li>
     <% if (controller.controller_name.eql?('institutes') && controller.action_name.eql?('new')) %>
     <li role="presentation" class="active">
       <% else %>
@@ -49,47 +46,14 @@ controller.controller_name.eql?('workspace') || controller_name.eql?('manage_use
 
 
     <% if signed_in? && current_user.is_om? %>
-    <% if controller.controller_name.eql?('manage_users') %>
-    <li role="presentation" class="active">
+      <% if controller.controller_name.eql?('manage_users') %>
+        <li role="presentation" class="active">
       <% else %>
-    <li role="presentation">
+        <li role="presentation">
       <% end %>
       <%= link_to t('dri.headerlinks.manage_users'), main_app.manage_users_path, :tabindex => "-1" %>
     </li>
     <% end %>
 
-    <% if signed_in? && current_user.is_admin? %>
-    <% if (controller.controller_name.eql?('licences')  && (controller.action_name.eql?('new') ||
-        controller.action_name.eql?('edit') || controller.action_name.eql?('index'))) %>
-        <li role="presentation" class="active">
-            <% else %>
-        <li role="presentation">
-            <% end %>
-            <%= link_to t('dri.views.static.admin.licences'), main_app.licences_path, :id => "licences", :tabindex => "-1" %>
-        </li>
-    <% end %>
-    
-    <% if signed_in? && current_user.is_admin? %> <!-- ok -->
-      <li role="presentation">
-        <%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, :id => "resque", :tabindex => "-1" %>
-      </li>
-
-
-      <% if (controller.controller_name.eql?('static') && controller.action_name.eql?('admin')) %>
-        <li role="presentation" class="active">
-      <% else %>
-        <li role="presentation">
-     <% end %>
-     <%= link_to t('user_groups.views.header.admin'), user_group.admin_path, :tabindex => "-1" %>
-     </li>
-
-      <% if (controller.controller_name.eql?('static') && controller.action_name.eql?('admin')) %>
-        <li role="presentation" class="active">
-      <% else %>
-        <li>
-      <% end %>
-      <%= link_to t('dri.headerlinks.reports'), main_app.page_path('reports'), :tabindex => "-1" %>
-      </li>
-    <% end %>
   </ul>
 </li>
