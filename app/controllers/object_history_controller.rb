@@ -15,7 +15,7 @@ class ObjectHistoryController < ApplicationController
 
     object_history = ObjectHistory.new(object: @object)
 
-    @file_versions = object_history.audit_trail
+    @versions = object_history.audit_trail
     @asset_info = object_history.asset_info
     @permission_info = object_history.permission_info
 
