@@ -47,7 +47,8 @@ DRI::ModelSupport::Files.module_eval do
   private
 
   def create_file(file, file_name, gf, datastream, checksum, mime_type)
-    object_version = (gf.batch.object_version.to_i+1).to_s
+    current_version = gf.batch.object_version || 1
+    object_version = (current_version.to_i+1).to_s
     object_id = gf.id
     batch_id = gf.batch.id
 

@@ -109,7 +109,8 @@ class MetadataController < CatalogController
       @errors = @object.errors.full_messages.inspect
     end
     
-    @object.object_version = @object.object_version.to_i + 1
+    version = @object.object_version || 1
+    @object.object_version = version.to_i + 1
 
     begin
       raise DRI::Exceptions::InternalError unless @object.save

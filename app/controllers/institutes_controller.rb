@@ -109,7 +109,8 @@ class InstitutesController < ApplicationController
       @collection.depositing_institute = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
     end
 
-    @collection.object_version = @collection.object_version.to_i + 1
+    version = @collection.object_version || 1
+    @collection.object_version = version.to_i + 1
 
     updated = @collection.save
 
@@ -149,7 +150,8 @@ class InstitutesController < ApplicationController
       @collection = ActiveFedora::Base.find(params[:object], cast: true)
       raise DRI::Exceptions::NotFound unless @collection
 
-      @collection.object_version = @collection.object_version.to_i + 1
+      version = @collection.object_version || 1
+      @collection.object_version = version.to_i + 1
       delete ? delete_association : add_association
 
       @collection_institutes = Institute.find_collection_institutes(@collection.institute)

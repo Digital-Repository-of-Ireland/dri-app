@@ -70,7 +70,8 @@ class ObjectsController < BaseObjectsController
 
     doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
-    @object.object_version = @object.object_version.to_i + 1
+    version = @object.object_version || 1
+    @object.object_version = version.to_i + 1
     updated = @object.update_attributes(update_params)
 
     # purge params from update action
@@ -182,7 +183,8 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published'
       # Do the preservation actions
-      @object.object_version = @object.object_version.to_i + 1
+      version = @object.object_version || 1
+      @object.object_version = version.to_i + 1
       assets = []
       @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
       preservation = Preservation::Preservator.new(@object)
@@ -289,7 +291,8 @@ class ObjectsController < BaseObjectsController
 
     unless @object.status == 'published'
       @object.status = params[:status] if params[:status].present?
-      @object.object_version = @object.object_version.to_i + 1
+      version = @object.object_version || 1
+      @object.object_version = version.to_i + 1
       @object.save
 
       # Do the preservation actions

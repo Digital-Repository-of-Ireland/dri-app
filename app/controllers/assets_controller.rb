@@ -73,7 +73,8 @@ class AssetsController < ApplicationController
 
     raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @generic_file.batch.status == 'published'
 
-    @generic_file.batch.object_version = @generic_file.batch.object_version.to_i + 1
+    version = @generic_file.batch.object_version || 1
+    @generic_file.batch.object_version = version.to_i + 1
     @generic_file.batch.save
 
     @generic_file.delete
@@ -141,7 +142,6 @@ class AssetsController < ApplicationController
     end
 
     @generic_file = build_generic_file
-
     preserve_file(file_upload, @generic_file, datastream, params)
     filename = params[:file_name].presence || file_upload.original_filename    
 
@@ -227,7 +227,8 @@ class AssetsController < ApplicationController
       filename = params[:file_name].presence || filedata.original_filename
       filename = "#{generic_file.id}_#{filename}"
 
-      generic_file.batch.object_version = generic_file.batch.object_version.to_i + 1
+      version = generic_file.batch.object_version || 1
+      generic_file.batch.object_version = version.to_i + 1
 
       # Update object version
       begin
@@ -259,7 +260,9 @@ class AssetsController < ApplicationController
       options[:mime_type] = @mime_type
       options[:checksum] = checksum
       options[:batch_id] = generic_file.batch.id
-      options[:object_version] = generic_file.batch.object_version
+
+      version = generic_file.batch.object_version || 1
+      options[:object_version] = version
       options[:file_name] = filename
 
       # Add and save the file

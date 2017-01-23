@@ -14,6 +14,12 @@ FactoryGirl.define do
     temporal_coverage      ["1900s"]
     subject                ["Ireland","something else"]
     resource_type                   ["Sound"]
+    object_version          1
+
+    after(:create) do |sound|
+      preservation = Preservation::Preservator.new(sound)
+      preservation.preserve(false, false, ['descMetadata','properties'])
+    end
   end
 
   factory(:audio, :class => DRI::QualifiedDublinCore) do
@@ -30,6 +36,12 @@ FactoryGirl.define do
     temporal_coverage      ["1900s"]
     subject                ["Ireland","something else"]
     resource_type                   ["Sound"]
+    object_version          1
+
+     after(:create) do |audio|
+      preservation = Preservation::Preservator.new(audio)
+      preservation.preserve(false, false, ['descMetadata','properties'])
+    end
   end
 
   factory(:text, :class => DRI::QualifiedDublinCore) do
@@ -56,6 +68,12 @@ FactoryGirl.define do
     resource_type          ["Collection"]
     creation_date          ["1916-01-01"]
     published_date         ["1916-01-02"]
+    object_version          1
+
+    after(:create) do |collection|
+      preservation = Preservation::Preservator.new(collection)
+      preservation.preserve(false, false, ['descMetadata','properties'])
+    end
   end
 
 end

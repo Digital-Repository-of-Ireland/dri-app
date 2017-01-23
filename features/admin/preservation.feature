@@ -36,15 +36,14 @@ Feature: Preservation
     And the manifest for version "1" for the saved pid should be valid
     And the manifest for version "2" for the saved pid should be valid
 
+  @noexec
   Scenario: Add collection cover image
     When I create a collection and save the pid
-    And I go to the "collection" "show" page for "the saved pid"
-    And I follow the link to add a cover image
+    And I go to the "collection" "edit" page for "the saved pid"
     And I attach the cover image file "sample_image.png"
-    And I press the button to "save cover image"
-    And I wait for the ajax request to finish
+    And I press the button to "save collection changes"
     Then I should see a success message for updating a collection
-    Then an AIP should exist for the saved pid
+    And an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
     And the manifest for version "1" for the saved pid should be valid
     And the manifest for version "2" for the saved pid should be valid

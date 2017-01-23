@@ -54,10 +54,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 81b7774adc140c6274f9af32d2b7736dc34f570c
-  branch: moab
+  revision: da2a13f2082b0227086d8745e25904778bae9925
+  branch: develop
   specs:
-    dri_data_models (2.4.3)
+    dri_data_models (2.4.4)
       active-fedora (= 9.11)
       google-api-client (= 0.8.6)
       hydra-access-controls
@@ -148,7 +148,7 @@ GEM
       activemodel (= 4.2.7.1)
       activesupport (= 4.2.7.1)
       arel (~> 6.0)
-    activerecord-import (0.16.2)
+    activerecord-import (0.17.0)
       activerecord (>= 3.2)
     activeresource (4.1.0)
       activemodel (~> 4.0)
@@ -163,12 +163,12 @@ GEM
     acts_as_follower (0.2.1)
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
-    arel (6.0.3)
+    arel (6.0.4)
     autoparse (0.3.3)
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    autoprefixer-rails (6.5.3.1)
+    autoprefixer-rails (6.6.1)
       execjs
     aws-sdk (2.1.36)
       aws-sdk-resources (= 2.1.36)
@@ -209,7 +209,7 @@ GEM
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
     bootstrap-switch-rails (3.3.2)
-    builder (3.2.2)
+    builder (3.2.3)
     cancancan (1.15.0)
     capybara (2.6.2)
       addressable
@@ -436,16 +436,25 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    json (1.8.3)
+    json (1.8.6)
     json-ld (1.99.2)
       multi_json (~> 1.11)
       rdf (~> 1.99)
     jsonpath (0.5.6)
       multi_json
     jwt (1.5.2)
-    kaminari (0.17.0)
-      actionpack (>= 3.0.0)
-      activesupport (>= 3.0.0)
+    kaminari (1.0.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.0.1)
+      kaminari-activerecord (= 1.0.1)
+      kaminari-core (= 1.0.1)
+    kaminari-actionview (1.0.1)
+      actionview
+      kaminari-core (= 1.0.1)
+    kaminari-activerecord (1.0.1)
+      activerecord
+      kaminari-core (= 1.0.1)
+    kaminari-core (1.0.1)
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -525,7 +534,7 @@ GEM
     net-http-persistent (2.9.4)
     netrc (0.10.3)
     noid (0.9.0)
-    nokogiri (1.6.8.1)
+    nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
     nokogiri-happymapper (0.5.9)
       nokogiri (~> 1.5)
@@ -567,12 +576,12 @@ GEM
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
-    posix-spawn (0.3.12)
+    posix-spawn (0.3.13)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    public_suffix (2.0.4)
+    public_suffix (2.0.5)
     rack (1.6.5)
     rack-protection (1.5.3)
       rack
@@ -592,9 +601,9 @@ GEM
       sprockets-rails
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
-    rails-dom-testing (1.0.7)
+    rails-dom-testing (1.0.8)
       activesupport (>= 4.2.0.beta, < 5.0)
-      nokogiri (~> 1.6.0)
+      nokogiri (~> 1.6)
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
@@ -764,7 +773,7 @@ GEM
       faraday
       ruby-progressbar
       rubyzip
-    solrizer (3.4.0)
+    solrizer (3.4.1)
       activesupport
       daemons
       nokogiri

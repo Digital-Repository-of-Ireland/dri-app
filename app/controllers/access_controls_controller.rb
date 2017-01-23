@@ -18,7 +18,9 @@ class AccessControlsController < ApplicationController
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
     params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase if params[:batch][:manager_users_string].present?
-    params[:batch][:object_version] = @object.object_version.to_i+1
+    
+    version = @object.object_version || 1
+    params[:batch][:object_version] = version.to_i+1
 
     permissionchange = permissions_changed?
 

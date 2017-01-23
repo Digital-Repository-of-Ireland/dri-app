@@ -29,7 +29,7 @@ class LocalFile < ActiveRecord::Base
     FileUtils.mkdir_p(base_dir)
     self.path = File.join(base_dir, opts[:file_name])
 
-    upload_to_file(base_dir, upload)
+    upload_to_file(upload)
 
     self.checksum = if opts[:checksum]
                       { opts[:checksum] => Checksum.checksum(opts[:checksum], path) }
@@ -56,7 +56,7 @@ class LocalFile < ActiveRecord::Base
       Rails.root.join(Settings.dri.files)
     end
 
-    def upload_to_file(base_dir, upload)
+    def upload_to_file(upload)
       if upload.respond_to?('path')
         FileUtils.cp(upload.path, path)
       else
