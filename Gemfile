@@ -87,6 +87,7 @@ group :development, :test do
   gem 'guard'
   gem 'rspec-rails', '~> 3.0'
   gem 'poltergeist', '>= 1.11.0'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'railroady'

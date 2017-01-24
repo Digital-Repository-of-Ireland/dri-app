@@ -572,6 +572,7 @@ GEM
       activerecord (>= 3.0, < 6.0)
       activesupport (>= 3.0, < 6.0)
       request_store (~> 1.1)
+    phantomjs (2.1.1.0)
     poltergeist (1.11.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -923,6 +924,7 @@ DEPENDENCIES
   openlayers-rails
   openseadragon
   paper_trail (~> 4)
+  phantomjs
   poltergeist (>= 1.11.0)
   railroady
   rails (~> 4.2)
