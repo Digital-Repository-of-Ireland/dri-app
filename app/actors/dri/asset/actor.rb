@@ -12,6 +12,8 @@ module DRI
           original_name: file.original_filename,
           mime_type: external_mime_type(url)
         )
+        generic_file.label = file.original_filename
+        generic_file.title = [file.original_filename]
 
         save_characterize_and_record_committer do
           if Sufia.config.respond_to?(:after_update_content)

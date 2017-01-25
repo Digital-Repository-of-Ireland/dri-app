@@ -23,7 +23,10 @@ module LinkTranslator
         "edit_collection"
 
       when /^delete a collection$/
-        "delete_collection"
+        "delete_object"
+
+      when /^delete an object$/
+        "delete_object"
 
       when /^edit this record$/
         "edit_record"
@@ -150,6 +153,18 @@ module LinkTranslator
 
       when /^add a file$/
         "add_file"
+
+      when /^add a cover image$/
+        "add_cover_image"
+
+      when /^view asset details$/
+        "asset_details"
+
+      when /^view asset tools$/
+        "show_asset_tools"
+
+      when /^associate a licence$/
+        "manage_licence"
 
       else "Unknown"
 

@@ -88,6 +88,10 @@ Given /^the object with pid "(.*?)" is in the collection with pid "(.*?)"$/ do |
 end
 
 Given /^I have associated the institute "(.?*)" with the collection with pid "(.?*)"$/ do |institute_name,pid|
+  if (pid.eql?('the saved pid'))
+    pid = @collection_pid ? @collection_pid : @pid
+  end
+
   collection = ActiveFedora::Base.find(pid ,{:cast => true})
 
   institute = Institute.new
@@ -99,6 +103,7 @@ Given /^I have associated the institute "(.?*)" with the collection with pid "(.
   institute.save
 
   collection.institute = collection.institute.push(institute.name)
+  collection.depositing_institute = institute.name
   collection.save
 end
 
@@ -117,13 +122,9 @@ When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title
     When I fill in "batch_title][" with "#{title}"
     And I fill in "batch_description][" with "Test description"
     And I fill in "batch_rights][" with "Test rights"
-    And I fill in "batch_type][" with "Collection"
     And I fill in "batch_creator][" with "test@test.com"
     And I fill in "batch_creation_date][" with "2000-01-01"
   }
-  #{}  And I select "publisher" from the selectbox number 0 for role type
-  #{}  And I fill in "batch_roles][name][" number 0 with "Test publisher"
-  #{}}
 end
 
 When /^I enter invalid metadata for a collection(?: with title (.*?))?$/ do |title|

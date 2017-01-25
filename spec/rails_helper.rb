@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'capybara/poltergeist'
+require 'preservation_helper'
 
 def zeus_running?
   File.exists? '.zeus.sock'
@@ -12,7 +13,10 @@ if !zeus_running?
     SimpleCov.start
 end
 
-Capybara.javascript_driver = :poltergeist
+#Capybara.javascript_driver = :poltergeist
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, :phantomjs => Phantomjs.path)
+end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] = 'test'
@@ -30,4 +34,5 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include Rails.application.routes.url_helpers
   config.include Warden::Test::Helpers, type: :request
+  config.include PreservationHelper
 end

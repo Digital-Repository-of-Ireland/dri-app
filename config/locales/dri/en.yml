@@ -78,6 +78,19 @@ en:
         Text: Text
         Title: "Media Types"
         Unknown: Unknown
+    datatables:
+      activity:
+        updated_at: "Updated At"
+        object_id: "Object ID"
+        type: "Type"
+        in_collection: "In Collection"
+        committer: "Committer"
+        status: "Status"
+      user_activity:
+        type: "Type"
+        item: "Item"
+        event: "Event"
+        object: "Object"
     flash:
       alert:
         create_permission: "You do not have permission to create this document."
@@ -167,7 +180,7 @@ en:
       about: About
       about_dri_lifecycle: "DRI Lifecycle"
       about_us: "About Us"
-      admin: "Admin Tasks"
+      admin: "Admin"
       browse: Discover
       collection: Collection
       collections: Collections
@@ -493,6 +506,7 @@ en:
         resque_error: "Error connecting to Resque."
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
+        file_not_found: "Upload file not found"
         view_permission: "This item is not available. You do not have sufficient access privileges to view the master file(s)."
       fields:
         Format: Format
@@ -704,6 +718,9 @@ en:
             view: "View request"
           approved:
             remove: "Remove access"
+      reports:
+        links:
+          activity_report: "Activity Report"
       static:
         admin:
           licences: "Supported Licences"

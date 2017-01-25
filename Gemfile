@@ -20,7 +20,7 @@ gem 'google-api-client', '0.8.6'
 
 gem 'paper_trail', '~> 4'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.4.3'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.4.4'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.2.0'
 
 gem 'active-fedora', '9.11'
@@ -38,6 +38,7 @@ gem 'feedjira'
 
 # Storage-related gems
 gem 'aws-sdk', '~> 2'
+gem 'moab-versioning'
 gem 'browse-everything', git: 'https://github.com/stkenny/browse-everything.git', branch: 's3_provider'
 
 # File processing gems
@@ -53,6 +54,7 @@ gem 'syslog-logger'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-cookie-rails'
+gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 
 gem 'remotipart'
 
@@ -84,7 +86,8 @@ end
 group :development, :test do
   gem 'guard'
   gem 'rspec-rails', '~> 3.0'
-  gem 'poltergeist', '>= 1.4.1'
+  gem 'poltergeist', '>= 1.11.0'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'railroady'

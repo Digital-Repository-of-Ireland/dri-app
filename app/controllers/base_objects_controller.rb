@@ -40,10 +40,22 @@ class BaseObjectsController < CatalogController
       @object = retrieve_object!(params[:id])
 
       licence = params[:batch][:licence]
-      @object.licence = licence if licence.present?
+      if licence.present?
+        @object.licence = licence
+        version = @object.object_version || 1
+        @object.object_version = version.to_i + 1
+      end
+
+      updated = @object.save
+
+      if updated
+        # Do the preservation actions
+        preservation = Preservation::Preservator.new(@object)
+        preservation.preserve(false, false, ['properties'])
+      end
 
       respond_to do |format|
-        if @object.save
+        if updated 
           flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
         else
           flash[:error] = t('dri.flash.error.licence_not_updated')

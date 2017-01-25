@@ -136,9 +136,9 @@ ga:
         zip: "Baile Átha Cliath 2"
     headerlinks:
       about: Eolas
-      about_dri_lifecycle: "DRI Lifecycle"
+      about_dri_lifecycle: "DRI Saolré"
       about_us: "About Us"
-      admin: "Tascanna Riaracháin"
+      admin: "Riarthóir"
       browse: Aimsigh
       collection: Bailiúchán
       collections: Bailiúcháin
@@ -146,13 +146,14 @@ ga:
       current_collection: "Bailiúchán Reatha: %{collection}"
       end_user_agreement: "Comhaontú an Úsáideora Dheiridh"
       help: Cabhair
-      home: "Leathanach Baile"
+      home: "Baile"
       ingest: "Glac isteach"
       institutions: Eagraíochtaí
       language: Teanga
       manage: Bainistigh
       manage_users: "Cuir úsáideoir bainisteora leis"
       my_collections: "Mo chuid bailiúchán"
+      my_tasks: "Mo tascanna"
       new_collection: "Bailiúchán Nua"
       new_organisation: "Eagraíocht Nua"
       object: Oibiacht
@@ -414,6 +415,7 @@ ga:
         resque_error: "Bhí earráid le linn ceangal le Resque"
         unknown_collection: "Bailiúchán Anaithnid."
         unknown_object: "Oibiacht Anaithnid."
+        file_not_found: "Upload file not found"
       fields:
         collection_title: "Teideal an Bhailiúcháin"
         contributor: Rannpháirtí

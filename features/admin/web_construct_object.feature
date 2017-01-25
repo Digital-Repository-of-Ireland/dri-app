@@ -6,16 +6,21 @@ Feature: Constructing objects with the webapp
 
 Background:
   Given I am logged in as "user1" in the group "cm" and accept cookies
-  And a collection with pid "xxxx" and title "Test Collection" created by "user1"
 
 Scenario: Constructing a valid Digital Object
-  When I go to the "metadata" "upload" page for "xxxx"
+  When I create a collection and save the pid
+  And I go to the "collection" "show" page for "the saved pid"
+  And I follow the link to upload XML
+  And I should wait for "10" seconds
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to "ingest metadata"
   Then I should see a success message for ingestion
 
 Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
-  When I go to the "metadata" "upload" page for "xxxx"
+  When I create a collection and save the pid
+  And I go to the "collection" "show" page for "the saved pid"
+  And I follow the link to upload XML
+  And I should wait for "10" seconds
   And I attach the metadata file "<metadata_file>"
   And I press the button to "ingest metadata"
   Then I should see a failure message for <case>
@@ -27,7 +32,10 @@ Scenario Outline: Constructing a Digital Object with metadata that incorrect or 
     | invalid_xml_metadata.xml      | invalid metadata |
 
 Scenario Outline: Constructing a valid Digital Object
-  When I go to the "metadata" "upload" page for "xxxx"
+  When I create a collection and save the pid
+  And I go to the "collection" "show" page for "the saved pid"
+  And I follow the link to upload XML
+  And I should wait for "10" seconds
   And I attach the metadata file "<metadata_file>"
   And I press the button to "ingest metadata"
   Then I should see a success message for ingestion
@@ -39,27 +47,33 @@ Scenario Outline: Constructing a valid Digital Object
     | SAMPLEA.xml                   | Sound       |
 
 Scenario: Adding a pdf asset to an object
-  Given "user1" has created a Digital Object
-  When I attach the asset file "sample_pdf.pdf"
+  When I create a collection and save the pid
+  And I create an object and save the pid
+  And I go to the "object" "show" page for "the saved pid"
+  And I attach the asset file "sample_pdf.pdf"
   And I press the button to "upload a file"
   Then I should see a success message for file upload
 
 Scenario: Replacing the metadata file of a Digital Object
-  Given "user1" has created a Digital Object
+  When I create a collection and save the pid
+  And I create an object and save the pid
+  And I go to the "object" "show" page for "the saved pid"
   When I click the link to edit
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to "upload metadata"
   Then I should see a success message for updating metadata
 
 Scenario: Constructing a Digital Object using the web form
-  When I go to the "collection" "new object" page for "xxxx"
+  When I create a collection and save the pid
+  When I go to the "collection" "new object" page for "the saved pid"
   When I enter valid metadata
   And I press the button to "continue"
   Then I should see a success message for ingestion
   And I should see the valid metadata
 
 Scenario: Constructing an invalid Digital Object using the web form
-  When I go to the "collection" "new object" page for "xxxx"
+  When I create a collection and save the pid
+  When I go to the "collection" "new object" page for "the saved pid"
   When I enter invalid metadata
   And I press the button to "continue"
   Then I should not see a success message for ingestion
@@ -76,22 +90,30 @@ Scenario: Constructing a Digital Object using the web form without setting a col
   And I should see the valid metadata
 
 Scenario: Editing the metadata of a Digital Object using the web form
-  Given "user1" has created a Digital Object
-  When I go to the "object" "edit" page for "created"
+  When I create a collection and save the pid
+  And I create an object and save the pid
+  And I go to the "object" "show" page for "the saved pid"
+  And I follow the link to edit
+  And I follow the link to edit an object
   And I enter modified metadata
   And I press the button to "save changes"
   Then I should see the modified metadata
   And I should see a success message for updating metadata
 
 Scenario: Editing the metadata of a Digital Object with invalid metadata
-  Given "user1" has created a Digital Object
-  When I go to the "object" "edit" page for "created"
+  When I create a collection and save the pid
+  And I create an object and save the pid
+  And I go to the "object" "show" page for "the saved pid"
+  And I follow the link to edit
+  And I follow the link to edit an object
   And I enter invalid metadata
   And I press the button to "save changes"
   Then I should not see a success message for updating metadata
 
 Scenario: Adding multiple audio files for a Digital Object
-  Given "user1" has created a Digital Object
+  When I create a collection and save the pid
+  And I create an object and save the pid
+  And I go to the "object" "show" page for "the saved pid"
   When I attach the asset file "sample_audio.mp3"
   And I press the button to "upload a file"
   Then I should see a success message for file upload
@@ -101,7 +123,9 @@ Scenario: Adding multiple audio files for a Digital Object
   Then I should see a success message for file upload
 
 Scenario Outline: Adding an audio file that is not valid
-  Given "user1" has created a Digital Object
+  When I create a collection and save the pid
+  And I create an object and save the pid
+  And I go to the "object" "show" page for "the saved pid"
   When I attach the asset file "<asset_name>"
   And I press the button to "upload a file"
   Then I should see a failure message for <case>
@@ -112,13 +136,17 @@ Scenario Outline: Adding an audio file that is not valid
 #    | sample_invalid_audio.mp3 | invalid file type |
 
 Scenario: Adding a file that contains a virus
-  Given "user1" has created a Digital Object
+  When I create a collection and save the pid
+  And I create an object and save the pid
+  And I go to the "object" "show" page for "the saved pid"
   When I upload the virus file "sample_virus.mp3"
   Then I should see a failure message for virus detected
 
 Scenario Outline: Editing an audio file where the file is invalid
-  Given "user1" has created a Digital Object
-  And I have added an audio file
+  When I create a collection and save the pid
+  And I create an object and save the pid
+  And I go to the "object" "show" page for "the saved pid"
+  And I attach the asset file "sample_audio.mp3"
   When I follow the link to edit an object
   And I attach the asset file "<asset_name>"
   And I press the button to "upload a file"

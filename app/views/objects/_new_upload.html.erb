@@ -5,7 +5,7 @@
             <div>
                 <a class='btn btn-default' href='javascript:;'> 
                     <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= t('dri.views.ingest.steps.upload') %></h5>
-                    <input type="file" name="metadata_file" accept="application/xml" required onchange='fileUploadHelper($(this));'> 
+                    <input type="file" id="metadata_file" name="metadata_file" accept="application/xml" required onchange='fileUploadHelper($(this));'> 
                     <h5 id="file_name">No File</h5></a>
             </div>
             <input type="hidden" name="batch[governing_collection]" value="<%= @collection %>">

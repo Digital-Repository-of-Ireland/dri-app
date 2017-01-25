@@ -53,6 +53,8 @@ DriApp::Application.routes.draw do
     resources :organisations, controller: :institutes
     get 'organisations/:id/logo', to: 'institutes#logo', as: :logo
 
+    get 'activity', to: 'activity#index'
+
     match 'association' => 'institutes#associate', :via => :post, :as => :new_association
     match 'association' => 'institutes#disassociate', :via => :delete, :as => :disassociation
     match 'manage_users' => 'manage_users#new', :via => :get, :as => :manage_users

@@ -73,9 +73,19 @@ class AssetsController < ApplicationController
 
     raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @generic_file.batch.status == 'published'
 
+    version = @generic_file.batch.object_version || 1
+    @generic_file.batch.object_version = version.to_i + 1
+    @generic_file.batch.save
+
     @generic_file.delete
     delete_surrogates(params[:object_id], @generic_file.id)
 
+    # Do the preservation actions
+    addfiles = []
+    delfiles = ["#{@generic_file.id}_#{@generic_file.label}"]
+    preservation = Preservation::Preservator.new(@generic_file.batch)
+    preservation.preserve_assets(addfiles, delfiles)
+ 
     flash[:notice] = t('dri.flash.notice.asset_deleted')
 
     respond_to do |format|
@@ -90,7 +100,7 @@ class AssetsController < ApplicationController
     file_upload = upload_from_params
     @generic_file = retrieve_object! params[:id]
 
-    create_file(file_upload, @generic_file, datastream, params[:checksum], params[:file_name])
+    preserve_file(file_upload, @generic_file, datastream, params)
 
     url = "#{URI.escape(download_url)}?version=#{@file.version}"
 
@@ -132,9 +142,8 @@ class AssetsController < ApplicationController
     end
 
     @generic_file = build_generic_file
-    create_file(file_upload, @generic_file, datastream, params[:checksum], params[:file_name])
-
-    filename = params[:file_name].presence || file_upload.original_filename
+    preserve_file(file_upload, @generic_file, datastream, params)
+    filename = params[:file_name].presence || file_upload.original_filename    
 
     url = "#{URI.escape(download_url)}?version=#{@file.version}"
 
@@ -213,13 +222,50 @@ class AssetsController < ApplicationController
       end
     end
 
-    def create_file(filedata, generic_file, datastream, checksum, filename = nil)
+    def preserve_file(filedata, generic_file, datastream, params)
+      checksum = params[:checksum]
+      filename = params[:file_name].presence || filedata.original_filename
+      filename = "#{generic_file.id}_#{filename}"
+
+      version = generic_file.batch.object_version || 1
+      generic_file.batch.object_version = version.to_i + 1
+
+      # Update object version
+      begin
+        generic_file.batch.save!
+      rescue ActiveRecord::ActiveRecordError => e
+        logger.error "Could not update object version number for #{generic_file.batch.id} to version #{generic_file.batch.object_version}"
+        raise Exceptions::InternalError
+      end
+
+      create_file(filedata, generic_file, datastream, checksum, filename)
+
+      # Do the preservation actions
+      addfiles = []
+      delfiles = []
+      if params[:action].eql?('update')
+        addfiles = [filename]
+        delfiles = ["#{generic_file.id}_#{generic_file.label}"]
+      else
+        addfiles = [filename]
+      end
+      preservation = Preservation::Preservator.new(generic_file.batch)
+      preservation.preserve_assets(addfiles, delfiles)
+    end
+
+    def create_file(filedata, generic_file, datastream, checksum, filename)
+      # prepare file
       @file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
       options = {}
       options[:mime_type] = @mime_type
       options[:checksum] = checksum
-      options[:file_name] = filename unless filename.nil?
+      options[:batch_id] = generic_file.batch.id
 
+      version = generic_file.batch.object_version || 1
+      options[:object_version] = version
+      options[:file_name] = filename
+
+      # Add and save the file
       @file.add_file(filedata, options)
 
       begin
@@ -228,6 +274,7 @@ class AssetsController < ApplicationController
         logger.error "Could not save the asset file #{@file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
         raise DRI::Exceptions::InternalError
       end
+
     end
 
     def delete_surrogates(bucket_name, file_prefix)
@@ -285,7 +332,7 @@ class AssetsController < ApplicationController
     def file_path(object_id, file_id, surrogate)
       storage = StorageService.new
       storage.surrogate_url(
-        object_id,
+        object_id, 
         "#{file_id}_#{surrogate}"
       )
     end

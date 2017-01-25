@@ -15,6 +15,7 @@ Scenario: Setting a list of users for restricted access
   When I press the button to "ingestion"
   And I press the button to "add new collection"
   And I enter valid metadata for a collection
+  And I check "deposit"
   And I choose "batch_read_groups_string_radio_restricted"
   And I fill in "batch_read_users_string" with "test, test2, test3"
   And I press the button to "create a collection"
@@ -43,6 +44,7 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
     | Text        |
     | Sound       |
 
+@wip
 Scenario Outline: Constructing a Digital Object using XML upload should set default permissions
   Given a collection with pid "perm2" created by "user1"
   When I go to the "metadata" "upload" page for "perm2"

@@ -124,12 +124,20 @@ class CollectionsController < BaseObjectsController
 
     doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
+    version = @object.object_version || 1
+    @object.object_version = version.to_i + 1
+
     updated = @object.update_attributes(update_params)
 
     if updated
       if cover_image.present?
         flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate_and_store(cover_image, @object)
       end
+
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(false, false, ['descMetadata','properties'])
+
     else
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
     end
@@ -157,11 +165,23 @@ class CollectionsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
 
-    # If a cover image was uploaded, remove it from the params hash
-    cover_image = params[:batch][:cover_image]
+    if params[:batch].present? && [:cover_image].present?
+      cover_image = params[:batch][:cover_image]
+    else
+      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.file_not_found')
+    end
+
+    version = @object.object_version || 1
+    @object.object_version = version.to_i + 1
 
     if cover_image.present?
       saved = Storage::CoverImages.validate_and_store(cover_image, @object)
+    end
+
+    if saved
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(false, false, ['properties'])
     end
 
     # purge params from update action
@@ -224,6 +244,10 @@ class CollectionsController < BaseObjectsController
       create_reader_group
 
       actor.version_and_record_committer
+
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(true, true, ['descMetadata','properties'])
 
       respond_to do |format|
         format.html do

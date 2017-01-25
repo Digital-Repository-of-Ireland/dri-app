@@ -6,10 +6,14 @@ describe CollectionsController do
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
+
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
   end
 
   after(:each) do
     @login_user.delete
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   describe 'DELETE destroy' do
@@ -127,6 +131,13 @@ describe CollectionsController do
       expect(flash[:error]).to be_present
     end
 
+    it 'creates new AIP' do
+      @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
+      put :add_cover_image, { id: @collection.id, batch: { cover_image: @uploaded } }
+
+      expect(Dir.entries(aip_dir(@collection.id)).size - 2).to eq(2)
+    end
+
   end
 
   describe 'update' do
@@ -144,6 +155,9 @@ describe CollectionsController do
       @collection[:status] = "draft"
       @collection.save
 
+      preservation = Preservation::Preservator.new(@collection)
+      preservation.preserve(false, false, ['descMetadata','properties'])
+
       @subcollection = DRI::Batch.with_standard :qdc
       @subcollection[:title] = ["A sub collection"]
       @subcollection[:description] = ["This is a sub-collection"]
@@ -155,6 +169,9 @@ describe CollectionsController do
       @subcollection[:published_date] = ["1916-04-01"]
       @subcollection[:status] = "draft"
       @subcollection.save
+
+      preservation = Preservation::Preservator.new(@subcollection)
+      preservation.preserve(false, false, ['descMetadata','properties'])
 
       @collection.governed_items << @subcollection
       @collection.reload
@@ -182,6 +199,9 @@ describe CollectionsController do
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "published"
       @collection.save
+
+      preservation = Preservation::Preservator.new(@collection)
+      preservation.preserve(false, false, ['descMetadata','properties'])
 
       stub_const(
         'DoiConfig',
@@ -221,6 +241,9 @@ describe CollectionsController do
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "published"
       @collection.save
+
+      preservation = Preservation::Preservator.new(@collection)
+      preservation.preserve(false, false, ['descMetadata','properties'])
 
       stub_const(
         'DoiConfig',

@@ -70,6 +70,8 @@ class ObjectsController < BaseObjectsController
 
     doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
+    version = @object.object_version || 1
+    @object.object_version = version.to_i + 1
     updated = @object.update_attributes(update_params)
 
     # purge params from update action
@@ -85,6 +87,10 @@ class ObjectsController < BaseObjectsController
 
         actor.version_and_record_committer
         update_doi(@object, doi, 'metadata update') if doi && doi.changed?
+
+        # Do the preservation actions
+        preservation = Preservation::Preservator.new(@object)
+        preservation.preserve(false, false,['descMetadata','properties'])
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
         format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
@@ -131,6 +137,8 @@ class ObjectsController < BaseObjectsController
 
     supported_licences
 
+    @object.object_version = 1
+
     if @object.valid? && @object.save
       warn_if_duplicates
 
@@ -138,6 +146,10 @@ class ObjectsController < BaseObjectsController
       retrieve_linked_data
 
       actor.version_and_record_committer
+
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(true, true, ['descMetadata','properties'])
 
       respond_to do |format|
         format.html do
@@ -170,7 +182,16 @@ class ObjectsController < BaseObjectsController
     @object = retrieve_object!(params[:id])
 
     if @object.status != 'published'
+      # Do the preservation actions
+      version = @object.object_version || 1
+      @object.object_version = version.to_i + 1
+      assets = []
+      @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
+      preservation = Preservation::Preservator.new(@object)
+      preservation.update_manifests(:deleted => {'content' => assets, 'metadata' => ['descMetadata.xml','permissions.rdf','properties.xml','resource.rdf']})
+
       @object.delete
+
       flash[:notice] = t('dri.flash.notice.object_deleted')
     else
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
@@ -270,7 +291,13 @@ class ObjectsController < BaseObjectsController
 
     unless @object.status == 'published'
       @object.status = params[:status] if params[:status].present?
+      version = @object.object_version || 1
+      @object.object_version = version.to_i + 1
       @object.save
+
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(false, false, ['properties'])
     end
 
     respond_to do |format|
@@ -373,4 +400,5 @@ class ObjectsController < BaseObjectsController
         end
       end
     end
+
 end

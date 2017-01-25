@@ -108,6 +108,23 @@ class MetadataController < CatalogController
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       @errors = @object.errors.full_messages.inspect
     end
+    
+    version = @object.object_version || 1
+    @object.object_version = version.to_i + 1
+
+    begin
+      raise DRI::Exceptions::InternalError unless @object.save
+
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(false, false, ['descMetadata','properties'])
+
+      actor.version_and_record_committer
+      flash[:notice] = t('dri.flash.notice.metadata_updated')
+    rescue RuntimeError => e
+      logger.error "Could not save object #{@object.id}: #{e.message}"
+      raise DRI::Exceptions::InternalError
+    end
 
     respond_to do |format|
       format.html { redirect_to controller: 'catalog', action: 'show', id: params[:id] }

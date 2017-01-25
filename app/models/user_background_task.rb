@@ -6,7 +6,7 @@ class UserBackgroundTask < ActiveRecord::Base
   def update
     return if %w(completed failed killed).include?(self.status)
 
-    status = Resque::Plugins::Status::Hash.get(self.job_id)
+    status = Resque::Plugins::Status::Hash.get(self.job)
     return if status.nil?
 
     self.status = status.status unless self.status == status.status

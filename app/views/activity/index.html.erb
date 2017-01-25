@@ -1,0 +1,5 @@
+<% if params[:report].presence == 'user' %>
+  <%= render partial: 'user_activity' %>
+<% else %>
+  <%= render partial: 'object_activity' %>
+<% end %>
