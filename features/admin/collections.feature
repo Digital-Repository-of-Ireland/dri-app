@@ -83,7 +83,7 @@ Scenario: Non-admin should not be given option to delete
   And the collection with pid "collec7" has status published
   When I go to the "collection" "show" page for "collec7"
   And I click the link to edit a collection
-  Then I should not see a button to delete collection with id collec7
+  Then I should not see a link to delete a collection
 
 Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
 #  Given a Digital Object with pid "dri:obj6" and title "Object 6"

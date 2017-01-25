@@ -109,7 +109,18 @@ class InstitutesController < ApplicationController
       @collection.depositing_institute = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
     end
 
-    raise DRI::Exceptions::InternalError unless @collection.save
+    version = @collection.object_version || 1
+    @collection.object_version = version.to_i + 1
+
+    updated = @collection.save
+
+    if updated
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@collection)
+      preservation.preserve(false, false, ['properties'])
+    else
+      raise DRI::Exceptions::InternalError
+    end
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.organisations_set')
@@ -139,10 +150,16 @@ class InstitutesController < ApplicationController
       @collection = ActiveFedora::Base.find(params[:object], cast: true)
       raise DRI::Exceptions::NotFound unless @collection
 
+      version = @collection.object_version || 1
+      @collection.object_version = version.to_i + 1
       delete ? delete_association : add_association
 
       @collection_institutes = Institute.find_collection_institutes(@collection.institute)
       @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
+
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@collection)
+      preservation.preserve(false, false, ['properties'])
 
       respond_to do |format|
         format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.id }

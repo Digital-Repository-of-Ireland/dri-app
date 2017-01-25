@@ -43,6 +43,7 @@ Given /^I have created a collection$/ do
     Given I am on the home page
     And I go to "create new collection"
     And I enter valid metadata for a collection
+    And I check "deposit"
     And I press the button to "create a collection"
   }
 end
@@ -52,6 +53,7 @@ Given /^I have created a collection with title "(.+)"$/ do |title|
     Given I am on the home page
     When I go to "create new collection"
     And I enter valid metadata for a collection with title #{title}
+    And I check "deposit"
     And I press the button to "create a collection"
   }
 end
@@ -63,6 +65,16 @@ Given /^I have added an audio file$/ do
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "upload a file"
     Then I should see a success message for file upload
+  }
+end
+
+Given /^I have created an institute "(.+)"$/ do |institute|
+  steps %{
+    Given I am on the new organisation page
+    When I fill in "institute[name]" with "#{institute}"
+    And I fill in "institute[url]" with "http://www.dri.ie/"
+    And I attach the institute logo file "sample_logo.png"
+    And I press the button to "add an institute"
   }
 end
 
@@ -84,6 +96,11 @@ When /^(?:|I )go to "([^"]*)"$/ do |page_name|
 end
 
 When /^(?:|I )go to the "([^"]*)" "([^"]*)" page for "([^"]*)"$/ do |type, page, pid|
+  if (pid.eql?('the saved pid') && type.eql?("collection"))
+    pid = @collection_pid ? @collection_pid : @pid
+  elsif (pid.eql?('the saved pid') && type.eql?("object"))
+    pid = @pid if pid.eql?('the saved pid')
+  end
   visit path_for(type, page, pid)
 end
 
@@ -135,6 +152,10 @@ end
 
 When /^I attach the institute logo file "(.*?)"$/ do |file|
   attach_file("institute[logo]", File.join(cc_fixture_path, file))
+end
+
+When /^I attach the cover image file "(.*?)"$/ do |file|
+  attach_file("batch_cover_image", File.expand_path(File.join(cc_fixture_path, file)))
 end
 
 When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|

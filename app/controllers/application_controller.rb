@@ -112,6 +112,13 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def authenticate_admin!
+      unless current_user && current_user.is_admin?
+        flash[:error] = t('dri.views.exceptions.access_denied')
+        redirect_to :back
+      end
+    end
+
     def read_only
       return unless Settings.read_only == true
 

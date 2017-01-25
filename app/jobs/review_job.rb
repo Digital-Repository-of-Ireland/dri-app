@@ -25,7 +25,13 @@ class ReviewJob
     # Need to set sub-collection to reviewed
     if subcollection?(collection)
       collection.status = 'reviewed'
+      version = collection.object_version || 1
+      collection.object_version = version.to_i + 1
       failed += 1 unless collection.save
+
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(collection)
+      preservation.preserve(false, false, ['properties'])
     end
 
     completed(completed: completed, failed: failed)
@@ -46,7 +52,13 @@ class ReviewJob
         o = ActiveFedora::Base.find(object['id'], { cast: true })
         if o.status == 'draft'
           o.status = 'reviewed'
+          version = o.object_version || 1
+          o.object_version = version.to_i + 1
           o.save ? (completed += 1) : (failed += 1)
+
+          # Do the preservation actions
+          preservation = Preservation::Preservator.new(o)
+          preservation.preserve(false, false, ['properties'])
         end
       end
 

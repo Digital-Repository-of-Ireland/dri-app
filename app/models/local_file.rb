@@ -2,25 +2,34 @@
 
 require 'checksum'
 require 'pathname'
+require 'preservation/preservation_helpers'
 
 class LocalFile < ActiveRecord::Base
+  include PreservationHelpers
+
   serialize :checksum
 
-  before_destroy :delete_file
+  # TODO: reenable this as an admin function
+  #before_destroy :delete_file
 
   # Write the file to the filesystem
   #
   def add_file(upload, opts = {})
-    file_name = opts[:file_name].presence || upload.original_filename
+    # Batch ID will be used in the MOAB directory name, check it exists
+    batch_id = opts[:batch_id]
+    if batch_id.nil? or batch_id.blank?
+      logger.error "Could not save the asset file for #{opts[:file_name]} because no batch_id was given."
+      raise Exceptions::InternalError
+    end
 
-    self.version = version_number
+    self.version = opts[:object_version] || 1
     self.mime_type = opts[:mime_type]
 
-    base_dir = opts[:directory].presence || File.join(local_storage_dir, content_path)
+    base_dir = opts[:directory].presence || File.join(content_path(batch_id, version))
     FileUtils.mkdir_p(base_dir)
-    self.path = File.join(base_dir, file_name)
+    self.path = File.join(base_dir, opts[:file_name])
 
-    upload_to_file(base_dir, upload)
+    upload_to_file(upload)
 
     self.checksum = if opts[:checksum]
                       { opts[:checksum] => Checksum.checksum(opts[:checksum], path) }
@@ -30,7 +39,8 @@ class LocalFile < ActiveRecord::Base
   end
 
   # Remove the file from the filesystem if it exists
-  #
+  # This has been disabled for now so that only soft delete is possible
+  # TODO reenable this as an admin function
   def delete_file
     return if path.nil? || !File.exist?(path)
 
@@ -46,33 +56,13 @@ class LocalFile < ActiveRecord::Base
       Rails.root.join(Settings.dri.files)
     end
 
-    def content_path
-      File.join(build_hash_dir, ds_id + version.to_s)
-    end
-
-    def build_hash_dir
-      dir = ''
-      index = 0
-
-      4.times do
-        dir = File.join(dir, fedora_id[index..index + 1])
-        index += 2
-      end
-
-      File.join(dir, fedora_id)
-    end
-
-    def upload_to_file(base_dir, upload)
+    def upload_to_file(upload)
       if upload.respond_to?('path')
         FileUtils.cp(upload.path, path)
       else
         File.open(path, 'wb') { |f| f.write(upload.read) }
       end
-
       File.chmod(0644, path)
     end
 
-    def version_number
-      LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d', { f: fedora_id, d: self.ds_id }).count
-    end
 end

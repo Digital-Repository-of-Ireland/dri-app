@@ -1,9 +1,15 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe AssetsController do
   include Devise::Test::ControllerHelpers
 
   before(:each) do
+    @tmp_upload_dir = Dir.mktmpdir
+    @tmp_assets_dir = Dir.mktmpdir
+    
+    Settings.dri.uploads = @tmp_upload_dir
+    Settings.dri.files = @tmp_assets_dir
+
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
 
@@ -16,12 +22,6 @@ describe AssetsController do
     @collection.governed_items << @object
 
     @collection.save    
-
-    @tmp_upload_dir = Dir.mktmpdir
-    @tmp_assets_dir = Dir.mktmpdir
-
-    Settings.dri.uploads = @tmp_upload_dir
-    Settings.dri.files = @tmp_assets_dir
   end
 
   after(:each) do
@@ -54,7 +54,7 @@ describe AssetsController do
       options = { :file_name => "SAMPLEA.mp3" }      
       post :create, { :object_id => @object.id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
        
-      expect(Dir.glob("#{@tmp_assets_dir}/**/SAMPLEA.mp3")).not_to be_empty
+      expect(Dir.glob("#{@tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
     end
 
     it 'should create an asset from an upload' do
@@ -63,7 +63,7 @@ describe AssetsController do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       post :create, { :object_id => @object.id, :Filedata => @uploaded }
 
-      expect(Dir.glob("#{@tmp_assets_dir}/**/SAMPLEA.mp3")).not_to be_empty
+      expect(Dir.glob("#{@tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
     end
 
     it 'should mint a doi when an asset is added to a published object' do
@@ -107,7 +107,8 @@ describe AssetsController do
       file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
-      options[:file_name] = "SAMPLEA.mp3"
+      options[:file_name] = "#{generic_file.id}_SAMPLEA.mp3"
+      options[:batch_id] = @object.id
        
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       file.add_file uploaded, options
@@ -117,7 +118,7 @@ describe AssetsController do
 
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       put :update, { :object_id => @object.id, :id => file_id, :Filedata => @uploaded }
-      expect(Dir.glob("#{@tmp_assets_dir}/**/content1/SAMPLEA.mp3")).not_to be_empty
+      expect(Dir.glob("#{@tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
     end
 
     it 'should create a new version from a local file' do
@@ -133,6 +134,7 @@ describe AssetsController do
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
+      options[:batch_id] = @object.id
 
       file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
       file.save
@@ -140,7 +142,7 @@ describe AssetsController do
       file_id = generic_file.id
 
       put :update, { :object_id => @object.id, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
-      expect(Dir.glob("#{@tmp_assets_dir}/**/content1/SAMPLEA.mp3")).not_to be_empty
+      expect(Dir.glob("#{@tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
     end
 
     it 'should mint a doi when an asset is modified' do
@@ -168,6 +170,7 @@ describe AssetsController do
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
+      options[:batch_id] = @object.id
 
       file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
       file.save
@@ -199,6 +202,7 @@ describe AssetsController do
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
+      options[:batch_id] = @object.id
        
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       file.add_file uploaded, options
@@ -232,6 +236,7 @@ describe AssetsController do
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
+      options[:batch_id] = @object.id
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       file.add_file uploaded, options

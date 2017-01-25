@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe DRI::IIIFViewable do
  
@@ -91,6 +91,7 @@ describe DRI::IIIFViewable do
     options = {}
     options[:mime_type] = 'image/jpeg'
     options[:file_name] = 'sample_image.jpeg'
+    options[:batch_id] = @sound.id
 
     file.add_file File.new(File.join(@tmp_upload_dir, 'sample_image.jpeg')), options
     file.save
