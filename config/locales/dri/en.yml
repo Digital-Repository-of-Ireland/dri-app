@@ -285,6 +285,8 @@ en:
       social_media_links: "Use these buttons to vist our Twitter, Facebook, Vimeo and Slideshare pages"
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
+      view_objects: "View Objects"
+      view_subcollections: "View Sub-Collections"
     navbar:
       bookmarks: Bookmarks
       items: Items
@@ -402,6 +404,7 @@ en:
           review_objects: "Review Objects"
           review_collection: "Review Collection"
           reviewed: Reviewed
+          published: Published
           share: Share
           status_update: "Update status"
           unknown_size: "Unknown Size"
