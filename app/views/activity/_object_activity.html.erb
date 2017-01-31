@@ -1,4 +1,4 @@
-<table id="datatable_activity" class="display" data-source="<%= activity_url(format: "json") %>">
+<table id="datatable_activity" class="display" data-source="<%= activity_url(format: "json", protocol: Rails.application.config.action_mailer.default_url_options[:protocol]) %>">
   <thead>
     <tr>
       <th><%= t('dri.datatables.activity.updated_at') %></th>

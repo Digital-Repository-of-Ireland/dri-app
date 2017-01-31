@@ -326,7 +326,13 @@ class AssetsController < ApplicationController
     end
 
     def download_url
-      url_for(controller: 'assets', action: 'download', object_id: @generic_file.batch.id, id: @generic_file.id)
+      url_for(
+        controller: 'assets',
+        action: 'download',
+        object_id: @generic_file.batch.id,
+        id: @generic_file.id,
+        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+      )
     end
 
     def file_path(object_id, file_id, surrogate)
