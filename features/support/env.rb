@@ -18,22 +18,19 @@ require 'capybara/poltergeist'
 require 'cucumber/rspec/doubles'
 require 'cucumber/api_steps'
 require 'rake'
+require 'phantomjs'
+require 'rspec'
 
 Capybara.javascript_driver = :poltergeist
-
 Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app,
-      js_errors: false,
-      timeout: 180,
-      phantomjs_logger: Puma::NullIO.new,
-      logger: nil,
-      phantomjs_options:
-      [
-        '--load-images=no',
-        '--ignore-ssl-errors=yes'
-      ],
-     :debug => false,
-     :phantomjs => Phantomjs.path)
+  options = {
+        :js_errors => false,
+        :timeout => 180,
+        :debug => false,
+        :phantomjs_options => ['--load-images=no', '--ignore-ssl-errors=yes', '--disk-cache=false'],
+        :phantomjs => Phantomjs.path
+    }
+  Capybara::Poltergeist::Driver.new(app, options)
 end
 
 Capybara.ignore_hidden_elements = false
@@ -115,6 +112,9 @@ Before do
   allow(Feedjira::Feed).to receive(:fetch_and_parse)
   
   ActiveFedora::Cleaner.clean!
+
+  @tmp_assets_dir = Dir.mktmpdir
+  Settings.dri.files = @tmp_assets_dir
 end
 
 def last_json

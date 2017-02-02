@@ -31,7 +31,7 @@ I want to be able to use the faceted search interface
 # Note that facets do not appear on the main page
 # Thus we need to perform an empty search first
 # This is probably a bug, need confirmation of what should appear on main page
-  Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
+Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
   Given a collection with pid "collection" and title "Test collection" created by "admin"
   And an object in collection "collection" with metadata from file "SAMPLEA.xml"
   And I am not logged in
@@ -43,12 +43,23 @@ I want to be able to use the faceted search interface
 
   Examples:
     | facetname  | facetid                              | search          | result             |
-    | Subjects   | blacklight-subject_sim               | subject1        | SAMPLE AUDIO TITLE |
-    | Places     | blacklight-geographical_coverage_sim | SAMPLE COUNTRY  | SAMPLE AUDIO TITLE |
+    | Subjects   | blacklight-subject_sim               | Subject1        | SAMPLE AUDIO TITLE |
+    | Places     | blacklight-geographical_coverage_sim | Sample Country  | SAMPLE AUDIO TITLE |
     | Names      | blacklight-person_sim                | Collins         | SAMPLE AUDIO TITLE |
     | Language   | blacklight-language_sim              | English         | SAMPLE AUDIO TITLE |
-    | Collection | blacklight-root_collection_id_sim    | Test collection | SAMPLE AUDIO TITLE |
+    | Collection | blacklight-root_collection_id_sim    | Test Collection | SAMPLE AUDIO TITLE |
     #| Institute  | blacklight-institute_sim             | Test Institute  | SAMPLE AUDIO TITLE |
+
+Scenario: Case Insensitive Facets
+  Given a collection with pid "collection" and title "Test collection" created by "admin"
+  And an object in collection "collection" with metadata from file "SAMPLEA.xml"
+  And an object in collection "collection" with metadata from file "SAMPLEB.xml"
+  When I go to "the home page"
+  And I press the button to "search" within "searchform"
+  And I select the "objects" tab
+  And I search for "Subjectx" in facet "Subjects" with id "blacklight-subject_sim"
+  Then I should see a search result "SAMPLE AUDIO TITLE"
+  And I should see a search result "SAMPLE AUDIO TITLE 2"
 
 @wip
 Scenario Outline: Faceted Search for admin user
@@ -65,7 +76,7 @@ Scenario Outline: Faceted Search for admin user
     | Record Status                | blacklight-status_sim                    | published       | SAMPLE AUDIO TITLE |
     | Metadata Search Access       | blacklight-private_metadata_isi          | Public          | SAMPLE AUDIO TITLE |
     | Master File Access           | blacklight-master_file_isi               | Private         | SAMPLE AUDIO TITLE |
-    | Subjects (in English)        | blacklight-subject_eng_sim               | subject1        | SAMPLE AUDIO TITLE |
+    | Subjects (in English)        | blacklight-subject_eng_sim               | Subject1        | SAMPLE AUDIO TITLE |
     | Subject (Place) (in English) | blacklight-geographical_coverage_eng_sim | SAMPLE COUNTRY  | SAMPLE AUDIO TITLE |
     | Subject (Era) (in English)   | blacklight-temporal_coverage_eng_sim     | SAMPLE ERA      | SAMPLE AUDIO TITLE |
     | Depositor                    | blacklight-depositor_sim                 | user1@user1.com | SAMPLE AUDIO TITLE |
