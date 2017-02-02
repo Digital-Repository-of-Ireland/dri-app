@@ -202,7 +202,7 @@ module FacetsHelper
     path = search_action_path(add_facet_params_and_redirect(facet_solr_field, item))
     link_to_unless(
       options[:suppress_link],
-      display_value + " (#{item.hits})",
+      display_value.titleize + " (#{item.hits})",
       path, class: 'facet_select'
     )
   end
