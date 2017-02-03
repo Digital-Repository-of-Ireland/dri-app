@@ -37,7 +37,6 @@ module DRI
       end
 
       def version_and_record_committer
-        puts "Being called"
         @object.create_version
 
         version_id = if @object.has_versions?

@@ -14,6 +14,7 @@ Scenario: Constructing a valid Digital Object
   And I should wait for "10" seconds
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to "ingest metadata"
+  And I should wait for "5" seconds
   Then I should see a success message for ingestion
 
 Scenario Outline: Constructing a Digital Object with metadata that incorrect or incomplete
