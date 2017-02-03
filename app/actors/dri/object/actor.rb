@@ -37,9 +37,16 @@ module DRI
       end
 
       def version_and_record_committer
+        puts "Being called"
         @object.create_version
 
-        VersionCommitter.create(version_id: @object.versions.last.uri, obj_id: @object.id, committer_login: @user.to_s)
+        version_id = if @object.has_versions?
+                       @object.versions.last.uri
+                     else
+                       @object.uri.to_s
+                     end
+
+        VersionCommitter.create(version_id: version_id, obj_id: @object.id, committer_login: @user.to_s)
       end
     end
   end
