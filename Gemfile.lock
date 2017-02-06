@@ -836,7 +836,6 @@ GEM
     timers (4.0.1)
       hitimes
     tins (1.6.0)
-    titleize (1.4.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.1)
@@ -950,7 +949,6 @@ DEPENDENCIES
   syntax
   syslog-logger
   timelineJS-rails (~> 1.1.5)
-  titleize
   uglifier (>= 1.0.3)
   unicode
   unicorn

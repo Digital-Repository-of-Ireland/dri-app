@@ -47,7 +47,6 @@ gem 'mimemagic'
 # Language and translation related gems
 gem 'http_accept_language'
 gem 'it'
-gem 'titleize'
 
 # logging
 gem 'syslog-logger'

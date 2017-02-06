@@ -25,7 +25,6 @@ As an authenticated and authorised
 I want to be able to use the faceted search interface
 
 # sorting of results => see req-26
-# Need to ask sharon
 # Does not specify if the date is creation, published, upload or broadcast
 # Based on current facets, need confirmation that these are correct
 # Note that facets do not appear on the main page
@@ -43,11 +42,11 @@ Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
 
   Examples:
     | facetname  | facetid                              | search          | result             |
-    | Subjects   | blacklight-subject_sim               | Subject1        | SAMPLE AUDIO TITLE |
-    | Places     | blacklight-geographical_coverage_sim | Sample Country  | SAMPLE AUDIO TITLE |
-    | Names      | blacklight-person_sim                | Collins         | SAMPLE AUDIO TITLE |
+    | Subjects   | blacklight-subject_sim               | subject1        | SAMPLE AUDIO TITLE |
+    | Places     | blacklight-geographical_coverage_sim | sample country  | SAMPLE AUDIO TITLE |
+    | Names      | blacklight-person_sim                | collins         | SAMPLE AUDIO TITLE |
     | Language   | blacklight-language_sim              | English         | SAMPLE AUDIO TITLE |
-    | Collection | blacklight-root_collection_id_sim    | Test Collection | SAMPLE AUDIO TITLE |
+    | Collection | blacklight-root_collection_id_sim    | Test collection | SAMPLE AUDIO TITLE |
     #| Institute  | blacklight-institute_sim             | Test Institute  | SAMPLE AUDIO TITLE |
 
 Scenario: Case Insensitive Facets
@@ -57,7 +56,7 @@ Scenario: Case Insensitive Facets
   When I go to "the home page"
   And I press the button to "search" within "searchform"
   And I select the "objects" tab
-  And I search for "Subjectx" in facet "Subjects" with id "blacklight-subject_sim"
+  And I search for "subjectx" in facet "Subjects" with id "blacklight-subject_sim"
   Then I should see a search result "SAMPLE AUDIO TITLE"
   And I should see a search result "SAMPLE AUDIO TITLE 2"
 
