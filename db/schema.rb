@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170106105332) do
+ActiveRecord::Schema.define(version: 20170206161648) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20170106105332) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "logo"
+    t.boolean  "depositing"
   end
 
   add_index "institutes", ["name"], name: "index_institutes_on_name"

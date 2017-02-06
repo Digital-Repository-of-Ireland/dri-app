@@ -45,6 +45,11 @@ class InstitutesController < ApplicationController
     add_logo
 
     @inst.url = params[:institute][:url]
+    if current_user.is_admin?
+      @inst.depositing = params[:institute][:depositing]
+    else
+      @inst.depositing = false
+    end
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
