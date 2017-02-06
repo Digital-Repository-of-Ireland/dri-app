@@ -616,7 +616,7 @@ en:
       objects: 
         access_controls: 
           accessible_master_file: "Allow access to a system-generated surrogate version and the original uploaded master file(s)"
-          alert: "Set an appropriate licence for this level of read access."
+          alert: "Set an appropriate licence for this level of access."
           date: "Date: "
           description: "Here you can set access permissions for your collections and objects."
           edit_collection: "Who can edit obects in this collection / sub-collection?"
@@ -640,7 +640,7 @@ en:
           private_metadata_warn: "DRI have an Open Metadata Policy. We strongly encourage all depositors to allow open access to their object's metadata."
           public: "Allow public access (anyone on the web can access)"
           public_metadata: "Public Metadata"
-          read: "Who can acess your assets?"
+          read: "Who can access your assets?"
           registered: "Limit access to logged-in users"
           restricted: "Restrict access to users who I approve"
           search: "Search Access"
