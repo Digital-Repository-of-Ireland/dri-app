@@ -321,7 +321,7 @@
                  <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.restricted') %></label>
 	    </div>
 	    <fieldset id="edit_access_entries">
-	    <%= f.text_field :edit_users_string, :onkeyup=>"edit_user_textbox.catch_tb_value();" %>
+	    <%= f.text_area :edit_users_string, :onkeyup=>"edit_user_textbox.catch_tb_value();", style: 'width:100%;' %>
 	    </fieldset>
 	</div>
     </div>
@@ -342,7 +342,7 @@
         </div>
 
 		<fieldset id="manager_access_entries">
-			<%= f.text_field :manager_users_string, :onkeyup=>"manager_user_textbox.catch_tb_value();" %>
+			<%= f.text_area :manager_users_string, :onkeyup=>"manager_user_textbox.catch_tb_value();", style: 'width:100%;' %>
 		</fieldset>
 	  </div>
     <% end %>
