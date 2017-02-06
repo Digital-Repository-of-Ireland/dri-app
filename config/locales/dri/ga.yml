@@ -456,9 +456,12 @@ ga:
           are_you_sure: "An bhfuil tú cinnte go bhfuil institiúid nua ag teastáil uait?"
           associate: "Comhlachaigh Eagraíocht"
           associate_depositing: "Roghnaigh an Eagraíocht Taiscthe"
+          associating_text: "Once an organisation has been added, it can be associated with collections using the 'Manage Organisations' button on individual collections' pages."
           available: Available
+          depositing_org_text: "Your Organisation will have been added when your Organisational Manager Agreement was signed. Use this page to add additional organisations."
           edit: "Tabhair an eagraíocht cothrom le dáta"
           form: 
+            depositing: "This is a depositing institute"
             logo: Lógó
             name: Ainm
             url: url
@@ -467,6 +470,7 @@ ga:
           move_all_label: "Move all"
           move_selected_label: "Move selected"
           not_set: "Not set"
+          org_not_created: "Don't see the organisation you need? Add it <a href='%{url}'>here</a>."
           remove: "Remove Organisation"
           remove_all_label: "Remove all"
           remove_selected_label: "Remove selected"
@@ -474,6 +478,7 @@ ga:
           selected: Selected
           set_institutes: "Set Organisations"
           title: "Eagraíochtaí agus Urraitheoirí"
+          what_is_org_text: "Organisations can include funding agencies, contributing partners and collaborating institutions. These parties may not be involved in the ingest and management of the DRI collection, but they may have contributed content or monetary support to the project."
         legends: 
           governed_objects: "Oibiachtaí Rialaithe"
           members: Baill
