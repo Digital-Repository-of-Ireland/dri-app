@@ -614,13 +614,15 @@ en:
       objects:
         access_controls:
           description: "Here you can set access permissions for your collections and objects."
-          metadata: "These settings affect only the uploaded asset files, all metadata will be publicly accessible."
+          metadata: "Access settings affect the asset files that you upload excluding preservation-only files. All metadata will be publicly accessible regardless of what settings you select here. "
           accessible_master_file: "Allow access to a system-generated surrogate version and the original uploaded master file(s)"
           alert: "Set an appropriate licence for this level of read access."
           date: "Date: "
-          edit: "Who can edit obects in this collection / sub-collection?"
+          edit_collection: "Who can edit obects in this collection / sub-collection?"
+          edit_object: "Who can edit this object"
           embargo: Embargo
           inherit: "Inherit this setting from the parent collection"
+          inherited_setting: "Curently set to %{inherited_setting}"
           manage: "Who can manage this collection?"
           master_file: "Which asset files can they access?"
           master_file_desc: "If accessible then users with access to surrogates can also download the master asset(s)"
@@ -637,6 +639,9 @@ en:
           registered: "Limit access to logged-in users"
           restricted: "Restrict access to users who I approve"
           search: "Search Access"
+          inherit_strings:
+            public: "surrogates and uploaded originals"
+            private: "surrogates only"
         buttons:
           add_master: "Add Master Asset"
           add_to_collection: "Add to Collection"

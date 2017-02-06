@@ -250,10 +250,14 @@
     <p><%= t('dri.views.objects.access_controls.metadata') %></p>
     <div class="field">
 	<h5><%= t('dri.views.objects.access_controls.read') %></h5>
-	<div>
+        <% if not inherit_disabled %>
+	    <div>
                 <%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled => inherit_disabled %>
-                <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %></label>
+                <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %>
+                    (<%= t('dri.views.objects.access_controls.inherited_setting', inherited_setting: get_inherited_read_groups(@object)) %>)
+                </label>
             </div>
+        <% end %>
             <div>
                 <%= f.radio_button :read_groups_string, "radio_public", :onclick => "read_field_toggle();" %>
                 <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.public') %></label>
@@ -279,10 +283,15 @@
 	    <div class="field">
 		<h5><%= t('dri.views.objects.access_controls.master_file') %></h5>
 
+                <% if not inherit_disabled %>
                 <div>
 	            <%= f.radio_button :master_file_access, "inherit", :checked=>(record.master_file_access.blank? || record.master_file_access=="inherit"), :disabled=> inherit_disabled %>
-                    <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %></label>
+                    <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %>
+                    <% legend = t("dri.views.objects.access_controls.inherit_strings."+get_inherited_masterfile_access(@object)) %>
+                    (<%= t('dri.views.objects.access_controls.inherited_setting', inherited_setting: legend) %>)
+                    </label>
 	        </div>
+                <% end %>
                 <div>		
 		    <%= f.radio_button :master_file_access, "private", :checked=>record.master_file_access=="private" %>
 		    <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.private_master_file') %></label>
@@ -293,12 +302,19 @@
                 </div> 
 	    </div> 
             
+
 	    <div class="field">
-		<h5><%= t('dri.views.objects.access_controls.edit') %></h5>
+                <% if @object.collection? %>
+		<h5><%= t('dri.views.objects.access_controls.edit_collection') %></h5>
+                <% else %>
+                <h5><%= t('dri.views.objects.access_controls.edit_object') %></h5>
+                <% end %>
+            <% if not inherit_disabled %>
 	    <div>
 	        <%= f.radio_button :edit_users_string, "radio_inherit", :onclick => "edit_field_toggle();", :disabled=> inherit_disabled  %>
 		<label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %></label>
             </div>
+            <% end %>
             <div>
                  <%= f.radio_button :edit_users_string, "radio_restricted", :onclick => "edit_field_toggle();" %>
                  <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.restricted') %></label>
@@ -312,10 +328,12 @@
 	   <% if record.collection? && (allow_manage || (can? :manage_collection, record)) %>
 	   <div class="field">
 		<h5><%= t('dri.views.objects.access_controls.manage') %></h5>
+                <% if not inherit_disabled %>
 		<div>
 	        <%= f.radio_button :manager_users_string, "radio_inherit", :onclick => "manager_field_toggle();", :disabled=> inherit_disabled  %>
 			<label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %></label>
                 </div>
+                <% end %>
                 <div>
 		  <%= f.radio_button :manager_users_string, "radio_restricted", :onclick => "manager_field_toggle();" %>
 		  <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.restricted') %></label>
