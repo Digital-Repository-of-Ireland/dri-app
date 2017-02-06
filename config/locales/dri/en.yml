@@ -452,7 +452,10 @@ en:
             admin: "My Collections"
             public: Collections
         institute: 
-          add: "Add a new Organisation"
+          depositing_org_text: "Your Organisation will have been added when your Organisational Manager Agreement was signed. Use this page to add additional organisations."
+          what_is_org_text: "Organisations can include funding agencies, contributing partners and collaborating institutions. These parties may not be involved in the ingest and management of the DRI collection, but they may have contributed content or monetary support to the project."
+          associating_text: "Once an organisation has been added, it can be associated with collections using the 'Manage Organisations' button on individual collections' pages."
+          add: "Add Additional Organisations"
           are_you_sure: "Are you sure you need a new Organisation?"
           associate: "Add Organisation"
           associate_depositing: "Select Depositing Organisation"
@@ -474,6 +477,7 @@ en:
           selected: Selected
           set_institutes: "Set Organisations"
           title: "Organisations and Sponsors"
+          org_not_created: "Don't see the organisation you need? Add it <a href='%{url}'>here</a>."
         legends: 
           governed_objects: "Governed Objects"
           members: Members
