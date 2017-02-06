@@ -309,6 +309,7 @@
                 <% else %>
                 <h5><%= t('dri.views.objects.access_controls.edit_object') %></h5>
                 <% end %>
+                <%= t('dri.views.objects.access_controls.edit_desc') %>
             <% if not inherit_disabled %>
 	    <div>
 	        <%= f.radio_button :edit_users_string, "radio_inherit", :onclick => "edit_field_toggle();", :disabled=> inherit_disabled  %>
@@ -328,6 +329,7 @@
 	   <% if record.collection? && (allow_manage || (can? :manage_collection, record)) %>
 	   <div class="field">
 		<h5><%= t('dri.views.objects.access_controls.manage') %></h5>
+                <%= t('dri.views.objects.access_controls.manager_desc') %>
                 <% if not inherit_disabled %>
 		<div>
 	        <%= f.radio_button :manager_users_string, "radio_inherit", :onclick => "manager_field_toggle();", :disabled=> inherit_disabled  %>

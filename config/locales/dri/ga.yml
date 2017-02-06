@@ -524,7 +524,6 @@ ga:
           inherit: "Faigh le hoidhreacht"
           manage: Bainisteoirí
           master_file: "Máistirchomhad Inrochtana"
-          master_file_desc: "Má tá sé  inrochtana, beidh úsáideoirí a bhfuil rochtain léitheoireachta acu in ann an máistirchomhad a íoslódáil"
           page: "Rochtain ar Leathanaigh"
           private: Príobháideach
           private_master_file: "Máistirchomha(i)d P(h)ríobháideach(a)"

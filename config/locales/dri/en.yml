@@ -625,7 +625,6 @@ en:
           inherited_setting: "Curently set to %{inherited_setting}"
           manage: "Who can manage this collection?"
           master_file: "Which asset files can they access?"
-          master_file_desc: "If accessible then users with access to surrogates can also download the master asset(s)"
           page: "Page Access"
           private: Private
           private_master_file: "Only allow access to a system-generated surrogate version of my original uploaded master file(s)"
@@ -635,10 +634,11 @@ en:
           public: "Allow public access (anyone on the web can access)"
           public_metadata: "Public Metadata"
           read: "Who can acess your assets?"
-          read_file_desc: "Set access to surrogates of the master asset (i.e. thumbnails etc)"
           registered: "Limit access to logged-in users"
           restricted: "Restrict access to users who I approve"
           search: "Search Access"
+          edit_desc: "Enter the email addresses of edit users below. These permissions will not be applied until these email addresses have been registered for DRI accounts."
+          manager_desc: "Enter the email addresses of manager users below. These permissions will not be applied until these email addresses have been registered for DRI accounts."
           inherit_strings:
             public: "surrogates and uploaded originals"
             private: "surrogates only"
