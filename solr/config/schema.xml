@@ -51,7 +51,7 @@
     
     <!-- string (_s...) -->
     <dynamicField name="*_si" type="string" stored="false" indexed="true" multiValued="false"/>
-    <dynamicField name="*_sim" type="string" stored="false" indexed="true" multiValued="true"/>
+    <dynamicField name="*_sim" type="caseInsensitive" stored="false" indexed="true" multiValued="true"/>
     <dynamicField name="*_ss" type="string" stored="true" indexed="false" multiValued="false"/>
     <dynamicField name="*_ssm" type="string" stored="true" indexed="false" multiValued="true"/>
     <dynamicField name="*_ssi" type="string" stored="true" indexed="true" multiValued="false"/>
@@ -311,6 +311,14 @@
       </analyzer>
     </fieldtype>
     
+    <!-- Lowercase facets -->
+    <fieldtype name="caseInsensitive" class="solr.TextField" sortMissingLast="true" omitNorms="true">
+      <analyzer>
+        <tokenizer class="solr.KeywordTokenizerFactory" />
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldtype> 
+
     <!-- A text field with defaults appropriate for English -->
     <fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">

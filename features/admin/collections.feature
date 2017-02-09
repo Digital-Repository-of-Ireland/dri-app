@@ -58,8 +58,8 @@ Scenario Outline: Adding a Digital Object in a governing collection
 
   Examples:
     | object_pid | object_title | object_desc | object_type | object_rights | collection_pid | governance_type |
-    | obj1   | Object 1     | Test 1      | Sound       | Test Rights   | coll1      | governing       |
-    | obj2   | Object 2     | Test 2      | Text        | Test Rights   | coll1      | governing       |
+    | object1   | Object 1     | Test 1      | Sound       | Test Rights   | coll1      | governing       |
+    | object2   | Object 2     | Test 2      | Text        | Test Rights   | coll1      | governing       |
 
 Scenario: Creating Digital Object in a governing collection using the web forms
   Given a collection with pid "coll2" created by "user1"

@@ -89,6 +89,7 @@ Feature: Preservation
     And I go to the "collection" "show" page for "the saved pid"
     And I follow the link to manage organisations
     And I press the button to "associate an institute"
+    And I should wait for "5" seconds
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
     And the manifest for version "1" for the saved pid should be valid

@@ -10,6 +10,7 @@
     <dc:subject>subject1</dc:subject>
     <dc:subject>subject2</dc:subject>
     <dc:subject>subject3</dc:subject>
+    <dc:subject>subjectx</dc:subject>
     <dcterms:temporal>SAMPLE ERA</dcterms:temporal>
     <dcterms:spatial>SAMPLE COUNTRY</dcterms:spatial>
     <dc:creator>Gallagher, Damien</dc:creator>

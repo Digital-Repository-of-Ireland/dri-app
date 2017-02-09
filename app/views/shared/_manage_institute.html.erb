@@ -1,4 +1,5 @@
 <div id="dri_organisations_manage">
+  <div><%= t('dri.views.collection.institute.org_not_created', :url => new_organisation_path() ).html_safe %></div>
   <%= form_tag collection_organisations_path(@document), :id => 'associate_institute', :name => 'associate_institute' do %>
     <select multiple="multiple" size="10" id="select_institutes" name="institutes[]" 
             onchange="setDepositingOrgs()">

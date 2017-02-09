@@ -1,60 +1,70 @@
 include DRI::MetadataBehaviour
 
-Given /^a collection with pid "(.*?)"(?: and title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
-  pid = @random_pid if (pid == "@random")
-  collection = DRI::Batch.with_standard(:qdc, {:id => pid})
-  collection.title = title ? [title] : [SecureRandom.hex(5)]
-  collection.description = [SecureRandom.hex(20)]
-  collection.rights = [SecureRandom.hex(20)]
-  collection.type = ["Collection"]
-  collection.creation_date = ["2000-01-01"]
+Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
+  pid = @random_pid if (pid.nil? || pid == "random")
+  @collection = DRI::Batch.with_standard(:qdc, {:id => pid})
+  @collection.title = title ? [title] : [SecureRandom.hex(5)]
+  @collection.description = [SecureRandom.hex(20)]
+  @collection.rights = [SecureRandom.hex(20)]
+  @collection.type = ["Collection"]
+  @collection.creation_date = ["2000-01-01"]
   user ||= 'test'
   if user
     email = "#{user}@#{user}.com"
     User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
 
-    collection.depositor = User.find_by_email(email).to_s
-    collection.manager_users_string=User.find_by_email(email).to_s
-    collection.discover_groups_string="public"
-    collection.read_groups_string="registered"
-    collection.creator = ["#{user}@#{user}.com"]
+    @collection.depositor = User.find_by_email(email).to_s
+    @collection.manager_users_string=User.find_by_email(email).to_s
+    @collection.discover_groups_string="public"
+    @collection.read_groups_string="registered"
+    @collection.creator = ["#{user}@#{user}.com"]
   end
-  collection.master_file_access="private"
-  collection.status = 'draft'
-  collection.save
-  expect(collection.governed_items.count).to be == 0
+  @collection.master_file_access="private"
+  @collection.status = 'draft'
+  @collection.save
+  expect(@collection.governed_items.count).to be == 0
 
-  group = UserGroup::Group.new(:name => collection.id,
-                              :description => "Default Reader group for collection #{collection.id}")
+  group = UserGroup::Group.new(:name => @collection.id,
+                              :description => "Default Reader group for collection #{@collection.id}")
   group.save
 end
 
 
-Given /^a Digital Object with pid "(.*?)"(?:, title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
-  pid = @random_pid if (pid == "@random")
-  digital_object = DRI::Batch.with_standard(:qdc, {:id => pid})
-  digital_object.title = title ? [title] : ["Test Object"]
-  digital_object.type = type ? [type] : ["Sound"]
-  digital_object.description = desc ? [desc] : ["A test object"]
+Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
+  pid = @random_pid if (pid == "random")
+  if pid
+    @digital_object = DRI::Batch.with_standard(:qdc, {:id => pid})
+  else
+    @digital_object = DRI::Batch.with_standard(:qdc)
+  end
+  @digital_object.title = title ? [title] : ["Test Object"]
+  @digital_object.type = type ? [type] : ["Sound"]
+  @digital_object.description = desc ? [desc] : ["A test object"]
 
   user ||= 'test'
   if user
     email = "#{user}@#{user}.com"
     User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
 
-    digital_object.depositor=User.find_by_email(email).to_s
-    digital_object.manager_users_string=User.find_by_email(email).to_s
-    #digital_object.edit_groups_string="registered"
-    digital_object.creator = ["#{user}@#{user}.com"]
+    @digital_object.depositor=User.find_by_email(email).to_s
+    @digital_object.manager_users_string=User.find_by_email(email).to_s
+    @digital_object.creator = ["#{user}@#{user}.com"]
   end
-  digital_object.rights = ["This is a statement of rights"]
-  digital_object.creation_date = ["2000-01-01"]
-  digital_object.status = 'draft'
+  @digital_object.rights = ["This is a statement of rights"]
+  @digital_object.creation_date = ["2000-01-01"]
+  @digital_object.status = 'draft'
   
-  digital_object.governing_collection = ActiveFedora::Base.find(coll, cast: true) if coll
+  if coll.nil?
+    coll = @collection.id unless @collection.nil?
+  end
+    
+  @digital_object.governing_collection = ActiveFedora::Base.find(coll, cast: true) if coll
 
-  checksum_metadata(digital_object)
-  digital_object.save!
+  checksum_metadata(@digital_object)
+  @digital_object.save!
+
+  preservation = Preservation::Preservator.new(@digital_object)
+  preservation.preserve(false, false, ['descMetadata','properties'])
 end
 
 Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |type, pid, title, user|
@@ -77,8 +87,14 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
   digital_object.save
 end
 
-Given /^the object with pid "(.*?)" is in the collection with pid "(.*?)"$/ do |objid,colid|
-  object = ActiveFedora::Base.find(objid, {:cast => true})
+Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)")?$/ do |objid,colid|
+  if objid
+    object = ActiveFedora::Base.find(objid, {:cast => true})
+  else
+    object = @digital_object
+  end
+  colid = @collection.id unless colid
+
   collection = ActiveFedora::Base.find(colid, {:cast => true})
   object.governing_collection = collection
   checksum_metadata(object)

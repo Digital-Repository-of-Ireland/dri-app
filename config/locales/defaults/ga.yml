@@ -1,10 +1,10 @@
 # en-GB file from https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
----
-ga:
-  activemodel:
-    errors:
+--- 
+ga: 
+  activemodel: 
+    errors: 
       format: "%{attribute} %{message}"
-      messages:
+      messages: 
         accepted: "ní mór glacadh leis"
         blank: "Ní féidir leis a bheith folamh"
         confirmation: "Ní ionann é agus an dearbhú"
@@ -23,24 +23,24 @@ ga:
         odd: "ní mór dó a bheith corr"
         record_invalid: "theip ar an mbailíochtú: %{errors}"
         taken: "tógtha cheana féin"
-        too_long:
+        too_long: 
           one: "ró-fhada (an t-uasmhéid ná 1 carachtar)"
           other: "ró-fhada (an t-uasmhéid ná %{count} carachtar)"
-        too_short:
+        too_short: 
           one: "ró-ghearr (an t-íosmhéid ná 1 carachtar)"
           other: "ró-ghearr (an t-íosmhéid ná %{count} carachtar)"
-        wrong_length:
+        wrong_length: 
           one: "an fad mícheart (ba chóir go mbeadh sé 1 carachtar)"
           other: "an fad mícheart (ba chóir go mbeadh sé %{count} carachtar)"
-      template:
+      template: 
         body: "Bhí fadhbanna leis na réimsí seo a leanas"
-        header:
+        header: 
           one: "níor sábháladh an %{model} seo toisc  earráid amháin"
           other: "níor sábháladh an %{model} seo toisc %{count}  earráid"
-  activerecord:
-    errors:
+  activerecord: 
+    errors: 
       format: "%{attribute} %{message}"
-      messages:
+      messages: 
         accepted: "ní mór glacadh leis"
         blank: "Ní féidir leis a bheith folamh"
         confirmation: "Ní ionann é agus an dearbhú"
@@ -59,22 +59,22 @@ ga:
         odd: "ní mór dó a bheith corr"
         record_invalid: "Theip ar an mbailíochtú: %{errors}"
         taken: "tógtha cheana féin"
-        too_long:
+        too_long: 
           one: "ró-fhada (an t-uasmhéid ná 1 carachtar)"
           other: "ró-fhada (an t-uasmhéid ná %{count} carachtar)"
-        too_short:
+        too_short: 
           one: "ró-ghearr (an t-íosmhéid ná 1 carachtar)"
           other: "ró-ghearr (an t-íosmhéid ná %{count} carachtar)"
-        wrong_length:
+        wrong_length: 
           one: "an fad mícheart (ba chóir go mbeadh sé 1 carachtar)"
           other: "an fad mícheart (ba chóir go mbeadh sé %{count} carachtar)"
-      template:
+      template: 
         body: "Bhí fadhbanna leis na réimsí seo a leanas"
-        header:
+        header: 
           one: "níor sábháladh an %{model} seo toisc earráid amháin"
           other: "níor sábháladh an %{model} seo toisc %{count} earráid"
-  date:
-    abbr_day_names:
+  date: 
+    abbr_day_names: 
       - Domh
       - Luain
       - Máirt
@@ -82,7 +82,7 @@ ga:
       - Déar
       - Aoine
       - Sath
-    abbr_month_names:
+    abbr_month_names: 
       - ~
       - Ean
       - Feabh
@@ -96,19 +96,19 @@ ga:
       - DF
       - Samh
       - Noll
-    day_names:
-      - Dé Domhnaigh
-      - Dé Luain
-      - Dé Máirt
-      - Dé Céadaoin
+    day_names: 
+      - "Dé Domhnaigh"
+      - "Dé Luain"
+      - "Dé Máirt"
+      - "Dé Céadaoin"
       - Déardaoin
-      - Dé hAoine
-      - Dé Sathairn
-    formats:
+      - "Dé hAoine"
+      - "Dé Sathairn"
+    formats: 
       default: "%d-%m-%Y"
       long: "%d %B, %Y"
       short: "%d %b"
-    month_names:
+    month_names: 
       - ~
       - Eanáir
       - Feabhra
@@ -122,56 +122,56 @@ ga:
       - "Deireadh Fómhair"
       - Samhain
       - Nollaig
-    order:
+    order: 
       - !ruby/symbol day
       - !ruby/symbol month
       - !ruby/symbol year
-  datetime:
-    distance_in_words:
-      about_x_hours:
+  datetime: 
+    distance_in_words: 
+      about_x_hours: 
         one: "tuairim is 1 ua. an chloig"
         other: "tuairim is %{count} ua. an chloig"
-      about_x_months:
+      about_x_months: 
         one: "tuairim is mí"
         other: "tuairim is %{count} mí"
-      about_x_years:
+      about_x_years: 
         one: "tuairim is bliain"
         other: "tuairim is %{count} bl."
-      almost_x_years:
+      almost_x_years: 
         one: "beagnach  bliain"
         other: "beagnach %{count}  bl."
       half_a_minute: leathnoiméad
-      less_than_x_minutes:
+      less_than_x_minutes: 
         one: "níos lú ná nóiméad"
         other: "níos lú ná %{count} nóim"
-      less_than_x_seconds:
+      less_than_x_seconds: 
         one: "Níos lú ná soicind"
         other: "Níos lú ná %{count} soic."
-      over_x_years:
+      over_x_years: 
         one: "níos mó ná  bliain"
         other: "níos mó ná %{count} bl."
-      x_days:
+      x_days: 
         one: lá
         other: "%{count} lá"
-      x_minutes:
+      x_minutes: 
         one: nóiméad
         other: "%{count) nóim"
-      x_months:
+      x_months: 
         one: mí
         other: "%{count} mí"
-      x_seconds:
+      x_seconds: 
         one: soicind
         other: "%{count}  soic."
-    prompts:
+    prompts: 
       day: Lá
       hour: Uair
       minute: Nóiméad
       month: Mí
       second: Soicind
       year: Bliain
-  errors:
+  errors: 
     format: "%{attribute} %{message}"
-    messages:
+    messages: 
       accepted: "ní mór glacadh leis"
       blank: "Ní féidir leis a bheith folamh"
       confirmation: "Ní ionann é agus an dearbhú"
@@ -190,30 +190,30 @@ ga:
       odd: "ní mór dó a bheith corr"
       record_invalid: "Theip ar an mbailíochtú: %{errors}"
       taken: "tógtha cheana féin"
-      too_long:
+      too_long: 
         one: "ró-fhada (an t-uasmhéid ná 1 carachtar)"
         other: "ró-fhada (an t-uasmhéid ná %{count} carachtar)"
-      too_short:
+      too_short: 
         one: "ró-ghearr (an t-íosmhéid ná 1 carachtar)"
         other: "ró-ghearr (an t-íosmhéid ná %{count}  carachtar)"
-      wrong_length:
+      wrong_length: 
         one: "an fad mícheart (ba chóir go mbeadh sé 1 carachtar)"
         other: "an fad mícheart (ba chóir go mbeadh sé %{count} carachtar)"
-    template:
+    template: 
       body: "Bhí fadhbanna leis na réimsí seo a leanas"
-      header:
+      header: 
         one: "níor sábháladh an %{model} seo toisc  earráid amháin"
         other: "níor sábháladh an %{model} seo toisc %{count} earráid"
-  helpers:
-    select:
+  helpers: 
+    select: 
       prompt: "Roghnaigh le do thoill"
-    submit:
+    submit: 
       create: "Cruthaigh %{model}"
       submit: "Sábháil %{model}"
       update: "Nuashonraigh %{model}"
-  number:
-    currency:
-      format:
+  number: 
+    currency: 
+      format: 
         delimiter: ","
         format: "%u%n"
         precision: 2
@@ -221,51 +221,51 @@ ga:
         significant: false
         strip_insignificant_zeros: false
         unit: £
-    format:
+    format: 
       delimiter: ","
       precision: 3
       separator: "."
       significant: false
       strip_insignificant_zeros: false
-    human:
-      decimal_units:
+    human: 
+      decimal_units: 
         format: "%n %u"
-        units:
+        units: 
           billion: Billiún
           million: Milliún
           quadrillion: Cuaidrilliún
           thousand: Míle
           trillion: Trilliún
           unit: ""
-      format:
+      format: 
         delimiter: ""
         precision: 3
         significant: true
         strip_insignificant_zeros: true
-      storage_units:
+      storage_units: 
         format: "%n %u"
-        units:
-          byte:
+        units: 
+          byte: 
             one: Beart
             other: Bearta
           gb: GB
           kb: KB
           mb: MB
           tb: TB
-    percentage:
-      format:
+    percentage: 
+      format: 
         delimiter: ""
-    precision:
-      format:
+    precision: 
+      format: 
         delimiter: ""
-  support:
-    array:
+  support: 
+    array: 
       last_word_connector: ", agus "
       two_words_connector: " agus "
       words_connector: ", "
-  time:
+  time: 
     am: am
-    formats:
+    formats: 
       default: "%a, %d %b %Y %H:%M:%S %z"
       long: "%d %B, %Y %H:%M"
       short: "%d %b %H:%M"

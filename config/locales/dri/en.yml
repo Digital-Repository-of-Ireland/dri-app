@@ -1,9 +1,9 @@
 
----
-en:
-  dri:
-    application:
-      edit_user_profile:
+--- 
+en: 
+  dri: 
+    application: 
+      edit_user_profile: 
         cancel: Cancel
         change_password: "Change Password"
         confirm_new_password: "Confirm New Password"
@@ -21,43 +21,43 @@ en:
         requested_to_leave: "You have requested to leave this group"
         save_edits: "Save Edits"
         settings: Settings
-      home:
+      home: 
         featured: Featured
         featured_collections: "Featured Collections (Decade of Centenaries)"
         featured_objects: "Featured Objects"
         introtext: "The Digital Repository of Ireland is a national digital repository for Ireland’s humanities, social sciences, and cultural heritage data. You can browse and search across multiple collections from some of the finest Irish institutions. These collections are safely preserved in the DRI. Please explore and enjoy."
-        links:
+        links: 
           news_dri: "Read our News"
           register_dri: "Sign Up Now"
           visit_dri: "Visit the DRI Project Website"
         new_collections: "New Collections"
-        rss_feed:
+        rss_feed: 
           read_more: "Read More"
           title: News
         welcome_to_dri: "Welcome to the DRI"
-      lang:
+      lang: 
         en: English
         ga: Irish
       locale: Language
-      maps:
+      maps: 
         loading_maps: "Loading Maps"
         no_results: "No valid location results have been found. Try the Grid View to see all results."
-      terms:
+      terms: 
         accept: "I agree"
         deposit_agreement: "I agree to the terms of Deposit Agreement"
         deposit_header: "The Digital Repository of Ireland Terms and Conditions of Deposit."
         header: "The Digital Repository of Ireland End User Agreement."
         message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='http://dri.ie/privacy-statement'>Privacy Policy</a>."
         reject: "I disagree"
-      timeline:
-        description:
+      timeline: 
+        description: 
           no_results: "No valid date results have been found. Try the Grid View to see all results."
           results_found: "Search results timeline..."
-        headline:
+        headline: 
           no_results: "No valid date results have been found. Try the Grid View to see all results."
           results_found: "Current Search Timeline"
-      user_profile:
-        administrator: "Administrator"
+      user_profile: 
+        administrator: Administrator
         collection_manager: "Collection Manager"
         collection_title: "Collection Title"
         edit: Edit
@@ -67,10 +67,10 @@ en:
         organisational_manager: "Organisational Manager"
         user_type: "User Type"
         your_collection_details: "Your Collection Details"
-    citation:
+    citation: 
       dri: DRI
-    data:
-      types:
+    data: 
+      types: 
         Image: Image
         MixedType: "Mixed Types"
         MovingImage: Video
@@ -78,30 +78,31 @@ en:
         Text: Text
         Title: "Media Types"
         Unknown: Unknown
-    datatables:
-      activity:
-        updated_at: "Updated At"
-        object_id: "Object ID"
-        type: "Type"
+    datatables: 
+      activity: 
+        committer: Committer
         in_collection: "In Collection"
-        committer: "Committer"
-        status: "Status"
-      user_activity:
-        type: "Type"
-        item: "Item"
-        event: "Event"
-        object: "Object"
-    flash:
-      alert:
+        object_id: "Object ID"
+        status: Status
+        type: Type
+        updated_at: "Updated At"
+      user_activity: 
+        event: Event
+        item: Item
+        object: Object
+        type: Type
+    flash: 
+      alert: 
         create_permission: "You do not have permission to create this document."
         delete_permission: "You do not have permission to delete this document."
+        doi_not_configured: "DOI configuration settings not found."
         edit_permission: "You do not have permission to edit this document."
         error_deleting_collection: "Unable to submit delete collection background task: %{error}"
         error_generating_surrogates: "Error generating surrogates: %{error}"
         error_publishing_collection: "Error publishing collection: %{error}"
         error_review_job: "Unable to submit background task, all objects will not be updated: %{error}"
-        error_set_depositing_institute_job: "Unable to submit background task, all objects will not be updated: %{error}"
         error_saving_file: "Error saving file: %{error}"
+        error_set_depositing_institute_job: "Unable to submit background task, all objects will not be updated: %{error}"
         invalid_file_type: "Warning: The file does not appear to be a valid type"
         invalid_object: "Invalid Object: %{error}."
         invalid_xml: "Invalid XML: %{error}"
@@ -110,8 +111,7 @@ en:
         read_permission: "You do not have permission to read this document."
         unknown_permission: "Unsupported Permission Level: %{action}"
         virus_detected: "Virus detected in uploaded file: %{virus}"
-        doi_not_configured: "DOI configuration settings not found."
-      error:
+      error: 
         cover_image_not_saved: "Unable to save cover image"
         locked: "This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information."
         manager_user_permission: "You do not have permission to create a manager user"
@@ -122,19 +122,19 @@ en:
         organisation_cannot_be_deleted: "The organisation cannot be deleted as it is still associated with collections"
         read_access: "Unable to grant read access"
         read_only: "Repository is currently undergoing maintenance. Updates are temporarily disabled."
-        submitting_read_request: "Unable to submit read access request: %{error}"
-        validation_errors: "Validation Errors: %{error}"
         schema_location_missing: "The metadata file is missing the XML SchemaLocation declaration"
         schema_location_parse: "Unable to parse XML schemaLocation declaration"
-      notice:
+        submitting_read_request: "Unable to submit read access request: %{error}"
+        validation_errors: "Validation Errors: %{error}"
+      notice: 
         access_controls_updated: "Access controls updated."
         added_to_collection: "Object has been added to collection."
         asset_deleted: "Asset deleted."
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Delete collection process successfully started."
-        collection_publishing: "Collection is being published."
-        collection_objects_review: "Review collection objects process successfully started. This may take some time. When completed, use the publish button on the collection page to publish all reviewed objects and sub-collections."
         collection_doi_request: "New DOI requested."
+        collection_objects_review: "Review collection objects process successfully started. This may take some time. When completed, use the publish button on the collection page to publish all reviewed objects and sub-collections."
+        collection_publishing: "Collection is being published."
         current_collection_cleared: "No collection set."
         current_collection_set: "Current collection has been set to: %{collection}"
         digital_object_ingested: "Digital object has been successfully ingested."
@@ -149,14 +149,14 @@ en:
         metadata_updated: "Metadata has been successfully updated."
         no_xml_schema: "The XML file contains no schema to validate against."
         object_deleted: "Object has been deleted."
-        organisation_created: "Organisation successfully created."
         organisation_added: "Organisation successfully added to collection."
-        organisations_set: "Organisations successfully updated."
-        organisation_removed: "Organisation successfully removed from collection."
+        organisation_created: "Organisation successfully created."
         organisation_depositor: "Organisation successfully set as Depositor."
+        organisation_removed: "Organisation successfully removed from collection."
+        organisations_set: "Organisations successfully updated."
         read_access_approved: "Read access request has been approved. The user has been notified."
-        read_access_removed: "Read access has been removed"
         read_access_rejected: "Read access request has been rejected. The user has been notified."
+        read_access_removed: "Read access has been removed"
         removed_from_collection: "Object has been removed from the collection."
         request_form_submitted: "Your request for access has been submitted to the depositing organisation for this collection and will be reviewed shortly. Please note, you may be requested to provide additional information to the depositing organisation and/or agree to additional terms and conditions for access. You will receive an email to notify you of the outcome of this request. If you have any queries about this access request please contact the depositing organisation for this collection."
         schema_validation_error: "The XML file could not validate against the Dublin Core schema."
@@ -167,20 +167,20 @@ en:
         specify_valid_file: "You must specify a valid file to upload."
         specify_xml_file: "You must specify a XML file."
         updated: "Updated %{item}"
-    footer:
-      contacts:
+    footer: 
+      contacts: 
         email: Email
         phone: Tel
-      ria_address:
+      ria_address: 
         name: "Royal Irish Academy"
         project: "Digital Repository of Ireland"
         street: "19 Dawson Street"
         zip: "Dublin 2"
-    headerlinks:
+    headerlinks: 
       about: About
       about_dri_lifecycle: "DRI Lifecycle"
       about_us: "About Us"
-      admin: "Admin"
+      admin: Admin
       browse: Discover
       collection: Collection
       collections: Collections
@@ -194,7 +194,7 @@ en:
       language: Language
       manage: Manage
       manage_users: "Add Manager User"
-      mirador: "Mirador"
+      mirador: Mirador
       my_collections: "My Collections"
       my_tasks: "My Tasks"
       new_collection: "New Collection"
@@ -209,7 +209,7 @@ en:
       sub_collections: Sub-Collections
       usergroups: "Users & Groups"
       workspace: Workspace
-    help:
+    help: 
       add_documentation_help_text: "These objects appear in the Related Materials section of the Collection show page."
       add_documentation_help_title: "Add contextual information"
       dri_browse_sort_tabs_collections: "Use this tab to search for Collections"
@@ -220,31 +220,30 @@ en:
       dri_browse_sort_tabs_sub_collection_title: "Sub-Collections Search"
       dri_change_sort_view: "Use these buttons to select between a Grid, Tabular, Timeline or Map layout for your search result"
       dri_change_sort_view_title: "Search Result Layout"
-      dri_depositing_organisation_title: "Set Depositing Organisation"
       dri_depositing_organisation_text: "Set %{name} as the depositing organisation"
+      dri_depositing_organisation_title: "Set Depositing Organisation"
       dri_facet_restrictions_links: "These are the Facets which are narrowing your search. You can disable them individually or Clear All"
       dri_facet_restrictions_links_title: "Selected Facets"
       dri_page_options: "Select from this list to choose the number of items shown on each page"
       dri_page_options_title: "Items per Page"
       dri_pagination_nav_links: "Use these links to move through your search results. You can change the number of pages selecting more or fewer items per page"
       dri_pagination_nav_links_title: "Result Pagination"
+      dri_publish_unavailable: "You need to set this Collection's Depositing Organisation before publishing. Use the \"Manage Organisations\" link"
+      dri_publish_unavailable_title: "Publish not available"
       dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
       dri_sort_options_title: "Search Sort Options"
-      dri_publish_unavailable_title: "Publish not available"
-      dri_publish_unavailable: "You need to set this Collection's Depositing Organisation before publishing. Use the \"Manage Organisations\" link"
       dummy_text: "Help text goes here"
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
       facets_title: "Facet Filters"
-      iiif_viewer: "Open in IIIF viewer"
-      fields:
+      fields: 
         collection_title: "Collection Title"
         collection_title_text: "A name given to the collection."
         coverages: Coverage
         coverages_text: "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant."
         creation_date: "Creation Date"
         creation_date_text: "Date of creation of the resource. NOTE: You are required to enter at least one of Creation Date OR Published Date OR Date"
-        creator: "Creator"
+        creator: Creator
         creator_text: "An entity primarily responsible for making the content of the resource."
         date: Date
         date_text: "A point or period of time associated with an event in the lifecycle of the resource."
@@ -272,12 +271,13 @@ en:
         sources_text: "A related resource from which the described resource is derived."
         subjects: Subjects
         subjects_text: "The topic of the resource."
-        temporal_coverage: Subject (Temporal)
+        temporal_coverage: "Subject (Temporal)"
         temporal_coverage_text: "Temporal characteristics of the resource."
         title: Title
         title_text: "A name given to the resource."
         types: Types
         types_text: "The nature or genre of the resource."
+      iiif_viewer: "Open in IIIF viewer"
       metadata_identifiers: "<a href='http://loc.org'>LOC</a>"
       no_results_found: "No search results found"
       q: "Type a search term and press Enter. Use AND and OR to narrow or broaden your search"
@@ -285,12 +285,14 @@ en:
       social_media_links: "Use these buttons to vist our Twitter, Facebook, Vimeo and Slideshare pages"
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
-    navbar:
+      view_objects: "View Objects"
+      view_subcollections: "View Sub-Collections"
+    navbar: 
       bookmarks: Bookmarks
       items: Items
       per_page: "per page"
       saved_searches: Searches
-    sign_in:
+    sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
       no_unlock: "Didn't receive unlock instructions?"
@@ -299,16 +301,16 @@ en:
       sign_in_with_institution: "Login via your institution"
       title: Login
       with_another_account: "Login with another Account"
-    views:
-      alt_tags:
+    views: 
+      alt_tags: 
         cover_image: "Cover Image"
-      assets:
-        buttons:
-          delete: "x"
-        confirm:
+      assets: 
+        buttons: 
+          delete: x
+        confirm: 
           delete: "This will delete the asset and all surrogates. Continue?"
-      catalog:
-        buttons:
+      catalog: 
+        buttons: 
           add_to_collection: "Add to collection"
           clear_all_bookmarks: "Clear All Bookmarks"
           clear_all_saved_searches: "Clear All Saved Searches"
@@ -317,21 +319,21 @@ en:
           edit_access_controls: "Access Controls"
           edit_metadata: "Edit Metadata"
           remove_from_collection: "Remove from collection"
-          set_licence: "Licence"
-          submit: "Submit"
-        facets:
-          dates:
+          set_licence: Licence
+          submit: Submit
+        facets: 
+          dates: 
             date_range: "Date Range"
             date_range_from: From
             date_range_to: To
             date_set: Set
-          values:
+          values: 
             collections: Collections
             no_collections: "No collections"
-        forms:
+        forms: 
           access_controls: "Access Controls"
           all_objects_in_collection: "All Objects in this Collection"
-          audio:
+          audio: 
             duration: Duration
             file_size: "Asset Size"
             format: Format
@@ -351,11 +353,12 @@ en:
           restricted_asset: "Restricted Asset"
           restricted_data_request: "Restricted data access request form"
           video_file: Video
-        headers:
+        headers: 
           files: "Asset Tools"
-          sub_collections: "Sub-collections"
           related_materials: "Related Materials"
-        legends:
+          sub_collections: Sub-collections
+        legends: 
+          file_status: "Status: %{status}"
           no_bookmarked_collections: "You have no bookmarked collections"
           no_bookmarked_objects: "You have no bookmarked objects"
           no_bookmarks: "You have no bookmarks"
@@ -363,7 +366,6 @@ en:
           no_permission: "You do not have permission to view the asset file associated with this object."
           no_saved_search: "You have no saved searches"
           no_surrogates: "No surrogates are available."
-          file_status: "Status: %{status}"
           preservation_only: "Preservation-only file."
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
@@ -371,7 +373,7 @@ en:
           surrogate_not_available: "Surrogate not available"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
           surrogate_not_supported: "%{mime_type} assets are not supported for display. Please download the asset using the link below if available."
-        links:
+        links: 
           add_documentation: "Add Documentation"
           add_object: "Add an Object"
           add_object_xml: "Upload Object XML"
@@ -385,22 +387,23 @@ en:
           download_nth: "Download %{index}"
           draft: Draft
           duplicates: Duplicates
-          edit_this_record: "Edit"
+          edit_this_record: Edit
           generate_surrogates: "Regenerate Surrogates"
           history: History
-          iiif_viewer: "Viewer"
+          iiif_viewer: Viewer
           listen: listen
-          mark_all_descendants_reviewed: "Proceed"
+          mark_all_descendants_reviewed: Proceed
           mark_all_reviewed: "Mark as Reviewed"
           mark_object_draft: "Mark Object as Draft"
           mark_object_reviewed: "Mark Object as Reviewed"
           not_characterized: "not yet characterized"
-          publish: "Publish"
+          publish: Publish
           publish_reviewed: "Publish Reviewed"
+          published: Published
           related: "Related Assets"
           request_doi: "Request DOI"
-          review_objects: "Review Objects"
           review_collection: "Review Collection"
+          review_objects: "Review Objects"
           reviewed: Reviewed
           share: Share
           status_update: "Update status"
@@ -408,93 +411,96 @@ en:
           upload_file: "Upload Asset"
           upload_preservation_file: "Upload Preservation-only Asset"
           view_metadata: "View Metadata (XML)"
-        sidebar:
+        sidebar: 
           more_like_this: "More Like This"
           nav_header: "Edit Tools"
-        titles:
+        titles: 
           editor_tools: "Editor Tools"
           navigation_tools: "Navigation Tools"
           object_tools: "Object Tools"
-      collection:
-        manage_cover_image: "Cover Image"
-        buttons:
+      collection: 
+        buttons: 
           add_cover_image: "Cover Image"
-          edit_metadata: "Edit Metadata"
           create_collection: "Create Collection"
           delete_collection: "Delete Collection"
+          edit_metadata: "Edit Metadata"
           new_collection: "New Collection"
           remove: Remove
         confirm_all_descendants_reviewed: "By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed."
         confirm_all_reviewed: "This will mark all objects within the collection as Reviewed. Continue?"
+        confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
+        confirm_publish: "This will make all reviewed objects accessible. This can not be undone! Continue?"
         confirm_review_collection: "This collection record will be marked as reviewed."
         confirm_review_subcollection: "Bear in mind that for this collection to be published you will have to mark all of its parent sub-collections as reviewed beforehand, otherwise the collection won't be accessible after publishing"
         confirm_review_summary: "(This operation will affect %{subcolls} sub-collections and %{objects} objects)"
-        confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
-        confirm_publish: "This will make all reviewed objects accessible. This can not be undone! Continue?"
         confirm_surrogates: "This will (re)generate surrogates for all objects within the collection. Continue?"
         doi_modification: "DOI change log entry"
         duplicates_found: "%{duplicates_count} duplicate objects have been found."
         edit: "Edit Collection"
-        index:
-          items:
+        index: 
+          items: 
             one: "%{count} item"
             other: "%{count} items"
-          no_collections:
+          no_collections: 
             admin: "You do not have any collections yet."
             public: "There are no collections available."
-          object_count:
+          object_count: 
             one: "%{count}"
             other: "%{count}"
           objects: Objects
-          title:
+          title: 
             admin: "My Collections"
             public: Collections
-        institute:
+        institute: 
+          add: "Add Additional Organisations"
           are_you_sure: "Are you sure you need a new Organisation?"
-          available: "Available"
-          see_orgs: "Check existing Organisations"
-          add: "Add a new Organisation"
           associate: "Add Organisation"
-          selected: "Selected"
-          set_institutes: "Set Organisations"
-          manage: "Manage Organisations"
-          move_selected_label: "Move selected"
-          move_all_label: "Move all"
-          remove_selected_label: "Remove selected"
-          remove_all_label: "Remove all"
-          not_set: "Not set"
           associate_depositing: "Select Depositing Organisation"
-          remove: "Remove Organisation"
+          associating_text: "Once an organisation has been added, it can be associated with collections using the 'Manage Organisations' button on individual collections' pages."
+          available: Available
+          depositing_org_text: "Your Organisation will have been added when your Organisational Manager Agreement was signed. Use this page to add additional organisations."
           edit: "Update Organisation"
-          form:
+          form: 
+            depositing: "This is a depositing institute"
             logo: Logo
             name: Name
             url: Url
+          manage: "Manage Organisations"
           more: "Show more"
+          move_all_label: "Move all"
+          move_selected_label: "Move selected"
+          not_set: "Not set"
+          org_not_created: "Don't see the organisation you need? Add it <a href='%{url}'>here</a>."
+          remove: "Remove Organisation"
+          remove_all_label: "Remove all"
+          remove_selected_label: "Remove selected"
+          see_orgs: "Check existing Organisations"
+          selected: Selected
+          set_institutes: "Set Organisations"
           title: "Organisations and Sponsors"
-        legends:
+          what_is_org_text: "Organisations can include funding agencies, contributing partners and collaborating institutions. These parties may not be involved in the ingest and management of the DRI collection, but they may have contributed content or monetary support to the project."
+        legends: 
           governed_objects: "Governed Objects"
           members: Members
           objects: "Objects in Collection"
+        manage_cover_image: "Cover Image"
         manage_read_requests: "Manage requests for read access"
-        new:
+        new: 
           title: "New Collection"
-      devise:
+      devise: 
         locale: Language
-      doi:
-        unavailable: "The object referenced by this DOI is not available. If you require more information please contact support@dri.ie."
-        fields:
+      doi: 
+        fields: 
           modified: Change
           modified_at: "Modification Date"
-        legends:
+        legends: 
           changelog: "Changelog for #{doi}"
-        links:
-          view_full_object: "View object" 
-      tasks:
-        links:
-          delete_all_tasks: "Clear all completed tasks"
-      exceptions:
+        links: 
+          view_full_object: "View object"
+        unavailable: "The object referenced by this DOI is not available. If you require more information please contact support@dri.ie."
+      exceptions: 
         access_denied: "You do not have permission to perform the requested operation."
+        file_not_found: "Upload file not found"
         internal_error: "Oops, something went wrong! Please try again later, or contact support@dri.ie"
         invalid_asset: "Unable to create asset. Please correct the errors and try again."
         invalid_collection: "Unable to create collection."
@@ -506,9 +512,8 @@ en:
         resque_error: "Error connecting to Resque."
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
-        file_not_found: "Upload file not found"
         view_permission: "This item is not available. You do not have sufficient access privileges to view the master file(s)."
-      fields:
+      fields: 
         Format: Format
         collection_title: "Collection Title"
         contributor: Contributor
@@ -561,7 +566,7 @@ en:
         subjects: Subjects
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
-        temporal_coverage: Subject (Temporal)
+        temporal_coverage: "Subject (Temporal)"
         temporal_coverage_eng: "Subject (Temporal) in English"
         temporal_coverage_gle: "Subject (Temporal) in Irish"
         temporal_coverages: "Subjects (Temporal)"
@@ -569,71 +574,77 @@ en:
         total_assets: "Total number of assets"
         type: Type
         types: Types
-      ingest:
-        buttons:
+      ingest: 
+        buttons: 
           continue: Continue
           delete: Delete
           new_collection: "New collection"
           reset: Reset
-        forms:
+        forms: 
           collection_prompt: "Select collection"
           ingest_method_prompt: "Select ingest method"
           metadata_standard_prompt: "Select metadata"
           object_type_prompt: "Select object type"
           status_prompt: "Select status"
           title: "Add a new digital object"
-        legends:
+        legends: 
           upload_caption: "Ingest metadata XML file."
           upload_legend: "Upload Metadata:"
-        steps:
+        steps: 
           collection: "Select Collection"
           ingest_method: "Select Ingest Method"
           input: Input
           object_type: "Select Object Type"
           upload: "Upload Metadata file"
-      licences:
+      licences: 
         all_rights_reserved: "Please see rights statement"
-        buttons:
+        buttons: 
           edit: "Edit Licence"
           new: "Add a new licence"
-        forms:
+        forms: 
           description: Description
           logo: Logo
           name: Name
           url: Url
-      manager_users:
-        buttons:
+      manager_users: 
+        buttons: 
           submit: Create
         email: "Enter user's email:"
-      metadata:
+      metadata: 
         dublin_core: "Dublin Core"
         qualified_dublin_core: "Qualifed Dublin Core"
-      objects:
-        access_controls:
-          accessible_master_file: "Accessible Master Asset(s)"
-          alert: "Set an appropriate licence for this level of read access."
+      objects: 
+        access_controls: 
+          accessible_master_file: "Allow access to a system-generated surrogate version and the original uploaded master file(s)"
+          alert: "Set an appropriate licence for this level of access."
           date: "Date: "
-          depositor: Depositor
-          edit: "Edit Access"
+          description: "Here you can set access permissions for your collections and objects."
+          edit_collection: "Who can edit obects in this collection / sub-collection?"
+          edit_desc: "Enter the email addresses of edit users below. These permissions will not be applied until these email addresses have been registered for DRI accounts."
+          edit_object: "Who can edit this object"
           embargo: Embargo
-          inherit: Inherit
-          manage: Managers
-          master_file: "Access Master Asset"
-          master_file_desc: "If accessible then users with access to surrogates can also download the master asset(s)"
+          inherit: "Inherit this setting from the parent collection"
+          inherit_strings: 
+            private: "surrogates only"
+            public: "surrogates and uploaded originals"
+          inherited_setting: "Curently set to %{inherited_setting}"
+          manage: "Who can manage this collection?"
+          manager_desc: "Enter the email addresses of manager users below. These permissions will not be applied until these email addresses have been registered for DRI accounts."
+          master_file: "Which asset files can they access?"
+          metadata: "Access settings affect the asset files that you upload excluding preservation-only files. All metadata will be publicly accessible regardless of what settings you select here. "
           page: "Page Access"
           private: Private
-          private_master_file: "Private Master Asset(s)"
+          private_master_file: "Only allow access to a system-generated surrogate version of my original uploaded master file(s)"
           private_metadata: "Private Metadata"
           private_metadata_access: "Since you have set access to metadata as private, you can add people here who you would like to be able to access the metadata."
           private_metadata_warn: "DRI have an Open Metadata Policy. We strongly encourage all depositors to allow open access to their object's metadata."
-          public: Public
+          public: "Allow public access (anyone on the web can access)"
           public_metadata: "Public Metadata"
-          read: "Surrogate Access"
-          read_file_desc: "Set access to surrogates of the master asset (i.e. thumbnails etc)"
-          registered: "Logged In"
-          restricted: Restricted
+          read: "Who can access your assets?"
+          registered: "Limit access to logged-in users"
+          restricted: "Restrict access to users who I approve"
           search: "Search Access"
-        buttons:
+        buttons: 
           add_master: "Add Master Asset"
           add_to_collection: "Add to Collection"
           cancel: Cancel
@@ -644,15 +655,15 @@ en:
           save_current_search: "Save Current Search"
           update_status: "Update Status"
           upload_master: "Upload Master Asset"
-        confirm:
-          surrogates: "This will (re)generate surrogates for all assets. Continue?"
+        confirm: 
           delete: "This will delete the object and all assets attached to it. Continue?"
-        edit:
-          sidebar:
+          surrogates: "This will (re)generate surrogates for all assets. Continue?"
+        edit: 
+          sidebar: 
             nav_header: "Edit Tools"
           title: "Edit Object"
           title_collection: "Edit Collection"
-        forms:
+        forms: 
           add_another: "Add Another"
           add_author: "Add Author"
           add_editor: "Add Editor"
@@ -682,7 +693,7 @@ en:
           status: Status
           subjects: Subjects
           title: Title
-        legends:
+        legends: 
           access_control: "Access Controls"
           audio_caption: "A master audio asset has already been uploaded."
           cite: Cite
@@ -701,33 +712,36 @@ en:
           upload_pdf: "Upload PDF Asset"
           view_collection: "View Collection"
           viewcount: Views
-        links:
+        links: 
           all_objects: "All Objects"
           cancel: Cancel
           download: download
           listen: listen
           view_record: "View Record"
-      readers:
-        headers:
+      readers: 
+        headers: 
           pending: "Pending Request"
           remove: Approved
-        links:
-          pending:
+        links: 
+          approved: 
+            remove: "Remove access"
+          pending: 
             approve: "Approve request"
             reject: "Reject request"
             view: "View request"
-          approved:
-            remove: "Remove access"
-      reports:
-        links:
+      reports: 
+        links: 
           activity_report: "Activity Report"
-      static:
-        admin:
+      static: 
+        admin: 
           licences: "Supported Licences"
-        workspace:
+        workspace: 
           account: "My Account"
-    vocabulary:
-      iso_639_2:
+      tasks: 
+        links: 
+          delete_all_tasks: "Clear all completed tasks"
+    vocabulary: 
+      iso_639_2: 
         aar: Afar
         abk: Abkhazian
         ace: Achinese
@@ -1213,7 +1227,7 @@ en:
         zun: Zuni
         zxx: "No linguistic content; Not applicable"
         zza: "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
-      marc_relator:
+      marc_relator: 
         abr: Abridger
         acp: "Art copyist"
         act: Actor
@@ -1478,10 +1492,10 @@ en:
         wdc: Woodcutter
         wde: "Wood engraver"
         wit: Witness
-      name:
+      name: 
         marc_relators: "MARC Relators"
-    window:
-      alert:
+    window: 
+      alert: 
         coming_soon: "Coming Soon"
-      modal:
+      modal: 
         close: Close

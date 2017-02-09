@@ -9,6 +9,7 @@ end
 After do
   #DatabaseCleaner.clean
   clean_repo
+  FileUtils.remove_dir(@tmp_assets_dir, force: true)
 end
 
 Before('@random_pid') do
