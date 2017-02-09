@@ -30,6 +30,10 @@ module DRI::Solr::Document::Collection
     status_count('published')
   end
 
+  def published_subcollections
+    status_count('published', true)
+  end
+
   def reviewed_objects
     status_count('reviewed')
   end

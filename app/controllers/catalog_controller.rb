@@ -80,6 +80,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('placename_field', :facetable), label: 'Placename', show: false
     config.add_facet_field solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
     config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: false
+    #config.add_facet_field solr_name('temporal_coverage_eng', :facetable), limit: 20, show: true
     config.add_facet_field solr_name('person', :facetable), limit: 20
     config.add_facet_field solr_name('language', :facetable), helper_method: :label_language, limit: true
     config.add_facet_field solr_name('file_type_display', :facetable)

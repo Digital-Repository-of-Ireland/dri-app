@@ -10,8 +10,8 @@ Feature: Licences
   Background:
     Given I am logged in as "admin" in the group "admin" and accept cookies
     And a collection with pid "lcoll" and title "Licence Test Collection" created by "admin@admin.com"
-    And a Digital Object with pid "lobj" and title "Licence Test Object"
-    And the object with pid "lobj" is in the collection with pid "lcoll"
+    And a Digital Object with pid "lobject" and title "Licence Test Object"
+    And the object with pid "lobject" is in the collection with pid "lcoll"
 
   Scenario: Navigating to the licences pages
     Given I am on the home page
@@ -53,7 +53,7 @@ Feature: Licences
     Then the "licence" drop-down should contain the option "TestLicence7"
     When I select "TestLicence7" from the selectbox for licence
     And I press the modal button to "set licence" in "dri_licence_modal_id"
-    And I go to the "object" "show" page for "lobj"
+    And I go to the "object" "show" page for "lobject"
     Then I should see "TestLicence7"
 
   Scenario: Setting licence at object level
@@ -63,9 +63,9 @@ Feature: Licences
     Then the "licence" drop-down should contain the option "TestLicenceColl"
     When I select "TestLicenceColl" from the selectbox for licence
     And I press the modal button to "set licence" in "dri_licence_modal_id"
-    And I go to the "object" "show" page for "lobj"
+    And I go to the "object" "show" page for "lobject"
     Then I should see "TestLicenceColl"
     When I select "TestLicenceObj" from the selectbox for licence
     And I press the modal button to "set licence" in "dri_licence_modal_id"
-    And I go to the "object" "show" page for "lobj"
+    And I go to the "object" "show" page for "lobject"
     Then I should see "TestLicenceObj"

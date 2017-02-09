@@ -20,7 +20,8 @@ Given /^"(.*?)" has created a Digital Object$/ do |user|
   }
 end
 
-Given /^I have created an object with metadata "(.*?)" in the collection with pid "(.*?)"$/ do |metadata_file, collection_pid|
+Given /^I have created an object with metadata "(.*?)" in the collection(?: with pid "(.*?)")?$/ do |metadata_file, collection_pid|
+  collection_pid = @collection.id unless collection_pid
   steps %{
     When I go to the "metadata" "upload" page for "#{collection_pid}"
     And I attach the metadata file "#{metadata_file}"
@@ -29,7 +30,8 @@ Given /^I have created an object with metadata "(.*?)" in the collection with pi
   }
 end
 
-Given /^I have created an object with title "(.*?)" in the collection with pid "(.*?)"$/ do |title, collection_pid|
+Given /^I have created an object with title "(.*?)" in the collection(?: with pid "(.*?)")?$/ do |title, collection_pid|
+  collection_pid = @collection.id unless collection_pid
   steps %{
     When I go to the "collection" "show" page for "#{collection_pid}"
     And I follow the link to add an object
@@ -95,20 +97,28 @@ When /^(?:|I )go to "([^"]*)"$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^(?:|I )go to the "([^"]*)" "([^"]*)" page for "([^"]*)"$/ do |type, page, pid|
-  if (pid.eql?('the saved pid') && type.eql?("collection"))
+When /^(?:|I )go to the "([^"]*)" "([^"]*)" page(?: for "([^"]*)")?$/ do |type, page, pid|
+  patiently do
+  if(pid.nil? && %w(collection metadata).include?(type))
+    pid = @collection.id
+  elsif(pid.nil? && type == "object")
+    pid = @digital_object.id
+  elsif (pid.eql?('the saved pid') && type.eql?("collection"))
     pid = @collection_pid ? @collection_pid : @pid
   elsif (pid.eql?('the saved pid') && type.eql?("object"))
     pid = @pid if pid.eql?('the saved pid')
   end
   visit path_for(type, page, pid)
+  end
 end
 
 When /^(?:|I )follow the link to (.+)$/ do |link_name|
-  if Capybara.current_driver == Capybara.javascript_driver
-    page.find_link(link_to_id(link_name)).trigger('click')
-  else
-    page.find_link(link_to_id(link_name)).click
+  patiently do
+    if Capybara.current_driver == Capybara.javascript_driver
+      page.find_link(link_to_id(link_name)).trigger('click')
+    else
+      page.find_link(link_to_id(link_name)).click
+    end
   end
 end
 
@@ -116,13 +126,17 @@ end
 # - it ignores overlaping <a> elements and just fires the click
 # event on the selected element.
 When /^(?:|I )click the link to (.+)$/ do |link_name|
-  element = page.find(:id, link_to_id(link_name))
-  element.trigger('click')
+  patiently do
+    element = page.find(:id, link_to_id(link_name))
+    element.trigger('click')
+  end
 end
 
 When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
-  with_scope(selector) do
-    click_link(link)
+  patiently do
+    with_scope(selector) do
+      click_link(link)
+    end
   end
 end
 
@@ -160,7 +174,9 @@ end
 
 When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|
   title ||= "A Test Object"
-  interface.enter_valid_metadata(title)
+  patiently do
+    interface.enter_valid_metadata(title)
+  end
 end
 
 When /^I enter invalid metadata(?: with title "(.*?)")?$/ do |title|
@@ -179,7 +195,9 @@ When /^I enter valid "(sound|text)" metadata$/ do |type|
 end
 
 When /^I enter modified metadata$/ do
-  interface.enter_modified_metadata
+  patiently do
+    interface.enter_modified_metadata
+  end
 end
 
 When /^I enter valid licence information for licence "(.*?)" into the new licence form$/ do |name|
@@ -228,7 +246,9 @@ end
 
 Then /^I press "(.*?)"$/ do |button|
   Capybara.ignore_hidden_elements = false
-  click_link_or_button(button)
+  patiently do
+    click_link_or_button(button)
+  end
 end
 
 Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|
@@ -237,12 +257,14 @@ end
 
 Then /^(?:|I )press the button to "([^"]*)"(?: within "([^"]*)")?$/ do |button,selector|
   Capybara.ignore_hidden_elements = false
-  if selector
-    within("//*[@id='#{selector}']") do
-      page.find_button(button_to_id(button)).click
+  patiently do
+    if selector
+      within("//*[@id='#{selector}']") do
+        page.find_button(button_to_id(button)).click
+      end
+    else
+      page.find_button(button_to_id(button), {visible: false}).click
     end
-  else
-    page.find_button(button_to_id(button), {visible: false}).click
   end
 end
 
@@ -382,7 +404,9 @@ Then /^I should see the error "([^\"]*)"$/ do |error|
 end
 
 Then /^I should( not)? see the message "([^\"]*)"$/ do |negate, message|
-  negate ? (page.should_not have_selector ".dri_messages_container", text: message) : (page.should have_selector ".dri_messages_container", text: message)
+  patiently do
+    negate ? (expect(page).to_not have_selector ".dri_messages_container", text: message) : (expect(page).to have_selector ".dri_messages_container", text: message)
+  end
 end
 
 Then /^I should (not )?see an element "([^"]*)"$/ do |negate, selector|

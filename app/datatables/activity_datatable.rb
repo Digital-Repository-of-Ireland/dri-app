@@ -1,5 +1,5 @@
 class ActivityDatatable
-  delegate :params, :h, :link_to, :catalog_path, to: :@view
+  delegate :params, :h, :link_to, :catalog_path, :object_file_path, to: :@view
 
   def initialize(view)
     @view = view
@@ -19,9 +19,15 @@ private
     display_on_page.map do |version|
       update = update_info(version)
 
+      if update[:type] == "object"
+        link = catalog_path(update[:updated_id])
+      else
+        link = update[:batch_id].present? ? object_file_path(update[:batch_id], update[:updated_id]) : ''
+      end
+
       [
         update[:updated_at],
-        link_to(update[:updated_id], catalog_path(update[:updated_id])),
+        link_to(update[:updated_id], link),
         update[:type],
         link_to(update[:collection_title], catalog_path(update[:collection_id])),
         update[:committer],
@@ -35,7 +41,7 @@ private
   end
 
   def fetch_versions
-    versions = VersionCommitter.order("#{sort_column} #{sort_direction}")
+    versions = VersionCommitter.where('created_at >= ?', 1.week.ago).order("#{sort_column} #{sort_direction}")
     if params[:search][:value].present?
       versions = versions.where("committer_login like :search or created_at like :search", search: "%#{params[:search][:value]}%")
     end
@@ -98,6 +104,7 @@ private
       if doc
         parent_id = doc['isPartOf_ssim'].first
         parent = solr_doc_for_id(parent_id)
+        info[:batch_id] = parent_id
         info[:collection_id] = parent['collection_id_tesim'].first
         info[:collection_title] = parent['collection_tesim'].first
       else
