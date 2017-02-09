@@ -220,8 +220,9 @@ class InstitutesController < ApplicationController
       if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
         solr_query = "#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
       end
-      solr_query = solr_query + "#{ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string)}:\"" + institute + "\" AND " +
-          "#{ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string)}:Collection"
+      solr_query = solr_query + 
+                 "#{ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string)}:\"" + institute.downcase + 
+                 "\" AND " + "#{ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string)}:Collection"
 
       solr_query
     end
