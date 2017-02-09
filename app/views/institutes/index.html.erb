@@ -4,7 +4,7 @@
     <% style='not_first' unless i == 0 %>
     <% collection_count = @collections[institute.id].count %>
     <div class="dri_collection_institutes_pages <%= style %>">
-      <% institute_browse_params[:f] = { Solrizer.solr_name('institute', :facetable, type: :string).to_sym => [institute[:name].to_s.html_safe] } %>
+      <% institute_browse_params[:f] = { ActiveFedora.index_field_mapper.solr_name('institute', :facetable, type: :string).to_sym => [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
       <%= link_to main_app.catalog_index_path(institute_browse_params) do %>
           <div class="dri_collection_institutes_pages_img">
             <%= image_tag logo_url(institute), alt: institute[:name].to_s.html_safe if institute.brand %>
