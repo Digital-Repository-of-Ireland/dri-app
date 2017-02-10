@@ -93,6 +93,7 @@ DriApp::Application.routes.draw do
 
     match '/privacy' => 'static_pages#privacy', :via => :get
     match '/workspace' => 'workspace#index', :via => :get
+    match '/workspace/facet/:id' => 'workspace#facet', :via => :get
     match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
 
     get 'surrogates/:id' => 'surrogates#show', :as => :surrogates
