@@ -180,10 +180,10 @@ class AssetsController < ApplicationController
     )
     result_docs = Solr::Query.new(solr_query)
     result_docs.each_solr_document do |doc|
-      if doc.published?
+      #if doc.published?
         item = list_files_with_surrogates(doc)
         @list << item unless item.empty?
-      end
+      #end
     end
 
     raise DRI::Exceptions::NotFound if @list.empty?

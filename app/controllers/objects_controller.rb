@@ -72,7 +72,7 @@ class ObjectsController < BaseObjectsController
 
     version = @object.object_version || 1
     @object.object_version = version.to_i + 1
-    
+
     unless @object.update_attributes(update_params)
       purge_params
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
@@ -210,7 +210,7 @@ class ObjectsController < BaseObjectsController
         docs.each do |doc|
           solr_doc = SolrDocument.new(doc)
 
-          next unless solr_doc.published?
+          #next unless solr_doc.published?
 
           item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
             i = solr_doc.extract_metadata(params[:metadata])
