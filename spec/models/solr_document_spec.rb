@@ -1,8 +1,11 @@
-require "spec_helper"
+require "rails_helper"
 
 describe SolrDocument do
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     @collection = FactoryGirl.create(:collection)
     @subcollection = FactoryGirl.create(:collection)
     @object = FactoryGirl.create(:sound)
@@ -35,6 +38,8 @@ describe SolrDocument do
     @collection.delete
     @institute.delete
     @dinstitute.delete
+
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   context "when retrieving the depositing institute" do

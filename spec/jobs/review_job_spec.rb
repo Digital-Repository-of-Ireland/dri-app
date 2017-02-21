@@ -15,6 +15,9 @@ describe "ReviewJob" do
   end
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     @login_user = FactoryGirl.create(:collection_manager)
 
     @collection = FactoryGirl.create(:collection)
@@ -40,6 +43,8 @@ describe "ReviewJob" do
     @collection.delete
 
     @login_user.delete
+
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
   
   describe "run" do
