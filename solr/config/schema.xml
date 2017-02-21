@@ -163,6 +163,8 @@
     <field name="cdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
     <!-- Published date dateRange field -->
     <field name="pdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
+    <!-- date dateRange field -->
+    <field name="ddateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
     <!-- Subject (temporal) dateRange field -->
     <field name="sdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
     <!-- geospatial stores any dcterms:Point or dcterms:Box values from the metadata -->
@@ -359,15 +361,8 @@
     </fieldType>
   
     <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
-    
-    <!-- dateRange field will be updated to the DateRangeField Solr field type that will be available in Solr 5 -->
-    <!-- distErrPct="0" (no approximation); maxDistErr="1" (as data represents whole years)-->
-    <fieldType name="dateRange" class="solr.SpatialRecursivePrefixTreeFieldType"
-      geo="false"
-      worldBounds="-9999 -9999 9999 9999"
-      distErrPct="0"
-      maxDistErr="1"
-      distanceUnits="degrees"/>
+   
+    <fieldType name="dateRange" class="solr.DateRangeField"/> 
   </types>
   
 </schema>
