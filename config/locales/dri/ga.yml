@@ -71,6 +71,7 @@ ga:
       dri: DRI
     data: 
       types: 
+        all: Gach 
         Image: Íomhá
         MixedType: Ilchineálach
         MovingImage: Físeán
@@ -332,7 +333,7 @@ ga:
             no_collections: "Bailiúchán Ar Bith"
         forms: 
           access_controls: "Rialuithe Rochtana"
-          all_objects_in_collection: "Gach Oibiacht sa mBailiúchán seo"
+          all_objects_in_collection: "Oibiacht sa mBailiúchán seo"
           audio: 
             duration: "Fad ama"
             file_size: "Méid Comhaid"
