@@ -228,14 +228,15 @@ class CatalogController < ApplicationController
   # Get Timeline data if view is Timeline
   def index
     (@response, @document_list) = search_results(params, search_params_logic)
-
+    
     if params[:view].present? && params[:view].include?('timeline')
       queried_date = ''
       if params[:year_from].present? && params[:year_to].present?
         queried_date = "#{params[:year_from]} #{params[:year_to]}"
       end
-      res = create_timeline_data(@document_list, queried_date)
-      @timeline_data = res.to_json
+      timeline = Timeline.new(view_context)
+      @filtered_list = @document_list.reject { |document| !can?(:read, document[:id]) }
+      @timeline_data = timeline.data(@filtered_list, queried_date)
     end
 
     respond_to do |format|
@@ -277,7 +278,7 @@ class CatalogController < ApplicationController
     solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
     if user_parameters[:mode] == 'collections'
       solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"
-      unless user_parameters[:show_subs].eql?('true')
+      unless user_parameters[:show_subs] == 'true'
         solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
       end
     else
@@ -353,10 +354,8 @@ class CatalogController < ApplicationController
 
   # If querying temporal_coverage, then query the Solr date range field for Subject(Temporal)
   # (sdateRange) as opposed to querying by temporal_coverage String
-  # Query: sdateRange:["-9999 #{start_date_year - 0.5}" TO "#{end_date_year + 0.5} 9999\"]
+  # Query: sdateRange:["[#{start_date TO #{end_date}]"]"
   # the Solr field for subject temporal date ranges stores a pair of (start_year end_year)
-  # the lower and upper boundaries for this field are -9999 and 9999 respectively, to cover
-  # BC Years - this will be properly documented!!
   #
   def subject_temporal_filter(solr_parameters, user_parameters)
     # Find index of the facet temporal_coverage_sim
@@ -372,9 +371,9 @@ class CatalogController < ApplicationController
 
       solr_parameters[:fq][temporal_idx].split(/\s*;\s*/).each do |component|
         (k, v) = component.split(/\s*=\s*/)
-        if k.eql?('start')
+        if k == 'start'
           start_date = v
-        elsif k.eql?('end')
+        elsif k == 'end'
           end_date = v
         end
       end
@@ -385,7 +384,7 @@ class CatalogController < ApplicationController
         begin
           sdate_str = ISO8601::DateTime.new(start_date).year
           edate_str = ISO8601::DateTime.new(end_date).year
-          # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits
+          
           solr_parameters[:fq][temporal_idx] = "sdateRange:[#{sdate_str} TO #{edate_str}]"
         rescue ISO8601::Errors::StandardError
         end
