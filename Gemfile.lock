@@ -205,6 +205,9 @@ GEM
       blacklight (~> 5.15)
       jquery-rails
       rails (>= 3.0, < 5.0)
+    bootstrap-glyphicons (0.0.1)
+      railties (>= 3.0)
+      sass (>= 3.2)
     bootstrap-sass (3.3.5)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
@@ -877,6 +880,7 @@ DEPENDENCIES
   blacklight (~> 5.16.0)
   blacklight-maps
   blacklight_range_limit
+  bootstrap-glyphicons
   bootstrap-sass
   bootstrap-switch-rails
   browse-everything!
