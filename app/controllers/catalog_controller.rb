@@ -25,9 +25,9 @@ class CatalogController < ApplicationController
   before_action :modify_user_parameters, only: :index
 
   # This applies appropriate access controls to all solr queries
-  CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
+  CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  CatalogController.solr_search_params_logic += [:search_date_dange, :subject_temporal_filter, :subject_place_filter, :exclude_unwanted_models]
+  CatalogController.search_params_logic += [:search_date_dange, :subject_temporal_filter, :subject_place_filter, :exclude_unwanted_models]
 
   configure_blacklight do |config|
     config.per_page = [9, 18, 36]
@@ -73,14 +73,16 @@ class CatalogController < ApplicationController
     #
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
-    config.add_facet_field "sdateRange", label: 'Subject (Temporal)', partial: 'custom_date_range'
+    #config.add_facet_field "sdateRange", label: 'Subject (Temporal)', date: true #partial: 'custom_date_range'
 
+    config.add_facet_field 'cdate_year_iim', label: 'Creation Date', limit: 20
+    config.add_facet_field 'pdate_year_iim', label: 'Published Date', limit: 20
     config.add_facet_field solr_name('subject', :facetable), limit: 20
+    config.add_facet_field solr_name('temporal_coverage_eng', :facetable), label: 'Subject (Temporal)', limit: 20, show: true
     config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, limit: 20
     config.add_facet_field solr_name('placename_field', :facetable), label: 'Placename', show: false
     config.add_facet_field solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
     config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: false
-    #config.add_facet_field solr_name('temporal_coverage_eng', :facetable), limit: 20, show: true
     config.add_facet_field solr_name('person', :facetable), limit: 20
     config.add_facet_field solr_name('language', :facetable), helper_method: :label_language, limit: true
     config.add_facet_field solr_name('file_type_display', :facetable)
@@ -121,6 +123,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true, helper_method: :parse_era
     config.add_show_field solr_name('publisher', :stored_searchable), label: 'publishers'
     config.add_show_field solr_name('published_date', :stored_searchable), label: 'published_date', date: true, helper_method: :parse_era
+    config.add_show_field solr_name('date', :stored_searchable), label: 'date', date: true, helper_method: :parse_era
     config.add_show_field solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
     config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), label: 'geographical_coverage'
     config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), label: 'temporal_coverage'
@@ -225,14 +228,15 @@ class CatalogController < ApplicationController
   # Get Timeline data if view is Timeline
   def index
     (@response, @document_list) = search_results(params, search_params_logic)
-
+    
     if params[:view].present? && params[:view].include?('timeline')
       queried_date = ''
       if params[:year_from].present? && params[:year_to].present?
         queried_date = "#{params[:year_from]} #{params[:year_to]}"
       end
-      res = create_timeline_data(@document_list, queried_date)
-      @timeline_data = res.to_json
+      timeline = Timeline.new(view_context)
+      @filtered_list = @document_list.reject { |document| !can?(:read, document[:id]) }
+      @timeline_data = timeline.data(@filtered_list, queried_date)
     end
 
     respond_to do |format|
@@ -274,7 +278,7 @@ class CatalogController < ApplicationController
     solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
     if user_parameters[:mode] == 'collections'
       solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"
-      unless user_parameters[:show_subs].eql?('true')
+      unless user_parameters[:show_subs] == 'true'
         solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
       end
     else
@@ -350,10 +354,8 @@ class CatalogController < ApplicationController
 
   # If querying temporal_coverage, then query the Solr date range field for Subject(Temporal)
   # (sdateRange) as opposed to querying by temporal_coverage String
-  # Query: sdateRange:["-9999 #{start_date_year - 0.5}" TO "#{end_date_year + 0.5} 9999\"]
+  # Query: sdateRange:["[#{start_date TO #{end_date}]"]"
   # the Solr field for subject temporal date ranges stores a pair of (start_year end_year)
-  # the lower and upper boundaries for this field are -9999 and 9999 respectively, to cover
-  # BC Years - this will be properly documented!!
   #
   def subject_temporal_filter(solr_parameters, user_parameters)
     # Find index of the facet temporal_coverage_sim
@@ -369,9 +371,9 @@ class CatalogController < ApplicationController
 
       solr_parameters[:fq][temporal_idx].split(/\s*;\s*/).each do |component|
         (k, v) = component.split(/\s*=\s*/)
-        if k.eql?('start')
+        if k == 'start'
           start_date = v
-        elsif k.eql?('end')
+        elsif k == 'end'
           end_date = v
         end
       end
@@ -382,8 +384,8 @@ class CatalogController < ApplicationController
         begin
           sdate_str = ISO8601::DateTime.new(start_date).year
           edate_str = ISO8601::DateTime.new(end_date).year
-          # In the query, start_date -0.5 and end_date+0.5 are used to include edge cases where the queried dates fall in the range limits
-          solr_parameters[:fq][temporal_idx] = "sdateRange:[\"-9999 #{(sdate_str.to_i - 0.5).to_s}\" TO \"#{(edate_str.to_i + 0.5).to_s} 9999\"]"
+          
+          solr_parameters[:fq][temporal_idx] = "sdateRange:[#{sdate_str} TO #{edate_str}]"
         rescue ISO8601::Errors::StandardError
         end
       end
@@ -410,7 +412,7 @@ class CatalogController < ApplicationController
   end
 
   def search_date_dange(solr_parameters, user_parameters)
-    if !user_parameters[:f].nil? && !user_parameters[:f]['sdateRange'].nil?
+    if user_parameters[:f].present? && user_parameters[:f]['sdateRange'].present?
       solr_parameters[:fq] ||= []
       # Assign facet filter contraint text (we don't want to show ugly Solr query)
       # user_parameters[:f]["sdateRange"] = user_parameters[:year_from] == user_parameters[:year_to] ?
@@ -423,7 +425,7 @@ class CatalogController < ApplicationController
       solr_parameters[:fq].each.with_index do |f_elem, idx|
         date_idx = idx if f_elem.include?("sdateRange")
       end
-      query = "sdateRange:[\"-9999 #{(user_parameters[:year_from].to_i - 0.5).to_s}\" TO \"#{(user_parameters[:year_to].to_i + 0.5).to_s} 9999\"]"
+      query = "sdateRange:[#{user_parameters[:year_from]} TO #{user_parameters[:year_to]}]"
 
       if date_idx.nil?
         solr_parameters[:fq] << query
@@ -437,7 +439,7 @@ class CatalogController < ApplicationController
   # in the solr_search_params_logic filter methods are not being persisted
   #
   def modify_user_parameters
-    if !params[:f].nil? && !params[:f]['sdateRange'].nil?
+    if params[:f].present? && params[:f]['sdateRange'].present?
       # Assign facet filter contraint text (we don't want to show ugly Solr query)
       params[:f]['sdateRange'] = if params[:year_from] == params[:year_to]
                                    ["#{params[:year_from]}"]

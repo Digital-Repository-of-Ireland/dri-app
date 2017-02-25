@@ -3,6 +3,9 @@ require 'rails_helper'
 feature 'Deleting a single object' do
   
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     @login_user = FactoryGirl.create(:admin)
 
     visit new_user_session_path
@@ -13,6 +16,7 @@ feature 'Deleting a single object' do
 
   after(:each) do
     @login_user.delete
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   scenario 'unable to delete a published object' do

@@ -203,104 +203,13 @@
         http://wiki.apache.org/solr/SpellCheckComponent
      -->
   <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-
-    <str name="queryAnalyzerFieldType">textSpell</str>
-
-    <!-- Multiple "Spell Checkers" can be declared and used by this
-         component
-      -->
-
-    <!-- a spellchecker built from a field of the main index, and
-         written to disk
-      -->
     <lst name="spellchecker">
-      <str name="name">default</str>
+      <str name="classname">solr.IndexBasedSpellChecker</str>
+      <str name="spellcheckIndexDir">./spellchecker</str>
       <str name="field">spell</str>
-      <str name="spellcheckIndexDir">./spell</str>
-      <str name="buildOnOptimize">true</str>
-    </lst>
-    <lst name="spellchecker">
-      <str name="name">author</str>
-      <str name="field">author_spell</str>
-      <str name="spellcheckIndexDir">./spell_author</str>
-      <str name="accuracy">0.7</str>
-      <str name="buildOnOptimize">true</str>
-    </lst>
-    <lst name="spellchecker">
-      <str name="name">subject</str>
-      <str name="field">subject_spell</str>
-      <str name="spellcheckIndexDir">./spell_subject</str>
-      <str name="accuracy">0.7</str>
-      <str name="buildOnOptimize">true</str>
-    </lst>
-    <lst name="spellchecker">
-      <str name="name">title</str>
-      <str name="field">title_spell</str>
-      <str name="spellcheckIndexDir">./spell_title</str>
-      <str name="accuracy">0.7</str>
-      <str name="buildOnOptimize">true</str>
-    </lst>
-
-    <!-- a spellchecker that uses a different distance measure -->
-    <!--
-       <lst name="spellchecker">
-         <str name="name">jarowinkler</str>
-         <str name="field">spell</str>
-         <str name="distanceMeasure">
-           org.apache.lucene.search.spell.JaroWinklerDistance
-         </str>
-         <str name="spellcheckIndexDir">spellcheckerJaro</str>
-       </lst>
-     -->
-
-    <!-- a spellchecker that use an alternate comparator 
-
-         comparatorClass be one of:
-          1. score (default)
-          2. freq (Frequency first, then score)
-          3. A fully qualified class name
-      -->
-    <!--
-       <lst name="spellchecker">
-         <str name="name">freq</str>
-         <str name="field">lowerfilt</str>
-         <str name="spellcheckIndexDir">spellcheckerFreq</str>
-         <str name="comparatorClass">freq</str>
-         <str name="buildOnCommit">true</str>
-      -->
-
-    <!-- A spellchecker that reads the list of words from a file -->
-    <!--
-       <lst name="spellchecker">
-         <str name="classname">solr.FileBasedSpellChecker</str>
-         <str name="name">file</str>
-         <str name="sourceLocation">spellings.txt</str>
-         <str name="characterEncoding">UTF-8</str>
-         <str name="spellcheckIndexDir">spellcheckerFile</str>
-       </lst>
-      -->
-  </searchComponent>
-
-  <searchComponent name="suggest" class="solr.SuggestComponent">
-    <lst name="suggester">
-      <str name="name">mySuggester</str>
-      <str name="lookupImpl">FuzzyLookupFactory</str>
-      <str name="suggestAnalyzerFieldType">textSuggest</str>
-      <str name="buildOnCommit">true</str>
-      <str name="field">suggest</str>
+      <str name="buildOnCommit">false</str>
     </lst>
   </searchComponent>
-
-  <requestHandler name="/suggest" class="solr.SearchHandler" startup="lazy">
-    <lst name="defaults">
-      <str name="suggest">true</str>
-      <str name="suggest.count">5</str>
-      <str name="suggest.dictionary">mySuggester</str>
-    </lst>
-    <arr name="components">
-      <str>suggest</str>
-    </arr>
-  </requestHandler>
 
   <requestHandler name="/update/extract" class="org.apache.solr.handler.extraction.ExtractingRequestHandler">
     <lst name="defaults">

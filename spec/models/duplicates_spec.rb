@@ -1,8 +1,17 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'DRI::Solr::Document::Collection' do
   include DRI::MetadataBehaviour
   
+  before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+  end
+
+  after(:each) do
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
+  end
+
   before(:each) do
     @collection = FactoryGirl.create(:collection)
    

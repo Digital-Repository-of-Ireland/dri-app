@@ -336,10 +336,11 @@ class AssetsController < ApplicationController
     end
 
     def file_path(object_id, file_id, surrogate)
+      base_name = File.basename(surrogate, ".*" )
       storage = StorageService.new
       storage.surrogate_url(
         object_id, 
-        "#{file_id}_#{surrogate}"
+        "#{file_id}_#{base_name}"
       )
     end
 

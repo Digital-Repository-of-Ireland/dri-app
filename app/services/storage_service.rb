@@ -1,6 +1,7 @@
 class StorageService
   def initialize
-    driver_class = "Storage::#{Settings.storage.driver.camelcase}".constantize
+    driver = Settings.storage.nil? ? 's3_interface' : Settings.storage.driver
+    driver_class = "Storage::#{driver.camelcase}".constantize
     @driver = driver_class.new
   end
 

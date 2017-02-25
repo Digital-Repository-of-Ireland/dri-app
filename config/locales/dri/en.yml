@@ -71,6 +71,7 @@ en:
       dri: DRI
     data: 
       types: 
+        all: All
         Image: Image
         MixedType: "Mixed Types"
         MovingImage: Video
@@ -332,7 +333,7 @@ en:
             no_collections: "No collections"
         forms: 
           access_controls: "Access Controls"
-          all_objects_in_collection: "All Objects in this Collection"
+          all_objects_in_collection: "Objects in this Collection"
           audio: 
             duration: Duration
             file_size: "Asset Size"

@@ -49,3 +49,4 @@ app/assets/stylesheets/dri/*
 fakes3
 dump.rdb
 .project
+fcrepo4-test-data/

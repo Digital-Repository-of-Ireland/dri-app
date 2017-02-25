@@ -6,7 +6,7 @@ ActiveFedora::Noid.class_eval do
 
   def self.treeify(identifier)
     id = identifier.split('/').first
-    (id.scan(/..?/).first(4) + [identifier]).join('/')
+    (id.scan(/..?/).first(4) + [identifier]).join('/') unless id.nil?
   end
 
 end
