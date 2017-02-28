@@ -9,7 +9,7 @@
           <option value="<%= inst %>"><%= inst %></option>
         <% end %>
       <% end %>
-      
+
       <% if @depositing_institute %>
         <option value="<%= @depositing_institute.name %>" selected="selected">
         	<%= @depositing_institute.name %>
@@ -57,7 +57,12 @@
     $('option', select).remove();
     options[0] = new Option("<%= t('dri.views.collection.institute.not_set') %>", "not_set");   
 
+    <% if @depositors %>
+      var depositors = <%= raw(@depositors) %>
+    <% end %>
+
     if(orgs) {
+      orgs = intersect(orgs,depositors)
       $.each(orgs, function(val, text) {
         options[options.length] = new Option(text, text);
       });
@@ -78,4 +83,13 @@
     	$("associate_institute input[type=submit]").removeAttr('disabled');
     }
   });
+
+
+  function intersect(a, b) {
+    var t;
+    if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+    return a.filter(function (e) {
+        return b.indexOf(e) > -1;
+    });
+  }
 </script>

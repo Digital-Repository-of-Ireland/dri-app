@@ -298,6 +298,8 @@ class CatalogController < ApplicationController
     # the Depositing Institute if any
     @depositing_institute = @document.depositing_institute
 
+    @depositors = Institute.where(depositing: true).map { |item| item['name'] }
+
     institutes_array = []
     collection_institutes_array = []
     depositing_institute_array = []

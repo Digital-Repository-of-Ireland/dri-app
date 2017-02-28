@@ -454,6 +454,8 @@ en:
             admin: "My Collections"
             public: Collections
         institute: 
+          buttons:
+            save: "Create Organisation"
           add: "Add Additional Organisations"
           are_you_sure: "Are you sure you need a new Organisation?"
           associate: "Add Organisation"
