@@ -5,8 +5,8 @@ source 'http://rubygems.org'
 
 gem 'rails','~> 4.2'
 
-gem 'blacklight', '~> 5.16.0'
-gem 'blacklight_range_limit'
+gem 'blacklight', '~> 5.19.0'
+#gem 'blacklight_range_limit'
 gem 'blacklight-maps'
 gem 'hydra-head', '9.10'
 
@@ -69,6 +69,7 @@ gem 'high_voltage', '~> 2.1.0'
 # is it working fork
 gem 'is_it_working-cbeer'
 gem 'honeybadger', '~> 2.0'
+gem 'resque', '1.26'
 gem 'resque-status'
 
 gem 'sass-rails' , '~> 4.0.4'
@@ -134,7 +135,7 @@ gem 'unicorn'
 gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
-gem 'bootstrap-sass' #, '~> 3.3.4'
+gem 'bootstrap-sass', '~> 3.2'
 gem 'bootstrap-glyphicons'
 gem 'yard'
 
