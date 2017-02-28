@@ -25,11 +25,11 @@
 
     <% elsif generic_file.pdf? %>
         <% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
-        <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
-        <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "lightbox_format") unless @surrogate_colorbox %>
+        <% @surrogate_pdf = surrogate_url(document.id, generic_file.id, "pdf") %>
+        <% @title = generic_file.label %>
         <% if @surrogate %>
-            <%= link_to @surrogate_colorbox, :class => 'dri_gallery group1' do %>
-                <img class="dri_carousel_img" src="<%= @surrogate %>">
+            <%= link_to '', :'data-target' => '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :id => "view_pdf" do %>
+              <img class="dri_carousel_img" src="<%= @surrogate %>">
             <% end %>
         <% end %>
 
@@ -72,6 +72,5 @@
           <% end %>
         </p>
     <% end %>
-
 <% end %>
 
