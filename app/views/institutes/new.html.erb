@@ -41,7 +41,7 @@
             <label><%= t('dri.views.collection.institute.form.depositing') %></label>
             <%= f.check_box :depositing %>
           <% end %>
-          <%= f.submit t('dri.views.collection.institute.add'), :id => 'add_institute', :class=>'dri_button_green' %>
+          <%= f.submit t('dri.views.collection.institute.buttons.save'), :id => 'add_institute', :class=>'dri_button_green' %>
           <% end %>
           <%= form_for(@inst, url: organisations_path) do |f| %>
           <%= f.submit t('dri.views.objects.links.cancel'), :class=>'btn dri_grey_button' %>
