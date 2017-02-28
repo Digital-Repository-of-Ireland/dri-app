@@ -47,7 +47,6 @@ gem 'mimemagic'
 # Language and translation related gems
 gem 'http_accept_language'
 gem 'it'
-gem 'titleize'
 
 # logging
 gem 'syslog-logger'
@@ -136,6 +135,7 @@ gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
 gem 'bootstrap-sass' #, '~> 3.3.4'
+gem 'bootstrap-glyphicons'
 gem 'yard'
 
 group :translations do

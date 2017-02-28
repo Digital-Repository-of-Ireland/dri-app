@@ -5,9 +5,6 @@
      as well as the default schema file included with Solr -->
   
   <uniqueKey>id</uniqueKey>
-
-  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
-  <solrQueryParser defaultOperator="OR"/>
   
   <fields>
     <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
@@ -157,7 +154,7 @@
     <dynamicField name="*_llsim" type="location" stored="true" indexed="true" multiValued="true"/>
 
     <dynamicField name="*_unstem_search" type="text_general" indexed="true" stored="false" multiValued="true" />
-    <dynamicField name="*spell" type="textSpell" indexed="true" stored="false" multiValued="true" />
+    <dynamicField name="*spell" type="textSpell" indexed="true" stored="true" multiValued="true" />
 
     <!-- you must define copyField source and dest fields explicity or schemaBrowser doesn't work -->
     <field name="all_text_timv" type="text" stored="false" indexed="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true"/>
@@ -166,12 +163,13 @@
     <field name="cdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
     <!-- Published date dateRange field -->
     <field name="pdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
+    <!-- date dateRange field -->
+    <field name="ddateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
     <!-- Subject (temporal) dateRange field -->
     <field name="sdateRange" type="dateRange" stored="true" indexed="true" multiValued="true" />
     <!-- geospatial stores any dcterms:Point or dcterms:Box values from the metadata -->
     <field name="geospatial" type="location_rpt" stored="true" indexed="true" multiValued="true" />
-    <dynamicField name="*suggest" type="textSuggest" indexed="true" stored="false" multiValued="true" />
-   </fields>
+  </fields>
   
   <!-- Above, multiple source fields are copied to the [text] field.
       Another way to map multiple source fields to the same
@@ -196,26 +194,19 @@
    <!-- spellcheck fields -->
    <!-- default spell check;  should match fields for default request handler -->
    <!-- it won't work with a copy of a copy field -->
-   <copyField source="*_tesim" dest="spell"/>
-   <copyField source="*_sim" dest="spell"/>
-   <!-- title spell check;  should match fields for title request handler -->
-   <copyField source="title_tesim" dest="title_spell"/>
+   <copyField source="title_tesim" dest="spell"/>
    <!-- author spell check; should match fields for author request handler -->
-   <copyField source="author_tesim" dest="author_spell"/>
-   <copyField source="person_tesim" dest="person_spell"/>
-   <copyField source="person_sim" dest="person_spell" />
+   <copyField source="person_tesim" dest="spell"/>
 
    <!-- subject spell check; should match fields for subject request handler -->
-   <copyField source="subject_tesim" dest="subject_spell"/>
-   <copyField source="geographical_coverage_tesim" dest="geographical_coverage_spell"/>
-   <copyField source="geographical_coverage_sim" dest="geographical_coverage_spell" />
+   <copyField source="subject_tesim" dest="spell"/>
+   <copyField source="description_tesim" dest="spell"/>
+   <copyField source="placename_field_tesim" dest="spell"/>
+   <copyField source="geographical_coverage_eng_tesim" dest="spell" />
 
    <defaultSearchField>text</defaultSearchField>
 
-    <copyField source="*_tesim" dest="suggest"/>
-    <copyField source="*_ssim" dest="suggest"/>
-
-  <types>
+   <types>
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>    
     <fieldType name="rand" class="solr.RandomSortField" omitNorms="true"/>
@@ -369,26 +360,9 @@
       </analyzer>
     </fieldType>
   
-    <fieldType class="solr.TextField" name="textSuggest" positionIncrementGap="100">
-      <analyzer>
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
-        <filter class="solr.StandardFilterFactory"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
-      </analyzer>
-    </fieldType>
-    
- 
     <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
-    
-    <!-- dateRange field will be updated to the DateRangeField Solr field type that will be available in Solr 5 -->
-    <!-- distErrPct="0" (no approximation); maxDistErr="1" (as data represents whole years)-->
-    <fieldType name="dateRange" class="solr.SpatialRecursivePrefixTreeFieldType"
-      geo="false"
-      worldBounds="-9999 -9999 9999 9999"
-      distErrPct="0"
-      maxDistErr="1"
-      distanceUnits="degrees"/>
+   
+    <fieldType name="dateRange" class="solr.DateRangeField"/> 
   </types>
   
 </schema>

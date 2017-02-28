@@ -50,7 +50,7 @@ module DRI
           fields = metadata_fields || DEFAULT_METADATA_FIELDS
 
           fields.each do |field|
-            value = if field.eql?('isGovernedBy')
+            value = if field == 'isGovernedBy'
                       self[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable, type: :symbol)]
                     else
                       self[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable)]

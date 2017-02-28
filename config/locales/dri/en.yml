@@ -71,6 +71,7 @@ en:
       dri: DRI
     data: 
       types: 
+        all: All
         Image: Image
         MixedType: "Mixed Types"
         MovingImage: Video
@@ -332,7 +333,7 @@ en:
             no_collections: "No collections"
         forms: 
           access_controls: "Access Controls"
-          all_objects_in_collection: "All Objects in this Collection"
+          all_objects_in_collection: "Objects in this Collection"
           audio: 
             duration: Duration
             file_size: "Asset Size"
@@ -616,7 +617,7 @@ en:
       objects: 
         access_controls: 
           accessible_master_file: "Allow access to a system-generated surrogate version and the original uploaded master file(s)"
-          alert: "Set an appropriate licence for this level of read access."
+          alert: "Set an appropriate licence for this level of access."
           date: "Date: "
           description: "Here you can set access permissions for your collections and objects."
           edit_collection: "Who can edit in this collection / sub-collection?"

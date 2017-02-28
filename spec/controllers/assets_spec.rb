@@ -257,6 +257,9 @@ describe AssetsController do
         Settings.reload_from_files(
           Rails.root.join(fixture_path, "settings-ro.yml").to_s
         )
+        @tmp_assets_dir = Dir.mktmpdir
+        Settings.dri.files = @tmp_assets_dir
+
         @login_user = FactoryGirl.create(:admin)
         sign_in @login_user
         @object = FactoryGirl.create(:sound) 
@@ -267,7 +270,8 @@ describe AssetsController do
       after(:each) do
         @object.delete if ActiveFedora::Base.exists?(@object.id)
         @login_user.delete
-
+        
+        FileUtils.remove_dir(@tmp_assets_dir, force: true)
         Settings.reload_from_files(
           Rails.root.join("config", "settings.yml").to_s
         )
