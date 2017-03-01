@@ -55,7 +55,6 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-cookie-rails'
 gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
-
 gem 'remotipart'
 
 # clients
@@ -152,7 +151,7 @@ gem 'rvm'
 gem 'colorbox-rails'
 gem 'bootstrap-switch-rails'
 gem 'videojs_rails', git: 'https://github.com/ekilfeather/videojs_rails.git', ref: '605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd'
-gem 'timelineJS-rails', '~> 1.1.5'
+gem 'timelineJS3-rails', git: 'https://github.com/podemos-info/timelineJS3-rails.git'
 gem 'openlayers-rails'
 gem 'social-share-button'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'

@@ -61,9 +61,18 @@
 }
 /* Timeline Override */
 
-.vco-feature h3 {
-    font-size: 1.2em;
-    line-height: 1.2em;
+.tl-text-content-container {
+  h2.tl-headline {
+    font-size: 1.2em !important;
+    line-height: 1.2em !important;
+  }
+  a {
+    color: $dri_greytext;
+    &:hover {
+      color: $dri_green;
+      text-decoration: none;
+    }
+  }
 }
 /* Homepage carousel Controls */
 
