@@ -1,23 +1,20 @@
 <% valid_object_count = timeline_count(params) %>
-<%= javascript_include_tag "https://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js" %>
 
 <% if valid_object_count > 0 && valid_object_count < 100 %>
+     <div id="dri_timeline_id" style="height:450px">
+        <div id="time_line" ></div>
+    </div>
+
     <script>
         $(document).ready(function() {
             var tlwidth = $('#dri_timeline_id').width();
-            createStoryJS({
-                type: 'timeline',
-                width: tlwidth,
-                height: '450',
-                source: <%= @timeline_data.html_safe %>,
-                embed_id: 'time_line'
-            });
-        });
-    </script>
-    <div id="dri_timeline_id">
-            <div id="time_line" ></div>
-    </div>
 
+            var additionalOptions = {
+              width: tlwidth,
+            }
+            window.timeline = new TL.Timeline('time_line', <%= @timeline_data.html_safe %>);   
+        });
+    </script
 <% elsif valid_object_count > 0 && valid_object_count > 100 %>
     <h4>
     <!-- TRANSLATE -->

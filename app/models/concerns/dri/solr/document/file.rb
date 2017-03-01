@@ -29,6 +29,10 @@ module DRI::Solr::Document::File
     self[key].present? && self[key] == ['true'] ? true : false
   end
 
+  def label
+    self['label_tesim'].present? ? self['label_tesim'].first : ''
+  end 
+
   def mime_type
     mime_key = 'characterization__mime_type_tesim'
     self[mime_key].present? ? self[mime_key].first : nil

@@ -6,44 +6,54 @@ class Timeline
   end
   
   def data(response, queried_date = '')
-    timeline_data = { timeline: { type: 'default', date: [] } }
+    timeline_data = { title: {}, events: [] }
 
     if response.blank?
-      timeline_data[:timeline][:headline] = I18n.t('dri.application.timeline.headline.no_results')
-      timeline_data[:timeline][:text] = I18n.t('dri.application.timeline.description.no_results')
+      timeline_data[:title][:text] = {}
+      timeline_data[:title][:text][:headline] = I18n.t('dri.application.timeline.headline.no_results')
+      timeline_data[:title][:text][:text] = I18n.t('dri.application.timeline.description.no_results')
     elsif response.size > 120
-      timeline_data[:timeline][:headline] = I18n.t('dri.application.timeline.headline.too_many_results')
-      timeline_data[:timeline][:text] = I18n.t('dri.application.timeline.description.too_many_results')
+      timeline_data[:title][:text] = {}
+      timeline_data[:title][:text][:headline] = I18n.t('dri.application.timeline.headline.too_many_results')
+      timeline_data[:title][:text][:text] = I18n.t('dri.application.timeline.description.too_many_results')
     else
-      timeline_data[:timeline][:headline] = I18n.t('dri.application.timeline.headline.results_found')
-      timeline_data[:timeline][:text] = I18n.t('dri.application.timeline.description.results_found')
+      timeline_data[:title][:text] = {}
+      timeline_data[:title][:text][:headline] = I18n.t('dri.application.timeline.headline.results_found')
+      timeline_data[:title][:text][:text] = I18n.t('dri.application.timeline.description.results_found')
 
+      timeline_data[:events] = []
       response.each_with_index do |document, index|
         document_date = nil
         document = document.symbolize_keys
         unless document[:sdateRange].nil?
           document_date = full_date(document[:temporal_coverage_tesim], queried_date)
-          document_date = document[:sdateRange].first if document_date.empty?
+          document_date = document[:sdateRange].first if document_date.nil?
         end
-
-        timeline_data[:timeline][:date][index] = {}
 
         title_key = ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym
         description_key = ActiveFedora.index_field_mapper.solr_name('description', :stored_searchable, type: :string).to_sym
 
-        if document_date
-          timeline_data[:timeline][:date][index][:startDate] = document_date.split(' ')[0]
-          timeline_data[:timeline][:date][index][:endDate] = document_date.split(' ')[1]
+        if document_date.present?
+          start = document_date[0]
+          end_date = document_date[1]
+          event = {}
+          event[:text] = {}
 
-          timeline_data[:timeline][:date][index][:headline] = '<a href="' + catalog_path(document[:id]) + '">' + document[title_key].first + '</a>'
-          timeline_data[:timeline][:date][index][:text] = document[description_key].first.truncate(60, separator: ' ')
-          timeline_data[:timeline][:date][index][:asset] = {}
-          timeline_data[:timeline][:date][index][:asset][:media] = image(document)
-          timeline_data[:timeline][:date][index][:asset][:thumbnail] = image(document)
+          event[:start_date] = { year: start.year, month: start.month, day: start.day }
+          event[:end_date] = { year: end_date.year, month: end_date.month, day: end_date.day }
+
+          event[:text][:headline] = '<a href="' + catalog_path(document[:id]) + '">' + document[title_key].first + '</a>'
+          event[:text][:text] = document[description_key].first.truncate(60, separator: ' ')
+          event[:media] = {}
+          event[:media][:url] = image(document)
+          event[:media][:thumbnail] = image(document)
+
+          timeline_data[:events] << event
         end
       end # for-each
     end
 
+    puts timeline_data.to_json
     timeline_data.to_json
   end
 
@@ -85,15 +95,15 @@ class Timeline
         date_to = date_from if date_to.empty?
 
         begin
-          sdate_str = ISO8601::DateTime.new(date_from).year
-          edate_str = ISO8601::DateTime.new(date_to).year
+          sdate_str = ISO8601::DateTime.new(date_from)
+          edate_str = ISO8601::DateTime.new(date_to)
 
           if queried_date.empty?
-            result_date = "#{ISO8601::DateTime.new(date_from).strftime("%m/%d/%Y")} #{ISO8601::DateTime.new(date_to).strftime("%m/%d/%Y")}"
+            result_date = [ISO8601::DateTime.new(date_from), ISO8601::DateTime.new(date_to)]
             break
           else
-            if overlaps?(year_from, sdate_str, year_to, edate_str)
-              result_date = "#{ISO8601::DateTime.new(date_from).strftime("%m/%d/%Y")} #{ISO8601::DateTime.new(date_to).strftime("%m/%d/%Y")}"
+            if overlaps?(year_from, sdate_str.year, year_to, edate_str.year)
+              result_date = [ISO8601::DateTime.new(date_from), ISO8601::DateTime.new(date_to)]
               break
             end
           end

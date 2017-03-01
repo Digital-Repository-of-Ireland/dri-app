@@ -37,5 +37,6 @@
 //= require jquery-xmleditor
 //= require openseadragon
 //= require spin
+//= require timelineJS3
 //= require dri/
 
