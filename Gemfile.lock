@@ -22,13 +22,6 @@ GIT
     videojs_rails (4.11.4)
 
 GIT
-  remote: https://github.com/podemos-info/timelineJS3-rails.git
-  revision: d86e2dacabaf79a7297a5cc4d3ae407f4cb700a8
-  specs:
-    timelineJS3-rails (1.0.3)
-      jquery-rails
-
-GIT
   remote: https://github.com/stkenny/browse-everything.git
   revision: 5da5e0f5f872988ca6101ba6d210c278d71d1237
   branch: s3_provider
@@ -58,6 +51,13 @@ GIT
   branch: form_upload
   specs:
     jquery-xmleditor-rails (0.1.0)
+
+GIT
+  remote: https://github.com/stkenny/timelineJS3-rails.git
+  revision: 0bfee2ac3254fe133cfee0794537fb5cf2f9b1db
+  specs:
+    timelineJS3-rails (1.0.3)
+      jquery-rails
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git

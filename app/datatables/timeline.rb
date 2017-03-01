@@ -53,7 +53,6 @@ class Timeline
       end # for-each
     end
 
-    puts timeline_data.to_json
     timeline_data.to_json
   end
 
@@ -84,9 +83,9 @@ class Timeline
       next unless DRI::Metadata::Transformations.dcmi_period?(date)
       date.split(/\s*;\s*/).each do |component|
         (k, v) = component.split(/\s*=\s*/)
-        if k.eql?('start')
+        if k == 'start'
           date_from = v
-        elsif k.eql?('end')
+        elsif k == 'end'
           date_to = v
         end
       end
