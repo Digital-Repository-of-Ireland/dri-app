@@ -1,60 +1,52 @@
 <div class="dri_object_first_block">
-	<div class="dri_object_title_top">
-		<%= document_heading %>
-	</div>
-	<div class="dri_border_bottom">
-		&nbsp;
-	</div>
-
-	<dl class="dri_object_metadata_readview">
-		<% document_show_fields.each do |solr_fname, field| -%>
-		<% if should_render_show_field? document, field %>
-		<dt class="blacklight-<%= solr_fname.parameterize %>">
-			<%= render_document_show_field_label :field => solr_fname %>
-		</dt>
-		<dd class="blacklight-<%= solr_fname.parameterize %>">
-			<%= render_document_show_field_value :document => document, :field => solr_fname %>
-		</dd>
-		<% end -%>
-		<% end -%>
-
-		<dt class="blacklight-depositing_institute">
-			<%= t('dri.views.fields.depositing_institute') %>
-		</dt>
-		<dd class="blacklight-depositing_institute">
-			<% if (@depositing_institute) %>
-			<% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { Solrizer.solr_name('institute', :facetable).to_sym => [@depositing_institute[:name]] } } %>
-			<%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
-			<% else %>
-        <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', class: 'dri_manage_org_link' do %>
-			    <span class="label label-danger"><%= t('dri.views.fields.depositing_institute_not_set') %></span>
-			  <% end %>
-			<% end %>
-		</dd>
-	</dl>
-
+  <div class="dri_object_title_top">
+    <%= document_heading %>
+  </div>
+  <div class="dri_border_bottom">
+    &nbsp;
+  </div>
+  <dl class="dri_object_metadata_readview">
+    <% document_show_fields.each do |solr_fname, field| -%>
+    <% if should_render_show_field? document, field %>
+    <dt class="blacklight-<%= solr_fname.parameterize %>">
+      <%= render_document_show_field_label :field => solr_fname %>
+    </dt>
+    <dd class="blacklight-<%= solr_fname.parameterize %>">
+      <%= render_document_show_field_value :document => document, :field => solr_fname %>
+    </dd>
+    <% end -%>
+    <% end -%>
+    <dt class="blacklight-depositing_institute">
+      <%= t('dri.views.fields.depositing_institute') %>
+    </dt>
+    <dd class="blacklight-depositing_institute">
+      <% if (@depositing_institute) %>
+      <% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { Solrizer.solr_name('institute', :facetable).to_sym => [@depositing_institute[:name]] } } %>
+      <%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
+      <% else %>
+      <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', class: 'dri_manage_org_link' do %>
+      <span class="label label-danger"><%= t('dri.views.fields.depositing_institute_not_set') %></span>
+      <% end %>
+      <% end %>
+    </dd>
+  </dl>
 </div>
-
 <!-- close dri_object_first_block -->
-
 <div class="dri_object_second_block">
-	<div class="dri_sidenav_top">
-		<%= link_back_to_catalog %>
-	</div>
-	<% if @document.cover_image %>
-	<div class="dri_vc_image hidden-xs">
-		<%= image_tag(cover_image_path(@document), :alt=> t('dri.views.alt_tags.cover_image') ) %>
-	</div>
-	<% end %>
-
-	<% objectsCount = count_items_in_collection document[:id] %>
-	<%= render :partial => "show_collection_navigation_tools", :locals => {:document => document, :objectsCount => objectsCount} %>
-	<%= render :partial => "tools", :locals => {:document => document} %>
-
-	<% if signed_in? && (can? :manage_collection, document) %>
-	<%= render :partial => "catalog/show_collection_editor_tools", :locals => {:document => document} %>
-
-	<% end %>
-
+  <div class="dri_sidenav_top">
+    <%= link_back_to_catalog %>
+  </div>
+  <% if @document.cover_image %>
+  <div class="dri_vc_image hidden-xs">
+    <%= image_tag(cover_image_path(@document), :alt=> t('dri.views.alt_tags.cover_image') ) %>
+  </div>
+  <% end %>
+  <% objectsCount = count_items_in_collection document[:id] %>
+  <%= render :partial => "show_collection_navigation_tools", :locals => {:document => document, :objectsCount => objectsCount} %>
+  <%= render :partial => "tools", :locals => {:document => document} %>
+  <% if signed_in? && (can? :manage_collection, document) %>
+  <%= render :partial => "catalog/show_collection_manager_tools", :locals => {:document => document} %>
+  <% elsif signed_in? && (can? :edit, document) %>
+  <%= render :partial => "catalog/show_collection_editor_tools", :locals => {:document => document} %>
+  <% end %>
 </div>
-
