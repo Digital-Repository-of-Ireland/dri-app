@@ -624,7 +624,7 @@ en:
           date: "Date: "
           description: "Here you can set access permissions for your collections and objects."
           edit_collection: "Who can edit in this collection / sub-collection?"
-          edit_desc: "Enter the email addresses of edit users below. These permissions will not be applied until these email addresses have been registered for DRI accounts."
+          edit_desc: "Enter the email addresses of Edit Users below. An Edit User is an authorised user who can ingest content into collections to which they have access. These permissions will not be applied until these email addresses have been registered for DRI accounts."
           edit_object: "Who can edit this object"
           embargo: Embargo
           inherit: "Inherit this setting from the parent collection"
@@ -633,7 +633,7 @@ en:
             public: "surrogates and uploaded originals"
           inherited_setting: "Curently set to %{inherited_setting}"
           manage: "Who can manage this collection?"
-          manager_desc: "Enter the email addresses of manager users below. These permissions will not be applied until these email addresses have been registered for DRI accounts."
+          manager_desc: "Enter the email addresses of Manager Users below. A Manager User is an authorised user who can create and edit collections which are assigned to them by Organisational Manager. These permissions will not be applied until these email addresses have been registered for DRI accounts."
           master_file: "Which asset files can they access?"
           metadata: "Access settings affect the asset files that you upload excluding preservation-only files. All metadata will be publicly accessible regardless of what settings you select here. "
           page: "Page Access"
