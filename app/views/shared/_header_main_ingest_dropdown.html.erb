@@ -1,5 +1,5 @@
 <% if (controller.controller_name.eql?('collections') && controller.action_name.eql?('new')) ||
-controller.controller_name.eql?('workspace') || controller_name.eql?('manage_users') || (controller.controller_name.eql?('institutes') && controller.action_name.eql?('new')) || controller.controller_name.eql?('user_background_tasks') %>
+controller_name.eql?('manage_users') || (controller.controller_name.eql?('institutes') && controller.action_name.eql?('new')) || controller.controller_name.eql?('user_background_tasks') %>
   <li class="dropdown active dri_dropdown visible-sm visible-md visible-lg">
 <% else %>
   <li class="dropdown dri_dropdown visible-sm visible-md visible-lg">
@@ -8,14 +8,6 @@ controller.controller_name.eql?('workspace') || controller_name.eql?('manage_use
   <a href="#" id="dri_manage_id" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><%= t('dri.headerlinks.manage') %> <span class="caret"></span></a>
 
   <ul class="dropdown-menu" role="menu">
-    <% if (controller.controller_name.eql?('workspace')) %>
-      <li role="presentation" class="active">
-    <% else %>
-      <li role="presentation">
-    <% end %>
-      <%= link_to t('dri.headerlinks.my_collections'), workspace_path(:mode => "collections"), :id => "my_collections", :tabindex => "-1" %>
-    </li>
-
     <% if tasks? %>
       <% if (controller.controller_name.eql?('user_background_tasks')) %>
         <li role="presentation" class="active">
