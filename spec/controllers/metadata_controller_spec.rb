@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe MetadataController do
   include Devise::Test::ControllerHelpers
@@ -6,6 +6,9 @@ describe MetadataController do
   describe 'update' do
 
     before(:each) do
+      @tmp_assets_dir = Dir.mktmpdir
+      Settings.dri.files = @tmp_assets_dir
+
       @login_user = FactoryGirl.create(:admin)
       sign_in @login_user
 
@@ -17,6 +20,8 @@ describe MetadataController do
     after(:each) do
       @login_user.delete
       @object.delete
+
+      FileUtils.remove_dir(@tmp_assets_dir, force: true)
     end
 
     it 'should update an object with a valid metadata file' do
@@ -61,6 +66,9 @@ describe MetadataController do
         Settings.reload_from_files(
           Rails.root.join(fixture_path, "settings-ro.yml").to_s
         )
+        @tmp_assets_dir = Dir.mktmpdir
+        Settings.dri.files = @tmp_assets_dir
+
         @login_user = FactoryGirl.create(:admin)
         sign_in @login_user
         @object = FactoryGirl.create(:sound) 
@@ -75,6 +83,8 @@ describe MetadataController do
         Settings.reload_from_files(
           Rails.root.join("config", "settings.yml").to_s
         )
+
+        FileUtils.remove_dir(@tmp_assets_dir, force: true)
       end
 
     it 'should not update an object' do

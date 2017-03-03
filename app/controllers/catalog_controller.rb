@@ -27,7 +27,7 @@ class CatalogController < ApplicationController
   # This applies appropriate access controls to all solr queries
   CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  CatalogController.search_params_logic += [:search_date_dange, :subject_temporal_filter, :subject_place_filter, :exclude_unwanted_models]
+  CatalogController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models]
 
   configure_blacklight do |config|
     config.per_page = [9, 18, 36]
@@ -78,11 +78,10 @@ class CatalogController < ApplicationController
     config.add_facet_field 'cdate_year_iim', label: 'Creation Date', limit: 20
     config.add_facet_field 'pdate_year_iim', label: 'Published Date', limit: 20
     config.add_facet_field solr_name('subject', :facetable), limit: 20
-    config.add_facet_field solr_name('temporal_coverage_eng', :facetable), label: 'Subject (Temporal)', limit: 20, show: true
+    config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: true
     config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, limit: 20
     config.add_facet_field solr_name('placename_field', :facetable), label: 'Placename', show: false
     config.add_facet_field solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
-    config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: false
     config.add_facet_field solr_name('person', :facetable), limit: 20
     config.add_facet_field solr_name('language', :facetable), helper_method: :label_language, limit: true
     config.add_facet_field solr_name('file_type_display', :facetable)
@@ -230,13 +229,9 @@ class CatalogController < ApplicationController
     (@response, @document_list) = search_results(params, search_params_logic)
     
     if params[:view].present? && params[:view].include?('timeline')
-      queried_date = ''
-      if params[:year_from].present? && params[:year_to].present?
-        queried_date = "#{params[:year_from]} #{params[:year_to]}"
-      end
       timeline = Timeline.new(view_context)
       @filtered_list = @document_list.reject { |document| !can?(:read, document[:id]) }
-      @timeline_data = timeline.data(@filtered_list, queried_date)
+      @timeline_data = timeline.data(@filtered_list)
     end
 
     respond_to do |format|
@@ -353,47 +348,7 @@ class CatalogController < ApplicationController
       @status[file_id] = { status: status.status }
     end
   end
-
-  # If querying temporal_coverage, then query the Solr date range field for Subject(Temporal)
-  # (sdateRange) as opposed to querying by temporal_coverage String
-  # Query: sdateRange:["[#{start_date TO #{end_date}]"]"
-  # the Solr field for subject temporal date ranges stores a pair of (start_year end_year)
-  #
-  def subject_temporal_filter(solr_parameters, user_parameters)
-    # Find index of the facet temporal_coverage_sim
-    # if present then modify query to target sdateRange Solr field
-    temporal_idx = nil
-    solr_parameters[:fq].each.with_index do |f_elem, idx|
-      temporal_idx = idx if f_elem.include?('temporal_coverage')
-    end
-
-    unless temporal_idx.nil?
-      start_date = ''
-      end_date = ''
-
-      solr_parameters[:fq][temporal_idx].split(/\s*;\s*/).each do |component|
-        (k, v) = component.split(/\s*=\s*/)
-        if k == 'start'
-          start_date = v
-        elsif k == 'end'
-          end_date = v
-        end
-      end
-
-      unless start_date == '' # If date is formatted in DCMI Period, then use the date range Solr field query
-        end_date = start_date if end_date == ''
-
-        begin
-          sdate_str = ISO8601::DateTime.new(start_date).year
-          edate_str = ISO8601::DateTime.new(end_date).year
-          
-          solr_parameters[:fq][temporal_idx] = "sdateRange:[#{sdate_str} TO #{edate_str}]"
-        rescue ISO8601::Errors::StandardError
-        end
-      end
-    end
-  end
-
+  
   # If querying geographical_coverage, then query the Solr geospatial field
   #
   def subject_place_filter(solr_parameters, user_parameters)
@@ -412,45 +367,11 @@ class CatalogController < ApplicationController
       end
     end
   end
-
-  def search_date_dange(solr_parameters, user_parameters)
-    if user_parameters[:f].present? && user_parameters[:f]['sdateRange'].present?
-      solr_parameters[:fq] ||= []
-      # Assign facet filter contraint text (we don't want to show ugly Solr query)
-      # user_parameters[:f]["sdateRange"] = user_parameters[:year_from] == user_parameters[:year_to] ?
-      # ["#{user_parameters[:year_from]}"] :
-      # ["#{user_parameters[:year_from]} - #{user_parameters[:year_to]}"]
-
-      # Check whether parameters already contain a date range filter, then get the index of :fq for update
-      date_idx = nil
-
-      solr_parameters[:fq].each.with_index do |f_elem, idx|
-        date_idx = idx if f_elem.include?("sdateRange")
-      end
-      query = "sdateRange:[#{user_parameters[:year_from]} TO #{user_parameters[:year_to]}]"
-
-      if date_idx.nil?
-        solr_parameters[:fq] << query
-      else
-        solr_parameters[:fq][date_idx] = query
-      end
-    end # if
-  end # search_date_dange
-
+  
   # Workaround for search_date_dange: BL 5.10 user_parameters being modified
   # in the solr_search_params_logic filter methods are not being persisted
   #
   def modify_user_parameters
-    if params[:f].present? && params[:f]['sdateRange'].present?
-      # Assign facet filter contraint text (we don't want to show ugly Solr query)
-      params[:f]['sdateRange'] = if params[:year_from] == params[:year_to]
-                                   ["#{params[:year_from]}"]
-                                 else
-                                   ["#{params[:year_from]} - #{params[:year_to]}"]
-                                 end
-
-    end
-
     if params[:view].present? && params[:view].include?('timeline')
       params[:per_page] = '100'
     elsif params[:per_page].present? && params[:per_page].to_i > 36

@@ -2,6 +2,8 @@ module TimelineHelper
   include ActionView::Helpers::TextHelper
 
   def timeline_count(params)
+    return 0 if @timeline_data.nil?
+    
     query = data_query(params)
     ActiveFedora::SolrService.count(query[:q], fq: query[:fq], defType: 'edismax')
   end
