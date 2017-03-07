@@ -1,26 +1,22 @@
 class Timeline
-  delegate :asset_path, :catalog_path, :cover_image_path, :object_file_path, to: :@view
+  include ApplicationHelper
+
+  delegate :can?, :asset_url, :asset_path, :catalog_path, :cover_image_path, :object_file_path, to: :@view
 
   def initialize(view)
     @view = view
   end
   
   def data(response)
-    timeline_data = { title: {}, events: [] }
-
+    timeline_data = {}
+    timeline_data[:events] = []
+        
     if response.blank?
+      timeline_data[:title] = {}
       timeline_data[:title][:text] = {}
       timeline_data[:title][:text][:headline] = I18n.t('dri.application.timeline.headline.no_results')
       timeline_data[:title][:text][:text] = I18n.t('dri.application.timeline.description.no_results')
-    elsif response.size > 120
-      timeline_data[:title][:text] = {}
-      timeline_data[:title][:text][:headline] = I18n.t('dri.application.timeline.headline.too_many_results')
-      timeline_data[:title][:text][:text] = I18n.t('dri.application.timeline.description.too_many_results')
     else
-      timeline_data[:title][:text] = {}
-      timeline_data[:title][:text][:headline] = I18n.t('dri.application.timeline.headline.results_found')
-      timeline_data[:title][:text][:text] = I18n.t('dri.application.timeline.description.results_found')
-
       timeline_data[:events] = []
       response.each_with_index do |document, index|
         document_date = nil
@@ -54,10 +50,12 @@ class Timeline
       end # for-each
     end
 
-    timeline_data[:events].empty? ? nil : timeline_data.to_json
+    timeline_data.to_json
   end
 
   def image(document)
+    return default_image(file_doc) unless can?(:read, document)
+
     rel_key = ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)
 
     files_query = "#{rel_key}:\"#{document[:id]}\""
@@ -103,70 +101,6 @@ class Timeline
     end
 
     result_date
-  end
- 
-  def search_image(document, file_document, image_name = 'crop16_9_width_200_thumbnail.jpg')
-    path = nil
-    file_type_key = ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)
-
-    unless file_document[file_type_key].blank?
-      format = file_document[file_type_key].first
-      case format
-      when 'image'
-        path = surrogate_url(document[:id], file_document.id, image_name)
-      when 'text'
-        path = surrogate_url(document[:id], file_document.id, 'thumbnail_medium.jpg')
-      end
-    end
-
-    path
-  end
-
-  def default_image(file_document)
-    path = 'assets/no_image.png'
-    file_type_key = ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)
-
-    unless file_document.nil?
-      unless file_document[file_type_key].blank?
-        format = file_document[file_type_key].first
-
-        path = asset_path("dri/formats/#{format}.png")
-        path = asset_path('no_image.png') if Rails.application.assets.find_asset(path).nil?
-      end
-    end
-
-    path
-  end
-
-  def cover_image(document)
-    path = nil
-    cover_image_key = ActiveFedora.index_field_mapper.solr_name('cover_image', :stored_searchable, type: :string).to_sym
-    root_col_key = ActiveFedora.index_field_mapper.solr_name('root_collection', :stored_searchable, type: :string).to_sym
-
-    if document[cover_image_key] && document[cover_image_key].first
-      path = cover_image_url(SolrDocument.new(document))
-    elsif !document[root_col_key].blank?
-      collection = root_collection_solr_tm(document)
-      if collection[cover_image_key] && collection[cover_image_key].first
-        path = cover_image_path(SolrDocument.new(collection))
-      end
-    end
-
-    path
-  end
-
-  def root_collection_solr_tm(doc)
-    root_col_key = ActiveFedora.index_field_mapper.solr_name('root_collection', :stored_searchable, type: :string).to_sym
-    root_col_id_key = ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
-
-    if doc[root_col_key]
-      id = doc[root_col_id_key][0]
-      solr_query = "id:#{id}"
-      collection = ActiveFedora::SolrService.query(solr_query, defType: 'edismax', rows: '1')
-      return collection[0]
-    end
-
-    nil
   end
 
   def surrogate_url(doc, file_doc, name)

@@ -10,7 +10,6 @@ class CatalogController < ApplicationController
   # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
   include Hydra::AccessControlsEnforcement
 
-  include TimelineHelper
   include DRI::Readable
 
   # This method shows the DO if the metadata is open
@@ -22,12 +21,14 @@ class CatalogController < ApplicationController
   before_action :enforce_search_for_show_permissions, only: :show
 
   # Workaround to user_parameters not being persisted in search_params_filter
-  before_action :modify_user_parameters, only: :index
+  #before_action :modify_user_parameters, only: :index
 
   # This applies appropriate access controls to all solr queries
   CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  CatalogController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models]
+  CatalogController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
+
+  MAX_TIMELINE_ENTRIES = 50
 
   configure_blacklight do |config|
     config.per_page = [9, 18, 36]
@@ -227,11 +228,10 @@ class CatalogController < ApplicationController
   # Get Timeline data if view is Timeline
   def index
     (@response, @document_list) = search_results(params, search_params_logic)
-    
+
     if params[:view].present? && params[:view].include?('timeline')
       timeline = Timeline.new(view_context)
-      @filtered_list = @document_list.reject { |document| !can?(:read, document[:id]) }
-      @timeline_data = timeline.data(@filtered_list)
+      @timeline_data = timeline.data(@document_list)
     end
 
     respond_to do |format|
@@ -282,6 +282,22 @@ class CatalogController < ApplicationController
         solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\""
       end
     end
+  end
+
+  def configure_timeline(solr_parameters, user_parameters)
+    if user_parameters[:view] == 'timeline'
+      solr_parameters[:fq] << "+sdateRange:*"
+      solr_parameters[:sort] = "sdate_range_start_isi asc"
+      solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
+
+      if params[:tl_page].present? && params[:tl_page].to_i > 1
+        solr_parameters[:start] = MAX_TIMELINE_ENTRIES * (params[:tl_page].to_i - 1)
+      else
+        solr_parameters[:start] = 0
+      end
+    else
+      params.delete(:tl_page)
+    end  
   end
 
   # method to find the Institutes associated with and available to add to or remove from the current collection (document)
@@ -365,17 +381,6 @@ class CatalogController < ApplicationController
       if coordinates.present?
         solr_parameters[:fq][geographical_idx] = "geospatial:\"Intersects(#{coordinates})\""
       end
-    end
-  end
-  
-  # Workaround for search_date_dange: BL 5.10 user_parameters being modified
-  # in the solr_search_params_logic filter methods are not being persisted
-  #
-  def modify_user_parameters
-    if params[:view].present? && params[:view].include?('timeline')
-      params[:per_page] = '100'
-    elsif params[:per_page].present? && params[:per_page].to_i > 36
-      params[:per_page] = '9'
     end
   end
 end

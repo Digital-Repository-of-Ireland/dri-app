@@ -2,48 +2,53 @@
 <nav id="dri_display_grid_table_id" class="dri_sort_nav">
 	<% changeViewParams = params.clone %>
 	<div class="dri_change_sort_view" id="dri_change_sort_view_id" data-content="<%= t('dri.help.dri_change_sort_view') %>"  data-original-title="<%= t('dri.help.dri_change_sort_view_title')%>" data-trigger="hover" data-placement="top">
+		
 		<% if params[:view] == "grid" %>
-		<i class="fa fa-th fa-lg dri_icon_border"></i>
-		<% changeViewParams[:view] = "list" %>
-		<%= link_to changeViewParams, :id => 'table_view' do %><i class="fa fa-list fa-lg dri_icon_border"></i><% end %>
-		<% if params[:controller] == 'catalog' %>
-		<% changeViewParams[:view] = "timeline" %>
-		<%= link_to changeViewParams, :id => 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %>
-		<% changeViewParams[:view] = "maps" %>
-		<%= link_to changeViewParams, :id => 'maps_view' do %><i class="fa fa-map-marker fa-lg dri_icon_border"></i><% end %>
-		<% end %>
+		  <i class="fa fa-th fa-lg dri_icon_border"></i>
+		  <% changeViewParams[:view] = "list" %>
+		  <%= link_to changeViewParams, :id => 'table_view' do %><i class="fa fa-list fa-lg dri_icon_border"></i><% end %>
+		  <% if params[:controller] == 'catalog' %>
+		    <% changeViewParams[:view] = "timeline" %>
+		    <%= link_to changeViewParams, :id => 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %>
+		    <% changeViewParams[:view] = "maps" %>
+		    <%= link_to changeViewParams, :id => 'maps_view' do %><i class="fa fa-map-marker fa-lg dri_icon_border"></i><% end %>
+		  <% end %>
+		
 		<% elsif params[:view] == "list" %>
-		<% changeViewParams[:view] = "grid" %>
-		<%= link_to changeViewParams , :id => 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>
-		<% changeViewParams[:view] = "list" %>
-		<i class="fa fa-list fa-lg dri_icon_border"></i>
-		<% if params[:controller] == 'catalog' %>
-		<% changeViewParams[:view] = "timeline" %>
-		<%= link_to changeViewParams, :id => 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %>
-		<% changeViewParams[:view] = "maps" %>
-
-		<%= link_to changeViewParams, :id => 'maps_view' do %><i class="fa fa-map-marker fa-lg dri_icon_border"></i><% end %>
-
-		<% end %>
+		  <% changeViewParams[:view] = "grid" %>
+		  <%= link_to changeViewParams , :id => 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>
+		  <% changeViewParams[:view] = "list" %>
+		  <i class="fa fa-list fa-lg dri_icon_border"></i>
+		  <% if params[:controller] == 'catalog' %>
+		    <% changeViewParams[:view] = "timeline" %>
+		    <%= link_to changeViewParams, :id => 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %>
+		    <% changeViewParams[:view] = "maps" %>
+		    <%= link_to changeViewParams, :id => 'maps_view' do %><i class="fa fa-map-marker fa-lg dri_icon_border"></i><% end %>
+		  <% end %>
+		
 		<% elsif params[:view] == "timeline" %>
-		<% changeViewParams[:view] = "grid" %>
-		<%= link_to changeViewParams , :id => 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>
-		<% changeViewParams[:view] = "list" %>
-		<%= link_to changeViewParams, :id => 'table_view' do %><i class="fa fa-list fa-lg dri_icon_border"></i><% end %>
-		<% if params[:controller] == 'catalog' %>
-		<i class="fa fa-clock-o fa-lg dri_icon_border"></i>
-		<% changeViewParams[:view] = "maps" %>
-		<%= link_to changeViewParams, :id => 'maps_view' do %><i class="fa fa-map-marker fa-lg dri_icon_border"></i><% end %>
-		<% end %>
+		  <% changeViewParams.delete(:direction) %>
+		  <% changeViewParams.delete(:tl_page) %>
+		  
+		  <% changeViewParams[:view] = "grid" %>
+		  <%= link_to changeViewParams , :id => 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>
+		  <% changeViewParams[:view] = "list" %>
+		  <%= link_to changeViewParams, :id => 'table_view' do %><i class="fa fa-list fa-lg dri_icon_border"></i><% end %>
+		  <% if params[:controller] == 'catalog' %>
+		    <i class="fa fa-clock-o fa-lg dri_icon_border"></i>
+		    <% changeViewParams[:view] = "maps" %>
+		    <%= link_to changeViewParams, :id => 'maps_view' do %><i class="fa fa-map-marker fa-lg dri_icon_border"></i><% end %>
+		  <% end %>
+		
 		<% elsif params[:view] == "maps" %>
-		<% changeViewParams[:view] = "grid" %>
-		<%= link_to changeViewParams , :id => 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>
-		<% changeViewParams[:view] = "list" %>
-		<%= link_to changeViewParams, :id => 'table_view' do %><i class="fa fa-list fa-lg dri_icon_border"></i><% end %>
-		<% if params[:controller] == 'catalog' %>
-		<% changeViewParams[:view] = "timeline" %>
-		<%= link_to changeViewParams, :id => 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %> <i class="fa fa-map-marker fa-lg dri_icon_border"></i>
-		<% end %>
+		  <% changeViewParams[:view] = "grid" %>
+		  <%= link_to changeViewParams , :id => 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>
+		  <% changeViewParams[:view] = "list" %>
+		  <%= link_to changeViewParams, :id => 'table_view' do %><i class="fa fa-list fa-lg dri_icon_border"></i><% end %>
+		  <% if params[:controller] == 'catalog' %>
+		    <% changeViewParams[:view] = "timeline" %>
+		    <%= link_to changeViewParams, :id => 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %> <i class="fa fa-map-marker fa-lg dri_icon_border"></i>
+		  <% end %>
 		<% end %>
 	</div>
 </nav>
