@@ -8,15 +8,6 @@ controller_name.eql?('manage_users') || (controller.controller_name.eql?('instit
   <a href="#" id="dri_manage_id" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><%= t('dri.headerlinks.manage') %> <span class="caret"></span></a>
 
   <ul class="dropdown-menu" role="menu">
-    <% if tasks? %>
-      <% if (controller.controller_name.eql?('user_background_tasks')) %>
-        <li role="presentation" class="active">
-      <% else %>
-        <li role="presentation">
-      <% end %>
-      <%= link_to t('dri.headerlinks.my_tasks'), user_tasks_path, id: "tasks" %>
-    <% end %>
-
     <% if signed_in? && (current_user.is_cm? || current_user.is_om? || current_user.is_admin? || @collections.count > 0 ) %>
 
       <% if (controller.controller_name.eql?('collections') && controller.action_name.eql?('new')) %>
@@ -36,7 +27,6 @@ controller_name.eql?('manage_users') || (controller.controller_name.eql?('instit
 
     <% end %>
 
-
     <% if signed_in? && current_user.is_om? %>
       <% if controller.controller_name.eql?('manage_users') %>
         <li role="presentation" class="active">
@@ -45,6 +35,15 @@ controller_name.eql?('manage_users') || (controller.controller_name.eql?('instit
       <% end %>
       <%= link_to t('dri.headerlinks.manage_users'), main_app.manage_users_path, :tabindex => "-1" %>
     </li>
+    <% end %>
+
+     <% if tasks? %>
+      <% if (controller.controller_name.eql?('user_background_tasks')) %>
+        <li role="presentation" class="active">
+      <% else %>
+        <li role="presentation">
+      <% end %>
+      <%= link_to t('dri.headerlinks.my_tasks'), user_tasks_path, id: "tasks" %>
     <% end %>
 
   </ul>

@@ -3,6 +3,8 @@ class UserBackgroundTask < ActiveRecord::Base
 
   paginates_per 10
 
+  scope :available, ->{ where("name <> 'nil'") }
+
   def update
     return if %w(completed failed killed).include?(self.status)
 
