@@ -29,6 +29,7 @@
 		<% elsif params[:view] == "timeline" %>
 		  <% changeViewParams.delete(:direction) %>
 		  <% changeViewParams.delete(:tl_page) %>
+		  <% changeViewParams.delete(:tl_field) %>
 		  
 		  <% changeViewParams[:view] = "grid" %>
 		  <%= link_to changeViewParams , :id => 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>

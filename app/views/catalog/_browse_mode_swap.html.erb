@@ -6,6 +6,7 @@
 			<% initialSub = copySearchParams[:show_subs] %>
 			<% copySearchParams.delete(:page) %>
 			<% copySearchParams.delete(:tl_page) %>
+			<% copySearchParams.delete(:tl_field) %>
 			<% copySearchParams.delete(:direction) %>
 
 			<% if params[:mode] == 'collections' %>

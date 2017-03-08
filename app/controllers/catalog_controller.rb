@@ -230,8 +230,9 @@ class CatalogController < ApplicationController
     (@response, @document_list) = search_results(params, search_params_logic)
 
     if params[:view].present? && params[:view].include?('timeline')
+      tl_field = params[:tl_field].presence || 'sdate'
       timeline = Timeline.new(view_context)
-      @timeline_data = timeline.data(@document_list)
+      @timeline_data = timeline.data(@document_list, tl_field)
     end
 
     respond_to do |format|
@@ -286,8 +287,18 @@ class CatalogController < ApplicationController
 
   def configure_timeline(solr_parameters, user_parameters)
     if user_parameters[:view] == 'timeline'
-      solr_parameters[:fq] << "+sdateRange:*"
-      solr_parameters[:sort] = "sdate_range_start_isi asc"
+      case user_parameters[:tl_field]
+      when 'sdate'
+        solr_parameters[:fq] << "+sdateRange:*"
+        solr_parameters[:sort] = "sdate_range_start_isi asc"
+      when 'cdate'
+        solr_parameters[:fq] << "+cdateRange:*"
+        solr_parameters[:sort] = "cdate_range_start_isi asc"
+      when 'pdate'
+        solr_parameters[:fq] << "+pdateRange:*"
+        solr_parameters[:sort] = "pdate_range_start_isi asc"
+      end
+
       solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
 
       if params[:tl_page].present? && params[:tl_page].to_i > 1
@@ -297,6 +308,7 @@ class CatalogController < ApplicationController
       end
     else
       params.delete(:tl_page)
+      params.delete(:tl_field)
     end  
   end
 

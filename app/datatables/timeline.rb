@@ -7,7 +7,7 @@ class Timeline
     @view = view
   end
   
-  def data(response)
+  def data(response, tl_field)
     timeline_data = {}
     timeline_data[:events] = []
         
@@ -19,20 +19,16 @@ class Timeline
     else
       timeline_data[:events] = []
       response.each_with_index do |document, index|
-        document_date = nil
         document = document.symbolize_keys
-
-        if document[:sdateRange].present?
-          document_date = full_date(document[:temporal_coverage_tesim])
-          document_date = document[:sdateRange].first if document_date.nil?
-        end
 
         title_key = ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym
         description_key = ActiveFedora.index_field_mapper.solr_name('description', :stored_searchable, type: :string).to_sym
 
-        if document_date.present?
-          start = document_date[0]
-          end_date = document_date[1]
+        dates = document_date(document, tl_field)
+
+        if dates.present?
+          start = dates[0]
+          end_date = dates[1]
           event = {}
           event[:text] = {}
 
@@ -50,7 +46,16 @@ class Timeline
       end # for-each
     end
 
-    timeline_data.to_json
+    timeline_data[:events].empty? ? nil : timeline_data.to_json
+  end
+
+  def document_date(document, tl_field)
+    if document["#{tl_field}_range_start_isi".to_sym].present?
+      start_year = document["#{tl_field}_range_start_isi".to_sym]
+      end_year = document["#{tl_field}_range_end_isi"] || start_year
+      
+      [ISO8601::DateTime.new(start_year.to_s), ISO8601::DateTime.new(end_year.to_s)]
+    end
   end
 
   def image(document)
@@ -67,40 +72,6 @@ class Timeline
     image = default_image(file_doc) if image.nil?
 
     image
-  end
-
-  def full_date(dates_array)
-    result_date = ''
-    date_from = ''
-    date_to = ''
-    
-    dates_array.each do |date|
-      next unless DRI::Metadata::Transformations.dcmi_period?(date)
-      date.split(/\s*;\s*/).each do |component|
-        (k, v) = component.split(/\s*=\s*/)
-        if k == 'start'
-          date_from = v
-        elsif k == 'end'
-          date_to = v
-        end
-      end
-
-      unless date_from.empty?
-        date_to = date_from if date_to.empty?
-
-        begin
-          sdate_str = ISO8601::DateTime.new(date_from)
-          edate_str = ISO8601::DateTime.new(date_to)
-
-          result_date = [ISO8601::DateTime.new(date_from), ISO8601::DateTime.new(date_to)]
-          break
-        rescue ISO8601::Errors::StandardError
-          Rails.logger.error('Timeline helper. Invalid date (non-ISO8601)')
-        end
-      end
-    end
-
-    result_date
   end
 
   def surrogate_url(doc, file_doc, name)
