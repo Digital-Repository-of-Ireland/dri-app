@@ -29,6 +29,7 @@
 //= require bootstrap/popover
 //= require bootstrap/tab
 //= require jquery.bootstrap-duallistbox
+//= require jquery.readyselector
 // Required by Blacklight
 //= require blacklight/blacklight
 //
@@ -37,5 +38,7 @@
 //= require jquery-xmleditor
 //= require openseadragon
 //= require spin
+//= require timelineJS3
+//= require dri-timeline
 //= require dri/
 

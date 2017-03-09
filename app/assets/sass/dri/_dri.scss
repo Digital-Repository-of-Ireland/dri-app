@@ -61,10 +61,28 @@
 }
 /* Timeline Override */
 
-.vco-feature h3 {
-    font-size: 1.2em;
-    line-height: 1.2em;
+.tl-text-content-container {
+  h2.tl-headline {
+    font-size: 1.2em !important;
+    line-height: 1.2em !important;
+  }
+  a {
+    color: $dri_greytext;
+    &:hover {
+      color: $dri_green;
+      text-decoration: none;
+    }
+  }
 }
+
+.dri_tlfield_options {
+  color: $dri_white;
+  background-color: $dri_darkgrey;
+  @include border_radius (3px);
+  box-shadow: 1px 1px 4px #888888;
+  text-decoration: none;
+}
+
 /* Homepage carousel Controls */
 
 .dri_slideshow_block {
