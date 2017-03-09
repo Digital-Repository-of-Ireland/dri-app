@@ -51,7 +51,7 @@ module ApplicationHelper
   end
 
   def default_image(file_document)
-    path = asset_url "no_image.png"
+    path = asset_url("no_image.png")
 
     if file_document
       if file_document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].present?
@@ -59,11 +59,11 @@ module ApplicationHelper
 
         path = "dri/formats/#{format}.png"
 
-        path = asset_url "no_image.png" if Rails.application.assets.find_asset(path).nil?
+        path = "no_image.png" if Rails.application.assets.find_asset(path).nil?
       end
     end
 
-    path
+    asset_url(path)
   end
 
   def cover_image(doc)
