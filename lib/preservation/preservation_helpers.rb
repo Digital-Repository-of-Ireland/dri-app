@@ -49,7 +49,6 @@ module PreservationHelpers
       }
 
       File.join(dir, batch)
-
     end
 
   end

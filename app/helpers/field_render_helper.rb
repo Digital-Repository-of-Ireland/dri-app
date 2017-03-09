@@ -168,11 +168,13 @@ module FieldRenderHelper
   def standardise_facet(args)
     facet = args[:facet]
 
-    if facet == ActiveFedora.index_field_mapper.solr_name('language', :facetable)
-      DRI::Metadata::Descriptors.standardise_language_code args[:value]
-    else
-      args[:value]
-    end
+    standardised = if facet == ActiveFedora.index_field_mapper.solr_name('language', :facetable)
+                     DRI::Metadata::Descriptors.standardise_language_code args[:value]
+                   else
+                     args[:value]
+                   end
+
+    standardised.mb_chars.downcase
   end
 
   def standardise_value(args)

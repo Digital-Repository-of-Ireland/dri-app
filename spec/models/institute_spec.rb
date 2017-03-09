@@ -1,8 +1,11 @@
-require "spec_helper"
+require "rails_helper"
 
 describe Institute do
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     @collection = FactoryGirl.create(:collection)
     @institute = Institute.new
     @institute.name = "Test Institute"
@@ -13,6 +16,8 @@ describe Institute do
   after(:each) do
     @collection.delete
     @institute.delete
+
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   it "should return the institutes for a collection" do

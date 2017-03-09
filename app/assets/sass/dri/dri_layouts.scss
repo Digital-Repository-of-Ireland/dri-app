@@ -1,3 +1,5 @@
+
+@import 'bootstrap/glyphicons';
 @import "bootstrap-sprockets";
 @import "bootstrap.scss";
 /* for bootstrap3 */
@@ -9,6 +11,7 @@
 @import "leaflet";
 @import "openseadragon";
 @import "datatables";
+@import "timelineJS3";
 /*Import the Zen Grids files*/
 
 @import "_dri_init.scss";

@@ -4,6 +4,9 @@ describe DoiController do
   include Devise::Test::ControllerHelpers
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     stub_const(
         'DoiConfig',
         OpenStruct.new(
@@ -19,13 +22,14 @@ describe DoiController do
 
   after(:each) do
     Settings.doi.enable = false
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   before(:each) do
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
 
-    @object = FactoryGirl.create(:sound)    
+    @object = FactoryGirl.create(:sound)
   end
 
   describe "GET show" do

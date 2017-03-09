@@ -72,32 +72,27 @@ class ObjectsController < BaseObjectsController
 
     version = @object.object_version || 1
     @object.object_version = version.to_i + 1
-    updated = @object.update_attributes(update_params)
+    
+    unless @object.update_attributes(update_params)
+      purge_params
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+      format.html { render action: 'edit' }
+      return
+    end
 
     # purge params from update action
     purge_params
 
     respond_to do |format|
-      if updated
-        checksum_metadata(@object)
-        @object.save
+      checksum_metadata(@object)
+      @object.save
 
-        warn_if_duplicates
-        retrieve_linked_data
-
-        actor.version_and_record_committer
+      post_save(false) do
         update_doi(@object, doi, 'metadata update') if doi && doi.changed?
-
-        # Do the preservation actions
-        preservation = Preservation::Preservator.new(@object)
-        preservation.preserve(false, false,['descMetadata','properties'])
-
-        flash[:notice] = t('dri.flash.notice.metadata_updated')
-        format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
-      else
-        flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-        format.html { render action: 'edit' }
       end
+
+      flash[:notice] = t('dri.flash.notice.metadata_updated')
+      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
       format.json { render json: @object }
     end
   end
@@ -140,16 +135,9 @@ class ObjectsController < BaseObjectsController
     @object.object_version = 1
 
     if @object.valid? && @object.save
-      warn_if_duplicates
-
-      create_reader_group if @object.collection?
-      retrieve_linked_data
-
-      actor.version_and_record_committer
-
-      # Do the preservation actions
-      preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(true, true, ['descMetadata','properties'])
+      post_save(true) do
+        create_reader_group if @object.collection?
+      end
 
       respond_to do |format|
         format.html do
@@ -187,8 +175,14 @@ class ObjectsController < BaseObjectsController
       @object.object_version = version.to_i + 1
       assets = []
       @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
+      
       preservation = Preservation::Preservator.new(@object)
-      preservation.update_manifests(:deleted => {'content' => assets, 'metadata' => ['descMetadata.xml','permissions.rdf','properties.xml','resource.rdf']})
+      preservation.update_manifests(
+        deleted: {
+          'content' => assets,
+          'metadata' => ['descMetadata.xml','permissions.rdf','properties.xml','resource.rdf']
+          }
+      )
 
       @object.delete
 
@@ -254,11 +248,11 @@ class ObjectsController < BaseObjectsController
         'select',
         params: {
           q: solr_query, qt: 'standard',
-          fq: "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false
-               AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published",
+          fq: "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false
+               AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published",
           mlt: 'true',
-          :'mlt.fl' => "#{Solrizer.solr_name('subject', :stored_searchable, type: :string)},
-                        #{Solrizer.solr_name('subject', :stored_searchable, type: :string)}",
+          :'mlt.fl' => "#{ActiveFedora.index_field_mapper.solr_name('subject', :stored_searchable, type: :string)},
+                        #{ActiveFedora.index_field_mapper.solr_name('subject', :stored_searchable, type: :string)}",
           :'mlt.count' => count,
           fl: 'id,score',
           :'mlt.match.include' => 'false'
@@ -389,6 +383,18 @@ class ObjectsController < BaseObjectsController
 
     def numeric?(number)
       Integer(number) rescue false
+    end
+
+    def post_save(create)
+      warn_if_duplicates
+      retrieve_linked_data
+      actor.version_and_record_committer
+
+      yield
+
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(create, create, ['descMetadata','properties'])
     end
 
     def retrieve_linked_data

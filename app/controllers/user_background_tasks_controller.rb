@@ -3,7 +3,7 @@ class UserBackgroundTasksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @tasks = UserBackgroundTask.where(user_id: current_user.id).page(params[:page])
+    @tasks = UserBackgroundTask.where(user_id: current_user.id).page(params[:page]).available
   end
 
   def destroy

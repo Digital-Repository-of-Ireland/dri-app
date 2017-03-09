@@ -298,6 +298,9 @@ describe CollectionsController do
       Settings.reload_from_files(
         Rails.root.join(fixture_path, "settings-ro.yml").to_s
       )
+      @tmp_assets_dir = Dir.mktmpdir
+      Settings.dri.files = @tmp_assets_dir
+
       @login_user = FactoryGirl.create(:admin)
       sign_in @login_user
       @collection = FactoryGirl.create(:collection)
@@ -312,6 +315,7 @@ describe CollectionsController do
       Settings.reload_from_files(
         Rails.root.join("config", "settings.yml").to_s
       )
+      FileUtils.remove_dir(@tmp_assets_dir, force: true)
     end
 
     it 'should not allow object creation' do
@@ -345,6 +349,9 @@ describe CollectionsController do
   describe "collection is locked" do
 
     before(:each) do
+      @tmp_assets_dir = Dir.mktmpdir
+      Settings.dri.files = @tmp_assets_dir
+
       @login_user = FactoryGirl.create(:admin)
       sign_in @login_user
       @collection = FactoryGirl.create(:collection)
@@ -357,6 +364,8 @@ describe CollectionsController do
       CollectionLock.delete_all(collection_id: @collection.id)
       @collection.delete if ActiveFedora::Base.exists?(@collection.id)
       @login_user.delete
+
+      FileUtils.remove_dir(@tmp_assets_dir, force: true)
     end
 
     it 'should not allow object updates' do

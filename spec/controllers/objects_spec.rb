@@ -3,6 +3,15 @@ require 'rails_helper'
 describe ObjectsController do
   include Devise::Test::ControllerHelpers
 
+  before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+  end
+
+  after(:each) do
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
+  end
+
   describe 'destroy' do
     
     before(:each) do
@@ -217,6 +226,9 @@ describe ObjectsController do
         Settings.reload_from_files(
           Rails.root.join(fixture_path, "settings-ro.yml").to_s
         )
+        @tmp_assets_dir = Dir.mktmpdir
+        Settings.dri.files = @tmp_assets_dir
+        
         @login_user = FactoryGirl.create(:admin)
         sign_in @login_user
         @collection = FactoryGirl.create(:collection)
@@ -228,7 +240,8 @@ describe ObjectsController do
       after(:each) do
         @collection.delete if ActiveFedora::Base.exists?(@collection.id)
         @login_user.delete
-
+        
+        FileUtils.remove_dir(@tmp_assets_dir, force: true)
         Settings.reload_from_files(
           Rails.root.join("config", "settings.yml").to_s
         )

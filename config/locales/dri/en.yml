@@ -52,10 +52,8 @@ en:
       timeline: 
         description: 
           no_results: "No valid date results have been found. Try the Grid View to see all results."
-          results_found: "Search results timeline..."
         headline: 
           no_results: "No valid date results have been found. Try the Grid View to see all results."
-          results_found: "Current Search Timeline"
       user_profile: 
         administrator: Administrator
         collection_manager: "Collection Manager"
@@ -71,6 +69,7 @@ en:
       dri: DRI
     data: 
       types: 
+        all: All
         Image: Image
         MixedType: "Mixed Types"
         MovingImage: Video
@@ -115,6 +114,7 @@ en:
         cover_image_not_saved: "Unable to save cover image"
         locked: "This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information."
         manager_user_permission: "You do not have permission to create a manager user"
+        manager_user_invalid: "User %{email} does not exist, please have the user create an account first."
         no_read_group: "No read group has been set for the collection"
         no_type_specified: "You must specify a valid object type"
         not_created: "Unable to create. Check set permissions"
@@ -145,7 +145,6 @@ en:
         licence_created: "Licence successfully created."
         licence_updated: "Licence successfully updated."
         manager_user_created: "User %{email} successfully granted manager permissions."
-        manager_user_invalid: "User %{email} does not exist, please have the user create an account first."
         metadata_updated: "Metadata has been successfully updated."
         no_xml_schema: "The XML file contains no schema to validate against."
         object_deleted: "Object has been deleted."
@@ -196,7 +195,7 @@ en:
       manage_users: "Add Manager User"
       mirador: Mirador
       my_collections: "My Collections"
-      my_tasks: "My Tasks"
+      my_tasks: "Background Tasks"
       new_collection: "New Collection"
       new_organisation: "New Organisation"
       object: Object
@@ -232,6 +231,8 @@ en:
       dri_publish_unavailable_title: "Publish not available"
       dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
       dri_sort_options_title: "Search Sort Options"
+      dri_tlfield_options: "Select the date field to display on the timeline"
+      dri_tlfield_options_title: "Display Date Options"
       dummy_text: "Help text goes here"
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
@@ -332,7 +333,7 @@ en:
             no_collections: "No collections"
         forms: 
           access_controls: "Access Controls"
-          all_objects_in_collection: "All Objects in this Collection"
+          all_objects_in_collection: "Objects in this Collection"
           audio: 
             duration: Duration
             file_size: "Asset Size"
@@ -366,6 +367,7 @@ en:
           no_permission: "You do not have permission to view the asset file associated with this object."
           no_saved_search: "You have no saved searches"
           no_surrogates: "No surrogates are available."
+          no_tasks: "No recent background task (publish or review) status information currently available."
           preservation_only: "Preservation-only file."
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
@@ -373,6 +375,7 @@ en:
           surrogate_not_available: "Surrogate not available"
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
           surrogate_not_supported: "%{mime_type} assets are not supported for display. Please download the asset using the link below if available."
+          surrogate_not_viewable: "This browser does not support viewing this file type. Please download the asset to view."
         links: 
           add_documentation: "Add Documentation"
           add_object: "Add an Object"
@@ -452,6 +455,8 @@ en:
             admin: "My Collections"
             public: Collections
         institute: 
+          buttons:
+            save: "Create Organisation"
           add: "Add Additional Organisations"
           are_you_sure: "Are you sure you need a new Organisation?"
           associate: "Add Organisation"
@@ -619,8 +624,8 @@ en:
           alert: "Set an appropriate licence for this level of access."
           date: "Date: "
           description: "Here you can set access permissions for your collections and objects."
-          edit_collection: "Who can edit obects in this collection / sub-collection?"
-          edit_desc: "Enter the email addresses of edit users below. These permissions will not be applied until these email addresses have been registered for DRI accounts."
+          edit_collection: "Who can edit in this collection / sub-collection?"
+          edit_desc: "Enter the email addresses of Edit Users below. An Edit User is an authorised user who can ingest content into collections to which they have access. These permissions will not be applied until these email addresses have been registered for DRI accounts."
           edit_object: "Who can edit this object"
           embargo: Embargo
           inherit: "Inherit this setting from the parent collection"
@@ -629,7 +634,7 @@ en:
             public: "surrogates and uploaded originals"
           inherited_setting: "Curently set to %{inherited_setting}"
           manage: "Who can manage this collection?"
-          manager_desc: "Enter the email addresses of manager users below. These permissions will not be applied until these email addresses have been registered for DRI accounts."
+          manager_desc: "Enter the email addresses of Manager Users below. A Manager User is an authorised user who can create and edit collections which are assigned to them by Organisational Manager. These permissions will not be applied until these email addresses have been registered for DRI accounts."
           master_file: "Which asset files can they access?"
           metadata: "Access settings affect the asset files that you upload excluding preservation-only files. All metadata will be publicly accessible regardless of what settings you select here. "
           page: "Page Access"
@@ -642,7 +647,7 @@ en:
           public_metadata: "Public Metadata"
           read: "Who can access your assets?"
           registered: "Limit access to logged-in users"
-          restricted: "Restrict access to users who I approve"
+          restricted: "Restrict access to users who I approve (via email requests)"
           search: "Search Access"
         buttons: 
           add_master: "Add Master Asset"

@@ -104,7 +104,11 @@
             
             <!-- Replace metadata only visible if non-EAD collection AND not a Documentation object -->
             <% if @document.active_fedora_model != "DRI::Documentation" %>
-              <li>
+              <% if signed_in? && can?(:manage, @document.id) %>
+                <li>
+              <% else %>
+                <li class="dri_subnav_edit_list_last">
+              <% end %>
                 <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
                   <div class="dri_fileUpload">
                     <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => "dri_button_green_small" %>
@@ -117,6 +121,7 @@
             <% end %> <!-- END IF (non-EAD collections AND not Documentation Object) -->
            <% end %>
 
+           <% if signed_in? && can?(:manage, @document.id) %>
             <li>
              <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
             </li>
@@ -126,6 +131,7 @@
                 <%= t('dri.views.catalog.buttons.set_licence') %>
                </li>
             <% end %>
+           <% end %>
           </ul>
       </div>
     </div>
