@@ -54,7 +54,8 @@ class Timeline
       ranges = document["#{tl_field}Range".to_sym]
 
       start_and_end = min_max(ranges)
-
+      return [] if start_and_end.empty?
+      
       start_date = start_and_end[0]
       end_date = start_and_end[1]
       
@@ -70,10 +71,15 @@ class Timeline
 
       start_date = endpoints[0]
       end_date = endpoints[1] || start_date
-
-      start_dates[ISO8601::DateTime.new(start_date).to_f] = start_date
-      end_dates[ISO8601::DateTime.new(end_date).to_f] = end_date
+      begin
+        start_dates[ISO8601::DateTime.new(start_date).to_f] = start_date
+        end_dates[ISO8601::DateTime.new(end_date).to_f] = end_date
+      rescue ISO8601::Errors::StandardError => e
+        next
+      end
     end
+
+    return [] if start_dates.empty?
 
     min = start_dates.min
     max = end_dates.max
