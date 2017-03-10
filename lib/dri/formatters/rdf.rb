@@ -31,6 +31,7 @@ module DRI::Formatters
     def initialize(object_doc, fields = nil)
       @object_doc = object_doc
       @object_hash = format(object_doc, fields)
+      build_graph
     end
 
     def uri
@@ -123,12 +124,10 @@ module DRI::Formatters
     end
 
     def xml
-      build_graph
       graph.to_rdfxml
     end
 
     def ttl
-      build_graph
       graph.to_ttl
     end
   end
