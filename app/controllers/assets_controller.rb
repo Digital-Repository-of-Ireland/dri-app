@@ -38,23 +38,16 @@ class AssetsController < ApplicationController
   # Retrieves external datastream files that have been stored in the filesystem.
   # By default, it retrieves the file in the content datastream
   def download
-    if params[:type].present? && params[:type].eql?('surrogate')
-      @generic_file = retrieve_object! params[:fileid]
-      if @generic_file && @generic_file.audio?
-        surrogate_type_name = "mp3"
-      elsif @generic_file && @generic_file.video?
-        surrogate_type_name = "webm"
-      elsif @generic_file && @generic_file.pdf?
-        surrogate_type_name = "pdf"
-      elsif @generic_file && @generic_file.text?
-        surrogate_type_name = "rtf"
-      elsif @generic_file && @generic_file.image?
-        surrogate_type_name = "full_size_web_format"
-      end
-
-      download_surrogate(surrogate_type_name)
-      return
-    elsif params[:type].present? && params[:type].eql?('masterfile')
+    if params[:type].present?
+      case params[:type]
+      when 'surrogate'
+        @generic_file = retrieve_object! params[:fileid]
+        if @generic_file
+          download_surrogate(surrogate_type_name)
+          return
+        end
+      
+      when 'masterfile'
       enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
       @generic_file = retrieve_object! params[:fileid]
@@ -73,12 +66,14 @@ class AssetsController < ApplicationController
           return
         end
       end
-    elsif params[:type].present? && params[:type].eql?('archive')
-      Resque.enqueue(CreateArchiveJob, params[:object_id], current_user.email)
 
-      flash[:notice] = t('dri.flash.notice.archiving')
-      redirect_to :back
-      return
+      when 'archive'
+        Resque.enqueue(CreateArchiveJob, params[:object_id], current_user.email)
+
+        flash[:notice] = t('dri.flash.notice.archiving')
+        redirect_to :back
+        return
+      end
     end
 
     render text: 'Unable to find file', status: 500
@@ -377,6 +372,20 @@ class AssetsController < ApplicationController
       response.headers['Accept-Ranges'] = 'bytes'
       response.headers['Content-Length'] = File.size(file).to_s
       send_file file, { type: type, disposition: 'inline' }
+    end
+
+    def surrogate_type_name
+      if @generic_file.audio?
+        "mp3"
+      elsif @generic_file.video?
+        "webm"
+      elsif @generic_file.pdf?
+        "pdf"
+      elsif @generic_file.text?
+        "rtf"
+      elsif @generic_file.image?
+        "full_size_web_format"
+      end
     end
 
     def download_url
