@@ -89,7 +89,7 @@ module LinkTranslator
         "styled_metadata"
 
       when /^download asset$/
-        "download_master_asset"
+        "configure_download"
 
       when /^download surrogate$/
         "download_surrogate_asset"

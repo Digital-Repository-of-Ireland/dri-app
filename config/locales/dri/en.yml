@@ -128,6 +128,7 @@ en:
         schema_location_parse: "Unable to parse XML schemaLocation declaration"
         submitting_read_request: "Unable to submit read access request: %{error}"
         validation_errors: "Validation Errors: %{error}"
+        download_no_file: "Unable to find your archive file, please check the url and try again."
       notice: 
         access_controls_updated: "Access controls updated."
         added_to_collection: "Object has been added to collection."
@@ -168,6 +169,7 @@ en:
         specify_valid_file: "You must specify a valid file to upload."
         specify_xml_file: "You must specify a XML file."
         updated: "Updated %{item}"
+        archiving: "An archive of this object is being created. You will receive an email when it is available."
     footer: 
       contacts: 
         email: Email
@@ -354,6 +356,12 @@ en:
           restricted_asset: "Restricted Asset"
           restricted_data_request: "Restricted data access request form"
           video_file: Video
+          download: Download
+          download_surrogate: "Download optimised surrogate version of this individual asset (recommended for viewing)"
+          download_originals: "Download the original uploaded version of this individual asset (254 kb)"
+          download_all:
+            one: "Download entire object including the asset"
+            other: "Download entire object including all %{count} assets"
         headers: 
           files: "Asset Tools"
           related_materials: "Related Materials"

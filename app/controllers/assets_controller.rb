@@ -2,9 +2,9 @@
 #
 class AssetsController < ApplicationController
   before_action :authenticate_user_from_token!, only: [:list_assets]
-  before_action :authenticate_user!, only: [:list_assets]
+  before_action :authenticate_user!, only: [:list_assets, :retrieve]
   before_action :read_only, except: [:show, :download, :list_assets]
-  before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets]
+  before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets, :retrieve]
 
   require 'validators'
 
@@ -38,32 +38,86 @@ class AssetsController < ApplicationController
   # Retrieves external datastream files that have been stored in the filesystem.
   # By default, it retrieves the file in the content datastream
   def download
-    if params[:surrogate].present?
-      download_surrogate
+    if params[:type].present? && params[:type].eql?('surrogate')
+      @generic_file = retrieve_object! params[:fileid]
+      if @generic_file && @generic_file.audio?
+        surrogate_type_name = "mp3"
+      elsif @generic_file && @generic_file.video?
+        surrogate_type_name = "webm"
+      elsif @generic_file && @generic_file.pdf?
+        surrogate_type_name = "pdf"
+      elsif @generic_file && @generic_file.text?
+        surrogate_type_name = "rtf"
+      elsif @generic_file && @generic_file.image?
+        surrogate_type_name = "full_size_web_format"
+      end
+
+      download_surrogate(surrogate_type_name)
       return
-    end
+    elsif params[:type].present? && params[:type].eql?('masterfile')
+      enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
-    # Check if user can view a master file
-    enforce_permissions!('edit', params[:object_id]) if params[:version].present?
+      @generic_file = retrieve_object! params[:fileid]
+      if @generic_file
+        can_view?
 
-    @generic_file = retrieve_object! params[:id]
-    if @generic_file
-      can_view?
-
-      lfile = local_file
-      if lfile
-        response.headers['Content-Length'] = File.size?(lfile.path).to_s
-        send_file lfile.path,
+        lfile = local_file
+        if lfile
+          response.headers['Content-Length'] = File.size?(lfile.path).to_s
+          send_file lfile.path,
                   type: lfile.mime_type,
                   stream: true,
                   buffer: 4096,
                   disposition: "attachment; filename=\"#{File.basename(lfile.path)}\";",
                   url_based_filename: true
-        return
+          return
+        end
       end
+    elsif params[:type].present? && params[:type].eql?('archive')
+      Resque.enqueue(CreateArchiveJob, params[:object_id], current_user.email)
+
+      flash[:notice] = t('dri.flash.notice.archiving')
+      redirect_to :back
+      return
     end
 
     render text: 'Unable to find file', status: 500
+  end
+
+  def retrieve
+    fileparts = params[:archive].split(/_/)
+    id = fileparts[0]
+    begin
+      object = retrieve_object!(id) 
+    rescue ActiveFedora::ObjectNotFoundError
+      flash[:error] = t('dri.flash.error.download_no_file')
+    end
+      
+    if object.present?
+      if (can? :read, object)
+        if File.file?(File.join(Settings.dri.downloads, params[:archive]))
+          response.headers['Content-Length'] = File.size?(params[:archive]).to_s
+          send_file File.join(Settings.dri.downloads, params[:archive]),
+                type: "application/zip",
+                stream: true,
+                buffer: 4096,
+                disposition: "attachment; filename=\"#{id}.zip\";",
+                url_based_filename: true
+          file_sent = true
+        else
+          flash[:error] = t('dri.flash.error.download_no_file')
+        end
+      else
+        flash[:alert] = t('dri.flash.alert.read_permission')
+      end
+    end
+
+    unless file_sent
+      respond_to do |format|
+        format.html { redirect_to controller: 'catalog', action: 'index' }
+      end
+    end
+
   end
 
   def destroy
@@ -282,16 +336,16 @@ class AssetsController < ApplicationController
       storage.delete_surrogates(bucket_name, file_prefix)
     end
 
-    def download_surrogate
+    def download_surrogate(surrogate_name)
       raise DRI::Exceptions::BadRequest unless params[:object_id].present?
       raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
 
-      file = file_path(params[:object_id], params[:id], params[:surrogate])
+      file = file_path(params[:object_id], params[:fileid], surrogate_name)
       raise DRI::Exceptions::NotFound unless file
 
       type, ext = mime_type(file)
 
-      name = "#{params[:id]}#{ext}"
+      name = "#{params[:fileid]}#{ext}"
 
       open(file) do |f|
         send_data(
