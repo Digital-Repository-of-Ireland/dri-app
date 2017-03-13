@@ -52,10 +52,8 @@ en:
       timeline: 
         description: 
           no_results: "No valid date results have been found. Try the Grid View to see all results."
-          results_found: "Search results timeline..."
         headline: 
           no_results: "No valid date results have been found. Try the Grid View to see all results."
-          results_found: "Current Search Timeline"
       user_profile: 
         administrator: Administrator
         collection_manager: "Collection Manager"
@@ -199,7 +197,7 @@ en:
       manage_users: "Add Manager User"
       mirador: Mirador
       my_collections: "My Collections"
-      my_tasks: "My Tasks"
+      my_tasks: "Background Tasks"
       new_collection: "New Collection"
       new_organisation: "New Organisation"
       object: Object
@@ -235,6 +233,8 @@ en:
       dri_publish_unavailable_title: "Publish not available"
       dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
       dri_sort_options_title: "Search Sort Options"
+      dri_tlfield_options: "Select the date field to display on the timeline"
+      dri_tlfield_options_title: "Display Date Options"
       dummy_text: "Help text goes here"
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
@@ -375,6 +375,7 @@ en:
           no_permission: "You do not have permission to view the asset file associated with this object."
           no_saved_search: "You have no saved searches"
           no_surrogates: "No surrogates are available."
+          no_tasks: "No recent background task (publish or review) status information currently available."
           preservation_only: "Preservation-only file."
           request_permission_in_progress: "Your request is in progress."
           request_permission_logged_in: "Request Access"
