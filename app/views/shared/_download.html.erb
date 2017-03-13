@@ -1,0 +1,23 @@
+<%= form_tag(url_for(file_download_path(@document.id)), :multipart => false, :method => :put, :id => "download_form") do %>
+
+<fieldset id="download_options">
+  <div>
+  <%= hidden_field_tag 'fileid' %>
+  <%= radio_button_tag(:type, 'surrogate', true) %>
+  <%= label_tag(:surrogate, t('dri.views.catalog.forms.download_surrogate')) %>
+  </div>
+  <% if @document.read_master? || (can? :edit, @document) %>
+    <div>
+    <%= radio_button_tag(:type, 'masterfile') %>
+    <%= label_tag(:masterfile, t('dri.views.catalog.forms.download_originals')) %>
+    </div>
+  <% end %>
+  <% if current_user %>
+    <div>
+    <%= radio_button_tag(:type, 'archive') %>
+    <%= label_tag(:all, t('dri.views.catalog.forms.download_all', :count => @displayfiles.count)) %>
+    </div>
+  <% end %>
+</fieldset>
+
+<% end %>
