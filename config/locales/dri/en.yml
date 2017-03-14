@@ -51,9 +51,9 @@ en:
         reject: "I disagree"
       timeline: 
         description: 
-          no_results: "No valid date results have been found. Try the Grid View to see all results."
+          no_results: "No valid date results have been found. Try another date field or the Grid View to see all results."
         headline: 
-          no_results: "No valid date results have been found. Try the Grid View to see all results."
+          no_results: "No valid date results have been found. Try another date field or the Grid View to see all results."
       user_profile: 
         administrator: Administrator
         collection_manager: "Collection Manager"
