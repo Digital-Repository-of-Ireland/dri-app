@@ -6,7 +6,12 @@ module ApplicationHelper
     storage = StorageService.new
     return nil unless storage.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
 
-    object_file_url(object_id: doc_id, id: file_doc_id, surrogate: name)
+    object_file_url(
+      object_id: doc_id,
+      id: file_doc_id,
+      surrogate: name,
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+    )
   end
 
   def iiif_info_url(doc_id, file_id)
