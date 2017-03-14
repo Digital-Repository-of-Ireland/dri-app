@@ -1,20 +1,21 @@
-<% if @timeline_data %>
-  <select id="dri_tlfield_options_id" class="dri_tlfield_options" name="tlfield_options" data-content="<%= t('dri.help.dri_tlfield_options') %>"  data-original-title="<%= t('dri.help.dri_tlfield_options_title')%>" data-trigger="hover" data-placement="auto right">
-      <% current_params = params.clone %>
-      <% current_params.delete(:tl_field) %>
-            
-      <% ({ 'sdate' => 'Subject (Temporal)', 'cdate' => 'Creation Date', 'pdate' => 'Publication Date' }).each do |field,text| %>
-        <% current_params[:tl_field] = field %>
-        <% if params[:tl_field].presence == field %>
-          <option value="<%= url_for(current_params) %>" selected> 
-        <% else %>
-          <option value="<%= url_for(current_params) %>"> 
-        <% end %>
-          <%= text %> 
-          </option>
-    <%- end -%>
-  </select>
 
+<select id="dri_tlfield_options_id" class="dri_tlfield_options" name="tlfield_options" data-content="<%= t('dri.help.dri_tlfield_options') %>"  data-original-title="<%= t('dri.help.dri_tlfield_options_title')%>" data-trigger="hover" data-placement="auto right">
+    <% current_params = params.clone %>
+    <% current_params.delete(:tl_field) %>
+          
+    <% ({ 'sdate' => 'Subject (Temporal)', 'cdate' => 'Creation Date', 'pdate' => 'Publication Date' }).each do |field,text| %>
+      <% current_params[:tl_field] = field %>
+      <% if params[:tl_field].presence == field %>
+        <option value="<%= url_for(current_params) %>" selected> 
+      <% else %>
+        <option value="<%= url_for(current_params) %>"> 
+      <% end %>
+        <%= text %> 
+        </option>
+  <%- end -%>
+</select>
+
+<% if @timeline_data %>
   <%= content_tag "div", id: "dri_timeline_id", style: "height:550px", data: { total_count: @response.total_count, total_pages: @response.total_pages, current_page: @response.current_page, timeline_data: @timeline_data }  do %>
     <%= tag(:div, id: "time_line") %>
   <% end %>
