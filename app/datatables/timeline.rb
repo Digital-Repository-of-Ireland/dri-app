@@ -88,15 +88,13 @@ class Timeline
   end
 
   def image(document)
-    return default_image(file_doc) unless can?(:read, document)
-
     rel_key = ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)
 
     files_query = "#{rel_key}:\"#{document[:id]}\""
     files = ActiveFedora::SolrService.query(files_query)
     file_doc = SolrDocument.new(files.first) unless files.empty?
 
-    image = search_image(document, file_doc) unless file_doc.nil?
+    image = search_image(document, file_doc) if file_doc && can?(:read, document[:id])
     image = cover_image(document) if image.nil?
     image = default_image(file_doc) if image.nil?
 
