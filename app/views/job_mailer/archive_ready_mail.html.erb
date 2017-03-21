@@ -5,6 +5,6 @@
   </head>
   <body>
     <h1>The object <%= @title %> is ready for you to download.</h1>
-    <p>You can download the file <%= link_to "here", retrieve_archive_url(@file) %>. Your file will be available until <%= Time.now + (60*60*24*30) %>.</p>
+    <p>You can download the file <%= link_to "here", retrieve_archive_url(@object.id, @file) %>. Your file will be available until <%= Time.now + (60*60*24*30) %>.</p>
   </body>
 </html>

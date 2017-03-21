@@ -1,8 +1,12 @@
 <script>
-$(document).on('shown.bs.modal','#dri_download_modal_id', function (e) {
-  document.getElementById('fileid').value = e.relatedTarget.dataset.fileid
-})
-
+$(document).on("click", "#configure_download", function () {
+  var fileid = $(this).data('fileid');
+  var infoModal = $('#dri_download_modal_id');
+  htmlData = $('.' + fileid).html();
+  console.log(htmlData);
+  infoModal.find('.modal-body').html(htmlData);
+  return false;
+});
 </script>
 
 <% @iiif_sources = [] %>
@@ -53,29 +57,3 @@ $(document).on('shown.bs.modal','#dri_download_modal_id', function (e) {
     <%= javascript_include_tag 'iiif_viewer' %>
   <% end %>  
 <% end %>
-
-
-
-<div class="modal fade" id="dri_download_modal_id">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-          &times;
-        </button>
-        <h4 class="modal-title"><%= t('dri.views.catalog.forms.download') %></h4>
-      </div>
-      <div class="modal-body">
-        <%= render :partial => "shared/download" %>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="dri_button_grey" data-dismiss="modal">
-          <%= t('dri.window.modal.close') %>
-        </button>
-        <button id="download_files" type="submit" class="dri_button_green" onclick="$('#download_form').submit();">
-          <%= t('dri.views.catalog.forms.download') %>
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
