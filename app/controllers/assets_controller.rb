@@ -4,7 +4,7 @@ class AssetsController < ApplicationController
   before_action :authenticate_user_from_token!, only: [:list_assets]
   before_action :authenticate_user!, only: [:list_assets]
   before_action :read_only, except: [:show, :download, :list_assets]
-  before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets]
+  before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets, :retrieve]
 
   require 'validators'
 
@@ -36,33 +36,39 @@ class AssetsController < ApplicationController
   end
 
   # Retrieves external datastream files that have been stored in the filesystem.
-  # By default, it retrieves the file in the content datastream
+  # By default, it retrieves the master file
   def download
-    if params[:surrogate].present?
-      download_surrogate
-      return
-    end
+    type = params[:type].presence || 'masterfile'
 
-    # Check if user can view a master file
-    enforce_permissions!('edit', params[:object_id]) if params[:version].present?
-
-    @generic_file = retrieve_object! params[:id]
-    if @generic_file
-      can_view?
-
-      lfile = local_file
-      if lfile
-        response.headers['Content-Length'] = File.size?(lfile.path).to_s
-        send_file lfile.path,
-                  type: lfile.mime_type,
-                  stream: true,
-                  buffer: 4096,
-                  disposition: "attachment; filename=\"#{File.basename(lfile.path)}\";",
-                  url_based_filename: true
+    case type
+    when 'surrogate'
+      @generic_file = retrieve_object! params[:id]
+      if @generic_file
+        download_surrogate(surrogate_type_name)
         return
       end
-    end
+    
+    when 'masterfile'
+      enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
+      @generic_file = retrieve_object! params[:id]
+      if @generic_file
+        can_view?
+
+        lfile = local_file
+        if lfile
+          response.headers['Content-Length'] = File.size?(lfile.path).to_s
+          send_file lfile.path,
+                type: lfile.mime_type,
+                stream: true,
+                buffer: 4096,
+                disposition: "attachment; filename=\"#{File.basename(lfile.path)}\";",
+                url_based_filename: true
+          return
+        end
+      end
+    end
+    
     render text: 'Unable to find file', status: 500
   end
 
@@ -282,11 +288,11 @@ class AssetsController < ApplicationController
       storage.delete_surrogates(bucket_name, file_prefix)
     end
 
-    def download_surrogate
+    def download_surrogate(surrogate_name)
       raise DRI::Exceptions::BadRequest unless params[:object_id].present?
       raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
 
-      file = file_path(params[:object_id], params[:id], params[:surrogate])
+      file = file_path(params[:object_id], params[:id], surrogate_name)
       raise DRI::Exceptions::NotFound unless file
 
       type, ext = mime_type(file)
@@ -323,6 +329,20 @@ class AssetsController < ApplicationController
       response.headers['Accept-Ranges'] = 'bytes'
       response.headers['Content-Length'] = File.size(file).to_s
       send_file file, { type: type, disposition: 'inline' }
+    end
+
+    def surrogate_type_name
+      if @generic_file.audio?
+        "mp3"
+      elsif @generic_file.video?
+        "webm"
+      elsif @generic_file.pdf?
+        "pdf"
+      elsif @generic_file.text?
+        "rtf"
+      elsif @generic_file.image?
+        "full_size_web_format"
+      end
     end
 
     def download_url

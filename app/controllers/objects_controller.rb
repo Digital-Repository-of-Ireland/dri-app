@@ -5,10 +5,12 @@ require 'solr/query'
 class ObjectsController < BaseObjectsController
   include DRI::MetadataBehaviour
 
+  Mime::Type.register "application/zip", :zip
+
   before_action :authenticate_user_from_token!, except: [:show, :citation]
   before_action :authenticate_user!, except: [:show, :citation]
-  before_action :read_only, except: [:index, :show, :citation, :related]
-  before_action ->(id=params[:id]) { locked(id) }, except: [:index, :show, :citation, :related, :new, :create]
+  before_action :read_only, except: [:index, :show, :citation, :related, :retrieve]
+  before_action ->(id=params[:id]) { locked(id) }, except: [:index, :show, :citation, :related, :new, :create, :retrieve]
 
   # Displays the New Object form
   #
@@ -51,6 +53,17 @@ class ObjectsController < BaseObjectsController
     respond_to do |format|
       format.html { redirect_to(catalog_url(@object.id)) }
       format.endnote { render text: @object.export_as_endnote, layout: false }
+      format.zip do
+        if current_user
+          Resque.enqueue(CreateArchiveJob, params[:id], current_user.email)
+
+          flash[:notice] = t('dri.flash.notice.archiving')
+          redirect_to :back
+        else
+          flash[:alert] = t('dri.flash.alert.archiving_login')
+          redirect_to :back
+        end
+      end
     end
   end
 
@@ -271,6 +284,40 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       format.json {}
+    end
+  end
+
+  def retrieve
+    id = params[:id]
+    begin
+      object = retrieve_object!(id) 
+    rescue ActiveFedora::ObjectNotFoundError
+      flash[:error] = t('dri.flash.error.download_no_file')
+    end
+      
+    if object.present?
+      if (can? :read, object)
+        if File.file?(File.join(Settings.dri.downloads, params[:archive]))
+          response.headers['Content-Length'] = File.size?(params[:archive]).to_s
+          send_file File.join(Settings.dri.downloads, params[:archive]),
+                type: "application/zip",
+                stream: true,
+                buffer: 4096,
+                disposition: "attachment; filename=\"#{id}.zip\";",
+                url_based_filename: true
+          file_sent = true
+        else
+          flash[:error] = t('dri.flash.error.download_no_file')
+        end
+      else
+        flash[:alert] = t('dri.flash.alert.read_permission')
+      end
+    end
+
+    unless file_sent
+      respond_to do |format|
+        format.html { redirect_to controller: 'catalog', action: 'index' }
+      end
     end
   end
 

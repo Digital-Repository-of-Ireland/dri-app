@@ -337,7 +337,7 @@ GEM
     gherkin (3.2.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    google-analytics-rails (0.0.6)
+    google-analytics-rails (1.1.0)
     google-api-client (0.8.6)
       activesupport (>= 3.2)
       addressable (~> 2.3)
@@ -900,7 +900,7 @@ DEPENDENCIES
   fcrepo_wrapper (= 0.6.0)
   feedjira
   font-awesome-rails
-  google-analytics-rails
+  google-analytics-rails (= 1.1.0)
   google-api-client (= 0.8.6)
   guard
   guard-livereload

@@ -169,7 +169,7 @@ module FieldRenderHelper
     facet = args[:facet]
 
     standardised = if facet == ActiveFedora.index_field_mapper.solr_name('language', :facetable)
-                     DRI::Metadata::Descriptors.standardise_language_code args[:value]
+                     DRI::Metadata::Descriptors.standardise_language_code(args[:value]) || args[:value]
                    else
                      args[:value]
                    end

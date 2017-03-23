@@ -243,6 +243,28 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+$('#dri_pdf_viewer_modal_id .modal-content').resizable({
+      alsoResize: ".modal-body",
+      minHeight: 300,
+      minWidth: 300
+    });
+    $('#dri_pdf_viewer_modal_id .modal-dialog').draggable();
+
+    $('#dri_pdf_viewer_modal_id').on('show.bs.modal', function() {
+      $(this).find('.modal-body').css({
+        'max-height': '100%'
+      });
+    });
+});
+
+$(document).on("click", ".view_pdf", function () {
+     var pdf = $(this).data('source');
+     var title = $(this).data('title');
+     $("#dri_pdf_viewer_modal_id .modal-title").html(title);
+     $("#dri_pdf_viewer_modal_id .modal-body").html("<object data=" + pdf + " type=\"application/pdf\" width=\"100%\" height=\"100%\"/>");
+});
+
 $(document).ready(function() {
     $('#datatable_activity').DataTable( {
         "processing": true,

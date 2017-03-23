@@ -78,6 +78,7 @@ DriApp::Application.routes.draw do
     match 'objects/:id/history' => 'object_history#show', :via => :get, :as => :object_history
     match 'objects/:id/datastreams/:stream' => 'datastream_version#show', :via => :get, :as => :datastream_version
     match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download
+    match 'objects/:id/retrieve/:archive' => 'objects#retrieve', :via => :get, :as => :retrieve_archive
 
     match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
     match 'objects/:id/status' => 'objects#status', :via => :get, :as => :status
