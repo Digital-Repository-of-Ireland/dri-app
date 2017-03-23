@@ -28,7 +28,7 @@
         <% @surrogate_pdf = surrogate_url(document.id, generic_file.id, "pdf") %>
         <% @title = generic_file.label %>
         <% if @surrogate %>
-            <%= link_to '', :'data-target' => '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :id => "view_pdf" do %>
+            <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate_pdf, :'data-title' => @title, :id => "view_pdf", :class => "view_pdf" do %>
               <img class="dri_carousel_img" src="<%= @surrogate %>">
             <% end %>
         <% end %>
