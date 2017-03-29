@@ -655,7 +655,7 @@ en:
           public_metadata: "Public Metadata"
           read: "Who can access your assets?"
           registered: "Limit access to logged-in users"
-          restricted: "Restrict access to users who I approve (via email requests)"
+          restricted: "Restrict access to users who I approve"
           search: "Search Access"
         buttons: 
           add_master: "Add Master Asset"
