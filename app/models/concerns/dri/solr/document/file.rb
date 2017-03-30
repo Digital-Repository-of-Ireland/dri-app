@@ -100,17 +100,19 @@ module DRI::Solr::Document::File
 
   def read_master?
     master_file_key = ActiveFedora.index_field_mapper.solr_name('master_file_access', :stored_searchable, type: :string)
+    return true if self[master_file_key] == ['public']
+    
+    result = false
+    
+    ancestor_ids.each do |id|
+      ancestor = ancestor_docs[id]
+      next if ancestor[master_file_key].nil? || ancestor[master_file_key] == 'inherit'
 
-    governing_object = self
-
-    while governing_object[master_file_key].nil? || governing_object[master_file_key] == 'inherit'
-      parent_id = governing_object[ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)]
-      return false unless parent_id
-
-      governing_object = parent_object(parent_id.first)
+      result = ancestor[master_file_key] == ['public'] ? true : false
+      break
     end
 
-    governing_object[master_file_key] == ['public']
+    result
   end
 
   def surrogates(file_id, timeout = nil)
@@ -133,12 +135,4 @@ module DRI::Solr::Document::File
   def audio?
     Settings.restrict.mime_types.audio.include? mime_type
   end
-
-  private
-
-    def parent_object(id)
-      parent_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([id])
-      parent = ActiveFedora::SolrService.query(parent_query)
-      SolrDocument.new(parent.first)
-    end
 end
