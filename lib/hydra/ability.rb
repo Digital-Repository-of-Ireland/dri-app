@@ -113,6 +113,22 @@ module Hydra
         cache.put(obj.id, obj)
         test_manager(obj.id)
       end
+
+      can :manage, String do |pid|
+        Rails.logger.debug("[MANPERM] Checking from STRING")
+        test_manager(pid)
+      end
+
+      can :manage, DRI::Batch do |obj|
+        Rails.logger.debug("[MANPERM] Checking from Object")
+        test_manager(obj.id)
+      end
+
+      can :manage, SolrDocument do |obj|
+        Rails.logger.debug("[MANPERM] Checking from SolrDoc")
+        cache.put(obj.id, obj)
+        test_manager(obj.id)
+      end
     end
 
     ## Override custom permissions in your own app to add more permissions beyond what is defined by default.

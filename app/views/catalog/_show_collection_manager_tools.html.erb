@@ -160,48 +160,48 @@
     <% end %>
 
     <li>
-	  <div class="accordion" id="dri_edit_record_tools_id">
-	    <div class="accordion-group">
-	        <a class="accordion-toggle" id="edit_menu" data-toggle="collapse" data-parent="#dri_edit_record_tools_id" href="#dri_edit_record_tools_collapsed_id">
-	          <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.collection.edit') %>
-	        </a>
-	      
-	        <div id="dri_edit_record_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
-	          <div class="accordion-inner">
-		            <ul class="dri_subnav_edit_list">
-		              <% if @document.editable? %>
-                    <%= link_to edit_collection_path, :id => "edit_collection" do %>
-		                  <li><%= t('dri.views.collection.buttons.edit_metadata') %></li>
-		                <% end %>
+  	  <div class="accordion" id="dri_edit_record_tools_id">
+  	    <div class="accordion-group">
+  	        <a class="accordion-toggle" id="edit_menu" data-toggle="collapse" data-parent="#dri_edit_record_tools_id" href="#dri_edit_record_tools_collapsed_id">
+  	          <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.collection.edit') %>
+  	        </a>
+  	      
+  	        <div id="dri_edit_record_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
+  	          <div class="accordion-inner">
+  		            <ul class="dri_subnav_edit_list">
+                    <%= link_to '', :'data-target' => '#dri_cover_image_modal_id', :'data-toggle' => 'modal', :id => "add_cover_image" do %>
+                      <li><%= t('dri.views.collection.buttons.add_cover_image') %></li>
+                    <% end %>
+                    
+  		              <% if @document.editable? %>
+                      <%= link_to edit_collection_path, :id => "edit_collection" do %>
+  		                  <li><%= t('dri.views.collection.buttons.edit_metadata') %></li>
+  		                <% end %>
 
-		                <li>
-							        <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
-							          <div class="dri_fileUpload">
-						              <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %> 
-						              <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
-						            </div>
-							          <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-							          <%= hidden_field_tag 'datastream', "content" %>
-						          <% end %>
-										</li>
-                  <% end %>
-		            
-		              <li>
-		                <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
-		              </li>
-
-			            <%= link_to '', :'data-target' => '#dri_cover_image_modal_id', :'data-toggle' => 'modal', :id => "add_cover_image" do %>
-			              <li><%= t('dri.views.collection.buttons.add_cover_image') %></li>
-			            <% end %>
-			       
-			             <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
-			               <li class="dri_subnav_edit_list_last"><%= t('dri.views.catalog.buttons.set_licence') %></li>
-			             <% end %>
-			          </ul>
-	          </div>
-	      </div>
-	    </div>
-	  </div>
+  		                <li>
+  							        <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
+  							          <div class="dri_fileUpload">
+  						              <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %> 
+  						              <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
+  						            </div>
+  							          <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+  							          <%= hidden_field_tag 'datastream', "content" %>
+  						          <% end %>
+  										</li>
+                    <% end %>
+  		            
+  		              <li>
+  		                <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
+  		              </li>
+  			              			       
+  			             <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
+  			               <li class="dri_subnav_edit_list_last"><%= t('dri.views.catalog.buttons.set_licence') %></li>
+  			             <% end %>
+  			          </ul>
+  	          </div>
+  	      </div>
+  	    </div>
+  	  </div>
     </li>
 
 	<!-- Link to manage pending memberships for the read group -->
@@ -318,85 +318,85 @@
 <% end %>
 
 <% if current_user.is_admin? || (can? :manage_collection, @document) %>
-<div class="modal fade" id="dri_doi_modal_id">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title"><%= t('dri.views.catalog.links.request_doi') %></h4>
-			</div>
+  <div class="modal fade" id="dri_doi_modal_id">
+  	<div class="modal-dialog">
+  		<div class="modal-content">
+  			<div class="modal-header">
+  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+  					&times;
+  				</button>
+  				<h4 class="modal-title"><%= t('dri.views.catalog.links.request_doi') %></h4>
+  			</div>
 
-			<div class="modal-body">
-				<%= form_tag(collection_doi_path(@document.id), method: "post") do %>
-				  <%= label_tag 'modified', t('dri.views.collection.doi_modification') %>
-				  <%= text_field_tag :modified, nil, size: 50, required: true  %>
-                  <%= submit_tag(t('dri.views.catalog.buttons.submit'), class: 'dri_button_green') %>
-                <% end %>
-			</div>
-			<div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">
-					<%= t('dri.window.modal.close') %>
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+  			<div class="modal-body">
+  				<%= form_tag(collection_doi_path(@document.id), method: "post") do %>
+  				  <%= label_tag 'modified', t('dri.views.collection.doi_modification') %>
+  				  <%= text_field_tag :modified, nil, size: 50, required: true  %>
+                    <%= submit_tag(t('dri.views.catalog.buttons.submit'), class: 'dri_button_green') %>
+                  <% end %>
+  			</div>
+  			<div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+  					<%= t('dri.window.modal.close') %>
+  				</button>
+  			</div>
+  		</div><!-- /.modal-content -->
+  	</div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 <% end %>
 
 <% if current_user.is_admin? || (can? :manage_collection, @document) %>
-<div class="modal fade" id="dri_organisation_modal_id">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title"><%= t('dri.views.collection.institute.manage') %></h4>
-			</div>
+  <div class="modal fade" id="dri_organisation_modal_id">
+  	<div class="modal-dialog">
+  		<div class="modal-content">
+  			<div class="modal-header">
+  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+  					&times;
+  				</button>
+  				<h4 class="modal-title"><%= t('dri.views.collection.institute.manage') %></h4>
+  			</div>
 
-			<div class="modal-body">
-			<%= render :partial => "shared/manage_institute" %>
-			</div>
-			<div class="modal-footer">
-              <button type="button" class="dri_button_grey" data-dismiss="modal">
-					<%= t('dri.window.modal.close') %>
-				</button>
-				<button id="associate_inst" type="submit" class="dri_button_green" onclick="$('#associate_institute').submit();">
-					<%= t('dri.views.collection.institute.set_institutes') %>
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+  			<div class="modal-body">
+  			<%= render :partial => "shared/manage_institute" %>
+  			</div>
+  			<div class="modal-footer">
+                <button type="button" class="dri_button_grey" data-dismiss="modal">
+  					<%= t('dri.window.modal.close') %>
+  				</button>
+  				<button id="associate_inst" type="submit" class="dri_button_green" onclick="$('#associate_institute').submit();">
+  					<%= t('dri.views.collection.institute.set_institutes') %>
+  				</button>
+  			</div>
+  		</div><!-- /.modal-content -->
+  	</div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 <% end %>
 
 <% if current_user.is_admin? || (can? :manage_collection, @document) %>
-<div class="modal fade" id="dri_cover_image_modal_id">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title"><%= t('dri.views.collection.manage_cover_image') %></h4>
-			</div>
+  <div class="modal fade" id="dri_cover_image_modal_id">
+  	<div class="modal-dialog">
+  		<div class="modal-content">
+  			<div class="modal-header">
+  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+  					&times;
+  				</button>
+  				<h4 class="modal-title"><%= t('dri.views.collection.manage_cover_image') %></h4>
+  			</div>
 
-			<div class="modal-body">
-			<%= render :partial => "shared/add_cover_image" %>
-			</div>
-			<div class="modal-footer">
-        <button type="button" class="dri_button_grey" data-dismiss="modal">
-					<%= t('dri.window.modal.close') %>
-				</button>
-				<button id="add_cover_image" type="submit" class="dri_button_green" onclick="$('#choose_cover_image').submit();">
-					<%= t('dri.views.objects.buttons.save') %>
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+  			<div class="modal-body">
+  			<%= render :partial => "shared/add_cover_image" %>
+  			</div>
+  			<div class="modal-footer">
+          <button type="button" class="dri_button_grey" data-dismiss="modal">
+  					<%= t('dri.window.modal.close') %>
+  				</button>
+  				<button id="add_cover_image" type="submit" class="dri_button_green" onclick="$('#choose_cover_image').submit();">
+  					<%= t('dri.views.objects.buttons.save') %>
+  				</button>
+  			</div>
+  		</div><!-- /.modal-content -->
+  	</div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 <% end %>
 
 <div class="modal fade" id="dri_licence_modal_id">
