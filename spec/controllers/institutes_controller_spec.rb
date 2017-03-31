@@ -1,9 +1,12 @@
-require "spec_helper"
+require "rails_helper"
 
 describe InstitutesController do
   include Devise::Test::ControllerHelpers
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
 
@@ -18,6 +21,7 @@ describe InstitutesController do
   after(:each) do
     @collection.delete
     @institute.delete
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   describe "associate" do

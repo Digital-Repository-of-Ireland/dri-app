@@ -7,6 +7,9 @@ describe AccessControlsController, :type => :request do
   include_context "api request global before and after hooks"
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
 
@@ -21,6 +24,8 @@ describe AccessControlsController, :type => :request do
   after(:each) do
     @collection.delete
     @login_user.delete
+
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   describe 'update' do

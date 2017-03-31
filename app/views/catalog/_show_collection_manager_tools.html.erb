@@ -140,8 +140,10 @@
 	       <% end %>
       <% end %>
 
-      <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
-        <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
+      <% if current_user.is_admin? %>
+        <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
+          <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
+        <% end %>
       <% end %>
     
        <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', :id => "manage_organisations" do %>
@@ -172,7 +174,7 @@
                     <%= link_to '', :'data-target' => '#dri_cover_image_modal_id', :'data-toggle' => 'modal', :id => "add_cover_image" do %>
                       <li><%= t('dri.views.collection.buttons.add_cover_image') %></li>
                     <% end %>
-                    
+
   		              <% if @document.editable? %>
                       <%= link_to edit_collection_path, :id => "edit_collection" do %>
   		                  <li><%= t('dri.views.collection.buttons.edit_metadata') %></li>

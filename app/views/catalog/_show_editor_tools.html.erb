@@ -56,10 +56,10 @@
      <% end %>
     </li>
  
-    <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
-      <li>
-        <%= t('dri.views.catalog.links.generate_surrogates') %>
-      </li>
+    <% if current_user.is_admin? %>
+      <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
+        <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
+      <% end %>
     <% end %>
   <% end %>
 
