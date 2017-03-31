@@ -34,6 +34,22 @@ class SolrDocument
     self[ActiveFedora.index_field_mapper.solr_name('active_fedora_model', :stored_sortable, type: :string)]
   end
 
+  def ancestor_docs
+    @ancestor_docs ||= load_ancestors
+  end
+
+  def load_ancestors
+    ids = ancestor_ids
+    if ids.present?
+      docs = {}
+      query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
+      results = ActiveFedora::SolrService.query(query)
+      results.each { |r| docs[r['id']] = SolrDocument.new(r) }
+    end
+
+    docs
+  end
+  
   def ancestor_ids
     ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
     return [] unless self[ancestors_key].present?    
@@ -43,8 +59,7 @@ class SolrDocument
 
   def ancestors_published?
     ancestor_ids.each do |id|
-      collection = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
-      doc = SolrDocument.new(collection[0])
+      doc = ancestor_docs[id]
       return false unless doc.status == 'published'
     end
 
@@ -76,23 +91,17 @@ class SolrDocument
   end
   
   # Get the earliest ancestor for any inherited attribute
-  def ancestor_field(field, ancestor = nil)
-    governed_key = ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
+  def ancestor_field(field)
+    return self[field] if self[field].present?
 
-    current_doc = ancestor || self
-    begin
-      return current_doc[field] if current_doc[field].present?
-      return nil if current_doc[governed_key].nil?
-    rescue NoMethodError
-      return nil
+    return nil unless ancestor_docs.present?
+
+    ancestor_ids.each do |ancestor_id|
+      ancestor = ancestor_docs[ancestor_id]
+      return ancestor[field] if ancestor[field].present?
     end
 
-    id = current_doc[governed_key].first
-    ancestor_doc = ActiveFedora::SolrService.query("id:#{id}",
-                                                 defType: 'edismax',
-                                                 rows: '1',
-                                                 fl: "id,#{governed_key},#{field}").first
-    ancestor_field(field, ancestor_doc)
+    nil
   end
 
   def has_doi?
@@ -139,11 +148,10 @@ class SolrDocument
   def licence
     licence_key = ActiveFedora.index_field_mapper.solr_name('licence', :stored_searchable, type: :string).to_sym
 
-    if self[licence_key].present?
-      licence = Licence.where(name: self[licence_key]).first
-      licence ||= self[licence_key]
+    licence = if self[licence_key].present?
+      Licence.where(name: self[licence_key]).first || self[licence_key]
     else
-      licence = retrieve_ancestor_licence
+      retrieve_ancestor_licence
     end
 
     licence
@@ -163,13 +171,9 @@ class SolrDocument
 
   def root_collection
     root_id = root_collection_id
-    root = nil
-    if root_id
-      solr_query = "id:#{root_id}"
-      collection = ActiveFedora::SolrService.query(solr_query, defType: 'edismax', rows: '1')
-      root = SolrDocument.new(collection[0])
-    end
+    return self if root_id && ancestor_docs.blank?
 
+    root = ancestor_docs[root_id] if root_id && ancestor_docs.key?(root_id)
     root
   end
 
@@ -177,22 +181,17 @@ class SolrDocument
     governing_id = collection_id
     return nil unless governing_id
 
-    solr_query = "id:#{governing_id}"
-    collection = ActiveFedora::SolrService.query(solr_query, defType: 'edismax', rows: '1')
-    
-    SolrDocument.new(collection[0])
+    ancestor_docs[governing_id]
   end
 
   def retrieve_ancestor_licence
     ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
-    return nil unless self[ancestors_key].present?
+    return nil unless ancestor_docs.present?
 
     licence_key = ActiveFedora.index_field_mapper.solr_name('licence', :stored_searchable, type: :string).to_sym
 
-    ancestors_ids = self[ancestors_key]
-    ancestors_ids.each do |id|
-      collection = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
-      doc = SolrDocument.new(collection[0])
+    ancestor_ids.each do |id|
+      doc = ancestor_docs[id]
       return Licence.where(name: doc[licence_key]).first if doc[licence_key].present?
     end
 
