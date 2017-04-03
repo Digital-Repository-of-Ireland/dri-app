@@ -287,16 +287,21 @@ class CatalogController < ApplicationController
 
   def configure_timeline(solr_parameters, user_parameters)
     if user_parameters[:view] == 'timeline'
-      case user_parameters[:tl_field]
-      when 'sdate'
-        solr_parameters[:fq] << "+sdateRange:*"
-        solr_parameters[:sort] = "sdate_range_start_isi asc"
+      tl_field = user_parameters[:tl_field].presence || 'sdate'
+
+      case tl_field
       when 'cdate'
         solr_parameters[:fq] << "+cdateRange:*"
+        solr_parameters[:fq] << "+cdate_range_start_isi:[* TO *]"
         solr_parameters[:sort] = "cdate_range_start_isi asc"
       when 'pdate'
         solr_parameters[:fq] << "+pdateRange:*"
+        solr_parameters[:fq] << "+pdate_range_start_isi:[* TO *]"
         solr_parameters[:sort] = "pdate_range_start_isi asc"
+      else
+        solr_parameters[:fq] << "+sdateRange:*"
+        solr_parameters[:fq] << "+sdate_range_start_isi:[* TO *]"
+        solr_parameters[:sort] = "sdate_range_start_isi asc"
       end
 
       solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
