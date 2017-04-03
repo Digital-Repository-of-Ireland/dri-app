@@ -22,7 +22,7 @@
   <!-- close facet block -->
 </div>
 <div id="dri_result_container_id" class="dri_result_container">
-  <% if (@document_list.count > 0) %>
+  <% if (@document_list.count > 0 || params[:view] == 'timeline') %>
       <%= render_document_index @document_list %>&nbsp;
   <% else %>
       <h4>

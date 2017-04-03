@@ -1,5 +1,4 @@
-
-<select id="dri_tlfield_options_id" class="dri_tlfield_options" name="tlfield_options" data-content="<%= t('dri.help.dri_tlfield_options') %>"  data-original-title="<%= t('dri.help.dri_tlfield_options_title')%>" data-trigger="hover" data-placement="auto right">
+<div><b><%= t('dri.views.catalog.legends.timeline_display_field') %>:&nbsp;</b><select id="dri_tlfield_options_id" class="dri_tlfield_options" name="tlfield_options" data-content="<%= t('dri.help.dri_tlfield_options') %>"  data-original-title="<%= t('dri.help.dri_tlfield_options_title')%>" data-trigger="hover" data-placement="auto right"></div>
     <% current_params = params.clone %>
     <% current_params.delete(:tl_field) %>
           
@@ -21,7 +20,7 @@
   <% end %>
 <% else %>
   <h4>
-    <%= t('dri.help.no_results_found') %>
+    <%= t('dri.application.timeline.no_results_found') %>
   </h4>
   <p>
     <%= t('dri.application.timeline.description.no_results') %>

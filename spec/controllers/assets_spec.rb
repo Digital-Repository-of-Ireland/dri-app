@@ -244,7 +244,7 @@ describe AssetsController do
       generic_file.save
       file_id = generic_file.id
 
-      get :download, id: file_id, object_id: @object.id 
+      get :download, id: file_id, object_id: @object.id, type: 'masterfile'
       expect(response.status).to eq(200)
       expect(response.header['Content-Type']).to eq('audio/mp3')
       expect(response.header['Content-Length']).to eq("#{File.size(File.join(fixture_path, "SAMPLEA.mp3"))}")      

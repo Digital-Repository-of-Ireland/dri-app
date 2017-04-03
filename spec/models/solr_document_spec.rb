@@ -75,4 +75,58 @@ describe SolrDocument do
       expect(doc.institutes).to match_array([@institute, @institute_b])
     end
   end
+
+  context "getting inherited fields" do
+    it "returns a list of ancestor ids" do
+      doc = SolrDocument.new(@object.to_solr)
+      expect(doc.ancestor_ids).to eq [@subcollection.id, @collection.id]
+    end
+
+    it "returns the root collection" do
+      doc = SolrDocument.new(@object.to_solr)
+      expect(doc.root_collection.id).to eq @collection.id
+    end
+
+    it "returns the governing collection" do
+      doc = SolrDocument.new(@object.to_solr)
+      expect(doc.governing_collection.id).to eq @subcollection.id
+    end
+  end
+
+  context "file methods" do
+    it "should check for read master in object" do
+      @object.master_file_access = 'public'
+      @object.save
+      @object.reload
+
+      doc = SolrDocument.new(@object.to_solr)
+      expect(doc.read_master?).to be true
+    end
+
+    it "should check for read master in ancestors" do
+      @collection.master_file_access = 'public'
+      @collection.save
+      @collection.reload
+
+      doc = SolrDocument.new(@object.to_solr)
+      expect(doc.read_master?).to be true
+    end
+
+    it "first found is returned" do
+      @collection.master_file_access = 'public'
+      @collection.save
+      @collection.reload
+
+      @subcollection.master_file_access = 'private'
+      @subcollection.save
+      @subcollection.reload
+
+      @object.master_file_access = nil
+      @object.save
+      @object.reload
+
+      doc = SolrDocument.new(@object.to_solr)
+      expect(doc.read_master?).to be false
+    end
+  end
 end

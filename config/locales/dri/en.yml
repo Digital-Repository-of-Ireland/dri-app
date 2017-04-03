@@ -49,11 +49,12 @@ en:
         header: "The Digital Repository of Ireland End User Agreement."
         message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='http://dri.ie/privacy-statement'>Privacy Policy</a>."
         reject: "I disagree"
-      timeline: 
+      timeline:
+        no_results_found: "No objects compatible with timeline display found" 
         description: 
-          no_results: "No valid date results have been found. Try another date field or the Grid View to see all results."
+          no_results: "No objects with supported date formats of the selected type have been found. Try choosing another date field in the select box above or the Grid View to see all results."
         headline: 
-          no_results: "No valid date results have been found. Try another date field or the Grid View to see all results."
+          no_results: "No objects with supported date formats of the selected type have been found. Try choosing another date field in the select box above or the Grid View to see all results."
       user_profile: 
         administrator: Administrator
         collection_manager: "Collection Manager"
@@ -69,7 +70,6 @@ en:
       dri: DRI
     data: 
       types: 
-        all: All
         Image: Image
         MixedType: "Mixed Types"
         MovingImage: Video
@@ -77,6 +77,7 @@ en:
         Text: Text
         Title: "Media Types"
         Unknown: Unknown
+        all: All
     datatables: 
       activity: 
         committer: Committer
@@ -112,9 +113,10 @@ en:
         virus_detected: "Virus detected in uploaded file: %{virus}"
       error: 
         cover_image_not_saved: "Unable to save cover image"
+        download_no_file: "Unable to find your archive file, please check the url and try again."
         locked: "This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information."
-        manager_user_permission: "You do not have permission to create a manager user"
         manager_user_invalid: "User %{email} does not exist, please have the user create an account first."
+        manager_user_permission: "You do not have permission to create a manager user"
         no_read_group: "No read group has been set for the collection"
         no_type_specified: "You must specify a valid object type"
         not_created: "Unable to create. Check set permissions"
@@ -129,6 +131,7 @@ en:
       notice: 
         access_controls_updated: "Access controls updated."
         added_to_collection: "Object has been added to collection."
+        archiving: "An archive of this object is being created. You will receive an email when it is available."
         asset_deleted: "Asset deleted."
         collection_created: "Collection object has been successfully created."
         collection_deleted: "Delete collection process successfully started."
@@ -342,6 +345,12 @@ en:
           audio_file: "Audio Asset"
           bookmark_collection: "Bookmark Collection"
           bookmark_object: "Bookmark Object"
+          download: Download
+          download_all: 
+            one: "Download entire object including the asset"
+            other: "Download entire object including all %{count} assets"
+          download_originals: "Download the original uploaded version of this individual asset (254 kb)"
+          download_surrogate: "Download optimised surrogate version of this individual asset (recommended for viewing)"
           file: File
           image_file: Image
           manage_bookmark: "Manage Your Bookmarks"
@@ -376,6 +385,7 @@ en:
           surrogate_not_available_why: "This may be because the Object has been added recently and is still being processed by the system. Please try again later."
           surrogate_not_supported: "%{mime_type} assets are not supported for display. Please download the asset using the link below if available."
           surrogate_not_viewable: "This browser does not support viewing this file type. Please download the asset to view."
+          timeline_display_field: "Display objects by"
         links: 
           add_documentation: "Add Documentation"
           add_object: "Add an Object"
@@ -455,14 +465,14 @@ en:
             admin: "My Collections"
             public: Collections
         institute: 
-          buttons:
-            save: "Create Organisation"
           add: "Add Additional Organisations"
           are_you_sure: "Are you sure you need a new Organisation?"
           associate: "Add Organisation"
           associate_depositing: "Select Depositing Organisation"
           associating_text: "Once an organisation has been added, it can be associated with collections using the 'Manage Organisations' button on individual collections' pages."
           available: Available
+          buttons: 
+            save: "Create Organisation"
           depositing_org_text: "Your Organisation will have been added when your Organisational Manager Agreement was signed. Use this page to add additional organisations."
           edit: "Update Organisation"
           form: 
@@ -647,7 +657,7 @@ en:
           public_metadata: "Public Metadata"
           read: "Who can access your assets?"
           registered: "Limit access to logged-in users"
-          restricted: "Restrict access to users who I approve (via email requests)"
+          restricted: "Restrict access to users who I approve"
           search: "Search Access"
         buttons: 
           add_master: "Add Master Asset"

@@ -4,6 +4,9 @@ describe BatchIngestController do
   include Devise::Test::ControllerHelpers
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+    
     @login_user = FactoryGirl.create(:admin)
     sign_in @login_user
 
@@ -12,6 +15,7 @@ describe BatchIngestController do
 
   after(:each) do
     @login_user.delete
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   describe 'CREATE' do

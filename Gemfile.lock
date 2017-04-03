@@ -155,7 +155,7 @@ GEM
       activemodel (= 4.2.8)
       activesupport (= 4.2.8)
       arel (~> 6.0)
-    activerecord-import (0.17.1)
+    activerecord-import (0.17.2)
       activerecord (>= 3.2)
     activeresource (4.1.0)
       activemodel (~> 4.0)
@@ -167,14 +167,14 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     acts_as_follower (0.2.1)
-    addressable (2.5.0)
+    addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (6.0.4)
     autoparse (0.3.3)
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    autoprefixer-rails (6.7.6)
+    autoprefixer-rails (6.7.7.1)
       execjs
     aws-sdk (2.1.36)
       aws-sdk-resources (= 2.1.36)
@@ -285,7 +285,7 @@ GEM
     debug_inspector (0.0.2)
     deprecation (0.2.2)
       activesupport
-    devise (4.2.0)
+    devise (4.2.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
@@ -336,7 +336,7 @@ GEM
     gherkin (3.2.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    google-analytics-rails (0.0.6)
+    google-analytics-rails (1.1.0)
     google-api-client (0.8.6)
       activesupport (>= 3.2)
       addressable (~> 2.3)
@@ -502,7 +502,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     little-plugger (1.1.4)
-    logging (2.1.0)
+    logging (2.2.0)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
     loofah (2.0.3)
@@ -517,7 +517,7 @@ GEM
     method_source (0.8.2)
     mime-types (2.99.3)
     mimemagic (0.3.2)
-    mini_magick (4.6.1)
+    mini_magick (4.7.0)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
     moab-versioning (2.0.0)
@@ -539,7 +539,7 @@ GEM
     net-http-persistent (2.9.4)
     netrc (0.10.3)
     noid (0.9.0)
-    nokogiri (1.7.0.1)
+    nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
     nokogiri-happymapper (0.5.9)
       nokogiri (~> 1.5)
@@ -839,7 +839,7 @@ GEM
     timers (4.0.1)
       hitimes
     tins (1.6.0)
-    tzinfo (1.2.2)
+    tzinfo (1.2.3)
       thread_safe (~> 0.1)
     uglifier (2.7.1)
       execjs (>= 0.3.0)
@@ -899,7 +899,7 @@ DEPENDENCIES
   fcrepo_wrapper (= 0.6.0)
   feedjira
   font-awesome-rails
-  google-analytics-rails
+  google-analytics-rails (= 1.1.0)
   google-api-client (= 0.8.6)
   guard
   guard-livereload

@@ -1,3 +1,14 @@
+<script>
+$(document).on("click", "#configure_download", function () {
+  var fileid = $(this).data('fileid');
+  var infoModal = $('#dri_download_modal_id');
+  htmlData = $('.' + fileid).html();
+  console.log(htmlData);
+  infoModal.find('.modal-body').html(htmlData);
+  return false;
+});
+</script>
+
 <% @iiif_sources = [] %>
 
 <div id="oject-multiple-asset-carousel" class="carousel slide dri_carousel_controls" data-ride="carousel" data-interval = "false" >

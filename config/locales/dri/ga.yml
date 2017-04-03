@@ -52,10 +52,8 @@ ga:
       timeline: 
         description: 
           no_results: "Níor aimsíodh torthaí bailí ar bith"
-          results_found: "Breathnaigh ar amlíne do thorthaí an chuardaigh le do thoil"
         headline: 
           no_results: "Níor aimsíodh torthaí ar bith"
-          results_found: "Amlíne Chuardaigh Reatha"
       user_profile: 
         administrator: Administrator
         collection_manager: "Collection Manager"
@@ -71,7 +69,6 @@ ga:
       dri: DRI
     data: 
       types: 
-        all: Gach 
         Image: Íomhá
         MixedType: Ilchineálach
         MovingImage: Físeán
@@ -79,6 +76,7 @@ ga:
         Text: Téacs
         Title: "Cineálacha Meán"
         Unknown: Anaithnid
+        all: Gach
     datatables: 
       activity: 
         committer: Committer
@@ -114,7 +112,9 @@ ga:
         virus_detected: "Aimsíodh víreas sa chomhad a uaslódáladh: %{virus}"
       error: 
         cover_image_not_saved: "Ní féidir an íomhá chlúdaigh a shábháil"
+        download_no_file: "Unable to find your archive file, please check the url and try again."
         locked: "This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information."
+        manager_user_invalid: "User %{email} does not exist, please have the user create an account first."
         manager_user_permission: "You do not have permission to create a manager user"
         no_read_group: "No read group has been set for the collection"
         no_type_specified: "Ní mór cineál oibiachta bailí a shonrú"
@@ -130,6 +130,7 @@ ga:
       notice: 
         access_controls_updated: "Tugtha cothrom le dáta."
         added_to_collection: "Cuireadh an oibiacht leis an mbailiúchán."
+        archiving: "An archive of this object is being created. You will receive an email when it is available."
         asset_deleted: "Asset deleted."
         collection_created: "D'éirigh leat an oibiacht bhailiúcháin a chruthú."
         collection_deleted: "D'éirigh leat próiseas scriosta an bhailiúcháin a thosú."
@@ -146,7 +147,6 @@ ga:
         licence_created: "D'éirigh leat an ceadúnas a chruthú"
         licence_updated: "D'éirigh leat an ceadúnas a thabhairt cothrom le dáta"
         manager_user_created: "Tugadh ceadanna bainisteora d’úsáideoir %{email}"
-        manager_user_invalid: "Ní hann d’úsáideoir %{email}, iarr ar an úsáideoir cuntas a chruthú ar dtús le do thoil"
         metadata_updated: "D'éirigh leat na meiteashonraí a thabhairt cothrom le dáta."
         no_xml_schema: "Níl scéimre sa chomhad XML lena bhailíochtú."
         object_deleted: "Object has been deleted."
@@ -233,6 +233,8 @@ ga:
       dri_publish_unavailable_title: "Publish not available"
       dri_sort_options: "Roghnaigh ón liosta seo chun do chuid torthaí a shórtáil de réir Iontráil is Déanaí, Teideal nó Ábharthacht. Is ionann Ábharthacht agus tuairim is fearr an chórais faoi na Bailiúcháin nó na hOibiachtaí sin is mó a bhaineann le do chuardach"
       dri_sort_options_title: "Roghanna maidir le sortáil an chuardaigh"
+      dri_tlfield_options: "Select the date field to display on the timeline"
+      dri_tlfield_options_title: "Display Date Options"
       dummy_text: "Téann téacs cabhrach anseo"
       dummy_title: "Teideal na cabhrach anseo"
       facets: "Bain úsáid as Gnéithe chun do chuardach a chaolú le réimsí áirithe meiteashonraíochta"
@@ -342,6 +344,12 @@ ga:
           audio_file: "Comhad Fuaime"
           bookmark_collection: "Leabharmharcáil an Bailiúchán"
           bookmark_object: "Leabharmharcáil an Oibiacht"
+          download: Download
+          download_all: 
+            one: "Download entire object including the asset"
+            other: "Download entire object including all %{count} assets"
+          download_originals: "Download the original uploaded version of this individual asset (254 kb)"
+          download_surrogate: "Download optimised surrogate version of this individual asset (recommended for viewing)"
           file: Comhad
           image_file: Íomhá
           manage_bookmark: "Bainistigh do chuid Leabharmharcanna"
@@ -367,6 +375,7 @@ ga:
           no_permission: "Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo."
           no_saved_search: "Níor shábháil tú cuardach ar bith"
           no_surrogates: "Níl aon ionadaí ar fáil."
+          no_tasks: "No recent background task (publish or review) status information currently available."
           preservation_only: "Comhad caomhnú-amháin."
           request_permission_in_progress: "Tá d’iarratas dá phróiseáil"
           request_permission_logged_in: "Iarr Rochtain"
@@ -374,6 +383,7 @@ ga:
           surrogate_not_available: "Níl an t-ionadaí ar fáil go fóill"
           surrogate_not_available_why: "Seans gur cuireadh an oibiacht isteach le gairid agus go bhfuil an córas dá próiseáil go fóill. Níor mhór duit é a thiail arís i gceann tamaill."
           surrogate_not_supported: "%{mime_type} assets are not supported for display. Please download the asset using the link below if available."
+          surrogate_not_viewable: "This browser does not support viewing this file type. Please download the asset to view."
         links: 
           add_documentation: "Cuir doiciméadacht leis"
           add_object: "Cuir Oibiacht leis"
@@ -459,6 +469,8 @@ ga:
           associate_depositing: "Roghnaigh an Eagraíocht Taiscthe"
           associating_text: "Once an organisation has been added, it can be associated with collections using the 'Manage Organisations' button on individual collections' pages."
           available: Available
+          buttons: 
+            save: "Create Organisation"
           depositing_org_text: "Your Organisation will have been added when your Organisational Manager Agreement was signed. Use this page to add additional organisations."
           edit: "Tabhair an eagraíocht cothrom le dáta"
           form: 

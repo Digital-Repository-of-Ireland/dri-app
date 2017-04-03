@@ -4,6 +4,7 @@ dri:
   password: CHANGEME
   files: dri_files/data
   uploads: dri_files/uploads
+  downloads: dri_files/downloads
 plugins:
   ffmpeg_path: /usr/local/bin/ffmpeg
 restrict:
