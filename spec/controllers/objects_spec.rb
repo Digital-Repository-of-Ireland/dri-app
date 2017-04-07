@@ -177,7 +177,7 @@ describe ObjectsController do
       @object.save
       DataciteDoi.create(object_id: @object.id)
 
-      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       params = {}
       params[:batch] = {}
       params[:batch][:title] = ["A modified title"]
@@ -206,7 +206,7 @@ describe ObjectsController do
       @object.save
       DataciteDoi.create(object_id: @object.id)
 
-      expect(Sufia.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
+      expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
       params[:batch] = {}
       params[:batch][:title] = ["An Audio Title"]

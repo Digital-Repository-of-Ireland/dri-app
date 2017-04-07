@@ -13,13 +13,12 @@ gem 'riiif', git: 'https://github.com/curationexperts/riiif.git'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'sufia-models', '6.5.0'
 gem 'redlock'
 gem 'google-api-client', '0.8.6'
 
 gem 'paper_trail', '~> 4'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'nosufia'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
 
 gem 'active-fedora', '9.11'

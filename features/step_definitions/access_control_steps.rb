@@ -27,7 +27,7 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
   file.add_file(uploaded, { :directory => Dir.tmpdir })
   file.save
 
-  actor = Sufia::GenericFile::Actor.new(gf, current_user)  
+  actor = DRI::Asset::Actor.new(gf, current_user)  
   actor.create_content(uploaded, uploaded.original_filename, "content", uploaded.content_type)
   gf.save
 

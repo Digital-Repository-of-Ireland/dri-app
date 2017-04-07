@@ -447,7 +447,7 @@ class ObjectsController < BaseObjectsController
     def retrieve_linked_data
       if AuthoritiesConfig
         begin
-          Sufia.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present?
+          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present?
         rescue Exception => e
           Rails.logger.error "Unable to submit linked data job: #{e.message}"
         end

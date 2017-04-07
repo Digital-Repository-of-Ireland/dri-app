@@ -35,13 +35,13 @@ describe SurrogatesController do
 
     it 'should update a collections surrogates' do
       request.env["HTTP_REFERER"] = "/"
-      Sufia.queue.should_receive(:push).with(an_instance_of(CharacterizeJob)).once
+      DRI.queue.should_receive(:push).with(an_instance_of(CharacterizeJob)).once
       put :update, id: @collection.id
     end
 
     it 'should update an objects surrogates' do
       request.env["HTTP_REFERER"] = "/"
-      Sufia.queue.should_receive(:push).with(an_instance_of(CharacterizeJob)).once
+      DRI.queue.should_receive(:push).with(an_instance_of(CharacterizeJob)).once
       put :update, id: @object.id
     end
 
@@ -52,7 +52,7 @@ describe SurrogatesController do
       @gf2.save
       
       request.env["HTTP_REFERER"] = "/"
-      Sufia.queue.should_receive(:push).with(an_instance_of(CharacterizeJob)).twice
+      DRI.queue.should_receive(:push).with(an_instance_of(CharacterizeJob)).twice
       put :update, id: @object.id
 
       @gf2.delete

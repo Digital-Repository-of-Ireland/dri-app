@@ -7,6 +7,7 @@ dri:
   downloads: dri_files/downloads
 plugins:
   ffmpeg_path: /usr/local/bin/ffmpeg
+  fits_path: /opt/local/fits/fits.sh
 restrict:
   mime_types:
     image: ['image/png','image/jpeg', 'image/jpg', 'image/jp2', 'image/bmp', 'image/gif', 'image/tiff']

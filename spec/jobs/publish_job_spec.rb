@@ -34,7 +34,7 @@ describe 'PublishJob' do
 
   describe 'run' do
     it "should set a collection\'s reviewed objects status to published" do
-      allow(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob))
+      allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
       job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
 
@@ -58,7 +58,7 @@ describe 'PublishJob' do
       @collection.governed_items << @subcollection
       @collection.save
 
-      allow(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob))
+      allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
       job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
 
@@ -101,7 +101,7 @@ describe 'PublishJob' do
 
       job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       
-      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).twice
+      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).twice
       job.perform
 
       @collection.reload

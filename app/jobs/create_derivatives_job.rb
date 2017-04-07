@@ -11,9 +11,6 @@ class CreateDerivativesJob < ActiveFedoraIdBasedJob
       type = mime_type.respond_to?(:content_type) ? mime_type.content_type : mime_type
       return if type != 'message/external-body' && !generic_file.content.has_content?
 
-      if generic_file.video?
-        return unless Sufia.config.enable_ffmpeg
-      end
       generic_file.create_derivatives
     end
   end

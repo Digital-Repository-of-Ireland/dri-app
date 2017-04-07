@@ -1,6 +1,6 @@
-require "sufia/generic_file/characterization"
+require "dri/asset/characterization"
 
-Sufia::GenericFile::Characterization.module_eval do
+DRI::Asset::Characterization.module_eval do
 
  # Extract the metadata from the content datastream and record it in the characterization datastream
  def characterize

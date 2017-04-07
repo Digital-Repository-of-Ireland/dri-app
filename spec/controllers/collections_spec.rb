@@ -50,7 +50,7 @@ describe CollectionsController do
 
       expect(@collection.governed_items.size).to be == 1
 
-      expect(Sufia.queue).to receive(:push).with(an_instance_of(DeleteCollectionJob)).once
+      expect(DRI.queue).to receive(:push).with(an_instance_of(DeleteCollectionJob)).once
       delete :destroy, :id => @collection.id
     end
 
@@ -217,7 +217,7 @@ describe CollectionsController do
 
       DataciteDoi.create(object_id: @collection.id)
 
-      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       params = {}
       params[:batch] = {}
       params[:batch][:title] = ["A modified title"]
@@ -259,7 +259,7 @@ describe CollectionsController do
 
       DataciteDoi.create(object_id: @collection.id)
 
-      expect(Sufia.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
+      expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
       params[:batch] = {}
       params[:batch][:title] = ["A collection"]

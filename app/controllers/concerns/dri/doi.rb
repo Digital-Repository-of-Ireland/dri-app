@@ -23,10 +23,10 @@ module DRI::Doi
       DataciteDoi.create(object_id: object.id, modified: modified)
     end
 
-    Sufia.queue.push(MintDoiJob.new(object.id))
+    DRI.queue.push(MintDoiJob.new(object.id))
   end
 
   def doi_metadata_update(object)
-    Sufia.queue.push(UpdateDoiJob.new(object.id))
+    DRI.queue.push(UpdateDoiJob.new(object.id))
   end
 end

@@ -107,7 +107,7 @@ end
 
 Before do
   require 'factory_girl'
-  allow(Sufia.queue).to receive(:push) 
+  allow(DRI.queue).to receive(:push) 
   allow_any_instance_of(DRI::Object::Actor).to receive(:version_and_record_committer)
   allow(Feedjira::Feed).to receive(:fetch_and_parse)
   

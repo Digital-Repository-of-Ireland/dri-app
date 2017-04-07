@@ -19,7 +19,7 @@ class SetDepositingInstituteJob < ActiveFedoraIdBasedJob
         col_obj.depositing_institute = object.depositing_institute
         col_obj.save
 
-        Sufia.queue.push(SetDepositingInstituteJob.new(col_obj.id)) unless col_obj.governed_items.blank?
+        DRI.queue.push(SetDepositingInstituteJob.new(col_obj.id)) unless col_obj.governed_items.blank?
       end
     end
 

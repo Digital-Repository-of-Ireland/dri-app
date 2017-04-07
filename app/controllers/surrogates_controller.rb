@@ -74,9 +74,9 @@ class SurrogatesController < ApplicationController
         begin
           # only characterize if necessary
           if file_doc[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].present?
-            Sufia.queue.push(CreateBucketJob.new(file_doc.id))
+            DRI.queue.push(CreateBucketJob.new(file_doc.id))
           else
-            Sufia.queue.push(CharacterizeJob.new(file_doc.id))
+            DRI.queue.push(CharacterizeJob.new(file_doc.id))
           end
           flash[:notice] = t('dri.flash.notice.generating_surrogates')
         rescue Exception => e

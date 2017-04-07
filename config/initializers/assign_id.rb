@@ -1,6 +1,6 @@
-require 'sufia/noid.rb'
+require 'dri/noid.rb'
 
-Sufia::Noid.module_eval do
+DRI::Noid.module_eval do
 
   def service
     @service ||= DRI::Noid::Service.new

@@ -1,5 +1,4 @@
 require "hydra/derivatives/extract_metadata"
-# require "sufia/models/file_content"
 
 Hydra::Derivatives::ExtractMetadata.module_eval do
   # Quick fixes to get the content from storage and avoid using the REST API
@@ -28,16 +27,16 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
         temp_file.rewind
 
         Hydra::FileCharacterization.characterize(temp_file, filename_for_characterization.join(""), :fits) do |config|
-          config[:fits] = Hydra::Derivatives.fits_path
+          config[:fits] = Settings.plugins.fits_path
         end
       else
         Hydra::FileCharacterization.characterize(File.open(path), filename_for_characterization.join(""), :fits) do |config|
-          config[:fits] = Hydra::Derivatives.fits_path
+          config[:fits] = Settings.plugins.fits_path
         end
       end
     else
       Hydra::FileCharacterization.characterize(content, filename_for_characterization.join(""), :fits) do |config|
-        config[:fits] = Hydra::Derivatives.fits_path
+        config[:fits] = Settings.plugins.fits_path
       end
     end
 

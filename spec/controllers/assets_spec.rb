@@ -86,7 +86,7 @@ describe AssetsController do
 
       expect_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content).and_return(true)
 
-      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       post :create, { :object_id => @object.id, :Filedata => @uploaded }
 
@@ -181,7 +181,7 @@ describe AssetsController do
       @object.save
       DataciteDoi.create(object_id: @object.id)
 
-      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       put :update, { :object_id => @object.id, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
        
       DataciteDoi.where(object_id: @object.id).each { |d| d.delete }

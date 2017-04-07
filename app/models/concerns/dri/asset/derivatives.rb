@@ -1,5 +1,5 @@
-module Sufia
-  module GenericFile
+module DRI
+  module Asset
     module Derivatives
       extend ActiveSupport::Concern
 
