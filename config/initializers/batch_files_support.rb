@@ -3,7 +3,7 @@ require 'validators'
 
 DRI::ModelSupport::Files.module_eval do
 
-  def add_file(file, dsid='content', file_name)
+  def add_file(file, dsid='content', original_file_name)
     mime_type = Validators.file_type(file.path)
     pass_validation = false
 
@@ -26,7 +26,7 @@ DRI::ModelSupport::Files.module_eval do
 
     @actor = DRI::Asset::Actor.new(gf, ingest_user)
 
-    version = create_file(file, file_name, gf.id, dsid, '', mime_type.to_s)
+    version = create_file(file, file_name, gf, dsid, '', mime_type.to_s)
  
     url = Rails.application.routes.url_helpers.url_for(
       controller: 'assets',

@@ -68,6 +68,7 @@ gem 'is_it_working-cbeer'
 gem 'honeybadger', '~> 2.0'
 gem 'resque', '1.26'
 gem 'resque-status'
+gem 'nest'
 
 gem 'sass-rails' , '~> 4.0.4'
 gem 'compass-rails'

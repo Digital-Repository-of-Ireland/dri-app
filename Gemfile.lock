@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 886faad28bf250ff3199ff70f9bd361ce0a94116
+  revision: c8fc710afafd3fa1b99b3ce50a7dc788ca4b433c
   branch: nosufia
   specs:
     dri_data_models (2.5.0)
@@ -372,6 +372,7 @@ GEM
     hashie (3.4.4)
     high_voltage (2.1.0)
     hike (1.2.3)
+    hiredis (0.6.1)
     hitimes (1.2.2)
     honeybadger (2.6.0)
     htmlentities (4.3.4)
@@ -520,6 +521,8 @@ GEM
     mysql (2.9.1)
     mysql2 (0.3.18)
     nenv (0.2.0)
+    nest (2.0.0)
+      redic
     net-http-persistent (2.9.4)
     netrc (0.10.3)
     noid (0.9.0)
@@ -659,6 +662,8 @@ GEM
       rdf (~> 1.1, >= 1.1.10)
     rdf-xsd (1.99.0)
       rdf (~> 1.99)
+    redic (1.5.0)
+      hiredis
     redis (3.3.3)
     redis-namespace (1.5.3)
       redis (~> 3.0, >= 3.0.4)
@@ -883,6 +888,7 @@ DEPENDENCIES
   moab-versioning
   mysql
   mysql2
+  nest
   oauth
   omniauth-shibboleth
   openlayers-rails
