@@ -61,8 +61,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: c8fc710afafd3fa1b99b3ce50a7dc788ca4b433c
-  branch: nosufia
+  revision: bcba8b97a33375d829b25d6d1948b476f59dc7b5
+  branch: develop
   specs:
     dri_data_models (2.5.0)
       active-fedora (= 9.11)
@@ -492,7 +492,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     little-plugger (1.1.4)
-    logging (2.2.0)
+    logging (2.2.1)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
     loofah (2.0.3)
