@@ -112,7 +112,7 @@ module Storage
   def bucket_path(bucket)
     hashed_bucket = hash_dir(bucket)
     
-    return hashed_bucket if Dir.exists?(hashed_bucket)
+    return hashed_bucket
   end
 
   def filename_match?(filename, key)
@@ -122,6 +122,8 @@ module Storage
   end
 
   def hash_dir(bucket)
+    return File.join(@dir, bucket) unless bucket.index('.').nil?
+
     sub_dir = ''
     index = 0
 
