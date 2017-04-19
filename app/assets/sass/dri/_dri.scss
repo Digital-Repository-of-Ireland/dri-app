@@ -627,15 +627,22 @@ a .dri_signin_edugate {
 }
 // scss update for account styling
 .dri_account_nav {
+    float: right;
     margin: 10px 0 0 0;
     padding: 0px;
     font-size: 100%;
+    div.account_container {
+        width: 100%;
+        position: relative;
+        text-align: right;
+    }
     ul.dri_account_links {
+        display: inline;
         li {
             float: left;
-            display: block;
+            display: inline;
             margin: 2px 0 0 10px;
-            padding: 0 10px 0 0;
+            padding: 0 0px 0 0;
             border-right: 1px solid $dri_thingrey;
             color: $dri_midgrey;
             &:hover {
@@ -651,8 +658,8 @@ a .dri_signin_edugate {
     }
 }
 .dri_language_links {
-    float: right;
-    display: block;
+    float: left;
+    display: inline;
     border: 1px solid $dri_thingrey;
     margin: 0;
     padding: 2px 7px 2px 7px;
@@ -1262,6 +1269,13 @@ h4.suggest {
     }
 }
 /*-------------- Accounts page --------------*/
+
+.dri_account_buttons {
+    border-bottom: 1px solid #d9dadb;
+    display: flex;
+    height: 100%;
+    padding: 30px 0 30px 0;
+}
 
 .dri_account_block {
     border-bottom: 1px solid $dri_thingrey;
