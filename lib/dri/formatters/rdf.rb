@@ -28,9 +28,10 @@ module DRI::Formatters
      'institute' => RDF::Vocab::EDM.provider
     }
         
-    def initialize(object_doc, fields = nil)
+    def initialize(object_doc, options = {})
+      fields = options[:fields].presence
       @object_doc = object_doc
-      @object_hash = format(object_doc, fields)
+      @object_hash = object_doc.extract_metadata(fields)
       build_graph
     end
 
@@ -115,8 +116,10 @@ module DRI::Formatters
       end
     end
 
-    def format(object_doc, fields = nil)
-      object_doc.extract_metadata(fields)
+    def format(options = {})
+      output_format = options[:format].presence || :ttl
+
+      output_format == :ttl ? ttl : xml
     end
 
     def graph

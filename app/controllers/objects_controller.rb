@@ -223,10 +223,10 @@ class ObjectsController < BaseObjectsController
         docs.each do |doc|
           solr_doc = SolrDocument.new(doc)
 
-          #next unless solr_doc.published?
+          next unless solr_doc.published?
 
           item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
-            i = solr_doc.extract_metadata(params[:metadata])
+            solr_doc.extract_metadata(params[:metadata])
           end
 
           item.merge!(find_assets_and_surrogates(solr_doc))

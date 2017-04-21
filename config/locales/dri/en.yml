@@ -242,7 +242,7 @@ en:
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
       facets_title: "Facet Filters"
-      fields: 
+      fields:
         collection_title: "Collection Title"
         collection_title_text: "A name given to the collection."
         coverages: Coverage
@@ -531,6 +531,7 @@ en:
         unknown_object: "Unknown Object."
         view_permission: "This item is not available. You do not have sufficient access privileges to view the master file(s)."
       fields: 
+        assets: Assets
         Format: Format
         collection_title: "Collection Title"
         contributor: Contributor

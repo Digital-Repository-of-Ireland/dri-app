@@ -5,37 +5,36 @@ class CreateExportJob
 
   def self.perform(object_id, fields, email)
     tmp = Tempfile.new("#{object_id}_export")
-    puts tmp.path
-
+    
     solr_query = "#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{object_id}\""
     f_query = "-#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"
 
     q_result = Solr::Query.new(solr_query, 500, fq: f_query)
     
+    assets = fields.delete('assets')
+    options = { fields: fields.keys }
+    
     CSV.open(tmp.path, "wb") do |csv|
-      titles = ['id'].concat(fields.values)
-      titles << 'url'
+      titles = ['Id'].concat(fields.values)
+      titles << 'Licence'
+      if assets.present?
+        options[:with_assets] = true
+        titles << 'Assets'
+      end
       csv << titles # title row
-      q_result.each_solr_document do |doc| 
-        row = []
-        row << doc['id']
-        fields.keys.each do |key|
-          field = doc[ActiveFedora.index_field_mapper.solr_name(key, :stored_searchable, type: :string)]
-          value = field.kind_of?(Array) ? field.join(',') : field 
-          row << value
-        end
-        row << Rails.application.routes.url_helpers.url_for(
-                 controller: 'catalog', action: 'show', id: doc['id'],
-                 protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
-               )
+
+      q_result.each_solr_document do |doc|
+        formatter = DRI::Formatters::Csv.new(doc, options)
+        csv_string = formatter.format
+        rows = CSV.parse(csv_string)
+        row = rows[1]
         csv << row
       end
     end
 
     key = store_export(object_id, email, tmp.path)
-
-    JobMailer.export_ready_mail(key, email, object_id).deliver_now
     tmp.unlink
+    JobMailer.export_ready_mail(key, email, object_id).deliver_now
   end
 
   def self.store_export(object_id, email, csv)

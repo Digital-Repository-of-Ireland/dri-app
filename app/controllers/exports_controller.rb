@@ -8,6 +8,8 @@ class ExportsController < ApplicationController
   end
 
   def create
+    enforce_permissions!('manage_collection', params[:id])
+
     begin
       Resque.enqueue(CreateExportJob, params[:id], params[:fields], current_user.email)
     rescue Exception => e
@@ -21,11 +23,12 @@ class ExportsController < ApplicationController
   end
 
   def show
+    enforce_permissions!('manage_collection', params[:id])
+    
     storage = StorageService.new
     
     bucket = "users.#{Mail::Address.new(current_user.email).local}"
     file = storage.file_url(bucket, params[:export_key])
-    puts file
     raise DRI::Exceptions::NotFound unless file
 
     open(file) do |f|
