@@ -1,8 +1,12 @@
 <div class="dri_ingest_form_container">
   <div class="dri_ingest_form">
-    <h4>Export Object Metadata</h4>
-    <p>Choose object fields to include in export</p>
-    <%= form_tag({controller: "exports", action: "create", id: @collection.id}, method: "post", class: 'form-vertical') do %>
+    <h4><%= t('dri.views.export.headers.export_all_metadata') %></h4>
+    <p><%= t('dri.views.export.legends.export_all_metadata') %></p>
+     <div>
+      <%= check_box_tag 'toggle-boxes' %>
+      <%= label_tag "#{t('dri.views.fields.toggle')}" %>
+    </div><br/>
+    <%= form_tag({controller: "exports", action: "create", id: @collection.id}, method: "post", id: 'export_form', class: 'form-vertical') do %>
     <div>
       <%= check_box_tag 'fields[title]', "#{t('dri.views.fields.title')}"%>
       <%= label_tag "#{t('dri.views.fields.title')}"%>
@@ -64,3 +68,9 @@
     
   </div>
 </div>
+
+<script>
+ $( '#toggle-boxes' ).click( function () {
+    $( '#export_form input[type="checkbox"]' ).prop('checked', this.checked)
+  })
+</script>

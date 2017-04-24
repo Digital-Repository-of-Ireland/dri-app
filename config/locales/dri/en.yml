@@ -403,6 +403,7 @@ en:
           draft: Draft
           duplicates: Duplicates
           edit_this_record: Edit
+          export_collection_metadata: "Export all Metadata"
           generate_surrogates: "Regenerate Surrogates"
           history: History
           iiif_viewer: Viewer
@@ -530,6 +531,11 @@ en:
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
         view_permission: "This item is not available. You do not have sufficient access privileges to view the master file(s)."
+      export:
+        headers:
+          export_all_metadata: "Export all Metadata"
+        legends:
+          export_all_metadata: "Choose fields to export for each object in the collection. The metadata will be exported as a CSV file for you to download."
       fields: 
         assets: Assets
         Format: Format
@@ -590,6 +596,7 @@ en:
         temporal_coverages: "Subjects (Temporal)"
         title: Title
         total_assets: "Total number of assets"
+        toggle: "Toggle All"
         type: Type
         types: Types
       ingest: 

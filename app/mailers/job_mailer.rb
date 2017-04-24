@@ -17,7 +17,7 @@ class JobMailer < ActionMailer::Base
     unless email.nil?
       @file = file
       @object_id = object_id
-      mail(to: 'stuart.kenny@tchpc.tcd.ie', subject: "Your download is ready")
+      mail(to: @user, subject: "Your download is ready")
     end
   end
 
