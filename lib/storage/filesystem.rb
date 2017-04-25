@@ -18,7 +18,7 @@ module Storage
   
   def delete_bucket(bucket)
     bucket_to_delete = bucket_path(bucket)
-    FileUtils.remove_entry_secure(bucket_to_delete) unless bucket_to_delete.nil?
+    FileUtils.remove_entry_secure(bucket_to_delete, true) unless bucket_to_delete.nil?
   end
 
   def delete_surrogates(bucket, key)
