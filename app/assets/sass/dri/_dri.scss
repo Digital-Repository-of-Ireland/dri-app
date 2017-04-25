@@ -2127,6 +2127,7 @@ ul.dri_collection_institutes_list {
 /*-------------- Footer navigation --------------*/
 
 .dri_main_footer_navigation {
+    clear: left;
     margin: 100px 0 70px 0;
     padding: 0px;
     border-top: 1px solid $dri_thingrey;
@@ -2181,11 +2182,21 @@ ul.dri_collection_institutes_list {
 }
 .dri_footer_address {
     margin: 10px 0 10px 0;
+    float: right;
     color: $dri_greytext;
     a {
         color: $dri_midgrey;
         text-decoration: underline;
     }
+}
+.dri_footer_dsa_logo {
+    float: right;
+    padding-top: 2.3em;
+    box-sizing: border-box;
+    display: inline-block;
+    width: 180px;
+    height: 77px;
+    text-align: center;
 }
 .dri_main_footer {
     .dri_footer_address {
