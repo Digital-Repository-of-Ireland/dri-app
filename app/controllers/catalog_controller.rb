@@ -261,7 +261,12 @@ class CatalogController < ApplicationController
 
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
-      format.json { render json: { response: { document: @document } } }
+      format.json do
+        options = {}
+        options[:with_assets] = true if can?(:read, @document)
+        formatter = DRI::Formatters::Json.new(@document, options)
+        render json: formatter.format
+      end
       format.js { render layout: false }
 
       additional_export_formats(@document, format)
