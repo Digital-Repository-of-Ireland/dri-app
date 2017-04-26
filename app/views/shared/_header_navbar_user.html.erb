@@ -1,41 +1,15 @@
   <nav id="dri_account_nav_id" class="dri_account_nav">
+
+    <div class="account_container">
+    <%= render :partial => 'shared/header_mobile_lang' %>
+
     <ul id="dri_account_links_id" class="dri_account_links">
-      <% if current_user %>
-          <%= link_to user_group.user_path(current_user), :id => 'view_account' do %>
-              <li class="on">
-                <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
-              </li>
-          <% end %>
+      <%= link_to user_group.profile_path, :id => 'view_account' do %>
+        <li class="no_border">
+          <i class="fa fa-user"></i>
+        </li>
       <% end %>
-      <% if !current_user %>
-      <%= link_to user_group.new_user_path, :id => 'sign_up' do %>
-          <li>
-            <%= t('dri.sign_in.register') %>          
-          </li>
-          <% end %>
-      <% end %>
-      <%= link_to main_app.page_path('about_faq'), :id => "dri_header_help", :class => "muted" do %>
-      <li>
-        <%= t('dri.headerlinks.help') %>
-      </li>
-      <% end %>
-
-        <% if current_user %>
-            <%= link_to main_app.destroy_user_session_path, :method => :delete, :id => 'logout' do %>
-            <li class="no_border">
-            	<%= t('blacklight.header_links.logout') %>
-            </li>
-            <% end %>
-        <% else %>
-            <%= link_to main_app.new_user_session_path, :id => 'login' do %>
-                        <li class="no_border">
-                        	<%= t('blacklight.header_links.login') %>
-            </li>
-            <% end %>
-        <% end %>
-
-
-      <%= render :partial => 'shared/header_mobile_lang' %>
     </ul>
+    </div>
   </nav>
   <!-- close dri_account_nav -->

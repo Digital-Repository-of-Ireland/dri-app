@@ -652,7 +652,7 @@ en:
           inherit_strings: 
             private: "surrogates only"
             public: "surrogates and uploaded originals"
-          inherited_setting: "Curently set to %{inherited_setting}"
+          inherited_setting: "Currently set to %{inherited_setting}"
           manage: "Who can manage this collection?"
           manager_desc: "Enter the email addresses of Manager Users below. A Manager User is an authorised user who can create and edit collections which are assigned to them by Organisational Manager. These permissions will not be applied until these email addresses have been registered for DRI accounts."
           master_file: "Which asset files can they access?"
