@@ -26,6 +26,9 @@ module PathTranslator
       when /^(the )?home page$/
         root_path
 
+      when /^(the )?user profile page$/
+        user_group.profile_path      
+
       when /^sign in$/
         new_user_session_path
 

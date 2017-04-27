@@ -40,6 +40,9 @@ module LinkTranslator
       when /^upload XML$/
         "add_object_xml"
 
+      when /^user profile$/
+       "view_account"
+
       when /^sign out$/
         "logout"
 
