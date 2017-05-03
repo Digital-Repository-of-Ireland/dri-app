@@ -23,3 +23,22 @@
 <%= link_to t('dri.headerlinks.institutions'), organisations_path, id: 'institutions' %>
 </li>
 
+<!--
+<li>
+  <%= render 'shared/header_main_about_dropdown' %>
+</li>
+
+<li>
+  <%= render 'shared/header_main_team_dropdown' %>
+</li>
+
+-->
+
+<% if (controller.controller_name == 'worspace' && controller.action_name == 'index') %>
+    <li class="active">
+<% else %>
+    <li>
+<% end %>
+<%= link_to t('dri.headerlinks.workspace'), page_path('workspace'), id: 'workspace' %>
+</li>
+
