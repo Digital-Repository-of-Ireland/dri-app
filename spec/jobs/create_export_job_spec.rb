@@ -6,8 +6,7 @@ describe "CreateExportJob" do
   before(:all) do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
-    Settings.filesystem.directory = @tmp_assets_dir
-
+    
     @login_user = FactoryGirl.create(:collection_manager)
 
     @collection = FactoryGirl.create(:collection)
@@ -35,7 +34,6 @@ describe "CreateExportJob" do
   end
   
   describe "run" do
-    let(:export_file) { Dir[File.join(@tmp_assets_dir, "users.#{Mail::Address.new(@login_user.email).local}", "#{@collection.id}*.csv")] }
       
     it "creates an export file" do
       delivery = double
@@ -45,11 +43,20 @@ describe "CreateExportJob" do
       .and_return(delivery)
       CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description'}, @login_user.email)
 
-      expect(export_file).to_not be_empty
+      storage = StorageService.new
+      bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
+      key = "#{@collection_id}"
+
+      expect(storage.surrogate_exists?(bucket_name, key)).to be true
     end
 
     it "adds the objects metadata to the export" do
-      csv = CSV.read(export_file[0])
+      storage = StorageService.new
+      bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
+      key = "#{@collection_id}"
+      files = storage.get_surrogates(bucket_name, key)
+      file_contents = open(files.values.first) { |f| f.read }
+      csv = CSV.parse(file_contents)
 
       expect(csv[1].drop(1)).to eql(csv[2].drop(1))
 
