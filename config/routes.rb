@@ -43,6 +43,10 @@ DriApp::Application.routes.draw do
     post 'collections/:id/lock', to: 'collections#lock', as: :collection_lock
     delete 'collections/:id/lock', to: 'collections#lock', as: :collection_unlock
 
+    get 'collections/:id/exports/new', to: 'exports#new', as: :new_export
+    post 'collections/:id/exports', to: 'exports#create', as: :exports
+    get 'collections/:id/exports/:export_key' => 'exports#show', :as => :export
+ 
     get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
     put 'objects/:id/access', to: 'access_controls#update'
 

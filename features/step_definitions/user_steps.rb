@@ -183,11 +183,13 @@ end
 
 Then /^I should be logged in$/ do
   step 'I should have a cookie _dri-app_session'
+  step 'I am on the user profile page'
   step 'I should see a link to sign out'
 end
 
 Then /^I should be logged out$/ do
-  step 'I should see a link to sign in'
+  step 'I am on the user profile page'
+  step 'I should see a button to sign in'
 end
 
 Then /^I should be logged in as "(.*?)"$/ do |login|
@@ -213,14 +215,12 @@ Then /^my authentication details should be updated from "([^\"]*)", "([^\"]*)" t
   oldemail = "#{oldlogin}@#{oldlogin}.com"
   newemail = "#{newlogin}@#{newlogin}.com"
   page.should have_content( newemail )
-  step 'I follow the link to sign out'
-  step 'I should be logged out'
+  step 'I am not logged in'
   visit path_to("sign in")
   fill_in("user_email", :with => oldemail)
   fill_in("user_password", :with => oldpassword)
   click_button("Login")
   step 'I should see the error "Invalid email or password"'
-  step 'I should be logged out'
   fill_in("user_email", :with => newemail)
   fill_in("user_password", :with => newpassword)
   click_button("Login")

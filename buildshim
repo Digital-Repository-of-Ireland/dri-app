@@ -42,6 +42,8 @@ S3:
   access_key_id: anykey
   secret_access_key: anykey
   bucket_prefix: buildbot
+filesystem:
+  directory: fs_files
 doi:
   enable: false
 __EOF__

@@ -8,16 +8,15 @@ Feature: User sign up
 Scenario: Navigate to the Sign in page
   Given I am not logged in
   When I go to "the home page"
-  Then I should see a link to sign in
-  And I should not see a link to sign out
-  When I follow the link to sign in
+  Then I should see a link to user profile
+  When I follow the link to user profile
   Then I should be on the User Signin page
 
 Scenario: Navigate to the Sign up page
   Given I am not logged in
   When I go to "the home page"
-  Then I should see a link to sign in
-  When I follow the link to sign in
+  Then I should see a link to user profile
+  When I follow the link to user profile
   Then I should be on the User Signin page
   When I follow the link to sign up
   Then I should be on the User Sign up page
@@ -39,21 +38,18 @@ Scenario: Creating an invalid user account with duplicate email
   Given I am on the User Sign up page
   When I submit the User Sign up page with email "user1@user1.com" and password "password1"
   Then I should see a failure message for duplicate email
-  And I should be logged out
 
 Scenario: Creating an invalid user account with non-matching password confirmation
   Given I am not logged in
   Given I am on the User Sign up page
   When I submit a valid email address and non-matching password and password confirmation
   Then I should see a failure message for password mismatch
-  And I should be logged out
 
 Scenario: Creating an invalid user account with too short password
   Given I am not logged in
   Given I am on the User Sign up page
   When I submit a valid email address and too short password and password confirmation
   Then I should see a failure message for too short password
-  And I should be logged out
 
 Scenario: User signs in with valid credentials
   Given an account for "user1" already exists
@@ -66,13 +62,11 @@ Scenario: User signs in with invalid credentials
   Given I am not logged in
   Given I am on the User Signin page
   When I submit the User Sign in page with credentials "user1@user1.com" and "badpassword"
-  Then I should be logged out
-  And I should see a failure message for invalid email or password
+  Then I should see a failure message for invalid email or password
 
-@javascript
 Scenario: Logging out
-  Given I am logged in as "user1" with password "password1" and accept cookies
-  When I go to "the home page"
+  Given I am logged in as "user1" with password "password1"
+  And I am on the user profile page
   Then I should see a link to sign out
   When I follow the link to sign out
   Then I should be logged out

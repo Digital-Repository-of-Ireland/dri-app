@@ -114,6 +114,7 @@ en:
       error: 
         cover_image_not_saved: "Unable to save cover image"
         download_no_file: "Unable to find your archive file, please check the url and try again."
+        exporting: "Error submitting export background job."
         locked: "This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information."
         manager_user_invalid: "User %{email} does not exist, please have the user create an account first."
         manager_user_permission: "You do not have permission to create a manager user"
@@ -143,6 +144,7 @@ en:
         digital_object_ingested: "Digital object has been successfully ingested."
         doi_not_latest: "A more recent version of this object exists."
         duplicate_object_ingested: "Possible duplicate objects found: %{duplicates}"
+        exporting: "An export of this collection is being created. You will receive an email when it is available."
         file_uploaded: "Asset has been successfully uploaded."
         generating_surrogates: "Surrogates are being generated."
         licence_created: "Licence successfully created."
@@ -249,7 +251,7 @@ en:
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
       facets_title: "Facet Filters"
-      fields: 
+      fields:
         collection_title: "Collection Title"
         collection_title_text: "A name given to the collection."
         coverages: Coverage
@@ -410,6 +412,7 @@ en:
           draft: Draft
           duplicates: Duplicates
           edit_this_record: Edit
+          export_collection_metadata: "Export all Metadata"
           generate_surrogates: "Regenerate Surrogates"
           history: History
           iiif_viewer: Viewer
@@ -537,7 +540,13 @@ en:
         unknown_collection: "Unknown collection."
         unknown_object: "Unknown Object."
         view_permission: "This item is not available. You do not have sufficient access privileges to view the master file(s)."
+      export:
+        headers:
+          export_all_metadata: "Export all Metadata"
+        legends:
+          export_all_metadata: "Choose fields to export for each object in the collection. The metadata will be exported as a CSV file for you to download."
       fields: 
+        assets: Assets
         Format: Format
         collection_title: "Collection Title"
         contributor: Contributor
@@ -596,6 +605,7 @@ en:
         temporal_coverages: "Subjects (Temporal)"
         title: Title
         total_assets: "Total number of assets"
+        toggle: "Toggle All"
         type: Type
         types: Types
       ingest: 
