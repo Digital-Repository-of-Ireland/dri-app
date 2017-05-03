@@ -205,7 +205,7 @@ module Storage
     end
 
     def with_prefix(bucket)
-      bucket_prefix ? "#{bucket_prefix}.#{bucket}" : bucket
+      bucket_prefix && !bucket.index('.').nil? ? "#{bucket_prefix}.#{bucket}" : bucket
     end
 
     def create_url(bucket, object, expire=nil, authenticated=true)
