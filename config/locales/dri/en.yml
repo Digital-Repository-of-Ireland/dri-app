@@ -213,6 +213,15 @@ en:
       sub_collections: Sub-Collections
       usergroups: "Users & Groups"
       workspace: Workspace
+      deposit_guide: "Guide to Deposit"
+      publications: "Publications"
+      projects: "Projects"
+      blog: "Blog"
+      events: Events
+      resources: Resources
+      team: Team
+      people: People
+      vacancies: Vacancies
     help: 
       add_documentation_help_text: "These objects appear in the Related Materials section of the Collection show page."
       add_documentation_help_title: "Add contextual information"
@@ -761,6 +770,7 @@ en:
         admin: 
           licences: "Supported Licences"
         workspace: 
+          please_login: "Please <a href='%{url}'>login</a> for Workspace options."
           account: "My Account"
       tasks: 
         links: 
