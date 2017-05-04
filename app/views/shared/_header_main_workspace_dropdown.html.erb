@@ -1,4 +1,4 @@
-<% if (request.path.include? "/bookmarks") || (request.path.include? "/user_groups/users") || (request.path.include? "/search_history") || (request.path.include? "/saved_searches") || (controller.controller_name.eql?('workspace')) %>
+<% if (request.path.include? "/bookmarks") || (request.path.include? "/user_groups/users") || (request.path.include? "/search_history") || (request.path.include? "/saved_searches") || (controller.controller_name.eql?('my_collections')) || (controller.controller_name.eql?('workspace')) %>
 <li class="dropdown active dri_dropdown">
 	<% else %>
 <li class="dropdown dri_dropdown">
@@ -17,12 +17,12 @@
 
 		</li>
 
-    <% if (controller.controller_name.eql?('workspace')) %>
+    <% if (controller.controller_name.eql?('my_collections')) || (controller.controller_name.eql?('workspace')) %>
       <li role="presentation" class="active">
     <% else %>
       <li role="presentation">
     <% end %>
-      <%= link_to t('dri.headerlinks.my_collections'), workspace_path(:mode => "collections"), :id => "my_collections", :tabindex => "-1" %>
+      <%= link_to t('dri.headerlinks.my_collections'), my_collections_path(:mode => "collections"), :id => "my_collections", :tabindex => "-1" %>
     </li>
 
 

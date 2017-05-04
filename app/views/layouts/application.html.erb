@@ -66,7 +66,7 @@
 			<% end %>
 			<!-- This condition identifies the browse section of the application and every search result and/or facet refinement -->
 			<% if (((controller_name.eql?('catalog') || controller_name.eql?('bookmarks') ||
-			controller_name.eql?('workspace')) && action_name.eql?('index')) && has_browse_params?) ||
+			controller_name.eql?('my_collections')) && action_name.eql?('index')) && has_browse_params?) ||
 			(controller_name.eql?('saved_searches') && action_name.eql?('index'))%>
 			<%= render 'catalog/browse_mode_swap' %>
 			<% end %>
