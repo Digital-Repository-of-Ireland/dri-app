@@ -51,6 +51,13 @@ describe "CreateExportJob" do
     end
 
     it "adds the objects metadata to the export" do
+      delivery = double
+      expect(delivery).to receive(:deliver_now).with(no_args)
+
+      expect(JobMailer).to receive(:export_ready_mail)
+      .and_return(delivery)
+      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description'}, @login_user.email)
+      
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
       key = "#{@collection_id}"
