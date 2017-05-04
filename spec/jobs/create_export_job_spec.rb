@@ -4,9 +4,13 @@ require 'csv'
 describe "CreateExportJob" do
   
   before(:all) do
+    Settings.reload_from_files(
+      Rails.root.join(fixture_path, "settings-fs.yml").to_s
+    )
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
-    
+    Settings.filesystem.directory = @tmp_assets_dir
+
     @login_user = FactoryGirl.create(:collection_manager)
 
     @collection = FactoryGirl.create(:collection)
@@ -31,6 +35,9 @@ describe "CreateExportJob" do
     @login_user.delete
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
+    Settings.reload_from_files(
+      Rails.root.join("config", "settings.yml").to_s
+    )
   end
   
   describe "run" do
@@ -51,13 +58,6 @@ describe "CreateExportJob" do
     end
 
     it "adds the objects metadata to the export" do
-      delivery = double
-      expect(delivery).to receive(:deliver_now).with(no_args)
-
-      expect(JobMailer).to receive(:export_ready_mail)
-      .and_return(delivery)
-      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description'}, @login_user.email)
-      
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
       key = "#{@collection_id}"
