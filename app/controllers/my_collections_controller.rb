@@ -7,6 +7,9 @@ class MyCollectionsController < ApplicationController
 
   include Hydra::AccessControlsEnforcement
 
+  before_action :authenticate_user_from_token!
+  before_action :authenticate_user!
+
   # This method shows the DO if the metadata is open
   # Rather than before where the user had to have read permissions on the object all the time
   def enforce_search_for_show_permissions
