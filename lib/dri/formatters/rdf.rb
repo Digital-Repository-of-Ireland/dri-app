@@ -4,8 +4,6 @@ include RDF
 module DRI::Formatters
   class Rdf
    
-    BASE_URI = "https://repository.dri.ie"
-    
     METADATA_FIELDS_MAP = {
      'title' => RDF::DC.title,
      'subject' => RDF::DC.subject,
@@ -36,8 +34,13 @@ module DRI::Formatters
       build_graph
     end
 
+    def base_uri
+      protocol = Rails.application.config.action_mailer.default_url_options[:protocol] || 'http'
+      "#{protocol}://#{Rails.application.config.action_mailer.default_url_options[:host]}"
+    end
+
     def uri
-      @uri ||= RDF::URI.new("#{BASE_URI}/catalog/#{@object_hash['pid']}")
+      @uri ||= RDF::URI.new("#{base_uri}/catalog/#{@object_hash['pid']}")
     end
 
     def ttl_uri
@@ -47,7 +50,7 @@ module DRI::Formatters
     def html_uri
       @html_uri ||= RDF::URI.new("#{uri}.html")
     end
-
+    
     def build_graph
       graph << [uri, RDF::DC.hasFormat, RDF::URI("#{uri}.ttl")]
       graph << [uri, RDF::DC.hasFormat, RDF::URI("#{uri}.html")]
@@ -71,12 +74,12 @@ module DRI::Formatters
       assets = @object_doc.assets
       
       assets.each do |a| 
-        id = "#{BASE_URI}#{object_file_path(a['id'])}#id"
+        id = "#{base_uri}#{object_file_path(a['id'])}#id"
         graph << [RDF::URI("#{uri}#id"), RDF::DC.hasPart, RDF::URI.new(id)]
 
         graph << [RDF::URI.new(id), RDF.type, file_type(a)]
         graph << [RDF::URI.new(id), FOAF.topic, RDF::URI("#{uri}#id")]
-        graph << [RDF::URI.new(id), mrss_vocab.content, RDF::URI("#{BASE_URI}#{file_path(a['id'])}")]
+        graph << [RDF::URI.new(id), mrss_vocab.content, RDF::URI("#{base_uri}#{file_path(a['id'])}")]
         graph << [RDF::URI.new(id), RDF::RDFS.label, RDF::Literal.new(a['label_tesim'])]
         graph << [RDF::URI.new(id), RDF::DC.isPartOf, RDF::URI("#{uri}#id")]
       end
@@ -125,7 +128,7 @@ module DRI::Formatters
           metadata[field].each do |value|
             case field
             when 'isGovernedBy'
-              graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::URI("#{BASE_URI}/catalog/#{value}#id")]
+              graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::URI("#{base_uri}/catalog/#{value}#id")]
             when 'geographical_coverage'
               if DRI::Metadata::Transformations.dcmi_box?(value)
                 graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::DC.Box)]
