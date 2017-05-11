@@ -11,20 +11,19 @@ module DRI::Solr::Document::File
   def assets(with_preservation = false)
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{id}\""
-
-    unless with_preservation
-      files_query += " AND NOT #{ActiveFedora.index_field_mapper.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
-    end
+    
     query = Solr::Query.new(files_query)
 
     assets = []
-    query.each_solr_document { |sd| assets << sd }
+    query.each_solr_document do |sd| 
+      assets << sd unless (with_preservation == false && sd.preservation_only?)
+    end
 
     assets
   end
 
   def preservation_only?
-    key = 'dri_properties__preservation_only_tesim'
+    key = 'preservation_only_tesim'
 
     self[key].present? && self[key] == ['true'] ? true : false
   end
@@ -34,7 +33,7 @@ module DRI::Solr::Document::File
   end 
 
   def mime_type
-    mime_key = 'characterization__mime_type_tesim'
+    mime_key = 'mime_type_tesim'
     self[mime_key].present? ? self[mime_key].first : nil
   end
 
