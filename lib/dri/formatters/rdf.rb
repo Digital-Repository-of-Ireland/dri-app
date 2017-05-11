@@ -5,6 +5,7 @@ module DRI::Formatters
   class Rdf
    
     METADATA_FIELDS_MAP = {
+     'identifier' => RDF::DC.identifier,
      'title' => RDF::DC.title,
      'subject' => RDF::DC.subject,
      'creation_date' => RDF::DC.created,
@@ -25,7 +26,20 @@ module DRI::Formatters
      'temporal_coverage' => RDF::DC.temporal,
      'institute' => RDF::Vocab::EDM.provider
     }
-        
+      
+    RELATIONSHIP_FIELDS_MAP = {
+      'References' => RDF::DC.references,
+      'Is Referenced By' => RDF::DC.isReferencedBy,
+      'Is Related To' => RDF::DC.relation,
+      'Is Part Of' => RDF::DC.isPartOf,
+      'Has Part' => RDF::DC.hasPart,
+      'Is Version Of' => RDF::DC.isVersionOf,
+      'Has Version' => RDF::DC.hasVersion,
+      'Is Format Of' => RDF::DC.isFormatOf,
+      'Has Format' => RDF::DC.hasFormat,
+      'Source' => RDF::DC.source
+    }
+
     def initialize(object_doc, options = {})
       fields = options[:fields].presence
       @object_doc = object_doc
@@ -63,6 +77,7 @@ module DRI::Formatters
       add_formats
 
       add_metadata
+      add_relationships
       add_assets if @with_assets
      
       graph
@@ -146,6 +161,26 @@ module DRI::Formatters
             end
           end
         end
+      end
+
+      if @object_doc.identifier.present?
+        @object_doc.identifier.each { |ident| graph << [RDF::URI.new(id), METADATA_FIELDS_MAP['identifier'], ident] }
+      end
+    end
+
+    def add_relationships
+      id = "#{uri}#id"
+
+      relationships = @object_doc.object_relationships
+
+      if relationships.present?
+
+        relationships.keys.each do |key|
+          relationships[key].each do |relationship|
+            graph << [RDF::URI.new(id), RELATIONSHIP_FIELDS_MAP[key], RDF::URI("#{base_uri}/catalog/#{relationship[1]['id']}#id")]
+          end
+        end
+
       end
     end
 
