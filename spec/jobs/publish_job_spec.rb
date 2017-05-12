@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'solr/query'
 
 # declare an exclusion filter
@@ -13,6 +13,9 @@ describe 'PublishJob' do
   end
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     @login_user = FactoryGirl.create(:collection_manager)
 
     @collection = FactoryGirl.create(:collection)
@@ -30,6 +33,8 @@ describe 'PublishJob' do
   after(:each) do
     @object.delete
     @collection.delete
+   
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   describe 'run' do
