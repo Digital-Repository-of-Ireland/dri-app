@@ -36,9 +36,9 @@ describe "formatters" do
       
       expect(generated_csv[0]).to eql(expected_titles)
       expect(generated_csv[1][0]).to eql(@object.id)
-      expect(generated_csv[1][1]).to eql(@object.title.join(','))
-      expect(generated_csv[1][2]).to eql(@object.subject.join(','))
-      expect(generated_csv[1][3]).to eql(object_doc['temporal_coverage_tesim'].join(','))
+      expect(generated_csv[1][1]).to eql(@object.title.join('|'))
+      expect(generated_csv[1][2]).to eql(@object.subject.join('|'))
+      expect(generated_csv[1][3]).to eql(object_doc['temporal_coverage_tesim'].join('|'))
     end
   end
 

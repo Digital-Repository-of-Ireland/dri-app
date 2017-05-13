@@ -65,10 +65,10 @@ describe "CreateExportJob" do
       file_contents = open(files.values.first) { |f| f.read }
       csv = CSV.parse(file_contents)
 
-      expect(csv[1].drop(1)).to eql(csv[2].drop(1))
-
-      expect(csv[1][1]).to eql(@object.title.join(','))
-      expect(csv[1][2]).to eql(@object.description.join(','))
+      expect(csv[1][1]).to eql(@object.title.first)
+      expect(csv[1][2]).to eql(@object.description.first)
+      expect(csv[2][1]).to eql(@object.title.first)
+      expect(csv[2][2]).to eql(@object.description.first)
     end 
   end
 
