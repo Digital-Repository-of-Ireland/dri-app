@@ -100,6 +100,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def after_sign_in_path_for(resource)
+      session["user_return_to"] || user_group.profile_path
+    end
+
     def authenticate_user_from_token!
       user_email = params[:user_email].presence
       user       = user_email && User.find_by_email(user_email)

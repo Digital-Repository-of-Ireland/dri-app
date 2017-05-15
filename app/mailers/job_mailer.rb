@@ -12,4 +12,13 @@ class JobMailer < ActionMailer::Base
     end
   end
 
+  def export_ready_mail(file, email, object_id)
+    Rails.logger.debug("[Job MAILER] sending mail to #{email}")
+    unless email.nil?
+      @file = file
+      @object_id = object_id
+      mail(to: @user, subject: "Your download is ready")
+    end
+  end
+
 end

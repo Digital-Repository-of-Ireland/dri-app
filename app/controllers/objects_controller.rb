@@ -22,6 +22,11 @@ class ObjectsController < BaseObjectsController
     @object = DRI::Batch.with_standard :qdc
     @object.creator = ['']
 
+    if params[:is_sub_collection].present? && params[:is_sub_collection] == 'true'
+      @object.object_type = ['Collection']
+      @object.type = ['Collection']
+    end
+
     supported_licences
   end
 
@@ -85,7 +90,7 @@ class ObjectsController < BaseObjectsController
 
     version = @object.object_version || 1
     @object.object_version = version.to_i + 1
-    
+
     unless @object.update_attributes(update_params)
       purge_params
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
@@ -142,9 +147,7 @@ class ObjectsController < BaseObjectsController
     end
 
     checksum_metadata(@object)
-
     supported_licences
-
     @object.object_version = 1
 
     if @object.valid? && @object.save
@@ -226,7 +229,7 @@ class ObjectsController < BaseObjectsController
           next unless solr_doc.published?
 
           item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
-            i = solr_doc.extract_metadata(params[:metadata])
+            solr_doc.extract_metadata(params[:metadata])
           end
 
           item.merge!(find_assets_and_surrogates(solr_doc))
@@ -447,7 +450,7 @@ class ObjectsController < BaseObjectsController
     def retrieve_linked_data
       if AuthoritiesConfig
         begin
-          Sufia.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present?
+          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present?
         rescue Exception => e
           Rails.logger.error "Unable to submit linked data job: #{e.message}"
         end

@@ -69,7 +69,7 @@
         <% if @document.draft? %>
           <%= hidden_field_tag( :status, "reviewed") %>
           <span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), :id => 'status_update', :class => "pull-right dri_button_green_small" %>
-        <% else %>
+        <% elsif @document.status == 'reviewed' %>
           <%= hidden_field_tag( :status, "draft") %>
           <span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update', :class => "pull-right dri_button_red_small" %>
         <% end %>

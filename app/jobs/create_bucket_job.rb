@@ -23,20 +23,20 @@ class CreateBucketJob < ActiveFedoraIdBasedJob
   def after_create_bucket
     if generic_file.pdf?
       status_for_type('pdf')
-      Sufia.queue.push(ThumbnailJob.new(generic_file_id))
-      Sufia.queue.push(TextSurrogateJob.new(generic_file_id))
+      DRI.queue.push(ThumbnailJob.new(generic_file_id))
+      DRI.queue.push(TextSurrogateJob.new(generic_file_id))
     elsif generic_file.text?
       status_for_type('text')
-      Sufia.queue.push(TextSurrogateJob.new(generic_file_id))
+      DRI.queue.push(TextSurrogateJob.new(generic_file_id))
     elsif generic_file.video?
       status_for_type('video')
-      Sufia.queue.push(CreateDerivativesJob.new(generic_file_id))
+      DRI.queue.push(CreateDerivativesJob.new(generic_file_id))
     elsif generic_file.audio?
       status_for_type('audio')
-      Sufia.queue.push(CreateDerivativesJob.new(generic_file_id))
+      DRI.queue.push(CreateDerivativesJob.new(generic_file_id))
     elsif generic_file.image?
       status_for_type('image')
-      Sufia.queue.push(ThumbnailJob.new(generic_file_id))
+      DRI.queue.push(ThumbnailJob.new(generic_file_id))
     end
   end
 

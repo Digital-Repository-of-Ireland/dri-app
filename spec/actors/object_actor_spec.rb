@@ -4,6 +4,9 @@ describe 'DRI::Object::Actor' do
   include DRI::MetadataBehaviour
   
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+    
     @user = FactoryGirl.create(:user)
 
     @collection = FactoryGirl.create(:collection)
@@ -31,6 +34,8 @@ describe 'DRI::Object::Actor' do
 
   after(:each) do
     @collection.delete
+
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   it 'should return duplicates' do

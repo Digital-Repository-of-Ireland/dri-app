@@ -36,6 +36,7 @@
     padding-top: 20px;
     @include zen-grid-container;
     .dri_authentication_search_container {
+        text-align: right;
         float: right;
         .dri_authentication_menus_container {} .dri_search_term_input {}
     }

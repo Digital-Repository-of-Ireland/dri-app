@@ -521,7 +521,7 @@ class CollectionsController < BaseObjectsController
     end
 
     def delete_collection
-      Sufia.queue.push(DeleteCollectionJob.new(@object.id))
+      DRI.queue.push(DeleteCollectionJob.new(@object.id))
     rescue Exception => e
       logger.error "Unable to delete collection: #{e.message}"
       raise DRI::Exceptions::ResqueError

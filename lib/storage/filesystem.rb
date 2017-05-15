@@ -18,7 +18,7 @@ module Storage
   
   def delete_bucket(bucket)
     bucket_to_delete = bucket_path(bucket)
-    FileUtils.remove_entry_secure(bucket_to_delete) unless bucket_to_delete.nil?
+    FileUtils.remove_entry_secure(bucket_to_delete, true) unless bucket_to_delete.nil?
   end
 
   def delete_surrogates(bucket, key)
@@ -112,7 +112,7 @@ module Storage
   def bucket_path(bucket)
     hashed_bucket = hash_dir(bucket)
     
-    return hashed_bucket if Dir.exists?(hashed_bucket)
+    return hashed_bucket
   end
 
   def filename_match?(filename, key)
@@ -122,6 +122,8 @@ module Storage
   end
 
   def hash_dir(bucket)
+    return File.join(@dir, bucket) unless bucket.index('.').nil?
+
     sub_dir = ''
     index = 0
 

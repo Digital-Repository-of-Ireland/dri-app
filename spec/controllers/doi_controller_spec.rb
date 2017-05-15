@@ -71,7 +71,7 @@ describe DoiController do
       @collection.save
       DataciteDoi.create(object_id: @collection.id)
 
-      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       put :update, object_id: @collection.id, modified: 'objects added'
 
       DataciteDoi.where(object_id: @collection.id).first.delete

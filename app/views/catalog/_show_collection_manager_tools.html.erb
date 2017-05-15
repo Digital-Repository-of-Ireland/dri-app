@@ -105,12 +105,6 @@
         </ul>
     </li>
 
-
-
-
-
-
-
     <!-- Add documentation should be available to any collection (MARC, MODS, QDC and EAD) -->
     <li class="dri_help_popover" data-content="<%= t('dri.help.add_documentation_help_text') %>" data-original-title="<%= t('dri.help.add_documentation_help_title') %>" data-trigger="hover" data-placement="left">
       <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %><%= t('dri.views.catalog.links.add_documentation') %><% end %>
@@ -134,6 +128,10 @@
         <% end %>
       <% end %> <!-- if end (non-EAD collections) -->
 	      
+      <%= link_to new_export_path(document.id), :id => "export_metadata" do %>
+        <li ><%= t('dri.views.catalog.links.export_collection_metadata') %></li>
+      <% end %>
+
       <% if @document.published? && @document.doi %>
          <%= link_to '', :'data-target' => '#dri_doi_modal_id', :'data-toggle' => 'modal', :id => "request_doi" do %>
 	         <li><%= t('dri.views.catalog.links.request_doi') %></li>

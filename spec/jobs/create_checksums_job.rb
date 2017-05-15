@@ -25,7 +25,7 @@ describe "workers" do
     @file.add_file(uploadhash, {:directory => tmpdir} )
     @file.save
 
-    actor = Sufia::GenericFile::Actor.new(@gf, @user)
+    actor = DRI::Asset::Actor.new(@gf, @user)
     actor.create_content(uploadhash, uploadhash.original_filename, 'content', 'audio/mpeg')
   end
 

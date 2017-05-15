@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'solr/query'
 
 # declare an exclusion filter
@@ -13,6 +13,9 @@ describe 'PublishJob' do
   end
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     @login_user = FactoryGirl.create(:collection_manager)
 
     @collection = FactoryGirl.create(:collection)
@@ -30,11 +33,13 @@ describe 'PublishJob' do
   after(:each) do
     @object.delete
     @collection.delete
+   
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   describe 'run' do
     it "should set a collection\'s reviewed objects status to published" do
-      allow(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob))
+      allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
       job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
 
@@ -58,7 +63,7 @@ describe 'PublishJob' do
       @collection.governed_items << @subcollection
       @collection.save
 
-      allow(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob))
+      allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
       job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
 
@@ -101,7 +106,7 @@ describe 'PublishJob' do
 
       job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       
-      expect(Sufia.queue).to receive(:push).with(an_instance_of(MintDoiJob)).twice
+      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).twice
       job.perform
 
       @collection.reload

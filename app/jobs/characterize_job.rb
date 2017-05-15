@@ -18,13 +18,13 @@ class CharacterizeJob < ActiveFedoraIdBasedJob
 
   def after_characterize
     unless generic_file.preservation_only == 'true'
-      Sufia.queue.push(CreateBucketJob.new(generic_file_id))
+      DRI.queue.push(CreateBucketJob.new(generic_file_id))
     end
 
     # Update the Batch object's Solr index now that the GenericFile
     # has characterization metadata
     unless generic_file.batch.nil?
-      Sufia.queue.push(UpdateIndexJob.new(generic_file.batch.id))
+      DRI.queue.push(UpdateIndexJob.new(generic_file.batch.id))
     end
   end
 end

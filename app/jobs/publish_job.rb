@@ -101,7 +101,7 @@ class PublishJob
     end
 
     begin
-      Sufia.queue.push(MintDoiJob.new(obj.id))
+      DRI.queue.push(MintDoiJob.new(obj.id))
     rescue Exception => e
       Rails.logger.error "Unable to submit mint doi job: #{e.message}"
     end

@@ -13,14 +13,13 @@ gem 'riiif', git: 'https://github.com/curationexperts/riiif.git'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'sufia-models', '6.5.0'
 gem 'redlock'
 gem 'google-api-client', '0.8.6'
 
 gem 'paper_trail', '~> 4'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.4.5'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.2.0'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.5.0'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.2.1'
 
 gem 'active-fedora', '9.11'
 gem 'active_fedora-noid', '1.1.1'
@@ -69,6 +68,7 @@ gem 'is_it_working-cbeer'
 gem 'honeybadger', '~> 2.0'
 gem 'resque', '1.26'
 gem 'resque-status'
+gem 'nest'
 
 gem 'sass-rails' , '~> 4.0.4'
 gem 'compass-rails'

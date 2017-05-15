@@ -640,7 +640,7 @@ ga:
           inherit_strings: 
             private: "surrogates only"
             public: "surrogates and uploaded originals"
-          inherited_setting: "Curently set to %{inherited_setting}"
+          inherited_setting: "Currently set to %{inherited_setting}"
           manage: Bainisteoirí
           manager_desc: "Enter the email addresses of manager users below. These permissions will not be applied until these email addresses have been registered for DRI accounts."
           master_file: "Máistirchomhad Inrochtana"
