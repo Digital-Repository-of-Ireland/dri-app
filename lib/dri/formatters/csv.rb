@@ -5,7 +5,7 @@ module DRI::Formatters
 
     METADATA_FIELDS_MAP = {
      'title' => 'Title',
-     'subject' => 'Subject',
+     'subject' => 'Subjects',
      'creation_date' => 'Creation Date',
      'published_date' => 'Issued Date',
      'type' => 'Type',

@@ -48,7 +48,7 @@ describe "CreateExportJob" do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description'}, @login_user.email)
+      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
@@ -69,7 +69,20 @@ describe "CreateExportJob" do
       expect(csv[1][2]).to eql(@object.description.first)
       expect(csv[2][1]).to eql(@object.title.first)
       expect(csv[2][2]).to eql(@object.description.first)
-    end 
+    end
+
+    it "creates headers for fields with multiple values" do
+      storage = StorageService.new
+      bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
+      key = "#{@collection_id}"
+      files = storage.get_surrogates(bucket_name, key)
+      file_contents = open(files.values.first) { |f| f.read }
+      csv = CSV.parse(file_contents, headers: true)
+      row = csv.first
+      
+      expect(row.key?('Subjects')).to be true
+      expect(row.key?('Subjects_1')).to be true
+    end
   end
 
 end
