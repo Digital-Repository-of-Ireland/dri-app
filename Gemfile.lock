@@ -61,8 +61,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: f7a57d4a5c7f1be0f839703f482f266566659933
-  branch: develop
+  revision: 53791937450f9c7b8dfad0d0b1dcfa945fcc4bb9
+  tag: v2.5.0
   specs:
     dri_data_models (2.5.0)
       active-fedora (= 9.11)
@@ -81,8 +81,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 49b9d20b507e4a9543b2b3ecfecbce2874818544
-  branch: develop
+  revision: eb16f9dd782da83011b4ee163538c889f6b4a630
+  tag: v1.2.1
   specs:
     user_group (1.2.1)
       devise
