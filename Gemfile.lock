@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: f7a57d4a5c7f1be0f839703f482f266566659933
+  revision: 0574a39aed2d7ecdc9c23e21f5f9d555daba8a5f
   branch: develop
   specs:
     dri_data_models (2.5.0)
@@ -574,7 +574,7 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     public_suffix (2.0.5)
-    rack (1.6.6)
+    rack (1.6.8)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -929,4 +929,4 @@ DEPENDENCIES
   zeus
 
 BUNDLED WITH
-   1.13.6
+   1.14.6
