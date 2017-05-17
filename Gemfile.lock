@@ -61,20 +61,23 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 391f7d379235e6eeaf2b22d69c101913505238ad
-  branch: v2.4.5.1
+  revision: 6c2480e766658cf81fadd00178b194342e53ee06
+  tag: v2.5.0.1
   specs:
-    dri_data_models (2.4.5)
+    dri_data_models (2.5.0)
       active-fedora (= 9.11)
+      active_fedora-noid (~> 1.0)
       google-api-client (= 0.8.6)
       hydra-access-controls
       hydra-collections
+      hydra-derivatives (~> 1.0)
       hydra-head (~> 9.10)
       iso-639
       iso8601
       rails (~> 4.2)
+      resque (~> 1.23)
+      resque-pool (~> 0.3)
       sass-rails (~> 4.0.3)
-      sufia-models (= 6.5.0)
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
@@ -155,18 +158,11 @@ GEM
       activemodel (= 4.2.8)
       activesupport (= 4.2.8)
       arel (~> 6.0)
-    activerecord-import (0.18.3)
-      activerecord (>= 3.2)
-    activeresource (4.1.0)
-      activemodel (~> 4.0)
-      activesupport (~> 4.0)
-      rails-observers (~> 0.1.2)
     activesupport (4.2.8)
       i18n (~> 0.7)
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    acts_as_follower (0.2.1)
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (6.0.4)
@@ -223,12 +219,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    carrierwave (0.11.2)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-      json (>= 1.7)
-      mime-types (>= 1.16)
-      mimemagic (>= 0.3.0)
     celluloid (0.16.0)
       timers (~> 4.0.0)
     chunky_png (1.3.8)
@@ -382,6 +372,7 @@ GEM
     hashie (3.5.5)
     high_voltage (2.1.0)
     hike (1.2.3)
+    hiredis (0.6.1)
     hitimes (1.2.2)
     honeybadger (2.6.0)
     htmlentities (4.3.4)
@@ -474,8 +465,6 @@ GEM
     leaflet-markercluster-rails (0.7.0)
       railties (>= 3.1)
     leaflet-rails (0.7.7)
-    legato (0.7.0)
-      multi_json
     link_header (0.0.8)
     linkeddata (1.99.0)
       equivalent-xml (~> 0.6)
@@ -511,9 +500,6 @@ GEM
     lumberjack (1.0.9)
     mail (2.6.5)
       mime-types (>= 1.16, < 4)
-    mailboxer (0.14.0)
-      carrierwave (>= 0.5.8)
-      rails (>= 4.2.0)
     memoist (0.15.0)
     method_source (0.8.2)
     mime-types (2.99.3)
@@ -535,8 +521,8 @@ GEM
     mysql (2.9.1)
     mysql2 (0.3.18)
     nenv (0.2.0)
-    nest (1.1.2)
-      redis
+    nest (3.1.1)
+      redic
     net-http-persistent (2.9.4)
     netrc (0.10.3)
     noid (0.9.0)
@@ -552,12 +538,12 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     oauth (0.5.1)
-    oauth2 (0.9.4)
-      faraday (>= 0.8, < 0.10)
+    oauth2 (1.3.1)
+      faraday (>= 0.8, < 0.12)
       jwt (~> 1.0)
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
-      rack (~> 1.2)
+      rack (>= 1.2, < 3)
     om (3.1.1)
       activemodel
       activesupport
@@ -583,7 +569,6 @@ GEM
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
-    posix-spawn (0.3.13)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -614,8 +599,6 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    rails-observers (0.1.2)
-      activemodel (~> 4.0)
     rails_config (0.4.2)
       activesupport (>= 3.0)
     railties (4.2.8)
@@ -679,6 +662,8 @@ GEM
       rdf (~> 1.1, >= 1.1.10)
     rdf-xsd (1.99.0)
       rdf (~> 1.99)
+    redic (1.5.0)
+      hiredis
     redis (3.3.3)
     redis-namespace (1.5.3)
       redis (~> 3.0, >= 3.0.4)
@@ -811,26 +796,6 @@ GEM
       sprockets (>= 2.8, < 4.0)
     sqlite3 (1.3.10)
     stomp (1.4.3)
-    sufia-models (6.5.0)
-      active-fedora (~> 9.4)
-      active_fedora-noid (~> 1.0)
-      activerecord-import (~> 0.5)
-      activeresource (~> 4.0)
-      acts_as_follower (>= 0.1.1, < 0.3)
-      carrierwave (~> 0.9)
-      google-api-client (~> 0.7)
-      hydra-collections (>= 5.0.3, < 6.0)
-      hydra-derivatives (~> 1.0)
-      hydra-head (~> 9.0)
-      legato (~> 0.3)
-      mailboxer (~> 0.12)
-      mini_magick
-      nest (~> 1.1)
-      oauth2 (~> 0.9)
-      posix-spawn
-      rails (~> 4.0)
-      resque (~> 1.23)
-      resque-pool (~> 0.3)
     sxp (0.1.5)
     syntax (1.2.0)
     syslog-logger (1.6.8)
