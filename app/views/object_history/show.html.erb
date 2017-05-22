@@ -65,9 +65,9 @@
 
 
       <% versions = @asset_info[file.id][:versions] %>
-      <tr><td><%= t('dri.reports.assets.version') %></td><td><%= versions.count - 1 %></td></tr>
+      <tr><td><%= t('dri.reports.assets.version') %></td><td><%= versions.size - 1 %></td></tr>
 
-      <% if versions.count > 0 %>
+      <% if versions.size > 0 %>
 
         <tr><td><%= t('dri.reports.assets.previous_versions') %></td><td>
           <ul>

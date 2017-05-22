@@ -42,7 +42,7 @@
 
 
 
-<% if signed_in? && (current_user.is_cm? || current_user.is_om? || current_user.is_admin? || @collections.count > 0 ) %>
+<% if signed_in? && (current_user.is_cm? || current_user.is_om? || current_user.is_admin? || @collections.size > 0 ) %>
   <div class="dri_account_block dri_clearfix">
     <h4 class="dri_account_block_heading"><%= t('dri.headerlinks.manage') %></h4>
     <div class="dri_account_block_info">
