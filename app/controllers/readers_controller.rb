@@ -27,7 +27,7 @@ class ReadersController < ApplicationController
     end
 
     action = current_user.join_group(@reader_group.id)
-    if action.errors.count > 0
+    if action.errors.size > 0
       flash[:alert] = t('dri.flash.error.submitting_read_request', error: action.errors.full_messages.inspect)
       redirect_to :back
       return
@@ -109,20 +109,20 @@ class ReadersController < ApplicationController
     def notify_managers(group)
       # inform managers for reader group requests
       result = ActiveFedora::SolrService.query("id:#{@collection.id}")
-      doc = SolrDocument.new(result.pop) if result.count > 0
+      doc = SolrDocument.new(result.pop) if result.size > 0
       managers = doc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
 
       # if no manager set for this collection it could be inherited, iterate up the tree
       if managers.nil?
         doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :text)].reverse_each do |ancestor|
           result = ActiveFedora::SolrService.query("id:#{ancestor}")
-          ancestordoc = SolrDocument.new(result.pop) if result.count > 0
+          ancestordoc = SolrDocument.new(result.pop) if result.size > 0
           managers = ancestordoc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
-          break if managers.present? && managers.count > 0
+          break if managers.present? && managers.size > 0
         end
       end
 
-      if managers.present? && managers.count > 0
+      if managers.present? && managers.size > 0
         AuthMailer.pending_mail(managers, current_user.email,
         collection_manage_requests_url(group.name)).deliver_now
       end
