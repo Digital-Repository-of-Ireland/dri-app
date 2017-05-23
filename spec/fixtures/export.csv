@@ -1,2 +1,3 @@
-Id,Title,Subject,Creation Date,Issued Date,Type,Rights,Language,Description,Creator,Contributor,Publisher,Date,Format,Source,Collection,Donor,Subject (Place),Subject (Temporal),Organisation,License
-8049g5061,An Audio Title,"Ireland,something else",name=1916-01-01; start=1916-01-01;,name=1916-04-01; start=1916-04-01;,Sound,This is a statement about the rights associated with this object,ga,This is an Audio file,,"DeValera, Eamonn,Connolly, James",,"",,CD nnn nuig,,,Dublin,name=1900s;,,
+Id,Title,Subjects,Creation Date,Issued Date,Type,Rights,Language,Description,Creator,Contributor,Publisher,Date,Format,Source,Collection,Donor,Subject (Place),Subject (Temporal),Organisation,Identifier,Licence,Url
+bk128b035,An Audio Title,Ireland|something else,name=1916-01-01; start=1916-01-01;,name=1916-04-01; start=1916-04-01;,Sound,This is a statement about the rights associated with this object,ga,This is an Audio file,,"DeValera, Eamonn|Connolly, James",,,,CD nnn nuig,,,Dublin,name=1900s;,,,"",http://test.com/catalog/bk128b035
+

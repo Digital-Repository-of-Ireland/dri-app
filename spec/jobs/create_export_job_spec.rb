@@ -4,9 +4,13 @@ require 'csv'
 describe "CreateExportJob" do
   
   before(:all) do
+    Settings.reload_from_files(
+      Rails.root.join(fixture_path, "settings-fs.yml").to_s
+    )
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
-    
+    Settings.filesystem.directory = @tmp_assets_dir
+
     @login_user = FactoryGirl.create(:collection_manager)
 
     @collection = FactoryGirl.create(:collection)
@@ -31,6 +35,9 @@ describe "CreateExportJob" do
     @login_user.delete
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
+    Settings.reload_from_files(
+      Rails.root.join("config", "settings.yml").to_s
+    )
   end
   
   describe "run" do
@@ -41,7 +48,7 @@ describe "CreateExportJob" do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description'}, @login_user.email)
+      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
@@ -58,11 +65,24 @@ describe "CreateExportJob" do
       file_contents = open(files.values.first) { |f| f.read }
       csv = CSV.parse(file_contents)
 
-      expect(csv[1].drop(1)).to eql(csv[2].drop(1))
+      expect(csv[1][1]).to eql(@object.title.first)
+      expect(csv[1][2]).to eql(@object.description.first)
+      expect(csv[2][1]).to eql(@object.title.first)
+      expect(csv[2][2]).to eql(@object.description.first)
+    end
 
-      expect(csv[1][1]).to eql(@object.title.join(','))
-      expect(csv[1][2]).to eql(@object.description.join(','))
-    end 
+    it "creates headers for fields with multiple values" do
+      storage = StorageService.new
+      bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
+      key = "#{@collection_id}"
+      files = storage.get_surrogates(bucket_name, key)
+      file_contents = open(files.values.first) { |f| f.read }
+      csv = CSV.parse(file_contents, headers: true)
+      row = csv.first
+      
+      expect(row.key?('Subjects')).to be true
+      expect(row.key?('Subjects_1')).to be true
+    end
   end
 
 end

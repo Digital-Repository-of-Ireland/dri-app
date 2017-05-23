@@ -22,6 +22,11 @@ class ObjectsController < BaseObjectsController
     @object = DRI::Batch.with_standard :qdc
     @object.creator = ['']
 
+    if params[:is_sub_collection].present? && params[:is_sub_collection] == 'true'
+      @object.object_type = ['Collection']
+      @object.type = ['Collection']
+    end
+
     supported_licences
   end
 
@@ -142,9 +147,7 @@ class ObjectsController < BaseObjectsController
     end
 
     checksum_metadata(@object)
-
     supported_licences
-
     @object.object_version = 1
 
     if @object.valid? && @object.save

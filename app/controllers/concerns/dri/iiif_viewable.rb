@@ -83,13 +83,14 @@ module DRI::IIIFViewable
   def attached_images
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{@document.id}"
-    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)}:\"image\""
-    files_query += " AND NOT #{ActiveFedora.index_field_mapper.solr_name('dri_properties__preservation_only', :stored_searchable)}:true"
-
+    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
+    
     files = []
     
     query = Solr::Query.new(files_query)
-    query.each_solr_document { |file_doc| files << file_doc }
+    query.each_solr_document do |file_doc| 
+      files << file_doc unless file_doc.preservation_only? 
+    end
 
     files.sort_by{ |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
   end

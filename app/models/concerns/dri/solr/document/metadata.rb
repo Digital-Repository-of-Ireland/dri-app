@@ -28,6 +28,12 @@ module DRI
           metadata('creation_date')
         end
 
+        def identifier
+          profile = JSON.parse(self['object_profile_ssm'].first)
+
+          id = profile['identifier'].presence
+        end
+
         def published_date
           metadata('published_date')
         end

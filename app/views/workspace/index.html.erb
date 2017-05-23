@@ -1,0 +1,80 @@
+<% @page_title = 'Workspace' %>
+
+<div class="dri_account_block dri_clearfix">
+  <h4 class="dri_account_block_heading"><%= t('dri.headerlinks.workspace') %></h4>
+  <div class="dri_account_block_info">
+      <p>
+        <%= link_to user_group.user_path(current_user) do %>
+          <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
+        <% end %>
+      </p>
+
+      <p>
+        <%= link_to t('dri.headerlinks.my_collections'), my_collections_path(mode: 'collections'), id: 'my_collections' %>
+      </p>
+
+      <p>
+        <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path({mode: 'collections', view: 'grid'}) %>
+      </p>
+
+      <p>
+        <%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path, id: 'saved_search' %>
+      </p>   
+  </div>
+</div>
+
+
+
+<% if current_user.is_cm? || current_user.is_om? || current_user.is_admin? %>
+  <div class="dri_account_block dri_clearfix">
+    <h4 class="dri_account_block_heading"><%= t('dri.headerlinks.manage') %></h4>
+    <div class="dri_account_block_info">
+
+    <p>
+      <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, id: 'new_collection' %>
+    </p>
+
+    <p>
+      <%= link_to t('dri.headerlinks.new_organisation'), new_organisation_path %>
+    </p>
+
+
+    <% if current_user.is_om? %>
+      <p>
+        <%= link_to t('dri.headerlinks.manage_users'), main_app.manage_users_path %>
+      </p>
+    <% end %>
+
+     <% if tasks? %>
+       <p>
+         <%= link_to t('dri.headerlinks.my_tasks'), user_tasks_path, id: 'tasks' %>
+       </p>
+     <% end %>
+    </div>
+  </div>
+<% end %>
+
+<% if current_user.is_admin? %>
+  <div class="dri_account_block dri_clearfix">
+    <h4 class="dri_account_block_heading"><%= t('dri.headerlinks.admin') %></h4>
+    <div class="dri_account_block_info">
+
+      <p>
+        <%= link_to t('dri.views.static.admin.licences'), main_app.licences_path, id: 'licences' %>
+      </p>
+    
+      <p>
+        <%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, id: 'resque' %>
+      </p>
+
+      <p>
+        <%= link_to t('user_groups.views.header.admin'), user_group.admin_path %>
+      </p>
+
+      <p>
+        <%= link_to t('dri.headerlinks.reports'), main_app.page_path('reports') %>
+      </p>
+
+    </div>
+  </div>
+<% end %>

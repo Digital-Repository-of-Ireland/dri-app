@@ -5,7 +5,7 @@ module DRI::Formatters
 
     METADATA_FIELDS_MAP = {
      'title' => 'Title',
-     'subject' => 'Subject',
+     'subject' => 'Subjects',
      'creation_date' => 'Creation Date',
      'published_date' => 'Issued Date',
      'type' => 'Type',
@@ -22,7 +22,8 @@ module DRI::Formatters
      'role_dnr' => 'Donor',
      'geographical_coverage' => 'Subject (Place)',
      'temporal_coverage' => 'Subject (Temporal)',
-     'institute' => 'Organisation'
+     'institute' => 'Organisation',
+     'identifier' => 'Identifier'
     }
 
     def initialize(object_doc, options = {})
@@ -35,9 +36,9 @@ module DRI::Formatters
     def format
       titles = ['Id']
       @request_fields.each { |k| titles << METADATA_FIELDS_MAP[k] }
-      
-      titles << 'License'
+      titles << 'Licence'
       titles << 'Assets' if @with_assets.present?
+      titles << 'Url'
       
       csv_string = CSV.generate do |csv|
         csv << titles
@@ -45,15 +46,17 @@ module DRI::Formatters
         row = []
         row << @object_doc['id']
         @request_fields.each do |key|
-          field = @object_doc[ActiveFedora.index_field_mapper.solr_name(key, :stored_searchable, type: :string)]
-          value = field.kind_of?(Array) ? field.join(',') : field 
-          row << value
+          if key == 'identifier'
+            field = @object_doc.identifier
+          else
+            field = @object_doc[ActiveFedora.index_field_mapper.solr_name(key, :stored_searchable, type: :string)]
+          end
+          value = field.kind_of?(Array) ? field.join('|') : field 
+          row << value || ''
         end
         row << licence
-
-        if @with_assets.present?
-          row << assets
-        end
+        row << assets if @with_assets.present?
+        row << url
 
         csv << row
       end
@@ -64,23 +67,39 @@ module DRI::Formatters
     def assets
       assets = @object_doc.assets
       asset_column = []
-      assets.each do |a| 
-        asset_column << file_path(a['id'])
-      end
-      asset_column.join(',')
+      assets.each { |a| asset_column << file_url(a['id']) }
+      asset_column.join('|')
     end
 
-    def file_path(file_id)
-      Rails.application.routes.url_helpers.file_download_path(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
+    def file_url(file_id)
+      Rails.application.routes.url_helpers.file_download_url(
+        id: file_id,
+        object_id: @object_doc['id'],
+        type: 'surrogate',
+        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+      )
     end
 
     def licence
       licence = @object_doc.licence
-      if licence
-        value = (licence.name == 'All Rights Reserved') ? licence.name : licence.url
-      end
+      return '' if licence.nil?
 
-      value
+      (licence.name == 'All Rights Reserved') ? licence.name : licence.url
+    end
+
+    def identifier
+      return '' unless @object_doc.identifier
+
+      @object_doc.identifier.join('|')
+    end
+
+    def url
+      Rails.application.routes.url_helpers.url_for(
+        controller: 'catalog',
+        action: 'show',
+        id: @object_doc.id,
+        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+      )
     end
   end
 end

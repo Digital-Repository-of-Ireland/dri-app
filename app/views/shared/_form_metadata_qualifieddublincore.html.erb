@@ -43,11 +43,8 @@
 		</p>
 	</fieldset>
 	<%# we don't want the Collection type to be output as we don't want it modified %>
-	<fieldset id="type" <% if @object.type.first == 'Collection' %>class="dri_no_display"<%end%>>
+	<fieldset id="type" <% if @object.type.first == 'Collection' || params[:is_sub_collection] == 'true' %>class="dri_no_display"<%end%>>
 		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.types')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.types_text') %>" data-original-title="<%= t('dri.help.fields.types')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% if params[:is_sub_collection] == 'true' %>
-		  <%= f.hidden_field "type][", :value=>'Collection' %>
-		<% end %>
 		<% if @object.type.size == 0%>
 		  <div><%= f.text_field "type][", :value=>'', :class => "edit span6 dri-textfield", :required => "true"  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
 		<% end %>

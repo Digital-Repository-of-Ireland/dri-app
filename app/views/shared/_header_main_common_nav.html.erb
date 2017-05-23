@@ -32,11 +32,11 @@
 </li>
 
 
-<% if (controller.controller_name == 'worspace' && controller.action_name == 'index') %>
+<% if ['/bookmarks','/user_groups/users','/search_history','/saved_searches'].include?(request.path) || (controller.controller_name == 'my_collections' && controller.action_name == 'index') || controller.controller_name == 'workspace' %>
     <li class="active">
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.workspace'), page_path('workspace'), id: 'workspace' %>
+<%= link_to t('dri.headerlinks.workspace'), workspace_path, id: 'workspace' %>
 </li>
 

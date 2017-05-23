@@ -28,7 +28,7 @@ class ExportsController < ApplicationController
     storage = StorageService.new
     
     bucket = "users.#{Mail::Address.new(current_user.email).local}"
-    file = storage.file_url(bucket, params[:export_key])
+    file = storage.file_url(bucket, "#{params[:export_key]}.csv")
     raise DRI::Exceptions::NotFound unless file
 
     open(file) do |f|

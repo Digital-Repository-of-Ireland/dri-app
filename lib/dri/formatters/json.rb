@@ -41,10 +41,13 @@ module DRI::Formatters
           [METADATA_FIELDS_MAP[k], v]
         end
       end.to_h
-      @formatted_hash = { 'id' => @object_hash['pid'] }
+      @formatted_hash = { 'Id' => @object_hash['pid'] }
       @formatted_hash.merge!(translated_hash)
-      @formatted_hash['licence'] = licence
-      @formatted_hash['assets'] = assets if @with_assets
+
+      identifier = @object_doc.identifier
+      @formatted_hash['Identifier'] = identifier if identifier
+      @formatted_hash['Licence'] = licence
+      @formatted_hash['Assets'] = assets if @with_assets
       @formatted_hash.to_json
     end
 

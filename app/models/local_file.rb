@@ -17,7 +17,7 @@ class LocalFile < ActiveRecord::Base
   def add_file(upload, opts = {})
     # Batch ID will be used in the MOAB directory name, check it exists
     batch_id = opts[:batch_id]
-    if batch_id.nil? or batch_id.blank?
+    if batch_id.blank?
       logger.error "Could not save the asset file for #{opts[:file_name]} because no batch_id was given."
       raise Exceptions::InternalError
     end
