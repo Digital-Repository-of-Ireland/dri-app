@@ -15,7 +15,7 @@
  <%= paginate @document_list, :theme => 'blacklight' %>
 
 <div id="dri_result_container_id" class="dri_result_container">
-  <% if (@document_list.count > 0) %>
+  <% if (@document_list.size > 0) %>
       <%= render_document_index @document_list %>&nbsp;
   <% else %>
       <h4>

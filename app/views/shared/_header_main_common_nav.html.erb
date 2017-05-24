@@ -3,7 +3,7 @@
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.home'), main_app.root_path, id: 'dri_home_id' %>
+<%= link_to t('dri.headerlinks.home'), 'http://www.dri.ie/', id: 'dri_home_id' %>
 </li>
 
 <% if ((controller_name == 'catalog') && (controller.action_name != 'index')  || (request.path.include? "/catalog") ) %>
@@ -23,7 +23,6 @@
 <%= link_to t('dri.headerlinks.institutions'), organisations_path, id: 'institutions' %>
 </li>
 
-<!--
 <li>
   <%= render 'shared/header_main_about_dropdown' %>
 </li>
@@ -32,7 +31,6 @@
   <%= render 'shared/header_main_team_dropdown' %>
 </li>
 
--->
 
 <% if ['/bookmarks','/user_groups/users','/search_history','/saved_searches'].include?(request.path) || (controller.controller_name == 'my_collections' && controller.action_name == 'index') || controller.controller_name == 'workspace' %>
     <li class="active">

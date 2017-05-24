@@ -23,7 +23,7 @@ module DRI::Readable
 
     doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :text)].reverse_each do |ancestor|
       result = ActiveFedora::SolrService.query("id:#{ancestor}")
-      ancestordoc = SolrDocument.new(result.pop) if result.count > 0
+      ancestordoc = SolrDocument.new(result.pop) if result.size > 0
       read_groups = ancestordoc[Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)]
       if read_groups.present? && read_groups.include?(ancestor)
         read_group = UserGroup::Group.find_by(name: ancestor)
