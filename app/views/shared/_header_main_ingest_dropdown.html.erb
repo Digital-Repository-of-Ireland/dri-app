@@ -8,7 +8,7 @@ controller_name.eql?('manage_users') || (controller.controller_name.eql?('instit
   <a href="#" id="dri_manage_id" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><%= t('dri.headerlinks.manage') %> <span class="caret"></span></a>
 
   <ul class="dropdown-menu" role="menu">
-    <% if signed_in? && (current_user.is_cm? || current_user.is_om? || current_user.is_admin? || @collections.count > 0 ) %>
+    <% if signed_in? && (current_user.is_cm? || current_user.is_om? || current_user.is_admin? || @collections.size > 0 ) %>
 
       <% if (controller.controller_name.eql?('collections') && controller.action_name.eql?('new')) %>
         <li role="presentation" class="active">

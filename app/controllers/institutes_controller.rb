@@ -63,7 +63,7 @@ class InstitutesController < ApplicationController
   def destroy
     @institute = Institute.find(params[:id])
 
-    if institute_collections(@institute[:name]).count.zero?
+    if institute_collections(@institute[:name]).size.zero?
       @institute.delete
     else
       flash[:error] = t('dri.flash.error.organisation_cannot_be_deleted')
