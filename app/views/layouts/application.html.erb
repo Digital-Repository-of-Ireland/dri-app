@@ -18,12 +18,9 @@
 		<link href="<%= opensearch_catalog_url(:format => 'xml') %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
-
 		<%= stylesheet_link_tag "dri/dri_layouts" %>
-
 		<%= javascript_include_tag "application" %>
 		<%= csrf_meta_tags %>
-		
 		<%= content_for(:head) %>
 
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -33,19 +30,14 @@
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
 
-                <% custom_vars = get_custom_vars %>
-                <%= analytics_init(:custom_vars => custom_vars) if Rails.env.production? && !(Settings.analytics && Settings.analytics.disable == true) %>
+    <% custom_vars = get_custom_vars %>
+    <%= analytics_init(:custom_vars => custom_vars) if Rails.env.production? && !(Settings.analytics && Settings.analytics.disable == true) %>
 	</head>
 
 	<% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
 
 	<body>
 		<div id="dri_wrapper_id" class="block1 dri_wrapper">
-
-			
-			
-			
-
 			<%= render :partial => 'shared/cookies_modal' unless cookies[:accept_cookies]%>
 			<%= render :partial => 'shared/header_navbar' %>
 			<div id="ajax-modal" class="modal fade" tabindex="-1">
@@ -57,18 +49,23 @@
 			</div>
 			<%#  the blacklight maps gem seems to set a 'constraint' even when none appears to exist %>
 			<%# - check below is to see if a facet or text query exists %>
-			<% if query_has_constraints? && (!params[:f].nil?) || (!params[:q].nil?) %>
-			<%= render 'constraints' %>
+			<% if query_has_constraints? && (!params[:f].nil?) || (!params[:q].nil?) || (!params[:q_ws].nil?) %>
+			  <%= render 'constraints' %>
 			<% end %>
 
 			<% if flash  %>
-			<%= render :partial=>'/flash_msg' %>
+			  <%= render :partial=>'/flash_msg' %>
 			<% end %>
 			<!-- This condition identifies the browse section of the application and every search result and/or facet refinement -->
-			<% if (((controller_name.eql?('catalog') || controller_name.eql?('bookmarks') ||
-			controller_name.eql?('my_collections')) && action_name.eql?('index')) && has_browse_params?) ||
-			(controller_name.eql?('saved_searches') && action_name.eql?('index'))%>
-			<%= render 'catalog/browse_mode_swap' %>
+			<% if (
+				      (
+					      (
+						      controller_name == 'catalog' || controller_name == 'bookmarks' ||
+			            controller_name == 'my_collections'
+			          ) && action_name == 'index'
+			        ) && has_browse_params?
+			      ) || (controller_name == 'saved_searches' && action_name == 'index') %>
+			  <%= render 'catalog/browse_mode_swap' %>
 			<% end %>
 
 			<div class="dri_main_content_container">

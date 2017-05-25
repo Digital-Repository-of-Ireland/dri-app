@@ -3,7 +3,7 @@ require 'csv'
 
 describe "CreateExportJob" do
   
-  before(:all) do
+  before(:each) do
     Settings.reload_from_files(
       Rails.root.join(fixture_path, "settings-fs.yml").to_s
     )
@@ -30,7 +30,7 @@ describe "CreateExportJob" do
     @collection.save
   end
 
-  after(:all) do
+  after(:each) do
     @collection.delete
     @login_user.delete
 
@@ -58,6 +58,13 @@ describe "CreateExportJob" do
     end
 
     it "adds the objects metadata to the export" do
+      delivery = double
+      expect(delivery).to receive(:deliver_now).with(no_args)
+
+      expect(JobMailer).to receive(:export_ready_mail)
+      .and_return(delivery)
+      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
       key = "#{@collection_id}"
@@ -72,6 +79,13 @@ describe "CreateExportJob" do
     end
 
     it "creates headers for fields with multiple values" do
+      delivery = double
+      expect(delivery).to receive(:deliver_now).with(no_args)
+
+      expect(JobMailer).to receive(:export_ready_mail)
+      .and_return(delivery)
+      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
       key = "#{@collection_id}"

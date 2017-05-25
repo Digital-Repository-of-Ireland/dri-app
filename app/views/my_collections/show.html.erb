@@ -1,0 +1,26 @@
+<% @page_title = t('blacklight.search.show.title', document_title: document_show_html_title, application_name: application_name) %>
+
+<% render_link_rel_alternates %>
+<%= render partial: 'my_collections/paginate_compact', object: @response %>
+<div class="dri_object_container" id="object_container">
+  <%= render_document_partial @document, :show %>
+</div>
+
+<% # Render partial for Related Materials (QDC and MODS)  %>
+<%= render partial: "my_collections/show_related_items", locals: { params: params, document: @document } %>
+
+<% children = collection_children(@document, 500) %>
+<% if children.length > 0 %>
+  <%= render partial: "my_collections/show_children", locals: { document: @document, children: children } %>
+<% end %>
+
+<div class="dri_section_block" id="institutes_block">
+  <%= render partial: 'shared/display_institutes' %>
+</div>
+<% content_for :head do %>
+  <meta property="fb:app_id"          content="298965153560401" /> 
+    <meta property="og:type"            content="article" /> 
+    <meta property="og:url"             content="<%= request.original_url %>" /> 
+    <meta property="og:title"           content="<%= @page_title %>" /> 
+    <meta property="og:description"    content="DRI Object" />
+<% end %>

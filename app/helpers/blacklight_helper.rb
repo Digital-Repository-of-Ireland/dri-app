@@ -96,4 +96,15 @@ module BlacklightHelper
       super(document, solr_field)
     end
   end
+
+  def render_workspace_constraints_query(localized_params = params)
+    # So simple don't need a view template, we can just do it here.
+    scope = localized_params.delete(:route_set) || self
+    return "".html_safe if localized_params[:q_ws].blank?
+
+    render_constraint_element(constraint_query_label(localized_params),
+          localized_params[:q_ws],
+          :classes => ["query"],
+          :remove => scope.url_for(localized_params.merge(:q_ws=>nil, :action=>'index')))
+  end
 end

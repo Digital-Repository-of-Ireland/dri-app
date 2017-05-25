@@ -92,7 +92,8 @@ module UserHelper
 
   def get_saved_search_snippet_documents(search_params)
     solr_query = get_saved_search_solr_query(search_params)
-    ActiveFedora::SolrService.query(solr_query, defType: "edismax", rows: "3")
+    results = ActiveFedora::SolrService.query(solr_query, defType: "edismax", rows: "3")
+    results.map { |doc| SolrDocument.new(doc) }
   end
 
   def get_saved_search_count(search_params)

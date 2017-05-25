@@ -32,9 +32,7 @@ class SurrogatesController < ApplicationController
         # Changed query to work with collections that have sub-collections (e.g. EAD) 
         # - ancestor_id rather than collection_id field
         query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
-        query.each_solr_document do |object_doc|
-          generate_surrogates(object_doc.id)
-        end
+        query.each_solr_document { |object_doc| generate_surrogates(object_doc.id) }
       else
         generate_surrogates(doc.id)
       end

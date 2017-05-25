@@ -296,6 +296,13 @@ a {
 .dri_search_term_input {
     padding-top: 45px;
 }
+.dri_workspace_search_input_form {
+  padding: 0px;
+  float: left;
+  display: block;
+  color: $dri_grey;
+  @include border_radius (3px);
+}
 // mobile logo version
 .dri_ident_tiny {
     background: image-url($dri_logo_tiny_url);

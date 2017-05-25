@@ -297,6 +297,7 @@ en:
       no_results_found: "No search results found"
       q: "Type a search term and press Enter. Use AND and OR to narrow or broaden your search"
       q_title: "Search the repository"
+      q_ws_title: "Search your collections"
       social_media_links: "Use these buttons to vist our Twitter, Facebook, Vimeo and Slideshare pages"
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
@@ -333,9 +334,10 @@ en:
           download_metadata_xml: "Download as XML"
           edit_access_controls: "Access Controls"
           edit_metadata: "Edit Metadata"
-          remove_from_collection: "Remove from collection"
+          open_workspace: "Open in Workspace"          
           set_licence: Licence
           submit: Submit
+          view_catalog: "View in Catalog"
         facets: 
           dates: 
             date_range: "Date Range"

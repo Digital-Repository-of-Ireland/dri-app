@@ -15,13 +15,14 @@ Manage and Edit users should see all collections for which they have manage
 or edit permission, as well as all objects within those collections.
 Manage and Edit users should see all objects for which they have manage or
 edit permission.
-  Scenario: Admin user can see all objects
+ Scenario: Admin user can see all objects
     Given I am logged in as "admin" in the group "admin" 
     And a collection with title "Search Collection 1" created by "admin"
     And a Digital Object with title "Search Object 1" created by "admin"
     And the object is in the collection
-    And I am on the home page
-    When I press the button to "search" within "searchform"
+    And the collection is published
+    When I am on the home page
+    And I press the button to "search" within "searchform"
     Then I should see a search result "Search Collection 1"
     And I select the "objects" tab
     Then I should see a search result "Search Object 1"
@@ -31,8 +32,7 @@ edit permission.
     And a collection with title "Search Collection 2" created by "colmgr"
     And a Digital Object with title "Search Object 2" created by "user1"
     And the object is in the collection
-    And I am on the home page
-    When I press the button to "search" within "searchform"
+    And I am on the my collections page
     Then I should see a search result "Search Collection 2"
     And I select the "objects" tab
     Then I should see a search result "Search Object 2"
@@ -41,8 +41,7 @@ edit permission.
     Given I am logged in as "user2"
     And a collection with pid "coll3" and title "Search Collection 3" created by "user1"
     And "user2@user2.com" has been granted "<permission>" permissions on "coll3"
-    And I am on the home page
-    When I press the button to "search" within "searchform"
+    And I am on the my collections page
     And I follow the link to collections
     Then I should see a search result "Search Collection 3"
 
@@ -57,8 +56,7 @@ edit permission.
     And a Digital Object with title "Search Object 4" created by "user1"
     And the object is in the collection with pid "coll4"
     And "user3@user3.com" has been granted "<permission>" permissions on "coll4"
-    And I am on the home page
-    When I press the button to "search" within "searchform"
+    And I am on my collections page
     Then I should see a search result "Search Collection 4"
     And I select the "objects" tab
     Then I should see a search result "Search Object 4"
@@ -68,15 +66,13 @@ edit permission.
       | edit       |
       | manage     |
 
-  @test
   Scenario Outline: Manage/edit users should see all objects for which they have permission
     Given I am logged in as "user4"
     And a collection with pid "coll5" and title "Search Collection 5" created by "user1"
     And a Digital Object with pid "object5" and title "Search Object 5" created by "user1"
     And the object with pid "object5" is in the collection with pid "coll5"
     And "user4@user4.com" has been granted "<permission>" permissions on "object5"
-    And I am on the home page
-    When I press the button to "search" within "searchform"
+    And I am on the my collections page
     And I select the "objects" tab
     Then I should see a search result "Search Object 5"
 

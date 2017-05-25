@@ -6,6 +6,7 @@ class MyCollectionsController < ApplicationController
   include Hydra::Controller::ControllerBehavior
 
   include Hydra::AccessControlsEnforcement
+  include DRI::Readable
 
   before_action :authenticate_user_from_token!
   before_action :authenticate_user!
@@ -35,6 +36,8 @@ class MyCollectionsController < ApplicationController
   end
 
   configure_blacklight do |config|
+    config.show.route = { controller: 'my_collections' }
+
     config.default_solr_params = {
       defType: 'edismax',
       qt: 'search',
@@ -227,7 +230,8 @@ class MyCollectionsController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
     config.add_sort_field 'system_create_dtsi desc', label: 'newest'
-    # The year created sort throws an error as the date type is not enforced and so a string can be passed in - it is commented out for this reason.
+    # The year created sort throws an error as the date type is not enforced and so a string can be passed in 
+    # - it is commented out for this reason.
     # config.add_sort_field 'creation_date_dtsim, title_sorted_ssi asc', label: 'year created'
 
     # We son't use the author_tesi field in DRI so disabling this sort - Damien
@@ -254,6 +258,145 @@ class MyCollectionsController < ApplicationController
   end
 
   def self.controller_path
-    'catalog'
+    'my_collections'
+  end
+
+  def index
+    params[:q] = params.delete(:q_ws)
+    (@response, @document_list) = search_results(params, search_params_logic)
+    params[:q_ws] = params.delete(:q)
+
+    respond_to do |format|
+      format.html { store_preferred_view }
+      format.rss  { render layout: false }
+      format.atom { render layout: false }
+      format.json do
+        render json: render_search_results_as_json
+      end
+
+      additional_response_formats(format)
+      document_export_formats(format)
+    end
+  end
+
+  # get a single document from the index
+  # to add responses for formats other than html or json see _Blacklight::Document::Export_
+  def show
+    @response, @document = fetch params[:id]
+
+    available_institutes
+    files_and_surrogates
+    supported_licences
+
+    @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
+
+    respond_to do |format|
+      format.html { setup_next_and_previous_documents }
+      format.json do
+        options = {}
+        options[:with_assets] = true if can?(:read, @document)
+        formatter = DRI::Formatters::Json.new(@document, options)
+        render json: formatter.format
+      end
+      format.ttl do
+        options = {}
+        options[:with_assets] = true if can?(:read, @document)
+        formatter = DRI::Formatters::Rdf.new(@document, options)
+        render text: formatter.format({format: :ttl})
+      end
+      format.rdf do
+        options = {}
+        options[:with_assets] = true if can?(:read, @document)
+        formatter = DRI::Formatters::Rdf.new(@document, options)
+        render text: formatter.format({format: :xml})
+      end
+      format.js { render layout: false }
+
+      additional_export_formats(@document, format)
+    end
+  end
+  
+  # method to find the Institutes associated with and available to add to or remove from the current collection (document)
+  def available_institutes
+    # the full list of Institutes
+    @institutes = Institute.all
+    # the Institutes currently associated with this collection if any
+    @collection_institutes = @document.institutes
+    # the Depositing Institute if any
+    @depositing_institute = @document.depositing_institute
+
+    @depositors = Institute.where(depositing: true).map { |item| item['name'] }
+
+    institutes_array = []
+    collection_institutes_array = []
+    depositing_institute_array = []
+
+    depositing_institute_array.push(@depositing_institute.name) unless @depositing_institute.blank?
+    @institutes.each { |inst| institutes_array.push(inst.name) }
+
+    @collection_institutes.each { |inst| collection_institutes_array.push(inst.name) } unless @collection_institutes.empty?
+
+    # exclude the associated and depositing Institutes from the list of Institutes available
+    @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array
+    # exclude the depositing Institute from the list of Institutes which can be removed
+    @removal_institutes = collection_institutes_array - depositing_institute_array
+  end
+
+  def files_and_surrogates
+    # get assets including preservation
+    @files = @document.assets(true)
+    @files.sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
+
+    @displayfiles = []
+    @surrogates = {}
+    @status = {}
+
+    @files.each do |file|
+      @displayfiles << file unless file.preservation_only?
+
+      # get the surrogates for this file if they exist
+      surrogates = @document.surrogates(file.id)
+      if surrogates
+        file_list = {}
+        surrogates.each do |key, _path|
+          file_list[key] = url_for(object_file_url(
+                                     object_id: @document.id, id: file.id, surrogate: key
+                                  ))
+        end
+
+        @surrogates[file.id] = file_list unless file_list.empty?
+      end
+
+      file_status(file.id) if @surrogates[file.id].blank?
+    end
+
+    ''
+  end
+
+  def file_status(file_id)
+    ingest_status = IngestStatus.where(asset_id: file_id)
+    if ingest_status.present?
+      status = ingest_status.first
+      @status[file_id] = { status: status.status }
+    end
+  end
+  
+  # If querying geographical_coverage, then query the Solr geospatial field
+  #
+  def subject_place_filter(solr_parameters, user_parameters)
+    # Find index of the facet geographical_coverage_sim
+    geographical_idx = nil
+    solr_parameters[:fq].each.with_index do |f_elem, idx|
+      geographical_idx = idx if f_elem.include?('geographical_coverage')
+    end
+
+    unless geographical_idx.nil?
+      geo_string = solr_parameters[:fq][geographical_idx]
+      coordinates = DRI::Metadata::Transformations.get_spatial_coordinates(geo_string)
+
+      if coordinates.present?
+        solr_parameters[:fq][geographical_idx] = "geospatial:\"Intersects(#{coordinates})\""
+      end
+    end
   end
 end

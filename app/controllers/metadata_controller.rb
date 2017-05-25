@@ -127,7 +127,7 @@ class MetadataController < CatalogController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: params[:id] }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:id] }
       format.json { render json: @object }
       format.text do
         response = if @errors

@@ -100,8 +100,9 @@ DriApp::Application.routes.draw do
     match '/workspace' => 'workspace#index', :via => :get
     match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
 
-    match '/my_collections' => 'my_collections#index', :via => :get
+    match '/my_collections' => 'my_collections#index', :via => :get, as: :my_collections_index
     match '/my_collections/facet/:id' => 'my_collections#facet', :via => :get
+    match '/my_collections/:id' => 'my_collections#show', :via => :get, as: :my_collections
 
     get 'surrogates/:id' => 'surrogates#show', :as => :surrogates
     put 'surrogates/:id' => 'surrogates#update', :as => :surrogates_generate

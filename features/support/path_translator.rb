@@ -26,6 +26,9 @@ module PathTranslator
       when /^(the )?home page$/
         root_path
 
+      when /^(the )?my collections page$/
+        my_collections_index_path
+
       when /^(the )?user profile page$/
         user_group.profile_path      
 
@@ -92,18 +95,33 @@ module PathTranslator
           when /edit/
             id = (pid == "created") ? @obj_pid : pid
             edit_object_path(id)
+          when /modify/
+            id = (pid == "created") ? @obj_pid : pid
+            my_collections_path(id)  
+        else
+            raise('Unknown route')
+        end
+
+      when /my collections/
+        case page
+          when /show/
+            my_collections_path(pid)
+          when /edit/
+            edit_collection_path(pid)
+          when /new object/
+            new_object_path(collection: pid, method: 'form')
           else
             raise('Unknown route')
         end
 
-      when /collection/
+       when /collection/
         case page
           when /show/
             catalog_path(pid)
           when /edit/
             edit_collection_path(pid)
           when /new object/
-            new_object_path(collection: pid, method: 'form')            
+            new_object_path(collection: pid, method: 'form')
           else
             raise('Unknown route')
         end

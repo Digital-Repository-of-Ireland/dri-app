@@ -110,7 +110,7 @@ class ObjectsController < BaseObjectsController
       end
 
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
       format.json { render json: @object }
     end
   end
@@ -158,13 +158,13 @@ class ObjectsController < BaseObjectsController
       respond_to do |format|
         format.html do
           flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-          redirect_to controller: 'catalog', action: 'show', id: @object.id
+          redirect_to controller: 'my_collections', action: 'show', id: @object.id
         end
         format.json do
           response = { pid: @object.id }
           response[:warning] = @warnings if @warnings
 
-          render json: response, location: catalog_url(@object.id), status: :created
+          render json: response, location: my_collections_url(@object.id), status: :created
         end
       end
     else
@@ -208,7 +208,7 @@ class ObjectsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'index' }
+      format.html { redirect_to controller: 'my_collections', action: 'index' }
     end
   end
 
@@ -346,7 +346,7 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
       format.json do
         response = { id: @object.id, status: @object.status }
         response[:warning] = @warnings if @warnings

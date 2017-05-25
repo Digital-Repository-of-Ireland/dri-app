@@ -1,5 +1,5 @@
 module DocumentHelper
-  Child = Struct.new(:link_text, :path, :type) do
+  Child = Struct.new(:id, :link_text, :path, :type) do
     def to_partial_path
       'child'
     end
@@ -46,6 +46,7 @@ module DocumentHelper
       type = doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
 
       child = Child.new
+      child.id = doc['id']
       child.link_text = link_text
       child.path = catalog_path(doc['id'])
       child.type = type

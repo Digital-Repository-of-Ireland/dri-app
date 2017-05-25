@@ -1,0 +1,4 @@
+<% # container for all documents in index view -%>
+<% if params[:view] == 'grid' || params[:view] == 'list' %>
+  <%= render partial: 'my_collections/document', collection: documents, :as => :document %>
+<% end %>

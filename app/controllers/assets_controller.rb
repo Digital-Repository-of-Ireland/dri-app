@@ -168,7 +168,7 @@ class AssetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: params[:object_id] }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
       format.json do
         response = { checksum: @file.checksum }
         response[:warnings] = @warnings if @warnings
