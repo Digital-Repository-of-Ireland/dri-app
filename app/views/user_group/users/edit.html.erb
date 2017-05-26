@@ -111,7 +111,7 @@
       <div class="dri_account_block_info">
         <h5 class="no_bottom_margin"><%= (t :'user_groups.views.shared.cancel') %></h5>
         <%= render 'user_group/shared/leave_groups', object: @user %>
-        <% if @user.pending_memberships.count > 0 %>
+        <% if @user.pending_memberships.size > 0 %>
             <h5 class="no_bottom_margin"><%= (t :'user_groups.views.shared.pending') %></h5>
             <%= render 'user_group/shared/pending_groups', object: @user %>
         <% end %>

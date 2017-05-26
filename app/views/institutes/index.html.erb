@@ -2,7 +2,7 @@
 <% style='' %>
 <% @institutes.each_with_index do |institute, i| %>
     <% style='not_first' unless i == 0 %>
-    <% collection_count = @collections[institute.id].count %>
+    <% collection_count = @collections[institute.id].size %>
     <div class="dri_collection_institutes_pages <%= style %>">
       <% institute_browse_params[:f] = { ActiveFedora.index_field_mapper.solr_name('institute', :facetable, type: :string).to_sym => [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
       <%= link_to main_app.catalog_index_path(institute_browse_params) do %>

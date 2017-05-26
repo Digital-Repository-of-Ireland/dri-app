@@ -31,7 +31,7 @@
       <% end %>
     </div>
 
-    <% if (@displayfiles.count > 1) %>
+    <% if (@displayfiles.size > 1) %>
       <div>
         <a class="left carousel-control" href="#oject-multiple-asset-carousel" data-slide="prev">
           <i class="fa fa-arrow-left"></i>
@@ -43,8 +43,8 @@
     <% end %>
   </div>
   <!-- Controls -->
-<% if (@displayfiles.count > 0) %>
-    <p class="dri_assets_total"><%= "#{t('dri.views.fields.total_assets')} (#{@displayfiles.count})" %></p>
+<% if (@displayfiles.size > 0) %>
+    <p class="dri_assets_total"><%= "#{t('dri.views.fields.total_assets')} (#{@displayfiles.size})" %></p>
 <% end %>
 
  <% if document.published? && document.public_read? %>
@@ -54,6 +54,6 @@
   </div>
 
   <% content_for :head do %>
-    <%= javascript_include_tag 'iiif_viewer' %>
+    <%= javascript_include_tag 'iiif_viewer', async: Rails.env.production? %>
   <% end %>  
 <% end %>
