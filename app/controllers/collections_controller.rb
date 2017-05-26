@@ -19,7 +19,7 @@ class CollectionsController < BaseObjectsController
       if params[:id]
         redirect_to controller: 'my_collections', action: 'show', id: params[:id]
       else
-        redirect_to controller: 'my_collections', action: 'index'
+        redirect_to controller: 'workspace', action: 'index'
       end
     end
   end
