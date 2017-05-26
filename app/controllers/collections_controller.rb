@@ -372,6 +372,11 @@ class CollectionsController < BaseObjectsController
     def create_from_form
       enforce_permissions!('create', DRI::Batch)
 
+      unless valid_root_permissions?
+        flash[:alert] = t('dri.flash.error.not_created')
+        return false
+      end
+
       @object = DRI::Batch.with_standard :qdc
 
       @object.type = ['Collection'] if @object.type.nil?
@@ -386,11 +391,6 @@ class CollectionsController < BaseObjectsController
 
       # depositor is not submitted as part of the form
       @object.depositor = current_user.to_s
-
-      unless valid_permissions?
-        flash[:alert] = t('dri.flash.error.not_created')
-        return false
-      end
 
       # We need to save to get a pid at this point
       if @object.save
@@ -548,13 +548,7 @@ class CollectionsController < BaseObjectsController
       end
     end
 
-    def valid_permissions?
-      if @object.governing_collection_id.blank? &&
-         ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
-         (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
-        false
-      else
-        true
-      end
+    def valid_root_permissions?
+      !((params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
     end
 end
