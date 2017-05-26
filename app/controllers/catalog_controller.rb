@@ -302,7 +302,7 @@ class CatalogController < ApplicationController
         solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\""
       end
     end
-    #solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('status', :facetable, type: :string)}:published"
+    solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('status', :facetable, type: :string)}:published"
   end
 
   def configure_timeline(solr_parameters, user_parameters)
