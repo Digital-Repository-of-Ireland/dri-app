@@ -831,14 +831,18 @@ ol.breadcrumb {
 /*-------------- Search --------------*/
 
 .dri_search_term_text_input {
-    clear: right;
-    float: right;
     margin: 24px 0 0 0;
     width: 226px;
     padding: 4px 0 4px 30px;
-    border: 1px solid $dri_thingrey;
     color: $dri_midgrey;
     font-size: 112%;
+    background: image-url("dri/search_icon.png") no-repeat left;
+}
+
+.dri_search_box {
+    width: 226px;
+    padding: 2px 0 2px 30px;
+    color: $dri_midgrey;
     background: image-url("dri/search_icon.png") no-repeat left;
 }
 /*-------------- Grid / table display--------------*/

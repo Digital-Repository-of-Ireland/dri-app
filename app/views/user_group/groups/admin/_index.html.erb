@@ -4,6 +4,12 @@
 <div style="width: 73%">
   <br/>
   <%= paginate @groups, theme: 'blacklight' %>
+
+  <%= form_tag(user_group.groups_path, method: "get", id: "search-form") do %>
+    <%= text_field_tag :search, params[:search], :class => "dri_search_box" %>
+    <%= submit_tag "Search", :class => 'dri_no_display' %>
+  <% end %>
+
   <br />
   <% for group in @groups %>
       <div class="index-element">

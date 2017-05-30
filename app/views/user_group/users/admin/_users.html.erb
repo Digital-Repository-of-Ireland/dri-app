@@ -5,8 +5,12 @@
   <br />
     <%= render :partial => 'by_letter' %>
   <br />
-
+  
   <%= paginate @users, theme: 'blacklight' %>
+  <%= form_tag(user_group.users_path, method: "get", id: "search-form") do %>
+    <%= text_field_tag :search, params[:search], :class => "dri_search_box" %>
+    <%= button_tag "Search", :class => 'dri_no_display' %>
+  <% end %>
   <br />
   <% for user in @users %>
     <div class="index-element">
