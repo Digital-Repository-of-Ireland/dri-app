@@ -1,0 +1,21 @@
+<%= link_to (t :'user_groups.views.shared.add_group'), new_group_path %>
+
+<h2> <%= (t :'user_groups.views.groups.index.groups') %>(<%= @groups.total_count %>)</h2>
+<div style="width: 73%">
+  <br/>
+  <%= paginate @groups, theme: 'blacklight' %>
+  <br />
+  <% for group in @groups %>
+      <div class="index-element">
+          <%= link_to group.name.capitalize, group %> 
+          <% unless group.is_locked %>| 
+            <%= link_to (t :'user_groups.views.shared.delete'), group, method: :delete, confirm: (t :'user_groups.views.shared.confirm') %>
+          <% end %>
+          <p><%= group.description %></p>
+          
+          <%= render partial: "pending_link", locals: { group: group }  %>
+
+          <i><%= (t :'user_groups.views.groups.index.members') %></i> <%= group.full_memberships.count %>
+      </div>
+  <% end %>
+</div>

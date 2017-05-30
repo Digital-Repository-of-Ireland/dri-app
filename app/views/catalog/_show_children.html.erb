@@ -9,7 +9,7 @@
 		  <%= render children %>
 	  </div>
 		<div class="dri_clearfix dri_float_right dri_related_items" id="subcoll_paginator">
-			<%= paginate children, param_name: 'subs_page', remote: true %>
+			<%= paginate children, theme: 'blacklight', param_name: 'subs_page', remote: true %>
 		</div>
 	</div>
 <% end %>
