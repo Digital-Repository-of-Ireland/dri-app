@@ -22,21 +22,11 @@ class MyCollectionsController < ApplicationController
   MyCollectionsController.solr_search_params_logic += [:add_access_controls_to_solr_params_no_pub]
   # This filters out objects that you want to exclude from search results, like FileAssets
   MyCollectionsController.solr_search_params_logic += [:exclude_unwanted_models]
-
-  def rows_per_page
-    result = 15
-
-    if params.include?(:per_page)
-      rows_per_page = params[:per_page].to_i
-
-      if (rows_per_page < 1) || (rows_per_page > 100)
-        rows_per_page = 9
-      end
-    end
-  end
-
+  
   configure_blacklight do |config|
     config.show.route = { controller: 'my_collections' }
+    config.per_page = [9, 18, 36]
+    config.default_per_page = 9
 
     config.default_solr_params = {
       defType: 'edismax',
