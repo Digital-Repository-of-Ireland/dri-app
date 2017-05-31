@@ -86,8 +86,6 @@ class ObjectsController < BaseObjectsController
       @object.governing_collection = collection
     end
 
-    doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
-
     version = @object.object_version || 1
     @object.object_version = version.to_i + 1
 
@@ -97,6 +95,8 @@ class ObjectsController < BaseObjectsController
       format.html { render action: 'edit' }
       return
     end
+
+    doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
     # purge params from update action
     purge_params
