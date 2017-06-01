@@ -338,6 +338,8 @@ GEM
       multi_json (~> 1.10)
       retriable (~> 1.4)
       signet (~> 0.6)
+    google-oauth2-installed (0.0.4)
+      oauth2
     google_drive (1.0.6)
       google-api-client (>= 0.7.0, < 0.9)
       nokogiri (>= 1.4.4, != 1.5.2, != 1.5.1)
@@ -465,6 +467,8 @@ GEM
     leaflet-markercluster-rails (0.7.0)
       railties (>= 3.1)
     leaflet-rails (0.7.7)
+    legato (0.7.0)
+      multi_json
     link_header (0.0.8)
     linkeddata (1.99.0)
       equivalent-xml (~> 0.6)
@@ -868,6 +872,7 @@ DEPENDENCIES
   font-awesome-rails
   google-analytics-rails (= 1.1.0)
   google-api-client (= 0.8.6)
+  google-oauth2-installed
   guard
   guard-livereload
   high_voltage (~> 2.1.0)
@@ -885,6 +890,7 @@ DEPENDENCIES
   jquery-xmleditor-rails!
   jwt (= 1.5.2)
   launchy
+  legato
   mimemagic
   moab-versioning
   mysql
@@ -929,4 +935,4 @@ DEPENDENCIES
   zeus
 
 BUNDLED WITH
-   1.14.6
+   1.15.0
