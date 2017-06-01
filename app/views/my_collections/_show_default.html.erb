@@ -47,7 +47,7 @@
 	  <%= link_back_to_catalog %>
 	</div>
 	<%= render partial: "show_object_navigation_tools" %>
-	<%= render partial: "tools" %>
+	<%= render partial: "shared/tools" %>
 	<% if signed_in? && can?(:edit, @document.id) %>
 	  <%= render partial: "show_file_tools" %>
  	  <%= render partial: "show_editor_tools" %>

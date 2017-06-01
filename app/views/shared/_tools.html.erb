@@ -6,21 +6,21 @@
 		<% if current_or_guest_user %>
 		  <li>
 			  <% if @document.collection? %>
-			    <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({:mode => 'collections', :view => 'grid', :show_subs=> true}), :tabindex => "-1", id: "manage_bookmark" %>
+			    <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({mode: 'collections', view: 'grid', show_subs: true}), :tabindex => "-1", id: "manage_bookmark" %>
 			  <% else %>
-			    <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({:mode => 'objects', :view => 'grid'}), :tabindex => "-1" %>
+			    <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({mode: 'objects', view: 'grid'}), tabindex: "-1" %>
 			  <% end %>
 		  </li>
 		<% end %>
 		
 		<% if @document.has_geocode? %>
 		  <li>
-			  <%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id), :id => "logainm_map", :'data-toggle' => 'modal',  :'data-target' => '#dri_map_modal_id' %> 
+			  <%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id), id: "logainm_map", :'data-toggle' => 'modal',  :'data-target' => '#dri_map_modal_id' %> 
 		  </li>
 		<% end %>
 		
 		<li>
-			<%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, format: 'js'), :id => "styled_metadata", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %>
+			<%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, format: 'js'), id: "styled_metadata", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %>
 		</li>
 		
 		<li>
@@ -28,16 +28,30 @@
 		</li>
 		    
 		<li>
-			<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), :id => 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citation_modal_id' %>
+			<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), id: 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citation_modal_id' %>
 		</li>
 		
 		<% if (can? :edit, @document) %>
 		  <li>
-			  <%= link_to t('dri.views.catalog.links.history'), object_history_path(@document.id), :id => 'show_object_history_report' %>
+			  <%= link_to t('dri.views.catalog.links.history'), object_history_path(@document.id), id: 'show_object_history_report' %>
 		  </li>
 		<% end %>
 		
 		<% if @document.published? && @document.public_read? %>
+		  <% @available = true %>
+		  <% @li_class = "dri_formats" %>
+		<% else %>
+      <% @li_class = "dri_formats_spacing" %>
+    <% end %>
+    
+    <%= content_tag(:li, nil, class: @li_class) do %>
+    	<%= link_to(image_tag("rdf_icon.png"), url_for_document(@document.id, format: :ttl)) %>
+    	<% if @available %>
+        <%= link_to(image_tag("iiif_logo.png"), iiif_manifest_path(@document.id, format: :json)) %>
+      <% end %>
+		<% end %>
+    
+		<% if @available %>
 			<% image_for_search @document %>
 			<li class="dri_share">
 			  <%= social_share_button_tag(document_show_html_title, image: @search_image, popup: 'true') %>
@@ -80,7 +94,7 @@
 			</div>
 			<div class="modal-footer">
 				<%= link_to t('dri.views.catalog.buttons.download_metadata_xml'), 
-				    object_metadata_path(@document.id, :format => :xml), {:id => "download_metadata", :class => "btn btn-default"} 
+				    object_metadata_path(@document.id, format: :xml), {id: "download_metadata", class: "btn btn-default"} 
 				%>
 				<button type="button" class="btn btn-default" data-dismiss="modal">
 					<%= t('dri.window.modal.close') %>

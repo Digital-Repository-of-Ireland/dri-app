@@ -43,7 +43,7 @@
   <% end %>
   <% objectsCount = count_items_in_collection document[:id] %>
   <%= render :partial => "show_collection_navigation_tools", :locals => {:document => document, :objectsCount => objectsCount} %>
-  <%= render :partial => "tools", :locals => {:document => document} %>
+  <%= render :partial => "shared/tools", :locals => {:document => document} %>
 
    <% if signed_in? && can?(:edit, @document.id) %>
     <%= link_to my_collections_path(@document.id), id: "open_workspace" do %>

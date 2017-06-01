@@ -43,7 +43,7 @@
   <% end %>
   <% objectsCount = count_items_in_collection document[:id] %>
   <%= render partial: "show_collection_navigation_tools", locals: { document: document, objectsCount: objectsCount} %>
-  <%= render partial: "tools", :locals => {:document => document} %>
+  <%= render partial: "shared/tools", :locals => {:document => document} %>
   <% if signed_in? && (can? :manage_collection, document) %>
     <%= render partial: "show_collection_manager_tools", locals: { document: document } %>
   <% elsif signed_in? && (can? :edit, document) %>

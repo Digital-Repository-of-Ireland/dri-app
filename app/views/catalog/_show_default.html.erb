@@ -41,7 +41,7 @@
 	  <%= link_back_to_catalog %>
 	</div>
 	<%= render :partial => "show_object_navigation_tools" %>
-	<%= render :partial => "tools" %>
+	<%= render :partial => "shared/tools" %>
 
   <% if signed_in? && can?(:edit, @document.id) %>
     <%= link_to my_collections_path(@document.id), id: "open_workspace" do %>

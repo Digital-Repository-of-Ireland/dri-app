@@ -95,7 +95,7 @@ module DRI::Formatters
         graph << [RDF::URI.new(id), RDF.type, file_type(a)]
         graph << [RDF::URI.new(id), FOAF.topic, RDF::URI("#{uri}#id")]
         graph << [RDF::URI.new(id), mrss_vocab.content, RDF::URI("#{base_uri}#{file_path(a['id'])}")]
-        graph << [RDF::URI.new(id), RDF::RDFS.label, RDF::Literal.new(a['label_tesim'])]
+        graph << [RDF::URI.new(id), RDF::RDFS.label, RDF::Literal.new(a['label_tesim'].first)]
         graph << [RDF::URI.new(id), RDF::DC.isPartOf, RDF::URI("#{uri}#id")]
       end
     end
