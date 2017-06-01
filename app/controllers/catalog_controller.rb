@@ -31,6 +31,7 @@ class CatalogController < ApplicationController
   MAX_TIMELINE_ENTRIES = 50
 
   configure_blacklight do |config|
+    config.show.route = { controller: 'catalog' }
     config.per_page = [9, 18, 36]
     config.default_per_page = 9
     config.metadata_lang = ['all', 'gle', 'enl']

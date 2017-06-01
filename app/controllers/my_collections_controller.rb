@@ -21,8 +21,10 @@ class MyCollectionsController < ApplicationController
   # This applies appropriate access controls to all solr queries
   MyCollectionsController.solr_search_params_logic += [:add_access_controls_to_solr_params_no_pub]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  MyCollectionsController.solr_search_params_logic += [:exclude_unwanted_models]
+  MyCollectionsController.solr_search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
   
+  MAX_TIMELINE_ENTRIES = 50
+
   configure_blacklight do |config|
     config.show.route = { controller: 'my_collections' }
     config.per_page = [9, 18, 36]
@@ -33,6 +35,7 @@ class MyCollectionsController < ApplicationController
       qt: 'search',
       rows: 9
     }
+    config.show.partials << :show_maplet
 
     # solr field configuration for search results/index views
     config.index.title_field = solr_name('title', :stored_searchable, type: :string)
@@ -83,6 +86,9 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field solr_name('width', :facetable, type: :integer), label: 'Image Width'
     config.add_facet_field solr_name('height', :facetable, type: :integer), label: 'Image Height'
     config.add_facet_field solr_name('area', :facetable, type: :integer), label: 'Image Size'
+
+    config.add_facet_field solr_name('placename_field', :facetable), label: 'Placename', show: false
+    config.add_facet_field solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
 
     # duration is measured in milliseconds
     config.add_facet_field solr_name('duration_total', :stored_sortable, type: :integer), label: 'Total Duration'
@@ -233,6 +239,17 @@ class MyCollectionsController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+
+    config.view.maps.coordinates_field = 'geospatial'
+    config.view.maps.placename_property = 'placename'
+    config.view.maps.tileurl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    config.view.maps.mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    config.view.maps.maxzoom = 18
+    config.view.maps.show_initial_zoom = 5
+    config.view.maps.facet_mode = 'geojson'
+    config.view.maps.placename_field = ActiveFedora.index_field_mapper.solr_name('placename_field', :facetable, type: :string)
+    config.view.maps.geojson_field = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol)
+    config.view.maps.search_mode = 'placename'
   end
 
   def exclude_unwanted_models(solr_parameters, user_parameters)
@@ -247,6 +264,38 @@ class MyCollectionsController < ApplicationController
     end
   end
 
+  def configure_timeline(solr_parameters, user_parameters)
+    if user_parameters[:view] == 'timeline'
+      tl_field = user_parameters[:tl_field].presence || 'sdate'
+
+      case tl_field
+      when 'cdate'
+        solr_parameters[:fq] << "+cdateRange:*"
+        solr_parameters[:fq] << "+cdate_range_start_isi:[* TO *]"
+        solr_parameters[:sort] = "cdate_range_start_isi asc"
+      when 'pdate'
+        solr_parameters[:fq] << "+pdateRange:*"
+        solr_parameters[:fq] << "+pdate_range_start_isi:[* TO *]"
+        solr_parameters[:sort] = "pdate_range_start_isi asc"
+      else
+        solr_parameters[:fq] << "+sdateRange:*"
+        solr_parameters[:fq] << "+sdate_range_start_isi:[* TO *]"
+        solr_parameters[:sort] = "sdate_range_start_isi asc"
+      end
+
+      solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
+
+      if params[:tl_page].present? && params[:tl_page].to_i > 1
+        solr_parameters[:start] = MAX_TIMELINE_ENTRIES * (params[:tl_page].to_i - 1)
+      else
+        solr_parameters[:start] = 0
+      end
+    else
+      params.delete(:tl_page)
+      params.delete(:tl_field)
+    end  
+  end
+
   def self.controller_path
     'my_collections'
   end
@@ -254,6 +303,13 @@ class MyCollectionsController < ApplicationController
   def index
     params[:q] = params.delete(:q_ws)
     (@response, @document_list) = search_results(params, search_params_logic)
+
+    if params[:view].present? && params[:view].include?('timeline')
+      tl_field = params[:tl_field].presence || 'sdate'
+      timeline = Timeline.new(view_context)
+      @timeline_data = timeline.data(@document_list, tl_field)
+    end
+
     params[:q_ws] = params.delete(:q)
 
     respond_to do |format|
