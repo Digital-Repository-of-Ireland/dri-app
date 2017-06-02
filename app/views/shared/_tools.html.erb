@@ -3,7 +3,8 @@
 	<!-- close vc_title -->
 
 	<ul>
-		<% if current_or_guest_user %>
+		<% if current_or_guest_user && controller_name != 'my_collections' %>
+                  <%= render_show_doc_actions %>
 		  <li>
 			  <% if @document.collection? %>
 			    <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({mode: 'collections', view: 'grid', show_subs: true}), :tabindex => "-1", id: "manage_bookmark" %>
