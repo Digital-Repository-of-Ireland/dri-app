@@ -66,6 +66,8 @@ DriApp::Application.routes.draw do
 
     resources :licences
 
+    get 'resource/:object', to: 'resources#show', defaults: { format: 'ttl' }
+
     match 'session/:id' => 'session#create', :via => :get, :as => :lang
 
     match 'error/404' => 'error#404', :via => :get
