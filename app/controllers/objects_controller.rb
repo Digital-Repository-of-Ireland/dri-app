@@ -86,8 +86,8 @@ class ObjectsController < BaseObjectsController
       @object.governing_collection = collection
     end
 
-    version = @object.object_version || 1
-    @object.object_version = version.to_i + 1
+    version = @object.object_version || '1'
+    @object.object_version = (version.to_i + 1).to_s
 
     unless @object.update_attributes(update_params)
       purge_params
@@ -148,7 +148,7 @@ class ObjectsController < BaseObjectsController
 
     checksum_metadata(@object)
     supported_licences
-    @object.object_version = 1
+    @object.object_version = '1'
 
     if @object.valid? && @object.save
       post_save(true) do
@@ -187,8 +187,8 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published'
       # Do the preservation actions
-      version = @object.object_version || 1
-      @object.object_version = version.to_i + 1
+      version = @object.object_version || '1'
+      @object.object_version = (version.to_i + 1).to_s
       assets = []
       @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
       
@@ -335,8 +335,8 @@ class ObjectsController < BaseObjectsController
 
     unless @object.status == 'published'
       @object.status = params[:status] if params[:status].present?
-      version = @object.object_version || 1
-      @object.object_version = version.to_i + 1
+      version = @object.object_version || '1'
+      @object.object_version = (version.to_i + 1).to_s
       @object.save
 
       # Do the preservation actions

@@ -100,7 +100,7 @@ class ProcessBatchIngest
     filedata = OpenStruct.new
     filedata.path = file_path
     
-    current_version = object.object_version || 1
+    current_version = object.object_version || '1'
     object_version = (current_version.to_i+1).to_s
 
     object.object_version = object_version
@@ -133,7 +133,7 @@ class ProcessBatchIngest
     object.governing_collection = collection
     object.depositor = user.to_s
     object.status = 'draft'
-    object.object_version = 1
+    object.object_version = '1'
 
     set_metadata_datastream(object, xml)
     checksum_metadata(object)
