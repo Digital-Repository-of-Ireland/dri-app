@@ -48,7 +48,7 @@
     <%= content_tag(:li, nil, class: @li_class) do %>
     	<%= link_to(image_tag("rdf_icon.png"), url_for_document(@document.id, format: :ttl)) %>
     	<% if @available %>
-        <%= link_to(image_tag("iiif_logo.png"), iiif_manifest_path(@document.id, format: :json)) %>
+        <%= link_to(image_tag("iiif_logo.png"), "https://repository.dri.ie/mirador?manifest=https://repository.dri.ie#{iiif_manifest_path(@document.id, format: :json)}") %>
       <% end %>
 		<% end %>
     
