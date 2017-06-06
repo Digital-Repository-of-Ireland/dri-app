@@ -165,7 +165,7 @@ module DRI::Formatters
                                       else
                                         value
                                       end
-                                      
+
                          [RDF::URI.new(id), METADATA_FIELDS_MAP[field], typed_value]
                        end
               
@@ -242,12 +242,14 @@ module DRI::Formatters
     end
 
     def sparql_subject(value)
-      provider = DRI::Sparql::Provider::Sparql.new
-      provider.endpoint = AuthoritiesConfig['data.dri.ie']['endpoint']
+      Rails.cache.fetch(value, expires_in: 48.hours) do
+        provider = DRI::Sparql::Provider::Sparql.new
+        provider.endpoint = AuthoritiesConfig['data.dri.ie']['endpoint']
 
-      triples = provider.retrieve_data([nil, 'skos:prefLabel', "\"#{value}\"@en"])
+        triples = provider.retrieve_data([nil, 'skos:prefLabel', "\"#{value}\"@en"])
 
-      triples.present? ? triples.first[0] : nil
+        triples.present? ? triples.first[0] : nil
+      end
     end
   end
 end
