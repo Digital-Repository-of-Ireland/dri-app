@@ -15,6 +15,7 @@
 //= require jquery_ujs
 //= require datatables
 //= require jquery-ui
+//= require jquery.slick
 
 //
 // Required by Blacklight-Maps
@@ -39,6 +40,7 @@
 //= require openseadragon
 //= require spin
 //= require timelineJS3
+//= slick-scroller
 //= require dri-timeline
 //= require dri/
 

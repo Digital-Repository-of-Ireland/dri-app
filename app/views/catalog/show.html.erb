@@ -11,7 +11,7 @@
 
 <% children = collection_children(@document, 500) %>
 <% if children.length > 0 %>
-  <%= render partial: "catalog/show_children", locals: { document: @document, children: children } %>
+  <%= render partial: "shared/show_children", locals: { document: @document, children: children } %>
 <% end %>
 
 <div class="dri_section_block" id="institutes_block">

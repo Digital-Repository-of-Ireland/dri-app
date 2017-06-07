@@ -280,3 +280,7 @@ dl.dri_object_metadata_readview {
         }
     }
 }
+/*--slick overrides--*/
+.slick-prev:before, .slick-next:before { 
+    color:$dri_darkgrey !important;
+}

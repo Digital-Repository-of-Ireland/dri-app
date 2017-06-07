@@ -1,0 +1,27 @@
+<article class="">
+		<div class="dri_content_block">
+			<%= link_to url_for_document(child.id) do %>
+			  <h1><%= child.link_text %></h1>
+			<% end %>
+			<div class="dri_collection_image">
+        <% image = child.cover %>
+        <% if image %>
+            <%= image_tag cover_image_path(child.id), :width=>"228" %>
+        <% else %>
+            <%= image_tag "no_image.png", :width=>"228" %>
+        <% end %>
+      </div>
+			<div class="dri_icon">
+				<span class="dri_icon_image">
+					<% if child.type == 'Item'%>
+					  <i class="fa fa-file"></i>
+					<% else %>
+					  <i class="fa fa-folder"></i>
+					<% end %>
+					&nbsp;<%= child.type %>
+			  </span>
+			</div>
+			<!-- close dri_icon -->
+		</div>
+		<!-- close content_block -->
+</article>
