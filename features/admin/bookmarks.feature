@@ -6,6 +6,7 @@ Feature: Bookmarks Feature
     Given I am logged in as "admin" in the group "admin" and accept cookies
     And a collection with pid "bookcoll" and title "Bookmark Test Collection"
     And a Digital Object with pid "bookobj" and title "Bookmark Test Object" in collection "bookcoll"
+    And the collection is published
 
   Scenario: Check no bookmarks
     Given I am on the home page

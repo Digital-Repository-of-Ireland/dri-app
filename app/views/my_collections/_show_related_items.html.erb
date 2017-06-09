@@ -1,0 +1,58 @@
+<% relationships = get_object_relationships @document %>
+<% external_rels = get_external_relationships @document %>
+
+<% if (!relationships.empty? || !external_rels.empty?) %>
+<div class="dri_section_block" id="related_materials">
+  <div class="dri_section_title">
+	  <span><%= "#{t('dri.views.catalog.headers.related_materials')}" %></span>
+  </div>
+
+  <% unless relationships.empty? %>
+      <% relationships.each do |key, value| -%>
+        
+        <div class="dri_clearfix">
+          <% value.take(4).each do |item| -%>
+            <article class="">
+              <%= link_to my_collections_path(item[1].id)  do %>
+                <div class="dri_content_block">
+                  <h1><%= item[0] %></h1>
+                  <div class="dri_icon">
+                    <span class="dri_icon_image"><i class="fa fa-link"></i> &nbsp;<%= key %></span>
+                  </div>
+                  <!-- close dri_icon -->
+                </div>
+              <% end %>
+              <!-- close content_block -->
+            </article>
+          <% end %>
+        </div>
+        
+        <div class="dri_clearfix dri_float_right dri_related_items">
+          <%= paginate value, :param_name => key.downcase.gsub(/\s/,'_') + '_page' %>
+        </div>
+
+      <% end %>
+  <% end %>
+  
+  <% unless external_rels.empty? %>
+    <div class="dri_clearfix">
+  	  <% external_rels.each do |url| -%>
+        <article class="">
+  		  <%= link_to url, :target => "_blank"  do %>
+  			  <div class="dri_content_block">
+            <h1><%= url %></h1>
+  			    <div class="dri_icon">
+  			      <span class="dri_icon_image"><i class="fa fa-link"></i> &nbsp;<%= t('dri.views.fields.related.external_link') %></span>
+  			    </div>
+  				<!-- close dri_icon -->
+  			  </div>
+        <% end %> <!-- close content_block -->
+  		  </article>
+      <% end %>
+  	  <div class="dri_clearfix dri_float_right dri_related_items">
+        <%= paginate external_rels, :param_name => 'externs_page' %>
+      </div>
+	  </div>
+  <% end %>
+</div>
+<% end %>

@@ -6,7 +6,6 @@ dri:
   uploads: dri_files/uploads
   downloads: dri_files/downloads
 plugins:
-  ffmpeg_path: /usr/local/bin/ffmpeg
   fits_path: /opt/local/fits/fits.sh
 restrict:
   mime_types:
@@ -23,8 +22,6 @@ S3:
   access_key_id: anything
   secret_access_key: anything
   expiry: 604800
-data:
-  types: [Sound, MovingImage, Image, Text]
 doi:
   enable: "false"
 iiif:

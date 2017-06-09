@@ -31,7 +31,6 @@
                   <%= link_to catalog_index_path(search.query_params), :class => "dri_save_search_link_block" do %>
 
                       <% snippet_documents.each do |document| %>
-                          <% document = document.symbolize_keys! %>
                           <article class="dri_no_mobile_display">
                             <%= render :partial => 'catalog/saved_search_object_snippet', :locals => {:document => document, :mode => search.query_params[:mode]}%>
                           </article>

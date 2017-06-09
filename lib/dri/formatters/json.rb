@@ -35,7 +35,7 @@ module DRI::Formatters
       translated_hash = metadata_hash.map do |k, v|
         case k
         when 'institute'
-          value = v.blank? ? v : v['name']
+          value = v.blank? ? v : v.map(&:name)
           [METADATA_FIELDS_MAP[k], value]
         else
           [METADATA_FIELDS_MAP[k], v]

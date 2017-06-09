@@ -1,7 +1,7 @@
 class Timeline
   include ApplicationHelper
 
-  delegate :can?, :asset_url, :asset_path, :catalog_path, :cover_image_path, :object_file_path, to: :@view
+  delegate :can?, :asset_url, :asset_path, :link_to, :url_for_document, :cover_image_path, :object_file_path, to: :@view
 
   def initialize(view)
     @view = view
@@ -30,11 +30,9 @@ class Timeline
           end_date = dates[1]
           event = {}
           event[:text] = {}
-
           event[:start_date] = { year: start.year, month: start.month, day: start.day }
           event[:end_date] = { year: end_date.year, month: end_date.month, day: end_date.day }
-
-          event[:text][:headline] = '<a href="' + catalog_path(document[:id]) + '">' + document[title_key].first + '</a>'
+          event[:text][:headline] = link_to(document[title_key].first, url_for_document(document[:id]))
           event[:text][:text] = document[description_key].first.truncate(60, separator: ' ')
           event[:media] = {}
           event[:media][:url] = image(document)

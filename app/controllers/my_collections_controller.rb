@@ -6,6 +6,7 @@ class MyCollectionsController < ApplicationController
   include Hydra::Controller::ControllerBehavior
 
   include Hydra::AccessControlsEnforcement
+  include DRI::Readable
 
   before_action :authenticate_user_from_token!
   before_action :authenticate_user!
@@ -20,26 +21,21 @@ class MyCollectionsController < ApplicationController
   # This applies appropriate access controls to all solr queries
   MyCollectionsController.solr_search_params_logic += [:add_access_controls_to_solr_params_no_pub]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  MyCollectionsController.solr_search_params_logic += [:exclude_unwanted_models]
-
-  def rows_per_page
-    result = 15
-
-    if params.include?(:per_page)
-      rows_per_page = params[:per_page].to_i
-
-      if (rows_per_page < 1) || (rows_per_page > 100)
-        rows_per_page = 9
-      end
-    end
-  end
+  MyCollectionsController.solr_search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
+  
+  MAX_TIMELINE_ENTRIES = 50
 
   configure_blacklight do |config|
+    config.show.route = { controller: 'my_collections' }
+    config.per_page = [9, 18, 36]
+    config.default_per_page = 9
+
     config.default_solr_params = {
       defType: 'edismax',
       qt: 'search',
       rows: 9
     }
+    config.show.partials << :show_maplet
 
     # solr field configuration for search results/index views
     config.index.title_field = solr_name('title', :stored_searchable, type: :string)
@@ -48,6 +44,10 @@ class MyCollectionsController < ApplicationController
     # solr field configuration for document/show views
     config.show.title_field = solr_name('title', :stored_searchable, type: :string)
     config.show.display_type_field = solr_name('file_type', :stored_searchable, type: :string)
+
+    config.show.document_actions.delete(:email)
+    config.show.document_actions.delete(:sms)
+    config.show.document_actions.delete(:citation)
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -90,6 +90,9 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field solr_name('width', :facetable, type: :integer), label: 'Image Width'
     config.add_facet_field solr_name('height', :facetable, type: :integer), label: 'Image Height'
     config.add_facet_field solr_name('area', :facetable, type: :integer), label: 'Image Size'
+
+    config.add_facet_field solr_name('placename_field', :facetable), label: 'Placename', show: false
+    config.add_facet_field solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
 
     # duration is measured in milliseconds
     config.add_facet_field solr_name('duration_total', :stored_sortable, type: :integer), label: 'Total Duration'
@@ -227,7 +230,8 @@ class MyCollectionsController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
     config.add_sort_field 'system_create_dtsi desc', label: 'newest'
-    # The year created sort throws an error as the date type is not enforced and so a string can be passed in - it is commented out for this reason.
+    # The year created sort throws an error as the date type is not enforced and so a string can be passed in 
+    # - it is commented out for this reason.
     # config.add_sort_field 'creation_date_dtsim, title_sorted_ssi asc', label: 'year created'
 
     # We son't use the author_tesi field in DRI so disabling this sort - Damien
@@ -239,6 +243,17 @@ class MyCollectionsController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+
+    config.view.maps.coordinates_field = 'geospatial'
+    config.view.maps.placename_property = 'placename'
+    config.view.maps.tileurl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    config.view.maps.mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    config.view.maps.maxzoom = 18
+    config.view.maps.show_initial_zoom = 5
+    config.view.maps.facet_mode = 'geojson'
+    config.view.maps.placename_field = ActiveFedora.index_field_mapper.solr_name('placename_field', :facetable, type: :string)
+    config.view.maps.geojson_field = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol)
+    config.view.maps.search_mode = 'placename'
   end
 
   def exclude_unwanted_models(solr_parameters, user_parameters)
@@ -253,7 +268,185 @@ class MyCollectionsController < ApplicationController
     end
   end
 
+  def configure_timeline(solr_parameters, user_parameters)
+    if user_parameters[:view] == 'timeline'
+      tl_field = user_parameters[:tl_field].presence || 'sdate'
+
+      case tl_field
+      when 'cdate'
+        solr_parameters[:fq] << "+cdateRange:*"
+        solr_parameters[:fq] << "+cdate_range_start_isi:[* TO *]"
+        solr_parameters[:sort] = "cdate_range_start_isi asc"
+      when 'pdate'
+        solr_parameters[:fq] << "+pdateRange:*"
+        solr_parameters[:fq] << "+pdate_range_start_isi:[* TO *]"
+        solr_parameters[:sort] = "pdate_range_start_isi asc"
+      else
+        solr_parameters[:fq] << "+sdateRange:*"
+        solr_parameters[:fq] << "+sdate_range_start_isi:[* TO *]"
+        solr_parameters[:sort] = "sdate_range_start_isi asc"
+      end
+
+      solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
+
+      if params[:tl_page].present? && params[:tl_page].to_i > 1
+        solr_parameters[:start] = MAX_TIMELINE_ENTRIES * (params[:tl_page].to_i - 1)
+      else
+        solr_parameters[:start] = 0
+      end
+    else
+      params.delete(:tl_page)
+      params.delete(:tl_field)
+    end  
+  end
+
   def self.controller_path
-    'catalog'
+    'my_collections'
+  end
+
+  def index
+    params[:q] = params.delete(:q_ws)
+    (@response, @document_list) = search_results(params, search_params_logic)
+
+    if params[:view].present? && params[:view].include?('timeline')
+      tl_field = params[:tl_field].presence || 'sdate'
+      timeline = Timeline.new(view_context)
+      @timeline_data = timeline.data(@document_list, tl_field)
+    end
+
+    params[:q_ws] = params.delete(:q)
+
+    respond_to do |format|
+      format.html { store_preferred_view }
+      format.rss  { render layout: false }
+      format.atom { render layout: false }
+      format.json do
+        render json: render_search_results_as_json
+      end
+
+      additional_response_formats(format)
+      document_export_formats(format)
+    end
+  end
+
+  # get a single document from the index
+  # to add responses for formats other than html or json see _Blacklight::Document::Export_
+  def show
+    @response, @document = fetch params[:id]
+
+    available_institutes
+    files_and_surrogates
+    supported_licences
+
+    @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
+
+    respond_to do |format|
+      format.html { setup_next_and_previous_documents }
+      format.json do
+        options = {}
+        options[:with_assets] = true if can?(:read, @document)
+        formatter = DRI::Formatters::Json.new(@document, options)
+        render json: formatter.format
+      end
+      format.ttl do
+        options = {}
+        options[:with_assets] = true if can?(:read, @document)
+        formatter = DRI::Formatters::Rdf.new(@document, options)
+        render text: formatter.format({format: :ttl})
+      end
+      format.rdf do
+        options = {}
+        options[:with_assets] = true if can?(:read, @document)
+        formatter = DRI::Formatters::Rdf.new(@document, options)
+        render text: formatter.format({format: :xml})
+      end
+      format.js { render layout: false }
+
+      additional_export_formats(@document, format)
+    end
+  end
+  
+  # method to find the Institutes associated with and available to add to or remove from the current collection (document)
+  def available_institutes
+    # the full list of Institutes
+    @institutes = Institute.all
+    # the Institutes currently associated with this collection if any
+    @collection_institutes = @document.institutes
+    # the Depositing Institute if any
+    @depositing_institute = @document.depositing_institute
+
+    @depositors = Institute.where(depositing: true).map { |item| item['name'] }
+
+    institutes_array = []
+    collection_institutes_array = []
+    depositing_institute_array = []
+
+    depositing_institute_array.push(@depositing_institute.name) unless @depositing_institute.blank?
+    @institutes.each { |inst| institutes_array.push(inst.name) }
+
+    @collection_institutes.each { |inst| collection_institutes_array.push(inst.name) } unless @collection_institutes.empty?
+
+    # exclude the associated and depositing Institutes from the list of Institutes available
+    @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array
+    # exclude the depositing Institute from the list of Institutes which can be removed
+    @removal_institutes = collection_institutes_array - depositing_institute_array
+  end
+
+  def files_and_surrogates
+    # get assets including preservation
+    @files = @document.assets(true)
+    @files.sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
+
+    @displayfiles = []
+    @surrogates = {}
+    @status = {}
+
+    @files.each do |file|
+      @displayfiles << file unless file.preservation_only?
+
+      # get the surrogates for this file if they exist
+      surrogates = @document.surrogates(file.id)
+      if surrogates
+        file_list = {}
+        surrogates.each do |key, _path|
+          file_list[key] = url_for(object_file_url(
+                                     object_id: @document.id, id: file.id, surrogate: key
+                                  ))
+        end
+
+        @surrogates[file.id] = file_list unless file_list.empty?
+      end
+
+      file_status(file.id) if @surrogates[file.id].blank?
+    end
+
+    ''
+  end
+
+  def file_status(file_id)
+    ingest_status = IngestStatus.where(asset_id: file_id)
+    if ingest_status.present?
+      status = ingest_status.first
+      @status[file_id] = { status: status.status }
+    end
+  end
+  
+  # If querying geographical_coverage, then query the Solr geospatial field
+  #
+  def subject_place_filter(solr_parameters, user_parameters)
+    # Find index of the facet geographical_coverage_sim
+    geographical_idx = nil
+    solr_parameters[:fq].each.with_index do |f_elem, idx|
+      geographical_idx = idx if f_elem.include?('geographical_coverage')
+    end
+
+    unless geographical_idx.nil?
+      geo_string = solr_parameters[:fq][geographical_idx]
+      coordinates = DRI::Metadata::Transformations.get_spatial_coordinates(geo_string)
+
+      if coordinates.present?
+        solr_parameters[:fq][geographical_idx] = "geospatial:\"Intersects(#{coordinates})\""
+      end
+    end
   end
 end

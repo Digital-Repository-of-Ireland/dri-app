@@ -86,10 +86,8 @@ class ObjectsController < BaseObjectsController
       @object.governing_collection = collection
     end
 
-    doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
-
-    version = @object.object_version || 1
-    @object.object_version = version.to_i + 1
+    version = @object.object_version || '1'
+    @object.object_version = (version.to_i + 1).to_s
 
     unless @object.update_attributes(update_params)
       purge_params
@@ -97,6 +95,8 @@ class ObjectsController < BaseObjectsController
       format.html { render action: 'edit' }
       return
     end
+
+    doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
     # purge params from update action
     purge_params
@@ -110,7 +110,7 @@ class ObjectsController < BaseObjectsController
       end
 
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
       format.json { render json: @object }
     end
   end
@@ -148,7 +148,7 @@ class ObjectsController < BaseObjectsController
 
     checksum_metadata(@object)
     supported_licences
-    @object.object_version = 1
+    @object.object_version = '1'
 
     if @object.valid? && @object.save
       post_save(true) do
@@ -158,13 +158,13 @@ class ObjectsController < BaseObjectsController
       respond_to do |format|
         format.html do
           flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-          redirect_to controller: 'catalog', action: 'show', id: @object.id
+          redirect_to controller: 'my_collections', action: 'show', id: @object.id
         end
         format.json do
           response = { pid: @object.id }
           response[:warning] = @warnings if @warnings
 
-          render json: response, location: catalog_url(@object.id), status: :created
+          render json: response, location: my_collections_url(@object.id), status: :created
         end
       end
     else
@@ -187,8 +187,8 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published'
       # Do the preservation actions
-      version = @object.object_version || 1
-      @object.object_version = version.to_i + 1
+      version = @object.object_version || '1'
+      @object.object_version = (version.to_i + 1).to_s
       assets = []
       @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
       
@@ -208,7 +208,7 @@ class ObjectsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'index' }
+      format.html { redirect_to controller: 'my_collections', action: 'index' }
     end
   end
 
@@ -335,8 +335,8 @@ class ObjectsController < BaseObjectsController
 
     unless @object.status == 'published'
       @object.status = params[:status] if params[:status].present?
-      version = @object.object_version || 1
-      @object.object_version = version.to_i + 1
+      version = @object.object_version || '1'
+      @object.object_version = (version.to_i + 1).to_s
       @object.save
 
       # Do the preservation actions
@@ -346,7 +346,7 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
       format.json do
         response = { id: @object.id, status: @object.status }
         response[:warning] = @warnings if @warnings

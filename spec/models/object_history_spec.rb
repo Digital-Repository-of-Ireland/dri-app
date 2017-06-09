@@ -3,6 +3,9 @@ require 'rails_helper'
 describe ObjectHistory  do
   
   before do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     @user_email = "user@dri.ie"
     @user_fname = "fname"
     @user_sname = "sname"
@@ -41,6 +44,9 @@ describe ObjectHistory  do
     @object_history = ObjectHistory.new(object: @object)
   end
 
+  after do
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
+  end
 
   it 'should get the root collection depositor as institute mgr' do
     expect(@object_history.institute_manager).to be == 'instmgr@dri.ie'

@@ -13,7 +13,7 @@ class CatalogController < ApplicationController
   include DRI::Readable
 
   # This method shows the DO if the metadata is open
-  # ather than before where the user had to have read permissions on the object all the time
+  # rather than before where the user had to have read permissions on the object all the time
   def enforce_search_for_show_permissions
     enforce_permissions!("show_digital_object", params[:id])
   end
@@ -31,6 +31,7 @@ class CatalogController < ApplicationController
   MAX_TIMELINE_ENTRIES = 50
 
   configure_blacklight do |config|
+    config.show.route = { controller: 'catalog' }
     config.per_page = [9, 18, 36]
     config.default_per_page = 9
     config.metadata_lang = ['all', 'gle', 'enl']
@@ -227,6 +228,8 @@ class CatalogController < ApplicationController
   # OVER-RIDDEN from BL
   # Get Timeline data if view is Timeline
   def index
+    params.delete(:q_ws)
+
     (@response, @document_list) = search_results(params, search_params_logic)
 
     if params[:view].present? && params[:view].include?('timeline')
@@ -253,8 +256,8 @@ class CatalogController < ApplicationController
   def show
     @response, @document = fetch params[:id]
 
-    available_institutes
-    files_and_surrogates
+    institutes
+    files
     supported_licences
 
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
@@ -300,6 +303,7 @@ class CatalogController < ApplicationController
         solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\""
       end
     end
+    solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('status', :facetable, type: :string)}:published"
   end
 
   def configure_timeline(solr_parameters, user_parameters)
@@ -334,8 +338,8 @@ class CatalogController < ApplicationController
     end  
   end
 
-  # method to find the Institutes associated with and available to add to or remove from the current collection (document)
-  def available_institutes
+  # method to find the Institutes associated with the current collection (document)
+  def institutes
     # the full list of Institutes
     @institutes = Institute.all
     # the Institutes currently associated with this collection if any
@@ -353,50 +357,11 @@ class CatalogController < ApplicationController
     @institutes.each { |inst| institutes_array.push(inst.name) }
 
     @collection_institutes.each { |inst| collection_institutes_array.push(inst.name) } unless @collection_institutes.empty?
-
-    # exclude the associated and depositing Institutes from the list of Institutes available
-    @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array
-    # exclude the depositing Institute from the list of Institutes which can be removed
-    @removal_institutes = collection_institutes_array - depositing_institute_array
   end
 
-  def files_and_surrogates
-    # get assets including preservation
-    @files = @document.assets(true)
-    @files.sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
-
-    @displayfiles = []
-    @surrogates = {}
-    @status = {}
-
-    @files.each do |file|
-      @displayfiles << file unless file.preservation_only?
-
-      # get the surrogates for this file if they exist
-      surrogates = @document.surrogates(file.id)
-      if surrogates
-        file_list = {}
-        surrogates.each do |key, _path|
-          file_list[key] = url_for(object_file_url(
-                                     object_id: @document.id, id: file.id, surrogate: key
-                                  ))
-        end
-
-        @surrogates[file.id] = file_list unless file_list.empty?
-      end
-
-      file_status(file.id) if @surrogates[file.id].blank?
-    end
-
-    ''
-  end
-
-  def file_status(file_id)
-    ingest_status = IngestStatus.where(asset_id: file_id)
-    if ingest_status.present?
-      status = ingest_status.first
-      @status[file_id] = { status: status.status }
-    end
+  def files
+    @displayfiles = @document.assets(false)
+    @displayfiles.sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
   end
   
   # If querying geographical_coverage, then query the Solr geospatial field

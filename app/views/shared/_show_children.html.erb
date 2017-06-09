@@ -1,0 +1,29 @@
+<% if children.present? %>
+	<div class="dri_section_block" id="collection_children">
+		<div class="dri_section_title">
+			<span id="dri_sub_collection_page_info">
+				<%= "#{t('dri.views.catalog.headers.sub_collections')}" %> (<%= children.length %>)
+			</span>
+		</div>
+             
+    <div id="dri_sub_collection_list" class="dri_scroller" style="width:95%; margin: auto">
+      <% children.each do |child| %>
+        <div>
+          <%= render partial: 'shared/child', locals: { child: child } %>
+        </div>
+      <% end %>
+	  </div>
+	</div>
+<% end %>
+
+<script>
+  $(document).ready(function () {
+    $('.dri_scroller').slick({
+      lazyLoad: 'ondemand',
+      dots: true,
+      infinite: true,
+      slidesToShow: 4,
+      slidesToScroll: 1,
+    })
+  });
+</script>

@@ -95,7 +95,7 @@ module DRI::Formatters
         graph << [RDF::URI.new(id), RDF.type, file_type(a)]
         graph << [RDF::URI.new(id), FOAF.topic, RDF::URI("#{uri}#id")]
         graph << [RDF::URI.new(id), mrss_vocab.content, RDF::URI("#{base_uri}#{file_path(a['id'])}")]
-        graph << [RDF::URI.new(id), RDF::RDFS.label, RDF::Literal.new(a['label_tesim'])]
+        graph << [RDF::URI.new(id), RDF::RDFS.label, RDF::Literal.new(a['label_tesim'].first)]
         graph << [RDF::URI.new(id), RDF::DC.isPartOf, RDF::URI("#{uri}#id")]
       end
     end
@@ -142,18 +142,39 @@ module DRI::Formatters
         if metadata[field].present?
           metadata[field].each do |value|
             case field
+            when 'subject','creator','contributor'
+              subject = sparql_subject(value)
+              graph << if subject
+                          [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::URI(subject)]
+                       else
+                          [RDF::URI.new(id), METADATA_FIELDS_MAP[field], value]
+                       end
             when 'isGovernedBy'
               graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::URI("#{base_uri}/catalog/#{value}#id")]
             when 'geographical_coverage'
-              if DRI::Metadata::Transformations.dcmi_box?(value)
-                graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::DC.Box)]
-              elsif DRI::Metadata::Transformations.dcmi_point?(value)
-                graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::DC.Point)]
-              end
+              name = extract_name(value)
+              subject = sparql_subject(name)
+
+              graph << if subject
+                         [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::URI(subject)]
+                       else
+                        typed_value = if DRI::Metadata::Transformations.dcmi_box?(value)
+                                        RDF::Literal.new(value, datatype: RDF::DC.Box)
+                                      elsif DRI::Metadata::Transformations.dcmi_point?(value)
+                                        RDF::Literal.new(value, datatype: RDF::DC.Point)
+                                      else
+                                        value
+                                      end
+
+                         [RDF::URI.new(id), METADATA_FIELDS_MAP[field], typed_value]
+                       end
+              
             when 'temporal_coverage'
-              if DRI::Metadata::Transformations.dcmi_period?(value)
-                graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::DC.Period)]
-              end
+              graph << if DRI::Metadata::Transformations.dcmi_period?(value)
+                         [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::DC.Period)]
+                       else
+                         [RDF::URI.new(id), METADATA_FIELDS_MAP[field], value]
+                       end
             when 'institute'
               graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], value['name']]
             else
@@ -184,6 +205,12 @@ module DRI::Formatters
       end
     end
 
+    def extract_name(value)
+      return value unless value.start_with?('name=')
+
+      value['name='.length..value.index(';')-1]
+    end
+
     def file_type(file)
       if file.text?
         RDF::FOAF.Document
@@ -212,6 +239,17 @@ module DRI::Formatters
 
     def ttl
       graph.to_ttl
+    end
+
+    def sparql_subject(value)
+      Rails.cache.fetch(value, expires_in: 48.hours) do
+        provider = DRI::Sparql::Provider::Sparql.new
+        provider.endpoint = AuthoritiesConfig['data.dri.ie']['endpoint']
+
+        triples = provider.retrieve_data([nil, 'skos:prefLabel', "\"#{value}\"@en"])
+
+        triples.present? ? triples.first[0] : nil
+      end
     end
   end
 end

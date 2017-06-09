@@ -348,7 +348,7 @@ ga:
           download_all: 
             one: "Download entire object including the asset"
             other: "Download entire object including all %{count} assets"
-          download_originals: "Download the original uploaded version of this individual asset (254 kb)"
+          download_originals: "Download the original uploaded version of this individual asset"
           download_surrogate: "Download optimised surrogate version of this individual asset (recommended for viewing)"
           file: Comhad
           image_file: Íomhá

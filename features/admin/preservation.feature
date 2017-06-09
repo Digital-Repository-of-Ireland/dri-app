@@ -16,7 +16,7 @@ Feature: Preservation
 
   Scenario: Edit collection metadata
     When I create a collection and save the pid 
-    When I go to the "collection" "show" page for "the saved pid"
+    When I go to the "my collections" "show" page for "the saved pid"
     And I follow the link to edit a collection
     And I enter valid metadata with title "Test Edit"
     And I press the button to "save collection changes"
@@ -27,7 +27,7 @@ Feature: Preservation
 
   Scenario: Replace collection metadata
     When I create a collection and save the pid
-    And I go to the "collection" "show" page for "the saved pid"
+    And I go to the "my collections" "show" page for "the saved pid"
     And I follow the link to edit
     And I attach the metadata file "SAMPLEA.xml"
     And I press the button to "upload metadata"
@@ -63,7 +63,7 @@ Feature: Preservation
   Scenario: Add a licence for a collection
     Given I have created a licence "Test"
     When I create a collection and save the pid
-    And I go to the "collection" "show" page for "the saved pid"
+    And I go to the "my collections" "show" page for "the saved pid"
     And I follow the link to associate a licence
     And I select "Test" from the selectbox for licence 
     And I press the button to "set licence"
@@ -86,7 +86,7 @@ Feature: Preservation
   Scenario: Add institutes for a collection
     Given I have created an institute "Test"
     When I create a collection and save the pid
-    And I go to the "collection" "show" page for "the saved pid"
+    And I go to the "my collections" "show" page for "the saved pid"
     And I follow the link to manage organisations
     And I press the button to "associate an institute"
     And I should wait for "5" seconds
@@ -103,7 +103,7 @@ Feature: Preservation
 
   Scenario: Edit object metadata
     When I create an object and save the pid
-    And I go to the "object" "show" page for "the saved pid"
+    And I go to the "object" "modify" page for "the saved pid"
     And I follow the link to edit an object
     And I enter valid metadata with title "Test Edit"
     And I press the button to "save changes"
@@ -114,7 +114,7 @@ Feature: Preservation
 
   Scenario: Replace object metadata
     When I create an object and save the pid
-    And I go to the "object" "show" page for "the saved pid"
+    And I go to the "object" "modify" page for "the saved pid"
     And I follow the link to edit
     And I attach the metadata file "SAMPLEA.xml"
     And I press the button to "upload metadata"
@@ -153,7 +153,7 @@ Feature: Preservation
 
   Scenario: Mark object as reviewed
     When I create an object and save the pid
-    And I go to the "object" "show" page for "the saved pid"
+    And I go to the "object" "modify" page for "the saved pid"
     And I press the button to "update status"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions

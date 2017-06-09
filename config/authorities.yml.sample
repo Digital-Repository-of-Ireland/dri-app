@@ -5,6 +5,9 @@ development:
   data.logainm.ie:
     provider: Logainm 
     endpoint: http://data.logainm.ie/sparql
+  data.dri.ie:
+    provider: Sparql
+    endpoint: http://data.dri.ie/sparql
 
 test:
   <<: *common

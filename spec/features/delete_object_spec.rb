@@ -38,7 +38,7 @@ feature 'Deleting a single object' do
 
     collection.governed_items << object
   
-    visit(object_path(object.id))
+    visit(my_collections_path(object.id))
     
     expect(page).not_to have_link(I18n.t('dri.views.objects.buttons.delete_object'))
 
@@ -64,10 +64,10 @@ feature 'Deleting a single object' do
 
     collection.governed_items << object
   
-    visit(object_path(object.id))
+    visit(my_collections_path(object.id))
     click_button "submit_delete"
 
-    expect(current_path).to eq(root_path)
+    expect(current_path).to eq(my_collections_index_path)
     expect(page.find('.dri_alert_text')).to have_content I18n.t('dri.flash.notice.object_deleted')
 
     collection.reload

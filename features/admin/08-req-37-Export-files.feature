@@ -27,7 +27,7 @@ Feature: Export files
 
   Scenario: Export a DigitalObject's asset when I have edit/manage permissions
     Given I create an object and save the pid
-    When I go to the "object" "show" page for "the saved pid"
+    When I go to the "object" "modify" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "upload a file"
     And I should wait for "10" seconds

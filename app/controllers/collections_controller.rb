@@ -17,9 +17,9 @@ class CollectionsController < BaseObjectsController
   def check_for_cancel
     if params[:commit] == t('dri.views.objects.buttons.cancel')
       if params[:id]
-        redirect_to controller: 'catalog', action: 'show', id: params[:id]
+        redirect_to controller: 'my_collections', action: 'show', id: params[:id]
       else
-        redirect_to controller: 'catalog', action: 'index'
+        redirect_to controller: 'workspace', action: 'index'
       end
     end
   end
@@ -103,7 +103,7 @@ class CollectionsController < BaseObjectsController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
-      format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
     end
   end
   
@@ -124,8 +124,8 @@ class CollectionsController < BaseObjectsController
 
     doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
-    version = @object.object_version || 1
-    @object.object_version = version.to_i + 1
+    version = @object.object_version || '1'
+    @object.object_version = (version.to_i + 1).to_s
 
     updated = @object.update_attributes(update_params)
 
@@ -151,7 +151,7 @@ class CollectionsController < BaseObjectsController
         update_doi(@object, doi, "metadata update") if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
-        format.html  { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+        format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
       else
         format.html  { render action: 'edit' }
       end
@@ -171,8 +171,8 @@ class CollectionsController < BaseObjectsController
       raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.file_not_found')
     end
 
-    version = @object.object_version || 1
-    @object.object_version = version.to_i + 1
+    version = @object.object_version || '1'
+    @object.object_version = (version.to_i + 1).to_s
 
     if cover_image.present?
       saved = Storage::CoverImages.validate_and_store(cover_image, @object)
@@ -193,7 +193,7 @@ class CollectionsController < BaseObjectsController
       else
         flash[:error] = t('dri.flash.error.cover_image_not_saved')
       end
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
     end
   end
 
@@ -252,7 +252,7 @@ class CollectionsController < BaseObjectsController
       respond_to do |format|
         format.html do
           flash[:notice] = t('dri.flash.notice.collection_created')
-          redirect_to controller: 'catalog', action: 'show', id: @object.id
+          redirect_to controller: 'my_collections', action: 'show', id: @object.id
         end
         format.json do
           @response = {}
@@ -299,7 +299,7 @@ class CollectionsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'index' }
+      format.html { redirect_to controller: 'my_collections', action: 'index' }
     end
   end
 
@@ -329,7 +329,7 @@ class CollectionsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
       format.json do
         response = { id: @object.id, status: @object.status }
         response[:warning] = @warnings if @warnings
@@ -355,7 +355,7 @@ class CollectionsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
       format.json do
         response = { id: @object.id, status: @object.status }
         response[:warning] = @warnings if @warnings
@@ -372,6 +372,11 @@ class CollectionsController < BaseObjectsController
     def create_from_form
       enforce_permissions!('create', DRI::Batch)
 
+      unless valid_root_permissions?
+        flash[:alert] = t('dri.flash.error.not_created')
+        return false
+      end
+
       @object = DRI::Batch.with_standard :qdc
 
       @object.type = ['Collection'] if @object.type.nil?
@@ -386,11 +391,6 @@ class CollectionsController < BaseObjectsController
 
       # depositor is not submitted as part of the form
       @object.depositor = current_user.to_s
-
-      unless valid_permissions?
-        flash[:alert] = t('dri.flash.error.not_created')
-        return false
-      end
 
       # We need to save to get a pid at this point
       if @object.save
@@ -548,13 +548,7 @@ class CollectionsController < BaseObjectsController
       end
     end
 
-    def valid_permissions?
-      if @object.governing_collection_id.blank? &&
-         ((params[:batch][:read_groups_string].blank? && params[:batch][:read_users_string].blank?) ||
-         (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
-        false
-      else
-        true
-      end
+    def valid_root_permissions?
+      !((params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
     end
 end

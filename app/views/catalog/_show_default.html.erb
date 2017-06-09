@@ -41,10 +41,13 @@
 	  <%= link_back_to_catalog %>
 	</div>
 	<%= render :partial => "show_object_navigation_tools" %>
-	<%= render :partial => "tools" %>
-	<% if signed_in? && can?(:edit, @document.id) %>
-	  <%= render :partial => "show_file_tools" %>
- 	  <%= render :partial => "show_editor_tools" %>
-	<% end %>
+	<%= render :partial => "shared/tools" %>
+
+  <% if signed_in? && can?(:edit, @document.id) %>
+    <%= link_to my_collections_path(@document.id), id: "open_workspace" do %>
+      <%= button_tag(t('dri.views.catalog.buttons.open_workspace'), {class: 'dri_open_workspace_button'}) %>
+    <% end %>
+  <% end %>
+
 </div>
 <!-- close dri_object_second_block -->

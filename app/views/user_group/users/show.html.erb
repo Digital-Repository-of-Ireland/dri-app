@@ -92,11 +92,11 @@
 	<h4 class="dri_account_block_heading"><%= t('dri.application.user_profile.your_collection_details') %></h4>
     <% page = params[:page].to_i || 0 %>
   	<div class="dri_account_block_info">
-  	  <% collection_data.each_with_index do |collection, i| %>
+      <% collection_data.each_with_index do |collection, i| %>
     		<div class="dri_account_block_info_item">
     			<h5><%= "#{t('dri.application.user_profile.collection_title')}" %></h5>
     			<p>
-    				<%= link_to collection[:collection_title].join(', '), catalog_path(collection[:id]) %>
+    				<%= link_to collection[:collection_title].join(', '), my_collections_path(collection[:id]) %>
     			</p>
     			<h5><%= t('dri.application.user_profile.user_type') %></h5>
     			<p>
@@ -104,8 +104,7 @@
     			</p>
     		</div>
   		<% end %>
-
-      <%= paginate collection_data %>
+      <%= paginate collection_data, theme: 'blacklight' %>
   	</div>
   </div>
 <% end %>

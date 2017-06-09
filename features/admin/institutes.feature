@@ -13,7 +13,7 @@ Feature: Institutes
     And I fill in "institute[url]" with "http://www.dri.ie/"
     And I attach the institute logo file "sample_logo.png"
     And I press the button to "add an institute"
-    When I go to the "collection" "show" page for "the saved pid"
+    When I go to the "my collections" "show" page for "the saved pid"
     And I follow the link to edit a collection
     Then the "add institute" drop-down should contain the option "TestInstitute"
 

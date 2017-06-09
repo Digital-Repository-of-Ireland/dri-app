@@ -9,6 +9,15 @@ class DoiController < ApplicationController
       @history = {}
     else
       @available = ActiveFedora::Base.exists?(@object_id)
+      @reason = t('dri.views.catalog.legends.doi_deleted', id: @object_id) unless @available
+
+      if(@available)
+        doc = SolrDocument.new(ActiveFedora::SolrService.query("id:#{@object_id}").first)
+        if !doc.published?
+          @reason = t('dri.views.catalog.legends.doi_not_available')
+          @available = false
+        end
+      end
 
       id, version = params[:id].split('-')
       version = 0 if version.nil?
@@ -24,7 +33,7 @@ class DoiController < ApplicationController
         return
       end
 
-      flash[:notice] = t('dri.flash.notice.doi_not_latest')
+      flash[:notice] = t('dri.flash.notice.doi_not_latest') if @available
     end
   end
 
