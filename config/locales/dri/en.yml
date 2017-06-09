@@ -383,6 +383,8 @@ en:
           related_materials: "Related Materials"
           sub_collections: Sub-collections
         legends: 
+          doi_not_available: "This object is currently unavailable as it has been locked for editing."
+          doi_deleted: "This object is no longer available. You can contact dri@ria.ie for more information, quoting the object ID %{id}."
           file_status: "Status: %{status}"
           no_bookmarked_collections: "You have no bookmarked collections"
           no_bookmarked_objects: "You have no bookmarked objects"
@@ -528,7 +530,7 @@ en:
           changelog: "Changelog for #{doi}"
         links: 
           view_full_object: "View object"
-        unavailable: "The object referenced by this DOI is not available. If you require more information please contact support@dri.ie."
+        unavailable: "The object referenced by this DOI is not available. If you require more information please contact dri@ria.ie."
       exceptions: 
         access_denied: "You do not have permission to perform the requested operation."
         file_not_found: "Upload file not found"
