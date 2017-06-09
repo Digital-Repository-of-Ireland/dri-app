@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 4c89bbb437d78bb589af87a6521b38459260be7b
+  revision: a806229d5df7b56c73423654ad67fddf6ddbf4f6
   branch: develop
   specs:
     user_group (1.2.2)
@@ -246,6 +246,7 @@ GEM
       sass (~> 3.2.19)
     compass-rails (2.0.0)
       compass (>= 0.12.2)
+    concurrent-ruby (1.0.5)
     confstruct (1.0.2)
       hashie (~> 3.3)
     cucumber (2.3.3)
@@ -416,7 +417,7 @@ GEM
       hydra-access-controls (= 9.10.0)
       hydra-core (= 9.10.0)
       rails (>= 3.2.6)
-    i18n (0.8.1)
+    i18n (0.8.4)
     i18n_sync (0.5.1)
       ya2yaml
     is_it_working-cbeer (1.0.16)
@@ -507,7 +508,7 @@ GEM
     mime-types (2.99.3)
     mimemagic (0.3.2)
     mini_magick (4.7.0)
-    mini_portile2 (2.1.0)
+    mini_portile2 (2.2.0)
     minitest (5.10.2)
     moab-versioning (2.0.0)
       confstruct
@@ -528,8 +529,8 @@ GEM
     net-http-persistent (2.9.4)
     netrc (0.10.3)
     noid (0.9.0)
-    nokogiri (1.7.2)
-      mini_portile2 (~> 2.1.0)
+    nokogiri (1.8.0)
+      mini_portile2 (~> 2.2.0)
     nokogiri-happymapper (0.5.9)
       nokogiri (~> 1.5)
     nom-xml (0.6.0)
