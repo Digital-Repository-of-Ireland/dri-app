@@ -61,8 +61,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 0574a39aed2d7ecdc9c23e21f5f9d555daba8a5f
-  branch: develop
+  revision: 6c2480e766658cf81fadd00178b194342e53ee06
+  tag: v2.5.0.1
   specs:
     dri_data_models (2.5.0)
       active-fedora (= 9.11)
@@ -81,10 +81,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: a806229d5df7b56c73423654ad67fddf6ddbf4f6
-  branch: develop
+  revision: eb16f9dd782da83011b4ee163538c889f6b4a630
+  tag: v1.2.1
   specs:
-    user_group (1.2.2)
+    user_group (1.2.1)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -170,7 +170,7 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    autoprefixer-rails (7.1.0)
+    autoprefixer-rails (7.1.1)
       execjs
     aws-sdk (2.1.36)
       aws-sdk-resources (= 2.1.36)
@@ -211,7 +211,7 @@ GEM
       sass (>= 3.2.19)
     bootstrap-switch-rails (3.3.2)
     builder (3.2.3)
-    cancancan (1.16.0)
+    cancancan (1.17.0)
     capybara (2.6.2)
       addressable
       mime-types (>= 1.16)
@@ -246,7 +246,6 @@ GEM
       sass (~> 3.2.19)
     compass-rails (2.0.0)
       compass (>= 0.12.2)
-    concurrent-ruby (1.0.5)
     confstruct (1.0.2)
       hashie (~> 3.3)
     cucumber (2.3.3)
