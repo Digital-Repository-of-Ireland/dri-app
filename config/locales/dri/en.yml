@@ -247,6 +247,8 @@ en:
       dri_sort_options_title: "Search Sort Options"
       dri_tlfield_options: "Select the date field to display on the timeline"
       dri_tlfield_options_title: "Display Date Options"
+      dri_view_rdf: "View RDF format"
+      dri_view_iiif: "Drag and drop to IIIF viewer, or click to open in Mirador"
       dummy_text: "Help text goes here"
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"

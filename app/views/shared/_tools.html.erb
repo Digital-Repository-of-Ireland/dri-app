@@ -4,7 +4,7 @@
 
 	<ul>
 		<% if current_or_guest_user && controller_name != 'my_collections' %>
-                  <%= render_show_doc_actions %>
+      <%= render_show_doc_actions %>
 		  <li>
 			  <% if @document.collection? %>
 			    <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({mode: 'collections', view: 'grid', show_subs: true}), :tabindex => "-1", id: "manage_bookmark" %>
@@ -46,9 +46,9 @@
     <% end %>
     
     <%= content_tag(:li, nil, class: @li_class) do %>
-    	<%= link_to(image_tag("rdf_icon.png"), url_for_document(@document.id, format: :ttl)) %>
-    	<% if @available %>
-        <%= link_to(image_tag("iiif_logo.png"), "https://repository.dri.ie/mirador?manifest=https://repository.dri.ie#{iiif_manifest_path(@document.id, format: :json)}") %>
+    	<%= link_to(image_tag("rdf_icon.png", { title: t('dri.help.dri_view_rdf')}), url_for_document(@document.id, format: :ttl), target: :_blank) %>
+    	<% if !@document.collection? && @available %>
+        <%= link_to(image_tag("iiif_logo.png", { title: t('dri.help.dri_view_iiif')}), "https://repository.dri.ie/mirador?manifest=https://repository.dri.ie#{iiif_manifest_path(@document.id, format: :json)}", target: :_blank) %>
       <% end %>
 		<% end %>
     
