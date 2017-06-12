@@ -208,7 +208,8 @@ module DRI::Formatters
     def extract_name(value)
       return value unless value.start_with?('name=')
 
-      value['name='.length..value.index(';')-1]
+      end_range = value.index(';') || value.length
+      value['name='.length..(end_range-1)]
     end
 
     def file_type(file)
