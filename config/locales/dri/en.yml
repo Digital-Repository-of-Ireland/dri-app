@@ -91,6 +91,10 @@ en:
         item: Item
         object: Object
         type: Type
+      analytics:
+        title1: blah
+        title2: blah
+        title3: blah
     flash: 
       alert: 
         create_permission: "You do not have permission to create this document."

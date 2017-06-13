@@ -58,6 +58,7 @@ DriApp::Application.routes.draw do
     get 'organisations/:id/logo', to: 'institutes#logo', as: :logo
 
     get 'activity', to: 'activity#index'
+    get 'analytics', to: 'analytics#index'
 
     match 'association' => 'institutes#associate', :via => :post, :as => :new_association
     match 'association' => 'institutes#disassociate', :via => :delete, :as => :disassociation
