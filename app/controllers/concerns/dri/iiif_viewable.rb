@@ -172,11 +172,9 @@ module DRI::IIIFViewable
   end
 
   def create_metadata
-    metadata = [
-      { 'label' => 'Creator', 'value' => @document.creator.join(', ') },
-      { 'label' => 'Title', 'value' => @document.title.join(', ') }
-    ]
-
+    metadata = []
+    metadata << { 'label' => 'Creator', 'value' => @document.creator.join(', ') } unless @document.creator.blank?
+    metadata << { 'label' => 'Title', 'value' => @document.title.join(', ') } unless @document.title.blank?
     metadata << { 'label' => 'Creation date', 'value' => @document.creation_date.first } unless @document.creation_date.blank?
     metadata << { 'label' => 'Published date', 'value' => @document.published_date.first } unless @document.published_date.blank?
     metadata << { 'label' => 'Date', 'value' => @document.date.first } unless @document.date.blank?
