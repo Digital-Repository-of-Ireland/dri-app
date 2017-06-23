@@ -246,7 +246,6 @@ GEM
       sass (~> 3.2.19)
     compass-rails (2.0.0)
       compass (>= 0.12.2)
-    concurrent-ruby (1.0.5)
     confstruct (1.0.2)
       hashie (~> 3.3)
     cucumber (2.3.3)

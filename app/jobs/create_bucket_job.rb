@@ -27,7 +27,7 @@ class CreateBucketJob < ActiveFedoraIdBasedJob
       DRI.queue.push(TextSurrogateJob.new(generic_file_id))
     elsif generic_file.text?
       status_for_type('text')
-      DRI.queue.push(TextSurrogateJob.new(generic_file_id))
+      DRI.queue.push(CreateDerivativesJob.new(generic_file_id))
     elsif generic_file.video?
       status_for_type('video')
       DRI.queue.push(CreateDerivativesJob.new(generic_file_id))

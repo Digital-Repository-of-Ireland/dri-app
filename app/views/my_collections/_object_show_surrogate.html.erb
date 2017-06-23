@@ -34,12 +34,13 @@
         <% end %>
 
     <% elsif generic_file.text? %>
-        <% @surrogate = surrogate_url(document.id, generic_file.id, "rtf") %>
+        <% @surrogate = surrogate_url(document.id, generic_file.id, "pdf") %>
+        <% @surrogate_pdf = surrogate_url(document.id, generic_file.id, "pdf") %>
+        <% @title = generic_file.label %>
         <% if @surrogate %>
-            <h2 class="dri_restrict_title"><%= t('dri.views.objects.legends.rtf_surrogate_title') %></h2>
-            <p class="dri_restrict_message" id="asset_not_available">
-              <%= t('dri.views.objects.legends.rtf_surrogate_text') %>
-            </p>
+            <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate_pdf, :'data-title' => @title, :id => "view_pdf", :class => "view_pdf" do %>
+              <%= image_tag('PDF_Logo.png') %>
+            <% end %>
         <% end %>
 
     <% elsif generic_file.image? %>

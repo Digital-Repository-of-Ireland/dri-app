@@ -309,15 +309,15 @@ class AssetsController < ApplicationController
 
     def surrogate_type_name
       if @generic_file.audio?
-        "mp3"
+        'mp3'
       elsif @generic_file.video?
-        "webm"
+        'webm'
       elsif @generic_file.pdf?
-        "pdf"
+        'pdf'
       elsif @generic_file.text?
-        "rtf"
+        'pdf'
       elsif @generic_file.image?
-        "full_size_web_format"
+        'full_size_web_format'
       end
     end
 
