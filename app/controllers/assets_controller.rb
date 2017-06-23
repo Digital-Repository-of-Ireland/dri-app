@@ -97,7 +97,7 @@ class AssetsController < ApplicationController
     flash[:notice] = t('dri.flash.notice.asset_deleted')
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: params[:object_id] }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
     end
   end
 
