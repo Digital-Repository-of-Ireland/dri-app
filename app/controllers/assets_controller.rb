@@ -97,7 +97,7 @@ class AssetsController < ApplicationController
     flash[:notice] = t('dri.flash.notice.asset_deleted')
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: params[:object_id] }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
     end
   end
 
@@ -309,15 +309,15 @@ class AssetsController < ApplicationController
 
     def surrogate_type_name
       if @generic_file.audio?
-        "mp3"
+        'mp3'
       elsif @generic_file.video?
-        "webm"
+        'webm'
       elsif @generic_file.pdf?
-        "pdf"
+        'pdf'
       elsif @generic_file.text?
-        "rtf"
+        'pdf'
       elsif @generic_file.image?
-        "full_size_web_format"
+        'full_size_web_format'
       end
     end
 

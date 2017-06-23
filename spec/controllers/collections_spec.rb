@@ -136,6 +136,7 @@ describe CollectionsController do
       put :add_cover_image, { id: @collection.id, batch: { cover_image: @uploaded } }
 
       expect(Dir.entries(aip_dir(@collection.id)).size - 2).to eq(2)
+      expect(aip_valid?(@collection.id, 2)).to be true
     end
 
   end

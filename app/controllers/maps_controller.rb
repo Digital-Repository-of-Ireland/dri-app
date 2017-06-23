@@ -3,6 +3,7 @@ class MapsController < ApplicationController
     object = retrieve_object!(params[:id])
 
     @document = SolrDocument.new(object.to_solr)
+    @request_controller = params[:request_controller]
   end
 
   def get

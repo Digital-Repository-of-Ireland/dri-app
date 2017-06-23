@@ -341,7 +341,6 @@ class CatalogController < ApplicationController
   # method to find the Institutes associated with the current collection (document)
   def institutes
     # the full list of Institutes
-    @institutes = Institute.all
     # the Institutes currently associated with this collection if any
     @collection_institutes = @document.institutes
     # the Depositing Institute if any
@@ -349,12 +348,10 @@ class CatalogController < ApplicationController
 
     @depositors = Institute.where(depositing: true).map { |item| item['name'] }
 
-    institutes_array = []
     collection_institutes_array = []
     depositing_institute_array = []
 
     depositing_institute_array.push(@depositing_institute.name) unless @depositing_institute.blank?
-    @institutes.each { |inst| institutes_array.push(inst.name) }
 
     @collection_institutes.each { |inst| collection_institutes_array.push(inst.name) } unless @collection_institutes.empty?
   end

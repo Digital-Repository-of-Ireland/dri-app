@@ -29,9 +29,8 @@
 		<![endif]-->
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
-
-    <% custom_vars = get_custom_vars %>
-    <%= analytics_init(:custom_vars => custom_vars) if Rails.env.production? && !(Settings.analytics && Settings.analytics.disable == true) %>
+                <% custom_vars = get_custom_vars %>
+                <%= analytics_init(:custom_vars => custom_vars) if Rails.env.production? && !(Settings.analytics && Settings.analytics.disable == true) %>
 	</head>
 
 	<% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>

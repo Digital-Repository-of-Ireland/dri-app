@@ -18,6 +18,7 @@ class TextSurrogateJob < ActiveFedoraIdBasedJob
     
       ext = Rack::Mime::MIME_TYPES.invert[local_file_info.first.mime_type]
       ext = ext[1..-1] if ext[0] == '.'
+      ext = 'doc' if ext == 'dot'
       surrogate_filename = "#{generic_file_id}_#{ext}.#{ext}"
 
       out_file = File.open(filename, "rb")
