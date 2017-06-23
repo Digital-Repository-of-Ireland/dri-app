@@ -19,7 +19,7 @@ module DRI
                 crop16_9_width_200: { size: "200", crop: "200x113+0+0", gravity: "Center", trim: "true", datastream: 'crop16_9_width_200_thumbnail' }
               }
           when *text_mime_types
-            obj.transform_file :content, { pdf: { format: 'pdf', datastream: 'pdf' }}, processor: 'DRI::Derivatives::Document'
+            obj.transform_file :content, { pdf: { format: 'pdf', datastream: 'pdf' }}, processor: :document
           when *audio_mime_types
             obj.transform_file :content,
               { mp3: { format: 'mp3', datastream: 'mp3' },
