@@ -1,7 +1,7 @@
-module DRI
+module Hydra
   module Derivatives
-    class Document < Hydra::Derivatives::Processor
-      include Hydra::Derivatives::ShellBasedProcessor
+    class Document < Processor
+      include ShellBasedProcessor
 
       def self.encode(path, options, output_file)
         format = File.extname(output_file).sub('.', '')
