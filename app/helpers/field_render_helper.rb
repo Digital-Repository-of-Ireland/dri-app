@@ -101,7 +101,7 @@ module FieldRenderHelper
           "<a href=\"" << url_for(
                             { 
                               action: 'index',
-                              controller: 'catalog',
+                              controller: controller_name,
                               facet_arg => standardise_facet(facet: facet_name, value: indexed_value[i])
                             }
                           ) << "\">" << standardise_value(facet_name: facet_name, value: v) << "</a>"
