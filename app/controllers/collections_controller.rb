@@ -210,7 +210,9 @@ class CollectionsController < BaseObjectsController
     cover_url = object.cover_image
     raise DRI::Exceptions::NotFound if cover_url.blank?
     if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
-      redirect_to cover_url
+      cover_uri = URI.parse(cover_url)
+      cover_uri.scheme = 'https'
+      redirect_to cover_uri.to_s
       return
     end
 
