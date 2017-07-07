@@ -48,6 +48,16 @@
           float: right;
           border:none;
         }
+        li.dri_formats {
+          padding:5px 0 5px 0;
+          float: right;
+          border:none;
+        }
+        li.dri_formats_spacing {
+          margin-bottom: 15px;
+          float: right;
+          border:none;
+        }
         li.dri_disabled {
           color: $dri_red;
         }

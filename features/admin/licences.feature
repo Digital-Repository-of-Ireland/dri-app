@@ -49,7 +49,7 @@ Feature: Licences
 
   Scenario: Associating a licence with a collection
     Given I have created a licence "TestLicence7"
-    When I go to the "object" "show" page for "lcoll"
+    When I go to the "object" "modify" page for "lcoll"
     Then the "licence" drop-down should contain the option "TestLicence7"
     When I select "TestLicence7" from the selectbox for licence
     And I press the modal button to "set licence" in "dri_licence_modal_id"
@@ -59,13 +59,14 @@ Feature: Licences
   Scenario: Setting licence at object level
     Given I have created a licence "TestLicenceColl"
     And I have created a licence "TestLicenceObj"
-    When I go to the "object" "show" page for "lcoll"
+    When I go to the "object" "modify" page for "lcoll"
     Then the "licence" drop-down should contain the option "TestLicenceColl"
     When I select "TestLicenceColl" from the selectbox for licence
     And I press the modal button to "set licence" in "dri_licence_modal_id"
     And I go to the "object" "show" page for "lobject"
     Then I should see "TestLicenceColl"
-    When I select "TestLicenceObj" from the selectbox for licence
+    When I go to the "object" "modify" page for "lobject"
+    And I select "TestLicenceObj" from the selectbox for licence
     And I press the modal button to "set licence" in "dri_licence_modal_id"
-    And I go to the "object" "show" page for "lobject"
+    When I go to the "object" "show" page for "lobject"
     Then I should see "TestLicenceObj"

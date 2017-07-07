@@ -146,7 +146,7 @@ module FacetsHelper
     standard_lang = DRI::Metadata::Descriptors.standardise_language_code(value)
 
     unless standard_lang.nil?
-      t('dri.vocabulary.iso_639_2.' + standard_lang)
+      t('vocabulary.iso_639_2.codes.' + standard_lang)
     else
       value
     end

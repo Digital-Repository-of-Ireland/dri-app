@@ -94,7 +94,7 @@ module DRI::Solr::Document::File
   def supported_type?
     mime_type.nil? || (audio? ||
       video? || pdf? || image? ||
-      text? && file_format.include?("RTF"))
+      text? && (file_format.include?('RTF') || file_format.include?('msword')))
   end
 
   def read_master?

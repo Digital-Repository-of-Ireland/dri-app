@@ -27,7 +27,7 @@ DRI::ModelSupport::Files.module_eval do
 
     @actor = DRI::Asset::Actor.new(@generic_file, ingest_user)
 
-    current_version = self.object_version || 1
+    current_version = self.object_version || '1'
     object_version = (current_version.to_i+1).to_s
     self.object_version = object_version
 

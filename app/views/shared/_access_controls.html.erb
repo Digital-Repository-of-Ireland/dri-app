@@ -1,4 +1,4 @@
-<% inherit_disabled = record.root_collection? ? true : false %>
+<% inherit_disabled = (record.new_record? || record.root_collection?) ? true : false %>
 <% allow_manage = (record.collection? && record.new_record?) ? true : false %>
 
 <script type="text/javascript">

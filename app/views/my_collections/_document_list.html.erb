@@ -1,0 +1,6 @@
+<% # container for all documents in index view -%>
+<% if params[:view] == 'grid' || params[:view] == 'list' %>
+    <%= render partial: 'my_collections/document', collection: documents, :as => :document %>
+<% elsif params[:view] == 'timeline' %>
+    <%= render 'shared/browse_view_timeline' %>
+<% end %>

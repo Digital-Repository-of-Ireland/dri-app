@@ -1,5 +1,5 @@
 module DocumentHelper
-  Child = Struct.new(:link_text, :path, :type) do
+  Child = Struct.new(:id, :link_text, :path, :type, :cover) do
     def to_partial_path
       'child'
     end
@@ -37,23 +37,26 @@ module DocumentHelper
   def collection_children(document, limit)
     children_array = []
     children = document.children(limit)
-
+    count = 0;
     children.each do |doc|
       next unless doc.published? || ((current_user && current_user.is_admin?) || can?(:edit, doc))
 
       link_text = doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
       # FIXME: For now, the EAD type is indexed last in the type solr index, review in the future
       type = doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
+      cover = doc[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].presence
 
       child = Child.new
+      child.id = doc['id']
       child.link_text = link_text
       child.path = catalog_path(doc['id'])
+      child.cover = cover
       child.type = type
 
       children_array = children_array.to_a.push(child)
     end
 
-    Kaminari.paginate_array(children_array).page(params[:subs_page]).per(4)
+    children_array
   end
 
   def get_object_relationships(document)

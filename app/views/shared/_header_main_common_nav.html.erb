@@ -32,7 +32,7 @@
 </li>
 
 
-<% if ['/bookmarks','/user_groups/users','/search_history','/saved_searches'].include?(request.path) || (controller.controller_name == 'my_collections' && controller.action_name == 'index') || controller.controller_name == 'workspace' %>
+<% if ['/bookmarks','/user_groups/users','/search_history','/saved_searches'].include?(request.path) || controller.controller_name == 'my_collections' || controller.controller_name == 'workspace' %>
     <li class="active">
 <% else %>
     <li>

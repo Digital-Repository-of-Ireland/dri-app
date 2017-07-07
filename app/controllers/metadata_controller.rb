@@ -109,8 +109,8 @@ class MetadataController < CatalogController
       @errors = @object.errors.full_messages.inspect
     end
     
-    version = @object.object_version || 1
-    @object.object_version = version.to_i + 1
+    version = @object.object_version || '1'
+    @object.object_version = (version.to_i + 1).to_s
 
     begin
       raise DRI::Exceptions::InternalError unless @object.save
@@ -127,7 +127,7 @@ class MetadataController < CatalogController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: params[:id] }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:id] }
       format.json { render json: @object }
       format.text do
         response = if @errors

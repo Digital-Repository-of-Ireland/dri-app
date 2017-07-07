@@ -39,17 +39,15 @@ describe InstitutesController do
       @collection.reload
       expect(@collection.depositing_institute).to eq(@institute.name)
     end
+   
+    it "should create a new AIP when updating the institute_name" do
+      expect(Dir.entries(aip_dir(@collection.id)).size - 2).to eq(1)
+      expect(aip_valid?(@collection.id, 1)).to be true
+      
+      post :associate, object: @collection.id, institute_name: @institute.name
 
-    # Cascading of depositing institute for sub-colls disabled
-    xit "should associate depositing institute for sub-collections" do
-      @collection.governed_items << @subcollection
-      @collection.save
-
-      post :associate, object: @collection.id, institute_name: @institute.name, type: "depositing"
-
-      @collection.reload
-      @subcollection.reload
-      expect(@subcollection.depositing_institute).to eq(@collection.depositing_institute)
+      expect(Dir.entries(aip_dir(@collection.id)).size - 2).to eq(2)
+      expect(aip_valid?(@collection.id, 2)).to be true
     end
 
   end

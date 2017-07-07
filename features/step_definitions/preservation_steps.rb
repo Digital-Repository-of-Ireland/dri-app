@@ -12,7 +12,7 @@ end
 When /^I create an object and save the pid$/ do
   steps %{
     When I create a collection and save the pid
-    And I go to the "collection" "show" page for "the saved pid"
+    And I go to the "my collections" "show" page for "the saved pid"
     And I follow the link to add an object
     And I enter valid metadata
     And I press the button to "continue"

@@ -9,7 +9,7 @@ module UserHelper
 
     collections = collections(admin, query)
     collections.map { |item| item[:permission] = 'Depositor' }
-    Kaminari.paginate_array(collections).page(params[:page]).per(9)
+    Kaminari.paginate_array(collections).page(params[:page]).per(5)
   end
 
   def collections(user, query)
@@ -67,7 +67,7 @@ module UserHelper
             "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
     )
 
-    Kaminari.paginate_array(collections(user, solr_query)).page(params[:page]).per(9)
+    Kaminari.paginate_array(collections(user, solr_query)).page(params[:page]).per(5)
   end
 
   def read_group_query(user)
@@ -92,7 +92,8 @@ module UserHelper
 
   def get_saved_search_snippet_documents(search_params)
     solr_query = get_saved_search_solr_query(search_params)
-    ActiveFedora::SolrService.query(solr_query, defType: "edismax", rows: "3")
+    results = ActiveFedora::SolrService.query(solr_query, defType: "edismax", rows: "3")
+    results.map { |doc| SolrDocument.new(doc) }
   end
 
   def get_saved_search_count(search_params)

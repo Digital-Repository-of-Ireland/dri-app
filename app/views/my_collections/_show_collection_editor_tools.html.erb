@@ -34,16 +34,16 @@
         <li>
           <%= t('dri.views.catalog.links.draft') %>
           (<i class="fa fa-folder" aria-hidden="true"></i>
-          <%= review_link("#{draft_subcoll} ", "#{catalog_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=draft&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
+          <%= review_link("#{draft_subcoll} ", "#{my_collections_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=draft&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
           /<i class="fa fa-file" aria-hidden="true"></i>
-          <%= review_link("#{draft_objects} )", "#{catalog_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=draft&mode=objects&view=grid", t('dri.help.view_objects')) %>
+          <%= review_link("#{draft_objects} )", "#{my_collections_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=draft&mode=objects&view=grid", t('dri.help.view_objects')) %>
         </li>
         <!-- end Draft Stats Block -->
         <!-- Reviewed Stats Block -->
         <li>
           <%= "#{t('dri.views.catalog.links.reviewed')}" %>
           (<i class="fa fa-folder" aria-hidden="true"></i>
-          <%= review_link("#{reviewed_subcoll}", "#{catalog_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=reviewed&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
+          <%= review_link("#{reviewed_subcoll}", "#{my_collections_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=reviewed&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
           /<i class="fa fa-file" aria-hidden="true"></i>
           <%= review_link("#{reviewed_objects} )","#{catalog_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=reviewed&mode=objects&view=grid", t('dri.help.view_objects')) %>
           <!-- end Reviewed Stats Block -->
@@ -55,9 +55,9 @@
           <% end %>
           <%= "#{t('dri.views.catalog.links.published')}" %>
           (<i class="fa fa-folder" aria-hidden="true"></i>
-          <%= review_link("#{published_subcoll}", "#{catalog_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=published&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
+          <%= review_link("#{published_subcoll}", "#{my_collections_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=published&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
           /<i class="fa fa-file" aria-hidden="true"></i>
-          <%= review_link("#{published_objects} )","#{catalog_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=published&mode=objects&view=grid", t('dri.help.view_objects')) %>
+          <%= review_link("#{published_objects} )","#{my_collections_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=published&mode=objects&view=grid", t('dri.help.view_objects')) %>
         </li>
         <!-- end Published Stats Block -->
         <!-- Duplicate Stats Block -->

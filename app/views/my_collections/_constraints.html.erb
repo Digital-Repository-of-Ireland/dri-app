@@ -1,0 +1,21 @@
+<div id="dri_facet_restrictions_container_id"
+     class="dri_facet_restrictions_container dri_clearfix">
+  <ul id="dri_facet_restrictions_links_id"
+      class="dri_facet_restrictions_links" data-content="<%= t('dri.help.dri_facet_restrictions_links') %>"  data-original-title="<%= t('dri.help.dri_facet_restrictions_links_title')%>" data-trigger="hover" data-placement="top">
+    
+    <%= render_workspace_constraints_query(params) + render_constraints_filters(params) %>
+
+    <% copyParams = params.clone %>
+    <% if copyParams[:mode].nil? %>
+        <% copyParams[:mode] = "objects" %>
+        <% copyParams[:search_field] = "all_fields" %>
+    <% end %>
+    <% copyParams.delete(:f) %>
+    <% copyParams.delete(:q_ws) %>
+    <% copyParams = copyParams.except(*[:c_date, :p_date, :s_date, :year_from, :year_to]) %>
+
+    <span class="dri_clear_all">
+      <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), main_app.my_collections_index_path(copyParams), :id => 'browse_clear_all' %>
+    </span>
+  </ul>
+</div>

@@ -4,13 +4,13 @@ en:
   dri: 
     application: 
       edit_user_profile: 
-        cancel: Cancel
+        cancel: "Cancel"
         change_password: "Change Password"
         confirm_new_password: "Confirm New Password"
         current_password: "Current Password"
         delete_your_account: "Delete your account"
         edit_account: "Edit Account"
-        email: Email
+        email: "Email"
         first_name: "First Name"
         help_bubbles: "Show Help Bubbles"
         last_name: "Last Name"
@@ -20,9 +20,9 @@ en:
         request_to_leave: "Request To Leave"
         requested_to_leave: "You have requested to leave this group"
         save_edits: "Save Edits"
-        settings: Settings
+        settings: "Settings"
       home: 
-        featured: Featured
+        featured: "Featured"
         featured_collections: "Featured Collections (Decade of Centenaries)"
         featured_objects: "Featured Objects"
         introtext: "The Digital Repository of Ireland is a national digital repository for Ireland’s humanities, social sciences, and cultural heritage data. You can browse and search across multiple collections from some of the finest Irish institutions. These collections are safely preserved in the DRI. Please explore and enjoy."
@@ -33,12 +33,12 @@ en:
         new_collections: "New Collections"
         rss_feed: 
           read_more: "Read More"
-          title: News
+          title: "News"
         welcome_to_dri: "Welcome to the DRI"
       lang: 
-        en: English
-        ga: Irish
-      locale: Language
+        en: "English"
+        ga: "Irish"
+      locale: "Language"
       maps: 
         loading_maps: "Loading Maps"
         no_results: "No valid location results have been found. Try the Grid View to see all results."
@@ -56,45 +56,55 @@ en:
         headline: 
           no_results: "No objects with supported date formats of the selected type have been found. Try choosing another date field in the select box above or the Grid View to see all results."
       user_profile: 
-        administrator: Administrator
+        administrator: "Administrator"
         collection_manager: "Collection Manager"
         collection_title: "Collection Title"
-        edit: Edit
-        email: Email
+        edit: "Edit"
+        email: "Email"
         my_account: "My Account"
-        name: Name
+        name: "Name"
         organisational_manager: "Organisational Manager"
         user_type: "User Type"
         your_collection_details: "Your Collection Details"
     citation: 
-      dri: DRI
+      dri: "DRI"
     data: 
       types: 
-        Image: Image
+        Image: "Image"
         MixedType: "Mixed Types"
-        MovingImage: Video
-        Sound: Audio
-        Text: Text
+        MovingImage: "Video"
+        Sound: "Audio"
+        Text: "Text"
         Title: "Media Types"
-        Unknown: Unknown
-        all: All
+        Unknown: "Unknown"
+        all: "All"
     datatables: 
       activity: 
-        committer: Committer
+        committer: "Committer"
         in_collection: "In Collection"
         object_id: "Object ID"
-        status: Status
-        type: Type
+        status: "Status"
+        type: "Type"
         updated_at: "Updated At"
       user_activity: 
-        event: Event
-        item: Item
-        object: Object
-        type: Type
+        event: "Event"
+        item: "Item"
+        object: "Object"
+        type: "Type"
       analytics:
-        title1: blah
-        title2: blah
-        title3: blah
+        header: "My Reports"
+        start: "Start"
+        end: "End"
+        title: "Collection Title"
+        url: "URL"
+        subcollections: "Subcollections"
+        objects: "Objects in this Collection"
+        columns:
+          collection_title: "Collection"
+          visits: "Unique Visits"
+          downloads: "Downloads"
+          object_title: "Object Title"
+          hits: "Total Hits"
     flash: 
       alert: 
         create_permission: "You do not have permission to create this document."
@@ -124,8 +134,8 @@ en:
         manager_user_permission: "You do not have permission to create a manager user"
         no_read_group: "No read group has been set for the collection"
         no_type_specified: "You must specify a valid object type"
-        not_created: "Unable to create. Check set permissions"
-        not_updated: "%{item} was not updated. Check set permissions"
+        not_created: "Unable to create. Check set permissions. You must have at least one manager or edit user."
+        not_updated: "%{item} was not updated. Check set permissions. You must have at least one manager or edit user."
         organisation_cannot_be_deleted: "The organisation cannot be deleted as it is still associated with collections"
         read_access: "Unable to grant read access"
         read_only: "Repository is currently undergoing maintenance. Updates are temporarily disabled."
@@ -177,55 +187,55 @@ en:
         updated: "Updated %{item}"
     footer: 
       contacts: 
-        email: Email
-        phone: Tel
+        email: "Email"
+        phone: "Tel"
       ria_address: 
         name: "Royal Irish Academy"
         project: "Digital Repository of Ireland"
         street: "19 Dawson Street"
         zip: "Dublin 2"
     headerlinks: 
-      about: About
+      about: "About"
       about_dri_lifecycle: "DRI Lifecycle"
       about_us: "About Us"
-      admin: Admin
-      browse: Discover
-      collection: Collection
-      collections: Collections
-      contact: Contact
+      admin: "Admin"
+      browse: "Discover"
+      collection: "Collection"
+      collections: "Collections"
+      contact: "Contact"
       current_collection: "Current Collection: %{collection}"
       end_user_agreement: "End User Agreement"
-      help: FAQ
-      home: Home
+      help: "FAQ"
+      home: "Home"
       ingest: "Ingest Object"
-      institutions: Organisations
-      language: Language
-      manage: Manage
+      institutions: "Organisations"
+      language: "Language"
+      manage: "Manage"
       manage_users: "Add Manager User"
-      mirador: Mirador
+      mirador: "Mirador"
       my_collections: "My Collections"
       my_tasks: "Background Tasks"
       new_collection: "New Collection"
       new_organisation: "New Organisation"
-      object: Object
-      objects: Objects
+      object: "Object"
+      objects: "Objects"
       privacy: "Privacy & Cookies policy"
       privacy_statement: "Privacy Statement"
-      reports: Reports
+      reports: "Reports"
       resque: "Resque Server"
-      sitemap: Sitemap
-      sub_collections: Sub-Collections
+      sitemap: "Sitemap"
+      sub_collections: "Sub-Collections"
       usergroups: "Users & Groups"
-      workspace: Workspace
+      workspace: "Workspace"
       deposit_guide: "Guide to Deposit"
       publications: "Publications"
       projects: "Projects"
       blog: "Blog"
-      events: Events
-      resources: Resources
-      team: Team
-      people: People
-      vacancies: Vacancies
+      events: "Events"
+      resources: "Resources"
+      team: "Team"
+      people: "People"
+      vacancies: "Vacancies"
     help: 
       add_documentation_help_text: "These objects appear in the Related Materials section of the Collection show page."
       add_documentation_help_title: "Add contextual information"
@@ -251,6 +261,8 @@ en:
       dri_sort_options_title: "Search Sort Options"
       dri_tlfield_options: "Select the date field to display on the timeline"
       dri_tlfield_options_title: "Display Date Options"
+      dri_view_rdf: "View RDF format"
+      dri_view_iiif: "Drag and drop to IIIF viewer, or click to open in Mirador"
       dummy_text: "Help text goes here"
       dummy_title: "Title of help here"
       facets: "Use Facets to narrow your search using specific metadata fields"
@@ -258,59 +270,60 @@ en:
       fields:
         collection_title: "Collection Title"
         collection_title_text: "A name given to the collection."
-        coverages: Coverage
+        coverages: "Coverage"
         coverages_text: "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant."
         creation_date: "Creation Date"
         creation_date_text: "Date of creation of the resource. NOTE: You are required to enter at least one of Creation Date OR Published Date OR Date"
-        creator: Creator
+        creator: "Creator"
         creator_text: "An entity primarily responsible for making the content of the resource."
-        date: Date
+        date: "Date"
         date_text: "A point or period of time associated with an event in the lifecycle of the resource."
-        description: Description
+        description: "Description"
         description_text: "An account of the resource."
-        formats: Format
+        formats: "Format"
         formats_text: "The Format of the resource"
         geographical_coverages: "Subject (Place)"
         geographical_coverages_text: "Spatial characteristics of the resource."
-        identifiers: Identifier
+        identifiers: "Identifier"
         identifiers_text: "Identifier for the resource."
-        languages: Language
+        languages: "Language"
         languages_text: "A language of the resource."
-        licence: Licence
+        licence: "Licence"
         licence_text: "The reuse licence for this resource."
         published_date: "Published Date / Issued"
         published_date_text: "Date of formal issuance (e.g., publication) of the resource."
-        relations: Relation
+        relations: "Relation"
         relations_text: "A related resource."
         rights: "Rights statement"
         rights_text: "Information about rights held in and over the resource. If the asset is an orphan work it must be registered with the EUIPO Orphan Works Database, and the associated file number must be included here."
-        roles: Contributor
+        roles: "Contributor"
         roles_text: "An entity responsible for making contributions to the resource."
-        sources: Source
+        sources: "Source"
         sources_text: "A related resource from which the described resource is derived."
-        subjects: Subjects
+        subjects: "Subjects"
         subjects_text: "The topic of the resource."
         temporal_coverage: "Subject (Temporal)"
         temporal_coverage_text: "Temporal characteristics of the resource."
-        title: Title
+        title: "Title"
         title_text: "A name given to the resource."
-        types: Types
+        types: "Types"
         types_text: "The nature or genre of the resource."
       iiif_viewer: "Open in IIIF viewer"
       metadata_identifiers: "<a href='http://loc.org'>LOC</a>"
       no_results_found: "No search results found"
       q: "Type a search term and press Enter. Use AND and OR to narrow or broaden your search"
       q_title: "Search the repository"
+      q_ws_title: "Search your collections"
       social_media_links: "Use these buttons to vist our Twitter, Facebook, Vimeo and Slideshare pages"
       social_media_links_title: "DRI on the Internet"
       try_looking_for: "Try looking for"
       view_objects: "View Objects"
       view_subcollections: "View Sub-Collections"
     navbar: 
-      bookmarks: Bookmarks
-      items: Items
+      bookmarks: "Bookmarks"
+      items: "Items"
       per_page: "per page"
-      saved_searches: Searches
+      saved_searches: "Searches"
     sign_in: 
       forgot_password: "Forgot your password?"
       no_confirmation: "Didn't receive confirmation?"
@@ -318,14 +331,14 @@ en:
       register: "Sign Up"
       sign_in_with: "Login with "
       sign_in_with_institution: "Login via your institution"
-      title: Login
+      title: "Login"
       with_another_account: "Login with another Account"
     views: 
       alt_tags: 
         cover_image: "Cover Image"
       assets: 
         buttons: 
-          delete: x
+          delete: "x"
         confirm: 
           delete: "This will delete the asset and all surrogates. Continue?"
       catalog: 
@@ -337,52 +350,55 @@ en:
           download_metadata_xml: "Download as XML"
           edit_access_controls: "Access Controls"
           edit_metadata: "Edit Metadata"
-          remove_from_collection: "Remove from collection"
-          set_licence: Licence
-          submit: Submit
+          open_workspace: "Open in Workspace"          
+          set_licence: "Licence"
+          submit: "Submit"
+          view_catalog: "View in Catalog"
         facets: 
           dates: 
             date_range: "Date Range"
-            date_range_from: From
-            date_range_to: To
-            date_set: Set
+            date_range_from: "From"
+            date_range_to: "To"
+            date_set: "Set"
           values: 
-            collections: Collections
+            collections: "Collections"
             no_collections: "No collections"
         forms: 
           access_controls: "Access Controls"
           all_objects_in_collection: "Objects in this Collection"
           audio: 
-            duration: Duration
+            duration: "Duration"
             file_size: "Asset Size"
-            format: Format
+            format: "Format"
             last_modified: "Last Update"
           audio_file: "Audio Asset"
           bookmark_collection: "Bookmark Collection"
           bookmark_object: "Bookmark Object"
-          download: Download
+          download: "Download"
           download_all: 
             one: "Download entire object including the asset"
             other: "Download entire object including all %{count} assets"
-          download_originals: "Download the original uploaded version of this individual asset (254 kb)"
+          download_originals: "Download the original uploaded version of this individual asset"
           download_surrogate: "Download optimised surrogate version of this individual asset (recommended for viewing)"
-          file: File
-          image_file: Image
+          file: "File"
+          image_file: "Image"
           manage_bookmark: "Manage Your Bookmarks"
           manage_licence: "Manage Licence"
-          map: Map
-          metadata: Metadata
+          map: "Map"
+          metadata: "Metadata"
           metadata_full: "Full Metadata"
-          objects_in_collection: Objects
-          pdf_file: PDF
+          objects_in_collection: "Objects"
+          pdf_file: "PDF"
           restricted_asset: "Restricted Asset"
           restricted_data_request: "Restricted data access request form"
-          video_file: Video
+          video_file: "Video"
         headers: 
           files: "Asset Tools"
           related_materials: "Related Materials"
-          sub_collections: Sub-collections
+          sub_collections: "Sub-collections"
         legends: 
+          doi_not_available: "This object is currently unavailable as it has been locked for editing."
+          doi_deleted: "This object is no longer available. You can contact dri@ria.ie for more information, quoting the object ID %{id}."
           file_status: "Status: %{status}"
           no_bookmarked_collections: "You have no bookmarked collections"
           no_bookmarked_objects: "You have no bookmarked objects"
@@ -406,35 +422,35 @@ en:
           add_object: "Add an Object"
           add_object_xml: "Upload Object XML"
           add_sub_collection: "Add Sub-Collection"
-          asset: Asset
-          characterization: Characterization
+          asset: "Asset"
+          characterization: "Characterization"
           details: "Asset Details"
           download: "Download asset"
           download_master: "Download master asset"
           download_not_available: "not available"
           download_nth: "Download %{index}"
-          draft: Draft
-          duplicates: Duplicates
-          edit_this_record: Edit
+          draft: "Draft"
+          duplicates: "Duplicates"
+          edit_this_record: "Edit"
           export_collection_metadata: "Export all Metadata"
           generate_surrogates: "Regenerate Surrogates"
-          history: History
-          iiif_viewer: Viewer
-          listen: listen
-          mark_all_descendants_reviewed: Proceed
+          history: "History"
+          iiif_viewer: "Viewer"
+          listen: "listen"
+          mark_all_descendants_reviewed: "Proceed"
           mark_all_reviewed: "Mark as Reviewed"
           mark_object_draft: "Mark Object as Draft"
           mark_object_reviewed: "Mark Object as Reviewed"
           not_characterized: "not yet characterized"
-          publish: Publish
+          publish: "Publish"
           publish_reviewed: "Publish Reviewed"
-          published: Published
+          published: "Published"
           related: "Related Assets"
           request_doi: "Request DOI"
           review_collection: "Review Collection"
           review_objects: "Review Objects"
-          reviewed: Reviewed
-          share: Share
+          reviewed: "Reviewed"
+          share: "Share"
           status_update: "Update status"
           unknown_size: "Unknown Size"
           upload_file: "Upload Asset"
@@ -454,7 +470,7 @@ en:
           delete_collection: "Delete Collection"
           edit_metadata: "Edit Metadata"
           new_collection: "New Collection"
-          remove: Remove
+          remove: "Remove"
         confirm_all_descendants_reviewed: "By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed."
         confirm_all_reviewed: "This will mark all objects within the collection as Reviewed. Continue?"
         confirm_delete: "This will delete the collection and all objects within the collection. Continue?"
@@ -476,26 +492,26 @@ en:
           object_count: 
             one: "%{count}"
             other: "%{count}"
-          objects: Objects
+          objects: "Objects"
           title: 
             admin: "My Collections"
-            public: Collections
+            public: "Collections"
         institute: 
           add: "Add Additional Organisations"
           are_you_sure: "Are you sure you need a new Organisation?"
           associate: "Add Organisation"
           associate_depositing: "Select Depositing Organisation"
           associating_text: "Once an organisation has been added, it can be associated with collections using the 'Manage Organisations' button on individual collections' pages."
-          available: Available
+          available: "Available"
           buttons: 
             save: "Create Organisation"
           depositing_org_text: "Your Organisation will have been added when your Organisational Manager Agreement was signed. Use this page to add additional organisations."
           edit: "Update Organisation"
           form: 
             depositing: "This is a depositing institute"
-            logo: Logo
-            name: Name
-            url: Url
+            logo: "Logo"
+            name: "Name"
+            url: "Url"
           manage: "Manage Organisations"
           more: "Show more"
           move_all_label: "Move all"
@@ -506,29 +522,29 @@ en:
           remove_all_label: "Remove all"
           remove_selected_label: "Remove selected"
           see_orgs: "Check existing Organisations"
-          selected: Selected
+          selected: "Selected"
           set_institutes: "Set Organisations"
           title: "Organisations and Sponsors"
           what_is_org_text: "Organisations can include funding agencies, contributing partners and collaborating institutions. These parties may not be involved in the ingest and management of the DRI collection, but they may have contributed content or monetary support to the project."
         legends: 
           governed_objects: "Governed Objects"
-          members: Members
+          members: "Members"
           objects: "Objects in Collection"
         manage_cover_image: "Cover Image"
         manage_read_requests: "Manage requests for read access"
         new: 
           title: "New Collection"
       devise: 
-        locale: Language
+        locale: "Language"
       doi: 
         fields: 
-          modified: Change
+          modified: "Change"
           modified_at: "Modification Date"
         legends: 
           changelog: "Changelog for #{doi}"
         links: 
           view_full_object: "View object"
-        unavailable: "The object referenced by this DOI is not available. If you require more information please contact support@dri.ie."
+        unavailable: "The object referenced by this DOI is not available. If you require more information please contact dri@ria.ie."
       exceptions: 
         access_denied: "You do not have permission to perform the requested operation."
         file_not_found: "Upload file not found"
@@ -550,28 +566,28 @@ en:
         legends:
           export_all_metadata: "Choose fields to export for each object in the collection. The metadata will be exported as a CSV file for you to download."
       fields: 
-        assets: Assets
-        Format: Format
+        assets: "Assets"
+        Format: "Format"
         collection_title: "Collection Title"
-        contributor: Contributor
-        contributors: Contributors
+        contributor: "Contributor"
+        contributors: "Contributors"
         cover_image: "Upload a cover image"
-        coverage: Coverage
-        coverages: Coverages
+        coverage: "Coverage"
+        coverages: "Coverages"
         creation_date: "Creation Date"
         creation_dates: "Creation Dates"
-        creator: Creator
-        creators: Creators
-        date: Date
-        dates: Dates
+        creator: "Creator"
+        creators: "Creators"
+        date: "Date"
+        dates: "Dates"
         depositing_institute: "Depositing Organisation"
         depositing_institute_not_set: "Depositing organisation not set. Click here to manage organisations."
         depositing_institute_not_set_object: "Depositing organisation not set. Organisations can be set from the Collection view."
-        description: Description
+        description: "Description"
         description_eng: "Description (English)"
         description_gle: "Description (Irish)"
-        format: Format
-        formats: Formats
+        format: "Format"
+        formats: "Formats"
         geographical_coverage: "Subject (Place)"
         geographical_coverage_eng: "Subject (Place) in English"
         geographical_coverage_gle: "Subject (Place) in Irish"
@@ -579,45 +595,45 @@ en:
         governing_collection: "Governing Collection"
         hide_description_eng: "Hide English"
         hide_description_gle: "Hide Irish"
-        identifier: Identifier
-        identifiers: Identifiers
-        language: Language
-        languages: Languages
-        licence: Licence
+        identifier: "Identifier"
+        identifiers: "Identifiers"
+        language: "Language"
+        languages: "Languages"
+        licence: "Licence"
         name_coverage: "Subject (Name)"
         name_coverages: "Subjects (Names)"
         published_date: "Published Date"
         published_dates: "Published Dates"
-        publisher: Publisher
-        publishers: Publishers
-        relation: Relation
-        relations: Relations
-        rights: Rights
-        roles: Contributor
+        publisher: "Publisher"
+        publishers: "Publishers"
+        relation: "Relation"
+        relations: "Relations"
+        rights: "Rights"
+        roles: "Contributor"
         show_description_eng: "Show English"
         show_description_gle: "Show Irish"
-        source: Source
-        sources: Sources
-        status: Status
-        subject: Subject
-        subjects: Subjects
+        source: "Source"
+        sources: "Sources"
+        status: "Status"
+        subject: "Subject"
+        subjects: "Subjects"
         subjects_eng: "Subjects in English"
         subjects_gle: "Subjects in Irish"
         temporal_coverage: "Subject (Temporal)"
         temporal_coverage_eng: "Subject (Temporal) in English"
         temporal_coverage_gle: "Subject (Temporal) in Irish"
         temporal_coverages: "Subjects (Temporal)"
-        title: Title
+        title: "Title"
         total_assets: "Total number of assets"
         toggle: "Toggle All"
-        type: Type
-        types: Types
+        type: "Type"
+        types: "Types"
       ingest: 
         buttons: 
-          continue: Continue
-          delete: Delete
+          continue: "Continue"
+          delete: "Delete"
           new_collection: "New collection"
-          reset: Reset
+          reset: "Reset"
         forms: 
           collection_prompt: "Select collection"
           ingest_method_prompt: "Select ingest method"
@@ -631,7 +647,7 @@ en:
         steps: 
           collection: "Select Collection"
           ingest_method: "Select Ingest Method"
-          input: Input
+          input: "Input"
           object_type: "Select Object Type"
           upload: "Upload Metadata file"
       licences: 
@@ -640,13 +656,13 @@ en:
           edit: "Edit Licence"
           new: "Add a new licence"
         forms: 
-          description: Description
-          logo: Logo
-          name: Name
-          url: Url
+          description: "Description"
+          logo: "Logo"
+          name: "Name"
+          url: "Url"
       manager_users: 
         buttons: 
-          submit: Create
+          submit: "Create"
         email: "Enter user's email:"
       metadata: 
         dublin_core: "Dublin Core"
@@ -660,7 +676,7 @@ en:
           edit_collection: "Who can edit in this collection / sub-collection?"
           edit_desc: "Enter the email addresses of Edit Users below. An Edit User is an authorised user who can ingest content into collections to which they have access. These permissions will not be applied until these email addresses have been registered for DRI accounts."
           edit_object: "Who can edit this object"
-          embargo: Embargo
+          embargo: "Embargo"
           inherit: "Inherit this setting from the parent collection"
           inherit_strings: 
             private: "surrogates only"
@@ -671,7 +687,7 @@ en:
           master_file: "Which asset files can they access?"
           metadata: "Access settings affect the asset files that you upload excluding preservation-only files. All metadata will be publicly accessible regardless of what settings you select here. "
           page: "Page Access"
-          private: Private
+          private: "Private"
           private_master_file: "Only allow access to a system-generated surrogate version of my original uploaded master file(s)"
           private_metadata: "Private Metadata"
           private_metadata_access: "Since you have set access to metadata as private, you can add people here who you would like to be able to access the metadata."
@@ -685,7 +701,7 @@ en:
         buttons: 
           add_master: "Add Master Asset"
           add_to_collection: "Add to Collection"
-          cancel: Cancel
+          cancel: "Cancel"
           delete_object: "Delete Object"
           replace_master: "Replace Master Asset"
           replace_metadata: "Upload Metadata"
@@ -712,33 +728,33 @@ en:
           add_source: "Add Source"
           add_subject: "Add Subject"
           apply_to_all: "Apply to all"
-          authors: Authors
+          authors: "Authors"
           broadcast_date: "Broadcast Date"
           creation_date: "Creation Date"
-          delete: Remove
-          description: Description
-          editors: Editors
+          delete: "Remove"
+          description: "Description"
+          editors: "Editors"
           governing_collection: "Governing Collection"
-          guests: Guests
-          language: Language
+          guests: "Guests"
+          language: "Language"
           object_status: "Object Status"
-          places: Places
-          presenters: Presenters
-          producers: Producers
-          publisher: publisher
-          rights: Rights
-          sources: Sources
-          status: Status
-          subjects: Subjects
-          title: Title
+          places: "Places"
+          presenters: "Presenters"
+          producers: "Producers"
+          publisher: "publisher"
+          rights: "Rights"
+          sources: "Sources"
+          status: "Status"
+          subjects: "Subjects"
+          title: "Title"
         legends: 
           access_control: "Access Controls"
           audio_caption: "A master audio asset has already been uploaded."
-          cite: Cite
-          comments: Comments
+          cite: "Cite"
+          comments: "Comments"
           file_caption: "A master asset has already been uploaded."
-          likes: Likes
-          metadata: Metadata
+          likes: "Likes"
+          metadata: "Metadata"
           replace_caption: "Replace metadata using XML file."
           replace_metadata: "Replace Metadata"
           rtf_surrogate_text: "Please download the asset from the url below."
@@ -749,17 +765,17 @@ en:
           upload_file_caption: "No files have been uploaded. Please upload a master asset."
           upload_pdf: "Upload PDF Asset"
           view_collection: "View Collection"
-          viewcount: Views
+          viewcount: "Views"
         links: 
           all_objects: "All Objects"
-          cancel: Cancel
-          download: download
-          listen: listen
+          cancel: "Cancel"
+          download: "download"
+          listen: "listen"
           view_record: "View Record"
       readers: 
         headers: 
           pending: "Pending Request"
-          remove: Approved
+          remove: "Approved"
         links: 
           approved: 
             remove: "Remove access"
@@ -779,762 +795,8 @@ en:
       tasks: 
         links: 
           delete_all_tasks: "Clear all completed tasks"
-    vocabulary: 
-      iso_639_2: 
-        aar: Afar
-        abk: Abkhazian
-        ace: Achinese
-        ach: Acoli
-        ada: Adangme
-        ady: "Adyghe; Adygei"
-        afa: "Afro-Asiatic languages"
-        afh: Afrihili
-        afr: Afrikaans
-        ain: Ainu
-        aka: Akan
-        akk: Akkadian
-        alb: Albanian
-        ale: Aleut
-        alg: "Algonquian languages"
-        alt: "Southern Altai"
-        amh: Amharic
-        ang: "English, Old (ca.450-1100)"
-        anp: Angika
-        apa: "Apache languages"
-        ara: Arabic
-        arc: "Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)"
-        arg: Aragonese
-        arm: Armenian
-        arn: "Mapudungun; Mapuche"
-        arp: Arapaho
-        art: "Artificial languages"
-        arw: Arawak
-        asm: Assamese
-        ast: "Asturian; Bable; Leonese; Asturleonese"
-        ath: "Athapascan languages"
-        aus: "Australian languages"
-        ava: Avaric
-        ave: Avestan
-        awa: Awadhi
-        aym: Aymara
-        aze: Azerbaijani
-        bad: "Banda languages"
-        bai: "Bamileke languages"
-        bak: Bashkir
-        bal: Baluchi
-        bam: Bambara
-        ban: Balinese
-        baq: Basque
-        bas: Basa
-        bat: "Baltic languages"
-        bej: "Beja; Bedawiyet"
-        bel: Belarusian
-        bem: Bemba
-        ben: Bengali
-        ber: "Berber languages"
-        bho: Bhojpuri
-        bih: "Bihari languages"
-        bik: Bikol
-        bin: "Bini; Edo"
-        bis: Bislama
-        bla: Siksika
-        bnt: "Bantu (Other)"
-        bos: Bosnian
-        bra: Braj
-        bre: Breton
-        btk: "Batak languages"
-        bua: Buriat
-        bug: Buginese
-        bul: Bulgarian
-        bur: Burmese
-        byn: "Blin; Bilin"
-        cad: Caddo
-        cai: "Central American Indian languages"
-        car: "Galibi Carib"
-        cat: "Catalan; Valencian"
-        cau: "Caucasian languages"
-        ceb: Cebuano
-        cel: "Celtic languages"
-        cha: Chamorro
-        chb: Chibcha
-        che: Chechen
-        chg: Chagatai
-        chi: Chinese
-        chk: Chuukese
-        chm: Mari
-        chn: "Chinook jargon"
-        cho: Choctaw
-        chp: "Chipewyan; Dene Suline"
-        chr: Cherokee
-        chu: "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"
-        chv: Chuvash
-        chy: Cheyenne
-        cmc: "Chamic languages"
-        cop: Coptic
-        cor: Cornish
-        cos: Corsican
-        cpe: "Creoles and pidgins, English based"
-        cpf: "Creoles and pidgins, French-based "
-        cpp: "Creoles and pidgins, Portuguese-based "
-        cre: Cree
-        crh: "Crimean Tatar; Crimean Turkish"
-        crp: "Creoles and pidgins "
-        csb: Kashubian
-        cus: "Cushitic languages"
-        cze: Czech
-        dak: Dakota
-        dan: Danish
-        dar: Dargwa
-        day: "Land Dayak languages"
-        del: Delaware
-        den: "Slave (Athapascan)"
-        dgr: Dogrib
-        din: Dinka
-        div: "Divehi; Dhivehi; Maldivian"
-        doi: Dogri
-        dra: "Dravidian languages"
-        dsb: "Lower Sorbian"
-        dua: Duala
-        dum: "Dutch, Middle (ca.1050-1350)"
-        dut: "Dutch; Flemish"
-        dyu: Dyula
-        dzo: Dzongkha
-        efi: Efik
-        egy: "Egyptian (Ancient)"
-        eka: Ekajuk
-        elx: Elamite
-        eng: English
-        enm: "English, Middle (1100-1500)"
-        epo: Esperanto
-        est: Estonian
-        ewe: Ewe
-        ewo: Ewondo
-        fan: Fang
-        fao: Faroese
-        fat: Fanti
-        fij: Fijian
-        fil: "Filipino; Pilipino"
-        fin: Finnish
-        fiu: "Finno-Ugrian languages"
-        fon: Fon
-        fre: French
-        frm: "French, Middle (ca.1400-1600)"
-        fro: "French, Old (842-ca.1400)"
-        frr: "Northern Frisian"
-        frs: "Eastern Frisian"
-        fry: "Western Frisian"
-        ful: Fulah
-        fur: Friulian
-        gaa: Ga
-        gay: Gayo
-        gba: Gbaya
-        gem: "Germanic languages"
-        geo: Georgian
-        ger: German
-        gez: Geez
-        gil: Gilbertese
-        gla: "Gaelic; Scottish Gaelic"
-        gle: Irish
-        glg: Galician
-        glv: Manx
-        gmh: "German, Middle High (ca.1050-1500)"
-        goh: "German, Old High (ca.750-1050)"
-        gon: Gondi
-        gor: Gorontalo
-        got: Gothic
-        grb: Grebo
-        grc: "Greek, Ancient (to 1453)"
-        gre: "Greek, Modern (1453-)"
-        grn: Guarani
-        gsw: "Swiss German; Alemannic; Alsatian"
-        guj: Gujarati
-        gwi: Gwich'in
-        hai: Haida
-        hat: "Haitian; Haitian Creole"
-        hau: Hausa
-        haw: Hawaiian
-        heb: Hebrew
-        her: Herero
-        hil: Hiligaynon
-        him: "Himachali languages; Western Pahari languages"
-        hin: Hindi
-        hit: Hittite
-        hmn: Hmong
-        hmo: "Hiri Motu"
-        hrv: Croatian
-        hsb: "Upper Sorbian"
-        hun: Hungarian
-        hup: Hupa
-        iba: Iban
-        ibo: Igbo
-        ice: Icelandic
-        ido: Ido
-        iii: "Sichuan Yi; Nuosu"
-        ijo: "Ijo languages"
-        iku: Inuktitut
-        ile: "Interlingue; Occidental"
-        ilo: Iloko
-        ina: "Interlingua (International Auxiliary Language Association)"
-        inc: "Indic languages"
-        ind: Indonesian
-        ine: "Indo-European languages"
-        inh: Ingush
-        ipk: Inupiaq
-        ira: "Iranian languages"
-        iro: "Iroquoian languages"
-        ita: Italian
-        jav: Javanese
-        jbo: Lojban
-        jpn: Japanese
-        jpr: Judeo-Persian
-        jrb: Judeo-Arabic
-        kaa: Kara-Kalpak
-        kab: Kabyle
-        kac: "Kachin; Jingpho"
-        kal: "Kalaallisut; Greenlandic"
-        kam: Kamba
-        kan: Kannada
-        kar: "Karen languages"
-        kas: Kashmiri
-        kau: Kanuri
-        kaw: Kawi
-        kaz: Kazakh
-        kbd: Kabardian
-        kha: Khasi
-        khi: "Khoisan languages"
-        khm: "Central Khmer"
-        kho: "Khotanese; Sakan"
-        kik: "Kikuyu; Gikuyu"
-        kin: Kinyarwanda
-        kir: "Kirghiz; Kyrgyz"
-        kmb: Kimbundu
-        kok: Konkani
-        kom: Komi
-        kon: Kongo
-        kor: Korean
-        kos: Kosraean
-        kpe: Kpelle
-        krc: Karachay-Balkar
-        krl: Karelian
-        kro: "Kru languages"
-        kru: Kurukh
-        kua: "Kuanyama; Kwanyama"
-        kum: Kumyk
-        kur: Kurdish
-        kut: Kutenai
-        lad: Ladino
-        lah: Lahnda
-        lam: Lamba
-        lao: Lao
-        lat: Latin
-        lav: Latvian
-        lez: Lezghian
-        lim: "Limburgan; Limburger; Limburgish"
-        lin: Lingala
-        lit: Lithuanian
-        lol: Mongo
-        loz: Lozi
-        ltz: "Luxembourgish; Letzeburgesch"
-        lua: Luba-Lulua
-        lub: Luba-Katanga
-        lug: Ganda
-        lui: Luiseno
-        lun: Lunda
-        luo: "Luo (Kenya and Tanzania)"
-        lus: Lushai
-        mac: Macedonian
-        mad: Madurese
-        mag: Magahi
-        mah: Marshallese
-        mai: Maithili
-        mak: Makasar
-        mal: Malayalam
-        man: Mandingo
-        mao: Maori
-        map: "Austronesian languages"
-        mar: Marathi
-        mas: Masai
-        may: Malay
-        mdf: Moksha
-        mdr: Mandar
-        men: Mende
-        mga: "Irish, Middle (900-1200)"
-        mic: "Mi'kmaq; Micmac"
-        min: Minangkabau
-        mis: "Uncoded languages"
-        mkh: "Mon-Khmer languages"
-        mlg: Malagasy
-        mlt: Maltese
-        mnc: Manchu
-        mni: Manipuri
-        mno: "Manobo languages"
-        moh: Mohawk
-        mon: Mongolian
-        mos: Mossi
-        mul: "Multiple languages"
-        mun: "Munda languages"
-        mus: Creek
-        mwl: Mirandese
-        mwr: Marwari
-        myn: "Mayan languages"
-        myv: Erzya
-        nah: "Nahuatl languages"
-        nai: "North American Indian languages"
-        nap: Neapolitan
-        nau: Nauru
-        nav: "Navajo; Navaho"
-        nbl: "Ndebele, South; South Ndebele"
-        nde: "Ndebele, North; North Ndebele"
-        ndo: Ndonga
-        nds: "Low German; Low Saxon; German, Low; Saxon, Low"
-        nep: Nepali
-        new: "Nepal Bhasa; Newari"
-        nia: Nias
-        nic: "Niger-Kordofanian languages"
-        niu: Niuean
-        nno: "Norwegian Nynorsk; Nynorsk, Norwegian"
-        nob: "Bokmål, Norwegian; Norwegian Bokmål"
-        nog: Nogai
-        non: "Norse, Old"
-        nor: Norwegian
-        nqo: N'Ko
-        nso: "Pedi; Sepedi; Northern Sotho"
-        nub: "Nubian languages"
-        nwc: "Classical Newari; Old Newari; Classical Nepal Bhasa"
-        nya: "Chichewa; Chewa; Nyanja"
-        nym: Nyamwezi
-        nyn: Nyankole
-        nyo: Nyoro
-        nzi: Nzima
-        oci: "Occitan (post 1500); Provençal"
-        oji: Ojibwa
-        ori: Oriya
-        orm: Oromo
-        osa: Osage
-        oss: "Ossetian; Ossetic"
-        ota: "Turkish, Ottoman (1500-1928)"
-        oto: "Otomian languages"
-        paa: "Papuan languages"
-        pag: Pangasinan
-        pal: Pahlavi
-        pam: "Pampanga; Kapampangan"
-        pan: "Panjabi; Punjabi"
-        pap: Papiamento
-        pau: Palauan
-        peo: "Persian, Old (ca.600-400 B.C.)"
-        per: Persian
-        phi: "Philippine languages"
-        phn: Phoenician
-        pli: Pali
-        pol: Polish
-        pon: Pohnpeian
-        por: Portuguese
-        pra: "Prakrit languages"
-        pro: "Provençal, Old (to 1500)"
-        pus: "Pushto; Pashto"
-        qaa: "Reserved for local use"
-        que: Quechua
-        raj: Rajasthani
-        rap: Rapanui
-        rar: "Rarotongan; Cook Islands Maori"
-        roa: "Romance languages"
-        roh: Romansh
-        rom: Romany
-        rum: "Romanian; Moldavian; Moldovan"
-        run: Rundi
-        rup: "Aromanian; Arumanian; Macedo-Romanian"
-        rus: Russian
-        sad: Sandawe
-        sag: Sango
-        sah: Yakut
-        sai: "South American Indian (Other)"
-        sal: "Salishan languages"
-        sam: "Samaritan Aramaic"
-        san: Sanskrit
-        sas: Sasak
-        sat: Santali
-        scn: Sicilian
-        sco: Scots
-        sel: Selkup
-        sem: "Semitic languages"
-        sga: "Irish, Old (to 900)"
-        sgn: "Sign Languages"
-        shn: Shan
-        sid: Sidamo
-        sin: "Sinhala; Sinhalese"
-        sio: "Siouan languages"
-        sit: "Sino-Tibetan languages"
-        sla: "Slavic languages"
-        slo: Slovak
-        slv: Slovenian
-        sma: "Southern Sami"
-        sme: "Northern Sami"
-        smi: "Sami languages"
-        smj: "Lule Sami"
-        smn: "Inari Sami"
-        smo: Samoan
-        sms: "Skolt Sami"
-        sna: Shona
-        snd: Sindhi
-        snk: Soninke
-        sog: Sogdian
-        som: Somali
-        son: "Songhai languages"
-        sot: "Sotho, Southern"
-        spa: "Spanish; Castilian"
-        srd: Sardinian
-        srn: "Sranan Tongo"
-        srp: Serbian
-        srr: Serer
-        ssa: "Nilo-Saharan languages"
-        ssw: Swati
-        suk: Sukuma
-        sun: Sundanese
-        sus: Susu
-        sux: Sumerian
-        swa: Swahili
-        swe: Swedish
-        syc: "Classical Syriac"
-        syr: Syriac
-        tah: Tahitian
-        tai: "Tai languages"
-        tam: Tamil
-        tat: Tatar
-        tel: Telugu
-        tem: Timne
-        ter: Tereno
-        tet: Tetum
-        tgk: Tajik
-        tgl: Tagalog
-        tha: Thai
-        tib: Tibetan
-        tig: Tigre
-        tir: Tigrinya
-        tiv: Tiv
-        tkl: Tokelau
-        tlh: "Klingon; tlhIngan-Hol"
-        tli: Tlingit
-        tmh: Tamashek
-        tog: "Tonga (Nyasa)"
-        ton: "Tonga (Tonga Islands)"
-        tpi: "Tok Pisin"
-        tsi: Tsimshian
-        tsn: Tswana
-        tso: Tsonga
-        tuk: Turkmen
-        tum: Tumbuka
-        tup: "Tupi languages"
-        tur: Turkish
-        tut: "Altaic languages"
-        tvl: Tuvalu
-        twi: Twi
-        tyv: Tuvinian
-        udm: Udmurt
-        uga: Ugaritic
-        uig: "Uighur; Uyghur"
-        ukr: Ukrainian
-        umb: Umbundu
-        und: Undetermined
-        urd: Urdu
-        uzb: Uzbek
-        vai: Vai
-        ven: Venda
-        vie: Vietnamese
-        vol: Volapük
-        vot: Votic
-        wak: "Wakashan languages"
-        wal: Walamo
-        war: Waray
-        was: Washo
-        wel: Welsh
-        wen: "Sorbian languages"
-        wln: Walloon
-        wol: Wolof
-        xal: "Kalmyk; Oirat"
-        xho: Xhosa
-        yao: Yao
-        yap: Yapese
-        yid: Yiddish
-        yor: Yoruba
-        ypk: "Yupik languages"
-        zap: Zapotec
-        zbl: "Blissymbols; Blissymbolics; Bliss"
-        zen: Zenaga
-        zha: "Zhuang; Chuang"
-        znd: "Zande languages"
-        zul: Zulu
-        zun: Zuni
-        zxx: "No linguistic content; Not applicable"
-        zza: "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
-      marc_relator: 
-        abr: Abridger
-        acp: "Art copyist"
-        act: Actor
-        adi: "Art director"
-        adp: Adapter
-        aft: "Author of afterword, colophon, etc."
-        anl: Analyst
-        anm: Animator
-        ann: Annotator
-        ant: "Bibliographic antecedent"
-        ape: Appellee
-        apl: Appellant
-        app: Applicant
-        aqt: "Author in quotations or text abstracts"
-        arc: Architect
-        ard: "Artistic director"
-        arr: Arranger
-        art: Artist
-        asg: Assignee
-        asn: "Associated name"
-        ato: Autographer
-        att: "Attributed name"
-        auc: Auctioneer
-        aud: "Author of dialog"
-        aui: "Author of introduction, etc."
-        aus: Screenwriter
-        aut: Author
-        bdd: "Binding designer"
-        bjd: "Bookjacket designer"
-        bkd: "Book designer"
-        bkp: "Book producer"
-        blw: "Blurb writer"
-        bnd: Binder
-        bpd: "Bookplate designer"
-        brd: Broadcaster
-        brl: "Braille embosser"
-        bsl: Bookseller
-        cas: Caster
-        ccp: Conceptor
-        chr: Choreographer
-        clb: Collaborator
-        cli: Client
-        cll: Calligrapher
-        clr: Colorist
-        clt: Collotyper
-        cmm: Commentator
-        cmp: Composer
-        cmt: Compositor
-        cnd: Conductor
-        cng: Cinematographer
-        cns: Censor
-        coe: Contestant-appellee
-        col: Collector
-        com: Compiler
-        con: Conservator
-        cor: "Collection registrar"
-        cos: Contestant
-        cot: Contestant-appellant
-        cou: "Court governed"
-        cov: "Cover designer"
-        cpc: "Copyright claimant"
-        cpe: Complainant-appellee
-        cph: "Copyright holder"
-        cpl: Complainant
-        cpt: Complainant-appellant
-        cre: Creator
-        crp: Correspondent
-        crr: Corrector
-        crt: "Court reporter"
-        csl: Consultant
-        csp: "Consultant to a project"
-        cst: "Costume designer"
-        ctb: Contributor
-        cte: Contestee-appellee
-        ctg: Cartographer
-        ctr: Contractor
-        cts: Contestee
-        ctt: Contestee-appellant
-        cur: Curator
-        cwt: "Commentator for written text"
-        dbp: "Distribution place"
-        dfd: Defendant
-        dfe: Defendant-appellee
-        dft: Defendant-appellant
-        dgg: "Degree granting institution"
-        dis: Dissertant
-        dln: Delineator
-        dnc: Dancer
-        dnr: Donor
-        dpc: Depicted
-        dpt: Depositor
-        drm: Draftsman
-        drt: Director
-        dsr: Designer
-        dst: Distributor
-        dtc: "Data contributor"
-        dte: Dedicatee
-        dtm: "Data manager"
-        dto: Dedicator
-        dub: "Dubious author"
-        edc: "Editor of compilation"
-        edm: "Editor of moving image work"
-        edt: Editor
-        egr: Engraver
-        elg: Electrician
-        elt: Electrotyper
-        eng: Engineer
-        enj: "Enacting jurisdiction"
-        etr: Etcher
-        evp: "Event place"
-        exp: Expert
-        fac: Facsimilist
-        fds: "Film distributor"
-        fld: "Field director"
-        flm: "Film editor"
-        fmd: "Film director"
-        fmk: Filmmaker
-        fmo: "Former owner"
-        fmp: "Film producer"
-        fnd: Funder
-        fpy: "First party"
-        frg: Forger
-        gis: "Geographic information specialist"
-        grt: "Graphic technician"
-        his: "Host institution"
-        hnr: Honoree
-        hst: Host
-        ill: Illustrator
-        ilu: Illuminator
-        ins: Inscriber
-        inv: Inventor
-        isb: "Issuing body"
-        itr: Instrumentalist
-        ive: Interviewee
-        ivr: Interviewer
-        jud: Judge
-        jug: "Jurisdiction governed"
-        lbr: Laboratory
-        lbt: Librettist
-        ldr: "Laboratory director"
-        led: Lead
-        lee: Libelee-appellee
-        lel: Libelee
-        len: Lender
-        let: Libelee-appellant
-        lgd: "Lighting designer"
-        lie: Libelant-appellee
-        lil: Libelant
-        lit: Libelant-appellant
-        lsa: "Landscape architect"
-        lse: Licensee
-        lso: Licensor
-        ltg: Lithographer
-        lyr: Lyricist
-        mcp: "Music copyist"
-        mdc: "Metadata contact"
-        mfp: "Manufacture place"
-        mfr: Manufacturer
-        mod: Moderator
-        mon: Monitor
-        mrb: Marbler
-        mrk: "Markup editor"
-        msd: "Musical director"
-        mte: Metal-engraver
-        mus: Musician
-        nrt: Narrator
-        opn: Opponent
-        org: Originator
-        orm: "Organizer of meeting"
-        osp: "Onscreen presenter"
-        oth: Other
-        own: Owner
-        pan: Panelist
-        pat: Patron
-        pbd: "Publishing director"
-        pbl: Publisher
-        pdr: "Project director"
-        pfr: Proofreader
-        pht: Photographer
-        plt: Platemaker
-        pma: "Permitting agency"
-        pmn: "Production manager"
-        pop: "Printer of plates"
-        ppm: Papermaker
-        ppt: Puppeteer
-        pra: Praeses
-        prc: "Process contact"
-        prd: "Production personnel"
-        pre: Presenter
-        prf: Performer
-        prg: Programmer
-        prm: Printmaker
-        prn: "Production company"
-        pro: Producer
-        prp: "Production place"
-        prs: "Production designer"
-        prt: Printer
-        prv: Provider
-        pta: "Patent applicant"
-        pte: Plaintiff-appellee
-        ptf: Plaintiff
-        pth: "Patent holder"
-        ptt: Plaintiff-appellant
-        pup: "Publication place"
-        rbr: Rubricator
-        rcd: Recordist
-        rce: "Recording engineer"
-        rcp: Addressee
-        rdd: "Radio director"
-        red: Redaktor
-        ren: Renderer
-        res: Researcher
-        rev: Reviewer
-        rpc: "Radio producer"
-        rps: Repository
-        rpt: Reporter
-        rpy: "Responsible party"
-        rse: Respondent-appellee
-        rsg: Restager
-        rsp: Respondent
-        rsr: Restorationist
-        rst: Respondent-appellant
-        rth: "Research team head"
-        rtm: "Research team member"
-        sad: "Scientific advisor"
-        sce: Scenarist
-        scl: Sculptor
-        scr: Scribe
-        sds: "Sound designer"
-        sec: Secretary
-        sgd: "Stage director"
-        sgn: Signer
-        sht: "Supporting host"
-        sll: Seller
-        sng: Singer
-        spk: Speaker
-        spn: Sponsor
-        spy: "Second party"
-        srv: Surveyor
-        std: "Set designer"
-        stg: Setting
-        stl: Storyteller
-        stm: "Stage manager"
-        stn: "Standards body"
-        str: Stereotyper
-        tcd: "Technical director"
-        tch: Teacher
-        ths: "Thesis advisor"
-        tld: "Television director"
-        tlp: "Television producer"
-        trc: Transcriber
-        trl: Translator
-        tyd: "Type designer"
-        tyg: Typographer
-        uvp: "University place"
-        vdg: Videographer
-        voc: Vocalist
-        wac: "Writer of added commentary"
-        wal: "Writer of added lyrics"
-        wam: "Writer of accompanying material"
-        wat: "Writer of added text"
-        wdc: Woodcutter
-        wde: "Wood engraver"
-        wit: Witness
-      name: 
-        marc_relators: "MARC Relators"
-    window: 
-      alert: 
+    window:
+      alert:
         coming_soon: "Coming Soon"
-      modal: 
-        close: Close
+      modal:
+        close: "Close"

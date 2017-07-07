@@ -81,8 +81,8 @@ class AssetsController < ApplicationController
     
     raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @object.status == 'published'
 
-    version = @object.object_version || 1
-    @object.object_version = version.to_i + 1
+    version = @object.object_version || '1'
+    @object.object_version = (version.to_i + 1).to_s
     @object.save
 
     @generic_file.delete
@@ -97,7 +97,7 @@ class AssetsController < ApplicationController
     flash[:notice] = t('dri.flash.notice.asset_deleted')
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: params[:object_id] }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
     end
   end
 
@@ -168,7 +168,7 @@ class AssetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: params[:object_id] }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
       format.json do
         response = { checksum: @file.checksum }
         response[:warnings] = @warnings if @warnings
@@ -235,8 +235,8 @@ class AssetsController < ApplicationController
       filename = "#{@generic_file.id}_#{filename}"
 
       # Update object version
-      version = @object.object_version || 1
-      object_version = version.to_i + 1
+      version = @object.object_version || '1'
+      object_version = (version.to_i + 1).to_s
       @object.object_version = object_version
 
       begin
@@ -309,15 +309,15 @@ class AssetsController < ApplicationController
 
     def surrogate_type_name
       if @generic_file.audio?
-        "mp3"
+        'mp3'
       elsif @generic_file.video?
-        "webm"
+        'webm'
       elsif @generic_file.pdf?
-        "pdf"
+        'pdf'
       elsif @generic_file.text?
-        "rtf"
+        'pdf'
       elsif @generic_file.image?
-        "full_size_web_format"
+        'full_size_web_format'
       end
     end
 

@@ -33,7 +33,7 @@ end
 Given /^I have created an object with title "(.*?)" in the collection(?: with pid "(.*?)")?$/ do |title, collection_pid|
   collection_pid = @collection.id unless collection_pid
   steps %{
-    When I go to the "collection" "show" page for "#{collection_pid}"
+    When I go to the "my collections" "show" page for "#{collection_pid}"
     And I follow the link to add an object
     When I enter valid metadata with title "#{title}"
     And I press the button to "continue"
@@ -99,11 +99,11 @@ end
 
 When /^(?:|I )go to the "([^"]*)" "([^"]*)" page(?: for "([^"]*)")?$/ do |type, page, pid|
   patiently do
-  if(pid.nil? && %w(collection metadata).include?(type))
+  if(pid.nil? && ['my collections', 'collection', 'metadata'].include?(type))
     pid = @collection.id
   elsif(pid.nil? && type == "object")
     pid = @digital_object.id
-  elsif (pid.eql?('the saved pid') && type.eql?("collection"))
+  elsif (pid.eql?('the saved pid') && (type.eql?("collection") || type == 'my collections'))
     pid = @collection_pid ? @collection_pid : @pid
   elsif (pid.eql?('the saved pid') && type.eql?("object"))
     pid = @pid if pid.eql?('the saved pid')
@@ -255,7 +255,7 @@ Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|
   page.find_by_id(modal, :visible=>false).find_by_id(button_to_id(button)).trigger('click')
 end
 
-Then /^(?:|I )press the button to "([^"]*)"(?: within "([^"]*)")?$/ do |button,selector|
+Then /^(?:|I )(press|click) the button to "([^"]*)"(?: within "([^"]*)")?$/ do |action,button,selector|
   Capybara.ignore_hidden_elements = false
   patiently do
     if selector
@@ -263,7 +263,11 @@ Then /^(?:|I )press the button to "([^"]*)"(?: within "([^"]*)")?$/ do |button,s
         page.find_button(button_to_id(button)).click
       end
     else
-      page.find_button(button_to_id(button), {visible: false}).click
+      if action == 'click'
+        page.find_button(button_to_id(button), {visible: false}).trigger('click')
+      else
+        page.find_button(button_to_id(button), {visible: false}).click
+      end
     end
   end
 end

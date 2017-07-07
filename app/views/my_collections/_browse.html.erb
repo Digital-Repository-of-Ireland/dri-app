@@ -1,0 +1,43 @@
+
+<!--overides view params if missing-->
+<% if (params[:view].blank?) %>
+    <% params[:view] = "grid" %>
+<% end %>
+
+<% if (params[:view] == "maps") %>
+    <%= stylesheet_link_tag "blacklight_maps" %>
+<% end %>
+
+<% @page_title = t('blacklight.search.title', :application_name => application_name) %>
+
+<% render_opensearch_response_metadata.html_safe %>
+
+<%= render :partial => 'did_you_mean' %>
+
+<div id="dri_second_navigation_container_id"
+     class="dri_second_navigation_container">
+  <!-- facet block -->
+  <%= render "#{controller_name}/dri_search_form" %>
+    
+  <div class="dri_facet_filters_block" id="sidebar">
+    <%= render :partial => 'facets' %>
+  </div>
+  <!-- close facet block -->
+</div>
+<div id="dri_result_container_id" class="dri_result_container">
+  <% if (@document_list.count > 0) %>
+    <%= render_document_index @document_list %>&nbsp;
+  <% else %>
+      <h4>
+        <%= t('dri.help.no_results_found') %>
+      </h4>
+      <p>
+        <%= t('dri.help.try_looking_for') %>
+        <% if (params[:mode] == "collections") %>
+            <%= t('dri.headerlinks.objects') %>
+        <% else %>
+            <%= t('dri.headerlinks.collections') %>
+        <% end %>
+      </p>
+  <% end %>
+</div><!-- close dri_result_container -->

@@ -22,25 +22,25 @@ Scenario: Ingesting a duplicate Digital Object using metadata file upload
 Scenario: Ingesting a duplicate Digital Object using form input
   Given a collection with title "Test Collection" created by "user1"
   And I have created an object with title "SAMPLE OBJECT A" in the collection
-  When I go to the "collection" "show" page
+  When I go to the "my collections" "show" page
   And I follow the link to add an object
   And I enter valid metadata with title "SAMPLE OBJECT A"
   And I press the button to "continue"
   Then I should see a success message for ingestion
   And I should see the message "Possible duplicate objects found"
 
-@random_pid
+@random_pid 
 Scenario: Creating a duplicate Digital Object by replacing the metadata file
   Given a collection with title "Test Collection" created by "user1"
   And I have created an object with metadata "SAMPLEA.xml" in the collection
   And a Digital Object created by "user1"
   And the object is in the collection
-  When I go to the "object" "show" page
+  When I go to the "object" "modify" page
   And I click the link to edit
   And I attach the metadata file "SAMPLEB.xml"
   And I press the button to "upload metadata"
   Then I should not see the message "Possible duplicate objects found"
-  When I go to the "object" "show" page
+  When I go to the "object" "modify" page
   And I click the link to edit
   And I attach the metadata file "SAMPLEA.xml"
   And I press the button to "upload metadata"

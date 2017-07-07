@@ -1,0 +1,15 @@
+<% # main container for facets/limits menu -%>
+<% if has_facet_values?  %>
+<div id="facets" class="facets sidenav dri_facet_filters" data-content="<%= t('dri.help.facets') %>"
+data-original-title="<%= t('dri.help.facets_title') %>" data-trigger="hover" data-placement="top">
+	<div class="dri_head_title">
+		<a data-toggle="collapse" href="#facet-panel-collapse" aria-expanded="false" aria-controls="Collapse Facets"> <%= t('blacklight.search.facets.title') %> 
+		   <span class="caret"></span> <span class="dri_search_num" id="browse_results_count"><%= @response.response[:numFound] %></span>
+		</a>
+	</div>
+
+	<div id="facet-panel-collapse" class="panel-group facet-non-md" aria-expanded="false">
+		<%= render_facet_partials %>
+	</div>
+</div>
+<% end %>

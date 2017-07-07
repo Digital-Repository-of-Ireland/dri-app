@@ -95,7 +95,7 @@ module Interface
 
     def has_modified_metadata?
       within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_object_container')]") do
-        page.should have_content("Creation Date 2013-01-01")
+        page.should have_content("Creation Date  2013-01-01")
         page.should have_content("Description Editing test")
       end
     end

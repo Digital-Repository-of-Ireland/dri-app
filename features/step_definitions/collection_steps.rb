@@ -103,6 +103,18 @@ Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)
   collection.save
 end
 
+Given /^the collection(?: with pid "(.*?)")? is published?$/ do |colid|
+  colid = @collection.id unless colid
+
+  collection = ActiveFedora::Base.find(colid, {:cast => true})
+  collection.governed_items.each do |o|
+    o.status = 'published'
+    o.save
+  end
+  collection.status = 'published'
+  collection.save
+end
+
 Given /^I have associated the institute "(.?*)" with the collection with pid "(.?*)"$/ do |institute_name,pid|
   if (pid.eql?('the saved pid'))
     pid = @collection_pid ? @collection_pid : @pid

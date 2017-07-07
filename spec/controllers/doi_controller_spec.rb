@@ -30,6 +30,8 @@ describe DoiController do
     sign_in @login_user
 
     @object = FactoryGirl.create(:sound)
+    @object.status = 'published'
+    @object.save
   end
 
   describe "GET show" do

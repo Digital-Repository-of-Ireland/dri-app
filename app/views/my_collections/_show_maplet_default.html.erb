@@ -1,0 +1,12 @@
+<%= stylesheet_link_tag "blacklight_maps" %>
+<% # map for catalog#show view %>
+<div id="blacklight-show-map-container2">
+    <% if @document[blacklight_config.view.maps.geojson_field.to_sym] || @document[blacklight_config.view.maps.coordinates_field.to_sym] %>
+        <% geojson_features = serialize_geojson(@document) %>
+        <%= blacklight_map_tag('blacklight-show-map2',
+                     {data:{
+                     initialzoom:blacklight_config.view.maps.show_initial_zoom,
+                     singlemarkermode:false, searchcontrol:true, placenamefield: blacklight_config.view.maps.placename_field}, style: "height: 400px; width: 100%"}) %>
+        <%= javascript_tag "$('#blacklight-show-map2').blacklight_leaflet_map(#{geojson_features});" %>
+    <% end %>
+</div>

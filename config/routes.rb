@@ -2,7 +2,7 @@ require 'resque/server'
 
 DriApp::Application.routes.draw do
   scope ENV["RAILS_RELATIVE_URL_ROOT"] || "/" do
-    root :to => "catalog#index"
+    root :to => redirect('/catalog?mode=collections&search_field=all_fields')
 
     mount UserGroup::Engine => "/user_groups"
     mount Riiif::Engine => '/images'
@@ -67,6 +67,8 @@ DriApp::Application.routes.draw do
 
     resources :licences
 
+    get 'resource/:object', to: 'resources#show', defaults: { format: 'ttl' }
+
     match 'session/:id' => 'session#create', :via => :get, :as => :lang
 
     match 'error/404' => 'error#404', :via => :get
@@ -101,8 +103,9 @@ DriApp::Application.routes.draw do
     match '/workspace' => 'workspace#index', :via => :get
     match '/admin_tasks' => 'static_pages#admin_tasks', :via => :get
 
-    match '/my_collections' => 'my_collections#index', :via => :get
+    match '/my_collections' => 'my_collections#index', :via => :get, as: :my_collections_index
     match '/my_collections/facet/:id' => 'my_collections#facet', :via => :get
+    match '/my_collections/:id' => 'my_collections#show', :via => :get, as: :my_collections
 
     get 'surrogates/:id' => 'surrogates#show', :as => :surrogates
     put 'surrogates/:id' => 'surrogates#update', :as => :surrogates_generate
