@@ -101,7 +101,7 @@ module FieldRenderHelper
           "<a href=\"" << url_for(
                             { 
                               action: 'index',
-                              controller: 'catalog',
+                              controller: controller_name,
                               facet_arg => standardise_facet(facet: facet_name, value: indexed_value[i])
                             }
                           ) << "\">" << standardise_value(facet_name: facet_name, value: v) << "</a>"
@@ -132,7 +132,7 @@ module FieldRenderHelper
     label = blacklight_config.show_fields[field].label
 
     if label[0, 5] == 'role_'
-      html_escape t('dri.vocabulary.marc_relator.' + label[5, 3])
+      html_escape t('vocabulary.marc_relator.codes.' + label[5, 3])
     else
       html_escape t('dri.views.fields.' + label)
     end
@@ -143,7 +143,7 @@ module FieldRenderHelper
     label = index_fields[field].label
 
     if label[0, 5] == 'role_'
-      html_escape t('dri.vocabulary.marc_relator.' + label[5, 3]) + ":"
+      html_escape t('vocabulary.marc_relator.codes.' + label[5, 3]) + ":"
     else
       html_escape t('dri.views.fields.' + label) + ":"
     end
@@ -217,13 +217,13 @@ module FieldRenderHelper
 
     DRI::Vocabulary.marc_relators.each do |role|
       array_result = @object.send("role_" + role)
-      marc_relator_select_list.push([role + " - " + t("dri.vocabulary.marc_relator." + role), "role_" + role])
+      marc_relator_select_list.push([role + " - " + t("vocabulary.marc_relator.codes." + role), "role_" + role])
       if !array_result.nil? && !array_result.empty?
         qdc_people.merge!("role_" + role => array_result)
       end
     end
 
-    @qdc_people_select_list.push([t('dri.vocabulary.name.marc_relators'), marc_relator_select_list])
+    @qdc_people_select_list.push([t('vocabulary.marc_relator.name'), marc_relator_select_list])
 
     qdc_people
   end

@@ -125,34 +125,32 @@ class MyCollectionsController < ApplicationController
     config.add_index_field solr_name('title', :stored_searchable, type: :string), label: 'title'
     config.add_index_field solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
     config.add_index_field solr_name('creator', :stored_searchable, type: :string), label: 'creators'
-    config.add_index_field solr_name('format', :stored_searchable), label: 'Format:'
+    config.add_index_field solr_name('format', :stored_searchable), label: 'format'
     config.add_index_field solr_name('file_type_display', :stored_searchable, type: :string), label: 'Mediatype'
-    config.add_index_field solr_name('language', :stored_searchable, type: :string), label: 'language', :helper_method => :label_language
+    config.add_index_field solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
     config.add_index_field solr_name('published', :stored_searchable, type: :string), label: 'Published:'
 
     # solr fields to be displayed in the show (single result) view
     # The ordering of the field names is the order of the display
     config.add_show_field solr_name('title', :stored_searchable, type: :string), label: 'title'
     config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), label: 'subtitle:'
-    config.add_show_field solr_name('description', :stored_searchable, type: :string), label: 'description'
-    config.add_show_field solr_name('scope_content', :stored_searchable, type: :string), label: 'scope_content'
-    config.add_show_field solr_name('scopecontent', :stored_searchable, type: :string), label: 'scope_content'
-    config.add_show_field solr_name('abstract', :stored_searchable, type: :string), label: 'abstract'
+    config.add_show_field solr_name('description', :stored_searchable, type: :string), label: 'description', helper_method: :render_description
+    config.add_show_field solr_name('description_eng', :stored_searchable, type: :string), label: 'description_eng', helper_method: :render_description
+    config.add_show_field solr_name('description_gle', :stored_searchable, type: :string), label: 'description_gle', helper_method: :render_description
     config.add_show_field solr_name('creator', :stored_searchable, type: :string), label: 'creators'
     DRI::Vocabulary.marc_relators.each do |role|
       config.add_show_field solr_name('role_' + role, :stored_searchable, type: :string), label: 'role_' + role
     end
-    config.add_show_field solr_name('bioghist', :stored_searchable, type: :string), label: 'bioghist'
     config.add_show_field solr_name('contributor', :stored_searchable, type: :string), label: 'contributors'
-    config.add_show_field solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true
-    config.add_show_field solr_name('published_date', :stored_searchable), label: 'published_date', date: true
+    config.add_show_field solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true, helper_method: :parse_era
+    config.add_show_field solr_name('publisher', :stored_searchable), label: 'publishers'
+    config.add_show_field solr_name('published_date', :stored_searchable), label: 'published_date', date: true, helper_method: :parse_era
+    config.add_show_field solr_name('date', :stored_searchable), label: 'date', date: true, helper_method: :parse_era
     config.add_show_field solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
     config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), label: 'geographical_coverage'
     config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), label: 'temporal_coverage'
     config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), label: 'name_coverage'
-    config.add_show_field solr_name('format', :stored_searchable), label: 'Format:'
-    config.add_show_field solr_name('physdesc', :stored_searchable), label: 'physdesc'
-    # config.add_show_field solr_name('object_type', :stored_searchable, type: :string), label: 'format'
+    config.add_show_field solr_name('format', :stored_searchable), label: 'format'
     config.add_show_field solr_name('type', :stored_searchable, type: :string), label: 'type'
     config.add_show_field solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
     config.add_show_field solr_name('source', :stored_searchable, type: :string), label: 'sources'
@@ -176,7 +174,6 @@ class MyCollectionsController < ApplicationController
     # This one uses all the defaults set by the solr request handler. Which
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise.
-
     config.add_search_field 'all_fields', label: 'All Fields'
 
     # Now we see how to over-ride Solr request handler defaults, in this

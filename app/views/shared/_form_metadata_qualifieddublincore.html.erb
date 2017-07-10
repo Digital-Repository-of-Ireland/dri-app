@@ -21,7 +21,7 @@
 	<div class="dri_file_upload">
 		<% unless @object[:cover_image].blank? %>
 		<div class="dri_cover_image_img">
-			<%= image_tag @object[:cover_image], :width=>"228" unless @object[:cover_image].blank? %>
+			<%= image_tag cover_image_path(@object), :width=>"228" unless @object[:cover_image].blank? %>
 			<h2>Current Image</h2>
 		</div>
 		<% end %>
