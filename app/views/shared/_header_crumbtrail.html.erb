@@ -42,7 +42,7 @@
               my_collections_path(@collection), id: 'view_collection' ) %>
         <% else %>
           <%= link_to( t('dri.views.objects.legends.view_collection'), 
-              url_for_document(@collection), id: 'view_collection' ) %>
+              url_for_document(@collection.id), id: 'view_collection' ) %>
         <% end %>
       </li>
     </ol>

@@ -210,7 +210,7 @@ $('#dri_pdf_viewer_modal_id .modal-content').resizable({
       minHeight: 300,
       minWidth: 300
     });
-    $('#dri_pdf_viewer_modal_id .modal-dialog').draggable();
+    $('#dri_pdf_viewer_modal_id .modal-content').draggable({handle: "#dri_pdf_header"});
 
     $('#dri_pdf_viewer_modal_id').on('show.bs.modal', function() {
       $(this).find('.modal-body').css({
