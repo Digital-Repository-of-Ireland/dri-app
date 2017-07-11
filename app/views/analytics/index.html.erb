@@ -1,10 +1,22 @@
-<table id="datatable_user_activity" class="display" data-source="<%= analytics_url(report: "1", format: "json", protocol: Rails.application.config.action_mailer.default_url_options[:protocol]) %>">
+<h3><%= t('dri.datatables.analytics.header') %></h3>
+
+<%= form_tag({:controller => "analytics", :action => "index"}, :method => "get") do %>
+<table>
+<tr>
+<td style="width: 20%;"><%= label_tag(:start, t('dri.datatables.analytics.start') ) %>
+<%= text_field_tag(:startdate, @startdate) %><td>
+<td style="width: 20%;"><%= label_tag(:end, t('dri.datatables.analytics.end') ) %>
+<%= text_field_tag(:enddate, @enddate) %></td>
+<td style="width: 20%;"><%= submit_tag("Filter", :name => nil) %></td>
+</tr>
+</table>
+<% end %>
+
+<table id="datatable_my_collections" class="display" data-source="<%= analytics_url(startdate: @startdate, enddate: @enddate, format: "json", protocol: Rails.application.config.action_mailer.default_url_options[:protocol]) %>">
   <thead>
     <tr>
-      <th><%= t('dri.datatables.activity.updated_at') %></th>
-      <th><%= t('dri.datatables.user_activity.type') %></th>
-      <th><%= t('dri.datatables.user_activity.item') %></th>
-      <th><%= t('dri.datatables.user_activity.event') %></th>
+      <th><%= t('dri.datatables.analytics.columns.collection_title') %></th>
+      <th><%= t('dri.datatables.analytics.columns.visits') %></th>
     </tr>
   </thead>
   <tbody>

@@ -4,10 +4,12 @@ class AnalyticsController < ApplicationController
   def index
     if signed_in? && (current_user.is_admin? || current_user.is_om? || current_user.is_cm?)
 
+      @startdate = params[:startdate] || Date.today.at_beginning_of_month() 
+      @enddate = params[:enddate] || Date.today
       respond_to do |format|
         format.html
         format.json do
-          render json: CollectionViewsDatatable.new(view_context)
+          render json: MyCollectionsDatatable.new(view_context)
         end
       end
     else

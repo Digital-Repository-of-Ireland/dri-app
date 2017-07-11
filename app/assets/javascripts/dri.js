@@ -253,6 +253,23 @@ $(document).ready(function() {
 } );
 
 $(document).ready(function() {
+    var table = $('#datatable_my_collections').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "order": [[ 0, "desc" ]],
+        "ajax": $('#datatable_my_collections').data('source'),
+        "searching": false,
+        columnDefs: [
+          { targets: '_all', orderable: true },
+          { targets: '_all', searchable: false }
+        ]
+    } );
+
+} );
+
+
+
+$(document).ready(function() {
   var opts = {
     lines: 13, // The number of lines to draw
     length: 20, // The length of each line
@@ -274,4 +291,5 @@ $(document).ready(function() {
 
   var target = document.getElementById('dri_loading_spinner_center');
   var spinner = new Spinner(opts).spin(target);
+
 } );
