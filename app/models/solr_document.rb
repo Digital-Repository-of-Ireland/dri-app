@@ -72,6 +72,14 @@ class SolrDocument
     self[collection_key].present? ? self[collection_key][0] : nil
   end
 
+  def contains_images?
+    files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
+    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{id}"
+    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
+    
+    ActiveFedora::SolrService.count(files_query) > 0
+  end
+
   def doi
     doi_key = ActiveFedora.index_field_mapper.solr_name('doi')
 

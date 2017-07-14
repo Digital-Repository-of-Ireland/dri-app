@@ -21,7 +21,7 @@ module DRI::Solr::Document::File
 
     assets
   end
-
+  
   def preservation_only?
     key = 'preservation_only_tesim'
 
