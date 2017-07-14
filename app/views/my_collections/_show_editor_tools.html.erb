@@ -63,7 +63,7 @@
     <% end %>
   <% end %>
 
-  <% unless @document.status == 'published' %>
+  <% if @document.status != 'published' || current_user.is_admin? %>
     <li>
       <%= form_tag status_update_path(@document.id) ,:method => :put do %>
         <% if @document.draft? %>
@@ -72,6 +72,9 @@
         <% elsif @document.status == 'reviewed' %>
           <%= hidden_field_tag( :status, "draft") %>
           <span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update', :class => "pull-right dri_button_red_small" %>
+        <% elsif current_user.is_admin? %>
+          <%= hidden_field_tag( :status, "draft") %>
+          <span class="label label-danger"><%= t('dri.views.catalog.links.published') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update', :class => "pull-right dri_button_red_small" %>
         <% end %>
       <% end %>
     </li>  

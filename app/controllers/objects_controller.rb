@@ -185,7 +185,7 @@ class ObjectsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
 
-    if @object.status != 'published'
+    if @object.status != 'published' || current_user.is_admin?
       # Do the preservation actions
       version = @object.object_version || '1'
       @object.object_version = (version.to_i + 1).to_s
@@ -333,7 +333,7 @@ class ObjectsController < BaseObjectsController
 
     raise DRI::Exceptions::BadRequest if @object.collection?
 
-    unless @object.status == 'published'
+    if @object.status != 'published' || current_user.is_admin?
       @object.status = params[:status] if params[:status].present?
       version = @object.object_version || '1'
       @object.object_version = (version.to_i + 1).to_s

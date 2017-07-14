@@ -15,7 +15,7 @@ describe ObjectsController do
   describe 'destroy' do
     
     before(:each) do
-      @login_user = FactoryGirl.create(:admin)
+      @login_user = FactoryGirl.create(:collection_manager)
       sign_in @login_user
     end
 
@@ -24,23 +24,58 @@ describe ObjectsController do
     end
 
     it 'should delete a draft object' do
+      collection = FactoryGirl.create(:collection)
+      collection.depositor = User.find_by_email(@login_user.email).to_s
+      collection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      collection.discover_groups_string="public"
+      collection.read_groups_string="registered"
+      collection.creator = [@login_user.email]
+
+      object = FactoryGirl.create(:sound) 
+      object[:status] = "draft"
+      object.depositor=User.find_by_email(@login_user.email).to_s
+      object.manager_users_string=User.find_by_email(@login_user.email).to_s
+      object.creator = [@login_user.email]  
+  
+      object.save
+
+      collection.governed_items << object
+
+      expect {
+        delete :destroy, :id => object.id
+      }.to change { ActiveFedora::Base.exists?(object.id) }.from(true).to(false)
+
+      collection.reload
+      collection.delete
+    end
+
+    it 'should not delete a published object for non-admin' do
       @collection = FactoryGirl.create(:collection)
-   
+      @collection.depositor = User.find_by_email(@login_user.email).to_s
+      @collection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      @collection.discover_groups_string="public"
+      @collection.read_groups_string="registered"
+      @collection.creator = [@login_user.email]
+
       @object = FactoryGirl.create(:sound) 
-      @object[:status] = "draft"
+      @object[:status] = "published"
       @object.save
 
       @collection.governed_items << @object
 
-      expect {
-        delete :destroy, :id => @object.id
-      }.to change { ActiveFedora::Base.exists?(@object.id) }.from(true).to(false)
+      delete :destroy, :id => @object.id
+
+      expect(ActiveFedora::Base.exists?(@object.id)).to be true
 
       @collection.reload
       @collection.delete
     end
 
-    it 'should not delete a published object' do
+    it 'should delete a published object for an admin' do
+      sign_out @login_user
+      @admin_user = FactoryGirl.create(:admin)
+      sign_in @admin_user
+
       @collection = FactoryGirl.create(:collection)
    
       @object = FactoryGirl.create(:sound) 
@@ -51,7 +86,7 @@ describe ObjectsController do
 
       delete :destroy, :id => @object.id
 
-      expect(ActiveFedora::Base.exists?(@object.id)).to be true
+      expect(ActiveFedora::Base.exists?(@object.id)).to be false
 
       @collection.reload
       @collection.delete
@@ -110,9 +145,14 @@ describe ObjectsController do
   describe 'status' do
 
     before(:each) do
-      @login_user = FactoryGirl.create(:admin)
+      @login_user = FactoryGirl.create(:collection_manager)
       sign_in @login_user
       @collection = FactoryGirl.create(:collection)
+      @collection.depositor = User.find_by_email(@login_user.email).to_s
+      @collection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      @collection.discover_groups_string="public"
+      @collection.read_groups_string="registered"
+      @collection.creator = [@login_user.email]
    
       @object = FactoryGirl.create(:sound) 
       @object[:status] = "draft"
