@@ -1,11 +1,13 @@
 <div id="dri_download_assets" class="<%= generic_file.id %>" style="display:none">
-  <div>
-     <%= link_to file_download_path(@document.id, generic_file.id, type: 'surrogate') do %>
-     <i class="fa fa-download"></i>
-   <% end %>
-   <%= label_tag(:surrogate, t('dri.views.catalog.forms.download_surrogate')) %>
-  </div>
-
+  <% if surrogate %>
+    <div>
+       <%= link_to file_download_path(@document.id, generic_file.id, type: 'surrogate') do %>
+       <i class="fa fa-download"></i>
+     <% end %>
+     <%= label_tag(:surrogate, t('dri.views.catalog.forms.download_surrogate')) %>
+    </div>
+  <% end %>
+  
    <% if @document.read_master? || (can? :edit, @document) %>
    <div>
      <%= link_to file_download_path(@document.id, generic_file.id, type: 'masterfile') do %>
