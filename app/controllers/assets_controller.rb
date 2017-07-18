@@ -45,6 +45,7 @@ class AssetsController < ApplicationController
     when 'surrogate'
       @generic_file = retrieve_object! params[:id]
       if @generic_file
+        Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.batch.governing_collection_id, "Download",  @generic_file.batch_id, 1, true) 
         download_surrogate(surrogate_type_name)
         return
       end
@@ -56,6 +57,7 @@ class AssetsController < ApplicationController
       if @generic_file
         can_view?
 
+        Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.batch.governing_collection_id, "Download", @generic_file.batch_id, 1, true)
         lfile = local_file
         if lfile
           response.headers['Content-Length'] = File.size?(lfile.path).to_s

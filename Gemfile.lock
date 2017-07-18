@@ -323,6 +323,7 @@ GEM
       railties (>= 3.2, < 5.1)
     formatador (0.2.5)
     fssm (0.2.10)
+    gabba (1.0.1)
     gherkin (3.2.0)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
@@ -868,6 +869,7 @@ DEPENDENCIES
   fcrepo_wrapper (= 0.6.0)
   feedjira
   font-awesome-rails
+  gabba
   google-analytics-rails (= 1.1.0)
   google-api-client (= 0.8.6)
   guard
@@ -932,4 +934,4 @@ DEPENDENCIES
   zeus
 
 BUNDLED WITH
-   1.14.6
+   1.15.0
