@@ -185,7 +185,7 @@ class ObjectsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
 
-    if @object.status != 'published'
+    if @object.status != 'published' || current_user.is_admin?
       # Do the preservation actions
       version = @object.object_version || '1'
       @object.object_version = (version.to_i + 1).to_s
@@ -308,6 +308,8 @@ class ObjectsController < BaseObjectsController
                 buffer: 4096,
                 disposition: "attachment; filename=\"#{id}.zip\";",
                 url_based_filename: true
+
+          Gabba::Gabba.new(GA.tracker, request.host).event(object.governing_collection_id, "Download", object.id, 1, true)
           file_sent = true
         else
           flash[:error] = t('dri.flash.error.download_no_file')
@@ -333,7 +335,7 @@ class ObjectsController < BaseObjectsController
 
     raise DRI::Exceptions::BadRequest if @object.collection?
 
-    unless @object.status == 'published'
+    if @object.status != 'published' || current_user.is_admin?
       @object.status = params[:status] if params[:status].present?
       version = @object.object_version || '1'
       @object.object_version = (version.to_i + 1).to_s
