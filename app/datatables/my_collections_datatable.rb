@@ -2,7 +2,7 @@ require 'legato'
 require 'signet/oauth_2/client'
 
 class MyCollectionsDatatable
-  delegate :current_user, :params, :link_to, to: :@view
+  delegate :current_user, :params, :catalog_path, :link_to, to: :@view
   delegate :user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
   def initialize(view)
@@ -38,59 +38,48 @@ class MyCollectionsDatatable
   end
 
   def as_json(options = {})
+    tabledata = data
     {
-      recordsTotal: audit.size,
-      recordsFiltered: audit.size,
-      data: data
+      recordsTotal: tabledata[1],
+      recordsFiltered: tabledata[1],
+      data: tabledata[0]
     }
   end
 
 private
 
   def data
-    display_on_page.map do |entry|
+
+    collections = get_collections()
+    collection_hash = get_collection_names(collections)
+ 
+    data = display_on_page(collections)
+    formatted_data = data.map do |entry|
       [
-       entry.dimension1,
+       link_to(collection_hash[entry.dimension1], catalog_path(entry.dimension1)),
        entry.users,
       ]
     end
-  end
-
-  def audit
-    @audit ||= fetch_analytics
+    return formatted_data, data.total_count
   end
 
   # Get collections for which we have manage permissions
   # TODO consider admin
   # if none then just return empty array
   # else get analytics for these collection ids and return analytics
-  def fetch_analytics
-    collections = get_collections()
+  def fetch_analytics(collections)
     return collections if collections.empty?
-
-    # get collection names
-    query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(collections)
-    object_docs = ActiveFedora::SolrService.query(query,
-                  :'fl' => "id, #{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}" )
-    collection_hash = {}
-    object_docs.map { |o| collection_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
 
     @startdate = params[:startdate] || Date.today.at_beginning_of_month()
     @enddate = params[:enddate] || Date.today
 
-
     analytics = CollectionStats.results(@profile, :start_date => @startdate, :end_date => @enddate, :sort => sort_column).collections(*collections).to_a
 
-    analytics.each do |a|
-      a.dimension1 = collection_hash[a.dimension1]
-    end
-
     return analytics
-
   end
 
-  def display_on_page 
-    Kaminari.paginate_array(fetch_analytics).page(page).per(per_page)
+  def display_on_page(collections)
+    return Kaminari.paginate_array(fetch_analytics(collections)).page(page).per(per_page)
   end 
 
   def page
@@ -151,6 +140,15 @@ private
     end
 
     return collections
+  end
+
+  def get_collection_names(collections)
+    query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(collections)
+    object_docs = ActiveFedora::SolrService.query(query,
+                  :'fl' => "id, #{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}" )
+    collection_hash = {}
+    object_docs.map { |o| collection_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
+    return collection_hash
   end
     
 end
