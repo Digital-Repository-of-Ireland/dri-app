@@ -145,6 +145,7 @@ end
 
 # analytics
 gem 'google-analytics-rails', '1.1.0'
+gem 'gabba'
 
 gem 'rvm'
 
