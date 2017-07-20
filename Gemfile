@@ -45,6 +45,7 @@ gem 'mimemagic'
 # Language and translation related gems
 gem 'http_accept_language'
 gem 'it'
+gem 'i18n-tasks', '~> 0.9.15'
 
 # logging
 gem 'syslog-logger'
@@ -144,6 +145,7 @@ end
 
 # analytics
 gem 'google-analytics-rails', '1.1.0'
+gem 'gabba'
 
 gem 'rvm'
 
