@@ -262,6 +262,10 @@ class CatalogController < ApplicationController
 
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 
+    if @document.published?
+      Gabba::Gabba.new(GA.tracker, request.host).event(@document.root_collection_id, "View",  @document.id, 1, true)
+    end
+
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
       format.json do
