@@ -310,7 +310,7 @@ class ObjectsController < BaseObjectsController
                 url_based_filename: true
 
           if object.published?
-            Gabba::Gabba.new(GA.tracker, request.host).event(object.governing_collection_id, "Download", object.id, 1, true)
+            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.id, 1, true)
           end
           file_sent = true
         else
