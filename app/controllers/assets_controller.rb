@@ -46,7 +46,7 @@ class AssetsController < ApplicationController
       @generic_file = retrieve_object! params[:id]
       if @generic_file
         if @generic_file.batch.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.batch.governing_collection_id, "Download",  @generic_file.batch_id, 1, true) 
+          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.batch.root_collection.first, "Download",  @generic_file.batch_id, 1, true) 
         end
         download_surrogate(surrogate_type_name)
         return
@@ -60,7 +60,7 @@ class AssetsController < ApplicationController
         can_view?
 
         if @generic_file.batch.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.batch.governing_collection_id, "Download", @generic_file.batch_id, 1, true)
+          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.batch.root_collection.first, "Download", @generic_file.batch_id, 1, true)
         end
         lfile = local_file
         if lfile
