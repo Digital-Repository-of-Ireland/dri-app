@@ -56,8 +56,9 @@ private
     data = display_on_page(collections)
     formatted_data = data.map do |entry|
       [
-       link_to(collection_hash[entry.dimension1], catalog_path(entry.dimension1)),
-       entry.users,
+       link_to(entry[:title], catalog_path(entry[:dimension1])),
+       entry[:users],
+       entry[:totalEvents]
       ]
     end
     return formatted_data, data.total_count
@@ -73,7 +74,21 @@ private
     @startdate = params[:startdate] || Date.today.at_beginning_of_month()
     @enddate = params[:enddate] || Date.today
 
-    analytics = CollectionStats.results(@profile, :start_date => @startdate, :end_date => @enddate, :sort => sort_column).collections(*collections).to_a
+    views = AnalyticsCollectionUsers.results(@profile, :start_date => @startdate, :end_date => @enddate).collections(*collections).to_a
+    downloads = AnalyticsCollectionEvents.results(@profile, :start_date => @startdate, :end_date => @enddate).collections(*collections).action('Download').to_a
+
+    downloads.map{|r| r[:dimension1] = r.delete_field(:eventCategory) }
+    analytics = (views+downloads).map{|a| a.to_h }.group_by{|h| h[:dimension1] }.map{|k,v| v.reduce({}, :merge)}
+
+    collection_hash = get_collection_names(collections)
+    analytics.map{ |r| r[:title] = collection_hash[r[:dimension1]] }
+
+    if sort_column.eql?('title')
+      analytics.sort_by! { |hsh| hsh[sort_column.to_sym] }
+    else
+      analytics.sort_by! { |hsh| hsh[sort_column.to_sym].to_i }
+    end
+    analytics.reverse! if sort_direction.eql?('desc')
 
     return analytics
   end
@@ -91,13 +106,8 @@ private
   end
 
   def sort_column
-    columns = %w[dimension1 users]
-    columns[params[:order][:'0'][:column].to_i]
-    if params[:order][:'0'][:dir].eql?("desc")
-      return "-"+columns[params[:order][:'0'][:column].to_i] 
-    else
-      return columns[params[:order][:'0'][:column].to_i]
-    end
+    columns = %w[title users totalEvents]
+    return columns[params[:order][:'0'][:column].to_i]
   end
 
   def sort_direction
