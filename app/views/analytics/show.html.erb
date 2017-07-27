@@ -1,0 +1,42 @@
+<h3><%= t('dri.datatables.analytics.header') %></h3>
+
+<div>
+<%= t('dri.datatabse.analytics.columns.collection_title') %>  <%= @document.title.first %>
+</div>
+
+<div>
+<%= t('dri.datatabse.analytics.columns.url') %>  <%= link_to(catalog_path(@document), catalog_path(@document)) %>
+</div>
+
+<div>
+<%= t('dri.datatabse.analytics.columns.subcollections') %>  <%= @document.published_subcollections %>
+</div>
+
+<% objectsCount = count_items_in_collection @document.id %>
+<div>
+<%= render partial: 'shared/show_collection_object_type_links', :locals => {:document => @document, :objectsCount => objectsCount} %>
+</div>
+
+<%= form_tag({:controller => "analytics", :action => "index"}, :method => "get") do %>
+<table>
+<tr>
+<td style="width: 20%;"><%= label_tag(:start, t('dri.datatables.analytics.start') ) %>
+<%= text_field_tag(:startdate, @startdate) %><td>
+<td style="width: 20%;"><%= label_tag(:end, t('dri.datatables.analytics.end') ) %>
+<%= text_field_tag(:enddate, @enddate) %></td>
+<td style="width: 20%;"><%= submit_tag("Filter", :name => nil) %></td>
+</tr>
+</table>
+<% end %>
+
+<table id="datatable_my_collections" class="display" data-source="<%= analytics_url(startdate: @startdate, enddate: @enddate, format: "json", protocol: Rails.application.config.action_mailer.default_url_options[:protocol]) %>">
+  <thead>
+    <tr>
+      <th><%= t('dri.datatables.analytics.columns.object_title') %></th>
+      <th><%= t('dri.datatables.analytics.columns.visits') %></th>
+      <th><%= t('dri.datatables.analytics.columns.downloads') %></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>

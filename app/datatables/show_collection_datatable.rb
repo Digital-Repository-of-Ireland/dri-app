@@ -1,8 +1,8 @@
 require 'legato'
 require 'signet/oauth_2/client'
 
-class MyCollectionsDatatable
-  delegate :current_user, :params, :analytic_path, :link_to, to: :@view
+class ShowCollectionDatatable
+  delegate :current_user, :params, :catalog_path, :link_to, to: :@view
   delegate :user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
   def initialize(view)
@@ -55,7 +55,7 @@ private
     data = display_on_page(collections)
     formatted_data = data.map do |entry|
       [
-       link_to(entry[:title], analytic_path(entry[:dimension1])),
+       link_to(entry[:title], catalog_path(entry[:dimension1])),
        entry[:users],
        entry[:totalEvents]
       ]
@@ -73,14 +73,15 @@ private
     @startdate = params[:startdate] || Date.today.at_beginning_of_month()
     @enddate = params[:enddate] || Date.today
 
-    views = AnalyticsCollectionUsers.results(@profile, :start_date => @startdate, :end_date => @enddate).collections(*collections).to_a
-    downloads = AnalyticsCollectionEvents.results(@profile, :start_date => @startdate, :end_date => @enddate).collections(*collections).action('Download').to_a
+    views = AnalyticsObjectUsers.results(@profile, :start_date => @startdate, :end_date => @enddate).collections(*collections).to_a
+    downloads = AnalyticsObjectEvents.results(@profile, :start_date => @startdate, :end_date => @enddate).collections(*collections).action('Download').to_a
 
-    downloads.map{|r| r[:dimension1] = r.delete_field(:eventCategory) }
-    analytics = (views+downloads).map{|a| a.to_h }.group_by{|h| h[:dimension1] }.map{|k,v| v.reduce({}, :merge)}
+    downloads.map{|r| r[:dimension3] = r.delete_field(:eventLabel) }
+    analytics = (views+downloads).map{|a| a.to_h }.group_by{|h| h[:dimension3] }.map{|k,v| v.reduce({}, :merge)}
 
+    object_hash = get_object_names(collection)
     collection_hash = get_collection_names(collections)
-    analytics.map{ |r| r[:title] = collection_hash[r[:dimension1]] }
+    analytics.map{ |r| r[:title] = collection_hash[r[:dimension3]] }
 
     if sort_column.eql?('title')
       analytics.sort_by! { |hsh| hsh[sort_column.to_sym] }
@@ -119,6 +120,15 @@ private
 
   def end
     params[:end]
+  end
+
+  def item_id(entry)
+    if entry.item_type == 'UserGroup::User'
+        user = UserGroup::User.find(entry.item_id)
+        user.nil? ? entry.item_id : link_to(UserGroup::User.find(entry.item_id).to_s, user_path(entry.item_id))
+    elsif entry.item_type == 'UserGroup::Membership'
+      entry.item_id
+    end
   end
 
   def get_collections()

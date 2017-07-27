@@ -27,3 +27,13 @@ doi:
   enable: "false"
 iiif:
   server: http://localhost:3000/iiif
+analytics:
+  disable: true
+  profile_id: '80821501'
+  token_credential_uri: 'https://accounts.google.com/o/oauth2/token'
+  audience: 'https://accounts.google.com/o/oauth2/token'
+  scope: 'https://www.googleapis.com/auth/analytics.readonly'
+  issuer: 'dri-webapp-viewer@driapi-169411.iam.gserviceaccount.com'
+  sub: 'dri-webapp-viewer@driapi-169411.iam.gserviceaccount.com'
+  keyfile: 'DRIAPI-14b539c1bdde.p12'
+  secret: 'notasecret'
