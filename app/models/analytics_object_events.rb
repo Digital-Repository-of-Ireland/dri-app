@@ -1,7 +1,7 @@
-class AnalyticsCollectionEvents
+class AnalyticsObjectEvents
     extend Legato::Model
 
-    filter :collections, &lambda {|*collections| collections.map {|collectionid| matches(:eventCategory, collectionid)}}
+    filter :collection, &lambda {|collection| matches(:eventCategory, collection)}
     filter :action, &lambda {|action| matches(:eventAction, action)}
 
     metrics :totalEvents, :uniqueEvents

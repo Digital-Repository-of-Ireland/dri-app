@@ -29,7 +29,7 @@
 </table>
 <% end %>
 
-<table id="datatable_my_collections" class="display" data-source="<%= analytics_url(startdate: @startdate, enddate: @enddate, format: "json", protocol: Rails.application.config.action_mailer.default_url_options[:protocol]) %>">
+<table id="datatable_show_collection" class="display" data-source="<%= analytic_url(@document.id, startdate: @startdate, enddate: @enddate, format: "json", protocol: Rails.application.config.action_mailer.default_url_options[:protocol]) %>">
   <thead>
     <tr>
       <th><%= t('dri.datatables.analytics.columns.object_title') %></th>

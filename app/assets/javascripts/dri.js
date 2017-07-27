@@ -267,6 +267,21 @@ $(document).ready(function() {
 
 } );
 
+$(document).ready(function() {
+    var table = $('#datatable_show_collection').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "order": [[ 0, "desc" ]],
+        "ajax": $('#datatable_show_collection').data('source'),
+        "searching": false,
+        columnDefs: [
+          { targets: '_all', orderable: true },
+          { targets: '_all', searchable: false }
+        ]
+    } );
+
+} );
+
 
 
 $(document).ready(function() {

@@ -2,7 +2,7 @@ require 'legato'
 require 'signet/oauth_2/client'
 
 class ShowCollectionDatatable
-  delegate :current_user, :params, :catalog_path, :link_to, to: :@view
+  delegate :current_user, :params, :catalog_path, :link_to, :collection_children_query, to: :@view
   delegate :user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
   def initialize(view)
@@ -49,13 +49,10 @@ private
 
   def data
 
-    collections = get_collections()
-    collection_hash = get_collection_names(collections)
- 
-    data = display_on_page(collections)
+    data = display_on_page(collection_id)
     formatted_data = data.map do |entry|
       [
-       link_to(entry[:title], catalog_path(entry[:dimension1])),
+       link_to(entry[:title], catalog_path(entry[:dimension3])),
        entry[:users],
        entry[:totalEvents]
       ]
@@ -67,21 +64,15 @@ private
   # TODO consider admin
   # if none then just return empty array
   # else get analytics for these collection ids and return analytics
-  def fetch_analytics(collections)
-    return collections if collections.empty?
-
-    @startdate = params[:startdate] || Date.today.at_beginning_of_month()
-    @enddate = params[:enddate] || Date.today
-
-    views = AnalyticsObjectUsers.results(@profile, :start_date => @startdate, :end_date => @enddate).collections(*collections).to_a
-    downloads = AnalyticsObjectEvents.results(@profile, :start_date => @startdate, :end_date => @enddate).collections(*collections).action('Download').to_a
+  def fetch_analytics(collection)
+    views = AnalyticsObjectUsers.results(@profile, :start_date => startdate, :end_date => enddate).collection(collection).to_a
+    downloads = AnalyticsObjectEvents.results(@profile, :start_date => startdate, :end_date => enddate).collection(collection).action('Download').to_a
 
     downloads.map{|r| r[:dimension3] = r.delete_field(:eventLabel) }
     analytics = (views+downloads).map{|a| a.to_h }.group_by{|h| h[:dimension3] }.map{|k,v| v.reduce({}, :merge)}
 
     object_hash = get_object_names(collection)
-    collection_hash = get_collection_names(collections)
-    analytics.map{ |r| r[:title] = collection_hash[r[:dimension3]] }
+    analytics.map{ |r| r[:title] = object_hash[r[:dimension3]] }
 
     if sort_column.eql?('title')
       analytics.sort_by! { |hsh| hsh[sort_column.to_sym] }
@@ -93,8 +84,8 @@ private
     return analytics
   end
 
-  def display_on_page(collections)
-    return Kaminari.paginate_array(fetch_analytics(collections)).page(page).per(per_page)
+  def display_on_page(collection)
+    return Kaminari.paginate_array(fetch_analytics(collection)).page(page).per(per_page)
   end 
 
   def page
@@ -114,12 +105,16 @@ private
     params[:order][:'0'][:dir] == "desc" ? "desc" : "asc"
   end
 
-  def start
-    params[:start]
+  def startdate
+    params[:startdate] || Date.today.at_beginning_of_month()
+  end
+  
+  def enddate
+    params[:enddate] || Date.today
   end
 
-  def end
-    params[:end]
+  def collection_id
+    params[:id]
   end
 
   def item_id(entry)
@@ -131,34 +126,13 @@ private
     end
   end
 
-  def get_collections()
-    collections = []
-
-    query = "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
-    solr_query = Solr::Query.new(
-      query,
-      100,
-      { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
-            "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
-    )
-
-    while solr_query.has_more?
-      objects = solr_query.pop
-      objects.each do |object|
-        collections.push(object['id'])
-      end
-    end
-
-    return collections
-  end
-
-  def get_collection_names(collections)
-    query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(collections)
+  def get_object_names(collection_id)
+    query = collection_children_query(collection_id)
     object_docs = ActiveFedora::SolrService.query(query,
                   :'fl' => "id, #{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}" )
-    collection_hash = {}
-    object_docs.map { |o| collection_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
-    return collection_hash
+    object_hash = {}
+    object_docs.map { |o| object_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
+    return object_hash
   end
     
 end

@@ -70,11 +70,8 @@ private
   def fetch_analytics(collections)
     return collections if collections.empty?
 
-    @startdate = params[:startdate] || Date.today.at_beginning_of_month()
-    @enddate = params[:enddate] || Date.today
-
-    views = AnalyticsCollectionUsers.results(@profile, :start_date => @startdate, :end_date => @enddate).collections(*collections).to_a
-    downloads = AnalyticsCollectionEvents.results(@profile, :start_date => @startdate, :end_date => @enddate).collections(*collections).action('Download').to_a
+    views = AnalyticsCollectionUsers.results(@profile, :start_date => startdate, :end_date => enddate).collections(*collections).to_a
+    downloads = AnalyticsCollectionEvents.results(@profile, :start_date => startdate, :end_date => enddate).collections(*collections).action('Download').to_a
 
     downloads.map{|r| r[:dimension1] = r.delete_field(:eventCategory) }
     analytics = (views+downloads).map{|a| a.to_h }.group_by{|h| h[:dimension1] }.map{|k,v| v.reduce({}, :merge)}
@@ -113,12 +110,12 @@ private
     params[:order][:'0'][:dir] == "desc" ? "desc" : "asc"
   end
 
-  def start
-    params[:start]
+  def startdate
+    params[:startdate] || Date.today.at_beginning_of_month()
   end
 
-  def end
-    params[:end]
+  def enddate
+    params[:enddate] || Date.today
   end
 
   def get_collections()
