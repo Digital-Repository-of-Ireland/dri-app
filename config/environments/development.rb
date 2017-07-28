@@ -43,5 +43,8 @@ DriApp::Application.configure do
 
   config.eager_load = false
 
+  # google analytics
+  GA.tracker = "UA-94005055-1"
+
   Deprecation.default_deprecation_behavior = :silence
 end

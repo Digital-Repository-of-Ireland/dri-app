@@ -1,0 +1,10 @@
+analytics:
+  disable: false
+  profile_id: '143279130'
+  token_credential_uri: 'https://accounts.google.com/o/oauth2/token'
+  audience: 'https://accounts.google.com/o/oauth2/token'
+  scope: 'https://www.googleapis.com/auth/analytics.readonly'
+  issuer: 'dri-devel@dri-test-175113.iam.gserviceaccount.com'
+  sub: 'dri-devel@dri-test-175113.iam.gserviceaccount.com'
+  keyfile: 'DRI-Test-10b535184d6f.p12'
+  secret: 'notasecret'
