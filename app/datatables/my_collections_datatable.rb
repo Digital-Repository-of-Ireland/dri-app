@@ -8,9 +8,6 @@ class MyCollectionsDatatable
   def initialize(view)
     @view = view
 
-    cert_path = Gem.loaded_specs['google-api-client'].full_gem_path+'/lib/cacerts.pem'
-    ENV['SSL_CERT_FILE'] = cert_path
-
     keypath = Rails.root.join('config',Settings.analytics.keyfile).to_s
     key         = OpenSSL::PKCS12.new(File.read(keypath), Settings.analytics.secret).key
     auth_client = Signet::OAuth2::Client.new(

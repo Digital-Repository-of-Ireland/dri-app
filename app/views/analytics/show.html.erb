@@ -18,7 +18,7 @@
 <%= render partial: 'shared/show_collection_object_type_links', :locals => {:document => @document, :objectsCount => objectsCount} %>
 </div>
 
-<%= form_tag({:controller => "analytics", :action => "index"}, :method => "get") do %>
+<%= form_tag({:controller => "analytics", :action => "show", :id => @document.id}, :method => "get") do %>
 <table>
 <tr>
 <td style="width: 20%;"><%= label_tag(:start, t('dri.datatables.analytics.start') ) %>
