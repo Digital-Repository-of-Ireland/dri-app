@@ -141,10 +141,12 @@ private
 
   def get_collection_names(collections)
     query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(collections)
-    object_docs = ActiveFedora::SolrService.query(query,
-                  :'fl' => "id, #{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}" )
+    solr_query = Solr::Query.new(query)
     collection_hash = {}
-    object_docs.map { |o| collection_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
+    while solr_query.has_more?
+      object_docs = solr_query.pop
+      object_docs.map { |o| collection_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
+    end
     return collection_hash
   end
     

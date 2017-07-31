@@ -2,7 +2,7 @@ require 'legato'
 require 'signet/oauth_2/client'
 
 class ShowCollectionDatatable
-  delegate :current_user, :params, :catalog_path, :link_to, :collection_children_query, to: :@view
+  delegate :current_user, :params, :catalog_path, :link_to, to: :@view
   delegate :user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
   def initialize(view)
@@ -54,6 +54,7 @@ private
       [
        link_to(entry[:title], catalog_path(entry[:dimension3])),
        entry[:users],
+       entry[:totalHits],
        entry[:totalEvents]
       ]
     end
@@ -67,9 +68,13 @@ private
   def fetch_analytics(collection)
     views = AnalyticsObjectUsers.results(@profile, :start_date => startdate, :end_date => enddate).collection(collection).to_a
     downloads = AnalyticsObjectEvents.results(@profile, :start_date => startdate, :end_date => enddate).collection(collection).action('Download').to_a
+    hits = AnalyticsObjectEvents.results(@profile, :start_date => startdate, :end_date => enddate).collection(collection).action('View').to_a
 
     downloads.map{|r| r[:dimension3] = r.delete_field(:eventLabel) }
-    analytics = (views+downloads).map{|a| a.to_h }.group_by{|h| h[:dimension3] }.map{|k,v| v.reduce({}, :merge)}
+    hits.map{|r| r[:dimension3] = r.delete_field(:eventLabel) }
+    hits.map{|r| r[:totalHits] = r.delete_field(:totalEvents) }
+
+    analytics = (views+hits+downloads).map{|a| a.to_h }.group_by{|h| h[:dimension3] }.map{|k,v| v.reduce({}, :merge)}
 
     object_hash = get_object_names(collection)
     analytics.map{ |r| r[:title] = object_hash[r[:dimension3]] }
@@ -97,7 +102,7 @@ private
   end
 
   def sort_column
-    columns = %w[title users totalEvents]
+    columns = %w[title users totalHits totalEvents]
     return columns[params[:order][:'0'][:column].to_i]
   end
 
@@ -127,11 +132,15 @@ private
   end
 
   def get_object_names(collection_id)
-    query = collection_children_query(collection_id)
-    object_docs = ActiveFedora::SolrService.query(query,
-                  :'fl' => "id, #{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}" )
+    query = "(id:\"" + collection_id + "\" OR #{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
+    "\" OR #{ActiveFedora.index_field_mapper.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
+    solr_query = Solr::Query.new(query)
+    #              {:'fl' => "id, #{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"} )
     object_hash = {}
-    object_docs.map { |o| object_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
+    while solr_query.has_more?
+      objects = solr_query.pop
+      objects.map { |o| object_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
+    end
     return object_hash
   end
     
