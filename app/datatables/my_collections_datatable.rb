@@ -8,8 +8,7 @@ class MyCollectionsDatatable
   def initialize(view)
     @view = view
 
-    keypath = Rails.root.join('config',Settings.analytics.keyfile).to_s
-    key         = OpenSSL::PKCS12.new(File.read(keypath), Settings.analytics.secret).key
+    key         = OpenSSL::PKCS12.new(File.read(Settings.analytics.keyfile), Settings.analytics.secret).key
     auth_client = Signet::OAuth2::Client.new(
                   token_credential_uri: Settings.analytics.token_credential_uri,
                   audience: Settings.analytics.audience,

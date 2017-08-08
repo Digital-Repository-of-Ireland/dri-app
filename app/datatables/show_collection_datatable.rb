@@ -8,8 +8,7 @@ class ShowCollectionDatatable
   def initialize(view)
     @view = view
 
-    keypath = Rails.root.join('config',Settings.analytics.keyfile).to_s
-    key         = OpenSSL::PKCS12.new(File.read(keypath), Settings.analytics.secret).key
+    key         = OpenSSL::PKCS12.new(File.read(Settings.analytics.keyfile), Settings.analytics.secret).key
     auth_client = Signet::OAuth2::Client.new(
                   token_credential_uri: Settings.analytics.token_credential_uri,
                   audience: Settings.analytics.audience,
@@ -132,7 +131,6 @@ private
     query = "(id:\"" + collection_id + "\" OR #{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
     "\" OR #{ActiveFedora.index_field_mapper.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
     solr_query = Solr::Query.new(query)
-    #              {:'fl' => "id, #{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"} )
     object_hash = {}
     while solr_query.has_more?
       objects = solr_query.pop
