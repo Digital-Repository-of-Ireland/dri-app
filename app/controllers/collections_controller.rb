@@ -304,19 +304,7 @@ class CollectionsController < BaseObjectsController
       format.html { redirect_to controller: 'my_collections', action: 'index' }
     end
   end
-
-  def duplicates
-    enforce_permissions!('manage_collection', params[:id])
-
-    result = ActiveFedora::SolrService.query("id:#{params[:id]}")
-    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if result.blank?
-
-    @object = SolrDocument.new(result.first)
-
-    @response, document_list = @object.duplicates
-    @document_list = Kaminari.paginate_array(document_list).page(params[:page]).per(params[:per_page])
-  end
-
+  
   def review
     enforce_permissions!('manage_collection', params[:id])
 
