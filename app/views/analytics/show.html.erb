@@ -30,6 +30,7 @@
 </table>
 <% end %>
 
+<% if can?(:manage, @document.id) %>
 <table id="datatable_show_collection" class="display" data-source="<%= analytic_url(@document.id, startdate: @startdate, enddate: @enddate, format: "json", protocol: Rails.application.config.action_mailer.default_url_options[:protocol]) %>">
   <thead>
     <tr>
@@ -42,3 +43,4 @@
   <tbody>
   </tbody>
 </table>
+<% end %>

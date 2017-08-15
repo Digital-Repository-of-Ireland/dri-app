@@ -117,7 +117,11 @@ private
   def get_collections()
     collections = []
 
-    query = "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
+    if current_user.is_admin?
+      query = "*:*"
+    else
+        query = "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
+    end
     solr_query = Solr::Query.new(
       query,
       100,
