@@ -1,5 +1,6 @@
 class CreateArchiveJob
   require 'zip'
+  require 'digest/md5'
 
   @queue = :create_archive
 
@@ -33,7 +34,12 @@ class CreateArchiveJob
     licence.close
     zipfile.add("#{object.id}/Licence.txt", licence.path)
 
+    # End User Agreement
+    zipfile.add("#{object.id}/End_User_Agreement.txt", "app/assets/text/End_User_Agreement.txt")
+
     storage = StorageService.new
+
+    checksums = []
 
     object.generic_files.each do |gf|
       # exclude presevation files
@@ -42,6 +48,7 @@ class CreateArchiveJob
       if get_inherited_masterfile_access(object) == "public"
         lf = LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d', f: gf.id, d: 'content').order('version DESC').to_a.first
         zipfile.add("#{object.id}/originals/#{gf.id}_#{gf.label}", lf.path)
+        checksums << "#{gf.original_checksum.first} originals/#{gf.id}_#{gf.label}"
       end
 
       # Get surrogates
@@ -58,7 +65,16 @@ class CreateArchiveJob
       end
 
       zipfile.add("#{object.id}/optimised/#{gf.id}_optimised_#{gf.label}", surrogate)
+
+      hash = Digest::MD5.hexdigest(File.read(surrogate))
+      checksums << "#{hash} optimised/#{gf.id}_optimised_#{gf.label}"
     end
+
+    md5file = Tempfile.open('checksums')
+    md5file.puts(checksums)
+    md5file.close
+
+    zipfile.add("#{object.id}/checksums.md5", md5file)
 
     zipfile.close
     metadata.unlink

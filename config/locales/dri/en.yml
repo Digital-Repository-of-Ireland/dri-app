@@ -128,7 +128,7 @@ en:
         validation_errors: 'Validation Errors: %{error}'
       notice:
         access_controls_updated: Access controls updated.
-        archiving: An archive of this object is being created. You will receive an email when it is available.
+        archiving: An archive of this object is being created. This may take some time. You will receive an email when it is available. Please check your spam folder or whitelist the address no-reply@dri.ie if you do not receive an email.
         asset_deleted: Asset deleted.
         collection_created: Collection object has been successfully created.
         collection_deleted: Delete collection process successfully started.
@@ -323,6 +323,7 @@ en:
           download_all:
             one: Download entire object including the asset
             other: 'Download entire object including all %{count} assets'
+          download_archive_explanation: "This may take some time. You will receive an email when your download is ready."
           download_originals: Download the original uploaded version of this individual asset
           download_surrogate: Download optimised surrogate version of this individual asset (recommended for viewing)
           manage_bookmark: Manage Your Bookmarks
