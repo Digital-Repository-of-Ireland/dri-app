@@ -92,7 +92,7 @@ module DRI::Solr::Document::Collection
       query_params = {
         fq: [
           "+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{id}",
-          "+has_model_ssim:\"DRI::Batch\"", "+is_collection_sim:false"
+          "+has_model_ssim:\"DRI::DigitalObject\"", "+is_collection_sim:false"
         ],
         "facet.pivot" => "#{metadata_field},id",
         facet: true,

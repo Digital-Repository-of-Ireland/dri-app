@@ -10,7 +10,7 @@ module DRI::Noid
       Mutex.new.synchronize do
         while true
           pid = next_id
-          return pid unless ActiveFedora::Base.exists?(pid) || ActiveFedora::Base.gone?(pid)
+          return pid unless (DRI::DigitalObject.exists?(noid: pid) || DRI::GenericFile.exists?(noid: pid))
         end
       end
     end

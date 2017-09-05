@@ -34,12 +34,12 @@ describe AssetsController do
   describe 'show' do
 
     it 'should return 404 for a surrogate that does not exist' do
-      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
-      generic_file.batch = @object
+      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file.digital_object = @object
       generic_file.apply_depositor_metadata(@login_user.email)
       generic_file.save
       
-      get :show, { object_id: @object.id, id: generic_file.id, surrogate: 'thumbnail' }
+      get :show, { object_id: @object.noid, id: generic_file.noid, surrogate: 'thumbnail' }
       expect(response.status).to eq(404)
     end
 
@@ -52,7 +52,7 @@ describe AssetsController do
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
       options = { :file_name => "SAMPLEA.mp3" }      
-      post :create, { :object_id => @object.id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
+      post :create, { :object_id => @object.noid, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
        
       expect(Dir.glob("#{@tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
     end
@@ -61,7 +61,7 @@ describe AssetsController do
       allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
 
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      post :create, { :object_id => @object.id, :Filedata => @uploaded }
+      post :create, { :object_id => @object.noid, :Filedata => @uploaded }
 
       expect(Dir.glob("#{@tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
     end
@@ -82,15 +82,15 @@ describe AssetsController do
         )
       Settings.doi.enable = true
 
-      DataciteDoi.create(object_id: @object.id)
+      DataciteDoi.create(object_id: @object.noid)
 
       expect_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content).and_return(true)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      post :create, { :object_id => @object.id, :Filedata => @uploaded }
+      post :create, { :object_id => @object.noid, :Filedata => @uploaded }
 
-      DataciteDoi.where(object_id: @object.id).first.delete
+      DataciteDoi.where(object_id: @object.noid).first.delete
       Settings.doi.enable = false
     end
 
@@ -101,23 +101,23 @@ describe AssetsController do
       allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
       allow_any_instance_of(DRI::Asset::Actor).to receive(:update_external_content)
 
-      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
-      generic_file.batch = @object
+      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
-      file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
+      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
-      options[:file_name] = "#{generic_file.id}_SAMPLEA.mp3"
-      options[:batch_id] = @object.id
+      options[:file_name] = "#{generic_file.noid}_SAMPLEA.mp3"
+      options[:batch_id] = @object.noid
        
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       file.add_file uploaded, options
       file.save
       generic_file.save
-      file_id = generic_file.id
+      file_id = generic_file.noid
 
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      put :update, { :object_id => @object.id, :id => file_id, :Filedata => @uploaded }
+      put :update, { :object_id => @object.noid, :id => file_id, :Filedata => @uploaded }
       expect(Dir.glob("#{@tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
     end
 
@@ -127,21 +127,21 @@ describe AssetsController do
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
 
-      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
-      generic_file.batch = @object
+      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
-      file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
+      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
-      options[:batch_id] = @object.id
+      options[:batch_id] = @object.noid
 
       file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
       file.save
       generic_file.save
-      file_id = generic_file.id
+      file_id = generic_file.noid
 
-      put :update, { :object_id => @object.id, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
+      put :update, { :object_id => @object.noid, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
       expect(Dir.glob("#{@tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
     end
 
@@ -163,28 +163,28 @@ describe AssetsController do
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
 
-      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
-      generic_file.batch = @object
+      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
-      file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
+      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
-      options[:batch_id] = @object.id
+      options[:batch_id] = @object.noid
 
       file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
       file.save
       generic_file.save
-      file_id = generic_file.id
+      file_id = generic_file.noid
 
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.id)
+      DataciteDoi.create(object_id: @object.noid)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
-      put :update, { :object_id => @object.id, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
+      put :update, { :object_id => @object.noid, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
        
-      DataciteDoi.where(object_id: @object.id).each { |d| d.delete }
+      DataciteDoi.where(object_id: @object.noid).each { |d| d.delete }
       Settings.doi.enable = false
     end
 
@@ -195,24 +195,24 @@ describe AssetsController do
     it 'should delete a file' do
       allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
       
-      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
-      generic_file.batch = @object
+      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
-      file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
+      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
-      options[:batch_id] = @object.id
+      options[:batch_id] = @object.noid
        
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       file.add_file uploaded, options
       file.save
       generic_file.save
-      file_id = generic_file.id
+      file_id = generic_file.noid
 
       expect {
-        delete :destroy, object_id: @object.id, id: file_id
-      }.to change { ActiveFedora::Base.exists?(file_id) }.from(true).to(false)
+        delete :destroy, object_id: @object.noid, id: file_id
+      }.to change { DRI::GenericFile.exists?(noid: file_id) }.from(true).to(false)
       
     end
 
@@ -229,22 +229,22 @@ describe AssetsController do
       @object.save
       @object.reload
 
-      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
-      generic_file.batch = @object
+      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file.digital_object = @object
       generic_file.apply_depositor_metadata(@login_user.email)
-      file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
+      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
-      options[:batch_id] = @object.id
+      options[:batch_id] = @object.noid
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       file.add_file uploaded, options
       file.save
       generic_file.save
-      file_id = generic_file.id
+      file_id = generic_file.noid
 
-      get :download, id: file_id, object_id: @object.id, type: 'masterfile'
+      get :download, id: file_id, object_id: @object.noid, type: 'masterfile'
       expect(response.status).to eq(200)
       expect(response.header['Content-Type']).to eq('audio/mp3')
       expect(response.header['Content-Length']).to eq("#{File.size(File.join(fixture_path, "SAMPLEA.mp3"))}")      
@@ -268,7 +268,7 @@ describe AssetsController do
       end
 
       after(:each) do
-        @object.delete if ActiveFedora::Base.exists?(@object.id)
+        @object.delete if DRI::DigitalObject.exists?(noid: @object.noid)
         @login_user.delete
         
         FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -283,7 +283,7 @@ describe AssetsController do
         allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
 
         @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-        post :create, { :object_id => @object.id, :Filedata => @uploaded }
+        post :create, { :object_id => @object.noid, :Filedata => @uploaded }
         
         expect(flash[:error]).to be_present
       end

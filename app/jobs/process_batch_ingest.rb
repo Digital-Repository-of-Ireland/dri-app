@@ -14,7 +14,7 @@ class ProcessBatchIngest
     ingest_batch = JSON.parse(ingest_json)
 
     user = UserGroup::User.find(user_id)
-    collection = DRI::Batch.find(collection_id, cast: true)
+    collection = DRI::DigitalObject.find_by(noid: collection_id)
 
     download_path = File.join(Settings.downloads.directory, collection_id)
     FileUtils.mkdir_p(download_path)
@@ -23,7 +23,7 @@ class ProcessBatchIngest
 
     if ingest_metadata['object_id'].present?
       # metadata ingest was successful so only ingest missing assets
-      object = DRI::Batch.find(ingest_metadata['object_id'], cast: true)
+      object = DRI::DigitalObject.find_by(noid: ingest_metadata['object_id'])
     else
       metadata = retrieve_files(download_path, [ingest_metadata])[0]
       object = ingest_metadata(collection, user, metadata)
@@ -37,13 +37,13 @@ class ProcessBatchIngest
 
   def self.ingest_assets(user, object, assets)
     assets.each do |asset|
-      @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
-      @generic_file.batch = object
+      @generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
+      @generic_file.digital_object = object
       @generic_file.apply_depositor_metadata(user)
       @generic_file.preservation_only = 'true' if asset[:label] == 'preservation'
 
       original_file_name = File.basename(asset[:path])
-      file_name = "#{@generic_file.id}_#{original_file_name}"
+      file_name = "#{@generic_file.noid}_#{original_file_name}"
 
       version = ingest_file(asset[:path], object, 'content', file_name)
       if version < 1
@@ -53,8 +53,8 @@ class ProcessBatchIngest
         url = Rails.application.routes.url_helpers.url_for(
           controller: 'assets',
           action: 'download',
-          object_id: object.id,
-          id: @generic_file.id,
+          object_id: object.noid,
+          id: @generic_file.noid,
           version: version
         )
         DRI::Asset::Actor.new(@generic_file, user).create_external_content(
@@ -129,7 +129,7 @@ class ProcessBatchIngest
   def self.create_object(collection, user, xml)
     standard = metadata_standard_from_xml(xml)
 
-    object = DRI::Batch.with_standard standard
+    object = DRI::DigitalObject.with_standard standard
     object.governing_collection = collection
     object.depositor = user.to_s
     object.status = 'draft'
@@ -143,8 +143,8 @@ class ProcessBatchIngest
 
   def self.create_reader_group(object)
     group = UserGroup::Group.new(
-      name: object.id.to_s,
-      description: "Default Reader group for collection #{object.id}"
+      name: object.noid.to_s,
+      description: "Default Reader group for collection #{object.noid}"
     )
     group.reader_group = true
     group.save
@@ -152,7 +152,7 @@ class ProcessBatchIngest
 
   def self.download_url(generic_file)
     Rails.application.routes.url_helpers.url_for controller: 'assets',
-             action: 'download', object_id: generic_file.batch.id, id: generic_file.id
+             action: 'download', object_id: generic_file.digital_object.noid, id: generic_file.noid
   end
 
   def self.file_data(path)

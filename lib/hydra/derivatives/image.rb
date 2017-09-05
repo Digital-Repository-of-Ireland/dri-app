@@ -59,7 +59,7 @@ module Hydra
         xfrm.write(output_file)
 
         format = xfrm["format"].downcase
-        bucket_id = object.batch.nil? ? object.id : object.batch.id
+        bucket_id = object.digital_object.nil? ? object.noid : object.digital_object.noid
         filename = "#{object.id}_#{output_datastream}.#{format}"
 
         out_file = File.open(output_file, "rb")

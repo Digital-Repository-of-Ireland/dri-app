@@ -17,7 +17,7 @@ class DatastreamVersionController < CatalogController
 
     if @object && @object.attached_files.keys.include?(params[:stream])
       begin
-        data = open("#{ActiveFedora.config.credentials[:url]}/objects/#{@object.id}/datastreams/#{params[:stream]}/content?asOfDateTime=#{params[:date]}")
+        data = open("#{ActiveFedora.config.credentials[:url]}/objects/#{@object.noid}/datastreams/#{params[:stream]}/content?asOfDateTime=#{params[:date]}")
       rescue OpenURI::HTTPError
         render text: 'Unable to load metadata'
         return

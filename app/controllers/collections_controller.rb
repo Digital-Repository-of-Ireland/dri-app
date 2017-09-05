@@ -45,8 +45,8 @@ class CollectionsController < BaseObjectsController
   # Creates a new model.
   #
   def new
-    enforce_permissions!('create', DRI::Batch)
-    @object = DRI::Batch.with_standard :qdc
+    enforce_permissions!('create', DRI::DigitalObject)
+    @object = DRI::DigitalObject.with_standard :qdc
 
     # configure default permissions
     @object.apply_depositor_metadata(current_user.to_s)
@@ -103,7 +103,7 @@ class CollectionsController < BaseObjectsController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
-      format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+      format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
     end
   end
   
@@ -115,14 +115,14 @@ class CollectionsController < BaseObjectsController
     @object = retrieve_object!(params[:id])
 
     # If a cover image was uploaded, remove it from the params hash
-    cover_image = params[:batch].delete(:cover_image)
+    cover_image = params[:digital_object].delete(:cover_image)
 
     @institutes = Institute.all
     @inst = Institute.new
 
     supported_licences
 
-    doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
+    doi.update_metadata(params[:digital_object].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
     version = @object.object_version || '1'
     @object.object_version = (version.to_i + 1).to_s
@@ -151,7 +151,7 @@ class CollectionsController < BaseObjectsController
         update_doi(@object, doi, "metadata update") if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
-        format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+        format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
       else
         format.html  { render action: 'edit' }
       end
@@ -165,8 +165,8 @@ class CollectionsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
 
-    if params[:batch].present? && [:cover_image].present?
-      cover_image = params[:batch][:cover_image]
+    if params[:digital_object].present? && [:cover_image].present?
+      cover_image = params[:digital_object][:cover_image]
     else
       raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.file_not_found')
     end
@@ -193,7 +193,7 @@ class CollectionsController < BaseObjectsController
       else
         flash[:error] = t('dri.flash.error.cover_image_not_saved')
       end
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
     end
   end
 
@@ -258,7 +258,7 @@ class CollectionsController < BaseObjectsController
         end
         format.json do
           @response = {}
-          @response[:id] = @object.id
+          @response[:id] = @object.noid
           @response[:title] = @object.title
           @response[:description] = @object.description
           render(json: @response, status: :created)
@@ -319,9 +319,9 @@ class CollectionsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
       format.json do
-        response = { id: @object.id, status: @object.status }
+        response = { id: @object.noid, status: @object.status }
         response[:warning] = @warnings if @warnings
 
         render json: response, status: :accepted
@@ -345,9 +345,9 @@ class CollectionsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
       format.json do
-        response = { id: @object.id, status: @object.status }
+        response = { id: @object.noid, status: @object.status }
         response[:warning] = @warnings if @warnings
 
         render json: response, status: :accepted
@@ -360,14 +360,14 @@ class CollectionsController < BaseObjectsController
     # Create a collection with the web form
     #
     def create_from_form
-      enforce_permissions!('create', DRI::Batch)
+      enforce_permissions!('create', DRI::DigitalObject)
 
       unless valid_root_permissions?
         flash[:alert] = t('dri.flash.error.not_created')
         return false
       end
 
-      @object = DRI::Batch.with_standard :qdc
+      @object = DRI::DigitalObject.with_standard :qdc
 
       @object.type = ['Collection'] if @object.type.nil?
       @object.type.push('Collection') unless @object.type.include?('Collection')
@@ -375,7 +375,7 @@ class CollectionsController < BaseObjectsController
       supported_licences
 
       # If a cover image was uploaded, remove it from the params hash
-      cover_image = params[:batch].delete(:cover_image)
+      cover_image = params[:digital_object].delete(:cover_image)
 
       @object.update_attributes(create_params)
 
@@ -397,7 +397,7 @@ class CollectionsController < BaseObjectsController
     # Create a collection from an uploaded XML file.
     #
     def create_from_xml
-      enforce_permissions!('create', DRI::Batch)
+      enforce_permissions!('create', DRI::DigitalObject)
 
       unless params[:metadata_file].present?
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
@@ -425,7 +425,7 @@ class CollectionsController < BaseObjectsController
         return false
       end
 
-      @object = DRI::Batch.with_standard standard
+      @object = DRI::DigitalObject.with_standard standard
       set_metadata_datastream(@object, xml)
       checksum_metadata(@object)
       warn_if_duplicates
@@ -456,7 +456,7 @@ class CollectionsController < BaseObjectsController
     def create_reader_group
       @group = UserGroup::Group.new(
         name: reader_group_name,
-        description: "Default Reader group for collection #{@object.id}"
+        description: "Default Reader group for collection #{@object.noid}"
       )
       @group.reader_group = true
       @group.save
@@ -464,7 +464,7 @@ class CollectionsController < BaseObjectsController
     end
 
     def reader_group_name
-      @object.id
+      @object.noid
     end
 
     def results_to_hash(solr_query)
@@ -495,7 +495,7 @@ class CollectionsController < BaseObjectsController
 
     def review_all
       job_id = ReviewCollectionJob.create(
-        'collection_id' => @object.id,
+        'collection_id' => @object.noid,
         'user_id' => current_user.id
       )
       UserBackgroundTask.create(
@@ -511,7 +511,7 @@ class CollectionsController < BaseObjectsController
     end
 
     def delete_collection
-      DRI.queue.push(DeleteCollectionJob.new(@object.id))
+      DRI.queue.push(DeleteCollectionJob.new(@object.noid))
     rescue Exception => e
       logger.error "Unable to delete collection: #{e.message}"
       raise DRI::Exceptions::ResqueError
@@ -519,7 +519,7 @@ class CollectionsController < BaseObjectsController
 
     def publish_collection
       job_id = PublishCollectionJob.create(
-        'collection_id' => @object.id,
+        'collection_id' => @object.noid,
         'user_id' => current_user.id
       )
       UserBackgroundTask.create(
@@ -539,6 +539,6 @@ class CollectionsController < BaseObjectsController
     end
 
     def valid_root_permissions?
-      !((params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?))
+      !((params[:digital_object][:manager_users_string].blank? && params[:digital_object][:edit_users_string].blank?))
     end
 end

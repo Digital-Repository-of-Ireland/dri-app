@@ -84,14 +84,14 @@ describe DRI::IIIFViewable do
     FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), 
       File.join(@tmp_upload_dir, 'sample_image.jpeg'))
 
-    @generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
-    @generic_file.batch = @sound
+    @generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+    @generic_file.digital_object = @sound
     @generic_file.apply_depositor_metadata(@login_user.email)
-    file = LocalFile.new(fedora_id: @generic_file.id, ds_id: 'content')
+    file = LocalFile.new(fedora_id: @generic_file.noid, ds_id: 'content')
     options = {}
     options[:mime_type] = 'image/jpeg'
     options[:file_name] = 'sample_image.jpeg'
-    options[:batch_id] = @sound.id
+    options[:batch_id] = @sound.noid
 
     file.add_file File.new(File.join(@tmp_upload_dir, 'sample_image.jpeg')), options
     file.save
@@ -140,7 +140,7 @@ describe DRI::IIIFViewable do
       manifest = iiif_test.new(SolrDocument.new(@collection.to_solr)).iiif_manifest
 
       expect(manifest.collections.length).to be 1
-      expect(manifest.collections.first['@id']).to end_with("collection/#{@subcollection.id}.json")
+      expect(manifest.collections.first['@id']).to end_with("collection/#{@subcollection.noid}.json")
     end
 
     it 'should add images to objects' do
@@ -151,7 +151,7 @@ describe DRI::IIIFViewable do
       expect(manifest.sequences.first.canvases.first.images.length).to be 1
 
       expect(manifest.sequences.first.canvases.first.images.first.resource['@id']).to end_with(
-        "#{@sound.id}:#{@generic_file.id}/full/full/0/default.jpg")
+        "#{@sound.noid}:#{@generic_file.noid}/full/full/0/default.jpg")
     end
 
   end

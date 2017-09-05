@@ -23,9 +23,9 @@ class AssetsController < ApplicationController
       result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
       @document = SolrDocument.new(result.first)
 
-      @generic_file = retrieve_object! params[:id]
+      @generic_file = retrieve_generic_file! params[:id]
 
-      status(@generic_file.id)
+      status(@generic_file.noid)
 
       can_view?
 
@@ -43,10 +43,10 @@ class AssetsController < ApplicationController
 
     case type
     when 'surrogate'
-      @generic_file = retrieve_object! params[:id]
+      @generic_file = retrieve_generic_file! params[:id]
       if @generic_file
-        if @generic_file.batch.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.batch.root_collection.first, "Download",  @generic_file.batch_id, 1, true) 
+        if @generic_file.digital_object.published?
+          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.digital_object.root_collection.first, "Download",  @generic_file.digital_object_id, 1, true) 
         end
         download_surrogate(surrogate_type_name)
         return
@@ -55,12 +55,12 @@ class AssetsController < ApplicationController
     when 'masterfile'
       enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
-      @generic_file = retrieve_object! params[:id]
+      @generic_file = retrieve_generic_file! params[:id]
       if @generic_file
         can_view?
 
-        if @generic_file.batch.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.batch.root_collection.first, "Download", @generic_file.batch_id, 1, true)
+        if @generic_file.digital_object.published?
+          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.digital_object.root_collection.first, "Download", @generic_file.digital_object_id, 1, true)
         end
         lfile = local_file
         if lfile
@@ -83,8 +83,7 @@ class AssetsController < ApplicationController
     enforce_permissions!('edit', params[:object_id])
 
     @object = retrieve_object!(params[:object_id])
-    @generic_file = retrieve_object!(params[:id])
-    
+    @generic_file = retrieve_generic_file!(params[:id])
     raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @object.status == 'published'
 
     version = @object.object_version || '1'
@@ -92,11 +91,11 @@ class AssetsController < ApplicationController
     @object.save
 
     @generic_file.delete
-    delete_surrogates(params[:object_id], @generic_file.id)
+    delete_surrogates(params[:object_id], @generic_file.noid)
 
     # Do the preservation actions
     addfiles = []
-    delfiles = ["#{@generic_file.id}_#{@generic_file.label}"]
+    delfiles = ["#{@generic_file.noid}_#{@generic_file.label}"]
     preservation = Preservation::Preservator.new(@object)
     preservation.preserve_assets(addfiles, delfiles)
  
@@ -109,17 +108,17 @@ class AssetsController < ApplicationController
 
   def update
     enforce_permissions!('edit', params[:object_id])
-
+    
     datastream = 'content'
     file_upload = upload_from_params
 
     @object = retrieve_object!(params[:object_id])
-    @generic_file = retrieve_object! params[:id]
+    @generic_file = retrieve_generic_file!(params[:id])
 
     preserve_file(file_upload, datastream, params)
 
     url = "#{URI.escape(download_url)}?version=#{@file.version}"
-
+   
     if actor.update_external_content(url, file_upload, datastream)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
@@ -131,7 +130,7 @@ class AssetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to object_file_url(params[:object_id], @generic_file.id) }
+      format.html { redirect_to object_file_url(params[:object_id], @generic_file.noid) }
       format.json do
         response = { checksum: @file.checksum }
         response[:warning] = @warnings if @warnings
@@ -219,8 +218,8 @@ class AssetsController < ApplicationController
     end
 
     def build_generic_file
-      @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
-      @generic_file.batch = @object
+      @generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
+      @generic_file.digital_object = @object
       @generic_file.apply_depositor_metadata(current_user)
       @generic_file.preservation_only = 'true' if params[:preservation] == 'true'
     end
@@ -238,7 +237,7 @@ class AssetsController < ApplicationController
     def preserve_file(filedata, datastream, params)
       checksum = params[:checksum]
       filename = params[:file_name].presence || filedata.original_filename
-      filename = "#{@generic_file.id}_#{filename}"
+      filename = "#{@generic_file.noid}_#{filename}"
 
       # Update object version
       version = @object.object_version || '1'
@@ -248,7 +247,7 @@ class AssetsController < ApplicationController
       begin
         @object.save!
       rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not update object version number for #{@object.id} to version #{object_version}"
+        logger.error "Could not update object version number for #{@object.noid} to version #{object_version}"
         raise Exceptions::InternalError
       end
 
@@ -259,7 +258,7 @@ class AssetsController < ApplicationController
       delfiles = []
       
       addfiles = [filename]
-      delfiles = ["#{@generic_file.id}_#{@generic_file.label}"] if params[:action] == 'update'
+      delfiles = ["#{@generic_file.noid}_#{@generic_file.label}"] if params[:action] == 'update'
       
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve_assets(addfiles, delfiles)
@@ -331,8 +330,8 @@ class AssetsController < ApplicationController
       url_for(
         controller: 'assets',
         action: 'download',
-        object_id: @object.id,
-        id: @generic_file.id,
+        object_id: @object.noid,
+        id: @generic_file.noid,
         protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
       )
     end
@@ -373,7 +372,7 @@ class AssetsController < ApplicationController
     end
 
     def local_file(datastream = 'content')
-      search_params = { f: @generic_file.id, d: datastream }
+      search_params = { f: @generic_file.noid, d: datastream }
       search_params[:v] = params[:version] if params[:version].present?
 
       query = 'fedora_id LIKE :f AND ds_id LIKE :d'

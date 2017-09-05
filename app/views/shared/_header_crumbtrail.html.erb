@@ -2,7 +2,7 @@
 <% if @document %>
   <div id="dri_crumbtrail_nav_container_id">
     <ol class="breadcrumb">
-    <% unless @document.is_a?(DRI::Batch) %>
+    <% unless @document.is_a?(DRI::DigitalObject) %>
         
         <% if @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].present? %>
           <% @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].to_enum.with_index.reverse_each do |ancestor_id, index| %>

@@ -69,11 +69,17 @@ class ApplicationController < ActionController::Base
 
   # Retrieves a Fedora Digital Object by ID
   def retrieve_object(id)
-    ActiveFedora::Base.find(id, cast: true)
+    DRI::DigitalObject.find_by(noid: id)
   end
 
   def retrieve_object!(id)
-    objs = ActiveFedora::Base.find(id, cast: true)
+    objs = DRI::DigitalObject.find_by(noid: id)
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if objs.nil?
+    objs
+  end
+
+  def retrieve_generic_file!(id)
+    objs = DRI::GenericFile.find_by(noid: id)
     raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if objs.nil?
     objs
   end
@@ -139,7 +145,7 @@ class ApplicationController < ActionController::Base
       docs = ActiveFedora::SolrService.query("id:#{id}")
       obj = SolrDocument.new(docs.first)
       
-      return unless CollectionLock.exists?(collection_id: obj.root_collection_id)
+      return unless CollectionLock.exists?(collection_id: obj.root_collection.id)
 
       respond_to do |format|
         format.json { head status: 403 }

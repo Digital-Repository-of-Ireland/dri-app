@@ -3,7 +3,7 @@ module BackgroundTasks
 
     def status
       @status ||= IngestStatus.find_or_create_by(asset_id: generic_file_id) do |ingest_status|
-        ingest_status.batch_id = generic_file.batch.id
+        ingest_status.batch_id = generic_file.digital_object.noid
         ingest_status.status = 'processing'
       end
 

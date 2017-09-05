@@ -1,4 +1,4 @@
-<%= form_for @document, as: :batch, html: { id: 'choose_cover_image' }, 
+<%= form_for @document, as: :digital_object, html: { id: 'choose_cover_image' }, 
     :url => { controller: "collections", action: "add_cover_image" }, method: "put" do |f| %>
 
 <div class="dri_file_upload">

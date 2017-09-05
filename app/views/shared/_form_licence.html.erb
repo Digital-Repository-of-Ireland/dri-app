@@ -1,6 +1,6 @@
 <fieldset id="licence">
 	<span><%= f.label "#{t('dri.views.fields.licence')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.licence_text') %>" data-original-title="<%= t('dri.help.fields.licence')%>" data-trigger="hover" data-placement="right"></i></span>
-	<select class="dri_licence_select" name="batch[licence]" id="batch_licence">
+	<select class="dri_licence_select" name="digital_object[licence]" id="batch_licence">
     <% @licences.each do |text, value| %>
       <% if @document[:licence_tesim].present? &&  @document[:licence_tesim].first == value %>
         <option selected="selected" value="<%= value %>" label="<%= value %>" title="<%= text %>"><%= text %></option>

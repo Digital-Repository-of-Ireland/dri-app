@@ -11,11 +11,10 @@ module DRI::Solr::Document::File
   def assets(with_preservation = false)
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{id}\""
-    
     query = Solr::Query.new(files_query)
-
+    
     assets = []
-    query.each_solr_document do |sd| 
+    query.each_solr_document do |sd|
       assets << sd unless (with_preservation == false && sd.preservation_only?)
     end
 

@@ -15,12 +15,12 @@ class AccessControlsController < ApplicationController
     @object = retrieve_object!(params[:id])
     @object.collection? ? enforce_permissions!('manage_collection', params[:id]) : enforce_permissions!('edit', params[:id])
 
-    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
-    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
-    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase if params[:batch][:manager_users_string].present?
+    params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
+    params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
+    params[:digital_object][:manager_users_string] = params[:digital_object][:manager_users_string].to_s.downcase if params[:digital_object][:manager_users_string].present?
     
     version = @object.object_version || '1'
-    params[:batch][:object_version] = (version.to_i+1).to_s
+    params[:digital_object][:object_version] = (version.to_i+1).to_s
 
     permissionchange = permissions_changed?
     updated = @object.update_attributes(update_params) unless @object.collection? && !valid_permissions?
@@ -39,14 +39,14 @@ class AccessControlsController < ApplicationController
     purge_params
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
     end
   end
 
   private
 
     def purge_params
-      params.delete(:batch)
+      params.delete(:digital_object)
       params.delete(:_method)
       params.delete(:authenticity_token)
       params.delete(:commit)
@@ -54,7 +54,7 @@ class AccessControlsController < ApplicationController
     end
 
     def update_params
-      params.require(:batch).permit(
+      params.require(:digital_object).permit(
         :read_groups_string,
         :read_users_string,
         :master_file_access,
@@ -68,14 +68,14 @@ class AccessControlsController < ApplicationController
     def valid_permissions?
       !(
         @object.governing_collection_id.blank? &&
-        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?)
+        (params[:digital_object][:manager_users_string].blank? && params[:digital_object][:edit_users_string].blank?)
       )
     end
 
     def permissions_changed?
-      !(@object.read_groups_string == params[:batch][:read_groups_string] &&
-      @object.edit_users_string == params[:batch][:edit_users_string] &&
-      @object.manager_users_string == params[:batch][:manager_users_string])
+      !(@object.read_groups_string == params[:digital_object][:read_groups_string] &&
+      @object.edit_users_string == params[:digital_object][:edit_users_string] &&
+      @object.manager_users_string == params[:digital_object][:manager_users_string])
     end
 
 end

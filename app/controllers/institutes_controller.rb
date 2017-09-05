@@ -53,7 +53,7 @@ class InstitutesController < ApplicationController
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
-    @object = ActiveFedora::Base.find(params[:object], cast: true) if params[:object]
+    @object = DRI::DigitalObject.find_by(noid: params[:object]) if params[:object]
 
     respond_to do |format|
       format.html { redirect_to organisations_url }
@@ -129,7 +129,7 @@ class InstitutesController < ApplicationController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.organisations_set')
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.id }
+      format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.noid }
     end
   end
 
@@ -152,7 +152,7 @@ class InstitutesController < ApplicationController
 
     def add_or_remove_association(delete = false)
       # save the institute name to the properties datastream
-      @collection = ActiveFedora::Base.find(params[:object], cast: true)
+      @collection = DRI::DigitalObject.find_by(noid: params[:object])
       raise DRI::Exceptions::NotFound unless @collection
 
       version = @collection.object_version || '1'
@@ -167,19 +167,17 @@ class InstitutesController < ApplicationController
       preservation.preserve(false, false, ['properties'])
 
       respond_to do |format|
-        format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.id }
+        format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.noid }
       end
     end
 
     def add_association
       institute_name = params[:institute_name]
-
       if params[:type].present? && params[:type] == 'depositing'
         @collection.depositing_institute = institute_name
       else
         @collection.institute = @collection.institute.push(institute_name)
       end
-
       raise DRI::Exceptions::InternalError unless @collection.save
 
       flash[:notice] = if params[:type].present? && params[:type] == 'depositing'
@@ -192,7 +190,7 @@ class InstitutesController < ApplicationController
     def delete_association
       institute_name = params[:institute_name]
 
-      institutes = @collection.institute
+      institutes = @collection.institute.clone
       institutes.delete(institute_name)
       @collection.institute = institutes
 

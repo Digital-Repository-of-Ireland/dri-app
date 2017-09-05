@@ -19,7 +19,7 @@ describe CollectionsController do
   describe 'DELETE destroy' do
 
     it 'should delete a collection' do
-      @collection = DRI::Batch.with_standard :qdc
+      @collection = DRI::DigitalObject.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -30,7 +30,7 @@ describe CollectionsController do
       @collection[:published_date] = ["1916-04-01"]
       @collection.save
       
-      @object = DRI::Batch.with_standard :qdc
+      @object = DRI::DigitalObject.with_standard :qdc
       @object[:title] = ["An Audio Title"]
       @object[:rights] = ["This is a statement about the rights associated with this object"]
       @object[:role_hst] = ["Collins, Michael"]
@@ -51,7 +51,7 @@ describe CollectionsController do
       expect(@collection.governed_items.size).to be == 1
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(DeleteCollectionJob)).once
-      delete :destroy, :id => @collection.id
+      delete :destroy, :id => @collection.noid
     end
 
   end
@@ -59,7 +59,7 @@ describe CollectionsController do
   describe 'publish' do
 
     it 'should publish a collection' do
-      @collection = DRI::Batch.with_standard :qdc
+      @collection = DRI::DigitalObject.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
       @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -71,7 +71,7 @@ describe CollectionsController do
       @collection[:status] = "draft"
       @collection.save
 
-      @object = DRI::Batch.with_standard :qdc
+      @object = DRI::DigitalObject.with_standard :qdc
       @object[:title] = ["An Audio Title"]
       @object[:rights] = ["This is a statement about the rights associated with this object"]
       @object[:role_hst] = ["Collins, Michael"]
@@ -91,7 +91,7 @@ describe CollectionsController do
       @collection.governed_items << @object
  
       expect(PublishCollectionJob).to receive(:create)
-      post :publish, id: @collection.id
+      post :publish, id: @collection.noid
     end    
 
   end
@@ -110,33 +110,33 @@ describe CollectionsController do
     end
 
     it 'should return not-found for no cover image' do
-      get :cover, { id: @collection.id }
+      get :cover, { id: @collection.noid }
       expect(response.status).to eq(404)
     end
 
     it 'should return not found if cover image cannot be found for storage interface' do
-      get :cover, { id: @collection.id }
+      get :cover, { id: @collection.noid }
       expect(response.status).to eq(404)
     end
 
     it 'accepts a valid image' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :add_cover_image, { id: @collection.id, batch: { cover_image: @uploaded } }
+      put :add_cover_image, { id: @collection.noid, digital_object: { cover_image: @uploaded } }
       expect(flash[:notice]).to be_present
     end
 
     it 'rejects unsupported image format' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.tiff"), "image/tiff")
-      put :add_cover_image, { id: @collection.id, batch: { cover_image: @uploaded } }
+      put :add_cover_image, { id: @collection.noid, digital_object: { cover_image: @uploaded } }
       expect(flash[:error]).to be_present
     end
 
     it 'creates new AIP' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :add_cover_image, { id: @collection.id, batch: { cover_image: @uploaded } }
+      put :add_cover_image, { id: @collection.noid, digital_object: { cover_image: @uploaded } }
 
-      expect(Dir.entries(aip_dir(@collection.id)).size - 2).to eq(2)
-      expect(aip_valid?(@collection.id, 2)).to be true
+      expect(Dir.entries(aip_dir(@collection.noid)).size - 2).to eq(2)
+      expect(aip_valid?(@collection.noid, 2)).to be true
     end
 
   end
@@ -144,7 +144,7 @@ describe CollectionsController do
   describe 'update' do
     
     it 'should allow a subcollection to be updated' do
-      @collection = DRI::Batch.with_standard :qdc
+      @collection = DRI::DigitalObject.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
       @collection[:creator] = [@login_user.email]
@@ -159,7 +159,7 @@ describe CollectionsController do
       preservation = Preservation::Preservator.new(@collection)
       preservation.preserve(false, false, ['descMetadata','properties'])
 
-      @subcollection = DRI::Batch.with_standard :qdc
+      @subcollection = DRI::DigitalObject.with_standard :qdc
       @subcollection[:title] = ["A sub collection"]
       @subcollection[:description] = ["This is a sub-collection"]
       @subcollection[:creator] = [@login_user.email]
@@ -179,9 +179,9 @@ describe CollectionsController do
       @subcollection.reload
  
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["A modified sub collection title"]
-      put :update, :id => @subcollection.id, :batch => params[:batch]
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A modified sub collection title"]
+      put :update, id: @subcollection.noid, digital_object: params[:digital_object]
       @subcollection.reload
       expect(@subcollection.title).to eq(["A modified sub collection title"])
 
@@ -189,7 +189,7 @@ describe CollectionsController do
     end
 
     it 'should mint a doi for an update of mandatory fields' do
-      @collection = DRI::Batch.with_standard :qdc
+      @collection = DRI::DigitalObject.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
       @collection[:creator] = [@login_user.email]
@@ -216,22 +216,22 @@ describe CollectionsController do
         )
       Settings.doi.enable = true
 
-      DataciteDoi.create(object_id: @collection.id)
+      DataciteDoi.create(object_id: @collection.noid)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["A modified title"]
-      params[:batch][:read_users_string] = "public"
-      params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @collection.id, :batch => params[:batch]
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A modified title"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      put :update, id: @collection.noid, digital_object: params[:digital_object]
 
-      DataciteDoi.where(object_id: @collection.id).first.delete
+      DataciteDoi.where(object_id: @collection.noid).first.delete
       Settings.doi.enable = false
     end
 
     it 'should not mint a doi for no update of mandatory fields' do
-      @collection = DRI::Batch.with_standard :qdc
+      @collection = DRI::DigitalObject.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
       @collection[:creator] = [@login_user.email]
@@ -258,17 +258,17 @@ describe CollectionsController do
         )
       Settings.doi.enable = true
 
-      DataciteDoi.create(object_id: @collection.id)
+      DataciteDoi.create(object_id: @collection.noid)
 
       expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["A collection"]
-      params[:batch][:read_users_string] = "public"
-      params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @collection.id, :batch => params[:batch]
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A collection"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      put :update, id: @collection.noid, digital_object: params[:digital_object]
 
-      DataciteDoi.where(object_id: @collection.id).first.delete
+      DataciteDoi.where(object_id: @collection.noid).first.delete
       Settings.doi.enable = false
     end
 
@@ -287,7 +287,7 @@ describe CollectionsController do
         attr_reader :tempfile
       end
 
-      post :create, :metadata_file => @file
+      post :create, metadata_file: @file
       expect(response).to be_success    
     end
 
@@ -310,7 +310,7 @@ describe CollectionsController do
     end
 
     after(:each) do
-      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      @collection.delete if DRI::DigitalObject.exists?(noid: @collection.noid)
       @login_user.delete
 
       Settings.reload_from_files(
@@ -335,11 +335,11 @@ describe CollectionsController do
 
     it 'should not allow object updates' do
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["A collection"]
-      params[:batch][:read_users_string] = "public"
-      params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @collection.id, :batch => params[:batch]
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A collection"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      put :update, id: @collection.noid, digital_object: params[:digital_object]
 
       expect(flash[:error]).to be_present
     end
@@ -356,14 +356,14 @@ describe CollectionsController do
       @login_user = FactoryGirl.create(:admin)
       sign_in @login_user
       @collection = FactoryGirl.create(:collection)
-      CollectionLock.create(collection_id: @collection.id)
+      CollectionLock.create(collection_id: @collection.noid)
       
       request.env["HTTP_REFERER"] = catalog_index_path
     end
 
     after(:each) do
-      CollectionLock.delete_all(collection_id: @collection.id)
-      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      CollectionLock.delete_all(collection_id: @collection.noid)
+      @collection.delete if DRI::DigitalObject.exists?(@collection.noid)
       @login_user.delete
 
       FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -371,11 +371,11 @@ describe CollectionsController do
 
     it 'should not allow object updates' do
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["A collection"]
-      params[:batch][:read_users_string] = "public"
-      params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @collection.id, :batch => params[:batch]
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A collection"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      put :update, id: @collection.noid, digital_object: params[:digital_object]
 
       expect(flash[:error]).to be_present
     end

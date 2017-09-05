@@ -19,7 +19,7 @@ class ObjectsController < BaseObjectsController
 
     locked(@collection); return if performed?
 
-    @object = DRI::Batch.with_standard :qdc
+    @object = DRI::DigitalObject.with_standard :qdc
     @object.creator = ['']
 
     if params[:is_sub_collection].present? && params[:is_sub_collection] == 'true'
@@ -56,7 +56,7 @@ class ObjectsController < BaseObjectsController
     @object = retrieve_object!(params[:id])
 
     respond_to do |format|
-      format.html { redirect_to(catalog_url(@object.id)) }
+      format.html { redirect_to(catalog_url(@object.noid)) }
       format.endnote { render text: @object.export_as_endnote, layout: false }
       format.zip do
         if current_user
@@ -81,8 +81,8 @@ class ObjectsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
 
-    if params[:batch][:governing_collection_id].present?
-      collection = DRI::Batch.find(params[:batch][:governing_collection_id])
+    if params[:digital_object][:governing_collection_id].present?
+      collection = DRI::DigitalObject.find_by(noid: params[:digital_object][:governing_collection_id])
       @object.governing_collection = collection
     end
 
@@ -96,7 +96,7 @@ class ObjectsController < BaseObjectsController
       return
     end
 
-    doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
+    doi.update_metadata(params[:digital_object].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
     # purge params from update action
     purge_params
@@ -110,7 +110,7 @@ class ObjectsController < BaseObjectsController
       end
 
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
       format.json { render json: @object }
     end
   end
@@ -124,21 +124,21 @@ class ObjectsController < BaseObjectsController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
-    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
+    params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
+    params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
 
-    if params[:batch][:governing_collection].present?
-      params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection])
+    if params[:digital_object][:governing_collection].present?
+      params[:digital_object][:governing_collection] = DRI::DigitalObject.find_by(noid: params[:digital_object][:governing_collection])
       # governing_collection present and also whether this is a documentation object?
-      if params[:batch][:documentation_for].present?
-        params[:batch][:documentation_for] = DRI::Batch.find(params[:batch][:documentation_for])
+      if params[:digital_object][:documentation_for].present?
+        params[:digital_object][:documentation_for] = DRI::DigitalObject.find_by(noid: params[:digital_object][:documentation_for])
       end
     end
 
-    enforce_permissions!('create_digital_object', params[:batch][:governing_collection].id)
-    locked(params[:batch][:governing_collection].id); return if performed?
+    enforce_permissions!('create_digital_object', params[:digital_object][:governing_collection].noid)
+    locked(params[:digital_object][:governing_collection].noid); return if performed?
 
-    if params[:batch][:documentation_for].present?
+    if params[:digital_object][:documentation_for].present?
       create_from_form :documentation
     elsif params[:metadata_file].present?
       create_from_upload
@@ -158,13 +158,13 @@ class ObjectsController < BaseObjectsController
       respond_to do |format|
         format.html do
           flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-          redirect_to controller: 'my_collections', action: 'show', id: @object.id
+          redirect_to controller: 'my_collections', action: 'show', id: @object.noid
         end
         format.json do
-          response = { pid: @object.id }
+          response = { pid: @object.noid }
           response[:warning] = @warnings if @warnings
 
-          render json: response, location: my_collections_url(@object.id), status: :created
+          render json: response, location: my_collections_url(@object.noid), status: :created
         end
       end
     else
@@ -190,7 +190,7 @@ class ObjectsController < BaseObjectsController
       version = @object.object_version || '1'
       @object.object_version = (version.to_i + 1).to_s
       assets = []
-      @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
+      @object.generic_files.map { |gf| assets << "#{gf.noid}_#{gf.label}" }
       
       preservation = Preservation::Preservator.new(@object)
       preservation.update_manifests(
@@ -310,7 +310,7 @@ class ObjectsController < BaseObjectsController
                 url_based_filename: true
 
           if object.published?
-            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.id, 1, true)
+            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.noid, 1, true)
           end
           file_sent = true
         else
@@ -330,7 +330,7 @@ class ObjectsController < BaseObjectsController
 
   def status
     enforce_permissions!('edit', params[:id])
-
+    
     @object = retrieve_object!(params[:id])
 
     return if request.get?
@@ -350,9 +350,9 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
       format.json do
-        response = { id: @object.id, status: @object.status }
+        response = { id: @object.noid, status: @object.status }
         response[:warning] = @warnings if @warnings
         render json: response, status: :accepted
       end
@@ -371,7 +371,7 @@ class ObjectsController < BaseObjectsController
       xml = load_xml(params[:metadata_file])
       standard = metadata_standard_from_xml(xml)
 
-      @object = DRI::Batch.with_standard standard
+      @object = DRI::DigitalObject.with_standard standard
       @object.depositor = current_user.to_s
       @object.update_attributes create_params
 
@@ -383,9 +383,9 @@ class ObjectsController < BaseObjectsController
     #
     def create_from_form(standard = nil)
       @object = if standard
-                  DRI::Batch.with_standard(standard)
+                  DRI::DigitalObject.with_standard(standard)
                 else
-                  DRI::Batch.with_standard(:qdc)
+                  DRI::DigitalObject.with_standard(:qdc)
                 end
       @object.depositor = current_user.to_s
       @object.update_attributes create_params
@@ -393,8 +393,8 @@ class ObjectsController < BaseObjectsController
 
     def create_reader_group
       group = UserGroup::Group.new(
-        name: @object.id.to_s,
-        description: "Default Reader group for collection #{@object.id}"
+        name: @object.noid.to_s,
+        description: "Default Reader group for collection #{@object.noid}"
       )
       group.reader_group = true
       group.save
@@ -407,7 +407,7 @@ class ObjectsController < BaseObjectsController
       # Get files
       if can? :read, doc
         files = doc.assets
-
+        
         files.each do |file_doc|
           file_list = {}
 
@@ -454,7 +454,7 @@ class ObjectsController < BaseObjectsController
     def retrieve_linked_data
       if AuthoritiesConfig
         begin
-          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present?
+          DRI.queue.push(LinkedDataJob.new(@object.noid)) if @object.geographical_coverage.present?
         rescue Exception => e
           Rails.logger.error "Unable to submit linked data job: #{e.message}"
         end

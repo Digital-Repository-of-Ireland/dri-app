@@ -6,18 +6,18 @@ class BaseObjectsController < CatalogController
   end
 
   def doi
-    @doi ||= DataciteDoi.where(object_id: @object.id)
+    @doi ||= DataciteDoi.where(object_id: @object.noid)
     @doi.empty? ? nil : @doi.current
   end
 
   protected
 
     def create_params
-      params.require(:batch).permit!
+      params.require(:digital_object).permit!
     end
 
     def update_params
-      params.require(:batch).except!(
+      params.require(:digital_object).except!(
         :read_groups_string,
         :read_users_string,
         :master_file_access,
@@ -27,7 +27,7 @@ class BaseObjectsController < CatalogController
     end
 
     def purge_params
-      params.delete(:batch)
+      params.delete(:digital_object)
       params.delete(:_method)
       params.delete(:authenticity_token)
       params.delete(:commit)
@@ -39,7 +39,7 @@ class BaseObjectsController < CatalogController
     def set_licence
       @object = retrieve_object!(params[:id])
 
-      licence = params[:batch][:licence]
+      licence = params[:digital_object][:licence]
       if licence.present?
         @object.licence = licence
         version = @object.object_version || '1'
@@ -60,7 +60,7 @@ class BaseObjectsController < CatalogController
         else
           flash[:error] = t('dri.flash.error.licence_not_updated')
         end
-        format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+        format.html { redirect_to controller: 'catalog', action: 'show', id: @object.noid }
       end
     end
 end

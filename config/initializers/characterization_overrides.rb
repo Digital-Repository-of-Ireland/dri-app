@@ -3,10 +3,6 @@ require "hydra/derivatives/extract_metadata"
 Hydra::Derivatives::ExtractMetadata.module_eval do
   # Quick fixes to get the content from storage and avoid using the REST API
 
-  def id
-    /\/([^\/]*)$/.match(uri.to_str.rpartition('/')[0])[1]
-  end
-
   def external_body?
     registered_mime_type = MIME::Types[mime_type].first
     registered_mime_type.content_type == "message/external-body"
@@ -15,7 +11,7 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
   def extract_metadata
     
     if external_body?
-      @local_file_info = LocalFile.where(fedora_id: id, ds_id: "content").order("VERSION DESC").limit(1).to_a
+      @local_file_info = LocalFile.where(fedora_id: noid, ds_id: "content").order("VERSION DESC").limit(1).to_a
       path = @local_file_info[0].path
 
       # Bit of a hack here to force mp2 files to be characterized in FITS
@@ -46,7 +42,7 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
     source = nil
 
     if external_body?
-      @local_file_info = LocalFile.where(fedora_id: id, ds_id: "content").order("VERSION DESC").limit(1).to_a
+      @local_file_info = LocalFile.where(fedora_id: noid, ds_id: "content").order("VERSION DESC").limit(1).to_a
       source = File.open(@local_file_info[0].path, 'r')
     else
       source = content
@@ -70,7 +66,7 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
     def filename_for_characterization
       extension = ""
       if external_body?
-        local_file_info = LocalFile.where(fedora_id: id, ds_id: "content").order("VERSION DESC").limit(1).to_a
+        local_file_info = LocalFile.where(fedora_id: noid, ds_id: "content").order("VERSION DESC").limit(1).to_a
         extension = "."+local_file_info[0].path.split(".").last
       else
         registered_mime_type = MIME::Types[mime_type].first
@@ -83,7 +79,7 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
       end
       version_id = 1 # TODO fixme
 
-      ["#{id}-#{version_id}", "#{extension}"]
+      ["#{noid}-#{version_id}", "#{extension}"]
     end
 
 end

@@ -42,7 +42,7 @@ class MetadataController < CatalogController
                  else
                    @object.attached_files[:descMetadata].content
                  end
-          send_data(data, filename: "#{@object.id}.xml")
+          send_data(data, filename: "#{@object.noid}.xml")
         end
         format.js do
           xml_data = @object.attached_files[:descMetadata].content
@@ -101,7 +101,7 @@ class MetadataController < CatalogController
         actor.version_and_record_committer
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
-        logger.error "Could not save object #{@object.id}: #{e.message}"
+        logger.error "Could not save object #{@object.noid}: #{e.message}"
         raise DRI::Exceptions::InternalError
       end
     else
@@ -122,7 +122,7 @@ class MetadataController < CatalogController
       actor.version_and_record_committer
       flash[:notice] = t('dri.flash.notice.metadata_updated')
     rescue RuntimeError => e
-      logger.error "Could not save object #{@object.id}: #{e.message}"
+      logger.error "Could not save object #{@object.noid}: #{e.message}"
       raise DRI::Exceptions::InternalError
     end
 

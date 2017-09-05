@@ -25,9 +25,8 @@ class Institute < ActiveRecord::Base
 
   def self.find_collection_institutes(institute_list)
     return nil if institute_list.blank?
-
-    institutes = where(name: institute_list)
-    institutes.blank? ? nil : institutes.to_a
+    institutes = where(name: institute_list.to_a)
+    institutes.blank? ? nil : institutes
   end
 
   def local_storage_dir

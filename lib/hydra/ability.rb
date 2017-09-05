@@ -36,14 +36,14 @@ module Hydra
         test_edit(pid)
       end
 
-      can [:edit, :update, :destroy], DRI::Batch do |obj|
-        Rails.logger.debug("[EDITPERM] Checking from Batch")
-        test_edit(obj.id)
+      can [:edit, :update, :destroy], DRI::DigitalObject do |obj|
+        Rails.logger.debug("[EDITPERM] Checking from DigitalObject")
+        test_edit(obj.noid)
       end
 
       can [:edit, :update, :destroy], DRI::GenericFile do |obj|
         Rails.logger.debug("[EDITPERM] Checking from GenericFile")
-        test_edit(obj.id)
+        test_edit(obj.noid)
       end
 
       can :edit, SolrDocument do |obj|
@@ -60,9 +60,9 @@ module Hydra
         test_read(pid)
       end
 
-      can :read, [DRI::Batch] do |obj|
+      can :read, [DRI::DigitalObject] do |obj|
         Rails.logger.debug("[READPERM] Checking from Object")
-        test_read(obj.id)
+        test_read(obj.noid)
       end
 
 
@@ -83,9 +83,9 @@ module Hydra
         test_search(pid)
       end
 
-      can :search, [DRI::Batch] do |obj|
+      can :search, [DRI::DigitalObject] do |obj|
         Rails.logger.debug("[SEARCHPERM] Checking from Object")
-        test_search(obj.id)
+        test_search(obj.noid)
       end
 
       can :search, SolrDocument do |obj|
@@ -103,9 +103,9 @@ module Hydra
         test_manager(pid)
       end
 
-      can :manage_collection, DRI::Batch do |obj|
+      can :manage_collection, DRI::DigitalObject do |obj|
         Rails.logger.debug("[MANPERM] Checking from Object")
-        test_manager(obj.id)
+        test_manager(obj.noid)
       end
 
       can :manage_collection, SolrDocument do |obj|
@@ -119,9 +119,9 @@ module Hydra
         test_manager(pid)
       end
 
-      can :manage, DRI::Batch do |obj|
+      can :manage, DRI::DigitalObject do |obj|
         Rails.logger.debug("[MANPERM] Checking from Object")
-        test_manager(obj.id)
+        test_manager(obj.noid)
       end
 
       can :manage, SolrDocument do |obj|
@@ -138,9 +138,8 @@ module Hydra
       if current_user.applicable_policy?(SETTING_POLICY_COLLECTION_MANAGER)
         #Marked as being able to :manage_collection
         can :manage_collection_flag, :all
-        can :create, [DRI::Batch, DRI::GenericFile]
+        can :create, [DRI::DigitalObject, DRI::GenericFile]
       end
-
 
       #Admin Permissions
       if current_user.applicable_policy?(SETTING_POLICY_ADMIN)
@@ -154,7 +153,7 @@ module Hydra
         test_create(pid)
       end
 
-      can :create_do, DRI::Batch do |collection|
+      can :create_do, DRI::DigitalObject do |collection|
         test_create(collection)
       end
     end

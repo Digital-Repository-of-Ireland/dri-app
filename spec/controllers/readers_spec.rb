@@ -7,7 +7,7 @@ describe ReadersController do
     @manager_user = FactoryGirl.create(:collection_manager)
     @login_user = FactoryGirl.create(:user)
     
-    @collection = DRI::Batch.with_standard :qdc
+    @collection = DRI::DigitalObject.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -19,15 +19,15 @@ describe ReadersController do
     @collection.manager_users_string = @manager_user.email
     @collection.save
 
-    @group = UserGroup::Group.new(name: @collection.id, 
-      description: "Default Reader group for collection #{@collection.id}")
+    @group = UserGroup::Group.new(name: @collection.noid, 
+      description: "Default Reader group for collection #{@collection.noid}")
     @group.reader_group = true
     @group.save
     
-    @collection.read_groups_string = "#{@collection.id}"
+    @collection.read_groups_string = "#{@collection.noid}"
     @collection.save
 
-    @object = DRI::Batch.with_standard :qdc
+    @object = DRI::DigitalObject.with_standard :qdc
     @object[:title] = ["An Audio Title"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
     @object[:role_hst] = ["Collins, Michael"]
@@ -58,14 +58,14 @@ describe ReadersController do
     it "creates a new pending membership" do
       sign_in @login_user
 
-      @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
+      @request.env['HTTP_REFERER'] = "/catalog/#{@object.noid}"
 
-      group = UserGroup::Group.find_by(name: @collection.id)
+      group = UserGroup::Group.find_by(name: @collection.noid)
       expect(@login_user.member?(group.id)).to be_falsey
       expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
-        post :create, { :id => @collection.id }
+        post :create, { :id => @collection.noid }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
       @login_user.reload
       expect(@login_user.pending_member?(group.id)).to be true
@@ -77,7 +77,7 @@ describe ReadersController do
     before(:each) do
       sign_in @login_user
      
-      @subcollection = DRI::Batch.with_standard :qdc
+      @subcollection = DRI::DigitalObject.with_standard :qdc
       @subcollection[:title] = ["A collection"]
       @subcollection[:description] = ["This is a Collection"]
       @subcollection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -89,7 +89,7 @@ describe ReadersController do
       @subcollection.manager_users_string = @manager_user.email
       @subcollection.save
             
-      @subobject = DRI::Batch.with_standard :qdc
+      @subobject = DRI::DigitalObject.with_standard :qdc
       @subobject[:title] = ["An Audio Title in the Sub Collection"]
       @subobject[:rights] = ["This is a statement about the rights associated with this object"]
       @subobject[:role_hst] = ["Collins, Michael"]
@@ -115,36 +115,36 @@ describe ReadersController do
     end  
 
     it "creates a new pending membership in the governing read group" do
-      @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
+      @request.env['HTTP_REFERER'] = "/catalog/#{@object.noid}"
 
-      group = UserGroup::Group.find_by(name: @collection.id)
+      group = UserGroup::Group.find_by(name: @collection.noid)
       expect(@login_user.member?(group.id)).to be_falsey
       expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
-        post :create, { :id => @subcollection.id }
+        post :create, { :id => @subcollection.noid }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
       @login_user.reload
       expect(@login_user.pending_member?(group.id)).to be true
     end
 
     it "creates a new pending membership in the subcollection read group" do
-      subgroup = UserGroup::Group.new(name: @subcollection.id, 
-      description: "Default Reader group for collection #{@subcollection.id}")
+      subgroup = UserGroup::Group.new(name: @subcollection.noid, 
+      description: "Default Reader group for collection #{@subcollection.noid}")
       subgroup.reader_group = true
       subgroup.save
 
-      @subcollection.read_groups_string = "#{@subcollection.id}"
+      @subcollection.read_groups_string = "#{@subcollection.noid}"
       @subcollection.save
 
-      @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
+      @request.env['HTTP_REFERER'] = "/catalog/#{@object.noid}"
 
-      group = UserGroup::Group.find_by(name: @subcollection.id)
+      group = UserGroup::Group.find_by(name: @subcollection.noid)
       expect(@login_user.member?(group.id)).to be_falsey
       expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
-        post :create, { :id => @subcollection.id }
+        post :create, { :id => @subcollection.noid }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
       @login_user.reload
@@ -156,11 +156,11 @@ describe ReadersController do
   describe 'UPDATE read request' do
     it "approves a pending membership" do
       sign_in @manager_user
-      @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
+      @request.env['HTTP_REFERER'] = "/catalog/#{@object.noid}"
 
       membership = @login_user.join_group(@group.id)
 
-      post :update, { id: @collection.id, user_id: @login_user.id }
+      post :update, { id: @collection.noid, user_id: @login_user.id }
 
       membership.reload
       expect(membership.approved?).to be true
@@ -170,14 +170,14 @@ describe ReadersController do
   describe 'DELETE read request' do
     it "approves a pending membership" do
       sign_in @manager_user
-      @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
+      @request.env['HTTP_REFERER'] = "/catalog/#{@object.noid}"
 
       membership = @login_user.join_group(@group.id)
       membership.approve_membership(@manager_user.id)
       membership.save
 
       expect {
-        delete :destroy, { id: @collection.id, user_id: @login_user.id }
+        delete :destroy, { id: @collection.noid, user_id: @login_user.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
       expect(UserGroup::Membership.find_by(group_id: @group.id, user_id: @login_user.id)).to be nil

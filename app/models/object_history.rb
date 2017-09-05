@@ -18,7 +18,7 @@ class ObjectHistory
 
   # Get the institute manager for any collection or object
   def institute_manager
-    root_collection = ActiveFedora::Base.find(object.root_collection.first)
+    root_collection = DRI::DigitalObject.find_by(noid: object.root_collection.first.noid)
 
     root_collection.depositor
   end
@@ -61,10 +61,10 @@ class ObjectHistory
     asset_info = {}
 
     object.generic_files.each do |file|
-      asset_info[file.id] = {}
+      asset_info[file.noid] = {}
 
-      asset_info[file.id][:versions] = local_files(file.id)
-      asset_info[file.id][:surrogates] = surrogate_info(file.id)
+      asset_info[file.noid][:versions] = local_files(file.noid)
+      asset_info[file.noid][:surrogates] = surrogate_info(file.noid)
     end
 
     asset_info
@@ -95,7 +95,7 @@ class ObjectHistory
 
   def surrogate_info(file_id)
     storage = StorageService.new
-    surrogates = storage.surrogate_info(@object.id, file_id)
+    surrogates = storage.surrogate_info(@object.noid, file_id)
 
     surrogates
   end

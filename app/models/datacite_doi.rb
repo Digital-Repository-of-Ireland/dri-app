@@ -11,7 +11,7 @@ class DataciteDoi < ActiveRecord::Base
   before_create :set_metadata
 
   def object
-    object ||= ActiveFedora::Base.find(object_id, cast: true)
+    object ||= DRI::DigitalObject.find_by(noid: object_id)
   end
 
   def update_metadata(params)

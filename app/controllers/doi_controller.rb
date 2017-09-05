@@ -8,7 +8,7 @@ class DoiController < ApplicationController
       flash[:alert] = t('dri.flash.alert.doi_not_configured')
       @history = {}
     else
-      @available = ActiveFedora::Base.exists?(@object_id)
+      @available = DRI::DigitalObject.exists?(noid: @object_id)
       @reason = t('dri.views.catalog.legends.doi_deleted', id: @object_id) unless @available
 
       if(@available)
@@ -46,9 +46,9 @@ class DoiController < ApplicationController
     flash[:notice] = t('dri.flash.notice.collection_doi_request')
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.noid }
       format.json do
-        response = { id: @object.id }
+        response = { id: @object.noid }
         render json: response, status: :accepted
       end
     end

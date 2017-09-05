@@ -42,8 +42,8 @@ describe ObjectsController do
       collection.governed_items << object
 
       expect {
-        delete :destroy, :id => object.id
-      }.to change { ActiveFedora::Base.exists?(object.id) }.from(true).to(false)
+        delete :destroy, :id => object.noid
+      }.to change { DRI::DigitalObject.exists?(noid: object.noid) }.from(true).to(false)
 
       collection.reload
       collection.delete
@@ -63,9 +63,9 @@ describe ObjectsController do
 
       @collection.governed_items << @object
 
-      delete :destroy, :id => @object.id
+      delete :destroy, :id => @object.noid
 
-      expect(ActiveFedora::Base.exists?(@object.id)).to be true
+      expect(DRI::DigitalObject.exists?(noid: @object.noid)).to be true
 
       @collection.reload
       @collection.delete
@@ -84,9 +84,9 @@ describe ObjectsController do
 
       @collection.governed_items << @object
 
-      delete :destroy, :id => @object.id
+      delete :destroy, :id => @object.noid
 
-      expect(ActiveFedora::Base.exists?(@object.id)).to be false
+      expect(DRI::DigitalObject.exists?(noid: @object.noid)).to be false
 
       @collection.reload
       @collection.delete
@@ -103,7 +103,7 @@ describe ObjectsController do
     end
 
     after(:each) do
-      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      @collection.delete if DRI::DigitalObject.exists?(noid: @collection)
       @login_user.delete
     end
 
@@ -118,7 +118,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file 
+      post :create, digital_object: { governing_collection: @collection.noid }, metadata_file: @file 
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
@@ -134,7 +134,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file 
+      post :create, digital_object: { governing_collection: @collection.noid }, metadata_file: @file 
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
@@ -165,24 +165,24 @@ describe ObjectsController do
       @collection.governed_items << @object
       @collection.governed_items << @object2
 
-      @collection.save    
+      @collection.save
     end
 
     after(:each) do
       @object2.delete
-      @object.delete if ActiveFedora::Base.exists?(@object.id)
-      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      @object.delete if DRI::DigitalObject.exists?(noid: @object.noid)
+      @collection.delete if DRI::DigitalObject.exists?(noid: @collection.noid)
       @login_user.delete
     end
 
     it 'should set an object status' do
-      post :status, :id => @object.id, :status => "reviewed"
+      post :status, :id => @object.noid, :status => "reviewed"
 
       @object.reload
 
       expect(@object.status).to eql("reviewed")
 
-      post :status, :id => @object.id, :status => "draft"
+      post :status, :id => @object.noid, :status => "draft"
 
       @object.reload
 
@@ -193,7 +193,7 @@ describe ObjectsController do
       @object.status = "published"
       @object.save
 
-      post :status, :id => @object.id, :status => "draft"
+      post :status, :id => @object.noid, :status => "draft"
 
       @object.reload
 
@@ -215,17 +215,17 @@ describe ObjectsController do
 
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.id)
+      DataciteDoi.create(object_id: @object.noid)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["A modified title"]
-      params[:batch][:read_users_string] = "public"
-      params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @object.id, :batch => params[:batch]
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A modified title"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      put :update, :id => @object.noid, :digital_object => params[:digital_object]
 
-      DataciteDoi.where(object_id: @object.id).first.delete
+      DataciteDoi.where(object_id: @object.noid).first.delete
       Settings.doi.enable = false
     end
 
@@ -244,17 +244,17 @@ describe ObjectsController do
 
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.id)
+      DataciteDoi.create(object_id: @object.noid)
 
       expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["An Audio Title"]
-      params[:batch][:read_users_string] = "public"
-      params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @object.id, :batch => params[:batch]
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["An Audio Title"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      put :update, :id => @object.noid, :digital_object => params[:digital_object]
 
-      DataciteDoi.where(object_id: @object.id).first.delete
+      DataciteDoi.where(object_id: @object.noid).first.delete
       Settings.doi.enable = false
     end
 
@@ -278,7 +278,7 @@ describe ObjectsController do
       end
 
       after(:each) do
-        @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+        @collection.delete if DRI::DigitalObject.exists?(@collection.id)
         @login_user.delete
         
         FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -297,17 +297,17 @@ describe ObjectsController do
           attr_reader :tempfile
         end
 
-        post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
+        post :create, digital_object: { governing_collection: @collection.id }, metadata_file: @file
         expect(flash[:error]).to be_present
       end
 
       it 'should not allow object updates' do
         params = {}
-        params[:batch] = {}
-        params[:batch][:title] = ["An Audio Title"]
-        params[:batch][:read_users_string] = "public"
-        params[:batch][:edit_users_string] = @login_user.email
-        put :update, :id => @object.id, :batch => params[:batch]
+        params[:digital_object] = {}
+        params[:digital_object][:title] = ["An Audio Title"]
+        params[:digital_object][:read_users_string] = "public"
+        params[:digital_object][:edit_users_string] = @login_user.email
+        put :update, :id => @object.noid, :digital_object => params[:digital_object]
 
         expect(flash[:error]).to be_present
       end
@@ -321,14 +321,14 @@ describe ObjectsController do
         sign_in @login_user
         @collection = FactoryGirl.create(:collection)
         @object = FactoryGirl.create(:sound)
-        CollectionLock.create(collection_id: @collection.id)
+        CollectionLock.create(collection_id: @collection.noid)
 
-        request.env["HTTP_REFERER"] = catalog_path(@collection.id)
+        request.env["HTTP_REFERER"] = catalog_path(@collection.noid)
       end
 
       after(:each) do
-        CollectionLock.delete_all(collection_id: @collection.id)
-        @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+        CollectionLock.delete_all(collection_id: @collection.noid)
+        @collection.delete if DRI::DigitalObject.exists?(@collection.noid)
         @login_user.delete
       end
 
@@ -342,7 +342,7 @@ describe ObjectsController do
           attr_reader :tempfile
         end
 
-        post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
+        post :create, digital_object: { governing_collection: @collection.noid }, metadata_file: @file
         expect(flash[:error]).to be_present
       end
 
@@ -351,11 +351,11 @@ describe ObjectsController do
         @object.save
         
         params = {}
-        params[:batch] = {}
-        params[:batch][:title] = ["An Audio Title"]
-        params[:batch][:read_users_string] = "public"
-        params[:batch][:edit_users_string] = @login_user.email
-        put :update, :id => @object.id, :batch => params[:batch]
+        params[:digital_object] = {}
+        params[:digital_object][:title] = ["An Audio Title"]
+        params[:digital_object][:read_users_string] = "public"
+        params[:digital_object][:edit_users_string] = @login_user.email
+        put :update, :id => @object.noid, :digital_object => params[:digital_object]
 
         expect(flash[:error]).to be_present
       end
@@ -381,7 +381,7 @@ describe ObjectsController do
     it 'should assign valid JSON to @list' do
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :index, objects: [{ 'pid' => @object.id }]
+      post :index, objects: [{ 'pid' => @object.noid }]
       list = controller.instance_variable_get(:@list)
       expect { JSON.parse(list.to_json) }.not_to raise_error
     end
@@ -389,7 +389,7 @@ describe ObjectsController do
     it 'should contain the metadata fields' do
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :index, objects: [{ 'pid' => @object.id }]
+      post :index, objects: [{ 'pid' => @object.noid }]
       list = controller.instance_variable_get(:@list)
       json = JSON.parse(list.to_json)
 
@@ -401,7 +401,7 @@ describe ObjectsController do
     it 'should only return the requested fields' do
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :index, objects: [{ 'pid' => @object.id }], metadata: ['title', 'description']
+      post :index, objects: [{ 'pid' => @object.noid }], metadata: ['title', 'description']
       list = controller.instance_variable_get(:@list)
       json = JSON.parse(list.to_json)
 
@@ -413,15 +413,15 @@ describe ObjectsController do
     it 'should include assets and surrogates' do
       @gf = DRI::GenericFile.new
       @gf.apply_depositor_metadata(@login_user)
-      @gf.batch = @object
+      @gf.digital_object = @object
       @gf.save
 
       storage = StorageService.new
-      storage.create_bucket(@object.id)
-      storage.store_surrogate(@object.id, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.id}_mp3.mp3")
+      storage.create_bucket(@object.noid)
+      storage.store_surrogate(@object.noid, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.noid}_mp3.mp3")
 
       request.env["HTTP_ACCEPT"] = 'application/json'
-      post :index, objects: [{ 'pid' => @object.id }]
+      post :index, objects: [{ 'pid' => @object.noid }]
       list = controller.instance_variable_get(:@list)
 
       expect(list.first).to include('files')

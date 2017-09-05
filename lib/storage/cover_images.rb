@@ -33,12 +33,12 @@ module Storage
     def self.store_cover(cover_image, collection)
       url = nil
       storage = StorageService.new
-      storage.create_bucket(collection.pid)
+      storage.create_bucket(collection.noid)
 
-      if (storage.store_file(collection.pid, cover_image.tempfile.path,
-            "#{collection.pid}.#{cover_image.original_filename.split(".").last}"))
-        url = storage.file_url(collection.pid,
-            "#{collection.pid}.#{cover_image.original_filename.split(".").last}")
+      cover_filename = "#{collection.noid}.#{cover_image.original_filename.split(".").last}"
+
+      if (storage.store_file(collection.noid, cover_image.tempfile.path, cover_filename))
+        url = storage.file_url(collection.noid, cover_filename)
       end
       
       url

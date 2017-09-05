@@ -13,7 +13,7 @@ describe MetadataController do
       sign_in @login_user
 
       @object = FactoryGirl.create(:sound)
-      @object[:status] = 'draft'
+      @object.status = 'draft'
       @object.save  
     end
 
@@ -35,7 +35,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, id: @object.id, metadata_file: @file
+      put :update, id: @object.noid, metadata_file: @file
 
       @object.reload
       expect(@object.title).to eq(['SAMPLE AUDIO TITLE'])
@@ -52,7 +52,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, id: @object.id, metadata_file: @file
+      put :update, id: @object.noid, metadata_file: @file
 
       @object.reload
       expect(@object.title).to eq(['An Audio Title'])
@@ -77,7 +77,7 @@ describe MetadataController do
       end
 
       after(:each) do
-        @object.delete if ActiveFedora::Base.exists?(@object.id)
+        @object.delete if DRI::DigitalObject.exists?(noid: @object.noid)
         @login_user.delete
 
         Settings.reload_from_files(
@@ -98,7 +98,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, id: @object.id, metadata_file: @file
+      put :update, id: @object.noid, metadata_file: @file
       expect(response.status).to eq(503)
     end
 

@@ -26,8 +26,8 @@ module Hydra
         out_file = File.open(new_output, "rb")
         object.add_file(out_file.read, path: dest_path, mime_type: mime_type)
 
-        bucket_id = object.batch.nil? ? object.id : object.batch.id
-        filename = "#{object.id}_#{dest_path}.#{file_suffix}"
+        bucket_id = object.digital_object.nil? ? object.noid : object.digital_object.noid
+        filename = "#{object.noid}_#{dest_path}.#{file_suffix}"
 
         storage = StorageService.new
         storage.store_surrogate(bucket_id, out_file, filename)
@@ -36,7 +36,7 @@ module Hydra
       end
 
       def output_file(file_suffix)
-        Dir::Tmpname.create(["#{object.id.gsub('/', '_')}-content.", ".#{file_suffix}"], Hydra::Derivatives.temp_file_base){}
+        Dir::Tmpname.create(["#{object.noid.gsub('/', '_')}-content.", ".#{file_suffix}"], Hydra::Derivatives.temp_file_base){}
       end
 
       def new_mime_type(format)

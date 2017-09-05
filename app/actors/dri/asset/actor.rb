@@ -29,17 +29,17 @@ module DRI
     # it is typically used in conjunction with create_content, which does do a save.
     # If you want to save when using create_metadata, you can do this:
     #   create_metadata(batch_id) { |gf| gf.save }
-    def create_metadata(batch_id)
+    def create_metadata(digital_object_id)
       generic_file.apply_depositor_metadata(user)
       time_in_utc = DateTime.now.new_offset(0)
       generic_file.date_uploaded = time_in_utc
       generic_file.date_modified = time_in_utc
       generic_file.creator = [user.name]
 
-      if batch_id
-        generic_file.batch_id = batch_id
+      if digital_object_id
+        generic_file.digital_object_id = digital_object_id
       else
-        ActiveFedora::Base.logger.warn "unable to find batch to attach to"
+        ActiveFedora::Base.logger.warn "unable to find digital object to attach to"
       end
       yield(generic_file) if block_given?
     end
@@ -98,7 +98,7 @@ module DRI
     end
 
     def push_characterize_job
-      DRI.queue.push(CharacterizeJob.new(@generic_file.id))
+      DRI.queue.push(CharacterizeJob.new(@generic_file.noid))
     end
 
     protected
