@@ -12,21 +12,21 @@ describe 'DRI::Object::Actor' do
     @collection = FactoryGirl.create(:collection)
    
     @object = FactoryGirl.create(:sound) 
-    @object[:status] = "draft"
+    @object.status = "draft"
     checksum_metadata(@object)
-    @object.save
-
-    @object2 = FactoryGirl.create(:sound) 
-    @object2[:status] = "draft"
+    @object.save!
+    
+    @object2 = FactoryGirl.create(:sound)
+    @object2.status = "draft"
     checksum_metadata(@object2)
-    @object2.save
-
+    @object2.save!
+    
     @object3 = FactoryGirl.create(:sound) 
-    @object3[:status] = "draft"
-    @object3[:title] = ["Not a Duplicate"]
+    @object3.status = "draft"
+    @object3.title = ["Not a Duplicate"]
     checksum_metadata(@object3)
-    @object3.save
-
+    @object3.save!
+    
     @collection.governed_items << @object
     @collection.governed_items << @object2
     @collection.governed_items << @object3
@@ -44,6 +44,6 @@ describe 'DRI::Object::Actor' do
     duplicates = actor.find_duplicates
     
     expect(duplicates.length).to eq(1)
-    expect(duplicates.first['id']).to eq(@object2.id)
+    expect(duplicates.first['id']).to eq(@object2.noid)
   end
 end

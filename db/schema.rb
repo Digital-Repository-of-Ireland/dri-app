@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170206161648) do
+ActiveRecord::Schema.define(version: 20170904152023) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -52,6 +52,35 @@ ActiveRecord::Schema.define(version: 20170206161648) do
     t.integer  "version"
   end
 
+  create_table "digital_objects", force: :cascade do |t|
+    t.string   "ingest_files_from_metadata"
+    t.string   "master_file_access"
+    t.string   "published_at"
+    t.string   "digital_object_type"
+    t.string   "discover_users"
+    t.string   "discover_groups"
+    t.string   "read_users"
+    t.string   "read_groups"
+    t.string   "edit_users"
+    t.string   "edit_groups"
+    t.string   "manager_users"
+    t.string   "manager_groups"
+    t.integer  "governing_collection_id"
+    t.string   "governing_collection_type"
+    t.integer  "previous_sibling_id"
+    t.string   "previous_sibling_type"
+    t.integer  "documentation_for_id"
+    t.string   "documentation_for_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "noid"
+  end
+
+  add_index "digital_objects", ["documentation_for_type", "documentation_for_id"], name: "doc_for_index"
+  add_index "digital_objects", ["governing_collection_type", "governing_collection_id"], name: "governing_index"
+  add_index "digital_objects", ["noid"], name: "index_digital_objects_on_noid", unique: true
+  add_index "digital_objects", ["previous_sibling_type", "previous_sibling_id"], name: "sibling_index"
+
   create_table "doi_metadata", force: :cascade do |t|
     t.integer  "datacite_doi_id"
     t.text     "title"
@@ -66,6 +95,35 @@ ActiveRecord::Schema.define(version: 20170206161648) do
   end
 
   add_index "doi_metadata", ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
+
+  create_table "generic_files", force: :cascade do |t|
+    t.text     "title"
+    t.text     "creator"
+    t.string   "label"
+    t.string   "depositor"
+    t.string   "mime_type"
+    t.integer  "version"
+    t.string   "path"
+    t.string   "checksum_md5"
+    t.string   "checksum_sha256"
+    t.string   "checksum_rmd160"
+    t.string   "discover_users"
+    t.string   "discover_groups"
+    t.string   "read_users"
+    t.string   "read_groups"
+    t.string   "edit_users"
+    t.string   "edit_groups"
+    t.string   "manager_users"
+    t.string   "manager_groups"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "digital_object_id"
+    t.string   "digital_object_type"
+    t.string   "noid"
+  end
+
+  add_index "generic_files", ["digital_object_type", "digital_object_id"], name: "gf_do_index"
+  add_index "generic_files", ["noid"], name: "index_generic_files_on_noid", unique: true
 
   create_table "ingest_statuses", force: :cascade do |t|
     t.string   "batch_id"
@@ -94,7 +152,7 @@ ActiveRecord::Schema.define(version: 20170206161648) do
     t.integer  "ingest_status_id"
     t.string   "job"
     t.string   "status"
-    t.string   "message"
+    t.text     "message"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -118,6 +176,17 @@ ActiveRecord::Schema.define(version: 20170206161648) do
     t.integer "version"
     t.text    "checksum"
   end
+
+  create_table "om_datastreams", force: :cascade do |t|
+    t.string   "type"
+    t.binary   "datastream_content"
+    t.integer  "describable_id"
+    t.string   "describable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "om_datastreams", ["describable_type", "describable_id"], name: "om_index"
 
   create_table "searches", force: :cascade do |t|
     t.text     "query_params"
