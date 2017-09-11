@@ -310,7 +310,7 @@ describe CollectionsController do
     end
 
     after(:each) do
-      @collection.delete if DRI::DigitalObject.exists?(noid: @collection.noid)
+      @collection.delete if DRI::Identifier.object_exists?(@collection.noid)
       @login_user.delete
 
       Settings.reload_from_files(

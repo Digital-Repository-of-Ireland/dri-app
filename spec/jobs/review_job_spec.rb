@@ -38,9 +38,7 @@ describe "ReviewJob" do
   end
 
   after(:each) do
-    @object.delete
-    @object2.delete
-    @collection.delete
+    @collection.destroy
 
     @login_user.delete
 
@@ -49,14 +47,14 @@ describe "ReviewJob" do
   
   describe "run" do
     it "should set all objects status to reviewed" do
-      job = ReviewJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = ReviewJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
       job.perform
       
       @object.reload
       @object2.reload
 
-      expect(@object.status).to eql("reviewed")
-      expect(@object2.status).to eql("reviewed")     
+      expect(@object.status).to eq("reviewed")
+      expect(@object2.status).to eq("reviewed")     
     end
 
     it "should ignore published objects" do
@@ -64,15 +62,15 @@ describe "ReviewJob" do
       @published[:status] = "published"
       @published.save
 
-      job = ReviewJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = ReviewJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
       job.perform
       
       @object.reload
       @object2.reload
 
-      expect(@object.status).to eql("reviewed")
-      expect(@object2.status).to eql("reviewed")
-      expect(@published.status).to eql("published")
+      expect(@object.status).to eq("reviewed")
+      expect(@object2.status).to eq("reviewed")
+      expect(@published.status).to eq("published")
 
       @published.delete
     end
@@ -88,10 +86,10 @@ describe "ReviewJob" do
       end
 
       @collection.save
-      job = ReviewJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id})
+      job = ReviewJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id})
       job.perform
             
-      expect(ActiveFedora::SolrService.count("collection_id_sim:\"#{@collection.id}\" AND status_ssim:reviewed")).to eq(22)
+      expect(ActiveFedora::SolrService.count("collection_id_sim:\"#{@collection.noid}\" AND status_ssim:reviewed")).to eq(22)
     end     
       
 

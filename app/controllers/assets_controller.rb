@@ -23,7 +23,7 @@ class AssetsController < ApplicationController
       result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
       @document = SolrDocument.new(result.first)
 
-      @generic_file = retrieve_generic_file! params[:id]
+      @generic_file = retrieve_object!(params[:id])
 
       status(@generic_file.noid)
 
@@ -43,7 +43,7 @@ class AssetsController < ApplicationController
 
     case type
     when 'surrogate'
-      @generic_file = retrieve_generic_file! params[:id]
+      @generic_file = retrieve_object!(params[:id])
       if @generic_file
         if @generic_file.digital_object.published?
           Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.digital_object.root_collection.first, "Download",  @generic_file.digital_object_id, 1, true) 
@@ -55,7 +55,7 @@ class AssetsController < ApplicationController
     when 'masterfile'
       enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
-      @generic_file = retrieve_generic_file! params[:id]
+      @generic_file = retrieve_object!(params[:id])
       if @generic_file
         can_view?
 
@@ -83,7 +83,7 @@ class AssetsController < ApplicationController
     enforce_permissions!('edit', params[:object_id])
 
     @object = retrieve_object!(params[:object_id])
-    @generic_file = retrieve_generic_file!(params[:id])
+    @generic_file = retrieve_object!(params[:id])
     raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @object.status == 'published'
 
     version = @object.object_version || '1'
@@ -113,7 +113,7 @@ class AssetsController < ApplicationController
     file_upload = upload_from_params
 
     @object = retrieve_object!(params[:object_id])
-    @generic_file = retrieve_generic_file!(params[:id])
+    @generic_file = retrieve_object!(params[:id])
 
     preserve_file(file_upload, datastream, params)
 

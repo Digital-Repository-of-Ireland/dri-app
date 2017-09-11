@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Status' do
 
@@ -7,9 +7,9 @@ describe 'Status' do
 
     def generic_file
       Class.new { 
-        def batch
+        def digital_object
           Class.new {
-            def id
+            def noid
               'test-1'
             end
           }.new

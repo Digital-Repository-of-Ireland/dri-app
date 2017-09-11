@@ -101,7 +101,6 @@ module DRI::Solr::Document::File
     return true if self[master_file_key] == ['public']
     
     result = false
-    
     ancestor_ids.each do |id|
       ancestor = ancestor_docs[id]
       next if ancestor[master_file_key].nil? || ancestor[master_file_key] == 'inherit'

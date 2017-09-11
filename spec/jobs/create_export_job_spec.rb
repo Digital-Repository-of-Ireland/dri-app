@@ -31,7 +31,7 @@ describe "CreateExportJob" do
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
     @login_user.delete
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -48,7 +48,7 @@ describe "CreateExportJob" do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(@collection.noid, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
@@ -63,7 +63,7 @@ describe "CreateExportJob" do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(@collection.noid, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
@@ -84,7 +84,7 @@ describe "CreateExportJob" do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(@collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(@collection.noid, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"

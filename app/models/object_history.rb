@@ -18,9 +18,8 @@ class ObjectHistory
 
   # Get the institute manager for any collection or object
   def institute_manager
-    root_collection = DRI::DigitalObject.find_by(noid: object.root_collection.first.noid)
-
-    root_collection.depositor
+    root_collection = DRI::Identifier.retrieve_object(object.root_collection.first)
+    root_collection.try(:depositor).try(:first)
   end
 
   def read_users_by_group(parent = nil)

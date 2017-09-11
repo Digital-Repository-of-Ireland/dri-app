@@ -53,7 +53,7 @@ class InstitutesController < ApplicationController
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
-    @object = DRI::DigitalObject.find_by(noid: params[:object]) if params[:object]
+    @object = retrieve_object!(params[:object]) if params[:object]
 
     respond_to do |format|
       format.html { redirect_to organisations_url }
@@ -152,7 +152,7 @@ class InstitutesController < ApplicationController
 
     def add_or_remove_association(delete = false)
       # save the institute name to the properties datastream
-      @collection = DRI::DigitalObject.find_by(noid: params[:object])
+      @collection = retrieve_object(params[:object])
       raise DRI::Exceptions::NotFound unless @collection
 
       version = @collection.object_version || '1'

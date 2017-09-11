@@ -69,21 +69,17 @@ class ApplicationController < ActionController::Base
 
   # Retrieves a Fedora Digital Object by ID
   def retrieve_object(id)
-    DRI::DigitalObject.find_by(noid: id)
+    ident = DRI::Identifier.find_by(alternate_id: id)
+    return nil unless ident
+    ident.identifiable
   end
 
   def retrieve_object!(id)
-    objs = DRI::DigitalObject.find_by(noid: id)
-    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if objs.nil?
-    objs
+    ident = DRI::Identifier.find_by(alternate_id: id)
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if ident.nil?
+    ident.identifiable
   end
-
-  def retrieve_generic_file!(id)
-    objs = DRI::GenericFile.find_by(noid: id)
-    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if objs.nil?
-    objs
-  end
-
+  
   def warn_if_duplicates
     duplicates = actor.find_duplicates
     return if duplicates.blank?

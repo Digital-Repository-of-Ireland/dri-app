@@ -5,7 +5,8 @@ class CreateArchiveJob
   @queue = :create_archive
 
   def self.perform(object_id, email) 
-    object = DRI::DigitalObject.find_by(noid: object_id)
+    ident = DRI::Identifier.find_by(alternate_id: object_id)
+    object = ident.identifiable if ident
     
     # Get metadata
     # Get assets if masterfile

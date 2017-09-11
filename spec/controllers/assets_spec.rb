@@ -25,7 +25,7 @@ describe AssetsController do
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
     @login_user.delete
     FileUtils.remove_dir(@tmp_upload_dir, :force => true)
     FileUtils.remove_dir(@tmp_assets_dir, :force => true)
@@ -212,7 +212,7 @@ describe AssetsController do
 
       expect {
         delete :destroy, object_id: @object.noid, id: file_id
-      }.to change { DRI::GenericFile.exists?(noid: file_id) }.from(true).to(false)
+      }.to change { DRI::Identifier.object_exists?(file_id) }.from(true).to(false)
       
     end
 
@@ -268,7 +268,7 @@ describe AssetsController do
       end
 
       after(:each) do
-        @object.delete if DRI::DigitalObject.exists?(noid: @object.noid)
+        @object.delete if DRI::Identifier.object_exists?(@object.noid)
         @login_user.delete
         
         FileUtils.remove_dir(@tmp_assets_dir, force: true)

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'ostruct'
 require 'active_support/core_ext/hash/conversions'
 
@@ -16,7 +16,7 @@ describe "DataciteDoi" do
             )
         )
 
-    @object = DRI::Batch.with_standard :qdc
+    @object = DRI::DigitalObject.with_standard :qdc
     @object[:title] = ["An Audio Title"]
     @object[:creator] = ["A. N. Other"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
@@ -35,16 +35,16 @@ describe "DataciteDoi" do
   end
 
   after(:each) do
-    @object.delete
+    @object.destroy
   end
 
   it "should create a DOI" do
-    datacite = DataciteDoi.create(object_id: @object.id)
+    datacite = DataciteDoi.create(object_id: @object.noid)
     datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
   end
 
   it "should create datacite XML" do
-    datacite = DataciteDoi.create(object_id: @object.id)
+    datacite = DataciteDoi.create(object_id: @object.noid)
     xml = datacite.to_xml
     
     doc = Nokogiri::XML(xml)
@@ -56,7 +56,7 @@ describe "DataciteDoi" do
   end
 
   it 'should use roles if no creator' do
-    @creator = DRI::Batch.with_standard :qdc
+    @creator = DRI::DigitalObject.with_standard :qdc
     @creator[:title] = ["An Audio Title"]
     @creator[:description] = ["This is an Audio file"]
     @creator[:rights] = ["This is a statement about the rights associated with this object"]
@@ -65,7 +65,7 @@ describe "DataciteDoi" do
     @creator[:resource_type] = ["Sound"]
     @creator.save
 
-    datacite = DataciteDoi.create(object_id: @creator.id)
+    datacite = DataciteDoi.create(object_id: @creator.noid)
     xml = datacite.to_xml
 
     doc = Nokogiri::XML(xml)
@@ -78,35 +78,35 @@ describe "DataciteDoi" do
   end
 
   it "should require update if title changed" do
-    datacite = DataciteDoi.create(object_id: @object.id)
+    datacite = DataciteDoi.create(object_id: @object.noid)
     fields = { title: ["A modified title"], creator: @object.creator }
     datacite.update_metadata(fields)
     expect(datacite.changed?).to be true
   end
 
   it "should require update if creator changed" do
-    datacite = DataciteDoi.create(object_id: @object.id)
+    datacite = DataciteDoi.create(object_id: @object.noid)
     fields = { title: @object.title, creator: ["A. Body"] }
     datacite.update_metadata(fields)
     expect(datacite.changed?).to be true
   end
 
   it "should not need an update if no change" do
-    datacite = DataciteDoi.create(object_id: @object.id)
+    datacite = DataciteDoi.create(object_id: @object.noid)
     fields = { title: @object.title, creator: @object.creator }
     datacite.update_metadata(fields)
     expect(datacite.changed?).to be false
   end
  
   it "should add version numbers to doi" do
-    datacite = DataciteDoi.create(object_id: @object.id)
+    datacite = DataciteDoi.create(object_id: @object.noid)
     
     datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
 
-    datacite2 = DataciteDoi.create(object_id: @object.id)
+    datacite2 = DataciteDoi.create(object_id: @object.noid)
     datacite2.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-1"))
 
-    datacite3 = DataciteDoi.create(object_id: @object.id)
+    datacite3 = DataciteDoi.create(object_id: @object.noid)
     datacite3.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-2"))
   end
 

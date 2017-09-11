@@ -19,8 +19,7 @@ class ReviewJob
     f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false"
 
     completed, failed = set_as_reviewed(collection_id, q_str, f_query)
-
-    collection = DRI::DigitalObject.find_by(noid: collection_id)
+    collection = DRI::Identifier.retrieve_object(collection_id)
 
     # Need to set sub-collection to reviewed
     if subcollection?(collection)
@@ -49,8 +48,8 @@ class ReviewJob
       collection_objects = query.pop
 
       collection_objects.each do |object|
-        o = DRI::DigitalObject.find_by(noid: object['id'])
-        if o.status == 'draft'
+        o = DRI::Identifier.retrieve_object(object['id'])
+        if o && o.status == 'draft'
           o.status = 'reviewed'
           version = o.object_version || '1'
           o.object_version = (version.to_i + 1).to_s

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'solr/query'
 
 RSpec.configure do |c|
@@ -9,7 +9,7 @@ end
 describe "DeleteCollectionJob" do
 
   before(:each) do
-    @collection = DRI::Batch.with_standard :qdc
+    @collection = DRI::DigitalObject.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -21,7 +21,7 @@ describe "DeleteCollectionJob" do
     @collection[:status] = "draft"
     @collection.save
 
-    @object = DRI::Batch.with_standard :qdc
+    @object = DRI::DigitalObject.with_standard :qdc
     @object[:title] = ["An Audio Title"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
     @object[:role_hst] = ["Collins, Michael"]
@@ -37,19 +37,27 @@ describe "DeleteCollectionJob" do
     @object[:resource_type] = ["Sound"]
     @object[:status] = "reviewed"
     @object.save
-
-    @collection.governed_items << @object
-    @collection.save
   end
   
   describe "run" do
-    it "should delete a collection" do
-      
-      job = DeleteCollectionJob.new(@collection.id)
+    it "should delete a collection and governed_items" do
+      @collection.governed_items << @object
+      @collection.save
+      job = DeleteCollectionJob.new(@collection.noid)
       job.run
 
-      expect { ActiveFedora::Base.find(@object.id, :cast => true) }.to raise_error(Ldp::Gone)
-      expect { ActiveFedora::Base.find(@collection.id, :cast => true) }.to raise_error(Ldp::Gone)
+      expect(DRI::Identifier.object_exists?(@object.noid)).to be false
+      expect(DRI::Identifier.object_exists?(@collection.noid)).to be false
+    end
+
+    it "should delete objects with governing collection" do
+      @object.governing_collection = @collection
+      @object.save
+      job = DeleteCollectionJob.new(@collection.noid)
+      job.run
+
+      expect(DRI::Identifier.object_exists?(@object.noid)).to be false
+      expect(DRI::Identifier.object_exists?(@collection.noid)).to be false
     end
 
   end

@@ -87,7 +87,7 @@ describe DRI::DigitalObject do
   
   after(:each) do
     unless @t.new_record?
-      @t.delete
+      @t.destroy
     end
   end
 

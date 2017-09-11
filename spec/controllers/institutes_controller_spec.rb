@@ -19,7 +19,7 @@ describe InstitutesController do
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
     @institute.delete
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end

@@ -19,7 +19,6 @@ class SurrogatesController < ApplicationController
 
   def update
     raise DRI::Exceptions::BadRequest unless params[:id].present?
-
     enforce_permissions!('edit', params[:id])
 
     result_docs = solr_query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
@@ -74,6 +73,7 @@ class SurrogatesController < ApplicationController
           if file_doc[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].present?
             DRI.queue.push(CreateBucketJob.new(file_doc.id))
           else
+            puts "Characterize #{file_doc.id}"
             DRI.queue.push(CharacterizeJob.new(file_doc.id))
           end
           flash[:notice] = t('dri.flash.notice.generating_surrogates')

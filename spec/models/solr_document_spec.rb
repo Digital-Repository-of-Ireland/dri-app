@@ -11,8 +11,11 @@ describe SolrDocument do
     @object = FactoryGirl.create(:sound)
 
     @subcollection.governing_collection = @collection
-    @subcollection.governed_items << @object
+    #@subcollection.governed_items << @object
     @subcollection.save
+
+    @object.governing_collection = @subcollection
+    @object.save
 
     @institute = Institute.new
     @institute.name = "Test Institute"
@@ -35,7 +38,7 @@ describe SolrDocument do
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
     @institute.delete
     @dinstitute.delete
 
@@ -79,17 +82,17 @@ describe SolrDocument do
   context "getting inherited fields" do
     it "returns a list of ancestor ids" do
       doc = SolrDocument.new(@object.to_solr)
-      expect(doc.ancestor_ids).to eq [@subcollection.id, @collection.id]
+      expect(doc.ancestor_ids).to eq [@subcollection.noid, @collection.noid]
     end
 
     it "returns the root collection" do
       doc = SolrDocument.new(@object.to_solr)
-      expect(doc.root_collection.id).to eq @collection.id
+      expect(doc.root_collection.id).to eq @collection.noid
     end
 
     it "returns the governing collection" do
       doc = SolrDocument.new(@object.to_solr)
-      expect(doc.governing_collection.id).to eq @subcollection.id
+      expect(doc.governing_collection.id).to eq @subcollection.noid
     end
   end
 

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'solr/query'
 
 RSpec.configure do |c|
@@ -9,20 +9,11 @@ end
 describe "Query" do
 
   before(:each) do
-    @collection = DRI::Batch.with_standard :qdc
-    @collection[:title] = ["A collection"]
-    @collection[:description] = ["This is a Collection"]
-    @collection[:rights] = ["This is a statement about the rights associated with this object"]
-    @collection[:publisher] = ["RnaG"]
-    @collection[:type] = ["Collection"]
-    @collection[:creation_date] = ["1916-01-01"]
-    @collection[:published_date] = ["1916-04-01"]
-    @collection[:status] = "draft"
-    @collection.save
+    @collection = FactoryGirl.create(:collection)
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
   end
   
   describe "run" do

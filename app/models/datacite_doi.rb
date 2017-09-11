@@ -11,7 +11,7 @@ class DataciteDoi < ActiveRecord::Base
   before_create :set_metadata
 
   def object
-    object ||= DRI::DigitalObject.find_by(noid: object_id)
+    object ||= retrieve_object
   end
 
   def update_metadata(params)
@@ -25,6 +25,11 @@ class DataciteDoi < ActiveRecord::Base
 
   def changed?
     update_type == 'mandatory' || update_type == 'required'
+  end
+
+  def retrieve_object
+    ident = DRI::Identifier.find_by(alternate_id: object_id)
+    ident.identifiable if ident
   end
 
   def clear_changed

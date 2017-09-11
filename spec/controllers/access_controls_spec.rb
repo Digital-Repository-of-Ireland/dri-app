@@ -22,7 +22,7 @@ describe AccessControlsController, type: :request do
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
     @login_user.delete
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)

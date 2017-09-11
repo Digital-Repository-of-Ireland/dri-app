@@ -125,7 +125,7 @@ describe DRI::IIIFViewable do
     it "should set within for collection objects" do
       manifest = iiif_test.new(SolrDocument.new(@sound.to_solr)).iiif_manifest
  
-      expect(manifest.within['@id']).to end_with("#{@collection.id}.json")
+      expect(manifest.within['@id']).to end_with("#{@collection.noid}.json")
     end
 
     it "should include subcollections in the collection manifest" do

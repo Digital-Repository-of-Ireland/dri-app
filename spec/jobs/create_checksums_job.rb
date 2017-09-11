@@ -30,9 +30,7 @@ describe "workers" do
   end
 
   after(:each) do
-    @file.delete
-    @gf.delete
-    @object.delete
+    @object.destroy
   end
   
   describe CreateChecksumsJob do

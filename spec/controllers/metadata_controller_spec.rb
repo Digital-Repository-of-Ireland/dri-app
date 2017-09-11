@@ -19,7 +19,7 @@ describe MetadataController do
 
     after(:each) do
       @login_user.delete
-      @object.delete
+      @object.destroy
 
       FileUtils.remove_dir(@tmp_assets_dir, force: true)
     end
@@ -77,7 +77,7 @@ describe MetadataController do
       end
 
       after(:each) do
-        @object.delete if DRI::DigitalObject.exists?(noid: @object.noid)
+        @object.delete if DRI::Identifier.object_exists?(@object.noid)
         @login_user.delete
 
         Settings.reload_from_files(

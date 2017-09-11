@@ -43,10 +43,10 @@ describe ObjectsController do
 
       expect {
         delete :destroy, :id => object.noid
-      }.to change { DRI::DigitalObject.exists?(noid: object.noid) }.from(true).to(false)
+      }.to change { DRI::Identifier.object_exists?(object.noid) }.from(true).to(false)
 
       collection.reload
-      collection.delete
+      collection.destroy
     end
 
     it 'should not delete a published object for non-admin' do
@@ -65,10 +65,10 @@ describe ObjectsController do
 
       delete :destroy, :id => @object.noid
 
-      expect(DRI::DigitalObject.exists?(noid: @object.noid)).to be true
+      expect(DRI::Identifier.object_exists?(@object.noid)).to be true
 
       @collection.reload
-      @collection.delete
+      @collection.destroy
     end
 
     it 'should delete a published object for an admin' do
@@ -86,10 +86,10 @@ describe ObjectsController do
 
       delete :destroy, :id => @object.noid
 
-      expect(DRI::DigitalObject.exists?(noid: @object.noid)).to be false
+      expect(DRI::Identifier.object_exists?(@object.noid)).to be false
 
       @collection.reload
-      @collection.delete
+      @collection.destroy
     end
 
   end
@@ -103,7 +103,7 @@ describe ObjectsController do
     end
 
     after(:each) do
-      @collection.delete if DRI::DigitalObject.exists?(noid: @collection)
+      @collection.destroy if DRI::Identifier.object_exists?(@collection)
       @login_user.delete
     end
 
@@ -169,9 +169,7 @@ describe ObjectsController do
     end
 
     after(:each) do
-      @object2.delete
-      @object.delete if DRI::DigitalObject.exists?(noid: @object.noid)
-      @collection.delete if DRI::DigitalObject.exists?(noid: @collection.noid)
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.noid)
       @login_user.delete
     end
 
@@ -278,7 +276,7 @@ describe ObjectsController do
       end
 
       after(:each) do
-        @collection.delete if DRI::DigitalObject.exists?(@collection.id)
+        @collection.destroy if DRI::Identifier.object_exists?(@collection.id)
         @login_user.delete
         
         FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -328,7 +326,7 @@ describe ObjectsController do
 
       after(:each) do
         CollectionLock.delete_all(collection_id: @collection.noid)
-        @collection.delete if DRI::DigitalObject.exists?(@collection.noid)
+        @collection.destroy if DRI::Identifier.object_exists?(@collection.noid)
         @login_user.delete
       end
 
@@ -374,7 +372,7 @@ describe ObjectsController do
     end
 
     after(:each) do
-      @object.delete
+      @object.destroy
       @login_user.delete
     end
 

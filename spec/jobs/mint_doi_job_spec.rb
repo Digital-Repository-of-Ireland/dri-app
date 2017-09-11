@@ -7,7 +7,7 @@ describe "MintDoiJob" do
     stub_const('DoiConfig', OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" }))
     Settings.doi.enable = true
 
-    @collection = DRI::Batch.with_standard :qdc
+    @collection = DRI::DigitalObject.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
@@ -18,7 +18,7 @@ describe "MintDoiJob" do
     @collection[:status] = "draft"
     @collection.save
 
-    @object = DRI::Batch.with_standard :qdc
+    @object = DRI::DigitalObject.with_standard :qdc
     @object[:title] = ["An Audio Title"]
     @object[:rights] = ["This is a statement about the rights associated with this object"]
     @object[:role_hst] = ["Collins, Michael"]
@@ -51,14 +51,14 @@ describe "MintDoiJob" do
       expect_any_instance_of(DOI::Datacite).to receive(:mint)
       expect_any_instance_of(DOI::Datacite).to receive(:metadata)
       
-      DataciteDoi.create(object_id: @object.id)
+      DataciteDoi.create(object_id: @object.noid)
       
-      job = MintDoiJob.new(@object.id)
+      job = MintDoiJob.new(@object.noid)
       job.run
 
       @object.reload
 
-      expect(@object.doi).to eql("10.5072/DRI.#{@object.id}")     
+      expect(@object.doi.first).to eql("10.5072/DRI.#{@object.noid}")     
     end
 
   end

@@ -100,7 +100,7 @@ class SolrDocument
   
   # Get the earliest ancestor for any inherited attribute
   def ancestor_field(field)
-    return self[field] if self[field].present?
+    return self[field] if self[field].present? && self[field].any?(&:present?)
 
     return nil unless ancestor_docs.present?
 

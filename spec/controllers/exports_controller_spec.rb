@@ -25,10 +25,10 @@ describe ExportsController do
 
     it 'should start an export' do
       @collection = FactoryGirl.create(:collection)
-      @request.env['HTTP_REFERER'] = "/collections/#{@collection.id}/export/new"
+      @request.env['HTTP_REFERER'] = "/collections/#{@collection.noid}/export/new"
             
       expect(Resque).to receive(:enqueue).once
-      post :create, id: @collection.id
+      post :create, id: @collection.noid
     end
   end
 end

@@ -23,10 +23,7 @@ describe SurrogatesController do
   end
 
   after(:each) do
-    @gf.delete
-    @object.delete
-    @collection.delete
-
+    @collection.destroy
     @login_user.delete
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
@@ -55,7 +52,7 @@ describe SurrogatesController do
       expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).twice
       put :update, id: @object.noid
 
-      @gf2.delete
+      @gf2.destroy
     end
 
   end

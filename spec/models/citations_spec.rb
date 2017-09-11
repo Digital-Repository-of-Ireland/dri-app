@@ -1,8 +1,8 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "Object citations" do
   it "should correctly format a citation" do
-    @t = DRI::Batch.with_standard :qdc
+    @t = DRI::DigitalObject.with_standard :qdc
     @t.title = ["A test of citations"]
     @t.creator = ["A. Tester"]
     @t.rights = ["Rights"]
@@ -13,7 +13,7 @@ describe "Object citations" do
   end
 
   it "should add the published year" do
-    @t = DRI::Batch.with_standard :qdc
+    @t = DRI::DigitalObject.with_standard :qdc
     @t.title = ["A test of citations"]
     @t.creator = ["A. Tester"]
     @t.rights = ["Rights"]
@@ -29,7 +29,7 @@ describe "Object citations" do
   end
 
   it "should add the depositing institute" do
-    @t = DRI::Batch.with_standard :qdc
+    @t = DRI::DigitalObject.with_standard :qdc
     @t.title = ["A test of citations"]
     @t.creator = ["A. Tester"]
     @t.rights = ["Rights"]
@@ -41,7 +41,7 @@ describe "Object citations" do
 
     @t.type = ["Text"]
 
-    @c = DRI::Batch.with_standard :qdc
+    @c = DRI::DigitalObject.with_standard :qdc
     @c.type = ["Collection"]
     @c.creator = ["A. Collection"] 
     @c.rights = ["Rights"]

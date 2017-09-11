@@ -24,7 +24,8 @@ class PublishJob
 
     completed, failed = set_as_published(collection_id, q_str, f_query)
 
-    collection = DRI::DigitalObject.find_by(noid: collection_id)
+    ident = DRI::Identifier.find_by!(alternate_id: collection_id)
+    collection = ident.identifiable
 
     # if already published skip
     return if collection.status == 'published'
@@ -59,7 +60,8 @@ class PublishJob
       collection_objects = query.pop
 
       collection_objects.each do |object|
-        o = DRI::DigitalObject.find_by(noid: object['id'])
+        ident = DRI::Identifier.find_by!(alternate_id: object['id'])
+        o = ident.identifiable
 
         next unless o.status == 'reviewed'
         o.status = 'published'
@@ -90,11 +92,11 @@ class PublishJob
   def mint_doi(obj)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
-    if obj.descMetadata.has_versions?
+    if obj.object_version.to_i > 1 #obj.descMetadata.has_versions?
       DataciteDoi.create(
         object_id: obj.noid,
         modified: 'DOI created',
-        mod_version: obj.descMetadata.versions.last.uri
+        mod_version: obj.object_version #obj.descMetadata.versions.last.uri
       )
     else
       DataciteDoi.create(object_id: obj.noid, modified: 'DOI created')

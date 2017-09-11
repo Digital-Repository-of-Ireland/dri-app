@@ -31,8 +31,7 @@ describe 'PublishJob' do
   end
 
   after(:each) do
-    @object.delete
-    @collection.delete
+    @collection.destroy
    
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
@@ -40,7 +39,7 @@ describe 'PublishJob' do
   describe 'run' do
     it "should set a collection\'s reviewed objects status to published" do
       allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
-      job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
       job.perform
 
       @collection.reload
@@ -64,16 +63,16 @@ describe 'PublishJob' do
       @collection.save
 
       allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
-      job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
       job.perform
 
       @collection.reload
       @subcollection.reload
       @reviewed.reload
 
-      expect(@collection.status).to eql('published')
-      expect(@subcollection.status).to eql('draft')
-      expect(@reviewed.status).to eql('reviewed')
+      expect(@collection.status).to eq('published')
+      expect(@subcollection.status).to eq('draft')
+      expect(@reviewed.status).to eq('reviewed')
     end
 
     it "should not set a collection\'s draft objects to published" do
@@ -84,13 +83,13 @@ describe 'PublishJob' do
       @collection.governed_items << @draft
       @collection.save
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
       job.perform
 
       @collection.reload
       @draft.reload
 
-      expect(@draft.status).to eql('draft')
+      expect(@draft.status).to eq('draft')
 
       @draft.delete
     end
@@ -104,7 +103,7 @@ describe 'PublishJob' do
         publisher: 'Digital Repository of Ireland'))
       Settings.doi.enable = true
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
       
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).twice
       job.perform
@@ -112,8 +111,8 @@ describe 'PublishJob' do
       @collection.reload
       @object.reload
 
-      expect(@collection.status).to eql('published')
-      expect(@object.status).to eql('published')
+      expect(@collection.status).to eq('published')
+      expect(@object.status).to eq('published')
 
       Settings.doi.enable = false
     end
@@ -130,10 +129,10 @@ describe 'PublishJob' do
 
       @collection.save
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
       job.perform
 
-      q = "collection_id_sim:\"#{@collection.id}\" AND status_ssim:published"
+      q = "collection_id_sim:\"#{@collection.noid}\" AND status_ssim:published"
       expect(ActiveFedora::SolrService.count(q)).to eq(21)
     end
   end

@@ -10,7 +10,7 @@ module DRI::Noid
       Mutex.new.synchronize do
         while true
           pid = next_id
-          return pid unless (DRI::DigitalObject.exists?(noid: pid) || DRI::GenericFile.exists?(noid: pid))
+          return pid unless DRI::Identifier.exists?(alternate_id: pid)
         end
       end
     end

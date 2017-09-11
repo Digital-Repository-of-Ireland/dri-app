@@ -13,7 +13,7 @@ class ReviewCollectionJob < StatusJob
 
     # get all sub-collections
     job_ids = sub_collection_review_jobs(collection_id, user_id)
-
+    
     # review direct child objects of this collection
     job_ids << ReviewJob.create(collection_id: collection_id, user_id: user_id)
     failures = wait_for_completion(collection_id, job_ids)
@@ -29,7 +29,6 @@ class ReviewCollectionJob < StatusJob
     f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
     job_ids = []
-
     query = Solr::Query.new(q_str, 100, fq: f_query)
     while query.has_more?
       subcollection_objects = query.pop

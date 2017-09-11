@@ -82,7 +82,7 @@ class ObjectsController < BaseObjectsController
     @object = retrieve_object!(params[:id])
 
     if params[:digital_object][:governing_collection_id].present?
-      collection = DRI::DigitalObject.find_by(noid: params[:digital_object][:governing_collection_id])
+      collection = retrieve_object(params[:digital_object][:governing_collection_id])
       @object.governing_collection = collection
     end
 
@@ -128,10 +128,10 @@ class ObjectsController < BaseObjectsController
     params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
 
     if params[:digital_object][:governing_collection].present?
-      params[:digital_object][:governing_collection] = DRI::DigitalObject.find_by(noid: params[:digital_object][:governing_collection])
+      params[:digital_object][:governing_collection] = retrieve_object(params[:digital_object][:governing_collection])
       # governing_collection present and also whether this is a documentation object?
       if params[:digital_object][:documentation_for].present?
-        params[:digital_object][:documentation_for] = DRI::DigitalObject.find_by(noid: params[:digital_object][:documentation_for])
+        params[:digital_object][:documentation_for] = retrieve_object(params[:digital_object][:documentation_for])
       end
     end
 

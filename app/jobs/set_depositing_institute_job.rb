@@ -15,7 +15,8 @@ class SetDepositingInstituteJob < ActiveFedoraIdBasedJob
       subcollections = query_results.pop
 
       subcollections.each do |col|
-        col_obj = DRI::DigitalObject.find_by(noid: col['id'])
+        ident = DRI::Identifier.find_by!(alternate_id: col['id'])
+        col_obj = ident.identifiable
         col_obj.depositing_institute = object.depositing_institute
         col_obj.save
 

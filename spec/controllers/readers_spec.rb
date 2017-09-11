@@ -50,7 +50,7 @@ describe ReadersController do
     @login_user.delete
     @manager_user.delete
 
-    @collection.delete
+    @collection.destroy
     @group.delete
   end
 
@@ -111,7 +111,7 @@ describe ReadersController do
     end
 
     after(:each) do
-      @subcollection.delete
+      @subcollection.destroy
     end  
 
     it "creates a new pending membership in the governing read group" do

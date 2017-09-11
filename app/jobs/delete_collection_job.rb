@@ -5,7 +5,7 @@ class DeleteCollectionJob < ActiveFedoraIdBasedJob
   end
 
   def run
-    Rails.logger.info "Deleting all objects in #{object.id}"
-    object.delete
+    Rails.logger.info "Deleting all objects in #{object.noid}"
+    object.destroy
   end
 end

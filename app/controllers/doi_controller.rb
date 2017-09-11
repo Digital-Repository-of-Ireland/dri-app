@@ -8,7 +8,7 @@ class DoiController < ApplicationController
       flash[:alert] = t('dri.flash.alert.doi_not_configured')
       @history = {}
     else
-      @available = DRI::DigitalObject.exists?(noid: @object_id)
+      @available = DRI::Identifier.object_exists?(@object_id)
       @reason = t('dri.views.catalog.legends.doi_deleted', id: @object_id) unless @available
 
       if(@available)

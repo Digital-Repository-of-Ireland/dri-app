@@ -14,7 +14,8 @@ class ProcessBatchIngest
     ingest_batch = JSON.parse(ingest_json)
 
     user = UserGroup::User.find(user_id)
-    collection = DRI::DigitalObject.find_by(noid: collection_id)
+    ident = DRI::Identifier.find_by!(alternate_id: object_id)
+    collection = ident.identifiable
 
     download_path = File.join(Settings.downloads.directory, collection_id)
     FileUtils.mkdir_p(download_path)
@@ -23,7 +24,8 @@ class ProcessBatchIngest
 
     if ingest_metadata['object_id'].present?
       # metadata ingest was successful so only ingest missing assets
-      object = DRI::DigitalObject.find_by(noid: ingest_metadata['object_id'])
+      ident = DRI::Identifier.find_by!(alternate_id: ingest_metadata['object_id'])
+      object = ident.identifiable
     else
       metadata = retrieve_files(download_path, [ingest_metadata])[0]
       object = ingest_metadata(collection, user, metadata)

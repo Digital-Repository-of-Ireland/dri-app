@@ -41,7 +41,7 @@ describe "ReviewCollectionJob" do
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
     @login_user.delete
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -50,7 +50,7 @@ describe "ReviewCollectionJob" do
   describe "run" do
     it "should trigger jobs for subcollections" do
       expect(ReviewJob).to receive(:create).exactly(3).times
-      job = ReviewCollectionJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = ReviewCollectionJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
       job.perform
     end  
   end

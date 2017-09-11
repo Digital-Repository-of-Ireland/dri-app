@@ -37,7 +37,7 @@ describe 'DRI::Solr::Document::Collection' do
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
   end
 
   it 'should return a count of duplicates' do
@@ -54,9 +54,9 @@ describe 'DRI::Solr::Document::Collection' do
     duplicates.each { |dup| ids << dup.id }
 
     expect(ids.count).to eq(2)
-    expect(ids).to include(@object.id)
-    expect(ids).to include(@object2.id)
-    expect(ids).to_not include(@object3.id)
+    expect(ids).to include(@object.noid)
+    expect(ids).to include(@object2.noid)
+    expect(ids).to_not include(@object3.noid)
   end
 
 end
