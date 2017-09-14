@@ -30,5 +30,5 @@ Given /^an object with pid "([^\"]*)" exists$/ do |pid|
   Rake::Task.define_task(:environment)
   @rake['dri:fixtures:refresh'].invoke
 
-  object = ActiveFedora::Base.find(pid, {:cast => true})
+  object = DRI::Identifier.retrieve_object(pid)
 end

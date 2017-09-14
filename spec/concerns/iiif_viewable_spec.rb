@@ -87,14 +87,13 @@ describe DRI::IIIFViewable do
     @generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
     @generic_file.digital_object = @sound
     @generic_file.apply_depositor_metadata(@login_user.email)
-    file = LocalFile.new(fedora_id: @generic_file.noid, ds_id: 'content')
     options = {}
     options[:mime_type] = 'image/jpeg'
     options[:file_name] = 'sample_image.jpeg'
     options[:batch_id] = @sound.noid
 
-    file.add_file File.new(File.join(@tmp_upload_dir, 'sample_image.jpeg')), options
-    file.save
+    @generic_file.add_file(File.new(File.join(@tmp_upload_dir, 'sample_image.jpeg')), options)
+    #file.save
 
     @generic_file.characterization.ng_xml = Nokogiri::XML(FITS_DATA)
     @generic_file.filename = ['sample_image.jpeg']

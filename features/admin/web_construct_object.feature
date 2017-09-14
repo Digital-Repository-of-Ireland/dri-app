@@ -140,6 +140,7 @@ Scenario Outline: Adding an audio file that is not valid
     | sample_audio.txt         | invalid file type |
 #    | sample_invalid_audio.mp3 | invalid file type |
 
+@noexec
 Scenario: Adding a file that contains a virus
   When I create a collection and save the pid
   And I create an object and save the pid

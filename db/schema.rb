@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170904152023) do
+ActiveRecord::Schema.define(version: 20170906163254) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -73,12 +73,10 @@ ActiveRecord::Schema.define(version: 20170904152023) do
     t.string   "documentation_for_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "noid"
   end
 
   add_index "digital_objects", ["documentation_for_type", "documentation_for_id"], name: "doc_for_index"
   add_index "digital_objects", ["governing_collection_type", "governing_collection_id"], name: "governing_index"
-  add_index "digital_objects", ["noid"], name: "index_digital_objects_on_noid", unique: true
   add_index "digital_objects", ["previous_sibling_type", "previous_sibling_id"], name: "sibling_index"
 
   create_table "doi_metadata", force: :cascade do |t|
@@ -99,6 +97,7 @@ ActiveRecord::Schema.define(version: 20170904152023) do
   create_table "generic_files", force: :cascade do |t|
     t.text     "title"
     t.text     "creator"
+    t.string   "filename"
     t.string   "label"
     t.string   "depositor"
     t.string   "mime_type"
@@ -119,11 +118,18 @@ ActiveRecord::Schema.define(version: 20170904152023) do
     t.datetime "updated_at"
     t.integer  "digital_object_id"
     t.string   "digital_object_type"
-    t.string   "noid"
   end
 
   add_index "generic_files", ["digital_object_type", "digital_object_id"], name: "gf_do_index"
-  add_index "generic_files", ["noid"], name: "index_generic_files_on_noid", unique: true
+
+  create_table "identifiers", force: :cascade do |t|
+    t.string  "alternate_id"
+    t.integer "identifiable_id"
+    t.string  "identifiable_type"
+  end
+
+  add_index "identifiers", ["alternate_id"], name: "index_identifiers_on_alternate_id", unique: true
+  add_index "identifiers", ["identifiable_type", "identifiable_id"], name: "index_identifiers_on_identifiable_type_and_identifiable_id"
 
   create_table "ingest_statuses", force: :cascade do |t|
     t.string   "batch_id"
@@ -166,15 +172,6 @@ ActiveRecord::Schema.define(version: 20170904152023) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "local_files", force: :cascade do |t|
-    t.string  "path"
-    t.string  "fedora_id"
-    t.string  "ds_id"
-    t.string  "mime_type"
-    t.integer "version"
-    t.text    "checksum"
   end
 
   create_table "om_datastreams", force: :cascade do |t|

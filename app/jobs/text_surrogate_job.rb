@@ -11,12 +11,11 @@ class TextSurrogateJob < ActiveFedoraIdBasedJob
     with_status_update('text') do
       Rails.logger.info "Creating surrogate of #{generic_file_id} asset"
 
-      local_file_info = LocalFile.where("fedora_id LIKE :f AND ds_id LIKE 'content'", { :f => generic_file_id }).order("version DESC").limit(1).to_a
-      filename = local_file_info.first.path
+      filename = generic_file.path
 
-      bucket_id = object.batch.nil? ? object.pid : object.batch.pid
+      bucket_id = object.digital_object.nil? ? object.noid : generic_file.noid
     
-      ext = Rack::Mime::MIME_TYPES.invert[local_file_info.first.mime_type]
+      ext = Rack::Mime::MIME_TYPES.invert[generic_file.mime_type]
       ext = ext[1..-1] if ext[0] == '.'
       ext = 'doc' if ext == 'dot'
       surrogate_filename = "#{generic_file_id}_#{ext}.#{ext}"

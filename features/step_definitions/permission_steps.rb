@@ -1,5 +1,5 @@
 When(/^"(.*?)" has been granted "(.*?)" permissions(?: on "(.*?)")?$/) do |user, permission, pid|
-  object = ActiveFedora::Base.find(pid, {:cast => true})
+  object = DRI::Identifier.retrieve_object(pid)
 
   if permission == "none"
     # do nothing

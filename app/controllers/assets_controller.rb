@@ -9,8 +9,7 @@ class AssetsController < ApplicationController
   require 'validators'
 
   include DRI::Doi
-  include DRI::AssetBehaviour
-
+  
   def actor
     @actor ||= DRI::Asset::Actor.new(@generic_file, current_user)
   end
@@ -40,14 +39,21 @@ class AssetsController < ApplicationController
   # By default, it retrieves the master file
   def download
     type = params[:type].presence || 'masterfile'
-
+    # TODO: Need to handle versions
     case type
     when 'surrogate'
       @generic_file = retrieve_object!(params[:id])
       if @generic_file
+        
         if @generic_file.digital_object.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.digital_object.root_collection.first, "Download",  @generic_file.digital_object_id, 1, true) 
+          Gabba::Gabba.new(GA.tracker, request.host).event(
+            @generic_file.digital_object.root_collection.first,
+            "Download", 
+            @generic_file.digital_object_id,
+            1,
+            true) 
         end
+        
         download_surrogate(surrogate_type_name)
         return
       end
@@ -60,16 +66,22 @@ class AssetsController < ApplicationController
         can_view?
 
         if @generic_file.digital_object.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.digital_object.root_collection.first, "Download", @generic_file.digital_object_id, 1, true)
+          Gabba::Gabba.new(GA.tracker, request.host).event(
+              @generic_file.digital_object.root_collection.first,
+              "Download",
+              @generic_file.digital_object_id,
+              1,
+              true
+            )
         end
-        lfile = local_file
-        if lfile
-          response.headers['Content-Length'] = File.size?(lfile.path).to_s
-          send_file lfile.path,
-                type: lfile.mime_type,
+        
+        if File.file?(@generic_file.path)
+          response.headers['Content-Length'] = File.size?(@generic_file.path).to_s
+          send_file @generic_file.path,
+                type: @generic_file.mime_type,
                 stream: true,
                 buffer: 4096,
-                disposition: "attachment; filename=\"#{File.basename(lfile.path)}\";",
+                disposition: "attachment; filename=\"#{File.basename(@generic_file.path)}\";",
                 url_based_filename: true
           return
         end
@@ -116,10 +128,9 @@ class AssetsController < ApplicationController
     @generic_file = retrieve_object!(params[:id])
 
     preserve_file(file_upload, datastream, params)
-
-    url = "#{URI.escape(download_url)}?version=#{@file.version}"
-   
-    if actor.update_external_content(url, file_upload, datastream)
+    filename = params[:file_name].presence || file_upload.original_filename  
+    
+    if actor.update_external_content(file_upload, datastream, filename, @mime_type)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
       mint_doi(@object, 'asset modified') if @object.status == 'published'
@@ -147,8 +158,10 @@ class AssetsController < ApplicationController
     enforce_permissions!('edit', params[:object_id])
 
     datastream = 'content'
-    file_upload = upload_from_params
 
+    # calls validate_upload which sets @mime_type variable
+    file_upload = upload_from_params
+    
     @object = retrieve_object!(params[:object_id])
     if @object.nil?
       flash[:notice] = t('dri.flash.notice.specify_object_id')
@@ -157,11 +170,10 @@ class AssetsController < ApplicationController
 
     build_generic_file
     preserve_file(file_upload, datastream, params)
+    
     filename = params[:file_name].presence || file_upload.original_filename    
-
-    url = "#{URI.escape(download_url)}?version=#{@file.version}"
-
-    if actor.create_external_content(url, datastream, filename)
+    
+    if actor.create_external_content(file_upload, datastream, filename, @mime_type)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
       mint_doi(@object, 'asset added') if @object.status == 'published'
@@ -250,8 +262,6 @@ class AssetsController < ApplicationController
         logger.error "Could not update object version number for #{@object.noid} to version #{object_version}"
         raise Exceptions::InternalError
       end
-
-      create_file(@object, filedata, datastream, checksum, filename)
 
       # Do the preservation actions
       addfiles = []
@@ -370,21 +380,7 @@ class AssetsController < ApplicationController
 
       item
     end
-
-    def local_file(datastream = 'content')
-      search_params = { f: @generic_file.noid, d: datastream }
-      search_params[:v] = params[:version] if params[:version].present?
-
-      query = 'fedora_id LIKE :f AND ds_id LIKE :d'
-      query << ' AND version = :v' if search_params[:v].present?
-
-      LocalFile.where(query, search_params).order(version: :desc).first
-    rescue ActiveRecord::RecordNotFound
-      raise DRI::Exceptions::InternalError, "Unable to find requested file"
-    rescue ActiveRecord::ActiveRecordError
-      raise DRI::Exceptions::InternalError, "Error finding file"
-    end
-
+   
     def local_file_ingest(name)
       upload_dir = Rails.root.join(Settings.dri.uploads)
       File.new(File.join(upload_dir, name))

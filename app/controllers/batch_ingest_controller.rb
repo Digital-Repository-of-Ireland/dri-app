@@ -14,6 +14,7 @@ class BatchIngestController < ApplicationController
       begin
         Resque.enqueue(ProcessBatchIngest, current_user.id, collection_id, params[:batch_ingest])
       rescue Exception => e
+        puts e
         status = :internal_server_error
       end
     else

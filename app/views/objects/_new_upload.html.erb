@@ -1,6 +1,6 @@
 <fieldset>
     <div class="dri_file_upload">
-        <form id="metadata_uploader" action="<%= url_for(:action=>"create", :controller=>"objects") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+        <form id="metadata_uploader" action="<%= url_for(action: "create", controller: "objects") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
 
             <div>
                 <a class='btn btn-default' href='javascript:;'> 
@@ -8,12 +8,12 @@
                     <input type="file" id="metadata_file" name="metadata_file" accept="application/xml" required onchange='fileUploadHelper($(this));'> 
                     <h5 id="file_name">No File</h5></a>
             </div>
-            <input type="hidden" name="batch[governing_collection]" value="<%= @collection %>">
+            <input type="hidden" name="digital_object[governing_collection]" value="<%= @collection %>">
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-            <input type="hidden" name="batch[read_groups_string]" value="public" />
-            <input type="hidden" name="batch[discover_groups_string]" value="public" />
+            <input type="hidden" name="digital_object[read_groups_string]" value="public" />
+            <input type="hidden" name="digital_object[discover_groups_string]" value="public" />
             <div>
-                <%= submit_tag t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large dri_clearfix", :name => "ingest_metadata", :id => "ingest_metadata" %>
+                <%= submit_tag t('dri.views.ingest.buttons.continue'), class: "btn-primary btn-large dri_clearfix", name: "ingest_metadata", id: "ingest_metadata" %>
             </div>
         </form>
     </div>

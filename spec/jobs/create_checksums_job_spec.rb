@@ -1,10 +1,13 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'ostruct'
 require 'tempfile'
 
 describe "workers" do
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     asset = File.join(fixture_path, 'SAMPLEA.mp3')
     tmp_file = Tempfile.new('SAMPLEA')
     FileUtils.cp(asset, tmp_file.path)
@@ -18,12 +21,8 @@ describe "workers" do
      
     @gf = DRI::GenericFile.new
     @gf.apply_depositor_metadata(@user)
-    @gf.batch = @object
+    @gf.digital_object = @object
     @gf.save
-
-    @file = LocalFile.new(fedora_id: @gf.id, ds_id: 'content')
-    @file.add_file(uploadhash, {:directory => tmpdir} )
-    @file.save
 
     actor = DRI::Asset::Actor.new(@gf, @user)
     actor.create_content(uploadhash, uploadhash.original_filename, 'content', 'audio/mpeg')
@@ -31,19 +30,21 @@ describe "workers" do
 
   after(:each) do
     @object.destroy
+    @user.destroy
+    FileUtils.remove_dir(@tmp_assets_dir, :force => true)
   end
   
   describe CreateChecksumsJob do
   
     describe "run" do
       it "should create checksums when run function is called" do
-        @gf.checksum_md5.should be nil
-        @gf.checksum_sha256.should be nil
-        job = CreateChecksumsJob.new(@gf.id)
+        expect(@gf.checksum_md5).to be nil
+        expect(@gf.checksum_sha256).to be nil
+        job = CreateChecksumsJob.new(@gf.noid)
         job.run
         @gf.reload
-        @gf.checksum_md5.should_not be nil
-        @gf.checksum_sha256.should_not be nil
+        expect(@gf.checksum_md5).to_not be nil
+        expect(@gf.checksum_sha256).to_not be nil
       end
     end
   

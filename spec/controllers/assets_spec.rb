@@ -48,18 +48,17 @@ describe AssetsController do
   describe 'create' do
 
     it 'should create an asset from a local file' do
-      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:save_characterize_and_record_committer)
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
       options = { :file_name => "SAMPLEA.mp3" }      
-      post :create, { :object_id => @object.noid, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
+      post :create, { object_id: @object.noid, local_file: "SAMPLEA.mp3", file_name: "SAMPLEA.mp3" }
        
       expect(Dir.glob("#{@tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
     end
 
     it 'should create an asset from an upload' do
-      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
-
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:save_characterize_and_record_committer)
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       post :create, { :object_id => @object.noid, :Filedata => @uploaded }
 
@@ -98,21 +97,19 @@ describe AssetsController do
 
    describe 'update' do  
     it 'should create a new version' do
-      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
-      allow_any_instance_of(DRI::Asset::Actor).to receive(:update_external_content)
+      #allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+      #allow_any_instance_of(DRI::Asset::Actor).to receive(:update_external_content)
 
       generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
-      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "#{generic_file.noid}_SAMPLEA.mp3"
       options[:batch_id] = @object.noid
        
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      file.add_file uploaded, options
-      file.save
+      generic_file.add_file uploaded, options
       generic_file.save
       file_id = generic_file.noid
 
@@ -122,22 +119,19 @@ describe AssetsController do
     end
 
     it 'should create a new version from a local file' do
-      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
-      allow_any_instance_of(DRI::Asset::Actor).to receive(:update_external_content)
-
+      #allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+      
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
 
       generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
-      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
       options[:batch_id] = @object.noid
 
-      file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
-      file.save
+      generic_file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
       generic_file.save
       file_id = generic_file.noid
 
@@ -166,14 +160,12 @@ describe AssetsController do
       generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
-      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
       options[:batch_id] = @object.noid
 
-      file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
-      file.save
+      generic_file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
       generic_file.save
       file_id = generic_file.noid
 
@@ -198,15 +190,13 @@ describe AssetsController do
       generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
-      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
       options[:batch_id] = @object.noid
        
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      file.add_file uploaded, options
-      file.save
+      generic_file.add_file uploaded, options
       generic_file.save
       file_id = generic_file.noid
 
@@ -221,8 +211,8 @@ describe AssetsController do
   describe 'download' do
   
     it "should be possible to download the master asset" do
-      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
-
+      #allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:save_characterize_and_record_committer)
       @object.master_file_access = 'public'
       @object.edit_users_string = @login_user.email
       @object.read_users_string = @login_user.email
@@ -232,15 +222,13 @@ describe AssetsController do
       generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata(@login_user.email)
-      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
       options[:batch_id] = @object.noid
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      file.add_file uploaded, options
-      file.save
+      generic_file.add_file uploaded, options
       generic_file.save
       file_id = generic_file.noid
 

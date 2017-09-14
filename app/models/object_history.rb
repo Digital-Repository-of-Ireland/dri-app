@@ -62,7 +62,7 @@ class ObjectHistory
     object.generic_files.each do |file|
       asset_info[file.noid] = {}
 
-      asset_info[file.noid][:versions] = local_files(file.noid)
+      asset_info[file.noid][:versions] = [] #local_files(file.noid)
       asset_info[file.noid][:surrogates] = surrogate_info(file.noid)
     end
 
@@ -75,7 +75,7 @@ class ObjectHistory
   end
 
   def local_files(file_id)
-    LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d', { f: file_id, d: 'content' }).to_a
+    #LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d', { f: file_id, d: 'content' }).to_a
   end
 
   def licence

@@ -9,7 +9,7 @@ describe "Object citations" do
     @t.creation_date = ["2015-05-12"]
     @t.type = ["Text"]
 
-    (@t.export_as_dri_citation).should eq("A. Tester. A test of citations, Digital Repository of Ireland [Distributor]")
+    expect(@t.export_as_dri_citation).to eq("A. Tester. A test of citations, Digital Repository of Ireland [Distributor]")
   end
 
   it "should add the published year" do
@@ -25,7 +25,7 @@ describe "Object citations" do
 
     @t.type = ["Text"]
 
-    (@t.export_as_dri_citation).should eq("A. Tester. (#{year}) A test of citations, Digital Repository of Ireland [Distributor]")
+    expect(@t.export_as_dri_citation).to eq("A. Tester. (#{year}) A test of citations, Digital Repository of Ireland [Distributor]")
   end
 
   it "should add the depositing institute" do
@@ -50,7 +50,7 @@ describe "Object citations" do
 
     @t.governing_collection = @c
 
-    (@t.export_as_dri_citation).should eq("A. Tester. (#{year}) A test of citations, Digital Repository of Ireland [Distributor], Depositing Institute [Depositing Institution]")
+    expect(@t.export_as_dri_citation).to eq("A. Tester. (#{year}) A test of citations, Digital Repository of Ireland [Distributor], Depositing Institute [Depositing Institution]")
   end
 
 end

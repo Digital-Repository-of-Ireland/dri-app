@@ -5,8 +5,7 @@ class CreateArchiveJob
   @queue = :create_archive
 
   def self.perform(object_id, email) 
-    ident = DRI::Identifier.find_by(alternate_id: object_id)
-    object = ident.identifiable if ident
+    object = DRI::Identifier.retrieve_object(object_id)
     
     # Get metadata
     # Get assets if masterfile
@@ -47,14 +46,13 @@ class CreateArchiveJob
       next if gf.preservation_only == 'true'
       
       if get_inherited_masterfile_access(object) == "public"
-        lf = LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d', f: gf.noid, d: 'content').order('version DESC').to_a.first
-        zipfile.add("#{object.noid}/originals/#{gf.noid}_#{gf.label}", lf.path)
+        zipfile.add("#{object.noid}/originals/#{gf.noid}_#{gf.label}", gf.path)
         checksums << "#{gf.original_checksum.first} originals/#{gf.noid}_#{gf.label}"
       end
 
       # Get surrogates
       surrogate = Tempfile.new('surrogate')
-      storage_url = storage.surrogate_url(object.id,"#{gf.noid}_full_size_web_format")
+      storage_url = storage.surrogate_url(object.noid,"#{gf.noid}_full_size_web_format")
 
       # handle case of using file storage as well as S3
       if storage_url =~ /\A#{URI.regexp(['http', 'https'])}\z/

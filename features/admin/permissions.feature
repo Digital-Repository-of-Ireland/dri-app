@@ -16,18 +16,18 @@ Scenario: Setting a list of users for restricted access
   And I press the button to "add new collection"
   And I enter valid metadata for a collection
   And I check "deposit"
-  And I choose "batch_read_groups_string_radio_restricted"
-  And I fill in "batch_read_users_string" with "test, test2, test3"
+  And I choose "digital_object_read_groups_string_radio_restricted"
+  And I fill in "digital_object_read_users_string" with "test, test2, test3"
   And I press the button to "create a collection"
   Then I should see a success message for creating a collection
   When I follow the link to edit a collection
-  Then the "batch_read_users_string" field should contain "test, test2, test3"
+  Then the "digital_object_read_users_string" field should contain "test, test2, test3"
 
 Scenario: Constructing a Collection using the web form should set default permissions
   Given I am on the home page
   And I go to "create new collection"
-  And the radio button "batch_read_groups_string_radio_public" should be "checked"
-  And the "batch_manager_users_string" field should contain "user1@user1.com"
+  And the radio button "digital_object_read_groups_string_radio_public" should be "checked"
+  And the "digital_object_manager_users_string" field should contain "user1@user1.com"
 
 Scenario Outline: Constructing a Digital Object using the web form should set default permissions
   Given a collection with pid "perm1" created by "user1"
@@ -36,8 +36,8 @@ Scenario Outline: Constructing a Digital Object using the web form should set de
   And I press the button to "continue"
   Then I should see a success message for ingestion
   When I follow the link to edit access controls
-  And the radio button "batch_read_groups_string_radio_inherit" should be "checked"
-  And the radio button "batch_edit_users_string_radio_inherit" should be "checked"
+  And the radio button "digital_object_read_groups_string_radio_inherit" should be "checked"
+  And the radio button "digital_object_edit_users_string_radio_inherit" should be "checked"
 
   Examples:
     | object_type |
@@ -52,7 +52,7 @@ Scenario Outline: Constructing a Digital Object using XML upload should set defa
   And I press the button to "ingest metadata"
   Then I should see a success message for ingestion
   When I follow the link to edit access controls
-  Then the hidden "batch_read_groups_string" field should contain ""
+  Then the hidden "digital_object_read_groups_string" field should contain ""
 
   Examples:
     | metadata_file                 |

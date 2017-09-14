@@ -21,17 +21,17 @@ describe BatchIngestController do
   describe 'CREATE' do
 
     it 'should return accepted for valid json' do
-      json = { id: @collection.id, :format => 'json', :batch_ingest => { :name => "foo", :description => "bar" }.to_json }
-      Resque.should_receive(:enqueue).once
+      json = { id: @collection.noid, format: 'json', batch_ingest: { name: "foo", description: "bar" }.to_json }
+      expect(Resque).to receive(:enqueue).once
       post :create, json
-      response.status.should eq(202)
+      expect(response.status).to eq(202)
     end
 
     it 'should return bad request for invalid json' do
-      json = { id: @collection.id, :format => 'json', :batch_ingest => "{ \"name\": \"foo\", \"description\": [\"bar\" }" }
+      json = { id: @collection.noid, format: 'json', batch_ingest: "{ \"name\": \"foo\", \"description\": [\"bar\" }" }
       expect(Resque).to_not receive(:enqueue)
       post :create, json
-      response.status.should eq(400)
+      expect(response.status).to eq(400)
     end
 
   end

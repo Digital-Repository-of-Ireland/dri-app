@@ -8,21 +8,12 @@ module DRI
         @user = user
       end
 
-      def create_external_content(url, path, file_name)
-        create_content('', file_name, path, external_mime_type(url))
+      def create_external_content(file_upload, path, filename, mime_type)
+        create_content(file_upload, filename, path, mime_type)
       end
 
-      def update_external_content(url, file, path)
-        generic_file.add_file(
-          '',
-          path: path,
-          original_name: file.original_filename,
-          mime_type: external_mime_type(url)
-        )
-        generic_file.label = file.original_filename
-        generic_file.title = [file.original_filename]
-
-        save_characterize_and_record_committer
+      def update_external_content(file_upload, path, filename, mime_type)
+        create_content(file_upload, filename, path, mime_type)
       end
 
     # in order to avoid two saves in a row, create_metadata does not save the file by default.
@@ -44,13 +35,13 @@ module DRI
       yield(generic_file) if block_given?
     end
 
-    def create_content(file, file_name, path, mime_type)
-      generic_file.add_file(file, path: path, original_name: file_name, mime_type: mime_type)
-      generic_file.label ||= file_name
-      generic_file.title = [generic_file.label] if generic_file.title.blank?
-      saved = save_characterize_and_record_committer
+    def create_content(file, filename, path, mime_type)
+      generic_file.add_file(file, { path: path, file_name: "#{generic_file.noid}_#{filename}", mime_type: mime_type })
 
-      saved
+      generic_file.label = filename
+      generic_file.title = [generic_file.label] if generic_file.title.blank?
+      
+      save_characterize_and_record_committer
     end
 
     def revert_content(revision_id)

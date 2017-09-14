@@ -78,17 +78,17 @@ module Preservation
       deleted = []
       modified = []
 
-      if resource
-        saved = moabify_resource
-        return false unless saved
-        dslist << 'resource.rdf'
-      end
+      #if resource
+      #  saved = moabify_resource
+      #  return false unless saved
+      #  dslist << 'resource.rdf'
+      #end
       
-      if permissions
-        saved = moabify_permissions
-        return false unless saved
-        dslist << 'permissions.rdf'
-      end
+      #if permissions
+      #  saved = moabify_permissions
+      #  return false unless saved
+      #  dslist << 'permissions.rdf'
+      #end
 
       if datastreams.present?
         #object.reload # we must refresh the datastreams list

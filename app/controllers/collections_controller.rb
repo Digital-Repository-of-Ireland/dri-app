@@ -254,7 +254,7 @@ class CollectionsController < BaseObjectsController
       respond_to do |format|
         format.html do
           flash[:notice] = t('dri.flash.notice.collection_created')
-          redirect_to controller: 'my_collections', action: 'show', id: @object.id
+          redirect_to controller: 'my_collections', action: 'show', id: @object.noid
         end
         format.json do
           @response = {}

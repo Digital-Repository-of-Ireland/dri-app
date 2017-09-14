@@ -2,8 +2,7 @@ require 'ostruct'
 
 class ProcessBatchIngest
   extend DRI::MetadataBehaviour
-  extend DRI::AssetBehaviour
-
+  
   @queue = :process_batch_ingest
 
   def self.auth_url(user, url)
@@ -14,9 +13,8 @@ class ProcessBatchIngest
     ingest_batch = JSON.parse(ingest_json)
 
     user = UserGroup::User.find(user_id)
-    ident = DRI::Identifier.find_by!(alternate_id: object_id)
-    collection = ident.identifiable
-
+    collection = DRI::Identifier.retrieve_object!(object_id)
+    
     download_path = File.join(Settings.downloads.directory, collection_id)
     FileUtils.mkdir_p(download_path)
 
@@ -24,7 +22,7 @@ class ProcessBatchIngest
 
     if ingest_metadata['object_id'].present?
       # metadata ingest was successful so only ingest missing assets
-      ident = DRI::Identifier.find_by!(alternate_id: ingest_metadata['object_id'])
+      object = DRI::Identifier.retrieve_object!(ingest_metadata['object_id'])
       object = ident.identifiable
     else
       metadata = retrieve_files(download_path, [ingest_metadata])[0]
@@ -39,35 +37,17 @@ class ProcessBatchIngest
 
   def self.ingest_assets(user, object, assets)
     assets.each do |asset|
-      @generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
-      @generic_file.digital_object = object
-      @generic_file.apply_depositor_metadata(user)
-      @generic_file.preservation_only = 'true' if asset[:label] == 'preservation'
+      generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
+      generic_file.digital_object = object
+      generic_file.apply_depositor_metadata(user)
+      generic_file.preservation_only = 'true' if asset[:label] == 'preservation'
 
-      original_file_name = File.basename(asset[:path])
-      file_name = "#{@generic_file.noid}_#{original_file_name}"
-
-      version = ingest_file(asset[:path], object, 'content', file_name)
-      if version < 1
-        saved = false
-      else
-        saved = true
-        url = Rails.application.routes.url_helpers.url_for(
-          controller: 'assets',
-          action: 'download',
-          object_id: object.noid,
-          id: @generic_file.noid,
-          version: version
-        )
-        DRI::Asset::Actor.new(@generic_file, user).create_external_content(
-                  url,
-                  'content', file_name
-                )
-      end
-    
-      message = if saved
+      filename = File.basename(asset[:path])
+      
+      version = ingest_file(asset[:path], object, generic_file, filename)
+      message = if version > 1
                   { status_code: 'COMPLETED',
-                    file_location: Rails.application.routes.url_helpers.object_file_path(object, @generic_file) }
+                    file_location: Rails.application.routes.url_helpers.object_file_path(object, generic_file) }
                 else
                   { status_code: 'FAILED' }
                 end
@@ -98,10 +78,10 @@ class ProcessBatchIngest
     object
   end
 
-  def self.ingest_file(file_path, object, datastream, filename)
+  def self.ingest_file(file_path, object, generic_file, filename)
     filedata = OpenStruct.new
     filedata.path = file_path
-    
+
     current_version = object.object_version || '1'
     object_version = (current_version.to_i+1).to_s
 
@@ -111,16 +91,16 @@ class ProcessBatchIngest
     begin
       object.save
     rescue ActiveRecord::ActiveRecordError => e
-      logger.error "Could not update object version number for #{object.id} to version #{object_version}"
+      logger.error "Could not update object version number for #{object.noid} to version #{object_version}"
       return -1
     end
-
-    begin
-      create_file(object, filedata, datastream, nil, filename)
-    rescue StandardError => e
-      Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"
-      return -1
-    end
+   
+    DRI::Asset::Actor.new(generic_file, user).create_external_content(
+                  filedata,
+                  'content',
+                  filename,
+                  Validators.file_type(filedata)
+    )
 
     preservation = Preservation::Preservator.new(object)
     preservation.preserve_assets([filename],[])
@@ -131,7 +111,7 @@ class ProcessBatchIngest
   def self.create_object(collection, user, xml)
     standard = metadata_standard_from_xml(xml)
 
-    object = DRI::DigitalObject.with_standard standard
+    object = DRI::DigitalObject.with_standard(standard)
     object.governing_collection = collection
     object.depositor = user.to_s
     object.status = 'draft'

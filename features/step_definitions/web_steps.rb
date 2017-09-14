@@ -21,7 +21,7 @@ Given /^"(.*?)" has created a Digital Object$/ do |user|
 end
 
 Given /^I have created an object with metadata "(.*?)" in the collection(?: with pid "(.*?)")?$/ do |metadata_file, collection_pid|
-  collection_pid = @collection.id unless collection_pid
+  collection_pid = @collection.noid unless collection_pid
   steps %{
     When I go to the "metadata" "upload" page for "#{collection_pid}"
     And I attach the metadata file "#{metadata_file}"
@@ -31,7 +31,7 @@ Given /^I have created an object with metadata "(.*?)" in the collection(?: with
 end
 
 Given /^I have created an object with title "(.*?)" in the collection(?: with pid "(.*?)")?$/ do |title, collection_pid|
-  collection_pid = @collection.id unless collection_pid
+  collection_pid = @collection.noid unless collection_pid
   steps %{
     When I go to the "my collections" "show" page for "#{collection_pid}"
     And I follow the link to add an object
@@ -100,13 +100,13 @@ end
 When /^(?:|I )go to the "([^"]*)" "([^"]*)" page(?: for "([^"]*)")?$/ do |type, page, pid|
   patiently do
   if(pid.nil? && ['my collections', 'collection', 'metadata'].include?(type))
-    pid = @collection.id
+    pid = @collection.noid
   elsif(pid.nil? && type == "object")
-    pid = @digital_object.id
+    pid = @digital_object.noid
   elsif (pid.eql?('the saved pid') && (type.eql?("collection") || type == 'my collections'))
     pid = @collection_pid ? @collection_pid : @pid
-  elsif (pid.eql?('the saved pid') && type.eql?("object"))
-    pid = @pid if pid.eql?('the saved pid')
+  elsif (pid == 'the saved pid' && type == "object")
+    pid = @pid if pid == 'the saved pid'
   end
   visit path_for(type, page, pid)
   end
@@ -169,7 +169,7 @@ When /^I attach the institute logo file "(.*?)"$/ do |file|
 end
 
 When /^I attach the cover image file "(.*?)"$/ do |file|
-  attach_file("batch_cover_image", File.expand_path(File.join(cc_fixture_path, file)))
+  attach_file("digital_object_cover_image", File.expand_path(File.join(cc_fixture_path, file)))
 end
 
 When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|
