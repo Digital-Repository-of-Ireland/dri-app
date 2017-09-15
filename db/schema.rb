@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906163254) do
+ActiveRecord::Schema.define(version: 20170914181732) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(version: 20170906163254) do
     t.datetime "updated_at"
     t.integer  "digital_object_id"
     t.string   "digital_object_type"
+    t.boolean  "preservation_only"
   end
 
   add_index "generic_files", ["digital_object_type", "digital_object_id"], name: "gf_do_index"

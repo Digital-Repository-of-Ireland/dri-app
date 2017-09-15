@@ -39,7 +39,7 @@ module DRI
       generic_file.add_file(file, { path: path, file_name: "#{generic_file.noid}_#{filename}", mime_type: mime_type })
 
       generic_file.label = filename
-      generic_file.title = [generic_file.label] if generic_file.title.blank?
+      generic_file.title = filename if generic_file.title.blank?
       
       save_characterize_and_record_committer
     end

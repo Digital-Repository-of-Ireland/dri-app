@@ -3,6 +3,14 @@ require "hydra/derivatives/processor"
 require "hydra/derivatives/image"
 require 'open3'
 
+Hydra::Derivatives::Processor.class_eval do
+
+  def source_file
+    object
+  end
+
+end
+
 Hydra::Derivatives::ShellBasedProcessor.module_eval do
 
   # Force the Hydra Derivatives processors to save surrogates to CEPH instead of FEDORA datastream
@@ -14,12 +22,12 @@ Hydra::Derivatives::ShellBasedProcessor.module_eval do
     end
     out_file = File.open(output_file, "rb")
 
-    bucket_id = object.batch.nil? ? object.id : object.batch.id
-    filename = "#{object.id}_#{dest_dsid}.#{file_suffix}"
+    bucket_id = object.batch.nil? ? object.noid : object.digital_object.noid
+    filename = "#{object.noid}_#{dest_dsid}.#{file_suffix}"
 
     storage = StorageService.new
-    
     storage.store_surrogate(bucket_id, out_file, filename)
+
     File.unlink(output_file)
   end
 

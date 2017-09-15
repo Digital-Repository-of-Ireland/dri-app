@@ -7,7 +7,7 @@ class CreateBucketJob < ActiveFedoraIdBasedJob
 
   def run
     with_status_update('create_bucket') do
-      bucket_id = object.batch.nil? ? object.id : object.batch.id
+      bucket_id = object.digital_object.nil? ? object.noid : object.digital_object.noid
       Rails.logger.info "Creating bucket for object #{bucket_id}"
 
       storage = StorageService.new

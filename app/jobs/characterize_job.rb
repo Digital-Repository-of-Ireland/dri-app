@@ -23,8 +23,8 @@ class CharacterizeJob < ActiveFedoraIdBasedJob
 
     # Update the Batch object's Solr index now that the GenericFile
     # has characterization metadata
-    unless generic_file.batch.nil?
-      DRI.queue.push(UpdateIndexJob.new(generic_file.batch.id))
+    unless generic_file.digital_object.nil?
+      DRI.queue.push(UpdateIndexJob.new(generic_file.digital_object.noid))
     end
   end
 end

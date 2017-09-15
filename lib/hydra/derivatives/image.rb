@@ -60,7 +60,7 @@ module Hydra
 
         format = xfrm["format"].downcase
         bucket_id = object.digital_object.nil? ? object.noid : object.digital_object.noid
-        filename = "#{object.id}_#{output_datastream}.#{format}"
+        filename = "#{object.noid}_#{output_datastream}.#{format}"
 
         out_file = File.open(output_file, "rb")
 
