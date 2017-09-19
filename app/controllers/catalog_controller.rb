@@ -271,18 +271,21 @@ class CatalogController < ApplicationController
       format.json do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
+        options[:with_metadata] = true
         formatter = DRI::Formatters::Json.new(@document, options)
         render json: formatter.format
       end
       format.ttl do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
+        options[:with_metadata] = true
         formatter = DRI::Formatters::Rdf.new(@document, options)
         render text: formatter.format({format: :ttl})
       end
       format.rdf do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
+        options[:with_metadata] = true
         formatter = DRI::Formatters::Rdf.new(@document, options)
         render text: formatter.format({format: :xml})
       end

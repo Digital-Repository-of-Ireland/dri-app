@@ -49,8 +49,10 @@ module Preservation
 
     # moabify_resource
     def moabify_resource
+      document = SolrDocument.new(ActiveFedora::SolrService.query("id:#{self.object.noid}").first)
+      formatter = DRI::Formatters::Rdf.new(document, { with_assets: true, with_metadata: false})
       begin
-        File.write(File.join(metadata_path(self.object.noid, self.version), 'resource.rdf'), object.resource.dump(:ttl))
+        File.write(File.join(metadata_path(self.object.noid, self.version), 'resource.rdf'), formatter.format({format: :ttl}))
         true
       rescue StandardError => e
         Rails.logger.error "unable to write resource: #{e}"
@@ -62,7 +64,7 @@ module Preservation
     # moabify_permissions
     def moabify_permissions
       begin
-        File.write(File.join(metadata_path(self.object.noid, self.version), 'permissions.rdf'), object.permissions.inspect )
+        File.write(File.join(metadata_path(self.object.noid, self.version), 'permissions.rdf'), object.permissions )
       rescue StandardError => e
         Rails.logger.error "unable to write permissions: #{e}"
         false
@@ -78,17 +80,17 @@ module Preservation
       deleted = []
       modified = []
 
-      #if resource
-      #  saved = moabify_resource
-      #  return false unless saved
-      #  dslist << 'resource.rdf'
-      #end
+      if resource
+        saved = moabify_resource
+        return false unless saved
+        dslist << 'resource.rdf'
+      end
       
-      #if permissions
-      #  saved = moabify_permissions
-      #  return false unless saved
-      #  dslist << 'permissions.rdf'
-      #end
+      if permissions
+        saved = moabify_permissions
+        return false unless saved
+        dslist << 'permissions.rdf'
+      end
 
       if datastreams.present?
         #object.reload # we must refresh the datastreams list

@@ -20,7 +20,6 @@ module DRI::Formatters
      'date' => RDF::DC.date,
      'format' => RDF::DC.format,
      'source' => RDF::DC.source,
-     'isGovernedBy' => RDF::DC.isPartOf,
      'role_dnr' => RDF::Vocab::MARCRelators.dnr,
      'geographical_coverage' => RDF::DC.spatial,
      'temporal_coverage' => RDF::DC.temporal,
@@ -45,6 +44,7 @@ module DRI::Formatters
       @object_doc = object_doc
       @object_hash = object_doc.extract_metadata(fields)
       @with_assets = options[:with_assets].presence
+      @with_metadata = options[:with_metadata].presence
       build_graph
     end
 
@@ -74,9 +74,13 @@ module DRI::Formatters
       graph << [uri, FOAF.primaryTopic, RDF::URI("#{uri}#id")]
        
       add_licence
-      add_formats
+      
+      if @with_metadata
+        add_formats
+        add_metadata
+      end
 
-      add_metadata
+      add_hierarchy
       add_relationships
       add_assets if @with_assets
      
@@ -149,8 +153,6 @@ module DRI::Formatters
                        else
                           [RDF::URI.new(id), METADATA_FIELDS_MAP[field], value]
                        end
-            when 'isGovernedBy'
-              graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::URI("#{base_uri}/catalog/#{value}#id")]
             when 'geographical_coverage'
               name = extract_name(value)
               subject = sparql_subject(name)
@@ -188,6 +190,16 @@ module DRI::Formatters
         @object_doc.identifier.each { |ident| graph << [RDF::URI.new(id), METADATA_FIELDS_MAP['identifier'], ident] }
       end
     end
+
+    def add_hierarchy
+      id = "#{uri}#id"
+      metadata = @object_hash['metadata']
+      if metadata['isGovernedBy'].present?
+        metadata['isGovernedBy'].each do |value| 
+          graph << [RDF::URI.new(id), RDF::DC.isPartOf, RDF::URI("#{base_uri}/catalog/#{value}#id")]
+        end
+      end
+    end 
 
     def add_relationships
       id = "#{uri}#id"
