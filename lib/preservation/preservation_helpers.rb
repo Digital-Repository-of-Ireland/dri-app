@@ -10,7 +10,7 @@ module PreservationHelpers
 
     # data path
     def data_path(batch, version)
-      File.join(version_path(batch,version), "data")
+      File.join(version_path(batch, version), "data")
     end
 
     # output: partial path string e.g. "1c/18/df/87/1c18df87m/v0001"

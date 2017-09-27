@@ -105,7 +105,7 @@ When /^(?:|I )go to the "([^"]*)" "([^"]*)" page(?: for "([^"]*)")?$/ do |type, 
     pid = @digital_object.noid
   elsif (pid.eql?('the saved pid') && (type.eql?("collection") || type == 'my collections'))
     pid = @collection_pid ? @collection_pid : @pid
-  elsif (pid == 'the saved pid' && type == "object")
+  elsif (pid == 'the saved pid' && (type == "object" || type == 'asset'))
     pid = @pid if pid == 'the saved pid'
   end
   visit path_for(type, page, pid)

@@ -121,18 +121,17 @@ class AssetsController < ApplicationController
   def update
     enforce_permissions!('edit', params[:object_id])
     
-    datastream = 'content'
     file_upload = upload_from_params
 
     @object = retrieve_object!(params[:object_id])
     @generic_file = retrieve_object!(params[:id])
-
-    preserve_file(file_upload, datastream, params)
+    
     filename = params[:file_name].presence || file_upload.original_filename  
     
-    if actor.update_external_content(file_upload, datastream, filename, @mime_type)
+    if actor.update_external_content(file_upload, filename, @mime_type)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
-
+ 
+      preserve_file(file_upload)
       mint_doi(@object, 'asset modified') if @object.status == 'published'
     else
       message = @generic_file.errors.full_messages.join(', ')
@@ -151,13 +150,11 @@ class AssetsController < ApplicationController
     end
   end
 
-  # Stores an uploaded file to the local filesystem and then attaches it to one
-  # of the objects datastreams. content is used by default.
+  # Stores an uploaded file to the local filesystem and then attaches it to 
+  # a new GenericFile.
   #
   def create
     enforce_permissions!('edit', params[:object_id])
-
-    datastream = 'content'
 
     # calls validate_upload which sets @mime_type variable
     file_upload = upload_from_params
@@ -169,14 +166,16 @@ class AssetsController < ApplicationController
     end
 
     build_generic_file
-    preserve_file(file_upload, datastream, params)
-    
     filename = params[:file_name].presence || file_upload.original_filename    
     
-    if actor.create_external_content(file_upload, datastream, filename, @mime_type)
-      flash[:notice] = t('dri.flash.notice.file_uploaded')
+    # Create external content updates the parent object version
+    # and adds the file to the GenericFile
+    if actor.create_external_content(file_upload, filename, @mime_type)
+      preserve_file(file_upload)
 
       mint_doi(@object, 'asset added') if @object.status == 'published'
+
+      flash[:notice] = t('dri.flash.notice.file_uploaded')
     else
       message = @generic_file.errors.full_messages.join(', ')
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
@@ -246,30 +245,18 @@ class AssetsController < ApplicationController
       end
     end
 
-    def preserve_file(filedata, datastream, params)
+    def preserve_file(filedata)
       checksum = params[:checksum]
       filename = params[:file_name].presence || filedata.original_filename
       filename = "#{@generic_file.noid}_#{filename}"
-
-      # Update object version
-      version = @object.object_version || '1'
-      object_version = (version.to_i + 1).to_s
-      @object.object_version = object_version
-
-      begin
-        @object.save!
-      rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not update object version number for #{@object.noid} to version #{object_version}"
-        raise Exceptions::InternalError
-      end
-
+      
       # Do the preservation actions
       addfiles = []
       delfiles = []
       
       addfiles = [filename]
       delfiles = ["#{@generic_file.noid}_#{@generic_file.label}"] if params[:action] == 'update'
-      
+
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve_assets(addfiles, delfiles)
     end

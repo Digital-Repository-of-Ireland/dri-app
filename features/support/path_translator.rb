@@ -134,6 +134,15 @@ module PathTranslator
             raise('Unknown route')
         end
 
+      when /asset/
+        case page
+          when /details/
+            object = DRI::DigitalObject.find_by_noid(pid)
+            object_file_path(pid, object.generic_files.first.noid)
+          else
+            raise('Unknown route')
+        end
+
       else
         raise('Unknown route')
     end

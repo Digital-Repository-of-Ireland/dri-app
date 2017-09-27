@@ -124,10 +124,9 @@ Feature: Preservation
     And the manifest for version "1" for the saved pid should be valid
     And the manifest for version "2" for the saved pid should be valid
 
-  @noexec
   Scenario: Upload an asset
     When I create an object and save the pid
-    And I go to the "object" "show" page for "the saved pid"
+    And I go to the "object" "modify" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "upload a file"
     Then an AIP should exist for the saved pid
@@ -135,17 +134,15 @@ Feature: Preservation
     And the manifest for version "1" for the saved pid should be valid
     And the manifest for version "2" for the saved pid should be valid
 
-  @noexec
+  @test
   Scenario: Replace asset
     When I create an object and save the pid
-    And I go to the "object" "show" page for "the saved pid"
+    And I go to the "object" "modify" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "upload a file"
-    And I go to the "object" "show" page for "the saved pid"
-    And I follow the link to view asset tools
-    And I follow the link to view asset details
-    And I attach the asset file "sample_audio.mp3"
-    And I press the button to "upload a file"
+    And I go to the "asset" "details" page for "the saved pid"
+    And I attach the asset file "sample_image.jpeg"
+    And I press the button to "replace a file"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "3" versions
     And the manifest for version "1" for the saved pid should be valid
