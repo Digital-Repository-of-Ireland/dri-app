@@ -4,6 +4,10 @@ module PreservationHelpers
      Rails.root.join(Settings.dri.files)
    end
 
+   def base_path(batch)
+     File.join(local_storage_dir, build_hash_dir(batch))
+   end
+
    def version_path(batch, version)
       File.join(local_storage_dir, build_hash_dir(batch), version_string(version))
     end

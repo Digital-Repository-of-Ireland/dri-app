@@ -59,8 +59,6 @@ class AssetsController < ApplicationController
       end
     
     when 'masterfile'
-      enforce_permissions!('edit', params[:object_id]) if params[:version].present?
-
       @generic_file = retrieve_object!(params[:id])
       if @generic_file
         can_view?

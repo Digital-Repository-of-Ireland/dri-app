@@ -2,18 +2,16 @@
 
   <h3><%= t('dri.reports.headings.object') %></h3>
   <table>
-    <tr><td> <%= t('dri.reports.object.object_id') %> </td><td> <%= @object.id %> </td></tr>
-    <tr><td> <%= t('dri.reports.object.doi') %> </td><td> <%= @object.doi %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.object_id') %> </td><td> <%= @object.noid %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.doi') %> </td><td> <%= @object.doi.first %> </td></tr>
     <tr><td> <%= t('dri.reports.object.title') %> </td><td> <%= @object.title.join(' : ') %> </td></tr>
     <tr><td> <%= t('dri.reports.object.created_at') %> </td><td> <%= @object.create_date %> </td></tr>
     <tr><td> <%= t('dri.reports.object.last_mod') %> </td><td> <%= @object.modified_date %> </td></tr>
-    <tr><td> <%= t('dri.reports.object.depositor') %> </td><td> <%= @object.depositor %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.depositor') %> </td><td> <%= @object.depositor.first %> </td></tr>
     <tr><td> <%= t('dri.reports.object.status') %> </td><td> <%= @object.status %> </td></tr>
-    <tr><td> <%= t('dri.reports.object.metadata_md5') %> </td><td> <%= @object.metadata_md5 %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.metadata_md5') %> </td><td> <%= @object.metadata_md5.first %> </td></tr>
     <tr><td> <%= t('dri.reports.object.licence') %> </td><td> <%= @licence %> </td></tr>
     <tr><td> <%= t('dri.reports.object.copyright') %> </td><td> <%= @object.rights.join(' : ') %> </td></tr>
-    <tr><td> <%= t('dri.reports.object.fedora_url') %> </td><td> <%= link_to(@fedora_url, @fedora_url) %>
-
   </table>
 
 
@@ -45,7 +43,7 @@
        <tr>
         <td><%= @versions[label][:created] %></td>
         <td><%= @versions[label][:committer] %></td>
-        <td><a href="<%= @versions[label][:uri] %>"><%= label %></a></td>
+        <td><%= label %></td>
       </tr>
     <% end %>
     </table>
@@ -54,34 +52,18 @@
   <h3><%= t('dri.reports.headings.files') %></h3>
   <% @object.generic_files.each do |file| %>
     <table>
-      <tr><td><%= t('dri.reports.assets.asset_id') %></td><td><%= file.id %></td></tr>
+      <tr><td><%= t('dri.reports.assets.asset_id') %></td><td><%= file.noid %></td></tr>
       <tr><td><%= t('dri.reports.assets.asset_type') %></td><td><%= file.format_label.join(' : ') %></td></tr>
-      <tr><td><%= t('dri.reports.assets.file_size') %></td><td><%= file.file_size.join(' : ') %></td></tr>
+      <tr><td><%= t('dri.reports.assets.file_size') %></td><td><%= number_to_human_size(file.file_size.first.to_i) %></td></tr>
       <tr><td><%= t('dri.reports.assets.last_modified') %></td><td><%= file.last_modified.join(' : ') %></td></tr>
       <tr><td><%= t('dri.reports.assets.checksum_orig') %></td><td><%= file.original_checksum.join(' : ') %></td></tr>
-      <tr><td><%= t('dri.reports.assets.file_info_link') %></td><td><%= link_to(object_file_path(@object.id, file.id), object_file_path(@object.id, file.id)) %></td></tr>
-      <tr><td><%= t('dri.reports.assets.file_download_link') %></td><td><%= link_to(file_download_path(@object.id, file.id), file_download_path(@object.id, file.id)) %></td></tr>
+      <tr><td><%= t('dri.reports.assets.file_info_link') %></td><td><%= link_to(object_file_path(@object.noid, file.noid), object_file_path(@object.noid, file.noid)) %></td></tr>
+      <tr><td><%= t('dri.reports.assets.file_download_link') %></td><td><%= link_to(file_download_path(@object.noid, file.noid), file_download_path(@object.noid, file.noid)) %></td></tr>
 
-
-      <% versions = @asset_info[file.id][:versions] %>
-      <tr><td><%= t('dri.reports.assets.version') %></td><td><%= versions.size - 1 %></td></tr>
-
-      <% if versions.size > 0 %>
-
-        <tr><td><%= t('dri.reports.assets.previous_versions') %></td><td>
-          <ul>
-            <% versions.pop %>
-            <% versions.each do |f| %>
-            <li><%= link_to(file_download_path(@object.id, file.id, version: f.version),
-                            file_download_path(@object.id, file.id, version: f.version)) %></li>
-            <% end %>
-          </ul>
-        </td></tr>
-      <% end %>
 
       <tr><td><%= t('dri.reports.assets.surrogates') %></td><td>
 
-        <% @asset_info[file.id][:surrogates].each do |key,value| %>
+        <% @asset_info[file.noid][:surrogates].each do |key,value| %>
           <table>
             <tr><td><%= t('dri.reports.surrogates.name') %></td><td><%= key %></td></tr>
             <tr><td><%= t('dri.reports.surrogates.mime_type') %></td><td><%= value[:content_type] %></td></tr>

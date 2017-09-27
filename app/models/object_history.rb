@@ -1,5 +1,9 @@
+require 'moab'
+require 'preservation/preservation_helpers'
+
 class ObjectHistory
   include ActiveModel::Model
+  include PreservationHelpers
 
   attr_accessor :object
 
@@ -46,11 +50,9 @@ class ObjectHistory
   def audit_trail
     versions = {}
 
-    if @object.has_versions?
-      audit_trail = @object.versions.all
-      audit_trail.each do |version|
-        versions[version.label] = { uri: version.uri, created: version.created, committer: committer(version) }
-      end
+    if has_versions?
+      audit_trail = object_versions
+      audit_trail.each { |version| versions[version.version_name] = version_info(version.version_id) }
     end
 
     versions
@@ -61,21 +63,24 @@ class ObjectHistory
 
     object.generic_files.each do |file|
       asset_info[file.noid] = {}
-
-      asset_info[file.noid][:versions] = [] #local_files(file.noid)
       asset_info[file.noid][:surrogates] = surrogate_info(file.noid)
     end
 
     asset_info
   end
 
-  def committer(version)
-    vc = VersionCommitter.where(version_id: version.uri)
-    vc.empty? ? nil : vc.first.committer_login
+  def version_info(version)
+    vc = VersionCommitter.where(version_id: version, obj_id: object.noid).take
+    { created: vc.created_at, committer: vc.committer_login }
   end
 
-  def local_files(file_id)
-    #LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d', { f: file_id, d: 'content' }).to_a
+  def has_versions?
+    object_versions.count > 0
+  end
+
+  def object_versions
+    storage_object = Moab::StorageObject.new(object.noid, base_path(object.noid))
+    storage_object.versions
   end
 
   def licence
