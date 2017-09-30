@@ -81,23 +81,9 @@ class ProcessBatchIngest
   def self.ingest_file(file_path, object, generic_file, filename)
     filedata = OpenStruct.new
     filedata.path = file_path
-
-    current_version = object.object_version || '1'
-    object_version = (current_version.to_i+1).to_s
-
-    object.object_version = object_version
-    
-    # Update object version
-    begin
-      object.save
-    rescue ActiveRecord::ActiveRecordError => e
-      logger.error "Could not update object version number for #{object.noid} to version #{object_version}"
-      return -1
-    end
    
     DRI::Asset::Actor.new(generic_file, user).create_external_content(
                   filedata,
-                  'content',
                   filename,
                   Validators.file_type(filedata)
     )
