@@ -74,7 +74,7 @@ module DRI
       end
 
       def push_characterize_job
-        DRI.queue.push(CharacterizeJob.new(@generic_file.noid))
+        DRI.queue.push(CharacterizeJob.new(generic_file.noid))
       end
 
       protected

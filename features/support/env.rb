@@ -1,6 +1,5 @@
 require 'simplecov'
 require 'simplecov-rcov'
-require 'active_fedora/cleaner'
 
 class SimpleCov::Formatter::MergedFormatter
   def format(result)
@@ -110,8 +109,6 @@ Before do
   allow(DRI.queue).to receive(:push) 
   allow_any_instance_of(DRI::Object::Actor).to receive(:version_and_record_committer)
   allow(Feedjira::Feed).to receive(:fetch_and_parse)
-  
-  ActiveFedora::Cleaner.clean!
 
   @tmp_assets_dir = Dir.mktmpdir
   Settings.dri.files = @tmp_assets_dir

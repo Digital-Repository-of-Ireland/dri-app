@@ -7,8 +7,7 @@ Before('~@javascript') do
 end
 
 After do
-  #DatabaseCleaner.clean
-  clean_repo
+  DatabaseCleaner.clean
   FileUtils.remove_dir(@tmp_assets_dir, force: true)
 end
 
