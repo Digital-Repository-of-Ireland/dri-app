@@ -34,7 +34,7 @@ describe AssetsController do
   describe 'show' do
 
     it 'should return 404 for a surrogate that does not exist' do
-      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata(@login_user.email)
       generic_file.save
@@ -83,7 +83,7 @@ describe AssetsController do
 
       DataciteDoi.create(object_id: @object.noid)
 
-      expect_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content).and_return(true)
+      expect_any_instance_of(DRI::Asset::Actor).to receive(:save_characterize_and_record_committer).and_return(true)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
@@ -97,10 +97,9 @@ describe AssetsController do
 
    describe 'update' do  
     it 'should create a new version' do
-      #allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
-      #allow_any_instance_of(DRI::Asset::Actor).to receive(:update_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:push_characterize_job)
 
-      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
       options = {}
@@ -119,11 +118,11 @@ describe AssetsController do
     end
 
     it 'should create a new version from a local file' do
-      #allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:push_characterize_job)
       
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
 
-      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
       options = {}
@@ -140,8 +139,7 @@ describe AssetsController do
     end
 
     it 'should mint a doi when an asset is modified' do
-      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
-      allow_any_instance_of(DRI::Asset::Actor).to receive(:update_external_content).and_return(true)
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:push_characterize_job)
 
       stub_const(
         'DoiConfig',
@@ -157,13 +155,12 @@ describe AssetsController do
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
 
-      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
-      options[:batch_id] = @object.noid
 
       generic_file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
       generic_file.save
@@ -173,6 +170,7 @@ describe AssetsController do
       @object.save
       DataciteDoi.create(object_id: @object.noid)
 
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:push_characterize_job)
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       put :update, { :object_id => @object.noid, :id => file_id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
        
@@ -187,7 +185,7 @@ describe AssetsController do
     it 'should delete a file' do
       allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
       
-      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata('test@test.com')
       options = {}
@@ -219,7 +217,7 @@ describe AssetsController do
       @object.save
       @object.reload
 
-      generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+      generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata(@login_user.email)
       options = {}

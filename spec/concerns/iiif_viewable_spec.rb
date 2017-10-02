@@ -84,7 +84,7 @@ describe DRI::IIIFViewable do
     FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), 
       File.join(@tmp_upload_dir, 'sample_image.jpeg'))
 
-    @generic_file = DRI::GenericFile.new(noid: ActiveFedora::Noid::Service.new.mint)
+    @generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
     @generic_file.digital_object = @sound
     @generic_file.apply_depositor_metadata(@login_user.email)
     options = {}

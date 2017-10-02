@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe DRI::DigitalObject do
   it "should have an audio type with the level 1 required metadata fields" do
@@ -7,7 +7,7 @@ describe DRI::DigitalObject do
     @t.rights = nil
     @t.language = nil
     @t.object_type = ["Audio"]
-    @t.should_not be_valid
+    expect(@t).to_not be_valid
   end
 
   it "should not index null date values" do

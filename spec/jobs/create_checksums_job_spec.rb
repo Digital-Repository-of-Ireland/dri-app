@@ -5,6 +5,8 @@ require 'tempfile'
 describe "workers" do
 
   before(:each) do
+    allow_any_instance_of(DRI::Asset::Actor).to receive(:push_characterize_job)
+
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
@@ -16,7 +18,6 @@ describe "workers" do
     tmpdir = Dir::tmpdir
 
     @user = FactoryGirl.create(:admin)
-
     @object = FactoryGirl.create(:sound)
      
     @gf = DRI::GenericFile.new
@@ -25,7 +26,7 @@ describe "workers" do
     @gf.save
 
     actor = DRI::Asset::Actor.new(@gf, @user)
-    actor.create_content(uploadhash, uploadhash.original_filename, 'content', 'audio/mpeg')
+    actor.create_content(uploadhash, uploadhash.original_filename, 'audio/mpeg')
   end
 
   after(:each) do
