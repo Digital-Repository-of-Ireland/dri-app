@@ -1,24 +1,17 @@
-require 'fcrepo_wrapper'
-require 'fcrepo_wrapper/rake_task'
 require 'solr_wrapper'
 
 namespace :jetty do
 
   task(:config).clear
 
-  desc 'Starts configured solr and fedora instances for local development and testing'
+  desc 'Starts configured solr instances for local development and testing'
   task start: :environment do
     solr.extract_and_configure
     solr.start
-
-    fedora.start
   end
 
   task stop: :environment do
     solr.stop
-    port = fedora.port
-    pid = %x(lsof -ti :#{port}).to_i
-    Process.kill("TERM", pid) unless pid == 0
   end
 
   task config: :environment do
@@ -42,7 +35,4 @@ namespace :jetty do
     @solr ||= SolrWrapper.instance
   end
 
-  def fedora
-    @fedora ||= FcrepoWrapper.default_instance
-  end
 end

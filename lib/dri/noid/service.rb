@@ -17,11 +17,15 @@ module DRI::Noid
     def mint
       Mutex.new.synchronize do
         loop do
-          pid = @service.respond_to?(:minter) ? @service.minter.send(:next_id) : @service.next_id
+          pid = next_id
                     
           return pid unless DRI::Identifier.exists?(alternate_id: pid)
         end
       end
+    end
+
+    def next_id
+      @service.respond_to?(:minter) ? @service.minter.send(:next_id) : @service.send(:next_id)
     end
 
   end

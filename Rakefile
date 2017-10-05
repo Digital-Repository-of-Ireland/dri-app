@@ -11,7 +11,7 @@ APP_ROOT= File.dirname(__FILE__)
 require 'rspec/core'
 require 'rspec/core/rake_task'
 require 'bundler'
-#require 'active_fedora/rake_support'
+require 'dri/rake_support'
 
 require 'ci/reporter/rake/rspec'
 
@@ -59,7 +59,7 @@ task :ci => ['ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
   
-  with_test_server do
+  with_solr_test_server do
     begin
       Rake::Task['first_try'].invoke
     rescue Exception => e
