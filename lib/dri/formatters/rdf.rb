@@ -40,9 +40,8 @@ module DRI::Formatters
     }
 
     def initialize(object_doc, options = {})
-      fields = options[:fields].presence
+      @fields = options[:fields].presence
       @object_doc = object_doc
-      @object_hash = object_doc.extract_metadata(fields)
       @with_assets = options[:with_assets].presence
       @with_metadata = options[:with_metadata].presence
       build_graph
@@ -54,7 +53,7 @@ module DRI::Formatters
     end
 
     def uri
-      @uri ||= RDF::URI.new("#{base_uri}/catalog/#{@object_hash['pid']}")
+      @uri ||= RDF::URI.new("#{base_uri}/catalog/#{object_hash['pid']}")
     end
 
     def ttl_uri
@@ -65,12 +64,16 @@ module DRI::Formatters
       @html_uri ||= RDF::URI.new("#{uri}.html")
     end
     
+    def object_hash
+      @object_hash ||= @object_doc.extract_metadata(@fields)
+    end
+
     def build_graph
       graph << [uri, RDF::DC.hasFormat, RDF::URI("#{uri}.ttl")]
       graph << [uri, RDF::DC.hasFormat, RDF::URI("#{uri}.html")]
       graph << [uri, RDF.type, RDF::FOAF.Document]
       graph << [uri, RDF::DC.title, RDF::Literal.new(
-        "Description of '#{@object_hash['metadata']['title'].first}'", language: :en)]
+        "Description of '#{object_hash['metadata']['title'].first}'", language: :en)]
       graph << [uri, FOAF.primaryTopic, RDF::URI("#{uri}#id")]
        
       add_licence
@@ -87,16 +90,20 @@ module DRI::Formatters
       graph
     end
 
-    def add_assets
-      mrss_vocab = RDF::Vocabulary.new("http://search.yahoo.com/mrss/")
+    def mrss_vocab
+      @mrss_vocab ||= RDF::Vocabulary.new("http://search.yahoo.com/mrss/")
+    end
 
+    def add_assets      
       assets = @object_doc.assets
       
       assets.each do |a| 
         id = "#{base_uri}#{object_file_path(a['id'])}#id"
         graph << [RDF::URI("#{uri}#id"), RDF::DC.hasPart, RDF::URI.new(id)]
 
-        graph << [RDF::URI.new(id), RDF.type, file_type(a)]
+        type = file_type(a)
+        graph << [RDF::URI.new(id), RDF.type, type] unless type.nil?
+
         graph << [RDF::URI.new(id), FOAF.topic, RDF::URI("#{uri}#id")]
         graph << [RDF::URI.new(id), mrss_vocab.content, RDF::URI("#{base_uri}#{file_path(a['id'])}")]
         graph << [RDF::URI.new(id), RDF::RDFS.label, RDF::Literal.new(a['label_tesim'].first)]
@@ -119,12 +126,12 @@ module DRI::Formatters
       graph << [ttl_uri, RDF.type, format_vocab.Turtle]
       graph << [ttl_uri, RDF::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/turtle")]
       graph << [ttl_uri, RDF::DC.title, RDF::Literal.new(
-        "Description of '#{@object_hash['metadata']['title'].first}' as Turtle (RDF)", language: :en)]
+        "Description of '#{object_hash['metadata']['title'].first}' as Turtle (RDF)", language: :en)]
 
       graph << [html_uri, RDF.type, RDF::Vocab::DCMIType.Text]
       graph << [html_uri, RDF::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/html")]
       graph << [html_uri, RDF::DC.title, RDF::Literal.new(
-        "Description of '#{@object_hash['metadata']['title'].first}' as a web page", language: :en)]
+        "Description of '#{object_hash['metadata']['title'].first}' as a web page", language: :en)]
     end
 
     def add_licence
@@ -138,7 +145,7 @@ module DRI::Formatters
     def add_metadata
       id = "#{uri}#id"
 
-      metadata = @object_hash['metadata']
+      metadata = object_hash['metadata']
       
       graph << [RDF::URI.new(id), RDF.type, RDF::Vocab::DCMIType.Collection] if @object_doc.collection?
 
@@ -193,7 +200,7 @@ module DRI::Formatters
 
     def add_hierarchy
       id = "#{uri}#id"
-      metadata = @object_hash['metadata']
+      metadata = object_hash['metadata']
       if metadata['isGovernedBy'].present?
         metadata['isGovernedBy'].each do |value| 
           graph << [RDF::URI.new(id), RDF::DC.isPartOf, RDF::URI("#{base_uri}/catalog/#{value}#id")]
@@ -207,7 +214,6 @@ module DRI::Formatters
       relationships = @object_doc.object_relationships
 
       if relationships.present?
-
         relationships.keys.each do |key|
           relationships[key].each do |relationship|
             graph << [RDF::URI.new(id), RELATIONSHIP_FIELDS_MAP[key], RDF::URI("#{base_uri}/catalog/#{relationship[1]['id']}#id")]

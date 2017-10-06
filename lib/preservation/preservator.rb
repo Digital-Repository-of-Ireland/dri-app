@@ -48,7 +48,9 @@ module Preservation
     def moabify_resource
       document = SolrDocument.new(ActiveFedora::SolrService.query("id:#{object.noid}").first)
       formatter = DRI::Formatters::Rdf.new(document, { with_assets: true, with_metadata: false})
-      File.write(File.join(metadata_path(object.noid, version), 'resource.rdf'), formatter.format({format: :ttl}))    
+      resource = formatter.format({format: :ttl})
+
+      File.write(File.join(metadata_path(object.noid, version), 'resource.rdf'), resource)    
     rescue StandardError => e
       Rails.logger.error "unable to write resource: #{e}"
       false
@@ -101,8 +103,13 @@ module Preservation
     # preserve_assets
     def preserve_assets(addfiles, delfiles)
       create_moab_dirs()
+      moabify_resource
       moabify_datastream('properties', object.attached_files['properties'])
-      update_manifests({:added => {'content' => addfiles}, deleted: {'content' => delfiles}, modified: {'metadata' => ['properties.xml']}})
+      update_manifests({
+        added: {'content' => addfiles},
+        deleted: {'content' => delfiles},
+        modified: {'metadata' => ['resource.rdf', 'properties.xml']}
+      })
     end
     
     # create_manifests
@@ -197,9 +204,7 @@ module Preservation
           path = path_for_type(type)
           
           files.each do |file|
-
             @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
-
             moab_add_file_instance(path, file, type)
           end
         end
