@@ -64,7 +64,7 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
   @digital_object.save!
 
   preservation = Preservation::Preservator.new(@digital_object)
-  preservation.preserve(false, false, ['descMetadata','properties'])
+  preservation.preserve(false, ['descMetadata','properties'])
 end
 
 Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)")?$/ do |objid,colid|

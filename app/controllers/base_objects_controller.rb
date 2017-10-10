@@ -42,16 +42,17 @@ class BaseObjectsController < CatalogController
       licence = params[:digital_object][:licence]
       if licence.present?
         @object.licence = licence
-        version = @object.object_version || '1'
-        @object.object_version = (version.to_i + 1).to_s
+        @object.object_version = @object.object_version.next
       end
 
       updated = @object.save
 
       if updated
+        actor.version_and_record_committer
+        
         # Do the preservation actions
         preservation = Preservation::Preservator.new(@object)
-        preservation.preserve(false, false, ['properties'])
+        preservation.preserve(false, ['properties'])
       end
 
       respond_to do |format|

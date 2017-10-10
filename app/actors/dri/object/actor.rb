@@ -37,7 +37,6 @@ module DRI
 
       def version_and_record_committer
         version_id = @object.object_version
-
         VersionCommitter.create(version_id: version_id, obj_id: @object.noid, committer_login: @user.to_s)
       end
     end

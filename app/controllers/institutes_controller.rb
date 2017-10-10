@@ -45,11 +45,11 @@ class InstitutesController < ApplicationController
     add_logo
 
     @inst.url = params[:institute][:url]
-    if current_user.is_admin?
-      @inst.depositing = params[:institute][:depositing]
-    else
-      @inst.depositing = false
-    end
+    @inst.depositing = if current_user.is_admin?
+                         params[:institute][:depositing]
+                       else
+                         false
+                       end
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
@@ -114,15 +114,15 @@ class InstitutesController < ApplicationController
       @collection.depositing_institute = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
     end
 
-    version = @collection.object_version || '1'
-    @collection.object_version = (version.to_i + 1).to_s
-
+    @collection.object_version = @collection.object_version.next
     updated = @collection.save
 
     if updated
       # Do the preservation actions
+      VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.noid, committer_login: current_user.to_s)
+
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve(false, ['properties'])
     else
       raise DRI::Exceptions::InternalError
     end
@@ -155,16 +155,17 @@ class InstitutesController < ApplicationController
       @collection = retrieve_object(params[:object])
       raise DRI::Exceptions::NotFound unless @collection
 
-      version = @collection.object_version || '1'
-      @collection.object_version = (version.to_i + 1).to_s
+      @collection.object_version = @collection.object_version.next
       delete ? delete_association : add_association
 
       @collection_institutes = Institute.find_collection_institutes(@collection.institute)
       @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
 
+      VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.noid, committer_login: current_user.to_s)
+
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve(false, ['properties'])
 
       respond_to do |format|
         format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.noid }

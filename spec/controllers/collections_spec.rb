@@ -157,7 +157,7 @@ describe CollectionsController do
       @collection.save
 
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
 
       @subcollection = DRI::DigitalObject.with_standard :qdc
       @subcollection[:title] = ["A sub collection"]
@@ -172,7 +172,7 @@ describe CollectionsController do
       @subcollection.save
 
       preservation = Preservation::Preservator.new(@subcollection)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
 
       @collection.governed_items << @subcollection
       @collection.reload
@@ -202,7 +202,7 @@ describe CollectionsController do
       @collection.save
 
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
 
       stub_const(
         'DoiConfig',
@@ -244,7 +244,7 @@ describe CollectionsController do
       @collection.save
 
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
 
       stub_const(
         'DoiConfig',

@@ -86,8 +86,7 @@ class ObjectsController < BaseObjectsController
       @object.governing_collection = collection
     end
 
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
+    @object.object_version = @object.object_version.next
 
     unless @object.update_attributes(update_params)
       purge_params
@@ -148,7 +147,6 @@ class ObjectsController < BaseObjectsController
 
     checksum_metadata(@object)
     supported_licences
-    @object.object_version = '1'
 
     if @object.valid? && @object.save
       post_save(true) do
@@ -187,8 +185,7 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published' || current_user.is_admin?
       # Do the preservation actions
-      version = @object.object_version || '1'
-      @object.object_version = (version.to_i + 1).to_s
+      @object.object_version = @object.object_version.next
       assets = []
       @object.generic_files.map { |gf| assets << "#{gf.noid}_#{gf.label}" }
       
@@ -339,13 +336,14 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published' || current_user.is_admin?
       @object.status = params[:status] if params[:status].present?
-      version = @object.object_version || '1'
-      @object.object_version = (version.to_i + 1).to_s
+      @object.object_version = @object.object_version.next
       @object.save
+
+      actor.version_and_record_committer
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve(false, ['properties'])
     end
 
     respond_to do |format|
@@ -448,7 +446,7 @@ class ObjectsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(create, create, ['descMetadata','properties'])
+      preservation.preserve(create, ['descMetadata','properties'])
     end
 
     def retrieve_linked_data

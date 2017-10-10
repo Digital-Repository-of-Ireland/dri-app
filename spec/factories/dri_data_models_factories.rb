@@ -17,8 +17,10 @@ FactoryGirl.define do
     object_version          '1'
 
     after(:create) do |sound|
+      VersionCommitter.create(obj_id: sound.noid, committer_login: sound.depositor, version_id: '1')
+
       preservation = Preservation::Preservator.new(sound)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
     end
   end
 
@@ -40,7 +42,7 @@ FactoryGirl.define do
 
      after(:create) do |audio|
       preservation = Preservation::Preservator.new(audio)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
     end
   end
 
@@ -71,8 +73,10 @@ FactoryGirl.define do
     object_version          '1'
 
     after(:create) do |collection|
+      VersionCommitter.create(obj_id: collection.noid, committer_login: collection.depositor, version_id: '1')
+
       preservation = Preservation::Preservator.new(collection)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
     end
   end
 

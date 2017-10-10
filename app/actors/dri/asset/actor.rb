@@ -19,9 +19,7 @@ module DRI
       def update_object_version
         # Update object version
         object = generic_file.digital_object
-        version = object.object_version || '1'
-        object_version = (version.to_i + 1).to_s
-        object.object_version = object_version
+        object.object_version = object.object_version.next
 
         begin
           object.save!
@@ -69,6 +67,8 @@ module DRI
         end
         yield if block_given?
 
+        # creates an entry in VersionCommitter for the parent 
+        # digital object version  
         generic_file.record_version_committer(user)
         true
       end

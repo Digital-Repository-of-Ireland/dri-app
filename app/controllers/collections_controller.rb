@@ -123,10 +123,8 @@ class CollectionsController < BaseObjectsController
     supported_licences
 
     doi.update_metadata(params[:digital_object].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
-
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
-
+    
+    @object.object_version = @object.object_version.next
     updated = @object.update_attributes(update_params)
 
     if updated
@@ -136,7 +134,7 @@ class CollectionsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
 
     else
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
@@ -171,17 +169,18 @@ class CollectionsController < BaseObjectsController
       raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.file_not_found')
     end
 
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
+    @object.object_version = @object.object_version.next
 
     if cover_image.present?
       saved = Storage::CoverImages.validate_and_store(cover_image, @object)
     end
 
     if saved
+      actor.version_and_record_committer
+
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve(false, ['properties'])
     end
 
     # purge params from update action
@@ -206,15 +205,10 @@ class CollectionsController < BaseObjectsController
     raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if solr_result.blank?
 
     object = SolrDocument.new(solr_result.first)
-
     cover_url = object.cover_image
     raise DRI::Exceptions::NotFound if cover_url.blank?
-    if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
-      cover_uri = URI.parse(cover_url)
-      cover_uri.scheme = 'https'
-      redirect_to cover_uri.to_s
-      return
-    end
+
+    return if redirect_url(cover_url)
 
     uri = URI.parse(cover_url)
     cover_name = File.basename(uri.path)
@@ -244,12 +238,11 @@ class CollectionsController < BaseObjectsController
     if created && (@object.valid? && @object.save)
       # We have to create a default reader group
       create_reader_group
-
       actor.version_and_record_committer
-
+      
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(true, true, ['descMetadata','properties'])
+      preservation.preserve(true, ['descMetadata','properties'])
 
       respond_to do |format|
         format.html do
@@ -264,22 +257,24 @@ class CollectionsController < BaseObjectsController
           render(json: @response, status: :created)
         end
       end
-    else
-      respond_to do |format|
-        format.html do
-          unless @object.nil? || @object.valid?
-            flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-          end
-          raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
+
+      return
+    end
+
+    respond_to do |format|
+      format.html do
+        unless @object.nil? || @object.valid?
+          flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
         end
-        format.json do
-          unless @object.nil? || @object.valid?
-            @error = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-          end
-          response = {}
-          response[:error] = @error
-          render json: response, status: :bad_request
+        raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
+      end
+      format.json do
+        unless @object.nil? || @object.valid?
+          @error = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
         end
+        response = {}
+        response[:error] = @error
+        render json: response, status: :bad_request
       end
     end
   end
@@ -307,7 +302,6 @@ class CollectionsController < BaseObjectsController
   
   def review
     enforce_permissions!('manage_collection', params[:id])
-
     @object = retrieve_object!(params[:id])
 
     return if request.get?
@@ -331,7 +325,6 @@ class CollectionsController < BaseObjectsController
 
   def publish
     enforce_permissions!('manage_collection', params[:id])
-
     @object = retrieve_object!(params[:id])
 
     raise DRI::Exceptions::BadRequest unless @object.collection?
@@ -465,6 +458,23 @@ class CollectionsController < BaseObjectsController
 
     def reader_group_name
       @object.noid
+    end
+
+    def redirect_url(cover_url)
+      if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
+        cover_uri = force_https(cover_url)
+        redirect_to cover_uri.to_s
+        return true
+      end
+      
+      false
+    end
+
+    def force_https(cover_url)
+      cover_uri = URI.parse(cover_url)
+      cover_uri.scheme = 'https' if Rails.env == 'production'
+
+      cover_uri
     end
 
     def results_to_hash(solr_query)

@@ -96,8 +96,7 @@ class AssetsController < ApplicationController
     @generic_file = retrieve_object!(params[:id])
     raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @object.status == 'published'
 
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
+    @object.object_version = @object.object_version.next
     @object.save
 
     @generic_file.delete

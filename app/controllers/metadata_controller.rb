@@ -83,22 +83,23 @@ class MetadataController < CatalogController
       raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
     end
 
-    @object.update_metadata xml
+    @object.update_metadata(xml)
+
     if @object.valid?
       checksum_metadata(@object)
       warn_if_duplicates
 
-      begin
-        raise DRI::Exceptions::InternalError unless @object.attached_files[:descMetadata].save
-      rescue RuntimeError => e
-        logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
-        raise DRI::Exceptions::InternalError
-      end
+      @object.object_version = @object.object_version.next
 
       begin
         raise DRI::Exceptions::InternalError unless @object.save
 
         actor.version_and_record_committer
+        
+        # Do the preservation actions
+        preservation = Preservation::Preservator.new(@object)
+        preservation.preserve(false, ['descMetadata','properties'])
+
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
         logger.error "Could not save object #{@object.noid}: #{e.message}"
@@ -109,23 +110,6 @@ class MetadataController < CatalogController
       @errors = @object.errors.full_messages.inspect
     end
     
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
-
-    begin
-      raise DRI::Exceptions::InternalError unless @object.save
-
-      # Do the preservation actions
-      preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, false, ['descMetadata','properties'])
-
-      actor.version_and_record_committer
-      flash[:notice] = t('dri.flash.notice.metadata_updated')
-    rescue RuntimeError => e
-      logger.error "Could not save object #{@object.noid}: #{e.message}"
-      raise DRI::Exceptions::InternalError
-    end
-
     respond_to do |format|
       format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:id] }
       format.json { render json: @object }

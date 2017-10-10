@@ -11,6 +11,9 @@ class ReviewJob
 
   def perform
     collection_id = options['collection_id']
+    user_id = options['user_id']
+    user = UserGroup::User.find(user_id)
+
     set_status(collection_id: collection_id)
 
     # get objects within this collection, not including sub-collections
@@ -18,25 +21,26 @@ class ReviewJob
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:draft"
     f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false"
 
-    completed, failed = set_as_reviewed(collection_id, q_str, f_query)
+    completed, failed = set_as_reviewed(collection_id, user, q_str, f_query)
     collection = DRI::Identifier.retrieve_object(collection_id)
 
     # Need to set sub-collection to reviewed
     if subcollection?(collection)
       collection.status = 'reviewed'
-      version = collection.object_version || '1'
-      collection.object_version = (version.to_i + 1).to_s
+      collection.object_version = collection.object_version.next
       failed += 1 unless collection.save
+
+      DRI::Object::Actor.new(collection, user).version_and_record_committer
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(collection)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve(false, ['properties'])
     end
 
     completed(completed: completed, failed: failed)
   end
 
-  def set_as_reviewed(collection_id, q_str, f_query)
+  def set_as_reviewed(collection_id, user, q_str, f_query)
     total_objects = ActiveFedora::SolrService.count(q_str, { fq: f_query })
 
     query = Solr::Query.new(q_str, 100, fq: f_query)
@@ -51,13 +55,14 @@ class ReviewJob
         o = DRI::Identifier.retrieve_object(object['id'])
         if o && o.status == 'draft'
           o.status = 'reviewed'
-          version = o.object_version || '1'
-          o.object_version = (version.to_i + 1).to_s
+          o.object_version = o.object_version.next
           o.save ? (completed += 1) : (failed += 1)
+
+          DRI::Object::Actor.new(o, user).version_and_record_committer
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
-          preservation.preserve(false, false, ['properties'])
+          preservation.preserve(false, ['properties'])
         end
       end
 

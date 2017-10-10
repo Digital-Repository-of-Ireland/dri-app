@@ -18,9 +18,7 @@ class AccessControlsController < ApplicationController
     params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
     params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
     params[:digital_object][:manager_users_string] = params[:digital_object][:manager_users_string].to_s.downcase if params[:digital_object][:manager_users_string].present?
-    
-    version = @object.object_version || '1'
-    params[:digital_object][:object_version] = (version.to_i+1).to_s
+    params[:digital_object][:object_version] = @object.object_version.next
 
     permissionchange = permissions_changed?
     updated = @object.update_attributes(update_params) unless @object.collection? && !valid_permissions?
@@ -30,7 +28,7 @@ class AccessControlsController < ApplicationController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, permissionchange, ['properties'])
+      preservation.preserve(permissionchange, ['properties'])
     else
       flash[:alert] = t('dri.flash.error.not_updated', item: params[:id])
     end

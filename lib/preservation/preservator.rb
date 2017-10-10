@@ -47,9 +47,9 @@ module Preservation
     # moabify_resource
     def moabify_resource
       document = SolrDocument.new(ActiveFedora::SolrService.query("id:#{object.noid}").first)
-      formatter = DRI::Formatters::Rdf.new(document, { with_assets: true, with_metadata: false})
+      formatter = DRI::Formatters::Preservation.new(document)
       resource = formatter.format({format: :ttl})
-
+      
       File.write(File.join(metadata_path(object.noid, version), 'resource.rdf'), resource)    
     rescue StandardError => e
       Rails.logger.error "unable to write resource: #{e}"
@@ -65,14 +65,12 @@ module Preservation
     end
     
     # preserve
-    def preserve(resource=false, permissions=false, datastreams=nil)
+    def preserve(permissions=false, datastreams=nil)
       create_moab_dirs()
       dslist = []
      
-      if resource
-        return false unless moabify_resource
-        dslist << 'resource.rdf'
-      end
+      return false unless moabify_resource
+      dslist << 'resource.rdf'
       
       if permissions
         return false unless moabify_permissions

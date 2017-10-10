@@ -13,24 +13,28 @@ module DRI::Formatters
       graph << [uri, RDF.type, RDF::FOAF.Document]
       
       add_licence
-      
       add_metadata
       add_hierarchy
       add_relationships
       add_assets
-     
+      
       graph
     end
 
     def add_metadata
       id = "#{uri}#id"
 
-      graph << [RDF::URI.new(id), RDF.type, RDF::Vocab::DCMIType.Collection] if @object_doc.collection?
+      if @object_doc.collection?
+        graph << [RDF::URI.new(id), RDF.type, RDF::Vocab::DCMIType.Collection] 
+        graph << [RDF::URI.new(id), RDF::DC.creator, RDF::Literal.new(@object_doc['creator_tesim'].first)] if @object_doc['creator_tesim'].present?
+      else
+        graph << [RDF::URI.new(id), RDF::DC.creator, RDF::Literal.new(@object_doc['depositor_tesim'].first)]
+      end
       graph << [RDF::URI.new(id), RDF::URI("info\:fedora/fedora-system\:def/model#hasModel"), RDF::Literal.new(@object_doc['active_fedora_model_ssi'])]
-      graph << [RDF::URI.new(id), RDF::DC.creator, RDF::Literal.new(@object_doc['depositor_tesim'].first)]
       graph << [RDF::URI.new(id), RDF::DC.contributor, RDF::Literal.new(committer)]
       graph << [RDF::URI.new(id), RDF::DC.created, RDF::Literal.new(@object_doc['system_create_dtsi'])]
       graph << [RDF::URI.new(id), RDF::DC.modified, RDF::Literal.new(modified_at)]
+      graph << [RDF::URI.new(id), RDF::DC.identifier, RDF::Literal.new('v%04d' % version_id)]
     end
 
     def add_assets
@@ -54,6 +58,10 @@ module DRI::Formatters
 
     def modified_at
       version.created_at.iso8601
+    end
+
+    def version_id
+      version.version_id
     end
   end
 end

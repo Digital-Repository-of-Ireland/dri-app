@@ -134,7 +134,6 @@ Feature: Preservation
     And the manifest for version "1" for the saved pid should be valid
     And the manifest for version "2" for the saved pid should be valid
 
-  @test
   Scenario: Replace asset
     When I create an object and save the pid
     And I go to the "object" "modify" page for "the saved pid"
