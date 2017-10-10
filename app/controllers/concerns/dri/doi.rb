@@ -13,16 +13,7 @@ module DRI::Doi
   def mint_doi(object, modified)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
-    #if object.descMetadata.has_versions?
-    #  DataciteDoi.create(
-    #    object_id: object.noid,
-    #    modified: modified,
-    #    mod_version: object.descMetadata.versions.last.uri
-    #  )
-    #else
-      DataciteDoi.create(object_id: object.noid, modified: modified)
-    #end
-
+    DataciteDoi.create(object_id: object.noid, modified: modified, mod_version: object.object_version)
     DRI.queue.push(MintDoiJob.new(object.noid))
   end
 

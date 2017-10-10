@@ -25,6 +25,7 @@ class AccessControlsController < ApplicationController
 
     if updated
       flash[:notice] = t('dri.flash.notice.access_controls_updated')
+      DRI::Object::Actor.new(@object, current_user).version_and_record_committer
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)

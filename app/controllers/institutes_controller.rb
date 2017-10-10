@@ -115,9 +115,8 @@ class InstitutesController < ApplicationController
     end
 
     @collection.object_version = @collection.object_version.next
-    updated = @collection.save
 
-    if updated
+    if @collection.save
       # Do the preservation actions
       VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.noid, committer_login: current_user.to_s)
 
