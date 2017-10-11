@@ -42,7 +42,7 @@ class BaseObjectsController < CatalogController
       licence = params[:digital_object][:licence]
       if licence.present?
         @object.licence = licence
-        @object.object_version = @object.object_version.next
+        @object.increment_version
       end
 
       updated = @object.save

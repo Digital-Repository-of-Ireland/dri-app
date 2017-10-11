@@ -86,7 +86,7 @@ class ObjectsController < BaseObjectsController
       @object.governing_collection = collection
     end
 
-    @object.object_version = @object.object_version.next
+    @object.increment_version
 
     unless @object.update_attributes(update_params)
       purge_params
@@ -185,7 +185,7 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published' || current_user.is_admin?
       # Do the preservation actions
-      @object.object_version = @object.object_version.next
+      @object.increment_version
       assets = []
       @object.generic_files.map { |gf| assets << "#{gf.noid}_#{gf.label}" }
       
@@ -336,7 +336,7 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published' || current_user.is_admin?
       @object.status = params[:status] if params[:status].present?
-      @object.object_version = @object.object_version.next
+      @object.increment_version
       @object.save
 
       actor.version_and_record_committer

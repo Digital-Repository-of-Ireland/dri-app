@@ -27,7 +27,7 @@ class ReviewJob
     # Need to set sub-collection to reviewed
     if subcollection?(collection)
       collection.status = 'reviewed'
-      collection.object_version = collection.object_version.next
+      collection.increment_version
       failed += 1 unless collection.save
 
       DRI::Object::Actor.new(collection, user).version_and_record_committer
@@ -55,7 +55,7 @@ class ReviewJob
         o = DRI::Identifier.retrieve_object(object['id'])
         if o && o.status == 'draft'
           o.status = 'reviewed'
-          o.object_version = o.object_version.next
+          o.increment_version
           o.save ? (completed += 1) : (failed += 1)
 
           DRI::Object::Actor.new(o, user).version_and_record_committer

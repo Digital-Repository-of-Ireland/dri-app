@@ -35,7 +35,7 @@ class PublishJob
     # publish the collection object and mint a DOI
     collection.status = 'published'
     collection.published_at = Time.now.utc.iso8601
-    collection.object_version = collection.object_version.next
+    collection.increment_version
 
     if collection.save
       mint_doi(collection)
@@ -69,7 +69,7 @@ class PublishJob
 
         next unless o.status == 'reviewed'
         o.status = 'published'
-        o.object_version = o.object_version.next
+        o.increment_version
 
         if o.save
           completed += 1

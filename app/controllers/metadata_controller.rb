@@ -89,7 +89,7 @@ class MetadataController < CatalogController
       checksum_metadata(@object)
       warn_if_duplicates
 
-      @object.object_version = @object.object_version.next
+      @object.increment_version
 
       begin
         raise DRI::Exceptions::InternalError unless @object.save

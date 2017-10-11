@@ -18,7 +18,7 @@ class AccessControlsController < ApplicationController
     params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
     params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
     params[:digital_object][:manager_users_string] = params[:digital_object][:manager_users_string].to_s.downcase if params[:digital_object][:manager_users_string].present?
-    params[:digital_object][:object_version] = @object.object_version.next
+    params[:digital_object][:object_version] = @object.increment_version
 
     permissionchange = permissions_changed?
     updated = @object.update_attributes(update_params) unless @object.collection? && !valid_permissions?

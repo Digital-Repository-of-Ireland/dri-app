@@ -114,7 +114,7 @@ class InstitutesController < ApplicationController
       @collection.depositing_institute = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
     end
 
-    @collection.object_version = @collection.object_version.next
+    @collection.increment_version
 
     if @collection.save
       # Do the preservation actions
@@ -154,7 +154,7 @@ class InstitutesController < ApplicationController
       @collection = retrieve_object(params[:object])
       raise DRI::Exceptions::NotFound unless @collection
 
-      @collection.object_version = @collection.object_version.next
+      @collection.increment_version
       delete ? delete_association : add_association
 
       @collection_institutes = Institute.find_collection_institutes(@collection.institute)

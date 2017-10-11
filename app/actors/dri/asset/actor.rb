@@ -19,7 +19,7 @@ module DRI
       def update_object_version
         # Update object version
         object = generic_file.digital_object
-        object.object_version = object.object_version.next
+        object.increment_version
 
         begin
           object.save!
