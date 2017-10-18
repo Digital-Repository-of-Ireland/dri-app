@@ -34,7 +34,7 @@ class CreateExportJob
     CSV.open(@first_pass.path, "wb") do |csv|
       csv << titles # title row
 
-      q_result.each_solr_document do |doc|
+      q_result.each do |doc|
         formatter = DRI::Formatters::Csv.new(doc, options)
         csv_string = formatter.format
         CSV.parse(csv_string, headers: true) do |row|

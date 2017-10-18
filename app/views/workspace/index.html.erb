@@ -45,6 +45,10 @@
       </p>
     <% end %>
 
+    <p>
+      <%= link_to t('dri.datatables.analytics.header') , analytics_path %>
+    </p>
+
      <% if tasks? %>
        <p>
          <%= link_to t('dri.headerlinks.my_tasks'), user_tasks_path, id: 'tasks' %>
@@ -52,6 +56,7 @@
      <% end %>
     </div>
   </div>
+
 <% end %>
 
 <% if current_user.is_admin? %>

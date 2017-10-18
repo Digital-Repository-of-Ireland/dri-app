@@ -1,0 +1,27 @@
+<h3><%= t('dri.datatables.analytics.header') %></h3>
+
+<%= form_tag({:controller => "analytics", :action => "index"}, :method => "get") do %>
+<div class="dri_report_container">
+<table>
+<tr>
+<td style="width: 20%;"><%= label_tag(:start, t('dri.datatables.analytics.start') ) %>
+<%= text_field_tag(:startdate, @startdate) %><td>
+<td style="width: 20%;"><%= label_tag(:end, t('dri.datatables.analytics.end') ) %>
+<%= text_field_tag(:enddate, @enddate) %></td>
+<td style="width: 20%;"><%= submit_tag("Filter", :name => nil) %></td>
+</tr>
+</table>
+</div>
+<% end %>
+
+<table id="datatable_my_collections" class="display" data-source="<%= analytics_url(startdate: @startdate, enddate: @enddate, format: "json", protocol: Rails.application.config.action_mailer.default_url_options[:protocol]) %>">
+  <thead>
+    <tr>
+      <th><%= t('dri.datatables.analytics.columns.collection_title') %></th>
+      <th><%= t('dri.datatables.analytics.columns.visits') %></th>
+      <th><%= t('dri.datatables.analytics.columns.downloads') %></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>

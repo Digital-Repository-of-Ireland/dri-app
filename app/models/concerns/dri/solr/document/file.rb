@@ -13,13 +13,7 @@ module DRI::Solr::Document::File
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{id}\""
     
     query = Solr::Query.new(files_query)
-
-    assets = []
-    query.each_solr_document do |sd| 
-      assets << sd unless (with_preservation == false && sd.preservation_only?)
-    end
-
-    assets
+    query.reject { |sd| with_preservation == false && sd.preservation_only? }
   end
   
   def preservation_only?

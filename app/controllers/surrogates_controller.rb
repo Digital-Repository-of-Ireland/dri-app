@@ -10,7 +10,7 @@ class SurrogatesController < ApplicationController
     object_docs = solr_query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
     raise DRI::Exceptions::NotFound if object_docs.empty?
 
-    all_surrogates object_docs
+    all_surrogates(object_docs)
 
     respond_to do |format|
       format.json { @surrogates.to_json }
@@ -32,7 +32,7 @@ class SurrogatesController < ApplicationController
         # Changed query to work with collections that have sub-collections (e.g. EAD) 
         # - ancestor_id rather than collection_id field
         query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
-        query.each_solr_document { |object_doc| generate_surrogates(object_doc.id) }
+        query.each { |object_doc| generate_surrogates(object_doc.id) }
       else
         generate_surrogates(doc.id)
       end
@@ -53,7 +53,7 @@ class SurrogatesController < ApplicationController
         if doc.collection?
           query = Solr::Query.new("#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{doc.id}\"")
 
-          query.each_solr_document do |object_doc|
+          query.each do |object_doc|
             object_surrogates = surrogates(object_doc)
             @surrogates[object_doc.id] = object_surrogates unless object_surrogates.empty?
           end
@@ -68,7 +68,7 @@ class SurrogatesController < ApplicationController
     def generate_surrogates(object_id)
       enforce_permissions!('edit', object_id)
       query = Solr::Query.new("#{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object_id}\" AND NOT #{ActiveFedora.index_field_mapper.solr_name('preservation_only', :stored_searchable)}:true")
-      query.each_solr_document do |file_doc|
+      query.each do |file_doc|
         begin
           # only characterize if necessary
           if file_doc[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].present?
@@ -90,7 +90,7 @@ class SurrogatesController < ApplicationController
         storage = StorageService.new
 
         query = Solr::Query.new("#{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{object.id}\"")
-        query.each_solr_document do |file_doc|
+        query.each do |file_doc|
           file_surrogates = storage.get_surrogates(object, file_doc)
           surrogates[file_doc.id] = file_surrogates unless file_surrogates.empty?
         end

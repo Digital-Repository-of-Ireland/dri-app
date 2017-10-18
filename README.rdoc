@@ -299,3 +299,76 @@ The last step is to install the mysql and mysql2 gems and to setup your new mysq
   $ bundle exec rake db:seed
   $ bundle exec rake db:test:prepare
 
+== Configuring Analytics
+
+The application uses Google Analytics to store usage data.
+
+All page views are send to Google Analytics using the google-analytics-rails gem. For published objects the
+object ID, parent collection ID and Depositing Organisation name are also sent.
+
+When an object is viewed, or an asset file is downloaded the server also sends
+the view and download Events to Google Analytics via the Gabba gem.
+
+The Analytics reports (/analytics) use the Legato gem to query the Google
+Analytics API.
+
+In order for this to work a number of configuration changes are required at the
+Google Analytics side.
+
+=== Configure a Google Analytics account for the site
+Create a Google Analytics account for your site and get the Tracking ID number.
+This should be saved in the environments files as GA.tracker
+
+=== Create Custom Dimensions
+The following custom dimensions are required to be configured in the following order
+
+  * Dimension1 'collection'
+  * Dimension2 'organisation'
+  * Dimension3 'object'
+
+This is done via the Admin Menu - Custom Definitions - Custom Dimensions. All three should
+have hit scope.
+
+=== Create a project in the Google API console
+Go to the Google API Console https://console.developers.google.com/ and view the Dashboard.
+You may be prompted to create a project. If not look for the projects list at the top of
+the screen beside the Google APIs logo. Click on this to see your project list and use the +
+button to create a new project.
+
+=== Create credentials for the Google API project
+You will need to create a service account credential. Click on the top menu and navigate
+to IAM & Admin - Service Accounts. Here create a new Service account giving it a role
+of Project - Viewer.
+
+Save the account and download the key file in p12 format. Save this to the config dir
+and update the Settings.yml file with the following information:
+
+==== profile_id
+profile_id should be equal to the part after the p in the url for your analytics page. I.e.
+your analytics page will have an url of the form
+
+https://analytics.google.com/analytics/web/#embed/report-home/a00000000w000000000p1234567890/
+
+The part after the p is the profile id, in this case 1234567890.
+
+==== issuer && sub
+These should both be the service account ID which you will find in the Service Account section
+of the Google API Console https://console.developers.google.com/
+
+==== keyfile
+This should be the name of the p12 keyfile you downloaded from the Google API Console.
+
+==== secret
+This should match the secret that you were shown on downloading the p12 keyfile.
+
+==== other
+Other settings should be as follows
+
+  disable: false
+  token_credential_uri: 'https://accounts.google.com/o/oauth2/token'
+  audience: 'https://accounts.google.com/o/oauth2/token'
+  scope: 'https://www.googleapis.com/auth/analytics.readonly'
+
+
+
+

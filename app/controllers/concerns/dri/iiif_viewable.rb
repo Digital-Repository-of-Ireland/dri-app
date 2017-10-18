@@ -88,10 +88,8 @@ module DRI::IIIFViewable
     files = []
     
     query = Solr::Query.new(files_query)
-    query.each_solr_document do |file_doc| 
-      files << file_doc unless file_doc.preservation_only? 
-    end
-
+    files = query.reject { |file_doc| file_doc.preservation_only? } 
+  
     files.sort_by{ |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
   end
 
@@ -128,9 +126,7 @@ module DRI::IIIFViewable
     objects = []
 
     query = Solr::Query.new(q_str, 100, fq: f_query)
-    query.each_solr_document { |object_doc| objects << object_doc }
-
-    objects
+    query.to_a
   end
 
   def create_canvas(file, iiif_base_url)
