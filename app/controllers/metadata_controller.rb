@@ -10,7 +10,7 @@ TITLES = {
 #
 # Creates, updates, or retrieves, the descMetadata datastream for an object
 #
-class MetadataController < CatalogController
+class MetadataController < ApplicationController
   include DRI::MetadataBehaviour
 
   before_action :authenticate_user_from_token!, except: :show
