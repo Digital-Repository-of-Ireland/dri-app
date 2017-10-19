@@ -146,6 +146,8 @@ end
 # analytics
 gem 'google-analytics-rails', '1.1.0'
 gem 'gabba'
+gem 'legato'
+gem 'google-oauth2-installed'
 
 gem 'rvm'
 

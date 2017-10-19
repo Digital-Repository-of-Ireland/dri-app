@@ -194,13 +194,11 @@ class AssetsController < ApplicationController
       params[:objects].map { |o| o.values.first }
     )
     result_docs = Solr::Query.new(solr_query)
-    result_docs.each_solr_document do |doc|
-      #if doc.published?
-        item = list_files_with_surrogates(doc)
-        @list << item unless item.empty?
-      #end
+    result_docs.each do |doc|
+      item = list_files_with_surrogates(doc)
+      @list << item unless item.empty?
     end
-
+    
     raise DRI::Exceptions::NotFound if @list.empty?
 
     respond_to do |format|
@@ -361,7 +359,7 @@ class AssetsController < ApplicationController
           file_list['masterfile'] = url
         end
 
-        if can? :read, doc
+        if can?(:read, doc)
           surrogates = doc.surrogates(file_doc.id)
           surrogates.each { |file, loc| file_list[file] = loc }
         end

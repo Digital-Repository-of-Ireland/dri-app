@@ -29,7 +29,6 @@ DriApp::Application.routes.draw do
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
     post 'collections/:id/batch', to: 'batch_ingest#create', as: :batch_ingest
-    get 'collections/:id/duplicates', to: 'collections#duplicates', as: :collection_duplicates
 
     get 'collections/:id/readers', to: 'readers#index', as: :collection_manage_requests
     post 'collections/:id/readers', to: 'readers#create', as: :collection_request_read
@@ -58,6 +57,8 @@ DriApp::Application.routes.draw do
     get 'organisations/:id/logo', to: 'institutes#logo', as: :logo
 
     get 'activity', to: 'activity#index'
+
+    resources :analytics, :only => ['index', 'show']
 
     match 'association' => 'institutes#associate', :via => :post, :as => :new_association
     match 'association' => 'institutes#disassociate', :via => :delete, :as => :disassociation
@@ -105,6 +106,7 @@ DriApp::Application.routes.draw do
     match '/my_collections' => 'my_collections#index', :via => :get, as: :my_collections_index
     match '/my_collections/facet/:id' => 'my_collections#facet', :via => :get
     match '/my_collections/:id' => 'my_collections#show', :via => :get, as: :my_collections
+    get 'my_collections/:id/duplicates', to: 'my_collections#duplicates', as: :collection_duplicates
 
     get 'surrogates/:id' => 'surrogates#show', :as => :surrogates
     put 'surrogates/:id' => 'surrogates#update', :as => :surrogates_generate

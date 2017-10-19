@@ -27,3 +27,5 @@ doi:
   enable: "false"
 iiif:
   server: http://localhost:3000/iiif
+analytics:
+  disable: true

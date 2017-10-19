@@ -1,5 +1,6 @@
 module Solr
   class Query
+    include Enumerable
 
     def initialize(query, chunk=100, args = {})
       @query = query
@@ -34,7 +35,7 @@ module Solr
       self.query
     end
 
-    def each_solr_document
+    def each(&block)
       while has_more?
         objects = pop
 

@@ -43,5 +43,11 @@ DriApp::Application.configure do
 
   config.eager_load = false
 
+  # google analytics
+  GA.tracker = "UA-94005055-1"
+
+  cert_path = Gem.loaded_specs['google-api-client'].full_gem_path+'/lib/cacerts.pem'
+  ENV['SSL_CERT_FILE'] = cert_path
+
   Deprecation.default_deprecation_behavior = :silence
 end
