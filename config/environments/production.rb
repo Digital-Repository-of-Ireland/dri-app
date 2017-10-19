@@ -94,7 +94,7 @@ DriApp::Application.configure do
   config.assets.precompile += [%w( video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff ),'dri/dri_grid.css','dri/dri_layouts.css']
 
   # google analytics
-  GA.tracker = "UA-27838653-2"
+  # GA.tracker = 
 
   Devise.setup do |config|
     config.omniauth_path_prefix = "/users/auth"
