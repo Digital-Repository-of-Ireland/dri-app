@@ -228,7 +228,7 @@ module Preservation
         begin
           FileUtils.mkdir_p(paths)
         rescue StandardError => e
-          Rails.logger.error "Unable to create MOAB directory #{path}. Error: #{e.message}"
+          Rails.logger.error "Unable to create MOAB directory #{paths}. Error: #{e.message}"
           raise DRI::Exceptions::InternalError
         end
       end
