@@ -29,6 +29,7 @@ DriApp::Application.routes.draw do
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
     post 'collections/:id/batch', to: 'batch_ingest#create', as: :batch_ingest
+    put 'collections/:id/fixity', to: 'fixity#update', as: :fixity_check
 
     get 'collections/:id/readers', to: 'readers#index', as: :collection_manage_requests
     post 'collections/:id/readers', to: 'readers#create', as: :collection_request_read

@@ -36,6 +36,17 @@ module DRI
         query
       end
 
+      def verify
+        preservator = Preservation::Preservator.new(@object)
+        version = preservator.version_string(@object.object_version)
+
+        storage_object = Moab::StorageObject.new(@object.id, preservator.aip_dir)
+        storage_object_version = Moab::StorageObjectVersion.new(storage_object, version_id=version)
+        result = storage_object_version.verify_version_storage
+
+        [result.verified, result]
+      end
+
       def version_and_record_committer
         @object.create_version
 

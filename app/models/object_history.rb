@@ -70,6 +70,29 @@ class ObjectHistory
     asset_info
   end
 
+  def fixity
+    fixity_check = {}
+
+    if object.collection?
+      fixity_check[:time] = FixityCheck.where(collection_id: object.id).latest.first.created_at
+      failures = FixityCheck.where(collection_id: object.id).failed
+      if failures.any?
+        fixity_check[:verified] = 'failed'
+        fixity_check[:result] = failures.pluck(:object_id).join(', ')
+      else
+        fixity_check[:verified] = 'passed'
+        fixity_check[:result] = ''
+      end
+    else
+      check = FixityCheck.where(object_id: object.id).last
+      fixity_check[:time] = check.created_at
+      fixity_check[:verified] = check.verified == 'true' ? 'passed' : 'failed'
+      fixity_check[:result] = check.result
+    end
+
+    fixity_check
+  end
+
   def committer(version)
     vc = VersionCommitter.where(version_id: version.uri)
     vc.empty? ? nil : vc.first.committer_login
