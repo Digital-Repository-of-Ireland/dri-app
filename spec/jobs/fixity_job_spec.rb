@@ -1,8 +1,14 @@
 require 'rails_helper'
 require 'solr/query'
 
-describe 'PublishJob' do
+describe 'FixityJob' do
   
+  before do
+    allow_any_instance_of(FixityJob).to receive(:completed)
+    allow_any_instance_of(FixityJob).to receive(:set_status)
+    allow_any_instance_of(FixityJob).to receive(:at)
+  end
+
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir

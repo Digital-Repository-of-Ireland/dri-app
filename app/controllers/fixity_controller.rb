@@ -43,15 +43,15 @@ class FixityController < ApplicationController
   end
 
   def fixity_collection(object)
-  	job_id = FixityCollectionJob.create(
+    job_id = FixityCollectionJob.create(
         'collection_id' => object.id,
         'user_id' => current_user.id
-      )
-      UserBackgroundTask.create(
-        user_id: current_user.id,
-        job: job_id
-      )
-      flash[:notice] = t('dri.flash.notice.fixity_check_running')
+    )
+    UserBackgroundTask.create(
+      user_id: current_user.id,
+      job: job_id
+    )
+    flash[:notice] = t('dri.flash.notice.fixity_check_running')
   rescue Exception => e
     logger.error "Unable to submit fixity job: #{e.message}"
     flash[:alert] = t('dri.flash.alert.error_fixity_collection', error: e.message)

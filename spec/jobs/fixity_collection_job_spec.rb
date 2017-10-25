@@ -2,6 +2,10 @@ require 'rails_helper'
 
 describe "FixityCollectionJob" do
   
+  before do
+    expect_any_instance_of(FixityCollectionJob).to receive(:completed)
+  end
+
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir

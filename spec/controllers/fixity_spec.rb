@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'securerandom'
 
 describe FixityController do
   include Devise::Test::ControllerHelpers
@@ -25,12 +26,6 @@ describe FixityController do
   end
 
   describe 'update' do
-
-    it 'should trigger a fixity check for a collection' do
-      request.env["HTTP_REFERER"] = "/"
-      expect_any_instance_of(FixityCollectionJob).to receive(:perform)
-      put :update, id: @collection.id
-    end
 
     it 'should trigger a fixity check for an object' do
       request.env["HTTP_REFERER"] = "/"
