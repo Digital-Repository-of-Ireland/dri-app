@@ -86,7 +86,7 @@ class ObjectHistory
     else
       check = FixityCheck.where(object_id: object.id).last
       fixity_check[:time] = check.created_at
-      fixity_check[:verified] = check.verified == 'true' ? 'passed' : 'failed'
+      fixity_check[:verified] = check.verified == true ? 'passed' : 'failed'
       fixity_check[:result] = check.result
     end
 

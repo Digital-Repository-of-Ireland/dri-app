@@ -1,7 +1,6 @@
-require 'moab'
-
 class FixityJob
   include Resque::Plugins::Status
+  include Preservation::PreservationHelpers
 
   def queue
     :fixity
@@ -39,7 +38,8 @@ class FixityJob
       collection_objects = query.pop
 
       collection_objects.each do |object|
-        result = verify(SolrDocument.new(object))
+        result = verify(object['id'])
+        
         FixityCheck.create(
           collection_id: collection_id,
           object_id: object['id'],
@@ -61,22 +61,5 @@ class FixityJob
     end
 
     return completed, failed
-  end
-
-  def verify(object)
-    storage_object = ::Moab::StorageObject.new(object['id'], aip_dir(object['id']))
-    storage_object_version = storage_object.current_version
-    storage_object_version.verify_version_storage
-  end
-
-  def aip_dir(id)
-    dir = ""
-    index = 0
-    4.times {
-      dir = File.join(dir, id[index..index+1])
-      index += 2
-    }
-
-    File.join(Settings.dri.files, dir, id)
   end
 end

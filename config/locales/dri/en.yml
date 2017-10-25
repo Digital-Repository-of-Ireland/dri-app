@@ -142,6 +142,7 @@ en:
         exporting: An export of this collection is being created. You will receive an email when it is available.
         file_uploaded: Asset has been successfully uploaded.
         fixity_check_running: Fixity check is running.
+        fixity_check_completed: Fixity check completed.
         generating_surrogates: Surrogates are being generated.
         licence_created: Licence successfully created.
         licence_updated: Licence successfully updated.

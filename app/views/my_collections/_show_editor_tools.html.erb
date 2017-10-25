@@ -57,9 +57,15 @@
     </li>
  
     <% if current_user.is_admin? %>
-      <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
+      <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
         <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
       <% end %>
+    <% end %>
+  <% end %>
+
+  <% if current_user.is_admin? %>
+    <%= link_to object_fixity_check_path(@document), method: :put, id: "fixity_check" do %>
+      <li><%= t('dri.views.catalog.links.fixity_check') %></li>
     <% end %>
   <% end %>
 

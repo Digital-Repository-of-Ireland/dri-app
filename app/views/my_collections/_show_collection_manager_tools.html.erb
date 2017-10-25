@@ -130,22 +130,21 @@
       <% end %>
 
       <% if @document.published? && @document.doi %>
-         <%= link_to '', :'data-target' => '#dri_doi_modal_id', :'data-toggle' => 'modal', :id => "request_doi" do %>
+         <%= link_to '', :'data-target' => '#dri_doi_modal_id', :'data-toggle' => 'modal', id: "request_doi" do %>
 	         <li><%= t('dri.views.catalog.links.request_doi') %></li>
 	       <% end %>
       <% end %>
 
       <% if current_user.is_admin? %>
-        <%= link_to surrogates_generate_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
+        <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
           <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
         <% end %>
-      <% end %>
     
-      <%= link_to fixity_check_path(@document), :method => :put, data: { confirm: t('dri.views.collection.confirm_fixity') }, :id => "surrogates_generate" do %>
+        <%= link_to fixity_check_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_fixity') }, id: "fixity_check" do %>
           <li><%= t('dri.views.catalog.links.fixity_check') %></li>
+        <% end %>
       <% end %>
-
-       <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', :id => "manage_organisations" do %>
+       <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', id: "manage_organisations" do %>
          <li><%= t('dri.views.collection.institute.manage') %></li>
        <% end %>
 
@@ -153,7 +152,7 @@
     <!-- If (root collection OR not EAD collection) enable delete collection link -->
     <!-- This is to allow to delete any sub-collection except for EAD -->
     <% if !@document.published? && (@document.root_collection? || @document.editable?) %>
-      <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal', :id => 'delete_object' do %>
+      <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal', id: 'delete_object' do %>
         <li>
           <%= t('dri.views.collection.buttons.delete_collection') %>
         </li>

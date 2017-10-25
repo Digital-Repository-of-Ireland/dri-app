@@ -1,4 +1,8 @@
+require 'moab'
+
 class FixityController < ApplicationController
+
+  include Preservation::PreservationHelpers
 
   def update
     raise DRI::Exceptions::BadRequest unless params[:id].present?
@@ -19,6 +23,26 @@ class FixityController < ApplicationController
   private
 
   def fixity(object)
+    if object.collection?
+      fixity_collection(object)
+    else
+      fixity_object(object)
+    end
+  end
+
+  def fixity_object(object)
+    result = verify(object.id)
+
+    FixityCheck.create(
+          collection_id: object.collection_id,
+          object_id: object.id,
+          verified: result.verified,
+          result: result.to_json
+    )
+    flash[:notice] = t('dri.flash.notice.fixity_check_completed')
+  end
+
+  def fixity_collection(object)
   	job_id = FixityCollectionJob.create(
         'collection_id' => object.id,
         'user_id' => current_user.id

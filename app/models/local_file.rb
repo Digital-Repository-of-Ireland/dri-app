@@ -2,10 +2,9 @@
 
 require 'checksum'
 require 'pathname'
-require 'preservation/preservation_helpers'
 
 class LocalFile < ActiveRecord::Base
-  include PreservationHelpers
+  include Preservation::PreservationHelpers
 
   serialize :checksum
 
