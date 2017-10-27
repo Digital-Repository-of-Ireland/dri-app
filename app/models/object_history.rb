@@ -76,7 +76,7 @@ class ObjectHistory
     if object.collection?
       fixity_check[:time] = FixityCheck.where(collection_id: object.id).latest.first.created_at
       failures = FixityCheck.where(collection_id: object.id).failed
-      if failures.any?
+      if failures.to_a.any?
         fixity_check[:verified] = 'failed'
         fixity_check[:result] = failures.pluck(:object_id).join(', ')
       else
