@@ -169,6 +169,12 @@ module LinkTranslator
       when /^associate a licence$/
         "manage_licence"
 
+      when /^the workspace page$/
+        "workspace"
+
+      when /^add a new collection$/
+        "new_collection"
+
       else "Unknown"
 
     end

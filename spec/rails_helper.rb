@@ -10,7 +10,9 @@ if !zeus_running?
     require 'simplecov'
     require 'simplecov-rcov'
     SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-    SimpleCov.start
+    SimpleCov.start do 
+        add_filter "/spec/"
+    end
 end
 
 #Capybara.javascript_driver = :poltergeist

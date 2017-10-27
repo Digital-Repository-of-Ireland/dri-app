@@ -55,7 +55,7 @@ module FieldRenderHelper
   #
   def parse_description(args)
     if args[:document][args[:field]].size > 1
-      args[:document][args[:field]].collect!.each { |value| "<p>" << simple_format(value) << "</p>" }
+      args[:document][args[:field]].collect!.each { |value| simple_format(value)  }
     else
       simple_format(args[:document][args[:field]].first)
     end
