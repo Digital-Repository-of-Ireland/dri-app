@@ -12,7 +12,7 @@ module DRI::Solr::Document::File
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{id}\""
     
-    query = Solr::Query.new(files_query)
+    query = ::Solr::Query.new(files_query)
     query.reject { |sd| with_preservation == false && sd.preservation_only? }
   end
   

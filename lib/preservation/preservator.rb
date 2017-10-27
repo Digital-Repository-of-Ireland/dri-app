@@ -1,10 +1,9 @@
 require 'moab'
-require 'preservation/preservation_helpers'
 
 module Preservation
   class Preservator
 
-    include PreservationHelpers
+    include Preservation::PreservationHelpers
 
     attr_accessor :base_dir, :object, :version
 
@@ -228,7 +227,7 @@ module Preservation
         begin
           FileUtils.mkdir_p(paths)
         rescue StandardError => e
-          Rails.logger.error "Unable to create MOAB directory #{path}. Error: #{e.message}"
+          Rails.logger.error "Unable to create MOAB directory #{paths}. Error: #{e.message}"
           raise DRI::Exceptions::InternalError
         end
       end

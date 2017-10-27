@@ -103,6 +103,7 @@ en:
         error_publishing_collection: 'Error publishing collection: %{error}'
         error_review_job: 'Unable to submit background task, all objects will not be updated: %{error}'
         error_saving_file: 'Error saving file: %{error}'
+        error_fixity_collection: 'Unable to start fixity check: %{error}'
         invalid_file_type: 'Warning: The file does not appear to be a valid type'
         invalid_object: 'Invalid Object: %{error}.'
         invalid_xml: 'Invalid XML: %{error}'
@@ -140,6 +141,8 @@ en:
         duplicate_object_ingested: 'Possible duplicate objects found: %{duplicates}'
         exporting: An export of this collection is being created. You will receive an email when it is available.
         file_uploaded: Asset has been successfully uploaded.
+        fixity_check_running: Fixity check is running.
+        fixity_check_completed: Fixity check completed.
         generating_surrogates: Surrogates are being generated.
         licence_created: Licence successfully created.
         licence_updated: Licence successfully updated.
@@ -372,6 +375,7 @@ en:
           duplicates: Duplicates
           edit_this_record: Edit
           export_collection_metadata: Export all Metadata
+          fixity_check: Perform Fixity Check
           generate_surrogates: Regenerate Surrogates
           history: History
           iiif_viewer: Viewer
@@ -400,6 +404,7 @@ en:
           edit_metadata: Edit Metadata
         confirm_all_descendants_reviewed: By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed.
         confirm_delete: This will delete the collection and all objects within the collection. Continue?
+        confirm_fixity: 'Perform fixity check on all objects in this collection?'
         confirm_publish: This will make all reviewed objects accessible. This can not be undone! Continue?
         confirm_review_collection: This collection record will be marked as reviewed.
         confirm_review_subcollection: "Bear in mind that for this collection to be published you will have to mark all of its parent sub-collections as reviewed beforehand, otherwise the collection won't be accessible after publishing"
@@ -624,3 +629,10 @@ en:
         coming_soon: Coming Soon
       modal:
         close: Close
+    reports:
+      headings:
+        fixity: Fixity Check
+        fixity_status: Result
+        fixity_failures: Failures
+        fixity_result: Output
+
