@@ -235,38 +235,39 @@ en:
       fields:
         collection_title: Collection Title
         collection_title_text: A name given to the collection.
-        coverages: Coverage
+        coverages: Coverages
         coverages_text: The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant.
         creation_date: Creation Date
         creation_date_text: 'Date of creation of the resource. NOTE: You are required to enter at least one of Creation Date OR Published Date OR Date'
-        creator: Creator
+        creator: Creators
         creator_text: An entity primarily responsible for making the content of the resource.
         date: Date
         date_text: A point or period of time associated with an event in the lifecycle of the resource.
         description: Description
         description_text: An account of the resource.
-        formats: Format
+        formats: Formats
         formats_text: The Format of the resource
-        geographical_coverages: Subject (Place)
+        geographical_coverages: Subjects (Places)
         geographical_coverages_text: Spatial characteristics of the resource.
-        identifiers: Identifier
+        identifiers: Identifiers
         identifiers_text: Identifier for the resource.
-        languages: Language
+        languages: Languages
         licence: Licence
         licence_text: The reuse licence for this resource.
-        published_date: Published Date / Issued
+        published_date: Published Date
         published_date_text: Date of formal issuance (e.g., publication) of the resource.
-        relations: Relation
+        relations: Relations
         relations_text: A related resource.
-        rights: Rights statement
+        related: Related Materials
+        rights: Rights
         rights_text: Information about rights held in and over the resource. If the asset is an orphan work it must be registered with the EUIPO Orphan Works Database, and the associated file number must be included here.
-        roles: Contributor
+        roles: Contributors
         roles_text: An entity responsible for making contributions to the resource.
-        sources: Source
+        sources: Sources
         sources_text: A related resource from which the described resource is derived.
         subjects: Subjects
         subjects_text: The topic of the resource.
-        temporal_coverage: Subject (Temporal)
+        temporal_coverage: Subjects (Temporal)
         temporal_coverage_text: Temporal characteristics of the resource.
         title: Title
         title_text: A name given to the resource.
@@ -485,16 +486,16 @@ en:
         description: Description
         description_eng: Description (English)
         description_gle: Description (Irish)
-        format: Format
+        format: Formats
         formats: Formats
-        geographical_coverage: Subject (Place)
-        geographical_coverage_eng: Subject (Place) in English
-        geographical_coverage_gle: Subject (Place) in Irish
+        geographical_coverage: Subjects (Places)
+        geographical_coverage_eng: Subjects (Places) in English
+        geographical_coverage_gle: Subjects (Places) in Irish
         geographical_coverages: Subjects (Places)
         governing_collection: Governing Collection
         hide_description_eng: Hide English
         hide_description_gle: Hide Irish
-        identifier: Identifier
+        identifier: Identifiers
         identifiers: Identifiers
         language: Language
         languages: Languages
@@ -507,25 +508,26 @@ en:
         publishers: Publishers
         relation: Relation
         relations: Relations
+        related: Related Materials
         rights: Rights
-        roles: Contributor
+        roles: Contributors
         show_description_eng: Show English
         show_description_gle: Show Irish
-        source: Source
+        source: Sources
         sources: Sources
         status: Status
         subject: Subject
         subjects: Subjects
         subjects_eng: Subjects in English
         subjects_gle: Subjects in Irish
-        temporal_coverage: Subject (Temporal)
-        temporal_coverage_eng: Subject (Temporal) in English
-        temporal_coverage_gle: Subject (Temporal) in Irish
+        temporal_coverage: Subjects (Temporal)
+        temporal_coverage_eng: Subjects (Temporal) in English
+        temporal_coverage_gle: Subjects (Temporal) in Irish
         temporal_coverages: Subjects (Temporal)
         title: Title
         toggle: Toggle All
         total_assets: Total number of assets
-        type: Type
+        type: Types
         types: Types
       ingest:
         buttons:
