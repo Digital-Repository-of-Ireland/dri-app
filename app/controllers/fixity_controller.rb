@@ -1,7 +1,6 @@
 require 'moab'
 
 class FixityController < ApplicationController
-
   include Preservation::PreservationHelpers
 
   def update
@@ -42,15 +41,8 @@ class FixityController < ApplicationController
     flash[:notice] = t('dri.flash.notice.fixity_check_completed')
   end
 
-  def fixity_collection(object)
-    job_id = FixityCollectionJob.create(
-        'collection_id' => object.id,
-        'user_id' => current_user.id
-    )
-    UserBackgroundTask.create(
-      user_id: current_user.id,
-      job: job_id
-    )
+  def fixity_collection(collection)
+    Resque.enqueue(FixityCollectionJob, collection.id, current_user.id)
     flash[:notice] = t('dri.flash.notice.fixity_check_running')
   rescue Exception => e
     logger.error "Unable to submit fixity job: #{e.message}"

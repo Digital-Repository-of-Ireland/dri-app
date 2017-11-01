@@ -96,7 +96,7 @@
 	</fieldset>
 
 	<fieldset id="creator">
-    <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.creator')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.creator_text') %>" data-original-title="<%= t('dri.help.fields.creator')%>" data-trigger="hover" data-placement="right"></i></span>
+    <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.creators')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.creator_text') %>" data-original-title="<%= t('dri.help.fields.creator')%>" data-trigger="hover" data-placement="right"></i></span>
     <% if @object.creator.size == 0 %>
       <div><%= f.text_field "creator][", :value=>'', :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
     <% end %>
@@ -185,7 +185,11 @@
 		</p>
 	</fieldset>
 	<fieldset id="relation">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.relations')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.relations_text') %>" data-original-title="<%= t('dri.help.fields.relations')%>" data-trigger="hover" data-placement="right"></i></span>
+        <% if params[:controller] == 'collections' %>
+		    <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.related')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.relations_text') %>" data-original-title="<%= t('dri.help.fields.related')%>" data-trigger="hover" data-placement="right"></i></span>
+        <% else %>
+            <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.relations')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.relations_text') %>" data-original-title="<%= t('dri.help.fields.relations')%>" data-trigger="hover" data-placement="right"></i></span>
+        <% end %>
 		<% @object.relation.each do |i| %>
 		  <div><%= f.text_field "relation][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
 		<% end %>
@@ -193,6 +197,8 @@
 			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Relation"><%= t('dri.views.objects.forms.add_relation') %></a>
 		</p>
 	</fieldset>
+   
+    <% if params[:controller] != 'collections' %>
 	<fieldset id="source">
 		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.sources')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.sources_text') %>" data-original-title="<%= t('dri.help.fields.sources')%>" data-trigger="hover" data-placement="right"></i></span>
 		<% @object.source.each do |i| %>
@@ -202,6 +208,9 @@
 			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Source"><%= t('dri.views.objects.forms.add_source') %></a>
 		</p>
 	</fieldset>
+    <% end %>
+
+    <% if params[:controller] != 'collections' %>
 	<fieldset id="format">
 		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.formats')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.formats_text') %>" data-original-title="<%= t('dri.help.fields.formats')%>" data-trigger="hover" data-placement="right"></i></span>
 		<% @object.format.each do |i| %>
@@ -211,6 +220,7 @@
 			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Format"><%= t('dri.views.objects.forms.add_format') %></a>
 		</p>
 	</fieldset>
+    <% end %>
 
 	<fieldset id="rights" class="dri_rights_metadata_fieldset dri_form_multiline_block">
 		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.rights')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.rights_text') %>" data-original-title="<%= t('dri.help.fields.rights')%>" data-trigger="hover" data-placement="right"></i></span>
