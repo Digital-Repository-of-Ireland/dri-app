@@ -1,29 +1,15 @@
-class FixityCollectionJob < StatusJob
-  def queue
-    :fixity
-  end
+class FixityCollectionJob
+  @queue = :fixity
 
-  def name
-    'FixityCollectionJob'
-  end
-
-  def perform
-    collection_id = options['collection_id']
-    user_id = options['user_id']
-
+  def self.perform(collection_id, user_id)
     # start jobs for all sub-collections
-    job_ids = sub_collection_verify_jobs(collection_id, user_id)
+    sub_collection_verify_jobs(collection_id)
 
     # verify direct child objects of this collection
-    job_ids << FixityJob.create(collection_id: collection_id, user_id: user_id)
-    failures = wait_for_completion(collection_id, job_ids)
-
-    message = "Completed verifying collection #{collection_id}."
-    message += "Failed to verify #{failures} objects." if failures > 0
-    completed(message)
+    queue_job(collection_id)
   end
 
-  def sub_collection_verify_jobs(collection_id, user_id)
+  def self.sub_collection_verify_jobs(collection_id)
     q_str = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"#{collection_id}\""
     f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
@@ -33,17 +19,11 @@ class FixityCollectionJob < StatusJob
     while query.has_more?
       subcollection_objects = query.pop
 
-      subcollection_objects.each do |subcoll|
-        job_id = FixityJob.create(collection_id: subcoll['id'], user_id: user_id)
-        job_ids << job_id
-      end
+      subcollection_objects.each { |subcoll| queue_job(subcoll['id']) }
     end
-
-    job_ids
   end
 
-  def update(identifier, total, completed)
-    at(completed, total,
-        "Verifying #{identifier}: #{completed} of #{total} sub-collections completed")
-  end
+  def self.queue_job(collection_id)
+    Resque.enqueue(FixityJob, collection_id)
+  end 
 end
