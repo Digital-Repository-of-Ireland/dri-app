@@ -118,7 +118,7 @@ module Interface
 
     def is_type?(type)
       within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_object_container')]") do
-        page.should have_content("Type #{type}")
+        page.should have_content("Types #{type}")
       end
     end
 
