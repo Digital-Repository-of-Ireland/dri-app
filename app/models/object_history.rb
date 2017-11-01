@@ -71,24 +71,40 @@ class ObjectHistory
   end
 
   def fixity
+    if object.collection?
+      fixity_check_collection
+    else
+      fixity_check_object
+    end
+  end
+
+  def fixity_check_collection
     fixity_check = {}
 
-    if object.collection?
-      fixity_check[:time] = FixityCheck.where(collection_id: object.id).latest.first.created_at
-      failures = FixityCheck.where(collection_id: object.id).failed
-      if failures.to_a.any?
-        fixity_check[:verified] = 'failed'
-        fixity_check[:result] = failures.pluck(:object_id).join(', ')
-      else
-        fixity_check[:verified] = 'passed'
-        fixity_check[:result] = ''
-      end
+    return fixity_check unless FixityCheck.exists?(collection_id: object.id)
+
+    fixity_check[:time] = FixityCheck.where(collection_id: object.id).latest.first.created_at
+    failures = FixityCheck.where(collection_id: object.id).failed
+    if failures.to_a.any?
+      fixity_check[:verified] = 'failed'
+      fixity_check[:result] = failures.pluck(:object_id).join(', ')
     else
-      check = FixityCheck.where(object_id: object.id).last
-      fixity_check[:time] = check.created_at
-      fixity_check[:verified] = check.verified == true ? 'passed' : 'failed'
-      fixity_check[:result] = check.result
+      fixity_check[:verified] = 'passed'
+      fixity_check[:result] = ''
     end
+
+    fixity_check
+  end
+
+  def fixity_check_object
+    fixity_check = {}
+
+    return fixity_check unless FixityCheck.exists?(object_id: object.id)
+
+    check = FixityCheck.where(object_id: object.id).last
+    fixity_check[:time] = check.created_at
+    fixity_check[:verified] = check.verified == true ? 'passed' : 'failed'
+    fixity_check[:result] = check.result
 
     fixity_check
   end
