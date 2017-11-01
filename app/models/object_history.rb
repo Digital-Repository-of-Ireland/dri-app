@@ -84,10 +84,10 @@ class ObjectHistory
     return fixity_check unless FixityCheck.exists?(collection_id: object.id)
 
     fixity_check[:time] = FixityCheck.where(collection_id: object.id).latest.first.created_at
-    failures = FixityCheck.where(collection_id: object.id).failed
-    if failures.to_a.any?
+    failures = FixityCheck.where(collection_id: object.id).failed.to_a
+    if failures.any?
       fixity_check[:verified] = 'failed'
-      fixity_check[:result] = failures.pluck(:object_id).join(', ')
+      fixity_check[:result] = failures.to_a.map(&:object_id).join(', ')
     else
       fixity_check[:verified] = 'passed'
       fixity_check[:result] = ''
