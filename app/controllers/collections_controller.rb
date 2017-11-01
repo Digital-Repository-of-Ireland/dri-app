@@ -59,7 +59,6 @@ class CollectionsController < BaseObjectsController
     @object.description = ['']
     @object.creator = ['']
     @object.creation_date = ['']
-    @object.publisher = ['']
     @object.rights = ['']
     @object.type = ['Collection']
 
