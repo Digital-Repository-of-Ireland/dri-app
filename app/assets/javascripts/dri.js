@@ -240,6 +240,19 @@ $(document).ready(function() {
 } );
 
 $(document).ready(function() {
+    $('#datatable_fixity').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "searching": false,
+        "order": [[ 0, "desc" ]],
+        "ajax": $('#datatable_activity').data('source'),
+        columnDefs: [
+          { targets: '_all', orderable: false }
+        ]
+    } );
+} );
+
+$(document).ready(function() {
     $('#datatable_user_activity').DataTable( {
         "processing": true,
         "serverSide": true,

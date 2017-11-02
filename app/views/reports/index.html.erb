@@ -1,0 +1,7 @@
+<% if params[:report].presence == 'user' %>
+  <%= render partial: 'user_activity' %>
+<% elsif params[:report].presence == 'object' %>
+  <%= render partial: 'object_activity' %>
+<% elsif params[:report].presence == 'fixity' %>
+  <%= render partial: 'fixity_report' %>
+<% end %>
