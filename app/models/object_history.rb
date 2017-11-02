@@ -47,8 +47,8 @@ class ObjectHistory
   def audit_trail
     versions = {}
 
-    if @object.has_versions?
-      audit_trail = @object.versions.all
+    if object.has_versions?
+      audit_trail = object.versions.all
       audit_trail.each do |version|
         versions[version.label] = { uri: version.uri, created: version.created, committer: committer(version) }
       end
@@ -80,6 +80,15 @@ class ObjectHistory
 
   def fixity_check_collection
     fixity_check = {}
+    fixity_check[:time] = Time.now.to_s
+    fixity_check[:verified] = 'unknown'
+    fixity_check[:result] = []
+
+    subcoll_checks = fixity_check_subcollections
+    unless subcoll_checks.empty?
+      fixity_check[:verified] = 'failed'
+      fixity_check[:result] = subcoll_checks.keys
+    end
 
     return fixity_check unless FixityCheck.exists?(collection_id: object.id)
 
@@ -87,13 +96,29 @@ class ObjectHistory
     failures = FixityCheck.where(collection_id: object.id).failed.to_a
     if failures.any?
       fixity_check[:verified] = 'failed'
-      fixity_check[:result] = failures.to_a.map(&:object_id).join(', ')
+      fixity_check[:result].push(*failures.to_a.map(&:object_id))
     else
-      fixity_check[:verified] = 'passed'
-      fixity_check[:result] = ''
+      fixity_check[:verified] = 'passed' if fixity_check[:verified] == 'unknown'
     end
 
     fixity_check
+  end
+
+  def fixity_check_subcollections
+    subcoll_checks = {}
+
+    q_str = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"#{object.id}\""
+    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    
+    query = Solr::Query.new(q_str, 100, fq: f_query)
+    query.each do |subcoll|
+      next unless FixityCheck.exists?(collection_id: subcoll.id)
+
+      failures = FixityCheck.where(collection_id: subcoll.id).failed.to_a
+      subcoll_checks[subcoll.id] = 'failed' if failures.any?
+    end
+
+    subcoll_checks
   end
 
   def fixity_check_object
