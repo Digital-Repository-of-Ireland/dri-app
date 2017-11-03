@@ -84,12 +84,6 @@ class ObjectHistory
     fixity_check[:verified] = 'unknown'
     fixity_check[:result] = []
 
-    subcoll_checks = fixity_check_subcollections
-    unless subcoll_checks.empty?
-      fixity_check[:verified] = 'failed'
-      fixity_check[:result] = subcoll_checks.keys
-    end
-
     return fixity_check unless FixityCheck.exists?(collection_id: object.id)
 
     fixity_check[:time] = FixityCheck.where(collection_id: object.id).latest.first.created_at
@@ -102,23 +96,6 @@ class ObjectHistory
     end
 
     fixity_check
-  end
-
-  def fixity_check_subcollections
-    subcoll_checks = {}
-
-    q_str = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"#{object.id}\""
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
-    
-    query = Solr::Query.new(q_str, 100, fq: f_query)
-    query.each do |subcoll|
-      next unless FixityCheck.exists?(collection_id: subcoll.id)
-
-      failures = FixityCheck.where(collection_id: subcoll.id).failed.to_a
-      subcoll_checks[subcoll.id] = 'failed' if failures.any?
-    end
-
-    subcoll_checks
   end
 
   def fixity_check_object

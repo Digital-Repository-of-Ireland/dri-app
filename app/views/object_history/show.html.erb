@@ -32,8 +32,8 @@
     <tr><td> <%= t('dri.reports.object.manage_users') %> </td><td><%= @permission_info[:manager_users] %></td></tr>
   </table>
 
-  <h3><%= t('dri.reports.headings.fixity') %></h3>
-  <% if @fixity.present? %>
+  <% if (!@object.collection? || @object.root_collection?) && @fixity.present? %>
+    <h3><%= t('dri.reports.headings.fixity') %></h3>
     <table class="table">
       <tr>
         <th><%= t('dri.reports.headings.date') %></th>
