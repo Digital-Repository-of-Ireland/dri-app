@@ -20,7 +20,7 @@ private
       fixity = fixity_info(collection)
 
       [
-       collection.id,
+       link_to(collection.id, object_history_path(collection.id)),
        fixity[:time],
        fixity[:verified]
       ]
