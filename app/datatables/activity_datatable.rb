@@ -19,11 +19,11 @@ private
     display_on_page.map do |version|
       update = update_info(version)
 
-      if update[:type] == "object"
-        link = catalog_path(update[:updated_id])
-      else
-        link = update[:batch_id].present? ? object_file_path(update[:batch_id], update[:updated_id]) : ''
-      end
+      link = if update[:type] == "object"
+               catalog_path(update[:updated_id])
+             else
+               update[:batch_id].present? ? object_file_path(update[:batch_id], update[:updated_id]) : ''
+             end
 
       [
         update[:updated_at],

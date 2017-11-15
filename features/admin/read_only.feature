@@ -6,6 +6,7 @@ Feature: Read Only
     Given I am logged in as "user1" in the group "cm" and accept cookies
     And the repository is set to read only
 
+  @read_only
   Scenario: see message correct
     Given I am on the home page
     And I follow the link to the workspace page

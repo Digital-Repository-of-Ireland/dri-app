@@ -31,3 +31,6 @@ After('@api') do
   buckets.each { |bucket| storage.delete_bucket(bucket) }
 end
 
+After('@read_only') do
+  Settings.read_only = false
+end

@@ -16,23 +16,16 @@ class FixityJob
   end
 
   def self.fixity_check(collection_id, q_str, f_query)
-    total_objects = ActiveFedora::SolrService.count(q_str, { fq: f_query })
     query = Solr::Query.new(q_str, 100, fq: f_query)
-    
-    while query.has_more?
-      collection_objects = query.pop
-
-      collection_objects.each do |object|
-        result = verify(object['id'])
+    query.each do |object|
+      result = verify(object.id)
         
-        FixityCheck.create(
-          collection_id: collection_id,
-          object_id: object['id'],
-          verified: result.verified,
-          result: result.to_json
-        )
-      end
+      FixityCheck.create(
+        collection_id: object.root_collection_id,
+        object_id: object.id,
+        verified: result.verified,
+        result: result.to_json
+      )
     end
-
   end
 end
