@@ -92,6 +92,11 @@ en:
           downloads: "Downloads"
           object_title: "Object Title"
           hits: "Total Hits"
+      fixity:
+        collection_id: "Collection"
+        timestamp: "Timestamp"
+        verified: "Verified"
+        submit: "Submit New"
     flash:
       alert:
         create_permission: You do not have permission to create this document.
