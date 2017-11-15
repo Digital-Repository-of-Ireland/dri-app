@@ -34,17 +34,26 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "searching": false,
+        "bInfo" : false,
         "order": [[ 0, "desc" ]],
         "ajax": $('#datatable_fixity').data('source'),
         columnDefs: [
           { "render": function ( data, type, row ) {
                         if (data == 'passed') {
                           return "<i class=\"fa fa-check-circle-o fa-2x text-success\" ></i>"
-                        } else {
+                        } else if (data == 'failed') {
                           return "<i class=\"fa fa-times fa-2x text-danger\" ></i>"
+                        } else {
+                          return "<i class=\"fa fa-exclamation-circle fa-2x text-warning\" ></i>"
                         }
             },
             "targets": 2
+          },
+          { "render": function ( data, type, row ) {
+            return "<a rel=\"nofollow\" data-method=\"put\" href=\"" + data + "\">"
+              + "<i class=\"fa fa-arrow-circle-right fa-2x text-success\"></i></a>"
+            },
+            "targets": 3
           },
           { targets: '_all', orderable: false }
         ]
