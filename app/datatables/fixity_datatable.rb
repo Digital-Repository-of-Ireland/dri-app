@@ -1,5 +1,5 @@
 class FixityDatatable
-  delegate :current_user, :params, :object_history_path, :link_to, to: :@view
+  delegate :current_user, :params, :object_history_path, :link_to, :fixity_check_path, to: :@view
   
   def initialize(view)
     @view = view
@@ -8,7 +8,7 @@ class FixityDatatable
   def as_json(options = {})
     {
       recordsTotal: collections.size,
-      recordsFiltered: 0,
+      recordsFiltered: collections.size,
       data: data
     }
   end
@@ -22,7 +22,8 @@ private
       [
        link_to(collection.id, object_history_path(collection.id)),
        fixity[:time],
-       fixity[:verified]
+       fixity[:verified],
+       fixity_check_path(collection.id)
       ]
     end
   end
