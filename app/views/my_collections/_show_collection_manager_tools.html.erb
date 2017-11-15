@@ -140,8 +140,10 @@
           <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
         <% end %>
     
-        <%= link_to fixity_check_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_fixity') }, id: "fixity_check" do %>
-          <li><%= t('dri.views.catalog.links.fixity_check') %></li>
+        <% if @document.root_collection? %>
+          <%= link_to fixity_check_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_fixity') }, id: "fixity_check" do %>
+            <li><%= t('dri.views.catalog.links.fixity_check') %></li>
+          <% end %>
         <% end %>
       <% end %>
        <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', id: "manage_organisations" do %>

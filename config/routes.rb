@@ -58,7 +58,7 @@ DriApp::Application.routes.draw do
     resources :organisations, controller: :institutes
     get 'organisations/:id/logo', to: 'institutes#logo', as: :logo
 
-    get 'activity', to: 'activity#index'
+    get 'reports', to: 'reports#index'
 
     resources :analytics, :only => ['index', 'show']
 

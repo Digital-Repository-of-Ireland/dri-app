@@ -1,7 +1,7 @@
 <div class="dri_report_container">
 
   <h3><%= t('dri.reports.headings.object') %></h3>
-  <table>
+  <table class="table">
     <tr><td> <%= t('dri.reports.object.object_id') %> </td><td> <%= @object.id %> </td></tr>
     <tr><td> <%= t('dri.reports.object.doi') %> </td><td> <%= @object.doi %> </td></tr>
     <tr><td> <%= t('dri.reports.object.title') %> </td><td> <%= @object.title.join(' : ') %> </td></tr>
@@ -18,13 +18,13 @@
 
 
   <h3><%= t('dri.reports.headings.permissions') %></h3>
-  <table>
+  <table class="table">
     <tr><td> <%= t('dri.reports.object.institute_manager') %> </td><td> <%= @permission_info[:institute_manager] %> </td></tr>
     <tr><td> <%= t('dri.reports.object.read_groups') %> </td><td> <%= @permission_info[:read_groups] %> </td></tr>
     <tr><td> <%= t('dri.reports.object.read_users') %> </td><td>
       <% @permission_info[:read_users].each do |user| %>
       <table>
-        <tr><td><%= user[0] %></td><td><%= user[1] %></td><td><%= user[2] %></td></tr>
+        <tr><td><%= "#{user[0]} #{user[1]}, #{user[2]}" %></td></tr>
       </table>
       <% end %>
     </td></tr>
@@ -32,9 +32,9 @@
     <tr><td> <%= t('dri.reports.object.manage_users') %> </td><td><%= @permission_info[:manager_users] %></td></tr>
   </table>
 
-  <h3><%= t('dri.reports.headings.fixity') %></h3>
-  <% if @fixity.present? %>
-    <table>
+  <% if (!@object.collection? || @object.root_collection?) && @fixity.present? %>
+    <h3><%= t('dri.reports.headings.fixity') %></h3>
+    <table class="table">
       <tr>
         <th><%= t('dri.reports.headings.date') %></th>
         <th><%= t('dri.reports.headings.fixity_status') %></th>
@@ -47,7 +47,15 @@
       <tr>
         <td><%= @fixity[:time] %></td>
         <td><%= @fixity[:verified] %></td>
-        <td><%= @fixity[:result] %></td>
+        <td>
+          <% if @object.collection? %>
+            <% @fixity[:result].each do |result| %>
+              <%= link_to(result, object_history_path(result)) %>
+            <% end %>
+          <% else %>
+            <%= @fixity[:result] %>
+          <% end %>
+        </td>
       </tr>
     </table>
   <% end %>
@@ -55,7 +63,7 @@
   <h3><%= t('dri.reports.headings.versions') %></h3>
 
   <% if @versions.present? %>
-    <table>
+    <table class="table">
       <tr>
         <th><%= t('dri.reports.headings.date') %></th>
         <th><%= t('dri.reports.headings.committer') %></th>
@@ -74,7 +82,7 @@
   <% unless @object.collection? %>
     <h3><%= t('dri.reports.headings.files') %></h3>
     <% @object.generic_files.each do |file| %>
-      <table>
+      <table class="table">
         <tr><td><%= t('dri.reports.assets.asset_id') %></td><td><%= file.id %></td></tr>
         <tr><td><%= t('dri.reports.assets.asset_type') %></td><td><%= file.format_label.join(' : ') %></td></tr>
         <tr><td><%= t('dri.reports.assets.file_size') %></td><td><%= file.file_size.join(' : ') %></td></tr>
@@ -102,7 +110,7 @@
         <tr><td><%= t('dri.reports.assets.surrogates') %></td><td>
 
           <% @asset_info[file.id][:surrogates].each do |key,value| %>
-            <table>
+            <table class="table">
               <tr><td><%= t('dri.reports.surrogates.name') %></td><td><%= key %></td></tr>
               <tr><td><%= t('dri.reports.surrogates.mime_type') %></td><td><%= value[:content_type] %></td></tr>
               <tr><td><%= t('dri.reports.surrogates.size') %></td><td><%= number_to_human_size(value[:content_length]) %></td></tr>
