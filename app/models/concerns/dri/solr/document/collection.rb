@@ -39,6 +39,10 @@ module DRI::Solr::Document::Collection
     status_count('reviewed', true)
   end
 
+  def total_objects
+    status_count(nil)
+  end
+
   def duplicate_total
     response = duplicate_query
 
@@ -78,9 +82,9 @@ module DRI::Solr::Document::Collection
     end
 
     def status_count(status, subcoll = false)
-      query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{id}
-        AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}
-        AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
+      query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{id}"
+      query += "AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}" unless status.nil?
+      query += "AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
 
       ActiveFedora::SolrService.count(query)
     end
