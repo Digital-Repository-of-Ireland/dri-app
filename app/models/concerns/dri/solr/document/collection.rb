@@ -83,8 +83,8 @@ module DRI::Solr::Document::Collection
 
     def status_count(status, subcoll = false)
       query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{id}"
-      query += "AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}" unless status.nil?
-      query += "AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
+      query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}" unless status.nil?
+      query += " AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
 
       ActiveFedora::SolrService.count(query)
     end
