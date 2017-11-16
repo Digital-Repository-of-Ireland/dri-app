@@ -20,10 +20,12 @@ private
       fixity = fixity_info(collection)
 
       [
-       link_to(collection.id, object_history_path(collection.id)),
+       link_to(collection['title_tesim'].first, object_history_path(collection.id)),
        fixity[:time],
        fixity[:verified],
-       fixity_check_path(collection.id)
+       fixity_check_path(collection.id),
+       collection.total_objects,
+       total_checked(collection.id, fixity[:time])
       ]
     end
   end
@@ -48,15 +50,7 @@ private
   def per_page
     params[:length].to_i > 0 ? params[:length].to_i : 10
   end
-
-  def startdate
-    params[:startdate] || Date.today.at_beginning_of_month()
-  end
-
-  def enddate
-    params[:enddate] || Date.today
-  end
-
+  
   def load_collections
     collections = []
 
@@ -70,6 +64,10 @@ private
     solr_query.each { |object| collections.push(object) }
 
     collections
+  end
+
+  def total_checked(id, start_time)
+    FixityCheck.where(collection_id: id).where("created_at >= '#{start_time}'").count
   end
     
 end
