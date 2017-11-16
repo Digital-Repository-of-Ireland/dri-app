@@ -20,7 +20,7 @@ private
       fixity = fixity_info(collection)
 
       [
-       link_to(collection.id, object_history_path(collection.id)),
+       link_to(collection['title_tesim'].first, object_history_path(collection.id)),
        fixity[:time],
        fixity[:verified],
        fixity_check_path(collection.id)
