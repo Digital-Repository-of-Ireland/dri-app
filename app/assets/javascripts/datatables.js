@@ -20,6 +20,7 @@ $(document).ready(function() {
     $('#datatable_activity').DataTable( {
         "processing": true,
         "serverSide": true,
+        "stateSave": true,
         "order": [[ 0, "desc" ]],
         "ajax": $('#datatable_activity').data('source'),
         columnDefs: [
@@ -34,6 +35,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "searching": false,
+        "stateSave": true,
         "bInfo" : false,
         "order": [[ 0, "desc" ]],
         "ajax": $('#datatable_fixity').data('source'),
@@ -64,6 +66,7 @@ $(document).ready(function() {
     $('#datatable_user_activity').DataTable( {
         "processing": true,
         "serverSide": true,
+        "stateSave": true,
         "order": [[ 0, "desc" ]],
         "ajax": $('#datatable_user_activity').data('source'),
         columnDefs: [
