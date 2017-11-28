@@ -80,37 +80,15 @@ module FieldRenderHelper
     indexed_value = [indexed_value] unless indexed_value.is_a? Array
     indexed_value = indexed_value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x }
 
-    last_index = args[:field].rindex('_')
-    field = if !last_index.nil?
-              args[:field][0..last_index - 1]
-            else
-              args[:field]
-            end
+    field = args[:field].rpartition('_').reject(&:empty?).first if args[:field]
 
     # if (args[:field] and args[:field].match(/_facet$/))
     if args[:field] && (args[:field][0, 5] == "role_" || blacklight_config.facet_fields[ActiveFedora.index_field_mapper.solr_name(field, :facetable)])
-      facet_name = ActiveFedora.index_field_mapper.solr_name(field, :facetable)
-      if args[:field][0, 5] == "role_"
-        facet_name = ActiveFedora.index_field_mapper.solr_name("person", :facetable)
-      end
-      facet_arg = get_search_arg_from_facet(facet: facet_name)
-
-      value = value.each_with_index.map do |v, i|
-        # don't show URLs in the UI
-        unless uri?(indexed_value[i])
-          "<a href=\"" << url_for(
-                            { 
-                              action: 'index',
-                              controller: controller_name,
-                              facet_arg => standardise_facet(facet: facet_name, value: indexed_value[i])
-                            }
-                          ) << "\">" << standardise_value(facet_name: facet_name, value: v) << "</a>"
-        end
-      end
+      value = render_facet_link(args, field, value, indexed_value)
     else
       if value.length > 1
-        if !field.include?("date")
-          value = value.each_with_index.map do |_v, i|
+        unless field.include?("date")
+          value = value.each_with_index.map do |v, i|
             unless uri?(indexed_value[i])
               '<dd>' << indexed_value[i] << '</dd>'
             end
@@ -179,7 +157,7 @@ module FieldRenderHelper
 
   def standardise_value(args)
     if args[:facet_name] == ActiveFedora.index_field_mapper.solr_name('temporal_coverage', :facetable, type: :string) || args[:facet_name] == ActiveFedora.index_field_mapper.solr_name('geographical_coverage', :facetable, type: :string)
-      get_value_from_solr_field args[:value], "name"
+      get_value_from_solr_field(args[:value], "name")
     else
       args[:value]
     end
@@ -197,6 +175,30 @@ module FieldRenderHelper
 
     url_for(url_args)
   end
+
+  def render_facet_link(args, field, value, indexed_value)
+    facet_name = ActiveFedora.index_field_mapper.solr_name(field, :facetable)
+    if args[:field][0, 5] == "role_"
+      facet_name = ActiveFedora.index_field_mapper.solr_name("person", :facetable)
+    end
+    facet_arg = get_search_arg_from_facet(facet: facet_name)
+
+    value.each_with_index.map do |v, i|
+      # don't show URLs in the UI
+      next if uri?(indexed_value[i])
+      standardised_value = standardise_value(facet_name: facet_name, value: v)
+      next unless standardised_value
+    
+      "<a href=\"" << url_for(
+                            { 
+                              action: 'index',
+                              controller: controller_name,
+                              facet_arg => standardise_facet(facet: facet_name, value: indexed_value[i])
+                            }
+                      ) << "\">" << standardised_value << "</a>"
+    end
+  end
+
 
   # For form views, returns a list of "people" values in qualifed dublin core that have values.
   # Also sets @qdc_people_select_list, for creating a select list in HTML based on qualified dublin core people
@@ -231,13 +233,16 @@ module FieldRenderHelper
   def get_value_from_solr_field(solr_field, value)
     return nil if solr_field.blank? || value.blank?
 
+    dcmi_pairs = {}
     solr_field.split(/\s*;\s*/).each do |component|
       (k, v) = component.split(/\s*=\s*/)
-      if k == value
-        return v unless v.nil?
-      end
+      dcmi_pairs[k] = v unless v.nil?      
+    end
+
+    unless dcmi_pairs.empty?
+      return dcmi_pairs[value].presence
     end
 
     solr_field
-  end
+  end 
 end
