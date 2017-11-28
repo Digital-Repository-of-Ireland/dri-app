@@ -1,4 +1,4 @@
-require 'faker'
+require 'ffaker'
 
 FactoryGirl.define do
   sequence :email do
@@ -11,8 +11,8 @@ FactoryGirl.define do
     u.email { FactoryGirl.generate(:email) }
     u.password 'password'
     u.password_confirmation 'password'
-    u.first_name Faker::Name.first_name
-    u.second_name Faker::Name.last_name
+    u.first_name FFaker::Name.first_name
+    u.second_name FFaker::Name.last_name
     u.confirmed_at Time.now
   end
 
