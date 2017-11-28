@@ -2,7 +2,7 @@ require 'ffaker'
 
 FactoryGirl.define do
   sequence :email do
-    Faker::Internet.email
+    FFaker::Internet.email
   end
 end
 
