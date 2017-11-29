@@ -4,6 +4,11 @@ class ReportsController < ApplicationController
   before_action :authenticate_admin!
 
   def index
+
+    if params[:report].presence == 'stats'
+      @mime_type_counts = Report.mime_type_counts
+    end
+
     respond_to do |format|
       format.html
       format.json do

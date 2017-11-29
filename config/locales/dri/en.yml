@@ -97,6 +97,13 @@ en:
         timestamp: "Timestamp"
         verified: "Verified"
         submit: "Submit New"
+      stats:
+       collection_id: "Collection"
+       total_objects: "Total Objects"
+       size: "Size"
+       files:
+         mime_type: Mime Type
+         count: Count
     flash:
       alert:
         create_permission: You do not have permission to create this document.

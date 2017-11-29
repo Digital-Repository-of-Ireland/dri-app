@@ -1,0 +1,14 @@
+<h3>File Types</h3>
+<table id="files_stats" class="table display">
+  <thead>
+    <tr>
+      <th><%= t('dri.datatables.stats.files.mime_type') %></th>
+      <th><%= t('dri.datatables.stats.files.count') %></th>
+    </tr>
+  </thead>
+  <tbody>
+  	<% @mime_type_counts.each do |type, count| %>
+  	  <tr><td><%= "#{key}" %></td><td><%= "#{count}" %></td></tr>
+  	<% end %>
+  </tbody>
+</table>
