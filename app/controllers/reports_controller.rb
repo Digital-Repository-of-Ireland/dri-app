@@ -14,6 +14,8 @@ class ReportsController < ApplicationController
           render json: ActivityDatatable.new(view_context)
         when 'fixity'
           render json: FixityDatatable.new(view_context)
+        when 'stats'
+          render json: CollectionStatsDatatable.new(view_context)
         end
       end
     end

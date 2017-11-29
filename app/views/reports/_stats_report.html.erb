@@ -1,0 +1,11 @@
+<table id="datatable_stats" class="display" data-source="<%= reports_url(report: "stats", format: "json", protocol: Rails.application.config.action_mailer.default_url_options[:protocol]) %>">
+  <thead>
+    <tr>
+      <th><%= t('dri.datatables.stats.collection_id') %></th>
+      <th><%= t('dri.datatables.stats.total_objects') %></th>
+      <th><%= t('dri.datatables.stats.size') %></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>

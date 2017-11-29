@@ -63,6 +63,21 @@ $(document).ready(function() {
 } );
 
 $(document).ready(function() {
+    $('#datatable_stats').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "searching": false,
+        "stateSave": true,
+        "bInfo" : false,
+        "order": [[ 0, "desc" ]],
+        "ajax": $('#datatable_stats').data('source'),
+        columnDefs: [
+          { targets: '_all', orderable: false }
+        ]
+    } );
+} );
+
+$(document).ready(function() {
     $('#datatable_user_activity').DataTable( {
         "processing": true,
         "serverSide": true,

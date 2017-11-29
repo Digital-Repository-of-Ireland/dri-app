@@ -4,4 +4,6 @@
   <%= render partial: 'object_activity' %>
 <% elsif params[:report].presence == 'fixity' %>
   <%= render partial: 'fixity_report' %>
+<% elsif params[:report].presence == 'stats' %>
+  <%= render partial: 'stats_report' %>
 <% end %>

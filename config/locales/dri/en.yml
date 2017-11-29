@@ -642,4 +642,7 @@ en:
         fixity_status: Result
         fixity_failures: Failures
         fixity_result: Output
-
+      links:
+         activity_report: Activity Report
+         fixity_report: Fixity Report
+         stats: Collection Statistics Report
