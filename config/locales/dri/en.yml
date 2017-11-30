@@ -649,6 +649,10 @@ en:
         fixity_status: Result
         fixity_failures: Failures
         fixity_result: Output
+        stats_collection_sizes: Collection Sizes
+        stats_collection_total: Total
+        stats_file_types: File Types
+          
       links:
          activity_report: Activity Report
          fixity_report: Fixity Report

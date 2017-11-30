@@ -7,6 +7,7 @@ class ReportsController < ApplicationController
 
     if params[:report].presence == 'stats'
       @mime_type_counts = Report.mime_type_counts
+      @total_file_size = Report.total_file_size
     end
 
     respond_to do |format|

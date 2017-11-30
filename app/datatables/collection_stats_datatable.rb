@@ -1,5 +1,5 @@
 class CollectionStatsDatatable
-  delegate :current_user, :params, :my_collections_path, :link_to, :number_to_human_size, to: :@view
+  delegate :current_user, :params, :my_collections_path, :number_to_human_size, :link_to, to: :@view
   
   def initialize(view)
     @view = view
@@ -12,7 +12,7 @@ class CollectionStatsDatatable
       data: data
     }
   end
- 
+
 private
 
   def data

@@ -1,4 +1,4 @@
-<h3>File Types</h3>
+<h3><%= t('dri.reports.headings.stats_file_types') %></h3>
 <table id="files_stats" class="table display">
   <thead>
     <tr>
@@ -8,7 +8,7 @@
   </thead>
   <tbody>
   	<% @mime_type_counts.each do |type, count| %>
-  	  <tr><td><%= "#{key}" %></td><td><%= "#{count}" %></td></tr>
+  	  <tr><td><%= "#{type}" %></td><td><%= "#{count}" %></td></tr>
   	<% end %>
   </tbody>
 </table>

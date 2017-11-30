@@ -68,11 +68,10 @@ $(document).ready(function() {
         "serverSide": true,
         "searching": false,
         "stateSave": true,
-        "bInfo" : false,
         "order": [[ 0, "desc" ]],
         "ajax": $('#datatable_stats').data('source'),
         columnDefs: [
-          { targets: '_all', orderable: false }
+          { targets: '_all', orderable: false },
         ]
     } );
 } );
