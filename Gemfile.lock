@@ -745,7 +745,7 @@ GEM
       multipart-post
       oauth2
     ruby-progressbar (1.8.1)
-    rubyzip (1.2.0)
+    rubyzip (1.2.1)
     rvm (1.11.3.9)
     sass (3.2.19)
     sass-rails (4.0.5)
