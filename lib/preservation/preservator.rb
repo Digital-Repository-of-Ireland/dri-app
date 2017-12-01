@@ -121,115 +121,111 @@ module Preservation
     
     # create_manifests
     def create_manifests
-      begin
-        signature_catalog = Moab::SignatureCatalog.new(digital_object_id: @object.id, version_id: 0)
-        new_version_id = signature_catalog.version_id + 1
+      signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.id, version_id: 0)
+      new_version_id = signature_catalog.version_id + 1
+      new_manifest_path = manifest_path(object.id, new_version_id)
 
-        version_inventory = Moab::FileInventory.new(type: 'version', version_id: new_version_id, digital_object_id: @object.id)
-        file_group = Moab::FileGroup.new(:group_id=>'metadata').group_from_directory(Pathname.new(metadata_path(@object.id, new_version_id)))
-        version_inventory.groups << file_group
-        file_group = Moab::FileGroup.new(:group_id=>'content').group_from_directory(Pathname.new(content_path(@object.id, new_version_id)))
-        version_inventory.groups << file_group
+      version_inventory = Moab::FileInventory.new(type: 'version', version_id: new_version_id, digital_object_id: object.id)
+      file_group = Moab::FileGroup.new(:group_id=>'metadata').group_from_directory(Pathname.new(metadata_path(object.id, new_version_id)))
+      version_inventory.groups << file_group
+      file_group = Moab::FileGroup.new(:group_id=>'content').group_from_directory(Pathname.new(content_path(object.id, new_version_id)))
+      version_inventory.groups << file_group
 
-        version_additions = signature_catalog.version_additions(version_inventory)
+      version_additions = signature_catalog.version_additions(version_inventory)
 
-        signature_catalog.update(version_inventory, Pathname.new( data_path(@object.id, new_version_id) ))
+      signature_catalog.update(version_inventory, Pathname.new(data_path(object.id, new_version_id)))
 
-        file_inventory_difference = Moab::FileInventoryDifference.new
-        file_inventory_difference.compare(Moab::FileInventory.new(), version_inventory)
+      file_inventory_difference = Moab::FileInventoryDifference.new
+      file_inventory_difference.compare(Moab::FileInventory.new(), version_inventory)
 
-        signature_catalog.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
-        version_inventory.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
-        version_additions.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
-        file_inventory_difference.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
+      signature_catalog.write_xml_file(Pathname.new(new_manifest_path))
+      version_inventory.write_xml_file(Pathname.new(new_manifest_path))
+      version_additions.write_xml_file(Pathname.new(new_manifest_path))
+      file_inventory_difference.write_xml_file(Pathname.new(new_manifest_path))
 
-        manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: @object.id, version_id: new_version_id)
-        manifest_inventory.groups << Moab::FileGroup.new(group_id: 'manifests').group_from_directory(manifest_path(@object.id, new_version_id), recursive=false)
-        
-        manifest_inventory.write_xml_file(Pathname.new(manifest_path(@object.id, new_version_id)))
-      rescue StandardError => e
-        Rails.logger.error "unable to create manifests: #{e}"
-        return false
-      end
+      manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: object.id, version_id: new_version_id)
+      manifest_inventory.groups << Moab::FileGroup.new(group_id: 'manifests').group_from_directory(new_manifest_path, recursive=false)
+      
+      manifest_inventory.write_xml_file(Pathname.new(new_manifest_path))
 
       true
+    rescue StandardError => e
+      Rails.logger.error "unable to create manifests: #{e}"
+      false
     end
 
     # update_manifests
     # changes: hash with keys :added, :modified and :deleted. Each is an array of filenames (excluding directory paths)
     def update_manifests(changes)
-      begin
-        last_version_inventory = Moab::FileInventory.new(type: 'version', version_id: self.version.to_i-1, digital_object_id: @object.id)
-        last_version_inventory.parse(Pathname.new(File.join(manifest_path(@object.id, self.version.to_i-1),'versionInventory.xml')).read)
+      current_manifest_path = manifest_path(object.id, self.version)
+      previous_manifest_path = manifest_path(object.id, self.version.to_i-1)
 
-        @version_inventory = Moab::FileInventory.new(type: 'version', version_id: self.version.to_i-1, digital_object_id: @object.id)
-        @version_inventory.parse(Pathname.new(File.join(manifest_path(@object.id, self.version.to_i-1),'versionInventory.xml')).read)
-        @version_inventory.version_id = @version_inventory.version_id+1
+      last_version_inventory = Moab::FileInventory.new(type: 'version', version_id: self.version.to_i-1, digital_object_id: @object.id)
+      last_version_inventory.parse(Pathname.new(File.join(previous_manifest_path, 'versionInventory.xml')).read)
 
-        if changes.key?(:added)
-          changes[:added].keys.each do |type|
-            path = path_for_type(type)
-            
-            changes[:added][type].each { |file| moab_add_file_instance(path, file, type) }
-          end
+      @version_inventory = Moab::FileInventory.new(type: 'version', version_id: self.version.to_i-1, digital_object_id: @object.id)
+      @version_inventory.parse(Pathname.new(File.join(previous_manifest_path, 'versionInventory.xml')).read)
+      @version_inventory.version_id = @version_inventory.version_id+1
+
+      if changes.key?(:added)
+        changes[:added].keys.each do |type|
+          path = path_for_type(type)
+          
+          changes[:added][type].each { |file| moab_add_file_instance(path, file, type) }
         end
-
-        if changes.key?(:modified)
-          changes[:modified].keys.each do |type|
-            path = path_for_type(type)
-
-            changes[:modified][type].each do |file|
-              @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
-
-              moab_add_file_instance(path, file, type)
-            end
-          end
-        end
-
-        if changes.key?(:deleted)
-          changes[:deleted].keys.each do |type|
-            path = path_for_type(type)
-
-            changes[:deleted][type].each do |file|
-              @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
-            end
-          end
-        end
-
-        signature_catalog = Moab::SignatureCatalog.new(:digital_object_id => @object.id)
-        signature_catalog.parse(Pathname.new(File.join(manifest_path(@object.id, self.version.to_i-1),'signatureCatalog.xml')).read)
-        version_additions = signature_catalog.version_additions(@version_inventory)
-        signature_catalog.update(@version_inventory, Pathname.new( data_path(@object.id, self.version) ))
-        file_inventory_difference = Moab::FileInventoryDifference.new
-        file_inventory_difference.compare(last_version_inventory, @version_inventory)
-
-        signature_catalog.write_xml_file(Pathname.new(manifest_path(@object.id, self.version)))
-        @version_inventory.write_xml_file(Pathname.new(manifest_path(@object.id, self.version)))
-        version_additions.write_xml_file(Pathname.new(manifest_path(@object.id, self.version)))
-        file_inventory_difference.write_xml_file(Pathname.new(manifest_path(@object.id, self.version)))
-
-        manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: @object.id, version_id: self.version)
-        manifest_inventory.groups << Moab::FileGroup.new(group_id: 'manifests').group_from_directory(manifest_path(@object.id, self.version), recursive=false)
-        manifest_inventory.write_xml_file(Pathname.new(manifest_path(@object.id, self.version)))
-      rescue StandardError => e
-        Rails.logger.error "unable to update manifests: #{e}"
-        return false
       end
 
+      if changes.key?(:modified)
+        changes[:modified].keys.each do |type|
+          path = path_for_type(type)
+
+          changes[:modified][type].each do |file|
+            @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
+
+            moab_add_file_instance(path, file, type)
+          end
+        end
+      end
+
+      if changes.key?(:deleted)
+        changes[:deleted].keys.each do |type|
+          path = path_for_type(type)
+
+          changes[:deleted][type].each do |file|
+            @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
+          end
+        end
+      end
+      
+      signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.id)
+      signature_catalog.parse(Pathname.new(File.join(previous_manifest_path, 'signatureCatalog.xml')).read)
+      version_additions = signature_catalog.version_additions(@version_inventory)
+      signature_catalog.update(@version_inventory, Pathname.new( data_path(object.id, self.version) ))
+      file_inventory_difference = Moab::FileInventoryDifference.new
+      file_inventory_difference.compare(last_version_inventory, @version_inventory)
+
+      signature_catalog.write_xml_file(Pathname.new(current_manifest_path))
+      @version_inventory.write_xml_file(Pathname.new(current_manifest_path))
+      version_additions.write_xml_file(Pathname.new(current_manifest_path))
+      file_inventory_difference.write_xml_file(Pathname.new(current_manifest_path))
+
+      manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: object.id, version_id: self.version)
+      manifest_inventory.groups << Moab::FileGroup.new(group_id: 'manifests').group_from_directory(current_manifest_path, recursive=false)
+      manifest_inventory.write_xml_file(Pathname.new(current_manifest_path))
+
       true
-
+    rescue StandardError => e
+      Rails.logger.error "unable to update manifests: #{e}"
+      false
     end
-
 
     private
 
       def make_dir(paths)
-        begin
-          FileUtils.mkdir_p(paths)
-        rescue StandardError => e
-          Rails.logger.error "Unable to create MOAB directory #{paths}. Error: #{e.message}"
-          raise DRI::Exceptions::InternalError
-        end
+        FileUtils.mkdir_p(paths)
+      rescue StandardError => e
+        Rails.logger.error "Unable to create MOAB directory #{paths}. Error: #{e.message}"
+        raise DRI::Exceptions::InternalError
       end
 
       def moab_add_file_instance(path, file, type)
@@ -244,9 +240,9 @@ module Preservation
 
       def path_for_type(type)
         if type == 'content'
-          content_path(@object.id, self.version)
+          content_path(object.id, self.version)
         elsif type == 'metadata'
-          metadata_path(@object.id, self.version)
+          metadata_path(object.id, self.version)
         end
       end
 

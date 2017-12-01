@@ -312,8 +312,6 @@ GEM
     factory_girl_rails (4.5.0)
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
-    faker (1.4.3)
-      i18n (~> 0.5)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     fastimage (2.1.0)
@@ -323,6 +321,7 @@ GEM
       curb (~> 0.8)
       loofah (~> 2.0)
       sax-machine (~> 1.0)
+    ffaker (2.7.0)
     ffi (1.9.10)
     font-awesome-rails (4.5.0.1)
       railties (>= 3.2, < 5.1)
@@ -746,7 +745,7 @@ GEM
       multipart-post
       oauth2
     ruby-progressbar (1.8.1)
-    rubyzip (1.2.0)
+    rubyzip (1.2.1)
     rvm (1.11.3.9)
     sass (3.2.19)
     sass-rails (4.0.5)
@@ -892,10 +891,10 @@ DEPENDENCIES
   dri_data_models!
   execjs
   factory_girl_rails
-  faker
   fakes3!
   fcrepo_wrapper (= 0.6.0)
   feedjira
+  ffaker
   font-awesome-rails
   gabba
   google-analytics-rails (= 1.1.0)
