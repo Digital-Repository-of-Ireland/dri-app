@@ -115,7 +115,7 @@ group :test do
   gem 'launchy'
   gem 'shoulda'
   gem 'factory_girl_rails'
-  gem 'faker'
+  gem 'ffaker'
   gem 'syntax'
   gem 'cucumber-api-steps'
 end

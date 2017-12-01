@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe FieldRenderHelper, testing: true do
 
@@ -115,7 +115,7 @@ describe FieldRenderHelper, testing: true do
             expect(get_value_from_solr_field('name=The 1960s; start=1960-01-01; end=1969-12-31','name')).to eq('The 1960s')
         end
 
-        it "will works for other parts aside from names" do
+        it "will work for other parts aside from names" do
             expect(get_value_from_solr_field('name=Early 20th Century; start=1900-01-01; end=1949-12-31;','end')).to eq('1949-12-31')
         end
 
@@ -123,8 +123,8 @@ describe FieldRenderHelper, testing: true do
             expect(get_value_from_solr_field('this is not a DCMI field','name')).to eq('this is not a DCMI field')
         end
 
-        it "will return the original string if it can't find the requested field" do
-            expect(get_value_from_solr_field('name=Early 20th Century; start=1900-01-01','end')).to eq('name=Early 20th Century; start=1900-01-01')
+        it "will return nil if it can't find the requested field" do
+            expect(get_value_from_solr_field('name=Early 20th Century; start=1900-01-01','end')).to be_nil
         end
 
     end

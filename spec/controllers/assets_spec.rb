@@ -57,6 +57,16 @@ describe AssetsController do
       expect(Dir.glob("#{@tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
     end
 
+    it 'should create a valid aip' do
+      allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+
+      FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(@tmp_upload_dir, "SAMPLEA.mp3"))
+      options = { :file_name => "SAMPLEA.mp3" }      
+      post :create, { :object_id => @object.id, :local_file => "SAMPLEA.mp3", :file_name => "SAMPLEA.mp3" }
+       
+      expect(aip_valid?(@object.id, 2)).to be true
+    end
+
     it 'should create an asset from an upload' do
       allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
 
@@ -119,6 +129,20 @@ describe AssetsController do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       put :update, { :object_id => @object.id, :id => file_id, :Filedata => @uploaded }
       expect(Dir.glob("#{@tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
+    end
+
+    it 'should create a valid aip' do
+      @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      post :create, { :object_id => @object.id, :Filedata => @uploaded }
+      expect(aip_valid?(@object.id, 2)).to be true
+
+      @object.reload
+      file_id = @object.generic_files.first.id
+
+      @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
+      put :update, { :object_id => @object.id, :id => file_id, :Filedata => @uploaded }
+       
+      expect(aip_valid?(@object.id, 3)).to be true
     end
 
     it 'should create a new version from a local file' do
