@@ -76,6 +76,9 @@ module PathTranslator
       when /^(the )?organisations page$/
         '/organisations'
 
+      when /^(the )?workspace page$/
+        workspace_path
+
       else
         raise('You specified an invalid path')
 
