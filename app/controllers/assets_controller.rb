@@ -253,10 +253,8 @@ class AssetsController < ApplicationController
       create_file(@object, filedata, datastream, checksum, filename)
 
       # Do the preservation actions
-      addfiles = []
-      delfiles = []
-      
       addfiles = [filename]
+      delfiles = []
       delfiles = ["#{@generic_file.id}_#{@generic_file.label}"] if params[:action] == 'update'
       
       preservation = Preservation::Preservator.new(@object)

@@ -1,3 +1,4 @@
-<%= link_to (t :'user_groups.views.shared.user_report'), activity_path(report: 'user') %><br/>
-<%= link_to (t :'views.reports.links.activity_report'), activity_path %>
-
+<%= link_to (t :'user_groups.views.shared.user_report'), reports_path(report: 'user') %><br/>
+<%= link_to (t :'dri.reports.links.activity_report'), reports_path(report: 'object') %><br/>
+<%= link_to (t :'dri.reports.links.fixity_report'), reports_path(report: 'fixity') %><br/>
+<%= link_to (t :'dri.reports.links.stats'), reports_path(report: 'stats') %>

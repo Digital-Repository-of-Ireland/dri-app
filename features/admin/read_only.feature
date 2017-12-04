@@ -1,4 +1,4 @@
-@javascript @readonly
+@javascript 
 Feature: Read Only
   The repository can be set to read only and edits will be disabled
 
@@ -6,6 +6,7 @@ Feature: Read Only
     Given I am logged in as "user1" in the group "cm" and accept cookies
     And the repository is set to read only
 
+  @read_only
   Scenario: see maintenance message when read-only flag is set
     Given I am on the workspace page
     And I follow the link to add a new collection

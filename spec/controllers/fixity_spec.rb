@@ -32,5 +32,11 @@ describe FixityController do
       expect{ put :update, id: @object.id }.to change(FixityCheck, :count).by(1)
     end
 
+    it 'should trigger a fixity check for a collection' do
+      request.env["HTTP_REFERER"] = "/"
+      expect(Resque).to receive(:enqueue).exactly(1).times
+      put :update, id: @collection.id
+    end
+
   end
 end
