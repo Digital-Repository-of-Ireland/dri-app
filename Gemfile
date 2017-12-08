@@ -4,6 +4,8 @@
 source 'http://rubygems.org'
 
 gem 'rails','~> 4.2'
+# fix rails dependency problem
+gem 'sinatra', '1.4.8'
 
 gem 'blacklight', '~> 5.19.0'
 gem 'blacklight-maps'
@@ -15,6 +17,7 @@ gem 'openseadragon'
 
 gem 'redlock'
 gem 'google-api-client', '0.8.6'
+gem 'googleauth', '0.5.1'
 
 gem 'paper_trail', '~> 4'
 
