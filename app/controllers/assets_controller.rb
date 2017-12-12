@@ -1,7 +1,7 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
 class AssetsController < ApplicationController
-  before_action :authenticate_user_from_token!, only: [:list_assets]
+  before_action :authenticate_user_from_token!, only: [:list_assets, :download]
   before_action :authenticate_user!, only: [:list_assets]
   before_action :read_only, except: [:show, :download, :list_assets]
   before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets, :retrieve]
@@ -226,7 +226,7 @@ class AssetsController < ApplicationController
     end
 
     def can_view?
-      if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
+      if (!can?(:read_master, params[:object_id]) && !can?(:edit, params[:object_id]))
         raise Hydra::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
