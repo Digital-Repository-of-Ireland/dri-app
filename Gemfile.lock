@@ -61,8 +61,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 5dd397dab2b1cefa0653baa14bf7da7dd10794f8
-  branch: develop
+  revision: e718e376b2d8d7ae0861247d4cd94ebae20bce99
+  tag: v2.5.2
   specs:
     dri_data_models (2.5.2)
       active-fedora (= 9.11)
@@ -81,8 +81,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: a806229d5df7b56c73423654ad67fddf6ddbf4f6
-  branch: develop
+  revision: 27613a3c241383daa26c9c07ec238a3384310d8c
+  tag: v1.2.2
   specs:
     user_group (1.2.2)
       devise
@@ -378,7 +378,7 @@ GEM
       multi_json (~> 1.8)
     haml (4.0.7)
       tilt
-    hashie (3.5.5)
+    hashie (3.5.6)
     high_voltage (2.1.0)
     highline (1.7.8)
     hike (1.2.3)
@@ -576,10 +576,10 @@ GEM
       activesupport
       nokogiri (>= 1.4.2)
       solrizer (~> 3.3)
-    omniauth (1.6.1)
+    omniauth (1.7.1)
       hashie (>= 3.4.6, < 3.6.0)
       rack (>= 1.6.2, < 3)
-    omniauth-shibboleth (1.2.1)
+    omniauth-shibboleth (1.3.0)
       omniauth (>= 1.0.0)
     openlayers-rails (0.0.4)
       railties (>= 3.1)
