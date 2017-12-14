@@ -1,7 +1,7 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
 class AssetsController < ApplicationController
-  before_action :authenticate_user_from_token!, only: [:list_assets]
+  before_action :authenticate_user_from_token!, only: [:list_assets, :download]
   before_action :authenticate_user!, only: [:list_assets]
   before_action :read_only, except: [:show, :download, :list_assets]
   before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets, :retrieve]
@@ -45,8 +45,9 @@ class AssetsController < ApplicationController
     when 'surrogate'
       @generic_file = retrieve_object! params[:id]
       if @generic_file
-        if @generic_file.batch.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.batch.root_collection.first, "Download",  @generic_file.batch_id, 1, true) 
+        object = @generic_file.batch
+        if object.published?
+          Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download",  object.id, 1, true) 
         end
         download_surrogate(surrogate_type_name)
         return
@@ -55,12 +56,16 @@ class AssetsController < ApplicationController
     when 'masterfile'
       enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
+      result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
+      @document = SolrDocument.new(result.first)
+
       @generic_file = retrieve_object! params[:id]
       if @generic_file
         can_view?
 
-        if @generic_file.batch.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(@generic_file.batch.root_collection.first, "Download", @generic_file.batch_id, 1, true)
+        object = @generic_file.batch
+        if object.published?
+          Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.id, 1, true)
         end
         lfile = local_file
         if lfile
@@ -224,7 +229,7 @@ class AssetsController < ApplicationController
     end
 
     def can_view?
-      if !(@generic_file.public? && can?(:read, params[:object_id])) && !can?(:edit, params[:object_id])
+      if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document)) 
         raise Hydra::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
