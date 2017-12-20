@@ -20,7 +20,7 @@
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.institutions'), organisations_path, id: 'institutions' %>
+<%= link_to t('dri.headerlinks.institutions'), main_app.organisations_path, id: 'institutions' %>
 </li>
 
 <li>
@@ -37,6 +37,6 @@
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.workspace'), workspace_path, id: 'workspace' %>
+<%= link_to t('dri.headerlinks.workspace'), main_app.workspace_path, id: 'workspace' %>
 </li>
 

@@ -11,23 +11,25 @@ gem 'blacklight', '~> 5.19.0'
 gem 'blacklight-maps'
 gem 'hydra-head', '9.10'
 
-gem 'riiif', git: 'https://github.com/curationexperts/riiif.git'
+gem 'riiif', '1.2.0' #git: 'https://github.com/curationexperts/riiif.git'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
 gem 'redlock'
-gem 'google-api-client', '0.8.6'
+gem 'google-api-client', '~> 0.9'
 gem 'googleauth', '0.5.1'
 
 gem 'paper_trail', '~> 4'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
+#gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
+gem 'dri_data_models', path: '/Users/skenny/Development/dri/dri-data-models'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
+gem 'dri_batch_ingest', path: '/Users/skenny/Development/dri/dri_batch_ingest'
 
 gem 'active-fedora', '9.11'
 gem 'active_fedora-noid', '1.1.1'
 
-gem 'rails_config'
+gem 'config'
 gem 'sqlite3'
 gem 'mysql'
 gem 'mysql2'
@@ -40,7 +42,8 @@ gem 'feedjira'
 # Storage-related gems
 gem 'aws-sdk', '~> 2'
 gem 'moab-versioning'
-gem 'browse-everything', git: 'https://github.com/stkenny/browse-everything.git', branch: 's3_provider'
+gem 'browse-everything', git: 'https://github.com/stkenny/browse-everything.git', branch: 'feature/per_user'
+gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 
 # File processing gems
 gem 'mimemagic'
@@ -76,7 +79,7 @@ gem 'resque-status'
 gem 'nest'
 
 gem 'sass-rails' , '~> 4.0.4'
-gem 'compass-rails'
+#gem 'compass', '0.12.7'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs'
@@ -99,7 +102,6 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'guard-livereload', require: false
-  gem 'compass'
 
   gem "zeus", require: false
 
@@ -136,9 +138,9 @@ gem 'unicorn'
 # gem 'debugger'
 
 gem 'unicode', platforms: [:mri_18, :mri_19]
-gem 'font-awesome-rails'
+gem 'font-awesome-rails', '4.5.0.1'
 gem 'jwt', '1.5.2'
-gem 'bootstrap-sass', '~> 3.2'
+gem 'bootstrap-sass', '3.3.5'
 gem 'bootstrap-glyphicons'
 gem 'yard'
 
