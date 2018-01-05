@@ -24,7 +24,7 @@ gem 'paper_trail', '~> 4'
 #gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
 gem 'dri_data_models', path: '/Users/skenny/Development/dri/dri-data-models'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
-gem 'dri_batch_ingest', path: '/Users/skenny/Development/dri/dri_batch_ingest'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git'
 
 gem 'active-fedora', '9.11'
 gem 'active_fedora-noid', '1.1.1'
@@ -44,6 +44,7 @@ gem 'aws-sdk', '~> 2'
 gem 'moab-versioning'
 gem 'browse-everything', git: 'https://github.com/stkenny/browse-everything.git', branch: 'feature/per_user'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
+gem 'roo', '2.6.0'
 
 # File processing gems
 gem 'mimemagic'

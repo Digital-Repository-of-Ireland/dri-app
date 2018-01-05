@@ -1,4 +1,16 @@
 GIT
+  remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
+  revision: 0afeefc0ba6ceb8f60eddf9877f37ff132c8a30c
+  specs:
+    dri_batch_ingest (0.0.1)
+      filesize
+      fuelux-rails-sass
+      iconv
+      kaminari
+      rails (~> 4.2.10)
+      underscore-rails
+
+GIT
   remote: https://github.com/IIIF/osullivan.git
   revision: 1113f6b17a0c7bde22eca60fbf1231ed5d8b4daa
   specs:
@@ -78,17 +90,6 @@ PATH
       rails (~> 4.2)
       resque (~> 1.23)
       resque-pool (~> 0.3)
-
-PATH
-  remote: /Users/skenny/Development/dri/dri_batch_ingest
-  specs:
-    dri_batch_ingest (0.0.1)
-      filesize
-      fuelux-rails-sass
-      iconv
-      kaminari
-      rails (~> 4.2.10)
-      underscore-rails
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
@@ -475,7 +476,7 @@ GEM
       terminal-table (>= 1.5.1)
     i18n_sync (0.5.1)
       ya2yaml
-    iconv (1.0.4)
+    iconv (1.0.5)
     inflecto (0.0.2)
     is_it_working-cbeer (1.0.16)
     iso-639 (0.2.8)
@@ -573,7 +574,7 @@ GEM
     mini_magick (4.8.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.10.3)
+    minitest (5.11.1)
     moab-versioning (4.1.0)
       confstruct
       druid-tools (>= 1.0.0)
@@ -765,7 +766,7 @@ GEM
     retriable (3.1.1)
     riiif (1.2.0)
       railties (>= 4.2, < 6)
-    roo (2.7.1)
+    roo (2.6.0)
       nokogiri (~> 1)
       rubyzip (~> 1.1, < 2.0.0)
     rsolr (1.1.2)
@@ -992,6 +993,7 @@ DEPENDENCIES
   resque-status
   rest-client
   riiif (= 1.2.0)
+  roo (= 2.6.0)
   rspec-rails (~> 3.0)
   rvm
   sass-rails (~> 4.0.4)

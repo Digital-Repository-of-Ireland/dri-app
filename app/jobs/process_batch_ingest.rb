@@ -6,10 +6,6 @@ class ProcessBatchIngest
 
   @queue = :process_batch_ingest
 
-  def self.auth_url(user, url)
-    "#{url}?user_email=#{user.email}&user_token=#{user.authentication_token}"
-  end
-
   def self.perform(user_id, collection_id, ingest_json)
     ingest_batch = JSON.parse(ingest_json)
 
@@ -19,19 +15,18 @@ class ProcessBatchIngest
     download_path = File.join(Settings.downloads.directory, collection_id)
     FileUtils.mkdir_p(download_path)
 
-    ingest_metadata = ingest_batch['metadata']
+    # retrieve information about metadata file to be ingested
+    metadata_info = ingest_batch['metadata']
 
-    if ingest_metadata['object_id'].present?
-      # metadata ingest was successful so only ingest missing assets
-      object = DRI::Batch.find(ingest_metadata['object_id'], cast: true)
-    else
-      metadata = retrieve_files(download_path, [ingest_metadata])[0]
-      object = ingest_metadata(collection, user, metadata)
-    end
+    object = if metadata_info['object_id'].present?
+               # metadata ingest was successful so only ingest missing assets
+               DRI::Batch.find(metadata_info['object_id'], cast: true)
+             else
+               metadata = retrieve_files(download_path, [metadata_info])[0]
+               ingest_metadata(collection, user, metadata)
+             end
 
-    ingest_files = ingest_batch['files']
-    assets = retrieve_files(download_path, ingest_files)
-
+    assets = retrieve_files(download_path, ingest_batch['files'])
     ingest_assets(user, object, assets)
   end
 
@@ -46,53 +41,55 @@ class ProcessBatchIngest
       file_name = "#{@generic_file.id}_#{original_file_name}"
 
       version = ingest_file(asset[:path], object, 'content', file_name)
-      if version < 1
-        saved = false
-      else
-        saved = true
-        url = Rails.application.routes.url_helpers.url_for(
-          controller: 'assets',
-          action: 'download',
-          object_id: object.id,
-          id: @generic_file.id,
-          version: version
-        )
-        DRI::Asset::Actor.new(@generic_file, user).create_external_content(
+      saved = if version < 1
+                false
+              else
+                url = Rails.application.routes.url_helpers.url_for(
+                        controller: 'assets',
+                        action: 'download',
+                        object_id: object.id,
+                        id: @generic_file.id,
+                        version: version
+                      )
+                DRI::Asset::Actor.new(@generic_file, user).create_external_content(
                   url,
-                  'content', file_name
+                  'content',
+                  file_name
                 )
-      end
+                true
+              end
     
-      message = if saved
-                  { status_code: 'COMPLETED',
-                    file_location: Rails.application.routes.url_helpers.object_file_path(object, @generic_file) }
-                else
-                  { status_code: 'FAILED' }
-                end
+      update = if saved
+                 { status_code: 'COMPLETED',
+                   file_location: Rails.application.routes.url_helpers.object_file_path(object, @generic_file) }
+               else
+                 { status_code: 'FAILED' }
+               end
 
-      send_message(auth_url(user, asset[:callback_url]), message)
+      update_master_file(asset[:master_file_id], update)
     end
   end
 
-  def self.ingest_metadata(collection, user, metadata)
+  def self.ingest_metadata(collection, user, metadata) 
     xml = load_xml(file_data(metadata[:path]))
     object = create_object(collection, user, xml)
 
-    if object.valid? && object.save
-      create_reader_group if object.collection?
+    update = if object.valid? && object.save
+               create_reader_group if object.collection?
 
-      DRI::Object::Actor.new(object, user).version_and_record_committer
+               DRI::Object::Actor.new(object, user).version_and_record_committer
 
-      preservation = Preservation::Preservator.new(object)
-      preservation.preserve(true, true, ['descMetadata','properties'])
+               preservation = Preservation::Preservator.new(object)
+               preservation.preserve(true, true, ['descMetadata','properties'])
 
-      message = { status_code: 'COMPLETED',
-                  file_location: Rails.application.routes.url_helpers.catalog_path(object) }
-    else
-      message = { status_code: 'FAILED', file_location: "error:#{object.errors.full_messages.inspect}" }
-    end
+               { status_code: 'COMPLETED',
+                 file_location: Rails.application.routes.url_helpers.my_collections_path(object) }
+             else
+               { status_code: 'FAILED', file_location: "error:#{object.errors.full_messages.inspect}" }
+              end
 
-    send_message(auth_url(user, metadata[:callback_url]), message)
+    update_master_file(metadata[:master_file_id], update)
+
     object
   end
 
@@ -179,16 +176,17 @@ class ProcessBatchIngest
         end
       end
 
-      download = { label: file['label'], path: download_location, callback_url: file['callback_url'] }
+      download = { label: file['label'], path: download_location, master_file_id: file['id'] }
       downloaded_files << download
     end
 
     downloaded_files
   end
 
-  def self.send_message(url, message)
-    RestClient.put url, { 'master_file' => message }, content_type: :json, accept: :json
-  rescue RestClient::Exception => e
-    Rails.logger.error "Error sending callback: #{e}"
+  def self.update_master_file(id, update)
+    master_file = DriBatchIngest::MasterFile.find(id)
+    master_file.status_code = update[:status_code]
+    master_file.file_location = update[:file_location]
+    master_file.save
   end
 end
