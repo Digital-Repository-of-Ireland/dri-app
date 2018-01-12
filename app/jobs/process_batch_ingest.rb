@@ -32,13 +32,13 @@ class ProcessBatchIngest
 
   def self.ingest_assets(user, object, assets)
     assets.each do |asset|
-      @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
-      @generic_file.batch = object
-      @generic_file.apply_depositor_metadata(user)
-      @generic_file.preservation_only = 'true' if asset[:label] == 'preservation'
+      generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
+      generic_file.batch = object
+      generic_file.apply_depositor_metadata(user)
+      generic_file.preservation_only = 'true' if asset[:label] == 'preservation'
 
       original_file_name = File.basename(asset[:path])
-      file_name = "#{@generic_file.id}_#{original_file_name}"
+      file_name = "#{generic_file.id}_#{original_file_name}"
 
       version = ingest_file(asset[:path], object, 'content', file_name)
       saved = if version < 1
@@ -48,10 +48,10 @@ class ProcessBatchIngest
                         controller: 'assets',
                         action: 'download',
                         object_id: object.id,
-                        id: @generic_file.id,
+                        id: generic_file.id,
                         version: version
                       )
-                DRI::Asset::Actor.new(@generic_file, user).create_external_content(
+                DRI::Asset::Actor.new(generic_file, user).create_external_content(
                   url,
                   'content',
                   file_name
@@ -61,7 +61,7 @@ class ProcessBatchIngest
     
       update = if saved
                  { status_code: 'COMPLETED',
-                   file_location: Rails.application.routes.url_helpers.object_file_path(object, @generic_file) }
+                   file_location: Rails.application.routes.url_helpers.object_file_path(object, generic_file) }
                else
                  { status_code: 'FAILED' }
                end
