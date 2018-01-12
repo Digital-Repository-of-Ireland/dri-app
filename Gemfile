@@ -11,7 +11,7 @@ gem 'blacklight', '~> 5.19.0'
 gem 'blacklight-maps'
 gem 'hydra-head', '9.10'
 
-gem 'riiif', '1.2.0' #git: 'https://github.com/curationexperts/riiif.git'
+gem 'riiif', '1.2.0'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
@@ -21,8 +21,7 @@ gem 'googleauth', '0.5.1'
 
 gem 'paper_trail', '~> 4'
 
-#gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
-gem 'dri_data_models', path: '/Users/skenny/Development/dri/dri-data-models'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git'
 
@@ -40,7 +39,6 @@ gem 'oauth'
 gem 'feedjira'
 
 # Storage-related gems
-gem 'aws-sdk', '~> 2'
 gem 'moab-versioning'
 gem 'browse-everything', git: 'https://github.com/stkenny/browse-everything.git', branch: 'feature/per_user'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
