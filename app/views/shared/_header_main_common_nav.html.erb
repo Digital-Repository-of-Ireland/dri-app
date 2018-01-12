@@ -31,7 +31,7 @@
   <%= render 'shared/header_main_team_dropdown' %>
 </li>
 
-<% if ['/bookmarks','/user_groups/users','/search_history','/saved_searches','/ingest/','/ingest/ingests'].include?(request.path) || controller.controller_name == 'my_collections' || controller.controller_name == 'workspace' %>
+<% if ['/bookmarks','/user_groups/users','/search_history','/saved_searches','/ingest/','/ingest/batch','/ingest/ingests'].include?(request.path) || controller.controller_name == 'my_collections' || controller.controller_name == 'workspace' %>
     <li class="active">
 <% else %>
     <li>
