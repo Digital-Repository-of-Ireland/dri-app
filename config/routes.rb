@@ -6,6 +6,7 @@ DriApp::Application.routes.draw do
 
     mount UserGroup::Engine => "/user_groups"
     mount Riiif::Engine => '/images'
+    mount DriBatchIngest::Engine => '/ingest'
 
     Blacklight.add_routes(self)
 

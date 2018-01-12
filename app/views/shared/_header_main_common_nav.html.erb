@@ -20,7 +20,7 @@
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.institutions'), organisations_path, id: 'institutions' %>
+<%= link_to t('dri.headerlinks.institutions'), main_app.organisations_path, id: 'institutions' %>
 </li>
 
 <li>
@@ -31,12 +31,11 @@
   <%= render 'shared/header_main_team_dropdown' %>
 </li>
 
-
-<% if ['/bookmarks','/user_groups/users','/search_history','/saved_searches'].include?(request.path) || controller.controller_name == 'my_collections' || controller.controller_name == 'workspace' %>
+<% if ['/bookmarks','/user_groups/users','/search_history','/saved_searches','/ingest/','/ingest/batch','/ingest/ingests'].include?(request.path) || controller.controller_name == 'my_collections' || controller.controller_name == 'workspace' %>
     <li class="active">
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.workspace'), workspace_path, id: 'workspace' %>
+<%= link_to t('dri.headerlinks.workspace'), main_app.workspace_path, id: 'workspace' %>
 </li>
 

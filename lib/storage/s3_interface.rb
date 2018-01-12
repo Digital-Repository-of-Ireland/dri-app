@@ -1,3 +1,5 @@
+require 'aws-sdk-s3'
+
 module Storage
   class S3Interface
     def initialize(options = {})
