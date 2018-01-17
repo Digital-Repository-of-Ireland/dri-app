@@ -126,7 +126,7 @@ module ApplicationHelper
   end
 
   def root?
-    request.env['PATH_INFO'] == '/' && request.query_string.blank?
+    request.env['PATH_INFO'] == '/' && request.path.nil? && request.query_string.blank?
   end
 
   def has_search_parameters?

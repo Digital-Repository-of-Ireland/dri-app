@@ -10,8 +10,8 @@ else
   printf "ERROR: An RVM installation was not found.\n"
 fi
 
-rvm use ruby-2.2.4 || exit 100
-rvm use ruby-2.2.4@build --create || exit 100
+rvm use ruby-2.2.6 || exit 100
+rvm use ruby-2.2.6@build --create || exit 100
 
 branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
@@ -22,7 +22,7 @@ install_deps)
     ;;
 configure)
 
-rvm --force gemset empty ruby-2.2.4@build || exit 100
+rvm --force gemset empty ruby-2.2.6@build || exit 100
 
 cp config/fedora.yml.sample config/fedora.yml
 cp config/solr.yml.sample config/solr.yml

@@ -6,6 +6,7 @@ DriApp::Application.routes.draw do
 
     mount UserGroup::Engine => "/user_groups"
     mount Riiif::Engine => '/images'
+    mount DriBatchIngest::Engine => '/ingest'
 
     Blacklight.add_routes(self)
 
@@ -28,7 +29,6 @@ DriApp::Application.routes.draw do
     resources :collections, :only => ['index','new','create','update','edit','destroy']
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
-    post 'collections/:id/batch', to: 'batch_ingest#create', as: :batch_ingest
     put 'collections/:id/fixity', to: 'fixity#update', as: :fixity_check
     put 'objects/:id/fixity', to: 'fixity#update', as: :object_fixity_check
 
