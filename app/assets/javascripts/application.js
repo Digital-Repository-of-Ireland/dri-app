@@ -40,6 +40,7 @@
 //= require openseadragon
 //= require spin
 //= require timelineJS3
+//= require dri_batch_ingest
 //= slick-scroller
 //= require dri-timeline
 //= require dri/

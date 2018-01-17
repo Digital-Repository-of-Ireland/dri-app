@@ -128,10 +128,10 @@ en:
         exporting: Error submitting export background job.
         locked: This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information.
         manager_user_invalid: 'User %{email} does not exist, please have the user create an account first.'
-        manager_user_permission: You do not have permission to create a manager user
+        manager_user_permission: You do not have permission to create a Collection Manager
         no_read_group: No read group has been set for the collection
-        not_created: Unable to create. Check set permissions. You must have at least one manager or edit user.
-        not_updated: "%{item} was not updated. Check set permissions. You must have at least one manager or edit user."
+        not_created: Unable to create. Check set permissions. You must have at least one collection manager or edit user.
+        not_updated: "%{item} was not updated. Check set permissions. You must have at least one collection manager or edit user."
         organisation_cannot_be_deleted: The organisation cannot be deleted as it is still associated with collections
         read_access: Unable to grant read access
         read_only: Repository is currently undergoing maintenance. Updates are temporarily disabled.
@@ -158,7 +158,7 @@ en:
         generating_surrogates: Surrogates are being generated.
         licence_created: Licence successfully created.
         licence_updated: Licence successfully updated.
-        manager_user_created: 'User %{email} successfully granted manager permissions.'
+        manager_user_created: 'User %{email} successfully granted collection manager permissions.'
         metadata_updated: Metadata has been successfully updated.
         object_deleted: Object has been deleted.
         organisation_added: Organisation successfully added to collection.
@@ -188,6 +188,7 @@ en:
       about: About
       about_dri_lifecycle: DRI Lifecycle
       admin: Admin
+      batch_ingest: Batch Ingest
       blog: Blog
       browse: Discover
       collection: Collection
@@ -200,7 +201,7 @@ en:
       institutions: Organisations
       language: Language
       manage: Manage
-      manage_users: Add Manager User
+      manage_users: Add Collection Manager
       my_collections: My Collections
       my_tasks: Background Tasks
       new_collection: New Collection
@@ -583,7 +584,7 @@ en:
             public: "surrogates and uploaded originals"
           inherited_setting: 'Currently set to %{inherited_setting}'
           manage: Who can manage this collection?
-          manager_desc: Enter the email addresses of Manager Users below. A Manager User is an authorised user who can create and edit collections which are assigned to them by Organisational Manager. These permissions will not be applied until these email addresses have been registered for DRI accounts.
+          manager_desc: Enter the email addresses of Collection Managers below. A Collection Manager is an authorised user who can create and edit collections which are assigned to them by Organisational Manager. These permissions will not be applied until these email addresses have been registered for DRI accounts.
           master_file: Which asset files can they access?
           metadata: 'Access settings affect the asset files that you upload excluding preservation-only files. All metadata will be publicly accessible regardless of what settings you select here. '
           private: Private
