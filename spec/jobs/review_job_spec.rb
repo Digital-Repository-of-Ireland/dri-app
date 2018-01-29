@@ -18,17 +18,17 @@ describe "ReviewJob" do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @login_user = FactoryGirl.create(:collection_manager)
+    @login_user = FactoryBot.create(:collection_manager)
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
     @collection[:status] = "draft"
     @collection.save
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
     @object[:status] = "draft"
     @object.save
 
-    @object2 = FactoryGirl.create(:sound)
+    @object2 = FactoryBot.create(:sound)
     @object2[:status] = "draft"
     @object2.save
 
@@ -60,7 +60,7 @@ describe "ReviewJob" do
     end
 
     it "should ignore published objects" do
-      @published = FactoryGirl.create(:sound)
+      @published = FactoryBot.create(:sound)
       @published[:status] = "published"
       @published.save
 
@@ -80,7 +80,7 @@ describe "ReviewJob" do
     @slow
     it "should handle more than 10 objects", :slow => true do
       20.times do
-        o = FactoryGirl.create(:sound)
+        o = FactoryBot.create(:sound)
         o[:status] = "draft"
         o.save
 

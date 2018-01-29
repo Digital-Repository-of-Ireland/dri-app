@@ -3,7 +3,7 @@ require 'rails_helper'
 describe "StorageService" do
 
   before(:each) do
-    @login_user = FactoryGirl.create(:admin)
+    @login_user = FactoryBot.create(:admin)
     
     @collection = DRI::Batch.with_standard :qdc
     @collection[:title] = ["A collection"]

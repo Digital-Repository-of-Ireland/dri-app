@@ -25,7 +25,7 @@ describe ObjectHistory  do
     @membership.approved_by = @user.id
     @membership.save
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
     @collection[:status] = "public"
     @collection[:depositor] = "instmgr@dri.ie"
     @collection.edit_users = ['edituser@dri.ie', 'anotheruser@dri.ie']
@@ -33,7 +33,7 @@ describe ObjectHistory  do
     @collection.read_groups = ['test']
     @collection.save
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
     @object[:status] = "published"
     @object[:depositor] = "edituser@dri.ie"
     @object.save

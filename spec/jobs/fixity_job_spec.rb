@@ -7,12 +7,12 @@ describe 'FixityJob' do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @login_user = FactoryGirl.create(:collection_manager)
+    @login_user = FactoryBot.create(:collection_manager)
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
     @collection.save
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
     @object.save
 
     @collection.governed_items << @object

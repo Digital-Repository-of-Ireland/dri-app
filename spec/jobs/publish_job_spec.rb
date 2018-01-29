@@ -16,13 +16,13 @@ describe 'PublishJob' do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @login_user = FactoryGirl.create(:collection_manager)
+    @login_user = FactoryBot.create(:collection_manager)
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
     @collection[:status] = "draft"
     @collection.save
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
     @object[:status] = "reviewed"
     @object.save
 
@@ -51,11 +51,11 @@ describe 'PublishJob' do
     end
 
     it 'should not set an object to published if within an unreviewed sub-collection' do
-      @reviewed = FactoryGirl.create(:collection)
+      @reviewed = FactoryBot.create(:collection)
       @reviewed[:status] = 'reviewed'
       @reviewed.save
 
-      @subcollection = FactoryGirl.create(:collection)
+      @subcollection = FactoryBot.create(:collection)
       @subcollection[:status] = 'draft'
       @subcollection.governed_items << @reviewed
       @subcollection.save
@@ -77,7 +77,7 @@ describe 'PublishJob' do
     end
 
     it "should not set a collection\'s draft objects to published" do
-      @draft = FactoryGirl.create(:sound)
+      @draft = FactoryBot.create(:sound)
       @draft[:status] = 'draft'
       @draft.save
 
@@ -121,7 +121,7 @@ describe 'PublishJob' do
     @slow
     it 'should handle more than 10 objects', slow: true do
       20.times do
-        o = FactoryGirl.create(:sound)
+        o = FactoryBot.create(:sound)
         o[:status] = 'reviewed'
         o.save
 

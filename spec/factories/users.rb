@@ -1,14 +1,14 @@
 require 'ffaker'
 
-FactoryGirl.define do
+FactoryBot.define do
   sequence :email do
     FFaker::Internet.email
   end
 end
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :user, :class => UserGroup::User do |u|
-    u.email { FactoryGirl.generate(:email) }
+    u.email { FactoryBot.generate(:email) }
     u.password 'password'
     u.password_confirmation 'password'
     u.first_name FFaker::Name.first_name

@@ -7,7 +7,7 @@ describe "formatters" do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
     @object[:status] = "draft"
     @object.save
   end

@@ -12,9 +12,9 @@ describe "workers" do
     uploadhash = OpenStruct.new uploadfile
     tmpdir = Dir::tmpdir
 
-    @user = FactoryGirl.create(:admin)
+    @user = FactoryBot.create(:admin)
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
      
     @gf = DRI::GenericFile.new
     @gf.apply_depositor_metadata(@user)

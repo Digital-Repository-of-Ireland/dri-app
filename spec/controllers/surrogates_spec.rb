@@ -7,11 +7,11 @@ describe SurrogatesController do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @login_user = FactoryGirl.create(:admin)
+    @login_user = FactoryBot.create(:admin)
     sign_in @login_user
 
-    @collection = FactoryGirl.create(:collection)
-    @object = FactoryGirl.create(:sound)
+    @collection = FactoryBot.create(:collection)
+    @object = FactoryBot.create(:sound)
     
     @collection.governed_items << @object    
     @collection.save

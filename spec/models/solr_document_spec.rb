@@ -6,9 +6,9 @@ describe SolrDocument do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @collection = FactoryGirl.create(:collection)
-    @subcollection = FactoryGirl.create(:collection)
-    @object = FactoryGirl.create(:sound)
+    @collection = FactoryBot.create(:collection)
+    @subcollection = FactoryBot.create(:collection)
+    @object = FactoryBot.create(:sound)
 
     @subcollection.governing_collection = @collection
     @subcollection.governed_items << @object
