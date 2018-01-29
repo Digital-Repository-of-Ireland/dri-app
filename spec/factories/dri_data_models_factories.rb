@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
 
   factory(:sound, :class => DRI::QualifiedDublinCore) do
     title                  ["An Audio Title"]

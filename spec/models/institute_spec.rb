@@ -6,7 +6,7 @@ describe Institute do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
     @institute = Institute.new
     @institute.name = "Test Institute"
     @institute.url = "http://www.test.ie"

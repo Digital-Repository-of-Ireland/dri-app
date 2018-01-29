@@ -3,7 +3,7 @@ require 'rails_helper'
 describe RiiifAuthorizationService do
 
   before do
-    @object = FactoryGirl.build(:sound)
+    @object = FactoryBot.build(:sound)
     @object[:depositor] = "edituser@dri.ie"
     @object.save
 

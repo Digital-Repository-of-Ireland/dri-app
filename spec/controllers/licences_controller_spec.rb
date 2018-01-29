@@ -6,7 +6,7 @@ describe LicencesController do
   describe "permissions" do
   
     it 'should allow an administrator to create a licence' do
-       @admin_user = FactoryGirl.create(:admin)
+       @admin_user = FactoryBot.create(:admin)
        sign_in @admin_user
  
        get :new            
@@ -14,7 +14,7 @@ describe LicencesController do
     end
 
     it 'should not allow an ordinary user to create a licence' do
-      @user = FactoryGirl.create(:user)
+      @user = FactoryBot.create(:user)
       sign_in @user
 
       get :new

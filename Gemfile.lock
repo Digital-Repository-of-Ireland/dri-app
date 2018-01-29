@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
-  revision: fb925bb2feb57c0d23347abd82d22dd6d1444b62
+  revision: 2396365cf574f631dffb991d3922c66b62922d41
   specs:
     dri_batch_ingest (0.0.1)
       filesize
@@ -351,10 +351,10 @@ GEM
     erubis (2.7.0)
     eventmachine (1.2.5)
     execjs (2.7.0)
-    factory_girl (4.9.0)
+    factory_bot (4.8.2)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.9.0)
-      factory_girl (~> 4.9.0)
+    factory_bot_rails (4.8.2)
+      factory_bot (~> 4.8.2)
       railties (>= 3.0.0)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
@@ -941,7 +941,7 @@ DEPENDENCIES
   dri_batch_ingest!
   dri_data_models!
   execjs
-  factory_girl_rails
+  factory_bot_rails
   fakes3!
   fcrepo_wrapper (= 0.6.0)
   feedjira
@@ -1017,4 +1017,4 @@ DEPENDENCIES
   zeus
 
 BUNDLED WITH
-   1.14.2
+   1.16.1

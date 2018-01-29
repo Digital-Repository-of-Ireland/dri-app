@@ -26,10 +26,10 @@ describe DoiController do
   end
 
   before(:each) do
-    @login_user = FactoryGirl.create(:admin)
+    @login_user = FactoryBot.create(:admin)
     sign_in @login_user
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
     @object.status = 'published'
     @object.save
   end

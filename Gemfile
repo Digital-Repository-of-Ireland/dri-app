@@ -118,7 +118,7 @@ group :test do
   gem 'database_cleaner'
   gem 'launchy'
   gem 'shoulda'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'syntax'
   gem 'cucumber-api-steps'

@@ -10,12 +10,12 @@ describe AssetsController do
     Settings.dri.uploads = @tmp_upload_dir
     Settings.dri.files = @tmp_assets_dir
 
-    @login_user = FactoryGirl.create(:admin)
+    @login_user = FactoryBot.create(:admin)
     sign_in @login_user
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
    
-    @object = FactoryGirl.create(:sound) 
+    @object = FactoryBot.create(:sound) 
     @object[:status] = "draft"
     @object.save
 
@@ -355,9 +355,9 @@ describe AssetsController do
         @tmp_assets_dir = Dir.mktmpdir
         Settings.dri.files = @tmp_assets_dir
 
-        @login_user = FactoryGirl.create(:admin)
+        @login_user = FactoryBot.create(:admin)
         sign_in @login_user
-        @object = FactoryGirl.create(:sound) 
+        @object = FactoryBot.create(:sound) 
 
         request.env["HTTP_REFERER"] = catalog_index_path
       end

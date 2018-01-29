@@ -29,7 +29,7 @@ describe "Query" do
     @slow
     it "should return results more than chunk size", :slow => true do
       20.times do
-        o = FactoryGirl.create(:sound)
+        o = FactoryBot.create(:sound)
         o.save
 
         @collection.governed_items << o
@@ -49,7 +49,7 @@ describe "Query" do
     @slow
     it "should return results equal to the chunk size", :slow => true do
       10.times do
-        o = FactoryGirl.create(:sound)
+        o = FactoryBot.create(:sound)
         o.save
 
         @collection.governed_items << o
@@ -69,7 +69,7 @@ describe "Query" do
     @slow
     it "should handle results between chunk sizes", :slow => true do
       27.times do
-        o = FactoryGirl.create(:sound)
+        o = FactoryBot.create(:sound)
         o.save
 
         @collection.governed_items << o

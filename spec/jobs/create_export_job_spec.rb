@@ -11,17 +11,17 @@ describe "CreateExportJob" do
     Settings.dri.files = @tmp_assets_dir
     Settings.filesystem.directory = @tmp_assets_dir
 
-    @login_user = FactoryGirl.create(:collection_manager)
+    @login_user = FactoryBot.create(:collection_manager)
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
     @collection[:status] = "draft"
     @collection.save
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
     @object[:status] = "draft"
     @object.save
 
-    @object2 = FactoryGirl.create(:sound)
+    @object2 = FactoryBot.create(:sound)
     @object2[:status] = "draft"
     @object2.save
 
