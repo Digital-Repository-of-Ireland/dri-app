@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
-  revision: fb925bb2feb57c0d23347abd82d22dd6d1444b62
+  revision: 2396365cf574f631dffb991d3922c66b62922d41
   specs:
     dri_batch_ingest (0.0.1)
       filesize
@@ -466,7 +466,7 @@ GEM
       hydra-access-controls (= 9.10.0)
       hydra-core (= 9.10.0)
       rails (>= 3.2.6)
-    i18n (0.9.1)
+    i18n (0.9.3)
       concurrent-ruby (~> 1.0)
     i18n-tasks (0.9.19)
       activesupport (>= 4.0.2)
@@ -578,7 +578,7 @@ GEM
     mini_magick (4.8.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.11.1)
+    minitest (5.11.3)
     moab-versioning (4.1.0)
       confstruct
       druid-tools (>= 1.0.0)
@@ -599,7 +599,7 @@ GEM
     net-http-persistent (2.9.4)
     netrc (0.11.0)
     noid (0.9.0)
-    nokogiri (1.8.1)
+    nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     nokogiri-happymapper (0.6.0)
       nokogiri (~> 1.5)
