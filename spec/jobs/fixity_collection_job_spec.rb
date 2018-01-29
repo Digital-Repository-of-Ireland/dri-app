@@ -6,20 +6,20 @@ describe "FixityCollectionJob" do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @login_user = FactoryGirl.create(:collection_manager)
+    @login_user = FactoryBot.create(:collection_manager)
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
     
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
   
     @collection.governed_items << @object
     @collection.save
 
-    @subcollection = FactoryGirl.create(:collection)
+    @subcollection = FactoryBot.create(:collection)
     @subcollection.governing_collection = @collection
     @subcollection.save
 
-    @subcollection2 = FactoryGirl.create(:collection)
+    @subcollection2 = FactoryBot.create(:collection)
     @subcollection2.governing_collection = @collection
     @subcollection2.save
   end

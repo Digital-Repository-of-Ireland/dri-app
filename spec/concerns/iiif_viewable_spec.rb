@@ -59,7 +59,7 @@ describe DRI::IIIFViewable do
   }
 
   before(:each) do
-    @login_user = FactoryGirl.create(:admin)
+    @login_user = FactoryBot.create(:admin)
     
     @tmp_upload_dir = Dir.mktmpdir
     @tmp_assets_dir = Dir.mktmpdir
@@ -67,12 +67,12 @@ describe DRI::IIIFViewable do
     Settings.dri.uploads = @tmp_upload_dir
     Settings.dri.files = @tmp_assets_dir
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
     @collection[:creator] = [@login_user.email]
     @collection[:status] = 'published'
     @collection.save
 
-    @sound = FactoryGirl.create(:sound)
+    @sound = FactoryBot.create(:sound)
     @sound[:status] = 'published'
     @sound[:creator] = [@login_user.email]
     @sound.governing_collection = @collection
@@ -129,7 +129,7 @@ describe DRI::IIIFViewable do
     end
 
     it "should include subcollections in the collection manifest" do
-      @subcollection = FactoryGirl.create(:collection)
+      @subcollection = FactoryBot.create(:collection)
       @subcollection.governing_collection = @collection
       @subcollection[:creator] = [@login_user.email]
       @subcollection.status = 'published'

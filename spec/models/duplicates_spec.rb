@@ -13,19 +13,19 @@ describe 'DRI::Solr::Document::Collection' do
   end
 
   before(:each) do
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
    
-    @object = FactoryGirl.create(:sound) 
+    @object = FactoryBot.create(:sound) 
     @object[:status] = "draft"
     checksum_metadata(@object)
     @object.save
 
-    @object2 = FactoryGirl.create(:sound) 
+    @object2 = FactoryBot.create(:sound) 
     @object2[:status] = "draft"
     checksum_metadata(@object2)
     @object2.save
 
-    @object3 = FactoryGirl.create(:sound) 
+    @object3 = FactoryBot.create(:sound) 
     @object3[:status] = "draft"
     @object3[:title] = ["Not a Duplicate"]
     checksum_metadata(@object3)

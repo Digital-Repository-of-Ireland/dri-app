@@ -4,8 +4,8 @@ describe ReadersController do
   include Devise::Test::ControllerHelpers
   
   before(:each) do
-    @manager_user = FactoryGirl.create(:collection_manager)
-    @login_user = FactoryGirl.create(:user)
+    @manager_user = FactoryBot.create(:collection_manager)
+    @login_user = FactoryBot.create(:user)
     
     @collection = DRI::Batch.with_standard :qdc
     @collection[:title] = ["A collection"]

@@ -7,11 +7,11 @@ describe InstitutesController do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @login_user = FactoryGirl.create(:admin)
+    @login_user = FactoryBot.create(:admin)
     sign_in @login_user
 
-    @collection = FactoryGirl.create(:collection)
-    @subcollection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
+    @subcollection = FactoryBot.create(:collection)
     @institute = Institute.new
     @institute.name = "Test Institute"
     @institute.url = "http://www.test.ie"
