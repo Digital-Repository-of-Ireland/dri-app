@@ -15,7 +15,7 @@ describe ObjectsController do
   describe 'destroy' do
     
     before(:each) do
-      @login_user = FactoryGirl.create(:collection_manager)
+      @login_user = FactoryBot.create(:collection_manager)
       sign_in @login_user
     end
 
@@ -24,14 +24,14 @@ describe ObjectsController do
     end
 
     it 'should delete a draft object' do
-      collection = FactoryGirl.create(:collection)
+      collection = FactoryBot.create(:collection)
       collection.depositor = User.find_by_email(@login_user.email).to_s
       collection.manager_users_string=User.find_by_email(@login_user.email).to_s
       collection.discover_groups_string="public"
       collection.read_groups_string="registered"
       collection.creator = [@login_user.email]
 
-      object = FactoryGirl.create(:sound) 
+      object = FactoryBot.create(:sound) 
       object[:status] = "draft"
       object.depositor=User.find_by_email(@login_user.email).to_s
       object.manager_users_string=User.find_by_email(@login_user.email).to_s
@@ -50,14 +50,14 @@ describe ObjectsController do
     end
 
     it 'should not delete a published object for non-admin' do
-      @collection = FactoryGirl.create(:collection)
+      @collection = FactoryBot.create(:collection)
       @collection.depositor = User.find_by_email(@login_user.email).to_s
       @collection.manager_users_string=User.find_by_email(@login_user.email).to_s
       @collection.discover_groups_string="public"
       @collection.read_groups_string="registered"
       @collection.creator = [@login_user.email]
 
-      @object = FactoryGirl.create(:sound) 
+      @object = FactoryBot.create(:sound) 
       @object[:status] = "published"
       @object.save
 
@@ -73,12 +73,12 @@ describe ObjectsController do
 
     it 'should delete a published object for an admin' do
       sign_out @login_user
-      @admin_user = FactoryGirl.create(:admin)
+      @admin_user = FactoryBot.create(:admin)
       sign_in @admin_user
 
-      @collection = FactoryGirl.create(:collection)
+      @collection = FactoryBot.create(:collection)
    
-      @object = FactoryGirl.create(:sound) 
+      @object = FactoryBot.create(:sound) 
       @object[:status] = "published"
       @object.save
 
@@ -97,9 +97,9 @@ describe ObjectsController do
   describe 'create' do
 
     before(:each) do
-      @login_user = FactoryGirl.create(:admin)
+      @login_user = FactoryBot.create(:admin)
       sign_in @login_user
-      @collection = FactoryGirl.create(:collection)
+      @collection = FactoryBot.create(:collection)
     end
 
     after(:each) do
@@ -145,20 +145,20 @@ describe ObjectsController do
   describe 'status' do
 
     before(:each) do
-      @login_user = FactoryGirl.create(:collection_manager)
+      @login_user = FactoryBot.create(:collection_manager)
       sign_in @login_user
-      @collection = FactoryGirl.create(:collection)
+      @collection = FactoryBot.create(:collection)
       @collection.depositor = User.find_by_email(@login_user.email).to_s
       @collection.manager_users_string=User.find_by_email(@login_user.email).to_s
       @collection.discover_groups_string="public"
       @collection.read_groups_string="registered"
       @collection.creator = [@login_user.email]
    
-      @object = FactoryGirl.create(:sound) 
+      @object = FactoryBot.create(:sound) 
       @object[:status] = "draft"
       @object.save
 
-      @object2 = FactoryGirl.create(:sound)
+      @object2 = FactoryBot.create(:sound)
       @object2[:status] = "draft"
       @object2.save
 
@@ -269,10 +269,10 @@ describe ObjectsController do
         @tmp_assets_dir = Dir.mktmpdir
         Settings.dri.files = @tmp_assets_dir
         
-        @login_user = FactoryGirl.create(:admin)
+        @login_user = FactoryBot.create(:admin)
         sign_in @login_user
-        @collection = FactoryGirl.create(:collection)
-        @object = FactoryGirl.create(:sound) 
+        @collection = FactoryBot.create(:collection)
+        @object = FactoryBot.create(:sound) 
 
         request.env["HTTP_REFERER"] = catalog_path(@collection.id)
       end
@@ -317,10 +317,10 @@ describe ObjectsController do
   describe "collection is locked" do
 
       before(:each) do
-        @login_user = FactoryGirl.create(:admin)
+        @login_user = FactoryBot.create(:admin)
         sign_in @login_user
-        @collection = FactoryGirl.create(:collection)
-        @object = FactoryGirl.create(:sound)
+        @collection = FactoryBot.create(:collection)
+        @object = FactoryBot.create(:sound)
         CollectionLock.create(collection_id: @collection.id)
 
         request.env["HTTP_REFERER"] = catalog_path(@collection.id)
@@ -365,10 +365,10 @@ describe ObjectsController do
   describe 'get_objects' do
 
     before(:each) do
-      @login_user = FactoryGirl.create(:admin)
+      @login_user = FactoryBot.create(:admin)
       sign_in @login_user
 
-      @object = FactoryGirl.create(:sound)
+      @object = FactoryBot.create(:sound)
       @object.status = 'published'
       @object.save
     end

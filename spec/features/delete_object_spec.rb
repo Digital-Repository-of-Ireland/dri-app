@@ -6,7 +6,7 @@ feature 'Deleting a single object' do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @login_user = FactoryGirl.create(:collection_manager)
+    @login_user = FactoryBot.create(:collection_manager)
 
     visit new_user_session_path
     fill_in "user_email", with: @login_user.email
@@ -20,7 +20,7 @@ feature 'Deleting a single object' do
   end
 
   scenario 'unable to delete a published object' do
-    collection = FactoryGirl.create(:collection)
+    collection = FactoryBot.create(:collection)
     collection.depositor = User.find_by_email(@login_user.email).to_s
     collection.manager_users_string=User.find_by_email(@login_user.email).to_s
     collection.discover_groups_string="public"
@@ -28,7 +28,7 @@ feature 'Deleting a single object' do
     collection.creator = [@login_user.email]
     collection.save
 
-    object = FactoryGirl.create(:sound) 
+    object = FactoryBot.create(:sound) 
     object[:status] = "published"
     object.depositor=User.find_by_email(@login_user.email).to_s
     object.manager_users_string=User.find_by_email(@login_user.email).to_s
@@ -46,7 +46,7 @@ feature 'Deleting a single object' do
   end
 
   scenario 'deleting a draft object' do
-    collection = FactoryGirl.create(:collection)
+    collection = FactoryBot.create(:collection)
     collection.depositor = User.find_by_email(@login_user.email).to_s
     collection.manager_users_string=User.find_by_email(@login_user.email).to_s
     collection.discover_groups_string="public"
@@ -54,7 +54,7 @@ feature 'Deleting a single object' do
     collection.creator = [@login_user.email]
     collection.save
 
-    object = FactoryGirl.create(:sound)
+    object = FactoryBot.create(:sound)
     object[:status] = "draft"
     object.depositor=User.find_by_email(@login_user.email).to_s
     object.manager_users_string=User.find_by_email(@login_user.email).to_s
@@ -80,7 +80,7 @@ feature 'Deleting a single object' do
       @tmp_assets_dir = Dir.mktmpdir
       Settings.dri.files = @tmp_assets_dir
 
-      @login_user = FactoryGirl.create(:admin)
+      @login_user = FactoryBot.create(:admin)
 
       visit new_user_session_path
       fill_in "user_email", with: @login_user.email
@@ -94,7 +94,7 @@ feature 'Deleting a single object' do
     end
 
     scenario 'able to delete as admin' do
-      collection = FactoryGirl.create(:collection)
+      collection = FactoryBot.create(:collection)
       collection.depositor = User.find_by_email(@login_user.email).to_s
       collection.manager_users_string=User.find_by_email(@login_user.email).to_s
       collection.discover_groups_string="public"
@@ -102,7 +102,7 @@ feature 'Deleting a single object' do
       collection.creator = [@login_user.email]
       collection.save
 
-      object = FactoryGirl.create(:sound) 
+      object = FactoryBot.create(:sound) 
       object[:status] = "published"
       object.depositor=User.find_by_email(@login_user.email).to_s
       object.manager_users_string=User.find_by_email(@login_user.email).to_s

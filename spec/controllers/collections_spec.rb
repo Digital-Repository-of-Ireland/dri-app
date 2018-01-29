@@ -4,7 +4,7 @@ describe CollectionsController do
   include Devise::Test::ControllerHelpers
 
   before(:each) do
-    @login_user = FactoryGirl.create(:admin)
+    @login_user = FactoryBot.create(:admin)
     sign_in @login_user
 
     @tmp_assets_dir = Dir.mktmpdir
@@ -99,7 +99,7 @@ describe CollectionsController do
   describe 'cover' do
 
     before(:each) do
-      @collection = FactoryGirl.create(:collection)
+      @collection = FactoryBot.create(:collection)
       @collection[:creator] = [@login_user.email]
       @collection[:status] = "draft"
       @collection.save
@@ -302,9 +302,9 @@ describe CollectionsController do
       @tmp_assets_dir = Dir.mktmpdir
       Settings.dri.files = @tmp_assets_dir
 
-      @login_user = FactoryGirl.create(:admin)
+      @login_user = FactoryBot.create(:admin)
       sign_in @login_user
-      @collection = FactoryGirl.create(:collection)
+      @collection = FactoryBot.create(:collection)
       
       request.env["HTTP_REFERER"] = catalog_index_path
     end
@@ -353,9 +353,9 @@ describe CollectionsController do
       @tmp_assets_dir = Dir.mktmpdir
       Settings.dri.files = @tmp_assets_dir
 
-      @login_user = FactoryGirl.create(:admin)
+      @login_user = FactoryBot.create(:admin)
       sign_in @login_user
-      @collection = FactoryGirl.create(:collection)
+      @collection = FactoryBot.create(:collection)
       CollectionLock.create(collection_id: @collection.id)
       
       request.env["HTTP_REFERER"] = catalog_index_path
