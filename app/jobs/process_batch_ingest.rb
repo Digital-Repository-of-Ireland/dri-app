@@ -89,6 +89,7 @@ class ProcessBatchIngest
               end
 
     update_master_file(metadata[:master_file_id], update)
+    FileUtils.rm_f(metadata[:path])
 
     object
   end
@@ -120,6 +121,8 @@ class ProcessBatchIngest
     preservation = Preservation::Preservator.new(object)
     preservation.preserve_assets([filename],[])
 
+    FileUtils.rm_f(file_path)
+    
     object.object_version.to_i
   end
 
