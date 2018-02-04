@@ -6,7 +6,7 @@ module Storage
       endpoint = Settings.S3.server
       credentials = Aws::Credentials.new(Settings.S3.access_key_id, Settings.S3.secret_access_key)
 
-      params = options.merge({ region: 'us-east-1', endpoint: endpoint, credentials: credentials, ssl_verify_peer: false, force_path_style: true })
+      params = options.merge({ region: 'us-east-1', endpoint: endpoint, credentials: credentials, ssl_verify_peer: false, force_path_style: true, signature_version: 's3' })
       @client = Aws::S3::Client.new(params)
     end
 
