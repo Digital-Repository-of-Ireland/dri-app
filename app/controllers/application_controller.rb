@@ -123,6 +123,17 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def authenticate_cm!
+      unless current_user && (current_user.is_admin? || current_user.is_cm?)
+        flash[:error] = t('dri.views.exceptions.access_denied')
+        if request.env["HTTP_REFERER"].present?
+          redirect_to(:back)
+        else
+          raise Hydra::AccessDenied.new(t('dri.flash.alert.create_permission'))
+        end
+      end
+    end
+
     def read_only
       return unless Settings.read_only == true
 

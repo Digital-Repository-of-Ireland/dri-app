@@ -9,6 +9,7 @@ class CollectionsController < BaseObjectsController
 
   before_action :authenticate_user_from_token!, except: [:cover]
   before_action :authenticate_user!, except: [:cover]
+  before_action :authenticate_cm!, only: [:new, :create]
   before_action :check_for_cancel, only: [:create, :update, :add_cover_image]
   before_action :read_only, except: [:index, :cover]
   before_action ->(id=params[:id]) { locked(id) }, except: %i|index cover lock new create|
@@ -45,7 +46,6 @@ class CollectionsController < BaseObjectsController
   # Creates a new model.
   #
   def new
-    enforce_permissions!('create', DRI::Batch)
     @object = DRI::Batch.with_standard :qdc
 
     # configure default permissions
@@ -359,8 +359,6 @@ class CollectionsController < BaseObjectsController
     # Create a collection with the web form
     #
     def create_from_form
-      enforce_permissions!('create', DRI::Batch)
-
       unless valid_root_permissions?
         flash[:alert] = t('dri.flash.error.not_created')
         return false
@@ -396,8 +394,6 @@ class CollectionsController < BaseObjectsController
     # Create a collection from an uploaded XML file.
     #
     def create_from_xml
-      enforce_permissions!('create', DRI::Batch)
-
       unless params[:metadata_file].present?
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @error = t('dri.flash.notice.specify_valid_file')
