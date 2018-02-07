@@ -123,7 +123,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def authenticate_cm!
+    def authorize_cm!
       unless current_user && (current_user.is_admin? || current_user.is_cm?)
         flash[:error] = t('dri.views.exceptions.access_denied')
         if request.env["HTTP_REFERER"].present?

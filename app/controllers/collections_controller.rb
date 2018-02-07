@@ -9,7 +9,7 @@ class CollectionsController < BaseObjectsController
 
   before_action :authenticate_user_from_token!, except: [:cover]
   before_action :authenticate_user!, except: [:cover]
-  before_action :authenticate_cm!, only: [:new, :create]
+  before_action :authorize_cm!, only: [:new, :create]
   before_action :check_for_cancel, only: [:create, :update, :add_cover_image]
   before_action :read_only, except: [:index, :cover]
   before_action ->(id=params[:id]) { locked(id) }, except: %i|index cover lock new create|
