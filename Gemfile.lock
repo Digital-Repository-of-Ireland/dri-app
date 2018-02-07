@@ -886,7 +886,7 @@ GEM
     thread_safe (0.3.6)
     tilt (1.4.1)
     tins (1.6.0)
-    tzinfo (1.2.4)
+    tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uber (0.1.0)
     uglifier (4.0.2)

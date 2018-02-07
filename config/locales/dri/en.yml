@@ -17,17 +17,6 @@ en:
         request_to_leave: Request To Leave
         requested_to_leave: You have requested to leave this group
         settings: Settings
-      home:
-        featured: Featured
-        featured_collections: Featured Collections (Decade of Centenaries)
-        featured_objects: Featured Objects
-        introtext: "The Digital Repository of Ireland is a national digital repository for Ireland’s humanities, social sciences, and cultural heritage data. You can browse and search across multiple collections from some of the finest Irish institutions. These collections are safely preserved in the DRI. Please explore and enjoy."
-        links:
-          visit_dri: Visit the DRI Project Website
-        rss_feed:
-          read_more: Read More
-          title: News
-        welcome_to_dri: Welcome to the DRI
       lang:
         en: English
         ga: Irish
