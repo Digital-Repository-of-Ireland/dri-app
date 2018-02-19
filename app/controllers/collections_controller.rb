@@ -78,7 +78,7 @@ class CollectionsController < BaseObjectsController
     @institutes = Institute.all
     @inst = Institute.new
 
-    @collection_institutes = Institute.find_collection_institutes(@object.institute)
+    @collection_institutes = Institute.where(name: @object.institute).to_a
     @depositing_institute = @object.depositing_institute.present? ? Institute.find_by(name: @object.depositing_institute) : nil
 
     supported_licences

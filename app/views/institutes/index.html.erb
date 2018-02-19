@@ -3,6 +3,7 @@
 <% @institutes.each_with_index do |institute, i| %>
     <% style='not_first' unless i == 0 %>
     <% collection_count = @collections[institute.id].size %>
+    <% next unless collection_count > 0 || (signed_in? && current_user.is_admin?) %>
     <div class="dri_collection_institutes_pages <%= style %>">
       <% institute_browse_params[:f] = { ActiveFedora.index_field_mapper.solr_name('institute', :facetable, type: :string).to_sym => [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
       <%= link_to main_app.catalog_index_path(institute_browse_params) do %>
@@ -21,7 +22,6 @@
               <% if (collection_count > 0) %>
                   <% collections = @collections[institute.id] %>
                   <% collections[0..2].each do |collection| %>
-                     <% collection = collection.symbolize_keys! %>
                      <% image = cover_image collection %>
                      <% if image %>
                         <li><%= image_tag image, :width=>"150", title: collection[:title_tesim].first %></li>
