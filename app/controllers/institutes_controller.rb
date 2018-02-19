@@ -15,7 +15,12 @@ class InstitutesController < ApplicationController
     @institutes = Institute.all.order('name asc')
     @collections = {}
     @institutes.each do |institute|
-      @collections[institute.id] = institute_collections(institute[:name])
+      institute_collections = if signed_in? && current_user.is_admin?
+                                institute.collections
+                              else
+                                institute.collections.select { |c| c.published? } 
+                              end
+      @collections[institute.id] = institute_collections
     end
   end
 
@@ -159,7 +164,7 @@ class InstitutesController < ApplicationController
       @collection.object_version = (version.to_i + 1).to_s
       delete ? delete_association : add_association
 
-      @collection_institutes = Institute.find_collection_institutes(@collection.institute)
+      @collection_institutes = Institute.where(name: @collection.institute).to_a
       @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
 
       # Do the preservation actions
@@ -203,28 +208,6 @@ class InstitutesController < ApplicationController
 
     def admin?
       raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
-    end
-
-    def institute_collections(institute)
-      solr_query = institute_collections_query(institute)
-
-      ActiveFedora::SolrService.query(
-        solr_query,
-        defType: 'edismax',
-        fq: "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
-      )
-    end
-
-    def institute_collections_query(institute)
-      solr_query = ""
-      if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
-        solr_query = "#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
-      end
-      solr_query = solr_query + 
-                 "#{ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string)}:\"" + institute.mb_chars.downcase + 
-                 "\" AND " + "#{ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string)}:Collection"
-
-      solr_query
     end
 
     def update_params

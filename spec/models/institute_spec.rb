@@ -20,14 +20,14 @@ describe Institute do
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
-  it "should return the institutes for a collection" do
+  it "should return the collections it is associated with" do
     @collection.institute = [@institute.name]
     @collection.save
       
-    expect(Institute.find_collection_institutes(@collection.institute)).to include(@institute)
+    expect(@institute.collections.first[:id]).to eq @collection.id
   end
 
-  it "should return nil if no institutes set" do
-    expect(Institute.find_collection_institutes(@collection.institute)).to be nil
+  it "should return empty array if not associated" do
+    expect(@institute.collections).to eq([])
   end
 end
