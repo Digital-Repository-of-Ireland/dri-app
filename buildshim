@@ -77,7 +77,7 @@ upload)
     cd -
 
     #only deploy to test instance on develop branch
-    if [[ "$branch" == "false" ]]; then
+    if [[ "$branch" == "develop" ]]; then
 
       #setup ssh agent for key forwarding to work
       eval ssh-agent $SHELL
