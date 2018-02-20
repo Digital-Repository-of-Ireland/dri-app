@@ -24,6 +24,7 @@ Feature: Institutes
 
   Scenario: Viewing institutes page
     Given I have associated the institute "TestInstitute" with the collection with pid "the saved pid"
+    And the collection with pid "the saved pid" is published
     When I go to "the organisations page"
     Then I should see the image "TestInstitute"
 

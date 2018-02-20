@@ -46,9 +46,9 @@
 			    </li>
 			  <% else %>
 			    <li id="dri_browse_sort_tabs_sub_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>" data-trigger="hover" data-placement="auto right" class='dri_help_popover_slow'>
-	            <%= link_to t('dri.headerlinks.sub_collections'), copySearchParams, :id=>"sub_collections" %>
-	        </li>
-	      <% end %>
+	              <%= link_to t('dri.headerlinks.sub_collections'), copySearchParams, :id=>"sub_collections" %>
+	            </li>
+	          <% end %>
 			  <li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="auto right">
 				  <%= link_to t('dri.headerlinks.objects'), "#", :id=>"objects", :class=>'selected' %>
 			  </li>

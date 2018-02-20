@@ -105,7 +105,10 @@ end
 
 Given /^the collection(?: with pid "(.*?)")? is published?$/ do |colid|
   colid = @collection.id unless colid
-
+  if (colid == 'the saved pid')
+     colid = @collection_pid ? @collection_pid : @pid
+  end
+  
   collection = ActiveFedora::Base.find(colid, {:cast => true})
   collection.governed_items.each do |o|
     o.status = 'published'
