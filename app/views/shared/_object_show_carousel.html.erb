@@ -3,7 +3,6 @@
     var fileid = $(this).data('fileid');
     var infoModal = $('#dri_download_modal_id');
     htmlData = $('.' + fileid).html();
-    console.log(htmlData);
     infoModal.find('.modal-body').html(htmlData);
     return false;
   });
@@ -18,15 +17,15 @@
 
 
       <div class="item dri_asset_carousel_item dri_bottom_stack active">
-        <%= render :partial => "object_show_surrogate", :locals => {:document => document, :generic_file => @displayfiles.first} %>
-        <%= render :partial => "object_show_download", :locals => {:document => document, :generic_file => @displayfiles.first, :index => 1} %>
+        <%= render :partial => "shared/object_show_surrogate", :locals => {:document => document, :generic_file => @displayfiles.first} %>
+        <%= render :partial => "shared/object_show_download", :locals => {:document => document, :generic_file => @displayfiles.first, :index => 1} %>
       </div>
 
 
       <% @displayfiles[1..-1].each_with_index do |file,i| %>
         <div class="item dri_asset_carousel_item dri_bottom_stack">
-          <%= render :partial => "object_show_surrogate", :locals => {:document => document, :generic_file => file} %>
-          <%= render :partial => "object_show_download", :locals => {:document => document, :generic_file => file, :index => i + 2} %>
+          <%= render :partial => "shared/object_show_surrogate", :locals => {:document => document, :generic_file => file} %>
+          <%= render :partial => "shared/object_show_download", :locals => {:document => document, :generic_file => file, :index => i + 2} %>
         </div>
       <% end %>
     </div>

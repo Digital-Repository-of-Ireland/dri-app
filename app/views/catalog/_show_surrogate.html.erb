@@ -3,7 +3,7 @@
 
       <!-- display the asset carousel -->
       <div class="dri_asset_holder">
-        <%= render partial: "object_show_carousel", locals: {document: @document, files: @displayfiles} %>
+        <%= render partial: "shared/object_show_carousel", locals: {document: @document, files: @displayfiles} %>
       </div> <!-- ending dri_asset_holder -->
 
       <div class="modal fade dri_pdf_view" id="dri_pdf_viewer_modal_id">
