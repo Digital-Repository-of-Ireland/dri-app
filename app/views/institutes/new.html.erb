@@ -3,7 +3,7 @@
         $("#institution_logo").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
   }
 </script>
-<h5><%= t('dri.views.collection.institute.are_you_sure') %> (<%=  link_to t('dri.views.collection.institute.see_orgs'), organisations_path %>)</h5>
+<h5><%= t('dri.views.collection.institute.are_you_sure') %> (<%=  link_to t('dri.views.collection.institute.see_orgs'), '#', :'data-toggle' => 'modal',  :'data-target' => '#dri_organisations_modal_id' %>)</h5>
 <div class="dri_collection_institutes_dropdown">
   <div class="dri_institutes_title">
     <div class="dri_file_upload">
@@ -51,3 +51,36 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="dri_organisations_modal_id">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title"><%= t('dri.headerlinks.institutions') %></h4>
+      </div>
+      <div class="modal-body">
+        <% @institutes.each_with_index do |institute, i| %>
+          <% style='not_first' unless i == 0 %>
+          <div class="dri_collection_institutes_pages <%= style %>">
+            <div class="dri_collection_institutes_modal_img">
+              <%= image_tag logo_url(institute), alt: institute[:name].to_s.html_safe if institute.brand %>
+              <h6><%= institute[:name].to_s.html_safe %></h6>
+              <% if signed_in? && current_user.is_admin? %>
+              <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_organisation_path(institute) %>
+              <%= link_to '<i class="fa fa-times-circle"></i>'.html_safe, organisation_path(institute), method: :delete %>
+            <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
