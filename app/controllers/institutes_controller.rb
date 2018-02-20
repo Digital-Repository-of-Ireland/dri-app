@@ -15,16 +15,15 @@ class InstitutesController < ApplicationController
     @institutes = Institute.all.order('name asc')
     @collections = {}
     @institutes.each do |institute|
-      institute_collections = if signed_in? && current_user.is_admin?
-                                institute.collections
-                              else
-                                institute.collections.select { |c| c.published? } 
-                              end
-      @collections[institute.id] = institute_collections
+      @collections[institute.id] = institute.collections.select { |c| c.published? } 
     end
+
+    @depositing_institutes = @institutes.select { |i| i.depositing == true }
+    @other_institutes = @institutes.select { |i| i.depositing.blank? }
   end
 
   def new
+    @institutes = Institute.all.order('name asc')
     @inst = Institute.new
   end
 
@@ -50,11 +49,11 @@ class InstitutesController < ApplicationController
     add_logo
 
     @inst.url = params[:institute][:url]
-    if current_user.is_admin?
-      @inst.depositing = params[:institute][:depositing]
-    else
-      @inst.depositing = false
-    end
+    @inst.depositing = if current_user.is_admin?
+                         params[:institute][:depositing]
+                       else
+                         false
+                       end
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 

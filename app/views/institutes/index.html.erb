@@ -1,9 +1,13 @@
 <% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => {} } %>
 <% style='' %>
+
+<h3><%= t('dri.views.collection.institute.title') %></h3>
+<p><%= t('dri.views.collection.institute.what_is_org_text') %></p>
+<div class="dri_section_block">
 <% @institutes.each_with_index do |institute, i| %>
     <% style='not_first' unless i == 0 %>
     <% collection_count = @collections[institute.id].size %>
-    <% next unless collection_count > 0 || (signed_in? && current_user.is_admin?) %>
+    <% next unless collection_count > 0 %>
     <div class="dri_collection_institutes_pages <%= style %>">
       <% institute_browse_params[:f] = { ActiveFedora.index_field_mapper.solr_name('institute', :facetable, type: :string).to_sym => [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
       <%= link_to main_app.catalog_index_path(institute_browse_params) do %>
@@ -12,10 +16,6 @@
             <h6>
               <%= institute[:name].to_s.html_safe %>
             </h6>
-            <% if signed_in? && current_user.is_admin? %>
-              <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_organisation_path(institute) %>
-              <%= link_to '<i class="fa fa-times-circle"></i>'.html_safe, organisation_path(institute), method: :delete %>
-            <% end %>
           </div>
           <div class="dri_collection_institutes_pages_text" >
             <ul>
@@ -41,3 +41,4 @@
       <% end %>
     </div>
 <% end %>
+</div>

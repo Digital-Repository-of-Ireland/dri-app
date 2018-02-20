@@ -1804,6 +1804,19 @@ p.dri_rss_link a {
         }
     }
 }
+
+/*-------------- Organisations modal -----------------*/
+
+#dri_organisations_modal_id {
+  /* Important part */
+  .modal-dialog{
+    overflow-y: initial !important
+  }
+  .modal-body{
+    height: 60vh;
+    overflow-y: auto;
+  }
+}
 /*-------------- Collection status and Features  --------------*/
 
 .dri_object_second_block {
@@ -2034,6 +2047,16 @@ ul.dri_view_collection {
     clear: both;
     .dri_collection_institutes_pages_img {
         border-right: 1px solid $dri_thingrey;
+        padding-top: -30px;
+        padding-bottom: -30px;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        img {
+            max-height: 75px;
+            max-width: 90%;
+        }
+    }
+    .dri_collection_institutes_modal_img {
         padding-top: -30px;
         padding-bottom: -30px;
         margin-top: 40px;
