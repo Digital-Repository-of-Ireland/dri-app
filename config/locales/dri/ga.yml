@@ -114,12 +114,14 @@ ga:
       collection: Bailiúchán
       collections: Bailiúcháin
       end_user_agreement: Comhaontú an Úsáideora Dheiridh
+      find_us: Conas teacht orainn 
       help: Cabhair
       home: Baile
       institutions: Eagraíochtaí
       language: Teanga
       manage: Bainistigh
       manage_users: Cuir úsáideoir bainisteora leis
+      membership: Ballraíocht
       my_collections: Mo chuid bailiúchán
       my_tasks: Mo tascanna
       new_collection: Bailiúchán Nua
@@ -131,6 +133,7 @@ ga:
       reports: Tuairiscí
       resque: Freastalaí Resque
       sub_collections: Fo-bhailiúcháín
+      team: Foireann
       usergroups: "Úsáideoirí agus Grúpaí"
       workspace: Spás Oibre
     help:

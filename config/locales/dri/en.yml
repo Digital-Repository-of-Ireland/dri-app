@@ -191,6 +191,7 @@ en:
       language: Language
       manage: Manage
       manage_users: Add Collection Manager
+      membership: Membership
       my_collections: My Collections
       my_tasks: Background Tasks
       new_collection: New Collection
