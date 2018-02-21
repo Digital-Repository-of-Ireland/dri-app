@@ -191,6 +191,7 @@ en:
       language: Language
       manage: Manage
       manage_users: Add Collection Manager
+      membership: Membership
       my_collections: My Collections
       my_tasks: Background Tasks
       new_collection: New Collection
@@ -544,6 +545,8 @@ en:
           title: Add a new digital object
         steps:
           upload: Upload Metadata file
+      institutes:
+        orgs_legend: "Organisations listed on this page are associated in various ways with deposited collections. They include depositing organisations, contributing partners, collaborating institutions, and funding agencies. For a list of DRI Members, see the <a href='%{url}'>Membership page</a>."
       licences:
         all_rights_reserved: Please see rights statement
         buttons:
