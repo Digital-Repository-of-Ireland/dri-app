@@ -2,7 +2,7 @@
 <% style='' %>
 
 <h3><%= t('dri.views.collection.institute.title') %></h3>
-<p><%= t('dri.views.collection.institute.what_is_org_text') %></p>
+<p><%= t('dri.views.institutes.orgs_legend', url: 'http://www.dri.ie/membership').html_safe %></p>
 <div class="dri_section_block">
 <% @institutes.each_with_index do |institute, i| %>
     <% style='not_first' unless i == 0 %>
