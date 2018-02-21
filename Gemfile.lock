@@ -20,13 +20,6 @@ GIT
       json
 
 GIT
-  remote: https://github.com/ekilfeather/videojs_rails.git
-  revision: 605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd
-  ref: 605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd
-  specs:
-    videojs_rails (4.11.4)
-
-GIT
   remote: https://github.com/stkenny/avalon_ingest
   revision: 14ef32f5c00b0097de54c823151c6c06871ba1a0
   specs:
@@ -1012,7 +1005,6 @@ DEPENDENCIES
   unicode
   unicorn
   user_group!
-  videojs_rails!
   yard
   zeus
 

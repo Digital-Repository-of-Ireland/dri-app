@@ -23,7 +23,9 @@ gem 'paper_trail', '~> 4'
 
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.5.3'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.2.2'
+
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git'
+gem 'roo', '2.6.0'
 
 gem 'active-fedora', '9.11'
 gem 'active_fedora-noid', '1.1.1'
@@ -42,7 +44,6 @@ gem 'feedjira'
 gem 'moab-versioning'
 gem 'browse-everything', git: 'https://github.com/stkenny/browse-everything.git', branch: 'feature/per_user'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
-gem 'roo', '2.6.0'
 
 # File processing gems
 gem 'mimemagic'
@@ -158,7 +159,6 @@ gem 'rvm'
 # UI widgets
 gem 'colorbox-rails'
 gem 'bootstrap-switch-rails'
-gem 'videojs_rails', git: 'https://github.com/ekilfeather/videojs_rails.git', ref: '605afa19acc03c4e7a1fc7a4031fa6a3311ffdcd'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 gem 'openlayers-rails'
 gem 'social-share-button'

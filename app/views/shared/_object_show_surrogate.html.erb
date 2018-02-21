@@ -4,11 +4,11 @@
     <% if generic_file.audio? %>
         <% @surrogate = surrogate_url(document.id, generic_file.id, "mp3") %>
         <% if @surrogate %>
-            <audio id="surrogate_audio" class="video-js vjs-default-skin" controls
+            <audio id="surrogate_audio" controls
              preload="auto" width="100%" height="100"  data-setup='{}'>
               <source src="<%= @surrogate %>" type="audio/mpeg" >
             </audio>
-            <%= render partial: 'object_show_single_audio_details', locals: { generic_file: generic_file } %>
+            <%= render partial: 'shared/object_show_single_audio_details', locals: { generic_file: generic_file } %>
         <% end %>
 
     <% elsif generic_file.video? %>
@@ -16,11 +16,7 @@
         <% @surrogate_mp4 = surrogate_url(document.id, generic_file.id, "mp4") %>
         <% @surrogate = @surrogate_webm %>
         <% if @surrogate_webm %>
-            <!-- Video JS handles video playback but requires javascript -->
-            <%= videojs_rails sources: { webm: @surrogate_webm, mp4: @surrogate_mp4, setup: "{}", controls: true }, width:"100%", height: "270px" %>
-            <!-- ><video controls>
-              <source src="<%= @surrogate %>" type="video/webm">
-            </video> -->
+            <%= video_tag ["#{@surrogate_webm}", "#{@surrogate_mp4}"], controls: true, width:"100%", height: "270px" %>
         <% end %>
 
     <% elsif generic_file.pdf? %>
