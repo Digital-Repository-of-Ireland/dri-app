@@ -19,26 +19,21 @@
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav dri_uppercase">
-				<%= render 'shared/header_main_common_nav' %>
-				<%= render 'shared/header_main_nav_lang' %>
+			  <%= render 'shared/header_main_common_nav' %>
+			  <%= render 'shared/header_main_nav_lang' %>
 
-      <% if !current_user %>
-          <li class="hidden-sm hidden-md hidden-lg">
-            <%= link_to "Sign Up", user_group.new_user_path %>
-          </li>
-      <% end %>
-      <li class="hidden-sm hidden-md hidden-lg">
-        <% if current_user %>
-            <%= link_to t('blacklight.header_links.logout'), main_app.destroy_user_session_path, :method => :delete %>
-        <% else %>
-            <%= link_to t('blacklight.header_links.login'), main_app.new_user_session_path%>
-        <% end %>
-
-      </li>
-
-			</ul>
-
-			</li>
+		      <% unless current_user %>
+		        <li class="hidden-sm hidden-md hidden-lg">
+		          <%= link_to "Sign Up", user_group.new_user_path %>
+		        </li>
+		      <% end %>
+		      <li class="hidden-sm hidden-md hidden-lg">
+		        <% if current_user %>
+		            <%= link_to t('blacklight.header_links.logout'), main_app.destroy_user_session_path, :method => :delete %>
+		        <% else %>
+		            <%= link_to t('blacklight.header_links.login'), main_app.new_user_session_path%>
+		        <% end %>
+		      </li>
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->

@@ -41,6 +41,8 @@
 //= require timelineJS3
 //= require dri_batch_ingest
 //= slick-scroller
-//= require dri-timeline
-//= require dri/
+//= require dri/timeline
+//= require dri/forms
+//= require dri/spinner
+//= require dri
 
