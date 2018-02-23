@@ -46,5 +46,6 @@ class ReviewCollectionJob < StatusJob
   def update(identifier, total, completed)
     at(completed, total,
        "Reviewing #{identifier}: #{completed} of #{total} sub-collections marked as reviewed")
+    UserBackgroundTask.find_by(job: uuid).try(:update)
   end
 end
