@@ -49,5 +49,6 @@ class PublishCollectionJob < StatusJob
   def update(identifier, total, completed)
     at(completed, total,
         "Publishing #{identifier}: #{completed} of #{total} sub-collections marked as published")
+    UserBackgroundTask.find_by(job: uuid).try(:update)
   end
 end
