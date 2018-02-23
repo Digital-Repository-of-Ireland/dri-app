@@ -278,7 +278,7 @@
 				<button type="button" class="dri_button" data-dismiss="modal">
 						<%= t('dri.window.modal.close') %>
 					</button>
-					<%= button_to review_path(:apply_all => 'yes'), :class =>"dri_button_green", form: {style: 'display:inline-block;'}, :id => "all_objects_reviewed", :method => :put do %>
+					<%= button_to review_path(:apply_all => 'yes'), :class =>"dri_button_green", form: { style: 'display:inline-block;', id: 'review_collection' }, :id => "all_objects_reviewed", :method => :put do %>
 					  <%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
 					<% end %>
 			</div>
@@ -310,7 +310,7 @@
                                 <button type="button" class="dri_button" data-dismiss="modal">
                                                 <%= t('dri.window.modal.close') %>
                                         </button>
-                                        <%= button_to publish_path(@document), :class =>"dri_button_green", form: {style: 'display:inline-block;'}, :id => "publish", :method => :put do %>
+                                        <%= button_to publish_path(@document), :class =>"dri_button_green", form: {style: 'display:inline-block;', id: 'publish_collection'}, :id => "publish", :method => :put do %>
                                           <%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
                                         <% end %>
                         </div>
@@ -452,3 +452,12 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<script>
+  $('#review_collection').one('submit', function() {
+    $(this).find('button[type="submit"]').attr('disabled','disabled');
+  });
+   $('#publish_collection').one('submit', function() {
+    $(this).find('button[type="submit"]').attr('disabled','disabled');
+  });
+</script>
