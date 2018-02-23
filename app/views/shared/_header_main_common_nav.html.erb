@@ -23,9 +23,12 @@
 <%= link_to t('dri.headerlinks.institutions'), main_app.organisations_path, id: 'institutions' %>
 </li>
 
+<% enabled = false %>
+<% if enabled %>
 <li>
-<%= link_to t('dri.headerlinks.membership'), 'http://www.dri.ie/membership', id: 'dri_membership' %>
+  <%= render 'shared/header_main_membership_dropdown' %>
 </li>
+<% end %>
 
 <li>
   <%= render 'shared/header_main_about_dropdown' %>
