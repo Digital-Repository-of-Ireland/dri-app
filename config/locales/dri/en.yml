@@ -192,12 +192,15 @@ en:
       manage: Manage
       manage_users: Add Collection Manager
       membership: Membership
+      member_benefits: Member Benefits
+      membership_fees: Membership Fees
       my_collections: My Collections
       my_tasks: Background Tasks
       new_collection: New Collection
       new_organisation: New Organisation
       object: Object
       objects: Objects
+      our_members: Our Members
       people: People
       privacy: 'Privacy & Cookies policy'
       privacy_statement: Privacy Statement
@@ -210,6 +213,7 @@ en:
       team: Team
       usergroups: 'Users & Groups'
       vacancies: Vacancies
+      why_join_dri: 'Why Join DRI?'
       workspace: Workspace
       find_us: 'Find Us'
     help:
