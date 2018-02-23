@@ -133,7 +133,7 @@ class InstitutesController < ApplicationController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.organisations_set')
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.id }
     end
   end
 
@@ -171,7 +171,7 @@ class InstitutesController < ApplicationController
       preservation.preserve(false, false, ['properties'])
 
       respond_to do |format|
-        format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.id }
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.id }
       end
     end
 
