@@ -23,12 +23,9 @@
 <%= link_to t('dri.headerlinks.institutions'), main_app.organisations_path, id: 'institutions' %>
 </li>
 
-<% enabled = false %>
-<% if enabled %>
 <li>
   <%= render 'shared/header_main_membership_dropdown' %>
 </li>
-<% end %>
 
 <li>
   <%= render 'shared/header_main_about_dropdown' %>
