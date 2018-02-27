@@ -58,22 +58,4 @@ module DocumentHelper
 
     children_array
   end
-
-  def get_object_relationships(document)
-    relationships = document.object_relationships
-    filtered_relationships = {}
-
-    relationships.each do |key, array|
-      filtered_array = array.select { |item| item[1].published? || ((current_user && current_user.is_admin?) || can?(:edit, item[1])) }
-      unless filtered_array.empty?
-        filtered_relationships[key] = Kaminari.paginate_array(filtered_array).page(params[key.downcase.gsub(/\s/, '_') << '_page']).per(4)
-      end
-    end
-
-    filtered_relationships
-  end
-
-  def get_external_relationships(document)
-    Kaminari.paginate_array(document.external_relationships).page(params[:externs_page]).per(4)
-  end
 end

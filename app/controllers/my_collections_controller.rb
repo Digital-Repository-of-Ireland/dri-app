@@ -287,6 +287,7 @@ class MyCollectionsController < ApplicationController
     available_institutes
     files_and_surrogates
     supported_licences
+    relationships
 
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 

@@ -236,6 +236,7 @@ class CatalogController < ApplicationController
     institutes
     files
     supported_licences
+    relationships
 
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 
