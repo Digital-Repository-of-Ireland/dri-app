@@ -1,34 +1,11 @@
 # -*- encoding : utf-8 -*-
-require 'iso8601'
-require 'iso-639'
-
-# Blacklight catalog controller
-#
 class CatalogController < ApplicationController
-  include Blacklight::Catalog
-  include Hydra::Controller::ControllerBehavior
-  # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
-  include Hydra::AccessControlsEnforcement
-
-  include DRI::Readable
-
-  # This method shows the DO if the metadata is open
-  # rather than before where the user had to have read permissions on the object all the time
-  def enforce_search_for_show_permissions
-    enforce_permissions!("show_digital_object", params[:id])
-  end
-  # These before_filters apply the hydra access controls
-  before_action :enforce_search_for_show_permissions, only: :show
-
-  # Workaround to user_parameters not being persisted in search_params_filter
-  #before_action :modify_user_parameters, only: :index
-
+  include DRI::Catalog
+     
   # This applies appropriate access controls to all solr queries
   CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
   CatalogController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
-
-  MAX_TIMELINE_ENTRIES = 50
 
   configure_blacklight do |config|
     config.show.route = { controller: 'catalog' }
@@ -310,77 +287,16 @@ class CatalogController < ApplicationController
     solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('status', :facetable, type: :string)}:published"
   end
 
-  def configure_timeline(solr_parameters, user_parameters)
-    if user_parameters[:view] == 'timeline'
-      tl_field = user_parameters[:tl_field].presence || 'sdate'
-
-      case tl_field
-      when 'cdate'
-        solr_parameters[:fq] << "+cdateRange:*"
-        solr_parameters[:fq] << "+cdate_range_start_isi:[* TO *]"
-        solr_parameters[:sort] = "cdate_range_start_isi asc"
-      when 'pdate'
-        solr_parameters[:fq] << "+pdateRange:*"
-        solr_parameters[:fq] << "+pdate_range_start_isi:[* TO *]"
-        solr_parameters[:sort] = "pdate_range_start_isi asc"
-      else
-        solr_parameters[:fq] << "+sdateRange:*"
-        solr_parameters[:fq] << "+sdate_range_start_isi:[* TO *]"
-        solr_parameters[:sort] = "sdate_range_start_isi asc"
-      end
-
-      solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
-
-      if params[:tl_page].present? && params[:tl_page].to_i > 1
-        solr_parameters[:start] = MAX_TIMELINE_ENTRIES * (params[:tl_page].to_i - 1)
-      else
-        solr_parameters[:start] = 0
-      end
-    else
-      params.delete(:tl_page)
-      params.delete(:tl_field)
-    end  
-  end
-
   # method to find the Institutes associated with the current collection (document)
   def institutes
-    # the full list of Institutes
     # the Institutes currently associated with this collection if any
     @collection_institutes = @document.institutes
     # the Depositing Institute if any
     @depositing_institute = @document.depositing_institute
-
-    @depositors = Institute.where(depositing: true).map { |item| item['name'] }
-
-    collection_institutes_array = []
-    depositing_institute_array = []
-
-    depositing_institute_array.push(@depositing_institute.name) unless @depositing_institute.blank?
-
-    @collection_institutes.each { |inst| collection_institutes_array.push(inst.name) } unless @collection_institutes.empty?
   end
 
   def files
     @displayfiles = @document.assets(false)
     @displayfiles.sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
-  end
-  
-  # If querying geographical_coverage, then query the Solr geospatial field
-  #
-  def subject_place_filter(solr_parameters, user_parameters)
-    # Find index of the facet geographical_coverage_sim
-    geographical_idx = nil
-    solr_parameters[:fq].each.with_index do |f_elem, idx|
-      geographical_idx = idx if f_elem.include?('geographical_coverage')
-    end
-
-    unless geographical_idx.nil?
-      geo_string = solr_parameters[:fq][geographical_idx]
-      coordinates = DRI::Metadata::Transformations.get_spatial_coordinates(geo_string)
-
-      if coordinates.present?
-        solr_parameters[:fq][geographical_idx] = "geospatial:\"Intersects(#{coordinates})\""
-      end
-    end
   end
 end

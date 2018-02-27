@@ -1,29 +1,14 @@
 # -*- encoding : utf-8 -*-
-# Blacklight catalog controller
-#
 class MyCollectionsController < ApplicationController
-  include Blacklight::Catalog
-  include Hydra::Controller::ControllerBehavior
-
-  include Hydra::AccessControlsEnforcement
-  include DRI::Readable
-
+  include DRI::Catalog
+  
   before_action :authenticate_user_from_token!
   before_action :authenticate_user!
 
-  # This method shows the DO if the metadata is open
-  # Rather than before where the user had to have read permissions on the object all the time
-  def enforce_search_for_show_permissions
-    enforce_permissions!('show_digital_object', params[:id])
-  end
-  # These before_filters apply the hydra access controls
-  before_action :enforce_search_for_show_permissions, only: :show
   # This applies appropriate access controls to all solr queries
   MyCollectionsController.solr_search_params_logic += [:add_access_controls_to_solr_params_no_pub]
   # This filters out objects that you want to exclude from search results, like FileAssets
-  MyCollectionsController.solr_search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
-  
-  MAX_TIMELINE_ENTRIES = 50
+  MyCollectionsController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
 
   configure_blacklight do |config|
     config.show.route = { controller: 'my_collections' }
@@ -264,39 +249,7 @@ class MyCollectionsController < ApplicationController
       solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
     end
   end
-
-  def configure_timeline(solr_parameters, user_parameters)
-    if user_parameters[:view] == 'timeline'
-      tl_field = user_parameters[:tl_field].presence || 'sdate'
-
-      case tl_field
-      when 'cdate'
-        solr_parameters[:fq] << "+cdateRange:*"
-        solr_parameters[:fq] << "+cdate_range_start_isi:[* TO *]"
-        solr_parameters[:sort] = "cdate_range_start_isi asc"
-      when 'pdate'
-        solr_parameters[:fq] << "+pdateRange:*"
-        solr_parameters[:fq] << "+pdate_range_start_isi:[* TO *]"
-        solr_parameters[:sort] = "pdate_range_start_isi asc"
-      else
-        solr_parameters[:fq] << "+sdateRange:*"
-        solr_parameters[:fq] << "+sdate_range_start_isi:[* TO *]"
-        solr_parameters[:sort] = "sdate_range_start_isi asc"
-      end
-
-      solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
-
-      if params[:tl_page].present? && params[:tl_page].to_i > 1
-        solr_parameters[:start] = MAX_TIMELINE_ENTRIES * (params[:tl_page].to_i - 1)
-      else
-        solr_parameters[:start] = 0
-      end
-    else
-      params.delete(:tl_page)
-      params.delete(:tl_field)
-    end  
-  end
-
+  
   def self.controller_path
     'my_collections'
   end
@@ -394,30 +347,29 @@ class MyCollectionsController < ApplicationController
     @files = @document.assets(true)
     @files.sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
 
-    @displayfiles = []
+    @displayfiles = @files.reject { |file| file.preservation_only? }
     @surrogates = {}
     @status = {}
 
     @files.each do |file|
-      @displayfiles << file unless file.preservation_only?
-
       # get the surrogates for this file if they exist
       surrogates = @document.surrogates(file.id)
       if surrogates
-        file_list = {}
-        surrogates.each do |key, _path|
-          file_list[key] = url_for(object_file_url(
-                                     object_id: @document.id, id: file.id, surrogate: key
-                                  ))
-        end
-
-        @surrogates[file.id] = file_list unless file_list.empty?
+        @surrogates[file.id] = surrogates_with_url(file.id, surrogates)
+      else 
+        file_status(file.id)
       end
-
-      file_status(file.id) if @surrogates[file.id].blank?
     end
 
     ''
+  end
+
+  def surrogates_with_url(file_id, surrogates)
+    surrogates.each do |key, _path|
+      surrogates[key] = url_for(object_file_url(
+                              object_id: @document.id, id: file_id, surrogate: key
+                        ))
+    end
   end
 
   def file_status(file_id)
@@ -425,25 +377,6 @@ class MyCollectionsController < ApplicationController
     if ingest_status.present?
       status = ingest_status.first
       @status[file_id] = { status: status.status }
-    end
-  end
-  
-  # If querying geographical_coverage, then query the Solr geospatial field
-  #
-  def subject_place_filter(solr_parameters, user_parameters)
-    # Find index of the facet geographical_coverage_sim
-    geographical_idx = nil
-    solr_parameters[:fq].each.with_index do |f_elem, idx|
-      geographical_idx = idx if f_elem.include?('geographical_coverage')
-    end
-
-    unless geographical_idx.nil?
-      geo_string = solr_parameters[:fq][geographical_idx]
-      coordinates = DRI::Metadata::Transformations.get_spatial_coordinates(geo_string)
-
-      if coordinates.present?
-        solr_parameters[:fq][geographical_idx] = "geospatial:\"Intersects(#{coordinates})\""
-      end
     end
   end
 
