@@ -1,5 +1,5 @@
 module DRI
-  class CatalogCollectionPresenter < CollectionPresenter
+  class CatalogPresenter < ObjectPresenter
 
     def children
       @children ||= document.children(100).select { |child| child.published? }

@@ -1,5 +1,5 @@
 module DRI
-  class MyCollectionsPresenter < CollectionPresenter
+  class MyCollectionsPresenter < ObjectPresenter
 
     def children
       @children ||= document.children(100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, doc)) }

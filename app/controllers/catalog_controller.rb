@@ -232,7 +232,7 @@ class CatalogController < ApplicationController
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
     @response, @document = fetch params[:id]
-    @presenter = DRI::CatalogCollectionPresenter.new(@document, view_context)
+    @presenter = DRI::CatalogPresenter.new(@document, view_context)
 
     institutes
     supported_licences

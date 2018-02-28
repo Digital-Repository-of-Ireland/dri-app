@@ -1,5 +1,5 @@
 module DRI
-  class CollectionPresenter
+  class ObjectPresenter
 
     attr_reader :document
     delegate :catalog_path, to: :@view
