@@ -283,6 +283,7 @@ class MyCollectionsController < ApplicationController
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
     @response, @document = fetch params[:id]
+    @presenter = DRI::MyCollectionsPresenter.new(@document, view_context)
 
     available_institutes
     files_and_surrogates
@@ -348,7 +349,6 @@ class MyCollectionsController < ApplicationController
     @files = @document.assets(true)
     @files.sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
 
-    @displayfiles = @files.reject { |file| file.preservation_only? }
     @surrogates = {}
     @status = {}
 

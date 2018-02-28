@@ -232,9 +232,9 @@ class CatalogController < ApplicationController
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
     @response, @document = fetch params[:id]
+    @presenter = DRI::CatalogCollectionPresenter.new(@document, view_context)
 
     institutes
-    files
     supported_licences
     relationships
 
@@ -294,10 +294,5 @@ class CatalogController < ApplicationController
     @collection_institutes = @document.institutes
     # the Depositing Institute if any
     @depositing_institute = @document.depositing_institute
-  end
-
-  def files
-    @displayfiles = @document.assets(false)
-    @displayfiles.sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
   end
 end

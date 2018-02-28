@@ -23,7 +23,7 @@
       <%= link_to object_path(@document, format: 'zip') do %>
         <i class="fa fa-download"></i>
       <% end %>
-      <%= label_tag(:all, t('dri.views.catalog.forms.download_all', count: @displayfiles.size)) %>
+      <%= label_tag(:all, t('dri.views.catalog.forms.download_all', count: @presenter.displayfiles.size)) %>
       <div> (<%= t('dri.views.catalog.forms.download_archive_explanation') %>)</div>
     </div>
   <% end %>

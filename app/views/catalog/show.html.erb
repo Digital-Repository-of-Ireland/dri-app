@@ -9,9 +9,8 @@
 <% # Render partial for Related Materials (QDC and MODS)  %>
 <%= render partial: "shared/show_related_items", locals: { params: params, document: @document } %>
 
-<% children = collection_children(@document, 500) %>
-<% if children.length > 0 %>
-  <%= render partial: "shared/show_children", locals: { document: @document, children: children } %>
+<% if @presenter.children.length > 0 %>
+  <%= render partial: "shared/show_children", locals: { document: @document, children: @presenter.display_children } %>
 <% end %>
 
 <div class="dri_section_block" id="institutes_block">
