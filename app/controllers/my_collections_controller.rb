@@ -286,10 +286,8 @@ class MyCollectionsController < ApplicationController
     @presenter = DRI::MyCollectionsPresenter.new(@document, view_context)
 
     available_institutes
-    files_and_surrogates
     supported_licences
-    relationships
-
+    
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 
     respond_to do |format|
@@ -342,43 +340,6 @@ class MyCollectionsController < ApplicationController
     @available_institutes = institutes_array - collection_institutes_array - depositing_institute_array
     # exclude the depositing Institute from the list of Institutes which can be removed
     @removal_institutes = collection_institutes_array - depositing_institute_array
-  end
-
-  def files_and_surrogates
-    # get assets including preservation
-    @files = @document.assets(true)
-    @files.sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
-
-    @surrogates = {}
-    @status = {}
-
-    @files.each do |file|
-      # get the surrogates for this file if they exist
-      surrogates = @document.surrogates(file.id)
-      if surrogates
-        @surrogates[file.id] = surrogates_with_url(file.id, surrogates)
-      else 
-        file_status(file.id)
-      end
-    end
-
-    ''
-  end
-
-  def surrogates_with_url(file_id, surrogates)
-    surrogates.each do |key, _path|
-      surrogates[key] = url_for(object_file_url(
-                              object_id: @document.id, id: file_id, surrogate: key
-                        ))
-    end
-  end
-
-  def file_status(file_id)
-    ingest_status = IngestStatus.where(asset_id: file_id)
-    if ingest_status.present?
-      status = ingest_status.first
-      @status[file_id] = { status: status.status }
-    end
   end
 
   def duplicates

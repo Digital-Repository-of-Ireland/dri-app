@@ -43,7 +43,7 @@
     <% end %>
   </li>
 
-  <% if @files.present? %>
+  <% if @presenter.files.present? %>
     <li>
       <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
         <%= hidden_field_tag "preservation", "true" %>

@@ -2,7 +2,7 @@ module DRI
   class ObjectPresenter
 
     attr_reader :document
-    delegate :catalog_path, to: :@view
+    delegate :catalog_path, :params, to: :@view
 
     def initialize(document, view_context)
       @view = view_context
@@ -11,6 +11,10 @@ module DRI
     
     def display_children
       children.map { |child| display_child(child) }
+    end
+
+    def external_relationships
+      Kaminari.paginate_array(document.external_relationships).page(params[:externs_page]).per(4)
     end
 
     private

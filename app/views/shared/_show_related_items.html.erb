@@ -1,11 +1,11 @@
-<% unless @relationships.empty? && @external_relationships.empty? %>
+<% unless @presenter.relationships.empty? && @presenter.external_relationships.empty? %>
   <div class="dri_section_block" id="related_materials">
     <div class="dri_section_title">
   	  <span><%= "#{t('dri.views.catalog.headers.related_materials')}" %></span>
     </div>
 
-    <% unless @relationships.empty? %>
-        <% @relationships.each do |key, value| -%>
+    <% unless @presenter.relationships.empty? %>
+        <% @presenter.relationships.each do |key, value| -%>
           
           <div class="dri_clearfix">
             <% value.take(4).each do |item| -%>
@@ -31,9 +31,9 @@
         <% end %>
     <% end %>
     
-    <% unless @external_relationships.empty? %>
+    <% unless @presenter.external_relationships.empty? %>
       <div class="dri_clearfix">
-    	  <% @external_relationships.each do |url| -%>
+    	  <% @presenter.external_relationships.each do |url| -%>
           <article class="">
     		  <%= link_to url, :target => "_blank"  do %>
     			  <div class="dri_content_block">
@@ -47,7 +47,7 @@
     		  </article>
         <% end %>
     	  <div class="dri_clearfix dri_float_right dri_related_items">
-          <%= paginate @external_relationships, param_name: 'externs_page' %>
+          <%= paginate @presenter.external_relationships, param_name: 'externs_page' %>
         </div>
   	  </div>
     <% end %>
