@@ -4,19 +4,20 @@
     <select multiple="multiple" size="10" id="select_institutes" name="institutes[]" 
             onchange="setDepositingOrgs()">
       
-      <% if @available_institutes %>
-        <% @available_institutes.each do |inst| %>
+      <% if @presenter.unassigned_organisations %>
+        <% @presenter.unassigned_organisations.each do |inst| %>
           <option value="<%= inst %>"><%= inst %></option>
         <% end %>
       <% end %>
 
-      <% if @depositing_institute %>
-        <option value="<%= @depositing_institute.name %>" selected="selected">
-        	<%= @depositing_institute.name %>
+      <%= @presenter.depositing_organisation %>
+      <% if @presenter.depositing_organisation %>
+        <option value="<%= @presenter.depositing_organisation.name %>" selected="selected">
+        	<%= @presenter.depositing_organisation.name %>
         </option>
       <% end %>
           
-      <% @removal_institutes.each do |inst| %>
+      <% @presenter.assigned_organisations.each do |inst| %>
         <option value="<%= inst %>" selected="selected"><%= inst %></option>
       <% end %>
     </select>
@@ -57,8 +58,8 @@
     $('option', select).remove();
     options[0] = new Option("<%= t('dri.views.collection.institute.not_set') %>", "not_set");   
 
-    <% if @depositors %>
-      var depositors = <%= raw(@depositors) %>
+    <% if @presenter.depositing_organisations %>
+      var depositors = <%= raw(@presenter.depositing_organisations) %>
     <% end %>
 
     if(orgs) {
@@ -67,8 +68,8 @@
         options[options.length] = new Option(text, text);
       });
     
-      <% if @depositing_institute %>
-        select.val("<%= @depositing_institute.name %>");
+      <% if @presenter.depositing_organisation %>
+        select.val("<%= @presenter.depositing_organisation.name %>");
       <% end %>
     }
   } 

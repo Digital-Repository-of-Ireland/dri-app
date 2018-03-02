@@ -8,11 +8,15 @@ module DRI
 
       @surrogates = {}
       @status = {}
-      load_surrogates
+      surrogate_or_status_info
     end
 
     def children
       @children ||= document.children(100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, doc)) }
+    end
+
+    def depositing_organisations
+      @depositing_organisations ||= Institute.where(depositing: true).pluck(:name)
     end
 
     def displayfiles
@@ -23,6 +27,10 @@ module DRI
       @files ||= @document.assets(true).sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
     end
 
+    def relationships
+      @relationships ||= object_relationships
+    end
+
     def surrogates(file_id)
       @surrogates[file_id]
     end
@@ -31,13 +39,17 @@ module DRI
       @status[file_id]
     end
 
-    def relationships
-      @relationships ||= object_relationships
+    def unassigned_organisations
+      @unassigned_organisations ||= all_organisations - current_collection_organisations - [depositing_organisation.try(:name)]
+    end
+
+    def assigned_organisations
+      @removal_institutes = current_collection_organisations - [depositing_organisation.try(:name)]
     end
 
     private
 
-      def load_surrogates
+      def surrogate_or_status_info
         files.each do |file|
           # get the surrogates for this file if they exist
           surrogates = document.surrogates(file.id)
@@ -77,6 +89,14 @@ module DRI
                               object_id: document.id, id: file_id, surrogate: key
                         ))
         end
+      end
+
+      def all_organisations
+        @all_organisations ||= Institute.all.pluck(:name)
+      end
+
+      def current_collection_organisations
+        @current_collection_organisations ||= organisations.map(&:name)
       end
   end
 end

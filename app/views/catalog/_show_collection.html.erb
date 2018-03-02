@@ -20,9 +20,9 @@
       <%= t('dri.views.fields.depositing_institute') %>
     </dt>
     <dd class="blacklight-depositing_institute">
-      <% if (@depositing_institute) %>
-      <% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { ActiveFedora.index_field_mapper.solr_name('institute', :facetable).to_sym => [@depositing_institute[:name].mb_chars.downcase] } } %>
-      <%= link_to @depositing_institute[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
+      <% if (@presenter.depositing_organisation) %>
+      <% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => { ActiveFedora.index_field_mapper.solr_name('institute', :facetable).to_sym => [@presenter.depositing_organisation[:name].mb_chars.downcase] } } %>
+      <%= link_to @presenter.depositing_organisation[:name], main_app.catalog_index_path(institute_browse_params), :id => 'depositing_institute' %>
       <% else %>
       <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', class: 'dri_manage_org_link' do %>
       <span class="label label-danger"><%= t('dri.views.fields.depositing_institute_not_set') %></span>

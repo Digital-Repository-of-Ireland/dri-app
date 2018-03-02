@@ -1,42 +1,26 @@
 
 <div class="dri_display_institutes">
-	<% if @collection_institutes || @depositing_institute %>
+	<% if @presenter.organisations || @presenter.depositing_organisation %>
 	<div class="dri_section_title">
 		<span><%= t('dri.views.collection.institute.title') %></span>
 	</div>
 
 
 	<ul class="dri_collection_institutes_list">
-		<% if @depositing_institute %>
+		<% if @presenter.depositing_organisation %>
 		<li>
 			<div class="dri_collection_institutes_item">
-				<%if @depositing_institute.brand.nil? && @depositing_institute.url.blank?%>
-				<%= @depositing_institute.name %>
-				<% elsif @depositing_institute.brand.nil? && !@depositing_institute.url.blank? %>
-				<%= link_to @depositing_institute.name, @depositing_institute.url, :target => "_blank" %>
-				<% elsif @depositing_institute.brand && @depositing_institute.url.blank? %>
-				<%= image_tag logo_path(@depositing_institute), :height => "75px", alt: @depositing_institute.brand.filename %>
-				<% else %>
-				<%= link_to image_tag(logo_path(@depositing_institute), :height => "75px", alt: @depositing_institute.brand.filename), @depositing_institute.url, :target => "_blank" %>
-				<% end %>
+				<%= @presenter.display_organisation(@presenter.depositing_organisation) %>
 			</div>
 		</li>
 		<% end %>
 
-		<% if @collection_institutes %>
-		  <% @collection_institutes.each do |inst| %>
-		    <% next if (@depositing_institute && @depositing_institute.name == inst.name) %>
+		<% if @presenter.organisations %>
+		  <% @presenter.organisations.each do |organisation| %>
+		    <% next if @presenter.depositing_organisation.try(:name) == organisation.name %>
 		    <li>
 			  <div class="dri_collection_institutes_item">
-				<%if inst.brand.nil? && inst.url.blank? %>
-				<%= inst.name %>
-				<% elsif inst.brand.nil? && !inst.url.blank? %>
-				<%= link_to inst.name, inst.url, :target => "_blank" %>
-				<% elsif inst.brand && inst.url.blank? %>
-				<%= image_tag logo_path(inst), :height => "75px", alt: inst.brand.name %>
-				<% else %>
-				<%= link_to image_tag(logo_path(inst), :height => "75px", alt: inst.brand.filename), inst.url, :target => "_blank" %>
-				<% end %>
+				<%= @presenter.display_organisation(organisation) %>
 			  </div>
 		    </li>
 		  <% end %>

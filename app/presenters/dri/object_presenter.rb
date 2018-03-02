@@ -2,7 +2,7 @@ module DRI
   class ObjectPresenter
 
     attr_reader :document
-    delegate :catalog_path, :params, to: :@view
+    delegate :catalog_path, :params, :link_to, :image_tag, :logo_path, to: :@view
 
     def initialize(document, view_context)
       @view = view_context
@@ -15,6 +15,26 @@ module DRI
 
     def external_relationships
       Kaminari.paginate_array(document.external_relationships).page(params[:externs_page]).per(4)
+    end
+
+    def organisations
+      @organisations ||= document.institutes
+    end
+
+    def depositing_organisation
+      @depositing_organisation ||= document.depositing_institute
+    end
+
+    def display_organisation(organisation)
+      if organisation.brand.nil? && organisation.url.blank?
+        organisaton.name
+      elsif organisation.brand.nil? && organisation.url.blank?
+        link_to(organisation.name, organisation.url, target: "_blank")
+      elsif organisation.brand && organisation.url.blank?
+        image_tag logo_path(organisation), height: "75px", alt: organisation.brand.filename
+      else
+        link_to image_tag(logo_path(organisation), height: "75px", alt: organisation.brand.filename), organisation.url, target: "_blank"
+      end
     end
 
     private

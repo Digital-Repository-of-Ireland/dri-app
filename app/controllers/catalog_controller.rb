@@ -234,7 +234,6 @@ class CatalogController < ApplicationController
     @response, @document = fetch params[:id]
     @presenter = DRI::CatalogPresenter.new(@document, view_context)
 
-    institutes
     supported_licences
     
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
@@ -285,13 +284,5 @@ class CatalogController < ApplicationController
       end
     end
     solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('status', :facetable, type: :string)}:published"
-  end
-
-  # method to find the Institutes associated with the current collection (document)
-  def institutes
-    # the Institutes currently associated with this collection if any
-    @collection_institutes = @document.institutes
-    # the Depositing Institute if any
-    @depositing_institute = @document.depositing_institute
   end
 end
