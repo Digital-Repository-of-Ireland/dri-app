@@ -39,7 +39,7 @@ DRI::ModelSupport::Files.module_eval do
       raise Exceptions::InternalError
     end
     
-    create_file(self, file, dsid, nil, filename)
+    create_local_file(self, file, dsid, nil, filename)
         
     preservation = Preservation::Preservator.new(self)
     preservation.preserve_assets([filename],[])

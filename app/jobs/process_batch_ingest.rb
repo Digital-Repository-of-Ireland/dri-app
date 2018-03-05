@@ -32,10 +32,7 @@ class ProcessBatchIngest
 
   def self.ingest_assets(user, object, assets)
     assets.each do |asset|
-      @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
-      @generic_file.batch = object
-      @generic_file.apply_depositor_metadata(user)
-      @generic_file.preservation_only = 'true' if asset[:label] == 'preservation'
+      build_generic_file(object)
 
       original_file_name = File.basename(asset[:path])
       file_name = "#{@generic_file.id}_#{original_file_name}"
@@ -112,7 +109,7 @@ class ProcessBatchIngest
     end
 
     begin
-      create_file(object, filedata, datastream, nil, filename)
+      create_local_file(object, filedata, datastream, nil, filename)
     rescue StandardError => e
       Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"
       return -1

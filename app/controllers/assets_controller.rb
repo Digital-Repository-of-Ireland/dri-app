@@ -24,9 +24,7 @@ class AssetsController < ApplicationController
       @document = SolrDocument.new(result.first)
 
       @generic_file = retrieve_object! params[:id]
-
       status(@generic_file.id)
-
       can_view?
 
       respond_to do |format|
@@ -161,7 +159,7 @@ class AssetsController < ApplicationController
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end
 
-    build_generic_file
+    build_generic_file(@object)
     preserve_file(file_upload, datastream, params)
     filename = params[:file_name].presence || file_upload.original_filename    
 
@@ -221,13 +219,6 @@ class AssetsController < ApplicationController
       return MIME::Types.type_for(file_name).first.content_type, ext
     end
 
-    def build_generic_file
-      @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
-      @generic_file.batch = @object
-      @generic_file.apply_depositor_metadata(current_user)
-      @generic_file.preservation_only = 'true' if params[:preservation] == 'true'
-    end
-
     def can_view?
       if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document)) 
         raise Hydra::AccessDenied.new(
@@ -236,34 +227,6 @@ class AssetsController < ApplicationController
           params[:object_id]
         )
       end
-    end
-
-    def preserve_file(filedata, datastream, params)
-      checksum = params[:checksum]
-      filename = params[:file_name].presence || filedata.original_filename
-      filename = "#{@generic_file.id}_#{filename}"
-
-      # Update object version
-      version = @object.object_version || '1'
-      object_version = (version.to_i + 1).to_s
-      @object.object_version = object_version
-
-      begin
-        @object.save!
-      rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not update object version number for #{@object.id} to version #{object_version}"
-        raise Exceptions::InternalError
-      end
-
-      create_file(@object, filedata, datastream, checksum, filename)
-
-      # Do the preservation actions
-      addfiles = [filename]
-      delfiles = []
-      delfiles = ["#{@generic_file.id}_#{@generic_file.label}"] if params[:action] == 'update'
-      
-      preservation = Preservation::Preservator.new(@object)
-      preservation.preserve_assets(addfiles, delfiles)
     end
 
     def delete_surrogates(bucket_name, file_prefix)
