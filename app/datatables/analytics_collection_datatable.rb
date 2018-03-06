@@ -1,35 +1,10 @@
-require 'legato'
-require 'signet/oauth_2/client'
-
-class ShowCollectionDatatable
+class AnalyticsCollectionDatatable
   delegate :current_user, :params, :catalog_path, :link_to, to: :@view
   delegate :user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
-  def initialize(view)
+  def initialize(profile, view)
     @view = view
-
-    key         = OpenSSL::PKCS12.new(File.read(Settings.analytics.keyfile), Settings.analytics.secret).key
-    auth_client = Signet::OAuth2::Client.new(
-                  token_credential_uri: Settings.analytics.token_credential_uri,
-                  audience: Settings.analytics.audience,
-                  scope: Settings.analytics.scope,
-                  issuer: Settings.analytics.issuer,
-                  signing_key: key,
-                  sub: Settings.analytics.sub)
-
-    access_token = auth_client.fetch_access_token!
-
-    oauth_client = OAuth2::Client.new('', '', {
-      authorize_url: 'https://accounts.google.com/o/oauth2/auth',
-      token_url: 'https://accounts.google.com/o/oauth2/token'
-    })
-
-    @token = OAuth2::AccessToken.new(oauth_client, access_token['access_token'], expires_in: access_token['expires_in'])
-
-    @user  = Legato::User.new(@token)
-
-    @profile = Legato::Management::Profile.all(@user).select {|p| p.id == Settings.analytics.profile_id}.first    
-    
+    @profile = profile    
   end
 
   def as_json(options = {})
@@ -44,7 +19,6 @@ class ShowCollectionDatatable
 private
 
   def data
-
     data = display_on_page(collection_id)
     formatted_data = data.map do |entry|
       [
@@ -62,9 +36,9 @@ private
   # if none then just return empty array
   # else get analytics for these collection ids and return analytics
   def fetch_analytics(collection)
-    views = AnalyticsObjectUsers.results(@profile, :start_date => startdate, :end_date => enddate).collection(collection).to_a
-    downloads = AnalyticsObjectEvents.results(@profile, :start_date => startdate, :end_date => enddate).collection(collection).action('Download').to_a
-    hits = AnalyticsObjectEvents.results(@profile, :start_date => startdate, :end_date => enddate).collection(collection).action('View').to_a
+    views = AnalyticsObjectUsers.results(@profile, start_date: startdate, end_date: enddate).collection(collection).to_a
+    downloads = AnalyticsObjectEvents.results(@profile, start_date: startdate, end_date: enddate).collection(collection).action('Download').to_a
+    hits = AnalyticsObjectEvents.results(@profile, start_date: startdate, end_date: enddate).collection(collection).action('View').to_a
 
     downloads.map{|r| r[:dimension3] = r.delete_field(:eventLabel) }
     hits.map{|r| r[:dimension3] = r.delete_field(:eventLabel) }
@@ -75,18 +49,18 @@ private
     object_hash = get_object_names(collection)
     analytics.map{ |r| r[:title] = object_hash[r[:dimension3]] }
 
-    if sort_column.eql?('title')
+    if sort_column == 'title'
       analytics.sort_by! { |hsh| hsh[sort_column.to_sym] }
     else
       analytics.sort_by! { |hsh| hsh[sort_column.to_sym].to_i }
     end
-    analytics.reverse! if sort_direction.eql?('desc')
+    analytics.reverse! if sort_direction == 'desc'
 
-    return analytics
+    analytics
   end
 
   def display_on_page(collection)
-    return Kaminari.paginate_array(fetch_analytics(collection)).page(page).per(per_page)
+    Kaminari.paginate_array(fetch_analytics(collection)).page(page).per(per_page)
   end 
 
   def page
@@ -136,7 +110,7 @@ private
       objects = solr_query.pop
       objects.map { |o| object_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
     end
-    return object_hash
+    object_hash
   end
     
 end

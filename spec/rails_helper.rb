@@ -38,3 +38,5 @@ RSpec.configure do |config|
   config.include Warden::Test::Helpers, type: :request
   config.include PreservationHelper
 end
+
+Rails.application.eager_load!
