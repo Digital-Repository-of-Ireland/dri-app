@@ -18,7 +18,7 @@ describe 'ProcessBatchIngest' do
   end
 
   after(:each) do
-    @login_user.delete
+    @login_user.delete if @login_user
   end
 
   context "ingest metadata" do
