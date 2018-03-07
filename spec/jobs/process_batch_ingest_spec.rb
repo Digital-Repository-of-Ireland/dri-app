@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe 'ProcessBatchIngest' do
 
-  before do
-    allow(ProcessBatchIngest).to receive(:current_user).and_return(@login_user)
+  before(:each) do
     allow(ProcessBatchIngest).to receive(:params).and_return({preservation: 'false'})
     allow_any_instance_of(DRI::GenericFile).to receive(:apply_depositor_metadata)
     allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)

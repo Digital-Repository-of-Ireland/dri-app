@@ -159,7 +159,7 @@ class AssetsController < ApplicationController
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end
 
-    build_generic_file(@object)
+    build_generic_file(@object, current_user)
     preserve_file(file_upload, datastream, params)
     filename = params[:file_name].presence || file_upload.original_filename    
 

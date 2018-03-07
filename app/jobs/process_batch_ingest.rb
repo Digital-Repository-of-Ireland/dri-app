@@ -32,7 +32,7 @@ class ProcessBatchIngest
 
   def self.ingest_assets(user, object, assets)
     assets.each do |asset|
-      build_generic_file(object)
+      build_generic_file(object, user)
 
       original_file_name = File.basename(asset[:path])
       file_name = "#{@generic_file.id}_#{original_file_name}"
