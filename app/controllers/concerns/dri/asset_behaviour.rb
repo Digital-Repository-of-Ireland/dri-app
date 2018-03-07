@@ -1,11 +1,11 @@
 module DRI::AssetBehaviour
   extend ActiveSupport::Concern
 
-  def build_generic_file(object, user)
+  def build_generic_file(object:, user:, preservation: false)
     @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
     @generic_file.batch = object
     @generic_file.apply_depositor_metadata(user)
-    @generic_file.preservation_only = 'true' if params[:preservation] == 'true'
+    @generic_file.preservation_only = 'true' if preservation
   end
 
   # asset controller
