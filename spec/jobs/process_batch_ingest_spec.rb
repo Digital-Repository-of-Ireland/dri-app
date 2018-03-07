@@ -3,7 +3,6 @@ require 'rails_helper'
 describe 'ProcessBatchIngest' do
 
   before do
-    allow_any_instance_of(ProcessBatchIngest).to receive(:update_master_file)
     allow(ProcessBatchIngest).to receive(:current_user).and_return(@login_user)
     allow(ProcessBatchIngest).to receive(:params).and_return({preservation: 'false'})
     allow_any_instance_of(DRI::GenericFile).to receive(:apply_depositor_metadata)
