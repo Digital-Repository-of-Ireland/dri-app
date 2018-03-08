@@ -174,7 +174,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (6.0.4)
     ast (2.3.0)
-    autoprefixer-rails (8.0.0)
+    autoprefixer-rails (8.1.0)
       execjs
     aws-partitions (1.53.0)
     aws-sdk-core (3.13.0)
@@ -522,8 +522,7 @@ GEM
       slop
     leaflet-markercluster-rails (0.7.0)
       railties (>= 3.1)
-    leaflet-rails (1.2.0)
-      rails (>= 4.2.0)
+    leaflet-rails (0.7.4)
     legato (0.7.0)
       multi_json
     link_header (0.0.8)
@@ -641,7 +640,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.0.2)
-    rack (1.6.8)
+    rack (1.6.9)
     rack-protection (1.5.4)
       rack
     rack-test (0.6.3)
@@ -964,6 +963,7 @@ DEPENDENCIES
   jquery-xmleditor-rails!
   jwt (= 1.5.2)
   launchy
+  leaflet-rails (= 0.7.4)
   legato
   mimemagic
   moab-versioning
