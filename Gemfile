@@ -9,6 +9,7 @@ gem 'sinatra', '1.4.8'
 
 gem 'blacklight', '~> 5.19.0'
 gem 'blacklight-maps'
+gem 'leaflet-rails', '0.7.4'
 gem 'hydra-head', '9.10'
 
 gem 'riiif', '1.2.0'
