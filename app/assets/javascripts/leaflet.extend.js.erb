@@ -1,0 +1,6 @@
+DefaultIcon = L.icon({
+    iconUrl: "<%= asset_url("marker-icon.png") %>",
+    shadowUrl:  "<%= asset_url("marker-shadow.png") %>",
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;

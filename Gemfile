@@ -8,7 +8,7 @@ gem 'rails','~> 4.2'
 gem 'sinatra', '1.4.8'
 
 gem 'blacklight', '~> 5.19.0'
-gem 'blacklight-maps'
+
 gem 'hydra-head', '9.10'
 
 gem 'riiif', '1.2.0'
@@ -59,9 +59,6 @@ gem 'syslog-logger'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-cookie-rails'
-gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
-gem "jquery-slick-rails"
-gem 'remotipart'
 
 # clients
 gem 'rest-client'
@@ -163,3 +160,13 @@ gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 gem 'openlayers-rails'
 gem 'social-share-button'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
+
+gem 'blacklight-maps'
+gem 'leaflet-rails', '1.0.0'
+gem 'rails-assets-leaflet', '1.1.0', source: 'https://rails-assets.org'
+gem 'rails-assets-leaflet.markercluster', '1.3.0', source: 'https://rails-assets.org'
+
+gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
+gem "jquery-slick-rails"
+gem 'remotipart'
+
