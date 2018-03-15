@@ -12,6 +12,7 @@ if !zeus_running?
     SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
     SimpleCov.start do 
         add_filter "/spec/"
+        add_filter "/config/"
     end
 end
 
