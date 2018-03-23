@@ -25,7 +25,7 @@ module DRI::Sparql
             name = "#{s[:nameGA].value}/#{s[:nameEN]}"
             north = s[:lat].value
             east = s[:long].value
-            points << DRI::Metadata::Transformations.geojson_string_from_coords(name, "#{east} #{north}")
+            points << DRI::Metadata::Transformations::SpatialTransformations.coords_to_geojson_string(name, "#{east} #{north}")
           end
         end
 
