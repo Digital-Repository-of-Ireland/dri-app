@@ -69,8 +69,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: b655d156df0825db147d8ecddb02058b9823b391
-  branch: develop
+  revision: 5d68f1611cfad64d3a4f03db4c9607a041bdfa1c
+  tag: v2.5.4
   specs:
     dri_data_models (2.5.4)
       active-fedora (= 9.11)
@@ -88,8 +88,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: bfd96039bbce9d48b292c39d04beb9c518e4830f
-  branch: develop
+  revision: 27613a3c241383daa26c9c07ec238a3384310d8c
+  tag: v1.2.2
   specs:
     user_group (1.2.2)
       devise
@@ -285,10 +285,10 @@ GEM
     deep_merge (1.1.1)
     deprecation (0.99.0)
       activesupport
-    devise (4.4.1)
+    devise (4.4.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0, < 5.2)
+      railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
     devise-guests (0.6.0)
@@ -744,7 +744,7 @@ GEM
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
       uber (< 0.2.0)
-    request_store (1.4.0)
+    request_store (1.4.1)
       rack (>= 1.4)
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
