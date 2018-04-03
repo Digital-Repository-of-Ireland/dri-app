@@ -20,6 +20,11 @@ describe Institute do
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
+  it "should allow for a logo to be added" do
+    uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_logo.png"), "image/png")
+    expect(Institute.new.add_logo(uploaded, { name: 'Test logo', url: @institute.url })).to be true
+  end
+
   it "should return the collections it is associated with" do
     @collection.institute = [@institute.name]
     @collection.save

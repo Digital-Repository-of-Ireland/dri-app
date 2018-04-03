@@ -12,6 +12,7 @@ if !zeus_running?
     SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
     SimpleCov.start do 
         add_filter "/spec/"
+        add_filter "/config/"
     end
 end
 
@@ -38,3 +39,5 @@ RSpec.configure do |config|
   config.include Warden::Test::Helpers, type: :request
   config.include PreservationHelper
 end
+
+Rails.application.eager_load!

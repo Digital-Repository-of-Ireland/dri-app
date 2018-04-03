@@ -1,11 +1,12 @@
-class Report
+class StatsReport
   include ActiveModel::Model
 
   def self.mime_type_counts
     type_counts = {}
 
-    result = ActiveFedora::SolrService.get('*:*', facet: true, 'facet.field' => 'mime_type_sim')
-    facet = result['facet_counts']['facet_fields']['mime_type_sim']
+    result = ActiveFedora::SolrService.get('has_model_ssim:"DRI::GenericFile"', facet: true, 'facet.field' => 'file_format_sim')
+
+    facet = result['facet_counts']['facet_fields']['file_format_sim']
     facet.each_slice(2) { |type,count| type_counts[type] = count }
   
     type_counts

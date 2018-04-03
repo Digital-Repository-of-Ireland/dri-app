@@ -8,13 +8,10 @@ class LinkedDataJob < ActiveFedoraIdBasedJob
   end
 
   def run
-    Rails.logger.info "Retrieving linked data for  #{object.id}"
+    Rails.logger.info "Retrieving linked data for #{object.id}"
 
-    uris = []
-    object.geographical_coverage.each do |g|
-      uris << g if g.start_with?('http')
-    end
-
+    uris = object.geographical_coverage.select { |g| g.start_with?('http') }
+    
     uris.each do |uri|
       host = URI(uri).host
       if AuthoritiesConfig && AuthoritiesConfig[host].present?

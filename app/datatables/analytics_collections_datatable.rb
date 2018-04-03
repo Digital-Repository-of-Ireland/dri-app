@@ -1,35 +1,10 @@
-require 'legato'
-require 'signet/oauth_2/client'
-
-class MyCollectionsDatatable
+class AnalyticsCollectionsDatatable
   delegate :current_user, :params, :analytic_path, :link_to, to: :@view
   delegate :user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
-  def initialize(view)
+  def initialize(profile, view)
     @view = view
-
-    key         = OpenSSL::PKCS12.new(File.read(Settings.analytics.keyfile), Settings.analytics.secret).key
-    auth_client = Signet::OAuth2::Client.new(
-                  token_credential_uri: Settings.analytics.token_credential_uri,
-                  audience: Settings.analytics.audience,
-                  scope: Settings.analytics.scope,
-                  issuer: Settings.analytics.issuer,
-                  signing_key: key,
-                  sub: Settings.analytics.sub)
-
-    access_token = auth_client.fetch_access_token!
-
-    oauth_client = OAuth2::Client.new('', '', {
-      authorize_url: 'https://accounts.google.com/o/oauth2/auth',
-      token_url: 'https://accounts.google.com/o/oauth2/token'
-    })
-
-    @token = OAuth2::AccessToken.new(oauth_client, access_token['access_token'], expires_in: access_token['expires_in'])
-
-    @user  = Legato::User.new(@token)
-
-    @profile = Legato::Management::Profile.all(@user).select {|p| p.id == Settings.analytics.profile_id}.first    
-    
+    @profile = profile
   end
 
   def as_json(options = {})
@@ -44,8 +19,7 @@ class MyCollectionsDatatable
 private
 
   def data
-
-    collections = get_collections()
+    collections = get_collections
     collection_hash = get_collection_names(collections)
  
     data = display_on_page(collections)
@@ -66,8 +40,8 @@ private
   def fetch_analytics(collections)
     return collections if collections.empty?
 
-    views = AnalyticsCollectionUsers.results(@profile, :start_date => startdate, :end_date => enddate).collections(*collections).to_a
-    downloads = AnalyticsCollectionEvents.results(@profile, :start_date => startdate, :end_date => enddate).collections(*collections).action('Download').to_a
+    views = AnalyticsCollectionUsers.results(@profile, start_date: startdate, end_date: enddate).collections(*collections).to_a
+    downloads = AnalyticsCollectionEvents.results(@profile, start_date: startdate, end_date: enddate).collections(*collections).action('Download').to_a
 
     downloads.map{|r| r[:dimension1] = r.delete_field(:eventCategory) }
     analytics = (views+downloads).map{|a| a.to_h }.group_by{|h| h[:dimension1] }.map{|k,v| v.reduce({}, :merge)}
@@ -75,18 +49,18 @@ private
     collection_hash = get_collection_names(collections)
     analytics.map{ |r| r[:title] = collection_hash[r[:dimension1]] }
 
-    if sort_column.eql?('title')
+    if sort_column == 'title'
       analytics.sort_by! { |hsh| hsh[sort_column.to_sym] }
     else
       analytics.sort_by! { |hsh| hsh[sort_column.to_sym].to_i }
     end
-    analytics.reverse! if sort_direction.eql?('desc')
+    analytics.reverse! if sort_direction == 'desc'
 
-    return analytics
+    analytics
   end
 
   def display_on_page(collections)
-    return Kaminari.paginate_array(fetch_analytics(collections)).page(page).per(per_page)
+    Kaminari.paginate_array(fetch_analytics(collections)).page(page).per(per_page)
   end 
 
   def page
@@ -114,14 +88,14 @@ private
     params[:enddate] || Date.today
   end
 
-  def get_collections()
+  def get_collections
     collections = []
 
-    if current_user.is_admin?
-      query = "*:*"
-    else
-        query = "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
-    end
+    query = if current_user.is_admin?
+              "*:*"
+            else
+              "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
+            end
     solr_query = Solr::Query.new(
       query,
       100,
@@ -136,7 +110,7 @@ private
       end
     end
 
-    return collections
+    collections
   end
 
   def get_collection_names(collections)
@@ -145,9 +119,11 @@ private
     collection_hash = {}
     while solr_query.has_more?
       object_docs = solr_query.pop
-      object_docs.map { |o| collection_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
+      object_docs.map do |o| 
+        collection_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first
+      end
     end
-    return collection_hash
+    collection_hash
   end
     
 end

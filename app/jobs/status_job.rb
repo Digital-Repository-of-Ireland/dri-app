@@ -22,7 +22,7 @@ class StatusJob
           failures += status['failed'] if status['failed'].present?
         end
 
-        update(identifier, total_jobs, completed)
+        update_status(identifier, total_jobs, completed)
       end
     end
 
@@ -31,5 +31,9 @@ class StatusJob
 
   def retrieve_status(job_ids)
     job_ids.map { |job| [job, Resque::Plugins::Status::Hash.get(job)]}.to_h
+  end
+
+  def update_status(identifier, total_jobs, completed)
+    update(identifier, total_jobs, completed)
   end
 end

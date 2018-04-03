@@ -2,6 +2,7 @@
 # yields the passed block
 def with_test_server(&block)
   with_server('test', &block)
+rescue EOFError
 end
 
 def with_server(environment)

@@ -71,11 +71,7 @@ class ObjectHistory
   end
 
   def fixity
-    if object.collection?
-      fixity_check_collection
-    else
-      fixity_check_object
-    end
+    object.collection? ? fixity_check_collection : fixity_check_object
   end
 
   def fixity_check_collection

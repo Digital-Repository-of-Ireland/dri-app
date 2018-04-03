@@ -8,8 +8,7 @@ gem 'rails','~> 4.2'
 gem 'sinatra', '1.4.8'
 
 gem 'blacklight', '~> 5.19.0'
-gem 'blacklight-maps'
-gem 'leaflet-rails', '0.7.4'
+
 gem 'hydra-head', '9.10'
 
 gem 'riiif', '1.2.0'
@@ -22,7 +21,7 @@ gem 'googleauth', '0.5.1'
 
 gem 'paper_trail', '~> 4'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.5.3'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.5.4'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.2.2'
 
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git'
@@ -60,9 +59,6 @@ gem 'syslog-logger'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-cookie-rails'
-gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
-gem "jquery-slick-rails"
-gem 'remotipart'
 
 # clients
 gem 'rest-client'
@@ -164,3 +160,13 @@ gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 gem 'openlayers-rails'
 gem 'social-share-button'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
+
+gem 'blacklight-maps'
+gem 'leaflet-rails', '1.0.0'
+gem 'rails-assets-leaflet', '1.1.0', source: 'https://rails-assets.org'
+gem 'rails-assets-leaflet.markercluster', '1.3.0', source: 'https://rails-assets.org'
+
+gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
+gem "jquery-slick-rails"
+gem 'remotipart'
+

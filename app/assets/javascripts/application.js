@@ -19,6 +19,8 @@
 //
 // Required by Blacklight-Maps
 //= require blacklight-maps
+//= require leaflet.markercluster
+//= require leaflet.extend
 //= require jquery.remotipart
 //= require jquery.cookie
 //= require jquery.validate
