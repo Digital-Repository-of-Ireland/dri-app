@@ -192,7 +192,7 @@ class CatalogController < ApplicationController
 
     config.view.maps.coordinates_field = 'geospatial'
     config.view.maps.placename_property = 'placename'
-    config.view.maps.tileurl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    config.view.maps.tileurl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     config.view.maps.mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     config.view.maps.maxzoom = 18
     config.view.maps.show_initial_zoom = 5
