@@ -32,8 +32,6 @@ gem 'active_fedora-noid', '1.1.1'
 
 gem 'config'
 gem 'sqlite3'
-gem 'mysql'
-gem 'mysql2'
 
 gem 'omniauth-shibboleth'
 gem 'oauth'
@@ -70,7 +68,6 @@ gem 'high_voltage', '~> 2.1.0'
 # monitoring 
 # is it working fork
 gem 'is_it_working-cbeer'
-gem 'honeybadger', '~> 2.0'
 gem 'resque', '1.26'
 gem 'resque-status'
 gem 'nest'
@@ -85,6 +82,9 @@ gem 'uglifier', '>= 1.0.3'
 
 group :production do
   gem 'clamav'
+  #gem 'mysql'
+  gem 'mysql2'
+  gem 'honeybadger', '~> 2.0'
 end
 
 group :development, :test do
