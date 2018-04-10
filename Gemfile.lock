@@ -582,7 +582,7 @@ GEM
     multi_test (0.1.2)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
-    mysql2 (0.5.0)
+    mysql2 (0.4.10)
     nenv (0.3.0)
     nest (3.1.1)
       redic
@@ -969,7 +969,7 @@ DEPENDENCIES
   legato
   mimemagic
   moab-versioning
-  mysql2
+  mysql2 (< 0.5)
   nest
   oauth
   omniauth-shibboleth
