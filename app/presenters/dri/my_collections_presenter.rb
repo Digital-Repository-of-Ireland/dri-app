@@ -1,7 +1,7 @@
 module DRI
   class MyCollectionsPresenter < ObjectPresenter
 
-    delegate :url_for, :object_file_url, to: :@view
+    delegate :url_for, :object_file_url, :current_user, to: :@view
 
     def initialize(document, view_context)
       super
