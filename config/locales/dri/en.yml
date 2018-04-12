@@ -42,6 +42,7 @@ en:
         my_account: My Account
         name: Name
         organisational_manager: Organisational Manager
+        permissions: Permissions
         user_type: User Type
         your_collection_details: Your Collection Details
     data:
