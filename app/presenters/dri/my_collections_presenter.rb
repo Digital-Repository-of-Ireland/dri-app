@@ -12,7 +12,7 @@ module DRI
     end
 
     def children
-      @children ||= document.children(100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, doc)) }
+      @children ||= document.children(100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, document)) }
     end
 
     def depositing_organisations
@@ -24,7 +24,7 @@ module DRI
     end
 
     def files
-      @files ||= @document.assets(true).sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
+      @files ||= document.assets(true).sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
     end
 
     def relationships
