@@ -82,6 +82,13 @@ en:
           downloads: "Downloads"
           object_title: "Object Title"
           hits: "Total Hits"
+        help:
+          visits: "Unique Users"
+          visits_desc: "Users indicates the number of unique visitors. This figure is taken directly from Google Analytics GA:Users metric and may be calculated differently to how Hits and Downloads are counted."
+          hits: "Total Hits"
+          hits_desc: "The total number of times the page for this object has been loaded."
+          downloads: "Asset Downloads"
+          downloads_desc: "The total number of times the asset associated with this object (or objects within this collection) has been downloaded to the user's computer for offline viewing."
       fixity:
         collection_id: "Collection"
         timestamp: "Timestamp"
