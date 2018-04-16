@@ -78,7 +78,7 @@ en:
         objects: "Objects in this Collection"
         columns:
           collection_title: "Collection"
-          visits: "Unique Visits"
+          visits: "Users"
           downloads: "Downloads"
           object_title: "Object Title"
           hits: "Total Hits"
