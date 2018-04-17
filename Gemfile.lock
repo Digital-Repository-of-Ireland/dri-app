@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
-  revision: 9ecc44bb84895aeea0a683a022976d68a5326631
+  revision: 9809ad69678d49c2ea0c09048c720cf5164df877
   specs:
     dri_batch_ingest (0.0.1)
       filesize
@@ -257,7 +257,7 @@ GEM
       dry-validation (>= 0.10.4)
     confstruct (1.0.2)
       hashie (~> 3.3)
-    crass (1.0.3)
+    crass (1.0.4)
     cucumber (2.3.3)
       builder (>= 2.1.2)
       cucumber-core (~> 1.4.0)
