@@ -1,10 +1,6 @@
 require 'rails_helper'
-require 'shared_contexts'
 
 describe AccessControlsController, :type => :request do
-  #include Devise::Test::ControllerHelpers
-  include_context "api request authentication helper methods"
-  include_context "api request global before and after hooks"
 
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir

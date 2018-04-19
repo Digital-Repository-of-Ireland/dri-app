@@ -1,4 +1,4 @@
-module DeviseRequestSpecHelpers
+module DeviseRequestSpecHelper
 
   include Warden::Test::Helpers
 

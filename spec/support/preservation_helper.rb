@@ -18,4 +18,8 @@ module PreservationHelper
     result.verified
   end
 
+  def aip_version(id)
+     storage_object = Moab::StorageObject.new(id, aip_dir(id))
+     storage_object.current_version_id
+  end
 end

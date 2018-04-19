@@ -60,6 +60,7 @@ Feature: Preservation
     And the manifest for version "1" for the saved pid should be valid
     And the manifest for version "2" for the saved pid should be valid
 
+  @noexec
   Scenario: Add a licence for a collection
     Given I have created a licence "Test"
     When I create a collection and save the pid
