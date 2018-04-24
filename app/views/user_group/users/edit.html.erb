@@ -92,13 +92,16 @@
                   <%= t ('dri.application.edit_user_profile.cancel') %>
             <% end %>
             <%= f.submit (t :'user_groups.views.shared.update'), :id => "commit", :class => "dri_button_green dri_w230"%>
-            <% if current_user.is_admin? %>
-                <%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account") do %>
-                    <button class="dri_button_black dri_w230">
-                      <%= t :'user_groups.views.users.edit.delete' %>
-                    </button>
-                <% end %>
+            <% collection_data = collection_permission(@user) %>
+            <% disabled = "disabled" unless collection_data.blank? %>
+                
+            <%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), :id => "cancel_account") do %>
+                <button class="dri_button_black dri_w230" <%= disabled %>>
+                  <%= t :'user_groups.views.users.edit.delete' %>
+                </button>
             <% end %>
+
+            <div><%= t ('dri.application.edit_user_profile.delete_help') %></div>
           </div>
         </div>
     <% end %>
