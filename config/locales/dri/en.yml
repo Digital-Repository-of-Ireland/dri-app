@@ -107,7 +107,7 @@ en:
         delete_permission: You do not have permission to delete this document.
         doi_not_configured: DOI configuration settings not found.
         edit_permission: You do not have permission to edit this document.
-        error_deleting_collection: 'Unable to submit delete collection background task: %{error}'
+        error_deleting_collection: "Unable to submit 'delete collection' background task: %{error}"
         error_generating_surrogates: 'Error generating surrogates: %{error}'
         error_publishing_collection: 'Error publishing collection: %{error}'
         error_review_job: 'Unable to submit background task, all objects will not be updated: %{error}'
@@ -122,7 +122,7 @@ en:
       error:
         cover_image_not_saved: Unable to save cover image
         download_no_file: Unable to find your archive file, please check the url and try again.
-        exporting: Error submitting export background job.
+        exporting: "Error submitting 'export' background job."
         locked: This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information.
         manager_user_invalid: 'User %{email} does not exist, please have the user create an account first.'
         manager_user_permission: You do not have permission to create a Collection Manager
@@ -198,7 +198,7 @@ en:
       institutions: Organisations
       language: Language
       manage: Manage
-      manage_users: Add Collection Manager
+      manage_users: Assign Collection Manager
       membership: Membership
       member_benefits: Member Benefits
       membership_fees: Membership Fees
@@ -225,7 +225,7 @@ en:
       workspace: Workspace
       find_us: 'Find Us'
     help:
-      add_documentation_help_text: These objects appear in the Related Materials section of the Collection show page.
+      add_documentation_help_text: These objects appear in the Related Materials section of the collection page.
       add_documentation_help_title: Add contextual information
       dri_browse_sort_tabs_collections: Use this tab to search for Collections
       dri_browse_sort_tabs_collections_title: Collections Search
@@ -235,7 +235,7 @@ en:
       dri_browse_sort_tabs_sub_collection_title: Sub-Collections Search
       dri_change_sort_view: 'Use these buttons to select between a Grid, Tabular, Timeline or Map layout for your search result'
       dri_change_sort_view_title: Search Result Layout
-      dri_facet_restrictions_links: These are the Facets which are narrowing your search. You can disable them individually or Clear All
+      dri_facet_restrictions_links: "These are the Facets which are narrowing your search. You can disable them individually or 'Clear All'"
       dri_facet_restrictions_links_title: Selected Facets
       dri_page_options: Select from this list to choose the number of items shown on each page
       dri_page_options_title: Items per Page
@@ -265,7 +265,7 @@ en:
         description: Description
         description_text: An account of the resource.
         formats: Formats
-        formats_text: The Format of the resource
+        formats_text: The format of the resource
         geographical_coverages: Subjects (Places)
         geographical_coverages_text: Spatial characteristics of the resource.
         identifiers: Identifiers
@@ -433,7 +433,6 @@ en:
         institute:
           add: Add Additional Organisations
           are_you_sure: Are you sure you need a new Organisation?
-          associate: Add Organisation
           associate_depositing: Select Depositing Organisation
           associating_text: "Once an organisation has been added, it can be associated with collections using the 'Manage Organisations' button on individual collections' pages."
           available: Available
@@ -623,7 +622,7 @@ en:
           replace_caption: Replace metadata using XML file.
           replace_metadata: Replace Metadata
           upload_file: Upload Asset
-          upload_file_caption: No files have been uploaded. Please upload a master asset.
+          upload_file_caption: No asset files have been uploaded. Please upload a master asset.
           view_collection: View Collection
         links:
           cancel: Cancel
