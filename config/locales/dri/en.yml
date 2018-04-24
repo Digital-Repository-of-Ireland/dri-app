@@ -17,6 +17,7 @@ en:
         request_to_leave: Request To Leave
         requested_to_leave: You have requested to leave this group
         settings: Settings
+        delete_help: Note that you cannot delete your account if you currently have read, edit or manager permissions on any collection. Please modify your permissions first.
       lang:
         en: English
         ga: Irish
