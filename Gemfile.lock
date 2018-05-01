@@ -69,10 +69,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: b066e182048fca06da7517554d13b4bd1bb25773
+  revision: 3673625e49fa96fbfaaf5af7a5cca424cc268cbd
   branch: develop
   specs:
-    dri_data_models (2.5.5)
+    dri_data_models (2.6.5)
       active-fedora (= 9.11)
       active_fedora-noid (~> 1.0)
       google-api-client (~> 0.9)
@@ -105,7 +105,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git
-  revision: 2e44326005223169889b871666c6ca437e39da0e
+  revision: 6fecd615b25df94cd50d8a733d0e54bdfdd5a43c
   branch: issue22
   specs:
     fakes3 (1.2.1)
@@ -176,7 +176,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (6.0.4)
     ast (2.3.0)
-    autoprefixer-rails (8.2.0)
+    autoprefixer-rails (8.4.1)
       execjs
     aws-partitions (1.53.0)
     aws-sdk-core (3.13.0)
@@ -638,7 +638,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.0.2)
-    rack (1.6.9)
+    rack (1.6.10)
     rack-protection (1.5.5)
       rack
     rack-test (0.6.3)

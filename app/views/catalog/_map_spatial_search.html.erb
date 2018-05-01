@@ -3,4 +3,7 @@
   <%= coordinates.length == 2 ? coordinates.reverse : coordinates %><br/>
   <%= content_tag(:small, pluralize(hits, t('blacklight.maps.interactions.item'))) if hits %>
 </h5>
+<% unless label.empty? %>
+  (<%= link_to(label[:projection], label[:crs]) %> <%= label[:coordinates] %>)</br>
+<% end %>
 <%= render_spatial_search_link(coordinates) %>
