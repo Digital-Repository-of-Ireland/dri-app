@@ -1,4 +1,3 @@
----
 ga:
   dri:
     application:
@@ -12,26 +11,18 @@ ga:
         help_bubbles: Taispeáin Bolgáin na Cabhrach
         last_name: Sloinne
         new_password: Pasfhocal Nua
-        off_text: AS
-        on_text: AIR
+        off_text: 'AS'
+        on_text: 'AIR'
         request_to_leave: Iarratas Imeachta
-        requested_to_leave: "D'iarr tú imeacht as an ngrúpa seo"
+        requested_to_leave: D'iarr tú imeacht as an ngrúpa seo
         settings: Socruithe
-      home:
-        featured: Faoi thrácht
-        featured_collections: Bailiúcháin Faoi Thrácht
-        featured_objects: Oibiachtaí faoi thrácht
-        introtext: Taisclann dhigiteach náisiúnta le haghaidh sonraí daonnachtaí, eolaíochtaí sóisialta agus oidhreacht chultúrtha na hÉireann í Taisclann Dhigiteach na hÉireann. Is féidir an iliomad bailiúchán ó roinnt de mhór-insitiúidí na hÉireann a aimsiú agus a chuardach. Caomhnaítear na bailiúcháin seo go sábháilte i TDÉ. Breathnaígí orthu agus bainigí sult astu.
-        links:
-          visit_dri: Tabhair Cuairt ar Shuíomh Tionscnaimh TDÉ
-        rss_feed:
-          read_more: Léigh tuilleadh
-          title: Nuacht
       lang:
         en: English
         ga: Gaeilge
       terms:
         accept: Aontaím
+        deposit_agreement: Aontaím le téarmaí an Chomhaontaithe Taisce
+        deposit_header: 'Taisclann Dhigiteach na hÉireann: Téarmaí agus Coinníollacha na Taisce'
         header: Comhaontú Úsáideora Deiridh Thaisclann Dhigiteach na hÉireann
         message: "Má chuireann tú tic le &quot;Aontaím&quot; thíos aontaíonn tú le húsáid fianán agus leis na téarmaí agus na coinníollacha mar a leagtar amach thuas iad. Tá siad sin ar fáil <a href='%{url}'>anseo</a> freisin. Féach ar ár <a href='http://dri.ie/privacy-statement'>bPolasaí Príobháideachta</a> le haghaidh tuilleadh eolais."
         reject: Ní aontaím
@@ -40,17 +31,22 @@ ga:
           no_results: Níor aimsíodh torthaí bailí ar bith
         headline:
           no_results: Níor aimsíodh torthaí ar bith
+        no_results_found: Níor aimsíodh aon oibiacht atá comhoiriúnach le taispeáint na hamlíne
       user_profile:
+        administrator: Riarthóir
+        collection_manager: Bainisteoir an Bhailiúcháin
         collection_title: Teideal an Bhailiúcháin
         edit: Déan Eagarthóireacht
         email: Ríomhphost
         my_account: Mo Chuntas
         name: Ainm
+        organisational_manager: Bainisteoir Eagrúcháin
+        permissions: Ceadanna
         user_type: Cineál Úsáideora
         your_collection_details: Sonraí do Bhailiúcháin
     data:
       types:
-        Image: "Íomhá"
+        Image: Íomhá
         MixedType: Ilchineálach
         MovingImage: Físeán
         Sound: Fuaim
@@ -58,45 +54,119 @@ ga:
         Title: Cineálacha Meán
         Unknown: Anaithnid
         all: Gach
+    datatables:
+      activity:
+        committer: An Té a Chuir isteach
+        in_collection: Sa mBailiúchán
+        object_id: ID na hOibiachta
+        status: Stádas
+        type: Cineál
+        updated_at: Nuashonraithe ag
+      user_activity:
+        event: Teagmhas
+        item: Mír
+        object: Oibiacht
+        type: Cineál MIME
+      analytics:
+        header: "Mo chuid Tuairiscí"
+        start: "Tús"
+        end: "Deireadh"
+        title: "Teideal an Bhailiúcháin"
+        url: "URL"
+        subcollections: "Fobhailiúcháin"
+        objects: "Oibiachtaí sa Bhailiúchán seo"
+        columns:
+          collection_title: "Bailiúchán"
+          visits: "Úsáideoirí"
+          downloads: "Íoslódálacha"
+          object_title: "Teideal na hOibiachta"
+          hits: "Iomlán na n-amas"
+        help:
+          visits: "Úsáideoirí ar leith"
+          hits: "Iomlán na n-amas"
+      fixity:
+        collection_id: "Bailiúchán"
+        timestamp: "Stampa Ama"
+        verified: "Fíoraithe"
+        submit: "Cuir ceann nua isteach"
+      stats:
+        collection_id: "Bailiúchán"
+        total_objects: "Iomlán na nOibiachtaí"
+        size: "Méid"
+        files:
+          mime_type: Cineál Mime
+          count: Comhaireamh
     flash:
       alert:
         create_permission: Níl cead agat an doiciméad seo a chruthú.
         delete_permission: Níl cead agat an doiciméad seo a scrios.
+        doi_not_configured: Níor aimsíodh socruithe cumraíochta an DOI
         edit_permission: Níl cead agat an doiciméad seo a chur in eagar.
-        error_deleting_collection: "%{error}"
+        error_deleting_collection: "Ní féidir an tasc sa chúlra 'scrios bailiúchán' a chuir faoi bhráid: %{error}"
         error_generating_surrogates: 'Bhí earráid ann le linn cruthú ionadaithe: %{error}'
         error_publishing_collection: 'Bhí earráid ann le linn foilsiú an bhailiúcháin: %{error}'
-        error_review_job: 'Ní féidir an tasc cúlra a chur isteach, ní thabharfar na hoibiachtaí cothrom le dáta: %{error}'
+        error_review_job: 'Ní féidir an tasc sa chúlra a chur isteach, ní thabharfar na hoibiachtaí cothrom le dáta: %{error}'
         error_saving_file: 'Bhí earráid ann le linn sábháil an chomhaid: %{error}'
+        error_fixity_collection: 'Ní féidir seiceáil seastachta a thosú: %{error}'
         invalid_file_type: 'Rabhadh: Is cosúil nach cineál bailí comhaid é an comhad seo'
         invalid_object: 'Oibiacht Neamhbhailí: %{error}.'
-        invalid_xml: XML Neamhbhailí %{error}
+        invalid_xml: 'XML Neamhbhailí: %{error}'
         read_permission: Níl cead agat an doiciméad seo a léamh.
-        unknown_permission: Ní ghlactar leis an leibhéal ceada atá agat.
+        unknown_permission: 'Ní ghlactar leis an leibhéal ceada: %{action}'
         virus_detected: 'Aimsíodh víreas sa chomhad a uaslódáladh: %{virus}'
       error:
         cover_image_not_saved: Ní féidir an íomhá chlúdaigh a shábháil
-        manager_user_invalid: "%{email}"
-        submitting_read_request: "%{error}"
+        download_no_file: Níor aimsíodh do chomhad cartlainne, le do thoil seiceáil an url agus bain triail as arís.
+        exporting: "Earráid ag cuir faoi bhráid an tasc sa chúlra 'easpórtáil'.  "
+        locked: 'Chuir an riarthóir glas sealadach ar an mbailiúchán seo. Déan teagmháil le tech@dri.ie chun níos mó eolais a fháil. '
+        manager_user_invalid: 'Níl úsáideoir %{email} ann, le do thoil abair leis an úsáideoir cuntas a chruthú ar dtús.'
+        manager_user_permission: Níl cead agat Bainisteoir Bailiúcháin a chruthú
+        no_read_group: Níor socraíodh aon ghrúpa léimh don bhailiúchán
+        not_created: Ní féidir é a chruthú. Seiceáil na ceadanna. Caithfear ar a laghad bainisteoir bailiúcháin nó úsáideoir eagarthóireachta amháin a bheith agat.
+        not_updated: "Níor déanadh nuashonrú ar %{item}. Seiceáil na ceadanna. Caithfidh ar a laghad bainisteoir bailiúcháin nó úsáideoir eagarthóireachta amháin a bheith agat."
+        organisation_cannot_be_deleted: 'Ní féidir an eagraíocht a scrios mar go bhfuil sé comhcheangailte le bailiúcháin fós. '
+        read_access: Ní féidir rochtain léimh a thabhairt.
+        read_only: 'Tá cothabháil chórais i bhfeidhm ar an taisclann. Tá nuashonrúcháin díchumasaithe go sealadach. '
+        schema_location_missing: 'Tá an fhógairt XML SchemaLocation ar iarraidh sa gcomhad meitashonraí '
+        schema_location_parse: Ní féidir an fógra XML schemaLocation a pharsáil.
+        submitting_read_request: 'Ní rabhthas in ann iarratas rochtain chun léite a chuir isteach: %{error}'
         validation_errors: 'Earráidí Bailíochtaithe: %{error}'
       notice:
-        access_controls_updated: Tugtha cothrom le dáta.
-        collection_created: "D'éirigh leat an oibiacht bhailiúcháin a chruthú."
-        collection_deleted: "D'éirigh leat próiseas scriosta an bhailiúcháin a thosú."
+        access_controls_updated: D'éirigh leat na rialúcháin rochtana a thabhairt cothrom le dáta.
+        archiving: Tá cartlann den oibiacht seo á chruthú. Seans go dtógfaidh sé seo tamall. Gheobhaidh tú ríomhphost nuair a bheas sé ar fáil. Le do thoil, seiceáil do fhillteán turscair nó geal-liostaigh an seoladh no-reply@dri.ie mura bhfaigheann tú an ríomhphost.
+        asset_deleted: Tá an sócmhainn scriosta.
+        collection_created: D'éirigh leat an oibiacht bhailiúcháin a chruthú.
+        collection_deleted: D'éirigh leat próiseas scriosta an bhailiúcháin a thosú.
+        collection_doi_request: DOI nua iarrtha.
+        collection_objects_review: 'Tá tús curtha leis an bpróiseas chun athbhreithniú a dhéanamh ar oibiachtaí bailiúcháin. Nuair a bheas sé críochnaithe, úsáid an cnaipe foilsiúcháin ar leathanach na mbailiúchán chun gach oibiacht agus fobhailiúchán athbhreithnithe a fhoilsiú.   '
         collection_publishing: Tá an Bailiúchán dá fhoilsiú
         digital_object_ingested: Glacadh an oibiacht dhigiteach isteach go sásúil.
+        doi_not_latest: Tá leagan níos nuaí den oibiacht seo ann.
         duplicate_object_ingested: 'D''fhéadfadh gur aimsíodh oibiachtaí dúblacha: %{duplicates}'
-        file_uploaded: D'éirigh leat an comhad a uaslódáil.
+        exporting: Tá comhad easpórtála den bhailiúchán seo á chruthú. Gheobhaidh tú ríomhphost nuair a bheidh sé ar fáil.
+        file_uploaded: D'éirigh leat an sócmhainn a uaslódáil.
+        fixity_check_running: Tá seiceáil seastachta ag rith.
+        fixity_check_completed: Tá seiceáil seastachta críochnaithe.
         generating_surrogates: Tá ionadaithe dá nginiúint
-        licence_created: D'éirigh leat an ceadúnas a chruthú
-        licence_updated: D'éirigh leat an ceadúnas a thabhairt cothrom le dáta
-        manager_user_created: Tugadh ceadanna bainisteora d’úsáideoir %{email}
+        licence_created: D'éirigh leat an ceadúnas a chruthú.
+        licence_updated: D'éirigh leat an ceadúnas a thabhairt cothrom le dáta.
+        manager_user_created: 'Tá ceadanna bainisteora bailiúcháin tugtha d''úsáideoir %{email}. '
         metadata_updated: D'éirigh leat na meiteashonraí a thabhairt cothrom le dáta.
+        object_deleted: Tá an oibiacht scriosta.
+        organisation_added: Cuireadh an eagraíocht leis an mbailiúchán.
         organisation_created: D'éirigh leat an Eagraíocht a chruthú.
+        organisation_depositor: Tá an eagraíocht socraithe mar 'Taisceoir'.
+        organisation_removed: Baineadh an eagraíocht den bhailiúchán.
+        organisations_set: 'Tá na heagraíochtaí nuashonraithe. '
+        read_access_approved: 'Tá glactha le hiarratas ar rochtain chun léite. Tá fógra tugtha don úsáideoir. '
+        read_access_rejected: Tá diúltaithe don iarratas ar rochtain chun léite. Tá fógra tugtha don úsáideoir.
+        read_access_removed: Tá rochtain chun léite tarraingte siar.
+        request_form_submitted: 'Tá d''iarratas maidir le rochtain curtha faoi bhráid na eagraíochta taiscthe don bhailiúchán seo agus déanfar athbhreithniú air go luath. Tabhair faoi deara, le do thoil, go mb''fhéidir go n-iarrfaidh an eagraíocht thaiscthe breis eolais uait agus/nó aontú le téarmaí agus coinníollacha breise. Gheobhaidh tú ríomhphost faoi thoradh an iarratais seo. Má tá aon cheist agat faoin iarratas rochtana seo, le do thoil déan teaghmháil le heagraíocht thaiscthe an bhailiúcháin seo.'
+        specify_collection: Ní léir ón gcomhad meiteashonraí gur bailiúchán atá san oibiacht.
         specify_file: Ní mór duit comhad a shonrú le huaslódáil.
         specify_object_id: Ní mór duit ID oibiachta bailí a shonrú.
         specify_valid_file: Ní mór duit comhad bailí a shonrú le huaslódáil.
-        updated: Tugtha cothrom le dáta %{item}
+        updated: 'Nuashonraithe %{item}'
     footer:
       contacts:
         email: Ríomhphost
@@ -108,191 +178,315 @@ ga:
         zip: Baile Átha Cliath 2
     headerlinks:
       about: Eolas
-      about_dri_lifecycle: DRI Saolré
+      about_dri_lifecycle: Saolré DRI
       admin: Riarthóir
+      batch_ingest: Baiscionghabháil
+      blog: Blag
       browse: Aimsigh
       collection: Bailiúchán
       collections: Bailiúcháin
+      deposit_guide: Treoir don Chuir i dTaisce
       end_user_agreement: Comhaontú an Úsáideora Dheiridh
-      find_us: Conas teacht orainn 
+      events: Imeachtaí
       help: Cabhair
       home: Baile
       institutions: Eagraíochtaí
       language: Teanga
       manage: Bainistigh
-      manage_users: Cuir úsáideoir bainisteora leis
-      membership: Ballraíocht
+      manage_users: Cuir Bainisteoir Bailiúcháin leis
       my_collections: Mo chuid bailiúchán
-      my_tasks: Mo tascanna
+      my_tasks: Mo chuid tascanna
       new_collection: Bailiúchán Nua
       new_organisation: Eagraíocht Nua
       object: Oibiacht
       objects: Oibiachtaí
-      privacy: Polasaí um Príobháideachas agus Fianáin
+      people: Daoine
+      privacy: 'Polasaí um Príobháideachas agus Fianáin'
       privacy_statement: Ráiteas Príobháideachais
+      projects: Tionscadail
+      publications: Foilseacháin
       reports: Tuairiscí
+      resources: Acmhainní
       resque: Freastalaí Resque
-      sub_collections: Fo-bhailiúcháín
+      sub_collections: Fo-bhailiúcháin
       team: Foireann
-      usergroups: "Úsáideoirí agus Grúpaí"
+      usergroups: 'Úsáideoirí agus Grúpaí'
+      vacancies: Folúntais
       workspace: Spás Oibre
+      find_us: 'Aimsigh Muid'
     help:
-      dri_browse_sort_tabs_collections: Bain úsáid as an táb seo chun Bailiúcháin a aimsiú
-      dri_browse_sort_tabs_collections_title: Aimsigh Bailiúcháin
-      dri_browse_sort_tabs_objects: Bain úsáid as an táb seo chun Oibiachtaí a aimsiú
-      dri_browse_sort_tabs_objects_title: Aimsigh Oibiachtaí
-      dri_browse_sort_tabs_sub_collection: Bain úsáid as an táb seo chun malartú idir fo-bhailiúcháin i do chuardach
-      dri_browse_sort_tabs_sub_collection_title: Cuardach fo-bhailiúchán
-      dri_change_sort_view: Bain úsáid as na cnaipí seo chun leagan amach greille nó táblach a roghnú le haghaidh toradh do chuardaigh
+      add_documentation_help_text: Tá na hoibiachtaí seo le feiceáil sa gcuid "Ábhair Ghaolmhara" den leathanach na mbailiúchán.
+      add_documentation_help_title: Cuir faisnéis chomhthéacsúil leis
+      dri_browse_sort_tabs_collections: Bain úsáid as an táb seo chun Bailiúcháin a chuardaigh
+      dri_browse_sort_tabs_collections_title: Cuardach Bailiúcháin
+      dri_browse_sort_tabs_objects: Bain úsáid as an táb seo chun Oibiachtaí a chuardaigh
+      dri_browse_sort_tabs_objects_title: Cuardach Oibiachtaí
+      dri_browse_sort_tabs_sub_collection: Bain úsáid as an táb seo chun fobhailiúcháin a scoránaigh i do chuardach
+      dri_browse_sort_tabs_sub_collection_title: Cuardach Fobhailiúchán
+      dri_change_sort_view: 'Bain úsáid as na cnaipí seo chun leagan amach greille, táblach, amlíne nó léarscáil a roghnú le haghaidh toradh do chuardaigh'
       dri_change_sort_view_title: Leagan amach thorthaí an chuardaigh
-      dri_facet_restrictions_links: Caolaíonn na Gnéithe seo do chuardach. Is féidir iad a ghlanadh ó cheann go ceann nó gach ceann a ghlanadh
+      dri_facet_restrictions_links: "Caolaíonn na Gnéithe seo do chuardach. Is féidir iad a ghlanadh ó cheann go ceann nó cliceáil ar 'Glan Gach Rud'"
       dri_facet_restrictions_links_title: Gnéithe Roghnaithe
       dri_page_options: Roghnaigh líon na míreanna a bheidh á dtaispeáint ar gach leathanach ón liosta seo
       dri_page_options_title: Míreanna in aghaidh an leathanaigh
       dri_pagination_nav_links: Bain úsáid as na naisc seo chun dul trí thorthaí do chuardaigh. Is féidir líon na leathanach a athrú ach níos mó nó níos lú míreanna a roghnú in aghaidh an leathanaigh
       dri_pagination_nav_links_title: Uimhriú leathanach na dtorthaí
-      dri_sort_options: Roghnaigh ón liosta seo chun do chuid torthaí a shórtáil de réir Iontráil is Déanaí, Teideal nó Ábharthacht. Is ionann Ábharthacht agus tuairim is fearr an chórais faoi na Bailiúcháin nó na hOibiachtaí sin is mó a bhaineann le do chuardach
+      dri_publish_unavailable: "Caithfidh tú Eagraíocht Thaiscthe an Bhailiúcháin a shocrú roimh fhoilsiú. Úsáid an nasc \"Bainistigh Eagraíochtaí\" "
+      dri_publish_unavailable_title: Níl Foilsigh ar fáil
+      dri_sort_options: "Roghnaigh ón liosta seo chun do chuid torthaí a shórtáil de réir Iontráil is Déanaí, Teideal, Ábharthacht nó Sraith. Is ionann Ábharthacht agus tuairim is fearr an chórais faoi na Bailiúcháin nó na hOibiachtaí sin is mó a bhaineann le do chuardach"
       dri_sort_options_title: Roghanna maidir le sortáil an chuardaigh
+      dri_tlfield_options: Roghnaigh an réimse 'dáta' le taispeáint ar an amlíne
+      dri_tlfield_options_title: Taispeáin Roghanna do Dhátaí
+      dri_view_iiif: 'Tarraing agus scaoil chuig an amharcóir IIIF, nó cliceáil le hoscailt i Mirador'
+      dri_view_rdf: Amharc ar fhormáid RDF
       facets: Bain úsáid as Gnéithe chun do chuardach a chaolú le réimsí áirithe meiteashonraíochta
       facets_title: Scagairí Gnéithe
       fields:
+        collection_title: Teideal an Bhailiúcháin
+        collection_title_text: Ainm atá tugtha don bhailiúchán.
+        coverages: Clúdaigh
+        coverages_text: Topaic spásúil nó ama den acmhainn, nó an dlínse lena mbaineann an acmhainn.
+        creation_date: Dáta Cruthaithe
+        creation_date_text: 'Dáta cruthaithe na hacmhainne. NÓTA: Tá ort ar a laghad Dáta Cruthaithe amháin NÓ Dáta Foilsithe amháin NÓ Dáta amháin a ionchur.'
+        creator: Cruthaitheoirí
+        creator_text: Aonán atá freagrach, den chuid is mó, as ábhar a chruthú don acmhainn.
+        date: Dáta
+        date_text: Pointe, nó tréimhse ama, atá bainteach le heachtra i saolré na hacmhainne.
+        description: Cur Síos
+        description_text: Cur síos na hacmhainne
+        formats: Formáidí
+        formats_text: Formáid na hacmhainne
+        geographical_coverages: Ábhair (Áiteanna)
+        geographical_coverages_text: Tréithe spásúlachta na hacmhainne
+        identifiers: Aitheantóirí
+        identifiers_text: Aitheantóir don acmhainn
+        languages: Teangacha
         licence: Ceadúnas
-      no_results_found: Níor aimsíodh torthaí ar bith. Bain triail as
+        licence_text: Ceadúnas athúsáide don acmhainn seo
+        published_date: Dáta Foilsithe
+        published_date_text: Dáta eisiúna foirmeálta (e.g., foilsiú) na hacmhainne.
+        relations: Naisc
+        relations_text: Acmhainn gaolmhar
+        related: Ábhair Ghaolmhara
+        rights: Cearta
+        rights_text: Faisnéis faoi chearta maidir leis an acmhainn. Más saothar dílleachta atá sa sócmhainn, caithfear é a chlárú le Bunachar Sonraí na Saothar Dílleachta de chuid an EUIPO, agus ba chóir an uimhir chomhaid chuí a áireamh anseo.
+        roles: Rannpháirtithe
+        roles_text: Aonán a chuireann leis an acmhainn.
+        sources: Foinsí
+        sources_text: Acmhainn gaolmhar, as a bhfuil an acmhainn faoi chaibidil díorthaithe.
+        subjects: Ábhair
+        subjects_text: Topaic na hacmhainne.
+        temporal_coverage: Ábhair (Réanna)
+        temporal_coverage_text: Tréithe ama na hacmhainne.
+        title: Teideal
+        title_text: Ainm tugtha don acmhainn.
+        types: Cineálacha
+        types_text: Nádúr nó seánra na hacmhainne.
+      no_results_found: Níor aimsíodh torthaí ar bith
       q: Iontráil téarma cuardaigh. Is féidir do chuardach a chaolú nó a leathnú le AND nó OR
       q_title: Cuardaigh sa taisclann
-      social_media_links: Bain úsáid as na cnaipí seo chun cuairt a thabhairt ar ár leathanaigh Facebook, Linked-In, Slideshare agus Twitter
+      q_ws_title: Cuardaigh do chuid Bailiúchán
+      social_media_links: Bain úsáid as na cnaipí seo chun cuairt a thabhairt ar ár leathanaigh Twitter, Facebook, Vimeo agus Slideshare
       social_media_links_title: TDÉ ar an Idirlíon
       try_looking_for: Bain triail as
+      view_objects: Amharc ar Oibiachtaí
+      view_subcollections: Amharc ar Fobhailiúcháin
     sign_in:
       forgot_password: Pasfhocal dearmadta?
-      no_confirmation: Nach bhfuair tú dearbhú?
-      no_unlock: Nach bhfuair tú treoracha faoi dhíghlasáil?
+      no_confirmation: "Nach bhfuair tú dearbhú?"
+      no_unlock: "Nach bhfuair tú treoracha faoi dhíghlasáil?"
       register: Cláraigh
       sign_in_with: 'Logáil isteach le '
-      sign_in_with_institution: Login via your institution
+      sign_in_with_institution: Logáil isteach tríd d'Institiúid
       title: Logáil Isteach
       with_another_account: Logáil isteach le Cuntas Eile
     views:
       alt_tags:
-        cover_image: "Íomhá Chlúdaigh"
+        cover_image: Íomhá Chlúdaigh
       assets:
         buttons:
           delete: x
+        confirm:
+          delete: Scriosfaidh sé seo an sócmhainn agus gach sócmhainn ionadach. Lean ar aghaidh?
       catalog:
         buttons:
           clear_all_bookmarks: Glan Gach Leabharmharc
           clear_all_saved_searches: Glan Gach Cuardach Sábháilte
           clear_search_facet_list: Glan Gach Rud
+          download_metadata_xml: Íoslódáil mar XML
           edit_access_controls: Rialuithe Rochtana
-          edit_metadata: Meiteashonraí
+          edit_metadata: Cuir Meiteashonraí in eagar
+          open_workspace: Oscail sa Spás Oibre
           set_licence: Ceadúnas
+          submit: Seol ar aghaidh
+          view_catalog: Amharc sa gCatalóg
         forms:
           access_controls: Rialuithe Rochtana
-          all_objects_in_collection: Oibiacht sa mBailiúchán seo
+          all_objects_in_collection: Oibiacht sa Bhailiúchán seo
           audio:
-            file_size: Méid Comhaid
+            file_size: Méid na Sócmhainne
             format: Formáid
             last_modified: Nuashonrú is deireanaí
           bookmark_collection: Leabharmharcáil an Bailiúchán
           bookmark_object: Leabharmharcáil an Oibiacht
+          download: Íoslódáil
+          download_all:
+            one: 'Íoslódáil an oibiacht iomlán, an sócmhainn san áireamh'
+            two: 'Íoslódáil an oibiacht iomlán, an sócmhainn san áireamh'
+            few: 'Íoslódáil an oibiacht iomlán, an sócmhainn san áireamh'
+            many: 'Íoslódáil an oibiacht iomlán, gach %{count} sócmhainn san áireamh.'
+            other: 'Íoslódáil an oibiacht iomlán, gach %{count} sócmhainn san áireamh.'
+          download_archive_explanation: "Seans go dtógfaidh sé seo tamall. Gheobhaidh tú ríomhphost nuair a bheas d'íoslódáil réidh. "
+          download_originals: Íoslódáil an bunleagan uaslódáilte den sócmhainn indibhidiúil seo.
+          download_surrogate: Íoslódáil an leagan ionadach optamaithe den sócmhainn aonair seo (molta chun féachaint air)
           manage_bookmark: Bainistigh do chuid Leabharmharcanna
-          manage_licence: Ceadúnas
+          manage_licence: Bainistigh Ceadúnas
           map: Léarscáil
           metadata: Meiteashonraí
-          metadata_full: Meiteashonraí Iomlán (XML)
+          metadata_full: Meiteashonraí Iomlán
           objects_in_collection: Oibiachtaí
           restricted_asset: Sócmhainn Shrianta
-          restricted_data_request: Restricted data access request form
+          restricted_data_request: Foirm chun iarratas a dhéanamh ar rochtain ar shonraí srianta
         headers:
-          files: Uirlisí Comhaid
-          sub_collections: Fo-bhailiúcháín
+          files: Uirlisí Sócmhainne
+          related_materials: Ábhair Ghaolmhara
+          sub_collections: Fo-bhailiúcháin
         legends:
-          file_status: " %{status}"
+          doi_deleted: 'Níl an oibiacht seo ar fáil níos mó. Is féidir teagmháil a dhéanamh le dri@ria.ie chun níos mó eolais a fháil, ag déanamh tagartha de ID na hoibiachta %{id}.'
+          doi_not_available: Níl an oibiacht seo ar fáil faoi láthair mar go bhfuil sé faoi glas ag próiseas eagarthóireachta.
+          file_status: ' Stádas: %{status}'
           no_bookmarked_collections: Níor leabharmharcáil tú bailiúchán ar bith
           no_bookmarked_objects: Níor leabharmharcáil tú oibiacht ar bith
           no_bookmarks: Níor leabharmharc ar bith agat
-          no_files: Níor uaslódáladh comhad ar bith.
+          no_files: Níor uaslódáladh sócmhainn ar bith.
           no_permission: Níl cead agat féachaint ar an gcomhad sócmhainne a bhaineann leis an oibiacht seo.
           no_saved_search: Níor shábháil tú cuardach ar bith
           no_surrogates: Níl aon ionadaí ar fáil.
+          no_tasks: 'Níl aon fhaisnéis stádais úrnua faoi tasc sa chúlra (foilsigh nó athbhreithnigh) ar fáil faoi láthair.    '
           preservation_only: Comhad caomhnú-amháin.
-          request_permission_in_progress: Tá d’iarratas dá phróiseáil
+          request_permission_in_progress: Tá d’iarratas á phróiseáil
           request_permission_logged_in: Iarr Rochtain
           request_permission_not_logged_in: Cláraigh/Logáil Isteach le haghaidh rochtana
-          surrogate_not_available: Níl an t-ionadaí ar fáil go fóill
+          surrogate_not_available: Níl an t-ionadaí ar fáil
           surrogate_not_available_why: Seans gur cuireadh an oibiacht isteach le gairid agus go bhfuil an córas dá próiseáil go fóill. Níor mhór duit é a thiail arís i gceann tamaill.
-          surrogate_not_supported: "%{mime_type}"
+          surrogate_not_supported: "Níl tacaíocht taispeána tugtha do shócmhainní %{mime_type}. Le do thoil, íoslódáil an sócmhainn ag úsáid an nasc thíós, má bhíonn sé ar fáil."
+          surrogate_not_viewable: Níl thacaíonn an brabhsálaí seo le breathnú ar an gcineál comhad seo. Le do thoil, íoslódáil an sócmhainn chun breathnú air.
+          timeline_display_field: Taispeáin oibiachtaí de réir
         links:
           add_documentation: Cuir doiciméadacht leis
           add_object: Cuir Oibiacht leis
           add_object_xml: Uaslódáil XML na hOibiachta
           add_sub_collection: Cuir fo-bhailiúchán leis
-          characterization: Mianach
-          details: Sonraí an Chomhaid
-          download: "Íoslódáil an tsocmhainn"
+          characterization: Tréithriú
+          details: Sonraí na Sócmhainne
+          download: Íoslódáil an sócmhainn
           download_not_available: níl fáil air
           draft: Dréacht
-          edit_this_record: Cuir an taifead seo in eagar
+          duplicates: Dúblaigh
+          edit_this_record: Cuir in eagar
+          export_collection_metadata: Easpórtáil na Meiteashonraí go léir
+          fixity_check: Déan Seiceáil Seastachta
           generate_surrogates: Gin na hionadaithe
           history: Stair
-          mark_all_descendants_reviewed: Léirigh gur athbhreithníodh na hoibiachtaí sa mbailiúchán AGUS sa bhfo-bhailiúchán
-          mark_all_reviewed: Léirigh gur athbhreithníodh
+          iiif_viewer: Amharcóir
+          mark_all_descendants_reviewed: Lean ar aghaidh
+          mark_all_reviewed: Athbhreithnigh
           mark_object_draft: Léirigh gur dréachtoibiacht í seo
           mark_object_reviewed: Léirigh gur athbhreithníodh an oibiacht
-          publish: Foilsigh an bailiúchán
+          not_characterized: gan tréithriú déanta fós
+          publish: Foilsigh
           publish_reviewed: Foilsigh na hoibiachtaí athbhreithnithe
-          related: Comhaid bainteach leis
+          published: Foilsithe
+          related: Sócmhainn bainteach leis
+          request_doi: Iarr DOI
+          review_collection: Athbhreithnigh an Bailiúchán
           reviewed: Athbhreithnithe
-          upload_file: Uaslódáil an comhad
+          upload_file: Uaslódáil an Sócmhainn
           upload_preservation_file: Uaslódáil sócmhainn chaomhnú-amháin
         titles:
           editor_tools: Uirlisí Eagarthóireachta
           object_tools: Uirlisí Oibiachta
       collection:
         buttons:
-          add_cover_image: "Íomhá Chlúdaigh"
+          add_cover_image: Íomhá Chlúdaigh
           create_collection: Cruthaigh Bailiúchán
           delete_collection: Scrios an Bailiúchán
-          edit_metadata: Meiteashonraí
-        confirm_all_descendants_reviewed: Léireofar gur athbhreithníodh gach oibiacht sa mbailiúchán AGUS sa bhfo-bhailiúchán. Lean ar aghaidh?
-        confirm_delete: Scriosfar an bailiúchán agus gach oibiacht sa mbailiúchán. Lean ar aghaidh?
-        confirm_publish: Beidh rochtain ar gach oibiacht athbhreithnithe. Lean ar aghaidh?
-        confirm_review_summary: " %{subcolls} %{objects} "
+          edit_metadata: Cuir Meiteashonraí in eagar
+        confirm_all_descendants_reviewed: Má leantar leis seo, marcálfar mar athbhreithnithe gach oibiacht agus fobhailiúcháin atá mar chuid den bhailiúchán seo.
+        confirm_delete: Scriosfar an bailiúchán agus gach oibiacht sa bhailiúchán. Lean ar aghaidh?
+        confirm_fixity: 'Déan seiceáil seastachta ar gach oibiacht sa mbailiúchán seo?'
+        confirm_publish: Beidh rochtain ar gach oibiacht athbhreithnithe. Ní feidir é seo a neamhfhoilsiú! Lean ar aghaidh?
+        confirm_review_collection: Marcálfar mar athbhreithnithe an taifead bailiúcháin seo.
+        confirm_review_subcollection: "Tabhair faoi deara, ionas gur féidir an bailiúchán seo a fhoilsiú, go mbeidh ort gach fobhailiúchán de chuid an bhailiúcháin a mharcáil mar 'athbhreithnithe' roimh ré, nó ní bheidh fáil ar an mbailiúchán tar éis an fhoilsithe."
+        confirm_review_summary: "(Beidh tionchar ag an oibríocht seo ar %{subcolls} fobhailiúchán agus %{objects} oibiacht)"
         confirm_surrogates: Ginfear ionadaithe do gach oibiacht sa mbailiúchán. Lean ar aghaidh?
-        duplicates_found: "%{duplicates_count} "
+        doi_modification: Iontráil loga athruithe de chuid an DOI
+        duplicates_found: "Fritheadh %{duplicates_count} oibiacht dúblála."
         edit: Cuir an bailiúchán in eagar
         institute:
           add: Cuir Eagraíocht nua leis
-          are_you_sure: An bhfuil tú cinnte go bhfuil institiúid nua ag teastáil uait?
-          associate: Comhlachaigh Eagraíocht
+          are_you_sure: An bhfuil tú cinnte go bhfuil eagraíocht nua ag teastáil uait?
           associate_depositing: Roghnaigh an Eagraíocht Taiscthe
+          associating_text: "Nuair a chuirtear eagraíocht leis, is féidir é a chomhcheangail le bailiúcháin ag úsáid an cnaipe \"Bainistigh Eagraíochtaí\" i leathanaigh na mbailiúchán indibhidiúla. "
+          available: Ar fáil
+          buttons:
+            save: Cruthaigh Eagraíocht
+          depositing_org_text: Áiríodh d'Eagraíocht nuair a síníodh Comhaontú an Bhainisteora Eagraíochtúil. Úsáid an leathanach seo chun níos mó eagraíochtaí a áireamh.
           edit: Tabhair an eagraíocht cothrom le dáta
           form:
+            depositing: Is institiúid taiscthe í seo.
             logo: Lógó
             name: Ainm
-            url: url
-          org_not_created: "<a href='%{url}'></a>."
-          see_orgs: Seiceáil le haghaidh institiúidí atá ann
+            url: Url
+          manage: Bainistigh Eagraíochtaí
+          move_all_label: Bog gach rud
+          move_selected_label: Bog a bhfuil roghnaithe
+          not_set: Níl seo socraithe
+          org_not_created: "Ní fheiceann tú an eagraíocht atá ag teastáil uait? Cuir <a href='%{url}'>anseo</a> í."
+          remove: Bain Eagraíocht
+          remove_all_label: Bain gach rud
+          remove_selected_label: Bain na rudaí atá roghnaithe
+          see_orgs: Seiceáil le haghaidh eagraíochtaí atá ann
+          selected: Roghnaithe
+          set_institutes: Socraigh Eagraíochtaí
           title: Eagraíochtaí agus Urraitheoirí
-        manage_cover_image: "Íomhá Chlúdaigh"
+          what_is_org_text: 'Is féidir gníomhaireachtaí maoinithe, páirtnéirí chuiditheacha agus institiúidí chomhoibrithe a áireamh mar eagraíochtaí. D''fhéadfadh nach mbeadh na páirtithe seo ag glacadh páirt in ionghabháil ná i mbainistiú an bhailiúcháin DRI, ach d''fhéadfadh sé gur thug siad ábhar nó tacaíocht airgeadais don tionscadal. '
+        manage_cover_image: Íomhá Chlúdaigh
         manage_read_requests: Bainistigh iarratais le haghaidh rochtain chun léite
         new:
           title: Bailiúchán Nua
+      doi:
+        fields:
+          modified: Athrú
+          modified_at: Dáta Modhnaithe
+        links:
+          view_full_object: Amharc ar oibiacht
+        unavailable: 'Níl an oibiacht, tagartha ag an DOI seo, ar fáil. Má tá níos mó eolais uait le do thoil déan teagmháil le dri@ria.ie '
       exceptions:
         access_denied: Thriail tú oibríocht nach bhfuil cead agat a chur i bhfeidhm.
+        file_not_found: Ní bhfuarthas comhad uaslódála
         internal_error: Fuips. Chuaigh rud éigin amú! Bain triail eile as níos déanaí le do thoil, nó téigh i dteagmháil le support@dri.ie
-        invalid_file: Theip ar bhailíochtú na huaslódála %{name}.
+        invalid_file: 'Theip ar bhailíochtú na huaslódála %{name}.'
         invalid_metadata: Tá an comhad meiteashonraí a d'uaslódáil tú neamhbhailí. Leasaigh na hearráidí le do thoil, agus bain triail eile as.
         invalid_metadata_input: Tá na meiteashonraí a cuireadh isteach neamhbhailí. Leasaigh na hearráidí le do thoil, agus bain triail eile as.
+        invalid_url: URL neamhbhailí
         resque_error: Bhí earráid le linn ceangal le Resque
         unknown_object: Oibiacht Anaithnid.
+        view_permission: Níl an mhír seo ar fáil. Níl dóthain pribhléidí rochtana agat chun breathnú ar an/na máistirchomha(i)d.
+      export:
+        headers:
+          export_all_metadata: Easpórtáil gach meitashonraí
+        legends:
+          export_all_metadata: Roghnaigh réimsí le heaspórtáil do gach oibiacht sa mbailiúchán. Déanfar na meiteashonraí a easpórtáil mar CSV, ar féidir leat a íoslódáil.
       fields:
+        Format: Formáid
+        assets: Sócmhainní
         collection_title: Teideal an Bhailiúcháin
         contributor: Rannpháirtí
         contributors: Rannpháirtithe
         cover_image: Uaslódáil íomhá chlúdaigh
         coverage: Cuimsiú
-        coverages: Cuimsiú
+        coverages: Clúdaigh
         creation_date: Dáta Cruthaithe
         creation_dates: Dátaí Cruthaithe
         creator: Cruthaitheoir
@@ -300,49 +494,53 @@ ga:
         date: Dáta
         dates: Dátaí
         depositing_institute: Eagraíocht Taiscthe
+        depositing_institute_not_set: Níl an Eagraíocht Thaiscthe socraithe. Cliceáil anseo chun na heagraíochtaí a bhainistiú.
+        depositing_institute_not_set_object: 'Níl an eagraíocht thaiscthe socraithe. Is féidir eagraíochtaí a shocrú ó leathanach na mBailiúchán. '
         description: Cur Síos
         description_eng: Cur Síos (Béarla)
         description_gle: Cur Síos (Gaeilge)
-        format: Formáid
+        format: Formáidí
         formats: Formáidí
-        geographical_coverage: "Ábhar (Áit)"
-        geographical_coverage_eng: "Ábhar (Áit) as Béarla"
-        geographical_coverage_gle: "Ábhar (Áit) as Gaeilge"
-        geographical_coverages: "Ábhair (Áiteanna)"
+        geographical_coverage: Ábhair (Áiteanna)
+        geographical_coverage_eng: Ábhair (Áiteanna) as Béarla
+        geographical_coverage_gle: Ábhair (Áiteanna) as Gaeilge
+        geographical_coverages: Ábhair (Áiteanna)
         governing_collection: Bailiúchán Rialaithe
         hide_description_eng: Folaigh an Béarla
         hide_description_gle: Folaigh an Ghaeilge
-        identifier: Aitheantóir
+        identifier: Aitheantóirí
         identifiers: Aitheantóirí
         language: Teanga
         languages: Teangacha
         licence: Ceadúnas
-        name_coverage: "Ábhar (Ainm)"
-        name_coverages: "Ábhair (Ainmneacha)"
+        name_coverage: Ábhar (Ainm)
+        name_coverages: Ábhair (Ainmneacha)
         published_date: Dáta Foilsithe
         published_dates: 'Dátaí Foilsithe '
         publisher: Foilsitheoir
         publishers: Foilsitheoirí
         relation: Nasc
         relations: Naisc
+        related: Ábhair Ghaolmhara
         rights: Cearta
-        roles: Róil
+        roles: Rannpháirtithe
         show_description_eng: Taispeáin an Béarla
         show_description_gle: Taispeáin an Ghaeilge
-        source: Foinse
+        source: Foinsí
         sources: Foinsí
         status: Stádas
-        subject: "Ábhar"
-        subjects: "Ábhair"
-        subjects_eng: "Ábhair as Béarla"
-        subjects_gle: "Ábhair as Gaeilge"
-        temporal_coverage: "Ábhar (Ré)"
-        temporal_coverage_eng: "Ábhar (Ré) as Béarla"
-        temporal_coverage_gle: "Ábhar (Ré) as Gaeilge"
-        temporal_coverages: "Ábhair (Réanna)"
+        subject: Ábhar
+        subjects: Ábhair
+        subjects_eng: Ábhair as Béarla
+        subjects_gle: Ábhair as Gaeilge
+        temporal_coverage: Ábhair (Réanna)
+        temporal_coverage_eng: Ábhair (Réanna) as Béarla
+        temporal_coverage_gle: Ábhair (Réanna) as Gaeilge
+        temporal_coverages: Ábhair (Réanna)
         title: Teideal
+        toggle: Scoránaigh gach rud
         total_assets: Líon iomlán na sócmhainní
-        type: Cineál
+        type: Cineálacha
         types: Cineálacha
       ingest:
         buttons:
@@ -360,7 +558,7 @@ ga:
           description: Cur síos
           logo: Lógó
           name: Ainm
-          url: url
+          url: Url
       manager_users:
         buttons:
           submit: Cruthaigh
@@ -369,26 +567,38 @@ ga:
         dublin_core: Dublin Core
       objects:
         access_controls:
-          accessible_master_file: Máistirchomhad Inrochtana
-          inherit: Faigh le hoidhreacht
-          inherited_setting: " %{inherited_setting}"
-          manage: Bainisteoirí
-          master_file: Máistirchomhad Inrochtana
+          accessible_master_file: Tabhair cead rochtana chuig leagan ionadach ríomhghinte agus an bunleagan uaslódáilte den mháistirchomhad (nó na máistirchomhaid).
+          alert: Socraigh an ceadúnas cuí don leibhéal rochtana seo.
+          description: 'Is féidir ceadanna rochtana do do chuid bailiúchán agus do chuid oibiachtaí a shocrú anseo. '
+          edit_collection: Cé atá in ann eagarthóireacht a dhéanamh sa mbailiúchán/fobhailiúchán seo?
+          edit_desc: Cuir isteach thíos na seoltaí ríomhphoist de na hÚsáideoirí Eagarthóireachta. Séard atá in Úsáideoir Eagarthóireachta ná úsáideoir údaraithe atá in ann ábhar a ionghabháil i mbailiúcháin atá cead rochtana acu orthu. Ní chuirfear i bhfeidhm na ceadanna seo go dtí go gclárófar na seoltaí ríomhphoist do na cuntais DRI.
+          edit_object: Cé atá in ann eagarthóireacht a dhéanamh ar an oibiacht seo?
+          inherit: Faigh le hoidhreacht an socrú seo ón máthairbhailiúchán
+          inherit_strings:
+            private: "oibiachtaí Ionadacha amháin"
+            public: "oibiachtaí ionadacha agus bunchóipeanna uaslódáilte "
+          inherited_setting: 'Socraithe, faoi láthair, mar %{inherited_setting}'
+          manage: Cé atá in ann an bailiúchán seo a bhainistiú?
+          manager_desc: Cuir isteach thíos na seoltaí ríomhphoist de na Bainisteoirí Bailiúcháin. Séard atá i mBainisteoir Bailiúcháin ná úsáideoir údaraithe atá in ann bailiúcháin, atá sannta dóibh ag Bainisteoir Eagraíochtúil, a chruthú agus a chur in eagar. Ní chuirfear i bhfeidhm na ceadanna seo go dtí go gclárófar na seoltaí ríomhphoist do na cuntais DRI.
+          master_file: Cén comhaid shócmhainne gur féidir leo rochtain a bheith acu orthu?
+          metadata: 'Tá tionchar ag socruithe rochtana ar na comhaid shócmhainne a uaslódálann tú (seachas na comhaid atá ''caomhnú amháin'' curtha i bhfeidhm orthu). Beidh rochtain phoiblí ar na meiteashonraí, cibé socruithe a roghnaíonn tú anseo. '
           private: Príobháideach
-          private_master_file: Máistirchomha(i)d P(h)ríobháideach(a)
-          public: Poiblí
-          read: Rochtain Léitheoireachta
-          registered: Logáilte Isteach
-          restricted: Srianta
+          private_master_file: Srianaigh cead rochtana chuig leagan ionadach ríomhghinte de bhunleaga(i)n na/an mháistirchomha(i)d uaslódáilte.
+          public: Ceadaigh rochtain phoiblí (is féidir le haon duine ar an ngréasán rochtain a bheith acu)
+          read: Cén atá in ann rochtain a bheith acu ar do chuid sócmhainní?
+          registered: Déan rochtain a shrianaigh chuig úsáideoirí atá logáilte isteach amháin.
+          restricted: Srianaigh rochtain chucu siúd amháin a cheadaíonn mé
         buttons:
+          cancel: Cealaigh
           delete_object: Scrios an Oibiacht
-          replace_master: Athchuir Máistirchomhad
+          replace_master: Athchuir Máistirsócmhainn
           replace_metadata: Uaslódáil Meiteashonraí
           save: Sábháil na hathruithe
           save_current_search: Sábháil an cuardach reatha
-          upload_master: Uaslódáil Máistirchomhad
+          upload_master: Uaslódáil Máistirsócmhainn
         confirm:
-          surrogates: Ginfear ionadaithe do gach comhad. Lean ar aghaidh?
+          delete: Scriosfaidh sé seo an oibiacht agus gach sócmhainn ceangailte leis. Lean ar aghaidh?
+          surrogates: Ginfear ionadaithe do gach sócmhainn. Lean ar aghaidh?
         edit:
           title: Cuir Oibiacht in eagar
           title_collection: Cuir an Bailiúchán in eagar
@@ -402,16 +612,43 @@ ga:
           metadata: Meiteashonraí
           replace_caption: Athchuir meiteashonraí trí chomhad XML a úsáid.
           replace_metadata: Athchuir meiteashonraí
-          upload_file: Uaslódáil comhad
-          upload_file_caption: Níor uaslódáladh comhad ar bith. Uaslódáil máistirchomhad le do thoil.
+          upload_file: Uaslódáil an Sócmhainn
+          upload_file_caption: Níor uaslódáladh comhaid shócmhainne ar bith. Uaslódáil máistirsócmhainn le do thoil.
           view_collection: Breathnaigh ar an mBailiúchán
         links:
           cancel: Cealaigh
+      readers:
+        headers:
+          pending: Iarratas ar Feitheamh
+          remove: Faofa
+        links:
+          approved:
+            remove: Tarraing siar Rochtain
+          pending:
+            approve: Glac leis an iarratas
+            reject: Diúltaigh don iarratas
+            view: Amharc ar iarratas
       static:
         admin:
           licences: Ceadúnais faoi thacaíocht
+      tasks:
+        links:
+          delete_all_tasks: 'Glan gach tasc atá críochnaithe '
     window:
       alert:
         coming_soon: Ag teacht go luath
       modal:
         close: Dún
+    reports:
+      headings:
+        fixity: Seiceáil Seastachta
+        fixity_status: Toradh
+        fixity_failures: Teipeanna
+        fixity_result: Aschur
+        stats_collection_sizes: Méideanna na mBailiúchán
+        stats_collection_total: Iomlán
+        stats_file_types: Cineálacha Comhad
+      links:
+        activity_report: Tuairisc Ghníomhaíochta
+        fixity_report: Tuairisc Sheastachta
+        stats: Tuairisc ar Staidreamh Bailiúcháin

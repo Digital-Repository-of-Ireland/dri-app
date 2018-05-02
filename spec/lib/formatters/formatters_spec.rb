@@ -33,7 +33,7 @@ describe "formatters" do
 
     it "should accept fields to output" do
       requested_fields = ['title', 'subject', 'temporal_coverage']
-      expected_titles = ["Id", "Title", "Subjects", "Subject (Temporal)", "Licence", "Url"]
+      expected_titles = ["Id", "Title", "Subjects", "Subjects (Temporal)", "Licence", "Url"]
       object_doc = SolrDocument.new(@object.to_solr)
       formatter = DRI::Formatters::Csv.new(object_doc, { fields: requested_fields })
       generated_csv = CSV.parse(formatter.format)

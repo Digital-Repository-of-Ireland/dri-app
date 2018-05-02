@@ -20,8 +20,8 @@ module DRI::Formatters
      'source' => 'Source',
      'isGovernedBy' => 'Collection',
      'role_dnr' => 'Donor',
-     'geographical_coverage' => 'Subject (Place)',
-     'temporal_coverage' => 'Subject (Temporal)',
+     'geographical_coverage' => 'Subjects (Places)',
+     'temporal_coverage' => 'Subjects (Temporal)',
      'institute' => 'Organisation',
      'identifier' => 'Identifier'
     }

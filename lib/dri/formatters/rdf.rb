@@ -37,7 +37,9 @@ module DRI::Formatters
       'Has Version' => RDF::DC.hasVersion,
       'Is Format Of' => RDF::DC.isFormatOf,
       'Has Format' => RDF::DC.hasFormat,
-      'Source' => RDF::DC.source
+      'Source' => RDF::DC.source,
+      'Has Documentation' => RDF::DC.requires,
+      'Is Documentation For' => RDF::DC.isRequiredBy
     }
 
     def initialize(object_doc, options = {})
@@ -193,12 +195,15 @@ module DRI::Formatters
       id = "#{uri}#id"
 
       relationships = @object_doc.object_relationships
-
+      puts "*** Relationships #{relationships.inspect}"
       if relationships.present?
 
         relationships.keys.each do |key|
           relationships[key].each do |relationship|
-            graph << [RDF::URI.new(id), RELATIONSHIP_FIELDS_MAP[key], RDF::URI("#{base_uri}/catalog/#{relationship[1]['id']}#id")]
+            relationship_predicate = RELATIONSHIP_FIELDS_MAP[key]
+            if relationship_predicate
+              graph << [RDF::URI.new(id), relationship_predicate, RDF::URI("#{base_uri}/catalog/#{relationship[1]['id']}#id")]
+            end
           end
         end
 

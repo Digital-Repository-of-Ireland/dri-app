@@ -21,7 +21,7 @@ gem 'googleauth', '0.5.1'
 
 gem 'paper_trail', '~> 4'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.5.5'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.6.0'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.2.2'
 
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git'
@@ -32,8 +32,6 @@ gem 'active_fedora-noid', '1.1.1'
 
 gem 'config'
 gem 'sqlite3'
-gem 'mysql'
-gem 'mysql2'
 
 gem 'omniauth-shibboleth'
 gem 'oauth'
@@ -70,7 +68,6 @@ gem 'high_voltage', '~> 2.1.0'
 # monitoring 
 # is it working fork
 gem 'is_it_working-cbeer'
-gem 'honeybadger', '~> 2.0'
 gem 'resque', '1.26'
 gem 'resque-status'
 gem 'nest'
@@ -85,6 +82,8 @@ gem 'uglifier', '>= 1.0.3'
 
 group :production do
   gem 'clamav'
+  gem 'mysql2', '< 0.5'
+  gem 'honeybadger', '~> 2.0'
 end
 
 group :development, :test do
