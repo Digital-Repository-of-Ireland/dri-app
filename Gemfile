@@ -6,6 +6,7 @@ source 'http://rubygems.org'
 gem 'rails','~> 4.2'
 # fix rails dependency problem
 gem 'sinatra', '1.4.8'
+gem 'xmlrpc' # removed in ruby 2.4.0
 
 gem 'blacklight', '~> 5.19.0'
 
