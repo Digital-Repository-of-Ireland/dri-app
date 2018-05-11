@@ -127,6 +127,7 @@ en:
           institute_sim: Organisation
           language_sim: Language
           person_sim: Names
+          placename_field_sim: Places
           root_collection_id_sim: Collection
           subject_sim: Subjects
           temporal_coverage_sim: "Subject (Temporal)"
