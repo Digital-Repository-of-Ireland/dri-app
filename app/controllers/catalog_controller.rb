@@ -58,8 +58,8 @@ class CatalogController < ApplicationController
     config.add_facet_field 'pdate_year_iim', label: 'Published Date', limit: 20
     config.add_facet_field solr_name('subject', :facetable), limit: 20
     config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: true
-    config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, limit: 20, show: true
-    config.add_facet_field solr_name('placename_field', :facetable), show: false
+    config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, show: false
+    config.add_facet_field solr_name('placename_field', :facetable), show: true, limit: 20
     config.add_facet_field solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
     config.add_facet_field solr_name('person', :facetable), limit: 20
     config.add_facet_field solr_name('language', :facetable), helper_method: :label_language, limit: true

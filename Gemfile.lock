@@ -72,7 +72,7 @@ GIT
   revision: 4c6186d532fd6ed4ed823b8f65b1c9d50dbd50a4
   tag: v2.6.1
   specs:
-    dri_data_models (2.6.1)
+    dri_data_models (2.6.2)
       active-fedora (= 9.11)
       active_fedora-noid (~> 1.0)
       google-api-client (~> 0.9)
@@ -176,7 +176,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (6.0.4)
     ast (2.3.0)
-    autoprefixer-rails (8.4.1)
+    autoprefixer-rails (8.5.0)
       execjs
     aws-partitions (1.53.0)
     aws-sdk-core (3.13.0)
