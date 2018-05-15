@@ -59,8 +59,8 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field solr_name('subject', :facetable), limit: 20
     config.add_facet_field solr_name('subject_gle', :facetable), label: 'Subjects (in Irish)'
     config.add_facet_field solr_name('subject_eng', :facetable), label: 'Subjects (in English)'
-    config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, limit: 20
-    config.add_facet_field solr_name('placename_field', :facetable), show: false
+    config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, show: false
+    config.add_facet_field solr_name('placename_field', :facetable), limit: 20
     config.add_facet_field solr_name('geographical_coverage_gle', :facetable), label: 'Subject (Place) (in Irish)', limit: 20
     config.add_facet_field solr_name('geographical_coverage_eng', :facetable), label: 'Subject (Place) (in English)', limit: 20
     config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20
