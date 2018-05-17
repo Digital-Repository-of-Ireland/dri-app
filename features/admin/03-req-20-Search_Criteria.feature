@@ -23,7 +23,6 @@ DELETEME: 1.8 It shall support fuzzy string matching.
 In order to search for objects in the repository
 As an authenticated and authorised
 I want to be able to use the faceted search interface
-
 # sorting of results => see req-26
 # Does not specify if the date is creation, published, upload or broadcast
 # Based on current facets, need confirmation that these are correct
@@ -44,7 +43,7 @@ Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
   Examples:
     | facetname  | facetid                              | search          | result             |
     | Subjects   | blacklight-subject_sim               | subject1        | SAMPLE AUDIO TITLE |
-    | Places     | blacklight-geographical_coverage_sim | sample country  | SAMPLE AUDIO TITLE |
+    | Places     | blacklight-placename_field_sim | sample country  | SAMPLE AUDIO TITLE |
     | Names      | blacklight-person_sim                | collins         | SAMPLE AUDIO TITLE |
     | Language   | blacklight-language_sim              | English         | SAMPLE AUDIO TITLE |
     | Collection | blacklight-root_collection_id_sim    | Test collection | SAMPLE AUDIO TITLE |
