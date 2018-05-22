@@ -29,7 +29,7 @@ module BlacklightHelper
   def title_to_saved_search(params)
     params[:mode] = params[:mode].presence || 'objects'
   
-    "#{params[:mode].to_s.capitalize} (" + render_search_to_s_q(params) + render_search_to_s_filters(params) + ")"
+    "#{params[:mode].to_s.capitalize} (" + [render_search_to_s_q(params), render_search_to_s_filters(params)].reject { |value| value.blank? }.join(", ") + ")"
   end
 
   # Create a link back to the index screen, keeping the user's facet, query and paging choices intact by using session.
