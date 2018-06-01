@@ -5,6 +5,7 @@ class SolrDocument
   include Blacklight::Document
   include Blacklight::Document::ActiveModelShim
   include Blacklight::AccessControls::PermissionsQuery
+  include BlacklightOaiProvider::SolrDocument
 
   include UserGroup::PermissionsSolrDocOverride
   include UserGroup::InheritanceMethods
@@ -24,10 +25,15 @@ class SolrDocument
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
   field_semantics.merge!(
-    title: 'title_display',
-    author: 'author_display',
-    language: 'language_facet',
-    format: 'format'
+    title: 'title_tesim',
+    description: 'description_tesim',
+    creator: 'creator_tesim',
+    publisher: 'publisher_tesim',
+    subject: 'subject_tesim',
+    type: 'type_tesim',
+    language: 'language_tesim',
+    format: 'file_type_sim',
+    rights: 'rights_tesim',
   )
 
   def active_fedora_model
@@ -210,6 +216,12 @@ class SolrDocument
     status_key = ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :string).to_sym
 
     self[status_key].first
+  end
+
+  def sets
+    ancestor_sets = DRI::OaiProvider::AncestorSet
+    ancestor_sets.fields = [{label: 'collection', solr_field: 'ancestor_id_tesim'}]
+    ancestor_sets.sets_for(self)
   end
 
   def published?
