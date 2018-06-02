@@ -32,7 +32,7 @@ class SolrDocument
     subject: 'subject_tesim',
     type: 'type_tesim',
     language: 'language_tesim',
-    format: 'file_type_sim',
+    format: 'file_type_tesim',
     rights: 'rights_tesim',
   )
 

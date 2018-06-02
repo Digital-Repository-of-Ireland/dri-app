@@ -9,12 +9,14 @@ module DRI::OaiProvider
       collection_document['title_tesim'].join(" ")
     end
 
+    def solr_filter
+      "#{@solr_field}:\"#{@value.split(':').last}\""
+    end
+
     # Returns array of sets for a solr document, or empty array if none are available.
     def self.sets_for(record)
       Array.wrap(@fields).map do |field|
-        record.fetch(field[:solr_field], []).map do |value|
-          new("#{field[:label]}:#{value}")
-        end
+        new("#{field[:label]}:#{record.fetch(field[:solr_field], []).reverse.join(':')}")
       end.flatten
     end
 
