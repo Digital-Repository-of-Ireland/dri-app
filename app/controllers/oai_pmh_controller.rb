@@ -1,6 +1,8 @@
 class OaiPmhController < CatalogController
   include BlacklightOaiProvider::Controller
  
+  BlacklightOaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::OAI.instance)
+
   protected
 
   def oai_catalog_url(*args)
