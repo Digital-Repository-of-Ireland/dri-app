@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git
-  revision: c40fcbcb6d2ffc0aed4f835d2f65e1cb0299ec20
+  revision: 553eeb4aad22c7eefd88524897456ddc9d05765f
   specs:
     blacklight_oai_provider (6.0.0)
       blacklight (>= 5)
@@ -185,7 +185,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (6.0.4)
     ast (2.3.0)
-    autoprefixer-rails (8.5.0)
+    autoprefixer-rails (8.6.0)
       execjs
     aws-partitions (1.53.0)
     aws-sdk-core (3.13.0)
