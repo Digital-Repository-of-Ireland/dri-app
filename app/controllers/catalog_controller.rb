@@ -204,13 +204,13 @@ class CatalogController < ApplicationController
     config.oai = {
       provider: {
         repository_name: 'Digital Repository of Ireland',
-        repository_url: 'http://localhost/catalog/oai',
+        repository_url: 'https://repository.dri.ie/oai',
         record_prefix: 'oai:dri',
-        admin_email: 'root@localhost',
+        admin_email: 'tech@dri.ie',
         #sample_id: '109660'
       },
       document: {
-        limit: 25,            # number of records returned with each request, default: 15
+        limit: 100,            # number of records returned with each request, default: 15
         set_model: DRI::OaiProvider::AncestorSet,
         set_fields: [        # ability to define ListSets, optional, default: nil
           { label: 'collection', solr_field: 'ancestor_id_sim' }

@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git
-  revision: 553eeb4aad22c7eefd88524897456ddc9d05765f
+  revision: ca184ba9cf38905768c323d195c76298379bf8b0
   specs:
     blacklight_oai_provider (6.0.0)
       blacklight (>= 5)

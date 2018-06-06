@@ -15,6 +15,7 @@ class SolrDocument
   include DRI::Solr::Document::Documentation
   include DRI::Solr::Document::Collection
   include DRI::Solr::Document::Metadata
+  include DRI::Solr::Document::Oai
 
   # DublinCore uses the semantic field mappings below to assemble
   # an OAI-compliant Dublin Core document
@@ -24,6 +25,7 @@ class SolrDocument
   # and Blacklight::Solr::Document#to_semantic_values
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
+  
   field_semantics.merge!(
     title: 'title_tesim',
     description: 'description_tesim',
@@ -35,7 +37,7 @@ class SolrDocument
     format: 'file_type_tesim',
     rights: 'rights_tesim',
   )
-
+   
   def active_fedora_model
     self[ActiveFedora.index_field_mapper.solr_name('active_fedora_model', :stored_sortable, type: :string)]
   end
@@ -56,6 +58,20 @@ class SolrDocument
     docs
   end
   
+  # Get the earliest ancestor for any inherited attribute
+  def ancestor_field(field)
+    return self[field] if self[field].present?
+
+    return nil unless ancestor_docs.present?
+
+    ancestor_ids.each do |ancestor_id|
+      ancestor = ancestor_docs[ancestor_id]
+      return ancestor[field] if ancestor[field].present?
+    end
+
+    nil
+  end
+
   def ancestor_ids
     ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
     return [] unless self[ancestors_key].present?    
@@ -103,21 +119,7 @@ class SolrDocument
   def editable?
     active_fedora_model && active_fedora_model == 'DRI::EncodedArchivalDescription' ? false : true
   end
-  
-  # Get the earliest ancestor for any inherited attribute
-  def ancestor_field(field)
-    return self[field] if self[field].present?
-
-    return nil unless ancestor_docs.present?
-
-    ancestor_ids.each do |ancestor_id|
-      ancestor = ancestor_docs[ancestor_id]
-      return ancestor[field] if ancestor[field].present?
-    end
-
-    nil
-  end
-
+    
   def has_doi?
     doi_key = ActiveFedora.index_field_mapper.solr_name('doi', :displayable, type: :symbol).to_sym
 
@@ -217,13 +219,7 @@ class SolrDocument
 
     self[status_key].first
   end
-
-  def sets
-    ancestor_sets = DRI::OaiProvider::AncestorSet
-    ancestor_sets.fields = [{label: 'collection', solr_field: 'ancestor_id_tesim'}]
-    ancestor_sets.sets_for(self)
-  end
-
+  
   def published?
     ancestors_published? && status == 'published'
   end

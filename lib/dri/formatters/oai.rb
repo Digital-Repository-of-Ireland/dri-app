@@ -4,7 +4,7 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
   def initialize
     @prefix = "oai_dri"
     @schema = "https://repository.dri.ie/oai_dri/oai_dri.xsd"
-    @namespace = "http://www.openarchives.org/OAI/2.0/oai_dc/"
+    @namespace = "https://repository.dri.ie/oai_dri/"
     @element_namespace = "dri"
   end
 
@@ -68,7 +68,7 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
           # byebug if values.present?
 
           values.each do |value|
-            xml.tag! "#{pref}:#{k}", value
+            xml.tag! "#{pref}:#{k}", value unless value.nil?
           end
         end
       end

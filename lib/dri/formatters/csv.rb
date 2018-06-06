@@ -46,11 +46,11 @@ module DRI::Formatters
         row = []
         row << @object_doc['id']
         @request_fields.each do |key|
-          if key == 'identifier'
-            field = @object_doc.identifier
-          else
-            field = @object_doc[ActiveFedora.index_field_mapper.solr_name(key, :stored_searchable, type: :string)]
-          end
+          field = if key == 'identifier'
+                    @object_doc.identifier
+                  else
+                    @object_doc[ActiveFedora.index_field_mapper.solr_name(key, :stored_searchable, type: :string)]
+                  end
           value = field.kind_of?(Array) ? field.join('|') : field 
           row << value || ''
         end
