@@ -7,7 +7,7 @@
   end
 
   def to_oai_dri
-    DRI::Formatters::OAI.instance.encode(nil, o)
+    DRI::Formatters::OAI.instance.encode(nil, self)
   end
 
   alias_method :export_as_oai_dri_xml, :to_oai_dri
