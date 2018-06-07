@@ -26,12 +26,12 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
       temporal: "temporal_coverage_tesim",
       license: lambda do |record|
         licence = record.licence
-        [ licence.url || licence.name ]
+        licence.present? ? [ licence.url || licence.name ] : [nil]
       end
     },
     edm: {
       provider: lambda { |record| ["Digital Repository of Ireland"] },
-      dataProvider: lambda { |record| [record.depositing_institute] },
+      dataProvider: lambda { |record| [record.depositing_institute.try(:name)] },
       isShownAt: lambda do |record|
         [Rails.application.routes.url_helpers.catalog_url(record.id)]
       end,
