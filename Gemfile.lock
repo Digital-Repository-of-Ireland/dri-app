@@ -69,10 +69,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 8950a508c5586b0dc4d6ea522d504fb3b26754d9
+  revision: b0ca43cea3b52098677d76798d9f5199815e8e72
   branch: develop
   specs:
-    dri_data_models (2.6.2)
+    dri_data_models (2.6.3)
       active-fedora (= 9.11)
       active_fedora-noid (~> 1.0)
       google-api-client (~> 0.9)
@@ -176,7 +176,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (6.0.4)
     ast (2.3.0)
-    autoprefixer-rails (8.5.0)
+    autoprefixer-rails (8.6.1)
       execjs
     aws-partitions (1.53.0)
     aws-sdk-core (3.13.0)
