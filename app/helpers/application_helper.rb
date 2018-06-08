@@ -78,15 +78,15 @@ module ApplicationHelper
 
     cover_key = ActiveFedora.index_field_mapper.solr_name('cover_image', :stored_searchable, type: :string).to_sym
 
-    if document[cover_key].present? && document[cover_key].first
-        path = cover_image_path(document)
-    elsif document[ActiveFedora.index_field_mapper.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
-      collection = document.root_collection
+    path = if document[cover_key].present? && document[cover_key].first
+             cover_image_path(document)
+           elsif document[ActiveFedora.index_field_mapper.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
+             collection = document.root_collection
 
-      if collection[cover_key].present? && collection[cover_key].first
-        path = cover_image_path(collection)
-      end
-    end
+             if collection[cover_key].present? && collection[cover_key].first
+               cover_image_path(collection)
+             end
+          end
 
     path
   end
@@ -117,10 +117,6 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
   end
 
-  def reader_group(collection_id)
-    UserGroup::Group.find_by(name: collection_id)
-  end
-
   def has_browse_params?
     has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
   end
@@ -131,26 +127,6 @@ module ApplicationHelper
 
   def has_search_parameters?
     params[:q].present? || params[:f].present? || params[:search_field].present?
-  end
-
-  def tasks?
-    current_user && UserBackgroundTask.where(user_id: current_user.id).count > 0
-  end
-
-  def link_to_loc(field)
-    link_to('?', "http://www.loc.gov/marc/bibliographic/bd" + field + ".html")
-  end
-
-  def get_reader_group(doc)
-    readgroups = doc["#{Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
-    group = reader_group(doc['id'])
-    if group
-      if readgroups.present? && readgroups.include?(group.name)
-        return @reader_group = group
-      end
-    end
-
-    nil
   end
 
   # URI Checker

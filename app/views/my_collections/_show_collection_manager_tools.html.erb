@@ -207,7 +207,7 @@
     </li>
 
 	<!-- Link to manage pending memberships for the read group -->
-	<% if get_reader_group(@document) %>
+	<% if @presenter.reader_group %>
 	  <%= link_to collection_manage_requests_path(@document), id: "manage_read_requests" do %>
 	    <li>
 		    <%= t('dri.views.collection.manage_read_requests') %>

@@ -31,6 +31,10 @@ module DRI
       @relationships ||= object_relationships
     end
 
+    def reader_group
+      @reader_group ||= find_reader_group 
+    end
+
     def surrogates(file_id)
       @surrogates[file_id]
     end
@@ -66,6 +70,14 @@ module DRI
         if ingest_status.present?
           status = ingest_status.first
           { status: status.status }
+        end
+      end
+
+      def find_reader_group
+        readgroups = document["#{ActiveFedora.index_field_mapper.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
+
+        if readgroups.present? && readgroups.include?(document.id)
+          UserGroup::Group.find_by(name: document.id)
         end
       end
 
