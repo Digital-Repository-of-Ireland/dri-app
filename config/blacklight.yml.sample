@@ -8,7 +8,7 @@ profile:
   url: <%= ENV['HYDRA_SOLR_URL_DEVELOPMENT'] || 'http://127.0.0.1:8983/solr/development' %>
 test:
   adapter: solr
-  url: <%= ENV['HYDRA_SOLR_URL_TEST'] || 'http://127.0.0.1:8983/solr/test' %>
+  url: http://127.0.0.1:<%= ENV['SOLR_TEST_PORT'] || 8983 %>/solr/test
 production:
   adapter: solr
   url: 'http://your.production.server:8080/bl_solr/core0'
