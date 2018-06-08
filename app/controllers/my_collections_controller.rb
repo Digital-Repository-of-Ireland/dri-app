@@ -270,10 +270,8 @@ class MyCollectionsController < ApplicationController
       format.html { store_preferred_view }
       format.rss  { render layout: false }
       format.atom { render layout: false }
-      format.json do
-        render json: render_search_results_as_json
-      end
-
+      format.json { render json: render_search_results_as_json }
+      
       additional_response_formats(format)
       document_export_formats(format)
     end
@@ -287,8 +285,6 @@ class MyCollectionsController < ApplicationController
 
     supported_licences
     
-    @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
-
     respond_to do |format|
       format.html { setup_next_and_previous_documents }
       format.json do
