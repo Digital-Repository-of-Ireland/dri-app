@@ -200,6 +200,23 @@ class CatalogController < ApplicationController
     config.view.maps.placename_field = ActiveFedora.index_field_mapper.solr_name('placename_field', :facetable, type: :string)
     config.view.maps.geojson_field = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol)
     config.view.maps.search_mode = 'placename'
+
+    config.oai = {
+      provider: {
+        repository_name: 'Digital Repository of Ireland',
+        repository_url: 'https://repository.dri.ie/oai',
+        record_prefix: 'oai:dri',
+        admin_email: 'tech@dri.ie',
+        #sample_id: '109660'
+      },
+      document: {
+        limit: 100,            # number of records returned with each request, default: 15
+        set_model: DRI::OaiProvider::AncestorSet,
+        set_fields: [        # ability to define ListSets, optional, default: nil
+          { label: 'collection', solr_field: 'ancestor_id_sim' }
+        ]
+      }
+    }
   end
 
   # OVER-RIDDEN from BL

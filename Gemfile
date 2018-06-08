@@ -9,6 +9,7 @@ gem 'sinatra', '1.4.8'
 gem 'xmlrpc' # removed in ruby 2.4.0
 
 gem 'blacklight', '~> 5.19.0'
+gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
 
 gem 'hydra-head', '9.10'
 

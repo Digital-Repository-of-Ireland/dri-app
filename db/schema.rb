@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170206161648) do
+ActiveRecord::Schema.define(version: 20171024145657) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -67,6 +67,60 @@ ActiveRecord::Schema.define(version: 20170206161648) do
 
   add_index "doi_metadata", ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
 
+  create_table "dri_batch_ingest_ingest_batches", force: :cascade do |t|
+    t.string   "email"
+    t.string   "collection_id"
+    t.integer  "user_ingest_id"
+    t.text     "media_object_ids"
+    t.boolean  "finished",         default: false
+    t.boolean  "email_sent",       default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "dri_batch_ingest_master_files", force: :cascade do |t|
+    t.integer  "media_object_id"
+    t.string   "status_code"
+    t.string   "file_size"
+    t.string   "file_location"
+    t.boolean  "preservation"
+    t.text     "download_spec"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.boolean  "metadata"
+  end
+
+  add_index "dri_batch_ingest_master_files", ["media_object_id"], name: "index_dri_batch_ingest_master_files_on_media_object_id"
+
+  create_table "dri_batch_ingest_media_objects", force: :cascade do |t|
+    t.integer  "ingest_batch_id"
+    t.string   "collection"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "dri_batch_ingest_media_objects", ["ingest_batch_id"], name: "ingest_batch_idx"
+
+  create_table "dri_batch_ingest_user_ingests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "dri_batch_ingest_user_ingests", ["user_id"], name: "index_dri_batch_ingest_user_ingests_on_user_id"
+
+  create_table "fixity_checks", force: :cascade do |t|
+    t.string   "collection_id"
+    t.string   "object_id"
+    t.boolean  "verified"
+    t.text     "result"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "fixity_checks", ["collection_id"], name: "index_fixity_checks_on_collection_id"
+  add_index "fixity_checks", ["object_id"], name: "index_fixity_checks_on_object_id"
+
   create_table "ingest_statuses", force: :cascade do |t|
     t.string   "batch_id"
     t.string   "asset_id"
@@ -94,7 +148,7 @@ ActiveRecord::Schema.define(version: 20170206161648) do
     t.integer  "ingest_status_id"
     t.string   "job"
     t.string   "status"
-    t.string   "message"
+    t.text     "message"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
