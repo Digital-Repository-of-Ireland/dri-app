@@ -3,13 +3,13 @@
 require "rails_helper"
 
 RSpec.describe "Oai requests", type: :request do
-let(:collection) { FactoryBot.create(:collection) }
-let(:object) { FactoryBot.create(:sound) }
+  let(:collection) { FactoryBot.create(:collection) }
+  let(:object) { FactoryBot.create(:sound) }
 
   before do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
-
+ 
     collection.status = "published"
     object.status = "published"
     object.save
@@ -19,6 +19,7 @@ let(:object) { FactoryBot.create(:sound) }
   end
 
   after do
+    collection.delete
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
@@ -45,8 +46,13 @@ let(:object) { FactoryBot.create(:sound) }
     expect(response.body).to match(/collection:#{collection.id}/)
   end
 
+  it "has a setSpec" do
+    get "/oai", { verb: 'ListRecords', metadataPrefix: 'oai_dri' }
+    expect(response.body).to match(%r{<setSpec>collection:#{collection.id}<\/setSpec>})
+  end
+
   it "has a record in the repo" do
-    get "/oai?verb=ListRecords&metadataPrefix=oai_dri"
+    get "/oai", { verb: 'ListRecords', metadataPrefix: 'oai_dri' }
     expect(response.body).to match(%r{<identifier>oai:dri:.*<\/identifier>})
   end
 

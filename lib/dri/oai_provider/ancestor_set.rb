@@ -15,6 +15,8 @@ module DRI::OaiProvider
 
     # Returns array of sets for a solr document, or empty array if none are available.
     def self.sets_for(record)
+      return [] if (record.keys & @fields.map { |field| field[:solr_field] }).empty?
+
       Array.wrap(@fields).map do |field|
         new("#{field[:label]}:#{record.fetch(field[:solr_field], []).reverse.join(':')}")
       end.flatten
