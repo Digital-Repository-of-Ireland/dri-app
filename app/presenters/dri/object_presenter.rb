@@ -26,15 +26,9 @@ module DRI
     end
 
     def display_organisation(organisation)
-      if organisation.brand.nil? && organisation.url.blank?
-        organisaton.name
-      elsif organisation.brand.nil? && organisation.url.blank?
-        link_to(organisation.name, organisation.url, target: "_blank")
-      elsif organisation.brand && organisation.url.blank?
-        image_tag logo_path(organisation), height: "75px", alt: organisation.brand.filename
-      else
-        link_to image_tag(logo_path(organisation), height: "75px", alt: organisation.brand.filename), organisation.url, target: "_blank"
-      end
+      return display_brand(organisation) if organisation.brand
+     
+      organisation.url.present? ? link_to(organisation.name, organisation.url, target: "_blank") : organisation.name
     end
 
     private
@@ -42,6 +36,15 @@ module DRI
     Child = Struct.new(:id, :link_text, :path, :type, :cover) do
       def to_partial_path
         'child'
+      end
+    end
+
+    # logo_path links to the InstituteController which looks up the Brand for the Institute to retrieve the logo image
+    def display_brand(organisation)
+      if organisation.url.present?
+        link_to image_tag(logo_path(organisation), height: "75px", alt: organisation.name), organisation.url, target: "_blank"
+      else
+        image_tag logo_path(organisation), height: "75px", alt: organisation.name
       end
     end
 
