@@ -25,7 +25,10 @@ gem 'paper_trail', '~> 4'
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.6.3'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.2.2'
 
+# batch ingest
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git'
+gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
+gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo', '2.6.0'
 
 gem 'active-fedora', '9.11'
@@ -41,8 +44,6 @@ gem 'feedjira'
 
 # Storage-related gems
 gem 'moab-versioning'
-gem 'browse-everything', git: 'https://github.com/stkenny/browse-everything.git', branch: 'feature/per_user'
-gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 
 # File processing gems
 gem 'mimemagic'
