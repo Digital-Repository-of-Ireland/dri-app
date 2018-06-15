@@ -20,7 +20,7 @@ Feature: Institutes
   Scenario: Viewing associated institutes for a collection
     Given I have associated the institute "TestInstitute" with the collection with pid "the saved pid"
     When I go to the "collection" "show" page for "the saved pid"
-    Then I should see the image "sample_logo.png"
+    Then I should see the image "TestInstitute"
 
   Scenario: Viewing institutes page
     Given I have associated the institute "TestInstitute" with the collection with pid "the saved pid"
@@ -32,4 +32,4 @@ Feature: Institutes
     Given I create an object and save the pid
     And I have associated the institute "TestInstitute" with the collection with pid "the saved pid"
     When I go to the "object" "show" page for "the saved pid"
-    Then I should see the image "sample_logo.png"
+    Then I should see the image "TestInstitute"
