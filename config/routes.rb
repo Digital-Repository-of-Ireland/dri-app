@@ -9,7 +9,12 @@ DriApp::Application.routes.draw do
     mount DriBatchIngest::Engine => '/ingest'
 
     Blacklight.add_routes(self)
-
+    
+    concern :oai_provider, BlacklightOaiProvider::Routes.new
+    scope controller: "oai_pmh", as: "oai_pmh" do
+      concerns :oai_provider
+    end
+   
     devise_for :users, :skip => [:sessions, :registrations, :passwords], class_name: 'UserGroup::User', :controllers => { :omniauth_callbacks => "user_group/omniauth_callbacks" }
 
     devise_scope :user do
@@ -29,6 +34,7 @@ DriApp::Application.routes.draw do
     resources :collections, :only => ['index','new','create','update','edit','destroy']
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
+    
     put 'collections/:id/fixity', to: 'fixity#update', as: :fixity_check
     put 'objects/:id/fixity', to: 'fixity#update', as: :object_fixity_check
 

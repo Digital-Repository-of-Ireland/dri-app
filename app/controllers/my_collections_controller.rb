@@ -6,7 +6,7 @@ class MyCollectionsController < ApplicationController
   before_action :authenticate_user!
 
   # This applies appropriate access controls to all solr queries
-  MyCollectionsController.solr_search_params_logic += [:add_access_controls_to_solr_params_no_pub]
+  MyCollectionsController.solr_search_params_logic += [:add_workspace_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
   MyCollectionsController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
 

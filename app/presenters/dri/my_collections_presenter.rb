@@ -70,6 +70,8 @@ module DRI
         if ingest_status.present?
           status = ingest_status.first
           { status: status.status }
+        else 
+          { status: 'unknown' }
         end
       end
 

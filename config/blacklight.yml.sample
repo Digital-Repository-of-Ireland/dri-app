@@ -1,0 +1,14 @@
+# This is a sample config file that points to a solr server for each environment
+
+development:
+  adapter: solr
+  url: <%= ENV['HYDRA_SOLR_URL_DEVELOPMENT'] || 'http://localhost:8983/solr/development' %>
+profile:
+  adapter: solr
+  url: <%= ENV['HYDRA_SOLR_URL_DEVELOPMENT'] || 'http://127.0.0.1:8983/solr/development' %>
+test:
+  adapter: solr
+  url: http://127.0.0.1:<%= ENV['SOLR_TEST_PORT'] || 8983 %>/solr/test
+production:
+  adapter: solr
+  url: 'http://your.production.server:8080/bl_solr/core0'
