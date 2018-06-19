@@ -77,8 +77,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: b0ca43cea3b52098677d76798d9f5199815e8e72
-  branch: develop
+  revision: ad0b0bace50c6724891232f6a9327709c96cf1f3
+  tag: v2.6.3
   specs:
     dri_data_models (2.6.3)
       active-fedora (= 9.11)
@@ -96,8 +96,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 8e76b0598540aff222a3780e9632db8d09e11de2
-  branch: develop
+  revision: 108fc4d64ef63d9e1d23746fba66851f1e244c6a
+  tag: v1.2.3
   specs:
     user_group (1.2.3)
       devise
@@ -184,7 +184,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (6.0.4)
     ast (2.3.0)
-    autoprefixer-rails (8.6.2)
+    autoprefixer-rails (8.6.3)
       execjs
     aws-eventstream (1.0.0)
     aws-partitions (1.91.0)
