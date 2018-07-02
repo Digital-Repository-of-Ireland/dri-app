@@ -345,6 +345,7 @@ en:
             one: Download entire object including the asset
             other: 'Download entire object including all %{count} assets'
           download_archive_explanation: "This may take some time. You will receive an email when your download is ready."
+          download_tsandcs_msg: "Downloaded assets must be used in accordance with the <a href='%{url}'>DRI End User Terms and Conditions</a>"
           download_originals: Download the original uploaded version of this individual asset
           download_surrogate: Download optimised surrogate version of this individual asset (recommended for viewing)
           manage_bookmark: Manage Your Bookmarks
