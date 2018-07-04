@@ -184,6 +184,7 @@ en:
         zip: Dublin 2
     headerlinks:
       about: About
+      about_dri: About DRI
       about_dri_lifecycle: DRI Lifecycle
       admin: Admin
       batch_ingest: Batch Ingest
@@ -225,6 +226,7 @@ en:
       why_join_dri: 'Why Join DRI?'
       workspace: Workspace
       find_us: 'Find Us'
+      research_data: Research Data and DRI
     help:
       add_documentation_help_text: These objects appear in the Related Materials section of the collection page.
       add_documentation_help_title: Add contextual information
