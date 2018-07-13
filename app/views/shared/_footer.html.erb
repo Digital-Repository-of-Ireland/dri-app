@@ -1,8 +1,6 @@
 
 <footer id="dri_main_footer_id" class="dri_main_footer">
-
-
-
+  
   <div id="dri_footer_address_id" class="dri_footer_address">
     <%= t('dri.footer.ria_address.project') %><br/>
     <%= t('dri.footer.ria_address.name') %><br/>
@@ -18,14 +16,11 @@
     <% end %>
   </div>
 
-
-
   <div id="dri_footer_dsa_logo_id" class="dri_footer_dsa_logo">
-    <%= link_to 'https://www.datasealofapproval.org/en/', :id => "dsa_link", :target => "_blank" do %>
-      <%= image_tag("dri/home/CoreTrustSeal-logo_60x60.png", :alt=>"Data Seal of Approval" ) %>
+    <%= link_to 'https://www.coretrustseal.org/', id: "dsa_link", target: "_blank" do %>
+      <%= image_tag("dri/home/CoreTrustSeal-logo_60x60.png", alt: "Core Trust Seal" ) %>
     <% end %>
   </div>
-
 
   <nav id="dri_main_footer_navigation_id"
        class="dri_main_footer_navigation">
@@ -37,7 +32,9 @@
       <li class="">
         <span> <%= link_to t('dri.headerlinks.privacy_statement'), 'http://www.dri.ie/privacy-statement', :id => "privacy_statement", :class => "muted", :target => '_blank' %> </span>
       </li>
-
+      <li class="">
+        <span> <%= link_to t('dri.headerlinks.licensing_statement'), 'http://www.dri.ie/licensing-statement', :id => "licensing_statement", :class => "muted", :target => '_blank' %> </span>
+      </li>
       <li>
         <%= link_to t('dri.headerlinks.help'), main_app.page_path('about_faq'), :id => "dri_footer_help" %>
       </li>

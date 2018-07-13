@@ -184,6 +184,7 @@ en:
         zip: Dublin 2
     headerlinks:
       about: About
+      about_dri: About DRI
       about_dri_lifecycle: DRI Lifecycle
       admin: Admin
       batch_ingest: Batch Ingest
@@ -198,6 +199,7 @@ en:
       home: Home
       institutions: Organisations
       language: Language
+      licensing_statement: Licensing Statement
       manage: Manage
       manage_users: Assign Collection Manager
       membership: Membership
@@ -225,6 +227,7 @@ en:
       why_join_dri: 'Why Join DRI?'
       workspace: Workspace
       find_us: 'Find Us'
+      research_data: Research Data and DRI
     help:
       add_documentation_help_text: These objects appear in the Related Materials section of the collection page.
       add_documentation_help_title: Add contextual information
@@ -345,6 +348,7 @@ en:
             one: Download entire object including the asset
             other: 'Download entire object including all %{count} assets'
           download_archive_explanation: "This may take some time. You will receive an email when your download is ready."
+          download_tsandcs_msg: "Downloaded assets must be used in accordance with the <a href='%{url}'>DRI End User Terms and Conditions</a>"
           download_originals: Download the original uploaded version of this individual asset
           download_surrogate: Download optimised surrogate version of this individual asset (recommended for viewing)
           manage_bookmark: Manage Your Bookmarks

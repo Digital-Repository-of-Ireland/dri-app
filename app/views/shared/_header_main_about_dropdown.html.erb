@@ -1,6 +1,10 @@
 <li class="dropdown dri_dropdown">
-  <a href="http://www.dri.ie/about" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.about') %> <span class="caret"></span></a>
+  <a href="http://www.dri.ie/about-dri" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.about') %> <span class="caret"></span></a>
   <ul class="dropdown-menu" role="menu">
+
+    <li role="presentation">
+      <%= link_to t('dri.headerlinks.about_dri'), "http://www.dri.ie/about-dri" %>
+    </li>
 
     <li role="presentation">
       <%= link_to t('dri.headerlinks.deposit_guide'), "http://www.dri.ie/about/guide-to-deposit" %>
@@ -24,6 +28,10 @@
 
     <li role="presentation">
       <%= link_to t('dri.headerlinks.resources'), "http://www.dri.ie/resources-0" %>
+    </li>
+
+    <li role="presentation">
+      <%= link_to t('dri.headerlinks.research_data'), "http://www.dri.ie/research-data-and-dri" %>
     </li>
 
   </ul>
