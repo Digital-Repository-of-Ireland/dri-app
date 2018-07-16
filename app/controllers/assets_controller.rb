@@ -2,7 +2,8 @@
 #
 class AssetsController < ApplicationController
   before_action :authenticate_user_from_token!, only: [:list_assets, :download]
-  before_action :authenticate_user!, only: [:list_assets]
+  before_action :authenticate_user!, only: :list_assets
+  before_action :add_cors_to_json, only: :list_assets
   before_action :read_only, except: [:show, :download, :list_assets]
   before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets, :retrieve]
 
@@ -211,6 +212,12 @@ class AssetsController < ApplicationController
   end
 
   private
+
+    def add_cors_to_json
+      if request.format == "application/json"
+        response.headers["Access-Control-Allow-Origin"] = "*"
+      end
+    end
 
     def mime_type(file_uri)
       uri = URI.parse(file_uri)
