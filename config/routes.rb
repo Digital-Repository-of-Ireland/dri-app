@@ -124,9 +124,10 @@ DriApp::Application.routes.draw do
     match 'collections/:id' => 'catalog#show', :via => :get
 
     #API paths
-    match 'get_objects' => 'objects#index', :via => :post
-    match 'related' => 'objects#related', :via => :get
-    match 'get_assets' => 'assets#list_assets', :via => :post, :as => :list_assets
+    match 'get_objects' => 'objects#index', via: :post
+    match 'related' => 'objects#related', via: :get
+    match 'get_assets' => 'assets#list_assets', via: :post, as: :list_assets
+    match '*get_assets', via: [:options], to:  lambda {|_| [204, {'Access-Control-Allow-Headers' => "Origin, Content-Type, Accept, Authorization, Token", 'Access-Control-Allow-Origin' => "*", 'Content-Type' => 'text/plain'}, []]}
 
     # need to put in the 'system administrator' role here
     authenticate do
