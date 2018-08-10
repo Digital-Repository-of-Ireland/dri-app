@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
-  revision: 1084babf2c91e702b5dfd55bd8d37d93324e7479
+  revision: d29077d196bc2974e2f7cf6c7e2e90d24594fb64
   specs:
     dri_batch_ingest (0.0.1)
       filesize
