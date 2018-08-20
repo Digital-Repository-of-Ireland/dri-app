@@ -248,6 +248,7 @@ GEM
       ci_reporter (~> 2.0)
       rspec (>= 2.14, < 4)
     clamav (0.4.1)
+    clipboard-rails (1.7.1)
     cliver (0.3.2)
     coderay (1.1.2)
     coffee-rails (4.2.2)
@@ -470,6 +471,8 @@ GEM
       rails (>= 3.2.6)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
+    i18n-js (3.0.11)
+      i18n (>= 0.6.6, < 2)
     i18n-tasks (0.9.19)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
@@ -942,6 +945,7 @@ DEPENDENCIES
   browse-everything!
   ci_reporter_rspec
   clamav
+  clipboard-rails
   colorbox-rails
   config
   cucumber (= 2.3.3)
@@ -968,6 +972,7 @@ DEPENDENCIES
   honeybadger (~> 2.0)
   http_accept_language
   hydra-head (= 9.10)
+  i18n-js
   i18n-tasks (~> 0.9.15)
   i18n_sync
   iiif-presentation!

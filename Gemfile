@@ -53,6 +53,7 @@ gem 'mimemagic'
 gem 'http_accept_language'
 gem 'it'
 gem 'i18n-tasks', '~> 0.9.15'
+gem 'i18n-js'
 
 # logging
 gem 'syslog-logger'
@@ -162,6 +163,7 @@ gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 gem 'openlayers-rails'
 gem 'social-share-button'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
+gem 'clipboard-rails'
 
 gem 'blacklight-maps'
 gem 'leaflet-rails', '1.0.0'

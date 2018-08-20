@@ -15,6 +15,9 @@
 //= require datatables
 //= require jquery-ui
 //= require jquery.slick
+//= require clipboard
+//= require i18n
+//= require i18n/translations
 
 //
 // Required by Blacklight-Maps

@@ -359,6 +359,9 @@ en:
           objects_in_collection: Objects
           restricted_asset: Restricted Asset
           restricted_data_request: Restricted data access request form
+          copy_to_clipboard: Copy to Clipboard 
+          copy_success: Copied to Clipboard
+          copy_failure: Not copied
         headers:
           files: Asset Tools
           related_materials: Related Materials
