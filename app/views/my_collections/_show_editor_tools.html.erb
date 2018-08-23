@@ -17,15 +17,7 @@
     });
   });
 </script>
-<script>
-  function confirmDelete() {
-    if (confirm("<%= t('dri.views.objects.confirm.delete') %>")) {
-           $('#delete_object').submit();
-       } else {
-           return false;
-       }
-  }
-</script>
+
 <div class="dri_sidenav">
 <h5>
   <i class="fa fa-pencil"></i> <%= t('dri.views.catalog.titles.editor_tools') %>
@@ -173,7 +165,7 @@
           <button type="button" class="dri_button_grey" data-dismiss="modal">
             <%= t('dri.window.modal.close') %>
           </button>
-          <%= button_tag t('dri.views.objects.buttons.delete_object'), :class => "dri_button_red", :id => "delete_object_#{@document.id}", onclick: "confirmDelete();" %>
+          <%= button_tag t('dri.views.objects.buttons.delete_object'), :class => "dri_button_red", :id => "delete_object_#{@document.id}" %>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
