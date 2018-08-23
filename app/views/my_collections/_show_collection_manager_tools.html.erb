@@ -226,7 +226,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title"><%= t('dri.views.collection.buttons.delete_collection') %></h4>
+				<h4 class="modal-title"><%= t('dri.views.collection.buttons.delete_collection') %> - <%= @document.title.first %></h4>
 			</div>
 
 			<div class="modal-body">
@@ -240,7 +240,7 @@
 
 			<div class="modal-footer">
         <button type="button" class="dri_button_grey" data-dismiss="modal">
-          <%= t('dri.window.modal.close') %>
+          <%= t('dri.window.modal.cancel') %>
         </button>
         <%= button_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_button_red", :id => "delete_collection_#{@document.id}", onclick: "confirmDelete();" %>
 			</div>

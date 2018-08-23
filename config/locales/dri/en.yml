@@ -652,10 +652,9 @@ en:
         links:
           delete_all_tasks: Clear all completed tasks
     window:
-      alert:
-        coming_soon: Coming Soon
       modal:
         close: Close
+        cancel: Cancel
     reports:
       headings:
         fixity: Fixity Check
