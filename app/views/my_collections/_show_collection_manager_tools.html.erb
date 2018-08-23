@@ -5,7 +5,7 @@
 				$('#dri_upload_metadata_file').attr('style', 'display: inherit;');
 			}
 		});
-	}); 
+	});
 </script>
 <script>
   function confirmDelete() {
@@ -41,7 +41,7 @@
                 <%= review_link("#{draft_objects} )", "#{my_collections_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=draft&mode=objects&view=grid", t('dri.help.view_objects')) %>
 
                 <div class='pull-right'>
-                    <button type="button" class="dri_button_green_small" data-toggle="modal" data-target="#dri_review_modal_id" 
+                    <button type="button" class="dri_button_green_small" data-toggle="modal" data-target="#dri_review_modal_id"
                             id="all_objects_reviewed" <%= "disabled" if (draft_objects == 0 && draft_subcoll == 0) %> >
                             <%= t('dri.views.catalog.links.mark_all_reviewed') %>
                     </button>
@@ -59,18 +59,18 @@
             <% if @document.root_collection? %> <!-- Only show reviewedsh button if on root collection -->
                 <div class='pull-right'>
                 <% if @presenter.depositing_organisation %> <!-- Publish button enabled if depositing institute set -->
-                    <button type="button" class="dri_button_green_small" data-toggle="modal" data-target="#dri_publish_modal_id" 
+                    <button type="button" class="dri_button_green_small" data-toggle="modal" data-target="#dri_publish_modal_id"
                          id="publish" <%= "disabled" if (reviewed_objects == 0 && reviewed_subcoll == 0) %> >
                          <%= t('dri.views.catalog.links.publish') %>
                     </button>
                 <% elsif !@presenter.depositing_organisation %>  <!-- Publish button disabled if depositing institute not set -->
-                    <button type="button" class="dri_button_green_small" data-toggle="modal" data-target="#dri_publish_modal_id" 
+                    <button type="button" class="dri_button_green_small" data-toggle="modal" data-target="#dri_publish_modal_id"
                          id="publish" disabled>
                          <span class="dri_help_popover" data-content="<%= t('dri.help.dri_publish_unavailable') %>" data-original-title="<%= t('dri.help.dri_publish_unavailable_title') %>" data-trigger="hover" data-placement="left">
                          <%= t('dri.views.catalog.links.publish') %>
                          </span>
                     </button>
-                <% end %> 
+                <% end %>
                 </div>
             <% end %>
             <!-- end Reviewed Stats Block -->
@@ -106,7 +106,7 @@
     <li class="dri_help_popover" data-content="<%= t('dri.help.add_documentation_help_text') %>" data-original-title="<%= t('dri.help.add_documentation_help_title') %>" data-trigger="hover" data-placement="left">
       <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %><%= t('dri.views.catalog.links.add_documentation') %><% end %>
     </li>
-    
+
       <% if @document.editable? %>
         <% if @document.active_fedora_model == 'DRI::QualifiedDublinCore' %>
           <%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
@@ -124,7 +124,7 @@
           <li ><%= t('dri.views.catalog.links.add_object_xml') %></li>
         <% end %>
       <% end %> <!-- if end (non-EAD collections) -->
-	      
+
       <%= link_to new_export_path(document.id), :id => "export_metadata" do %>
         <li ><%= t('dri.views.catalog.links.export_collection_metadata') %></li>
       <% end %>
@@ -139,7 +139,7 @@
         <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
           <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
         <% end %>
-    
+
         <% if @document.root_collection? %>
           <%= link_to fixity_check_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_fixity') }, id: "fixity_check" do %>
             <li><%= t('dri.views.catalog.links.fixity_check') %></li>
@@ -153,7 +153,7 @@
 
     <!-- If (root collection OR not EAD collection) enable delete collection link -->
     <!-- This is to allow to delete any sub-collection except for EAD -->
-    <% if !@document.published? && (@document.root_collection? || @document.editable?) %>
+    <% if (!@document.published? || current_user.is_admin?) && (@document.root_collection? || @document.editable?) %>
       <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal', id: 'delete_object' do %>
         <li>
           <%= t('dri.views.collection.buttons.delete_collection') %>
@@ -167,7 +167,7 @@
   	        <a class="accordion-toggle" id="edit_menu" data-toggle="collapse" data-parent="#dri_edit_record_tools_id" href="#dri_edit_record_tools_collapsed_id">
   	          <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.collection.edit') %>
   	        </a>
-  	      
+
   	        <div id="dri_edit_record_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
   	          <div class="accordion-inner">
   		            <ul class="dri_subnav_edit_list">
@@ -183,7 +183,7 @@
   		                <li>
   							        <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
   							          <div class="dri_fileUpload">
-  						              <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %> 
+  						              <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => 'dri_metadata_upload' %>
   						              <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
   						            </div>
   							          <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
@@ -191,11 +191,11 @@
   						          <% end %>
   										</li>
                     <% end %>
-  		            
+
   		              <li>
   		                <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
   		              </li>
-  			              			       
+
   			             <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
   			               <li class="dri_subnav_edit_list_last"><%= t('dri.views.catalog.buttons.set_licence') %></li>
   			             <% end %>
@@ -214,7 +214,7 @@
 	    </li>
 	  <% end %>
 	<% end %>
-	
+
   </ul>
 </div>
 
@@ -266,8 +266,8 @@
 				<% end %>
 			  </p>
 				<p><%= t('dri.views.collection.confirm_all_descendants_reviewed') %></p>
-				<p><%= t('dri.views.collection.confirm_review_summary', 
-					      objects: @document.draft_objects, 
+				<p><%= t('dri.views.collection.confirm_review_summary',
+					      objects: @document.draft_objects,
 				        subcolls: @document.draft_subcollections) %></p>
 				<br />
 				<% if duplicate_total && duplicate_total > 0 %>
