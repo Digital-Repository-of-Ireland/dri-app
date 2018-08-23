@@ -428,7 +428,7 @@ en:
           delete_collection: Delete Collection
           edit_metadata: Edit Metadata
         confirm_all_descendants_reviewed: By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed.
-        confirm_delete: This will delete the collection and all objects within the collection. Continue?
+        confirm_delete: This will delete the collection and all objects within the collection/sub-collection. Continue?
         confirm_fixity: 'Perform fixity check on all objects in this collection?'
         confirm_publish: This will make all reviewed objects accessible. This can not be undone! Continue?
         confirm_review_collection: This collection record will be marked as reviewed.
