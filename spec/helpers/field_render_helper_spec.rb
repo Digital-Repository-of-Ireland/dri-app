@@ -37,6 +37,7 @@ describe FieldRenderHelper, testing: true do
             helper.request.cookies[:metadata_language] = "ga"
             expect(helper.render_description({:field => 'description_gle_tesim',
                                               :document => {'description_gle_tesim' => ['Sample Description']}})).to include('Hide Irish')
+            helper.request.cookies[:metadata_language] = "en"
         end
 
         it "when metadata language is ga there is a link to show English metadata" do
@@ -46,6 +47,7 @@ describe FieldRenderHelper, testing: true do
             expect(helper.render_description({:field => 'description_eng_tesim',
                                               :document => {'description_eng_tesim' => ['Sample Description'],
                                                             'description_gle_tesim' => []}})).to include('Show English')
+            helper.request.cookies[:metadata_language] = "en"
         end
 
         it "when metadata language is en there is a link to hide irish metadata" do
@@ -72,6 +74,7 @@ describe FieldRenderHelper, testing: true do
             expect(helper.render_description({:field => 'description_eng_tesim',
                                               :document => {'description_eng_tesim' => ['Sample Description'],
                                                             'description_gle_tesim' => []}})).to include('Folaigh an Béarla')
+            I18n.locale = :en
         end
 
     end
