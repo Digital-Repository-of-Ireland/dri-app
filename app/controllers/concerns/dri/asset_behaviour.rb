@@ -37,9 +37,8 @@ module DRI::AssetBehaviour
     filename = "#{@generic_file.id}_#{filename}"
 
     # Update object version
-    version = @object.object_version || '1'
-    object_version = (version.to_i + 1).to_s
-    @object.object_version = object_version
+    @object.object_version ||= '1'
+    @object.increment_version
 
     begin
       @object.save!

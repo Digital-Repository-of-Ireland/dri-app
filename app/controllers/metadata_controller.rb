@@ -109,8 +109,8 @@ class MetadataController < ApplicationController
       @errors = @object.errors.full_messages.inspect
     end
     
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
+    @object.object_version ||= '1'
+    @object.increment_version
 
     begin
       raise DRI::Exceptions::InternalError unless @object.save

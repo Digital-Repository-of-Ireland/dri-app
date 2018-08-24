@@ -86,8 +86,8 @@ class ObjectsController < BaseObjectsController
       @object.governing_collection = collection
     end
 
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
+    @object.object_version ||= '1'
+    @object.increment_version
 
     unless @object.update_attributes(update_params)
       purge_params
@@ -187,8 +187,9 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published' || current_user.is_admin?
       # Do the preservation actions
-      version = @object.object_version || '1'
-      @object.object_version = (version.to_i + 1).to_s
+      @object.object_version || '1'
+      @object.increment_version
+
       assets = []
       @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
       
@@ -339,8 +340,8 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published' || current_user.is_admin?
       @object.status = params[:status] if params[:status].present?
-      version = @object.object_version || '1'
-      @object.object_version = (version.to_i + 1).to_s
+      @object.object_version ||= '1'
+      @object.increment_version
       @object.save
 
       # Do the preservation actions

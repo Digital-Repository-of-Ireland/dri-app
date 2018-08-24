@@ -42,8 +42,8 @@ class BaseObjectsController < CatalogController
       licence = params[:batch][:licence]
       if licence.present?
         @object.licence = licence
-        version = @object.object_version || '1'
-        @object.object_version = (version.to_i + 1).to_s
+        @object.object_version ||= '1'
+        @object.increment_version
       end
 
       updated = @object.save
