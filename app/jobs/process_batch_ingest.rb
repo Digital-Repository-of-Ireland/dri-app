@@ -18,7 +18,7 @@ class ProcessBatchIngest
     # retrieve information about metadata file to be ingested
     metadata_info = ingest_batch['metadata']
 
-    object = if metadata_info['object_id'].present?
+    rc, object = if metadata_info['object_id'].present?
                # metadata ingest was successful so only ingest missing assets
                DRI::Batch.find(metadata_info['object_id'], cast: true)
              else
@@ -26,8 +26,10 @@ class ProcessBatchIngest
                ingest_metadata(collection, user, metadata)
              end
 
-    assets = retrieve_files(download_path, ingest_batch['files'])
-    ingest_assets(user, object, assets)
+    if rc == 0 && object
+      assets = retrieve_files(download_path, ingest_batch['files'])
+      ingest_assets(user, object, assets)
+    end
   end
 
   def self.ingest_assets(user, object, assets)
@@ -55,7 +57,7 @@ class ProcessBatchIngest
                 )
                 true
               end
-    
+
       update = if saved
                  { status_code: 'COMPLETED',
                    file_location: Rails.application.routes.url_helpers.object_file_path(object, @generic_file) }
@@ -67,39 +69,54 @@ class ProcessBatchIngest
     end
   end
 
-  def self.ingest_metadata(collection, user, metadata) 
+  def self.ingest_metadata(collection, user, metadata)
     xml = load_xml(file_data(metadata[:path]))
     object = create_object(collection, user, xml)
 
-    update = if object.valid? && object.save
-               create_reader_group if object.collection?
+    if !object.valid?
+      update = { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
+      update_master_file(metadata[:master_file_id], update)
+      FileUtils.rm_f(metadata[:path])
 
-               DRI::Object::Actor.new(object, user).version_and_record_committer
+      return -1, object
+    end
 
-               preservation = Preservation::Preservator.new(object)
-               preservation.preserve(true, true, ['descMetadata','properties'])
+    begin
+      update = if object.save
+                 create_reader_group if object.collection?
 
-               { status_code: 'COMPLETED',
-                 file_location: Rails.application.routes.url_helpers.my_collections_path(object) }
-             else
-               { status_code: 'FAILED', file_location: "error:#{object.errors.full_messages.inspect}" }
-              end
+                 DRI::Object::Actor.new(object, user).version_and_record_committer
+
+                 preservation = Preservation::Preservator.new(object)
+                 preservation.preserve(true, true, ['descMetadata','properties'])
+
+                 rc = 0
+                 { status_code: 'COMPLETED',
+                   file_location: Rails.application.routes.url_helpers.my_collections_path(object) }
+               else
+                 rc = -1
+                 { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
+               end
+    rescue Ldp::HttpError => e
+      update =  { status_code: 'FAILED', file_location: "error: unable to persist object to repository. service may be overloaded." }
+      rc = -1
+    end
 
     update_master_file(metadata[:master_file_id], update)
     FileUtils.rm_f(metadata[:path])
 
-    object
+    return rc, object
   end
 
   def self.ingest_file(file_path, object, datastream, filename)
     filedata = OpenStruct.new
     filedata.path = file_path
-    
+
     current_version = object.object_version || '1'
     object_version = (current_version.to_i+1).to_s
 
     object.object_version = object_version
-    
+
     # Update object version
     begin
       object.save
@@ -119,7 +136,7 @@ class ProcessBatchIngest
     preservation.preserve_assets([filename],[])
 
     FileUtils.rm_f(file_path)
-    
+
     object.object_version.to_i
   end
 
