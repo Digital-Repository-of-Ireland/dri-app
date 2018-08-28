@@ -1,5 +1,5 @@
 class BaseObjectsController < CatalogController
-  include DRI::Doi
+  include DRI::Citable
   include DRI::Versionable
 
   def doi

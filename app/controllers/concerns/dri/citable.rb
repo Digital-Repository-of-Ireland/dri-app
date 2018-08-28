@@ -1,4 +1,4 @@
-module DRI::Doi
+module DRI::Citable
   extend ActiveSupport::Concern
 
   def update_doi(object, doi, modified)
