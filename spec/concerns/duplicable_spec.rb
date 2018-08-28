@@ -1,27 +1,32 @@
 require 'rails_helper'
 
-describe 'DRI::Object::Actor' do
+describe 'DRI::Duplicable' do
   include DRI::MetadataBehaviour
-  
+
+  let(:duplicable_test) { Class.new do
+    include DRI::Duplicable
+  end
+  }
+
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
-    
+
     @user = FactoryBot.create(:user)
 
     @collection = FactoryBot.create(:collection)
-   
-    @object = FactoryBot.create(:sound) 
+
+    @object = FactoryBot.create(:sound)
     @object[:status] = "draft"
     checksum_metadata(@object)
     @object.save
 
-    @object2 = FactoryBot.create(:sound) 
+    @object2 = FactoryBot.create(:sound)
     @object2[:status] = "draft"
     checksum_metadata(@object2)
     @object2.save
 
-    @object3 = FactoryBot.create(:sound) 
+    @object3 = FactoryBot.create(:sound)
     @object3[:status] = "draft"
     @object3[:title] = ["Not a Duplicate"]
     checksum_metadata(@object3)
@@ -39,10 +44,8 @@ describe 'DRI::Object::Actor' do
   end
 
   it 'should return duplicates' do
-    actor = DRI::Object::Actor.new(@object, @user)
+    duplicates = duplicable_test.new.find_object_duplicates(@object)
 
-    duplicates = actor.find_duplicates
-    
     expect(duplicates.length).to eq(1)
     expect(duplicates.first['id']).to eq(@object2.id)
   end

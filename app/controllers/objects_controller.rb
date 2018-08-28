@@ -4,6 +4,7 @@ require 'solr/query'
 
 class ObjectsController < BaseObjectsController
   include DRI::MetadataBehaviour
+  include DRI::Duplicable
 
   Mime::Type.register "application/zip", :zip
 
@@ -192,7 +193,7 @@ class ObjectsController < BaseObjectsController
 
       assets = []
       @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
-      
+
       preservation = Preservation::Preservator.new(@object)
       preservation.update_manifests(
         deleted: {
@@ -294,11 +295,11 @@ class ObjectsController < BaseObjectsController
   def retrieve
     id = params[:id]
     begin
-      object = retrieve_object!(id) 
+      object = retrieve_object!(id)
     rescue ActiveFedora::ObjectNotFoundError
       flash[:error] = t('dri.flash.error.download_no_file')
     end
-      
+
     if object.present?
       if (can? :read, object)
         if File.file?(File.join(Settings.dri.downloads, params[:archive]))
@@ -441,9 +442,9 @@ class ObjectsController < BaseObjectsController
     end
 
     def post_save(create)
-      warn_if_duplicates
+      warn_if_has_duplicates(@object)
       retrieve_linked_data
-      actor.version_and_record_committer
+      version_and_record_committer(@object, current_user)
 
       yield
 

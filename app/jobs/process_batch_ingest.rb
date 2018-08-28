@@ -100,7 +100,7 @@ class ProcessBatchIngest
       update = if object.save
                  create_reader_group if object.collection?
 
-                 DRI::Object::Actor.new(object, user).version_and_record_committer
+                 version_and_record_committer(object, user)
 
                  preservation = Preservation::Preservator.new(object)
                  preservation.preserve(true, true, ['descMetadata','properties'])
@@ -223,5 +223,17 @@ class ProcessBatchIngest
     master_file.status_code = update[:status_code]
     master_file.file_location = update[:file_location]
     master_file.save
+  end
+
+  def self.version_and_record_committer(object, user)
+    object.create_version
+
+    VersionCommitter.create(version_id: version_id(object), obj_id: object.id, committer_login: user.to_s)
+  end
+
+  def self.version_id(object)
+    return object.versions.last.uri if object.has_versions?
+
+    object.uri.to_s
   end
 end
