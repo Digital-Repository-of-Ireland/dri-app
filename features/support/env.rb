@@ -108,7 +108,7 @@ end
 Before do
   require 'factory_bot'
   allow(DRI.queue).to receive(:push) 
-  allow_any_instance_of(DRI::Object::Actor).to receive(:version_and_record_committer)
+  allow_any_instance_of(DRI::Versionable).to receive(:version_and_record_committer)
   allow(Feedjira::Feed).to receive(:fetch_and_parse)
   
   ActiveFedora::Cleaner.clean!

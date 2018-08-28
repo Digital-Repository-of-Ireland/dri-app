@@ -12,6 +12,8 @@ TITLES = {
 #
 class MetadataController < ApplicationController
   include DRI::MetadataBehaviour
+  include DRI::Duplicable
+  include DRI::Versionable
 
   before_action :authenticate_user_from_token!, except: :show
   before_action :authenticate_user!, except: :show
@@ -86,7 +88,7 @@ class MetadataController < ApplicationController
     @object.update_metadata xml
     if @object.valid?
       checksum_metadata(@object)
-      warn_if_duplicates
+      warn_if_has_duplicates(@object)
 
       begin
         raise DRI::Exceptions::InternalError unless @object.attached_files[:descMetadata].save
@@ -98,7 +100,7 @@ class MetadataController < ApplicationController
       begin
         raise DRI::Exceptions::InternalError unless @object.save
 
-        actor.version_and_record_committer
+        version_and_record_committer(@object, current_user)
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
         logger.error "Could not save object #{@object.id}: #{e.message}"
@@ -108,7 +110,7 @@ class MetadataController < ApplicationController
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       @errors = @object.errors.full_messages.inspect
     end
-    
+
     @object.object_version ||= '1'
     @object.increment_version
 
@@ -119,7 +121,7 @@ class MetadataController < ApplicationController
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve(false, false, ['descMetadata','properties'])
 
-      actor.version_and_record_committer
+      version_and_record_committer(@object, current_user)
       flash[:notice] = t('dri.flash.notice.metadata_updated')
     rescue RuntimeError => e
       logger.error "Could not save object #{@object.id}: #{e.message}"
