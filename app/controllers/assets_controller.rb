@@ -9,7 +9,7 @@ class AssetsController < ApplicationController
 
   require 'validators'
 
-  include DRI::Doi
+  include DRI::Citable
   include DRI::AssetBehaviour
 
   def actor
@@ -46,12 +46,12 @@ class AssetsController < ApplicationController
       if @generic_file
         object = @generic_file.batch
         if object.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download",  object.id, 1, true) 
+          Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download",  object.id, 1, true)
         end
         download_surrogate(surrogate_type_name)
         return
       end
-    
+
     when 'masterfile'
       enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
@@ -79,7 +79,7 @@ class AssetsController < ApplicationController
         end
       end
     end
-    
+
     render text: 'Unable to find file', status: 500
   end
 
@@ -88,7 +88,7 @@ class AssetsController < ApplicationController
 
     @object = retrieve_object!(params[:object_id])
     @generic_file = retrieve_object!(params[:id])
-    
+
     raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @object.status == 'published'
 
     @object.object_version ||= '1'
@@ -103,7 +103,7 @@ class AssetsController < ApplicationController
     delfiles = ["#{@generic_file.id}_#{@generic_file.label}"]
     preservation = Preservation::Preservator.new(@object)
     preservation.preserve_assets(addfiles, delfiles)
- 
+
     flash[:notice] = t('dri.flash.notice.asset_deleted')
 
     respond_to do |format|
@@ -163,7 +163,7 @@ class AssetsController < ApplicationController
     preservation = params[:preservation].presence == 'true' ? true : false
     build_generic_file(object: @object, user: current_user, preservation: preservation)
     preserve_file(file_upload, datastream, params)
-    filename = params[:file_name].presence || file_upload.original_filename    
+    filename = params[:file_name].presence || file_upload.original_filename
 
     url = "#{URI.escape(download_url)}?version=#{@file.version}"
 
@@ -203,7 +203,7 @@ class AssetsController < ApplicationController
       item = list_files_with_surrogates(doc)
       @list << item unless item.empty?
     end
-    
+
     raise DRI::Exceptions::NotFound if @list.empty?
 
     respond_to do |format|
@@ -228,7 +228,7 @@ class AssetsController < ApplicationController
     end
 
     def can_view?
-      if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document)) 
+      if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document))
         raise Hydra::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
@@ -313,7 +313,7 @@ class AssetsController < ApplicationController
       base_name = File.basename(surrogate, ".*" )
       storage = StorageService.new
       storage.surrogate_url(
-        object_id, 
+        object_id,
         "#{file_id}_#{base_name}"
       )
     end
