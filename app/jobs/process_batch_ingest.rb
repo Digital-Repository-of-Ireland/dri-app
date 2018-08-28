@@ -19,12 +19,12 @@ class ProcessBatchIngest
     metadata_info = ingest_batch['metadata']
 
     rc, object = if metadata_info['object_id'].present?
-               # metadata ingest was successful so only ingest missing assets
-               DRI::Batch.find(metadata_info['object_id'], cast: true)
-             else
-               metadata = retrieve_files(download_path, [metadata_info])[0]
-               ingest_metadata(collection, user, metadata)
-             end
+                   # metadata ingest was successful so only ingest missing assets
+                   DRI::Batch.find(metadata_info['object_id'], cast: true)
+                 else
+                   metadata = retrieve_files(download_path, [metadata_info])[0]
+                   ingest_metadata(collection, user, metadata)
+                 end
 
     if rc == 0 && object
       assets = retrieve_files(download_path, ingest_batch['files'])
@@ -34,6 +34,13 @@ class ProcessBatchIngest
 
   def self.ingest_assets(user, object, assets)
     assets.each do |asset|
+
+      # the asset file was not found
+      if asset[:path].start_with?('error:')
+        update_master_file(asset[:master_file_id], { status_code: 'FAILED', file_location: asset[:path] })
+        next
+      end
+
       build_generic_file(object: object, user: user)
 
       original_file_name = File.basename(asset[:path])
@@ -70,7 +77,15 @@ class ProcessBatchIngest
   end
 
   def self.ingest_metadata(collection, user, metadata)
-    xml = load_xml(file_data(metadata[:path]))
+    download_path = metadata[:path]
+
+    # the metadata file could not be retrieved
+    if download_path.start_with?('error:')
+       update_master_file(metadata[:master_file_id], { status_code: 'FAILED', file_location: download_path })
+       return -1, nil
+    end
+
+    xml = load_xml(file_data(download_path))
     object = create_object(collection, user, xml)
 
     if !object.valid?
@@ -112,10 +127,8 @@ class ProcessBatchIngest
     filedata = OpenStruct.new
     filedata.path = file_path
 
-    current_version = object.object_version || '1'
-    object_version = (current_version.to_i+1).to_s
-
-    object.object_version = object_version
+    object.object_version ||= '1'
+    object.increment_version
 
     # Update object version
     begin
@@ -185,12 +198,17 @@ class ProcessBatchIngest
     files.each do |file|
       download_location = File.join(download_path, file['download_spec']['file_name'])
       downloaded = 0
-      File.open download_location, 'wb' do |dest|
-        # Retrieve the file, yielding each chunk to a block
-        retriever.retrieve(file['download_spec']) do |chunk, retrieved, total|
-          dest.write chunk
-          downloaded = retrieved
+
+      begin
+        File.open download_location, 'wb' do |dest|
+          # Retrieve the file, yielding each chunk to a block
+          retriever.retrieve(file['download_spec']) do |chunk, retrieved, total|
+            dest.write chunk
+            downloaded = retrieved
+          end
         end
+      rescue Errno::ENOENT => e
+        download_location = "error: #{e.message}"
       end
 
       download = { label: file['label'], path: download_location, master_file_id: file['id'] }
