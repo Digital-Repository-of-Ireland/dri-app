@@ -20,10 +20,6 @@ class MetadataController < ApplicationController
   before_action :read_only, except: :show
   before_action ->(id=params[:id]) { locked(id) }, except: :show
 
-  def actor
-    @actor ||= DRI::Object::Actor.new(@object, current_user)
-  end
-
   # Renders the metadata XML stored in the descMetadata datastream.
   #
   #

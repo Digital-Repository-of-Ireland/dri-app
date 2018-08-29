@@ -2,7 +2,6 @@ require 'ostruct'
 
 class ProcessBatchIngest
   extend DRI::MetadataBehaviour
-  extend DRI::AssetBehaviour
 
   @queue = :process_batch_ingest
 
@@ -57,9 +56,9 @@ class ProcessBatchIngest
                         id: @generic_file.id,
                         version: version
                       )
-                DRI::Asset::Actor.new(@generic_file, user).create_external_content(
+                file_content = GenericFileContent.new(user: user, generic_file: @generic_file)
+                file_content.external_content(
                   url,
-                  'content',
                   file_name
                 )
                 true
@@ -139,7 +138,13 @@ class ProcessBatchIngest
     end
 
     begin
-      create_local_file(object, filedata, datastream, nil, filename)
+      LocalFile.build_local_file(
+        object: object,
+        generic_file: @generic_file,
+        data:filedata,
+        datastream: datastream,
+        opts: { filename: filename }
+      )
     rescue StandardError => e
       Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"
       return -1
@@ -151,6 +156,13 @@ class ProcessBatchIngest
     FileUtils.rm_f(file_path)
 
     object.object_version.to_i
+  end
+
+  def self.build_generic_file(object:, user:, preservation: false)
+    @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
+    @generic_file.batch = object
+    @generic_file.apply_depositor_metadata(user)
+    @generic_file.preservation_only = 'true' if preservation
   end
 
   def self.create_object(collection, user, xml)

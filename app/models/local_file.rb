@@ -8,6 +8,29 @@ class LocalFile < ActiveRecord::Base
 
   serialize :checksum
 
+  def self.build_local_file(object:, generic_file:, data:, datastream:, opts: {})
+    # prepare file
+    file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
+    options = {}
+    options[:mime_type] = opts[:mime_type]
+    options[:checksum] = opts[:checksum] unless opts[:checksum].present?
+    options[:batch_id] = object.id
+    options[:object_version] = object.object_version || 1
+    options[:file_name] = opts[:filename]
+
+    # Add and save the file
+    file.add_file(data, options)
+
+    begin
+      raise DRI::Exceptions::InternalError unless file.save!
+
+      file
+    rescue ActiveRecord::ActiveRecordError => e
+      logger.error "Could not save the asset file #{@file.path} for #{@generic_file.id} to #{datastream}: #{e.message}"
+      raise DRI::Exceptions::InternalError
+    end
+  end
+
   # TODO: reenable this as an admin function
   #before_destroy :delete_file
 
