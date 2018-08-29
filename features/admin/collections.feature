@@ -43,6 +43,11 @@ Scenario: Constructing a collection with invalid permissions
   And I press the button to "create a collection"
   Then I should see a failure message for invalid collection
 
+Scenario: Constructing a collection
+  Given I am on the home page
+  When I go to "create new collection"
+  Then the element with id "batch_title][" should be focused
+
 Scenario: Updating a collection with invalid metadata
   Given a collection with pid "collperm" created by "user1"
   When I go to the "collection" "edit" page for "collperm"
