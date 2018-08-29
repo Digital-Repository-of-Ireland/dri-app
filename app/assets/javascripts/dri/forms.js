@@ -3,6 +3,7 @@ $(document).ready(function() {
   $('.add-text-field a').click(function(e){ 
     var fieldset_name = $(this).parents('fieldset').attr('id');
     var model_name = $(this).attr('model-name');
+    // var nchildren = $("#"+fieldset_name+" > div > input").length;
 
     e.preventDefault();
     if (fieldset_name == 'description'  || fieldset_name == 'rights') {
@@ -14,6 +15,7 @@ $(document).ready(function() {
                                   +'_'+fieldset_name+'][" name="'+model_name+'['
                                   +fieldset_name+'][]" size="30" type="text" value=""/> <a class="destructive">&nbsp;<i class="fa fa-times-circle"></i> Remove</a></div>');
     }
+    $("#"+fieldset_name+" > div > input").last().focus();
   });
 
   $('.dri_ingest_form').on('click','.destructive', function(e){
@@ -23,7 +25,7 @@ $(document).ready(function() {
     if(fieldset_name != 'roles') {
       $(this).parent('div').remove();
     }
-   });
+  });
 
 
   $('.add-person-fields a').click(function(e) {
