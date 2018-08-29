@@ -446,3 +446,9 @@ end
 Then /^I should see the image "(.*?)"$/ do |src|
   page.should have_xpath("//img[contains(@alt, \"#{src}\")]")
 end
+
+Then /^the element with id "([^"]*)" should be focused/ do |id|
+  # page.should have_selector("#{id}:focus")
+  # syntax error css selector "#batch_title][:focus" (Capybara::Poltergeist::InvalidSelector)
+  assert_equal page.evaluate_script("document.activeElement.id"), "#{id}"
+end

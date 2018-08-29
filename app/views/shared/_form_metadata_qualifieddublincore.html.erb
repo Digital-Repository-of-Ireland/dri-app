@@ -9,7 +9,7 @@
 		<% end%>
 		
 		<% @object.title.each do |i| %>
-		  <div><%= f.text_field "title][", :value=>i, :class => "edit span6 dri-textfield", :required=>'required' %><a class="destructive" model-name="batch">&nbsp;&nbsp;<i class="fa fa-times-circle">&nbsp;</i> <%= t('dri.views.objects.forms.delete') %></a></div>
+		  <div><%= f.text_field "title][", :value=>i, :class => "edit span6 dri-textfield", :required=>'required', :autofocus=>true %><a class="destructive" model-name="batch">&nbsp;&nbsp;<i class="fa fa-times-circle">&nbsp;</i> <%= t('dri.views.objects.forms.delete') %></a></div>
 		<% end %>
 		<p class="add-text-field">
 			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Title"><%= t('dri.views.objects.forms.add_title') %></a>
