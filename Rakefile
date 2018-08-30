@@ -115,8 +115,3 @@ namespace :solr do
     end
   end
 end
-
-task 'db:test:prepare' => 'dri:fixtures:generate'
-task 'cucumber' => 'dri:fixtures:generate'
-task 'rspec' => 'dri:fixtures:generate'
-
