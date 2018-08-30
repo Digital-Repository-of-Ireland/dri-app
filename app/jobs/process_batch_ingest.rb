@@ -1,8 +1,6 @@
 require 'ostruct'
 
 class ProcessBatchIngest
-  extend DRI::MetadataBehaviour
-
   @queue = :process_batch_ingest
 
   def self.perform(user_id, collection_id, ingest_json)
@@ -84,8 +82,9 @@ class ProcessBatchIngest
        return -1, nil
     end
 
-    xml = load_xml(file_data(download_path))
-    object = create_object(collection, user, xml)
+    xml_ds = XmlDatastream.new
+    xml_ds.load_xml(file_data(download_path))
+    object = create_object(collection, user, xml_ds)
 
     if !object.valid?
       update = { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
@@ -165,8 +164,8 @@ class ProcessBatchIngest
     @generic_file.preservation_only = 'true' if preservation
   end
 
-  def self.create_object(collection, user, xml)
-    standard = metadata_standard_from_xml(xml)
+  def self.create_object(collection, user, xml_ds)
+    standard = xml_ds.metadata_standard
 
     object = DRI::Batch.with_standard standard
     object.governing_collection = collection
@@ -174,7 +173,7 @@ class ProcessBatchIngest
     object.status = 'draft'
     object.object_version = '1'
 
-    set_metadata_datastream(object, xml)
+    object.update_metadata(xml_ds.xml)
     checksum_metadata(object)
 
     object
@@ -247,5 +246,12 @@ class ProcessBatchIngest
     return object.versions.last.uri if object.has_versions?
 
     object.uri.to_s
+  end
+
+  def self.checksum_metadata(object)
+    if object.attached_files.key?(:descMetadata)
+      xml = object.attached_files[:descMetadata].content
+      object.metadata_md5 = Checksum.md5_string(xml)
+    end
   end
 end

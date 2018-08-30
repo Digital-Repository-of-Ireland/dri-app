@@ -5,7 +5,6 @@ require 'validators'
 
 class CollectionsController < BaseObjectsController
   include Hydra::AccessControlsEnforcement
-  include DRI::MetadataBehaviour
   include DRI::Duplicable
 
   before_action :authenticate_user_from_token!, except: [:cover]
@@ -401,8 +400,9 @@ class CollectionsController < BaseObjectsController
         return false
       end
 
+      xml_ds = XmlDatastream.new
       begin
-        xml = load_xml(params[:metadata_file])
+        xml_ds.load_xml(params[:metadata_file])
       rescue DRI::Exceptions::InvalidXML
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @error = t('dri.flash.notice.specify_valid_file')
@@ -413,16 +413,14 @@ class CollectionsController < BaseObjectsController
         return false
       end
 
-      standard = metadata_standard_from_xml(xml)
-
-      if standard.nil?
+      if xml_ds.metadata_standard.nil?
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @error = t('dri.flash.notice.specify_valid_file')
         return false
       end
 
-      @object = DRI::Batch.with_standard standard
-      set_metadata_datastream(@object, xml)
+      @object = DRI::Batch.with_standard xml_ds.metadata_standard
+      @object.update_metadata xml_ds.xml
       checksum_metadata(@object)
       warn_if_has_duplicates(@object)
 

@@ -1,4 +1,4 @@
-include DRI::MetadataBehaviour
+include DRI::Duplicable
 
 Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = @random_pid if (pid.nil? || pid == "random")

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'DRI::Duplicable' do
-  include DRI::MetadataBehaviour
 
   let(:duplicable_test) { Class.new do
     include DRI::Duplicable
@@ -18,18 +17,15 @@ describe 'DRI::Duplicable' do
 
     @object = FactoryBot.create(:sound)
     @object[:status] = "draft"
-    checksum_metadata(@object)
     @object.save
 
     @object2 = FactoryBot.create(:sound)
     @object2[:status] = "draft"
-    checksum_metadata(@object2)
     @object2.save
 
     @object3 = FactoryBot.create(:sound)
     @object3[:status] = "draft"
     @object3[:title] = ["Not a Duplicate"]
-    checksum_metadata(@object3)
     @object3.save
 
     @collection.governed_items << @object
@@ -44,6 +40,13 @@ describe 'DRI::Duplicable' do
   end
 
   it 'should return duplicates' do
+    duplicable_test.new.checksum_metadata(@object)
+    duplicable_test.new.checksum_metadata(@object2)
+    duplicable_test.new.checksum_metadata(@object3)
+    @object.save
+    @object2.save
+    @object3.save
+
     duplicates = duplicable_test.new.find_object_duplicates(@object)
 
     expect(duplicates.length).to eq(1)
