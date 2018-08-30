@@ -3,7 +3,6 @@
 require 'solr/query'
 
 class ObjectsController < BaseObjectsController
-  include DRI::MetadataBehaviour
   include DRI::Duplicable
 
   Mime::Type.register "application/zip", :zip
@@ -370,14 +369,14 @@ class ObjectsController < BaseObjectsController
   private
 
     def create_from_upload
-      xml = load_xml(params[:metadata_file])
-      standard = metadata_standard_from_xml(xml)
+      xml_ds = XmlDatastream.new
+      xml = xml_ds.load_xml(params[:metadata_file])
 
-      @object = DRI::Batch.with_standard standard
+      @object = DRI::Batch.with_standard(xml_ds.metadata_standard)
       @object.depositor = current_user.to_s
       @object.update_attributes create_params
 
-      set_metadata_datastream(@object, xml)
+      @object.update_metadata xml
     end
 
     # If no standard parameter then default to :qdc

@@ -11,7 +11,6 @@ TITLES = {
 # Creates, updates, or retrieves, the descMetadata datastream for an object
 #
 class MetadataController < ApplicationController
-  include DRI::MetadataBehaviour
   include DRI::Duplicable
   include DRI::Versionable
 
@@ -67,7 +66,8 @@ class MetadataController < ApplicationController
     param = params[:xml].presence || params[:metadata_file].presence
 
     if param
-      xml = load_xml(param)
+      xml_ds = XmlDatastream.new
+      xml_ds.load_xml(param)
     else
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
       redirect_to controller: 'catalog', action: 'show', id: params[:id]
@@ -81,7 +81,7 @@ class MetadataController < ApplicationController
       raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
     end
 
-    @object.update_metadata xml
+    @object.update_metadata xml_ds.xml
     if @object.valid?
       checksum_metadata(@object)
       warn_if_has_duplicates(@object)

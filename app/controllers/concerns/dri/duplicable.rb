@@ -1,5 +1,14 @@
+require 'checksum'
+
 module DRI::Duplicable
   extend ActiveSupport::Concern
+
+  def checksum_metadata(object)
+    if object.attached_files.key?(:descMetadata)
+      xml = object.attached_files[:descMetadata].content
+      object.metadata_md5 = Checksum.md5_string(xml)
+    end
+  end
 
   def warn_if_has_duplicates(object)
     duplicates = find_object_duplicates(object)
