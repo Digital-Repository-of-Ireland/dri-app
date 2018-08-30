@@ -448,7 +448,5 @@ Then /^I should see the image "(.*?)"$/ do |src|
 end
 
 Then /^the element with id "([^"]*)" should be focused/ do |id|
-  # page.should have_selector("#{id}:focus")
-  # syntax error css selector "#batch_title][:focus" (Capybara::Poltergeist::InvalidSelector)
-  assert_equal page.evaluate_script("document.activeElement.id"), "#{id}"
+  page.evaluate_script("document.activeElement.id").should == id 
 end
