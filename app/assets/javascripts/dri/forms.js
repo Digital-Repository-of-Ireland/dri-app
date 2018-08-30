@@ -3,19 +3,35 @@ $(document).ready(function() {
   $('.add-text-field a').click(function(e){ 
     var fieldset_name = $(this).parents('fieldset').attr('id');
     var model_name = $(this).attr('model-name');
-    // var nchildren = $("#"+fieldset_name+" > div > input").length;
+
+    var element_to_add = ['description', 'rights'].includes(fieldset_name) ? 'textarea' : 'input';
+    var nchildren = $("#"+fieldset_name+" > div > "+element_to_add).length;
+
+    var remove_button = '<a class="destructive" model-name="batch">\
+                          &nbsp; <i class="fa fa-times-circle"></i> Remove\
+                        </a>';
+    var input_id = [model_name, fieldset_name, nchildren].join('_')+'][';
+    var input_name = model_name+'['+fieldset_name+'][]';
 
     e.preventDefault();
-    if (fieldset_name == 'description'  || fieldset_name == 'rights') {
-      $("#"+fieldset_name+' .add-text-field').before('<div><textarea class="edit span6 dri-textarea" id="'+model_name
-                                  +'_'+fieldset_name+'][" name="'+model_name+'['+fieldset_name
-                                  +'][]"></textarea> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> Remove</a></div>');
+
+    if (element_to_add == 'textarea') {
+      $("#"+fieldset_name+' .add-text-field').before(
+        '<div>\
+          <textarea class="edit span6 dri-textarea" \
+            id='+input_id+' name='+input_name+'>\
+          </textarea>'+ remove_button +
+        '</div>');
     } else {
-      $("#"+fieldset_name+' .add-text-field').before('<div><input class="edit span6 dri-textfield" id="'+model_name
-                                  +'_'+fieldset_name+'][" name="'+model_name+'['
-                                  +fieldset_name+'][]" size="30" type="text" value=""/> <a class="destructive">&nbsp;<i class="fa fa-times-circle"></i> Remove</a></div>');
+      $("#"+fieldset_name+' .add-text-field').before(
+        '<div>\
+          <input class="edit span6 dri-textfield" \
+            id='+input_id+' name='+input_name+' \
+            size="30" type="text" value=""/>'+remove_button+
+        '</div>');
     }
-    $("#"+fieldset_name+" > div > input").last().focus();
+    
+    $("#"+fieldset_name+" > div > "+element_to_add).last().focus();
   });
 
   $('.dri_ingest_form').on('click','.destructive', function(e){
@@ -26,7 +42,6 @@ $(document).ready(function() {
       $(this).parent('div').remove();
     }
   });
-
 
   $('.add-person-fields a').click(function(e) {
     e.preventDefault();
@@ -49,10 +64,8 @@ $(document).ready(function() {
       $(this).parent('div').remove();
     });
   });
-});
 
-// ensure at least one date is entered
-$(document).ready(function () {
+  // ensure at least one date is entered
   jQuery.validator.setDefaults({
    showErrors: function(errorMap, errorList) {
      // Clean up any tooltips for valid elements
@@ -72,10 +85,8 @@ $(document).ready(function () {
       });
     }, 
   });
-});
 
-// ensure at least one date is entered
-$(document).ready(function () {
+  // ensure at least one date is entered
   $("#new_batch").validate({
     rules: {
       "batch[creation_date][]": { require_from_group: [1, ".date-group"] },
@@ -89,9 +100,7 @@ $(document).ready(function () {
       "batch[date][]": { placement:'top' },
     },
   });
-});
 
-$(document).ready(function () {
   $("#edit_batch").validate({
     rules: {
       "batch[creation_date][]": { require_from_group: [1, ".date-group"] },
