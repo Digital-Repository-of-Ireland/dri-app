@@ -197,6 +197,10 @@ When /^I press the remove from collection button for Digital Object "(.*?)"/ do 
    click_link_or_button(button_to_id("remove from collection #{object_pid}"))
 end
 
+When /^I (click|press) the edit collection button with text "(.*?)"$/ do |_, button_text|
+  find('fieldset a span', text: button_text).click
+end 
+
 Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as type "(.*?)")?$/ do |collection_pid,object_pid,*type|
   object = ActiveFedora::Base.find(object_pid, {:cast => true})
   collection = ActiveFedora::Base.find(collection_pid, {:cast => true})

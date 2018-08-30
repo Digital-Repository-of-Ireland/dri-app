@@ -10,7 +10,8 @@ $(document).ready(function() {
     var remove_button = '<a class="destructive" model-name="batch">\
                           &nbsp; <i class="fa fa-times-circle"></i> Remove\
                         </a>';
-    var input_id = [model_name, fieldset_name, nchildren].join('_')+'][';
+    // var input_id = [model_name, fieldset_name, nchildren].join('_')+'][';
+    var input_id = [model_name, fieldset_name].join('_')+'][';
     var input_name = model_name+'['+fieldset_name+'][]';
 
     e.preventDefault();
@@ -30,7 +31,7 @@ $(document).ready(function() {
             size="30" type="text" value=""/>'+remove_button+
         '</div>');
     }
-    
+
     $("#"+fieldset_name+" > div > "+element_to_add).last().focus();
   });
 
