@@ -447,6 +447,6 @@ Then /^I should see the image "(.*?)"$/ do |src|
   page.should have_xpath("//img[contains(@alt, \"#{src}\")]")
 end
 
-Then /^the element with id "([^"]*)" should be focused/ do |id|
+Then /^the element with id "([^"]*)" should be focused$/ do |id|
   page.evaluate_script("document.activeElement.id").should == id 
 end
