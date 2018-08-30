@@ -1,9 +1,6 @@
 class BaseObjectsController < CatalogController
-  include DRI::Doi
-
-  def actor
-    @actor ||= DRI::Object::Actor.new(@object, current_user)
-  end
+  include DRI::Citable
+  include DRI::Versionable
 
   def doi
     @doi ||= DataciteDoi.where(object_id: @object.id)
@@ -55,7 +52,7 @@ class BaseObjectsController < CatalogController
       end
 
       respond_to do |format|
-        if updated 
+        if updated
           flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
         else
           flash[:error] = t('dri.flash.error.licence_not_updated')

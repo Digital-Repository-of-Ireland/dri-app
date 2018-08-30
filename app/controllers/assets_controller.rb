@@ -9,12 +9,7 @@ class AssetsController < ApplicationController
 
   require 'validators'
 
-  include DRI::Doi
-  include DRI::AssetBehaviour
-
-  def actor
-    @actor ||= DRI::Asset::Actor.new(@generic_file, current_user)
-  end
+  include DRI::Citable
 
   def show
     if params[:surrogate].present?
@@ -46,12 +41,12 @@ class AssetsController < ApplicationController
       if @generic_file
         object = @generic_file.batch
         if object.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download",  object.id, 1, true) 
+          Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download",  object.id, 1, true)
         end
         download_surrogate(surrogate_type_name)
         return
       end
-    
+
     when 'masterfile'
       enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
@@ -79,7 +74,7 @@ class AssetsController < ApplicationController
         end
       end
     end
-    
+
     render text: 'Unable to find file', status: 500
   end
 
@@ -88,7 +83,7 @@ class AssetsController < ApplicationController
 
     @object = retrieve_object!(params[:object_id])
     @generic_file = retrieve_object!(params[:id])
-    
+
     raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @object.status == 'published'
 
     @object.object_version ||= '1'
@@ -103,7 +98,7 @@ class AssetsController < ApplicationController
     delfiles = ["#{@generic_file.id}_#{@generic_file.label}"]
     preservation = Preservation::Preservator.new(@object)
     preservation.preserve_assets(addfiles, delfiles)
- 
+
     flash[:notice] = t('dri.flash.notice.asset_deleted')
 
     respond_to do |format|
@@ -121,10 +116,12 @@ class AssetsController < ApplicationController
     @generic_file = retrieve_object! params[:id]
 
     preserve_file(file_upload, datastream, params)
+    filename = params[:file_name].presence || file_upload.original_filename
 
     url = "#{URI.escape(download_url)}?version=#{@file.version}"
 
-    if actor.update_external_content(url, file_upload, datastream)
+    file_content = GenericFileContent.new(user: current_user, generic_file: @generic_file)
+    if file_content.external_content(url, filename)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
       mint_doi(@object, 'asset modified') if @object.status == 'published'
@@ -163,11 +160,12 @@ class AssetsController < ApplicationController
     preservation = params[:preservation].presence == 'true' ? true : false
     build_generic_file(object: @object, user: current_user, preservation: preservation)
     preserve_file(file_upload, datastream, params)
-    filename = params[:file_name].presence || file_upload.original_filename    
+    filename = params[:file_name].presence || file_upload.original_filename
 
     url = "#{URI.escape(download_url)}?version=#{@file.version}"
 
-    if actor.create_external_content(url, datastream, filename)
+    file_content = GenericFileContent.new(user: current_user, generic_file: @generic_file)
+    if file_content.external_content(url, filename)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
       mint_doi(@object, 'asset added') if @object.status == 'published'
@@ -203,7 +201,7 @@ class AssetsController < ApplicationController
       item = list_files_with_surrogates(doc)
       @list << item unless item.empty?
     end
-    
+
     raise DRI::Exceptions::NotFound if @list.empty?
 
     respond_to do |format|
@@ -219,6 +217,13 @@ class AssetsController < ApplicationController
       end
     end
 
+    def build_generic_file(object:, user:, preservation: false)
+      @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
+      @generic_file.batch = object
+      @generic_file.apply_depositor_metadata(user)
+      @generic_file.preservation_only = 'true' if preservation
+    end
+
     def mime_type(file_uri)
       uri = URI.parse(file_uri)
       file_name = File.basename(uri.path)
@@ -228,7 +233,7 @@ class AssetsController < ApplicationController
     end
 
     def can_view?
-      if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document)) 
+      if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document))
         raise Hydra::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
@@ -263,6 +268,39 @@ class AssetsController < ApplicationController
           buffer_size: '4096'
         )
       end
+    end
+
+    def preserve_file(filedata, datastream, params)
+      checksum = params[:checksum]
+      filename = params[:file_name].presence || filedata.original_filename
+      filename = "#{@generic_file.id}_#{filename}"
+
+      # Update object version
+      @object.object_version ||= '1'
+      @object.increment_version
+
+      begin
+        @object.save!
+      rescue ActiveRecord::ActiveRecordError => e
+        logger.error "Could not update object version number for #{@object.id} to version #{object_version}"
+        raise Exceptions::InternalError
+      end
+
+      @file = LocalFile.build_local_file(
+        object: @object,
+        generic_file: @generic_file,
+        data:filedata,
+        datastream: datastream,
+        opts: { filename: filename }
+      )
+
+      # Do the preservation actions
+      addfiles = [filename]
+      delfiles = []
+      delfiles = ["#{@generic_file.id}_#{@generic_file.label}"] if params[:action] == 'update'
+
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve_assets(addfiles, delfiles)
     end
 
     def show_surrogate
@@ -313,7 +351,7 @@ class AssetsController < ApplicationController
       base_name = File.basename(surrogate, ".*" )
       storage = StorageService.new
       storage.surrogate_url(
-        object_id, 
+        object_id,
         "#{file_id}_#{base_name}"
       )
     end

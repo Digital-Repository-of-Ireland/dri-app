@@ -1,9 +1,6 @@
 require 'ostruct'
 
 class ProcessBatchIngest
-  extend DRI::MetadataBehaviour
-  extend DRI::AssetBehaviour
-
   @queue = :process_batch_ingest
 
   def self.perform(user_id, collection_id, ingest_json)
@@ -57,9 +54,9 @@ class ProcessBatchIngest
                         id: @generic_file.id,
                         version: version
                       )
-                DRI::Asset::Actor.new(@generic_file, user).create_external_content(
+                file_content = GenericFileContent.new(user: user, generic_file: @generic_file)
+                file_content.external_content(
                   url,
-                  'content',
                   file_name
                 )
                 true
@@ -85,8 +82,9 @@ class ProcessBatchIngest
        return -1, nil
     end
 
-    xml = load_xml(file_data(download_path))
-    object = create_object(collection, user, xml)
+    xml_ds = XmlDatastream.new
+    xml_ds.load_xml(file_data(download_path))
+    object = create_object(collection, user, xml_ds)
 
     if !object.valid?
       update = { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
@@ -100,7 +98,7 @@ class ProcessBatchIngest
       update = if object.save
                  create_reader_group if object.collection?
 
-                 DRI::Object::Actor.new(object, user).version_and_record_committer
+                 version_and_record_committer(object, user)
 
                  preservation = Preservation::Preservator.new(object)
                  preservation.preserve(true, true, ['descMetadata','properties'])
@@ -139,7 +137,13 @@ class ProcessBatchIngest
     end
 
     begin
-      create_local_file(object, filedata, datastream, nil, filename)
+      LocalFile.build_local_file(
+        object: object,
+        generic_file: @generic_file,
+        data:filedata,
+        datastream: datastream,
+        opts: { filename: filename }
+      )
     rescue StandardError => e
       Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"
       return -1
@@ -153,8 +157,15 @@ class ProcessBatchIngest
     object.object_version.to_i
   end
 
-  def self.create_object(collection, user, xml)
-    standard = metadata_standard_from_xml(xml)
+  def self.build_generic_file(object:, user:, preservation: false)
+    @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
+    @generic_file.batch = object
+    @generic_file.apply_depositor_metadata(user)
+    @generic_file.preservation_only = 'true' if preservation
+  end
+
+  def self.create_object(collection, user, xml_ds)
+    standard = xml_ds.metadata_standard
 
     object = DRI::Batch.with_standard standard
     object.governing_collection = collection
@@ -162,7 +173,7 @@ class ProcessBatchIngest
     object.status = 'draft'
     object.object_version = '1'
 
-    set_metadata_datastream(object, xml)
+    object.update_metadata(xml_ds.xml)
     checksum_metadata(object)
 
     object
@@ -223,5 +234,24 @@ class ProcessBatchIngest
     master_file.status_code = update[:status_code]
     master_file.file_location = update[:file_location]
     master_file.save
+  end
+
+  def self.version_and_record_committer(object, user)
+    object.create_version
+
+    VersionCommitter.create(version_id: version_id(object), obj_id: object.id, committer_login: user.to_s)
+  end
+
+  def self.version_id(object)
+    return object.versions.last.uri if object.has_versions?
+
+    object.uri.to_s
+  end
+
+  def self.checksum_metadata(object)
+    if object.attached_files.key?(:descMetadata)
+      xml = object.attached_files[:descMetadata].content
+      object.metadata_md5 = Checksum.md5_string(xml)
+    end
   end
 end

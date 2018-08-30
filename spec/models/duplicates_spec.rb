@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'DRI::Solr::Document::Collection' do
-  include DRI::MetadataBehaviour
+  include DRI::Duplicable
   
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir

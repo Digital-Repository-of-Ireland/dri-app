@@ -4,7 +4,7 @@ describe 'ProcessBatchIngest' do
 
   before(:each) do
     allow_any_instance_of(DRI::GenericFile).to receive(:apply_depositor_metadata)
-    allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+    allow_any_instance_of(GenericFileContent).to receive(:external_content)
   end
 
   before(:each) do

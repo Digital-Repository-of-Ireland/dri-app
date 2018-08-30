@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   # Adds Hydra behaviors into the application controller
   include Hydra::Controller::ControllerBehavior
 
-  include DRI::Exceptions  
+  include DRI::Exceptions
 
   include UserGroup::PermissionsCheck
   include Hydra::AccessControlsEnforcement
@@ -78,18 +78,6 @@ class ApplicationController < ActionController::Base
     objs
   end
 
-  def warn_if_duplicates
-    duplicates = actor.find_duplicates
-    return if duplicates.blank?
-
-    warning = t(
-      'dri.flash.notice.duplicate_object_ingested',
-      duplicates: duplicates.map { |o| "'" + o["id"] + "'" }.join(", ").html_safe
-    )
-    flash[:alert] = warning
-    @warnings = warning
-  end
-
   # Return a list of all supported licences (for populating select dropdowns)
   def supported_licences
     @licences = {}
@@ -107,7 +95,7 @@ class ApplicationController < ActionController::Base
     def authenticate_user_from_token!
       user_email = params[:user_email].presence
       user       = user_email && User.find_by_email(user_email)
-      
+
       # Notice how we use Devise.secure_compare to compare the token
       # in the database with the token given in the params, mitigating
       # timing attacks.
@@ -149,7 +137,7 @@ class ApplicationController < ActionController::Base
     def locked(id)
       docs = ActiveFedora::SolrService.query("id:#{id}")
       obj = SolrDocument.new(docs.first)
-      
+
       return unless CollectionLock.exists?(collection_id: obj.root_collection_id)
 
       respond_to do |format|

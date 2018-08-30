@@ -7,22 +7,22 @@ describe CreateArchiveJob do
     @tmp_upload_dir = Dir.mktmpdir
     @tmp_assets_dir = Dir.mktmpdir
     @tmp_downloads_dir = Dir.mktmpdir
-    
+
     Settings.dri.uploads = @tmp_upload_dir
     Settings.dri.downloads = @tmp_downloads_dir
     Settings.dri.files = @tmp_assets_dir
 
     @login_user = FactoryBot.create(:admin)
     @collection = FactoryBot.create(:collection)
-   
-    @object = FactoryBot.create(:image) 
+
+    @object = FactoryBot.create(:image)
     @object[:status] = "draft"
     @object.save
 
     @collection.governed_items << @object
-    @collection.save    
+    @collection.save
 
-    allow_any_instance_of(DRI::Asset::Actor).to receive(:create_external_content)
+    allow_any_instance_of(GenericFileContent).to receive(:external_content)
 
     @object.master_file_access = 'public'
     @object.edit_users_string = @login_user.email
