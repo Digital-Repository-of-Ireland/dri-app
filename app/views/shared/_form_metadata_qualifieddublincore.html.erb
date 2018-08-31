@@ -41,12 +41,7 @@
 			  <%= render "shared/form_buttons/remove_field_button" %>
 		  </div>
 		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i>
-			<a model-name="batch" title="Add Title">
-				<%= t('dri.views.objects.forms.add_title') %>
-			</a>
-		</p>
+	  <%= render "shared/form_buttons/add_text_field_button", action:%w(add title) %>
 	</fieldset>
 <% end %>
 
@@ -65,12 +60,7 @@
 			  <%= render "shared/form_buttons/remove_field_button" %>
       </div>
     <% end %>
-    <p class="add-text-field">
-      <i class="fa fa-plus">&nbsp;</i>
-      <a model-name="batch" title="Add Creator">
-	      <%= t('dri.views.objects.forms.add_creator') %>
-      </a>
-    </p>
+    <%= render "shared/form_buttons/add_text_field_button", action:%w(add creator) %>
 	</fieldset>
 
 	<fieldset id="date_group">
@@ -90,12 +80,8 @@
 				  <%= render "shared/form_buttons/remove_field_button" %>
 			  </div>
 			<% end %>
-			<p class="add-text-field">
-				<i class="fa fa-plus">&nbsp;</i>
-				<a model-name="batch" title="Add Date">
-					<%= t('dri.views.objects.forms.add_date') %>
-				</a>
-			</p>
+			
+    <%= render "shared/form_buttons/add_text_field_button", action:%w(add date) %>
 		</fieldset>
 		<fieldset id="creation_date">
 			<span class="dri_metadata_label_span">
@@ -114,12 +100,8 @@
 				  <%= render "shared/form_buttons/remove_field_button" %>
 			  </div>
 			<% end %>
-			<p class="add-text-field">
-				<i class="fa fa-plus">&nbsp;</i>
-				<a model-name="batch" title="Add Creation Date">
-					<%= t('dri.views.objects.forms.add_creation_date') %>
-				</a>
-			</p>
+
+	    <%= render "shared/form_buttons/add_text_field_button", action:%w(add creation date) %>
 		</fieldset>
 		<fieldset id="published_date">
 			<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.published_date')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.published_date_text') %>" data-original-title="<%= t('dri.help.fields.published_date')%>" data-trigger="hover" data-placement="right"></i></span>
@@ -133,9 +115,7 @@
 				  <%= render "shared/form_buttons/remove_field_button" %>
 			  </div>
 			<% end %>
-			<p class="add-text-field">
-				<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Published Date"><%= t('dri.views.objects.forms.add_published_date') %></a>
-			</p>
+	    <%= render "shared/form_buttons/add_text_field_button", action:%w(add published date) %>
 		</fieldset>
 	</fieldset>
 
@@ -146,9 +126,8 @@
 			  <%= render "shared/form_buttons/remove_field_button" %>
 		  </div>
 		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Description"><%= t('dri.views.objects.forms.add_description') %></a>
-		</p>
+
+    <%= render "shared/form_buttons/add_text_field_button", action:%w(add description) %>
 	</fieldset>
 
 	<fieldset id="rights" class="dri_rights_metadata_fieldset dri_form_multiline_block">
@@ -163,9 +142,7 @@
 			  <%= render "shared/form_buttons/remove_field_button" %>
 		  </div>
 		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Rights"><%= t('dri.views.objects.forms.add_rights') %></a>
-		</p>
+    <%= render "shared/form_buttons/add_text_field_button", action:%w(add rights) %>
 	</fieldset>
 
 	<%# we don't want the Collection type to be output as we don't want it modified %>
@@ -181,9 +158,7 @@
 			  <%= render "shared/form_buttons/remove_field_button" %>
 		  </div>
 		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Type"><%= t('dri.views.objects.forms.add_type') %></a>
-		</p>
+    <%= render "shared/form_buttons/add_text_field_button", action:%w(add type) %>
 	</fieldset>
 
 	<fieldset id="language">
@@ -193,9 +168,7 @@
 			  <%= render "shared/form_buttons/remove_field_button" %>
 		  </div>
 		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Language"><%= t('dri.views.objects.forms.add_language') %></a>
-		</p>
+    <%= render "shared/form_buttons/add_text_field_button", action:%w(add language) %>
 	</fieldset>
 
 	<fieldset id="roles">
@@ -240,75 +213,86 @@
 			  <%= render "shared/form_buttons/remove_field_button" %>
 		  </div>
 		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Relation"><%= t('dri.views.objects.forms.add_relation') %></a>
-		</p>
+    <%= render "shared/form_buttons/add_text_field_button", action:%w(add relation) %>
 	</fieldset>
    
   <% if params[:controller] != 'collections' %>
 		<fieldset id="source">
-			<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.sources')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.sources_text') %>" data-original-title="<%= t('dri.help.fields.sources')%>" data-trigger="hover" data-placement="right"></i></span>
+			<span class="dri_metadata_label_span">
+				<%= f.label "#{t('dri.views.fields.sources')}"%>
+				<i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.sources_text') %>" data-original-title="<%= t('dri.help.fields.sources')%>" data-trigger="hover" data-placement="right"></i>
+			</span>
 			<% @object.source.each do |i| %>
 			  <div><%= f.text_field "source][", value:i, class: "edit span6 dri-textfield" %> 
 				  <%= render "shared/form_buttons/remove_field_button" %>
 			  </div>
 			<% end %>
-			<p class="add-text-field">
-				<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Source"><%= t('dri.views.objects.forms.add_source') %></a>
-			</p>
+	    <%= render "shared/form_buttons/add_text_field_button", action:%w(add source) %>
 		</fieldset>
   <% end %>
 
 	<fieldset id="coverage">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.coverages')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.coverages_text') %>" data-original-title="<%= t('dri.help.fields.coverages')%>" data-trigger="hover" data-placement="right"></i></span>
+		<span class="dri_metadata_label_span">
+			<%= f.label "#{t('dri.views.fields.coverages')}"%>
+			<i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.coverages_text') %>" data-original-title="<%= t('dri.help.fields.coverages')%>" data-trigger="hover" data-placement="right"></i>
+		</span>
 		<% @object.coverage.each do |i| %>
 		  <div><%= f.text_field "coverage][", value:i, class: "edit span6 dri-textfield" %> 
 			  <%= render "shared/form_buttons/remove_field_button" %>
 		  </div>
 		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Coverage"><%= t('dri.views.objects.forms.add_coverage') %></a>
-		</p>
+    <%= render "shared/form_buttons/add_text_field_button", action:%w(add coverage) %>
 	</fieldset>
 
 	<fieldset id="geographical_coverage">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.geographical_coverages')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.geographical_coverages_text') %>" data-original-title="<%= t('dri.help.fields.geographical_coverages')%>" data-trigger="hover" data-placement="right"></i></span>
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.geographical_coverages')}"%>
+			<i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.geographical_coverages_text') %>" data-original-title="<%= t('dri.help.fields.geographical_coverages')%>" data-trigger="hover" data-placement="right"></i>
+		</span>
 		<% @object.geographical_coverage.each do |i| %>
-		  <div><%= f.text_field "geographical_coverage][", value:i, class: "edit span6 dri-textfield" %> 
+		  <div>
+			  <%= f.text_field "geographical_coverage][", value:i, class: "edit span6 dri-textfield" %> 
 			  <%= render "shared/form_buttons/remove_field_button" %>
 		  </div>
 		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Place"><%= t('dri.views.objects.forms.add_place') %></a>
-		</p>
+    <%= render "shared/form_buttons/add_text_field_button", action:%w(add place) %>
 	</fieldset>
 
 	<fieldset id="temporal_coverage">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.temporal_coverages')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.temporal_coverage_text') %>" data-original-title="<%= t('dri.help.fields.temporal_coverage')%>" data-trigger="hover" data-placement="right"></i></span>
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.temporal_coverages')}"%>
+			<i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.temporal_coverage_text') %>" data-original-title="<%= t('dri.help.fields.temporal_coverage')%>" data-trigger="hover" data-placement="right"></i>
+		</span>
 		<% @object.temporal_coverage.each do |i| %>
-		  <div><%= f.text_field "temporal_coverage][", value:i, class: "edit span6 dri-textfield" %> 
+		  <div>
+			  <%= f.text_field "temporal_coverage][", value:i, class: "edit span6 dri-textfield" %> 
 			  <%= render "shared/form_buttons/remove_field_button" %>
 		  </div>
 		<% end %>
+		<%# title and action don't match so can't use current button partial %>
 		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Subject (Era)"><%= t('dri.views.objects.forms.add_temporal_coverage') %></a>
+			<i class="fa fa-plus">&nbsp;</i>
+			<a model-name="batch" title="Add Subject (Era)">
+				<%= t('dri.views.objects.forms.add_temporal_coverage') %>
+			</a>
 		</p>
 	</fieldset>
 
 	<fieldset id="subject">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.subjects')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.subjects_text') %>" data-original-title="<%= t('dri.help.fields.subjects')%>" data-trigger="hover" data-placement="right"></i></span>
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.subjects')}"%>
+			<i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.subjects_text') %>" data-original-title="<%= t('dri.help.fields.subjects')%>" data-trigger="hover" data-placement="right"></i>
+		</span>
 		<% @object.subject.each do |i| %>
-		  <div><%= f.text_field "subject][", value:i, class: "edit span6 dri-textfield" %> 
+		  <div>
+			  <%= f.text_field "subject][", value:i, class: "edit span6 dri-textfield" %> 
 			  <%= render "shared/form_buttons/remove_field_button" %>
 		  </div>
 		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Subject"><%= t('dri.views.objects.forms.add_subject') %></a>
-		</p>
+    <%= render "shared/form_buttons/add_text_field_button", action:%w(add subject) %>
 	</fieldset>
 
 	<fieldset id="identifier">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.identifiers')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.identifiers_text') %>" data-original-title="<%= t('dri.help.fields.identifiers')%>" data-trigger="hover" data-placement="right"></i></span>
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.identifiers')}"%>
+			<i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.identifiers_text') %>" data-original-title="<%= t('dri.help.fields.identifiers')%>" data-trigger="hover" data-placement="right"></i>
+		</span>
 		<% @object.identifier.each do |i| %>
 		  <div><%= f.text_field "identifier][", value:i, class: "edit span6 dri-textfield" %> 
 			  <%= render "shared/form_buttons/remove_field_button" %>
@@ -321,7 +305,10 @@
 
   <% if params[:controller] != 'collections' %>
 		<fieldset id="format">
-			<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.formats')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.formats_text') %>" data-original-title="<%= t('dri.help.fields.formats')%>" data-trigger="hover" data-placement="right"></i></span>
+			<span class="dri_metadata_label_span">
+				<%= f.label "#{t('dri.views.fields.formats')}"%>
+				<i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.formats_text') %>" data-original-title="<%= t('dri.help.fields.formats')%>" data-trigger="hover" data-placement="right"></i>
+			</span>
 			<% @object.format.each do |i| %>
 			  <div><%= f.text_field "format][", value:i, class: "edit span6 dri-textfield" %> 
 				  <%= render "shared/form_buttons/remove_field_button" %>

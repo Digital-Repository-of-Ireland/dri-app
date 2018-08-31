@@ -1,0 +1,7 @@
+<% action = action.map(&:downcase) %>
+<p class="add-text-field">
+  <i class="fa fa-plus">&nbsp;</i>
+  <a model-name="batch" title="<%=action.map(&:capitalize).join(' ')%>">
+    <%= t("dri.views.objects.forms." + action.join('_')) %>
+  </a>
+</p>
