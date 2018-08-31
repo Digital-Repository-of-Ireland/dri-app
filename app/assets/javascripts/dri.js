@@ -99,3 +99,40 @@ $(document).ready(function() {
   });
 });
 
+$(document).ready(function() {
+  // Tooltip
+
+  $('.clipboard-btn').tooltip({
+    trigger: 'click',
+    placement: 'bottom'
+  });
+
+  function setTooltip(btn, message) {
+    $(btn).tooltip('hide')
+      .attr('data-original-title', message)
+      .tooltip('show');
+  }
+
+  function hideTooltip(btn) {
+    setTimeout(function() {
+      $(btn).tooltip('hide');
+    }, 1000);
+  }
+
+  // Clipboard
+  if (clipboard) {
+    clipboard.destroy();
+  }
+  var clipboard = new Clipboard('.clipboard-btn');
+    
+  clipboard.on('success', function(e) {
+    setTooltip(e.trigger, I18n.t("dri.views.catalog.forms.copy_success"));
+    hideTooltip(e.trigger);
+    e.clearSelection();
+  });
+
+  clipboard.on('error', function(e) {
+    setTooltip(e.trigger, I18n.t("dri.views.catalog.forms.copy_failure"));
+    hideTooltip(e.trigger);
+  });
+});

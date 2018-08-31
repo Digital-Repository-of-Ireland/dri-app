@@ -11,16 +11,13 @@ TITLES = {
 # Creates, updates, or retrieves, the descMetadata datastream for an object
 #
 class MetadataController < ApplicationController
-  include DRI::MetadataBehaviour
+  include DRI::Duplicable
+  include DRI::Versionable
 
   before_action :authenticate_user_from_token!, except: :show
   before_action :authenticate_user!, except: :show
   before_action :read_only, except: :show
   before_action ->(id=params[:id]) { locked(id) }, except: :show
-
-  def actor
-    @actor ||= DRI::Object::Actor.new(@object, current_user)
-  end
 
   # Renders the metadata XML stored in the descMetadata datastream.
   #
@@ -69,7 +66,8 @@ class MetadataController < ApplicationController
     param = params[:xml].presence || params[:metadata_file].presence
 
     if param
-      xml = load_xml(param)
+      xml_ds = XmlDatastream.new
+      xml_ds.load_xml(param)
     else
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
       redirect_to controller: 'catalog', action: 'show', id: params[:id]
@@ -83,10 +81,10 @@ class MetadataController < ApplicationController
       raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
     end
 
-    @object.update_metadata xml
+    @object.update_metadata xml_ds.xml
     if @object.valid?
       checksum_metadata(@object)
-      warn_if_duplicates
+      warn_if_has_duplicates(@object)
 
       begin
         raise DRI::Exceptions::InternalError unless @object.attached_files[:descMetadata].save
@@ -98,7 +96,7 @@ class MetadataController < ApplicationController
       begin
         raise DRI::Exceptions::InternalError unless @object.save
 
-        actor.version_and_record_committer
+        version_and_record_committer(@object, current_user)
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
         logger.error "Could not save object #{@object.id}: #{e.message}"
@@ -108,9 +106,9 @@ class MetadataController < ApplicationController
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       @errors = @object.errors.full_messages.inspect
     end
-    
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
+
+    @object.object_version ||= '1'
+    @object.increment_version
 
     begin
       raise DRI::Exceptions::InternalError unless @object.save
@@ -119,7 +117,7 @@ class MetadataController < ApplicationController
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve(false, false, ['descMetadata','properties'])
 
-      actor.version_and_record_committer
+      version_and_record_committer(@object, current_user)
       flash[:notice] = t('dri.flash.notice.metadata_updated')
     rescue RuntimeError => e
       logger.error "Could not save object #{@object.id}: #{e.message}"

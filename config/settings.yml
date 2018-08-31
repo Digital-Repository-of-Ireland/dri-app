@@ -17,6 +17,8 @@ restrict:
     video: ['video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/avi', 'video/quicktime', 'application/mxf']
 storage:
   driver: s3_interface
+downloads:
+  directory: /tmp
 S3:
   server: http://localhost:8081
   use_ssl: false

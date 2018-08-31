@@ -43,6 +43,25 @@ Scenario: Constructing a collection with invalid permissions
   And I press the button to "create a collection"
   Then I should see a failure message for invalid collection
 
+Scenario: Constructing a collection (form focus)
+  Given I am on the home page
+  When I go to "create new collection"
+  Then the element with id "batch_title][" should be focused
+
+# # These won't work until driver is changed from phantom/poltergeist
+# # To a more up to date browser i.e. healdess chrome or ff
+#Scenario: Updating a collection (description form focus)
+#  Given a collection with pid "collperm" created by "user1"
+#  When I go to the "collection" "edit" page for "collperm"
+#  And I press the edit collection button with text "Add Description"
+#  Then the element with id "batch_description][" should be focused
+
+#Scenario: Updating a collection (creators form focus)
+#  Given a collection with pid "collperm" created by "user1"
+#  When I go to the "collection" "edit" page for "collperm"
+#  And I press the edit collection button with text "Add Creator"
+#  Then the element with id "batch_creator][" should be focused
+
 Scenario: Updating a collection with invalid metadata
   Given a collection with pid "collperm" created by "user1"
   When I go to the "collection" "edit" page for "collperm"

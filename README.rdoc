@@ -11,10 +11,9 @@ For testing and development you will need to bootstrap the project
 
   $ git clone git@tracker.dri.ie:drirepo/dri-app.git
   $ cd dri-app
-  $ bundle
+  $ bundle install --without production
   $ cp config/database.yml.sample config/database.yml (and edit as appropriate)
   $ cp config/fedora.yml.sample config/fedora.yml (and edit as appropriate)
-  $ cp config/jetty.yml.sample config/jetty.yml (and edit as appropriate)
   $ cp config/redis.yml.sample config/redis.yml (and edit as appropriate)
   $ cp config/solr.yml.sample config/solr.yml (and edit as appropriate)
   $ bundle exec rake db:migrate
@@ -27,11 +26,6 @@ Dont forget to prepare the test database with
 You may also need to edit config/settings.yml and/or create config/settings.local.yml
 
 To start the application for demo purposes
-
-Note: Ensure that a mysql (or mysql replacement) is
-running.  (E.G. MariaDB start alias: alias mariadbstart='cd
-"/opt/local" ;sudo /opt/local/lib/mariadb/bin/mysqld_safe
---datadir="/opt/local/var/db/mariadb"')
 
   $ cd dri-app
   $ rake jetty:start
@@ -69,7 +63,7 @@ To run the functional tests
 
 If you are using homebrew on OSX
 
-  $ brew install ansible coreutils libtool libksba libxml2 libxslt automake autoconf openssl curl curl-ca-bundle readline lzlib gettext pkg-config libyaml mariadb redis clamav sqlite ffmpeg gource phantomjs fits glib imagemagick ghostscript node
+  $ brew install coreutils libtool libksba libxml2 libxslt automake autoconf openssl curl curl-ca-bundle readline lzlib gettext pkg-config libyaml redis sqlite ffmpeg gource phantomjs fits glib imagemagick ghostscript node
 
 In order to properly ingest videos, please reinstall ffmpeg with all the the supported codecs and encoders available:
 
@@ -91,22 +85,6 @@ to run poltergeist.
 
 * https://github.com/jonleighton/poltergeist
 * https://github.com/ariya/phantomjs
-
-== Translations
-
-When translations are added to the english locale files in config/locales
-you should run the rake task localefiles with the parameter file which should
-be set to the path to the ENGLISH yml file. For example:
-
-  $ rake locales:mergefile file=config/locales/dri/en.yml
-
-This will merge any new keys from the English file into any other locale files
-(with the same naming convention) in that directory. The default value for each
-key will be the English text.
-
-To merge all files use
-
-  $ rake locales:mergeall
 
 == Settings.yml
 

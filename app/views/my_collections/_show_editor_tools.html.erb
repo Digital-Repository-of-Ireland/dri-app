@@ -17,21 +17,13 @@
     });
   });
 </script>
-<script>
-  function confirmDelete() {
-    if (confirm("<%= t('dri.views.objects.confirm.delete') %>")) {
-           $('#delete_object').submit();
-       } else {
-           return false;
-       }
-  }
-</script>
+
 <div class="dri_sidenav">
 <h5>
   <i class="fa fa-pencil"></i> <%= t('dri.views.catalog.titles.editor_tools') %>
 </h5>
 <ul>
-  
+
   <li>
     <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
       <div class="dri_fileUpload">
@@ -55,7 +47,7 @@
         <%= hidden_field_tag 'datastream', "content" %>
      <% end %>
     </li>
- 
+
     <% if current_user.is_admin? %>
       <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
         <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
@@ -83,9 +75,9 @@
           <span class="label label-danger"><%= t('dri.views.catalog.links.published') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update', :class => "pull-right dri_button_red_small" %>
         <% end %>
       <% end %>
-    </li>  
+    </li>
 
-    <% if @document.editable? %>
+    <% if @document.editable? && (@document.status != 'published' || current_user.is_admin?) %>
       <%= link_to '', :'data-target' => '#dri_delete_object_modal_id', :'data-toggle' => 'modal' do %>
         <li>
           <%= t('dri.views.objects.buttons.delete_object') %>
@@ -93,24 +85,24 @@
       <% end %>
     <% end %>
   <% end %>
-  
+
   <li>
   <div class="accordion" id="dri_edit_record_tools_id">
     <div class="accordion-group">
       <a class="accordion-toggle" id="edit_menu" data-toggle="collapse" data-parent="#dri_edit_record_tools_id" href="#dri_edit_record_tools_collapsed_id">
         <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.catalog.links.edit_this_record') %>
       </a>
-     
+
       <div id="dri_edit_record_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
         <div class="accordion-inner">
-          <ul class="dri_subnav_edit_list">              
-           <% if @document.editable? %> 
+          <ul class="dri_subnav_edit_list">
+           <% if @document.editable? %>
             <%= link_to edit_object_path(@document), :id => "edit_record" do %>
               <li>
                 <%= t('dri.views.catalog.buttons.edit_metadata') %>
               </li>
             <% end %>
-            
+
             <!-- Replace metadata only visible if non-EAD collection AND not a Documentation object -->
             <% if @document.active_fedora_model != "DRI::Documentation" %>
               <% if signed_in? && can?(:manage, @document.id) %>
@@ -150,7 +142,7 @@
 </ul>
 </div>
 
-<% if (can? :edit, @document) && @document.editable? && !(@document.status == 'published') %>
+<% if (can? :edit, @document) && @document.editable? && (@document.status != 'published' || current_user.is_admin?) %>
   <div class="modal fade" id="dri_delete_object_modal_id">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -171,9 +163,9 @@
 
         <div class="modal-footer">
           <button type="button" class="dri_button_grey" data-dismiss="modal">
-            <%= t('dri.window.modal.close') %>
+            <%= t('dri.window.modal.cancel') %>
           </button>
-          <%= button_tag t('dri.views.objects.buttons.delete_object'), :class => "dri_button_red", :id => "delete_object_#{@document.id}", onclick: "confirmDelete();" %>
+          <%= button_tag t('dri.views.objects.buttons.delete_object'), :class => "dri_button_red", :id => "delete_object_#{@document.id}" %>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -233,5 +225,5 @@
 </div><!-- /.modal -->
 
 <script>
-  
+
 </script>

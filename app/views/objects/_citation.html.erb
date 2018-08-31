@@ -3,8 +3,11 @@
   <h4 class="modal-title"><%= t('blacklight.tools.cite') %></h4>
 </div>
 <div class="modal-body">
-	<%= @object.export_as_dri_citation %>     
+    <textarea id="citation-text" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly"><%= @object.export_as_dri_citation %></textarea>
 </div>
 <div class="modal-footer">
+  <button class="btn btn-default clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#citation-text" data-container="body">
+    <%= t('dri.views.catalog.forms.copy_to_clipboard') %>
+  </button>
   <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('dri.window.modal.close') %></button>
 </div>

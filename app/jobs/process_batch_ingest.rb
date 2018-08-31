@@ -1,9 +1,6 @@
 require 'ostruct'
 
 class ProcessBatchIngest
-  extend DRI::MetadataBehaviour
-  extend DRI::AssetBehaviour
-
   @queue = :process_batch_ingest
 
   def self.perform(user_id, collection_id, ingest_json)
@@ -18,20 +15,29 @@ class ProcessBatchIngest
     # retrieve information about metadata file to be ingested
     metadata_info = ingest_batch['metadata']
 
-    object = if metadata_info['object_id'].present?
-               # metadata ingest was successful so only ingest missing assets
-               DRI::Batch.find(metadata_info['object_id'], cast: true)
-             else
-               metadata = retrieve_files(download_path, [metadata_info])[0]
-               ingest_metadata(collection, user, metadata)
-             end
+    rc, object = if metadata_info['object_id'].present?
+                   # metadata ingest was successful so only ingest missing assets
+                   DRI::Batch.find(metadata_info['object_id'], cast: true)
+                 else
+                   metadata = retrieve_files(download_path, [metadata_info])[0]
+                   ingest_metadata(collection, user, metadata)
+                 end
 
-    assets = retrieve_files(download_path, ingest_batch['files'])
-    ingest_assets(user, object, assets)
+    if rc == 0 && object
+      assets = retrieve_files(download_path, ingest_batch['files'])
+      ingest_assets(user, object, assets)
+    end
   end
 
   def self.ingest_assets(user, object, assets)
     assets.each do |asset|
+
+      # the asset file was not found
+      if asset[:path].start_with?('error:')
+        update_master_file(asset[:master_file_id], { status_code: 'FAILED', file_location: asset[:path] })
+        next
+      end
+
       build_generic_file(object: object, user: user)
 
       original_file_name = File.basename(asset[:path])
@@ -48,14 +54,14 @@ class ProcessBatchIngest
                         id: @generic_file.id,
                         version: version
                       )
-                DRI::Asset::Actor.new(@generic_file, user).create_external_content(
+                file_content = GenericFileContent.new(user: user, generic_file: @generic_file)
+                file_content.external_content(
                   url,
-                  'content',
                   file_name
                 )
                 true
               end
-    
+
       update = if saved
                  { status_code: 'COMPLETED',
                    file_location: Rails.application.routes.url_helpers.object_file_path(object, @generic_file) }
@@ -67,39 +73,61 @@ class ProcessBatchIngest
     end
   end
 
-  def self.ingest_metadata(collection, user, metadata) 
-    xml = load_xml(file_data(metadata[:path]))
-    object = create_object(collection, user, xml)
+  def self.ingest_metadata(collection, user, metadata)
+    download_path = metadata[:path]
 
-    update = if object.valid? && object.save
-               create_reader_group if object.collection?
+    # the metadata file could not be retrieved
+    if download_path.start_with?('error:')
+       update_master_file(metadata[:master_file_id], { status_code: 'FAILED', file_location: download_path })
+       return -1, nil
+    end
 
-               DRI::Object::Actor.new(object, user).version_and_record_committer
+    xml_ds = XmlDatastream.new
+    xml_ds.load_xml(file_data(download_path))
+    object = create_object(collection, user, xml_ds)
 
-               preservation = Preservation::Preservator.new(object)
-               preservation.preserve(true, true, ['descMetadata','properties'])
+    if !object.valid?
+      update = { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
+      update_master_file(metadata[:master_file_id], update)
+      FileUtils.rm_f(metadata[:path])
 
-               { status_code: 'COMPLETED',
-                 file_location: Rails.application.routes.url_helpers.my_collections_path(object) }
-             else
-               { status_code: 'FAILED', file_location: "error:#{object.errors.full_messages.inspect}" }
-              end
+      return -1, object
+    end
+
+    begin
+      update = if object.save
+                 create_reader_group if object.collection?
+
+                 version_and_record_committer(object, user)
+
+                 preservation = Preservation::Preservator.new(object)
+                 preservation.preserve(true, true, ['descMetadata','properties'])
+
+                 rc = 0
+                 { status_code: 'COMPLETED',
+                   file_location: Rails.application.routes.url_helpers.my_collections_path(object) }
+               else
+                 rc = -1
+                 { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
+               end
+    rescue Ldp::HttpError => e
+      update =  { status_code: 'FAILED', file_location: "error: unable to persist object to repository. service may be overloaded." }
+      rc = -1
+    end
 
     update_master_file(metadata[:master_file_id], update)
     FileUtils.rm_f(metadata[:path])
 
-    object
+    return rc, object
   end
 
   def self.ingest_file(file_path, object, datastream, filename)
     filedata = OpenStruct.new
     filedata.path = file_path
-    
-    current_version = object.object_version || '1'
-    object_version = (current_version.to_i+1).to_s
 
-    object.object_version = object_version
-    
+    object.object_version ||= '1'
+    object.increment_version
+
     # Update object version
     begin
       object.save
@@ -109,7 +137,13 @@ class ProcessBatchIngest
     end
 
     begin
-      create_local_file(object, filedata, datastream, nil, filename)
+      LocalFile.build_local_file(
+        object: object,
+        generic_file: @generic_file,
+        data:filedata,
+        datastream: datastream,
+        opts: { filename: filename }
+      )
     rescue StandardError => e
       Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"
       return -1
@@ -119,12 +153,19 @@ class ProcessBatchIngest
     preservation.preserve_assets([filename],[])
 
     FileUtils.rm_f(file_path)
-    
+
     object.object_version.to_i
   end
 
-  def self.create_object(collection, user, xml)
-    standard = metadata_standard_from_xml(xml)
+  def self.build_generic_file(object:, user:, preservation: false)
+    @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
+    @generic_file.batch = object
+    @generic_file.apply_depositor_metadata(user)
+    @generic_file.preservation_only = 'true' if preservation
+  end
+
+  def self.create_object(collection, user, xml_ds)
+    standard = xml_ds.metadata_standard
 
     object = DRI::Batch.with_standard standard
     object.governing_collection = collection
@@ -132,7 +173,7 @@ class ProcessBatchIngest
     object.status = 'draft'
     object.object_version = '1'
 
-    set_metadata_datastream(object, xml)
+    object.update_metadata(xml_ds.xml)
     checksum_metadata(object)
 
     object
@@ -168,12 +209,17 @@ class ProcessBatchIngest
     files.each do |file|
       download_location = File.join(download_path, file['download_spec']['file_name'])
       downloaded = 0
-      File.open download_location, 'wb' do |dest|
-        # Retrieve the file, yielding each chunk to a block
-        retriever.retrieve(file['download_spec']) do |chunk, retrieved, total|
-          dest.write chunk
-          downloaded = retrieved
+
+      begin
+        File.open download_location, 'wb' do |dest|
+          # Retrieve the file, yielding each chunk to a block
+          retriever.retrieve(file['download_spec']) do |chunk, retrieved, total|
+            dest.write chunk
+            downloaded = retrieved
+          end
         end
+      rescue Errno::ENOENT => e
+        download_location = "error: #{e.message}"
       end
 
       download = { label: file['label'], path: download_location, master_file_id: file['id'] }
@@ -188,5 +234,24 @@ class ProcessBatchIngest
     master_file.status_code = update[:status_code]
     master_file.file_location = update[:file_location]
     master_file.save
+  end
+
+  def self.version_and_record_committer(object, user)
+    object.create_version
+
+    VersionCommitter.create(version_id: version_id(object), obj_id: object.id, committer_login: user.to_s)
+  end
+
+  def self.version_id(object)
+    return object.versions.last.uri if object.has_versions?
+
+    object.uri.to_s
+  end
+
+  def self.checksum_metadata(object)
+    if object.attached_files.key?(:descMetadata)
+      xml = object.attached_files[:descMetadata].content
+      object.metadata_md5 = Checksum.md5_string(xml)
+    end
   end
 end

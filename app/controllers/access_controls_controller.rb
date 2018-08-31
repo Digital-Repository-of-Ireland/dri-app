@@ -20,7 +20,7 @@ class AccessControlsController < ApplicationController
     params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase if params[:batch][:manager_users_string].present?
     
     version = @object.object_version || '1'
-    params[:batch][:object_version] = (version.to_i+1).to_s
+    params[:batch][:object_version] = version.next
 
     permissionchange = permissions_changed?
     updated = @object.update_attributes(update_params) unless @object.collection? && !valid_permissions?

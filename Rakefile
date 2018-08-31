@@ -89,7 +89,6 @@ task :ci_clean do
 end
 
 namespace :rvm do
-
   desc 'Trust rvmrc file'
   task :trust_rvmrc do
     system(". ~/.rvm/scripts/rvm && rvm rvmrc trust .rvmrc && rvm rvmrc load")
@@ -116,7 +115,12 @@ namespace :solr do
   end
 end
 
-task 'db:test:prepare' => 'dri:fixtures:generate'
-task 'cucumber' => 'dri:fixtures:generate'
-task 'rspec' => 'dri:fixtures:generate'
+namespace :fakes3 do
+  desc 'Start fakes3'
+  task start: :environment do
+    fakes3_dir = 'tmp/fakes3/'
+    FileUtils.mkdir_p(fakes3_dir) unless Dir.exists?(fakes3_dir)
+    system("fakes3 -r #{fakes3_dir} -p 8081 -H localhost")
+  end
+end
 

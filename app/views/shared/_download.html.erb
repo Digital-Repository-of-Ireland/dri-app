@@ -1,5 +1,6 @@
 <div id="dri_download_assets" class="<%= generic_file.id %>" style="display:none">
   <div>
+    HELLO
     <p>
         <%= t('dri.views.catalog.forms.download_tsandcs_msg', url: main_app.page_path('terms')).html_safe %>
     </p>
@@ -8,8 +9,8 @@
     <div>
        <%= link_to file_download_path(@document.id, generic_file.id, type: 'surrogate') do %>
        <i class="fa fa-download"></i>
-     <% end %>
      <%= label_tag(:surrogate, t('dri.views.catalog.forms.download_surrogate')) %>
+     <% end %>
     </div>
   <% end %>
   
@@ -17,9 +18,9 @@
    <div>
      <%= link_to file_download_path(@document.id, generic_file.id, type: 'masterfile') do %>
        <i class="fa fa-download"></i>
-     <% end %>
      <% file_size = number_to_human_size(generic_file['file_size_isi']) %>
      <%= label_tag(:masterfile, "#{t('dri.views.catalog.forms.download_originals')} (#{file_size})") %>
+     <% end %>
     </div>
   <% end %>
 
@@ -27,8 +28,8 @@
     <div>
       <%= link_to object_path(@document, format: 'zip') do %>
         <i class="fa fa-download"></i>
-      <% end %>
       <%= label_tag(:all, t('dri.views.catalog.forms.download_all', count: @presenter.displayfiles.size)) %>
+      <% end %>
       <div> (<%= t('dri.views.catalog.forms.download_archive_explanation') %>)</div>
     </div>
   <% end %>

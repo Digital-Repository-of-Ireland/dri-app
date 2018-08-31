@@ -1,0 +1,186 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "01a797c347b950bc5b36ccb05f65307c7a4362a3d9ec1aff1deeac7970e15a04",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/concerns/dri/solr/document/collection.rb",
+      "line": 89,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveFedora::SolrService.count(((\"#{ActiveFedora.index_field_mapper.solr_name(\"ancestor_id\", :facetable, :type => :string)}:#{id}\" + \" AND #{ActiveFedora.index_field_mapper.solr_name(\"status\", :stored_searchable, :type => :symbol)}:#{status}\") + \" AND #{ActiveFedora.index_field_mapper.solr_name(\"is_collection\", :searchable, :type => :symbol)}:#{subcoll}\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DRI::Solr::Document::Collection",
+        "method": "status_count"
+      },
+      "user_input": "ActiveFedora.index_field_mapper.solr_name(\"is_collection\", :searchable, :type => :symbol)",
+      "confidence": "Weak",
+      "note": "This is fine."
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "0f8d8e79ff9c7f3384ddde2ca62d527fc3bf508493ada8e3857e4e2efb7293ac",
+      "check_name": "FileAccess",
+      "message": "Parameter value used in file name",
+      "file": "app/controllers/metadata_controller.rb",
+      "line": 50,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "File.read(\"app/assets/stylesheets/#{Nokogiri.XML(retrieve_object!(params[:id]).attached_files[:descMetadata].content).root.name}.xsl\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "MetadataController",
+        "method": "show"
+      },
+      "user_input": "params[:id]",
+      "confidence": "Weak",
+      "note": "This is not a security issue, but maybe should be changed at some point in the future to put the xsl files in a lookup instead?"
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "1782cab0951d458b705ad83c1a82910e0ca0426012878d5c59041b1a3a9e256d",
+      "check_name": "FileAccess",
+      "message": "Parameter value used in file name",
+      "file": "app/controllers/exports_controller.rb",
+      "line": 34,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "open(StorageService.new.file_url(\"users.#{Mail::Address.new(current_user.email).local}\", \"#{params[:export_key]}.csv\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ExportsController",
+        "method": "show"
+      },
+      "user_input": "params[:export_key]",
+      "confidence": "Weak",
+      "note": "This is ok. They have to have manage permissions and be logged in as the user who created the bucket. File is retrieved from the bucket with filename based on the export key param which is a datetime string. It is not possible to download arbitrary files via this code."
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "249c6fcae7f5810d987bbfaec087ad2d2fecb0994a8930931b7b720d9d9e92da",
+      "check_name": "SendFile",
+      "message": "Model attribute used in file name",
+      "file": "app/controllers/collections_controller.rb",
+      "line": 227,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "send_file(StorageService.new.surrogate_url(SolrDocument.new(ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])).first).id, File.basename(URI.parse(SolrDocument.new(ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])).first).cover_image).path)), :type => MIME::Types.type_for(File.basename(URI.parse(SolrDocument.new(ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])).first).cover_image).path)).first.content_type, :disposition => \"inline\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "CollectionsController",
+        "method": "cover"
+      },
+      "user_input": "SolrDocument.new(ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])).first).cover_image",
+      "confidence": "Weak",
+      "note": "This is safe, it should not allow retrieval of arbitrary files, only works for valid cover images."
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "2843bc7e2c2dadd8570aed137913aaf5d57fc118558cc9d27947b658d5be7270",
+      "check_name": "FileAccess",
+      "message": "Parameter value used in file name",
+      "file": "app/controllers/assets_controller.rb",
+      "line": 256,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "open(file_path(params[:object_id], params[:id], surrogate_name))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "AssetsController",
+        "method": "download_surrogate"
+      },
+      "user_input": "params[:id]",
+      "confidence": "Weak",
+      "note": "This is safe, called in a private method from code that does appropriate checks before hand, cannot be used to download arbitrary files."
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "3d05af24c837ddc763b72974602d4a0cf94cd82fe0f5f1f7815618c1a5917c15",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/solr_document.rb",
+      "line": 102,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveFedora::SolrService.count(((\"active_fedora_model_ssi:\\\"DRI::GenericFile\\\"\" + \" AND #{ActiveFedora.index_field_mapper.solr_name(\"isPartOf\", :symbol)}:#{id}\") + \" AND #{ActiveFedora.index_field_mapper.solr_name(\"file_type\", :facetable)}:\\\"image\\\"\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "SolrDocument",
+        "method": "contains_images?"
+      },
+      "user_input": "ActiveFedora.index_field_mapper.solr_name(\"file_type\", :facetable)",
+      "confidence": "Weak",
+      "note": "This is safe."
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "4e0ca593e387e338095e6e285d03f1e9e9ce9d0b445cd9f4ff805d8642252df3",
+      "check_name": "FileAccess",
+      "message": "Model attribute used in file name",
+      "file": "app/jobs/text_surrogate_job.rb",
+      "line": 24,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "File.open(LocalFile.where(\"fedora_id LIKE :f AND ds_id LIKE 'content'\", :f => generic_file_id).order(\"version DESC\").limit(1).to_a.first.path, \"rb\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "TextSurrogateJob",
+        "method": "run"
+      },
+      "user_input": "LocalFile.where(\"fedora_id LIKE :f AND ds_id LIKE 'content'\", :f => generic_file_id).order(\"version DESC\").limit(1).to_a.first.path",
+      "confidence": "Medium",
+      "note": "This is safe, it only gets triggered by internl code."
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "4ea4c5204afcd588694ec327ab4040984ce71450457cdefdbdce9d9f2aa11034",
+      "check_name": "SendFile",
+      "message": "Parameter value used in file name",
+      "file": "app/controllers/assets_controller.rb",
+      "line": 285,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "send_file(file_path(params[:object_id], params[:id], params[:surrogate]), :type => type, :disposition => \"inline\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "AssetsController",
+        "method": "show_surrogate"
+      },
+      "user_input": "params[:surrogate]",
+      "confidence": "Weak",
+      "note": "This should be safe."
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "b846136d1da1fee45eb06822fada50d1df943d7d9fdb274a2ec0774fed601d25",
+      "check_name": "FileAccess",
+      "message": "Model attribute used in file name",
+      "file": "app/jobs/index_text_job.rb",
+      "line": 15,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "File.read(LocalFile.where(\"fedora_id LIKE :f AND ds_id LIKE 'content'\", :f => generic_file_id).order(\"version DESC\").limit(1).to_a.first.path)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "IndexTextJob",
+        "method": "run"
+      },
+      "user_input": "LocalFile.where(\"fedora_id LIKE :f AND ds_id LIKE 'content'\", :f => generic_file_id).order(\"version DESC\").limit(1).to_a.first.path",
+      "confidence": "Medium",
+      "note": "This is safe, it only gets triggered by internal code."
+    }
+  ],
+  "updated": "2018-08-10 16:53:37 +0100",
+  "brakeman_version": "4.3.1"
+}

@@ -1,5 +1,5 @@
 class DoiController < ApplicationController
-  include DRI::Doi
+  include DRI::Citable
 
   def show
     @object_id = params[:object_id]

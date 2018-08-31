@@ -5,7 +5,7 @@ require 'validators'
 
 class CollectionsController < BaseObjectsController
   include Hydra::AccessControlsEnforcement
-  include DRI::MetadataBehaviour
+  include DRI::Duplicable
 
   before_action :authenticate_user_from_token!, except: [:cover]
   before_action :authenticate_user!, except: [:cover]
@@ -30,11 +30,11 @@ class CollectionsController < BaseObjectsController
     query += " OR manager_access_person_ssim:#{current_user.email}"
 
     fq = ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"]
-    
+
     if params[:governing].present?
       fq << "+#{ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)}:#{params[:governing]}"
     end
-    
+
     solr_query = Solr::Query.new(query, 100, { fq: fq })
     collections = results_to_hash(solr_query)
 
@@ -105,7 +105,7 @@ class CollectionsController < BaseObjectsController
       format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
     end
   end
-  
+
   # Updates the attributes of an existing model.
   #
   def update
@@ -123,8 +123,8 @@ class CollectionsController < BaseObjectsController
 
     doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
+    @object.object_version ||= '1'
+    @object.increment_version
 
     updated = @object.update_attributes(update_params)
 
@@ -146,7 +146,7 @@ class CollectionsController < BaseObjectsController
 
     respond_to do |format|
       if updated
-        actor.version_and_record_committer
+        version_and_record_committer(@object, current_user)
         update_doi(@object, doi, "metadata update") if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
@@ -170,8 +170,8 @@ class CollectionsController < BaseObjectsController
       raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.file_not_found')
     end
 
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
+    @object.object_version ||= '1'
+    @object.increment_version
 
     if cover_image.present?
       saved = Storage::CoverImages.validate_and_store(cover_image, @object)
@@ -239,12 +239,12 @@ class CollectionsController < BaseObjectsController
   #
   def create
     created = params[:metadata_file].present? ? create_from_xml : create_from_form
-    
+
     if created && (@object.valid? && @object.save)
       # We have to create a default reader group
       create_reader_group
 
-      actor.version_and_record_committer
+      version_and_record_committer(@object, current_user)
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
@@ -303,7 +303,7 @@ class CollectionsController < BaseObjectsController
       format.html { redirect_to controller: 'my_collections', action: 'index' }
     end
   end
-  
+
   def review
     enforce_permissions!('manage_collection', params[:id])
 
@@ -400,8 +400,9 @@ class CollectionsController < BaseObjectsController
         return false
       end
 
+      xml_ds = XmlDatastream.new
       begin
-        xml = load_xml(params[:metadata_file])
+        xml_ds.load_xml(params[:metadata_file])
       rescue DRI::Exceptions::InvalidXML
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @error = t('dri.flash.notice.specify_valid_file')
@@ -412,18 +413,16 @@ class CollectionsController < BaseObjectsController
         return false
       end
 
-      standard = metadata_standard_from_xml(xml)
-
-      if standard.nil?
+      if xml_ds.metadata_standard.nil?
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @error = t('dri.flash.notice.specify_valid_file')
         return false
       end
 
-      @object = DRI::Batch.with_standard standard
-      set_metadata_datastream(@object, xml)
+      @object = DRI::Batch.with_standard xml_ds.metadata_standard
+      @object.update_metadata xml_ds.xml
       checksum_metadata(@object)
-      warn_if_duplicates
+      warn_if_has_duplicates(@object)
 
       if @object.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
@@ -478,7 +477,7 @@ class CollectionsController < BaseObjectsController
            governing = object[
             ActiveFedora.index_field_mapper.solr_name(
             'isGovernedBy', :stored_searchable, type: :symbol
-            )] 
+            )]
             collection[:governing_collection] = governing.present? ? governing.first : 'root'
 
           collections.push(collection)

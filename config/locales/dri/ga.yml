@@ -635,9 +635,8 @@ ga:
         links:
           delete_all_tasks: 'Glan gach tasc atá críochnaithe '
     window:
-      alert:
-        coming_soon: Ag teacht go luath
       modal:
+        cancel: Cealaigh
         close: Dún
     reports:
       headings:

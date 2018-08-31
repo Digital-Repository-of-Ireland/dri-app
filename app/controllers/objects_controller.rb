@@ -3,7 +3,7 @@
 require 'solr/query'
 
 class ObjectsController < BaseObjectsController
-  include DRI::MetadataBehaviour
+  include DRI::Duplicable
 
   Mime::Type.register "application/zip", :zip
 
@@ -86,8 +86,8 @@ class ObjectsController < BaseObjectsController
       @object.governing_collection = collection
     end
 
-    version = @object.object_version || '1'
-    @object.object_version = (version.to_i + 1).to_s
+    @object.object_version ||= '1'
+    @object.increment_version
 
     unless @object.update_attributes(update_params)
       purge_params
@@ -187,11 +187,12 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published' || current_user.is_admin?
       # Do the preservation actions
-      version = @object.object_version || '1'
-      @object.object_version = (version.to_i + 1).to_s
+      @object.object_version || '1'
+      @object.increment_version
+
       assets = []
       @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
-      
+
       preservation = Preservation::Preservator.new(@object)
       preservation.update_manifests(
         deleted: {
@@ -293,11 +294,11 @@ class ObjectsController < BaseObjectsController
   def retrieve
     id = params[:id]
     begin
-      object = retrieve_object!(id) 
+      object = retrieve_object!(id)
     rescue ActiveFedora::ObjectNotFoundError
       flash[:error] = t('dri.flash.error.download_no_file')
     end
-      
+
     if object.present?
       if (can? :read, object)
         if File.file?(File.join(Settings.dri.downloads, params[:archive]))
@@ -339,8 +340,8 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published' || current_user.is_admin?
       @object.status = params[:status] if params[:status].present?
-      version = @object.object_version || '1'
-      @object.object_version = (version.to_i + 1).to_s
+      @object.object_version ||= '1'
+      @object.increment_version
       @object.save
 
       # Do the preservation actions
@@ -368,14 +369,14 @@ class ObjectsController < BaseObjectsController
   private
 
     def create_from_upload
-      xml = load_xml(params[:metadata_file])
-      standard = metadata_standard_from_xml(xml)
+      xml_ds = XmlDatastream.new
+      xml = xml_ds.load_xml(params[:metadata_file])
 
-      @object = DRI::Batch.with_standard standard
+      @object = DRI::Batch.with_standard(xml_ds.metadata_standard)
       @object.depositor = current_user.to_s
       @object.update_attributes create_params
 
-      set_metadata_datastream(@object, xml)
+      @object.update_metadata xml
     end
 
     # If no standard parameter then default to :qdc
@@ -440,9 +441,9 @@ class ObjectsController < BaseObjectsController
     end
 
     def post_save(create)
-      warn_if_duplicates
+      warn_if_has_duplicates(@object)
       retrieve_linked_data
-      actor.version_and_record_committer
+      version_and_record_committer(@object, current_user)
 
       yield
 
