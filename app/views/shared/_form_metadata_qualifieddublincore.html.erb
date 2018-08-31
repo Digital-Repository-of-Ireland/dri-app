@@ -1,22 +1,3 @@
-<!-- <h4><%#= t('dri.views.objects.legends.metadata') %></h4>-->
-<% if update_desc_metadata?(@object.class.to_s) %>
-	<fieldset id="title" class="dri_title_metadata_fieldset">
-		
-		<% if params[:controller] == 'collections' %>
-		  <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.collection_title')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.collection_title_text') %>" data-original-title="<%= t('dri.help.fields.collection_title')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% else %>
-		  <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.title')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.title_text') %>" data-original-title="<%= t('dri.help.fields.title')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% end%>
-		
-		<% @object.title.each do |i| %>
-		  <div><%= f.text_field "title][", :value=>i, :class => "edit span6 dri-textfield", :required=>'required', :autofocus=>true %><a class="destructive" model-name="batch">&nbsp;&nbsp;<i class="fa fa-times-circle">&nbsp;</i> <%= t('dri.views.objects.forms.delete') %></a></div>
-		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Title"><%= t('dri.views.objects.forms.add_title') %></a>
-		</p>
-	</fieldset>
-<% end %>
-
 <% if params[:controller] == 'collections' %>
 	<div class="dri_file_upload">
 		<% unless @object[:cover_image].blank? %>
@@ -32,31 +13,51 @@
 	</div>
 <% end %>
 
+<!-- <h4><%#= t('dri.views.objects.legends.metadata') %></h4>-->
 <% if update_desc_metadata?(@object.class.to_s) %>
-	<fieldset id="description" class="dri_description_metadata_fieldset dri_form_multiline_block">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.description')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.description_text') %>" data-original-title="<%= t('dri.help.fields.description')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% @object.description.each do |i| %>
-		  <div><%= f.text_area "description][", :value=>i, :class => "edit span6 dri-textarea", :required=>'required'  %><a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+	<fieldset id="title" class="dri_title_metadata_fieldset">
+		<% if params[:controller] == 'collections' %>
+		  <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.collection_title')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.collection_title_text') %>" data-original-title="<%= t('dri.help.fields.collection_title')%>" data-trigger="hover" data-placement="right"></i></span>
+		<% else %>
+		  <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.title')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.title_text') %>" data-original-title="<%= t('dri.help.fields.title')%>" data-trigger="hover" data-placement="right"></i></span>
+		<% end%>
+		
+		<% @object.title.each do |i| %>
+		  <div><%= f.text_field "title][", :value=>i, :class => "edit span6 dri-textfield", :required=>'required', :autofocus=>true %><a class="destructive" model-name="batch">&nbsp;&nbsp;<i class="fa fa-times-circle">&nbsp;</i> <%= t('dri.views.objects.forms.delete') %></a></div>
 		<% end %>
 		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Description"><%= t('dri.views.objects.forms.add_description') %></a>
+			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Title"><%= t('dri.views.objects.forms.add_title') %></a>
 		</p>
 	</fieldset>
-	<%# we don't want the Collection type to be output as we don't want it modified %>
-	<fieldset id="type" <% if @object.type.first == 'Collection' || params[:is_sub_collection] == 'true' %>class="dri_no_display"<%end%>>
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.types')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.types_text') %>" data-original-title="<%= t('dri.help.fields.types')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% if @object.type.size == 0%>
-		  <div><%= f.text_field "type][", :value=>'', :class => "edit span6 dri-textfield", :required => "true"  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-		<% end %>
-		<% @object.type.each do |i| %>
-		  <div><%= f.text_field "type][", :value=>i, :class => "edit span6 dri-textfield", :required => "true"  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Type"><%= t('dri.views.objects.forms.add_type') %></a>
-		</p>
+<% end %>
+
+<% if update_desc_metadata?(@object.class.to_s) %>
+	<fieldset id="creator">
+    <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.creators')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.creator_text') %>" data-original-title="<%= t('dri.help.fields.creator')%>" data-trigger="hover" data-placement="right"></i></span>
+    <% if @object.creator.size == 0 %>
+      <div><%= f.text_field "creator][", :value=>'', :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+    <% end %>
+    <% @object.creator.each do |i| %>
+      <div><%= f.text_field "creator][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+    <% end %>
+    <p class="add-text-field">
+            <i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Creator"><%= t('dri.views.objects.forms.add_creator') %></a>
+    </p>
 	</fieldset>
 
 	<fieldset id="date_group">
+		<fieldset id="date">
+			<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.date')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.date_text') %>" data-original-title="<%= t('dri.help.fields.date')%>" data-trigger="hover" data-placement="right"></i></span>
+			<% if @object.date.size == 0 %>
+			  <div><%= f.text_field "date][", :value=>'', :class => "edit span6 dri-textfield date-group" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+			<% end %>
+			<% @object.date.each do |i| %>
+			  <div><%= f.text_field "date][", :value=>i, :class => "edit span6 dri-textfield date-group" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+			<% end %>
+			<p class="add-text-field">
+				<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Date"><%= t('dri.views.objects.forms.add_date') %></a>
+			</p>
+		</fieldset>
 		<fieldset id="creation_date">
 			<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.creation_date')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.creation_date_text') %>" data-original-title="<%= t('dri.help.fields.creation_date')%>" data-trigger="hover" data-placement="right"></i></span>
 			<% if @object.creation_date.size == 0 %>
@@ -81,31 +82,53 @@
 				<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Published Date"><%= t('dri.views.objects.forms.add_published_date') %></a>
 			</p>
 		</fieldset>
-		<fieldset id="date">
-			<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.date')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.date_text') %>" data-original-title="<%= t('dri.help.fields.date')%>" data-trigger="hover" data-placement="right"></i></span>
-			<% if @object.date.size == 0 %>
-			  <div><%= f.text_field "date][", :value=>'', :class => "edit span6 dri-textfield date-group" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-			<% end %>
-			<% @object.date.each do |i| %>
-			  <div><%= f.text_field "date][", :value=>i, :class => "edit span6 dri-textfield date-group" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-			<% end %>
-			<p class="add-text-field">
-				<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Date"><%= t('dri.views.objects.forms.add_date') %></a>
-			</p>
-		</fieldset>
 	</fieldset>
 
-	<fieldset id="creator">
-    <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.creators')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.creator_text') %>" data-original-title="<%= t('dri.help.fields.creator')%>" data-trigger="hover" data-placement="right"></i></span>
-    <% if @object.creator.size == 0 %>
-      <div><%= f.text_field "creator][", :value=>'', :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-    <% end %>
-    <% @object.creator.each do |i| %>
-      <div><%= f.text_field "creator][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-    <% end %>
-    <p class="add-text-field">
-            <i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Creator"><%= t('dri.views.objects.forms.add_creator') %></a>
-    </p>
+	<fieldset id="description" class="dri_description_metadata_fieldset dri_form_multiline_block">
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.description')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.description_text') %>" data-original-title="<%= t('dri.help.fields.description')%>" data-trigger="hover" data-placement="right"></i></span>
+		<% @object.description.each do |i| %>
+		  <div><%= f.text_area "description][", :value=>i, :class => "edit span6 dri-textarea", :required=>'required'  %><a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+		<% end %>
+		<p class="add-text-field">
+			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Description"><%= t('dri.views.objects.forms.add_description') %></a>
+		</p>
+	</fieldset>
+
+	<fieldset id="rights" class="dri_rights_metadata_fieldset dri_form_multiline_block">
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.rights')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.rights_text') %>" data-original-title="<%= t('dri.help.fields.rights')%>" data-trigger="hover" data-placement="right"></i></span>
+		<% if @object.rights.size == 0 %>
+		<div><%= f.text_area "rights][", :value=>'', :class => "edit span6 dri-textarea", :required=>'required'  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+		<% end %>
+		<% @object.rights.each do |i| %>
+		  <div><%= f.text_area "rights][", :value=>i, :class => "edit span6 dri-textarea", :required=>'required'  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+		<% end %>
+		<p class="add-text-field">
+			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Rights"><%= t('dri.views.objects.forms.add_rights') %></a>
+		</p>
+	</fieldset>
+
+	<%# we don't want the Collection type to be output as we don't want it modified %>
+	<fieldset id="type" <% if @object.type.first == 'Collection' || params[:is_sub_collection] == 'true' %>class="dri_no_display"<%end%>>
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.types')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.types_text') %>" data-original-title="<%= t('dri.help.fields.types')%>" data-trigger="hover" data-placement="right"></i></span>
+		<% if @object.type.size == 0%>
+		  <div><%= f.text_field "type][", :value=>'', :class => "edit span6 dri-textfield", :required => "true"  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+		<% end %>
+		<% @object.type.each do |i| %>
+		  <div><%= f.text_field "type][", :value=>i, :class => "edit span6 dri-textfield", :required => "true"  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+		<% end %>
+		<p class="add-text-field">
+			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Type"><%= t('dri.views.objects.forms.add_type') %></a>
+		</p>
+	</fieldset>
+
+	<fieldset id="language">
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.languages')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.languages') %>" data-original-title="<%= t('dri.help.fields.languages')%>" data-trigger="hover" data-placement="right"></i></span>
+		<% @object.language.each do |i| %>
+		  <div><%= f.text_field "language][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+		<% end %>
+		<p class="add-text-field">
+			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Language"><%= t('dri.views.objects.forms.add_language') %></a>
+		</p>
 	</fieldset>
 
 	<fieldset id="roles">
@@ -130,33 +153,33 @@
 			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Role"><%= t('dri.views.objects.forms.add_role') %></a>
 		</p>
 	</fieldset>
-	<fieldset id="subject">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.subjects')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.subjects_text') %>" data-original-title="<%= t('dri.help.fields.subjects')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% @object.subject.each do |i| %>
-		  <div><%= f.text_field "subject][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+
+	<fieldset id="relation">
+    <% if params[:controller] == 'collections' %>
+	    <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.related')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.relations_text') %>" data-original-title="<%= t('dri.help.fields.related')%>" data-trigger="hover" data-placement="right"></i></span>
+    <% else %>
+      <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.relations')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.relations_text') %>" data-original-title="<%= t('dri.help.fields.relations')%>" data-trigger="hover" data-placement="right"></i></span>
+    <% end %>
+		<% @object.relation.each do |i| %>
+		  <div><%= f.text_field "relation][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
 		<% end %>
 		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Subject"><%= t('dri.views.objects.forms.add_subject') %></a>
+			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Relation"><%= t('dri.views.objects.forms.add_relation') %></a>
 		</p>
 	</fieldset>
-	<fieldset id="geographical_coverage">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.geographical_coverages')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.geographical_coverages_text') %>" data-original-title="<%= t('dri.help.fields.geographical_coverages')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% @object.geographical_coverage.each do |i| %>
-		  <div><%= f.text_field "geographical_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Place"><%= t('dri.views.objects.forms.add_place') %></a>
-		</p>
-	</fieldset>
-	<fieldset id="temporal_coverage">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.temporal_coverages')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.temporal_coverage_text') %>" data-original-title="<%= t('dri.help.fields.temporal_coverage')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% @object.temporal_coverage.each do |i| %>
-		  <div><%= f.text_field "temporal_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Subject (Era)"><%= t('dri.views.objects.forms.add_temporal_coverage') %></a>
-		</p>
-	</fieldset>
+   
+  <% if params[:controller] != 'collections' %>
+		<fieldset id="source">
+			<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.sources')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.sources_text') %>" data-original-title="<%= t('dri.help.fields.sources')%>" data-trigger="hover" data-placement="right"></i></span>
+			<% @object.source.each do |i| %>
+			  <div><%= f.text_field "source][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+			<% end %>
+			<p class="add-text-field">
+				<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Source"><%= t('dri.views.objects.forms.add_source') %></a>
+			</p>
+		</fieldset>
+  <% end %>
+
 	<fieldset id="coverage">
 		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.coverages')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.coverages_text') %>" data-original-title="<%= t('dri.help.fields.coverages')%>" data-trigger="hover" data-placement="right"></i></span>
 		<% @object.coverage.each do |i| %>
@@ -166,15 +189,37 @@
 			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Coverage"><%= t('dri.views.objects.forms.add_coverage') %></a>
 		</p>
 	</fieldset>
-	<fieldset id="language">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.languages')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.languages') %>" data-original-title="<%= t('dri.help.fields.languages')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% @object.language.each do |i| %>
-		  <div><%= f.text_field "language][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+
+	<fieldset id="geographical_coverage">
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.geographical_coverages')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.geographical_coverages_text') %>" data-original-title="<%= t('dri.help.fields.geographical_coverages')%>" data-trigger="hover" data-placement="right"></i></span>
+		<% @object.geographical_coverage.each do |i| %>
+		  <div><%= f.text_field "geographical_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
 		<% end %>
 		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Language"><%= t('dri.views.objects.forms.add_language') %></a>
+			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Place"><%= t('dri.views.objects.forms.add_place') %></a>
 		</p>
 	</fieldset>
+
+	<fieldset id="temporal_coverage">
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.temporal_coverages')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.temporal_coverage_text') %>" data-original-title="<%= t('dri.help.fields.temporal_coverage')%>" data-trigger="hover" data-placement="right"></i></span>
+		<% @object.temporal_coverage.each do |i| %>
+		  <div><%= f.text_field "temporal_coverage][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+		<% end %>
+		<p class="add-text-field">
+			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Subject (Era)"><%= t('dri.views.objects.forms.add_temporal_coverage') %></a>
+		</p>
+	</fieldset>
+
+	<fieldset id="subject">
+		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.subjects')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.subjects_text') %>" data-original-title="<%= t('dri.help.fields.subjects')%>" data-trigger="hover" data-placement="right"></i></span>
+		<% @object.subject.each do |i| %>
+		  <div><%= f.text_field "subject][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+		<% end %>
+		<p class="add-text-field">
+			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Subject"><%= t('dri.views.objects.forms.add_subject') %></a>
+		</p>
+	</fieldset>
+
 	<fieldset id="identifier">
 		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.identifiers')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.identifiers_text') %>" data-original-title="<%= t('dri.help.fields.identifiers')%>" data-trigger="hover" data-placement="right"></i></span>
 		<% @object.identifier.each do |i| %>
@@ -184,54 +229,16 @@
 			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Identifier"><%= t('dri.views.objects.forms.add_identifier') %></a>
 		</p>
 	</fieldset>
-	<fieldset id="relation">
-        <% if params[:controller] == 'collections' %>
-		    <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.related')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.relations_text') %>" data-original-title="<%= t('dri.help.fields.related')%>" data-trigger="hover" data-placement="right"></i></span>
-        <% else %>
-            <span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.relations')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.relations_text') %>" data-original-title="<%= t('dri.help.fields.relations')%>" data-trigger="hover" data-placement="right"></i></span>
-        <% end %>
-		<% @object.relation.each do |i| %>
-		  <div><%= f.text_field "relation][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Relation"><%= t('dri.views.objects.forms.add_relation') %></a>
-		</p>
-	</fieldset>
-   
-    <% if params[:controller] != 'collections' %>
-	<fieldset id="source">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.sources')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.sources_text') %>" data-original-title="<%= t('dri.help.fields.sources')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% @object.source.each do |i| %>
-		  <div><%= f.text_field "source][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Source"><%= t('dri.views.objects.forms.add_source') %></a>
-		</p>
-	</fieldset>
-    <% end %>
 
-    <% if params[:controller] != 'collections' %>
-	<fieldset id="format">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.formats')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.formats_text') %>" data-original-title="<%= t('dri.help.fields.formats')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% @object.format.each do |i| %>
-		  <div><%= f.text_field "format][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Format"><%= t('dri.views.objects.forms.add_format') %></a>
-		</p>
-	</fieldset>
-    <% end %>
-
-	<fieldset id="rights" class="dri_rights_metadata_fieldset dri_form_multiline_block">
-		<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.rights')}"%><i class="dri_help_popover fa fa-info-circle fa-1 red" data-content="<%= t('dri.help.fields.rights_text') %>" data-original-title="<%= t('dri.help.fields.rights')%>" data-trigger="hover" data-placement="right"></i></span>
-		<% if @object.rights.size == 0 %>
-		<div><%= f.text_area "rights][", :value=>'', :class => "edit span6 dri-textarea", :required=>'required'  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-		<% end %>
-		<% @object.rights.each do |i| %>
-		  <div><%= f.text_area "rights][", :value=>i, :class => "edit span6 dri-textarea", :required=>'required'  %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
-		<% end %>
-		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Rights"><%= t('dri.views.objects.forms.add_rights') %></a>
-		</p>
-	</fieldset>
+  <% if params[:controller] != 'collections' %>
+		<fieldset id="format">
+			<span class="dri_metadata_label_span"><%= f.label "#{t('dri.views.fields.formats')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-content="<%= t('dri.help.fields.formats_text') %>" data-original-title="<%= t('dri.help.fields.formats')%>" data-trigger="hover" data-placement="right"></i></span>
+			<% @object.format.each do |i| %>
+			  <div><%= f.text_field "format][", :value=>i, :class => "edit span6 dri-textfield" %> <a class="destructive" model-name="batch">&nbsp;<i class="fa fa-times-circle"></i> <%= t('dri.views.objects.forms.delete') %></a></div>
+			<% end %>
+			<p class="add-text-field">
+				<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Format"><%= t('dri.views.objects.forms.add_format') %></a>
+			</p>
+		</fieldset>
+  <% end %>
 <% end %>
