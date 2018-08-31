@@ -77,10 +77,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 58d2e1aec82ee9d8efcbd0358940a96a10481ff8
+  revision: d58cf6793255821af9714f87ffaefd87a7ca8f14
   branch: develop
   specs:
-    dri_data_models (2.6.3)
+    dri_data_models (2.6.4)
       active-fedora (= 9.11)
       active_fedora-noid (~> 1.0)
       google-api-client (~> 0.9)
@@ -833,7 +833,7 @@ GEM
       activesupport (>= 3.0.0)
     show_me_the_cookies (3.1.0)
       capybara (~> 2.0)
-    signet (0.9.0)
+    signet (0.9.1)
       addressable (~> 2.3)
       faraday (~> 0.9)
       jwt (>= 1.5, < 3.0)
