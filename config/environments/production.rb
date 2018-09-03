@@ -91,7 +91,10 @@ DriApp::Application.configure do
   #  [u, p] == ['navr', 'navr']
   #end
   # The vjs entries are specified in the Video-JS docs to be included in the production.rd configuration - unsure if this is the right way to pass them in though {EK]}
-  config.assets.precompile += [%w( video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff ),'dri/dri_grid.css','dri/dri_layouts.css']
+  config.assets.precompile += [
+    %w( video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff ),
+    'dri/dri_grid.css','dri/dri_layouts.css', 'dri/dri_print.css'
+  ]
 
   # google analytics
   # GA.tracker = 
