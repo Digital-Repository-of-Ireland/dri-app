@@ -27,38 +27,38 @@
 <% if update_desc_metadata?(@object.class.to_s) %>
 	<fieldset id="title" class="dri_title_metadata_fieldset">
 		<% if params[:controller] == 'collections' %>
-		  <%= render "shared/form_components/fieldset_label", f:f, source:'collection_title' %>
+		  <%= render "shared/form_fieldset_label", f:f, source:'collection_title' %>
 		<% else %>
-		  <%= render "shared/form_components/fieldset_label", f:f, source:'title' %>
+		  <%= render "shared/form_fieldset_label", f:f, source:'title' %>
 		<% end%>
 		
 		<% @object.title.each do |i| %>
 		  <div><%= f.text_field "title][", value:i, class: "edit span6 dri-textfield", required:'required', autofocus:true %>
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-	  <%= render "shared/form_components/add_text_field_button", action:%w(add title) %>
+	  <%= render "shared/form_add_text_field_button", action:%w(add title) %>
 	</fieldset>
 
 	<fieldset id="creator">
-	  <%= render "shared/form_components/fieldset_label", f:f, source:'creator',
+	  <%= render "shared/form_fieldset_label", f:f, source:'creator',
 		  span_string:'dri.views.fields.creators' %>
     <% if @object.creator.size == 0 %>
       <div><%= f.text_field "creator][", value:'', class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
       </div>
     <% end %>
     <% @object.creator.each do |i| %>
       <div><%= f.text_field "creator][", value:i, class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
       </div>
     <% end %>
-    <%= render "shared/form_components/add_text_field_button", action:%w(add creator) %>
+    <%= render "shared/form_add_text_field_button", action:%w(add creator) %>
 	</fieldset>
 
 	<%# contributors %>
 	<fieldset id="roles">
-	  <%= render "shared/form_components/fieldset_label", f:f, source:'roles' %>
+	  <%= render "shared/form_fieldset_label", f:f, source:'roles' %>
     <% people = qdc_extract_people %>
     <% if people.length > 0 %>
       <% people.each do |key, value_array| %>
@@ -68,7 +68,7 @@
               <%= grouped_options_for_select(@qdc_people_select_list, key) %>
 			      </select>
 			      <%= f.text_field "roles][name][", value:value, class: "edit span6 dri-textfield" %> 
-					  <%= render "shared/form_components/remove_field_button" %>
+					  <%= render "shared/form_remove_field_button" %>
 		      </div>
         <% end %>
       <% end %>
@@ -78,7 +78,7 @@
           <%= grouped_options_for_select(@qdc_people_select_list) %>
         </select>
         <%= f.text_field "roles][name][", value:'', class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
       </div>
     <% end %>
     <%# doesn't match add_text_field partial structure %>
@@ -89,166 +89,166 @@
 
 	<fieldset id="date_group">
 		<fieldset id="date">
-		  <%= render "shared/form_components/fieldset_label", f:f, source:'date' %>
+		  <%= render "shared/form_fieldset_label", f:f, source:'date' %>
 			<% if @object.date.size == 0 %>
 			  <div>
 				  <%= f.text_field "date][", value:'', class: "edit span6 dri-textfield date-group" %> 
-				  <%= render "shared/form_components/remove_field_button" %>
+				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
 			<% @object.date.each do |i| %>
 			  <div>
 				  <%= f.text_field "date][", value:i, class: "edit span6 dri-textfield date-group" %> 
-				  <%= render "shared/form_components/remove_field_button" %>
+				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
 			
-	    <%= render "shared/form_components/add_text_field_button", action:%w(add date) %>
+	    <%= render "shared/form_add_text_field_button", action:%w(add date) %>
 		</fieldset>
 		<fieldset id="creation_date">
-		  <%= render "shared/form_components/fieldset_label", f:f, source:'creation_date' %>
+		  <%= render "shared/form_fieldset_label", f:f, source:'creation_date' %>
 			<% if @object.creation_date.size == 0 %>
 			  <div>
 				  <%= f.text_field "creation_date][", value:'', class: "edit span6 dri-textfield date-group" %> 
-				  <%= render "shared/form_components/remove_field_button" %>
+				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
 			<% @object.creation_date.each do |i| %>
 			  <div>
 				  <%= f.text_field "creation_date][", value:i, class: "edit span6 dri-textfield date-group" %> 
-				  <%= render "shared/form_components/remove_field_button" %>
+				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
 
-	    <%= render "shared/form_components/add_text_field_button", action:%w(add creation date) %>
+	    <%= render "shared/form_add_text_field_button", action:%w(add creation date) %>
 		</fieldset>
 		<fieldset id="published_date">
-		  <%= render "shared/form_components/fieldset_label", f:f, source:'published_date' %>
+		  <%= render "shared/form_fieldset_label", f:f, source:'published_date' %>
 			<% if @object.published_date.size == 0 %>
 			  <div><%= f.text_field "published_date][", value:'', class: "edit span6 dri-textfield date-group" %>
-				  <%= render "shared/form_components/remove_field_button" %>
+				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
 			<% @object.published_date.each do |i| %>
 			  <div><%= f.text_field "published_date][", value:i, class: "edit span6 dri-textfield date-group" %>
-				  <%= render "shared/form_components/remove_field_button" %>
+				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
-	    <%= render "shared/form_components/add_text_field_button", action:%w(add published date) %>
+	    <%= render "shared/form_add_text_field_button", action:%w(add published date) %>
 		</fieldset>
 	</fieldset>
 
 	<fieldset id="description" class="dri_description_metadata_fieldset dri_form_multiline_block">
-	  <%= render "shared/form_components/fieldset_label", f:f, source:'description' %>
+	  <%= render "shared/form_fieldset_label", f:f, source:'description' %>
 		<% @object.description.each do |i| %>
 		  <div><%= f.text_area "description][", value:i, class: "edit span6 dri-textarea", required:'required'  %>
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
 
-    <%= render "shared/form_components/add_text_field_button", action:%w(add description) %>
+    <%= render "shared/form_add_text_field_button", action:%w(add description) %>
 	</fieldset>
 
 	<fieldset id="rights" class="dri_rights_metadata_fieldset dri_form_multiline_block">
-	  <%= render "shared/form_components/fieldset_label", f:f, source:'rights' %>
+	  <%= render "shared/form_fieldset_label", f:f, source:'rights' %>
 		<% if @object.rights.size == 0 %>
 			<div>
 				<%= f.text_area "rights][", value:'', class: "edit span6 dri-textarea", required:'required'  %> 
-				<%= render "shared/form_components/remove_field_button" %>
+				<%= render "shared/form_remove_field_button" %>
 			</div>
 		<% end %>
 		<% @object.rights.each do |i| %>
 		  <div><%= f.text_area "rights][", value:i, class: "edit span6 dri-textarea", required:'required'  %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_components/add_text_field_button", action:%w(add rights) %>
+    <%= render "shared/form_add_text_field_button", action:%w(add rights) %>
 	</fieldset>
 
 	<%# we don't want the Collection type to be output as we don't want it modified %>
 	<fieldset id="type" <% if @object.type.first == 'Collection' || params[:is_sub_collection] == 'true' %>class="dri_no_display"<%end%>>
-	  <%= render "shared/form_components/fieldset_label", f:f, source:'types' %>
+	  <%= render "shared/form_fieldset_label", f:f, source:'types' %>
 		<% if @object.type.size == 0%>
 		  <div><%= f.text_field "type][", value:'', class: "edit span6 dri-textfield", required: "true"  %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
 		<% @object.type.each do |i| %>
 		  <div><%= f.text_field "type][", value:i, class: "edit span6 dri-textfield", required: "true"  %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_components/add_text_field_button", action:%w(add type) %>
+    <%= render "shared/form_add_text_field_button", action:%w(add type) %>
 	</fieldset>
 
 	<fieldset id="language">
-	  <%= render "shared/form_components/fieldset_label", 
+	  <%= render "shared/form_fieldset_label", 
 		  f:f, source:'languages', help_string:'dri.help.fields.languages' %>
 		<% @object.language.each do |i| %>
 		  <div><%= f.text_field "language][", value:i, class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_components/add_text_field_button", action:%w(add language) %>
+    <%= render "shared/form_add_text_field_button", action:%w(add language) %>
 	</fieldset>
 
 	<fieldset id="relation">
     <% if params[:controller] == 'collections' %>
-		  <%= render "shared/form_components/fieldset_label", 
+		  <%= render "shared/form_fieldset_label", 
 			  f:f, source:'related', 
 			  help_string:'dri.help.fields.relations_text' %>
     <% else %>
-		  <%= render "shared/form_components/fieldset_label", f:f, source:'relations' %>
+		  <%= render "shared/form_fieldset_label", f:f, source:'relations' %>
     <% end %>
 		<% @object.relation.each do |i| %>
 		  <div><%= f.text_field "relation][", value:i, class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_components/add_text_field_button", action:%w(add relation) %>
+    <%= render "shared/form_add_text_field_button", action:%w(add relation) %>
 	</fieldset>
    
   <% if params[:controller] != 'collections' %>
 		<fieldset id="source">
-		  <%= render "shared/form_components/fieldset_label", f:f, source:'sources' %>
+		  <%= render "shared/form_fieldset_label", f:f, source:'sources' %>
 			<% @object.source.each do |i| %>
 			  <div><%= f.text_field "source][", value:i, class: "edit span6 dri-textfield" %> 
-				  <%= render "shared/form_components/remove_field_button" %>
+				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
-	    <%= render "shared/form_components/add_text_field_button", action:%w(add source) %>
+	    <%= render "shared/form_add_text_field_button", action:%w(add source) %>
 		</fieldset>
   <% end %>
 
 	<fieldset id="coverage">
-		<%= render "shared/form_components/fieldset_label", f:f, source:'coverages' %>
+		<%= render "shared/form_fieldset_label", f:f, source:'coverages' %>
 	  <% @object.coverage.each do |i| %>
 		  <div>
 			  <%= f.text_field "coverage][", value:i, class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_components/add_text_field_button", action:%w(add coverage) %>
+    <%= render "shared/form_add_text_field_button", action:%w(add coverage) %>
 	</fieldset>
 
 	<fieldset id="geographical_coverage">
-	  <%= render "shared/form_components/fieldset_label", f:f, source:'geographical_coverages' %>
+	  <%= render "shared/form_fieldset_label", f:f, source:'geographical_coverages' %>
 		<% @object.geographical_coverage.each do |i| %>
 		  <div>
 			  <%= f.text_field "geographical_coverage][", value:i, class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_components/add_text_field_button", action:%w(add place) %>
+    <%= render "shared/form_add_text_field_button", action:%w(add place) %>
 	</fieldset>
 
 	<fieldset id="temporal_coverage">
-	  <%= render "shared/form_components/fieldset_label", f:f, 
+	  <%= render "shared/form_fieldset_label", f:f, 
 	  source:'temporal_coverage', span_sting:'dri.views.fields.temporal_coverages'  %>
 		<% @object.temporal_coverage.each do |i| %>
 		  <div>
 			  <%= f.text_field "temporal_coverage][", value:i, class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
 		<%# title and action don't match so can't use current button partial %>
@@ -261,21 +261,21 @@
 	</fieldset>
 
 	<fieldset id="subject">
-	  <%= render "shared/form_components/fieldset_label", f:f, source:'subjects' %>
+	  <%= render "shared/form_fieldset_label", f:f, source:'subjects' %>
 		<% @object.subject.each do |i| %>
 		  <div>
 			  <%= f.text_field "subject][", value:i, class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_components/add_text_field_button", action:%w(add subject) %>
+    <%= render "shared/form_add_text_field_button", action:%w(add subject) %>
 	</fieldset>
 
 	<fieldset id="identifier">
-	  <%= render "shared/form_components/fieldset_label", f:f, source:'identifiers' %>
+	  <%= render "shared/form_fieldset_label", f:f, source:'identifiers' %>
 		<% @object.identifier.each do |i| %>
 		  <div><%= f.text_field "identifier][", value:i, class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
+			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
 		<p class="add-text-field">
@@ -285,10 +285,10 @@
 
   <% if params[:controller] != 'collections' %>
 		<fieldset id="format">
-		  <%= render "shared/form_components/fieldset_label", f:f, source:'formats' %>
+		  <%= render "shared/form_fieldset_label", f:f, source:'formats' %>
 			<% @object.format.each do |i| %>
 			  <div><%= f.text_field "format][", value:i, class: "edit span6 dri-textfield" %> 
-				  <%= render "shared/form_components/remove_field_button" %>
+				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
 			<p class="add-text-field">
