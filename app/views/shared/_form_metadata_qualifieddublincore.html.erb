@@ -39,9 +39,7 @@
 		<% end %>
 	  <%= render "shared/form_components/add_text_field_button", action:%w(add title) %>
 	</fieldset>
-<% end %>
 
-<% if update_desc_metadata?(@object.class.to_s) %>
 	<fieldset id="creator">
 	  <%= render "shared/form_components/fieldset_label", f:f, source:'creator',
 		  span_string:'dri.views.fields.creators' %>
@@ -56,6 +54,37 @@
       </div>
     <% end %>
     <%= render "shared/form_components/add_text_field_button", action:%w(add creator) %>
+	</fieldset>
+
+	<%# contributors %>
+	<fieldset id="roles">
+	  <%= render "shared/form_components/fieldset_label", f:f, source:'roles' %>
+    <% people = qdc_extract_people %>
+    <% if people.length > 0 %>
+      <% people.each do |key, value_array| %>
+		    <% value_array.each do |value| %>
+		      <div>
+			      <select id="batch_roles][type][" name="batch[roles][type][]">
+              <%= grouped_options_for_select(@qdc_people_select_list, key) %>
+			      </select>
+			      <%= f.text_field "roles][name][", value:value, class: "edit span6 dri-textfield" %> 
+					  <%= render "shared/form_components/remove_field_button" %>
+		      </div>
+        <% end %>
+      <% end %>
+    <% else %>
+	    <div>
+		    <select id="batch_roles][type][" name="batch[roles][type][]">
+          <%= grouped_options_for_select(@qdc_people_select_list) %>
+        </select>
+        <%= f.text_field "roles][name][", value:'', class: "edit span6 dri-textfield" %> 
+			  <%= render "shared/form_components/remove_field_button" %>
+      </div>
+    <% end %>
+    <%# doesn't match add_text_field partial structure %>
+		<p class="add-person-fields">
+			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Role"><%= t('dri.views.objects.forms.add_role') %></a>
+		</p>
 	</fieldset>
 
 	<fieldset id="date_group">
@@ -161,35 +190,6 @@
 		  </div>
 		<% end %>
     <%= render "shared/form_components/add_text_field_button", action:%w(add language) %>
-	</fieldset>
-
-	<fieldset id="roles">
-	  <%= render "shared/form_components/fieldset_label", f:f, source:'roles' %>
-    <% people = qdc_extract_people %>
-    <% if people.length > 0 %>
-      <% people.each do |key, value_array| %>
-		    <% value_array.each do |value| %>
-		      <div>
-			      <select id="batch_roles][type][" name="batch[roles][type][]">
-              <%= grouped_options_for_select(@qdc_people_select_list, key) %>
-			      </select>
-			      <%= f.text_field "roles][name][", value:value, class: "edit span6 dri-textfield" %> 
-					  <%= render "shared/form_components/remove_field_button" %>
-		      </div>
-        <% end %>
-      <% end %>
-    <% else %>
-	    <div>
-		    <select id="batch_roles][type][" name="batch[roles][type][]">
-          <%= grouped_options_for_select(@qdc_people_select_list) %>
-        </select>
-        <%= f.text_field "roles][name][", value:'', class: "edit span6 dri-textfield" %> 
-			  <%= render "shared/form_components/remove_field_button" %>
-      </div>
-    <% end %>
-		<p class="add-person-fields">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Role"><%= t('dri.views.objects.forms.add_role') %></a>
-		</p>
 	</fieldset>
 
 	<fieldset id="relation">
