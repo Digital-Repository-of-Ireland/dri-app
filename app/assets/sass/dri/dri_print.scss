@@ -1,0 +1,13 @@
+@media print {
+  #dri_header_container_id, 
+  #dri_loading_spinner_center,
+  #dri_main_nav_id,
+  #dri_main_footer_id,
+  #dri_main_footer_navigation_id,
+  #dri_crumbtrail_nav_container_id,
+  #ajax-modal,
+  .dri_object_second_block,
+  .navbar-header {
+    display: none !important;
+  }
+}
