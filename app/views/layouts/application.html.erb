@@ -33,7 +33,7 @@
                 <%= analytics_init(:custom_vars => custom_vars) if !(Settings.analytics && Settings.analytics.disable == true) %>
         <script type="text/javascript">
             I18n.locale = "<%= I18n.locale %>";
-        </script>`
+        </script>
 	</head>
 
 	<% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
