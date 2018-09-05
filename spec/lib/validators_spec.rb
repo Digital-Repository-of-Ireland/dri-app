@@ -1,7 +1,4 @@
-require 'rails_helper'
-
 describe "validators" do
-
   describe "virus_scan" do
 
     before do
@@ -39,5 +36,4 @@ describe "validators" do
     end
 
   end
-  
 end  

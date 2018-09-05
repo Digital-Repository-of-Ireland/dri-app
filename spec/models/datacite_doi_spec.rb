@@ -1,4 +1,3 @@
-require 'rails_helper'
 require 'ostruct'
 require 'active_support/core_ext/hash/conversions'
 

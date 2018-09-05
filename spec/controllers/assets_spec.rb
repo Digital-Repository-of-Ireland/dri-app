@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe AssetsController do
   include Devise::Test::ControllerHelpers
 

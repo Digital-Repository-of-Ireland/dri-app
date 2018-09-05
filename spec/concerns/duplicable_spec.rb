@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe 'DRI::Duplicable' do
 
   let(:duplicable_test) { Class.new do

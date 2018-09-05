@@ -1,4 +1,3 @@
-require 'rails_helper'
 require 'solr/query'
 
 # declare an exclusion filter

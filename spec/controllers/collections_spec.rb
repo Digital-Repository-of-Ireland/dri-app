@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe CollectionsController do
   include Devise::Test::ControllerHelpers
 

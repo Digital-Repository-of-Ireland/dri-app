@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe LicencesController do
   include Devise::Test::ControllerHelpers
 

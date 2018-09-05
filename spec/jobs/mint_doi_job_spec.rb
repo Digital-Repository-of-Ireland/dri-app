@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'doi/datacite'
 
 describe "MintDoiJob" do

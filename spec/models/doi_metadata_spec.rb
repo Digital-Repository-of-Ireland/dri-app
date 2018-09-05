@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe DoiMetadata do
 
   it "should get the publication year" do

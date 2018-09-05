@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe DoiController do
   include Devise::Test::ControllerHelpers
 
