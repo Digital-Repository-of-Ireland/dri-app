@@ -595,6 +595,7 @@ GEM
     multi_test (0.1.2)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
+    mustache (1.0.5)
     mysql2 (0.4.10)
     nenv (0.3.0)
     nest (3.1.1)
@@ -808,6 +809,10 @@ GEM
       rspec-mocks (~> 3.7.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.0)
+    rspec_api_documentation (6.0.0)
+      activesupport (>= 3.0.0)
+      mustache (~> 1.0, >= 0.99.4)
+      rspec (~> 3.0)
     ruby-box (1.15.0)
       addressable
       json
@@ -1011,6 +1016,7 @@ DEPENDENCIES
   riiif (= 1.2.0)
   roo (= 2.6.0)
   rspec-rails (~> 3.0)
+  rspec_api_documentation
   rvm
   sass-rails (~> 4.0.4)
   shoulda
@@ -1034,4 +1040,4 @@ DEPENDENCIES
   zeus
 
 BUNDLED WITH
-   1.16.3
+   1.16.4

@@ -12,6 +12,7 @@ require 'rspec/core'
 require 'rspec/core/rake_task'
 require 'bundler'
 require 'active_fedora/rake_support'
+require 'rspec_api_documentation'
 
 require 'ci/reporter/rake/rspec'
 
@@ -46,6 +47,12 @@ RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
   rspec.pattern = FileList['spec/*_spec.rb']
 end
 
+desc 'runs tests in spec/api and generates docs based on test output'
+RSpec::Core::RakeTask.new('apidocs:generate') do |t|
+  t.pattern = 'spec/api/**/*_spec.rb'
+  t.rspec_opts = ["--format RspecApiDocumentation::ApiFormatter"]
+end
+
 Cucumber::Rake::Task.new(:first_try) do |t|
   t.cucumber_opts = "--profile first_try"
 end
@@ -69,6 +76,7 @@ task :ci => ['ci_clean'] do
   end
 
   Rake::Task["rdoc"].invoke
+  Rake::Task["apidocs:generate"].invoke
 end
 
 desc "Run Continuous Integration-spec"
@@ -81,6 +89,7 @@ task :ci_spec => ['ci_clean'] do
   end
 
   Rake::Task["rdoc"].invoke
+  Rake::Task["apidocs:generate"].invoke
 end
 
 desc "Clean CI environment"
@@ -123,4 +132,6 @@ namespace :fakes3 do
     system("fakes3 -r #{fakes3_dir} -p 8081 -H localhost")
   end
 end
+
+
 

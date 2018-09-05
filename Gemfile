@@ -93,6 +93,7 @@ end
 group :development, :test do
   gem 'guard'
   gem 'rspec-rails', '~> 3.0'
+  gem 'rspec_api_documentation'
   gem 'poltergeist', '>= 1.11.0'
   gem 'phantomjs', :require => 'phantomjs/poltergeist'
   gem 'simplecov'
@@ -111,6 +112,7 @@ group :development, :test do
   gem 'fcrepo_wrapper', '0.6.0'
 
   gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
+
 end
 
 group :test do
