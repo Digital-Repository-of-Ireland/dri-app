@@ -38,9 +38,7 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.main = "README.rdoc"
   rdoc.rdoc_files.include('*.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
-  rdoc.rdoc_files.include('lib/*.rb')
   rdoc.rdoc_files.include('app/**/*.rb')
-  rdoc.rdoc_files.include('app/*.rb')
 end
 
 RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
@@ -48,7 +46,7 @@ RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
 end
 
 desc 'runs tests in spec/api and generates docs based on test output'
-RSpec::Core::RakeTask.new('apidocs:generate') do |t|
+RSpec::Core::RakeTask.new('apidoc:generate') do |t|
   t.pattern = 'spec/api/**/*_spec.rb'
   t.rspec_opts = ["--format RspecApiDocumentation::ApiFormatter"]
 end
