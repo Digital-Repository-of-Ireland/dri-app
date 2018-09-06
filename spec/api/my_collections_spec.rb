@@ -1,12 +1,15 @@
 # https://blog.codeship.com/producing-documentation-for-your-rails-api/
 require 'api_spec_helper'
-require 'byebug'
 
 resource "my_collections" do
+
+  header "Accept", "application/json"
+  header "Host", "localhost"
+  explanation "This route is used to view collections for the current user"
+
   include_context 'collection_manager_user'
 
   before(:all) do
-    @auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
     @existential_error_regex = /"error":"Blacklight::Exceptions::InvalidSolrID: The solr permissions search handler didn't return anything for id/
   end
 
@@ -15,14 +18,10 @@ resource "my_collections" do
     sign_in @login_user
   end
 
-  explanation "This route is used to view collections for the current user"
-
-  # Headers which should be included in the request
-  header "Accept", "application/json"
-  header "Host", "localhost"
-  # header "X-Api-Key", :auth_token
 
   get "/my_collections" do
+    it_behaves_like 'an api with authentication'
+    
     with_options with_example: true do
       parameter :mode, 'Show Objects or Collections', type: :string, default: 'Collections'
       parameter :show_subs, 'Show subcollections', type: :boolean, default: false
@@ -47,14 +46,6 @@ resource "my_collections" do
       # explanation "List all collections for the current user."
       do_request
       expect(status).to eq(200)
-    end
-    
-    example "Unauthorized access to the api" do
-      explanation "Users must be authenticated before accessing the api"
-      sign_out(@login_user)
-      do_request
-      expect(response_body).to eq @auth_error_response
-      expect(status).to eq(401) # 401 unauthorized
     end
   end
 
@@ -91,7 +82,6 @@ resource "my_collections" do
       end
 
       example "Listing a specific collection" do
-        # byebug
         request = {
           id: @collection.id
         }
