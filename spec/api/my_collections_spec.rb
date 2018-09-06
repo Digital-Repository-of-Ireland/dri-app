@@ -1,20 +1,18 @@
 # https://blog.codeship.com/producing-documentation-for-your-rails-api/
 require 'api_spec_helper'
+require 'byebug'
 
 resource "my_collections" do
+  include_context 'collection_manager_user'
+
   before(:all) do
-    UserGroup::Group.find_or_create_by(name: SETTING_GROUP_CM, description: "collection manager test group")
-    @login_user = FactoryBot.create(:collection_manager)
     @auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
     @existential_error_regex = /"error":"Blacklight::Exceptions::InvalidSolrID: The solr permissions search handler didn't return anything for id/
   end
 
+  # stay looged in by default, only one test requires you to be logged out
   before(:each) do
     sign_in @login_user
-  end
-
-  after(:all) do
-    UserGroup::Group.find_by(name: SETTING_GROUP_CM).delete
   end
 
   explanation "This route is used to view collections for the current user"
@@ -50,6 +48,7 @@ resource "my_collections" do
       do_request
       expect(status).to eq(200)
     end
+    
     example "Unauthorized access to the api" do
       explanation "Users must be authenticated before accessing the api"
       sign_out(@login_user)
@@ -76,34 +75,23 @@ resource "my_collections" do
     end
 
     context "200" do
-      before(:each) do
-        @tmp_assets_dir = Dir.mktmpdir
-        Settings.dri.files = @tmp_assets_dir
-
-        @collection = FactoryBot.create(:collection)
-        @collection[:creator] = [@login_user.email]
-        @collection[:depositor] = @login_user.email
-        @collection[:status] = "draft"
+      include_context 'collection', num_items=3
+      
+      # this part can't be in the shared context
+      # because @login_user is created by another shared_context
+      # and they currently can't be nested the same way regular specs can
+      # so @login_user isn't available from within another shared context
+      before do
+        @collection.creator = [@login_user.to_s]  
         @collection.apply_depositor_metadata(@login_user.to_s)
-
-        3.times do |i|
-          object = FactoryBot.create(:sound)
-          object[:status] = "draft"
-          object[:title] = ["Not a Duplicate#{i}"]
-          object.apply_depositor_metadata(@login_user.to_s)
-          object.save
-          @collection.governed_items << object
+        @collection.governed_items.each do |item|
+          item.apply_depositor_metadata(@login_user.to_s)
         end
-
         @collection.save
       end
 
-      after(:each) do
-        @collection.delete
-        FileUtils.remove_dir(@tmp_assets_dir, force: true)
-      end
-
       example "Listing a specific collection" do
+        # byebug
         request = {
           id: @collection.id
         }
