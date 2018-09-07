@@ -37,3 +37,29 @@ shared_context 'collection' do |num_items=1, item_type=:sound, status='draft'|
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 end
+
+shared_context 'collections' do |num_collections=2, status='draft'|
+  before(:each) do
+    @collections = []
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
+    # have to create new user here to grant access to collection
+    @new_user = FactoryBot.create(:collection_manager)
+    sign_in @new_user
+
+    num_collections.times do |i|
+      collection = FactoryBot.create(:collection)
+      collection[:status] = status
+      collection.creator = [@new_user.to_s]
+      collection.apply_depositor_metadata(@new_user.to_s)
+      collection.save
+      @collections.push(collection)
+    end
+  end
+
+  after(:each) do
+    @collections.map(&:delete)
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
+  end
+end

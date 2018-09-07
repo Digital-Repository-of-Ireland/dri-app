@@ -1,11 +1,12 @@
 # https://blog.codeship.com/producing-documentation-for-your-rails-api/
 require 'api_spec_helper'
+require 'byebug'
 
 resource "my_collections" do
 
   header "Accept", "application/json"
   header "Host", "localhost"
-  explanation "This route is used to view collections for the current user"
+  explanation "This route is used to view collections and objects for the current user"
 
   include_context 'collection_manager_user'
 
@@ -47,6 +48,29 @@ resource "my_collections" do
       do_request
       expect(status).to eq(200)
     end
+
+    # context "Page limit" do
+    #   # TODO: make sure collections are actually being created
+    #   # pages['total_count'] should be 5 if they are
+    #   include_context 'collections', num_collections=5
+
+    #   # TODO: dynamically add param to example title
+    #   example "Listing the current users collections with a page limit" do
+    #     byebug
+    #     request = {
+    #       per_page: 1
+    #     }
+    #     do_request(request)
+    #     json_response = JSON.parse(response_body)
+    #     pages = json_response['response']['pages']
+        
+    #     expect(status).to eq(200)
+    #     expect(pages['first_page?']).to eq true
+    #     expect(pages['last_page?']).to eq false
+    #     expect(pages['limit_value']).to eq 1
+    #     # expect(pages['total_pages']).to eq @collections.count
+    #   end
+    # end
   end
 
   get "/my_collections/:id" do
@@ -54,15 +78,8 @@ resource "my_collections" do
       parameter :id, 'The collection id', type: :string
     end
 
-    context "404" do
-      example "Listing a collection that does not exist" do
-        request = {
-          id: 'id_that_does_not_exist'
-        }  
-        do_request(request)
-        expect(status).to eq 404
-        expect(response_body).to match(@existential_error_regex)
-      end
+    context '400' do
+      it_behaves_like 'a request for a collection that does not exist'
     end
 
     context "200" do
