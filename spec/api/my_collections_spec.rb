@@ -1,6 +1,5 @@
 # https://blog.codeship.com/producing-documentation-for-your-rails-api/
 require 'api_spec_helper'
-require 'byebug'
 
 resource "my_collections" do
 
@@ -58,7 +57,6 @@ resource "my_collections" do
 
     #   # TODO: dynamically add param to example title
     #   example "Listing the current users collections with a page limit" do
-    #     byebug
     #     request = {
     #       per_page: 1
     #     }
