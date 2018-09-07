@@ -20,28 +20,30 @@ resource "my_collections" do
   end
 
 
+  with_options scope: :results do
+    parameter :mode, 'Show Objects or Collections', type: :string, default: 'Collections'
+    parameter :show_subs, 'Show subcollections', type: :boolean, default: false
+    parameter :per_page, 'Number of results per page', type: :number, default: 9
+    parameter :search_field, 'Field to search against', type: :string, default: 'all_fields'
+    parameter :q, 'Search Query', type: :string
+    parameter :sort, 'Sort results', type: :string, default: 'system_create_dtsi+desc'
+    
+    # refine your search section (facet filters)
+    parameter :f, 'Facet filter', type: :array
+    # parameter :status_sim, 'Record Status', type: :array
+    # parameter :master_file_access_sim, 'Master File Access', type: :array
+    # parameter :person_sim, 'Names', :type :array
+    # parameter :file_count_isi, 'Number of files', type: :array
+    # mediatype
+    # Type (from Metadata)
+    # Depositor
+    # Collection
+  end
+
+
   get "/my_collections" do
     it_behaves_like 'an api with authentication'
-    
-    with_options with_example: true do
-      parameter :mode, 'Show Objects or Collections', type: :string, default: 'Collections'
-      parameter :show_subs, 'Show subcollections', type: :boolean, default: false
-      parameter :per_page, 'Number of results per page', type: :number, default: 9
-      parameter :search_field, '', type: :string, default: 'all_fields'
-      parameter :q, 'Search Query'
-      parameter :sort, 'Sort results', type: :string, default: 'system_create_dtsi+desc'
-      
-      # refine your search section (facet filters)
-      parameter :f, 'Facet filter', type: :array
-      # parameter :status_sim, 'Record Status', type: :array
-      # parameter :master_file_access_sim, 'Master File Access', type: :array
-      # parameter :person_sim, 'Names', :type :array
-      # parameter :file_count_isi, 'Number of files', type: :array
-      # mediatype
-      # Type (from Metadata)
-      # Depositor
-      # Collection
-    end
+
 
     example "Listing the current users collections" do
       # explanation "List all collections for the current user."
@@ -74,7 +76,7 @@ resource "my_collections" do
   end
 
   get "/my_collections/:id" do
-    with_options with_example: true do
+    with_options scope: :collection, with_example: true do
       parameter :id, 'The collection id', type: :string
     end
 

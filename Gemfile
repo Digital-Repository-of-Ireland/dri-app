@@ -84,6 +84,9 @@ gem 'execjs'
 
 gem 'uglifier', '>= 1.0.3'
 
+# for serving api docs
+gem 'raddocs'
+
 group :production do
   gem 'clamav'
   gem 'mysql2', '< 0.5'
@@ -175,4 +178,3 @@ gem 'rails-assets-leaflet.markercluster', '1.3.0', source: 'https://rails-assets
 gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem "jquery-slick-rails"
 gem 'remotipart'
-

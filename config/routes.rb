@@ -1,4 +1,5 @@
 require 'resque/server'
+require 'raddocs'
 
 DriApp::Application.routes.draw do
   scope ENV["RAILS_RELATIVE_URL_ROOT"] || "/" do
@@ -7,6 +8,7 @@ DriApp::Application.routes.draw do
     mount UserGroup::Engine => "/user_groups"
     mount Riiif::Engine => '/images'
     mount DriBatchIngest::Engine => '/ingest'
+    mount Raddocs::App => "/api_docs"
 
     Blacklight.add_routes(self)
     
