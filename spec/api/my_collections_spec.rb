@@ -10,10 +10,6 @@ resource "my_collections" do
   include_context 'collection_manager_user'
   include_context 'tmp_assets'
 
-  before(:all) do
-    @existential_error_regex = /"error":"Blacklight::Exceptions::InvalidSolrID: The solr permissions search handler didn't return anything for id/
-  end
-
   # stay logged in by default, only one test requires you to be logged out
   before(:each) do
     sign_in @login_user
@@ -21,9 +17,8 @@ resource "my_collections" do
 
 
   with_options scope: :results do
-    parameter :mode, 'Show Objects or Collections', type: :string, default: 'Collections'
+    parameter :mode, 'Show Objects or Collections', type: :string, default: 'objects'
     parameter :show_subs, 'Show subcollections', type: :boolean, default: false
-    parameter :per_page, 'Number of results per page', type: :number, default: 9
     parameter :search_field, 'Field to search against', type: :string, default: 'all_fields'
     parameter :q, 'Search Query', type: :string
     parameter :sort, 'Sort results', type: :string, default: 'system_create_dtsi+desc'
@@ -41,6 +36,11 @@ resource "my_collections" do
   end
 
 
+  with_options scope: :collection, with_example: true do
+    parameter :id, 'The collection id. Accessed via my_collections/:id or my_collections?id=:id', type: :string
+    parameter :per_page, 'Number of results per page', type: :number, default: 9
+  end
+
   get "/my_collections" do
     it_behaves_like 'an api with authentication'
 
@@ -50,13 +50,41 @@ resource "my_collections" do
       expect(status).to eq(200)
     end
 
-    context "Page limit" do
-      with_options scope: :results, with_example: true do
-        parameter :per_page, 'Number of results per page', type: :number, default: 9
-      end
+    context "Mode" do
+      # let!(:ncols) { 3 }
+      # let!(:nobjs) { 2 }
+      # include_context 'collections_with_objects', 
+      #   num_collections=ncols, num_objects=nobjs
+
+      include_context 'collections_with_objects', 
+        num_collections=2, num_objects=3
+
       
+      example "Listing the current users objects" do
+        do_request(mode: 'objects')
+        json_response = JSON.parse(response_body)
+
+        # is_collection = json_response["response"]["facets"].select do |f|
+        #   f["name"] == "is_collection_sim"
+        # end.first["items"].first
+
+        # expect(is_collection["value"]).to eq "false"
+        # expect(is_collection["hits"]).to eq (@num_collections * @num_objects)
+
+
+        json_response["response"]["facets"].each do |facet|
+          if facet["name"] == "is_collection_sim"
+            facet_results = facet["items"].first
+            expect(facet_results["value"]).to eq "false"
+            expect(facet_results["hits"]).to eq 6
+          end
+        end
+      end
+    end
+
+    context "Page limit" do      
       context "Single item per collection" do
-        include_context 'collections_with_items', num_collections=3 
+        include_context 'collections_with_objects', num_collections=3 
 
         # TODO: dynamically add param to example title
         example "Listing the current users collections with a page limit" do
@@ -75,11 +103,11 @@ resource "my_collections" do
         end
       end
 
-      context "Multiple items per collection" do
-        @num_items=4
-        include_context 'collections_with_items', num_collections=2, num_items=@num_items
+      context "Multiple objects per collection" do
+        @num_objects=4
+        include_context 'collections_with_objects', num_collections=2, num_objects=@num_objects
 
-        example "per_page limits per item, not per collection" do
+        example "Listing the current users collections with a page limit limits results per item, not per collection" do
           request = {
             per_page: 1
           }
@@ -91,23 +119,19 @@ resource "my_collections" do
           expect(pages['first_page?']).to eq true
           expect(pages['last_page?']).to eq false
           expect(pages['limit_value']).to eq 1
-          expect(pages['total_pages']).to eq @collections.count * num_items
+          expect(pages['total_pages']).to eq @collections.count * num_objects
         end
       end
     end
   end
 
   get "/my_collections/:id" do
-    with_options scope: :collection, with_example: true do
-      parameter :id, 'The collection id', type: :string
-    end
-
     context '400' do
       it_behaves_like 'a request for a collection that does not exist'
     end
 
     context "200" do
-      include_context 'collections_with_items', num_items=3
+      include_context 'collections_with_objects', num_objects=3
 
       example "Listing a specific collection" do
         request = {

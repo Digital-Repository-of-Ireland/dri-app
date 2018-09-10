@@ -23,7 +23,7 @@ shared_context 'tmp_assets' do
   end
 end
 
-shared_context 'collections_with_items' do |num_collections=2, num_items=1, status='draft'|
+shared_context 'collections_with_objects' do |num_collections=2, num_objects=1, status='draft'|
   before(:each) do
     @collections = []
 
@@ -40,10 +40,10 @@ shared_context 'collections_with_items' do |num_collections=2, num_items=1, stat
       collection[:date] = [DateTime.now.strftime("%Y-%m-%d")]
       collection.apply_depositor_metadata(@new_user.to_s)
 
-      # collections must contain items 
+      # collections must contain objects 
       # in order to take up space on the json output!
       # otherwise docs=[], total_pages=0
-      num_items.times do |j|
+      num_objects.times do |j|
         object = FactoryBot.create(:sound)
         object[:status] = status
         object[:title] = ["Not a Duplicate#{j}"]
