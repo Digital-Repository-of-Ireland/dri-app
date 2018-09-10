@@ -1,5 +1,6 @@
 require 'rspec_api_documentation'
 require 'rspec_api_documentation/dsl'
+require 'support/shared_api_examples'
 
 RspecApiDocumentation.configure do |config|
   config.api_name = "DRI JSON API"

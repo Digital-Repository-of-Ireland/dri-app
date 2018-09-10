@@ -40,7 +40,7 @@ resource "my_collections" do
   end
 
 
-  get "/my_collections" do
+  get "/my_collections.json" do
     it_behaves_like 'an api with authentication'
 
 
@@ -50,27 +50,27 @@ resource "my_collections" do
       expect(status).to eq(200)
     end
 
-    # context "Page limit" do
-    #   # TODO: make sure collections are actually being created
-    #   # pages['total_count'] should be 5 if they are
-    #   include_context 'collections', num_collections=5
+    context "Page limit" do
+      # TODO: make sure collections are actually being created
+      # pages['total_count'] should be 5 if they are
+      include_context 'collections', num_collections=5
 
-    #   # TODO: dynamically add param to example title
-    #   example "Listing the current users collections with a page limit" do
-    #     request = {
-    #       per_page: 1
-    #     }
-    #     do_request(request)
-    #     json_response = JSON.parse(response_body)
-    #     pages = json_response['response']['pages']
+      # TODO: dynamically add param to example title
+      example "Listing the current users collections with a page limit" do
+        request = {
+          per_page: 1
+        }
+        do_request(request)
+        json_response = JSON.parse(response_body)
+        pages = json_response['response']['pages']
         
-    #     expect(status).to eq(200)
-    #     expect(pages['first_page?']).to eq true
-    #     expect(pages['last_page?']).to eq false
-    #     expect(pages['limit_value']).to eq 1
-    #     # expect(pages['total_pages']).to eq @collections.count
-    #   end
-    # end
+        expect(status).to eq(200)
+        expect(pages['first_page?']).to eq true
+        expect(pages['last_page?']).to eq false
+        expect(pages['limit_value']).to eq 1
+        expect(pages['total_pages']).to eq @collections.count
+      end
+    end
   end
 
   get "/my_collections/:id" do

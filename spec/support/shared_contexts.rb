@@ -50,9 +50,32 @@ shared_context 'collections' do |num_collections=2, status='draft'|
 
     num_collections.times do |i|
       collection = FactoryBot.create(:collection)
+      # collection = Collection.new
       collection[:status] = status
-      collection.creator = [@new_user.to_s]
+      collection[:creator] = [@new_user.to_s]
+      collection[:date] = [DateTime.now.strftime("%Y-%m-%d")]
+      collection.licence = "All Rights Reserved"
       collection.apply_depositor_metadata(@new_user.to_s)
+      collection.manager_users_string = @new_user.to_s
+      collection.manager_groups_string = @new_user.to_s
+      collection.discover_groups_string = 'draft'
+      collection.discover_groups_string = 'draft'
+      collection.discover_users_string = 'draft'
+      collection.read_groups_string = 'draft'
+      collection.read_users_string = 'draft'
+      collection.edit_groups_string = 'draft'
+      collection.edit_users_string = 'draft'
+      collection.master_file_access = 'draft'
+
+      # collections must contain items 
+      # in order to take up space on the json output!
+      # otherwise docs=[], page_count=0
+      object = FactoryBot.create(:sound)
+      object[:status] = status
+      object[:title] = ["Not a Duplicate#{i}"]
+      object.save
+      collection.governed_items << object
+
       collection.save
       @collections.push(collection)
     end
