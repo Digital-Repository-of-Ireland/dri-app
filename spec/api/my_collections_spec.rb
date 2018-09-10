@@ -8,12 +8,13 @@ resource "my_collections" do
   explanation "This route is used to view collections and objects for the current user"
 
   include_context 'collection_manager_user'
+  include_context 'tmp_assets'
 
   before(:all) do
     @existential_error_regex = /"error":"Blacklight::Exceptions::InvalidSolrID: The solr permissions search handler didn't return anything for id/
   end
 
-  # stay looged in by default, only one test requires you to be logged out
+  # stay logged in by default, only one test requires you to be logged out
   before(:each) do
     sign_in @login_user
   end
@@ -40,9 +41,8 @@ resource "my_collections" do
   end
 
 
-  get "/my_collections.json" do
+  get "/my_collections" do
     it_behaves_like 'an api with authentication'
-
 
     example "Listing the current users collections" do
       # explanation "List all collections for the current user."
@@ -51,24 +51,48 @@ resource "my_collections" do
     end
 
     context "Page limit" do
-      # TODO: make sure collections are actually being created
-      # pages['total_count'] should be 5 if they are
-      include_context 'collections', num_collections=5
+      with_options scope: :results, with_example: true do
+        parameter :per_page, 'Number of results per page', type: :number, default: 9
+      end
+      
+      context "Single item per collection" do
+        include_context 'collections_with_items', num_collections=3 
 
-      # TODO: dynamically add param to example title
-      example "Listing the current users collections with a page limit" do
-        request = {
-          per_page: 1
-        }
-        do_request(request)
-        json_response = JSON.parse(response_body)
-        pages = json_response['response']['pages']
-        
-        expect(status).to eq(200)
-        expect(pages['first_page?']).to eq true
-        expect(pages['last_page?']).to eq false
-        expect(pages['limit_value']).to eq 1
-        expect(pages['total_pages']).to eq @collections.count
+        # TODO: dynamically add param to example title
+        example "Listing the current users collections with a page limit" do
+          request = {
+            per_page: 1
+          }
+          do_request(request)
+          json_response = JSON.parse(response_body)
+          pages = json_response['response']['pages']
+          
+          expect(status).to eq(200)
+          expect(pages['first_page?']).to eq true
+          expect(pages['last_page?']).to eq false
+          expect(pages['limit_value']).to eq 1
+          expect(pages['total_pages']).to eq @collections.count
+        end
+      end
+
+      context "Multiple items per collection" do
+        @num_items=4
+        include_context 'collections_with_items', num_collections=2, num_items=@num_items
+
+        example "per_page limits per item, not per collection" do
+          request = {
+            per_page: 1
+          }
+          do_request(request)
+          json_response = JSON.parse(response_body)
+          pages = json_response['response']['pages']
+          
+          expect(status).to eq(200)
+          expect(pages['first_page?']).to eq true
+          expect(pages['last_page?']).to eq false
+          expect(pages['limit_value']).to eq 1
+          expect(pages['total_pages']).to eq @collections.count * num_items
+        end
       end
     end
   end
@@ -83,24 +107,11 @@ resource "my_collections" do
     end
 
     context "200" do
-      include_context 'collection', num_items=3
-      
-      # this part can't be in the shared context
-      # because @login_user is created by another shared_context
-      # and they currently can't be nested the same way regular specs can
-      # so @login_user isn't available from within another shared context
-      before do
-        @collection.creator = [@login_user.to_s]  
-        @collection.apply_depositor_metadata(@login_user.to_s)
-        @collection.governed_items.each do |item|
-          item.apply_depositor_metadata(@login_user.to_s)
-        end
-        @collection.save
-      end
+      include_context 'collections_with_items', num_items=3
 
       example "Listing a specific collection" do
         request = {
-          id: @collection.id
+          id: @collections.first.id
         }
         do_request(request)
         expect(status).to eq 200  
