@@ -12,7 +12,6 @@ require 'rspec/core'
 require 'rspec/core/rake_task'
 require 'bundler'
 require 'active_fedora/rake_support'
-require 'rspec_api_documentation'
 
 require 'ci/reporter/rake/rspec'
 
@@ -45,12 +44,7 @@ RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
   rspec.pattern = FileList['spec/*_spec.rb']
 end
 
-desc 'runs tests in spec/api and generates docs based on test output'
-RSpec::Core::RakeTask.new('apidoc:generate') do |t|
-  t.pattern = 'spec/api/**/*_spec.rb'
-  t.rspec_opts = ["--format RspecApiDocumentation::ApiFormatter"]
-end
-
+desc 'similar to rswag:spec:swaggerize except it excludes --dry-run so output is included in swagger docs where applicable'
 namespace :rswag do
   namespace :docs do
     desc 'Generate Swagger JSON files from integration specs'

@@ -84,9 +84,6 @@ gem 'execjs'
 
 gem 'uglifier', '>= 1.0.3'
 
-# for serving api docs
-gem 'raddocs'
-
 group :production do
   gem 'clamav'
   gem 'mysql2', '< 0.5'
@@ -96,7 +93,6 @@ end
 group :development, :test do
   gem 'guard'
   gem 'rspec-rails', '~> 3.0'
-  gem 'rspec_api_documentation'
   gem 'poltergeist', '>= 1.11.0'
   gem 'phantomjs', :require => 'phantomjs/poltergeist'
   gem 'simplecov'
