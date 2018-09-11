@@ -61,3 +61,14 @@ shared_context 'collections_with_objects' do |num_collections=2, num_objects=1, 
     @collections.map(&:delete)
   end
 end
+
+shared_context 'rswag_include_spec_output' do
+  after do |example|
+    example.metadata[:response][:examples] = { 
+      'application/json' => JSON.parse(
+        response.body, 
+        symbolize_names: true
+      ) 
+    }
+  end
+end

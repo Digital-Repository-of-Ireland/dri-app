@@ -2042,6 +2042,57 @@
         "responses": {
           "401": {
             "description": "Must be signed in to access this route"
+          },
+          "404": {
+            "description": "Object not found",
+            "examples": {
+              "application/json": {
+                "status": "404",
+                "error": "Blacklight::Exceptions::InvalidSolrID: The solr permissions search handler didn't return anything for id \"collection_that_does_not_exist\""
+              }
+            }
+          },
+          "200": {
+            "description": "Object found",
+            "examples": {
+              "application/json": {
+                "Id": "8049g5079",
+                "Title": [
+                  "A collection"
+                ],
+                "Creation Date": [
+                  "name=1916-01-01; start=1916-01-01;"
+                ],
+                "Issued Date": [
+                  "name=1916-01-02; start=1916-01-02;"
+                ],
+                "Type": [
+                  "Collection"
+                ],
+                "Rights": [
+                  "This is a statement about the rights associated with this object"
+                ],
+                "Description": [
+                  "This is a Collection"
+                ],
+                "Creator": [
+                  "mignon@halvorson.co.uk"
+                ],
+                "Publisher": [
+                  "RnaG"
+                ],
+                "Date": [
+                  "name=2018-09-11; start=2018-09-11;"
+                ],
+                "Organisation": [
+
+                ],
+                "Licence": null,
+                "Assets": [
+
+                ]
+              }
+            }
           }
         }
       }

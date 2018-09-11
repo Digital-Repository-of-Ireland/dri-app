@@ -25,6 +25,7 @@ describe "My Collections API" do
 
   path "/my_collections/{id}" do
     include_context 'collections_with_objects', num_collections=2, num_objects=3
+
     get "retrieves a specific collection" do
       produces 'application/json'#, 'application/ttl'
       parameter name: :id, :in => :path, :type => :string
@@ -39,19 +40,43 @@ describe "My Collections API" do
           submit_request(example.metadata)
         end
 
-        after do |example|
-          example.metadata[:response][:examples] = { 
-            'application/json' => JSON.parse(
-              response.body, 
-              symbolize_names: true
-            ) 
-          }
-        end
+        # after do |example|
+        #   example.metadata[:response][:examples] = { 
+        #     'application/json' => JSON.parse(
+        #       response.body, 
+        #       symbolize_names: true
+        #     ) 
+        #   }
+        # end
 
         it 'returns a 401 when the user is not signed in' do
           # auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
           # expect(response.body).to eq auth_error_response
           expect(status).to eq(401) # 401 unauthorized
+        end
+      end
+
+      response "404", "Object not found" do
+        include_context 'rswag_include_spec_output'
+        let(:id) { "collection_that_does_not_exist" }
+
+        # doesn't matter whether you're signed in
+        # 404 takes precendence over 401
+        before do |example|
+          sign_out_all
+          submit_request(example.metadata)
+        end
+
+        it 'returns a 404 when the user is not signed in' do
+          expect(status).to eq(404) 
+        end
+      end
+
+      response "200", "Object found" do
+        include_context 'rswag_include_spec_output'
+        let(:id) { @collections.first.id }
+        run_test! do
+          expect(status).to eq(200) 
         end
       end
     end
