@@ -93,6 +93,7 @@ end
 group :development, :test do
   gem 'guard'
   gem 'rspec-rails', '~> 3.0'
+  gem 'rswag-specs', '~> 2.0'
   gem 'poltergeist', '>= 1.11.0'
   gem 'phantomjs', :require => 'phantomjs/poltergeist'
   gem 'simplecov'
@@ -175,4 +176,7 @@ gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem "jquery-slick-rails"
 gem 'remotipart'
 
-gem "rswag", "~> 2.0"
+
+gem "rswag-api", "~> 2.0"
+
+gem "rswag-ui", "~> 2.0"
