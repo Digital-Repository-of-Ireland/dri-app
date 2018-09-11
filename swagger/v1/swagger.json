@@ -5,11 +5,46 @@
     "version": "v1"
   },
   "paths": {
+    "/bookmarks": {
+      "get": {
+        "summary": "retrieves bookmarks",
+        "tags": [
+          "Public"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "302": {
+            "description": "bookmark redirect"
+          }
+        }
+      }
+    },
     "/catalog": {
       "get": {
         "summary": "retrieves objects from the catalog",
+        "tags": [
+          "Public"
+        ],
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "per_page",
+            "description": "Number of results per page",
+            "in": "query",
+            "type": "number",
+            "default": 9
+          },
+          {
+            "name": "mode",
+            "description": "Show Objects or Collections",
+            "in": "query",
+            "type": "string",
+            "default": "objects"
+          }
         ],
         "responses": {
           "200": {
@@ -2007,9 +2042,40 @@
         }
       }
     },
+    "/collections": {
+      "get": {
+        "summary": "retrieves collections for the current user",
+        "tags": [
+          "Private (Sign in required)"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "401": {
+            "description": "Must be signed in to access this route",
+            "examples": {
+              "application/json": {
+                "error": "You need to sign in or sign up before continuing."
+              }
+            }
+          },
+          "200": {
+            "description": "All collections found",
+            "examples": {
+              "application/json": {
+              }
+            }
+          }
+        }
+      }
+    },
     "/my_collections": {
       "get": {
-        "summary": "retrieves objects or collections for the current user",
+        "summary": "retrieves objects, collections, or subcollections for the current user",
+        "tags": [
+          "Private (Sign in required)"
+        ],
         "produces": [
           "application/json"
         ],
@@ -2020,6 +2086,13 @@
             "in": "query",
             "type": "number",
             "default": 9
+          },
+          {
+            "name": "mode",
+            "description": "Show Objects or Collections",
+            "in": "query",
+            "type": "string",
+            "default": "objects"
           }
         ],
         "responses": {
@@ -2038,16 +2111,16 @@
                 "response": {
                   "docs": [
                     {
-                      "system_create_dtsi": "2018-09-11T15:06:54Z",
-                      "system_modified_dtsi": "2018-09-11T15:06:54Z",
+                      "system_create_dtsi": "2018-09-11T15:58:31Z",
+                      "system_modified_dtsi": "2018-09-11T15:58:31Z",
                       "active_fedora_model_ssi": "DRI::QualifiedDublinCore",
                       "has_model_ssim": [
                         "DRI::Batch",
                         "DRI::QualifiedDublinCore"
                       ],
-                      "id": "nz805z78z",
+                      "id": "bv73c054d",
                       "object_profile_ssm": [
-                        "{\"id\":\"nz805z78z\",\"status\":\"draft\",\"object_type\":[],\"depositor\":\"kiera@lindgrenhermann.co.uk\",\"metadata_md5\":null,\"model_version\":\"2.6.3\",\"verified\":null,\"doi\":null,\"cover_image\":null,\"institute\":[],\"depositing_institute\":null,\"licence\":null,\"ingest_files_from_metadata\":null,\"master_file_access\":null,\"published_at\":null,\"object_version\":\"1\",\"title\":[\"Not a Duplicate2\"],\"description\":[\"This is an Audio file\"],\"rights\":[\"This is a statement about the rights associated with this object\"],\"creator\":[],\"contributor\":[\"DeValera, Eamonn\",\"Connolly, James\"],\"publisher\":[],\"subject\":[\"Ireland\",\"something else\"],\"language\":[\"ga\"],\"full_text\":[],\"date\":[],\"relation\":[],\"external_relation\":[],\"source\":[\"CD nnn nuig\"],\"geographical_coverage\":[\"Dublin\"],\"temporal_coverage\":[\"1900s\"],\"name_coverage\":[],\"resource_type\":[\"Sound\"],\"format\":[],\"coverage\":[],\"identifier\":[],\"id_asset\":null,\"qdc_id\":[],\"geocode_point\":[],\"geocode_box\":[],\"published_date\":[\"1916-04-01\"],\"creation_date\":[\"1916-01-01\"],\"role_acp\":[],\"role_act\":[],\"role_adp\":[],\"role_aft\":[],\"role_anl\":[],\"role_anm\":[],\"role_ann\":[],\"role_ant\":[],\"role_app\":[],\"role_aqt\":[],\"role_arc\":[],\"role_ard\":[],\"role_arr\":[],\"role_art\":[],\"role_asg\":[],\"role_asn\":[],\"role_att\":[],\"role_auc\":[],\"role_aud\":[],\"role_aui\":[],\"role_aus\":[],\"role_aut\":[],\"role_bdd\":[],\"role_bjd\":[],\"role_bkd\":[],\"role_bkp\":[],\"role_bnd\":[],\"role_bpd\":[],\"role_bsl\":[],\"role_ccp\":[],\"role_chr\":[],\"role_clb\":[],\"role_cli\":[],\"role_cll\":[],\"role_clt\":[],\"role_cmm\":[],\"role_cmp\":[],\"role_cmt\":[],\"role_cng\":[],\"role_cnd\":[],\"role_cns\":[],\"role_coe\":[],\"role_col\":[],\"role_com\":[],\"role_cos\":[],\"role_cot\":[],\"role_cov\":[],\"role_cpc\":[],\"role_cpe\":[],\"role_cph\":[],\"role_cpl\":[],\"role_cpt\":[],\"role_cre\":[],\"role_crp\":[],\"role_crr\":[],\"role_csl\":[],\"role_csp\":[],\"role_cst\":[],\"role_ctb\":[],\"role_cte\":[],\"role_ctg\":[],\"role_ctr\":[],\"role_cts\":[],\"role_ctt\":[],\"role_cur\":[],\"role_cwt\":[],\"role_dfd\":[],\"role_dfe\":[],\"role_dft\":[],\"role_dgg\":[],\"role_dis\":[],\"role_dln\":[],\"role_dnc\":[],\"role_dnr\":[],\"role_dpc\":[],\"role_dpt\":[],\"role_drm\":[],\"role_drt\":[],\"role_dsr\":[],\"role_dst\":[],\"role_dtc\":[],\"role_dte\":[],\"role_dtm\":[],\"role_dto\":[],\"role_dub\":[],\"role_edt\":[],\"role_egr\":[],\"role_elg\":[],\"role_elt\":[],\"role_eng\":[],\"role_etr\":[],\"role_exp\":[],\"role_fac\":[],\"role_fld\":[],\"role_flm\":[],\"role_fmo\":[],\"role_fpy\":[],\"role_fnd\":[],\"role_frg\":[],\"role_gis\":[],\"role_grt\":[],\"role_hnr\":[],\"role_hst\":[\"Collins, Michael\"],\"role_ill\":[],\"role_ilu\":[],\"role_ins\":[],\"role_inv\":[],\"role_itr\":[],\"role_ive\":[],\"role_ivr\":[],\"role_lbr\":[],\"role_lbt\":[],\"role_ldr\":[],\"role_led\":[],\"role_lee\":[],\"role_lel\":[],\"role_len\":[],\"role_let\":[],\"role_lgd\":[],\"role_lie\":[],\"role_lil\":[],\"role_lit\":[],\"role_lsa\":[],\"role_lse\":[],\"role_lso\":[],\"role_ltg\":[],\"role_lyr\":[],\"role_mcp\":[],\"role_mfr\":[],\"role_mdc\":[],\"role_mod\":[],\"role_mon\":[],\"role_mrk\":[],\"role_msd\":[],\"role_mte\":[],\"role_mus\":[],\"role_nrt\":[],\"role_opn\":[],\"role_org\":[],\"role_orm\":[],\"role_oth\":[],\"role_own\":[],\"role_pat\":[],\"role_pbd\":[],\"role_pbl\":[],\"role_pdr\":[],\"role_pfr\":[],\"role_pht\":[],\"role_plt\":[],\"role_pma\":[],\"role_pmn\":[],\"role_pop\":[],\"role_ppm\":[],\"role_ppt\":[],\"role_prc\":[],\"role_prd\":[],\"role_prf\":[],\"role_prg\":[],\"role_prm\":[],\"role_pro\":[],\"role_prt\":[],\"role_pta\":[],\"role_pte\":[],\"role_ptf\":[],\"role_pth\":[],\"role_ptt\":[],\"role_rbr\":[],\"role_rce\":[],\"role_rcp\":[],\"role_red\":[],\"role_ren\":[],\"role_res\":[],\"role_rev\":[],\"role_rps\":[],\"role_rpt\":[],\"role_rpy\":[],\"role_rse\":[],\"role_rsg\":[],\"role_rsp\":[],\"role_rst\":[],\"role_rth\":[],\"role_rtm\":[],\"role_sad\":[],\"role_sce\":[],\"role_scl\":[],\"role_scr\":[],\"role_sds\":[],\"role_sec\":[],\"role_sgn\":[],\"role_sht\":[],\"role_sng\":[],\"role_spk\":[],\"role_spn\":[],\"role_spy\":[],\"role_srv\":[],\"role_std\":[],\"role_stl\":[],\"role_stm\":[],\"role_stn\":[],\"role_str\":[],\"role_tcd\":[],\"role_tch\":[],\"role_ths\":[],\"role_trc\":[],\"role_trl\":[],\"role_tyd\":[],\"role_tyg\":[],\"role_vdg\":[],\"role_voc\":[],\"role_wam\":[],\"role_wdc\":[],\"role_wde\":[],\"role_wit\":[],\"relation_ids_relation\":[],\"relation_ids_isPartOf\":[],\"relation_ids_hasPart\":[],\"relation_ids_isReferencedBy\":[],\"relation_ids_references\":[],\"relation_ids_isVersionOf\":[],\"relation_ids_hasVersion\":[],\"relation_ids_isFormatOf\":[],\"relation_ids_hasFormat\":[],\"relation_ids_source\":[],\"ext_related_items_ids_relation\":[],\"ext_related_items_ids_isPartOf\":[],\"ext_related_items_ids_hasPart\":[],\"ext_related_items_ids_isReferencedBy\":[],\"ext_related_items_ids_references\":[],\"ext_related_items_ids_isVersionOf\":[],\"ext_related_items_ids_hasVersion\":[],\"ext_related_items_ids_isFormatOf\":[],\"ext_related_items_ids_hasFormat\":[],\"ext_related_items_ids_source\":[],\"governing_collection_id\":\"cc08hf72r\",\"previous_sibling_id\":null}"
+                        "{\"id\":\"bv73c054d\",\"status\":\"draft\",\"object_type\":[],\"depositor\":\"numbers@block.com\",\"metadata_md5\":null,\"model_version\":\"2.6.3\",\"verified\":null,\"doi\":null,\"cover_image\":null,\"institute\":[],\"depositing_institute\":null,\"licence\":null,\"ingest_files_from_metadata\":null,\"master_file_access\":null,\"published_at\":null,\"object_version\":\"1\",\"title\":[\"A collection\"],\"description\":[\"This is a Collection\"],\"rights\":[\"This is a statement about the rights associated with this object\"],\"creator\":[\"numbers@block.com\"],\"contributor\":[],\"publisher\":[\"RnaG\"],\"subject\":[],\"language\":[],\"full_text\":[],\"date\":[\"2018-09-11\"],\"relation\":[],\"external_relation\":[],\"source\":[],\"geographical_coverage\":[],\"temporal_coverage\":[],\"name_coverage\":[],\"resource_type\":[\"Collection\"],\"format\":[],\"coverage\":[],\"identifier\":[],\"id_asset\":null,\"qdc_id\":[],\"geocode_point\":[],\"geocode_box\":[],\"published_date\":[\"1916-01-02\"],\"creation_date\":[\"1916-01-01\"],\"role_acp\":[],\"role_act\":[],\"role_adp\":[],\"role_aft\":[],\"role_anl\":[],\"role_anm\":[],\"role_ann\":[],\"role_ant\":[],\"role_app\":[],\"role_aqt\":[],\"role_arc\":[],\"role_ard\":[],\"role_arr\":[],\"role_art\":[],\"role_asg\":[],\"role_asn\":[],\"role_att\":[],\"role_auc\":[],\"role_aud\":[],\"role_aui\":[],\"role_aus\":[],\"role_aut\":[],\"role_bdd\":[],\"role_bjd\":[],\"role_bkd\":[],\"role_bkp\":[],\"role_bnd\":[],\"role_bpd\":[],\"role_bsl\":[],\"role_ccp\":[],\"role_chr\":[],\"role_clb\":[],\"role_cli\":[],\"role_cll\":[],\"role_clt\":[],\"role_cmm\":[],\"role_cmp\":[],\"role_cmt\":[],\"role_cng\":[],\"role_cnd\":[],\"role_cns\":[],\"role_coe\":[],\"role_col\":[],\"role_com\":[],\"role_cos\":[],\"role_cot\":[],\"role_cov\":[],\"role_cpc\":[],\"role_cpe\":[],\"role_cph\":[],\"role_cpl\":[],\"role_cpt\":[],\"role_cre\":[],\"role_crp\":[],\"role_crr\":[],\"role_csl\":[],\"role_csp\":[],\"role_cst\":[],\"role_ctb\":[],\"role_cte\":[],\"role_ctg\":[],\"role_ctr\":[],\"role_cts\":[],\"role_ctt\":[],\"role_cur\":[],\"role_cwt\":[],\"role_dfd\":[],\"role_dfe\":[],\"role_dft\":[],\"role_dgg\":[],\"role_dis\":[],\"role_dln\":[],\"role_dnc\":[],\"role_dnr\":[],\"role_dpc\":[],\"role_dpt\":[],\"role_drm\":[],\"role_drt\":[],\"role_dsr\":[],\"role_dst\":[],\"role_dtc\":[],\"role_dte\":[],\"role_dtm\":[],\"role_dto\":[],\"role_dub\":[],\"role_edt\":[],\"role_egr\":[],\"role_elg\":[],\"role_elt\":[],\"role_eng\":[],\"role_etr\":[],\"role_exp\":[],\"role_fac\":[],\"role_fld\":[],\"role_flm\":[],\"role_fmo\":[],\"role_fpy\":[],\"role_fnd\":[],\"role_frg\":[],\"role_gis\":[],\"role_grt\":[],\"role_hnr\":[],\"role_hst\":[],\"role_ill\":[],\"role_ilu\":[],\"role_ins\":[],\"role_inv\":[],\"role_itr\":[],\"role_ive\":[],\"role_ivr\":[],\"role_lbr\":[],\"role_lbt\":[],\"role_ldr\":[],\"role_led\":[],\"role_lee\":[],\"role_lel\":[],\"role_len\":[],\"role_let\":[],\"role_lgd\":[],\"role_lie\":[],\"role_lil\":[],\"role_lit\":[],\"role_lsa\":[],\"role_lse\":[],\"role_lso\":[],\"role_ltg\":[],\"role_lyr\":[],\"role_mcp\":[],\"role_mfr\":[],\"role_mdc\":[],\"role_mod\":[],\"role_mon\":[],\"role_mrk\":[],\"role_msd\":[],\"role_mte\":[],\"role_mus\":[],\"role_nrt\":[],\"role_opn\":[],\"role_org\":[],\"role_orm\":[],\"role_oth\":[],\"role_own\":[],\"role_pat\":[],\"role_pbd\":[],\"role_pbl\":[],\"role_pdr\":[],\"role_pfr\":[],\"role_pht\":[],\"role_plt\":[],\"role_pma\":[],\"role_pmn\":[],\"role_pop\":[],\"role_ppm\":[],\"role_ppt\":[],\"role_prc\":[],\"role_prd\":[],\"role_prf\":[],\"role_prg\":[],\"role_prm\":[],\"role_pro\":[],\"role_prt\":[],\"role_pta\":[],\"role_pte\":[],\"role_ptf\":[],\"role_pth\":[],\"role_ptt\":[],\"role_rbr\":[],\"role_rce\":[],\"role_rcp\":[],\"role_red\":[],\"role_ren\":[],\"role_res\":[],\"role_rev\":[],\"role_rps\":[],\"role_rpt\":[],\"role_rpy\":[],\"role_rse\":[],\"role_rsg\":[],\"role_rsp\":[],\"role_rst\":[],\"role_rth\":[],\"role_rtm\":[],\"role_sad\":[],\"role_sce\":[],\"role_scl\":[],\"role_scr\":[],\"role_sds\":[],\"role_sec\":[],\"role_sgn\":[],\"role_sht\":[],\"role_sng\":[],\"role_spk\":[],\"role_spn\":[],\"role_spy\":[],\"role_srv\":[],\"role_std\":[],\"role_stl\":[],\"role_stm\":[],\"role_stn\":[],\"role_str\":[],\"role_tcd\":[],\"role_tch\":[],\"role_ths\":[],\"role_trc\":[],\"role_trl\":[],\"role_tyd\":[],\"role_tyg\":[],\"role_vdg\":[],\"role_voc\":[],\"role_wam\":[],\"role_wdc\":[],\"role_wde\":[],\"role_wit\":[],\"relation_ids_relation\":[],\"relation_ids_isPartOf\":[],\"relation_ids_hasPart\":[],\"relation_ids_isReferencedBy\":[],\"relation_ids_references\":[],\"relation_ids_isVersionOf\":[],\"relation_ids_hasVersion\":[],\"relation_ids_isFormatOf\":[],\"relation_ids_hasFormat\":[],\"relation_ids_source\":[],\"ext_related_items_ids_relation\":[],\"ext_related_items_ids_isPartOf\":[],\"ext_related_items_ids_hasPart\":[],\"ext_related_items_ids_isReferencedBy\":[],\"ext_related_items_ids_references\":[],\"ext_related_items_ids_isVersionOf\":[],\"ext_related_items_ids_hasVersion\":[],\"ext_related_items_ids_isFormatOf\":[],\"ext_related_items_ids_hasFormat\":[],\"ext_related_items_ids_source\":[],\"governing_collection_id\":null,\"previous_sibling_id\":null}"
                       ],
                       "properties__status_ssim": [
                         "draft"
@@ -2059,93 +2132,57 @@
                         "draft"
                       ],
                       "properties__depositor_tesim": [
-                        "kiera@lindgrenhermann.co.uk"
+                        "numbers@block.com"
                       ],
                       "properties__depositor_ssm": [
-                        "kiera@lindgrenhermann.co.uk"
+                        "numbers@block.com"
                       ],
                       "desc_metadata__title_tesim": [
-                        "Not a Duplicate2"
+                        "A collection"
                       ],
                       "desc_metadata__rights_tesim": [
                         "This is a statement about the rights associated with this object"
                       ],
                       "desc_metadata__description_tesim": [
-                        "This is an Audio file"
+                        "This is a Collection"
                       ],
-                      "desc_metadata__language_tesim": [
-                        "ga"
+                      "desc_metadata__publisher_tesim": [
+                        "RnaG"
                       ],
-                      "desc_metadata__subject_tesim": [
-                        "Ireland",
-                        "something else"
-                      ],
-                      "desc_metadata__contributor_tesim": [
-                        "DeValera, Eamonn",
-                        "Connolly, James"
-                      ],
-                      "desc_metadata__geographical_coverage_tesim": [
-                        "Dublin"
-                      ],
-                      "desc_metadata__role_hst_tesim": [
-                        "Collins, Michael"
+                      "desc_metadata__creator_tesim": [
+                        "numbers@block.com"
                       ],
                       "creation_date_tesim": [
                         "name=1916-01-01; start=1916-01-01;"
                       ],
                       "published_date_tesim": [
-                        "name=1916-04-01; start=1916-04-01;"
+                        "name=1916-01-02; start=1916-01-02;"
                       ],
-                      "temporal_coverage_tesim": [
-                        "name=1900s;"
+                      "date_tesim": [
+                        "name=2018-09-11; start=2018-09-11;"
                       ],
                       "person_tesim": [
-                        "DeValera, Eamonn",
-                        "Connolly, James",
-                        "Collins, Michael",
-                        "Eamonn DeValera",
-                        "James Connolly",
-                        "Michael Collins"
+                        "RnaG",
+                        "numbers@block.com"
                       ],
                       "spell": [
-                        "DeValera, Eamonn",
-                        "Connolly, James",
-                        "Collins, Michael",
-                        "Eamonn DeValera",
-                        "James Connolly",
-                        "Michael Collins",
-                        "Dublin",
-                        "Dublin",
-                        "Not a Duplicate2",
-                        "This is an Audio file",
-                        "Ireland",
-                        "something else"
+                        "RnaG",
+                        "numbers@block.com",
+                        "A collection",
+                        "This is a Collection"
                       ],
-                      "title_sorted_ssi": "Not a Duplicate2",
+                      "title_sorted_ssi": "collection",
                       "all_metadata_tesim": [
-                        "Not a Duplicate2 This is an Audio file This is a statement about the rights associated with this object Collins, Michael DeValera, Eamonn Connolly, James ga 1916-04-01 1916-01-01 CD nnn nuig Dublin 1900s Ireland something else Sound "
+                        "A collection This is a Collection This is a statement about the rights associated with this object numbers@block.com RnaG Collection 1916-01-01 1916-01-02 2018-09-11 "
                       ],
                       "title_eng_tesim": [
-                        "Not a Duplicate2"
+                        "A collection"
                       ],
                       "rights_eng_tesim": [
                         "This is a statement about the rights associated with this object"
                       ],
-                      "subject_eng_tesim": [
-                        "Ireland",
-                        "something else"
-                      ],
-                      "temporal_coverage_eng_tesim": [
-                        "1900s"
-                      ],
-                      "geographical_coverage_eng_tesim": [
-                        "Dublin"
-                      ],
                       "description_eng_tesim": [
-                        "This is an Audio file"
-                      ],
-                      "source_eng_tesim": [
-                        "CD nnn nuig"
+                        "This is a Collection"
                       ],
                       "cdateRange": [
                         "1916-01-01"
@@ -2153,60 +2190,39 @@
                       "cdate_range_start_isi": 1916,
                       "cdate_range_end_isi": 1916,
                       "pdateRange": [
-                        "1916-04-01"
+                        "1916-01-02"
                       ],
                       "pdate_range_start_isi": 1916,
                       "pdate_range_end_isi": 1916,
-                      "placename_field_tesim": [
-                        "Dublin"
-                      ],
-                      "isGovernedBy_ssim": [
-                        "cc08hf72r"
-                      ],
-                      "source_tesim": [
-                        "CD nnn nuig"
-                      ],
-                      "geographical_coverage_tesim": [
-                        "Dublin"
+                      "ddateRange": [
+                        "2018-09-11"
                       ],
                       "resource_type_tesim": [
-                        "Sound"
+                        "Collection"
                       ],
                       "edit_access_person_ssim": [
-                        "kiera@lindgrenhermann.co.uk"
-                      ],
-                      "ancestor_title_tesim": [
-                        "A collection"
-                      ],
-                      "ancestor_id_tesim": [
-                        "cc08hf72r"
-                      ],
-                      "collection_id_tesim": [
-                        "cc08hf72r"
-                      ],
-                      "collection_tesim": [
-                        "A collection"
-                      ],
-                      "root_collection_id_tesim": [
-                        "cc08hf72r"
+                        "numbers@block.com"
                       ],
                       "root_collection_tesim": [
                         "A collection"
                       ],
+                      "root_collection_id_tesim": [
+                        "bv73c054d"
+                      ],
                       "is_collection_tesim": [
-                        "false"
+                        "true"
                       ],
                       "object_type_ssm": [
-                        "Sound"
+                        "Collection"
                       ],
                       "type_tesim": [
-                        "Sound"
+                        "Collection"
                       ],
                       "file_type_tesim": [
-                        "Sound"
+                        "collection"
                       ],
                       "file_type_display_tesim": [
-                        "Sound"
+                        "Collection"
                       ],
                       "file_count_isi": 0,
                       "status_ssim": [
@@ -2219,36 +2235,177 @@
                         "draft"
                       ],
                       "depositor_tesim": [
-                        "kiera@lindgrenhermann.co.uk"
+                        "numbers@block.com"
                       ],
                       "depositor_ssm": [
-                        "kiera@lindgrenhermann.co.uk"
+                        "numbers@block.com"
                       ],
                       "title_tesim": [
-                        "Not a Duplicate2"
+                        "A collection"
                       ],
                       "rights_tesim": [
                         "This is a statement about the rights associated with this object"
                       ],
                       "description_tesim": [
-                        "This is an Audio file"
+                        "This is a Collection"
                       ],
-                      "language_tesim": [
-                        "ga"
+                      "publisher_tesim": [
+                        "RnaG"
                       ],
-                      "subject_tesim": [
-                        "Ireland",
-                        "something else"
+                      "creator_tesim": [
+                        "numbers@block.com"
                       ],
-                      "contributor_tesim": [
-                        "DeValera, Eamonn",
-                        "Connolly, James"
+                      "_version_": 1611327354701873152,
+                      "timestamp": "2018-09-11T15:58:33.502Z",
+                      "score": 1.0
+                    },
+                    {
+                      "system_create_dtsi": "2018-09-11T15:58:28Z",
+                      "system_modified_dtsi": "2018-09-11T15:58:28Z",
+                      "active_fedora_model_ssi": "DRI::QualifiedDublinCore",
+                      "has_model_ssim": [
+                        "DRI::Batch",
+                        "DRI::QualifiedDublinCore"
                       ],
-                      "role_hst_tesim": [
-                        "Collins, Michael"
+                      "id": "db78tc08j",
+                      "object_profile_ssm": [
+                        "{\"id\":\"db78tc08j\",\"status\":\"draft\",\"object_type\":[],\"depositor\":\"numbers@block.com\",\"metadata_md5\":null,\"model_version\":\"2.6.3\",\"verified\":null,\"doi\":null,\"cover_image\":null,\"institute\":[],\"depositing_institute\":null,\"licence\":null,\"ingest_files_from_metadata\":null,\"master_file_access\":null,\"published_at\":null,\"object_version\":\"1\",\"title\":[\"A collection\"],\"description\":[\"This is a Collection\"],\"rights\":[\"This is a statement about the rights associated with this object\"],\"creator\":[\"numbers@block.com\"],\"contributor\":[],\"publisher\":[\"RnaG\"],\"subject\":[],\"language\":[],\"full_text\":[],\"date\":[\"2018-09-11\"],\"relation\":[],\"external_relation\":[],\"source\":[],\"geographical_coverage\":[],\"temporal_coverage\":[],\"name_coverage\":[],\"resource_type\":[\"Collection\"],\"format\":[],\"coverage\":[],\"identifier\":[],\"id_asset\":null,\"qdc_id\":[],\"geocode_point\":[],\"geocode_box\":[],\"published_date\":[\"1916-01-02\"],\"creation_date\":[\"1916-01-01\"],\"role_acp\":[],\"role_act\":[],\"role_adp\":[],\"role_aft\":[],\"role_anl\":[],\"role_anm\":[],\"role_ann\":[],\"role_ant\":[],\"role_app\":[],\"role_aqt\":[],\"role_arc\":[],\"role_ard\":[],\"role_arr\":[],\"role_art\":[],\"role_asg\":[],\"role_asn\":[],\"role_att\":[],\"role_auc\":[],\"role_aud\":[],\"role_aui\":[],\"role_aus\":[],\"role_aut\":[],\"role_bdd\":[],\"role_bjd\":[],\"role_bkd\":[],\"role_bkp\":[],\"role_bnd\":[],\"role_bpd\":[],\"role_bsl\":[],\"role_ccp\":[],\"role_chr\":[],\"role_clb\":[],\"role_cli\":[],\"role_cll\":[],\"role_clt\":[],\"role_cmm\":[],\"role_cmp\":[],\"role_cmt\":[],\"role_cng\":[],\"role_cnd\":[],\"role_cns\":[],\"role_coe\":[],\"role_col\":[],\"role_com\":[],\"role_cos\":[],\"role_cot\":[],\"role_cov\":[],\"role_cpc\":[],\"role_cpe\":[],\"role_cph\":[],\"role_cpl\":[],\"role_cpt\":[],\"role_cre\":[],\"role_crp\":[],\"role_crr\":[],\"role_csl\":[],\"role_csp\":[],\"role_cst\":[],\"role_ctb\":[],\"role_cte\":[],\"role_ctg\":[],\"role_ctr\":[],\"role_cts\":[],\"role_ctt\":[],\"role_cur\":[],\"role_cwt\":[],\"role_dfd\":[],\"role_dfe\":[],\"role_dft\":[],\"role_dgg\":[],\"role_dis\":[],\"role_dln\":[],\"role_dnc\":[],\"role_dnr\":[],\"role_dpc\":[],\"role_dpt\":[],\"role_drm\":[],\"role_drt\":[],\"role_dsr\":[],\"role_dst\":[],\"role_dtc\":[],\"role_dte\":[],\"role_dtm\":[],\"role_dto\":[],\"role_dub\":[],\"role_edt\":[],\"role_egr\":[],\"role_elg\":[],\"role_elt\":[],\"role_eng\":[],\"role_etr\":[],\"role_exp\":[],\"role_fac\":[],\"role_fld\":[],\"role_flm\":[],\"role_fmo\":[],\"role_fpy\":[],\"role_fnd\":[],\"role_frg\":[],\"role_gis\":[],\"role_grt\":[],\"role_hnr\":[],\"role_hst\":[],\"role_ill\":[],\"role_ilu\":[],\"role_ins\":[],\"role_inv\":[],\"role_itr\":[],\"role_ive\":[],\"role_ivr\":[],\"role_lbr\":[],\"role_lbt\":[],\"role_ldr\":[],\"role_led\":[],\"role_lee\":[],\"role_lel\":[],\"role_len\":[],\"role_let\":[],\"role_lgd\":[],\"role_lie\":[],\"role_lil\":[],\"role_lit\":[],\"role_lsa\":[],\"role_lse\":[],\"role_lso\":[],\"role_ltg\":[],\"role_lyr\":[],\"role_mcp\":[],\"role_mfr\":[],\"role_mdc\":[],\"role_mod\":[],\"role_mon\":[],\"role_mrk\":[],\"role_msd\":[],\"role_mte\":[],\"role_mus\":[],\"role_nrt\":[],\"role_opn\":[],\"role_org\":[],\"role_orm\":[],\"role_oth\":[],\"role_own\":[],\"role_pat\":[],\"role_pbd\":[],\"role_pbl\":[],\"role_pdr\":[],\"role_pfr\":[],\"role_pht\":[],\"role_plt\":[],\"role_pma\":[],\"role_pmn\":[],\"role_pop\":[],\"role_ppm\":[],\"role_ppt\":[],\"role_prc\":[],\"role_prd\":[],\"role_prf\":[],\"role_prg\":[],\"role_prm\":[],\"role_pro\":[],\"role_prt\":[],\"role_pta\":[],\"role_pte\":[],\"role_ptf\":[],\"role_pth\":[],\"role_ptt\":[],\"role_rbr\":[],\"role_rce\":[],\"role_rcp\":[],\"role_red\":[],\"role_ren\":[],\"role_res\":[],\"role_rev\":[],\"role_rps\":[],\"role_rpt\":[],\"role_rpy\":[],\"role_rse\":[],\"role_rsg\":[],\"role_rsp\":[],\"role_rst\":[],\"role_rth\":[],\"role_rtm\":[],\"role_sad\":[],\"role_sce\":[],\"role_scl\":[],\"role_scr\":[],\"role_sds\":[],\"role_sec\":[],\"role_sgn\":[],\"role_sht\":[],\"role_sng\":[],\"role_spk\":[],\"role_spn\":[],\"role_spy\":[],\"role_srv\":[],\"role_std\":[],\"role_stl\":[],\"role_stm\":[],\"role_stn\":[],\"role_str\":[],\"role_tcd\":[],\"role_tch\":[],\"role_ths\":[],\"role_trc\":[],\"role_trl\":[],\"role_tyd\":[],\"role_tyg\":[],\"role_vdg\":[],\"role_voc\":[],\"role_wam\":[],\"role_wdc\":[],\"role_wde\":[],\"role_wit\":[],\"relation_ids_relation\":[],\"relation_ids_isPartOf\":[],\"relation_ids_hasPart\":[],\"relation_ids_isReferencedBy\":[],\"relation_ids_references\":[],\"relation_ids_isVersionOf\":[],\"relation_ids_hasVersion\":[],\"relation_ids_isFormatOf\":[],\"relation_ids_hasFormat\":[],\"relation_ids_source\":[],\"ext_related_items_ids_relation\":[],\"ext_related_items_ids_isPartOf\":[],\"ext_related_items_ids_hasPart\":[],\"ext_related_items_ids_isReferencedBy\":[],\"ext_related_items_ids_references\":[],\"ext_related_items_ids_isVersionOf\":[],\"ext_related_items_ids_hasVersion\":[],\"ext_related_items_ids_isFormatOf\":[],\"ext_related_items_ids_hasFormat\":[],\"ext_related_items_ids_source\":[],\"governing_collection_id\":null,\"previous_sibling_id\":null}"
                       ],
-                      "_version_": 1611324105694380032,
-                      "timestamp": "2018-09-11T15:06:55.007Z",
+                      "properties__status_ssim": [
+                        "draft"
+                      ],
+                      "properties__status_tesim": [
+                        "draft"
+                      ],
+                      "properties__status_ssm": [
+                        "draft"
+                      ],
+                      "properties__depositor_tesim": [
+                        "numbers@block.com"
+                      ],
+                      "properties__depositor_ssm": [
+                        "numbers@block.com"
+                      ],
+                      "desc_metadata__title_tesim": [
+                        "A collection"
+                      ],
+                      "desc_metadata__rights_tesim": [
+                        "This is a statement about the rights associated with this object"
+                      ],
+                      "desc_metadata__description_tesim": [
+                        "This is a Collection"
+                      ],
+                      "desc_metadata__publisher_tesim": [
+                        "RnaG"
+                      ],
+                      "desc_metadata__creator_tesim": [
+                        "numbers@block.com"
+                      ],
+                      "creation_date_tesim": [
+                        "name=1916-01-01; start=1916-01-01;"
+                      ],
+                      "published_date_tesim": [
+                        "name=1916-01-02; start=1916-01-02;"
+                      ],
+                      "date_tesim": [
+                        "name=2018-09-11; start=2018-09-11;"
+                      ],
+                      "person_tesim": [
+                        "RnaG",
+                        "numbers@block.com"
+                      ],
+                      "spell": [
+                        "RnaG",
+                        "numbers@block.com",
+                        "A collection",
+                        "This is a Collection"
+                      ],
+                      "title_sorted_ssi": "collection",
+                      "all_metadata_tesim": [
+                        "A collection This is a Collection This is a statement about the rights associated with this object numbers@block.com RnaG Collection 1916-01-01 1916-01-02 2018-09-11 "
+                      ],
+                      "title_eng_tesim": [
+                        "A collection"
+                      ],
+                      "rights_eng_tesim": [
+                        "This is a statement about the rights associated with this object"
+                      ],
+                      "description_eng_tesim": [
+                        "This is a Collection"
+                      ],
+                      "cdateRange": [
+                        "1916-01-01"
+                      ],
+                      "cdate_range_start_isi": 1916,
+                      "cdate_range_end_isi": 1916,
+                      "pdateRange": [
+                        "1916-01-02"
+                      ],
+                      "pdate_range_start_isi": 1916,
+                      "pdate_range_end_isi": 1916,
+                      "ddateRange": [
+                        "2018-09-11"
+                      ],
+                      "resource_type_tesim": [
+                        "Collection"
+                      ],
+                      "edit_access_person_ssim": [
+                        "numbers@block.com"
+                      ],
+                      "root_collection_tesim": [
+                        "A collection"
+                      ],
+                      "root_collection_id_tesim": [
+                        "db78tc08j"
+                      ],
+                      "is_collection_tesim": [
+                        "true"
+                      ],
+                      "object_type_ssm": [
+                        "Collection"
+                      ],
+                      "type_tesim": [
+                        "Collection"
+                      ],
+                      "file_type_tesim": [
+                        "collection"
+                      ],
+                      "file_type_display_tesim": [
+                        "Collection"
+                      ],
+                      "file_count_isi": 0,
+                      "status_ssim": [
+                        "draft"
+                      ],
+                      "status_tesim": [
+                        "draft"
+                      ],
+                      "status_ssm": [
+                        "draft"
+                      ],
+                      "depositor_tesim": [
+                        "numbers@block.com"
+                      ],
+                      "depositor_ssm": [
+                        "numbers@block.com"
+                      ],
+                      "title_tesim": [
+                        "A collection"
+                      ],
+                      "rights_tesim": [
+                        "This is a statement about the rights associated with this object"
+                      ],
+                      "description_tesim": [
+                        "This is a Collection"
+                      ],
+                      "publisher_tesim": [
+                        "RnaG"
+                      ],
+                      "creator_tesim": [
+                        "numbers@block.com"
+                      ],
+                      "_version_": 1611327352310071296,
+                      "timestamp": "2018-09-11T15:58:31.221Z",
                       "score": 1.0
                     }
                   ],
@@ -2258,7 +2415,7 @@
                       "items": [
                         {
                           "value": "draft",
-                          "hits": 6,
+                          "hits": 2,
                           "label": "draft"
                         }
                       ],
@@ -2274,16 +2431,7 @@
                     {
                       "name": "subject_sim",
                       "items": [
-                        {
-                          "value": "ireland",
-                          "hits": 6,
-                          "label": "ireland"
-                        },
-                        {
-                          "value": "something else",
-                          "hits": 6,
-                          "label": "something else"
-                        }
+
                       ],
                       "label": "Subject Sim"
                     },
@@ -2297,38 +2445,21 @@
                     {
                       "name": "subject_eng_sim",
                       "items": [
-                        {
-                          "value": "ireland",
-                          "hits": 6,
-                          "label": "ireland"
-                        },
-                        {
-                          "value": "something else",
-                          "hits": 6,
-                          "label": "something else"
-                        }
+
                       ],
                       "label": "Subjects (in English)"
                     },
                     {
                       "name": "geographical_coverage_sim",
                       "items": [
-                        {
-                          "value": "dublin",
-                          "hits": 6,
-                          "label": "dublin"
-                        }
+
                       ],
                       "label": "Geographical Coverage Sim"
                     },
                     {
                       "name": "placename_field_sim",
                       "items": [
-                        {
-                          "value": "dublin",
-                          "hits": 6,
-                          "label": "dublin"
-                        }
+
                       ],
                       "label": "Placename Field Sim"
                     },
@@ -2342,22 +2473,14 @@
                     {
                       "name": "geographical_coverage_eng_sim",
                       "items": [
-                        {
-                          "value": "dublin",
-                          "hits": 6,
-                          "label": "dublin"
-                        }
+
                       ],
                       "label": "Subject (Place) (in English)"
                     },
                     {
                       "name": "temporal_coverage_sim",
                       "items": [
-                        {
-                          "value": "name=1900s;",
-                          "hits": 6,
-                          "label": "name=1900s;"
-                        }
+
                       ],
                       "label": "Temporal Coverage Sim"
                     },
@@ -2371,11 +2494,7 @@
                     {
                       "name": "temporal_coverage_eng_sim",
                       "items": [
-                        {
-                          "value": "1900s",
-                          "hits": 6,
-                          "label": "1900s"
-                        }
+
                       ],
                       "label": "Subject (Era) (in English)"
                     },
@@ -2389,7 +2508,11 @@
                     {
                       "name": "creator_sim",
                       "items": [
-
+                        {
+                          "value": "numbers@block.com",
+                          "hits": 2,
+                          "label": "numbers@block.com"
+                        }
                       ],
                       "label": "creators"
                     },
@@ -2404,19 +2527,14 @@
                       "name": "person_sim",
                       "items": [
                         {
-                          "value": "collins, michael",
-                          "hits": 6,
-                          "label": "collins, michael"
+                          "value": "numbers@block.com",
+                          "hits": 2,
+                          "label": "numbers@block.com"
                         },
                         {
-                          "value": "connolly, james",
-                          "hits": 6,
-                          "label": "connolly, james"
-                        },
-                        {
-                          "value": "devalera, eamonn",
-                          "hits": 6,
-                          "label": "devalera, eamonn"
+                          "value": "rnag",
+                          "hits": 2,
+                          "label": "rnag"
                         }
                       ],
                       "label": "Person Sim"
@@ -2424,11 +2542,7 @@
                     {
                       "name": "language_sim",
                       "items": [
-                        {
-                          "value": "gle",
-                          "hits": 6,
-                          "label": "gle"
-                        }
+
                       ],
                       "label": "Language Sim"
                     },
@@ -2507,7 +2621,7 @@
                       "items": [
                         {
                           "value": "0",
-                          "hits": 6,
+                          "hits": 2,
                           "label": "0"
                         }
                       ],
@@ -2538,9 +2652,9 @@
                       "name": "file_type_display_sim",
                       "items": [
                         {
-                          "value": "sound",
-                          "hits": 6,
-                          "label": "sound"
+                          "value": "collection",
+                          "hits": 2,
+                          "label": "collection"
                         }
                       ],
                       "label": "File Type Display Sim"
@@ -2549,9 +2663,9 @@
                       "name": "object_type_sim",
                       "items": [
                         {
-                          "value": "sound",
-                          "hits": 6,
-                          "label": "sound"
+                          "value": "collection",
+                          "hits": 2,
+                          "label": "collection"
                         }
                       ],
                       "label": "Type (from Metadata)"
@@ -2560,9 +2674,9 @@
                       "name": "depositor_sim",
                       "items": [
                         {
-                          "value": "kiera@lindgrenhermann.co.uk",
-                          "hits": 6,
-                          "label": "kiera@lindgrenhermann.co.uk"
+                          "value": "numbers@block.com",
+                          "hits": 2,
+                          "label": "numbers@block.com"
                         }
                       ],
                       "label": "Depositor"
@@ -2578,14 +2692,14 @@
                       "name": "root_collection_id_sim",
                       "items": [
                         {
-                          "value": "bg257f089",
-                          "hits": 3,
-                          "label": "bg257f089"
+                          "value": "bv73c054d",
+                          "hits": 1,
+                          "label": "bv73c054d"
                         },
                         {
-                          "value": "cc08hf72r",
-                          "hits": 3,
-                          "label": "cc08hf72r"
+                          "value": "db78tc08j",
+                          "hits": 1,
+                          "label": "db78tc08j"
                         }
                       ],
                       "label": "Root Collection Id Sim"
@@ -2594,9 +2708,9 @@
                       "name": "is_collection_sim",
                       "items": [
                         {
-                          "value": "false",
-                          "hits": 6,
-                          "label": "false"
+                          "value": "true",
+                          "hits": 2,
+                          "label": "true"
                         }
                       ],
                       "label": "is_collection"
@@ -2604,14 +2718,14 @@
                   ],
                   "pages": {
                     "current_page": 1,
-                    "next_page": 2,
+                    "next_page": null,
                     "prev_page": null,
-                    "total_pages": 6,
-                    "limit_value": 1,
+                    "total_pages": 1,
+                    "limit_value": 9,
                     "offset_value": 0,
-                    "total_count": 6,
+                    "total_count": 2,
                     "first_page?": true,
-                    "last_page?": false
+                    "last_page?": true
                   }
                 }
               }
@@ -2622,7 +2736,10 @@
     },
     "/my_collections/{id}": {
       "get": {
-        "summary": "retrieves a specific collection",
+        "summary": "retrieves a specific object, collection or subcollection",
+        "tags": [
+          "Private (Sign in required)"
+        ],
         "produces": [
           "application/json",
           "application/xml",
@@ -2654,7 +2771,7 @@
             "description": "Object found",
             "examples": {
               "application/json": {
-                "Id": "mp48sc827",
+                "Id": "z603qx52r",
                 "Title": [
                   "A collection"
                 ],
@@ -2674,7 +2791,7 @@
                   "This is a Collection"
                 ],
                 "Creator": [
-                  "alexander@walker.co.uk"
+                  "samella@orn.us"
                 ],
                 "Publisher": [
                   "RnaG"

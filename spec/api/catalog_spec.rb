@@ -3,20 +3,22 @@ require 'swagger_helper'
 describe "Catalog API" do
   path "/catalog" do
     get "retrieves objects from the catalog" do
+      tags 'Public'      
       produces "application/json"
-      response '200', 'catalog found' do
-        before do |example|
-          sign_out_all
-          submit_request(example.metadata)
-        end
 
-        after do |example|
-          example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
-        end
+      parameter name: :per_page, description: 'Number of results per page', 
+        in: :query, type: :number, default: 9
+      parameter name: :mode, description: 'Show Objects or Collections', 
+        in: :query, type: :string, default: 'objects'
+
+      let(:per_page) { 9 }
+      let(:mode)     { 'objects' }
+
+      response '200', 'catalog found' do
+        include_context 'sign_out_before_request'
+        include_context 'rswag_include_spec_output'
           
         it 'returns 200 regardless of whether you are signed in' do
-          auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
-          expect(response.body).not_to eq auth_error_response
           expect(status).to eq 200
         end
       end

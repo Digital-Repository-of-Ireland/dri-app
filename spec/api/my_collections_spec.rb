@@ -2,21 +2,24 @@ require 'swagger_helper'
 
 describe "My Collections API" do
   path "/my_collections" do
-    get "retrieves objects or collections for the current user" do
+    get "retrieves objects, collections, or subcollections for the current user" do
+      tags 'Private (Sign in required)'
       # TODO accept ttl and xml on default route too
       # not just specific objects
       produces 'application/json'
 
       parameter name: :per_page, description: 'Number of results per page', 
         in: :query, type: :number, default: 9
+      parameter name: :mode, description: 'Show Objects or Collections', 
+        in: :query, type: :string, default: 'objects'
 
       # undefined method `per_page' when not set
-      let(:per_page) { 1 }
+      let(:per_page) { 9 }
+      let(:mode)     { 'objects' }
       
       response "401", "Must be signed in to access this route" do
         include_context 'sign_out_before_request'
         include_context 'rswag_include_spec_output'
-
 
         it "should require a sign in" do 
           auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
@@ -25,20 +28,32 @@ describe "My Collections API" do
         end
       end
 
-      response "200", "All collections found" do
-        include_context 'collections_with_objects', num_collections=2, num_objects=3
-        include_context 'rswag_include_spec_output'
-        run_test! do
-          expect(status).to eq(200) 
+      context "Signed in user with collections" do
+        include_context 'collections_with_objects'
+
+        response "200", "All objects found" do
+          include_context 'rswag_include_spec_output'
+          run_test! do
+            expect(status).to eq(200) 
+          end
+        end
+
+        response "200", "All collections found" do
+          include_context 'rswag_include_spec_output'
+          let(:mode) { 'collections' }
+          run_test! do
+            expect(status).to eq(200) 
+          end
         end
       end
     end
   end
 
   path "/my_collections/{id}" do
-    include_context 'collections_with_objects', num_collections=2, num_objects=3
+    include_context 'collections_with_objects'
 
-    get "retrieves a specific collection" do
+    get "retrieves a specific object, collection or subcollection" do
+      tags 'Private (Sign in required)'
       produces 'application/json', 'application/xml', 'application/ttl'
       parameter name: :id, description: 'Object ID',
         in: :path, :type => :string

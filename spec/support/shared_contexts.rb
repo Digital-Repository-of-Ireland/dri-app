@@ -23,7 +23,7 @@ shared_context 'tmp_assets' do
   end
 end
 
-shared_context 'collections_with_objects' do |num_collections=2, num_objects=1, status='draft'|
+shared_context 'collections_with_objects' do |num_collections=2, num_objects=2, status='draft'|
   before(:each) do
     @collections = []
 
