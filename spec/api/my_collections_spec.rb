@@ -7,17 +7,29 @@ describe "My Collections API" do
       # not just specific objects
       produces 'application/json'
 
-      parameter name: :per_page, 
-        description: 'Number of results per page', type: :number, default: 9
+      parameter name: :per_page, description: 'Number of results per page', 
+        in: :query, type: :number, default: 9
+
+      # undefined method `per_page' when not set
+      let(:per_page) { 1 }
       
       response "401", "Must be signed in to access this route" do
-        include_context 'rswag_include_spec_output'
         include_context 'sign_out_before_request'
+        include_context 'rswag_include_spec_output'
+
 
         it "should require a sign in" do 
           auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
           expect(response.body).to eq auth_error_response
           expect(status).to eq(401) # 401 unauthorized
+        end
+      end
+
+      response "200", "All collections found" do
+        include_context 'collections_with_objects', num_collections=2, num_objects=3
+        include_context 'rswag_include_spec_output'
+        run_test! do
+          expect(status).to eq(200) 
         end
       end
     end
@@ -29,9 +41,7 @@ describe "My Collections API" do
     get "retrieves a specific collection" do
       produces 'application/json', 'application/xml', 'application/ttl'
       parameter name: :id, description: 'Object ID',
-        :in => :path, :type => :string
-      parameter name: :per_page, description: 'Number of results per page', 
-        type: :number, default: 9
+        in: :path, :type => :string
 
       # TODO: make api response consistent
       # always return sign in error when not signed in on route that requires it
@@ -46,10 +56,10 @@ describe "My Collections API" do
       end
 
       response "404", "Object not found" do
-        include_context 'rswag_include_spec_output'
-        include_context 'sign_out_before_request'
         # doesn't matter whether you're signed in
         # 404 takes precendence over 401
+        include_context 'sign_out_before_request'
+        include_context 'rswag_include_spec_output'
 
         let(:id) { "collection_that_does_not_exist" }
 

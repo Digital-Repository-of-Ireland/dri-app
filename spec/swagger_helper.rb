@@ -1,4 +1,3 @@
-require 'support/shared_api_examples'
 require 'rails_helper'
 
 RSpec.configure do |config|

@@ -2017,6 +2017,7 @@
           {
             "name": "per_page",
             "description": "Number of results per page",
+            "in": "query",
             "type": "number",
             "default": 9
           }
@@ -2027,6 +2028,592 @@
             "examples": {
               "application/json": {
                 "error": "You need to sign in or sign up before continuing."
+              }
+            }
+          },
+          "200": {
+            "description": "All collections found",
+            "examples": {
+              "application/json": {
+                "response": {
+                  "docs": [
+                    {
+                      "system_create_dtsi": "2018-09-11T15:06:54Z",
+                      "system_modified_dtsi": "2018-09-11T15:06:54Z",
+                      "active_fedora_model_ssi": "DRI::QualifiedDublinCore",
+                      "has_model_ssim": [
+                        "DRI::Batch",
+                        "DRI::QualifiedDublinCore"
+                      ],
+                      "id": "nz805z78z",
+                      "object_profile_ssm": [
+                        "{\"id\":\"nz805z78z\",\"status\":\"draft\",\"object_type\":[],\"depositor\":\"kiera@lindgrenhermann.co.uk\",\"metadata_md5\":null,\"model_version\":\"2.6.3\",\"verified\":null,\"doi\":null,\"cover_image\":null,\"institute\":[],\"depositing_institute\":null,\"licence\":null,\"ingest_files_from_metadata\":null,\"master_file_access\":null,\"published_at\":null,\"object_version\":\"1\",\"title\":[\"Not a Duplicate2\"],\"description\":[\"This is an Audio file\"],\"rights\":[\"This is a statement about the rights associated with this object\"],\"creator\":[],\"contributor\":[\"DeValera, Eamonn\",\"Connolly, James\"],\"publisher\":[],\"subject\":[\"Ireland\",\"something else\"],\"language\":[\"ga\"],\"full_text\":[],\"date\":[],\"relation\":[],\"external_relation\":[],\"source\":[\"CD nnn nuig\"],\"geographical_coverage\":[\"Dublin\"],\"temporal_coverage\":[\"1900s\"],\"name_coverage\":[],\"resource_type\":[\"Sound\"],\"format\":[],\"coverage\":[],\"identifier\":[],\"id_asset\":null,\"qdc_id\":[],\"geocode_point\":[],\"geocode_box\":[],\"published_date\":[\"1916-04-01\"],\"creation_date\":[\"1916-01-01\"],\"role_acp\":[],\"role_act\":[],\"role_adp\":[],\"role_aft\":[],\"role_anl\":[],\"role_anm\":[],\"role_ann\":[],\"role_ant\":[],\"role_app\":[],\"role_aqt\":[],\"role_arc\":[],\"role_ard\":[],\"role_arr\":[],\"role_art\":[],\"role_asg\":[],\"role_asn\":[],\"role_att\":[],\"role_auc\":[],\"role_aud\":[],\"role_aui\":[],\"role_aus\":[],\"role_aut\":[],\"role_bdd\":[],\"role_bjd\":[],\"role_bkd\":[],\"role_bkp\":[],\"role_bnd\":[],\"role_bpd\":[],\"role_bsl\":[],\"role_ccp\":[],\"role_chr\":[],\"role_clb\":[],\"role_cli\":[],\"role_cll\":[],\"role_clt\":[],\"role_cmm\":[],\"role_cmp\":[],\"role_cmt\":[],\"role_cng\":[],\"role_cnd\":[],\"role_cns\":[],\"role_coe\":[],\"role_col\":[],\"role_com\":[],\"role_cos\":[],\"role_cot\":[],\"role_cov\":[],\"role_cpc\":[],\"role_cpe\":[],\"role_cph\":[],\"role_cpl\":[],\"role_cpt\":[],\"role_cre\":[],\"role_crp\":[],\"role_crr\":[],\"role_csl\":[],\"role_csp\":[],\"role_cst\":[],\"role_ctb\":[],\"role_cte\":[],\"role_ctg\":[],\"role_ctr\":[],\"role_cts\":[],\"role_ctt\":[],\"role_cur\":[],\"role_cwt\":[],\"role_dfd\":[],\"role_dfe\":[],\"role_dft\":[],\"role_dgg\":[],\"role_dis\":[],\"role_dln\":[],\"role_dnc\":[],\"role_dnr\":[],\"role_dpc\":[],\"role_dpt\":[],\"role_drm\":[],\"role_drt\":[],\"role_dsr\":[],\"role_dst\":[],\"role_dtc\":[],\"role_dte\":[],\"role_dtm\":[],\"role_dto\":[],\"role_dub\":[],\"role_edt\":[],\"role_egr\":[],\"role_elg\":[],\"role_elt\":[],\"role_eng\":[],\"role_etr\":[],\"role_exp\":[],\"role_fac\":[],\"role_fld\":[],\"role_flm\":[],\"role_fmo\":[],\"role_fpy\":[],\"role_fnd\":[],\"role_frg\":[],\"role_gis\":[],\"role_grt\":[],\"role_hnr\":[],\"role_hst\":[\"Collins, Michael\"],\"role_ill\":[],\"role_ilu\":[],\"role_ins\":[],\"role_inv\":[],\"role_itr\":[],\"role_ive\":[],\"role_ivr\":[],\"role_lbr\":[],\"role_lbt\":[],\"role_ldr\":[],\"role_led\":[],\"role_lee\":[],\"role_lel\":[],\"role_len\":[],\"role_let\":[],\"role_lgd\":[],\"role_lie\":[],\"role_lil\":[],\"role_lit\":[],\"role_lsa\":[],\"role_lse\":[],\"role_lso\":[],\"role_ltg\":[],\"role_lyr\":[],\"role_mcp\":[],\"role_mfr\":[],\"role_mdc\":[],\"role_mod\":[],\"role_mon\":[],\"role_mrk\":[],\"role_msd\":[],\"role_mte\":[],\"role_mus\":[],\"role_nrt\":[],\"role_opn\":[],\"role_org\":[],\"role_orm\":[],\"role_oth\":[],\"role_own\":[],\"role_pat\":[],\"role_pbd\":[],\"role_pbl\":[],\"role_pdr\":[],\"role_pfr\":[],\"role_pht\":[],\"role_plt\":[],\"role_pma\":[],\"role_pmn\":[],\"role_pop\":[],\"role_ppm\":[],\"role_ppt\":[],\"role_prc\":[],\"role_prd\":[],\"role_prf\":[],\"role_prg\":[],\"role_prm\":[],\"role_pro\":[],\"role_prt\":[],\"role_pta\":[],\"role_pte\":[],\"role_ptf\":[],\"role_pth\":[],\"role_ptt\":[],\"role_rbr\":[],\"role_rce\":[],\"role_rcp\":[],\"role_red\":[],\"role_ren\":[],\"role_res\":[],\"role_rev\":[],\"role_rps\":[],\"role_rpt\":[],\"role_rpy\":[],\"role_rse\":[],\"role_rsg\":[],\"role_rsp\":[],\"role_rst\":[],\"role_rth\":[],\"role_rtm\":[],\"role_sad\":[],\"role_sce\":[],\"role_scl\":[],\"role_scr\":[],\"role_sds\":[],\"role_sec\":[],\"role_sgn\":[],\"role_sht\":[],\"role_sng\":[],\"role_spk\":[],\"role_spn\":[],\"role_spy\":[],\"role_srv\":[],\"role_std\":[],\"role_stl\":[],\"role_stm\":[],\"role_stn\":[],\"role_str\":[],\"role_tcd\":[],\"role_tch\":[],\"role_ths\":[],\"role_trc\":[],\"role_trl\":[],\"role_tyd\":[],\"role_tyg\":[],\"role_vdg\":[],\"role_voc\":[],\"role_wam\":[],\"role_wdc\":[],\"role_wde\":[],\"role_wit\":[],\"relation_ids_relation\":[],\"relation_ids_isPartOf\":[],\"relation_ids_hasPart\":[],\"relation_ids_isReferencedBy\":[],\"relation_ids_references\":[],\"relation_ids_isVersionOf\":[],\"relation_ids_hasVersion\":[],\"relation_ids_isFormatOf\":[],\"relation_ids_hasFormat\":[],\"relation_ids_source\":[],\"ext_related_items_ids_relation\":[],\"ext_related_items_ids_isPartOf\":[],\"ext_related_items_ids_hasPart\":[],\"ext_related_items_ids_isReferencedBy\":[],\"ext_related_items_ids_references\":[],\"ext_related_items_ids_isVersionOf\":[],\"ext_related_items_ids_hasVersion\":[],\"ext_related_items_ids_isFormatOf\":[],\"ext_related_items_ids_hasFormat\":[],\"ext_related_items_ids_source\":[],\"governing_collection_id\":\"cc08hf72r\",\"previous_sibling_id\":null}"
+                      ],
+                      "properties__status_ssim": [
+                        "draft"
+                      ],
+                      "properties__status_tesim": [
+                        "draft"
+                      ],
+                      "properties__status_ssm": [
+                        "draft"
+                      ],
+                      "properties__depositor_tesim": [
+                        "kiera@lindgrenhermann.co.uk"
+                      ],
+                      "properties__depositor_ssm": [
+                        "kiera@lindgrenhermann.co.uk"
+                      ],
+                      "desc_metadata__title_tesim": [
+                        "Not a Duplicate2"
+                      ],
+                      "desc_metadata__rights_tesim": [
+                        "This is a statement about the rights associated with this object"
+                      ],
+                      "desc_metadata__description_tesim": [
+                        "This is an Audio file"
+                      ],
+                      "desc_metadata__language_tesim": [
+                        "ga"
+                      ],
+                      "desc_metadata__subject_tesim": [
+                        "Ireland",
+                        "something else"
+                      ],
+                      "desc_metadata__contributor_tesim": [
+                        "DeValera, Eamonn",
+                        "Connolly, James"
+                      ],
+                      "desc_metadata__geographical_coverage_tesim": [
+                        "Dublin"
+                      ],
+                      "desc_metadata__role_hst_tesim": [
+                        "Collins, Michael"
+                      ],
+                      "creation_date_tesim": [
+                        "name=1916-01-01; start=1916-01-01;"
+                      ],
+                      "published_date_tesim": [
+                        "name=1916-04-01; start=1916-04-01;"
+                      ],
+                      "temporal_coverage_tesim": [
+                        "name=1900s;"
+                      ],
+                      "person_tesim": [
+                        "DeValera, Eamonn",
+                        "Connolly, James",
+                        "Collins, Michael",
+                        "Eamonn DeValera",
+                        "James Connolly",
+                        "Michael Collins"
+                      ],
+                      "spell": [
+                        "DeValera, Eamonn",
+                        "Connolly, James",
+                        "Collins, Michael",
+                        "Eamonn DeValera",
+                        "James Connolly",
+                        "Michael Collins",
+                        "Dublin",
+                        "Dublin",
+                        "Not a Duplicate2",
+                        "This is an Audio file",
+                        "Ireland",
+                        "something else"
+                      ],
+                      "title_sorted_ssi": "Not a Duplicate2",
+                      "all_metadata_tesim": [
+                        "Not a Duplicate2 This is an Audio file This is a statement about the rights associated with this object Collins, Michael DeValera, Eamonn Connolly, James ga 1916-04-01 1916-01-01 CD nnn nuig Dublin 1900s Ireland something else Sound "
+                      ],
+                      "title_eng_tesim": [
+                        "Not a Duplicate2"
+                      ],
+                      "rights_eng_tesim": [
+                        "This is a statement about the rights associated with this object"
+                      ],
+                      "subject_eng_tesim": [
+                        "Ireland",
+                        "something else"
+                      ],
+                      "temporal_coverage_eng_tesim": [
+                        "1900s"
+                      ],
+                      "geographical_coverage_eng_tesim": [
+                        "Dublin"
+                      ],
+                      "description_eng_tesim": [
+                        "This is an Audio file"
+                      ],
+                      "source_eng_tesim": [
+                        "CD nnn nuig"
+                      ],
+                      "cdateRange": [
+                        "1916-01-01"
+                      ],
+                      "cdate_range_start_isi": 1916,
+                      "cdate_range_end_isi": 1916,
+                      "pdateRange": [
+                        "1916-04-01"
+                      ],
+                      "pdate_range_start_isi": 1916,
+                      "pdate_range_end_isi": 1916,
+                      "placename_field_tesim": [
+                        "Dublin"
+                      ],
+                      "isGovernedBy_ssim": [
+                        "cc08hf72r"
+                      ],
+                      "source_tesim": [
+                        "CD nnn nuig"
+                      ],
+                      "geographical_coverage_tesim": [
+                        "Dublin"
+                      ],
+                      "resource_type_tesim": [
+                        "Sound"
+                      ],
+                      "edit_access_person_ssim": [
+                        "kiera@lindgrenhermann.co.uk"
+                      ],
+                      "ancestor_title_tesim": [
+                        "A collection"
+                      ],
+                      "ancestor_id_tesim": [
+                        "cc08hf72r"
+                      ],
+                      "collection_id_tesim": [
+                        "cc08hf72r"
+                      ],
+                      "collection_tesim": [
+                        "A collection"
+                      ],
+                      "root_collection_id_tesim": [
+                        "cc08hf72r"
+                      ],
+                      "root_collection_tesim": [
+                        "A collection"
+                      ],
+                      "is_collection_tesim": [
+                        "false"
+                      ],
+                      "object_type_ssm": [
+                        "Sound"
+                      ],
+                      "type_tesim": [
+                        "Sound"
+                      ],
+                      "file_type_tesim": [
+                        "Sound"
+                      ],
+                      "file_type_display_tesim": [
+                        "Sound"
+                      ],
+                      "file_count_isi": 0,
+                      "status_ssim": [
+                        "draft"
+                      ],
+                      "status_tesim": [
+                        "draft"
+                      ],
+                      "status_ssm": [
+                        "draft"
+                      ],
+                      "depositor_tesim": [
+                        "kiera@lindgrenhermann.co.uk"
+                      ],
+                      "depositor_ssm": [
+                        "kiera@lindgrenhermann.co.uk"
+                      ],
+                      "title_tesim": [
+                        "Not a Duplicate2"
+                      ],
+                      "rights_tesim": [
+                        "This is a statement about the rights associated with this object"
+                      ],
+                      "description_tesim": [
+                        "This is an Audio file"
+                      ],
+                      "language_tesim": [
+                        "ga"
+                      ],
+                      "subject_tesim": [
+                        "Ireland",
+                        "something else"
+                      ],
+                      "contributor_tesim": [
+                        "DeValera, Eamonn",
+                        "Connolly, James"
+                      ],
+                      "role_hst_tesim": [
+                        "Collins, Michael"
+                      ],
+                      "_version_": 1611324105694380032,
+                      "timestamp": "2018-09-11T15:06:55.007Z",
+                      "score": 1.0
+                    }
+                  ],
+                  "facets": [
+                    {
+                      "name": "status_sim",
+                      "items": [
+                        {
+                          "value": "draft",
+                          "hits": 6,
+                          "label": "draft"
+                        }
+                      ],
+                      "label": "Record Status"
+                    },
+                    {
+                      "name": "master_file_access_sim",
+                      "items": [
+
+                      ],
+                      "label": "Master File Access"
+                    },
+                    {
+                      "name": "subject_sim",
+                      "items": [
+                        {
+                          "value": "ireland",
+                          "hits": 6,
+                          "label": "ireland"
+                        },
+                        {
+                          "value": "something else",
+                          "hits": 6,
+                          "label": "something else"
+                        }
+                      ],
+                      "label": "Subject Sim"
+                    },
+                    {
+                      "name": "subject_gle_sim",
+                      "items": [
+
+                      ],
+                      "label": "Subjects (in Irish)"
+                    },
+                    {
+                      "name": "subject_eng_sim",
+                      "items": [
+                        {
+                          "value": "ireland",
+                          "hits": 6,
+                          "label": "ireland"
+                        },
+                        {
+                          "value": "something else",
+                          "hits": 6,
+                          "label": "something else"
+                        }
+                      ],
+                      "label": "Subjects (in English)"
+                    },
+                    {
+                      "name": "geographical_coverage_sim",
+                      "items": [
+                        {
+                          "value": "dublin",
+                          "hits": 6,
+                          "label": "dublin"
+                        }
+                      ],
+                      "label": "Geographical Coverage Sim"
+                    },
+                    {
+                      "name": "placename_field_sim",
+                      "items": [
+                        {
+                          "value": "dublin",
+                          "hits": 6,
+                          "label": "dublin"
+                        }
+                      ],
+                      "label": "Placename Field Sim"
+                    },
+                    {
+                      "name": "geographical_coverage_gle_sim",
+                      "items": [
+
+                      ],
+                      "label": "Subject (Place) (in Irish)"
+                    },
+                    {
+                      "name": "geographical_coverage_eng_sim",
+                      "items": [
+                        {
+                          "value": "dublin",
+                          "hits": 6,
+                          "label": "dublin"
+                        }
+                      ],
+                      "label": "Subject (Place) (in English)"
+                    },
+                    {
+                      "name": "temporal_coverage_sim",
+                      "items": [
+                        {
+                          "value": "name=1900s;",
+                          "hits": 6,
+                          "label": "name=1900s;"
+                        }
+                      ],
+                      "label": "Temporal Coverage Sim"
+                    },
+                    {
+                      "name": "temporal_coverage_gle_sim",
+                      "items": [
+
+                      ],
+                      "label": "Subject (Era) (in Irish)"
+                    },
+                    {
+                      "name": "temporal_coverage_eng_sim",
+                      "items": [
+                        {
+                          "value": "1900s",
+                          "hits": 6,
+                          "label": "1900s"
+                        }
+                      ],
+                      "label": "Subject (Era) (in English)"
+                    },
+                    {
+                      "name": "name_coverage_sim",
+                      "items": [
+
+                      ],
+                      "label": "Subject (Name)"
+                    },
+                    {
+                      "name": "creator_sim",
+                      "items": [
+
+                      ],
+                      "label": "creators"
+                    },
+                    {
+                      "name": "contributor_sim",
+                      "items": [
+
+                      ],
+                      "label": "contributors"
+                    },
+                    {
+                      "name": "person_sim",
+                      "items": [
+                        {
+                          "value": "collins, michael",
+                          "hits": 6,
+                          "label": "collins, michael"
+                        },
+                        {
+                          "value": "connolly, james",
+                          "hits": 6,
+                          "label": "connolly, james"
+                        },
+                        {
+                          "value": "devalera, eamonn",
+                          "hits": 6,
+                          "label": "devalera, eamonn"
+                        }
+                      ],
+                      "label": "Person Sim"
+                    },
+                    {
+                      "name": "language_sim",
+                      "items": [
+                        {
+                          "value": "gle",
+                          "hits": 6,
+                          "label": "gle"
+                        }
+                      ],
+                      "label": "Language Sim"
+                    },
+                    {
+                      "name": "creation_date_dtsim",
+                      "items": [
+
+                      ],
+                      "label": "Creation Date"
+                    },
+                    {
+                      "name": "published_date_dtsim",
+                      "items": [
+
+                      ],
+                      "label": "Published/Broadcast Date"
+                    },
+                    {
+                      "name": "width_sim",
+                      "items": [
+
+                      ],
+                      "label": "Image Width"
+                    },
+                    {
+                      "name": "height_sim",
+                      "items": [
+
+                      ],
+                      "label": "Image Height"
+                    },
+                    {
+                      "name": "area_sim",
+                      "items": [
+
+                      ],
+                      "label": "Image Size"
+                    },
+                    {
+                      "name": "geojson_ssim",
+                      "items": [
+
+                      ],
+                      "label": "Coordinates"
+                    },
+                    {
+                      "name": "duration_total_isi",
+                      "items": [
+
+                      ],
+                      "label": "Total Duration"
+                    },
+                    {
+                      "name": "channels_sim",
+                      "items": [
+
+                      ],
+                      "label": "Audio Channels"
+                    },
+                    {
+                      "name": "sample_rate_sim",
+                      "items": [
+
+                      ],
+                      "label": "Sample Rate"
+                    },
+                    {
+                      "name": "bit_depth_sim",
+                      "items": [
+
+                      ],
+                      "label": "Bit Depth"
+                    },
+                    {
+                      "name": "file_count_isi",
+                      "items": [
+                        {
+                          "value": "0",
+                          "hits": 6,
+                          "label": "0"
+                        }
+                      ],
+                      "label": "Number of Files"
+                    },
+                    {
+                      "name": "file_size_total_isi",
+                      "items": [
+
+                      ],
+                      "label": "Total File Size"
+                    },
+                    {
+                      "name": "mime_type_sim",
+                      "items": [
+
+                      ],
+                      "label": "MIME Type"
+                    },
+                    {
+                      "name": "file_format_sim",
+                      "items": [
+
+                      ],
+                      "label": "File Format"
+                    },
+                    {
+                      "name": "file_type_display_sim",
+                      "items": [
+                        {
+                          "value": "sound",
+                          "hits": 6,
+                          "label": "sound"
+                        }
+                      ],
+                      "label": "File Type Display Sim"
+                    },
+                    {
+                      "name": "object_type_sim",
+                      "items": [
+                        {
+                          "value": "sound",
+                          "hits": 6,
+                          "label": "sound"
+                        }
+                      ],
+                      "label": "Type (from Metadata)"
+                    },
+                    {
+                      "name": "depositor_sim",
+                      "items": [
+                        {
+                          "value": "kiera@lindgrenhermann.co.uk",
+                          "hits": 6,
+                          "label": "kiera@lindgrenhermann.co.uk"
+                        }
+                      ],
+                      "label": "Depositor"
+                    },
+                    {
+                      "name": "institute_sim",
+                      "items": [
+
+                      ],
+                      "label": "Institute Sim"
+                    },
+                    {
+                      "name": "root_collection_id_sim",
+                      "items": [
+                        {
+                          "value": "bg257f089",
+                          "hits": 3,
+                          "label": "bg257f089"
+                        },
+                        {
+                          "value": "cc08hf72r",
+                          "hits": 3,
+                          "label": "cc08hf72r"
+                        }
+                      ],
+                      "label": "Root Collection Id Sim"
+                    },
+                    {
+                      "name": "is_collection_sim",
+                      "items": [
+                        {
+                          "value": "false",
+                          "hits": 6,
+                          "label": "false"
+                        }
+                      ],
+                      "label": "is_collection"
+                    }
+                  ],
+                  "pages": {
+                    "current_page": 1,
+                    "next_page": 2,
+                    "prev_page": null,
+                    "total_pages": 6,
+                    "limit_value": 1,
+                    "offset_value": 0,
+                    "total_count": 6,
+                    "first_page?": true,
+                    "last_page?": false
+                  }
+                }
               }
             }
           }
@@ -2048,12 +2635,6 @@
             "in": "path",
             "type": "string",
             "required": true
-          },
-          {
-            "name": "per_page",
-            "description": "Number of results per page",
-            "type": "number",
-            "default": 9
           }
         ],
         "responses": {
@@ -2073,7 +2654,7 @@
             "description": "Object found",
             "examples": {
               "application/json": {
-                "Id": "f1881k934",
+                "Id": "mp48sc827",
                 "Title": [
                   "A collection"
                 ],
@@ -2093,7 +2674,7 @@
                   "This is a Collection"
                 ],
                 "Creator": [
-                  "divina.robel@hagenes.name"
+                  "alexander@walker.co.uk"
                 ],
                 "Publisher": [
                   "RnaG"

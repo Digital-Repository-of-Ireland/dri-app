@@ -44,21 +44,6 @@ RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
   rspec.pattern = FileList['spec/*_spec.rb']
 end
 
-desc 'similar to rswag:spec:swaggerize except it excludes --dry-run so output is included in swagger docs where applicable'
-namespace :rswag do
-  namespace :docs do
-    desc 'Generate Swagger JSON files from integration specs'
-    RSpec::Core::RakeTask.new('generate') do |t|
-      t.pattern = 'spec/api/**/*_spec.rb'
-
-      t.rspec_opts = [ 
-        '--format Rswag::Specs::SwaggerFormatter', 
-        '--order defined' 
-      ]
-    end
-  end
-end
-
 Cucumber::Rake::Task.new(:first_try) do |t|
   t.cucumber_opts = "--profile first_try"
 end
@@ -82,7 +67,7 @@ task :ci => ['ci_clean'] do
   end
 
   Rake::Task["rdoc"].invoke
-  Rake::Task["apidocs:generate"].invoke
+  Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Run Continuous Integration-spec"
@@ -95,7 +80,7 @@ task :ci_spec => ['ci_clean'] do
   end
 
   Rake::Task["rdoc"].invoke
-  Rake::Task["apidocs:generate"].invoke
+  Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Clean CI environment"
@@ -139,5 +124,18 @@ namespace :fakes3 do
   end
 end
 
+desc 'similar to rswag:spec:swaggerize except it excludes --dry-run so output is included in swagger docs where applicable'
+namespace :api do
+  namespace :docs do
+    desc 'Generate Swagger JSON files from integration specs'
+    RSpec::Core::RakeTask.new('generate') do |t|
+      t.pattern = 'spec/api/**/*_spec.rb'
 
+      t.rspec_opts = [ 
+        '--format Rswag::Specs::SwaggerFormatter', 
+        '--order defined' 
+      ]
+    end
+  end
+end
 
