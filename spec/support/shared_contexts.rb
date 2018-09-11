@@ -79,3 +79,10 @@ shared_context 'sign_out_before_request' do
     submit_request(example.metadata)
   end
 end
+
+# shared_context 'sign_in_before_request' do
+#   before do |example|
+#     sign_in @login_user
+#     submit_request(example.metadata)
+#   end
+# end

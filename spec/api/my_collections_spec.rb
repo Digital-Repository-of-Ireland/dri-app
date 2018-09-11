@@ -38,6 +38,8 @@ describe "My Collections API" do
           end
         end
 
+        # TODO find a way to include multiple responses with the same code
+        # https://github.com/domaindrivendev/rswag/issues/131
         response "200", "All collections found" do
           include_context 'rswag_include_spec_output'
           let(:mode) { 'collections' }
