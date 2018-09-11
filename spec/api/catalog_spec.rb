@@ -1,14 +1,17 @@
-require 'api_spec_helper'
+require 'swagger_helper'
 
-resource "catalog" do
-
-  header "Accept", "application/json"
-  header "Host", "localhost"
-  explanation "This route is used to view all objects in the repository"
-
-  get "/catalog" do
-    # don't have to be signed in to access /catalogue
-    # it_behaves_like 'an api with authentication'
-    it_behaves_like 'an api without authentication'
+describe "Catalog API" do
+  path "/catalog" do
+    get "retrieves objects from the catalog" do
+      produces "application/json"
+      response '200', 'catalog found' do
+        run_test! do
+          sign_out_all
+          auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
+          expect(response_body).not_to eq auth_error_response
+          expect(status).to eq 200
+        end
+      end
+    end
   end
 end
