@@ -2013,6 +2013,14 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "name": "per_page",
+            "description": "Number of results per page",
+            "type": "number",
+            "default": 9
+          }
+        ],
         "responses": {
           "401": {
             "description": "Must be signed in to access this route",
@@ -2029,14 +2037,23 @@
       "get": {
         "summary": "retrieves a specific collection",
         "produces": [
-          "application/json"
+          "application/json",
+          "application/xml",
+          "application/ttl"
         ],
         "parameters": [
           {
             "name": "id",
+            "description": "Object ID",
             "in": "path",
             "type": "string",
             "required": true
+          },
+          {
+            "name": "per_page",
+            "description": "Number of results per page",
+            "type": "number",
+            "default": 9
           }
         ],
         "responses": {
@@ -2056,7 +2073,7 @@
             "description": "Object found",
             "examples": {
               "application/json": {
-                "Id": "8049g5079",
+                "Id": "sb397828k",
                 "Title": [
                   "A collection"
                 ],
@@ -2076,7 +2093,7 @@
                   "This is a Collection"
                 ],
                 "Creator": [
-                  "mignon@halvorson.co.uk"
+                  "kathlene_huel@harber.co.uk"
                 ],
                 "Publisher": [
                   "RnaG"

@@ -3,16 +3,16 @@ require 'swagger_helper'
 describe "My Collections API" do
   path "/my_collections" do
     get "retrieves objects or collections for the current user" do
+      # TODO accept ttl and xml on default route too
+      # not just specific objects
       produces 'application/json'
-      response "401", "Must be signed in to access this route" do
-        before do |example|
-          sign_out_all
-          submit_request(example.metadata)
-        end
 
-        after do |example|
-          example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
-        end
+      parameter name: :per_page, 
+        description: 'Number of results per page', type: :number, default: 9
+      
+      response "401", "Must be signed in to access this route" do
+        include_context 'rswag_include_spec_output'
+        include_context 'sign_out_before_request'
 
         it "should require a sign in" do 
           auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
@@ -27,45 +27,31 @@ describe "My Collections API" do
     include_context 'collections_with_objects', num_collections=2, num_objects=3
 
     get "retrieves a specific collection" do
-      produces 'application/json'#, 'application/ttl'
-      parameter name: :id, :in => :path, :type => :string
+      produces 'application/json', 'application/xml', 'application/ttl'
+      parameter name: :id, description: 'Object ID',
+        :in => :path, :type => :string
+      parameter name: :per_page, description: 'Number of results per page', 
+        type: :number, default: 9
 
       # TODO: make api response consistent
       # always return sign in error when not signed in on route that requires it
+      # can't include rspec output since it's an empty sting (not json)
       response "401", "Must be signed in to access this route" do
+        include_context 'sign_out_before_request'
         let(:id) { @collections.first.id }
 
-        before do |example|
-          sign_out_all
-          submit_request(example.metadata)
-        end
-
-        # after do |example|
-        #   example.metadata[:response][:examples] = { 
-        #     'application/json' => JSON.parse(
-        #       response.body, 
-        #       symbolize_names: true
-        #     ) 
-        #   }
-        # end
-
         it 'returns a 401 when the user is not signed in' do
-          # auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
-          # expect(response.body).to eq auth_error_response
           expect(status).to eq(401) # 401 unauthorized
         end
       end
 
       response "404", "Object not found" do
         include_context 'rswag_include_spec_output'
-        let(:id) { "collection_that_does_not_exist" }
-
+        include_context 'sign_out_before_request'
         # doesn't matter whether you're signed in
         # 404 takes precendence over 401
-        before do |example|
-          sign_out_all
-          submit_request(example.metadata)
-        end
+
+        let(:id) { "collection_that_does_not_exist" }
 
         it 'returns a 404 when the user is not signed in' do
           expect(status).to eq(404) 

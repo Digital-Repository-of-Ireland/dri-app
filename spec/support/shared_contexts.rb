@@ -72,3 +72,10 @@ shared_context 'rswag_include_spec_output' do
     }
   end
 end
+
+shared_context 'sign_out_before_request' do
+  before do |example|
+    sign_out_all
+    submit_request(example.metadata)
+  end
+end
