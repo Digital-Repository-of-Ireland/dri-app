@@ -51,6 +51,20 @@ RSpec::Core::RakeTask.new('apidoc:generate') do |t|
   t.rspec_opts = ["--format RspecApiDocumentation::ApiFormatter"]
 end
 
+namespace :rswag do
+  namespace :docs do
+    desc 'Generate Swagger JSON files from integration specs'
+    RSpec::Core::RakeTask.new('generate') do |t|
+      t.pattern = 'spec/api/**/*_spec.rb'
+
+      t.rspec_opts = [ 
+        '--format Rswag::Specs::SwaggerFormatter', 
+        '--order defined' 
+      ]
+    end
+  end
+end
+
 Cucumber::Rake::Task.new(:first_try) do |t|
   t.cucumber_opts = "--profile first_try"
 end

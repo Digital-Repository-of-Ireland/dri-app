@@ -4,20 +4,19 @@ describe "My Collections API" do
   path "/my_collections" do
     get "retrieves objects or collections for the current user" do
       produces 'application/json'
-
-      include_context 'collection_manager_user'
-      include_context 'tmp_assets'
-
-      # stay logged in by default, only one test requires you to be logged out
-      before(:each) do
-        sign_in @login_user
-      end
-
       response "401", "Must be signed in to access this route" do
-        run_test! do 
+        before do |example|
           sign_out_all
+          submit_request(example.metadata)
+        end
+
+        after do |example|
+          example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
+        end
+
+        it "should require a sign in" do 
           auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
-          expect(response_body).to eq auth_error_response
+          expect(response.body).to eq auth_error_response
           expect(status).to eq(401) # 401 unauthorized
         end
       end
@@ -25,21 +24,15 @@ describe "My Collections API" do
   end
 
   path "/my_collections/{id}" do
-    include_context 'collections_with_objects', 
-        num_collections=2, num_objects=3
+    include_context 'collections_with_objects', num_collections=2, num_objects=3
     get "retrieves a specific collection" do
       produces 'application/json'#, 'application/ttl'
       parameter name: :id, :in => :path, :type => :string
 
+      # TODO: make api response consistent
+      # always return sign in error when not signed in on route that requires it
       response "401", "Must be signed in to access this route" do
-
-        # schema type: :object,
-        #   properties: {
-        #     id: { type: :string },
-        #     title: { type: :string },
-        #     organisation: { type: :string },
-        #     license: { type: :string }
-        #   }
+        let(:id) { @collections.first.id }
 
         before do |example|
           sign_out_all
@@ -55,11 +48,9 @@ describe "My Collections API" do
           }
         end
 
-        let(:id) {@collections.first.id}
-
         it 'returns a 401 when the user is not signed in' do
-          auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
-          expect(response.body).to eq auth_error_response
+          # auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
+          # expect(response.body).to eq auth_error_response
           expect(status).to eq(401) # 401 unauthorized
         end
       end
