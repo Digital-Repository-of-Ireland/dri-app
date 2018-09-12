@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'validators'
 
 class ProcessBatchIngest
   @queue = :process_batch_ingest
@@ -124,6 +125,7 @@ class ProcessBatchIngest
   def self.ingest_file(file_path, object, datastream, filename)
     filedata = OpenStruct.new
     filedata.path = file_path
+    mime_type = Validators.file_type(file_path)
 
     object.object_version ||= '1'
     object.increment_version
@@ -142,7 +144,7 @@ class ProcessBatchIngest
         generic_file: @generic_file,
         data:filedata,
         datastream: datastream,
-        opts: { filename: filename }
+        opts: { filename: filename, mime_type: mime_type }
       )
     rescue StandardError => e
       Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"
