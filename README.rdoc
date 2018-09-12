@@ -59,6 +59,14 @@ To run the functional tests
   $ rake jetty:config
   $ rake cucumber or bundle exec cucumber
 
+To generate the app docs
+
+  $ bundle exec rake rdoc
+
+To generate the api docs
+
+  $ bundle exec rake apidoc:generate
+
 == Dependencies
 
 If you are using homebrew on OSX

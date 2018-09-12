@@ -185,6 +185,7 @@ en:
     headerlinks:
       about: About
       about_dri: About DRI
+      about_api: About the API
       about_dri_lifecycle: DRI Lifecycle
       admin: Admin
       batch_ingest: Batch Ingest

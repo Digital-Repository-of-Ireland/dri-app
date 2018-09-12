@@ -507,6 +507,8 @@ GEM
     json-ld (1.99.2)
       multi_json (~> 1.11)
       rdf (~> 1.99)
+    json-schema (2.8.0)
+      addressable (>= 2.4)
     jsonpath (0.8.10)
       multi_json
     jwt (1.5.2)
@@ -808,6 +810,15 @@ GEM
       rspec-mocks (~> 3.7.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.0)
+    rswag-api (2.0.5)
+      railties (>= 3.1, < 6.0)
+    rswag-specs (2.0.5)
+      activesupport (>= 3.1, < 6.0)
+      json-schema (~> 2.2)
+      railties (>= 3.1, < 6.0)
+    rswag-ui (2.0.5)
+      actionpack (>= 3.1, < 6.0)
+      railties (>= 3.1, < 6.0)
     ruby-box (1.15.0)
       addressable
       json
@@ -1011,6 +1022,9 @@ DEPENDENCIES
   riiif (= 1.2.0)
   roo (= 2.6.0)
   rspec-rails (~> 3.0)
+  rswag-api (~> 2.0)
+  rswag-specs (~> 2.0)
+  rswag-ui (~> 2.0)
   rvm
   sass-rails (~> 4.0.4)
   shoulda
@@ -1034,4 +1048,4 @@ DEPENDENCIES
   zeus
 
 BUNDLED WITH
-   1.16.3
+   1.16.4

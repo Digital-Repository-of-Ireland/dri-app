@@ -178,6 +178,8 @@ ga:
         zip: Baile Átha Cliath 2
     headerlinks:
       about: Eolas
+      about_dri: Eolas faoin DRI
+      about_api: Eolas faoin API
       about_dri_lifecycle: Saolré DRI
       admin: Riarthóir
       batch_ingest: Baiscionghabháil

@@ -13,4 +13,10 @@ module DeviseRequestSpecHelper
     logout(scope)
   end
 
+  def sign_out_all
+    User.all.each do |user|
+      sign_out(user)
+    end
+  end
+
 end

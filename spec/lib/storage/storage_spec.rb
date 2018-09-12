@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe "StorageService" do
 
   before(:each) do

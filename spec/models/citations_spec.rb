@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe "Object citations" do
   it "should correctly format a citation" do
     @t = DRI::Batch.with_standard :qdc
