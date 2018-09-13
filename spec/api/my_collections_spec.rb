@@ -40,13 +40,29 @@ describe "My Collections API" do
 
         # TODO find a way to include multiple responses with the same code
         # https://github.com/domaindrivendev/rswag/issues/131
-        response "200", "All collections found" do
+        # Larger issue with multiple responses in OpenAPI and swagger in general
+        # https://github.com/OAI/OpenAPI-Specification/issues/270
+        # https://github.com/swagger-api/swagger-ui/issues/3803
+        response "200 ", "All collections found" do
           include_context 'rswag_include_spec_output'
+          before do |example|
+            submit_request(example.metadata)
+          end
           let(:mode) { 'collections' }
-          run_test! do
+          it 'returns 200' do
             expect(status).to eq(200) 
           end
         end
+
+        # # hack using spaces to give separate responses
+        # # must use it format, run_test! fails "200" != "200 "
+        # response "200  ", "All objects found with a page limit of one" do
+        #   include_context 'rswag_include_spec_output'
+        #   let(:per_page) { 1 }
+        #   run_test! do
+        #     expect(status).to eq(200) 
+        #   end
+        # end
       end
     end
   end
