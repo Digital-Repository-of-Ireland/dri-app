@@ -65,7 +65,7 @@ class AssetsController < ApplicationController
         if lfile
           response.headers['Content-Length'] = File.size?(lfile.path).to_s
           send_file lfile.path,
-                type: lfile.mime_type,
+                type: lfile.mime_type || @generic_file.mime_type,
                 stream: true,
                 buffer: 4096,
                 disposition: "attachment; filename=\"#{File.basename(lfile.path)}\";",
@@ -291,7 +291,7 @@ class AssetsController < ApplicationController
         generic_file: @generic_file,
         data:filedata,
         datastream: datastream,
-        opts: { filename: filename }
+        opts: { filename: filename, mime_type: @mime_type }
       )
 
       # Do the preservation actions
