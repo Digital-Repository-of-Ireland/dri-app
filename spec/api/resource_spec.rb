@@ -4,7 +4,7 @@ require 'swagger_helper'
 describe "Resource API" do
   path "/resource/{id}" do
     include_context 'collections_with_objects'
-    get "retrieves rdf data using sparql" do
+    get "retrieves linked data using sparql" do
       tags 'Private (Sign in required)'
       produces 'application/rdf', 'application/ttl'
       parameter name: :id, description: 'Object ID',

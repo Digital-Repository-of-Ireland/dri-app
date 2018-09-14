@@ -101,6 +101,14 @@ shared_context 'rswag_include_json_spec_output' do |example_name='application/js
   end
 end
 
+shared_context 'rswag_include_xml_spec_output' do |example_name='application/xml'|
+  after do |example|
+    example.metadata[:response][:examples] = { 
+      example_name => Nokogiri::XML(response.body) 
+    }
+  end
+end
+
 shared_context 'sign_out_before_request' do
   before do |example|
     sign_out_all

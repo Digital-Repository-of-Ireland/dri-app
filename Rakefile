@@ -132,8 +132,9 @@ namespace :api do
       t.pattern = 'spec/api/**/*_spec.rb'
 
       t.rspec_opts = [ 
-        '--format Rswag::Specs::SwaggerFormatter', 
-        '--order defined' 
+        '--format progress',
+        '--format Rswag::Specs::SwaggerFormatter',
+        '--order defined'
       ]
     end
   end
