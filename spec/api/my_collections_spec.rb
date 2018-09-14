@@ -6,6 +6,7 @@ describe "My Collections API" do
       tags 'Private (Sign in required)'
       # TODO accept ttl and xml on default route too
       # not just specific objects
+      # TODO add json format for /my_collections/:id/duplicates
       produces 'application/json'
 
       parameter name: :per_page, description: 'Number of results per page', 
@@ -13,22 +14,19 @@ describe "My Collections API" do
       parameter name: :page, description: 'Page number', 
         in: :query, type: :number, default: 1, required: false
       parameter name: :mode, description: 'Show Objects or Collections', 
-        in: :query, required: false, default: 'objects', type: :string
-        # schema: {
-        #   type: :string,
-        #   enum: ['objects', 'collections'],
-        #   default: 'objects'
-        # }
+        in: :query, required: false, default: 'objects', type: :string,
+        enum: ['objects', 'collections']
       parameter name: :show_subs, description: 'Show subcollections',
         in: :query, type: :boolean, default: false
       parameter name: :search_field, description: 'Solr field to search for',
         in: :query, type: :string, default: 'all_fields'
-      # parameter name: :sort, description: 'Solr fields to sort by',
-      #   in: :query, type: :string, default: nil
-      # parameter name: :q, description: 'Search Query',
-      #   in: :query, type: :string, default: nil
+      parameter name: :sort, description: 'Solr fields to sort by',
+        in: :query, type: :string, default: nil
+      parameter name: :q, description: 'Search Query',
+        in: :query, type: :string, default: nil
+      # # issue with facets beign empty string
       # parameter name: :f, description: 'Search facet (solr fields to filter results)',
-      #   in: :query, type: :string, default: nil
+        # in: :query, type: :string, default: nil
 
       # undefined method `per_page' when not set
       let(:per_page)     { 9 }
@@ -38,8 +36,8 @@ describe "My Collections API" do
       let(:mode)         { 'objects' }
       let(:show_subs)    { false }
       let(:search_field) { 'all_fields' }
-      # let(:sort)         { nil }
-      # let(:q)            { nil }
+      let(:sort)         { nil }
+      let(:q)            { nil }
       # let(:f)            { nil }
       
       response "401", "Must be signed in to access this route" do
