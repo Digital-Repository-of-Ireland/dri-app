@@ -25,10 +25,10 @@
 <ul>
 
   <li>
-    <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
+    <%= form_tag(url_for(object_files_path(@document.id)), multipart: true, method: :post, id: "file_uploader") do %>
       <div class="dri_fileUpload">
-       <%= t('dri.views.catalog.links.upload_file') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_asset_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => "dri_button_green_small" %>
-        <%= file_field_tag 'Filedata', :required=>'required', :class => 'upload', :id => 'dri_asset_uploader' %>
+       <%= t('dri.views.catalog.links.upload_file') %><%= button_tag t('dri.views.objects.buttons.upload'), id: "dri_upload_asset_file", name: "upload_file", style: "display:none; margin-left: 5px;", class: "dri_button_green_small" %>
+        <%= file_field_tag 'Filedata', required: 'required', class: 'upload', id: 'dri_asset_uploader' %>
       </div>
       <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
       <%= hidden_field_tag 'datastream', "content" %>
@@ -37,11 +37,11 @@
 
   <% if @presenter.files.present? %>
     <li>
-      <%= form_tag(url_for(object_files_path(@document.id)), :multipart => true, :method => :post, :id => "file_uploader") do %>
+      <%= form_tag(url_for(object_files_path(@document.id)), multipart: true, method: :post, id: "file_uploader") do %>
         <%= hidden_field_tag "preservation", "true" %>
         <div class="dri_fileUpload">
-        <%= t('dri.views.catalog.links.upload_preservation_file') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_preservation_asset_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => "dri_button_green_small"  %>
-        <%= file_field_tag 'Presfiledata', :required=>'required', :class => 'upload', :id => 'dri_preservation_asset_uploader' %>
+        <%= t('dri.views.catalog.links.upload_preservation_file') %><%= button_tag t('dri.views.objects.buttons.upload'), id: "dri_upload_preservation_asset_file", name: "upload_file", style: "display:none; margin-left: 5px;", class: "dri_button_green_small"  %>
+        <%= file_field_tag 'Presfiledata', required: 'required', class: 'upload', id: 'dri_preservation_asset_uploader' %>
         </div>
         <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
         <%= hidden_field_tag 'datastream', "content" %>
@@ -49,7 +49,7 @@
     </li>
 
     <% if current_user.is_admin? %>
-      <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, :id => "surrogates_generate" do %>
+      <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, id: "surrogates_generate" do %>
         <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
       <% end %>
     <% end %>
@@ -63,16 +63,16 @@
 
   <% if @document.status != 'published' || current_user.is_admin? %>
     <li>
-      <%= form_tag status_update_path(@document.id) ,:method => :put do %>
+      <%= form_tag status_update_path(@document.id), method: :put do %>
         <% if @document.draft? %>
           <%= hidden_field_tag( :status, "reviewed") %>
-          <span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), :id => 'status_update', :class => "pull-right dri_button_green_small" %>
+          <span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), id: 'status_update', class: "pull-right dri_button_green_small" %>
         <% elsif @document.status == 'reviewed' %>
           <%= hidden_field_tag( :status, "draft") %>
-          <span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update', :class => "pull-right dri_button_red_small" %>
+          <span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), id: 'status_update', class: "pull-right dri_button_red_small" %>
         <% elsif current_user.is_admin? %>
           <%= hidden_field_tag( :status, "draft") %>
-          <span class="label label-danger"><%= t('dri.views.catalog.links.published') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), :id => 'status_update', :class => "pull-right dri_button_red_small" %>
+          <span class="label label-danger"><%= t('dri.views.catalog.links.published') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), id: 'status_update', class: "pull-right dri_button_red_small" %>
         <% end %>
       <% end %>
     </li>
@@ -97,7 +97,7 @@
         <div class="accordion-inner">
           <ul class="dri_subnav_edit_list">
            <% if @document.editable? %>
-            <%= link_to edit_object_path(@document), :id => "edit_record" do %>
+            <%= link_to edit_object_path(@document), id: "edit_record" do %>
               <li>
                 <%= t('dri.views.catalog.buttons.edit_metadata') %>
               </li>
@@ -110,10 +110,10 @@
               <% else %>
                 <li class="dri_subnav_edit_list_last">
               <% end %>
-                <%= form_tag(url_for(:action=>"update", :controller=>"metadata", :id=>@document.id), :multipart => true, :method => :put, :id => "metadata_uploader") do %>
+                <%= form_tag(url_for(action: "update", controller: "metadata", id: @document.id), multipart: true, method: :put, id: "metadata_uploader") do %>
                   <div class="dri_fileUpload">
-                    <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), :id => "dri_upload_metadata_file", :name => "upload_file", :style => "display:none; margin-left: 5px;", :class => "dri_button_green_small" %>
-                    <%= file_field_tag 'metadata_file', :accept => "application/xml", :required => "true", :class => 'upload', :id => 'dri_metadata_uploader' %>
+                    <%= t('dri.views.objects.legends.replace_metadata') %><%= button_tag t('dri.views.objects.buttons.upload'), id: "dri_upload_metadata_file", name: "upload_file", style: "display:none; margin-left: 5px;", class: "dri_button_green_small" %>
+                    <%= file_field_tag 'metadata_file', accept: "application/xml", required: "true", class: 'upload', id: 'dri_metadata_uploader' %>
                   </div>
                   <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
                   <%= hidden_field_tag 'datastream', "content" %>
@@ -124,10 +124,10 @@
 
            <% if signed_in? && can?(:manage, @document.id) %>
              <li>
-               <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), :id => "edit_access_controls", :remote => true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
+               <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), id: "edit_access_controls", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
              </li>
 
-              <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', :id => "manage_licence" do %>
+              <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', id: "manage_licence" do %>
                 <li class="dri_subnav_edit_list_last">
                   <%= t('dri.views.catalog.buttons.set_licence') %>
                 </li>
@@ -156,7 +156,7 @@
         <div class="modal-body">
           <span class="label label-danger"><%= t('dri.views.objects.confirm.delete') %></span>
           <br />
-          <%= form_tag (object_path(@document.id)), id: "delete_object", :class=>'dri_ingest_form', :method => :delete, :style=>"margin:0;padding:0;display:inline;" do %>
+          <%= form_tag (object_path(@document.id)), id: "delete_object", class: 'dri_ingest_form', method: :delete, style: "margin:0;padding:0;display:inline;" do %>
             <%= submit_tag t('dri.views.objects.buttons.delete_object'), id: 'submit_delete', class: "hidden" %>
           <% end %>
         </div>
@@ -165,7 +165,7 @@
           <button type="button" class="dri_button_grey" data-dismiss="modal">
             <%= t('dri.window.modal.cancel') %>
           </button>
-          <%= button_tag t('dri.views.objects.buttons.delete_object'), :class => "dri_button_red", :id => "delete_object_#{@document.id}" %>
+          <%= button_tag t('dri.views.objects.buttons.delete_object'), class: "dri_button_red", id: "delete_object_#{@document.id}", onclick: "$('#delete_object').submit();" %>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -183,7 +183,7 @@
       </div>
 
       <div class="modal-body">
-        <%= render :partial => "shared/set_object_licence" %>
+        <%= render partial: "shared/set_object_licence" %>
       </div>
       <div class="modal-footer">
         <button type="button" class="dri_button_grey" data-dismiss="modal">
