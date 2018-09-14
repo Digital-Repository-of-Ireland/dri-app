@@ -65,10 +65,9 @@ module DRI::Solr::Document::Collection
     end
 
     query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
-    response = ActiveFedora::SolrService.get(query)
+    response = ActiveFedora::SolrService.get(query, rows: ids.size)
 
     docs = response['response']['docs']
-
     duplicates = []
     docs.each { |d| duplicates << SolrDocument.new(d) }
 
