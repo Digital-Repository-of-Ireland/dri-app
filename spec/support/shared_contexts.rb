@@ -1,3 +1,14 @@
+shared_context 'tmp_assets' do
+  before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+  end
+
+  after(:each) do
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
+  end
+end
+
 shared_context 'collection_manager_user' do
   before(:all) do
     UserGroup::Group.find_or_create_by(
@@ -9,17 +20,6 @@ shared_context 'collection_manager_user' do
 
   after(:all) do
     UserGroup::Group.find_by(name: SETTING_GROUP_CM).delete
-  end
-end
-
-shared_context 'tmp_assets' do
-  before(:each) do
-    @tmp_assets_dir = Dir.mktmpdir
-    Settings.dri.files = @tmp_assets_dir
-  end
-
-  after(:each) do
-    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 end
 
@@ -59,6 +59,34 @@ shared_context 'collections_with_objects' do |num_collections=2, num_objects=2, 
 
   after(:each) do
     @collections.map(&:delete)
+  end
+end
+
+shared_context 'subcollection' do |status='draft'|
+  before(:each) do
+    @new_user = FactoryBot.create(:collection_manager)
+    sign_in @new_user
+
+    @collection = FactoryBot.create(:collection)
+    @subcollection = FactoryBot.create(:collection)
+
+    [@collection, @subcollection].each do |c|
+      object = FactoryBot.create(:sound)
+      object[:status] = status
+      object[:title] = ["Not a Duplicate"]
+      object[:creator] = [@new_user.email]
+      object.apply_depositor_metadata(@new_user.to_s)
+      object.save
+      c.governed_items << object
+      c.apply_depositor_metadata(@new_user.to_s)
+    end
+
+    @subcollection.status = status
+    @subcollection[:title] = ["Not a Duplicate collection"]
+    @subcollection[:creator] = [@new_user.email]
+    @subcollection.save
+    @subcollection.governing_collection = @collection
+    @collection.save
   end
 end
 
