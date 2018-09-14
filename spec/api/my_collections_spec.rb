@@ -19,7 +19,7 @@ describe "My Collections API" do
       
       response "401", "Must be signed in to access this route" do
         include_context 'sign_out_before_request'
-        include_context 'rswag_include_spec_output'
+        include_context 'rswag_include_json_spec_output'
 
         it "should require a sign in" do 
           auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
@@ -32,7 +32,9 @@ describe "My Collections API" do
         include_context 'collections_with_objects'
 
         response "200", "All objects found" do
-          include_context 'rswag_include_spec_output'
+          include_context 'rswag_include_json_spec_output',
+            example_name='test'
+
           run_test! do
             expect(status).to eq(200) 
           end
@@ -43,8 +45,10 @@ describe "My Collections API" do
         # Larger issue with multiple responses in OpenAPI and swagger in general
         # https://github.com/OAI/OpenAPI-Specification/issues/270
         # https://github.com/swagger-api/swagger-ui/issues/3803
-        response "200 ", "All collections found" do
-          include_context 'rswag_include_spec_output'
+        response "200", "All collections found" do
+          include_context 'rswag_include_json_spec_output', 
+            example_name='application/json&mode=collections'
+
           before do |example|
             submit_request(example.metadata)
           end
@@ -57,7 +61,7 @@ describe "My Collections API" do
         # # hack using spaces to give separate responses
         # # must use it format, run_test! fails "200" != "200 "
         # response "200  ", "All objects found with a page limit of one" do
-        #   include_context 'rswag_include_spec_output'
+        #   include_context 'rswag_include_json_spec_output'
         #   let(:per_page) { 1 }
         #   run_test! do
         #     expect(status).to eq(200) 
@@ -92,7 +96,7 @@ describe "My Collections API" do
         # doesn't matter whether you're signed in
         # 404 takes precendence over 401
         include_context 'sign_out_before_request'
-        include_context 'rswag_include_spec_output'
+        include_context 'rswag_include_json_spec_output'
 
         let(:id) { "collection_that_does_not_exist" }
 
@@ -102,7 +106,7 @@ describe "My Collections API" do
       end
 
       response "200", "Object found" do
-        include_context 'rswag_include_spec_output'
+        include_context 'rswag_include_json_spec_output'
         let(:id) { @collections.first.id }
         run_test! do
           expect(status).to eq(200) 

@@ -13,7 +13,7 @@ describe "Collections API" do
 
       response "401", "Must be signed in to access this route" do
         include_context 'sign_out_before_request'
-        include_context 'rswag_include_spec_output'
+        include_context 'rswag_include_json_spec_output'
 
         it "should require a sign in" do 
           auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
@@ -27,7 +27,7 @@ describe "Collections API" do
         include_context 'collections_with_objects'
 
         response "200", "All collections found" do
-          include_context 'rswag_include_spec_output'
+          include_context 'rswag_include_json_spec_output'
           run_test! do
             expect(status).to eq(200) 
           end
@@ -63,7 +63,7 @@ describe "Collections API" do
         # doesn't matter whether you're signed in
         # 404 takes precendence over 401
         include_context 'sign_out_before_request'
-        include_context 'rswag_include_spec_output'
+        include_context 'rswag_include_json_spec_output'
 
         let(:id) { "collection_that_does_not_exist" }
 
@@ -73,7 +73,7 @@ describe "Collections API" do
       end
 
       response "200", "Object found" do
-        include_context 'rswag_include_spec_output'
+        include_context 'rswag_include_json_spec_output'
         let(:id) { @collections.first.id }
         run_test! do
           expect(status).to eq(200) 

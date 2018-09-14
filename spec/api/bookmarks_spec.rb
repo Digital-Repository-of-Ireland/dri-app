@@ -9,7 +9,7 @@ describe "Bookmarks API" do
       response '302', 'bookmark redirect' do
         include_context 'sign_out_before_request'
         # can't include output since redirect includes html
-        # include_context 'rswag_include_spec_output'
+        # include_context 'rswag_include_json_spec_output'
           
         it 'returns 302 regardless of whether you are signed in' do
           expect(status).to eq 302

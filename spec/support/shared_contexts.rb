@@ -62,10 +62,10 @@ shared_context 'collections_with_objects' do |num_collections=2, num_objects=2, 
   end
 end
 
-shared_context 'rswag_include_spec_output' do
+shared_context 'rswag_include_json_spec_output' do |example_name='application/json'|
   after do |example|
     example.metadata[:response][:examples] = { 
-      'application/json' => JSON.parse(
+      example_name => JSON.parse(
         response.body, 
         symbolize_names: true
       ) 

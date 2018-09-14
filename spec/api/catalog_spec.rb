@@ -16,7 +16,7 @@ describe "Catalog API" do
 
       response '200', 'catalog found' do
         include_context 'sign_out_before_request'
-        include_context 'rswag_include_spec_output'
+        include_context 'rswag_include_json_spec_output'
           
         it 'returns 200 regardless of whether you are signed in' do
           expect(status).to eq 200
