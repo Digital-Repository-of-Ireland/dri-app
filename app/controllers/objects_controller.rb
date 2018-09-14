@@ -185,31 +185,31 @@ class ObjectsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
 
-    if @object.status != 'published' || current_user.is_admin?
-      # Do the preservation actions
-      @object.object_version || '1'
-      @object.increment_version
-
-      assets = []
-      @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
-
-      preservation = Preservation::Preservator.new(@object)
-      preservation.update_manifests(
-        deleted: {
-          'content' => assets,
-          'metadata' => ['descMetadata.xml','permissions.rdf','properties.xml','resource.rdf']
-          }
-      )
-
-      @object.delete
-
-      flash[:notice] = t('dri.flash.notice.object_deleted')
-    else
+    if @object.status == 'published' && !current_user.is_admin?
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
+    # Do the preservation actions
+    @object.object_version || '1'
+    @object.increment_version
+
+    assets = []
+    @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
+
+    preservation = Preservation::Preservator.new(@object)
+    preservation.update_manifests(
+      deleted: {
+        'content' => assets,
+        'metadata' => ['descMetadata.xml','permissions.rdf','properties.xml','resource.rdf']
+        }
+    )
+    collection_id = @object.governing_collection_id
+    @object.delete
+
+    flash[:notice] = t('dri.flash.notice.object_deleted')
+
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'index' }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: collection_id }
     end
   end
 
