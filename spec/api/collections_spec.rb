@@ -3,6 +3,10 @@ require 'swagger_helper'
 describe "Collections API" do
   path "/collections" do
     get "retrieves collections for the current user" do
+      # TODO is collections really private?
+      # Can access specific public collections, 
+      # just not the /collections route and private/draft collections
+      # without sign in
       tags 'Private (Sign in required)'
       # TODO deprecate this endpoint?
       produces 'application/json'

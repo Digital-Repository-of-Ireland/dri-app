@@ -32,6 +32,13 @@ class IiifController < ApplicationController
       format.html  { @manifest = JSON.pretty_generate JSON.parse(manifest) }
       format.json  { render json: manifest, content_type: 'application/ld+json' }
     end
+  rescue Blacklight::Exceptions::InvalidSolrID => e
+    # TODO look into blacklight handling 404s same as my_collections controller
+    respond_to do |format|
+      format.html  { render file: "#{Rails.root}/public/404.html", layout: false, status: 404 }
+      format.json  { render json: {status: "404", error: "#{e}"}, content_type: 'application/ld+json', status: 404 }
+    end
+    return
   end
 
   private
