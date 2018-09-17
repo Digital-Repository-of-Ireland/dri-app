@@ -30,7 +30,7 @@
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
                 <% custom_vars = get_custom_vars %>
-                <%= analytics_init(:custom_vars => custom_vars) if !(Settings.analytics && Settings.analytics.disable == true) %>
+                <%= analytics_init(custom_vars: custom_vars) if !(Settings.analytics && Settings.analytics.disable == true) %>
         <script type="text/javascript">
             I18n.locale = "<%= I18n.locale %>";
         </script>
@@ -40,8 +40,8 @@
 
 	<body>
 		<div id="dri_wrapper_id" class="block1 dri_wrapper">
-			<%= render :partial => 'shared/cookies_modal' unless cookies[:accept_cookies]%>
-			<%= render :partial => 'shared/header_navbar' %>
+			<%= render partial: 'shared/cookies_modal' unless cookies[:accept_cookies] %>
+			<%= render partial: 'shared/header_navbar' %>
 			<div id="ajax-modal" class="modal fade" tabindex="-1">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -56,15 +56,12 @@
 			<% end %>
 
 			<% if flash  %>
-			  <%= render :partial=>'/flash_msg' %>
+			  <%= render partial: '/flash_msg' %>
 			<% end %>
 			<!-- This condition identifies the browse section of the application and every search result and/or facet refinement -->
 			<% if (
-				      (
-					      (
-						      controller_name == 'catalog' || controller_name == 'bookmarks' ||
-			            controller_name == 'my_collections'
-			          ) && action_name == 'index'
+				    (
+					  (%w(catalog bookmarks my_collections).include?(controller_name)) && action_name == 'index'
 			        ) && has_browse_params?
 			      ) || (controller_name == 'saved_searches' && action_name == 'index') %>
 			  <%= render 'shared/browse_mode_swap' %>
@@ -74,11 +71,11 @@
 				<%= yield %>
 			</div>
 			<div class="dri_search_features_nav_container dri_clearfix">
-				<%= render :partial => 'shared/results_paginator' %>
+				<%= render partial: 'shared/results_paginator' %>
 			</div>
 			<!-- close dri_main_content_container -->
 
-			<%= render :partial => 'shared/footer' %>
+			<%= render partial: 'shared/footer' %>
 
 		</div><!-- close dri_wrapper -->
 

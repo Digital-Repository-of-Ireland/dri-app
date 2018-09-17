@@ -25,7 +25,7 @@
 //= require leaflet.markercluster
 //= require leaflet.extend
 //= require jquery.remotipart
-//= require jquery.cookie
+//= require js.cookie
 //= require jquery.validate
 //= require additional-methods
 //= require bootstrap/affix

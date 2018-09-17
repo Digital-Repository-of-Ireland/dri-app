@@ -60,7 +60,7 @@ gem 'syslog-logger'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'jquery-cookie-rails'
+gem 'js_cookie_rails'
 
 # clients
 gem 'rest-client'
