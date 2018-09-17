@@ -80,7 +80,6 @@ task :ci_spec => ['ci_clean'] do
   end
 
   Rake::Task["rdoc"].invoke
-  # Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Clean CI environment"
