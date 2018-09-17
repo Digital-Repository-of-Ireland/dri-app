@@ -17,7 +17,7 @@ class AssetsController < ApplicationController
       return
     else
       result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
-      @document = SolrDocument.new(result.first)
+      @object_document = SolrDocument.new(result.first)
 
       @generic_file = retrieve_object! params[:id]
       status(@generic_file.id)
@@ -51,7 +51,7 @@ class AssetsController < ApplicationController
       enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
       result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
-      @document = SolrDocument.new(result.first)
+      @object_document = SolrDocument.new(result.first)
 
       @generic_file = retrieve_object! params[:id]
       if @generic_file
@@ -233,7 +233,7 @@ class AssetsController < ApplicationController
     end
 
     def can_view?
-      if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document))
+      if (!(can?(:read, params[:object_id]) && @object_document.read_master? && @object_document.published?) && !can?(:edit, @object_document))
         raise Hydra::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,

@@ -1,24 +1,24 @@
-<% if can? :read, @document %>
+<% if can? :read, @object_document %>
 
   <div class="dri_object_render_block">
     <% if @generic_file.audio? %>
       <div class="dri_audio_player">
         <audio controls>
-          <source src="<%= surrogate_url(@document.id, @generic_file.id, "mp3") %>" type="audio/mpeg">
+          <source src="<%= surrogate_url(@object_document.id, @generic_file.id, "mp3") %>" type="audio/mpeg">
         </audio>
       </div><!-- close dri_audio_player -->
     <% elsif @generic_file.video? %>
       <div>
         <video width="320" height="240" controls>
-          <source src="<%= surrogate_url(@document.id, @generic_file.id, "mp4") %>" type="video/mp4">
+          <source src="<%= surrogate_url(@object_document.id, @generic_file.id, "mp4") %>" type="video/mp4">
         </video>
       </div>
     <% elsif @generic_file.pdf? %>
       <div>
-        <img src="<%= surrogate_url(@document.id, @generic_file.id, "thumbnail_large") %>">
+        <img src="<%= surrogate_url(@object_document.id, @generic_file.id, "thumbnail_large") %>">
       </div>
     <% elsif @generic_file.image? %>
-      <img src="<%= surrogate_url(@document.id, @generic_file.id, "thumbnail_medium")  %>">
+      <img src="<%= surrogate_url(@object_document.id, @generic_file.id, "thumbnail_medium")  %>">
     <% end %>
   </div>
 
@@ -26,5 +26,5 @@
 
   <h2 class="dri_restrict_title"><%= t('dri.views.catalog.forms.restricted_asset') %></h2>
   <p class="dri_restrict_message"><%= t('dri.views.catalog.legends.no_permission') %></p>
-  
+
 <% end %>
