@@ -26,7 +26,7 @@ describe "Collections API" do
         end
       end
 
-      # TODO: fix empty output on this test
+      # TODO: fix empty output on this test by creating public collections
       context "Signed in user with collections" do
         include_context 'collections_with_objects'
 
