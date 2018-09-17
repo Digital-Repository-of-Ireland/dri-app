@@ -1,4 +1,4 @@
-<%= render :partial => "show_surrogate" %>
+<%= render partial: "show_surrogate" %>
 
 <h2 class="non lower"><%= t('dri.views.catalog.links.details') %></h2>
 <table>
@@ -11,7 +11,7 @@
             <dl>
               <dt>
                 <% @generic_file.related_files.each do |f| %>
-                  <dd><%= link_to(f.label, object_file_path(@document.id, f.id)) %></dd>
+                  <dd><%= link_to(f.label, object_file_path(@object_document.id, f.id)) %></dd>
               <% end %>
               </dt>
             </dl>
