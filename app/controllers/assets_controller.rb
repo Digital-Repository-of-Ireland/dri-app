@@ -61,14 +61,14 @@ class AssetsController < ApplicationController
         if object.published?
           Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.id, 1, true)
         end
-        lfile = local_file
-        if lfile
-          response.headers['Content-Length'] = File.size?(lfile.path).to_s
-          send_file lfile.path,
-                type: lfile.mime_type || @generic_file.mime_type,
+
+        if local_file
+          response.headers['Content-Length'] = File.size?(local_file.path).to_s
+          send_file local_file.path,
+                type: local_file.mime_type || @generic_file.mime_type,
                 stream: true,
                 buffer: 4096,
-                disposition: "attachment; filename=\"#{File.basename(lfile.path)}\";",
+                disposition: "attachment; filename=\"#{File.basename(local_file.path)}\";",
                 url_based_filename: true
           return
         end
@@ -112,16 +112,14 @@ class AssetsController < ApplicationController
     datastream = 'content'
     file_upload = upload_from_params
 
-    @object = retrieve_object!(params[:object_id])
+    @object = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
 
-    preserve_file(file_upload, datastream, params)
-    filename = params[:file_name].presence || file_upload.original_filename
-
-    url = "#{URI.escape(download_url)}?version=#{@file.version}"
+    preserved_file = preserve_file(file_upload, datastream, params)
+    url = "#{URI.escape(download_url)}?version=#{preserved_file.version}"
 
     file_content = GenericFileContent.new(user: current_user, generic_file: @generic_file)
-    if file_content.external_content(url, filename)
+    if file_content.external_content(url, preserved_file.filename)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
       mint_doi(@object, 'asset modified') if @object.status == 'published'
@@ -134,7 +132,7 @@ class AssetsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to object_file_url(params[:object_id], @generic_file.id) }
       format.json do
-        response = { checksum: @file.checksum }
+        response = { checksum: preserved_file.checksum }
         response[:warning] = @warnings if @warnings
 
         render json: response, status: :ok
@@ -151,21 +149,20 @@ class AssetsController < ApplicationController
     datastream = 'content'
     file_upload = upload_from_params
 
-    @object = retrieve_object!(params[:object_id])
+    @object = retrieve_object! params[:object_id]
     if @object.nil?
       flash[:notice] = t('dri.flash.notice.specify_object_id')
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end
 
     preservation = params[:preservation].presence == 'true' ? true : false
-    build_generic_file(object: @object, user: current_user, preservation: preservation)
-    preserve_file(file_upload, datastream, params)
-    filename = params[:file_name].presence || file_upload.original_filename
+    @generic_file = build_generic_file(object: @object, user: current_user, preservation: preservation)
 
-    url = "#{URI.escape(download_url)}?version=#{@file.version}"
+    preserved_file = preserve_file(file_upload, datastream, params)
+    url = "#{URI.escape(download_url)}?version=#{preserved_file.version}"
 
     file_content = GenericFileContent.new(user: current_user, generic_file: @generic_file)
-    if file_content.external_content(url, filename)
+    if file_content.external_content(url, preserved_file.filename)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
       mint_doi(@object, 'asset added') if @object.status == 'published'
@@ -179,7 +176,7 @@ class AssetsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
       format.json do
-        response = { checksum: @file.checksum }
+        response = { checksum: preserved_file.checksum }
         response[:warnings] = @warnings if @warnings
 
         render json: response, status: :created
@@ -218,10 +215,12 @@ class AssetsController < ApplicationController
     end
 
     def build_generic_file(object:, user:, preservation: false)
-      @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
-      @generic_file.batch = object
-      @generic_file.apply_depositor_metadata(user)
-      @generic_file.preservation_only = 'true' if preservation
+      generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
+      generic_file.batch = object
+      generic_file.apply_depositor_metadata(user)
+      generic_file.preservation_only = 'true' if preservation
+
+      generic_file
     end
 
     def mime_type(file_uri)
@@ -282,16 +281,16 @@ class AssetsController < ApplicationController
       begin
         @object.save!
       rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not update object version number for #{@object.id} to version #{object_version}"
+        logger.error "Could not update object version number for #{@object.id} to version #{@object.object_version}"
         raise Exceptions::InternalError
       end
 
-      @file = LocalFile.build_local_file(
+      file = LocalFile.build_local_file(
         object: @object,
         generic_file: @generic_file,
-        data:filedata,
+        data: filedata,
         datastream: datastream,
-        opts: { filename: filename, mime_type: @mime_type }
+        opts: { filename: filename, mime_type: @mime_type, checksum: 'md5' }
       )
 
       # Do the preservation actions
@@ -301,6 +300,8 @@ class AssetsController < ApplicationController
 
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve_assets(addfiles, delfiles)
+
+      file
     end
 
     def show_surrogate
@@ -383,13 +384,15 @@ class AssetsController < ApplicationController
     end
 
     def local_file(datastream = 'content')
+      return @local_file if @local_file
+
       search_params = { f: @generic_file.id, d: datastream }
       search_params[:v] = params[:version] if params[:version].present?
 
       query = 'fedora_id LIKE :f AND ds_id LIKE :d'
       query << ' AND version = :v' if search_params[:v].present?
 
-      LocalFile.where(query, search_params).order(version: :desc).first
+      @local_file = LocalFile.where(query, search_params).order(version: :desc).first
     rescue ActiveRecord::RecordNotFound
       raise DRI::Exceptions::InternalError, "Unable to find requested file"
     rescue ActiveRecord::ActiveRecordError
