@@ -40,7 +40,7 @@ DRI::ModelSupport::Files.module_eval do
       generic_file: generic_file,
       data: file,
       datastream: dsid,
-      opts: { filename: filename, mime_type: mime_type }
+      opts: { filename: filename, mime_type: mime_type, checksum: 'md5' }
     )
 
     preservation = Preservation::Preservator.new(self)
