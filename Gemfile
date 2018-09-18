@@ -32,7 +32,7 @@ gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo', '2.6.0'
 
-gem 'active-fedora', '9.11'
+gem 'active-fedora', '9.13'
 gem 'active_fedora-noid', '1.1.1'
 
 gem 'config'
