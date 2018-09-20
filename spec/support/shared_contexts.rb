@@ -23,14 +23,16 @@ shared_context 'collection_manager_user' do
   end
 end
 
-shared_context 'collections_with_objects' do |num_collections=2, num_objects=2, status='draft'|
+shared_context 'signed_in_user_with_collections' do |user=nil, num_collections=2, num_objects=2, status='draft'|
   before(:each) do
     @collections = []
 
-    # have to create new user here to grant access to collection
-    # otherwise we depend on the context for the user to already exist
-    @new_user = FactoryBot.create(:collection_manager)
-    sign_in @new_user
+    if user
+      @new_user = user
+    else
+      @new_user = FactoryBot.create(:collection_manager)
+      sign_in @new_user
+    end
 
     num_collections.times do |i|
       collection = FactoryBot.create(:collection)

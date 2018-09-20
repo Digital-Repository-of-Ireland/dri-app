@@ -52,7 +52,7 @@ describe "My Collections API" do
       end
 
       context "Signed in user with collections" do
-        include_context 'collections_with_objects'
+        include_context 'signed_in_user_with_collections'
 
         response "200", "All objects found" do
           context 'All objects found' do
@@ -98,7 +98,7 @@ describe "My Collections API" do
   end
 
   path "/my_collections/{id}" do
-    include_context 'collections_with_objects'
+    include_context 'signed_in_user_with_collections'
 
     get "retrieves a specific object, collection or subcollection" do
       tags 'Private (Sign in required)'

@@ -38,12 +38,9 @@ describe 'Users API' do
       # response '401', 'Invalid credentials' do
       #   run_test!
       # end
-
-      # # TODO fix form data issue, request workign on postman
+      
       response '200', 'Valid credentials' do
-        # require 'byebug'
-        # let(:user) { {email: 'admin@dri.ie', password: 'CHANGEME'} }
-        let('user[email]') { 'tadmin@dri.ie' }
+        let('user[email]') { 'admin@dri.ie' }
         let('user[password]') { 'CHANGEME' }
         run_test!
       end

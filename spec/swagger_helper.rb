@@ -22,7 +22,19 @@ RSpec.configure do |config|
         title: 'API V1',
         version: 'v1'
       },
-      paths: {}
+      paths: {},
+      securityDefinitions: {
+        apiKey: {
+          type: :apiKey,
+          name: 'user_token',
+          in: :query
+        },
+        appId: {
+          type: :apiKey,
+          name: 'user_email',
+          in: :query
+        }
+      }
     }
   }
 end

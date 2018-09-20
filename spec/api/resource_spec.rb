@@ -3,7 +3,7 @@ require 'swagger_helper'
 # TODO sparql endpoint spec
 describe "Resource API" do
   path "/resource/{id}" do
-    include_context 'collections_with_objects'
+    include_context 'signed_in_user_with_collections'
     get "retrieves linked data using sparql" do
       tags 'Private (Sign in required)'
       produces 'application/rdf', 'application/ttl'
