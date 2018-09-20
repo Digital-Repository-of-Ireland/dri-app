@@ -92,22 +92,15 @@ shared_context 'subcollection' do |status='draft'|
   end
 end
 
-shared_context 'rswag_include_json_spec_output' do |example_name='application/json'|
-  after do |example|
-    example.metadata[:response][:examples] = { 
-      example_name => JSON.parse(
-        response.body, 
-        symbolize_names: true
-      ) 
-    }
+shared_context 'create_token_auth_user' do
+  before(:each) do
+    # create objects for security params
+    @example_user = FactoryBot.create(:collection_manager)
+    @example_user.create_token
+    @example_user.save!
   end
-end
-
-shared_context 'rswag_include_xml_spec_output' do |example_name='application/xml'|
-  after do |example|
-    example.metadata[:response][:examples] = { 
-      example_name => Nokogiri::XML(response.body) 
-    }
+  after(:each) do
+    @example_user.delete
   end
 end
 

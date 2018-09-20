@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/rswag_shared_contexts'
 
 RSpec.configure do |config|
   # Specify a root folder where Swagger JSON files are generated

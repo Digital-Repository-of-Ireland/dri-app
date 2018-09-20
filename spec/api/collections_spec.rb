@@ -8,13 +8,10 @@ describe "Collections API" do
       # Can access specific public collections, 
       # just not the /collections route and private/draft collections
       # without sign in
-      tags 'Private (Sign in required)'
+      tags 'Collections'
       security [ apiKey: [], appId: [] ]
-
-      # create security params
-      new_user = FactoryBot.create(:collection_manager)
-      new_user.create_token
-      new_user.save!
+      # creates @example_user with authentication_token (not signed in)
+      include_context 'create_token_auth_user'
 
       # TODO deprecate this endpoint?
       produces 'application/json'
@@ -42,11 +39,11 @@ describe "Collections API" do
       # TODO: fix empty output on this test by creating public collections
       # First create an organisation, then publish a collection
       context "Signed in user with collections" do
-        include_context 'signed_in_user_with_collections', user=new_user
+        include_context 'signed_in_user_with_collections', user=@example_user
 
         response "200", "All collections found" do
-          let(:user_token) { new_user.authentication_token }
-          let(:user_email) { CGI.escape(new_user.to_s) }
+          let(:user_token) { @example_user.authentication_token }
+          let(:user_email) { CGI.escape(@example_user.to_s) }
           include_context 'rswag_include_json_spec_output'
 
           before do |example| 
@@ -68,7 +65,8 @@ describe "Collections API" do
     include_context 'signed_in_user_with_collections'
 
     get "retrieves a specific object, collection or subcollection" do
-      tags 'Private (Sign in required)'
+      tags 'Collections'
+      
       produces 'application/json', 'application/xml', 'application/ttl'
       parameter name: :id, description: 'Object ID',
         in: :path, :type => :string
