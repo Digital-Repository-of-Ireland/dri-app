@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 describe "Open Archives Initiative API" do
   path "/oai" do
-    include_context 'signed_in_user_with_collections'
+    include_context 'user_with_collections'
     get "retrieves open archives initiative data for the dri repository" do
       description 'the html version of this endpoint includes links to valid requests'
       tags 'Public'

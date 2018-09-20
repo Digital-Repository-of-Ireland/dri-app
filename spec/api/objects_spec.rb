@@ -16,7 +16,7 @@
 
 # describe 'Objects API' do
 #   path '/get_objects' do
-#     include_context 'signed_in_user_with_collections'
+#     include_context 'user_with_collections'
 
 #     post 'retrieve all objects' do
 #       tags 'Private (Sign in required)'

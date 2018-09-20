@@ -23,7 +23,7 @@ shared_context 'collection_manager_user' do
   end
 end
 
-shared_context 'signed_in_user_with_collections' do |user=nil, num_collections=2, num_objects=2, status='draft'|
+shared_context 'user_with_collections' do |user=nil, num_collections=2, num_objects=2, status='draft'|
   before(:each) do
     @collections = []
 

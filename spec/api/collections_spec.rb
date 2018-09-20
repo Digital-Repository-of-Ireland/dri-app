@@ -38,8 +38,8 @@ describe "Collections API" do
 
       # TODO: fix empty output on this test by creating public collections
       # First create an organisation, then publish a collection
-      context "Signed in user with collections" do
-        include_context 'signed_in_user_with_collections', user=@example_user
+      context "Authenticated user with collections" do
+        include_context 'user_with_collections', user=@example_user
 
         response "200", "All collections found" do
           let(:user_token) { @example_user.authentication_token }
@@ -62,7 +62,8 @@ describe "Collections API" do
   path "/collections/{id}" do
     # TODO break this into shared examples?
     # Common pattern in my_collections and collections
-    include_context 'signed_in_user_with_collections'
+    include_context 'create_token_auth_user'
+    include_context 'user_with_collections', user=@example_user
 
     get "retrieves a specific object, collection or subcollection" do
       tags 'Collections'
@@ -73,9 +74,9 @@ describe "Collections API" do
 
       # TODO: make api response consistent
       # always return sign in error when not signed in on route that requires it
-      # can't include rspec output since it's an empty sting (not json)
+      # can't include rspec output since it's an empty string (not json)
       response "401", "Must be signed in to access this route" do
-        include_context 'sign_out_before_request'
+        include_context 'rswag_unauthenticated_request'
         let(:id) { @collections.first.id }
 
         it 'returns a 401 when the user is not signed in' do

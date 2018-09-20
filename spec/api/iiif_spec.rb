@@ -10,7 +10,7 @@ describe "International Image Interoperability Framework API" do
       parameter name: :id, in: :path, type: :string, required: true
 
       context "Signed in user with collections" do
-        include_context 'signed_in_user_with_collections'
+        include_context 'user_with_collections'
 
         response "200", "Manifest found" do
           include_context 'rswag_include_json_spec_output', 
