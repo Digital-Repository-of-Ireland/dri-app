@@ -38,10 +38,12 @@ ga:
         collection_title: Teideal an Bhailiúcháin
         edit: Déan Eagarthóireacht
         email: Ríomhphost
+        for_example: Mar shampla
         my_account: Mo Chuntas
         name: Ainm
         organisational_manager: Bainisteoir Eagrúcháin
         permissions: Ceadanna
+        token_params: Cuir na paraiméadar seo a leanas in iarratas chun an iarratas sin a dhéanamh tu féin
         user_type: Cineál Úsáideora
         your_collection_details: Sonraí do Bhailiúcháin
     data:
