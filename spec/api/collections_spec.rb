@@ -28,20 +28,14 @@ describe "Collections API" do
 
       # TODO: fix empty output on this test by creating public collections
       # First create an organisation, then publish a collection
+      # Issue with FactoryBot objects not being in solr?
+      # Create real collection to update solr doc?
       context "Authenticated user with collections" do
         response "200", "All collections found" do
           include_context 'rswag_include_json_spec_output'
           let(:user_token) { @example_user.authentication_token }
           let(:user_email) { CGI.escape(@example_user.to_s) }
-          # before do 
-          #   allow_any_instance_of(CollectionsController).to receive(
-          #     :restults_to_hash
-          #   ).and_return()
-          # end
-
-          run_test! do
-            byebug
-          end
+          run_test! 
         end
       end
     end

@@ -4,12 +4,6 @@ FactoryBot.define do
   sequence :email do
     FFaker::Internet.email
   end
-  sequence :name do
-    FFaker::Name.name
-  end
-  sequence :domain_name do
-    FFaker::Internet.domain_name
-  end
 end
 
 FactoryBot.define do
@@ -43,11 +37,4 @@ FactoryBot.define do
       @membership.save
     end
   end
-end
-
-FactoryBot.define do
-  factory(:institute, :class => Institute) do |i|
-    i.name { FactoryBot.generate(:name) }
-    i.url { FactoryBot.generate(:domain_name) }
-  end  
 end
