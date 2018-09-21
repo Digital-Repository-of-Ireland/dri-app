@@ -24,6 +24,10 @@ RSpec.configure do |config|
         version: 'v1'
       },
       paths: {},
+      schemes: [
+        'http',
+        'https' 
+      ],
       securityDefinitions: {
         apiKey: {
           type: :apiKey,
