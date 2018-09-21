@@ -4,7 +4,7 @@ require 'swagger_helper'
 describe "Bookmarks API" do
   path "/bookmarks" do
     get "retrieves bookmarks" do
-      tags 'Public'      
+      # tags 'Bookmarks'      
       produces "application/json"
       response '302', 'bookmark redirect' do
         include_context 'sign_out_before_request'

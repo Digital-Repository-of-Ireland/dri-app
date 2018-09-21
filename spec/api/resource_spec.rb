@@ -3,9 +3,9 @@ require 'swagger_helper'
 # TODO sparql endpoint spec
 describe "Resource API" do
   path "/resource/{id}" do
-    include_context 'user_with_collections'
+    include_context 'rswag_user_with_collections'
     get "retrieves linked data using sparql" do
-      tags 'Private (Sign in required)'
+      security [ apiKey: [], appId: [] ]
       produces 'application/rdf', 'application/ttl'
       parameter name: :id, description: 'Object ID',
         in: :path, :type => :string
@@ -14,11 +14,10 @@ describe "Resource API" do
       # Return sign in error in turtle format?
       response "401", "Must be signed in to access this route" do
         include_context 'sign_out_before_request'
+        let(:user_token) { nil }
+        let(:user_email) { nil }
         let(:id) { @collections.first.id }
-
-        it 'returns a 401 when the user is not signed in' do
-          expect(status).to eq(401) # 401 unauthorized
-        end
+        run_test!
       end
     end
   end

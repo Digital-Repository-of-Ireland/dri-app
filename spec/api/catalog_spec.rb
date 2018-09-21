@@ -3,7 +3,7 @@ require 'swagger_helper'
 describe "Catalog API" do
   path "/catalog" do
     get "retrieves objects from the catalog" do
-      tags 'Catalog'
+      # tags 'catalog'
       produces "application/json"
       include_context 'rswag_user_with_collections', status: 'published'
 
@@ -16,6 +16,7 @@ describe "Catalog API" do
       let(:mode)     { 'objects' }
 
       response '200', 'catalog found' do
+        include_context 'sign_out_before_request'
         include_context 'rswag_include_json_spec_output'
         run_test!
       end

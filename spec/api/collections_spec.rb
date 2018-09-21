@@ -8,7 +8,7 @@ describe "Collections API" do
       # Can access specific public collections, 
       # just not the /collections route and private/draft collections
       # without sign in
-      tags 'Collections'
+      tags 'collections'
       security [ apiKey: [], appId: [] ]
       produces 'application/json'
       # creates @example_user with authentication_token (not signed in)
@@ -45,7 +45,7 @@ describe "Collections API" do
     # TODO break this into shared examples?
     # Common pattern in my_collections and collections
     get "retrieves a specific object, collection or subcollection" do
-      tags 'Collections'
+      tags 'collections'
       security [ apiKey: [], appId: [] ]
       produces 'application/json', 'application/xml', 'application/ttl'
       parameter name: :id, description: 'Object ID',

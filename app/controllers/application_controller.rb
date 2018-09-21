@@ -93,6 +93,7 @@ class ApplicationController < ActionController::Base
     end
 
     def authenticate_user_from_token!
+      # byebug
       user_email = params[:user_email].presence
       user       = user_email && User.find_by_email(user_email)
 
@@ -100,6 +101,9 @@ class ApplicationController < ActionController::Base
       # in the database with the token given in the params, mitigating
       # timing attacks.
       if user && Devise.secure_compare(user.authentication_token, params[:user_token])
+        # sign_in :users, user, store: false
+        # solves mapping not found in dev
+        # but causes tests to fail with 401
         sign_in user, store: false
       end
     end
