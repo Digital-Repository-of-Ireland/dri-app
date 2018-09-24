@@ -17,27 +17,8 @@ shared_context 'rswag_include_xml_spec_output' do |example_name='application/xml
   end
 end
 
-# shared_context 'rswag_unauthenticated_request' do
-#   let(:user_token) { nil }
-#   let(:user_email) { nil }
-#   before(:each) do |example|
-#     sign_out_all
-#     submit_request(example.metadata)
-#   end
-# end
-
-# # depends on @example user existing with authentication_token!
-# shared_context 'rswag_token_authenticated_request' do
-#   let(:user_token) { @example_user.authentication_token }
-#   let(:user_email) { CGI.escape(@example_user.to_s) }
-#   before(:each) do |example|
-#     sign_out_all
-#     submit_request(example.metadata)
-#   end
-# end
-
-shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2|
-  before do
+shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true|
+  before(:each) do
     @example_user = create_user
     @collections = []
     if status == 'published'
@@ -64,14 +45,24 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
       collection.save
       @collections << collection
     end
+    @collections << create_subcollection_for(@example_user) if subcollection
+    sign_out_all # just to make sure requests aren't using session 
   end
   after(:each) do
     @institute.delete if @institute
-    @collections.map
     @example_user.delete
+    # issue with nested examples
+    # possibly check for ldp gone before delete?
+    # @collections.map(&:delete)
   end
 end
 
+shared_context 'sign_out_before_request' do
+  before do |example|
+    sign_out_all
+    submit_request(example.metadata)
+  end
+end
 
 # @param type [Symbol]
 # @param token [Boolean]
@@ -90,13 +81,30 @@ end
 # @return collection [DRI::QualifiedDublinCore (Collection)]
 def create_collection_for(user, status: 'draft', title: 'test_collection')
   collection = FactoryBot.create(:collection)
-  # collection = Collection.new if status == 'published'
   collection[:status] = status
   collection[:creator] = [user.to_s]
   collection[:title] = [title]
   collection[:date] = [DateTime.now.strftime("%Y-%m-%d")]
   collection.apply_depositor_metadata(user.to_s)
   collection.save
+  collection
+end
+
+# @param user [User]
+# @param type [Symbol]
+# @param title [String]
+# @param status [String]
+# @return collection containing subcollection [DRI::QualifiedDublinCore (Collection)]
+def create_subcollection_for(user, status: 'draft')
+  collection = create_collection_for(user, status: status)
+  subcollection = create_collection_for(user, status: status, title: 'subcollection')
+  subcollection.governing_collection = collection
+
+  [collection, subcollection].each do |c|
+    c.governed_items << create_object_for(user, status: status)
+    c.save
+  end
+
   collection
 end
 

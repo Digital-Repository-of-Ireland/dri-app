@@ -70,7 +70,7 @@ describe "My Collections API" do
         context 'Show subcollections' do
           include_context 'rswag_include_json_spec_output', 
             example_name='/my_collections.json?mode=collections&show_subs=true'
-          include_context 'subcollection'
+          # include_context 'subcollection'
           let(:mode) { 'collections' }
           let(:show_subs) { true }
           run_test!
