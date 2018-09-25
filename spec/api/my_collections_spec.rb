@@ -104,19 +104,15 @@ describe "My Collections API" do
         run_test!
       end
 
-      # # TODO make api 404 consistent
-      # # should either take precedence or not
-      # # but currently takes precedence over 401 on iiif route
-      # # but not my_collections route
-      # response "404", "Object not found" do
-      #   # doesn't matter whether you're signed in
-      #   # 404 takes precendence over 401
-      #   include_context 'rswag_include_json_spec_output'
-      #   let(:user_token) { nil }
-      #   let(:user_email) { nil }
-      #   let(:id) { "collection_that_does_not_exist" }
-      #   run_test!
-      # end
+      response "404", "Object not found" do
+        # doesn't matter whether you're signed in
+        # 404 takes precendence over 401
+        include_context 'rswag_include_json_spec_output'
+        let(:user_token) { nil }
+        let(:user_email) { nil }
+        let(:id) { "collection_that_does_not_exist" }
+        run_test!
+      end
 
       response "200", "Object found" do
         include_context 'rswag_include_json_spec_output'

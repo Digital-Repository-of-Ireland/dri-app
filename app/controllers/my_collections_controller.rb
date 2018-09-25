@@ -4,8 +4,8 @@ class MyCollectionsController < ApplicationController
   # otherwise enforce_search_for_show_permissions in catalog will return 401
   # even when the user provides a valid api key
   before_action :authenticate_user_from_token!
-  before_action :authenticate_user!
   include DRI::Catalog
+  before_action :authenticate_user!
 
   # This applies appropriate access controls to all solr queries
   MyCollectionsController.solr_search_params_logic += [:add_workspace_access_controls_to_solr_params]
