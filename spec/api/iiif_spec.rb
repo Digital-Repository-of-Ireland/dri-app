@@ -4,7 +4,7 @@ describe "International Image Interoperability Framework API" do
   # TODO include /iiif/collection/id?
   # Returns same result as iiif/{collection_id}/manifest
   path "/iiif/{id}/manifest" do
-    get "retrieves International Image Interoperability Framework manifests" do
+    get "retrieves International Image Interoperability Framework manifests for objects" do
       # tags 'IIIF'
       security [ apiKey: [], appId: [] ]
       produces 'application/json'
@@ -31,7 +31,7 @@ describe "International Image Interoperability Framework API" do
         end
       end
 
-      response "401", "Unauthorized access of specific manifest" do
+      response "401", "Unauthorized access of private manifest" do
         # TODO same issue as collections 401, not returning error message
         # include_context 'rswag_include_json_spec_output'
         let(:user_token) { nil }

@@ -33,7 +33,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
         object = create_object_for(
           @example_user, 
           status: status,
-          title: "not a duplicate #{j}",
+          title: "not a duplicate #{i}#{j}",
         )
         object.depositing_institute = @institute.name if @institute
         collection.governed_items << object
@@ -51,7 +51,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
   after(:each) do
     @institute.delete if @institute
     @example_user.delete
-    # issue with nested examples
+    # issue with nested examples e.g iiif_spec
     # possibly check for ldp gone before delete?
     # @collections.map(&:delete)
   end

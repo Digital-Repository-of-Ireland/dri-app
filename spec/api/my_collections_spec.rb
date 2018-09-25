@@ -85,7 +85,7 @@ describe "My Collections API" do
     end
   end
 
-  path "/my_collections/{id}" do
+  path "/my_collections/{id}/" do
     get "retrieves a specific object, collection or subcollection" do
       tags 'collections'
       security [ apiKey: [], appId: [] ]
@@ -104,32 +104,27 @@ describe "My Collections API" do
         run_test!
       end
 
-      response "404", "Object not found" do
-        # doesn't matter whether you're signed in
-        # 404 takes precendence over 401
+      # # TODO make api 404 consistent
+      # # should either take precedence or not
+      # # but currently takes precedence over 401 on iiif route
+      # # but not my_collections route
+      # response "404", "Object not found" do
+      #   # doesn't matter whether you're signed in
+      #   # 404 takes precendence over 401
+      #   include_context 'rswag_include_json_spec_output'
+      #   let(:user_token) { nil }
+      #   let(:user_email) { nil }
+      #   let(:id) { "collection_that_does_not_exist" }
+      #   run_test!
+      # end
+
+      response "200", "Object found" do
         include_context 'rswag_include_json_spec_output'
-        let(:user_token) { nil }
-        let(:user_email) { nil }
-        let(:id) { "collection_that_does_not_exist" }
+        let(:user_token) { @example_user.authentication_token }
+        let(:user_email) { CGI.escape(@example_user.to_s) }
+        let(:id) { @collections.first.id }
         run_test!
       end
-
-      # response "200", "Object found" do
-      #   include_context 'rswag_include_json_spec_output'
-      #   let(:user_token) { @example_user.authentication_token }
-      #   let(:user_email) { CGI.escape(@example_user.to_s) }
-      #   let(:id) { @collections.first.id }
-      #   run_test!
-      #   # before do |example|
-      #   #   byebug
-      #   #   submit_request(example.metadata)
-      #   # end
-
-      #   # it 'should be 200' do
-      #   #   byebug
-      #   #   expect(status).to eq 200
-      #   # end
-      # end
     end
   end
 end

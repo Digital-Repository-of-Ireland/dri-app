@@ -1,7 +1,6 @@
 require 'swagger_helper'
 
 describe "Collections API" do
-  # TODO deprecate this endpoint?
   path "/collections" do
     get "retrieves collections for the current user" do
       # TODO is collections really private?
