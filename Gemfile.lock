@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
-  revision: d29077d196bc2974e2f7cf6c7e2e90d24594fb64
+  revision: ec575efa6bdc3065859571b964cb03fc29501370
   specs:
     dri_batch_ingest (0.0.1)
       filesize
@@ -376,7 +376,7 @@ GEM
       sax-machine (>= 1.0)
     ffaker (2.7.0)
     ffi (1.9.25)
-    filesize (0.1.1)
+    filesize (0.2.0)
     font-awesome-rails (4.5.0.1)
       railties (>= 3.2, < 5.1)
     formatador (0.2.5)
