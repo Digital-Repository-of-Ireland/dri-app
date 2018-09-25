@@ -2,11 +2,11 @@ require 'swagger_helper'
 
 describe "Open Archives Initiative API" do
   path "/oai" do
-    include_context 'collections_with_objects'
     get "retrieves open archives initiative data for the dri repository" do
       description 'the html version of this endpoint includes links to valid requests'
-      tags 'Public'
+      # tags 'Open Archives Initiative'
       produces 'application/xml'
+      include_context 'rswag_user_with_collections'
       parameter name: :verb, in: :query, type: :string, required: true,
         enum: [
           'Identify', 'ListRecords', 'ListSets', 
@@ -26,10 +26,7 @@ describe "Open Archives Initiative API" do
           include_context 'sign_out_before_request'
           include_context 'rswag_include_xml_spec_output',
             example_name="/oai (error missing verb)"
-
-          it 'returns 200 whether the user is signed in or not' do
-            expect(status).to eq(200) # 401 unauthorized
-          end
+          run_test!
         end
         # TODO better test using nokogiri to make sure response 
         # doesn't contain errors
@@ -42,6 +39,7 @@ describe "Open Archives Initiative API" do
         }.each do |k, v|
           context k do
             api_args = v.map &->(k,v) {"#{k}=#{v}"}
+            include_context 'sign_out_before_request'
             include_context 'rswag_include_xml_spec_output',
               example_name="/oai?#{api_args.join("&")}"
             v.each { |symbol, value|  let(symbol) { value } }

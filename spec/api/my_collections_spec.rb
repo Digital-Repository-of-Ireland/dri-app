@@ -3,11 +3,13 @@ require 'swagger_helper'
 describe "My Collections API" do
   path "/my_collections" do
     get "retrieves objects, collections, or subcollections for the current user" do
-      tags 'Private (Sign in required)'
+      tags 'collections'
+      security [ apiKey: [], appId: [] ]
+      produces 'application/json'
+      include_context 'rswag_user_with_collections'
       # TODO accept ttl and xml on default route too
       # not just specific objects
       # TODO add json format for /my_collections/:id/duplicates
-      produces 'application/json'
 
       parameter name: :per_page, description: 'Number of results per page', 
         in: :query, type: :number, default: 9, required: false
@@ -41,102 +43,83 @@ describe "My Collections API" do
       # let(:f)            { nil }
       
       response "401", "Must be signed in to access this route" do
-        include_context 'sign_out_before_request'
         include_context 'rswag_include_json_spec_output'
+        let(:user_token) { nil }
+        let(:user_email) { nil }
 
-        it "should require a sign in" do 
+        run_test! do 
           auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
           expect(response.body).to eq auth_error_response
           expect(status).to eq(401) # 401 unauthorized
         end
       end
-
-      context "Signed in user with collections" do
-        include_context 'collections_with_objects'
-
-        response "200", "All objects found" do
-          context 'All objects found' do
-            include_context 'rswag_include_json_spec_output', 
-              example_name='/my_collections.json'
-            run_test! do
-              expect(status).to eq(200) 
-            end
-          end
-          context 'All collections found' do
-            include_context 'rswag_include_json_spec_output', 
-              example_name='/my_collections.json?mode=collections'
-
-            before do |example|
-              submit_request(example.metadata)
-            end
-            let(:mode) { 'collections' }
-            it 'returns 200' do
-              expect(status).to eq(200) 
-            end
-          end 
-          context 'Show subcollections' do
-            include_context 'rswag_include_json_spec_output', 
-              example_name='/my_collections.json?mode=collections&show_subs=true'
-            include_context 'subcollection'
-            let(:mode) { 'collections' }
-            let(:show_subs) { true }
-            run_test! do
-              expect(status).to eq(200) 
-            end
-          end
-          context 'Limit results' do
-            include_context 'rswag_include_json_spec_output', 
-              example_name='/my_collections.json?per_page=1'
-            let(:per_page) { 1 }
-            run_test! do
-              expect(status).to eq(200) 
-            end
-          end
+      response "200", "All objects found" do
+        let(:user_token) { @example_user.authentication_token }
+        let(:user_email) { CGI.escape(@example_user.to_s) }
+        context 'All objects found' do
+          include_context 'rswag_include_json_spec_output', 
+            example_name='/my_collections.json'
+          run_test!
+        end
+        context 'All collections found' do
+          include_context 'rswag_include_json_spec_output', 
+            example_name='/my_collections.json?mode=collections'
+          let(:mode) { 'collections' }
+          run_test!
+        end 
+        context 'Show subcollections' do
+          include_context 'rswag_include_json_spec_output', 
+            example_name='/my_collections.json?mode=collections&show_subs=true'
+          # include_context 'subcollection'
+          let(:mode) { 'collections' }
+          let(:show_subs) { true }
+          run_test!
+        end
+        context 'Limit results' do
+          include_context 'rswag_include_json_spec_output', 
+            example_name='/my_collections.json?per_page=1'
+          let(:per_page) { 1 }
+          run_test!
         end
       end
     end
   end
 
-  path "/my_collections/{id}" do
-    include_context 'collections_with_objects'
-
+  path "/my_collections/{id}/" do
     get "retrieves a specific object, collection or subcollection" do
-      tags 'Private (Sign in required)'
+      tags 'collections'
+      security [ apiKey: [], appId: [] ]
       produces 'application/json', 'application/xml', 'application/ttl'
       parameter name: :id, description: 'Object ID',
         in: :path, :type => :string
+      include_context 'rswag_user_with_collections'
 
       # TODO: make api response consistent
       # always return sign in error when not signed in on route that requires it
       # can't include rspec output since it's an empty sting (not json)
       response "401", "Must be signed in to access this route" do
-        include_context 'sign_out_before_request'
+        let(:user_token) { nil }
+        let(:user_email) { nil }
         let(:id) { @collections.first.id }
-
-        it 'returns a 401 when the user is not signed in' do
-          expect(status).to eq(401) # 401 unauthorized
-        end
+        run_test!
       end
 
       response "404", "Object not found" do
         # doesn't matter whether you're signed in
         # 404 takes precendence over 401
-        include_context 'sign_out_before_request'
         include_context 'rswag_include_json_spec_output'
-
+        let(:user_token) { nil }
+        let(:user_email) { nil }
         let(:id) { "collection_that_does_not_exist" }
-
-        it 'returns a 404 when the user is not signed in' do
-          expect(status).to eq(404) 
-        end
+        run_test!
       end
 
       response "200", "Object found" do
         include_context 'rswag_include_json_spec_output'
+        let(:user_token) { @example_user.authentication_token }
+        let(:user_email) { CGI.escape(@example_user.to_s) }
         let(:id) { @collections.first.id }
-        run_test! do
-          expect(status).to eq(200) 
-        end
+        run_test!
       end
     end
   end

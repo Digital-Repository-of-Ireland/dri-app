@@ -4,7 +4,7 @@ describe 'Users API' do
   path '/users/sign_out' do
     include_context 'collection_manager_user'
     delete 'Signs the current user out' do
-      tags 'Public'
+      tags 'users'
       produces 'nothing'
 
       # should redirect to sign in
@@ -14,36 +14,24 @@ describe 'Users API' do
     end
   end
   path '/users/sign_in' do
-    post 'Signs in the user' do
-      tags 'Public'
+    post 'Signs the user in' do
+      tags 'users'
       consumes 'multipart/form-data'
-      # consumes 'application/x-www-form-urlencoded'
+      # TODO find proper way to set output to nothing
+      # or produce some json response
 
-      # parameter name: :user, in: :formData, schema: {
-      #   type: :object,
-      #   properties: {
-      #     email: { type: :string },
-      #     password: { type: :string }
-      #   },
-      #   required: ['email', 'password']
-      # }
-
-      # let(:user) { nil }
       parameter name: 'user[email]', in: :formData, type: :string
       parameter name: 'user[password]', in: :formData, type: :string
-
-      let('user[email]') { nil }
+      
+        let('user[email]') { nil }
       let('user[password]') { nil }
 
       # response '401', 'Invalid credentials' do
       #   run_test!
       # end
-
-      # # TODO fix form data issue, request workign on postman
+      
       response '200', 'Valid credentials' do
-        # require 'byebug'
-        # let(:user) { {email: 'admin@dri.ie', password: 'CHANGEME'} }
-        let('user[email]') { 'tadmin@dri.ie' }
+        let('user[email]') { 'admin@dri.ie' }
         let('user[password]') { 'CHANGEME' }
         run_test!
       end
