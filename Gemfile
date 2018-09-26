@@ -180,3 +180,5 @@ gem 'remotipart'
 gem "rswag-api", "~> 2.0"
 
 gem "rswag-ui", "~> 2.0"
+
+gem "parallel_tests", "~> 2.23"
