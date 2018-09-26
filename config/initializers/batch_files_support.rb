@@ -54,7 +54,7 @@ DRI::ModelSupport::Files.module_eval do
       version: object_version
     )
 
-    file_content = GenericFileContent.new(user: ingest_user, generic_file: generic_file)
+    file_content = GenericFileContent.new(user: ingest_user, object: object, generic_file: generic_file)
     if file_content.external_content(URI.escape(url), filename, dsid)
       true
     else

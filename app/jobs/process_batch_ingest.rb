@@ -55,7 +55,7 @@ class ProcessBatchIngest
                         id: @generic_file.id,
                         version: version
                       )
-                file_content = GenericFileContent.new(user: user, generic_file: @generic_file)
+                file_content = GenericFileContent.new(user: user, object: object, generic_file: @generic_file)
                 file_content.external_content(
                   url,
                   file_name
