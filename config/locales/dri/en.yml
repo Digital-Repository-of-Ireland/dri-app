@@ -40,10 +40,12 @@ en:
         collection_title: Collection Title
         edit: Edit
         email: Email
+        for_example: For example
         my_account: My Account
         name: Name
         organisational_manager: Organisational Manager
         permissions: Permissions
+        token_params: Add the following parameters to a request to make that request as yourself
         user_type: User Type
         your_collection_details: Your Collection Details
     data:

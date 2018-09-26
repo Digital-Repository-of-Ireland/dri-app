@@ -65,8 +65,6 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
                      value_for(v, record.to_h, {})
                    end
 
-          # byebug if values.present?
-
           values.each do |value|
             xml.tag! "#{pref}:#{k}", value unless value.nil?
           end

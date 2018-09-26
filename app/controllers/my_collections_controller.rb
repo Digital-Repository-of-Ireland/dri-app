@@ -1,8 +1,10 @@
 # -*- encoding : utf-8 -*-
 class MyCollectionsController < ApplicationController
-  include DRI::Catalog
-
+  # authentication must always happen before including DIR::catalog,
+  # otherwise enforce_search_for_show_permissions in catalog will return 401
+  # even when the user provides a valid api key
   before_action :authenticate_user_from_token!
+  include DRI::Catalog
   before_action :authenticate_user!
 
   # This applies appropriate access controls to all solr queries

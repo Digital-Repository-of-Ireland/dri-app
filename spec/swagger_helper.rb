@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'support/rswag_shared_contexts'
 
 RSpec.configure do |config|
   # Specify a root folder where Swagger JSON files are generated
@@ -22,7 +23,23 @@ RSpec.configure do |config|
         title: 'API V1',
         version: 'v1'
       },
-      paths: {}
+      paths: {},
+      schemes: [
+        'http',
+        'https' 
+      ],
+      securityDefinitions: {
+        apiKey: {
+          type: :apiKey,
+          name: 'user_token',
+          in: :query
+        },
+        appId: {
+          type: :apiKey,
+          name: 'user_email',
+          in: :query
+        }
+      }
     }
   }
 end
