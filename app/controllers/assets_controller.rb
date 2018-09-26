@@ -35,13 +35,15 @@ class AssetsController < ApplicationController
   def download
     type = params[:type].presence || 'masterfile'
 
+    result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
+    @object_document = SolrDocument.new(result.first)
+
     case type
     when 'surrogate'
       @generic_file = retrieve_object! params[:id]
       if @generic_file
-        object = @generic_file.batch
-        if object.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download",  object.id, 1, true)
+        if @object_document.published?
+          Gabba::Gabba.new(GA.tracker, request.host).event(@object_document.root_collection_id, "Download",  @object_document.id, 1, true)
         end
         download_surrogate(surrogate_type_name)
         return
@@ -50,16 +52,12 @@ class AssetsController < ApplicationController
     when 'masterfile'
       enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
-      result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
-      @object_document = SolrDocument.new(result.first)
-
       @generic_file = retrieve_object! params[:id]
       if @generic_file
         can_view?
 
-        object = @generic_file.batch
-        if object.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.id, 1, true)
+        if @object_document.published?
+          Gabba::Gabba.new(GA.tracker, request.host).event(@object_document.root_collection_id, "Download", @object_document.id, 1, true)
         end
 
         if local_file
@@ -109,17 +107,15 @@ class AssetsController < ApplicationController
   def update
     enforce_permissions!('edit', params[:object_id])
 
-    datastream = 'content'
-    file_upload = upload_from_params
+    file_upload, mime_type = upload_from_params
 
     @object = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
 
-    preserved_file = preserve_file(file_upload, datastream, params)
-    url = "#{URI.escape(download_url)}?version=#{preserved_file.version}"
+    filename = params[:file_name].presence || file_upload.original_filename
+    file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
 
-    file_content = GenericFileContent.new(user: current_user, generic_file: @generic_file)
-    if file_content.external_content(url, preserved_file.filename)
+    if file_content.update_content(file_upload, filename, mime_type, download_url)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
       mint_doi(@object, 'asset modified') if @object.status == 'published'
@@ -130,7 +126,7 @@ class AssetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to object_file_url(params[:object_id], @generic_file.id) }
+      format.html { redirect_to object_file_url(@object.id, @generic_file.id) }
       format.json do
         response = { checksum: preserved_file.checksum }
         response[:warning] = @warnings if @warnings
@@ -146,8 +142,7 @@ class AssetsController < ApplicationController
   def create
     enforce_permissions!('edit', params[:object_id])
 
-    datastream = 'content'
-    file_upload = upload_from_params
+    file_upload, mime_type = upload_from_params
 
     @object = retrieve_object! params[:object_id]
     if @object.nil?
@@ -158,11 +153,10 @@ class AssetsController < ApplicationController
     preservation = params[:preservation].presence == 'true' ? true : false
     @generic_file = build_generic_file(object: @object, user: current_user, preservation: preservation)
 
-    preserved_file = preserve_file(file_upload, datastream, params)
-    url = "#{URI.escape(download_url)}?version=#{preserved_file.version}"
+    filename = params[:file_name].presence || file_upload.original_filename
+    file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
 
-    file_content = GenericFileContent.new(user: current_user, generic_file: @generic_file)
-    if file_content.external_content(url, preserved_file.filename)
+    if file_content.add_content(file_upload, filename, mime_type, download_url)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
       mint_doi(@object, 'asset added') if @object.status == 'published'
@@ -176,7 +170,7 @@ class AssetsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
       format.json do
-        response = { checksum: preserved_file.checksum }
+        response = { checksum: file_content.checksum }
         response[:warnings] = @warnings if @warnings
 
         render json: response, status: :created
@@ -267,41 +261,6 @@ class AssetsController < ApplicationController
           buffer_size: '4096'
         )
       end
-    end
-
-    def preserve_file(filedata, datastream, params)
-      checksum = params[:checksum]
-      filename = params[:file_name].presence || filedata.original_filename
-      filename = "#{@generic_file.id}_#{filename}"
-
-      # Update object version
-      @object.object_version ||= '1'
-      @object.increment_version
-
-      begin
-        @object.save!
-      rescue ActiveRecord::ActiveRecordError => e
-        logger.error "Could not update object version number for #{@object.id} to version #{@object.object_version}"
-        raise Exceptions::InternalError
-      end
-
-      file = LocalFile.build_local_file(
-        object: @object,
-        generic_file: @generic_file,
-        data: filedata,
-        datastream: datastream,
-        opts: { filename: filename, mime_type: @mime_type, checksum: 'md5' }
-      )
-
-      # Do the preservation actions
-      addfiles = [filename]
-      delfiles = []
-      delfiles = ["#{@generic_file.id}_#{@generic_file.label}"] if params[:action] == 'update'
-
-      preservation = Preservation::Preservator.new(@object)
-      preservation.preserve_assets(addfiles, delfiles)
-
-      file
     end
 
     def show_surrogate
@@ -432,18 +391,21 @@ class AssetsController < ApplicationController
                       params[:Filedata].presence || params[:Presfiledata].presence
                     end
 
-      validate_upload(file_upload)
+      mime_type = validate_upload(file_upload)
 
-      file_upload
+      return file_upload, mime_type
     end
 
     def validate_upload(file_upload)
-      @mime_type = Validators.file_type(file_upload)
-      Validators.validate_file(file_upload, @mime_type)
+      mime_type = Validators.file_type(file_upload)
+      Validators.validate_file(file_upload, mime_type)
+
+      mime_type
     rescue DRI::Exceptions::UnknownMimeType, DRI::Exceptions::WrongExtension, DRI::Exceptions::InappropriateFileType
       message = t('dri.flash.alert.invalid_file_type')
       flash[:alert] = message
       @warnings = message
+      mime_type
     rescue DRI::Exceptions::VirusDetected => e
       flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
       raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', name: file_upload.original_filename)
