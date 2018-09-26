@@ -43,7 +43,7 @@ ga:
         name: Ainm
         organisational_manager: Bainisteoir Eagrúcháin
         permissions: Ceadanna
-        token_params: Cuir na paraiméadar seo a leanas in iarratas chun an iarratas sin a dhéanamh tu féin
+        token_params: Cuir na paraiméadar seo a leanas in iarratas chun é a fhíordheimhniú
         user_type: Cineál Úsáideora
         your_collection_details: Sonraí do Bhailiúcháin
     data:

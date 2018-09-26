@@ -45,7 +45,7 @@ en:
         name: Name
         organisational_manager: Organisational Manager
         permissions: Permissions
-        token_params: Add the following parameters to a request to make that request as yourself
+        token_params: Add the following parameters to authenticate a request
         user_type: User Type
         your_collection_details: Your Collection Details
     data:
