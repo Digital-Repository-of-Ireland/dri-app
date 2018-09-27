@@ -65,6 +65,8 @@ shared_context 'sign_out_before_request' do
   end
 end
 
+# TODO move methods in helper module
+
 # @param type [Symbol]
 # @param token [Boolean]
 # @return user [User]

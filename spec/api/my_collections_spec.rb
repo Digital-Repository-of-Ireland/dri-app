@@ -48,7 +48,8 @@ describe "My Collections API" do
         let(:user_email) { nil }
 
         it_behaves_like 'a json api error'
-        it_behaves_like 'a json api 401 error'
+        it_behaves_like 'a json api 401 error',
+          message: "You need to sign in or sign up before continuing."
       end
       response "200", "All objects found" do
         let(:user_token) { @example_user.authentication_token }
@@ -98,8 +99,7 @@ describe "My Collections API" do
         let(:id) { @collections.first.id }
 
         it_behaves_like 'a json api error'
-        it_behaves_like 'a json api 401 error', 
-          message: 'You do not have sufficient access privileges to read this document'
+        it_behaves_like 'a json api 401 error'
       end
 
       response "404", "Object not found" do
@@ -111,7 +111,7 @@ describe "My Collections API" do
         let(:id) { "collection_that_does_not_exist" }
 
         it_behaves_like 'a json api error'
-        run_test!
+        it_behaves_like 'a json api 404 error'
       end
 
       response "200", "Object found" do

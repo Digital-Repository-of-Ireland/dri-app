@@ -32,12 +32,13 @@ describe "International Image Interoperability Framework API" do
       end
 
       response "401", "Unauthorized access of private manifest" do
-        # TODO same issue as collections 401, not returning error message
-        # include_context 'rswag_include_json_spec_output'
+        include_context 'rswag_include_json_spec_output'
+        
         let(:user_token) { nil }
         let(:user_email) { nil }
         let(:id) { @collections.first.id }
-        run_test!
+        it_behaves_like 'a json api error'
+        it_behaves_like 'a json api 401 error'
       end
       
       response "404", "Manifest not found" do
@@ -45,7 +46,8 @@ describe "International Image Interoperability Framework API" do
         let(:user_token) { nil }
         let(:user_email) { nil }
         let(:id) { 'id_that_does_not_exist' }
-        run_test!
+        it_behaves_like 'a json api error'
+        it_behaves_like 'a json api 404 error'
       end
     end
   end
