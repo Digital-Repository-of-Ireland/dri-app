@@ -234,6 +234,7 @@ GEM
       sass (>= 3.2.19)
     bootstrap-switch-rails (3.3.3)
     builder (3.2.3)
+    byebug (10.0.2)
     cancancan (1.17.0)
     capybara (2.16.1)
       addressable
@@ -954,6 +955,7 @@ DEPENDENCIES
   bootstrap-sass (= 3.3.5)
   bootstrap-switch-rails
   browse-everything!
+  byebug (~> 10.0)
   ci_reporter_rspec
   clamav
   clipboard-rails

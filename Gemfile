@@ -75,7 +75,6 @@ gem 'is_it_working-cbeer'
 gem 'resque', '1.26'
 gem 'resque-status'
 gem 'nest'
-
 gem 'sass-rails' , '~> 4.0.4'
 #gem 'compass', '0.12.7'
 
@@ -103,16 +102,12 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'guard-livereload', require: false
-
   gem "zeus", require: false
-
   gem 'ci_reporter_rspec'
-
   gem 'solr_wrapper', '~> 0.18'
   gem 'fcrepo_wrapper', '0.6.0'
-
   gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
-
+  gem "byebug", "~> 10.0"
 end
 
 group :test do
@@ -176,7 +171,7 @@ gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem "jquery-slick-rails"
 gem 'remotipart'
 
-
+# api documentation generator / presenter
 gem "rswag-api", "~> 2.0"
-
 gem "rswag-ui", "~> 2.0"
+
