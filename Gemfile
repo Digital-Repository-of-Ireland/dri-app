@@ -120,6 +120,7 @@ group :test do
   gem 'ffaker'
   gem 'syntax'
   gem 'cucumber-api-steps'
+  gem "parallel_tests", "~> 2.23"
 end
 
 # To use ActiveModel has_secure_password
@@ -174,5 +175,3 @@ gem 'remotipart'
 # api documentation generator / presenter
 gem "rswag-api", "~> 2.0"
 gem "rswag-ui", "~> 2.0"
-
-gem "parallel_tests", "~> 2.23"

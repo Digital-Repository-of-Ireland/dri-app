@@ -1,7 +1,7 @@
 --require spec_helper
 --require rails_helper
 
---format progress
---color
+#--format progress
+#--color
 
 -- --serialize-stdout
