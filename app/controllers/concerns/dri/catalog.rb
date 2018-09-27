@@ -12,6 +12,9 @@ module DRI::Catalog
   MAX_TIMELINE_ENTRIES = 50
 
   included do
+    # need rescue_from here to ensure that errors thrown by before_action 
+    # below are caught and handled properly
+    rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
     # These before_filters apply the hydra access controls
     before_action :enforce_search_for_show_permissions, only: :show
   end

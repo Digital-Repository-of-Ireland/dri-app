@@ -68,16 +68,29 @@ module DRI
 
       respond_to do |type|
         type.html do
-         render(
-          template: 'errors/error_display',
-          locals: { header: status_message,
-                    message: message },
-                    status: status_type
-                )
+          render(
+            template: 'errors/error_display',
+            locals: { header: status_message, message: message },
+            status: status_type
+          )
         end
         type.all  { render nothing: true, status: status_type}
       end
       true
+    end
+
+    def render_404(e)
+      respond_to do |format|
+        format.html  {
+          render file: "#{Rails.root}/public/404.html", 
+          layout: false, 
+          status: 404 
+        }
+        format.json {
+          render json: JSON.pretty_generate({errors: [{status: "404", detail: "#{e}"}] }), 
+          content_type: 'application/ld+json', status: 404 
+        }
+      end
     end
 
     def status_to_message(status)
