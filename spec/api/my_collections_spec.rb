@@ -47,11 +47,8 @@ describe "My Collections API" do
         let(:user_token) { nil }
         let(:user_email) { nil }
 
-        run_test! do 
-          auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
-          expect(response.body).to eq auth_error_response
-          expect(status).to eq(401) # 401 unauthorized
-        end
+        it_behaves_like 'a json api error'
+        it_behaves_like 'a json api 401 error'
       end
       response "200", "All objects found" do
         let(:user_token) { @example_user.authentication_token }
@@ -94,14 +91,15 @@ describe "My Collections API" do
         in: :path, :type => :string
       include_context 'rswag_user_with_collections'
 
-      # TODO: make api response consistent
-      # always return sign in error when not signed in on route that requires it
-      # can't include rspec output since it's an empty sting (not json)
       response "401", "Must be signed in to access this route" do
+        include_context 'rswag_include_json_spec_output'
         let(:user_token) { nil }
         let(:user_email) { nil }
         let(:id) { @collections.first.id }
-        run_test!
+
+        it_behaves_like 'a json api error'
+        it_behaves_like 'a json api 401 error', 
+          message: 'You do not have sufficient access privileges to read this document'
       end
 
       response "404", "Object not found" do
@@ -111,6 +109,8 @@ describe "My Collections API" do
         let(:user_token) { nil }
         let(:user_email) { nil }
         let(:id) { "collection_that_does_not_exist" }
+
+        it_behaves_like 'a json api error'
         run_test!
       end
 

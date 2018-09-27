@@ -69,15 +69,16 @@ module DRI
             status: status_type
           )
         end
-        # format.json do
-        #   render(
-        #     json: JSON.pretty_generate(
-        #       { errors: [{status: status_type, detail: message}] }
-        #     ), 
-        #     content_type: 'application/ld+json', 
-        #     status: status_type 
-        #   )
-        # end
+        format.json do
+          code = "#{status_code(status_type)}"
+          render(
+            json: JSON.pretty_generate(
+              { errors: [{ status: code, detail: message }] }
+            ), 
+            content_type: 'application/ld+json', 
+            status: code 
+          )
+        end
         format.all  { render nothing: true, status: status_type}
       end
       true
@@ -96,6 +97,8 @@ module DRI
         }
       end
     end
+
+    # 401 handled by CustomDeviseFailureApp
 
     def status_to_message(status)
       HTTP_STATUS_CODES[status_code(status)]

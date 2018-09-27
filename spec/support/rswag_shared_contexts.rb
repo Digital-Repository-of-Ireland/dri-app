@@ -1,3 +1,4 @@
+# rswag / api shared contexts
 shared_context 'rswag_include_json_spec_output' do |example_name='application/json'|
   after do |example|
     example.metadata[:response][:examples] = { 
