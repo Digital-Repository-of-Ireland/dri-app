@@ -2,22 +2,17 @@ module DRI
   module Exceptions
     include Rack::Utils
 
-
     class BadRequest < StandardError
     end
-
 
     class InternalError < StandardError
     end
 
-
     class UnknownMimeType < StandardError
     end
 
-
     class WrongExtension < StandardError
     end
-
 
     class InappropriateFileType < StandardError
     end
@@ -66,15 +61,24 @@ module DRI
     def render_exception(status_type, message)
       status_message = status_to_message(status_type)
 
-      respond_to do |type|
-        type.html do
+      respond_to do |format|
+        format.html do
           render(
             template: 'errors/error_display',
             locals: { header: status_message, message: message },
             status: status_type
           )
         end
-        type.all  { render nothing: true, status: status_type}
+        # format.json do
+        #   render(
+        #     json: JSON.pretty_generate(
+        #       { errors: [{status: status_type, detail: message}] }
+        #     ), 
+        #     content_type: 'application/ld+json', 
+        #     status: status_type 
+        #   )
+        # end
+        format.all  { render nothing: true, status: status_type}
       end
       true
     end
