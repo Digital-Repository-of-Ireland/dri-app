@@ -5,75 +5,55 @@ class AssetsController < ApplicationController
   before_action :authenticate_user!, only: :list_assets
   before_action :add_cors_to_json, only: :list_assets
   before_action :read_only, except: [:show, :download, :list_assets]
-  before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets, :retrieve]
+  before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets]
 
   require 'validators'
 
   include DRI::Citable
 
   def show
-    if params[:surrogate].present?
-      show_surrogate
-      return
-    else
-      result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
-      @object_document = SolrDocument.new(result.first)
+    @object_document = SolrDocument.find(params[:object_id])
+    @generic_file = retrieve_object! params[:id]
 
-      @generic_file = retrieve_object! params[:id]
-      status(@generic_file.id)
-      can_view?
+    status(@generic_file.id)
+    can_view?
 
-      respond_to do |format|
-        format.html
-        format.json { render json: @generic_file }
-      end
+    respond_to do |format|
+      format.html
+      format.json { render json: @generic_file }
     end
   end
 
   # Retrieves external datastream files that have been stored in the filesystem.
   # By default, it retrieves the master file
   def download
-    type = params[:type].presence || 'masterfile'
+    enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
-    result = ActiveFedora::SolrService.query("id:#{params[:object_id]}")
-    @object_document = SolrDocument.new(result.first)
+    @generic_file = retrieve_object! params[:id]
+    if @generic_file
+      @object_document = SolrDocument.find(params[:object_id])
 
-    case type
-    when 'surrogate'
-      @generic_file = retrieve_object! params[:id]
-      if @generic_file
-        if @object_document.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(@object_document.root_collection_id, "Download",  @object_document.id, 1, true)
-        end
-        download_surrogate(surrogate_type_name)
-        return
+      can_view?
+
+      if @object_document.published?
+        Gabba::Gabba.new(GA.tracker, request.host).event(@object_document.root_collection_id, "Download", @object_document.id, 1, true)
       end
 
-    when 'masterfile'
-      enforce_permissions!('edit', params[:object_id]) if params[:version].present?
+      local_file = GenericFileContent.new(generic_file: @generic_file).local_file(params[:version])
 
-      @generic_file = retrieve_object! params[:id]
-      if @generic_file
-        can_view?
-
-        if @object_document.published?
-          Gabba::Gabba.new(GA.tracker, request.host).event(@object_document.root_collection_id, "Download", @object_document.id, 1, true)
-        end
-
-        if local_file
-          response.headers['Content-Length'] = File.size?(local_file.path).to_s
-          send_file local_file.path,
-                type: local_file.mime_type || @generic_file.mime_type,
-                stream: true,
-                buffer: 4096,
-                disposition: "attachment; filename=\"#{File.basename(local_file.path)}\";",
-                url_based_filename: true
-          return
-        end
+      if local_file
+        response.headers['Content-Length'] = File.size?(local_file.path).to_s
+        send_file local_file.path,
+              type: local_file.mime_type || @generic_file.mime_type,
+              stream: true,
+              buffer: 4096,
+              disposition: "attachment; filename=\"#{File.basename(local_file.path)}\";",
+              url_based_filename: true
+        return
       end
     end
 
-    render text: 'Unable to find file', status: 500
+    render text: 'Unable to find file', status: 404
   end
 
   def destroy
@@ -217,14 +197,6 @@ class AssetsController < ApplicationController
       generic_file
     end
 
-    def mime_type(file_uri)
-      uri = URI.parse(file_uri)
-      file_name = File.basename(uri.path)
-      ext = File.extname(file_name)
-
-      return MIME::Types.type_for(file_name).first.content_type, ext
-    end
-
     def can_view?
       if (!(can?(:read, params[:object_id]) && @object_document.read_master? && @object_document.published?) && !can?(:edit, @object_document))
         raise Hydra::AccessDenied.new(
@@ -240,63 +212,6 @@ class AssetsController < ApplicationController
       storage.delete_surrogates(bucket_name, file_prefix)
     end
 
-    def download_surrogate(surrogate_name)
-      raise DRI::Exceptions::BadRequest unless params[:object_id].present?
-      raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
-
-      file = file_path(params[:object_id], params[:id], surrogate_name)
-      raise DRI::Exceptions::NotFound unless file
-
-      type, ext = mime_type(file)
-
-      name = "#{params[:id]}#{ext}"
-
-      open(file) do |f|
-        send_data(
-          f.read,
-          filename: name,
-          type: type,
-          disposition: 'attachment',
-          stream: 'true',
-          buffer_size: '4096'
-        )
-      end
-    end
-
-    def show_surrogate
-      raise DRI::Exceptions::BadRequest unless params[:object_id].present?
-      raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
-
-      file = file_path(params[:object_id], params[:id], params[:surrogate])
-      raise DRI::Exceptions::NotFound unless file
-
-      if file =~ /\A#{URI.regexp(['http', 'https'])}\z/
-        redirect_to file
-        return
-      end
-
-      type, _ext = mime_type(file)
-
-      # For derivatives stored on the local file system
-      response.headers['Accept-Ranges'] = 'bytes'
-      response.headers['Content-Length'] = File.size(file).to_s
-      send_file file, { type: type, disposition: 'inline' }
-    end
-
-    def surrogate_type_name
-      if @generic_file.audio?
-        'mp3'
-      elsif @generic_file.video?
-        'webm'
-      elsif @generic_file.pdf?
-        'pdf'
-      elsif @generic_file.text?
-        'pdf'
-      elsif @generic_file.image?
-        'full_size_web_format'
-      end
-    end
-
     def download_url
       url_for(
         controller: 'assets',
@@ -304,15 +219,6 @@ class AssetsController < ApplicationController
         object_id: @object.id,
         id: @generic_file.id,
         protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
-      )
-    end
-
-    def file_path(object_id, file_id, surrogate)
-      base_name = File.basename(surrogate, ".*" )
-      storage = StorageService.new
-      storage.surrogate_url(
-        object_id,
-        "#{file_id}_#{base_name}"
       )
     end
 
@@ -340,22 +246,6 @@ class AssetsController < ApplicationController
       end
 
       item
-    end
-
-    def local_file(datastream = 'content')
-      return @local_file if @local_file
-
-      search_params = { f: @generic_file.id, d: datastream }
-      search_params[:v] = params[:version] if params[:version].present?
-
-      query = 'fedora_id LIKE :f AND ds_id LIKE :d'
-      query << ' AND version = :v' if search_params[:v].present?
-
-      @local_file = LocalFile.where(query, search_params).order(version: :desc).first
-    rescue ActiveRecord::RecordNotFound
-      raise DRI::Exceptions::InternalError, "Unable to find requested file"
-    rescue ActiveRecord::ActiveRecordError
-      raise DRI::Exceptions::InternalError, "Error finding file"
     end
 
     def local_file_ingest(name)

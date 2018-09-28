@@ -29,20 +29,6 @@ describe AssetsController do
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
-  describe 'show' do
-
-    it 'should return 404 for a surrogate that does not exist' do
-      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
-      generic_file.batch = @object
-      generic_file.apply_depositor_metadata(@login_user.email)
-      generic_file.save
-
-      get :show, { object_id: @object.id, id: generic_file.id, surrogate: 'thumbnail' }
-      expect(response.status).to eq(404)
-    end
-
-  end
-
   describe 'create' do
 
     it 'should create an asset from a local file' do

@@ -25,7 +25,7 @@ class SolrDocument
   # and Blacklight::Solr::Document#to_semantic_values
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
-  
+
   field_semantics.merge!(
     title: 'title_tesim',
     description: 'description_tesim',
@@ -37,7 +37,12 @@ class SolrDocument
     format: 'file_type_tesim',
     rights: 'rights_tesim',
   )
-   
+
+  def self.find(id)
+    result = ActiveFedora::SolrService.query("id:#{id}")
+    SolrDocument.new(result.first) if result.present?
+  end
+
   def active_fedora_model
     self[ActiveFedora.index_field_mapper.solr_name('active_fedora_model', :stored_sortable, type: :string)]
   end
@@ -57,7 +62,7 @@ class SolrDocument
 
     docs
   end
-  
+
   # Get the earliest ancestor for any inherited attribute
   def ancestor_field(field)
     return self[field] if self[field].present?
@@ -74,7 +79,7 @@ class SolrDocument
 
   def ancestor_ids
     ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
-    return [] unless self[ancestors_key].present?    
+    return [] unless self[ancestors_key].present?
 
     self[ancestors_key]
   end
@@ -98,7 +103,7 @@ class SolrDocument
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{id}"
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
-    
+
     ActiveFedora::SolrService.count(files_query) > 0
   end
 
@@ -119,7 +124,7 @@ class SolrDocument
   def editable?
     active_fedora_model && active_fedora_model == 'DRI::EncodedArchivalDescription' ? false : true
   end
-    
+
   def has_doi?
     doi_key = ActiveFedora.index_field_mapper.solr_name('doi', :displayable, type: :symbol).to_sym
 
@@ -131,7 +136,7 @@ class SolrDocument
 
     self[geojson_key].present? ? true : false
   end
-  
+
   def collection?
     is_collection_key = ActiveFedora.index_field_mapper.solr_name('is_collection')
 
@@ -158,7 +163,7 @@ class SolrDocument
     institute_names = ancestor_field(ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string))
     institutes = Institute.where(name: institute_names)
 
-    institutes.to_a 
+    institutes.to_a
   end
 
   def licence
@@ -219,7 +224,7 @@ class SolrDocument
 
     self[status_key].first
   end
-  
+
   def published?
     ancestors_published? && status == 'published'
   end
