@@ -25,6 +25,7 @@ DriApp::Application.routes.draw do
       delete '/users/sign_out', :to => 'sessions#destroy', :as => :destroy_user_session
     end
 
+    get 'objects/:object_id/files/:id', to: 'surrogates#show', constraints: { query_string: /surrogate=([^&]*)/ }
     resources :objects, :only => ['new', 'edit', 'update', 'create', 'show', 'destroy'] do
       resources :files, :controller => :assets, :only => ['create','show','update','destroy']
       resources :pages
@@ -93,7 +94,10 @@ DriApp::Application.routes.draw do
     match 'objects/:id/metadata' => 'metadata#update', :via => :put
     match 'objects/:id/citation' => 'objects#citation', :via => :get, :as => :citation_object
     match 'objects/:id/history' => 'object_history#show', :via => :get, :as => :object_history
-    match 'objects/:object_id/files/:id/download' => 'assets#download', :via => :get, :as => :file_download
+
+    get 'objects/:object_id/files/:id/download', to: 'surrogates#download', constraints: { query_string: /type=surrogate/ }
+    get 'objects/:object_id/files/:id/download', to: 'assets#download', as: :file_download
+
     match 'objects/:id/retrieve/:archive' => 'objects#retrieve', :via => :get, :as => :retrieve_archive
 
     match 'objects/:id/status' => 'objects#status', :via => :put, :as => :status_update
@@ -117,8 +121,8 @@ DriApp::Application.routes.draw do
     match '/my_collections/:id' => 'my_collections#show', :via => :get, as: :my_collections
     get 'my_collections/:id/duplicates', to: 'my_collections#duplicates', as: :collection_duplicates
 
-    get 'surrogates/:id' => 'surrogates#show', :as => :surrogates
-    put 'surrogates/:id' => 'surrogates#update', :as => :surrogates_generate
+    get 'surrogates/:id' => 'surrogates#index', as: :surrogates
+    put 'surrogates/:id' => 'surrogates#update', as: :surrogates_generate
 
     get 'tasks' => 'user_background_tasks#index', as: :user_tasks
     delete 'tasks' => 'user_background_tasks#destroy', as: :destroy_user_tasks  

@@ -23,6 +23,22 @@ class GenericFileContent
     save_characterize_and_record_committer
   end
 
+  def local_file(version = nil, datastream = 'content')
+    return @local_file if @local_file
+
+    search_params = { f: generic_file.id, d: datastream }
+    search_params[:v] = version unless version.nil?
+
+    query = 'fedora_id LIKE :f AND ds_id LIKE :d'
+    query << ' AND version = :v' if search_params[:v].present?
+
+    @local_file = LocalFile.where(query, search_params).order(version: :desc).first
+  rescue ActiveRecord::RecordNotFound
+    raise DRI::Exceptions::InternalError, "Unable to find requested file"
+  rescue ActiveRecord::ActiveRecordError
+    raise DRI::Exceptions::InternalError, "Error finding file"
+  end
+
   private
 
   def set_content(update, file_upload, filename, mime_type, download_url, path='content')
