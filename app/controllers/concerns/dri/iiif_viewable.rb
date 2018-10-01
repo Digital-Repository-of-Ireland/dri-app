@@ -5,6 +5,25 @@ module DRI::IIIFViewable
   HEIGHT_SOLR_FIELD = 'height_isi'
   WIDTH_SOLR_FIELD = 'width_isi'
 
+  # patch issue with as_json wrapping keys in data
+  # and changing key order
+  # may be resolved by iiif-prezi/osullivan/issues/72
+  class IIIF::Presentation::Collection
+    define_method(:as_json) do
+      JSON.parse(self.to_json)
+    end
+  end
+
+  # module IIIFAsJson
+  #   def self.as_json
+  #     JSON.parse(self.to_json(options))
+  #   end
+  # end
+
+  # class IIIF::Presentation::Collection
+  #   prepend DRI::IIIFViewable::IIIFAsJson
+  # end
+
   def iiif_manifest
     object_url = ''
 
@@ -221,5 +240,4 @@ module DRI::IIIFViewable
       'format' => 'text/xml'
     }
   end
-
 end

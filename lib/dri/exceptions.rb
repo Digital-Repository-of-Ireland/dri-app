@@ -73,7 +73,7 @@ module DRI
           code = "#{status_code(status_type)}"
           render(
             json: { errors: [{ status: code, detail: message }] },
-            content_type: 'application/ld+json', 
+            content_type: 'application/json', 
             status: code 
           )
         end
@@ -91,7 +91,7 @@ module DRI
         }
         format.json {
           render json: {errors: [{status: "404", detail: "#{e}"}] }, 
-          content_type: 'application/ld+json', status: 404 
+          content_type: 'application/json', status: 404 
         }
       end
     end
