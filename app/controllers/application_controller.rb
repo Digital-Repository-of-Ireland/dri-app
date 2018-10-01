@@ -36,6 +36,27 @@ class ApplicationController < ActionController::Base
   rescue_from DRI::Exceptions::ResqueError, with: :render_resque_error
   rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
 
+  ActionController::Renderers.add :json do |json, options|
+    unless json.kind_of?(String)
+      # return hash representation of model if it supports that
+      json = json.as_json(options) if json.respond_to?(:as_json)
+      # handle pretty json output for any json presonse
+      if params[:pretty] == 'true'
+        json = JSON.pretty_generate(json, options)
+      else
+        json = json.to_json
+      end
+    end
+
+    if options[:callback].present?
+      self.content_type ||= Mime::JS
+      "#{options[:callback]}(#{json})"
+    else
+      self.content_type ||= Mime::JSON
+      json
+    end
+  end
+
   def set_locale
     current_lang = http_accept_language.preferred_language_from(Settings.interface.languages)
     if cookies[:lang].nil? && current_user.nil?

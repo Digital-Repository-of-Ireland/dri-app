@@ -72,9 +72,7 @@ module DRI
         format.json do
           code = "#{status_code(status_type)}"
           render(
-            json: JSON.pretty_generate(
-              { errors: [{ status: code, detail: message }] }
-            ), 
+            json: { errors: [{ status: code, detail: message }] },
             content_type: 'application/ld+json', 
             status: code 
           )
@@ -92,7 +90,7 @@ module DRI
           status: 404 
         }
         format.json {
-          render json: JSON.pretty_generate({errors: [{status: "404", detail: "#{e}"}] }), 
+          render json: {errors: [{status: "404", detail: "#{e}"}] }, 
           content_type: 'application/ld+json', status: 404 
         }
       end

@@ -13,9 +13,9 @@ module FailureApps
     def json_error_response
       self.status = 401
       self.content_type = "application/json"
-      self.response_body = JSON.pretty_generate(
-        { errors: [{ status: self.status, detail: i18n_message }] }
-      )
+      self.response_body = { 
+        errors: [{ status: self.status, detail: i18n_message }] 
+        }.to_json
     end
   end
 end
