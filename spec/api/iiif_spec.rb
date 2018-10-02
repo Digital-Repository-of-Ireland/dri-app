@@ -39,6 +39,7 @@ describe "International Image Interoperability Framework API" do
         let(:id) { @collections.first.id }
         it_behaves_like 'a json api error'
         it_behaves_like 'a json api 401 error'
+        it_behaves_like 'a pretty json response'
       end
       
       response "404", "Manifest not found" do
