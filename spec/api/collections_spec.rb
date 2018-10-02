@@ -12,6 +12,8 @@ describe "Collections API" do
       produces 'application/json'
       # creates @example_user with authentication_token (not signed in)
       include_context 'rswag_user_with_collections', status: 'published'
+      parameter name: :pretty, in: :query, type: :boolean, required: false,
+        description: 'indent json so it is human readable'
 
       response "401", "Must be signed in or use apikey to access this route" do
         include_context 'rswag_include_json_spec_output'
@@ -21,6 +23,7 @@ describe "Collections API" do
         it_behaves_like 'a json api error'
         it_behaves_like 'a json api 401 error',
           message: "You need to sign in or sign up before continuing."
+        it_behaves_like 'a pretty json response'
       end
 
       # TODO: fix empty output on this test by creating public collections
@@ -32,7 +35,7 @@ describe "Collections API" do
           include_context 'rswag_include_json_spec_output'
           let(:user_token) { @example_user.authentication_token }
           let(:user_email) { CGI.escape(@example_user.to_s) }
-          run_test! 
+          it_behaves_like 'a pretty json response'
         end
       end
     end
@@ -58,6 +61,7 @@ describe "Collections API" do
 
         it_behaves_like 'a json api error'
         it_behaves_like 'a json api 401 error'
+        it_behaves_like 'a pretty json response'
       end
 
       response "404", "Object not found" do
@@ -70,6 +74,7 @@ describe "Collections API" do
         
         it_behaves_like 'a json api error'
         it_behaves_like 'a json api 404 error'
+        it_behaves_like 'a pretty json response'
       end
 
       response "200", "Object found" do
@@ -77,7 +82,7 @@ describe "Collections API" do
         let(:user_token) { @example_user.authentication_token }
         let(:user_email) { CGI.escape(@example_user.to_s) }
         let(:id) { @collections.first.id }
-        run_test!
+        it_behaves_like 'a pretty json response'
       end
     end
   end

@@ -7,6 +7,7 @@ describe "Resource API" do
     get "retrieves linked data using sparql" do
       security [ apiKey: [], appId: [] ]
       produces 'application/rdf', 'application/ttl'
+
       parameter name: :id, description: 'Object ID',
         in: :path, :type => :string
 

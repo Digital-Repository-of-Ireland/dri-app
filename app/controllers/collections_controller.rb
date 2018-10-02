@@ -39,7 +39,7 @@ class CollectionsController < BaseObjectsController
     collections = results_to_hash(solr_query)
 
     respond_to do |format|
-      format.json { render(json: collections.to_json) }
+      format.json { render(json: collections) }
     end
   end
 

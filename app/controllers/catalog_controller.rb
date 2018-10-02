@@ -265,7 +265,7 @@ class CatalogController < ApplicationController
         options = {}
         options[:with_assets] = true if can?(:read, @document)
         formatter = DRI::Formatters::Json.new(@document, options)
-        render json: formatter.format
+        render json: formatter.format(func: :as_json)
       end
       format.ttl do
         options = {}

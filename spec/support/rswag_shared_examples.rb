@@ -26,50 +26,19 @@ shared_examples 'a json api 404 error' do |message: nil|
 end
 
 shared_examples 'a pretty json response' do
-  # parameter name: :pretty, in: :query, type: :boolean, required: true
-
   before do |example|
     submit_request(example.metadata)
     @normal_response = response.body.clone
-    # pretty_config = {
-    #   name: :pretty, 
-    #   in: :query, 
-    #   type: :boolean, 
-    #   required: true, # not really a required param, 
-    #   # but needs to be for rswag to include the param in the request
-    #   default: true
-    # }
-    # pretty_metadata = example.metadata.clone
-    # pretty_metadata[:operation][:parameters] << pretty_config
-    byebug
-    pretty_path = "#{request.fullpath}&pretty=true"
-    get pretty_path, {}, { 
-      CONTENT_TYPE: 'application/json', 
-      ACCEPT: 'application/json' 
-    }
+    pretty_path = "#{request.original_fullpath}&pretty=true"
+    req_format = 'application/json'
+    get pretty_path, {}, CONTENT_TYPE: req_format, ACCEPT: req_format
     @pretty_response = response.body.clone
   end
+  # run_test! is a rswag specific function that 
+  # submits the request and checks the response code matches the test 
   run_test! do
     # same json but different formatting with ?pretty=true
-    expect(@normal_response).to_not eq @pretty_response
-    expect(JSON.parse(@normal_response)).to eq JSON.parse(@pretty_response)
+    normal_json = JSON.parse(@normal_response)
+    expect(JSON.pretty_generate(normal_json)).to eq @pretty_response
   end
-
-  # parameter name: :pretty, in: :query, type: :boolean, required: false, 
-  # context 'normal_response' do
-  #   let(:pretty) { false }
-  #   run_test! do
-  #     @normal_response = response.body.clone
-  #   end
-  # end
-  # context 'pretty_response' do
-  #   let(:pretty) { true }
-  # end
 end
-
-# # nested shared example
-# shared_examples 'a json api error with' do |message: nil|
-#   error_detail = JSON.parse(response.body)["errors"][0]["detail"]
-#   expect(error_detail).to match(message)
-# end
-
