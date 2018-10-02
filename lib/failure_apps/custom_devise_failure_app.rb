@@ -15,7 +15,8 @@ module FailureApps
     # required to conform to json api error spec
     # http://jsonapi.org/format/#errors
     def json_error_response
-      self.status ||= 401
+      # status must be assigned, ||= will often return 200
+      self.status = 401
       self.content_type = "application/json"
       # have to include format_json here because custom error app 
       # doesn't seem to call render json: as normal
