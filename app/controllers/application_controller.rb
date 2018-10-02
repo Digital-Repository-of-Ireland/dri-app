@@ -4,6 +4,13 @@ class ApplicationController < ActionController::Base
   before_action :set_locale, :set_cookie, :set_metadata_language
 
   include HttpAcceptLanguage
+  
+  # handles pretty formatting for any json response
+  include DRI::Renderers::Json
+
+  ActionController::Renderers.add :json do |json, options|
+    format_json(json, options)
+  end
 
   # Adds a few additional behaviors into the application controller
   include Blacklight::Controller
@@ -34,6 +41,7 @@ class ApplicationController < ActionController::Base
     render_bad_request(DRI::Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
   end
   rescue_from DRI::Exceptions::ResqueError, with: :render_resque_error
+  rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
 
   def set_locale
     current_lang = http_accept_language.preferred_language_from(Settings.interface.languages)

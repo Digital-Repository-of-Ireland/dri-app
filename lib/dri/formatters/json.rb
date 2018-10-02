@@ -30,7 +30,10 @@ module DRI::Formatters
       @object_hash = object_doc.extract_metadata(request_fields)
     end
 
-    def format(options = {})
+    # @param [Hash]   options
+    # @param [Symbol] func     default :to_json, allows for :as_json as needed
+    # @return [String(json) | Hash ]
+    def format(options = {}, func: :to_json)
       metadata_hash = @object_hash['metadata']
       translated_hash = metadata_hash.map do |k, v|
         case k
@@ -48,7 +51,7 @@ module DRI::Formatters
       @formatted_hash['Identifier'] = identifier if identifier
       @formatted_hash['Licence'] = licence
       @formatted_hash['Assets'] = assets if @with_assets
-      @formatted_hash.to_json
+      @formatted_hash.send(func)
     end
 
     def assets

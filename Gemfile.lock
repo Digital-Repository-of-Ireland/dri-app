@@ -234,6 +234,7 @@ GEM
       sass (>= 3.2.19)
     bootstrap-switch-rails (3.3.3)
     builder (3.2.3)
+    byebug (10.0.2)
     cancancan (1.17.0)
     capybara (2.16.1)
       addressable
@@ -646,6 +647,9 @@ GEM
       activerecord (>= 3.0, < 6.0)
       activesupport (>= 3.0, < 6.0)
       request_store (~> 1.1)
+    parallel (1.12.1)
+    parallel_tests (2.23.0)
+      parallel
     parser (2.4.0.2)
       ast (~> 2.3)
     phantomjs (2.1.1.0)
@@ -954,6 +958,7 @@ DEPENDENCIES
   bootstrap-sass (= 3.3.5)
   bootstrap-switch-rails
   browse-everything!
+  byebug (~> 10.0)
   ci_reporter_rspec
   clamav
   clipboard-rails
@@ -1008,6 +1013,7 @@ DEPENDENCIES
   openlayers-rails
   openseadragon
   paper_trail (~> 4)
+  parallel_tests (~> 2.23)
   phantomjs
   poltergeist (>= 1.11.0)
   railroady

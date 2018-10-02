@@ -26,6 +26,8 @@ describe "My Collections API" do
         in: :query, type: :string, default: nil
       parameter name: :q, description: 'Search Query',
         in: :query, type: :string, default: nil
+      parameter name: :pretty, in: :query, type: :boolean, required: false,
+        description: 'indent json so it is human readable'
       # # issue with facets beign empty string
       # parameter name: :f, description: 'Search facet (solr fields to filter results)',
         # in: :query, type: :string, default: nil
@@ -47,11 +49,10 @@ describe "My Collections API" do
         let(:user_token) { nil }
         let(:user_email) { nil }
 
-        run_test! do 
-          auth_error_response = '{"error":"You need to sign in or sign up before continuing."}'
-          expect(response.body).to eq auth_error_response
-          expect(status).to eq(401) # 401 unauthorized
-        end
+        it_behaves_like 'a json api error'
+        it_behaves_like 'a json api 401 error',
+          message: "You need to sign in or sign up before continuing."
+        it_behaves_like 'a pretty json response'
       end
       response "200", "All objects found" do
         let(:user_token) { @example_user.authentication_token }
@@ -59,13 +60,13 @@ describe "My Collections API" do
         context 'All objects found' do
           include_context 'rswag_include_json_spec_output', 
             example_name='/my_collections.json'
-          run_test!
+          it_behaves_like 'a pretty json response'
         end
         context 'All collections found' do
           include_context 'rswag_include_json_spec_output', 
             example_name='/my_collections.json?mode=collections'
           let(:mode) { 'collections' }
-          run_test!
+          it_behaves_like 'a pretty json response'
         end 
         context 'Show subcollections' do
           include_context 'rswag_include_json_spec_output', 
@@ -73,13 +74,13 @@ describe "My Collections API" do
           # include_context 'subcollection'
           let(:mode) { 'collections' }
           let(:show_subs) { true }
-          run_test!
+          it_behaves_like 'a pretty json response'
         end
         context 'Limit results' do
           include_context 'rswag_include_json_spec_output', 
             example_name='/my_collections.json?per_page=1'
           let(:per_page) { 1 }
-          run_test!
+          it_behaves_like 'a pretty json response'
         end
       end
     end
@@ -90,18 +91,23 @@ describe "My Collections API" do
       tags 'collections'
       security [ apiKey: [], appId: [] ]
       produces 'application/json', 'application/xml', 'application/ttl'
+
       parameter name: :id, description: 'Object ID',
         in: :path, :type => :string
+      parameter name: :pretty, in: :query, type: :boolean, required: false,
+        description: 'indent json so it is human readable'
+
       include_context 'rswag_user_with_collections'
 
-      # TODO: make api response consistent
-      # always return sign in error when not signed in on route that requires it
-      # can't include rspec output since it's an empty sting (not json)
       response "401", "Must be signed in to access this route" do
+        include_context 'rswag_include_json_spec_output'
         let(:user_token) { nil }
         let(:user_email) { nil }
         let(:id) { @collections.first.id }
-        run_test!
+
+        it_behaves_like 'a json api error'
+        it_behaves_like 'a json api 401 error'
+        it_behaves_like 'a pretty json response'
       end
 
       response "404", "Object not found" do
@@ -111,7 +117,10 @@ describe "My Collections API" do
         let(:user_token) { nil }
         let(:user_email) { nil }
         let(:id) { "collection_that_does_not_exist" }
-        run_test!
+
+        it_behaves_like 'a json api error'
+        it_behaves_like 'a json api 404 error'
+        it_behaves_like 'a pretty json response'
       end
 
       response "200", "Object found" do
@@ -119,7 +128,7 @@ describe "My Collections API" do
         let(:user_token) { @example_user.authentication_token }
         let(:user_email) { CGI.escape(@example_user.to_s) }
         let(:id) { @collections.first.id }
-        run_test!
+        it_behaves_like 'a pretty json response'
       end
     end
   end

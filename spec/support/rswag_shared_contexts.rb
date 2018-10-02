@@ -1,3 +1,4 @@
+# rswag / api shared contexts
 shared_context 'rswag_include_json_spec_output' do |example_name='application/json'|
   after do |example|
     example.metadata[:response][:examples] = { 
@@ -63,6 +64,8 @@ shared_context 'sign_out_before_request' do
     submit_request(example.metadata)
   end
 end
+
+# TODO move methods in helper module
 
 # @param type [Symbol]
 # @param token [Boolean]

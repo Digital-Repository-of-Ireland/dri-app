@@ -11,6 +11,8 @@ describe "Catalog API" do
         in: :query, type: :number, default: 9
       parameter name: :mode, description: 'Show Objects or Collections', 
         in: :query, type: :string, default: 'objects'
+      parameter name: :pretty, in: :query, type: :boolean, required: false,
+        description: 'indent json so it is human readable'
 
       let(:per_page) { 9 }
       let(:mode)     { 'objects' }
@@ -18,7 +20,7 @@ describe "Catalog API" do
       response '200', 'catalog found' do
         include_context 'sign_out_before_request'
         include_context 'rswag_include_json_spec_output'
-        run_test!
+        it_behaves_like 'a pretty json response'
       end
     end
   end
