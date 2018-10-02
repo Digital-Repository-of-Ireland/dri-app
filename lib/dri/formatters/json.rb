@@ -32,7 +32,8 @@ module DRI::Formatters
 
     # @param [Hash]   options
     # @param [Symbol] func     default :to_json, allows for :as_json as needed
-    # @return [String(json) | Hash ]
+    # @return [String(json) | Hash] (Could be any type depending on :func)
+    #     String | Hash are the expected outputs
     def format(options = {}, func: :to_json)
       metadata_hash = @object_hash['metadata']
       translated_hash = metadata_hash.map do |k, v|

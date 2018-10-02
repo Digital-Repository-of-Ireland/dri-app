@@ -53,3 +53,5 @@ dump.rdb
 .project
 fcrepo4-test-data/
 dri_files
+
+.byebug*

@@ -9,8 +9,9 @@ describe "International Image Interoperability Framework API" do
       security [ apiKey: [], appId: [] ]
       produces 'application/json'
       parameter name: :id, in: :path, type: :string, required: true
-      parameter name: :pretty, in: :query, type: :boolean, required: false,
-        description: 'indent json so it is human readable'
+      parameter name: :pretty, description: 'indent json so it is human readable', 
+        in: :query, type: :boolean, default: false, required: false
+        
       include_context 'rswag_user_with_collections'
 
       response "200", "Manifest found" do

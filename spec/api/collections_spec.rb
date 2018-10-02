@@ -12,8 +12,9 @@ describe "Collections API" do
       produces 'application/json'
       # creates @example_user with authentication_token (not signed in)
       include_context 'rswag_user_with_collections', status: 'published'
-      parameter name: :pretty, in: :query, type: :boolean, required: false,
-        description: 'indent json so it is human readable'
+      
+      parameter name: :pretty, description: 'indent json so it is human readable', 
+        in: :query, type: :boolean, default: false, required: false
 
       response "401", "Must be signed in or use apikey to access this route" do
         include_context 'rswag_include_json_spec_output'
