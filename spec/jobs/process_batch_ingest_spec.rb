@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe 'ProcessBatchIngest' do
 
   before(:each) do

@@ -5,7 +5,7 @@ def zeus_running?
   File.exists? '.zeus.sock'
 end
 
-if !zeus_running?
+if !zeus_running? && ENV["RUN_COVERAGE"]
     require 'simplecov'
     require 'simplecov-rcov'
     SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
@@ -40,3 +40,4 @@ RSpec.configure do |config|
 end
 
 Rails.application.eager_load!
+

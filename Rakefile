@@ -37,9 +37,7 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.main = "README.rdoc"
   rdoc.rdoc_files.include('*.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
-  rdoc.rdoc_files.include('lib/*.rb')
   rdoc.rdoc_files.include('app/**/*.rb')
-  rdoc.rdoc_files.include('app/*.rb')
 end
 
 RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
@@ -69,6 +67,7 @@ task :ci => ['ci_clean'] do
   end
 
   Rake::Task["rdoc"].invoke
+  # Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Run Continuous Integration-spec"
@@ -121,6 +120,22 @@ namespace :fakes3 do
     fakes3_dir = 'tmp/fakes3/'
     FileUtils.mkdir_p(fakes3_dir) unless Dir.exists?(fakes3_dir)
     system("fakes3 -r #{fakes3_dir} -p 8081 -H localhost")
+  end
+end
+
+desc 'similar to rswag:spec:swaggerize except it excludes --dry-run so output is included in swagger docs where applicable'
+namespace :api do
+  namespace :docs do
+    desc 'Generate Swagger JSON files from integration specs'
+    RSpec::Core::RakeTask.new('generate') do |t|
+      t.pattern = 'spec/api/**/*_spec.rb'
+
+      t.rspec_opts = [ 
+        '--format progress',
+        '--format Rswag::Specs::SwaggerFormatter',
+        '--order defined'
+      ]
+    end
   end
 end
 

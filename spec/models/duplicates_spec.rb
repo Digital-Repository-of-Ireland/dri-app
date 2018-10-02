@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe 'DRI::Solr::Document::Collection' do
   include DRI::Duplicable
   

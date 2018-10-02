@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe ApplicationController do
 
   it "should handle the key not existing" do

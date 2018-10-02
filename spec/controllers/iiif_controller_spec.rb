@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe IiifController do
   include Devise::Test::ControllerHelpers
 

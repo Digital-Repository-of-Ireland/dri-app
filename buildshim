@@ -51,7 +51,6 @@ __EOF__
     bundle exec rake db:seed
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
-    bundle exec rake dri:fixtures:generate
     bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &>/dev/null &
     echo $! > fakes3.pid
     ;;
@@ -61,7 +60,6 @@ check)
     bundle exec rake ci_spec || exit 100
     bundle exec rake db:migrate
     bundle exec rake db:seed
-    bundle exec rake dri:fixtures:generate
     bundle exec rake db:test:prepare
     bundle exec rake ci || exit 100
     bundle exec rake rdoc

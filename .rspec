@@ -1,3 +1,6 @@
 --color
 --format progress
---profile 20
+#--profile 20
+
+--require spec_helper
+--require rails_helper

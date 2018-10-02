@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'Status' do
 
   let(:dummy_class) { Class.new { 

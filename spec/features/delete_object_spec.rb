@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 feature 'Deleting a single object' do
   describe 'as a manager user' do
   before(:each) do
@@ -67,7 +65,7 @@ feature 'Deleting a single object' do
     visit(my_collections_path(object.id))
     click_button "submit_delete"
 
-    expect(current_path).to eq(my_collections_index_path)
+    expect(current_path).to eq(my_collections_path(collection.id))
     expect(page.find('.dri_alert_text')).to have_content I18n.t('dri.flash.notice.object_deleted')
 
     collection.reload

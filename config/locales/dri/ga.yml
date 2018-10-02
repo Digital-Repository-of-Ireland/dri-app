@@ -16,6 +16,7 @@ ga:
         request_to_leave: Iarratas Imeachta
         requested_to_leave: D'iarr tú imeacht as an ngrúpa seo
         settings: Socruithe
+        delete_help: Tabhair faoi deara nach féidir leat do cúntas a dhúnadh má tá cead léitheoireachta, eagarthóireachta nó bainisteora agut ar bailiúchán ar bith. Athraigh do ceadanna ar dtús, más é do thoil é.
       lang:
         en: English
         ga: Gaeilge
@@ -38,10 +39,12 @@ ga:
         collection_title: Teideal an Bhailiúcháin
         edit: Déan Eagarthóireacht
         email: Ríomhphost
+        for_example: Mar shampla
         my_account: Mo Chuntas
         name: Ainm
         organisational_manager: Bainisteoir Eagrúcháin
         permissions: Ceadanna
+        token_params: Cuir na paraiméadar seo a leanas in iarratas chun é a fhíordheimhniú
         user_type: Cineál Úsáideora
         your_collection_details: Sonraí do Bhailiúcháin
     data:
@@ -84,6 +87,7 @@ ga:
         help:
           visits: "Úsáideoirí ar leith"
           hits: "Iomlán na n-amas"
+          hits_desc: "An méid uair iomlán ina raibh an leathanach lódáilte don oibiacht seo."
       fixity:
         collection_id: "Bailiúchán"
         timestamp: "Stampa Ama"
@@ -178,6 +182,8 @@ ga:
         zip: Baile Átha Cliath 2
     headerlinks:
       about: Eolas
+      about_dri: Maidir le DRI
+      about_api: Maidir leis an API
       about_dri_lifecycle: Saolré DRI
       admin: Riarthóir
       batch_ingest: Baiscionghabháil
@@ -190,16 +196,22 @@ ga:
       events: Imeachtaí
       help: Cabhair
       home: Baile
+      ingest: Ionghabh
       institutions: Eagraíochtaí
       language: Teanga
+      licensing_statement: Ráiteas ceadúnaigh
       manage: Bainistigh
       manage_users: Cuir Bainisteoir Bailiúcháin leis
+      membership: Ballríocht
+      member_benefits: Buntáistí Ballríochta
+      membership_fees: Táilí Ballríochta
       my_collections: Mo chuid bailiúchán
       my_tasks: Mo chuid tascanna
       new_collection: Bailiúchán Nua
       new_organisation: Eagraíocht Nua
       object: Oibiacht
       objects: Oibiachtaí
+      our_members: Ár Baill
       people: Daoine
       privacy: 'Polasaí um Príobháideachas agus Fianáin'
       privacy_statement: Ráiteas Príobháideachais
@@ -214,6 +226,7 @@ ga:
       vacancies: Folúntais
       workspace: Spás Oibre
       find_us: 'Aimsigh Muid'
+      research_data: Sonraí taighde agus DRI
     help:
       add_documentation_help_text: Tá na hoibiachtaí seo le feiceáil sa gcuid "Ábhair Ghaolmhara" den leathanach na mbailiúchán.
       add_documentation_help_title: Cuir faisnéis chomhthéacsúil leis
@@ -347,6 +360,9 @@ ga:
           objects_in_collection: Oibiachtaí
           restricted_asset: Sócmhainn Shrianta
           restricted_data_request: Foirm chun iarratas a dhéanamh ar rochtain ar shonraí srianta
+          copy_to_clipboard: Cóipeáil go dtí an gearrthaisce
+          copy_success: Cóipeáilte go dtí an gearrthaisce
+          copy_failure: Níl sé cóipeáilte
         headers:
           files: Uirlisí Sócmhainne
           related_materials: Ábhair Ghaolmhara
@@ -413,7 +429,7 @@ ga:
           delete_collection: Scrios an Bailiúchán
           edit_metadata: Cuir Meiteashonraí in eagar
         confirm_all_descendants_reviewed: Má leantar leis seo, marcálfar mar athbhreithnithe gach oibiacht agus fobhailiúcháin atá mar chuid den bhailiúchán seo.
-        confirm_delete: Scriosfar an bailiúchán agus gach oibiacht sa bhailiúchán. Lean ar aghaidh?
+        confirm_delete: Scriosfaidh sé seo an bailiúchán agus gach oibiacht sa bailiúchán/fobhailiúchán. Lean ar aghaidh?
         confirm_fixity: 'Déan seiceáil seastachta ar gach oibiacht sa mbailiúchán seo?'
         confirm_publish: Beidh rochtain ar gach oibiacht athbhreithnithe. Ní feidir é seo a neamhfhoilsiú! Lean ar aghaidh?
         confirm_review_collection: Marcálfar mar athbhreithnithe an taifead bailiúcháin seo.
@@ -636,8 +652,8 @@ ga:
           delete_all_tasks: 'Glan gach tasc atá críochnaithe '
     window:
       modal:
-        cancel: Cealaigh
         close: Dún
+        cancel: Cealaigh
     reports:
       headings:
         fixity: Seiceáil Seastachta

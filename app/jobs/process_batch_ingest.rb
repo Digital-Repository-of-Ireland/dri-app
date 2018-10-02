@@ -55,7 +55,7 @@ class ProcessBatchIngest
                         id: @generic_file.id,
                         version: version
                       )
-                file_content = GenericFileContent.new(user: user, generic_file: @generic_file)
+                file_content = GenericFileContent.new(user: user, object: object, generic_file: @generic_file)
                 file_content.external_content(
                   url,
                   file_name
@@ -144,7 +144,7 @@ class ProcessBatchIngest
         generic_file: @generic_file,
         data:filedata,
         datastream: datastream,
-        opts: { filename: filename, mime_type: mime_type }
+        opts: { filename: filename, mime_type: mime_type, checksum: 'md5'}
       )
     rescue StandardError => e
       Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"

@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe StatsReport do
   
   before(:each) do

@@ -188,9 +188,9 @@ module FieldRenderHelper
       next if uri?(indexed_value[i])
       standardised_value = standardise_value(facet_name: facet_name, value: v)
       next unless standardised_value
-    
+
       "<a href=\"" << url_for(
-                            { 
+                            {
                               action: 'index',
                               controller: controller_name,
                               facet_arg => standardise_facet(facet: facet_name, value: indexed_value[i])
@@ -236,7 +236,7 @@ module FieldRenderHelper
     dcmi_pairs = {}
     solr_field.split(/\s*;\s*/).each do |component|
       (k, v) = component.split(/\s*=\s*/)
-      dcmi_pairs[k] = v unless v.nil?      
+      dcmi_pairs[k] = v unless v.nil?
     end
 
     unless dcmi_pairs.empty?
@@ -244,5 +244,5 @@ module FieldRenderHelper
     end
 
     solr_field
-  end 
+  end
 end

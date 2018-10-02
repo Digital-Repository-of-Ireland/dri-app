@@ -40,10 +40,12 @@ en:
         collection_title: Collection Title
         edit: Edit
         email: Email
+        for_example: For example
         my_account: My Account
         name: Name
         organisational_manager: Organisational Manager
         permissions: Permissions
+        token_params: Add the following parameters to authenticate a request
         user_type: User Type
         your_collection_details: Your Collection Details
     data:
@@ -185,6 +187,7 @@ en:
     headerlinks:
       about: About
       about_dri: About DRI
+      about_api: About the API
       about_dri_lifecycle: DRI Lifecycle
       admin: Admin
       batch_ingest: Batch Ingest
@@ -197,6 +200,7 @@ en:
       events: Events
       help: FAQ
       home: Home
+      ingest: Ingest
       institutions: Organisations
       language: Language
       licensing_statement: Licensing Statement

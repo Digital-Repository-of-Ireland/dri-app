@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe DRI::IIIFViewable do
 
   FITS_DATA = <<-FITSXML

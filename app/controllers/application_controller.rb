@@ -4,6 +4,13 @@ class ApplicationController < ActionController::Base
   before_action :set_locale, :set_cookie, :set_metadata_language
 
   include HttpAcceptLanguage
+  
+  # handles pretty formatting for any json response
+  include DRI::Renderers::Json
+
+  ActionController::Renderers.add :json do |json, options|
+    format_json(json, options)
+  end
 
   # Adds a few additional behaviors into the application controller
   include Blacklight::Controller
@@ -34,6 +41,7 @@ class ApplicationController < ActionController::Base
     render_bad_request(DRI::Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
   end
   rescue_from DRI::Exceptions::ResqueError, with: :render_resque_error
+  rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
 
   def set_locale
     current_lang = http_accept_language.preferred_language_from(Settings.interface.languages)
@@ -95,12 +103,16 @@ class ApplicationController < ActionController::Base
     def authenticate_user_from_token!
       user_email = params[:user_email].presence
       user       = user_email && User.find_by_email(user_email)
-
       # Notice how we use Devise.secure_compare to compare the token
       # in the database with the token given in the params, mitigating
       # timing attacks.
       if user && Devise.secure_compare(user.authentication_token, params[:user_token])
-        sign_in user, store: true
+        begin
+          sign_in user, store: false
+        # handles issue where Devise::Mapping.find_scope! fails #1829
+        rescue StandardError => e
+          sign_in :user, user, store: false
+        end
       end
     end
 

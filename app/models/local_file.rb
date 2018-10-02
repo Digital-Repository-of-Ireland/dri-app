@@ -13,7 +13,7 @@ class LocalFile < ActiveRecord::Base
     file = LocalFile.new(fedora_id: generic_file.id, ds_id: datastream)
     options = {}
     options[:mime_type] = opts[:mime_type]
-    options[:checksum] = opts[:checksum] unless opts[:checksum].present?
+    options[:checksum] = opts[:checksum] if opts[:checksum].present?
     options[:batch_id] = object.id
     options[:object_version] = object.object_version || 1
     options[:file_name] = opts[:filename]
@@ -26,7 +26,7 @@ class LocalFile < ActiveRecord::Base
 
       file
     rescue ActiveRecord::ActiveRecordError => e
-      logger.error "Could not save the asset file #{@file.path} for #{@generic_file.id} to #{datastream}: #{e.message}"
+      logger.error "Could not save the asset file #{file.path} for #{generic_file.id} to #{datastream}: #{e.message}"
       raise DRI::Exceptions::InternalError
     end
   end
@@ -58,6 +58,10 @@ class LocalFile < ActiveRecord::Base
                     else
                       {}
                     end
+  end
+
+  def filename
+    Pathname.new(path).basename.to_s
   end
 
   # Remove the file from the filesystem if it exists

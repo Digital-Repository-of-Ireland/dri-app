@@ -6,12 +6,12 @@
       </div>
       <div class="modal-body">
         <div class="dri_cookie_acceptance_text">
-           <p><%= render :partial => 'shared/terms' %></p>
+           <p><%= render partial: 'shared/terms' %></p>
         </div>
            <p><%= t('dri.application.terms.message', :url => main_app.page_path('terms') ).html_safe %></p>
       </div>
       <div class="modal-footer">
-        <button type="button" id="accept_cookies" class="dri_button_green" data-dismiss="modal" onclick="$.cookie('accept_cookies', 'yes', { path: '/', expires: 10000 });">
+        <button type="button" id="accept_cookies" class="dri_button_green" data-dismiss="modal" onclick="Cookies.set('accept_cookies', 'yes', { path: '/', expires: 10000 });">
           <%= t('dri.application.terms.accept') %>
         </button>
         <a href="http://dri.ie/end-user-agreement"><button type="button" class="dri_button_black" id="reject_agreement"><%= t('dri.application.terms.reject') %></button></a>

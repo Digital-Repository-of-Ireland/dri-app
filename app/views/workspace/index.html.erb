@@ -1,8 +1,7 @@
 <% @page_title = 'Workspace' %>
-
-<div class="dri_account_block dri_clearfix">
-  <h4 class="dri_account_block_heading"><%= t('dri.headerlinks.workspace') %></h4>
-  <div class="dri_account_block_info">
+<div class="dri_workspace_menu_block dri_clearfix">
+  <h4 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.workspace') %></h4>
+  <div class="dri_workspace_menu_block_info">
       <p>
         <%= link_to user_group.user_path(current_user) do %>
           <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
@@ -19,27 +18,34 @@
 
       <p>
         <%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path, id: 'saved_search' %>
-      </p>   
+      </p>
   </div>
 </div>
 
+<% if @collection_count > 0 || (current_user.is_cm? || current_user.is_om? || current_user.is_admin?) %>
+  <div class="dri_workspace_menu_block dri_clearfix">
+    <h4 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.ingest') %></h4>
+    <div class="dri_workspace_menu_block_info">
+      <% if current_user.is_cm? || current_user.is_om? || current_user.is_admin? %>
+        <p>
+          <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, id: 'new_collection' %>
+        </p>
+      <% end %>
 
+      <p>
+        <%= link_to t('dri.headerlinks.batch_ingest'), dri_batch_ingest.new_batch_path %>
+      </p>
+    </div>
+  </div>
+<% end %>
 
 <% if current_user.is_cm? || current_user.is_om? || current_user.is_admin? %>
-  <div class="dri_account_block dri_clearfix">
-    <h4 class="dri_account_block_heading"><%= t('dri.headerlinks.manage') %></h4>
-    <div class="dri_account_block_info">
-
-    <p>
-      <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, id: 'new_collection' %>
-    </p>
+  <div class="dri_workspace_menu_block dri_clearfix">
+    <h4 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.manage') %></h4>
+    <div class="dri_workspace_menu_block_info">
 
     <p>
       <%= link_to t('dri.headerlinks.new_organisation'), new_organisation_path %>
-    </p>
-
-     <p>
-      <%= link_to t('dri.headerlinks.batch_ingest'), dri_batch_ingest.new_batch_path %>
     </p>
 
     <% if current_user.is_om? %>
@@ -63,14 +69,14 @@
 <% end %>
 
 <% if current_user.is_admin? %>
-  <div class="dri_account_block dri_clearfix">
-    <h4 class="dri_account_block_heading"><%= t('dri.headerlinks.admin') %></h4>
-    <div class="dri_account_block_info">
+  <div class="dri_workspace_menu_block dri_clearfix">
+    <h4 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.admin') %></h4>
+    <div class="dri_workspace_menu_block_info">
 
       <p>
         <%= link_to t('dri.views.static.admin.licences'), main_app.licences_path, id: 'licences' %>
       </p>
-    
+
       <p>
         <%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, id: 'resque' %>
       </p>

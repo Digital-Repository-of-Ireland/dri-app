@@ -56,12 +56,21 @@
     <% end %>
                   
     <% if @user.authentication_token.present? %>
+      <% example_params_hash = {user_email: @user.email, user_token: @user.authentication_token} %>
       <h5><%=  (t :'user_groups.views.shared.token')  %></h5>
       <p><%= @user.authentication_token %></p>
 
       <p>
-        <%= t :'user_groups.views.users.show.token_sign_in' %><br />
-        <%= link_to request.env["HTTP_HOST"] + "#{root_path(:user_token => @user.authentication_token, :user_email => @user.email)}", root_path(:user_token => @user.authentication_token, :user_email => @user.email)  %>
+        <%=t('dri.application.user_profile.token_params')%>:
+        <pre><%= example_params_hash.to_param %></pre>
+        <br />
+        <%= t('dri.application.user_profile.for_example') %>,<br />
+        <%= link_to(
+          "#{request.env["HTTP_HOST"]}#{my_collections_index_path(example_params_hash)}",
+          my_collections_index_path(example_params_hash))
+        %>
+
+                <%#= link_to "#{request.env["HTTP_HOST"]}#{my_collections_path(:user_token => @user.authentication_token, :user_email => @user.email)}", my_collections_path(:user_token => @user.authentication_token, :user_email => @user.email)  %>
       </p>
 
       <% if SETTING_PROFILE_TOKEN_EXPIRY_DAYS == 0 %>

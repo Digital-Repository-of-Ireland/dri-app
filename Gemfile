@@ -23,7 +23,7 @@ gem 'googleauth', '0.5.1'
 
 gem 'paper_trail', '~> 4'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.6.4'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v2.6.5'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.2.3'
 
 # batch ingest
@@ -32,7 +32,7 @@ gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo', '2.6.0'
 
-gem 'active-fedora', '9.11'
+gem 'active-fedora', '9.13'
 gem 'active_fedora-noid', '1.1.1'
 
 gem 'config'
@@ -60,7 +60,7 @@ gem 'syslog-logger'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'jquery-cookie-rails'
+gem 'js_cookie_rails'
 
 # clients
 gem 'rest-client'
@@ -75,7 +75,6 @@ gem 'is_it_working-cbeer'
 gem 'resque', '1.26'
 gem 'resque-status'
 gem 'nest'
-
 gem 'sass-rails' , '~> 4.0.4'
 #gem 'compass', '0.12.7'
 
@@ -93,6 +92,7 @@ end
 group :development, :test do
   gem 'guard'
   gem 'rspec-rails', '~> 3.0'
+  gem 'rswag-specs', '~> 2.0'
   gem 'poltergeist', '>= 1.11.0'
   gem 'phantomjs', :require => 'phantomjs/poltergeist'
   gem 'simplecov'
@@ -102,15 +102,12 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'guard-livereload', require: false
-
   gem "zeus", require: false
-
   gem 'ci_reporter_rspec'
-
   gem 'solr_wrapper', '~> 0.18'
   gem 'fcrepo_wrapper', '0.6.0'
-
   gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
+  gem "byebug", "~> 10.0"
 end
 
 group :test do
@@ -123,6 +120,7 @@ group :test do
   gem 'ffaker'
   gem 'syntax'
   gem 'cucumber-api-steps'
+  gem "parallel_tests", "~> 2.23"
 end
 
 # To use ActiveModel has_secure_password
@@ -174,3 +172,6 @@ gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem "jquery-slick-rails"
 gem 'remotipart'
 
+# api documentation generator / presenter
+gem "rswag-api", "~> 2.0"
+gem "rswag-ui", "~> 2.0"

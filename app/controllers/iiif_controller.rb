@@ -26,10 +26,10 @@ class IiifController < ApplicationController
 
     response.headers['Access-Control-Allow-Origin'] = '*'
 
-    manifest = Rails.cache.fetch("#{@document.id}-#{@document['system_modified_dtsi']}") { iiif_manifest.to_json }
+    manifest = Rails.cache.fetch("#{@document.id}-#{@document['system_modified_dtsi']}") { iiif_manifest.as_json }
     
     respond_to do |format|
-      format.html  { @manifest = JSON.pretty_generate JSON.parse(manifest) }
+      format.html  { @manifest = JSON.pretty_generate(manifest) }
       format.json  { render json: manifest, content_type: 'application/ld+json' }
     end
   end

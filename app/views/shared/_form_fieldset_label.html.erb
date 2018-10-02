@@ -1,0 +1,15 @@
+<% 
+  # use default format followed by source, unless already set
+  span_string ||= "dri.views.fields.#{source}"  
+  help_string ||= "dri.help.fields.#{source}_text"
+  help_title ||= "dri.help.fields.#{source}"
+%>
+<span class="dri_metadata_label_span">
+  <%= f.label "#{t(span_string)}"%>
+  <i  class="dri_help_popover fa fa-info-circle fa-1" 
+      data-content="<%= t(help_string) %>" 
+      data-original-title="<%= t(help_title)%>"
+      data-trigger="hover" 
+      data-placement="right">
+  </i>
+</span>

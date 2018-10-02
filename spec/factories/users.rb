@@ -37,5 +37,4 @@ FactoryBot.define do
       @membership.save
     end
   end
-
 end
