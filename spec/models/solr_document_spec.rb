@@ -28,7 +28,7 @@ describe SolrDocument do
     @dinstitute.name = "Depositing Test Institute"
     @dinstitute.url = "http://www.test.ie"
     @dinstitute.save
-  
+
     @collection.institute = [@institute.name, @institute_b.name]
     @collection.depositing_institute = @dinstitute.name
     @collection.save
@@ -128,5 +128,18 @@ describe SolrDocument do
       doc = SolrDocument.new(@object.to_solr)
       expect(doc.read_master?).to be false
     end
+
+    it "should return the asset docs" do
+      labels = %w(g445rv188_DCLA.RDFA.006.08.tif g445rv188_DCLA.RDFA.006.20.tif g445rv188_DCLA.RDFA.006.07.tif g445rv188_DCLA.RDFA.006.13.tif)
+      ordered_labels = %w(g445rv188_DCLA.RDFA.006.07.tif g445rv188_DCLA.RDFA.006.08.tif g445rv188_DCLA.RDFA.006.13.tif g445rv188_DCLA.RDFA.006.20.tif)
+
+      labels.each { |l| @object.generic_files << DRI::GenericFile.create(label: l) }
+      @object.save
+
+      od = SolrDocument.find(@object.id)
+      expect(od.assets(ordered: false).map(&:label)).to match_array(labels)
+      expect(od.assets(ordered: true).map(&:label)).to eq ordered_labels
+    end
+
   end
 end
