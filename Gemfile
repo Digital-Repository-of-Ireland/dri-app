@@ -108,6 +108,7 @@ group :development, :test do
   gem 'fcrepo_wrapper', '0.6.0'
   gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
   gem "byebug", "~> 10.0"
+  gem "parallel_tests", "~> 2.23"
 end
 
 group :test do
@@ -120,7 +121,6 @@ group :test do
   gem 'ffaker'
   gem 'syntax'
   gem 'cucumber-api-steps'
-  gem "parallel_tests", "~> 2.23"
 end
 
 # To use ActiveModel has_secure_password

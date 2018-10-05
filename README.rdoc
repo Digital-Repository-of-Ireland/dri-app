@@ -63,9 +63,22 @@ To generate the app docs
 
   $ bundle exec rake rdoc
 
+To run api specs
+
+  # there is an exclude filter for api specs in .rspec 
+  # since api:docs:generate runs those specs anyway
+  # override with the command below
+  $ bundle exec rspec spec/api --exclude-filter=''
+
 To generate the api docs
 
   $ bundle exec rake apidoc:generate
+
+To run tests in parallel
+
+  $ bundle exec rake parallel:create
+  $ bundle exec rake parallel:prepare
+  $ bundle exec parallel_rspec spec
 
 == Dependencies
 
