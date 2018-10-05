@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 module UserTests
     describe UserGroup::User do
         before :each do

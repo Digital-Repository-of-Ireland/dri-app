@@ -1,3 +1,4 @@
+require 'rails_helper'
 require 'solr/query'
 
 describe 'FixityJob' do

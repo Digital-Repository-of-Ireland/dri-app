@@ -1,3 +1,4 @@
+require 'rails_helper'
 require 'solr/query'
 
 RSpec.configure do |c|
