@@ -1,6 +1,7 @@
 --color
 --format progress
-#--profile 20
+--profile 20
+--exclude-pattern "spec/api/**"
 
 --require spec_helper
 --require rails_helper
