@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe ReadersController do
   include Devise::Test::ControllerHelpers
   

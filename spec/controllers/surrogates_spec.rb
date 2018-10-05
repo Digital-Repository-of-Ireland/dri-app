@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe SurrogatesController do
   include Devise::Test::ControllerHelpers
 

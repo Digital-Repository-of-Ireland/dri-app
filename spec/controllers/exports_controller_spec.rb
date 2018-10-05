@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe ExportsController do
   include Devise::Test::ControllerHelpers
 

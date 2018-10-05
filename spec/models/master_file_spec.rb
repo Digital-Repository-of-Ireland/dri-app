@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe "master file access" do
 
   before :each do
