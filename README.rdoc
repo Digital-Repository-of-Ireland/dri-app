@@ -45,36 +45,35 @@ it should be updated as soon as possible after installation. To change the passw
 application as each of the default users, navigate to their profile page by
 clicking on the username at the top of the screen, and clicking on the 'Edit' button.
  
-To run the unit tests
+To run the unit tests:
 
   $ cd dri-app
   $ rake jetty:start
   $ rake jetty:config
   $ rake rspec
 
-To run the functional tests
+To run the functional tests:
 
   $ cd dri-app
   $ rake jetty:start
   $ rake jetty:config
   $ rake cucumber or bundle exec cucumber
 
-To generate the app docs
+To generate the app docs:
 
   $ bundle exec rake rdoc
 
-To run api specs
+There is an exclude filter for api specs in .rspec 
+since api:docs:generate runs those specs anyway.
+To run api specs:
 
-  # there is an exclude filter for api specs in .rspec 
-  # since api:docs:generate runs those specs anyway
-  # override with the command below
-  $ bundle exec rspec spec/api --exclude-filter=''
+  $ bundle exec rspec spec/api --exclude-pattern=''
 
-To generate the api docs
+To generate the api docs:
 
   $ bundle exec rake apidoc:generate
 
-To run tests in parallel
+To run tests in parallel:
 
   $ bundle exec rake parallel:create
   $ bundle exec rake parallel:prepare

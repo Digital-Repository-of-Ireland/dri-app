@@ -11,16 +11,12 @@ end
 
 shared_context 'collection_manager_user' do
   before(:all) do
-    # UserGroup::Group.find_or_create_by(
-    #   name: SETTING_GROUP_CM, 
-    #   description: "collection manager test group"
-    # )
     @login_user = FactoryBot.create(:collection_manager)
   end
 
   after(:all) do
-    @login_user.delete
-    # UserGroup::Group.find_by(name: SETTING_GROUP_CM).delete
+    @login_user.destroy
+    @group.destroy
   end
 end
 

@@ -55,6 +55,10 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     # issue with nested examples e.g iiif_spec
     # possibly check for ldp gone before delete?
     # @collections.map(&:delete)
+    @collections.each do |c|
+      # try to destroy collection if it still exists, otherwise do nothing
+      c.destroy rescue nil
+    end
   end
 end
 
