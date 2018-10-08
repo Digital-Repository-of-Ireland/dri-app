@@ -1,5 +1,27 @@
 module Seeds
-  def self.add_collections()
+  def self.add_collections
+    create_collection('save')
+  end
+
+  def self.add_collections!
+    create_collection('save!')
+  end
+
+  def self.remove_collections
+    DRI::QualifiedDublinCore.find(title: 'test_collection').each do |collection|
+      collection.destroy
+    end
+  end
+
+  def self.remove_collections!
+    DRI::QualifiedDublinCore.find(title: 'test_collection').each do |collection|
+      collection.destroy!
+    end
+  end
+
+  private
+
+  def self.create_collection(func)
     # only use email for associating object with user?
     admin = User.find(1).email
     collection = create_object(admin, 'test_collection', type: 'Collection')
@@ -7,18 +29,9 @@ module Seeds
     2.times do |n|
       collection.governed_items << create_object(admin, "test_object_#{n}")
     end
-
-    collection.governed_items.map(&:save)
-    collection.save
+    collection.governed_items.map(&func.to_sym)
+    collection.send(func)
   end
-
-  def self.remove_collections()
-    DRI::QualifiedDublinCore.find_by(title: 'test_collection').each do |collection|
-      collection.destroy!
-    end
-  end
-
-  private
 
   # @param [String] owner
   # @param [String] title
