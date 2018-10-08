@@ -140,3 +140,24 @@ namespace :api do
   end
 end
 
+# custom seed files to add/remove data for dev/test
+# e.g bundle exec rake db:seed:add_organisations
+require 'byebug'
+namespace :db do
+  namespace :seed do
+    Dir[Rails.root.join('db', 'seeds', '*.rb')].each do |filename|
+      task_name = File.basename(filename, '.rb')
+      desc "Seed " + task_name
+      ["add", "remove"].each do |cmd|
+        task "#{cmd}_#{task_name}".to_sym => :environment do
+          if File.exist?(filename)
+            require(filename)
+            puts "starting #{cmd}_#{task_name} seeds"
+            Seeds.send("#{cmd}_#{task_name}".to_sym)
+            puts "finished #{cmd}_#{task_name} seeds"
+          end
+        end
+      end
+    end
+  end
+end
