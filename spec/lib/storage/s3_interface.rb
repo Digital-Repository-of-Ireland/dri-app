@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe "Storage::S3Interface" do
 
   before(:all) do

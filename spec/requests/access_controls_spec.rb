@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe AccessControlsController, :type => :request do
 
   before(:each) do

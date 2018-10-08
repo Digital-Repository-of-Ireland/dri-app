@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe "collection associations" do
 
   before :each do

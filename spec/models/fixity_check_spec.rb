@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe FixityCheck do
 
   before(:each) do

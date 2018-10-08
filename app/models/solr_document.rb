@@ -71,7 +71,7 @@ class SolrDocument
 
     ancestor_ids.each do |ancestor_id|
       ancestor = ancestor_docs[ancestor_id]
-      return ancestor[field] if ancestor[field].present?
+      return ancestor[field] if ancestor && ancestor[field].present?
     end
 
     nil
@@ -87,7 +87,7 @@ class SolrDocument
   def ancestors_published?
     ancestor_ids.each do |id|
       doc = ancestor_docs[id]
-      return false unless doc.status == 'published'
+      return false unless doc&.status == 'published'
     end
 
     true

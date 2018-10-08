@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe LocalFile do
 
   before(:each) do

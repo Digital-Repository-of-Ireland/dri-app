@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe "FixityCollectionJob" do
   
   before(:each) do

@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe ObjectHistory  do
   
   before do
