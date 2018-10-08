@@ -30,8 +30,8 @@ module DRI::Formatters
       @object_hash = object_doc.extract_metadata(request_fields)
     end
 
-    # @param [Hash]   options
-    # @param [Symbol] func     default :to_json, allows for :as_json as needed
+    # @param options [Hash]
+    # @param func [Symbol]     default :to_json, allows for :as_json as needed
     # @return [String(json) | Hash] (Could be any type depending on :func)
     #     String | Hash are the expected outputs
     def format(options = {}, func: :to_json)

@@ -21,6 +21,7 @@ module Seeds
 
   private
 
+  # @param func [String] the function collection calls to save itself
   def self.create_collection(func)
     # only use email for associating object with user?
     admin = User.find(1).email
@@ -33,14 +34,14 @@ module Seeds
     collection.send(func)
   end
 
-  # @param [String] owner
-  # @param [String] title
-  # @param [String] access
-  # @param [String] type
+  # @param owner [String]
+  # @param title [String] 
+  # @param access [String] 
+  # @param type [String] 
   # @return DRI::QualifiedDublicCore
   def self.create_object(owner, title, access: 'public', type: 'Object')
     # institute = Institute.all.sample.name # random institute
-    institute = Institute.first.name
+    institute = Institute.find_by(depositing: true).name
     object = DRI::Batch.with_standard :qdc
     object.title = [title]
     object.description = ['this is a test']
@@ -50,16 +51,19 @@ module Seeds
     object.creator = [owner]
     object.discover_groups_string = access
     object.read_groups_string = access
-    object.master_file_access = access
+    object.status = 'published'
+    object.master_file_access = access 
+    object.institute = [institute]
     object.depositing_institute = institute
     object.role_org = [institute]
 
     object.object_type = [type]
     object.type = [type]
 
-    # has to be a string
-    # otherwise Error: undefined method `gsub' for 25:Integer
+    # dates have to be string otherwise Error: undefined method `gsub' for 25:Integer
     object.creation_date = ["#{Time.now}"]
+    object.published_date = ["#{Time.now}"]
+    object.date = ["#{Time.now}"]
     object.rights = ['CC-BY']
     object.licence = 'CC-BY'
     object
