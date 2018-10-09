@@ -122,7 +122,7 @@ describe 'ProcessBatchIngest' do
       expect(master_file.status_code).to eq 'FAILED'
     end
 
-     it "should rescue errors saving invalid metadata" do
+     it "should rescue errors saving metadata with missing required fields" do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'metadata_no_rights.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
@@ -133,6 +133,20 @@ describe 'ProcessBatchIngest' do
       expect(rc).to eq -1
       expect(object.persisted?).to be false
       expect(master_file.status_code).to eq 'FAILED'
+    end
+
+    it "should rescue errors saving metadata with invalid xml" do
+      tmp_file = Tempfile.new(['metadata', '.xml'])
+      FileUtils.cp(File.join(fixture_path, 'invalid_xml_metadata.xml'), tmp_file.path)
+      metadata = { master_file_id: master_file.id, path: tmp_file.path }
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection, @login_user, metadata)
+
+      master_file.reload
+
+      expect(rc).to eq -1
+      expect(object).to be_nil
+      expect(master_file.status_code).to eq 'FAILED'
+      expect(master_file.file_location).to start_with("error: invalid metadata")
     end
 
     it "should rescue errors if metadata file not found" do
