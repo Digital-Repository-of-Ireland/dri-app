@@ -2,13 +2,12 @@
 <% if generic_file.present? && !generic_file.preservation_only? %>
 
     <% if generic_file.audio? %>
-        <% @surrogate = surrogate_url(document.id, generic_file.id, "mp3") %>
+        <% @surrogate_mp3 = surrogate_url(document.id, generic_file.id, "mp3") %>
+        <% @surrogate_ogg = surrogate_url(document.id, generic_file.id, "ogg") %>
+        <% @surrogate = @surrogate_mp3 %>
         <% if @surrogate %>
-            <audio id="surrogate_audio" controls
-             preload="auto" width="100%" height="100"  data-setup='{}'>
-              <source src="<%= @surrogate %>" type="audio/mpeg" >
-            </audio>
-            <%= render partial: 'shared/object_show_single_audio_details', locals: { generic_file: generic_file } %>
+          <%= audio_tag [@surrogate_mp3, @surrogate_ogg], controls: true, autobuffer: true, width: "100%", height: "100px" %>
+           <%= render partial: 'shared/object_show_single_audio_details', locals: { generic_file: generic_file } %>
         <% end %>
 
     <% elsif generic_file.video? %>
@@ -24,7 +23,7 @@
         <% @surrogate_pdf = surrogate_url(document.id, generic_file.id, "pdf") %>
         <% @title = generic_file.label %>
         <% if @surrogate %>
-            <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate_pdf, :'data-title' => @title, :id => "view_pdf", :class => "view_pdf" do %>
+            <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate_pdf, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
               <img class="dri_carousel_img" src="<%= @surrogate %>">
             <% end %>
         <% end %>
@@ -34,7 +33,7 @@
         <% @surrogate_pdf = surrogate_url(document.id, generic_file.id, "pdf") %>
         <% @title = generic_file.label %>
         <% if @surrogate %>
-            <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate_pdf, :'data-title' => @title, :id => "view_pdf", :class => "view_pdf" do %>
+            <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate_pdf, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
               <%= image_tag('PDF_Logo.png') %>
             <% end %>
         <% end %>
@@ -42,20 +41,20 @@
     <% elsif generic_file.image? %>
         <% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
         <% content_for :head do %>
-            <meta property="og:image" content="<%= @surrogate %>" /> 
+            <meta property="og:image" content="<%= @surrogate %>" />
         <% end %>
         <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
         <% if @surrogate %>
             <% if document.published? && document.public_read? %>
-              <% @iiif_sources << iiif_info_url(document.id, generic_file.id) %> 
+              <% @iiif_sources << iiif_info_url(document.id, generic_file.id) %>
               <%= link_to "#dri_iiif_view", class: 'dri_iiif' do %>
-                  <img class="dri_carousel_img" src="<%= @surrogate %>">      
+                  <img class="dri_carousel_img" src="<%= @surrogate %>">
               <% end %>
             <% else %>
-               <%= link_to @surrogate_colorbox, :class => 'dri_gallery group1' do %>
-                  <img class="dri_carousel_img" src="<%= @surrogate %>">      
+               <%= link_to @surrogate_colorbox, class: 'dri_gallery group1' do %>
+                  <img class="dri_carousel_img" src="<%= @surrogate %>">
                 <% end %>
-            <% end %>    
+            <% end %>
         <% end %>
     <% end %>
 
