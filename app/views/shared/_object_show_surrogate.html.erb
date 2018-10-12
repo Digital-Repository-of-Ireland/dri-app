@@ -3,52 +3,52 @@
 
     <% if generic_file.audio? %>
         <% @surrogate_mp3 = surrogate_url(document.id, generic_file.id, "mp3") %>
-        <% @surrogate_ogg = surrogate_url(document.id, generic_file.id, "ogg") %>
         <% @surrogate = @surrogate_mp3 %>
         <% if @surrogate %>
+          <% @surrogate_ogg = surrogate_url(document.id, generic_file.id, "ogg") %>
           <%= audio_tag [@surrogate_mp3, @surrogate_ogg], controls: true, autobuffer: true, width: "100%", height: "100px" %>
            <%= render partial: 'shared/object_show_single_audio_details', locals: { generic_file: generic_file } %>
         <% end %>
 
     <% elsif generic_file.video? %>
-        <% @surrogate_webm = surrogate_url(document.id, generic_file.id, "webm") %>
-        <% @surrogate_mp4 = surrogate_url(document.id, generic_file.id, "mp4") %>
-        <% @surrogate = @surrogate_mp4 %>
+        <% @surrogate = surrogate_url(document.id, generic_file.id, "mp4") %>
         <% if @surrogate %>
-            <%= video_tag [@surrogate_mp4, @surrogate_webm], controls: true, width:"100%", height: "270px" %>
+            <% @surrogate_webm = surrogate_url(document.id, generic_file.id, "webm") %>
+            <%= video_tag [@surrogate, @surrogate_webm], controls: true, width:"100%", height: "270px" %>
         <% end %>
 
     <% elsif generic_file.pdf? %>
-        <% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
-        <% @surrogate_pdf = surrogate_url(document.id, generic_file.id, "pdf") %>
+        <% @surrogate = surrogate_url(document.id, generic_file.id, "pdf") %>
         <% @title = generic_file.label %>
         <% if @surrogate %>
-            <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate_pdf, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
+            <% @surrogate_thumb = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
+
+            <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
               <% if first %>
-                <img class="dri_carousel_img" src="<%= @surrogate %>">
+                <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
               <% else %>
-                <img class="dri_carousel_img" data-src="<%= @surrogate %>">
+                <img class="dri_carousel_img" data-src="<%= @surrogate_thumb %>">
               <% end %>
             <% end %>
         <% end %>
 
     <% elsif generic_file.text? %>
         <% @surrogate = surrogate_url(document.id, generic_file.id, "pdf") %>
-        <% @surrogate_pdf = surrogate_url(document.id, generic_file.id, "pdf") %>
         <% @title = generic_file.label %>
         <% if @surrogate %>
-            <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate_pdf, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
+            <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
               <%= image_tag('PDF_Logo.png') %>
             <% end %>
         <% end %>
 
     <% elsif generic_file.image? %>
-        <% @surrogate_thumb = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
-        <% content_for :head do %>
-            <meta property="og:image" content="<%= @surrogate_thumb %>" />
-        <% end %>
         <% @surrogate = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
         <% if @surrogate %>
+            <% @surrogate_thumb = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
+            <% content_for :head do %>
+              <meta property="og:image" content="<%= @surrogate_thumb %>" />
+            <% end %>
+
             <% if document.published? && document.public_read? %>
               <% @iiif_sources << iiif_info_url(document.id, generic_file.id) %>
               <%= link_to "#dri_iiif_view", class: 'dri_iiif' do %>
