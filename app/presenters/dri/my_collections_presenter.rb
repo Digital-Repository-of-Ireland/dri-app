@@ -24,7 +24,7 @@ module DRI
     end
 
     def files
-      @files ||= document.assets(true).sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
+      @files ||= document.assets(with_preservation: true, ordered: true)
     end
 
     def relationships
@@ -32,7 +32,11 @@ module DRI
     end
 
     def reader_group
-      @reader_group ||= find_reader_group 
+      @reader_group ||= find_reader_group
+    end
+
+    def surrogate_exists?(file_id, name)
+      surrogates(file_id).key?(name)
     end
 
     def surrogates(file_id)
@@ -70,7 +74,7 @@ module DRI
         if ingest_status.present?
           status = ingest_status.first
           { status: status.status }
-        else 
+        else
           { status: 'unknown' }
         end
       end

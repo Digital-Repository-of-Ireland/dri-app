@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Deleting a single object' do
   describe 'as a manager user' do
   before(:each) do

@@ -84,7 +84,17 @@ class ProcessBatchIngest
     end
 
     xml_ds = XmlDatastream.new
-    xml_ds.load_xml(file_data(download_path))
+
+    begin
+      xml_ds.load_xml(file_data(download_path))
+    rescue DRI::Exceptions::InvalidXML, DRI::Exceptions::ValidationErrors => e
+      update = { status_code: 'FAILED', file_location: "error: invalid metadata: #{e.message}" }
+      update_master_file(metadata[:master_file_id], update)
+      FileUtils.rm_f(metadata[:path])
+
+      return -1, nil
+    end
+
     object = create_object(collection, user, xml_ds)
 
     if !object.valid?

@@ -17,7 +17,7 @@ end
 
 #Capybara.javascript_driver = :poltergeist
 Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, :phantomjs => Phantomjs.path)
+  Capybara::Poltergeist::Driver.new(app, phantomjs: Phantomjs.path)
 end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
@@ -30,7 +30,7 @@ require 'rspec/rails'
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
   config.infer_base_class_for_anonymous_controllers = false
   config.infer_spec_type_from_file_location!
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

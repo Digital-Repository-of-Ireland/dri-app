@@ -1,6 +1,9 @@
+require 'rails_helper'
+
 describe XmlDatastream do
-  describe 'load_xml' do
-    
+
+describe 'load_xml' do
+
     it 'raises an exception if no schema' do
       file = fixture_file_upload("/invalid_metadata_noschema.xml", "text/xml")
       class << file

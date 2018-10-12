@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'solr/query'
 
 RSpec.configure do |c|

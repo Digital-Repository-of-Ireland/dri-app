@@ -6,7 +6,11 @@ module DRI
     end
 
     def displayfiles
-      @displayfiles ||= document.assets(false).sort_by! { |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
+      @displayfiles ||= document.assets(ordered: true)
+    end
+
+    def surrogate_exists?(id, name)
+      document.surrogates(id).key?(name)
     end
 
     def relationships

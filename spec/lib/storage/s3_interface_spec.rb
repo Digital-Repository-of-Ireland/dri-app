@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe "Storage::S3Interface" do
 
   before(:all) do

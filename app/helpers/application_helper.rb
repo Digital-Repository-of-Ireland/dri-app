@@ -3,8 +3,7 @@ module ApplicationHelper
   require 'uri'
 
   def surrogate_url(doc_id, file_doc_id, name)
-    storage = StorageService.new
-    return nil unless storage.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
+    return nil unless @presenter.surrogate_exists?(file_doc_id, name)
 
     object_file_url(
       object_id: doc_id,
@@ -100,7 +99,7 @@ module ApplicationHelper
 
     ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
   end
-  
+
   def collection_children_query(collection_id)
     "(#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
     "\" AND is_collection_sim:false" +

@@ -1,3 +1,4 @@
+require 'rails_helper'
 require 'zip'
 
 describe CreateArchiveJob do

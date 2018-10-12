@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe MetadataController do
   include Devise::Test::ControllerHelpers
     

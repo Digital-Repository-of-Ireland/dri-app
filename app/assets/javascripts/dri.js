@@ -12,7 +12,7 @@ $(document).ready(function() {
 	    addEventListener("load", function() {
 	            setTimeout(hideURLbar, 0);
 	    }, false);
-	}
+	  }
 });
 
 function hideURLbar() {
@@ -124,7 +124,7 @@ $(document).ready(function() {
     clipboard.destroy();
   }
   var clipboard = new Clipboard('.clipboard-btn');
-    
+
   clipboard.on('success', function(e) {
     setTooltip(e.trigger, I18n.t("dri.views.catalog.forms.copy_success"));
     hideTooltip(e.trigger);
@@ -134,5 +134,14 @@ $(document).ready(function() {
   clipboard.on('error', function(e) {
     setTooltip(e.trigger, I18n.t("dri.views.catalog.forms.copy_failure"));
     hideTooltip(e.trigger);
+  });
+});
+
+$(function() {
+  return $(".carousel").on("slid.bs.carousel", function(ev) {
+    var lazy;
+    lazy = $(ev.relatedTarget).find("img[data-src]");
+    lazy.attr("src", lazy.data('src'));
+    lazy.removeAttr("data-src");
   });
 });

@@ -67,7 +67,7 @@ task :ci => ['ci_clean'] do
   end
 
   Rake::Task["rdoc"].invoke
-  # Rake::Task["api:docs:generate"].invoke
+  Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Run Continuous Integration-spec"
@@ -80,6 +80,7 @@ task :ci_spec => ['ci_clean'] do
   end
 
   Rake::Task["rdoc"].invoke
+  Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Clean CI environment"
@@ -139,3 +140,24 @@ namespace :api do
   end
 end
 
+# custom seed files to add/remove data for dev/test
+# e.g bundle exec rake db:seed:add_organisations
+namespace :db do
+  namespace :seed do
+    Dir[Rails.root.join('db', 'seeds', '*.rb')].each do |filename|
+      cmd = File.basename(filename, '.rb')
+      tasks = ["add_#{cmd}", "add_#{cmd}!", "remove_#{cmd}", "remove_#{cmd}!"]
+      tasks.each do |task_name|
+        desc "Seed " + task_name
+        task task_name.to_sym => :environment do
+          if File.exist?(filename)
+            require(filename)
+            puts "starting #{task_name} seeds"
+            Seeds.send("#{task_name}".to_sym)
+            puts "finished #{task_name} seeds"
+          end
+        end
+      end
+    end
+  end
+end
