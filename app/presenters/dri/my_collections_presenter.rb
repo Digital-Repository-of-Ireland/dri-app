@@ -35,6 +35,10 @@ module DRI
       @reader_group ||= find_reader_group
     end
 
+    def surrogate_exists?(file_id, name)
+      surrogates(file_id).key?(name)
+    end
+
     def surrogates(file_id)
       @surrogates[file_id]
     end

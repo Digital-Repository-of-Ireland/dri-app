@@ -3,6 +3,8 @@ module ApplicationHelper
   require 'uri'
 
   def surrogate_url(doc_id, file_doc_id, name)
+    return nil unless @presenter.surrogate_exists?(file_doc_id, name)
+
     object_file_url(
       object_id: doc_id,
       id: file_doc_id,

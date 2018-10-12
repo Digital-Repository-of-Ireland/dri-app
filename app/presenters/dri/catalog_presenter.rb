@@ -9,6 +9,10 @@ module DRI
       @displayfiles ||= document.assets(ordered: true)
     end
 
+    def surrogate_exists?(id, name)
+      document.surrogates(id).key?(name)
+    end
+
     def relationships
       @relationships ||= object_relationships
     end

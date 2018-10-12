@@ -114,8 +114,11 @@ module DRI::Solr::Document::File
   end
 
   def surrogates(file_id, timeout = nil)
-    storage = StorageService.new
-    storage.get_surrogates(self, file_id, timeout)
+    storage_service.get_surrogates(self, file_id, timeout)
+  end
+
+  def storage_service
+    @storage_service ||= StorageService.new
   end
 
   def text?
