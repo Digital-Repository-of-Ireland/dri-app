@@ -3,7 +3,12 @@ module ApplicationHelper
   require 'uri'
 
   def surrogate_url(doc_id, file_doc_id, name)
-    return nil unless @presenter.surrogate_exists?(file_doc_id, name)
+    if @presenter
+      return nil unless @presenter.surrogate_exists?(file_doc_id, name)
+    else
+      storage = StorageService.new
+      return nil unless storage.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
+    end
 
     object_file_url(
       object_id: doc_id,
