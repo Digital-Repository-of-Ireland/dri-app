@@ -24,7 +24,11 @@
         <% @title = generic_file.label %>
         <% if @surrogate %>
             <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate_pdf, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
-              <img class="dri_carousel_img" src="<%= @surrogate %>">
+              <% if first %>
+                <img class="dri_carousel_img" src="<%= @surrogate %>">
+              <% else %>
+                <img class="dri_carousel_img" data-src="<%= @surrogate %>">
+              <% end %>
             <% end %>
         <% end %>
 
@@ -39,20 +43,24 @@
         <% end %>
 
     <% elsif generic_file.image? %>
-        <% @surrogate = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
+        <% @surrogate_thumb = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
         <% content_for :head do %>
-            <meta property="og:image" content="<%= @surrogate %>" />
+            <meta property="og:image" content="<%= @surrogate_thumb %>" />
         <% end %>
-        <% @surrogate_colorbox = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
+        <% @surrogate = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
         <% if @surrogate %>
             <% if document.published? && document.public_read? %>
               <% @iiif_sources << iiif_info_url(document.id, generic_file.id) %>
               <%= link_to "#dri_iiif_view", class: 'dri_iiif' do %>
-                  <img class="dri_carousel_img" src="<%= @surrogate %>">
+                  <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
               <% end %>
             <% else %>
-               <%= link_to @surrogate_colorbox, class: 'dri_gallery group1' do %>
-                  <img class="dri_carousel_img" src="<%= @surrogate %>">
+               <%= link_to @surrogate, class: 'dri_gallery group1' do %>
+                  <% if first %>
+                    <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
+                  <% else %>
+                    <img class="dri_carousel_img" data-src="<%= @surrogate_thumb %>">
+                  <% end %>
                 <% end %>
             <% end %>
         <% end %>
