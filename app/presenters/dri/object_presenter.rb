@@ -8,7 +8,7 @@ module DRI
       @view = view_context
       @document = document
     end
-    
+
     def display_children
       children.map { |child| display_child(child) }
     end
@@ -27,8 +27,19 @@ module DRI
 
     def display_organisation(organisation)
       return display_brand(organisation) if organisation.brand
-     
+
       organisation.url.present? ? link_to(organisation.name, organisation.url, target: "_blank") : organisation.name
+    end
+
+    def surrogate_url(file_id, name)
+      return nil unless surrogate_exists?(file_id, name)
+
+      object_file_url(
+        object_id: document.id,
+        id: file_id,
+        surrogate: name,
+        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+      )
     end
 
     private

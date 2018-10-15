@@ -13,6 +13,8 @@ class AssetsController < ApplicationController
 
   def show
     @object_document = SolrDocument.find(params[:object_id])
+    @presenter = DRI::MyCollectionsPresenter.new(@object_document, view_context)
+
     @generic_file = retrieve_object! params[:id]
 
     status(@generic_file.id)
