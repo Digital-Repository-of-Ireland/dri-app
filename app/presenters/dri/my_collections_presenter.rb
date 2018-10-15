@@ -36,7 +36,7 @@ module DRI
     end
 
     def surrogate_exists?(file_id, name)
-      surrogates(file_id).key?(name)
+      surrogates(file_id)&.key?(name)
     end
 
     def surrogates(file_id)
