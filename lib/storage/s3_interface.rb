@@ -32,16 +32,14 @@ module Storage
     def delete_bucket(bucket_name)
       return false unless bucket_exists?(bucket_name)
 
-      begin
-        objects = list_files(bucket_name)
-        objects.each { |obj| @client.delete_object(bucket: with_prefix(bucket_name), key: obj) }
+      objects = list_files(bucket_name)
+      objects.each { |obj| @client.delete_object(bucket: with_prefix(bucket_name), key: obj) }
 
-        @client.delete_bucket(bucket: with_prefix(bucket_name))
-        true
-      rescue Exception => e
-        Rails.logger.error "Could not delete Storage Bucket #{bucket_name}: #{e}"
-        false
-      end
+      @client.delete_bucket(bucket: with_prefix(bucket_name))
+      true
+    rescue Exception => e
+      Rails.logger.error "Could not delete Storage Bucket #{bucket_name}: #{e}"
+      false
     end
 
     def delete_surrogates(bucket, key)
@@ -61,22 +59,19 @@ module Storage
       bucket = object.respond_to?(:id) ? object.id : object
       generic_file_id = file.respond_to?(:id) ? file.id : file
 
-      surrogate_file_names = list_files(bucket)
-
-      @surrogates_hash = {}
+      surrogate_file_names = list_files(bucket, generic_file_id)
+      surrogates_hash = {}
 
       surrogate_file_names.each do |filename|
         begin
-          if match = filename_match?(filename, generic_file_id)
-            url = create_url(bucket, filename, expire)
-            @surrogates_hash[match] = url
-          end
+          url = create_url(bucket, filename, expire)
+          surrogates_hash[key_from_filename(generic_file_id, filename)] = url
         rescue Exception => e
-          Rails.logger.debug "Problem getting url for file #{file} : #{e.to_s}"
+          Rails.logger.debug "Problem getting url for file #{generic_file_id} : #{e.to_s}"
         end
       end
 
-      @surrogates_hash
+      surrogates_hash
     end
 
      # Get url for a specific surrogate
@@ -93,7 +88,7 @@ module Storage
     def surrogate_info(bucket, key)
       surrogates_hash = {}
       begin
-        response = @client.list_objects(bucket: with_prefix(bucket))
+        response = @client.list_objects(bucket: with_prefix(bucket), prefix: key)
 
         if response.successful?
           response.contents.each do |fileobj|
@@ -113,14 +108,13 @@ module Storage
     def surrogate_url(bucket, key, expire=nil)
       expire = Settings.S3.expiry unless expire.present? && numeric?(expire)
 
-      files = list_files(bucket)
-      surrogate = files.find { |e| /#{key}/ =~ e }
+      surrogate = list_files(bucket, key)
 
       if surrogate.present?
         begin
-          url = create_url(bucket, surrogate, expire)
+          url = create_url(bucket, surrogate.first, expire)
         rescue Exception => e
-          Rails.logger.debug "Problem getting url for file #{surrogate}: #{e}"
+          Rails.logger.debug "Problem getting url for file #{surrogate.first}: #{e}"
         end
       end
 
@@ -167,6 +161,10 @@ module Storage
 
     def bucket_prefix
       Settings.S3.bucket_prefix ? "#{Settings.S3.bucket_prefix}.#{Rails.env}" : nil
+    end
+
+    def key_from_filename(generic_file_id, filename)
+      File.basename(filename, '.*').split("#{generic_file_id}_")[1]
     end
 
     def expiration_timestamp(input)
@@ -228,7 +226,7 @@ module Storage
       querystring = "AWSAccessKeyId=#{Settings.S3.access_key_id}&Expires=#{expire_date}&Signature=#{signature}"
 
       endpoint = URI.parse(Settings.S3.server)
-      uri_class = endpoint.scheme.eql?("https") ? URI::HTTPS : URI::HTTP
+      uri_class = (endpoint.scheme == "https") ? URI::HTTPS : URI::HTTP
       uri_class.build(host: endpoint.host,
                       port: endpoint.port,
                       path: "/#{bucket}/#{path}",
