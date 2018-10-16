@@ -422,6 +422,7 @@ en:
           reviewed: Reviewed
           upload_file: Upload Asset
           upload_preservation_file: Upload Preservation-only Asset
+          view_assets: View Assets
         titles:
           editor_tools: Editor Tools
           object_tools: Object Tools

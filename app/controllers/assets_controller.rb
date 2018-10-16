@@ -11,14 +11,23 @@ class AssetsController < ApplicationController
 
   include DRI::Citable
 
+  def index
+    @object_document = SolrDocument.find(params[:object_id])
+    can_view?
+
+    @files = @object_document.assets(with_preservation: true, ordered: true)
+
+    @surrogates, @status = surrogate_or_status_info(@files)
+  end
+
   def show
     @object_document = SolrDocument.find(params[:object_id])
-    @presenter = DRI::MyCollectionsPresenter.new(@object_document, view_context)
+    can_view?
 
+    @presenter = DRI::MyCollectionsPresenter.new(@object_document, view_context)
     @generic_file = retrieve_object! params[:id]
 
-    status(@generic_file.id)
-    can_view?
+    @status = status(@generic_file.id)
 
     respond_to do |format|
       format.html
@@ -255,18 +264,54 @@ class AssetsController < ApplicationController
       File.new(File.join(upload_dir, name))
     end
 
+    def surrogate_or_status_info(files)
+      surrogates = {}
+      statuses = {}
+
+      files.each do |file|
+        # get the surrogates for this file if they exist
+        file_surrogates = @object_document.surrogates(file.id)
+        if file_surrogates.present?
+          surrogates[file.id] = surrogates_with_url(file.id, file_surrogates)
+        else
+          status[file.id] = file_status(file.id)
+        end
+      end
+
+      return surrogates, statuses
+    end
+
+    def file_status(file_id)
+      ingest_status = status(file_id)
+      if ingest_status.present?
+        { status: ingest_status[:status] }
+      else
+        { status: 'unknown' }
+      end
+    end
+
     def status(file_id)
       ingest_status = IngestStatus.where(asset_id: file_id)
 
-      @status = {}
+      status_info = {}
       if ingest_status.present?
         status = ingest_status.first
-        @status[:status] = status.status
+        status_info[:status] = status.status
 
-        @status[:jobs] = {}
+        status_info[:jobs] = {}
         status.job_status.each do |job|
-          @status[:jobs][job.job] = { status: job.status, message: job.message }
+          status_info[:jobs][job.job] = { status: job.status, message: job.message }
         end
+      end
+
+      status_info
+    end
+
+    def surrogates_with_url(file_id, surrogates)
+      surrogates.each do |key, _path|
+        surrogates[key] = url_for(object_file_url(
+                            object_id: @object_document.id, id: file_id, surrogate: key
+                          ))
       end
     end
 

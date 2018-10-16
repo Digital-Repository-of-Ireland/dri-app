@@ -1,6 +1,8 @@
 module DRI
   class CatalogPresenter < ObjectPresenter
 
+    delegate :object_file_url, to: :@view
+
     def children
       @children ||= document.children(100).select { |child| child.published? }
     end

@@ -6,9 +6,7 @@ module DRI
     def initialize(document, view_context)
       super
 
-      @surrogates = {}
-      @status = {}
-      surrogate_or_status_info
+      @surrogates = load_surrogates
     end
 
     def children
@@ -43,10 +41,6 @@ module DRI
       @surrogates[file_id]
     end
 
-    def status(file_id)
-      @status[file_id]
-    end
-
     def unassigned_organisations
       @unassigned_organisations ||= all_organisations - current_collection_organisations - [depositing_organisation.try(:name)]
     end
@@ -57,26 +51,18 @@ module DRI
 
     private
 
-      def surrogate_or_status_info
+      def load_surrogates
+        surrogates = {}
+
         files.each do |file|
           # get the surrogates for this file if they exist
-          surrogates = document.surrogates(file.id)
-          if surrogates.present?
-            @surrogates[file.id] = surrogates_with_url(file.id, surrogates)
-          else
-            @status[file.id] = file_status(file.id)
+          file_surrogates = document.surrogates(file.id)
+          if file_surrogates.present?
+            surrogates[file.id] = surrogates_with_url(file.id, file_surrogates)
           end
         end
-      end
 
-      def file_status(file_id)
-        ingest_status = IngestStatus.where(asset_id: file_id)
-        if ingest_status.present?
-          status = ingest_status.first
-          { status: status.status }
-        else
-          { status: 'unknown' }
-        end
+        surrogates
       end
 
       def find_reader_group
