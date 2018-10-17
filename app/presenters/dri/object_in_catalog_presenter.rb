@@ -1,18 +1,10 @@
 module DRI
-  class CatalogPresenter < ObjectPresenter
+  class ObjectInCatalogPresenter < ObjectPresenter
 
     delegate :object_file_url, to: :@view
 
-    def children
-      @children ||= document.children(100).select { |child| child.published? }
-    end
-
-    def displayfiles
-      @displayfiles ||= document.assets(ordered: true)
-    end
-
-    def surrogate_exists?(id, name)
-      document.surrogates(id).key?(name)
+    def displayfiles(assets)
+      @displayfiles = assets
     end
 
     def relationships

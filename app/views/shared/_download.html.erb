@@ -12,7 +12,7 @@
      <% end %>
     </div>
   <% end %>
-  
+
    <% if @document.read_master? || (can? :edit, @document) %>
    <div>
      <%= link_to file_download_path(@document.id, generic_file.id, type: 'masterfile') do %>
@@ -27,7 +27,7 @@
     <div>
       <%= link_to object_path(@document, format: 'zip') do %>
         <i class="fa fa-download"></i>
-      <%= label_tag(:all, t('dri.views.catalog.forms.download_all', count: @presenter.displayfiles.size)) %>
+      <%= label_tag(:all, t('dri.views.catalog.forms.download_all', count: displayfiles_count)) %>
       <% end %>
       <div> (<%= t('dri.views.catalog.forms.download_archive_explanation') %>)</div>
     </div>

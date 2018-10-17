@@ -1,9 +1,9 @@
 <!-- close vc_title -->
 <div class="dri_sidenav">
-	<h5><i class="fa fa-lg fa-gear"></i> <%= t('dri.views.catalog.headers.files') %> (<%= @presenter.files.size %>)</h5>
+	<h5><i class="fa fa-lg fa-gear"></i> <%= t('dri.views.catalog.headers.files') %> (<%= @assets.size %>)</h5>
 	<ul>
 
-	  <% if @presenter.files.empty? %>
+	  <% if @assets.empty? %>
 	    <li><%= t('dri.views.catalog.legends.no_files') %></li>
 	  <% else %>
 	    <li>

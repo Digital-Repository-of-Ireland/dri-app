@@ -1,30 +1,30 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
 class AssetsController < ApplicationController
-  before_action :authenticate_user_from_token!, only: [:list_assets, :download]
-  before_action :authenticate_user!, only: :list_assets
+  before_action :authenticate_user_from_token!, only: [:index, :list_assets, :download]
+  before_action :authenticate_user!, only: [:index, :list_assets]
   before_action :add_cors_to_json, only: :list_assets
-  before_action :read_only, except: [:show, :download, :list_assets]
-  before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets]
+  before_action :read_only, except: [:index, :show, :download, :list_assets]
+  before_action ->(id=params[:object_id]) { locked(id) }, except: [:index, :show, :download, :list_assets]
 
   require 'validators'
 
   include DRI::Citable
 
   def index
-    @object_document = SolrDocument.find(params[:object_id])
-    can_view?
+    enforce_permissions!('edit', params[:object_id])
 
-    @files = @object_document.assets(with_preservation: true, ordered: true)
+    @document = SolrDocument.find(params[:object_id])
+    @assets = @document.assets(with_preservation: true, ordered: true)
 
     @surrogates, @status = surrogate_or_status_info(@files)
   end
 
   def show
-    @object_document = SolrDocument.find(params[:object_id])
+    @document = SolrDocument.find(params[:object_id])
     can_view?
 
-    @presenter = DRI::MyCollectionsPresenter.new(@object_document, view_context)
+    @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
     @generic_file = retrieve_object! params[:id]
 
     @status = status(@generic_file.id)
@@ -42,12 +42,12 @@ class AssetsController < ApplicationController
 
     @generic_file = retrieve_object! params[:id]
     if @generic_file
-      @object_document = SolrDocument.find(params[:object_id])
+      @document = SolrDocument.find(params[:object_id])
 
       can_view?
 
-      if @object_document.published?
-        Gabba::Gabba.new(GA.tracker, request.host).event(@object_document.root_collection_id, "Download", @object_document.id, 1, true)
+      if @document.published?
+        Gabba::Gabba.new(GA.tracker, request.host).event(@document.root_collection_id, "Download", @document.id, 1, true)
       end
 
       local_file = GenericFileContent.new(generic_file: @generic_file).local_file(params[:version])
@@ -209,7 +209,7 @@ class AssetsController < ApplicationController
     end
 
     def can_view?
-      if (!(can?(:read, params[:object_id]) && @object_document.read_master? && @object_document.published?) && !can?(:edit, @object_document))
+      if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document))
         raise Hydra::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
@@ -270,7 +270,7 @@ class AssetsController < ApplicationController
 
       files.each do |file|
         # get the surrogates for this file if they exist
-        file_surrogates = @object_document.surrogates(file.id)
+        file_surrogates = @document.surrogates(file.id)
         if file_surrogates.present?
           surrogates[file.id] = surrogates_with_url(file.id, file_surrogates)
         else
@@ -310,7 +310,7 @@ class AssetsController < ApplicationController
     def surrogates_with_url(file_id, surrogates)
       surrogates.each do |key, _path|
         surrogates[key] = url_for(object_file_url(
-                            object_id: @object_document.id, id: file_id, surrogate: key
+                            object_id: @document.id, id: file_id, surrogate: key
                           ))
       end
     end
