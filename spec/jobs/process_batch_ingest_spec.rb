@@ -4,7 +4,7 @@ describe 'ProcessBatchIngest' do
 
   before(:each) do
     allow_any_instance_of(DRI::GenericFile).to receive(:apply_depositor_metadata)
-    allow_any_instance_of(GenericFileContent).to receive(:external_content)
+    allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
   end
 
   before(:each) do
@@ -97,6 +97,19 @@ describe 'ProcessBatchIngest' do
       ProcessBatchIngest.ingest_assets(@login_user, object, assets)
 
       master_file.reload
+      expect(master_file.status_code).to eq 'COMPLETED'
+    end
+
+    it "should create a preservation asset from file" do
+      tmp_file = Tempfile.new(['sample_image', '.jpeg'])
+      FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), tmp_file.path)
+      assets = [{ label: 'preservation', master_file_id: master_file.id, path: tmp_file.path }]
+      ProcessBatchIngest.ingest_assets(@login_user, object, assets)
+
+      master_file.reload
+      id = master_file.file_location.split('/').last
+
+      expect(DRI::GenericFile.find(id).preservation?).to be true
       expect(master_file.status_code).to eq 'COMPLETED'
     end
 
