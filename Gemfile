@@ -175,3 +175,5 @@ gem 'remotipart'
 # api documentation generator / presenter
 gem "rswag-api", "~> 2.0"
 gem "rswag-ui", "~> 2.0"
+
+gem "qa", "~> 1.2"

@@ -1,6 +1,8 @@
 require 'resque/server'
 
 DriApp::Application.routes.draw do
+  mount Qa::Engine => '/qa'
+
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   scope ENV["RAILS_RELATIVE_URL_ROOT"] || "/" do
