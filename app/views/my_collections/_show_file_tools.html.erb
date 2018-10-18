@@ -20,13 +20,13 @@
 	        <% else %>
 	          <% @presenter.files.each_with_index do |file, index| %>
 			    <% if ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
-				        
+
 				  <% if index > 0 %>
 				    <li class="dri_asset_tools_entry">
 				  <% else %>
 				    <li>
 				  <% end %>
-				        
+
 				  <div>
 				    <span>
 				      <%= link_to t('dri.views.catalog.links.details') + " " + (index +1).to_s , object_file_path(@document, file.id), id: "asset_details", style: "display:inline-block" %>
@@ -40,22 +40,22 @@
 		            </span>
 		          </div>
 		            </li>
-				  
+
 				    <li>
 				      <%= link_to t('dri.views.catalog.links.download'), file_download_path(@document, file.id), :id => "download_asset" %>
 				    </li>
 	            <% end %>
 
 	            <% if file.preservation_only? %>
-		          
+
 		            <li><%= t('dri.views.catalog.legends.preservation_only') %></li>
 
-		            <% if @presenter.status(file.id) != 'success' %>
+		            <% if @presenter.status(file.id)&.dig(:status) != 'success' %>
 		              <li><%= t('dri.views.catalog.legends.file_status', status: @presenter.status(file.id)[:status]) %></li>
 	              <% end %>
-	            
+
 	            <% else %>
-			      
+
 			          <% if can? :read, @document %>
 			            <% if @presenter.surrogates(file.id).blank? %>
 	                      <li><%= t('dri.views.catalog.legends.no_surrogates') %></li>
@@ -71,7 +71,7 @@
 
 			        <% end %><!-- if preservation -->
 
-			      <% end %><!-- each file -->  
+			      <% end %><!-- each file -->
 		      <% end %>
 
 		    </ul>
