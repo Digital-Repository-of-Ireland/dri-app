@@ -50,4 +50,6 @@
 //= require dri/forms
 //= require dri/spinner
 //= require dri
+//
+//= require dri/autocomplete_vocabs
 
