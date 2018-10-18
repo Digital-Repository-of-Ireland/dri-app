@@ -271,7 +271,7 @@ class AssetsController < ApplicationController
       files.each do |file|
         # get the surrogates for this file if they exist
         file_surrogates = @document.surrogates(file.id)
-        if file_surrogates.present?
+        if file_surrogates.present? && !file.preservation_only?
           surrogates[file.id] = surrogates_with_url(file.id, file_surrogates)
         else
           status[file.id] = file_status(file.id)
