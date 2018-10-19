@@ -11,7 +11,7 @@ class PublishJob
 
   def perform
     collection_id = options['collection_id']
-    
+
     Rails.logger.info "Publishing collection #{collection_id}"
     set_status(collection_id: collection_id)
 
@@ -100,10 +100,8 @@ class PublishJob
       DataciteDoi.create(object_id: obj.id, modified: 'DOI created')
     end
 
-    begin
       DRI.queue.push(MintDoiJob.new(obj.id))
-    rescue Exception => e
-      Rails.logger.error "Unable to submit mint doi job: #{e.message}"
-    end
+  rescue Exception => e
+    Rails.logger.error "Unable to submit mint doi job: #{e.message}"
   end
 end

@@ -20,7 +20,7 @@
         <% if document.file_type_label != t("dri.data.types.Unknown") %>
             <span class="dri_icon_image">
               <% document.icon_path.each do |i| %>
-                <%= image_tag(i) %> 
+                <%= image_tag(i) %>
               <% end %> &nbsp; <%= document.file_type_label %></span>
         <% else %>
             <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
@@ -36,7 +36,7 @@
     <% end %>
 
     <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-        <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' %>
+        <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, id: 'remove_bookmark' %>
     <% end %>
   </div>
   <!-- close content_block -->

@@ -1,19 +1,19 @@
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block_collection">
       <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-        <%= link_to bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' do %>
+        <%= link_to bookmark_path(document.id), method: :delete, id: 'remove_bookmark' do %>
           <span class="dri_remove_bookmark">x</span>
           <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
         <% end %>
       <% end %>
-      <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
+      <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter)} )) do %>
         <div>
           <div class="dri_collection_image">
             <% image = cover_image ( document ) %>
             <% if image %>
-                <%= image_tag image, :width=>"228" %>
+                <%= image_tag image, width: "228" %>
             <% else %>
-                <%= image_tag "no_image.png", :width=>"228" %>
+                <%= image_tag "no_image.png", width: "228" %>
             <% end %>
           </div>
           <!-- close image -->
@@ -33,7 +33,7 @@
       <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}} %>
     <% else %>
       <%# If SUB-COLLECTION %>
-      <% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}} %>
+      <% collection_objects_params = { f: {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}} %>
     <% end %>
     <% controller = (controller_name == 'bookmarks') ? 'catalog' : controller_name %>
     <%= link_to collection_objects_params.merge({ controller: controller, action: :index, mode: "objects", search_field: "all_fields", view: params[:view]}) do %>

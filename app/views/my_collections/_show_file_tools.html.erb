@@ -1,82 +1,21 @@
 <!-- close vc_title -->
-<div class="accordion" id="dri_asset_tools_id">
-  <div class="accordion-group dri_sidenav">
+<div class="dri_sidenav">
+	<h5><i class="fa fa-lg fa-gear"></i> <%= t('dri.views.catalog.headers.files') %> (<%= @assets.size %>)</h5>
+	<ul>
 
-    <div class="accordion-heading">
+	  <% if @assets.empty? %>
+	    <li><%= t('dri.views.catalog.legends.no_files') %></li>
+	  <% else %>
+	    <li>
+	      <%= link_to t('dri.views.catalog.links.view_assets'), object_files_path(@document), id: "object_assets" %>
+	    </li>
 
-	    <a class="accordion-toggle" data-toggle="collapse" data-parent="#dri_asset_tools_id" href="#dri_asset_tools_collapsed_id" id="show_asset_tools">
-	      <h5>
-		      <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.catalog.headers.files') %> (<%= @presenter.files.size %>)
-		    </h5>
-		  </a>
+	     <% if current_user.is_admin? %>
+           <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, id: "surrogates_generate" do %>
+             <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
+           <% end %>
+         <% end %>
+	  <% end %>
 
-	  </div>
-
-	  <div id="dri_asset_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
-	    <div class="accordion-inner ">
-		    <ul>
-	        <% if @presenter.files.empty? %>
-	          <li><%= t('dri.views.catalog.legends.no_files') %></li>
-	        <% else %>
-	          <% @presenter.files.each_with_index do |file, index| %>
-			    <% if ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
-				        
-				  <% if index > 0 %>
-				    <li class="dri_asset_tools_entry">
-				  <% else %>
-				    <li>
-				  <% end %>
-				        
-				  <div>
-				    <span>
-				      <%= link_to t('dri.views.catalog.links.details') + " " + (index +1).to_s , object_file_path(@document, file.id), id: "asset_details", style: "display:inline-block" %>
-		              <% unless @document.published? %>
-				        <%= form_tag(object_file_path(@document.id, file.id), method: :delete, id: "file_delete", style: "display:inline-block") do %>
-		                  <%= button_tag t('dri.views.assets.buttons.delete'), :id => "dri_delete_asset_file", :name => "delete_file", :style => "display:inherit; margin-left: 5px;", class: 'dri_button_red_small', data: { confirm: t('dri.views.assets.confirm.delete') } %>
-		                  <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-		                <% end %>
-
-		              <% end %>
-		            </span>
-		          </div>
-		            </li>
-				  
-				    <li>
-				      <%= link_to t('dri.views.catalog.links.download'), file_download_path(@document, file.id), :id => "download_asset" %>
-				    </li>
-	            <% end %>
-
-	            <% if file.preservation_only? %>
-		          
-		            <li><%= t('dri.views.catalog.legends.preservation_only') %></li>
-
-		            <% if @presenter.status(file.id) != 'success' %>
-		              <li><%= t('dri.views.catalog.legends.file_status', status: @presenter.status(file.id)[:status]) %></li>
-	              <% end %>
-	            
-	            <% else %>
-			      
-			          <% if can? :read, @document %>
-			            <% if @presenter.surrogates(file.id).blank? %>
-	                      <li><%= t('dri.views.catalog.legends.no_surrogates') %></li>
-			              <% if @presenter.status(file.id).present? %>
-			                <li><%= t('dri.views.catalog.legends.file_status', status: @presenter.status(file.id)[:status]) %></li>
-			              <% end %>
-			            <% else %>
-				            <% @presenter.surrogates(file.id).each do |desc, url| %>
-				              <li><%= link_to desc, url, id: desc %></li>
-			              <% end %>
-			            <% end %>
-			          <% end %>
-
-			        <% end %><!-- if preservation -->
-
-			      <% end %><!-- each file -->  
-		      <% end %>
-
-		    </ul>
-	    </div>
-	  </div>
-
-  </div>
+	</ul>
 </div>

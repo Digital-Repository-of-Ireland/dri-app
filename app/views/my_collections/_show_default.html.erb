@@ -4,40 +4,41 @@
 	   &nbsp;
 	</div>
 
-	<%= render :partial => 'show_surrogate' %>
+	<%= render partial: 'show_surrogate' %>
+
 	<dl class="dri_object_metadata_readview">
 		<% document_show_fields.each do |solr_fname, field| -%>
 		  <% if should_render_show_field? document, field %>
 		    <dt class="blacklight-<%= solr_fname.parameterize %>">
-			    <%= render_document_show_field_label :field => solr_fname %>
+			    <%= render_document_show_field_label field: solr_fname %>
 		    </dt>
 		    <dd class="blacklight-<%= solr_fname.parameterize %>">
-			    <%= render_document_show_field_value :document => document, :field => solr_fname %>
+			    <%= render_document_show_field_value document: document, field: solr_fname %>
 		    </dd>
 		  <% end -%>
 		<% end -%>
-		
-		<%= render :partial => 'shared/display_licence' %>
-		
+
+		<%= render partial: 'shared/display_licence' %>
+
 		<dt class="blacklight-depositing_institute">
 			<%= t('dri.views.fields.depositing_institute') %>
 		</dt>
-		
+
 		<dd class="blacklight-depositing_institute">
 		<% if (@presenter.depositing_organisation) %>
-		  <% institute_browse_params = { 
+		  <% institute_browse_params = {
 		  	   mode: 'collections',
 		  	   search_field: 'all_fields',
 		  	   view: 'grid',
 		  	   f: { ActiveFedora.index_field_mapper.solr_name('institute', :facetable).to_sym => [@presenter.depositing_organisation[:name].mb_chars.downcase] }
-		  	 } 
+		  	 }
 		  %>
       <%= link_to @presenter.depositing_organisation[:name], main_app.my_collections_index_path(institute_browse_params), id: 'depositing_institute' %>
     <% else %>
         <span class="label label-danger"><%= t('dri.views.fields.depositing_institute_not_set_object') %></span>
 	  <% end %>
 		</dd>
-		
+
 	</dl>
 </div>
 <!-- close dri_object_first_block -->

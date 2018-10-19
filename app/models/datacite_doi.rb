@@ -98,7 +98,7 @@ class DataciteDoi < ActiveRecord::Base
 
     def set_metadata
       metadata = DoiMetadata.new
-      metadata.title = object.title
+      metadata.title = object.title if object.title.present?
       metadata.creator = find_creator
       metadata.description = object.description if object.description.present?
       metadata.subject = object.subject if object.subject.present?
