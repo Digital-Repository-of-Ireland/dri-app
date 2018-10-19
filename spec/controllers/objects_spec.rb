@@ -162,6 +162,15 @@ describe ObjectsController do
       @subcollection.creator = [@login_user.email]
       @subcollection.status = 'draft'
 
+      @subsubcollection = FactoryBot.create(:collection)
+      @subsubcollection.depositor = User.find_by_email(@login_user.email).to_s
+      @subsubcollection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      @subsubcollection.discover_groups_string="public"
+      @subsubcollection.read_groups_string="registered"
+      @subsubcollection.creator = [@login_user.email]
+      @subsubcollection.status = 'draft'
+
+      @subcollection.governed_items << @subsubcollection
       @collection.governed_items << @subcollection
 
       @object = FactoryBot.create(:sound)
@@ -175,6 +184,13 @@ describe ObjectsController do
       @object3 = FactoryBot.create(:sound)
       @object3[:status] = "draft"
       @object3.save
+
+      @object4 = FactoryBot.create(:sound)
+      @object4[:status] = "draft"
+      @object4.save
+
+      @subsubcollection.governed_items << @object4
+      @subsubcollection.save
 
       @subcollection.governed_items << @object3
       @subcollection.save
@@ -207,14 +223,22 @@ describe ObjectsController do
     end
 
     it 'should set a parent subcollection to reviewed' do
-      post :status, id: @object3.id, status: "reviewed"
+      post :status, id: @object4.id, status: "reviewed"
+
+      @object4.reload
+      expect(@object4.status).to eql("reviewed")
 
       @object3.reload
+      expect(@object3.status).to eql("draft")
 
-      expect(@object3.status).to eql("reviewed")
+      @subsubcollection.reload
+      expect(@subsubcollection.status).to eql("reviewed")
 
       @subcollection.reload
       expect(@subcollection.status).to eql("reviewed")
+
+      @collection.reload
+      expect(@collection.status).to eql("draft")
     end
 
     it 'should not set the status of a published object' do
