@@ -9,7 +9,7 @@ module DRI
       @document = document
     end
 
-    def display_children
+    def display_children(children)
       children.map { |child| display_child(child) }
     end
 
@@ -40,6 +40,10 @@ module DRI
         surrogate: name,
         protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
       )
+    end
+
+    def surrogate_exists?(id, name)
+      document.surrogates(id).key?(name)
     end
 
     private

@@ -288,7 +288,15 @@ class MyCollectionsController < ApplicationController
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
     @response, @document = fetch params[:id]
-    @presenter = DRI::MyCollectionsPresenter.new(@document, view_context)
+
+    # published subcollections unless admin or edit permission
+    @children = @document.children(limit: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
+
+    # assets including preservation only files, ordered by label
+    @assets = @document.assets(with_preservation: true, ordered: true)
+    @reader_group = find_reader_group(@document)
+
+    @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
 
     supported_licences
 
@@ -330,4 +338,14 @@ class MyCollectionsController < ApplicationController
     @response, document_list = @object.duplicates
     @document_list = Kaminari.paginate_array(document_list).page(params[:page]).per(params[:per_page])
   end
+
+  private
+
+    def find_reader_group(document)
+      readgroups = document["#{ActiveFedora.index_field_mapper.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
+
+      if readgroups.present? && readgroups.include?(document.id)
+        UserGroup::Group.find_by(name: document.id)
+      end
+    end
 end

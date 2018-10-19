@@ -35,7 +35,7 @@
     <% end %>
   </li>
 
-  <% if @presenter.files.present? %>
+  <% if @assets.present? %>
     <li>
       <%= form_tag(url_for(object_files_path(@document.id)), multipart: true, method: :post, id: "file_uploader") do %>
         <%= hidden_field_tag "preservation", "true" %>
@@ -47,12 +47,6 @@
         <%= hidden_field_tag 'datastream', "content" %>
      <% end %>
     </li>
-
-    <% if current_user.is_admin? %>
-      <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, id: "surrogates_generate" do %>
-        <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
-      <% end %>
-    <% end %>
   <% end %>
 
   <% if current_user.is_admin? %>
