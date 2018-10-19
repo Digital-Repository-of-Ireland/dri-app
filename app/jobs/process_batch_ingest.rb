@@ -43,9 +43,8 @@ class ProcessBatchIngest
       build_generic_file(object: object, user: user, preservation: preservation)
 
       original_file_name = File.basename(asset[:path])
-      file_name = "#{@generic_file.id}_#{original_file_name}"
 
-      version = ingest_file(asset[:path], object, 'content', file_name)
+      version = ingest_file(asset[:path], object, 'content', original_file_name)
       saved = if version < 1
                 false
               else
@@ -59,7 +58,7 @@ class ProcessBatchIngest
                 file_content = GenericFileContent.new(user: user, object: object, generic_file: @generic_file)
                 file_content.external_content(
                   url,
-                  file_name
+                  original_file_name
                 )
                 true
               end
@@ -134,6 +133,8 @@ class ProcessBatchIngest
   end
 
   def self.ingest_file(file_path, object, datastream, filename)
+    filename = "#{@generic_file.id}_#{filename}"
+
     filedata = OpenStruct.new
     filedata.path = file_path
     mime_type = Validators.file_type(file_path)
