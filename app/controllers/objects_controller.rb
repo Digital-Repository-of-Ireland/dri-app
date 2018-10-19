@@ -347,6 +347,19 @@ class ObjectsController < BaseObjectsController
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve(false, false, ['properties'])
+
+      # if this object is in a sub-collection, we need to set that collection status
+      # to reviewed so that a publish job will run on the collection
+      governing_collection = @object.governing_collection
+      if params[:status] == 'reviewed' && !governing_collection.root_collection? && governing_collection.status == 'draft'
+        governing_collection.status = 'reviewed'
+        governing_collection.increment_version
+        governing_collection.save
+
+        # Do the preservation actions
+        preservation = Preservation::Preservator.new(governing_collection)
+        preservation.preserve(false, false, ['properties'])
+      end
     end
 
     respond_to do |format|
