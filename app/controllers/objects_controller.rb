@@ -347,6 +347,10 @@ class ObjectsController < BaseObjectsController
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve(false, false, ['properties'])
+
+      # if this object is in a sub-collection, we need to set that collection status
+      # to reviewed so that a publish job will run on the collection
+      set_ancestors_reviewed if params[:status] == 'reviewed'
     end
 
     respond_to do |format|
@@ -459,6 +463,24 @@ class ObjectsController < BaseObjectsController
         rescue Exception => e
           Rails.logger.error "Unable to submit linked data job: #{e.message}"
         end
+      end
+    end
+
+    def set_ancestors_reviewed
+      governing_collection = @object.governing_collection
+
+      while governing_collection.root_collection? == false
+        if governing_collection.status == 'draft'
+          governing_collection.status = 'reviewed'
+          governing_collection.increment_version
+          governing_collection.save
+
+          # Do the preservation actions
+          preservation = Preservation::Preservator.new(governing_collection)
+          preservation.preserve(false, false, ['properties'])
+        end
+
+        governing_collection = governing_collection.governing_collection
       end
     end
 

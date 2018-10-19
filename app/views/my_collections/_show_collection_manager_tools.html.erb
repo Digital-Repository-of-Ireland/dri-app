@@ -56,7 +56,7 @@
             <%= review_link("#{reviewed_subcoll}", "#{my_collections_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=reviewed&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
             /<i class="fa fa-file" aria-hidden="true"></i>
             <%= review_link("#{reviewed_objects} )","#{my_collections_index_path}?f[ancestor_id_sim][]=#{@document.id}&f[status_sim][]=reviewed&mode=objects&view=grid", t('dri.help.view_objects')) %>
-            <% if @document.root_collection? %> <!-- Only show reviewedsh button if on root collection -->
+            <% if @document.root_collection? %> <!-- Only show publish button if on root collection -->
                 <div class='pull-right'>
                 <% if @presenter.depositing_organisation %> <!-- Publish button enabled if depositing institute set -->
                     <button type="button" class="dri_button_green_small" data-toggle="modal" data-target="#dri_publish_modal_id"
@@ -206,7 +206,7 @@
     </li>
 
 	<!-- Link to manage pending memberships for the read group -->
-	<% if @presenter.reader_group %>
+	<% if @reader_group %>
 	  <%= link_to collection_manage_requests_path(@document), id: "manage_read_requests" do %>
 	    <li>
 		    <%= t('dri.views.collection.manage_read_requests') %>

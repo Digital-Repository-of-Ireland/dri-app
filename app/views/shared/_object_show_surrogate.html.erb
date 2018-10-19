@@ -2,26 +2,26 @@
 <% if generic_file.present? && !generic_file.preservation_only? %>
 
     <% if generic_file.audio? %>
-        <% @surrogate_mp3 = surrogate_url(document.id, generic_file.id, "mp3") %>
+        <% @surrogate_mp3 = @presenter.surrogate_url(generic_file.id, "mp3") %>
         <% @surrogate = @surrogate_mp3 %>
         <% if @surrogate %>
-          <% @surrogate_ogg = surrogate_url(document.id, generic_file.id, "ogg") %>
+          <% @surrogate_ogg = @presenter.surrogate_url(generic_file.id, "ogg") %>
           <%= audio_tag [@surrogate_mp3, @surrogate_ogg], controls: true, autobuffer: true, width: "100%", height: "100px" %>
            <%= render partial: 'shared/object_show_single_audio_details', locals: { generic_file: generic_file } %>
         <% end %>
 
     <% elsif generic_file.video? %>
-        <% @surrogate = surrogate_url(document.id, generic_file.id, "mp4") %>
+        <% @surrogate = @presenter.surrogate_url(generic_file.id, "mp4") %>
         <% if @surrogate %>
-            <% @surrogate_webm = surrogate_url(document.id, generic_file.id, "webm") %>
+            <% @surrogate_webm = @presenter.surrogate_url(generic_file.id, "webm") %>
             <%= video_tag [@surrogate, @surrogate_webm], controls: true, width:"100%", height: "270px" %>
         <% end %>
 
     <% elsif generic_file.pdf? %>
-        <% @surrogate = surrogate_url(document.id, generic_file.id, "pdf") %>
+        <% @surrogate = @presenter.surrogate_url(generic_file.id, "pdf") %>
         <% @title = generic_file.label %>
         <% if @surrogate %>
-            <% @surrogate_thumb = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
+            <% @surrogate_thumb = @presenter.surrogate_url(generic_file.id, "thumbnail_large") %>
 
             <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
               <% if first %>
@@ -33,7 +33,7 @@
         <% end %>
 
     <% elsif generic_file.text? %>
-        <% @surrogate = surrogate_url(document.id, generic_file.id, "pdf") %>
+        <% @surrogate = @presenter.surrogate_url(generic_file.id, "pdf") %>
         <% @title = generic_file.label %>
         <% if @surrogate %>
             <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
@@ -42,9 +42,9 @@
         <% end %>
 
     <% elsif generic_file.image? %>
-        <% @surrogate = surrogate_url(document.id, generic_file.id, "full_size_web_format") %>
+        <% @surrogate = @presenter.surrogate_url(generic_file.id, "full_size_web_format") %>
         <% if @surrogate %>
-            <% @surrogate_thumb = surrogate_url(document.id, generic_file.id, "thumbnail_large") %>
+            <% @surrogate_thumb = @presenter.surrogate_url(generic_file.id, "thumbnail_large") %>
             <% content_for :head do %>
               <meta property="og:image" content="<%= @surrogate_thumb %>" />
             <% end %>

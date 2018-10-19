@@ -15,18 +15,18 @@
     <div class="carousel-inner">
       <!--First item set to active-->
       <div class="item dri_asset_carousel_item dri_bottom_stack active">
-        <%= render partial: "shared/object_show_surrogate", locals: {document: document, generic_file: @presenter.displayfiles.first, first: true} %>
-        <%= render partial: "shared/object_show_download", locals: {document: document, generic_file: @presenter.displayfiles.first, index: 1} %>
+        <%= render partial: "shared/object_show_surrogate", locals: {document: document, generic_file: displayfiles.first, first: true} %>
+        <%= render partial: "shared/object_show_download", locals: {document: document, generic_file: displayfiles.first, index: 1, displayfiles_count: displayfiles.size } %>
       </div>
-      <% @presenter.displayfiles[1..-1].each_with_index do |file,i| %>
+      <% displayfiles[1..-1].each_with_index do |file,i| %>
         <div class="item dri_asset_carousel_item dri_bottom_stack">
           <%= render partial: "shared/object_show_surrogate", locals: { document: document, generic_file: file, first: false } %>
-          <%= render partial: "shared/object_show_download", locals: { document: document, generic_file: file, index: i + 2 } %>
+          <%= render partial: "shared/object_show_download", locals: { document: document, generic_file: file, index: i + 2, displayfiles_count: displayfiles.size } %>
         </div>
       <% end %>
     </div>
 
-    <% if (@presenter.displayfiles.size > 1) %>
+    <% if (displayfiles.size > 1) %>
       <div>
         <a class="left carousel-control" href="#oject-multiple-asset-carousel" data-slide="prev">
           <i class="fa fa-arrow-left"></i>
@@ -38,8 +38,8 @@
     <% end %>
   </div>
   <!-- Controls -->
-<% if (@presenter.displayfiles.size > 0) %>
-    <p class="dri_assets_total"><%= "#{t('dri.views.fields.total_assets')} (#{@presenter.displayfiles.size})" %></p>
+<% if (displayfiles.size > 0) %>
+    <p class="dri_assets_total"><%= "#{t('dri.views.fields.total_assets')} (#{displayfiles.size})" %></p>
 <% end %>
 
  <% if document.published? && document.public_read? %>

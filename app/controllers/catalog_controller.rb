@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class CatalogController < ApplicationController
   include DRI::Catalog
-     
+
   # This applies appropriate access controls to all solr queries
   CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
   # This filters out objects that you want to exclude from search results, like FileAssets
@@ -249,10 +249,16 @@ class CatalogController < ApplicationController
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
     @response, @document = fetch params[:id]
-    @presenter = DRI::CatalogPresenter.new(@document, view_context)
+
+    @children = @document.children(limit: 100).select { |child| child.published? }
+
+    # assets ordered by label, excludes preservation only files
+    @assets = @document.assets(ordered: true)
+
+    @presenter = DRI::ObjectInCatalogPresenter.new(@document, view_context)
 
     supported_licences
-    
+
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 
     if @document.published?

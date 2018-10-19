@@ -9,17 +9,17 @@
 <% # Render partial for Related Materials (QDC and MODS)  %>
 <%= render partial: "shared/show_related_items", locals: { params: params, document: @document } %>
 
-<% if @presenter.children.length > 0 %>
-  <%= render partial: "shared/show_children", locals: { document: @document, children: @presenter.display_children } %>
+<% if @children.length > 0 %>
+  <%= render partial: "shared/show_children", locals: { document: @document, children: @presenter.display_children(@children) } %>
 <% end %>
 
 <div class="dri_section_block" id="institutes_block">
   <%= render partial: 'shared/display_organisations' %>
 </div>
 <% content_for :head do %>
-  <meta property="fb:app_id"          content="298965153560401" /> 
-    <meta property="og:type"            content="article" /> 
-    <meta property="og:url"             content="<%= request.original_url %>" /> 
-    <meta property="og:title"           content="<%= @page_title %>" /> 
+  <meta property="fb:app_id"          content="298965153560401" />
+    <meta property="og:type"            content="article" />
+    <meta property="og:url"             content="<%= request.original_url %>" />
+    <meta property="og:title"           content="<%= @page_title %>" />
     <meta property="og:description"    content="DRI Object" />
 <% end %>

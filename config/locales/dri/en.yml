@@ -66,6 +66,13 @@ en:
         status: Status
         type: Type
         updated_at: Updated At
+      assets:
+        preview: Preview
+        filename: Filename
+        status: Status
+        details: Details
+        download: Download
+        delete: Delete
       user_activity:
         event: Event
         item: Item
@@ -422,6 +429,7 @@ en:
           reviewed: Reviewed
           upload_file: Upload Asset
           upload_preservation_file: Upload Preservation-only Asset
+          view_assets: View Assets
         titles:
           editor_tools: Editor Tools
           object_tools: Object Tools

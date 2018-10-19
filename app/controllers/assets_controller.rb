@@ -1,22 +1,33 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
 class AssetsController < ApplicationController
-  before_action :authenticate_user_from_token!, only: [:list_assets, :download]
-  before_action :authenticate_user!, only: :list_assets
+  before_action :authenticate_user_from_token!, only: [:index, :list_assets, :download]
+  before_action :authenticate_user!, only: [:index, :list_assets]
   before_action :add_cors_to_json, only: :list_assets
-  before_action :read_only, except: [:show, :download, :list_assets]
-  before_action ->(id=params[:object_id]) { locked(id) }, except: [:show, :download, :list_assets]
+  before_action :read_only, except: [:index, :show, :download, :list_assets]
+  before_action ->(id=params[:object_id]) { locked(id) }, except: [:index, :show, :download, :list_assets]
 
   require 'validators'
 
   include DRI::Citable
 
+  def index
+    enforce_permissions!('edit', params[:object_id])
+
+    @document = SolrDocument.find(params[:object_id])
+    @assets = @document.assets(with_preservation: true, ordered: true)
+
+    @surrogates, @status = surrogate_or_status_info(@files)
+  end
+
   def show
-    @object_document = SolrDocument.find(params[:object_id])
+    @document = SolrDocument.find(params[:object_id])
+    can_view?
+
+    @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
     @generic_file = retrieve_object! params[:id]
 
-    status(@generic_file.id)
-    can_view?
+    @status = status(@generic_file.id)
 
     respond_to do |format|
       format.html
@@ -31,12 +42,12 @@ class AssetsController < ApplicationController
 
     @generic_file = retrieve_object! params[:id]
     if @generic_file
-      @object_document = SolrDocument.find(params[:object_id])
+      @document = SolrDocument.find(params[:object_id])
 
       can_view?
 
-      if @object_document.published?
-        Gabba::Gabba.new(GA.tracker, request.host).event(@object_document.root_collection_id, "Download", @object_document.id, 1, true)
+      if @document.published?
+        Gabba::Gabba.new(GA.tracker, request.host).event(@document.root_collection_id, "Download", @document.id, 1, true)
       end
 
       local_file = GenericFileContent.new(generic_file: @generic_file).local_file(params[:version])
@@ -198,7 +209,7 @@ class AssetsController < ApplicationController
     end
 
     def can_view?
-      if (!(can?(:read, params[:object_id]) && @object_document.read_master? && @object_document.published?) && !can?(:edit, @object_document))
+      if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document))
         raise Hydra::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
@@ -253,18 +264,54 @@ class AssetsController < ApplicationController
       File.new(File.join(upload_dir, name))
     end
 
+    def surrogate_or_status_info(files)
+      surrogates = {}
+      statuses = {}
+
+      files.each do |file|
+        # get the surrogates for this file if they exist
+        file_surrogates = @document.surrogates(file.id)
+        if file_surrogates.present? && !file.preservation_only?
+          surrogates[file.id] = surrogates_with_url(file.id, file_surrogates)
+        else
+          status[file.id] = file_status(file.id)
+        end
+      end
+
+      return surrogates, statuses
+    end
+
+    def file_status(file_id)
+      ingest_status = status(file_id)
+      if ingest_status.present?
+        { status: ingest_status[:status] }
+      else
+        { status: 'unknown' }
+      end
+    end
+
     def status(file_id)
       ingest_status = IngestStatus.where(asset_id: file_id)
 
-      @status = {}
+      status_info = {}
       if ingest_status.present?
         status = ingest_status.first
-        @status[:status] = status.status
+        status_info[:status] = status.status
 
-        @status[:jobs] = {}
+        status_info[:jobs] = {}
         status.job_status.each do |job|
-          @status[:jobs][job.job] = { status: job.status, message: job.message }
+          status_info[:jobs][job.job] = { status: job.status, message: job.message }
         end
+      end
+
+      status_info
+    end
+
+    def surrogates_with_url(file_id, surrogates)
+      surrogates.each do |key, _path|
+        surrogates[key] = url_for(object_file_url(
+                            object_id: @document.id, id: file_id, surrogate: key
+                          ))
       end
     end
 

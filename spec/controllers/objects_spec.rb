@@ -13,7 +13,7 @@ describe ObjectsController do
   end
 
   describe 'destroy' do
-    
+
     before(:each) do
       @login_user = FactoryBot.create(:collection_manager)
       sign_in @login_user
@@ -31,12 +31,12 @@ describe ObjectsController do
       collection.read_groups_string="registered"
       collection.creator = [@login_user.email]
 
-      object = FactoryBot.create(:sound) 
+      object = FactoryBot.create(:sound)
       object[:status] = "draft"
       object.depositor=User.find_by_email(@login_user.email).to_s
       object.manager_users_string=User.find_by_email(@login_user.email).to_s
-      object.creator = [@login_user.email]  
-  
+      object.creator = [@login_user.email]
+
       object.save
 
       collection.governed_items << object
@@ -57,7 +57,7 @@ describe ObjectsController do
       @collection.read_groups_string="registered"
       @collection.creator = [@login_user.email]
 
-      @object = FactoryBot.create(:sound) 
+      @object = FactoryBot.create(:sound)
       @object[:status] = "published"
       @object.save
 
@@ -77,8 +77,8 @@ describe ObjectsController do
       sign_in @admin_user
 
       @collection = FactoryBot.create(:collection)
-   
-      @object = FactoryBot.create(:sound) 
+
+      @object = FactoryBot.create(:sound)
       @object[:status] = "published"
       @object.save
 
@@ -118,7 +118,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file 
+      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
@@ -134,7 +134,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file 
+      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
@@ -153,8 +153,27 @@ describe ObjectsController do
       @collection.discover_groups_string="public"
       @collection.read_groups_string="registered"
       @collection.creator = [@login_user.email]
-   
-      @object = FactoryBot.create(:sound) 
+
+      @subcollection = FactoryBot.create(:collection)
+      @subcollection.depositor = User.find_by_email(@login_user.email).to_s
+      @subcollection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      @subcollection.discover_groups_string="public"
+      @subcollection.read_groups_string="registered"
+      @subcollection.creator = [@login_user.email]
+      @subcollection.status = 'draft'
+
+      @subsubcollection = FactoryBot.create(:collection)
+      @subsubcollection.depositor = User.find_by_email(@login_user.email).to_s
+      @subsubcollection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      @subsubcollection.discover_groups_string="public"
+      @subsubcollection.read_groups_string="registered"
+      @subsubcollection.creator = [@login_user.email]
+      @subsubcollection.status = 'draft'
+
+      @subcollection.governed_items << @subsubcollection
+      @collection.governed_items << @subcollection
+
+      @object = FactoryBot.create(:sound)
       @object[:status] = "draft"
       @object.save
 
@@ -162,10 +181,24 @@ describe ObjectsController do
       @object2[:status] = "draft"
       @object2.save
 
+      @object3 = FactoryBot.create(:sound)
+      @object3[:status] = "draft"
+      @object3.save
+
+      @object4 = FactoryBot.create(:sound)
+      @object4[:status] = "draft"
+      @object4.save
+
+      @subsubcollection.governed_items << @object4
+      @subsubcollection.save
+
+      @subcollection.governed_items << @object3
+      @subcollection.save
+
       @collection.governed_items << @object
       @collection.governed_items << @object2
 
-      @collection.save    
+      @collection.save
     end
 
     after(:each) do
@@ -176,28 +209,47 @@ describe ObjectsController do
     end
 
     it 'should set an object status' do
-      post :status, :id => @object.id, :status => "reviewed"
+      post :status, id: @object.id, status: "reviewed"
 
       @object.reload
 
       expect(@object.status).to eql("reviewed")
 
-      post :status, :id => @object.id, :status => "draft"
+      post :status, id: @object.id, status: "draft"
 
       @object.reload
 
       expect(@object.status).to eql("draft")
     end
 
+    it 'should set a parent subcollection to reviewed' do
+      post :status, id: @object4.id, status: "reviewed"
+
+      @object4.reload
+      expect(@object4.status).to eql("reviewed")
+
+      @object3.reload
+      expect(@object3.status).to eql("draft")
+
+      @subsubcollection.reload
+      expect(@subsubcollection.status).to eql("reviewed")
+
+      @subcollection.reload
+      expect(@subcollection.status).to eql("reviewed")
+
+      @collection.reload
+      expect(@collection.status).to eql("draft")
+    end
+
     it 'should not set the status of a published object' do
       @object.status = "published"
       @object.save
 
-      post :status, :id => @object.id, :status => "draft"
+      post :status, id: @object.id, status: "draft"
 
       @object.reload
 
-      expect(@object.status).to eql("published") 
+      expect(@object.status).to eql("published")
     end
 
     it 'should mint a doi for an update of mandatory fields' do
@@ -268,11 +320,11 @@ describe ObjectsController do
         )
         @tmp_assets_dir = Dir.mktmpdir
         Settings.dri.files = @tmp_assets_dir
-        
+
         @login_user = FactoryBot.create(:admin)
         sign_in @login_user
         @collection = FactoryBot.create(:collection)
-        @object = FactoryBot.create(:sound) 
+        @object = FactoryBot.create(:sound)
 
         request.env["HTTP_REFERER"] = catalog_path(@collection.id)
       end
@@ -280,7 +332,7 @@ describe ObjectsController do
       after(:each) do
         @collection.delete if ActiveFedora::Base.exists?(@collection.id)
         @login_user.delete
-        
+
         FileUtils.remove_dir(@tmp_assets_dir, force: true)
         Settings.reload_from_files(
           Rails.root.join("config", "settings.yml").to_s
@@ -349,7 +401,7 @@ describe ObjectsController do
       it 'should not allow object updates' do
         @object.governing_collection = @collection
         @object.save
-        
+
         params = {}
         params[:batch] = {}
         params[:batch][:title] = ["An Audio Title"]

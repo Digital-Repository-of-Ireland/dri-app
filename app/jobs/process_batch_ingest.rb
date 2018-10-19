@@ -39,7 +39,8 @@ class ProcessBatchIngest
         next
       end
 
-      build_generic_file(object: object, user: user)
+      preservation = asset[:label] == 'preservation'
+      build_generic_file(object: object, user: user, preservation: preservation)
 
       original_file_name = File.basename(asset[:path])
       file_name = "#{@generic_file.id}_#{original_file_name}"

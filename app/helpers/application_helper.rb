@@ -3,12 +3,7 @@ module ApplicationHelper
   require 'uri'
 
   def surrogate_url(doc_id, file_doc_id, name)
-    if @presenter
-      return nil unless @presenter.surrogate_exists?(file_doc_id, name)
-    else
-      storage = StorageService.new
-      return nil unless storage.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
-    end
+    return nil unless StorageService.new.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
 
     object_file_url(
       object_id: doc_id,
@@ -137,9 +132,7 @@ module ApplicationHelper
   def uri?(string)
     uri = URI.parse(string)
     %w(http https).include?(uri.scheme)
-  rescue URI::BadURIError
-    false
-  rescue URI::InvalidURIError
+  rescue URI::BadURIError, URI::InvalidURIError
     false
   end
 end
