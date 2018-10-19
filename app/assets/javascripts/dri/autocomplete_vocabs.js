@@ -1,9 +1,12 @@
-function setOclcAutocomplete(selector='.vocab-autocomplete') {
+function setVocabAutocomplete(selector='.vocab-autocomplete') {
   var endpoint = $('#choose_vocab').find(':selected').val();
-  if (endpoint == 'na') { 
+  console.log("called", selector, $(selector).length);
+  if (endpoint === 'na') { 
     $(selector).autocomplete({source: []}); // turn autocomplete off
     return false; 
   }
+
+  // turn autocomplete back on
   $(selector).autocomplete({
     source: function (request, response) {
       console.log(endpoint + request.term + '&maximumRecords=5');
@@ -22,11 +25,7 @@ function setOclcAutocomplete(selector='.vocab-autocomplete') {
   return true;
 }
 
-function addChooseVocab(selector='.dri_ingest_form_container') {
-  var to_insert_beside = $(selector)[0];
-  if (to_insert_beside === undefined) {
-    return false;
-  }
+function createChooseVocab() {
   var choose_vocab = document.createElement('select');
   choose_vocab.id = 'choose_vocab'
   var options = [
@@ -41,36 +40,50 @@ function addChooseVocab(selector='.dri_ingest_form_container') {
     option.value = arr[1];
     choose_vocab.appendChild(option);
   });
+  return choose_vocab;
+}
 
-  to_insert_beside.before(
-    choose_vocab,
-    document.createElement('br')
+function addChooseVocab(selector) {
+  $('#choose_vocab').remove(); // remove the old choose vocab
+
+  // add the new choose_vocab
+  $(selector).append(
+    createChooseVocab(),
   );
+
+  // add autocomplete
+  setVocabAutocomplete();
+
+  // update autcomplete endpoint when dropdown changes
+  $('#choose_vocab').on('change', function(){
+    setVocabAutocomplete();
+  });
+
   return true;
 }
 
-// wait til doc is ready
-$(function () {
-  addChooseVocab();
-  setOclcAutocomplete(); // set autocomplete when page loads
-  $('#choose_vocab').change(function() {
-    setOclcAutocomplete(); // update autocomplete using value of select option
-  });
-});
 
 // TODO
 
 // support these vocabs:
-// logainm.ie
-// unesco
-// LOC
-// creator vocab: irish guidelines for indexing archives
-// type vocab:    dcmi vocab?
+// 1. logainm.ie
+// 2. unesco
+// 3. done (out of the box) // LOC
+// 4. creator vocab: irish guidelines for indexing archives
+// 5. type vocab:    dcmi vocab?
 
-// support URI? e.g http://id.loc.gov/authorities/subjects/sh94007248.html
+// ui:
+// 1. support URI? e.g http://id.loc.gov/authorities/subjects/sh94007248.html
 // from http://localhost:3000/qa/search/loc/subjects?q=easter+rising&maximumRecords=100
 // by parsing id and replacing info:lc with http://id.loc.gov
-// add class for autocomplete
-// add class to subject and coverage
+// 2. done // add class for autocomplete
+// 3. done // add class to subject and coverage
+// 4. done // move extra <br>s above dropdown
 
+// issue: 
+// localhost:3000//qa/search/loc/subjects?q=united%20state  returns
+// localhost:3000//qa/search/loc/subjects?q=united%20stat   does not
+// localhost:3000//qa/search/loc/subjects?q=united%20sta    does not
+// localhost:3000//qa/search/loc/subjects?q=united%20st     returns
+// &maxRecords param having no affect. possibly sufia only?
 

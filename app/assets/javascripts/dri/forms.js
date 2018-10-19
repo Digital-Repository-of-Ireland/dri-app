@@ -1,18 +1,18 @@
 // Whenever an "add" link is clicked, a new text field is added to the bottom of the list
 $(document).ready(function() { 
   $('.add-text-field a').click(function(e) { 
-    var fieldset_name = $(this).parents('fieldset').attr('id');
+    var fieldset_id = $(this).parents('fieldset').attr('id');
     var model_name = $(this).attr('model-name');
 
-    var element_to_add = ['description', 'rights'].includes(fieldset_name) ? 'textarea' : 'input';
-    var nchildren = $("#"+fieldset_name+" > div > "+element_to_add).length;
+    var element_to_add = ['description', 'rights'].includes(fieldset_id) ? 'textarea' : 'input';
+    var nchildren = $("#"+fieldset_id+" > div > "+element_to_add).length;
 
     var remove_button = '<a class="destructive" model-name="batch">\
                           &nbsp; <i class="fa fa-times-circle"></i> Remove\
                         </a>';
-    // var input_id = [model_name, fieldset_name, nchildren].join('_')+'][';
-    var input_id = [model_name, fieldset_name].join('_')+'][';
-    var input_name = model_name+'['+fieldset_name+'][]';
+    // var input_id = [model_name, fieldset_id, nchildren].join('_')+'][';
+    var input_id = [model_name, fieldset_id].join('_')+'][';
+    var input_name = model_name+'['+fieldset_id+'][]';
 
     e.preventDefault();
     var css_classes="edit span6";
@@ -24,13 +24,13 @@ $(document).ready(function() {
       'temporal_coverage'
     ];
     
-    if ($.inArray(fieldset_name, autocomplete_elements) > -1) {
+    if ($.inArray(fieldset_id, autocomplete_elements) > -1) {
       css_classes += ' vocab-autocomplete';
     }
 
     if (element_to_add == 'textarea') {
       css_classes += ' dri-textarea';
-      $("#"+fieldset_name+' .add-text-field').before(
+      $("#"+fieldset_id+' .add-text-field').before(
         '<div>\
           <textarea class="' + css_classes + '" \
             id='+input_id+' name='+input_name+'>\
@@ -38,7 +38,7 @@ $(document).ready(function() {
         '</div>');
     } else {
       css_classes += ' dri-textfield';
-      $("#"+fieldset_name+' .add-text-field').before(
+      $("#"+fieldset_id+' .add-text-field').before(
         '<div>\
           <input class="' + css_classes + '" \
             id='+input_id+' name='+input_name+' \
@@ -46,32 +46,31 @@ $(document).ready(function() {
         '</div>');
     }
 
-    var added_element = $("#"+fieldset_name+" > div > "+element_to_add).last();
-    bindAutocompleteFocus(added_element);
-    added_element.focus();
-    setOclcAutocomplete();
+    var added_element = $("#"+fieldset_id+" > div > "+element_to_add).last();
+    addChooseVocab('#' + fieldset_id); // remove old autocomplete vocab dropdown, add new one
+    added_element.focus(); // focus on newly added input
   });
 
   $('.dri_ingest_form').on('click','.destructive', function(e) {
     e.preventDefault();
-    var fieldset_name = $(this).parents('fieldset').attr('id');
+    var fieldset_id = $(this).parents('fieldset').attr('id');
     
-    if(fieldset_name != 'roles') {
+    if(fieldset_id != 'roles') {
       $(this).parent('div').remove();
     }
   });
 
   $('.add-person-fields a').click(function(e) {
     e.preventDefault();
-    var fieldset_name = $(this).parents('fieldset').attr('id');
+    var fieldset_id = $(this).parents('fieldset').attr('id');
     var model_name = $(this).attr('model-name')
     var previous_select = $(this).parent().siblings('div').last().children('select');
     
     $(this).parent().before(
-      '<div><select id="'+model_name+'_'+fieldset_name+'][type][" selected="'+previous_select.val()
-      +'" name="'+model_name+'['+fieldset_name+'][type][]">'+previous_select.html()+'</select> '
-      +'<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_name+'][name][" name="'
-      +model_name+'['+fieldset_name+'][name][]" size="30" type="text" value="">  <a class="destructive" model-name="'
+      '<div><select id="'+model_name+'_'+fieldset_id+'][type][" selected="'+previous_select.val()
+      +'" name="'+model_name+'['+fieldset_id+'][type][]">'+previous_select.html()+'</select> '
+      +'<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_id+'][name][" name="'
+      +model_name+'['+fieldset_id+'][name][]" size="30" type="text" value="">  <a class="destructive" model-name="'
       +model_name+'">&nbsp;<i class="fa fa-times-circle"></i> Remove</a></div>'
     );
 
@@ -141,13 +140,3 @@ function fileUploadHelper(thisObj) {
 function coverImageFileUploadHelper(thisObj) {
     $("#cover_image").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
 };
-
-function bindAutocompleteFocus(element) {
-  console.log('called');
-  element.focus(function() {
-    $('#choose_vocab').show();
-  });
-  element.focusout(function() {
-    $('#choose_vocab').hide();
-  });
-}
