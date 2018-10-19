@@ -2633,3 +2633,9 @@ ul.dri_collection_institutes_list {
     box-sizing: border-box;         /* Opera/IE 8+ */
     border: none;
 }
+#choose_vocab {
+    position: fixed;
+    top: 50;
+    right: 0;
+    display: none;
+}

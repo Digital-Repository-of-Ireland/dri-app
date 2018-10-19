@@ -1,6 +1,6 @@
 // Whenever an "add" link is clicked, a new text field is added to the bottom of the list
 $(document).ready(function() { 
-  $('.add-text-field a').click(function(e){ 
+  $('.add-text-field a').click(function(e) { 
     var fieldset_name = $(this).parents('fieldset').attr('id');
     var model_name = $(this).attr('model-name');
 
@@ -15,27 +15,44 @@ $(document).ready(function() {
     var input_name = model_name+'['+fieldset_name+'][]';
 
     e.preventDefault();
+    var css_classes="edit span6";
+
+    var autocomplete_elements = [
+      'subject', 
+      'coverage', 
+      'geographical_coverage',
+      'temporal_coverage'
+    ];
+    
+    if ($.inArray(fieldset_name, autocomplete_elements) > -1) {
+      css_classes += ' vocab-autocomplete';
+    }
 
     if (element_to_add == 'textarea') {
+      css_classes += ' dri-textarea';
       $("#"+fieldset_name+' .add-text-field').before(
         '<div>\
-          <textarea class="edit span6 dri-textarea" \
+          <textarea class="' + css_classes + '" \
             id='+input_id+' name='+input_name+'>\
           </textarea>'+ remove_button +
         '</div>');
     } else {
+      css_classes += ' dri-textfield';
       $("#"+fieldset_name+' .add-text-field').before(
         '<div>\
-          <input class="edit span6 dri-textfield" \
+          <input class="' + css_classes + '" \
             id='+input_id+' name='+input_name+' \
             size="30" type="text" value=""/>'+remove_button+
         '</div>');
     }
 
-    $("#"+fieldset_name+" > div > "+element_to_add).last().focus();
+    var added_element = $("#"+fieldset_name+" > div > "+element_to_add).last();
+    bindAutocompleteFocus(added_element);
+    added_element.focus();
+    setOclcAutocomplete();
   });
 
-  $('.dri_ingest_form').on('click','.destructive', function(e){
+  $('.dri_ingest_form').on('click','.destructive', function(e) {
     e.preventDefault();
     var fieldset_name = $(this).parents('fieldset').attr('id');
     
@@ -124,3 +141,13 @@ function fileUploadHelper(thisObj) {
 function coverImageFileUploadHelper(thisObj) {
     $("#cover_image").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
 };
+
+function bindAutocompleteFocus(element) {
+  console.log('called');
+  element.focus(function() {
+    $('#choose_vocab').show();
+  });
+  element.focusout(function() {
+    $('#choose_vocab').hide();
+  });
+}
