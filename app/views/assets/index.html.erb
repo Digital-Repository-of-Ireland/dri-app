@@ -3,10 +3,10 @@
   <% if @assets.empty? %>
     <p><%= t('dri.views.catalog.legends.no_files') %></p>
   <% else %>
+
 	  <table id="datatable_assets" class="table table-bordered table-condensed">
 		  <thead>
 		    <tr>
-		      <th><%= t('dri.datatables.assets.preview') %></th>
 		      <th><%= t('dri.datatables.assets.filename') %></th>
 		      <th><%= t('dri.datatables.assets.status') %></th>
 		      <th><%= t('dri.datatables.assets.details') %></th>
@@ -17,19 +17,12 @@
 		  <tbody>
 			<% @assets.each_with_index do |file, index| %>
 			  <% if ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
-                  <tr>
+                <tr>
                   <td>
-                  	<img src="<%= @surrogates[file.id]["crop16_9_width_200_thumbnail"]  %>">
-                  </td>
-				  <td>
 				      <%= file.label %>
 		          </td>
 		          <td>
-		          	<% if @status[file.id].present? %>
-		          	  <%= @status[file.id][:status] %>
-		          	<% else %>
-                      <%= 'success' %>
-                    <% end %>
+		          	<%= @status[file.id][:status] %>
 		          </td>
 		          <td>
 				      <%= link_to object_file_path(@document, file.id), id: "asset_details", style: "display:inline-block" do %>
@@ -47,14 +40,13 @@
 		                <%= button_tag t('dri.views.assets.buttons.delete'), id: "dri_delete_asset_file", name: "delete_file", class: 'dri_button_red_small', data: { confirm: t('dri.views.assets.confirm.delete') } %>
 		                <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
 		              <% end %>
-
 		            <% end %>
-		           </td>
-	            <% end %>
-		      <% end %><!-- each file -->
-		     </tr>
+		          </td>
+		        </tr>
+	          <% end %>
+		    <% end %><!-- each file -->
 		  </tbody>
-	  </table>
-    <% end %>
+	   </table>
 
+    <% end %>
 </div>

@@ -17,7 +17,7 @@ class AssetsController < ApplicationController
     @document = SolrDocument.find(params[:object_id])
     @assets = @document.assets(with_preservation: true, ordered: true)
 
-    @surrogates, @status = surrogate_or_status_info(@files)
+    @status = status_info(@assets)
   end
 
   def show
@@ -264,21 +264,14 @@ class AssetsController < ApplicationController
       File.new(File.join(upload_dir, name))
     end
 
-    def surrogate_or_status_info(files)
-      surrogates = {}
+    def status_info(files)
       statuses = {}
 
       files.each do |file|
-        # get the surrogates for this file if they exist
-        file_surrogates = @document.surrogates(file.id)
-        if file_surrogates.present? && !file.preservation_only?
-          surrogates[file.id] = surrogates_with_url(file.id, file_surrogates)
-        else
-          status[file.id] = file_status(file.id)
-        end
+        statuses[file.id] = file_status(file.id)
       end
 
-      return surrogates, statuses
+      statuses
     end
 
     def file_status(file_id)
