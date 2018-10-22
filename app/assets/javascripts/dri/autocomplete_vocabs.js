@@ -9,9 +9,9 @@ function setVocabAutocomplete() {
   // turn autocomplete back on
   $(selector).autocomplete({
     source: function (request, response) {
-      console.log(endpoint + request.term + '&maximumRecords=5');
+      console.log(endpoint + request.term);
       $.ajax({
-        url: endpoint + request.term + '&maximumRecords=5',
+        url: endpoint + request.term,
         type: 'GET',
         dataType: 'json',
         complete: function (xhr, status) {
@@ -36,6 +36,7 @@ function createChooseVocab() {
   var options = [
     ["Library of Congress", "/qa/search/loc/subjects?q="],
     ["OCLC FAST", "/qa/search/assign_fast/all?q="],
+    ["Unesco", "/qa/search/unesco/subjects?q="],
     ["No authority (disable autocomplete)", "na"]
   ];
 
@@ -85,8 +86,8 @@ function addChooseVocab(selector) {
 // 3. done // add class to subject and coverage
 // 4. done // move extra <br>s above dropdown
 // 5. move dropdown to the right so it's visible while suggestions are too?
-// 6. handle case where no fields are selected but last used dropdown still exists
-// 7. adding dropdown should be on focus, not on add new element
+// 6. done // handle case where no fields are selected but last used dropdown still exists
+// 7. done // adding dropdown should be on focus, not on add new element
 
 // issue: 
 // localhost:3000//qa/search/loc/subjects?q=united%20state  returns
