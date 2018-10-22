@@ -54,14 +54,25 @@ $(document).ready(function() {
   $.each(['#subject', '#coverage', '#geographical_coverage', '#temporal_coverage'], function(index, id) {
     console.log(index, id);
     $(id).on('focusin', function() {
-      console.log('focusin', id);
-      addChooseVocab(id); // won't work, selecting dropdown will remove and readd dropdown
+      console.log('focusin', $(id).find(':focus').length);
+      // addChooseVocab if it doesn't exist
+      if ($('#choose_vocab').length < 1) {
+        addChooseVocab(id);
+      }
     });
-    // .off not trigered when out of focus
-    $(id).off('focusin', function() {
-      console.log('off');
-      $('#chose_vocab').remove();
-      removeVocabAutocomplete();
+    $(id).on('focusout', function() {
+      // wait half a second, then if id has no focused children
+      // remove autocomplete and choose_vocab drop down
+      setTimeout(function() {
+        if (! $(id).find(':focus').length) {
+          removeVocabAutocomplete();
+          $('#choose_vocab').fadeTo(300, 0.01, function(){ 
+            $(this).slideUp(150, function() {
+              $(this).remove(); 
+            }); 
+          });
+        }
+      }, 500);
     });
   });
 

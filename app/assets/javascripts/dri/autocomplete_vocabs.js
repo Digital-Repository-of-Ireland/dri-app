@@ -1,7 +1,6 @@
 function setVocabAutocomplete() {
   var selector = '.vocab-autocomplete'
   var endpoint = $('#choose_vocab').find(':selected').val();
-  console.log("called", selector, $(selector).length);
   if (endpoint === 'na') { 
     removeVocabAutocomplete();
     return false; 
@@ -50,7 +49,7 @@ function createChooseVocab() {
 }
 
 function addChooseVocab(selector) {
-  $('#choose_vocab').remove(); // remove the old choose vocab
+  // $('#choose_vocab').remove(); // remove the old choose vocab
 
   // add the new choose_vocab
   $(selector).append(
