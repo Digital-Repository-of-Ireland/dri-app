@@ -9,7 +9,8 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
-  revision: ec575efa6bdc3065859571b964cb03fc29501370
+  revision: 79bf80453d8e28533d6c90bdb0efacc7e49b6510
+  tag: v1.0.0
   specs:
     dri_batch_ingest (0.0.1)
       filesize
@@ -574,7 +575,7 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.12)
-    mail (2.7.0)
+    mail (2.7.1)
       mini_mime (>= 0.1.1)
     memoist (0.16.0)
     method_source (0.9.0)

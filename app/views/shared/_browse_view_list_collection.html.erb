@@ -10,7 +10,7 @@
     <!-- close image -->
 
     <div class="dri_content_list_collection_data">
-      <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
+      <%= link_to(url_for_document(document), document_link_params(document, {counter: document_counter_with_offset(document_counter)} )) do %>
           <h4><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h4>
       <% end %>
       <p>
@@ -29,7 +29,7 @@
           <% collection_objects_params = { f: {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, mode: "objects", search_field: "all_fields", view: params[:view] } %>
       <% else %>
           <%# If SUB-COLLECTION %>
-          <% collection_objects_params = { f: {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}, mode: "objects", search_field: "all_fields", view: => params[:view] } %>
+          <% collection_objects_params = { f: {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}, mode: "objects", search_field: "all_fields", view: params[:view] } %>
       <% end %>
       <%= link_to (catalog_index_path(collection_objects_params)) do %>
           <div class="dri_num_list_objects">
@@ -40,7 +40,7 @@
       <% end %> <!-- close dri_num_objects -->
     </div>
   </div>
-  <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
+  <%= link_to(url_for_document(document), document_link_params(document, {counter: document_counter_with_offset(document_counter)} )) do %>
       <div class="dri_image">
         <% image = cover_image ( document ) %>
         <% unless image.nil? %>
