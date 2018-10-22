@@ -8,7 +8,6 @@ class ProcessBatchIngest
     ingest_batch = JSON.parse(ingest_json)
 
     user = UserGroup::User.find(user_id)
-    collection = DRI::Batch.find(collection_id, cast: true)
 
     download_path = File.join(Settings.downloads.directory, collection_id)
     FileUtils.mkdir_p(download_path)
@@ -18,10 +17,10 @@ class ProcessBatchIngest
 
     rc, object = if metadata_info['object_id'].present?
                    # metadata ingest was successful so only ingest missing assets
-                   DRI::Batch.find(metadata_info['object_id'], cast: true)
+                   [0, DRI::Batch.find(metadata_info['object_id'], cast: true)]
                  else
                    metadata = retrieve_files(download_path, [metadata_info])[0]
-                   ingest_metadata(collection, user, metadata)
+                   ingest_metadata(collection_id, user, metadata)
                  end
 
     if rc == 0 && object
@@ -74,7 +73,7 @@ class ProcessBatchIngest
     end
   end
 
-  def self.ingest_metadata(collection, user, metadata)
+  def self.ingest_metadata(collection_id, user, metadata)
     download_path = metadata[:path]
 
     # the metadata file could not be retrieved
@@ -95,7 +94,7 @@ class ProcessBatchIngest
       return -1, nil
     end
 
-    object = create_object(collection, user, xml_ds)
+    object = create_object(collection_id, user, xml_ds)
 
     if !object.valid?
       update = { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
@@ -178,11 +177,11 @@ class ProcessBatchIngest
     @generic_file.preservation_only = 'true' if preservation
   end
 
-  def self.create_object(collection, user, xml_ds)
+  def self.create_object(collection_id, user, xml_ds)
     standard = xml_ds.metadata_standard
 
     object = DRI::Batch.with_standard standard
-    object.governing_collection = collection
+    object.governing_collection_id = collection_id
     object.depositor = user.to_s
     object.status = 'draft'
     object.object_version = '1'
