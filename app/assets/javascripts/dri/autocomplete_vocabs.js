@@ -1,4 +1,4 @@
-function setVocabAutocomplete() {
+function addVocabAutocomplete() {
   var selector = '.vocab-autocomplete'
   var endpoint = $('#choose_vocab').find(':selected').val();
   if (endpoint === 'na') { 
@@ -58,11 +58,11 @@ function addChooseVocab(selector) {
   );
 
   // add autocomplete
-  setVocabAutocomplete();
+  addVocabAutocomplete();
 
   // update autcomplete endpoint when dropdown changes
   $('#choose_vocab').on('change', function(){
-    setVocabAutocomplete();
+    addVocabAutocomplete();
   });
 
   return true;

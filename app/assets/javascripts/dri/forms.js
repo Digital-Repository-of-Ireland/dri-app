@@ -47,7 +47,7 @@ $(document).ready(function() {
     }
 
     var added_element = $("#"+fieldset_id+" > div > "+element_to_add).last();
-    // addChooseVocab('#' + fieldset_id); // remove old autocomplete vocab dropdown, add new one
+    addVocabAutocomplete(); // re-add autocomplete listeners to include new input
     added_element.focus(); // focus on newly added input
   });
 

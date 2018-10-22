@@ -23,6 +23,10 @@ Dont forget to prepare the test database with
 
   $ bundle exec rake db:test:prepare
 
+You may also want to create test organisations (institutions) with
+
+  $ bundle exec rake db:seed:add_organisations
+
 You may also need to edit config/settings.yml and/or create config/settings.local.yml
 
 To start the application for demo purposes
