@@ -47,8 +47,22 @@ $(document).ready(function() {
     }
 
     var added_element = $("#"+fieldset_id+" > div > "+element_to_add).last();
-    addChooseVocab('#' + fieldset_id); // remove old autocomplete vocab dropdown, add new one
+    // addChooseVocab('#' + fieldset_id); // remove old autocomplete vocab dropdown, add new one
     added_element.focus(); // focus on newly added input
+  });
+
+  $.each(['#subject', '#coverage', '#geographical_coverage', '#temporal_coverage'], function(index, id) {
+    console.log(index, id);
+    $(id).on('focusin', function() {
+      console.log('focusin', id);
+      addChooseVocab(id); // won't work, selecting dropdown will remove and readd dropdown
+    });
+    // .off not trigered when out of focus
+    $(id).off('focusin', function() {
+      console.log('off');
+      $('#chose_vocab').remove();
+      removeVocabAutocomplete();
+    });
   });
 
   $('.dri_ingest_form').on('click','.destructive', function(e) {

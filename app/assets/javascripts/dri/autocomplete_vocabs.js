@@ -1,8 +1,9 @@
-function setVocabAutocomplete(selector='.vocab-autocomplete') {
+function setVocabAutocomplete() {
+  var selector = '.vocab-autocomplete'
   var endpoint = $('#choose_vocab').find(':selected').val();
   console.log("called", selector, $(selector).length);
   if (endpoint === 'na') { 
-    $(selector).autocomplete({source: []}); // turn autocomplete off
+    removeVocabAutocomplete();
     return false; 
   }
 
@@ -23,6 +24,11 @@ function setVocabAutocomplete(selector='.vocab-autocomplete') {
     autoFocus: true
   });
   return true;
+}
+
+function removeVocabAutocomplete() {
+  var selector = '.vocab-autocomplete'
+  $(selector).autocomplete({source: []});
 }
 
 function createChooseVocab() {
@@ -79,6 +85,9 @@ function addChooseVocab(selector) {
 // 2. done // add class for autocomplete
 // 3. done // add class to subject and coverage
 // 4. done // move extra <br>s above dropdown
+// 5. move dropdown to the right so it's visible while suggestions are too?
+// 6. handle case where no fields are selected but last used dropdown still exists
+// 7. adding dropdown should be on focus, not on add new element
 
 // issue: 
 // localhost:3000//qa/search/loc/subjects?q=united%20state  returns
