@@ -76,11 +76,23 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.id, @login_user, metadata)
 
       expect(rc).to eq 0
       expect(object.valid?).to be true
       expect(object.persisted?).to be true
+    end
+
+     it "should create add an object to the correct collection" do
+      tmp_file = Tempfile.new(['metadata', '.xml'])
+      FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
+      metadata = { master_file_id: master_file.id, path: tmp_file.path }
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.id, @login_user, metadata)
+
+      expect(rc).to eq 0
+      expect(object.valid?).to be true
+      expect(object.persisted?).to be true
+      expect(object.governing_collection.id).to eq @collection.id
     end
 
   end
@@ -126,7 +138,7 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.id, @login_user, metadata)
 
       master_file.reload
 
@@ -139,7 +151,7 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'metadata_no_rights.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.id, @login_user, metadata)
 
       master_file.reload
 
@@ -152,7 +164,7 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'invalid_xml_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.id, @login_user, metadata)
 
       master_file.reload
 
