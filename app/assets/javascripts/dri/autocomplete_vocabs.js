@@ -35,6 +35,7 @@ function createChooseVocab() {
   choose_vocab.id = 'choose_vocab'
   var options = [
     ["Library of Congress", "/qa/search/loc/subjects?q="],
+    ["Logaimn", "/qa/search/logainm/subjects?q="],
     ["OCLC FAST", "/qa/search/assign_fast/all?q="],
     ["Unesco", "/qa/search/unesco/subjects?q="],
     ["No authority (disable autocomplete)", "na"]
