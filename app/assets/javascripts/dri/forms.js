@@ -1,78 +1,56 @@
 // Whenever an "add" link is clicked, a new text field is added to the bottom of the list
 $(document).ready(function() { 
   $('.add-text-field a').click(function(e) { 
+    e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
     var model_name = $(this).attr('model-name');
-
-    var element_to_add = ['description', 'rights'].includes(fieldset_id) ? 'textarea' : 'input';
-    var nchildren = $("#"+fieldset_id+" > div > "+element_to_add).length;
-
-    var remove_button = '<a class="destructive" model-name="batch">\
-                          &nbsp; <i class="fa fa-times-circle"></i> Remove\
-                        </a>';
+    var new_elemenet_type = ['description', 'rights'].includes(fieldset_id) ? 
+      'textarea' : 
+      'input';
+    // var nchildren = $("#"+fieldset_id+" > div > "+new_elemenet_type).length;
     // var input_id = [model_name, fieldset_id, nchildren].join('_')+'][';
     var input_id = [model_name, fieldset_id].join('_')+'][';
     var input_name = model_name+'['+fieldset_id+'][]';
-
-    e.preventDefault();
-    var css_classes="edit span6";
-
-    var autocomplete_elements = [
-      'subject', 
-      'coverage', 
-      'geographical_coverage',
-      'temporal_coverage'
-    ];
+    var css_classes = "edit span6";
+    var default_authority = 'na'
     
-    if ($.inArray(fieldset_id, autocomplete_elements) > -1) {
+    // add autocomplete class if necessary
+    if ($.inArray('#' + fieldset_id, autoCompleteIds()) > -1) {
       css_classes += ' vocab-autocomplete';
+      default_authority = getDefaultAuthority(fieldset_id);
     }
 
-    if (element_to_add == 'textarea') {
-      css_classes += ' dri-textarea';
-      $("#"+fieldset_id+' .add-text-field').before(
-        '<div>\
-          <textarea class="' + css_classes + '" \
-            id='+input_id+' name='+input_name+'>\
-          </textarea>'+ remove_button +
-        '</div>');
-    } else {
-      css_classes += ' dri-textfield';
-      $("#"+fieldset_id+' .add-text-field').before(
-        '<div>\
-          <input class="' + css_classes + '" \
-            id='+input_id+' name='+input_name+' \
-            size="30" type="text" value=""/>'+remove_button+
-        '</div>');
-    }
+    var new_element_html = (new_elemenet_type == 'textarea') ?
+      createTextArea(input_id, input_name, css_classes) :
+      createTextInput(input_id, input_name, css_classes);
 
-    var added_element = $("#"+fieldset_id+" > div > "+element_to_add).last();
+    $(new_element_html).hide().insertBefore(
+      $(this).parent()
+    ).slideDown('fast');
+
+    var added_element = $("#"+fieldset_id+" > div > "+new_elemenet_type).last();
     addVocabAutocomplete(); // re-add autocomplete listeners to include new input
     added_element.focus(); // focus on newly added input
   });
 
-  $.each(['#subject', '#coverage', '#geographical_coverage', '#temporal_coverage'], function(index, id) {
-    console.log(index, id);
+  $.each(autoCompleteIds(), function(index, id) {
     $(id).on('focusin', function() {
-      console.log('focusin', $(id).find(':focus').length);
       // addChooseVocab if it doesn't exist
-      if ($('#choose_vocab').length < 1) {
-        addChooseVocab(id);
-      }
+      setTimeout(function() {
+        if ($('#choose_vocab').length < 1) {
+          addChooseVocab(id);
+        }
+      }, 100);
     });
     $(id).on('focusout', function() {
-      // wait half a second, then if id has no focused children
+      // if id has no focused children
       // remove autocomplete and choose_vocab drop down
       setTimeout(function() {
         if (! $(id).find(':focus').length) {
           removeVocabAutocomplete();
-          $('#choose_vocab').fadeTo(300, 0.01, function(){ 
-            $(this).slideUp(150, function() {
-              $(this).remove(); 
-            }); 
-          });
+          removeChooseVocab();
         }
-      }, 500);
+      }, 100);
     });
   });
 
@@ -80,31 +58,39 @@ $(document).ready(function() {
     e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
     
-    if(fieldset_id != 'roles') {
-      $(this).parent('div').remove();
+    if (fieldset_id === 'roles') {
+      // ensure at least one role always exists
+      // otherwise previous_select.html() will be empty 
+      // and the next generated dropdown won't have any options
+      if (numberOfRoles() > 1) {
+        $(this).parent('div').slideUp('fast', function() {
+          $(this).remove();
+        });
+      } else {
+        alert('You must have at least one Contributor field')
+      }
+    } else {
+      $(this).parent('div').slideUp('fast', function() {
+        $(this).remove();
+      });
     }
   });
 
   $('.add-person-fields a').click(function(e) {
     e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
-    var model_name = $(this).attr('model-name')
+    var model_name = $(this).attr('model-name');
     var previous_select = $(this).parent().siblings('div').last().children('select');
-    
-    $(this).parent().before(
-      '<div><select id="'+model_name+'_'+fieldset_id+'][type][" selected="'+previous_select.val()
-      +'" name="'+model_name+'['+fieldset_id+'][type][]">'+previous_select.html()+'</select> '
-      +'<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_id+'][name][" name="'
-      +model_name+'['+fieldset_id+'][name][]" size="30" type="text" value="">  <a class="destructive" model-name="'
-      +model_name+'">&nbsp;<i class="fa fa-times-circle"></i> Remove</a></div>'
-    );
+    var classes = "edit span6";
 
-    $(this).parent().siblings('div').last().children('select').val(previous_select.val())
-    
-    $(this).parent().siblings('div').last().children('a').click(function(e) {
-      e.preventDefault();
-      $(this).parent('div').remove();
-    });
+    var new_element_html = createPersonInput(fieldset_id, model_name, classes, previous_select);
+    $(new_element_html).hide().insertBefore($(this).parent()).slideDown('fast');
+
+    var added_element = $(this).parent().siblings('div').last();
+    // set new dropdown selected value to the same as the parent select
+    added_element.children('select').val(previous_select.val())
+    // focus on the new input
+    added_element.children('input').focus();    
   });
 
   // ensure at least one date is entered
@@ -165,3 +151,43 @@ function fileUploadHelper(thisObj) {
 function coverImageFileUploadHelper(thisObj) {
     $("#cover_image").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
 };
+
+function numberOfRoles() {
+  return $('#roles').children('div').length;
+}
+
+function createRemoveButton(model='batch') {
+  return '<a class="destructive" model-name="'+model+'">\
+            &nbsp; <i class="fa fa-times-circle"></i> Remove\
+          </a>';
+}
+
+function createTextArea(id, name, classes) {
+  return '<div>\
+            <textarea class="' + classes + ' dri-textarea " \
+              id='+id+' name='+name+'>\
+            </textarea>'+createRemoveButton()+
+          '</div>';
+}
+
+function createTextInput(id, name, classes) {
+  return '<div>\
+            <input class="'+classes+' dri-textfield " \
+              id='+id+' name='+name+' \
+              size="30" type="text" value=""/>'+createRemoveButton()+
+          '</div>';
+}
+
+// TODO 
+// 1. move to ecma6 template strings
+// 2. Check selected data-field needs to exist? (doesn't update, isn't on first element)
+// 3. Always keep one contributor field
+function createPersonInput(id, name, classes, previous_select) {
+  return '<div>\
+            <select id="'+name+'_'+id+'][type][" selected="'+previous_select.val()+
+              '" name="'+name+'['+id+'][type][]">'+previous_select.html()+
+            '</select> \
+              <input class="'+classes+' dri-textfield " id="'+name+'_'+id+'][name][" name="'
+              +name+'['+id+'][name][]" size="30" type="text" value=""/>'+createRemoveButton()+
+          '</div>';
+}
