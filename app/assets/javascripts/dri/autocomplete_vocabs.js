@@ -51,32 +51,22 @@ function createChooseVocab() {
 }
 
 function addChooseVocab(selector) {
-  // $('#choose_vocab').remove(); // remove the old choose vocab
+  // add the dropdown menu
+  $(createChooseVocab()).hide().appendTo($(selector)).slideDown('fast');
 
-  // add the new choose_vocab
-  // $(selector).append(
-  //   createChooseVocab(),
-  // );
-  $(createChooseVocab()).appendTo($(selector)).slideDown('slow');
-
-  // add autocomplete
+  // add autocomplete to relevant inputs
   addVocabAutocomplete();
 
   // update autcomplete endpoint when dropdown changes
   $('#choose_vocab').on('change', function(){
     addVocabAutocomplete();
   });
-
-  return true;
 }
 
 function removeChooseVocab() {
-  // $('#choose_vocab').fadeTo(300, 0.01, function(){ 
-  //   $(this).slideUp(150, function() {
-  //     $(this).remove(); 
-  //   }); 
-  // });
-  $('#choose_vocab').remove();
+  $('#choose_vocab').slideUp('fast', function() {
+    $(this).remove();
+  });
 }
 
 function autoCompleteIds() {
@@ -92,35 +82,3 @@ function getDefaultAuthority(id) {
   }
   return mappings[id];
 }
-
-
-// TODO
-
-// support these vocabs:
-// 1. done //logainm.ie
-// 2. done //unesco
-// 3. done //(out of the box) // LOC
-// 4. creator vocab: irish guidelines for indexing archives
-// 5. type vocab:    dcmi vocab?
-
-// ui:
-// 1. support URI? e.g http://id.loc.gov/authorities/subjects/sh94007248.html
-// from http://localhost:3000/qa/search/loc/subjects?q=easter+rising&maximumRecords=100
-// by parsing id and replacing info:lc with http://id.loc.gov
-// 2. done // add class for autocomplete
-// 3. done // add class to subject and coverage
-// 4. done // move extra <br>s above dropdown
-// 5. move dropdown to the right so it's visible while suggestions are too?
-// 6. done // handle case where no fields are selected but last used dropdown still exists
-// 7. done // adding dropdown should be on focus, not on add new element
-// 8. done // fix issue where immediately adding a new input doesn't create a new vocab dropdown
-// because the old one still exists (due to set timeout handling overlap with focusout and focusin)
-// 9. done // fix issue where dropdown is reset when adding an additional element
-
-// issue: 
-// localhost:3000//qa/search/loc/subjects?q=united%20state  returns
-// localhost:3000//qa/search/loc/subjects?q=united%20stat   does not
-// localhost:3000//qa/search/loc/subjects?q=united%20sta    does not
-// localhost:3000//qa/search/loc/subjects?q=united%20st     returns
-// &maxRecords param having no affect. possibly sufia only?
-

@@ -58,6 +58,8 @@ $(document).ready(function() {
     e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
     
+    // TODO
+    // 1. make required fields generic? i.e. can't remove all inputs of type x
     if (fieldset_id === 'roles') {
       // ensure at least one role always exists
       // otherwise previous_select.html() will be empty 
@@ -181,7 +183,6 @@ function createTextInput(id, name, classes) {
 // TODO 
 // 1. move to ecma6 template strings
 // 2. Check selected data-field needs to exist? (doesn't update, isn't on first element)
-// 3. Always keep one contributor field
 function createPersonInput(id, name, classes, previous_select) {
   return '<div>\
             <select id="'+name+'_'+id+'][type][" selected="'+previous_select.val()+
