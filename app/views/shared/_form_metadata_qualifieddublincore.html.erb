@@ -231,7 +231,7 @@
     <%= render "shared/form_add_text_field_button", action:%w(add coverage) %>
 	</fieldset>
 
-	<fieldset id="geographical_coverage">
+	<fieldset id="geographical_coverage" data-default-authority='logainm/subjects'>
 	  <%= render "shared/form_fieldset_label", f:f, source:'geographical_coverages' %>
 		<% @object.geographical_coverage.each do |i| %>
 		  <div>
@@ -260,7 +260,7 @@
 		</p>
 	</fieldset>
 
-	<fieldset id="subject">
+	<fieldset id="subject" data-default-authority='unesco/subjects'>
 	  <%= render "shared/form_fieldset_label", f:f, source:'subjects' %>
 		<% @object.subject.each do |i| %>
 		  <div>

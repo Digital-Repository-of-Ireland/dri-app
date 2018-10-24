@@ -9,7 +9,6 @@ function addVocabAutocomplete() {
   // turn autocomplete back on
   $(selector).autocomplete({
     source: function (request, response) {
-      console.log(endpoint + request.term);
       $.ajax({
         url: endpoint + request.term,
         type: 'GET',
@@ -20,6 +19,14 @@ function addVocabAutocomplete() {
         }
       });
     },
+    // TODO
+    // issue with results not returning exact match
+    // want to display since clicking should add uri to hidden element too in future
+    // available in version 1.12.4? 
+    // lookupFilter: function (suggestion, originalQuery, queryLowerCase) {
+    //   console.log(suggestion.value.toLowerCase)
+    //   return suggestion.value.toLowerCase().indexOf(queryLowerCase) === 0;
+    // },
     autoFocus: true
   });
   return true;
@@ -33,13 +40,7 @@ function removeVocabAutocomplete() {
 function createChooseVocab() {
   var choose_vocab = document.createElement('select');
   choose_vocab.id = 'choose_vocab'
-  var options = [
-    ["Library of Congress", "/qa/search/loc/subjects?q="],
-    ["Logaimn", "/qa/search/logainm/subjects?q="],
-    ["OCLC FAST", "/qa/search/assign_fast/all?q="],
-    ["Unesco", "/qa/search/unesco/subjects?q="],
-    ["No authority (disable autocomplete)", "na"]
-  ];
+  var options = vocabOptions();
 
   options.forEach(function(arr){
     var option = document.createElement('option');
@@ -53,6 +54,13 @@ function createChooseVocab() {
 function addChooseVocab(selector) {
   // add the dropdown menu
   $(createChooseVocab()).hide().appendTo($(selector)).slideDown('fast');
+
+  var default_authority = $(selector).data('default-authority');
+  if (default_authority) {
+    $('#choose_vocab').val(
+      '/qa/search/' + default_authority + '?q='
+    );
+  }
 
   // add autocomplete to relevant inputs
   addVocabAutocomplete();
@@ -75,10 +83,19 @@ function autoCompleteIds() {
 
 function getDefaultAuthority(id) {
   var mappings = {
-    'subject': 'loc',
-    'coverage': 'loc', 
-    'geographical_coverage': 'logainm',
-    'temporal_coverage': ''
+    'subject': 'Library of Congress',
+    'coverage': 'Library of Congress', 
+    'geographical_coverage': 'Logaimn',
   }
   return mappings[id];
+}
+
+function vocabOptions() {
+  return [
+    ["Library of Congress", "/qa/search/loc/subjects?q="],
+    ["Logaimn", "/qa/search/logainm/subjects?q="],
+    ["OCLC FAST", "/qa/search/assign_fast/all?q="],
+    ["Unesco", "/qa/search/unesco/subjects?q="],
+    ["No authority (disable autocomplete)", "na"]
+  ];
 }

@@ -12,12 +12,16 @@ $(document).ready(function() {
     var input_id = [model_name, fieldset_id].join('_')+'][';
     var input_name = model_name+'['+fieldset_id+'][]';
     var css_classes = "edit span6";
-    var default_authority = 'na'
+    // var default_authority = vocabOptions()[0][1];
     
     // add autocomplete class if necessary
     if ($.inArray('#' + fieldset_id, autoCompleteIds()) > -1) {
       css_classes += ' vocab-autocomplete';
-      default_authority = getDefaultAuthority(fieldset_id);
+      // default_authority = getDefaultAuthority(fieldset_id);
+      // var new_default_authority = getDefaultAuthority(fieldset_id);
+      // if (new_default_authority) {
+      //   default_authority = new_default_authority;
+      // }
     }
 
     var new_element_html = (new_elemenet_type == 'textarea') ?
@@ -31,6 +35,7 @@ $(document).ready(function() {
     var added_element = $("#"+fieldset_id+" > div > "+new_elemenet_type).last();
     addVocabAutocomplete(); // re-add autocomplete listeners to include new input
     added_element.focus(); // focus on newly added input
+    // $("#"+fieldset_id).data('default-authority', default_authority); // ensure default
   });
 
   $.each(autoCompleteIds(), function(index, id) {
@@ -40,7 +45,7 @@ $(document).ready(function() {
         if ($('#choose_vocab').length < 1) {
           addChooseVocab(id);
         }
-      }, 100);
+      }, 500);
     });
     $(id).on('focusout', function() {
       // if id has no focused children
