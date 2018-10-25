@@ -36,7 +36,6 @@ class AssetsController < ApplicationController
   end
 
   # Retrieves external datastream files that have been stored in the filesystem.
-  # By default, it retrieves the master file
   def download
     enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
@@ -58,7 +57,7 @@ class AssetsController < ApplicationController
               type: local_file.mime_type || @generic_file.mime_type,
               stream: true,
               buffer: 4096,
-              disposition: "attachment; filename=\"#{File.basename(local_file.path)}\";",
+              disposition: "attachment; filename=\"#{@generic_file.filename.first}\";",
               url_based_filename: true
         return
       end
