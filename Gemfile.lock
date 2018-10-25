@@ -9,10 +9,10 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
-  revision: 79bf80453d8e28533d6c90bdb0efacc7e49b6510
-  tag: v1.0.0
+  revision: 394d2398262f7b4da83048bef638c83a6328203d
+  tag: v1.0.1
   specs:
-    dri_batch_ingest (0.0.1)
+    dri_batch_ingest (1.0.1)
       filesize
       fuelux-rails-sass
       iconv

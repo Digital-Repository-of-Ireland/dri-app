@@ -129,7 +129,7 @@ describe SolrDocument do
       expect(doc.read_master?).to be false
     end
 
-    it "should return the asset docs" do
+    it "should return the asset docs ordered or unordered" do
       labels = %w(g445rv188_DCLA.RDFA.006.08.tif g445rv188_DCLA.RDFA.006.20.tif g445rv188_DCLA.RDFA.006.07.tif g445rv188_DCLA.RDFA.006.13.tif)
       ordered_labels = %w(g445rv188_DCLA.RDFA.006.07.tif g445rv188_DCLA.RDFA.006.08.tif g445rv188_DCLA.RDFA.006.13.tif g445rv188_DCLA.RDFA.006.20.tif)
 
