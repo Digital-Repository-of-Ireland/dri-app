@@ -17,8 +17,8 @@ module Qa::Authorities
       json_response = JSON.parse(response.body, symbolize_names: true)
       json_response[:results][:bindings].map do |h| 
         {
-          label: h[:o][:value],
           id: h[:s][:value],
+          label: h[:o][:value],
         }
       end
     end

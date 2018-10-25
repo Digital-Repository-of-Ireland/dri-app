@@ -7,8 +7,6 @@ $(document).ready(function() {
     var new_elemenet_type = ['description', 'rights'].includes(fieldset_id) ? 
       'textarea' : 
       'input';
-    // var nchildren = $("#"+fieldset_id+" > div > "+new_elemenet_type).length;
-    // var input_id = [model_name, fieldset_id, nchildren].join('_')+'][';
     var input_id = [model_name, fieldset_id].join('_')+'][';
     var input_name = model_name+'['+fieldset_id+'][]';
     var css_classes = "edit span6";
@@ -17,11 +15,10 @@ $(document).ready(function() {
     // add autocomplete class if necessary
     if ($.inArray('#' + fieldset_id, autoCompleteIds()) > -1) {
       css_classes += ' vocab-autocomplete';
-      // default_authority = getDefaultAuthority(fieldset_id);
-      // var new_default_authority = getDefaultAuthority(fieldset_id);
-      // if (new_default_authority) {
-      //   default_authority = new_default_authority;
-      // }
+      // include hidden input to send uri added by autocomplete to server
+      // var hidden_id = [model_name, fieldset_id, 'uri'].join('_')+'][';
+      // var hidden_name = model_name+'['+fieldset_id+'_uri][]';
+      // $(createHiddenInput(hidden_id, hidden_name)).insertBefore($(this).parent());
     }
 
     var new_element_html = (new_elemenet_type == 'textarea') ?
@@ -35,7 +32,6 @@ $(document).ready(function() {
     var added_element = $("#"+fieldset_id+" > div > "+new_elemenet_type).last();
     addVocabAutocomplete(); // re-add autocomplete listeners to include new input
     added_element.focus(); // focus on newly added input
-    // $("#"+fieldset_id).data('default-authority', default_authority); // ensure default
   });
 
   $.each(autoCompleteIds(), function(index, id) {
