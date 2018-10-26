@@ -10,7 +10,7 @@ module DRI::Sorters
       break -1 if index == (a.length - 1)
     end
 
-    #all of a is in b so b is greater than a
+    #all of a is in b so b is greater
     return index if index == -1
 
     digits_a = a[index..-1].scan(/\d+/).map(&:to_i)
@@ -20,12 +20,15 @@ module DRI::Sorters
     return (a <=> b) if digits_a == digits_b
 
     digits_a.each_with_index do |num, index|
-      # a longer than b, so a greater than b
-      break 1 unless digits_b[index]
+      # a longer than b, so a greater
+      return 1 unless digits_b[index]
 
       if num != digits_b[index]
-        break num - digits_b[index]
+        return num - digits_b[index]
       end
     end
+
+    # a shorter than b, so b greater
+    -1
   end
 end
