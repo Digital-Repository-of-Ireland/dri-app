@@ -1,34 +1,31 @@
 module DRI::Sorters
 
   def self.trailing_digits_sort(a, b)
-    if a == b
-      0
-    else
-      index = a.chars.each_with_index do |char, index|
-        break index if char != b[index]
+    return 0 if a == b
 
-        # all of a is contained in b
-        break -1 if index == (a.length - 1)
-      end
+    index = a.chars.each_with_index do |char, index|
+      break index if char != b[index]
 
-      # a is shorter than b
-      if index == -1
-        -1
-      else
-        digits_a = a[index..-1].scan(/\d+/).map(&:to_i)
-        digits_b = b[index..-1].scan(/\d+/).map(&:to_i)
+      # all of a is contained in b
+      break -1 if index == (a.length - 1)
+    end
 
-        rc = digits_a.each_with_index do |num, index|
-          break 1 unless digits_b[index]
+    #all of a is in b so b is greater than a
+    return index if index == -1
 
-          if num != digits_b[index]
-            break num - digits_b[index]
-          end
-        end
+    digits_a = a[index..-1].scan(/\d+/).map(&:to_i)
+    digits_b = b[index..-1].scan(/\d+/).map(&:to_i)
 
-        rc ? rc : -1
+    # can't sort on digits so fallback to sort strings
+    return (a <=> b) if digits_a == digits_b
+
+    digits_a.each_with_index do |num, index|
+      # a longer than b, so a greater than b
+      break 1 unless digits_b[index]
+
+      if num != digits_b[index]
+        break num - digits_b[index]
       end
     end
   end
-
 end
