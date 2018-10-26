@@ -44,4 +44,12 @@ describe DRI::Sorters do
     expect(labels.sort { |a,b| DRI::Sorters.trailing_digits_sort(a,b) }).to eq ordered_labels
   end
 
+  it "should handle cases where a shorter than b" do
+    labels = %w(DCLA.RDFA.119.04.28.12 DCLA.RDFA.119.04.28.102.02.12)
+    ordered_labels = labels
+
+    expect(labels.sort { |a,b| DRI::Sorters.trailing_digits_sort(a,b) }).to eq ordered_labels
+  end
+
+
 end
