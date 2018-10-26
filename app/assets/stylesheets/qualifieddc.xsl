@@ -7,7 +7,22 @@
                     <xsl:value-of select="local-name()"/>
                 </dt>
                 <dd>
-                    <xsl:value-of select="."/>
+                    <!-- 
+                        if the value contains http, make it clickable
+                        XSLT 2.0 could use fn:matches to use regex  
+                        and match more complex uris.
+                        Could also modify xml at metadatacontroller level?
+                    -->
+                    <xsl:choose>
+                        <xsl:when test="contains(., 'http')">
+                            <a href="{.}">
+                                <xsl:value-of select="."/>
+                            </a>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="."/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </dd>
             </xsl:for-each>
         </dl>
