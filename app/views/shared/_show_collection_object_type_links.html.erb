@@ -1,22 +1,22 @@
 <ul>
 
-        <% collection = @document.root_collection %>
+  <% collection = @document.root_collection %>
 
-        <% if collection %>
+  <% if collection %>
 
-          <!-- If it's a root collection, we show all the objects within it -->
-          <% if document.root_collection? %>
-            <% collection_objects_params = { :f => {ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable).to_sym => [document[ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-          <% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
-            <% collection_objects_params = { :f => {ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-          <% end %>
-    
+    <!-- If it's a root collection, we show all the objects within it -->
+    <% if document.root_collection? %>
+      <% collection_objects_params = { f: {ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable).to_sym => [document[ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
+    <% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
+      <% collection_objects_params = { f: {ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
+    <% end %>
+
     <h5>
       <i class="fa fa-folder-open"></i>&nbsp;<%= t('dri.views.catalog.forms.all_objects_in_collection') %>
     </h5>
 
-        <% end %>
-        
+  <% end %>
+
   <% if (objectsCount > 0) %>
 
     <% imageCount = count_items_in_collection_by_type(document[:id], "image") %>
@@ -26,12 +26,12 @@
     <% mixedCount = count_items_in_collection_by_type(document[:id], "mixed_types") %>
 
       <li>
-        <%= link_to catalog_index_path(collection_objects_params), :id => 'collection_s_object' do %>
+        <%= link_to catalog_index_path(collection_objects_params), id: 'collection_s_object' do %>
           <%= t("dri.data.types.all") %>
           <span class="dri_stat_num"><%= objectsCount %></span>
         <% end %>
       </li>
-        
+
       <% if (imageCount > 0) %>
           <li>
             <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "image")) do %>
@@ -78,4 +78,3 @@
       <% end %>
 <% end %>
 </ul>
-
