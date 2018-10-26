@@ -38,8 +38,8 @@ function addVocabAutocomplete() {
         var fieldset_id = $('#choose_vocab').parents('fieldset').attr('id');
         var model_name = $('#choose_vocab').siblings('.add-text-field')
                                            .children('a').attr('model-name');
-        var hidden_uri_id = [model_name, fieldset_id].join('_')+'][uri][';
-        var hidden_uri_name = model_name+'['+fieldset_id+'][][uri]';
+        var hidden_uri_id = [model_name, fieldset_id].join('_')+'][';
+        var hidden_uri_name = model_name+'['+fieldset_id+'][]';
         // add a hidden input with the vocab uri as the value
         // use a data attribute to validate that the value in the input
         // matches the label of the uri in the hidden input

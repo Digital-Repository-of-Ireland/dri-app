@@ -374,10 +374,7 @@ class CollectionsController < BaseObjectsController
       # If a cover image was uploaded, remove it from the params hash
       cover_image = params[:batch].delete(:cover_image)
 
-      # if there is a valid uri, store it
-      # otherwise store the label
-      # create_params[:coverage].map {|h| h.keys.include?('uri') ? h['uri'] : h['label']}
-      @object.update_attributes(filter_autocomplete_params(create_params))
+      @object.update_attributes(create_params)
 
       # depositor is not submitted as part of the form
       @object.depositor = current_user.to_s
@@ -392,31 +389,6 @@ class CollectionsController < BaseObjectsController
       end
 
       true
-    end
-
-    def autocomplete_params
-      %w(coverage subject temporal_coverage geographical_coverage)
-    end
-
-    def filter_autocomplete_params(params)
-      new_params = params.clone()
-      autocomplete_params.each do |param_key|
-        if params.keys.include?(param_key)
-          new_params[param_key] = return_uri_or_label(new_params[param_key])
-        end
-      end
-      new_params
-    end
-
-    def return_uri_or_label(array_of_hashes)
-      array_of_hashes.map do |h| 
-        # if h.keys.include?('uri')
-        #   h['uri']
-        # elsif h.keys.include?('label')
-        #   h['label']
-        # end   
-        h.keys.include?('uri') ? h['uri'] : h['label']
-      end
     end
 
     # Create a collection from an uploaded XML file.

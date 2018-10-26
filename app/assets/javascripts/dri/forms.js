@@ -14,10 +14,6 @@ $(document).ready(function() {
     // add autocomplete class if necessary
     if ($.inArray('#' + fieldset_id, autoCompleteIds()) > -1) {
       css_classes += ' vocab-autocomplete';
-      // submit autocomplete values as array of hashes
-      // [{'label'=>'v', 'uri'}=>'test']
-      // then filter server side to save uri, or label if no uri exists
-      input_name += '[label]';
     }
 
     var new_element_html = (new_elemenet_type == 'textarea') ?
