@@ -10,15 +10,14 @@ $(document).ready(function() {
     var input_id = [model_name, fieldset_id].join('_')+'][';
     var input_name = model_name+'['+fieldset_id+'][]';
     var css_classes = "edit span6";
-    // var default_authority = vocabOptions()[0][1];
     
     // add autocomplete class if necessary
     if ($.inArray('#' + fieldset_id, autoCompleteIds()) > -1) {
       css_classes += ' vocab-autocomplete';
-      // include hidden input to send uri added by autocomplete to server
-      // var hidden_id = [model_name, fieldset_id, 'uri'].join('_')+'][';
-      // var hidden_name = model_name+'['+fieldset_id+'_uri][]';
-      // $(createHiddenInput(hidden_id, hidden_name)).insertBefore($(this).parent());
+      // submit autocomplete values as array of hashes
+      // [{'label'=>'v', 'uri'}=>'test']
+      // then filter server side to save uri, or label if no uri exists
+      input_name += '[label]';
     }
 
     var new_element_html = (new_elemenet_type == 'textarea') ?

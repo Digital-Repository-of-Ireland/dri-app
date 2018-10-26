@@ -38,8 +38,8 @@ function addVocabAutocomplete() {
         var fieldset_id = $('#choose_vocab').parents('fieldset').attr('id');
         var model_name = $('#choose_vocab').siblings('.add-text-field')
                                            .children('a').attr('model-name');
-        var hidden_uri_id = [model_name, fieldset_id, 'uri'].join('_')+'][';
-        var hidden_uri_name = model_name+'['+fieldset_id+'_uri][]';
+        var hidden_uri_id = [model_name, fieldset_id].join('_')+'][uri][';
+        var hidden_uri_name = model_name+'['+fieldset_id+'][][uri]';
         // add a hidden input with the vocab uri as the value
         // use a data attribute to validate that the value in the input
         // matches the label of the uri in the hidden input
@@ -62,9 +62,6 @@ function addVocabAutocomplete() {
           }
         });
       }
-      // OCLC
-      // https://platform.worldcat.org/api-explorer/apis/fastapi/LinkedData/Read
-      // http://fast.oclc.org/fast/{id}/{format}
     },
     // TODO
     // issue with results not returning exact match
@@ -124,9 +121,9 @@ function addChooseVocab(selector) {
 
 // Comment out this function to debug the dropdown
 function removeChooseVocab() {
-  // $('#choose_vocab').slideUp('fast', function() {
-  //   $(this).remove();
-  // });
+  $('#choose_vocab').slideUp('fast', function() {
+    $(this).remove();
+  });
 }
 
 function autoCompleteIds() {
