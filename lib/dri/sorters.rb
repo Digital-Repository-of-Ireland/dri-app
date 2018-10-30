@@ -3,18 +3,13 @@ module DRI::Sorters
   def self.trailing_digits_sort(a, b)
     return 0 if a == b
 
-    index = a.chars.each_with_index do |char, index|
-      break index if char != b[index]
+    split_a = a.match(/[0-9\._]*$/)
+    split_b = b.match(/[0-9\._]*$/)
 
-      # all of a is contained in b
-      break -1 if index == (a.length - 1)
-    end
+    return (a <=> b) unless split_a[0].present? && split_b[0].present?
 
-    #all of a is in b so b is greater
-    return index if index == -1
-
-    digits_a = a[index..-1].scan(/\d+/).map(&:to_i)
-    digits_b = b[index..-1].scan(/\d+/).map(&:to_i)
+    digits_a = split_a[0].scan(/\d+/).map(&:to_i)
+    digits_b = split_b[0].scan(/\d+/).map(&:to_i)
 
     # can't sort on digits so fallback to sort strings
     return (a <=> b) if digits_a == digits_b
