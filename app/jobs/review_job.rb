@@ -25,6 +25,7 @@ class ReviewJob
     # Need to set sub-collection to reviewed
     if subcollection?(collection) && collection.status == 'draft'
       collection.status = 'reviewed'
+      collection.object_version ||= '1'
       collection.increment_version
 
       failed += 1 unless collection.save
@@ -52,6 +53,7 @@ class ReviewJob
         o = ActiveFedora::Base.find(object['id'], { cast: true })
         if o.status == 'draft'
           o.status = 'reviewed'
+          o.object_version ||= '1'
           o.increment_version
 
           o.save ? (completed += 1) : (failed += 1)
