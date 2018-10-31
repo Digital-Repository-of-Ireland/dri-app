@@ -35,7 +35,7 @@ describe "ReviewCollectionJob" do
     @subcollection.save
 
     @subcollection2 = FactoryBot.create(:collection)
-    @subcollection2[:status] = "draft"
+    @subcollection2[:status] = "reviewed"
     @subcollection2.governing_collection = @collection
     @subcollection2.save
   end
@@ -46,13 +46,13 @@ describe "ReviewCollectionJob" do
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
-  
+
   describe "run" do
     it "should trigger jobs for subcollections" do
       expect(ReviewJob).to receive(:create).exactly(3).times
       job = ReviewCollectionJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
       job.perform
-    end  
+    end
   end
 
 end
