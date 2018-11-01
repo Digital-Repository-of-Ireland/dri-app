@@ -15,32 +15,28 @@
 		    </tr>
 		  </thead>
 		  <tbody>
-			<% @assets.each_with_index do |file, index| %>
-			  <% if ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
-                <tr>
-                  <td>
-				      <%= file.label %>
-		          </td>
-		          <td>
-		          	<%= @status[file.id][:status] %>
-		          </td>
-		          <td>
-				      <%= link_to object_file_path(@document, file.id), id: "asset_details", style: "display:inline-block" do %>
-                        <i class="fa fa-info-circle fa-2x"></i>
-				      <% end %>
-		          </td>
-		          <td>
-				    <%= link_to file_download_path(@document, file.id), id: "download_asset" do %>
-                      <i class="fa fa-download fa-2x"></i>
-				    <% end %>
-				  </td>
-				  <td>
-		            <% unless @document.published? %>
-				      <%= form_tag(object_file_path(@document.id, file.id), method: :delete, id: "file_delete", style: "display:inline-block") do %>
-		                <%= button_tag t('dri.views.assets.buttons.delete'), id: "dri_delete_asset_file", name: "delete_file", class: 'dri_button_red_small', data: { confirm: t('dri.views.assets.confirm.delete') } %>
+                <% @assets.each_with_index do |file, index| %>
+		  <% if ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
+            <tr>
+              <td><%= file.label %></td>
+		      <td><%= @status[file.id][:status] %></td>
+		      <td>
+                <%= link_to object_file_path(@document, file.id), id: "asset_details", style: "display:inline-block" do %>
+                          <i class="fa fa-info-circle fa-2x"></i>
+			    <% end %>
+		      </td>
+		      <td>
+                <%= link_to file_download_path(@document, file.id), id: "download_asset" do %>
+                  <i class="fa fa-download fa-2x"></i>
+		        <% end %>
+              </td>
+              <td>
+		        <% if !@document.published? || current_user.is_admin? %>
+                  <%= form_tag(object_file_path(@document.id, file.id), method: :delete, id: "file_delete", style: "display:inline-block") do %>
+				    <%= button_tag t('dri.views.assets.buttons.delete'), id: "dri_delete_asset_file", name: "delete_file", class: 'dri_button_red_small', data: { confirm: t('dri.views.assets.confirm.delete') } %>
 		                <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
 		              <% end %>
-		            <% end %>
+		          <% end %>
 		          </td>
 		        </tr>
 	          <% end %>
