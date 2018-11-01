@@ -285,15 +285,14 @@ class AssetsController < ApplicationController
     end
 
     def status(file_id)
-      ingest_status = IngestStatus.where(asset_id: file_id)
+      ingest_status = IngestStatus.find_by(asset_id: file_id)
 
       status_info = {}
-      if ingest_status.present?
-        status = ingest_status.first
-        status_info[:status] = status.status
+      if ingest_status
+        status_info[:status] = ingest_status.completed_status
 
         status_info[:jobs] = {}
-        status.job_status.each do |job|
+        ingest_status.job_status.each do |job|
           status_info[:jobs][job.job] = { status: job.status, message: job.message }
         end
       end
