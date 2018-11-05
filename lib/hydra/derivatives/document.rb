@@ -53,6 +53,8 @@ module Hydra
           'application/vnd.openxmlformats-officedocument.presentationml.presentation'
         when 'jpg'
           'image/jpeg'
+        when 'csv'
+          'text/csv'
         else
           raise "I don't know about the format '#{format}'"
         end

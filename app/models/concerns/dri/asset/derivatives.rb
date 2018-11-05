@@ -28,6 +28,9 @@ module DRI
             obj.transform_file :content,
               { webm: { format: "webm", datastream: 'webm' },
                 mp4: { format: "mp4", datastream: 'mp4' } }, processor: :video
+          when *tabular_mime_types
+            obj.transform_file :content,
+              { csv: { format: "csv", datastream: "csv" }}, processor: :document
           when *image_mime_types
             obj.transform_file :content,
               {

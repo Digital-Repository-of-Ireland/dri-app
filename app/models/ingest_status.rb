@@ -6,6 +6,7 @@ class IngestStatus < ActiveRecord::Base
   AUDIO_JOBS = %w(create_derivatives)
   VIDEO_JOBS = %w(create_derivatives)
   IMAGE_JOBS = %w(thumbnail)
+  TABULAR_JOBS = %w(create_derivatives)
 
   def completed?(job_status)
     if (job_status.job == 'characterize' || job_status.job == 'create_bucket') && job_status.status == 'failed'

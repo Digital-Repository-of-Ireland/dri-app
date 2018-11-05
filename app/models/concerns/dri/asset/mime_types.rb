@@ -23,6 +23,10 @@ module DRI
         self.class.audio_mime_types.include? self.mime_type
       end
 
+      def tabular?
+        self.class.tabular_mime_types.include? self.mime_type
+      end
+
       def file_format
         return nil if self.mime_type.blank? && self.format_label.blank?
         return self.mime_type.split('/')[1] + " (" + self.format_label.join(", ") + ")" unless self.mime_type.blank? || self.format_label.blank?
@@ -49,6 +53,10 @@ module DRI
 
         def audio_mime_types
           Settings.restrict.mime_types.audio
+        end
+
+        def tabular_mime_types
+          Settings.restrict.mime_types.tabular
         end
       end
     end

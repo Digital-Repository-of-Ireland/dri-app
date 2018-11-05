@@ -9,7 +9,7 @@ class CreateBucketJob < ActiveFedoraIdBasedJob
     with_status_update('create_bucket') do
       bucket_id = object.batch.nil? ? object.id : object.batch.id
       Rails.logger.info "Creating bucket for object #{bucket_id}"
-
+ 
       storage = StorageService.new
       created = storage.create_bucket(bucket_id)
       
@@ -37,6 +37,9 @@ class CreateBucketJob < ActiveFedoraIdBasedJob
     elsif generic_file.image?
       status_for_type('image')
       DRI.queue.push(ThumbnailJob.new(generic_file_id))
+    elsif generic_file.tabular?
+      status_for_type('tabular')
+      DRI.queue.push(CreateDerivativesJob.new(generic_file_id))
     end
   end
 

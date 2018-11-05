@@ -98,7 +98,8 @@ module DRI::Solr::Document::File
   def supported_type?
     mime_type.nil? || (audio? ||
       video? || pdf? || image? ||
-      text? && (file_format.include?('RTF') || file_format.include?('msword')))
+      text? && (file_format.include?('RTF') || file_format.include?('msword'))) ||
+      tabular?
   end
 
   def read_master?
@@ -140,5 +141,9 @@ module DRI::Solr::Document::File
 
   def audio?
     Settings.restrict.mime_types.audio.include? mime_type
+  end
+
+  def tabular?
+    Settings.restrict.mime_types.tabular.include? mime_type
   end
 end
