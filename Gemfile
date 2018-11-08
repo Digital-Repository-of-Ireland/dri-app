@@ -27,7 +27,7 @@ gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-mode
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
 
 # batch ingest
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.0.1'
 gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo', '2.6.0'

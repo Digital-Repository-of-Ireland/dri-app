@@ -18,9 +18,11 @@ module DRI::Solr::Document::File
   end
 
   def sort_assets(assets)
-    assets.sort_by do |f|
-      trailing_digits = File.basename(f.label, File.extname(f.label)).scan(/\d+$/).first
-      [ trailing_digits ? 0 : 1, trailing_digits || 0 ]
+    assets.sort do |a,b|
+      DRI::Sorters.trailing_digits_sort(
+        File.basename(a.label, File.extname(a.label)),
+        File.basename(b.label, File.extname(b.label))
+      )
     end
   end
 

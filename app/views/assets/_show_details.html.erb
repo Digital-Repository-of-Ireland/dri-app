@@ -1,61 +1,59 @@
 <%= render partial: "show_surrogate" %>
 
-<h2 class="non lower"><%= t('dri.views.catalog.links.details') %></h2>
+<div>
 <table>
   <tbody>
-  <% unless @generic_file.related_files.empty? %>
-      <tr>
-        <th><%= t('dri.views.catalog.links.related') %></th>
-        <td>
-          <div>
-            <dl>
-              <dt>
-                <% @generic_file.related_files.each do |f| %>
-                  <dd><%= link_to(f.label, object_file_path(@object_document.id, f.id)) %></dd>
-              <% end %>
-              </dt>
-            </dl>
-          </div>
-        </td>
-      </tr>
-  <% end %>
-  <tr>
-    <th><%= t('dri.views.catalog.links.characterization') %></th>
-    <td>
-      <%= t('dri.views.catalog.links.not_characterized') if @generic_file.characterization_terms.values.flatten.map(&:empty?).reduce(true) { |sum, value| sum && value } %>
-      <% @generic_file.characterization_terms.each_pair do |term, values| %>
-          <div>
-            <% label = term.to_s %>
-            <% if label == "format_label" %>
-                <% label = "File Format"  %>
-                <% values = @generic_file.file_format %>
-            <% end %>
-            <% label = label.humanize %>
-            <% if values.is_a? Array %>
-                <% length = values.length %>
-                <% fits_message_length = 5 %>
-                <% length = fits_message_length-1  if term == :message && values.length > fits_message_length-1  %>
-                <% values[0..length].each_with_index do |value, idx| %>
-                    <% next if value.empty? %>
-                    <%= "#{label}: #{value.truncate(250)}" %>
-                    <%= "<br />".html_safe unless idx == length %>
-                <% end %>
-            <% else %>
-                <%= "#{label}: #{values.truncate(250)}" %><br />
-            <% end %>
-          </div>
-      <% end %>
-    </td>
-  </tr>
-  <% if @status[:status].present? %>
-  <tr>
-    <th><%= t('dri.views.catalog.legends.file_status', status: @status[:status]) %></th></tr>
-    <tr><th>Job</th><th>Status</th><th>Message</th></tr>
-    <% @status[:jobs].each do |name, job| %>
     <tr>
-      <td><%= name %></td><td><%= job[:status] %></td><td><%= job[:message] %></td>
+      <th><%= t('dri.views.catalog.links.characterization') %></th>
+      <td>
+        <%= t('dri.views.catalog.links.not_characterized') if @generic_file.characterization_terms.values.flatten.map(&:empty?).reduce(true) { |sum, value| sum && value } %>
+        <% @generic_file.characterization_terms.each_pair do |term, values| %>
+            <div>
+              <% label = term.to_s %>
+              <% if label == "format_label" %>
+                  <% label = "File Format"  %>
+                  <% values = @generic_file.file_format %>
+              <% end %>
+              <% label = label.humanize %>
+              <% if values.is_a? Array %>
+                  <% length = values.length %>
+                  <% fits_message_length = 5 %>
+                  <% length = fits_message_length-1  if term == :message && values.length > fits_message_length-1  %>
+                  <% values[0..length].each_with_index do |value, idx| %>
+                      <% next if value.empty? %>
+                      <%= "#{label}: #{value.truncate(250)}" %>
+                      <%= "<br />".html_safe unless idx == length %>
+                  <% end %>
+              <% else %>
+                  <%= "#{label}: #{values.truncate(250)}" %><br />
+              <% end %>
+            </div>
+        <% end %>
+      </td>
     </tr>
-    <% end %>
-  <% end %>
   </tbody>
-</table> <!-- /verticalheadings -->
+</table>
+</div>
+
+</br>
+
+<% unless @generic_file.related_files.size == 0 %>
+  <p><b><%= t('dri.views.catalog.links.related') %>    </b><%= link_to "#{t('dri.views.catalog.links.view_assets')} (#{@generic_file.related_files.size})", object_files_path(@document) %></p>
+<% end %>
+
+</br>
+
+<% if @status[:status].present? %>
+  <div>
+    <table class="table">
+    <tbody>
+      <tr><th>Job</th><th>Status</th><th>Message</th></tr>
+      <% @status[:jobs].each do |name, job| %>
+        <tr>
+          <td><%= name %></td><td><%= job[:status] %></td><td><%= job[:message] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table> <!-- /verticalheadings -->
+  </div>
+<% end %>

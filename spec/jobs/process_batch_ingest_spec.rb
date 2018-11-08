@@ -4,7 +4,7 @@ describe 'ProcessBatchIngest' do
 
   before(:each) do
     allow_any_instance_of(DRI::GenericFile).to receive(:apply_depositor_metadata)
-    allow_any_instance_of(GenericFileContent).to receive(:external_content)
+    allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
   end
 
   before(:each) do
@@ -76,11 +76,23 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.id, @login_user, metadata)
 
       expect(rc).to eq 0
       expect(object.valid?).to be true
       expect(object.persisted?).to be true
+    end
+
+     it "should create add an object to the correct collection" do
+      tmp_file = Tempfile.new(['metadata', '.xml'])
+      FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
+      metadata = { master_file_id: master_file.id, path: tmp_file.path }
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.id, @login_user, metadata)
+
+      expect(rc).to eq 0
+      expect(object.valid?).to be true
+      expect(object.persisted?).to be true
+      expect(object.governing_collection.id).to eq @collection.id
     end
 
   end
@@ -100,6 +112,19 @@ describe 'ProcessBatchIngest' do
       expect(master_file.status_code).to eq 'COMPLETED'
     end
 
+    it "should create a preservation asset from file" do
+      tmp_file = Tempfile.new(['sample_image', '.jpeg'])
+      FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), tmp_file.path)
+      assets = [{ label: 'preservation', master_file_id: master_file.id, path: tmp_file.path }]
+      ProcessBatchIngest.ingest_assets(@login_user, object, assets)
+
+      master_file.reload
+      id = master_file.file_location.split('/').last
+
+      expect(DRI::GenericFile.find(id).preservation?).to be true
+      expect(master_file.status_code).to eq 'COMPLETED'
+    end
+
   end
 
   context "ingest errors" do
@@ -113,7 +138,7 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.id, @login_user, metadata)
 
       master_file.reload
 
@@ -126,7 +151,7 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'metadata_no_rights.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.id, @login_user, metadata)
 
       master_file.reload
 
@@ -139,7 +164,7 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'invalid_xml_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.id, @login_user, metadata)
 
       master_file.reload
 

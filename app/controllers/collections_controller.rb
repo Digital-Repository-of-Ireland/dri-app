@@ -210,7 +210,7 @@ class CollectionsController < BaseObjectsController
     raise DRI::Exceptions::NotFound if cover_url.blank?
     if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
       cover_uri = URI.parse(cover_url)
-      cover_uri.scheme = 'https'
+      #cover_uri.scheme = 'https'
       redirect_to cover_uri.to_s
       return
     end
@@ -292,15 +292,17 @@ class CollectionsController < BaseObjectsController
       begin
         delete_collection
         flash[:notice] = t('dri.flash.notice.collection_deleted')
-      rescue Exception => e
-        flash[:alert] = t('dri.flash.alert.error_deleting_collection', error: e.message)
+      rescue DRI::Exceptions::ResqueError => e
+        flash[:error] = t('dri.flash.alert.error_deleting_collection', error: e.message)
+        redirect_to :back
+        return
       end
     else
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'index' }
+      format.html { redirect_to controller: 'workspace', action: 'index' }
     end
   end
 
@@ -508,7 +510,7 @@ class CollectionsController < BaseObjectsController
       DRI.queue.push(DeleteCollectionJob.new(@object.id))
     rescue Exception => e
       logger.error "Unable to delete collection: #{e.message}"
-      raise DRI::Exceptions::ResqueError
+      raise DRI::Exceptions::ResqueError, e.message
     end
 
     def publish_collection

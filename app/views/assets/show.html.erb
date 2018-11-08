@@ -1,15 +1,16 @@
 <div class="dri_object_container">
 
+  <legend><%= t('dri.views.catalog.links.details') %></legend>
   <%= render partial: 'show_details' %>
 
   <br/>
-  <legend><%= t('dri.views.objects.legends.upload_file') %></legend>
+  <legend><%= t('dri.views.objects.buttons.replace_master') %></legend>
 
-  <%= form_tag(url_for(object_file_path(@object_document.id, @generic_file.id)), multipart: true, method: :put, id: "file_uploader") do %>
+  <%= form_tag(url_for(object_file_path(@document.id, @generic_file.id)), multipart: true, method: :put, id: "file_uploader") do %>
     <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
     <%= hidden_field_tag 'datastream', "content" %>
     <%= file_field_tag 'Filedata', required: "true" %>
-    <%= button_tag t('dri.views.objects.buttons.replace_master'), id: "replace_file", name: "upload_file", class: "btn-primary" %>
+    <%= button_tag t('dri.views.objects.buttons.upload'), id: "replace_file", name: "upload_file", class: "btn-primary" %>
   <% end %>
 
 </div>

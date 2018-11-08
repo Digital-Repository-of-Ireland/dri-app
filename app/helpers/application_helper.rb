@@ -94,7 +94,7 @@ module ApplicationHelper
     solr_query = collection_children_query(collection_id)
 
     unless signed_in? && can?(:edit, collection_id)
-      solr_query = "#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
+      solr_query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
     end
 
     ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
@@ -102,16 +102,15 @@ module ApplicationHelper
 
   def collection_children_query(collection_id)
     "(#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
-    "\" AND is_collection_sim:false" +
-    " OR #{ActiveFedora.index_field_mapper.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
+    "\" AND is_collection_sim:false)"
   end
 
   def count_items_in_collection_by_type(collection_id, type)
-    solr_query = "(#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
-        "\" OR #{ActiveFedora.index_field_mapper.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" ) AND " +
-        "#{ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string)}:"+ type
+    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
+                 "\" AND " +
+                 "#{ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string)}:"+ type
     unless signed_in? && can?(:edit, collection_id)
-      solr_query = "#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published AND " + solr_query
+      solr_query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
     end
     ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
   end

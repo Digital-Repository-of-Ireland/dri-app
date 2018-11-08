@@ -1,12 +1,12 @@
 module DRI::Solr::Document::Collection
   # Filter to only get those that are collections:
   # fq=is_collection_tesim:true
-  def children(chunk=100)
+  def children(limit: 100)
     # Find immediate children of this collection
     solr_query = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{id}\""
     f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
-    q_result = Solr::Query.new(solr_query, chunk, fq: f_query)
+    q_result = Solr::Query.new(solr_query, limit, fq: f_query)
     q_result.to_a
   end
 

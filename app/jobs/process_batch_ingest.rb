@@ -8,7 +8,6 @@ class ProcessBatchIngest
     ingest_batch = JSON.parse(ingest_json)
 
     user = UserGroup::User.find(user_id)
-    collection = DRI::Batch.find(collection_id, cast: true)
 
     download_path = File.join(Settings.downloads.directory, collection_id)
     FileUtils.mkdir_p(download_path)
@@ -18,10 +17,10 @@ class ProcessBatchIngest
 
     rc, object = if metadata_info['object_id'].present?
                    # metadata ingest was successful so only ingest missing assets
-                   DRI::Batch.find(metadata_info['object_id'], cast: true)
+                   [0, DRI::Batch.find(metadata_info['object_id'], cast: true)]
                  else
                    metadata = retrieve_files(download_path, [metadata_info])[0]
-                   ingest_metadata(collection, user, metadata)
+                   ingest_metadata(collection_id, user, metadata)
                  end
 
     if rc == 0 && object
@@ -39,12 +38,12 @@ class ProcessBatchIngest
         next
       end
 
-      build_generic_file(object: object, user: user)
+      preservation = asset[:label] == 'preservation'
+      build_generic_file(object: object, user: user, preservation: preservation)
 
       original_file_name = File.basename(asset[:path])
-      file_name = "#{@generic_file.id}_#{original_file_name}"
 
-      version = ingest_file(asset[:path], object, 'content', file_name)
+      version = ingest_file(asset[:path], object, 'content', original_file_name)
       saved = if version < 1
                 false
               else
@@ -58,7 +57,7 @@ class ProcessBatchIngest
                 file_content = GenericFileContent.new(user: user, object: object, generic_file: @generic_file)
                 file_content.external_content(
                   url,
-                  file_name
+                  original_file_name
                 )
                 true
               end
@@ -74,7 +73,7 @@ class ProcessBatchIngest
     end
   end
 
-  def self.ingest_metadata(collection, user, metadata)
+  def self.ingest_metadata(collection_id, user, metadata)
     download_path = metadata[:path]
 
     # the metadata file could not be retrieved
@@ -95,7 +94,7 @@ class ProcessBatchIngest
       return -1, nil
     end
 
-    object = create_object(collection, user, xml_ds)
+    object = create_object(collection_id, user, xml_ds)
 
     if !object.valid?
       update = { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
@@ -133,6 +132,8 @@ class ProcessBatchIngest
   end
 
   def self.ingest_file(file_path, object, datastream, filename)
+    filename = "#{@generic_file.id}_#{filename}"
+
     filedata = OpenStruct.new
     filedata.path = file_path
     mime_type = Validators.file_type(file_path)
@@ -176,11 +177,11 @@ class ProcessBatchIngest
     @generic_file.preservation_only = 'true' if preservation
   end
 
-  def self.create_object(collection, user, xml_ds)
+  def self.create_object(collection_id, user, xml_ds)
     standard = xml_ds.metadata_standard
 
     object = DRI::Batch.with_standard standard
-    object.governing_collection = collection
+    object.governing_collection_id = collection_id
     object.depositor = user.to_s
     object.status = 'draft'
     object.object_version = '1'

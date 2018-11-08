@@ -136,7 +136,8 @@ class SurrogatesController < ApplicationController
         begin
           # only characterize if necessary
           if file_doc[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].present?
-            DRI.queue.push(CreateBucketJob.new(file_doc.id))
+            # don't create surrogates of preservation only assets
+            DRI.queue.push(CreateBucketJob.new(file_doc.id)) unless file_doc.preservation_only?
           else
             DRI.queue.push(CharacterizeJob.new(file_doc.id))
           end

@@ -2,9 +2,9 @@
 <div class="carousel-caption">
   <p>
 
-    <% if @surrogate.nil? && !((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
+    <% if @surrogate.nil? && !((document.read_master? && can?(:read, document.id)) || can?(:edit, document.id)) %>
       <%= t('dri.views.catalog.links.download_not_available', index: index.ordinalize) %>
-    <% elsif @document.read_master? || @surrogate && can?(:read, @document.id) || can?(:edit, @document.id) %>
+    <% elsif document.read_master? || @surrogate && can?(:read, document.id) || can?(:edit, document.id) %>
       <%= link_to '#dri_download_modal_id', :'data-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download", class: 'configure_download' do %>
           <%= t('dri.views.catalog.links.download') %>
       <% end %>
@@ -13,4 +13,4 @@
   </p>
 </div>
 
-<%= render partial: 'shared/download', locals: { generic_file: generic_file, surrogate: @surrogate } %>
+<%= render partial: 'shared/download', locals: { displayfiles_count: displayfiles_count, generic_file: generic_file, surrogate: @surrogate } %>

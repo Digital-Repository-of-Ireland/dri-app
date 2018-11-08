@@ -245,7 +245,12 @@ class MyCollectionsController < ApplicationController
     solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
     if user_parameters[:mode] == 'collections'
       solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"
-      solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+
+      # if show subcollections is false we only want root collections
+      # i.e., those without any ancestor ids
+      unless user_parameters[:show_subs] == 'true'
+        solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+      end
     else
       solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:false"
       solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\"" if user_parameters[:collection].present?
@@ -283,7 +288,15 @@ class MyCollectionsController < ApplicationController
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
     @response, @document = fetch params[:id]
-    @presenter = DRI::MyCollectionsPresenter.new(@document, view_context)
+
+    # published subcollections unless admin or edit permission
+    @children = @document.children(limit: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
+
+    # assets including preservation only files, ordered by label
+    @assets = @document.assets(with_preservation: true, ordered: true)
+    @reader_group = find_reader_group(@document)
+
+    @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
 
     supported_licences
 
@@ -325,4 +338,14 @@ class MyCollectionsController < ApplicationController
     @response, document_list = @object.duplicates
     @document_list = Kaminari.paginate_array(document_list).page(params[:page]).per(params[:per_page])
   end
+
+  private
+
+    def find_reader_group(document)
+      readgroups = document["#{ActiveFedora.index_field_mapper.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
+
+      if readgroups.present? && readgroups.include?(document.id)
+        UserGroup::Group.find_by(name: document.id)
+      end
+    end
 end

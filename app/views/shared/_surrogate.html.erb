@@ -1,8 +1,8 @@
- <% unless @presenter.displayfiles.empty? %>
+ <% unless @presenter.displayfiles(@assets).empty? %>
 
   <!-- display the asset carousel -->
   <div class="dri_asset_holder">
-    <%= render partial: "shared/object_show_carousel", locals: {document: @document, files: @presenter.displayfiles} %>
+    <%= render partial: "shared/object_show_carousel", locals: {document: @document, displayfiles: @presenter.displayfiles(@assets)} %>
   </div> <!-- ending dri_asset_holder -->
 
   <div class="modal fade dri_pdf_view" id="dri_pdf_viewer_modal_id">
