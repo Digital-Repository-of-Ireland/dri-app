@@ -74,6 +74,16 @@ module DRI::Solr::Document::Collection
     return Blacklight::Solr::Response.new(response['response'], response['responseHeader']), duplicates
   end
 
+  def type_count(type, published_only: false)
+    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + self.id +
+                 "\" AND " +
+                 "#{ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string)}:"+ type
+    if published_only
+      solr_query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
+    end
+    ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
+  end
+
   private
 
     def metadata_field

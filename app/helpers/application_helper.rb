@@ -90,16 +90,6 @@ module ApplicationHelper
     path
   end
 
-  def count_items_in_collection_by_type(collection_id, type)
-    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
-                 "\" AND " +
-                 "#{ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string)}:"+ type
-    unless signed_in? && can?(:edit, collection_id)
-      solr_query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
-    end
-    ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
-  end
-
   def root?
     request.env['PATH_INFO'] == '/' && request.path.nil? && request.query_string.blank?
   end
