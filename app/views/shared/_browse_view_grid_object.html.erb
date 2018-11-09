@@ -1,6 +1,3 @@
-<% @search_image = "no_image.png" %>
-<% image_for_search(document) %>
-
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block">
     <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
@@ -10,10 +7,10 @@
       <% end %>
     <% end %>
 
-    <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
+    <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter)} )) do %>
         <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
         <div class="dri_image">
-          <%= image_tag @search_image, width: "200" %>
+          <%= image_tag image_for_search(document), width: "200" %>
         </div><!-- close image -->
     <% end %>
 

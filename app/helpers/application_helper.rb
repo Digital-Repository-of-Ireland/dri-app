@@ -2,17 +2,6 @@ module ApplicationHelper
   require 'storage/s3_interface'
   require 'uri'
 
-  def surrogate_url(doc_id, file_doc_id, name)
-    return nil unless StorageService.new.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
-
-    object_file_url(
-      object_id: doc_id,
-      id: file_doc_id,
-      surrogate: name,
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
-    )
-  end
-
   def iiif_info_url(doc_id, file_id)
     "#{Settings.iiif.server}/#{doc_id}:#{file_id}/info.json"
   end
@@ -34,24 +23,33 @@ module ApplicationHelper
       end
     end
 
-    @search_image = image || default_image(file_doc)
+    image || default_image(file_doc)
   end
 
   def search_image(document, file_document, image_name = 'crop16_9_width_200_thumbnail')
-    path = nil
+    file_type_key = ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)
+    return nil unless file_document[file_type_key].present?
 
-    if file_document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].present?
-      format = file_document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].first
-
-      case format
-      when "image"
-        path = surrogate_url(document[:id], file_document.id, image_name)
-      when "text"
-        path = surrogate_url(document[:id], file_document.id, "thumbnail_medium")
-      end
+    format = file_document[file_type_key].first
+    case format
+    when "image"
+      search_image_url(document[:id], file_document.id, image_name)
+    when "text"
+      search_image_url(document[:id], file_document.id, "thumbnail_medium")
+    else
+      nil
     end
+  end
 
-    path
+  def search_image_url(doc_id, file_doc_id, name)
+    return nil unless StorageService.new.surrogate_exists?(doc_id, "#{file_doc_id}_#{name}")
+
+    object_file_url(
+      object_id: doc_id,
+      id: file_doc_id,
+      surrogate: name,
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+    )
   end
 
   def default_image(file_document)
