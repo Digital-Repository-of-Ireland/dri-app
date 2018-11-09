@@ -36,17 +36,16 @@
   <div class="dri_sidenav_top">
     <%= link_back_to_catalog %>
   </div>
-  <% if @document.cover_image %>
+  <% if document.cover_image %>
   <div class="dri_vc_image hidden-xs">
-    <%= image_tag(cover_image_path(@document), alt: t('dri.views.alt_tags.cover_image') ) %>
+    <%= image_tag(cover_image_path(document), alt: t('dri.views.alt_tags.cover_image') ) %>
   </div>
   <% end %>
-  <% objectsCount = count_items_in_collection document[:id] %>
-  <%= render partial: "show_collection_navigation_tools", locals: { document: document, objectsCount: objectsCount } %>
+  <%= render partial: "show_collection_navigation_tools", locals: { document: document, objectsCount: document.published_objects } %>
   <%= render :partial => "shared/tools", locals: { document: document} %>
 
-   <% if signed_in? && can?(:edit, @document.id) %>
-    <%= link_to my_collections_path(@document.id), id: "open_workspace" do %>
+   <% if signed_in? && can?(:edit, document.id) %>
+    <%= link_to my_collections_path(document.id), id: "open_workspace" do %>
       <%= button_tag(t('dri.views.catalog.buttons.open_workspace'), {class: 'dri_open_workspace_button'}) %>
     <% end %>
   <% end %>

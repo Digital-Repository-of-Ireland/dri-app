@@ -38,7 +38,7 @@
     <% controller = (controller_name == 'bookmarks') ? 'catalog' : controller_name %>
     <%= link_to collection_objects_params.merge({ controller: controller, action: :index, mode: "objects", search_field: "all_fields", view: params[:view]}) do %>
         <div class="dri_num_objects">
-          <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %></span>
+          <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + object_count.to_s + ")" %></span>
         </div>
     <% end %> <!-- close dri_num_objects -->
   </div>

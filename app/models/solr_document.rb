@@ -225,6 +225,10 @@ class SolrDocument
     self[status_key].first
   end
 
+  def draft?
+    status == 'draft'
+  end
+
   def published?
     ancestors_published? && status == 'published'
   end
@@ -239,9 +243,5 @@ class SolrDocument
 
   def permissions_doc(id)
     get_permissions_solr_response_for_doc_id(id)
-  end
-
-  def draft?
-    status == 'draft'
   end
 end

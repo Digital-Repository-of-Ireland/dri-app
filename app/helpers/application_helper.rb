@@ -90,21 +90,6 @@ module ApplicationHelper
     path
   end
 
-  def count_items_in_collection(collection_id)
-    solr_query = collection_children_query(collection_id)
-
-    unless signed_in? && can?(:edit, collection_id)
-      solr_query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
-    end
-
-    ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
-  end
-
-  def collection_children_query(collection_id)
-    "(#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
-    "\" AND is_collection_sim:false)"
-  end
-
   def count_items_in_collection_by_type(collection_id, type)
     solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
                  "\" AND " +
@@ -115,12 +100,12 @@ module ApplicationHelper
     ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
   end
 
-  def has_browse_params?
-    has_search_parameters? || !params[:mode].blank? || !params[:search_field].blank? || !params[:view].blank?
-  end
-
   def root?
     request.env['PATH_INFO'] == '/' && request.path.nil? && request.query_string.blank?
+  end
+
+  def has_browse_params?
+    has_search_parameters? || params[:mode].present? || params[:search_field].present? || params[:view].present?
   end
 
   def has_search_parameters?
