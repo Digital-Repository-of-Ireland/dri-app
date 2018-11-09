@@ -8,6 +8,9 @@
                 </dt>
                 <dd>
                     <!-- 
+                        TODO: check on rails side if value is url 
+                        if it is wrap in anchor tag
+
                         if the value contains http, make it clickable
                         XSLT 2.0 could use fn:matches to use regex  
                         and match more complex uris.
