@@ -6,11 +6,11 @@ class Timeline
   def initialize(view)
     @view = view
   end
-  
+
   def data(response, tl_field)
     timeline_data = {}
     timeline_data[:events] = []
-        
+
     if response.blank?
       timeline_data[:title] = {}
       timeline_data[:title][:text] = {}
@@ -49,13 +49,13 @@ class Timeline
   def document_date(document, tl_field)
     if document["#{tl_field}Range".to_sym].present?
       ranges = document["#{tl_field}Range".to_sym]
-      
+
       start_and_end = min_max(ranges)
       return [] if start_and_end.empty?
-      
+
       start_date = start_and_end[0]
       end_date = start_and_end[1]
-      
+
       [ISO8601::DateTime.new(start_date), ISO8601::DateTime.new(end_date)]
     end
   end
@@ -85,25 +85,18 @@ class Timeline
   end
 
   def image(document)
-    files_query = "#{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\"
-                  AND NOT #{ActiveFedora.index_field_mapper.solr_name('preservation_only', :stored_searchable)}:true"
-    files = ActiveFedora::SolrService.query(files_query)
+    files = SolrDocument.new(document).assets
+    file_types = document[file_type_key]
 
-    file_doc = nil
+    return default_image(file_types) unless can?(:read, document[:id])
+
     image = nil
 
     files.each do |file|
-      file_doc = SolrDocument.new(file) unless files.empty?
-      if can?(:read, document[:id])
-        image = search_image(document, file_doc) unless file_doc.nil?
-        break if image
-      end
+      image = search_image(document, file)
+      break if image
     end
 
     image || cover_image(document) || default_image(file_doc)
-  end
-
-  def surrogate_url(doc, file_doc, name)
-    object_file_path(object_id: doc, id: file_doc, surrogate: name)
   end
 end
