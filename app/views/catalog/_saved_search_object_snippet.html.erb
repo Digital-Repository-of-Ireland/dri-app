@@ -3,11 +3,13 @@
     <div class="dri_content_block_collection">
       <div>
         <div class="dri_collection_image">
-          <% image = cover_image ( document ) %>
-          <% unless image.nil? %>
-              <%= image_tag image, :width=>"228" %>
-          <% else %>
-              <%= image_tag "no_image.png", :width=>"228" %>
+          <% present(document, DRI::ImagePresenter) do |images| %>
+            <% image = images.cover_image %>
+            <% if image %>
+              <%= image_tag image, width: "228" %>
+            <% else %>
+              <%= image_tag "no_image.png", width: "228" %>
+            <% end %>
           <% end %>
         </div>
         <!-- close image -->
@@ -30,7 +32,9 @@
     <div class="dri_content_block">
       <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
       <div class="dri_image">
-        <%= image_tag image_for_search(document), width: "200" %>
+         <% present(document, DRI::ImagePresenter) do |images| %>
+          <%= image_tag images.image_for_search, width: "200" %>
+        <% end %>
       </div><!-- close image -->
       <p class="dri_subject">
         <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>

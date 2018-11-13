@@ -42,7 +42,7 @@
   </div>
   <% end %>
   <%= render partial: "show_collection_navigation_tools", locals: { document: document, objects_count: document.published_objects } %>
-  <%= render :partial => "shared/tools", locals: { document: document} %>
+  <%= render partial: "shared/tools", locals: { document: document} %>
 
    <% if signed_in? && can?(:edit, document.id) %>
     <%= link_to my_collections_path(document.id), id: "open_workspace" do %>

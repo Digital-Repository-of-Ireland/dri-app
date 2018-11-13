@@ -85,18 +85,21 @@ class Timeline
   end
 
   def image(document)
-    files = SolrDocument.new(document).assets
-    file_types = document[file_type_key]
+    solr_doc = SolrDocument.new(document)
+    files = solr_doc.assets
 
-    return default_image(file_types) unless can?(:read, document[:id])
+    presenter = DRI::ImagePresenter.new(document, @view)
+    file_types = document[presenter.file_type_key]
+
+    return presenter.default_image(file_types) unless can?(:read, document[:id])
 
     image = nil
 
     files.each do |file|
-      image = search_image(document, file)
+      image = presenter.search_image(file)
       break if image
     end
 
-    image || cover_image(document) || default_image(file_doc)
+    image || presenter.cover_image || presenter.default_image(file_doc)
   end
 end

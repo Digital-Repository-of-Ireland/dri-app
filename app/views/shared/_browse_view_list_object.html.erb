@@ -31,7 +31,9 @@
     <%  %>
     <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
         <div class="dri_image">
-          <%= image_tag image_for_search(document), width: "200" %>
+          <% present(document, DRI::ImagePresenter) do |images| %>
+            <%= image_tag images.image_for_search, width: "200" %>
+          <% end %>
         </div><!-- close image -->
     <% end %>
 

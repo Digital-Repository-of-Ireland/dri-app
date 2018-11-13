@@ -9,7 +9,7 @@
     <!-- close image -->
 
     <div class="dri_content_list_collection_data">
-      <%= link_to(url_for_document(document), document_link_params(document, {counter: document_counter_with_offset(document_counter)} )) do %>
+      <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
           <h4><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h4>
       <% end %>
       <p>
@@ -39,13 +39,15 @@
       <% end %> <!-- close dri_num_objects -->
     </div>
   </div>
-  <%= link_to(url_for_document(document), document_link_params(document, {counter: document_counter_with_offset(document_counter)} )) do %>
+  <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
       <div class="dri_image">
-        <% image = cover_image(document) %>
-        <% unless image.nil? %>
+        <% present(document, DRI::ImagePresenter) do |images| %>
+          <% image = images.cover_image %>
+          <% if image %>
             <%= image_tag image, width: "200" %>
-        <% else %>
+          <% else %>
             <%= image_tag "no_image.png", width: "200" %>
+          <% end %>
         <% end %>
       </div>
   <% end %>
