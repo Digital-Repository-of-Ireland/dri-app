@@ -100,6 +100,6 @@ class Timeline
       break if image
     end
 
-    image || presenter.cover_image || presenter.default_image(file_doc)
+    image || presenter.cover_image || presenter.default_image(file_types)
   end
 end
