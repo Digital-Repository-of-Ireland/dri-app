@@ -30,11 +30,15 @@
           <%# If SUB-COLLECTION %>
           <% collection_objects_params = { f: {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}, mode: "objects", search_field: "all_fields", view: params[:view] } %>
       <% end %>
-      <%= link_to (catalog_index_path(collection_objects_params)) do %>
+      <% controller = (controller_name == 'bookmarks') ? 'catalog' : controller_name %>
+      <%= link_to collection_objects_params.merge({ controller: controller, action: :index, mode: "objects", search_field: "all_fields", view: params[:view]}) do %>
           <div class="dri_num_list_objects">
             <span class="dri_object_text_num">
-              <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + object_count.to_s + ")" %>
+              <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + object_count.to_s + ") " %>
             </span>
+            <% unless document.public_read? %>
+              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+            <% end %>
           </div>
       <% end %> <!-- close dri_num_objects -->
     </div>

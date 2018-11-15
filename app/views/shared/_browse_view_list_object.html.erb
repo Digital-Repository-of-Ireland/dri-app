@@ -1,7 +1,7 @@
 <article class="dri_result_object dri_clearfix" id="<%= document.id.to_s %>">
   <div class="dri_content_list_collection">
     <div class="dri_content_list_collection_data">
-      <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) } )) do %>
+      <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
           <h4><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h4>
       <% end %>
       <p class="dri_list_description">
@@ -10,26 +10,18 @@
       <p class="dri_list_subject">
         <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
             <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
-                <%= subject %> <% if !document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last %> , <% end %>
+                <%= subject %> <% if !document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last %>, <% end %>
             <% end %>
         <% else %>
             n/a
         <% end %>
       </p>
-      <div class="dri_list_icon">
-        <% if document.file_type_label != t("dri.data.types.Unknown") %>
-            <span class="dri_icon_image">
-              <% document.icon_path.each do |i| %>
-                <%= image_tag(i) %>
-              <% end %> &nbsp; <%= document.file_type_label %></span>
-        <% else %>
-            <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
-        <% end %>
-      </div>
+
+      <%= render partial: 'shared/object_icons', locals: { document: document } %>
       <!-- close dri_icon -->
     </div>
     <%  %>
-    <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
+    <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
         <div class="dri_image">
           <% present(document, DRI::ImagePresenter) do |images| %>
             <%= image_tag images.image_for_search, width: "200" %>
