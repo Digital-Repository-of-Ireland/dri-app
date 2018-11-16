@@ -7,7 +7,7 @@ module DRI::Formatters
      'title' => 'Title',
      'subject' => 'Subjects',
      'creation_date' => 'Creation Date',
-     'published_date' => 'Issued Date',
+     'published_date' => 'Published Date',
      'type' => 'Type',
      'rights' => 'Rights',
      'language' => 'Language',
@@ -18,12 +18,13 @@ module DRI::Formatters
      'date' => 'Date',
      'format' => 'Format',
      'source' => 'Source',
+     'status' => 'Status',
      'isGovernedBy' => 'Collection',
      'role_dnr' => 'Donor',
      'geographical_coverage' => 'Subjects (Places)',
      'temporal_coverage' => 'Subjects (Temporal)',
      'institute' => 'Organisation',
-     'identifier' => 'Identifier'
+     'identifiers' => 'Identifiers'
     }
 
     def initialize(object_doc, options = {})
@@ -39,19 +40,19 @@ module DRI::Formatters
       titles << 'Licence'
       titles << 'Assets' if @with_assets.present?
       titles << 'Url'
-      
+
       csv_string = CSV.generate do |csv|
         csv << titles
 
         row = []
         row << @object_doc['id']
         @request_fields.each do |key|
-          field = if key == 'identifier'
+          field = if key == 'identifiers'
                     @object_doc.identifier
                   else
                     @object_doc[ActiveFedora.index_field_mapper.solr_name(key, :stored_searchable, type: :string)]
                   end
-          value = field.kind_of?(Array) ? field.join('|') : field 
+          value = field.kind_of?(Array) ? field.join('|') : field
           row << value || ''
         end
         row << licence
