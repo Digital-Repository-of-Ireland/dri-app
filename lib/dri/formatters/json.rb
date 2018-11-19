@@ -69,12 +69,7 @@ module DRI::Formatters
     end
 
     def licence
-      licence = @object_doc.licence
-      if licence
-        value = (licence.name == 'All Rights Reserved') ? licence.name : licence.url
-      end
-
-      value
+      @object_doc.licence.as_json(only: [:name, :description, :url])
     end
 
   end
