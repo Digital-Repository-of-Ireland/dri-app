@@ -1,4 +1,18 @@
 # rswag / api shared examples
+
+## 
+# handle case where add_param is first param, use ? instead of &
+#
+# @param  [String] url
+# @param  [array] params
+# @return [String] uri
+def add_param(url, param)
+  uri = URI.parse(url)
+  query_arr = URI.decode_www_form(uri.query || '') << param
+  uri.query = URI.encode_www_form(query_arr)
+  uri.to_s
+end
+
 shared_examples 'it has json licence information' do
   run_test! do
     licence_info = JSON.parse(response.body)['Licence']
@@ -32,11 +46,11 @@ shared_examples 'a json api 404 error' do |message: nil|
   end
 end
 
-shared_examples 'a pretty json response' do
+shared_examples 'a pretty json response', shared_context: :metadata do
   before do |example|
     submit_request(example.metadata)
     @normal_response = response.body.clone
-    pretty_path = "#{request.original_fullpath}&pretty=true"
+    pretty_path = add_param(request.original_fullpath, ['pretty', 'true'])
     req_format = 'application/json'
     get pretty_path, {}, CONTENT_TYPE: req_format, ACCEPT: req_format
     @pretty_response = response.body.clone

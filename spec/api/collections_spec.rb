@@ -66,24 +66,29 @@ describe "Collections API" do
       end
 
       response "404", "Object not found" do
-        include_context 'rswag_include_json_spec_output'
         # doesn't matter whether you're signed in
         # 404 takes precendence over 401
         let(:user_token) { nil }
         let(:user_email) { nil }
         let(:id) { "collection_that_does_not_exist" }
         
-        it_behaves_like 'a json api error'
-        it_behaves_like 'a json api 404 error'
-        it_behaves_like 'a pretty json response'
+        include_context 'rswag_include_json_spec_output' do
+          it_behaves_like 'a json api error'
+          it_behaves_like 'a json api 404 error'
+          it_behaves_like 'a pretty json response'
+        end
       end
 
       response "200", "Object found" do
-        include_context 'rswag_include_json_spec_output'
         let(:user_token) { @example_user.authentication_token }
         let(:user_email) { CGI.escape(@example_user.to_s) }
         let(:id) { @collections.first.id }
-        it_behaves_like 'a pretty json response'
+
+        it_behaves_like 'it has json licence information'
+
+        include_context 'rswag_include_json_spec_output' do
+          it_behaves_like 'a pretty json response'
+        end
       end
     end
   end

@@ -3,8 +3,7 @@ require 'swagger_helper'
 describe "Catalog API" do
   path "/catalog" do
     get "retrieves objects from the catalog" do
-      # tags 'catalog'
-      produces "application/json"
+      produces 'application/json', 'application/xml', 'application/ttl'
       include_context 'rswag_user_with_collections', status: 'published'
 
       parameter name: :per_page, description: 'Number of results per page', 
@@ -19,9 +18,33 @@ describe "Catalog API" do
       let(:mode)     { 'objects' }
 
       response '200', 'catalog found' do
-        include_context 'sign_out_before_request'
-        include_context 'rswag_include_json_spec_output'
-        it_behaves_like 'a pretty json response'
+        include_context 'sign_out_before_request' do
+          include_context 'rswag_include_json_spec_output' do
+            it_behaves_like 'a pretty json response'
+          end
+        end
+      end
+    end
+  end
+
+  path "/catalog/{id}" do
+    get "retrieves a specific object from the catalog" do
+      produces 'application/json', 'application/xml', 'application/ttl'
+      parameter name: :pretty, description: 'indent json so it is human readable', 
+        in: :query, type: :boolean, default: false, required: false
+      parameter name: :id, description: 'Object ID',
+        in: :path, :type => :string
+      include_context 'rswag_user_with_collections', status: 'published'
+
+      response '200', 'catalog found' do
+        let(:id) { @collections.first.id }
+        
+        include_context 'sign_out_before_request' 
+
+        it_behaves_like 'it has json licence information'
+        include_context 'rswag_include_json_spec_output' do
+          it_behaves_like 'a pretty json response'
+        end
       end
     end
   end
