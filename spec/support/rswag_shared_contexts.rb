@@ -20,6 +20,9 @@ end
 
 shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true|
   before(:each) do
+    @licence = Licence.create(
+      name: 'test', description: 'this is a test', url: 'http://example.com'
+    )
     @example_user = create_user
     @collections = []
     if status == 'published'
@@ -30,6 +33,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     end
     num_collections.times do |i|
       collection = create_collection_for(@example_user, status: status)
+      collection.licence = @licence.name
       num_objects.times do |j|
         object = create_object_for(
           @example_user, 
@@ -50,6 +54,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     sign_out_all # just to make sure requests aren't using session 
   end
   after(:each) do
+    @licence.destroy
     @institute.delete if @institute
     @example_user.delete
     # issue with nested examples e.g iiif_spec

@@ -124,17 +124,23 @@ namespace :fakes3 do
   end
 end
 
-desc 'similar to rswag:spec:swaggerize except it excludes --dry-run so output is included in swagger docs where applicable'
+desc 'similar to rswag:spec:swaggerize except it does not use --dry-run so output is included in swagger docs where applicable'
 namespace :api do
   namespace :docs do
     desc 'Generate Swagger JSON files from integration specs'
-    RSpec::Core::RakeTask.new('generate') do |t|
+    RSpec::Core::RakeTask.new('generate', :pattern) do |t|
+      # allow call to update specific doc spec
+      # e.g rake api:docs:generate spec/api/my_collections
+      # this will remove output from tests that were not run 
+      # leave for now until merge strategy is improved
+      # t.pattern = ARGV[1].start_with?('spec/api/') ? ARGV[1] : 'spec/api/**/*_spec.rb'
       t.pattern = 'spec/api/**/*_spec.rb'
 
       t.rspec_opts = [ 
         '--format progress',
         '--format Rswag::Specs::SwaggerFormatter',
-        '--order defined'
+        '--order defined',
+        "--exclude-pattern=''"
       ]
     end
   end

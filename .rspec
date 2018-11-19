@@ -1,4 +1,7 @@
 --color
 --format progress
 --profile 20
---exclude-pattern "spec/api/**"
+--exclude-pattern="spec/api/**"
+
+# api specs are quite slow and are run by rake api:docs:generate anyway
+# so exclude them from regular spec call

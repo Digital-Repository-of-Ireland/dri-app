@@ -71,7 +71,7 @@ To run api specs:
 
 To generate the api docs:
 
-  $ bundle exec rake apidoc:generate
+  $ bundle exec rake api:docs:generate
 
 To run tests in parallel:
 
