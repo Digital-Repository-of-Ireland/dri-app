@@ -129,7 +129,7 @@ namespace :api do
   namespace :docs do
     desc 'Generate Swagger JSON files from integration specs'
     RSpec::Core::RakeTask.new('generate', :pattern) do |t|
-      if ARGV[1].start_with?('spec/api/')
+      if ARGV[1] and ARGV[1].start_with?('spec/api/')
         puts '[WARNING] running a subset of the test suite will remove output for tests that do not run. Continue? y/n'
         input = STDIN.gets.chomp
         abort unless input.downcase == 'y'

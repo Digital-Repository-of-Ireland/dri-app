@@ -274,7 +274,7 @@ class ObjectsController < BaseObjectsController
     id = doc['root_collection_id_tesim']
     query = ActiveFedora::SolrService.construct_query_for_ids(id)
     results = Solr::Query.new(query)
-    licences = results.map {|o| o['licence_ssm']}.flatten.compact
+    licences = results.map {|result| result['licence_ssm']}.flatten.compact
     logger.error("multiple licences found for #{id}") if licences.length > 1
     # licences have unique names so find_by will always be length 1 or nil
     licence = Licence.find_by(name: licences.first)

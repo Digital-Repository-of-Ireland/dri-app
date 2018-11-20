@@ -52,7 +52,8 @@ shared_examples 'a pretty json response', shared_context: :metadata do
     @normal_response = response.body.clone
     pretty_path = add_param(request.original_fullpath, ['pretty', 'true'])
     req_format = 'application/json'
-    get pretty_path, {}, CONTENT_TYPE: req_format, ACCEPT: req_format
+    verb_func = method(example.metadata[:operation][:verb])
+    verb_func.call(pretty_path, {}, CONTENT_TYPE: req_format, ACCEPT: req_format)
     @pretty_response = response.body.clone
   end
   # run_test! is a rswag specific function that 
