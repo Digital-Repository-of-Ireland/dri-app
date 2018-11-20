@@ -4,7 +4,7 @@
 # handle case where add_param is first param, use ? instead of &
 #
 # @param  [String] url
-# @param  [array] params
+# @param  [Array]  param
 # @return [String] uri
 def add_param(url, param)
   uri = URI.parse(url)
@@ -21,7 +21,7 @@ shared_examples 'it has json licence information' do
 end
 
 shared_examples 'a json api error' do
-  run_test! do 
+  run_test! do
     json_response = JSON.parse(response.body)
     expect(json_response.keys).to include('errors')
   end
@@ -56,7 +56,7 @@ shared_examples 'a pretty json response', shared_context: :metadata do
     @pretty_response = response.body.clone
   end
   # run_test! is a rswag specific function that 
-  # submits the request and checks the response code matches the test 
+  # submits the request and checks the response code matches the test definition
   run_test! do
     # same json but different formatting with ?pretty=true
     normal_json = JSON.parse(@normal_response)

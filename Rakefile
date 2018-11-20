@@ -129,12 +129,14 @@ namespace :api do
   namespace :docs do
     desc 'Generate Swagger JSON files from integration specs'
     RSpec::Core::RakeTask.new('generate', :pattern) do |t|
-      # allow call to update specific doc spec
-      # e.g rake api:docs:generate spec/api/my_collections
-      # this will remove output from tests that were not run 
-      # leave for now until merge strategy is improved
-      # t.pattern = ARGV[1].start_with?('spec/api/') ? ARGV[1] : 'spec/api/**/*_spec.rb'
-      t.pattern = 'spec/api/**/*_spec.rb'
+      if ARGV[1].start_with?('spec/api/')
+        puts '[WARNING] running a subset of the test suite will remove output for tests that do not run. Continue? y/n'
+        input = STDIN.gets.chomp
+        abort unless input.downcase == 'y'
+        t.pattern = ARGV[1] 
+      else
+        t.pattern = 'spec/api/**/*_spec.rb'
+      end
 
       t.rspec_opts = [ 
         '--format progress',

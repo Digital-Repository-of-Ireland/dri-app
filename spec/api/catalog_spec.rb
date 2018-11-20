@@ -12,7 +12,6 @@ describe "Catalog API" do
         in: :query, type: :string, default: 'objects'
       parameter name: :pretty, description: 'indent json so it is human readable', 
         in: :query, type: :boolean, default: false, required: false
-        
 
       let(:per_page) { 9 }
       let(:mode)     { 'objects' }

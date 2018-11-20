@@ -60,4 +60,11 @@ class BaseObjectsController < CatalogController
         format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
       end
     end
+
+    # Gets the licence by name (since object.licence field store licence name, not object)
+    #
+    def get_licence
+      @object = retrieve_object!(params[:id])
+      Licence.where(name: @object.licence)
+    end
 end

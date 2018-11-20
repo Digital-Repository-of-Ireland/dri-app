@@ -216,37 +216,44 @@ class ObjectsController < BaseObjectsController
   def index
     @list = []
 
-    if params[:objects].present?
-      solr_query = ActiveFedora::SolrService.construct_query_for_ids(
-        params[:objects].map { |o| o.values.first }
-      )
-      results = Solr::Query.new(solr_query)
+    # array parameters can be in multiple forms e.g
+    # objects=a,b,c
+    # objects[]=a&objects[]=b&objects[]=c
+    if params[:objects].kind_of? String
+      object_ids = params[:objects].split(',')
+    elsif params[:objects].kind_of? Array
+      object_ids = params[:objects]
+    elsif params[:objects].kind_of? Hash
+      object_ids = params[:objects].map { |o| o.values.first }
+    else
+      err_msg = 'No objects in params'
+      logger.error "#{err_msg} #{params.inspect}"
+      raise DRI::Exceptions::BadRequest
+    end
+      
+    solr_query = ActiveFedora::SolrService.construct_query_for_ids(object_ids)
+    results = Solr::Query.new(solr_query)
 
-      while results.has_more?
-        docs = results.pop
-        docs.each do |doc|
-          solr_doc = SolrDocument.new(doc)
+    while results.has_more?
+      docs = results.pop
+      docs.each do |doc|
+        solr_doc = SolrDocument.new(doc)
 
-          next unless solr_doc.published?
+        next unless solr_doc.published?
 
-          item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
-            solr_doc.extract_metadata(params[:metadata])
-          end
-
-          item.merge!(find_assets_and_surrogates(solr_doc))
-          @list << item
+        item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
+          solr_doc.extract_metadata(params[:metadata])
         end
 
-        raise DRI::Exceptions::NotFound if @list.empty?
+        item.merge!(find_assets_and_surrogates(solr_doc))
+        @list << item
       end
 
-    else
-      logger.error "No objects in params #{params.inspect}"
-      raise DRI::Exceptions::BadRequest
+      raise DRI::Exceptions::NotFound if @list.empty?
     end
 
     respond_to do |format|
-      format.json {}
+      format.json { render(json: @list) }
     end
   end
 
