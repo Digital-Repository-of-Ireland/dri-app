@@ -245,6 +245,18 @@ class ObjectsController < BaseObjectsController
           solr_doc.extract_metadata(params[:metadata])
         end
 
+        # licence is stored at collection level in solr
+        # but don't show licence for collections since all collection metadata is cc-by
+        # find parent licence for objects and display that
+        if item['metadata']['type'] == ["Collection"]
+          item['metadata']['licence'] = nil
+        else
+          # licence = get_all_licences_dfs(doc).first
+          # licence = get_closest_parent_licence(doc)
+          licence = get_root_licence(doc)
+          item['metadata']['licence'] = licence.show
+        end
+
         item.merge!(find_assets_and_surrogates(solr_doc))
         @list << item
       end
@@ -255,6 +267,54 @@ class ObjectsController < BaseObjectsController
     respond_to do |format|
       format.json { render(json: @list) }
     end
+  end
+
+  # fast but skips over closer parent licences
+  def get_root_licence(doc)
+    id = doc['root_collection_id_tesim']
+    query = ActiveFedora::SolrService.construct_query_for_ids(id)
+    results = Solr::Query.new(query)
+    licences = results.map {|o| o['licence_ssm']}.flatten.compact
+    logger.error("multiple licences found for #{id}") if licences.length > 1
+    # licences have unique names so find_by will always be length 1 or nil
+    licence = Licence.find_by(name: licences.first)
+  end
+
+  def get_closest_parent_licence(doc)
+    parent = doc
+    while !parent.nil?
+      if !parent['licence_ssm'].nil?
+        licence = Licence.find_by(name: parent['licence_ssm'])
+        return licence if licence
+      # if ancestor doesn't exist, break
+      elsif parent['ancestor_id_tesim'].nil?
+        break
+      end
+      # can objects ever have multiple parents?
+      query = ActiveFedora::SolrService.construct_query_for_ids(doc['ancestor_id_tesim'])
+      results = Solr::Query.new(query)
+      parent = results.first
+    end
+  end
+
+  # refactor: nested method bad practice
+  def get_all_licences_dfs(doc)
+    @licences = []
+    def get_licences(doc)
+      unless doc.nil?
+        if doc['licence_ssm'].nil?
+          query = ActiveFedora::SolrService.construct_query_for_ids(doc['ancestor_id_tesim'])
+          results = Solr::Query.new(query)
+          results.each do |parent|
+            get_licences(parent)
+          end
+        else
+          @licences << Licence.find_by(name: doc['licence_ssm'])
+        end
+      end
+    end
+    get_licences(doc)
+    @licences
   end
 
   def related

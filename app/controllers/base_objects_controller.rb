@@ -61,10 +61,11 @@ class BaseObjectsController < CatalogController
       end
     end
 
-    # Gets the licence by name (since object.licence field store licence name, not object)
-    #
-    def get_licence
-      @object = retrieve_object!(params[:id])
-      Licence.where(name: @object.licence)
-    end
+    # # Gets the licence by name (since object.licence field store licence name, not object)
+    # # Not strictly a getter, so not named as such
+    # #
+    # def find_licence(id: params[:id])
+    #   @object = retrieve_object!(id)
+    #   Licence.find_by(name: @object.licence)
+    # end
 end

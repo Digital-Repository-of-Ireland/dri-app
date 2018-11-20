@@ -50,7 +50,7 @@ module DRI::Formatters
 
       identifier = @object_doc.identifier
       @formatted_hash['Identifier'] = identifier if identifier
-      @formatted_hash['Licence'] = licence
+      @formatted_hash['Licence'] = @object_doc.licence.show
       @formatted_hash['Assets'] = assets if @with_assets
       @formatted_hash.send(func)
     end
@@ -67,10 +67,5 @@ module DRI::Formatters
     def file_path(file_id)
       Rails.application.routes.url_helpers.file_download_path(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
     end
-
-    def licence
-      @object_doc.licence.as_json(only: [:name, :description, :url])
-    end
-
   end
 end
