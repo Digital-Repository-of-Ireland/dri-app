@@ -5,6 +5,7 @@ describe "Get Objects API" do
     # use post since list of objects could be very large and get request has smaller size limit
     # however, must use named value pairs to exceed url length limit, which this example does not
     post "retrieves objects by id" do
+      tags 'objects'
       security [ apiKey: [], appId: [] ]
       produces 'application/json'
       consumes 'application/json'
@@ -12,12 +13,13 @@ describe "Get Objects API" do
       # Could not render JsonSchema_array, see the console
       # because query param of type array has no standard
       # update to use post body param 
-      parameter name: :objects, description: 'array of hashes with object ids as values. e.g. {"objects": [{"v": "zp38wc65b"}]}',
+      parameter name: :objects, description: 'array of hashes with object ids as values. e.g. {"objects": [{"v": "zp38wc65b"}]}. Only the first value of each hash is read.',
         in: :body, schema: {
           type: :array,
           items: {
             type: :object
-          }
+          },
+          example: {"objects": [{"v": "zp38wc65b"}]}
         }
       parameter name: :pretty, description: 'indent json so it is human readable', 
         in: :query, type: :boolean, default: false, required: false
@@ -53,7 +55,7 @@ describe "Get Objects API" do
             end.flatten
           }
           let(:objects) { {objects: object_ids} }
-          exn = "/get_objects?objects=(object ids)"
+          exn = "/get_objects?(object ids)"
           include_context 'rswag_include_json_spec_output', example_name=exn do
             it_behaves_like 'a pretty json response'
             run_test! do
@@ -79,8 +81,7 @@ describe "Get Objects API" do
           # let(:objects) { {objects: [{k: @collections.first.id}]} }
           let(:collection_ids) { @collections.map {|c| [[c.id, c.id]].to_h} }
           let(:objects) { {objects: collection_ids} }
-          exn = "/get_objects?objects=(collection ids, \
-                  no licence info because metadata is cc-by)"
+          exn = "/get_objects?(collection ids)"
           include_context 'rswag_include_json_spec_output', example_name=exn do
             it_behaves_like 'a pretty json response'
           end

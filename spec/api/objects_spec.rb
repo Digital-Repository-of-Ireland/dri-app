@@ -17,6 +17,7 @@ require 'swagger_helper'
 describe 'Objects API' do
   path "/objects/{id}/" do
     get 'retrieves a specific object' do
+      tags 'objects'
       include_context 'rswag_user_with_collections', status: 'published'
 
       parameter name: :id, description: 'Object ID',

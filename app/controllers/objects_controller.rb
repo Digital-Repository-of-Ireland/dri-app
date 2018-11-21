@@ -60,7 +60,6 @@ class ObjectsController < BaseObjectsController
       format.endnote { render text: @object.export_as_endnote, layout: false }
       format.json do
         # refactor: currently traverse parents of id in solr and find licence
-        # solr_query = ActiveFedora::SolrService.get("id:#{@object.id}")
         json = @object.as_json
         json['licence'] = if @object.type == ['Collection']
                             nil
