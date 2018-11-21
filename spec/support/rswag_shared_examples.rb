@@ -20,6 +20,13 @@ shared_examples 'it has json licence information' do
   end
 end
 
+shared_examples 'it has no json licence information' do
+  run_test! do
+    licence_info = JSON.parse(response.body)['Licence']
+    expect(licence_info).to be nil
+  end
+end
+
 shared_examples 'a json api error' do
   run_test! do
     json_response = JSON.parse(response.body)

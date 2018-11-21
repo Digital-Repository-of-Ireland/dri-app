@@ -127,7 +127,8 @@ DriApp::Application.routes.draw do
     get 'tasks' => 'user_background_tasks#index', as: :user_tasks
     delete 'tasks' => 'user_background_tasks#destroy', as: :destroy_user_tasks  
 
-    match 'collections/:id' => 'catalog#show', :via => :get
+    match 'collections/:id' => 'catalog#show', via: :get
+    match 'objects/:id' => 'objects#show', via: :get
 
     #API paths
     match 'get_objects' => 'objects#index', via: :post
