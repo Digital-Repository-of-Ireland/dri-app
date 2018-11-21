@@ -35,14 +35,19 @@ describe "Catalog API" do
         in: :path, :type => :string
       include_context 'rswag_user_with_collections', status: 'published'
 
-      response '200', 'catalog found' do
-        let(:id) { @collections.first.id }
-        
-        include_context 'sign_out_before_request' 
-
-        it_behaves_like 'it has json licence information'
-        include_context 'rswag_include_json_spec_output' do
-          it_behaves_like 'a pretty json response'
+      response "200", "Found" do
+        context 'Collection' do
+          let(:id) { @collections.first.id }
+          it_behaves_like 'it has no json licence information'
+          include_context 'rswag_include_json_spec_output', example_name='Found Collection' do
+            it_behaves_like 'a pretty json response'
+          end
+        end
+        context 'Object' do
+          let(:id) { @collections.first.governed_items.first.id }
+          include_context 'rswag_include_json_spec_output', example_name='Found Object' do
+            it_behaves_like 'it has json licence information'
+          end
         end
       end
     end

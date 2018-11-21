@@ -131,15 +131,22 @@ describe "My Collections API" do
         end
       end
 
-      response "200", "Object found" do
+      response "200", "Found" do
         let(:user_token) { @example_user.authentication_token }
         let(:user_email) { CGI.escape(@example_user.to_s) }
-        let(:id) { @collections.first.id }
 
-        it_behaves_like 'it has json licence information'
-
-        include_context 'rswag_include_json_spec_output' do
-          it_behaves_like 'a pretty json response'
+        context 'Collection' do
+          let(:id) { @collections.first.id }
+          it_behaves_like 'it has no json licence information'
+          include_context 'rswag_include_json_spec_output', example_name='Found Collection' do
+            it_behaves_like 'a pretty json response'
+          end
+        end
+        context 'Object' do
+          let(:id) { @collections.first.governed_items.first.id }
+          include_context 'rswag_include_json_spec_output', example_name='Found Object' do
+            it_behaves_like 'it has json licence information'
+          end
         end
       end
     end
