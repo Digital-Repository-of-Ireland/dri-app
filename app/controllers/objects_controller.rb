@@ -228,14 +228,7 @@ class ObjectsController < BaseObjectsController
 
   def index
     @list = []
-    # array parameters can be in multiple forms e.g
-    # objects=a,b,c
-    # objects[]=a&objects[]=b&objects[]=c
-    if params[:objects].kind_of? String
-      object_ids = params[:objects].split(',')
-    elsif params[:objects].kind_of? Array
-      object_ids = params[:objects]
-    elsif params[:objects].kind_of? Hash
+    if params[:objects].present?
       object_ids = params[:objects].map { |o| o.values.first }
     else
       err_msg = 'No objects in params'
