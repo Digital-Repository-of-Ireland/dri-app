@@ -59,9 +59,16 @@ class ObjectsController < BaseObjectsController
       format.html { redirect_to(catalog_url(@object.id)) }
       format.endnote { render text: @object.export_as_endnote, layout: false }
       format.json do
+        # refactor: currently traverse parents of id in solr and find licence
+        # solr_query = ActiveFedora::SolrService.get("id:#{@object.id}")
         json = @object.as_json
-        licence = Licence.find_by(name: @object.licence)
-        json['licence'] = licence.show if licence and @object.type != ['Collection']
+        json['licence'] = if @object.type == ['Collection']
+                            nil
+                          else
+                            solr_query = ActiveFedora::SolrService.construct_query_for_ids([@object.id])
+                            licence = Solr::Query.new(solr_query).first.licence
+                            licence.show if licence
+                          end
         render json: json
       end
       format.zip do

@@ -13,16 +13,16 @@ def add_param(url, param)
   uri.to_s
 end
 
-shared_examples 'it has json licence information' do
+shared_examples 'it has json licence information' do |licence_key='Licence'|
   run_test! do
-    licence_info = JSON.parse(response.body)['Licence']
+    licence_info = JSON.parse(response.body)[licence_key]
     expect(licence_info.keys).to eq(%w[name url description])
   end
 end
 
-shared_examples 'it has no json licence information' do
+shared_examples 'it has no json licence information' do |licence_key='Licence'|
   run_test! do
-    licence_info = JSON.parse(response.body)['Licence']
+    licence_info = JSON.parse(response.body)[licence_key]
     expect(licence_info).to be nil
   end
 end
