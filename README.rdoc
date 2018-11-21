@@ -67,13 +67,15 @@ There is an exclude filter for api specs in .rspec
 since api:docs:generate runs those specs anyway.
 To run api specs:
 
-  $ bundle exec rspec spec/api --exclude-pattern=''
+  $ bundle exec rspec spec/api --exclude-pattern ''
 
 To generate the api docs:
 
   $ bundle exec rake api:docs:generate
 
 To run tests in parallel:
+
+Ensure config/database.yml uses database: db/test<%= ENV['TEST_ENV_NUMBER'] %>.sqlite3
 
   $ bundle exec rake parallel:create
   $ bundle exec rake parallel:prepare

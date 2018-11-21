@@ -67,7 +67,7 @@ task :ci => ['ci_clean'] do
   end
 
   Rake::Task["rdoc"].invoke
-  Rake::Task["api:docs:generate"].invoke
+  # Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Run Continuous Integration-spec"
@@ -80,7 +80,7 @@ task :ci_spec => ['ci_clean'] do
   end
 
   Rake::Task["rdoc"].invoke
-  Rake::Task["api:docs:generate"].invoke
+  # Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Clean CI environment"
@@ -142,7 +142,7 @@ namespace :api do
         '--format progress',
         '--format Rswag::Specs::SwaggerFormatter',
         '--order defined',
-        "--exclude-pattern=''"
+        '--exclude-pattern ""'
       ]
     end
   end
