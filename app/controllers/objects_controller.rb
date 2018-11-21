@@ -255,7 +255,8 @@ class ObjectsController < BaseObjectsController
         if item['metadata']['type'] == ["Collection"]
           item['metadata']['licence'] = nil
         else
-          item['metadata']['licence'] = solr_doc.licence.show
+          licence = solr_doc.licence
+          item['metadata']['licence'] = licence.show if licence
         end
 
         item.merge!(find_assets_and_surrogates(solr_doc))

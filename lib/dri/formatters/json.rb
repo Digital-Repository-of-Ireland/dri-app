@@ -50,7 +50,9 @@ module DRI::Formatters
 
       identifier = @object_doc.identifier
       @formatted_hash['Identifier'] = identifier if identifier
-      @formatted_hash['Licence'] = @object_doc.licence.show unless @formatted_hash['Type'] == ['Collection']
+      if @formatted_hash['Type'] != ['Collection'] and @object_doc.licence
+        @formatted_hash['Licence'] = @object_doc.licence.show
+      end 
       @formatted_hash['Assets'] = assets if @with_assets
       @formatted_hash.send(func)
     end
