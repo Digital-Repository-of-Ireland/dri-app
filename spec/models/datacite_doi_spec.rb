@@ -110,4 +110,18 @@ describe "DataciteDoi" do
     datacite3.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-2"))
   end
 
+  describe 'show' do
+    before(:each) { @doi = DataciteDoi.create(object_id: @object.id) }
+    after(:each) { @doi.delete }
+    it 'should include a doi link' do
+      expect(@doi.show['url']).to match(/https\:\/\/doi\.org\/10\.5072\/DRI\.(.+)/)
+    end
+    it 'should include a version number' do
+      expect(@doi.show['version']).to be_a_kind_of(Numeric)
+    end
+    it 'should include the date it was created' do
+      expect(@doi.show.keys.include?('created_at')).to be true 
+    end
+  end
+
 end
