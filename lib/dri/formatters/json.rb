@@ -54,13 +54,18 @@ module DRI::Formatters
         @formatted_hash['Licence'] = @object_doc.licence.show
       end 
       @formatted_hash['Assets'] = assets if @with_assets
+      @formatted_hash['Doi'] = doi
       @formatted_hash.send(func)
+    end
+
+    def doi
+      DataciteDoi.where(object_id: @object_doc.id).map(&:show)
     end
 
     def assets
       assets = @object_doc.assets
       assets_json = []
-      assets.each do |a| 
+      assets.each do |a|
         assets_json << { 'id' => a['id'], 'title' => a['label_tesim'], 'path' => file_path(a['id']) }
       end
       assets_json
