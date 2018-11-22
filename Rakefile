@@ -65,9 +65,6 @@ task :ci => ['ci_clean'] do
 
     Rake::Task['second_try'].invoke
   end
-
-  Rake::Task["rdoc"].invoke
-  # Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Run Continuous Integration-spec"
@@ -77,10 +74,8 @@ task :ci_spec => ['ci_clean'] do
 
   with_test_server do 
     Rake::Task['spec'].invoke
+    Rake::Task["api:docs:generate"].invoke
   end
-
-  Rake::Task["rdoc"].invoke
-  # Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Clean CI environment"

@@ -62,7 +62,6 @@ check)
     bundle exec rake db:seed
     bundle exec rake db:test:prepare
     bundle exec rake ci || exit 100
-    bundle exec rake rdoc
     bundle exec rake assets:precompile
     ;;
 package)
@@ -71,10 +70,6 @@ upload)
 
     cd ~/dri-app.git
     git fetch -p origin
-    # # update api docs
-    # git add swagger/
-    # git add rdoc/
-    # git commit --amend --no-edit
     git push --mirror
     cd -
 
