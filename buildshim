@@ -71,6 +71,10 @@ upload)
 
     cd ~/dri-app.git
     git fetch -p origin
+    # # update api docs
+    # git add swagger/
+    # git add rdoc/
+    # git commit --amend --no-edit
     git push --mirror
     cd -
 

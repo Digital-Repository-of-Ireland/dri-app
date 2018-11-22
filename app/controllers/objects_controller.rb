@@ -58,6 +58,18 @@ class ObjectsController < BaseObjectsController
     respond_to do |format|
       format.html { redirect_to(catalog_url(@object.id)) }
       format.endnote { render text: @object.export_as_endnote, layout: false }
+      format.json do
+        # refactor: currently traverse parents of id in solr and find licence
+        json = @object.as_json
+        json['licence'] = if @object.type == ['Collection']
+                            nil
+                          else
+                            solr_query = ActiveFedora::SolrService.construct_query_for_ids([@object.id])
+                            licence = Solr::Query.new(solr_query).first.licence
+                            licence.show if licence
+                          end
+        render json: json
+      end
       format.zip do
         if current_user
           Resque.enqueue(CreateArchiveJob, params[:id], current_user.email)
@@ -215,38 +227,47 @@ class ObjectsController < BaseObjectsController
 
   def index
     @list = []
-
     if params[:objects].present?
-      solr_query = ActiveFedora::SolrService.construct_query_for_ids(
-        params[:objects].map { |o| o.values.first }
-      )
-      results = Solr::Query.new(solr_query)
+      object_ids = params[:objects].map { |o| o.values.first }
+    else
+      err_msg = 'No objects in params'
+      logger.error "#{err_msg} #{params.inspect}"
+      raise DRI::Exceptions::BadRequest
+    end
+      
+    solr_query = ActiveFedora::SolrService.construct_query_for_ids(object_ids)
+    results = Solr::Query.new(solr_query)
 
-      while results.has_more?
-        docs = results.pop
-        docs.each do |doc|
-          solr_doc = SolrDocument.new(doc)
+    while results.has_more?
+      docs = results.pop
+      docs.each do |doc|
+        solr_doc = SolrDocument.new(doc)
 
-          next unless solr_doc.published?
+        next unless solr_doc.published?
 
-          item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
-            solr_doc.extract_metadata(params[:metadata])
-          end
-
-          item.merge!(find_assets_and_surrogates(solr_doc))
-          @list << item
+        item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
+          solr_doc.extract_metadata(params[:metadata])
         end
 
-        raise DRI::Exceptions::NotFound if @list.empty?
+        # licence is stored at collection level in solr
+        # but don't show licence for collections since all collection metadata is cc-by
+        # find parent licence for objects and display that
+        if item['metadata']['type'] == ["Collection"]
+          item['metadata']['licence'] = nil
+        else
+          licence = solr_doc.licence
+          item['metadata']['licence'] = licence.show if licence
+        end
+
+        item.merge!(find_assets_and_surrogates(solr_doc))
+        @list << item
       end
 
-    else
-      logger.error "No objects in params #{params.inspect}"
-      raise DRI::Exceptions::BadRequest
+      raise DRI::Exceptions::NotFound if @list.empty?
     end
 
     respond_to do |format|
-      format.json {}
+      format.json { render(json: @list) }
     end
   end
 

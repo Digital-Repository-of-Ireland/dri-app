@@ -16,7 +16,6 @@ shared_context 'collection_manager_user' do
 
   after(:all) do
     @login_user.destroy
-    @group.destroy
   end
 end
 
