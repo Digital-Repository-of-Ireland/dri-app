@@ -54,25 +54,24 @@ module DRI::Formatters
         @formatted_hash['Licence'] = @object_doc.licence.show
       end 
       @formatted_hash['Assets'] = assets if @with_assets
-      @formatted_hash['Doi'] = doi
       @formatted_hash.send(func)
-    end
-
-    def doi
-      DataciteDoi.where(object_id: @object_doc.id).map(&:show)
     end
 
     def assets
       assets = @object_doc.assets
       assets_json = []
-      assets.each do |a|
-        assets_json << { 'id' => a['id'], 'title' => a['label_tesim'], 'path' => file_path(a['id']) }
+      assets.each do |a| 
+        assets_json << { 'id' => a['id'], 'title' => a['label_tesim'], 'path' => file_url(a['id']) }
       end
       assets_json
     end
 
     def file_path(file_id)
       Rails.application.routes.url_helpers.file_download_path(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
+    end
+
+    def file_url(file_id)
+      Rails.application.routes.url_helpers.file_download_url(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
     end
   end
 end
