@@ -61,13 +61,17 @@ module DRI::Formatters
       assets = @object_doc.assets
       assets_json = []
       assets.each do |a| 
-        assets_json << { 'id' => a['id'], 'title' => a['label_tesim'], 'path' => file_path(a['id']) }
+        assets_json << { 'id' => a['id'], 'title' => a['label_tesim'], 'path' => file_url(a['id']) }
       end
       assets_json
     end
 
     def file_path(file_id)
       Rails.application.routes.url_helpers.file_download_path(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
+    end
+
+    def file_url(file_id)
+      Rails.application.routes.url_helpers.file_download_url(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
     end
   end
 end
