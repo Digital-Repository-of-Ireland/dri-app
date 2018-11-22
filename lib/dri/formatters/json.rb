@@ -50,9 +50,9 @@ module DRI::Formatters
 
       identifier = @object_doc.identifier
       @formatted_hash['Identifier'] = identifier if identifier
-      if @formatted_hash['Type'] != ['Collection'] and @object_doc.licence
+      if !@object_doc.collection? && @object_doc.licence
         @formatted_hash['Licence'] = @object_doc.licence.show
-      end 
+      end
       @formatted_hash['Assets'] = assets if @with_assets
       @formatted_hash.send(func)
     end
@@ -60,7 +60,7 @@ module DRI::Formatters
     def assets
       assets = @object_doc.assets
       assets_json = []
-      assets.each do |a| 
+      assets.each do |a|
         assets_json << { 'id' => a['id'], 'title' => a['label_tesim'], 'path' => file_url(a['id']) }
       end
       assets_json
