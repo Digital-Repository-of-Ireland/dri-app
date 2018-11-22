@@ -1,24 +1,25 @@
 # rswag / api shared contexts
 shared_context 'rswag_include_json_spec_output' do |example_name='application/json'|
   after do |example|
-    example.metadata[:response][:examples] = { 
+    example.metadata[:response][:examples] = {
       example_name => JSON.parse(
-        response.body, 
+        response.body,
         symbolize_names: true
-      ) 
+      )
     }
   end
 end
 
 shared_context 'rswag_include_xml_spec_output' do |example_name='application/xml'|
   after do |example|
-    example.metadata[:response][:examples] = { 
-      example_name => Nokogiri::XML(response.body) 
+    example.metadata[:response][:examples] = {
+      example_name => Nokogiri::XML(response.body)
     }
   end
 end
 
 shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true|
+  include_context 'tmp_assets'
   before(:each) do
     @licence = Licence.create(
       name: 'test', description: 'this is a test', url: 'http://example.com'
@@ -36,7 +37,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
       collection.licence = @licence.name
       num_objects.times do |j|
         object = create_object_for(
-          @example_user, 
+          @example_user,
           status: status,
           title: "not a duplicate #{i}#{j}",
         )
@@ -51,7 +52,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
       @collections << collection
     end
     @collections << create_subcollection_for(@example_user) if subcollection
-    sign_out_all # just to make sure requests aren't using session 
+    sign_out_all # just to make sure requests aren't using session
   end
   after(:each) do
     @licence.destroy
