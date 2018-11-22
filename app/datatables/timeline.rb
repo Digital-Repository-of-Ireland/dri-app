@@ -1,50 +1,57 @@
 class Timeline
   include ApplicationHelper
 
+  TITLE_KEY = ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym
+  DESCRIPTION_KEY = ActiveFedora.index_field_mapper.solr_name('description', :stored_searchable, type: :string).to_sym
+
+  TL_FIELDS = %w(sdate cdate pdate ddate).freeze
+
   delegate :can?, :asset_url, :asset_path, :link_to, :url_for_document, :cover_image_path, :object_file_path, to: :@view
 
   def initialize(view)
     @view = view
   end
 
-  def data(response, tl_field)
+  def data(response)
     timeline_data = {}
-    timeline_data[:events] = []
 
-    if response.blank?
-      timeline_data[:title] = {}
-      timeline_data[:title][:text] = {}
-      timeline_data[:title][:text][:headline] = I18n.t('dri.application.timeline.headline.no_results')
-      timeline_data[:title][:text][:text] = I18n.t('dri.application.timeline.description.no_results')
-    else
-      timeline_data[:events] = []
-      response.each_with_index do |document, index|
-        document = document.symbolize_keys
+    response.each_with_index do |document, index|
+      document = document.symbolize_keys
 
-        title_key = ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym
-        description_key = ActiveFedora.index_field_mapper.solr_name('description', :stored_searchable, type: :string).to_sym
-
+      TL_FIELDS.each do |tl_field|
         dates = document_date(document, tl_field)
-        if dates.present?
-          start = dates[0]
-          end_date = dates[1]
-          event = {}
-          event[:text] = {}
-          event[:start_date] = { year: start.year, month: start.month, day: start.day }
-          event[:end_date] = { year: end_date.year, month: end_date.month, day: end_date.day }
-          event[:text][:headline] = link_to(document[title_key].first, url_for_document(document[:id]))
-          event[:text][:text] = document[description_key].first.truncate(60, separator: ' ')
-          event[:media] = {}
-          event[:media][:url] = image(document)
-          event[:media][:thumbnail] = image(document)
+        next unless dates.present?
 
-          timeline_data[:events] << event
+        event = create_event(document, dates)
+
+        if timeline_data.key?(tl_field)
+          timeline_data[tl_field][:events] << event
+        else
+          timeline_data[tl_field] = { events: [event] }
         end
-      end # for-each
+      end
     end
 
-    timeline_data[:events].empty? ? nil : timeline_data.to_json
+    timeline_data.empty? ? nil : timeline_data
   end
+
+  def create_event(document, dates)
+    start = dates[0]
+    end_date = dates[1]
+
+    event = {}
+    event[:text] = {}
+    event[:start_date] = { year: start.year, month: start.month, day: start.day }
+    event[:end_date] = { year: end_date.year, month: end_date.month, day: end_date.day }
+    event[:text][:headline] = link_to(document[TITLE_KEY].first, url_for_document(document[:id]))
+    event[:text][:text] = document[DESCRIPTION_KEY].first.truncate(60, separator: ' ')
+    event[:media] = {}
+    event[:media][:url] = image(document)
+    event[:media][:thumbnail] = image(document)
+
+    event
+  end
+
 
   def document_date(document, tl_field)
     if document["#{tl_field}Range".to_sym].present?
