@@ -54,7 +54,14 @@ module DRI::Formatters
         @formatted_hash['Licence'] = @object_doc.licence.show
       end
       @formatted_hash['Assets'] = assets if @with_assets
+      @formatted_hash['Doi'] = dois
       @formatted_hash.send(func)
+    end
+
+    # @return [Array] array of hashes for each doi || nil
+    def dois
+      dois = DataciteDoi.where(object_id: @object_doc.id)
+      return dois.map(&:show) if dois.count > 0
     end
 
     def assets

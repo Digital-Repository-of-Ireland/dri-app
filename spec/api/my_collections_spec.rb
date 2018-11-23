@@ -60,31 +60,27 @@ describe "My Collections API" do
         let(:user_email) { CGI.escape(@example_user.to_s) }
         context 'All objects found' do
           # it_behaves_like 'a json api with licence information'
-          include_context 'rswag_include_json_spec_output', 
-            example_name='/my_collections.json' do
+          include_context 'rswag_include_json_spec_output', '/my_collections.json' do
             it_behaves_like 'a pretty json response'
           end
         end
         context 'All collections found' do
           let(:mode) { 'collections' }
-          include_context 'rswag_include_json_spec_output', 
-            example_name='/my_collections.json?mode=collections' do
+          include_context 'rswag_include_json_spec_output', '/my_collections.json?mode=collections' do
             it_behaves_like 'a pretty json response'
           end
         end 
         context 'Show subcollections' do
           let(:mode) { 'collections' }
           let(:show_subs) { true }
-          include_context 'rswag_include_json_spec_output', 
-            example_name='/my_collections.json?mode=collections&show_subs=true' do
+          include_context 'rswag_include_json_spec_output', '/my_collections.json?mode=collections&show_subs=true' do
             # include_context 'subcollection'
             it_behaves_like 'a pretty json response'
           end
         end
         context 'Limit results' do
           let(:per_page) { 1 }
-          include_context 'rswag_include_json_spec_output', 
-            example_name='/my_collections.json?per_page=1' do
+          include_context 'rswag_include_json_spec_output', '/my_collections.json?per_page=1' do
             it_behaves_like 'a pretty json response'
           end
         end
@@ -138,14 +134,15 @@ describe "My Collections API" do
         context 'Collection' do
           let(:id) { @collections.first.id }
           it_behaves_like 'it has no json licence information'
-          include_context 'rswag_include_json_spec_output', example_name='Found Collection' do
+          include_context 'rswag_include_json_spec_output', 'Found Collection' do
             it_behaves_like 'a pretty json response'
           end
         end
         context 'Object' do
           let(:id) { @collections.first.governed_items.first.id }
-          include_context 'rswag_include_json_spec_output', example_name='Found Object' do
+          include_context 'rswag_include_json_spec_output', 'Found Object' do
             it_behaves_like 'it has json licence information'
+            it_behaves_like 'it has json doi information'
           end
         end
       end

@@ -18,7 +18,7 @@ shared_context 'rswag_include_xml_spec_output' do |example_name='application/xml
   end
 end
 
-shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true|
+shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true, doi: true|
   include_context 'tmp_assets'
   before(:each) do
     @licence = Licence.create(
@@ -26,6 +26,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     )
     @example_user = create_user
     @collections = []
+    @dois = []
     if status == 'published'
       @institute = FactoryBot.create(:institute)
       @institute.save
@@ -43,6 +44,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
         )
         object.depositing_institute = @institute.name if @institute
         collection.governed_items << object
+        @dois << DataciteDoi.create(object_id: object.id) if doi
       end
       collection.depositing_institute = @institute.name if @institute
       collection.manager_users = [@example_user]
@@ -58,6 +60,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     @licence.destroy
     @institute.delete if @institute
     @example_user.delete
+    @dois.map(&:delete)
     # issue with nested examples e.g iiif_spec
     # possibly check for ldp gone before delete?
     # @collections.map(&:delete)
