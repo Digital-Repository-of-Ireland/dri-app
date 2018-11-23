@@ -50,18 +50,23 @@ module DRI::Formatters
 
       identifier = @object_doc.identifier
       @formatted_hash['Identifier'] = identifier if identifier
-      if !@object_doc.collection? && @object_doc.licence
-        @formatted_hash['Licence'] = @object_doc.licence.show
-      end
+      @formatted_hash['Licence'] = self.class::licence(@object_doc)
+      @formatted_hash['Doi'] = self.class::dois(@object_doc)
       @formatted_hash['RelatedObjects'] = @object_doc.object_relationships_as_json
       @formatted_hash['Assets'] = assets if @with_assets
-      @formatted_hash['Doi'] = dois
       @formatted_hash.send(func)
     end
 
+    # @param [SolrDocument]
+    # @return [Hash] licence || nil if licence is not found
+    def self.licence(solr_doc)
+      solr_doc.licence.show if !solr_doc.collection? && solr_doc.licence
+    end
+
+    # @param [SolrDocument]
     # @return [Array] array of hashes for each doi || nil
-    def dois
-      dois = DataciteDoi.where(object_id: @object_doc.id)
+    def self.dois(solr_doc)
+      dois = DataciteDoi.where(object_id: solr_doc.id)
       return dois.map(&:show) if dois.count > 0
     end
 
