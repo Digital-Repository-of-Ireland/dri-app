@@ -68,6 +68,8 @@ class ObjectsController < BaseObjectsController
                             licence = Solr::Query.new(solr_query).first.licence
                             licence.show if licence
                           end
+        dois = DataciteDoi.where(object_id: @object.id)
+        json['doi'] = dois.map(&:show) if dois.count > 0
         render json: json
       end
       format.zip do
@@ -258,6 +260,9 @@ class ObjectsController < BaseObjectsController
           licence = solr_doc.licence
           item['metadata']['licence'] = licence.show if licence
         end
+
+        dois = DataciteDoi.where(object_id: solr_doc.id)
+        item['metadata']['doi'] = dois.count > 0 ? dois.map(&:show) : nil
 
         item.merge!(find_assets_and_surrogates(solr_doc))
         @list << item

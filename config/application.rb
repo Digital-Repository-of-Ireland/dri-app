@@ -49,6 +49,9 @@ module DriApp
 
     # Enable escaping HTML in JSON.
     config.active_support.escape_html_entities_in_json = true
+    # TODO ensure rails returns same time format as solr for json responses
+    # Rails: 2018-11-22T14:18:45.526Z, Solr: 2018-11-22 13:34:55 +0000
+    # config.active_support.use_standard_json_time_format = true
 
     config.active_record.raise_in_transactional_callbacks = true
 
