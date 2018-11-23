@@ -46,10 +46,9 @@ module DRI::Solr::Document::Collection
   def duplicate_total
     response = duplicate_query
 
-    duplicates = response['facet_counts']['facet_fields']["#{metadata_field}"]
-
+    duplicates = response['facet_counts']['facet_pivot']['metadata_md5_tesim,id'].select { |value| value['count'] > 1 && value['pivot'].present? }
     total = 0
-    duplicates.each_slice(2) { |duplicate| total += duplicate[1].to_i }
+    duplicates.each { |duplicate| total += duplicate['count'] }
 
     total
   end
@@ -61,6 +60,7 @@ module DRI::Solr::Document::Collection
     duplicates = response['facet_counts']['facet_pivot']["#{metadata_field},id"].select { |f| f['count'] > 1 }
     duplicates.each do |dup|
       pivot = dup["pivot"]
+      next unless pivot
       pivot.each { |p| ids << p['value'] }
     end
 
