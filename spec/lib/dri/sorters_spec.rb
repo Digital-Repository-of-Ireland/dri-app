@@ -51,7 +51,7 @@ describe DRI::Sorters do
     expect(labels.sort { |a,b| DRI::Sorters.trailing_digits_sort(a,b) }).to eq ordered_labels
   end
 
-  it 'should' do
+  it 'should handle decimal edge cases' do
     labels = %w(DCLA.RDFA.119.04.28.12 DCLA.RDFA.119.04.28.122.02.12 DCLA.RDFA.119.04.28.122.02.13  DCLA.RDFA.119.04.28.13)
     ordered_labels =  %w(DCLA.RDFA.119.04.28.12 DCLA.RDFA.119.04.28.13 DCLA.RDFA.119.04.28.122.02.12 DCLA.RDFA.119.04.28.122.02.13)
 

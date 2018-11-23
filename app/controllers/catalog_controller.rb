@@ -227,9 +227,7 @@ class CatalogController < ApplicationController
     (@response, @document_list) = search_results(params, search_params_logic)
 
     if params[:view].present? && params[:view].include?('timeline')
-      tl_field = params[:tl_field].presence || 'sdate'
-      timeline = Timeline.new(view_context)
-      @timeline_data = timeline.data(@document_list, tl_field)
+      @timeline_data = timeline_data
     end
 
     respond_to do |format|

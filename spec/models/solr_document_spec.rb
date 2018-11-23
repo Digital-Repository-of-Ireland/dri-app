@@ -140,6 +140,39 @@ describe SolrDocument do
       expect(od.assets(ordered: false).map(&:label)).to match_array(labels)
       expect(od.assets(ordered: true).map(&:label)).to eq ordered_labels
     end
+  end
+
+  context "collection methods" do
+    it "should return total objects" do
+      5.times do
+        @collection.governed_items << FactoryBot.create(:sound)
+      end
+      @collection.save
+      @collection.reload
+
+      doc = SolrDocument.find(@collection.id)
+      expect(doc.total_objects).to eq 6
+    end
+
+    it 'should return published only if requested' do
+       2.times do
+        @collection.governed_items << FactoryBot.create(:sound)
+      end
+
+      3.times do
+        object = FactoryBot.create(:sound)
+        object.status = 'published'
+        object.save
+        @collection.governed_items << object
+      end
+
+      @collection.save
+      @collection.reload
+
+      doc = SolrDocument.find(@collection.id)
+      expect(doc.published_objects).to eq 3
+    end
+
 
   end
 end

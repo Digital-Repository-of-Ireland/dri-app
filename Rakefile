@@ -65,9 +65,6 @@ task :ci => ['ci_clean'] do
 
     Rake::Task['second_try'].invoke
   end
-
-  Rake::Task["rdoc"].invoke
-  Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Run Continuous Integration-spec"
@@ -77,10 +74,8 @@ task :ci_spec => ['ci_clean'] do
 
   with_test_server do 
     Rake::Task['spec'].invoke
+    Rake::Task["api:docs:generate"].invoke
   end
-
-  Rake::Task["rdoc"].invoke
-  Rake::Task["api:docs:generate"].invoke
 end
 
 desc "Clean CI environment"
@@ -124,17 +119,25 @@ namespace :fakes3 do
   end
 end
 
-desc 'similar to rswag:spec:swaggerize except it excludes --dry-run so output is included in swagger docs where applicable'
+desc 'similar to rswag:spec:swaggerize except it does not use --dry-run so output is included in swagger docs where applicable'
 namespace :api do
   namespace :docs do
     desc 'Generate Swagger JSON files from integration specs'
-    RSpec::Core::RakeTask.new('generate') do |t|
-      t.pattern = 'spec/api/**/*_spec.rb'
+    RSpec::Core::RakeTask.new('generate', :pattern) do |t|
+      if ARGV[1] and ARGV[1].start_with?('spec/api/')
+        puts '[WARNING] running a subset of the test suite will remove output for tests that do not run. Continue? y/n'
+        input = STDIN.gets.chomp
+        abort unless input.downcase == 'y'
+        t.pattern = ARGV[1] 
+      else
+        t.pattern = 'spec/api/**/*_spec.rb'
+      end
 
       t.rspec_opts = [ 
         '--format progress',
         '--format Rswag::Specs::SwaggerFormatter',
-        '--order defined'
+        '--order defined',
+        '--exclude-pattern ""'
       ]
     end
   end

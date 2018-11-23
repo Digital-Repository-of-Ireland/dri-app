@@ -41,6 +41,20 @@ class DataciteDoi < ActiveRecord::Base
     File.join(DoiConfig.prefix.to_s, doi)
   end
 
+  # @return [String] url 
+  def doi_url
+    "https://doi.org/#{doi}"
+  end
+
+  # representation of doi used in json api
+  #
+  # @return [Hash] json 
+  def show
+    json = self.as_json(only: [:created_at, :version])
+    json['url'] = doi_url
+    json
+  end
+
   def set_update_type
     self.update_type = if doi_metadata.title_changed? || doi_metadata.creator_changed?
                          'mandatory'

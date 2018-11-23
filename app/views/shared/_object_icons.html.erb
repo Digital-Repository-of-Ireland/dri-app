@@ -1,0 +1,14 @@
+<div class="dri_icon">
+  <% if document.file_type_label != t("dri.data.types.Unknown") %>
+      <span class="dri_icon_image">
+        <% document.icon_path.each do |i| %>
+          <%= image_tag(i) %>
+        <% end %> &nbsp; <%= document.file_type_label %></span>
+  <% else %>
+      <!-- takes value from metadata -->
+      <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
+  <% end %>
+  <% unless document.public_read? %>
+    <span class="dri_icon_text pull-right"><i class="fa fa-lock" style="font-size: 1.4em;" title="<%= t('dri.views.catalog.forms.restricted_asset') %>"></i></span>
+  <% end %>
+</div>

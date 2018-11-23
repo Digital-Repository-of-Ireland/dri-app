@@ -46,10 +46,9 @@ module DRI::Solr::Document::Collection
   def duplicate_total
     response = duplicate_query
 
-    duplicates = response['facet_counts']['facet_fields']["#{metadata_field}"]
-
+    duplicates = response['facet_counts']['facet_pivot']['metadata_md5_tesim,id'].select { |value| value['count'] > 1 && value['pivot'].present? }
     total = 0
-    duplicates.each_slice(2) { |duplicate| total += duplicate[1].to_i }
+    duplicates.each { |duplicate| total += duplicate['count'] }
 
     total
   end
@@ -61,6 +60,7 @@ module DRI::Solr::Document::Collection
     duplicates = response['facet_counts']['facet_pivot']["#{metadata_field},id"].select { |f| f['count'] > 1 }
     duplicates.each do |dup|
       pivot = dup["pivot"]
+      next unless pivot
       pivot.each { |p| ids << p['value'] }
     end
 
@@ -72,6 +72,16 @@ module DRI::Solr::Document::Collection
     docs.each { |d| duplicates << SolrDocument.new(d) }
 
     return Blacklight::Solr::Response.new(response['response'], response['responseHeader']), duplicates
+  end
+
+  def type_count(type, published_only: false)
+    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + self.id +
+                 "\" AND " +
+                 "#{ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string)}:"+ type
+    if published_only
+      solr_query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
+    end
+    ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
   end
 
   private

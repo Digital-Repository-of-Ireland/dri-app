@@ -1,81 +1,80 @@
 <ul>
 
-        <% collection = @document.root_collection %>
+  <% collection = document.root_collection %>
 
-        <% if collection %>
+  <% if collection %>
 
-          <!-- If it's a root collection, we show all the objects within it -->
-          <% if document.root_collection? %>
-            <% collection_objects_params = { :f => {ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable).to_sym => [document[ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-          <% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
-            <% collection_objects_params = { :f => {ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, :mode => "objects", :search_field => "all_fields", :view => "grid" } %>
-          <% end %>
-    
+    <!-- If it's a root collection, we show all the objects within it -->
+    <% if document.root_collection? %>
+      <% collection_objects_params = { f: {ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable).to_sym => [document[ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
+    <% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
+      <% collection_objects_params = { f: {ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
+    <% end %>
+
     <h5>
       <i class="fa fa-folder-open"></i>&nbsp;<%= t('dri.views.catalog.forms.all_objects_in_collection') %>
     </h5>
 
-        <% end %>
-        
-  <% if (objectsCount > 0) %>
+  <% end %>
 
-    <% imageCount = count_items_in_collection_by_type(document[:id], "image") %>
-    <% textCount = count_items_in_collection_by_type(document[:id], "text") %>
-    <% audioCount = count_items_in_collection_by_type(document[:id], "audio") %>
-    <% videoCount = count_items_in_collection_by_type(document[:id], "video") %>
-    <% mixedCount = count_items_in_collection_by_type(document[:id], "mixed_types") %>
+  <% if (objects_count > 0) %>
+
+    <% image_count = document.type_count("image", published_only: true) %>
+    <% text_count = document.type_count("text", published_only: true) %>
+    <% audio_count = document.type_count("audio", published_only: true) %>
+    <% video_count = document.type_count("video", published_only: true) %>
+    <% mixed_count = document.type_count("mixed_types", published_only: true) %>
 
       <li>
-        <%= link_to catalog_index_path(collection_objects_params), :id => 'collection_s_object' do %>
+        <%= link_to catalog_index_path(collection_objects_params), id: 'collection_s_object' do %>
           <%= t("dri.data.types.all") %>
-          <span class="dri_stat_num"><%= objectsCount %></span>
+          <span class="dri_stat_num"><%= objects_count %></span>
         <% end %>
       </li>
-        
-      <% if (imageCount > 0) %>
+
+      <% if (image_count > 0) %>
           <li>
             <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "image")) do %>
                 <%= t("dri.data.types.Image") %>
-                <span class="dri_stat_num"><%= imageCount %></span>
+                <span class="dri_stat_num"><%= image_count %></span>
             <% end %>
           </li>
       <% end %>
 
-      <% if (audioCount > 0) %>
+      <% if (audio_count > 0) %>
           <li>
             <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "audio")) do %>
                 <%= t("dri.data.types.Sound") %>
-                <span class="dri_stat_num"><%= audioCount %></span>
+                <span class="dri_stat_num"><%= audio_count %></span>
             <% end %>
           </li>
       <% end %>
 
-      <% if (videoCount > 0) %>
+      <% if (video_count > 0) %>
           <li>
             <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "video")) do %>
                 <%= t("dri.data.types.MovingImage") %>
-                <span class="dri_stat_num"><%= videoCount %></span>
+                <span class="dri_stat_num"><%= video_count %></span>
             <% end %>
           </li>
       <% end %>
 
-      <% if (textCount > 0) %>
+      <% if (text_count > 0) %>
           <li>
             <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "text")) do %>
                 <%= t("dri.data.types.Text") %>
-                <span class="dri_stat_num"><%= textCount %></span>
+                <span class="dri_stat_num"><%= text_count %></span>
             <% end %>
           </li>
       <% end %>
 
-      <% if (mixedCount > 0) %>
+      <% if (mixed_count > 0) %>
           <li>
             <%= link_to main_app.catalog_index_path(get_collection_media_type_params(document, document[:id], "mixed_types")) do %>
                 <%= t("dri.data.types.MixedType") %>
-                <span class="dri_stat_num"><%= mixedCount %></span>
+                <span class="dri_stat_num"><%= mixed_count %></span>
             <% end %>
           </li>
       <% end %>
 <% end %>
 </ul>
-

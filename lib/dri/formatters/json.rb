@@ -50,7 +50,9 @@ module DRI::Formatters
 
       identifier = @object_doc.identifier
       @formatted_hash['Identifier'] = identifier if identifier
-      @formatted_hash['Licence'] = licence
+      if !@object_doc.collection? && @object_doc.licence
+        @formatted_hash['Licence'] = @object_doc.licence.show
+      end
       @formatted_hash['Assets'] = assets if @with_assets
       @formatted_hash.send(func)
     end
@@ -58,8 +60,8 @@ module DRI::Formatters
     def assets
       assets = @object_doc.assets
       assets_json = []
-      assets.each do |a| 
-        assets_json << { 'id' => a['id'], 'title' => a['label_tesim'], 'path' => file_path(a['id']) }
+      assets.each do |a|
+        assets_json << { 'id' => a['id'], 'title' => a['label_tesim'], 'path' => file_url(a['id']) }
       end
       assets_json
     end
@@ -68,14 +70,8 @@ module DRI::Formatters
       Rails.application.routes.url_helpers.file_download_path(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
     end
 
-    def licence
-      licence = @object_doc.licence
-      if licence
-        value = (licence.name == 'All Rights Reserved') ? licence.name : licence.url
-      end
-
-      value
+    def file_url(file_id)
+      Rails.application.routes.url_helpers.file_download_url(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
     end
-
   end
 end

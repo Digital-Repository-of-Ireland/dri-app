@@ -62,7 +62,6 @@ check)
     bundle exec rake db:seed
     bundle exec rake db:test:prepare
     bundle exec rake ci || exit 100
-    bundle exec rake rdoc
     bundle exec rake assets:precompile
     ;;
 package)

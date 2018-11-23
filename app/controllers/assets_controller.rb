@@ -72,7 +72,9 @@ class AssetsController < ApplicationController
     @object = retrieve_object!(params[:object_id])
     @generic_file = retrieve_object!(params[:id])
 
-    raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @object.status == 'published'
+    if @object.status == 'published' && !current_user.is_admin?
+      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
+    end
 
     @object.object_version ||= '1'
     @object.increment_version
@@ -283,15 +285,14 @@ class AssetsController < ApplicationController
     end
 
     def status(file_id)
-      ingest_status = IngestStatus.where(asset_id: file_id)
+      ingest_status = IngestStatus.find_by(asset_id: file_id)
 
       status_info = {}
-      if ingest_status.present?
-        status = ingest_status.first
-        status_info[:status] = status.status
+      if ingest_status
+        status_info[:status] = ingest_status.completed_status
 
         status_info[:jobs] = {}
-        status.job_status.each do |job|
+        ingest_status.job_status.each do |job|
           status_info[:jobs][job.job] = { status: job.status, message: job.message }
         end
       end

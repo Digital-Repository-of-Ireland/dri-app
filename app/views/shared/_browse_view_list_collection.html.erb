@@ -1,16 +1,15 @@
 <article class="dri_result_object dri_clearfix" id="<%= document.id.to_s %>">
   <div class="dri_content_list_collection">
-           <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-
-                <%= link_to bookmark_path(document.id), method: :delete, id: 'remove_bookmark' do %>
-                <span class="dri_remove_bookmark"><i class="fa fa-bookmark"></i></span>
-                <% end %>
-            <% end %>
+    <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+      <%= link_to bookmark_path(document.id), method: :delete, id: 'remove_bookmark' do %>
+      <span class="dri_remove_bookmark"><i class="fa fa-bookmark"></i></span>
+      <% end %>
+    <% end %>
 
     <!-- close image -->
 
     <div class="dri_content_list_collection_data">
-      <%= link_to(url_for_document(document), document_link_params(document, {counter: document_counter_with_offset(document_counter)} )) do %>
+      <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
           <h4><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h4>
       <% end %>
       <p>
@@ -31,22 +30,28 @@
           <%# If SUB-COLLECTION %>
           <% collection_objects_params = { f: {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}, mode: "objects", search_field: "all_fields", view: params[:view] } %>
       <% end %>
-      <%= link_to (catalog_index_path(collection_objects_params)) do %>
+      <% controller = (controller_name == 'bookmarks') ? 'catalog' : controller_name %>
+      <%= link_to collection_objects_params.merge({ controller: controller, action: :index, mode: "objects", search_field: "all_fields", view: params[:view]}) do %>
           <div class="dri_num_list_objects">
             <span class="dri_object_text_num">
-              <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %>
+              <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + object_count.to_s + ") " %>
             </span>
+            <% unless document.public_read? %>
+              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+            <% end %>
           </div>
       <% end %> <!-- close dri_num_objects -->
     </div>
   </div>
-  <%= link_to(url_for_document(document), document_link_params(document, {counter: document_counter_with_offset(document_counter)} )) do %>
+  <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
       <div class="dri_image">
-        <% image = cover_image ( document ) %>
-        <% unless image.nil? %>
+        <% present(document, DRI::ImagePresenter) do |images| %>
+          <% image = images.cover_image %>
+          <% if image %>
             <%= image_tag image, width: "200" %>
-        <% else %>
+          <% else %>
             <%= image_tag "no_image.png", width: "200" %>
+          <% end %>
         <% end %>
       </div>
   <% end %>
