@@ -53,6 +53,7 @@ module DRI::Formatters
       if !@object_doc.collection? && @object_doc.licence
         @formatted_hash['Licence'] = @object_doc.licence.show
       end
+      @formatted_hash['RelatedObjects'] = @object_doc.object_relationships_as_json
       @formatted_hash['Assets'] = assets if @with_assets
       @formatted_hash['Doi'] = dois
       @formatted_hash.send(func)
