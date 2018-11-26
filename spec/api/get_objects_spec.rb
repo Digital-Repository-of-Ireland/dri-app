@@ -32,7 +32,6 @@ describe "Get Objects API" do
         let(:objects) { @collections.map(&:id) }
 
         include_context 'rswag_include_json_spec_output' do
-          it_behaves_like 'a json api error'
           it_behaves_like 'a json api 401 error',
             message: "You need to sign in or sign up before continuing."
           it_behaves_like 'a pretty json response'
@@ -56,7 +55,7 @@ describe "Get Objects API" do
           }
           let(:objects) { {objects: object_ids} }
           exn = "/get_objects?(object ids)"
-          include_context 'rswag_include_json_spec_output', example_name=exn do
+          include_context 'rswag_include_json_spec_output', exn do
             it_behaves_like 'a pretty json response'
             run_test! do
               json_response = JSON.parse(response.body)
@@ -82,7 +81,7 @@ describe "Get Objects API" do
           let(:collection_ids) { @collections.map {|c| [[c.id, c.id]].to_h} }
           let(:objects) { {objects: collection_ids} }
           exn = "/get_objects?(collection ids)"
-          include_context 'rswag_include_json_spec_output', example_name=exn do
+          include_context 'rswag_include_json_spec_output', exn do
             it_behaves_like 'a pretty json response'
           end
         end

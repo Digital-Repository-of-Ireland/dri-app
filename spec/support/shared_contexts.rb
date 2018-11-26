@@ -19,3 +19,4 @@ shared_context 'collection_manager_user' do
   end
 end
 
+
