@@ -57,13 +57,13 @@ module DRI::Formatters
       @formatted_hash.send(func)
     end
 
-    # @param [SolrDocument]
-    # @return [Hash] licence || nil if licence is not found
+    # @param [SolrDocument] solr_doc
+    # @return [Hash] licence || nil
     def self.licence(solr_doc)
       solr_doc.licence.show if !solr_doc.collection? && solr_doc.licence
     end
 
-    # @param [SolrDocument]
+    # @param [SolrDocument] solr_doc
     # @return [Array] array of hashes for each doi || nil
     def self.dois(solr_doc)
       dois = DataciteDoi.where(object_id: solr_doc.id)

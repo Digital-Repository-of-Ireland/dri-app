@@ -18,24 +18,29 @@ shared_context 'rswag_include_xml_spec_output' do |example_name='application/xml
   end
 end
 
-shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true, doi: true|
+shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true, doi: true, docs: true|
   include_context 'tmp_assets'
   before(:each) do
     @licence = Licence.create(
       name: 'test', description: 'this is a test', url: 'http://example.com'
     )
+    
     @example_user = create_user
-    @collections = []
-    @dois = []
-    if status == 'published'
-      @institute = FactoryBot.create(:institute)
-      @institute.save
-    else
-      @institute = nil
-    end
+    @collections  = []
+    @dois         = []
+    @docs         = []
+    @institute    = institute(status)
+
     num_collections.times do |i|
       collection = create_collection_for(@example_user, status: status)
       collection.licence = @licence.name
+      
+      if docs
+        doc = FactoryBot.create(:documentation)
+        collection.documentation_object_ids = doc.id
+        @docs << doc
+      end
+      
       num_objects.times do |j|
         object = create_object_for(
           @example_user,
@@ -49,7 +54,6 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
       collection.depositing_institute = @institute.name if @institute
       collection.manager_users = [@example_user]
       collection.published_at = DateTime.now.strftime("%Y-%m-%d")
-      # collection.governing_collection = 'root'
       collection.save
       @collections << collection
     end
@@ -79,6 +83,17 @@ shared_context 'sign_out_before_request' do
 end
 
 # TODO move methods in helper module
+# Need to ensure it gets loaded before shared_examples / contexts though
+
+# @param [String] status
+# @return [Institute] || nil
+def institute(status)
+  if status == 'published'
+    org = FactoryBot.create(:institute)
+    org.save
+    org
+  end
+end
 
 # @param type [Symbol]
 # @param token [Boolean]

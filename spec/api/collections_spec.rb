@@ -85,6 +85,7 @@ describe "Collections API" do
         context 'Collection' do
           let(:id) { @collections.first.id }
           it_behaves_like 'it has no json licence information'
+          it_behaves_like 'it has json related objects information'
           include_context 'rswag_include_json_spec_output', 'Found Collection' do
             it_behaves_like 'a pretty json response'
           end

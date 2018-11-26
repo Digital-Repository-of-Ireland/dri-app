@@ -34,6 +34,13 @@ shared_examples 'it has json doi information' do |key='Doi'|
   end  
 end
 
+shared_examples 'it has json related objects information' do |key='RelatedObjects'|
+  run_test! do
+    related_objects_details = JSON.parse(response.body)[key][0]
+    expect(related_objects_details.keys.sort).to eq(%w[doi relation url])
+  end  
+end
+
 shared_examples 'a json api error' do
   run_test! do
     json_response = JSON.parse(response.body)

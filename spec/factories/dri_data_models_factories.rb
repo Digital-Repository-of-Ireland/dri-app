@@ -91,4 +91,21 @@ FactoryBot.define do
     end
   end
 
+  factory(:documentation, :class => DRI::Documentation) do
+    title                  ["Test docs"]
+    description            ["Test documentation"]
+    rights                 ["This is a statement about the rights associated with this object"]
+    creator                ["A. User"]
+    publisher              ["RnaG"]
+    resource_type          ["Documentation"]
+    creation_date          ["1916-01-01"]
+    published_date         ["1916-01-02"]
+    object_version          '1'
+
+    after(:create) do |collection|
+      preservation = Preservation::Preservator.new(collection)
+      preservation.preserve(false, false, ['descMetadata','properties'])
+    end
+  end
+
 end

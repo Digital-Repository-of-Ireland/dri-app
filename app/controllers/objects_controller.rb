@@ -59,7 +59,11 @@ class ObjectsController < BaseObjectsController
       format.endnote { render text: @object.export_as_endnote, layout: false }
       format.json do
         json = @object.as_json
-        solr_doc = SolrDocument.new(@object.to_solr)
+        # solr_doc = SolrDocument.new(@object.to_solr)
+        # # intermittent issue using to_solr:  A JSON text must at least contain two octets!
+        solr_query = ActiveFedora::SolrService.construct_query_for_ids([@object.id])
+        solr_doc = SolrDocument.new(Solr::Query.new(solr_query).first)
+        
         json['licence'] = DRI::Formatters::Json.licence(solr_doc)
         json['doi'] = DRI::Formatters::Json.dois(solr_doc)
         json['related_objects'] = solr_doc.object_relationships_as_json
