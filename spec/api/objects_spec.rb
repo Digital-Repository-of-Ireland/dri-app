@@ -19,6 +19,7 @@ describe 'Objects API' do
     get 'retrieves a specific object' do
       tags 'objects'
       include_context 'rswag_user_with_collections', status: 'published'
+      include_context 'doi_config_exists'
 
       parameter name: :id, description: 'Object ID',
           in: :path, :type => :string

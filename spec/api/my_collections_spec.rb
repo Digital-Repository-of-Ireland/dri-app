@@ -7,6 +7,7 @@ describe "My Collections API" do
       security [ apiKey: [], appId: [] ]
       produces 'application/json'
       include_context 'rswag_user_with_collections'
+      include_context 'doi_config_exists'
       # TODO accept ttl and xml on default route too
       # not just specific objects
       # TODO add json format for /my_collections/:id/duplicates
@@ -99,6 +100,7 @@ describe "My Collections API" do
         in: :query, type: :boolean, default: false, required: false
 
       include_context 'rswag_user_with_collections'
+      include_context 'doi_config_exists'
 
       response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }

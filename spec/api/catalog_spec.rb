@@ -5,6 +5,7 @@ describe "Catalog API" do
     get "retrieves objects from the catalog" do
       produces 'application/json', 'application/xml', 'application/ttl'
       include_context 'rswag_user_with_collections', status: 'published'
+      include_context 'doi_config_exists'
 
       parameter name: :per_page, description: 'Number of results per page', 
         in: :query, type: :number, default: 9
@@ -34,6 +35,7 @@ describe "Catalog API" do
       parameter name: :id, description: 'Object ID',
         in: :path, :type => :string
       include_context 'rswag_user_with_collections', status: 'published'
+      include_context 'doi_config_exists'
 
       response "200", "Found" do
         context 'Collection' do

@@ -25,6 +25,7 @@ describe "Get Objects API" do
         in: :query, type: :boolean, default: false, required: false
 
       include_context 'rswag_user_with_collections', status: 'published'
+      include_context 'doi_config_exists'
 
       response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }
