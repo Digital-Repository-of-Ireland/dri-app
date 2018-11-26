@@ -13,25 +13,32 @@ def add_param(url, param)
   uri.to_s
 end
 
-shared_examples 'it has json licence information' do |licence_key='Licence'|
+shared_examples 'it has json licence information' do |key='Licence'|
   run_test! do
-    licence_info = JSON.parse(response.body)[licence_key]
+    licence_info = JSON.parse(response.body)[key]
     expect(licence_info.keys).to eq(%w[name url description])
   end
 end
 
-shared_examples 'it has no json licence information' do |licence_key='Licence'|
+shared_examples 'it has no json licence information' do |key='Licence'|
   run_test! do
-    licence_info = JSON.parse(response.body)[licence_key]
+    licence_info = JSON.parse(response.body)[key]
     expect(licence_info).to be nil
   end
 end
 
-shared_examples 'a json api error' do
+shared_examples 'it has json doi information' do |key='Doi'|
   run_test! do
-    json_response = JSON.parse(response.body)
-    expect(json_response.keys).to include('errors')
-  end
+    doi_details = JSON.parse(response.body)[key][0]
+    expect(doi_details.keys.sort).to eq(%w[created_at url version]) 
+  end  
+end
+
+shared_examples 'it has json related objects information' do |key='RelatedObjects'|
+  run_test! do
+    related_objects_details = JSON.parse(response.body)[key][0]
+    expect(related_objects_details.keys.sort).to eq(%w[doi relation url])
+  end  
 end
 
 # @param [String | Regexp] message 
@@ -53,7 +60,7 @@ shared_examples 'a json api 404 error' do |message: nil|
   end
 end
 
-shared_examples 'a pretty json response', shared_context: :metadata do
+shared_examples 'a pretty json response' do
   before do |example|
     # submit normal request
     submit_request(example.metadata)
@@ -70,7 +77,7 @@ shared_examples 'a pretty json response', shared_context: :metadata do
   end
   # run_test! is a rswag specific function that 
   # submits the request and checks the response code matches the test definition
-  run_test! do
+  it 'should return pretty (indented) json' do
     # same json but different formatting with ?pretty=true
     normal_json = JSON.parse(@normal_response)
     expect(JSON.pretty_generate(normal_json)).to eq @pretty_response

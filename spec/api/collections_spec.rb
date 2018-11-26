@@ -21,7 +21,6 @@ describe "Collections API" do
         let(:user_token) { nil }
         let(:user_email) { nil }
 
-        it_behaves_like 'a json api error'
         it_behaves_like 'a json api 401 error',
           message: "You need to sign in or sign up before continuing."
         it_behaves_like 'a pretty json response'
@@ -60,7 +59,6 @@ describe "Collections API" do
         let(:user_email) { nil }
         let(:id) { @collections.first.id }
 
-        it_behaves_like 'a json api error'
         it_behaves_like 'a json api 401 error'
         it_behaves_like 'a pretty json response'
       end
@@ -73,7 +71,6 @@ describe "Collections API" do
         let(:id) { "collection_that_does_not_exist" }
         
         include_context 'rswag_include_json_spec_output' do
-          it_behaves_like 'a json api error'
           it_behaves_like 'a json api 404 error'
           it_behaves_like 'a pretty json response'
         end
@@ -85,14 +82,16 @@ describe "Collections API" do
         context 'Collection' do
           let(:id) { @collections.first.id }
           it_behaves_like 'it has no json licence information'
-          include_context 'rswag_include_json_spec_output', example_name='Found Collection' do
+          it_behaves_like 'it has json related objects information'
+          include_context 'rswag_include_json_spec_output', 'Found Collection' do
             it_behaves_like 'a pretty json response'
           end
         end
         context 'Object' do
           let(:id) { @collections.first.governed_items.first.id }
-          include_context 'rswag_include_json_spec_output', example_name='Found Object' do
+          include_context 'rswag_include_json_spec_output', 'Found Object' do
             it_behaves_like 'it has json licence information'
+            it_behaves_like 'it has json doi information'
           end
         end
       end
