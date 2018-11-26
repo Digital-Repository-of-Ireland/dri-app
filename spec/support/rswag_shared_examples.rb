@@ -41,13 +41,6 @@ shared_examples 'it has json related objects information' do |key='RelatedObject
   end  
 end
 
-shared_examples 'a json api error' do
-  run_test! do
-    json_response = JSON.parse(response.body)
-    expect(json_response.keys).to include('errors')
-  end
-end
-
 # @param [String | Regexp] message 
 shared_examples 'a json api 401 error' do |message: nil|
   run_test! do
@@ -84,7 +77,7 @@ shared_examples 'a pretty json response' do
   end
   # run_test! is a rswag specific function that 
   # submits the request and checks the response code matches the test definition
-  run_test! do
+  it 'should return pretty (indented) json' do
     # same json but different formatting with ?pretty=true
     normal_json = JSON.parse(@normal_response)
     expect(JSON.pretty_generate(normal_json)).to eq @pretty_response

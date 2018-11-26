@@ -32,7 +32,6 @@ describe "Get Objects API" do
         let(:objects) { @collections.map(&:id) }
 
         include_context 'rswag_include_json_spec_output' do
-          it_behaves_like 'a json api error'
           it_behaves_like 'a json api 401 error',
             message: "You need to sign in or sign up before continuing."
           it_behaves_like 'a pretty json response'

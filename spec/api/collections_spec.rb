@@ -21,7 +21,6 @@ describe "Collections API" do
         let(:user_token) { nil }
         let(:user_email) { nil }
 
-        it_behaves_like 'a json api error'
         it_behaves_like 'a json api 401 error',
           message: "You need to sign in or sign up before continuing."
         it_behaves_like 'a pretty json response'
@@ -60,7 +59,6 @@ describe "Collections API" do
         let(:user_email) { nil }
         let(:id) { @collections.first.id }
 
-        it_behaves_like 'a json api error'
         it_behaves_like 'a json api 401 error'
         it_behaves_like 'a pretty json response'
       end
@@ -73,7 +71,6 @@ describe "Collections API" do
         let(:id) { "collection_that_does_not_exist" }
         
         include_context 'rswag_include_json_spec_output' do
-          it_behaves_like 'a json api error'
           it_behaves_like 'a json api 404 error'
           it_behaves_like 'a pretty json response'
         end
