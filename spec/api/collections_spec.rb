@@ -12,6 +12,7 @@ describe "Collections API" do
       produces 'application/json'
       # creates @example_user with authentication_token (not signed in)
       include_context 'rswag_user_with_collections', status: 'published'
+      include_context 'doi_config_exists'
       
       parameter name: :pretty, description: 'indent json so it is human readable', 
         in: :query, type: :boolean, default: false, required: false
@@ -51,6 +52,7 @@ describe "Collections API" do
       parameter name: :id, description: 'Object ID',
         in: :path, :type => :string
       include_context 'rswag_user_with_collections'
+      include_context 'doi_config_exists'
 
       response "401", "Must be signed in to access this route" do
         include_context 'rswag_include_json_spec_output'
