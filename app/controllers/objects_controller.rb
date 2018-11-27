@@ -248,18 +248,9 @@ class ObjectsController < BaseObjectsController
           solr_doc.extract_metadata(params[:metadata])
         end
 
-        # licence is stored at collection level in solr
-        # but don't show licence for collections since all collection metadata is cc-by
-        # find parent licence for objects and display that
-        if item['metadata']['type'] == ["Collection"]
-          item['metadata']['licence'] = nil
-        else
-          licence = solr_doc.licence
-          item['metadata']['licence'] = licence.show if licence
-        end
-
-        dois = DataciteDoi.where(object_id: solr_doc.id)
-        item['metadata']['doi'] = dois.count > 0 ? dois.map(&:show) : nil
+        item['metadata']['licence'] = DRI::Formatters::Json.licence(solr_doc)
+        item['metadata']['doi'] = DRI::Formatters::Json.dois(solr_doc)
+        item['metadata']['related_objects'] = solr_doc.object_relationships_as_json
 
         item.merge!(find_assets_and_surrogates(solr_doc))
         @list << item
