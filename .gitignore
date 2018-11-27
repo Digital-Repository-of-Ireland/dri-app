@@ -55,8 +55,6 @@ dump.rdb
 fcrepo4-test-data/
 dri_files
 
-swagger/
-
 .byebug*
 *.pid
 *.sublime*
