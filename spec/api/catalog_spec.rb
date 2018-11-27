@@ -48,8 +48,8 @@ describe "Catalog API" do
         end
         context 'Object' do
           let(:id) { @collections.first.governed_items.first.id }
+          it_behaves_like 'it has json licence information'
           include_context 'rswag_include_json_spec_output', 'Found Object' do
-            it_behaves_like 'it has json licence information'
             it_behaves_like 'it has json doi information'
           end
         end

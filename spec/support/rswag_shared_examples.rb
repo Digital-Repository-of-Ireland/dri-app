@@ -13,6 +13,15 @@ def add_param(url, param)
   uri.to_s
 end
 
+shared_examples 'a json response with' do |licence_key: false, doi_key: false, related_objects_key: false|
+  run_test! do
+    json_response = JSON.parse(response.body)
+    expect(json_response[licence_key].keys.sort).to eq(%w[name url description]) if licence_key
+    expect(json_response[doi_key].keys.sort).to eq(%w[created_at url version]) if doi_key
+    expect(json_response[related_objects_key].keys.sort).to eq(%w[doi relation url]) if related_objects_key
+  end
+end
+
 shared_examples 'it has json licence information' do |key='Licence'|
   run_test! do
     licence_info = JSON.parse(response.body)[key]
@@ -64,7 +73,7 @@ shared_examples 'a pretty json response' do
   before do |example|
     # submit normal request
     submit_request(example.metadata)
-    @normal_response = response.body.clone
+    @normal_response = response.body
     # add pretty param and resubmit request
     pretty_path = add_param(request.original_fullpath, ['pretty', 'true'])
     req_format = 'application/json'
@@ -73,7 +82,7 @@ shared_examples 'a pretty json response' do
     # include body for post requests
     body = http_verb == :post ? request.body : {}
     verb_func.call(pretty_path, body, CONTENT_TYPE: req_format, ACCEPT: req_format)
-    @pretty_response = response.body.clone
+    @pretty_response = response.body
   end
   # run_test! is a rswag specific function that 
   # submits the request and checks the response code matches the test definition

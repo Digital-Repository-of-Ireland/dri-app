@@ -47,13 +47,14 @@ describe "My Collections API" do
       # let(:f)            { nil }
       
       response "401", "Must be signed in to access this route" do
-        include_context 'rswag_include_json_spec_output'
         let(:user_token) { nil }
         let(:user_email) { nil }
 
-        it_behaves_like 'a json api 401 error',
-          message: "You need to sign in or sign up before continuing."
         it_behaves_like 'a pretty json response'
+        include_context 'rswag_include_json_spec_output' do
+          it_behaves_like 'a json api 401 error',
+            message: "You need to sign in or sign up before continuing."
+        end
       end
       response "200", "All objects found" do
         let(:user_token) { @example_user.authentication_token }
@@ -107,9 +108,9 @@ describe "My Collections API" do
         let(:user_email) { nil }
         let(:id) { @collections.first.id }
 
+        it_behaves_like 'a pretty json response'
         include_context 'rswag_include_json_spec_output' do
           it_behaves_like 'a json api 401 error'
-          it_behaves_like 'a pretty json response'
         end
       end
 
@@ -120,8 +121,8 @@ describe "My Collections API" do
         let(:user_email) { nil }
         let(:id) { "collection_that_does_not_exist" }
 
+        it_behaves_like 'a json api 404 error'
         include_context 'rswag_include_json_spec_output' do
-          it_behaves_like 'a json api 404 error'
           it_behaves_like 'a pretty json response'
         end
       end
@@ -133,16 +134,16 @@ describe "My Collections API" do
         context 'Collection' do
           let(:id) { @collections.first.id }
           # collections should not display licence info tracker #1857
+          it_behaves_like 'a pretty json response'
           it_behaves_like 'it has no json licence information'
-          it_behaves_like 'it has json related objects information'
           include_context 'rswag_include_json_spec_output', 'Found Collection' do
-            it_behaves_like 'a pretty json response'
+            it_behaves_like 'it has json related objects information'
           end
         end
         context 'Object' do
           let(:id) { @collections.first.governed_items.first.id }
+          it_behaves_like 'it has json licence information'
           include_context 'rswag_include_json_spec_output', 'Found Object' do
-            it_behaves_like 'it has json licence information'
             it_behaves_like 'it has json doi information'
           end
         end
