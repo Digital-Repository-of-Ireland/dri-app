@@ -1,4 +1,4 @@
-<% institute_browse_params = { :mode => "collections", :search_field => "all_fields", :view => "grid", :f => {} } %>
+<% institute_browse_params = { mode: "collections", search_field: "all_fields", view: "grid", f: {} } %>
 <% style='' %>
 
 <h3><%= t('dri.views.collection.institute.title') %></h3>
@@ -22,12 +22,14 @@
               <% if (collection_count > 0) %>
                   <% collections = @collections[institute.id] %>
                   <% collections[0..2].each do |collection| %>
-                     <% image = cover_image collection %>
-                     <% if image %>
-                        <li><%= image_tag image, :width=>"150", title: collection[:title_tesim].first %></li>
-                     <% else %>
-                        <li><%= image_tag "no_image.png", :width=>"150", title: collection[:title_tesim].first %></li>
-                     <% end %>
+                    <% present(collection, DRI::ImagePresenter) do |images| %>
+                      <% image = images.cover_image %>
+                      <% if image %>
+                        <li><%= image_tag image, width: "150", title: collection[:title_tesim].first %></li>
+                      <% else %>
+                        <li><%= image_tag "no_image.png", width: "150", title: collection[:title_tesim].first %></li>
+                      <% end %>
+                    <% end %>
                   <% end %>
               <% end %>
             </ul>

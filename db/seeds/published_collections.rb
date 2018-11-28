@@ -1,19 +1,19 @@
 module Seeds
-  def self.add_collections
+  def self.add_published_collections
     create_collection('save')
   end
 
-  def self.add_collections!
+  def self.add_published_collections!
     create_collection('save!')
   end
 
-  def self.remove_collections
+  def self.remove_published_collections
     DRI::QualifiedDublinCore.find(title: 'test_collection').each do |collection|
       collection.destroy
     end
   end
 
-  def self.remove_collections!
+  def self.remove_published_collections!
     DRI::QualifiedDublinCore.find(title: 'test_collection').each do |collection|
       collection.destroy!
     end
@@ -32,6 +32,7 @@ module Seeds
     end
     collection.governed_items.map(&func.to_sym)
     collection.send(func)
+    # refactor to use block and yield?
   end
 
   # @param owner [String]

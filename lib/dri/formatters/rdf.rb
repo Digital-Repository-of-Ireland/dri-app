@@ -3,7 +3,7 @@ include RDF
 
 module DRI::Formatters
   class Rdf
-   
+
     METADATA_FIELDS_MAP = {
      'identifier' => RDF::DC.identifier,
      'title' => RDF::DC.title,
@@ -26,7 +26,7 @@ module DRI::Formatters
      'temporal_coverage' => RDF::DC.temporal,
      'institute' => RDF::Vocab::EDM.provider
     }
-      
+
     RELATIONSHIP_FIELDS_MAP = {
       'References' => RDF::DC.references,
       'Is Referenced By' => RDF::DC.isReferencedBy,
@@ -66,7 +66,7 @@ module DRI::Formatters
     def html_uri
       @html_uri ||= RDF::URI.new("#{uri}.html")
     end
-    
+
     def build_graph
       graph << [uri, RDF::DC.hasFormat, RDF::URI("#{uri}.ttl")]
       graph << [uri, RDF::DC.hasFormat, RDF::URI("#{uri}.html")]
@@ -74,14 +74,14 @@ module DRI::Formatters
       graph << [uri, RDF::DC.title, RDF::Literal.new(
         "Description of '#{@object_hash['metadata']['title'].first}'", language: :en)]
       graph << [uri, FOAF.primaryTopic, RDF::URI("#{uri}#id")]
-       
+
       add_licence
       add_formats
 
       add_metadata
       add_relationships
       add_assets if @with_assets
-     
+
       graph
     end
 
@@ -89,8 +89,8 @@ module DRI::Formatters
       mrss_vocab = RDF::Vocabulary.new("http://search.yahoo.com/mrss/")
 
       assets = @object_doc.assets
-      
-      assets.each do |a| 
+
+      assets.each do |a|
         id = "#{base_uri}#{object_file_path(a['id'])}#id"
         graph << [RDF::URI("#{uri}#id"), RDF::DC.hasPart, RDF::URI.new(id)]
 
@@ -112,7 +112,7 @@ module DRI::Formatters
 
     def add_formats
       format_vocab = RDF::Vocabulary.new("http://www.w3.org/ns/formats/")
-      
+
       graph << [ttl_uri, RDF.type, RDF::Vocab::DCMIType.Text]
       graph << [ttl_uri, RDF.type, format_vocab.Turtle]
       graph << [ttl_uri, RDF::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/turtle")]
@@ -129,7 +129,7 @@ module DRI::Formatters
       licence = @object_doc.licence
       if licence
         value = (licence.name == 'All Rights Reserved') ? licence.name : licence.url
-        graph << [uri, RDF::DC.license, value]     
+        graph << [uri, RDF::DC.license, value]
       end
     end
 
@@ -137,7 +137,7 @@ module DRI::Formatters
       id = "#{uri}#id"
 
       metadata = @object_hash['metadata']
-      
+
       graph << [RDF::URI.new(id), RDF.type, RDF::Vocab::DCMIType.Collection] if @object_doc.collection?
 
       METADATA_FIELDS_MAP.keys.each do |field|
@@ -170,7 +170,7 @@ module DRI::Formatters
 
                          [RDF::URI.new(id), METADATA_FIELDS_MAP[field], typed_value]
                        end
-              
+
             when 'temporal_coverage'
               graph << if DRI::Metadata::Transformations.dcmi_period?(value)
                          [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::DC.Period)]
@@ -226,6 +226,8 @@ module DRI::Formatters
         RDF::Vocab::DCMIType.Sound
       elsif file.video?
         RDF::Vocab::DCMIType.MovingImage
+      else
+        RDF::FOAF.Document
       end
     end
 

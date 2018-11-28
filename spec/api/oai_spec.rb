@@ -24,8 +24,7 @@ describe "Open Archives Initiative API" do
       response "200", "OAI data found" do
         context 'public access' do
           include_context 'sign_out_before_request'
-          include_context 'rswag_include_xml_spec_output',
-            example_name="/oai (error missing verb)"
+          include_context 'rswag_include_xml_spec_output', "/oai (error missing verb)"
           run_test!
         end
         # TODO better test using nokogiri to make sure response 
@@ -39,11 +38,10 @@ describe "Open Archives Initiative API" do
         }.each do |k, v|
           context k do
             api_args = v.map &->(k,v) {"#{k}=#{v}"}
-            include_context 'sign_out_before_request'
-            include_context 'rswag_include_xml_spec_output',
-              example_name="/oai?#{api_args.join("&")}"
             v.each { |symbol, value|  let(symbol) { value } }
             before { |example| submit_request(example.metadata) }
+            include_context 'sign_out_before_request'
+            include_context 'rswag_include_xml_spec_output', "/oai?#{api_args.join("&")}"
             run_test!
           end
         end

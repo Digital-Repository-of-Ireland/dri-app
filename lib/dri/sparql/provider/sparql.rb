@@ -4,6 +4,8 @@ module DRI::Sparql
   module Provider
     class Sparql
 
+      attr_accessor :endpoint
+
       def endpoint=(endpoint)
         @endpoint = endpoint
       end
@@ -13,12 +15,12 @@ module DRI::Sparql
         predicate = triple[1] || '?p'
         object = triple[2] || '?o'
 
-        select = "CONSTRUCT { ?s ?p ?o } WHERE 
+        select = "CONSTRUCT { ?s ?p ?o } WHERE
                   { #{subject} #{predicate} #{object}
                    . ?s ?p ?o }"
         client = DRI::Sparql::Client.new @endpoint
         results = client.query select
-        
+
         output = []
         return output if results.nil?
 

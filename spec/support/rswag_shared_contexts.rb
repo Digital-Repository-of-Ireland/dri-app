@@ -1,57 +1,70 @@
 # rswag / api shared contexts
 shared_context 'rswag_include_json_spec_output' do |example_name='application/json'|
   after do |example|
-    example.metadata[:response][:examples] = { 
+    example.metadata[:response][:examples] = {
       example_name => JSON.parse(
-        response.body, 
+        response.body,
         symbolize_names: true
-      ) 
+      )
     }
   end
 end
 
 shared_context 'rswag_include_xml_spec_output' do |example_name='application/xml'|
   after do |example|
-    example.metadata[:response][:examples] = { 
-      example_name => Nokogiri::XML(response.body) 
+    example.metadata[:response][:examples] = {
+      example_name => Nokogiri::XML(response.body)
     }
   end
 end
 
-shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true|
+shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true, doi: true, docs: true|
+  include_context 'tmp_assets'
   before(:each) do
+    @licence = Licence.create(
+      name: 'test', description: 'this is a test', url: 'http://example.com'
+    )
+    
     @example_user = create_user
-    @collections = []
-    if status == 'published'
-      @institute = FactoryBot.create(:institute)
-      @institute.save
-    else
-      @institute = nil
-    end
+    @collections  = []
+    @dois         = []
+    @docs         = []
+    @institute    = institute(status)
+
     num_collections.times do |i|
       collection = create_collection_for(@example_user, status: status)
+      collection.licence = @licence.name
+      
+      if docs
+        doc = FactoryBot.create(:documentation)
+        collection.documentation_object_ids = doc.id
+        @docs << doc
+      end
+      
       num_objects.times do |j|
         object = create_object_for(
-          @example_user, 
+          @example_user,
           status: status,
           title: "not a duplicate #{i}#{j}",
         )
         object.depositing_institute = @institute.name if @institute
         collection.governed_items << object
+        @dois << DataciteDoi.create(object_id: object.id) if doi
       end
       collection.depositing_institute = @institute.name if @institute
       collection.manager_users = [@example_user]
       collection.published_at = DateTime.now.strftime("%Y-%m-%d")
-      # collection.governing_collection = 'root'
       collection.save
       @collections << collection
     end
     @collections << create_subcollection_for(@example_user) if subcollection
-    sign_out_all # just to make sure requests aren't using session 
+    sign_out_all # just to make sure requests aren't using session
   end
   after(:each) do
+    @licence.destroy
     @institute.delete if @institute
     @example_user.delete
+    @dois.map(&:delete)
     # issue with nested examples e.g iiif_spec
     # possibly check for ldp gone before delete?
     # @collections.map(&:delete)
@@ -70,6 +83,17 @@ shared_context 'sign_out_before_request' do
 end
 
 # TODO move methods in helper module
+# Need to ensure it gets loaded before shared_examples / contexts though
+
+# @param [String] status
+# @return [Institute] || nil
+def institute(status)
+  if status == 'published'
+    org = FactoryBot.create(:institute)
+    org.save
+    org
+  end
+end
 
 # @param type [Symbol]
 # @param token [Boolean]

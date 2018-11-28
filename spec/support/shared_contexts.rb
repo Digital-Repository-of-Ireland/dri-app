@@ -16,7 +16,24 @@ shared_context 'collection_manager_user' do
 
   after(:all) do
     @login_user.destroy
-    @group.destroy
   end
 end
+
+shared_context 'doi_config_exists' do
+   before(:each) do
+    stub_const(
+      'DoiConfig',
+      OpenStruct.new(
+        { 
+          :username => "user",
+          :password => "password",
+          :prefix => '10.5072',
+          :base_url => "http://repository.dri.ie",
+          :publisher => "Digital Repository of Ireland" 
+        }
+      )
+    )
+  end
+end
+
 
