@@ -9,7 +9,7 @@ function addVocabAutocomplete() {
   $(selector).autocomplete({
     source: function (request, response) {
       $.ajax({
-        url: endpoint + request.term,
+        url: endpoint + request.term.toLowerCase(),
         type: 'GET',
         dataType: 'json',
         complete: function (xhr, status) {

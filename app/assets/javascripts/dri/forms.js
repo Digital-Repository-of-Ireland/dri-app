@@ -31,8 +31,8 @@ $(document).ready(function() {
 
   $.each(autoCompleteIds(), function(index, id) {
     $(id).on('focusin', function() {
-      // addChooseVocab if it doesn't exist
       setTimeout(function() {
+        // addChooseVocab if it doesn't exist
         if ($('#choose_vocab').length < 1) {
           addChooseVocab(id);
         }
@@ -40,10 +40,13 @@ $(document).ready(function() {
     });
     $(id).on('focusout', function() {
       // if id has no focused children
-      // remove autocomplete and choose_vocab drop down
+      // remove choose_vocab drop down
       setTimeout(function() {
         if (! $(id).find(':focus').length) {
-          removeVocabAutocomplete();
+          // if an input goes out of focus then back in, it won't have any autocomplete. 
+          // If it's out of focus, it won't be using autocomplete anyway, so leave the autocomplete on
+          // but remove the dropdown
+          // removeVocabAutocomplete();
           removeChooseVocab();
         }
       }, 100);
