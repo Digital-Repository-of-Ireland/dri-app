@@ -49,6 +49,8 @@ describe "Collections API" do
       tags 'collections'
       security [ apiKey: [], appId: [] ]
       produces 'application/json', 'application/xml', 'application/ttl'
+      parameter name: :pretty, description: 'indent json so it is human readable', 
+        in: :query, type: :boolean, default: false, required: false
       parameter name: :id, description: 'Object ID',
         in: :path, :type => :string
       include_context 'rswag_user_with_collections'

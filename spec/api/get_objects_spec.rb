@@ -9,10 +9,8 @@ describe "Get Objects API" do
       security [ apiKey: [], appId: [] ]
       produces 'application/json'
       consumes 'application/json'
-      # TODO refactor parameter
-      # Could not render JsonSchema_array, see the console
-      # because query param of type array has no standard
-      # update to use post body param 
+      parameter name: :pretty, description: 'indent json so it is human readable', 
+        in: :query, type: :boolean, default: false, required: false
       parameter name: :objects, description: 'array of hashes with object ids as values. e.g. {"objects": [{"v": "zp38wc65b"}]}. Only the first value of each hash is read.',
         in: :body, schema: {
           type: :array,
@@ -21,8 +19,6 @@ describe "Get Objects API" do
           },
           example: {"objects": [{"v": "zp38wc65b"}]}
         }
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
 
       include_context 'rswag_user_with_collections', status: 'published'
       include_context 'doi_config_exists'

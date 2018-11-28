@@ -70,25 +70,8 @@ shared_examples 'a json api 404 error' do |message: nil|
 end
 
 shared_examples 'a pretty json response' do
-  before do |example|
-    # submit normal request
-    submit_request(example.metadata)
-    @normal_response = response.body
-    # add pretty param and resubmit request
-    pretty_path = add_param(request.original_fullpath, ['pretty', 'true'])
-    req_format = 'application/json'
-    http_verb = example.metadata[:operation][:verb]
-    verb_func = method(http_verb)
-    # include body for post requests
-    body = http_verb == :post ? request.body : {}
-    verb_func.call(pretty_path, body, CONTENT_TYPE: req_format, ACCEPT: req_format)
-    @pretty_response = response.body
-  end
-  # run_test! is a rswag specific function that 
-  # submits the request and checks the response code matches the test definition
-  it 'should return pretty (indented) json' do
-    # same json but different formatting with ?pretty=true
-    normal_json = JSON.parse(@normal_response)
-    expect(JSON.pretty_generate(normal_json)).to eq @pretty_response
+  let(:pretty) {true}
+  run_test! do
+    expect(JSON.pretty_generate(JSON.parse(response.body))).to eq(response.body)
   end
 end
