@@ -42,7 +42,7 @@ function saveUriInForm(element, vocab_uri, label) {
   // use a data attribute to validate that the value in the input
   // matches the label of the uri in the hidden input
   $(createHiddenInput(hidden_uri_id, hidden_uri_name, vocab_uri))
-      .insertBefore($(element))
+      .insertAfter($(element))
       .data('vocab-label', label);
 
   // make it clear this is a label for a link
