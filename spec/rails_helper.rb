@@ -1,5 +1,6 @@
 require 'rubygems'
-require 'capybara/poltergeist'
+require 'capybara/rspec'
+require 'selenium-webdriver'
 
 def zeus_running?
   File.exists? '.zeus.sock'
@@ -15,10 +16,13 @@ if !zeus_running? && ENV["RUN_COVERAGE"]
     end
 end
 
-#Capybara.javascript_driver = :poltergeist
-Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, phantomjs: Phantomjs.path)
+Capybara.register_driver :chrome do |app|
+  options = Selenium::WebDriver::Chrome::Options.new(
+		args: %w[headless no-sandbox]
+            )
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
+Capybara.javascript_driver = :chrome
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] = 'test'
