@@ -133,6 +133,7 @@ function vocabOptions() {
   return [
     ["Library of Congress", "/qa/search/loc/subjects?q="],
     ["Logainm", "/qa/search/logainm/subjects?q="],
+    ["NUTS3", "/qa/search/nuts3/subjects?q="],
     ["OCLC FAST", "/qa/search/assign_fast/all?q="],
     ["Unesco", "/qa/search/unesco/subjects?q="],
     ["No authority (disable autocomplete)", "na"]
@@ -144,9 +145,11 @@ function vocabIdToUri(vocab, id) {
     "Library of Congress": locIdToUri,
     "OCLC FAST": oclcFastIdToUri,
     "Unesco": function(v) {return v;}, // unseco id is already uri
-    "Logainm": function(v) {return v;} // logainm id is uri, 
+    "Logainm": function(v) {return v;}, // logainm id is uri, 
     // but all links data.logainm.ie/place so far are broken
     // e.g. http://data.logainm.ie/place/1391191 (Whitestown)
+    // will be fixed by fct (facet browser) virtuoso add-on
+    "NUTS3": nuts3ToUri
   };
 
   var conversion = mappings[vocab];
@@ -154,6 +157,12 @@ function vocabIdToUri(vocab, id) {
   if (conversion) {
     return conversion(id);
   } // implicit return undefined
+}
+
+// TODO replace with locally hosted output / official source
+function nuts3ToUri(id) {
+  return "https://tbed.org/eudemo/index.php?tablename=nuts_vw" + 
+  "&function=details&where_field=nuts_code&where_value=" + id;
 }
 
 function oclcFastIdToUri(id) {
