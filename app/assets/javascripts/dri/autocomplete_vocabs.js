@@ -91,7 +91,10 @@ function createChooseVocab() {
 
 function addChooseVocab(selector) {
   // add the dropdown menu
-  $(createChooseVocab()).hide().appendTo($(selector)).slideDown('fast');
+  // $(createChooseVocab()).hide().appendTo($(selector)).slideDown('fast');
+
+  var fieldsetTitle = $(selector).children('span')[0];
+  $(createChooseVocab()).hide().insertAfter(fieldsetTitle).slideDown('fast');
 
   var default_authority = $(selector).data('default-authority');
   if (default_authority) {

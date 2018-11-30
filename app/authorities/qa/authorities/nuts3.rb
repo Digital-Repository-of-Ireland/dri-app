@@ -5,6 +5,8 @@ module Qa::Authorities
     # subset of irish codes in nuts3
 
     # possible options converting nuts3 IDs to URIs: 
+    # https://ec.europa.eu/eurostat/web/nuts/background
+    # https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02003R1059-20180118&from=EN
     # http://irelandsdg.geohive.ie/datasets/OSi::nuts3-generalised-100m-2/geoservice
     # https://tbed.org/eudemo/index.php?tablename=nuts_vw&function=details&where_field=nuts_code&where_value=
 

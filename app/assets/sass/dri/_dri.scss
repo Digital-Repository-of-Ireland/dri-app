@@ -2424,6 +2424,8 @@ ul.dri_collection_institutes_list {
             a.destructive {
                 color: $dri_midgrey;
                 cursor: pointer;
+                // keep icon and text on same line
+                white-space: nowrap;
             }
         }
     }
@@ -2637,6 +2639,12 @@ ul.dri_collection_institutes_list {
 
 .ui-autocomplete-loading { 
     background:url('colorbox/loading.gif') no-repeat right center;
+}
+
+#choose_vocab {
+    margin-bottom: 5px;
+    margin-right: 5px;
+    // float:right;
 }
 
 .dri_help_popover {
