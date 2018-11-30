@@ -242,6 +242,9 @@ en:
     help:
       add_documentation_help_text: These objects appear in the Related Materials section of the collection page.
       add_documentation_help_title: Add contextual information
+      autocomplete:
+        title: Autocompelete source
+        content: This dropdown sets the autocomplete source for the inputs below. Start typing in an input to get suggestions, or select disable to turn this feature off.
       dri_browse_collection_restricted: This collection may contain some objects with restricted assets
       dri_browse_sort_tabs_collections: Use this tab to search for Collections
       dri_browse_sort_tabs_collections_title: Collections Search

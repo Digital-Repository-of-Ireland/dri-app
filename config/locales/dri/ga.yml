@@ -44,7 +44,6 @@ ga:
         name: Ainm
         organisational_manager: Bainisteoir Eagrúcháin
         permissions: Ceadanna
-        token_params: Cuir na paraiméadar seo a leanas in iarratas chun é a fhíordheimhniú
         user_type: Cineál Úsáideora
         your_collection_details: Sonraí do Bhailiúcháin
     data:
@@ -65,6 +64,12 @@ ga:
         status: Stádas
         type: Cineál
         updated_at: Nuashonraithe ag
+      assets:
+        preview: Réamhamharc
+        status: Stádas
+        details: Sonraí
+        download: Íoslódáil
+        delete: Scrios
       user_activity:
         event: Teagmhas
         item: Mír
@@ -88,6 +93,7 @@ ga:
           visits: "Úsáideoirí ar leith"
           hits: "Iomlán na n-amas"
           hits_desc: "An méid uair iomlán ina raibh an leathanach lódáilte don oibiacht seo."
+          downloads: "Íoslódálacha sócmhainní"
       fixity:
         collection_id: "Bailiúchán"
         timestamp: "Stampa Ama"
@@ -230,6 +236,9 @@ ga:
     help:
       add_documentation_help_text: Tá na hoibiachtaí seo le feiceáil sa gcuid "Ábhair Ghaolmhara" den leathanach na mbailiúchán.
       add_documentation_help_title: Cuir faisnéis chomhthéacsúil leis
+      autocomplete:
+        title: Foinse autocomplete
+        content: Tugann an roghchlár seo rogha duit foinse autocomplete a roghnú. Tosaigh ag scríobh in aon ionchuir thíos chun moltaí a fháil, nó roghnaigh disable chun an autocomplete a díchumasú.
       dri_browse_sort_tabs_collections: Bain úsáid as an táb seo chun Bailiúcháin a chuardaigh
       dri_browse_sort_tabs_collections_title: Cuardach Bailiúcháin
       dri_browse_sort_tabs_objects: Bain úsáid as an táb seo chun Oibiachtaí a chuardaigh
@@ -419,6 +428,7 @@ ga:
           reviewed: Athbhreithnithe
           upload_file: Uaslódáil an Sócmhainn
           upload_preservation_file: Uaslódáil sócmhainn chaomhnú-amháin
+          view_assets: Breathnaigh ar na sócmhainní
         titles:
           editor_tools: Uirlisí Eagarthóireachta
           object_tools: Uirlisí Oibiachta
