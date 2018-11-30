@@ -1,12 +1,42 @@
-function addVocabAutocomplete() {
-  var selector = '.vocab-autocomplete'
-  var endpoint = $('#choose_vocab').find(':selected').val();
+$(document).ready(function(){
+  // for each fieldset that has a choose-vocab-container in it
+  $.each($('fieldset:has(.choose-vocab-container)'), function(_, fieldset) {
+    var id = '#' + fieldset.id;
+    console.log(id);
+    $(id).on('focusin', function() {
+      console.log(id + ' > .choose-vocab-container');
+      $(id + ' > .choose-vocab-container').slideDown('fast');
+      addVocabAutocomplete(id);
+    });
+    $(id).on('focusout', function() {
+      // if fieldset has no focused children, hide choose_vocab drop down
+      // wait 100ms to stop hide / immediate unhide when changing focus to different element within the same fieldset
+      setTimeout(function() {
+        if ($(id).find(':focus').length < 1) {
+          $(id + ' > .choose-vocab-container').slideUp('fast');
+        }
+      }, 100);
+    });
+  });
+
+  // any time a vocab-dropdown changes, update the autocomplete endpoint
+  $('.vocab-dropdown').each(function(){
+    $(this).change(function(){
+      addVocabAutocomplete($(this).parents('fieldset')[0].id);
+    });
+  });
+});
+
+function addVocabAutocomplete(id) {
+  // select all visible text inputs in the current fieldset
+  var input_selector = id + ' input[type="text"]:visible'
+  var dropdown_selector = id + ' > .choose-vocab-container > .vocab-dropdown';
+  var endpoint = $(dropdown_selector).find(':selected').val();
   if (endpoint === 'na') { 
-    removeVocabAutocomplete();
+    removeVocabAutocomplete(input_selector);
     return false; 
   }
-  // turn autocomplete back on
-  $(selector).autocomplete({
+  $(input_selector).autocomplete({
     source: function (request, response) {
       $.ajax({
         url: endpoint + request.term.toLowerCase(),
@@ -19,8 +49,8 @@ function addVocabAutocomplete() {
       });
     },
     select: function(request, response) {
-      var current_vocab = $('#choose_vocab').find(':selected').text();
-      var vocab_uri = vocabIdToUri(current_vocab, response.item.id);
+      var current_vocab = $(dropdown_selector).find(':selected').text();
+      var vocab_uri = vocabIdToUri(current_vocab.trim(), response.item.id);
       // if a vocab uri was generated, save the uri to a hidden element
       if (vocab_uri) {
         saveUriInForm($(this), vocab_uri, response.item.label);
@@ -33,9 +63,9 @@ function addVocabAutocomplete() {
 
 // TODO refactor to use this instead of passing element down?
 function saveUriInForm(element, vocab_uri, label) {
-  var fieldset_id = $('#choose_vocab').parents('fieldset').attr('id');
-  var model_name = $('#choose_vocab').siblings('.add-text-field')
-                                     .children('a').attr('model-name');
+  console.log('called save', $(element).id);
+  var fieldset_id = $(element).parents('fieldset').attr('id');
+  var model_name = $('#' + fieldset_id + ' .add-text-field a').attr('model-name');
   var hidden_uri_id = [model_name, fieldset_id].join('_')+'][';
   var hidden_uri_name = model_name+'['+fieldset_id+'][]';
   // add a hidden input with the vocab uri as the value
@@ -53,6 +83,8 @@ function saveUriInForm(element, vocab_uri, label) {
   });
 }
 
+// TODO run on all elements on form submit 
+// focus out won't be triggered before form submits
 function handleMismatchedSavedUri(element) {
   var hidden_input = $(element).parent().find('input:hidden');
   var normal_input = $(element);
@@ -60,7 +92,7 @@ function handleMismatchedSavedUri(element) {
   var current_label = $(element).val();
   // if both inputs exists, and the labels don't match
   // remove the hidden input and revert back to non-link style
-  if (stored_label && current_label && (current_label != stored_label)) {
+  if (stored_label && current_label && (current_label !== stored_label)) {
     $(hidden_input).remove();
     $(element).css({'color':'black', 'text-decoration':'none'});
   }
@@ -70,57 +102,8 @@ function createHiddenInput(id, name, value='none') {
   return '<input id="'+id+'" name="'+name+'" type="hidden" value="'+value+'"/>';
 }
 
-function removeVocabAutocomplete() {
-  var selector = '.vocab-autocomplete'
+function removeVocabAutocomplete(selector) {
   $(selector).autocomplete({source: []});
-}
-
-function createChooseVocab() {
-  var choose_vocab = document.createElement('select');
-  choose_vocab.id = 'choose_vocab'
-  var options = vocabOptions();
-
-  options.forEach(function(arr){
-    var option = document.createElement('option');
-    option.text = arr[0];
-    option.value = arr[1];
-    choose_vocab.appendChild(option);
-  });
-  return choose_vocab;
-}
-
-function addChooseVocab(selector) {
-  // add the dropdown menu
-  // $(createChooseVocab()).hide().appendTo($(selector)).slideDown('fast');
-
-  var fieldsetTitle = $(selector).children('span')[0];
-  $(createChooseVocab()).hide().insertAfter(fieldsetTitle).slideDown('fast');
-
-  var default_authority = $(selector).data('default-authority');
-  if (default_authority) {
-    $('#choose_vocab').val(
-      '/qa/search/' + default_authority + '?q='
-    );
-  }
-
-  // add autocomplete to relevant inputs
-  addVocabAutocomplete();
-
-  // update autcomplete endpoint when dropdown changes
-  $('#choose_vocab').on('change', function(){
-    addVocabAutocomplete();
-  });
-}
-
-// Comment out this function to debug the dropdown
-function removeChooseVocab() {
-  $('#choose_vocab').slideUp('fast', function() {
-    $(this).remove();
-  });
-}
-
-function autoCompleteIds() {
-  return ['#subject', '#coverage', '#geographical_coverage', '#temporal_coverage'];
 }
 
 function getDefaultAuthority(id) {
@@ -130,17 +113,6 @@ function getDefaultAuthority(id) {
     'geographical_coverage': 'Logainm',
   }
   return mappings[id];
-}
-
-function vocabOptions() {
-  return [
-    ["Library of Congress", "/qa/search/loc/subjects?q="],
-    ["Logainm", "/qa/search/logainm/subjects?q="],
-    ["NUTS3", "/qa/search/nuts3/subjects?q="],
-    ["OCLC FAST", "/qa/search/assign_fast/all?q="],
-    ["Unesco", "/qa/search/unesco/subjects?q="],
-    ["No authority (disable autocomplete)", "na"]
-  ];
 }
 
 function vocabIdToUri(vocab, id) {

@@ -222,6 +222,7 @@
 
 	<fieldset id="coverage">
 		<%= render "shared/form_fieldset_label", f:f, source:'coverages' %>
+		<%= render "shared/autocomplete_dropdown" %>		
 	  <% @object.coverage.each do |i| %>
 		  <div>
 			  <%= f.text_field "coverage][", value:i, class: "edit span6 dri-textfield" %> 
@@ -231,8 +232,9 @@
     <%= render "shared/form_add_text_field_button", action:%w(add coverage) %>
 	</fieldset>
 
-	<fieldset id="geographical_coverage" data-default-authority='logainm/subjects'>
+	<fieldset id="geographical_coverage">
 	  <%= render "shared/form_fieldset_label", f:f, source:'geographical_coverages' %>
+	  <%= render "shared/autocomplete_dropdown", default:'Logainm' %>
 		<% @object.geographical_coverage.each do |i| %>
 		  <div>
 			  <%= f.text_field "geographical_coverage][", value:i, class: "edit span6 dri-textfield" %> 
@@ -245,6 +247,7 @@
 	<fieldset id="temporal_coverage">
 	  <%= render "shared/form_fieldset_label", f:f, 
 	  source:'temporal_coverage', span_sting:'dri.views.fields.temporal_coverages'  %>
+	  <%= render "shared/autocomplete_dropdown" %>
 		<% @object.temporal_coverage.each do |i| %>
 		  <div>
 			  <%= f.text_field "temporal_coverage][", value:i, class: "edit span6 dri-textfield" %> 
@@ -262,6 +265,7 @@
 
 	<fieldset id="subject" data-default-authority='unesco/subjects'>
 	  <%= render "shared/form_fieldset_label", f:f, source:'subjects' %>
+	  <%= render "shared/autocomplete_dropdown" %>	  
 		<% @object.subject.each do |i| %>
 		  <div>
 			  <%= f.text_field "subject][", value:i, class: "edit span6 dri-textfield" %> 

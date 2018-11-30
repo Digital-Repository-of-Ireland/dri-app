@@ -9,48 +9,17 @@ $(document).ready(function() {
       'input';
     var input_id = [model_name, fieldset_id].join('_')+'][';
     var input_name = model_name+'['+fieldset_id+'][]';
-    var css_classes = "edit span6";
-    
-    // add autocomplete class if necessary
-    if ($.inArray('#' + fieldset_id, autoCompleteIds()) > -1) {
-      css_classes += ' vocab-autocomplete';
-    }
 
     var new_element_html = (new_elemenet_type == 'textarea') ?
-      createTextArea(input_id, input_name, css_classes) :
-      createTextInput(input_id, input_name, css_classes);
+      createTextArea(input_id, input_name) :
+      createTextInput(input_id, input_name);
 
     $(new_element_html).hide().insertBefore(
       $(this).parent()
     ).slideDown('fast');
 
     var added_element = $("#"+fieldset_id+" > div > "+new_elemenet_type).last();
-    addVocabAutocomplete(); // re-add autocomplete listeners to include new input
     added_element.focus(); // focus on newly added input
-  });
-
-  $.each(autoCompleteIds(), function(index, id) {
-    $(id).on('focusin', function() {
-      setTimeout(function() {
-        // addChooseVocab if it doesn't exist
-        if ($('#choose_vocab').length < 1) {
-          addChooseVocab(id);
-        }
-      }, 500);
-    });
-    $(id).on('focusout', function() {
-      // if id has no focused children
-      // remove choose_vocab drop down
-      setTimeout(function() {
-        if (! $(id).find(':focus').length) {
-          // if an input goes out of focus then back in, it won't have any autocomplete. 
-          // If it's out of focus, it won't be using autocomplete anyway, so leave the autocomplete on
-          // but remove the dropdown
-          // removeVocabAutocomplete();
-          removeChooseVocab();
-        }
-      }, 100);
-    });
   });
 
   $('.dri_ingest_form').on('click','.destructive', function(e) {
@@ -82,9 +51,8 @@ $(document).ready(function() {
     var fieldset_id = $(this).parents('fieldset').attr('id');
     var model_name = $(this).attr('model-name');
     var previous_select = $(this).parent().siblings('div').last().children('select');
-    var classes = "edit span6";
 
-    var new_element_html = createPersonInput(fieldset_id, model_name, classes, previous_select);
+    var new_element_html = createPersonInput(fieldset_id, model_name, previous_select);
     $(new_element_html).hide().insertBefore($(this).parent()).slideDown('fast');
 
     var added_element = $(this).parent().siblings('div').last();
@@ -165,7 +133,7 @@ function createRemoveButton(model='batch') {
 
 function createTextArea(id, name, classes) {
   return '<div>\
-            <textarea class="' + classes + ' dri-textarea " \
+            <textarea class="edit span6 dri-textarea " \
               id='+id+' name='+name+'>\
             </textarea>'+createRemoveButton()+
           '</div>';
@@ -173,7 +141,7 @@ function createTextArea(id, name, classes) {
 
 function createTextInput(id, name, classes) {
   return '<div>\
-            <input class="'+classes+' dri-textfield " \
+            <input class="edit span6 dri-textfield " \
               id='+id+' name='+name+' \
               size="30" type="text" value=""/>'+createRemoveButton()+
           '</div>';
@@ -182,12 +150,12 @@ function createTextInput(id, name, classes) {
 // TODO 
 // 1. move to ecma6 template strings
 // 2. Check selected data-field needs to exist? (doesn't update, isn't on first element)
-function createPersonInput(id, name, classes, previous_select) {
+function createPersonInput(id, name, previous_select) {
   return '<div>\
             <select id="'+name+'_'+id+'][type][" selected="'+previous_select.val()+
               '" name="'+name+'['+id+'][type][]">'+previous_select.html()+
             '</select> \
-              <input class="'+classes+' dri-textfield " id="'+name+'_'+id+'][name][" name="'
+              <input class="edit span6 dri-textfield " id="'+name+'_'+id+'][name][" name="'
               +name+'['+id+'][name][]" size="30" type="text" value=""/>'+createRemoveButton()+
           '</div>';
 }
