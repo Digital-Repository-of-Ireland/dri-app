@@ -6,9 +6,13 @@ Before('~@javascript') do
   page.driver.browser.header('Accept-Language', 'en')
 end
 
+#Before do
+#  clean_repo
+#end
+
 After do
   #DatabaseCleaner.clean
-  clean_repo
+  #clean_repo
   FileUtils.remove_dir(@tmp_assets_dir, force: true)
 end
 

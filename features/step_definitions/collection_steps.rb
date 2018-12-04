@@ -2,6 +2,8 @@ include DRI::Duplicable
 
 Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = @random_pid if (pid.nil? || pid == "random")
+  @pid = pid
+
   @collection = DRI::Batch.with_standard(:qdc, {:id => pid})
   @collection.title = title ? [title] : [SecureRandom.hex(5)]
   @collection.description = [SecureRandom.hex(20)]
@@ -22,6 +24,7 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
   @collection.master_file_access="private"
   @collection.status = 'draft'
   @collection.save
+
   expect(@collection.governed_items.count).to be == 0
 
   group = UserGroup::Group.new(:name => @collection.id,
@@ -122,7 +125,6 @@ Given /^I have associated the institute "(.?*)" with the collection with pid "(.
   if (pid.eql?('the saved pid'))
     pid = @collection_pid ? @collection_pid : @pid
   end
-
   collection = ActiveFedora::Base.find(pid ,{:cast => true})
 
   institute = Institute.new
@@ -165,7 +167,6 @@ When /^I enter invalid metadata for a collection(?: with title (.*?))?$/ do |tit
     And I fill in "batch_description][" with "Test description"
     And I fill in "batch_creation_date][" with "2000-01-01"
     And I fill in "batch_rights][" with ""
-    And I fill in "batch_type][" with "Collection"
   }
 end
 

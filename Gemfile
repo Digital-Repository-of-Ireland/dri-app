@@ -111,8 +111,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'cucumber', '2.3.3'
-  gem 'cucumber-rails', '1.4.3', require: false
+  gem 'cucumber', '3.1.2'
+  gem 'cucumber-rails', '1.6.0', require: false
   gem 'database_cleaner'
   gem 'launchy'
   gem 'shoulda'
