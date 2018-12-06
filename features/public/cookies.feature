@@ -7,13 +7,13 @@ Feature: Cookies alert
 
 Background:
   Given I am not logged in
+  And I have no cookies
 
 Scenario: Visiting the site for the first time
   Given I am on the home page
   Then I should see a window about cookies
   When I accept cookies terms
   Then I should have a cookie accept_cookies
-#  And I should not see a window about cookies
 
 Scenario: Logging in should set accept_cookies
   Given I am on the home page

@@ -94,7 +94,9 @@ Scenario: Deleting a collection as an admin
   And the collection with pid "coll6" has status published
   When I go to the "my collections" "show" page for "coll6"
   Then I should see a button to delete collection with id coll6
-  When I press the modal button to "delete collection with id coll6" in "dri_delete_modal_id"
+  When I follow the link to delete a collection
+  And I press the button to "delete collection with id coll6"
+  And I accept the alert
   Then I should see a success message for deleting a collection
 
 Scenario: Non-admin should not be given option to delete

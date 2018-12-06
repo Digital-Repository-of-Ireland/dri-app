@@ -98,7 +98,6 @@ When /^(?:|I )go to "([^"]*)"$/ do |page_name|
 end
 
 When /^(?:|I )go to the "([^"]*)" "([^"]*)" page(?: for "([^"]*)")?$/ do |type, page, pid|
-  patiently do
   if(pid.nil? && ['my collections', 'collection', 'metadata'].include?(type))
     pid = @collection.id
   elsif(pid.nil? && type == "object")
@@ -109,16 +108,14 @@ When /^(?:|I )go to the "([^"]*)" "([^"]*)" page(?: for "([^"]*)")?$/ do |type, 
     pid = @pid if pid.eql?('the saved pid')
   end
   visit path_for(type, page, pid)
-  end
 end
 
 When /^(?:|I )follow the link to (.+)$/ do |link_name|
-  patiently do
-    if Capybara.current_driver == Capybara.javascript_driver
-      page.find_link(link_to_id(link_name)).trigger('click')
-    else
-      page.find_link(link_to_id(link_name)).click
-    end
+  if Capybara.current_driver == Capybara.javascript_driver
+    element = page.find_link(link_to_id(link_name), { visible: false})
+    page.execute_script("return arguments[0].click();", element)
+  else
+    page.find_link(link_to_id(link_name)).click
   end
 end
 
@@ -126,17 +123,18 @@ end
 # - it ignores overlaping <a> elements and just fires the click
 # event on the selected element.
 When /^(?:|I )click the link to (.+)$/ do |link_name|
-  patiently do
+  if Capybara.current_driver == Capybara.javascript_driver
+    element = page.find_link(link_to_id(link_name), { visible: false})
+    page.execute_script("return arguments[0].click();", element)
+  else
     element = page.find(:id, link_to_id(link_name))
     element.trigger('click')
   end
 end
 
 When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
-  patiently do
-    with_scope(selector) do
-      click_link(link)
-    end
+  with_scope(selector) do
+    click_link(link)
   end
 end
 
@@ -146,7 +144,6 @@ end
 
 When /^I select "(.*?)" from the selectbox number (.*?) for (.*?)$/ do |option, index, selector|
   page.all(:xpath, '//select[@id="'+select_box_to_id(selector)+'"]')[index.to_i].find(:xpath, ".//option[@value='#{option}']").select_option
-  #select_by_value(option, :xpath => selected_select)
 end
 
 When /^I select the text "(.*?)" from the selectbox for (.*?)$/ do |option, selector|
@@ -158,7 +155,6 @@ When /^I upload the metadata file "(.*?)"$/ do |file|
 end
 
 When /^I attach the metadata file "(.*?)"$/ do |file|
-  #within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_file_upload')]") do
   within('#metadata_uploader') do
     attach_file("metadata_file", File.expand_path(File.join(cc_fixture_path, file)))
   end
@@ -174,9 +170,7 @@ end
 
 When /^I enter valid metadata(?: with title "(.*?)")?$/ do |title|
   title ||= "A Test Object"
-  patiently do
-    interface.enter_valid_metadata(title)
-  end
+  interface.enter_valid_metadata(title)
 end
 
 When /^I enter invalid metadata(?: with title "(.*?)")?$/ do |title|
@@ -195,9 +189,7 @@ When /^I enter valid "(sound|text)" metadata$/ do |type|
 end
 
 When /^I enter modified metadata$/ do
-  patiently do
-    interface.enter_modified_metadata
-  end
+  interface.enter_modified_metadata
 end
 
 When /^I enter valid licence information for licence "(.*?)" into the new licence form$/ do |name|
@@ -246,35 +238,33 @@ end
 
 Then /^I press "(.*?)"$/ do |button|
   Capybara.ignore_hidden_elements = false
-  patiently do
-    click_link_or_button(button)
-  end
+  click_link_or_button(button)
 end
 
 Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|
-  page.find_by_id(modal, :visible=>false).find_by_id(button_to_id(button)).trigger('click')
+  element = page.find_by_id(modal, :visible=>false).find_by_id(button_to_id(button))
+  page.execute_script("return arguments[0].click();", element)
 end
 
 Then /^(?:|I )(press|click) the button to "([^"]*)"(?: within "([^"]*)")?$/ do |action,button,selector|
   Capybara.ignore_hidden_elements = false
-  patiently do
-    if selector
-      within("//*[@id='#{selector}']") do
-        page.find_button(button_to_id(button)).click
-      end
+  if selector
+    within("//*[@id='#{selector}']") do
+      page.find_button(button_to_id(button)).click
+    end
+  else
+    if action == 'click'
+      page.find_button(button_to_id(button), {visible: false}).trigger('click')
     else
-      if action == 'click'
-        page.find_button(button_to_id(button), {visible: false}).trigger('click')
-      else
-        page.find_button(button_to_id(button), {visible: false}).click
-      end
+      page.find_button(button_to_id(button), {visible: false}).click
     end
   end
 end
 
 Then /^I check "(.*?)"$/ do |checkbox|
   Capybara.ignore_hidden_elements = false
-  page.find_by_id(checkbox, { visible: false}).trigger('click')
+  element = page.find_by_id(checkbox, { visible: false}) #.click #trigger('click')
+  page.execute_script("return arguments[0].click();", element)
 end
 
 When /^(?:|I )perform a search$/ do
@@ -408,9 +398,7 @@ Then /^I should see the error "([^\"]*)"$/ do |error|
 end
 
 Then /^I should( not)? see the message "([^\"]*)"$/ do |negate, message|
-  patiently do
-    negate ? (expect(page).to_not have_selector ".dri_messages_container", text: message) : (expect(page).to have_selector ".dri_messages_container", text: message)
-  end
+  negate ? (expect(page).to_not have_selector ".dri_messages_container", text: message) : (expect(page).to have_selector ".dri_messages_container", text: message)
 end
 
 Then /^I should (not )?see an element "([^"]*)"$/ do |negate, selector|
