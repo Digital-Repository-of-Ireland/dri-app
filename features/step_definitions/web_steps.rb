@@ -406,6 +406,13 @@ Then /^I should (not )?see an element "([^"]*)"$/ do |negate, selector|
   page.send(expectation, have_css(selector))
 end
 
+# used for vocab autocomplete
+# .vocab-dropdown always exists, but is hidden. using see element will always pass
+Then /^I should (not )?see a visible element "([^"]*)"/ do |negate, selector|
+  expectation = negate ? :to_not : :to
+  expect(find_all(selector, visible: true).count).send(expectation, eq(1)) 
+end
+
 Then /^I should see the iframe "([^\"]+)"$/ do |iframe_name|
   within_frame(iframe_name){
     sleep 5
