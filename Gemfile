@@ -76,7 +76,6 @@ gem 'resque', '1.26'
 gem 'resque-status'
 gem 'nest'
 gem 'sass-rails' , '~> 4.0.4'
-#gem 'compass', '0.12.7'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs'
@@ -93,8 +92,8 @@ group :development, :test do
   gem 'guard'
   gem 'rspec-rails', '~> 3.0'
   gem 'rswag-specs', '~> 2.0'
-  gem 'poltergeist', '>= 1.11.0'
-  gem 'phantomjs', :require => 'phantomjs/poltergeist'
+  gem 'selenium-webdriver'
+  gem 'chromedriver-helper'
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'railroady'
@@ -112,8 +111,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'cucumber', '2.3.3'
-  gem 'cucumber-rails', '1.4.3', require: false
+  gem 'cucumber', '3.1.2'
+  gem 'cucumber-rails', '1.6.0', require: false
   gem 'database_cleaner'
   gem 'launchy'
   gem 'shoulda'
