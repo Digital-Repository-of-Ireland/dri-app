@@ -377,9 +377,16 @@ When /^(?:|I )choose "([^"]*)"(?: within "([^"]*)")?$/ do |field, selector|
   end
 end
 
-Then /^the( hidden)? "([^"]*)" field(?: within "([^"]*)")? should( not)? contain "([^"]*)"$/ do |visibility, field, selector, negate, value|
+Then /^the( hidden)? "([^"]*)" field(?: within "([^"]*)")? should( not)? contain "([^"]*)"$/ do |visibility, field_id, selector, negate, value|
   with_scope(selector) do
-    field = visibility ? find_field(field, :visible=>false) : find_field(field)
+    # https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Node/Finders#find-instance_method
+    # visible: false returns visible and non-visible elements, use :hidden
+    field = if visibility
+              find("##{escape_id(field_id)}", visible: :hidden)
+              # find_field(field_id, visible: :hidden) # throws exception
+            else 
+              find_field(field_id)
+            end
     field_value = (field.tag_name == 'textarea') ? field.text : field.value
     if field_value.respond_to? :should_not
       negate ? field_value.should_not =~ /#{value}/ : field_value.should =~ /#{value}/

@@ -111,6 +111,9 @@ group :development, :test do
 end
 
 group :test do
+  # requires >= 3.3.0 to test styles on node element
+  # https://github.com/teamcapybara/capybara/commit/faa45e135434a7f16f04ef5136c63a0663925dec
+  gem 'capybara', '~> 3.12.0'
   gem 'cucumber', '3.1.2'
   gem 'cucumber-rails', '1.6.0', require: false
   gem 'database_cleaner'
