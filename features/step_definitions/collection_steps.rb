@@ -199,7 +199,7 @@ When /^I press the remove from collection button for Digital Object "(.*?)"/ do 
 end
 
 When /^I (click|press) the edit collection button with text "(.*?)"$/ do |_, button_text|
-  find('fieldset a span', text: button_text).click
+  find('fieldset a', text: button_text).click
 end 
 
 Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as type "(.*?)")?$/ do |collection_pid,object_pid,*type|
