@@ -23,7 +23,8 @@ gem 'googleauth', '0.5.1'
 
 gem 'paper_trail', '~> 4'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
+#gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
+gem 'dri_data_models', path: '/home/kathryn/src/dri-data-models'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
 
 # batch ingest
@@ -171,6 +172,7 @@ gem 'rails-assets-leaflet.markercluster', '1.3.0', source: 'https://rails-assets
 gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem "jquery-slick-rails"
 gem 'remotipart'
+gem "d3-rails", "3.5.6"
 
 # api documentation generator / presenter
 gem "rswag-api", "~> 2.0"

@@ -18,6 +18,7 @@
 //= require clipboard
 //= require i18n
 //= require i18n/translations
+//= require d3
 
 //
 // Required by Blacklight-Maps

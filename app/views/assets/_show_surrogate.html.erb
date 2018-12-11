@@ -19,6 +19,8 @@
       </div>
     <% elsif @generic_file.image? %>
       <img src="<%= @presenter.surrogate_url(@generic_file.id, "thumbnail_medium")  %>">
+    <% elsif @generic_file.tabular? %>
+      <p>IT IS TABULAR</p>
     <% end %>
   </div>
 

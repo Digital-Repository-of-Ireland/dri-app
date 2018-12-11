@@ -183,6 +183,8 @@ class SurrogatesController < ApplicationController
         'pdf'
       elsif @generic_file.image?
         'full_size_web_format'
+      elsif @generic_file.tabular?
+        'csv'
       end
     end
 

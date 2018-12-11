@@ -76,10 +76,8 @@ GIT
     timelineJS3-rails (1.0.3)
       jquery-rails
 
-GIT
-  remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 83ad019472ec57f8a05e381549bc18d3d6f0bef3
-  branch: develop
+PATH
+  remote: /home/kathryn/src/dri-data-models
   specs:
     dri_data_models (2.6.5)
       active-fedora (= 9.13)
@@ -291,6 +289,8 @@ GEM
       nokogiri (~> 1.5)
       railties (>= 3, < 5)
     cucumber-wire (0.0.1)
+    d3-rails (3.5.6)
+      railties (>= 3.1)
     daemons (1.2.6)
     database_cleaner (1.6.2)
     debug_inspector (0.0.3)
@@ -491,7 +491,7 @@ GEM
     inflecto (0.0.2)
     is_it_working-cbeer (1.0.16)
     iso-639 (0.2.8)
-    iso8601 (0.12.0)
+    iso8601 (0.12.1)
     it (1.0.0)
       actionpack (>= 3.0.0)
     jmespath (1.4.0)
@@ -968,6 +968,7 @@ DEPENDENCIES
   cucumber (= 2.3.3)
   cucumber-api-steps
   cucumber-rails (= 1.4.3)
+  d3-rails (= 3.5.6)
   database_cleaner
   dri_batch_ingest!
   dri_data_models!
@@ -1055,4 +1056,4 @@ DEPENDENCIES
   zeus
 
 BUNDLED WITH
-   1.16.4
+   1.17.1

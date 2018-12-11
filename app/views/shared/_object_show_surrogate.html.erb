@@ -64,6 +64,14 @@
                 <% end %>
             <% end %>
         <% end %>
+
+    <% elsif generic_file.tabular? %>
+        <% @surrogate = @presenter.surrogate_url(generic_file.id, "csv") %>
+        <% @title = generic_file.label %>
+        <% if @surrogate %>
+            <%= content_tag :div, id: "dri_tabular_surrogate_display", data: {surrogate: @surrogate} do %>
+            <% end %>
+        <% end %>
     <% end %>
 
     <% if @surrogate.blank? %>

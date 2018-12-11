@@ -91,6 +91,48 @@ $(document).on("click", ".view_pdf", function () {
      $("#dri_pdf_viewer_modal_id .modal-body").html("<object data=" + pdf + " type=\"application/pdf\" width=\"100%\" height=\"100%\"/>");
 });
 
+// function to display csv surrogate in a table
+$(document).ready(function() {
+
+    d3.csv($("#dri_tabular_surrogate_display").data('surrogate'), function(tabularData) {
+        var myHeadings;
+        var myRows = [];
+        tabularData.forEach(function(d){
+            myHeadings = Object.keys(d);
+            var tmp = [];
+            myHeadings.forEach( function(key) {
+                tmp.push(d[key]);
+            });
+            myRows.push(tmp);
+        });
+        
+        var table = d3.select("#dri_tabular_surrogate_display").append("table");
+        var header = table.append("thead").append("tr");
+        header
+                .selectAll("th")
+                .data(myHeadings)
+                .enter()
+                .append("th")
+                .text(function(d) { return d; });
+        var tablebody = table.append("tbody");
+        var rows = tablebody
+                .selectAll("tr")
+                .data(myRows)
+                .enter()
+                .append("tr");
+        var cells = rows.selectAll("td")
+                .data(function(d) {
+                    return d;
+                })
+                .enter()
+                .append("td")
+                .text(function(d) {
+                    return d;
+                });
+    });
+
+});
+
 $(document).ready(function() {
   $('.dri_main_nav_new ul.nav li.dropdown').hover(function() {
     $(this).find('.dropdown-menu').stop(true, true).delay(100).fadeIn(200);
