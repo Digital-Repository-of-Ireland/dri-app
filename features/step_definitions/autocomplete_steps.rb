@@ -2,10 +2,10 @@ When /^I click the first autocomplete result$/ do
   first(".ui-autocomplete li a", visible: true).click
 end
 
-When /^I Add "([^"]*)" and fill in ([^"]*)" and choose the first autocomplete result$/ do |add, text|
+When /^I "([^"]*)" and fill in "([^"]*)" and choose the first autocomplete result$/ do |add, text|
   steps %{
-    When I press the edit collection button with text "Add #{add}"
-    And I fill in "#{button_to_input_id('Add ' + add)}" with "#{text}"
+    When I press the edit collection button with text "#{add}"
+    And I fill in "#{button_to_input_id(add)}" with "#{text}"
     And I click the first autocomplete result
   }
 end

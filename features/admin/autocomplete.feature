@@ -49,22 +49,10 @@ Scenario: Choosing an autocomplete result, then changing your mind
 
 Scenario: Submitting a collection with autocomplete results
   When I enter valid metadata for a collection
-
-  And I press the edit collection button with text "Add Coverage"
-  And I fill in "batch_coverage][" with "Ireland"
-  And I click the first autocomplete result
-
-  And I press the edit collection button with text "Add Place"
-  And I fill in "batch_geographical_coverage][" with "Dublin"
-  And I click the first autocomplete result
-
-  And I press the edit collection button with text "Add Temporal Coverage"
-  And I fill in "batch_temporal_coverage][" with "20th century"
-  And I click the first autocomplete result
-
-  And I press the edit collection button with text "Add Subject"
-  And I fill in "batch_subject][" with "Leinster house"
-  And I click the first autocomplete result
+  And I "Add Coverage" and fill in "Ireland" and choose the first autocomplete result
+  And I "Add Place" and fill in "Dublin" and choose the first autocomplete result
+  And I "Add Temporal Coverage" and fill in "20th century" and choose the first autocomplete result
+  And I "Add Subject" and fill in "Leinster house" and choose the first autocomplete result
 
   And I check "deposit"
   And I press the button to "create a collection"
