@@ -2,7 +2,7 @@ Then /^I should wait$/ do
   sleep 2
 end
 
-Then /^I should wait for "(.*?)" seconds$/ do |time|
+Then /^I( should)? wait for "(.*?)" second(s)?$/ do |_, time, _|
   sleep(time.to_i)
 end
 

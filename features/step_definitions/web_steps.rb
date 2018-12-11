@@ -415,9 +415,16 @@ end
 
 # used for vocab autocomplete
 # .vocab-dropdown always exists, but is hidden. using see element will always pass
-Then /^I should (not )?see (\d+) visible element(s)? "([^"]*)"/ do |negate, num, _, selector|
+Then /^I should (not )?see (\d+) visible element(s)? "([^"]*)"$/ do |negate, num, _, selector|
   expectation = negate ? :to_not : :to
   expect(find_all(selector, visible: true).count).send(expectation, eq(num)) 
+end
+
+Then /^I should (not )?see a hidden "([^"]*)" within "([^"]*)"$/ do |negate, element, scope|
+  expectation = negate ? :to_not : :to
+  with_scope(scope) do
+    expect(find_all(escape_id(element), visible: :hidden).count).send(expectation, be > 0)
+  end
 end
 
 Then /^I should see the iframe "([^\"]+)"$/ do |iframe_name|
