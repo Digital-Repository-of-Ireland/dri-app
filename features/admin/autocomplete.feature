@@ -51,9 +51,15 @@ Scenario: Submitting a collection with autocomplete results
   When I enter valid metadata for a collection
   And I "Add Coverage" and fill in "Ireland" and choose the first autocomplete result
   And I "Add Place" and fill in "Dublin" and choose the first autocomplete result
-  And I "Add Temporal Coverage" and fill in "20th century" and choose the first autocomplete result
+  And I "Add Temporal Coverage" and fill in "20th Century" and choose the first autocomplete result
   And I "Add Subject" and fill in "Leinster house" and choose the first autocomplete result
-
   And I check "deposit"
   And I press the button to "create a collection"
   Then I should see a success message for creating a collection
+  When I follow the link to full metadata
+  Then I should see "Ireland" within ".modal-body .dri_object_metadata_readview"
+  And I should see "Dublin" within ".modal-body .dri_object_metadata_readview"
+  And I should see "20th Century" within ".modal-body .dri_object_metadata_readview"
+  And I should see "Leinster House" within ".modal-body .dri_object_metadata_readview"
+  # the 4 hidden URIs for each autocomplete result, saved in the metadata
+  And I should see 4 visible elements ".modal-body .dri_object_metadata_readview dd a"

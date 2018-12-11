@@ -101,13 +101,13 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'guard-livereload', require: false
-  gem "zeus", require: false
+  gem 'zeus', require: false
   gem 'ci_reporter_rspec'
   gem 'solr_wrapper', '~> 0.18'
   gem 'fcrepo_wrapper', '0.6.0'
   gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
-  gem "byebug", "~> 10.0"
-  gem "parallel_tests", "~> 2.23"
+  gem 'byebug', '~> 10.0'
+  gem 'parallel_tests', '~> 2.23'
 end
 
 group :test do
@@ -171,11 +171,11 @@ gem 'rails-assets-leaflet', '1.1.0', source: 'https://rails-assets.org'
 gem 'rails-assets-leaflet.markercluster', '1.3.0', source: 'https://rails-assets.org'
 
 gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
-gem "jquery-slick-rails"
+gem 'jquery-slick-rails'
 gem 'remotipart'
 
 # api documentation generator / presenter
-gem "rswag-api", "~> 2.0"
-gem "rswag-ui", "~> 2.0"
+gem 'rswag-api', '~> 2.0'
+gem 'rswag-ui', '~> 2.0'
 
-gem "qa", "~> 1.2"
+gem 'qa', '~> 1.2'
