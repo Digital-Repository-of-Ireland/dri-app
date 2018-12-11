@@ -35,13 +35,32 @@ module DRI::Catalog
 
     def configure_timeline(solr_parameters, user_parameters)
       if user_parameters[:view] == 'timeline'
-        solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
-
-        if params[:tl_page].present? && params[:tl_page].to_i > 1
-          solr_parameters[:start] = MAX_TIMELINE_ENTRIES * (params[:tl_page].to_i - 1)
-        else
-          solr_parameters[:start] = 0
+        tl_field = user_parameters[:tl_field].presence || 'sdate'
+        case tl_field
+        when 'cdate'
+          solr_parameters[:fq] << "+cdateRange:*"
+          solr_parameters[:fq] << "+cdate_range_start_isi:[* TO *]"
+          solr_parameters[:sort] = "cdate_range_start_isi asc"
+        when 'pdate'
+          solr_parameters[:fq] << "+pdateRange:*"
+          solr_parameters[:fq] << "+pdate_range_start_isi:[* TO *]"
+          solr_parameters[:sort] = "pdate_range_start_isi asc"
+        when 'sdate'
+          solr_parameters[:fq] << "+sdateRange:*"
+          solr_parameters[:fq] << "+sdate_range_start_isi:[* TO *]"
+          solr_parameters[:sort] = "sdate_range_start_isi asc"
+        when 'date'
+          solr_parameters[:fq] << "+ddateRange:*"
+          solr_parameters[:fq] << "+date_range_start_isi:[* TO *]"
+          solr_parameters[:sort] = "date_range_start_isi asc"
         end
+
+        solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
+        solr_parameters[:start] = if params[:tl_page].present? && params[:tl_page].to_i > 1
+                                    MAX_TIMELINE_ENTRIES * (params[:tl_page].to_i - 1)
+                                  else
+                                    0
+                                  end
       else
         params.delete(:tl_page)
         params.delete(:tl_field)
@@ -49,32 +68,12 @@ module DRI::Catalog
     end
 
     def timeline_data
+      tl_field = params[:tl_field].presence || 'sdate'
+
       timeline = Timeline.new(view_context)
-      all_dates_events = timeline.data(@document_list)
+      date_field_events = timeline.data(@document_list, tl_field)
 
-      timeline_fields = {}
-      all_dates_events.keys.each do |field|
-        timeline_fields[field] = TIMELINE_FIELD_LABELS[field]
-      end
-
-      field_events = timeline_events_for_field(params[:tl_field], all_dates_events)
-
-      { available_fields: timeline_fields, events: field_events }
-    end
-
-    def timeline_events_for_field(tl_field, all_dates_events)
-      if tl_field && all_dates_events.key?(tl_field)
-          return all_dates_events[tl_field].to_json
-      else
-        TIMELINE_FIELD_LABELS.keys.each do |tl_field|
-          if all_dates_events.key?(tl_field)
-            params[:tl_field] = tl_field
-            return all_dates_events[tl_field].to_json
-          end
-        end
-      end
-
-      nil
+      { available_fields: TIMELINE_FIELD_LABELS, field: tl_field, events: date_field_events }
     end
 
     # If querying geographical_coverage, then query the Solr geospatial field

@@ -225,7 +225,6 @@ class CatalogController < ApplicationController
     params.delete(:q_ws)
 
     (@response, @document_list) = search_results(params, search_params_logic)
-
     if params[:view].present? && params[:view].include?('timeline')
       @timeline_data = timeline_data
     end
@@ -252,11 +251,8 @@ class CatalogController < ApplicationController
 
     # assets ordered by label, excludes preservation only files
     @assets = @document.assets(ordered: true)
-
     @presenter = DRI::ObjectInCatalogPresenter.new(@document, view_context)
-
     supported_licences
-
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 
     if @document.published?

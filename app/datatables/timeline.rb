@@ -12,27 +12,20 @@ class Timeline
     @view = view
   end
 
-  def data(response)
-    timeline_data = {}
+  def data(response, tl_field)
+    timeline_data = []
 
     response.each_with_index do |document, index|
       document = document.symbolize_keys
 
-      TL_FIELDS.each do |tl_field|
-        dates = document_date(document, tl_field)
-        next unless dates.present?
+      dates = document_date(document, tl_field)
+      next unless dates.present?
 
-        event = create_event(document, dates)
-
-        if timeline_data.key?(tl_field)
-          timeline_data[tl_field][:events] << event
-        else
-          timeline_data[tl_field] = { events: [event] }
-        end
-      end
+      event = create_event(document, dates)
+      timeline_data << event
     end
 
-    timeline_data.empty? ? nil : timeline_data
+    timeline_data
   end
 
   def create_event(document, dates)

@@ -1,6 +1,5 @@
 
-<% if @timeline_data[:available_fields].keys.length > 1 %>
-  <div><b><%= t('dri.views.catalog.legends.timeline_display_field') %>:&nbsp;</b>
+<div><b><%= t('dri.views.catalog.legends.timeline_display_field') %>:&nbsp;</b>
     <select id="dri_tlfield_options_id" class="dri_tlfield_options" name="tlfield_options" data-content="<%= t('dri.help.dri_tlfield_options') %>"  data-original-title="<%= t('dri.help.dri_tlfield_options_title')%>" data-trigger="hover" data-placement="auto right">
 
       <% current_params = params.clone %>
@@ -17,11 +16,10 @@
           </option>
         <%- end -%>
     </select>
-  </div>
-<% end %>
+</div>
 
-<% if @timeline_data[:events] %>
-  <%= content_tag "div", id: "dri_timeline_id", style: "height:550px", data: { total_count: @response.total_count, total_pages: @response.total_pages, current_page: @response.current_page, timeline_data: @timeline_data[:events] }  do %>
+<% unless @timeline_data[:events].empty? %>
+  <%= content_tag "div", id: "dri_timeline_id", style: "height:550px", data: { total_count: @response.total_count, total_pages: @response.total_pages, current_page: @response.current_page, timeline_data: @timeline_data.to_json }  do %>
     <%= tag(:div, id: "time_line") %>
   <% end %>
 <% else %>

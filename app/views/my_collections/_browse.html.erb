@@ -18,14 +18,14 @@
      class="dri_second_navigation_container">
   <!-- facet block -->
   <%= render "#{controller_name}/dri_search_form" %>
-    
+
   <div class="dri_facet_filters_block" id="sidebar">
     <%= render :partial => 'facets' %>
   </div>
   <!-- close facet block -->
 </div>
 <div id="dri_result_container_id" class="dri_result_container">
-  <% if (@document_list.count > 0) %>
+  <% if (@document_list.count > 0 || params[:view] == 'timeline') %>
     <%= render_document_index @document_list %>&nbsp;
   <% else %>
       <h4>
