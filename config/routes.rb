@@ -11,12 +11,12 @@ DriApp::Application.routes.draw do
     mount DriBatchIngest::Engine => '/ingest'
 
     Blacklight.add_routes(self)
-    
+
     concern :oai_provider, BlacklightOaiProvider::Routes.new
     scope controller: "oai_pmh", as: "oai_pmh" do
       concerns :oai_provider
     end
-   
+
     devise_for :users, :skip => [:sessions, :registrations, :passwords], class_name: 'UserGroup::User', :controllers => { :omniauth_callbacks => "user_group/omniauth_callbacks" }
 
     devise_scope :user do
@@ -37,7 +37,7 @@ DriApp::Application.routes.draw do
     resources :collections, :only => ['index','new','create','update','edit','destroy']
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
-    
+
     put 'collections/:id/fixity', to: 'fixity#update', as: :fixity_check
     put 'objects/:id/fixity', to: 'fixity#update', as: :object_fixity_check
 
@@ -56,14 +56,14 @@ DriApp::Application.routes.draw do
     get 'collections/:id/exports/new', to: 'exports#new', as: :new_export
     post 'collections/:id/exports', to: 'exports#create', as: :exports
     get 'collections/:id/exports/:export_key' => 'exports#show', :as => :export
- 
+
     get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
     put 'objects/:id/access', to: 'access_controls#update'
 
     get 'iiif/:id/manifest', to: 'iiif#manifest', as: :iiif_manifest
     get 'iiif/collection/:id', to: 'iiif#manifest', as: :iiif_collection_manifest
     get 'iiif/:id', to: 'iiif#show'
- 
+
     resources :organisations, controller: :institutes
     get 'organisations/:id/logo', to: 'institutes#logo', as: :logo
 
@@ -125,7 +125,7 @@ DriApp::Application.routes.draw do
     put 'surrogates/:id' => 'surrogates#update', as: :surrogates_generate
 
     get 'tasks' => 'user_background_tasks#index', as: :user_tasks
-    delete 'tasks' => 'user_background_tasks#destroy', as: :destroy_user_tasks  
+    delete 'tasks' => 'user_background_tasks#destroy', as: :destroy_user_tasks
 
     match 'collections/:id' => 'catalog#show', via: :get
     match 'objects/:id' => 'objects#show', via: :get
@@ -136,9 +136,12 @@ DriApp::Application.routes.draw do
     match 'get_assets' => 'assets#list_assets', via: :post, as: :list_assets
     match '*get_assets', via: [:options], to:  lambda {|_| [204, {'Access-Control-Allow-Headers' => "Origin, Content-Type, Accept, Authorization, Token", 'Access-Control-Allow-Origin' => "*", 'Content-Type' => 'text/plain'}, []]}
 
-    # need to put in the 'system administrator' role here
-    authenticate do
-      mount Resque::Server, :at => "/resque"
+    resque_web_constraint = lambda do |request|
+      current_user = request.env['warden'].user
+      current_user.present? && current_user.respond_to?(:is_admin?) && current_user.is_admin?
+    end
+    constraints resque_web_constraint do
+      mount Resque::Server, at: "/resque"
     end
   end
 
