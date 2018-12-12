@@ -14,7 +14,7 @@ module DRI::Catalog
     'sdate' => 'Subject (Temporal)',
     'cdate' => 'Creation Date',
     'pdate' => 'Publication Date',
-    'ddate' => 'Date'
+    'date' => 'Date'
   }
 
   included do
@@ -67,13 +67,24 @@ module DRI::Catalog
       end
     end
 
+    def available_timelines_from_facets
+      available_timelines = []
+      TIMELINE_FIELD_LABELS.keys.each do |field|
+        if @response['facet_counts']['facet_fields']["#{field}_range_start_isi"].present?
+          available_timelines << field
+        end
+      end
+
+      available_timelines
+    end
+
     def timeline_data
       tl_field = params[:tl_field].presence || 'sdate'
 
       timeline = Timeline.new(view_context)
       date_field_events = timeline.data(@document_list, tl_field)
 
-      { available_fields: TIMELINE_FIELD_LABELS, field: tl_field, events: date_field_events }
+      { available_fields: TIMELINE_FIELD_LABELS.slice(*@available_timelines), field: tl_field, events: date_field_events }
     end
 
     # If querying geographical_coverage, then query the Solr geospatial field
