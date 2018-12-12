@@ -2,9 +2,7 @@ $(document).ready(function(){
   // for each fieldset that has a choose-vocab-container in it
   $.each($('fieldset:has(.choose-vocab-container)'), function(_, fieldset) {
     var id = '#' + fieldset.id;
-    console.log(id);
     $(id).on('focusin', function() {
-      console.log(id + ' > .choose-vocab-container');
       $(id + ' > .choose-vocab-container').slideDown('fast');
       addVocabAutocomplete(id);
     });
@@ -38,12 +36,14 @@ function addVocabAutocomplete(id) {
   }
   $(input_selector).autocomplete({
     source: function (request, response) {
+      console.log(endpoint + request.term.toLowerCase())
       $.ajax({
         url: endpoint + request.term.toLowerCase(),
         type: 'GET',
         dataType: 'json',
         complete: function (xhr, status) {
           var results = $.parseJSON(xhr.responseText);
+          console.log("results", results);
           response(results);
         }
       });
@@ -124,7 +124,7 @@ function vocabIdToUri(vocab, id) {
     // but all links data.logainm.ie/place so far are broken
     // e.g. http://data.logainm.ie/place/1391191 (Whitestown)
     // will be fixed by fct (facet browser) virtuoso add-on
-    "NUTS3": nuts3ToUri
+    "NUTS3": function(v) {return v;}
   };
 
   var conversion = mappings[vocab];
@@ -134,11 +134,17 @@ function vocabIdToUri(vocab, id) {
   } // implicit return undefined
 }
 
-// TODO replace with locally hosted output / official source
-function nuts3ToUri(id) {
-  return "https://tbed.org/eudemo/index.php?tablename=nuts_vw" + 
-  "&function=details&where_field=nuts_code&where_value=" + id;
-}
+// function nuts3ToUri(id) {
+//   id;
+//   // // unofficial source, should not preserve
+//   // return "https://tbed.org/eudemo/index.php?tablename=nuts_vw" + 
+//   // "&function=details&where_field=nuts_code&where_value=" + id;
+//   // // official source, but doesn't provide fullf resful service
+//   // // map view available here
+//   // https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/nuts-2016-units.html
+//   // // json loaded e.g.
+//   // https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/distribution/IE052-region-60m-4326-2016.geojson
+// }
 
 function oclcFastIdToUri(id) {
   return 'http://fast.oclc.org/fast/' + id;

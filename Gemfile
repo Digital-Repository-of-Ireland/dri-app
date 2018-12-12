@@ -179,3 +179,7 @@ gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'
 
 gem 'qa', '~> 1.2'
+
+gem "vcr", "~> 4.0"
+
+gem "puffing-billy", "~> 0.11.0"

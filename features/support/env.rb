@@ -20,10 +20,11 @@ require 'cucumber/rspec/doubles'
 require 'cucumber/api_steps'
 require 'rake'
 require 'rspec'
+require 'billy/capybara/cucumber'
 
 Capybara.register_driver :selenium do |app|
         options = Selenium::WebDriver::Chrome::Options.new(
-                args: %w[headless no-sandbox]
+                # args: %w[headless no-sandbox]
         )
         Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
@@ -111,6 +112,23 @@ Before do
 
   @tmp_assets_dir = Dir.mktmpdir
   Settings.dri.files = @tmp_assets_dir
+end
+
+Before('@stub_requests') do
+  Capybara.current_driver = :selenium_chrome_billy
+  ShowMeTheCookies.register_adapter(:selenium_chrome_billy, ShowMeTheCookies::Selenium)
+  # http://localhost:3000/qa/search/logainm/subjects?q=dublin
+  # http://127.0.0.1:42987
+  proxy.stub(/http:\/\/(localhost|127.0.0.1):\d+\/qa\/search\/logainm\/subjects.*/).and_return(
+    [
+      { label: "Dublin", id: "http://example.com/dublin" },
+      { label: "Ireland", id: "http://example.com/ireland" }
+    ].to_json
+  )
+end
+
+After do
+  Capybara.use_default_driver
 end
 
 def last_json

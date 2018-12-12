@@ -11,7 +11,7 @@ module Qa::Authorities
     # https://tbed.org/eudemo/index.php?tablename=nuts_vw&function=details&where_field=nuts_code&where_value=
 
     # data from aileen's email, originally https://en.wikipedia.org/wiki/NUTS_3_statistical_regions_of_the_Republic_of_Ireland
-    def data
+    def all
       [
         {
          "Region Code": "IE041",
@@ -59,7 +59,7 @@ module Qa::Authorities
     def search(_q)
       # case insensitive match
       regex = Regexp.new(Regexp.escape(_q), 'i')
-      matching_regions = data.select { |_h| _h[:'Region Name'].match? regex }
+      matching_regions = all.select { |_h| _h[:'Region Name'].match? regex }
       matching_regions.map do |_h|
         {
           id: _h[:'Region Code'],
@@ -69,7 +69,7 @@ module Qa::Authorities
     end
 
     def show(id)
-      data[:'Region Code']
+      all[:'Region Code']
     end
   end
 end

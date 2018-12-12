@@ -1,5 +1,11 @@
 When /^I click the first autocomplete result$/ do
-  first(".ui-autocomplete li a", visible: true).click
+  # TODO fix puffing billy stubs for autocomplete
+  begin
+    first(".ui-autocomplete li a", visible: true).click
+  rescue => e
+    require 'byebug'
+    byebug
+  end
 end
 
 When /^I "([^"]*)" and fill in "([^"]*)" and choose the first autocomplete result$/ do |add, text|

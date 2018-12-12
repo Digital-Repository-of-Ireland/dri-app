@@ -280,6 +280,7 @@ GEM
       dry-validation (>= 0.10.4)
     confstruct (1.0.2)
       hashie (~> 3.3)
+    cookiejar (0.3.3)
     crass (1.0.4)
     cucumber (3.1.2)
       builder (>= 2.1.2)
@@ -365,6 +366,16 @@ GEM
     ebnf (1.0.0)
       rdf (~> 1.1)
       sxp (~> 0.1, >= 0.1.3)
+    em-http-request (1.1.5)
+      addressable (>= 2.3.4)
+      cookiejar (!= 0.3.1)
+      em-socksify (>= 0.3)
+      eventmachine (>= 1.0.3)
+      http_parser.rb (>= 0.6.0)
+    em-socksify (0.3.2)
+      eventmachine (>= 1.0.0.beta.4)
+    em-synchrony (1.0.6)
+      eventmachine (>= 1.0.0.beta.1)
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
@@ -373,6 +384,7 @@ GEM
     erubi (1.7.0)
     erubis (2.7.0)
     eventmachine (1.2.5)
+    eventmachine_httpserver (0.2.1)
     execjs (2.7.0)
     factory_bot (4.8.2)
       activesupport (>= 3.0.0)
@@ -673,6 +685,14 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.0.3)
+    puffing-billy (0.11.0)
+      addressable (~> 2.4, >= 2.4.0)
+      em-http-request (~> 1.1, >= 1.1.0)
+      em-synchrony
+      eventmachine (~> 1.0, >= 1.0.4)
+      eventmachine_httpserver
+      http_parser.rb (~> 0.6.0)
+      multi_json
     qa (1.2.0)
       activerecord-import
       deprecation
@@ -949,6 +969,7 @@ GEM
     unicorn (5.3.1)
       kgio (~> 2.6)
       raindrops (~> 0.7)
+    vcr (4.0.0)
     vegas (0.1.11)
       rack (>= 1.0.0)
     warden (1.2.7)
@@ -1036,6 +1057,7 @@ DEPENDENCIES
   openseadragon
   paper_trail (~> 4)
   parallel_tests (~> 2.23)
+  puffing-billy (~> 0.11.0)
   qa (~> 1.2)
   railroady
   rails (~> 4.2)
@@ -1071,6 +1093,7 @@ DEPENDENCIES
   unicode
   unicorn
   user_group!
+  vcr (~> 4.0)
   xmlrpc
   yard
   zeus

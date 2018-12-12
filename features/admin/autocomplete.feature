@@ -1,4 +1,4 @@
-@javascript
+@javascript @stub_requests
 Feature: Autocomplete
   In order to manage my Digital Objects
   As an authorized user
