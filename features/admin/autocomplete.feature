@@ -10,6 +10,7 @@ Background:
   And I am on the home page
   When I go to "create new collection"
 
+# autocomplete dropdown is only visible when in use
 Scenario: Seeing autocomplete vocab dropdown
   Then I should see 0 visible elements ".vocab-dropdown"
   When I press the edit collection button with text "Add Coverage"
@@ -63,3 +64,18 @@ Scenario: Submitting a collection with autocomplete results
   And I should see "Leinster House" within ".modal-body .dri_object_metadata_readview"
   # the 4 hidden URIs for each autocomplete result, saved in the metadata
   And I should see 4 visible elements ".modal-body .dri_object_metadata_readview dd a"
+
+Scenario: Disabling autocomplete
+  When I press the edit collection button with text "Add Coverage"
+  And I select "Disable" from the autocomplete menu
+  And I fill in "batch[coverage][]" with "test"
+  Then I should see 0 visible elements ".ui-autocomplete"
+
+Scenario: Re-enabling autocomplete
+  When I press the edit collection button with text "Add Coverage"
+  And I select "Disable" from the autocomplete menu
+  And I fill in "batch[coverage][]" with "test"
+  Then I should see 0 visible elements ".ui-autocomplete"
+  When I select "NUTS3" from the autocomplete menu
+  And I fill in "batch[coverage][]" with "dublin"
+  Then I should see 1 visible elements ".ui-autocomplete"

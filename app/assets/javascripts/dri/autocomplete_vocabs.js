@@ -36,14 +36,12 @@ function addVocabAutocomplete(id) {
   }
   $(input_selector).autocomplete({
     source: function (request, response) {
-      console.log(endpoint + request.term.toLowerCase())
       $.ajax({
         url: endpoint + request.term.toLowerCase(),
         type: 'GET',
         dataType: 'json',
         complete: function (xhr, status) {
           var results = $.parseJSON(xhr.responseText);
-          console.log("results", results);
           response(results);
         }
       });
@@ -63,7 +61,6 @@ function addVocabAutocomplete(id) {
 
 // TODO refactor to use this instead of passing element down?
 function saveUriInForm(element, vocab_uri, label) {
-  console.log('called save', $(element).id);
   var fieldset_id = $(element).parents('fieldset').attr('id');
   var model_name = $('#' + fieldset_id + ' .add-text-field a').attr('model-name');
   var hidden_uri_id = [model_name, fieldset_id].join('_')+'][';
