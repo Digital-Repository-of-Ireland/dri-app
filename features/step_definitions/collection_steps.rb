@@ -56,11 +56,11 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
   @digital_object.rights = ["This is a statement of rights"]
   @digital_object.creation_date = ["2000-01-01"]
   @digital_object.status = 'draft'
-  
+
   if coll.nil?
     coll = @collection.id unless @collection.nil?
   end
-    
+
   @digital_object.governing_collection = ActiveFedora::Base.find(coll, cast: true) if coll
 
   checksum_metadata(@digital_object)
@@ -74,9 +74,9 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
   pid = "o" + @random_pid if (pid == "@random")
   case type
    when 'Audio'
-    digital_object = DRI::Model::Audio.new(:pid => pid)
+    digital_object = DRI::Model::Audio.new(pid: pid)
    when 'Pdf'
-    digital_object = DRI::Model::Pdfdoc.new(:pid => pid)
+    digital_object = DRI::Model::Pdfdoc.new(pid: pid)
   end
 
   digital_object.title = [title]
@@ -107,11 +107,11 @@ Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)
 end
 
 Given /^the collection(?: with pid "(.*?)")? is published?$/ do |colid|
-  colid = @collection.id unless colid
+  colid = @collection.id unless colid || @collection.nil?
   if (colid == 'the saved pid')
      colid = @collection_pid ? @collection_pid : @pid
   end
-  
+
   collection = ActiveFedora::Base.find(colid, {:cast => true})
   collection.governed_items.each do |o|
     o.status = 'published'
@@ -200,7 +200,7 @@ end
 
 When /^I (click|press) the edit collection button with text "(.*?)"$/ do |_, button_text|
   find('fieldset a', text: button_text).click
-end 
+end
 
 Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as type "(.*?)")?$/ do |collection_pid,object_pid,*type|
   object = ActiveFedora::Base.find(object_pid, {:cast => true})

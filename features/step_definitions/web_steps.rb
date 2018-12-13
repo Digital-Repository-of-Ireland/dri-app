@@ -457,5 +457,5 @@ Then /^I should see the image "(.*?)"$/ do |src|
 end
 
 Then /^the element with id "([^"]*)" should be focused$/ do |id|
-  page.evaluate_script("document.activeElement.id").should == id 
+  page.evaluate_script("document.activeElement.id").should == id
 end

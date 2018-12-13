@@ -72,7 +72,7 @@ gem 'high_voltage', '~> 2.1.0'
 # monitoring 
 # is it working fork
 gem 'is_it_working-cbeer'
-gem 'resque', '1.26'
+gem 'resque', '~> 1'
 gem 'resque-status'
 gem 'nest'
 gem 'sass-rails' , '~> 4.0.4'

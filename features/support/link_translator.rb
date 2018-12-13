@@ -178,6 +178,9 @@ module LinkTranslator
       when /^add a new collection$/
         "new_collection"
 
+      when /^view the timeline$/
+	"timeline_view"
+
       else "Unknown"
 
     end

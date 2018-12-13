@@ -4,35 +4,26 @@ class Timeline
   TITLE_KEY = ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym
   DESCRIPTION_KEY = ActiveFedora.index_field_mapper.solr_name('description', :stored_searchable, type: :string).to_sym
 
-  TL_FIELDS = %w(sdate cdate pdate ddate).freeze
-
   delegate :can?, :asset_url, :asset_path, :link_to, :url_for_document, :cover_image_path, :object_file_path, to: :@view
 
   def initialize(view)
     @view = view
   end
 
-  def data(response)
-    timeline_data = {}
+  def data(response, tl_field)
+    timeline_data = []
 
     response.each_with_index do |document, index|
       document = document.symbolize_keys
 
-      TL_FIELDS.each do |tl_field|
-        dates = document_date(document, tl_field)
-        next unless dates.present?
+      dates = document_date(document, tl_field)
+      next unless dates.present?
 
-        event = create_event(document, dates)
-
-        if timeline_data.key?(tl_field)
-          timeline_data[tl_field][:events] << event
-        else
-          timeline_data[tl_field] = { events: [event] }
-        end
-      end
+      event = create_event(document, dates)
+      timeline_data << event
     end
 
-    timeline_data.empty? ? nil : timeline_data
+    timeline_data
   end
 
   def create_event(document, dates)
@@ -54,6 +45,10 @@ class Timeline
 
 
   def document_date(document, tl_field)
+    # using date_range_start_isi not ddate, so need to modify to find
+    # ddateRange field
+    tl_field = 'ddate' if tl_field == 'date'
+
     if document["#{tl_field}Range".to_sym].present?
       ranges = document["#{tl_field}Range".to_sym]
 
