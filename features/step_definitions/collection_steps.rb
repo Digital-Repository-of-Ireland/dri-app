@@ -199,6 +199,7 @@ When /^I press the remove from collection button for Digital Object "(.*?)"/ do 
 end
 
 When /^I (click|press) the edit collection button with text "(.*?)"$/ do |_, button_text|
+  # span does not exist when translation is present
   find('fieldset a', text: button_text).click
 end
 
