@@ -416,8 +416,6 @@ end
 # used for vocab autocomplete
 # .vocab-dropdown always exists, but is hidden. using see element will always pass
 Then /^I should (not )?see (\d+) visible element(s)? "([^"]*)"$/ do |negate, num, _, selector|
-  require 'byebug'
-  byebug
   expectation = negate ? :to_not : :to
   expect(find_all(selector, visible: true).count).send(expectation, eq(num)) 
 end

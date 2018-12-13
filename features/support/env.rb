@@ -117,14 +117,49 @@ end
 Before('@stub_requests') do
   Capybara.current_driver = :selenium_chrome_billy
   ShowMeTheCookies.register_adapter(:selenium_chrome_billy, ShowMeTheCookies::Selenium)
-  # http://localhost:3000/qa/search/logainm/subjects?q=dublin
-  # http://127.0.0.1:42987
-  proxy.stub(/http:\/\/(localhost|127.0.0.1):\d+\/qa\/search\/logainm\/subjects.*/).and_return(
-    [
-      { label: "Dublin", id: "http://example.com/dublin" },
-      { label: "Ireland", id: "http://example.com/ireland" }
-    ].to_json
-  )
+  qa_base = /http:\/\/(localhost|127.0.0.1):\d+\/qa\/search/
+  loc_base = /#{qa_base}\/loc\/subjects/
+  logainm_base = /#{qa_base}\/logainm\/subjects/
+  nuts3_base = /#{qa_base}\/nuts3\/subjects/
+  oclc_base = /#{qa_base}\/assign_fast\/all/
+  unesco_base = /#{qa_base}\/nuts3\/subjects/
+
+  [loc_base, logainm_base, nuts3_base, oclc_base, unesco_base,].each do |regex_base|
+    proxy.stub(/#{regex_base}.*/).and_return(json: [])
+    proxy.stub(/#{regex_base}\?q=(.*)/i).and_return(Proc.new { |params, headers, body, url, method|
+      # labels at real endpoints are usually capitalized
+      label = params['q'].first.split(/\s+/).map {|v| v.capitalize }.join(' ')
+      uri = "http://example.com/#{params['q'].first.gsub(/\s+/, '_')}"
+      {
+        :code => 200,
+        json: [ { label: label, id: uri } ]
+      }
+    })
+
+
+    # proxy.stub(/#{regex_base}\?q=dublin/i).and_return(
+    #   json: [ { label: "Dublin", id: "http://example.com/dublin" } ]
+    # )
+    # proxy.stub(/#{regex_base}\?q=leinster house/i).and_return(
+    #   json: [ { label: "Leinster House", id: "http://example.com/leinster_house" } ]
+    # )
+    # proxy.stub(/#{regex_base}\?q=ireland/i).and_return(
+    #   json: [ { label: "Ireland", id: "http://example.com/ireland" } ]
+    # )
+    # proxy.stub(/#{regex_base}\?q=20th century/i).and_return(
+    #   json: [ { label: "20th Century", id: "http://example.com/20th_century" } ]
+    # )
+  end
+
+  # proxy.stub(/#{qa_base}\/logainm\/subjects?\q=dublin/).and_return(
+  #   json: [ { label: "Dublin", id: "http://example.com/dublin" } ]
+  # )
+  # proxy.stub(/#{qa_base}\/loc\/subjects.*/).and_return(json:
+  #   [
+  #     { label: "Dublin", id: "http://example.com/dublin" },
+  #     { label: "Ireland", id: "http://example.com/ireland" }
+  #   ]
+  # )
 end
 
 After do
