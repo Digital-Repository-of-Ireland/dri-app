@@ -95,7 +95,7 @@ function handleMismatchedSavedUri(element) {
   }
 }
 
-function createHiddenInput(id, name, value='none') {
+function createHiddenInput(id, name, value) {
   return '<input id="'+id+'" name="'+name+'" type="hidden" value="'+value+'"/>';
 }
 

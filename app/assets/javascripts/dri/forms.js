@@ -125,7 +125,7 @@ function numberOfRoles() {
   return $('#roles').children('div').length;
 }
 
-function createRemoveButton(model='batch') {
+function createRemoveButton(model) {
   return '<a class="destructive" model-name="'+model+'">\
             &nbsp; <i class="fa fa-times-circle"></i> Remove\
           </a>';
@@ -135,7 +135,7 @@ function createTextArea(id, name, classes) {
   return '<div>\
             <textarea class="edit span6 dri-textarea " \
               id='+id+' name='+name+'>\
-            </textarea>'+createRemoveButton()+
+            </textarea>'+createRemoveButton('batch')+
           '</div>';
 }
 
@@ -143,7 +143,7 @@ function createTextInput(id, name, classes) {
   return '<div>\
             <input class="edit span6 dri-textfield " \
               id='+id+' name='+name+' \
-              size="30" type="text" value=""/>'+createRemoveButton()+
+              size="30" type="text" value=""/>'+createRemoveButton('batch')+
           '</div>';
 }
 
@@ -156,6 +156,6 @@ function createPersonInput(id, name, previous_select) {
               '" name="'+name+'['+id+'][type][]">'+previous_select.html()+
             '</select> \
               <input class="edit span6 dri-textfield " id="'+name+'_'+id+'][name][" name="'
-              +name+'['+id+'][name][]" size="30" type="text" value=""/>'+createRemoveButton()+
+              +name+'['+id+'][name][]" size="30" type="text" value=""/>'+createRemoveButton('batch')+
           '</div>';
 }
