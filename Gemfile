@@ -108,6 +108,7 @@ group :development, :test do
   gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
   gem 'byebug', '~> 10.0'
   gem 'parallel_tests', '~> 2.23'
+  gem 'puffing-billy', '~> 0.11.0'
 end
 
 group :test do
@@ -179,7 +180,3 @@ gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'
 
 gem 'qa', '~> 1.2'
-
-gem "vcr", "~> 4.0"
-
-gem "puffing-billy", "~> 0.11.0"

@@ -33,13 +33,13 @@ Scenario: Choosing an autocomplete result should save the label text and hidden 
   When I press the edit collection button with text "Add Subject"
   And I fill in "batch_subject][" with "Dublin"
   And I click the first autocomplete result
-  Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/id\.loc\.gov\/authorities\/subjects\/"
+  Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
 
 Scenario: Choosing an autocomplete result, then changing your mind
   When I press the edit collection button with text "Add Subject"
   And I fill in "batch_subject][" with "Dublin"
   And I click the first autocomplete result
-  Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/id\.loc\.gov\/authorities\/subjects\/"
+  Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
   And the text in "batch_subject][" should have link styling
   When I fill in "batch_subject][" with "asdf"
   # requires click on any other element to trigger on change

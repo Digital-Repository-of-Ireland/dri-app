@@ -24,7 +24,11 @@ require 'billy/capybara/cucumber'
 
 Capybara.register_driver :selenium do |app|
         options = Selenium::WebDriver::Chrome::Options.new(
-                # args: %w[headless no-sandbox]
+                args: [
+                  "headless", 
+                  "no-sandbox",
+                  "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}"
+                ]
         )
         Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
@@ -115,8 +119,7 @@ Before do
 end
 
 Before('@stub_requests') do
-  Capybara.current_driver = :selenium_chrome_billy
-  ShowMeTheCookies.register_adapter(:selenium_chrome_billy, ShowMeTheCookies::Selenium)
+  # stub questioning authority autocomplete requests
   qa_base = /http:\/\/(localhost|127.0.0.1):\d+\/qa\/search/
   loc_base = /#{qa_base}\/loc\/subjects/
   logainm_base = /#{qa_base}\/logainm\/subjects/
@@ -126,6 +129,7 @@ Before('@stub_requests') do
 
   [loc_base, logainm_base, nuts3_base, oclc_base, unesco_base,].each do |regex_base|
     proxy.stub(/#{regex_base}.*/).and_return(json: [])
+    # pass param through (i.e. whatever the user types, return that as an autocomplete result)
     proxy.stub(/#{regex_base}\?q=(.*)/i).and_return(Proc.new { |params, headers, body, url, method|
       # labels at real endpoints are usually capitalized
       label = params['q'].first.split(/\s+/).map {|v| v.capitalize }.join(' ')
@@ -135,31 +139,7 @@ Before('@stub_requests') do
         json: [ { label: label, id: uri } ]
       }
     })
-
-
-    # proxy.stub(/#{regex_base}\?q=dublin/i).and_return(
-    #   json: [ { label: "Dublin", id: "http://example.com/dublin" } ]
-    # )
-    # proxy.stub(/#{regex_base}\?q=leinster house/i).and_return(
-    #   json: [ { label: "Leinster House", id: "http://example.com/leinster_house" } ]
-    # )
-    # proxy.stub(/#{regex_base}\?q=ireland/i).and_return(
-    #   json: [ { label: "Ireland", id: "http://example.com/ireland" } ]
-    # )
-    # proxy.stub(/#{regex_base}\?q=20th century/i).and_return(
-    #   json: [ { label: "20th Century", id: "http://example.com/20th_century" } ]
-    # )
   end
-
-  # proxy.stub(/#{qa_base}\/logainm\/subjects?\q=dublin/).and_return(
-  #   json: [ { label: "Dublin", id: "http://example.com/dublin" } ]
-  # )
-  # proxy.stub(/#{qa_base}\/loc\/subjects.*/).and_return(json:
-  #   [
-  #     { label: "Dublin", id: "http://example.com/dublin" },
-  #     { label: "Ireland", id: "http://example.com/ireland" }
-  #   ]
-  # )
 end
 
 After do
