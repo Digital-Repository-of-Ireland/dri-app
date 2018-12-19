@@ -2,6 +2,8 @@ include DRI::Duplicable
 
 Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = @random_pid if (pid.nil? || pid == "random")
+  @pid = pid
+
   @collection = DRI::Batch.with_standard(:qdc, {:id => pid})
   @collection.title = title ? [title] : [SecureRandom.hex(5)]
   @collection.description = [SecureRandom.hex(20)]
@@ -22,6 +24,7 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
   @collection.master_file_access="private"
   @collection.status = 'draft'
   @collection.save
+
   expect(@collection.governed_items.count).to be == 0
 
   group = UserGroup::Group.new(:name => @collection.id,
@@ -53,11 +56,11 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
   @digital_object.rights = ["This is a statement of rights"]
   @digital_object.creation_date = ["2000-01-01"]
   @digital_object.status = 'draft'
-  
+
   if coll.nil?
     coll = @collection.id unless @collection.nil?
   end
-    
+
   @digital_object.governing_collection = ActiveFedora::Base.find(coll, cast: true) if coll
 
   checksum_metadata(@digital_object)
@@ -71,9 +74,9 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
   pid = "o" + @random_pid if (pid == "@random")
   case type
    when 'Audio'
-    digital_object = DRI::Model::Audio.new(:pid => pid)
+    digital_object = DRI::Model::Audio.new(pid: pid)
    when 'Pdf'
-    digital_object = DRI::Model::Pdfdoc.new(:pid => pid)
+    digital_object = DRI::Model::Pdfdoc.new(pid: pid)
   end
 
   digital_object.title = [title]
@@ -104,11 +107,11 @@ Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)
 end
 
 Given /^the collection(?: with pid "(.*?)")? is published?$/ do |colid|
-  colid = @collection.id unless colid
+  colid = @collection.id unless colid || @collection.nil?
   if (colid == 'the saved pid')
      colid = @collection_pid ? @collection_pid : @pid
   end
-  
+
   collection = ActiveFedora::Base.find(colid, {:cast => true})
   collection.governed_items.each do |o|
     o.status = 'published'
@@ -122,7 +125,6 @@ Given /^I have associated the institute "(.?*)" with the collection with pid "(.
   if (pid.eql?('the saved pid'))
     pid = @collection_pid ? @collection_pid : @pid
   end
-
   collection = ActiveFedora::Base.find(pid ,{:cast => true})
 
   institute = Institute.new
@@ -165,7 +167,6 @@ When /^I enter invalid metadata for a collection(?: with title (.*?))?$/ do |tit
     And I fill in "batch_description][" with "Test description"
     And I fill in "batch_creation_date][" with "2000-01-01"
     And I fill in "batch_rights][" with ""
-    And I fill in "batch_type][" with "Collection"
   }
 end
 
@@ -198,8 +199,9 @@ When /^I press the remove from collection button for Digital Object "(.*?)"/ do 
 end
 
 When /^I (click|press) the edit collection button with text "(.*?)"$/ do |_, button_text|
-  find('fieldset a span', text: button_text).click
-end 
+  # span does not exist when translation is present
+  find('fieldset a', text: button_text).click
+end
 
 Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as type "(.*?)")?$/ do |collection_pid,object_pid,*type|
   object = ActiveFedora::Base.find(object_pid, {:cast => true})

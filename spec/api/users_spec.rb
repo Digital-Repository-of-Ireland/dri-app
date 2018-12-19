@@ -23,7 +23,7 @@ describe 'Users API' do
       parameter name: 'user[email]', in: :formData, type: :string
       parameter name: 'user[password]', in: :formData, type: :string
       
-        let('user[email]') { nil }
+      let('user[email]') { nil }
       let('user[password]') { nil }
 
       # response '401', 'Invalid credentials' do

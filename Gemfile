@@ -72,11 +72,10 @@ gem 'high_voltage', '~> 2.1.0'
 # monitoring 
 # is it working fork
 gem 'is_it_working-cbeer'
-gem 'resque', '1.26'
+gem 'resque', '~> 1'
 gem 'resque-status'
 gem 'nest'
 gem 'sass-rails' , '~> 4.0.4'
-#gem 'compass', '0.12.7'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs'
@@ -93,8 +92,8 @@ group :development, :test do
   gem 'guard'
   gem 'rspec-rails', '~> 3.0'
   gem 'rswag-specs', '~> 2.0'
-  gem 'poltergeist', '>= 1.11.0'
-  gem 'phantomjs', :require => 'phantomjs/poltergeist'
+  gem 'selenium-webdriver'
+  gem 'chromedriver-helper'
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'railroady'
@@ -102,18 +101,22 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'guard-livereload', require: false
-  gem "zeus", require: false
+  gem 'zeus', require: false
   gem 'ci_reporter_rspec'
   gem 'solr_wrapper', '~> 0.18'
   gem 'fcrepo_wrapper', '0.6.0'
   gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
-  gem "byebug", "~> 10.0"
-  gem "parallel_tests", "~> 2.23"
+  gem 'byebug', '~> 10.0'
+  gem 'parallel_tests', '~> 2.23'
+  gem 'puffing-billy', '~> 0.11.0'
 end
 
 group :test do
-  gem 'cucumber', '2.3.3'
-  gem 'cucumber-rails', '1.4.3', require: false
+  # requires >= 3.3.0 to test styles on node element
+  # https://github.com/teamcapybara/capybara/commit/faa45e135434a7f16f04ef5136c63a0663925dec
+  gem 'capybara', '~> 3.12.0'
+  gem 'cucumber', '3.1.2'
+  gem 'cucumber-rails', '1.6.0', require: false
   gem 'database_cleaner'
   gem 'launchy'
   gem 'shoulda'
@@ -169,9 +172,11 @@ gem 'rails-assets-leaflet', '1.1.0', source: 'https://rails-assets.org'
 gem 'rails-assets-leaflet.markercluster', '1.3.0', source: 'https://rails-assets.org'
 
 gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
-gem "jquery-slick-rails"
+gem 'jquery-slick-rails'
 gem 'remotipart'
 
 # api documentation generator / presenter
-gem "rswag-api", "~> 2.0"
-gem "rswag-ui", "~> 2.0"
+gem 'rswag-api', '~> 2.0'
+gem 'rswag-ui', '~> 2.0'
+
+gem 'qa', '~> 1.2'

@@ -56,6 +56,12 @@ class CatalogController < ApplicationController
 
     config.add_facet_field 'cdate_year_iim', label: 'Creation Date', limit: 20
     config.add_facet_field 'pdate_year_iim', label: 'Published Date', limit: 20
+
+    config.add_facet_field 'cdate_range_start_isi', show: false
+    config.add_facet_field 'sdate_range_start_isi', show: false
+    config.add_facet_field 'pdate_range_start_isi', show: false
+    config.add_facet_field 'date_range_start_isi', show: false
+
     config.add_facet_field solr_name('subject', :facetable), limit: 20
     config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: true
     config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, show: false
@@ -226,6 +232,7 @@ class CatalogController < ApplicationController
 
     (@response, @document_list) = search_results(params, search_params_logic)
 
+    @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')
       @timeline_data = timeline_data
     end
@@ -252,11 +259,8 @@ class CatalogController < ApplicationController
 
     # assets ordered by label, excludes preservation only files
     @assets = @document.assets(ordered: true)
-
     @presenter = DRI::ObjectInCatalogPresenter.new(@document, view_context)
-
     supported_licences
-
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 
     if @document.published?

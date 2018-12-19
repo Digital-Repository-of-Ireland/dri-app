@@ -52,24 +52,21 @@ class ObjectsController < BaseObjectsController
 
   def show
     enforce_permissions!('show_digital_object', params[:id])
-
     @object = retrieve_object!(params[:id])
 
     respond_to do |format|
       format.html { redirect_to(catalog_url(@object.id)) }
       format.endnote { render text: @object.export_as_endnote, layout: false }
       format.json do
-        # refactor: currently traverse parents of id in solr and find licence
         json = @object.as_json
-        json['licence'] = if @object.type == ['Collection']
-                            nil
-                          else
-                            solr_query = ActiveFedora::SolrService.construct_query_for_ids([@object.id])
-                            licence = Solr::Query.new(solr_query).first.licence
-                            licence.show if licence
-                          end
-        dois = DataciteDoi.where(object_id: @object.id)
-        json['doi'] = dois.map(&:show) if dois.count > 0
+        # solr_doc = SolrDocument.new(@object.to_solr)
+        # # intermittent issue using to_solr:  A JSON text must at least contain two octets!
+        solr_query = ActiveFedora::SolrService.construct_query_for_ids([@object.id])
+        solr_doc = SolrDocument.new(Solr::Query.new(solr_query).first)
+        
+        json['licence'] = DRI::Formatters::Json.licence(solr_doc)
+        json['doi'] = DRI::Formatters::Json.dois(solr_doc)
+        json['related_objects'] = solr_doc.object_relationships_as_json
         render json: json
       end
       format.zip do
@@ -251,18 +248,9 @@ class ObjectsController < BaseObjectsController
           solr_doc.extract_metadata(params[:metadata])
         end
 
-        # licence is stored at collection level in solr
-        # but don't show licence for collections since all collection metadata is cc-by
-        # find parent licence for objects and display that
-        if item['metadata']['type'] == ["Collection"]
-          item['metadata']['licence'] = nil
-        else
-          licence = solr_doc.licence
-          item['metadata']['licence'] = licence.show if licence
-        end
-
-        dois = DataciteDoi.where(object_id: solr_doc.id)
-        item['metadata']['doi'] = dois.count > 0 ? dois.map(&:show) : nil
+        item['metadata']['licence'] = DRI::Formatters::Json.licence(solr_doc)
+        item['metadata']['doi'] = DRI::Formatters::Json.dois(solr_doc)
+        item['metadata']['related_objects'] = solr_doc.object_relationships_as_json
 
         item.merge!(find_assets_and_surrogates(solr_doc))
         @list << item

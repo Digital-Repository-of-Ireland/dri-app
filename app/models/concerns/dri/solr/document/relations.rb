@@ -46,6 +46,27 @@ module DRI::Solr::Document::Relations
     relationships_hash
   end # get_object_relationships
 
+  # Format object relationships for json api
+  # @return [Array] of Hashes
+  def object_relationships_as_json
+    relationships = object_relationships
+    json = []
+    relationships.each do |relationship_type, list_of_objects|
+      key = relationship_type.gsub(/\s+/, '') # no spaces in json keys
+      solr_docs = list_of_objects.flatten.select { |v| v.kind_of? SolrDocument }
+      solr_docs.each do |doc|
+        dois = doc.doi
+        url = Rails.application.routes.url_helpers.url_for({controller: 'catalog', action: 'show', id: doc.id})
+        json << { 
+          relation: key, 
+          doi: dois ? dois.show : dois,
+          url: url
+        }
+      end
+    end
+    json
+  end
+
   private
 
     def get_documentation

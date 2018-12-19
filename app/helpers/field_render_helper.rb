@@ -185,7 +185,7 @@ module FieldRenderHelper
 
     value.each_with_index.map do |v, i|
       # don't show URLs in the UI
-      next if uri?(indexed_value[i])
+      next if uri?(indexed_value[i].gsub('name=', ''))
       standardised_value = standardise_value(facet_name: facet_name, value: v)
       next unless standardised_value
 

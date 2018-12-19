@@ -9,10 +9,8 @@ describe "Get Objects API" do
       security [ apiKey: [], appId: [] ]
       produces 'application/json'
       consumes 'application/json'
-      # TODO refactor parameter
-      # Could not render JsonSchema_array, see the console
-      # because query param of type array has no standard
-      # update to use post body param 
+      parameter name: :pretty, description: 'indent json so it is human readable', 
+        in: :query, type: :boolean, default: false, required: false
       parameter name: :objects, description: 'array of hashes with object ids as values. e.g. {"objects": [{"v": "zp38wc65b"}]}. Only the first value of each hash is read.',
         in: :body, schema: {
           type: :array,
@@ -21,21 +19,19 @@ describe "Get Objects API" do
           },
           example: {"objects": [{"v": "zp38wc65b"}]}
         }
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
 
       include_context 'rswag_user_with_collections', status: 'published'
+      include_context 'doi_config_exists'
 
       response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }
         let(:user_email) { nil }
         let(:objects) { @collections.map(&:id) }
 
+        it_behaves_like 'a pretty json response'
         include_context 'rswag_include_json_spec_output' do
-          it_behaves_like 'a json api error'
           it_behaves_like 'a json api 401 error',
             message: "You need to sign in or sign up before continuing."
-          it_behaves_like 'a pretty json response'
         end
       end
 
@@ -56,7 +52,7 @@ describe "Get Objects API" do
           }
           let(:objects) { {objects: object_ids} }
           exn = "/get_objects?(object ids)"
-          include_context 'rswag_include_json_spec_output', example_name=exn do
+          include_context 'rswag_include_json_spec_output', exn do
             it_behaves_like 'a pretty json response'
             run_test! do
               json_response = JSON.parse(response.body)
@@ -82,7 +78,7 @@ describe "Get Objects API" do
           let(:collection_ids) { @collections.map {|c| [[c.id, c.id]].to_h} }
           let(:objects) { {objects: collection_ids} }
           exn = "/get_objects?(collection ids)"
-          include_context 'rswag_include_json_spec_output', example_name=exn do
+          include_context 'rswag_include_json_spec_output', exn do
             it_behaves_like 'a pretty json response'
           end
         end

@@ -3,6 +3,8 @@ require 'dri/sparql'
 module DRI::Sparql::Provider
   class Logainm
 
+    attr_accessor :endpoint
+
     def endpoint=(endpoint)
       @endpoint = endpoint
     end
@@ -17,7 +19,7 @@ module DRI::Sparql::Provider
 
       client = DRI::Sparql::Client.new @endpoint
       results = client.query select
-      
+
       points = []
       unless results.nil?
         results.each_solution do |s|

@@ -2407,7 +2407,7 @@ ul.dri_collection_institutes_list {
                 -webkit-border-radius: none;
                 -moz-border-radius: 0px;
                 vertical-align: top;
-                padding-bottom: 12px;
+                // padding-bottom: 12px;
                 width: 150px;
                 overflow-wrap: initial;
             }
@@ -2423,6 +2423,9 @@ ul.dri_collection_institutes_list {
             }
             a.destructive {
                 color: $dri_midgrey;
+                cursor: pointer;
+                // keep icon and text on same line
+                white-space: nowrap;
             }
         }
     }
@@ -2632,4 +2635,20 @@ ul.dri_collection_institutes_list {
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
     border: none;
+}
+
+.ui-autocomplete-loading { 
+    background:url('colorbox/loading.gif') no-repeat right center;
+}
+
+.choose-vocab-container {
+    .vocab-dropdown {
+        margin-bottom: 5px;
+    }
+    display: none;
+}
+
+.dri_help_popover {
+    padding-left: 5px;
+    cursor: help;
 }

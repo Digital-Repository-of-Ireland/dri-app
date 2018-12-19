@@ -12,6 +12,7 @@ describe "Collections API" do
       produces 'application/json'
       # creates @example_user with authentication_token (not signed in)
       include_context 'rswag_user_with_collections', status: 'published'
+      include_context 'doi_config_exists'
       
       parameter name: :pretty, description: 'indent json so it is human readable', 
         in: :query, type: :boolean, default: false, required: false
@@ -21,16 +22,11 @@ describe "Collections API" do
         let(:user_token) { nil }
         let(:user_email) { nil }
 
-        it_behaves_like 'a json api error'
         it_behaves_like 'a json api 401 error',
           message: "You need to sign in or sign up before continuing."
         it_behaves_like 'a pretty json response'
       end
 
-      # TODO: fix empty output on this test by creating public collections
-      # First create an organisation, then publish a collection
-      # Issue with FactoryBot objects not being in solr?
-      # Create real collection to update solr doc?
       context "Authenticated user with collections" do
         response "200", "All collections found" do
           include_context 'rswag_include_json_spec_output'
@@ -49,20 +45,23 @@ describe "Collections API" do
       tags 'collections'
       security [ apiKey: [], appId: [] ]
       produces 'application/json', 'application/xml', 'application/ttl'
+      parameter name: :pretty, description: 'indent json so it is human readable', 
+        in: :query, type: :boolean, default: false, required: false
       parameter name: :id, description: 'Object ID',
         in: :path, :type => :string
       include_context 'rswag_user_with_collections'
+      include_context 'doi_config_exists'
 
       response "401", "Must be signed in to access this route" do
-        include_context 'rswag_include_json_spec_output'
 
         let(:user_token) { nil }
         let(:user_email) { nil }
         let(:id) { @collections.first.id }
 
-        it_behaves_like 'a json api error'
-        it_behaves_like 'a json api 401 error'
         it_behaves_like 'a pretty json response'
+        include_context 'rswag_include_json_spec_output' do
+          it_behaves_like 'a json api 401 error'
+        end
       end
 
       response "404", "Object not found" do
@@ -73,7 +72,6 @@ describe "Collections API" do
         let(:id) { "collection_that_does_not_exist" }
         
         include_context 'rswag_include_json_spec_output' do
-          it_behaves_like 'a json api error'
           it_behaves_like 'a json api 404 error'
           it_behaves_like 'a pretty json response'
         end
@@ -85,14 +83,16 @@ describe "Collections API" do
         context 'Collection' do
           let(:id) { @collections.first.id }
           it_behaves_like 'it has no json licence information'
-          include_context 'rswag_include_json_spec_output', example_name='Found Collection' do
+          it_behaves_like 'it has json related objects information'
+          include_context 'rswag_include_json_spec_output', 'Found Collection' do
             it_behaves_like 'a pretty json response'
           end
         end
         context 'Object' do
           let(:id) { @collections.first.governed_items.first.id }
-          include_context 'rswag_include_json_spec_output', example_name='Found Object' do
-            it_behaves_like 'it has json licence information'
+          it_behaves_like 'it has json licence information'
+          include_context 'rswag_include_json_spec_output', 'Found Object' do
+            it_behaves_like 'it has json doi information'
           end
         end
       end

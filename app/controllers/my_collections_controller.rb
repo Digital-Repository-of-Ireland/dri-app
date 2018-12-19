@@ -55,6 +55,10 @@ class MyCollectionsController < ApplicationController
     #
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
+    config.add_facet_field 'cdate_range_start_isi', show: false
+    config.add_facet_field 'sdate_range_start_isi', show: false
+    config.add_facet_field 'pdate_range_start_isi', show: false
+    config.add_facet_field 'date_range_start_isi', show: false
 
     config.add_facet_field solr_name('status', :facetable), label: 'Record Status'
     config.add_facet_field solr_name('master_file_access', :facetable), label: 'Master File Access'
@@ -265,6 +269,7 @@ class MyCollectionsController < ApplicationController
     params[:q] = params.delete(:q_ws)
     (@response, @document_list) = search_results(params, search_params_logic)
 
+    @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')
       @timeline_data = timeline_data
     end

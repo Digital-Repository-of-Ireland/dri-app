@@ -48,19 +48,17 @@ Scenario: Constructing a collection (form focus)
   When I go to "create new collection"
   Then the element with id "batch_title][" should be focused
 
-# # These won't work until driver is changed from phantom/poltergeist
-# # To a more up to date browser i.e. healdess chrome or ff
-#Scenario: Updating a collection (description form focus)
-#  Given a collection with pid "collperm" created by "user1"
-#  When I go to the "collection" "edit" page for "collperm"
-#  And I press the edit collection button with text "Add Description"
-#  Then the element with id "batch_description][" should be focused
+Scenario: Updating a collection (description form focus)
+  Given a collection with pid "collperm" created by "user1"
+  When I go to the "collection" "edit" page for "collperm"
+  And I press the edit collection button with text "Add Description"
+  Then the element with id "batch_description][" should be focused
 
-#Scenario: Updating a collection (creators form focus)
-#  Given a collection with pid "collperm" created by "user1"
-#  When I go to the "collection" "edit" page for "collperm"
-#  And I press the edit collection button with text "Add Creator"
-#  Then the element with id "batch_creator][" should be focused
+Scenario: Updating a collection (creators form focus)
+  Given a collection with pid "collperm" created by "user1"
+  When I go to the "collection" "edit" page for "collperm"
+  And I press the edit collection button with text "Add Creator"
+  Then the element with id "batch_creator][" should be focused
 
 Scenario: Updating a collection with invalid metadata
   Given a collection with pid "collperm" created by "user1"
@@ -94,7 +92,9 @@ Scenario: Deleting a collection as an admin
   And the collection with pid "coll6" has status published
   When I go to the "my collections" "show" page for "coll6"
   Then I should see a button to delete collection with id coll6
-  When I press the modal button to "delete collection with id coll6" in "dri_delete_modal_id"
+  When I follow the link to delete a collection
+  And I press the button to "delete collection with id coll6"
+  And I accept the alert
   Then I should see a success message for deleting a collection
 
 Scenario: Non-admin should not be given option to delete

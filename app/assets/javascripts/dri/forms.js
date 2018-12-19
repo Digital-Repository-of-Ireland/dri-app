@@ -1,69 +1,65 @@
 // Whenever an "add" link is clicked, a new text field is added to the bottom of the list
 $(document).ready(function() { 
-  $('.add-text-field a').click(function(e){ 
-    var fieldset_name = $(this).parents('fieldset').attr('id');
-    var model_name = $(this).attr('model-name');
-
-    var element_to_add = ['description', 'rights'].includes(fieldset_name) ? 'textarea' : 'input';
-    var nchildren = $("#"+fieldset_name+" > div > "+element_to_add).length;
-
-    var remove_button = '<a class="destructive" model-name="batch">\
-                          &nbsp; <i class="fa fa-times-circle"></i> Remove\
-                        </a>';
-    // var input_id = [model_name, fieldset_name, nchildren].join('_')+'][';
-    var input_id = [model_name, fieldset_name].join('_')+'][';
-    var input_name = model_name+'['+fieldset_name+'][]';
-
+  $('.add-text-field a').click(function(e) { 
     e.preventDefault();
+    var fieldset_id = $(this).parents('fieldset').attr('id');
+    var model_name = $(this).attr('model-name');
+    var new_elemenet_type = ['description', 'rights'].includes(fieldset_id) ? 
+      'textarea' : 
+      'input';
+    var input_id = [model_name, fieldset_id].join('_')+'][';
+    var input_name = model_name+'['+fieldset_id+'][]';
 
-    if (element_to_add == 'textarea') {
-      $("#"+fieldset_name+' .add-text-field').before(
-        '<div>\
-          <textarea class="edit span6 dri-textarea" \
-            id='+input_id+' name='+input_name+'>\
-          </textarea>'+ remove_button +
-        '</div>');
-    } else {
-      $("#"+fieldset_name+' .add-text-field').before(
-        '<div>\
-          <input class="edit span6 dri-textfield" \
-            id='+input_id+' name='+input_name+' \
-            size="30" type="text" value=""/>'+remove_button+
-        '</div>');
-    }
+    var new_element_html = (new_elemenet_type == 'textarea') ?
+      createTextArea(input_id, input_name) :
+      createTextInput(input_id, input_name);
 
-    $("#"+fieldset_name+" > div > "+element_to_add).last().focus();
+    $(new_element_html).hide().insertBefore(
+      $(this).parent()
+    ).slideDown('fast');
+
+    var added_element = $("#"+fieldset_id+" > div > "+new_elemenet_type).last();
+    added_element.focus(); // focus on newly added input
   });
 
-  $('.dri_ingest_form').on('click','.destructive', function(e){
+  $('.dri_ingest_form').on('click','.destructive', function(e) {
     e.preventDefault();
-    var fieldset_name = $(this).parents('fieldset').attr('id');
+    var fieldset_id = $(this).parents('fieldset').attr('id');
     
-    if(fieldset_name != 'roles') {
-      $(this).parent('div').remove();
+    // TODO
+    // 1. make required fields generic? i.e. can't remove all inputs of type x
+    if (fieldset_id === 'roles') {
+      // ensure at least one role always exists
+      // otherwise previous_select.html() will be empty 
+      // and the next generated dropdown won't have any options
+      if (numberOfRoles() > 1) {
+        $(this).parent('div').slideUp('fast', function() {
+          $(this).remove();
+        });
+      } else {
+        alert('You must have at least one Contributor field')
+      }
+    } else {
+      $(this).parent('div').slideUp('fast', function() {
+        $(this).remove();
+      });
     }
   });
 
   $('.add-person-fields a').click(function(e) {
     e.preventDefault();
-    var fieldset_name = $(this).parents('fieldset').attr('id');
-    var model_name = $(this).attr('model-name')
+    var fieldset_id = $(this).parents('fieldset').attr('id');
+    var model_name = $(this).attr('model-name');
     var previous_select = $(this).parent().siblings('div').last().children('select');
-    
-    $(this).parent().before(
-      '<div><select id="'+model_name+'_'+fieldset_name+'][type][" selected="'+previous_select.val()
-      +'" name="'+model_name+'['+fieldset_name+'][type][]">'+previous_select.html()+'</select> '
-      +'<input class="edit span6 dri-textfield" id="'+model_name+'_'+fieldset_name+'][name][" name="'
-      +model_name+'['+fieldset_name+'][name][]" size="30" type="text" value="">  <a class="destructive" model-name="'
-      +model_name+'">&nbsp;<i class="fa fa-times-circle"></i> Remove</a></div>'
-    );
 
-    $(this).parent().siblings('div').last().children('select').val(previous_select.val())
-    
-    $(this).parent().siblings('div').last().children('a').click(function(e) {
-      e.preventDefault();
-      $(this).parent('div').remove();
-    });
+    var new_element_html = createPersonInput(fieldset_id, model_name, previous_select);
+    $(new_element_html).hide().insertBefore($(this).parent()).slideDown('fast');
+
+    var added_element = $(this).parent().siblings('div').last();
+    // set new dropdown selected value to the same as the parent select
+    added_element.children('select').val(previous_select.val())
+    // focus on the new input
+    added_element.children('input').focus();    
   });
 
   // ensure at least one date is entered
@@ -124,3 +120,42 @@ function fileUploadHelper(thisObj) {
 function coverImageFileUploadHelper(thisObj) {
     $("#cover_image").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
 };
+
+function numberOfRoles() {
+  return $('#roles').children('div').length;
+}
+
+function createRemoveButton(model) {
+  return '<a class="destructive" model-name="'+model+'">\
+            &nbsp; <i class="fa fa-times-circle"></i> Remove\
+          </a>';
+}
+
+function createTextArea(id, name, classes) {
+  return '<div>\
+            <textarea class="edit span6 dri-textarea " \
+              id='+id+' name='+name+'>\
+            </textarea>'+createRemoveButton('batch')+
+          '</div>';
+}
+
+function createTextInput(id, name, classes) {
+  return '<div>\
+            <input class="edit span6 dri-textfield " \
+              id='+id+' name='+name+' \
+              size="30" type="text" value=""/>'+createRemoveButton('batch')+
+          '</div>';
+}
+
+// TODO 
+// 1. move to ecma6 template strings
+// 2. Check selected data-field needs to exist? (doesn't update, isn't on first element)
+function createPersonInput(id, name, previous_select) {
+  return '<div>\
+            <select id="'+name+'_'+id+'][type][" selected="'+previous_select.val()+
+              '" name="'+name+'['+id+'][type][]">'+previous_select.html()+
+            '</select> \
+              <input class="edit span6 dri-textfield " id="'+name+'_'+id+'][name][" name="'
+              +name+'['+id+'][name][]" size="30" type="text" value=""/>'+createRemoveButton('batch')+
+          '</div>';
+}

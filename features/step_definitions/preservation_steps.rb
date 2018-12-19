@@ -9,6 +9,10 @@ When /^I create a collection and save the pid$/ do
   @pid = URI.parse(current_url).path.split('/').last
 end
 
+When /^I save the pid$/ do
+  @pid = URI.parse(current_url).path.split('/').last
+end
+
 When /^I create an object and save the pid$/ do
   steps %{
     When I create a collection and save the pid

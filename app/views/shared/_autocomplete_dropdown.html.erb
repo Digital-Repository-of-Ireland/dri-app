@@ -1,0 +1,29 @@
+<div class='choose-vocab-container'>
+  <%
+    vocabs = [
+      ["Library of Congress", "/qa/search/loc/subjects?q="],
+      ["Logainm", "/qa/search/logainm/subjects?q="],
+      ["NUTS3", "/qa/search/nuts3/subjects?q="],
+      ["OCLC FAST", "/qa/search/assign_fast/all?q="],
+      ["Unesco", "/qa/search/unesco/subjects?q="],
+      ["Disable", "na"]
+    ]
+    # if no default is set, use the first label
+    default ||= vocabs[0][0]
+  %>
+  <select class='vocab-dropdown'>
+    <% vocabs.each do |arr| %>
+      <option <%= selected='selected' if arr[0] == default %> value="<%=arr[1]%>">
+        <%=arr[0]%>
+      </option>
+    <% end %>
+  </select>
+
+  <%# TODO add translations %>
+  <i class="dri_help_popover fa fa-info-circle fa-1" 
+      data-original-title="<%=t('dri.help.autocomplete.title')%>"
+      data-content="<%=t('dri.help.autocomplete.content')%>"
+      data-trigger="hover" 
+      data-placement="right">
+  </i>
+</div>

@@ -16,9 +16,10 @@ Given /^I am logged in as "([^\"]*)" and accept cookies$/ do |login|
   @user.confirm
   delete destroy_user_session_path(@user)
   visit path_to("sign in")
+  step 'I accept cookies terms'
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
-  step 'I accept cookies terms'
+  #step 'I accept cookies terms'
   click_button("Login")
   step 'I should be logged in'
 end
@@ -56,9 +57,9 @@ Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)" and accept cookies$
   membership.save
   delete destroy_user_session_path(@user)
   visit path_to("sign in")
+  step 'I accept cookies terms'
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
-  step 'I accept cookies terms'
   click_button("Login")
   step 'I should be logged in'
 end
@@ -194,7 +195,6 @@ end
 
 Then /^I should be logged in as "(.*?)"$/ do |login|
   step 'I should be logged in'
-  find('#view_account').trigger('click')
   page.should have_content(login)
 end
 
