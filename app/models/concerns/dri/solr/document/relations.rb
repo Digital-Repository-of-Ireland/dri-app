@@ -26,7 +26,6 @@ module DRI::Solr::Document::Relations
     relationships_hash = {}
 
     begin
-
       if active_fedora_model == 'DRI::Documentation'
         documentation = documentation_for
 
@@ -55,12 +54,11 @@ module DRI::Solr::Document::Relations
       key = relationship_type.gsub(/\s+/, '') # no spaces in json keys
       solr_docs = list_of_objects.flatten.select { |v| v.kind_of? SolrDocument }
       solr_docs.each do |doc|
-        dois = doc.doi
         url = Rails.application.routes.url_helpers.url_for({controller: 'catalog', action: 'show', id: doc.id})
-        json << { 
+        json << {
           relation: key,
           # if doi exists serialize it, otherwise return nil
-          doi: dois ? dois.show : nil,
+          doi: DRI::Formatters::Json.dois(doc),
           url: url
         }
       end
@@ -127,19 +125,20 @@ module DRI::Solr::Document::Relations
       # Get Root collection of current object.
       root = root_collection
 
-      if root
-        solr_query = "#{solr_id_field}:(#{relations_array.map { |r| "\"#{r}\"" }.join(' OR ')})"
-        solr_query << " AND #{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string)}:\"#{root.id}\""
-
-        solr_results = ActiveFedora::SolrService.query(solr_query, rows: relations_array.length, defType: 'edismax')
-
-        if solr_results.present?
-          solr_results.each { |item| records << SolrDocument.new(item) }
-        else
-          Rails.logger.error("Relationship target objects not found in Solr for object #{id}")
-        end
-      else
+      unless root
         Rails.logger.error("Root collection ID for object with PID #{id} not found in Solr")
+        return records
+      end
+
+      solr_query = "#{solr_id_field}:(#{relations_array.map { |r| "\"#{r}\"" }.join(' OR ')})"
+      solr_query << " AND #{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string)}:\"#{root.id}\""
+
+      solr_results = ActiveFedora::SolrService.query(solr_query, rows: relations_array.length, defType: 'edismax')
+
+      if solr_results.present?
+        solr_results.each { |item| records << SolrDocument.new(item) }
+      else
+        Rails.logger.error("Relationship target objects not found in Solr for object #{id}")
       end
 
       records
