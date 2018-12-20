@@ -58,8 +58,9 @@ module DRI::Solr::Document::Relations
         dois = doc.doi
         url = Rails.application.routes.url_helpers.url_for({controller: 'catalog', action: 'show', id: doc.id})
         json << { 
-          relation: key, 
-          doi: dois ? dois.show : dois,
+          relation: key,
+          # if doi exists serialize it, otherwise return nil
+          doi: dois ? dois.show : nil,
           url: url
         }
       end
