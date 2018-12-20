@@ -67,7 +67,7 @@ module DRI::Formatters
     # @return [Array] array of hashes for each doi || nil
     def self.dois(solr_doc)
       dois = DataciteDoi.where(object_id: solr_doc.id)
-      return dois.map(&:show) if dois.count > 0
+      return dois.map(&:show) unless dois.empty?
     end
 
     def assets
