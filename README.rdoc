@@ -93,7 +93,19 @@ If you are using homebrew on OSX
 
 In order to properly ingest videos, please reinstall ffmpeg with all the the supported codecs and encoders available:
 
- $ brew reinstall ffmpeg --with-fdk-aac --with-ffplay --with-freetype --with-frei0r --with-libass --with-libvo-aacenc --with-libvorbis --with-libvpx --with-opencore-amr --with-openjpeg --with-opus --with-rtmpdump --with-schroedinger --with-speex --with-theora --with-tools
+  $ brew reinstall ffmpeg --with-fdk-aac --with-ffplay --with-freetype --with-frei0r --with-libass --with-libvo-aacenc --with-libvorbis --with-libvpx --with-opencore-amr --with-openjpeg --with-opus --with-rtmpdump --with-schroedinger --with-speex --with-theora --with-tools
+
+If you are using Ubuntu or another debian linux distribution
+
+  $ sudo apt-get install coreutils libtool libksba8 libxml2 libxslt1.1 automake autoconf openssl curl libreadline6 gettext pkg-config libyaml-dev redis sqlite ffmpeg gource phantomjs libgtk2.0-dev imagemagick ghostscript nodejs
+
+There's no debian package for fits so you'll need to get it from 
+the harvard website https://projects.iq.harvard.edu/fits/downloads
+or github https://github.com/harvard-lts/fits/
+
+You may need to comment out `<tool class="edu.harvard.hul.ois.fits.tools.mediainfo.MediaInfo"` in fits/xml/fits.xml
+as per https://github.com/harvard-lts/fits/issues/160
+
 
 == Testing
 
