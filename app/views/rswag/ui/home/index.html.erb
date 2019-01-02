@@ -1,4 +1,10 @@
 ﻿<!-- HTML for static distribution bundle build -->
+<% 
+  def main_app
+    Rails.application.class.routes.url_helpers
+  end
+%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -95,6 +101,52 @@
 
         // Apply OAuth config
         ui.initOAuth(oauthConfigObject);
+
+        console.log("hi");
+
+        // // TODO refactor to use jQuery
+        // function validate_auth() {
+        //   var modals = document.getElementsByClassName("modal-dialog-ux");
+        //   // foreach?
+        //   for (var i = 0; i < modals.length; i++) {
+        //     console.log(modals[i]);
+        //     modals[i].onclick = function(){
+        //       console.log("hi");
+        //     }
+        //   }
+        // }
+
+        function waitForElement(callback, selector, time) {
+          if (document.querySelector(selector) != null) {
+            callback();
+          } else {
+            setTimeout(function() {
+              waitForElement(callback, selector, time);
+            }, time);
+          }
+        }
+
+        function waitForSwagger(callback, time) {
+          waitForElement(callback, "div.swagger-ui", time);
+        }
+
+        var modal = document.getElementsByClassName("modal-dialog-ux")[0];
+        var generate_token_button = document.createElement("button");
+        generate_token_button.innerHTML = "Generate Token"
+        generate_token_button.onclick = function() {
+          console.log("go to token");
+          console.log("<%= main_app.new_user_session_url %>");
+          console.log("<%#= current_user %>");
+          console.log("<%#= main_app.user_group.user_path(current_user) %>");
+          console.log("<%#= main_app.link_to 'Login', main_app.new_user_session_url %>");
+        }
+        // console.log(auth_button);
+        waitForSwagger(function() {
+          var parent = document.querySelector("section.schemes");
+          var auth_button = document.querySelector("section.schemes > .auth-wrapper");
+          // parent.insertBefore(auth_button, generate_token_button);
+          parent.appendChild(generate_token_button)
+        }, 100);
       }
     </script>
   </body>
