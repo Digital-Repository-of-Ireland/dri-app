@@ -199,7 +199,7 @@ module FieldRenderHelper
                               controller: controller_name,
                               facet_arg => standardise_facet(facet: facet_name, value: standardised_value)
                             }
-                      ) << "\">" << standardised_value << "</a><a href=\"" << identifier << "\" class=\"orcidlink\">" << identifier << "</a></span>" 
+                      ) << "\">" << standardised_value << "</a><a href=\"" << identifier << "\" class=\"orcidlink\"  target=\"_blank\">" << identifier << "</a></span>" 
       else
         "<a href=\"" << url_for(
                             {
