@@ -7,5 +7,4 @@ Rswag::Ui.configure do |c|
   # then the list below should correspond to the relative paths for those endpoints
 
   c.swagger_endpoint '/api-docs/v1/swagger.json', 'API V1 Docs'
-  # include Rails.application.routes.mounted_helpers
 end

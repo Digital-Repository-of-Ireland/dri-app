@@ -74,7 +74,10 @@ module PathTranslator
         new_organisation_path
 
       when /^(the )?organisations page$/
-        '/organisations'
+        "#{root_path}organisations"
+
+      when /^(the )?api docs page$/
+        "#{root_path}api-docs"
 
       when /^(the )?workspace page$/
         workspace_path

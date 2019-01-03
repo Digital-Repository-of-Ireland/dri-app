@@ -124,8 +124,9 @@
           var modal = document.getElementsByClassName("modal-dialog-ux")[0];
           // var generate_token_button = document.createElement("button");
           var generate_token_button = document.querySelector("div.swagger-ui div.auth-wrapper button.authorize").cloneNode(true);
-          generate_token_button.innerHTML = "Log in (get token)"
+          generate_token_button.innerHTML = "Login (get token)"
           generate_token_button.style.height = "36px";
+          generate_token_button.id = "login";
           generate_token_button.onclick = function() {
             window.location.href = "<%= main_app.new_user_session_url %>";
           }
