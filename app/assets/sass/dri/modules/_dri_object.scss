@@ -259,12 +259,16 @@ dl.dri_object_metadata_readview {
         padding: 0;
         color: $dri_midgrey;
         text-align: left;
-        a {
+        a,span {
             margin: 0 0 0 15px;
             padding: 0;
             display: list-item;
             list-style-type: square;
             color: $dri_midgrey;
+        }
+        span a {
+            display: inline;
+            margin: 0 5px 0 0;
         }
         a:hover {
             text-decoration: underline;

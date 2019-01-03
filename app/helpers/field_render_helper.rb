@@ -184,21 +184,33 @@ module FieldRenderHelper
     facet_arg = get_search_arg_from_facet(facet: facet_name)
 
     value.each_with_index.map do |v, i|
-      # don't show URLs in the UI
+      # don't show simple URLs in the UI
       next if uri?(indexed_value[i])
       standardised_value = standardise_value(facet_name: facet_name, value: v)
       next unless standardised_value
+      authority = get_value_from_solr_field(indexed_value[i], "authority")
+      identifier = get_value_from_solr_field(indexed_value[i], "identifier")
 
-      "<a href=\"" << url_for(
+      # for orcids include a repository search on name and the orcid link
+      if authority.present? && authority.casecmp("ORCID") && uri?(identifier)
+        "<span><a href=\"" << url_for(
+                            {
+                              action: 'index',
+                              controller: controller_name,
+                              facet_arg => standardise_facet(facet: facet_name, value: standardised_value)
+                            }
+                      ) << "\">" << standardised_value << "</a><a href=\"" << identifier << "\" class=\"orcidlink\">" << identifier << "</a></span>" 
+      else
+        "<a href=\"" << url_for(
                             {
                               action: 'index',
                               controller: controller_name,
                               facet_arg => standardise_facet(facet: facet_name, value: indexed_value[i])
                             }
                       ) << "\">" << standardised_value << "</a>"
+      end
     end
   end
-
 
   # For form views, returns a list of "people" values in qualifed dublin core that have values.
   # Also sets @qdc_people_select_list, for creating a select list in HTML based on qualified dublin core people
