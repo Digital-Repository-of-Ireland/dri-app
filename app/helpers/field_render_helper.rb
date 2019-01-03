@@ -193,7 +193,7 @@ module FieldRenderHelper
 
       # for orcids include a repository search on name and the orcid link
       if authority.present? && authority.casecmp("ORCID") && uri?(identifier)
-        "<span><a href=\"" << url_for(
+        "<span class=\"orcid\"><a href=\"" << url_for(
                             {
                               action: 'index',
                               controller: controller_name,
