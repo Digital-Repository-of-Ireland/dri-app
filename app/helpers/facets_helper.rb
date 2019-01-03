@@ -23,6 +23,23 @@ module FacetsHelper
     results
   end
 
+  def parse_orcid(args)
+    results = nil
+
+    if args.is_a?(Hash)
+      results = []
+      value_list = args[:document][args[:field]]
+
+      value_list.each do |value|
+        results.push(transform_orcid(value))
+      end
+    else
+      results = transform_orcid(args)
+    end
+    
+    results
+  end
+
   def parse_era(args)
     results = nil
 
@@ -106,6 +123,19 @@ module FacetsHelper
     return 'nil' if value.nil?
 
     value == 'false' ? t('dri.views.facets.values.no_collections') : t('dri.views.facets.values.collections')
+  end
+
+  # parses encoded orcid identifiers
+  def transform_orcid(value)
+    return 'nil' if value.nil?
+
+    value.split(/\s*;\s*/).each do |component|
+      (k,v) = component.split(/\s*=\s*/)
+      if k == 'name'
+        return v unless v.nil? || v.empty?
+      end
+    end
+    value
   end
 
   # parses encoded era values
