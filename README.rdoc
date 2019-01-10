@@ -99,9 +99,16 @@ If you are using Ubuntu or another debian linux distribution
 
   $ sudo apt-get install coreutils libtool libksba8 libxml2 libxslt1.1 automake autoconf openssl curl libreadline6 gettext pkg-config libyaml-dev redis sqlite ffmpeg gource phantomjs libgtk2.0-dev imagemagick ghostscript nodejs
 
-There's no debian package for fits so you'll need to get it from 
-the harvard website https://projects.iq.harvard.edu/fits/downloads
-or github https://github.com/harvard-lts/fits/
+There are a few installation options for fits:
+
+
+1. Download fits from the harvard website https://projects.iq.harvard.edu/fits/downloads
+2. Use ant to build from source github https://github.com/harvard-lts/fits/
+3. Install http://linuxbrew.sh/ and brew install fits
+4. Use the ppa
+    $ sudo add-apt-repository ppa:conorsheehan1/fits-ppa
+    $ sudo apt-get update
+    $ sudo apt install fits
 
 You may need to comment out `<tool class="edu.harvard.hul.ois.fits.tools.mediainfo.MediaInfo"` in fits/xml/fits.xml
 as per https://github.com/harvard-lts/fits/issues/160
