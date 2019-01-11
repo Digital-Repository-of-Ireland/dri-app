@@ -31,6 +31,10 @@ module DRI::Solr::Document::Collection
     status_id('published')
   end
 
+  def published_solr_objects
+    status_solr_object('published')
+  end
+
   def published_subcollections
     status_count('published', true)
   end
@@ -94,20 +98,27 @@ module DRI::Solr::Document::Collection
       ActiveFedora.index_field_mapper.solr_name('metadata_md5', :stored_searchable, type: :string)
     end
 
-    def status_count(status, subcoll = false)
+    def status_query(status, subcoll = false)
       query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{id}"
       query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}" unless status.nil?
       query += " AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
+      query
+    end
 
-      ActiveFedora::SolrService.count(query)
+    def status_count(status, subcoll = false)
+      ActiveFedora::SolrService.count(status_query(status, subcoll))
+    end
+
+    def status_solr_object(status, subcoll = false)
+      results = ActiveFedora::SolrService.get(status_query(status, subcoll))
+      results["response"]["docs"].map do |doc|
+        SolrDocument.new(doc)
+      end
     end
 
     def status_id(status, subcoll = false)
-      query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{id}"
-      query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}" unless status.nil?
-      query += " AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
-
-      ActiveFedora::SolrService.get(query)["response"]["docs"].map do |doc|
+      results = ActiveFedora::SolrService.get(status_query(status, subcoll))
+      results["response"]["docs"].map do |doc|
         doc["id"]
       end
     end

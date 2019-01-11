@@ -62,6 +62,9 @@ module DRI::IIIFViewable
   end
 
   def create_collection_manifest
+    require 'byebug'
+    byebug
+    
     seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
 
@@ -85,7 +88,8 @@ module DRI::IIIFViewable
       sub_collections.each { |c| manifest.collections << create_subcollection(c) }
     end
 
-    objects = child_objects
+    # objects = child_objects
+    objects = @document.published_solr_objects.select { |doc| doc.file_type_label == 'Image' }
     unless objects.empty?
       objects.each { |o| manifest.manifests << create_manifest(o) }
     end
