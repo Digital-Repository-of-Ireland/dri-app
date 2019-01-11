@@ -15,7 +15,7 @@ DriApp::Application.configure do
   config.cache_classes = true
 
   # turn off caching for method results e.g. iiif_manifst call in iiif_controller.rb
-  config.cache_store = :null_store
+  config.cache_store = [:null_store]
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true

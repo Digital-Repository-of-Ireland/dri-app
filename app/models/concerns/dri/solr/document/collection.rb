@@ -27,6 +27,10 @@ module DRI::Solr::Document::Collection
     status_count('published')
   end
 
+  def published_object_ids
+    status_id('published')
+  end
+
   def published_subcollections
     status_count('published', true)
   end
@@ -96,6 +100,16 @@ module DRI::Solr::Document::Collection
       query += " AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
 
       ActiveFedora::SolrService.count(query)
+    end
+
+    def status_id(status, subcoll = false)
+      query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{id}"
+      query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}" unless status.nil?
+      query += " AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
+
+      ActiveFedora::SolrService.get(query)["response"]["docs"].map do |doc|
+        doc["id"]
+      end
     end
 
     def duplicate_query
