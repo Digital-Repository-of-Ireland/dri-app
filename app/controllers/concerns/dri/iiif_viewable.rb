@@ -96,6 +96,7 @@ module DRI::IIIFViewable
         'viewing_hint' => 'individuals'})
 
     # objects = child_objects
+
     objects = @document.published_solr_objects.select { |doc| doc.file_type_label == 'Image' }
 
     unless objects.empty?
