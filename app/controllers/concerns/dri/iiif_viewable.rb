@@ -28,8 +28,20 @@ module DRI::IIIFViewable
     end
   end
 
-  def iiif_base_url
-    iiif_base_url = url_for controller: 'iiif', action: 'show', id: @document.id,
+  def iiif_sequence
+    if @document.collection?
+      create_collection_sequence
+    else
+      # TODO, get parent collection id
+      # use create_collection_sequence to generate manifest, but target image from current object
+      # so that full collection is opened in mirador, but with the current object selected
+      create_object_manifest
+    end
+  end
+
+  def iiif_base_url(solr_id = nil)
+    solr_id ||= @document.id
+    iiif_base_url = url_for controller: 'iiif', action: 'show', id: solr_id,
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
   end
 
@@ -61,10 +73,45 @@ module DRI::IIIFViewable
     manifest
   end
 
-  def create_collection_manifest
-    require 'byebug'
-    byebug
-    
+  def create_collection_sequence
+    seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+
+    seed = {
+      '@id' => seed_id,
+      'label' => @document.title.join(','),
+      'description' => @document.description.join(' ')
+    }
+
+    manifest = IIIF::Presentation::Manifest.new(seed)
+    base_manifest(manifest)
+
+    sub_collections = @document.children
+    unless sub_collections.empty?
+      sub_collections.each { |c| manifest.collections << create_subcollection(c) }
+    end
+
+    sequence = IIIF::Presentation::Sequence.new(
+        {'@id' => "#{iiif_base_url}/sequence/normal", 
+        'viewing_hint' => 'individuals'})
+
+    # objects = child_objects
+    objects = @document.published_solr_objects.select { |doc| doc.file_type_label == 'Image' }
+
+    unless objects.empty?
+      objects.each do |o| 
+        files = attached_images(o.id)
+        files.each do |f| 
+          sequence.canvases << create_canvas(f, iiif_base_url(o.id), o.id)
+        end
+      end
+    end
+
+    manifest.sequences << sequence
+    manifest
+  end
+
+  def create_collection_manifest    
     seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
 
@@ -88,18 +135,25 @@ module DRI::IIIFViewable
       sub_collections.each { |c| manifest.collections << create_subcollection(c) }
     end
 
-    # objects = child_objects
-    objects = @document.published_solr_objects.select { |doc| doc.file_type_label == 'Image' }
+    sequence = IIIF::Presentation::Sequence.new(
+        {'@id' => "#{iiif_base_url}/sequence/normal", 
+        'viewing_hint' => 'individuals'})
+
+    objects = child_objects
+
     unless objects.empty?
-      objects.each { |o| manifest.manifests << create_manifest(o) }
+      objects.each do |o| 
+        manifest.manifests << create_manifest(o)
+      end
     end
 
     manifest
   end
 
-  def attached_images
+  def attached_images(solr_id = nil)
+    solr_id ||= @document.id
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{@document.id}"
+    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{solr_id}"
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
     
     files = []
@@ -146,7 +200,8 @@ module DRI::IIIFViewable
     query.to_a
   end
 
-  def create_canvas(file, iiif_base_url)
+  def create_canvas(file, iiif_base_url, solr_id = nil)
+    solr_id ||= @document.id
     canvas = IIIF::Presentation::Canvas.new()
     canvas['@id'] = "#{iiif_base_url}/canvas/#{file.id}"
     
@@ -154,7 +209,7 @@ module DRI::IIIFViewable
     canvas.height = file[WIDTH_SOLR_FIELD]
     canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')].first
 
-    base_uri = Settings.iiif.server + '/' + @document.id + ':' + file.id
+    base_uri = Settings.iiif.server + '/' + solr_id + ':' + file.id
     image_url =  base_uri + '/full/full/0/default.jpg'
 
     image = IIIF::Presentation::ImageResource.create_image_api_image_resource(
