@@ -38,7 +38,7 @@ FactoryBot.define do
     resource_type          ["Sound"]
     object_version          '1'
 
-     after(:create) do |audio|
+    after(:create) do |audio|
       preservation = Preservation::Preservator.new(audio)
       preservation.preserve(false, false, ['descMetadata','properties'])
     end
@@ -72,6 +72,12 @@ FactoryBot.define do
     temporal_coverage      ["1900s"]
     subject                ["Ireland","something else"]
     resource_type          ["Image"]
+
+    after(:create) do |image|
+      # TODO add attached_file
+      preservation = Preservation::Preservator.new(image)
+      preservation.preserve(false, false, ['descMetadata','properties'])
+    end
   end
 
   factory(:collection, :class => DRI::QualifiedDublinCore) do

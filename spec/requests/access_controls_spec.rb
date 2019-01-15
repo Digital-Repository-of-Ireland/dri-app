@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe AccessControlsController, :type => :request do
+describe AccessControlsController, type: :request do
 
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir

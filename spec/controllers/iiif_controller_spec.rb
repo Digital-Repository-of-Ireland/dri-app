@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'swagger_helper'
 
 describe IiifController do
   include Devise::Test::ControllerHelpers
@@ -79,37 +78,11 @@ describe IiifController do
     let(:login_user) { FactoryBot.create(:admin) }
     before(:each) do
       sign_in login_user
-      # collection.governed_items << object
-      # collection.status = 'published'
-      # collection.governed_items.map do |item|
-      #   item.status = 'published'
-      # end
     end
 
     it 'should return a valid manifest for a collection' do
       get :sequence, id: collection.id, format: :json
       expect { JSON.parse(response.body) }.not_to raise_error
     end
-
-    include_context 'rswag_user_with_collections' do
-      it 'should put all published images in the collection in a sequence' do
-        require 'byebug'
-        byebug
-        sign_in @example_user
-        get :sequence, id: collection.id, format: :json
-        sequences = JSON.parse(response.body)['sequences']
-        image_ids = sequences.map do |seq| 
-          seq['canvases'].map do |canvas|
-            canvas['images'].map do |image|
-              image_url = image['resource']['service']['@id']
-              # get id, between /images/ and :
-              # e.g http://localhost:3000/images/j9602061v:zp38wc62h
-              image_url[/\/images\/(.*)\:/m, 1]
-            end
-          end
-        end.flatten
-      end
-
-    end 
   end
 end
