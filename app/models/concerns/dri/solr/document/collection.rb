@@ -35,6 +35,12 @@ module DRI::Solr::Document::Collection
     status_solr_object('published')
   end
 
+  def published_images
+    published_solr_objects.select do |doc| 
+      doc.file_type_label == 'Image'
+    end
+  end
+
   def published_subcollections
     status_count('published', true)
   end

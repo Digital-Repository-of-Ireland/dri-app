@@ -73,6 +73,7 @@ module DRI::IIIFViewable
     manifest
   end
 
+  # based on https://iiif.lib.harvard.edu/manifests/drs:48309543
   def create_collection_sequence
     seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
@@ -92,19 +93,39 @@ module DRI::IIIFViewable
     end
 
     sequence = IIIF::Presentation::Sequence.new(
-        {'@id' => "#{iiif_base_url}/sequence/normal", 
-        'viewing_hint' => 'individuals'})
+      '@id' => "#{iiif_base_url}/sequence/normal", 
+      'viewing_hint' => 'individuals'
+    )
 
     # objects = child_objects
-    objects = @document.published_solr_objects.select { |doc| doc.file_type_label == 'Image' }
+    objects = @document.published_images
 
     unless objects.empty?
       objects.each do |o| 
         files = attached_images(o.id)
-        files.each do |f| 
+        files.each_with_index do |f, i| 
           sequence.canvases << create_canvas(f, iiif_base_url(o.id), o.id)
         end
       end
+    end
+
+    # add toc
+    manifest.structures << {
+      'canvases' => sequence.canvases.map { |canvas| canvas["@id"] },
+      '@id' => "#{iiif_base_url}/range/range-1.json",
+      '@type' => "sc:Range",
+      'label' => "Table of Contents"
+    }
+
+    # add items to toc
+    sequence.canvases.each_with_index do |canvas, idx|
+      manifest.structures << {
+        'canvases' => [canvas["@id"]],
+        'within' => "#{iiif_base_url}/range/range-1.json",
+        '@id' => "#{iiif_base_url}/range/range-1-#{idx+1}.json",
+        '@type' => "sc:Range",
+        'label' => "image #{idx+1}"
+      }
     end
 
     manifest.sequences << sequence
