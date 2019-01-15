@@ -41,8 +41,10 @@ module DRI::IIIFViewable
 
   def iiif_base_url(solr_id = nil)
     solr_id ||= @document.id
-    iiif_base_url = url_for controller: 'iiif', action: 'show', id: solr_id,
+    url_for(
+      controller: 'iiif', action: 'show', id: solr_id,
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+    )
   end
 
   def create_object_manifest
@@ -73,7 +75,24 @@ module DRI::IIIFViewable
     manifest
   end
 
-  # based on https://iiif.lib.harvard.edu/manifests/drs:48309543
+  # TODO move to solr_document class?
+  # Remove func if unused in mirador toc regions
+  # @return [Array]
+  def bfs_subcollections(solr_doc = nil)
+    solr_doc ||= @document
+    output = []
+    queue = @document.children
+    until queue.empty?
+      sub_collection = queue.pop
+      unless sub_collection.children.empty?
+        # insert collection at the back of the queue
+        sub_collection.children.each { |col| queue.insert(0, col) }
+      end
+      output << sub_collection
+    end
+    output
+  end
+
   def create_collection_sequence
     seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
@@ -87,25 +106,28 @@ module DRI::IIIFViewable
     manifest = IIIF::Presentation::Manifest.new(seed)
     base_manifest(manifest)
 
-    sub_collections = @document.children
-    unless sub_collections.empty?
-      sub_collections.each { |c| manifest.collections << create_subcollection(c) }
-    end
-
     sequence = IIIF::Presentation::Sequence.new(
       '@id' => "#{iiif_base_url}/sequence/normal", 
       'viewing_hint' => 'individuals'
     )
 
+    # TODO: check why child_objects is empty in dev env
+    # issue with object_type in solr?
+    # Add collapsible subcollections to structures like
+    # https://iiif.lib.harvard.edu/manifests/drs:48309543
     # objects = child_objects
     objects = @document.published_images
 
-    unless objects.empty?
-      objects.each do |o| 
-        files = attached_images(o.id)
-        files.each_with_index do |f, i| 
-          sequence.canvases << create_canvas(f, iiif_base_url(o.id), o.id)
-        end
+    # exit early if @document doesn't have published images
+    return manifest if objects.empty?
+
+    require 'byebug'
+    byebug
+
+    objects.each do |o| 
+      files = attached_images(o.id)
+      files.each_with_index do |f, i| 
+        sequence.canvases << create_canvas(f, iiif_base_url(o.id), o.id)
       end
     end
 

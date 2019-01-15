@@ -2,7 +2,8 @@ DriApp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # default host mirador runs on locally after `npm start`
-  config.mirador_url = 'http://localhost:8000'
+  # config.mirador_url = 'http://localhost:8000'
+  config.mirador_url = 'https://repository.dri.ie/mirador'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
