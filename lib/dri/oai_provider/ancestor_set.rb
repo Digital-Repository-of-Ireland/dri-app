@@ -2,7 +2,7 @@ module DRI::OaiProvider
   class AncestorSet < BlacklightOaiProvider::SolrSet
 
     def description
-      collection_document['description_tesim'].join(" ")
+      collection_document['description_tesim'].present? ? collection_document['description_tesim'].join(" ") : ""
     end
 
     def name
