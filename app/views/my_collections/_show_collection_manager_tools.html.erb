@@ -22,13 +22,13 @@
 </h5>
 <ul>
     <li>
-        <% draft_objects = @document.draft_objects %>
-        <% draft_subcoll = @document.draft_subcollections %>
+        <% draft_objects = @document.draft_objects_count %>
+        <% draft_subcoll = @document.draft_subcollections_count %>
         <% duplicate_total = @document.duplicate_total %>
-        <% reviewed_objects = @document.reviewed_objects %>
-        <% reviewed_subcoll = @document.reviewed_subcollections %>
-        <% published_objects = @document.published_objects %>
-        <% published_subcoll = @document.published_subcollections %>
+        <% reviewed_objects = @document.reviewed_objects_count %>
+        <% reviewed_subcoll = @document.reviewed_subcollections_count %>
+        <% published_objects = @document.published_objects_count %>
+        <% published_subcoll = @document.published_subcollections_count %>
 
         <ul class="dri_subnav_review_list">
 
@@ -263,8 +263,8 @@
 			  </p>
 				<p><%= t('dri.views.collection.confirm_all_descendants_reviewed') %></p>
 				<p><%= t('dri.views.collection.confirm_review_summary',
-					      objects: @document.draft_objects,
-				        subcolls: @document.draft_subcollections) %></p>
+					      objects: @document.draft_objects_count,
+				        subcolls: @document.draft_subcollections_count) %></p>
 				<br />
 				<% if duplicate_total && duplicate_total > 0 %>
 				  <span class="label label-danger"><%= t('dri.views.collection.duplicates_found', duplicates_count: duplicate_total) %></span>
@@ -298,8 +298,8 @@
                         <div class="modal-body">
                                 <p><b><%= t('dri.views.collection.confirm_publish') %></b></p>
                                 <p><%= t('dri.views.collection.confirm_review_summary',
-                                              objects: @document.reviewed_objects,
-                                        subcolls: @document.reviewed_subcollections) %></p>
+                                              objects: @document.reviewed_objects_count,
+                                        subcolls: @document.reviewed_subcollections_count) %></p>
                                 <br />
                         </div>
                         <div class="modal-footer">

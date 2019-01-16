@@ -151,7 +151,7 @@ describe SolrDocument do
       @collection.reload
 
       doc = SolrDocument.find(@collection.id)
-      expect(doc.total_objects).to eq 6
+      expect(doc.total_objects_count).to eq 6
     end
 
     it 'should return published only if requested' do
@@ -170,7 +170,7 @@ describe SolrDocument do
       @collection.reload
 
       doc = SolrDocument.find(@collection.id)
-      expect(doc.published_objects).to eq 3
+      expect(doc.published_objects_count).to eq 3
     end
 
 
