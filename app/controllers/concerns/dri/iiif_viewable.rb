@@ -121,9 +121,6 @@ module DRI::IIIFViewable
     # exit early if @document doesn't have published images
     return manifest if objects.empty?
 
-    require 'byebug'
-    byebug
-
     objects.each do |o| 
       files = attached_images(o.id)
       files.each_with_index do |f, i| 
