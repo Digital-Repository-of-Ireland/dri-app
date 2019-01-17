@@ -247,6 +247,10 @@ Then /^I press "(.*?)"$/ do |button|
   click_link_or_button(button)
 end
 
+Then /^I click "([^\"]*)"$/ do |selector|
+  page.find(selector).click
+end
+
 Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|
   element = page.find_by_id(modal, :visible=>false).find_by_id(button_to_id(button))
   page.execute_script("return arguments[0].click();", element)
@@ -348,7 +352,7 @@ Then /^the object should be of type (.*?)$/ do |type|
   interface.is_type?(type)
 end
 
-Then /^I should see a link to "([^\"]*)" with text "([^\"]*)"$/ do |url, text|
+Then /^I should see a link to "([^\"]+)" with text "([^\"]+)"$/ do |url, text|
   page.should have_link(text, href: url)
 end
 

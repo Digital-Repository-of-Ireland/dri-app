@@ -36,6 +36,11 @@ end
 Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
   pid = @random_pid if (pid == "random")
   if pid
+    # TODO: add similar guard clause to build_hash_dir ?
+    err_msg = 'A pid must be at least 6 characters long. '\
+    'Otherwise methods will break, for example '\
+    'preservation_helpers.rb#build_hash_dir assumes pid.length >= 6'
+    raise ArgumentError, err_msg if pid.length < 6
     @digital_object = DRI::Batch.with_standard(:qdc, {:id => pid})
   else
     @digital_object = DRI::Batch.with_standard(:qdc)
