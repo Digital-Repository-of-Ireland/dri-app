@@ -15,20 +15,38 @@ Background:
   And the collection with pid "col1" is published
 
 # Collections tab show collections only
-# Sub-Collections tab shows collections and subcollections (selects collections and sub-collections tab)
+# Sub-Collections tab shows collections and subcollections (selects both tabs too)
 # Objects tab selects object only
-Scenario: Browsing subcollections with tabs
+Scenario: Using browse type tabs
   Given I am on the show Digital Object page for id col1
   When I click "#collection_s_object"
   Then I should see 0 visible element "#collections.selected"
   Then I should see 0 visible element "#sub_collections.selected"
   Then I should see 1 visible element "#objects.selected"
+
   When I click "#sub_collections"
   Then I should see 1 visible element "#collections.selected"
   Then I should see 1 visible element "#sub_collections.selected"
   Then I should see 0 visible element "#objects.selected"
+
   When I click "#collections"
   Then I should see 1 visible element "#collections.selected"
   Then I should see 0 visible element "#sub_collections.selected"
   Then I should see 0 visible element "#objects.selected"
   
+# TODO: refactor to check links are for root_collection objects when collection tab is clicked?
+# PROS - can change css without breaking spec, more robust check i.e. could have non-collection object rendered in collection block
+# CONS - slower, would need to parse href, load object by id, check type
+Scenario: Looking at results under browse tabs
+  Given I am on the show Digital Object page for id col1
+  When I click "#collection_s_object"
+  Then I should see 1 visible elements ".dri_content_block"
+  And I should see 0 visible element ".dri_content_block_collection"
+
+  When I click "#sub_collections"
+  Then I should see 0 visible elements ".dri_content_block"
+  And I should see 2 visible element ".dri_content_block_collection"
+
+  When I click "#collections"
+  Then I should see 0 visible elements ".dri_content_block"
+  And I should see 1 visible element ".dri_content_block_collection"
