@@ -14,9 +14,21 @@ Background:
   And the collection with pid "sub_col1" is in the collection with pid "col1"
   And the collection with pid "col1" is published
 
-Scenario: Browsing subcollections
+# Collections tab show collections only
+# Sub-Collections tab shows collections and subcollections (selects collections and sub-collections tab)
+# Objects tab selects object only
+Scenario: Browsing subcollections with tabs
   Given I am on the show Digital Object page for id col1
   When I click "#collection_s_object"
+  Then I should see 0 visible element "#collections.selected"
+  Then I should see 0 visible element "#sub_collections.selected"
   Then I should see 1 visible element "#objects.selected"
   When I click "#sub_collections"
+  Then I should see 1 visible element "#collections.selected"
   Then I should see 1 visible element "#sub_collections.selected"
+  Then I should see 0 visible element "#objects.selected"
+  When I click "#collections"
+  Then I should see 1 visible element "#collections.selected"
+  Then I should see 0 visible element "#sub_collections.selected"
+  Then I should see 0 visible element "#objects.selected"
+  
