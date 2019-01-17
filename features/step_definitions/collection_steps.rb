@@ -90,7 +90,14 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
   digital_object.save
 end
 
-Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)")?$/ do |objid,colid|
+Given /^the collection with pid "([^\"]+)" is in the collection with pid "([^\"]+)"$/ do |subcolid, colid|
+  collection = ActiveFedora::Base.find(colid, {:cast => true})
+  subcollection = ActiveFedora::Base.find(subcolid, {:cast => true})
+  subcollection.governing_collection = collection
+  subcollection.save
+end
+
+Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)")?$/ do |objid, colid|
   if objid
     object = ActiveFedora::Base.find(objid, {:cast => true})
   else
@@ -106,7 +113,7 @@ Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)
   collection.save
 end
 
-Given /^the collection(?: with pid "(.*?)")? is published?$/ do |colid|
+Given /^the collection(?: with pid "(.*?)")? is published$/ do |colid|
   colid = @collection.id unless colid || @collection.nil?
   if (colid == 'the saved pid')
      colid = @collection_pid ? @collection_pid : @pid

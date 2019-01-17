@@ -132,9 +132,15 @@ When /^(?:|I )click the link to (.+)$/ do |link_name|
   end
 end
 
-When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
-  with_scope(selector) do
+When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, scope|
+  with_scope(scope) do
     click_link(link)
+  end
+end
+
+When /^(?:|I )click the first "([^\"]+)" within "([^"]*)"$/ do |selector, scope|
+  with_scope(scope) do
+    click_on(page.find_all(selector).first)
   end
 end
 
