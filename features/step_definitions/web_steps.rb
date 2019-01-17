@@ -140,7 +140,7 @@ end
 
 When /^(?:|I )click the first "([^\"]+)" within "([^"]*)"$/ do |selector, scope|
   with_scope(scope) do
-    click_on(page.find_all(selector).first)
+    page.find_all(selector).first.click
   end
 end
 
