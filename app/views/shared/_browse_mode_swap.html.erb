@@ -16,13 +16,17 @@
 				# and passing verything through with params.merge
 				param_modes = %w[collections subcollections objects].map do |mode|
 					{
+						# if mode if collections or subcollections
+						# param[:mode] is set to collections
 						mode: mode.include?('collections') ? 'collections' : 'objects',
 						show_subs: mode == 'subcollections' ? 'true' : 'false',
 						root_collection_id_sim: params[:root_collection_id_sim],
 						search_field: params[:search_field],
 						controller: params[:controller],
 						action: params[:action],
-						view: params[:view]
+						view: params[:view],
+						utf8: params[:utf8],
+						q: params[:q]	
 					}
 				end
 
