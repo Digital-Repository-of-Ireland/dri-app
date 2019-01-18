@@ -128,13 +128,13 @@ class SolrDocument
   def has_doi?
     doi_key = ActiveFedora.index_field_mapper.solr_name('doi', :displayable, type: :symbol).to_sym
 
-    self[doi_key].present? ? true : false
+    self[doi_key].present?
   end
 
   def has_geocode?
     geojson_key = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
 
-    self[geojson_key].present? ? true : false
+    self[geojson_key].present?
   end
 
   def collection?
@@ -148,7 +148,7 @@ class SolrDocument
                       self[is_collection_key]
                     end
 
-    is_collection == 'true' || is_collection == true ? true : false
+    is_collection == 'true' || is_collection == true
   end
 
   def root_collection?
@@ -157,6 +157,20 @@ class SolrDocument
 
   def sub_collection?
     collection? && !root_collection?
+  end
+
+  def object?
+    is_collection_key = ActiveFedora.index_field_mapper.solr_name('is_object')
+
+    return false unless self[is_collection_key].present?
+
+    is_collection = if self[is_collection_key].is_a?(Array)
+                      self[is_collection_key].first
+                    else
+                      self[is_collection_key]
+                    end
+
+    is_collection == 'true' || is_collection == true
   end
 
   def institutes

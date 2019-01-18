@@ -133,7 +133,7 @@ Given /^the collection(?: with pid "(.*?)")? is published$/ do |colid|
   collection.save
 end
 
-Given /^I have associated the institute "(.?*)" with the collection with pid "(.?*)"$/ do |institute_name,pid|
+Given /^I have associated the institute "([^\"]+)" with the collection with pid "([^\"]+)"$/ do |institute_name,pid|
   if (pid.eql?('the saved pid'))
     pid = @collection_pid ? @collection_pid : @pid
   end

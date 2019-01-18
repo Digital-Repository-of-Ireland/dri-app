@@ -14,12 +14,13 @@ Background:
   And the collection with pid "sub_col1" is in the collection with pid "col1"
   And the collection with pid "col1" is published
 
+  And I am on the show Digital Object page for id col1
+  And I click "#collection_s_object"
+
 # Collections tab show collections only
 # Sub-Collections tab shows collections and subcollections (selects both tabs too)
 # Objects tab selects object only
-Scenario: Using browse type tabs
-  Given I am on the show Digital Object page for id col1
-  When I click "#collection_s_object"
+Scenario: Browse tabs highlighting
   Then I should see 0 visible element "#collections.selected"
   Then I should see 0 visible element "#sub_collections.selected"
   Then I should see 1 visible element "#objects.selected"
@@ -33,20 +34,21 @@ Scenario: Using browse type tabs
   Then I should see 1 visible element "#collections.selected"
   Then I should see 0 visible element "#sub_collections.selected"
   Then I should see 0 visible element "#objects.selected"
-  
-# TODO: refactor to check links are for root_collection objects when collection tab is clicked?
-# PROS - can change css without breaking spec, more robust check i.e. could have non-collection object rendered in collection block
-# CONS - slower, would need to parse href, load object by id, check type
-Scenario: Looking at results under browse tabs
-  Given I am on the show Digital Object page for id col1
-  When I click "#collection_s_object"
+
+Scenario: Browse for objects
+  When I click "#objects"
   Then I should see 1 visible elements ".dri_content_block"
   And I should see 0 visible element ".dri_content_block_collection"
+  And all ".dri_content_block_collection" within "#dri_result_container_id" should link to an object
 
+Scenario: Browse for subcollections
   When I click "#sub_collections"
   Then I should see 0 visible elements ".dri_content_block"
   And I should see 2 visible element ".dri_content_block_collection"
+  And all ".dri_content_block_collection" within "#dri_result_container_id" should link to a collection
 
+Scenario: Browse for collections
   When I click "#collections"
   Then I should see 0 visible elements ".dri_content_block"
   And I should see 1 visible element ".dri_content_block_collection"
+  And all ".dri_content_block_collection" within "#dri_result_container_id" should link to a root collection
