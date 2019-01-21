@@ -36,6 +36,11 @@ end
 Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
   pid = @random_pid if (pid == "random")
   if pid
+    # TODO: add similar guard clause to build_hash_dir ?
+    err_msg = 'A pid must be at least 6 characters long. '\
+    'Otherwise methods will break, for example '\
+    'preservation_helpers.rb#build_hash_dir assumes pid.length >= 6'
+    raise ArgumentError, err_msg if pid.length < 6
     @digital_object = DRI::Batch.with_standard(:qdc, {:id => pid})
   else
     @digital_object = DRI::Batch.with_standard(:qdc)
@@ -90,7 +95,14 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
   digital_object.save
 end
 
-Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)")?$/ do |objid,colid|
+Given /^the collection with pid "([^\"]+)" is in the collection with pid "([^\"]+)"$/ do |subcolid, colid|
+  collection = ActiveFedora::Base.find(colid, {:cast => true})
+  subcollection = ActiveFedora::Base.find(subcolid, {:cast => true})
+  subcollection.governing_collection = collection
+  subcollection.save
+end
+
+Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)")?$/ do |objid, colid|
   if objid
     object = ActiveFedora::Base.find(objid, {:cast => true})
   else
@@ -106,7 +118,7 @@ Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)
   collection.save
 end
 
-Given /^the collection(?: with pid "(.*?)")? is published?$/ do |colid|
+Given /^the collection(?: with pid "(.*?)")? is published$/ do |colid|
   colid = @collection.id unless colid || @collection.nil?
   if (colid == 'the saved pid')
      colid = @collection_pid ? @collection_pid : @pid
@@ -121,7 +133,7 @@ Given /^the collection(?: with pid "(.*?)")? is published?$/ do |colid|
   collection.save
 end
 
-Given /^I have associated the institute "(.?*)" with the collection with pid "(.?*)"$/ do |institute_name,pid|
+Given /^I have associated the institute "([^\"]+)" with the collection with pid "([^\"]+)"$/ do |institute_name,pid|
   if (pid.eql?('the saved pid'))
     pid = @collection_pid ? @collection_pid : @pid
   end

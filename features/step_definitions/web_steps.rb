@@ -132,9 +132,15 @@ When /^(?:|I )click the link to (.+)$/ do |link_name|
   end
 end
 
-When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
-  with_scope(selector) do
+When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, scope|
+  with_scope(scope) do
     click_link(link)
+  end
+end
+
+When /^(?:|I )click the first "([^\"]+)" within "([^"]*)"$/ do |selector, scope|
+  with_scope(scope) do
+    page.find_all(selector).first.click
   end
 end
 
@@ -241,6 +247,10 @@ Then /^I press "(.*?)"$/ do |button|
   click_link_or_button(button)
 end
 
+Then /^I click "([^\"]*)"$/ do |selector|
+  page.find(selector).click
+end
+
 Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|
   element = page.find_by_id(modal, :visible=>false).find_by_id(button_to_id(button))
   page.execute_script("return arguments[0].click();", element)
@@ -342,7 +352,7 @@ Then /^the object should be of type (.*?)$/ do |type|
   interface.is_type?(type)
 end
 
-Then /^I should see a link to "([^\"]*)" with text "([^\"]*)"$/ do |url, text|
+Then /^I should see a link to "([^\"]+)" with text "([^\"]+)"$/ do |url, text|
   page.should have_link(text, href: url)
 end
 
@@ -458,4 +468,25 @@ end
 
 Then /^the element with id "([^"]*)" should be focused$/ do |id|
   page.evaluate_script("document.activeElement.id").should == id
+end
+
+Then /^all "([^\"]+)" within "([^\"]+)" should link to (.+)$/ do |selector, scope, type|
+  expect_method = if type.match? /a root collection/
+                    :root_collection?
+                  elsif type.match? /a collection/
+                    :collection?
+                  elsif type.match? /an object/
+                    :object?
+                  else
+                    raise ArgumentError, "unrecognized type: #{type}"
+                  end
+
+  with_scope(scope) do
+    page.find_all(selector).each do |obj|
+      catalog_link = obj.find_link(href: /\/catalog\//)[:href]
+      object_pid = catalog_link.split("/catalog/")[-1]
+      object = ActiveFedora::Base.find(object_pid, cast: true)
+      expect(object.send(expect_method)).to be true
+    end
+  end
 end
