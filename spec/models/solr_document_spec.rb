@@ -175,14 +175,35 @@ describe SolrDocument do
 
     context 'object type methods' do
       before(:each) do
+        @to_delete = []
         @solr_collection = SolrDocument.find(@collection.id)
         @solr_subcollection = SolrDocument.find(@subcollection.id)
-        # @collection.governed_items will include subcollection
-        # subcollection should only hold objects
-        @solr_objects = @subcollection.governed_items.map do |item|
-          SolrDocument.find(item.id)  
+        # factory_names = FactoryBot.factories.map(&:name)
+        # valid_factories = factory_names.reject do |name|
+        #   name.match?('invalid')
+        # end
+
+        # object_factories = valid_factories.reject do |name| 
+        #   name.match?('collection') || name.match?('generic')
+        # end
+
+        @solr_objects = %i[sound audio text image documentation].map do |name|
+          object = FactoryBot.create(name)
+          object.save
+          @to_delete << object
+          SolrDocument.find(object.id)
         end
+
+        generic_file = FactoryBot.create(:generic_png_file)
+        generic_file.save
+        @to_delete << generic_file
+        @solr_generic_file = SolrDocument.find(generic_file.id)
       end
+
+      after(:each) do
+        @to_delete.map(&:delete)
+      end
+
       describe 'collection?' do
         # collections includes subcollections
         it 'should return true for collections' do
@@ -195,6 +216,9 @@ describe SolrDocument do
           @solr_objects.each do |item|
             expect(item.collection?).to be false
           end
+        end
+        it 'should return false for generic files' do
+          expect(@solr_generic_file.collection?).to be false
         end
       end
 
@@ -211,6 +235,9 @@ describe SolrDocument do
             expect(item.object?).to be true
           end
         end
+        it 'should return false for generic files' do
+          expect(@solr_generic_file.object?).to be false
+        end
       end
 
       describe 'root_collection?' do
@@ -224,10 +251,9 @@ describe SolrDocument do
           @solr_objects.each do |item|
             expect(item.root_collection?).to be false
           end
-          # require 'byebug'
-          # byebug
-
-          # FactoryBot.factories
+        end
+        it 'should return false for generic files' do
+          expect(@solr_generic_file.root_collection?).to be false
         end
       end
     end

@@ -172,7 +172,8 @@ class SolrDocument
   end
 
   def root_collection?
-    collection_id ? false : true
+    # a collection without any governing / parent collection
+    collection? && (collection_id ? false : true)
   end
 
   def sub_collection?
