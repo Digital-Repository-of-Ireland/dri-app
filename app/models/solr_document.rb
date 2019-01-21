@@ -154,17 +154,19 @@ class SolrDocument
   # legacy from sufia, all objects / collections have model DRI::Batch
   # Generic files are DRI::GenericFile
   # @return [Boolean]
-  def dri_batch?
-    # # has_model_tesim
-    # key = ActiveFedora.index_field_mapper.solr_name('has_model')
-    key = 'has_model_ssim'
-    self[key].include?("DRI::Batch")
+  def batch?
+    self['has_model_ssim'].include?("DRI::Batch")
+  end
+
+  # @return [Boolean]
+  def generic_file?
+    self['has_model_ssim'].include?("DRI::GenericFile")
   end
 
   def object?
     # if solr_object doesn't have is_object, but also isn't a collection
     # treat it as an object
-    truthy_index_field?('is_object') || (!collection? && dri_batch?)
+    truthy_index_field?('is_object') || (!collection? && batch?)
   end
 
   def collection?
