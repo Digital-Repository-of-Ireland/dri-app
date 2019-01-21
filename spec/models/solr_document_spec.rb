@@ -173,6 +173,63 @@ describe SolrDocument do
       expect(doc.published_objects).to eq 3
     end
 
+    context 'object type methods' do
+      before(:each) do
+        @solr_collection = SolrDocument.find(@collection.id)
+        @solr_subcollection = SolrDocument.find(@subcollection.id)
+        # @collection.governed_items will include subcollection
+        # subcollection should only hold objects
+        @solr_objects = @subcollection.governed_items.map do |item|
+          SolrDocument.find(item.id)  
+        end
+      end
+      describe 'collection?' do
+        # collections includes subcollections
+        it 'should return true for collections' do
+          expect(@solr_collection.collection?).to be true
+        end
+        it 'should return true for subcollections' do
+          expect(@solr_subcollection.collection?).to be true
+        end
+        it 'should return false for objects' do
+          @solr_objects.each do |item|
+            expect(item.collection?).to be false
+          end
+        end
+      end
 
+      describe 'object?' do
+        # any other type i.e. collections
+        it 'should return false for collections' do
+          expect(@solr_collection.object?).to be false
+        end
+        it 'should return false for subcollections' do
+          expect(@solr_subcollection.object?).to be false
+        end
+        it 'should return true for objects' do
+          @solr_objects.each do |item|
+            expect(item.object?).to be true
+          end
+        end
+      end
+
+      describe 'root_collection?' do
+        it 'should return true for root collections' do
+          expect(@solr_collection.root_collection?).to be true
+        end
+        it 'should return false for subcollections' do
+          expect(@solr_subcollection.root_collection?).to be false
+        end
+        it 'should return false for objects' do
+          @solr_objects.each do |item|
+            expect(item.root_collection?).to be false
+          end
+          # require 'byebug'
+          # byebug
+
+          # FactoryBot.factories
+        end
+      end
+    end
   end
 end

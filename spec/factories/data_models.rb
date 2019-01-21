@@ -108,4 +108,12 @@ FactoryBot.define do
     end
   end
 
+  factor(:generic_png_file, class: DRI::GenericFile) do
+    file_title              ["test.png"]
+    file_size               10000
+    label                   ["test.png"]
+    mime_type               ["image/png"]
+    creator                 ["A. User"]
+  end
+
 end

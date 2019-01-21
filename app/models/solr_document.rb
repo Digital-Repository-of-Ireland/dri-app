@@ -137,18 +137,38 @@ class SolrDocument
     self[geojson_key].present?
   end
 
+  # @param [String] field_name
+  # @return [Boolean]
+  def truthy_index_field?(field_name)
+    key = ActiveFedora.index_field_mapper.solr_name(field_name)
+
+    return false unless self[key].present?
+    value = if self[key].is_a?(Array)
+              self[key].first
+            else
+              self[key]
+            end
+    value == 'true' || value == true
+  end
+
+  # legacy from sufia, all objects / collections have model DRI::Batch
+  # Generic files are DRI::GenericFile
+  # @return [Boolean]
+  def dri_batch?
+    # # has_model_tesim
+    # key = ActiveFedora.index_field_mapper.solr_name('has_model')
+    key = 'has_model_ssim'
+    self[key].include?("DRI::Batch")
+  end
+
+  def object?
+    # if solr_object doesn't have is_object, but also isn't a collection
+    # treat it as an object
+    truthy_index_field?('is_object') || (!collection? && dri_batch?)
+  end
+
   def collection?
-    is_collection_key = ActiveFedora.index_field_mapper.solr_name('is_collection')
-
-    return false unless self[is_collection_key].present?
-
-    is_collection = if self[is_collection_key].is_a?(Array)
-                      self[is_collection_key].first
-                    else
-                      self[is_collection_key]
-                    end
-
-    is_collection == 'true' || is_collection == true
+    truthy_index_field?('is_collection')
   end
 
   def root_collection?
@@ -157,20 +177,6 @@ class SolrDocument
 
   def sub_collection?
     collection? && !root_collection?
-  end
-
-  def object?
-    is_collection_key = ActiveFedora.index_field_mapper.solr_name('is_object')
-
-    return false unless self[is_collection_key].present?
-
-    is_collection = if self[is_collection_key].is_a?(Array)
-                      self[is_collection_key].first
-                    else
-                      self[is_collection_key]
-                    end
-
-    is_collection == 'true' || is_collection == true
   end
 
   def institutes
