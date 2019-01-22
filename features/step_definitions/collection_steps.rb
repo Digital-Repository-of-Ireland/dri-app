@@ -32,7 +32,6 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
   group.save
 end
 
-
 Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
   pid = @random_pid if (pid == "random")
   if pid
