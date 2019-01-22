@@ -238,10 +238,10 @@ When /^I hover over a visible "([^\"]+)"$/ do |selector|
 end
 
 When /^I click "([^\"]+)"$/ do |selector|
-  find(selector).click
+  find(selector, visible: true).click
 end
 
-Then /^I should( not)? see a popover$/ do |negate|
+Then /^I should( not)? see a popover$/ do |negate|  
   expectation = negate ? :should_not : :should
   page.send(expectation, have_css('div.popover', visible: true))
 end
@@ -502,6 +502,23 @@ Then /^all "([^\"]+)" within "([^\"]+)" should link to (.+)$/ do |selector, scop
       object_pid = catalog_link.split("/catalog/")[-1]
       object = ActiveFedora::Base.find(object_pid, cast: true)
       expect(object.send(expect_method)).to be true
+    end
+  end
+end
+
+Then /^"([^\"]+)" should( not)? be disabled$/ do |selector, negate|
+  element = find(selector, visible: true)
+  expect(element.disabled?).to be !negate
+end
+
+Then /^I should( not)? see a modal(?: with title "([^\"]+)")?$/ do |negate, title|
+  if negate
+    expect(page).to_not have_css('.modal-dialog', visible: true)
+  else
+    modal = find('.modal-dialog', visible: true)
+    if title
+      modal_title = modal.find('.modal-title').text
+      expect(modal_title).to eq title
     end
   end
 end

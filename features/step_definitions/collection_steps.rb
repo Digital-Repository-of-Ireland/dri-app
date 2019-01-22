@@ -152,7 +152,7 @@ Given /^I have associated the institute "([^\"]+)" with the collection with pid 
 end
 
 # Given /^the object with pid "([^\"]+) is reviewed"$/ do |pid|
-Given /^the object(?: with pid "([^\"]+)")? is reviewed$/ do |objid|
+Given /^the (object|collection)(?: with pid "([^\"]+)")? is reviewed$/ do |_, objid|
   if objid
     object = ActiveFedora::Base.find(objid, cast: true)
   else

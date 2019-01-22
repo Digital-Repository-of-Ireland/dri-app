@@ -71,7 +71,7 @@
                                            'dri_button_red_small dri_help_popover'
                                          else
                                             'dri_button_green_small'
-                                          end
+                                         end
                 %>
                 <div class='pull-right'>
                   <button 
@@ -79,18 +79,22 @@
                     id="publish" 
                     class="<%= publish_button_class %>"
                     <% if pub_disabled_warnings.empty? %>
-                      <%# if there are no warnings, show the modal when clicked%>
+                      <%# if there are no warnings, show the modal when clicked %>
                       data-toggle="modal" 
                       data-target="#dri_publish_modal_id"
                     <% else %>
-                      <%# if there are warnings, disable the button and %>
-                      <%# display all the apllicable warnings in the popover %>
+                      <%# if there are warnings, disable the button and display all the apllicable warnings in the popover %>
                       data-content="<%= pub_disabled_warnings.map {|v| t(v)}.join('. ') %>"
                       data-original-title="<%= t('dri.help.dri_publish_unavailable_title') %>"
                       data-trigger="hover"
                       data-placement="left"
-                      <%# disabled %>
-                      dsiabled
+                      <%# 
+                        Bootstrap tooltips don't display on disabled buttons. 
+                        i.e. the user won't see why they can't publish the collection.
+                        Would need to apply tooltip to another element.
+                        This patch removes the modal trigger rather than fully disabling the button,
+                        so tooltips display and the button can be clicked, but it doesn't open the publish modal.
+                      %>
                     <% end %>
                   >
                     <%= t('dri.views.catalog.links.publish') %>
