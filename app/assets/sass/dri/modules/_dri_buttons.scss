@@ -1,5 +1,30 @@
 /*-------------- Button Styling--------------*/
 
+@mixin small_button {
+  font-size: 80%;
+  padding: 0px 5px 0px 5px;
+  margin: 2px 0px 0px 0px;
+}
+
+// // need to update to sass-rails 5.x to use sass >= 3.3
+// $button-colors: green red grey
+
+// @each $color in $button-colors
+//   .dri_button_#{$color} {
+//     @extend .dri_button;
+//     background-color: $dri_#{$color};
+//   }
+
+//   .dri_button_#{$color} {
+//     @extend .dri_button_#{$color};
+//     @include small_button;
+//   }
+
+//   .dri_button_#{$color}:hover {
+//     background-color: darken($dri_#{$color}, 10%);
+//   }
+
+
 .dri_button {
   font-size: 100%;
   color: white;
@@ -17,10 +42,9 @@
 
 .dri_button_green_small {
   @extend .dri_button_green;
-  font-size: 80%;
-  padding: 0px 5px 0px 5px;
-  margin: 2px 0px 0px 0px;
+  @include small_button;
 }
+
 .dri_button_green:hover {
   background-color: darken($dri_green, 10%);
 }
@@ -32,9 +56,7 @@
 
 .dri_button_red_small {
   @extend .dri_button_red;
-  font-size: 80%;
-  padding: 0px 5px 0px 5px;
-  margin: 2px 0px 0px 0px;
+  @include small_button;
 }
 
 .dri_button_red:hover {
@@ -48,6 +70,11 @@
 
 .dri_button_grey:hover {
   background-color: darken($dri_lightgrey, 10%);
+}
+
+.dri_button_grey_small {
+  @extend .dri_button_grey;
+  @include small_button;
 }
 
 .dri_button_black {
