@@ -152,6 +152,17 @@ Given /^I have associated the institute "([^\"]+)" with the collection with pid 
   collection.save
 end
 
+# Given /^the object with pid "([^\"]+) is reviewed"$/ do |pid|
+Given /^the object(?: with pid "([^\"]+)")? is reviewed$/ do |objid|
+  if objid
+    object = ActiveFedora::Base.find(objid, cast: true)
+  else
+    object = @digital_object
+  end
+  object.status = 'reviewed'
+  object.save
+end
+
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
     When I go to the "collection" "show" page for "#{collection_pid}"
