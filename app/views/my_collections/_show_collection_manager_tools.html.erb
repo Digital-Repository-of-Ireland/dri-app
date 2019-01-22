@@ -64,7 +64,7 @@
                   is_reviewed = reviewed_objects > 0 || reviewed_subcoll > 0
                   has_depos_org = @presenter.depositing_organisation
                   # dri_publish_no_org
-                  pub_disabled_warnings << 'dri.help.dri_publish_unavailable' if !has_depos_org
+                  pub_disabled_warnings << 'dri.help.dri_publish_no_org' if !has_depos_org
                   pub_disabled_warnings << 'dri.help.dri_publish_no_reviewed' if !is_reviewed
                   
                   publish_button_class = if !pub_disabled_warnings.empty?
