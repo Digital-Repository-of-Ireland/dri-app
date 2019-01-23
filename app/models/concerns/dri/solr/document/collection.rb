@@ -90,7 +90,7 @@ module DRI::Solr::Document::Collection
 
   # @param [String] type
   # @param [Boolean] published_only
-  # @return [Int]
+  # @return [Integer]
   def type_count(type, published_only: false)
     solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + self.id +
                  "\" AND " +

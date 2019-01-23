@@ -75,35 +75,8 @@ module DRI::IIIFViewable
     manifest
   end
 
-  # TODO move to solr_document class?
-  # Remove func if unused in mirador toc regions
-  # @return [Array]
-  def bfs_subcollections(solr_doc = nil)
-    solr_doc ||= @document
-    output = []
-    queue = @document.children
-    until queue.empty?
-      sub_collection = queue.pop
-      unless sub_collection.children.empty?
-        # insert collection at the back of the queue
-        sub_collection.children.each { |col| queue.insert(0, col) }
-      end
-      output << sub_collection
-    end
-    output
-  end
-
   def create_collection_sequence
-    seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
-
-    seed = {
-      '@id' => seed_id,
-      'label' => @document.title.join(','),
-      'description' => @document.description.join(' ')
-    }
-
-    manifest = IIIF::Presentation::Manifest.new(seed)
+    manifest = IIIF::Presentation::Manifest.new(collection_manifest_seed)
     base_manifest(manifest)
 
     sequence = IIIF::Presentation::Sequence.new(
@@ -152,16 +125,7 @@ module DRI::IIIFViewable
   end
 
   def create_collection_manifest    
-    seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
-
-    seed = {
-      '@id' => seed_id,
-      'label' => @document.title.join(','),
-      'description' => @document.description.join(' ')
-    }
-
-    manifest = IIIF::Presentation::Collection.new(seed)
+    manifest = IIIF::Presentation::Collection.new(collection_manifest_seed)
     base_manifest(manifest)
 
     if @document.collection_id.nil?
@@ -188,6 +152,17 @@ module DRI::IIIFViewable
     end
 
     manifest
+  end
+
+  def collection_manifest_seed
+    seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
+      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+
+    seed = {
+      '@id' => seed_id,
+      'label' => @document.title.join(','),
+      'description' => @document.description.join(' ')
+    }
   end
 
   def attached_images(solr_id = nil)
