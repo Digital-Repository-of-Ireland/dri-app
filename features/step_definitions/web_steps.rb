@@ -489,8 +489,7 @@ Then /^all "([^\"]+)" within "([^\"]+)" should link to (.+)$/ do |selector, scop
     objects.each do |obj|
       catalog_link = obj.find_link(href: /\/catalog\//)[:href]
       object_pid = catalog_link.split("/catalog/")[-1]
-      object = ActiveFedora::Base.find(object_pid, cast: true)
-      solr_doc = SolrDocument.new(object.to_solr)
+      solr_doc = SolrDocument.find(object_pid)
       expect(solr_doc.send(expect_method)).to be true
     end
   end
