@@ -459,11 +459,12 @@ end
 
 Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |id, negate, value|
   expectation = negate ? :should_not : :should
-  page.send(expectation,  have_xpath("//select[@id = '#{select_box_to_id(id)}']/option[@value = '#{value}']"))
+  page.send(expectation, have_xpath("//select[@id = '#{select_box_to_id(id)}']/option[@value = '#{value}']"))
 end
 
-Then /^I should see the image "(.*?)"$/ do |src|
-  page.should have_xpath("//img[contains(@alt, \"#{src}\")]")
+Then /^I should( not)? see the image "(.*?)"$/ do |negate, src|
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_xpath("//img[contains(@alt, \"#{src}\")]"))
 end
 
 Then /^the element with id "([^"]*)" should be focused$/ do |id|
@@ -481,12 +482,16 @@ Then /^all "([^\"]+)" within "([^\"]+)" should link to (.+)$/ do |selector, scop
                     raise ArgumentError, "unrecognized type: #{type}"
                   end
 
+  expect(page).to have_selector(scope)
   with_scope(scope) do
-    page.find_all(selector).each do |obj|
+    objects = page.find_all(selector)
+    expect(objects.count).to be >= 1
+    objects.each do |obj|
       catalog_link = obj.find_link(href: /\/catalog\//)[:href]
       object_pid = catalog_link.split("/catalog/")[-1]
       object = ActiveFedora::Base.find(object_pid, cast: true)
-      expect(object.send(expect_method)).to be true
+      solr_doc = SolrDocument.new(object.to_solr)
+      expect(solr_doc.send(expect_method)).to be true
     end
   end
 end
