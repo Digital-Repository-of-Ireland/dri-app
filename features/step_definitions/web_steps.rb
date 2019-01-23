@@ -233,6 +233,25 @@ When /^I select the "(objects|collections)" tab$/ do |tab|
   end
 end
 
+When /^I hover over a visible "([^\"]+)"$/ do |selector|
+  find(selector, visible: true).hover  
+end
+
+When /^I click "([^\"]+)"$/ do |selector|
+  find(selector, visible: true).click
+end
+
+Then /^I should( not)? see a popover$/ do |negate|  
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_css('div.popover', visible: true))
+end
+
+Then /^I should see a popover with the title "([^\"]+)"$/ do |title|
+  popover = find('div.popover', visible: true)
+  popover_title = popover.find('.popover-title').text
+  expect(popover_title).to eq title
+end
+
 Then /^I should see the (valid|modified) metadata$/ do |type|
   case type
     when "valid"
@@ -245,10 +264,6 @@ end
 Then /^I press "(.*?)"$/ do |button|
   Capybara.ignore_hidden_elements = false
   click_link_or_button(button)
-end
-
-Then /^I click "([^\"]*)"$/ do |selector|
-  page.find(selector).click
 end
 
 Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|
@@ -282,11 +297,11 @@ When /^(?:|I )perform a search$/ do
   find(:id, 'q').native.send_keys(:enter)
 end
 
-Then /^(?:|I )should( not)? see a button to (.+)$/ do |negate,button|
+Then /^(?:|I )should( not)? see a button to (.+)$/ do |negate, button|
    negate ? (expect(page).to_not have_button(button_to_id(button))) : (expect(page).to have_button(button_to_id(button)))
 end
 
-Then /^(?:|I )should( not)? see a link to (.+)$/ do |negate,link|
+Then /^(?:|I )should( not)? see a link to (.+)$/ do |negate, link|
   negate ? (expect(page).to_not have_link(link_to_id(link))) : (expect(page).to have_link(link_to_id(link)))
 end
 
@@ -491,6 +506,23 @@ Then /^all "([^\"]+)" within "([^\"]+)" should link to (.+)$/ do |selector, scop
       object_pid = catalog_link.split("/catalog/")[-1]
       solr_doc = SolrDocument.find(object_pid)
       expect(solr_doc.send(expect_method)).to be true
+    end
+  end
+end
+
+Then /^"([^\"]+)" should( not)? be disabled$/ do |selector, negate|
+  element = find(selector, visible: true)
+  expect(element.disabled?).to be !negate
+end
+
+Then /^I should( not)? see a modal(?: with title "([^\"]+)")?$/ do |negate, title|
+  if negate
+    expect(page).to_not have_css('.modal-dialog', visible: true)
+  else
+    modal = find('.modal-dialog', visible: true)
+    if title
+      modal_title = modal.find('.modal-title').text
+      expect(modal_title).to eq title
     end
   end
 end

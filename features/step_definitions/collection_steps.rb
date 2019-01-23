@@ -32,7 +32,6 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
   group.save
 end
 
-
 Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
   pid = @random_pid if (pid == "random")
   if pid
@@ -150,6 +149,17 @@ Given /^I have associated the institute "([^\"]+)" with the collection with pid 
   collection.institute = collection.institute.push(institute.name)
   collection.depositing_institute = institute.name
   collection.save
+end
+
+# Given /^the object with pid "([^\"]+) is reviewed"$/ do |pid|
+Given /^the (object|collection)(?: with pid "([^\"]+)")? is reviewed$/ do |_, objid|
+  if objid
+    object = ActiveFedora::Base.find(objid, cast: true)
+  else
+    object = @digital_object
+  end
+  object.status = 'reviewed'
+  object.save
 end
 
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|

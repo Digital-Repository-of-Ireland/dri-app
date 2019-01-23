@@ -260,7 +260,8 @@ en:
       dri_page_options_title: Items per Page
       dri_pagination_nav_links: Use these links to move through your search results. You can change the number of pages selecting more or fewer items per page
       dri_pagination_nav_links_title: Result Pagination
-      dri_publish_unavailable: "You need to set this Collection's Depositing Organisation before publishing. Use the \"Manage Organisations\" link"
+      dri_publish_no_org: "You must set this Collection's Depositing Organisation before publishing. Use the \"Manage Organisations\" link"
+      dri_publish_no_reviewed: "You must add and review at least one object or subcollection before publishing"
       dri_publish_unavailable_title: Publish not available
       dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
       dri_sort_options_title: Search Sort Options
