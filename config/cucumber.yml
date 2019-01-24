@@ -1,22 +1,23 @@
 <%
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'} features" : "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} #{rerun}"
-std_opts = "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --tags ~@wip --tags ~@review --tags ~@public --tags ~@noexec --tags ~@public-broken -r features"
+std_opts = "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --tags 'not @wip' --tags 'not @noexec' -r features"
 %>
 default: <%= std_opts %> features --format junit --out features/reports
 wip: --tags @wip:3 --wip features
-rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip --tags ~@review --tags ~@public --tags ~@noexec --tags ~@public-broken -r features
-guard: --format progress --strict --tags ~@wip --tags ~@review --tags ~@public --tags ~@noexec --tags ~@public-broken -r features
-html: --tags ~@wip --tags ~@review --tags ~@public --tags ~@noexec --tags ~@public-broken --format html --out=features_report.html -r features
+rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags 'not @wip' --tags 'not @review' --tags 'not @noexec' -r features
+guard: --format progress --strict --tags 'not @wip' --tags 'not @noexec' -r features
+html: --tags 'not @wip' --tags 'not @noexec' --format html --out=features_report.html -r features
+json: <%= std_opts %> features --format json --out features/report.json
 
 <%
 rerun_tests = File.file?('tmp/cucumber-rerun.txt') ? IO.read('tmp/cucumber-rerun.txt') : ""
 rerun_tests_opts = if rerun_tests.to_s.strip.empty?
   "--tags @none_so_will_pass --strict"
 else
-  "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --strict #{rerun_tests} -r features"
+  "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --format json --out features/reports/second_try.json --strict #{rerun_tests} -r features"
 end
-first_try = "--format rerun --out tmp/cucumber-rerun.txt #{std_opts} features --format junit --out features/reports"
+first_try = "--format rerun --out tmp/cucumber-rerun.txt #{std_opts} features --format json --out features/reports/first_try.json"
 %>
 first_try: <%= first_try %>
 second_try: <%= rerun_tests_opts %>

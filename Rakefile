@@ -44,26 +44,18 @@ RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
   rspec.pattern = FileList['spec/*_spec.rb']
 end
 
-Cucumber::Rake::Task.new(:first_try) do |t|
-  t.cucumber_opts = "--profile first_try"
-end
-
-Cucumber::Rake::Task.new(:second_try) do |t|
-  t.cucumber_opts = "--profile second_try"
-end
-
 desc "Run Continuous Integration"
 task :ci => ['ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
-  
+
   with_test_server do
     begin
-      Rake::Task['first_try'].invoke
+      Rake::Task['cucumber:first_try'].invoke
     rescue Exception => e
     end
 
-    Rake::Task['second_try'].invoke
+    Rake::Task['cucumber:second_try'].invoke
   end
 end
 
@@ -72,15 +64,16 @@ task :ci_spec => ['ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
 
-  with_test_server do 
+  with_test_server do
     Rake::Task['spec'].invoke
-    Rake::Task["api:docs:generate"].invoke
+    Rake::Task['api:docs:generate'].invoke
   end
 end
 
 desc "Clean CI environment"
 task :ci_clean do
   rm_rf 'features/reports'
+  mkdir_p 'features/reports'
 end
 
 namespace :rvm do
@@ -128,13 +121,15 @@ namespace :api do
         puts '[WARNING] running a subset of the test suite will remove output for tests that do not run. Continue? y/n'
         input = STDIN.gets.chomp
         abort unless input.downcase == 'y'
-        t.pattern = ARGV[1] 
+        t.pattern = ARGV[1]
       else
         t.pattern = 'spec/api/**/*_spec.rb'
       end
 
-      t.rspec_opts = [ 
+      t.rspec_opts = [
         '--format progress',
+        '--format RspecJunitFormatter',
+        '--out spec/reports/api.xml',
         '--format Rswag::Specs::SwaggerFormatter',
         '--order defined',
         '--exclude-pattern ""'

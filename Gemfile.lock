@@ -854,6 +854,8 @@ GEM
       rspec-mocks (~> 3.7.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.0)
+    rspec_junit_formatter (0.4.1)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rswag-api (2.0.5)
       railties (>= 3.1, < 6.0)
     rswag-specs (2.0.5)
@@ -1070,6 +1072,7 @@ DEPENDENCIES
   riiif (= 1.2.0)
   roo (= 2.6.0)
   rspec-rails (~> 3.0)
+  rspec_junit_formatter
   rswag-api (~> 2.0)
   rswag-specs (~> 2.0)
   rswag-ui (~> 2.0)

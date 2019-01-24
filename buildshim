@@ -23,6 +23,7 @@ install_deps)
 configure)
 
 rvm --force gemset empty ruby-2.4.4@build || exit 100
+gem install bundler
 
 cp config/fedora.yml.sample config/fedora.yml
 cp config/solr.yml.sample config/solr.yml
@@ -46,25 +47,33 @@ doi:
   enable: false
 __EOF__
 
-    bundle install --quiet
+    bundle install --without production
     bundle exec rake db:migrate
     bundle exec rake db:seed
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
     bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &>/dev/null &
     echo $! > fakes3.pid
-    ;;
-compile)
+    bundle exec rake jetty:start
+    bundle exec rake jetty:config
     ;;
 check)
-    bundle exec rake ci_spec || exit 100
-    bundle exec rake db:migrate
-    bundle exec rake db:seed
-    bundle exec rake db:test:prepare
-    bundle exec rake ci || exit 100
+    bundle exec rake rspec
+    bundle exec rake cucumber_ci
+    bundle exec rake api:docs:generate
     bundle exec rake assets:precompile
     ;;
-package)
+rspec)
+    bundle exec rake rspec
+    ;;
+cucumber)
+    bundle exec rake cucumber_ci
+    ;;
+api)
+   bundle exec rake api:docs:generate
+   ;; 
+compile)
+    bundle exec rake assets:precompile
     ;;
 upload)
 

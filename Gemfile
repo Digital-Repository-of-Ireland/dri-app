@@ -92,6 +92,7 @@ group :development, :test do
   gem 'guard'
   gem 'rspec-rails', '~> 3.0'
   gem 'rswag-specs', '~> 2.0'
+  gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
   gem 'simplecov'
