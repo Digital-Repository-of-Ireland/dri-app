@@ -15,6 +15,7 @@ Scenario: Collections with images should have a iiif link
   And the collection with pid "col1" is published
   When I am on the show Digital Object page for id col1
   Then I should see the image "Iiif logo"
+  And ".dri_formats img[alt='Iiif logo']" should have a link that matches "iiif/sequence/col1.json"
 
 Scenario: Objects with an image should have a iiif link
   Given a collection with pid "col1" created by "admin"
@@ -25,6 +26,7 @@ Scenario: Objects with an image should have a iiif link
   And the collection with pid "col1" is published
   When I am on the show Digital Object page for id object1
   Then I should see the image "Iiif logo"
+  And ".dri_formats img[alt='Iiif logo']" should have a link that matches "iiif/object1/manifest.json"
 
 Scenario: Collections with no images should not have a iiif link
   Given a collection with pid "col2" created by "admin"

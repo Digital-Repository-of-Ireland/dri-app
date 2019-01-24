@@ -489,9 +489,17 @@ Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |
   page.send(expectation, have_xpath("//select[@id = '#{select_box_to_id(id)}']/option[@value = '#{value}']"))
 end
 
-Then /^I should( not)? see the image "(.*?)"$/ do |negate, src|
+Then /^I should( not)? see the image "([^\"]+)"$/ do |negate, src|
   expectation = negate ? :should_not : :should
   page.send(expectation, have_xpath("//img[contains(@alt, \"#{src}\")]"))
+end
+
+Then /^"([^\"]+)" should have a link that matches "([^\"]+)"$/ do |selector, link|
+  # TODO generalize, use xpath directly in feature to select anchor containing iiif image
+  image = find(selector)
+  # image wrapped in anchor, so get link of parent
+  image_link = image.find(:xpath, '..')[:href]
+  expect(image_link).to match(link)
 end
 
 Then /^the element with id "([^"]*)" should be focused$/ do |id|
