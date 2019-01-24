@@ -80,10 +80,10 @@ Given /^I have created an institute "(.+)"$/ do |institute|
   }
 end
 
-When /^I add the asset "(.*)" to "(.*?)"$/ do |asset, pid|
+When /^I add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
   steps %{
-    When I go to the "object" "show" page for "#{pid}"
-    And I attach the asset file "#{asset}"
+    Given I am on the my collections page for id #{pid}
+    When I attach the asset file "#{asset}"
     And I press the button to "upload a file"
     Then I should see a success message for file upload
   }
@@ -239,6 +239,17 @@ end
 
 When /^I click "([^\"]+)"$/ do |selector|
   find(selector, visible: true).click
+end
+
+# resque / redis jobs update solr after characterization of asset
+# need to stub response since services aren't running in test
+When /^I fake the update to solr to add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
+  # TODO: only stub for given pid, possibly use block form to check pid?
+  allow_any_instance_of(SolrDocument).to receive(:published_images).and_return(
+    ActiveFedora::Base.find(pid).generic_files.map do |generic_file|
+      SolrDocument.new(generic_file.to_solr)
+    end
+  )
 end
 
 Then /^I should( not)? see a popover$/ do |negate|  
