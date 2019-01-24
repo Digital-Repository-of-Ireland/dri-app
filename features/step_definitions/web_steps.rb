@@ -494,11 +494,10 @@ Then /^I should( not)? see the image "([^\"]+)"$/ do |negate, src|
   page.send(expectation, have_xpath("//img[contains(@alt, \"#{src}\")]"))
 end
 
-Then /^"([^\"]+)" should have a link that matches "([^\"]+)"$/ do |selector, link|
-  # TODO generalize, use xpath directly in feature to select anchor containing iiif image
-  image = find(selector)
-  # image wrapped in anchor, so get link of parent
-  image_link = image.find(:xpath, '..')[:href]
+Then /^the iiif image should have a link that matches "([^\"]+)"$/ do |link|
+  # select anchor containing iiif logo
+  iiif_logo_link_xpath = "//a[.//img[contains(@alt, 'Iiif logo')]]"
+  image_link = find(:xpath, iiif_logo_link_xpath)[:href]
   expect(image_link).to match(link)
 end
 

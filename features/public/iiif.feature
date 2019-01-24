@@ -6,27 +6,36 @@ Feature: IIIF
 Background:
   Given I am logged in as "admin" in the group "admin" and accept cookies
 
-Scenario: Collections with images should have a iiif link
+Scenario Outline: Published collections and objects with images should have a iiif link
   Given a collection with pid "col1" created by "admin"
   And a Digital Object with pid "object1" in collection "col1"
   And I add the asset "sample_image.tiff" to "object1"
   And I fake the update to solr to add the asset "sample_image.tiff" to "object1"
   And I have associated the institute "TestInstitute" with the collection with pid "col1"
   And the collection with pid "col1" is published
-  When I am on the show Digital Object page for id col1
+  When I am on the show Digital Object page for id <id>
   Then I should see the image "Iiif logo"
-  And ".dri_formats img[alt='Iiif logo']" should have a link that matches "iiif/sequence/col1.json"
+  And the iiif image should have a link that matches "<link>"
 
-Scenario: Objects with an image should have a iiif link
+  Examples:
+    | id      | link                       |
+    | col1    | iiif/sequence/col1.json    |
+    | object1 | iiif/object1/manifest.json |
+
+Scenario Outline: Unpublished collections and objects with images should not have a iiif link
   Given a collection with pid "col1" created by "admin"
   And a Digital Object with pid "object1" in collection "col1"
   And I add the asset "sample_image.tiff" to "object1"
   And I fake the update to solr to add the asset "sample_image.tiff" to "object1"
   And I have associated the institute "TestInstitute" with the collection with pid "col1"
-  And the collection with pid "col1" is published
-  When I am on the show Digital Object page for id object1
-  Then I should see the image "Iiif logo"
-  And ".dri_formats img[alt='Iiif logo']" should have a link that matches "iiif/object1/manifest.json"
+  When I am on the show Digital Object page for id <id>
+  Then I should not see the image "Iiif logo"
+
+  Examples:
+    | id      |
+    | col1    |
+    | object1 |
+
 
 Scenario: Collections with no images should not have a iiif link
   Given a collection with pid "col2" created by "admin"
