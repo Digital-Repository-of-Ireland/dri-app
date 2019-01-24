@@ -250,6 +250,7 @@ When /^I fake the update to solr to add the asset "([^\"]+)" to "([^\"]+)"$/ do 
       SolrDocument.new(generic_file.to_solr)
     end
   )
+  allow_any_instance_of(SolrDocument).to receive(:contains_images?) { true }
 end
 
 Then /^I should( not)? see a popover$/ do |negate|  

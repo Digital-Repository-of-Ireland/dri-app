@@ -67,7 +67,7 @@
 		      	target: :_blank
 	      	) 
       	%>
-      <% elsif @document.collection? && !@document.published_images.empty? %>
+      <% elsif @document.collection? && !@document.published_images.empty? && @available %>
       	<%= 
 	      	link_to(
 		      	image_tag(

@@ -123,12 +123,13 @@ Given /^the collection(?: with pid "(.*?)")? is published$/ do |colid|
      colid = @collection_pid ? @collection_pid : @pid
   end
 
-  collection = ActiveFedora::Base.find(colid, {:cast => true})
+  collection = ActiveFedora::Base.find(colid, cast: true)
   collection.governed_items.each do |o|
     o.status = 'published'
     o.read_groups_string = 'public'
     o.save
   end
+  collection.read_groups_string = 'public'
   collection.status = 'published'
   collection.save
 end
