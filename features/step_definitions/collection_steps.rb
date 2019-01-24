@@ -32,6 +32,26 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
   group.save
 end
 
+Given /^a published collection with pid "([^\"]+)" and (\d+) images$/ do |pid, num_images|
+  total_steps = %{
+    Given a collection with pid "#{pid}" created by "admin"
+  }
+  num_images.times do |i|
+    total_steps += %{
+      And a Digital Object with pid "object#{i}" in collection "#{pid}"
+      And I add the asset "sample_image.tiff" to "object#{i}"
+    }
+  end
+
+  total_steps += %{
+    And published_images returns generic files from "#{pid}"
+    And I have associated the institute "TestInstitute" with the collection with pid "#{pid}"
+    And the collection with pid "#{pid}" is published
+  }
+
+  steps total_steps
+end
+
 Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
   pid = @random_pid if (pid == "random")
   if pid

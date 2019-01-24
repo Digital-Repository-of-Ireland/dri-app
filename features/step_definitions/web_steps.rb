@@ -241,16 +241,33 @@ When /^I click "([^\"]+)"$/ do |selector|
   find(selector, visible: true).click
 end
 
-# resque / redis jobs update solr after characterization of asset
-# need to stub response since services aren't running in test
+# # resque / redis jobs update solr after characterization of asset
+# # need to stub response since services aren't running in test
 When /^I fake the update to solr to add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
+  steps %{
+    When contains_images? always returns true
+    And published_images returns generic files from "#{pid}"
+  }
+end
+
+When /^contains_images\? always returns true$/ do
+  allow_any_instance_of(SolrDocument).to receive(:contains_images?) { true }
+end
+
+When /^published_images returns generic files from "([^\"]+)"$/ do |pid|
+  obj = ActiveFedora::Base.find(pid)
+  generic_files = if obj.collection?
+                    obj.governed_items.map(&:generic_files).flatten
+                  else
+                    obj.generic_files
+                  end
   # TODO: only stub for given pid, possibly use block form to check pid?
+  # e.g. any_inst_of(...) {|o| o.id == pid}
   allow_any_instance_of(SolrDocument).to receive(:published_images).and_return(
-    ActiveFedora::Base.find(pid).generic_files.map do |generic_file|
+    generic_files.map do |generic_file|
       SolrDocument.new(generic_file.to_solr)
     end
   )
-  allow_any_instance_of(SolrDocument).to receive(:contains_images?) { true }
 end
 
 Then /^I should( not)? see a popover$/ do |negate|  

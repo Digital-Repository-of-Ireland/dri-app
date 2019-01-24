@@ -47,3 +47,13 @@ Scenario: Objects with no image should not have a iiif link
   And a Digital Object with pid "object1" in collection "col2"
   When I am on the show Digital Object page for id object2
   Then I should not see the image "Iiif logo"
+
+## Harry clarke collection 10000+ images
+## This test is really slow, even for 10 images
+## TODO find a way to speed this up and check the sequence loads in mirador and doesn't crash
+#Scenario: Stress test large collection of images
+#  Given a published collection with pid "big_collection" and 10 images
+#  When I am on the show Digital Object page for id big_collection
+#  Then I should see the image "Iiif logo"
+#  And the iiif image should have a link that matches "iiif/sequence/big_collection.json"
+
