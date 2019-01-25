@@ -119,32 +119,23 @@ module DRI::Solr::Document::Collection
 
     # @param [String] status
     # @param [Boolean] subcoll
-    # @return [Array]
+    # @return [Integer]
     def status_count(status, subcoll = false)
       ActiveFedora::SolrService.count(status_query(status, subcoll))
     end
 
     # @param [String] status
     # @param [Boolean] subcoll
-    # @return [Array]
+    # @return [Solr::Query]
     def status_objects(status, subcoll = false)
-      results = ActiveFedora::SolrService.get(
-        status_query(status, subcoll),
-        rows: status_count(status, subcoll) # get all objects, not first 10
-      )
-      results["response"]["docs"].map do |doc|
-        SolrDocument.new(doc)
-      end
+      Solr::Query.new(status_query(status, subcoll))
     end
 
     # @param [String] status
     # @param [Boolean] subcoll
-    # @return [Array]
+    # @return [Array] List of IDs
     def status_ids(status, subcoll = false)
-      results = ActiveFedora::SolrService.get(status_query(status, subcoll))
-      results["response"]["docs"].map do |doc|
-        doc["id"]
-      end
+      Solr::Query.new(status_query(status, subcoll)).map(&:id)
     end
 
     def duplicate_query
