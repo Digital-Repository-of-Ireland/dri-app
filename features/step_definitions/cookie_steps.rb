@@ -41,6 +41,5 @@ Then /^The language cookie content should be (.*)$/ do |value|
 end
 
 Given /^I accept cookies terms$/ do
-  page.driver.browser.switch_to.alert.accept
-  #page.execute_script("document.querySelector('#accept_cookies').click()")
+  page.execute_script("document.querySelector('#accept_cookies').click()")
 end
