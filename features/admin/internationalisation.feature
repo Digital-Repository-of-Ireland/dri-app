@@ -4,6 +4,7 @@ Feature: Internationalisation
   As a user
   I should be able to see the website in English or Irish
 
+  @wip
   Scenario Outline: Not logged in user should see their own language based on their browser
     Given I reset the sessions
     Given I am not logged in and accept cookies
@@ -16,6 +17,7 @@ Feature: Internationalisation
     | en   |
     | ga   |
 
+  @wip
   Scenario Outline: Not logged in user changes language using the language selection tab
     Given I reset the sessions
     Given I am not logged in and accept cookies
