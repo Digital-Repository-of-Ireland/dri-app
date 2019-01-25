@@ -155,7 +155,7 @@ describe SolrDocument do
     end
 
     it 'should return published only if requested' do
-       2.times do
+      2.times do
         @collection.governed_items << FactoryBot.create(:sound)
       end
 
@@ -171,6 +171,27 @@ describe SolrDocument do
 
       doc = SolrDocument.find(@collection.id)
       expect(doc.published_objects_count).to eq 3
+    end
+
+    # ensure responses grouped into pages of 10
+    # still return the correct count
+    context 'when a document has 11 objects' do
+      before do
+        11.times do
+          object = FactoryBot.create(:sound)
+          object.status = 'published'
+          object.save
+          @collection.governed_items << object
+        end
+        @doc = SolrDocument.find(@collection.id)
+      end
+      # previously failing due to solr response pagination
+      it 'published_objects should return 11 objects' do
+        expect(@doc.published_objects.count).to eq(11)
+      end
+      it 'published_objects_count should be 11' do
+        expect(@doc.published_objects_count).to eq(11)
+      end
     end
   end
 
