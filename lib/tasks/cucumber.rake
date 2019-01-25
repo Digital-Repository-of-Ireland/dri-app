@@ -45,7 +45,7 @@ begin
     end
 
     desc 'Run all features'
-    task :all => [:ok, :wip]
+    task all: [:ok, :wip]
 
     task :statsetup do
       require 'rails/code_statistics'
@@ -54,11 +54,11 @@ begin
     end
   end
   desc 'Alias for cucumber:ok'
-  task :cucumber => 'cucumber:ok'
+  task cucumber: 'cucumber:ok'
 
-  task :default => :cucumber
+  task default: :cucumber
 
-  task :features => :cucumber do
+  task features: :cucumber do
     STDERR.puts "*** The 'features' task is deprecated. See rake -T cucumber ***"
   end
 
@@ -66,9 +66,10 @@ begin
   task 'db:test:prepare' do
   end
 
-  task :stats => 'cucumber:statsetup'
+  task stats: 'cucumber:statsetup'
 
-  task :cucumber_ci => ['ci_clean'] do
+  task cucumber_ci: ['ci_clean'] do
+    rm_rf 'tmp/cucumber-rerun.txt'
     begin
       Rake::Task['cucumber:first_try'].invoke
     rescue Exception => e

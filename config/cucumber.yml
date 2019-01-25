@@ -11,7 +11,7 @@ html: --tags 'not @wip' --tags 'not @noexec' --format html --out=features_report
 json: <%= std_opts %> features --format json --out features/report.json
 
 <%
-rerun_tests = File.file?('tmp/cucumber-rerun.txt') ? IO.read('tmp/cucumber-rerun.txt') : ""
+rerun_tests = File.file?('tmp/cucumber-rerun.txt') ? IO.read('tmp/cucumber-rerun.txt').gsub(/\n/, ' ') : ""
 rerun_tests_opts = if rerun_tests.to_s.strip.empty?
   "--tags @none_so_will_pass --strict"
 else
