@@ -54,16 +54,16 @@ __EOF__
     bundle exec rake db:test:prepare
     bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &>/dev/null &
     echo $! > fakes3.pid
-    bundle exec rake jetty:start
-    bundle exec rake jetty:config
     ;;
 check)
-    bundle exec rake rspec
-    bundle exec rake cucumber_ci
-    bundle exec rake api:docs:generate
+    bundle exec rake ci_spec || exit 100
+    bundle exec rake ci || exit 100
     bundle exec rake assets:precompile
     ;;
 rspec)
+    bundle exec rake jetty:start
+    bundle exec rake jetty:config
+
     bundle exec rake rspec
     ;;
 cucumber)

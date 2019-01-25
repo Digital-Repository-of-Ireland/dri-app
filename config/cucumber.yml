@@ -17,7 +17,7 @@ rerun_tests_opts = if rerun_tests.to_s.strip.empty?
 else
   "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --format json --out features/reports/second_try.json --strict #{rerun_tests} -r features"
 end
-first_try = "--format rerun --out tmp/cucumber-rerun.txt #{std_opts} features --format json --out features/reports/first_try.json"
+first_try = "--format rerun --out tmp/cucumber-rerun.txt --format json --out features/reports/first_try.json  #{std_opts} features"
 %>
 first_try: <%= first_try %>
 second_try: <%= rerun_tests_opts %>
