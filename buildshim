@@ -75,6 +75,10 @@ api)
 compile)
     bundle exec rake assets:precompile
     ;;
+push)
+    git fetch -p origin
+    git push --mirror
+    ;;
 upload)
 
     cd ~/dri-app.git

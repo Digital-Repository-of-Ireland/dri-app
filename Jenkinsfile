@@ -36,6 +36,9 @@ pipeline {
                 branch 'develop'
             }
             steps {
+                sh './buildshim push'
+            }
+            steps {
                 dir('ansible-dri-infrastructure') {
                     git branch: 'master',
                         credentialsId: '5a3ca3b3-d07d-4acd-bfd7-8a308078b6ec',
