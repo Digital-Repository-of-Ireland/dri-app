@@ -76,8 +76,13 @@ compile)
     bundle exec rake assets:precompile
     ;;
 push)
+    rm -rf dri-app-mirror
+    git clone --mirror ssh://git@tracker.dri.ie:2200/drirepo/dri-app.git dri-app-mirror
+    cd dri-app-mirror
+    git remote set-url --push origin git@github.com:Digital-Repository-of-Ireland/dri-app.git
     git fetch -p origin
     git push --mirror
+    cd ..
     ;;
 upload)
 
