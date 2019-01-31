@@ -1,18 +1,18 @@
-<dt class="dri_licence"><%= t('dri.views.fields.licence') %></dd>
-<dd class="dri_licence">
-  <% if @document.licence.present? %>
-      <% if @document.licence.is_a? Array %>
-        <%= "#{@document.licence.first}" %>
+<% if @document.licence.present? %>
+  <dt class="dri_licence"><%= t('dri.views.fields.licence') %></dd>
+  <dd class="dri_licence">
+    <% if @document.licence.is_a? Array %>
+      <%= "#{@document.licence.first}" %>
+    <% else %>
+      <% if @document.licence.name == "All Rights Reserved" %>
+        <%= t('dri.views.licences.all_rights_reserved') %>
+      <% elsif @document.licence.url.present? %>
+        <%= link_to "#{@document.licence.name}", @document.licence.url, target: "_blank" %>
       <% else %>
-        <% if @document.licence.name == "All Rights Reserved" %>
-          <%= t('dri.views.licences.all_rights_reserved') %>
-        <% elsif @document.licence.url.present? %>
-          <%= link_to "#{@document.licence.name}", @document.licence.url, :target => "_blank" %>
-        <% else %>
-          <%= "#{@document.licence.name}" %>
-        <% end %>
+        <%= "#{@document.licence.name}" %>
       <% end %>
-      <%# these logos are too ugly - text looks better %>
-      <%# image_tag(@licence.logo) unless @licence.logo.blank? %>
-  <% end %>
-</dd>
+    <% end %>
+    <%# these logos are too ugly - text looks better %>
+    <%# image_tag(@licence.logo) unless @licence.logo.blank? %>
+  </dd>
+<% end %>
