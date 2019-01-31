@@ -57,7 +57,7 @@ class BaseObjectsController < CatalogController
         else
           flash[:error] = t('dri.flash.error.licence_not_updated')
         end
-        format.html { redirect_to controller: 'catalog', action: 'show', id: @object.id }
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
       end
     end
 end
