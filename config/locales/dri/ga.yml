@@ -592,6 +592,8 @@ ga:
         email: 'Iontráil ríomhphost an úsáideora:'
       metadata:
         dublin_core: Dublin Core
+      pagination:
+        label: Scimeáil 
       objects:
         access_controls:
           accessible_master_file: Tabhair cead rochtana chuig leagan ionadach ríomhghinte agus an bunleagan uaslódáilte den mháistirchomhad (nó na máistirchomhaid).

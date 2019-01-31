@@ -1,10 +1,10 @@
 <% if @previous_document || @next_document %>
 
 <div id="dri_pagination_nav_id" class="dri_doc_pagination">
-	<span class="dri_pagination_label">Browse</span>
+	<span class="dri_pagination_label"><%= t('dri.views.pagination.label') %></span>
 	<div class="dri_doc_pagination_links">
 		<%if @previous_document %>
-		<span aria-label="Previous" class="previous"><%= link_to_previous_document @previous_document %></span>
+		  <span aria-label="Previous" class="previous"><%= link_to_previous_document @previous_document %></span>
 		<% end %>
 		<span class="position" aria-label="Position">&nbsp;<%= item_page_entry_info %>&nbsp;</span>
 		<%if @next_document %>

@@ -651,6 +651,8 @@ en:
           view_collection: View Collection
         links:
           cancel: Cancel
+      pagination:
+          label: Browse
       readers:
         headers:
           pending: Pending Request
