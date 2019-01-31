@@ -5,6 +5,7 @@ class MyCollectionsController < ApplicationController
   # even when the user provides a valid api key
   before_action :authenticate_user_from_token!
   include DRI::Catalog
+  include DRI::MyCollectionsSearchExtension
   before_action :authenticate_user!
 
   # This applies appropriate access controls to all solr queries
