@@ -1,0 +1,10 @@
+<h3><%= t('dri.reports.headings.stats_summary') %></h3>
+
+<dl>
+  <dt><%= t('dri.datatables.stats.summary.total_objects') %></dt>
+  <dd><%= number_with_delimiter(@summary_counts[:total_objects]) %></dd>
+  <dt><%= t('dri.datatables.stats.summary.total_assets') %></dt>
+  <dd><%= number_with_delimiter(@summary_counts[:total_assets]) %></dd>
+  <dt><%= t('dri.datatables.stats.summary.total_size') %></dt>
+  <dd><%= number_to_human_size(@total_file_size) %></dd>
+</dl>

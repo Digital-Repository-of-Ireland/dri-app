@@ -109,8 +109,13 @@ en:
        total_objects: "Total Objects"
        size: "Size"
        files:
+         file_type: Type
          mime_type: Mime Type
          count: Count
+       summary:
+         total_objects: Total Objects
+         total_assets: Total Assets
+         total_size: Total Asset Size
     flash:
       alert:
         create_permission: You do not have permission to create this document.
@@ -682,9 +687,10 @@ en:
         fixity_result: Output
         stats_collection_sizes: Collection Sizes
         stats_collection_total: Total
-        stats_file_types: File Types
-          
+        stats_file_types: Asset Types
+        stats_summary: Summary
       links:
-         activity_report: Activity Report
-         fixity_report: Fixity Report
-         stats: Collection Statistics Report
+         activity_report: Repository Activity
+         fixity_report: Collection Fixity
+         stats: Repository Usage
+         user_activity_report: User Activity
