@@ -92,7 +92,7 @@ module DRI::Solr::Document
           item['metadata'][field] = value if value
         end
       end
-      
+
       item
     end
 
@@ -112,11 +112,15 @@ module DRI::Solr::Document
       geojson_hash[:type] = 'Feature'
       geojson_hash[:geometry] = {}
 
-      coords = [Float(point_hash['east']), Float(point_hash['north'])]
       tmp_hash[:name] = point_hash['name']
-
       geojson_hash[:geometry][:type] = 'Point'
-      geojson_hash[:geometry][:coordinates] = coords
+
+      if point_hash.keys.include?('east') && point_hash.keys.include?('north')
+        coords = [Float(point_hash['east']), Float(point_hash['north'])]
+        geojson_hash[:geometry][:coordinates] = coords
+      else
+        geojson_hash[:geometry][:coordinates] = []
+      end
       geojson_hash[:properties] = tmp_hash
 
       geojson_hash
@@ -158,11 +162,11 @@ module DRI::Solr::Document
 
       period.split(/\s*;\s*/).each do |component|
         (k,v) = component.split(/\s*=\s*/)
-        if k.eql?('name')
+        if k == 'name'
           return v unless v.nil? || v.empty?
         end
       end
-      
+
       period
     end
   end

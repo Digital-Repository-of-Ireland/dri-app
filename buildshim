@@ -23,6 +23,7 @@ install_deps)
 configure)
 
 rvm --force gemset empty ruby-2.4.4@build || exit 100
+gem install bundler
 
 cp config/fedora.yml.sample config/fedora.yml
 cp config/solr.yml.sample config/solr.yml
@@ -46,7 +47,7 @@ doi:
   enable: false
 __EOF__
 
-    bundle install --quiet
+    bundle install --without production
     bundle exec rake db:migrate
     bundle exec rake db:seed
     bundle exec rake db:migrate
@@ -54,17 +55,34 @@ __EOF__
     bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &>/dev/null &
     echo $! > fakes3.pid
     ;;
-compile)
-    ;;
 check)
     bundle exec rake ci_spec || exit 100
-    bundle exec rake db:migrate
-    bundle exec rake db:seed
-    bundle exec rake db:test:prepare
     bundle exec rake ci || exit 100
     bundle exec rake assets:precompile
     ;;
-package)
+rspec)
+    bundle exec rake jetty:start
+    bundle exec rake jetty:config
+
+    bundle exec rake rspec
+    ;;
+cucumber)
+    bundle exec rake cucumber_ci
+    ;;
+api)
+   bundle exec rake api:docs:generate
+   ;; 
+compile)
+    bundle exec rake assets:precompile
+    ;;
+push)
+    rm -rf dri-app-mirror
+    git clone --mirror ssh://git@tracker.dri.ie:2200/drirepo/dri-app.git dri-app-mirror
+    cd dri-app-mirror
+    git remote set-url --push origin git@github.com:Digital-Repository-of-Ireland/dri-app.git
+    git fetch -p origin
+    git push --mirror
+    cd ..
     ;;
 upload)
 

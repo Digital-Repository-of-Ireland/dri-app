@@ -75,17 +75,6 @@ Scenario: Constructing an invalid Digital Object using the web form
   And I press the button to "continue"
   Then I should not see a success message for ingestion
 
-@review
-Scenario: Constructing a Digital Object using the web form without setting a collection
-  Given I am on the new Digital Object page
-  And I press the button to "continue"
-  And I select "input" from the selectbox for ingest methods
-  And I press the button to "continue"
-  When I enter valid metadata
-  And I press the button to "continue"
-  Then I should see a success message for ingestion
-  And I should see the valid metadata
-
 Scenario: Editing the metadata of a Digital Object using the web form
   When I create a collection and save the pid
   And I create an object and save the pid

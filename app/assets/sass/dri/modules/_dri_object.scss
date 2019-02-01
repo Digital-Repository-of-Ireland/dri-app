@@ -259,12 +259,15 @@ dl.dri_object_metadata_readview {
         padding: 0;
         color: $dri_midgrey;
         text-align: left;
-        a {
+        a,span.orcid {
             margin: 0 0 0 15px;
-            padding: 0;
             display: list-item;
             list-style-type: square;
             color: $dri_midgrey;
+        }
+        span.orcid a {
+            display: inline-block;
+            margin: 0 5px 0 0;
         }
         a:hover {
             text-decoration: underline;
@@ -279,6 +282,11 @@ dl.dri_object_metadata_readview {
           text-decoration: none;
         }
     }
+}
+a.orcidlink {
+    background: url(image-path('ORCID-iD_icon-16x16.png'));
+    background-repeat: no-repeat;
+    padding-left: 20px;
 }
 /*--slick overrides--*/
 .slick-prev:before, .slick-next:before { 

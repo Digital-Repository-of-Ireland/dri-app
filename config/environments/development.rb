@@ -4,7 +4,15 @@ DriApp::Application.configure do
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  config.cache_classes = false
+  # config.cache_classes = false
+
+  # can't start resque unless cache_classes = true
+  # bundle exec rake resque:work RAILS_ENV=development QUEUE="*" COUNT="2" VERBOSE=1 --trace
+  # ActiveSupport::Concern::MultipleIncludedBlocks: Cannot define multiple 'included' blocks for a Concern
+  # caused by https://github.com/projectblacklight/blacklight/blob/e7764c1e58bb10b5ea2e186c68e1e320d42c1fb3/app/models/concerns/blacklight/document.rb#L31
+  # more info at https://github.com/rails/rails/issues/15767
+  # later versions of blacklight use autoload, so revert this change after updating blacklight
+  config.cache_classes = true
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true

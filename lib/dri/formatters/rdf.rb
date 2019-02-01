@@ -195,9 +195,7 @@ module DRI::Formatters
       id = "#{uri}#id"
 
       relationships = @object_doc.object_relationships
-      puts "*** Relationships #{relationships.inspect}"
       if relationships.present?
-
         relationships.keys.each do |key|
           relationships[key].each do |relationship|
             relationship_predicate = RELATIONSHIP_FIELDS_MAP[key]
@@ -251,6 +249,7 @@ module DRI::Formatters
 
     def sparql_subject(value)
       Rails.cache.fetch(value, expires_in: 48.hours) do
+        return nil unless AuthoritiesConfig
         provider = DRI::Sparql::Provider::Sparql.new
         provider.endpoint = AuthoritiesConfig['data.dri.ie']['endpoint']
 

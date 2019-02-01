@@ -5,6 +5,7 @@ class MyCollectionsController < ApplicationController
   # even when the user provides a valid api key
   before_action :authenticate_user_from_token!
   include DRI::Catalog
+  include DRI::MyCollectionsSearchExtension
   before_action :authenticate_user!
 
   # This applies appropriate access controls to all solr queries
@@ -128,11 +129,11 @@ class MyCollectionsController < ApplicationController
     config.add_show_field solr_name('description', :stored_searchable, type: :string), label: 'description', helper_method: :render_description
     config.add_show_field solr_name('description_eng', :stored_searchable, type: :string), label: 'description_eng', helper_method: :render_description
     config.add_show_field solr_name('description_gle', :stored_searchable, type: :string), label: 'description_gle', helper_method: :render_description
-    config.add_show_field solr_name('creator', :stored_searchable, type: :string), label: 'creators'
+    config.add_show_field solr_name('creator', :stored_searchable, type: :string), label: 'creators', helper_method: :parse_orcid
     DRI::Vocabulary.marc_relators.each do |role|
-      config.add_show_field solr_name('role_' + role, :stored_searchable, type: :string), label: 'role_' + role
+      config.add_show_field solr_name('role_' + role, :stored_searchable, type: :string), label: 'role_' + role, helper_method: :parse_orcid
     end
-    config.add_show_field solr_name('contributor', :stored_searchable, type: :string), label: 'contributors'
+    config.add_show_field solr_name('contributor', :stored_searchable, type: :string), label: 'contributors', helper_method: :parse_orcid
     config.add_show_field solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true, helper_method: :parse_era
     config.add_show_field solr_name('publisher', :stored_searchable), label: 'publishers'
     config.add_show_field solr_name('published_date', :stored_searchable), label: 'published_date', date: true, helper_method: :parse_era

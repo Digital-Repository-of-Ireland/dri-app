@@ -61,3 +61,5 @@ dri_files
 .byebug*
 *.pid
 *.sublime*
+
+fits.log

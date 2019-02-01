@@ -2,57 +2,62 @@
 	<% unless (controller_name == 'saved_searches' && action_name == 'index') || root? %>
 
 		<ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs" >
-			<% copySearchParams = params.clone %>
-			<% initialSub = copySearchParams[:show_subs] %>
-			<% copySearchParams.delete(:page) %>
-			<% copySearchParams.delete(:tl_page) %>
-			<% copySearchParams.delete(:tl_field) %>
-			<% copySearchParams.delete(:direction) %>
+			<% 
+				collections_class = 'dri_help_popover_slow'
+				subcollections_class = 'dri_help_popover_slow'
+				objects_class = 'dri_help_popover_slow'
 
-			<% if params[:mode] == 'collections' %>
-			  <% copySearchParams[:mode] = 'objects' %>
-			  <li id="dri_browse_sort_tabs_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="auto right">
-				  <%= link_to t('dri.headerlinks.collections'), "#", id: "collections", class: 'selected dri_help_popover_slow' %>
-			  </li>
+				objects_class += ' selected' if params[:mode] == 'objects'
+				collections_class += ' selected' if params[:mode] == 'collections'
+				subcollections_class += ' selected' if params[:show_subs] == 'true'
 
-			  <% unless params[:show_subs] == 'true' %>
-			    <% copySearchParams[:mode] = 'collections' %>
-			    <% copySearchParams[:show_subs] = 'true' %>
-			    <li id="dri_browse_sort_tabs_sub_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>" data-trigger="hover" data-placement="auto right" class='dri_help_popover_slow'>
-				    <%= link_to t('dri.headerlinks.sub_collections'), copySearchParams, id: "sub_collections"  %>
-			    </li>
-			  <% else %>
-			    <% copySearchParams[:show_subs] = 'false' %>
-			    <% copySearchParams[:mode] = 'collections' %>
-			    <li id="dri_browse_sort_tabs_sub_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>" data-trigger="hover" data-placement="auto right" class='dri_help_popover_slow'>
-				    <%= link_to t('dri.headerlinks.sub_collections'), copySearchParams, id: "sub_collections", class: "selected" %>
-			    </li>
-			  <% end %>
+				# Use whitelist instead of blacklist (params.merge xss issue)
+				# Explicitly get expected params, rather than adding desired param
+				# and passing verything through with params.merge
+				param_modes = %w[collections subcollections objects].map do |mode|
+					{
+						# if mode if collections or subcollections
+						# param[:mode] is set to collections
+						mode: mode.include?('collections') ? 'collections' : 'objects',
+						show_subs: mode == 'subcollections' ? 'true' : 'false',
+						root_collection_id_sim: params[:root_collection_id_sim],
+						search_field: params[:search_field],
+						controller: params[:controller],
+						action: params[:action],
+						view: params[:view],
+						utf8: params[:utf8],
+						q: params[:q]	
+					}
+				end
 
-			  <% copySearchParams[:mode] = 'objects' %>
-			  <% copySearchParams[:show_subs] = initialSub %>
-			  <li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="auto right">
-				  <%= link_to t('dri.headerlinks.objects'), copySearchParams, id: "objects" %>
-			  </li>
-			<% else %>
-			  <% copySearchParams[:mode] = 'collections' %>
-			  <li id="dri_browse_sort_tabs_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" data-trigger="hover" data-placement="auto right" class='dri_help_popover_slow'>
-				  <%= link_to t('dri.headerlinks.collections'), copySearchParams, id: "collections" %>
-			  </li>
-			  <% unless params[:show_subs] = 'true' %>
-			    <% copySearchParams[:show_subs] = 'true' %>
-			    <li id="dri_browse_sort_tabs_sub_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>" data-trigger="hover" data-placement="auto right", class='dri_help_popover_slow'>
-				    <%= link_to t('dri.headerlinks.sub_collections'), copySearchParams, id: "sub_collections" %>
-			    </li>
-			  <% else %>
-			    <li id="dri_browse_sort_tabs_sub_collections_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>" data-trigger="hover" data-placement="auto right" class='dri_help_popover_slow'>
-	              <%= link_to t('dri.headerlinks.sub_collections'), copySearchParams, id: "sub_collections" %>
-	            </li>
-	          <% end %>
-			  <li id="dri_browse_sort_tabs_objects_id" data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" data-trigger="hover" data-placement="auto right">
-				  <%= link_to t('dri.headerlinks.objects'), "#", id: "objects", class: "selected" %>
-			  </li>
-			<% end %>
+				collections_params, subcollections_params, objects_params = param_modes
+			%>
+
+		  <li id="dri_browse_sort_tabs_collections_id" 
+		  	data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  
+		  	data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" 
+		  	data-trigger="hover" 
+		  	data-placement="auto right">
+			  <%= link_to t('dri.headerlinks.collections'), collections_params, id: "collections", class: collections_class	%>
+		  </li>
+
+	    <li id="dri_browse_sort_tabs_sub_collections_id" 
+	    data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"  
+	    data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>" 
+	    data-trigger="hover" 
+	    data-placement="auto right" 
+	    class='dri_help_popover_slow'>
+		    <%= link_to t('dri.headerlinks.sub_collections'), subcollections_params, id: "sub_collections", class: subcollections_class %>
+	    </li>
+
+		  <li id="dri_browse_sort_tabs_objects_id" 
+		  data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  
+		  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" 
+		  data-trigger="hover" 
+		  data-placement="auto right">
+			  <%= link_to t('dri.headerlinks.objects'), objects_params, id: "objects", class: objects_class %>
+		  </li>
+			
 			<%= render 'shared/header_browse_paginate' %>
 		</ul>
 

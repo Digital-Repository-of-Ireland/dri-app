@@ -211,6 +211,10 @@ When /^I submit the Edit User form$/ do
   click_button 'Update'
 end
 
+When /^I click the "([^\"]*)" button$/ do |button_text|
+  click_button(button_text)
+end
+
 Then /^my authentication details should be updated from "([^\"]*)", "([^\"]*)" to "([^\"]*)", "([^\"]*)"$/ do |oldlogin, oldpassword, newlogin, newpassword|
   oldemail = "#{oldlogin}@#{oldlogin}.com"
   newemail = "#{newlogin}@#{newlogin}.com"

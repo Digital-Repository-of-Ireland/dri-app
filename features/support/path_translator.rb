@@ -29,6 +29,10 @@ module PathTranslator
       when /^(the )?my collections page$/
         my_collections_index_path
 
+      when /^(the )?my collections page for id (.+)$/
+        pid = ($2 == "@random")? "dri:o" + @random_pid : $2
+        my_collections_path(pid)
+
       when /^(the )?user profile page$/
         user_group.profile_path      
 
@@ -74,7 +78,10 @@ module PathTranslator
         new_organisation_path
 
       when /^(the )?organisations page$/
-        '/organisations'
+        "#{root_path}organisations"
+
+      when /^(the )?api docs page$/
+        "#{root_path}api-docs"
 
       when /^(the )?workspace page$/
         workspace_path

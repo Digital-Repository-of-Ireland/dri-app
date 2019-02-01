@@ -21,26 +21,15 @@ Given /^I delete a "([^\"]+)" cookie$/ do |key|
 end
 
 Given /^I have no cookies$/ do
-	expire_cookies
+    expire_cookies
 end
 
 Then /^I should have a cookie (.*)$/ do |cookie|
-  #if Capybara.current_driver.to_s != "rack_test"
-    #expect(page.driver.cookies.find(cookie)).to_not be_nil
-  #  expect(page.driver.browser.manage.cookie_named(cookie)).to_not be_nil
-  #  expect(Capybara.current_session.driver.browser.manage.cookie_named(cookie)[:value]).to_not be_nil
-  #else
     expect(get_me_the_cookie(cookie)).to_not be_nil
-  #end
 end
 
 Then /^I should not have a cookie (.*)$/ do |cookie|
-  #if Capybara.current_driver.to_s != "rack_test"
-    #expect(page.driver.cookies.find(cookie)).to be_nil
-  #  expect(Capybara.current_session.driver.browser.manage.cookie_named(cookie)).to be_nil
-  #else
     expect(get_me_the_cookie(cookie)).to be_nil
-  #end
 end
 
 Then /^The language cookie content should be (.*)$/ do |value|
@@ -52,6 +41,5 @@ Then /^The language cookie content should be (.*)$/ do |value|
 end
 
 Given /^I accept cookies terms$/ do
-  #find('#accept_cookies').click
   page.execute_script("document.querySelector('#accept_cookies').click()")
 end

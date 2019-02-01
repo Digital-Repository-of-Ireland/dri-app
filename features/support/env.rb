@@ -25,7 +25,7 @@ require 'billy/capybara/cucumber'
 Capybara.register_driver :selenium do |app|
         options = Selenium::WebDriver::Chrome::Options.new(
                 args: [
-                  "headless", 
+                  "headless",
                   "no-sandbox",
                   "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}"
                 ]

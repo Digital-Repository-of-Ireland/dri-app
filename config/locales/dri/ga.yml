@@ -253,7 +253,8 @@ ga:
       dri_page_options_title: Míreanna in aghaidh an leathanaigh
       dri_pagination_nav_links: Bain úsáid as na naisc seo chun dul trí thorthaí do chuardaigh. Is féidir líon na leathanach a athrú ach níos mó nó níos lú míreanna a roghnú in aghaidh an leathanaigh
       dri_pagination_nav_links_title: Uimhriú leathanach na dtorthaí
-      dri_publish_unavailable: "Caithfidh tú Eagraíocht Thaiscthe an Bhailiúcháin a shocrú roimh fhoilsiú. Úsáid an nasc \"Bainistigh Eagraíochtaí\" "
+      dri_publish_no_org: "Caithfidh tú Eagraíocht Thaiscthe an Bhailiúcháin a shocrú roimh fhoilsiú. Úsáid an nasc \\\"Bainistigh Eagraíochtaí\\\""
+      dri_publish_no_reviewed: "Caithfidh tú Oibiacht amháin ar a laighead a chuir sa bhailiúchán agus é a athbhreithniú roimh foilsiú"
       dri_publish_unavailable_title: Níl Foilsigh ar fáil
       dri_sort_options: "Roghnaigh ón liosta seo chun do chuid torthaí a shórtáil de réir Iontráil is Déanaí, Teideal, Ábharthacht nó Sraith. Is ionann Ábharthacht agus tuairim is fearr an chórais faoi na Bailiúcháin nó na hOibiachtaí sin is mó a bhaineann le do chuardach"
       dri_sort_options_title: Roghanna maidir le sortáil an chuardaigh
@@ -591,6 +592,8 @@ ga:
         email: 'Iontráil ríomhphost an úsáideora:'
       metadata:
         dublin_core: Dublin Core
+      pagination:
+        label: Scimeáil 
       objects:
         access_controls:
           accessible_master_file: Tabhair cead rochtana chuig leagan ionadach ríomhghinte agus an bunleagan uaslódáilte den mháistirchomhad (nó na máistirchomhaid).

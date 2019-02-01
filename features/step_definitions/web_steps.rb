@@ -132,9 +132,15 @@ When /^(?:|I )click the link to (.+)$/ do |link_name|
   end
 end
 
-When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
-  with_scope(selector) do
+When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, scope|
+  with_scope(scope) do
     click_link(link)
+  end
+end
+
+When /^(?:|I )click the first "([^\"]+)" within "([^"]*)"$/ do |selector, scope|
+  with_scope(scope) do
+    page.find_all(selector).first.click
   end
 end
 
@@ -227,6 +233,25 @@ When /^I select the "(objects|collections)" tab$/ do |tab|
   end
 end
 
+When /^I hover over a visible "([^\"]+)"$/ do |selector|
+  find(selector, visible: true).hover  
+end
+
+When /^I click "([^\"]+)"$/ do |selector|
+  find(selector, visible: true).click
+end
+
+Then /^I should( not)? see a popover$/ do |negate|  
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_css('div.popover', visible: true))
+end
+
+Then /^I should see a popover with the title "([^\"]+)"$/ do |title|
+  popover = find('div.popover', visible: true)
+  popover_title = popover.find('.popover-title').text
+  expect(popover_title).to eq title
+end
+
 Then /^I should see the (valid|modified) metadata$/ do |type|
   case type
     when "valid"
@@ -272,11 +297,11 @@ When /^(?:|I )perform a search$/ do
   find(:id, 'q').native.send_keys(:enter)
 end
 
-Then /^(?:|I )should( not)? see a button to (.+)$/ do |negate,button|
+Then /^(?:|I )should( not)? see a button to (.+)$/ do |negate, button|
    negate ? (expect(page).to_not have_button(button_to_id(button))) : (expect(page).to have_button(button_to_id(button)))
 end
 
-Then /^(?:|I )should( not)? see a link to (.+)$/ do |negate,link|
+Then /^(?:|I )should( not)? see a link to (.+)$/ do |negate, link|
   negate ? (expect(page).to_not have_link(link_to_id(link))) : (expect(page).to have_link(link_to_id(link)))
 end
 
@@ -342,7 +367,7 @@ Then /^the object should be of type (.*?)$/ do |type|
   interface.is_type?(type)
 end
 
-Then /^I should see a link to "([^\"]*)" with text "([^\"]*)"$/ do |url, text|
+Then /^I should see a link to "([^\"]+)" with text "([^\"]+)"$/ do |url, text|
   page.should have_link(text, href: url)
 end
 
@@ -458,4 +483,42 @@ end
 
 Then /^the element with id "([^"]*)" should be focused$/ do |id|
   page.evaluate_script("document.activeElement.id").should == id
+end
+
+Then /^all "([^\"]+)" within "([^\"]+)" should link to (.+)$/ do |selector, scope, type|
+  expect_method = if type.match? /a root collection/
+                    :root_collection?
+                  elsif type.match? /a collection/
+                    :collection?
+                  elsif type.match? /an object/
+                    :object?
+                  else
+                    raise ArgumentError, "unrecognized type: #{type}"
+                  end
+
+  with_scope(scope) do
+    page.find_all(selector).each do |obj|
+      catalog_link = obj.find_link(href: /\/catalog\//)[:href]
+      object_pid = catalog_link.split("/catalog/")[-1]
+      object = ActiveFedora::Base.find(object_pid, cast: true)
+      expect(object.send(expect_method)).to be true
+    end
+  end
+end
+
+Then /^"([^\"]+)" should( not)? be disabled$/ do |selector, negate|
+  element = find(selector, visible: true)
+  expect(element.disabled?).to be !negate
+end
+
+Then /^I should( not)? see a modal(?: with title "([^\"]+)")?$/ do |negate, title|
+  if negate
+    expect(page).to_not have_css('.modal-dialog', visible: true)
+  else
+    modal = find('.modal-dialog', visible: true)
+    if title
+      modal_title = modal.find('.modal-title').text
+      expect(modal_title).to eq title
+    end
+  end
 end

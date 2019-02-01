@@ -1,6 +1,6 @@
 FactoryBot.define do
 
-  factory(:sound, :class => DRI::QualifiedDublinCore) do
+  factory(:sound, class: DRI::QualifiedDublinCore) do
     title                  ["An Audio Title"]
     rights                 ["This is a statement about the rights associated with this object"]
     role_hst               ["Collins, Michael"]
@@ -22,7 +22,7 @@ FactoryBot.define do
     end
   end
 
-  factory(:audio, :class => DRI::QualifiedDublinCore) do
+  factory(:audio, class: DRI::QualifiedDublinCore) do
     title                  ["An Audio Title"]
     rights                 ["This is a statement about the rights associated with this object"]
     role_hst               ["Collins, Michael"]
@@ -44,7 +44,7 @@ FactoryBot.define do
     end
   end
 
-  factory(:text, :class => DRI::QualifiedDublinCore) do
+  factory(:text, class: DRI::QualifiedDublinCore) do
     title                  ["A PDF Title"]
     rights                 ["This is a statement about the rights associated with this object"]
     role_aut               ["Collins, Michael"]
@@ -59,7 +59,7 @@ FactoryBot.define do
     resource_type          ["Text"]
   end
 
-  factory(:image, :class => DRI::QualifiedDublinCore) do
+  factory(:image, class: DRI::QualifiedDublinCore) do
     title                  ["An Image"]
     rights                 ["This is a statement about the rights associated with this object"]
     role_aut               ["Collins, Michael"]
@@ -74,7 +74,7 @@ FactoryBot.define do
     resource_type          ["Image"]
   end
 
-  factory(:collection, :class => DRI::QualifiedDublinCore) do
+  factory(:collection, class: DRI::QualifiedDublinCore) do
     title                  ["A collection"]
     description            ["This is a Collection"]
     rights                 ["This is a statement about the rights associated with this object"]
@@ -91,7 +91,7 @@ FactoryBot.define do
     end
   end
 
-  factory(:documentation, :class => DRI::Documentation) do
+  factory(:documentation, class: DRI::Documentation) do
     title                  ["Test docs"]
     description            ["Test documentation"]
     rights                 ["This is a statement about the rights associated with this object"]
@@ -102,10 +102,18 @@ FactoryBot.define do
     published_date         ["1916-01-02"]
     object_version          '1'
 
-    after(:create) do |collection|
-      preservation = Preservation::Preservator.new(collection)
+    after(:create) do |doc|
+      preservation = Preservation::Preservator.new(doc)
       preservation.preserve(false, false, ['descMetadata','properties'])
     end
+  end
+
+  factory(:generic_png_file, class: DRI::GenericFile) do
+    file_title              ["test.png"]
+    file_size               [10000]
+    label                   "test.png"
+    mime_type               "image/png"
+    creator                 ["A. User"]
   end
 
 end

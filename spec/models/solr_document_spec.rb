@@ -172,7 +172,100 @@ describe SolrDocument do
       doc = SolrDocument.find(@collection.id)
       expect(doc.published_objects).to eq 3
     end
+  end
 
 
+  context 'object type methods' do
+    before(:each) do
+      @to_delete = []
+      @solr_root_collection = SolrDocument.find(@collection.id)
+      @solr_subcollection = SolrDocument.find(@subcollection.id)
+
+      @solr_objects = %i[sound audio text image documentation].map do |name|
+        object = FactoryBot.create(name)
+        object.save
+        @to_delete << object
+        SolrDocument.find(object.id)
+      end
+
+      generic_file = FactoryBot.create(:generic_png_file)
+      generic_file.save
+      @to_delete << generic_file
+      @solr_generic_file = SolrDocument.find(generic_file.id)
+    end
+
+    after(:each) do
+      @to_delete.map(&:delete)
+    end
+
+    describe 'collection?' do
+      # collections includes subcollections
+      it 'should return true for collections' do
+        expect(@solr_root_collection.collection?).to be true
+      end
+      it 'should return true for subcollections' do
+        expect(@solr_subcollection.collection?).to be true
+      end
+      it 'should return false for objects' do
+        @solr_objects.each do |item|
+          expect(item.collection?).to be false
+        end
+      end
+      it 'should return false for generic files' do
+        expect(@solr_generic_file.collection?).to be false
+      end
+    end
+
+    describe 'object?' do
+      # any other type i.e. collections
+      it 'should return false for collections' do
+        expect(@solr_root_collection.object?).to be false
+      end
+      it 'should return false for subcollections' do
+        expect(@solr_subcollection.object?).to be false
+      end
+      it 'should return true for objects' do
+        @solr_objects.each do |item|
+          expect(item.object?).to be true
+        end
+      end
+      it 'should return false for generic files' do
+        expect(@solr_generic_file.object?).to be false
+      end
+    end
+
+    describe 'root_collection?' do
+      it 'should return true for root collections' do
+        expect(@solr_root_collection.root_collection?).to be true
+      end
+      it 'should return false for subcollections' do
+        expect(@solr_subcollection.root_collection?).to be false
+      end
+      it 'should return false for objects' do
+        @solr_objects.each do |item|
+          expect(item.root_collection?).to be false
+        end
+      end
+      it 'should return false for generic files' do
+        expect(@solr_generic_file.root_collection?).to be false
+      end
+    end
+
+    describe 'generic_file?' do
+      it 'should return true for root collections' do
+        expect(@solr_root_collection.generic_file?).to be false
+      end
+      it 'should return false for subcollections' do
+        expect(@solr_subcollection.generic_file?).to be false
+      end
+      it 'should return false for objects' do
+        @solr_objects.each do |item|
+          expect(item.generic_file?).to be false
+        end
+      end
+      it 'should return false for generic files' do
+        expect(@solr_generic_file.generic_file?).to be true
+      end
+    end
   end
 end

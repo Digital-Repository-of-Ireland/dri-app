@@ -128,31 +128,54 @@ class SolrDocument
   def has_doi?
     doi_key = ActiveFedora.index_field_mapper.solr_name('doi', :displayable, type: :symbol).to_sym
 
-    self[doi_key].present? ? true : false
+    self[doi_key].present?
   end
 
   def has_geocode?
     geojson_key = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
 
-    self[geojson_key].present? ? true : false
+    self[geojson_key].present?
+  end
+
+  # @param [String] field_name
+  # @return [Boolean]
+  def truthy_index_field?(field_name)
+    key = ActiveFedora.index_field_mapper.solr_name(field_name)
+
+    return false unless self[key].present?
+    value = if self[key].is_a?(Array)
+              self[key].first
+            else
+              self[key]
+            end
+    value == 'true' || value == true
+  end
+
+  # legacy from sufia, all objects / collections have model DRI::Batch
+  # Generic files are DRI::GenericFile
+  # @return [Boolean]
+  def batch?
+    self['has_model_ssim'].include?("DRI::Batch")
+  end
+
+  # @return [Boolean]
+  def generic_file?
+    self['has_model_ssim'].include?("DRI::GenericFile")
+  end
+
+  def object?
+    # if solr_object doesn't have is_object, but also isn't a collection
+    # treat it as an object
+    truthy_index_field?('is_object') || (!collection? && batch?)
   end
 
   def collection?
-    is_collection_key = ActiveFedora.index_field_mapper.solr_name('is_collection')
-
-    return false unless self[is_collection_key].present?
-
-    is_collection = if self[is_collection_key].is_a?(Array)
-                      self[is_collection_key].first
-                    else
-                      self[is_collection_key]
-                    end
-
-    is_collection == 'true' || is_collection == true ? true : false
+    truthy_index_field?('is_collection')
   end
 
   def root_collection?
-    collection_id ? false : true
+    # a collection without any governing / parent collection
+    collection? && (collection_id ? false : true)
   end
 
   def sub_collection?
