@@ -635,7 +635,6 @@ GEM
     net-http-persistent (2.9.4)
     netrc (0.11.0)
     noid (0.9.0)
-    nokogiri (1.9.1)
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
     nokogiri-happymapper (0.6.0)
