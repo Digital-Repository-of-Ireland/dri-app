@@ -205,7 +205,7 @@ module DRI::IIIFViewable
     q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{@document.id}\""
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:\"published\""
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('object_type', :facetable, type: :string)}:\"Image\""
+    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
     # excluding sub-collections
     f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false"
 

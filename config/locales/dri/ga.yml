@@ -104,6 +104,7 @@ ga:
         total_objects: "Iomlán na nOibiachtaí"
         size: "Méid"
         files:
+          file_type: Cineál
           mime_type: Cineál Mime
           count: Comhaireamh
     flash:
@@ -592,6 +593,8 @@ ga:
         email: 'Iontráil ríomhphost an úsáideora:'
       metadata:
         dublin_core: Dublin Core
+      pagination:
+        label: Scimeáil 
       objects:
         access_controls:
           accessible_master_file: Tabhair cead rochtana chuig leagan ionadach ríomhghinte agus an bunleagan uaslódáilte den mháistirchomhad (nó na máistirchomhaid).

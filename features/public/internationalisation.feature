@@ -4,6 +4,7 @@ Feature: Internationalisation
   As a user
   I should be able to see the website in English or Irish
 
+  @wip
   Scenario Outline: Not logged in user should see their own language based on their browser
     Given I reset the sessions
     Given I am not logged in and accept cookies
@@ -18,7 +19,7 @@ Feature: Internationalisation
 
   Scenario Outline: Not logged in user changes language using the language selection tab
     Given I reset the sessions
-    Given I am not logged in and accept cookies
+    Given I am not logged in
     And my browser language is "<lang>"
     Then I should see the language "<lang>"
     When I follow the link to change to <lang_new>
@@ -29,7 +30,7 @@ Feature: Internationalisation
   Examples:
     | lang | lang_new|
     | en   | ga      |
-    | ga   | en      |
+    #| ga   | en      |
 
   Scenario Outline: A logged in user should see languages that they have set in their profile
     Given I reset the sessions
