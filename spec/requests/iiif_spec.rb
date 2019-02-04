@@ -44,7 +44,7 @@ describe IiifController, type: :request do
           end
         end
       end.flatten
-      expect(image_ids).to eq(@collections.first.governed_items.map(&:id))
+      expect(image_ids.sort).to eq(@collections.first.governed_items.map(&:id).sort)
     end
   end 
 end
