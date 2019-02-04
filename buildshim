@@ -11,9 +11,11 @@ else
 fi
 
 rvm use ruby-2.4.4 || exit 100
-rvm use ruby-2.4.4@build --create || exit 100
 
-branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+branch=$(echo $GIT_BRANCH | cut -d / -f 2)
+rvm use ruby-2.4.4@$branch --create || exit 100
+
+#branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
 case $1 in
 patch)
@@ -22,7 +24,7 @@ install_deps)
     ;;
 configure)
 
-rvm --force gemset empty ruby-2.4.4@build || exit 100
+rvm --force gemset empty ruby-2.4.4@$branch || exit 100
 gem install bundler
 
 cp config/fedora.yml.sample config/fedora.yml
