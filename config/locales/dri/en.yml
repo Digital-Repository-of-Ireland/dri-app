@@ -109,8 +109,13 @@ en:
        total_objects: "Total Objects"
        size: "Size"
        files:
+         file_type: Type
          mime_type: Mime Type
          count: Count
+       summary:
+         total_objects: Total Objects
+         total_assets: Total Assets
+         total_size: Total Asset Size
     flash:
       alert:
         create_permission: You do not have permission to create this document.
@@ -263,6 +268,8 @@ en:
       dri_publish_no_org: "You must set this Collection's Depositing Organisation before publishing. Use the \"Manage Organisations\" link"
       dri_publish_no_reviewed: "You must add and review at least one object or subcollection before publishing"
       dri_publish_unavailable_title: Publish not available
+      dri_review_unavailable: There are no objects to review. You must add a new object first.
+      dri_review_unavailable_title: Review not available
       dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
       dri_sort_options_title: Search Sort Options
       dri_tlfield_options: Select the date field to display on the timeline
@@ -682,9 +689,10 @@ en:
         fixity_result: Output
         stats_collection_sizes: Collection Sizes
         stats_collection_total: Total
-        stats_file_types: File Types
-          
+        stats_file_types: Asset Types
+        stats_summary: Summary
       links:
-         activity_report: Activity Report
-         fixity_report: Fixity Report
-         stats: Collection Statistics Report
+         activity_report: Repository Activity
+         fixity_report: Collection Fixity
+         stats: Repository Usage
+         user_activity_report: User Activity
