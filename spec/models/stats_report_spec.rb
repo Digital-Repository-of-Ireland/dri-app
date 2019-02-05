@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe StatsReport do
-  
+
   before(:each) do
     @object = FactoryBot.create(:image)
   end
@@ -31,8 +31,8 @@ describe StatsReport do
 
       mime_types = StatsReport.mime_type_counts
 
-      expect(mime_types['pdf ()']).to eq 2
-      expect(mime_types['jpeg ()']).to eq 1
+      expect(mime_types['application/pdf']).to eq 1
+      expect(mime_types['image/jpeg']).to eq 1
     end
   end
 

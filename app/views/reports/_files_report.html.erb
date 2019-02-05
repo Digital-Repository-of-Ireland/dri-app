@@ -1,4 +1,28 @@
 <h3><%= t('dri.reports.headings.stats_file_types') %></h3>
+<table id="file_type_summary" class="table display">
+  <thead>
+    <tr>
+      <th><%= t('dri.datatables.stats.files.file_type') %></th>
+      <th><%= t('dri.datatables.stats.files.count') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @file_type_counts.each do |type, count| %>
+      <tr>
+        <td><%= link_to(type,
+                    url_for(
+                      action: 'index',
+                      controller: 'my_collections',
+                      "f[file_type_display_sim][]" => "#{type}"
+                    )
+                )
+              %>
+        </td><td><%= count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <table id="files_stats" class="table display">
   <thead>
     <tr>
@@ -8,7 +32,17 @@
   </thead>
   <tbody>
   	<% @mime_type_counts.each do |type, count| %>
-  	  <tr><td><%= "#{type}" %></td><td><%= "#{count}" %></td></tr>
+  	  <tr>
+        <td><%= link_to(type,
+                    url_for(
+                      action: 'index',
+                      controller: 'my_collections',
+                      "f[mime_type_sim][]" => "#{type}"
+                    )
+                )
+              %>
+        </td><td><%= count %></td>
+      </tr>
   	<% end %>
   </tbody>
 </table>

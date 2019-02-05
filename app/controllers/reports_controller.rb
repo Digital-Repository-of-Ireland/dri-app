@@ -5,10 +5,7 @@ class ReportsController < ApplicationController
 
   def index
 
-    if params[:report].presence == 'stats'
-      @mime_type_counts = StatsReport.mime_type_counts
-      @total_file_size = StatsReport.total_file_size
-    end
+    retrieve_stats if params[:report].presence == 'stats'
 
     respond_to do |format|
       format.html
@@ -25,5 +22,14 @@ class ReportsController < ApplicationController
         end
       end
     end
+  end
+
+  private
+
+  def retrieve_stats
+    @summary_counts = StatsReport.summary
+    @file_type_counts = StatsReport.file_type_counts
+    @mime_type_counts = StatsReport.mime_type_counts
+    @total_file_size = StatsReport.total_file_size
   end
 end
