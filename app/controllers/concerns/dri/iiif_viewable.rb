@@ -89,35 +89,28 @@ module DRI::IIIFViewable
     # Add collapsible subcollections to structures like
     # https://iiif.lib.harvard.edu/manifests/drs:48309543
     # objects = child_objects
-    objects = @document.published_images
+
+    # assumes images always have a title
+    objects = @document.published_images.sort_by(&:title)
 
     # exit early if @document doesn't have published images
     return manifest if objects.empty?
 
-    objects.each do |o| 
-      files = attached_images(o.id)
-      files.each_with_index do |f, i| 
-        sequence.canvases << create_canvas(f, iiif_base_url(o.id), o.id)
+    objects.each_with_index do |image_object, obj_idx|
+      # TODO: simplify this block
+      # will we ever want to display  more than one image per object?
+      attached_images(image_object.id).each_with_index do |image_file, file_idx|
+        canvas = create_canvas(image_file, iiif_base_url(image_object.id), image_object.id)
+        canvas.see_also = see_also(image_object.id)
+        sequence.canvases << canvas
+        manifest.structures << {
+          # canvas id is entire url, not just object.id
+          'canvases' => [canvas["@id"]],
+          '@id' => "#{iiif_base_url}/range/range-#{obj_idx + 1}-#{file_idx + 1}.json",
+          '@type' => "sc:Range",
+          'label' => "#{obj_idx + 1}. #{image_object.title.first.truncate(100)}"
+        }
       end
-    end
-
-    # add toc
-    manifest.structures << {
-      'canvases' => sequence.canvases.map { |canvas| canvas["@id"] },
-      '@id' => "#{iiif_base_url}/range/range-1.json",
-      '@type' => "sc:Range",
-      'label' => "Table of Contents"
-    }
-
-    # add items to toc
-    sequence.canvases.each_with_index do |canvas, idx|
-      manifest.structures << {
-        'canvases' => [canvas["@id"]],
-        'within' => "#{iiif_base_url}/range/range-1.json",
-        '@id' => "#{iiif_base_url}/range/range-1-#{idx+1}.json",
-        '@type' => "sc:Range",
-        'label' => "image #{idx+1}"
-      }
     end
 
     manifest.sequences << sequence
@@ -175,7 +168,7 @@ module DRI::IIIFViewable
     
     query = Solr::Query.new(files_query)
     files = query.reject { |file_doc| file_doc.preservation_only? } 
-  
+
     files.sort_by{ |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
   end
 
@@ -301,9 +294,10 @@ module DRI::IIIFViewable
     return depositing_org, logo
   end
 
-  def see_also
+  def see_also(solr_id = nil)
+    solr_id ||= @document.id
     {
-      "@id" => object_metadata_url(id: @document.id, 
+      "@id" => object_metadata_url(id: solr_id, 
       protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
       'format' => 'text/xml'
     }
