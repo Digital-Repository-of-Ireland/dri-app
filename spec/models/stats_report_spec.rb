@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe StatsReport do
-  
+
   before(:each) do
     @object = FactoryBot.create(:image)
     @object2 = FactoryBot.create(:image)
@@ -9,6 +9,7 @@ describe StatsReport do
 
   after(:each) do
     @object.delete
+    @object2.delete
   end
 
   context "Mime_type stats" do
