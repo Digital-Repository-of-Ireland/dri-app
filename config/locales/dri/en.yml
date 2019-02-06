@@ -121,6 +121,7 @@ en:
         create_permission: You do not have permission to create this document.
         delete_permission: You do not have permission to delete this document.
         doi_not_configured: DOI configuration settings not found.
+        doi_published_warning: "Please note that you are editing a published object. Changes that you make will be visible immediately after being saved. Changes to certain fields may result in the creation of the DOI name associated with this object. Refer to the <a href='https://guides.dri.ie/depositor-guide/04-review-and-publish.html#digital-object-identifier' target='_blank'>depositor guide</a> for more information."
         edit_permission: You do not have permission to edit this document.
         error_deleting_collection: "Unable to submit 'delete collection' background task: %{error}"
         error_generating_surrogates: 'Error generating surrogates: %{error}'

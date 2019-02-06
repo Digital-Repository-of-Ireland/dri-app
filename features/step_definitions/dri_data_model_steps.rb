@@ -39,3 +39,10 @@ Given /^an object in collection "(.*?)" with metadata from file "(.*?)"$/ do |co
   obj.master_file_access = 'private'
   obj.save
 end
+
+When /^the (object|collection) has a doi$/ do |type|
+  pid = type == "object" ? @pid : @collection_pid
+  obj = DRI::Batch.find(pid)
+  obj.doi = "10.5072/DRI-#{pid}"
+  obj.save 
+end
