@@ -146,7 +146,7 @@
         $zen-column-count: 3;
         .dri_header_container {
             padding-bottom: 20px;
-            .dri_search_term_text_input {
+            .dri_search_term_text_input, #search_field {
                 margin: 15px 0 0 0;
                 clear: right;
             }
@@ -248,8 +248,10 @@
             }
         }
     }
-    .dri_search_term_text_input {
+    .dri_search_term_text_input, #search_field {
         margin: 12px 10px 0 10px;
+    }
+    .dri_search_term_text_input {
         width: 50%;
     }
     .dri_main_content_container {
