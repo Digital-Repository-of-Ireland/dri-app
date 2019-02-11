@@ -234,14 +234,14 @@ When /^I select the "(objects|collections)" tab$/ do |tab|
 end
 
 When /^I hover over a visible "([^\"]+)"$/ do |selector|
-  find(selector, visible: true).hover  
+  find(selector, visible: true).hover
 end
 
 When /^I click "([^\"]+)"$/ do |selector|
   find(selector, visible: true).click
 end
 
-Then /^I should( not)? see a popover$/ do |negate|  
+Then /^I should( not)? see a popover$/ do |negate|
   expectation = negate ? :should_not : :should
   page.send(expectation, have_css('div.popover', visible: true))
 end
@@ -409,7 +409,7 @@ Then /^the( hidden)? "([^"]*)" field(?: within "([^"]*)")? should( not)? contain
     field = if visibility
               find("##{escape_id(field_id)}", visible: :hidden)
               # find_field(field_id, visible: :hidden) # throws exception
-            else 
+            else
               find_field(field_id)
             end
     field_value = (field.tag_name == 'textarea') ? field.text : field.value
@@ -442,7 +442,7 @@ end
 # .vocab-dropdown always exists, but is hidden. using see element will always pass
 Then /^I should (not )?see (\d+) visible element(s)? "([^"]*)"$/ do |negate, num, _, selector|
   expectation = negate ? :to_not : :to
-  expect(find_all(selector, visible: true).count).send(expectation, eq(num)) 
+  expect(find_all(selector, visible: true).count).send(expectation, eq(num))
 end
 
 Then /^I should (not )?see a hidden "([^"]*)" within "([^"]*)"$/ do |negate, element, scope|
@@ -466,6 +466,10 @@ end
 
 When /^I accept the alert$/ do
   page.driver.browser.switch_to.alert.accept
+end
+
+And /^I should see a dialog with text "([^"]*)"$/ do |text|
+  page.driver.browser.switch_to.alert.text.should include(text)
 end
 
 Then /^the radio button "(.*?)" should (not )?be "(.*?)"$/ do |field, negate, status|
