@@ -1,4 +1,4 @@
-@collections @req-17 @done @req-61 @req-63 @javascript
+@collections @javascript
 Feature: Collections
   In order to manage my Digital Objects
   As an authorized user
@@ -103,49 +103,6 @@ Scenario: Non-admin should not be given option to delete
   When I go to the "my collections" "show" page for "collec7"
   And I click the link to edit a collection
   Then I should not see a link to delete a collection
-
-Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
-#  Given a Digital Object with pid "dri:obj6" and title "Object 6"
-#  And a collection with pid "dri:coll6"
-#  And the collection "dri:coll6" already contains the Digital Object "dri:obj6"
-#  When I commit the Digital Object
-#  Then I should get a duplicate object warning
-#  And I should be given a choice of using the existing object or creating a new one
-
-@wip
-Scenario: Using the new design to create a collection
-  Given I am on the home page
-  Then I should see a link to collections
-  When I hover over the link to collections
-  Then I should see the collection sub-menu
-  When I follow the link to add a new collection
-  Then I should see the select collection type form
-  When I enter a collection title
-  And I select a metadta type
-  And I press the button to Continue
-  Then I should see the add your collection details form
-  When I upload a cover image
-  And I enter a description
-  And I enter a creation date
-  And I select the default copyright holder
-  And I press select the desired licence
-  And I press the button to download the Deposit Agreement
-  And I sign the Deposit Agreement
-  And I upload the signed Deposit Agreement
-  And I tick the box to agree to the terms and conditions of the Deposit Agreement
-  And I select the default language
-  And I add read access group public
-  And I select an Institutional Entity from the dropdown list
-  And I press the button to add the existing Institutional Entity
-  And I upload a logo for a new Institutional Entity
-  And I enter a name for the new Institutional Entity
-  And I enter a url for the new Institutional Entity
-  And I press the button to add the new institutional Entity
-  And I select read only access for public users
-  And I give public users search access
-  And I give public users export access
-  And I press the button to save draft
-  Then my collection should be created
 
 @wip @noexec
 Scenario: user requests access to readers group for restricted asset

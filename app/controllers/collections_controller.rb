@@ -83,6 +83,10 @@ class CollectionsController < BaseObjectsController
 
     supported_licences
 
+    if @object.published? && @object.doi.present?
+      flash[:alert] = "#{t('dri.flash.alert.doi_published_warning')}".html_safe
+    end
+
     respond_to do |format|
       format.html
     end
