@@ -163,6 +163,9 @@ module LinkTranslator
       when /^add a cover image$/
         "add_cover_image"
 
+      when /^view assets$/
+	"object_assets"
+
       when /^view asset details$/
         "asset_details"
 
