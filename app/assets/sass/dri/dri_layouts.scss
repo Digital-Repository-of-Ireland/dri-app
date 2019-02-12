@@ -223,20 +223,15 @@
         }
     }
 }
+
 @media only screen and (max-width: 766px) {
-    // #choose_vocab {
-    //     float:left;
-    //     display:block;
-    //     // push inputs to next line
-    //     margin-right: 766px;
-    // }
     .dri_wrapper {
         max-width: 760px;
         width: 100%;
         padding-left: 10px;
         padding-right: 10px;
         margin: 0 auto;
-        margin-top: 60px;
+        margin-top: 9em;
         $zen-column-count: 2;
         .dri_header_container {
             .dri_ident {
@@ -334,6 +329,13 @@
         }
     }
 }
+
+@media only screen and (max-width: 395px) {
+    .dri_wrapper {
+        margin-top: 12em;
+    }
+}
+
 .dri_report_container {
     margin-bottom: 25px;
 }
