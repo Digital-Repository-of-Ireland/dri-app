@@ -13,6 +13,11 @@ describe "Catalog API" do
         in: :query, type: :string, default: 'objects'
       parameter name: :pretty, description: 'indent json so it is human readable', 
         in: :query, type: :boolean, default: false, required: false
+      parameter name: :search_field, description: 'solr field for query q',
+        in: :query, type: :string, default: 'all_fields', required: false,
+        enum: ['all_fields', 'person', 'subject', 'title']
+      parameter name: :q, description: 'query for search_field',
+        in: :query, type: :string, required: false
 
       let(:per_page) { 9 }
       let(:mode)     { 'objects' }

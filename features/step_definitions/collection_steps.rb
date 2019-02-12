@@ -1,5 +1,19 @@
 include DRI::Duplicable
 
+module CollectionHelper
+  # @param [String] pid
+  # @return [FedoraObject] collection
+  def get_collection(pid = nil)
+    # override pid with collection id if pid is nil and collection.id exists
+    pid ||= @collection&.id
+    if pid == 'the saved pid'
+      pid = @collection_pid ? @collection_pid : @pid
+    end
+    ActiveFedora::Base.find(pid ,cast: true)
+  end
+end
+World(CollectionHelper)
+
 Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = @random_pid if (pid.nil? || pid == "random")
   @pid = pid
@@ -118,12 +132,7 @@ Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)
 end
 
 Given /^the collection(?: with pid "(.*?)")? is published$/ do |colid|
-  colid = @collection.id unless colid || @collection.nil?
-  if (colid == 'the saved pid')
-     colid = @collection_pid ? @collection_pid : @pid
-  end
-
-  collection = ActiveFedora::Base.find(colid, {:cast => true})
+  collection = get_collection(colid)
   collection.governed_items.each do |o|
     o.status = 'published'
     o.save
@@ -132,12 +141,14 @@ Given /^the collection(?: with pid "(.*?)")? is published$/ do |colid|
   collection.save
 end
 
-Given /^I have associated the institute "([^\"]+)" with the collection with pid "([^\"]+)"$/ do |institute_name,pid|
-  if (pid.eql?('the saved pid'))
-    pid = @collection_pid ? @collection_pid : @pid
-  end
-  collection = ActiveFedora::Base.find(pid ,{:cast => true})
+Given /^the collection(?: with pid "(.*?)")? has "([^\"]+)" = "([^\"]+)"$/ do |colid, field, value|
+  collection = get_collection(colid)
+  collection.send("#{field}=", value)
+  collection.save
+end
 
+Given /^I have associated the institute "([^\"]+)" with the collection with pid "([^\"]+)"$/ do |institute_name, pid|
+  collection = get_collection(pid)
   institute = Institute.new
   institute.name = institute_name
   institute.url = "http://www.dri.ie"
