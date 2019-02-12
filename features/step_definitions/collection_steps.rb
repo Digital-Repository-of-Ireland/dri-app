@@ -143,6 +143,8 @@ end
 
 Given /^the collection(?: with pid "(.*?)")? has "([^\"]+)" = "([^\"]+)"$/ do |colid, field, value|
   collection = get_collection(colid)
+  value = [value] if collection.attributes[field].is_a?(Array)
+
   collection.send("#{field}=", value)
   collection.save
 end
