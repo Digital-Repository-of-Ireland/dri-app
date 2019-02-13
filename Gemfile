@@ -106,7 +106,6 @@ group :development, :test do
   gem 'ci_reporter_rspec'
   gem 'solr_wrapper', '~> 0.18'
   gem 'fcrepo_wrapper', '0.6.0'
-  gem 'fakes3', git: 'ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git', branch: 'issue22'
   gem 'byebug', '~> 10.0'
   gem 'parallel_tests', '~> 2.23'
   gem 'puffing-billy', '~> 0.11.0'
