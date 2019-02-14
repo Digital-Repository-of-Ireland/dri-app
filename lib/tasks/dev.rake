@@ -46,3 +46,12 @@ namespace :jetty do
     @fedora ||= FcrepoWrapper.default_instance
   end
 end
+
+namespace :localstack do
+  desc 'Start LocalStack'
+  task start: :environment do
+    s3_dir = 'tmp/s3/'
+    FileUtils.mkdir_p(s3_dir) unless Dir.exists?(s3_dir)
+    system("SERVICES=s3:8081 DATA_DIR=#{s3_dir} localstack start")
+  end
+end

@@ -48,7 +48,7 @@ setting in the settings.yml file. Typically this will be set to "CHANGEME" and
 it should be updated as soon as possible after installation. To change the password log into the
 application as each of the default users, navigate to their profile page by
 clicking on the username at the top of the screen, and clicking on the 'Edit' button.
- 
+
 To run the unit tests:
 
   $ cd dri-app
@@ -67,7 +67,7 @@ To generate the app docs:
 
   $ bundle exec rake rdoc
 
-There is an exclude filter for api specs in .rspec 
+There is an exclude filter for api specs in .rspec
 since api:docs:generate runs those specs anyway.
 To run api specs:
 
@@ -244,17 +244,28 @@ to the hydra head's config/settings.yml or config/settings.local.yml file as fol
 Note that the keys should be pasted in as they appear in the output of the radosgw-admin command,
 but all '\' characters should be stripped.
 
-An alternative, if the Ceph VM is not working for you, is to use the FakeS3 gem. This is included
-in the development gem group, so should have been installed by bundler.
+An alternative, if the Ceph VM is not working for you, is to use LocalStack. This can be installed
+using pip:
 
-Create a directory for the server to use to store files, and then start the server with:
+ $ pip install --user localstack
 
- $  bundle exec fakes3 -r /path/to/fakes3_root -p 8081 -H localhost
+You may need to add the local bin dir to your path, if not previously done:
+
+ $ export PATH=/home/$USER/.local/bin:$PATH
+
+For tests, where you don't want files to persist, start the server using:
+
+ $ SERVICES=s3:8081 localstack start
+
+In development, if you would like the files to persist LocalStack restarts, create a directory for the server
+to use to store files, and then start the server with:
+
+ $ SERVICES=s3:8081 DATA_DIR=/path/to/localstack_files localstack start
 
 The settings should then be modified to the following:
 
   S3:
-    server: localhost:8081
+    server: 127.0.0.1:8081
     use_ssl: false
     access_key_id: anything
     secret_access_key: anything
