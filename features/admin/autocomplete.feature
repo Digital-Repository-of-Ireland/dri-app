@@ -63,6 +63,7 @@ Scenario: Submitting a collection with autocomplete results
   And I should see "20th Century" within ".modal-body .dri_object_metadata_readview"
   And I should see "Leinster House" within ".modal-body .dri_object_metadata_readview"
   # the 4 hidden URIs for each autocomplete result, saved in the metadata
+  And I wait for "2" seconds
   And I should see 4 visible elements ".modal-body .dri_object_metadata_readview dd a"
 
 Scenario: Disabling autocomplete
