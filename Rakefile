@@ -103,15 +103,6 @@ namespace :solr do
   end
 end
 
-namespace :fakes3 do
-  desc 'Start fakes3'
-  task start: :environment do
-    fakes3_dir = 'tmp/fakes3/'
-    FileUtils.mkdir_p(fakes3_dir) unless Dir.exists?(fakes3_dir)
-    system("fakes3 -r #{fakes3_dir} -p 8081 -H localhost")
-  end
-end
-
 desc 'similar to rswag:spec:swaggerize except it does not use --dry-run so output is included in swagger docs where applicable'
 namespace :api do
   namespace :docs do
