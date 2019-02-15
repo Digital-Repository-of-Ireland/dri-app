@@ -67,6 +67,8 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, show: false
     config.add_facet_field solr_name('placename_field', :facetable), show: true, limit: 20
     config.add_facet_field solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
+    config.add_facet_field solr_name('creator', :facetable), label: 'creators', show: false
+    config.add_facet_field solr_name('contributor', :facetable), label: 'contributors', show: false
     config.add_facet_field solr_name('person', :facetable), limit: 20
     config.add_facet_field solr_name('language', :facetable), helper_method: :label_language, limit: true
     config.add_facet_field solr_name('file_type_display', :facetable)
