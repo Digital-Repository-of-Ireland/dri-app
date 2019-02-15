@@ -3,7 +3,7 @@ class JobMailer < ActionMailer::Base
 
   def archive_ready_mail(file, user, object)
     Rails.logger.debug("[Job MAILER] sending mail to #{user}")
-    if !user.nil? && !user.empty?
+    if user.present?
       @user = user
       @file = file
       @object = object
@@ -17,8 +17,7 @@ class JobMailer < ActionMailer::Base
     unless email.nil?
       @file = file
       @object_id = object_id
-      mail(to: @user, subject: "Your download is ready")
+      mail(to: email, subject: "Your download is ready")
     end
   end
-
 end
