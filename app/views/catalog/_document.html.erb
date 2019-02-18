@@ -1,12 +1,12 @@
 <% if (params[:view] == 'grid') %>
   <% if collection?(document) %>
-    <%= render partial: 'shared/browse_view_grid_collection', locals: { document: document, document_counter: document_counter, object_count: document.published_objects } %>
+    <%= render partial: 'shared/browse_view_grid_collection', locals: { document: document, document_counter: document_counter, object_count: document.published_objects_count } %>
   <% else %>
     <%= render partial: 'shared/browse_view_grid_object', locals: { document: document, document_counter: document_counter } %>
   <% end %>
 <% elsif (params[:view] == 'list') %>
   <% if collection?(document) %>
-    <%= render partial: 'shared/browse_view_list_collection', locals: { document: document, document_counter: document_counter, object_count: document.published_objects } %>
+    <%= render partial: 'shared/browse_view_list_collection', locals: { document: document, document_counter: document_counter, object_count: document.published_objects_count } %>
   <% else %>
     <%= render partial: 'shared/browse_view_list_object', locals: { document: document, document_counter: document_counter } %>
   <% end %>

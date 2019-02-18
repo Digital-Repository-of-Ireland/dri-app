@@ -1,9 +1,11 @@
-ENV["RAILS_RELATIVE_URL_ROOT"] = "/"
+ENV['RAILS_RELATIVE_URL_ROOT'] = '/'
 DriApp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  config.mirador_url = 'https://repository.dri.ie/mirador'
+
   # the following might fail for high_voltage
-  config.content_path = ENV["RAILS_RELATIVE_URL_ROOT"]
+  config.content_path = ENV['RAILS_RELATIVE_URL_ROOT']
 
   # Code is not reloaded between requests
   config.cache_classes = true
@@ -12,7 +14,7 @@ DriApp::Application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
-  Rails.application.routes.default_url_options[:host] = "repository.dri.ie"
+  Rails.application.routes.default_url_options[:host] = 'repository.dri.ie'
 
   config.exceptions_app = self.routes
 
@@ -35,7 +37,7 @@ DriApp::Application.configure do
   # config.assets.manifest = YOUR_PATH
 
   # Specifies the header that your server uses for sending files
-  # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
+  # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
@@ -58,7 +60,7 @@ DriApp::Application.configure do
   # config.cache_store = :mem_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  # config.action_controller.asset_host = "http://assets.example.com"
+  # config.action_controller.asset_host = 'http://assets.example.com'
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
@@ -100,7 +102,7 @@ DriApp::Application.configure do
   # GA.tracker = 
 
   Devise.setup do |config|
-    config.omniauth_path_prefix = "/users/auth"
+    config.omniauth_path_prefix = '/users/auth'
   end
 
   config.eager_load = true

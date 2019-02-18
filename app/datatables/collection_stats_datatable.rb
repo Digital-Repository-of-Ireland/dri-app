@@ -21,7 +21,7 @@ private
 
       [
        link_to(collection['title_tesim'].first, my_collections_path(collection.id)),
-       collection.total_objects,
+       collection.total_objects_count,
        number_to_human_size(stats[:size]),
       ]
     end

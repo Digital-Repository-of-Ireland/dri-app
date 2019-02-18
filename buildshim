@@ -41,7 +41,7 @@ dri:
 plugins:
   ffmpeg_path: /usr/bin/ffmpeg
 S3:
-  server: http://localhost:8081
+  server: http://127.0.0.1:8081
   access_key_id: anykey
   secret_access_key: anykey
   bucket_prefix: buildbot
@@ -54,8 +54,8 @@ __EOF__
     bundle exec rake db:seed
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
-    bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &>/dev/null &
-    echo $! > fakes3.pid
+    SERVICES=s3:8081 /home/jenkins/.local/bin/localstack start &>/dev/null &
+    echo $! > localstack.pid
     ;;
 check)
     bundle exec rake ci_spec || exit 100
@@ -127,6 +127,6 @@ compile_extra)
 
     ;;
 uninstall_deps)
-    kill -TERM $(cat fakes3.pid) || true
+    kill -TERM $(cat localstack.pid) || true
     ;;
 esac

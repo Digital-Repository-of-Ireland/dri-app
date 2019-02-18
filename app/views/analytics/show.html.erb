@@ -10,11 +10,11 @@
 </div>
 
 <div class="dri_report_container">
-  <%= t('dri.datatables.analytics.columns.subcollections') %> <%= @document.published_subcollections %>
+  <%= t('dri.datatables.analytics.columns.subcollections') %> <%= @document.published_subcollections_count %>
 </div>
 
 <div class="dri_report_container">
-  <%= render partial: 'shared/show_collection_object_type_links', locals: { document: @document, objects_count: @document.published_objects } %>
+  <%= render partial: 'shared/show_collection_object_type_links', locals: { document: @document, objects_count: @document.published_objects_count } %>
 </div>
 
 <%= form_tag({ controller: "analytics", action: "show", id: @document.id }, method: "get") do %>

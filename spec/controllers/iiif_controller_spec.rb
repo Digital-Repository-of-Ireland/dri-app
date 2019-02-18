@@ -3,17 +3,16 @@ require 'rails_helper'
 describe IiifController do
   include Devise::Test::ControllerHelpers
 
-   before(:each) do
+  before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
-   end
+  end
 
-   after(:each) do
+  after(:each) do
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   describe 'GET show' do
-
     let(:collection) { FactoryBot.create(:collection) }
     let(:object) { FactoryBot.create(:image) }
 
@@ -54,22 +53,36 @@ describe IiifController do
       get :show, id: "#{object.id}:test", method: 'show'
       expect(response.status).to eq(401)
     end
-
   end
 
   describe 'GET manifest' do
-
     let(:collection) { FactoryBot.create(:collection) }
     let(:object) { FactoryBot.create(:image) }
     let(:login_user) { FactoryBot.create(:admin) }
+    before(:each) { sign_in login_user }
 
     it 'should return a valid manifest for an object' do
-      sign_in login_user
-
       get :manifest, id: object.id, format: :json
       expect { JSON.parse(response.body) }.not_to raise_error
     end
 
+    it 'should return a valid collection manifest for a collection' do
+      get :manifest, id: collection.id, format: :json
+      expect { JSON.parse(response.body) }.not_to raise_error
+    end
   end
 
+  describe 'Get sequence', type: :requeset do
+    let(:collection) { FactoryBot.create(:collection) }
+    let(:object) { FactoryBot.create(:image) }
+    let(:login_user) { FactoryBot.create(:admin) }
+    before(:each) do
+      sign_in login_user
+    end
+
+    it 'should return a valid manifest for a collection' do
+      get :sequence, id: collection.id, format: :json
+      expect { JSON.parse(response.body) }.not_to raise_error
+    end
+  end
 end

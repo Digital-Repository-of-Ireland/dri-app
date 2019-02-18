@@ -21,7 +21,8 @@ class IngestStatus < ActiveRecord::Base
   end
 
   def completed_status
-    job_status.group(:job).having('max(id)').collect(&:status).include?('failed') ? 'error' : 'success'
+    ids = job_status.select("max(id) as id").group(:job).collect(&:id)
+    job_status.where(id: ids).where(status: 'failed').count != 0 ? 'error' : 'success'
   end
 
   def job_names

@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe ReadersController do
   include Devise::Test::ControllerHelpers
-  
+
   before(:each) do
     @manager_user = FactoryBot.create(:collection_manager)
     @login_user = FactoryBot.create(:user)
-    
+
     @collection = DRI::Batch.with_standard :qdc
     @collection[:title] = ["A collection"]
     @collection[:description] = ["This is a Collection"]
@@ -19,11 +19,11 @@ describe ReadersController do
     @collection.manager_users_string = @manager_user.email
     @collection.save
 
-    @group = UserGroup::Group.new(name: @collection.id, 
+    @group = UserGroup::Group.new(name: @collection.id,
       description: "Default Reader group for collection #{@collection.id}")
     @group.reader_group = true
     @group.save
-    
+
     @collection.read_groups_string = "#{@collection.id}"
     @collection.save
 
@@ -76,7 +76,7 @@ describe ReadersController do
 
     before(:each) do
       sign_in @login_user
-     
+
       @subcollection = DRI::Batch.with_standard :qdc
       @subcollection[:title] = ["A collection"]
       @subcollection[:description] = ["This is a Collection"]
@@ -88,7 +88,7 @@ describe ReadersController do
       @subcollection[:published_date] = ["1916-04-01"]
       @subcollection.manager_users_string = @manager_user.email
       @subcollection.save
-            
+
       @subobject = DRI::Batch.with_standard :qdc
       @subobject[:title] = ["An Audio Title in the Sub Collection"]
       @subobject[:rights] = ["This is a statement about the rights associated with this object"]
@@ -112,7 +112,7 @@ describe ReadersController do
 
     after(:each) do
       @subcollection.delete
-    end  
+    end
 
     it "creates a new pending membership in the governing read group" do
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
@@ -129,7 +129,7 @@ describe ReadersController do
     end
 
     it "creates a new pending membership in the subcollection read group" do
-      subgroup = UserGroup::Group.new(name: @subcollection.id, 
+      subgroup = UserGroup::Group.new(name: @subcollection.id,
       description: "Default Reader group for collection #{@subcollection.id}")
       subgroup.reader_group = true
       subgroup.save
@@ -139,12 +139,11 @@ describe ReadersController do
 
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
 
-      group = UserGroup::Group.find_by(name: @subcollection.id)
-      expect(@login_user.member?(group.id)).to be_falsey
-      expect(@login_user.pending_member?(group.id)).not_to be true
+      expect(@login_user.member?(subgroup.id)).to be_falsey
+      expect(@login_user.pending_member?(subgroup.id)).not_to be true
 
       expect {
-        post :create, { :id => @subcollection.id }
+        post :create, { id: @subcollection.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
       @login_user.reload

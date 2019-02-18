@@ -112,16 +112,6 @@ GIT
       rails
       rb-gravatar
 
-GIT
-  remote: ssh://git@tracker.dri.ie:2200/drirepo/fake-s3.git
-  revision: 6fecd615b25df94cd50d8a733d0e54bdfdd5a43c
-  branch: issue22
-  specs:
-    fakes3 (1.2.1)
-      builder
-      thor
-      xml-simple
-
 GEM
   remote: http://rubygems.org/
   remote: https://rails-assets.org/
@@ -1021,7 +1011,6 @@ DEPENDENCIES
   dri_data_models!
   execjs
   factory_bot_rails
-  fakes3!
   fcrepo_wrapper (= 0.6.0)
   feedjira
   ffaker

@@ -39,7 +39,7 @@ Scenario: Browse for objects
   When I click "#objects"
   Then I should see 1 visible elements ".dri_content_block"
   And I should see 0 visible element ".dri_content_block_collection"
-  And all ".dri_content_block_collection" within "#dri_result_container_id" should link to an object
+  And all ".dri_content_block" within "#dri_result_container_id" should link to an object
 
 Scenario: Browse for subcollections
   When I click "#sub_collections"

@@ -80,10 +80,10 @@ Given /^I have created an institute "(.+)"$/ do |institute|
   }
 end
 
-When /^I add the asset "(.*)" to "(.*?)"$/ do |asset, pid|
+When /^I add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
   steps %{
-    When I go to the "object" "show" page for "#{pid}"
-    And I attach the asset file "#{asset}"
+    Given I am on the my collections page for id #{pid}
+    When I attach the asset file "#{asset}"
     And I press the button to "upload a file"
     Then I should see a success message for file upload
   }
@@ -229,14 +229,43 @@ When /^I select the "(objects|collections|sub collections)" tab$/ do |tab|
 end
 
 When /^I hover over a visible "([^\"]+)"$/ do |selector|
-  find(selector, visible: true).hover  
+  find(selector, visible: true).hover
 end
 
 When /^I click "([^\"]+)"$/ do |selector|
   find(selector, visible: true).click
 end
 
-Then /^I should( not)? see a popover$/ do |negate|  
+# # resque / redis jobs update solr after characterization of asset
+# # need to stub response since services aren't running in test
+When /^I fake the update to solr to add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
+  steps %{
+    When contains_images? always returns true
+    And published_images returns generic files from "#{pid}"
+  }
+end
+
+When /^contains_images\? always returns true$/ do
+  allow_any_instance_of(SolrDocument).to receive(:contains_images?) { true }
+end
+
+When /^published_images returns generic files from "([^\"]+)"$/ do |pid|
+  obj = ActiveFedora::Base.find(pid)
+  generic_files = if obj.collection?
+                    obj.governed_items.map(&:generic_files).flatten
+                  else
+                    obj.generic_files
+                  end
+  # TODO: only stub for given pid, possibly use block form to check pid?
+  # e.g. any_inst_of(...) {|o| o.id == pid}
+  allow_any_instance_of(SolrDocument).to receive(:published_images).and_return(
+    generic_files.map do |generic_file|
+      SolrDocument.new(generic_file.to_solr)
+    end
+  )
+end
+
+Then /^I should( not)? see a popover$/ do |negate|
   expectation = negate ? :should_not : :should
   page.send(expectation, have_css('div.popover', visible: true))
 end
@@ -405,7 +434,7 @@ Then /^the( hidden)? "([^"]*)" field(?: within "([^"]*)")? should( not)? contain
     field = if visibility
               find("##{escape_id(field_id)}", visible: :hidden)
               # find_field(field_id, visible: :hidden) # throws exception
-            else 
+            else
               find_field(field_id)
             end
     field_value = (field.tag_name == 'textarea') ? field.text : field.value
@@ -438,7 +467,7 @@ end
 # .vocab-dropdown always exists, but is hidden. using see element will always pass
 Then /^I should (not )?see (\d+) visible element(s)? "([^"]*)"$/ do |negate, num, _, selector|
   expectation = negate ? :to_not : :to
-  expect(find_all(selector, visible: true).count).send(expectation, eq(num)) 
+  expect(find_all(selector, visible: true).count).send(expectation, eq(num))
 end
 
 Then /^I should (not )?see a hidden "([^"]*)" within "([^"]*)"$/ do |negate, element, scope|
@@ -464,17 +493,29 @@ When /^I accept the alert$/ do
   page.driver.browser.switch_to.alert.accept
 end
 
+And /^I should see a dialog with text "([^"]*)"$/ do |text|
+  page.driver.browser.switch_to.alert.text.should include(text)
+end
+
 Then /^the radio button "(.*?)" should (not )?be "(.*?)"$/ do |field, negate, status|
   negate ? (find_by_id(field).should_not be_checked) : (find_by_id(field).should be_checked)
 end
 
 Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |id, negate, value|
   expectation = negate ? :should_not : :should
-  page.send(expectation,  have_xpath("//select[@id = '#{select_box_to_id(id)}']/option[@value = '#{value}']"))
+  page.send(expectation, have_xpath("//select[@id = '#{select_box_to_id(id)}']/option[@value = '#{value}']"))
 end
 
-Then /^I should see the image "(.*?)"$/ do |src|
-  page.should have_xpath("//img[contains(@alt, \"#{src}\")]")
+Then /^I should( not)? see the image "([^\"]+)"$/ do |negate, src|
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_xpath("//img[contains(@alt, \"#{src}\")]"))
+end
+
+Then /^the iiif image should have a link that matches "([^\"]+)"$/ do |link|
+  # select anchor containing iiif logo
+  iiif_logo_link_xpath = "//a[.//img[contains(@alt, 'Iiif logo')]]"
+  image_link = find(:xpath, iiif_logo_link_xpath)[:href]
+  expect(image_link).to match(link)
 end
 
 Then /^the element with id "([^"]*)" should be focused$/ do |id|
@@ -492,12 +533,15 @@ Then /^all "([^\"]+)" within "([^\"]+)" should link to (.+)$/ do |selector, scop
                     raise ArgumentError, "unrecognized type: #{type}"
                   end
 
+  expect(page).to have_selector(scope)
   with_scope(scope) do
-    page.find_all(selector).each do |obj|
+    objects = page.find_all(selector)
+    expect(objects.count).to be >= 1
+    objects.each do |obj|
       catalog_link = obj.find_link(href: /\/catalog\//)[:href]
       object_pid = catalog_link.split("/catalog/")[-1]
-      object = ActiveFedora::Base.find(object_pid, cast: true)
-      expect(object.send(expect_method)).to be true
+      solr_doc = SolrDocument.find(object_pid)
+      expect(solr_doc.send(expect_method)).to be true
     end
   end
 end

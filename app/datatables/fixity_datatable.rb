@@ -24,7 +24,7 @@ private
        fixity[:time],
        fixity[:verified],
        fixity_check_path(collection.id),
-       collection.total_objects,
+       collection.total_objects_count,
        total_checked(collection.id, fixity[:time])
       ]
     end

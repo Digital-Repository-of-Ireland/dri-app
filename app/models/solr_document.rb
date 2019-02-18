@@ -163,10 +163,9 @@ class SolrDocument
     self['has_model_ssim'].include?("DRI::GenericFile")
   end
 
+  # @return [Boolean]
   def object?
-    # if solr_object doesn't have is_object, but also isn't a collection
-    # treat it as an object
-    truthy_index_field?('is_object') || (!collection? && batch?)
+    !collection? && batch?
   end
 
   def collection?
