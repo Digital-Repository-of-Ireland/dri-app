@@ -16,6 +16,9 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
   # Catch false positives. This collection shouldn't be returned in search
   And a collection with pid "false_positive"
   And the collection with pid "false_positive" has "<attribute>" = "asdf"
+  # Issue with person field!
+  # Searching by person returns results for all fields
+  And the collection with pid "false_positive" has "language" = "<query>"
   And the collection with pid "false_positive" is published
 
   When I select "<search_field>" from "#search_field"
