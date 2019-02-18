@@ -134,6 +134,14 @@
          subject_unstem_search^1250
          subject_tesim^1000
        </str>
+       <str name="person_qf">
+         person_unstem_search^125
+         person_tesim^50
+       </str>
+       <str name="person_pf">
+         person_unstem_search^1250
+         person_tesim^1000
+       </str>
        <str name="fl">
          *,
          score

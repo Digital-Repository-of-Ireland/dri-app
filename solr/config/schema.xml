@@ -185,6 +185,7 @@
    <copyField source="title_tesim" dest="title_unstem_search"/>
    <copyField source="author_tesim" dest="author_unstem_search"/>
    <copyField source="subject_tesim" dest="subject_unstem_search"/>
+   <copyField source="person_tesim" dest="person_unstem_search"/>
    
    <!-- <copyField source="*_t" dest="text" maxChars="3000"/> -->
    <copyField source="*_ssim" dest="text"/>
