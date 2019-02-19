@@ -27,11 +27,11 @@ Scenario Outline: Successful search for "<query>" in all_fields
   And I should see 1 visible element ".dri_content_block_collection"
 
   Examples:
-    | query               | attribute |
-    | TestCD              | title     |
-    | Fake user           | creator   |
-    | Other user          | depositor |
-    | Fake Subject        | subject   |
+    | query               | attribute   |
+    | TestCD              | title       |
+    | Fake user           | creator     |
+    | Other user          | contributor |
+    | Fake Subject        | subject     |
 
 
 Scenario Outline: Successful search for "<query>" in "<search_field>"
@@ -57,8 +57,9 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
   And I should see 1 visible element ".dri_content_block_collection"
 
   Examples:
-    | search_field | query               | attribute |
-    | Title        | Test College Dublin | title     |
-    | Person       | Fake user           | creator   |
-    | Person       | Other user          | depositor |
-    | Subject      | Fake Subject        | subject   |
+    | search_field | query               | attribute   |
+    | Title        | Test College Dublin | title       |
+    | Person       | Fake user           | creator     |
+    | Person       | Other user          | contributor |
+    | Person       | Third Person        | publisher   |
+    | Subject      | Fake Subject        | subject     |

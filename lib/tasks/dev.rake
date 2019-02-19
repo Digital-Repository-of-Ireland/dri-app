@@ -34,6 +34,30 @@ namespace :jetty do
     end
   end
 
+  # https://github.com/samvera-deprecated/jettywrapper/wiki/Using-jettywrapper#setting-up-jetty-for-your-project
+  desc 'copies config files from solr/conf to the active solr dir'
+  task config_update: :environment do
+    solr_config_files.each do |cf|
+      cp(
+        "#{cf}",
+        "#{solr.instance_dir}/server/solr/#{Rails.env}/conf/",
+        verbose: true
+      )
+    end
+  end
+
+  desc 'shows differences between solr/conf and the active solr dir. use update_config to copy solr/conf xml files to the active solr dir'
+  task config_diff: :environment do
+    solr_config_files.each do |cf|
+      rf = "#{solr.instance_dir}/server/solr/#{Rails.env}/conf/#{File.basename(cf)}"
+      system("diff #{cf} #{rf}")
+    end
+  end
+
+  def solr_config_files
+    FileList[File.join(solr_config, '*.xml')]
+  end
+
   def solr_config
     File.join(Rails.root, 'solr', 'config')
   end
