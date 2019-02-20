@@ -62,6 +62,8 @@ class CatalogController < ApplicationController
     config.add_facet_field 'pdate_range_start_isi', show: false
     config.add_facet_field 'date_range_start_isi', show: false
 
+
+    config.add_facet_field solr_name('licence', :facetable), label: 'Licence', limit: 20
     config.add_facet_field solr_name('subject', :facetable), limit: 20
     config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: true
     config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, show: false
@@ -144,7 +146,7 @@ class CatalogController < ApplicationController
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields.
 
-    %w[title creator contributor subject person].each do |field_name|
+    %w[title creator contributor description subject person].each do |field_name|
       config.add_search_field(field_name) do |field|
         # solr_parameters hash are sent to Solr as ordinary url query params.
         # field.solr_parameters = { :'spellcheck.dictionary' => 'title' }

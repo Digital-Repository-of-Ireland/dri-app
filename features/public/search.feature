@@ -62,4 +62,5 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
     | Person       | Third Person        | publisher   |
     | Creator      | Fourth Person       | creator     |
     | Contributor  | yet another Person  | contributor |
+    | Description  | This is a test obj  | description |
     | Subject      | Fake Subject        | subject     |
