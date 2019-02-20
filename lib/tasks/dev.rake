@@ -21,14 +21,17 @@ namespace :jetty do
     Process.kill("TERM", pid) unless pid == 0
   end
 
-  task config: :environment do
-    Rake::Task['jetty:start'].invoke unless solr.started? 
+  task restart: :environment do
+    Rake::Task['jetty:stop'].invoke
+    Rake::Task['jetty:start'].invoke
+  end
 
-    client = SolrWrapper::Client.new(solr.url)
+  task config: :environment do
+    Rake::Task['jetty:start'].invoke unless solr.started?
 
     begin
-      solr.create(persist: true, name: 'development', dir: solr_config) unless client.exists?('development')
-      solr.create(persist: true, name: 'test', dir: solr_config) unless client.exists?('test')
+      update_core('development')
+      update_core('test')
     rescue Exception => e
       puts e
     end
@@ -52,6 +55,22 @@ namespace :jetty do
       rf = "#{solr.instance_dir}/server/solr/#{Rails.env}/conf/#{File.basename(cf)}"
       system("diff #{cf} #{rf}")
     end
+  end
+
+  # @param [String] env_name
+  # for env, create new core with latest config if core doesn't exist
+  # if core does exist, copy config
+  def update_core(env_name)
+    original_env = Rails.env
+    Rails.env = env_name
+    client = SolrWrapper::Client.new(solr.url)
+    if client.exists?(env_name)
+      Rake::Task['jetty:config_update'].invoke
+    else
+      solr.create(persist: true, name: env_name, dir: solr_config)
+    end
+  ensure
+    Rails.env = original_env
   end
 
   def solr_config_files
