@@ -827,11 +827,15 @@ ol.breadcrumb {
 }
 /*-------------- Search --------------*/
 
-.dri_search_term_text_input, #search_field {
+.dri_search_term_text_input{
     margin: 24px 0 0 0;
-    padding-top: 4px;
-    padding-bottom: 4px;
 }
+
+#search_field {
+    margin: 54px 0 0 0;
+    padding: 4px 0 4px 0;
+}
+
 .dri_search_term_text_input{
     width: 226px;
     padding: 4px 0 4px 30px;
