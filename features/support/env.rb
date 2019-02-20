@@ -23,14 +23,18 @@ require 'rspec'
 require 'billy/capybara/cucumber'
 
 Capybara.register_driver :selenium do |app|
-        options = Selenium::WebDriver::Chrome::Options.new(
-                args: [
-                  "headless",
-                  "no-sandbox",
-                  "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}"
-                ]
-        )
-        Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  # run chrome headless by default. only turn off if headless == false
+  # e.g. bundle exec cucumber headless=false
+  headless = ENV['headless'] == 'false' ? [] : ['headless']
+
+  options = Selenium::WebDriver::Chrome::Options.new(
+              args: [
+                *headless,
+                "no-sandbox",
+                "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}"
+              ]
+            )
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 Capybara.javascript_driver = :selenium
 Capybara.ignore_hidden_elements = false
