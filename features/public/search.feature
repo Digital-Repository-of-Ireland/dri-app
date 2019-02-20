@@ -55,12 +55,13 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
   And I should see 1 visible element ".dri_content_block_collection"
 
   Examples:
-    | search_field | query               | attribute   |
-    | Title        | Test College Dublin | title       |
-    | Person       | Fake user           | creator     |
-    | Person       | Other user          | contributor |
-    | Person       | Third Person        | publisher   |
-    | Creator      | Fourth Person       | creator     |
-    | Contributor  | yet another Person  | contributor |
-    | Description  | This is a test obj  | description |
-    | Subject      | Fake Subject        | subject     |
+    | search_field | query                | attribute   |
+    | Title        | Test College Dublin  | title       |
+    | Person       | Fake user            | creator     |
+    | Person       | Other user           | contributor |
+    | Person       | Third Person         | publisher   |
+    | Creator      | Fourth Person        | creator     |
+    | Contributor  | yet another Person   | contributor |
+    | Publisher    | rich uncle pennybags | publisher   |
+    | Description  | This is a test obj   | description |
+    | Subject      | Fake Subject         | subject     |

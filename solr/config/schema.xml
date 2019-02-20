@@ -189,6 +189,7 @@
    <copyField source="creator_tesim" dest="creator_unstem_search"/>
    <copyField source="contributor_tesim" dest="contributor_unstem_search"/>
    <copyField source="description_tesim" dest="description_unstem_search"/>
+   <copyField source="publisher_tesim" dest="publisher_unstem_search"/>
    
    <!-- <copyField source="*_t" dest="text" maxChars="3000"/> -->
    <copyField source="*_ssim" dest="text"/>
@@ -204,6 +205,7 @@
    <copyField source="creator_tesim" dest="spell"/>
    <copyField source="contributor_tesim" dest="spell"/>
    <copyField source="description_tesim" dest="spell"/>
+   <copyField source="publisher_tesim" dest="spell"/>
 
    <!-- subject spell check; should match fields for subject request handler -->
    <copyField source="subject_tesim" dest="spell"/>

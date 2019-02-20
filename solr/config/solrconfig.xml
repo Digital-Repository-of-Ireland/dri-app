@@ -166,6 +166,14 @@
          description_unstem_search^1250
          description_tesim^1000
        </str>
+       <str name="publisher_qf">
+         publisher_unstem_search^125
+         publisher_tesim^50
+       </str>
+       <str name="publisher_pf">
+         publisher_unstem_search^1250
+         publisher_tesim^1000
+       </str>
        <str name="fl">
          *,
          score
