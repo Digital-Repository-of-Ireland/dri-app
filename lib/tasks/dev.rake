@@ -40,37 +40,43 @@ namespace :jetty do
   # https://github.com/samvera-deprecated/jettywrapper/wiki/Using-jettywrapper#setting-up-jetty-for-your-project
   desc 'copies config files from solr/conf to the active solr dir'
   task config_update: :environment do
-    solr_config_files.each do |cf|
-      cp(
-        "#{cf}",
-        "#{solr.instance_dir}/server/solr/#{Rails.env}/conf/",
-        verbose: true
-      )
-    end
+    config_update(Rails.env)
   end
 
   desc 'shows differences between solr/conf and the active solr dir. use update_config to copy solr/conf xml files to the active solr dir'
   task config_diff: :environment do
-    solr_config_files.each do |cf|
-      rf = "#{solr.instance_dir}/server/solr/#{Rails.env}/conf/#{File.basename(cf)}"
-      system("diff #{cf} #{rf}")
-    end
+    config_diff(Rails.env)
   end
 
   # @param [String] env_name
   # for env, create new core with latest config if core doesn't exist
   # if core does exist, copy config
-  def update_core(env_name)
-    original_env = Rails.env
-    Rails.env = env_name
+  def update_core(env_name='development')
     client = SolrWrapper::Client.new(solr.url)
     if client.exists?(env_name)
-      Rake::Task['jetty:config_update'].invoke
+      config_update(env_name)
     else
       solr.create(persist: true, name: env_name, dir: solr_config)
     end
-  ensure
-    Rails.env = original_env
+  end
+
+  # @param [String] env_name
+  def config_diff(env_name='development')
+    solr_config_files.each do |cf|
+      rf = "#{solr.instance_dir}/server/solr/#{env_name}/conf/#{File.basename(cf)}"
+      system("diff #{cf} #{rf}")
+    end
+  end
+
+  # @param [String] env_name
+  def config_update(env_name='development')
+    solr_config_files.each do |cf|
+      cp(
+        "#{cf}",
+        "#{solr.instance_dir}/server/solr/#{env_name}/conf/",
+        verbose: true
+      )
+    end
   end
 
   def solr_config_files
