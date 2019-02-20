@@ -150,6 +150,14 @@
          creator_unstem_search^1250
          creator_tesim^1000
        </str>
+       <str name="contributor_qf">
+         contributor_unstem_search^125
+         contributor_tesim^50
+       </str>
+       <str name="contributor_pf">
+         contributor_unstem_search^1250
+         contributor_tesim^1000
+       </str>
        <str name="fl">
          *,
          score

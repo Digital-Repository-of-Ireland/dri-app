@@ -144,7 +144,7 @@ class CatalogController < ApplicationController
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields.
 
-    %w[title creator subject person].each do |field_name|
+    %w[title creator contributor subject person].each do |field_name|
       config.add_search_field(field_name) do |field|
         # solr_parameters hash are sent to Solr as ordinary url query params.
         # field.solr_parameters = { :'spellcheck.dictionary' => 'title' }

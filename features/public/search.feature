@@ -41,11 +41,9 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
 
   # Catch false positives. This collection shouldn't be returned in search
   And a collection with pid "false_positive"
-  # false match for query
+  # false match for query (q param)
   And the collection with pid "false_positive" has "<attribute>" = "asdf"
-  # Issue with person field!
-  # Searching by person returns results for all fields
-  # false match for search_field
+  # false match for search_field (search_field param)
   And the collection with pid "false_positive" has "language" = "<query>"
   And the collection with pid "false_positive" is published
 
@@ -63,4 +61,5 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
     | Person       | Other user          | contributor |
     | Person       | Third Person        | publisher   |
     | Creator      | Fourth Person       | creator     |
+    | Contributor  | yet another Person  | contributor |
     | Subject      | Fake Subject        | subject     |
