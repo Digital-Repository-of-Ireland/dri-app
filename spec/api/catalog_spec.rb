@@ -4,6 +4,7 @@ describe "Catalog API" do
   path "/catalog" do
     get "retrieves objects from the catalog" do
       produces 'application/json', 'application/xml', 'application/ttl'
+      # add subcollections?
       include_context 'rswag_user_with_collections', status: 'published'
       include_context 'doi_config_exists'
 
@@ -15,7 +16,8 @@ describe "Catalog API" do
         in: :query, type: :boolean, default: false, required: false
       parameter name: :search_field, description: 'solr field for query q',
         in: :query, type: :string, default: 'all_fields', required: false,
-        enum: ['all_fields', 'person', 'subject', 'title']
+        # keep docs in sync with dev, show all possible valid values for search_field
+        enum: CatalogController.blacklight_config.search_fields.keys
       parameter name: :q, description: 'query for search_field',
         in: :query, type: :string, required: false
 
@@ -26,6 +28,30 @@ describe "Catalog API" do
         include_context 'sign_out_before_request' do
           include_context 'rswag_include_json_spec_output' do
             it_behaves_like 'a pretty json response'
+          end
+          context 'search_field' do
+            # show one example of a request with search_field
+            include_context 'rswag_include_json_spec_output', 'search_field=title' do
+              let(:q) { 'fancy title' }
+              let(:search_field) { 'title' }
+              before do
+                # get first object in collection (ignore subcollections)
+                objects = @collections.first.governed_items.reject(&:collection?)
+                objects.first.title = [q]
+                objects.first.save
+              end
+              run_test! do
+                json_body = JSON.parse(response.body)
+                first_object = json_body['response']['docs'].first['object_profile_ssm'].first
+                json_object = JSON.parse(first_object)
+                expect(json_object['title']).to eq([q])
+              end
+            end
+
+            # # no output for these specs, just ensure no duplicates are found
+            # CatalogController.blacklight_config.search_fields.keys.each do |field|
+
+            # end
           end
         end
       end
