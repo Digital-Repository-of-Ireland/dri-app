@@ -83,6 +83,47 @@ shared_context 'sign_out_before_request' do
   end
 end
 
+# this context depends on @collection existing
+# and the first collection having more than one governed object
+# i.e. should be within rswag_user_with_collections
+# does not work with aggregate fields e.g. person
+# adjacent field could be creator, which is part of person
+# @param [String] field
+# @param [Array] all_fields
+shared_context 'catch search false positives' do |field, all_fields|
+  before do
+    # mode is objects, so ignore subcollections
+    @objects = @collections.first.governed_items.reject(&:collection?)
+    raise ArgumentError, 'less than 2 objects in collection' unless @objects.count >= 2
+
+    @objects[0].send("#{field}=", [q])
+    @objects[0].save
+
+    # treat fields like circular list, pick adjacent field so build is reproducible
+    idx = all_fields.find_index(field)
+    @adjacent_field = all_fields[(idx + 1) % all_fields.length]
+
+    raise ArgumentError, 'selected same field' unless @adjacent_field != field
+
+    @objects[1].send("#{@adjacent_field}=", [q])
+    @objects[1].save
+    # @collections.map(&:governed_items).flatten.map(&:title)
+    # @collections.map(&:governed_items).flatten.map(&:"#{field}")
+  end
+
+  after do
+    # reset the values
+    # TODO: is it worth regenerating collections for each spec?
+    # would avoid this edge case requiring reset
+    # @collections.map(&:governed_items).flatten.reject(&:collection?).each do |gov_obj|
+    @objects.each do |gov_obj|
+      gov_obj.send("#{field}=", %w[after_search_test])
+      gov_obj.send("#{@adjacent_field}=", %w[after_search_test])
+      gov_obj.save
+    end
+  end
+end
+
 # TODO move methods in helper module
 # Need to ensure it gets loaded before shared_examples / contexts though
 

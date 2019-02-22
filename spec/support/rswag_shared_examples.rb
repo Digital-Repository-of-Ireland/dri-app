@@ -75,3 +75,17 @@ shared_examples 'a pretty json response' do
     expect(JSON.pretty_generate(JSON.parse(response.body))).to eq(response.body)
   end
 end
+
+shared_examples 'a search response with no false positives' do |field|
+  let(:q)            { "fancy #{field}" }
+  let(:search_field) { field }
+  run_test! do
+    json_body = JSON.parse(response.body)
+    first_object = json_body['response']['docs'].first['object_profile_ssm'].first
+    json_object = JSON.parse(first_object)
+
+    # no false positives
+    expect(json_body['response']['docs'].count).to eq(1)
+    expect(json_object[field]).to eq([q])
+  end
+end

@@ -29,48 +29,20 @@ describe "Catalog API" do
           include_context 'rswag_include_json_spec_output' do
             it_behaves_like 'a pretty json response'
           end
-          context 'search_field' do
-            # show one example of a request with search_field
-            include_context 'rswag_include_json_spec_output', 'search_field=title' do
-              let(:q) { 'fancy title' }
-              let(:search_field) { 'title' }
-              before do
-                # mode is objects, so ignore subcollections
-                objects = @collections.first.governed_items.reject(&:collection?)
-                objects.first.title = [q]
-                objects.first.save
-              end
-              run_test! do
-                json_body = JSON.parse(response.body)
-                first_object = json_body['response']['docs'].first['object_profile_ssm'].first
-                json_object = JSON.parse(first_object)
-                expect(json_object['title']).to eq([q])
-              end
-            end
+        end
+        # no output for these specs, just ensure no duplicates are found
+        context 'search_field no output' do
+          # for searches with each remaining search_field
+          fields_hash = CatalogController.blacklight_config.search_fields
+          fields_to_test = fields_hash.keys.reject do |field|
+            # exclude aggregate fields
+             %w[all_fields person].include?(field)
+          end.sort
 
-            context 'search_field no output' do
-              # wrap in context?
-              fields_to_test = CatalogController.blacklight_config.search_fields.keys.reject do |field|
-                %w[all_fields title person].include?(field)
-              end
-              # no output for these specs, just ensure no duplicates are found
-              fields_to_test.each do |field|
-                context "#{field}" do
-                  let(:q) { "fancy #{field}" }
-                  let(:search_field) { field }
-                  before do
-                    # mode is objects, so ignore subcollections
-                    objects = @collections.first.governed_items.reject(&:collection?)
-                    objects.first.send("#{field}=", [q])
-                    objects.first.save
-                  end
-                  run_test! do
-                    json_body = JSON.parse(response.body)
-                    first_object = json_body['response']['docs'].first['object_profile_ssm'].first
-                    json_object = JSON.parse(first_object)
-                    expect(json_object[field]).to eq([q])
-                  end
-                end
+          fields_to_test.each do |field|
+            context "#{field} search" do
+              include_context 'catch search false positives', field, fields_to_test do
+                it_behaves_like 'a search response with no false positives', field
               end
             end
           end
