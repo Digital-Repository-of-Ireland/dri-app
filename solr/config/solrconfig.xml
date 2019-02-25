@@ -142,9 +142,17 @@
          person_unstem_search^1250
          person_tesim^1000
        </str>
+       <str name="place_qf">
+         place_unstem_search^125
+         placename_field_tesim^50
+       </str>
+       <str name="place_pf">
+         place_unstem_search^1250
+         placename_field_tesim^1000
+       </str>
        <str name="creator_qf">
-         creator_unstem_search^125
-         creator_tesim^50
+         place_unstem_search^125
+         place_tesim^50
        </str>
        <str name="creator_pf">
          creator_unstem_search^1250

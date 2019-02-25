@@ -190,6 +190,7 @@
    <copyField source="contributor_tesim" dest="contributor_unstem_search"/>
    <copyField source="description_tesim" dest="description_unstem_search"/>
    <copyField source="publisher_tesim" dest="publisher_unstem_search"/>
+   <copyField source="placename_field_tesim" dest="place_unstem_search"/>
    
    <!-- <copyField source="*_t" dest="text" maxChars="3000"/> -->
    <copyField source="*_ssim" dest="text"/>

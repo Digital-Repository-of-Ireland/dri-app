@@ -150,7 +150,7 @@ class CatalogController < ApplicationController
     %w[
       title subject description 
       creator contributor publisher 
-      person
+      person place
     ].each do |field_name|
       config.add_search_field(field_name) do |field|
         field.solr_local_parameters = {
@@ -158,13 +158,6 @@ class CatalogController < ApplicationController
           pf: "${#{field_name}_pf}"
         }
       end
-    end
-
-    # fields who's name doesn't match solr name
-    config.add_search_field('place') do |field|
-      field.solr_local_parameters = {
-        qf: "${placename_field}"
-      }
     end
 
     # "sort results by" select (pulldown)

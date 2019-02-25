@@ -57,14 +57,16 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
 
   # No nested scenario outlines, have to a home (catalog) and my collections example for each field 
   Examples:
-    | search_field | query                | attribute   | page           |
-    | Title        | Test College Dublin  | title       | home           |
-    | Subject      | Fake Subject         | subject     | home           |
-    | Person       | Fake user            | creator     | home           |
-    | Person       | Other user           | contributor | home           |
-    | Person       | Third Person         | publisher   | home           |
-    | Title        | Test College Dublin  | title       | my collections |
-    | Subject      | Fake Subject         | subject     | my collections |
-    | Person       | Fake user            | creator     | my collections |
-    | Person       | Other user           | contributor | my collections |
-    | Person       | Third Person         | publisher   | my collections |
+    | search_field | query                | attribute               | page           |
+    | Title        | Test College Dublin  | title                   | home           |
+    | Subject      | Fake Subject         | subject                 | home           |
+    | Person       | Fake user            | creator                 | home           |
+    | Person       | Other user           | contributor             | home           |
+    | Person       | Third Person         | publisher               | home           |
+    | Place        | Dublin               | geographical_coverage   | home           |
+    | Title        | Test College Dublin  | title                   | my collections |
+    | Subject      | Fake Subject         | subject                 | my collections |
+    | Person       | Fake user            | creator                 | my collections |
+    | Person       | Other user           | contributor             | my collections |
+    | Person       | Third Person         | publisher               | my collections |
+    | Place        | Dublin               | geographical_coverage   | my collections |

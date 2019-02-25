@@ -2,7 +2,7 @@
   <%= form_tag my_collections_index_path, :method => :get, :id => 'my_collections_searchform', :class => 'dri_workspace_search_input_form' do %>
     <% 
       display_fields = search_fields.select do |arr| 
-        %w[all_fields title subject person].include?(arr[1])
+        %w[all_fields title subject person place].include?(arr[1])
       end
     %>
     <%= select_tag(:search_field,

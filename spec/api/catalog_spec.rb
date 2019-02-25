@@ -30,6 +30,7 @@ describe "Catalog API" do
             it_behaves_like 'a pretty json response'
           end
         end
+        # TODO copy this spec in my_collections_spec? use higher level shared_example / context?
         # no output for these specs, just ensure no duplicates are found
         context 'search_field no output' do
           # for searches with each remaining search_field

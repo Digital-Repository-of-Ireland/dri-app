@@ -175,7 +175,7 @@ class MyCollectionsController < ApplicationController
     %w[
       title subject description 
       creator contributor publisher 
-      person
+      person place
     ].each do |field_name|
       config.add_search_field(field_name) do |field|
         field.solr_local_parameters = {
@@ -184,14 +184,7 @@ class MyCollectionsController < ApplicationController
         }
       end
     end
-
-    # fields who's name doesn't match solr name
-    config.add_search_field('place') do |field|
-      field.solr_local_parameters = {
-        qf: "${placename_field}"
-      }
-    end
-
+    
     # "sort results by" select (pulldown)
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
@@ -206,6 +199,7 @@ class MyCollectionsController < ApplicationController
 
     config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', label: 'relevance'
     config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', label: 'title'
+    config.add_sort_field 'id_asset_ssi asc, system_create_dtsi desc', label: 'order/sequence'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
