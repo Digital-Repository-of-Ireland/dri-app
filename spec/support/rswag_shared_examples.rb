@@ -87,5 +87,10 @@ shared_examples 'a search response with no false positives' do |field|
     # no false positives
     expect(json_body['response']['docs'].count).to eq(1)
     expect(json_object[field]).to eq([q])
+
+    # # parsing the object_profile seems slightly faster than looking up the solr name
+    # # may be useful in future if response changes and no longer returns duplicate info
+    # key = ActiveFedora.index_field_mapper.solr_name(field)
+    # expect(json_body['response']['docs'].first[key]).to eq([q])
   end
 end

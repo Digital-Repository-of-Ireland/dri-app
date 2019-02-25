@@ -35,6 +35,7 @@ Scenario Outline: Successful search for "<query>" in all_fields
 
 
 Scenario Outline: Successful search for "<query>" in "<search_field>"
+  Given I am on the <page> page
   Given a collection with pid "collection1"
   And the collection with pid "collection1" has "<attribute>" = "<query>"
   And the collection with pid "collection1" is published
@@ -54,10 +55,16 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
   Then I should see a search result "<query>"
   And I should see 1 visible element ".dri_content_block_collection"
 
+  # No nested scenario outlines, have to a home (catalog) and my collections example for each field 
   Examples:
-    | search_field | query                | attribute   |
-    | Title        | Test College Dublin  | title       |
-    | Person       | Fake user            | creator     |
-    | Person       | Other user           | contributor |
-    | Person       | Third Person         | publisher   |
-    | Subject      | Fake Subject         | subject     |
+    | search_field | query                | attribute   | page           |
+    | Title        | Test College Dublin  | title       | home           |
+    | Subject      | Fake Subject         | subject     | home           |
+    | Person       | Fake user            | creator     | home           |
+    | Person       | Other user           | contributor | home           |
+    | Person       | Third Person         | publisher   | home           |
+    | Title        | Test College Dublin  | title       | my collections |
+    | Subject      | Fake Subject         | subject     | my collections |
+    | Person       | Fake user            | creator     | my collections |
+    | Person       | Other user           | contributor | my collections |
+    | Person       | Third Person         | publisher   | my collections |

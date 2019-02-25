@@ -8,6 +8,7 @@ class CatalogController < ApplicationController
   CatalogController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
 
   configure_blacklight do |config|
+    
     config.show.route = { controller: 'catalog' }
     config.per_page = [9, 18, 36]
     config.default_per_page = 9
@@ -147,21 +148,23 @@ class CatalogController < ApplicationController
     # of Solr search fields.
 
     %w[
-      title subject description creator contributor publisher person
+      title subject description 
+      creator contributor publisher 
+      person
     ].each do |field_name|
       config.add_search_field(field_name) do |field|
-        # solr_parameters hash are sent to Solr as ordinary url query params.
-        # field.solr_parameters = { :'spellcheck.dictionary' => 'title' }
-
-        # :solr_local_parameters will be sent using Solr LocalParams
-        # syntax, as eg {! qf=$title_qf }. This is neccesary to use
-        # Solr parameter de-referencing like $title_qf.
-        # See: http://wiki.apache.org/solr/LocalParams
         field.solr_local_parameters = {
           qf: "${#{field_name}_qf}",
           pf: "${#{field_name}_pf}"
         }
       end
+    end
+
+    # fields who's name doesn't match solr name
+    config.add_search_field('place') do |field|
+      field.solr_local_parameters = {
+        qf: "${placename_field}"
+      }
     end
 
     # "sort results by" select (pulldown)

@@ -25,8 +25,28 @@ module DRI::Catalog
     before_action :enforce_search_for_show_permissions, only: :show
   end
 
-  private
+  # # need Blacklight::Controller to use blacklight_config
+  # # def default_dri_blacklight_config(config)
+  # configure_blacklight do |config|
+  #   default_dri_search_fields.each do |field_name|
+  #     config.add_search_field(field_name) do |field|
+  #       field.solr_local_parameters = {
+  #         qf: "${#{field_name}_qf}",
+  #         pf: "${#{field_name}_pf}"
+  #       }
+  #     end
+  #   end
+  # end
 
+  # def default_dri_search_fields
+  #   %w[
+  #     title subject description 
+  #     creator contributor publisher 
+  #     person
+  #   ]
+  # end
+
+  private
     # This method shows the DO if the metadata is open
     # rather than before where the user had to have read permissions on the object all the time
     def enforce_search_for_show_permissions
