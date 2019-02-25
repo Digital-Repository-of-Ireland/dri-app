@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker { 
             image 'dri-jenkins-agent'
-            label 'Jenkins'
+            label 'master'
             args '-u jenkins:jenkins -v rvm:/home/jenkins/.rvm -v /var/lib/jenkins/.ssh:/home/jenkins/.ssh'
         }
     }
