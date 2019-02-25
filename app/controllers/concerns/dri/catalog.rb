@@ -15,7 +15,13 @@ module DRI::Catalog
     'cdate' => 'Creation Date',
     'pdate' => 'Publication Date',
     'date' => 'Date'
-  }
+  }.freeze
+
+  EXCLUDE_GENERIC_FILES = "-#{ActiveFedora.index_field_mapper.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\"".freeze
+  INCLUDE_COLLECTIONS = "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true".freeze
+  EXCLUDE_COLLECTIONS = "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:false".freeze
+  EXCLUDE_SUB_COLLECTIONS = "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]".freeze
+  PUBLISHED_ONLY = "+#{ActiveFedora.index_field_mapper.solr_name('status', :facetable, type: :string)}:published".freeze
 
   included do
     # need rescue_from here to ensure that errors thrown by before_action
@@ -26,6 +32,34 @@ module DRI::Catalog
   end
 
   private
+
+    def exclude_unwanted_models(solr_parameters, user_parameters)
+      solr_parameters[:fq] ||= []
+      solr_parameters[:fq] << DRI::Catalog::EXCLUDE_GENERIC_FILES
+
+      if user_parameters[:mode] == 'collections'
+        collections_only_filters(solr_parameters, user_parameters)
+      else
+        objects_only_filters(solr_parameters, user_parameters)
+      end
+    end
+
+    def collections_only_filters(solr_parameters, user_parameters)
+      solr_parameters[:fq] << DRI::Catalog::INCLUDE_COLLECTIONS
+
+      # if show subcollections is false we only want root collections
+      # i.e., those without any ancestor ids
+      if user_parameters[:show_subs] != 'true'
+        solr_parameters[:fq] << DRI::Catalog::EXCLUDE_SUB_COLLECTIONS
+      end
+    end
+
+    def objects_only_filters(solr_parameters, user_parameters)
+      solr_parameters[:fq] << DRI::Catalog::EXCLUDE_COLLECTIONS
+      if user_parameters[:collection].present?
+        solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\""
+      end
+    end
 
     # This method shows the DO if the metadata is open
     # rather than before where the user had to have read permissions on the object all the time
