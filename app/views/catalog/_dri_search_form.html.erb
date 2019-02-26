@@ -1,12 +1,12 @@
 
   <%= form_tag main_app.catalog_index_path, :method => :get, :id => 'searchform', :class => 'dri_search_term_input_form' do %>
     <% 
-      display_fields = search_fields.select do |arr| 
+      ui_search_fields = search_fields.select do |arr| 
         %w[all_fields title subject person place].include?(arr[1])
       end
     %>
     <%= select_tag(:search_field,
-                   options_for_select(display_fields, h(params[:search_field])),
+                   options_for_select(ui_search_fields, h(params[:search_field])),
                    title: t('blacklight.search.form.search_field.title'),
                    id: "search_field",
                    class: "custom-select search-field")

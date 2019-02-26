@@ -63,7 +63,6 @@ class CatalogController < ApplicationController
     config.add_facet_field 'pdate_range_start_isi', show: false
     config.add_facet_field 'date_range_start_isi', show: false
 
-
     config.add_facet_field solr_name('licence', :facetable), label: 'Licence', limit: 20
     config.add_facet_field solr_name('subject', :facetable), limit: 20
     config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: true
