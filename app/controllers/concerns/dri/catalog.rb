@@ -8,6 +8,7 @@ module DRI::Catalog
   include Hydra::Controller::ControllerBehavior
   include Hydra::AccessControlsEnforcement
   include DRI::Readable
+  include SchemaFields
 
   MAX_TIMELINE_ENTRIES = 50
   TIMELINE_FIELD_LABELS = {
@@ -17,11 +18,11 @@ module DRI::Catalog
     'date' => 'Date'
   }.freeze
 
-  EXCLUDE_GENERIC_FILES = "-#{ActiveFedora.index_field_mapper.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\"".freeze
-  INCLUDE_COLLECTIONS = "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true".freeze
-  EXCLUDE_COLLECTIONS = "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:false".freeze
-  EXCLUDE_SUB_COLLECTIONS = "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]".freeze
-  PUBLISHED_ONLY = "+#{ActiveFedora.index_field_mapper.solr_name('status', :facetable, type: :string)}:published".freeze
+  EXCLUDE_GENERIC_FILES = "-#{SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\"".freeze
+  INCLUDE_COLLECTIONS = "+#{SchemaFields.facet('is_collection')}:true".freeze
+  EXCLUDE_COLLECTIONS = "+#{SchemaFields.facet('is_collection')}:false".freeze
+  EXCLUDE_SUB_COLLECTIONS = "-#{SchemaFields.facet('ancestor_id')}:[* TO *]".freeze
+  PUBLISHED_ONLY = "+#{SchemaFields.facet('status')}:published".freeze
 
   included do
     # need rescue_from here to ensure that errors thrown by before_action
@@ -37,11 +38,19 @@ module DRI::Catalog
       solr_parameters[:fq] ||= []
       solr_parameters[:fq] << DRI::Catalog::EXCLUDE_GENERIC_FILES
 
-      if user_parameters[:mode] == 'collections'
+      if collections_tab_active(user_parameters)
         collections_only_filters(solr_parameters, user_parameters)
       else
         objects_only_filters(solr_parameters, user_parameters)
       end
+    end
+
+    def collections_tab_active(user_parameters)
+      user_parameters[:mode] == 'collections'
+    end
+
+    def subcollections_tab_active(user_parameters)
+      user_parameters[:show_subs] == 'true'
     end
 
     def collections_only_filters(solr_parameters, user_parameters)
@@ -49,7 +58,7 @@ module DRI::Catalog
 
       # if show subcollections is false we only want root collections
       # i.e., those without any ancestor ids
-      if user_parameters[:show_subs] != 'true'
+      if !subcollections_tab_active(user_parameters)
         solr_parameters[:fq] << DRI::Catalog::EXCLUDE_SUB_COLLECTIONS
       end
     end
@@ -57,7 +66,7 @@ module DRI::Catalog
     def objects_only_filters(solr_parameters, user_parameters)
       solr_parameters[:fq] << DRI::Catalog::EXCLUDE_COLLECTIONS
       if user_parameters[:collection].present?
-        solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\""
+        solr_parameters[:fq] << "+#{SchemaFields.facet('root_collection_id')}:\"#{user_parameters[:collection]}\""
       end
     end
 
