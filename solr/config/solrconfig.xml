@@ -151,8 +151,8 @@
          placename_field_tesim^1000
        </str>
        <str name="creator_qf">
-         place_unstem_search^125
-         place_tesim^50
+         creator_unstem_search^125
+         creator_tesim^50
        </str>
        <str name="creator_pf">
          creator_unstem_search^1250

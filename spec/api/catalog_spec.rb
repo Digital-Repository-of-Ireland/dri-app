@@ -37,7 +37,7 @@ describe "Catalog API" do
           fields_hash = CatalogController.blacklight_config.search_fields
           fields_to_test = fields_hash.keys.reject do |field|
             # exclude aggregate fields
-             %w[all_fields person].include?(field)
+             %w[all_fields person place].include?(field)
           end.sort
 
           fields_to_test.each do |field|
