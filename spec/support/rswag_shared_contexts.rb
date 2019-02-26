@@ -97,7 +97,7 @@ shared_context 'catch search false positives' do |field, all_fields, search_para
     @objects = @collections.first.governed_items.reject(&:collection?)
     raise ArgumentError, 'less than 2 objects in collection' unless @objects.count >= 2
 
-    @objects[0].send("#{field}=", bind_param(search_param))
+    @objects[0].send("#{field}=", bind_search_param)
     @objects[0].save
 
     # treat fields like circular list, pick adjacent field so build is reproducible
@@ -106,7 +106,7 @@ shared_context 'catch search false positives' do |field, all_fields, search_para
 
     raise ArgumentError, 'selected same field' unless @adjacent_field != field
 
-    @objects[1].send("#{@adjacent_field}=", bind_param(search_param))
+    @objects[1].send("#{@adjacent_field}=", bind_search_param)
     @objects[1].save
     # @collections.map(&:governed_items).flatten.map(&:title)
     # @collections.map(&:governed_items).flatten.map(&:"#{field}")
@@ -196,8 +196,13 @@ def create_object_for(user, type: :sound, status: 'draft', title: 'test_object')
   object
 end
 
-# @param [Symbol] param_name
 # @return [Array]
-def bind_param(param_name)
-  [binding.local_variable_get(param_name)]
+def bind_search_param
+  # let is lazily evaluated and local_variable_get is not,
+  # so that approach won't work
+  # [binding.local_variable_get(param_name)]
+  # note loading byebug complicates this since it provides a method named q
+  return [q_ws] if defined? q_ws
+  return [q] if defined? q
+  raise ArgumentError, 'neither q nor q_ws defined'
 end

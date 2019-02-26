@@ -77,10 +77,7 @@ shared_examples 'a pretty json response' do
 end
 
 # @param [String] field
-# @param [Symbol] search_param [q | q_ws]
-shared_examples 'a search response with no false positives' do |field, search_param|
-  let(search_param)  { "fancy #{field}" }
-  let(:search_field) { field }
+shared_examples 'a search response with no false positives' do |field|
   run_test! do
     json_body = JSON.parse(response.body)
     first_object = json_body['response']['docs'].first['object_profile_ssm'].first
@@ -88,7 +85,7 @@ shared_examples 'a search response with no false positives' do |field, search_pa
 
     # no false positives
     expect(json_body['response']['docs'].count).to eq(1)
-    expect(json_object[field]).to eq([binding.local_variable_get(search_param)])
+    expect(json_object[field]).to eq(bind_search_param)
 
     # # parsing the object_profile seems slightly faster than looking up the solr name
     # # may be useful in future if response changes and no longer returns duplicate info
@@ -98,7 +95,6 @@ shared_examples 'a search response with no false positives' do |field, search_pa
 end
 
 # @param [Controller] controller
-# @param [Symbol] search_param [q | q_ws]
 shared_examples 'it accepts search_field params' do |controller, search_param|
   context 'search_field no output' do
     # for searches with each remaining search_field
@@ -110,9 +106,12 @@ shared_examples 'it accepts search_field params' do |controller, search_param|
 
     fields_to_test.each do |field|
       context "#{field} search" do
-        context_args = [field, fields_to_test, search_param]
-        spec_args = [field, search_param]
-        
+        let(search_param)  { "fancy #{field}" }
+        let(:search_field) { field }
+
+        context_args = [field, fields_to_test]
+        spec_args = [field]
+
         include_context 'catch search false positives', *context_args  do
           it_behaves_like 'a search response with no false positives', *spec_args
         end
