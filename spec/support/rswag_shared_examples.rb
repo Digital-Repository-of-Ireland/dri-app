@@ -1,18 +1,5 @@
 # rswag / api shared examples
 
-## 
-# handle case where add_param is first param, use ? instead of &
-#
-# @param  [String] url
-# @param  [Array]  param
-# @return [String] uri
-def add_param(url, param)
-  uri = URI.parse(url)
-  query_arr = URI.decode_www_form(uri.query || '') << param
-  uri.query = URI.encode_www_form(query_arr)
-  uri.to_s
-end
-
 shared_examples 'a json response with' do |licence_key: false, doi_key: false, related_objects_key: false|
   run_test! do
     json_response = JSON.parse(response.body)

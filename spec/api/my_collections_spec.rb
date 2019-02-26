@@ -16,16 +16,16 @@ describe "My Collections API" do
         in: :query, type: :number, default: 9, required: false
       parameter name: :page, description: 'Page number', 
         in: :query, type: :number, default: 1, required: false
+      # default: objects if param is omitted, collections if using search through UI
       parameter name: :mode, description: 'Show Objects or Collections', 
         in: :query, required: false, default: 'objects', type: :string,
         enum: ['objects', 'collections']
+      # default: false if param is omitted, true if using search through UI
       parameter name: :show_subs, description: 'Show subcollections',
         in: :query, type: :boolean, default: false
-      parameter name: :search_field, description: 'Solr field to search for',
-        in: :query, type: :string, default: 'all_fields'
       parameter name: :sort, description: 'Solr fields to sort by',
         in: :query, type: :string, default: nil
-      parameter name: :search_field, description: 'solr field for query',
+      parameter name: :search_field, description: 'Search for data in this field only',
         in: :query, type: :string, default: 'all_fields', required: false,
         # keep docs in sync with dev, show all possible valid values for search_field
         enum: MyCollectionsController.blacklight_config.search_fields.keys
@@ -33,7 +33,7 @@ describe "My Collections API" do
       parameter name: :q_ws, description: 'Search Query',
         in: :query, type: :string, default: nil
         
-      parameter name: :pretty, description: 'indent json so it is human readable', 
+      parameter name: :pretty, description: 'Indent json so it is human readable', 
         in: :query, type: :boolean, default: false, required: false
       # # issue with facets beign empty string
       # parameter name: :f, description: 'Search facet (solr fields to filter results)',
