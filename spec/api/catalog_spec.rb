@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 describe "Catalog API" do
   path "/catalog" do
-    get "retrieves objects from the catalog" do
+    get "retrieves published (public) objects, collections, or subcollections" do
       produces 'application/json', 'application/xml', 'application/ttl'
       # add subcollections?
       include_context 'rswag_user_with_collections', status: 'published'
@@ -29,24 +29,8 @@ describe "Catalog API" do
           include_context 'rswag_include_json_spec_output' do
             it_behaves_like 'a pretty json response'
           end
-        end
-        # TODO copy this spec in my_collections_spec? use higher level shared_example / context?
-        # no output for these specs, just ensure no duplicates are found
-        context 'search_field no output' do
-          # for searches with each remaining search_field
-          fields_hash = CatalogController.blacklight_config.search_fields
-          fields_to_test = fields_hash.keys.reject do |field|
-            # exclude aggregate fields
-             %w[all_fields person place].include?(field)
-          end.sort
-
-          fields_to_test.each do |field|
-            context "#{field} search" do
-              include_context 'catch search false positives', field, fields_to_test do
-                it_behaves_like 'a search response with no false positives', field
-              end
-            end
-          end
+          # no output for these specs, just ensure no duplicates are found
+          it_behaves_like 'it accepts search_field params', CatalogController, :q
         end
       end
     end

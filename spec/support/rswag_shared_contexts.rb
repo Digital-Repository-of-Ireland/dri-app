@@ -90,13 +90,14 @@ end
 # adjacent field could be creator, which is part of person
 # @param [String] field
 # @param [Array] all_fields
-shared_context 'catch search false positives' do |field, all_fields|
+# @param [Symbol] search_param
+shared_context 'catch search false positives' do |field, all_fields, search_param|
   before do
     # mode is objects, so ignore subcollections
     @objects = @collections.first.governed_items.reject(&:collection?)
     raise ArgumentError, 'less than 2 objects in collection' unless @objects.count >= 2
 
-    @objects[0].send("#{field}=", [q])
+    @objects[0].send("#{field}=", bind_param(search_param))
     @objects[0].save
 
     # treat fields like circular list, pick adjacent field so build is reproducible
@@ -105,7 +106,7 @@ shared_context 'catch search false positives' do |field, all_fields|
 
     raise ArgumentError, 'selected same field' unless @adjacent_field != field
 
-    @objects[1].send("#{@adjacent_field}=", [q])
+    @objects[1].send("#{@adjacent_field}=", bind_param(search_param))
     @objects[1].save
     # @collections.map(&:governed_items).flatten.map(&:title)
     # @collections.map(&:governed_items).flatten.map(&:"#{field}")
@@ -193,4 +194,10 @@ def create_object_for(user, type: :sound, status: 'draft', title: 'test_object')
   object.apply_depositor_metadata(user.to_s)
   object.save
   object
+end
+
+# @param [Symbol] param_name
+# @return [Array]
+def bind_param(param_name)
+  [binding.local_variable_get(param_name)]
 end

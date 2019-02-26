@@ -76,8 +76,10 @@ shared_examples 'a pretty json response' do
   end
 end
 
-shared_examples 'a search response with no false positives' do |field|
-  let(:q)            { "fancy #{field}" }
+# @param [String] field
+# @param [Symbol] search_param [q | q_ws]
+shared_examples 'a search response with no false positives' do |field, search_param|
+  let(search_param)  { "fancy #{field}" }
   let(:search_field) { field }
   run_test! do
     json_body = JSON.parse(response.body)
@@ -86,11 +88,35 @@ shared_examples 'a search response with no false positives' do |field|
 
     # no false positives
     expect(json_body['response']['docs'].count).to eq(1)
-    expect(json_object[field]).to eq([q])
+    expect(json_object[field]).to eq([binding.local_variable_get(search_param)])
 
     # # parsing the object_profile seems slightly faster than looking up the solr name
     # # may be useful in future if response changes and no longer returns duplicate info
     # key = ActiveFedora.index_field_mapper.solr_name(field)
     # expect(json_body['response']['docs'].first[key]).to eq([q])
+  end
+end
+
+# @param [Controller] controller
+# @param [Symbol] search_param [q | q_ws]
+shared_examples 'it accepts search_field params' do |controller, search_param|
+  context 'search_field no output' do
+    # for searches with each remaining search_field
+    fields_hash = controller.blacklight_config.search_fields
+    fields_to_test = fields_hash.keys.reject do |field|
+      # exclude aggregate fields
+       %w[all_fields person place].include?(field)
+    end.sort
+
+    fields_to_test.each do |field|
+      context "#{field} search" do
+        context_args = [field, fields_to_test, search_param]
+        spec_args = [field, search_param]
+        
+        include_context 'catch search false positives', *context_args  do
+          it_behaves_like 'a search response with no false positives', *spec_args
+        end
+      end
+    end
   end
 end

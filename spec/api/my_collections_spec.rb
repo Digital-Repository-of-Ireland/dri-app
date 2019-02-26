@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 describe "My Collections API" do
   path "/my_collections" do
-    get "retrieves objects, collections, or subcollections for the current user" do
+    get "retrieves published (public) and draft (private) objects, collections, or subcollections" do
       tags 'collections'
       security [ apiKey: [], appId: [] ]
       produces 'application/json'
@@ -25,7 +25,12 @@ describe "My Collections API" do
         in: :query, type: :string, default: 'all_fields'
       parameter name: :sort, description: 'Solr fields to sort by',
         in: :query, type: :string, default: nil
-      parameter name: :q, description: 'Search Query',
+      parameter name: :search_field, description: 'solr field for query',
+        in: :query, type: :string, default: 'all_fields', required: false,
+        # keep docs in sync with dev, show all possible valid values for search_field
+        enum: MyCollectionsController.blacklight_config.search_fields.keys
+      # also accepts q, but that runs the same search as the catalog endpoint
+      parameter name: :q_ws, description: 'Search Query',
         in: :query, type: :string, default: nil
         
       parameter name: :pretty, description: 'indent json so it is human readable', 
@@ -43,7 +48,7 @@ describe "My Collections API" do
       let(:show_subs)    { false }
       let(:search_field) { 'all_fields' }
       let(:sort)         { nil }
-      let(:q)            { nil }
+      let(:q_ws)         { nil }
       # let(:f)            { nil }
       
       response "401", "Must be signed in to access this route" do
@@ -84,6 +89,10 @@ describe "My Collections API" do
           include_context 'rswag_include_json_spec_output', '/my_collections.json?per_page=1' do
             it_behaves_like 'a pretty json response'
           end
+        end
+        context 'Search fields' do
+          # no output for these specs, just ensure no duplicates are found
+          it_behaves_like 'it accepts search_field params', MyCollectionsController, :q_ws
         end
       end
     end
