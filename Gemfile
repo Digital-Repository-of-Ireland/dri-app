@@ -141,7 +141,7 @@ gem 'unicorn'
 gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails', '4.5.0.1'
 gem 'jwt', '1.5.2'
-gem 'bootstrap-sass', '3.3.5'
+gem 'bootstrap-sass', '3.4.1'
 gem 'bootstrap-glyphicons'
 gem 'yard'
 
