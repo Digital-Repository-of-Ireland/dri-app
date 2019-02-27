@@ -8,7 +8,6 @@ module DRI::Catalog
   include Hydra::Controller::ControllerBehavior
   include Hydra::AccessControlsEnforcement
   include DRI::Readable
-  include SchemaFields
 
   MAX_TIMELINE_ENTRIES = 50
   TIMELINE_FIELD_LABELS = {
@@ -18,11 +17,11 @@ module DRI::Catalog
     'date' => 'Date'
   }.freeze
 
-  EXCLUDE_GENERIC_FILES = "-#{SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\"".freeze
-  INCLUDE_COLLECTIONS = "+#{SchemaFields.facet('is_collection')}:true".freeze
-  EXCLUDE_COLLECTIONS = "+#{SchemaFields.facet('is_collection')}:false".freeze
-  EXCLUDE_SUB_COLLECTIONS = "-#{SchemaFields.facet('ancestor_id')}:[* TO *]".freeze
-  PUBLISHED_ONLY = "+#{SchemaFields.facet('status')}:published".freeze
+  EXCLUDE_GENERIC_FILES = "-#{::Solr::SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\"".freeze
+  INCLUDE_COLLECTIONS = "+#{::Solr::SchemaFields.facet('is_collection')}:true".freeze
+  EXCLUDE_COLLECTIONS = "+#{::Solr::SchemaFields.facet('is_collection')}:false".freeze
+  EXCLUDE_SUB_COLLECTIONS = "-#{::Solr::SchemaFields.facet('ancestor_id')}:[* TO *]".freeze
+  PUBLISHED_ONLY = "+#{::Solr::SchemaFields.facet('status')}:published".freeze
 
   included do
     # need rescue_from here to ensure that errors thrown by before_action
@@ -66,7 +65,7 @@ module DRI::Catalog
     def objects_only_filters(solr_parameters, user_parameters)
       solr_parameters[:fq] << DRI::Catalog::EXCLUDE_COLLECTIONS
       if user_parameters[:collection].present?
-        solr_parameters[:fq] << "+#{SchemaFields.facet('root_collection_id')}:\"#{user_parameters[:collection]}\""
+        solr_parameters[:fq] << "+#{::Solr::SchemaFields.facet('root_collection_id')}:\"#{user_parameters[:collection]}\""
       end
     end
 

@@ -210,8 +210,8 @@ class CatalogController < ApplicationController
     config.view.maps.maxzoom = 18
     config.view.maps.show_initial_zoom = 5
     config.view.maps.facet_mode = 'geojson'
-    config.view.maps.placename_field = ActiveFedora.index_field_mapper.solr_name('placename_field', :facetable, type: :string)
-    config.view.maps.geojson_field = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol)
+    config.view.maps.placename_field = ::Solr::SchemaFields.facet('placename_field')
+    config.view.maps.geojson_field = ::Solr::SchemaFields.searchable_symbol('geojson')
     config.view.maps.search_mode = 'placename'
 
     config.oai = {
