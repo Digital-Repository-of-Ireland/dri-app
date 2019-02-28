@@ -3,17 +3,19 @@ require 'swagger_helper'
 describe "Open Archives Initiative API" do
   path "/oai" do
     get "retrieves open archives initiative data for the dri repository" do
-      description 'the html version of this endpoint includes links to valid requests'
+      include_context 'rswag_user_with_collections'
+      description 'The html version of this endpoint includes links to valid requests'
       # tags 'Open Archives Initiative'
       produces 'application/xml'
-      include_context 'rswag_user_with_collections'
+
       parameter name: :verb, in: :query, type: :string, required: true,
-        enum: [
-          'Identify', 'ListRecords', 'ListSets', 
-          'ListMetadataFormats', 'ListIdentifiers'
-        ]
-      parameter name: :metadataPrefix, in: :query, type: :string, 
-        required: false, description: 'must be oai_dri for ListRecords and ListIdentifiers'
+                enum: %w[
+                          Identify ListRecords ListSets 
+                          ListMetadataFormats ListIdentifiers
+                        ]
+      parameter name: :metadataPrefix, in: :query, 
+                type: :string, required: false,
+                description: 'must be oai_dri for ListRecords and ListIdentifiers'
 
       let(:verb) { nil }
       # must not be set at all since it'll create the following request

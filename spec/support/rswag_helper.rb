@@ -1,4 +1,5 @@
 module RswagHelper
+
   ## 
   # handle case where add_param is first param, use ? instead of &
   #

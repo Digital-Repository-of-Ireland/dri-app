@@ -6,13 +6,13 @@ describe "International Image Interoperability Framework API" do
   path "/iiif/{id}/manifest" do
     get "retrieves International Image Interoperability Framework manifests for objects" do
       # tags 'IIIF'
-      security [ apiKey: [], appId: [] ]
-      produces 'application/json'
-      parameter name: :id, in: :path, type: :string, required: true
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
-        
       include_context 'rswag_user_with_collections'
+      
+      produces 'application/json'
+      security [ apiKey: [], appId: [] ]
+      parameter name: :id, in: :path, type: :string, required: true
+      pretty_json_param
+        
 
       response "200", "Manifest found" do
         context 'Private manifest with auth' do

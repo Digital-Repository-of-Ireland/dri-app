@@ -3,6 +3,7 @@ require 'support/rswag_shared_contexts'
 require 'support/rswag_shared_examples'
 
 RSpec.configure do |config|
+  config.extend RswagExampleGroupHelper
   config.include RswagHelper
   # Specify a root folder where Swagger JSON files are generated
   # NOTE: If you're using the rswag-api to serve API descriptions, you'll need
