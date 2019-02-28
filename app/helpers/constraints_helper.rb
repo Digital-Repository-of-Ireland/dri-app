@@ -26,4 +26,9 @@ module ConstraintsHelper
   def query_has_constraints?(localized_params = params)
     true #!((localized_params[:q].blank? || localized_params[:q_ws].blank?) and localized_params[:f].blank?)
   end
+
+  def is_advanced_search?(req_params = params)
+    (req_params[:search_field] == blacklight_config.advanced_search[:url_key]) ||
+    req_params[:f_inclusive]
+  end
 end
