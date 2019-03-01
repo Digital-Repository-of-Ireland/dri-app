@@ -180,3 +180,6 @@ gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'
 
 gem 'qa', '~> 1.2'
+
+gem 'graphql', '~> 1.9'
+gem 'graphiql-rails', '1.5.0', group: :development

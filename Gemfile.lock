@@ -428,6 +428,10 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
+    graphiql-rails (1.5.0)
+      railties
+      sprockets-rails
+    graphql (1.9.3)
     guard (2.14.1)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -1018,6 +1022,8 @@ DEPENDENCIES
   google-api-client (~> 0.9)
   google-oauth2-installed
   googleauth (= 0.5.1)
+  graphiql-rails (= 1.5.0)
+  graphql (~> 1.9)
   guard
   guard-livereload
   high_voltage (~> 2.1.0)
