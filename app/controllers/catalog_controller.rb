@@ -151,7 +151,7 @@ class CatalogController < ApplicationController
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields.
 
-    %w[
+    %i[
       title subject description 
       creator contributor publisher 
       person place
@@ -161,6 +161,7 @@ class CatalogController < ApplicationController
           qf: "${#{field_name}_qf}",
           pf: "${#{field_name}_pf}"
         }
+        field.label = self.solr_field_to_label(field_name)
       end
     end
 

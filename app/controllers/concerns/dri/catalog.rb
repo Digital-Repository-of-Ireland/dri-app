@@ -24,13 +24,28 @@ module DRI::Catalog
   EXCLUDE_SUB_COLLECTIONS = "-#{SchemaFields.facet('ancestor_id')}:[* TO *]".freeze
   PUBLISHED_ONLY = "+#{SchemaFields.facet('status')}:published".freeze
 
+  module ClassMethods
+    # @param [Symbol] solr_field
+    # @return [String]
+    def solr_field_to_label(solr_field)
+      field_label_mappings = {
+        title: 'Titles', subject: 'Subjects', description: 'Descriptions',
+        creator: 'Creators', contributor: 'Contributors', publisher: 'Publishers', 
+        person: 'Names', place: 'Places'
+      }
+      field_label_mappings[solr_field]
+    end
+  end
+
   included do
     # need rescue_from here to ensure that errors thrown by before_action
     # below are caught and handled properly
     rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
     # These before_filters apply the hydra access controls
     before_action :enforce_search_for_show_permissions, only: :show
+    extend(ClassMethods)
   end
+
 
   private
 

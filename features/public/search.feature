@@ -58,15 +58,15 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
   # No nested scenario outlines, have to a home (catalog) and my collections example for each field 
   Examples:
     | search_field | query                | attribute               | page           |
-    | Title        | Test College Dublin  | title                   | home           |
-    | Subject      | Fake Subject         | subject                 | home           |
-    | Person       | Fake user            | creator                 | home           |
-    | Person       | Other user           | contributor             | home           |
-    | Person       | Third Person         | publisher               | home           |
-    | Place        | Dublin               | geographical_coverage   | home           |
-    | Title        | Test College Dublin  | title                   | my collections |
-    | Subject      | Fake Subject         | subject                 | my collections |
-    | Person       | Fake user            | creator                 | my collections |
-    | Person       | Other user           | contributor             | my collections |
-    | Person       | Third Person         | publisher               | my collections |
-    | Place        | Dublin               | geographical_coverage   | my collections |
+    | Titles       | Test College Dublin  | title                   | home           |
+    | Subjects     | Fake Subject         | subject                 | home           |
+    | Names        | Fake user            | creator                 | home           |
+    | Names        | Other user           | contributor             | home           |
+    | Names        | Third Person         | publisher               | home           |
+    | Places       | Dublin               | geographical_coverage   | home           |
+    | Titles       | Test College Dublin  | title                   | my collections |
+    | Subjects     | Fake Subject         | subject                 | my collections |
+    | Names        | Fake user            | creator                 | my collections |
+    | Names        | Other user           | contributor             | my collections |
+    | Names        | Third Person         | publisher               | my collections |
+    | Places       | Dublin               | geographical_coverage   | my collections |
