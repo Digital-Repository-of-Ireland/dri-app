@@ -1,34 +1,11 @@
 module Types
   class QueryType < Types::BaseObject
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
-
-    # TODO: remove me
     field :all_collections, [CollectionType], null: false,
-      description: "All published collection"
+          description: "All published collections"
+    # field :all_objects, [ObjectType], null: false,
+    #       description: "All published objects"
 
     def all_collections
-      # # still over fetching, and super slow call to fedora
-      # ActiveFedora::Base.all.select(&:collection?)
-
-      # # still overfetching, call to solr
-      # app.get '/catalog.json?mode=collections'
-      # response = app.response
-
-      # # can't rely on object_type, it's use input
-      # DRI::QualifiedDublinCore.where("Collection IN (#{object_type.join(', ')})",
-      #   status: 'published'
-      # ).all.count
-
-      # # TODO more efficient where, select collection
-      # # object_type is array, check it contains only 'collection'
-      # DRI::QualifiedDublinCore.where(status: 'published').select do |qdc| 
-      #   qdc.object_type.include?('Collection')
-      # end
-
-
-      # DRI::QualifiedDublinCore.where(status: 'published').select(&:collection?)
-
       collection_field = ActiveFedora.index_field_mapper.solr_name(
         'is_collection', :facetable, type: :string
       )
@@ -37,5 +14,18 @@ module Types
         status: 'published'
       )
     end
+
+    # def all_objects
+    #   # # no object field, closest is !collection? && batch?
+    #   # # see app/models/solr_document.rb#object?
+    #   # collection_field = ActiveFedora.index_field_mapper.solr_name(
+    #   #   'is_collection', :facetable, type: :string
+    #   # )
+    #   # # DRI::QualifiedDublinCore.where(status: 'published').where.not("#{collection_field}": 'true').where('DRI::Batch IN has_model_ssim')
+    #   # DRI::QualifiedDublinCore.where("#{collection_field} NOT IN (?)", %w[true]) 
+
+
+    #   DRI::QualifiedDublinCore.where(status: 'published').select(&:object?)
+    # end
   end
 end

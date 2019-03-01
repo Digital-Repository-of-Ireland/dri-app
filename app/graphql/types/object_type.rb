@@ -1,5 +1,5 @@
 module Types
-  class CollectionType < BaseObject
+  class ObjectType < BaseObject
     field :id, ID, null: false
     # field :titles, [String]
   end
