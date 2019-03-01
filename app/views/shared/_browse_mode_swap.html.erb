@@ -1,8 +1,9 @@
 <div class="dri_facet_restrictions_container">
-	<% unless (controller_name == 'saved_searches' && action_name == 'index') || root? %>
-
+	<% if (controller_name == 'saved_searches' && action_name == 'index') || root? %>
+      <%= render 'shared/header_browse_paginate' %>
+    <% else %>
 		<ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs" >
-			<% 
+			<%
 				collections_class = 'dri_help_popover_slow'
 				subcollections_class = 'dri_help_popover_slow'
 				objects_class = 'dri_help_popover_slow'
@@ -20,51 +21,39 @@
 						# param[:mode] is set to collections
 						mode: mode.include?('collections') ? 'collections' : 'objects',
 						show_subs: mode == 'subcollections' ? 'true' : 'false',
-						root_collection_id_sim: params[:root_collection_id_sim],
-						search_field: params[:search_field],
-						controller: params[:controller],
-						action: params[:action],
-						view: params[:view],
-						utf8: params[:utf8],
-						q: params[:q]	
-					}
+					}.merge(params.except(*[:mode, :show_subs]))
 				end
 
 				collections_params, subcollections_params, objects_params = param_modes
 			%>
 
-		  <li id="dri_browse_sort_tabs_collections_id" 
-		  	data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"  
-		  	data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>" 
-		  	data-trigger="hover" 
-		  	data-placement="auto right">
-			  <%= link_to t('dri.headerlinks.collections'), collections_params, id: "collections", class: collections_class	%>
-		  </li>
+		 <li id="dri_browse_sort_tabs_collections_id"
+		   data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"
+		   data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>"
+		   data-trigger="hover"
+		   data-placement="auto right">
+		     <%= link_to t('dri.headerlinks.collections'), collections_params, id: "collections", class: collections_class	%>
+		</li>
 
-	    <li id="dri_browse_sort_tabs_sub_collections_id" 
-	    data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"  
-	    data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>" 
-	    data-trigger="hover" 
-	    data-placement="auto right" 
-	    class='dri_help_popover_slow'>
-		    <%= link_to t('dri.headerlinks.sub_collections'), subcollections_params, id: "sub_collections", class: subcollections_class %>
+	    <li id="dri_browse_sort_tabs_sub_collections_id"
+	      data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"
+	      data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>"
+	      data-trigger="hover"
+	      data-placement="auto right">
+		  <%= link_to t('dri.headerlinks.sub_collections'), subcollections_params, id: "sub_collections", class: subcollections_class %>
 	    </li>
 
-		  <li id="dri_browse_sort_tabs_objects_id" 
-		  data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"  
-		  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>" 
-		  data-trigger="hover" 
+		<li id="dri_browse_sort_tabs_objects_id"
+		  data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"
+		  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>"
+		  data-trigger="hover"
 		  data-placement="auto right">
 			  <%= link_to t('dri.headerlinks.objects'), objects_params, id: "objects", class: objects_class %>
-		  </li>
-			
-			<%= render 'shared/header_browse_paginate' %>
+		</li>
+
+		<%= render 'shared/header_browse_paginate' %>
 		</ul>
-
-	<% else %>
-	  <%= render 'shared/header_browse_paginate' %>
 	<% end %>
-
 </div>
 
 <!-- close dri_facet_restrictions_container -->

@@ -11,6 +11,7 @@ TITLES = {
 # Creates, updates, or retrieves, the descMetadata datastream for an object
 #
 class MetadataController < ApplicationController
+  include DRI::Citable
   include DRI::Duplicable
   include DRI::Versionable
 
@@ -20,7 +21,6 @@ class MetadataController < ApplicationController
   before_action ->(id=params[:id]) { locked(id) }, except: :show
 
   # Renders the metadata XML stored in the descMetadata datastream.
-  #
   #
   def show
     enforce_permissions!('show_digital_object', params[:id])
@@ -60,6 +60,7 @@ class MetadataController < ApplicationController
   end
 
   # Replaces the current descMetadata datastream with the contents of the uploaded XML file.
+  #
   def update
     enforce_permissions!('update', params[:id])
 
@@ -81,7 +82,8 @@ class MetadataController < ApplicationController
       raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
     end
 
-    @object.update_metadata xml_ds.xml
+    @object.update_metadata(xml_ds.xml)
+
     if @object.valid?
       checksum_metadata(@object)
       warn_if_has_duplicates(@object)
@@ -93,10 +95,18 @@ class MetadataController < ApplicationController
         raise DRI::Exceptions::InternalError
       end
 
+      @object.object_version ||= '1'
+      @object.increment_version
+
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(false, false, ['descMetadata','properties'])
+
       begin
         raise DRI::Exceptions::InternalError unless @object.save
 
         version_and_record_committer(@object, current_user)
+        update_or_mint_doi
+
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
         logger.error "Could not save object #{@object.id}: #{e.message}"
@@ -105,23 +115,6 @@ class MetadataController < ApplicationController
     else
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       @errors = @object.errors.full_messages.inspect
-    end
-
-    @object.object_version ||= '1'
-    @object.increment_version
-
-    begin
-      raise DRI::Exceptions::InternalError unless @object.save
-
-      # Do the preservation actions
-      preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, false, ['descMetadata','properties'])
-
-      version_and_record_committer(@object, current_user)
-      flash[:notice] = t('dri.flash.notice.metadata_updated')
-    rescue RuntimeError => e
-      logger.error "Could not save object #{@object.id}: #{e.message}"
-      raise DRI::Exceptions::InternalError
     end
 
     respond_to do |format|
@@ -136,6 +129,20 @@ class MetadataController < ApplicationController
 
         render text: response
       end
+    end
+  end
+
+  private
+
+  def update_or_mint_doi
+    doi = DataciteDoi.find_by(object_id: @object.id)
+    if doi
+      doi_metadata_fields = {}
+      doi.metadata_fields.each do |field|
+        doi_metadata_fields[field] = @object.send(field.to_sym)
+      end
+      doi.update_metadata(doi_metadata_fields)
+      update_doi(@object, doi, 'metadata update') if doi.changed?
     end
   end
 end

@@ -28,6 +28,6 @@ S3:
 doi:
   enable: "false"
 iiif:
-  server: http://localhost:3000/iiif
+  server: http://localhost:3000/images
 analytics:
   disable: true

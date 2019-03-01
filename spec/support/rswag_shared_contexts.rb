@@ -18,7 +18,7 @@ shared_context 'rswag_include_xml_spec_output' do |example_name='application/xml
   end
 end
 
-shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true, doi: true, docs: true|
+shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true, doi: true, docs: true, object_type: :sound|
   include_context 'tmp_assets'
   before(:each) do
     @licence = Licence.create(
@@ -46,6 +46,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
           @example_user,
           status: status,
           title: "not a duplicate #{i}#{j}",
+          type: object_type
         )
         object.depositing_institute = @institute.name if @institute
         collection.governed_items << object

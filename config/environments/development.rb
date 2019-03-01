@@ -1,6 +1,10 @@
 DriApp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  # default host mirador runs on locally after `npm start`
+  # config.mirador_url = 'http://localhost:8000'
+  config.mirador_url = 'https://repository.dri.ie/mirador'
+
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
@@ -14,11 +18,14 @@ DriApp::Application.configure do
   # later versions of blacklight use autoload, so revert this change after updating blacklight
   config.cache_classes = true
 
+  # turn off caching for method results e.g. iiif_manifst call in iiif_controller.rb
+  config.cache_store = [:null_store]
+
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
-  Rails.application.routes.default_url_options[:host] = "localhost:3000"
+  Rails.application.routes.default_url_options[:host] = 'localhost:3000'
   
   config.exceptions_app = self.routes
 
@@ -52,7 +59,7 @@ DriApp::Application.configure do
   config.eager_load = false
 
   # google analytics
-  GA.tracker = "UA-94005055-1"
+  GA.tracker = 'UA-94005055-1'
 
   cert_path = Gem.loaded_specs['google-api-client'].full_gem_path+'/lib/cacerts.pem'
   ENV['SSL_CERT_FILE'] = cert_path

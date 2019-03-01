@@ -44,6 +44,10 @@ class ObjectsController < BaseObjectsController
     # used for crumbtrail
     @document = SolrDocument.new(@object.to_solr)
 
+    if @document.published? && @document.doi.present?
+      flash[:alert] = "#{t('dri.flash.alert.doi_published_warning')}".html_safe
+    end
+
     respond_to do |format|
       format.html
       format.json { render json: @object }
@@ -63,7 +67,7 @@ class ObjectsController < BaseObjectsController
         # # intermittent issue using to_solr:  A JSON text must at least contain two octets!
         solr_query = ActiveFedora::SolrService.construct_query_for_ids([@object.id])
         solr_doc = SolrDocument.new(Solr::Query.new(solr_query).first)
-        
+
         json['licence'] = DRI::Formatters::Json.licence(solr_doc)
         json['doi'] = DRI::Formatters::Json.dois(solr_doc)
         json['related_objects'] = solr_doc.object_relationships_as_json
@@ -233,7 +237,7 @@ class ObjectsController < BaseObjectsController
       logger.error "#{err_msg} #{params.inspect}"
       raise DRI::Exceptions::BadRequest
     end
-      
+
     solr_query = ActiveFedora::SolrService.construct_query_for_ids(object_ids)
     results = Solr::Query.new(solr_query)
 

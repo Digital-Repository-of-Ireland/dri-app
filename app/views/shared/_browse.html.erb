@@ -13,17 +13,23 @@
 <% render_opensearch_response_metadata.html_safe %>
 
 <%= render partial: 'did_you_mean' %>
+
 <div id="dri_second_navigation_container_id"
      class="dri_second_navigation_container">
   <!-- facet block -->
+
+  <% if controller_name == 'my_collections' %>
+    <%= render "#{controller_name}/dri_search_form" %>
+  <% end %>
+
   <div class="dri_facet_filters_block" id="sidebar">
     <%= render partial: 'facets' %>
   </div>
   <!-- close facet block -->
 </div>
 <div id="dri_result_container_id" class="dri_result_container">
-  <% if (@document_list.size > 0 || params[:view] == 'timeline') %>
-      <%= render_document_index @document_list %>&nbsp;
+  <% if (@document_list.count > 0 || params[:view] == 'timeline') %>
+    <%= render_document_index @document_list %>&nbsp;
   <% else %>
       <h4>
         <%= t('dri.help.no_results_found') %>

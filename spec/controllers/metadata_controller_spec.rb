@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe MetadataController do
   include Devise::Test::ControllerHelpers
-    
+
   describe 'update' do
 
     before(:each) do
@@ -14,7 +14,7 @@ describe MetadataController do
 
       @object = FactoryBot.create(:sound)
       @object[:status] = 'draft'
-      @object.save  
+      @object.save
     end
 
     after(:each) do
@@ -58,6 +58,75 @@ describe MetadataController do
       expect(@object.title).to eq(['An Audio Title'])
     end
 
+    it 'should mint a doi for an update of mandatory fields' do
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
+      Settings.doi.enable = true
+
+      @object.status = "published"
+      @object.save
+      DataciteDoi.create(object_id: @object.id)
+
+      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/valid_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      put :update, id: @object.id, metadata_file: @file
+
+      DataciteDoi.where(object_id: @object.id).first.delete
+      Settings.doi.enable = false
+    end
+
+    it 'should not mint a doi for no update of mandatory fields' do
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
+      Settings.doi.enable = true
+
+      @object.creator = ["Gallagher, Damien"]
+      @object.status = "published"
+      @object.save
+      DataciteDoi.create(object_id: @object.id)
+
+      expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/no_doi_change_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      put :update, id: @object.id, metadata_file: @file
+
+      DataciteDoi.where(object_id: @object.id).first.delete
+      Settings.doi.enable = false
+    end
+
   end
 
   describe 'read only set' do
@@ -71,7 +140,7 @@ describe MetadataController do
 
         @login_user = FactoryBot.create(:admin)
         sign_in @login_user
-        @object = FactoryBot.create(:sound) 
+        @object = FactoryBot.create(:sound)
 
         request.env["HTTP_REFERER"] = catalog_index_path
       end

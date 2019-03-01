@@ -18,15 +18,5 @@ storage:
   driver: filesystem
 filesystem:
   directory: dri_surrogates
-S3:
-  server: http://localhost:8081
-  use_ssl: false
-  access_key_id: anything
-  secret_access_key: anything
-  expiry: 604800
-data:
-  cover_image_bucket: coverimages
-  logos_bucket: institutelogos
-  types: [Sound, MovingImage, Image, Text]
 doi:
   enable: "false"

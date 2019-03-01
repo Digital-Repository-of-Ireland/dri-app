@@ -4,10 +4,12 @@ describe StatsReport do
 
   before(:each) do
     @object = FactoryBot.create(:image)
+    @object2 = FactoryBot.create(:image)
   end
 
   after(:each) do
     @object.delete
+    @object2.delete
   end
 
   context "Mime_type stats" do
@@ -23,15 +25,16 @@ describe StatsReport do
       generic_file2.save
 
       generic_file3 = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
-      generic_file3.batch = @object
+      generic_file3.batch = @object2
       generic_file3.mime_type = "application/pdf"
       generic_file3.save
 
       @object.update_index
+      @object2.update_index
 
       mime_types = StatsReport.mime_type_counts
 
-      expect(mime_types['application/pdf']).to eq 1
+      expect(mime_types['application/pdf']).to eq 2
       expect(mime_types['image/jpeg']).to eq 1
     end
   end

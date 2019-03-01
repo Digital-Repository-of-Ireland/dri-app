@@ -2,6 +2,7 @@ pipeline {
     agent {
         docker { 
             image 'dri-jenkins-agent'
+            label 'master'
             args '-u jenkins:jenkins -v rvm:/home/jenkins/.rvm -v /var/lib/jenkins/.ssh:/home/jenkins/.ssh'
         }
     }
@@ -42,6 +43,7 @@ pipeline {
                         credentialsId: '5a3ca3b3-d07d-4acd-bfd7-8a308078b6ec',
                         url: 'ssh://git@tracker.dri.ie:2200/drirepo/ansible-dri-infrastructure'
                 }
+                sh 'sudo /usr/bin/update-alternatives --set python /usr/bin/python2.7'
                 sshagent (credentials: ['5a3ca3b3-d07d-4acd-bfd7-8a308078b6ec']) {
                 ansiColor('xterm') {
                     ansiblePlaybook([credentialsId: '5a3ca3b3-d07d-4acd-bfd7-8a308078b6ec',

@@ -4,13 +4,13 @@
   </h5>
   <ul>
     <li>
-      <% draft_objects = @document.draft_objects %>
-      <% draft_subcoll = @document.draft_subcollections %>
+      <% draft_objects = @document.draft_objects_count %>
+      <% draft_subcoll = @document.draft_subcollections_count %>
       <% duplicate_total = @document.duplicate_total %>
-      <% reviewed_objects = @document.reviewed_objects %>
-      <% reviewed_subcoll = @document.reviewed_subcollections %>
-      <% published_objects = @document.published_objects %>
-      <% published_subcoll = @document.published_subcollections %>
+      <% reviewed_objects = @document.reviewed_objects_count %>
+      <% reviewed_subcoll = @document.reviewed_subcollections_count %>
+      <% published_objects = @document.published_objects_count %>
+      <% published_subcoll = @document.published_subcollections_count %>
 
       <ul class="dri_subnav_review_list">
         <!-- Draft Stats Block -->

@@ -3,7 +3,7 @@ module DRI::Solr::Document::Collection
   # fq=is_collection_tesim:true
   def children(limit: 100)
     # Find immediate children of this collection
-    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{id}\""
+    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{self.id}\""
     f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
     q_result = Solr::Query.new(solr_query, limit, fq: f_query)
@@ -15,31 +15,45 @@ module DRI::Solr::Document::Collection
     self[cover_field] && self[cover_field][0] ? self[cover_field][0] : nil
   end
 
-  def draft_objects
+  def draft_objects_count
     status_count('draft')
   end
 
-  def draft_subcollections
+  def draft_subcollections_count
     status_count('draft', true)
   end
 
-  def published_objects
+  def published_objects_count
     status_count('published')
   end
 
-  def published_subcollections
+  def published_object_ids
+    status_ids('published')
+  end
+
+  def published_objects
+    status_objects('published')
+  end
+
+  def published_images
+    published_objects.select do |doc| 
+      doc.file_type_label == 'Image'
+    end
+  end
+
+  def published_subcollections_count
     status_count('published', true)
   end
 
-  def reviewed_objects
+  def reviewed_objects_count
     status_count('reviewed')
   end
 
-  def reviewed_subcollections
+  def reviewed_subcollections_count
     status_count('reviewed', true)
   end
 
-  def total_objects
+  def total_objects_count
     status_count(nil)
   end
 
@@ -74,6 +88,9 @@ module DRI::Solr::Document::Collection
     return Blacklight::Solr::Response.new(response['response'], response['responseHeader']), duplicates
   end
 
+  # @param [String] type
+  # @param [Boolean] published_only
+  # @return [Integer]
   def type_count(type, published_only: false)
     solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + self.id +
                  "\" AND " +
@@ -90,18 +107,41 @@ module DRI::Solr::Document::Collection
       ActiveFedora.index_field_mapper.solr_name('metadata_md5', :stored_searchable, type: :string)
     end
 
-    def status_count(status, subcoll = false)
-      query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{id}"
+    # @param [String] status
+    # @param [Boolean] subcoll
+    # @return [String] solr query for children of self (id) with given status
+    def status_query(status, subcoll = false)
+      query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}"
       query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}" unless status.nil?
       query += " AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
+      query
+    end
 
-      ActiveFedora::SolrService.count(query)
+    # @param [String] status
+    # @param [Boolean] subcoll
+    # @return [Integer]
+    def status_count(status, subcoll = false)
+      ActiveFedora::SolrService.count(status_query(status, subcoll))
+    end
+
+    # @param [String] status
+    # @param [Boolean] subcoll
+    # @return [Solr::Query]
+    def status_objects(status, subcoll = false)
+      Solr::Query.new(status_query(status, subcoll))
+    end
+
+    # @param [String] status
+    # @param [Boolean] subcoll
+    # @return [Array] List of IDs
+    def status_ids(status, subcoll = false)
+      Solr::Query.new(status_query(status, subcoll)).map(&:id)
     end
 
     def duplicate_query
       query_params = {
         fq: [
-          "+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{id}",
+          "+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}",
           "+has_model_ssim:\"DRI::Batch\"", "+is_collection_sim:false"
         ],
         "facet.pivot" => "#{metadata_field},id",

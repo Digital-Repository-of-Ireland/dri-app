@@ -151,11 +151,11 @@ describe SolrDocument do
       @collection.reload
 
       doc = SolrDocument.find(@collection.id)
-      expect(doc.total_objects).to eq 6
+      expect(doc.total_objects_count).to eq 6
     end
 
     it 'should return published only if requested' do
-       2.times do
+      2.times do
         @collection.governed_items << FactoryBot.create(:sound)
       end
 
@@ -170,7 +170,39 @@ describe SolrDocument do
       @collection.reload
 
       doc = SolrDocument.find(@collection.id)
-      expect(doc.published_objects).to eq 3
+      expect(doc.published_objects_count).to eq 3
+    end
+
+    # ensure responses grouped into pages of 10 still return the correct count
+    context 'when a document has over 10 objects' do
+      before do
+        @pub_obj_ids = []
+        @num_objs = 11 # must be > 10 || solr default pagination
+        @num_objs.times do
+          object = FactoryBot.create(:sound)
+          object.status = 'published'
+          object.save
+          @pub_obj_ids << object.id
+          @collection.governed_items << object
+        end
+        @doc = SolrDocument.find(@collection.id)
+      end
+      describe 'published_objects' do
+        # previously failing due to solr response pagination
+        it 'should return 11 objects' do
+          expect(@doc.published_objects.count).to eq(@num_objs)
+        end
+      end
+      describe 'published_objects_count' do
+        it 'should be 11' do
+          expect(@doc.published_objects_count).to eq(@num_objs)
+        end
+      end
+      describe 'published_object_ids' do
+        it 'should return the 11 ids of published objects' do
+          expect(@doc.published_object_ids.sort).to eq(@pub_obj_ids.sort)
+        end
+      end
     end
   end
 

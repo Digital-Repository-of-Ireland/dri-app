@@ -80,6 +80,9 @@ module FlashTranslator
       when /^membership approved$/
         I18n.t('user_groups.memberships.approve', :locale => @user.locale)
 
+      when /^editing a published object$/
+        I18n.t('dri.flash.alert.doi_published_warning', locale: @user.locale)
+
       else "Unknown"
 
     end

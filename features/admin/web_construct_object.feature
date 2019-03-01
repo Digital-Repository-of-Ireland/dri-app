@@ -51,6 +51,7 @@ Scenario: Adding a pdf asset to an object
   And I press the button to "upload a file"
   Then I should see a success message for file upload
 
+@test
 Scenario: Replacing the metadata file of a Digital Object
   When I create a collection and save the pid
   And I create an object and save the pid
@@ -59,6 +60,10 @@ Scenario: Replacing the metadata file of a Digital Object
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to "upload metadata"
   Then I should see a success message for updating metadata
+  And an AIP should exist for the saved pid
+  And the AIP for the saved pid should have "2" versions
+  And the manifest for version "1" for the saved pid should be valid
+  And the manifest for version "2" for the saved pid should be valid
 
 Scenario: Constructing a Digital Object using the web form
   When I create a collection and save the pid
