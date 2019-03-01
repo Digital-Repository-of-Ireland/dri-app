@@ -4,8 +4,13 @@ class CatalogController < ApplicationController
 
   # This applies appropriate access controls to all solr queries
   CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
-  # This filters out objects that you want to exclude from search results, like FileAssets
-  CatalogController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
+  # This filters out objects that you want to exclude from search results, like Assets
+  CatalogController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :published_models_only, :configure_timeline]
+
+  # Excludes objects from the collections view or collections from the objects view
+  def published_models_only(solr_parameters, user_parameters)
+    solr_parameters[:fq] << DRI::Catalog::PUBLISHED_ONLY
+  end
 
   configure_blacklight do |config|
     
@@ -276,21 +281,4 @@ class CatalogController < ApplicationController
     end
   end
 
-  # Excludes objects from the collections view or collections from the objects view
-  def exclude_unwanted_models(solr_parameters, user_parameters)
-    solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
-    if user_parameters[:mode] == 'collections'
-      solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"
-      unless user_parameters[:show_subs] == 'true'
-        solr_parameters[:fq] << "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
-      end
-    else
-      solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:false"
-      if user_parameters[:collection].present?
-        solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\""
-      end
-    end
-    solr_parameters[:fq] << "+#{ActiveFedora.index_field_mapper.solr_name('status', :facetable, type: :string)}:published"
-  end
 end
