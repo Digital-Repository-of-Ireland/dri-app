@@ -1,5 +1,4 @@
 class DriAppSchema < GraphQL::Schema
-  mutation(Types::MutationType)
   query(Types::QueryType)
 
   def self.resolve_type(_type, object, _ctx)
