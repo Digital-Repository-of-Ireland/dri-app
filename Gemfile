@@ -183,3 +183,5 @@ gem 'qa', '~> 1.2'
 
 gem 'graphql', '~> 1.9'
 gem 'graphiql-rails', '1.5.0', group: :development
+gem 'search_object', '1.2.0'
+gem 'search_object_graphql', '0.1'

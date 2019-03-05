@@ -5,16 +5,9 @@ module Types
     # e.g. DRI::QualifiedDublinCore.where(status: 'published').limit(10)
 
     field :all_collections, [CollectionType], null: false,
-          description: "All published collections"
+          description: "All published collections", function: Resolvers::CollectionsSearch
     field :all_objects, [ObjectType], null: false,
           description: "All published objects"
-
-    def all_collections
-      DRI::QualifiedDublinCore.where(
-        "#{collection_field}": 'true',
-        status: 'published'
-      )
-    end
 
     def all_objects
       # # no object field, closest is !collection? && batch?
@@ -40,17 +33,6 @@ module Types
         status: 'published'
       )
     end
-
-    private
-
-      def collection_field
-        ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)
-      end
-
-      def generic_file_field
-        # Solr::SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\"
-        ActiveFedora.index_field_mapper.solr_name('has_model')
-      end
 
       ## Example queries 
       ########################################
