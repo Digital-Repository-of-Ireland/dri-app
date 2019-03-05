@@ -5,12 +5,17 @@ module Resolvers
     # include SearchObject for GraphQL
     include SearchObject.module(:graphql)
 
-    # scope is starting point for search
-    scope do
+    def all_collections(kwargs: {})
       DRI::QualifiedDublinCore.where(
         "#{collection_field}": 'true',
-        status: 'published'
+        status: 'published',
+        **kwargs
       )
+    end
+
+    # scope is starting point for search
+    scope do
+      all_collections
     end
 
     type types[Types::CollectionType]
@@ -18,6 +23,8 @@ module Resolvers
     # inline input type definition for the advance filter
     class CollectionFilter < ::Types::BaseInputObject
       argument :OR, [self], required: false
+      argument :AND, [self], required: false
+      # TODO dynamic args for filter, use CollectionType.fields
       argument :description_contains, String, required: false
     end
 
@@ -36,19 +43,32 @@ module Resolvers
 
     # apply_filter recursively loops through "OR" branches
     def apply_filter(scope, value)
-      branches = normalize_filters(value).reduce { |a, b| a.or(b) }
-      scope.merge branches
+      # TODO: time / profile which is more efficient
+      # modify results
+      scope.where(*normalize_filters(value))
+
+      # # new results
+      # all_collections(normalize_filters(value))
     end
 
-    def normalize_filters(value, branches = [])
-      scope = Link.all
-      scope = scope.like(:description, value['description_contains']) if value['description_contains']
+    # @param [Hash] value
+    def normalize_filters(value)      
+      value.map do |k, v|
+        k = k.to_s
+        raise ArgumentError, "Invalid query #{k}" unless valid_query?(k)
+        field, query_type = k.split('_')
+        send("#{query_type}_query", field, v)
+      end
+    end
 
-      branches << scope
-
-      value['OR'].reduce(branches) { |s, v| normalize_filters(v, s) } if value['OR'].present?
-
-      branches
+    # @param [String] query
+    # @return [Boolean]
+    def valid_query?(query)
+      return false unless query.count('_') == 1
+      field, query_type = query.split('_')
+      return false unless Types::CollectionType.fields.key?(field)
+      return false unless %w[contains is].include?(query_type)
+      return true      
     end
   end
 end

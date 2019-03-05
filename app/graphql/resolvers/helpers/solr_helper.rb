@@ -7,4 +7,12 @@ module Resolvers::Helpers::SolrHelper
     # Solr::SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\"
     ActiveFedora.index_field_mapper.solr_name('has_model')
   end
+
+  def contains_query(field, value)
+    "#{ActiveFedora.index_field_mapper.solr_name(field)}: *#{value}*"
+  end
+
+  def is_query(field, value)
+    "#{ActiveFedora.index_field_mapper.solr_name(field)}: #{value}"
+  end
 end

@@ -11,7 +11,7 @@ describe Resolvers::CollectionsSearch, type: :request do
                   status: 'published', num_collections: 4
 
   describe 'first' do
-    # call(query_string, context, variables)
+    # call([[:req, :object], [:req, :args], [:req, :context]])
     let(:result) { subject.class.call(nil, {first: 2}, nil) }
 
     it 'limits the number of results' do
@@ -28,6 +28,21 @@ describe Resolvers::CollectionsSearch, type: :request do
     it 'adds an offset to the results' do
       # get second and third object
       expect(result.map(&:id)).to eq(@collections.slice(1, 2).map(&:id))
+    end
+  end
+  describe 'filter' do
+    context 'filter_test results exist' do
+      before do
+        filter_args = { filter: { 'description_contains': 'filter_test' } }
+        @collections.first.description = ['filter_test']
+        @collections.first.save!
+        # # ensure no false positives
+        # @collections[1..-1].map { |col| col.description = ['some boring description']}
+        @result = subject.class.call(nil, filter_args, nil)
+      end
+      it 'should match any published collection with filter_test in the description' do
+        expect(@result.map(&:id)).to eq([@collections.first.id]) 
+      end
     end
   end
 end
