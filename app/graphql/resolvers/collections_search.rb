@@ -2,9 +2,9 @@ require 'search_object/plugin/graphql'
 
 module Resolvers
   class CollectionsSearch < BaseResolver
-    # include SearchObject for GraphQL
     include SearchObject.module(:graphql)
 
+    # TODO: migrate to ActiveFedora::SolrService.query ?
     def all_collections(kwargs: {})
       DRI::QualifiedDublinCore.where(
         "#{collection_field}": 'true',
@@ -13,7 +13,6 @@ module Resolvers
       )
     end
 
-    # scope is starting point for search
     scope do
       all_collections
     end
@@ -24,8 +23,11 @@ module Resolvers
     class CollectionFilter < ::Types::BaseInputObject
       argument :OR, [self], required: false
       argument :AND, [self], required: false
-      # TODO dynamic args for filter, use CollectionType.fields
-      argument :description_contains, String, required: false
+      # argument :description_contains, String, required: false
+      Types::CollectionType.fields.keys.each do |field_name|
+        argument :"#{field_name.underscore}_contains", String, required: false
+        argument :"#{field_name.underscore}_is", String, required: false
+      end
     end
 
     # when "filter" is passed "apply_filter" would be called to narrow the scope
@@ -41,7 +43,7 @@ module Resolvers
       scope.offset(value)
     end
 
-    # apply_filter recursively loops through "OR" branches
+    # TODO: iteratively generate and / or solr queries
     def apply_filter(scope, value)
       # TODO: time / profile which is more efficient
       # modify results
@@ -55,20 +57,9 @@ module Resolvers
     def normalize_filters(value)      
       value.map do |k, v|
         k = k.to_s
-        raise ArgumentError, "Invalid query #{k}" unless valid_query?(k)
         field, query_type = k.split('_')
         send("#{query_type}_query", field, v)
       end
-    end
-
-    # @param [String] query
-    # @return [Boolean]
-    def valid_query?(query)
-      return false unless query.count('_') == 1
-      field, query_type = query.split('_')
-      return false unless Types::CollectionType.fields.key?(field)
-      return false unless %w[contains is].include?(query_type)
-      return true      
     end
   end
 end

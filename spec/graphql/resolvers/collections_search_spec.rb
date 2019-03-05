@@ -16,7 +16,7 @@ describe Resolvers::CollectionsSearch, type: :request do
 
     it 'limits the number of results' do
       # should return first two objects
-      expect(result.map(&:id).count).to eq(2)
+      expect(result.map(&:id).size).to eq(2)
     end
     it 'gets the first n results' do
       expect(result.map(&:id)).to eq(@collections.slice(0, 2).map(&:id))
@@ -31,17 +31,47 @@ describe Resolvers::CollectionsSearch, type: :request do
     end
   end
   describe 'filter' do
-    context 'filter_test results exist' do
-      before do
-        filter_args = { filter: { 'description_contains': 'filter_test' } }
-        @collections.first.description = ['filter_test']
-        @collections.first.save!
-        # # ensure no false positives
-        # @collections[1..-1].map { |col| col.description = ['some boring description']}
-        @result = subject.class.call(nil, filter_args, nil)
+    # TODO move to helper module once search_api is merged
+    let(:get_results) do
+      ->(filter_func: 'description_is', filter_arg: 'filter_test') do
+        filter_args = { filter: { "#{filter_func}": filter_arg } }
+        subject.class.call(nil, filter_args, nil)
       end
-      it 'should match any published collection with filter_test in the description' do
-        expect(@result.map(&:id)).to eq([@collections.first.id]) 
+    end
+
+    context 'filter_test results exist' do
+      before(:each) do
+        published_collections = @collections.select do |col|
+          col.status == 'published'
+        end
+
+        published_collections.first.description = ['filter_test']
+        published_collections.first.save!
+
+        published_collections.last.description = ['other_filter_test']
+        published_collections.last.save!
+      end
+      describe 'contains' do
+        it 'should return fuzzy matches' do
+          # should match filter_test and filter
+          result = get_results.call(filter_func: 'description_contains')
+          expect(result.length).to eq(2)
+        end
+      end
+      describe 'is' do
+        it 'should return exact matches' do
+          result = get_results.call
+          expect(result.length).to eq(1)
+        end
+      end
+    end
+    context 'filter_test results do no exist' do
+      %w[description_is description_contains].each do |filter_func|
+        it "#{filter_func} not match anything" do
+          filter_args = { filter: { "#{filter_func}": 'filter_test' } }
+          result = subject.class.call(nil, filter_args, nil)
+          expect(result.size).to eq(0)
+        end
       end
     end
   end

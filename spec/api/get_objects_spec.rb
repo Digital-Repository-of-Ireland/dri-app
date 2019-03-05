@@ -14,9 +14,7 @@ describe "Get Objects API" do
       parameter name: :objects, description: 'array of hashes with object ids as values. e.g. {"objects": [{"v": "zp38wc65b"}]}. Only the first value of each hash is read.',
         in: :body, schema: {
           type: :array,
-          items: {
-            type: :object
-          },
+          items: { type: :object },
           example: {"objects": [{"v": "zp38wc65b"}]}
         }
 
