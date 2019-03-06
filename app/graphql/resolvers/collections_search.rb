@@ -47,14 +47,26 @@ module Resolvers
     def apply_filter(scope, value)
       # TODO: time / profile which is more efficient
       # modify results
-      scope.where(*normalize_filters(value))
+      scope.where(*query_array(value))
 
       # # new results
-      # all_collections(normalize_filters(value))
+      # all_collections(kwargs: query_hash(value))
     end
 
     # @param [Hash] value
-    def normalize_filters(value)      
+    # @return [hash]
+    def query_hash(value)
+      # TODO: just merge the hashes instead of converting to array and back
+      value.map do |k, v|
+        k = k.to_s
+        field, query_type = k.split('_')
+        send("#{query_type}_query_hash", field, v).to_a.first
+      end.to_h
+    end
+
+    # @param [Hash] value
+    # @return [Array] array of strings
+    def query_array(value)
       value.map do |k, v|
         k = k.to_s
         field, query_type = k.split('_')

@@ -12,7 +12,6 @@ describe "Get Objects API" do
                 schema: { 
                   type: :hash, 
                   items: { type: :object },
-                  # example: { "query": { "allCollections(filter:{titleContains:\"knowth\"})": "" } }
                   example: { "query": "{ allCollections(first:5) { id, title } }" }
                 }
 
@@ -21,7 +20,6 @@ describe "Get Objects API" do
       response "200", "Objects found" do
         context 'get objects' do
           let(:query) { { query: "{ allCollections(first:1) { id, title } }" } }
-          # let(:query) { { query: "{ allCollections { id, title } }" } }
           include_context 'rswag_include_json_spec_output' do
             run_test! do
               num_results = JSON.parse(response.body)['data']['allCollections'].size

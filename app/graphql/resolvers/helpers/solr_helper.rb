@@ -2,6 +2,10 @@ module Resolvers::Helpers::SolrHelper
   class DriQueryError < StandardError
   end
 
+  # TODO: should never use .where with tesim fields because they're tokenized
+  # which fields have sim equivalent? replace tesim for search
+  # add test that checks every field, try one character queries e.g.  
+  # DRI::QualifiedDublinCore.where('subject_tesim': '*t*').count
   def collection_field
     ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)
   end
@@ -12,44 +16,18 @@ module Resolvers::Helpers::SolrHelper
   end
 
   def contains_query(field, value)
-    "#{ActiveFedora.index_field_mapper.solr_name(field)}: *#{value}*"
+    "#{ActiveFedora.index_field_mapper.solr_name(field)}:*#{value}*"
   end
 
   def is_query(field, value)
-    "#{ActiveFedora.index_field_mapper.solr_name(field)}: #{value}"
+    "#{ActiveFedora.index_field_mapper.solr_name(field)}:#{value}"
   end
 
-  # def query_types
-  #   %[contains is]
-  # end
+  def contains_query_hash(field, value)
+    { "#{ActiveFedora.index_field_mapper.solr_name(field)}": "*#{value}*" }
+  end
 
-
-  # # @param [String] query
-  # # @return [Boolean]
-  # def valid_query?(query)
-  #   return false unless query.count('_') == 1
-
-  #   field, query_type = query.split('_')
-  #   return false unless self.class.fields.key?(field)
-
-  #   return false unless query_types.include?(query_type)
-
-  #   return true      
-  # end
-
-  # # @param [String] query
-  # def valid_query!(query)
-  #   raise DriQueryError, "query #{query} missing _" unless query.count('_') == 1
-
-  #   field, query_type = query.split('_')
-  #   unless self.class.fields.key?(field) do
-  #     raise DriQueryError, "#{self.class} does not accept queries for field: #{field}" 
-  #   end
-
-  #   unless query_types.include?(query_type) do
-  #     raise DriQueryError, "invalid query type #{query_type}. Try #{query_types}" 
-  #   end
-
-  #   return true
-  # end
+  def is_query_hash(field, value)
+    { "#{ActiveFedora.index_field_mapper.solr_name(field)}": "#{value}" }
+  end
 end
