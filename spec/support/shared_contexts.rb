@@ -36,4 +36,27 @@ shared_context 'doi_config_exists' do
   end
 end
 
+# @param [Symbol] field
+shared_context 'filter_test results exist' do |field: :subject|
+  before(:each) do
+    # drop draft collections
+    # @collections.select! { |col| col.status == 'published' }
 
+    @collections.first.send("#{field}=", ['filter_test'])
+    @collections.first.save!
+
+    @collections.last.send("#{field}=", ['other_filter_test'])
+    @collections.last.save!
+  end
+end
+
+
+# @param [Symbol] field
+shared_context 'filter_test results do not exist' do |field: :subject|
+  before(:each) do
+    @collections.each do |col|
+      col.send("#{field}=", ['no match'])
+      col.save!
+    end    
+  end
+end

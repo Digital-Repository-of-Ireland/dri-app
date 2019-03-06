@@ -33,46 +33,64 @@ describe Resolvers::CollectionsSearch, type: :request do
   describe 'filter' do
     # TODO move to helper module once search_api is merged
     let(:get_results) do
-      ->(filter_func: 'description_is', filter_arg: 'filter_test') do
+      ->(filter_func: '', filter_arg: 'filter_test') do
         filter_args = { filter: { "#{filter_func}": filter_arg } }
         subject.class.call(nil, filter_args, nil)
       end
     end
 
-    context 'filter_test results exist' do
-      before(:each) do
-        published_collections = @collections.select do |col|
-          col.status == 'published'
-        end
+    graphql_fields = Types::CollectionType.fields.keys.sort.reject do |field|
+      # id is a special case. It can't be changed once it's set
+      # publishedAt is a generated singular value
+      # TODO: determine if field is multival here
+      %w[id publishedAt createDate modifiedDate rootCollection depositingInstitute].include?(field)
+    end.map(&:underscore) # convert camel to snake case
 
-        published_collections.first.description = ['filter_test']
-        published_collections.first.save!
+    # graphql_fields = ['coverage']
 
-        published_collections.last.description = ['other_filter_test']
-        published_collections.last.save!
-      end
-      describe 'contains' do
-        it 'should return fuzzy matches' do
-          # should match filter_test and filter
-          result = get_results.call(filter_func: 'description_contains')
-          expect(result.length).to eq(2)
+    graphql_fields.each do |field_name|
+      describe "#{field_name}_contains" do
+        context 'results' do
+          include_context 'filter_test results exist', field: field_name
+          it 'should return fuzzy matches' do            
+            # should match filter_test and filter
+            result = get_results.call(filter_func: "#{field_name}_contains")
+            expect(result.length).to eq(2)
+          end
+        end
+        context 'no results' do
+          include_context 'filter_test results do not exist', field: field_name 
+          it 'should return an empty object when there are no matches found' do
+            result = get_results.call(filter_func: "#{field_name}_contains")
+            expect(result.length).to eq(0)
+          end
         end
       end
-      describe 'is' do
-        it 'should return exact matches' do
-          result = get_results.call
-          expect(result.length).to eq(1)
+      describe "#{field_name}_is" do
+        context 'results' do
+          include_context 'filter_test results exist', field: field_name
+          it 'should return exact matches' do
+            result = get_results.call(filter_func: "#{field_name}_is")
+            expect(result.length).to eq(1)
+          end
+        end
+        context 'no results' do
+          include_context 'filter_test results do not exist', field: field_name 
+          it 'should not match anything when there are no matches found' do
+            result = get_results.call(filter_func: "#{field_name}_is")
+            expect(result.length).to eq(0)
+          end
         end
       end
-    end
-    context 'filter_test results do no exist' do
-      %w[description_is description_contains].each do |filter_func|
-        it "#{filter_func} not match anything" do
-          filter_args = { filter: { "#{filter_func}": 'filter_test' } }
-          result = subject.class.call(nil, filter_args, nil)
-          expect(result.size).to eq(0)
-        end
-      end
+      # context 'filter_test results do no exist' do
+      #   ["#{field_name}_is", "#{field_name}_contains"].each do |filter_func|
+      #     it "#{filter_func}" do
+      #       filter_args = { filter: { "#{filter_func}": 'filter_test' } }
+      #       result = subject.class.call(nil, filter_args, nil)
+      #       expect(result.size).to eq(0)
+      #     end
+      #   end
+      # end
     end
   end
 end
