@@ -107,7 +107,7 @@ group :development, :test do
   gem 'zeus', require: false
   gem 'ci_reporter_rspec'
   gem 'solr_wrapper', '~> 0.18'
-  gem 'fcrepo_wrapper', '0.6.0'
+  gem 'fcrepo_wrapper', '0.9.0'
   gem 'byebug', '~> 10.0'
   gem 'parallel_tests', '~> 2.23'
   gem 'puffing-billy', '~> 0.11.0'

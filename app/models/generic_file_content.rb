@@ -45,7 +45,7 @@ class GenericFileContent
     preserved_file = preserve_file(file_upload, filename, mime_type, path, update)
     url = "#{URI.escape(download_url)}?version=#{preserved_file.version}"
 
-    external_content(url, preserved_file.filename)
+    external_content(url, filename)
   end
 
   def preserve_file(filedata, filename, mime_type, datastream, update=false)
