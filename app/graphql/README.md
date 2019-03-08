@@ -33,4 +33,10 @@ query getTestDescription {
     id, description
   }
 }
+
+query getTestDescription {
+  allCollections(filter:{descriptionContains:"test", titleContains:"dtest"}) {
+    id, description, title
+  }
+}
 ```

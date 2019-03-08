@@ -1,6 +1,6 @@
 module Types
   class QueryType < Types::BaseObject
-    # TODO: handle access levels, currently only published
+    # TODO: handle access levels, currently only published, add user scope
     # TODO: add default limit, querying everything in production will be very resource intensive / slow
     # e.g. DRI::QualifiedDublinCore.where(status: 'published').limit(10)
 
@@ -8,6 +8,9 @@ module Types
           description: "All published collections", function: Resolvers::CollectionsSearch
     field :all_objects, [ObjectType], null: false,
           description: "All published objects"
+
+    # could refactor to use enum option to specify type?
+    # .e.g search(type:collection) instead of CollectionsSearch
 
     def all_objects
       # # no object field, closest is !collection? && batch?
@@ -19,41 +22,12 @@ module Types
       # # catalog and my_collections controllers use not collection and exclude generic files
       # # see app/controllers/concerns/dri/catalog.rb
 
-      # collection_field = ActiveFedora.index_field_mapper.solr_name(
-      #   'is_collection', :facetable, type: :string
-      # )
-      # # DRI::QualifiedDublinCore.where(status: 'published').where.not("#{collection_field}": 'true').where('DRI::Batch IN has_model_ssim')
-      # DRI::QualifiedDublinCore.where("#{collection_field} NOT IN (?)", %w[true]) 
-
-      # # too slow
-      # DRI::QualifiedDublinCore.where(status: 'published').select(&:object?)
+      collection_field = Solr::SchemaFields.facet('is_collection')
       DRI::QualifiedDublinCore.where(
         "#{collection_field}": 'false',
         # "#{generic_file_field}": 'DRI::GenericFile'
         status: 'published'
       )
     end
-
-      ## Example queries 
-      ########################################
-      # query getAllPublishedCollections {
-      #   allCollections {
-      #     id, publishedAt, createDate, modifiedDate,
-          
-      #     title, creator,
-          
-      #     depositingInstitute,
-          
-      #     licence, language, contributor, publishedDate, relation, 
-      #     coverage, temporalCoverage, geographicalCoverage, subject,
-      #     qdcId
-      #   }
-      # }
-
-      # query getAllPublishedObjects {
-      #   allObjects {
-      #     id
-      #   }
-      # }
   end
 end

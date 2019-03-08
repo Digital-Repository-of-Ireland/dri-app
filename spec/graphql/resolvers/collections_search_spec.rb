@@ -64,8 +64,7 @@ describe Resolvers::CollectionsSearch, type: :request do
       describe "#{field_name}_contains" do
         context 'results' do
           include_context 'filter_test results exist', field: field_name
-          it 'should return fuzzy matches' do
-                
+          it 'should return fuzzy matches' do            
             # should match filter_test and other_filter_test
             result = get_results.call(filter_func: "#{field_name}_contains")
             expect(result.length).to eq(2)

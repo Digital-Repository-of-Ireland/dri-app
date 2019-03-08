@@ -21,59 +21,57 @@ module Resolvers
 
     # inline input type definition for the advance filter
     class CollectionFilter < ::Types::BaseInputObject
-      argument :OR, [self], required: false
-      argument :AND, [self], required: false
-      # argument :description_contains, String, required: false
+      # argument :OR, [self], required: false
+      # argument :AND, [self], required: false
       Types::CollectionType.fields.keys.each do |field_name|
         argument :"#{field_name.underscore}_contains", String, required: false
         argument :"#{field_name.underscore}_is", String, required: false
+        # TODO: escape solr chars for _is query? e.g. description_is:*test*
       end
     end
 
-    # when "filter" is passed "apply_filter" would be called to narrow the scope
     option :filter, type: CollectionFilter, with: :apply_filter
-    option :first, type: types.Int, with: :apply_first
+    option :first, type: types.Int, 
+                   default: blacklight_config.default_per_page, 
+                   with: :apply_first
     option :skip, type: types.Int, with: :apply_skip
 
-    def apply_first(scope, value)
+    # @param [ActiveFedora::Relation] scope
+    # @param [Integer] value
+    # @return [ActiveFedora::Relation]
+    def apply_first(scope, value)      
       scope.limit(value)
     end
 
+    # @param [ActiveFedora::Relation] scope
+    # @param [Integer] value
+    # @return [ActiveFedora::Relation]
     def apply_skip(scope, value)
       scope.offset(value)
     end
 
-    # TODO: iteratively generate and / or solr queries
+
+    # @param [ActiveFedora::Relation] scope
+    # @param [Hash] value
+    # @return [ActiveFedora::Relation]
     def apply_filter(scope, value)
+      # TODO: iteratively generate and / or solr queries
       # TODO: time / profile which is more efficient
       # modify results
-      scope.where(*query_array(value))
+      # will fail for filters with more than one value, need to chain where calls
+      # scope.where(*query_array(value))
+      query_array(value).reduce(scope) do |scp, arg|
+        scp.where(arg)
+      end
+
+      # ['is_collection_sim:true', 'status_sim:published'].reduce(DRI::QualifiedDublinCore) { |cls, arg| cls.where(arg) }.length
+      # [[:where, 'is_collection_sim:true'],[:where, 'status_sim:published']].reduce(DRI::QualifiedDublinCore) { |cls, (m, arg)| cls.send(m, arg) }.length
 
       # # new results
+      # # fails for some cases, e.g. contributor
+      # # DRI::QulaifiedDublinCore.where(contributor_sim: '*filter_test*').count # 1
+      # # DRI::QulaifiedDublinCore.where("contributor_sim:*filter*").count     # 2
       # all_collections(kwargs: query_hash(value))
-    end
-
-    # @param [Hash] value
-    # @return [hash]
-    def query_hash(value)
-      # TODO: just merge the hashes instead of converting to array and back
-      value.map do |k, v|
-        k = k.to_s
-        # split on last occurrence of _
-        field, _, query_type = k.rpartition('_')        
-        send("#{query_type}_query_hash", field, v).to_a.first
-      end.to_h
-    end
-
-    # @param [Hash] value
-    # @return [Array] array of strings
-    def query_array(value)
-      value.map do |k, v|
-        k = k.to_s
-        # split on last occurrence of _
-        field, _, query_type = k.rpartition('_')
-        send("#{query_type}_query", field, v)
-      end
     end
   end
 end
