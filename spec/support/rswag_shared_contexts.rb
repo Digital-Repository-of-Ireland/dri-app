@@ -58,7 +58,11 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
       collection.save
       @collections << collection
     end
-    @collections << create_subcollection_for(@example_user, status: status) if subcollection
+
+    if subcollection
+      @collections.push(*create_subcollection_for(@example_user, status: status))
+    end
+
     sign_out_all # just to make sure requests aren't using session
   end
   after(:each) do
@@ -126,7 +130,7 @@ end
 # @param type [Symbol]
 # @param title [String]
 # @param status [String]
-# @return collection containing subcollection [DRI::QualifiedDublinCore (Collection)]
+# @return [Array[DRI::QualifiedDublinCore]]
 def create_subcollection_for(user, status: 'draft')
   collection = create_collection_for(user, status: status)
   subcollection = create_collection_for(user, status: status, title: 'subcollection')
@@ -137,7 +141,7 @@ def create_subcollection_for(user, status: 'draft')
     c.save
   end
 
-  collection
+  [collection, subcollection]
 end
 
 # @param user [User]

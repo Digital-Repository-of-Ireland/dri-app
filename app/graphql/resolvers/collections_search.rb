@@ -59,7 +59,8 @@ module Resolvers
       # TODO: just merge the hashes instead of converting to array and back
       value.map do |k, v|
         k = k.to_s
-        field, query_type = k.split('_')
+        # split on last occurrence of _
+        field, _, query_type = k.rpartition('_')        
         send("#{query_type}_query_hash", field, v).to_a.first
       end.to_h
     end
@@ -69,7 +70,8 @@ module Resolvers
     def query_array(value)
       value.map do |k, v|
         k = k.to_s
-        field, query_type = k.split('_')
+        # split on last occurrence of _
+        field, _, query_type = k.rpartition('_')
         send("#{query_type}_query", field, v)
       end
     end

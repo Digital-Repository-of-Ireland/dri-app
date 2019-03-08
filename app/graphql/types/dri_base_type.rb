@@ -21,7 +21,7 @@ module Types
     # organisation should be set to be published: null: false
     # but in dev obj has org of null, null: false throws exception on query
     field :depositing_institute, String, null: true
-    field :institue, [String], null: true
+    field :institute, [String], null: true
     ##############################################################
 
     # optional user input fields

@@ -1,6 +1,6 @@
 require 'ffaker'
 module Seeds
-  INSTITUE_NAMES = %w(test_institute other_test_institute last_test_institute)
+  INSTITUTE_NAMES = %w(test_institute other_test_institute last_test_institute)
 
   def self.add_organisations
     create_organisation('save')
@@ -22,7 +22,7 @@ module Seeds
 
   # @param func [String] callback to save institute
   def self.create_organisation(func)
-    INSTITUE_NAMES.each do |institute_name|
+    INSTITUTE_NAMES.each do |institute_name|
       test_institute = Institute.new(
         name: institute_name,
         url: FFaker::Internet.domain_name,
@@ -35,7 +35,7 @@ module Seeds
 
   # @param func [String] callback to destroy institute
   def self.destroy_organisation(func)
-    INSTITUE_NAMES.each do |institute_name|
+    INSTITUTE_NAMES.each do |institute_name|
       Institute.find_by(name: institute_name).send(func)
     end
   end
