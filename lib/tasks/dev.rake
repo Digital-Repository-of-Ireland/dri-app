@@ -21,17 +21,66 @@ namespace :jetty do
     Process.kill("TERM", pid) unless pid == 0
   end
 
-  task config: :environment do
-    Rake::Task['jetty:start'].invoke unless solr.started? 
+  task restart: :environment do
+    Rake::Task['jetty:stop'].invoke
+    Rake::Task['jetty:start'].invoke
+  end
 
-    client = SolrWrapper::Client.new(solr.url)
+  task config: :environment do
+    Rake::Task['jetty:start'].invoke unless solr.started?
 
     begin
-      solr.create(persist: true, name: 'development', dir: solr_config) unless client.exists?('development')
-      solr.create(persist: true, name: 'test', dir: solr_config) unless client.exists?('test')
+      update_core('development')
+      update_core('test')
     rescue Exception => e
       puts e
     end
+  end
+
+  # https://github.com/samvera-deprecated/jettywrapper/wiki/Using-jettywrapper#setting-up-jetty-for-your-project
+  desc 'copies config files from solr/conf to the active solr dir'
+  task config_update: :environment do
+    config_update(Rails.env)
+  end
+
+  desc 'shows differences between solr/conf and the active solr dir. use update_config to copy solr/conf xml files to the active solr dir'
+  task config_diff: :environment do
+    config_diff(Rails.env)
+  end
+
+  # @param [String] env_name
+  # for env, create new core with latest config if core doesn't exist
+  # if core does exist, copy config
+  def update_core(env_name='development')
+    client = SolrWrapper::Client.new(solr.url)
+    if client.exists?(env_name)
+      config_update(env_name)
+    else
+      solr.create(persist: true, name: env_name, dir: solr_config)
+    end
+  end
+
+  # @param [String] env_name
+  def config_diff(env_name='development')
+    solr_config_files.each do |cf|
+      rf = "#{solr.instance_dir}/server/solr/#{env_name}/conf/#{File.basename(cf)}"
+      system("diff #{cf} #{rf}")
+    end
+  end
+
+  # @param [String] env_name
+  def config_update(env_name='development')
+    solr_config_files.each do |cf|
+      cp(
+        "#{cf}",
+        "#{solr.instance_dir}/server/solr/#{env_name}/conf/",
+        verbose: true
+      )
+    end
+  end
+
+  def solr_config_files
+    FileList[File.join(solr_config, '*.xml')]
   end
 
   def solr_config

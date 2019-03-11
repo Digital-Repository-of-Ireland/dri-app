@@ -146,7 +146,7 @@
         $zen-column-count: 3;
         .dri_header_container {
             padding-bottom: 20px;
-            .dri_search_term_text_input {
+            .dri_search_term_text_input, #search_field {
                 margin: 15px 0 0 0;
                 clear: right;
             }
@@ -223,20 +223,15 @@
         }
     }
 }
+
 @media only screen and (max-width: 766px) {
-    // #choose_vocab {
-    //     float:left;
-    //     display:block;
-    //     // push inputs to next line
-    //     margin-right: 766px;
-    // }
     .dri_wrapper {
         max-width: 760px;
         width: 100%;
         padding-left: 10px;
         padding-right: 10px;
         margin: 0 auto;
-        margin-top: 60px;
+        margin-top: 9em;
         $zen-column-count: 2;
         .dri_header_container {
             .dri_ident {
@@ -248,8 +243,10 @@
             }
         }
     }
-    .dri_search_term_text_input {
+    .dri_search_term_text_input, #search_field {
         margin: 12px 10px 0 10px;
+    }
+    .dri_search_term_text_input {
         width: 50%;
     }
     .dri_main_content_container {
@@ -332,6 +329,13 @@
         }
     }
 }
+
+@media only screen and (max-width: 395px) {
+    .dri_wrapper {
+        margin-top: 12em;
+    }
+}
+
 .dri_report_container {
     margin-bottom: 25px;
 }

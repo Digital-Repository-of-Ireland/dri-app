@@ -224,13 +224,8 @@ When /^I select a collection$/ do
   select_by_value(second_option, :from => "ingestcollection")
 end
 
-When /^I select the "(objects|collections)" tab$/ do |tab|
-  case tab
-    when "objects"
-      click_link("objects")
-    when "collections"
-      click_link("collections")
-  end
+When /^I select the "(objects|collections|sub collections)" tab$/ do |tab|
+  click_link(tab.gsub(/\s/, '_'))
 end
 
 When /^I hover over a visible "([^\"]+)"$/ do |selector|
@@ -300,24 +295,25 @@ Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|
   page.execute_script("return arguments[0].click();", element)
 end
 
-Then /^(?:|I )(press|click) the button to "([^"]*)"(?: within "([^"]*)")?$/ do |action,button,selector|
-  Capybara.ignore_hidden_elements = false
-  if selector
-    within("//*[@id='#{selector}']") do
-      page.find_button(button_to_id(button)).click
+Then /^(?:|I )(press|click) the button to "([^"]*)"(?: within "([^"]*)")?$/ do |action, button, id|
+  # click should work on hidden elements, press should not
+  if action == 'click'
+    Capybara.ignore_hidden_elements = false 
+    find_args = {visible: :hidden}
+  end
+
+  if id
+    within("##{id}") do
+      page.find_button(button_to_id(button), *find_args).click
     end
   else
-    if action == 'click'
-      page.find_button(button_to_id(button), {visible: false}).trigger('click')
-    else
-      page.find_button(button_to_id(button), {visible: false}).click
-    end
+    page.find_button(button_to_id(button), *find_args).click
   end
 end
 
 Then /^I check "(.*?)"$/ do |checkbox|
   Capybara.ignore_hidden_elements = false
-  element = page.find_by_id(checkbox, { visible: false}) #.click #trigger('click')
+  element = page.find_by_id(checkbox, {visible: false}) #.click #trigger('click')
   page.execute_script("return arguments[0].click();", element)
 end
 

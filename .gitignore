@@ -59,6 +59,8 @@ fcrepo4-test-data/
 dri_files
 
 *.bak
+swagger/
+
 .byebug*
 *.pid
 *.sublime*

@@ -5,21 +5,22 @@ describe "Get Objects API" do
     # use post since list of objects could be very large and get request has smaller size limit
     # however, must use named value pairs to exceed url length limit, which this example does not
     post "retrieves objects by id" do
-      tags 'objects'
-      security [ apiKey: [], appId: [] ]
+      include_context 'rswag_user_with_collections', status: 'published'
+      include_context 'doi_config_exists'
+      
       produces 'application/json'
       consumes 'application/json'
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
+      tags 'objects'
+      security [ apiKey: [], appId: [] ]
+
       parameter name: :objects, description: 'array of hashes with object ids as values. e.g. {"objects": [{"v": "zp38wc65b"}]}. Only the first value of each hash is read.',
         in: :body, schema: {
           type: :array,
           items: { type: :object },
           example: {"objects": [{"v": "zp38wc65b"}]}
         }
+      pretty_json_param
 
-      include_context 'rswag_user_with_collections', status: 'published'
-      include_context 'doi_config_exists'
 
       response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }

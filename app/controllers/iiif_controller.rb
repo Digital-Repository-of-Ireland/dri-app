@@ -29,7 +29,7 @@ class IiifController < ApplicationController
     @document = solr_doc_by_id_param
     response.headers['Access-Control-Allow-Origin'] = '*'
 
-    manifest = Rails.cache.fetch("#{@document.id}-#{@document['system_modified_dtsi']}") { iiif_sequence.as_json }
+    manifest = Rails.cache.fetch("#{@document.id}-iiif-sequence-#{@document['system_modified_dtsi']}") { iiif_sequence.as_json }
     
     respond_to do |format|
       format.html  { @manifest = JSON.pretty_generate(manifest) }

@@ -2,26 +2,28 @@ require 'swagger_helper'
 
 describe "Catalog API" do
   path "/catalog" do
-    get "retrieves objects from the catalog" do
-      produces 'application/json', 'application/xml', 'application/ttl'
+    get "retrieves published (public) objects, collections, or subcollections" do
+      # add subcollections?
       include_context 'rswag_user_with_collections', status: 'published'
       include_context 'doi_config_exists'
 
-      parameter name: :per_page, description: 'Number of results per page', 
-        in: :query, type: :number, default: 9
-      parameter name: :mode, description: 'Show Objects or Collections', 
-        in: :query, type: :string, default: 'objects'
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
+      produces 'application/json', 'application/xml', 'application/ttl'
 
-      let(:per_page) { 9 }
-      let(:mode)     { 'objects' }
+      # helper methods that call rswag parameter methods
+      parameter name: :q, description: 'Search Query',
+                in: :query, type: :string, required: false
+      search_controller_params(CatalogController.blacklight_config)
+      default_search_params
+      default_page_params
+      pretty_json_param
 
       response '200', 'catalog found' do
         include_context 'sign_out_before_request' do
           include_context 'rswag_include_json_spec_output' do
             it_behaves_like 'a pretty json response'
           end
+          # no output for these specs, just ensure no duplicates are found
+          it_behaves_like 'it accepts search_field params', CatalogController, :q
         end
       end
     end
@@ -29,13 +31,14 @@ describe "Catalog API" do
 
   path "/catalog/{id}" do
     get "retrieves a specific object from the catalog" do
-      produces 'application/json', 'application/xml', 'application/ttl'
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
-      parameter name: :id, description: 'Object ID',
-        in: :path, :type => :string
       include_context 'rswag_user_with_collections', status: 'published'
       include_context 'doi_config_exists'
+
+      produces 'application/json', 'application/xml', 'application/ttl'
+      
+      parameter name: :id, description: 'Object ID',
+                in: :path, :type => :string
+      pretty_json_param
 
       response "200", "Found" do
         context 'Collection' do

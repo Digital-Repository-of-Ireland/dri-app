@@ -2,49 +2,31 @@ require 'swagger_helper'
 
 describe "My Collections API" do
   path "/my_collections" do
-    get "retrieves objects, collections, or subcollections for the current user" do
-      tags 'collections'
-      security [ apiKey: [], appId: [] ]
-      produces 'application/json'
+    get "retrieves published (public) and draft (private) objects, collections, or subcollections" do
       include_context 'rswag_user_with_collections'
       include_context 'doi_config_exists'
+      
+      produces 'application/json'
+      security [ apiKey: [], appId: [] ]
+      tags 'collections'
       # TODO accept ttl and xml on default route too
       # not just specific objects
       # TODO add json format for /my_collections/:id/duplicates
 
-      parameter name: :per_page, description: 'Number of results per page', 
-        in: :query, type: :number, default: 9, required: false
-      parameter name: :page, description: 'Page number', 
-        in: :query, type: :number, default: 1, required: false
-      parameter name: :mode, description: 'Show Objects or Collections', 
-        in: :query, required: false, default: 'objects', type: :string,
-        enum: ['objects', 'collections']
-      parameter name: :show_subs, description: 'Show subcollections',
-        in: :query, type: :boolean, default: false
-      parameter name: :search_field, description: 'Solr field to search for',
-        in: :query, type: :string, default: 'all_fields'
-      parameter name: :sort, description: 'Solr fields to sort by',
-        in: :query, type: :string, default: nil
-      parameter name: :q, description: 'Search Query',
-        in: :query, type: :string, default: nil
+      # also accepts q, but that runs the same search as the catalog endpoint
+      parameter name: :q_ws, description: 'Search Query',
+                in: :query, type: :string, default: nil
+      # helper methods that call rswag parameter methods
+      search_controller_params(MyCollectionsController.blacklight_config)
+      default_search_params
+      default_page_params
+      pretty_json_param
+
+      let(:q_ws) { nil }
         
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
-      # # issue with facets beign empty string
+      # # issue with facets being empty string
       # parameter name: :f, description: 'Search facet (solr fields to filter results)',
         # in: :query, type: :string, default: nil
-
-      # undefined method `per_page' when not set
-      let(:per_page)     { 9 }
-      let(:page)         { 1 }
-      # although when you visit /my_collections in a web browser mode=collections
-      # if you call /my_collections.json you get objects, not only collections
-      let(:mode)         { 'objects' }
-      let(:show_subs)    { false }
-      let(:search_field) { 'all_fields' }
-      let(:sort)         { nil }
-      let(:q)            { nil }
-      # let(:f)            { nil }
       
       response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }
@@ -85,23 +67,26 @@ describe "My Collections API" do
             it_behaves_like 'a pretty json response'
           end
         end
+        context 'Search fields' do
+          # no output for these specs, just ensure no duplicates are found
+          it_behaves_like 'it accepts search_field params', MyCollectionsController, :q_ws
+        end
       end
     end
   end
 
   path "/my_collections/{id}/" do
     get "retrieves a specific object, collection or subcollection" do
-      tags 'collections'
-      security [ apiKey: [], appId: [] ]
-      produces 'application/json', 'application/xml', 'application/ttl'
-
-      parameter name: :id, description: 'Object ID',
-        in: :path, :type => :string
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
-
       include_context 'rswag_user_with_collections'
       include_context 'doi_config_exists'
+
+      produces 'application/json', 'application/xml', 'application/ttl'
+      tags 'collections'
+      security [ apiKey: [], appId: [] ]
+
+      parameter name: :id, description: 'Object ID',
+                in: :path, type: :string
+      pretty_json_param
 
       response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }

@@ -17,16 +17,15 @@ require 'swagger_helper'
 describe 'Objects API' do
   path "/objects/{id}/" do
     get 'retrieves a specific object' do
-      tags 'objects'
       include_context 'rswag_user_with_collections', status: 'published'
       include_context 'doi_config_exists'
+      produces 'application/json', 'application/endnote', 'application/zip'
+      tags 'objects'
 
       parameter name: :id, description: 'Object ID',
-          in: :path, :type => :string
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
+                in: :path, type: :string
+      pretty_json_param
 
-      produces 'application/json', 'application/endnote', 'application/zip'
       response '200', 'Found'  do
         context 'Collection' do
           let(:id) { @collections.first.id }

@@ -54,3 +54,13 @@ end
 After('@read_only') do
   Settings.read_only = false
 end
+
+# can't use around hook to catch expectation failure because it gets rescued internally
+After do |scenario|
+  # using byebug stop interaction with browser, just sleep on failure
+  if ENV['headless']&.downcase&.strip == 'false' && scenario.failed?
+    sleeptime = 600
+    STDOUT.puts("\nScenario failed. Sleeping for #{sleeptime} seconds.")
+    sleep(sleeptime)
+  end
+end

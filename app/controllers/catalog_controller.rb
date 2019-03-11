@@ -13,6 +13,7 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|
+    
     config.show.route = { controller: 'catalog' }
     config.per_page = [9, 18, 36]
     config.default_per_page = 9
@@ -67,6 +68,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'pdate_range_start_isi', show: false
     config.add_facet_field 'date_range_start_isi', show: false
 
+    config.add_facet_field solr_name('licence', :facetable), label: 'Licence', limit: 20
     config.add_facet_field solr_name('subject', :facetable), limit: 20
     config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: true
     config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, show: false
@@ -149,38 +151,18 @@ class CatalogController < ApplicationController
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields.
 
-    config.add_search_field('title') do |field|
-      # solr_parameters hash are sent to Solr as ordinary url query params.
-      field.solr_parameters = { :'spellcheck.dictionary' => 'title' }
-
-      # :solr_local_parameters will be sent using Solr LocalParams
-      # syntax, as eg {! qf=$title_qf }. This is neccesary to use
-      # Solr parameter de-referencing like $title_qf.
-      # See: http://wiki.apache.org/solr/LocalParams
-      field.solr_local_parameters = {
-        qf: '$title_qf',
-        pf: '$title_pf'
-      }
-    end
-
-    config.add_search_field('person') do |field|
-      field.solr_parameters = { :'spellcheck.dictionary' => 'person' }
-      field.solr_local_parameters = {
-        qf: '$person_qf',
-        pf: '$person_pf'
-      }
-    end
-
-    # Specifying a :qt only to show it's possible, and so our internal automated
-    # tests can test it. In this case it's the same as
-    # config[:default_solr_parameters][:qt], so isn't actually neccesary.
-    config.add_search_field('subject') do |field|
-      field.solr_parameters = { :'spellcheck.dictionary' => 'subject' }
-      field.qt = 'search'
-      field.solr_local_parameters = {
-        qf: '$subject_qf',
-        pf: '$subject_pf'
-      }
+    %i[
+      title subject description 
+      creator contributor publisher 
+      person place
+    ].each do |field_name|
+      config.add_search_field(field_name) do |field|
+        field.solr_local_parameters = {
+          qf: "${#{field_name}_qf}",
+          pf: "${#{field_name}_pf}"
+        }
+        field.label = self.solr_field_to_label(field_name)
+      end
     end
 
     # "sort results by" select (pulldown)
