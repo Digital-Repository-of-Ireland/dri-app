@@ -39,25 +39,16 @@ end
 # @param [Symbol] field
 shared_context 'filter_test results exist' do |field: :subject|
   before(:each) do
-    begin
-      filter_vals = %w[filter_test other_filter_test]
-      # filter_vals.map! {|v| [v]} if DRI::QualifiedDublinCore.multiple?(field)
-      # Types::CollectionType.fields.select {|k, v| v.type.class.name.demodulize == "List"}.keys
+    filter_vals = %w[filter_test other_filter_test]
+    # filter_vals.map! {|v| [v]} if DRI::QualifiedDublinCore.multiple?(field)
+    multival = Types::CollectionType.fields[field.camelize(:lower)].type.list?
+    filter_vals.map! { |v| [v] } if multival
 
-      # field_type = Types::CollectionType.fields[field.camelize(:lower)].type
-      # multival = field_type.class.name.demodulize == 'List'
-      multival = Types::CollectionType.fields[field.camelize(:lower)].type.list?
-      filter_vals.map! { |v| [v] } if multival
+    @collections.first.send("#{field}=", filter_vals.first)
+    @collections.first.save!
 
-      @collections.first.send("#{field}=", filter_vals.first)
-      @collections.first.save!
-
-      @collections.last.send("#{field}=", filter_vals.last)
-      @collections.last.save!
-    rescue e
-      require 'byebug'
-      byebug
-    end
+    @collections.last.send("#{field}=", filter_vals.last)
+    @collections.last.save!
   end
 end
 
@@ -67,9 +58,6 @@ shared_context 'filter_test results do not exist' do |field: :subject|
   before(:each) do
     @collections.each do |col|
       filter_val = 'no_match'
-      # filter_val = [filter_val] if DRI::QualifiedDublinCore.multiple?(field)
-
-      # field_type = Types::CollectionType.fields[field.camelize(:lower)].type
       multival = Types::CollectionType.fields[field.camelize(:lower)].type.list?
       filter_val = [filter_val] if multival
 
