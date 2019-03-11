@@ -61,35 +61,34 @@ describe Resolvers::CollectionsSearch, type: :request do
     ]
 
     graphql_fields.each do |field_name|
-      context 'results' do
-        include_context 'filter_test results exist', field: field_name
-
-        describe "#{field_name}_contains" do
+      describe "#{field_name}_contains" do
+        context 'results' do
+          include_context 'filter_test results exist', field: field_name
           it 'should return fuzzy matches' do            
             # should match filter_test and other_filter_test
             result = get_results.call(filter_func: "#{field_name}_contains")
             expect(result.length).to eq(2)
           end
         end
-
-        describe "#{field_name}_is" do
+        context 'no results' do
+          include_context 'filter_test results do not exist', field: field_name 
+          it 'should return an empty object when there are no matches found' do
+            result = get_results.call(filter_func: "#{field_name}_contains")
+            expect(result.length).to eq(0)
+          end
+        end
+      end
+      describe "#{field_name}_is" do
+        context 'results' do
+          include_context 'filter_test results exist', field: field_name
           it 'should return exact matches' do
             # should only match filter_test, not other_filter_test
             result = get_results.call(filter_func: "#{field_name}_is")
             expect(result.length).to eq(1)
           end
         end
-      end
-      context 'no results' do
-        include_context 'filter_test results do not exist', field: field_name
-        
-        describe "#{field_name}_contains" do
-          it 'should return an empty object when there are no matches found' do
-            result = get_results.call(filter_func: "#{field_name}_contains")
-            expect(result.length).to eq(0)
-          end
-        end
-        describe "#{field_name}_is" do
+        context 'no results' do
+          include_context 'filter_test results do not exist', field: field_name 
           it 'should not match anything when there are no matches found' do
             result = get_results.call(filter_func: "#{field_name}_is")
             expect(result.length).to eq(0)
