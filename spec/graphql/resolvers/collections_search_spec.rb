@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'support/rswag_shared_contexts'
+require 'swagger_helper'
 # TODO: move user / published collections shared contexts into common shared_context
 # rename to API shared context / example once search_api branch is merged
 # to avoid conflicts
@@ -54,11 +54,17 @@ describe Resolvers::CollectionsSearch, type: :request do
     #     ].include?(field)
     # end.map(&:underscore) # convert camel to snake case
 
+    ###############################################
     graphql_fields = %w[
       contributor coverage creator date description geographical_coverage 
       institute language licence published_date qdc_id 
       rights subject temporal_coverage title 
     ]
+
+    # Types::CollectionType.fields.keys.sort.each do |field|
+    #   xit "should test #{field}" unless graphql_fields.include?(field.underscore)
+    #   # ["createDate", "depositingInstitute", "governedItemIds", "id", "modifiedDate", "publishedAt", "relation", "rootCollection"]
+    # end
 
     graphql_fields.each do |field_name|
       describe "#{field_name}_contains" do
