@@ -25,11 +25,12 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
       name: 'test', description: 'this is a test', url: 'http://example.com'
     )
     
-    @example_user = create_user
-    @collections  = []
-    @dois         = []
-    @docs         = []
-    @institute    = create_institute(status)
+    @example_user    = create_user
+    @collections     = []
+    @sub_collections = []
+    @dois            = []
+    @docs            = []
+    @institute       = create_institute(status)
 
     num_collections.times do |i|
       collection = create_collection_for(@example_user, status: status)
@@ -60,11 +61,16 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     end
 
     if subcollection
-      @collections.push(*create_subcollection_for(@example_user, status: status))
+      collection = @collections.last
+      subcollection = create_collection_for(@example_user, status: status, title: 'subcollection')
+      @sub_collections << subcollection
+      subcollection.governing_collection = collection
+      [collection, subcollection].map(&:save)
     end
 
     sign_out_all # just to make sure requests aren't using session
   end
+
   after(:each) do
     @licence.destroy
     @institute.delete if @institute
@@ -73,7 +79,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     # issue with nested examples e.g iiif_spec
     # possibly check for ldp gone before delete?
     # @collections.map(&:delete)
-    @collections.each do |c|
+    [@collections, @sub_collections].flatten.each do |c|
       # try to destroy collection if it still exists, otherwise do nothing
       c.destroy rescue nil
     end
@@ -115,6 +121,7 @@ shared_context 'catch search false positives' do |field, all_fields, search_para
     # @collections.map(&:governed_items).flatten.map(&:title)
     # @collections.map(&:governed_items).flatten.map(&:"#{field}")
   end
+
   after do
     # reset the values
     # TODO: is it worth regenerating collections for each spec?

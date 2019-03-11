@@ -1,18 +1,5 @@
 module RswagHelper
 
-  ## 
-  # handle case where add_param is first param, use ? instead of &
-  #
-  # @param  [String] url
-  # @param  [Array]  param
-  # @return [String] uri
-  def add_param(url, param)
-    uri = URI.parse(url)
-    query_arr = URI.decode_www_form(uri.query || '') << param
-    uri.query = URI.encode_www_form(query_arr)
-    uri.to_s
-  end
-
   # @param [String] status
   # @return [Institute] || nil
   def create_institute(status)
@@ -47,24 +34,6 @@ module RswagHelper
     collection.apply_depositor_metadata(user.to_s)
     collection.save
     collection
-  end
-
-  # @param user [User]
-  # @param type [Symbol]
-  # @param title [String]
-  # @param status [String]
-  # @return collection containing subcollection [DRI::QualifiedDublinCore (Collection)]
-  def create_subcollection_for(user, status: 'draft')
-    collection = create_collection_for(user, status: status)
-    subcollection = create_collection_for(user, status: status, title: 'subcollection')
-    subcollection.governing_collection = collection
-
-    [collection, subcollection].each do |c|
-      c.governed_items << create_object_for(user, status: status)
-      c.save
-    end
-
-    [collection, subcollection]
   end
 
   # @param user [User]
