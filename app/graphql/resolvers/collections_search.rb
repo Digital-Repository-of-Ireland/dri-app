@@ -1,6 +1,5 @@
 module Resolvers
   class CollectionsSearch < BaseResolver
-    # TODO: migrate to ActiveFedora::SolrService.query ?
     def all_collections(kwargs: {})
       DRI::QualifiedDublinCore.where(
         "#{collection_field}": 'true',
@@ -17,8 +16,6 @@ module Resolvers
 
     # inline input type definition for the advance filter
     class CollectionFilter < ::Types::BaseInputObject
-      # argument :OR, [self], required: false
-      # argument :AND, [self], required: false
       Types::CollectionType.fields.keys.each do |field_name|
         argument :"#{field_name.underscore}_contains", String, required: false
         argument :"#{field_name.underscore}_is", String, required: false

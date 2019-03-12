@@ -28,6 +28,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     @example_user    = create_user
     @collections     = []
     @sub_collections = []
+    @objects         = []
     @dois            = []
     @docs            = []
     @institute       = create_institute(status)
@@ -49,6 +50,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
           title: "not a duplicate #{i}#{j}",
           type: object_type
         )
+        @objects << object
         object.depositing_institute = @institute.name if @institute
         collection.governed_items << object
         @dois << DataciteDoi.create(object_id: object.id) if doi
@@ -77,12 +79,12 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     @example_user.delete
     @dois.map(&:delete)
     # issue with nested examples e.g iiif_spec
-    # possibly check for ldp gone before delete?
-    # @collections.map(&:delete)
     [@collections, @sub_collections].flatten.each do |c|
-      # try to destroy collection if it still exists, otherwise do nothing
+      # try to destroy collection, otherwise do nothing (e.g. LDP gone)
       c.destroy rescue nil
     end
+    # TODO: find a way to remove this block? should be resetting at start of each test anyway
+    # before(:each) sets @collections = [] etc.
   end
 end
 

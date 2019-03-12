@@ -23,16 +23,15 @@ module Resolvers
     # @param [ActiveFedora::Relation] scope
     # @param [Hash] value
     # @return [ActiveFedora::Relation]
-    def apply_filter(scope, value)
+    def apply_filter(scope, value)      
       # TODO: iteratively generate and / or solr queries
 
-      # generate chain of .where calls for every arg from graphql
+      # generate chain of .where calls for every arg from graphql e.g.
+      # ['is_collection_sim:true', 'status_sim:published'].reduce(DRI::QualifiedDublinCore) { |cls, arg| cls.where(arg) }
       query_array(value).reduce(scope) do |scp, arg|
         scp.where(arg)
       end
 
-      # ['is_collection_sim:true', 'status_sim:published'].reduce(DRI::QualifiedDublinCore) { |cls, arg| cls.where(arg) }.length
-      # [[:where, 'is_collection_sim:true'],[:where, 'status_sim:published']].reduce(DRI::QualifiedDublinCore) { |cls, (m, arg)| cls.send(m, arg) }.length
     end
   end
 end

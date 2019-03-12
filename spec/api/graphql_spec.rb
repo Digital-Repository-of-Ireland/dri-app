@@ -1,6 +1,6 @@
 require 'swagger_helper'
 
-describe "Get Objects API" do
+describe "GRAPHQL API" do
   path "/graphql" do
     post "retrieves published objects" do
       # TODO: add auth!
@@ -17,13 +17,22 @@ describe "Get Objects API" do
 
       include_context 'rswag_user_with_collections', status: 'published', num_collections: 2
 
-      response "200", "Objects found" do
-        context 'get objects' do
+      response "200", "Collections found" do
+        context 'get collections' do
           let(:query) { { query: "{ allCollections(first:1) { id, title } }" } }
-          include_context 'rswag_include_json_spec_output' do
+          include_context 'rswag_include_json_spec_output', 'collections' do
             run_test! do
               num_results = JSON.parse(response.body)['data']['allCollections'].size
-              expect(num_results).to eq(1)              
+              expect(num_results).to eq(1)
+            end
+          end
+        end
+        context 'get objects' do
+          let(:query) { { query: "{ allObjects(first:1) { id, title } }" } }
+          include_context 'rswag_include_json_spec_output', 'objects' do
+            run_test! do
+              num_results = JSON.parse(response.body)['data']['allObjects'].size
+              expect(num_results).to eq(1)
             end
           end
         end

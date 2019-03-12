@@ -37,28 +37,33 @@ shared_context 'doi_config_exists' do
 end
 
 # @param [Symbol] field
-shared_context 'filter_test results exist' do |field: :subject|
+# @param [Sting] type
+shared_context 'filter_test results exist' do |field: :subject, type: 'Collection'|
   before(:each) do
     filter_vals = %w[filter_test other_filter_test]
     # filter_vals.map! {|v| [v]} if DRI::QualifiedDublinCore.multiple?(field)
-    multival = Types::CollectionType.fields[field.camelize(:lower)].type.list?
+    multival = Types.const_get("#{type}Type").fields[field.camelize(:lower)].type.list?
     filter_vals.map! { |v| [v] } if multival
 
-    @collections.first.send("#{field}=", filter_vals.first)
-    @collections.first.save!
+    qdc_arr = instance_variable_get("@#{type.downcase.pluralize}")
 
-    @collections.last.send("#{field}=", filter_vals.last)
-    @collections.last.save!
+    qdc_arr.first.send("#{field}=", filter_vals.first)
+    qdc_arr.first.save!
+
+    qdc_arr.last.send("#{field}=", filter_vals.last)
+    qdc_arr.last.save!
   end
 end
 
 
 # @param [Symbol] field
-shared_context 'filter_test results do not exist' do |field: :subject|
+# @param [Sting] type
+shared_context 'filter_test results do not exist' do |field: :subject, type: 'Collection'|
   before(:each) do
-    @collections.each do |col|
+    qdc_arr = instance_variable_get("@#{type.downcase.pluralize}")
+    qdc_arr.each do |col|
       filter_val = 'no_match'
-      multival = Types::CollectionType.fields[field.camelize(:lower)].type.list?
+      multival = Types.const_get("#{type}Type").fields[field.camelize(:lower)].type.list?
       filter_val = [filter_val] if multival
 
       col.send("#{field}=", filter_val)
