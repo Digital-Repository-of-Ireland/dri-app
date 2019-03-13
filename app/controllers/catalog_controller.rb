@@ -13,6 +13,12 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|
+
+    config.advanced_search = {
+      # https://github.com/projectblacklight/blacklight_advanced_search/tree/74d5be9756f2157204d486d37c766162d59bb400/lib/parsing_nesting#why-not-use-e-dismax
+      # support wildcards in advanced search
+      query_parser: 'edismax'
+    }
     
     config.show.route = { controller: 'catalog' }
     config.per_page = [9, 18, 36]
@@ -158,8 +164,10 @@ class CatalogController < ApplicationController
     ].each do |field_name|
       config.add_search_field(field_name) do |field|
         field.solr_local_parameters = {
-          qf: "${#{field_name}_qf}",
-          pf: "${#{field_name}_pf}"
+          # qf: "${#{field_name}_qf}",
+          # pf: "${#{field_name}_pf}"
+          qf: "$#{field_name}_qf",
+          pf: "$#{field_name}_pf"
         }
         field.label = self.solr_field_to_label(field_name)
       end
