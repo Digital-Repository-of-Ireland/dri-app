@@ -51,7 +51,6 @@ Scenario: Adding a pdf asset to an object
   And I press the button to "upload a file"
   Then I should see a success message for file upload
 
-@test
 Scenario: Replacing the metadata file of a Digital Object
   When I create a collection and save the pid
   And I create an object and save the pid

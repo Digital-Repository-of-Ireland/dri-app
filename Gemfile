@@ -91,7 +91,8 @@ group :production do
 end
 
 group :development, :test do
-  gem 'guard'
+  gem 'rubocop'
+  gem 'rubocop-rspec'
   gem 'rspec-rails', '~> 3.0'
   gem 'rswag-specs', '~> 2.0'
   gem 'rspec_junit_formatter'
@@ -103,7 +104,6 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'guard-livereload', require: false
   gem 'zeus', require: false
   gem 'ci_reporter_rspec'
   gem 'solr_wrapper', '~> 0.18'
@@ -121,7 +121,6 @@ group :test do
   gem 'cucumber-rails', '1.6.0', require: false
   gem 'database_cleaner'
   gem 'launchy'
-  gem 'shoulda'
   gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'syntax'
