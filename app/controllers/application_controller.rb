@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :set_locale, :set_cookie, :set_metadata_language
 
   include HttpAcceptLanguage
-  
+
   # handles pretty formatting for any json response
   include DRI::Renderers::Json
 
@@ -81,7 +81,11 @@ class ApplicationController < ActionController::Base
   end
 
   def retrieve_object!(id)
-    objs = ActiveFedora::Base.find(id, cast: true)
+    begin
+      objs = ActiveFedora::Base.find(id, cast: true)
+    rescue Ldp::HttpError
+      raise DRI::Exceptions::InternalError
+    end
     raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if objs.nil?
     objs
   end

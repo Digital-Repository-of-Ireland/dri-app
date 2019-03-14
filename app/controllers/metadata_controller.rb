@@ -18,7 +18,7 @@ class MetadataController < ApplicationController
   before_action :authenticate_user_from_token!, except: :show
   before_action :authenticate_user!, except: :show
   before_action :read_only, except: :show
-  before_action ->(id=params[:id]) { locked(id) }, except: :show
+  before_action ->(id = params[:id]) { locked(id) }, except: :show
 
   # Renders the metadata XML stored in the descMetadata datastream.
   #
@@ -26,31 +26,41 @@ class MetadataController < ApplicationController
     enforce_permissions!('show_digital_object', params[:id])
     begin
       @object = retrieve_object! params[:id]
+    rescue DRI::Exceptions::InternalError
+      @title = status_to_message(:internal_server_error)
     rescue ActiveFedora::ObjectNotFoundError
       render xml: { error: 'Not found' }, status: 404
       return
     end
 
-    if @object && @object.attached_files.key?(:descMetadata)
+    unless object_with_metadata
       respond_to do |format|
-        format.xml do
-          data = if @object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].content
-                   @object.attached_files[:fullMetadata].content
-                 else
-                   @object.attached_files[:descMetadata].content
-                 end
-          send_data(data, filename: "#{@object.id}.xml")
-        end
         format.js do
-          xml_data = @object.attached_files[:descMetadata].content
-          xml = Nokogiri::XML(xml_data)
-          xslt_data = File.read("app/assets/stylesheets/#{xml.root.name}.xsl")
-          xslt = Nokogiri::XSLT(xslt_data)
-          styled_xml = xslt.transform(xml)
-
-          @title = TITLES[xml.root.name]
-          @display_xml = styled_xml.to_html
+          @display_xml = t('dri.views.exceptions.internal_error')
         end
+        format.xml do
+          render xml: { error: t('dri.views.exceptions.internal_error') }, status: 500
+        end
+      end
+
+      return
+    end
+
+    respond_to do |format|
+      format.xml do
+        data = if @object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].content
+                 @object.attached_files[:fullMetadata].content
+               else
+                 @object.attached_files[:descMetadata].content
+               end
+        send_data(data, filename: "#{@object.id}.xml")
+      end
+      format.js do
+        xml_data = @object.attached_files[:descMetadata].content
+        xml = Nokogiri::XML(xml_data)
+
+        @title = TITLES[xml.root.name]
+        @display_xml = styled_xml(xml).to_html
       end
 
       return
@@ -88,24 +98,17 @@ class MetadataController < ApplicationController
       checksum_metadata(@object)
       warn_if_has_duplicates(@object)
 
-      begin
-        raise DRI::Exceptions::InternalError unless @object.attached_files[:descMetadata].save
-      rescue RuntimeError => e
-        logger.error "Could not save descMetadata for object #{@object.id}: #{e.message}"
-        raise DRI::Exceptions::InternalError
-      end
-
       @object.object_version ||= '1'
       @object.increment_version
-
-      preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, false, ['descMetadata','properties'])
 
       begin
         raise DRI::Exceptions::InternalError unless @object.save
 
         version_and_record_committer(@object, current_user)
         update_or_mint_doi
+
+        preservation = Preservation::Preservator.new(@object)
+        preservation.preserve(false, false, ['descMetadata', 'properties'])
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
@@ -134,9 +137,20 @@ class MetadataController < ApplicationController
 
   private
 
-  def update_or_mint_doi
-    doi = DataciteDoi.find_by(object_id: @object.id)
-    if doi
+    def object_with_metadata
+      @object && @object.attached_files.key?(:descMetadata)
+    end
+
+    def styled_xml(xml)
+      xslt_data = File.read("app/assets/stylesheets/#{xml.root.name}.xsl")
+      xslt = Nokogiri::XSLT(xslt_data)
+      xslt.transform(xml)
+    end
+
+    def update_or_mint_doi
+      doi = DataciteDoi.find_by(object_id: @object.id)
+      return unless doi
+
       doi_metadata_fields = {}
       doi.metadata_fields.each do |field|
         doi_metadata_fields[field] = @object.send(field.to_sym)
@@ -144,5 +158,4 @@ class MetadataController < ApplicationController
       doi.update_metadata(doi_metadata_fields)
       update_doi(@object, doi, 'metadata update') if doi.changed?
     end
-  end
 end
