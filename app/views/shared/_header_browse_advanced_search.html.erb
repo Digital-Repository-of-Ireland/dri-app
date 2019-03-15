@@ -1,4 +1,9 @@
-  <% unless params[:controller] == 'advanced' %>
+  <%# 
+    unless params[:controller] == 'advanced'
+    # TODO: handle draft collections in advanced search, 
+    # exclude from non-search pages
+  %>
+  <% if params[:controller] == 'catalog' %>
     <div id="dri_advanced_search_input_id" class="dri_sort_nav">
       <%= link_to t('dri.views.objects.buttons.advanced_search'), advanced_search_path(mode: params[:mode] || 'collections'), class: 'btn', id: 'advanced_search' %>
     </div>
