@@ -5,7 +5,6 @@ module Resolvers
     include Helpers::SolrHelper
     include SearchObject.module(:graphql)
 
-
     # @param [ActiveFedora::Relation] scope
     # @param [Integer] value
     # @return [ActiveFedora::Relation]

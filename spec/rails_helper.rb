@@ -40,6 +40,8 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include Rails.application.routes.url_helpers
   config.include DeviseRequestSpecHelper, type: :request
+  config.include DeviseRequestSpecHelper, type: :graphql
+  config.include GraphqlSpecHelper, type: :graphql
   config.include PreservationHelper
 end
 
