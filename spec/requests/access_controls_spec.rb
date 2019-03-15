@@ -38,7 +38,7 @@ describe AccessControlsController, type: :request do
       @collection.reload
 
       expect(@collection.manager_users_string).to eq(@login_user.to_s)
-      expect(controller).to set_flash[:alert]
+      expect(flash[:alert]).to be_present
     end
 
   end
