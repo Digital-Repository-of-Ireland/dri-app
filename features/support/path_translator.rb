@@ -86,6 +86,9 @@ module PathTranslator
       when /^(the )?workspace page$/
         workspace_path
 
+      when /^(the )?advanced search page$/
+        advanced_search_path
+        
       else
         raise('You specified an invalid path')
 

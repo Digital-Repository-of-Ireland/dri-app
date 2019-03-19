@@ -285,9 +285,10 @@ Then /^I should see the (valid|modified) metadata$/ do |type|
   end
 end
 
-Then /^I press "(.*?)"$/ do |button|
+Then /^I press "(.*?)"$/ do |selector|  
   Capybara.ignore_hidden_elements = false
-  click_link_or_button(button)
+  # click_on(selector)
+  find(selector).click
 end
 
 Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|

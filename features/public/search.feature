@@ -1,5 +1,5 @@
 @cookies @javascript
-Feature: Subcollections
+Feature: Search
   As an new visitor to the DRI
   I should be able to search DRI for public collections / subcollections / objects
 
@@ -70,3 +70,7 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
     | Names        | Other user           | contributor             | my collections |
     | Names        | Third Person         | publisher               | my collections |
     | Places       | Dublin               | geographical_coverage   | my collections |
+
+Scenario: Advanced Search Link
+  When I press "#dri_advanced_search_input_id #advanced_search"
+  Then I should be on the advanced search page

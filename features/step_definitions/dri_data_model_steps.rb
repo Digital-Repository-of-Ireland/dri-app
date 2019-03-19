@@ -13,7 +13,7 @@ Then /^it should have attribute "(.*?)"$/ do |attribute_name|
 end
 
 Then /^it should validate presence of attribute "(.*?)"$/ do |attribute_name|
-  @test_model.should validate_presence_of(attribute_name)
+  expect(@test_model).to validate_presence_of(attribute_name)
 end
 
 When /^we test an empty "(.*?)" Model$/ do |model_name|
