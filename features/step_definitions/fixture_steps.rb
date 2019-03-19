@@ -32,3 +32,9 @@ Given /^an object with pid "([^\"]*)" exists$/ do |pid|
 
   object = ActiveFedora::Base.find(pid, {:cast => true})
 end
+
+Given /^a swagger fixture$/ do
+  # TODO: find a better way to ensure swagger.json exists so api-docs feature passes  
+  system("cp #{File.join(cc_fixture_path, 'swagger.json')} #{File.join(Rails.root, 'swagger', 'v1', 'swagger.json')}")
+
+end
