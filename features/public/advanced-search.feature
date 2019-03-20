@@ -21,8 +21,6 @@ Scenario: Boolean AND search
   When I fill in "creator" with "*Two" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
-  # click on collections should not be necessary
-  And I press "#collections"
   And I should see 1 visible elements ".dri_content_block_collection"
 
 # Scenario: Boolean OR search
