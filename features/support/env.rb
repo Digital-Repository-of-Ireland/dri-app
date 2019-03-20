@@ -21,6 +21,7 @@ require 'cucumber/api_steps'
 require 'rake'
 require 'rspec'
 require 'billy/capybara/cucumber'
+require 'shoulda/matchers'
 
 Capybara.register_driver :selenium do |app|
   # run chrome headless by default. only turn off if headless == false
@@ -99,6 +100,13 @@ ActionController::Base.allow_rescue = false
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
 
 #
 # DRI-TCD - should be moved to a more sensible location to avoid being over-ridden

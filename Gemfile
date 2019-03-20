@@ -125,6 +125,7 @@ group :test do
   gem 'ffaker'
   gem 'syntax'
   gem 'cucumber-api-steps'
+  gem 'shoulda', '~> 3.6'
 end
 
 # To use ActiveModel has_secure_password
