@@ -2,18 +2,10 @@
 class CatalogController < ApplicationController
   include DRI::Catalog
 
-  # This applies appropriate access controls to all solr queries
-  CatalogController.search_params_logic += [:add_access_controls_to_solr_params]
-  # This filters out objects that you want to exclude from search results, like Assets
-  CatalogController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :published_models_only, :configure_timeline]
-
-  # Excludes objects from the collections view or collections from the objects view
-  def published_models_only(solr_parameters, user_parameters)
-    solr_parameters[:fq] << DRI::Catalog::PUBLISHED_ONLY
-  end
-
   configure_blacklight do |config|
-    
+
+    config.search_builder_class = CatalogSearchBuilder
+
     config.show.route = { controller: 'catalog' }
     config.per_page = [9, 18, 36]
     config.default_per_page = 9
@@ -152,8 +144,8 @@ class CatalogController < ApplicationController
     # of Solr search fields.
 
     %i[
-      title subject description 
-      creator contributor publisher 
+      title subject description
+      creator contributor publisher
       person place
     ].each do |field_name|
       config.add_search_field(field_name) do |field|
@@ -219,7 +211,7 @@ class CatalogController < ApplicationController
   def index
     params.delete(:q_ws)
 
-    (@response, @document_list) = search_results(params, search_params_logic)
+    (@response, @document_list) = search_results(params)
 
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')

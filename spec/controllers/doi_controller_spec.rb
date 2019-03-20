@@ -35,12 +35,12 @@ describe DoiController do
   end
 
   describe "GET show" do
-  
+
     it "assigns @history" do
       doi = DataciteDoi.create(object_id: @object.id)
 
       get :show, object_id: @object.id, id: doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
-      expect(assigns(:history)).to eq([doi])      
+      expect(assigns(:history)).to eq([doi])
     end
 
     it "alerts if doi is not the latest" do
@@ -56,7 +56,7 @@ describe DoiController do
       updated_doi = DataciteDoi.create(object_id: @object.id, modified: 'test update')
 
       get :show, object_id: @object.id, id: updated_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
-      expect(response).to redirect_to(catalog_path(@object.id))
+      expect(response).to redirect_to(solr_document_path(@object.id))
     end
 
     it "updates doi" do

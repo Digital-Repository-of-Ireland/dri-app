@@ -1,12 +1,14 @@
 require 'iso8601'
 require 'iso-639'
+require 'rsolr'
 
 module DRI::Catalog
   extend ActiveSupport::Concern
 
-  include Blacklight::Catalog
-  include Hydra::Controller::ControllerBehavior
+  #include ::Blacklight::Catalog
+  #include Hydra::Controller::ControllerBehavior
   include Hydra::AccessControlsEnforcement
+  include ::Hydra::Catalog
   include DRI::Readable
 
   MAX_TIMELINE_ENTRIES = 50
@@ -29,7 +31,7 @@ module DRI::Catalog
     def solr_field_to_label(solr_field)
       field_label_mappings = {
         title: 'Titles', subject: 'Subjects', description: 'Descriptions',
-        creator: 'Creators', contributor: 'Contributors', publisher: 'Publishers', 
+        creator: 'Creators', contributor: 'Contributors', publisher: 'Publishers',
         person: 'Names', place: 'Places'
       }
       field_label_mappings[solr_field]
@@ -48,80 +50,10 @@ module DRI::Catalog
 
   private
 
-    def exclude_unwanted_models(solr_parameters, user_parameters)
-      solr_parameters[:fq] ||= []
-      solr_parameters[:fq] << DRI::Catalog::EXCLUDE_GENERIC_FILES
-
-      if collections_tab_active(user_parameters)
-        collections_only_filters(solr_parameters, user_parameters)
-      else
-        objects_only_filters(solr_parameters, user_parameters)
-      end
-    end
-
-    def collections_tab_active(user_parameters)
-      user_parameters[:mode] == 'collections'
-    end
-
-    def subcollections_tab_active(user_parameters)
-      user_parameters[:show_subs] == 'true'
-    end
-
-    def collections_only_filters(solr_parameters, user_parameters)
-      solr_parameters[:fq] << DRI::Catalog::INCLUDE_COLLECTIONS
-
-      # if show subcollections is false we only want root collections
-      # i.e., those without any ancestor ids
-      if !subcollections_tab_active(user_parameters)
-        solr_parameters[:fq] << DRI::Catalog::EXCLUDE_SUB_COLLECTIONS
-      end
-    end
-
-    def objects_only_filters(solr_parameters, user_parameters)
-      solr_parameters[:fq] << DRI::Catalog::EXCLUDE_COLLECTIONS
-      if user_parameters[:collection].present?
-        solr_parameters[:fq] << "+#{::Solr::SchemaFields.facet('root_collection_id')}:\"#{user_parameters[:collection]}\""
-      end
-    end
-
     # This method shows the DO if the metadata is open
     # rather than before where the user had to have read permissions on the object all the time
     def enforce_search_for_show_permissions
       enforce_permissions!("show_digital_object", params[:id])
-    end
-
-    def configure_timeline(solr_parameters, user_parameters)
-      if user_parameters[:view] == 'timeline'
-        tl_field = user_parameters[:tl_field].presence || 'sdate'
-        case tl_field
-        when 'cdate'
-          solr_parameters[:fq] << "+cdateRange:*"
-          solr_parameters[:fq] << "+cdate_range_start_isi:[* TO *]"
-          solr_parameters[:sort] = "cdate_range_start_isi asc"
-        when 'pdate'
-          solr_parameters[:fq] << "+pdateRange:*"
-          solr_parameters[:fq] << "+pdate_range_start_isi:[* TO *]"
-          solr_parameters[:sort] = "pdate_range_start_isi asc"
-        when 'sdate'
-          solr_parameters[:fq] << "+sdateRange:*"
-          solr_parameters[:fq] << "+sdate_range_start_isi:[* TO *]"
-          solr_parameters[:sort] = "sdate_range_start_isi asc"
-        when 'date'
-          solr_parameters[:fq] << "+ddateRange:*"
-          solr_parameters[:fq] << "+date_range_start_isi:[* TO *]"
-          solr_parameters[:sort] = "date_range_start_isi asc"
-        end
-
-        solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
-        solr_parameters[:start] = if params[:tl_page].present? && params[:tl_page].to_i > 1
-                                    MAX_TIMELINE_ENTRIES * (params[:tl_page].to_i - 1)
-                                  else
-                                    0
-                                  end
-      else
-        params.delete(:tl_page)
-        params.delete(:tl_field)
-      end
     end
 
     def available_timelines_from_facets

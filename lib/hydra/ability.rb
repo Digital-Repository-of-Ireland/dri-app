@@ -11,7 +11,7 @@ module Hydra
     included do
       include CanCan::Ability
       include Hydra::PermissionsQuery
-      include Blacklight::SolrHelper
+      #include Blacklight::SolrHelper
       include UserGroup::InheritanceMethods
       include UserGroup::SharedAbility
 

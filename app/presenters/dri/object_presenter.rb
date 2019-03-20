@@ -2,7 +2,7 @@ module DRI
   class ObjectPresenter
 
     attr_reader :document
-    delegate :catalog_path, :params, :link_to, :image_tag, :logo_path, to: :@view
+    delegate :solr_document_path, :params, :link_to, :image_tag, :logo_path, to: :@view
 
     def initialize(document, view_context)
       @view = view_context
@@ -72,7 +72,7 @@ module DRI
       child = Child.new
       child.id = child_doc['id']
       child.link_text = link_text
-      child.path = catalog_path(child_doc['id'])
+      child.path = solr_document_path(child_doc['id'])
       child.cover = cover
       child.type = type
 

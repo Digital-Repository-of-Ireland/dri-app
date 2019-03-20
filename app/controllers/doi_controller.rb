@@ -29,7 +29,7 @@ class DoiController < ApplicationController
       current = @history.first
 
       if @available && doi == current.doi
-        redirect_to(catalog_path(@object_id))
+        redirect_to(solr_document_path(@object_id))
         return
       end
 
