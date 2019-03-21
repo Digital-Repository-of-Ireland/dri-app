@@ -624,6 +624,7 @@ ga:
           delete_object: Scrios an Oibiacht
           replace_master: Athchuir Máistirsócmhainn
           replace_metadata: Uaslódáil Meiteashonraí
+          reset_search: Athsocraigh an cuardach
           save: Sábháil na hathruithe
           save_current_search: Sábháil an cuardach reatha
           upload_master: Uaslódáil Máistirsócmhainn

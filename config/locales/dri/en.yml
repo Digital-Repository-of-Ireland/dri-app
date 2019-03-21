@@ -636,6 +636,7 @@ en:
           delete_object: Delete Object
           replace_master: Replace Master Asset
           replace_metadata: Upload Metadata
+          reset_search: Reset Search
           save: Save Changes
           save_current_search: Save Current Search
           upload_master: Upload Master Asset

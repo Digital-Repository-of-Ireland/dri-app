@@ -1,0 +1,7 @@
+  <%# only show reset button when after search is run %>
+  <%# regular search adds q, advanced adds op %>
+  <% if params.key?(:q) || params.key?(:op) %>
+    <div id="dri_reset_search" class="dri_sort_nav">
+      <%= link_to t('dri.views.objects.buttons.reset_search'), root_path, class: 'btn', id: 'reset_search' %>
+    </div>
+  <% end %>
