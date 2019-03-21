@@ -55,7 +55,8 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
   Then I should see a search result "<query>"
   And I should see 1 visible element ".dri_content_block_collection"
 
-  # No nested scenario outlines, have to a home (catalog) and my collections example for each field 
+  # Cucumber doesn't support nested scenario outlines
+  # Have to use a home (catalog) and my collections example for each field 
   Examples:
     | search_field | query                | attribute               | page           |
     | Titles       | Test College Dublin  | title                   | home           |
@@ -74,3 +75,5 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
 Scenario: Advanced Search Link
   When I press "#dri_advanced_search_input_id #advanced_search"
   Then I should be on the advanced search page
+
+#TODO fix single character queries (will there ever be collections / objects with a single charater field in prod?)
