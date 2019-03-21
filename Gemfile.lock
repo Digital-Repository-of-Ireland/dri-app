@@ -94,7 +94,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 6394efea0d34f35b54f37f8faf780ddbfcd9c7da
+  revision: a0230be340891dcc007012587a503de1364f3198
   branch: af_10
   specs:
     user_group (1.2.3)
@@ -1044,9 +1044,9 @@ DEPENDENCIES
   roo (= 2.6.0)
   rspec-rails
   rspec_junit_formatter
-  rswag-api
+  rswag-api (~> 2.0)
   rswag-specs
-  rswag-ui
+  rswag-ui (~> 2.0)
   rubocop
   rubocop-rspec
   rvm

@@ -23,9 +23,6 @@ DriApp::Application.routes.draw do
     resource :my_collections, only: [:index], controller: 'my_collections' do
       concerns :searchable
     end
-    resources :solr_documents, only: [:show], controller: 'my_collections' do
-      concerns :exportable
-    end
 
     resources :bookmarks do
       concerns :exportable

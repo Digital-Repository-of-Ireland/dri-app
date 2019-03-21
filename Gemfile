@@ -9,7 +9,7 @@ gem 'rails', '>= 4', '< 5'
 #gem 'xmlrpc' # removed in ruby 2.4.0
 
 gem 'blacklight', '~> 6'
-gem 'blacklight_advanced_search'#, '~> 5.3'
+gem 'blacklight_advanced_search'
 gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
 
 
@@ -18,10 +18,6 @@ gem 'hydra-head', '~> 10.6'
 gem 'riiif', '1.2.0'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
-
-#gem 'redlock'
-#gem 'google-api-client', '~> 0.9'
-#gem 'googleauth'#, '0.5.1'
 
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'af_10'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'af_10'
@@ -32,9 +28,6 @@ gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/d
 gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo', '2.6.0'
-
-#gem 'active-fedora', '10.3.0' #'9.13'
-#gem 'active_fedora-noid', '1.1.1'
 
 gem 'config'
 gem 'sqlite3','~> 1.3', '< 1.4'
@@ -91,8 +84,8 @@ end
 group :development, :test do
   gem 'rubocop'
   gem 'rubocop-rspec'
-  gem 'rspec-rails'#, '~> 3.0'
-  gem 'rswag-specs'#, '~> 2.0'
+  gem 'rspec-rails'
+  gem 'rswag-specs'
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
@@ -102,7 +95,6 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'better_errors'
   gem 'binding_of_caller'
-  # #gem 'zeus', require: false
   gem 'ci_reporter_rspec'
   gem 'solr_wrapper', '~> 0.18'
   gem 'fcrepo_wrapper', '0.9.0'
@@ -115,9 +107,9 @@ end
 group :test do
   # requires >= 3.3.0 to test styles on node element
   # https://github.com/teamcapybara/capybara/commit/faa45e135434a7f16f04ef5136c63a0663925dec
-  gem 'capybara'#, '~> 3.12.0'
-  gem 'cucumber'#, '3.1.2'
-  gem 'cucumber-rails'#, '1.6.0', require: false
+  gem 'capybara'
+  gem 'cucumber'
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'launchy'
   gem 'factory_bot_rails'
@@ -140,7 +132,7 @@ end
 #gem 'debugger'
 
 gem 'unicode', platforms: [:mri_18, :mri_19]
-gem 'font-awesome-rails'#, '4.5.0.1'
+gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
 gem 'bootstrap-sass', '3.4.1'
 gem 'bootstrap-glyphicons'
@@ -177,7 +169,7 @@ gem 'jquery-slick-rails'
 gem 'remotipart'
 
 # # api documentation generator / presenter
-gem 'rswag-api'#, '~> 2.0'
-gem 'rswag-ui'#, '~> 2.0'
+gem 'rswag-api', '~> 2.0'
+gem 'rswag-ui', '~> 2.0'
 
 gem 'qa', '~> 1.2'

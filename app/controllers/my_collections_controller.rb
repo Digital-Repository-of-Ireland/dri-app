@@ -9,7 +9,7 @@ class MyCollectionsController < ApplicationController
   before_action :authenticate_user!
 
   configure_blacklight do |config|
-    config.search_builder_class = MyCollectionsSearchBuilder
+    config.search_builder_class = ::MyCollectionsSearchBuilder
 
     config.show.route = { controller: 'my_collections' }
     config.per_page = [9, 18, 36]

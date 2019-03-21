@@ -4,7 +4,7 @@ class CatalogController < ApplicationController
 
   configure_blacklight do |config|
 
-    config.search_builder_class = CatalogSearchBuilder
+    config.search_builder_class = ::CatalogSearchBuilder
 
     config.show.route = { controller: 'catalog' }
     config.per_page = [9, 18, 36]

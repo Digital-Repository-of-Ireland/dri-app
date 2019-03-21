@@ -21,7 +21,6 @@ class ApplicationController < ActionController::Base
   include DRI::Exceptions
 
   include UserGroup::PermissionsCheck
-  include Hydra::AccessControlsEnforcement
   include UserGroup::Helpers
 
   layout 'application'

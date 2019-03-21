@@ -1,15 +1,10 @@
 require 'iso8601'
 require 'iso-639'
 require 'rsolr'
+require 'blacklight/catalog'
 
 module DRI::Catalog
   extend ActiveSupport::Concern
-
-  #include ::Blacklight::Catalog
-  #include Hydra::Controller::ControllerBehavior
-  include Hydra::AccessControlsEnforcement
-  include ::Hydra::Catalog
-  include DRI::Readable
 
   MAX_TIMELINE_ENTRIES = 50
   TIMELINE_FIELD_LABELS = {
@@ -39,6 +34,9 @@ module DRI::Catalog
   end
 
   included do
+    include Hydra::Catalog
+    include DRI::Readable
+
     # need rescue_from here to ensure that errors thrown by before_action
     # below are caught and handled properly
     rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
