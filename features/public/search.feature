@@ -76,4 +76,15 @@ Scenario: Advanced Search Link
   When I press "#dri_advanced_search_input_id #advanced_search"
   Then I should be on the advanced search page
 
+Scenario: Reset Search
+  Given I am on the home page
+  Then I should see 0 visible elements "#reset_search"
+  
+  When I fill in "q" with "test"
+  And I perform a search
+  Then I should see 1 visible element "#reset_search"
+  
+  When I click "#reset_search"
+  Then I should see 0 visible elements "#reset_search"
+
 #TODO fix single character queries (will there ever be collections / objects with a single charater field in prod?)
