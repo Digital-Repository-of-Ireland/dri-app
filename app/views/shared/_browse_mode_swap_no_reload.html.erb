@@ -1,0 +1,74 @@
+<div class="dri_facet_restrictions_container">
+	<ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs" >
+			<script type="text/javascript">
+				$(document).ready(function(){
+					// function unselect_others(current) {
+					// 	let tab_type_arr = ['collections', 'sub_collections', 'objects'];
+					// 	$.each(tab_type_arr, function(index, element) {
+					// 		console.log('dri_browse_sort_tabs_' + current + '_id a', element);
+
+					// 		if (element != current) {
+					// 			$('dri_browse_sort_tabs_' + current + '_id a').removeClass('selected');
+					// 		}
+					// 	});
+					// }
+
+					// $.each(['collections', 'objects'], function(index, element) {
+					// 	$('#dri_browse_sort_tabs_' + element + '_id a').on('click', function() {
+					// 		$(this).addClass('selected');
+					// 		unselect_others(element);
+					// 	});
+					// });
+
+					$('#dri_browse_sort_tabs_collections_id a').on('click', function() {
+						// could use this, but js ¯\_(ツ)_/¯
+						$('#dri_browse_sort_tabs_collections_id a').addClass('selected');
+						$('#dri_browse_sort_tabs_sub_collections_id a').removeClass('selected');
+						$('#dri_browse_sort_tabs_objects_id a').removeClass('selected');
+					});
+
+					$('#dri_browse_sort_tabs_objects_id a').on('click', function() {
+						$('#dri_browse_sort_tabs_objects_id a').addClass('selected');
+						$('#dri_browse_sort_tabs_collections_id a').removeClass('selected');
+						$('#dri_browse_sort_tabs_sub_collections_id a').removeClass('selected');
+					});
+
+					// sub-collections special case
+					$('#dri_browse_sort_tabs_sub_collections_id a').on('click', function() {
+						$('#dri_browse_sort_tabs_sub_collections_id a').addClass('selected');
+						$('#dri_browse_sort_tabs_collections_id a').addClass('selected');
+						$('#dri_browse_sort_tabs_objects_id a').removeClass('selected');
+					});
+
+				});
+			</script>
+
+		<li id="dri_browse_sort_tabs_collections_id"
+		   data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"
+		   data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>"
+		   data-trigger="hover"
+		   data-placement="auto right">
+			<a class='dri_help_popover_slow'><%= t('dri.headerlinks.collections') %></a>
+		</li>
+
+    <li id="dri_browse_sort_tabs_sub_collections_id"
+      data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"
+      data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>"
+      data-trigger="hover"
+      data-placement="auto right">
+			<a class='dri_help_popover_slow'><%= t('dri.headerlinks.sub_collections') %></a>
+    </li>
+
+		<li id="dri_browse_sort_tabs_objects_id"
+		  data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"
+		  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>"
+		  data-trigger="hover"
+		  data-placement="auto right">
+			<a class='dri_help_popover_slow'><%= t('dri.headerlinks.objects') %></a>
+		</li>
+
+			<%= render 'shared/header_browse_paginate' %>
+		</ul>
+</div>
+
+<!-- close dri_facet_restrictions_container -->
