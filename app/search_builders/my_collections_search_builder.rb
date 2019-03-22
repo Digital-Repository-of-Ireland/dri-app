@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 class MyCollectionsSearchBuilder < ::SearchBuilder
   # This applies appropriate access controls to all solr queries
-  self.default_processor_chain += [:with_manage_or_edit_access]
+  self.default_processor_chain += [:only_manage_or_edit_access]
 
-  def with_manage_or_edit_access(solr_parameters)
+  def only_manage_or_edit_access(solr_parameters)
     solr_parameters[:fq] ||= []
     return if (current_ability.current_user && current_ability.current_user.is_admin?)
 
