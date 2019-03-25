@@ -55,4 +55,5 @@
 //= require dri
 //
 //= require dri/autocomplete_vocabs
+//= require dri/advanced_search
 
