@@ -89,6 +89,8 @@ When /^I add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
   }
 end
 
+# TODO: refactor to use quotes around arg(s) to avoid ambiguous matches
+# would need to refactor path_translator too
 Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end
@@ -494,7 +496,7 @@ When /^I accept the alert$/ do
   page.driver.browser.switch_to.alert.accept
 end
 
-And /^I should see a dialog with text "([^"]*)"$/ do |text|
+Then /^I should see a dialog with text "([^"]*)"$/ do |text|
   page.driver.browser.switch_to.alert.text.should include(text)
 end
 
@@ -561,5 +563,11 @@ Then /^I should( not)? see a modal(?: with title "([^\"]+)")?$/ do |negate, titl
       modal_title = modal.find('.modal-title').text
       expect(modal_title).to eq title
     end
+  end
+end
+
+Then /^I should see an input "([^\"]+)" with text "([^\"]+)" within "([^\"]+)"$/ do |fname, text, selector|
+  with_scope(selector) do
+    expect(page).to have_field(fname, with: text)
   end
 end

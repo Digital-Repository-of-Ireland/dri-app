@@ -78,17 +78,20 @@ module PathTranslator
         new_organisation_path
 
       when /^(the )?organisations page$/
-        "#{root_path}organisations"
+        organisations_path
 
       when /^(the )?api docs page$/
-        "#{root_path}api-docs"
+        rswag_path
 
       when /^(the )?workspace page$/
         workspace_path
 
       when /^(the )?advanced search page$/
         advanced_search_path
-        
+
+      when /^(the )?advanced search page with mode(.+)$/
+        advanced_search_path(mode: $2.strip)
+
       else
         raise('You specified an invalid path')
 
@@ -127,7 +130,7 @@ module PathTranslator
             raise('Unknown route')
         end
 
-       when /collection/
+      when /collection/
         case page
           when /show/
             catalog_path(pid)
