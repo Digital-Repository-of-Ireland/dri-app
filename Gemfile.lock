@@ -77,7 +77,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 2cd3dff34038c1571189faef610c8de7b72d4cf6
+  revision: ea86bf3fea68b00d866fa4b991f3445b7668fe25
   branch: af_10
   specs:
     dri_data_models (2.6.6)
@@ -86,6 +86,7 @@ GIT
       google-api-client
       hydra-access-controls
       hydra-derivatives
+      hydra-file_characterization
       hydra-head
       iso-639
       iso8601
@@ -462,6 +463,8 @@ GEM
       deprecation
       mime-types (> 2.0, < 4.0)
       mini_magick (>= 3.2, < 5)
+    hydra-file_characterization (1.0.0)
+      activesupport (>= 3.0.0)
     hydra-head (10.6.2)
       hydra-access-controls (= 10.6.2)
       hydra-core (= 10.6.2)

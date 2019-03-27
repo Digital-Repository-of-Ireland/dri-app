@@ -38,7 +38,6 @@ module DRI
         object_id: document.id,
         id: file_id,
         surrogate: name,
-        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
       )
     end
 

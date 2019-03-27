@@ -78,17 +78,16 @@ class LocalFile < ActiveRecord::Base
 
   private
 
-    def local_storage_dir
-      Rails.root.join(Settings.dri.files)
-    end
+  def local_storage_dir
+    Rails.root.join(Settings.dri.files)
+  end
 
-    def upload_to_file(upload)
-      if upload.respond_to?('path')
-        FileUtils.cp(upload.path, path)
-      else
-        File.open(path, 'wb') { |f| f.write(upload.read) }
-      end
-      File.chmod(0644, path)
+  def upload_to_file(upload)
+    if upload.respond_to?('path')
+      FileUtils.cp(upload.path, path)
+    else
+      File.open(path, 'wb') { |f| f.write(upload.read) }
     end
-
+    File.chmod(0644, path)
+  end
 end
