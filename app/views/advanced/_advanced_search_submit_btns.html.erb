@@ -1,12 +1,12 @@
       <div class="sort-buttons pull-left">
-        <%= label_tag(:sort, t('blacklight_advanced_search.form.sort_label'), :class => "control-label") %>
-      
+        <%= label_tag(:sort, t('blacklight.advanced_search.form.sort_label'), :class => "control-label") %>
+
         <%= select_tag(:sort, options_for_select(sort_fields, h(params[:sort])), :class => "form-control sort-select") %>
       </div>
 
       <div class="sort-buttons pull-left">
-        <%= label_tag(:per_page, t('blacklight_advanced_search.form.paginate_label'), :class => "control-label") %>
-      
+        <%= label_tag(:per_page, t('blacklight.advanced_search.form.paginate_label'), :class => "control-label") %>
+
         <%= select_tag(:per_page, options_for_select(blacklight_config[:per_page], h(params[:per_page])), :class => "form-control sort-select") %>
       </div>
 

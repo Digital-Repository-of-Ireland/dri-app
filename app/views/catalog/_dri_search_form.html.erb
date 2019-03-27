@@ -1,17 +1,22 @@
 
   <%= form_tag main_app.catalog_index_path, :method => :get, :id => 'searchform', :class => 'dri_search_term_input_form' do %>
-    <% 
-      ui_search_fields = search_fields.select do |arr| 
-        %w[all_fields title subject person place].include?(arr[1])
+    <%
+      ui_search_fields = search_fields.select do |(label, value)|
+        %w[all_fields title subject person place].include?(value)
+      end
+
+      translated_field = ui_search_fields.map do |(label, value)|
+        # if translation doesn't exist, fall back to blacklight label
+        [t("blacklight.search.fields.label.#{value.pluralize}", default: label), value]
       end
     %>
     <%= select_tag(:search_field,
-                   options_for_select(ui_search_fields, h(params[:search_field])),
+                   options_for_select(translated_field, h(params[:search_field])),
                    title: t('blacklight.search.form.search_field.title'),
                    id: "search_field",
                    class: "custom-select search-field")
     %>
-  
+
     <% if params[:mode].blank? %>
         <%= hidden_field_tag 'mode', 'objects' %>
     <% end %>

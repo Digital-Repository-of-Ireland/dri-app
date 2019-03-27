@@ -71,7 +71,7 @@ gem 'sparql-client'
 # static pages
 gem 'high_voltage', '~> 2.1.0'
 
-# monitoring 
+# monitoring
 # is it working fork
 gem 'is_it_working-cbeer'
 gem 'resque', '~> 1'
@@ -111,6 +111,7 @@ group :development, :test do
   gem 'byebug', '~> 10.0'
   gem 'parallel_tests', '~> 2.23'
   gem 'puffing-billy', '~> 0.11.0'
+  gem 'i18n-debug', '~> 1.2'
 end
 
 group :test do

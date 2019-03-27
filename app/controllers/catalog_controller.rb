@@ -19,7 +19,7 @@ class CatalogController < ApplicationController
       # support wildcards in advanced search
       query_parser: 'edismax'
     }
-    
+
     config.show.route = { controller: 'catalog' }
     config.per_page = [9, 18, 36]
     config.default_per_page = 9
@@ -158,8 +158,8 @@ class CatalogController < ApplicationController
     # of Solr search fields.
 
     %i[
-      title subject description 
-      creator contributor publisher 
+      title subject description
+      creator contributor publisher
       person place
     ].each do |field_name|
       config.add_search_field(field_name) do |field|

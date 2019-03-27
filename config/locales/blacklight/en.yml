@@ -10,6 +10,10 @@ en:
     models: 
       feedback: Feedback
   blacklight: 
+    advanced_search: 
+      form: 
+        sort_label: Sort by
+        paginate_label: Results per page
     and: and
     application_name: "Digital Repository of Ireland"
     back_to_bookmarks: " ⬅ Back to Bookmarks"
@@ -119,18 +123,34 @@ en:
           count: "Numerical Sort"
           index: "A-Z Sort"
         title: "Refine your search"
-      fields: 
+      fields:
         default: Keyword
         facet: 
           file_type_display_sim: Mediatype
           geographical_coverage_sim: Places
           institute_sim: Organisation
           language_sim: Language
+          licence_sim: Licence
           person_sim: Names
           placename_field_sim: Places
           root_collection_id_sim: Collection
           subject_sim: Subjects
           temporal_coverage_sim: "Subject (Temporal)"
+        label:
+          # all_fields: All fields
+          # person: Names
+          # place: Places
+          # title: Titles
+          # subject: Subjects
+          all_fields: All fields
+          contributors: Contributors
+          creators: Creators
+          descriptions: Descriptions
+          people: People
+          places: Places
+          publishers: Publishers
+          titles: Titles
+          subjects: Subjects
       filters: 
         label: "%{label}:"
         remove: 
