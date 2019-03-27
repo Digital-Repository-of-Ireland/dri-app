@@ -2,9 +2,8 @@
 <div id="dri_search_features_nav_container_id"
 class="dri_search_features_nav_container">
 
-
-	<%= render 'shared/header_browse_sort_by' %>
-	<%= render 'shared/header_browse_per_page' %>
+  <%= render 'shared/header_browse_sort_by' unless controller_name == 'advanced' %>
+  <%= render 'shared/header_browse_per_page' unless controller_name == 'advanced' %>
 	<%= render 'shared/header_browse_change_view' %>
   <%= render 'shared/header_browse_save_search' %>
   <%= render 'shared/header_browse_advanced_search' %>
