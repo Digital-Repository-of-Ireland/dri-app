@@ -56,6 +56,13 @@ Scenario: Browse tabs should not reload the page
   And I press "#dri_browse_sort_tabs_collections_id_no_reload"
   Then I should see an input "title" with text "test tabs" within "#advanced_search"
 
+Scenario: Browse tabs should be the same on the results page
+  When I fill in "title" with "test tabs" within "#advanced_search"
+  And I press "#dri_browse_sort_tabs_sub_collections_id_no_reload"
+  And I press "#advanced-search-submit"
+  Then I should see 1 visible element "#dri_browse_sort_tabs_collections_id .selected"
+  And I should see 1 visible element "#dri_browse_sort_tabs_sub_collections_id .selected"
+
 Scenario: Url param sets browse tab highlighting
   Given I am on the advanced search page with mode sub_collections
   Then I should see 1 visible element "#dri_browse_sort_tabs_collections_id_no_reload .selected"
