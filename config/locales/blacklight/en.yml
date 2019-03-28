@@ -137,16 +137,11 @@ en:
           subject_sim: Subjects
           temporal_coverage_sim: "Subject (Temporal)"
         label:
-          # all_fields: All fields
-          # person: Names
-          # place: Places
-          # title: Titles
-          # subject: Subjects
-          all_fields: All fields
+          all_fields: All Fields
           contributors: Contributors
           creators: Creators
           descriptions: Descriptions
-          people: People
+          people: Names
           places: Places
           publishers: Publishers
           titles: Titles
