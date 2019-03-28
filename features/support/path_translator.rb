@@ -89,8 +89,8 @@ module PathTranslator
       when /^(the )?advanced search page$/
         advanced_search_path
 
-      when /^(the )?advanced search page with mode(.+)$/
-        advanced_search_path(mode: $2.strip)
+      when /^(the )?advanced search page with (\w+) (.+)$/
+        advanced_search_path("#{$2}": $3.strip)
 
       else
         raise('You specified an invalid path')

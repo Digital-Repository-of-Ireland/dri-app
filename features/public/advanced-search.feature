@@ -8,11 +8,9 @@ Background:
   And a collection with pid "t2" and title "titleTwo" created by "userTwo"
   And a collection with pid "t3" and title "titleThree" created by "userTwo"
   # catch false positive, Two in only one field
-
   And the collection with pid "t1" is published
   And the collection with pid "t2" is published
   And the collection with pid "t3" is published
-  
   And I am not logged in
   And I go to "the advanced search page"
   And I accept cookies terms
@@ -63,10 +61,28 @@ Scenario: Browse tabs should be the same on the results page
   Then I should see 1 visible element "#dri_browse_sort_tabs_collections_id .selected"
   And I should see 1 visible element "#dri_browse_sort_tabs_sub_collections_id .selected"
 
-Scenario: Url param sets browse tab highlighting
+Scenario Outline: "<TEST_STRING>" dropdowns should not reload the page
+  When I fill in "title" with "test <TEST_STRING>" within "#advanced_search"
+  And I select "<SELECTION>" from "<SELECTOR>"
+  Then I should see an input "title" with text "test <TEST_STRING>" within "#advanced_search"
+  Examples:
+    | SELECTOR        | SELECTION | TEST_STRING  |
+    | select#sort     | title     | sorting      |
+    | select#per_page | 18        | pagination   |
+
+# TODO test on catalog page and click button to go to adv. search
+Scenario: Browse tabs should change base on url params
   Given I am on the advanced search page with mode sub_collections
   Then I should see 1 visible element "#dri_browse_sort_tabs_collections_id_no_reload .selected"
   And I should see 1 visible element "#dri_browse_sort_tabs_sub_collections_id_no_reload .selected"
+
+Scenario Outline: "<PARAM>" dropdowns should change based on url params
+  Given I am on the advanced search page with <PARAM> <PARAM_VALUE>
+  Then "<LABEL>" should be selected in "<PARAM>"
+  Examples:
+    | PARAM     | PARAM_VALUE                                     | LABEL |
+    | sort      | title_sorted_ssi asc, system_create_dtsi desc   | title |
+    | per_page  | 36                                              | 36    |
 
 Scenario: Browse tab defaults to collections
   Given I am on the advanced search page

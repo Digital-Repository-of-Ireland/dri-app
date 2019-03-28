@@ -346,6 +346,10 @@ Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
   page.should have_select id
 end
 
+Then /^"([^\"]+)" should be selected in "([^\"]+)"$/ do |selected, selector|
+  expect(page).to have_select(selector, selected: selected)
+end
+
 Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negate, success_failure, message|
   url = current_url
   @obj_pid = URI(url).path.split('/').last

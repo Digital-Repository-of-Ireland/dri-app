@@ -4,7 +4,12 @@
     # exclude from non-search pages
   %>
   <% if params[:controller] == 'catalog' %>
+    <%
+      kwargs = { mode: params[:mode] || 'collections' }
+      kwargs[:sort] = params[:sort] if params[:sort]
+      kwargs[:per_page] = params[:per_page] if params[:per_page]
+    %>
     <div id="dri_advanced_search_input_id" class="dri_sort_nav">
-      <%= link_to t('dri.views.objects.buttons.advanced_search'), advanced_search_path(mode: params[:mode] || 'collections'), class: 'btn', id: 'advanced_search' %>
+      <%= link_to t('dri.views.objects.buttons.advanced_search'), advanced_search_path(**kwargs), class: 'btn', id: 'advanced_search' %>
     </div>
   <% end %>
