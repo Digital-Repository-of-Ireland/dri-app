@@ -13,7 +13,7 @@ ga:
     advanced_search: 
       form: 
         paginate_label: Torthaí in aghaidh an leathanach
-        sort_label: Sórtáil de réir
+        sort_label: Eagraigh de réir
         tips_title: Leideanna cuardaigh
       tips:
         boolean: Úsáid "OR", "AND", agus "NOT" chun loighic coimpléascach a cruthú. Is féidir leat lúibíní a úsáid.
@@ -162,11 +162,13 @@ ga:
           value: "Bain an srian: %{value}"
         title: "Chuardaigh tú"
       form: 
-        q: Cuardaigh
+        q: Cuardaigh...
+        search: Cuardaigh
         search_field: 
           label: Cuardaigh
           post_label: "le haghaidh"
           title: "Roghanna cuardach spriocdhírithe"
+        start_over: "Tosaigh arís"
         submit: Cuardaigh
       librarian_view: 
         leader: "LEADER %{leader}"
@@ -191,8 +193,12 @@ ga:
         title: "%{document_title} - %{application_name}"
       sort: 
         label: "Eagraigh de réir %{field}"
+        newest: Mír is déanaí
+        order/sequence: Ord/sraith
+        relevance: Ábharthacht
+        title: Teideal
         submit: "sórtáil na torthaí"
-      start_over: "Ttosaigh arís"
+      start_over: "Tosaigh arís"
       title: "Torthaí an Chuardaigh %{application_name}"
     search_history: 
       clear: 

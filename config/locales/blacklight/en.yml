@@ -163,10 +163,12 @@ en:
         title: "You searched for:"
       form: 
         q: Search...
+        search: Search
         search_field: 
           label: "Search in"
           post_label: for
           title: "Targeted search options"
+        start_over: "Start Over"
         submit: Ok
       librarian_view: 
         leader: "LEADER %{leader}"
@@ -191,6 +193,10 @@ en:
         title: "%{document_title} - %{application_name}"
       sort: 
         label: "Sort by %{field}"
+        newest: Newest
+        order/sequence: Order/sequence
+        relevance: Relevance
+        title: Title
         submit: "sort results"
       start_over: "Start Over"
       title: "%{application_name} Search Results"

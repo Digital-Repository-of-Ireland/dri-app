@@ -89,7 +89,7 @@ module PathTranslator
       when /^(the )?advanced search page$/
         advanced_search_path
 
-      when /^(the )?advanced search page with (\w+) (.+)$/
+      when /^(the )?advanced search page with (\w+) = (.+)$/
         advanced_search_path("#{$2}": $3.strip)
 
       else
