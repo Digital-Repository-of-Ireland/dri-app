@@ -3,9 +3,9 @@ require "dri/derivatives/extract_metadata"
 DRI::Derivatives::ExtractMetadata.module_eval do
   # Quick fixes to get the content from storage and avoid using the REST API
 
-  def id
-    translate_uri_to_id.call(uri).split('/').first
-  end
+  #def uri_to_id
+  #  translate_uri_to_id.call(uri).split('/').first
+  #end
 
   def local_file_info
     @local_file_info ||= LocalFile.where(fedora_id: id, ds_id: "content").order("VERSION DESC").limit(1).take
@@ -47,19 +47,17 @@ DRI::Derivatives::ExtractMetadata.module_eval do
   protected
 
   def filename_for_characterization
-    extension = ""
     if external_body?
       extension = "."+local_file_info.path.split(".").last
+      version_id = local_file_info.version
     else
       registered_mime_type = MIME::Types[mime_type].first
-      Logger.warn "Unable to find a registered mime type for #{mime_type.inspect} on #{id}" unless registered_mime_type
+      Logger.warn "Unable to find a registered mime type for #{mime_type.inspect}" unless registered_mime_type
       extension = registered_mime_type ? ".#{registered_mime_type.extensions.first}" : ''
+      version_id = 1
     end
 
-    if (extension == '.mp2')
-      extension = '.mp3'
-    end
-    version_id = 1 # TODO fixme
+    extension = '.mp3' if extension == '.mp2'
 
     ["#{id}-#{version_id}", "#{extension}"]
   end

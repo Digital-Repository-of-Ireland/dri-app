@@ -57,8 +57,9 @@ gem 'jquery-ui-rails'
 gem 'js_cookie_rails'
 
 # clients
-#gem 'rest-client'
+gem 'rest-client'
 gem 'sparql-client'
+gem 'httparty'
 
 # static pages
 gem 'high_voltage', '~> 2.1.0'

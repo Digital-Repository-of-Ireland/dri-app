@@ -20,8 +20,14 @@ DriApp::Application.routes.draw do
     resource :catalog, only: [:index], controller: 'catalog' do
       concerns :searchable
     end
+    get 'catalog/:id', to: 'catalog#show', as: :catalog
+
     resource :my_collections, only: [:index], controller: 'my_collections' do
       concerns :searchable
+    end
+
+    resources :solr_documents, only: [:show], path: "/catalog", controller: "catalog" do
+      concerns :exportable
     end
 
     resources :bookmarks do

@@ -15,7 +15,7 @@ class InstitutesController < ApplicationController
     @institutes = Institute.all.order('name asc')
     @collections = {}
     @institutes.each do |institute|
-      @collections[institute.id] = institute.collections.select { |c| c.published? } 
+      @collections[institute.id] = institute.collections.select { |c| c.published? }
     end
 
     @depositing_institutes = @institutes.select { |i| i.depositing == true }
@@ -97,12 +97,16 @@ class InstitutesController < ApplicationController
 
   # Associate institute
   def associate
-    add_or_remove_association
+    manage_association do
+      add_association
+    end
   end
 
   # Dis-associate institute
   def disassociate
-    add_or_remove_association(true)
+    manage_association do
+      delete_association
+    end
   end
 
   def set
@@ -118,8 +122,7 @@ class InstitutesController < ApplicationController
       @collection.depositing_institute = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
     end
 
-    version = @collection.object_version || '1'
-    @collection.object_version = (version.to_i + 1).to_s
+    @collection.increment_version
 
     updated = @collection.save
 
@@ -154,16 +157,16 @@ class InstitutesController < ApplicationController
       end
     end
 
-    def add_or_remove_association(delete = false)
+    def manage_association
       # save the institute name to the properties datastream
       @collection = ActiveFedora::Base.find(params[:object], cast: true)
       raise DRI::Exceptions::NotFound unless @collection
 
-      version = @collection.object_version || '1'
-      @collection.object_version = (version.to_i + 1).to_s
-      delete ? delete_association : add_association
+      @collection.increment_version
 
-      @collection_institutes = Institute.where(name: @collection.institute).to_a
+      yield
+
+      @collection_institutes = Institute.where(name: @collection.institute.flatten).to_a
       @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
 
       # Do the preservation actions
@@ -183,7 +186,6 @@ class InstitutesController < ApplicationController
       else
         @collection.institute = @collection.institute.push(institute_name)
       end
-
       raise DRI::Exceptions::InternalError unless @collection.save
 
       flash[:notice] = if params[:type].present? && params[:type] == 'depositing'
@@ -195,10 +197,7 @@ class InstitutesController < ApplicationController
 
     def delete_association
       institute_name = params[:institute_name]
-
-      institutes = @collection.institute
-      institutes.delete(institute_name)
-      @collection.institute = institutes
+      @collection.institute = @collection.institute - [institute_name]
 
       raise DRI::Exceptions::InternalError unless @collection.save
 

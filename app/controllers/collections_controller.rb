@@ -4,7 +4,7 @@ require 'storage/cover_images'
 require 'validators'
 
 class CollectionsController < BaseObjectsController
-  include Hydra::AccessControlsEnforcement
+  include Blacklight::AccessControls::Catalog
   include DRI::Duplicable
 
   before_action :authenticate_user_from_token!, except: [:cover]

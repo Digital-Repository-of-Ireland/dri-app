@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class MyCollectionsSearchBuilder < ::SearchBuilder
+class MyCollectionsSearchBuilder < SearchBuilder
   # This applies appropriate access controls to all solr queries
   self.default_processor_chain += [:only_manage_or_edit_access]
 

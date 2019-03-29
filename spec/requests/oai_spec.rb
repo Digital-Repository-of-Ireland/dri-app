@@ -9,7 +9,7 @@ RSpec.describe "Oai requests", type: :request do
   before do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
- 
+
     collection.status = "published"
     object.status = "published"
     object.save
