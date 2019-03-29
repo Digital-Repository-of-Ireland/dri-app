@@ -1168,6 +1168,7 @@ h4.suggest {
 /* ----------- Facet Filter block ---------- */
 
 .dri_facet_filters_block {
+    width: 100%;
     margin: 25px 0 0 0;
     padding: 0px;
     float: left;
@@ -1176,6 +1177,9 @@ h4.suggest {
     border: 1px solid $dri_thingrey;
     //box-shadow: 1px 2px 6px  #E3E3E3;
     @include border_radius (3px);
+}
+#advanced-help {
+    clear: left;
 }
 .dri_date_range_block {
     height: 150px;
@@ -1215,7 +1219,7 @@ h4.suggest {
         border: none;
     }
     .panel-group {
-        width: 238px;
+        min-width: 238px;
         margin-bottom: 2px;
         .panel-default {
             margin: 0px;

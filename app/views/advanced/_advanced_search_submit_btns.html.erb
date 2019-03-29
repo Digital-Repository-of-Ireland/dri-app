@@ -4,10 +4,10 @@
         <%= select_tag(:sort, options_for_select(sort_fields, h(params[:sort])), :class => "form-control sort-select") %>
       </div>
 
-      <div class="sort-buttons pull-left">
+      <div class="page-buttons pull-left">
         <%= label_tag(:per_page, t('blacklight.advanced_search.form.paginate_label'), :class => "control-label") %>
 
-        <%= select_tag(:per_page, options_for_select(blacklight_config[:per_page], h(params[:per_page])), :class => "form-control sort-select") %>
+        <%= select_tag(:per_page, options_for_select(blacklight_config[:per_page], h(params[:per_page])), :class => "form-control page-select") %>
       </div>
 
       <div class="submit-buttons pull-right">

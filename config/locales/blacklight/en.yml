@@ -14,6 +14,15 @@ en:
       form: 
         sort_label: Sort by
         paginate_label: Results per page
+        tips_title: Search tips
+      tips:
+        boolean: Use "OR", "AND", and "NOT" to create complex boolean logic. You can use parentheses in your complex expressions.
+        keywords: Combine keywords and attributes to find specific items.
+        match_any: Select "match any" to find at least one field.
+        match_all: Select  "match all" to require all fields.
+        minus: Use "-" before a word or phrase to exclude.
+        plus: Use "+" before a term to make it required. (Otherwise results matching only some of your terms may be included).
+        quotes: Use quotation marks to get exact matches only.        
     and: and
     application_name: "Digital Repository of Ireland"
     back_to_bookmarks: " ⬅ Back to Bookmarks"

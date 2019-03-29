@@ -1,4 +1,4 @@
-<% @page_title = "More Search Options - #{application_name}" %>
+<% @page_title = "#{application_name} More Search Options" %>
 
 <%# 
     TODO: add way to load browse tabs without reloading page on change. 
@@ -13,6 +13,10 @@
             <%= render 'advanced_search_form' %>
         </div>
         <div class="col-md-4">
+            <div class="dri_facet_filters_block" id="sidebar">
+                <%= render "catalog/facets" %>
+            </div>
+            <br>
             <%= render "advanced_search_help" %>
         </div>
     </div>

@@ -12,8 +12,17 @@ ga:
   blacklight: 
     advanced_search: 
       form: 
-        sort_label: Sórtáil de réir
         paginate_label: Torthaí in aghaidh an leathanach
+        sort_label: Sórtáil de réir
+        tips_title: Leideanna cuardaigh
+      tips:
+        boolean: Úsáid "OR", "AND", agus "NOT" chun loighic coimpléascach a cruthú. Is féidir leat lúibíní a úsáid.
+        keywords: Cuingrigh eochairfhocail agus tréithe chun míreanna sainiúil a aimsiú.
+        match_any: Roghnaigh "match any" chun réimse amháin ar a laighead a aimsiú.
+        match_all: Roghnaigh "match all" chun gach réimse a úsáid.
+        minus: Úsáid "-" roimh focal nó frása chun é a eisimh.
+        plus: Úsáid "+" roimh téarma chun é a chur de dhíth. (D'fhéadfadh roinnt torthaí a fháil gan an téarma mura cuirtear + roimhe).
+        quotes: Úsáid comharthaífiriol athfhriotail chun torthaí cruinn a fháil.
     and: agus
     application_name: "Taisclann Dhigiteach na hÉireann"
     back_to_bookmarks: " ⬅ Siar chuig Leabharmharcanna"
