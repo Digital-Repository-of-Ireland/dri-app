@@ -12,8 +12,9 @@ en:
   blacklight: 
     advanced_search: 
       form: 
-        sort_label: Sort by
         paginate_label: Results per page
+        query_criteria_heading_html: "Find items that match %{select_menu} of"
+        sort_label: Sort by
         tips_title: Search tips
       tips:
         boolean: Use "OR", "AND", and "NOT" to create complex boolean logic. You can use parentheses in your complex expressions.

@@ -13,6 +13,7 @@ ga:
     advanced_search: 
       form: 
         paginate_label: Torthaí in aghaidh an leathanach
+        query_criteria_heading_html: "Aimsigh míreanna le match %{select_menu}"
         sort_label: Eagraigh de réir
         tips_title: Leideanna cuardaigh
       tips:
