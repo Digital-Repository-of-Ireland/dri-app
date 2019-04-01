@@ -77,7 +77,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 57a8fcd6dc185799ee660c75197e44b20b0c9a45
+  revision: 7c09a1634581f334b83718b949ea912e233eadf6
   branch: af_10
   specs:
     dri_data_models (2.6.6)
@@ -1073,6 +1073,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.4)
   selenium-webdriver
   shoulda (~> 3.6)
+  shoulda-matchers
   show_me_the_cookies
   simplecov
   simplecov-rcov

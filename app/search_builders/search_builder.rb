@@ -5,9 +5,17 @@ class SearchBuilder < Blacklight::SearchBuilder
 
   self.default_processor_chain += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
 
+  MAX_TIMELINE_ENTRIES = 50
+
+  EXCLUDE_GENERIC_FILES = "-#{::Solr::SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\"".freeze
+  INCLUDE_COLLECTIONS = "+#{::Solr::SchemaFields.facet('is_collection')}:true".freeze
+  EXCLUDE_COLLECTIONS = "+#{::Solr::SchemaFields.facet('is_collection')}:false".freeze
+  EXCLUDE_SUB_COLLECTIONS = "-#{::Solr::SchemaFields.facet('ancestor_id')}:[* TO *]".freeze
+  PUBLISHED_ONLY = "+#{::Solr::SchemaFields.facet('status')}:published".freeze
+
   def exclude_unwanted_models(solr_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << DRI::Catalog::EXCLUDE_GENERIC_FILES
+    solr_parameters[:fq] << EXCLUDE_GENERIC_FILES
 
     if collections_tab_active(blacklight_params)
       collections_only_filters(solr_parameters, blacklight_params)
@@ -25,17 +33,17 @@ class SearchBuilder < Blacklight::SearchBuilder
   end
 
   def collections_only_filters(solr_parameters, user_parameters)
-    solr_parameters[:fq] << DRI::Catalog::INCLUDE_COLLECTIONS
+    solr_parameters[:fq] << INCLUDE_COLLECTIONS
 
     # if show subcollections is false we only want root collections
     # i.e., those without any ancestor ids
     if !subcollections_tab_active(user_parameters)
-      solr_parameters[:fq] << DRI::Catalog::EXCLUDE_SUB_COLLECTIONS
+      solr_parameters[:fq] << EXCLUDE_SUB_COLLECTIONS
     end
   end
 
   def objects_only_filters(solr_parameters, user_parameters)
-    solr_parameters[:fq] << DRI::Catalog::EXCLUDE_COLLECTIONS
+    solr_parameters[:fq] << EXCLUDE_COLLECTIONS
     if user_parameters[:collection].present?
       solr_parameters[:fq] << "+#{::Solr::SchemaFields.facet('root_collection_id')}:\"#{user_parameters[:collection]}\""
     end

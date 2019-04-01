@@ -122,7 +122,6 @@ end
 Before do
   allow(DRI.queue).to receive(:push) 
   allow_any_instance_of(DRI::Versionable).to receive(:version_and_record_committer)
-  allow(Feedjira::Feed).to receive(:fetch_and_parse)
 
   clean_repo
 

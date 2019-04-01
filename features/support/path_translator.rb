@@ -60,7 +60,7 @@ module PathTranslator
         collections_path
 
       when /^(the )?my saved search page$/
-        saved_searches_path
+	blacklight.saved_searches_path
 
       when /^(the )?show page for the collection$/
         solr_document_path(@collection.id)

@@ -6,19 +6,12 @@ require 'blacklight/catalog'
 module DRI::Catalog
   extend ActiveSupport::Concern
 
-  MAX_TIMELINE_ENTRIES = 50
   TIMELINE_FIELD_LABELS = {
     'sdate' => 'Subject (Temporal)',
     'cdate' => 'Creation Date',
     'pdate' => 'Publication Date',
     'date' => 'Date'
   }.freeze
-
-  EXCLUDE_GENERIC_FILES = "-#{::Solr::SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\"".freeze
-  INCLUDE_COLLECTIONS = "+#{::Solr::SchemaFields.facet('is_collection')}:true".freeze
-  EXCLUDE_COLLECTIONS = "+#{::Solr::SchemaFields.facet('is_collection')}:false".freeze
-  EXCLUDE_SUB_COLLECTIONS = "-#{::Solr::SchemaFields.facet('ancestor_id')}:[* TO *]".freeze
-  PUBLISHED_ONLY = "+#{::Solr::SchemaFields.facet('status')}:published".freeze
 
   module ClassMethods
     # @param [Symbol] solr_field
@@ -72,24 +65,5 @@ module DRI::Catalog
       date_field_events = timeline.data(@document_list, tl_field)
 
       { available_fields: TIMELINE_FIELD_LABELS.slice(*@available_timelines), field: tl_field, events: date_field_events }
-    end
-
-    # If querying geographical_coverage, then query the Solr geospatial field
-    #
-    def subject_place_filter(solr_parameters, user_parameters)
-      # Find index of the facet geographical_coverage_sim
-      geographical_idx = nil
-      solr_parameters[:fq].each.with_index do |f_elem, idx|
-        geographical_idx = idx if f_elem.include?('geographical_coverage')
-      end
-
-      unless geographical_idx.nil?
-        geo_string = solr_parameters[:fq][geographical_idx]
-        coordinates = DRI::Metadata::Transformations.get_spatial_coordinates(geo_string)
-
-        if coordinates.present?
-          solr_parameters[:fq][geographical_idx] = "geospatial:\"Intersects(#{coordinates})\""
-        end
-      end
     end
 end

@@ -20,10 +20,7 @@ When /^I add (.*?) metadata$/ do |type|
   @tmp_xml = Nokogiri::XML(File.new(File.join(cc_fixture_path, filename)).read)
 
   if @digital_object.attached_files.has_key?(:descMetadata)
-    @digital_object.datastreams["descMetadata"].ng_xml = @tmp_xml
-  else
-    ds = DRI::Metadata::DublinCoreAudio.from_xml(@tmp_xml)
-    @digital_object.add_datastream ds, :dsid => 'descMetadata'
+    @digital_object.attached_files[:descMetadata].ng_xml = @tmp_xml
   end
 end
 

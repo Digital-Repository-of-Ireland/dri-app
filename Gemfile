@@ -118,6 +118,7 @@ group :test do
   gem 'syntax'
   gem 'cucumber-api-steps'
   gem 'shoulda', '~> 3.6'
+  gem 'shoulda-matchers'
 end
 
 # To use ActiveModel has_secure_password

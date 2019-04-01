@@ -8,7 +8,7 @@ module UserHelper
 
     Kaminari.paginate_array(user_collections.collections_data).page(params[:page]).per(5)
   end
-  
+
   def get_inherited_read_groups(obj)
     return if obj == nil
     if obj.read_groups.empty?
@@ -17,15 +17,15 @@ module UserHelper
       return "logged-in"
     elsif obj.read_groups.first == 'public'
       return "public"
-    else 
+    else
       return "restricted"
     end
   end
 
-  def get_inherited_masterfile_access(obj)
-    return if obj == nil
+  def inherited_masterfile_access(obj)
+    return 'private' if obj == nil
     return obj.master_file_access unless obj.master_file_access == "inherit" || obj.master_file_access == nil
-    get_inherited_masterfile_access(obj.governing_collection)
+    inherited_masterfile_access(obj.governing_collection)
   end
 
 end
