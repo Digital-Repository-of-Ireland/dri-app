@@ -103,15 +103,6 @@ function removeVocabAutocomplete(selector) {
   $(selector).autocomplete({source: []});
 }
 
-function getDefaultAuthority(id) {
-  var mappings = {
-    'subject': 'Library of Congress',
-    'coverage': 'Library of Congress', 
-    'geographical_coverage': 'Logainm',
-  }
-  return mappings[id];
-}
-
 function vocabIdToUri(vocab, id) {
   var mappings = {
     "Library of Congress": locIdToUri,

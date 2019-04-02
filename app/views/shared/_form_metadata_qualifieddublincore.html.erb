@@ -263,7 +263,7 @@
 		</p>
 	</fieldset>
 
-	<fieldset id="subject" data-default-authority='unesco/subjects'>
+	<fieldset id="subject">
 	  <%= render "shared/form_fieldset_label", f:f, source:'subjects' %>
 	  <%= render "shared/autocomplete_dropdown" %>	  
 		<% @object.subject.each do |i| %>
