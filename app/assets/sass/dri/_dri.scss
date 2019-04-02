@@ -1169,6 +1169,7 @@ h4.suggest {
 
 .dri_facet_filters_block {
     width: 100%;
+    min-width: $dri_facet_min_width;
     margin: 25px 0 0 0;
     padding: 0px;
     float: left;
@@ -1198,16 +1199,21 @@ h4.suggest {
         padding-right: 10px;
     }
 }
+
+.dri_head_title {
+    color: $dri_darkgrey;
+    font-weight: bold;
+    a {
+        color: $dri_darkgrey;
+    }
+}
+
 .dri_facet_filters {
     border-bottom: none;
     .dri_head_title {
-        *color: $dri_darkgrey;
-        font-weight: bold;
         padding: 15px 0 15px 20px;
-        min-width: 238px;
-        a {
-            color: $dri_darkgrey;
-        }
+        // leave some space for the border
+        min-width: $dri_facet_min_width - 2;
     }
     .dri_search_num {
         float: right;
@@ -1219,7 +1225,7 @@ h4.suggest {
         border: none;
     }
     .panel-group {
-        min-width: 238px;
+        min-width: $dri_facet_min_width - 2;
         margin-bottom: 2px;
         .panel-default {
             margin: 0px;
