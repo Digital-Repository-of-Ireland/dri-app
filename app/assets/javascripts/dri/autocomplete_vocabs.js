@@ -105,7 +105,8 @@ function removeVocabAutocomplete(selector) {
 
 function vocabIdToUri(vocab, id) {
   var mappings = {
-    "Library of Congress": locIdToUri,
+    "LOC Subject Headings": locIdToUri,
+    "LOC Names": locIdToUri,
     "OCLC FAST": oclcFastIdToUri,
     "Unesco": function(v) {return v;}, // unseco id is already uri
     "Logainm": function(v) {return v;}, // logainm id is uri, 
@@ -115,6 +116,7 @@ function vocabIdToUri(vocab, id) {
     "NUTS3": function(v) {return v;}
   };
 
+  // assignment to check if it's undefined
   var conversion = mappings[vocab];
   // if you can convert the id to uri, return the uri
   if (conversion) {
