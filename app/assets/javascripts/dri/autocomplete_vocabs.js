@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  // TODO: switch to es6 syntax, use eslint
   // for each fieldset that has a choose-vocab-container in it
   $.each($('fieldset:has(.choose-vocab-container)'), function(_, fieldset) {
     var id = '#' + fieldset.id;
@@ -30,9 +31,9 @@ function addVocabAutocomplete(id) {
   var input_selector = id + ' input[type="text"]:visible'
   var dropdown_selector = id + ' > .choose-vocab-container > .vocab-dropdown';
   var endpoint = $(dropdown_selector).find(':selected').val();
-  if (endpoint === 'na') { 
+  if (endpoint === 'na') {
     removeVocabAutocomplete(input_selector);
-    return false; 
+    return false;
   }
   $(input_selector).autocomplete({
     source: function (request, response) {
@@ -80,7 +81,7 @@ function saveUriInForm(element, vocab_uri, label) {
   });
 }
 
-// TODO run on all elements on form submit 
+// TODO run on all elements on form submit
 // focus out won't be triggered before form submits
 function handleMismatchedSavedUri(element) {
   var hidden_input = $(element).parent().find('input:hidden');
@@ -107,9 +108,10 @@ function vocabIdToUri(vocab, id) {
   var mappings = {
     "LOC Subject Headings": locIdToUri,
     "LOC Names": locIdToUri,
+    "Getty Art and Architecture": function(v) {return v;},
     "OCLC FAST": oclcFastIdToUri,
     "Unesco": function(v) {return v;}, // unseco id is already uri
-    "Logainm": function(v) {return v;}, // logainm id is uri, 
+    "Logainm": function(v) {return v;}, // logainm id is uri,
     // but all links data.logainm.ie/place so far are broken
     // e.g. http://data.logainm.ie/place/1391191 (Whitestown)
     // will be fixed by fct (facet browser) virtuoso add-on
@@ -127,7 +129,7 @@ function vocabIdToUri(vocab, id) {
 // function nuts3ToUri(id) {
 //   id;
 //   // // unofficial source, should not preserve
-//   // return "https://tbed.org/eudemo/index.php?tablename=nuts_vw" + 
+//   // return "https://tbed.org/eudemo/index.php?tablename=nuts_vw" +
 //   // "&function=details&where_field=nuts_code&where_value=" + id;
 //   // // official source, but doesn't provide fullf resful service
 //   // // map view available here
