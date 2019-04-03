@@ -3,8 +3,10 @@
 Feature: API Docs
   As a public User
   I want to see documentation for the API
+  And have the ability to sign in and get an API token from the docs page
 
 Background:
+  Given a swagger fixture
   Given I am on the api docs page
 
 Scenario: Visiting the api docs page

@@ -7,6 +7,9 @@
 # Ignore bundler config
 /.bundle
 
+# Ignore local rspec config
+.rspec-local
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
@@ -57,6 +60,8 @@ dump.rdb
 .project
 fcrepo4-test-data/
 dri_files
+
+swagger/
 
 .byebug*
 *.pid

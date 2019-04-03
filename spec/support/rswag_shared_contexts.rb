@@ -29,7 +29,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     @collections  = []
     @dois         = []
     @docs         = []
-    @institute    = institute(status)
+    @institute    = create_institute(status)
 
     num_collections.times do |i|
       collection = create_collection_for(@example_user, status: status)
@@ -83,73 +83,44 @@ shared_context 'sign_out_before_request' do
   end
 end
 
-# TODO move methods in helper module
-# Need to ensure it gets loaded before shared_examples / contexts though
+# this context depends on @collection existing
+# and the first collection having more than one governed object
+# i.e. should be within rswag_user_with_collections
+# does not work with aggregate fields e.g. person
+# adjacent field could be creator, which is part of person
+# @param [String] field
+# @param [Array] all_fields
+# @param [Symbol] search_param
+shared_context 'catch search false positives' do |field, all_fields, search_param|
+  before do
+    # mode is objects, so ignore subcollections
+    @objects = @collections.first.governed_items.reject(&:collection?)
+    raise ArgumentError, 'less than 2 objects in collection' unless @objects.count >= 2
 
-# @param [String] status
-# @return [Institute] || nil
-def institute(status)
-  if status == 'published'
-    org = FactoryBot.create(:institute)
-    org.save
-    org
-  end
-end
+    @objects[0].send("#{field}=", bind_search_param)
+    @objects[0].save
 
-# @param type [Symbol]
-# @param token [Boolean]
-# @return user [User]
-def create_user(type: :collection_manager, token: true)
-  user = FactoryBot.create(type)
-  user.create_token if token
-  user.save
-  user
-end
+    # treat fields like circular list, pick adjacent field so build is reproducible
+    idx = all_fields.find_index(field)
+    @adjacent_field = all_fields[(idx + 1) % all_fields.length]
 
-# @param user [User]
-# @param type [Symbol]
-# @param title [String]
-# @param status [String]
-# @return collection [DRI::QualifiedDublinCore (Collection)]
-def create_collection_for(user, status: 'draft', title: 'test_collection')
-  collection = FactoryBot.create(:collection)
-  collection[:status] = status
-  collection[:creator] = [user.to_s]
-  collection[:title] = [title]
-  collection[:date] = [DateTime.now.strftime("%Y-%m-%d")]
-  collection.apply_depositor_metadata(user.to_s)
-  collection.save
-  collection
-end
+    raise ArgumentError, 'selected same field' unless @adjacent_field != field
 
-# @param user [User]
-# @param type [Symbol]
-# @param title [String]
-# @param status [String]
-# @return collection containing subcollection [DRI::QualifiedDublinCore (Collection)]
-def create_subcollection_for(user, status: 'draft')
-  collection = create_collection_for(user, status: status)
-  subcollection = create_collection_for(user, status: status, title: 'subcollection')
-  subcollection.governing_collection = collection
-
-  [collection, subcollection].each do |c|
-    c.governed_items << create_object_for(user, status: status)
-    c.save
+    @objects[1].send("#{@adjacent_field}=", bind_search_param)
+    @objects[1].save
+    # @collections.map(&:governed_items).flatten.map(&:title)
+    # @collections.map(&:governed_items).flatten.map(&:"#{field}")
   end
 
-  collection
-end
-
-# @param user [User]
-# @param type [Symbol]
-# @param title [String]
-# @param status [String]
-# @return collection [DRI::QualifiedDublinCore (Object)]
-def create_object_for(user, type: :sound, status: 'draft', title: 'test_object')
-  object = FactoryBot.create(type)
-  object[:status] = status
-  object[:title] = [title]
-  object.apply_depositor_metadata(user.to_s)
-  object.save
-  object
+  after do
+    # reset the values
+    # TODO: is it worth regenerating collections for each spec?
+    # would avoid this edge case requiring reset
+    # @collections.map(&:governed_items).flatten.reject(&:collection?).each do |gov_obj|
+    @objects.each do |gov_obj|
+      gov_obj.send("#{field}=", %w[after_search_test])
+      gov_obj.send("#{@adjacent_field}=", %w[after_search_test])
+      gov_obj.save
+    end
+  end
 end

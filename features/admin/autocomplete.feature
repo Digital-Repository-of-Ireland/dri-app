@@ -30,12 +30,14 @@ Scenario: Choosing an autocomplete result
   And I click the first autocomplete result
   Then the text in "batch_temporal_coverage][" should have link styling
 
+@wip
 Scenario: Choosing an autocomplete result should save the label text and hidden URL of the subject
   When I press the edit collection button with text "Add Subject"
   And I fill in "batch_subject][" with "Dublin"
   And I click the first autocomplete result
   Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
 
+@wip
 Scenario: Choosing an autocomplete result, then changing your mind
   When I press the edit collection button with text "Add Subject"
   And I fill in "batch_subject][" with "Dublin"
@@ -48,6 +50,7 @@ Scenario: Choosing an autocomplete result, then changing your mind
   Then I should not see a hidden "input#batch_subject][" within "fieldset#subject"
   Then the text in "batch_subject][" should not have link styling
 
+@wip
 Scenario: Submitting a collection with autocomplete results
   When I enter valid metadata for a collection
   And I "Add Coverage" and fill in "Ireland" and choose the first autocomplete result

@@ -660,7 +660,7 @@ a .dri_signin_edugate {
         }
     }
 }
-.dri_language_links {
+.dri_language_links, #search_field {
     float: left;
     display: inline;
     border: 1px solid $dri_thingrey;
@@ -676,6 +676,7 @@ a .dri_signin_edugate {
         color: $dri_midgrey;
     }
 }
+
 ul.dropdown a {
     color: $dri_midgrey;
     &:hover {
@@ -826,8 +827,16 @@ ol.breadcrumb {
 }
 /*-------------- Search --------------*/
 
-.dri_search_term_text_input {
+.dri_search_term_text_input{
     margin: 24px 0 0 0;
+}
+
+#search_field {
+    margin: 54px 0 0 0;
+    padding: 4px 0 4px 0;
+}
+
+.dri_search_term_text_input{
     width: 226px;
     padding: 4px 0 4px 30px;
     color: $dri_midgrey;

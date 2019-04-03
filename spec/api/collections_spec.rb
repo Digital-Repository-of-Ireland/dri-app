@@ -7,15 +7,15 @@ describe "Collections API" do
       # Can access specific public collections, 
       # just not the /collections route and private/draft collections
       # without sign in
-      tags 'collections'
-      security [ apiKey: [], appId: [] ]
-      produces 'application/json'
+
       # creates @example_user with authentication_token (not signed in)
       include_context 'rswag_user_with_collections', status: 'published'
       include_context 'doi_config_exists'
-      
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
+
+      produces 'application/json'
+      pretty_json_param
+      tags 'collections'
+      security [ apiKey: [], appId: [] ]
 
       response "401", "Must be signed in or use apikey to access this route" do
         include_context 'rswag_include_json_spec_output'
@@ -42,18 +42,17 @@ describe "Collections API" do
     # TODO break this into shared examples?
     # Common pattern in my_collections and collections
     get "retrieves a specific object, collection or subcollection" do
-      tags 'collections'
-      security [ apiKey: [], appId: [] ]
-      produces 'application/json', 'application/xml', 'application/ttl'
-      parameter name: :pretty, description: 'indent json so it is human readable', 
-        in: :query, type: :boolean, default: false, required: false
-      parameter name: :id, description: 'Object ID',
-        in: :path, :type => :string
       include_context 'rswag_user_with_collections'
       include_context 'doi_config_exists'
 
-      response "401", "Must be signed in to access this route" do
+      produces 'application/json', 'application/xml', 'application/ttl'
+      parameter name: :id, description: 'Object ID',
+                in: :path, :type => :string
+      pretty_json_param
+      tags 'collections'
+      security [ apiKey: [], appId: [] ]
 
+      response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }
         let(:user_email) { nil }
         let(:id) { @collections.first.id }

@@ -9,7 +9,9 @@ gem 'sinatra', '1.4.8'
 gem 'xmlrpc' # removed in ruby 2.4.0
 
 gem 'blacklight', '~> 5.19.0'
+gem 'blacklight_advanced_search', '~> 5.3'
 gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
+
 
 gem 'hydra-head', '9.10'
 
@@ -27,7 +29,7 @@ gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-mode
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.2.3'
 
 # batch ingest
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.0.1'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.0.2'
 gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo', '2.6.0'
@@ -89,7 +91,8 @@ group :production do
 end
 
 group :development, :test do
-  gem 'guard'
+  gem 'rubocop'
+  gem 'rubocop-rspec'
   gem 'rspec-rails', '~> 3.0'
   gem 'rswag-specs', '~> 2.0'
   gem 'rspec_junit_formatter'
@@ -101,7 +104,6 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'guard-livereload', require: false
   gem 'zeus', require: false
   gem 'ci_reporter_rspec'
   gem 'solr_wrapper', '~> 0.18'
@@ -119,11 +121,11 @@ group :test do
   gem 'cucumber-rails', '1.6.0', require: false
   gem 'database_cleaner'
   gem 'launchy'
-  gem 'shoulda'
   gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'syntax'
   gem 'cucumber-api-steps'
+  gem 'shoulda', '~> 3.6'
 end
 
 # To use ActiveModel has_secure_password

@@ -1,18 +1,5 @@
 # rswag / api shared examples
 
-## 
-# handle case where add_param is first param, use ? instead of &
-#
-# @param  [String] url
-# @param  [Array]  param
-# @return [String] uri
-def add_param(url, param)
-  uri = URI.parse(url)
-  query_arr = URI.decode_www_form(uri.query || '') << param
-  uri.query = URI.encode_www_form(query_arr)
-  uri.to_s
-end
-
 shared_examples 'a json response with' do |licence_key: false, doi_key: false, related_objects_key: false|
   run_test! do
     json_response = JSON.parse(response.body)
@@ -73,5 +60,49 @@ shared_examples 'a pretty json response' do
   let(:pretty) {true}
   run_test! do
     expect(JSON.pretty_generate(JSON.parse(response.body))).to eq(response.body)
+  end
+end
+
+# @param [String] field
+shared_examples 'a search response with no false positives' do |field|
+  run_test! do
+    json_body = JSON.parse(response.body)
+    first_object = json_body['response']['docs'].first['object_profile_ssm'].first
+    json_object = JSON.parse(first_object)
+
+    # no false positives
+    expect(json_body['response']['docs'].count).to eq(1)
+    expect(json_object[field]).to eq(bind_search_param)
+
+    # # parsing the object_profile seems slightly faster than looking up the solr name
+    # # may be useful in future if response changes and no longer returns duplicate info
+    # key = ActiveFedora.index_field_mapper.solr_name(field)
+    # expect(json_body['response']['docs'].first[key]).to eq([q])
+  end
+end
+
+# @param [Controller] controller
+shared_examples 'it accepts search_field params' do |controller, search_param|
+  context 'search_field no output' do
+    # for searches with each remaining search_field
+    fields_hash = controller.blacklight_config.search_fields
+    fields_to_test = fields_hash.keys.reject do |field|
+      # exclude aggregate fields
+       %w[all_fields person place].include?(field)
+    end.sort
+
+    fields_to_test.each do |field|
+      context "#{field} search" do
+        let(search_param)  { "fancy #{field}" }
+        let(:search_field) { field }
+
+        context_args = [field, fields_to_test]
+        spec_args = [field]
+
+        include_context 'catch search false positives', *context_args  do
+          it_behaves_like 'a search response with no false positives', *spec_args
+        end
+      end
+    end
   end
 end

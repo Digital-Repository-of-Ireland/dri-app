@@ -21,16 +21,21 @@ require 'cucumber/api_steps'
 require 'rake'
 require 'rspec'
 require 'billy/capybara/cucumber'
+require 'shoulda/matchers'
 
 Capybara.register_driver :selenium do |app|
-        options = Selenium::WebDriver::Chrome::Options.new(
-                args: [
-                  "headless",
-                  "no-sandbox",
-                  "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}"
-                ]
-        )
-        Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  # run chrome headless by default. only turn off if headless == false
+  # e.g. bundle exec cucumber headless=false
+  headless = ENV['headless'] == 'false' ? [] : ['headless']
+
+  options = Selenium::WebDriver::Chrome::Options.new(
+              args: [
+                *headless,
+                "no-sandbox",
+                "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}"
+              ]
+            )
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 Capybara.javascript_driver = :selenium
 Capybara.ignore_hidden_elements = false
@@ -95,6 +100,13 @@ ActionController::Base.allow_rescue = false
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
 
 #
 # DRI-TCD - should be moved to a more sensible location to avoid being over-ridden
