@@ -1,31 +1,32 @@
 <div class="dri_facet_restrictions_container">
 	<ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs" >
 		<li id="dri_browse_sort_tabs_collections_id_no_reload"
-		  data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"
-		  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>"
-		  data-trigger="hover"
-		  data-placement="auto right">
-			<a class='dri_help_popover_slow'><%= t('dri.headerlinks.collections') %></a>
-		</li>
-
-    <li id="dri_browse_sort_tabs_sub_collections_id_no_reload"
-      data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"
-      data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>"
-      data-trigger="hover"
-      data-placement="auto right">
-			<a class='dri_help_popover_slow'><%= t('dri.headerlinks.sub_collections') %></a>
+        class='dri_help_popover_slow'
+        data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"
+        data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>"
+        data-trigger="hover"
+        data-placement="auto right">
+      <a><%= t('dri.headerlinks.collections') %></a>
     </li>
 
-		<li id="dri_browse_sort_tabs_objects_id_no_reload"
-		  data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"
-		  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>"
-		  data-trigger="hover"
-		  data-placement="auto right">
-			<a class='dri_help_popover_slow'><%= t('dri.headerlinks.objects') %></a>
-		</li>
+    <li id="dri_browse_sort_tabs_sub_collections_id_no_reload"
+        class='dri_help_popover_slow'
+        data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"
+        data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>"
+        data-trigger="hover"
+        data-placement="auto right">
+      <a><%= t('dri.headerlinks.sub_collections') %></a>
+    </li>
 
-			<%#= render 'shared/header_browse_paginate' %>
-		</ul>
+    <li id="dri_browse_sort_tabs_objects_id_no_reload"
+        class='dri_help_popover_slow'
+        data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"
+        data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>"
+        data-trigger="hover"
+        data-placement="auto right">
+      <a><%= t('dri.headerlinks.objects') %></a>
+    </li>
+  </ul>
 </div>
 
 <!-- close dri_facet_restrictions_container -->
