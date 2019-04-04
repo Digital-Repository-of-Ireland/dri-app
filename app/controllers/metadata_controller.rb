@@ -54,6 +54,7 @@ class MetadataController < ApplicationController
                  @object.attached_files[:descMetadata].content
                end
         send_data(data, filename: "#{@object.id}.xml")
+        return
       end
       format.js do
         xml_data = @object.attached_files[:descMetadata].content
@@ -61,9 +62,8 @@ class MetadataController < ApplicationController
 
         @title = TITLES[xml.root.name]
         @display_xml = styled_xml(xml).to_html
+        return
       end
-
-      return
     end
 
     render text: 'Unable to load metadata'
