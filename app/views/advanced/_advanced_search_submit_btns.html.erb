@@ -39,13 +39,17 @@
               t('blacklight.search.form.start_over'),
               advanced_search_path,
               class: 'btn btn-default advanced-search-start-over dri_help_popover_slow',
-              'data-content': t('dri.help.dri_page_options'),
-              'data-original-title': t('dri.help.dri_page_options_title'),
-              'data-placement': 'right',
+              'data-content': t('dri.help.advanced_search.start_over'),
+              'data-original-title': t('dri.help.advanced_search.start_over_title'),
+              'data-placement': 'left',
               'data-trigger': 'hover') %>
 
         <%= submit_tag(
               t('blacklight.search.form.search'),
               class: 'btn btn-primary advanced-search-submit dri_help_popover_slow',
-              id: 'advanced-search-submit') %>
+              id: 'advanced-search-submit',
+              'data-content': t('dri.help.advanced_search.search'),
+              'data-original-title': t('dri.help.advanced_search.search_title'),
+              'data-placement': 'left',
+              'data-trigger': 'hover') %>
       </div>

@@ -237,6 +237,11 @@ ga:
     help:
       add_documentation_help_text: Tá na hoibiachtaí seo le feiceáil sa gcuid "Ábhair Ghaolmhara" den leathanach na mbailiúchán.
       add_documentation_help_title: Cuir faisnéis chomhthéacsúil leis
+      advanced_search:
+        start_over: Glan an cuardach seo
+        start_over_title: Tosaigh arís
+        search: Tosaigh cuardach leis na socraithe seo
+        search_title: Cuardach
       autocomplete:
         title: Foinse autocomplete
         content: Tugann an roghchlár seo rogha duit foinse autocomplete a roghnú. Tosaigh ag scríobh in aon ionchuir thíos chun moltaí a fháil, nó roghnaigh disable chun an autocomplete a díchumasú.

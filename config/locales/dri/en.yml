@@ -248,6 +248,11 @@ en:
     help:
       add_documentation_help_text: These objects appear in the Related Materials section of the collection page.
       add_documentation_help_title: Add contextual information
+      advanced_search:
+        start_over: Clear the current search settings
+        start_over_title: Start Over
+        search: Start a search with the current settings
+        search_title: Search
       autocomplete:
         title: Autocompelete source
         content: This dropdown sets the autocomplete source for the inputs below. Start typing in an input to get suggestions, or select disable to turn this feature off.
