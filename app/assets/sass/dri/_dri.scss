@@ -677,6 +677,17 @@ a .dri_signin_edugate {
     }
 }
 
+// fit elements to smaller my-collections layout
+#my_collections_searchform {
+    #search_field, #q_ws {
+        margin-top: 24px;
+    }
+    #q_ws {
+        min-width: 150px;
+        max-width: 65%;
+    }
+}
+
 ul.dropdown a {
     color: $dri_midgrey;
     &:hover {

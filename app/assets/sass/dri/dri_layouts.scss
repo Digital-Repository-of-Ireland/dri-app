@@ -249,6 +249,13 @@
     .dri_search_term_text_input {
         width: 50%;
     }
+    #my_collections_searchform {
+        width: 100%;
+    }
+    input#q_ws.dri_search_term_text_input {
+        max-width: 75%;
+        width: 75%;
+    }
     .dri_main_content_container {
         @include zen-grid-container;
         @include zen-grid-item(2, 1);
@@ -327,6 +334,13 @@
         img {
             max-height: 25px;
         }
+    }
+}
+
+
+@media only screen and (max-width: 500px) {
+    input#q_ws.dri_search_term_text_input {
+        width: 60%;
     }
 }
 
