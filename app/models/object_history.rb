@@ -20,7 +20,7 @@ class ObjectHistory
   def institute_manager
     root_collection = ActiveFedora::Base.find(object.root_collection.first)
 
-    root_collection.depositor.first
+    root_collection.depositor
   end
 
   def read_users_by_group(parent = nil)

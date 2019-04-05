@@ -222,9 +222,7 @@ class CatalogController < ApplicationController
       format.html { store_preferred_view }
       format.rss  { render layout: false }
       format.atom { render layout: false }
-      format.json do
-        render json: render_search_results_as_json
-      end
+      format.json { render json: render_search_results_as_json }
 
       additional_response_formats(format)
       document_export_formats(format)
