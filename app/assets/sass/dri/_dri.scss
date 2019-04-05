@@ -819,6 +819,17 @@ ol.breadcrumb {
 }
 /*-------------- Sort by --------------*/
 
+%dri_sort_select {
+    margin: 0;
+    padding: 4px;
+    padding-right: 10px;
+    border: 1px solid $dri_thingrey;
+    @include border_radius;
+    color: $dri_midgrey;
+    font-size: 100%;
+    height: 25px;
+}
+
 .dri_sort_nav {
     float: left;
     margin: 0;
@@ -826,14 +837,15 @@ ol.breadcrumb {
     color: $dri_lightgrey;
     height: 36px;
     select {
-        margin: 0;
-        padding: 4px;
-        padding-right: 10px;
-        border: 1px solid $dri_thingrey;
-        @include border_radius;
-        color: $dri_midgrey;
-        font-size: 100%;
-        height: 25px;
+        @extend %dri_sort_select;
+    }
+}
+.sort-submit-buttons {
+    select {
+        @extend %dri_sort_select;
+    }
+    .sort-buttons, .page-buttons {
+        padding-left: 25px;
     }
 }
 /*-------------- Search --------------*/
