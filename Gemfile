@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'rails', '>= 4', '< 5'
 # fix rails dependency problem
@@ -9,7 +9,7 @@ gem 'rails', '>= 4', '< 5'
 #gem 'xmlrpc' # removed in ruby 2.4.0
 
 gem 'blacklight', '~> 6'
-gem 'blacklight_advanced_search'
+gem 'blacklight_advanced_search', '~>6'
 gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
 
 
@@ -25,7 +25,7 @@ gem 'paper_trail', '~> 4'
 
 # batch ingest
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.0.2'
-gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
+gem 'browse-everything', '1.0.0'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo', '2.6.0'
 
@@ -57,8 +57,8 @@ gem 'jquery-ui-rails'
 gem 'js_cookie_rails'
 
 # clients
-gem 'rest-client'
-gem 'sparql-client'
+gem 'rest-client', '~> 2.0'
+gem 'sparql-client', '~> 1.99'
 gem 'httparty'
 
 # static pages
@@ -67,7 +67,7 @@ gem 'high_voltage', '~> 2.1.0'
 # monitoring
 # is it working fork
 gem 'is_it_working-cbeer'
-gem 'resque'#, '~> 1'
+gem 'resque'
 gem 'resque-status'
 gem 'nest'
 
@@ -108,8 +108,8 @@ end
 group :test do
   # requires >= 3.3.0 to test styles on node element
   # https://github.com/teamcapybara/capybara/commit/faa45e135434a7f16f04ef5136c63a0663925dec
-  gem 'capybara'
-  gem 'cucumber'
+  gem 'capybara', '~> 3.14'
+  gem 'cucumber', '~> 3.1'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'launchy'
