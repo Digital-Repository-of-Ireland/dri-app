@@ -29,9 +29,16 @@ Scenario: Boolean OR search
   And I press "#advanced-search-submit"
   Then I should see 2 collections with titles "titleTwo, titleThree"
 
+Scenario: Boolean NOT search
+  When I fill in "Title" with "-*Two" within "#advanced_search"
+  When I fill in "Creator" with "*" within "#advanced_search"
+  And I select "any" from ".query-criteria #op"
+  And I press "#advanced-search-submit"
+  Then I should see 2 collections with titles "titleOne, titleThree"
+
 Scenario: Wildcard search
   When I fill in "Title" with "*e*e*" within "#advanced_search"
-  # creator and op lines should not be necessary but spec fails in headless chrome without them
+  # creator and .query-criteria#op lines should not be necessary but spec fails in headless chrome without them
   # related to https://github.com/Codeception/CodeceptJS/issues/561 ?
   When I fill in "Creator" with "*" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
