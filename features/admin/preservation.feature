@@ -6,7 +6,7 @@ Feature: Preservation
   The AIP will reflect the changes
 
   Background:
-    Given I am logged in as "user1" in the group "cm" and accept cookies
+    Given I am logged in as "user1" in the group "cm"
 
   Scenario: Create a collection
     When I create a collection and save the pid

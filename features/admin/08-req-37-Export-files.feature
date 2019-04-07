@@ -7,7 +7,7 @@ Feature: Export files
   And the asset file to my local drive
 
   Background:
-    Given I am logged in as "user1" in the group "cm" and accept cookies
+    Given I am logged in as "user1" in the group "cm"
 
   Scenario: Export DigitalObject's metadata when I have edit/manage permissions
     Given I create an object and save the pid

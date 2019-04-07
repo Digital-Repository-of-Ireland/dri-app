@@ -4,7 +4,7 @@ Feature: Subcollections
   I should be able to interact with public subcollections
 
 Background:
-  Given I am logged in as "user1" in the group "cm" and accept cookies
+  Given I am logged in as "user1" in the group "cm"
   And a collection with pid "col1" and title "Parent" created by "user1"
   And a collection with pid "sub_col1" and title "Child" created by "user1"
   And the collection with pid "sub_col1" is in the collection with pid "col1"
