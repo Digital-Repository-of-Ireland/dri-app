@@ -62,7 +62,6 @@ class MetadataController < ApplicationController
 
         @title = TITLES[xml.root.name]
         @display_xml = styled_xml(xml).to_html
-
         return
       end
     end

@@ -3,7 +3,7 @@ Feature: Bookmarks Feature
   I should be able to add, remove and show bookmarks
 
   Background:
-    Given I am logged in as "admin" in the group "admin" and accept cookies
+    Given I am logged in as "admin" in the group "admin"
     And a collection with pid "bookcoll" and title "Bookmark Test Collection"
     And a Digital Object with pid "bookobj" and title "Bookmark Test Object" in collection "bookcoll"
     And the collection is published

@@ -5,7 +5,7 @@ Feature: Constructing objects with the webapp
   I want to construct a Digital Object with web forms
 
 Background:
-  Given I am logged in as "user1" in the group "cm" and accept cookies
+  Given I am logged in as "user1" in the group "cm"
 
 Scenario: Constructing a valid Digital Object
   When I create a collection and save the pid

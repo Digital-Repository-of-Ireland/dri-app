@@ -4,7 +4,7 @@ Feature: IIIF
   I should be able to view images in a iiif viewer
 
 Background:
-  Given I am logged in as "admin" in the group "admin" and accept cookies
+  Given I am logged in as "admin" in the group "admin"
 
 Scenario Outline: Published collections and objects with images should have a iiif link
   Given a collection with pid "col1" created by "admin"

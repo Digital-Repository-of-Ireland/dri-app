@@ -3,7 +3,7 @@ Feature: Read Only
   The repository can be set to read only and edits will be disabled
 
   Background:
-    Given I am logged in as "user1" in the group "cm" and accept cookies
+    Given I am logged in as "user1" in the group "cm"
     And the repository is set to read only
 
   @read_only

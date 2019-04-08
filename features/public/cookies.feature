@@ -1,4 +1,4 @@
-@cookies @javascript @done @req-67
+@enforce_cookies @cookies @javascript @done @req-67
 Feature: Cookies alert
   In order to comply with EU e-Privacy Directive
   As an new visitor to the DRI

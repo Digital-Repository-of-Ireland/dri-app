@@ -263,7 +263,7 @@
 		</p>
 	</fieldset>
 
-	<fieldset id="subject" data-default-authority='unesco/subjects'>
+	<fieldset id="subject">
 	  <%= render "shared/form_fieldset_label", f:f, source:'subjects' %>
 	  <%= render "shared/autocomplete_dropdown" %>
 		<% @object.subject.each do |i| %>
@@ -290,6 +290,7 @@
   <% if params[:controller] != 'collections' %>
 		<fieldset id="format">
 		  <%= render "shared/form_fieldset_label", f:f, source:'formats' %>
+			<%= render "shared/autocomplete_dropdown" %>
 			<% @object.format.each do |i| %>
 			  <div><%= f.text_field "format][", value:i, class: "edit span6 dri-textfield" %>
 				  <%= render "shared/form_remove_field_button" %>
