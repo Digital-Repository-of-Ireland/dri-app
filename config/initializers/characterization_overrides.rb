@@ -8,11 +8,11 @@ DRI::Derivatives::ExtractMetadata.module_eval do
   #end
 
   def local_file_info
-    @local_file_info ||= LocalFile.where(fedora_id: id, ds_id: "content").order("VERSION DESC").limit(1).take
+    @local_file_info ||= LocalFile.where(fedora_id: id, ds_id: "content").order("VERSION DESC").take
   end
 
   def external_body?
-    registered_mime_type = MIME::Types[mime_type].first
+    registered_mime_type = MIME::Types[content.mime_type].first
     registered_mime_type.content_type == "message/external-body"
   end
 
@@ -51,8 +51,8 @@ DRI::Derivatives::ExtractMetadata.module_eval do
       extension = "."+local_file_info.path.split(".").last
       version_id = local_file_info.version
     else
-      registered_mime_type = MIME::Types[mime_type].first
-      Logger.warn "Unable to find a registered mime type for #{mime_type.inspect}" unless registered_mime_type
+      registered_mime_type = MIME::Types[content.mime_type].first
+      Logger.warn "Unable to find a registered mime type for #{content.mime_type.inspect}" unless registered_mime_type
       extension = registered_mime_type ? ".#{registered_mime_type.extensions.first}" : ''
       version_id = 1
     end
