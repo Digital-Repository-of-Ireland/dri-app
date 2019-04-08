@@ -8,7 +8,7 @@
         <%= select_tag(
               :sort,
               options_for_select(translated_fields, h(params[:sort])),
-              class: 'dri_help_popover_slow',
+              class: 'dri_help_popover_slow dri_select',
               'data-content': t('dri.help.dri_sort_options'),
               'data-original-title': t('dri.help.dri_sort_options_title'),
               'data-placement': 'right',
@@ -25,7 +25,7 @@
         <%= select_tag(
               :per_page,
               options_for_select(translated_per_page, h(params[:per_page])),
-              class: 'dri_help_popover_slow',
+              class: 'dri_help_popover_slow dri_select',
               'data-content': t('dri.help.dri_page_options'),
               'data-original-title': t('dri.help.dri_page_options_title'),
               'data-placement': 'right',

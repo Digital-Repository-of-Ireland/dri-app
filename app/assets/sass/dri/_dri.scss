@@ -840,6 +840,9 @@ ol.breadcrumb {
         @extend %dri_sort_select;
     }
 }
+.dri_select {
+    cursor: pointer;
+}
 .sort-submit-buttons {
     select {
         @extend %dri_sort_select;
