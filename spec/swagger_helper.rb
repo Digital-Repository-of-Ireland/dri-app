@@ -28,8 +28,8 @@ RSpec.configure do |config|
       },
       paths: {},
       schemes: [
-        'http',
-        'https' 
+        # 'http',
+        'https'
       ],
       securityDefinitions: {
         apiKey: {
