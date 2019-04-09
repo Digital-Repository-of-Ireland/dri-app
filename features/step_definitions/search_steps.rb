@@ -29,9 +29,20 @@ When /^I search for "(.*?)" in facet "(.*?)" with id "(.*?)"$/ do |search, facet
     element.click
 
     with_scope("div.#{facetid}") do
-      click_on search
+      find('li', text: search).click
     end
   end
+end
+
+
+When /^I select "([^\"]+)" in facet "([^\"]+)" with id "([^\"]+)"$/ do |search, facetname, facetid|
+  find("#facets .dri_title_dropdown", text: facetname).click
+  check("f_inclusive_#{facetid.remove('blacklight-')}_#{search.split(' ').join('-')}")
+end
+
+Then /^I should see "([^\"]+)" in facet with id "([^\"]+)"$/ do |search, facetid|
+  selector = "#facets #facet-#{facetid.remove('blacklight-')} .facet-values .selected"
+  expect(find(selector).text).to include(search)
 end
 
 

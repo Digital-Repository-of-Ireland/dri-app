@@ -12,13 +12,11 @@ Scenario Outline: Successful search for "<query>" in all_fields
   Given a collection with pid "collection1"
   And the collection with pid "collection1" has "<attribute>" = "<query>"
   And the collection with pid "collection1" is published
-
   # Catch false positives. This collection shouldn't be returned in search
   And a collection with pid "false_positive"
   # false match for query
   And the collection with pid "false_positive" has "<attribute>" = "asdf"
   And the collection with pid "false_positive" is published
-
   When I select "All Fields" from "#search_field"
   And I fill in "q" with "<query>"
   And I perform a search
@@ -39,7 +37,6 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
   Given a collection with pid "collection1"
   And the collection with pid "collection1" has "<attribute>" = "<query>"
   And the collection with pid "collection1" is published
-
   # Catch false positives. This collection shouldn't be returned in search
   And a collection with pid "false_positive"
   # false match for query (q param)
@@ -47,7 +44,6 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
   # false match for search_field (search_field param)
   And the collection with pid "false_positive" has "language" = "<query>"
   And the collection with pid "false_positive" is published
-
   When I select "<search_field>" from "#search_field"
   And I fill in "q" with "<query>"
   And I perform a search
@@ -56,7 +52,7 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
   And I should see 1 visible element ".dri_content_block_collection"
 
   # Cucumber doesn't support nested scenario outlines
-  # Have to use a home (catalog) and my collections example for each field 
+  # Have to use a home (catalog) and my collections example for each field
   Examples:
     | search_field | query                | attribute               | page           |
     | Titles       | Test College Dublin  | title                   | home           |
@@ -79,12 +75,11 @@ Scenario: Advanced Search Link
 Scenario: Reset Search
   Given I am on the home page
   Then I should see 0 visible elements "#reset_search"
-  
   When I fill in "q" with "test"
   And I perform a search
   Then I should see 1 visible element "#reset_search"
-  
   When I click "#reset_search"
   Then I should see 0 visible elements "#reset_search"
 
-#TODO fix single character queries (will there ever be collections / objects with a single charater field in prod?)
+#TODO fix single character queries (will there ever be collections / objects with a single character field in prod?)
+# remove custom reset search and use clear all button?

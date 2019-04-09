@@ -43,7 +43,7 @@ Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
   Examples:
     | facetname  | facetid                              | search          | result             |
     | Subjects   | blacklight-subject_sim               | subject1        | SAMPLE AUDIO TITLE |
-    | Places     | blacklight-placename_field_sim | sample country  | SAMPLE AUDIO TITLE |
+    | Places     | blacklight-placename_field_sim       | sample country  | SAMPLE AUDIO TITLE |
     | Names      | blacklight-person_sim                | collins         | SAMPLE AUDIO TITLE |
     | Language   | blacklight-language_sim              | English         | SAMPLE AUDIO TITLE |
     | Collection | blacklight-root_collection_id_sim    | Test collection | SAMPLE AUDIO TITLE |

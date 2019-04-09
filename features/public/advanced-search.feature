@@ -94,3 +94,31 @@ Scenario Outline: "<PARAM>" dropdowns should change based on url params
 Scenario: Browse tab defaults to collections
   Given I am on the advanced search page
   Then I should see 1 visible element "#dri_browse_sort_tabs_collections_id_no_reload .selected"
+
+# Scenario: Changing tab should load the facets for that type
+#   Given I am on the advanced search page
+#   And I press "#dri_browse_sort_tabs_objects_id_no_reload"
+#   # Then I should see the object facets
+#   When I press "#dri_browse_sort_tabs_objects_id_no_reload"
+#   # Then I should see the collection facets
+
+Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
+  # Given the collection with pid "t1" has "<ATTRIBUTE>" = "<SEARCH>"
+  # TODO: reload facets via ajax
+  # DRI::QualifiedDublinCore.where(is_collection_tesim: "true").map(&:subject)
+  Given I am on the advanced search page with mode = collections
+  # And I search for "<SEARCH>" in facet "<FACETNAME>" with id "<FACETID>"
+  And I select "<SEARCH>" in facet "<FACETNAME>" with id "<FACETID>"
+  And I press "#advanced-search-submit"
+  Then I should see a search result "<RESULT>"
+  And I should see "<SEARCH>" in facet with id "<FACETID>"
+
+  Examples:
+    | FACETNAME  | FACETID                              | SEARCH       | RESULT             |
+    | Collection | blacklight-root_collection_id_sim    | t1           | titleOne           |
+    # | Places     | blacklight-placename_field_sim       | sample country  | SAMPLE AUDIO TITLE |
+    # | Names      | blacklight-person_sim                | collins         | SAMPLE AUDIO TITLE |
+
+    # | FACETNAME  | FACETID                              | SEARCH           | ATTRIBUTE | RESULT             |
+    # | Language   | blacklight-language_sim              | eng              | language  | t1                 |
+    # | Subjects   | blacklight-subject_sim               | advanced_subject | subject   | SAMPLE AUDIO TITLE |
