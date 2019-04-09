@@ -60,10 +60,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: b2f5563137f34604e2795b0908a6cfab82fabe32
-  branch: af_10
+  revision: afe5e86db6629622942c8330fd17a97a912d31e0
+  branch: develop
   specs:
-    dri_data_models (2.6.6)
+    dri_data_models (3.0.0)
       active-fedora (>= 10, < 11)
       active_fedora-noid
       google-api-client
@@ -73,15 +73,16 @@ GIT
       hydra-head
       iso-639
       iso8601
+      rails (~> 4.2)
       resque
       resque-pool
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: a05e339df570a4b1c99db4203d9388e29eac212e
-  branch: af_10
+  revision: 31a93e164e8de9ea9d4fa4781207ece1b63f8b61
+  branch: develop
   specs:
-    user_group (1.2.3)
+    user_group (1.3.0)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
