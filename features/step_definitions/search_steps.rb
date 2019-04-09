@@ -34,7 +34,6 @@ When /^I search for "(.*?)" in facet "(.*?)" with id "(.*?)"$/ do |search, facet
   end
 end
 
-
 When /^I select "([^\"]+)" in facet "([^\"]+)" with id "([^\"]+)"$/ do |search, facetname, facetid|
   find("#facets .dri_title_dropdown", text: facetname).click
   check("f_inclusive_#{facetid.remove('blacklight-')}_#{search.split(' ').join('-')}")
