@@ -24,6 +24,15 @@ module ApplicationHelper
     params[:q].present? || params[:f].present? || params[:search_field].present?
   end
 
+  def has_constraint_params?
+    !params[:q].nil? || !params[:q_ws].nil? || !params[:f].nil? || !params[:f_inclusive].nil?
+    # # get all blacklight constraint keys
+    # constraint_keys = %i[f f_inclusive q q_ws]
+    # constraint_vals = params.select {|k, v| constraint_keys.include?(k.to_sym)}
+    # # if any are not empty return True, else false
+    # !constraint_vals.all?(&:nil?)
+  end
+
   # URI Checker
   def uri?(string)
     uri = URI.parse(string)

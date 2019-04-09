@@ -10,6 +10,7 @@
         <% copyParams[:mode] = "objects" %>
         <% copyParams[:search_field] = "all_fields" %>
     <% end %>
+    <% copyParams.delete(:f_inclusive) %>
     <% copyParams.delete(:f) %>
     <% copyParams.delete(:q) %>
     <% copyParams = copyParams.except(*[:c_date, :p_date, :s_date, :year_from, :year_to]) %>
