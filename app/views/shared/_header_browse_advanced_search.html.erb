@@ -1,6 +1,6 @@
-  <%# 
+  <%# @TCD.IE
     unless params[:controller] == 'advanced'
-    # TODO: handle draft collections in advanced search, 
+    # TODO: handle draft collections in advanced search,
     # exclude from non-search pages
   %>
   <% if params[:controller] == 'catalog' %>
@@ -8,6 +8,13 @@
       kwargs = { mode: params[:mode] || 'collections' }
       kwargs[:sort] = params[:sort] if params[:sort]
       kwargs[:per_page] = params[:per_page] if params[:per_page]
+      # # seems to change how facets are rendered. treats advanced page like it contains results.
+      # # throws errors when changing facets if they already existed.
+      # kwargs[:f_inclusive] = params[:f_inclusive] if params[:f_inclusive]
+
+      # keep search terms on redirect. use reset search to clear form.
+      advanced_keys = params.slice(*search_fields_for_advanced_search.keys).symbolize_keys
+      kwargs.merge!(advanced_keys)
     %>
     <div id="dri_advanced_search_input_id" class="dri_sort_nav">
       <%= link_to t('dri.views.objects.buttons.advanced_search'), advanced_search_path(**kwargs), class: 'btn', id: 'advanced_search' %>

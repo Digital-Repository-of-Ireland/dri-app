@@ -10,10 +10,13 @@
         <% copyParams[:mode] = "objects" %>
         <% copyParams[:search_field] = "all_fields" %>
     <% end %>
-    <% copyParams.delete(:f_inclusive) %>
-    <% copyParams.delete(:f) %>
-    <% copyParams.delete(:q) %>
-    <% copyParams = copyParams.except(*[:c_date, :p_date, :s_date, :year_from, :year_to]) %>
+    <%
+      search_fields_for_advanced_search.keys.each { |k| copyParams.delete(k.to_sym)}
+      copyParams.delete(:f_inclusive)
+      copyParams.delete(:f)
+      copyParams.delete(:q)
+      copyParams = copyParams.except(*[:c_date, :p_date, :s_date, :year_from, :year_to])
+    %>
 
     <span class="dri_clear_all">
       <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), main_app.catalog_index_path(copyParams), :id => 'browse_clear_all' %>

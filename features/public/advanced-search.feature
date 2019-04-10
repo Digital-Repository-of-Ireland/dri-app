@@ -95,13 +95,6 @@ Scenario: Browse tab defaults to collections
   Given I am on the advanced search page
   Then I should see 1 visible element "#dri_browse_sort_tabs_collections_id_no_reload .selected"
 
-# Scenario: Changing tab should load the facets for that type
-#   Given I am on the advanced search page
-#   And I press "#dri_browse_sort_tabs_objects_id_no_reload"
-#   # Then I should see the object facets
-#   When I press "#dri_browse_sort_tabs_objects_id_no_reload"
-#   # Then I should see the collection facets
-
 Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
   # Given the collection with pid "t1" has "<ATTRIBUTE>" = "<SEARCH>"
   # TODO: reload facets via ajax
@@ -122,3 +115,16 @@ Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
     # | FACETNAME  | FACETID                              | SEARCH           | ATTRIBUTE | RESULT             |
     # | Language   | blacklight-language_sim              | eng              | language  | t1                 |
     # | Subjects   | blacklight-subject_sim               | advanced_subject | subject   | SAMPLE AUDIO TITLE |
+
+Scenario: Resetting all search terms
+  # has_facet_values? will return false unless a mode is specified.
+  # TODO: add default { mode: 'collections' } to advanced route?
+  # shouldn't be able to get to advanced route without collections through UI
+  Given I am on the advanced search page with mode = collections
+  And I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
+  And I fill in "Title" with "*Two" within "#advanced_search"
+  And I fill in "Creator" with "*Two" within "#advanced_search"
+  And I select "all" from ".query-criteria #op"
+  And I press "#advanced-search-submit"
+  Then I should see 1 visible element "#browse_clear_all"
+  # When I click "#browse_clear_all"
