@@ -77,11 +77,16 @@ Scenario Outline: "<TEST_STRING>" dropdowns should not reload the page
     | select#sort     | Title     | sorting      |
     | select#per_page | 18        | pagination   |
 
-# TODO test on catalog page and click button to go to adv. search
 Scenario: Browse tabs should change base on url params
   Given I am on the advanced search page with mode = sub_collections
   Then I should see 1 visible element "#dri_browse_sort_tabs_collections_id_no_reload .selected"
   And I should see 1 visible element "#dri_browse_sort_tabs_sub_collections_id_no_reload .selected"
+
+Scenario: Browse settings should be preserved between simple and advanced search
+  Given I am on the home page
+  And I click "#dri_browse_sort_tabs_objects_id"
+  And I click "#advanced_search"
+  And I should see 1 visible element "#dri_browse_sort_tabs_objects_id_no_reload .selected"
 
 Scenario Outline: "<PARAM>" dropdowns should change based on url params
   Given I am on the advanced search page with <PARAM> = <PARAM_VALUE>
@@ -96,11 +101,7 @@ Scenario: Browse tab defaults to collections
   Then I should see 1 visible element "#dri_browse_sort_tabs_collections_id_no_reload .selected"
 
 Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
-  # Given the collection with pid "t1" has "<ATTRIBUTE>" = "<SEARCH>"
-  # TODO: reload facets via ajax
-  # DRI::QualifiedDublinCore.where(is_collection_tesim: "true").map(&:subject)
   Given I am on the advanced search page with mode = collections
-  # And I search for "<SEARCH>" in facet "<FACETNAME>" with id "<FACETID>"
   And I select "<SEARCH>" in facet "<FACETNAME>" with id "<FACETID>"
   And I press "#advanced-search-submit"
   Then I should see a search result "<RESULT>"

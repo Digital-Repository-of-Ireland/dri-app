@@ -4,23 +4,28 @@
     # options =>
     #   :remove => url for a remove constraint link
     #   :classes => array of classes to add to container span
+
     options ||= {}
     options[:escape_label] = true unless options.has_key?(:escape_label)
     options[:escape_value] = true unless options.has_key?(:escape_value)
 
-    # use "label = val" for advanced search params
-    advanced_val = search_fields_for_advanced_search.values.map(&:label).include?(label)
-    display_value = advanced_val ? "#{label} = " : ''
-    display_value += options[:escape_value] ? h(value) : raw(value)
+    advanced_hash = search_fields_for_advanced_search.select { |k, v| v.label == label }
 
-    # TODO: handle overlap between advanced search terms and facets
-    # Subjects, Names, Places
-    # Parse reset url to check for f_inclusive?
+    unless advanced_hash.empty?
+      advanced_key = advanced_hash.keys.first
+      change_hash = Rack::Utils.parse_query(URI(options[:remove]).query)
+      # if clicking remove should remove the advanced key, we know the change is for an advanced search term,
+      # not a facet of the same name e.g. subject, name, place
+      advanced_val = !change_hash.has_key?(advanced_key)
+    end
+
+    # use "label = val" for advanced search params
+    display_value = advanced_val ? "#{label} = #{value}" : value
 -%>
 
 <li>
   <span class="search_mini_icon"></span>
-  <%= display_value %>
+  <%= options[:escape_value] ? h(display_value) : raw(display_value) %>
   <%= link_to("x", options[:remove], class: "remove") %>
 </li>
 

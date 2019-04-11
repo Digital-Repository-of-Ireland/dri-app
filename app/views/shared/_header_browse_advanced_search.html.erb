@@ -1,13 +1,10 @@
-  <%# @TCD.IE
-    unless params[:controller] == 'advanced'
-    # TODO: handle draft collections in advanced search,
-    # exclude from non-search pages
-  %>
   <% if params[:controller] == 'catalog' %>
     <%
       kwargs = { mode: params[:mode] || 'collections' }
       kwargs[:sort] = params[:sort] if params[:sort]
-      kwargs[:per_page] = params[:per_page] if params[:per_page]
+
+      # TODO: preserve facets between requests
+      # kwargs[:per_page] = params[:per_page] if params[:per_page]
       # # seems to change how facets are rendered. treats advanced page like it contains results.
       # # throws errors when changing facets if they already existed.
       # kwargs[:f_inclusive] = params[:f_inclusive] if params[:f_inclusive]
