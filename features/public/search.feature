@@ -74,12 +74,12 @@ Scenario: Advanced Search Link
 
 Scenario: Reset Search
   Given I am on the home page
-  Then I should see 0 visible elements "#reset_search"
+  Then I should see 0 visible elements "#browse_clear_all"
   When I fill in "q" with "test"
   And I perform a search
-  Then I should see 1 visible element "#reset_search"
-  When I click "#reset_search"
-  Then I should see 0 visible elements "#reset_search"
+  Then I should see 1 visible element "#browse_clear_all"
+  When I click "#browse_clear_all"
+  Then I should see 0 visible elements "#browse_clear_all"
 
 #TODO fix single character queries (will there ever be collections / objects with a single character field in prod?)
 # remove custom reset search and use clear all button?

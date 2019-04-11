@@ -117,10 +117,7 @@ Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
     # | Subjects   | blacklight-subject_sim               | advanced_subject | subject   | SAMPLE AUDIO TITLE |
 
 Scenario: Resetting all search terms
-  # has_facet_values? will return false unless a mode is specified.
-  # TODO: add default { mode: 'collections' } to advanced route?
-  # shouldn't be able to get to advanced route without collections through UI
-  Given I am on the advanced search page with mode = collections
+  Given I am on the advanced search page
   And I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
   And I fill in "Title" with "*Two" within "#advanced_search"
   And I fill in "Creator" with "*Two" within "#advanced_search"

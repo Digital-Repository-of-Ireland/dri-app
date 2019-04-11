@@ -12,6 +12,10 @@
     advanced_val = search_fields_for_advanced_search.values.map(&:label).include?(label)
     display_value = advanced_val ? "#{label} = " : ''
     display_value += options[:escape_value] ? h(value) : raw(value)
+
+    # TODO: handle overlap between advanced search terms and facets
+    # Subjects, Names, Places
+    # Parse reset url to check for f_inclusive?
 -%>
 
 <li>
