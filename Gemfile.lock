@@ -157,8 +157,6 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
-    archive-zip (0.12.0)
-      io-like (~> 0.3.0)
     arel (6.0.4)
     ast (2.4.0)
     autoprefixer-rails (9.5.1)
@@ -244,9 +242,6 @@ GEM
       xpath (~> 3.2)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
-    chromedriver-helper (2.1.0)
-      archive-zip (~> 0.10)
-      nokogiri (~> 1.8)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
     ci_reporter_rspec (1.0.0)
@@ -487,7 +482,6 @@ GEM
     i18n_sync (0.5.1)
       ya2yaml
     iconv (1.0.8)
-    io-like (0.3.0)
     is_it_working-cbeer (1.0.16)
     iso-639 (0.2.8)
     iso8601 (0.12.1)
@@ -610,6 +604,7 @@ GEM
     nest (3.1.2)
       redic
     net-http-persistent (2.9.4)
+    net_http_ssl_fix (0.0.10)
     netrc (0.11.0)
     noid (0.9.0)
     nokogiri (1.10.2)
@@ -970,6 +965,11 @@ GEM
       rack (>= 1.0.0)
     warden (1.2.7)
       rack (>= 1.0)
+    webdrivers (3.7.2)
+      net_http_ssl_fix
+      nokogiri (~> 1.6)
+      rubyzip (~> 1.0)
+      selenium-webdriver (~> 3.0)
     xml-simple (1.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
@@ -993,7 +993,6 @@ DEPENDENCIES
   browse-everything (= 1.0.0)
   byebug (~> 10.0)
   capybara (~> 3.14)
-  chromedriver-helper
   ci_reporter_rspec
   clamav
   clipboard-rails
@@ -1065,7 +1064,6 @@ DEPENDENCIES
   rubocop-rspec
   rvm
   sass-rails (~> 4.0.4)
-  selenium-webdriver
   shoulda (~> 3.6)
   shoulda-matchers
   show_me_the_cookies
@@ -1081,6 +1079,7 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicode
   user_group!
+  webdrivers
   yard
 
 BUNDLED WITH
