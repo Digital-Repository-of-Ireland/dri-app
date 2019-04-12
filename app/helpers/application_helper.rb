@@ -36,6 +36,15 @@ module ApplicationHelper
     !params&.[]('selected_facets')&.[](solr_field).nil?
   end
 
+  def should_render_browse_mode_swap?
+    # catalog, bookmarks and my_collections need action index and browse params
+    # saved searches only need index action
+    return false unless action == 'index'
+    return true if controller_name == 'saved_searches'
+    return true if %w(catalog bookmarks my_collections).include?(controller_name) && has_browse_params?
+    return false
+  end
+
   # URI Checker
   def uri?(string)
     uri = URI.parse(string)

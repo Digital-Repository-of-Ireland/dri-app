@@ -59,16 +59,9 @@
 			  <%= render partial: '/flash_msg' %>
 			<% end %>
 			<!-- This condition identifies the browse section of the application and every search result and/or facet refinement -->
-			<%
-				# catalog, bookmarks and my_collections need action index and browse params
-				is_index_controller = %w(catalog bookmarks my_collections).include?(controller_name) && action_name == 'index'
-				index_browse = is_index_controller && has_browse_params?
-				# saved searches only need index action
-				saved_searches_browse = controller_name == 'saved_searches' && action_name == 'index'
-			%>
 			<%# if (((%w(catalog bookmarks my_collections).include?(controller_name)) && action_name == 'index') && has_browse_params?
 			      ) || (controller_name == 'saved_searches' && action_name == 'index') %>
-			<% if index_browse || saved_searches_browse %>
+			<% if should_render_browse_mode_swap? %>
 			  <%= render 'shared/browse_mode_swap' %>
 			<% end %>
 
