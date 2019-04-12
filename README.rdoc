@@ -1,8 +1,8 @@
-== Welcome to the DRI Hydra Head
+== DRI Repository Application
 
-This repository contains the Digital Repository of Ireland's Hydra application.
+This repository contains the Digital Repository of Ireland's Samvera based application.
 
-There are a number of other depedencies (see below) but at this point you
+There are a number of other dependencies (see below) but at this point you
 will need to have a functional Rails stack and at least Java version 7. You
 can check your Java version by running 'java -version' anything below 1.7x
 in the output and you should update from https://java.com/en/download/
@@ -32,8 +32,8 @@ You may also need to edit config/settings.yml and/or create config/settings.loca
 To start the application for demo purposes
 
   $ cd dri-app
-  $ rake jetty:start
-  $ rake jetty:config
+  $ rake server:start
+  $ rake server:config
   $ bundle exec rails server
 
 The db:seed step above will create 4 initial accounts:
@@ -49,20 +49,6 @@ it should be updated as soon as possible after installation. To change the passw
 application as each of the default users, navigate to their profile page by
 clicking on the username at the top of the screen, and clicking on the 'Edit' button.
 
-To run the unit tests:
-
-  $ cd dri-app
-  $ rake jetty:start
-  $ rake jetty:config
-  $ rake rspec
-
-To run the functional tests:
-
-  $ cd dri-app
-  $ rake jetty:start
-  $ rake jetty:config
-  $ rake cucumber or bundle exec cucumber
-
 To generate the app docs:
 
   $ bundle exec rake rdoc
@@ -76,14 +62,6 @@ To run api specs:
 To generate the api docs:
 
   $ bundle exec rake api:docs:generate
-
-To run tests in parallel:
-
-Ensure config/database.yml uses database: db/test<%= ENV['TEST_ENV_NUMBER'] %>.sqlite3
-
-  $ bundle exec rake parallel:create
-  $ bundle exec rake parallel:prepare
-  $ bundle exec parallel_rspec spec
 
 == Dependencies
 
@@ -101,7 +79,6 @@ If you are using Ubuntu or another debian linux distribution
 
 There are a few installation options for fits:
 
-
 1. Download fits from the harvard website https://projects.iq.harvard.edu/fits/downloads
 2. Use ant to build from source github https://github.com/harvard-lts/fits/
 3. Install http://linuxbrew.sh/ and brew install fits
@@ -112,24 +89,6 @@ There are a few installation options for fits:
 
 You may need to comment out `<tool class="edu.harvard.hul.ois.fits.tools.mediainfo.MediaInfo"` in fits/xml/fits.xml
 as per https://github.com/harvard-lts/fits/issues/160
-
-
-== Testing
-
-The unit tests are written using rspec and the functional tests are
-written with cucumber.
-
-This project is set up to use guard to automatically run tests as they
-are changed.
-
-  $ cd dri-app
-  $ bundle exec guard
-
-The poltergeist gem is required for testing, as a result phantomjs binary
-to run poltergeist.
-
-* https://github.com/jonleighton/poltergeist
-* https://github.com/ariya/phantomjs
 
 == Settings.yml
 
@@ -220,32 +179,8 @@ Run bundler. Virus scanning should now take place when an asset is uploaded.
 == Storage
 
 Surrogate files are stored using the S3 interface. To create surrogates
-you will need access to an S3 server. A Ceph VM with S3 Rados Gateway is available
-in the drirepo repository. To start up Ceph run
-
-  $ vagrant up ceph
-
-When the VM is running, log in with
-
-  $ vagrant ssh ceph
-
-Then create a user with no max bucket limit as follows:
-
-  $ sudo radosgw-admin user create --uid=johndoe --display-name="John Doe" --email=john@example.com --max-buckets=0
-
-This will return an access_key and secret_key which must be added
-to the hydra head's config/settings.yml or config/settings.local.yml file as follows:
-
-  S3:
-    server: 10.0.1.201
-    access_key_id: 4WP751XIFXBH9G97DD91
-    secret_access_key: v6tX8bZSeN9IRJAcelHLnQFrsYV8ojxgWa7rn0uz
-
-Note that the keys should be pasted in as they appear in the output of the radosgw-admin command,
-but all '\' characters should be stripped.
-
-An alternative, if the Ceph VM is not working for you, is to use LocalStack. This can be installed
-using pip:
+you will need access to an S3 server. LocalStack can be used for testing purposes. 
+This can be installed using pip:
 
  $ pip install --user localstack
 
@@ -403,6 +338,30 @@ Other settings should be as follows
   audience: 'https://accounts.google.com/o/oauth2/token'
   scope: 'https://www.googleapis.com/auth/analytics.readonly'
 
+== Testing
 
+The unit tests are written using rspec and the functional tests are
+written with cucumber.
 
+To run the unit tests:
+
+  $ cd dri-app
+  $ rake server:start
+  $ rake server:config
+  $ rake rspec
+
+To run the functional tests:
+
+  $ cd dri-app
+  $ rake server:start
+  $ rake server:config
+  $ rake cucumber or bundle exec cucumber
+
+To run tests in parallel:
+
+Ensure config/database.yml uses database: db/test<%= ENV['TEST_ENV_NUMBER'] %>.sqlite3
+
+  $ bundle exec rake parallel:create
+  $ bundle exec rake parallel:prepare
+  $ bundle exec parallel_rspec spec
 

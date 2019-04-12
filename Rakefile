@@ -129,6 +129,13 @@ namespace :api do
   end
 end
 
+namespace :jetty do
+  puts "[WARNING] jetty namespace has been removed, please use server instead."
+  task :start => ['server:start']
+  task :stop => ['server:stop']
+  task :config => ['server:config']
+end
+
 # custom seed files to add/remove data for dev/test
 # e.g bundle exec rake db:seed:add_organisations
 namespace :db do
