@@ -39,7 +39,7 @@ module ApplicationHelper
   def should_render_browse_mode_swap?
     # catalog, bookmarks and my_collections need action index and browse params
     # saved searches only need index action
-    return false unless action == 'index'
+    return false unless action_name == 'index'
     return true if controller_name == 'saved_searches'
     return true if %w(catalog bookmarks my_collections).include?(controller_name) && has_browse_params?
     return false
