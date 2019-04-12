@@ -44,5 +44,7 @@ Then /^I should see "([^\"]+)" in facet with id "([^\"]+)"$/ do |search, facetid
   expect(find(selector).text).to include(search)
 end
 
-
-
+Then /^I should( not)? see "([^\"]+)" in the facet well$/ do |negate, text|
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_css('#dri_facet_restrictions_container_id li', text: text))
+end

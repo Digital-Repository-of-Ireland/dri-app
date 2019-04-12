@@ -23,9 +23,9 @@
     display_value = advanced_val ? "#{label} = #{value}" : value
 -%>
 
-<li>
-  <span class="search_mini_icon"></span>
+<li class='search_facet'>
+  <span class='search_mini_icon'></span>
   <%= options[:escape_value] ? h(display_value) : raw(display_value) %>
-  <%= link_to("x", options[:remove], class: "remove") %>
+  <%= link_to("x", options[:remove], class: 'remove') %>
 </li>
 

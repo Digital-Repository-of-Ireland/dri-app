@@ -100,29 +100,25 @@ Scenario: Browse tab defaults to collections
   Given I am on the advanced search page
   Then I should see 1 visible element "#dri_browse_sort_tabs_collections_id_no_reload .selected"
 
-Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
+Scenario: Faceted Search for a normal end-user (anonymous or registered)
   Given I am on the advanced search page with mode = collections
-  And I select "<SEARCH>" in facet "<FACETNAME>" with id "<FACETID>"
+  And I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
   And I press "#advanced-search-submit"
-  Then I should see a search result "<RESULT>"
-  And I should see "<SEARCH>" in facet with id "<FACETID>"
-
-  Examples:
-    | FACETNAME  | FACETID                              | SEARCH       | RESULT             |
-    | Collection | blacklight-root_collection_id_sim    | t1           | titleOne           |
-    # | Places     | blacklight-placename_field_sim       | sample country  | SAMPLE AUDIO TITLE |
-    # | Names      | blacklight-person_sim                | collins         | SAMPLE AUDIO TITLE |
-
-    # | FACETNAME  | FACETID                              | SEARCH           | ATTRIBUTE | RESULT             |
-    # | Language   | blacklight-language_sim              | eng              | language  | t1                 |
-    # | Subjects   | blacklight-subject_sim               | advanced_subject | subject   | SAMPLE AUDIO TITLE |
+  Then I should see a search result "titleOne"
+  And I should see "t1" in facet with id "blacklight-root_collection_id_sim"
 
 Scenario: Resetting all search terms
   Given I am on the advanced search page
-  And I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
+  When I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
   And I fill in "Title" with "*Two" within "#advanced_search"
   And I fill in "Creator" with "*Two" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
   Then I should see 1 visible element "#browse_clear_all"
-  # When I click "#browse_clear_all"
+  And I should see "t1" in the facet well
+  And I should see "Titles = *Two" in the facet well
+  And I should see "Creators = *Two" in the facet well
+  When I click "#browse_clear_all"
+  And I should not see "t1" in the facet well
+  And I should not see "Titles = *Two" in the facet well
+  And I should not see "Creators = *Two" in the facet well

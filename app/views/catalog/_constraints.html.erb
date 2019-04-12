@@ -1,25 +1,40 @@
-<div id="dri_facet_restrictions_container_id"
-     class="dri_facet_restrictions_container dri_clearfix">
-  <ul id="dri_facet_restrictions_links_id"
-      class="dri_facet_restrictions_links" data-content="<%= t('dri.help.dri_facet_restrictions_links') %>"  data-original-title="<%= t('dri.help.dri_facet_restrictions_links_title')%>" data-trigger="hover" data-placement="top">
+<%#
+https://github.com/projectblacklight/blacklight/blob/1c8084cfb00d51f869c985947f7bd6bab5e59afc/app/helpers/blacklight/render_constraints_helper_behavior.rb#L35
+if ?q is empty, constraints are not rendered
 
-    <%= render_constraints(params) %>
+conflicts with blacklight maps gem which checks for has_search_parameters? || super (query_has_constraints?)
+could also be that query_has_constraints? in blacklight doesn't match render_constraints logic either?
 
-    <% copyParams = params.clone %>
-    <% if copyParams[:mode].nil? %>
-        <% copyParams[:mode] = "objects" %>
-        <% copyParams[:search_field] = "all_fields" %>
-    <% end %>
-    <%
-      search_fields_for_advanced_search.keys.each { |k| copyParams.delete(k.to_sym)}
-      copyParams.delete(:f_inclusive)
-      copyParams.delete(:f)
-      copyParams.delete(:q)
-      copyParams = copyParams.except(*[:c_date, :p_date, :s_date, :year_from, :year_to])
-    %>
+check if render constraints will render anything before adding clear all button
+%>
+<% constrains = render_constraints(params) %>
+<% unless constrains.empty? %>
+  <div id="dri_facet_restrictions_container_id"
+       class="dri_facet_restrictions_container dri_clearfix">
+    <ul id="dri_facet_restrictions_links_id"
+        class="dri_facet_restrictions_links"
+        data-content="<%= t('dri.help.dri_facet_restrictions_links') %>"
+        data-original-title="<%= t('dri.help.dri_facet_restrictions_links_title')%>"
+        data-trigger="hover"
+        data-placement="top">
 
-    <span class="dri_clear_all">
-      <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), main_app.catalog_index_path(copyParams), :id => 'browse_clear_all' %>
-    </span>
-  </ul>
-</div>
+      <%= constrains %>
+      <% copyParams = params.clone %>
+      <% if copyParams[:mode].nil? %>
+          <% copyParams[:mode] = "objects" %>
+          <% copyParams[:search_field] = "all_fields" %>
+      <% end %>
+      <%
+        search_fields_for_advanced_search.keys.each { |k| copyParams.delete(k.to_sym)}
+        copyParams.delete(:f_inclusive)
+        copyParams.delete(:f)
+        copyParams.delete(:q)
+        copyParams = copyParams.except(*[:c_date, :p_date, :s_date, :year_from, :year_to])
+      %>
+
+      <span class="dri_clear_all">
+        <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), main_app.catalog_index_path(copyParams), :id => 'browse_clear_all' %>
+      </span>
+    </ul>
+  </div>
+<% end %>

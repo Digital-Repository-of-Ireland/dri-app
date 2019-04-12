@@ -28,8 +28,12 @@ module ApplicationHelper
     # get all blacklight constraint keys
     constraint_keys = %i[f f_inclusive q q_ws] + search_fields_for_advanced_search.symbolize_keys.keys
     constraint_vals = params.select {|k, v| constraint_keys.include?(k.to_sym)}
-    # if any are not empty return True, else false
-    !constraint_vals.all?(&:empty?)
+    # show constaints if at least one constraint param is non-empty and not on advanced search
+    !constraint_vals.all?(&:empty?) && controller_name != 'advanced'
+  end
+
+  def has_selected_facet_param?(solr_field)
+    !params&.[]('selected_facets')&.[](solr_field).nil?
   end
 
   # URI Checker
