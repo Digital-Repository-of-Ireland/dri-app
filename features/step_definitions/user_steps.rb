@@ -184,8 +184,8 @@ end
 
 Then /^I should be logged in$/ do
   step 'I should have a cookie _dri-app_session'
-  step 'I am on the user profile page'
-  step 'I should see a link to sign out'
+  #step 'I am on the user profile page'
+  #step 'I should see a link to sign out'
 end
 
 Then /^I should be logged out$/ do
@@ -195,6 +195,7 @@ end
 
 Then /^I should be logged in as "(.*?)"$/ do |login|
   step 'I should be logged in'
+  step 'I am on the user profile page'
   page.should have_content(login)
 end
 

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "Object citations" do
   it "should correctly format a citation" do

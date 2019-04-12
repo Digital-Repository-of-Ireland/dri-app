@@ -12,13 +12,13 @@ module PathTranslator
 
       when /^(the )?show Digital Object page for id (.+)$/
         pid = ($2 == "@random")? "dri:o" + @random_pid : $2
-        catalog_path(pid)
+        solr_document_path(pid)
 
       when /^(the )?edit Digital Object page for id (.+)$/
         edit_object_path($2)
 
       when /^(the )?show page for the collection "(.+)"$/
-        catalog_path($2)
+        solr_document_path($2)
 
       when /^(the )?edit collection page for id (.+)$/
         edit_collection_path($2)
@@ -63,10 +63,10 @@ module PathTranslator
         collections_path
 
       when /^(the )?my saved search page$/
-        saved_searches_path
+	blacklight.saved_searches_path
 
       when /^(the )?show page for the collection$/
-        catalog_path(@collection.id)
+        solr_document_path(@collection.id)
 
       when /^(the )?licence index page$/
         licences_path
@@ -107,16 +107,16 @@ module PathTranslator
     case type
 
       when /object/
-        
+
         case page
           when /show/
-            catalog_path(pid)
+            solr_document_path(pid)
           when /edit/
             id = (pid == "created") ? @obj_pid : pid
             edit_object_path(id)
           when /modify/
             id = (pid == "created") ? @obj_pid : pid
-            my_collections_path(id)  
+            my_collections_path(id)
         else
             raise('Unknown route')
         end
@@ -136,7 +136,7 @@ module PathTranslator
       when /collection/
         case page
           when /show/
-            catalog_path(pid)
+            solr_document_path(pid)
           when /edit/
             edit_collection_path(pid)
           when /new object/

@@ -26,18 +26,18 @@ end
 shared_examples 'it has json doi information' do |key='Doi'|
   run_test! do
     doi_details = JSON.parse(response.body)[key][0]
-    expect(doi_details.keys.sort).to eq(%w[created_at url version]) 
-  end  
+    expect(doi_details.keys.sort).to eq(%w[created_at url version])
+  end
 end
 
 shared_examples 'it has json related objects information' do |key='RelatedObjects'|
   run_test! do
     related_objects_details = JSON.parse(response.body)[key][0]
     expect(related_objects_details.keys.sort).to eq(%w[doi relation url])
-  end  
+  end
 end
 
-# @param [String | Regexp] message 
+# @param [String | Regexp] message
 shared_examples 'a json api 401 error' do |message: nil|
   run_test! do
     error_detail = JSON.parse(response.body)["errors"][0]["detail"]
@@ -46,7 +46,7 @@ shared_examples 'a json api 401 error' do |message: nil|
   end
 end
 
-# @param [String | Regexp] message 
+# @param [String | Regexp] message
 shared_examples 'a json api 404 error' do |message: nil|
   run_test! do
     error_detail = JSON.parse(response.body)["errors"][0]["detail"]
@@ -67,12 +67,11 @@ end
 shared_examples 'a search response with no false positives' do |field|
   run_test! do
     json_body = JSON.parse(response.body)
-    first_object = json_body['response']['docs'].first['object_profile_ssm'].first
-    json_object = JSON.parse(first_object)
+    json_object = json_body['response']['docs'].first
 
     # no false positives
     expect(json_body['response']['docs'].count).to eq(1)
-    expect(json_object[field]).to eq(bind_search_param)
+    expect(json_object["#{field}_tesim"]).to eq(bind_search_param)
 
     # # parsing the object_profile seems slightly faster than looking up the solr name
     # # may be useful in future if response changes and no longer returns duplicate info

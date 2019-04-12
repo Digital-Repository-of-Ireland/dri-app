@@ -3,7 +3,7 @@ Feature: DOI Feature
   Published objects will have a DOI. Editing these objects should show a warning.
 
   Background:
-    Given I am logged in as "admin" in the group "admin" and accept cookies
+    Given I am logged in as "admin" in the group "admin"
     When I create an object and save the pid
     And the object has a doi
     And the collection with pid "the saved pid" is published

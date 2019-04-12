@@ -46,7 +46,13 @@ class AssetsController < ApplicationController
       can_view?
 
       if @document.published?
-        Gabba::Gabba.new(GA.tracker, request.host).event(@document.root_collection_id, "Download", @document.id, 1, true)
+        Gabba::Gabba.new(GA.tracker, request.host).event(
+          @document.root_collection_id,
+          'Download',
+          @document.id,
+          1,
+          true
+        )
       end
 
       local_file = GenericFileContent.new(generic_file: @generic_file).local_file(params[:version])

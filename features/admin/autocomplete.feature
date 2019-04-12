@@ -6,7 +6,7 @@ Feature: Autocomplete
   When I use the coverages, places, temporal, or subjects text inputs
 
 Background:
-  Given I am logged in as "user1" in the group "cm" and accept cookies
+  Given I am logged in as "user1" in the group "cm"
   And I am on the home page
   When I go to "create new collection"
 

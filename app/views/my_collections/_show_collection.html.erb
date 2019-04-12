@@ -50,7 +50,7 @@
   <% end %>
 
   <% if document.published? %>
-    <%= link_to catalog_path(document.id), id: "view_catalog" do %>
+    <%= link_to solr_document_path(document.id), id: "view_catalog" do %>
       <%= button_tag(t('dri.views.catalog.buttons.view_catalog'), {class: 'dri_open_workspace_button'}) %>
     <% end %>
   <% end %>

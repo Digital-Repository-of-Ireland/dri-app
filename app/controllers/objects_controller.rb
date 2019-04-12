@@ -3,6 +3,7 @@
 require 'solr/query'
 
 class ObjectsController < BaseObjectsController
+  include Blacklight::AccessControls::Catalog
   include DRI::Duplicable
 
   Mime::Type.register "application/zip", :zip
@@ -65,7 +66,7 @@ class ObjectsController < BaseObjectsController
         json = @object.as_json
         # solr_doc = SolrDocument.new(@object.to_solr)
         # # intermittent issue using to_solr:  A JSON text must at least contain two octets!
-        solr_query = ActiveFedora::SolrService.construct_query_for_ids([@object.id])
+        solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([@object.id])
         solr_doc = SolrDocument.new(Solr::Query.new(solr_query).first)
 
         json['licence'] = DRI::Formatters::Json.licence(solr_doc)
@@ -238,7 +239,7 @@ class ObjectsController < BaseObjectsController
       raise DRI::Exceptions::BadRequest
     end
 
-    solr_query = ActiveFedora::SolrService.construct_query_for_ids(object_ids)
+    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(object_ids)
     results = Solr::Query.new(solr_query)
 
     while results.has_more?
@@ -278,7 +279,7 @@ class ObjectsController < BaseObjectsController
             end
 
     if params[:object].present?
-      solr_query = ActiveFedora::SolrService.construct_query_for_pids([params[:object]])
+      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_pids([params[:object]])
       result = ActiveFedora::SolrService.instance.conn.get(
         'select',
         params: {

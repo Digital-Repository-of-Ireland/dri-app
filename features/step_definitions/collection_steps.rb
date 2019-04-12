@@ -27,7 +27,15 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
   user ||= 'test'
   if user
     email = "#{user}@#{user}.com"
-    User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
+    User.create(
+      email: email,
+      password: "password",
+      password_confirmation: "password",
+      locale: "en",
+      first_name: "fname",
+      second_name: "sname",
+      image_link: File.join(cc_fixture_path, 'sample_image.png')
+    ) if User.find_by_email(email).nil?
 
     @collection.depositor = User.find_by_email(email).to_s
     @collection.manager_users_string=User.find_by_email(email).to_s
@@ -41,8 +49,8 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
 
   expect(@collection.governed_items.count).to be == 0
 
-  group = UserGroup::Group.new(:name => @collection.id,
-                              :description => "Default Reader group for collection #{@collection.id}")
+  group = UserGroup::Group.new(name: @collection.id,
+                               description: "Default Reader group for collection #{@collection.id}")
   group.save
 end
 
@@ -74,7 +82,7 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
     'Otherwise methods will break, for example '\
     'preservation_helpers.rb#build_hash_dir assumes pid.length >= 6'
     raise ArgumentError, err_msg if pid.length < 6
-    @digital_object = DRI::Batch.with_standard(:qdc, {:id => pid})
+    @digital_object = DRI::Batch.with_standard(:qdc, { id: pid })
   else
     @digital_object = DRI::Batch.with_standard(:qdc)
   end

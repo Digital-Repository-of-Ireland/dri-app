@@ -6,8 +6,11 @@
           <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
         <% end %>
       <% end %>
-      <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter)} )) do %>
-        <div>
+      <%= link_to(
+            url_for_document(document),
+            document_link_params(document, { counter: document_counter_with_offset(document_counter) })
+          ) do %>
+      <div>
           <div class="dri_collection_image">
             <% present(document, DRI::ImagePresenter) do |images| %>
               <% image = images.cover_image %>

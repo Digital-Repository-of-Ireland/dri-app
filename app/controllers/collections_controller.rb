@@ -4,7 +4,7 @@ require 'storage/cover_images'
 require 'validators'
 
 class CollectionsController < BaseObjectsController
-  include Hydra::AccessControlsEnforcement
+  include Blacklight::AccessControls::Catalog
   include DRI::Duplicable
 
   before_action :authenticate_user_from_token!, except: [:cover]
@@ -78,7 +78,7 @@ class CollectionsController < BaseObjectsController
     @institutes = Institute.all
     @inst = Institute.new
 
-    @collection_institutes = Institute.where(name: @object.institute).to_a
+    @collection_institutes = Institute.where(name: @object.institute.flatten).to_a
     @depositing_institute = @object.depositing_institute.present? ? Institute.find_by(name: @object.depositing_institute) : nil
 
     supported_licences

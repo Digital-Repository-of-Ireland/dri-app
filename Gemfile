@@ -1,49 +1,41 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
-gem 'rails','~> 4.2'
+gem 'rails', '>= 4', '< 5'
 # fix rails dependency problem
-gem 'sinatra', '1.4.8'
-gem 'xmlrpc' # removed in ruby 2.4.0
+#gem 'sinatra'#, '1.4.8'
+#gem 'xmlrpc' # removed in ruby 2.4.0
 
-gem 'blacklight', '~> 5.19.0'
-gem 'blacklight_advanced_search', '~> 5.3'
+gem 'blacklight', '~> 6'
+gem 'blacklight_advanced_search', '~>6'
 gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
 
 
-gem 'hydra-head', '9.10'
+gem 'hydra-head', '~> 10.6'
 
 gem 'riiif', '1.2.0'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'redlock'
-gem 'google-api-client', '~> 0.9'
-gem 'googleauth', '0.5.1'
-
-gem 'paper_trail', '~> 4'
-
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
+gem 'paper_trail', '~> 4'
 
 # batch ingest
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.0.2'
-gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
+gem 'browse-everything', '1.0.0'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo', '2.6.0'
 
-gem 'active-fedora', '9.13'
-gem 'active_fedora-noid', '1.1.1'
-
 gem 'config'
-gem 'sqlite3'
+gem 'sqlite3','~> 1.3', '< 1.4'
 
 gem 'omniauth-shibboleth'
 gem 'oauth'
 
-gem 'feedjira'
+#gem 'feedjira'
 
 # Storage-related gems
 gem 'moab-versioning'
@@ -54,7 +46,7 @@ gem 'mimemagic'
 # Language and translation related gems
 gem 'http_accept_language'
 gem 'it'
-gem 'i18n-tasks', '~> 0.9.15'
+gem 'i18n-tasks' #, '~> 0.9.15'
 gem 'i18n-js'
 
 # logging
@@ -65,8 +57,9 @@ gem 'jquery-ui-rails'
 gem 'js_cookie_rails'
 
 # clients
-gem 'rest-client'
-gem 'sparql-client'
+gem 'rest-client', '~> 2.0'
+gem 'sparql-client', '~> 1.99'
+gem 'httparty'
 
 # static pages
 gem 'high_voltage', '~> 2.1.0'
@@ -74,10 +67,9 @@ gem 'high_voltage', '~> 2.1.0'
 # monitoring
 # is it working fork
 gem 'is_it_working-cbeer'
-gem 'resque', '~> 1'
+gem 'resque'
 gem 'resque-status'
 gem 'nest'
-gem 'sass-rails' , '~> 4.0.4'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs'
@@ -93,8 +85,8 @@ end
 group :development, :test do
   gem 'rubocop'
   gem 'rubocop-rspec'
-  gem 'rspec-rails', '~> 3.0'
-  gem 'rswag-specs', '~> 2.0'
+  gem 'rspec-rails'
+  gem 'rswag-specs'
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
@@ -104,7 +96,6 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'zeus', require: false
   gem 'ci_reporter_rspec'
   gem 'solr_wrapper', '~> 0.18'
   gem 'fcrepo_wrapper', '0.9.0'
@@ -112,14 +103,15 @@ group :development, :test do
   gem 'parallel_tests', '~> 2.23'
   gem 'puffing-billy', '~> 0.11.0'
   gem 'i18n-debug', '~> 1.2'
+  gem 'yard'
 end
 
 group :test do
   # requires >= 3.3.0 to test styles on node element
   # https://github.com/teamcapybara/capybara/commit/faa45e135434a7f16f04ef5136c63a0663925dec
-  gem 'capybara', '~> 3.12.0'
-  gem 'cucumber', '3.1.2'
-  gem 'cucumber-rails', '1.6.0', require: false
+  gem 'capybara', '~> 3.14'
+  gem 'cucumber', '~> 3.1'
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'launchy'
   gem 'factory_bot_rails'
@@ -127,6 +119,7 @@ group :test do
   gem 'syntax'
   gem 'cucumber-api-steps'
   gem 'shoulda', '~> 3.6'
+  gem 'shoulda-matchers'
 end
 
 # To use ActiveModel has_secure_password
@@ -136,17 +129,17 @@ end
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-gem 'unicorn'
+#gem 'unicorn'
 
 # To use debugger
-# gem 'debugger'
+#gem 'debugger'
 
 gem 'unicode', platforms: [:mri_18, :mri_19]
-gem 'font-awesome-rails', '4.5.0.1'
+gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
 gem 'bootstrap-sass', '3.4.1'
 gem 'bootstrap-glyphicons'
-gem 'yard'
+gem 'sass-rails', '~> 4.0.4'
 
 group :translations do
   gem 'i18n_sync'
@@ -178,7 +171,7 @@ gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem 'jquery-slick-rails'
 gem 'remotipart'
 
-# api documentation generator / presenter
+# # api documentation generator / presenter
 gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'
 

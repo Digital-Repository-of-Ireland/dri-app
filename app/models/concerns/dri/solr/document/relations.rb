@@ -39,7 +39,7 @@ module DRI::Solr::Document::Relations
       end
 
     rescue ActiveFedora::ObjectNotFoundError
-      Rails.logger.error("Object not found: #{document['id']}")
+      Rails.logger.error("Object not found")
     end
 
     relationships_hash
@@ -74,12 +74,16 @@ module DRI::Solr::Document::Relations
 
       documentation_ids = documentation_object_ids
       documentation_ids.each do |id|
-        doc_obj = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax')
-        next if doc_obj.empty?
+        solr_doc = SolrDocument.find(id)
+        next if solr_doc.nil?
 
-        solr_doc = SolrDocument.new(doc_obj[0])
-
-        link_text = solr_doc[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)].first
+        link_text = solr_doc[
+                      ActiveFedora.index_field_mapper.solr_name(
+                        'title',
+                        :stored_searchable,
+                        type: :string
+                      )
+                    ].first
         doc_array.to_a.push [link_text, solr_doc]
       end
       docs['Has Documentation'] = doc_array unless doc_array.empty?
@@ -95,7 +99,13 @@ module DRI::Solr::Document::Relations
         item_array = []
 
         value.each do |rel_obj_doc|
-          link_text = rel_obj_doc[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)].first
+          link_text = rel_obj_doc[
+                        ActiveFedora.index_field_mapper.solr_name(
+                          'title',
+                          :stored_searchable,
+                          type: :string
+                        )
+                      ].first
           item_array.to_a.push [link_text, rel_obj_doc]
         end
 
@@ -112,8 +122,11 @@ module DRI::Solr::Document::Relations
       relationships = object_class.relationships
 
       relationships.each do |key, value|
-        relations_array = object_profile[value[:field]]
-        records[key] = retrieve_relation_records(relations_array, object_class.solr_relationships_field) unless relations_array.blank?
+        relations_array = self["#{value[:field]}_tesim"]
+        records[key] = retrieve_relation_records(
+                         relations_array,
+                         object_class.solr_relationships_field
+                       ) unless relations_array.blank?
       end
 
       records
@@ -133,7 +146,11 @@ module DRI::Solr::Document::Relations
       solr_query = "#{solr_id_field}:(#{relations_array.map { |r| "\"#{r}\"" }.join(' OR ')})"
       solr_query << " AND #{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string)}:\"#{root.id}\""
 
-      solr_results = ActiveFedora::SolrService.query(solr_query, rows: relations_array.length, defType: 'edismax')
+      solr_results = ActiveFedora::SolrService.query(
+                       solr_query,
+                       rows: relations_array.length,
+                       defType: 'edismax'
+                     )
 
       if solr_results.present?
         solr_results.each { |item| records << SolrDocument.new(item) }

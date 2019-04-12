@@ -23,12 +23,12 @@ module BlacklightHelper
 
   def link_to_saved_search(params)
     label = title_to_saved_search(params)
-    link_to(raw(label), catalog_index_path(params)).html_safe
+    link_to(raw(label), search_catalog_path(params)).html_safe
   end
 
   def title_to_saved_search(params)
     params[:mode] = params[:mode].presence || 'objects'
-  
+
     "#{params[:mode].to_s.capitalize} (" + [render_search_to_s_q(params), render_search_to_s_filters(params)].reject { |value| value.blank? }.join(", ") + ")"
   end
 

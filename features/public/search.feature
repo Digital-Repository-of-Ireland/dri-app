@@ -6,7 +6,6 @@ Feature: Search
 Background:
   Given I am not logged in
   And I go to "the home page"
-  And I accept cookies terms
 
 Scenario Outline: Successful search for "<query>" in all_fields
   Given a collection with pid "collection1"

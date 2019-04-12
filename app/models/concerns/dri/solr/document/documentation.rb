@@ -13,8 +13,7 @@ module DRI::Solr::Document::Documentation
       key = ActiveFedora.index_field_mapper.solr_name('isDescriptionOf', :stored_searchable, type: :symbol)
       return nil unless self[key].present?
 
-      results = ActiveFedora::SolrService.query("id:#{self[key].first}")
-      results.present? ? SolrDocument.new(results.first) : nil
+      SolrDocument.find(key)
     end
 
     def retrieve_document_ids

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe DRI::Batch do
   it "should have an audio type with the level 1 required metadata fields" do

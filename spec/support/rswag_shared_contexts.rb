@@ -24,7 +24,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     @licence = Licence.create(
       name: 'test', description: 'this is a test', url: 'http://example.com'
     )
-    
+
     @example_user = create_user
     @collections  = []
     @dois         = []
@@ -34,13 +34,13 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     num_collections.times do |i|
       collection = create_collection_for(@example_user, status: status)
       collection.licence = @licence.name
-      
+
       if docs
         doc = FactoryBot.create(:documentation)
         collection.documentation_object_ids = doc.id
         @docs << doc
       end
-      
+
       num_objects.times do |j|
         object = create_object_for(
           @example_user,

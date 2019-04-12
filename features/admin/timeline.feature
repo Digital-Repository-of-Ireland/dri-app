@@ -4,7 +4,7 @@ Feature: Viewing objects on the timeline
   I should be able to view objects with valid dates on a timeline
 
   Background:
-    Given I am logged in as "user1" in the group "cm" and accept cookies
+    Given I am logged in as "user1" in the group "cm"
     And a collection with title "Timeline Collection" created by "user1"
 
   @random_pid

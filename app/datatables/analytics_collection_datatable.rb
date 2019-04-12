@@ -1,10 +1,10 @@
 class AnalyticsCollectionDatatable
-  delegate :current_user, :params, :catalog_path, :link_to, to: :@view
+  delegate :current_user, :params, :solr_document_path, :link_to, to: :@view
   delegate :user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
   def initialize(profile, view)
     @view = view
-    @profile = profile    
+    @profile = profile
   end
 
   def as_json(options = {})
@@ -22,7 +22,7 @@ private
     data = display_on_page(collection_id)
     formatted_data = data.map do |entry|
       [
-       link_to(entry[:title], catalog_path(entry[:dimension3])),
+       link_to(entry[:title], solr_document_path(entry[:dimension3])),
        entry[:users],
        entry[:totalHits],
        entry[:totalEvents]
@@ -61,7 +61,7 @@ private
 
   def display_on_page(collection)
     Kaminari.paginate_array(fetch_analytics(collection)).page(page).per(per_page)
-  end 
+  end
 
   def page
     params[:start].to_i/per_page + 1
@@ -83,7 +83,7 @@ private
   def startdate
     params[:startdate] || Date.today.at_beginning_of_month()
   end
-  
+
   def enddate
     params[:enddate] || Date.today
   end
@@ -112,5 +112,5 @@ private
     end
     object_hash
   end
-    
+
 end

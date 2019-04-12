@@ -9,15 +9,15 @@ end
 FactoryBot.define do
   factory :user, :class => UserGroup::User do |u|
     u.email { FactoryBot.generate(:email) }
-    u.password 'password'
-    u.password_confirmation 'password'
-    u.first_name FFaker::Name.first_name
-    u.second_name FFaker::Name.last_name
-    u.confirmed_at Time.now
+    u.password { 'password' }
+    u.password_confirmation { 'password' }
+    u.first_name { FFaker::Name.first_name }
+    u.second_name { FFaker::Name.last_name }
+    u.confirmed_at { Time.now }
   end
 
   factory :invalid_user, parent: :user do |u|
-    u.email nil
+    u.email { nil }
   end
 
   factory :admin,  parent: :user do |u|
