@@ -158,6 +158,14 @@ When /^I select the text "(.*?)" from the selectbox for (.*?)$/ do |option, sele
   select(option, :from => select_box_to_id(selector))
 end
 
+When /^I select "([^\"]+)" from "([^\"]+)"$/ do |text, selector|
+  find(selector, visible: true).select(text)
+end
+
+Then /^I should see "([^\"]+)" selected in "([^\"]+)"$/ do |text, selector|
+  expect(page).to have_select(selector, selected: text)
+end
+
 When /^I upload the metadata file "(.*?)"$/ do |file|
     attach_file("dri_metadata_uploader", File.expand_path(File.join(cc_fixture_path, file)))
 end

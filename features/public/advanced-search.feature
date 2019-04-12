@@ -86,7 +86,27 @@ Scenario: Browse settings should be preserved between simple and advanced search
   Given I am on the home page
   And I click "#dri_browse_sort_tabs_objects_id"
   And I click "#advanced_search"
-  And I should see 1 visible element "#dri_browse_sort_tabs_objects_id_no_reload .selected"
+  Then I should see 1 visible element "#dri_browse_sort_tabs_objects_id_no_reload .selected"
+
+Scenario: Browse settings should be preserved between advanced searches
+  When I select "any" from ".query-criteria #op"
+  And I press "#dri_browse_sort_tabs_sub_collections_id_no_reload"
+  And I fill in "Title" with "test title" within "#advanced_search"
+  And I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
+  And I select "Relevance" from "select#sort"
+  And I select "36" from "select#per_page"
+  # submit search then go back to advanced search from catalog results page
+  When I press "#advanced-search-submit"
+  Then I should be on the catalog page
+  When I press "#advanced_search"
+  Then I should be on the advanced search page
+  And I should see "any" selected in "op"
+  And I should see 1 visible element "#dri_browse_sort_tabs_collections_id_no_reload .selected"
+  And I should see 1 visible element "#dri_browse_sort_tabs_sub_collections_id_no_reload .selected"
+  And I should see an input "title" with text "test title" within "#advanced_search"
+  And I should see 1 visible element "#facet-root_collection_id_sim.in"
+  And I should see "Relevance" selected in "sort"
+  And I should see "36 Results" selected in "per_page"
 
 Scenario Outline: "<PARAM>" dropdowns should change based on url params
   Given I am on the advanced search page with <PARAM> = <PARAM_VALUE>

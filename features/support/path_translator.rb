@@ -26,6 +26,9 @@ module PathTranslator
       when /^(the )?home page$/
         root_path
 
+      when /^(the )?catalog page$?/
+        catalog_index_path
+
       when /^(the )?my collections page$/
         my_collections_index_path
 
@@ -34,7 +37,7 @@ module PathTranslator
         my_collections_path(pid)
 
       when /^(the )?user profile page$/
-        user_group.profile_path      
+        user_group.profile_path
 
       when /^sign in$/
         new_user_session_path

@@ -35,6 +35,11 @@ $(document).ready(function(){
   // if none are selected, check url params, select collections by default
   if ($(tab_selector).find('.selected').length < 1) {
     var current_mode = get_url_param('mode');
+    var show_subs = get_url_param('show_subs');
+    if (show_subs && show_subs == 'true' && current_mode == 'collections') {
+      current_mode = 'sub_collections';
+    }
+
     if (current_mode) {
       $('#dri_browse_sort_tabs_' + current_mode + '_id_no_reload a').click();
     } else {
