@@ -90,10 +90,10 @@ module PathTranslator
         workspace_path
 
       when /^(the )?advanced search page$/
-        advanced_path
+        advanced_search_path
 
       when /^(the )?advanced search page with (\w+) = (.+)$/
-        advanced_path("#{$2}": $3.strip)
+        advanced_search_path("#{$2}": $3.strip)
 
       else
         raise('You specified an invalid path')

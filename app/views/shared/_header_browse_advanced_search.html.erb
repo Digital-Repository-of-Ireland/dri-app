@@ -10,6 +10,6 @@
       kwargs.merge!(advanced_keys)
     %>
     <div id="dri_advanced_search_input_id" class="dri_sort_nav">
-      <%= link_to t('dri.views.objects.buttons.advanced_search'), advanced_path(**kwargs), class: 'btn', id: 'advanced_search' %>
+      <%= link_to t('dri.views.objects.buttons.advanced_search'), advanced_search_path(**kwargs), class: 'btn', id: 'advanced_search' %>
     </div>
   <% end %>
