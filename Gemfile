@@ -176,7 +176,3 @@ gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'
 
 gem 'qa', '~> 1.2'
-
-gem 'rsolr', '>= 1.0'
-
-gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'

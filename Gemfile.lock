@@ -1059,7 +1059,6 @@ DEPENDENCIES
   rest-client (~> 2.0)
   riiif (= 1.2.0)
   roo (= 2.6.0)
-  rsolr (>= 1.0)
   rspec-rails
   rspec_junit_formatter
   rswag-api (~> 2.0)
@@ -1082,7 +1081,6 @@ DEPENDENCIES
   syntax
   syslog-logger
   timelineJS3-rails!
-  twitter-typeahead-rails (= 0.11.1.pre.corejavascript)
   uglifier (>= 1.0.3)
   unicode
   user_group!

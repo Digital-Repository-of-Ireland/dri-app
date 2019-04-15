@@ -13,7 +13,6 @@ Background:
   And the collection with pid "t3" is published
   And I am not logged in
   And I go to "the advanced search page"
-  # And I accept cookies terms
 
 Scenario: Boolean AND search
   When I fill in "Title" with "*Two" within "#advanced_search"
@@ -110,7 +109,7 @@ Scenario: Faceted Search for a normal end-user (anonymous or registered)
   And I should see "t1" in facet with id "blacklight-root_collection_id_sim"
 
 Scenario: Resetting all search terms
-  # TODO: remove mode=collections, fix default params[:mode] for advanced
+  # TODO: remove mode=collections, fix default params[:mode] for advanced search
   Given I am on the advanced search page with mode = collections
   When I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
   And I fill in "Title" with "*Two" within "#advanced_search"
