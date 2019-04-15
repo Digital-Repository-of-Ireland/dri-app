@@ -5,12 +5,12 @@
     </div>
   <% end %>
 
-  <% params[:mode] ||= 'collections' %>
-
-<%= form_tag catalog_index_path, :class => 'advanced form-horizontal', :method => :get do  %>
+<%= form_tag search_catalog_path, :class => 'advanced form-horizontal', :method => :get do  %>
   <%= render_hash_as_hidden_fields(params_for_search(advanced_search_context, {})) %>
 
-  <%= hidden_field_tag(:show_subs, false) %>
+  <%= hidden_field_tag(:mode, params[:mode] || 'collections') %>
+  <%= hidden_field_tag(:show_subs, params[:show_subs] || false) %>
+
   <div class="col-md-8">
     <div class="input-criteria">
       <div class="query-criteria">

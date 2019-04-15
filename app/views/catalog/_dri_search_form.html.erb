@@ -1,5 +1,4 @@
-
-  <%= form_tag main_app.catalog_index_path, :method => :get, :id => 'searchform', :class => 'dri_search_term_input_form' do %>
+  <%= form_tag main_app.search_catalog_path, :method => :get, :id => 'searchform', :class => 'dri_search_term_input_form' do %>
     <%
       ui_search_fields = search_fields.select do |(label, value)|
         %w[all_fields title subject person place].include?(value)

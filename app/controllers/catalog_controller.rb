@@ -1,13 +1,15 @@
 # -*- encoding : utf-8 -*-
 class CatalogController < ApplicationController
   include DRI::Catalog
+  include BlacklightAdvancedSearch::Controller
 
   configure_blacklight do |config|
 
     config.advanced_search = {
       # https://github.com/projectblacklight/blacklight_advanced_search/tree/74d5be9756f2157204d486d37c766162d59bb400/lib/parsing_nesting#why-not-use-e-dismax
       # support wildcards in advanced search
-      query_parser: 'edismax'
+      query_parser: 'edismax',
+      url_key: 'advanced'
     }
 
     config.search_builder_class = ::CatalogSearchBuilder

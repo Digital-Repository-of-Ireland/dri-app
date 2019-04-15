@@ -33,7 +33,7 @@ check if render constraints will render anything before adding clear all button
       %>
 
       <span class="dri_clear_all">
-        <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), main_app.catalog_index_path(copyParams), :id => 'browse_clear_all' %>
+        <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), main_app.search_catalog_path(copyParams), :id => 'browse_clear_all' %>
       </span>
     </ul>
   </div>

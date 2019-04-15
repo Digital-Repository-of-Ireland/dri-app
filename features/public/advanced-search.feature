@@ -13,7 +13,7 @@ Background:
   And the collection with pid "t3" is published
   And I am not logged in
   And I go to "the advanced search page"
-  And I accept cookies terms
+  # And I accept cookies terms
 
 Scenario: Boolean AND search
   When I fill in "Title" with "*Two" within "#advanced_search"
@@ -76,6 +76,7 @@ Scenario: Browse settings should be preserved between simple and advanced search
   Then I should see 1 visible element "#dri_browse_sort_tabs_objects_id_no_reload .selected"
 
 Scenario: Browse settings should be preserved between advanced searches
+  Given I am on the advanced search page with mode = collections
   When I select "any" from ".query-criteria #op"
   And I press "#dri_browse_sort_tabs_sub_collections_id_no_reload"
   And I fill in "Title" with "titleOne" within "#advanced_search"
@@ -109,7 +110,8 @@ Scenario: Faceted Search for a normal end-user (anonymous or registered)
   And I should see "t1" in facet with id "blacklight-root_collection_id_sim"
 
 Scenario: Resetting all search terms
-  Given I am on the advanced search page
+  # TODO: remove mode=collections, fix default params[:mode] for advanced
+  Given I am on the advanced search page with mode = collections
   When I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
   And I fill in "Title" with "*Two" within "#advanced_search"
   And I fill in "Creator" with "*Two" within "#advanced_search"

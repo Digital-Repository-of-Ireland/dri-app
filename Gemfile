@@ -9,7 +9,7 @@ gem 'rails', '>= 4', '< 5'
 #gem 'xmlrpc' # removed in ruby 2.4.0
 
 gem 'blacklight', '~> 6'
-gem 'blacklight_advanced_search', '~>6'
+gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
 
 
@@ -97,7 +97,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'ci_reporter_rspec'
-  gem 'solr_wrapper', '~> 0.18'
+  gem 'solr_wrapper', '>= 0.3'
   gem 'fcrepo_wrapper', '0.9.0'
   gem 'byebug', '~> 10.0'
   gem 'parallel_tests', '~> 2.23'
@@ -176,3 +176,7 @@ gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'
 
 gem 'qa', '~> 1.2'
+
+gem 'rsolr', '>= 1.0'
+
+gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'

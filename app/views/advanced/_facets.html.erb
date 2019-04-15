@@ -1,5 +1,5 @@
 <% # main container for facets/limits menu -%>
-<% if has_facet_values?  %>
+<% if has_facet_values? || controller_name == 'advanced' %>
 <div id="facets" class="facets sidenav dri_facet_filters" data-content="<%= t('dri.help.facets') %>"
 data-original-title="<%= t('dri.help.facets_title') %>" data-trigger="hover" data-placement="top">
 	<div class="dri_head_title">

@@ -13,6 +13,7 @@ DriApp::Application.routes.draw do
     mount DriBatchIngest::Engine => '/ingest'
 
     mount Blacklight::Engine => '/'
+    mount BlacklightAdvancedSearch::Engine => '/'
 
     concern :searchable, Blacklight::Routes::Searchable.new
     concern :exportable, Blacklight::Routes::Exportable.new
@@ -62,7 +63,7 @@ DriApp::Application.routes.draw do
 
     resources :collections, :only => ['index','new','create','update','edit','destroy']
 
-    get '/advanced', to: 'advanced#index', defaults: { mode: 'collections' }
+    get '/advanced', to: 'advanced#index'
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
 

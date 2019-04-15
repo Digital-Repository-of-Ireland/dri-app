@@ -27,7 +27,7 @@ module PathTranslator
         root_path
 
       when /^(the )?catalog page$?/
-        catalog_index_path
+        search_catalog_path
 
       when /^(the )?my collections page$/
         my_collections_index_path
@@ -90,10 +90,10 @@ module PathTranslator
         workspace_path
 
       when /^(the )?advanced search page$/
-        advanced_search_path
+        advanced_path
 
       when /^(the )?advanced search page with (\w+) = (.+)$/
-        advanced_search_path("#{$2}": $3.strip)
+        advanced_path("#{$2}": $3.strip)
 
       else
         raise('You specified an invalid path')
