@@ -7,15 +7,10 @@ module Seeds
     hasset_graph = RDF::Graph.load(self.hasset_data_path, format: :rdf_xml)
 
     # skos: prefLabel, altLabel
-    query = RDF::Query.new({
-      subject: {
-        RDF::Vocab::SKOS.prefLabel => :label
-      }
-    })
+    query = RDF::Query.new({ subject: { RDF::Vocab::SKOS.prefLabel => :label } })
 
-    # 7626 terms with SKOS:prefLabel
+    # 7626 terms with SKOS:prefLabel, would be slow as yml file
     results = query.execute(hasset_graph)
-
     hasset_authority = Qa::LocalAuthority.find_or_create_by(name: 'hasset')
 
     results.each do |result|
@@ -26,6 +21,9 @@ module Seeds
   end
 
   def self.remove_hasset_authority
+    hasset_authority = Qa::LocalAuthority.find_by(name: 'hasset')
+    Qa::LocalAuthorityEntry::delete_all(local_authority: hasset_authority)
+    Qa::LocalAuthority.delete_all(name: 'hasset')
   end
 
   def self.hasset_data_path

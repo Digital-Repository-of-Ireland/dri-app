@@ -11,9 +11,11 @@ module Qa::Authorities
       sparql_endpoint = 'http://data.logainm.ie/sparql'
       client = SPARQL::Client.new(sparql_endpoint)
       query_text = "
-        SELECT ?place_name (SAMPLE(?link) AS ?link)
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+        SELECT ?place_name (SAMPLE(?tmp_links) AS ?link)
         WHERE {
-          ?link foaf:name ?place_name .
+          ?tmp_links foaf:name ?place_name .
           FILTER(CONTAINS(LCASE(?place_name), '#{_q}'))
           BIND(STRSTARTS(LCASE(?place_name), '#{_q}') as ?match)
         }
