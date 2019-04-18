@@ -1,4 +1,5 @@
 require 'ffaker'
+
 module Seeds
   INSTITUE_NAMES = %w(test_institute other_test_institute last_test_institute)
 

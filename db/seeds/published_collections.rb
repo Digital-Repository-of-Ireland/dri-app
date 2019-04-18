@@ -36,9 +36,9 @@ module Seeds
   end
 
   # @param owner [String]
-  # @param title [String] 
-  # @param access [String] 
-  # @param type [String] 
+  # @param title [String]
+  # @param access [String]
+  # @param type [String]
   # @return DRI::QualifiedDublicCore
   def self.create_object(owner, title, access: 'public', type: 'Object')
     # institute = Institute.all.sample.name # random institute
@@ -53,7 +53,7 @@ module Seeds
     object.discover_groups_string = access
     object.read_groups_string = access
     object.status = 'published'
-    object.master_file_access = access 
+    object.master_file_access = access
     object.institute = [institute]
     object.depositing_institute = institute
     object.role_org = [institute]
