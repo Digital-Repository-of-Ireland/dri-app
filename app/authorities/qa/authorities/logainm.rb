@@ -4,14 +4,9 @@ module Qa::Authorities
   class Logainm < Qa::Authorities::Base
     def search(_q)
       # filter by CONTAINS LCASE instead of REGEX to speed up query
-      # use SAMPLE instead of GROUP BY to speed up query,
-      # since link itself doesn't matter
+      # use SAMPLE instead of GROUP BY to speed up query, since link itself doesn't matter
       # binding intermediate var seems to slow query down, so call LCASE each time
       # ORDER BY exact matches first, then place names from a-z
-
-      # could also use rails to_query helper to generate url
-      # and then use HTTParty.get as http client e.g.
-      # HTTParty.get("#{sparql_endpoint}?#{query_text.to_query('query')}&format=application%2Fsparql-results%2Bjson")
 
       sparql_endpoint = 'http://data.logainm.ie/sparql'
       client = SPARQL::Client.new(sparql_endpoint)

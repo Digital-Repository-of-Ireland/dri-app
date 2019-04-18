@@ -15,14 +15,8 @@ module Seeds
 
     # 7626 terms with SKOS:prefLabel
     results = query.execute(hasset_graph)
-    # uri_label_hash = results.map do |result|
-    #   { result.subject.to_s => result.label.to_s  }
-    # end
 
     hasset_authority = Qa::LocalAuthority.find_or_create_by(name: 'hasset')
-
-    require 'byebug'
-    byebug
 
     results.each do |result|
       Qa::LocalAuthorityEntry::create(local_authority: hasset_authority,

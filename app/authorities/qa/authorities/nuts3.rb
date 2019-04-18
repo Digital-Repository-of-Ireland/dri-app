@@ -1,8 +1,24 @@
 module Qa::Authorities
   class Nuts3 < Qa::Authorities::Base
-    # https://ec.europa.eu/eurostat/web/nuts/linked-open-data
-    # select ?s ?p ?o  where {graph <http://data.europa.eu/nuts> {?s ?p ?o}}      LIMIT 10
-    # subset of irish codes in nuts3
+    def search(_q)
+      # case insensitive match
+      regex = Regexp.new(Regexp.escape(_q), 'i')
+
+      matching_regions = all.select do |sub_hash|
+        sub_hash[:'Region Name'].match? regex
+      end
+
+      matching_regions.map do |region|
+        {
+          id:    region[:'Region Code'],
+          label: region[:'Region Name']
+        }
+      end
+    end
+
+    def show(id)
+      all.select { |sub_hash| sub_hash[:'Region Code'] == id }
+    end
 
     # possible options converting nuts3 IDs to URIs:
     # https://ec.europa.eu/eurostat/web/nuts/background
@@ -11,6 +27,7 @@ module Qa::Authorities
     # https://tbed.org/eudemo/index.php?tablename=nuts_vw&function=details&where_field=nuts_code&where_value=
 
     # data from aileen's email, originally https://en.wikipedia.org/wiki/NUTS_3_statistical_regions_of_the_Republic_of_Ireland
+    # subset of irish codes in nuts3
     def all
       [
         {
@@ -54,22 +71,6 @@ module Qa::Authorities
          "Local Government areas included": "Laois, Longford, Offaly, Westmeath"
         }
       ]
-    end
-
-    def search(_q)
-      # case insensitive match
-      regex = Regexp.new(Regexp.escape(_q), 'i')
-      matching_regions = all.select { |sub_hash| sub_hash[:'Region Name'].match? regex }
-      matching_regions.map do |region|
-        {
-          id:    region[:'Region Code'],
-          label: region[:'Region Name']
-        }
-      end
-    end
-
-    def show(id)
-      all.select { |sub_hash| sub_hash[:'Region Code'] == id }
     end
   end
 end
