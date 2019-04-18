@@ -173,4 +173,7 @@ gem 'remotipart'
 gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'
 
+# authorities
 gem 'qa', '~> 1.2'
+gem 'rdf', '~> 1.99'
+gem 'rdf-vocab', '~> 0.8.8'

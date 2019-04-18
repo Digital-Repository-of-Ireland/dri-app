@@ -4,7 +4,7 @@ module Qa::Authorities
   class Logainm < Qa::Authorities::Base
     def search(_q)
       # filter by CONTAINS LCASE instead of REGEX to speed up query
-      # use SAMPLE instead of GROUP BY to speed up query, 
+      # use SAMPLE instead of GROUP BY to speed up query,
       # since link itself doesn't matter
       # binding intermediate var seems to slow query down, so call LCASE each time
       # ORDER BY exact matches first, then place names from a-z
@@ -26,9 +26,9 @@ module Qa::Authorities
         LIMIT 50
       "
       query = client.query(query_text)
-      query.to_a.map do |h| 
+      query.to_a.map do |h|
         {
-          label: h[:place_name].to_s, 
+          label: h[:place_name].to_s,
           id: h[:link].to_s
         }
       end

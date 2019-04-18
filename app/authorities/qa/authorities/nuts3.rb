@@ -4,7 +4,7 @@ module Qa::Authorities
     # select ?s ?p ?o  where {graph <http://data.europa.eu/nuts> {?s ?p ?o}}      LIMIT 10
     # subset of irish codes in nuts3
 
-    # possible options converting nuts3 IDs to URIs: 
+    # possible options converting nuts3 IDs to URIs:
     # https://ec.europa.eu/eurostat/web/nuts/background
     # https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02003R1059-20180118&from=EN
     # http://irelandsdg.geohive.ie/datasets/OSi::nuts3-generalised-100m-2/geoservice
@@ -59,17 +59,17 @@ module Qa::Authorities
     def search(_q)
       # case insensitive match
       regex = Regexp.new(Regexp.escape(_q), 'i')
-      matching_regions = all.select { |_h| _h[:'Region Name'].match? regex }
-      matching_regions.map do |_h|
+      matching_regions = all.select { |sub_hash| sub_hash[:'Region Name'].match? regex }
+      matching_regions.map do |region|
         {
-          id: _h[:'Region Code'],
-          label: _h[:'Region Name']
+          id:    region[:'Region Code'],
+          label: region[:'Region Name']
         }
       end
     end
 
     def show(id)
-      all[:'Region Code']
+      all.select { |sub_hash| sub_hash[:'Region Code'] == id }
     end
   end
 end
