@@ -3,7 +3,7 @@ module Qa::Authorities
     def search(_q)
       # hasset labels are all uppercase, so make query case insensitive
       results = all.where('lower(label) LIKE ?', "#{_q.downcase}%")
-      results.map { |result| {label: result.label, id: result.uri } }
+      results.map { |result| { label: result.label, id: result.uri } }
     end
 
     def all

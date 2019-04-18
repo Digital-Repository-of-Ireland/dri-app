@@ -83,3 +83,16 @@ Scenario: Re-enabling autocomplete
   When I select "NUTS3" from the autocomplete menu
   And I fill in "batch[coverage][]" with "dublin"
   Then I should see 1 visible elements ".ui-autocomplete"
+
+# Scenario: Endpoint failure warns user and removes loading gif
+#   Given the hasset autocomplete endpoint is errored
+#   When I press the edit collection button with text "Add Coverage"
+#   And I select "Hasset" from the autocomplete menu
+#   And I fill in "batch[coverage][]" with "test"
+#   Then I should see 1 visible element ".ui-autocomplete-loading"
+#   # timeout for autocomplete, set in "endpoint is errored"
+#   When I wait for "1" seconds
+#   Then I should see 0 visible elements ".ui-autocomplete-loading"
+#   # # ajax.failure not triggering
+#   # And I should see a dialog with text ""
+

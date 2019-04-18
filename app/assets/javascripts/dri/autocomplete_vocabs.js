@@ -36,15 +36,23 @@ function addVocabAutocomplete(id) {
     return false;
   }
   $(input_selector).autocomplete({
-    source: function (request, response) {
+    source: function(request, response) {
       $.ajax({
         url: endpoint + request.term.toLowerCase(),
+        timeout: 5000,
         type: 'GET',
         dataType: 'json',
-        complete: function (xhr, status) {
+        complete: function(xhr, status) {
           var results = $.parseJSON(xhr.responseText);
           response(results);
         }
+      }).fail(function(){
+        var endpoint_name = $(dropdown_selector).find(':selected').text().trim();
+        var end_message = '. Please try a different autocomplete source';
+        alert('error fetching ' + endpoint_name + end_message);
+      }).always(function(){
+        // remove loading gif
+        $(input_selector).removeClass('ui-autocomplete-loading');
       });
     },
     select: function(request, response) {
@@ -110,12 +118,11 @@ function vocabIdToUri(vocab, id) {
     "LOC Names": locIdToUri,
     "Getty Art and Architecture": function(v) {return v;},
     "OCLC FAST": oclcFastIdToUri,
-    "Unesco": function(v) {return v;}, // unseco id is already uri
+    "Unesco": function(v) {return v;}, // unseco id is already url
     "Logainm": function(v) {return v;}, // logainm id is uri,
-    // but all links data.logainm.ie/place so far are broken
-    // e.g. http://data.logainm.ie/place/1391191 (Whitestown)
-    // will be fixed by fct (facet browser) virtuoso add-on
-    "NUTS3": function(v) {return v;}
+    // will be dereferencable after fct (facet browser) virtuoso add-on
+    "NUTS3": function(v) {return v;},
+    "Hasset": function(v) {return v;}
   };
 
   // assignment to check if it's undefined
@@ -125,18 +132,6 @@ function vocabIdToUri(vocab, id) {
     return conversion(id);
   } // implicit return undefined
 }
-
-// function nuts3ToUri(id) {
-//   id;
-//   // // unofficial source, should not preserve
-//   // return "https://tbed.org/eudemo/index.php?tablename=nuts_vw" +
-//   // "&function=details&where_field=nuts_code&where_value=" + id;
-//   // // official source, but doesn't provide fullf resful service
-//   // // map view available here
-//   // https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/nuts-2016-units.html
-//   // // json loaded e.g.
-//   // https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/distribution/IE052-region-60m-4326-2016.geojson
-// }
 
 function oclcFastIdToUri(id) {
   return 'http://fast.oclc.org/fast/' + id;

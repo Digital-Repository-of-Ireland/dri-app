@@ -1,3 +1,12 @@
+# # qa/search/hasset/subjects?q= still returns []
+# # need to stub route response
+# Given /^the hasset autocomplete endpoint is errored$/ do
+#   allow(Qa::Authorities::Hasset).to receive(:all) do
+#     sleep 1
+#     raise 'error bad request'
+#   end
+# end
+
 When /^I click the first autocomplete result$/ do
   first(".ui-autocomplete li a", visible: true).click
 end
