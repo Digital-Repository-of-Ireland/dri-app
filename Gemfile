@@ -9,7 +9,6 @@ gem 'rails', '>= 4', '< 5'
 #gem 'xmlrpc' # removed in ruby 2.4.0
 
 gem 'blacklight', '~> 6'
-gem 'blacklight_advanced_search', '~>6'
 gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
 
 

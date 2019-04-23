@@ -207,9 +207,6 @@ GEM
       leaflet-markercluster-rails
       leaflet-rails
       rails
-    blacklight_advanced_search (6.4.1)
-      blacklight (~> 6.0, >= 6.0.1)
-      parslet
     bootstrap-glyphicons (0.0.1)
       railties (>= 3.0)
       sass (>= 3.2)
@@ -651,7 +648,6 @@ GEM
       parallel
     parser (2.6.0.0)
       ast (~> 2.4.0)
-    parslet (1.8.2)
     powerpack (0.1.2)
     psych (3.1.0)
     public_suffix (3.0.3)
@@ -985,7 +981,6 @@ DEPENDENCIES
   binding_of_caller
   blacklight (~> 6)
   blacklight-maps
-  blacklight_advanced_search (~> 6)
   blacklight_oai_provider!
   bootstrap-glyphicons
   bootstrap-sass (= 3.4.1)

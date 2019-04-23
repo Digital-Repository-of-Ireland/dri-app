@@ -10,14 +10,6 @@ DriApp::Application.configure do
   # since you don't have to restart the web server when you make code changes.
   # config.cache_classes = false
 
-  # can't start resque unless cache_classes = true
-  # bundle exec rake resque:work RAILS_ENV=development QUEUE="*" COUNT="2" VERBOSE=1 --trace
-  # ActiveSupport::Concern::MultipleIncludedBlocks: Cannot define multiple 'included' blocks for a Concern
-  # caused by https://github.com/projectblacklight/blacklight/blob/e7764c1e58bb10b5ea2e186c68e1e320d42c1fb3/app/models/concerns/blacklight/document.rb#L31
-  # more info at https://github.com/rails/rails/issues/15767
-  # later versions of blacklight use autoload, so revert this change after updating blacklight
-  config.cache_classes = true
-
   # turn off caching for method results e.g. iiif_manifst call in iiif_controller.rb
   config.cache_store = [:null_store]
 
@@ -26,7 +18,7 @@ DriApp::Application.configure do
   config.action_controller.perform_caching = false
 
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
-  
+
   config.exceptions_app = self.routes
 
   # Don't care if the mailer can't send
