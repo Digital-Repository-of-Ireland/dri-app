@@ -56,11 +56,18 @@ function addVocabAutocomplete(id) {
       });
     },
     select: function(request, response) {
+      // jquery autocomplete default is response value.
+      // in some cases (e.g. oclc) value is a truncated version of label,
+      // so try to use label, and if it doesn't exist, use value.
+      var label = response.item.label || resposne.item.value;
+      request.preventDefault();
+      $(this).val(label);
+
       var current_vocab = $(dropdown_selector).find(':selected').text();
       var vocab_uri = vocabIdToUri(current_vocab.trim(), response.item.id);
       // if a vocab uri was generated, save the uri to a hidden element
       if (vocab_uri) {
-        saveUriInForm($(this), vocab_uri, response.item.label);
+        saveUriInForm($(this), vocab_uri, label);
       }
     },
     autoFocus: true
@@ -83,14 +90,18 @@ function saveUriInForm(element, vocab_uri, label) {
 
   // make it clear this is a label for a link
   $(element).css({'color':'blue', 'text-decoration':'underline'});
+
   // remove the hidden input if the labels don't match
-  $(element).change(function() {
-    handleMismatchedSavedUri(element)
+  $(element).on({
+    change: function(){
+      handleMismatchedSavedUri(element);
+    },
+    input: function(){
+      handleMismatchedSavedUri(element);
+    }
   });
 }
 
-// TODO run on all elements on form submit
-// focus out won't be triggered before form submits
 function handleMismatchedSavedUri(element) {
   var hidden_input = $(element).parent().find('input:hidden');
   var normal_input = $(element);
