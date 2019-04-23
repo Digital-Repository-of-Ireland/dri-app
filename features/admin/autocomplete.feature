@@ -43,10 +43,10 @@ Scenario: Choosing an autocomplete result, then changing your mind
   And I fill in "batch_subject][" with "Dublin"
   And I click the first autocomplete result
   Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
+  # # Tested without puffing billy stubbing
+  # Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/id.loc.gov\/authorities\/subjects\/sh2004010472"
   And the text in "batch_subject][" should have link styling
   When I fill in "batch_subject][" with "asdf"
-  # requires click on any other element to trigger on change
-  And I press the edit collection button with text "Add Subject"
   Then I should not see a hidden "input#batch_subject][" within "fieldset#subject"
   Then the text in "batch_subject][" should not have link styling
 

@@ -1,4 +1,3 @@
-
 Before('not @javascript') do
   page.driver.browser.header('Accept-Language', 'en')
 end
@@ -6,7 +5,7 @@ end
 Before('@stub_requests') do
   # stub questioning authority autocomplete requests
   qa_base = /http:\/\/(localhost|127.0.0.1):\d+\/qa\/search/
-  loc_base = /#{qa_base}\/loc\/subjects/
+  loc_base = /#{qa_base}\/loc\/(.*)/
   logainm_base = /#{qa_base}\/logainm\/subjects/
   nuts3_base = /#{qa_base}\/nuts3\/subjects/
   oclc_base = /#{qa_base}\/assign_fast\/all/
