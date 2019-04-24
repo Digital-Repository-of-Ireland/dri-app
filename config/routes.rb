@@ -63,8 +63,6 @@ DriApp::Application.routes.draw do
 
     resources :collections, :only => ['index','new','create','update','edit','destroy']
 
-    # get '/advanced', to: 'advanced#index', as: :advanced_search, defaults: { mode: 'collections' }
-    get '/advanced', to: 'advanced#index', as: :advanced_search
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
 

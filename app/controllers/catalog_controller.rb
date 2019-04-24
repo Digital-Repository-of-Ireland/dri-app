@@ -151,11 +151,12 @@ class CatalogController < ApplicationController
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields.
 
-    %i[
-      title subject description
-      creator contributor publisher
-      person place
-    ].each do |field_name|
+    config.dri_display_search_fields = %i[all_fields title subject person place]
+    config.dri_all_search_fields = %i[
+      title subject description creator contributor publisher person place
+    ]
+
+    config.dri_all_search_fields.each do |field_name|
       config.add_search_field(field_name) do |field|
         field.solr_local_parameters = {
           # qf: "${#{field_name}_qf}",

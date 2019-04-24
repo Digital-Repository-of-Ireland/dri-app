@@ -1,11 +1,11 @@
 // Whenever an "add" link is clicked, a new text field is added to the bottom of the list
-$(document).ready(function() { 
-  $('.add-text-field a').click(function(e) { 
+$(document).ready(function() {
+  $('.add-text-field a').click(function(e) {
     e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
     var model_name = $(this).attr('model-name');
-    var new_elemenet_type = ['description', 'rights'].includes(fieldset_id) ? 
-      'textarea' : 
+    var new_elemenet_type = ['description', 'rights'].includes(fieldset_id) ?
+      'textarea' :
       'input';
     var input_id = [model_name, fieldset_id].join('_')+'][';
     var input_name = model_name+'['+fieldset_id+'][]';
@@ -25,7 +25,7 @@ $(document).ready(function() {
   $('.dri_ingest_form').on('click','.destructive', function(e) {
     e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
-    
+
     // TODO
     // 1. make required fields generic? i.e. can't remove all inputs of type x
     if (fieldset_id === 'roles') {
@@ -147,7 +147,7 @@ function createTextInput(id, name, classes) {
           '</div>';
 }
 
-// TODO 
+// TODO
 // 1. move to ecma6 template strings
 // 2. Check selected data-field needs to exist? (doesn't update, isn't on first element)
 function createPersonInput(id, name, previous_select) {
@@ -161,6 +161,8 @@ function createPersonInput(id, name, previous_select) {
 }
 
 function clearAdvancedForm(form_id) {
+  // remove text from text inputs
   $(form_id).find('input[type=text]').val('').end();
-  $(form_id + ' select#op').val('OR');
+  // reset search operator to 'all'
+  $(form_id + ' select#op').val('AND');
 }

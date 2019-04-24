@@ -107,4 +107,34 @@ module BlacklightHelper
           :classes => ["query"],
           :remove => scope.url_for(localized_params.merge(:q_ws=>nil, :action=>'index')))
   end
+
+  # @param [Array<Array>] fields
+  # @return [Array] blacklight search fields which can be displayed
+  def display_search_fields(fields = search_fields)
+    fields.select do |(label, value)|
+      blacklight_config.dri_display_search_fields.include?(value.to_sym)
+    end
+  end
+
+  # @param [Array<Array>] fields
+  # @return [Array] translated fields
+  def translated_search_fields(fields = search_fields)
+    fields.map do |(label, value)|
+      # if translation doesn't exist, fall back to blacklight label
+      [t("blacklight.search.fields.label.#{value.pluralize}", default: label), value]
+    end
+  end
+
+  # @param [Hash<string, config>] fields
+  # @return [Hash<string, config>]
+  # has side effect of adding translated_label to search_fields_for_advanced_search reference
+  # TODO look into making search_fields_for_advanced_search immutable, or removing this side effect
+  def translated_search_fields_for_andvanced_search(fields = search_fields_for_advanced_search)
+    fields.map do |key, field_def|
+      trans_key = "blacklight.search.fields.label.#{field_def.field.pluralize}"
+      translated_label = t(trans_key, default: field_def.label)
+      field_def.translated_label = translated_label
+      [key, field_def]
+    end.to_h
+  end
 end
