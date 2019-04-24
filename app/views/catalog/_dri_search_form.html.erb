@@ -28,4 +28,7 @@
     </button>
   <% end %><!-- end form -->
 <!-- close dri_search_term_input_form -->
-<%= render 'advanced/dri/advanced_modal' %>
+
+<% if controller_name == 'catalog' %>
+  <%= render 'advanced/dri_modal' %>
+<% end %>
