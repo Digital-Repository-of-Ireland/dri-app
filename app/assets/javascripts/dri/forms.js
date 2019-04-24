@@ -159,3 +159,11 @@ function createPersonInput(id, name, previous_select) {
               +name+'['+id+'][name][]" size="30" type="text" value=""/>'+createRemoveButton('batch')+
           '</div>';
 }
+
+function clearAdvancedForm(form_id) {
+  $(form_id).find('input[type=text]').val('').end();
+  $(form_id + ' select[name=op]').val('any');
+  // // advanced submit button is actually input, so only remove text input values
+  // $(form_id).find('input[type=text], textarea, select').val('').end()
+  //           .find('input[type=checkbox], input[type=radio]').prop('checked', '').end();
+}
