@@ -12,7 +12,8 @@ Background:
   And the collection with pid "t2" is published
   And the collection with pid "t3" is published
   And I am not logged in
-  And I go to "the advanced search page"
+  And I go to "the home page"
+  And I press "#advanced_search_button"
 
 Scenario: Boolean AND search
   When I fill in "Title" with "*Two" within "#advanced_search"
@@ -53,74 +54,21 @@ Scenario: Single character query
   And I press "#advanced-search-submit"
   Then I should see 1 collection with title "Z"
 
-Scenario: Browse tabs should not reload the page
-  When I fill in "Title" with "test tabs" within "#advanced_search"
-  And I press "#dri_browse_sort_tabs_objects_id_no_reload"
-  And I press "#dri_browse_sort_tabs_collections_id_no_reload"
-  Then I should see an input "title" with text "test tabs" within "#advanced_search"
-
-Scenario Outline: "<TEST_STRING>" dropdowns should not reload the page
-  When I fill in "Title" with "test <TEST_STRING>" within "#advanced_search"
-  And I select "<SELECTION>" from "<SELECTOR>"
-  Then I should see an input "title" with text "test <TEST_STRING>" within "#advanced_search"
-  Examples:
-    | SELECTOR        | SELECTION | TEST_STRING  |
-    | select#sort     | Title     | sorting      |
-    | select#per_page | 18        | pagination   |
-
-Scenario: Browse settings should be preserved between simple and advanced search
-  Given I am on the home page
-  And I click "#dri_browse_sort_tabs_objects_id"
-  And I click "#advanced_search"
-  Then I should see 1 visible element "#dri_browse_sort_tabs_objects_id_no_reload .selected"
-
-Scenario: Browse settings should be preserved between advanced searches
-  Given I am on the advanced search page with mode = collections
-  When I select "any" from ".query-criteria #op"
-  And I press "#dri_browse_sort_tabs_sub_collections_id_no_reload"
-  And I fill in "Title" with "titleOne" within "#advanced_search"
-  And I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
-  And I select "Relevance" from "select#sort"
-  And I select "36" from "select#per_page"
-  # submit search and check search settings are displayed correctly
-  When I press "#advanced-search-submit"
-  Then I should be on the catalog page
-  And I should see "t1" in facet with id "blacklight-root_collection_id_sim"
-  And I should see 1 visible element "#dri_browse_sort_tabs_collections_id .selected"
-  And I should see 1 visible element "#dri_browse_sort_tabs_sub_collections_id .selected"
-  And I should see "Relevance" selected in "sort"
-  And I should see "36 Results" selected in "per_page"
-  # go back to advanced search and check the settings are preserved
-  When I press "#advanced_search"
-  Then I should be on the advanced search page
-  And I should see "any" selected in "op"
-  And I should see 1 visible element "#dri_browse_sort_tabs_collections_id_no_reload .selected"
-  And I should see 1 visible element "#dri_browse_sort_tabs_sub_collections_id_no_reload .selected"
-  And I should see an input "title" with text "titleOne" within "#advanced_search"
-  And I should see 1 visible element "#facet-root_collection_id_sim.in"
-  And I should see "Relevance" selected in "sort"
-  And I should see "36 Results" selected in "per_page"
-
-Scenario: Faceted Search for a normal end-user (anonymous or registered)
-  Given I am on the advanced search page with mode = collections
-  And I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
-  And I press "#advanced-search-submit"
-  Then I should see a search result "titleOne"
-  And I should see "t1" in facet with id "blacklight-root_collection_id_sim"
-
 Scenario: Resetting all search terms
-  # TODO: remove mode=collections, fix default params[:mode] for advanced search
-  Given I am on the advanced search page with mode = collections
-  When I select "t1" in facet "Collection" with id "blacklight-root_collection_id_sim"
+  When I press "#dri_advanced_search_modal_id button.close"
+  And I search for "titleOne" in facet "Collection" with id "blacklight-root_collection_id_sim"
+  Then I should see 1 visible element "#browse_clear_all"
+  And I should see "titleOne" in the facet well
+  When I press "#advanced_search_button"
   And I fill in "Title" with "*Two" within "#advanced_search"
   And I fill in "Creator" with "*Two" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
   Then I should see 1 visible element "#browse_clear_all"
-  And I should see "t1" in the facet well
+  And I should see "titleOne" in the facet well
   And I should see "Titles = *Two" in the facet well
   And I should see "Creators = *Two" in the facet well
   When I click "#browse_clear_all"
-  And I should not see "t1" in the facet well
+  Then I should not see "t1" in the facet well
   And I should not see "Titles = *Two" in the facet well
   And I should not see "Creators = *Two" in the facet well
