@@ -68,8 +68,8 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
     | Places       | Dublin               | geographical_coverage   | my collections |
 
 Scenario: Advanced Search Link
-  When I press "#dri_advanced_search_input_id #advanced_search"
-  Then I should be on the advanced search page
+  When I press "#advanced_search_button"
+  Then I should see a modal with title "Advanced Search"
 
 Scenario: Reset Search
   Given I am on the home page
@@ -81,4 +81,3 @@ Scenario: Reset Search
   Then I should see 0 visible elements "#browse_clear_all"
 
 #TODO fix single character queries (will there ever be collections / objects with a single character field in prod?)
-# remove custom reset search and use clear all button?
