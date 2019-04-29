@@ -148,9 +148,9 @@ namespace :db do
         task task_name.to_sym => :environment do
           if File.exist?(filename)
             require(filename)
-            puts "starting #{task_name} seeds"
+            puts "Running seeds #{task_name}"
             Seeds.send("#{task_name}".to_sym)
-            puts "finished #{task_name} seeds"
+            puts "Ran seeds #{task_name}"
           end
         end
       end
