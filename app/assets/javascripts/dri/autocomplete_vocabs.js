@@ -132,7 +132,7 @@ function vocabIdToUri(vocab, id) {
     "Unesco": function(v) {return v;}, // unseco id is already url
     "Logainm": function(v) {return v;}, // logainm id is uri,
     // will be dereferencable after fct (facet browser) virtuoso add-on
-    "NUTS3": function(v) {return v;},
+    "Nuts3": function(v) {return v;},
     "Hasset": function(v) {return v;}
   };
 

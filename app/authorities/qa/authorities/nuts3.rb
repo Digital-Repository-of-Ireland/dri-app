@@ -29,6 +29,10 @@ module Qa::Authorities
       Psych.safe_load(File.open(nuts_path))
     end
 
+    def empty?
+      all.empty?
+    end
+
     private
 
       def nuts_path

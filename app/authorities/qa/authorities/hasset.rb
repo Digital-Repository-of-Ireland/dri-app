@@ -7,8 +7,15 @@ module Qa::Authorities
     end
 
     def all
-      hasset_authority = Qa::LocalAuthority.find_by(name: 'hasset')
-      Qa::LocalAuthorityEntry.where(local_authority: hasset_authority)
+      Qa::LocalAuthorityEntry.where(local_authority: authority_object)
+    end
+
+    def authority_object
+      Qa::LocalAuthority.find_by(name: 'hasset')
+    end
+
+    def empty?
+      all.empty?
     end
   end
 end

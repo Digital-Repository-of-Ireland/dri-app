@@ -1,31 +1,39 @@
 <div class='choose-vocab-container'>
   <%
     vocabs = [
-      ["LOC Subject Headings", "/qa/search/loc/subjects?q="],
-      ["LOC Names", "/qa/search/loc/names?q="],
-      ["Getty Art and Architecture", "/qa/search/getty/aat?q="],
-      ["Hasset", "/qa/search/hasset/subjects?q="],
-      ["Logainm", "/qa/search/logainm/subjects?q="],
-      ["NUTS3", "/qa/search/nuts3/subjects?q="],
-      ["OCLC FAST", "/qa/search/assign_fast/all?q="],
-      ["Unesco", "/qa/search/unesco/subjects?q="],
-      ["Disable", "na"]
+      { name: "LOC Subject Headings", endpoint: "/qa/search/loc/subjects?q=" },
+      { name: "LOC Names", endpoint: "/qa/search/loc/names?q=" },
+      { name: "Getty Art and Architecture", endpoint: "/qa/search/getty/aat?q=" },
+      { name: "Hasset", endpoint: "/qa/search/hasset/subjects?q=" },
+      { name: "Logainm", endpoint: "/qa/search/logainm/subjects?q=" },
+      { name: "Nuts3", endpoint: "/qa/search/nuts3/subjects?q=" },
+      { name: "OCLC FAST", endpoint: "/qa/search/assign_fast/all?q=" },
+      { name: "Unesco", endpoint: "/qa/search/unesco/subjects?q=" },
+      { name: "Disable", endpoint: "na" }
     ]
+
+    # remove local authorities if they are empty
+    %w(Hasset Nuts3).each do |authority_name|
+      local_authority = Qa::Authorities.const_get(authority_name)
+      vocabs.delete_if { |h| h[:name] == authority_name } if local_authority.new.empty?
+    end
+
     # if no default is set, use the first label
-    default ||= vocabs[0][0]
+    default ||= vocabs[0][:name]
   %>
   <select class='vocab-dropdown'>
-    <% vocabs.each do |arr| %>
-      <option <%= selected='selected' if arr[0] == default %> value="<%=arr[1]%>">
-        <%=arr[0]%>
+    <% vocabs.each do |vocab_hash| %>
+      <option <%= selected='selected' if vocab_hash[:name] == default %>
+              value="<%=vocab_hash[:endpoint]%>">
+        <%=vocab_hash[:name]%>
       </option>
     <% end %>
   </select>
 
   <i class="dri_help_popover fa fa-info-circle fa-1"
-      data-original-title="<%=t('dri.help.autocomplete.title')%>"
-      data-content="<%=t('dri.help.autocomplete.content')%>"
-      data-trigger="hover"
-      data-placement="right">
+     data-original-title="<%=t('dri.help.autocomplete.title')%>"
+     data-content="<%=t('dri.help.autocomplete.content')%>"
+     data-trigger="hover"
+     data-placement="right">
   </i>
 </div>

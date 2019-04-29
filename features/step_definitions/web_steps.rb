@@ -265,6 +265,11 @@ When /^published_images returns generic files from "([^\"]+)"$/ do |pid|
   )
 end
 
+When /^I refresh the page$/ do
+  # page.driver.browser.navigate.refresh
+  visit current_path
+end
+
 Then /^I should( not)? see a popover$/ do |negate|
   expectation = negate ? :should_not : :should
   page.send(expectation, have_css('div.popover', visible: true))
