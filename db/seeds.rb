@@ -6,6 +6,3 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 UserGroup::Engine.load_seed
-
-Rake::Task['db:seed:add_licences'].invoke
-Rake::Task['db:seed:add_hasset_authority'].invoke

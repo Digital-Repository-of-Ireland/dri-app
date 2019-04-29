@@ -135,25 +135,3 @@ namespace :jetty do
   task :stop => ['server:stop']
   task :config => ['server:config']
 end
-
-# custom seed files to add/remove data for dev/test
-# e.g bundle exec rake db:seed:add_organisations
-namespace :db do
-  namespace :seed do
-    Dir[Rails.root.join('db', 'seeds', '*.rb')].each do |filename|
-      cmd = File.basename(filename, '.rb')
-      tasks = ["add_#{cmd}", "add_#{cmd}!", "remove_#{cmd}", "remove_#{cmd}!"]
-      tasks.each do |task_name|
-        desc "Seed " + task_name
-        task task_name.to_sym => :environment do
-          if File.exist?(filename)
-            require(filename)
-            puts "Running seeds #{task_name}"
-            Seeds.send("#{task_name}".to_sym)
-            puts "Ran seeds #{task_name}"
-          end
-        end
-      end
-    end
-  end
-end

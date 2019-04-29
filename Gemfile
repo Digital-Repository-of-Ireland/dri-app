@@ -176,3 +176,5 @@ gem 'rswag-ui', '~> 2.0'
 gem 'qa', '~> 1.2'
 gem 'rdf', '~> 1.99'
 gem 'rdf-vocab', '~> 0.8.8'
+
+gem "seedbank", "~> 0.5.0"

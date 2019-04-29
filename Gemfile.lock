@@ -864,6 +864,8 @@ GEM
     sassc (2.0.1)
       ffi (~> 1.9)
       rake
+    seedbank (0.5.0)
+      rake (>= 10.0)
     selenium-webdriver (3.141.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2, >= 1.2.2)
@@ -1061,6 +1063,7 @@ DEPENDENCIES
   rubocop-rspec
   rvm
   sass-rails (~> 4.0.4)
+  seedbank (~> 0.5.0)
   shoulda (~> 3.6)
   shoulda-matchers
   show_me_the_cookies
