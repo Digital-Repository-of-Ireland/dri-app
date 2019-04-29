@@ -1,23 +1,6 @@
 <div class='choose-vocab-container'>
   <%
-    vocabs = [
-      { name: "LOC Subject Headings", endpoint: "/qa/search/loc/subjects?q=" },
-      { name: "LOC Names", endpoint: "/qa/search/loc/names?q=" },
-      { name: "Getty Art and Architecture", endpoint: "/qa/search/getty/aat?q=" },
-      { name: "Hasset", endpoint: "/qa/search/hasset/subjects?q=" },
-      { name: "Logainm", endpoint: "/qa/search/logainm/subjects?q=" },
-      { name: "Nuts3", endpoint: "/qa/search/nuts3/subjects?q=" },
-      { name: "OCLC FAST", endpoint: "/qa/search/assign_fast/all?q=" },
-      { name: "Unesco", endpoint: "/qa/search/unesco/subjects?q=" },
-      { name: "Disable", endpoint: "na" }
-    ]
-
-    # remove local authorities if they are empty
-    %w(Hasset Nuts3).each do |authority_name|
-      local_authority = Qa::Authorities.const_get(authority_name)
-      vocabs.delete_if { |h| h[:name] == authority_name } if local_authority.new.empty?
-    end
-
+    vocabs = DRI::AuthorityPresenter.viewable_vocabs
     # if no default is set, use the first label
     default ||= vocabs[0][:name]
   %>
