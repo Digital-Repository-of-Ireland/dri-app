@@ -1,3 +1,12 @@
+After do
+  FileUtils.remove_dir(@tmp_assets_dir, force: true)
+end
+
+# Before do
+#   # standardize window size (generic, runs on any driver, but slower than passing in config env.rb)
+#   Capybara.page.driver.browser.manage.window.resize_to(1200, 800)
+# end
+
 Before('not @javascript') do
   page.driver.browser.header('Accept-Language', 'en')
 end
@@ -25,10 +34,6 @@ Before('@stub_requests') do
       }
     })
   end
-end
-
-After do
-  FileUtils.remove_dir(@tmp_assets_dir, force: true)
 end
 
 Before('@random_pid') do
@@ -66,7 +71,7 @@ end
 After do |scenario|
   # using byebug stop interaction with browser, just sleep on failure
   if ENV['headless']&.downcase&.strip == 'false' && scenario.failed?
-    sleeptime = 600
+    sleeptime = 600 # 10 minutes
     STDOUT.puts("\nScenario failed. Sleeping for #{sleeptime} seconds.")
     sleep(sleeptime)
   end
