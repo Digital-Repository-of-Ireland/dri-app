@@ -59,7 +59,7 @@ function addVocabAutocomplete(id) {
       // jquery autocomplete default is response value.
       // in some cases (e.g. oclc) value is a truncated version of label,
       // so try to use label, and if it doesn't exist, use value.
-      var label = response.item.label || resposne.item.value;
+      var label = response.item.label || response.item.value;
       request.preventDefault();
       $(this).val(label);
 

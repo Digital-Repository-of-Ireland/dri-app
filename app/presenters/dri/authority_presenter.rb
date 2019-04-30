@@ -16,9 +16,11 @@ module DRI
 
     def self.viewable_vocabs
       # remove local authorities if they are empty
-      vocabs = self.vocabs
-      vocabs.reject! { |h| h[:name] == 'Nuts3' } if Qa::Authorities::Nuts3.new.empty?
-      vocabs.reject! { |h| h[:name] == 'Hasset' } if Qa::Authorities::Hasset.new.empty?
+      self.vocabs.reject do |h|
+        h[:name] == 'Nuts3' if Qa::Authorities::Nuts3.new.empty?
+      end.reject do |h|
+        h[:name] == 'Hasset' if Qa::Authorities::Hasset.new.empty?
+      end
     end
   end
 end

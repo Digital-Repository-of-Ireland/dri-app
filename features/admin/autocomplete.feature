@@ -84,6 +84,19 @@ Scenario: Re-enabling autocomplete
   And I fill in "batch[coverage][]" with "dublin"
   Then I should see 1 visible elements ".ui-autocomplete"
 
+Scenario Outline: Local authorities should be hidden if the data is missing
+  When I press the edit collection button with text "Add Coverage"
+  Then I should see "Nuts3" in the autocomplete menu
+  Given the local authority "<AUTHORITY_NAME>" is empty
+  When I refresh the page
+  And I press the edit collection button with text "Add Coverage"
+  Then I should not see "<AUTHORITY_NAME>" in the autocomplete menu
+
+  Examples:
+    | AUTHORITY_NAME |
+    | Hasset         |
+    | Nuts3          |
+
 # Scenario: Endpoint failure warns user and removes loading gif
 #   Given the hasset autocomplete endpoint is errored
 #   When I press the edit collection button with text "Add Coverage"
@@ -96,16 +109,7 @@ Scenario: Re-enabling autocomplete
 #   # # ajax.failure not triggering
 #   # And I should see a dialog with text ""
 
-Scenario Outline: Local authorities should be hidden if the data is missing
-  When I press the edit collection button with text "Add Coverage"
-  Then I should see "Nuts3" in the autocomplete menu
-
-  Given the local authority "<AUTHORITY_NAME>" is empty
-  When I refresh the page
-  And I press the edit collection button with text "Add Coverage"
-  Then I should not see "<AUTHORITY_NAME>" in the autocomplete menu
-
-  Examples:
-    | AUTHORITY_NAME |
-    | Hasset         |
-    | Nuts3          |
+# TODO: once puffing billy issue is resolved,
+# test that js fallback to response.item.value works
+# /app/assets/javascripts/dri/autocomplete_vocabs.js#62
+# var label = response.item.label || response.item.value;
